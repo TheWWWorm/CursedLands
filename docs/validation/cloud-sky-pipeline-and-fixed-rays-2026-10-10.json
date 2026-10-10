@@ -1,0 +1,2169 @@
+{
+  "date": "2026-10-10",
+  "feature": "Sky draw-state inspection and recorded-ray controls",
+  "base_commit": "a3edaad",
+  "production_commit": "eabc8d9",
+  "production_change": null,
+  "scope": {
+    "main_thread_only": true,
+    "playthroughs": false,
+    "new_packages": false,
+    "latest_delivery": "1.0.3-local.20261010.9, source 473beb9",
+    "runtime": "Existing a916f95 private desktop executable/PCK/game helper, with current eabc8d9 sky script substitution except global class registration. Source diagnostics only; no complete-current-source package acceptance.",
+    "native_diagnostic": "One temporary read-only LD_PRELOAD draw-state recorder compiled with gcc -shared -fPIC -O2 -Wall -Wextra -Werror sky_draw_trace.c -o libsky_draw_trace.so -ldl -pthread. Applied only to draw-mixed01; all observed Vulkan arguments forwarded unchanged.",
+    "android": "Read-only device inventory; no launch, write or installation. Normal app untouched.",
+    "cost_claim": null
+  },
+  "source_sha256": {
+    "game/src/game/sky.gd": "16959e684ecb8423f89e7cba036a6839a53bb647f388c18aa45a5509a6f3506c",
+    "game/src/game/fx/cloud_volume.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+    "game/src/game/fx/clouds.gd": "19b7121aa68409540c08a6f7c2acc6e1bd86b3989364a47b086ea9a7397925cf"
+  },
+  "findings": {
+    "draw_state": {
+      "scope": "Read-only Vulkan calls at each actual sky vkCmdDraw. Push constants, current bound graphics pipeline, dynamic viewport and scissor captured per command buffer; state resets at vkBeginCommandBuffer. All forwarded arguments unchanged.",
+      "record_count": 17172,
+      "record_size": 192,
+      "sha256": "e2212417b9a1654a8ff9a46b73e3f1b94a82cfdca46b07799e16dbf9a012ef8e",
+      "all_state_valid_flags": 15,
+      "summary": {
+        "320x320": {
+          "draw_count": 2502,
+          "viewport_states": [
+            [
+              0.0,
+              0.0,
+              320.0,
+              320.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "scissor_states": [
+            [
+              0,
+              0,
+              320,
+              320
+            ]
+          ],
+          "pipeline_handles": [
+            96245070420608,
+            96245102503008
+          ],
+          "constant_states_sha256": [
+            "cd754a3941b329c28fd39ab230e19962ad6d3f7e5a0799cf36150b9e7663ac17"
+          ]
+        },
+        "640x640": {
+          "draw_count": 2502,
+          "viewport_states": [
+            [
+              0.0,
+              0.0,
+              640.0,
+              640.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "scissor_states": [
+            [
+              0,
+              0,
+              640,
+              640
+            ]
+          ],
+          "pipeline_handles": [
+            96244839460000,
+            96244969806784
+          ],
+          "constant_states_sha256": [
+            "cd754a3941b329c28fd39ab230e19962ad6d3f7e5a0799cf36150b9e7663ac17"
+          ]
+        },
+        "1920x1080": {
+          "draw_count": 6084,
+          "viewport_states": [
+            [
+              0.0,
+              0.0,
+              1920.0,
+              1080.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "scissor_states": [
+            [
+              0,
+              0,
+              1920,
+              1080
+            ]
+          ],
+          "pipeline_handles": [
+            96245053064448,
+            96245112725152
+          ],
+          "constant_states_sha256": [
+            "1833e6f84c4180230c821b581cb5d7bc61aa072df02e3822ded575f633f89508"
+          ]
+        },
+        "3840x2160": {
+          "draw_count": 6084,
+          "viewport_states": [
+            [
+              0.0,
+              0.0,
+              3840.0,
+              2160.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "scissor_states": [
+            [
+              0,
+              0,
+              3840,
+              2160
+            ]
+          ],
+          "pipeline_handles": [
+            96245076021184,
+            96245155961600
+          ],
+          "constant_states_sha256": [
+            "1833e6f84c4180230c821b581cb5d7bc61aa072df02e3822ded575f633f89508"
+          ]
+        }
+      },
+      "captures": [
+        {
+          "label": "0-first",
+          "cloud_sha256": "7cccf67eea6e34d2ad6d7ba836b424583c39445c44767e124923da0c8a6e3b9b",
+          "shader_sha256": "33a6bb4f3791004827b76c0dbe56851d85793b3e7882cf94c709bf5c698c4488",
+          "capture_unix": [
+            1791661548.65439,
+            1791661549.02757
+          ],
+          "draw_states": {
+            "1920x1080": {
+              "time": 1791661548.6491516,
+              "command": 96244784619312,
+              "pipeline": 96245053064448,
+              "layout": 132978178562848,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                1920.0,
+                1080.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                1920,
+                1080
+              ]
+            },
+            "3840x2160": {
+              "time": 1791661548.6491663,
+              "command": 96244784619312,
+              "pipeline": 96245076021184,
+              "layout": 132978271720416,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                3840.0,
+                2160.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                3840,
+                2160
+              ]
+            }
+          }
+        },
+        {
+          "label": "0-held",
+          "cloud_sha256": "7cccf67eea6e34d2ad6d7ba836b424583c39445c44767e124923da0c8a6e3b9b",
+          "shader_sha256": "33a6bb4f3791004827b76c0dbe56851d85793b3e7882cf94c709bf5c698c4488",
+          "capture_unix": [
+            1791661551.33214,
+            1791661551.7002
+          ],
+          "draw_states": {
+            "1920x1080": {
+              "time": 1791661551.3212657,
+              "command": 96244784619312,
+              "pipeline": 96245053064448,
+              "layout": 132978178562848,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                1920.0,
+                1080.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                1920,
+                1080
+              ]
+            },
+            "3840x2160": {
+              "time": 1791661551.3212695,
+              "command": 96244784619312,
+              "pipeline": 96245076021184,
+              "layout": 132978271720416,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                3840.0,
+                2160.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                3840,
+                2160
+              ]
+            }
+          }
+        },
+        {
+          "label": "1-first",
+          "cloud_sha256": "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585",
+          "shader_sha256": "ca198fe5e44864fee1a9d03fca1a7ad5e21ae10941fea3e6a8303dfdaeba3f6d",
+          "capture_unix": [
+            1791661561.96098,
+            1791661562.31308
+          ],
+          "draw_states": {
+            "1920x1080": {
+              "time": 1791661561.9552884,
+              "command": 96244713260448,
+              "pipeline": 96245112725152,
+              "layout": 132978179489680,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                1920.0,
+                1080.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                1920,
+                1080
+              ]
+            },
+            "3840x2160": {
+              "time": 1791661561.955296,
+              "command": 96244713260448,
+              "pipeline": 96245155961600,
+              "layout": 132978265776608,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                3840.0,
+                2160.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                3840,
+                2160
+              ]
+            }
+          }
+        },
+        {
+          "label": "1-held",
+          "cloud_sha256": "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585",
+          "shader_sha256": "ca198fe5e44864fee1a9d03fca1a7ad5e21ae10941fea3e6a8303dfdaeba3f6d",
+          "capture_unix": [
+            1791661564.57806,
+            1791661564.98563
+          ],
+          "draw_states": {
+            "1920x1080": {
+              "time": 1791661564.555733,
+              "command": 96244713260448,
+              "pipeline": 96245112725152,
+              "layout": 132978179489680,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                1920.0,
+                1080.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                1920,
+                1080
+              ]
+            },
+            "3840x2160": {
+              "time": 1791661564.5557444,
+              "command": 96244713260448,
+              "pipeline": 96245155961600,
+              "layout": 132978265776608,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                3840.0,
+                2160.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                3840,
+                2160
+              ]
+            }
+          }
+        },
+        {
+          "label": "2-first",
+          "cloud_sha256": "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585",
+          "shader_sha256": "ca198fe5e44864fee1a9d03fca1a7ad5e21ae10941fea3e6a8303dfdaeba3f6d",
+          "capture_unix": [
+            1791661575.25288,
+            1791661575.60128
+          ],
+          "draw_states": {
+            "1920x1080": {
+              "time": 1791661575.2470605,
+              "command": 96244784619312,
+              "pipeline": 96245112725152,
+              "layout": 132978179489680,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                1920.0,
+                1080.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                1920,
+                1080
+              ]
+            },
+            "3840x2160": {
+              "time": 1791661575.2470698,
+              "command": 96244784619312,
+              "pipeline": 96245155961600,
+              "layout": 132978265776608,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                3840.0,
+                2160.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                3840,
+                2160
+              ]
+            }
+          }
+        },
+        {
+          "label": "2-held",
+          "cloud_sha256": "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585",
+          "shader_sha256": "ca198fe5e44864fee1a9d03fca1a7ad5e21ae10941fea3e6a8303dfdaeba3f6d",
+          "capture_unix": [
+            1791661577.92619,
+            1791661578.29667
+          ],
+          "draw_states": {
+            "1920x1080": {
+              "time": 1791661577.9203842,
+              "command": 96244784619312,
+              "pipeline": 96245112725152,
+              "layout": 132978179489680,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                1920.0,
+                1080.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                1920,
+                1080
+              ]
+            },
+            "3840x2160": {
+              "time": 1791661577.9203923,
+              "command": 96244784619312,
+              "pipeline": 96245155961600,
+              "layout": 132978265776608,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                3840.0,
+                2160.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                3840,
+                2160
+              ]
+            }
+          }
+        },
+        {
+          "label": "3-first",
+          "cloud_sha256": "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585",
+          "shader_sha256": "33a6bb4f3791004827b76c0dbe56851d85793b3e7882cf94c709bf5c698c4488",
+          "capture_unix": [
+            1791661588.68078,
+            1791661589.07528
+          ],
+          "draw_states": {
+            "1920x1080": {
+              "time": 1791661588.6750948,
+              "command": 96244784619312,
+              "pipeline": 96245053064448,
+              "layout": 132978178562848,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                1920.0,
+                1080.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                1920,
+                1080
+              ]
+            },
+            "3840x2160": {
+              "time": 1791661588.6751041,
+              "command": 96244784619312,
+              "pipeline": 96245076021184,
+              "layout": 132978271720416,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                3840.0,
+                2160.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                3840,
+                2160
+              ]
+            }
+          }
+        },
+        {
+          "label": "3-held",
+          "cloud_sha256": "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585",
+          "shader_sha256": "33a6bb4f3791004827b76c0dbe56851d85793b3e7882cf94c709bf5c698c4488",
+          "capture_unix": [
+            1791661591.38061,
+            1791661591.7982
+          ],
+          "draw_states": {
+            "1920x1080": {
+              "time": 1791661591.3589022,
+              "command": 96244784619312,
+              "pipeline": 96245053064448,
+              "layout": 132978178562848,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                1920.0,
+                1080.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                1920,
+                1080
+              ]
+            },
+            "3840x2160": {
+              "time": 1791661591.358908,
+              "command": 96244784619312,
+              "pipeline": 96245076021184,
+              "layout": 132978271720416,
+              "flags": 17,
+              "viewport": [
+                0.0,
+                0.0,
+                3840.0,
+                2160.0,
+                0.0,
+                1.0
+              ],
+              "scissor": [
+                0,
+                0,
+                3840,
+                2160
+              ]
+            }
+          }
+        }
+      ],
+      "restored_reference_same_observed_draw_state": true,
+      "restored_reference_cloud_buffer_changed": true
+    },
+    "draw_state_interpretation": "17,172 actual sky draws have complete recorder state, three vertices and one instance. Each viewport/scissor and camera-constant set is fixed. Each view pass has the expected two pipeline handles for original/current source. Restoring the same original half/full pipeline, layout, viewport and scissor changes the cloud buffer. This rules out an observed Vulkan pipeline/viewport/scissor switch for that restored-reference transition, not all internal driver/raster state.",
+    "reconstruction": "Fragment-coordinate and explicit-FMA ray reconstruction retain candidate/reference differences; FMA also changes on restoration. Screen-UV reconstruction passes one 90-check run but changes original ray/cloud maps and is not a qualified fix.",
+    "fixed_ray_input": {
+      "scope": "RGBA32F camera-ray texture from the three separately captured original-state-A EYEDIR components. This is a constructed fixed input, not simultaneous vector capture. Bottom nine rows are below-horizon (0,-1,0), preserving empty cloud output there.",
+      "size": [
+        1920,
+        1080
+      ],
+      "format": "RGBA32F little endian",
+      "bytes": 33177600,
+      "sha256": "0978e345ccc47e2f2df7fff35cdf7bc2be5aa4eeaef2b354b0343362f53b1cd1",
+      "matched_red_state": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+      "inputs": [
+        {
+          "component": "x",
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/rays-x-mixed02/half-1-first.bin",
+          "sha256": "a22309dd48ea8385f70cb60dd74ced425b73270e48e91f3693107814eb3eb205",
+          "decoded_sha256": "e2711b5c0e5bb5fe8e5d45fdb5542682d2667e94e8fd6ecfaf2f580046477441"
+        },
+        {
+          "component": "y",
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/rays-y-mixed02/half-0-first.bin",
+          "sha256": "75437c2a869a613e08e06ec8cbca3016f00ef91a0a5ece0681efcd1540b6edb7",
+          "decoded_sha256": "5b864d565d25d04f2edbc38d0b4f7ad28c8f5d0d90220d1b4cd3e65fdb26761f"
+        },
+        {
+          "component": "z",
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/rays-z-mixed02/half-0-held.bin",
+          "sha256": "8e56ae9dbdfcf1de8b48b55273a0ffc9c05899a07b26f64eb9e48815e06f094a",
+          "decoded_sha256": "55f42c74b05b866c0daef08e058d04ba55c5937977be0ebaa693ee42f013d8c2"
+        }
+      ]
+    },
+    "fixed_ray_scope": "31.640625 MiB diagnostic RGBA32F texture, joined from three separate original-state-A component captures, with bottom nine below-horizon rows replaced by (0,-1,0). Not a runtime cache proposal. Upload bytes are exact; fixed Y readback matches the original component bits at all 2,056,320 analysed pixels.",
+    "fixed_red_and_y": "All eight fixed-rays-y01 captures match the exact original red state a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1 and original Y map 5b864d565d25d04f2edbc38d0b4f7ad28c8f5d0d90220d1b4cd3e65fdb26761f.86 checks / 0 failures.",
+    "fixed_rgba": "Seven of eight complete original-colour cloud buffers exactly match the original state A. One held capture changes only two green half-float values, at (1659,153) and (853,291); red, blue and transmittance remain exact. The full scene also changes at 57 pixels, peak 1/255. Original/current, repeat and restoration pairs are exact in this run; the held control fails.93 checks / 2 failures.",
+    "fixed_rgba_difference": {
+      "changed_pixels": 2,
+      "per_channel": [
+        0,
+        2,
+        0,
+        0
+      ],
+      "peaks": [
+        0.0,
+        0.000244140625,
+        0.0,
+        0.0
+      ],
+      "bounds": [
+        853,
+        153,
+        1659,
+        291
+      ],
+      "samples": [
+        [
+          [
+            1659,
+            153
+          ],
+          [
+            0.18212890625,
+            0.197021484375,
+            0.1793212890625,
+            0.00957489013671875
+          ],
+          [
+            0.18212890625,
+            0.1971435546875,
+            0.1793212890625,
+            0.00957489013671875
+          ]
+        ],
+        [
+          [
+            853,
+            291
+          ],
+          [
+            0.431396484375,
+            0.4326171875,
+            0.4287109375,
+            0.453369140625
+          ],
+          [
+            0.431396484375,
+            0.432861328125,
+            0.4287109375,
+            0.453369140625
+          ]
+        ]
+      ]
+    },
+    "encoded_green": "In an altered program, floatBitsToUint(clouds.g) is encoded before engine postprocessing. All eight complete maps are identical while real red scattering still exactly matches the original state A.86 checks / 0 failures. This does not prove the original RGBA program had the same pre-postprocessing arithmetic.",
+    "rounding_illustration": {
+      "scope": "CPU arithmetic illustration only, including a toward-zero half conversion model. At(853,291), separate versus fused addition followed by this model reproduces the two native values. It does not prove the GPU uses either instruction sequence or conversion mode, or establish the original program's pre-postprocessing green value.",
+      "rows": [
+        {
+          "pixel": [
+            1659,
+            153
+          ],
+          "green_word": 1044814211,
+          "cloud_green": 0.19394497573375702,
+          "cpu_float32_dither_variants": [
+            {
+              "noise_dot_fused": false,
+              "noise": 0.0031985712703317404,
+              "separate_add": 0.1971435397863388,
+              "fused_add": 0.1971435397863388,
+              "half_separate": 0.1971435546875,
+              "half_fused": 0.1971435546875,
+              "half_toward_zero_separate": 0.197021484375,
+              "half_toward_zero_fused": 0.197021484375
+            },
+            {
+              "noise_dot_fused": true,
+              "noise": 0.0031985712703317404,
+              "separate_add": 0.1971435397863388,
+              "fused_add": 0.1971435397863388,
+              "half_separate": 0.1971435546875,
+              "half_fused": 0.1971435546875,
+              "half_toward_zero_separate": 0.197021484375,
+              "half_toward_zero_fused": 0.197021484375
+            }
+          ]
+        },
+        {
+          "pixel": [
+            853,
+            291
+          ],
+          "green_word": 1054828670,
+          "cloud_green": 0.43634408712387085,
+          "cpu_float32_dither_variants": [
+            {
+              "noise_dot_fused": false,
+              "noise": -0.0034827736672014,
+              "separate_add": 0.432861328125,
+              "fused_add": 0.4328612983226776,
+              "half_separate": 0.432861328125,
+              "half_fused": 0.432861328125,
+              "half_toward_zero_separate": 0.432861328125,
+              "half_toward_zero_fused": 0.4326171875
+            },
+            {
+              "noise_dot_fused": true,
+              "noise": -0.0034827736672014,
+              "separate_add": 0.432861328125,
+              "fused_add": 0.4328612983226776,
+              "half_separate": 0.432861328125,
+              "half_fused": 0.432861328125,
+              "half_toward_zero_separate": 0.432861328125,
+              "half_toward_zero_fused": 0.4326171875
+            }
+          ]
+        }
+      ]
+    },
+    "sky_debanding_control": {
+      "corrected_run": "fixed-rays-no-sky-debanding02",
+      "sky_render_mode_removed_from_both_emitted_programs": true,
+      "runtime_checks_count": 2,
+      "result": {
+        "checks": 95,
+        "failures": 0,
+        "native_states": [
+          "7508be8396541497f3262d911ace04b194bfccaee268fa38963b6d4cf5986ccf"
+        ],
+        "errors": [],
+        "scene_comparisons": [
+          {
+            "arm": 0,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "arm": 1,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "arm": 2,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "arm": 3,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "case": "candidate",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "same_gpu_inputs": true
+          },
+          {
+            "case": "restore",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "same_gpu_inputs": true
+          },
+          {
+            "case": "repeat",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "same_gpu_inputs": true
+          }
+        ]
+      },
+      "limit": "The corrected control passes 95 checks with exact native RGBA and all scene comparisons. Changing a display feature and supplying recorded rays is an isolation experiment. It is not production appearance/quality acceptance or a fix. The separate full-sky residual is retained."
+    }
+  },
+  "fixture_corrections": [
+    "The viewport debanding flag does not remove the sky shader render_mode.",
+    "A first attempted sky-mode removal matched the wrong text and was a no-op; a release assert did not stop it. Corrected explicit checks and frozen-source inspection verify every ray replacement and the actual mode removal. Both ineffective ablations remain in raw results.",
+    "The ray analyser now refuses unfinished/missing captures and snapshots its own source. The green map is explicitly labelled as a cloud scalar despite legacy ray_sha256 field names."
+  ],
+  "all_run_totals": {
+    "runs": 10,
+    "checks": 901,
+    "failures": 12,
+    "meaning": "Investigation totals including rejected/no-op controls and real failed equality checks, not release acceptance."
+  },
+  "limitations": [
+    "No image tolerance relaxed; no new shader optimization promoted.",
+    "No timing claim: extra texture, byte encodings, readbacks and interception alter the workload.",
+    "draw-mixed01, fixed-rays-y01 and fixed-rays-rgba01 overlap another project's Godot process; other completed runs observe none. No other process is stopped or modified.",
+    "No driver, compiler, FMA, interpolation, storage-rounding or postprocessing defect is established as the sole cause.",
+    "Original report-device validation, Windows, full-current-source package acceptance and separate Adreno650 Mobile water flicker remain open."
+  ],
+  "next_actions": [
+    "Use recorded-ray controls to distinguish cloud-march math from upstream view-ray variability when evaluating further optimizations. Keep ordinary-image controls and report their failures separately; do not use diagnostic texture/feature substitutions as production acceptance.",
+    "Finish isolating the tiny original-colour/whole-sky residual before claiming complete scene stability. Do not repeat pipeline/viewport or failed reconstruction probes without new evidence.",
+    "The fixed-cumulus candidate has recorded fair-weather benefit; phase hoisting and weather caching already have documented limited gains or quality/memory losses. Do not repeat them as untested.",
+    "Retain eabc8d9 seam repair, c34f19d reflection skip, High bounds, .8/.9 usability fixes and separate cloud controls. No playthroughs or unsolicited packages."
+  ],
+  "evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010",
+  "analysis_files_sha256": {
+    "analyse_draws.py": "e1165ac8aa5f5d54aba2089fc31af1a43753b0447a140681ba6f8d172b198b1f",
+    "analyse_rays.py": "db4d01070dee2b74b3f7e57b03c157b54af792ec1bb6031303259ccd9442c334",
+    "make_fixed_rays.py": "df5beb998f0febec139313e5f20672aef57a91459d25995164639fa10be86bcc",
+    "fixed-rays-A.bin": "0978e345ccc47e2f2df7fff35cdf7bc2be5aa4eeaef2b354b0343362f53b1cd1",
+    "fixed-rays-A.json": "8cb2f56da7beaca66f077229bfb2b564fa62a1bdaee6a0c84149f5279919b569",
+    "sky_draw_trace.c": "32d8586fafbed3f7fd2f069d85ca50e2eb5e0fa6543371d76d433fb629ffe871",
+    "libsky_draw_trace.so": "c6984aaacefc79ddb3eaf5775f75ac34240b5aa9989423a9f097fbd520d3c536",
+    "draw-mixed01/draw-analysis.json": "23b425bee0a5ca236e9565f587321608cef1b32fc3d2009625b40847b92ed6f2",
+    "fixed-rays-rgba01/held-native-difference.json": "38b4aa8d62f49b147c2fb23ecf1a8a438c80704fbe393649d27e323fe0e5e969",
+    "fixed-cloud-green01/green-rounding-samples.json": "dd418bca0289bf8f011274198d600443ffaff64a921b6633fc4f01ff4007aef8",
+    "post-run-state.json": "0c2fd3e4ba5cd24d0b7eaafb76738e7b7bc81d634adf3da49ecb42c99005f895",
+    "record_pipeline.py": "a3828f6f437c3e0e012239411b508aa856462ca9b598be018cfbf6e39d7bcf40"
+  },
+  "all_raw_runs": [
+    {
+      "label": "draw-mixed01",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/draw-mixed01",
+      "checks": 85,
+      "failures": 4,
+      "exit_code": 1,
+      "errors": [
+        "FAIL exact sky candidate",
+        "FAIL exact raw cloud buffer candidate",
+        "FAIL exact sky restore",
+        "FAIL exact raw cloud buffer restore"
+      ],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": false,
+      "source_effects_verified": {
+        "unbounded_reference_and_bounded_candidate": true,
+        "fixed_texture_cloud_ray": false,
+        "reconstructed_cloud_ray": false,
+        "sky_shader_debanding_present": true,
+        "captured_shader_hashes_match_emitted_source": true
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffers.gd": "69da159b70c739cadf14e91bc0534356971217eb520976e6f0eed4bc09884860",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_binding_probe.gd": "e1f5c604d905e44f9a715191dd81b58276e3901400c071ea3408586733e9757c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_draw_trace.c": "32d8586fafbed3f7fd2f069d85ca50e2eb5e0fa6543371d76d433fb629ffe871",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/libsky_draw_trace.so": "c6984aaacefc79ddb3eaf5775f75ac34240b5aa9989423a9f097fbd520d3c536"
+      },
+      "frozen_files_sha256": {
+        "run.json": "14f507456f3ed3787d0d5e196380dd3ec805018c3556a2585487f6ae1d130ebe",
+        "cloud-sky-inputs.json": "75025b1cb86cff7afc99b0b56af97408b5b6866723a91119668595c3ce06b332",
+        "reference.gdshader": "33a6bb4f3791004827b76c0dbe56851d85793b3e7882cf94c709bf5c698c4488",
+        "candidate.gdshader": "ca198fe5e44864fee1a9d03fca1a7ad5e21ae10941fea3e6a8303dfdaeba3f6d"
+      },
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-0-held.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-1-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-1-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-2-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-2-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-3-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-3-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d"
+      },
+      "native_cloud_states": [
+        "7cccf67eea6e34d2ad6d7ba836b424583c39445c44767e124923da0c8a6e3b9b",
+        "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 5072,
+            "peak_delta": 4,
+            "pixels_over_2": 4
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 5072,
+            "peak_delta": 4,
+            "pixels_over_2": 4
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ]
+    },
+    {
+      "label": "reconstructed-fragment-y01",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/reconstructed-fragment-y01",
+      "checks": 90,
+      "failures": 1,
+      "exit_code": 1,
+      "errors": [
+        "FAIL exact raw cloud buffer candidate"
+      ],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "source_effects_verified": {
+        "unbounded_reference_and_bounded_candidate": true,
+        "fixed_texture_cloud_ray": false,
+        "reconstructed_cloud_ray": true,
+        "sky_shader_debanding_present": true,
+        "captured_shader_hashes_match_emitted_source": true
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffers.gd": "2977ff5b17c2dbb28a7d305d7f754ac20fbb1876363c6d9136dddcc46ae45f5d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_binding_probe.gd": "245d325f6bce52a8f63e8e5566b6631e27525426479fbade9939c76e1092476c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "frozen_files_sha256": {
+        "run.json": "da9ae61f33d4a25770c1e147e295b6f43db81ca91af28d78222c1667550f1a8d",
+        "cloud-sky-inputs.json": "bf0c29655db7723b603e694ddc474a47b9af5399897d8004a6cc6dccd6b6fe68",
+        "reference.gdshader": "23f1dcfa86fd830f602280ff0fa4efcee9ca53060a112d432e4af2e91a49ec47",
+        "candidate.gdshader": "d734a458c796fe6c83409669a733bc58962108d8481ac2f39c18a1483b9d3bf5"
+      },
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "9e188d4bbc20e1a06a5fb60e8f3b29ab89b06f5464943f98e6a4ecfacadd3567",
+        "half-0-held.bin": "9e188d4bbc20e1a06a5fb60e8f3b29ab89b06f5464943f98e6a4ecfacadd3567",
+        "half-1-first.bin": "70e476c3671758df9af4d11c331928e12c1fbd92d72552c97cbfe59291d00195",
+        "half-1-held.bin": "70e476c3671758df9af4d11c331928e12c1fbd92d72552c97cbfe59291d00195",
+        "half-2-first.bin": "70e476c3671758df9af4d11c331928e12c1fbd92d72552c97cbfe59291d00195",
+        "half-2-held.bin": "70e476c3671758df9af4d11c331928e12c1fbd92d72552c97cbfe59291d00195",
+        "half-3-first.bin": "9e188d4bbc20e1a06a5fb60e8f3b29ab89b06f5464943f98e6a4ecfacadd3567",
+        "half-3-held.bin": "9e188d4bbc20e1a06a5fb60e8f3b29ab89b06f5464943f98e6a4ecfacadd3567"
+      },
+      "native_cloud_states": [
+        "1ebc967e0427f17097afbd1114e435239c7a1603efc8cf1536f8068325e6a1ce",
+        "5fd77e5efdc2ee9bf145cf5e8d84c10a60fb99998f54c51beea3c3f750dd04ab"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ],
+      "scalar_analysis": {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/reconstructed-fragment-y01/ray-analysis.json",
+        "sha256": "e713550ec6ab9ff994e956e392d21ab3f3a98fc19dabd0c50cd6a73529377955",
+        "capture_count": 8,
+        "pixels_per_capture": 2056320,
+        "all_codec_controls_pass": true,
+        "red_states": [
+          "0936d9cba348ef5b973a162c42e156d062776cff35eadb0c5c4725ccf02d8d6b",
+          "7c73194409032650c62d26465fe25a4aa706b4b4d51d71dad195df389923d431"
+        ],
+        "decoded_scalar_states": [
+          "2e2c3fede6b8ff475f523ec52c6edb400ac2e5c376276042b623657fe230a284",
+          "da75e50023a54cca95a669810051c4e0753396843dea90401d5ccd59c7b46d92"
+        ]
+      },
+      "limitation": "Artificial ray reconstruction changes the original view precision and observes only Y. Matrix/projection bindings are checked on CPU, not read back exhaustively here. One passing screen-UV run is not a production fix or acceptance."
+    },
+    {
+      "label": "reconstructed-screen-y01",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/reconstructed-screen-y01",
+      "checks": 90,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "source_effects_verified": {
+        "unbounded_reference_and_bounded_candidate": true,
+        "fixed_texture_cloud_ray": false,
+        "reconstructed_cloud_ray": true,
+        "sky_shader_debanding_present": true,
+        "captured_shader_hashes_match_emitted_source": true
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffers.gd": "2977ff5b17c2dbb28a7d305d7f754ac20fbb1876363c6d9136dddcc46ae45f5d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_binding_probe.gd": "245d325f6bce52a8f63e8e5566b6631e27525426479fbade9939c76e1092476c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "frozen_files_sha256": {
+        "run.json": "9bd3376a24d81edc8870d6b9610be48a1cc36826a1c4b77a4ff446df5cac1e23",
+        "cloud-sky-inputs.json": "819f23dcd3baca95b199ae9d4e0825c4a3a7158038d1639beab2b71227d04cad",
+        "reference.gdshader": "f0fffeadc3435b6e8ccb537ce0a7243daeaa568295274d7f3e9f866d40bb89bb",
+        "candidate.gdshader": "7db58b329a78f2af0fbb82cfdf2a573d23931516cd429503bf79cf009a506a69"
+      },
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "7f3253537f5648f04e94d7f62a20a22c3e521d4b25dbe1cfab64ca4074bf1b7f",
+        "half-0-held.bin": "7f3253537f5648f04e94d7f62a20a22c3e521d4b25dbe1cfab64ca4074bf1b7f",
+        "half-1-first.bin": "7f3253537f5648f04e94d7f62a20a22c3e521d4b25dbe1cfab64ca4074bf1b7f",
+        "half-1-held.bin": "7f3253537f5648f04e94d7f62a20a22c3e521d4b25dbe1cfab64ca4074bf1b7f",
+        "half-2-first.bin": "7f3253537f5648f04e94d7f62a20a22c3e521d4b25dbe1cfab64ca4074bf1b7f",
+        "half-2-held.bin": "7f3253537f5648f04e94d7f62a20a22c3e521d4b25dbe1cfab64ca4074bf1b7f",
+        "half-3-first.bin": "7f3253537f5648f04e94d7f62a20a22c3e521d4b25dbe1cfab64ca4074bf1b7f",
+        "half-3-held.bin": "7f3253537f5648f04e94d7f62a20a22c3e521d4b25dbe1cfab64ca4074bf1b7f"
+      },
+      "native_cloud_states": [
+        "e0ad089f2dd8fbe5b33b57e9c6f124884b048debc73aaa1b62c4aef2d040f31f"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ],
+      "scalar_analysis": {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/reconstructed-screen-y01/ray-analysis.json",
+        "sha256": "d54eb44d2bf2af6ededce8943b1b5a3de7366ca0fc4d7e6708f500f71a89820a",
+        "capture_count": 8,
+        "pixels_per_capture": 2056320,
+        "all_codec_controls_pass": true,
+        "red_states": [
+          "9a03275546850cbac44acfaa4dd1f5e312cf323d93ab2bf26918016cad38a32d"
+        ],
+        "decoded_scalar_states": [
+          "954ffc8efd5b68a18de8fe269c773a080912393f698bae6313c3f403da23f7d9"
+        ]
+      },
+      "limitation": "Artificial ray reconstruction changes the original view precision and observes only Y. Matrix/projection bindings are checked on CPU, not read back exhaustively here. One passing screen-UV run is not a production fix or acceptance."
+    },
+    {
+      "label": "reconstructed-fma-y01",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/reconstructed-fma-y01",
+      "checks": 90,
+      "failures": 2,
+      "exit_code": 1,
+      "errors": [
+        "FAIL exact raw cloud buffer candidate",
+        "FAIL exact raw cloud buffer restore"
+      ],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "source_effects_verified": {
+        "unbounded_reference_and_bounded_candidate": true,
+        "fixed_texture_cloud_ray": false,
+        "reconstructed_cloud_ray": true,
+        "sky_shader_debanding_present": true,
+        "captured_shader_hashes_match_emitted_source": true
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffers.gd": "2977ff5b17c2dbb28a7d305d7f754ac20fbb1876363c6d9136dddcc46ae45f5d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_binding_probe.gd": "bb899b25177c758dbd21515b6be09d7381ad25c86699e9c3e78c0ed10c2809b3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "frozen_files_sha256": {
+        "run.json": "ea2a6e894ea6e91dbabf730fa51218b76628a0331ba07ec9e9047de67dac17c5",
+        "cloud-sky-inputs.json": "973f00ba47780d2e44bac147036ec9b469694c130469cc651a39fc872d572dd3",
+        "reference.gdshader": "3eb44f3dc883991b3ca0e47db9d87edbbfc876f2e5b9d459bad26bd1bb692cfe",
+        "candidate.gdshader": "a290cd0fa2dcab8f0a515604cebec9b0b8df850119efee0024a14743dbf8fca4"
+      },
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "0887af6dec849a8381b18213397daf0a78c4811e27fd49478fd3cd29c5971bb5",
+        "half-0-held.bin": "0887af6dec849a8381b18213397daf0a78c4811e27fd49478fd3cd29c5971bb5",
+        "half-1-first.bin": "d898656492c87d7634f8d498812b4bd68c249fd2df7e19f74fef5facf776b516",
+        "half-1-held.bin": "d898656492c87d7634f8d498812b4bd68c249fd2df7e19f74fef5facf776b516",
+        "half-2-first.bin": "d898656492c87d7634f8d498812b4bd68c249fd2df7e19f74fef5facf776b516",
+        "half-2-held.bin": "d898656492c87d7634f8d498812b4bd68c249fd2df7e19f74fef5facf776b516",
+        "half-3-first.bin": "d898656492c87d7634f8d498812b4bd68c249fd2df7e19f74fef5facf776b516",
+        "half-3-held.bin": "d898656492c87d7634f8d498812b4bd68c249fd2df7e19f74fef5facf776b516"
+      },
+      "native_cloud_states": [
+        "05482eec79126fd8fef80a80a89f247a33b134c4301fa24d9918f5239b7248c4",
+        "270fd5311da55763d85c95cfdb67f068232af8e06969cf500d87ff8967eb2744"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ],
+      "scalar_analysis": {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/reconstructed-fma-y01/ray-analysis.json",
+        "sha256": "abbf22baea5cba64ec102ebc6f2a16c472deface06090854ce8edcd26944876a",
+        "capture_count": 8,
+        "pixels_per_capture": 2056320,
+        "all_codec_controls_pass": true,
+        "red_states": [
+          "2c503bd95e253e440a26dbd0b1d28923286134a9eddd1f7135e29b582e5a6089",
+          "bd590df0b60d9263175a2eb15a007bc29e31fe5f8f44ea9c47221220115fe5e2"
+        ],
+        "decoded_scalar_states": [
+          "3a49f175c2130d35a4f2727bfa1ee6f11792ebd2316350d99058a699b9a37c87",
+          "6a5faf487c3f6deb6d8007a595e7aaa9e43533facd2967988f70568f8d47dd4c"
+        ]
+      },
+      "limitation": "Artificial ray reconstruction changes the original view precision and observes only Y. Matrix/projection bindings are checked on CPU, not read back exhaustively here. One passing screen-UV run is not a production fix or acceptance."
+    },
+    {
+      "label": "fixed-rays-y01",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-y01",
+      "checks": 86,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": false,
+      "source_effects_verified": {
+        "unbounded_reference_and_bounded_candidate": true,
+        "fixed_texture_cloud_ray": true,
+        "reconstructed_cloud_ray": false,
+        "sky_shader_debanding_present": true,
+        "captured_shader_hashes_match_emitted_source": true
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffers.gd": "80a9c5adeee825505be9c6cfc558181d40c77a0cfc8e13c7a08df5eed6aacd29",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_binding_probe.gd": "1ee769cf1ea999249213f088b9f021c13c2b07a4a30e6ac24c3e893955ac1b97",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-A.bin": "0978e345ccc47e2f2df7fff35cdf7bc2be5aa4eeaef2b354b0343362f53b1cd1"
+      },
+      "frozen_files_sha256": {
+        "run.json": "2a49c93c2fc0ce3afa23014078f8e6f7eff67a2e22496a3adf0e046c3235d1c7",
+        "cloud-sky-inputs.json": "baf261b4c2310e7fd519c2b951c6e01580c447f51a53481a45321172ba7b9135",
+        "reference.gdshader": "1e90cbfadaa9ddc4ea96706bce5d27a2009c88202b38c6ae5646c42e77d276d3",
+        "candidate.gdshader": "3fd0e6246efb4b704926c73156539d1b6647679f54a0f9e768794524a78c6731"
+      },
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "75437c2a869a613e08e06ec8cbca3016f00ef91a0a5ece0681efcd1540b6edb7",
+        "half-0-held.bin": "75437c2a869a613e08e06ec8cbca3016f00ef91a0a5ece0681efcd1540b6edb7",
+        "half-1-first.bin": "75437c2a869a613e08e06ec8cbca3016f00ef91a0a5ece0681efcd1540b6edb7",
+        "half-1-held.bin": "75437c2a869a613e08e06ec8cbca3016f00ef91a0a5ece0681efcd1540b6edb7",
+        "half-2-first.bin": "75437c2a869a613e08e06ec8cbca3016f00ef91a0a5ece0681efcd1540b6edb7",
+        "half-2-held.bin": "75437c2a869a613e08e06ec8cbca3016f00ef91a0a5ece0681efcd1540b6edb7",
+        "half-3-first.bin": "75437c2a869a613e08e06ec8cbca3016f00ef91a0a5ece0681efcd1540b6edb7",
+        "half-3-held.bin": "75437c2a869a613e08e06ec8cbca3016f00ef91a0a5ece0681efcd1540b6edb7"
+      },
+      "native_cloud_states": [
+        "c53b19646448bc4d5c9db7456b647a0deb190b36c89cecd0e44820d07c639b44"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ],
+      "scalar_analysis": {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-y01/ray-analysis.json",
+        "sha256": "15b4ca9eec946a8b2027f88b62130106a7297510621a5eaa9c8a8f934a702fb5",
+        "capture_count": 8,
+        "pixels_per_capture": 2056320,
+        "all_codec_controls_pass": true,
+        "red_states": [
+          "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1"
+        ],
+        "decoded_scalar_states": [
+          "5b864d565d25d04f2edbc38d0b4f7ad28c8f5d0d90220d1b4cd3e65fdb26761f"
+        ]
+      }
+    },
+    {
+      "label": "fixed-rays-rgba01",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-rgba01",
+      "checks": 93,
+      "failures": 2,
+      "exit_code": 1,
+      "errors": [
+        "FAIL held sky 0",
+        "FAIL raw held cloud buffer 0"
+      ],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": false,
+      "source_effects_verified": {
+        "unbounded_reference_and_bounded_candidate": true,
+        "fixed_texture_cloud_ray": true,
+        "reconstructed_cloud_ray": false,
+        "sky_shader_debanding_present": true,
+        "captured_shader_hashes_match_emitted_source": true
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffers.gd": "80a9c5adeee825505be9c6cfc558181d40c77a0cfc8e13c7a08df5eed6aacd29",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_binding_probe.gd": "1ee769cf1ea999249213f088b9f021c13c2b07a4a30e6ac24c3e893955ac1b97",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-A.bin": "0978e345ccc47e2f2df7fff35cdf7bc2be5aa4eeaef2b354b0343362f53b1cd1"
+      },
+      "frozen_files_sha256": {
+        "run.json": "614701d21773190813d80ba5ba64c049ffecc7aed8ac8096f743b1771f04f984",
+        "cloud-sky-inputs.json": "c5f57fb676edc2083d4ce28da3b9e0613fc20586a39fc47ae8f9457a28a22ba7",
+        "reference.gdshader": "2df707b4eb285481a10c2de417a593f30ff784c4ff3d4d1012e2c1d8929cc455",
+        "candidate.gdshader": "88b75bf85547d0232ff520a4039e5244fe67bb465de48315b701b3404b217320"
+      },
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-0-held.bin": "b2be5adf76f1d0cd0ed780d51e05619971cb8ab709de0d1db2c9fdc7e1a5c543",
+        "half-1-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-1-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-2-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-2-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-3-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-3-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d"
+      },
+      "native_cloud_states": [
+        "5661edcfb33a45e7f0cae063998b269084b49e6e57771ec243b0a67717db7342",
+        "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 57,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ]
+    },
+    {
+      "label": "fixed-cloud-green01",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-cloud-green01",
+      "checks": 86,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "source_effects_verified": {
+        "unbounded_reference_and_bounded_candidate": true,
+        "fixed_texture_cloud_ray": true,
+        "reconstructed_cloud_ray": false,
+        "sky_shader_debanding_present": true,
+        "captured_shader_hashes_match_emitted_source": true
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffers.gd": "80a9c5adeee825505be9c6cfc558181d40c77a0cfc8e13c7a08df5eed6aacd29",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_binding_probe.gd": "37ea46a20011684f926ea0bad6bf2c10763f8d531ce8bd1111fed6182694714e",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-A.bin": "0978e345ccc47e2f2df7fff35cdf7bc2be5aa4eeaef2b354b0343362f53b1cd1"
+      },
+      "frozen_files_sha256": {
+        "run.json": "e73c87673fd1b76c0d88e2976bae363994ce1250eada4b6286e1cc487c9aea67",
+        "cloud-sky-inputs.json": "c027199203d862e9a51fc40990fc12346cac8e838f0d4fbc7c8ce0e1cfb9f3a9",
+        "reference.gdshader": "d0bd2c740034a8331ccd064440739e247cbfff55c47eaa534c75fe107120571d",
+        "candidate.gdshader": "7b8629b5898f761d626d9293a57aa9ef74f29926703103649ed1a5615c6d6cbb"
+      },
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "d3703a358f1f37d407fb2cbb12ca7403553c47addffc03aa5a55b08876404573",
+        "half-0-held.bin": "d3703a358f1f37d407fb2cbb12ca7403553c47addffc03aa5a55b08876404573",
+        "half-1-first.bin": "d3703a358f1f37d407fb2cbb12ca7403553c47addffc03aa5a55b08876404573",
+        "half-1-held.bin": "d3703a358f1f37d407fb2cbb12ca7403553c47addffc03aa5a55b08876404573",
+        "half-2-first.bin": "d3703a358f1f37d407fb2cbb12ca7403553c47addffc03aa5a55b08876404573",
+        "half-2-held.bin": "d3703a358f1f37d407fb2cbb12ca7403553c47addffc03aa5a55b08876404573",
+        "half-3-first.bin": "d3703a358f1f37d407fb2cbb12ca7403553c47addffc03aa5a55b08876404573",
+        "half-3-held.bin": "d3703a358f1f37d407fb2cbb12ca7403553c47addffc03aa5a55b08876404573"
+      },
+      "native_cloud_states": [
+        "8c986018a3ac8e7e7e40ccffb53154aba91a18b1e5dcad5557f465d306ec6914"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ],
+      "scalar_analysis": {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-cloud-green01/ray-analysis.json",
+        "sha256": "4e02e34cdb7b5fb7ba0d39f767c3e47fb139e5199d187b1dbfb1d0f68df1ea96",
+        "capture_count": 8,
+        "pixels_per_capture": 2056320,
+        "all_codec_controls_pass": true,
+        "red_states": [
+          "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1"
+        ],
+        "decoded_scalar_states": [
+          "5210e7575cc0b0b775fe49796f9489080befa7037049b566ce3c85be4bf7ed65"
+        ]
+      }
+    },
+    {
+      "label": "fixed-rays-no-debanding01",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-no-debanding01",
+      "checks": 93,
+      "failures": 2,
+      "exit_code": 1,
+      "errors": [
+        "FAIL held sky 0",
+        "FAIL raw held cloud buffer 0"
+      ],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "source_effects_verified": {
+        "unbounded_reference_and_bounded_candidate": true,
+        "fixed_texture_cloud_ray": true,
+        "reconstructed_cloud_ray": false,
+        "sky_shader_debanding_present": true,
+        "captured_shader_hashes_match_emitted_source": true
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffers.gd": "80a9c5adeee825505be9c6cfc558181d40c77a0cfc8e13c7a08df5eed6aacd29",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_background.gd": "eb730bc2be61dfe15f541307f7adda8911eb6ea5b6930f67ce146740305df2cb",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_binding_probe.gd": "37ea46a20011684f926ea0bad6bf2c10763f8d531ce8bd1111fed6182694714e",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-A.bin": "0978e345ccc47e2f2df7fff35cdf7bc2be5aa4eeaef2b354b0343362f53b1cd1"
+      },
+      "frozen_files_sha256": {
+        "run.json": "05688e2aad1015fab59bf124c736ff71747ca18b2a6f4bf7309a7f76383ad0d3",
+        "cloud-sky-inputs.json": "814381a64356a4e74b8077e328b95b6cb18646563043bfa48d896bd23e8ebdd8",
+        "reference.gdshader": "2df707b4eb285481a10c2de417a593f30ff784c4ff3d4d1012e2c1d8929cc455",
+        "candidate.gdshader": "88b75bf85547d0232ff520a4039e5244fe67bb465de48315b701b3404b217320"
+      },
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-0-held.bin": "b2be5adf76f1d0cd0ed780d51e05619971cb8ab709de0d1db2c9fdc7e1a5c543",
+        "half-1-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-1-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-2-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-2-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-3-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-3-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d"
+      },
+      "native_cloud_states": [
+        "5661edcfb33a45e7f0cae063998b269084b49e6e57771ec243b0a67717db7342",
+        "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 57,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ],
+      "limitation": "Viewport use_debanding=false does not disable the separate sky render_mode. Invalid as a sky-debanding ablation; preserves real ordinary-sky failures."
+    },
+    {
+      "label": "fixed-rays-no-sky-debanding01",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-no-sky-debanding01",
+      "checks": 93,
+      "failures": 1,
+      "exit_code": 1,
+      "errors": [
+        "FAIL exact sky candidate"
+      ],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "source_effects_verified": {
+        "unbounded_reference_and_bounded_candidate": true,
+        "fixed_texture_cloud_ray": true,
+        "reconstructed_cloud_ray": false,
+        "sky_shader_debanding_present": true,
+        "captured_shader_hashes_match_emitted_source": true
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffers.gd": "80a9c5adeee825505be9c6cfc558181d40c77a0cfc8e13c7a08df5eed6aacd29",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_background.gd": "eb730bc2be61dfe15f541307f7adda8911eb6ea5b6930f67ce146740305df2cb",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_binding_probe.gd": "f917f75e6d56c9c507a847e6e0d5b71bffeb4584caab22446bb04278f66fb341",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-A.bin": "0978e345ccc47e2f2df7fff35cdf7bc2be5aa4eeaef2b354b0343362f53b1cd1"
+      },
+      "frozen_files_sha256": {
+        "run.json": "6eda5b5494b6a1a6d65ffb0dade412ec5ebe178e41b6f2968884269ddd98ae0b",
+        "cloud-sky-inputs.json": "65812d875d28bf43bce412ce4e511f88bec33461c84e13768eb8b7632a240c29",
+        "reference.gdshader": "2df707b4eb285481a10c2de417a593f30ff784c4ff3d4d1012e2c1d8929cc455",
+        "candidate.gdshader": "88b75bf85547d0232ff520a4039e5244fe67bb465de48315b701b3404b217320"
+      },
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-0-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-1-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-1-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-2-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-2-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-3-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-3-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d"
+      },
+      "native_cloud_states": [
+        "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 57,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ],
+      "limitation": "Ineffective source replacement expected a standalone render_mode but the emitted program combines use_debanding and use_half_res_pass. Release assert did not enforce the guard. The saved programs retain sky debanding. Corrected in 02 with explicit checks and emitted-source validation."
+    },
+    {
+      "label": "fixed-rays-no-sky-debanding02",
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-no-sky-debanding02",
+      "checks": 95,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "source_effects_verified": {
+        "unbounded_reference_and_bounded_candidate": true,
+        "fixed_texture_cloud_ray": true,
+        "reconstructed_cloud_ray": false,
+        "sky_shader_debanding_present": false,
+        "captured_shader_hashes_match_emitted_source": true
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffers.gd": "87e2537de1cfcf9aaf4ddd77692bf177eb6e997672d876e6aba66579de5eba1c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_background.gd": "eb730bc2be61dfe15f541307f7adda8911eb6ea5b6930f67ce146740305df2cb",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_binding_probe.gd": "3ec2af832caa24926475759e50c532fe7c8d747613edefb92b7badd08c75c1ea",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-A.bin": "0978e345ccc47e2f2df7fff35cdf7bc2be5aa4eeaef2b354b0343362f53b1cd1"
+      },
+      "frozen_files_sha256": {
+        "run.json": "74ac89620855c9e922f421ec22ce422d1001542d5619a81aee4d7ff7854d7dd6",
+        "cloud-sky-inputs.json": "929e1df92b263fb84313a1b92dc9647e19e271ad8b0546952ecfe63cde455865",
+        "reference.gdshader": "166450973e7f6e7b525998be17a778fccb8d2868c038e9b53afac0a3a5fd6d75",
+        "candidate.gdshader": "3b144b34b8ecb4e593c8c78fbd0e9aac3c174f85745b255f6a5823cce00b448c"
+      },
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-0-held.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-1-first.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-1-held.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-2-first.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-2-held.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-3-first.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-3-held.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878"
+      },
+      "native_cloud_states": [
+        "7508be8396541497f3262d911ace04b194bfccaee268fa38963b6d4cf5986ccf"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ]
+    }
+  ],
+  "post_run_state": {
+    "device_inventory": "Retroid Pocket5 9a7e6425 only; adb devices read-only.",
+    "original_report_files": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/feedback/2026-10-10-device-reports/android-insta-crash.txt",
+        "bytes": 3454,
+        "mtime": 1791621491.9497235,
+        "sha256": "f4c51007f715c6da8e001ee0dc5c7cdbe60962dbd60c57cdb7a4b3aa5f2e3ddf"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/feedback/2026-10-10-device-reports/android-settings-no-buttons.png",
+        "bytes": 1630329,
+        "mtime": 1791621585.4804027,
+        "sha256": "f09c37f81f4e3a7f55e331da204e31e200a2692c224846386a0ef67f39fcb3ba"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/feedback/2026-10-10-device-reports/linux-gameplay-reported-crash.txt",
+        "bytes": 1420,
+        "mtime": 1791621790.5344222,
+        "sha256": "efa29ae4b00eb6a2cf30c9b8527470cc0086de45286a469c07267be54601df2e"
+      }
+    ],
+    "owned_validation_processes": [],
+    "runtime_sha256": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "android": "No launches or writes this turn."
+  }
+}
