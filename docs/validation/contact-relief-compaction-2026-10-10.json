@@ -1,0 +1,2477 @@
+{
+  "date": "2026-10-10",
+  "decision": "Retain four-tap relief compaction only on Compatibility/Forward+ contact programs without admitted Natural transitions; Mobile keeps its original source. Preserve baseline numerical residuals and the Android sampler-budget limitation; V1 remains default-off.",
+  "base_commit": "283af49c55c3f43ae2f0454f67e3185b7054f639",
+  "production_sha256": {
+    "game/src/game/fx/ground_contact.gd": "afa4af5f4219695932d23f5905e303d906af864f155509d42410791abe6b306e",
+    "game/src/game/fx/ground_contact_shader.gd": "36a4f5b5db0221feb96efdb59917781c6c884cae45fc16c7ba3ac8f50c283d22"
+  },
+  "implementation": [
+    "One uniform-bound loop performs the same four painted-relief samples with identical coordinates, explicit gradients and downstream arithmetic. The albedo and mean samples remain separate. This differs from the rejected five/six-color loops.",
+    "Only Compatibility/Forward+ non-admitted-Natural contact variants use compaction. Existing Natural pair/junction programs, resource ownership, geometry, atlas data, controls and defaults retain their previous behavior.",
+    "The internal loop bound defaults to four and is not a player setting. No additional sampler, texture, pass or image asset.",
+    "The benchmark fixtures now guard the optional footprint node; --no-deform previously dereferenced null in a release runtime."
+  ],
+  "private_build": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate02",
+    "manifest": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate02/build.json",
+      "sha256": "c3adac1bdedb8a3fc6819a0e9f7c39626a70a87303d43b577023c3b494ff2e3e"
+    },
+    "exact_canonical_game_files": 700,
+    "pack": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate02/CursedLands.pck",
+      "sha256": "fd004c86ce78d52352f35640f7a255b5e785c86997117607e5729ed0392a49b0"
+    },
+    "runtime_origin": "Unchanged .8 Linux runtime and native library. No delivery archive or APK.",
+    "prototype_manifest": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate01/build.json",
+      "sha256": "323063fa043fb7ac117992684725820dbe86e95159580d2a5622a460697c3efa"
+    },
+    "integration_note": "Final private export adds only a Mobile early return to the tested production shader generator. Compatibility/Forward+ output is unchanged; Mobile output returns to the exact baseline."
+  },
+  "performance": {
+    "renderer": "Compatibility",
+    "adapter": "NVIDIA GeForce RTX 3090",
+    "scene": "bz2g, held authored foliage/scenery, 800x600, near/far, Detailed + materials + soft ground + native shadows",
+    "baseline_labels": [
+      "baseline-detailed02"
+    ],
+    "candidate_labels": [
+      "candidate-detailed01",
+      "candidate-detailed02"
+    ],
+    "baseline_cold_contact_frame_mean_ms": 18937.042,
+    "candidate_cold_contact_frame_mean_ms": 14200.379,
+    "cold_frame_reduction_percent": 25.012686775474226,
+    "baseline_near_steady_gpu_medians_ms": [
+      1.97399997711182,
+      1.95500004291534
+    ],
+    "candidate_near_steady_gpu_medians_ms": [
+      1.98099994659424,
+      1.99699997901917,
+      2.03099989891052,
+      1.94099998474121
+    ],
+    "baseline_far_steady_gpu_medians_ms": [
+      0.829999983310699,
+      0.828999996185303
+    ],
+    "candidate_far_steady_gpu_medians_ms": [
+      0.820999979972839,
+      0.824999988079071,
+      0.836000025272369,
+      0.827000021934509
+    ],
+    "limits": "Normal first contact-enabled frame, not a pure compiler timer or game loading time. Steady GPU costs are similar in these sampled views; clocks were not fixed. No whole-game FPS or Windows performance claim."
+  },
+  "cost_runs": [
+    {
+      "label": "baseline-detailed01",
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-detailed01/report.json",
+        "sha256": "92cd4b0364c9d62cb0fbff77431a7597d0174d93f5d4bb0c421c9d6ef59e4acb"
+      },
+      "cold_warm_png_identical": true,
+      "runs": {
+        "cold": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": false,
+          "identified_startup_children": [],
+          "unrelated_or_unclassified_engine_observations": [
+            {
+              "seconds": 0.2505217050202191,
+              "pid": 3036085,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/candidate01/CursedLands.x86_64"
+            },
+            {
+              "seconds": 7.738482566026505,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 8.038657014025375,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 8.33904374402482,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 8.636964377015829,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 8.936124094994739,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 9.234509370988235,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 9.533322556992061,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 9.832067182986066,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 10.1304341609939,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 10.429338945017662,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 10.728528623003513,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 11.029458018019795,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 11.32711674098391,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 11.627534463012125,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 11.929639599984512,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 12.232216009986587,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 12.53076177398907,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 12.8346910669934,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 13.133277799992356,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 13.43209352903068,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 13.747446204011794,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 14.048087558010593,
+              "pid": 3036252,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            }
+          ],
+          "measurement_isolation_after_lineage_audit": false,
+          "cold_shader_caches_empty": true,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 74.51,
+                "first_frame_ms": 19313.762,
+                "viewport_gpu_ms": {
+                  "max": 3.97099995613098,
+                  "median": 1.96000003814697,
+                  "min": 1.51800000667572,
+                  "p95": 2.66799998283386
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.5550000667572,
+                "median": 1.9650000333786,
+                "min": 1.52100002765656,
+                "p95": 2.73200011253357
+              },
+              "native_off_first_frame_ms": 6607.339,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 75.425,
+                "first_frame_ms": 150.345,
+                "viewport_gpu_ms": {
+                  "max": 1.28900003433228,
+                  "median": 0.823000013828278,
+                  "min": 0.810999989509583,
+                  "p95": 0.866999983787537
+                }
+              },
+              "repeat_gpu": {
+                "max": 1.5460000038147,
+                "median": 0.822000026702881,
+                "min": 0.805000007152557,
+                "p95": 0.862999975681305
+              },
+              "native_off_first_frame_ms": 2.194,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        },
+        "warm": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": false,
+          "identified_startup_children": [],
+          "unrelated_or_unclassified_engine_observations": [
+            {
+              "seconds": 0.2505247759982012,
+              "pid": 3037009,
+              "fixture_pid": null,
+              "executable": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/candidate01/CursedLands.x86_64"
+            }
+          ],
+          "measurement_isolation_after_lineage_audit": false,
+          "cold_shader_caches_empty": null,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 73.108,
+                "first_frame_ms": 147.297,
+                "viewport_gpu_ms": {
+                  "max": 3.57599997520447,
+                  "median": 1.96000003814697,
+                  "min": 1.51600003242493,
+                  "p95": 2.81900000572205
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.90499997138977,
+                "median": 1.98099994659424,
+                "min": 1.53400003910065,
+                "p95": 2.93300008773804
+              },
+              "native_off_first_frame_ms": 162.237,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 75.54,
+                "first_frame_ms": 150.35,
+                "viewport_gpu_ms": {
+                  "max": 0.880999982357025,
+                  "median": 0.829999983310699,
+                  "min": 0.818000018596649,
+                  "p95": 0.867999970912933
+                }
+              },
+              "repeat_gpu": {
+                "max": 1.41600000858307,
+                "median": 0.830999970436096,
+                "min": 0.815999984741211,
+                "p95": 0.875
+              },
+              "native_off_first_frame_ms": 2.62,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "candidate-detailed01",
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-detailed01/report.json",
+        "sha256": "7cc0d1c5ad768964569d98a92ad0b7495328699be6f5e4e7a5a1125c90e4bf9e"
+      },
+      "cold_warm_png_identical": true,
+      "runs": {
+        "cold": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": false,
+          "identified_startup_children": [
+            {
+              "seconds": 0.25052759796380997,
+              "pid": 3041042,
+              "fixture_pid": 3041033,
+              "executable": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate01/CursedLands.x86_64"
+            }
+          ],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": true,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 76.517,
+                "first_frame_ms": 14229.975,
+                "viewport_gpu_ms": {
+                  "max": 3.16700005531311,
+                  "median": 1.98099994659424,
+                  "min": 1.52199995517731,
+                  "p95": 2.69700002670288
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.93199992179871,
+                "median": 1.96300005912781,
+                "min": 1.52199995517731,
+                "p95": 2.62100005149841
+              },
+              "native_off_first_frame_ms": 6476.412,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 78.621,
+                "first_frame_ms": 107.283,
+                "viewport_gpu_ms": {
+                  "max": 1.43099999427795,
+                  "median": 0.820999979972839,
+                  "min": 0.808000028133392,
+                  "p95": 0.860000014305115
+                }
+              },
+              "repeat_gpu": {
+                "max": 1.63800001144409,
+                "median": 0.822000026702881,
+                "min": 0.806999981403351,
+                "p95": 0.860000014305115
+              },
+              "native_off_first_frame_ms": 2.115,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        },
+        "warm": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": false,
+          "identified_startup_children": [
+            {
+              "seconds": 0.2504044900415465,
+              "pid": 3041626,
+              "fixture_pid": 3041618,
+              "executable": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate01/CursedLands.x86_64"
+            }
+          ],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": null,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 77.305,
+                "first_frame_ms": 113.181,
+                "viewport_gpu_ms": {
+                  "max": 3.91400003433228,
+                  "median": 1.99699997901917,
+                  "min": 1.52600002288818,
+                  "p95": 2.61999988555908
+                }
+              },
+              "repeat_gpu": {
+                "max": 4.1100001335144,
+                "median": 2.0239999294281,
+                "min": 1.53600001335144,
+                "p95": 2.70199990272522
+              },
+              "native_off_first_frame_ms": 162.775,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 79.777,
+                "first_frame_ms": 107.3,
+                "viewport_gpu_ms": {
+                  "max": 0.986000001430511,
+                  "median": 0.824999988079071,
+                  "min": 0.814000010490417,
+                  "p95": 0.867999970912933
+                }
+              },
+              "repeat_gpu": {
+                "max": 0.906000018119812,
+                "median": 0.824999988079071,
+                "min": 0.814000010490417,
+                "p95": 0.865000009536743
+              },
+              "native_off_first_frame_ms": 2.248,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "baseline-detailed02",
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-detailed02/report.json",
+        "sha256": "ee0c5041e5ce2b45f277474e07fa95adc257e3a9c455f5af4ddb13cf2c7b96f6"
+      },
+      "cold_warm_png_identical": true,
+      "runs": {
+        "cold": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": false,
+          "identified_startup_children": [
+            {
+              "seconds": 0.25053050002316013,
+              "pid": 3042061,
+              "fixture_pid": 3042030,
+              "executable": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/candidate01/CursedLands.x86_64"
+            }
+          ],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": true,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 74.903,
+                "first_frame_ms": 18937.042,
+                "viewport_gpu_ms": {
+                  "max": 3.31399989128113,
+                  "median": 1.97399997711182,
+                  "min": 1.53299999237061,
+                  "p95": 2.79099988937378
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.88499999046326,
+                "median": 1.97800004482269,
+                "min": 1.53299999237061,
+                "p95": 2.7739999294281
+              },
+              "native_off_first_frame_ms": 6529.603,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 74.76,
+                "first_frame_ms": 153.821,
+                "viewport_gpu_ms": {
+                  "max": 1.5809999704361,
+                  "median": 0.829999983310699,
+                  "min": 0.815999984741211,
+                  "p95": 0.870999991893768
+                }
+              },
+              "repeat_gpu": {
+                "max": 1.08399999141693,
+                "median": 0.829999983310699,
+                "min": 0.819000005722046,
+                "p95": 0.866999983787537
+              },
+              "native_off_first_frame_ms": 2.255,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        },
+        "warm": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": false,
+          "identified_startup_children": [
+            {
+              "seconds": 0.250611461000517,
+              "pid": 3042924,
+              "fixture_pid": 3042915,
+              "executable": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/candidate01/CursedLands.x86_64"
+            }
+          ],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": null,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 73.678,
+                "first_frame_ms": 147.515,
+                "viewport_gpu_ms": {
+                  "max": 4.19099998474121,
+                  "median": 1.95500004291534,
+                  "min": 1.53400003910065,
+                  "p95": 2.75600004196167
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.47900009155273,
+                "median": 2.00799989700317,
+                "min": 1.54299998283386,
+                "p95": 2.84899997711182
+              },
+              "native_off_first_frame_ms": 160.906,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 76.007,
+                "first_frame_ms": 147.592,
+                "viewport_gpu_ms": {
+                  "max": 0.882000029087067,
+                  "median": 0.828999996185303,
+                  "min": 0.816999971866608,
+                  "p95": 0.874000012874603
+                }
+              },
+              "repeat_gpu": {
+                "max": 1.41400003433228,
+                "median": 0.828999996185303,
+                "min": 0.815999984741211,
+                "p95": 0.869000017642975
+              },
+              "native_off_first_frame_ms": 2.344,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "candidate-detailed02",
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-detailed02/report.json",
+        "sha256": "d9c42ae88aeadf2e914530e7074521b79e305837bd7cd90c96b962e33017b738"
+      },
+      "cold_warm_png_identical": true,
+      "runs": {
+        "cold": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": false,
+          "identified_startup_children": [
+            {
+              "seconds": 0.25051702302880585,
+              "pid": 3043463,
+              "fixture_pid": 3043455,
+              "executable": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate01/CursedLands.x86_64"
+            }
+          ],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": true,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 76.96,
+                "first_frame_ms": 14170.783,
+                "viewport_gpu_ms": {
+                  "max": 4.04400014877319,
+                  "median": 2.03099989891052,
+                  "min": 1.54100000858307,
+                  "p95": 2.82599997520447
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.83800005912781,
+                "median": 2.00200009346008,
+                "min": 1.53999996185303,
+                "p95": 2.63499999046326
+              },
+              "native_off_first_frame_ms": 6441.939,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 84.982,
+                "first_frame_ms": 106.677,
+                "viewport_gpu_ms": {
+                  "max": 1.5110000371933,
+                  "median": 0.836000025272369,
+                  "min": 0.824000000953674,
+                  "p95": 0.879999995231628
+                }
+              },
+              "repeat_gpu": {
+                "max": 0.883000016212463,
+                "median": 0.836000025272369,
+                "min": 0.824999988079071,
+                "p95": 0.875999987125397
+              },
+              "native_off_first_frame_ms": 2.897,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        },
+        "warm": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": false,
+          "identified_startup_children": [
+            {
+              "seconds": 0.2505104099982418,
+              "pid": 3043996,
+              "fixture_pid": 3043972,
+              "executable": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate01/CursedLands.x86_64"
+            }
+          ],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": null,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 76.466,
+                "first_frame_ms": 111.448,
+                "viewport_gpu_ms": {
+                  "max": 3.73099994659424,
+                  "median": 1.94099998474121,
+                  "min": 1.52999997138977,
+                  "p95": 2.51799988746643
+                }
+              },
+              "repeat_gpu": {
+                "max": 4.47200012207031,
+                "median": 1.932000041008,
+                "min": 1.52300000190735,
+                "p95": 2.51900005340576
+              },
+              "native_off_first_frame_ms": 161.2,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 87.042,
+                "first_frame_ms": 115.763,
+                "viewport_gpu_ms": {
+                  "max": 1.54900002479553,
+                  "median": 0.827000021934509,
+                  "min": 0.811999976634979,
+                  "p95": 0.873000025749207
+                }
+              },
+              "repeat_gpu": {
+                "max": 0.991999983787537,
+                "median": 0.825999975204468,
+                "min": 0.811999976634979,
+                "p95": 0.862999975681305
+              },
+              "native_off_first_frame_ms": 2.034,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "baseline-forward01",
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-forward01/report.json",
+        "sha256": "f9fa615676f718e7ec907fce6877701107928dc571ef5bd49852d2b7cd14bdf3"
+      },
+      "cold_warm_png_identical": true,
+      "runs": {
+        "cold": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": true,
+          "identified_startup_children": [],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": true,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 90.4,
+                "first_frame_ms": 2291.568,
+                "viewport_gpu_ms": {
+                  "max": 3.30599999427795,
+                  "median": 2.0,
+                  "min": 1.64900004863739,
+                  "p95": 2.57699990272522
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.68899989128113,
+                "median": 1.99399995803833,
+                "min": 1.62000000476837,
+                "p95": 2.65300011634827
+              },
+              "native_off_first_frame_ms": 2127.864,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 169.758,
+                "first_frame_ms": 21.045,
+                "viewport_gpu_ms": {
+                  "max": 2.67000007629395,
+                  "median": 0.614000022411346,
+                  "min": 0.592999994754791,
+                  "p95": 1.39400005340576
+                }
+              },
+              "repeat_gpu": {
+                "max": 2.32800006866455,
+                "median": 0.612999975681305,
+                "min": 0.591000020503998,
+                "p95": 1.34599995613098
+              },
+              "native_off_first_frame_ms": 2.632,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        },
+        "warm": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": true,
+          "identified_startup_children": [],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": null,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 165.576,
+                "first_frame_ms": 23.646,
+                "viewport_gpu_ms": {
+                  "max": 2.96900010108948,
+                  "median": 1.89600002765656,
+                  "min": 1.61699998378754,
+                  "p95": 2.28999996185303
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.48799991607666,
+                "median": 1.96200001239777,
+                "min": 1.62199997901917,
+                "p95": 2.56800007820129
+              },
+              "native_off_first_frame_ms": 175.117,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 161.877,
+                "first_frame_ms": 20.754,
+                "viewport_gpu_ms": {
+                  "max": 2.13700008392334,
+                  "median": 0.620000004768372,
+                  "min": 0.591000020503998,
+                  "p95": 1.11699998378754
+                }
+              },
+              "repeat_gpu": {
+                "max": 1.557000041008,
+                "median": 0.615000009536743,
+                "min": 0.587000012397766,
+                "p95": 1.08599996566772
+              },
+              "native_off_first_frame_ms": 2.553,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "candidate-forward01",
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-forward01/report.json",
+        "sha256": "a28b47e89cb80d3965726e8ddf0541859afde6d3e47b9ee7a0ee2b2fa70ff5e7"
+      },
+      "cold_warm_png_identical": true,
+      "runs": {
+        "cold": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": true,
+          "identified_startup_children": [],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": true,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 93.786,
+                "first_frame_ms": 2018.398,
+                "viewport_gpu_ms": {
+                  "max": 3.49499988555908,
+                  "median": 1.97500002384186,
+                  "min": 1.65199995040894,
+                  "p95": 2.68600010871887
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.47300004959106,
+                "median": 1.92700004577637,
+                "min": 1.62300002574921,
+                "p95": 2.56399989128113
+              },
+              "native_off_first_frame_ms": 1976.708,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 160.348,
+                "first_frame_ms": 20.945,
+                "viewport_gpu_ms": {
+                  "max": 1.63800001144409,
+                  "median": 0.61599999666214,
+                  "min": 0.587999999523163,
+                  "p95": 1.12399995326996
+                }
+              },
+              "repeat_gpu": {
+                "max": 2.40199995040894,
+                "median": 0.614000022411346,
+                "min": 0.587999999523163,
+                "p95": 1.14699995517731
+              },
+              "native_off_first_frame_ms": 2.604,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        },
+        "warm": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": true,
+          "identified_startup_children": [],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": null,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 159.661,
+                "first_frame_ms": 18.247,
+                "viewport_gpu_ms": {
+                  "max": 3.3199999332428,
+                  "median": 1.93499994277954,
+                  "min": 1.62699997425079,
+                  "p95": 2.61800003051758
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.40700006484985,
+                "median": 1.94599997997284,
+                "min": 1.62600004673004,
+                "p95": 2.57500004768372
+              },
+              "native_off_first_frame_ms": 187.191,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 155.258,
+                "first_frame_ms": 18.038,
+                "viewport_gpu_ms": {
+                  "max": 1.80900001525879,
+                  "median": 0.615000009536743,
+                  "min": 0.592999994754791,
+                  "p95": 1.12399995326996
+                }
+              },
+              "repeat_gpu": {
+                "max": 1.57000005245209,
+                "median": 0.617999970912933,
+                "min": 0.593999981880188,
+                "p95": 1.11300003528595
+              },
+              "native_off_first_frame_ms": 2.498,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "candidate-mobile01",
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-mobile01/report.json",
+        "sha256": "b63459549152e8454d6f781e20bbdf9f7230619a386f5978a3814fb606201f97"
+      },
+      "cold_warm_png_identical": false,
+      "runs": {
+        "cold": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": true,
+          "identified_startup_children": [],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": true,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 86.023,
+                "first_frame_ms": 1725.551,
+                "viewport_gpu_ms": {
+                  "max": 3.53800010681152,
+                  "median": 1.94400000572205,
+                  "min": 1.61000001430511,
+                  "p95": 2.40899991989136
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.45300006866455,
+                "median": 1.89300000667572,
+                "min": 1.442999958992,
+                "p95": 2.33200001716614
+              },
+              "native_off_first_frame_ms": 1635.544,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 186.415,
+                "first_frame_ms": 14.23,
+                "viewport_gpu_ms": {
+                  "max": 1.45700001716614,
+                  "median": 0.485000014305115,
+                  "min": 0.46900001168251,
+                  "p95": 0.529999971389771
+                }
+              },
+              "repeat_gpu": {
+                "max": 1.43299996852875,
+                "median": 0.486000001430511,
+                "min": 0.467999994754791,
+                "p95": 0.52700001001358
+              },
+              "native_off_first_frame_ms": 2.465,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        },
+        "warm": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": true,
+          "identified_startup_children": [],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": null,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 191.606,
+                "first_frame_ms": 14.442,
+                "viewport_gpu_ms": {
+                  "max": 3.32599997520447,
+                  "median": 1.86300003528595,
+                  "min": 1.45200002193451,
+                  "p95": 2.30800008773804
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.09899997711182,
+                "median": 1.86600005626678,
+                "min": 1.44099998474121,
+                "p95": 2.37400007247925
+              },
+              "native_off_first_frame_ms": 195.122,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 183.942,
+                "first_frame_ms": 13.77,
+                "viewport_gpu_ms": {
+                  "max": 1.41499996185303,
+                  "median": 0.486999988555908,
+                  "min": 0.46900001168251,
+                  "p95": 0.551999986171722
+                }
+              },
+              "repeat_gpu": {
+                "max": 1.75699996948242,
+                "median": 0.486999988555908,
+                "min": 0.470999985933304,
+                "p95": 0.919000029563904
+              },
+              "native_off_first_frame_ms": 2.335,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "baseline-mobile01",
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-mobile01/report.json",
+        "sha256": "7331b3abd4efdb947d4f6b93934672676af242017e267e6de454718e227640b2"
+      },
+      "cold_warm_png_identical": false,
+      "runs": {
+        "cold": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": true,
+          "identified_startup_children": [],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": true,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 82.422,
+                "first_frame_ms": 1981.091,
+                "viewport_gpu_ms": {
+                  "max": 3.38700008392334,
+                  "median": 1.96399998664856,
+                  "min": 1.60300004482269,
+                  "p95": 2.40499997138977
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.02600002288818,
+                "median": 1.89900004863739,
+                "min": 1.58299994468689,
+                "p95": 2.41899991035461
+              },
+              "native_off_first_frame_ms": 1839.514,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 200.845,
+                "first_frame_ms": 16.123,
+                "viewport_gpu_ms": {
+                  "max": 1.10899996757507,
+                  "median": 0.481000006198883,
+                  "min": 0.465000003576279,
+                  "p95": 0.517000019550323
+                }
+              },
+              "repeat_gpu": {
+                "max": 0.907999992370605,
+                "median": 0.48199999332428,
+                "min": 0.46399998664856,
+                "p95": 0.514999985694885
+              },
+              "native_off_first_frame_ms": 2.454,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        },
+        "warm": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": true,
+          "identified_startup_children": [],
+          "unrelated_or_unclassified_engine_observations": [],
+          "measurement_isolation_after_lineage_audit": true,
+          "cold_shader_caches_empty": null,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 204.697,
+                "first_frame_ms": 17.046,
+                "viewport_gpu_ms": {
+                  "max": 3.30599999427795,
+                  "median": 1.87000000476837,
+                  "min": 1.5900000333786,
+                  "p95": 2.41499996185303
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.39599990844727,
+                "median": 1.87999999523163,
+                "min": 1.59200000762939,
+                "p95": 2.3840000629425
+              },
+              "native_off_first_frame_ms": 152.079,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 197.423,
+                "first_frame_ms": 15.718,
+                "viewport_gpu_ms": {
+                  "max": 1.28900003433228,
+                  "median": 0.483999997377396,
+                  "min": 0.46900001168251,
+                  "p95": 0.517000019550323
+                }
+              },
+              "repeat_gpu": {
+                "max": 1.35399997234344,
+                "median": 0.483999997377396,
+                "min": 0.467999994754791,
+                "p95": 0.662000000476837
+              },
+              "native_off_first_frame_ms": 2.405,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "baseline-detailed03",
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-detailed03/report.json",
+        "sha256": "1c81150ae1075dbdac11b63a2e88dfc1c856372b80595afb60320ef5e59decc9"
+      },
+      "cold_warm_png_identical": null,
+      "runs": {
+        "cold": {
+          "checks": 48,
+          "failures": 0,
+          "return_code": 0,
+          "errors": [],
+          "adapter": "NVIDIA GeForce RTX 3090",
+          "raw_other_engine_qualification": false,
+          "identified_startup_children": [
+            {
+              "seconds": 0.2505011869943701,
+              "pid": 3064356,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/candidate01/CursedLands.x86_64"
+            }
+          ],
+          "unrelated_or_unclassified_engine_observations": [
+            {
+              "seconds": 25.755036388000008,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 26.05403577099787,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 26.354036213015206,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 26.655098463001195,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 26.955049588985275,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 27.256879656983074,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 27.557609227020293,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 27.557609227020293,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 27.858944787003566,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 27.858944787003566,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 28.15946187597001,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 28.15946187597001,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 28.460552600969095,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 28.460552600969095,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 28.761256045021582,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 28.761256045021582,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 29.05999947298551,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 29.05999947298551,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 29.361563158978242,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 29.361563158978242,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 29.6630952389678,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 29.6630952389678,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 29.967907370999455,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 29.967907370999455,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 30.27078815799905,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 30.27078815799905,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 30.570250653021503,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 30.570250653021503,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 30.869788830983452,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 30.869788830983452,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 31.173187548993155,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 31.173187548993155,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 31.472604658978526,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 31.472604658978526,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 31.778684203978628,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 31.778684203978628,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 32.08231774898013,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 32.08231774898013,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 32.38603341701673,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 32.38603341701673,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 32.685618618968874,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 32.685618618968874,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 32.98660090996418,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 32.98660090996418,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 33.29097880696645,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 33.29097880696645,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 33.59329879900906,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 33.59329879900906,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 33.895241962978616,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 33.895241962978616,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 34.19657174596796,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 34.19657174596796,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 34.49978385900613,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 34.49978385900613,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 34.80138601199724,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 34.80138601199724,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 35.1050788469729,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 35.1050788469729,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 35.40630249900278,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 35.40630249900278,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 35.7093559189816,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 35.7093559189816,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 36.01765056501608,
+              "pid": 3064879,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            },
+            {
+              "seconds": 36.01765056501608,
+              "pid": 3064954,
+              "fixture_pid": 3064348,
+              "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64"
+            }
+          ],
+          "measurement_isolation_after_lineage_audit": false,
+          "cold_shader_caches_empty": true,
+          "rows": [
+            {
+              "distance": "near",
+              "on": {
+                "refresh_ms": 73.788,
+                "first_frame_ms": 19029.875,
+                "viewport_gpu_ms": {
+                  "max": 3.5090000629425,
+                  "median": 1.95799994468689,
+                  "min": 1.52400004863739,
+                  "p95": 2.75699996948242
+                }
+              },
+              "repeat_gpu": {
+                "max": 3.73699998855591,
+                "median": 1.90600001811981,
+                "min": 1.51300001144409,
+                "p95": 2.7960000038147
+              },
+              "native_off_first_frame_ms": 6537.503,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "on": {
+                "refresh_ms": 83.522,
+                "first_frame_ms": 161.791,
+                "viewport_gpu_ms": {
+                  "max": 0.976000010967255,
+                  "median": 0.824999988079071,
+                  "min": 0.810999989509583,
+                  "p95": 0.861999988555908
+                }
+              },
+              "repeat_gpu": {
+                "max": 1.22000002861023,
+                "median": 0.825999975204468,
+                "min": 0.813000023365021,
+                "p95": 0.861000001430511
+              },
+              "native_off_first_frame_ms": 2.314,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cost_scope": "candidate01 was the all-backend prototype. Compatibility/Forward+ generator output is identical in final candidate02; prototype Mobile performance does not apply to the retained path.",
+  "final_qualification": [
+    {
+      "label": "final-owner-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/final-owner-gl01/run.json",
+        "sha256": "5de0977939224cf0c8f3f791f36884375649d3f2bb62c3cbcf6ea2cd767908bc"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/final-owner-gl01/ground-contact-gl_compatibility.json",
+        "sha256": "a25411038cafd542532b00691c09499411a7663abba817862b36124f504b3f39"
+      },
+      "checks": 43,
+      "failures": 0
+    },
+    {
+      "label": "final-owner-forward01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/final-owner-forward01/run.json",
+        "sha256": "38066bf132e5444596d9f532d05eb319c4d0aec542f58d1efc7f0b7c323bfcf5"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/final-owner-forward01/ground-contact-forward_plus.json",
+        "sha256": "779967a1425a3859846e3f5bc53f16bd347f93ce7ae541bc8f049fd915b9b62a"
+      },
+      "checks": 43,
+      "failures": 0
+    },
+    {
+      "label": "final-owner-mobile01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/final-owner-mobile01/run.json",
+        "sha256": "ed40d929f00af9649cff303f7032f8639dea6f151552b1d566cc95b65addeab9"
+      },
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/final-owner-mobile01/ground-contact-mobile.json",
+        "sha256": "b51305c4f055fd4fdb30ec4bfc9613c8819e94752e539018f6c43dfd63caee00"
+      },
+      "checks": 44,
+      "failures": 0
+    },
+    {
+      "label": "final-no-deform-gl01",
+      "report": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/final-no-deform-gl01/report.json",
+        "sha256": "e139b278237e8cc12ecef2cf85dd88a5aecfee8e91737cd9497c44b76443d49b"
+      },
+      "checks": 96,
+      "failures": 0,
+      "scope": "Benchmark null-owner guard correctness only; allow-busy and timings excluded."
+    }
+  ],
+  "final_stage_comparison": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/final-stage-comparison.json",
+    "sha256": "62455bb562aca275242bed7e8a83ce68acffa1000ee259c9da1d11f048a6789c"
+  },
+  "functional": {
+    "checks": 873,
+    "failures": 4,
+    "runs": [
+      {
+        "label": "owner-gl01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/owner-gl01/run.json",
+          "sha256": "452a4cda6f1adb924b09a0e4f40247ea4754810515c7b2e19ddd68fab988a165"
+        },
+        "results": [
+          {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/owner-gl01/ground-contact-gl_compatibility.json",
+            "sha256": "a25411038cafd542532b00691c09499411a7663abba817862b36124f504b3f39"
+          }
+        ],
+        "checks": 43,
+        "failures": 0,
+        "return_code": 0,
+        "errors": [],
+        "captures": 2,
+        "timings_not_used": true
+      },
+      {
+        "label": "owner-forward01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/owner-forward01/run.json",
+          "sha256": "c36549ca5cd5942b3f8a41c66a2f2b5fe9208513d3fabcda7a2f5cb1fd7bdd97"
+        },
+        "results": [
+          {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/owner-forward01/ground-contact-forward_plus.json",
+            "sha256": "779967a1425a3859846e3f5bc53f16bd347f93ce7ae541bc8f049fd915b9b62a"
+          }
+        ],
+        "checks": 43,
+        "failures": 0,
+        "return_code": 0,
+        "errors": [],
+        "captures": 2,
+        "timings_not_used": true
+      },
+      {
+        "label": "owner-mobile01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/owner-mobile01/run.json",
+          "sha256": "b0744e3a8a83591c11aed3621ffaabe1b231f898fececfa79d5bd37524d28de1"
+        },
+        "results": [
+          {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/owner-mobile01/ground-contact-mobile.json",
+            "sha256": "c56c67535efb7295ddadced58a74fce1b7885cf3dc25f438611f445aa495639a"
+          }
+        ],
+        "checks": 43,
+        "failures": 0,
+        "return_code": 0,
+        "errors": [],
+        "captures": 2,
+        "timings_not_used": true
+      },
+      {
+        "label": "baseline-relief-gl01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-relief-gl01/run.json",
+          "sha256": "337ef8648348a399d19f693a58fac2c40c0440121df3d401851f2f7f4f8fb2bd"
+        },
+        "results": [
+          {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-relief-gl01/ground-contact-relief-scene.json",
+            "sha256": "bfa1c251418c7f439a2d50495de11825616fca1857c8d5683bbb4a68537aad08"
+          }
+        ],
+        "checks": 64,
+        "failures": 2,
+        "return_code": 1,
+        "errors": [
+          "FAIL sun contact leaves upper and non-band pixels exact",
+          "FAIL local-light painted perturbation affects lit wall-root pixels"
+        ],
+        "captures": 21,
+        "timings_not_used": true
+      },
+      {
+        "label": "candidate-relief-gl01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-relief-gl01/run.json",
+          "sha256": "88f6012240adebbc486fca4c63528cd966272f93b45f13abe2e6ec85a3285975"
+        },
+        "results": [
+          {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-relief-gl01/ground-contact-relief-scene.json",
+            "sha256": "bfa1c251418c7f439a2d50495de11825616fca1857c8d5683bbb4a68537aad08"
+          }
+        ],
+        "checks": 64,
+        "failures": 2,
+        "return_code": 1,
+        "errors": [
+          "FAIL sun contact leaves upper and non-band pixels exact",
+          "FAIL local-light painted perturbation affects lit wall-root pixels"
+        ],
+        "captures": 21,
+        "timings_not_used": true
+      },
+      {
+        "label": "baseline-relief-forward01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-relief-forward01/run.json",
+          "sha256": "aaa3c4e2b7fa521b8171fdd60f098393155f9f82a540f99e5b8da1630e2eaef5"
+        },
+        "results": [
+          {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-relief-forward01/ground-contact-relief-scene.json",
+            "sha256": "7028ba17fbb6f205fbd03a413060e407933b22cd70649534844fa8bb2328b725"
+          }
+        ],
+        "checks": 64,
+        "failures": 0,
+        "return_code": 0,
+        "errors": [],
+        "captures": 21,
+        "timings_not_used": true
+      },
+      {
+        "label": "candidate-relief-forward01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-relief-forward01/run.json",
+          "sha256": "cb825c5c99774ead7269a40b197130395da577d90e84bbf8b7e7c0c6d4cd5f79"
+        },
+        "results": [
+          {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-relief-forward01/ground-contact-relief-scene.json",
+            "sha256": "7028ba17fbb6f205fbd03a413060e407933b22cd70649534844fa8bb2328b725"
+          }
+        ],
+        "checks": 64,
+        "failures": 0,
+        "return_code": 0,
+        "errors": [],
+        "captures": 21,
+        "timings_not_used": true
+      },
+      {
+        "label": "baseline-relief-mobile01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-relief-mobile01/run.json",
+          "sha256": "32224131059d532930674c55dc3ac69a441ac685d4679f2aec03a008d0da704f"
+        },
+        "results": [
+          {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-relief-mobile01/ground-contact-relief-scene.json",
+            "sha256": "faca61d0cf86040c8920621559c83d6a96f38575c9eddd7f3e507cab4031d8df"
+          }
+        ],
+        "checks": 64,
+        "failures": 0,
+        "return_code": 0,
+        "errors": [],
+        "captures": 21,
+        "timings_not_used": true
+      },
+      {
+        "label": "candidate-relief-mobile01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-relief-mobile01/run.json",
+          "sha256": "98de7c0f55b0271a893515acc3677816b092d744eefef77dd8117bc43308d469"
+        },
+        "results": [
+          {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-relief-mobile01/ground-contact-relief-scene.json",
+            "sha256": "faca61d0cf86040c8920621559c83d6a96f38575c9eddd7f3e507cab4031d8df"
+          }
+        ],
+        "checks": 64,
+        "failures": 0,
+        "return_code": 0,
+        "errors": [],
+        "captures": 21,
+        "timings_not_used": true
+      },
+      {
+        "label": "baseline-snow-gl01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-snow-gl01/run.json",
+          "sha256": "d8363282a0102744ccc4cc308ed758d206c402e31e93c9a3999aa794bc5e819c"
+        },
+        "results": [
+          {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-snow-gl01/ground-contact-relief-scene.json",
+            "sha256": "5931060637cfefecc65728a09f1f7852ac61a10339bb13299cfa96f51793d437"
+          }
+        ],
+        "checks": 112,
+        "failures": 0,
+        "return_code": 0,
+        "errors": [],
+        "captures": 24,
+        "timings_not_used": true
+      },
+      {
+        "label": "candidate-snow-gl01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-snow-gl01/run.json",
+          "sha256": "2a1fb6303878eaf1c0a655d6e67938b8e919d85529a76bc0bc9d68071f079277"
+        },
+        "results": [
+          {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-snow-gl01/ground-contact-relief-scene.json",
+            "sha256": "5931060637cfefecc65728a09f1f7852ac61a10339bb13299cfa96f51793d437"
+          }
+        ],
+        "checks": 112,
+        "failures": 0,
+        "return_code": 0,
+        "errors": [],
+        "captures": 24,
+        "timings_not_used": true
+      },
+      {
+        "label": "baseline-composed-forward01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-composed-forward01/run.json",
+          "sha256": "1f503a94ec805fd260826705143a149d961cb0601ae2eda7e9d87d1f5c8f9645"
+        },
+        "results": [
+          {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-composed-forward01/ground-contact-relief-scene.json",
+            "sha256": "6de746ab6ef3014ab665db078627c2f7a5975d0101ac820fdf465a5880de508c"
+          }
+        ],
+        "checks": 68,
+        "failures": 0,
+        "return_code": 0,
+        "errors": [],
+        "captures": 21,
+        "timings_not_used": true
+      },
+      {
+        "label": "candidate-composed-forward01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-composed-forward01/run.json",
+          "sha256": "2596b9e4d23e653438b21d46e5785b07eb92e9155440aecdfd9c7a84ff59b283"
+        },
+        "results": [
+          {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/candidate-composed-forward01/ground-contact-relief-scene.json",
+            "sha256": "6de746ab6ef3014ab665db078627c2f7a5975d0101ac820fdf465a5880de508c"
+          }
+        ],
+        "checks": 68,
+        "failures": 0,
+        "return_code": 0,
+        "errors": [],
+        "captures": 21,
+        "timings_not_used": true
+      }
+    ]
+  },
+  "image_pairs": [
+    {
+      "case": "relief-gl01",
+      "paired_exact_pngs": 21,
+      "identical_errors": [
+        "FAIL sun contact leaves upper and non-band pixels exact",
+        "FAIL local-light painted perturbation affects lit wall-root pixels"
+      ]
+    },
+    {
+      "case": "relief-forward01",
+      "paired_exact_pngs": 21,
+      "identical_errors": []
+    },
+    {
+      "case": "relief-mobile01",
+      "paired_exact_pngs": 21,
+      "identical_errors": []
+    },
+    {
+      "case": "snow-gl01",
+      "paired_exact_pngs": 24,
+      "identical_errors": []
+    },
+    {
+      "case": "composed-forward01",
+      "paired_exact_pngs": 21,
+      "identical_errors": []
+    },
+    {
+      "baseline": "baseline-detailed02",
+      "candidate": "candidate-detailed01",
+      "temperature": "cold",
+      "paired_exact_pngs": 6
+    },
+    {
+      "baseline": "baseline-detailed02",
+      "candidate": "candidate-detailed01",
+      "temperature": "warm",
+      "paired_exact_pngs": 6
+    },
+    {
+      "baseline": "baseline-detailed02",
+      "candidate": "candidate-detailed02",
+      "temperature": "cold",
+      "paired_exact_pngs": 6
+    },
+    {
+      "baseline": "baseline-detailed02",
+      "candidate": "candidate-detailed02",
+      "temperature": "warm",
+      "paired_exact_pngs": 6
+    },
+    {
+      "baseline": "baseline-forward01",
+      "candidate": "candidate-forward01",
+      "temperature": "cold",
+      "paired_exact_pngs": 6
+    },
+    {
+      "baseline": "baseline-forward01",
+      "candidate": "candidate-forward01",
+      "temperature": "warm",
+      "paired_exact_pngs": 6
+    },
+    {
+      "baseline": "baseline-mobile01",
+      "candidate": "candidate-mobile01",
+      "temperature": "cold",
+      "paired_exact_pngs": 6
+    },
+    {
+      "baseline": "baseline-mobile01",
+      "candidate": "candidate-mobile01",
+      "temperature": "warm",
+      "paired_exact_pngs": 6
+    }
+  ],
+  "paired_exact_pngs": 156,
+  "retained_residuals": [
+    "Compatibility authored house: one upper/non-band pixel differs by 1/255 between contact Off and On; local-light painted-relief ablation peaks at 2/255 and fails the existing >2-byte positive threshold. Both assertions and all 21 images are identical between baseline and candidate.",
+    "Desktop Mobile cost test: cold/warm near-contact captures differ in exactly the same 23 pixels (three >2, peak 7/255) on both builds. Each baseline/candidate temperature pair is exact, including native Off/restored and all far images. Both strict cold/warm wrappers remain failed; their tolerances were not changed.",
+    "With soft ground enabled, physical Retroid Compatibility reports sampler-limit shader-link errors on BOTH the installed reference and the substituted candidate. Matching failed-shader images and passing in-script counters do not qualify this combination.",
+    "Physical Retroid Mobile prototype comparison fails 5/30 checks, including both baseline-restoration controls and native far-Off restoration. This is inconclusive for the new loop; no physical Mobile acceptance or performance claim. Final source excludes relief compaction on Mobile."
+  ],
+  "physical_android": [
+    {
+      "label": "retroid-gl02",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/retroid-gl02/run.json",
+        "sha256": "909282dcd1b70dfa9a86bbd6c63ee60ce8c550d001025642a66ed6f9bccb5c9c"
+      },
+      "result": {
+        "adapter": "Adreno (TM) 650",
+        "checks": 30,
+        "comparisons": [
+          {
+            "difference": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "label": "bz2g-near-on",
+            "materials": 99,
+            "programs": 3,
+            "restored": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            }
+          },
+          {
+            "difference": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "label": "bz2g-far-on",
+            "materials": 99,
+            "programs": 3,
+            "restored": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            }
+          }
+        ],
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "scope": "Runtime shader substitution in the existing private Android .9-source QA app. Exact four-tap source change; no new APK, full-current-source device acceptance or performance claim."
+      },
+      "errors": [
+        "10-10 14:19:28.272 19669 19710 E godot   : ERROR: SceneShaderGLES3: Program linking failed:",
+        "10-10 14:19:28.272 19669 19710 E godot   : ERROR: Method/function failed.",
+        "10-10 14:19:28.943 19669 19710 E godot   : ERROR: SceneShaderGLES3: Program linking failed:",
+        "10-10 14:19:28.943 19669 19710 E godot   : ERROR: Method/function failed.",
+        "10-10 14:19:42.367 19669 19710 E godot   : ERROR: SceneShaderGLES3: Program linking failed:",
+        "10-10 14:19:42.367 19669 19710 E godot   : ERROR: Method/function failed.",
+        "10-10 14:19:42.977 19669 19710 E godot   : ERROR: SceneShaderGLES3: Program linking failed:",
+        "10-10 14:19:42.977 19669 19710 E godot   : ERROR: Method/function failed."
+      ],
+      "timeout": false,
+      "restored": true,
+      "private_process_stopped": true,
+      "fixture": {
+        "contact_compact.gd": "9a1bc5c2c361440790c641bb1483ba2d2941c78ff2ef0cb8619a2f9983abbca5",
+        "contact_device.gd": "d83163502f6ef01c6a5e807c3fd3e12f95178127bbbd92c28c68303290b4e884",
+        "contact_parent.gd": "8eba0b7677e660d2c2b73cd522ed6c718cf169670c2fcd4ebb5e79d5cc01c2c3"
+      }
+    },
+    {
+      "label": "retroid-no-deform-gl02",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/retroid-no-deform-gl02/run.json",
+        "sha256": "95d8b6aec6f8bea5e661195aba3d17a0d0a7317fd9281d4043f9f2e792cfa57b"
+      },
+      "result": null,
+      "errors": [],
+      "timeout": true,
+      "restored": true,
+      "private_process_stopped": true,
+      "fixture": {
+        "contact_compact.gd": "9a1bc5c2c361440790c641bb1483ba2d2941c78ff2ef0cb8619a2f9983abbca5",
+        "contact_device.gd": "cc6b238f151a2a7082971a3e0c1a14425c8e613dfbd1ecc5c1806adc8a2680ac",
+        "contact_parent.gd": "145f1b96e507c99101b120ef0af07405bf222559473edfb04e49e475a3a68fd4"
+      }
+    },
+    {
+      "label": "retroid-no-deform-gl03",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/retroid-no-deform-gl03/run.json",
+        "sha256": "3914d0e37e7cc7ea97541454d2a833c5db51ff8ed97ba331941f1de5e3adeb09"
+      },
+      "result": {
+        "adapter": "Adreno (TM) 650",
+        "checks": 30,
+        "comparisons": [
+          {
+            "difference": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "label": "bz2g-near-on",
+            "materials": 99,
+            "programs": 3,
+            "restored": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            }
+          },
+          {
+            "difference": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "label": "bz2g-far-on",
+            "materials": 99,
+            "programs": 3,
+            "restored": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            }
+          }
+        ],
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "scope": "Runtime shader substitution in the existing private Android .9-source QA app. Exact four-tap source change; no new APK, full-current-source device acceptance or performance claim."
+      },
+      "errors": [],
+      "timeout": false,
+      "restored": true,
+      "private_process_stopped": true,
+      "fixture": {
+        "contact_compact.gd": "9a1bc5c2c361440790c641bb1483ba2d2941c78ff2ef0cb8619a2f9983abbca5",
+        "contact_device.gd": "cc6b238f151a2a7082971a3e0c1a14425c8e613dfbd1ecc5c1806adc8a2680ac",
+        "contact_parent.gd": "b36a4deab498fbaaad266060c24ca8914b31659ff564d0d1d895f40765398f5b"
+      }
+    },
+    {
+      "label": "retroid-deform-mobile01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/retroid-deform-mobile01/run.json",
+        "sha256": "9187fe21d8ebb1eb712532caf433a8d5d02c009fb244a1c89215e06765592829"
+      },
+      "result": {
+        "adapter": "Adreno (TM) 650",
+        "checks": 30,
+        "comparisons": [
+          {
+            "difference": {
+              "changed": 7193,
+              "mean": 0.843527083333333,
+              "peak": 194
+            },
+            "label": "bz2g-near-on",
+            "materials": 99,
+            "programs": 3,
+            "restored": {
+              "changed": 4836,
+              "mean": 0.437966666666667,
+              "peak": 207
+            }
+          },
+          {
+            "difference": {
+              "changed": 5613,
+              "mean": 0.6886375,
+              "peak": 217
+            },
+            "label": "bz2g-far-on",
+            "materials": 99,
+            "programs": 3,
+            "restored": {
+              "changed": 6319,
+              "mean": 0.7012125,
+              "peak": 217
+            }
+          }
+        ],
+        "failures": 5,
+        "renderer": "mobile",
+        "scope": "Runtime shader substitution in the existing private Android .9-source QA app. Exact four-tap source change; no new APK, full-current-source device acceptance or performance claim."
+      },
+      "errors": [
+        "10-10 14:28:59.747 21456 21488 E godot   : FAIL exact baseline/candidate device pixels { \"changed\": 7193, \"peak\": 194, \"mean\": 0.84352708333333 }",
+        "10-10 14:29:25.138 21456 21488 E godot   : FAIL device baseline restores exactly { \"changed\": 4836, \"peak\": 207, \"mean\": 0.43796666666667 }",
+        "10-10 14:30:21.095 21456 21488 E godot   : FAIL exact baseline/candidate device pixels { \"changed\": 5613, \"peak\": 217, \"mean\": 0.6886375 }",
+        "10-10 14:30:36.591 21456 21488 E godot   : FAIL device baseline restores exactly { \"changed\": 6319, \"peak\": 217, \"mean\": 0.7012125 }",
+        "10-10 14:30:48.255 21456 21488 E godot   : FAIL bz2g far restored pixels {\"changed\":3,\"mean\":0.000547916666666667,\"peak\":103}"
+      ],
+      "timeout": false,
+      "restored": true,
+      "private_process_stopped": true,
+      "fixture": {
+        "contact_compact.gd": "9a1bc5c2c361440790c641bb1483ba2d2941c78ff2ef0cb8619a2f9983abbca5",
+        "contact_device.gd": "cc6b238f151a2a7082971a3e0c1a14425c8e613dfbd1ecc5c1806adc8a2680ac",
+        "contact_parent.gd": "bf4a8b4ffde8fa4af415f9d5ac2ec69b9136352803cb4784944faf8bfe7e17b1"
+      }
+    }
+  ],
+  "android_fixture_crash": {
+    "diagnosis": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/retroid-no-deform-gl02/diagnosis.json",
+      "sha256": "470d16c294e2737615306e4d1994a99f8ab33f9770bbca707face9901d9314b8"
+    },
+    "native_log": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/retroid-no-deform-gl02/native-crash-log.txt",
+      "sha256": "502f1922aba2b9d95202c62399c878d0702b087c0c2e6a5a15fdbaa96a490e96"
+    },
+    "symbolized": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/retroid-no-deform-gl02/symbolized.txt",
+      "sha256": "1bff54f6ac371a5e1f2b0622d470ce7bccabf16c6e6d47cb71d3212afa18fa6d"
+    },
+    "scope": "A benchmark null-node access before candidate shader substitution. Fixed only in the benchmark guard; unrelated to the unestablished RMX3890 loading report."
+  },
+  "diagnostics": {
+    "excluded_initial_baseline": "baseline-detailed01 overlaps another rendered engine and lacks child lineage. Its timings are excluded.",
+    "process_audit": "The original wrapper preserves its strict raw flags. Instrumented observations identify only same-command direct children at about 0.25s, while the log contains the engine banner alone; no such child remains when rendering begins. The derived measurement-isolation field excludes only these verified startup children. Foreign/unclassified observations remain disqualifying.",
+    "cold_control_preflight_rejections": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-detailed03-preflight-blocked.log",
+        "sha256": "0f525b7b221deec70bf590846092500290eee7adccfd269650ec89cea9da877a"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/baseline-detailed03-preflight-blocked02.log",
+        "sha256": "0f525b7b221deec70bf590846092500290eee7adccfd269650ec89cea9da877a"
+      }
+    ],
+    "mobile_difference": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/mobile-image-comparison.json",
+      "sha256": "83bc43a1801ed82478a753998ab8304238454baa09e89bc8b7f59fe3a68f2b70"
+    },
+    "interrupted_final_control": "baseline-detailed03 cold overlaps foreign rendering, then warm is prevented by preflight. Excluded from the performance mean.",
+    "instrumented_runner": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/instrumented/ground_contact_cost.py",
+      "sha256": "9ba215163915d3a6953ec17a854848b05e8d903707eff7049d3592e34a385cb1"
+    },
+    "device_runner": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-preparation-20261010/device_run.py",
+      "sha256": "76c44375dd05600562d35ae3215047b62d08cf12360df35a605d048d7b66743a"
+    }
+  },
+  "scope": [
+    "Main thread only; no campaign playthrough.",
+    "Physical checks substitute this exact shader transformation in the already-installed private .9-source QA app. They are not acceptance of the complete newest source on Android.",
+    "Normal Android app/settings/saves untouched; private settings and test-module files restored, autorun removed.",
+    "No new delivery packages/APKs, version bump, stable release or protocol change. .9 delivery remains at 473beb9.",
+    "Remaining: Android Compatibility sampler budget for V1 + soft ground, unresolved RMX3890/Linux report causes, Windows/device acceptance, and other expensive effects/water rebuilds."
+  ]
+}

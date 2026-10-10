@@ -137,6 +137,7 @@ func _variant(base: ShaderMaterial, extent: Vector3) -> ShaderMaterial:
 	if not _shaders.has(source):
 		var code := GroundContactShader.source(source, _cliffs)
 		if _transitions: code = terrain._transitions.source(code)
+		else: code = GroundContactShader.compact_relief(code)
 		_shaders[source] = Gfx.make_shader(code)
 	var material := ShaderMaterial.new()
 	material.shader = _shaders[source]

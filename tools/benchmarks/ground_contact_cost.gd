@@ -75,7 +75,8 @@ func scene(map_name: String) -> void:
 	check(map != null, map_name + " loaded")
 	if map == null: view.free(); return
 	view.add_child(map); map.terrain.set_process(false)
-	map.terrain.details.soft_ground.set_process(false)
+	if is_instance_valid(map.terrain.details.soft_ground):
+		map.terrain.details.soft_ground.set_process(false)
 	map.terrain._water_mat.set_shader_parameter("waves", 0.0)
 	var load_ms := (Time.get_ticks_usec() - start) / 1000.0
 	var target := focus(map)

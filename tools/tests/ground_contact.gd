@@ -82,6 +82,9 @@ func ownership() -> void:
 	owner.register(one.get_parent()); owner.register(two.get_parent()); owner.register(small.get_parent())
 	var contact := one.material_override as ShaderMaterial
 	check(contact != base and contact == two.material_override, "same world/base/bounds share contact material")
+	if RenderingServer.get_current_rendering_method() == "mobile":
+		var original_contact := Gfx.make_shader(GroundContactShader.source(base.get_meta("ground_contact_source")))
+		check(contact.shader.code == original_contact.code, "Mobile owner retains its exact original contact program")
 	check(small.material_override != contact, "small parts keep proportionate band")
 	check(contact.get_shader_parameter("contact_extent") == Vector3(2, 2, 0), "exact mesh bounds passed to shader")
 	check(contact.get_shader_parameter("albedo_tex") == base.get_shader_parameter("albedo_tex"), "original atlas shared")

@@ -420,3 +420,41 @@ void light() {""")
 	code = code.replace("* 0.22 /*EI_FA*/;", "* 0.22 * (1.0-contact_diffuse_weight.a) /*EI_FA*/;")
 	code = code.replace("\tif (ei_leaf > 0.001)",highlight+"\tif (ei_leaf > 0.001)")
 	return code
+
+
+# Runtime-bounded loop keeps GL from expanding the terrain sampler four times.
+# Invoked only without admitted Natural transitions, which own their sampler.
+const RELIEF_FUNCTION := """
+uniform int contact_relief_passes = 4;
+void contact_relief_samples(ivec2 tile,vec2 local,vec2 step_uv,vec2 dx,vec2 dy,
+		out vec3 left,out vec3 right,out vec3 down,out vec3 up) {
+	left=vec3(0.0); right=vec3(0.0); down=vec3(0.0); up=vec3(0.0);
+	// Internal default is always four, like contact_query_passes. Keeping
+	// one sampler call prevents repeated GL expansion of the complete field.
+	for (int i=0;i<contact_relief_passes;i++) {
+		vec2 point=local-step_uv;
+		if (i==1) { point=local+step_uv; }
+		if (i==2) { point=local-step_uv.yx; }
+		if (i==3) { point=local+step_uv.yx; }
+		vec4 unused_traits;
+		vec3 color=ground_sample(tile,point,dx,dy,unused_traits);
+		if (i==0) { left=color; }
+		if (i==1) { right=color; }
+		if (i==2) { down=color; }
+		if (i==3) { up=color; }
+	}
+}
+"""
+const RELIEF_CALLS := """vec3 left=ground_sample(tile,local-step_uv,dx,dy,unused_traits);
+		vec3 right=ground_sample(tile,local+step_uv,dx,dy,unused_traits);
+		vec3 down=ground_sample(tile,local-step_uv.yx,dx,dy,unused_traits);
+		vec3 up=ground_sample(tile,local+step_uv.yx,dx,dy,unused_traits);"""
+
+
+static func compact_relief(code: String) -> String:
+	# Retain Mobile's program until the physical-device repeat control is stable.
+	if RenderingServer.get_current_rendering_method() == "mobile": return code
+	if not code.contains(RELIEF_CALLS): return code
+	code=code.replace("// Terrain's native light model",RELIEF_FUNCTION+"\n// Terrain's native light model")
+	return code.replace(RELIEF_CALLS,"""vec3 left; vec3 right; vec3 down; vec3 up;
+		contact_relief_samples(tile,local,step_uv,dx,dy,left,right,down,up);""")

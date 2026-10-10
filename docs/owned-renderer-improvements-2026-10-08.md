@@ -5880,3 +5880,65 @@ bounded regression/device reports; campaign playthroughs were explicitly
 removed from scope by the user.
 
 [Source, exact-image and timing evidence](validation/cloud-high-ray-bounds-2026-10-10.json).
+
+
+## V1 contact preparation: four relief samples — 10 October
+
+Compatibility and Forward+ contact materials now evaluate their four painted
+relief samples through one internal uniform-bound loop. Coordinates, explicit
+texture gradients and downstream arithmetic are unchanged; albedo and mean
+samples stay separate. This differs from the previously rejected five/six-color
+loops. Admitted Natural terrain programs keep their existing sampler path.
+Mobile retains its exact original contact program because the physical-device
+comparison did not produce a stable reference control. There is no additional
+texture, sampler, draw pass or player option. V1 remains default-off.
+
+In the held 800×600 `bz2g` Compatibility view on Linux RTX3090, empty-cache
+first contact-enabled drawing falls **18.94 → 14.20 seconds (25.0%)**. The two
+candidate runs measure 14.23 and 14.17 seconds. Steady GPU medians remain
+roughly 2.0 ms near and 0.83 ms far; this does not establish a steady FPS gain.
+Forward+ has an exploratory 2.292 → 2.018 second cold-frame comparison with
+exact images. These measurements include remaining driver preparation and
+normal frame work, not a pure compiler timer or complete game load. One clean
+baseline and two candidate runs support the Compatibility comparison. An
+initial contended baseline and a later interrupted control are excluded.
+The raw process flags are retained: lineage records identify short-lived
+same-command children before the renderer starts, rather than another engine.
+
+The all-backend prototype has **156 exact baseline/candidate PNG pairs**, across
+normal-frame near/far cost cases and authored house lighting, dense snow tracks,
+and Natural/cliff composition. Its functional suite has **873 assertions with
+four failures**: the same two Compatibility house assertions fail on both
+builds, with all 21 corresponding images exact. They concern one upper pixel at
+1/255 and a weak local-light relief positive control. Desktop Mobile's strict
+cold/warm comparison retains the same 23 differing pixels on both builds;
+baseline and candidate match exactly at each temperature. No thresholds changed.
+Final integration passes **130/0 ownership/rendering checks**, including exact
+Mobile program preservation, and **96/0** checks for the no-deformation benchmark.
+The final 700-file private export differs from the prototype only by Mobile's
+early return; Compatibility/Forward+ shader output is unchanged.
+
+Physical Retroid Pocket 5 / Android 33 / Adreno 650 checks use source substitution
+in the existing private QA app, without installing an APK. Compatibility with
+soft ground disabled passes **30/0**, including exact near/far comparisons and
+restoration across 99 scenery materials. With soft ground enabled, both old
+and candidate contact shaders exceed the texture-sampler limit and fail to
+link; matching failed-shader images do not qualify this combination. The Mobile
+prototype fails **5/30**, including baseline-restoration controls, and is excluded
+from final production. Neither result establishes the reported RMX3890 failure.
+
+A no-soft-ground diagnostic also exposed a benchmark-only null-node call. Its
+symbolized native stack points to `Node::set_process`; the old fixture assumes
+that the optional footprint node exists. Both benchmark scripts now guard it,
+and the corrected physical Compatibility run passes. This was before candidate
+shader substitution, not a new gameplay crash. Private app configuration and
+test modules were restored, autorun removed, and the private process stopped;
+the normal installed game was untouched.
+
+No delivery archive or APK was created. Final private export:
+`local/scratchpad/contact-preparation-20261010/candidate02`. Delivery .9 remains
+at `473beb9`. Continue with the Android V1/soft-ground sampler budget and other
+measured effect costs, including water rebuilds; retain the unresolved device
+reports and prior .8/.9 fixes. Main thread only, no campaign playthroughs.
+
+[Complete source, timing, image and device evidence](validation/contact-relief-compaction-2026-10-10.json).
