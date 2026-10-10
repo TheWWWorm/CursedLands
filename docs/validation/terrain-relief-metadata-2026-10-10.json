@@ -1,0 +1,690 @@
+{
+  "date": "2026-10-10",
+  "source_commit": "bf473ad",
+  "decision": "Do not integrate. Shared immutable relief rows preserve exact images but the sampled baseline/candidate costs do not establish a worthwhile gain; all timings overlap foreign rendering.",
+  "scope": "Scratch-only shader substitution in the unchanged local20261010.4 Linux pack, Forward+/Vulkan on RTX3090, original campaign, three held 1920x1080 views. No source/settings/package changes or Windows/device performance claim.",
+  "candidate": "Reuse the central original/junction metadata row across four relief taps. Every tap resolves its own cell, uses exact lookup fallback across boundaries, and retains its own warp, art, gradients and scoring. No persistent texture cache.",
+  "accepted_probe": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03",
+    "run_sha256": "bed06fcec919abf95d3bbe7e71141b46c632e55851ab52b2da2c961c6c7bac2b",
+    "result": {
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "campaign": "cursed_lands",
+      "checks": 79,
+      "failures": 0,
+      "renderer": "forward_plus",
+      "rows": [
+        {
+          "arm": 0,
+          "field": {
+            "admitted": 9840,
+            "build_us": 319471,
+            "bytes": 983040
+          },
+          "frame_wall_ms": {
+            "max": 7.458,
+            "median": 1.181,
+            "min": 0.475,
+            "p95": 4.095
+          },
+          "label": "three-families",
+          "map": "zone15",
+          "mode": 0,
+          "sample_frames": 240,
+          "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+          "tile": [
+            69,
+            19
+          ],
+          "viewport_cpu_ms": {
+            "max": 0.234999999403954,
+            "median": 0.0430000014603138,
+            "min": 0.0350000001490116,
+            "p95": 0.0920000001788139
+          },
+          "viewport_gpu_ms": {
+            "max": 2.71099996566772,
+            "median": 0.957000017166138,
+            "min": 0.907999992370605,
+            "p95": 1.51999998092651
+          },
+          "visible_draws": {
+            "max": 1,
+            "median": 1,
+            "min": 1,
+            "p95": 1
+          },
+          "visible_primitives": {
+            "max": 2048,
+            "median": 2048,
+            "min": 2048,
+            "p95": 2048
+          },
+          "warmup_frames": 96
+        },
+        {
+          "arm": 1,
+          "field": {
+            "admitted": 9840,
+            "build_us": 319471,
+            "bytes": 983040
+          },
+          "frame_wall_ms": {
+            "max": 7.723,
+            "median": 1.288,
+            "min": 0.525,
+            "p95": 2.211
+          },
+          "label": "three-families",
+          "map": "zone15",
+          "mode": 1,
+          "sample_frames": 240,
+          "shader_sha256": "dda0ebd7fba7f3115d5fa08bbbc49923795bd05beb623a680498abc7981d6e00",
+          "tile": [
+            69,
+            19
+          ],
+          "viewport_cpu_ms": {
+            "max": 0.126000002026558,
+            "median": 0.0410000011324883,
+            "min": 0.0350000001490116,
+            "p95": 0.0659999996423721
+          },
+          "viewport_gpu_ms": {
+            "max": 2.64199995994568,
+            "median": 1.11199998855591,
+            "min": 0.939000010490417,
+            "p95": 1.71800005435944
+          },
+          "visible_draws": {
+            "max": 1,
+            "median": 1,
+            "min": 1,
+            "p95": 1
+          },
+          "visible_primitives": {
+            "max": 2048,
+            "median": 2048,
+            "min": 2048,
+            "p95": 2048
+          },
+          "warmup_frames": 96
+        },
+        {
+          "arm": 2,
+          "field": {
+            "admitted": 9840,
+            "build_us": 319471,
+            "bytes": 983040
+          },
+          "frame_wall_ms": {
+            "max": 6.431,
+            "median": 1.186,
+            "min": 0.437,
+            "p95": 4.248
+          },
+          "label": "three-families",
+          "map": "zone15",
+          "mode": 1,
+          "sample_frames": 240,
+          "shader_sha256": "dda0ebd7fba7f3115d5fa08bbbc49923795bd05beb623a680498abc7981d6e00",
+          "tile": [
+            69,
+            19
+          ],
+          "viewport_cpu_ms": {
+            "max": 2.90300011634827,
+            "median": 0.0529999993741512,
+            "min": 0.034000001847744,
+            "p95": 0.104999996721745
+          },
+          "viewport_gpu_ms": {
+            "max": 2.62299990653992,
+            "median": 0.943000018596649,
+            "min": 0.915000021457672,
+            "p95": 1.44400000572205
+          },
+          "visible_draws": {
+            "max": 1,
+            "median": 1,
+            "min": 1,
+            "p95": 1
+          },
+          "visible_primitives": {
+            "max": 2048,
+            "median": 2048,
+            "min": 2048,
+            "p95": 2048
+          },
+          "warmup_frames": 96
+        },
+        {
+          "arm": 3,
+          "field": {
+            "admitted": 9840,
+            "build_us": 319471,
+            "bytes": 983040
+          },
+          "frame_wall_ms": {
+            "max": 9.01,
+            "median": 1.186,
+            "min": 0.424,
+            "p95": 3.982
+          },
+          "label": "three-families",
+          "map": "zone15",
+          "mode": 0,
+          "sample_frames": 240,
+          "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+          "tile": [
+            69,
+            19
+          ],
+          "viewport_cpu_ms": {
+            "max": 0.188999995589256,
+            "median": 0.0430000014603138,
+            "min": 0.034000001847744,
+            "p95": 0.112999998033047
+          },
+          "viewport_gpu_ms": {
+            "max": 2.96099996566772,
+            "median": 0.944999992847443,
+            "min": 0.908999979496002,
+            "p95": 1.42999994754791
+          },
+          "visible_draws": {
+            "max": 1,
+            "median": 1,
+            "min": 1,
+            "p95": 1
+          },
+          "visible_primitives": {
+            "max": 2048,
+            "median": 2048,
+            "min": 2048,
+            "p95": 2048
+          },
+          "warmup_frames": 96
+        },
+        {
+          "arm": 0,
+          "field": {
+            "admitted": 14319,
+            "build_us": 627410,
+            "bytes": 1310720
+          },
+          "frame_wall_ms": {
+            "max": 3.147,
+            "median": 1.483,
+            "min": 1.073,
+            "p95": 2.204
+          },
+          "label": "four-families",
+          "map": "zone12",
+          "mode": 0,
+          "sample_frames": 240,
+          "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+          "tile": [
+            67,
+            127
+          ],
+          "viewport_cpu_ms": {
+            "max": 0.114000000059605,
+            "median": 0.0430000014603138,
+            "min": 0.0379999987781048,
+            "p95": 0.0610000006854534
+          },
+          "viewport_gpu_ms": {
+            "max": 3.08500003814697,
+            "median": 1.42599999904633,
+            "min": 1.16700005531311,
+            "p95": 2.12400007247925
+          },
+          "visible_draws": {
+            "max": 4,
+            "median": 4,
+            "min": 4,
+            "p95": 4
+          },
+          "visible_primitives": {
+            "max": 8192,
+            "median": 8192,
+            "min": 8192,
+            "p95": 8192
+          },
+          "warmup_frames": 96
+        },
+        {
+          "arm": 1,
+          "field": {
+            "admitted": 14319,
+            "build_us": 627410,
+            "bytes": 1310720
+          },
+          "frame_wall_ms": {
+            "max": 11.793,
+            "median": 1.328,
+            "min": 0.439,
+            "p95": 5.917
+          },
+          "label": "four-families",
+          "map": "zone12",
+          "mode": 1,
+          "sample_frames": 240,
+          "shader_sha256": "dda0ebd7fba7f3115d5fa08bbbc49923795bd05beb623a680498abc7981d6e00",
+          "tile": [
+            67,
+            127
+          ],
+          "viewport_cpu_ms": {
+            "max": 0.178000003099442,
+            "median": 0.061999998986721,
+            "min": 0.0359999984502792,
+            "p95": 0.140000000596046
+          },
+          "viewport_gpu_ms": {
+            "max": 2.18700003623962,
+            "median": 0.991999983787537,
+            "min": 0.975000023841858,
+            "p95": 1.41299998760223
+          },
+          "visible_draws": {
+            "max": 4,
+            "median": 4,
+            "min": 4,
+            "p95": 4
+          },
+          "visible_primitives": {
+            "max": 8192,
+            "median": 8192,
+            "min": 8192,
+            "p95": 8192
+          },
+          "warmup_frames": 96
+        },
+        {
+          "arm": 2,
+          "field": {
+            "admitted": 14319,
+            "build_us": 627410,
+            "bytes": 1310720
+          },
+          "frame_wall_ms": {
+            "max": 8.949,
+            "median": 1.358,
+            "min": 0.494,
+            "p95": 4.621
+          },
+          "label": "four-families",
+          "map": "zone12",
+          "mode": 1,
+          "sample_frames": 240,
+          "shader_sha256": "dda0ebd7fba7f3115d5fa08bbbc49923795bd05beb623a680498abc7981d6e00",
+          "tile": [
+            67,
+            127
+          ],
+          "viewport_cpu_ms": {
+            "max": 0.90200001001358,
+            "median": 0.0520000010728836,
+            "min": 0.0370000004768372,
+            "p95": 0.129999995231628
+          },
+          "viewport_gpu_ms": {
+            "max": 2.3199999332428,
+            "median": 1.0349999666214,
+            "min": 0.982999980449677,
+            "p95": 1.65799999237061
+          },
+          "visible_draws": {
+            "max": 4,
+            "median": 4,
+            "min": 4,
+            "p95": 4
+          },
+          "visible_primitives": {
+            "max": 8192,
+            "median": 8192,
+            "min": 8192,
+            "p95": 8192
+          },
+          "warmup_frames": 96
+        },
+        {
+          "arm": 3,
+          "field": {
+            "admitted": 14319,
+            "build_us": 627410,
+            "bytes": 1310720
+          },
+          "frame_wall_ms": {
+            "max": 8.859,
+            "median": 1.414,
+            "min": 0.422,
+            "p95": 7.262
+          },
+          "label": "four-families",
+          "map": "zone12",
+          "mode": 0,
+          "sample_frames": 240,
+          "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+          "tile": [
+            67,
+            127
+          ],
+          "viewport_cpu_ms": {
+            "max": 1.01800000667572,
+            "median": 0.0590000003576279,
+            "min": 0.0359999984502792,
+            "p95": 0.12899999320507
+          },
+          "viewport_gpu_ms": {
+            "max": 1.80099999904633,
+            "median": 0.995999991893768,
+            "min": 0.981000006198883,
+            "p95": 1.39199995994568
+          },
+          "visible_draws": {
+            "max": 4,
+            "median": 4,
+            "min": 4,
+            "p95": 4
+          },
+          "visible_primitives": {
+            "max": 8192,
+            "median": 8192,
+            "min": 8192,
+            "p95": 8192
+          },
+          "warmup_frames": 96
+        },
+        {
+          "arm": 0,
+          "field": {
+            "admitted": 22269,
+            "build_us": 838519,
+            "bytes": 1572864
+          },
+          "frame_wall_ms": {
+            "max": 3.544,
+            "median": 1.328,
+            "min": 0.793,
+            "p95": 2.08
+          },
+          "label": "existing-pair",
+          "map": "zone11",
+          "mode": 0,
+          "sample_frames": 240,
+          "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+          "tile": [
+            69,
+            87
+          ],
+          "viewport_cpu_ms": {
+            "max": 0.129999995231628,
+            "median": 0.0399999991059303,
+            "min": 0.0350000001490116,
+            "p95": 0.0599999986588955
+          },
+          "viewport_gpu_ms": {
+            "max": 3.16599988937378,
+            "median": 0.976999998092651,
+            "min": 0.907999992370605,
+            "p95": 1.95799994468689
+          },
+          "visible_draws": {
+            "max": 1,
+            "median": 1,
+            "min": 1,
+            "p95": 1
+          },
+          "visible_primitives": {
+            "max": 2048,
+            "median": 2048,
+            "min": 2048,
+            "p95": 2048
+          },
+          "warmup_frames": 96
+        },
+        {
+          "arm": 1,
+          "field": {
+            "admitted": 22269,
+            "build_us": 838519,
+            "bytes": 1572864
+          },
+          "frame_wall_ms": {
+            "max": 3.171,
+            "median": 1.225,
+            "min": 0.897,
+            "p95": 1.758
+          },
+          "label": "existing-pair",
+          "map": "zone11",
+          "mode": 1,
+          "sample_frames": 240,
+          "shader_sha256": "dda0ebd7fba7f3115d5fa08bbbc49923795bd05beb623a680498abc7981d6e00",
+          "tile": [
+            69,
+            87
+          ],
+          "viewport_cpu_ms": {
+            "max": 0.108000002801418,
+            "median": 0.0399999991059303,
+            "min": 0.0370000004768372,
+            "p95": 0.0640000030398369
+          },
+          "viewport_gpu_ms": {
+            "max": 3.07800006866455,
+            "median": 0.944000005722046,
+            "min": 0.925999999046326,
+            "p95": 1.60800004005432
+          },
+          "visible_draws": {
+            "max": 1,
+            "median": 1,
+            "min": 1,
+            "p95": 1
+          },
+          "visible_primitives": {
+            "max": 2048,
+            "median": 2048,
+            "min": 2048,
+            "p95": 2048
+          },
+          "warmup_frames": 96
+        },
+        {
+          "arm": 2,
+          "field": {
+            "admitted": 22269,
+            "build_us": 838519,
+            "bytes": 1572864
+          },
+          "frame_wall_ms": {
+            "max": 2.567,
+            "median": 1.226,
+            "min": 0.941,
+            "p95": 1.764
+          },
+          "label": "existing-pair",
+          "map": "zone11",
+          "mode": 1,
+          "sample_frames": 240,
+          "shader_sha256": "dda0ebd7fba7f3115d5fa08bbbc49923795bd05beb623a680498abc7981d6e00",
+          "tile": [
+            69,
+            87
+          ],
+          "viewport_cpu_ms": {
+            "max": 0.14300000667572,
+            "median": 0.0410000011324883,
+            "min": 0.0370000004768372,
+            "p95": 0.0640000030398369
+          },
+          "viewport_gpu_ms": {
+            "max": 2.51500010490417,
+            "median": 0.943000018596649,
+            "min": 0.930999994277954,
+            "p95": 1.57099997997284
+          },
+          "visible_draws": {
+            "max": 1,
+            "median": 1,
+            "min": 1,
+            "p95": 1
+          },
+          "visible_primitives": {
+            "max": 2048,
+            "median": 2048,
+            "min": 2048,
+            "p95": 2048
+          },
+          "warmup_frames": 96
+        },
+        {
+          "arm": 3,
+          "field": {
+            "admitted": 22269,
+            "build_us": 838519,
+            "bytes": 1572864
+          },
+          "frame_wall_ms": {
+            "max": 2.85,
+            "median": 1.172,
+            "min": 0.671,
+            "p95": 1.733
+          },
+          "label": "existing-pair",
+          "map": "zone11",
+          "mode": 0,
+          "sample_frames": 240,
+          "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+          "tile": [
+            69,
+            87
+          ],
+          "viewport_cpu_ms": {
+            "max": 0.104000002145767,
+            "median": 0.0379999987781048,
+            "min": 0.0350000001490116,
+            "p95": 0.0520000010728836
+          },
+          "viewport_gpu_ms": {
+            "max": 2.53600001335144,
+            "median": 0.947000026702881,
+            "min": 0.915000021457672,
+            "p95": 1.54499995708466
+          },
+          "visible_draws": {
+            "max": 1,
+            "median": 1,
+            "min": 1,
+            "p95": 1
+          },
+          "visible_primitives": {
+            "max": 2048,
+            "median": 2048,
+            "min": 2048,
+            "p95": 2048
+          },
+          "warmup_frames": 96
+        }
+      ],
+      "scope": "Scratch-only shared relief metadata, baseline/candidate/candidate/baseline on identical Natural map views; no Windows or device acceptance.",
+      "viewport": [
+        1920,
+        1080
+      ]
+    },
+    "checks": 79,
+    "failures": 0,
+    "exact_image_pairs": [
+      {
+        "baseline": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-three-families-arm0.png",
+        "other": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-three-families-arm1.png",
+        "sha256": "80523756f3f9464eb230b8bd1c5eac31d2a44a2923fb714d6fe90701010eddd0"
+      },
+      {
+        "baseline": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-three-families-arm0.png",
+        "other": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-three-families-arm2.png",
+        "sha256": "80523756f3f9464eb230b8bd1c5eac31d2a44a2923fb714d6fe90701010eddd0"
+      },
+      {
+        "baseline": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-three-families-arm0.png",
+        "other": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-three-families-arm3.png",
+        "sha256": "80523756f3f9464eb230b8bd1c5eac31d2a44a2923fb714d6fe90701010eddd0"
+      },
+      {
+        "baseline": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-four-families-arm0.png",
+        "other": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-four-families-arm1.png",
+        "sha256": "99ad2e4af8701402b95dcd8fc392d69a82538cfedb901d92398ac6ed655c5f28"
+      },
+      {
+        "baseline": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-four-families-arm0.png",
+        "other": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-four-families-arm2.png",
+        "sha256": "99ad2e4af8701402b95dcd8fc392d69a82538cfedb901d92398ac6ed655c5f28"
+      },
+      {
+        "baseline": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-four-families-arm0.png",
+        "other": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-four-families-arm3.png",
+        "sha256": "99ad2e4af8701402b95dcd8fc392d69a82538cfedb901d92398ac6ed655c5f28"
+      },
+      {
+        "baseline": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-existing-pair-arm0.png",
+        "other": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-existing-pair-arm1.png",
+        "sha256": "70288ef014aa6a4e026e9e1411b20fa449cf4ea0df57ce34ba3c7ca0f120e509"
+      },
+      {
+        "baseline": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-existing-pair-arm0.png",
+        "other": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-existing-pair-arm2.png",
+        "sha256": "70288ef014aa6a4e026e9e1411b20fa449cf4ea0df57ce34ba3c7ca0f120e509"
+      },
+      {
+        "baseline": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-existing-pair-arm0.png",
+        "other": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe03/metadata-existing-pair-arm3.png",
+        "sha256": "70288ef014aa6a4e026e9e1411b20fa449cf4ea0df57ce34ba3c7ca0f120e509"
+      }
+    ],
+    "other_engines_absent": false,
+    "process_monitor_sha256": "bed06fcec919abf95d3bbe7e71141b46c632e55851ab52b2da2c961c6c7bac2b"
+  },
+  "retained_diagnostics": [
+    {
+      "name": "probe01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe01",
+      "run_sha256": "f8820d1f224a58b1b8b6cb806c0b1b319ec356700553fe6560d84911eb89af57",
+      "return_code": 1,
+      "errors": [
+        "FAIL candidate generated four-families",
+        "FAIL visible original geometry submitted four-families",
+        "FAIL visible original geometry submitted four-families",
+        "FAIL visible original geometry submitted four-families",
+        "FAIL visible original geometry submitted four-families"
+      ],
+      "description": "Wrong campaign mounted for base witness coordinates; blank four-family scene and unchanged candidate rejected by checks. Excluded in full."
+    },
+    {
+      "name": "probe02",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/probe02",
+      "run_sha256": "be04d6130d4ec116e749f624c89f735f03a8f18d76176e8f3914561d963432c8",
+      "return_code": 1,
+      "errors": [
+        "FAIL fixture uses original campaign witness coordinates"
+      ],
+      "description": "Added campaign guard initially used an incorrect string identifier. Failed before any scene; corrected to CampaignProfile.ORIGINAL. Excluded."
+    }
+  ],
+  "limits": [
+    "This sample changes only final terrain materials, not contact/footprint/cache consumers; it does not qualify an integration.",
+    "Images in nine held candidate/restored comparisons are exact. This is not a proof of the complete field or all dynamic gameplay.",
+    "No test tolerance was changed. Existing Natural, V1 and Windows performance limitations remain.",
+    "Do not promote or repeat this metadata variant without a new costly workload or independent compiler evidence."
+  ],
+  "artifacts": {
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/cost.gd": "25462b58e60315ebbf5bed632d249d738427555ec1c5c7f7f5cfbd8e9a7d6469",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/metadata_reuse.gd": "0ffbc97e4b261120b7a8155ab11ebdbe8f94c0b86d684d09c6b9c3f49d120d16",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/run.py": "8096afdb94bf92a63a68cd46da8e33f448a55fea1f601e2f29640845e847d1cd",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-relief-metadata-20261010/baseline_cost.gd": "2a36f07833980beb3393837794c5cbc5145492339a192376beb6b63c56c9dd0e"
+  }
+}

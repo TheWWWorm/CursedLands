@@ -5411,6 +5411,25 @@ gameplay routes remain unqualified. No stable release is claimed.
 
 [Package evidence](validation/local-feedback-build-2026-10-10-4.json).
 
+## Natural relief metadata experiment — 10 October
+
+A scratch-only variant shares immutable original/junction tile rows across the
+four adjacent relief samples. Each tap still resolves its own cell and retains
+its own warp, gradients, donor artwork and score. It adds no persistent texture
+cache. Three original-campaign views pass **79 checks**, with nine exact
+candidate/restored image pairs at 1920×1080. Draw and triangle counts agree.
+The baseline/candidate timings overlap foreign rendering and show no convincing
+repeatable saving; this variant is not integrated or packaged. Contact, dense
+footprint and baked-colour consumers were not qualified after that decision.
+
+The first run mounted LiA against base witness coordinates; the four-family
+scene failed visibility/template checks and the entire run is excluded. A
+subsequent preflight used an incorrect campaign identifier and stopped before
+rendering. The corrected fixture uses `CampaignProfile.ORIGINAL`; both rejected
+runs remain in the receipt. No thresholds or production code were altered.
+
+[Experiment evidence](validation/terrain-relief-metadata-2026-10-10.json).
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** shipped unit/preview materials now share
