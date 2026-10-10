@@ -3652,5 +3652,16 @@
     "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/accepted-shader-audit.json": "3153aea2e1be5a8d5b57212fdc6e265324f10e3c70103e897ba52b3cfd825b5d",
     "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/fair-edge-comparison.png": "ad8ab98a7f7bbdab553112da809c6549dc3d203ea3951f29fa4cf097e795143e",
     "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/post-run-state.json": "64c0a0f421d36aad54c53c3769c119f8f8ede57e3b6b3d0cf3f2cf2489782d2d"
+  },
+  "android_capability_correction_2026_10_11": {
+    "probe": {
+      "compatibility": false,
+      "constrained": true,
+      "os": "Android",
+      "renderer": "mobile",
+      "sky_subpass_alpha": true,
+      "volume_supported": false
+    },
+    "correction": "Earlier handoff/quality receipt incorrectly described fallback as missing native alpha capability. The installed engine has ei_sky_subpass_alpha=true. Portability.constrained() is true on Android, so production policy deliberately selects sheet fallback. Native volume remains outside this validation; installing an engine with the same flag does not override platform policy."
   }
 }

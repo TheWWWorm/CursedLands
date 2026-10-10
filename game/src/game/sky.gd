@@ -93,7 +93,12 @@ vec3 dome(int i, float s, vec2 cs, float u, vec3 l) {
 	return mix(sky_col, c, mix(FF[i], FF[i + 1], s));
 }
 
+uniform bool sky_radiance = true;
 void sky() {
+ if (AT_CUBEMAP_PASS && !sky_radiance) {
+  COLOR=vec3(0.0);
+ } else {
+
 	vec3 e = vec3(EYEDIR.x, -EYEDIR.z, EYEDIR.y);   // Godot → EI (z up)
 	float rho = length(e.xy);
 	float ca = cos(spin), sa = sin(spin);
@@ -161,6 +166,7 @@ void sky() {
 		COLOR = col;
 	}
 	#endif
+ }
 }
 """
 
@@ -204,8 +210,12 @@ static func update(m: ShaderMaterial, lights: EILights, hour: float, cave: bool,
 	if int(m.get_meta("clouds",0)) != clouds:
 		m.shader.code = Clouds.sky_source(SHADER) if clouds>0 else SHADER
 		m.set_meta("clouds",clouds)
+	# Keep the visible dome live while skipping its unused cubemap shading.
+	# Unknown environments and every radiance consumer retain the full sky.
+	var needs_radiance := radiance_needed(env)
+	m.set_shader_parameter("sky_radiance", needs_radiance)
 	if clouds >= 2:
-		m.set_shader_parameter("cloud_radiance", radiance_needed(env))
+		m.set_shader_parameter("cloud_radiance", needs_radiance)
 	var sky := lights.sample("sky", hour) if lights else Color(0.18, 0.71, 0.85)
 	var amb := lights.sample("ambient", hour) if lights else Color(0.5, 0.53, 0.49)
 	var sun := lights.sample("sunlight", hour) if lights else Color.WHITE
@@ -222,7 +232,7 @@ static func update(m: ShaderMaterial, lights: EILights, hour: float, cave: bool,
 
 
 ## Conservative opt-out: colour ambient alone cannot sample the sky. Fog can
-## still sample it even with AMBIENT_SOURCE_COLOR, so retain its full volume.
+## still sample it even with AMBIENT_SOURCE_COLOR, so retain its full radiance.
 ## Read the environment, not options: menus and gameplay configure it differently.
 static func radiance_needed(env: Environment) -> bool:
 	if env == null:

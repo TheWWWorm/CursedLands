@@ -1,5 +1,5 @@
 extends "water_interaction.gd"
-## Rendered consumer checks for the optional volume radiance optimization.
+## Rendered consumer checks for unused dome and cloud radiance work.
 const Clouds = preload("res://src/game/fx/clouds.gd")
 
 func capture(view: SubViewport, label: String) -> Image:
@@ -8,10 +8,13 @@ func capture(view: SubViewport, label: String) -> Image:
 	check(image.save_png("user://cloud-radiance-" + label + ".png") == OK, "capture " + label)
 	return image
 
-func compare(view: SubViewport, sky: ShaderMaterial, env: Environment, label: String, needed: bool) -> void:
+func compare(view: SubViewport, sky: ShaderMaterial, env: Environment, label: String, needed: bool, visible_consumer := true) -> Image:
 	EISky.update(sky, null, 12, false, true, env)
-	check(sky.get_shader_parameter("cloud_radiance") == needed, "live environment policy " + label)
+	check(sky.get_shader_parameter("sky_radiance") == needed, "live sky environment policy " + label)
+	if Clouds.mode() >= 2:
+		check(sky.get_shader_parameter("cloud_radiance") == needed, "live cloud environment policy " + label)
 	var automatic := await capture(view, label + "-auto")
+	sky.set_shader_parameter("sky_radiance", true)
 	sky.set_shader_parameter("cloud_radiance", true)
 	var complete := await capture(view, label + "-complete")
 	var delta := difference(automatic, complete)
@@ -19,16 +22,21 @@ func compare(view: SubViewport, sky: ShaderMaterial, env: Environment, label: St
 	check(delta.changed_pixels == 0, "full radiance preserves presented pixels " + label)
 	if needed:
 		# Demonstrate that removing this consumer's radiance really is visible.
+		sky.set_shader_parameter("sky_radiance", false)
 		sky.set_shader_parameter("cloud_radiance", false)
 		var unsafe := await capture(view, label + "-unsafe-control")
 		var control := difference(complete, unsafe)
 		rows.append({"case":label + "-unsafe-control", "difference":control})
-		check(control.pixels_over_2 > 20, "consumer detects missing cloud radiance " + label)
+		if visible_consumer:
+			check(control.pixels_over_2 > 20, "consumer detects missing sky radiance " + label)
+		else:
+			rows.append({"case":label, "positive_control_skipped":"Compatibility has no material aerial-perspective radiance sampling"})
 	EISky.update(sky, null, 12, false, true, env)
 	var restored := await capture(view, label + "-restored")
 	var restoration := difference(automatic, restored)
 	rows.append({"case":label + "-restored", "difference":restoration})
 	check(restoration.changed_pixels == 0, "live policy restores presented pixels " + label)
+	return automatic
 
 func policy() -> void:
 	var env := Environment.new()
@@ -69,32 +77,47 @@ func scene() -> void:
 	field.sample(0, "bz2g", "Ingos", Vector4(.7,-.7,.8,.3), 0, 1, 12, false)
 	Gfx.set_cloud_frame(view.get_instance_id(), field.sample(120, "bz2g", "Ingos", Vector4(.7,-.7,.8,.3), 0, 1, 12, false))
 	RenderingServer.global_shader_parameter_set(&"ei_sun_dir", Vector3(.3,.9,.2).normalized())
-	for quality in [2,3]:
+	var qualities := [0,1]
+	if Clouds.VolumeNoise.supported(): qualities.append_array([2,3])
+	var clear_sky: Image
+	for quality in qualities:
+		material.metallic = 1; material.roughness = 0.2
 		GameData.options.gfx_clouds = quality; Gfx.apply_surface_options()
-		await compare(view, sky, env, "background-" + str(quality), false)
-	# Exercise actual sky reflection and ambient consumers, then both fog paths.
-	env.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
-	await compare(view, sky, env, "reflection", true)
-	env.reflected_light_source = Environment.REFLECTION_SOURCE_DISABLED
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	material.metallic = 0; material.roughness = 1
-	await compare(view, sky, env, "ambient", true)
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	wall.visible = true; sphere.visible = false
-	env.fog_enabled = true; env.fog_depth_begin = 0; env.fog_depth_end = 40; env.fog_aerial_perspective = 1
-	await compare(view, sky, env, "aerial", true)
-	env.fog_enabled = false; env.fog_aerial_perspective = 0
-	env.volumetric_fog_enabled = true; env.volumetric_fog_density = .025
-	env.volumetric_fog_temporal_reprojection_enabled = false
-	env.volumetric_fog_ambient_inject = 1
-	if RenderingServer.get_current_rendering_method() == "forward_plus":
-		await compare(view, sky, env, "volumetric", true)
-	else:
-		check(EISky.radiance_needed(env), "unsupported fog remains conservatively guarded")
-	env.volumetric_fog_enabled = false; wall.visible = false; sphere.visible = true
-	await compare(view, sky, env, "background-return", false)
-	EISky.update(sky, null, 12, false, true)
-	check(sky.get_shader_parameter("cloud_radiance") == true, "caller without environment restores complete radiance")
+		# Turning clouds off clears their globals. Publish again after each mode
+		# switch so these controls exercise visible clouds as well as the dome.
+		Gfx.set_cloud_frame(view.get_instance_id(), field.sample(120, "bz2g", "Ingos", Vector4(.7,-.7,.8,.3), 0, 1, 12, false))
+		var background := await compare(view, sky, env, "background-" + str(quality), false)
+		if quality == 0:
+			clear_sky = background
+		else:
+			check(difference(clear_sky, background).pixels_over_2 > 20, "clouds are visible at quality " + str(quality))
+		# Exercise actual sky reflection and ambient consumers, then both fog paths.
+		env.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
+		await compare(view, sky, env, "reflection-" + str(quality), true)
+		env.reflected_light_source = Environment.REFLECTION_SOURCE_DISABLED
+		env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
+		material.metallic = 0; material.roughness = 1
+		await compare(view, sky, env, "ambient-" + str(quality), true)
+		env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+		wall.visible = true; sphere.visible = false
+		env.fog_enabled = true; env.fog_depth_begin = 0; env.fog_depth_end = 40; env.fog_aerial_perspective = 1
+		# The GLES3 material shader leaves its aerial-perspective sample disabled.
+		# Still verify the conservative policy and unchanged automatic/full output.
+		await compare(view, sky, env, "aerial-" + str(quality), true, not Portability.compatibility())
+		env.fog_enabled = false; env.fog_aerial_perspective = 0
+		env.volumetric_fog_enabled = true; env.volumetric_fog_density = .025
+		env.volumetric_fog_temporal_reprojection_enabled = false
+		env.volumetric_fog_ambient_inject = 1
+		if RenderingServer.get_current_rendering_method() == "forward_plus":
+			await compare(view, sky, env, "volumetric-" + str(quality), true)
+		else:
+			check(EISky.radiance_needed(env), "unsupported fog remains conservatively guarded")
+		env.volumetric_fog_enabled = false; wall.visible = false; sphere.visible = true
+		await compare(view, sky, env, "background-return-" + str(quality), false)
+		EISky.update(sky, null, 12, false, true)
+		check(sky.get_shader_parameter("sky_radiance") == true, "caller without environment restores complete sky radiance")
+		if Clouds.mode() >= 2:
+			check(sky.get_shader_parameter("cloud_radiance") == true, "caller without environment restores complete cloud radiance")
 	view.free(); Gfx.clear_clouds(); await frames(8)
 
 func menu_scene() -> void:
@@ -105,15 +128,16 @@ func menu_scene() -> void:
 	if menu == null: view.free(); return
 	view.add_child(menu); menu.set_process(false); menu.set_hour(12)
 	menu._player.pause(); menu.camera.current = true; menu.rain_bit = false
-	check(menu._sky.get_shader_parameter("cloud_radiance") == false, "menu passes its own environment")
+	check(menu._sky.get_shader_parameter("sky_radiance") == false, "menu passes its own environment")
 	var automatic := await capture(view, "menu-auto")
+	menu._sky.set_shader_parameter("sky_radiance", true)
 	menu._sky.set_shader_parameter("cloud_radiance", true)
 	var complete := await capture(view, "menu-complete")
 	var delta := difference(automatic, complete)
 	rows.append({"case":"menu", "difference":delta})
 	check(delta.changed_pixels == 0, "actual menu retains all presented pixels")
 	menu.set_hour(12)
-	check(menu._sky.get_shader_parameter("cloud_radiance") == false, "menu daylight update restores its environment policy")
+	check(menu._sky.get_shader_parameter("sky_radiance") == false, "menu daylight update restores its environment policy")
 	view.free(); Gfx.clear_clouds(); await frames(8)
 
 func _ready() -> void:
@@ -123,7 +147,7 @@ func _ready() -> void:
 	Gfx.ensure_globals(); Gfx.apply_surface_options(); Engine.time_scale = 0
 	Engine.max_fps = 0; process_mode = Node.PROCESS_MODE_ALWAYS
 	policy()
-	if DisplayServer.get_name() != "headless" and Clouds.mode() >= 2:
+	if DisplayServer.get_name() != "headless":
 		await scene()
 		await menu_scene()
 	Gfx.clear_clouds(); TexUpscale.shutdown(); UnitWounds.shutdown()
