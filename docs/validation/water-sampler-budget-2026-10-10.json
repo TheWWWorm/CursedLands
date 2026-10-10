@@ -1,0 +1,648 @@
+{
+  "date": "2026-10-10",
+  "feature": "Compatibility enhanced-water sampler budget / disappearing empty wave field",
+  "base_commit": "b8caeebbcfc329985bf9de30f8aad0058b74aff3",
+  "status": "Fixed in source; private desktop pack and Android production-helper substitution validated. No delivery archive or APK.",
+  "user_scope": {
+    "main_thread_only": true,
+    "no_playthroughs": true,
+    "delivery_packages_only_on_request": true
+  },
+  "source_sha256": {
+    "game/src/game/fx/water_texture_data.gd": "5dc6b740c394cb5735a09ee3a1c18225a33bdd52da6f784ce8d4fb578d7562eb",
+    "game/src/game/gfx.gd": "8a0150babc7823018cafbb523978da24a4efdfc71bd153ea6e5625c4eb51d482",
+    "game/src/ei/terrain.gd": "e4e1827e60adf31730637fd047803f40f61fd9024474d01e20f364317a4c1ead",
+    "tools/tests/water_sampler_budget.gd": "bb113d27dbf188664781d69e921962c7cb4d4f0641abebf2ca1a493f39f06ee4"
+  },
+  "cause": {
+    "summary": "On the tested 16-unit GLES path, adding a custom wave sampler overwrites the engine scene-depth binding at unit 9. A null field substitutes white depth and removes water. A zero field substitutes zero depth and restores water with an incorrect shore. Currents/cloud samplers can reach the same reserved units.",
+    "engine_source": "Godot 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88: drivers/gles3/rasterizer_scene_gles3.cpp binds backbuffer_depth at max_texture_image_units-7; storage/material_storage.cpp binds custom material textures from slot 0.",
+    "controlled_probes": {
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/probe02/run.json",
+      "null_or_180_frame_warm_or_explicit_zero_window": {
+        "changed_pixels": 73926,
+        "peak_delta": 117
+      },
+      "valid_neutral_texture_or_constant_zero_wave_function": {
+        "changed_pixels": 5595,
+        "peak_delta": 106
+      },
+      "remove_one_unused_sampler_null_field": {
+        "changed_pixels": 0,
+        "peak_delta": 0
+      },
+      "remove_one_unused_sampler_zero_field": {
+        "changed_pixels": 0,
+        "peak_delta": 0
+      },
+      "restore_original_null_binding": {
+        "changed_pixels": 73926,
+        "peak_delta": 117
+      }
+    }
+  },
+  "implementation": {
+    "scope": "Compatibility enhanced-water shaders only. Forward+ and Mobile use their original shader text and resources.",
+    "float_table": "Pack the existing 512-value sine table and 32x32 phase grid into one 512x3 RF texture. Preserve the native sine lookup and phase values; use exact integer addresses.",
+    "noise": "Share the two 256x256 RGB8 normal textures and foam noise in one three-layer RGB8 array, preserving all source mip bytes, repeat/filter settings, explicit gradients and LODs. Asynchronous generation updates the shared resource. Use neutral normals/white foam until a layer is ready.",
+    "samplers_before": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "samplers_after": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "shared_added_logical_gpu_payload_bytes": 792573,
+    "memory_note": "786429 bytes for three RGB8 mip chains plus 6144 bytes for the float table, shared across maps/materials. Existing source textures remain cached. This is logical texture payload, excluding driver allocation and transient CPU conversion overhead."
+  },
+  "desktop": {
+    "device": "Linux / NVIDIA RTX 3090 Ti",
+    "wave_controls": {
+      "gl_compatibility": {
+        "baseline": [
+          27,
+          0
+        ],
+        "candidate": [
+          27,
+          0
+        ]
+      },
+      "forward_plus": {
+        "baseline": [
+          27,
+          0
+        ],
+        "candidate": [
+          27,
+          0
+        ]
+      }
+    },
+    "full_matrix": {
+      "baseline": [
+        64,
+        0
+      ],
+      "candidate": [
+        168,
+        0
+      ],
+      "variants": 48,
+      "maps": [
+        "zone1",
+        "zone8"
+      ],
+      "options": "Six water/current/contact/history variants x four independent cloud shadow/reflection settings, with geometric waves, rain, Mirror reflections, material lighting and native sun shadows. Sixteen strict empty-history comparisons plus GPU data readback and resource reuse checks."
+    },
+    "exact_png_pairs": 110,
+    "image_comparison_record": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/image-comparisons.json",
+    "cost": {
+      "order": [
+        "cost-baseline01",
+        "cost-candidate01",
+        "cost-candidate02",
+        "cost-baseline02"
+      ],
+      "viewport": [
+        1280,
+        720
+      ],
+      "samples_per_scene_per_run": 96,
+      "scenes_per_run": 8,
+      "all_runs_no_other_engines": true,
+      "comparison": [
+        {
+          "map": "zone1",
+          "clouds": 0,
+          "mode": 0,
+          "gpu_ms": {
+            "baseline_medians": [
+              0.354000002145767,
+              0.349999994039536
+            ],
+            "candidate_medians": [
+              0.354000002145767,
+              0.351000010967255
+            ]
+          },
+          "cpu_ms": {
+            "baseline_medians": [
+              0.263999998569489,
+              0.264999985694885
+            ],
+            "candidate_medians": [
+              0.273999989032745,
+              0.275000005960464
+            ]
+          },
+          "wall_ms": {
+            "baseline_medians": [
+              8.83,
+              8.723
+            ],
+            "candidate_medians": [
+              8.911,
+              8.85
+            ]
+          }
+        },
+        {
+          "map": "zone1",
+          "clouds": 0,
+          "mode": 5,
+          "gpu_ms": {
+            "baseline_medians": [
+              0.358000010251999,
+              0.354999989271164
+            ],
+            "candidate_medians": [
+              0.361000001430511,
+              0.358999997377396
+            ]
+          },
+          "cpu_ms": {
+            "baseline_medians": [
+              0.27700001001358,
+              0.284999996423721
+            ],
+            "candidate_medians": [
+              0.266999989748001,
+              0.300000011920929
+            ]
+          },
+          "wall_ms": {
+            "baseline_medians": [
+              8.775,
+              8.777
+            ],
+            "candidate_medians": [
+              8.836,
+              8.907
+            ]
+          }
+        },
+        {
+          "map": "zone1",
+          "clouds": 3,
+          "mode": 0,
+          "gpu_ms": {
+            "baseline_medians": [
+              0.363999992609024,
+              0.361000001430511
+            ],
+            "candidate_medians": [
+              0.363999992609024,
+              0.361000001430511
+            ]
+          },
+          "cpu_ms": {
+            "baseline_medians": [
+              0.270999997854233,
+              0.272000014781952
+            ],
+            "candidate_medians": [
+              0.27700001001358,
+              0.26800000667572
+            ]
+          },
+          "wall_ms": {
+            "baseline_medians": [
+              8.659,
+              8.862
+            ],
+            "candidate_medians": [
+              8.89,
+              8.829
+            ]
+          }
+        },
+        {
+          "map": "zone1",
+          "clouds": 3,
+          "mode": 5,
+          "gpu_ms": {
+            "baseline_medians": [
+              0.368999987840652,
+              0.363999992609024
+            ],
+            "candidate_medians": [
+              0.368999987840652,
+              0.365000009536743
+            ]
+          },
+          "cpu_ms": {
+            "baseline_medians": [
+              0.268999993801117,
+              0.263999998569489
+            ],
+            "candidate_medians": [
+              0.263000011444092,
+              0.270000010728836
+            ]
+          },
+          "wall_ms": {
+            "baseline_medians": [
+              8.667,
+              8.8
+            ],
+            "candidate_medians": [
+              8.885,
+              8.761
+            ]
+          }
+        },
+        {
+          "map": "zone8",
+          "clouds": 0,
+          "mode": 0,
+          "gpu_ms": {
+            "baseline_medians": [
+              0.456999987363815,
+              0.453000009059906
+            ],
+            "candidate_medians": [
+              0.455000013113022,
+              0.453999996185303
+            ]
+          },
+          "cpu_ms": {
+            "baseline_medians": [
+              0.370999991893768,
+              0.323000013828278
+            ],
+            "candidate_medians": [
+              0.328000009059906,
+              0.34400001168251
+            ]
+          },
+          "wall_ms": {
+            "baseline_medians": [
+              8.971,
+              8.851
+            ],
+            "candidate_medians": [
+              8.784,
+              8.86
+            ]
+          }
+        },
+        {
+          "map": "zone8",
+          "clouds": 0,
+          "mode": 5,
+          "gpu_ms": {
+            "baseline_medians": [
+              0.474999994039536,
+              0.470999985933304
+            ],
+            "candidate_medians": [
+              0.47299998998642,
+              0.47299998998642
+            ]
+          },
+          "cpu_ms": {
+            "baseline_medians": [
+              0.319999992847443,
+              0.330000013113022
+            ],
+            "candidate_medians": [
+              0.33899998664856,
+              0.328000009059906
+            ]
+          },
+          "wall_ms": {
+            "baseline_medians": [
+              8.824,
+              8.816
+            ],
+            "candidate_medians": [
+              8.96,
+              8.768
+            ]
+          }
+        },
+        {
+          "map": "zone8",
+          "clouds": 3,
+          "mode": 0,
+          "gpu_ms": {
+            "baseline_medians": [
+              0.474999994039536,
+              0.470999985933304
+            ],
+            "candidate_medians": [
+              0.472000002861023,
+              0.472000002861023
+            ]
+          },
+          "cpu_ms": {
+            "baseline_medians": [
+              0.321000009775162,
+              0.331000000238419
+            ],
+            "candidate_medians": [
+              0.333000004291534,
+              0.335999995470047
+            ]
+          },
+          "wall_ms": {
+            "baseline_medians": [
+              8.673,
+              8.933
+            ],
+            "candidate_medians": [
+              8.818,
+              8.827
+            ]
+          }
+        },
+        {
+          "map": "zone8",
+          "clouds": 3,
+          "mode": 5,
+          "gpu_ms": {
+            "baseline_medians": [
+              0.488000005483627,
+              0.483999997377396
+            ],
+            "candidate_medians": [
+              0.483999997377396,
+              0.485000014305115
+            ]
+          },
+          "cpu_ms": {
+            "baseline_medians": [
+              0.337000012397766,
+              0.319000005722046
+            ],
+            "candidate_medians": [
+              0.330000013113022,
+              0.324000000953674
+            ]
+          },
+          "wall_ms": {
+            "baseline_medians": [
+              8.835,
+              8.775
+            ],
+            "candidate_medians": [
+              8.846,
+              8.724
+            ]
+          }
+        }
+      ],
+      "conclusion": "No material GPU cost change; paired medians differ by at most 0.0035 ms. This is held-scene GPU time, not whole-game FPS or loading speed."
+    },
+    "private_pack": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/candidate01",
+    "pack_sha256": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+    "source_scope": "All tested production executable source matches the final source. Only a two-line comment about the asynchronous fallback was corrected after export; frozen original source and hashes remain in candidate01/stage and build.json. No runtime statement changed."
+  },
+  "android": {
+    "device": "Retroid Pocket 5 / Android 33 / Adreno 650",
+    "package": "org.cursedlands.performance, existing private validation app",
+    "method": "Load the production WaterTextureData helper, apply its source transform in-place to actual existing water shaders and call its production bind method at the same terrain boundary. Preserve shader identity so late rain-cover updates still reach it. Load only the two absent water native classes using the previous b8caeeb validation adapter. Installed engine, pack and helper remain unchanged.",
+    "scope_limit": "Not a full-current-source APK, RMX3890/Adreno 610 or Windows acceptance. The older private Android Gfx pack couples cloud shadows/reflections; its matrix exercises the combined sampler maximum. Independent cloud controls are covered by the current-source desktop matrix.",
+    "compatibility": {
+      "wave": [
+        27,
+        0
+      ],
+      "river_current_plus_wave": [
+        28,
+        0
+      ],
+      "matrix": [
+        168,
+        0
+      ],
+      "matrix_variants": 48,
+      "samplers": [
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    "mobile": {
+      "standard_wave": [
+        27,
+        0
+      ],
+      "packed_helper_is_no_op": true,
+      "wider_matrix_noop_runs": [
+        [
+          64,
+          8
+        ],
+        [
+          64,
+          8
+        ]
+      ],
+      "unchanged_original_shader_control": [
+        64,
+        10
+      ],
+      "open_finding": "With geometric waves, native sun shadows, Mirror SSR, rain and clouds combined, strict empty-history comparisons differ at small distant-water edge regions. It also occurs without loading/applying the helper, and affected cases vary between runs. Cause not isolated; no threshold relaxed. Not counted as acceptance or as fixed."
+    },
+    "restoration": {
+      "reason": "Probe 02 generated the earlier diagnostic captures as well; collect and remove its twelve undeclared outputs. Probe 01 recorded these filenames absent before the first run.",
+      "files": [
+        {
+          "name": "water-interaction-empty-probe-active-zero.png",
+          "sha256": "9e5fe7f33f2d582995b46853dcbab96a4a83210da671525fe2ab9c607e113b33",
+          "removed": true
+        },
+        {
+          "name": "water-interaction-empty-probe-constant-zero.png",
+          "sha256": "9e5fe7f33f2d582995b46853dcbab96a4a83210da671525fe2ab9c607e113b33",
+          "removed": true
+        },
+        {
+          "name": "water-interaction-empty-probe-mean-128.png",
+          "sha256": "9e5fe7f33f2d582995b46853dcbab96a4a83210da671525fe2ab9c607e113b33",
+          "removed": true
+        },
+        {
+          "name": "water-interaction-empty-probe-null-warm.png",
+          "sha256": "559400de1b5d77894419f5cd817f8268930a442ab84a341734337bbf7960a589",
+          "removed": true
+        },
+        {
+          "name": "water-interaction-empty-probe-null.png",
+          "sha256": "559400de1b5d77894419f5cd817f8268930a442ab84a341734337bbf7960a589",
+          "removed": true
+        },
+        {
+          "name": "water-interaction-empty-probe-original-restored.png",
+          "sha256": "9e5fe7f33f2d582995b46853dcbab96a4a83210da671525fe2ab9c607e113b33",
+          "removed": true
+        },
+        {
+          "name": "water-interaction-empty-probe-outer-guard.png",
+          "sha256": "9e5fe7f33f2d582995b46853dcbab96a4a83210da671525fe2ab9c607e113b33",
+          "removed": true
+        },
+        {
+          "name": "water-interaction-empty-probe-window-zero.png",
+          "sha256": "559400de1b5d77894419f5cd817f8268930a442ab84a341734337bbf7960a589",
+          "removed": true
+        },
+        {
+          "name": "water-interaction-empty-probe-zero-1.png",
+          "sha256": "9e5fe7f33f2d582995b46853dcbab96a4a83210da671525fe2ab9c607e113b33",
+          "removed": true
+        },
+        {
+          "name": "water-interaction-empty-probe-zero-128.png",
+          "sha256": "9e5fe7f33f2d582995b46853dcbab96a4a83210da671525fe2ab9c607e113b33",
+          "removed": true
+        },
+        {
+          "name": "water-interaction-empty-probe-zero-after-active.png",
+          "sha256": "9e5fe7f33f2d582995b46853dcbab96a4a83210da671525fe2ab9c607e113b33",
+          "removed": true
+        },
+        {
+          "name": "water-interaction-empty-probe-zero-rgba8.png",
+          "sha256": "9e5fe7f33f2d582995b46853dcbab96a4a83210da671525fe2ab9c607e113b33",
+          "removed": true
+        }
+      ],
+      "settings_match_first_snapshot": true,
+      "renderer_matches_first_snapshot": true,
+      "validation_absent": true,
+      "temporary_directory_absent": true,
+      "private_process_stopped": true
+    },
+    "normal_installed_game_touched": false
+  },
+  "retained_failed_or_incomplete_controls": [
+    {
+      "run": "wave-device01",
+      "result": [
+        27,
+        1
+      ],
+      "reason": "Diagnostic replacement Shader identities prevented the existing terrain late-rain-cover identity test. Adapter changed to edit code in place; wave-device02 passes 27/0. Production always retained shader identity."
+    },
+    {
+      "runs": [
+        "matrix-device01",
+        "matrix-linux-baseline01",
+        "matrix-linux-candidate01"
+      ],
+      "reason": "Initial matrix did not invoke the existing global graphics recomposition after changing cloud settings. It passed but did not exercise clouds; replaced by the 02 matrix with explicit cloud-sampler assertions."
+    },
+    {
+      "run": "matrix-linux-baseline02",
+      "reason": "A transient headless Godot process overlapped initial correctness capture. Images were compared, not used for timing. All four separate cost runs had no other engines."
+    }
+  ],
+  "next_work": [
+    "Investigate the inherited Mobile combined-feature edge instability without relaxing exact controls.",
+    "Continue measured wave-domain/current/waterfall CPU costs and original Android/Linux report validation on available hardware.",
+    "Keep delivery builds on request; current source remains undelivered."
+  ],
+  "raw_records": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/probe01/run.json",
+      "sha256": "e973e8c64cf944897d1dbbe3dc7a0191f5d032f2ba149f890db4f125fbba3608"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/probe02/run.json",
+      "sha256": "142abb8eb707c54a5998c5068ce5b5de4b1aa2f1a26afc946f62e24c359c2e97"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/wave-device01/run.json",
+      "sha256": "61bd00e6ab8c4578cbeb976da55fbe8ae725b53129f98723f5eb8ad61ba7ca62"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/wave-device02/run.json",
+      "sha256": "f863ef9df8b213528edb208ad21f0cc2682ac0968bda53c11df855f5b7b172a9"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/wave-device-river01/run.json",
+      "sha256": "08f3c427f7ef4b57cb1b6c919efeb0cf9c0725cc6eaef86e32dd8e7fa9008ee1"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/wave-device-mobile01/run.json",
+      "sha256": "4ae8544ba52f507cb3e9ca68307affc9bf3a55376d65244b3376331d2faa1de8"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/matrix-device01/run.json",
+      "sha256": "556826131f46fbe5087458bf742e6f30a7488963c32874e22418eb7c5f60575d"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/matrix-device02/run.json",
+      "sha256": "b7e5ca08bd8775f5d89c989098d72e740cbf32f3e7692fb918168d8fcf8b3ade"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/matrix-device-mobile01/run.json",
+      "sha256": "0f34aaae8f56863395b90bc495bded3248e38dca0857f694a264b06a4a27781a"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/matrix-device-mobile02/run.json",
+      "sha256": "77fdfa3df20f191d65a7b17f6d681c75d15d8856a374b562cd5bfe0c57a4daa2"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/matrix-device-mobile-control01/run.json",
+      "sha256": "9450cf3c77c12650f20925f98da54bce4d18a86804e1ceb4386c9ed61d5bc555"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/wave-linux-baseline01/run.json",
+      "sha256": "8e44b2d1f6d1ef2f5f6d6f12f9161a2c51fb3fe947c2bd9bb0052e66502ecbda"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/wave-linux-candidate01/run.json",
+      "sha256": "1ab51f02d223c8e9b8dcf75c1acbfec63868031d0003d367aa500b1a1cb90ffb"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/matrix-linux-baseline01/run.json",
+      "sha256": "64db9d56dc58eca9634aabec08461e5f1a980896e05d47c521732f18c8cd9c9d"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/matrix-linux-candidate01/run.json",
+      "sha256": "f93c84f10a3380566b1a8461467cd0e19c02f681d3dd7593980ea0977143a392"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/matrix-linux-baseline02/run.json",
+      "sha256": "8ffc47c419a4813bea28d6c5d0e24ea58651bebb4e54db19945c38ad9f6d3e6d"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/matrix-linux-candidate02/run.json",
+      "sha256": "c363b3de981586a22deb65df13dbb46383ac4b39b0f216cc865e19807f74c6c3"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/cost-baseline01/run.json",
+      "sha256": "7f5082bebf3c38972d131945ca8f4558607a1e361e6168d466160fa6cfde7e0c"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/cost-candidate01/run.json",
+      "sha256": "a58930fb35c6c10893f778ed9147c7c0fefb17807ad106f2d3f31cb938df785d"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/cost-candidate02/run.json",
+      "sha256": "83a79cea6c6e80a0a0a24d8d3caac78d1d548f678ca55f52966d32ac21533a50"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/cost-baseline02/run.json",
+      "sha256": "633bdde99fc9bde00db7e486e6e928014ee06a43e5f3d6e32533419a79597638"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/wave-forward-baseline01/run.json",
+      "sha256": "2f43c811ecf1e1c59957b02f4c026c22577750d77f83656a4a97fc561351c799"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/wave-forward-candidate01/run.json",
+      "sha256": "0af020c332ad4a3b88350918ebd926949c43418f9eb68b8ade2b89e94bbd1e93"
+    }
+  ]
+}

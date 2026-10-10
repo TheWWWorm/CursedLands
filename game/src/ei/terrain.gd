@@ -1207,6 +1207,9 @@ func apply_gfx() -> void:
 		_water_mat.set_shader_parameter("wave_a", Gfx.noise("wave_a", 256, 0.018, 4, true, 5.0))
 		_water_mat.set_shader_parameter("wave_b", Gfx.noise("wave_b", 256, 0.03, 3, true, 4.0))
 		_water_mat.set_shader_parameter("foam_tex", Gfx.noise("foam", 256, 0.03, 4))
+		Gfx.WaterTextureData.bind(_water_mat,wave_sine_texture(),wave_phase_texture(),[
+			Gfx.noise("wave_a",256,0.018,4,true,5.0),
+			Gfx.noise("wave_b",256,0.03,3,true,4.0),Gfx.noise("foam",256,0.03,4)])
 	var det := GameData.option("gfx_terrain") != 0
 	_land_mat.set_shader_parameter("detail", 1.0 if det else 0.0)
 	if det:

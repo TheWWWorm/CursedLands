@@ -9,6 +9,7 @@ extends RefCounted
 
 static var _noise_cache := {}
 const Clouds = preload("res://src/game/fx/clouds.gd")
+const WaterTextureData = preload("res://src/game/fx/water_texture_data.gd")
 static var _cloud_owner := 0
 static var _cloud_frame := {"state":Vector4.ZERO,"phases":Vector4.ZERO,"twinkle":Vector2.ZERO}
 static var _cloud_volume_noise: Clouds.VolumeNoise
@@ -298,7 +299,7 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 		code = _blend_fog(code, lit)
 	if lit and LocalLightShader.enabled():
 		code = _function_tail(code, "fragment", LocalLightShader.CAPTURE)
-	return GroundContactData.source(code)
+	return WaterTextureData.source(GroundContactData.source(code))
 
 
 ## Insert after the stage's complete body, including nested option branches.
