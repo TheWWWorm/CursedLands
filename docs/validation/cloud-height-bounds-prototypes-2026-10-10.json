@@ -1,0 +1,1364 @@
+{
+  "date": "2026-10-10",
+  "base_commit": "fce1d597bea8d4ceb156187a475e5e0aee11701d",
+  "decision": "Do not integrate any cloud-height-bound variant. All production code is restored exactly. The .7 Windows/Linux archives remain current and unchanged.",
+  "scope": "Scratch-only optimization of existing volume density queries; no resolution/sample-count/default/settings/geometry/engine changes were accepted.",
+  "design": [
+    "Profile support is bounded analytically: stratus [0,.13], cumulus [.075,.755], nimbus [.02,1] of the 2200..5800 layer. Skip known-empty density samples before six weather/type texture reads, leaving all ray-march sample positions and shadow quadrature intact.",
+    "The initial variant publishes a conservative union as one vec2 global. A surface-only variant leaves sky source byte-identical. A third variant tests the existing weather type in each density query. The last variant sets a pure-cumulus flag once per frame in the previously unused storm.w component, without adding a global uniform.",
+    "The pure-cumulus variants retain the original guard for all other weather. Their extra conditional still produces a measured mixed-weather cost; correctness alone does not justify adoption."
+  ],
+  "findings": [
+    "The initial fair High sky comparison is exact and about 13.4% faster, but mixed High changes 5073 of 8294400 pixels (peak 23/255). Subsequent candidate held/repeat controls sometimes switch between the same two images. Original-only 4K High control passes 19/0. No cause is established; longer settling and preserving the original guard did not establish strict parity.",
+    "Direct GPU comparisons of density and shadows pass in Forward+ and Mobile. The generic surface candidate passes 99-check volume/lifecycle suites per backend. These results do not cure the separate sky or timing failures.",
+    "General surface bounds save about 6.1% on the fair ground view and 7.1% on fair water. Mixed-water GPU time increases about 4.3%, and clearing/storm bring no useful gain.",
+    "The runtime type check retains exact fair/mixed surface images, but mixed ground and water are slower by about 2.6% and 6.3%.",
+    "The final per-frame flag passes 136 assertions, including 3538944 GPU sample positions and all four 4K ground/water fair/mixed image controls. It saves about 5.4% on fair ground and 7.3% on fair water, while mixed ground/water cost increases about 1.8%/2.5%. That tradeoff does not address the reported expensive mixed-weather workload."
+  ],
+  "environment": {
+    "platform": "Linux",
+    "gpu": "NVIDIA RTX 3090 Ti / GPU1",
+    "driver": "580.178.04",
+    "viewport": [
+      3840,
+      2160
+    ],
+    "cost_renderer": "Forward+ / Vulkan",
+    "offload_env": {
+      "__NV_PRIME_RENDER_OFFLOAD": "1",
+      "__NV_PRIME_RENDER_OFFLOAD_PROVIDER": "NVIDIA-G0",
+      "__VK_LAYER_NV_optimus": "NVIDIA_only"
+    },
+    "method": "ABBA; each arm follows game time 424.2666667..430.25 after 256 warmup frames, then 360 measured normal frames. Use viewport GPU timestamps. Both shader programs prewarm before measuring. Clock, process and image records are retained per run. Clocks are not locked; no driver/display/unrelated process changes.",
+    "ground_scene": "Original bz2g terrain, orthographic 60m span around (64,64), Detailed terrain, Ingos cloud/weather parameters. This is not a complete Ingos LMP scene.",
+    "water_scene": "Original zone1 terrain/water, low camera; sunlight attenuation disabled to isolate reflected volume work.",
+    "gpu_residency": "Desktop rendering remains on GPU0. GPU1 has inactive ComfyUI and small Xorg allocations; dmon/pmon record activity. Other Godot engine observations are retained, not omitted."
+  },
+  "limits": [
+    "These are isolated viewport timings, not whole-game FPS or Windows RTX4090 Mobile results. The Windows 9 FPS report remains unresolved.",
+    "Initial 1440 fair01 had a backwards clock step between warmup and timing/capture. Preserve as exploratory only; exclude from performance conclusions.",
+    "clearing4k01 overlapped a headless import/export. mixed-integrated4k01 and density-forward01 have brief other-engine observations; they are not clean-device timing evidence. Final candidate04 cost runs have no other Godot engine observations.",
+    "Final frame-flag storm/clearing, Mobile and wider gameplay validation were not pursued after the mixed-weather slowdown was established; prior variant results are not inherited as final-candidate acceptance.",
+    "No user save, game data, public release, Windows runtime, graphics defaults or local package was changed. No subagents were used."
+  ],
+  "private_candidates": {
+    "candidate01": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/candidate01",
+      "build_receipt_sha256": "b5895d1815dba45b5639740f2cd529e5b9f1e7a1cb06dd8df392a0052d2c38dd",
+      "pack_sha256": "5da0b0c67a2c9053a2bdd9d479ddf434fd97db3211a38d0157aecb8927a30f39",
+      "production_changes": {
+        "src/game/fx/cloud_volume.gd": "bcfaea517a73fc878c7a98a8fd2baf247e5948a36bfd5fa2d2cb1cc8ba1f2944",
+        "src/game/gfx.gd": "adba00e97cc86a3908b9a9c335a715f318b2e5fc3f77508bc9edbc0148ef20e8"
+      },
+      "pack_changes": [
+        "src/game/fx/cloud_volume.gdc",
+        "src/game/gfx.gdc"
+      ]
+    },
+    "candidate02": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/candidate02",
+      "build_receipt_sha256": "3e17cc40a1b47bcbd6ea29c56af5f2ba6c5ffb40fb7263b42e89283e1aa2c795",
+      "pack_sha256": "8c491fc1327206487fab99b524113d8e53b126872af12cbf8541e929fddc03f7",
+      "production_changes": {
+        "src/game/fx/cloud_volume.gd": "bc3b4deff58590c4e29456fa8f0749ef6c0f3d20cda9bbcf9797aa1098a00279",
+        "src/game/fx/clouds.gd": "8d3ea389c13d447cfda1336652db46ec1c0e75c502237c9f3b6d56e8e9b91de6",
+        "src/game/gfx.gd": "adba00e97cc86a3908b9a9c335a715f318b2e5fc3f77508bc9edbc0148ef20e8"
+      },
+      "pack_changes": [
+        "src/game/fx/cloud_volume.gdc",
+        "src/game/fx/clouds.gdc",
+        "src/game/gfx.gdc"
+      ]
+    },
+    "candidate03": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/candidate03",
+      "build_receipt_sha256": "dbecbb5821383d74345133c7aa7e9d1d216779acc7a97a988dabeda8294b7544",
+      "pack_sha256": "2ab39430a71bfa0138162753c9010f91971b97e5bb5f150bf1541bb7c44fe27d",
+      "production_changes": {
+        "src/game/fx/cloud_volume.gd": "ec0f6eb5582374df0df65e613bbc1917765c56f53b64d83b11e229c7bdf9f327",
+        "src/game/fx/clouds.gd": "8d3ea389c13d447cfda1336652db46ec1c0e75c502237c9f3b6d56e8e9b91de6"
+      },
+      "pack_changes": [
+        "src/game/fx/cloud_volume.gdc",
+        "src/game/fx/clouds.gdc"
+      ]
+    },
+    "candidate04": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/candidate04",
+      "build_receipt_sha256": "25b1279d940939b15bbe30f80d4fe5b3cd26ed250d5b0ac3b5f9836467da0047",
+      "pack_sha256": "37a3aff3fdca21ac2ae8882f0fcf70a1c92381cbaa2893172d581a8d0e841e4a",
+      "production_changes": {
+        "src/game/fx/cloud_volume.gd": "a00f06784773766543ca4c2371b7d8994b6bf8acf5d45595488148add4f00ab5",
+        "src/game/fx/clouds.gd": "8d3ea389c13d447cfda1336652db46ec1c0e75c502237c9f3b6d56e8e9b91de6"
+      },
+      "pack_changes": [
+        "src/game/fx/cloud_volume.gdc",
+        "src/game/fx/clouds.gdc"
+      ]
+    }
+  },
+  "variants": {
+    "all_consumers_dynamic_bounds": {
+      "fair4k01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/fair4k01",
+        "run_sha256": "069c44ee10732a218b2ff82cf6dcfa9e1dd35eae3f9f86a74616a5593054c303",
+        "log_sha256": "5d6299aa19e89ef8fe57233fa7d21dba438bf57a699830e62ea7eab07b2c5769",
+        "result_sha256": "6691e33f102c7612ef162f82ca697f313d393b9caab55679649f55502a444e05",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 76,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "sky",
+            "quality": 2,
+            "weather": "fair",
+            "viewport_gpu_ms_abba": [
+              1.60500001907349,
+              1.59899997711182,
+              1.66199994087219,
+              1.34899997711182
+            ],
+            "baseline_mean_of_medians": 1.476999998092655,
+            "candidate_mean_of_medians": 1.6304999589920048,
+            "percent_gpu_time_reduction": -10.392685246958314,
+            "draw_counts_abba": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "path": "sky",
+            "quality": 3,
+            "weather": "fair",
+            "viewport_gpu_ms_abba": [
+              4.09600019454956,
+              3.55299997329712,
+              3.55200004577637,
+              4.10799980163574
+            ],
+            "baseline_mean_of_medians": 4.10199999809265,
+            "candidate_mean_of_medians": 3.552500009536745,
+            "percent_gpu_time_reduction": 13.395904164100719,
+            "draw_counts_abba": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "path": "water",
+            "quality": 2,
+            "weather": "fair",
+            "viewport_gpu_ms_abba": [
+              2.57699990272522,
+              2.40000009536743,
+              2.40300011634827,
+              2.58899998664856
+            ],
+            "baseline_mean_of_medians": 2.58299994468689,
+            "candidate_mean_of_medians": 2.40150010585785,
+            "percent_gpu_time_reduction": 7.026707035065051,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          },
+          {
+            "path": "water",
+            "quality": 3,
+            "weather": "fair",
+            "viewport_gpu_ms_abba": [
+              2.59599995613098,
+              2.40599989891052,
+              2.41100001335144,
+              2.59500002861023
+            ],
+            "baseline_mean_of_medians": 2.595499992370605,
+            "candidate_mean_of_medians": 2.4084999561309797,
+            "percent_gpu_time_reduction": 7.204778916944959,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 28,
+          "exact": 28,
+          "nonexact": []
+        },
+        "pack_sha256": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f"
+      },
+      "clearing4k01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/clearing4k01",
+        "run_sha256": "3ae2c73bde3a84b5e506401af4875cdef61d9385607c09884b6c93e258b81ec7",
+        "log_sha256": "f590bc6b68dcb1da1ad378ead6dfa228a8841ab998fe7a3d4f9664a690a2adec",
+        "result_sha256": "0550f700c54a57bf5ad9b944888359f381b90b72542515ae53bf787ff172b8cd",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 76,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": false,
+        "cost": [
+          {
+            "path": "sky",
+            "quality": 2,
+            "weather": "clearing",
+            "viewport_gpu_ms_abba": [
+              1.29499995708466,
+              1.68599998950958,
+              1.71099996566772,
+              1.65600001811981
+            ],
+            "baseline_mean_of_medians": 1.475499987602235,
+            "candidate_mean_of_medians": 1.69849997758865,
+            "percent_gpu_time_reduction": -15.11352028872611,
+            "draw_counts_abba": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "path": "sky",
+            "quality": 3,
+            "weather": "clearing",
+            "viewport_gpu_ms_abba": [
+              4.14200019836426,
+              4.20800018310547,
+              4.23299980163574,
+              4.16400003433228
+            ],
+            "baseline_mean_of_medians": 4.15300011634827,
+            "candidate_mean_of_medians": 4.2204999923706055,
+            "percent_gpu_time_reduction": -1.625328055172026,
+            "draw_counts_abba": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "path": "water",
+            "quality": 2,
+            "weather": "clearing",
+            "viewport_gpu_ms_abba": [
+              2.17799997329712,
+              2.21000003814697,
+              2.21300005912781,
+              2.18300008773804
+            ],
+            "baseline_mean_of_medians": 2.18050003051758,
+            "candidate_mean_of_medians": 2.21150004863739,
+            "percent_gpu_time_reduction": -1.4216930835103836,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          },
+          {
+            "path": "water",
+            "quality": 3,
+            "weather": "clearing",
+            "viewport_gpu_ms_abba": [
+              2.19000005722046,
+              2.21799993515015,
+              2.21600008010864,
+              2.18199992179871
+            ],
+            "baseline_mean_of_medians": 2.185999989509585,
+            "candidate_mean_of_medians": 2.217000007629395,
+            "percent_gpu_time_reduction": -1.4181161147564527,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 28,
+          "exact": 28,
+          "nonexact": []
+        },
+        "pack_sha256": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f"
+      },
+      "mixed-integrated4k01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/mixed-integrated4k01",
+        "run_sha256": "107dd7bd21a38a0940f00f116ac59dbce9cc4349623ab07ac2e08d1e54d9bb3e",
+        "log_sha256": "997e3947eb7ec6b65c8b4f5f9bbb8b9f1b0b1f5cb841ea9482ba7c6169585908",
+        "result_sha256": "e4dbe4472618278b0eb008c4678e38ef98daecd73309a6463fd5a5e9c6801bd1",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 76,
+        "failures": 1,
+        "errors": [
+          "FAIL candidate exact sky 3"
+        ],
+        "warnings": [],
+        "other_engines_absent": false,
+        "cost": [
+          {
+            "path": "sky",
+            "quality": 2,
+            "weather": "mixed",
+            "viewport_gpu_ms_abba": [
+              1.63300001621246,
+              1.66100001335144,
+              1.72599995136261,
+              1.65400004386902
+            ],
+            "baseline_mean_of_medians": 1.64350003004074,
+            "candidate_mean_of_medians": 1.6934999823570251,
+            "percent_gpu_time_reduction": -3.0422848434657856,
+            "draw_counts_abba": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "path": "sky",
+            "quality": 3,
+            "weather": "mixed",
+            "viewport_gpu_ms_abba": [
+              7.10699987411499,
+              7.125,
+              7.15399980545044,
+              6.92700004577637
+            ],
+            "baseline_mean_of_medians": 7.0169999599456805,
+            "candidate_mean_of_medians": 7.13949990272522,
+            "percent_gpu_time_reduction": -1.7457594909333236,
+            "draw_counts_abba": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "path": "water",
+            "quality": 2,
+            "weather": "mixed",
+            "viewport_gpu_ms_abba": [
+              4.21299982070923,
+              4.32800006866455,
+              4.36899995803833,
+              4.24599981307983
+            ],
+            "baseline_mean_of_medians": 4.22949981689453,
+            "candidate_mean_of_medians": 4.34850001335144,
+            "percent_gpu_time_reduction": -2.8135761108575914,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          },
+          {
+            "path": "water",
+            "quality": 3,
+            "weather": "mixed",
+            "viewport_gpu_ms_abba": [
+              4.31599998474121,
+              4.36299991607666,
+              4.37099981307983,
+              4.24499988555908
+            ],
+            "baseline_mean_of_medians": 4.280499935150145,
+            "candidate_mean_of_medians": 4.366999864578245,
+            "percent_gpu_time_reduction": -2.0207903454872143,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 28,
+          "exact": 27,
+          "nonexact": [
+            {
+              "case": "quality",
+              "delta": {
+                "changed_pixels": 5073,
+                "mean_max_channel_delta": 0.000615837191358025,
+                "peak_delta": 23,
+                "pixels_over_2": 5,
+                "pixels_over_8": 1
+              },
+              "path": "sky",
+              "quality": 3
+            }
+          ]
+        },
+        "pack_sha256": "5da0b0c67a2c9053a2bdd9d479ddf434fd97db3211a38d0157aecb8927a30f39"
+      },
+      "density-forward01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/density-forward01",
+        "run_sha256": "911695fd3c454bd61f8397d656fe07e8e7e6b0ca4cb08cbc007d2ad82d6f802a",
+        "log_sha256": "09e376f984e4199819f21d307e8b5e1da5432c026bf8481a0c947ae3334ea39a",
+        "result_sha256": "50d01fcf1d28dea0a7e232ab19f45b97278278de63616ae13e03bf81936c274f",
+        "result_file": "cloud-density-bounds.json",
+        "checks": 51,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": false,
+        "gpu_probe": {
+          "cases": 27,
+          "sample_positions": 3538944,
+          "mismatches": 0,
+          "positive_density": 1051895,
+          "shadowed": 2927004,
+          "comparison": "Any unequal density, positive-density local height, or solar attenuation becomes a full red pixel before 8-bit readback."
+        },
+        "pack_sha256": "5da0b0c67a2c9053a2bdd9d479ddf434fd97db3211a38d0157aecb8927a30f39"
+      },
+      "mixed-dual-guard01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/mixed-dual-guard01",
+        "run_sha256": "3c393d5dfb108771b6f4487d2a4a484ae3476ea94928057d114ea232fe2bce6c",
+        "log_sha256": "997fa5beac3be91dd17fb67ee5a80b9a586410ec4feca8c46fd4d62bf1e16623",
+        "result_sha256": "c8ea6665393eba1301d77e3e13332ce144bee213ed2fe4e5c41583a2a30ca83d",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 19,
+        "failures": 3,
+        "errors": [
+          "FAIL held clock exact sky-3-1",
+          "FAIL held clock exact sky-3-2",
+          "FAIL candidate exact sky 3"
+        ],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "sky",
+            "quality": 3,
+            "weather": "mixed",
+            "viewport_gpu_ms_abba": [
+              7.13000011444092,
+              7.29899978637695,
+              7.23699998855591,
+              7.20300006866455
+            ],
+            "baseline_mean_of_medians": 7.166500091552734,
+            "candidate_mean_of_medians": 7.26799988746643,
+            "percent_gpu_time_reduction": -1.41630914138039,
+            "draw_counts_abba": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 4,
+          "nonexact": [
+            {
+              "arm": 1,
+              "case": "held-control",
+              "delta": {
+                "changed_pixels": 5073,
+                "peak_delta": 23,
+                "pixels_over_2": 5
+              },
+              "path": "sky",
+              "quality": 3
+            },
+            {
+              "arm": 2,
+              "case": "held-control",
+              "delta": {
+                "changed_pixels": 5073,
+                "peak_delta": 23,
+                "pixels_over_2": 5
+              },
+              "path": "sky",
+              "quality": 3
+            },
+            {
+              "case": "quality",
+              "delta": {
+                "changed_pixels": 5073,
+                "mean_max_channel_delta": 0.000615837191358025,
+                "peak_delta": 23,
+                "pixels_over_2": 5,
+                "pixels_over_8": 1
+              },
+              "path": "sky",
+              "quality": 3
+            }
+          ]
+        },
+        "pack_sha256": "5da0b0c67a2c9053a2bdd9d479ddf434fd97db3211a38d0157aecb8927a30f39"
+      },
+      "mixed-settle01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/mixed-settle01",
+        "run_sha256": "0992fa0be6b576ea9453966165e679530ce63db51a0beaaab1a0e5eb38e8ba5a",
+        "log_sha256": "1ef588964d5f88739a2e413459c353795246d4d07d89ad84c01402cfba3f1db6",
+        "result_sha256": "b46ea250e8c8ba21e66e8ec125fdeaf4ffe3dbaa4dddd34e277fb3013f71924a",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 19,
+        "failures": 2,
+        "errors": [
+          "FAIL hoisted repeat exact sky",
+          "FAIL candidate exact sky 3"
+        ],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "sky",
+            "quality": 3,
+            "weather": "mixed",
+            "viewport_gpu_ms_abba": [
+              7.0770001411438,
+              7.11999988555908,
+              7.07200002670288,
+              6.94099998474121
+            ],
+            "baseline_mean_of_medians": 7.009000062942505,
+            "candidate_mean_of_medians": 7.09599995613098,
+            "percent_gpu_time_reduction": -1.2412597004878705,
+            "draw_counts_abba": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 5,
+          "nonexact": [
+            {
+              "case": "cache-repeat-control",
+              "delta": {
+                "changed_pixels": 5073,
+                "peak_delta": 23,
+                "pixels_over_2": 5
+              },
+              "path": "sky",
+              "quality": 3
+            },
+            {
+              "case": "quality",
+              "delta": {
+                "changed_pixels": 5073,
+                "mean_max_channel_delta": 0.000615837191358025,
+                "peak_delta": 23,
+                "pixels_over_2": 5,
+                "pixels_over_8": 1
+              },
+              "path": "sky",
+              "quality": 3
+            }
+          ]
+        },
+        "pack_sha256": "5da0b0c67a2c9053a2bdd9d479ddf434fd97db3211a38d0157aecb8927a30f39"
+      },
+      "mixed-original-control01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/mixed-original-control01",
+        "run_sha256": "9145cdc0ada5cfb7f3328681aedea37665bbe644a38b34c9ec556914c05643c3",
+        "log_sha256": "bb42528eea890c69c8e2ecd38a80ee98f6489f97df06738c98357ee50c90a800",
+        "result_sha256": "d6a5de7e86278b6d6f310924d54eb5c204c61e1d9ef3547be8e060b04e2e2b1e",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 19,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "sky",
+            "quality": 3,
+            "weather": "mixed",
+            "viewport_gpu_ms_abba": [
+              7.11899995803833,
+              6.89499998092651,
+              7.02500009536743,
+              7.0
+            ],
+            "baseline_mean_of_medians": 7.059499979019165,
+            "candidate_mean_of_medians": 6.96000003814697,
+            "percent_gpu_time_reduction": 1.4094474278335418,
+            "draw_counts_abba": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "5da0b0c67a2c9053a2bdd9d479ddf434fd97db3211a38d0157aecb8927a30f39"
+      }
+    },
+    "surface_dynamic_bounds": {
+      "density-forward02": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/density-forward02",
+        "run_sha256": "0967e1078ec50043cbeb4dde7386dd3a0f013b2b87e1bede7e2089ccd947e354",
+        "log_sha256": "fe60b5fd89801eea5e52a8f35780d4aabd86ecb407f5fdac9807d2d67075d7f1",
+        "result_sha256": "50d01fcf1d28dea0a7e232ab19f45b97278278de63616ae13e03bf81936c274f",
+        "result_file": "cloud-density-bounds.json",
+        "checks": 51,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "gpu_probe": {
+          "cases": 27,
+          "sample_positions": 3538944,
+          "mismatches": 0,
+          "positive_density": 1051895,
+          "shadowed": 2927004,
+          "comparison": "Any unequal density, positive-density local height, or solar attenuation becomes a full red pixel before 8-bit readback."
+        },
+        "pack_sha256": "8c491fc1327206487fab99b524113d8e53b126872af12cbf8541e929fddc03f7"
+      },
+      "density-mobile01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/density-mobile01",
+        "run_sha256": "94d0b0d0b7e3ab4af9071491509470192a0fb9dcb0bb0850b2670573f1d02dc5",
+        "log_sha256": "ee2207c8f7e5384cf2ff3f795ccf3328418fa72c88d3c06087bae18e492e17f7",
+        "result_sha256": "ea827dd2469fe6d99504972b9a36e22626d3e8e7bc43accdaaa4fc522dcef201",
+        "result_file": "cloud-density-bounds.json",
+        "checks": 51,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "gpu_probe": {
+          "cases": 27,
+          "sample_positions": 3538944,
+          "mismatches": 0,
+          "positive_density": 1051895,
+          "shadowed": 2927004,
+          "comparison": "Any unequal density, positive-density local height, or solar attenuation becomes a full red pixel before 8-bit readback."
+        },
+        "pack_sha256": "8c491fc1327206487fab99b524113d8e53b126872af12cbf8541e929fddc03f7"
+      },
+      "volume-forward01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/volume-forward01",
+        "run_sha256": "a69d0cc1f5e428fcd20417911e0fe5f5e8686d1f5c2424fa052184b73080af6c",
+        "log_sha256": "299f86ad215d0a2461b33c1468986d43aa9e0e1ff31b5cc2d7e51d5c398aa75d",
+        "result_sha256": "9b5ce6a234c540d897d6b51f751d737a28c15958bdaa5c713825c74bb5924051",
+        "result_file": "cloud-volume.json",
+        "checks": 99,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "pack_sha256": "8c491fc1327206487fab99b524113d8e53b126872af12cbf8541e929fddc03f7"
+      },
+      "volume-mobile01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/volume-mobile01",
+        "run_sha256": "24ce714fb5959920f84bd95e9f9df4271c445eebc9480e849658298998a69814",
+        "log_sha256": "d82a16255788c7234cad45a56ad7c7f5b30e190ccd16302730d480edfce46f6b",
+        "result_sha256": "a2614fa1290eb2c0aa718eaea3d984e9f844fa803f21720862d288b0b8e58f5c",
+        "result_file": "cloud-volume.json",
+        "checks": 99,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "pack_sha256": "8c491fc1327206487fab99b524113d8e53b126872af12cbf8541e929fddc03f7"
+      },
+      "ground-fair01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/ground-fair01",
+        "run_sha256": "f48b9ab9890e58709e417680b0d0201bf2a6a924a033febb19c36091a9875668",
+        "log_sha256": "5599a44b567a4300b20fda5a97bbb4bc52bd894cf67e0f581653259cc637f36a",
+        "result_sha256": "3a42ad56eb5917d908b9d113a2024343858c4a93cf11bbcf54d8bf1ee0e18e93",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 19,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "ground",
+            "quality": 3,
+            "weather": "fair",
+            "viewport_gpu_ms_abba": [
+              2.69000005722046,
+              2.53299999237061,
+              2.53099989891052,
+              2.70199990272522
+            ],
+            "baseline_mean_of_medians": 2.6959999799728402,
+            "candidate_mean_of_medians": 2.531999945640565,
+            "percent_gpu_time_reduction": 6.083087372052857,
+            "draw_counts_abba": [
+              12,
+              12,
+              12,
+              12
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "8c491fc1327206487fab99b524113d8e53b126872af12cbf8541e929fddc03f7"
+      },
+      "water-fair01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/water-fair01",
+        "run_sha256": "8b9c09508b780e814adff9281ece4cb3c87475e8d594e51b27d0991b21590efa",
+        "log_sha256": "59ba125df2f61a3e01e2a4b22d6053d9f2564283ee3ad545288380a93995c8ca",
+        "result_sha256": "407cf14d1ce6dab03bc6c535ac78de2240662ac3bfb90ae21561641ebc1f10ee",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 19,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "water",
+            "quality": 3,
+            "weather": "fair",
+            "viewport_gpu_ms_abba": [
+              2.57699990272522,
+              2.40199995040894,
+              2.40000009536743,
+              2.58999991416931
+            ],
+            "baseline_mean_of_medians": 2.583499908447265,
+            "candidate_mean_of_medians": 2.401000022888185,
+            "percent_gpu_time_reduction": 7.064056203848148,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "8c491fc1327206487fab99b524113d8e53b126872af12cbf8541e929fddc03f7"
+      },
+      "water-storm01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/water-storm01",
+        "run_sha256": "c26feeefbd058eda2d385b125977f902315c28ebd36aec6f5306ac7535ed2a85",
+        "log_sha256": "82fcd575102091f642c326ce81c2f52487fa70f354570f6000a1048465c957fb",
+        "result_sha256": "764350ca1526fad4857b63a94ac2e6ed38415d28ed465223699875975440aa02",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 19,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "water",
+            "quality": 3,
+            "weather": "storm",
+            "viewport_gpu_ms_abba": [
+              2.63800001144409,
+              2.65599989891052,
+              2.65700006484985,
+              2.64299988746643
+            ],
+            "baseline_mean_of_medians": 2.6404999494552603,
+            "candidate_mean_of_medians": 2.656499981880185,
+            "percent_gpu_time_reduction": -0.6059470831736002,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "8c491fc1327206487fab99b524113d8e53b126872af12cbf8541e929fddc03f7"
+      },
+      "water-mixed01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/water-mixed01",
+        "run_sha256": "a004bf8d0d24d4a277bde188e7f0403d7df531806ea4b4feb0eed19470a22e95",
+        "log_sha256": "844a18fc7e305e4c6cab23c826b6e21037453fd0ea851749094255e3fcb0cc1a",
+        "result_sha256": "ebea8eafda211d8ca4526b32afc890c71225b42e53894cecffd93c3ce1052a5e",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 19,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "water",
+            "quality": 3,
+            "weather": "mixed",
+            "viewport_gpu_ms_abba": [
+              4.22200012207031,
+              4.45699977874756,
+              4.48999977111816,
+              4.35300016403198
+            ],
+            "baseline_mean_of_medians": 4.287500143051145,
+            "candidate_mean_of_medians": 4.4734997749328596,
+            "percent_gpu_time_reduction": -4.338183689233664,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "8c491fc1327206487fab99b524113d8e53b126872af12cbf8541e929fddc03f7"
+      },
+      "water-clearing01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/water-clearing01",
+        "run_sha256": "86f5e7a538edf10b9e99cb3bb03f16f42d531c3f224a8fa07ecb8bedb95f4c58",
+        "log_sha256": "42ddaf08fb189357eb7812d39832088dafd581367e739e666db750f0ef28e4ee",
+        "result_sha256": "2a58b3cbbf2f2405afed8f4d8302bc11630b083c6c91cb8ee5fc83d0e02d9836",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 19,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "water",
+            "quality": 3,
+            "weather": "clearing",
+            "viewport_gpu_ms_abba": [
+              2.18899989128113,
+              2.22699999809265,
+              2.2279999256134,
+              2.19899988174438
+            ],
+            "baseline_mean_of_medians": 2.193999886512755,
+            "candidate_mean_of_medians": 2.227499961853025,
+            "percent_gpu_time_reduction": -1.5268950352370656,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "8c491fc1327206487fab99b524113d8e53b126872af12cbf8541e929fddc03f7"
+      },
+      "ground-storm01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/ground-storm01",
+        "run_sha256": "7812d8b585342b0f4440b223bfc314b487c08082161dbb6b88421a3d28d8b412",
+        "log_sha256": "7b4881646831c9c8875d0a39c302ab62d6c9d23bbda71f1f04c820ce369c16e8",
+        "result_sha256": "7281d3e1adebd86d432308b7917e5bb6b460bb4fce5aef7229cdc5a9c1e9cb87",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 19,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "ground",
+            "quality": 3,
+            "weather": "storm",
+            "viewport_gpu_ms_abba": [
+              3.31200003623962,
+              3.23699998855591,
+              3.24000000953674,
+              3.32500004768372
+            ],
+            "baseline_mean_of_medians": 3.31850004196167,
+            "candidate_mean_of_medians": 3.238499999046325,
+            "percent_gpu_time_reduction": 2.4107290011680873,
+            "draw_counts_abba": [
+              12,
+              12,
+              12,
+              12
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "8c491fc1327206487fab99b524113d8e53b126872af12cbf8541e929fddc03f7"
+      },
+      "ground-mixed01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/ground-mixed01",
+        "run_sha256": "5b8435baeec7e2682950de98d502303b187d58f3fcd172697f385f92be94a81f",
+        "log_sha256": "af237f14739709cd52d904151c820ef2061b9a6efeed8de90fcb4fcf91affd90",
+        "result_sha256": "8dd587c9d8d43e58d7067885e86ac52058346b330f2f42d878617fdc531c52ea",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 19,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "ground",
+            "quality": 3,
+            "weather": "mixed",
+            "viewport_gpu_ms_abba": [
+              3.4300000667572,
+              3.44600009918213,
+              3.42899990081787,
+              3.38299989700317
+            ],
+            "baseline_mean_of_medians": 3.406499981880185,
+            "candidate_mean_of_medians": 3.4375,
+            "percent_gpu_time_reduction": -0.9100254890565113,
+            "draw_counts_abba": [
+              12,
+              12,
+              12,
+              12
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "8c491fc1327206487fab99b524113d8e53b126872af12cbf8541e929fddc03f7"
+      }
+    },
+    "surface_runtime_type_check": {
+      "density-forward03": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/density-forward03",
+        "run_sha256": "e8dd870f37b68a0b027e3929c8ec2255799d3f09724b1bbb2c17fa6a7ebfd816",
+        "log_sha256": "d0e287003a182c33d07efcc07cdd6ccc3ea0b39af67407986a66a5946223e155",
+        "result_sha256": "c15710124b91c89da8bc7d34072e376921ca94f50862aa6e25812f1248de07cd",
+        "result_file": "cloud-density-bounds.json",
+        "checks": 29,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "gpu_probe": {
+          "cases": 27,
+          "sample_positions": 3538944,
+          "mismatches": 0,
+          "positive_density": 1098293,
+          "shadowed": 2927004,
+          "comparison": "Any unequal density, positive-density local height, or solar attenuation becomes a full red pixel before 8-bit readback."
+        },
+        "pack_sha256": "2ab39430a71bfa0138162753c9010f91971b97e5bb5f150bf1541bb7c44fe27d"
+      },
+      "ground-fair03": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/ground-fair03",
+        "run_sha256": "74a46ad04f76795e7a77736c0af5e19fc093cc327ec087d59579068718a6897d",
+        "log_sha256": "0fca85a8d1d8999af20c8c08e0454601169536b873908d30be7541e7084a1226",
+        "result_sha256": "eb4926b36bf2f375af99414270e247d2cfa3443f544fafec252dfb5921a55bf5",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 20,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "ground",
+            "quality": 3,
+            "weather": "fair",
+            "viewport_gpu_ms_abba": [
+              2.70499992370605,
+              2.59800004959106,
+              2.60400009155273,
+              2.71700000762939
+            ],
+            "baseline_mean_of_medians": 2.71099996566772,
+            "candidate_mean_of_medians": 2.601000070571895,
+            "percent_gpu_time_reduction": 4.0575395237503145,
+            "draw_counts_abba": [
+              12,
+              12,
+              12,
+              12
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "2ab39430a71bfa0138162753c9010f91971b97e5bb5f150bf1541bb7c44fe27d"
+      },
+      "ground-mixed03": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/ground-mixed03",
+        "run_sha256": "14bb90aa3bfa03d847ff965606d74a459419c8a5182fe73e179e5bfcfe2696c1",
+        "log_sha256": "4a298372cc969db3470a31147a3ff74a19b96aeaf1720dba1dae8091e8b8db1b",
+        "result_sha256": "8da1d41ee511d2f71d80ce9a78dbbcdeb8f79eb5c72d0873e796488765c96b53",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 20,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "ground",
+            "quality": 3,
+            "weather": "mixed",
+            "viewport_gpu_ms_abba": [
+              3.36400008201599,
+              3.46099996566772,
+              3.46900010108948,
+              3.39000010490417
+            ],
+            "baseline_mean_of_medians": 3.37700009346008,
+            "candidate_mean_of_medians": 3.4650000333786,
+            "percent_gpu_time_reduction": -2.6058613409262716,
+            "draw_counts_abba": [
+              12,
+              12,
+              12,
+              12
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "2ab39430a71bfa0138162753c9010f91971b97e5bb5f150bf1541bb7c44fe27d"
+      },
+      "water-fair03": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/water-fair03",
+        "run_sha256": "32b491b632aeab285c127cc105aa34b1ff589534b458e6bd61c28a97b4ec28c3",
+        "log_sha256": "7fcef97bdb4a5d54d1eb81895f1fc8a9c6e0837e1da780ed353d4f221f7aa8c5",
+        "result_sha256": "77e4c1119bb3bd19cfc3c140be02ee49c55b31945f663de97b97fe2a49bfc923",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 20,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "water",
+            "quality": 3,
+            "weather": "fair",
+            "viewport_gpu_ms_abba": [
+              2.58599996566772,
+              2.45199990272522,
+              2.4539999961853,
+              2.59400010108948
+            ],
+            "baseline_mean_of_medians": 2.5900000333786,
+            "candidate_mean_of_medians": 2.4529999494552603,
+            "percent_gpu_time_reduction": 5.289578461689289,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "2ab39430a71bfa0138162753c9010f91971b97e5bb5f150bf1541bb7c44fe27d"
+      },
+      "water-mixed03": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/water-mixed03",
+        "run_sha256": "47fc0b5f8262d6e6d08e923a67ba9cef5487d3ed7535826b5b590cfdbf1158f0",
+        "log_sha256": "95cf45c6eccb39b287dae4b6c43aab45bd9fa0fc1183b416f00e600543c7bb3e",
+        "result_sha256": "fb7efb13707071ebee63bb05c4b33730c76ef7cec05b0da853961addf126cd80",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 20,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "water",
+            "quality": 3,
+            "weather": "mixed",
+            "viewport_gpu_ms_abba": [
+              4.2480001449585,
+              4.57399988174438,
+              4.60500001907349,
+              4.38800001144409
+            ],
+            "baseline_mean_of_medians": 4.318000078201295,
+            "candidate_mean_of_medians": 4.5894999504089355,
+            "percent_gpu_time_reduction": -6.287630090102653,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "2ab39430a71bfa0138162753c9010f91971b97e5bb5f150bf1541bb7c44fe27d"
+      }
+    },
+    "surface_frame_flag": {
+      "density-forward04": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/density-forward04",
+        "run_sha256": "e9d114f180a285d7a08187e47fb2966381c698eae00ac7f306ccb3b9f61aacca",
+        "log_sha256": "b37af57d86900760d63a457011eb5ebf57734aa37932fef28b42ccb50bc8770b",
+        "result_sha256": "52555d8567f47a242249da3170f8327d02e15be4e4b5650acb9b98664a459821",
+        "result_file": "cloud-density-bounds.json",
+        "checks": 56,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "gpu_probe": {
+          "cases": 27,
+          "sample_positions": 3538944,
+          "mismatches": 0,
+          "positive_density": 1098293,
+          "shadowed": 2927004,
+          "comparison": "Any unequal density, positive-density local height, or solar attenuation becomes a full red pixel before 8-bit readback."
+        },
+        "pack_sha256": "37a3aff3fdca21ac2ae8882f0fcf70a1c92381cbaa2893172d581a8d0e841e4a"
+      },
+      "ground-fair04": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/ground-fair04",
+        "run_sha256": "3bcdc08e6efc5c5695709589b5073b4a1f9dee73961852cbe36a468eb21713b2",
+        "log_sha256": "59901ebfd34541cb726dfdc72ec7b7525ea4ff0ad274309b0e52bb92d2d1a13d",
+        "result_sha256": "aed74586513fa3bd3b542ad26d92a8c561927e537e5ec71cd120901c5f02674b",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 20,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "ground",
+            "quality": 3,
+            "weather": "fair",
+            "viewport_gpu_ms_abba": [
+              2.7039999961853,
+              2.55900001525879,
+              2.56500005722046,
+              2.71399998664856
+            ],
+            "baseline_mean_of_medians": 2.7089999914169303,
+            "candidate_mean_of_medians": 2.562000036239625,
+            "percent_gpu_time_reduction": 5.4263549517553775,
+            "draw_counts_abba": [
+              12,
+              12,
+              12,
+              12
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "37a3aff3fdca21ac2ae8882f0fcf70a1c92381cbaa2893172d581a8d0e841e4a"
+      },
+      "ground-mixed04": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/ground-mixed04",
+        "run_sha256": "c9a088d7b7e3047eb9fa6ed27fe405543f9a11324e40247f14fe8a86667cd8f6",
+        "log_sha256": "b3c8b4a3490465cddaf38ddaafc742606efb3ba794cff551239e5956050cd202",
+        "result_sha256": "79052f544325fbf582e7fdbc5160a2f0611f9e8494b74d9b77ba4ead6d311791",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 20,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "ground",
+            "quality": 3,
+            "weather": "mixed",
+            "viewport_gpu_ms_abba": [
+              3.35899996757507,
+              3.42700004577637,
+              3.43300008773804,
+              3.37800002098083
+            ],
+            "baseline_mean_of_medians": 3.36849999427795,
+            "candidate_mean_of_medians": 3.430000066757205,
+            "percent_gpu_time_reduction": -1.8257406140336796,
+            "draw_counts_abba": [
+              12,
+              12,
+              12,
+              12
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "37a3aff3fdca21ac2ae8882f0fcf70a1c92381cbaa2893172d581a8d0e841e4a"
+      },
+      "water-fair04": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/water-fair04",
+        "run_sha256": "7f2a295baea413561e465435ff3a0049c6bf6d869ad76853085908f28b5cfe1c",
+        "log_sha256": "26e29c3987d947b8fb4370230e390746bee7b952e48b81826121047f8ca5ba59",
+        "result_sha256": "fe603b5d96aa553c94bee728b77466fada3a659b87555d53a611ce006f377f76",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 20,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "water",
+            "quality": 3,
+            "weather": "fair",
+            "viewport_gpu_ms_abba": [
+              2.58299994468689,
+              2.3970000743866,
+              2.39800000190735,
+              2.59200000762939
+            ],
+            "baseline_mean_of_medians": 2.5874999761581403,
+            "candidate_mean_of_medians": 2.397500038146975,
+            "percent_gpu_time_reduction": 7.342992841038512,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "37a3aff3fdca21ac2ae8882f0fcf70a1c92381cbaa2893172d581a8d0e841e4a"
+      },
+      "water-mixed04": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/water-mixed04",
+        "run_sha256": "4e4df0a76a699015aedf27e120f14d982fe30eee3b753c2cd7c0587ec46d0a8f",
+        "log_sha256": "6ef98f4b05950e8fe48bd899910aea99f6c78c2be24a1a62f4b8d13794eb39b6",
+        "result_sha256": "381904f29414d6b85b4c221025ce3582733c42d967af2225d840249c02649bd5",
+        "result_file": "cloud-height-bounds.json",
+        "checks": 20,
+        "failures": 0,
+        "errors": [],
+        "warnings": [],
+        "other_engines_absent": true,
+        "cost": [
+          {
+            "path": "water",
+            "quality": 3,
+            "weather": "mixed",
+            "viewport_gpu_ms_abba": [
+              4.2350001335144,
+              4.41200017929077,
+              4.4060001373291,
+              4.36499977111816
+            ],
+            "baseline_mean_of_medians": 4.29999995231628,
+            "candidate_mean_of_medians": 4.409000158309935,
+            "percent_gpu_time_reduction": -2.5348885395903293,
+            "draw_counts_abba": [
+              33,
+              33,
+              33,
+              33
+            ]
+          }
+        ],
+        "image_controls": {
+          "comparisons": 7,
+          "exact": 7,
+          "nonexact": []
+        },
+        "pack_sha256": "37a3aff3fdca21ac2ae8882f0fcf70a1c92381cbaa2893172d581a8d0e841e4a"
+      }
+    }
+  },
+  "sky_source_control": {
+    "sky-source-1.gdshader": {
+      "baseline_sha256": "7e8de13bbb9c671b361376d31fdd20aeb8031d4d9dfa643201ad50731473ecef",
+      "surface_candidate02_sha256": "7e8de13bbb9c671b361376d31fdd20aeb8031d4d9dfa643201ad50731473ecef",
+      "byte_identical": true
+    },
+    "sky-source-2.gdshader": {
+      "baseline_sha256": "5bceec0edbbc4efd2b50ff29ab218725cb3eea142a1bbe69284263d7637329c9",
+      "surface_candidate02_sha256": "5bceec0edbbc4efd2b50ff29ab218725cb3eea142a1bbe69284263d7637329c9",
+      "byte_identical": true
+    },
+    "sky-source-3.gdshader": {
+      "baseline_sha256": "1d253f88bbe6d08512ee15e8e8f740bece1ef454b5e6814040b7f273deb44c66",
+      "surface_candidate02_sha256": "1d253f88bbe6d08512ee15e8e8f740bece1ef454b5e6814040b7f273deb44c66",
+      "byte_identical": true
+    }
+  },
+  "next_step": "Do not repeat these branch/guard variants without distinct compiler or workload evidence. Investigate other cost sources or the actual Windows workload; retain the existing cloud quality settings. Continue remaining handoff work in the main thread.",
+  "production_reverted_exactly": true,
+  "complete_local_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-height-bounds-20261010/complete-receipt.json",
+    "sha256": "3fa5d0fbf824bc48abd28fe8d08f57f44f5580d2cae71ce35b3b04e5b0231760"
+  }
+}
