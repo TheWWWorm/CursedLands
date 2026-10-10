@@ -1,0 +1,637 @@
+{
+  "date": "2026-10-10",
+  "feature": "Android ARM64 water current and wave native helper activation",
+  "base_commit": "f09dffd6b39657de4e97cc85069099ef16ca0023",
+  "previous_android_binary_source": "40394a3",
+  "status": "Rebuilt canonical ARM64 helper; new kernel bodies qualified through an isolated device adapter. No APK or delivery archive created.",
+  "user_scope": {
+    "main_thread_only": true,
+    "no_playthroughs": true,
+    "delivery_packages_only_on_request": true
+  },
+  "change": "Only water_current.h, water_wave.h and their four include/registration lines were added to compiled native sources since the old ARM64 binary. Other native implementations, compile policy and binding profile are unchanged. Rebuild the existing monolithic helper to expose the already-implemented kernels; no calculation, quality, option default, navigation, save or protocol change.",
+  "binary": {
+    "path": "game/src/native/bin/libterrain_search_android.so",
+    "old_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+    "new_sha256": "ed3e78c5b014cc344ab8abbd632c6c44394e487a4b6cdc67b0ef1a0c935bf479",
+    "old_bytes": 1307520,
+    "new_bytes": 1334536,
+    "unchanged_needed_libraries": [
+      "libm.so",
+      "libdl.so",
+      "libc.so"
+    ],
+    "soname": "libterrain_search.so",
+    "contains_build_machine_paths": false,
+    "contains_private_adapter_entry": false
+  },
+  "build": {
+    "metadata": "/home/llm2x/Documents/EI/local/scratchpad/android-water-native-20261010/native-build.json",
+    "metadata_sha256": "a26665c0f7de6639842905c3fa969966a11c9b06ce538604e1a22b21f1a3c6f3",
+    "toolchain": "Android NDK 29.0.14206865, API 24, arm64-v8a, c++_static, Release, -ffp-contract=off",
+    "godot_cpp": "507ed9d840c01a3c5b2a39af8bb4000bfac30bf5",
+    "all_compiled_sources_match_canonical": true,
+    "old_hard_linked_build_preserved": true
+  },
+  "device_validation_scope": {
+    "device": "Retroid Pocket 5 / Android 33 / Adreno 650",
+    "package": "org.cursedlands.performance, existing validation version 71",
+    "mechanism": "The installed helper lacks both water classes. Load a separate private GDExtension that registers only these absent classes, using byte-identical production headers and the same ARM64 compiler/bindings/float contraction policy. Production GDScript automatically selects the new classes. The old monolithic helper and installed engine/pack remain unchanged.",
+    "adapter_sha256": "49f214524529866e8fe271370a7c94a6b1065b70e931e54dac41766236b091d3",
+    "scope_limit": "The rebuilt monolithic library is statically audited; runtime checks exercise its two added kernel implementations via the adapter. They are not full-current-source APK or original RMX3890/Adreno610 acceptance.",
+    "restoration": "Every completed run restores prior settings, renderer, validation, keyboard and collected output files; removes injected scripts/library; and stops the private process. Normal org.cursedlands.engine is untouched."
+  },
+  "current_acceptance": {
+    "checks": 8712,
+    "failures": 0,
+    "maximum_native_scalar_error": 0,
+    "maps": [
+      "zone1",
+      "zone8",
+      "zone15"
+    ],
+    "scope": "Analytic surfaces, material exclusions, actual maps, synchronous initialization, deferred coalescing/restoration and release. The script-fallback worker remains the old baseline in the ABBA control."
+  },
+  "current_callback_cost": {
+    "order": [
+      "cost-script01",
+      "cost-native01",
+      "cost-native02",
+      "cost-script02"
+    ],
+    "checks_per_run": 81,
+    "failures": 0,
+    "maps": [
+      {
+        "map": "zone11",
+        "script": {
+          "build_ms": [
+            118.182,
+            118.941,
+            121.743,
+            114.759,
+            111.467,
+            111.486,
+            116.09,
+            120.469,
+            119.53,
+            115.917,
+            112.398,
+            111.793
+          ],
+          "median_ms": 116.0035,
+          "full_initialization_ms": [
+            214.783,
+            217.095
+          ]
+        },
+        "native": {
+          "build_ms": [
+            3.364,
+            2.561,
+            2.195,
+            3.138,
+            2.653,
+            3.066,
+            2.387,
+            2.185,
+            2.658,
+            3.149,
+            3.263,
+            3.191
+          ],
+          "median_ms": 2.862,
+          "full_initialization_ms": [
+            107.219,
+            107.532
+          ]
+        },
+        "reduction_percent": 97.53283306107143
+      },
+      {
+        "map": "zone13",
+        "script": {
+          "build_ms": [
+            100.489,
+            104.525,
+            113.387,
+            99.978,
+            92.071,
+            102.142,
+            101.132,
+            103.898,
+            110.623,
+            96.755,
+            91.696,
+            96.47
+          ],
+          "median_ms": 100.8105,
+          "full_initialization_ms": [
+            193.344,
+            195.541
+          ]
+        },
+        "native": {
+          "build_ms": [
+            1.918,
+            1.783,
+            1.786,
+            1.76,
+            2.647,
+            1.845,
+            1.92,
+            1.868,
+            1.804,
+            1.824,
+            1.864,
+            1.787
+          ],
+          "median_ms": 1.8345,
+          "full_initialization_ms": [
+            98.239,
+            99.07
+          ]
+        },
+        "reduction_percent": 98.1802490811969
+      },
+      {
+        "map": "zone8",
+        "script": {
+          "build_ms": [
+            76.314,
+            76.112,
+            76.26,
+            75.747,
+            75.553,
+            75.057,
+            78.462,
+            75.958,
+            81.355,
+            76.114,
+            78.056,
+            75.512
+          ],
+          "median_ms": 76.113,
+          "full_initialization_ms": [
+            257.995,
+            260.714
+          ]
+        },
+        "native": {
+          "build_ms": [
+            1.231,
+            1.283,
+            1.81,
+            1.268,
+            1.358,
+            1.279,
+            0.892,
+            0.935,
+            1.416,
+            1.3,
+            1.285,
+            1.271
+          ],
+          "median_ms": 1.281,
+          "full_initialization_ms": [
+            181.923,
+            185.008
+          ]
+        },
+        "reduction_percent": 98.31697607504631
+      }
+    ],
+    "exact_state_field_comparisons": {
+      "cost-native01": 240,
+      "cost-native02": 240,
+      "cost-script02": 240
+    },
+    "scope": "Actual terrain level-change callbacks on held hidden base maps zone11/zone13/zone8. Two runs per arm, six used-material updates per map per run. Script timing is the fallback worker elapsed time; native timing is the synchronous compiled build. Upload/snapshot time is excluded from the build metric; full initialization samples are recorded separately. Other runtime code/settings are identical in each arm. No FPS/GPU or general map-load claim."
+  },
+  "wave_acceptance": {
+    "checks": 31,
+    "failures": 0,
+    "scope": "Impulse, decay, advection, sixteen sources, shore/height barriers, malformed data, live domain ownership, clock behavior and release.",
+    "actual_lifetime_rows": [
+      {
+        "case": "analytic",
+        "decayed_peak": 7.74259387981147e-05,
+        "native_available": true
+      },
+      {
+        "campaign": "base",
+        "case": "lifetime",
+        "domain_us": 76145,
+        "focus": "(133.5, 5.758586, -98.5)",
+        "native": true,
+        "step_us": 475,
+        "worker_on_clear": false
+      }
+    ]
+  },
+  "wave_solver_cost": {
+    "checks": 73,
+    "failures": 0,
+    "exact_input_output_pairs": 8,
+    "scope": "CPU solver call time only; 128x128 domain, immutable equal inputs, ABBA; no GPU or FPS claim.",
+    "rows": [
+      {
+        "case": "still",
+        "steps": 1,
+        "sources": 1,
+        "script_ms": 88.2045,
+        "native_ms": 0.785,
+        "reduction_percent": 99.11002273126654,
+        "exact_output_sha256": "788d8b9005d3e5c467c42fd8cbaafbd7ff3d036b1d7091fa4899472e34f6ab3c"
+      },
+      {
+        "case": "still",
+        "steps": 8,
+        "sources": 1,
+        "script_ms": 665.8755,
+        "native_ms": 4.096,
+        "reduction_percent": 99.38486999446593,
+        "exact_output_sha256": "42fe13b6917379cc8591567b66bae05c43a3f6cdab4f327ca5c4774527d7545e"
+      },
+      {
+        "case": "river",
+        "steps": 1,
+        "sources": 1,
+        "script_ms": 88.863,
+        "native_ms": 0.7165,
+        "reduction_percent": 99.19370266590144,
+        "exact_output_sha256": "f58a1250bb7ec3d462566db9437ada58a8bf4ae8d2451e2d92602d8c674e4871"
+      },
+      {
+        "case": "river",
+        "steps": 8,
+        "sources": 1,
+        "script_ms": 669.4300000000001,
+        "native_ms": 4.08,
+        "reduction_percent": 99.39052626861658,
+        "exact_output_sha256": "8e5db13690daf5e09be6da1931d4e1b79392f9b7f40577520bd7b02d68d4e0db"
+      },
+      {
+        "case": "shore-step",
+        "steps": 1,
+        "sources": 1,
+        "script_ms": 68.916,
+        "native_ms": 0.752,
+        "reduction_percent": 98.90881653026872,
+        "exact_output_sha256": "405866565839819624f9b35332e866b680fd5a984e3421cf5a1bb446f6b2711f"
+      },
+      {
+        "case": "shore-step",
+        "steps": 8,
+        "sources": 1,
+        "script_ms": 509.0595,
+        "native_ms": 3.314,
+        "reduction_percent": 99.34899554963614,
+        "exact_output_sha256": "3dfe380aa20894a08550bff4d5b66c2bf24d38836c20bf7ccfc43a463dc67156"
+      },
+      {
+        "case": "crowd",
+        "steps": 1,
+        "sources": 16,
+        "script_ms": 88.83850000000001,
+        "native_ms": 0.7455,
+        "reduction_percent": 99.16083679936064,
+        "exact_output_sha256": "7f4fb900a8d13bd414c05f446b3101bcde92d3549b56c70dbb434444fd7f185f"
+      },
+      {
+        "case": "crowd",
+        "steps": 8,
+        "sources": 16,
+        "script_ms": 671.468,
+        "native_ms": 4.279999999999999,
+        "reduction_percent": 99.36259062233792,
+        "exact_output_sha256": "bdd11f096f550a6ecd3eff4075bd4bea0e763a72e727f8ac1decb8dcff5f0011"
+      }
+    ],
+    "limits": "One intra-process ABBA comparison per case/step count on this device. One and eight solver steps are not complete frame/update time; domain construction and texture publication are separate."
+  },
+  "rendered_acceptance": {
+    "exact_png_pairs": 61,
+    "runs": [
+      {
+        "baseline": "current-baseline-gl01",
+        "candidate": "current-candidate-gl01",
+        "checks_per_build": 20,
+        "failures_per_build": 0,
+        "exact_png_pairs": 14,
+        "png_sha256": {
+          "water-detail-current-after-wrap.png": "ed036bfe3e80ba01ab8249ba25261e66d10b9ffe2a0db662dd5f733c7ccdf73f",
+          "water-detail-current-before-wrap.png": "ec0a53360c9cea1bd0bb01916de4e1e505c193ab4a6104403b6e8c018f9d1665",
+          "water-detail-current-diagnostic-hour.png": "06dc63189ad6b5b4c6538278ee48b54758d3eddbede3d0c3bb1e469078c4a7e0",
+          "water-detail-current-diagnostic-motion.png": "1b06c9b32b309b62105d843801430dd6391c0935bdd35846abed21da81f07ee3",
+          "water-detail-current-diagnostic-ten-periods.png": "06dc63189ad6b5b4c6538278ee48b54758d3eddbede3d0c3bb1e469078c4a7e0",
+          "water-detail-current-diagnostic-zero.png": "06dc63189ad6b5b4c6538278ee48b54758d3eddbede3d0c3bb1e469078c4a7e0",
+          "water-detail-current-empty-contacts.png": "48141b37a05a712cfe94c948d9bfa64a802eba2caedfb0dcaa46b781a88b727d",
+          "water-detail-current-moved.png": "29f03c1357e04177119e4f442abafdb4281fca52ef2a7a881e88ee19623eb890",
+          "water-detail-current-off-restored.png": "e2ace6c6a71865168edc556e8181cc4146f0a630615fb8c8b21f782ba828d6ba",
+          "water-detail-current-off.png": "e2ace6c6a71865168edc556e8181cc4146f0a630615fb8c8b21f782ba828d6ba",
+          "water-detail-current-on.png": "48141b37a05a712cfe94c948d9bfa64a802eba2caedfb0dcaa46b781a88b727d",
+          "water-detail-current-reset.png": "48141b37a05a712cfe94c948d9bfa64a802eba2caedfb0dcaa46b781a88b727d",
+          "water-detail-current-stationary-river.png": "d4e469b47cdca4b013515d6b7d099d605f8dd4d78ba2a3f1777769bdc900081f",
+          "water-detail-current-stationary-still-water.png": "d3b5e3488205abafa965c674a0c45db726090df44593d9dafdf8f79125be19ba"
+        }
+      },
+      {
+        "baseline": "current-baseline-mobile01",
+        "candidate": "current-candidate-mobile01",
+        "checks_per_build": 20,
+        "failures_per_build": 0,
+        "exact_png_pairs": 14,
+        "png_sha256": {
+          "water-detail-current-after-wrap.png": "d0256763e0fb7dda8f8b49609fb5ed24a933a73cc2e9d3b6f0dade18e8c16758",
+          "water-detail-current-before-wrap.png": "4b35d659a5b8afa04fdd3f41d4916423f6a166babde8af67903af33304b59962",
+          "water-detail-current-diagnostic-hour.png": "42b64a99614d1e510e05849f5f9c8ab3ab7405e42622b8de32ddce14ba405ab4",
+          "water-detail-current-diagnostic-motion.png": "2992e7182a746a1e9753b25926211a6f2aac41082940ea3a91cdb4b8bd6296cd",
+          "water-detail-current-diagnostic-ten-periods.png": "42b64a99614d1e510e05849f5f9c8ab3ab7405e42622b8de32ddce14ba405ab4",
+          "water-detail-current-diagnostic-zero.png": "42b64a99614d1e510e05849f5f9c8ab3ab7405e42622b8de32ddce14ba405ab4",
+          "water-detail-current-empty-contacts.png": "05c61406fdc6f7d017d112ba2649b11c48cc8c21b689079a1ae3e8176acec62d",
+          "water-detail-current-moved.png": "d3699f65945dbabaf34aadb5376535e21e0d0c6ed36a3943be04270e233749ff",
+          "water-detail-current-off-restored.png": "a0bb0484a342f6f857a20db069e1ff313a6257acd4744e8b8fcdddba055825db",
+          "water-detail-current-off.png": "a0bb0484a342f6f857a20db069e1ff313a6257acd4744e8b8fcdddba055825db",
+          "water-detail-current-on.png": "05c61406fdc6f7d017d112ba2649b11c48cc8c21b689079a1ae3e8176acec62d",
+          "water-detail-current-reset.png": "05c61406fdc6f7d017d112ba2649b11c48cc8c21b689079a1ae3e8176acec62d",
+          "water-detail-current-stationary-river.png": "759d5166585a9b0ea1d79c05385522342076145668f166d88f9332f748c6a064",
+          "water-detail-current-stationary-still-water.png": "8051937a94b68e4644a7344c5ae0b94895a1d3b9a26073d8fdde479d1fb97f4d"
+        }
+      },
+      {
+        "baseline": "wave-baseline-gl01",
+        "candidate": "wave-candidate-gl01",
+        "checks_per_build": 27,
+        "failures_per_build": 2,
+        "exact_png_pairs": 11,
+        "png_sha256": {
+          "water-interaction-wave-clock-held.png": "f8eac84aa5a190af956029d65ba1374af86dadb1a14339a2155bc8bc0ef2c09e",
+          "water-interaction-wave-disabled.png": "0dfe7ee99a39f09b75fe78fec1eb9b8c5d7ecd18d728d9d987361dd58c3245b3",
+          "water-interaction-wave-empty.png": "559400de1b5d77894419f5cd817f8268930a442ab84a341734337bbf7960a589",
+          "water-interaction-wave-history-control.png": "02f380a2cf9fa19afc7a76b09fbd08bd75e8b3666be55ec6212d321187b9f153",
+          "water-interaction-wave-lava-control.png": "f7c5293f7a1c571ff1c017d782194c4958f1d29ba3c870b10f5a743f1318e371",
+          "water-interaction-wave-lava.png": "f7c5293f7a1c571ff1c017d782194c4958f1d29ba3c870b10f5a743f1318e371",
+          "water-interaction-wave-lingering.png": "f8eac84aa5a190af956029d65ba1374af86dadb1a14339a2155bc8bc0ef2c09e",
+          "water-interaction-wave-off.png": "77b9a10596371b56c05061e3c58d9955ef9c6a0be8cf90581b0d34d4943ee675",
+          "water-interaction-wave-reenabled-empty.png": "559400de1b5d77894419f5cd817f8268930a442ab84a341734337bbf7960a589",
+          "water-interaction-wave-swamp-control.png": "7a3742fc44c152e29b15656381b7d1a61c39054c137f2d6e3e2f29360bfa7fc3",
+          "water-interaction-wave-swamp.png": "7a3742fc44c152e29b15656381b7d1a61c39054c137f2d6e3e2f29360bfa7fc3"
+        }
+      },
+      {
+        "baseline": "wave-baseline-mobile01",
+        "candidate": "wave-candidate-mobile01",
+        "checks_per_build": 27,
+        "failures_per_build": 0,
+        "exact_png_pairs": 11,
+        "png_sha256": {
+          "water-interaction-wave-clock-held.png": "db3eaf11932967d11f41a65cb228cab45e6a6baf74ff5e1fc1c0fc95a83955d4",
+          "water-interaction-wave-disabled.png": "229996d65ee32cc3df848ed399b2dbae3370ce18fde07ce8c0c7cbcf16aed52f",
+          "water-interaction-wave-empty.png": "026fe671ddb5e7f1068fe6b99e5278709f35168d0642b4e0b630cc8d7af9acff",
+          "water-interaction-wave-history-control.png": "229996d65ee32cc3df848ed399b2dbae3370ce18fde07ce8c0c7cbcf16aed52f",
+          "water-interaction-wave-lava-control.png": "cf96f5a16a78619cec3d6520912726268d03a3c7a03e34012b885c47ddeac8e3",
+          "water-interaction-wave-lava.png": "cf96f5a16a78619cec3d6520912726268d03a3c7a03e34012b885c47ddeac8e3",
+          "water-interaction-wave-lingering.png": "db3eaf11932967d11f41a65cb228cab45e6a6baf74ff5e1fc1c0fc95a83955d4",
+          "water-interaction-wave-off.png": "026fe671ddb5e7f1068fe6b99e5278709f35168d0642b4e0b630cc8d7af9acff",
+          "water-interaction-wave-reenabled-empty.png": "229996d65ee32cc3df848ed399b2dbae3370ce18fde07ce8c0c7cbcf16aed52f",
+          "water-interaction-wave-swamp-control.png": "054caf5877001216122905c6835e517369e31c59033a9bac0a68376dea4aee16",
+          "water-interaction-wave-swamp.png": "054caf5877001216122905c6835e517369e31c59033a9bac0a68376dea4aee16"
+        }
+      },
+      {
+        "baseline": "wave-river-baseline-gl01",
+        "candidate": "wave-river-candidate-gl01",
+        "checks_per_build": 28,
+        "failures_per_build": 0,
+        "exact_png_pairs": 11,
+        "png_sha256": {
+          "water-interaction-wave-clock-held.png": "d980b7eb1695fa3b3410d60aa173f13e4fe5b4090a6676b45d3c1daa4f30a8ee",
+          "water-interaction-wave-disabled.png": "9e51c26d1f9311cf44c8063c54dd65f6b8f73302d9a2d569e002fa952f47df47",
+          "water-interaction-wave-empty.png": "935ca816712b944fb5569e67db7c43e189b3ce6534eee7ce2f08f00df9f4b276",
+          "water-interaction-wave-history-control.png": "9e51c26d1f9311cf44c8063c54dd65f6b8f73302d9a2d569e002fa952f47df47",
+          "water-interaction-wave-lava-control.png": "3db27e076b73a6cd9346b05b624bf1f0290a2f8e22e57733fb5006157dc33748",
+          "water-interaction-wave-lava.png": "3db27e076b73a6cd9346b05b624bf1f0290a2f8e22e57733fb5006157dc33748",
+          "water-interaction-wave-lingering.png": "d980b7eb1695fa3b3410d60aa173f13e4fe5b4090a6676b45d3c1daa4f30a8ee",
+          "water-interaction-wave-off.png": "935ca816712b944fb5569e67db7c43e189b3ce6534eee7ce2f08f00df9f4b276",
+          "water-interaction-wave-reenabled-empty.png": "9e51c26d1f9311cf44c8063c54dd65f6b8f73302d9a2d569e002fa952f47df47",
+          "water-interaction-wave-swamp-control.png": "edf63499458f237d1263da6868910b9fc69f5b601b43337a4ca368f851817497",
+          "water-interaction-wave-swamp.png": "edf63499458f237d1263da6868910b9fc69f5b601b43337a4ca368f851817497"
+        }
+      }
+    ],
+    "scope": "Compatibility and Mobile current/wave scenes plus Compatibility river with both kernels active. Compare old script paths and compiled paths at the same held clock/input sequence. Includes motion, trail, disabled/empty controls, lava/swamp exclusions and resource release."
+  },
+  "inherited_failure": {
+    "affected_case": "Compatibility waves enabled without river currents and without an active wave history",
+    "baseline_failures": 2,
+    "candidate_failures": 2,
+    "labels": [
+      "empty optional wave shader retains exact pixels",
+      "re-enable starts empty with exact water appearance"
+    ],
+    "observed": "Water disappears in the empty/re-enabled Compatibility images in both builds. Initial control changes 73926 pixels, peak channel delta 117. All eleven script/native images are still byte-identical. Mobile and combined-current river controls pass. No assertion was relaxed.",
+    "status": "Separate existing graphics defect remains open; investigate inactive/null wave-field binding next.",
+    "neutral_texture_diagnostic": {
+      "run": "wave-neutral-probe01",
+      "checks": 27,
+      "failures": 2,
+      "initial_changed_pixels": 5595,
+      "peak_delta": 106,
+      "meaning": "A valid 1x1 zero RGBAF texture restores most water but does not restore exact empty controls. Active/history/off captures remain exact. This is a fixture-only probe, not a production fix or proof of the full cause."
+    }
+  },
+  "failed_setup_attempts": [
+    {
+      "run": "probe-candidate01",
+      "reason": "Installed QA engine disables external main-pack path overrides. It rejected the private PCK; configuration and files were restored. No APK was rebuilt to change that policy."
+    },
+    {
+      "run": "extension-probe01",
+      "reason": "Diagnostic dispatch script needed an explicit bool annotation. Fixed only in the fixture; successful probe and all final runs follow."
+    }
+  ],
+  "diagnostic_run_sha256": {
+    "wave-neutral-probe01": "f98c78ec1ded431d36d9797ca86db530f8ccdcff87401026d3a6764f8a5ea7ab"
+  },
+  "private_pack_attempt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/android-water-native-20261010/current-android.pck",
+    "sha256": "86a8c7b1f42009863fef0d5d9152b7aaabad9aa106892cceaef79d963456afdb",
+    "status": "Unexecuted private data-pack experiment retained; not a delivery or accepted current-source Android run."
+  },
+  "remaining": [
+    "Fix the inherited Compatibility empty-wave visibility defect without loosening the pixel controls.",
+    "Wave-domain construction still costs about 76 ms in the sampled Android lifetime fixture; classify/cache that work before claiming the complete wave feature is inexpensive.",
+    "Other positive waterfall mesh, water snapshot/setter and old/new effect costs remain. New kernel speed does not establish whole-game FPS.",
+    "Latest delivered Android APK remains local.20261010.9 with the old helper. Full new-library APK integration, original reported devices and wider platform acceptance remain open."
+  ],
+  "evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/android-water-native-20261010",
+  "runs": {
+    "cost-script01": {
+      "metadata_sha256": "3b67941fa671415d5813e31c850913ce08cd6fab237355ce67ebcd018bf19909",
+      "result_sha256": {
+        "water-rebuild.json": "8114709ec9420e094f6ab068c2e61ff686922496cba4f0a7f0bdd690c193a4d4",
+        "before-water-rebuild.json": "170b89b195f7efdfc39bf77600ea66c5ef5802341c58fb94cd2d6b44653e0682",
+        "water-native-loader.json": "bc959819c8e60d2c066f4cf70c49b77d50e39e04f81422975cb1e156525fd8d6"
+      },
+      "errors": []
+    },
+    "cost-native01": {
+      "metadata_sha256": "6aae816f01f5106ae9a29480c767e6069ccf2d008f361526ce69d1b001017920",
+      "result_sha256": {
+        "water-rebuild.json": "b982c8895ec62b7c2061f5eb897430c0a60f3d20d68e5e9702c7add0592289b0",
+        "before-water-rebuild.json": "170b89b195f7efdfc39bf77600ea66c5ef5802341c58fb94cd2d6b44653e0682",
+        "water-native-loader.json": "077dd853290f35e351b0549043aaeb5f69e567b5190bc78641290732edab46d6"
+      },
+      "errors": []
+    },
+    "cost-native02": {
+      "metadata_sha256": "fe4773ccad4069c20ba2918de6250416d3d69869dc1cd283aa5ab1f8117c4d29",
+      "result_sha256": {
+        "water-rebuild.json": "8b5507a785400029786feb4b9512d3945fd957741ea409f2cf5d533d9445b878",
+        "before-water-rebuild.json": "170b89b195f7efdfc39bf77600ea66c5ef5802341c58fb94cd2d6b44653e0682",
+        "water-native-loader.json": "077dd853290f35e351b0549043aaeb5f69e567b5190bc78641290732edab46d6"
+      },
+      "errors": []
+    },
+    "cost-script02": {
+      "metadata_sha256": "faef1968e1efaa2defed7de9b114fd0fdb0fe5aceb84675b5231d4990bbd63ee",
+      "result_sha256": {
+        "water-rebuild.json": "c001482e19f00e93dd7bd89784e052234ea7f062eb6240a783910472797bf58d",
+        "before-water-rebuild.json": "170b89b195f7efdfc39bf77600ea66c5ef5802341c58fb94cd2d6b44653e0682",
+        "water-native-loader.json": "bc959819c8e60d2c066f4cf70c49b77d50e39e04f81422975cb1e156525fd8d6"
+      },
+      "errors": []
+    },
+    "extension-probe02": {
+      "metadata_sha256": "061c9dc7ebc4a3ed9db4a076cde3db275cb4e2916b08cfcade36b44d4337fb70",
+      "result_sha256": {
+        "water-native-probe.json": "2384627e2b3e16a671eeb77bfdb7b556f7953963ef113fc70790f5cc68ecd0a8",
+        "water-native-loader.json": "077dd853290f35e351b0549043aaeb5f69e567b5190bc78641290732edab46d6"
+      },
+      "errors": []
+    },
+    "native-current01": {
+      "metadata_sha256": "08ff5c1f9137e869d491f807bebc9acf11208892e31513a8eae60f582e21bd7a",
+      "result_sha256": {
+        "water-native-loader.json": "077dd853290f35e351b0549043aaeb5f69e567b5190bc78641290732edab46d6",
+        "water-current.json": "5892372b06e265e6af31daf003f6fff14a4bd23011707ca63fade909beb5e872"
+      },
+      "errors": []
+    },
+    "native-wave01": {
+      "metadata_sha256": "f218e8c2ced739670f54fa3703982daea305988a4856a9dd7b89a0cec7a5ad6a",
+      "result_sha256": {
+        "water-wave-field.json": "e70f26417eb33926835eee25047ac8a2141c6441f57777bcbd025cb6522a34b1",
+        "water-native-loader.json": "077dd853290f35e351b0549043aaeb5f69e567b5190bc78641290732edab46d6"
+      },
+      "errors": []
+    },
+    "wave-solver01": {
+      "metadata_sha256": "1444efd099e32623c9dbdb9538c4426f4a6e0d05ff6ea3264a3da9a35deaccac",
+      "result_sha256": {
+        "water-wave-solver.json": "06760e0cf86cb0a469100e7e206954976f964fd9294b73cc6ee9d4623be5c4fb",
+        "water-native-loader.json": "930291b578e32b491002d590f4796923995774a7cae20234776c8a5cdecbfcdf"
+      },
+      "errors": []
+    },
+    "current-baseline-gl01": {
+      "metadata_sha256": "43b607a523b5d16a98e4467642561d60100e034f2bb6eba5157a68f10f39ffe4",
+      "result_sha256": {
+        "water-current-render.json": "bdf3ad82c40b5ce7b2a1b89805ddcc203a5914306f1c918bba4b2f2baefd95ee",
+        "water-native-loader.json": "ed20f7e5a667ffb560ee5e35bcb5cc443033cc7273581a4ff2dc42d67a77df88"
+      },
+      "errors": []
+    },
+    "current-candidate-gl01": {
+      "metadata_sha256": "9b1bbba16c5e6c14b74c48cd8d9607a9bbebdf0dcc11be7d2808271d517028ba",
+      "result_sha256": {
+        "water-current-render.json": "bdf3ad82c40b5ce7b2a1b89805ddcc203a5914306f1c918bba4b2f2baefd95ee",
+        "water-native-loader.json": "930291b578e32b491002d590f4796923995774a7cae20234776c8a5cdecbfcdf"
+      },
+      "errors": []
+    },
+    "current-baseline-mobile01": {
+      "metadata_sha256": "e410656af3a1af7f15a72c7a6f87d7419d099e480d7c0b221135c4c70e6fa158",
+      "result_sha256": {
+        "water-current-render.json": "2245083b24aa143605ba7e5b3a3f9d76627d2d461e1a2e125c961d372edbba41",
+        "water-native-loader.json": "ed20f7e5a667ffb560ee5e35bcb5cc443033cc7273581a4ff2dc42d67a77df88"
+      },
+      "errors": []
+    },
+    "current-candidate-mobile01": {
+      "metadata_sha256": "7515ed564fac2c7c5c29d33291f639131efd3440061e2df82f452533f63a97d6",
+      "result_sha256": {
+        "water-current-render.json": "2245083b24aa143605ba7e5b3a3f9d76627d2d461e1a2e125c961d372edbba41",
+        "water-native-loader.json": "930291b578e32b491002d590f4796923995774a7cae20234776c8a5cdecbfcdf"
+      },
+      "errors": []
+    },
+    "wave-baseline-gl01": {
+      "metadata_sha256": "dbaa84c0c723486d76d80edf8a48aafb78897314f3c00f2ac05aa1080f03beab",
+      "result_sha256": {
+        "water-wave-render.json": "5d68ab49b6003fdd2973a7590b6720dbd64ca97acbe83b777e2e748a6ed9b454",
+        "water-native-loader.json": "ed20f7e5a667ffb560ee5e35bcb5cc443033cc7273581a4ff2dc42d67a77df88"
+      },
+      "errors": [
+        "10-10 16:56:38.821 16954 16986 E godot   : FAIL empty optional wave shader retains exact pixels",
+        "10-10 16:56:45.503 16954 16986 E godot   : FAIL re-enable starts empty with exact water appearance"
+      ]
+    },
+    "wave-candidate-gl01": {
+      "metadata_sha256": "98e67e2008f581e38c6d86b6b4880ed6e7c1da92785e87c87255968037f0c4be",
+      "result_sha256": {
+        "water-wave-render.json": "3d2e4e8020ff6b2d9e3e0ea85bbb631c7e27d5cb36f2c33ab73a11760c083428",
+        "water-native-loader.json": "930291b578e32b491002d590f4796923995774a7cae20234776c8a5cdecbfcdf"
+      },
+      "errors": [
+        "10-10 16:57:50.244 17437 17470 E godot   : FAIL empty optional wave shader retains exact pixels",
+        "10-10 16:57:55.460 17437 17470 E godot   : FAIL re-enable starts empty with exact water appearance"
+      ]
+    },
+    "wave-baseline-mobile01": {
+      "metadata_sha256": "f4327ff0e11e7fde8e0afbc288aaada563f780fedac2df4a1fccd4b62536874d",
+      "result_sha256": {
+        "water-wave-render.json": "d0cc09141a4d066d4c8066f8bf85e151ee81586d320ce053a88a7d4cd9eb7ca8",
+        "water-native-loader.json": "ed20f7e5a667ffb560ee5e35bcb5cc443033cc7273581a4ff2dc42d67a77df88"
+      },
+      "errors": []
+    },
+    "wave-candidate-mobile01": {
+      "metadata_sha256": "df030203cdbf76597b3830277666377f4d48977c59496a695e4a45e8750f777c",
+      "result_sha256": {
+        "water-wave-render.json": "6737f994e8047882e16546188c4513e7d66d345e4f227bd9b66580f31899c404",
+        "water-native-loader.json": "930291b578e32b491002d590f4796923995774a7cae20234776c8a5cdecbfcdf"
+      },
+      "errors": []
+    },
+    "wave-river-baseline-gl01": {
+      "metadata_sha256": "91c1c2f662b2646938b4f59d8cd80f728f9619c5d02bd0973f9e3c3517441f3a",
+      "result_sha256": {
+        "water-wave-render.json": "c94453456279dd7c0408546782ca1eb26ecd5200b9e15070505a331f19d47fdf",
+        "water-native-loader.json": "ed20f7e5a667ffb560ee5e35bcb5cc443033cc7273581a4ff2dc42d67a77df88"
+      },
+      "errors": []
+    },
+    "wave-river-candidate-gl01": {
+      "metadata_sha256": "131b0d18adb00ebe26e35aa0b6c3dbb74615b0043b4407fd64fe5ffa5c3694b6",
+      "result_sha256": {
+        "water-wave-render.json": "953c3d0709e49592efac92968aee7640d23886fe8fc4fe8690bd8fc189e10709",
+        "water-native-loader.json": "930291b578e32b491002d590f4796923995774a7cae20234776c8a5cdecbfcdf"
+      },
+      "errors": []
+    }
+  },
+  "fixture_sha256": {
+    "tools/benchmarks/water_wave_solver.gd": "dcbf81049be61fb685dc3975dc5711e365d3d9e276ef4d3b6d9d6e7b94433aed"
+  },
+  "evidence_scripts_sha256": {
+    "analyze_native.py": "cc2c70a38fd8934b0a7d449aaed7bb03007c1102e3365e9ed4cb061027653fec",
+    "device_extension_run.py": "27952773bdbcee12665459fe07b40bd24dd2f8566bbdf5fdd73b09ba96c89515",
+    "dispatch.gd": "d846bae554383a69fba645ea8dad083dad2dec9d0a8208ea01a4d9fda64295a2",
+    "cost_abba.py": "0497a244826beff53384469e280ecb91e167f3b893da0771422c26b6870a2979",
+    "render_compare.py": "90e181568b1656f1c6b3121545f78e53566aa95367a88b2c47b968bdf84663b1",
+    "render_mobile.py": "aeb036a7049f80dc03f562878f2d215b58cf9228b9abc55373ee855b3367bbba",
+    "render_river.py": "b7c31d4c3d510c7e19d05659dbbba1ab0ef62c23ca4f8277f221612d5fb4c0b8"
+  }
+}

@@ -157,9 +157,9 @@ at most eight substeps and sixteen visible pressure sources. The caller owns
 the window, terrain coverage, pausable clock, flooding invalidation and texture.
 It changes no navigation, authoritative actor, save or network state.
 `-- --ei-script-water-waves` selects the bounded single-worker script fallback;
-old libraries select it automatically. The 9 October wave checkpoint updates
-the Linux library only; Windows/Android exports need a rebuild to use this
-helper. Actual device performance has not been established.
+old libraries select it automatically. The 9 October wave checkpoint updated
+the Linux library first. The 10 October ARM64 helper now includes this solver
+and the current-field kernel below; delivery APKs still contain the older helper.
 
 `WaterCurrentKernel` calculates the optional river-current field from immutable
 authored water heights, vertex material owners, terrain heights and current
@@ -168,10 +168,21 @@ oracle in `water_current.gd` remains available with older/absent libraries or
 `-- --ei-script-water-current`. Initial preparation is synchronous; later
 script-fallback flooding calculations use one coalesced worker and publish
 textures on the main thread. Turning the option off or retiring the terrain
-joins pending work. Desktop tests cover numeric parity and that lifecycle;
-they do not establish Android/browser cost. The River currents option defaults
-off. See `tools/tests/water_current.gd`, `water_current_render.gd`, and the
-renderer handoff for acceptance evidence and remaining water work.
+joins pending work. Desktop tests cover numeric parity and that lifecycle.
+The River currents option defaults off. See `tools/tests/water_current.gd`,
+`water_current_render.gd`, and the renderer handoff for acceptance evidence.
+
+The 10 October Retroid Pocket 5 checks load only the two newly added classes
+through a private GDExtension adapter, compiled from the same production headers.
+The installed app and its older helper remain unchanged. Current-field rebuilds
+in three maps fall from roughly 76–116 ms in script to 1.3–2.9 ms compiled;
+the 128² wave solver retains exact output with much lower CPU cost. These are
+bounded kernel/callback measurements, not whole-game FPS or full-APK acceptance.
+Use `tools/benchmarks/water_wave_solver.gd` for equal-input ABBA solver comparisons.
+The [Android water receipt](../../../../docs/validation/android-water-native-2026-10-10.json)
+records device controls and the inherited Compatibility empty-wave visibility
+failure. Both water options remain off by default. Browser/fallback and broader
+device costs, water-domain construction and the visibility failure remain open.
 
 Use CMake 3.22+, a C++17 compiler, Python 3, and the MIT-licensed
 [godot-cpp bindings](https://github.com/godotengine/godot-cpp) at commit
