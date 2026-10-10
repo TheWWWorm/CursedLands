@@ -1,6 +1,10 @@
 # Gameplay handoff — 9 October 2026
 
-## Current continuation
+**Latest local test, 10 October:** `1.0.3-local.20261010.6`: [Windows ZIP](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.6-windows-x86_64.zip) and [Linux archive](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.6-linux-x86_64.tar.gz), source `b408eaf`, protocol 13. Adds Nalo rescue-entry and original Gipat captive-dialogue fixes (`218eafa`). Both packs are identical, contain 682 resources / 265 scripts, and retain the engines with twelve patches. Only one compiled dialogue admission script and the displayed version differ from .5; renderer assets and native binaries are unchanged. The actual Linux package passes **37/0** fresh-save/native-dialogue/rescue-entry/escape checks; source qualification separately passes **250/0** including pending/completed reloads and the prior Nalo return. Both archives read back exactly. Previous stone lighting, contact shading, grass, loading/menu and depth-of-field validation is inherited. Windows runtime, target-device performance, V1 cold preparation/numerical residuals and full organic campaign routes remain open; this is a local test, not stable 1.0.3. [Package receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-6.json).
+
+**Working mode: main thread only.** The 9 October checkpoint/package statements below are historical; the latest status is above and in the dated follow-ups.
+
+## 9 October continuation (historical)
 
 **Current handoff, 9 October:** the user resumed the renderer list and remaining gameplay reports, with coordinated subagents. Canonical renderer/gameplay work remains combined on protocol 13. No release or device installation was made.
 
@@ -418,3 +422,24 @@ and captive approach failures. The entry boundaries are explicitly prepared;
 subsequent dialogue, quests, party transfers and travel are original script
 behavior. This does not establish complete organic campaign, recruited-party,
 Windows, real ENet/WAN, physical-input or rendering acceptance.
+
+## Captive dialogue local packages — 10 October, .6
+
+Local20261010.6 packages `b408eaf` for Linux and Windows, including the
+`218eafa` original Gipat captive-dialogue and Nalo rescue-entry fixes. Both
+682-resource / 265-script packs are byte-identical and differ from the
+qualified candidate only in the displayed version. One compiled dialogue
+admission script changes from .5; engines, native helpers, renderer assets
+and protocol 13 are unchanged.
+
+The actual Linux package passes **37/0** checks: fresh pending Nalo entry
+through the actual Kr60 briefing, original rescue quest/party creation and
+save; and fresh captive arrival through the Hermit-first route, original
+escape and save. Separate source qualification passes **250/0** and includes
+commander-first choice, pending/completed reloads, Nalo return and ordinary
+approach guards. Archives pass complete file readback; Linux permissions
+and Windows PE/import checks pass. Windows runtime, full organic campaign,
+recruited-party, WAN/input and prior renderer/device limitations remain open.
+This is a local test package, not a stable 1.0.3 release.
+
+[Package evidence](validation/local-feedback-build-2026-10-10-6.json).

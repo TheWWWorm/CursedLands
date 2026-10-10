@@ -1,0 +1,172 @@
+{
+  "version": "1.0.3-local.20261010.6",
+  "source_commit": "b408eaf9f0749b46178dd2da280d32372ee7c427",
+  "protocol": 13,
+  "engine_patch_count": 12,
+  "published": false,
+  "checks": 37,
+  "failures": 0,
+  "headless": true,
+  "windows_runtime_tested": false,
+  "build_receipt": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-6/build.json",
+  "build_receipt_sha256": "a4923e9294f473b58454d838cf5d8c5e8d5223c833a822e786c6eda5d061d626",
+  "runtime_checks": {
+    "nalo-entry01": {
+      "checks": 15,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-6/nalo-entry01",
+      "run_sha256": "8ab563ee673b1847d558745d2ee6916498932849170cee37f043f20d585a91eb",
+      "result_sha256": "58bbcc793f349b75c9863d426d7ac80a9bc1ecad7d3f8bcf455fe03be3535638",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_entry.gd": "bcdab43857c799876f251790b70225b514ab703d24c6707159d857eac694c038",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      }
+    },
+    "captive-hermit01": {
+      "checks": 22,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-6/captive-hermit01",
+      "run_sha256": "7576099fb6ade41e4a20361e08b4134f18f97373e0f631b7a59de860f4cc87a4",
+      "result_sha256": "0e0cf55ab857fad9368939efad797aaa5b9ddfc4bb51297217f6627be3addc91",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/gipat_captive_dialogue.gd": "a21c958dea91f24c3360c917641f8be8fcee00286e012dd226c2ab9f34380aa1",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      }
+    }
+  },
+  "runtime_scope": "Actual Linux .6 pack: fresh Nalo pending entry -> normal Kr60 conversation -> native rescue quest/party; fresh Gipat captive arrival -> Hermit-first conversation -> native escape. Both save normally.",
+  "source_validation": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/original-captive-dialogue-2026-10-10.json",
+    "sha256": "059b39f300f3483d2c5aa8dda5a6c33988187b5d3526c6f59887e670d028c2fa",
+    "checks": 250,
+    "failures": 0
+  },
+  "inherited_renderer_validation": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-4.json",
+    "sha256": "54108eff8693ad83aafbfa0d59082a366819eca0496bc38f81b4a2d402f82fa3",
+    "scope": "The .4 renderer/engine/menu checks are inherited, not rerun for one dialogue admission script and version metadata."
+  },
+  "pack_resources": 682,
+  "compiled_scripts": 265,
+  "linux_windows_pack_byte_identical": true,
+  "pack_changes_from_qualified_candidate": [
+    "project.binary"
+  ],
+  "windows_pe_audit": {
+    "CursedLands.exe": {
+      "architecture": "PE x86_64",
+      "imports": [
+        "ADVAPI32.dll",
+        "AVRT.dll",
+        "bcrypt.dll",
+        "CRYPT32.dll",
+        "dwmapi.dll",
+        "DWrite.dll",
+        "GDI32.dll",
+        "HID.DLL",
+        "IMM32.dll",
+        "IPHLPAPI.DLL",
+        "KERNEL32.dll",
+        "api-ms-win-core-processthreads-l1-1-3.dll",
+        "api-ms-win-security-base-l1-2-1.dll",
+        "api-ms-win-security-lsalookup-l2-1-0.dll",
+        "msvcrt.dll",
+        "ntdll.dll",
+        "ole32.dll",
+        "OLEAUT32.dll",
+        "SHCORE.dll",
+        "SHELL32.dll",
+        "SHLWAPI.dll",
+        "USER32.dll",
+        "WINMM.dll",
+        "WS2_32.dll",
+        "WSOCK32.dll"
+      ]
+    },
+    "libterrain_search.dll": {
+      "architecture": "PE x86_64",
+      "imports": [
+        "KERNEL32.dll",
+        "msvcrt.dll"
+      ]
+    }
+  },
+  "limits": [
+    "Windows runtime and the user's 4090 Mobile remain untested; PE/import checks do not establish runtime acceptance.",
+    "These Linux checks are headless save/dialogue correctness checks, not rendering or performance measurements.",
+    "The earlier story boundaries were prepared; normal dialogue/escape/rescue entry does not establish an organic campaign or recruited-party route.",
+    "V1 and V8 remain off by default. Inherited terrain-contact cold preparation and strict Mobile/Compatibility/snow pixel residuals remain open.",
+    "Original multiplayer, co-op WAN, physical input and target-device performance retain their existing limits. No stable 1.0.3 release."
+  ],
+  "packages": {
+    "linux-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.6-linux-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.6-linux-x86_64.tar.gz",
+      "archive_bytes": 36530861,
+      "archive_sha256": "7e6d7a9f68d8c5a61406296b865034d55f91cef31d6b2aae138153429922bf3a",
+      "archive_readback_exact": true,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "SHA256SUMS.txt": "055edc778d7bf2fa8cb088b6f2e33a6d8328e73795ba561c24eb51c84ed0435e",
+        "BUILD-INFO.json": "8bf29666e236d9e360a3d46b813096983598db0564f7a0127e3cae28d867653e",
+        "Play.sh": "75835f261e9acd2b45973152790cabf255b05b649f0f059997c1de9ba4e3ec2b",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "8c4a3a674e90013b6cf69c1decf4f31dd551d7395d4967b91b71e93d3b36cf80",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    },
+    "windows-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.6-windows-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.6-windows-x86_64.zip",
+      "archive_bytes": 37737684,
+      "archive_sha256": "7b50002b9e8535b7c1aced57c29356d522fd7708e002583185301154de405a87",
+      "archive_readback_exact": true,
+      "files": {
+        "SHA256SUMS.txt": "0e61c53441470950144b2f451b6f34eb108245db3e717e502397e29b98fd6869",
+        "BUILD-INFO.json": "29080c9865fd01daafac3788b1281bb89b03afb30d057024fa87700dc6c6e7f6",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "libterrain_search.dll": "14906b040d4b6a5e1e217b9bfb21214f48700b6709163be584cc98e584f45106",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "8c4a3a674e90013b6cf69c1decf4f31dd551d7395d4967b91b71e93d3b36cf80",
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    }
+  },
+  "game_source_changes_from_local_20261010_5": [
+    "game/src/game/script/authored_village_talk.gd"
+  ],
+  "production_sha256": {
+    "game/src/game/script/authored_village_talk.gd": "11a0c4406b9663596ac395f6ee03a6d7918521b31b03c86f38031d91577da4ef"
+  },
+  "artifacts": {
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-6/build.py": "028569bd1406ccd7f9d22b0bc811bf6fab2c3c1668bc984dbb9196dc37d5dcb6",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-6/build.json": "a4923e9294f473b58454d838cf5d8c5e8d5223c833a822e786c6eda5d061d626",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-6/build-run.log": "a7dce0bf8ccab777c7b3a1a8b634e3914c4d25c134bcceb8f2e4afa4cc57192c",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-6/run.py": "e27e3e7f14ce9f4068341603634ae70b8aa83fe40ab0f18a8558990ae962ca5f",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-6/nalo-entry01-command.log": "875f2c558fffb11162abbcf14e1e23d6b227d9e097ed49608c39bd27b27a9bf4",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-6/captive-hermit01-command.log": "730c2858649ff3d263446ffb735a9d582c817bbede163621660faba1e2adc4fe",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-6/package.py": "16ce4b5943abde7e738ae182381093d42ac35482defbb0a7771a2ff631c9018d",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-6/package.json": "d60261dec71e7ede1dd3d45ffd25fb315aa6f190c588b90567c87326579e5da7",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-6/package-run.log": "e379504e39fd459d9e3c390d2a0ad833213e01582095de11e43a2c0197b956ac",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-6/record.py": "3a2ece93ec2dfdcd574f3eec898097b613117113036de277009178828d034a24"
+  },
+  "upstream_entry_source": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-entry-audit-20261010/upstream-source03/gipat-entry-source.json",
+    "sha256": "c82db0f1b8b380fdfcc6e7838bab21d6f2bdcdf2dd387cae15c07bd8d3ff9be4",
+    "run_sha256": "abb4bd4f339fe0ce3204692fd924fd148d82d05fd91fea681215defeb74e8363",
+    "source_mob": "zone4hadagans.mob",
+    "source_script_sha256": "8300575355a89c1383c46230cf3e84b4d3c2a1e5958017dcc76403df651b6388",
+    "scope": "Read-only scan of all 99 original MOBs locates the native bz4g transfer in zone4hadagans: q29g completion offers Ha29 and enters bz4g at native entrance 0, mapped by ScriptVM to the fixture entrance 1. The entry script does not change the active party. It is source evidence, not an additional organic route test."
+  }
+}
