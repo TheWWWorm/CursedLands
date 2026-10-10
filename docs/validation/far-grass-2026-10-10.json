@@ -686,5 +686,11 @@
     "The root plus eight perimeter samples reject broad paths, water, slope and expanded scenery bounds but can miss a one-pixel interior painted stripe.",
     "Distant grass deliberately adds no sun-shadow casters; existing near grass shadows are unchanged.",
     "Rendered sustained camera-travel acceptance on the user Windows device remains open."
-  ]
+  ],
+  "packaged_followup": {
+    "version": "1.0.3-local.20261010.1",
+    "source_commit": "4a7632def87daec70858407c19f3ba6ba846447f",
+    "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json",
+    "windows_runtime_tested": false
+  }
 }

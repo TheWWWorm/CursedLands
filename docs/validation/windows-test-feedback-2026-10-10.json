@@ -58,77 +58,101 @@
       "id": "W01",
       "report": "Beach rocks look poor",
       "image": 1,
-      "status": "Scratch low pebble geometry; visual acceptance pending"
+      "status": "Rounded textured meshes, exclusive rooted placement and material/contact lighting packaged in local20261010.1 (1cf5c82 + 4f0faf2). Three-renderer source controls and final-package live-option checks pass; Windows visual acceptance pending.",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/beach-pebble-lighting-2026-10-10.json",
+      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json"
     },
     {
       "id": "W02",
       "report": "Ground detail looks similar but is expensive, especially Natural transitions; optimize or cache per map",
-      "status": "Exact donor reuse prototype; receiver/backend qualification in progress"
+      "status": "Exact duplicate donor reuse packaged with a Forward+ guard (3bc9340). Whole-map caching is not adopted; substantial Natural transition cost work and clean/Windows timing remain open.",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/renderer-reuse-2026-10-10.json",
+      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json"
     },
     {
       "id": "W03",
       "report": "Clouds very expensive",
-      "status": "Exact repeated solar-shadow reuse prototype; receiver/backend qualification in progress"
+      "status": "Exact duplicate receiver solar-shadow reuse packaged with a Forward+ guard (3bc9340). Broader cloud raymarch cost work and clean/Windows timing remain open.",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/renderer-reuse-2026-10-10.json",
+      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json"
     },
     {
       "id": "W04",
       "report": "Third-person self-spell targeting is hard with keyboard and mouse",
-      "status": "Qualified source37f0dd4, awaiting package",
-      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/third-person-kbm-2026-10-10.json"
+      "status": "Qualified source37f0dd4, packaged in local20261010.1; Windows user acceptance pending",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/third-person-kbm-2026-10-10.json",
+      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json"
     },
     {
       "id": "W05",
       "report": "Third-person ground-item pickup is hard with keyboard and mouse",
-      "status": "Qualified source37f0dd4, awaiting package",
-      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/third-person-kbm-2026-10-10.json"
+      "status": "Qualified source37f0dd4, packaged in local20261010.1; Windows user acceptance pending",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/third-person-kbm-2026-10-10.json",
+      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json"
     },
     {
       "id": "W06",
       "report": "Grass does not cover the full visible range",
       "image": 2,
-      "status": "Existing near-stream gaps fixed bcae3dd; bounded distant coverage qualified for local test on 10 October. Camera-turn planning, lifecycle, authored maps, actual meadow and three-renderer LOD/arrival controls pass. Windows acceptance pending.",
+      "status": "Near-stream gaps (bcae3dd) and bounded visible distant grass (4a7632d) packaged in local20261010.1. Source tests31513/0; actual packaged meadow152/0. Windows visual/performance acceptance pending.",
       "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/grass-stream-envelope-2026-10-10.json",
-      "far_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/far-grass-2026-10-10.json"
+      "far_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/far-grass-2026-10-10.json",
+      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json"
     },
     {
       "id": "W07",
       "report": "Ingos NPCs repeatedly sit and stand every few seconds in original multiplayer, possibly single player too",
       "image": 3,
-      "status": "Qualified source4a1a92a, awaiting package",
-      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-visibility-pose-2026-10-10.json"
+      "status": "Qualified source4a1a92a, packaged in local20261010.1; Windows user acceptance pending",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-visibility-pose-2026-10-10.json",
+      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json"
     },
     {
       "id": "W08",
       "report": "Original multiplayer shows all enemies ignoring field of view",
       "image": 4,
-      "status": "Qualified source4a1a92a, awaiting package",
-      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-visibility-pose-2026-10-10.json"
+      "status": "Qualified source4a1a92a, packaged in local20261010.1; Windows user acceptance pending",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-visibility-pose-2026-10-10.json",
+      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json"
     },
     {
       "id": "W09",
       "report": "Menu creatures broken after leaving original multiplayer",
       "image": 5,
-      "status": "Qualified source4d63428, awaiting package",
-      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-menu-loading-2026-10-10.json"
+      "status": "Qualified source4d63428, packaged in local20261010.1; Windows user acceptance pending",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-menu-loading-2026-10-10.json",
+      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json"
     },
     {
       "id": "W10",
       "report": "Loading into original multiplayer still exposes empty HUD before loading screen",
       "image": 6,
-      "status": "Qualified source4d63428, awaiting package",
-      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-menu-loading-2026-10-10.json"
+      "status": "Qualified source4d63428, packaged in local20261010.1; Windows user acceptance pending",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-menu-loading-2026-10-10.json",
+      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json"
     },
     {
       "id": "W11",
       "report": "Leaving an area in original multiplayer freezes the character in a transition before the loading screen",
       "image": 7,
-      "status": "Qualified source4d63428, awaiting package",
-      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-menu-loading-2026-10-10.json"
+      "status": "Qualified source4d63428, packaged in local20261010.1; Windows user acceptance pending",
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/native-mp-menu-loading-2026-10-10.json",
+      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json"
     }
   ],
-  "limits": "Screenshots are observations, not controlled performance comparisons. Source fixes tested on Linux; no Windows runtime reproduction here. Delivered .2 archives remain unchanged. Full-surface contact prototypes remain isolated.",
+  "limits": "Screenshots are observations, not controlled performance comparisons. Source fixes and315 final-package checks ran on Linux. Fresh local20261010.1 archives are verified; no Windows runtime or performance acceptance is claimed. The earlier .2 archives remain unchanged. Full-surface contact prototypes remain isolated.",
   "origin_report": {
     "path": "/home/llm2x/Documents/EI/local/scratchpad/windows-test-feedback-20261010/user-feedback.json",
     "sha256": "603f925a335b999847801701dc6a1ed7a8a38f44bd9af324bfe02780c1459714"
+  },
+  "latest_local_test": {
+    "version": "1.0.3-local.20261010.1",
+    "source_commit": "4a7632def87daec70858407c19f3ba6ba846447f",
+    "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json",
+    "archives": {
+      "linux-x86_64": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.1-linux-x86_64.tar.gz",
+      "windows-x86_64": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.1-windows-x86_64.zip"
+    },
+    "windows_runtime_tested": false
   }
 }

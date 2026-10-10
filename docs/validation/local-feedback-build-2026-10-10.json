@@ -1,0 +1,776 @@
+{
+  "version": "1.0.3-local.20261010.1",
+  "source_commit": "4a7632def87daec70858407c19f3ba6ba846447f",
+  "protocol": 13,
+  "published": false,
+  "build_receipt": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010/build.json",
+  "build_receipt_sha256": "4b35dde057d08fdfb496ac14931febae4797852a87748ec76dc1f65e04043887",
+  "checks": 315,
+  "failures": 0,
+  "runs": {
+    "new-game01": {
+      "checks": 9,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010/new-game01",
+      "receipt_sha256": "0c04ab7d038a1f22f9de50c75a82acda82a2a5999e9141ddae89192e5ebfecda",
+      "observations": {
+        "covered": 834,
+        "deferred": false,
+        "exposed": 0,
+        "new_game": true,
+        "worker": true,
+        "worker_pid": 2104743,
+        "zone": "gz1g"
+      },
+      "captures": {
+        "menu-covered.png": "26c7c05ac5802100a0e9b9bd9a049de35274a3bee236dad725876bf08d700b46"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "9f3742d29ad2137ef4c9e9a82a536d64d4a2417a2f66ebd10e84bf90a88ff8a7"
+      }
+    },
+    "continue01": {
+      "checks": 9,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010/continue01",
+      "receipt_sha256": "755c4d27fa69741ca54058ae6c4142a09a98e15a44b9912bb33680bfadc19680",
+      "observations": {
+        "covered": 883,
+        "deferred": false,
+        "exposed": 0,
+        "new_game": false,
+        "worker": true,
+        "worker_pid": 2108673,
+        "zone": "bz1g"
+      },
+      "captures": {
+        "menu-covered.png": "bd95c4b08724bdc864d6a3be89b2d2f17661639f8ada1727a639f1bf1d575f51"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "9f3742d29ad2137ef4c9e9a82a536d64d4a2417a2f66ebd10e84bf90a88ff8a7"
+      }
+    },
+    "lia-new-game01": {
+      "checks": 9,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010/lia-new-game01",
+      "receipt_sha256": "626f77155b10b69522a95f06bad5c6579b4b32a27041614fd13e8e61e500969d",
+      "observations": {
+        "covered": 580,
+        "deferred": false,
+        "exposed": 0,
+        "new_game": true,
+        "worker": true,
+        "worker_pid": 2109931,
+        "zone": "gz1g"
+      },
+      "captures": {
+        "menu-covered.png": "fa382a805cc6f55be4d9d04b82c673f26f836950186f6f1e88635ca1d9a97b4f"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "9f3742d29ad2137ef4c9e9a82a536d64d4a2417a2f66ebd10e84bf90a88ff8a7"
+      }
+    },
+    "original-mp01": {
+      "checks": 23,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010/original-mp01",
+      "receipt_sha256": "2344db9802d6b89949bc90331381d613fe6fbbffdc5c1dd62dd692017388f92b",
+      "observations": {
+        "checks": 23,
+        "failures": 0,
+        "frames": {
+          "start": {
+            "covered": 754,
+            "exposed": 0,
+            "transition": 0
+          },
+          "travel": {
+            "covered": 574,
+            "exposed": 0,
+            "transition": 0
+          }
+        },
+        "menu_creatures": {
+          "after": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          },
+          "before": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          }
+        },
+        "menu_database": [
+          {
+            "label": "before",
+            "lmp_db": false
+          },
+          {
+            "label": "after",
+            "lmp_db": false
+          }
+        ],
+        "scope": "Real menu and separate native multiplayer authority; controlled public quest/travel commands; presented loading frames and exact menu creature texture/layer retention. Linux execution, not Windows performance or physical exit-route validation.",
+        "travel_exposed_frames_after_one_second": 0,
+        "travel_request_to_loading_ms": 244
+      },
+      "captures": {
+        "lmp-travel-covered.png": "81a7d39c018e915cc6e1f1097bdbfcfae04feca31cce929de0bd6e5c5b049c0b",
+        "lmp-menu-after.png": "72f218a176da7d678fc6f77531e0d9c204ff628333170935fe9f2be2e250a31e",
+        "lmp-start-covered.png": "e7fbf3adbac1cc909c33426ec3c963053d4958228a2476780f624701f01013f4",
+        "lmp-menu-before.png": "81c7e36ad249eaa864bab85b6ff7296ec83d5ae860112c8f814a31a3bff0a292"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_lmp_flow.gd": "c01452e95c4db9104b388783b223f11802118e570edab51c1cf8df0a3ee60285"
+      }
+    },
+    "menu-material01": {
+      "checks": 46,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010/menu-material01",
+      "receipt_sha256": "e80cac1c5248cb1847df1cf042c1b9e9cff690f23532378a4b3170897a31f191",
+      "observations": {
+        "checks": 46,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 0,
+            "hover_references": 6,
+            "label": "startup-off-initial",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-off-live-options",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-off-hover",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 0,
+            "hover_references": 6,
+            "label": "startup-off-contact-off",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-off-contact-on-again",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-initial",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-live-options",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-hover",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 0,
+            "hover_references": 6,
+            "label": "startup-on-contact-off",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-contact-on-again",
+            "labels": 6,
+            "wrong_labels": []
+          }
+        ]
+      },
+      "captures": {
+        "menu-material-startup-on-hover.png": "9110536ced95842d9209f89402cae23046afd07788139ba40c86fb77b92f66a4",
+        "menu-material-startup-off-live-options.png": "b7710f2edc12aaefdcfdcc2bf6677bce433c04439c5b1a7407e999f47925527f",
+        "menu-material-startup-off-initial.png": "90f7062d1ef4b3b300f756659365b0a222c17aaaadad05832b1357ca22d312d1",
+        "menu-material-startup-off-contact-on-again.png": "77833e2d230d9179191a1f08b1a1ca73940071635951332bf593d0297a045a2f",
+        "menu-material-startup-on-initial.png": "bc2f0752bbb0b1b2369fa66d1dda8cbc13d1f084cc7a324c05a04174dfaaa32e",
+        "menu-material-startup-off-hover.png": "77833e2d230d9179191a1f08b1a1ca73940071635951332bf593d0297a045a2f",
+        "menu-material-startup-on-contact-on-again.png": "9110536ced95842d9209f89402cae23046afd07788139ba40c86fb77b92f66a4",
+        "menu-material-startup-off-contact-off.png": "d716b1662fa805de084b16be8402b299a04ed32e378d0427aeb1a6c7b4cc053e",
+        "menu-material-startup-on-live-options.png": "237763fee0d90e7f4139b76071b58400f6c9b4cff16c13c6ec43e6234a2070d9",
+        "menu-material-startup-on-contact-off.png": "9dd4b29082d9b2e683be0483cb376ebe5d8ca10e907a464d53f1705bd8dafe5d"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_material_refresh.gd": "4726a4cb53983aa7968a9ebd902aae7b64f1568d014b5d3c99f6bdcfa9a15ad7"
+      }
+    },
+    "far-meadow01": {
+      "checks": 152,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010/far-meadow01",
+      "receipt_sha256": "5520a45c5e587e58c8e863e0a6f5b808aa3374697152269464c814885f6bc605",
+      "observations": {
+        "checks": 152,
+        "failures": 0,
+        "rows": [
+          {
+            "case": "meadow_selection",
+            "eligible_ring_samples": 29,
+            "focus": "(72.0, 192.0)"
+          },
+          {
+            "camera": "[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.707107, 0.707107), Z: (-0.0, 0.707107, -0.707107), O: (72.0, 53.23474, -237.0)]",
+            "case": "far-grass-meadow-baseline",
+            "counts": {
+              "shadow_draws": 536,
+              "shadow_primitives": 102491,
+              "visible_draws": 1876,
+              "visible_primitives": 274821
+            },
+            "diagnostic": {
+              "active_jobs": 0,
+              "borrowed_cover": false,
+              "candidate_limit": 115200,
+              "coarsen_bias": 0,
+              "coarsened": false,
+              "discarded": 0,
+              "far_plane": 260.0,
+              "instance_bytes": 2119840,
+              "instances": 26498,
+              "jobs": 72,
+              "limit": 128,
+              "max_upload_tiles": 1,
+              "max_upload_us": 96,
+              "packed_byte_limit": 9216000,
+              "pending_tiles": 0,
+              "resident_tiles": 72,
+              "snapshot_owned_bytes": 10388612,
+              "tiles": 72,
+              "triangle_limit": 691200
+            },
+            "focus": "(72.00001, 8.234737, -192.0)",
+            "levels": {
+              "0": 59,
+              "1": 13
+            },
+            "median_viewport_cpu_ms": 1.38900005817413,
+            "median_viewport_gpu_ms": 2.59599995613098,
+            "packed_bytes": 2119840
+          },
+          {
+            "camera": "[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.707107, 0.707107), Z: (-0.0, 0.707107, -0.707107), O: (72.0, 53.23474, -237.0)]",
+            "case": "far-grass-meadow-on",
+            "counts": {
+              "shadow_draws": 536,
+              "shadow_primitives": 102491,
+              "visible_draws": 1935,
+              "visible_primitives": 404241
+            },
+            "diagnostic": {
+              "active_jobs": 0,
+              "borrowed_cover": false,
+              "candidate_limit": 115200,
+              "coarsen_bias": 0,
+              "coarsened": false,
+              "discarded": 0,
+              "far_plane": 260.0,
+              "instance_bytes": 2119840,
+              "instances": 26498,
+              "jobs": 72,
+              "limit": 128,
+              "max_upload_tiles": 1,
+              "max_upload_us": 96,
+              "packed_byte_limit": 9216000,
+              "pending_tiles": 0,
+              "resident_tiles": 72,
+              "snapshot_owned_bytes": 10388612,
+              "tiles": 72,
+              "triangle_limit": 691200
+            },
+            "focus": "(72.00001, 8.234737, -192.0)",
+            "levels": {
+              "0": 59,
+              "1": 13
+            },
+            "median_viewport_cpu_ms": 0.936999976634979,
+            "median_viewport_gpu_ms": 2.65700006484985,
+            "packed_bytes": 2119840
+          },
+          {
+            "camera": "[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.970295, 0.241923), Z: (-0.0, 0.241923, -0.970295), O: (72.0, 20.23474, -242.0)]",
+            "case": "far-grass-meadow-low-baseline",
+            "counts": {
+              "shadow_draws": 793,
+              "shadow_primitives": 165969,
+              "visible_draws": 1910,
+              "visible_primitives": 283543
+            },
+            "diagnostic": {
+              "active_jobs": 0,
+              "borrowed_cover": false,
+              "candidate_limit": 112000,
+              "coarsen_bias": 0,
+              "coarsened": false,
+              "discarded": 0,
+              "far_plane": 260.0,
+              "instance_bytes": 1957120,
+              "instances": 24464,
+              "jobs": 74,
+              "limit": 128,
+              "max_upload_tiles": 1,
+              "max_upload_us": 96,
+              "packed_byte_limit": 8960000,
+              "pending_tiles": 0,
+              "resident_tiles": 70,
+              "snapshot_owned_bytes": 10388612,
+              "tiles": 70,
+              "triangle_limit": 672000
+            },
+            "focus": "(72.00001, 8.234736, -193.8709)",
+            "levels": {
+              "0": 55,
+              "1": 15
+            },
+            "median_viewport_cpu_ms": 1.02499997615814,
+            "median_viewport_gpu_ms": 2.32999992370605,
+            "packed_bytes": 1957120
+          },
+          {
+            "camera": "[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.970295, 0.241923), Z: (-0.0, 0.241923, -0.970295), O: (72.0, 20.23474, -242.0)]",
+            "case": "far-grass-meadow-low-on",
+            "counts": {
+              "shadow_draws": 793,
+              "shadow_primitives": 165969,
+              "visible_draws": 1968,
+              "visible_primitives": 405217
+            },
+            "diagnostic": {
+              "active_jobs": 0,
+              "borrowed_cover": false,
+              "candidate_limit": 112000,
+              "coarsen_bias": 0,
+              "coarsened": false,
+              "discarded": 0,
+              "far_plane": 260.0,
+              "instance_bytes": 1957120,
+              "instances": 24464,
+              "jobs": 74,
+              "limit": 128,
+              "max_upload_tiles": 1,
+              "max_upload_us": 96,
+              "packed_byte_limit": 8960000,
+              "pending_tiles": 0,
+              "resident_tiles": 70,
+              "snapshot_owned_bytes": 10388612,
+              "tiles": 70,
+              "triangle_limit": 672000
+            },
+            "focus": "(72.00001, 8.234736, -193.8709)",
+            "levels": {
+              "0": 55,
+              "1": 15
+            },
+            "median_viewport_cpu_ms": 1.78999996185303,
+            "median_viewport_gpu_ms": 2.36700010299683,
+            "packed_bytes": 1957120
+          }
+        ]
+      },
+      "captures": {
+        "far-grass-meadow-low-baseline.png": "708bb9d65970403b363b3a735d09149f85806d0ebff2031fe9ac3e74855bb32b",
+        "far-grass-meadow-baseline.png": "d1a81fa497cbcbd23d3ed038c177d5dc9400fed8faeea8615cb3164f40ea7466",
+        "far-grass-meadow-low-on.png": "df1b4afef192ef372f19c5649e257f677f8b5237943da3c6c15f3b6fd314db47",
+        "far-grass-meadow-on.png": "6df559397796b50cd1ce157289f48ae6a8b323f8c3ea761f5e541cec1a7e4cb7"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass_meadow03.gd": "3a52b54f91bb52e40901abae819904758636297f25e18e47f271c4caef203196",
+        "/home/llm2x/Documents/EI/local/scratchpad/far-grass-prototype-20261010/far_grass.gd": "dd5cffaf35ea7c0b5e9a7c24dc9f286a5558cfee284175ac6f3f3536bf56c7a6"
+      }
+    },
+    "stone-options01": {
+      "checks": 67,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010/stone-options01",
+      "receipt_sha256": "9006dcef582f97b6a3ebb61e85e793bcc8eaa05853d5119df4f38e4f385734ae",
+      "observations": {
+        "checks": 67,
+        "failures": 0,
+        "rows": [
+          {
+            "area": 0.0496902425365988,
+            "centre": "(3.12, 3.04)",
+            "dense": false,
+            "expected_area": 0.049689943573552,
+            "kind": "contact_geometry",
+            "triangles": 18,
+            "vertices": 24
+          },
+          {
+            "area": 0.0496865852328483,
+            "centre": "(3.12, 3.04)",
+            "dense": true,
+            "expected_area": 0.049689943573552,
+            "kind": "contact_geometry",
+            "triangles": 65,
+            "vertices": 133
+          },
+          {
+            "area": 0.0496895157848485,
+            "centre": "(3.48, 3.49)",
+            "dense": false,
+            "expected_area": 0.049689943573552,
+            "kind": "contact_geometry",
+            "triangles": 16,
+            "vertices": 20
+          },
+          {
+            "area": 0.0496879904094385,
+            "centre": "(3.48, 3.49)",
+            "dense": true,
+            "expected_area": 0.049689943573552,
+            "kind": "contact_geometry",
+            "triangles": 62,
+            "vertices": 132
+          },
+          {
+            "area": 0.0496895895630587,
+            "centre": "(3.93, 3.94)",
+            "dense": false,
+            "expected_area": 0.049689943573552,
+            "kind": "contact_geometry",
+            "triangles": 16,
+            "vertices": 20
+          },
+          {
+            "area": 0.0496890319918748,
+            "centre": "(3.93, 3.94)",
+            "dense": true,
+            "expected_area": 0.049689943573552,
+            "kind": "contact_geometry",
+            "triangles": 68,
+            "vertices": 148
+          },
+          {
+            "all_other_records_exact": true,
+            "kind": "stone_occupancy",
+            "removed_overlapping_plants": 1
+          },
+          {
+            "all_cover_far_triangles": 1472,
+            "all_cover_near_triangles": 3846,
+            "all_cover_vertices": 7284,
+            "chunks": 9,
+            "kind": "geometry_budget",
+            "stones": 6
+          },
+          {
+            "batches": 3,
+            "kind": "contact_budget",
+            "new_textures": 0,
+            "per_stone_nodes": 0,
+            "triangles": 379,
+            "vertices": 847
+          },
+          {
+            "ambient": "(0.5059, 0.5294, 0.4902, 1.0)",
+            "bias": 0.0399999991059303,
+            "cascade": 0.131999999284744,
+            "hour": 9.0,
+            "kind": "actual_game_lighting",
+            "max_distance": 100.0,
+            "normal_bias": 1.20000004768372,
+            "sun": "(1.0, 1.0, 1.0, 1.0)",
+            "terrain_caster_excluded": true,
+            "to_sun": "(0.466228, 0.75184, 0.466228)"
+          },
+          {
+            "difference": {
+              "changed": 6691,
+              "over_2": 5720,
+              "peak": 63
+            },
+            "hour": 9.0,
+            "kind": "contact_toggle"
+          },
+          {
+            "case": "light-09",
+            "chosen": {
+              "anchor": "(525.0, 90.0, 0.328827, 0.5476)",
+              "angle": 1.36831423335725,
+              "cold": false,
+              "colour": "(0.5804, 0.5255, 0.3529, 1.0)",
+              "flower": 0.0,
+              "height": 6.0235773367167,
+              "kind": 5,
+              "normal": "(0.080691, 0.996739, 0.0)",
+              "p": "(262.6712, 90.87643)",
+              "scale": 0.857402265071869,
+              "seed": 0.147304072976112,
+              "snow": false
+            },
+            "chunks": 9,
+            "difference": {
+              "changed": 13374,
+              "over_2": 8053,
+              "peak": 63
+            }
+          }
+        ]
+      },
+      "captures": {
+        "cover-stone-native-after.png": "e6897b423aa30cbc2e26f24c20039bec31211138301b228a68d81906aefc128c",
+        "cover-stone-light-09-after.png": "c6abed20f8cf4a65a7ad41f397f73a8c84625e085f2f152a7f056e26d0cb0adf",
+        "cover-stone-native-before.png": "e6897b423aa30cbc2e26f24c20039bec31211138301b228a68d81906aefc128c",
+        "cover-stone-light-09-restored.png": "15311bd032bbc7952097b9a75305c1d9c6abf3fe9b8a3d7d9ac050f3dce5560f",
+        "cover-stone-light-09-before.png": "15311bd032bbc7952097b9a75305c1d9c6abf3fe9b8a3d7d9ac050f3dce5560f",
+        "cover-stone-options-restored.png": "c6abed20f8cf4a65a7ad41f397f73a8c84625e085f2f152a7f056e26d0cb0adf",
+        "cover-stone-light-09-held.png": "c6abed20f8cf4a65a7ad41f397f73a8c84625e085f2f152a7f056e26d0cb0adf",
+        "cover-stone-light-09-contact-off.png": "0144cdd294c7693646d182604c2abb81c39429b97ddbd099f9f5fdefdcb057cf"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/beach_options08.gd": "f95f849068161b762c141a782c49100d5ffe376dabd55b44626a16173f5734ed",
+        "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/base_production_cover.gd": "302750636bd0005d562c3abed200586afc7f59d56ad838e97991b02cc2387246",
+        "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/baseline_biome_cover.gd": "13be2a5b28611a87995329924d6ef2ca1f091ace8f6d1b3fd5812db4b886cd4a",
+        "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/baseline_biome_cover_mesh.gd": "d0f6ed26116101978ec25f2ed136b7262963e635d59d1930b61b1b62942c9e7f",
+        "/home/llm2x/Documents/EI/local/scratchpad/beach-pebbles-20261010/lighting_held_mesh.gd": "fae4ec5eea599902574565490236d5eda4b35f484996da4566c874a5b19310e9"
+      }
+    }
+  },
+  "packages": {
+    "linux-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.1-linux-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.1-linux-x86_64.tar.gz",
+      "archive_bytes": 36508712,
+      "archive_sha256": "b0aa0c4a57dc5159460cf1c0ce97e46ffa45ff427680d719d5f730d06b015c4e",
+      "archive_readback_exact": true,
+      "files": {
+        "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+        "SHA256SUMS.txt": "b61798f569df6aaf5e49f7c9acf1d6caed447e4015fc45bcda8ad2961578307a",
+        "BUILD-INFO.json": "d2e1a81b08f38c264781f28e74ab06d5d5261899cf23bbca90f913c2ca31adac",
+        "Play.sh": "75835f261e9acd2b45973152790cabf255b05b649f0f059997c1de9ba4e3ec2b",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "README.txt": "7ed77b9717f32dc2c4da3dfa9a3c2b696e80a206a18f7b3c4c526c12203a3283",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    },
+    "windows-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.1-windows-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.1-windows-x86_64.zip",
+      "archive_bytes": 37717429,
+      "archive_sha256": "8c5fb3fff3fdfc8de2d9767b5ab5c1fab481f21e45e678a7fe3f360f10790b5a",
+      "archive_readback_exact": true,
+      "files": {
+        "SHA256SUMS.txt": "c7ab76c6fe9d140393c90938e6a5a043117aefd9f4267b4bbf4226f5ef258a3d",
+        "BUILD-INFO.json": "a2a6b753e66cf01c6faefcb053c54e2a71eaecccdb1770e17fc5cc94f001d5e6",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "libterrain_search.dll": "14906b040d4b6a5e1e217b9bfb21214f48700b6709163be584cc98e584f45106",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+        "README.txt": "ede46ee96acd09ad67593e9d7cddad9e87b9e2309faec6aef9caabda36712407",
+        "CursedLands.exe": "a42bb1bd94afc58726b6eb5bb09619a66a6cae5f28c71dcc0c2f4875f8462354",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    }
+  },
+  "limits": [
+    "Windows PE/source/archive checks only; no Windows execution or performance claim.",
+    "Linux Forward+ checks use separate rendering thread and isolated profiles; foreign processes may overlap.",
+    "The original-multiplayer fixture uses public quest/travel commands, not a walked exit route.",
+    "The unfinished V1 terrain-contact experiment is excluded; broader Natural/cloud performance and full routes remain open."
+  ],
+  "origin_receipt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010/package.json",
+    "sha256": "2632b92915e6e624342cd9b1f8b03023302f7f0f2960e740d5e42e20a0c1c3bc"
+  },
+  "export_summary": {
+    "source_commit": "4a7632def87daec70858407c19f3ba6ba846447f",
+    "committed_game_files_exact_except_display_version": true,
+    "compiled_scripts": 264,
+    "pck_resources": 680,
+    "linux_windows_pack_byte_identical": true,
+    "native_and_engine_source_unchanged_since": "e2e7e0af17d0a7cd7f7de20eea2e910e33038204",
+    "windows_pe_audit": {
+      "CursedLands.exe": {
+        "architecture": "PE x86_64",
+        "imports": [
+          "ADVAPI32.dll",
+          "AVRT.dll",
+          "bcrypt.dll",
+          "CRYPT32.dll",
+          "dwmapi.dll",
+          "DWrite.dll",
+          "GDI32.dll",
+          "HID.DLL",
+          "IMM32.dll",
+          "IPHLPAPI.DLL",
+          "KERNEL32.dll",
+          "api-ms-win-core-processthreads-l1-1-3.dll",
+          "api-ms-win-security-base-l1-2-1.dll",
+          "api-ms-win-security-lsalookup-l2-1-0.dll",
+          "msvcrt.dll",
+          "ntdll.dll",
+          "ole32.dll",
+          "OLEAUT32.dll",
+          "SHCORE.dll",
+          "SHELL32.dll",
+          "SHLWAPI.dll",
+          "USER32.dll",
+          "WINMM.dll",
+          "WS2_32.dll",
+          "WSOCK32.dll"
+        ]
+      },
+      "libterrain_search.dll": {
+        "architecture": "PE x86_64",
+        "imports": [
+          "KERNEL32.dll",
+          "msvcrt.dll"
+        ]
+      }
+    }
+  },
+  "recipes": {
+    "build.py": "81833afba7c64a7a514347edd59606ab31244a884de483a04b4578b690a538cc",
+    "package.py": "219d90872415ee3435f38162d41ff62564476cf54b6526b9810ccddc396db5e7",
+    "run.py": "e27e3e7f14ce9f4068341603634ae70b8aa83fe40ab0f18a8558990ae962ca5f",
+    "suite.py": "10ef1f4c58a22ac60da24a452199f3f0e7f2fd3621f7f07228cb88bd3f8e99ba"
+  }
+}
