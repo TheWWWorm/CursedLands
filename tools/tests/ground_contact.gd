@@ -23,6 +23,13 @@ func terrain_fixture() -> EITerrain:
 	terrain.heights.resize(33 * 33); terrain.heights.fill(0.0)
 	terrain.land_xy.resize(33 * 33); terrain.land_xy.fill(Vector2.ZERO)
 	terrain.land_n.resize(33 * 33); terrain.land_n.fill(Vector3.UP)
+	terrain.land_tile.resize(16 * 16); terrain.land_tile.fill(0)
+	terrain.tile_types.resize(1); terrain.tile_types.fill(0)
+	terrain.water.resize(32 * 32); terrain.water.fill(-100.0)
+	terrain.water_base = terrain.water.duplicate()
+	terrain.ground.resize(32 * 32); terrain.ground.fill(0)
+	terrain.liquid_ground.resize(32 * 32); terrain.liquid_ground.fill(0)
+	terrain.water_mat.resize(32 * 32); terrain.water_mat.fill(0)
 	# The production contact data reads the source sector arrays, including
 	# ArrayMesh normal packing and sector-owned light input bytes.
 	var sector := EITerrainSector.new(); sector.name = "Sector_0_0"
@@ -88,6 +95,11 @@ func ownership() -> void:
 	check(small.material_override != contact, "small parts keep proportionate band")
 	check(contact.get_shader_parameter("contact_extent") == Vector3(2, 2, 0), "exact mesh bounds passed to shader")
 	check(contact.get_shader_parameter("albedo_tex") == base.get_shader_parameter("albedo_tex"), "original atlas shared")
+	if Portability.compatibility():
+		check(owner.surface.metadata != null and owner.surface.normals == null and owner.surface.light_inputs == null,
+			"Compatibility allocates one metadata array without duplicate normal/light textures")
+		check(contact.get_shader_parameter("contact_data") == owner.surface.metadata.texture,
+			"world contact materials share their metadata array")
 	var terrain2 := terrain_fixture(); add_child(terrain2)
 	var owner2 := owner_fixture(terrain2)
 	var other := object_fixture(terrain2, base); owner2.register(other.get_parent())
@@ -131,6 +143,7 @@ func ownership() -> void:
 	terrain._land_mat.set_shader_parameter("level", levels); owner.refresh_parameters()
 	check(one.material_override.get_shader_parameter("level") == levels, "water change reaches active fade")
 	var old_field: WeakRef = weakref(owner.surface.vertices)
+	var old_metadata: WeakRef = weakref(owner.surface.metadata.texture) if owner.surface.metadata else null
 	GameData.options["gfx_ground_contact"] = 0
 	owner.refresh()
 	check(one.get_meta("cam_fade_mat") == base and two.material_override == base and small.material_override == base, "option off restores exact originals")
@@ -143,6 +156,7 @@ func ownership() -> void:
 	check(not CameraFade._derived.has(contact) and not CameraFade._shaders.has(contact.shader), "option off removes world materials from global fade cache")
 	contact = null
 	check(old_field.get_ref() == null, "option off releases static field")
+	check(old_metadata == null or old_metadata.get_ref() == null, "option off releases packed static metadata")
 	fade._set_alpha(0, 0.0)
 	check(one.material_override == base, "fade completion restores original while off")
 	GameData.options["gfx_ground_contact"] = 1
@@ -151,10 +165,12 @@ func ownership() -> void:
 	check(relabelled.material_override == labels and label_after_registration.material_override == labels, "re-enabling contact leaves relinquished menu materials intact")
 	fade._set_alpha(0, 0.4)
 	old_field = weakref(owner.surface.vertices)
+	old_metadata = weakref(owner.surface.metadata.texture) if owner.surface.metadata else null
 	terrain.free()
 	check(not CameraFade._derived.has(contact) and not CameraFade._shaders.has(contact.shader), "world removal clears global derived cache")
 	contact = null
 	check(old_field.get_ref() == null, "world removal releases static textures")
+	check(old_metadata == null or old_metadata.get_ref() == null, "world removal releases packed static metadata")
 	terrain2.free()
 	var cfg := ConfigFile.new()
 	check(GameData.ground_effect_defaults(cfg).gfx_ground_contact == 0, "unproven first-use cost keeps desktop opt-in")
@@ -241,10 +257,11 @@ func render_bands() -> void:
 	check(compare(off, tiny, Rect2i(2, 2, 252, 236)).changed == 0, "small props restrict contact reach")
 	contact.set_shader_parameter("contact_extent", Vector3(2, 2, 0))
 	# Raising water above the ground removes the dry-ground projection.
-	terrain._land_mat.set_shader_parameter("terrain_cells", texture(Color(0.5, 0, 0, 0), Image.FORMAT_RGBAF, 32))
+	var water_levels := PackedFloat32Array(); water_levels.resize(64); water_levels[0] = 100.5
+	terrain._land_mat.set_shader_parameter("level", water_levels)
 	owner.refresh_parameters()
 	check(compare(off, await capture(view), Rect2i(2, 2, 252, 252)).changed == 0, "underwater band suppressed")
-	terrain._land_mat.set_shader_parameter("terrain_cells", texture(Color(-100, 0, 0, 0), Image.FORMAT_RGBAF, 32))
+	water_levels[0] = 0.0; terrain._land_mat.set_shader_parameter("level", water_levels)
 	owner.refresh_parameters()
 	# Alpha cutouts must keep the same holes at the contact line and above it.
 	var cutout := Image.create(8, 8, false, Image.FORMAT_RGBA8)

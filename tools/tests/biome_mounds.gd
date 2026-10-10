@@ -181,7 +181,7 @@ func run() -> void:
 	var p: Vector2=chosen.record.p; geometry(t,chosen.key,chosen.data); install(d,chosen)
 	rows.append({"case":"chosen","zone":id,"record":str(chosen.record),"key":str(chosen.key)})
 	check(d._mound_material.get_shader_parameter("query_tracks")==d.soft_ground.shared_field().texture,"mounds share the existing track texture")
-	check(d._cover_surface.normals==null,"mounds do not allocate contact normals")
+	check(d._cover_surface.normals==null and d._cover_surface.metadata==null,"mounds do not allocate contact normals or metadata")
 	var blocked := [{"box":AABB(Vector3(p.x-0.01,0,-p.y-0.01),Vector3(0.02,200,0.02)),"inverse":Transform3D.IDENTITY}]
 	var rejected := d._cover_field.mounds.build(d._cover_field,chosen.key,blocked)
 	check(rejected.records.all(func(r: Dictionary): return r.p!=p),"full mound footprint excludes a thin prop")

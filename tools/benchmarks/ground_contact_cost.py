@@ -30,7 +30,8 @@ def engines(exclude=None):
                 continue
             args = (entry.parent / "cmdline").read_bytes().split(b"\0")
             found.append({"pid": pid, "executable": str(name), "headless": b"--headless" in args,
-                          "command": [arg.decode(errors="replace") for arg in args if arg]})
+                          "command": [arg.decode(errors="replace") for arg in args if arg],
+                          "proc_stat": (entry.parent / "stat").read_text()})
         except (OSError, RuntimeError):
             pass
     return found
@@ -112,8 +113,18 @@ def main():
             proc = subprocess.Popen(command, stdout=stream, stderr=subprocess.STDOUT, env=env)
             while proc.poll() is None:
                 time.sleep(0.25)
-                observations.append({"seconds": time.monotonic() - start, "processes": engines(proc.pid)})
                 current = log.read_text()
+                current_engines = engines(proc.pid)
+                for process in current_engines:
+                    stat = process["proc_stat"].rsplit(")", 1)[1].split()
+                    # The launcher briefly probes the renderer in its own
+                    # same-command child. Retain it in the raw evidence, but
+                    # do not classify it as another concurrent workload.
+                    process["own_pre_renderer_child"] = (
+                        int(stat[1]) == proc.pid and process["command"] == command
+                        and "Using Device:" not in current)
+                observations.append({"seconds": time.monotonic() - start, "launcher_pid": proc.pid,
+                                     "processes": current_engines})
                 if "SCRIPT ERROR:" in current or time.monotonic() - start > args.timeout:
                     reason = "script error" if "SCRIPT ERROR:" in current else "timeout"
                     proc.terminate()
@@ -139,7 +150,8 @@ def main():
             errors.append("Missing or unexpected captures")
         if not result or result.get("failures") or len(result.get("rows", [])) != 2:
             errors.append("Incomplete or failed fixture result")
-        clean = not any(item["processes"] for item in observations)
+        clean = not any(any(not p.get("own_pre_renderer_child", False) for p in item["processes"])
+                        for item in observations)
         row = {"seconds": elapsed, "return_code": proc.returncode, "termination_reason": reason,
                "errors": errors, "cache_before": before, "cache_after": cache_state(root),
                "timing_qualified_against_other_engines": clean, "process_observations": observations,

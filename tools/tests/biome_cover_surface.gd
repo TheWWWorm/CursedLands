@@ -273,7 +273,7 @@ func run() -> void:
 	var soft := d.soft_ground
 	if OS.get_cmdline_user_args().has("--surface-script-mesh"): soft._native_mesh=false
 	check(d._cover_surface==t.ground_surface_data(),"cover shares the map geometry resource")
-	check(d._cover_surface.normals==null,"cover alone does not build contact-light normals or bounds")
+	check(d._cover_surface.normals==null and d._cover_surface.metadata==null,"cover alone does not build contact-light normals or metadata")
 	check(d._cover_material.get_shader_parameter("query_tracks")==soft.shared_field().texture,"cover uses the existing deformation field")
 	var field_id := soft.field.texture.get_rid()
 	var camera := Camera3D.new(); view.add_child(camera); camera.position=focus+Vector3(2.7,2.8,3.5); camera.look_at(focus); camera.current=true
@@ -352,7 +352,7 @@ func run() -> void:
 	var data := t.ground_surface_data(); var vertex_id := data.vertices.get_rid()
 	var full := ShaderMaterial.new(); full.shader=Shader.new(); full.shader.code="shader_type spatial;"
 	data.bind(full)
-	check(data.normals!=null and data.vertices.get_rid()==vertex_id,"contact upgrade preserves the cover vertex texture RID")
+	check((data.normals!=null or data.metadata!=null) and data.vertices.get_rid()==vertex_id,"contact upgrade preserves the cover vertex texture RID")
 	check(difference(base,await snap(view,"contact-upgrade")).changed==0,"contact data upgrade leaves attached cover identical")
 	full=null; data=null
 	# Real water-level changes rebuild placement and rebind the surviving track

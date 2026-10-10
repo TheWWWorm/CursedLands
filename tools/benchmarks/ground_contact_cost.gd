@@ -54,7 +54,12 @@ func measure(view: SubViewport, owner: GroundContact, label: String, enabled: bo
 		"surface_texture_bytes":0}
 	if owner.surface:
 		# Readback is after sampling and is excluded from all measured phases.
-		result.surface_texture_bytes = owner.surface.vertices.get_image().get_data().size() + owner.surface.normals.get_image().get_data().size()
+		result.surface_texture_bytes = owner.surface.vertices.get_image().get_data().size()
+		var metadata: Variant = owner.surface.get("metadata")
+		if metadata:
+			result.surface_texture_bytes += metadata.bytes
+		else:
+			result.surface_texture_bytes += owner.surface.normals.get_image().get_data().size() + owner.surface.light_inputs.get_image().get_data().size()
 	if capture:
 		var pixels := view.get_texture().get_image(); pixels.convert(Image.FORMAT_RGBA8)
 		check(pixels.save_png("user://ground-contact-cost-" + label + ".png") == OK, label + " capture saved")

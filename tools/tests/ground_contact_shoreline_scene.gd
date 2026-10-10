@@ -67,22 +67,31 @@ func light_case(mode: String,view: SubViewport,object: Node3D,owner: GroundConta
 	await super.light_case(mode,view,object,owner,sun,point,anchor)
 	GameData.options.gfx_ground_contact=1;owner.refresh()
 	var on := await capture(view,"shore-inputs-"+mode+"-on")
-	var saved := {};var zero: ImageTexture
+	var saved := {};var zero: Texture
+	var parameter := "contact_data" if target_meshes(object)[0].material_override.get_shader_parameter("contact_data") != null else "query_light_inputs"
 	for mesh in target_meshes(object):
 		var material := mesh.material_override as ShaderMaterial
 		if saved.has(material):continue
-		var texture := material.get_shader_parameter("query_light_inputs") as Texture2D
+		var texture := material.get_shader_parameter(parameter) as Texture
 		check(texture!=null,"shore contact binds native baked vertex inputs")
 		if texture==null:continue
 		if zero==null:
-			var pixels := Image.create(texture.get_width(),texture.get_height(),false,Image.FORMAT_RGBA8)
-			pixels.fill(Color(0,0,0,0));zero=ImageTexture.create_from_image(pixels)
-		saved[material]=texture;material.set_shader_parameter("query_light_inputs",zero)
+			if texture is Texture2DArray:
+				# GLES layer readback clamps floats into RGBA8. Recreate from
+				# retained CPU sources so normals/heights keep all their bits.
+				var images: Dictionary = owner.surface.call("_metadata_images", owner.terrain)
+				images.query_light_inputs.fill(Color(0,0,0,0))
+				var pool: RefCounted = load("res://src/game/fx/ground_contact_data.gd").new()
+				pool.build(images); zero=pool.texture
+			else:
+				var pixels := Image.create(texture.get_width(),texture.get_height(),false,Image.FORMAT_RGBA8)
+				pixels.fill(Color(0,0,0,0));zero=ImageTexture.create_from_image(pixels)
+		saved[material]=texture;material.set_shader_parameter(parameter,zero)
 	var control := await capture(view,"shore-inputs-"+mode+"-disabled")
 	var band := difference(on,control,"band");var outside := difference(on,control,"outside_band")
 	if mode!="local-light":check(band.over_two_bytes>8,mode+" native shoreline inputs visibly affect bridge band "+str(band))
 	check(outside.changed_pixels==0,mode+" shoreline inputs change only the contact band")
-	for material: ShaderMaterial in saved:material.set_shader_parameter("query_light_inputs",saved[material])
+	for material: ShaderMaterial in saved:material.set_shader_parameter(parameter,saved[material])
 	check(difference(on,await capture(view,"shore-inputs-"+mode+"-restored")).changed_pixels==0,mode+" shoreline input restoration exact")
 	rows.append({"light":"shore-inputs-"+mode,"band":band,"outside_band":outside,"scope":"Ablates only copied-ground packed vertex E/k; native object/terrain data and all shader code unchanged."})
 	GameData.options.gfx_ground_contact=0;owner.refresh()

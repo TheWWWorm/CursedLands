@@ -1,0 +1,899 @@
+{
+  "date": "2026-10-10",
+  "base_commit": "7e7dd36f40815f0c0e5133a0768dd67b05ce6048",
+  "decision": "Fit Compatibility ground contact plus soft ground, rain and cloud shadow variants within the tested Adreno 650 sampler budget. Preserve exact terrain/contact values and the original Forward+/Mobile paths. V1 remains default-off.",
+  "production_sha256": {
+    "game/src/ei/terrain.gd": "876cf11c05d3ea0d3f3507989c4e368f55b38a4308b135196451a34d25b4e5d2",
+    "game/src/game/gfx.gd": "08cb8e2fddf4221bf8a322630532adf8a39c56f8588a514478fb50cee77b3ffb",
+    "game/src/game/fx/ground_contact.gd": "3b920dac4ddc7ea9632c5a57e0cf8de5f7e6c5b67cfd64e05868e3e42bd8fa28",
+    "game/src/game/fx/ground_surface_data.gd": "74bca835fa9ca7c809212a03b37eaac08463e0fdc04b2768e1181111361196b3",
+    "game/src/game/fx/ground_contact_data.gd": "9f9a9337a0c06c597ec588da5ae3f12bb716084f402a7b98b4bf2d5306dd1366",
+    "game/src/game/fx/ground_contact_data.gd.uid": "e63dec58acf964c05327774379950e3df099f219b24a764806134633f5e410a7"
+  },
+  "implementation": [
+    "One world-owned RGBA32F Texture2DArray holds query vertices, decoded native normals, packed native vertex light inputs, original tile/cell data and admitted cliff/transition data. Integer fields retain their original row-major order in consecutive pages.",
+    "Array layers use exactly the original terrain_cells dimensions, preserving hardware normalized-coordinate nearest filtering. A floor(uv*size) prototype disagreed at NVIDIA boundaries and was rejected.",
+    "Static images come from retained CPU source arrays, not GLES array readback, which clamps float layers to RGBA8 in this runtime. Original water initialization order and dynamic roof/track textures are preserved.",
+    "Remove the unused sector-only soft_sample function and soft_track_texture declaration from contact programs. Actual object/foliage programs use 13, 13 and 12 custom/global samplers, leaving native shadow unit 13 available on the tested Android renderer.",
+    "Power-of-two cell dimensions specialize integer page addressing to exact masks/shifts. Other dimensions keep the general division path. The global shader cache keeps distinct raw sources, with per-map shifts bound as uniforms.",
+    "Natural/cliff changes rebuild the same shared array resource; fade copies and world/option cleanup retain their ownership rules. Cover-only consumers keep the existing lazy geometry-only path."
+  ],
+  "private_build": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/candidate05",
+    "manifest": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/candidate05/build.json",
+      "sha256": "920fc5547cc86e3f6cb795fcf07141a0eccbea0f6dfb0f1881de099d3fc9ccbb"
+    },
+    "pack": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/candidate05/CursedLands.pck",
+      "sha256": "ca57a24a641321f20ff62bd71cf52b328a85e520233fcb6d90eb34865d72dd1a"
+    },
+    "exact_canonical_runtime_files": 702,
+    "runtime_origin": "Unchanged .8 Linux runtime/native helper. No delivery archive or APK created."
+  },
+  "desktop_validation": [
+    {
+      "label": "bitpage-metadata-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-metadata-gl01/run.json",
+        "sha256": "2a6002bce3898cfae8bf03b84c822bf667687ba7b60d68af924d7b0f10344d55"
+      },
+      "return_code": 0,
+      "errors": [],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact_metadata.gd": "6f122b8ee5c83c130d68c83e5a9fecb5707eaa5efcb476aadbe9f47c61037f39"
+      },
+      "results": [
+        {
+          "file": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-metadata-gl01/contact-sampler-budget.json",
+            "sha256": "6230198d1382f0fbb694223641a56281f0fb6f257ca005db09a1a94222d81c4e"
+          },
+          "checks": 24,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "label": "bitpage-owner-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-owner-gl01/run.json",
+        "sha256": "e3ba1879f78da46c35e56454ce3cdfaa88dbdbe7aa627c8b44b9c442182415a7"
+      },
+      "return_code": 0,
+      "errors": [],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact.gd": "59468e5746459735ac0c4ffaed73463d296f475ed1e870d52faacc80bbb8c41c"
+      },
+      "results": [
+        {
+          "file": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-owner-gl01/ground-contact-gl_compatibility.json",
+            "sha256": "4bbb2cefca0af6f2ad4ba72b849f57424e9d3081731f9cb93b9d6f785f88ff9e"
+          },
+          "checks": 47,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "label": "bitpage-owner-forward01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-owner-forward01/run.json",
+        "sha256": "250b0f3c6712a04fca8b2428f385888c3a6cf2c44d8f69fe28c8255e3cf8b71f"
+      },
+      "return_code": 0,
+      "errors": [],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact.gd": "59468e5746459735ac0c4ffaed73463d296f475ed1e870d52faacc80bbb8c41c"
+      },
+      "results": [
+        {
+          "file": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-owner-forward01/ground-contact-forward_plus.json",
+            "sha256": "979e8597cbf48710d5fefc26af81d401008ab15b6aaceb8f68799336a08e2d51"
+          },
+          "checks": 45,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "label": "bitpage-owner-mobile01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-owner-mobile01/run.json",
+        "sha256": "3911ecb7098638d13840e2cf1a4912d563df6c8314bc3b9e593455bbf54e95c4"
+      },
+      "return_code": 0,
+      "errors": [],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact.gd": "59468e5746459735ac0c4ffaed73463d296f475ed1e870d52faacc80bbb8c41c"
+      },
+      "results": [
+        {
+          "file": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-owner-mobile01/ground-contact-mobile.json",
+            "sha256": "f61804253bf2ee4edb8b6e75d16ccfe242bb618f3c95003cafed2bc2eac87513"
+          },
+          "checks": 46,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "label": "bitpage-map-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-map-gl01/run.json",
+        "sha256": "0af37cc313aa84c20654e97a5d96c2f717417f689496c7a10f1289a9996bc9bd"
+      },
+      "return_code": 0,
+      "errors": [],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/ground_contact.gd": "1f2bcd53cb9cd04cb891f4468d83300a3c2ded6ef8ab47d984b8e0edc2c9de09"
+      },
+      "results": [
+        {
+          "file": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-map-gl01/ground-contact-map-gl_compatibility.json",
+            "sha256": "13c7d95addb18f4ea673ec1b77d6ffdd2cc54db1cdd82e4712cd0028c2fcefd2"
+          },
+          "checks": 14,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "label": "bitpage-relief-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-relief-gl01/run.json",
+        "sha256": "b35e16d93c25e71709a1963d2a33252fb97475ea9e09be0ebc064758e1b4999d"
+      },
+      "return_code": 1,
+      "errors": [
+        "FAIL sun contact leaves upper and non-band pixels exact",
+        "FAIL local-light painted perturbation affects lit wall-root pixels"
+      ],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact_relief_scene.gd": "538296456d76129d751bf8b4a77a08867a3515e38ab821d09c0cba83df7e11b2"
+      },
+      "results": [
+        {
+          "file": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-relief-gl01/ground-contact-relief-scene.json",
+            "sha256": "bfa1c251418c7f439a2d50495de11825616fca1857c8d5683bbb4a68537aad08"
+          },
+          "checks": 64,
+          "failures": 2
+        }
+      ]
+    },
+    {
+      "label": "bitpage-tracks-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-tracks-gl01/run.json",
+        "sha256": "b7286e5977e3a8940391a3a5891c5cfdc41e49fe0b0b1361d7827326c66a4da3"
+      },
+      "return_code": 0,
+      "errors": [],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact_tracks_scene.gd": "c4b85b4ccbb95e884e25734a01a1182ecb8010187c664b28f8d1f92253cc0245",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact_relief_scene.gd": "538296456d76129d751bf8b4a77a08867a3515e38ab821d09c0cba83df7e11b2"
+      },
+      "results": [
+        {
+          "file": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-tracks-gl01/ground-contact-relief-scene.json",
+            "sha256": "5931060637cfefecc65728a09f1f7852ac61a10339bb13299cfa96f51793d437"
+          },
+          "checks": 112,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "label": "bitpage-shore-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-shore-gl01/run.json",
+        "sha256": "c0928888e027f6ee1466a9dc90adadac41de031894761286ae0d49c57a327eea"
+      },
+      "return_code": 0,
+      "errors": [],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact_shoreline_scene.gd": "5807f4f07ec1c6c7f5bb73de29eaa9f5a6a067a52f7a9acfca2345a2a420b102",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact_relief_scene.gd": "538296456d76129d751bf8b4a77a08867a3515e38ab821d09c0cba83df7e11b2"
+      },
+      "results": [
+        {
+          "file": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-shore-gl01/ground-contact-relief-scene.json",
+            "sha256": "fc33196bbfa19132e754cdc61ad3ea647b2dd2b02e9521c6353d568d504960ec"
+          },
+          "checks": 72,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "label": "bitpage-composed-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-composed-gl01/run.json",
+        "sha256": "ca91cd6f197bede17f76e81a724fcd0a57754776d5f4b13ab58607df8badbba2"
+      },
+      "return_code": 1,
+      "errors": [
+        "FAIL sun contact leaves upper and non-band pixels exact",
+        "FAIL local-light painted perturbation affects lit wall-root pixels"
+      ],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact_relief_scene.gd": "538296456d76129d751bf8b4a77a08867a3515e38ab821d09c0cba83df7e11b2"
+      },
+      "results": [
+        {
+          "file": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-composed-gl01/ground-contact-relief-scene.json",
+            "sha256": "d113ca36a6f307c1b140b73700a6022fe478eeceaa6c584fdccd73fc74d21d55"
+          },
+          "checks": 66,
+          "failures": 2
+        }
+      ]
+    },
+    {
+      "label": "paged-cover-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/paged-cover-gl01/run.json",
+        "sha256": "7088c9b8b8b6ddfd6a8d282b5cd667b9a3d9c4803f9bce8d29a672b803311b0d"
+      },
+      "return_code": 0,
+      "errors": [],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/biome_cover_surface.gd": "3c670fa08cc8bcab7e84dc92600ae084dc9f163e5fb0896b8018fa2e61546fd2"
+      },
+      "results": [
+        {
+          "file": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/paged-cover-gl01/biome-cover-surface.json",
+            "sha256": "4042463e3d9f488fb8f8dc31a09b6ee35d8959f7c4cf143af6bdc1f4ab8f2a54"
+          },
+          "checks": 12345,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "label": "paged-water-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/paged-water-gl01/run.json",
+        "sha256": "04b67995dccfdb5cd840685a99a301e6ead9ff8e59ee739f13a7c1baaf07fdd2"
+      },
+      "return_code": 0,
+      "errors": [],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_surface.gd": "e3c45cabe23ee31a5102e9c244d06d7937298a7afe744832a9a9725dce210183"
+      },
+      "results": [
+        {
+          "file": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/paged-water-gl01/water-surface.json",
+            "sha256": "ae88c1eb40479decdffcd0d2104ec2942e0bf256e72c00b260df1b894f7f1dfa"
+          },
+          "checks": 23,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "label": "paged-options-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/paged-options-gl01/run.json",
+        "sha256": "a951ab78bb72aeedae374ca0c89bd40cc65387dae62e100ba75aee8ddcd5b199"
+      },
+      "return_code": 0,
+      "errors": [],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/material_shader_options.gd": "8116d2bc50d86ef41f8726ad9ca4825d21f393c231696fcc38a027a520a3a70c"
+      },
+      "results": [
+        {
+          "log": {
+            "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/paged-options-gl01/run.log",
+            "sha256": "abca574f024db2d56b7bed582363728ad50a62aa0616eb6cba2d5d83ec4bdafe"
+          },
+          "checks": 416,
+          "failures": 0
+        }
+      ]
+    }
+  ],
+  "validation_build_scope": "Final candidate05 runs: bitpage metadata, ownership, scene equivalence and cost fixtures. Inherited candidate04 runs: cover/water lifecycle and 126 generic shader variants, whose geometry-only and unmarked general-address programs are unchanged by the power-of-two contact specialization.",
+  "desktop_image_equivalence": [
+    {
+      "baseline": "baseline-relief-gl01",
+      "candidate": "bitpage-relief-gl01",
+      "exact_png_pairs": 21,
+      "mismatches": [],
+      "baseline_run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/baseline-relief-gl01/run.json",
+        "sha256": "7a7ec8568bf34db47a202e8036ca8a71529add556adcaf32dd4ac892ea28429b"
+      },
+      "candidate_run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-relief-gl01/run.json",
+        "sha256": "b35e16d93c25e71709a1963d2a33252fb97475ea9e09be0ebc064758e1b4999d"
+      }
+    },
+    {
+      "baseline": "baseline-tracks-gl01",
+      "candidate": "bitpage-tracks-gl01",
+      "exact_png_pairs": 24,
+      "mismatches": [],
+      "baseline_run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/baseline-tracks-gl01/run.json",
+        "sha256": "41ba645e84907f3d330da38c31534292aac653817137fbf3bb2df3b26a9b4188"
+      },
+      "candidate_run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-tracks-gl01/run.json",
+        "sha256": "b7286e5977e3a8940391a3a5891c5cfdc41e49fe0b0b1361d7827326c66a4da3"
+      }
+    },
+    {
+      "baseline": "baseline-shore-gl02",
+      "candidate": "bitpage-shore-gl01",
+      "exact_png_pairs": 24,
+      "mismatches": [],
+      "baseline_run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/baseline-shore-gl02/run.json",
+        "sha256": "6893659d1549208617d8b9ba516090ac183372855a734fa2787914353c199758"
+      },
+      "candidate_run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-shore-gl01/run.json",
+        "sha256": "c0928888e027f6ee1466a9dc90adadac41de031894761286ae0d49c57a327eea"
+      }
+    },
+    {
+      "baseline": "baseline-map-gl02",
+      "candidate": "bitpage-map-gl01",
+      "exact_png_pairs": 10,
+      "mismatches": [],
+      "baseline_run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/baseline-map-gl02/run.json",
+        "sha256": "5c6c9dcc2a6515c9cb7e05dc86ea00864d458ae6a72672aa8410d90d4373cf1b"
+      },
+      "candidate_run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-map-gl01/run.json",
+        "sha256": "0af37cc313aa84c20654e97a5d96c2f717417f689496c7a10f1289a9996bc9bd"
+      }
+    },
+    {
+      "baseline": "baseline-composed-gl01",
+      "candidate": "bitpage-composed-gl01",
+      "exact_png_pairs": 21,
+      "mismatches": [],
+      "baseline_run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/baseline-composed-gl01/run.json",
+        "sha256": "1daf3226343c5b0b198010ddb21df74e1f522a0df51d382477d1b05fac3b6a78"
+      },
+      "candidate_run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-composed-gl01/run.json",
+        "sha256": "ca91cd6f197bede17f76e81a724fcd0a57754776d5f4b13ab58607df8badbba2"
+      }
+    }
+  ],
+  "retained_strict_failures": {
+    "per_relief_run": [
+      "sun upper/non-band pixel: peak 1/255",
+      "local-light painted perturbation positive control: peak 2/255 does not exceed the strict threshold"
+    ],
+    "scope": "Both ordinary and composed Natural fixtures retain exactly the same two failures as their baselines, with every capture identical. Thresholds were not relaxed."
+  },
+  "android": {
+    "device": "Retroid Pocket 5, Android 33, Adreno 650",
+    "package": "org.cursedlands.performance",
+    "scope": "Production shader conversion, array builder and CPU factories substituted into the existing private QA app. Not full-current-source Android acceptance; no APK built or installed. Normal installed game untouched. Held map views only, no campaign playthrough.",
+    "runs": [
+      {
+        "label": "bitpage-metadata-device01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-metadata-device01/run.json",
+          "sha256": "d74d6848da082783d20332f6bba8b7dab4cb9f691e90b04230cb3ef39075a6bd"
+        },
+        "result": {
+          "adapter": "Adreno (TM) 650",
+          "cases": [
+            {
+              "bytes": 17136,
+              "dimensions": "(17, 9)",
+              "power_of_two_pages": false
+            },
+            {
+              "bytes": 16384,
+              "dimensions": "(16, 8)",
+              "power_of_two_pages": true
+            }
+          ],
+          "checks": 24,
+          "failures": 0,
+          "mismatches": [],
+          "renderer": "gl_compatibility"
+        },
+        "restored": true,
+        "private_process_stopped": true,
+        "sampler_counts": []
+      },
+      {
+        "label": "bitpage-detailed-device01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-detailed-device01/run.json",
+          "sha256": "c85b39385a017f1e3c50fd3d7b0292cd1daebb2edfe046c3e52922e5592462cb"
+        },
+        "result": {
+          "active_cloud_state": [
+            0.5,
+            0.28,
+            160.0,
+            1.0
+          ],
+          "active_rain": 0.9,
+          "active_wetness": 0.8,
+          "adapter": "Adreno (TM) 650",
+          "checks": 34,
+          "failures": 0,
+          "merged": [
+            {
+              "cliffs": 0,
+              "fields": 1,
+              "indices": "{ \"query_vertices\": 0, \"query_normals\": 2, \"query_light_inputs\": 4, \"terrain_tiles\": 6, \"terrain_cells\": 7 }",
+              "label": "bz2g-near-on",
+              "materials": 99,
+              "original_bytes": 942416,
+              "packed_bytes": 2097152,
+              "programs": 3,
+              "sizes": "{ \"query_vertices\": (129, 129), \"query_normals\": (132, 132), \"query_light_inputs\": (132, 132), \"terrain_tiles\": (64, 64), \"terrain_cells\": (128, 128) }",
+              "transitions": 0
+            },
+            {
+              "cliffs": 0,
+              "fields": 1,
+              "indices": "{ \"query_vertices\": 0, \"query_normals\": 2, \"query_light_inputs\": 4, \"terrain_tiles\": 6, \"terrain_cells\": 7 }",
+              "label": "bz2g-far-on",
+              "materials": 99,
+              "original_bytes": 942416,
+              "packed_bytes": 2097152,
+              "programs": 3,
+              "sizes": "{ \"query_vertices\": (129, 129), \"query_normals\": (132, 132), \"query_light_inputs\": (132, 132), \"terrain_tiles\": (64, 64), \"terrain_cells\": (128, 128) }",
+              "transitions": 0
+            }
+          ],
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 1986,
+                "mean": 0.0426270833333333,
+                "peak": 29
+              },
+              "distance": "near",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 4.31300020217896,
+                "cpu_p95_ms": 4.74599981307983,
+                "draws": 1067,
+                "gpu_median_ms": 0.0,
+                "gpu_p95_ms": 0.0,
+                "warmup_ms": 542
+              },
+              "on": {
+                "cpu_median_ms": 5.66400003433228,
+                "cpu_p95_ms": 5.84100008010864,
+                "draws": 1067,
+                "gpu_median_ms": 0.0,
+                "gpu_p95_ms": 0.0,
+                "warmup_ms": 10028
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 2.8529999256134,
+                "cpu_p95_ms": 3.97900009155273,
+                "draws": 1067,
+                "gpu_median_ms": 0.0,
+                "gpu_p95_ms": 0.0,
+                "warmup_ms": 341
+              },
+              "template": "nafltr56"
+            },
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 80,
+                "mean": 0.00157708333333333,
+                "peak": 14
+              },
+              "distance": "far",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 4.50500011444092,
+                "cpu_p95_ms": 4.85599994659424,
+                "draws": 1107,
+                "gpu_median_ms": 0.0,
+                "gpu_p95_ms": 0.0,
+                "warmup_ms": 379
+              },
+              "on": {
+                "cpu_median_ms": 5.14499998092651,
+                "cpu_p95_ms": 6.07800006866455,
+                "draws": 1107,
+                "gpu_median_ms": 0.0,
+                "gpu_p95_ms": 0.0,
+                "warmup_ms": 715
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 3.53200006484985,
+                "cpu_p95_ms": 4.51000022888184,
+                "draws": 1107,
+                "gpu_median_ms": 0.0,
+                "gpu_p95_ms": 0.0,
+                "warmup_ms": 393
+              },
+              "template": "nafltr56"
+            }
+          ],
+          "scope": "Production metadata source/builder and CPU image factories in the existing Android QA app. Non-Natural four-tap compaction and current contact cloud-sun injection included. Both soft ground and contact enabled. Reference unmerged shader cannot link on this device; full image equivalence requires separate controls. Timings are diagnostic."
+        },
+        "restored": true,
+        "private_process_stopped": true,
+        "sampler_counts": [
+          13,
+          13,
+          12,
+          13,
+          13,
+          12
+        ]
+      },
+      {
+        "label": "bitpage-natural-device01",
+        "run": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-natural-device01/run.json",
+          "sha256": "29ba95706f1d8fa91ee38f2e9f8a63a43456b02d6c5e74933751e1885bbe1f0c"
+        },
+        "result": {
+          "active_cloud_state": [
+            0.5,
+            0.28,
+            160.0,
+            1.0
+          ],
+          "active_rain": 0.9,
+          "active_wetness": 0.8,
+          "adapter": "Adreno (TM) 650",
+          "checks": 19,
+          "failures": 0,
+          "merged": [
+            {
+              "cliffs": 62,
+              "fields": 1,
+              "indices": "{ \"query_vertices\": 0, \"query_normals\": 2, \"query_light_inputs\": 4, \"terrain_tiles\": 6, \"terrain_cells\": 7, \"cliff_tiles\": 8, \"cliff_flatness\": 9, \"transition_tiles\": 11 }",
+              "label": "bz2g-near-on",
+              "materials": 99,
+              "original_bytes": 1094225,
+              "packed_bytes": 3145728,
+              "programs": 3,
+              "sizes": "{ \"query_vertices\": (129, 129), \"query_normals\": (132, 132), \"query_light_inputs\": (132, 132), \"terrain_tiles\": (64, 64), \"terrain_cells\": (128, 128), \"cliff_tiles\": (64, 64), \"cliff_flatness\": (129, 129), \"transition_tiles\": (64, 128) }",
+              "transitions": 2798
+            }
+          ],
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "base_materials": 18,
+              "contact_materials": 99,
+              "difference": {
+                "changed": 2022,
+                "mean": 0.0430020833333333,
+                "peak": 29
+              },
+              "distance": "near",
+              "focus": "(69.6434, 11.36386, -40.651)",
+              "map": "bz2g",
+              "object": "LeafTree00-3715",
+              "off": {
+                "cpu_median_ms": 4.34700012207031,
+                "cpu_p95_ms": 4.76700019836426,
+                "draws": 1067,
+                "gpu_median_ms": 0.0,
+                "gpu_p95_ms": 0.0,
+                "warmup_ms": 1136
+              },
+              "on": {
+                "cpu_median_ms": 4.85599994659424,
+                "cpu_p95_ms": 5.7350001335144,
+                "draws": 1067,
+                "gpu_median_ms": 0.0,
+                "gpu_p95_ms": 0.0,
+                "warmup_ms": 29439
+              },
+              "registered_parts": 668,
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              },
+              "restored": {
+                "cpu_median_ms": 3.77999997138977,
+                "cpu_p95_ms": 4.40500020980835,
+                "draws": 1067,
+                "gpu_median_ms": 0.0,
+                "gpu_p95_ms": 0.0,
+                "warmup_ms": 1073
+              },
+              "template": "nafltr56"
+            }
+          ],
+          "scope": "Production metadata source/builder and CPU image factories in the existing Android QA app. Non-Natural four-tap compaction and current contact cloud-sun injection included. Both soft ground and contact enabled. Reference unmerged shader cannot link on this device; full image equivalence requires separate controls. Timings are diagnostic."
+        },
+        "restored": true,
+        "private_process_stopped": true,
+        "sampler_counts": [
+          13,
+          13,
+          12
+        ]
+      }
+    ],
+    "final_checks": 77
+  },
+  "storage": {
+    "scene": "bz2g, 129x129 geometry; 132x132 sector-owned normal/light inputs",
+    "detailed_pool_bytes": 2097152,
+    "natural_cliff_pool_bytes": 3145728,
+    "removed_normal_light_texture_bytes": 348480,
+    "known_additional_gpu_payload_detailed_bytes": 1748672,
+    "known_additional_gpu_payload_natural_bytes": 2797248,
+    "retained_cpu_vertex_snapshot_bytes": 266256,
+    "limits": "Nominal payload, not driver-resident VRAM. Existing geometry and native terrain/cliff/transition textures remain. Temporary upload images and driver allocation overhead are excluded."
+  },
+  "performance": {
+    "runs": [
+      {
+        "label": "paged-cost-baseline01",
+        "report": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/paged-cost-baseline01/report.json",
+          "sha256": "ad1cc6322e27bb25580ec99cade07c702459c34dbad78245ae2cab3e27c96a63"
+        },
+        "cold_warm_png_identical": true,
+        "rows": [
+          {
+            "temperature": "cold",
+            "distance": "near",
+            "adapter": "NVIDIA GeForce RTX 3090",
+            "checks": 48,
+            "on_refresh_ms": 77.338,
+            "on_first_frame_ms": 14255.064,
+            "on_gpu_median_ms": 2.0,
+            "repeat_on_gpu_median_ms": 1.98399996757507,
+            "surface_texture_bytes": 614736
+          },
+          {
+            "temperature": "cold",
+            "distance": "far",
+            "adapter": "NVIDIA GeForce RTX 3090",
+            "checks": 48,
+            "on_refresh_ms": 76.188,
+            "on_first_frame_ms": 106.43,
+            "on_gpu_median_ms": 0.824999988079071,
+            "repeat_on_gpu_median_ms": 0.824000000953674,
+            "surface_texture_bytes": 614736
+          },
+          {
+            "temperature": "warm",
+            "distance": "near",
+            "adapter": "NVIDIA GeForce RTX 3090",
+            "checks": 48,
+            "on_refresh_ms": 74.373,
+            "on_first_frame_ms": 118.583,
+            "on_gpu_median_ms": 1.99199998378754,
+            "repeat_on_gpu_median_ms": 1.92700004577637,
+            "surface_texture_bytes": 614736
+          },
+          {
+            "temperature": "warm",
+            "distance": "far",
+            "adapter": "NVIDIA GeForce RTX 3090",
+            "checks": 48,
+            "on_refresh_ms": 75.419,
+            "on_first_frame_ms": 107.065,
+            "on_gpu_median_ms": 0.829999983310699,
+            "repeat_on_gpu_median_ms": 0.829999983310699,
+            "surface_texture_bytes": 614736
+          }
+        ]
+      },
+      {
+        "label": "bitpage-cost-candidate01",
+        "report": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-cost-candidate01/report.json",
+          "sha256": "909120afcc59a6c6336e79036fc3cd07216b3984f22f1155fcbe0bdbb66f8052"
+        },
+        "cold_warm_png_identical": true,
+        "rows": [
+          {
+            "temperature": "cold",
+            "distance": "near",
+            "adapter": "NVIDIA GeForce RTX 3090",
+            "checks": 48,
+            "on_refresh_ms": 96.838,
+            "on_first_frame_ms": 15514.809,
+            "on_gpu_median_ms": 2.10500001907349,
+            "repeat_on_gpu_median_ms": 2.09500002861023,
+            "surface_texture_bytes": 2363408
+          },
+          {
+            "temperature": "cold",
+            "distance": "far",
+            "adapter": "NVIDIA GeForce RTX 3090",
+            "checks": 48,
+            "on_refresh_ms": 98.517,
+            "on_first_frame_ms": 116.636,
+            "on_gpu_median_ms": 0.833999991416931,
+            "repeat_on_gpu_median_ms": 0.834999978542328,
+            "surface_texture_bytes": 2363408
+          },
+          {
+            "temperature": "warm",
+            "distance": "near",
+            "adapter": "NVIDIA GeForce RTX 3090",
+            "checks": 48,
+            "on_refresh_ms": 95.112,
+            "on_first_frame_ms": 120.118,
+            "on_gpu_median_ms": 2.04999995231628,
+            "repeat_on_gpu_median_ms": 2.07500004768372,
+            "surface_texture_bytes": 2363408
+          },
+          {
+            "temperature": "warm",
+            "distance": "far",
+            "adapter": "NVIDIA GeForce RTX 3090",
+            "checks": 48,
+            "on_refresh_ms": 96.062,
+            "on_first_frame_ms": 117.77,
+            "on_gpu_median_ms": 0.842999994754791,
+            "repeat_on_gpu_median_ms": 0.839999973773956,
+            "surface_texture_bytes": 2363408
+          }
+        ]
+      }
+    ],
+    "exact_baseline_candidate_png_pairs": 12,
+    "gpu_clocks": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/paged-cost-gpu-clocks.log",
+      "sha256": "71c14fe9f4b9495aa908e289e2fe4f8cfd4be2f3f2d7aa807876b22f17fb1957"
+    },
+    "gpu_processes": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/paged-cost-gpu-processes.log",
+      "sha256": "0ba93c6f910f1b46be1012d1d27613b1b4ebaf87fadb3db59127b143f0cc5329"
+    },
+    "candidate_gpu_clocks": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-cost-gpu-clocks.log",
+      "sha256": "9245df5c1ac00839c24fa638bb986cb344d8f90059796c6e86561bb16183f7f6"
+    },
+    "candidate_gpu_processes": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/bitpage-cost-gpu-processes.log",
+      "sha256": "0d1d8505b468cf537b8df7cb530fbf456668f38b16716bdc8412d0dc25f52e10"
+    },
+    "limits": "One isolated baseline/candidate cold/warm pair on the recorded desktop adapter. Normal first-frame and steady viewport measurements, not pure compiler time, game loading time, Android speed or whole-game FPS. Clocks were observed, not locked."
+  },
+  "rejected_or_incomplete": [
+    {
+      "labels": [
+        "merged-map-gl01",
+        "merged-weather-cloud-gl01",
+        "pruned-gl01"
+      ],
+      "reason": "Scenery disappeared despite apparently useful draw counters; not accepted. Added a zero-contact-strength native-image control."
+    },
+    {
+      "labels": [
+        "pooled-weather-cloud-gl01",
+        "pooled-neutral-gl01"
+      ],
+      "reason": "Upload had been placed in assert, which release builds do not evaluate; rejected and corrected."
+    },
+    {
+      "labels": [
+        "metadata-gl01",
+        "production-metadata-gl01",
+        "production-metadata-gl02",
+        "production-natural-gl01",
+        "production-natural-gl02"
+      ],
+      "reason": "Invalid bit-encoding/fixture or parsing controls; retained as failed attempts."
+    },
+    {
+      "labels": [
+        "pooled-natural-gl01",
+        "options-gl01"
+      ],
+      "reason": "Timed out before complete acceptance."
+    },
+    {
+      "labels": [
+        "candidate01",
+        "candidate02"
+      ],
+      "reason": "Intermediate layouts and an initially misplaced native ripple initialization block; not final exports."
+    },
+    {
+      "labels": [
+        "candidate04",
+        "paged-cost-candidate01"
+      ],
+      "reason": "Correct page layout but expensive dynamic integer divisions. The clean warm near view measured 3.137 ms versus the 1.992 ms baseline. The cold candidate run overlaps an unrelated Etherlords renderer and is excluded from timing conclusions. Candidate05 adds exact power-of-two addressing; general non-power-of-two GPU cost remains unoptimized."
+    },
+    {
+      "labels": [
+        "candidate03",
+        "final-metadata-gl01"
+      ],
+      "reason": "Padded/floor sampling passed scene captures and Adreno probes but failed the NVIDIA exact boundary probe (11 checks, 1 failure); rejected in favor of original-dimension native sampling."
+    }
+  ],
+  "measured_tradeoff": {
+    "near_steady_gpu_ms": {
+      "baseline": [
+        2.0,
+        1.992
+      ],
+      "candidate": [
+        2.105,
+        2.05
+      ]
+    },
+    "far_steady_gpu_ms": {
+      "baseline": [
+        0.825,
+        0.83
+      ],
+      "candidate": [
+        0.834,
+        0.843
+      ]
+    },
+    "cold_contact_frame_ms": {
+      "baseline": 14255.064,
+      "candidate": 15514.809
+    },
+    "near_refresh_ms": {
+      "baseline": [
+        77.338,
+        74.373
+      ],
+      "candidate": [
+        96.838,
+        95.112
+      ]
+    },
+    "interpretation": "Correctness repair with a small steady GPU cost and higher cold/CPU preparation and memory in this sampled scene. Not a performance win over the working desktop baseline. Bit addressing avoids the much larger generic-division regression for power-of-two maps."
+  },
+  "scope": [
+    "Main thread only. No new delivery package/APK, playthrough, public release or protocol change.",
+    "Original RMX3890/Adreno610 load exit and Linux RTX3050 report are still not reproduced; this sampler fix is not claimed as their cause.",
+    "Continue measured cost/ranking of old and new effects and water rebuild hitches; Windows and wider-device acceptance remain open."
+  ]
+}

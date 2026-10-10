@@ -1024,6 +1024,32 @@ func _build(arc: EIResArchive) -> void:
 ## Shared data for view-independent surf depth and material-specific ground
 ## detail. Original atlases, collision and navigation are never altered.
 func _build_surface_data() -> void:
+	_tile_tex = ImageTexture.create_from_image(_ground_tile_image())
+	var wtiles := PackedFloat32Array()
+	wtiles.resize(water_tile.size())
+	for i in water_tile.size():
+		wtiles[i] = water_tile[i]
+	_water_tile_tex = ImageTexture.create_from_image(Image.create_from_data(sectors_x * TILES,
+		sectors_y * TILES, false, Image.FORMAT_RF, wtiles.to_byte_array()))
+	_height_tex = ImageTexture.create_from_image(Image.create_from_data(
+		grid_w, sectors_y * SECTOR + 1, false, Image.FORMAT_RF, heights.to_byte_array()))
+	_cell_tex = ImageTexture.create_from_image(_surface_cell_image())
+	# Until SurfaceWeather scans placed solids, the map is uncovered.
+	var uncovered := Image.create(1, 1, false, Image.FORMAT_RF)
+	uncovered.fill(Color(-10000.0, 0.0, 0.0))
+	_rain_cover = ImageTexture.create_from_image(uncovered)
+	_surf.resize(64)
+	_surf.fill(0.0)
+	_ripple.resize(64)
+	_ripple.fill(0.35)
+	for m in mini(materials.size(), 64):
+		_ripple[m] = clampf(0.25 + float(materials[m].get("wave", 0.0)) * 0.65, 0.25, 1.0)
+		if m in SURF_MATERIALS.get(resource_prefix, []) and _lava[m] == 0.0:
+			_surf[m] = 1.0
+			_ripple[m] = 1.0
+
+
+func _ground_tile_image() -> Image:
 	var tiles := PackedFloat32Array()
 	tiles.resize(land_tile.size() * 4)
 	for i in land_tile.size():
@@ -1037,16 +1063,11 @@ func _build_surface_data() -> void:
 			9: tiles[i * 4 + 2] = 0.20; tiles[i * 4 + 3] = 0.30
 			12: tiles[i * 4 + 2] = 0.075; tiles[i * 4 + 3] = 0.12
 			3: tiles[i * 4 + 2] = 0.008; tiles[i * 4 + 3] = 0.025
-	_tile_tex = ImageTexture.create_from_image(Image.create_from_data(sectors_x * TILES,
-		sectors_y * TILES, false, Image.FORMAT_RGBAF, tiles.to_byte_array()))
-	var wtiles := PackedFloat32Array()
-	wtiles.resize(water_tile.size())
-	for i in water_tile.size():
-		wtiles[i] = water_tile[i]
-	_water_tile_tex = ImageTexture.create_from_image(Image.create_from_data(sectors_x * TILES,
-		sectors_y * TILES, false, Image.FORMAT_RF, wtiles.to_byte_array()))
-	_height_tex = ImageTexture.create_from_image(Image.create_from_data(
-		grid_w, sectors_y * SECTOR + 1, false, Image.FORMAT_RF, heights.to_byte_array()))
+	return Image.create_from_data(sectors_x * TILES,
+		sectors_y * TILES, false, Image.FORMAT_RGBAF, tiles.to_byte_array())
+
+
+func _surface_cell_image() -> Image:
 	var cells := PackedFloat32Array()
 	cells.resize(water.size() * 4)
 	for i in water.size():
@@ -1054,23 +1075,8 @@ func _build_surface_data() -> void:
 		cells[i * 4 + 1] = ground[i]
 		cells[i * 4 + 2] = liquid_ground[i]
 		cells[i * 4 + 3] = water_mat[i] if water_mat[i] < 64 else 0
-	_cell_tex = ImageTexture.create_from_image(Image.create_from_data(
-		sectors_x * SECTOR, sectors_y * SECTOR, false, Image.FORMAT_RGBAF, cells.to_byte_array()))
-	# Until SurfaceWeather scans the placed solids, the map is uncovered.
-	# This also keeps standalone terrain viewers and original-water fixtures
-	# usable without a Game or weather controller.
-	var uncovered := Image.create(1, 1, false, Image.FORMAT_RF)
-	uncovered.fill(Color(-10000.0, 0.0, 0.0))
-	_rain_cover = ImageTexture.create_from_image(uncovered)
-	_surf.resize(64)
-	_surf.fill(0.0)
-	_ripple.resize(64)
-	_ripple.fill(0.35)
-	for m in mini(materials.size(), 64):
-		_ripple[m] = clampf(0.25 + float(materials[m].get("wave", 0.0)) * 0.65, 0.25, 1.0)
-		if m in SURF_MATERIALS.get(resource_prefix, []) and _lava[m] == 0.0:
-			_surf[m] = 1.0
-			_ripple[m] = 1.0
+	return Image.create_from_data(sectors_x * SECTOR, sectors_y * SECTOR,
+		false, Image.FORMAT_RGBAF, cells.to_byte_array())
 
 
 ## Remake rendering options (gfx_water, gfx_terrain) on the terrain and water

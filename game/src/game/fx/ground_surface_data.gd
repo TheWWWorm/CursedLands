@@ -10,6 +10,9 @@ var _terrain: WeakRef
 var vertices: ImageTexture
 var normals: ImageTexture
 var light_inputs: ImageTexture
+var metadata: GroundContactData
+var _metadata_key := []
+var _vertex_snapshot: Image
 var _dense_colors: GroundDenseColors
 var _empty := SoftGroundField.new()
 
@@ -19,7 +22,7 @@ func _init(terrain: EITerrain, contact := true) -> void:
 	_build(terrain,contact)
 
 
-func _build(terrain: EITerrain, contact: bool) -> void:
+static func _vertex_image(terrain: EITerrain, contact: bool) -> Image:
 	var count := terrain.heights.size()
 	var width := terrain.grid_w
 	var height := terrain.sectors_y * 32 + 1
@@ -48,14 +51,47 @@ func _build(terrain: EITerrain, contact: bool) -> void:
 			# Conservative upper bound for any triangle covering this metre.
 			# Shader adds the maximum loose/banked displacement before skipping.
 			points[at + 3] = top
-	var image := Image.create_from_data(width,height,false,Image.FORMAT_RGBAF,points.to_byte_array())
+	return Image.create_from_data(width,height,false,Image.FORMAT_RGBAF,points.to_byte_array())
+
+
+func _build(terrain: EITerrain, contact: bool) -> void:
+	var image := _vertex_image(terrain, contact)
 	# A contact consumer may join after cover. Preserve the bound vertex RID
 	# when adding its upper bounds; XYZ and the cover's geometry stay identical.
 	if vertices: vertices.update(image)
 	else: vertices = ImageTexture.create_from_image(image)
 	if contact:
-		normals = ImageTexture.create_from_image(_normal_image(terrain))
-		light_inputs = ImageTexture.create_from_image(_light_input_image(terrain))
+		if Portability.compatibility():
+			_vertex_snapshot = image
+			_refresh_metadata(terrain)
+		else:
+			normals = ImageTexture.create_from_image(_normal_image(terrain))
+			light_inputs = ImageTexture.create_from_image(_light_input_image(terrain))
+
+
+func _refresh_metadata(terrain: EITerrain) -> void:
+	var cliff := terrain._cliffs
+	var transition := terrain._transitions
+	var key := [cliff.get_instance_id() if cliff else 0, transition.get_instance_id() if transition else 0]
+	if metadata == null or key != _metadata_key:
+		if metadata == null: metadata = GroundContactData.new()
+		metadata.build(_metadata_images(terrain))
+		_metadata_key = key
+
+
+func _metadata_images(terrain: EITerrain) -> Dictionary:
+	var images := {"query_vertices":_vertex_snapshot, "query_normals":_normal_image(terrain), "query_light_inputs":_light_input_image(terrain),
+		"terrain_tiles":terrain._ground_tile_image(), "terrain_cells":terrain._surface_cell_image()}
+	var cliff := terrain._cliffs
+	if cliff and cliff.admitted > 0:
+		images.cliff_tiles = Image.create_from_data(cliff.tile_size.x, cliff.tile_size.y, false, Image.FORMAT_R8, cliff.eligible)
+		images.cliff_flatness = Image.create_from_data(cliff.grid_size.x, cliff.grid_size.y, false, Image.FORMAT_R8, cliff.guards)
+	var transition := terrain._transitions
+	if transition and transition.admitted > 0:
+		var pixels := transition.rows.to_byte_array()
+		if transition.junctions > 0: pixels.append_array(transition.junction_rows.to_byte_array())
+		images.transition_tiles = Image.create_from_data(transition.tile_size.x, transition.tile_size.y * (2 if transition.junctions > 0 else 1), false, Image.FORMAT_RGBAF, pixels)
+	return images
 
 
 
@@ -110,7 +146,7 @@ func bind(material: ShaderMaterial, triangle_only := false) -> void:
 	var terrain := _terrain.get_ref() as EITerrain
 	if terrain == null:
 		return
-	if not triangle_only and normals == null: _build(terrain,true)
+	if not triangle_only and normals == null and metadata == null: _build(terrain,true)
 	for key in LAND_PARAMETERS:
 		if triangle_only and key not in [&"terrain_tiles",&"terrain_cells",&"level",&"soft_ground"]: continue
 		material.set_shader_parameter(key, terrain._land_mat.get_shader_parameter(key))
@@ -122,8 +158,12 @@ func bind(material: ShaderMaterial, triangle_only := false) -> void:
 		material.set_shader_parameter("blend_edges", Gfx.on("gfx_terrain"))
 		material.set_shader_parameter("query_cell_count", 9)
 		material.set_shader_parameter("contact_query_passes", 2)
-		material.set_shader_parameter("query_normals", normals)
-		material.set_shader_parameter("query_light_inputs", light_inputs)
+		if Portability.compatibility():
+			_refresh_metadata(terrain)
+			metadata.bind(material)
+		else:
+			material.set_shader_parameter("query_normals", normals)
+			material.set_shader_parameter("query_light_inputs", light_inputs)
 	material.set_shader_parameter("query_vertices", vertices)
 	material.set_shader_parameter("query_vertex_count", 3)
 	var field := _empty

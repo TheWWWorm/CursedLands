@@ -298,7 +298,7 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 		code = _blend_fog(code, lit)
 	if lit and LocalLightShader.enabled():
 		code = _function_tail(code, "fragment", LocalLightShader.CAPTURE)
-	return code
+	return GroundContactData.source(code)
 
 
 ## Insert after the stage's complete body, including nested option branches.

@@ -120,6 +120,17 @@ func _ready() -> void:
 			var off := await sample(view, map_name + "-" + distance_mode + "-off")
 			GameData.options["gfx_ground_contact"] = 1; owner.refresh()
 			var on := await sample(view, map_name + "-" + distance_mode + "-on")
+			if OS.get_cmdline_user_args().has("--contact-native-control"):
+				# Submitted draw counts cannot detect a linked-but-invalid GLES
+				# draw. Exercise the same shader/bindings at zero blend strength.
+				for family: Dictionary in owner._variants.values():
+					for material: ShaderMaterial in family.values(): material.set_shader_parameter("contact_strength", 0.0)
+				var neutral := await sample(view, map_name + "-" + distance_mode + "-neutral")
+				check(compare(off.image, neutral.image).changed == 0, "zero strength retains native scenery within two bytes")
+				for family: Dictionary in owner._variants.values():
+					for material: ShaderMaterial in family.values(): material.set_shader_parameter("contact_strength", 0.7)
+				var strength_restored := await sample(view, map_name + "-" + distance_mode + "-strength-restored")
+				check(compare(on.image, strength_restored.image).peak == 0, "contact strength restores exact pixels")
 			var variants := 0
 			for family: Dictionary in owner._variants.values(): variants += family.size()
 			var base_count := owner._variants.size()
