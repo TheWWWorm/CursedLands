@@ -97,9 +97,9 @@ for the four-file source audit, inherited nine-patch audit, build and full RGB
 controls. XR/multiview and other platform templates still need execution tests;
 no installed template is changed here.
 
-macOS and Web use the official 4.7 templates. Experimental 5 Android ARM64 uses
-the first six common patches and `android-headless-service.patch`; earlier public
-Android releases used the official template. See
+macOS and Web use the official 4.7 templates. Stable 1.0.3 Android ARM64 uses
+all twelve common patches and `android-headless-service.patch`; Experimental 5
+and 6 used the first six common patches plus that service patch. See
 [the Android service guide](../../platform/android/simulation/README.md).
 The extra patch guards Android-only sensor dispatch and supplies a surface-free
 frame loop for the engine's existing `GodotService`. It does not change the

@@ -65,5 +65,6 @@ func _ready() -> void:
 			await RenderingServer.frame_post_draw
 			check(get_viewport().get_texture().get_image().save_png("user://graphics-presets-"+lang+".png")==OK,"capture localized preset selector "+lang)
 	panel._restore(); panel._close(); panel.free()
+	FileAccess.open("user://graphics-presets.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures},"\t"))
 	print("GRAPHICS_PRESETS ",checks," checks ",failures," failures")
 	get_tree().quit(1 if failures else 0)
