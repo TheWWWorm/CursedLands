@@ -1,0 +1,2268 @@
+{
+  "date": "2026-10-10",
+  "feature": "Current-source fixed-cumulus and unused type-lookup candidates under native fixed-ray and ordinary sky controls",
+  "base_commit": "b412a6b",
+  "production_commit": "eabc8d9",
+  "status": "Investigation only; no production change or accepted optimization. No image or native-buffer threshold relaxed.",
+  "scope": "Main thread only. No playthrough, package, export, engine/helper rebuild, APK or install. Existing private desktop runtime with explicitly frozen current cloud/volume/sky source substitution; unchanged runtime services remain in its PCK. No full-current-source package or matching-device acceptance.",
+  "current_source_verification": {
+    "checks": {
+      "cloud_source_current": true,
+      "volume_source_current": true,
+      "sky_source_current": true
+    },
+    "scope": "Cloud source substitutes its current local Volume preload; Sky omits only global class registration. Runtime services and unchanged res:// dependencies come from the reused private PCK; not complete-current-source package acceptance.",
+    "files_sha256": {
+      "cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+      "cloud_volume_source.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+      "sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+    }
+  },
+  "findings": {
+    "fixed_cumulus": {
+      "normal_rendering_cost": {
+        "reference_gpu_ms": 3.0245000123977652,
+        "candidate_gpu_ms": 2.705999970436095,
+        "reduction_percent": 10.530667570048035,
+        "arm_medians_ms": [
+          3.01999998092651,
+          2.70700001716614,
+          2.70499992370605,
+          3.02900004386902
+        ],
+        "samples_per_arm": 360,
+        "quiet_process_monitor": true,
+        "scope": "4K isolated background-only sky, ordinary camera and default sky debanding. Not whole-game FPS."
+      },
+      "cost_quality_checks": {
+        "checks": 25,
+        "failures": 0,
+        "all_held_candidate_repeat_and_restore_images_exact": true
+      },
+      "same_input_native_failure": "Fair weather, recorded rays, sky shader debanding removed: 97 checks / 1 failure. Candidate changes seven native RGBA16F pixels, nine scattering channel values, each by one half-float code. Peak absolute scatter delta 0.000244140625; alpha/transmittance remains exact. All held, repeat and restored-reference native controls and all final images are exact. This is new evidence beyond the earlier 128x64 HDR test, and prevents an exact-output claim for this candidate.",
+      "changed_pixels": {
+        "scope": "Native half-resolution cloud buffer expanded losslessly from RGBA16F. Diagnostic fixed rays and sky debanding disabled. Seven candidate-versus-reference scattering pixels; alpha/transmittance remains bit-identical everywhere. All held, repeat and restored native controls are exact.",
+        "pixels": [
+          {
+            "xy": [
+              616,
+              412
+            ],
+            "reference": [
+              0.044647216796875,
+              0.045684814453125,
+              0.044281005859375,
+              0.9345703125
+            ],
+            "candidate": [
+              0.044647216796875,
+              0.045654296875,
+              0.044281005859375,
+              0.9345703125
+            ],
+            "half_code_delta": [
+              0,
+              -1,
+              0,
+              0
+            ]
+          },
+          {
+            "xy": [
+              1726,
+              492
+            ],
+            "reference": [
+              0.142822265625,
+              0.142822265625,
+              0.142822265625,
+              0.85107421875
+            ],
+            "candidate": [
+              0.1429443359375,
+              0.1429443359375,
+              0.1429443359375,
+              0.85107421875
+            ],
+            "half_code_delta": [
+              1,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "xy": [
+              1706,
+              497
+            ],
+            "reference": [
+              0.032073974609375,
+              0.032196044921875,
+              0.031890869140625,
+              0.96630859375
+            ],
+            "candidate": [
+              0.032073974609375,
+              0.032196044921875,
+              0.0318603515625,
+              0.96630859375
+            ],
+            "half_code_delta": [
+              0,
+              0,
+              -1,
+              0
+            ]
+          },
+          {
+            "xy": [
+              243,
+              542
+            ],
+            "reference": [
+              0.16650390625,
+              0.170654296875,
+              0.1650390625,
+              0.759765625
+            ],
+            "candidate": [
+              0.16650390625,
+              0.170654296875,
+              0.1651611328125,
+              0.759765625
+            ],
+            "half_code_delta": [
+              0,
+              0,
+              1,
+              0
+            ]
+          },
+          {
+            "xy": [
+              1213,
+              550
+            ],
+            "reference": [
+              0.010223388671875,
+              0.01043701171875,
+              0.0101470947265625,
+              0.9873046875
+            ],
+            "candidate": [
+              0.01021575927734375,
+              0.01043701171875,
+              0.0101470947265625,
+              0.9873046875
+            ],
+            "half_code_delta": [
+              -1,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "xy": [
+              1686,
+              558
+            ],
+            "reference": [
+              0.3515625,
+              0.356689453125,
+              0.35009765625,
+              0.6025390625
+            ],
+            "candidate": [
+              0.3515625,
+              0.356689453125,
+              0.349853515625,
+              0.6025390625
+            ],
+            "half_code_delta": [
+              0,
+              0,
+              -1,
+              0
+            ]
+          },
+          {
+            "xy": [
+              1584,
+              559
+            ],
+            "reference": [
+              0.0005121231079101562,
+              0.000518798828125,
+              0.0005097389221191406,
+              0.9990234375
+            ],
+            "candidate": [
+              0.0005121231079101562,
+              0.0005183219909667969,
+              0.0005097389221191406,
+              0.9990234375
+            ],
+            "half_code_delta": [
+              0,
+              -1,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      "mixed": "The same recorded-ray/no-sky-debanding control has exact native cloud buffers but a 57-pixel / peak1 final-image difference between candidate and reference. 97 checks / 1 failure. Held, repeat and restoration controls pass.",
+      "decision": "Retain as rejected for exact-output promotion; do not describe the 10.5% saving as accepted or deployed."
+    },
+    "lookup_only": {
+      "change": "Skip only the type-noise texture fetch when type spread is exactly zero. Use .5 for that otherwise unused sample; preserve the remaining original density expression. All other source bytes remain identical. This is a smaller previously inconclusively timed candidate, re-evaluated because fixed-cumulus now has a same-input native failure.",
+      "fixed_input_acceptance": {
+        "runs": 2,
+        "checks": 194,
+        "failures": 0,
+        "weather": [
+          "fair",
+          "mixed"
+        ],
+        "all_native_cloud_buffers_and_final_image_comparisons_exact": true,
+        "limit": "Both runs use a diagnostic recorded-ray texture and disable the Sky use_debanding render mode. These are math/isolation controls, not production appearance or performance acceptance."
+      },
+      "direct_hdr": {
+        "cases": 110,
+        "ray_pixels": 901120,
+        "all_exact": true,
+        "minimum_transmittance": 5.90085983276367e-06,
+        "scope": "Current eabc8d9 High integrator versus the guarded unused type-noise lookup, HDR scattering and transmittance, including rays originating below/inside/above the cloud layer. No gameplay route or FPS claim."
+      },
+      "ordinary_fair": {
+        "checks": 25,
+        "failures": 0,
+        "all_image_comparisons_exact": true,
+        "performance": {
+          "reference_gpu_ms": 3.0249999761581403,
+          "candidate_gpu_ms": 2.923500061035155,
+          "reduction_percent": 3.355369121420426,
+          "arm_medians_ms": [
+            3.01300001144409,
+            2.92400002479553,
+            2.92300009727478,
+            3.03699994087219
+          ],
+          "samples_per_arm": 360,
+          "quiet_process_monitor": false,
+          "scope": "4K isolated background-only sky, ordinary camera and default sky debanding. Not whole-game FPS."
+        },
+        "timed_process_isolation": {
+          "scope": "Process observations sampled approximately every 0.25s. A foreign game was observed during startup, through +5.704s. None observed in the timed arms or a 0.5s margin. Full-run isolation is not claimed.",
+          "foreign_observation_offsets": [
+            0.2511634826660156,
+            0.5525124073028564,
+            0.8578405380249023,
+            1.1627111434936523,
+            1.4868414402008057,
+            1.8392229080200195,
+            2.2030062675476074,
+            2.558515787124634,
+            2.9171533584594727,
+            3.2670211791992188,
+            3.5714800357818604,
+            3.8800554275512695,
+            4.184229612350464,
+            4.490914821624756,
+            4.793313503265381,
+            5.094972372055054,
+            5.39953875541687,
+            5.703909873962402
+          ],
+          "arms": [
+            {
+              "arm": 0,
+              "start_offset_seconds": 11.802030324935913,
+              "end_offset_seconds": 13.559110403060913,
+              "foreign_observations_with_margin": 0
+            },
+            {
+              "arm": 1,
+              "start_offset_seconds": 21.397430419921875,
+              "end_offset_seconds": 23.108200311660767,
+              "foreign_observations_with_margin": 0
+            },
+            {
+              "arm": 2,
+              "start_offset_seconds": 30.944390535354614,
+              "end_offset_seconds": 32.646310329437256,
+              "foreign_observations_with_margin": 0
+            },
+            {
+              "arm": 3,
+              "start_offset_seconds": 40.4694504737854,
+              "end_offset_seconds": 42.161930322647095,
+              "foreign_observations_with_margin": 0
+            }
+          ]
+        },
+        "limit": "A different project runs during startup through +5.704s. No competing engine is observed in any timed arm or a 0.5s margin; the first timed arm begins at +11.802s. About 3.36% is a measured candidate result with this stated isolation limit, not an accepted whole-game improvement."
+      },
+      "ordinary_mixed": "87 checks / 6 failures. Native candidate-held, candidate-versus-reference and restored-reference comparisons differ at 50,055 pixels; final sky at 5,072 pixels / peak4. Native hashes exactly match the two previously documented original renderer states. The unchanged reference also changes on restoration. This does not isolate the candidate as the cause; another project is observed during the run, and no timing claim is made.",
+      "decision": "Scratch-only pending ordinary renderer stability and complete platform qualification. A passing diagnostic substitution must not bypass the failed ordinary controls."
+    }
+  },
+  "all_run_totals": {
+    "runs": 8,
+    "checks": 641,
+    "failures": 8,
+    "meaning": "Includes retained real failures. Not a release-acceptance total."
+  },
+  "limits": [
+    "All GPU timing is RTX3090 Ti / Forward+, 3840x2160 background-only High sky with the real owner Environment and cloud_radiance=false; no reflection/ground work and no whole-game FPS claim.",
+    "No driver, compiler, floating-point contraction or other single root cause is proved.",
+    "The 31.640625 MiB fixed-ray texture is diagnostic only. It is constructed from earlier component maps, not simultaneous vector capture or a runtime cache proposal.",
+    "Foreign engine work is recorded and never stopped or modified. lookup-cost-fair01, lookup-native-mixed01 and lookup-fixed-mixed01 observe another project; other runs observe none.",
+    "The broad HDR fixture uses 110 combinations / 901120 rays, 11 weather/type cases, two quadrature settings and five altitudes; it cannot substitute for native Sky-stage checks.",
+    "Original RMX3890/Adreno610 first-load/settings and RTX3050/CachyOS report-device verification, Windows, full-current-source package acceptance and separate Adreno650 Mobile water flicker remain open."
+  ],
+  "next_actions": [
+    "Do not retry fixed-cumulus as an exact candidate without a concrete arithmetic change that addresses the seven native scattering differences.",
+    "Keep the smaller lookup guard scratch-only until ordinary camera/sky controls pass. Fixed-input equivalence is now established in the fair/mixed fixtures and broad HDR cases; repeating that same grid adds no evidence.",
+    "Resolve the known upstream viewing-ray/final-sky variation before claiming complete sky stability or attributing these normal-rendering failures to either optimization. Preserve current seam repair, High bounds and accepted unused reflection-ray skip.",
+    "Continue source work without playthroughs or unsolicited packages; no device-porting or new build is justified solely by these rejected/pending candidates."
+  ],
+  "post_run_state": {
+    "unix_time": 1791664147.425383,
+    "owned_validation_processes": [],
+    "all_cursedlands_processes": [],
+    "runtime_sha256": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "reports": {
+      "android-insta-crash.txt": {
+        "size": 3454,
+        "mtime": 1791621491.9497235,
+        "sha256": "f4c51007f715c6da8e001ee0dc5c7cdbe60962dbd60c57cdb7a4b3aa5f2e3ddf"
+      },
+      "android-settings-no-buttons.png": {
+        "size": 1630329,
+        "mtime": 1791621585.4804027,
+        "sha256": "f09c37f81f4e3a7f55e331da204e31e200a2692c224846386a0ef67f39fcb3ba"
+      },
+      "linux-gameplay-reported-crash.txt": {
+        "size": 1420,
+        "mtime": 1791621790.5344222,
+        "sha256": "efa29ae4b00eb6a2cf30c9b8527470cc0086de45286a469c07267be54601df2e"
+      }
+    },
+    "devices": "List of devices attached\n9a7e6425               device usb:2-3 product:kona model:Retroid_Pocket_5 device:kona transport_id:1\n\n",
+    "private_qa_pid": "",
+    "android_activity_this_checkpoint": "Read-only device inventory and stopped-process audit only; no app launches, source pushes, settings changes, install or uninstall."
+  },
+  "evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010",
+  "supporting_evidence_sha256": {
+    "analyse_cumulus.py": "968ee809608426ea442213813a31e8f4eae656b1444f4c43cb1be758e9d2b6a8",
+    "record_cumulus.py": "45ccf647107fc9e0de800e044f303d49527f6390d77cb5927665dff4a90678db",
+    "current-source-verification.json": "63a5fb8e8f166d7af9689d86482e0d653c52d42c46c1dd51585b548f36f17317",
+    "provenance.json": "e7d6ad5ea26b1d04ae4dc80479dc969e9347cbe319797df016102bfc9f963471",
+    "post-run-state.json": "32bf80c23b96138e7e7d3cf767ebaa0483992e2a1aa60a742cc1b7ef5b31f163",
+    "cumulus-fixed-fair01/changed-native-pixels.json": "482e76e00b51ecdf59b837e1e04046a5feff47bea00d538190a4fd92ed29425b",
+    "lookup-cost-fair01/timed-process-isolation.json": "487efe5eeabddbc89bc09ccad1884c63fc6e292a6035ff76a7003b1c89738268"
+  },
+  "all_raw_runs": [
+    {
+      "variant": "fixed_cumulus",
+      "label": "cumulus-fixed-mixed01",
+      "checks": 97,
+      "failures": 1,
+      "return_code": 1,
+      "errors": [
+        "FAIL exact sky candidate"
+      ],
+      "warnings": [],
+      "other_engines_absent": true,
+      "source_verified": {
+        "current_seam_and_bounds": true,
+        "general_density_unchanged": true,
+        "specialized_density_only_replaces_type_noise": true,
+        "single_lookup_guard_only": false,
+        "exact_guard": true,
+        "fixed_rays": true,
+        "sky_debanding_removed": true
+      },
+      "native_comparisons": [
+        {
+          "name": "held-0",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-1",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-2",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-3",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "candidate",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "restore",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "repeat",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        }
+      ],
+      "native_cloud_states": [
+        "7508be8396541497f3262d911ace04b194bfccaee268fa38963b6d4cf5986ccf"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 57,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ],
+      "performance": null,
+      "evidence_sha256": {
+        "run.json": "eeba955ca9bfc82974b6634cd2c42e65c16b1aa09db7402d64ef3580b6637b6d",
+        "cloud-sky-inputs.json": "f923aaba34faa5724aa6cb1147d4196533faf8502d85748184848948b0d0332a",
+        "reference.gdshader": "3b144b34b8ecb4e593c8c78fbd0e9aac3c174f85745b255f6a5823cce00b448c",
+        "candidate.gdshader": "fbc060a2738deddd163e3d439228715c745a910421d344f418e736961b9d9853"
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_buffers.gd": "d750f85ad4f939116145f08614642f52b2bf97fab6a2055560a99d10f0971363",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/bounds_background.gd": "1cefd43ce56e1890df85ff604c38de32c3dd5d1a6941c2a100f84488b4392a5c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_volume_source.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_binding_probe.gd": "3ec2af832caa24926475759e50c532fe7c8d747613edefb92b7badd08c75c1ea",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-A.bin": "0978e345ccc47e2f2df7fff35cdf7bc2be5aa4eeaef2b354b0343362f53b1cd1"
+      },
+      "analysis_sha256": "4536bf502b08c9ac8ef870cdb77c648027a98c6f7c9d54dece592abf19f59945",
+      "analysis_source_sha256": "968ee809608426ea442213813a31e8f4eae656b1444f4c43cb1be758e9d2b6a8",
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-0-held.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-1-first.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-1-held.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-2-first.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-2-held.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-3-first.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-3-held.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878"
+      },
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cumulus-fixed-mixed01",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cumulus-fixed-mixed01/tool-source.gd",
+        "--weather=mixed",
+        "--probe-rays=/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cumulus-fixed-mixed01/fixed-rays.bin",
+        "--no-sky-debanding"
+      ]
+    },
+    {
+      "variant": "fixed_cumulus",
+      "label": "cumulus-fixed-fair01",
+      "checks": 97,
+      "failures": 1,
+      "return_code": 1,
+      "errors": [
+        "FAIL exact raw cloud buffer candidate"
+      ],
+      "warnings": [],
+      "other_engines_absent": true,
+      "source_verified": {
+        "current_seam_and_bounds": true,
+        "general_density_unchanged": true,
+        "specialized_density_only_replaces_type_noise": true,
+        "single_lookup_guard_only": false,
+        "exact_guard": true,
+        "fixed_rays": true,
+        "sky_debanding_removed": true
+      },
+      "native_comparisons": [
+        {
+          "name": "held-0",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-1",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-2",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-3",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "candidate",
+          "pixels": 2060160,
+          "changed_pixels": 7,
+          "changed_channels": [
+            2,
+            3,
+            4,
+            0
+          ],
+          "peak_channels": [
+            0.0001220703125,
+            0.0001220703125,
+            0.000244140625,
+            0.0
+          ],
+          "first_changed_xy": [
+            [
+              616,
+              412
+            ],
+            [
+              1726,
+              492
+            ],
+            [
+              1706,
+              497
+            ],
+            [
+              243,
+              542
+            ],
+            [
+              1213,
+              550
+            ],
+            [
+              1686,
+              558
+            ],
+            [
+              1584,
+              559
+            ]
+          ]
+        },
+        {
+          "name": "restore",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "repeat",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        }
+      ],
+      "native_cloud_states": [
+        "4c366dd80f99d40e21e1a00a7ec597caa2a214602435fd654c41e2b1d372af05",
+        "fffd4c21f0937cec23c1ca3a52bb7fd07e84c93f1524248f8eee192f44cd37f1"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ],
+      "performance": null,
+      "evidence_sha256": {
+        "run.json": "e86d2fa9a1f8c0ea41f54d73342c5e95dba3f89d9a3504381c6a339f20362799",
+        "cloud-sky-inputs.json": "145287c547479ed6bdf77163eca0eba4f8b05a2aa194d67414af451025c8c4bb",
+        "reference.gdshader": "3b144b34b8ecb4e593c8c78fbd0e9aac3c174f85745b255f6a5823cce00b448c",
+        "candidate.gdshader": "fbc060a2738deddd163e3d439228715c745a910421d344f418e736961b9d9853"
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_buffers.gd": "d750f85ad4f939116145f08614642f52b2bf97fab6a2055560a99d10f0971363",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/bounds_background.gd": "1cefd43ce56e1890df85ff604c38de32c3dd5d1a6941c2a100f84488b4392a5c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_volume_source.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_binding_probe.gd": "3ec2af832caa24926475759e50c532fe7c8d747613edefb92b7badd08c75c1ea",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-A.bin": "0978e345ccc47e2f2df7fff35cdf7bc2be5aa4eeaef2b354b0343362f53b1cd1"
+      },
+      "analysis_sha256": "f01a03bfce7d05e2f1d077e58da88707cbe676d56ee9977e2fd381bb957a9cd2",
+      "analysis_source_sha256": "968ee809608426ea442213813a31e8f4eae656b1444f4c43cb1be758e9d2b6a8",
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "623b2d570a706112a33f58c967319d9b4640756e6daf3f08a59928e40296b12b",
+        "half-0-held.bin": "623b2d570a706112a33f58c967319d9b4640756e6daf3f08a59928e40296b12b",
+        "half-1-first.bin": "2365bca5a934e7404abab62e61c23b5fc4472700084e5a07693352169c06ad00",
+        "half-1-held.bin": "2365bca5a934e7404abab62e61c23b5fc4472700084e5a07693352169c06ad00",
+        "half-2-first.bin": "2365bca5a934e7404abab62e61c23b5fc4472700084e5a07693352169c06ad00",
+        "half-2-held.bin": "2365bca5a934e7404abab62e61c23b5fc4472700084e5a07693352169c06ad00",
+        "half-3-first.bin": "623b2d570a706112a33f58c967319d9b4640756e6daf3f08a59928e40296b12b",
+        "half-3-held.bin": "623b2d570a706112a33f58c967319d9b4640756e6daf3f08a59928e40296b12b"
+      },
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cumulus-fixed-fair01",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cumulus-fixed-fair01/tool-source.gd",
+        "--weather=fair",
+        "--probe-rays=/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cumulus-fixed-fair01/fixed-rays.bin",
+        "--no-sky-debanding"
+      ]
+    },
+    {
+      "variant": "fixed_cumulus",
+      "label": "cumulus-cost-fair01",
+      "checks": 25,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "other_engines_absent": true,
+      "source_verified": {
+        "current_seam_and_bounds": true,
+        "general_density_unchanged": true,
+        "specialized_density_only_replaces_type_noise": true,
+        "single_lookup_guard_only": false,
+        "exact_guard": true,
+        "fixed_rays": false,
+        "sky_debanding_removed": false
+      },
+      "native_comparisons": [],
+      "native_cloud_states": [],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "sky",
+          "quality": 3
+        }
+      ],
+      "performance": {
+        "reference_gpu_ms": 3.0245000123977652,
+        "candidate_gpu_ms": 2.705999970436095,
+        "reduction_percent": 10.530667570048035,
+        "arm_medians_ms": [
+          3.01999998092651,
+          2.70700001716614,
+          2.70499992370605,
+          3.02900004386902
+        ],
+        "samples_per_arm": 360,
+        "quiet_process_monitor": true,
+        "scope": "4K isolated background-only sky, ordinary camera and default sky debanding. Not whole-game FPS."
+      },
+      "evidence_sha256": {
+        "run.json": "03d1f2842481105cd9ada7c271ebadc06712c8b0950ba59dd02462283b72bdd3",
+        "cloud-type-guard.json": "daf51b8a1560287024466f4bae7bd0fc3954eed6f1b01b8870b598e962d32609",
+        "reference.gdshader": "22f895c258dec9447423ad7cbc0c2bdf5c12d5e6441c231a958f76256cd5faeb",
+        "candidate.gdshader": "8456e3d87e66edd184417f11829821e66d104cd6acd3cd1a93e39bc064e2fece"
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cumulus_cost.gd": "b74e32992addf2c1747dbec58aafb542f44283092e8e208054414ca82bd2c87b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_volume_source.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "analysis_sha256": "067d2e8d4c7319e06c5d2b2ea86141eaea6dd405fe2744171fab6560fa0c1e3f",
+      "analysis_source_sha256": "968ee809608426ea442213813a31e8f4eae656b1444f4c43cb1be758e9d2b6a8",
+      "raw_buffers_sha256": {},
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cumulus-cost-fair01",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cumulus-cost-fair01/tool-source.gd",
+        "--weather=fair"
+      ]
+    },
+    {
+      "variant": "lookup_only",
+      "label": "lookup-fixed-fair01",
+      "checks": 97,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "other_engines_absent": true,
+      "source_verified": {
+        "current_seam_and_bounds": true,
+        "general_density_unchanged": false,
+        "specialized_density_only_replaces_type_noise": false,
+        "single_lookup_guard_only": true,
+        "exact_guard": true,
+        "fixed_rays": true,
+        "sky_debanding_removed": true
+      },
+      "native_comparisons": [
+        {
+          "name": "held-0",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-1",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-2",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-3",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "candidate",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "restore",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "repeat",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        }
+      ],
+      "native_cloud_states": [
+        "fffd4c21f0937cec23c1ca3a52bb7fd07e84c93f1524248f8eee192f44cd37f1"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ],
+      "performance": null,
+      "evidence_sha256": {
+        "run.json": "1b182f37a3168b34c9084c6e26553c67f887e23d2a9d35fb3435e587d7bdd370",
+        "cloud-sky-inputs.json": "d5e0a78d93f75b29d2c68db8955684b03270c93a50876d7d45166f58049b4115",
+        "reference.gdshader": "3b144b34b8ecb4e593c8c78fbd0e9aac3c174f85745b255f6a5823cce00b448c",
+        "candidate.gdshader": "4c99e0dda24216c6c75092db8ad4f9c0f7459cd7e6cd9560f89a568781454919"
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup_buffers.gd": "b1d588f76dc765acd54176c1aa5db83de02740afa85b7de0a9fccafcf1af53c9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/bounds_background.gd": "1cefd43ce56e1890df85ff604c38de32c3dd5d1a6941c2a100f84488b4392a5c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_volume_source.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_binding_probe.gd": "3ec2af832caa24926475759e50c532fe7c8d747613edefb92b7badd08c75c1ea",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup_probe.gd": "3aaf8158e54c034b89149464b171be0435399b9d251e21ee663342c8c1355392",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-A.bin": "0978e345ccc47e2f2df7fff35cdf7bc2be5aa4eeaef2b354b0343362f53b1cd1"
+      },
+      "analysis_sha256": "6da9c9ff1d29dbd60ee8cf55dec6ee67801c15978c526757b0c10141c8eabb9b",
+      "analysis_source_sha256": "968ee809608426ea442213813a31e8f4eae656b1444f4c43cb1be758e9d2b6a8",
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "623b2d570a706112a33f58c967319d9b4640756e6daf3f08a59928e40296b12b",
+        "half-0-held.bin": "623b2d570a706112a33f58c967319d9b4640756e6daf3f08a59928e40296b12b",
+        "half-1-first.bin": "623b2d570a706112a33f58c967319d9b4640756e6daf3f08a59928e40296b12b",
+        "half-1-held.bin": "623b2d570a706112a33f58c967319d9b4640756e6daf3f08a59928e40296b12b",
+        "half-2-first.bin": "623b2d570a706112a33f58c967319d9b4640756e6daf3f08a59928e40296b12b",
+        "half-2-held.bin": "623b2d570a706112a33f58c967319d9b4640756e6daf3f08a59928e40296b12b",
+        "half-3-first.bin": "623b2d570a706112a33f58c967319d9b4640756e6daf3f08a59928e40296b12b",
+        "half-3-held.bin": "623b2d570a706112a33f58c967319d9b4640756e6daf3f08a59928e40296b12b"
+      },
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup-fixed-fair01",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup-fixed-fair01/tool-source.gd",
+        "--weather=fair",
+        "--probe-rays=/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup-fixed-fair01/fixed-rays.bin",
+        "--no-sky-debanding"
+      ]
+    },
+    {
+      "variant": "lookup_only",
+      "label": "lookup-cost-fair01",
+      "checks": 25,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "other_engines_absent": false,
+      "source_verified": {
+        "current_seam_and_bounds": true,
+        "general_density_unchanged": false,
+        "specialized_density_only_replaces_type_noise": false,
+        "single_lookup_guard_only": true,
+        "exact_guard": true,
+        "fixed_rays": false,
+        "sky_debanding_removed": false
+      },
+      "native_comparisons": [],
+      "native_cloud_states": [],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "sky",
+          "quality": 3
+        }
+      ],
+      "performance": {
+        "reference_gpu_ms": 3.0249999761581403,
+        "candidate_gpu_ms": 2.923500061035155,
+        "reduction_percent": 3.355369121420426,
+        "arm_medians_ms": [
+          3.01300001144409,
+          2.92400002479553,
+          2.92300009727478,
+          3.03699994087219
+        ],
+        "samples_per_arm": 360,
+        "quiet_process_monitor": false,
+        "scope": "4K isolated background-only sky, ordinary camera and default sky debanding. Not whole-game FPS."
+      },
+      "evidence_sha256": {
+        "run.json": "314b3dc2ff92c543ae152d7321b0a5e2d4fa7fa28529f1614ef6720af7f83916",
+        "cloud-type-guard.json": "071a688e7950234a2efedac2cadc5ee6912b231636123593abe0291508831c94",
+        "reference.gdshader": "22f895c258dec9447423ad7cbc0c2bdf5c12d5e6441c231a958f76256cd5faeb",
+        "candidate.gdshader": "7d35422b8fe5522b8f5001429320f92e9d6c9cc80fb96ec3b252b5708f7233e7"
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup_cost.gd": "246ea105dcb238b2eb8d5b624100ddac561c3106314ff54886a35443ec0dba7b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_volume_source.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup_probe.gd": "3aaf8158e54c034b89149464b171be0435399b9d251e21ee663342c8c1355392",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "analysis_sha256": "2529fe20c37fa3da108deb88be7e1e4e11b9565190f495c7214719b93255373d",
+      "analysis_source_sha256": "968ee809608426ea442213813a31e8f4eae656b1444f4c43cb1be758e9d2b6a8",
+      "raw_buffers_sha256": {},
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup-cost-fair01",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup-cost-fair01/tool-source.gd",
+        "--weather=fair"
+      ]
+    },
+    {
+      "variant": "lookup_only",
+      "label": "lookup-native-mixed01",
+      "checks": 87,
+      "failures": 6,
+      "return_code": 1,
+      "errors": [
+        "FAIL held sky 1",
+        "FAIL raw held cloud buffer 1",
+        "FAIL exact sky candidate",
+        "FAIL exact raw cloud buffer candidate",
+        "FAIL exact sky restore",
+        "FAIL exact raw cloud buffer restore"
+      ],
+      "warnings": [],
+      "other_engines_absent": false,
+      "source_verified": {
+        "current_seam_and_bounds": true,
+        "general_density_unchanged": false,
+        "specialized_density_only_replaces_type_noise": false,
+        "single_lookup_guard_only": true,
+        "exact_guard": true,
+        "fixed_rays": false,
+        "sky_debanding_removed": false
+      },
+      "native_comparisons": [
+        {
+          "name": "held-0",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-1",
+          "pixels": 2060160,
+          "changed_pixels": 50055,
+          "changed_channels": [
+            8414,
+            8114,
+            8278,
+            31862
+          ],
+          "peak_channels": [
+            0.031005859375,
+            0.031005859375,
+            0.03076171875,
+            0.00589752197265625
+          ],
+          "first_changed_xy": [
+            [
+              11,
+              0
+            ],
+            [
+              13,
+              0
+            ],
+            [
+              63,
+              0
+            ],
+            [
+              64,
+              0
+            ],
+            [
+              125,
+              0
+            ],
+            [
+              134,
+              0
+            ],
+            [
+              135,
+              0
+            ],
+            [
+              152,
+              0
+            ]
+          ]
+        },
+        {
+          "name": "held-2",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-3",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "candidate",
+          "pixels": 2060160,
+          "changed_pixels": 50055,
+          "changed_channels": [
+            8414,
+            8114,
+            8278,
+            31862
+          ],
+          "peak_channels": [
+            0.031005859375,
+            0.031005859375,
+            0.03076171875,
+            0.00589752197265625
+          ],
+          "first_changed_xy": [
+            [
+              11,
+              0
+            ],
+            [
+              13,
+              0
+            ],
+            [
+              63,
+              0
+            ],
+            [
+              64,
+              0
+            ],
+            [
+              125,
+              0
+            ],
+            [
+              134,
+              0
+            ],
+            [
+              135,
+              0
+            ],
+            [
+              152,
+              0
+            ]
+          ]
+        },
+        {
+          "name": "restore",
+          "pixels": 2060160,
+          "changed_pixels": 50055,
+          "changed_channels": [
+            8414,
+            8114,
+            8278,
+            31862
+          ],
+          "peak_channels": [
+            0.031005859375,
+            0.031005859375,
+            0.03076171875,
+            0.00589752197265625
+          ],
+          "first_changed_xy": [
+            [
+              11,
+              0
+            ],
+            [
+              13,
+              0
+            ],
+            [
+              63,
+              0
+            ],
+            [
+              64,
+              0
+            ],
+            [
+              125,
+              0
+            ],
+            [
+              134,
+              0
+            ],
+            [
+              135,
+              0
+            ],
+            [
+              152,
+              0
+            ]
+          ]
+        },
+        {
+          "name": "repeat",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        }
+      ],
+      "native_cloud_states": [
+        "7cccf67eea6e34d2ad6d7ba836b424583c39445c44767e124923da0c8a6e3b9b",
+        "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 5072,
+            "peak_delta": 4,
+            "pixels_over_2": 4
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 5072,
+            "peak_delta": 4,
+            "pixels_over_2": 4
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 5072,
+            "peak_delta": 4,
+            "pixels_over_2": 4
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ],
+      "performance": null,
+      "evidence_sha256": {
+        "run.json": "159a866c4bb94cca8082cce3b19e3a51e1a7b433dab718f03be66eb8fbc370f2",
+        "cloud-sky-inputs.json": "e71408069502b04a88ad4a0e6941aedbe2e9109de9dbe4a1a1775e37a03102e4",
+        "reference.gdshader": "ca198fe5e44864fee1a9d03fca1a7ad5e21ae10941fea3e6a8303dfdaeba3f6d",
+        "candidate.gdshader": "745fdec8ae2c12b12633e67bb960e1582ff0a10dc4eaa10e5f25c367cb70e869"
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup_buffers.gd": "b1d588f76dc765acd54176c1aa5db83de02740afa85b7de0a9fccafcf1af53c9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/bounds_background.gd": "1cefd43ce56e1890df85ff604c38de32c3dd5d1a6941c2a100f84488b4392a5c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_volume_source.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_binding_probe.gd": "3ec2af832caa24926475759e50c532fe7c8d747613edefb92b7badd08c75c1ea",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup_probe.gd": "3aaf8158e54c034b89149464b171be0435399b9d251e21ee663342c8c1355392"
+      },
+      "analysis_sha256": "d54d2b09ca75d231502df3d19156c0eb22de50bf7b3e5ee77a6de75f5ab51fac",
+      "analysis_source_sha256": "968ee809608426ea442213813a31e8f4eae656b1444f4c43cb1be758e9d2b6a8",
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-0-held.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-1-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-1-held.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-2-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-2-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-3-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-3-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d"
+      },
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup-native-mixed01",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup-native-mixed01/tool-source.gd",
+        "--weather=mixed"
+      ]
+    },
+    {
+      "variant": "lookup_only",
+      "label": "lookup-fixed-mixed01",
+      "checks": 97,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "other_engines_absent": false,
+      "source_verified": {
+        "current_seam_and_bounds": true,
+        "general_density_unchanged": false,
+        "specialized_density_only_replaces_type_noise": false,
+        "single_lookup_guard_only": true,
+        "exact_guard": true,
+        "fixed_rays": true,
+        "sky_debanding_removed": true
+      },
+      "native_comparisons": [
+        {
+          "name": "held-0",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-1",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-2",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "held-3",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "candidate",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "restore",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        },
+        {
+          "name": "repeat",
+          "pixels": 2060160,
+          "changed_pixels": 0,
+          "changed_channels": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "peak_channels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "first_changed_xy": []
+        }
+      ],
+      "native_cloud_states": [
+        "7508be8396541497f3262d911ace04b194bfccaee268fa38963b6d4cf5986ccf"
+      ],
+      "scene_comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          }
+        },
+        {
+          "case": "candidate",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "restore",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        },
+        {
+          "case": "repeat",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "same_gpu_inputs": true
+        }
+      ],
+      "performance": null,
+      "evidence_sha256": {
+        "run.json": "047b6f10c8f85d29626ede265ebd270037db514a4de09d792af1856926733d43",
+        "cloud-sky-inputs.json": "5305d139338f4c28e83a297f92425fa0ccdf7c309a2700bc81f1b7a8c8975d2c",
+        "reference.gdshader": "3b144b34b8ecb4e593c8c78fbd0e9aac3c174f85745b255f6a5823cce00b448c",
+        "candidate.gdshader": "4c99e0dda24216c6c75092db8ad4f9c0f7459cd7e6cd9560f89a568781454919"
+      },
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup_buffers.gd": "b1d588f76dc765acd54176c1aa5db83de02740afa85b7de0a9fccafcf1af53c9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/bounds_background.gd": "1cefd43ce56e1890df85ff604c38de32c3dd5d1a6941c2a100f84488b4392a5c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_volume_source.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_binding_probe.gd": "3ec2af832caa24926475759e50c532fe7c8d747613edefb92b7badd08c75c1ea",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup_probe.gd": "3aaf8158e54c034b89149464b171be0435399b9d251e21ee663342c8c1355392",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-pipeline-20261010/fixed-rays-A.bin": "0978e345ccc47e2f2df7fff35cdf7bc2be5aa4eeaef2b354b0343362f53b1cd1"
+      },
+      "analysis_sha256": "dadf96fdf88603d29d3c62b8b267049981429fa2a356aa632a0d48b8baadd953",
+      "analysis_source_sha256": "968ee809608426ea442213813a31e8f4eae656b1444f4c43cb1be758e9d2b6a8",
+      "raw_buffers_sha256": {
+        "half-0-first.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-0-held.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-1-first.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-1-held.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-2-first.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-2-held.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-3-first.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878",
+        "half-3-held.bin": "4b67f982a768433705ca76973df5f24d6555e1f1b0640ff5b09de2d7102fa878"
+      },
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup-fixed-mixed01",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup-fixed-mixed01/tool-source.gd",
+        "--weather=mixed",
+        "--probe-rays=/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup-fixed-mixed01/fixed-rays.bin",
+        "--no-sky-debanding"
+      ]
+    },
+    {
+      "label": "lookup-hdr-forward01",
+      "variant": "lookup_only",
+      "checks": 116,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "other_engines_absent": true,
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup_hdr.gd": "57d85ed011efc40400d385e15fd6e8a24ac8045168bae96b8403048ff057434d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/cloud_volume_source.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup_probe.gd": "3aaf8158e54c034b89149464b171be0435399b9d251e21ee663342c8c1355392",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/fixtures/cloud_volume_reference.gd": "925b92f4b6a947e5427b4c7caba9d053c0c28165dd00eeb889fa6094831c3017"
+      },
+      "evidence_sha256": {
+        "run.json": "35b00ff1db19cc7b3bfdc79773a1a1b1f9033d60d9d37c3bebbed5fd7f30a3dc",
+        "cloud-type-hdr.json": "af83f662b6bf83545569d9ba5b6c3985caea00842329d0b3897aa56aeb32be00"
+      },
+      "direct_hdr": {
+        "cases": 110,
+        "ray_pixels": 901120,
+        "all_exact": true,
+        "minimum_transmittance": 5.90085983276367e-06,
+        "scope": "Current eabc8d9 High integrator versus the guarded unused type-noise lookup, HDR scattering and transmittance, including rays originating below/inside/above the cloud layer. No gameplay route or FPS claim."
+      },
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup-hdr-forward01",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-cumulus-control-20261010/lookup-hdr-forward01/tool-source.gd"
+      ]
+    }
+  ]
+}
