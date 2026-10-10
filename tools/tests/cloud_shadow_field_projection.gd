@@ -8,7 +8,7 @@ var shadow_view: SubViewport
 func _ready() -> void:
  for option: Array in GameData.OPTIONS:
   if String(option[0]).begins_with("gfx_"):GameData.options[option[0]]=0
- GameData.options.merge({"gfx_clouds":3,"auto_graphics":0,"confine_mouse":0,"vsync":0,"fps_limit":0},true)
+ GameData.options.merge({"gfx_clouds":3,"gfx_cloud_shadows":1,"auto_graphics":0,"confine_mouse":0,"vsync":0,"fps_limit":0},true)
  Gfx.ensure_globals();Gfx.apply_surface_options();Engine.time_scale=0;Engine.max_fps=0;process_mode=Node.PROCESS_MODE_ALWAYS
  DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED);DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true)
  var field:=Clouds.new();Gfx.set_cloud_frame(get_instance_id(),field.sample(0,"probe-gipat","Gipat",Vector4(.8,.6,.8,1),0,0,12,false))

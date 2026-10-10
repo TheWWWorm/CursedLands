@@ -5,7 +5,7 @@ extends "story_coop_traps_net.gd"
 const Ambient = preload("res://src/game/fx/ambient_life.gd")
 const Mist = preload("res://src/game/fx/weather_mist.gd")
 const Sources = preload("res://src/game/fx/weather_mist_sources.gd")
-const EFFECTS := ["gfx_ambient_wildlife","gfx_ambient_particles","gfx_weather_mist","gfx_clouds","gfx_depth_of_field"]
+const EFFECTS := ["gfx_ambient_wildlife","gfx_ambient_particles","gfx_weather_mist","gfx_clouds","gfx_cloud_shadows","gfx_cloud_reflections","gfx_depth_of_field"]
 const ZONE := "gz1g"
 var ambient: Ambient
 var mist: Mist

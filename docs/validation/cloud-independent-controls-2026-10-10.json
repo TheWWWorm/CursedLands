@@ -1,0 +1,2144 @@
+{
+  "date": "2026-10-10",
+  "status": "source qualified; no delivery package for this increment",
+  "main_thread_only": true,
+  "base_commit": "473beb9efacd81fc7730f65c30060fa7e0a6e768",
+  "user_instruction": "Do not make further delivery packages unless asked. Keep sky clouds independent of cloud reflections and surface shadows.",
+  "production_sources": {
+    "game/src/ei/game_data.gd": "398950a9c44c41b8b190c0cf812509f44846dbea5fc08fd4e703971bb2339b04",
+    "game/src/ei/remake_text.gd": "f166c549b457c4dad36e204f28458b5e5663adeb684b899dca1043e04a8d1626",
+    "game/src/game/fx/clouds.gd": "090692be550913bc15bf25218f7151b1d8cf21bd514e02e7082e7eecb701652e",
+    "game/src/game/gfx.gd": "7e3c74ba6b4ae618d3d066e5dd8ad170e5629bb8086ed988ecfd68afa72333aa",
+    "game/src/game/gfx_detect.gd": "3a4c18f0577c6dc40057e3adc24b1960c6bf192251e591f742398c78ab0554ac"
+  },
+  "frozen_stage": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate10/stage",
+  "build_receipt_sha256": "bcf6cc4be972f42efb438a598f6437204aee35090b0863e950b300816abf3b98",
+  "private_validation_exports_only": true,
+  "new_apk_or_distribution_archive": false,
+  "settings": {
+    "gfx_clouds": "Sky clouds: existing 0..3 qualities retained",
+    "gfx_cloud_shadows": "Independent bool, default 0; needs enabled sky clouds",
+    "gfx_cloud_reflections": "Independent bool, default 0; needs enabled sky clouds and enhanced water",
+    "locales": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "presets": "All standard presets leave clouds and both consumers off; manual change marks Custom. Missing keys in existing settings take default 0."
+  },
+  "changes": [
+    "Disabled consumers are removed from actual surface shader calls. Sky-only terrain/water use exact cloud-free programs.",
+    "Disabling cloud shadows releases the shared producer viewport and GPU texture while retaining sky volume noise and phases.",
+    "All-on sky/terrain/water generated programs and 800x600 held images match the pre-split 473beb9 reference on all three desktop backends.",
+    "Corrected a pre-existing contact-band shadow omission: the earlier terrain-lighting update compacted its source, so the old cloud substitution no longer matched. Updated the stale fixture to its real five-argument signature first, then reproduced 7/1 and fixed it to 7/0 on all three backends.",
+    "Gfx recomposition only sets Shader.code and refreshes camera-fade derivatives when the resulting code differs. Retains shader identity and derived fade code; avoids redundant native recompilation."
+  ],
+  "primary_checks": 1363,
+  "primary_failures": 0,
+  "primary_runs": {
+    "cloud-controls-retained-programs": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-controls-retained-programs",
+      "checks": 244,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate10/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-controls-retained-programs/tool-source.gd",
+        "--cloud-reference=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-reference-fp"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 50.37100707000354,
+      "run_json_sha256": "0fd26d32794ad9558b6f8e277691564bea3b53e07e19cc702867910ba80ea6fd",
+      "run_log_sha256": "f43e584dc3367e27fabd0d8d5a8c360d84fb0234fbde8f7314489633b26391f2",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_controls.gd": "97c9c23e29ef3af73170695edfe39f036a3acf2b8d5b55cdfe06b2b633f83ad2",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "434d2b85e72c3754d344257aaba8089f776e92cd0e566b7368ccc9a50d63c693",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "a8e8ddb4925b361cfe6fb097f7346ae6345a7957a2bd102a13d99de48a5ba32c",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-controls.json": "f9727e56d3ad7cc341aca3d3a1a82d2dbcfe1dfbde36a176262d8c0d95718aae"
+      },
+      "captures": {
+        "split-surface-q2-flags0-5.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-sky-q3-flags0-0.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-sky-q2-flags0-4.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-sky-q3-flags0-4.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-surface-q2-flags3-4.png": "655b7f477cd05aa85e04c6980604cf60f9b3e7132bb85c80c711dd941ace405d",
+        "split-sky-q2-flags3-3.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-sky-q1-flags3-3.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q2-flags2-3.png": "a0373f7bf9f6e96db94184c39b6691e553f080380587bb116a3bde98956fc3f0",
+        "split-sky-q1-flags0-4.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q1-flags2-3.png": "85f5f21b35ff2240b0d8c67f1dc9d5eb094c9ba2ac16a2872977cdcaf434e3bb",
+        "split-surface-q1-flags0-5.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "cloud-controls-de.png": "b6caaa0acbf0054b7858fee0f635e98b9d2e27b9ac8d1d17c7e776b6c3ca30d7",
+        "cloud-controls-ru.png": "11401890de7d1987cf4b972549bf49defdbdc95db357fc197c25ad205c45405f",
+        "cloud-controls-en.png": "9ba7fc90a0704729a2f122ad5557892df6960777f13bc850582e0f1477eb0776",
+        "split-surface-q3-flags3-4.png": "655b7f477cd05aa85e04c6980604cf60f9b3e7132bb85c80c711dd941ace405d",
+        "split-surface-q1-flags0-1.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-sky-q3-flags1-1.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-sky-q2-flags0-0.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-surface-q2-flags1-2.png": "49d3944fa5c67a7415bf21ac08bb58ff9071be24dbe582c32b68fb785f772793",
+        "split-sky-q3-flags2-2.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-surface-q2-flags0-1.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-surface-q3-flags2-3.png": "a0373f7bf9f6e96db94184c39b6691e553f080380587bb116a3bde98956fc3f0",
+        "split-sky-q2-flags1-1.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-sky-q1-flags2-2.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-sky-q2-flags2-2.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-surface-q1-flags1-2.png": "fa74e333db9b0edb1755c1adcb65754db0690d02b42bd787a8d1c94e090af2ac",
+        "split-sky-q3-flags3-3.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-sky-q1-flags1-1.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q3-flags0-1.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-surface-q3-flags1-2.png": "49d3944fa5c67a7415bf21ac08bb58ff9071be24dbe582c32b68fb785f772793",
+        "split-sky-q1-flags0-0.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q1-flags3-4.png": "8743c5af7fb0f97f83412590b494042bf34b2df32549a60fdbebf7d022e8a3f3",
+        "split-surface-q3-flags0-5.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5"
+      }
+    },
+    "cloud-split-controls-mobile": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-controls-mobile",
+      "checks": 230,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate08/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-controls-mobile/tool-source.gd",
+        "--cloud-reference=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-reference-mobile"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": false,
+      "seconds": 48.37209913600236,
+      "run_json_sha256": "fbdf84f240f37c23a36fa730c22b4890c60fdf95cf88c24a57d687e6ec0468a4",
+      "run_log_sha256": "55051a00e1f547ecf9499ab27ba7d78ed0bf4a8947ac27b7a7a126217323445a",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_controls.gd": "97c9c23e29ef3af73170695edfe39f036a3acf2b8d5b55cdfe06b2b633f83ad2",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "434d2b85e72c3754d344257aaba8089f776e92cd0e566b7368ccc9a50d63c693",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "59aeb6539d8e9a440561d742d23480b96e7b3bc17c86283bab8c642c5fc3dc95",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-controls.json": "5def0f2d7ee67785623e22a8c911d765359b40328f007935e7576d8432d413ca"
+      },
+      "captures": {
+        "split-surface-q2-flags0-5.png": "ad8b99ce23a2fa51d5309148b8ac4b61f7cffb6077f205c9b1e4738fd4ba8d48",
+        "split-sky-q3-flags0-0.png": "310c87fef95998229f4d4de8369983c8ad3b41245dbc1b8829de3f29f01f8041",
+        "split-sky-q2-flags0-4.png": "e893db564e4aa01bb76d0b5fc06df960f3fa296f3e969d38ffff7575399ca466",
+        "split-sky-q3-flags0-4.png": "310c87fef95998229f4d4de8369983c8ad3b41245dbc1b8829de3f29f01f8041",
+        "split-surface-q2-flags3-4.png": "8e7fd8ced5420c2e45380f1cf8977d551c8f27e53293069fb29b002c3f82ce8c",
+        "split-sky-q2-flags3-3.png": "e893db564e4aa01bb76d0b5fc06df960f3fa296f3e969d38ffff7575399ca466",
+        "split-sky-q1-flags3-3.png": "1baf6d3261fd5eca347d7edb7e4740d1ab888996ad825860b97031cbbf487722",
+        "split-surface-q2-flags2-3.png": "ddec62d2dbf0ac3141b94b2ed89217c99f37b885a156f70a7953b33dba5b89d6",
+        "split-sky-q1-flags0-4.png": "1baf6d3261fd5eca347d7edb7e4740d1ab888996ad825860b97031cbbf487722",
+        "split-surface-q1-flags2-3.png": "8616e41627b4373a1612897a509b18673882c92e5449c1a49e669b40ba81307c",
+        "split-surface-q1-flags0-5.png": "ad8b99ce23a2fa51d5309148b8ac4b61f7cffb6077f205c9b1e4738fd4ba8d48",
+        "cloud-controls-de.png": "8dcb64473929074ba96d9e625fa84f9cb666783a1abbb40cfdaf5929a18e4936",
+        "cloud-controls-ru.png": "a606a4283cb9bea01fdf84872b7db3e839d069e2f7f45c8a79532b8df8bf55bb",
+        "cloud-controls-en.png": "91d40cfb40024cfe01ba17881ee569aed6de7ff8de4fc59d4fa60087e2dd686e",
+        "split-surface-q3-flags3-4.png": "8e7fd8ced5420c2e45380f1cf8977d551c8f27e53293069fb29b002c3f82ce8c",
+        "split-surface-q1-flags0-1.png": "ad8b99ce23a2fa51d5309148b8ac4b61f7cffb6077f205c9b1e4738fd4ba8d48",
+        "split-sky-q3-flags1-1.png": "310c87fef95998229f4d4de8369983c8ad3b41245dbc1b8829de3f29f01f8041",
+        "split-sky-q2-flags0-0.png": "e893db564e4aa01bb76d0b5fc06df960f3fa296f3e969d38ffff7575399ca466",
+        "split-surface-q2-flags1-2.png": "12bf8b2f9308d66713909d73d7ff05c7de87f36f068c62e143007a3b6db95e4f",
+        "split-sky-q3-flags2-2.png": "310c87fef95998229f4d4de8369983c8ad3b41245dbc1b8829de3f29f01f8041",
+        "split-surface-q2-flags0-1.png": "ad8b99ce23a2fa51d5309148b8ac4b61f7cffb6077f205c9b1e4738fd4ba8d48",
+        "split-surface-q3-flags2-3.png": "ddec62d2dbf0ac3141b94b2ed89217c99f37b885a156f70a7953b33dba5b89d6",
+        "split-sky-q2-flags1-1.png": "e893db564e4aa01bb76d0b5fc06df960f3fa296f3e969d38ffff7575399ca466",
+        "split-sky-q1-flags2-2.png": "1baf6d3261fd5eca347d7edb7e4740d1ab888996ad825860b97031cbbf487722",
+        "split-sky-q2-flags2-2.png": "e893db564e4aa01bb76d0b5fc06df960f3fa296f3e969d38ffff7575399ca466",
+        "split-surface-q1-flags1-2.png": "bc22ee1875bb8ef2757af99f3a3d173db436ca5fdcbf7eb00964d37648068f58",
+        "split-sky-q3-flags3-3.png": "310c87fef95998229f4d4de8369983c8ad3b41245dbc1b8829de3f29f01f8041",
+        "split-sky-q1-flags1-1.png": "1baf6d3261fd5eca347d7edb7e4740d1ab888996ad825860b97031cbbf487722",
+        "split-surface-q3-flags0-1.png": "ad8b99ce23a2fa51d5309148b8ac4b61f7cffb6077f205c9b1e4738fd4ba8d48",
+        "split-surface-q3-flags1-2.png": "12bf8b2f9308d66713909d73d7ff05c7de87f36f068c62e143007a3b6db95e4f",
+        "split-sky-q1-flags0-0.png": "1baf6d3261fd5eca347d7edb7e4740d1ab888996ad825860b97031cbbf487722",
+        "split-surface-q1-flags3-4.png": "c4277567f51e0ca1c5245e9085c2c6bf8add810275cd0cb21e7c04b95342ac8d",
+        "split-surface-q3-flags0-5.png": "ad8b99ce23a2fa51d5309148b8ac4b61f7cffb6077f205c9b1e4738fd4ba8d48"
+      }
+    },
+    "cloud-split-controls-gl": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-controls-gl",
+      "checks": 220,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate08/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-controls-gl/tool-source.gd",
+        "--cloud-reference=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-reference-gl"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 34.315038086031564,
+      "run_json_sha256": "4d5db672e76b85f5a314652d8df9489125c19b8d9798875ef391d4bb86764316",
+      "run_log_sha256": "8a1e6e2da056e45c54c15dc16f2b0ed692856f8aaef1c8eedbdd0c56ddaa25a6",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_controls.gd": "97c9c23e29ef3af73170695edfe39f036a3acf2b8d5b55cdfe06b2b633f83ad2",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "434d2b85e72c3754d344257aaba8089f776e92cd0e566b7368ccc9a50d63c693",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "59aeb6539d8e9a440561d742d23480b96e7b3bc17c86283bab8c642c5fc3dc95",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-controls.json": "82c7d56c275eae6a74ca663ba00f53e79b1690037a2317954b08c7624de64ff7"
+      },
+      "captures": {
+        "split-surface-q2-flags0-5.png": "ee6f4e91dfb6ba7bdf8a35b20fe3a644dcaea8ea1b468174a14faab52b05ecbe",
+        "split-sky-q3-flags0-0.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-sky-q2-flags0-4.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-sky-q3-flags0-4.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-surface-q2-flags3-4.png": "9872e6f6da3c5154bf0f688db71ae35e661320d508a5f98a359ffa15f2834387",
+        "split-sky-q2-flags3-3.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-sky-q1-flags3-3.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-surface-q2-flags2-3.png": "76280fe0eb867eab51f8574ef2fb6b43761c6a8a231800084935a029536ce7b2",
+        "split-sky-q1-flags0-4.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-surface-q1-flags2-3.png": "76280fe0eb867eab51f8574ef2fb6b43761c6a8a231800084935a029536ce7b2",
+        "split-surface-q1-flags0-5.png": "ee6f4e91dfb6ba7bdf8a35b20fe3a644dcaea8ea1b468174a14faab52b05ecbe",
+        "cloud-controls-de.png": "f6177a93bfbd6e6e273a1724a0917622525e317ba365e48690e5db832d4ffbc2",
+        "cloud-controls-ru.png": "f469bcd074c0a3ca53b6ad0eedbae1b33f3976eef7e3e2855c5e31012c185066",
+        "cloud-controls-en.png": "4486ccbd24f20b24081530e47a86c9ffcf8077344d3d5c5422dd0c5059628bd8",
+        "split-surface-q3-flags3-4.png": "9872e6f6da3c5154bf0f688db71ae35e661320d508a5f98a359ffa15f2834387",
+        "split-surface-q1-flags0-1.png": "ee6f4e91dfb6ba7bdf8a35b20fe3a644dcaea8ea1b468174a14faab52b05ecbe",
+        "split-sky-q3-flags1-1.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-sky-q2-flags0-0.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-surface-q2-flags1-2.png": "f5459909e3962e24ce54cc7c5739b23a34e4ef86a63235e5556be91db1856623",
+        "split-sky-q3-flags2-2.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-surface-q2-flags0-1.png": "ee6f4e91dfb6ba7bdf8a35b20fe3a644dcaea8ea1b468174a14faab52b05ecbe",
+        "split-surface-q3-flags2-3.png": "76280fe0eb867eab51f8574ef2fb6b43761c6a8a231800084935a029536ce7b2",
+        "split-sky-q2-flags1-1.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-sky-q1-flags2-2.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-sky-q2-flags2-2.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-surface-q1-flags1-2.png": "f5459909e3962e24ce54cc7c5739b23a34e4ef86a63235e5556be91db1856623",
+        "split-sky-q3-flags3-3.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-sky-q1-flags1-1.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-surface-q3-flags0-1.png": "ee6f4e91dfb6ba7bdf8a35b20fe3a644dcaea8ea1b468174a14faab52b05ecbe",
+        "split-surface-q3-flags1-2.png": "f5459909e3962e24ce54cc7c5739b23a34e4ef86a63235e5556be91db1856623",
+        "split-sky-q1-flags0-0.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "split-surface-q1-flags3-4.png": "9872e6f6da3c5154bf0f688db71ae35e661320d508a5f98a359ffa15f2834387",
+        "split-surface-q3-flags0-5.png": "ee6f4e91dfb6ba7bdf8a35b20fe3a644dcaea8ea1b468174a14faab52b05ecbe"
+      }
+    },
+    "cloud-split-field": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-field",
+      "checks": 55,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate08/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-field/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 7.110502553055994,
+      "run_json_sha256": "f54f5f99d67a1ebaaf58ca898f42f1fe84e232aa2ee9436a29d6c116f6f1c618",
+      "run_log_sha256": "5bab61b0b8dedea54494d6543c9dd95792795bd3ebb132e5333ff6e6b98d3a13",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "434d2b85e72c3754d344257aaba8089f776e92cd0e566b7368ccc9a50d63c693",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "59aeb6539d8e9a440561d742d23480b96e7b3bc17c86283bab8c642c5fc3dc95",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-shadow-field-lifecycle.json": "382945d9a6d44d0babe4b19e550b05430dc8258be280c9b77906793a4de315a3"
+      },
+      "captures": {}
+    },
+    "cloud-contact-fixed-fp": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-contact-fixed-fp",
+      "checks": 7,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate09/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-contact-fixed-fp/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 8.117208943993319,
+      "run_json_sha256": "c92063a462778bc70bda92db2e5c26cb081468ecae24690cd49e8204bda33b50",
+      "run_log_sha256": "e74115146dea023d341478585bd5acf6a280ca51e9b10c13778f065204af0b30",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_contact_light.gd": "38c8a0362130a6c42aaf45af84378a04b1a35722a48d495be048a4b542cffa15",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "3e2f86aaa428d6ed07d6753dcf8e409c823003a150fdf367e6901d5a0baed5a3",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-contact.json": "dff9cbbe089709eeb9440c93233b5f3c37a817b69a5336da2e1d63ec421dcbae"
+      },
+      "captures": {
+        "cloud-contact-night-clear.png": "6c95d86eb2f3a5a304e3e2fb1e540ea4e69cdbc16b521c0067e9e51f0d955985",
+        "cloud-contact-shadow-setting-restored.png": "e0181964568e7fe2ea32c1b28512801574d81cd3ddb6a20963ee0796525bc6bc",
+        "cloud-contact-local-off.png": "eeb5e5e29fe7763c1f38737ce918fc9c6b2f742cd6f8495de38263030ee6e3e9",
+        "cloud-contact-local-on.png": "eeb5e5e29fe7763c1f38737ce918fc9c6b2f742cd6f8495de38263030ee6e3e9",
+        "cloud-contact-sun-on.png": "e0181964568e7fe2ea32c1b28512801574d81cd3ddb6a20963ee0796525bc6bc",
+        "cloud-contact-sun-reference.png": "e0181964568e7fe2ea32c1b28512801574d81cd3ddb6a20963ee0796525bc6bc",
+        "cloud-contact-ambient-off.png": "573a33b97d630c0ec7dbd1ca37227e4e31a6ef9853dcda1a2df235c4a4fe3135",
+        "cloud-contact-shadow-setting-off.png": "6c95d86eb2f3a5a304e3e2fb1e540ea4e69cdbc16b521c0067e9e51f0d955985",
+        "cloud-contact-ambient-on.png": "573a33b97d630c0ec7dbd1ca37227e4e31a6ef9853dcda1a2df235c4a4fe3135",
+        "cloud-contact-sun-off.png": "6c95d86eb2f3a5a304e3e2fb1e540ea4e69cdbc16b521c0067e9e51f0d955985"
+      }
+    },
+    "cloud-contact-fixed-mobile": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-contact-fixed-mobile",
+      "checks": 7,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate09/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-contact-fixed-mobile/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 7.098808405979071,
+      "run_json_sha256": "eaa98c2421fd448489a89db161a36ae9a7e3dbadf0c0b64396332b428370072a",
+      "run_log_sha256": "ddb148e3b29ffb235b90bdab68e57e3a980faa31e44f3b180acd75ddf9a0b6c4",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_contact_light.gd": "38c8a0362130a6c42aaf45af84378a04b1a35722a48d495be048a4b542cffa15",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "3e2f86aaa428d6ed07d6753dcf8e409c823003a150fdf367e6901d5a0baed5a3",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-contact.json": "20c9dac4793c979685fc829a9511465d57c4f4859d2afb23c90e4d642692b809"
+      },
+      "captures": {
+        "cloud-contact-night-clear.png": "6c95d86eb2f3a5a304e3e2fb1e540ea4e69cdbc16b521c0067e9e51f0d955985",
+        "cloud-contact-shadow-setting-restored.png": "e0181964568e7fe2ea32c1b28512801574d81cd3ddb6a20963ee0796525bc6bc",
+        "cloud-contact-local-off.png": "c391d1eb9a7522af5095777eb6a2d5bdbf149f33498b806651099d1691fbd990",
+        "cloud-contact-local-on.png": "c391d1eb9a7522af5095777eb6a2d5bdbf149f33498b806651099d1691fbd990",
+        "cloud-contact-sun-on.png": "e0181964568e7fe2ea32c1b28512801574d81cd3ddb6a20963ee0796525bc6bc",
+        "cloud-contact-sun-reference.png": "e0181964568e7fe2ea32c1b28512801574d81cd3ddb6a20963ee0796525bc6bc",
+        "cloud-contact-ambient-off.png": "8a9721e191b7c9d541b9aadbdb44028255d5612e6295b2575b1955cba8a8abfc",
+        "cloud-contact-shadow-setting-off.png": "6c95d86eb2f3a5a304e3e2fb1e540ea4e69cdbc16b521c0067e9e51f0d955985",
+        "cloud-contact-ambient-on.png": "8a9721e191b7c9d541b9aadbdb44028255d5612e6295b2575b1955cba8a8abfc",
+        "cloud-contact-sun-off.png": "6c95d86eb2f3a5a304e3e2fb1e540ea4e69cdbc16b521c0067e9e51f0d955985"
+      }
+    },
+    "cloud-contact-fixed-gl": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-contact-fixed-gl",
+      "checks": 7,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate09/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-contact-fixed-gl/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 7.133310167992022,
+      "run_json_sha256": "e66e81c10d7dbd478f008734c92bd31c946269b50db683c544d0c59681fbb774",
+      "run_log_sha256": "2b600031384901c8de6d784683d6020e82ba752f00954074c7c0aa352ab9ff67",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_contact_light.gd": "38c8a0362130a6c42aaf45af84378a04b1a35722a48d495be048a4b542cffa15",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "3e2f86aaa428d6ed07d6753dcf8e409c823003a150fdf367e6901d5a0baed5a3",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-contact.json": "8579e79b87cd594904922f5ddd844a5ca147d3c24b2e04c2564d8dea3b472c88"
+      },
+      "captures": {
+        "cloud-contact-night-clear.png": "5f548b05176b6df3171edb00fea988ecc48c245c37b7836e3e5001e9760ff6f7",
+        "cloud-contact-shadow-setting-restored.png": "9dee418f208a41c9691f3a9bae0640f5bd1c46f0c75d8d20e8a972acc5eb791a",
+        "cloud-contact-local-off.png": "8f15a0d73cdde51f5c51c2915a7192f2ce4a3fb26c7de7d642e0d46c3bdb1ab1",
+        "cloud-contact-local-on.png": "8f15a0d73cdde51f5c51c2915a7192f2ce4a3fb26c7de7d642e0d46c3bdb1ab1",
+        "cloud-contact-sun-on.png": "9dee418f208a41c9691f3a9bae0640f5bd1c46f0c75d8d20e8a972acc5eb791a",
+        "cloud-contact-sun-reference.png": "9dee418f208a41c9691f3a9bae0640f5bd1c46f0c75d8d20e8a972acc5eb791a",
+        "cloud-contact-ambient-off.png": "e719f6b6d1ee106d09bc8c4306a6ffb960435b25d30d0c08ce5cf6febab9f821",
+        "cloud-contact-shadow-setting-off.png": "5f548b05176b6df3171edb00fea988ecc48c245c37b7836e3e5001e9760ff6f7",
+        "cloud-contact-ambient-on.png": "e719f6b6d1ee106d09bc8c4306a6ffb960435b25d30d0c08ce5cf6febab9f821",
+        "cloud-contact-sun-off.png": "5f548b05176b6df3171edb00fea988ecc48c245c37b7836e3e5001e9760ff6f7"
+      }
+    },
+    "cloud-split-options-final": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-options-final",
+      "checks": 424,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate09/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-options-final/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 6.118094791017938,
+      "run_json_sha256": "ad12c363ff71e27b445abf3ad33983f8df01b7a38a3d5b1f57e067b30df17763",
+      "run_log_sha256": "ca96be5bfdee431cd143cbfd227e8d498d26e26d4c0d51e1de5a4a7c2f8926ca",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_options.gd": "97e97c70848a6dd91a1d8f9d32de16ff5bb554033b533efa69f7eda654cca7b5"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "3e2f86aaa428d6ed07d6753dcf8e409c823003a150fdf367e6901d5a0baed5a3",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "graphics-options.json": "de77e79cef54137e9a403155861edcac306f27d6cf5f3c42ea4bdda5797ffad3"
+      },
+      "captures": {
+        "graphics-options-en-remake.png": "ac3f85b21e5f28a95882b07e79559ce4a301c8ee02cb85e0044254ccbd4d2fa1",
+        "graphics-options-ru-r_effects.png": "85e091f0ddd32da4086016b4f6a5f073ccd55295e88b2b8e413c2eaa0046bcdb",
+        "graphics-options-ru-r_world.png": "de4b7070baf336e6f908653fb4b319ce0412e28315ff9cbfc0d85cff050d6a40",
+        "graphics-options-en-r_water.png": "6e53f6728bd83ec0988cf298abd91698d933e423145e9a985b28bfb1d1a9b090",
+        "graphics-options-ru-remake.png": "0557d63d0d0b61cc88db5165570749c85fcd399d8de7d6ada2006d5fce81f952",
+        "graphics-options-de-r_water.png": "2b91f9ba45a3ea89ae4034808eb2e9f8a1bcadd17e586c9dd78b7c9a72c62199",
+        "graphics-options-en-r_effects.png": "07189cec24240b16dd0179e2cac18300d82d54326500e091becebe11ee70935b",
+        "graphics-options-ru-r_lighting.png": "ddaed56a4d2ba9b8d3b69c21b4a095db616f129afee3fb509f76d6c16a9d194a",
+        "graphics-options-ru-graphics.png": "44ddfdc238d2d7a22d3972d21100ccd2e4047aab5ee1e4d3335a7b394dbf1371",
+        "graphics-options-de-r_terrain.png": "0488f524240147490ae19d9fb900ad4be82946af3490aa2ed3a87ea4e0f8c6b7",
+        "graphics-options-de-remake.png": "bfb19ac54797979cf9abc0fdee9c049722953fbc2569e5c6ad9dbcf760edd2f8",
+        "graphics-options-ru-r_water.png": "1d0bba2b2cf8da1d6fd7d3f3c2a67f51e5f878e6d274ec864314b6fd6cff5993",
+        "graphics-options-de-r_world.png": "30cf296493ebf4ff65703648fc3264b35d2835e23a5b08851dcc98b30f5f8cb9",
+        "graphics-options-de-graphics.png": "22cbb14431a9a6b3679c91d99d79a9ffe906669ac17a95e5e191abd05dd72eb7",
+        "graphics-options-en-r_world.png": "ea9af6a3e4df7b672ad7cb2d89d4396b7588a41f428fa512ac10918d3bc46778",
+        "graphics-options-en-r_lighting.png": "7dad49251550c76bc535bf9dd46a7084a1709eab0c7c90577760ac816719872e",
+        "graphics-options-ru-r_terrain.png": "01c590842b5eee50ca0bb59c14ac4043446ff79f542996cad30ccf2dc69b642a",
+        "graphics-options-en-graphics.png": "d089b4738bb70666b1ad32e70a8459532d22bfb9a5df284e2937fa0e15f940fb",
+        "graphics-options-de-r_effects.png": "748d18f68677da689ca200a76aa26d1a36ec1e23e01b91cd578cadddff24017d",
+        "graphics-options-de-r_lighting.png": "523dd48f166afb7305d47cdfd82f816d52efd91220ffd3ba47fee9623a4be4f2",
+        "graphics-options-en-r_terrain.png": "8b7ad8f6af367bc11cedec2806a04647c7b7a013f725ff39bbed2f8ce357e0e1"
+      }
+    },
+    "cloud-split-presets-final": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-presets-final",
+      "checks": 57,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate09/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-presets-final/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 5.085006234003231,
+      "run_json_sha256": "9eaa3ed5e872151fb26a46848fcade67d52cee4377665c61554eadd5bc70037b",
+      "run_log_sha256": "de7216e4cd0eb248bacfcac3365b7e6d44138f2ab6e54fabfab4be3588de5395",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_presets.gd": "af50376a11c4c756db74d5385d220902caa2aebf1b6aead8344f03dc7ea69f6a"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "3e2f86aaa428d6ed07d6753dcf8e409c823003a150fdf367e6901d5a0baed5a3",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {},
+      "captures": {
+        "graphics-presets-de.png": "dc6e08d1b95bd8ac2ea27adaf2055c22cf7bed12ccb0b7131750ec490b2f064d",
+        "graphics-presets-ru.png": "9d43355496a9bc5db82bbe5dd1d202f36e69811d0463b0e27e011d0d8a0fb4fa",
+        "graphics-presets-en.png": "01126e81537bd6c04df00dcbd10c1fa1e1092fca12c69a4d732295abe1d0ee6f"
+      }
+    },
+    "cloud-menu-retained-programs": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-menu-retained-programs",
+      "checks": 46,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate10/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-menu-retained-programs/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 88.58200679800939,
+      "run_json_sha256": "37ef393795866d9a98a139d05377387d57218f4c2cbbd26c0796decb032b22f2",
+      "run_log_sha256": "820d8675561d123445812b75e7dd44043aee5b7ad39c2e6bac06f903dacb4deb",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_material_refresh.gd": "12941dedea52784a96e9c0abbf3e58d1f68e59825489029e335d8fc547e0e3b3"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "a8e8ddb4925b361cfe6fb097f7346ae6345a7957a2bd102a13d99de48a5ba32c",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "menu-material-refresh.json": "fa95ccf7329c719a08f9d7841056fed408fe1aa54586da7f163882df38ad5cbd"
+      },
+      "captures": {
+        "menu-material-startup-on-hover.png": "3f3b960b4617cdd5ff63318cb5dbad9c131bcb84d654bd0a23f537d14af95694",
+        "menu-material-startup-off-live-options.png": "627a22de7ad8d62ec6424957da934495c8e37325cf823bd538fa98b56a071b15",
+        "menu-material-startup-off-initial.png": "63e75af1b8d8697dd13977f73f5523eaea4111d1de12839c57279306f6f97213",
+        "menu-material-startup-off-contact-on-again.png": "a4d4be34baf1d6766892efd7680ea863136a06f5e979055e2edaf92a5acbcb6c",
+        "menu-material-startup-on-initial.png": "7460d7f6bad5f9bce2cf7f31edb46be2abbebc5b5f935a2abaaf40c22ac43bfd",
+        "menu-material-startup-off-hover.png": "a4d4be34baf1d6766892efd7680ea863136a06f5e979055e2edaf92a5acbcb6c",
+        "menu-material-startup-on-contact-on-again.png": "3f3b960b4617cdd5ff63318cb5dbad9c131bcb84d654bd0a23f537d14af95694",
+        "menu-material-startup-off-contact-off.png": "dd9adad6d3d6a9e5c73df3144cafed1420833f1c1c8659aa618e794ac81e12d0",
+        "menu-material-startup-on-live-options.png": "3f4bf15db225629e48e737c3ed0a71b217ba234272ffd40de135f7d942939934",
+        "menu-material-startup-on-contact-off.png": "b32e547a6ebd1b8c51dc910da437c32f6c7e421a352a9b61531ffe6f96c03d0e"
+      }
+    },
+    "cloud-shader-refresh-candidate": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-shader-refresh-candidate",
+      "checks": 22,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate10/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-shader-refresh-candidate/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 8.107873256958555,
+      "run_json_sha256": "bf28a816b7e312901723e7528b8169ff799a0c4bb07f3a890b0d40fe86bd4178",
+      "run_log_sha256": "d2a4af779dad79b2872700d9aaf3c7e49f52d3eece1a69f881ab2390cd0b9200",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_shader_refresh.gd": "c9ab4b9c147745afcb62fdeb2de9c864ede64877af563a27c4a8ce2a0b8aaaab"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "a8e8ddb4925b361cfe6fb097f7346ae6345a7957a2bd102a13d99de48a5ba32c",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "graphics-shader-refresh.json": "55ecdd8f3453174b10e17fd2ae2de6feea0c31796457bceb9abbb8b4d3b75467"
+      },
+      "captures": {}
+    },
+    "cloud-shader-refresh-mobile": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-shader-refresh-mobile",
+      "checks": 22,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate10/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-shader-refresh-mobile/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 6.143283226003405,
+      "run_json_sha256": "9f5ceb336c724567a57a4f8f6144b46da57e05994c8778164a52468884ec02fc",
+      "run_log_sha256": "711cd38423cf50a00efe0410526a691d1980414aad8f37d0cb2f28e83710c216",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_shader_refresh.gd": "c9ab4b9c147745afcb62fdeb2de9c864ede64877af563a27c4a8ce2a0b8aaaab"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "a8e8ddb4925b361cfe6fb097f7346ae6345a7957a2bd102a13d99de48a5ba32c",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "graphics-shader-refresh.json": "9e3fc76209a7b2a326f00477617b83863717c748994d7c78296ce647402bc249"
+      },
+      "captures": {}
+    },
+    "cloud-shader-refresh-gl": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-shader-refresh-gl",
+      "checks": 22,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate10/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-shader-refresh-gl/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 5.133621891029179,
+      "run_json_sha256": "b1f2d1b37f4b1760d1de8dcd35551e8a6cc788c59a21699e043b7838ffb1700a",
+      "run_log_sha256": "175202c1cbdf11b8807cbc8bf8b6db727123d2a56712961e9a81c64001b221d3",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_shader_refresh.gd": "c9ab4b9c147745afcb62fdeb2de9c864ede64877af563a27c4a8ce2a0b8aaaab"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "a8e8ddb4925b361cfe6fb097f7346ae6345a7957a2bd102a13d99de48a5ba32c",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "graphics-shader-refresh.json": "afcb65f7540b4950fd37b88e9598208fe91256dfdfbdd50ac097a7686c5491ce"
+      },
+      "captures": {}
+    }
+  },
+  "references_and_diagnostics": {
+    "cloud-split-reference-fp": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-reference-fp",
+      "checks": 12,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate07/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-reference-fp/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 18.200817432021722,
+      "run_json_sha256": "0a02468dc47328b302e5962f15db7585a9c3927eeddcaae9c24052f8ffbfbcdb",
+      "run_log_sha256": "a24f718c1106a261a1349c527748bf85ec264c39c80098e951a4cdd60936f286",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud_reference.gd": "0067f09c207bf206dcd0285c46997e4ae9beab93bfc7a8fbeecd6a9dae9823a0",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-reference.json": "2f4e3b567d1727a6437ac72cdcb9d3ab3a602e916349219306424530e1c382b6"
+      },
+      "captures": {
+        "reference-sky-3.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "reference-sky-1.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "reference-surface-1.png": "8743c5af7fb0f97f83412590b494042bf34b2df32549a60fdbebf7d022e8a3f3",
+        "reference-surface-2.png": "655b7f477cd05aa85e04c6980604cf60f9b3e7132bb85c80c711dd941ace405d",
+        "reference-surface-3.png": "655b7f477cd05aa85e04c6980604cf60f9b3e7132bb85c80c711dd941ace405d",
+        "reference-sky-2.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e"
+      }
+    },
+    "cloud-split-reference-mobile": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-reference-mobile",
+      "checks": 12,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate07/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-reference-mobile/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 15.191801191016566,
+      "run_json_sha256": "0c2119bad3fd7485e469b57aa09132bbf790e545a5a9b638fa4d2a8a4035bbec",
+      "run_log_sha256": "76dd1c4d557a8690144c04cad1d9315b2b9d1a82c24586ea615955ce99a56336",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud_reference.gd": "0067f09c207bf206dcd0285c46997e4ae9beab93bfc7a8fbeecd6a9dae9823a0",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-reference.json": "12352e518f82ad72c36fcf64c290387bdc06e7a87458f0864f1ad4e9c46369a9"
+      },
+      "captures": {
+        "reference-sky-3.png": "310c87fef95998229f4d4de8369983c8ad3b41245dbc1b8829de3f29f01f8041",
+        "reference-sky-1.png": "1baf6d3261fd5eca347d7edb7e4740d1ab888996ad825860b97031cbbf487722",
+        "reference-surface-1.png": "c4277567f51e0ca1c5245e9085c2c6bf8add810275cd0cb21e7c04b95342ac8d",
+        "reference-surface-2.png": "8e7fd8ced5420c2e45380f1cf8977d551c8f27e53293069fb29b002c3f82ce8c",
+        "reference-surface-3.png": "8e7fd8ced5420c2e45380f1cf8977d551c8f27e53293069fb29b002c3f82ce8c",
+        "reference-sky-2.png": "e893db564e4aa01bb76d0b5fc06df960f3fa296f3e969d38ffff7575399ca466"
+      }
+    },
+    "cloud-split-reference-gl": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-reference-gl",
+      "checks": 12,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate07/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-reference-gl/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 11.173893538012635,
+      "run_json_sha256": "9358b8afd7391b3df9778f75c02ab0d3cd0ccba01d1ce73a2bb967c7aed86f02",
+      "run_log_sha256": "b9592466a6322cc6095453e36ebbb75b182ceea862ce916548b7371948736fd6",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud_reference.gd": "0067f09c207bf206dcd0285c46997e4ae9beab93bfc7a8fbeecd6a9dae9823a0",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-reference.json": "dd1831dff6584896c9a42b18179c50344c07abb70ef61a24437be0091541b1e4"
+      },
+      "captures": {
+        "reference-sky-3.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "reference-sky-1.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef",
+        "reference-surface-1.png": "9872e6f6da3c5154bf0f688db71ae35e661320d508a5f98a359ffa15f2834387",
+        "reference-surface-2.png": "9872e6f6da3c5154bf0f688db71ae35e661320d508a5f98a359ffa15f2834387",
+        "reference-surface-3.png": "9872e6f6da3c5154bf0f688db71ae35e661320d508a5f98a359ffa15f2834387",
+        "reference-sky-2.png": "9ba232d4835f5aadf1e44d5526dc166b4aa1f2524aea5aa7a4969b06d909a1ef"
+      }
+    },
+    "cloud-split-controls-fp": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-controls-fp",
+      "checks": 244,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate08/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-controls-fp/tool-source.gd",
+        "--cloud-reference=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-reference-fp"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 50.39243331301259,
+      "run_json_sha256": "a0836800d4d0ab5bd22d3533f768a7b4218eee56dbd84990e417cddce95a020b",
+      "run_log_sha256": "eb7cfcf47ad246a44837fc49a6b16152314185e092ff2897acbbc0dd6c45a381",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_controls.gd": "97c9c23e29ef3af73170695edfe39f036a3acf2b8d5b55cdfe06b2b633f83ad2",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "434d2b85e72c3754d344257aaba8089f776e92cd0e566b7368ccc9a50d63c693",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "59aeb6539d8e9a440561d742d23480b96e7b3bc17c86283bab8c642c5fc3dc95",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-controls.json": "f9727e56d3ad7cc341aca3d3a1a82d2dbcfe1dfbde36a176262d8c0d95718aae"
+      },
+      "captures": {
+        "split-surface-q2-flags0-5.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-sky-q3-flags0-0.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-sky-q2-flags0-4.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-sky-q3-flags0-4.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-surface-q2-flags3-4.png": "655b7f477cd05aa85e04c6980604cf60f9b3e7132bb85c80c711dd941ace405d",
+        "split-sky-q2-flags3-3.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-sky-q1-flags3-3.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q2-flags2-3.png": "a0373f7bf9f6e96db94184c39b6691e553f080380587bb116a3bde98956fc3f0",
+        "split-sky-q1-flags0-4.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q1-flags2-3.png": "85f5f21b35ff2240b0d8c67f1dc9d5eb094c9ba2ac16a2872977cdcaf434e3bb",
+        "split-surface-q1-flags0-5.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "cloud-controls-de.png": "b6caaa0acbf0054b7858fee0f635e98b9d2e27b9ac8d1d17c7e776b6c3ca30d7",
+        "cloud-controls-ru.png": "11401890de7d1987cf4b972549bf49defdbdc95db357fc197c25ad205c45405f",
+        "cloud-controls-en.png": "9ba7fc90a0704729a2f122ad5557892df6960777f13bc850582e0f1477eb0776",
+        "split-surface-q3-flags3-4.png": "655b7f477cd05aa85e04c6980604cf60f9b3e7132bb85c80c711dd941ace405d",
+        "split-surface-q1-flags0-1.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-sky-q3-flags1-1.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-sky-q2-flags0-0.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-surface-q2-flags1-2.png": "49d3944fa5c67a7415bf21ac08bb58ff9071be24dbe582c32b68fb785f772793",
+        "split-sky-q3-flags2-2.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-surface-q2-flags0-1.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-surface-q3-flags2-3.png": "a0373f7bf9f6e96db94184c39b6691e553f080380587bb116a3bde98956fc3f0",
+        "split-sky-q2-flags1-1.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-sky-q1-flags2-2.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-sky-q2-flags2-2.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-surface-q1-flags1-2.png": "fa74e333db9b0edb1755c1adcb65754db0690d02b42bd787a8d1c94e090af2ac",
+        "split-sky-q3-flags3-3.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-sky-q1-flags1-1.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q3-flags0-1.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-surface-q3-flags1-2.png": "49d3944fa5c67a7415bf21ac08bb58ff9071be24dbe582c32b68fb785f772793",
+        "split-sky-q1-flags0-0.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q1-flags3-4.png": "8743c5af7fb0f97f83412590b494042bf34b2df32549a60fdbebf7d022e8a3f3",
+        "split-surface-q3-flags0-5.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5"
+      }
+    },
+    "cloud-split-controls-final": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-controls-final",
+      "checks": 244,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate09/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-controls-final/tool-source.gd",
+        "--cloud-reference=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-reference-fp"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 50.358753481996246,
+      "run_json_sha256": "2c427fed1c898e5433ceb75572ea3e85d15b31b1609fca93fb9ec367c502bd46",
+      "run_log_sha256": "0f8e2187b0f41174ffe3c5d5d916d27f7bbd13f6eaf783b0e1172fcaa3c61668",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_controls.gd": "97c9c23e29ef3af73170695edfe39f036a3acf2b8d5b55cdfe06b2b633f83ad2",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "434d2b85e72c3754d344257aaba8089f776e92cd0e566b7368ccc9a50d63c693",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "3e2f86aaa428d6ed07d6753dcf8e409c823003a150fdf367e6901d5a0baed5a3",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-controls.json": "f9727e56d3ad7cc341aca3d3a1a82d2dbcfe1dfbde36a176262d8c0d95718aae"
+      },
+      "captures": {
+        "split-surface-q2-flags0-5.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-sky-q3-flags0-0.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-sky-q2-flags0-4.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-sky-q3-flags0-4.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-surface-q2-flags3-4.png": "655b7f477cd05aa85e04c6980604cf60f9b3e7132bb85c80c711dd941ace405d",
+        "split-sky-q2-flags3-3.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-sky-q1-flags3-3.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q2-flags2-3.png": "a0373f7bf9f6e96db94184c39b6691e553f080380587bb116a3bde98956fc3f0",
+        "split-sky-q1-flags0-4.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q1-flags2-3.png": "85f5f21b35ff2240b0d8c67f1dc9d5eb094c9ba2ac16a2872977cdcaf434e3bb",
+        "split-surface-q1-flags0-5.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "cloud-controls-de.png": "b6caaa0acbf0054b7858fee0f635e98b9d2e27b9ac8d1d17c7e776b6c3ca30d7",
+        "cloud-controls-ru.png": "11401890de7d1987cf4b972549bf49defdbdc95db357fc197c25ad205c45405f",
+        "cloud-controls-en.png": "9ba7fc90a0704729a2f122ad5557892df6960777f13bc850582e0f1477eb0776",
+        "split-surface-q3-flags3-4.png": "655b7f477cd05aa85e04c6980604cf60f9b3e7132bb85c80c711dd941ace405d",
+        "split-surface-q1-flags0-1.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-sky-q3-flags1-1.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-sky-q2-flags0-0.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-surface-q2-flags1-2.png": "49d3944fa5c67a7415bf21ac08bb58ff9071be24dbe582c32b68fb785f772793",
+        "split-sky-q3-flags2-2.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-surface-q2-flags0-1.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-surface-q3-flags2-3.png": "a0373f7bf9f6e96db94184c39b6691e553f080380587bb116a3bde98956fc3f0",
+        "split-sky-q2-flags1-1.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-sky-q1-flags2-2.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-sky-q2-flags2-2.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-surface-q1-flags1-2.png": "fa74e333db9b0edb1755c1adcb65754db0690d02b42bd787a8d1c94e090af2ac",
+        "split-sky-q3-flags3-3.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-sky-q1-flags1-1.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q3-flags0-1.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-surface-q3-flags1-2.png": "49d3944fa5c67a7415bf21ac08bb58ff9071be24dbe582c32b68fb785f772793",
+        "split-sky-q1-flags0-0.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q1-flags3-4.png": "8743c5af7fb0f97f83412590b494042bf34b2df32549a60fdbebf7d022e8a3f3",
+        "split-surface-q3-flags0-5.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5"
+      }
+    },
+    "cloud-split-menu-materials-final": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-menu-materials-final",
+      "checks": 46,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate09/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-menu-materials-final/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 88.62145968998084,
+      "run_json_sha256": "e5a32472b0ade25020dc1fe1762e32a9edba5e56b71f5e793bd306ab8fd15cf8",
+      "run_log_sha256": "185b4e57fcae6376f5d01da1112d8a13d7c97de3215c44cf158710d3025fd059",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_material_refresh.gd": "12941dedea52784a96e9c0abbf3e58d1f68e59825489029e335d8fc547e0e3b3"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "3e2f86aaa428d6ed07d6753dcf8e409c823003a150fdf367e6901d5a0baed5a3",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "menu-material-refresh.json": "fa95ccf7329c719a08f9d7841056fed408fe1aa54586da7f163882df38ad5cbd"
+      },
+      "captures": {
+        "menu-material-startup-on-hover.png": "3f3b960b4617cdd5ff63318cb5dbad9c131bcb84d654bd0a23f537d14af95694",
+        "menu-material-startup-off-live-options.png": "05b263d286c618dea5fdde31841eba5011dabc556cf1ba3082b0ed7c1893e8af",
+        "menu-material-startup-off-initial.png": "63e75af1b8d8697dd13977f73f5523eaea4111d1de12839c57279306f6f97213",
+        "menu-material-startup-off-contact-on-again.png": "a4d4be34baf1d6766892efd7680ea863136a06f5e979055e2edaf92a5acbcb6c",
+        "menu-material-startup-on-initial.png": "7460d7f6bad5f9bce2cf7f31edb46be2abbebc5b5f935a2abaaf40c22ac43bfd",
+        "menu-material-startup-off-hover.png": "a4d4be34baf1d6766892efd7680ea863136a06f5e979055e2edaf92a5acbcb6c",
+        "menu-material-startup-on-contact-on-again.png": "3f3b960b4617cdd5ff63318cb5dbad9c131bcb84d654bd0a23f537d14af95694",
+        "menu-material-startup-off-contact-off.png": "dd9adad6d3d6a9e5c73df3144cafed1420833f1c1c8659aa618e794ac81e12d0",
+        "menu-material-startup-on-live-options.png": "f8a1c2b752caafbe04d36fb3c8940cd02af088b269169dd1047dd09fb8597f32",
+        "menu-material-startup-on-contact-off.png": "b32e547a6ebd1b8c51dc910da437c32f6c7e421a352a9b61531ffe6f96c03d0e"
+      }
+    },
+    "cloud-split-contact": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-contact",
+      "checks": 5,
+      "failures": 1,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate08/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-contact/tool-source.gd"
+      ],
+      "return_code": 1,
+      "errors": [
+        "SHADER ERROR: Too few arguments for \"contact_light(vec3, vec3, vec4, vec3, vec3)\" call. Expected at least 5 but received 4.",
+        "ERROR: Shader compilation failed.",
+        "FAIL independent reduced-sun reference changes actual probe pixels"
+      ],
+      "other_engines_absent": true,
+      "seconds": 9.14294605498435,
+      "run_json_sha256": "4f3f6eae489cd56077518c28794cc5ded959ce50cef7bd75ee997841bc151c26",
+      "run_log_sha256": "8f6cbd4d8a49dcd66f84ad089c72d04f4330a89f65f4823c2f57dd28ba61a63d",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_contact_light.gd": "a64c106728f853548d939b3619610d0532e25fe7b998ac274ef265d6aabac47f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "59aeb6539d8e9a440561d742d23480b96e7b3bc17c86283bab8c642c5fc3dc95",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-contact.json": "41136a3fd358d8b03aaed58a0df92741284b7e729d0ff7031821944a47a52a2c"
+      },
+      "captures": {
+        "cloud-contact-night-clear.png": "676c48f7f8b5cd541f101653efda3fa20ab4410b4be3345c9d6ebdde40537e9f",
+        "cloud-contact-local-off.png": "676c48f7f8b5cd541f101653efda3fa20ab4410b4be3345c9d6ebdde40537e9f",
+        "cloud-contact-local-on.png": "676c48f7f8b5cd541f101653efda3fa20ab4410b4be3345c9d6ebdde40537e9f",
+        "cloud-contact-sun-on.png": "676c48f7f8b5cd541f101653efda3fa20ab4410b4be3345c9d6ebdde40537e9f",
+        "cloud-contact-sun-reference.png": "676c48f7f8b5cd541f101653efda3fa20ab4410b4be3345c9d6ebdde40537e9f",
+        "cloud-contact-ambient-off.png": "676c48f7f8b5cd541f101653efda3fa20ab4410b4be3345c9d6ebdde40537e9f",
+        "cloud-contact-ambient-on.png": "676c48f7f8b5cd541f101653efda3fa20ab4410b4be3345c9d6ebdde40537e9f",
+        "cloud-contact-sun-off.png": "676c48f7f8b5cd541f101653efda3fa20ab4410b4be3345c9d6ebdde40537e9f"
+      }
+    },
+    "cloud-contact-baseline-corrected": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-contact-baseline-corrected",
+      "checks": 7,
+      "failures": 1,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate08/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-contact-baseline-corrected/tool-source.gd"
+      ],
+      "return_code": 1,
+      "errors": [
+        "FAIL contact band shares exact terrain cloud attenuation before native byte packing"
+      ],
+      "other_engines_absent": true,
+      "seconds": 8.144614985969383,
+      "run_json_sha256": "7d6615cb29f1573925b22d7cfff46945c0ddf782660a58525a76c9f5125e0188",
+      "run_log_sha256": "423cbe4028d6788f528771810259e31985f8783b84bfa041eb647e279211cd69",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_contact_light.gd": "38c8a0362130a6c42aaf45af84378a04b1a35722a48d495be048a4b542cffa15",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "59aeb6539d8e9a440561d742d23480b96e7b3bc17c86283bab8c642c5fc3dc95",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-contact.json": "b7c28f58e5735ff705b6123769d4b76ebdbbf812ce6346f89e402bd2ec8c2333"
+      },
+      "captures": {
+        "cloud-contact-night-clear.png": "6c95d86eb2f3a5a304e3e2fb1e540ea4e69cdbc16b521c0067e9e51f0d955985",
+        "cloud-contact-shadow-setting-restored.png": "6c95d86eb2f3a5a304e3e2fb1e540ea4e69cdbc16b521c0067e9e51f0d955985",
+        "cloud-contact-local-off.png": "eeb5e5e29fe7763c1f38737ce918fc9c6b2f742cd6f8495de38263030ee6e3e9",
+        "cloud-contact-local-on.png": "eeb5e5e29fe7763c1f38737ce918fc9c6b2f742cd6f8495de38263030ee6e3e9",
+        "cloud-contact-sun-on.png": "6c95d86eb2f3a5a304e3e2fb1e540ea4e69cdbc16b521c0067e9e51f0d955985",
+        "cloud-contact-sun-reference.png": "e0181964568e7fe2ea32c1b28512801574d81cd3ddb6a20963ee0796525bc6bc",
+        "cloud-contact-ambient-off.png": "573a33b97d630c0ec7dbd1ca37227e4e31a6ef9853dcda1a2df235c4a4fe3135",
+        "cloud-contact-shadow-setting-off.png": "6c95d86eb2f3a5a304e3e2fb1e540ea4e69cdbc16b521c0067e9e51f0d955985",
+        "cloud-contact-ambient-on.png": "573a33b97d630c0ec7dbd1ca37227e4e31a6ef9853dcda1a2df235c4a4fe3135",
+        "cloud-contact-sun-off.png": "6c95d86eb2f3a5a304e3e2fb1e540ea4e69cdbc16b521c0067e9e51f0d955985"
+      }
+    },
+    "cloud-split-cost-fp": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-cost-fp",
+      "checks": 72,
+      "failures": 6,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate08/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-cost-fp/tool-source.gd"
+      ],
+      "return_code": 1,
+      "errors": [
+        "FAIL independent consumers preserve exact sky pixels",
+        "FAIL repeat condition has exact held pixels",
+        "FAIL independent consumers preserve exact sky pixels",
+        "FAIL repeat condition has exact held pixels",
+        "FAIL repeat condition has exact held pixels",
+        "FAIL independent consumers preserve exact sky pixels"
+      ],
+      "other_engines_absent": true,
+      "seconds": 139.91940411302494,
+      "run_json_sha256": "2d294710442315931b1566371f30a955bd2692b97946e957dcc0c1ece3927233",
+      "run_log_sha256": "104bfe17d4dabc1b907245f3055570ecbd23ef94f7d6161474ce89ee45b2209c",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud_consumer_cost.gd": "d2d828cc478cc8f65d07443d53f5a7a841fdc1f673bbc04bbb984a19c5dd11fa",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "59aeb6539d8e9a440561d742d23480b96e7b3bc17c86283bab8c642c5fc3dc95",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-consumer-cost.json": "bbb30603ead7e32df4724fdac3edff19cb1254665802ccd3956235f6abf57951"
+      },
+      "captures": {
+        "consumer-surface-3.png": "a48eca14d5d6e1a5bd1cb250f8307710f321a21fe81407ce020ce8dafab0e59d",
+        "consumer-sky-0.png": "609e750c0e3ed09a68263d6d426d959a64b445c680625b5bb8c7ae2d909e7169",
+        "consumer-surface-2.png": "72f4f9cac9ab777d960fee86eb971884da4bda82d3006f297e2d8fce11644eb9",
+        "consumer-sky-3.png": "6a3f3e3ab44956c09138eba91cb9d90f783f87417862831d5465c85c77045ad9",
+        "consumer-surface-1.png": "44930f7fdbeb5d93c76cd9a4cef9816ce488e4254a8437498139f622fa1db219",
+        "consumer-surface-0.png": "0074865d52caaad2b278e5c0fef2a3e95bb5ef44fb9f73fb55c7625367bc2c73",
+        "consumer-sky-2.png": "6a3f3e3ab44956c09138eba91cb9d90f783f87417862831d5465c85c77045ad9",
+        "consumer-sky-1.png": "6a3f3e3ab44956c09138eba91cb9d90f783f87417862831d5465c85c77045ad9"
+      }
+    },
+    "cloud-split-cost-old-control": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-cost-old-control",
+      "checks": 40,
+      "failures": 14,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate07/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-cost-old-control/tool-source.gd",
+        "--sky-only",
+        "--unchanged-control"
+      ],
+      "return_code": 1,
+      "errors": [
+        "FAIL repeat condition has exact held pixels",
+        "FAIL independent consumers preserve exact sky pixels",
+        "FAIL repeat condition has exact held pixels",
+        "FAIL independent consumers preserve exact sky pixels",
+        "FAIL repeat condition has exact held pixels",
+        "FAIL independent consumers preserve exact sky pixels",
+        "FAIL repeat condition has exact held pixels",
+        "FAIL independent consumers preserve exact sky pixels",
+        "FAIL repeat condition has exact held pixels",
+        "FAIL independent consumers preserve exact sky pixels",
+        "FAIL repeat condition has exact held pixels",
+        "FAIL independent consumers preserve exact sky pixels",
+        "FAIL repeat condition has exact held pixels",
+        "FAIL independent consumers preserve exact sky pixels"
+      ],
+      "other_engines_absent": false,
+      "seconds": 94.64821910398314,
+      "run_json_sha256": "d12ee357216fc85d3e322a2f060232cd50ba425a7241f30a4f9d38f771c8ad8d",
+      "run_log_sha256": "945ca7afb337c4a5b1907bdcfbd97d52039329889685f76df77a2cc4c52731d0",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud_consumer_cost.gd": "b39bc5e1a9cce1ae1dd784badabe0c8d52faed44612893786d1264dbd8661783",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-consumer-cost.json": "73aebf515e10b9b9f69f80b57a30eea1ecf6e1e6b20515eac75b050206f64bd9"
+      },
+      "captures": {
+        "repeat-sky-3-3.png": "f69035d3eebeadbf62d33b6097f0b8569bbf37cab2c6e9126c350fc2e0136da7",
+        "repeat-sky-3-5.png": "f69035d3eebeadbf62d33b6097f0b8569bbf37cab2c6e9126c350fc2e0136da7",
+        "repeat-sky-3-1.png": "f69035d3eebeadbf62d33b6097f0b8569bbf37cab2c6e9126c350fc2e0136da7",
+        "repeat-sky-3-6.png": "f69035d3eebeadbf62d33b6097f0b8569bbf37cab2c6e9126c350fc2e0136da7",
+        "consumer-sky-3.png": "609e750c0e3ed09a68263d6d426d959a64b445c680625b5bb8c7ae2d909e7169",
+        "repeat-sky-3-4.png": "f69035d3eebeadbf62d33b6097f0b8569bbf37cab2c6e9126c350fc2e0136da7",
+        "repeat-sky-3-2.png": "f69035d3eebeadbf62d33b6097f0b8569bbf37cab2c6e9126c350fc2e0136da7",
+        "repeat-sky-3-7.png": "f69035d3eebeadbf62d33b6097f0b8569bbf37cab2c6e9126c350fc2e0136da7"
+      }
+    },
+    "cloud-split-cost-old-no-interpolation": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-cost-old-no-interpolation",
+      "checks": 10,
+      "failures": 2,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate07/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-split-cost-old-no-interpolation/tool-source.gd",
+        "--sky-only",
+        "--unchanged-control",
+        "--quick-control"
+      ],
+      "return_code": 1,
+      "errors": [
+        "FAIL repeat condition has exact held pixels",
+        "FAIL independent consumers preserve exact sky pixels"
+      ],
+      "other_engines_absent": true,
+      "seconds": 28.2683617050061,
+      "run_json_sha256": "bfe8c3d31e6534e9116afe106fd55499df62f06b763b83112e3cc52167f808ec",
+      "run_log_sha256": "1f29c5adc7c6253fb5b08d57e519bb9f1cac100dcbb618ab70467ba88e364cee",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud_consumer_cost.gd": "f24ba8d1625ff7647c493d6434323a9b38809a085224975f18d0d1f360b34be7",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "cloud-consumer-cost.json": "637ee02298e8cfd7277c75b744c74fe7bb5926fbf15a9563f2b8648cba6c92f6"
+      },
+      "captures": {
+        "repeat-sky-3-1.png": "f9fae5c06cf6b30af812467fad6a4487ed0444468147035a64779b0e0713f467",
+        "consumer-sky-3.png": "371448a038e256b790ab46b65f297e5515a45bee729619d14610f86cfbdfdef0"
+      }
+    },
+    "cloud-shader-refresh-baseline": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-shader-refresh-baseline",
+      "checks": 22,
+      "failures": 5,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate09/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-shader-refresh-baseline/tool-source.gd"
+      ],
+      "return_code": 1,
+      "errors": [
+        "FAIL recompile only affected live programs: sky only",
+        "FAIL recompile only affected live programs: add reflections",
+        "FAIL recompile only affected live programs: remove reflections",
+        "FAIL recompile only affected live programs: change sky quality",
+        "FAIL recompile only affected live programs: disable sky"
+      ],
+      "other_engines_absent": true,
+      "seconds": 11.164558197953738,
+      "run_json_sha256": "6639f40713bc17d452da8e3df1621c55dae25f86ae061e8dac24a21a0bd11feb",
+      "run_log_sha256": "dab6f2758011bb565beac3b5085d399056daab862bb7f6c18b304619600bc07e",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_shader_refresh.gd": "c9ab4b9c147745afcb62fdeb2de9c864ede64877af563a27c4a8ce2a0b8aaaab"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "3e2f86aaa428d6ed07d6753dcf8e409c823003a150fdf367e6901d5a0baed5a3",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "graphics-shader-refresh.json": "ef72f42c260d9c1d076d26fb2b254eb33d1972841dba284c17bb32c20d046682"
+      },
+      "captures": {}
+    },
+    "cloud-shader-refresh-candidate-repeat": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-shader-refresh-candidate-repeat",
+      "checks": 22,
+      "failures": 0,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate10/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-shader-refresh-candidate-repeat/tool-source.gd"
+      ],
+      "return_code": 0,
+      "errors": [],
+      "other_engines_absent": true,
+      "seconds": 8.133850008016452,
+      "run_json_sha256": "09df4b6d415580c84c50baaa652e50dad4463958a5e73d1983ad5d5f7ba46a86",
+      "run_log_sha256": "a9c1a61a81f8e71b7f9b0ed55a82a0cf7ca1d6469b0c276bbd0d64ffd623dbfa",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_shader_refresh.gd": "c9ab4b9c147745afcb62fdeb2de9c864ede64877af563a27c4a8ce2a0b8aaaab"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "a8e8ddb4925b361cfe6fb097f7346ae6345a7957a2bd102a13d99de48a5ba32c",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "graphics-shader-refresh.json": "f908482488b20f882ebe08cb3d89945cdd3cb26544229a7ff7f35b6108481934"
+      },
+      "captures": {}
+    },
+    "cloud-shader-refresh-baseline-repeat": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-shader-refresh-baseline-repeat",
+      "checks": 22,
+      "failures": 5,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate09/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-shader-refresh-baseline-repeat/tool-source.gd"
+      ],
+      "return_code": 1,
+      "errors": [
+        "FAIL recompile only affected live programs: sky only",
+        "FAIL recompile only affected live programs: add reflections",
+        "FAIL recompile only affected live programs: remove reflections",
+        "FAIL recompile only affected live programs: change sky quality",
+        "FAIL recompile only affected live programs: disable sky"
+      ],
+      "other_engines_absent": true,
+      "seconds": 10.138732843042817,
+      "run_json_sha256": "788b332f4a38d5858c0fde63ec2c980070dc1e0fa4c528cddbc8fae3533407cb",
+      "run_log_sha256": "e838ec9ea4f1707ecbb3d91d9b1c8235489fcda916efa21130269ecee390027d",
+      "fixture_sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_shader_refresh.gd": "c9ab4b9c147745afcb62fdeb2de9c864ede64877af563a27c4a8ce2a0b8aaaab"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "3e2f86aaa428d6ed07d6753dcf8e409c823003a150fdf367e6901d5a0baed5a3",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "results": {
+        "graphics-shader-refresh.json": "fec1ef0f52cb8ce36028f6423709d5ff969f95d42a662379b6ded31dc07d12b3"
+      },
+      "captures": {}
+    }
+  },
+  "qualification_scope": "Linux desktop RTX3090 Ti, Forward+, Mobile Vulkan and Compatibility OpenGL. Final candidate10 includes the contact correction and no-op shader reuse; cross-backend control/field runs from candidate08 and contact/options/preset runs from candidate09 are retained, with final Forward+ full controls/menu and three-backend shader-refresh checks after the last source change. Compiled stage hashes match canonical production sources.",
+  "surface_gpu_measurement": {
+    "viewport": [
+      3840,
+      2160
+    ],
+    "map": "original zone1 terrain/water, controlled camera, mixed Ingos weather parameters; no full game/scenery/party workload",
+    "sky_quality": 3,
+    "order": [
+      3,
+      0,
+      1,
+      2,
+      2,
+      1,
+      0,
+      3
+    ],
+    "flags": "1=shadows, 2=cloud water reflections",
+    "warmup_frames": 240,
+    "warmup_ms_before_samples": 2500,
+    "samples_per_arm": 300,
+    "other_engines_absent": true,
+    "parent_and_shadow_producer_gpu_ms_summed": true,
+    "rows": [
+      {
+        "apply_us": 56990,
+        "arm": 0,
+        "case": "cost",
+        "clock_interval": [
+          424,
+          428.9833333333
+        ],
+        "combined_gpu_ms": {
+          "max": 2.19600002467632,
+          "median": 2.07400004565716,
+          "min": 2.01800000295043,
+          "p95": 2.13800007849932
+        },
+        "field_gpu_ms": {
+          "max": 0.0489999987185001,
+          "median": 0.046000000089407,
+          "min": 0.0450000017881393,
+          "p95": 0.0480000004172325
+        },
+        "flags": 3,
+        "frame_wall_ms": {
+          "max": 16.047,
+          "median": 6.884,
+          "min": 0.799,
+          "p95": 8.506
+        },
+        "parent_gpu_ms": {
+          "max": 2.15100002288818,
+          "median": 2.02800011634827,
+          "min": 1.97200000286102,
+          "p95": 2.09100008010864
+        },
+        "path": "surface",
+        "reflections": true,
+        "samples": 300,
+        "settle_ms": 2500,
+        "shadows": true,
+        "viewport_cpu_ms": {
+          "max": 0.388999998569489,
+          "median": 0.207000002264977,
+          "min": 0.172999992966652,
+          "p95": 0.287999987602234
+        },
+        "warmup": 240
+      },
+      {
+        "apply_us": 19019,
+        "arm": 1,
+        "case": "cost",
+        "clock_interval": [
+          424,
+          428.9833333333
+        ],
+        "combined_gpu_ms": {
+          "max": 1.31900000572205,
+          "median": 1.30400002002716,
+          "min": 1.28999996185303,
+          "p95": 1.31099998950958
+        },
+        "field_gpu_ms": {
+          "max": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "p95": 0.0
+        },
+        "flags": 0,
+        "frame_wall_ms": {
+          "max": 15.26,
+          "median": 7.207,
+          "min": 0.603,
+          "p95": 8.535
+        },
+        "parent_gpu_ms": {
+          "max": 1.31900000572205,
+          "median": 1.30400002002716,
+          "min": 1.28999996185303,
+          "p95": 1.31099998950958
+        },
+        "path": "surface",
+        "reflections": false,
+        "samples": 300,
+        "settle_ms": 2500,
+        "shadows": false,
+        "viewport_cpu_ms": {
+          "max": 0.349999994039536,
+          "median": 0.128000006079674,
+          "min": 0.0949999988079071,
+          "p95": 0.218999996781349
+        },
+        "warmup": 240
+      },
+      {
+        "apply_us": 32440,
+        "arm": 2,
+        "case": "cost",
+        "clock_interval": [
+          424,
+          428.9833333333
+        ],
+        "combined_gpu_ms": {
+          "max": 2.13399991393089,
+          "median": 1.42299995943904,
+          "min": 1.29300002753735,
+          "p95": 2.12599994242191
+        },
+        "field_gpu_ms": {
+          "max": 0.068000003695488,
+          "median": 0.0560000017285347,
+          "min": 0.0450000017881393,
+          "p95": 0.0659999996423721
+        },
+        "flags": 1,
+        "frame_wall_ms": {
+          "max": 16.721,
+          "median": 7.089,
+          "min": 0.727,
+          "p95": 8.66
+        },
+        "parent_gpu_ms": {
+          "max": 2.06699991226196,
+          "median": 1.36300003528595,
+          "min": 1.24800002574921,
+          "p95": 2.05999994277954
+        },
+        "path": "surface",
+        "reflections": false,
+        "samples": 300,
+        "settle_ms": 2500,
+        "shadows": true,
+        "viewport_cpu_ms": {
+          "max": 0.363000005483627,
+          "median": 0.194000005722046,
+          "min": 0.157000005245209,
+          "p95": 0.264999985694885
+        },
+        "warmup": 240
+      },
+      {
+        "apply_us": 22424,
+        "arm": 3,
+        "case": "cost",
+        "clock_interval": [
+          424,
+          428.9833333333
+        ],
+        "combined_gpu_ms": {
+          "max": 2.1159999370575,
+          "median": 1.99899995326996,
+          "min": 1.94000005722046,
+          "p95": 2.06800007820129
+        },
+        "field_gpu_ms": {
+          "max": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "p95": 0.0
+        },
+        "flags": 2,
+        "frame_wall_ms": {
+          "max": 16.571,
+          "median": 7.367,
+          "min": 0.623,
+          "p95": 8.795
+        },
+        "parent_gpu_ms": {
+          "max": 2.1159999370575,
+          "median": 1.99899995326996,
+          "min": 1.94000005722046,
+          "p95": 2.06800007820129
+        },
+        "path": "surface",
+        "reflections": true,
+        "samples": 300,
+        "settle_ms": 2500,
+        "shadows": false,
+        "viewport_cpu_ms": {
+          "max": 0.314000010490417,
+          "median": 0.138999998569489,
+          "min": 0.108999997377396,
+          "p95": 0.184000000357628
+        },
+        "warmup": 240
+      },
+      {
+        "apply_us": 158,
+        "arm": 4,
+        "case": "cost",
+        "clock_interval": [
+          424,
+          428.9833333333
+        ],
+        "combined_gpu_ms": {
+          "max": 2.10899996757507,
+          "median": 2.00099992752075,
+          "min": 1.93700003623962,
+          "p95": 2.06299996376038
+        },
+        "field_gpu_ms": {
+          "max": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "p95": 0.0
+        },
+        "flags": 2,
+        "frame_wall_ms": {
+          "max": 15.89,
+          "median": 7.393,
+          "min": 0.609,
+          "p95": 8.743
+        },
+        "parent_gpu_ms": {
+          "max": 2.10899996757507,
+          "median": 2.00099992752075,
+          "min": 1.93700003623962,
+          "p95": 2.06299996376038
+        },
+        "path": "surface",
+        "reflections": true,
+        "samples": 300,
+        "settle_ms": 2500,
+        "shadows": false,
+        "viewport_cpu_ms": {
+          "max": 0.333000004291534,
+          "median": 0.140000000596046,
+          "min": 0.114000000059605,
+          "p95": 0.224000006914139
+        },
+        "warmup": 240
+      },
+      {
+        "apply_us": 30904,
+        "arm": 5,
+        "case": "cost",
+        "clock_interval": [
+          424,
+          428.9833333333
+        ],
+        "combined_gpu_ms": {
+          "max": 2.05899995192885,
+          "median": 1.29399997740984,
+          "min": 1.28000001609325,
+          "p95": 2.05300002917647
+        },
+        "field_gpu_ms": {
+          "max": 0.0640000030398369,
+          "median": 0.0480000004172325,
+          "min": 0.0450000017881393,
+          "p95": 0.0610000006854534
+        },
+        "flags": 1,
+        "frame_wall_ms": {
+          "max": 15.784,
+          "median": 7.328,
+          "min": 0.772,
+          "p95": 8.873
+        },
+        "parent_gpu_ms": {
+          "max": 1.99899995326996,
+          "median": 1.24600005149841,
+          "min": 1.23500001430511,
+          "p95": 1.99199998378754
+        },
+        "path": "surface",
+        "reflections": false,
+        "samples": 300,
+        "settle_ms": 2500,
+        "shadows": true,
+        "viewport_cpu_ms": {
+          "max": 0.689999997615814,
+          "median": 0.208000004291534,
+          "min": 0.165999993681908,
+          "p95": 0.324000000953674
+        },
+        "warmup": 240
+      },
+      {
+        "apply_us": 19320,
+        "arm": 6,
+        "case": "cost",
+        "clock_interval": [
+          424,
+          428.9833333333
+        ],
+        "combined_gpu_ms": {
+          "max": 2.00300002098083,
+          "median": 1.27100002765656,
+          "min": 1.23099994659424,
+          "p95": 1.99699997901917
+        },
+        "field_gpu_ms": {
+          "max": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "p95": 0.0
+        },
+        "flags": 0,
+        "frame_wall_ms": {
+          "max": 16.043,
+          "median": 7.299,
+          "min": 0.597,
+          "p95": 8.591
+        },
+        "parent_gpu_ms": {
+          "max": 2.00300002098083,
+          "median": 1.27100002765656,
+          "min": 1.23099994659424,
+          "p95": 1.99699997901917
+        },
+        "path": "surface",
+        "reflections": false,
+        "samples": 300,
+        "settle_ms": 2500,
+        "shadows": false,
+        "viewport_cpu_ms": {
+          "max": 0.312000006437302,
+          "median": 0.118000000715256,
+          "min": 0.0920000001788139,
+          "p95": 0.17399999499321
+        },
+        "warmup": 240
+      },
+      {
+        "apply_us": 31987,
+        "arm": 7,
+        "case": "cost",
+        "clock_interval": [
+          424,
+          428.9833333333
+        ],
+        "combined_gpu_ms": {
+          "max": 2.20800008624792,
+          "median": 2.1019999012351,
+          "min": 2.02399999648333,
+          "p95": 2.15999998897314
+        },
+        "field_gpu_ms": {
+          "max": 0.0500000007450581,
+          "median": 0.0469999983906746,
+          "min": 0.0450000017881393,
+          "p95": 0.0489999987185001
+        },
+        "flags": 3,
+        "frame_wall_ms": {
+          "max": 15.566,
+          "median": 6.87,
+          "min": 0.746,
+          "p95": 8.372
+        },
+        "parent_gpu_ms": {
+          "max": 2.16000008583069,
+          "median": 2.05399990081787,
+          "min": 1.97699999809265,
+          "p95": 2.11199998855591
+        },
+        "path": "surface",
+        "reflections": true,
+        "samples": 300,
+        "settle_ms": 2500,
+        "shadows": true,
+        "viewport_cpu_ms": {
+          "max": 0.419999986886978,
+          "median": 0.216000005602837,
+          "min": 0.178000003099442,
+          "p95": 0.29899999499321
+        },
+        "warmup": 240
+      }
+    ],
+    "mean_paired_medians_ms": {
+      "0": 1.2875000238418601,
+      "1": 1.3584999684244399,
+      "2": 1.9999999403953552,
+      "3": 2.08799997344613
+    },
+    "both_disabled_reduction_percent": 38.33812067933546,
+    "surface_checks": 32,
+    "surface_failures": 0,
+    "scope": "Removing optional surface effects intentionally changes the surface image. Controlled viewport GPU cost, not faster unchanged cloud ray marching, target Windows FPS, or whole-game performance. No sky speedup is claimed."
+  },
+  "sky_repeat_diagnostic": {
+    "initial_full_run_checks": 72,
+    "initial_full_run_failures": 6,
+    "affected_path": "sky only; all surface repeated images passed",
+    "unchanged_earlier_code_control": "candidate07, identical settings, shader hashes and serialized cloud state; 40 checks / 14 failures, the same 4289 changed pixels, one pixel over 2 with maximum 23/255. Export overlap invalidates timing claims from this diagnostic; it does not invalidate the observed image/state comparison.",
+    "no_interpolation_control": "candidate07 with SubViewport physics interpolation disabled, 10/2; 4231 pixels differ by 1/255, none over 2. Root cause remains unestablished.",
+    "acceptance": "Do not claim universal exact 4K repeated sky pixels, or a sky optimization from these runs. Preserve strict failures separately from passing source/control acceptance."
+  },
+  "shader_recomposition_cpu": {
+    "order": "baseline, candidate, candidate, baseline",
+    "rows": [
+      {
+        "run": "cloud-shader-refresh-baseline",
+        "case": "unchanged-live-variants",
+        "count": 18,
+        "median_ms": 131.844,
+        "samples": [
+          129.611,
+          130.201,
+          130.268,
+          130.519,
+          130.922,
+          130.968,
+          131.038,
+          131.335,
+          131.542,
+          131.55,
+          131.588,
+          131.617,
+          131.844,
+          132.618,
+          133.807,
+          133.929,
+          134.795,
+          134.854,
+          134.966,
+          135.32,
+          136.333,
+          136.531,
+          139.223,
+          140.555
+        ]
+      },
+      {
+        "run": "cloud-shader-refresh-candidate",
+        "case": "unchanged-live-variants",
+        "count": 18,
+        "median_ms": 16.284,
+        "samples": [
+          16.145,
+          16.191,
+          16.203,
+          16.214,
+          16.232,
+          16.249,
+          16.254,
+          16.255,
+          16.266,
+          16.273,
+          16.274,
+          16.282,
+          16.284,
+          16.297,
+          16.318,
+          16.325,
+          16.329,
+          16.332,
+          16.358,
+          16.36,
+          16.365,
+          16.432,
+          16.477,
+          16.669
+        ]
+      },
+      {
+        "run": "cloud-shader-refresh-candidate-repeat",
+        "case": "unchanged-live-variants",
+        "count": 18,
+        "median_ms": 16.187,
+        "samples": [
+          15.966,
+          16.028,
+          16.036,
+          16.042,
+          16.045,
+          16.078,
+          16.098,
+          16.108,
+          16.124,
+          16.149,
+          16.174,
+          16.182,
+          16.187,
+          16.196,
+          16.199,
+          16.205,
+          16.23,
+          16.336,
+          16.356,
+          16.416,
+          16.42,
+          17.846,
+          18.379,
+          19.466
+        ]
+      },
+      {
+        "run": "cloud-shader-refresh-baseline-repeat",
+        "case": "unchanged-live-variants",
+        "count": 18,
+        "median_ms": 130.469,
+        "samples": [
+          129.669,
+          129.889,
+          129.94,
+          129.968,
+          130.011,
+          130.077,
+          130.085,
+          130.101,
+          130.155,
+          130.218,
+          130.27,
+          130.286,
+          130.469,
+          130.492,
+          130.538,
+          130.54,
+          130.588,
+          130.633,
+          130.687,
+          130.766,
+          130.968,
+          131.016,
+          131.217,
+          131.672
+        ]
+      }
+    ],
+    "baseline_mean_of_medians_ms": 131.1565,
+    "candidate_mean_of_medians_ms": 16.235500000000002,
+    "reduction_percent": 87.62127687152372,
+    "scope": "Synchronous source generation, preprocessing and shader assignment for 18 instantiated production terrain/water Shader resources, 24 repeated sky-quality changes per run with consumers off. Actual Shader.changed events reproduce five redundant-recompile failures before and zero after. This isolated fixture does not measure GPU/frame time or a rendered 18-material scene.",
+    "whole_menu_sequence_seconds": {
+      "before": 88.62145968998084,
+      "after": 88.58200679800939,
+      "interpretation": "The full cold menu regression remains about 88.6s; the isolated source/parse saving does not resolve its other preparation costs."
+    }
+  },
+  "packages": {
+    "latest_preexisting": "1.0.3-local.20261010.9 at source473beb9",
+    "new_cloud_changes_in_that_package": false,
+    "delivery_policy": "Only package again on explicit user request."
+  },
+  "open": [
+    "Android hardware acceptance of the new cloud controls and shader-reuse change; no new private or player APK made here.",
+    "Windows execution and target GPU cost.",
+    "Broad old/new effect ranking, sky/reflection ray-march optimization, V1 cold shader cost and water rebuild hitches.",
+    "Unreproduced RMX3890 exit and Linux empty-image/teardown messages.",
+    "Outstanding organic gameplay, larger-party, original-MP, reconnect, WAN and physical input/audio routes."
+  ]
+}

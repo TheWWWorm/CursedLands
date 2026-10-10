@@ -5,7 +5,7 @@ const SIZE := Vector2i(1000, 893)
 const NEW_OPTIONS := {"gfx_biome_cover":1, "gfx_vegetation_interaction":1, "gfx_ground_contact":1,
 	"gfx_terrain_cliffs":1, "gfx_depth_of_field":1, "gfx_water_interaction":1,
 	"gfx_water_caustics":1, "gfx_water_current":1, "gfx_water_waves":1, "gfx_waterfalls":1,
-	"gfx_ambient_wildlife":1, "gfx_ambient_particles":1, "gfx_clouds":3, "gfx_weather_mist":1}
+	"gfx_ambient_wildlife":1, "gfx_ambient_particles":1, "gfx_clouds":3, "gfx_cloud_shadows":1, "gfx_cloud_reflections":1, "gfx_weather_mist":1}
 var checks := 0
 var failures := 0
 var rows: Array[Dictionary] = []

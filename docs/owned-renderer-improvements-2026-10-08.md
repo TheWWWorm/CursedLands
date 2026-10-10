@@ -5767,3 +5767,45 @@ existing scripts lacked tracked UID sidecars. Committing the exact qualified
 match candidate03 except the displayed version. Actual Linux package checks
 pass 218/0; Windows is statically audited, not executed. The failed attempt is
 preserved in the package receipt. No engine/native/gameplay changes were added.
+
+## Independent cloud consumers and shader refresh — 10 October
+
+The user now requires delivery packages only when requested. Local `.9`
+(source `473beb9`) was already produced before that instruction and includes
+first-load settings, direct-attack stance, pollen/grass and graphics-preset
+repairs. The changes in this section are source-only; no new archive or APK
+was made for them.
+
+Weather/effects now offers **Sky clouds**, **Cloud shadows** and **Cloud
+reflections** independently. Sky keeps its existing four qualities. Both
+surface effects default off; shadows require enabled clouds, and reflections
+also require enhanced water. Turning off shadows releases the shared GPU
+producer while retaining sky resources and phases. Sky-only surfaces contain
+no cloud sampling. Persistence, manual Custom marking, cancellation and
+EN/RU/DE layout are covered.
+
+[Qualification](validation/cloud-independent-controls-2026-10-10.json) records
+**1,363/0** primary desktop assertions. Forward+, Mobile and Compatibility
+retain exact pre-split all-on shader programs and 800×600 reference images.
+The existing ground-contact probe had a stale four-argument call; correcting
+it exposed an older shadow omission after contact lighting was rewritten.
+The current five-argument production function now receives cloud attenuation,
+with independent sun/ambient/local-light checks on all three backends.
+
+In a controlled 4K original zone1 terrain/water view with mixed Ingos weather,
+combined viewport/shared-field median GPU time averages 2.088 ms with both
+extras and 1.288 ms without (38.3% lower). High sky quality stays selected.
+This saving intentionally removes optional surface effects; it is not a faster
+unchanged sky, whole-game FPS or target Windows performance. The separate sky
+repeat checks retain small differences also reproduced by unchanged earlier
+code with identical serialized state. Their cause is unestablished; strict
+failures and diagnostic overlap remain in the receipt.
+
+Shader recomposition now compares generated code before assigning it and
+refreshing existing camera-fade derivatives. An ABBA source/preprocessing
+fixture with 18 instantiated production programs falls from 131.844/130.469
+ms to 16.284/16.187 ms median per change, with the redundant Shader.changed
+events removed. Actual changed programs and fade copies retain their identity
+and correct source. The full cold menu regression still takes about 88.6 s;
+this is an isolated preparation improvement, not a general loading/FPS claim.
+Android and Windows acceptance of this increment remains open.

@@ -231,6 +231,7 @@ func _ready() -> void:
 	await frames(3)
 	for option in GameData.OPTIONS:
 		if String(option[0]).begins_with("gfx_"): GameData.options[option[0]]=0
+	GameData.options["gfx_cloud_shadows"]=1;GameData.options["gfx_cloud_reflections"]=1
 	GameData.options["gfx_water"]=1;GameData.options["gfx_materials"]=1
 	GameData.options["gfx_water_reflections"]=1;GameData.options["confine_mouse"]=0;GameData.options["vsync"]=0
 	Gfx.ensure_globals();Engine.time_scale=0;Engine.max_fps=60;process_mode=Node.PROCESS_MODE_ALWAYS

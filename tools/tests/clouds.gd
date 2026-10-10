@@ -208,6 +208,7 @@ func _ready() -> void:
 	for option in GameData.OPTIONS:
 		if String(option[0]).begins_with("gfx_"): GameData.options[option[0]]=0
 	for key in ["confine_mouse","vsync"]: GameData.options[key]=0
+	GameData.options["gfx_cloud_shadows"]=1;GameData.options["gfx_cloud_reflections"]=1
 	GameData.options["gfx_water"]=1; GameData.options["gfx_water_reflections"]=1
 	GameData.options["gfx_materials"]=int("--clouds-materials" in OS.get_cmdline_user_args())
 	GameData.options["fps_limit"]=3

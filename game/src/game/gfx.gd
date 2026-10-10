@@ -222,11 +222,14 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 		# a first write to a swizzle is treated as reading an unset varying.
 		code = code.replace("void vertex() {", "void vertex() {\n\tei_vertex_inputs = vec4(0.0);")
 	var i := code.find("\nvoid ")
+	var cloud_shadows := lit and Clouds.shadows_enabled()
+	var cloud_reflections := lit and code.contains("#define EI_WATER_FX") and Clouds.reflections_enabled()
 	var extra := "varying vec4 ei_surface_leaf;\n#define ei_surface ei_surface_leaf.rgb\n#define ei_leaf ei_surface_leaf.a\nvarying vec3 ei_vpos;\n" if lit else ""
 	if lit:
 		extra += VERTEX_LIGHT.replace("WRAP_TERM", _wrap_term(wrap))
-		if on("gfx_clouds"):
-			extra = Clouds.common_source()+Clouds.shadow_source()+extra
+		if cloud_shadows or cloud_reflections:
+			extra = Clouds.common_source()+(Clouds.shadow_source() if cloud_shadows else "")+extra
+		if cloud_shadows:
 			# Limit reuse to the qualified Forward+ path for this test build.
 			if RenderingServer.get_current_rendering_method() == "forward_plus":
 				# Vertex calls keep their own shadow evaluation. Fragment light calls
@@ -253,16 +256,17 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 		if LocalLightShader.enabled():
 			extra += LocalLightShader.COMMON
 	code = code.substr(0, i + 1) + LIGHT_COMMON + extra + code.substr(i + 1)
-	if lit and on("gfx_clouds"):
+	if cloud_shadows:
 		# Contact blending reconstructs terrain lighting independently of the
 		# figure's vertex path; its sampled band must share the ground shadow.
-		code = code.replace("ei_sun * max(dot(n,ei_sun_dir),0.0)",
-			"ei_sun * ei_cloud_sun(p) * max(dot(n,ei_sun_dir),0.0)")
-	if lit and on("gfx_clouds") and code.contains("#define EI_WATER_FX"):
+		code = code.replace("ei_sun*max(dot(n,ei_sun_dir),0.0)",
+			"ei_sun*ei_cloud_sun(p)*max(dot(n,ei_sun_dir),0.0)")
+	if cloud_reflections:
 		# Enhanced water has its own Fresnel/SSR composition and bypasses
 		# Godot's sky IBL. Sample the same sheet on its reflected world ray.
 		code = code.replace("vec3 R = ei_lin(ei_sky);",
 			"vec3 R = ei_lin(ei_cloud_sky(ei_sky,wpos,reflect(normalize((INV_VIEW_MATRIX*vec4(vdir,0.0)).xyz),wn),ei_ambient,ei_sun));")
+	if cloud_shadows and code.contains("#define EI_WATER_FX"):
 		code = code.replace("G = ei_lin(min(ei_sun, vec3(1.0))) *", "G = ei_lin(min(ei_sun, vec3(1.0))) * ei_cloud_sun(wpos) *")
 	if lit:
 		code = _function_tail(code, "vertex", "\n\tvec3 ei_d; vec3 ei_s;\n\tei_vertex_colours((MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz, normalize(MODEL_NORMAL_MATRIX * NORMAL), ei_e, ei_k, ei_d, ei_s);\n\tei_vertex_diffuse = ei_d; ei_vertex_specular = ei_s;\n")
@@ -358,7 +362,7 @@ static func _set_vol_fog(v: bool) -> void:
 	var mode := int(on("gfx_materials")) if _specialize_materials else -2
 	var terrain_mode := (int(on("gfx_terrain")) | (int(on("gfx_soft_ground")) << 1) \
 		| (int(on("gfx_weather_surfaces")) << 2)) if _specialize_materials else -2
-	var clouds := Clouds.mode()
+	var clouds := Clouds.mode() | (int(Clouds.shadows_enabled()) << 2) | (int(Clouds.reflections_enabled()) << 3)
 	if v == _vol_fog and mode == _material_mode and terrain_mode == _terrain_mode and clouds == _cloud_mode:
 		return
 	_vol_fog = v
@@ -369,8 +373,12 @@ static func _set_vol_fog(v: bool) -> void:
 	for r: Array in _made:
 		var sh := (r[0] as WeakRef).get_ref() as Shader
 		if sh:
-			sh.code = compose(r[1], r[2], r[3])
-			CameraFade.refresh_shader(sh)
+			# Setting identical code still recompiles it in Godot. Independent
+			# cloud consumers often leave most surface programs unchanged.
+			var code := compose(r[1], r[2], r[3])
+			if sh.code != code:
+				sh.code = code
+				CameraFade.refresh_shader(sh)
 			keep.append(r)
 	_made = keep
 
@@ -646,7 +654,7 @@ void light() {
 	elif grass:
 		code = code.replace("\tif (ei_surface_fx.x > 0.5) {", "#ifndef EI_GRASS_LIGHT\n\tif (ei_surface_fx.x > 0.5) {")
 		code = code.replace("\n#ifdef EI_WATER_WAVES", "\n#endif\n#ifdef EI_WATER_WAVES")
-	if on("gfx_clouds"):
+	if Clouds.shadows_enabled():
 		if RenderingServer.get_current_rendering_method() == "forward_plus":
 			# One local cache per light invocation. No new varying, temporal state,
 			# lowered sample count or interpolation: equal positions reuse a value.
@@ -730,19 +738,25 @@ static func set_cloud_frame(owner: int, frame: Dictionary) -> void:
 			RenderingServer.global_shader_parameter_set(&"ei_cv_storm",frame.volume.storm)
 			for layer in 6:
 				RenderingServer.global_shader_parameter_set(StringName("ei_cv_phase%d"%layer),frame.volume.phases[layer])
-			if RenderingServer.get_current_rendering_method()=="forward_plus":
+			if Clouds.shadows_enabled() and RenderingServer.get_current_rendering_method()=="forward_plus":
 				var receiver:=instance_from_id(owner) as Node
 				if receiver and receiver.is_inside_tree():
 					if not _cloud_shadow_field: _cloud_shadow_field=Clouds.ShadowField.new()
 					var extent: Vector2=receiver.size_ei() if receiver is EITerrain else _border_size
 					_cloud_shadow_field.update(receiver,extent,frame.state.y>0.0)
+			else:
+				_release_cloud_shadows()
 	else:
 		_release_cloud_volume()
 
 
-static func _release_cloud_volume() -> void:
+static func _release_cloud_shadows() -> void:
 	if _cloud_shadow_field:
 		_cloud_shadow_field.release();_cloud_shadow_field=null
+
+
+static func _release_cloud_volume() -> void:
+	_release_cloud_shadows()
 	if _cloud_volume_noise==null and not _cloud_volume_tried: return
 	if _globals:
 		RenderingServer.global_shader_parameter_set(&"ei_cv_storm",Vector4.ZERO)
@@ -770,6 +784,7 @@ static func apply_surface_options() -> void:
 		set_surface_weather(0.0, 0.0)
 	if not on("gfx_clouds"): clear_clouds()
 	elif Clouds.mode()<2: _release_cloud_volume()
+	elif not Clouds.shadows_enabled(): _release_cloud_shadows()
 
 
 ## Option gfx_sharp_units: the unit texture fetch (EIUnitModel.SHARP_FETCH),

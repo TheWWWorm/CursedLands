@@ -17,7 +17,7 @@ func _ready() -> void:
 		panel._set_value("graphics_preset",preset)
 		check(panel._switch_text(panel._rows[8])==RemakeText.t(GfxPresets.NAMES[preset]),"explicit preset label "+str(preset))
 		check(panel._values.auto_graphics==0,"explicit preset disables detection "+str(preset))
-		check(panel._values.gfx_clouds==0 and panel._values.gfx_ground_contact==0 and panel._values.gfx_depth_of_field==0,"expensive optional effects stay opt-in "+str(preset))
+		check(panel._values.gfx_clouds==0 and panel._values.gfx_cloud_shadows==0 and panel._values.gfx_cloud_reflections==0 and panel._values.gfx_ground_contact==0 and panel._values.gfx_depth_of_field==0,"expensive optional effects stay opt-in "+str(preset))
 		if preset==1:
 			var off := true
 			for key: String in panel._values:

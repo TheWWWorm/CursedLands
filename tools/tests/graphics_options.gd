@@ -154,7 +154,7 @@ func localization_and_layout() -> void:
 
 
 func presets_and_persistence() -> void:
-	for key: String in ["gfx_waterfalls","gfx_ambient_wildlife","gfx_ambient_particles","gfx_clouds","gfx_depth_of_field","gfx_terrain_cliffs","gfx_weather_mist"]:
+	for key: String in ["gfx_waterfalls","gfx_ambient_wildlife","gfx_ambient_particles","gfx_clouds","gfx_cloud_shadows","gfx_cloud_reflections","gfx_depth_of_field","gfx_terrain_cliffs","gfx_weather_mist"]:
 		check(GameData.option(key)==0 and key in GameData.OPTIONS_APPLIED,"new effect is opt-in and registered: "+key)
 		for tier in GfxDetect.LAST+1:
 			check(int(GfxDetect.tier_values(tier,GfxDetect.base_values({})).get(key,-1))==0,"automatic tier %d leaves %s off"%[tier,key])

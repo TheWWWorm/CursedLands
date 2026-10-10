@@ -392,6 +392,7 @@ func _ready() -> void:
 	if OS.get_cmdline_user_args().has("--composed"):
 		for key in ["gfx_water","gfx_water_interaction","gfx_water_current","gfx_water_caustics","gfx_water_reflections","gfx_terrain_cliffs","gfx_ground_contact","gfx_materials","gfx_weather_surfaces","gfx_wind"]: GameData.options[key] = 1
 		GameData.options["gfx_clouds"] = 3
+		GameData.options["gfx_cloud_shadows"] = 1
 		GameData.options["gfx_terrain"] = 2
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true)
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)

@@ -4,7 +4,7 @@ extends "water_wave_render.gd"
 ## Per-feature receipts cover individual effects; this catches integration.
 const COMPOSED := ["gfx_water", "gfx_water_interaction", "gfx_water_current",
 	"gfx_water_caustics", "gfx_waterfalls", "gfx_water_reflections", "gfx_terrain",
-	"gfx_terrain_cliffs", "gfx_ground_contact", "gfx_materials", "gfx_clouds",
+	"gfx_terrain_cliffs", "gfx_ground_contact", "gfx_materials", "gfx_clouds","gfx_cloud_shadows","gfx_cloud_reflections",
 	"gfx_weather_surfaces", "gfx_wind"]
 var cloud_quality := 1
 var terrain_quality := 1

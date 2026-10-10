@@ -15,7 +15,7 @@ func shadow(strength: float) -> void:
 func _ready() -> void:
 	for option: Array in GameData.OPTIONS:
 		if String(option[0]).begins_with("gfx_"): GameData.options[option[0]]=0
-	GameData.options.merge({"gfx_clouds":1,"auto_graphics":0,"confine_mouse":0,"vsync":0,"fps_limit":3},true)
+	GameData.options.merge({"gfx_clouds":1,"gfx_cloud_shadows":1,"auto_graphics":0,"confine_mouse":0,"vsync":0,"fps_limit":3},true)
 	Gfx.ensure_globals(); Gfx.apply_surface_options()
 	Engine.time_scale=0; Engine.max_fps=120; process_mode=Node.PROCESS_MODE_ALWAYS
 	RenderingServer.set_render_loop_enabled(true)
@@ -27,7 +27,7 @@ func _ready() -> void:
 	var mesh := MeshInstance3D.new(); var quad := QuadMesh.new(); quad.size=Vector2(4,4); mesh.mesh=quad; view.add_child(mesh)
 	var source := "shader_type spatial;\nrender_mode unshaded, cull_disabled;\nvarying vec3 ei_e;\nvarying float ei_k;\n"
 	source+=GroundContactShader.FUNCTIONS.get_slice("vec3 contact_vertex_normal",0)
-	source+="\nvoid vertex() { ei_e=vec3(0.0); ei_k=1.0; }\nvoid fragment() { vec3 d; vec3 s; contact_light(vec3(0.0),vec3(0.0,1.0,0.0),d,s); ALBEDO=ei_lin(d); }\n"
+	source+="\nvoid vertex() { ei_e=vec3(0.0); ei_k=1.0; }\nvoid fragment() { vec3 d; vec3 s; contact_light(vec3(0.0),vec3(0.0,1.0,0.0),vec4(0.0),d,s); ALBEDO=ei_lin(d); }\n"
 	var material := ShaderMaterial.new(); material.shader=Gfx.make_shader(source,true,true); mesh.material_override=material
 	var white := Image.create(4,4,true,Image.FORMAT_R8); white.fill(Color.WHITE); white.generate_mipmaps()
 	var white_texture := ImageTexture.create_from_image(white)
@@ -42,6 +42,11 @@ func _ready() -> void:
 	var expected := await capture("sun-reference")
 	check(difference(off,expected).peak_delta>10,"independent reduced-sun reference changes actual probe pixels")
 	check(difference(on,expected).changed_pixels==0,"contact band shares exact terrain cloud attenuation before native byte packing")
+	Gfx.set_light(ambient,sun);shadow(0.28)
+	GameData.options.gfx_cloud_shadows=0;Gfx.apply_surface_options()
+	check(difference(off,await capture("shadow-setting-off")).changed_pixels==0,"shadow toggle restores full contact sunlight with sky clouds retained")
+	GameData.options.gfx_cloud_shadows=1;Gfx.apply_surface_options()
+	check(difference(on,await capture("shadow-setting-restored")).changed_pixels==0,"live shadow toggle restores the existing contact band")
 	Gfx.set_light(ambient,sun); shadow(0.0)
 	check(difference(off,await capture("night-clear")).changed_pixels==0,"zero night shadow restores exact contact sunlight")
 	RenderingServer.global_shader_parameter_set(&"ei_sun_dir",Vector3.ZERO)

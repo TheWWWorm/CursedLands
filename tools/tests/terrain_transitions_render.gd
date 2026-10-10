@@ -188,7 +188,7 @@ func _ready() -> void:
 	if "--transition-contact" in OS.get_cmdline_user_args():GameData.options.gfx_ground_contact=1
 	if "--transition-soft" in OS.get_cmdline_user_args() or "--transition-tracks" in OS.get_cmdline_user_args():GameData.options.gfx_soft_ground=1
 	if "--transition-composed" in OS.get_cmdline_user_args():
-		for key in ["gfx_materials","gfx_clouds","gfx_weather_surfaces","gfx_water","gfx_water_caustics","gfx_water_current","gfx_water_interaction","gfx_water_waves","gfx_terrain_cliffs"]:GameData.options[key]=1
+		for key in ["gfx_materials","gfx_clouds","gfx_cloud_shadows","gfx_cloud_reflections","gfx_weather_surfaces","gfx_water","gfx_water_caustics","gfx_water_current","gfx_water_interaction","gfx_water_waves","gfx_terrain_cliffs"]:GameData.options[key]=1
 	Gfx.ensure_globals();Engine.time_scale=0;Engine.max_fps=120;process_mode=Node.PROCESS_MODE_ALWAYS
 	Gfx.apply_surface_options();RenderingServer.set_render_loop_enabled(true);Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true)

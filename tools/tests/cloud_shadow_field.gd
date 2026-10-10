@@ -12,7 +12,7 @@ func texture_live(rid: RID) -> bool:
 	return job.live
 
 func _ready() -> void:
-	GameData.options.merge({"gfx_clouds":3,"auto_graphics":0,"confine_mouse":0,"vsync":0,"fps_limit":0},true)
+	GameData.options.merge({"gfx_clouds":3,"gfx_cloud_shadows":1,"auto_graphics":0,"confine_mouse":0,"vsync":0,"fps_limit":0},true)
 	Gfx.ensure_globals();Gfx.apply_surface_options();Engine.time_scale=0;Engine.max_fps=0;process_mode=Node.PROCESS_MODE_ALWAYS
 	if DisplayServer.get_name()!="headless":
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)

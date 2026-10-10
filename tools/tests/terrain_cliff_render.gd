@@ -156,7 +156,7 @@ func _ready() -> void:
 		if String(option[0]).begins_with("gfx_"): GameData.options[option[0]]=0
 	GameData.options.merge({"gfx_terrain_cliffs":0,"auto_graphics":0,"confine_mouse":0,"vsync":0,"fps_limit":3},true)
 	if "--cliff-composed" in OS.get_cmdline_user_args():
-		for key in ["gfx_materials","gfx_clouds","gfx_weather_surfaces","gfx_water","gfx_water_caustics","gfx_water_current","gfx_water_interaction","gfx_water_waves"]:
+		for key in ["gfx_materials","gfx_clouds","gfx_cloud_shadows","gfx_cloud_reflections","gfx_weather_surfaces","gfx_water","gfx_water_caustics","gfx_water_current","gfx_water_interaction","gfx_water_waves"]:
 			GameData.options[key]=1
 	Gfx.ensure_globals(); Engine.time_scale=0; Engine.max_fps=120; process_mode=Node.PROCESS_MODE_ALWAYS
 	Gfx.apply_surface_options()

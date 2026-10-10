@@ -53,6 +53,14 @@ static func mode() -> int:
 	return mini(value,1) if value>1 and not VolumeNoise.supported() else value
 
 
+static func shadows_enabled() -> bool:
+	return mode()>0 and GameData.option("gfx_cloud_shadows")>0
+
+
+static func reflections_enabled() -> bool:
+	return mode()>0 and GameData.option("gfx_cloud_reflections")>0 and GameData.option("gfx_water")>0
+
+
 static func common_source() -> String:
 	if mode()<2: return COMMON
 	return COMMON.replace("vec3 ei_cloud_sky(","vec3 ei_cloud_sheet(")+Volume.COMMON+"""

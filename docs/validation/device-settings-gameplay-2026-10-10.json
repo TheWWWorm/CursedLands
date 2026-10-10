@@ -1163,5 +1163,595 @@
     "Full Shaina/Fairuz infiltration/escape/hand-in;laterJun/Jigran/finale;largerparties/reconnect/solo/originalMP.",
     "Windows/remoteWAN/physicalinput/audio acceptance;no stable1.0.3 approval or publicE6 asset replacement.",
     "Package .9 desktop/Android;audit original-data/test exclusion;update both handoffs."
-  ]
+  ],
+  "continuation_after_initial_receipt": {
+    "linux_gz3g": "Actual gz3g load, missing-load recovery and return to menu: current source 10/0 with 975 covered/0 exposed frames; Experimental6 10/1 with 727 covered/201 exposed. Both exit cleanly; no supplied empty-image or SceneCache teardown errors reproduced. Functional scope, not performance or a reproduced fatal crash.",
+    "light_density_specialization": "The corrected minimum-window profile gives valid GPU timestamps and 38/0 with exact held/restored/candidate images. Mixed sky improvement 2.426%, water 3.010%; baseline water spread is comparable. Not promoted. Prior zero-timestamp diagnostics remain excluded; no production optimization claim.",
+    "runs": {
+      "linux-gz3g-current": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/linux-gz3g-current",
+        "run_sha256": "176b4139c8dc58f588c1badc996a761ca61eb99275fbc78069d00f7aa4b39cc0",
+        "result_sha256": "25af995e9b1eaaa35b355fe568dfee91847e2738975f2b95f31343cfe1efb1b8",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate07/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--gpu-index",
+          "1",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/linux-gz3g-current/tool-source.gd",
+          "--zone=gz3g",
+          "--back-to-menu"
+        ],
+        "errors": [],
+        "return_code": 0,
+        "other_engines_absent": false,
+        "results": {
+          "covered": 975,
+          "deferred": false,
+          "exposed": 0,
+          "new_game": false,
+          "worker": true,
+          "worker_pid": 2947501,
+          "zone": "gz3g"
+        }
+      },
+      "linux-gz3g-experimental6": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/linux-gz3g-experimental6",
+        "run_sha256": "a50fd1fd83be5e792bd56f242ae7364dd92513d9e738f8fad9dcca5c4049c511",
+        "result_sha256": "b3394e231e0a50b20845f56c893b57ba4f13aa39db1217bf9d8fdcc6da19d93d",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/experimental6-gameplay-20261008/linux/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--gpu-index",
+          "1",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/linux-gz3g-experimental6/tool-source.gd",
+          "--zone=gz3g",
+          "--back-to-menu"
+        ],
+        "errors": [
+          "FAIL no presented HUD frame before loading picture"
+        ],
+        "return_code": 1,
+        "other_engines_absent": false,
+        "results": {
+          "covered": 727,
+          "deferred": false,
+          "exposed": 201,
+          "new_game": false,
+          "worker": true,
+          "worker_pid": 2948288,
+          "zone": "gz3g"
+        }
+      },
+      "cloud-light-density-minimum": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-light-density-minimum",
+        "run_sha256": "3b22e1fab33f76e623bb04fd716926467364cadf938101889f3a04e91fbeec4a",
+        "result_sha256": "cbebca61af0ca6ddf30ebb8fba8720a7b8e6bec2893f390eb3e357d21bc967b2",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/candidate07/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--gpu-index",
+          "1",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/cloud-light-density-minimum/tool-source.gd",
+          "--weather=mixed"
+        ],
+        "errors": [],
+        "return_code": 0,
+        "other_engines_absent": true,
+        "results": {
+          "adapter": "NVIDIA GeForce RTX 3090 Ti",
+          "checks": 38,
+          "failures": 0,
+          "renderer": "forward_plus",
+          "rows": [
+            {
+              "arm": 0,
+              "bounds": "(0.0, 0.0)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 8.503,
+                "median": 7.128,
+                "min": 5.833,
+                "p95": 7.299
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 2569.812,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.207000002264977,
+                "median": 0.0900000035762787,
+                "min": 0.0729999989271164,
+                "p95": 0.137999996542931
+              },
+              "viewport_gpu_ms": {
+                "max": 7.31099987030029,
+                "median": 7.06699991226196,
+                "min": 6.8600001335144,
+                "p95": 7.21199989318848
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 0,
+              "case": "held-control",
+              "delta": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "path": "sky",
+              "quality": 3
+            },
+            {
+              "arm": 1,
+              "bounds": "(0.0, 0.0)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 8.562,
+                "median": 6.874,
+                "min": 6.206,
+                "p95": 7.114
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 2481.394,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.397000014781952,
+                "median": 0.105999998748302,
+                "min": 0.0740000009536743,
+                "p95": 0.300999999046326
+              },
+              "viewport_gpu_ms": {
+                "max": 7.04699993133545,
+                "median": 6.81300020217896,
+                "min": 6.57499980926514,
+                "p95": 6.98699998855591
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 1,
+              "case": "held-control",
+              "delta": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "path": "sky",
+              "quality": 3
+            },
+            {
+              "arm": 2,
+              "bounds": "(0.0, 0.0)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 21.13,
+                "median": 6.963,
+                "min": 1.716,
+                "p95": 7.21
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 2517.85,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.398999989032745,
+                "median": 0.0989999994635582,
+                "min": 0.0729999989271164,
+                "p95": 0.232999995350838
+              },
+              "viewport_gpu_ms": {
+                "max": 7.25299978256226,
+                "median": 6.90000009536743,
+                "min": 6.57499980926514,
+                "p95": 7.08599996566772
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 2,
+              "case": "held-control",
+              "delta": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "path": "sky",
+              "quality": 3
+            },
+            {
+              "arm": 3,
+              "bounds": "(0.0, 0.0)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 10.421,
+                "median": 7.049,
+                "min": 3.779,
+                "p95": 7.254
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 2542.147,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.223000004887581,
+                "median": 0.0920000001788139,
+                "min": 0.0719999969005585,
+                "p95": 0.160999998450279
+              },
+              "viewport_gpu_ms": {
+                "max": 7.30200004577637,
+                "median": 6.98699998855591,
+                "min": 6.74300003051758,
+                "p95": 7.16099977493286
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 3,
+              "case": "held-control",
+              "delta": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "path": "sky",
+              "quality": 3
+            },
+            {
+              "case": "restore-control",
+              "delta": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "path": "sky",
+              "quality": 3
+            },
+            {
+              "case": "cache-repeat-control",
+              "delta": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "path": "sky",
+              "quality": 3
+            },
+            {
+              "case": "quality",
+              "delta": {
+                "changed_pixels": 0,
+                "mean_max_channel_delta": 0.0,
+                "peak_delta": 0,
+                "pixels_over_2": 0,
+                "pixels_over_8": 0
+              },
+              "path": "sky",
+              "quality": 3
+            },
+            {
+              "arm": 0,
+              "bounds": "(0.0, 0.0)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 15.868,
+                "median": 5.881,
+                "min": 0.688,
+                "p95": 9.247
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1795.613,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.646000027656555,
+                "median": 0.179000005125999,
+                "min": 0.142000004649162,
+                "p95": 0.372000008821487
+              },
+              "viewport_gpu_ms": {
+                "max": 4.31899976730347,
+                "median": 4.17999982833862,
+                "min": 4.07800006866455,
+                "p95": 4.2519998550415
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 0,
+              "case": "held-control",
+              "delta": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "path": "water",
+              "quality": 3
+            },
+            {
+              "arm": 1,
+              "bounds": "(0.0, 0.0)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 17.397,
+                "median": 6.054,
+                "min": 0.678,
+                "p95": 8.476
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1692.898,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.504999995231628,
+                "median": 0.172999992966652,
+                "min": 0.14300000667572,
+                "p95": 0.293999999761581
+              },
+              "viewport_gpu_ms": {
+                "max": 4.35099983215332,
+                "median": 4.15000009536743,
+                "min": 3.98000001907349,
+                "p95": 4.29500007629395
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 1,
+              "case": "held-control",
+              "delta": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "path": "water",
+              "quality": 3
+            },
+            {
+              "arm": 2,
+              "bounds": "(0.0, 0.0)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 20.744,
+                "median": 5.029,
+                "min": 0.662,
+                "p95": 8.51
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1779.118,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.744000017642975,
+                "median": 0.179000005125999,
+                "min": 0.14300000667572,
+                "p95": 0.284000009298325
+              },
+              "viewport_gpu_ms": {
+                "max": 7.64499998092651,
+                "median": 4.13100004196167,
+                "min": 4.02199983596802,
+                "p95": 4.32200002670288
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 2,
+              "case": "held-control",
+              "delta": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "path": "water",
+              "quality": 3
+            },
+            {
+              "arm": 3,
+              "bounds": "(0.0, 0.0)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 16.047,
+                "median": 4.477,
+                "min": 0.707,
+                "p95": 8.459
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1708.914,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.470999985933304,
+                "median": 0.178000003099442,
+                "min": 0.131999999284744,
+                "p95": 0.266999989748001
+              },
+              "viewport_gpu_ms": {
+                "max": 7.92799997329712,
+                "median": 4.35799980163574,
+                "min": 4.11899995803833,
+                "p95": 4.48699998855591
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 3,
+              "case": "held-control",
+              "delta": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "path": "water",
+              "quality": 3
+            },
+            {
+              "case": "restore-control",
+              "delta": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "path": "water",
+              "quality": 3
+            },
+            {
+              "case": "cache-repeat-control",
+              "delta": {
+                "changed_pixels": 0,
+                "peak_delta": 0,
+                "pixels_over_2": 0
+              },
+              "path": "water",
+              "quality": 3
+            },
+            {
+              "case": "quality",
+              "delta": {
+                "changed_pixels": 0,
+                "mean_max_channel_delta": 0.0,
+                "peak_delta": 0,
+                "pixels_over_2": 0,
+                "pixels_over_8": 0
+              },
+              "path": "water",
+              "quality": 3
+            }
+          ],
+          "scope": "Explicit light-density specialization: all light footprints >=80m; detail erosion is already zero above79.25m; unchanged ray steps and density, 4K sky ABBA with held/restored image controls.",
+          "viewport": [
+            3840,
+            2160
+          ]
+        }
+      }
+    },
+    "local_package": "Source 473beb9 packaged as 1.0.3-local.20261010.9 before the later instruction to package only on request. See local-feedback-build-2026-10-10-9.json. New cloud separation/source-reuse work is separately qualified and not packaged."
+  }
 }

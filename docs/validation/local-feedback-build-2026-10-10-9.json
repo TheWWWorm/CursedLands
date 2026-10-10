@@ -1,0 +1,194 @@
+{
+  "version": "1.0.3-local.20261010.9",
+  "source_commit": "473beb9efacd81fc7730f65c30060fa7e0a6e768",
+  "protocol": 13,
+  "published": false,
+  "linux_package_checks": 190,
+  "failures": 0,
+  "linux_runtime_checks": {
+    "package9-dialog": {
+      "checks": 47,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/package9-dialog",
+      "run_sha256": "8510708ac7ef98c24c93bfcb599ebc00fe24597778889f315997f1b3873cef59",
+      "result_sha256": "76abeb3dbdd165f103be36080f9a6f1275902f458ad650cb94732685402294a2",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/first_import_dialog.gd": "94e0bf4eec0e588ce717d2e9145ac92a1614324e4e975a711bfbd8882c825795"
+      }
+    },
+    "package9-presets": {
+      "checks": 57,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/package9-presets",
+      "run_sha256": "ae712516876a65fd4517e9c3772dc08f4f0696d6d1e1a8378ffffdb5b5691bfb",
+      "result_sha256": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_presets.gd": "08662992c0c16f7c4e49858423fdbb44d8055faa75336c22540bf37e17d42298"
+      }
+    },
+    "package9-stance": {
+      "checks": 31,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/package9-stance",
+      "run_sha256": "dd1dee443ac9a9d84895f8f70d038bd64d06478df32bbb8dd4b6f03573622396",
+      "result_sha256": "6466d4cf26bd36f792e5ad29c6296e04378783cd03f0949e7501ef0171c7cdb3",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_attack_stance.gd": "6c5106b25d03d0d8b7ad24e78a99cccd050cf0517778819920732f0f713f4861"
+      }
+    },
+    "package9-cloud-field": {
+      "checks": 55,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/package9-cloud-field",
+      "run_sha256": "aa9ed7bda55282baf085d6c0a1aa5789ab0fe2be32560fc3fff33ae54f16d83f",
+      "result_sha256": "382945d9a6d44d0babe4b19e550b05430dc8258be280c9b77906793a4de315a3",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "44706a27da911a5ae0134a64d90f99bc598215de5652faf87404f3b049edf73a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    }
+  },
+  "windows_runtime_tested": false,
+  "linux_windows_pack_byte_identical": true,
+  "compiled_scripts": 267,
+  "desktop_pack_resources": 686,
+  "desktop_engine_patch_count": 12,
+  "android_engine_patch_count": 13,
+  "build_receipt": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-9/build.json",
+  "build_sha256": "c0b6d479c4eab612cc83c022650ae0e1599ad96eb37d848e9cbfd09c9d7b2ca4",
+  "android_build_receipt": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-9/android-build.json",
+  "android_audit_receipt": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-9/android-audit.json",
+  "android_audit": {
+    "version": "1.0.3-local.20261010.9",
+    "apk_sha256": "0b3d3adeb0260aec375956c8c23f551f0dde121217ec370f6ab70df4a246e620",
+    "resources": 693,
+    "compiled_scripts": 267,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "expected_production_scripts_exact": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "engine_arguments": [
+      "--xr_mode_regular",
+      "--xr-mode",
+      "off",
+      "--fullscreen",
+      "--background_color",
+      "#000000"
+    ],
+    "sparse_pack": {
+      "format": 4,
+      "resources": 693,
+      "all_resource_sizes_and_md5_match": true,
+      "template_baseline_profiles": {
+        "dexopt/baseline.prof": {
+          "bytes": 1177,
+          "sha256": "4442960fb3fefc2020d4675b3fa13bb1017c4718e9144912ff7f2567262216b8"
+        },
+        "dexopt/baseline.profm": {
+          "bytes": 142,
+          "sha256": "df4de3e1028dedbb7787c99a666a9d79cc23407c6640bd5e86877734a2a88d28"
+        }
+      }
+    },
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+      "lib/arm64-v8a/libterrain_search_android.so": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7"
+    },
+    "debuggable": false,
+    "same_public_certificate": true,
+    "release_template_provenance": {
+      "base_template": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/experimental5-android-engine/platform/android/java/app/build/outputs/apk/standard/release/android_release.apk",
+      "base_sha256": "4a8f9803960ea65a1f7e0ebe585ff489499dd14d618f4dcf96b660ea1adddd7d",
+      "release_template": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-engine/android_release_12_common.apk",
+      "release_template_sha256": "1b2ec1cae200db13c510db8d5246e31887aec2a6e7876afc926883c9dc0e5ee8",
+      "engine_sha256": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+      "libcxx_sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "java_sources_identical": 70,
+      "manifests_semantically_identical": true,
+      "libcxx_note": "The new build copies an unstripped NDK29 library; stripping it reproduces the exact release/private template bytes."
+    },
+    "normal_installed_app_untouched": true
+  },
+  "qualification_receipt": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/device-settings-gameplay-2026-10-10.json",
+  "qualification_sha256": "0a68b6bdfddc3898a21ec3a7dc376b617ce0d60140858a67f138ec337314f933",
+  "scope": "Feedback fixes and presets; current Linux package tests plus Android release-engine private-container validation. No new cloud optimization or whole-game performance claim.",
+  "limits": [
+    "Adreno610/RMX3890 foreground exit and supplied Linux intermittent errors not reproduced; no fatal-cause claim.",
+    "Windows/WAN/physical input/audio and full outstanding gameplay routes unqualified.",
+    "Android player APK source/resources/signature/manifest audited; engine/components tested in private container, not installed over normal app.",
+    "Cloud sky/reflection cost and wider effect/preset measurements remain active."
+  ],
+  "packages": {
+    "linux-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.9-linux-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.9-linux-x86_64.tar.gz",
+      "bytes": 36568656,
+      "sha256": "75ecd0ab5f733e065c2ce852bcb61e2ae0b636f01bca3bdac70a248fa396e5a0",
+      "archive_readback_exact": true,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "SHA256SUMS.txt": "9d586d471bbfdd79a4a92861b9d66c091d70b86a441fb187648cdeb5b74aec2e",
+        "BUILD-INFO.json": "73b9577f03ba2a0ef17c28b8cba180bda5cee2ed9a6a0e2cfc5d713be93d0268",
+        "Play.sh": "75835f261e9acd2b45973152790cabf255b05b649f0f059997c1de9ba4e3ec2b",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "3325acf65ba44d8ee7f9b11ec5d1d54110b9dad93a28a253b598fb73bf7555c5",
+        "README.txt": "76b5cb30ee77745433ce6a9e1642eb4e5bfbdc72af4628ba7cc5704937685506",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+        "docs/local-feedback-build-2026-10-10-8.json": "1f015d04898c1ea130901f81240425780f538cf9c66761309a3c4957b673d4e2",
+        "docs/device-settings-gameplay-2026-10-10.json": "0a68b6bdfddc3898a21ec3a7dc376b617ce0d60140858a67f138ec337314f933"
+      }
+    },
+    "windows-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.9-windows-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.9-windows-x86_64.zip",
+      "bytes": 37771874,
+      "sha256": "e8fcd8eb8f48b4ba4cb7f86089b8661af042eae29d680cd157c3cd2511b76304",
+      "archive_readback_exact": true,
+      "files": {
+        "SHA256SUMS.txt": "545302bfe0e5bc253465fe29f49f5d8c5c3fc27d4aed6a590901115502d540fc",
+        "BUILD-INFO.json": "e7a39a5ecaa40f00565b41af8c3d255fdcc0f6343ee0e0ce42b5fbcc176eae42",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "libterrain_search.dll": "14906b040d4b6a5e1e217b9bfb21214f48700b6709163be584cc98e584f45106",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "3325acf65ba44d8ee7f9b11ec5d1d54110b9dad93a28a253b598fb73bf7555c5",
+        "README.txt": "76b5cb30ee77745433ce6a9e1642eb4e5bfbdc72af4628ba7cc5704937685506",
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+        "docs/local-feedback-build-2026-10-10-8.json": "1f015d04898c1ea130901f81240425780f538cf9c66761309a3c4957b673d4e2",
+        "docs/device-settings-gameplay-2026-10-10.json": "0a68b6bdfddc3898a21ec3a7dc376b617ce0d60140858a67f138ec337314f933"
+      }
+    },
+    "android": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.9-android",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.9-android.apk",
+      "bytes": 30238149,
+      "sha256": "0b3d3adeb0260aec375956c8c23f551f0dde121217ec370f6ab70df4a246e620",
+      "archive_readback_exact": true,
+      "files": {
+        "SHA256SUMS.txt": "8c894ea68b6cdca919a7233bb5c82f9534d25c9171ccceea482d9d15123ec5cb",
+        "BUILD-INFO.json": "3e91cc4663d68b81335c4781e9216445db72d61650023c4a14e8dd8fb8dd7db8",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "README.txt": "76b5cb30ee77745433ce6a9e1642eb4e5bfbdc72af4628ba7cc5704937685506",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "CursedLands.apk.idsig": "8096fbe1a793e64880ac9da820fe7c595ead08532a7dbb54c668441bc0e7f095",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "CursedLands.apk": "0b3d3adeb0260aec375956c8c23f551f0dde121217ec370f6ab70df4a246e620",
+        "docs/local-feedback-build-2026-10-10-8.json": "1f015d04898c1ea130901f81240425780f538cf9c66761309a3c4957b673d4e2",
+        "docs/device-settings-gameplay-2026-10-10.json": "0a68b6bdfddc3898a21ec3a7dc376b617ce0d60140858a67f138ec337314f933"
+      }
+    }
+  }
+}
