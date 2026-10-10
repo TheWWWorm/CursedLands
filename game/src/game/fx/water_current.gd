@@ -70,7 +70,8 @@ func _init(terrain: EITerrain) -> void:
 				elif owners[index] != -2:
 					owners[index] = m; base[index] = h
 	if ClassDB.class_exists(&"WaterCurrentKernel") and not "--ei-script-water-current" in OS.get_cmdline_user_args():
-		_kernel = ClassDB.instantiate(&"WaterCurrentKernel")
+		var candidate: RefCounted = ClassDB.instantiate(&"WaterCurrentKernel")
+		if candidate.has_method("build_rivers"): _kernel = candidate
 	refresh(terrain._level)
 
 
@@ -83,7 +84,7 @@ func refresh(levels: PackedFloat32Array, background := false) -> bool:
 	if levels == _levels and not values.is_empty(): return false
 	_levels = levels.duplicate()
 	var started := Time.get_ticks_usec()
-	values = _kernel.build(size,base,owners,ground,_levels) if _kernel else build_script(size,base,owners,ground,_levels)
+	values = _kernel.build_rivers(size,base,owners,ground,_levels) if _kernel else build_script(size,base,owners,ground,_levels)
 	last_build_us = Time.get_ticks_usec()-started
 	return _upload()
 
@@ -153,6 +154,7 @@ static func build_script(dim: Vector2i, rest: PackedFloat32Array, material: Pack
 		var c := heights[i-dim.x] if y>0 else INF
 		var d := heights[i+dim.x] if y+1<dim.y else INF
 		gradient[i]=Vector2(difference(heights[i],a,b),difference(heights[i],c,d))
+	extend_reaches(dim,heights,material,active,gradient)
 	var result := PackedFloat32Array(); result.resize(count*4)
 	for i in active:
 		var x := i%dim.x; var y := i/dim.x
@@ -179,6 +181,78 @@ static func build_script(dim: Vector2i, rest: PackedFloat32Array, material: Pack
 		result[i*4]=-sum.x/weight; result[i*4+1]=sum.y/weight
 		result[i*4+2]=sqrt(bend); result[i*4+3]=1.0
 	return result
+
+
+## Continue authored river slopes through their connected level reaches.
+## A multi-source distance field follows the wet grid around banks and bends.
+## Its sign distinguishes the approach to a drop from the water leaving it.
+## Unconnected ponds, seas and excluded/buried layers have no flow seed.
+static func extend_reaches(dim: Vector2i, heights: PackedFloat32Array, material: PackedInt32Array,
+		active: PackedInt32Array, gradient: PackedVector2Array) -> void:
+	var distance := PackedInt32Array(); distance.resize(heights.size()); distance.fill(-1)
+	var side := PackedInt32Array(); side.resize(heights.size())
+	var strength := PackedFloat32Array(); strength.resize(heights.size())
+	var queue := PackedInt32Array()
+	for i in active:
+		var slope := gradient[i].length()
+		if slope < 0.04: continue
+		distance[i] = 0; strength[i] = clampf(slope,0.08,0.15); queue.append(i)
+	var seeds := queue.size()
+	if seeds == 0: return
+	var at := 0
+	while at < queue.size():
+		var i := queue[at]; at += 1
+		var x := i%dim.x; var y := i/dim.x
+		for step: Vector2i in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+			var p := Vector2i(x,y)+step
+			if p.x < 0 or p.y < 0 or p.x >= dim.x or p.y >= dim.y: continue
+			var j := p.y*dim.x+p.x
+			if distance[j] >= 0 or not is_finite(heights[j]) or material[j] != material[i]: continue
+			var sign := side[i]
+			if distance[i] == 0:
+				var along := Vector2(step).dot(gradient[i])
+				# Sideways bank samples do not define upstream or downstream.
+				if absf(along) < gradient[i].length()*0.25: continue
+				sign = 1 if along > 0 else -1
+			distance[j] = distance[i]+1; side[j] = sign; strength[j] = strength[i]; queue.append(j)
+	if queue.size() == seeds: return
+	# Transport the nearest bank normal across the wet component. Projecting
+	# level-reach flow along that bank avoids diagonal shortcuts through bends.
+	var banks := PackedVector2Array(); banks.resize(heights.size())
+	var shores := PackedInt32Array()
+	for i in active:
+		var x := i%dim.x; var y := i/dim.x; var normal := Vector2.ZERO; var first := Vector2.ZERO
+		for step: Vector2i in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+			var p := Vector2i(x,y)+step
+			var outside := p.x < 0 or p.y < 0 or p.x >= dim.x or p.y >= dim.y
+			if outside or not is_finite(heights[p.y*dim.x+p.x]) or material[p.y*dim.x+p.x] != material[i]:
+				normal += Vector2(step); first = Vector2(step)
+		if first != Vector2.ZERO:
+			banks[i] = (normal if normal != Vector2.ZERO else first).normalized(); shores.append(i)
+	at = 0
+	while at < shores.size():
+		var i := shores[at]; at += 1
+		var x := i%dim.x; var y := i/dim.x
+		for step: Vector2i in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+			var p := Vector2i(x,y)+step
+			if p.x < 0 or p.y < 0 or p.x >= dim.x or p.y >= dim.y: continue
+			var j := p.y*dim.x+p.x
+			if banks[j] != Vector2.ZERO or not is_finite(heights[j]) or material[j] != material[i]: continue
+			banks[j] = banks[i]; shores.append(j)
+	for i in queue:
+		if distance[i] == 0: continue
+		var x := i%dim.x; var y := i/dim.x
+		var away := Vector2.ZERO
+		for step: Vector2i in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+			var p := Vector2i(x,y)+step
+			if p.x < 0 or p.y < 0 or p.x >= dim.x or p.y >= dim.y: continue
+			var j := p.y*dim.x+p.x
+			if material[j] == material[i] and distance[j] >= 0 and distance[j] < distance[i] \
+					and (distance[j] == 0 or side[j] == side[i]): away -= Vector2(step)
+		var direction := away.normalized()*float(side[i])
+		var tangent := direction-banks[i]*direction.dot(banks[i])
+		if tangent.length_squared() > 0.04: direction=tangent.normalized()
+		gradient[i] = direction*strength[i]
 
 
 static func difference(centre: float, left: float, right: float) -> float:

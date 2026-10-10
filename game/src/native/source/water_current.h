@@ -18,10 +18,20 @@ class WaterCurrentKernel : public RefCounted {
 protected:
     static void _bind_methods() {
         ClassDB::bind_method(D_METHOD("build","size","rest","material","bed","levels"),&WaterCurrentKernel::build);
+        ClassDB::bind_method(D_METHOD("build_rivers","size","rest","material","bed","levels"),&WaterCurrentKernel::build_rivers);
     }
 public:
     PackedFloat32Array build(Vector2i dim,const PackedFloat32Array &rest,const PackedInt32Array &material,
             const PackedFloat32Array &bed,const PackedFloat32Array &levels) const {
+        return calculate(dim,rest,material,bed,levels,false);
+    }
+    PackedFloat32Array build_rivers(Vector2i dim,const PackedFloat32Array &rest,const PackedInt32Array &material,
+            const PackedFloat32Array &bed,const PackedFloat32Array &levels) const {
+        return calculate(dim,rest,material,bed,levels,true);
+    }
+private:
+    PackedFloat32Array calculate(Vector2i dim,const PackedFloat32Array &rest,const PackedInt32Array &material,
+            const PackedFloat32Array &bed,const PackedFloat32Array &levels,bool continuous) const {
         PackedFloat32Array result;
         const int64_t count64=int64_t(dim.x)*dim.y;
         if(dim.x<1 || dim.y<1 || count64>4194304 || rest.size()!=count64 || material.size()!=count64 || bed.size()!=count64)return result;
@@ -48,6 +58,73 @@ public:
             const int x=i%width,y=i/width;
             gradient[i]=Vector2(difference(heights[i],x>0?heights[i-1]:infinity,x+1<width?heights[i+1]:infinity),
                 difference(heights[i],y>0?heights[i-width]:infinity,y+1<dim.y?heights[i+width]:infinity));
+        }
+        if(continuous) {
+            std::vector<int> distance(count,-1),side(count,0),queue;
+            std::vector<float> strength(count,0.f);
+            for(int i:active) {
+                const float slope=gradient[i].length();
+                if(slope<.04)continue;
+                distance[i]=0;strength[i]=float(std::clamp(double(slope),.08,.15));queue.push_back(i);
+            }
+            const size_t seeds=queue.size();
+            const Vector2i steps[]={Vector2i(-1,0),Vector2i(1,0),Vector2i(0,-1),Vector2i(0,1)};
+            for(size_t at=0;at<queue.size();++at) {
+                const int i=queue[at],x=i%width,y=i/width;
+                for(const Vector2i &step:steps) {
+                    const int xx=x+step.x,yy=y+step.y;
+                    if(xx<0||yy<0||xx>=width||yy>=dim.y)continue;
+                    const int j=yy*width+xx;
+                    if(distance[j]>=0||!std::isfinite(heights[j])||m[j]!=m[i])continue;
+                    int sign=side[i];
+                    if(distance[i]==0) {
+                        const double along=Vector2(step).dot(gradient[i]);
+                        if(std::abs(along)<double(gradient[i].length())*.25)continue;
+                        sign=along>0?1:-1;
+                    }
+                    distance[j]=distance[i]+1;side[j]=sign;strength[j]=strength[i];queue.push_back(j);
+                }
+            }
+            if(queue.size()>seeds) {
+            std::vector<Vector2> banks(count);
+            std::vector<int> shores;
+            for(int i:active) {
+                const int x=i%width,y=i/width;Vector2 normal,first;
+                for(const Vector2i &step:steps) {
+                    const int xx=x+step.x,yy=y+step.y;
+                    const bool outside=xx<0||yy<0||xx>=width||yy>=dim.y;
+                    if(outside||!std::isfinite(heights[yy*width+xx])||m[yy*width+xx]!=m[i]) {
+                        normal+=Vector2(step);first=Vector2(step);
+                    }
+                }
+                if(first!=Vector2()) {banks[i]=(normal!=Vector2()?normal:first).normalized();shores.push_back(i);}
+            }
+            for(size_t at=0;at<shores.size();++at) {
+                const int i=shores[at],x=i%width,y=i/width;
+                for(const Vector2i &step:steps) {
+                    const int xx=x+step.x,yy=y+step.y;
+                    if(xx<0||yy<0||xx>=width||yy>=dim.y)continue;
+                    const int j=yy*width+xx;
+                    if(banks[j]!=Vector2()||!std::isfinite(heights[j])||m[j]!=m[i])continue;
+                    banks[j]=banks[i];shores.push_back(j);
+                }
+            }
+            for(int i:queue) {
+                if(distance[i]==0)continue;
+                const int x=i%width,y=i/width;Vector2 away;
+                for(const Vector2i &step:steps) {
+                    const int xx=x+step.x,yy=y+step.y;
+                    if(xx<0||yy<0||xx>=width||yy>=dim.y)continue;
+                    const int j=yy*width+xx;
+                    if(m[j]==m[i]&&distance[j]>=0&&distance[j]<distance[i]&&
+                            (distance[j]==0||side[j]==side[i]))away-=Vector2(step);
+                }
+                Vector2 direction=away.normalized()*float(side[i]);
+                const Vector2 tangent=direction-banks[i]*direction.dot(banks[i]);
+                if(tangent.length_squared()>.04)direction=tangent.normalized();
+                gradient[i]=direction*strength[i];
+            }
+            }
         }
         result.resize(count64*4);float *out=result.ptrw();std::fill(out,out+count64*4,0.f);
         for(int i:active) {

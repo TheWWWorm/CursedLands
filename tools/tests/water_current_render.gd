@@ -44,6 +44,26 @@ func rendered_current() -> void:
 	t._water_mat.set_shader_parameter("waves",0.0)
 	var info := scan(t); var p: Array=info.focus_xyz
 	if flat: p=[89.4,t.water_at(89.4,24.14),-24.14]
+	if "--current-reach" in OS.get_cmdline_user_args():
+		var flow: RefCounted=t._current; var best := -INF; p=[]
+		for y in range(8,flow.size.y-8):
+			for x in range(8,flow.size.x-8):
+				var i: int=y*flow.size.x+x
+				if flow.owners[i]<0 or not is_finite(flow.base[i]): continue
+				var v: Vector3=flow.value(i)
+				if Vector2(v.x,v.y).length()<0.06: continue
+				var flat_patch := true
+				for dy in range(-3,4):
+					for dx in range(-3,4):
+						var j: int=i+dy*flow.size.x+dx
+						if flow.owners[j]!=flow.owners[i] or absf(flow.base[j]-flow.base[i])>0.01: flat_patch=false
+				if not flat_patch: continue
+				var height: float=flow.base[i]+t._level[flow.owners[i]]
+				var depth: float=height-t.height_at(x,y)
+				if depth<0.4 or depth>3: continue
+				var score := -absf(depth-1.2)
+				if score>best: best=score; p=[x,height,-y]
+		check(p.size()==3,"flat seven-metre river reach carries flow from a connected slope")
 	check(p.size()==3,"a suitable water focus exists")
 	if p.size()!=3: view.free(); return
 	var focus := Vector3(p[0],p[1],p[2])

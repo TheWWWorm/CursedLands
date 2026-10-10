@@ -32,7 +32,7 @@ func analytic() -> void:
 				if name=="mixed-levels" and x>=32: owner[i]=1
 		levels[1]=0.4 if name=="mixed-levels" else 0.0
 		var field: PackedFloat32Array=Current.build_script(dim,rest,owner,bed,levels)
-		if kernel: compare(field,kernel.build(dim,rest,owner,bed,levels),name)
+		if kernel: compare(field,kernel.build_rivers(dim,rest,owner,bed,levels),name)
 		for y in dim.y:
 			for x in dim.x:
 				var i := (y*dim.x+x)*4
@@ -48,8 +48,8 @@ func analytic() -> void:
 	check(absf(Current.velocity(Vector2(10,0)).length()-4)<0.00001,"river speed is bounded at four metres per second")
 	check(Current.build_script(dim,rest,PackedInt32Array(),bed,levels).is_empty(),"malformed scalar data rejected")
 	if kernel:
-		check(kernel.build(dim,rest,PackedInt32Array(),bed,levels).is_empty(),"malformed native data rejected")
-		check(kernel.build(Vector2i(-1,-1),rest,owner,bed,levels).is_empty(),"negative native dimensions rejected")
+		check(kernel.build_rivers(dim,rest,PackedInt32Array(),bed,levels).is_empty(),"malformed native data rejected")
+		check(kernel.build_rivers(Vector2i(-1,-1),rest,owner,bed,levels).is_empty(),"negative native dimensions rejected")
 	rows.append({"case":"analytic","native_available":kernel!=null,"cases":cases})
 
 func source_rules() -> void:

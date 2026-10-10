@@ -387,3 +387,7 @@ retain the original shader. The compact source representation passes 2,598
 checks on Linux and Android plus ASan/UBSan, with 173 device cache lifecycle
 checks. An extended linear/sRGB fixture adds Vulkan color-space coverage
 and passes 3,300 checks on Linux; its rendered Vulkan validation is separate.
+
+### Continuous river reaches (1.0.3)
+
+`WaterCurrentKernel.build_rivers` extends authored surface-slope flow through connected flat water of the same material. Two bounded breadth-first fields carry upstream/downstream direction and the nearest bank normal, followed by the existing 5×5 filter. Unseeded ponds and the established sea/lava/swamp exclusions stay still. This is a visual snapshot rebuilt for changed water levels; navigation heights and per-frame shader sampling stay unchanged. The scalar implementation is the fallback when an older helper lacks this method. `build` retains its original slope-only behavior for compatibility controls.
