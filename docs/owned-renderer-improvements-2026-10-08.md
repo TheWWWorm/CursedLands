@@ -5185,6 +5185,31 @@ candidate is excluded from this qualified gameplay export. No supplied save,
 original asset or installed build was modified. Other q71h/q72h source leads,
 full routes and platform coverage remain open; they are not part of this fix.
 
+## Terrain and cloud cost attribution — 10 October
+
+The unchanged `local20261010.1` package now has separate surface, moving-sky
+and water-reflection measurements. The 2560×1440 surface fixture passes 68
+execution controls; the moving-cloud fixture passes 74. These are Linux RTX3090
+diagnostics, not Windows FPS or an optimization acceptance. The moving-cloud
+run overlaps another rendered process at startup, and GPU clocks are not locked.
+Its High sky medians are about 6 ms; the isolated enhanced-water path adds about
+2 ms with clouds. Ground-only measurements exclude both of these paths.
+
+Single-sector main-device Natural cache experiments retain the actual donor
+sampler and independently evaluate each mip. At 48 pixels/tile the compact
+colour/traits textures use 11.4 MiB per sector including its gutter/mips.
+Resolution, boundary masks and caching only the Natural delta all have recorded
+quality/performance tradeoffs; none is promoted. Exact held/restored images are
+controls, not evidence that cached colour or normals are exact. Failed shader,
+SNORM-format and initially capped benchmark runs are retained and excluded.
+
+Continue with a bounded cloud-weather lookup proof: six repeated horizontal
+noise samples feed density in the sky, reflections and sunlight. Keep vertical
+density, shape/erosion and scattering live. First compare images and motion,
+then qualify owner/clock/pause/fallback/lifetime and GPU update costs. Do not add
+map residency around the unresolved Natural colour-cache prototype yet.
+[Full evidence and frozen fixtures](validation/terrain-cloud-cost-prototypes-2026-10-10.json).
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** shipped unit/preview materials now share

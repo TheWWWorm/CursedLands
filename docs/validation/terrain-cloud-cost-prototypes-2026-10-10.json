@@ -1,0 +1,2458 @@
+{
+  "date": "2026-10-10",
+  "status": "Scratch profiling and cache feasibility; no production optimization promoted or new package exported.",
+  "source_commit": "4a7632def87daec70858407c19f3ba6ba846447f",
+  "package": "1.0.3-local.20261010.1",
+  "build_sha256": {
+    "CursedLands.x86_64": "fa2a3139b82b5cc7eef61f2e91c30944910435ad7aaec5490ab450cb4c9504f5",
+    "CursedLands.pck": "1554c01385f9d3e70193c307ec59fa3394c58284cca61136fff712763eee22c6",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+  },
+  "adapter": "NVIDIA GeForce RTX 3090",
+  "renderer": "forward_plus",
+  "scope": "User Windows RTX4090 Mobile report investigated on Linux RTX3090/Forward+/Vulkan. Main thread only. Existing game code, saves and released/local archives are unchanged.",
+  "findings": [
+    "Immutable transition/donor metadata is already retained per map. Most remaining Natural work is per-fragment sampling and relief evaluation.",
+    "Main-device compute can bake the actual composed ground sampler, including authored rotations, donor fields and all four traits, without CPU image readback. Each mip is evaluated independently at its isotropic footprint.",
+    "A 16x16 tile sector plus one-tile gutter at 48 pixels/tile costs 15924800 logical bytes for two RGBA16F textures, or 11943600 with RGBA8 traits. These figures exclude driver overhead and source atlases.",
+    "The compact traits variant changes few additional pixels relative to full precision. The larger errors arise from resolving a position/footprint-dependent nonlinear field into filtered textures.",
+    "96 pixels/tile does not monotonically improve reconstruction. 144 improves close-up colour but worsens oblique/distant differences; its compact single sector costs 107494740 logical bytes.",
+    "A tile/warped-field boundary mask reduces changed area but does not remove the largest outliers and loses much of the measured saving.",
+    "Caching only Natural-minus-original preserves more native sampling, but still retains colour outliers and larger encoded-normal differences. It is not selected for production.",
+    "The largest measured cloud path here is the moving High sky. Enhanced water has a separate substantial cloud march even with SSR and sunlight attenuation removed. Low/High water have the same integration budget in the source."
+  ],
+  "cache_decision": {
+    "promoted": false,
+    "reason": "The resolved-colour and delta alternatives have not met a production quality/streaming contract. Do not build map residency around an assumed exact field or claim these measurements as a shipped speedup.",
+    "quality_scope": "39/58-check harness totals cover preparation, saved captures, held frames and exact restoration. Image/normal differences are measured, not quality-pass assertions. Means are over the full 1280x720 viewport and include unchanged pixels outside the single cached sector.",
+    "unimplemented": [
+      "LRU/streaming and bake-time GPU budget",
+      "HD atlas handling",
+      "shared terrain/contact page bindings",
+      "soft-ground/track composition",
+      "cross-page seams and eviction",
+      "Windows/D3D12 qualification"
+    ],
+    "failed_trials_retained": {
+      "natural-cache01": "GDScript type inference error before rendering.",
+      "natural-quality04": "Raw diagnostic shader incorrectly returned from fragment(); shader compilation rejected. Its results are not accepted.",
+      "natural-delta10": "RD supports SNORM storage, but Texture2DRD image-format bridge rejects it. Renderer errors/leaked temporary renderer texture wrappers invalidate the run. Delta11 encodes signed traits around byte128 in supported UNORM instead.",
+      "cloud-path13": "Default startup frame cap overrode the fixture; all twelve uncapped checks failed. Corrected fixture records actual cap/vsync in every arm and passes in cloud-path14."
+    }
+  },
+  "surface_cost_2560x1440": {
+    "evidence": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/surface-cost12/terrain-cloud-cost.json",
+    "checks": 68,
+    "failures": 0,
+    "rows": [
+      {
+        "label": "four-families",
+        "map": "zone12",
+        "mode": 0,
+        "cloud_mode": 0,
+        "arm": 0,
+        "viewport_gpu_ms": {
+          "max": 1.74699997901917,
+          "median": 0.365000009536743,
+          "min": 0.356000006198883,
+          "p95": 1.18099999427795
+        },
+        "visible_draws": {
+          "max": 4,
+          "median": 4,
+          "min": 4,
+          "p95": 4
+        },
+        "visible_primitives": {
+          "max": 8192,
+          "median": 8192,
+          "min": 8192,
+          "p95": 8192
+        }
+      },
+      {
+        "label": "four-families",
+        "map": "zone12",
+        "mode": 1,
+        "cloud_mode": 0,
+        "arm": 1,
+        "viewport_gpu_ms": {
+          "max": 2.83200001716614,
+          "median": 0.944999992847443,
+          "min": 0.814999997615814,
+          "p95": 2.04999995231628
+        },
+        "visible_draws": {
+          "max": 4,
+          "median": 4,
+          "min": 4,
+          "p95": 4
+        },
+        "visible_primitives": {
+          "max": 8192,
+          "median": 8192,
+          "min": 8192,
+          "p95": 8192
+        }
+      },
+      {
+        "label": "four-families",
+        "map": "zone12",
+        "mode": 2,
+        "cloud_mode": 0,
+        "arm": 2,
+        "viewport_gpu_ms": {
+          "max": 3.75200009346008,
+          "median": 2.24399995803833,
+          "min": 1.84599995613098,
+          "p95": 2.88499999046326
+        },
+        "visible_draws": {
+          "max": 4,
+          "median": 4,
+          "min": 4,
+          "p95": 4
+        },
+        "visible_primitives": {
+          "max": 8192,
+          "median": 8192,
+          "min": 8192,
+          "p95": 8192
+        }
+      },
+      {
+        "label": "four-families",
+        "map": "zone12",
+        "mode": 2,
+        "cloud_mode": 0,
+        "arm": 3,
+        "viewport_gpu_ms": {
+          "max": 3.64599990844727,
+          "median": 2.27500009536743,
+          "min": 1.84700000286102,
+          "p95": 2.98799991607666
+        },
+        "visible_draws": {
+          "max": 4,
+          "median": 4,
+          "min": 4,
+          "p95": 4
+        },
+        "visible_primitives": {
+          "max": 8192,
+          "median": 8192,
+          "min": 8192,
+          "p95": 8192
+        }
+      },
+      {
+        "label": "four-families",
+        "map": "zone12",
+        "mode": 1,
+        "cloud_mode": 0,
+        "arm": 4,
+        "viewport_gpu_ms": {
+          "max": 2.55599999427795,
+          "median": 0.986000001430511,
+          "min": 0.800999999046326,
+          "p95": 1.78400003910065
+        },
+        "visible_draws": {
+          "max": 4,
+          "median": 4,
+          "min": 4,
+          "p95": 4
+        },
+        "visible_primitives": {
+          "max": 8192,
+          "median": 8192,
+          "min": 8192,
+          "p95": 8192
+        }
+      },
+      {
+        "label": "four-families",
+        "map": "zone12",
+        "mode": 0,
+        "cloud_mode": 0,
+        "arm": 5,
+        "viewport_gpu_ms": {
+          "max": 1.76999998092651,
+          "median": 0.34400001168251,
+          "min": 0.333999991416931,
+          "p95": 1.21200001239777
+        },
+        "visible_draws": {
+          "max": 4,
+          "median": 4,
+          "min": 4,
+          "p95": 4
+        },
+        "visible_primitives": {
+          "max": 8192,
+          "median": 8192,
+          "min": 8192,
+          "p95": 8192
+        }
+      },
+      {
+        "label": "ingos-surface-cloud",
+        "map": "bz2g",
+        "mode": 1,
+        "cloud_mode": 0,
+        "arm": 0,
+        "viewport_gpu_ms": {
+          "max": 2.95600008964539,
+          "median": 1.56200003623962,
+          "min": 1.25699996948242,
+          "p95": 2.10700011253357
+        },
+        "visible_draws": {
+          "max": 12,
+          "median": 12,
+          "min": 12,
+          "p95": 12
+        },
+        "visible_primitives": {
+          "max": 18176,
+          "median": 18176,
+          "min": 18176,
+          "p95": 18176
+        }
+      },
+      {
+        "label": "ingos-surface-cloud",
+        "map": "bz2g",
+        "mode": 1,
+        "cloud_mode": 1,
+        "arm": 1,
+        "viewport_gpu_ms": {
+          "max": 3.76600003242493,
+          "median": 1.60399997234344,
+          "min": 1.27799999713898,
+          "p95": 2.17700004577637
+        },
+        "visible_draws": {
+          "max": 12,
+          "median": 12,
+          "min": 12,
+          "p95": 12
+        },
+        "visible_primitives": {
+          "max": 18176,
+          "median": 18176,
+          "min": 18176,
+          "p95": 18176
+        }
+      },
+      {
+        "label": "ingos-surface-cloud",
+        "map": "bz2g",
+        "mode": 1,
+        "cloud_mode": 3,
+        "arm": 2,
+        "viewport_gpu_ms": {
+          "max": 4.05399990081787,
+          "median": 2.46000003814697,
+          "min": 1.97399997711182,
+          "p95": 3.18799996376038
+        },
+        "visible_draws": {
+          "max": 12,
+          "median": 12,
+          "min": 12,
+          "p95": 12
+        },
+        "visible_primitives": {
+          "max": 18176,
+          "median": 18176,
+          "min": 18176,
+          "p95": 18176
+        }
+      },
+      {
+        "label": "ingos-surface-cloud",
+        "map": "bz2g",
+        "mode": 1,
+        "cloud_mode": 3,
+        "arm": 3,
+        "viewport_gpu_ms": {
+          "max": 3.83899998664856,
+          "median": 2.41199994087219,
+          "min": 1.98500001430511,
+          "p95": 3.14499998092651
+        },
+        "visible_draws": {
+          "max": 12,
+          "median": 12,
+          "min": 12,
+          "p95": 12
+        },
+        "visible_primitives": {
+          "max": 18176,
+          "median": 18176,
+          "min": 18176,
+          "p95": 18176
+        }
+      },
+      {
+        "label": "ingos-surface-cloud",
+        "map": "bz2g",
+        "mode": 1,
+        "cloud_mode": 1,
+        "arm": 4,
+        "viewport_gpu_ms": {
+          "max": 2.83200001716614,
+          "median": 1.60699999332428,
+          "min": 1.28999996185303,
+          "p95": 2.28900003433228
+        },
+        "visible_draws": {
+          "max": 12,
+          "median": 12,
+          "min": 12,
+          "p95": 12
+        },
+        "visible_primitives": {
+          "max": 18176,
+          "median": 18176,
+          "min": 18176,
+          "p95": 18176
+        }
+      },
+      {
+        "label": "ingos-surface-cloud",
+        "map": "bz2g",
+        "mode": 1,
+        "cloud_mode": 0,
+        "arm": 5,
+        "viewport_gpu_ms": {
+          "max": 3.29399991035461,
+          "median": 1.59300005435944,
+          "min": 1.25100004673004,
+          "p95": 2.12899994850159
+        },
+        "visible_draws": {
+          "max": 12,
+          "median": 12,
+          "min": 12,
+          "p95": 12
+        },
+        "visible_primitives": {
+          "max": 18176,
+          "median": 18176,
+          "min": 18176,
+          "p95": 18176
+        }
+      }
+    ]
+  },
+  "moving_cloud_paths_2560x1440": {
+    "evidence": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-path14/cloud-path-cost.json",
+    "checks": 74,
+    "failures": 0,
+    "scope": "Isolated normal viewport cost. Sky-only and real enhanced water without SSR or solar attenuation, moving through the identical 1/60 game-clock interval per arm. Diagnostic attribution, not Windows FPS or an optimization.",
+    "rows": [
+      {
+        "path": "sky",
+        "quality": 0,
+        "arm": 0,
+        "fps_limit": 0,
+        "vsync": 0,
+        "viewport_gpu_ms": {
+          "max": 0.273000001907349,
+          "median": 0.23199999332428,
+          "min": 0.211999997496605,
+          "p95": 0.243000000715256
+        },
+        "frame_wall_ms": {
+          "max": 4.271,
+          "median": 0.627,
+          "min": 0.363,
+          "p95": 2.264
+        }
+      },
+      {
+        "path": "sky",
+        "quality": 2,
+        "arm": 1,
+        "fps_limit": 0,
+        "vsync": 0,
+        "viewport_gpu_ms": {
+          "max": 2.95000004768372,
+          "median": 1.63999998569489,
+          "min": 1.29100000858307,
+          "p95": 2.26699995994568
+        },
+        "frame_wall_ms": {
+          "max": 3.009,
+          "median": 1.683,
+          "min": 1.071,
+          "p95": 2.292
+        }
+      },
+      {
+        "path": "sky",
+        "quality": 3,
+        "arm": 2,
+        "fps_limit": 0,
+        "vsync": 0,
+        "viewport_gpu_ms": {
+          "max": 7.58799982070923,
+          "median": 5.97100019454956,
+          "min": 4.85099983215332,
+          "p95": 6.9850001335144
+        },
+        "frame_wall_ms": {
+          "max": 7.654,
+          "median": 6.036,
+          "min": 4.391,
+          "p95": 7.063
+        }
+      },
+      {
+        "path": "sky",
+        "quality": 3,
+        "arm": 3,
+        "fps_limit": 0,
+        "vsync": 0,
+        "viewport_gpu_ms": {
+          "max": 7.64400005340576,
+          "median": 5.98600006103516,
+          "min": 5.10300016403198,
+          "p95": 7.21600008010864
+        },
+        "frame_wall_ms": {
+          "max": 7.704,
+          "median": 6.059,
+          "min": 5.082,
+          "p95": 7.271
+        }
+      },
+      {
+        "path": "sky",
+        "quality": 2,
+        "arm": 4,
+        "fps_limit": 0,
+        "vsync": 0,
+        "viewport_gpu_ms": {
+          "max": 3.23699998855591,
+          "median": 1.70700001716614,
+          "min": 1.28600001335144,
+          "p95": 2.57100009918213
+        },
+        "frame_wall_ms": {
+          "max": 3.283,
+          "median": 1.757,
+          "min": 1.292,
+          "p95": 2.633
+        }
+      },
+      {
+        "path": "sky",
+        "quality": 0,
+        "arm": 5,
+        "fps_limit": 0,
+        "vsync": 0,
+        "viewport_gpu_ms": {
+          "max": 0.250999987125397,
+          "median": 0.218999996781349,
+          "min": 0.211999997496605,
+          "p95": 0.229000002145767
+        },
+        "frame_wall_ms": {
+          "max": 1.677,
+          "median": 0.391,
+          "min": 0.312,
+          "p95": 1.042
+        }
+      },
+      {
+        "path": "water",
+        "quality": 0,
+        "arm": 0,
+        "fps_limit": 0,
+        "vsync": 0,
+        "viewport_gpu_ms": {
+          "max": 2.49600005149841,
+          "median": 0.818000018596649,
+          "min": 0.647000014781952,
+          "p95": 1.71200001239777
+        },
+        "frame_wall_ms": {
+          "max": 2.578,
+          "median": 0.878,
+          "min": 0.519,
+          "p95": 1.806
+        }
+      },
+      {
+        "path": "water",
+        "quality": 2,
+        "arm": 1,
+        "fps_limit": 0,
+        "vsync": 0,
+        "viewport_gpu_ms": {
+          "max": 5.13899993896484,
+          "median": 2.94000005722046,
+          "min": 2.38700008392334,
+          "p95": 3.86899995803833
+        },
+        "frame_wall_ms": {
+          "max": 5.15,
+          "median": 3.002,
+          "min": 2.389,
+          "p95": 3.951
+        }
+      },
+      {
+        "path": "water",
+        "quality": 3,
+        "arm": 2,
+        "fps_limit": 0,
+        "vsync": 0,
+        "viewport_gpu_ms": {
+          "max": 4.73799991607666,
+          "median": 3.0,
+          "min": 2.41499996185303,
+          "p95": 4.02799987792969
+        },
+        "frame_wall_ms": {
+          "max": 4.805,
+          "median": 3.06,
+          "min": 2.479,
+          "p95": 4.084
+        }
+      },
+      {
+        "path": "water",
+        "quality": 3,
+        "arm": 3,
+        "fps_limit": 0,
+        "vsync": 0,
+        "viewport_gpu_ms": {
+          "max": 3.96600008010864,
+          "median": 2.85599994659424,
+          "min": 2.40499997138977,
+          "p95": 3.68099999427795
+        },
+        "frame_wall_ms": {
+          "max": 4.025,
+          "median": 2.928,
+          "min": 2.347,
+          "p95": 3.756
+        }
+      },
+      {
+        "path": "water",
+        "quality": 2,
+        "arm": 4,
+        "fps_limit": 0,
+        "vsync": 0,
+        "viewport_gpu_ms": {
+          "max": 4.45699977874756,
+          "median": 2.80100011825562,
+          "min": 2.41799998283386,
+          "p95": 3.58400011062622
+        },
+        "frame_wall_ms": {
+          "max": 4.495,
+          "median": 2.854,
+          "min": 2.375,
+          "p95": 3.641
+        }
+      },
+      {
+        "path": "water",
+        "quality": 0,
+        "arm": 5,
+        "fps_limit": 0,
+        "vsync": 0,
+        "viewport_gpu_ms": {
+          "max": 1.77600002288818,
+          "median": 0.656000018119812,
+          "min": 0.609000027179718,
+          "p95": 1.25499999523163
+        },
+        "frame_wall_ms": {
+          "max": 3.094,
+          "median": 0.841,
+          "min": 0.504,
+          "p95": 1.344
+        }
+      }
+    ]
+  },
+  "timing_limits": [
+    "Measurements are complete diagnostic viewports, not summed components of one game frame and not Windows FPS.",
+    "Surface-cost12 and natural-cost09/delta11 observed no other Godot process at either endpoint; this does not control other GPU applications, clocks or thermals.",
+    "Cloud-path14 has another rendered Godot process at its start and none at its end. Treat its timings as attribution evidence, not a clean performance acceptance.",
+    "Earlier runs with observed foreign rendering remain retained. Do not compare their absolute times to the later runs as an optimization.",
+    "Creation CPU time is not GPU bake cost. No per-frame residency implementation or sustained playthrough was timed."
+  ],
+  "next_work": {
+    "priority": "Continue cloud optimization before further resolved-terrain-cache engineering; current Natural prototypes stay isolated.",
+    "candidate": "Prototype a bounded shared 2D cache of the horizontal cloud-weather inputs used by cv_density. Its six repeated 2D noise lookups are common to sky, water and sunlight. Keep vertical density, shape/erosion and scattering live.",
+    "source": "game/src/game/fx/cloud_volume.gd: cv_coord, cv_weather and the type_noise lookup at the start of cv_density.",
+    "contract": "Compare actual sky/reflection images and moving frames first. Preserve owner/game-clock/pause, native density fallback outside the field and below/above the layer, and option/map cleanup. LUT resolution and filtering are an explicit approximation requiring evidence.",
+    "memory_candidate": "RGBA16F without mips at 1024/2048 is 8/32 MiB; one bounded field must cover the sampled horizontal ray/light domain, not an unbounded map bake. This candidate is not implemented."
+  },
+  "runs": [
+    {
+      "label": "surface-cost01",
+      "execution_valid": true,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/surface-cost01/run.json",
+        "sha256": "80fd786f819ce04963a207a86cbeb1cea73ac2ae3ea9a2bac88185ff55968adc"
+      },
+      "errors": [],
+      "other_processes_at_start": [
+        {
+          "pid": 2122335,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 2122335,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/surface-cost01/tool-source.gd",
+          "sha256": "4b2797986d0316d63dd6e8105b3f878ff9dcea6f4b6d003b936af873bfb3eed9"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/surface-cost01/terrain-cloud-cost.json",
+        "sha256": "8fa129b6cda14cb7fc0b84d26467606009b967e5a523428a225116c6ed9b9fe5"
+      },
+      "harness_checks": 68,
+      "harness_failures": 0
+    },
+    {
+      "label": "natural-cache01",
+      "execution_valid": false,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cache01/run.json",
+        "sha256": "471de8706749cff8b2754961c100f0cfb82c1bb93aab4d24acaae635d37de214"
+      },
+      "errors": [
+        "SCRIPT ERROR: Parse Error: Cannot infer the type of \"label\" variable because the value doesn't have a set type.",
+        "ERROR: Failed to load script \"/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cache01/tool-source.gd\" with error \"Parse error\".",
+        "ERROR: Required object \"rp_child\" is null."
+      ],
+      "other_processes_at_start": [
+        {
+          "pid": 2130133,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 2131151,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cache01/natural_cache_probe.gd",
+          "sha256": "bb43b0e74d919e299348ceae8339bc7703a0fc3c2e696c483f6b4757be4416f3"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cache01/tool-source.gd",
+          "sha256": "4787e4eed2ba3e8158a08388f7e42a48b6ff951f56bc5f13ab692fb3c04187f8"
+        }
+      ]
+    },
+    {
+      "label": "natural-cache02",
+      "execution_valid": true,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cache02/run.json",
+        "sha256": "a026ef530e96e806513d317a0a01e08be0e73ce398c6587314581bce95f8a32a"
+      },
+      "errors": [],
+      "other_processes_at_start": [
+        {
+          "pid": 2134746,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 2135488,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cache02/natural_cache_probe.gd",
+          "sha256": "bb43b0e74d919e299348ceae8339bc7703a0fc3c2e696c483f6b4757be4416f3"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cache02/tool-source.gd",
+          "sha256": "cd28efab44cf625758e42dd2190d0ee34b0536a8ab16ca8a72d05844b1ce73d3"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cache02/natural-cache-probe.json",
+        "sha256": "603cec6ae4ff56333a59824f172869ea68720b573fed43ce7d37f90dd2618b67"
+      },
+      "harness_checks": 39,
+      "harness_failures": 0,
+      "cases": [
+        {
+          "variant": {
+            "density": 48
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 15924800,
+          "difference": {
+            "changed": 72176,
+            "mean": 0.0878786892361111,
+            "over2": 1141,
+            "over8": 251,
+            "peak": 30
+          },
+          "abba": [
+            {
+              "median_gpu_ms": 1.96200001239777,
+              "p95_gpu_ms": 2.59699988365173,
+              "variant": "live"
+            },
+            {
+              "median_gpu_ms": 0.845000028610229,
+              "p95_gpu_ms": 0.897000014781952,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 1.01900005340576,
+              "p95_gpu_ms": 1.06099998950958,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 1.91700005531311,
+              "p95_gpu_ms": 2.89400005340576,
+              "variant": "live"
+            }
+          ]
+        },
+        {
+          "variant": {
+            "density": 48
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 15924800,
+          "difference": {
+            "changed": 36549,
+            "mean": 0.04810546875,
+            "over2": 1455,
+            "over8": 193,
+            "peak": 29
+          }
+        },
+        {
+          "variant": {
+            "density": 48
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 15924800,
+          "difference": {
+            "changed": 24655,
+            "mean": 0.0326812065972222,
+            "over2": 1085,
+            "over8": 76,
+            "peak": 34
+          }
+        },
+        {
+          "variant": {
+            "density": 96
+          },
+          "pose": "near",
+          "density": 96,
+          "logical_bytes": 63700544,
+          "difference": {
+            "changed": 171723,
+            "mean": 0.293132595486111,
+            "over2": 23032,
+            "over8": 532,
+            "peak": 31
+          },
+          "abba": [
+            {
+              "median_gpu_ms": 2.24900007247925,
+              "p95_gpu_ms": 2.94600009918213,
+              "variant": "live"
+            },
+            {
+              "median_gpu_ms": 0.948000013828278,
+              "p95_gpu_ms": 0.976000010967255,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 0.995000004768372,
+              "p95_gpu_ms": 1.02900004386902,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 2.15100002288818,
+              "p95_gpu_ms": 2.87800002098083,
+              "variant": "live"
+            }
+          ]
+        },
+        {
+          "variant": {
+            "density": 96
+          },
+          "pose": "oblique",
+          "density": 96,
+          "logical_bytes": 63700544,
+          "difference": {
+            "changed": 99696,
+            "mean": 0.124626736111111,
+            "over2": 3221,
+            "over8": 174,
+            "peak": 28
+          }
+        },
+        {
+          "variant": {
+            "density": 96
+          },
+          "pose": "far",
+          "density": 96,
+          "logical_bytes": 63700544,
+          "difference": {
+            "changed": 26017,
+            "mean": 0.0343684895833333,
+            "over2": 1126,
+            "over8": 76,
+            "peak": 34
+          }
+        }
+      ]
+    },
+    {
+      "label": "natural-cache03",
+      "execution_valid": true,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cache03/run.json",
+        "sha256": "0ccaec6f1e322e500884a52299ff53ec105ade12cc01b4db5b45cb4e5bb0e06c"
+      },
+      "errors": [],
+      "other_processes_at_start": [
+        {
+          "pid": 2138742,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 2140102,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cache03/natural_cache_probe.gd",
+          "sha256": "2411a25fe10c8f50a2b4b4cb89327d9146439c8f5be2fa300caccdcfff69f73e"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cache03/tool-source.gd",
+          "sha256": "94cb06ca268f4c9f7fca5af7c03074f7c8f1574c3cbd2a86f4710a0ce5d5ce27"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cache03/natural-cache-probe.json",
+        "sha256": "0b4e92d243f5d11df53c35101f1766d418e5901fe2361592e2edce52436280b1"
+      },
+      "harness_checks": 39,
+      "harness_failures": 0,
+      "cases": [
+        {
+          "variant": {
+            "compact": false,
+            "density": 48,
+            "guard": true,
+            "name": "guard16"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 15924800,
+          "difference": {
+            "changed": 65455,
+            "mean": 0.0780414496527778,
+            "over2": 800,
+            "over8": 137,
+            "peak": 30
+          },
+          "abba": [
+            {
+              "median_gpu_ms": 2.27699995040894,
+              "p95_gpu_ms": 3.21300005912781,
+              "variant": "live"
+            },
+            {
+              "median_gpu_ms": 1.01600003242493,
+              "p95_gpu_ms": 1.11699998378754,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 1.1710000038147,
+              "p95_gpu_ms": 1.46899998188019,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 2.20600008964539,
+              "p95_gpu_ms": 3.02600002288818,
+              "variant": "live"
+            }
+          ]
+        },
+        {
+          "variant": {
+            "compact": false,
+            "density": 48,
+            "guard": true,
+            "name": "guard16"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 15924800,
+          "difference": {
+            "changed": 31169,
+            "mean": 0.0401692708333333,
+            "over2": 1064,
+            "over8": 148,
+            "peak": 29
+          }
+        },
+        {
+          "variant": {
+            "compact": false,
+            "density": 48,
+            "guard": true,
+            "name": "guard16"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 15924800,
+          "difference": {
+            "changed": 19963,
+            "mean": 0.0258148871527778,
+            "over2": 765,
+            "over8": 50,
+            "peak": 22
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "guard12"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 65484,
+            "mean": 0.0780729166666667,
+            "over2": 801,
+            "over8": 137,
+            "peak": 30
+          },
+          "abba": [
+            {
+              "median_gpu_ms": 2.08400011062622,
+              "p95_gpu_ms": 2.88899993896484,
+              "variant": "live"
+            },
+            {
+              "median_gpu_ms": 1.12199997901917,
+              "p95_gpu_ms": 1.18799996376038,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 1.19099998474121,
+              "p95_gpu_ms": 1.21599996089935,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 1.91999995708466,
+              "p95_gpu_ms": 2.88899993896484,
+              "variant": "live"
+            }
+          ]
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "guard12"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 31153,
+            "mean": 0.0401486545138889,
+            "over2": 1064,
+            "over8": 148,
+            "peak": 29
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "guard12"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 19963,
+            "mean": 0.0258148871527778,
+            "over2": 765,
+            "over8": 50,
+            "peak": 22
+          }
+        }
+      ]
+    },
+    {
+      "label": "natural-quality04",
+      "execution_valid": false,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-quality04/run.json",
+        "sha256": "fd261b7459e1ec218ebb5b3e42a198fe78fc3426c92244369f56d612bf70935a"
+      },
+      "errors": [
+        "SHADER ERROR: Using 'return' in the 'fragment' processor function is incorrect.",
+        "ERROR: Shader compilation failed.",
+        "SHADER ERROR: Using 'return' in the 'fragment' processor function is incorrect.",
+        "ERROR: Shader compilation failed."
+      ],
+      "other_processes_at_start": [
+        {
+          "pid": 2144256,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 2145395,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-quality04/natural_cache_probe.gd",
+          "sha256": "2411a25fe10c8f50a2b4b4cb89327d9146439c8f5be2fa300caccdcfff69f73e"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-quality04/tool-source.gd",
+          "sha256": "f850832941f9aa49bd727d14cdf2907c2eeda49f280c5c45e1edbf218f1bedf5"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-quality04/natural-cache-probe.json",
+        "sha256": "93c143ffb390ba5bca62b49827be32ee8ead002e14c10ff496472b951625a792"
+      },
+      "harness_checks": 58,
+      "harness_failures": 0
+    },
+    {
+      "label": "natural-quality05",
+      "execution_valid": true,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-quality05/run.json",
+        "sha256": "7252740b0cfb20dbbb7bdb68c51643c175fca1b124cdc80593a13d8e94ab7ef6"
+      },
+      "errors": [],
+      "other_processes_at_start": [
+        {
+          "pid": 2146159,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 2147027,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-quality05/natural_cache_probe.gd",
+          "sha256": "2411a25fe10c8f50a2b4b4cb89327d9146439c8f5be2fa300caccdcfff69f73e"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-quality05/tool-source.gd",
+          "sha256": "a67bda2f06687592476b8df1a1a4384f4786296e227629cfaeb92c4ae9d0f5ba"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-quality05/natural-cache-probe.json",
+        "sha256": "f6bdfe468f6fa8ea89a6641fd66f106dacacc6d9f3348260fb0473e3370a6531"
+      },
+      "harness_checks": 58,
+      "harness_failures": 0,
+      "cases": [
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "colour"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 65484,
+            "mean": 0.0780729166666667,
+            "over2": 801,
+            "over8": 137,
+            "peak": 30
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "colour"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 31153,
+            "mean": 0.0401486545138889,
+            "over2": 1064,
+            "over8": 148,
+            "peak": 29
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "colour"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 19963,
+            "mean": 0.0258148871527778,
+            "over2": 765,
+            "over8": 50,
+            "peak": 22
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "normals"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 39489,
+            "mean": 0.0452604166666667,
+            "over2": 394,
+            "over8": 73,
+            "peak": 13
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "normals"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 11760,
+            "mean": 0.0146419270833333,
+            "over2": 398,
+            "over8": 3,
+            "peak": 12
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "normals"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 529,
+            "mean": 0.000575086805555556,
+            "over2": 0,
+            "over8": 0,
+            "peak": 2
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "raw"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 72046,
+            "mean": 0.0893391927083333,
+            "over2": 1286,
+            "over8": 210,
+            "peak": 41
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "raw"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 34688,
+            "mean": 0.0478515625,
+            "over2": 1585,
+            "over8": 264,
+            "peak": 44
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "raw"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 25392,
+            "mean": 0.0358940972222222,
+            "over2": 1455,
+            "over8": 168,
+            "peak": 34
+          }
+        }
+      ]
+    },
+    {
+      "label": "natural-beach06",
+      "execution_valid": true,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-beach06/run.json",
+        "sha256": "604be0f02a47704ed939020c89ef6785fbf494951e40bc968a73854de33ace5c"
+      },
+      "errors": [],
+      "other_processes_at_start": [
+        {
+          "pid": 2147613,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 2149046,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-beach06/natural_cache_probe.gd",
+          "sha256": "2411a25fe10c8f50a2b4b4cb89327d9146439c8f5be2fa300caccdcfff69f73e"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-beach06/tool-source.gd",
+          "sha256": "a67bda2f06687592476b8df1a1a4384f4786296e227629cfaeb92c4ae9d0f5ba"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-beach06/natural-cache-probe.json",
+        "sha256": "ad29533cde69f4fbbd0fb88afb39dc914b87aaee6eeb06b2748dbb7386afb249"
+      },
+      "harness_checks": 58,
+      "harness_failures": 0,
+      "cases": [
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "colour"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 134268,
+            "mean": 0.147038845486111,
+            "over2": 52,
+            "over8": 0,
+            "peak": 5
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "colour"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 75722,
+            "mean": 0.0844715711805556,
+            "over2": 342,
+            "over8": 10,
+            "peak": 16
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "colour"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 23256,
+            "mean": 0.0278266059027778,
+            "over2": 437,
+            "over8": 40,
+            "peak": 24
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "normals"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 38727,
+            "mean": 0.042021484375,
+            "over2": 0,
+            "over8": 0,
+            "peak": 1
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "normals"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 27167,
+            "mean": 0.0299370659722222,
+            "over2": 78,
+            "over8": 0,
+            "peak": 6
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "normals"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 117,
+            "mean": 0.000126953125,
+            "over2": 0,
+            "over8": 0,
+            "peak": 1
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "raw"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 178018,
+            "mean": 0.198499348958333,
+            "over2": 251,
+            "over8": 0,
+            "peak": 7
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "raw"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 108083,
+            "mean": 0.122267795138889,
+            "over2": 653,
+            "over8": 24,
+            "peak": 21
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "raw"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 41542,
+            "mean": 0.0511252170138889,
+            "over2": 880,
+            "over8": 106,
+            "peak": 37
+          }
+        }
+      ]
+    },
+    {
+      "label": "natural-alignment07",
+      "execution_valid": true,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-alignment07/run.json",
+        "sha256": "cb75337800d2b4e1c8912e1dd7ef53233c4f56bf207b210113d3fac5d5a80e46"
+      },
+      "errors": [],
+      "other_processes_at_start": [
+        {
+          "pid": 2152059,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 2152059,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-alignment07/natural_cache_probe.gd",
+          "sha256": "5b7e2fad9eaefbb7b5808dd8e6dea352f6d1f76a5351a9e24bc6d6a2c03e34d0"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-alignment07/tool-source.gd",
+          "sha256": "8a882fb57c659d4242bc5195fa6bb6a4bcdf02e39d93dde5b178dc104abb3ab0"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-alignment07/natural-cache-probe.json",
+        "sha256": "98fb2f49e59df1d5034e834263d5af3de9f580d99b3fb781cd932b7121b93937"
+      },
+      "harness_checks": 58,
+      "harness_failures": 0,
+      "cases": [
+        {
+          "variant": {
+            "compact": true,
+            "density": 144,
+            "guard": true,
+            "name": "colour"
+          },
+          "pose": "near",
+          "density": 144,
+          "logical_bytes": 107494740,
+          "difference": {
+            "changed": 24222,
+            "mean": 0.0264735243055556,
+            "over2": 19,
+            "over8": 0,
+            "peak": 4
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 144,
+            "guard": true,
+            "name": "colour"
+          },
+          "pose": "oblique",
+          "density": 144,
+          "logical_bytes": 107494740,
+          "difference": {
+            "changed": 69652,
+            "mean": 0.0846907552083333,
+            "over2": 1808,
+            "over8": 96,
+            "peak": 22
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 144,
+            "guard": true,
+            "name": "colour"
+          },
+          "pose": "far",
+          "density": 144,
+          "logical_bytes": 107494740,
+          "difference": {
+            "changed": 74864,
+            "mean": 0.105209418402778,
+            "over2": 4787,
+            "over8": 247,
+            "peak": 33
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 144,
+            "guard": true,
+            "name": "normals"
+          },
+          "pose": "near",
+          "density": 144,
+          "logical_bytes": 107494740,
+          "difference": {
+            "changed": 12493,
+            "mean": 0.014384765625,
+            "over2": 195,
+            "over8": 0,
+            "peak": 7
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 144,
+            "guard": true,
+            "name": "normals"
+          },
+          "pose": "oblique",
+          "density": 144,
+          "logical_bytes": 107494740,
+          "difference": {
+            "changed": 22323,
+            "mean": 0.0281716579861111,
+            "over2": 795,
+            "over8": 7,
+            "peak": 11
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 144,
+            "guard": true,
+            "name": "normals"
+          },
+          "pose": "far",
+          "density": 144,
+          "logical_bytes": 107494740,
+          "difference": {
+            "changed": 1815,
+            "mean": 0.00197482638888889,
+            "over2": 1,
+            "over8": 0,
+            "peak": 3
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 144,
+            "guard": true,
+            "name": "raw"
+          },
+          "pose": "near",
+          "density": 144,
+          "logical_bytes": 107494740,
+          "difference": {
+            "changed": 18595,
+            "mean": 0.0205056423611111,
+            "over2": 35,
+            "over8": 0,
+            "peak": 6
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 144,
+            "guard": true,
+            "name": "raw"
+          },
+          "pose": "oblique",
+          "density": 144,
+          "logical_bytes": 107494740,
+          "difference": {
+            "changed": 84373,
+            "mean": 0.107427300347222,
+            "over2": 2918,
+            "over8": 304,
+            "peak": 40
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 144,
+            "guard": true,
+            "name": "raw"
+          },
+          "pose": "far",
+          "density": 144,
+          "logical_bytes": 107494740,
+          "difference": {
+            "changed": 90765,
+            "mean": 0.147188585069444,
+            "over2": 8696,
+            "over8": 793,
+            "peak": 51
+          }
+        }
+      ]
+    },
+    {
+      "label": "natural-confidence08",
+      "execution_valid": true,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-confidence08/run.json",
+        "sha256": "dc71ccf94da4b7437580d63873da843f51c5355ff546a56c0555d0477214c0d7"
+      },
+      "errors": [],
+      "other_processes_at_start": [],
+      "other_processes_at_end": [],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-confidence08/natural_cache_probe.gd",
+          "sha256": "b7822b7036149fee517127a8049e2d781051449ea891d2ad2cef179a994a9e57"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-confidence08/tool-source.gd",
+          "sha256": "42f6721b33e4992d857e596a15306149edae96f9a979f2d81a6ea206fa3b2f65"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-confidence08/natural-cache-probe.json",
+        "sha256": "0e3514f0ec4f030dad4990bfbffaa9b6283ed510b800e43df94394787c14ca9c"
+      },
+      "harness_checks": 58,
+      "harness_failures": 0,
+      "cases": [
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "colour"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 34755,
+            "mean": 0.0411545138888889,
+            "over2": 375,
+            "over8": 70,
+            "peak": 33
+          },
+          "abba": [
+            {
+              "median_gpu_ms": 0.887000024318695,
+              "p95_gpu_ms": 0.939000010490417,
+              "variant": "live"
+            },
+            {
+              "median_gpu_ms": 0.825999975204468,
+              "p95_gpu_ms": 0.83899998664856,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 0.869000017642975,
+              "p95_gpu_ms": 0.939000010490417,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 0.938000023365021,
+              "p95_gpu_ms": 0.972000002861023,
+              "variant": "live"
+            }
+          ]
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "colour"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 15331,
+            "mean": 0.0200564236111111,
+            "over2": 589,
+            "over8": 74,
+            "peak": 29
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "colour"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 5487,
+            "mean": 0.00691297743055556,
+            "over2": 175,
+            "over8": 11,
+            "peak": 16
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "normals"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 21062,
+            "mean": 0.02427734375,
+            "over2": 232,
+            "over8": 46,
+            "peak": 13
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "normals"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 6061,
+            "mean": 0.00740668402777778,
+            "over2": 181,
+            "over8": 1,
+            "peak": 9
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "normals"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 140,
+            "mean": 0.000151909722222222,
+            "over2": 0,
+            "over8": 0,
+            "peak": 1
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "raw"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 37764,
+            "mean": 0.0462424045138889,
+            "over2": 587,
+            "over8": 85,
+            "peak": 41
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "raw"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 16558,
+            "mean": 0.0234646267361111,
+            "over2": 850,
+            "over8": 146,
+            "peak": 44
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "raw"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 6930,
+            "mean": 0.00953233506944444,
+            "over2": 365,
+            "over8": 32,
+            "peak": 23
+          }
+        }
+      ]
+    },
+    {
+      "label": "natural-cost09",
+      "execution_valid": true,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cost09/run.json",
+        "sha256": "253cc0c5c592e697b8af1f21988e5b82f764895d4a8a66f7f0e944e0d212bfac"
+      },
+      "errors": [],
+      "other_processes_at_start": [],
+      "other_processes_at_end": [],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cost09/natural_cache_probe.gd",
+          "sha256": "b7822b7036149fee517127a8049e2d781051449ea891d2ad2cef179a994a9e57"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cost09/tool-source.gd",
+          "sha256": "a2df9d72fb94bd8be53dbf602d11a926b8fc979c0ad5a6f0cebfc175b71ffe02"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-cost09/natural-cache-probe.json",
+        "sha256": "601bc1574c1f4f27c0fa60ab5faa68f91902c57be9f62dfe8b12a2df976e0e58"
+      },
+      "harness_checks": 39,
+      "harness_failures": 0,
+      "cases": [
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "guard12"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 65484,
+            "mean": 0.0780729166666667,
+            "over2": 801,
+            "over8": 137,
+            "peak": 30
+          },
+          "abba": [
+            {
+              "median_gpu_ms": 0.959999978542328,
+              "p95_gpu_ms": 0.991999983787537,
+              "variant": "live"
+            },
+            {
+              "median_gpu_ms": 0.796000003814697,
+              "p95_gpu_ms": 0.823000013828278,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 0.870999991893768,
+              "p95_gpu_ms": 0.904999971389771,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 0.930000007152557,
+              "p95_gpu_ms": 1.03900003433228,
+              "variant": "live"
+            }
+          ]
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "guard12"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 31153,
+            "mean": 0.0401486545138889,
+            "over2": 1064,
+            "over8": 148,
+            "peak": 29
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": true,
+            "name": "guard12"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 19963,
+            "mean": 0.0258148871527778,
+            "over2": 765,
+            "over8": 50,
+            "peak": 22
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": false,
+            "name": "all12"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 72200,
+            "mean": 0.0879058159722222,
+            "over2": 1142,
+            "over8": 251,
+            "peak": 30
+          },
+          "abba": [
+            {
+              "median_gpu_ms": 1.05299997329712,
+              "p95_gpu_ms": 1.26400005817413,
+              "variant": "live"
+            },
+            {
+              "median_gpu_ms": 0.721000015735626,
+              "p95_gpu_ms": 0.931999981403351,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 0.749000012874603,
+              "p95_gpu_ms": 0.959999978542328,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 1.0809999704361,
+              "p95_gpu_ms": 1.29700005054474,
+              "variant": "live"
+            }
+          ]
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": false,
+            "name": "all12"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 36538,
+            "mean": 0.0480913628472222,
+            "over2": 1454,
+            "over8": 193,
+            "peak": 29
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": false,
+            "name": "all12"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 24653,
+            "mean": 0.0326790364583333,
+            "over2": 1085,
+            "over8": 76,
+            "peak": 34
+          }
+        }
+      ]
+    },
+    {
+      "label": "natural-delta10",
+      "execution_valid": false,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-delta10/run.json",
+        "sha256": "2caf8cb0353531d5ab35eef361967af9b140a78b6d619ef85e423ad648147b7c"
+      },
+      "errors": [
+        "ERROR: Unsupported image format",
+        "ERROR: Condition \"imfmt.image_format == Image::FORMAT_MAX\" is true.",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Parameter \"t\" is null.",
+        "ERROR: Unsupported image format",
+        "ERROR: Condition \"imfmt.image_format == Image::FORMAT_MAX\" is true.",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Parameter \"t\" is null.",
+        "ERROR: Unsupported image format",
+        "ERROR: Condition \"imfmt.image_format == Image::FORMAT_MAX\" is true.",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Attempting to use an uninitialized RID",
+        "ERROR: Parameter \"t\" is null.",
+        "ERROR: 3 RID allocations of type 'N10RendererRD14TextureStorage7TextureE' were leaked at exit."
+      ],
+      "other_processes_at_start": [],
+      "other_processes_at_end": [],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-delta10/natural_cache_probe.gd",
+          "sha256": "ca3977efc2eb087ea59340ea43a79bc6555a5efa1a39e14d096a2e1f172755f8"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-delta10/tool-source.gd",
+          "sha256": "982ebd519186525f188481425d896c6595820aa8a55595492470219b390a070c"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-delta10/natural-cache-probe.json",
+        "sha256": "4dfbcac63baf901310d193f1ffd4792235712953e97cfcc113cd3fd87b7f021d"
+      },
+      "harness_checks": 58,
+      "harness_failures": 0
+    },
+    {
+      "label": "natural-delta11",
+      "execution_valid": true,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-delta11/run.json",
+        "sha256": "f9bd0d0ece682326cb42d7f020f5ff74b10e5a7fa5f68f4f65a7f8c7c105ac62"
+      },
+      "errors": [],
+      "other_processes_at_start": [],
+      "other_processes_at_end": [],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-delta11/natural_cache_probe.gd",
+          "sha256": "b7075a57683f2dab2adc294d7f815093e04b5367352fb40d74ae426948302428"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-delta11/tool-source.gd",
+          "sha256": "982ebd519186525f188481425d896c6595820aa8a55595492470219b390a070c"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/natural-delta11/natural-cache-probe.json",
+        "sha256": "0d057420b212c92fff64f4909286a711c9e17967ead1d0fa8e20597787abe112"
+      },
+      "harness_checks": 58,
+      "harness_failures": 0,
+      "cases": [
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": false,
+            "name": "colour"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 46751,
+            "mean": 0.0630425347222222,
+            "over2": 1683,
+            "over8": 324,
+            "peak": 30
+          },
+          "abba": [
+            {
+              "median_gpu_ms": 1.02300000190735,
+              "p95_gpu_ms": 1.05400002002716,
+              "variant": "live"
+            },
+            {
+              "median_gpu_ms": 0.824999988079071,
+              "p95_gpu_ms": 0.853999972343445,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 0.828000009059906,
+              "p95_gpu_ms": 0.944000005722046,
+              "variant": "cache"
+            },
+            {
+              "median_gpu_ms": 1.01499998569489,
+              "p95_gpu_ms": 1.03299999237061,
+              "variant": "live"
+            }
+          ]
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": false,
+            "name": "colour"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 24948,
+            "mean": 0.0372927517361111,
+            "over2": 1775,
+            "over8": 194,
+            "peak": 29
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": false,
+            "name": "colour"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 17894,
+            "mean": 0.0272211371527778,
+            "over2": 1461,
+            "over8": 102,
+            "peak": 33
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": false,
+            "name": "normals"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 30576,
+            "mean": 0.040341796875,
+            "over2": 1288,
+            "over8": 147,
+            "peak": 25
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": false,
+            "name": "normals"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 14820,
+            "mean": 0.0202582465277778,
+            "over2": 842,
+            "over8": 23,
+            "peak": 16
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": false,
+            "name": "normals"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 772,
+            "mean": 0.00083984375,
+            "over2": 0,
+            "over8": 0,
+            "peak": 2
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": false,
+            "name": "raw"
+          },
+          "pose": "near",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 51863,
+            "mean": 0.0749240451388889,
+            "over2": 2473,
+            "over8": 460,
+            "peak": 41
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": false,
+            "name": "raw"
+          },
+          "pose": "oblique",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 28590,
+            "mean": 0.0475434027777778,
+            "over2": 2724,
+            "over8": 365,
+            "peak": 45
+          }
+        },
+        {
+          "variant": {
+            "compact": true,
+            "density": 48,
+            "guard": false,
+            "name": "raw"
+          },
+          "pose": "far",
+          "density": 48,
+          "logical_bytes": 11943600,
+          "difference": {
+            "changed": 21880,
+            "mean": 0.0387532552083333,
+            "over2": 2696,
+            "over8": 293,
+            "peak": 50
+          }
+        }
+      ]
+    },
+    {
+      "label": "surface-cost12",
+      "execution_valid": true,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/surface-cost12/run.json",
+        "sha256": "9b9af06b34fddba1dc4d99ea06e59e944f00f090c2bb0d112218b04f2927b3dd"
+      },
+      "errors": [],
+      "other_processes_at_start": [],
+      "other_processes_at_end": [],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/surface-cost12/tool-source.gd",
+          "sha256": "4b2797986d0316d63dd6e8105b3f878ff9dcea6f4b6d003b936af873bfb3eed9"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/surface-cost12/terrain-cloud-cost.json",
+        "sha256": "5739fa9acefd5b1136f98a00c9d2da42411f3ab0b1632457d1b3f541f71e5228"
+      },
+      "harness_checks": 68,
+      "harness_failures": 0
+    },
+    {
+      "label": "cloud-path13",
+      "execution_valid": false,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-path13/run.json",
+        "sha256": "e2190214193e31235fa494de796285e34cde1b031e4d9688553469b435f29514"
+      },
+      "errors": [
+        "FAIL uncapped run",
+        "FAIL uncapped run",
+        "FAIL uncapped run",
+        "FAIL uncapped run",
+        "FAIL uncapped run",
+        "FAIL uncapped run",
+        "FAIL uncapped run",
+        "FAIL uncapped run",
+        "FAIL uncapped run",
+        "FAIL uncapped run",
+        "FAIL uncapped run",
+        "FAIL uncapped run"
+      ],
+      "other_processes_at_start": [],
+      "other_processes_at_end": [],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-path13/clouds.gd",
+          "sha256": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-path13/tool-source.gd",
+          "sha256": "080ca653ca5a5fd06e0db5dcaff8d6763bb60c4269f6f678f818dd1ef053675f"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-path13/water_interaction.gd",
+          "sha256": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-path13/cloud-path-cost.json",
+        "sha256": "c9e6458f71d20e5d6c3b9eda8b2bcc85b8db2d708346ed293da2212bfa148bb3"
+      },
+      "harness_checks": 74,
+      "harness_failures": 12
+    },
+    {
+      "label": "cloud-path14",
+      "execution_valid": true,
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-path14/run.json",
+        "sha256": "6322dbc223469da836fef01f66d63ad2e9b3f1604ff0de5ede5ce177e1a4217b"
+      },
+      "errors": [],
+      "other_processes_at_start": [
+        {
+          "pid": 2171925,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [],
+      "frozen_fixtures": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-path14/clouds.gd",
+          "sha256": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-path14/tool-source.gd",
+          "sha256": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-path14/water_interaction.gd",
+          "sha256": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+        }
+      ],
+      "result": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-path14/cloud-path-cost.json",
+        "sha256": "b71acb9011c837d6777140b98082a8de402511d2b94ac5230168c552d2b814dd"
+      },
+      "harness_checks": 74,
+      "harness_failures": 0
+    }
+  ]
+}

@@ -65,16 +65,18 @@
     {
       "id": "W02",
       "report": "Ground detail looks similar but is expensive, especially Natural transitions; optimize or cache per map",
-      "status": "Exact duplicate donor reuse packaged with a Forward+ guard (3bc9340). Whole-map caching is not adopted; substantial Natural transition cost work and clean/Windows timing remain open.",
+      "status": "Exact donor reuse is packaged (3bc9340). Main-device single-sector colour/delta cache prototypes are measured but not promoted: filtering/normal outliers and residency costs remain. Natural cost and Windows qualification stay open.",
       "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/renderer-reuse-2026-10-10.json",
-      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json"
+      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json",
+      "prototype_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/terrain-cloud-cost-prototypes-2026-10-10.json"
     },
     {
       "id": "W03",
       "report": "Clouds very expensive",
-      "status": "Exact duplicate receiver solar-shadow reuse packaged with a Forward+ guard (3bc9340). Broader cloud raymarch cost work and clean/Windows timing remain open.",
+      "status": "Exact receiver solar-shadow reuse is packaged (3bc9340). Separate moving-sky/water/sunlight profiling identifies remaining raymarch costs. Next is a bounded horizontal cloud-weather lookup proof; no further cloud optimization is shipped.",
       "evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/renderer-reuse-2026-10-10.json",
-      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json"
+      "package_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10.json",
+      "prototype_evidence": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/terrain-cloud-cost-prototypes-2026-10-10.json"
     },
     {
       "id": "W04",
