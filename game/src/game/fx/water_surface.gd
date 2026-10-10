@@ -11,6 +11,7 @@ var _stamp := 0
 var _frame := 0
 var _phase := WaveState.phase_grid()
 var _waves := true
+var _cache_mean := false
 var _margin := 0.0
 
 
@@ -26,10 +27,13 @@ func clear() -> void:
 	_sectors.clear()
 
 
-func begin_frame(deformed := true) -> void:
+## Dense mean-surface batches may reuse triangles; sparse contacts use the
+## original query without allocating or filling per-triangle storage.
+func begin_frame(deformed := true, cache_mean := false) -> void:
 	_frame += 1
 	var value: Variant = terrain._water_mat.get_shader_parameter("waves") if terrain._water_mat else null
 	_waves = deformed and (value == null or float(value) > 0.5)
+	_cache_mean = cache_mean and not _waves
 
 
 func _sector(key: Vector2i) -> Dictionary:
@@ -121,6 +125,9 @@ func sample(point: Vector2) -> Dictionary:
 			var xf := node.global_transform
 			var p := node.to_local(Vector3(point.x,node.global_position.y,point.y))
 			var bucket := Vector2i(floori(p.x/BUCKET),floori(-p.z/BUCKET))
+			if _cache_mean:
+				best = _sample_mean(record,xf,point,bucket,best)
+				continue
 			for at: int in record.buckets.get(bucket,PackedInt32Array()):
 				var ia: int = record.indices[at]; var ib: int = record.indices[at+1]; var ic: int = record.indices[at+2]
 				var a := _vertex(record,ia,xf); var b := _vertex(record,ib,xf); var c := _vertex(record,ic,xf)
@@ -141,4 +148,59 @@ func sample(point: Vector2) -> Dictionary:
 				best = {"height":height,"lava":lava,"material":ma,
 					"slope":Vector2(((b.y-a.y)*ac.y-(c.y-a.y)*ab.y)/det,
 						(ab.x*(c.y-a.y)-ac.x*(b.y-a.y))/det)}
+	return best
+
+
+func _sample_mean(record: Dictionary, xf: Transform3D, point: Vector2, bucket: Vector2i, best: Dictionary) -> Dictionary:
+	var triangles: PackedInt32Array = record.buckets.get(bucket,PackedInt32Array())
+	if triangles.is_empty(): return best
+	# Mean-surface batches revisit triangles many times. Cache only their
+	# geometry, once per begin_frame, leaving live liquid flags below.
+	# Preserve vector rounding and float64 determinants/height arithmetic.
+	if int(record.get("triangle_frame",-1)) != _frame:
+		if not record.has("triangle_ready"):
+			record.triangle_ready = PackedByteArray(); record.triangle_points = PackedVector3Array()
+			record.triangle_edges = PackedVector4Array(); record.triangle_heights = PackedVector2Array()
+			record.triangle_det = PackedFloat64Array()
+			var count: int = record.indices.size()/3
+			record.triangle_ready.resize(count); record.triangle_points.resize(count)
+			record.triangle_edges.resize(count); record.triangle_heights.resize(count)
+			record.triangle_det.resize(count)
+		else: record.triangle_ready.fill(0)
+		record.triangle_frame = _frame
+	for at: int in triangles:
+		var ia: int = record.indices[at]; var ib: int = record.indices[at+1]; var ic: int = record.indices[at+2]
+		var a: Vector3; var ab: Vector2; var ac: Vector2
+		var by: float; var cy: float; var det: float
+		var triangle := at/3
+		if record.triangle_ready[triangle] != 0:
+			a = record.triangle_points[triangle]
+			var edges: Vector4 = record.triangle_edges[triangle]
+			ab = Vector2(edges.x,edges.y); ac = Vector2(edges.z,edges.w)
+			var heights: Vector2 = record.triangle_heights[triangle]
+			by = heights.x; cy = heights.y; det = record.triangle_det[triangle]
+		else:
+			a = _vertex(record,ia,xf)
+			var b := _vertex(record,ib,xf); var c := _vertex(record,ic,xf)
+			ab = Vector2(b.x-a.x,b.z-a.z); ac = Vector2(c.x-a.x,c.z-a.z)
+			by = b.y; cy = c.y; det = ab.cross(ac)
+			record.triangle_points[triangle] = a
+			record.triangle_edges[triangle] = Vector4(ab.x,ab.y,ac.x,ac.y)
+			record.triangle_heights[triangle] = Vector2(by,cy)
+			record.triangle_det[triangle] = det; record.triangle_ready[triangle] = 1
+		var ap := point-Vector2(a.x,a.z)
+		if absf(det) < 1e-8: continue
+		var v := ap.cross(ac)/det; var w := ab.cross(ap)/det
+		if v < -0.000001 or w < -0.000001 or v+w > 1.000001: continue
+		var height := a.y+v*(by-a.y)+w*(cy-a.y)
+		if not best.is_empty() and height <= float(best.height): continue
+		var ma := clampi(int(record.uv2[ia].y+0.5)%64,0,63)
+		var mb := clampi(int(record.uv2[ib].y+0.5)%64,0,63)
+		var mc := clampi(int(record.uv2[ic].y+0.5)%64,0,63)
+		var lava := false
+		for m: int in [ma,mb,mc]:
+			lava = lava or (m < terrain._lava.size() and terrain._lava[m] > 0.0)
+		best = {"height":height,"lava":lava,"material":ma,
+			"slope":Vector2(((by-a.y)*ac.y-(cy-a.y)*ab.y)/det,
+				(ab.x*(cy-a.y)-ac.x*(by-a.y))/det)}
 	return best

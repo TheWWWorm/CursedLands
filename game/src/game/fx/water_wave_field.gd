@@ -94,7 +94,7 @@ func _domain(terrain: EITerrain) -> void:
 	# The actual unposed triangles, selection order and slope evaluation are
 	# unchanged. Only this window's samples survive for the next movement.
 	if _surface == null: _surface = Surface.new(terrain)
-	_surface.begin_frame(false)
+	_surface.begin_frame(false,true)
 	var samples := {}; var width := terrain.sectors_x*32
 	var flow: RefCounted = terrain._current
 	var first := Vector2i(floori(origin.x*CELL),floori(origin.y*CELL))

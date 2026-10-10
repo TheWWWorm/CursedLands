@@ -1,0 +1,2699 @@
+{
+  "date": "2026-10-10",
+  "feature": "Opt-in per-frame mean-water triangle cache for wave-domain construction",
+  "base_commit": "3d7c79d6cd43adc90ff66db679139799400cadaf",
+  "status": "Accepted source optimization with exact surface/domain outputs, native/worker lifetimes and 33 exact rendered pairs. No new export, APK or delivery archive.",
+  "user_scope": {
+    "main_thread_only": true,
+    "playthroughs": false,
+    "new_packages": false
+  },
+  "source_sha256": {
+    "game/src/game/fx/water_surface.gd": "9e55c68121c6a86e183013c3ce0feb11fb224d297cbe17c8b86fde148493cf74",
+    "game/src/game/fx/water_wave_field.gd": "1c1f46ffda4a215bbec0dc44b579a7dabc553eb9638c94c257515d0652def3eb",
+    "tools/tests/water_surface_cache.gd": "e62ee549a48d484a0d6a185fa0e4d5dc273bd4394716bbcb8f0cddd7daca6ac8",
+    "tools/tests/water_surface_cache_reference.gd": "45f6c59c2dfe2e3d676e390068b2623c2e4b45167eb845d00668d859c3741fbf"
+  },
+  "implementation": {
+    "change": "Cache unposed triangle anchors, projected edges, vertex heights and determinant once per query frame. Enable only for the existing dense wave-domain batch via begin_frame(false,true). Other callers keep the original triangle loop and allocate no triangle payload.",
+    "precision": "Preserve original Vector2/Vector3 rounding, float64 height subtraction and determinants, barycentric tolerances, iteration/tie order, highest-surface selection, material ownership and live lava checks. Cache invalidates with the original begin_frame generation and existing mesh-identity/weak-node/LRU rules.",
+    "memory": "45 packed bytes per allocated triangle on these single-precision builds; lazy allocation only for nonempty queried buckets. Surface probes retain 173880-199800 additional packed CPU bytes (0.166-0.191 MiB); dictionary/allocator overhead is not measured. The existing 16-sector LRU bounds retention, and clear releases every record. No new GPU resource.",
+    "unchanged": "Authored wave evaluation, phase-grid constructor, navigation, solver, worker lifecycle, clocks, shaders, settings/defaults, independent cloud controls and .8/.9 fixes.",
+    "source_audits": {
+      "exact_tested_surface_methods": true,
+      "exact_prior_sample_oracle": true,
+      "unchanged_sector_and_vertex_methods": true,
+      "full_field_diff_only_surface_preload_in_cpu_adapter": true,
+      "typed_render_domain_diff_only_surface_factory_and_cast": true
+    }
+  },
+  "profile": {
+    "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/profile-android01/run.json",
+    "data": {
+      "rows": [
+        {
+          "constructor_us": 6013,
+          "map": "zone1",
+          "plain_domain_us": 68202,
+          "profiled_domain_us": 110102,
+          "sample_calls": 516,
+          "sample_us": 105437,
+          "sector_calls": 591,
+          "sector_us": 9029,
+          "vertex_calls": 44784,
+          "vertex_misses": 1372,
+          "vertex_us": 40930
+        },
+        {
+          "constructor_us": 6207,
+          "map": "zone11",
+          "plain_domain_us": 78239,
+          "profiled_domain_us": 132349,
+          "sample_calls": 625,
+          "sample_us": 127498,
+          "sector_calls": 685,
+          "sector_us": 8295,
+          "vertex_calls": 55416,
+          "vertex_misses": 1588,
+          "vertex_us": 50777
+        },
+        {
+          "constructor_us": 6819,
+          "map": "zone8",
+          "plain_domain_us": 78013,
+          "profiled_domain_us": 128765,
+          "sample_calls": 605,
+          "sample_us": 122572,
+          "sector_calls": 728,
+          "sector_us": 9432,
+          "vertex_calls": 52224,
+          "vertex_misses": 1634,
+          "vertex_us": 48006
+        }
+      ]
+    },
+    "interpretation": "Per fresh domain, 44784-55416 vertex-cache lookups serve only 1372-1634 newly evaluated vertices. Instrumentation adds substantial overhead; profiled elapsed times are not used as optimization measurements. Surface construction separately takes 6.0-6.8 ms in this sample."
+  },
+  "cost": {
+    "method": "Two fresh-process ABBA domain runs per platform; median across both reference arms and both candidate arms. Fresh includes the Surface constructor and complete _domain call; cached uses the two repeated origins; moving uses the two initial shifts. Equal inputs and checks outside the timed calls. Hidden held terrain, no other desktop engine process. CPU timings, not GPU time, whole-game FPS, map load or total water-level rebuild.",
+    "android": "Retroid Pocket 5 / Android 33 / Adreno 650; existing private Compatibility runtime. GPU is not what is timed.",
+    "linux": "Linux / AMD Ryzen 5950X, headless CPU runs. Separate rendered checks use RTX3090 Ti.",
+    "domain": {
+      "android": {
+        "zone1": {
+          "fresh": {
+            "before_ms": 68.949,
+            "after_ms": 52.4125,
+            "reduction_pct": 23.98366908874675,
+            "before_us": [
+              68985,
+              68419,
+              69002,
+              68913
+            ],
+            "after_us": [
+              52386,
+              52131,
+              52458,
+              52439
+            ]
+          },
+          "cached": {
+            "before_ms": 3.542,
+            "after_ms": 3.5655,
+            "reduction_pct": -0.6634669678148075,
+            "before_us": [
+              3710,
+              3607,
+              3381,
+              3485,
+              3748,
+              3599,
+              3480,
+              3385
+            ],
+            "after_us": [
+              3858,
+              3651,
+              3442,
+              3480,
+              3906,
+              3688,
+              3465,
+              3431
+            ]
+          },
+          "moving": {
+            "before_ms": 7.047,
+            "after_ms": 6.0465,
+            "reduction_pct": 14.197530864197528,
+            "before_us": [
+              6953,
+              7217,
+              7031,
+              6980,
+              7130,
+              7408,
+              7063,
+              6933
+            ],
+            "after_us": [
+              5986,
+              6032,
+              6185,
+              6053,
+              6773,
+              6914,
+              6040,
+              5962
+            ]
+          }
+        },
+        "zone11": {
+          "fresh": {
+            "before_ms": 79.9875,
+            "after_ms": 58.3445,
+            "reduction_pct": 27.057977809032664,
+            "before_us": [
+              79949,
+              79227,
+              80104,
+              80026
+            ],
+            "after_us": [
+              58221,
+              58468,
+              58218,
+              58549
+            ]
+          },
+          "cached": {
+            "before_ms": 3.6895,
+            "after_ms": 3.8145,
+            "reduction_pct": -3.38799295297465,
+            "before_us": [
+              3907,
+              3699,
+              3778,
+              3508,
+              3915,
+              3680,
+              3648,
+              3420
+            ],
+            "after_us": [
+              3995,
+              3813,
+              3816,
+              3631,
+              4035,
+              3907,
+              3620,
+              3559
+            ]
+          },
+          "moving": {
+            "before_ms": 8.6085,
+            "after_ms": 7.7185,
+            "reduction_pct": 10.338618806993082,
+            "before_us": [
+              4954,
+              4963,
+              12321,
+              12667,
+              4952,
+              4902,
+              12254,
+              12464
+            ],
+            "after_us": [
+              4731,
+              4742,
+              10695,
+              10735,
+              4736,
+              4733,
+              10744,
+              10764
+            ]
+          }
+        },
+        "zone8": {
+          "fresh": {
+            "before_ms": 79.327,
+            "after_ms": 59.3425,
+            "reduction_pct": 25.19255738903525,
+            "before_us": [
+              79163,
+              79313,
+              79822,
+              79341
+            ],
+            "after_us": [
+              58990,
+              58762,
+              59695,
+              59818
+            ]
+          },
+          "cached": {
+            "before_ms": 4.6115,
+            "after_ms": 4.6485,
+            "reduction_pct": -0.8023419711590485,
+            "before_us": [
+              5230,
+              5057,
+              4134,
+              4079,
+              5293,
+              5125,
+              4166,
+              4158
+            ],
+            "after_us": [
+              5106,
+              5083,
+              4142,
+              4023,
+              5365,
+              5191,
+              4214,
+              4139
+            ]
+          },
+          "moving": {
+            "before_ms": 8.75,
+            "after_ms": 7.535,
+            "reduction_pct": 13.885714285714279,
+            "before_us": [
+              6548,
+              6654,
+              10812,
+              10816,
+              6542,
+              6688,
+              10836,
+              10883
+            ],
+            "after_us": [
+              6146,
+              6165,
+              8975,
+              8905,
+              6143,
+              6116,
+              9184,
+              9098
+            ]
+          }
+        }
+      },
+      "desktop": {
+        "zone1": {
+          "fresh": {
+            "before_ms": 34.361,
+            "after_ms": 26.301,
+            "reduction_pct": 23.45682605279241,
+            "before_us": [
+              34484,
+              34060,
+              34939,
+              34238
+            ],
+            "after_us": [
+              26077,
+              26554,
+              26524,
+              26078
+            ]
+          },
+          "cached": {
+            "before_ms": 1.9155,
+            "after_ms": 1.898,
+            "reduction_pct": 0.9135995823544851,
+            "before_us": [
+              2135,
+              2000,
+              1908,
+              1818,
+              2063,
+              1906,
+              1923,
+              1835
+            ],
+            "after_us": [
+              2020,
+              2115,
+              1800,
+              1806,
+              2005,
+              1963,
+              1833,
+              1825
+            ]
+          },
+          "moving": {
+            "before_ms": 3.6875,
+            "after_ms": 3.147,
+            "reduction_pct": 14.65762711864408,
+            "before_us": [
+              3733,
+              3647,
+              3673,
+              3611,
+              3763,
+              3702,
+              3730,
+              3635
+            ],
+            "after_us": [
+              3199,
+              3164,
+              3103,
+              3098,
+              3217,
+              3267,
+              3130,
+              3121
+            ]
+          }
+        },
+        "zone11": {
+          "fresh": {
+            "before_ms": 39.4225,
+            "after_ms": 28.728,
+            "reduction_pct": 27.127909188914956,
+            "before_us": [
+              39423,
+              39182,
+              39791,
+              39422
+            ],
+            "after_us": [
+              28848,
+              28610,
+              28736,
+              28720
+            ]
+          },
+          "cached": {
+            "before_ms": 1.9205,
+            "after_ms": 1.852,
+            "reduction_pct": 3.5667794845092415,
+            "before_us": [
+              2123,
+              1936,
+              2135,
+              1745,
+              2066,
+              1905,
+              1873,
+              1730
+            ],
+            "after_us": [
+              1973,
+              1966,
+              1765,
+              1763,
+              1978,
+              1939,
+              1738,
+              1736
+            ]
+          },
+          "moving": {
+            "before_ms": 4.4775,
+            "after_ms": 3.889,
+            "reduction_pct": 13.143495254048021,
+            "before_us": [
+              2767,
+              2635,
+              6357,
+              6270,
+              2570,
+              2488,
+              6263,
+              6188
+            ],
+            "after_us": [
+              2519,
+              2479,
+              5648,
+              5372,
+              2344,
+              2365,
+              5261,
+              5259
+            ]
+          }
+        },
+        "zone8": {
+          "fresh": {
+            "before_ms": 39.4605,
+            "after_ms": 29.4695,
+            "reduction_pct": 25.318989875951903,
+            "before_us": [
+              39707,
+              39692,
+              39229,
+              38946
+            ],
+            "after_us": [
+              29439,
+              29555,
+              29500,
+              29245
+            ]
+          },
+          "cached": {
+            "before_ms": 2.4335,
+            "after_ms": 2.4145,
+            "reduction_pct": 0.7807684405177762,
+            "before_us": [
+              2915,
+              2715,
+              2272,
+              2155,
+              2847,
+              2595,
+              2187,
+              2125
+            ],
+            "after_us": [
+              2804,
+              2744,
+              2167,
+              2136,
+              2696,
+              2662,
+              2119,
+              2107
+            ]
+          },
+          "moving": {
+            "before_ms": 4.4375,
+            "after_ms": 3.814,
+            "reduction_pct": 14.050704225352106,
+            "before_us": [
+              3456,
+              3387,
+              5614,
+              5496,
+              3487,
+              3330,
+              5437,
+              5388
+            ],
+            "after_us": [
+              3156,
+              3191,
+              4612,
+              4594,
+              3105,
+              3113,
+              4437,
+              4439
+            ]
+          }
+        }
+      }
+    },
+    "query_scope": "Direct 1024-query ABBA batches exclude constructor and begin_frame. Mean, posed, default waves-disabled, and cache toggle controls are included. See raw rows for timings, hits and retained bytes.",
+    "surface_queries": {
+      "surface-desktop05": {
+        "checks": 346,
+        "failures": 0,
+        "platform": "Linux",
+        "rows": [
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/mean-cold",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              1015,
+              1041,
+              1023,
+              960
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/mean-repeat",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              897,
+              922,
+              908,
+              890
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/live-lava",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              890,
+              925,
+              908,
+              891
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/same-frame-offset",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              891,
+              920,
+              907,
+              890
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/next-frame-offset",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              913,
+              964,
+              950,
+              908
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/posed",
+            "extra_packed_bytes": 810,
+            "hits": 7,
+            "queries": 271,
+            "query_us_abba": [
+              1118,
+              1092,
+              1084,
+              1080
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/posed-moved",
+            "extra_packed_bytes": 810,
+            "hits": 9,
+            "queries": 271,
+            "query_us_abba": [
+              1087,
+              1099,
+              1093,
+              1084
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/back-to-mean",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              910,
+              966,
+              959,
+              910
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/cache-disabled",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              908,
+              912,
+              896,
+              901
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/cache-reenabled",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              904,
+              963,
+              954,
+              908
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/node-transform",
+            "extra_packed_bytes": 810,
+            "hits": 3,
+            "queries": 271,
+            "query_us_abba": [
+              831,
+              903,
+              895,
+              831
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/terrain-transform",
+            "extra_packed_bytes": 810,
+            "hits": 3,
+            "queries": 271,
+            "query_us_abba": [
+              830,
+              907,
+              898,
+              823
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/mesh-replaced-without-frame",
+            "extra_packed_bytes": 450,
+            "hits": 1,
+            "queries": 271,
+            "query_us_abba": [
+              770,
+              839,
+              833,
+              771
+            ]
+          },
+          {
+            "cache_sectors": 1,
+            "case": "synthetic/mesh-removed",
+            "extra_packed_bytes": 405,
+            "hits": 0,
+            "queries": 271,
+            "query_us_abba": [
+              557,
+              597,
+              558,
+              549
+            ]
+          },
+          {
+            "cache_sectors": 1,
+            "case": "synthetic/node-freed",
+            "extra_packed_bytes": 405,
+            "hits": 0,
+            "queries": 271,
+            "query_us_abba": [
+              532,
+              520,
+              518,
+              515
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/node-recreated",
+            "extra_packed_bytes": 810,
+            "hits": 8,
+            "queries": 271,
+            "query_us_abba": [
+              927,
+              972,
+              955,
+              927
+            ]
+          },
+          {
+            "cache_sectors": 16,
+            "case": "synthetic/eviction",
+            "extra_packed_bytes": 6480,
+            "hits": 20,
+            "queries": 20,
+            "query_us_abba": [
+              770,
+              857,
+              855,
+              745
+            ]
+          },
+          {
+            "cache_sectors": 16,
+            "case": "synthetic/revisit-evicted",
+            "extra_packed_bytes": 6480,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              973,
+              1024,
+              1017,
+              969
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/posed-only-after-clear",
+            "extra_packed_bytes": 0,
+            "hits": 9,
+            "queries": 271,
+            "query_us_abba": [
+              1258,
+              1138,
+              1137,
+              1139
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/mean/cold",
+            "extra_packed_bytes": 199800,
+            "hits": 522,
+            "queries": 1024,
+            "query_us_abba": [
+              32488,
+              22856,
+              22758,
+              32485
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/mean/repeat",
+            "extra_packed_bytes": 199800,
+            "hits": 522,
+            "queries": 1024,
+            "query_us_abba": [
+              27362,
+              15883,
+              15849,
+              27237
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/mean/next-frame",
+            "extra_packed_bytes": 199800,
+            "hits": 522,
+            "queries": 1024,
+            "query_us_abba": [
+              28010,
+              18532,
+              18627,
+              28231
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/posed/cold",
+            "extra_packed_bytes": 0,
+            "hits": 520,
+            "queries": 1024,
+            "query_us_abba": [
+              39895,
+              39802,
+              39613,
+              39613
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/posed/repeat",
+            "extra_packed_bytes": 0,
+            "hits": 520,
+            "queries": 1024,
+            "query_us_abba": [
+              27242,
+              27197,
+              27373,
+              27544
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/posed/next-frame",
+            "extra_packed_bytes": 0,
+            "hits": 520,
+            "queries": 1024,
+            "query_us_abba": [
+              35893,
+              35704,
+              35470,
+              35339
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/waves-off/default",
+            "extra_packed_bytes": 0,
+            "hits": 522,
+            "queries": 1024,
+            "query_us_abba": [
+              32189,
+              32173,
+              31900,
+              31820
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/waves-off/cold",
+            "extra_packed_bytes": 199800,
+            "hits": 522,
+            "queries": 1024,
+            "query_us_abba": [
+              27955,
+              18443,
+              18299,
+              27784
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/waves-reenabled",
+            "extra_packed_bytes": 199800,
+            "hits": 520,
+            "queries": 1024,
+            "query_us_abba": [
+              35154,
+              35092,
+              36039,
+              35264
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/mean/cold",
+            "extra_packed_bytes": 173880,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              36509,
+              25295,
+              25193,
+              36419
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/mean/repeat",
+            "extra_packed_bytes": 173880,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              31093,
+              17814,
+              17629,
+              31421
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/mean/next-frame",
+            "extra_packed_bytes": 173880,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              32234,
+              20837,
+              20753,
+              32194
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/posed/cold",
+            "extra_packed_bytes": 0,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              44830,
+              44791,
+              44609,
+              44630
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/posed/repeat",
+            "extra_packed_bytes": 0,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              31343,
+              31310,
+              31269,
+              31168
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/posed/next-frame",
+            "extra_packed_bytes": 0,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              40167,
+              40005,
+              39878,
+              39909
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/waves-off/default",
+            "extra_packed_bytes": 0,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              36498,
+              37625,
+              36232,
+              36149
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/waves-off/cold",
+            "extra_packed_bytes": 173880,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              31799,
+              20645,
+              20550,
+              32054
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/waves-reenabled",
+            "extra_packed_bytes": 173880,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              40503,
+              40569,
+              40321,
+              40212
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/mean/cold",
+            "extra_packed_bytes": 198360,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              33500,
+              23127,
+              22930,
+              33079
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/mean/repeat",
+            "extra_packed_bytes": 198360,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              28339,
+              16430,
+              16342,
+              28411
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/mean/next-frame",
+            "extra_packed_bytes": 198360,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              29157,
+              19004,
+              18961,
+              29070
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/posed/cold",
+            "extra_packed_bytes": 0,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              40790,
+              40665,
+              40591,
+              40622
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/posed/repeat",
+            "extra_packed_bytes": 0,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              28957,
+              29112,
+              28830,
+              28675
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/posed/next-frame",
+            "extra_packed_bytes": 0,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              36931,
+              36676,
+              36664,
+              36691
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/waves-off/default",
+            "extra_packed_bytes": 0,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              33513,
+              33431,
+              33153,
+              33062
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/waves-off/cold",
+            "extra_packed_bytes": 198360,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              29224,
+              19353,
+              18913,
+              28695
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/waves-reenabled",
+            "extra_packed_bytes": 198360,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              36263,
+              36516,
+              36445,
+              36366
+            ]
+          }
+        ],
+        "scope": "CPU query batch timing, excluding constructors and comparisons; no FPS claim."
+      },
+      "surface-android04": {
+        "checks": 346,
+        "failures": 0,
+        "platform": "Android",
+        "rows": [
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/mean-cold",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              2265,
+              2173,
+              2180,
+              2011
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/mean-repeat",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              1886,
+              1876,
+              1848,
+              1796
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/live-lava",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              1824,
+              1848,
+              1869,
+              1769
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/same-frame-offset",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              1848,
+              1856,
+              1835,
+              1754
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/next-frame-offset",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              1889,
+              1942,
+              1942,
+              1834
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/posed",
+            "extra_packed_bytes": 810,
+            "hits": 7,
+            "queries": 271,
+            "query_us_abba": [
+              2324,
+              2255,
+              2212,
+              2268
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/posed-moved",
+            "extra_packed_bytes": 810,
+            "hits": 9,
+            "queries": 271,
+            "query_us_abba": [
+              2254,
+              2275,
+              2244,
+              2291
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/back-to-mean",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              1820,
+              1979,
+              1935,
+              1867
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/cache-disabled",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              1796,
+              1868,
+              1830,
+              1881
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/cache-reenabled",
+            "extra_packed_bytes": 810,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              1844,
+              1962,
+              1942,
+              1885
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/node-transform",
+            "extra_packed_bytes": 810,
+            "hits": 3,
+            "queries": 271,
+            "query_us_abba": [
+              1701,
+              1862,
+              1831,
+              1722
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/terrain-transform",
+            "extra_packed_bytes": 810,
+            "hits": 3,
+            "queries": 271,
+            "query_us_abba": [
+              1679,
+              1880,
+              1836,
+              1700
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/mesh-replaced-without-frame",
+            "extra_packed_bytes": 450,
+            "hits": 1,
+            "queries": 271,
+            "query_us_abba": [
+              1616,
+              1775,
+              1743,
+              1589
+            ]
+          },
+          {
+            "cache_sectors": 1,
+            "case": "synthetic/mesh-removed",
+            "extra_packed_bytes": 405,
+            "hits": 0,
+            "queries": 271,
+            "query_us_abba": [
+              1124,
+              1068,
+              1050,
+              1068
+            ]
+          },
+          {
+            "cache_sectors": 1,
+            "case": "synthetic/node-freed",
+            "extra_packed_bytes": 405,
+            "hits": 0,
+            "queries": 271,
+            "query_us_abba": [
+              1002,
+              979,
+              973,
+              1029
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/node-recreated",
+            "extra_packed_bytes": 810,
+            "hits": 8,
+            "queries": 271,
+            "query_us_abba": [
+              1890,
+              2035,
+              2005,
+              1936
+            ]
+          },
+          {
+            "cache_sectors": 16,
+            "case": "synthetic/eviction",
+            "extra_packed_bytes": 6480,
+            "hits": 20,
+            "queries": 20,
+            "query_us_abba": [
+              2075,
+              2293,
+              2271,
+              2128
+            ]
+          },
+          {
+            "cache_sectors": 16,
+            "case": "synthetic/revisit-evicted",
+            "extra_packed_bytes": 6480,
+            "hits": 10,
+            "queries": 271,
+            "query_us_abba": [
+              2112,
+              2271,
+              2236,
+              2113
+            ]
+          },
+          {
+            "cache_sectors": 2,
+            "case": "synthetic/posed-only-after-clear",
+            "extra_packed_bytes": 0,
+            "hits": 9,
+            "queries": 271,
+            "query_us_abba": [
+              2569,
+              2504,
+              2428,
+              2476
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/mean/cold",
+            "extra_packed_bytes": 199800,
+            "hits": 522,
+            "queries": 1024,
+            "query_us_abba": [
+              66236,
+              47343,
+              47016,
+              65292
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/mean/repeat",
+            "extra_packed_bytes": 199800,
+            "hits": 522,
+            "queries": 1024,
+            "query_us_abba": [
+              55795,
+              34740,
+              34577,
+              56525
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/mean/next-frame",
+            "extra_packed_bytes": 199800,
+            "hits": 522,
+            "queries": 1024,
+            "query_us_abba": [
+              58267,
+              39828,
+              39324,
+              57715
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/posed/cold",
+            "extra_packed_bytes": 0,
+            "hits": 520,
+            "queries": 1024,
+            "query_us_abba": [
+              81342,
+              81113,
+              81660,
+              81436
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/posed/repeat",
+            "extra_packed_bytes": 0,
+            "hits": 520,
+            "queries": 1024,
+            "query_us_abba": [
+              56021,
+              56334,
+              55815,
+              56018
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/posed/next-frame",
+            "extra_packed_bytes": 0,
+            "hits": 520,
+            "queries": 1024,
+            "query_us_abba": [
+              73297,
+              73232,
+              73002,
+              73488
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/waves-off/default",
+            "extra_packed_bytes": 0,
+            "hits": 522,
+            "queries": 1024,
+            "query_us_abba": [
+              65335,
+              65159,
+              65095,
+              65153
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/waves-off/cold",
+            "extra_packed_bytes": 199800,
+            "hits": 522,
+            "queries": 1024,
+            "query_us_abba": [
+              57589,
+              39550,
+              39237,
+              57707
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone1/waves-reenabled",
+            "extra_packed_bytes": 199800,
+            "hits": 520,
+            "queries": 1024,
+            "query_us_abba": [
+              73835,
+              74410,
+              73783,
+              73615
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/mean/cold",
+            "extra_packed_bytes": 173880,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              75339,
+              52276,
+              52475,
+              74264
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/mean/repeat",
+            "extra_packed_bytes": 173880,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              64103,
+              39127,
+              38777,
+              64059
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/mean/next-frame",
+            "extra_packed_bytes": 173880,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              65637,
+              43932,
+              43620,
+              65277
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/posed/cold",
+            "extra_packed_bytes": 0,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              92234,
+              91680,
+              91656,
+              91422
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/posed/repeat",
+            "extra_packed_bytes": 0,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              63679,
+              63904,
+              63301,
+              63588
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/posed/next-frame",
+            "extra_packed_bytes": 0,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              83751,
+              83575,
+              83468,
+              84037
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/waves-off/default",
+            "extra_packed_bytes": 0,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              74227,
+              74834,
+              74379,
+              74413
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/waves-off/cold",
+            "extra_packed_bytes": 173880,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              65794,
+              44326,
+              43921,
+              66116
+            ]
+          },
+          {
+            "cache_sectors": 5,
+            "case": "zone11/waves-reenabled",
+            "extra_packed_bytes": 173880,
+            "hits": 608,
+            "queries": 1024,
+            "query_us_abba": [
+              84280,
+              84553,
+              83963,
+              83434
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/mean/cold",
+            "extra_packed_bytes": 198360,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              69001,
+              49035,
+              48090,
+              67739
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/mean/repeat",
+            "extra_packed_bytes": 198360,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              58832,
+              35939,
+              35651,
+              58598
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/mean/next-frame",
+            "extra_packed_bytes": 198360,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              60350,
+              40812,
+              40226,
+              60042
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/posed/cold",
+            "extra_packed_bytes": 0,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              84107,
+              83719,
+              83882,
+              84103
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/posed/repeat",
+            "extra_packed_bytes": 0,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              58727,
+              58425,
+              58244,
+              58559
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/posed/next-frame",
+            "extra_packed_bytes": 0,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              76134,
+              75701,
+              75702,
+              75845
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/waves-off/default",
+            "extra_packed_bytes": 0,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              69500,
+              68526,
+              67753,
+              67766
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/waves-off/cold",
+            "extra_packed_bytes": 198360,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              60105,
+              40962,
+              40523,
+              60123
+            ]
+          },
+          {
+            "cache_sectors": 4,
+            "case": "zone8/waves-reenabled",
+            "extra_packed_bytes": 198360,
+            "hits": 556,
+            "queries": 1024,
+            "query_us_abba": [
+              76067,
+              76371,
+              75991,
+              76153
+            ]
+          }
+        ],
+        "scope": "CPU query batch timing, excluding constructors and comparisons; no FPS claim."
+      }
+    },
+    "limits": "Cold domain cost remains 52-59 ms on the sampled Android maps. Cached domain medians vary by at most 0.13 ms here; no cached-build speedup is claimed. Default/posed queries retain their original per-triangle arithmetic and are near baseline in final batches."
+  },
+  "correctness": {
+    "runs": {
+      "surface-desktop05": {
+        "checks": 346,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/surface-desktop05/run.json",
+        "result_sha256": "9320e191794dde9b0847d657662b78369531f53c0b07a3b12d28218e75dc180a"
+      },
+      "surface-android04": {
+        "checks": 346,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/surface-android04/run.json",
+        "result_sha256": "5bfbc8efdf13d77a327154f40aa8e214e67e28f7c3155c7220359d1f906dee36"
+      },
+      "domain-desktop03": {
+        "checks": 1701,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/domain-desktop03/run.json",
+        "result_sha256": "f983da18c53d5ef179880bd3c6542942426c62970a94214b95cd64284e4414ab"
+      },
+      "domain-desktop04": {
+        "checks": 1701,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/domain-desktop04/run.json",
+        "result_sha256": "772c47027efb8b60fc54e5d6ccf23a0387d40637d6aec2205347372132f3fd38"
+      },
+      "domain-android03": {
+        "checks": 1701,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/domain-android03/run.json",
+        "result_sha256": "1aeedf4dbf94c8576f443dc2bc32cba3aa13cf202a1820d9cfc59a8f44894281"
+      },
+      "domain-android04": {
+        "checks": 1701,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/domain-android04/run.json",
+        "result_sha256": "e8274680459b3c61175f21fb1b4dba9a1881e0a06e7adc9c5fcfc585fe038b44"
+      },
+      "domain-astral01": {
+        "checks": 1648,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/domain-astral01/run.json",
+        "result_sha256": "0efe9758653eaa3813c6d1f09c795793ef07d8ad974f1517fcaa8c2b80c28aa5"
+      },
+      "lifetime-desktop01": {
+        "checks": 31,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/lifetime-desktop01/run.json",
+        "result_sha256": "6222cb8659afd91fbe8931eaca6f8c5205ffcd37f428b30349df1a010967d48e"
+      },
+      "lifetime-android-native01": {
+        "checks": 31,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/lifetime-android-native01/run.json",
+        "result_sha256": "a5b9f5f4e496252d6cc29a01379b9e452580ac0dd1602978039101a1c6dd8f36"
+      },
+      "lifetime-android-worker01": {
+        "checks": 31,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/lifetime-android-worker01/run.json",
+        "result_sha256": "ba4974e057e6195c872d95a166439d4af5f295ab79b08f59ddc8cf5419ae25ae"
+      },
+      "render-desktop-before01": {
+        "checks": 30,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-before01/run.json",
+        "result_sha256": "b3a72e15c93a9b217cbe6076a6a174b1c14826620fe7f2b99e3c5e6e34779c0b"
+      },
+      "render-desktop-after02": {
+        "checks": 31,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after02/run.json",
+        "result_sha256": "7e8534ebee2e13d2ccd1a4d5347ffd2e730d5260435623130e8c46d83952e87a"
+      },
+      "render-android-before01": {
+        "checks": 30,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-before01/run.json",
+        "result_sha256": "467579c7f5b1504a5fd1563bbe7cebbd1f20231b9c96ea9c2f56ad8c71b4bbbf"
+      },
+      "render-android-after02": {
+        "checks": 31,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after02/run.json",
+        "result_sha256": "ec01f69645f09febd1680abacb66487239fa6ab94f826940202380257fee43fc"
+      },
+      "render-mobile-before01": {
+        "checks": 29,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-before01/run.json",
+        "result_sha256": "4f669a1972a2baccb6fe0a691fa8a00654bd0075d42c48d9d57d9b8350a0737c"
+      },
+      "render-mobile-after01": {
+        "checks": 30,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-after01/run.json",
+        "result_sha256": "2dfe76ed1588ff931d92999319e08a1dfbec3e4d26a00cb5bb81b2385796eda2"
+      }
+    },
+    "coverage": "346 surface assertions per platform covering exact serialized heights/slopes/owners, highest/tied overlap, slivers/degeneracy, barycentric edges, nonfinite/negative points, offset and wave clocks, optional-cache toggles, live lava flags, node/terrain transforms, same-frame mesh replacement/removal/recreation, 16-sector eviction, clear and freed terrain. 1701 domain assertions per base run across zones 1/11/8 and 1648 for LiA zones 1/10/26 cover fractional origins, currents, exclusions, offsets and exact domain/cache/invalidation keys.",
+    "lifetime": "31/0 Linux, 31/0 Android native, 31/0 Android scalar worker; worker is active on clear and joined safely.",
+    "rendered": {
+      "exact_pairs": 33,
+      "pairs": [
+        {
+          "backend": "linux-gl",
+          "file": "water-interaction-wave-clock-held.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-before01/water-interaction-wave-clock-held.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after02/water-interaction-wave-clock-held.png",
+          "before_sha256": "f16db961a9c1cba270b5f305637a01343ab0ca7597595da712610e044f3c235e",
+          "after_sha256": "f16db961a9c1cba270b5f305637a01343ab0ca7597595da712610e044f3c235e"
+        },
+        {
+          "backend": "linux-gl",
+          "file": "water-interaction-wave-disabled.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-before01/water-interaction-wave-disabled.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after02/water-interaction-wave-disabled.png",
+          "before_sha256": "bd5648cc4f268b27da7c644d2f142be73ef4de810bd316a69ceb23b4eb7f0980",
+          "after_sha256": "bd5648cc4f268b27da7c644d2f142be73ef4de810bd316a69ceb23b4eb7f0980"
+        },
+        {
+          "backend": "linux-gl",
+          "file": "water-interaction-wave-empty.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-before01/water-interaction-wave-empty.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after02/water-interaction-wave-empty.png",
+          "before_sha256": "cbb3e243e6ccfce383c34a1fa25633a40a5d101f968b46947a187b7301a4f746",
+          "after_sha256": "cbb3e243e6ccfce383c34a1fa25633a40a5d101f968b46947a187b7301a4f746"
+        },
+        {
+          "backend": "linux-gl",
+          "file": "water-interaction-wave-history-control.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-before01/water-interaction-wave-history-control.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after02/water-interaction-wave-history-control.png",
+          "before_sha256": "bd5648cc4f268b27da7c644d2f142be73ef4de810bd316a69ceb23b4eb7f0980",
+          "after_sha256": "bd5648cc4f268b27da7c644d2f142be73ef4de810bd316a69ceb23b4eb7f0980"
+        },
+        {
+          "backend": "linux-gl",
+          "file": "water-interaction-wave-lava-control.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-before01/water-interaction-wave-lava-control.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after02/water-interaction-wave-lava-control.png",
+          "before_sha256": "37858bcf3caf29ad624fe3e6b458649a55a61ed52e824ebf3c09b9888e59eab1",
+          "after_sha256": "37858bcf3caf29ad624fe3e6b458649a55a61ed52e824ebf3c09b9888e59eab1"
+        },
+        {
+          "backend": "linux-gl",
+          "file": "water-interaction-wave-lava.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-before01/water-interaction-wave-lava.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after02/water-interaction-wave-lava.png",
+          "before_sha256": "37858bcf3caf29ad624fe3e6b458649a55a61ed52e824ebf3c09b9888e59eab1",
+          "after_sha256": "37858bcf3caf29ad624fe3e6b458649a55a61ed52e824ebf3c09b9888e59eab1"
+        },
+        {
+          "backend": "linux-gl",
+          "file": "water-interaction-wave-lingering.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-before01/water-interaction-wave-lingering.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after02/water-interaction-wave-lingering.png",
+          "before_sha256": "f16db961a9c1cba270b5f305637a01343ab0ca7597595da712610e044f3c235e",
+          "after_sha256": "f16db961a9c1cba270b5f305637a01343ab0ca7597595da712610e044f3c235e"
+        },
+        {
+          "backend": "linux-gl",
+          "file": "water-interaction-wave-off.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-before01/water-interaction-wave-off.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after02/water-interaction-wave-off.png",
+          "before_sha256": "cbb3e243e6ccfce383c34a1fa25633a40a5d101f968b46947a187b7301a4f746",
+          "after_sha256": "cbb3e243e6ccfce383c34a1fa25633a40a5d101f968b46947a187b7301a4f746"
+        },
+        {
+          "backend": "linux-gl",
+          "file": "water-interaction-wave-reenabled-empty.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-before01/water-interaction-wave-reenabled-empty.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after02/water-interaction-wave-reenabled-empty.png",
+          "before_sha256": "bd5648cc4f268b27da7c644d2f142be73ef4de810bd316a69ceb23b4eb7f0980",
+          "after_sha256": "bd5648cc4f268b27da7c644d2f142be73ef4de810bd316a69ceb23b4eb7f0980"
+        },
+        {
+          "backend": "linux-gl",
+          "file": "water-interaction-wave-swamp-control.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-before01/water-interaction-wave-swamp-control.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after02/water-interaction-wave-swamp-control.png",
+          "before_sha256": "c8717272f157dd53e0360fdbbf8d985345a312c6030dee8313524fb8cccc0b09",
+          "after_sha256": "c8717272f157dd53e0360fdbbf8d985345a312c6030dee8313524fb8cccc0b09"
+        },
+        {
+          "backend": "linux-gl",
+          "file": "water-interaction-wave-swamp.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-before01/water-interaction-wave-swamp.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after02/water-interaction-wave-swamp.png",
+          "before_sha256": "c8717272f157dd53e0360fdbbf8d985345a312c6030dee8313524fb8cccc0b09",
+          "after_sha256": "c8717272f157dd53e0360fdbbf8d985345a312c6030dee8313524fb8cccc0b09"
+        },
+        {
+          "backend": "android-gl",
+          "file": "water-interaction-wave-clock-held.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-before01/water-interaction-wave-clock-held.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after02/water-interaction-wave-clock-held.png",
+          "before_sha256": "1e2543681ab9fbc979b7d6270828ad32d770d1fc4f4f62d464828737495fd8e8",
+          "after_sha256": "1e2543681ab9fbc979b7d6270828ad32d770d1fc4f4f62d464828737495fd8e8"
+        },
+        {
+          "backend": "android-gl",
+          "file": "water-interaction-wave-disabled.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-before01/water-interaction-wave-disabled.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after02/water-interaction-wave-disabled.png",
+          "before_sha256": "00d9eba7891f42aa275a1b3bbf32494cdac7547d71efb107f523b0cd6d57528e",
+          "after_sha256": "00d9eba7891f42aa275a1b3bbf32494cdac7547d71efb107f523b0cd6d57528e"
+        },
+        {
+          "backend": "android-gl",
+          "file": "water-interaction-wave-empty.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-before01/water-interaction-wave-empty.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after02/water-interaction-wave-empty.png",
+          "before_sha256": "e466f606032b37af6fe5090272a2c88fd3f69e4110ea726404343f819a01dcdc",
+          "after_sha256": "e466f606032b37af6fe5090272a2c88fd3f69e4110ea726404343f819a01dcdc"
+        },
+        {
+          "backend": "android-gl",
+          "file": "water-interaction-wave-history-control.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-before01/water-interaction-wave-history-control.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after02/water-interaction-wave-history-control.png",
+          "before_sha256": "00d9eba7891f42aa275a1b3bbf32494cdac7547d71efb107f523b0cd6d57528e",
+          "after_sha256": "00d9eba7891f42aa275a1b3bbf32494cdac7547d71efb107f523b0cd6d57528e"
+        },
+        {
+          "backend": "android-gl",
+          "file": "water-interaction-wave-lava-control.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-before01/water-interaction-wave-lava-control.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after02/water-interaction-wave-lava-control.png",
+          "before_sha256": "3db27e076b73a6cd9346b05b624bf1f0290a2f8e22e57733fb5006157dc33748",
+          "after_sha256": "3db27e076b73a6cd9346b05b624bf1f0290a2f8e22e57733fb5006157dc33748"
+        },
+        {
+          "backend": "android-gl",
+          "file": "water-interaction-wave-lava.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-before01/water-interaction-wave-lava.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after02/water-interaction-wave-lava.png",
+          "before_sha256": "3db27e076b73a6cd9346b05b624bf1f0290a2f8e22e57733fb5006157dc33748",
+          "after_sha256": "3db27e076b73a6cd9346b05b624bf1f0290a2f8e22e57733fb5006157dc33748"
+        },
+        {
+          "backend": "android-gl",
+          "file": "water-interaction-wave-lingering.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-before01/water-interaction-wave-lingering.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after02/water-interaction-wave-lingering.png",
+          "before_sha256": "1e2543681ab9fbc979b7d6270828ad32d770d1fc4f4f62d464828737495fd8e8",
+          "after_sha256": "1e2543681ab9fbc979b7d6270828ad32d770d1fc4f4f62d464828737495fd8e8"
+        },
+        {
+          "backend": "android-gl",
+          "file": "water-interaction-wave-off.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-before01/water-interaction-wave-off.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after02/water-interaction-wave-off.png",
+          "before_sha256": "e466f606032b37af6fe5090272a2c88fd3f69e4110ea726404343f819a01dcdc",
+          "after_sha256": "e466f606032b37af6fe5090272a2c88fd3f69e4110ea726404343f819a01dcdc"
+        },
+        {
+          "backend": "android-gl",
+          "file": "water-interaction-wave-reenabled-empty.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-before01/water-interaction-wave-reenabled-empty.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after02/water-interaction-wave-reenabled-empty.png",
+          "before_sha256": "00d9eba7891f42aa275a1b3bbf32494cdac7547d71efb107f523b0cd6d57528e",
+          "after_sha256": "00d9eba7891f42aa275a1b3bbf32494cdac7547d71efb107f523b0cd6d57528e"
+        },
+        {
+          "backend": "android-gl",
+          "file": "water-interaction-wave-swamp-control.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-before01/water-interaction-wave-swamp-control.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after02/water-interaction-wave-swamp-control.png",
+          "before_sha256": "bf30aa42dcb17fb6dd35d9e8e32d875e877f4b6089d4f64ba6540967323daf64",
+          "after_sha256": "bf30aa42dcb17fb6dd35d9e8e32d875e877f4b6089d4f64ba6540967323daf64"
+        },
+        {
+          "backend": "android-gl",
+          "file": "water-interaction-wave-swamp.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-before01/water-interaction-wave-swamp.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after02/water-interaction-wave-swamp.png",
+          "before_sha256": "bf30aa42dcb17fb6dd35d9e8e32d875e877f4b6089d4f64ba6540967323daf64",
+          "after_sha256": "bf30aa42dcb17fb6dd35d9e8e32d875e877f4b6089d4f64ba6540967323daf64"
+        },
+        {
+          "backend": "android-mobile",
+          "file": "water-interaction-wave-clock-held.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-before01/water-interaction-wave-clock-held.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-after01/water-interaction-wave-clock-held.png",
+          "before_sha256": "db3eaf11932967d11f41a65cb228cab45e6a6baf74ff5e1fc1c0fc95a83955d4",
+          "after_sha256": "db3eaf11932967d11f41a65cb228cab45e6a6baf74ff5e1fc1c0fc95a83955d4"
+        },
+        {
+          "backend": "android-mobile",
+          "file": "water-interaction-wave-disabled.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-before01/water-interaction-wave-disabled.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-after01/water-interaction-wave-disabled.png",
+          "before_sha256": "229996d65ee32cc3df848ed399b2dbae3370ce18fde07ce8c0c7cbcf16aed52f",
+          "after_sha256": "229996d65ee32cc3df848ed399b2dbae3370ce18fde07ce8c0c7cbcf16aed52f"
+        },
+        {
+          "backend": "android-mobile",
+          "file": "water-interaction-wave-empty.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-before01/water-interaction-wave-empty.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-after01/water-interaction-wave-empty.png",
+          "before_sha256": "026fe671ddb5e7f1068fe6b99e5278709f35168d0642b4e0b630cc8d7af9acff",
+          "after_sha256": "026fe671ddb5e7f1068fe6b99e5278709f35168d0642b4e0b630cc8d7af9acff"
+        },
+        {
+          "backend": "android-mobile",
+          "file": "water-interaction-wave-history-control.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-before01/water-interaction-wave-history-control.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-after01/water-interaction-wave-history-control.png",
+          "before_sha256": "229996d65ee32cc3df848ed399b2dbae3370ce18fde07ce8c0c7cbcf16aed52f",
+          "after_sha256": "229996d65ee32cc3df848ed399b2dbae3370ce18fde07ce8c0c7cbcf16aed52f"
+        },
+        {
+          "backend": "android-mobile",
+          "file": "water-interaction-wave-lava-control.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-before01/water-interaction-wave-lava-control.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-after01/water-interaction-wave-lava-control.png",
+          "before_sha256": "cf96f5a16a78619cec3d6520912726268d03a3c7a03e34012b885c47ddeac8e3",
+          "after_sha256": "cf96f5a16a78619cec3d6520912726268d03a3c7a03e34012b885c47ddeac8e3"
+        },
+        {
+          "backend": "android-mobile",
+          "file": "water-interaction-wave-lava.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-before01/water-interaction-wave-lava.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-after01/water-interaction-wave-lava.png",
+          "before_sha256": "cf96f5a16a78619cec3d6520912726268d03a3c7a03e34012b885c47ddeac8e3",
+          "after_sha256": "cf96f5a16a78619cec3d6520912726268d03a3c7a03e34012b885c47ddeac8e3"
+        },
+        {
+          "backend": "android-mobile",
+          "file": "water-interaction-wave-lingering.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-before01/water-interaction-wave-lingering.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-after01/water-interaction-wave-lingering.png",
+          "before_sha256": "db3eaf11932967d11f41a65cb228cab45e6a6baf74ff5e1fc1c0fc95a83955d4",
+          "after_sha256": "db3eaf11932967d11f41a65cb228cab45e6a6baf74ff5e1fc1c0fc95a83955d4"
+        },
+        {
+          "backend": "android-mobile",
+          "file": "water-interaction-wave-off.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-before01/water-interaction-wave-off.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-after01/water-interaction-wave-off.png",
+          "before_sha256": "026fe671ddb5e7f1068fe6b99e5278709f35168d0642b4e0b630cc8d7af9acff",
+          "after_sha256": "026fe671ddb5e7f1068fe6b99e5278709f35168d0642b4e0b630cc8d7af9acff"
+        },
+        {
+          "backend": "android-mobile",
+          "file": "water-interaction-wave-reenabled-empty.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-before01/water-interaction-wave-reenabled-empty.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-after01/water-interaction-wave-reenabled-empty.png",
+          "before_sha256": "229996d65ee32cc3df848ed399b2dbae3370ce18fde07ce8c0c7cbcf16aed52f",
+          "after_sha256": "229996d65ee32cc3df848ed399b2dbae3370ce18fde07ce8c0c7cbcf16aed52f"
+        },
+        {
+          "backend": "android-mobile",
+          "file": "water-interaction-wave-swamp-control.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-before01/water-interaction-wave-swamp-control.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-after01/water-interaction-wave-swamp-control.png",
+          "before_sha256": "054caf5877001216122905c6835e517369e31c59033a9bac0a68376dea4aee16",
+          "after_sha256": "054caf5877001216122905c6835e517369e31c59033a9bac0a68376dea4aee16"
+        },
+        {
+          "backend": "android-mobile",
+          "file": "water-interaction-wave-swamp.png",
+          "dimensions": [
+            640,
+            480
+          ],
+          "changed_pixels": 0,
+          "before": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-before01/water-interaction-wave-swamp.png",
+          "after": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-after01/water-interaction-wave-swamp.png",
+          "before_sha256": "054caf5877001216122905c6835e517369e31c59033a9bac0a68376dea4aee16",
+          "after_sha256": "054caf5877001216122905c6835e517369e31c59033a9bac0a68376dea4aee16"
+        }
+      ],
+      "scope": "Real interaction controller with explicit selected Field/query script identity checks. Linux and Android Compatibility river/current scene; Android Mobile standard water. Eleven off/empty/lingering/held/alternate-liquid/disable/reenable captures per pair. The final Linux candidate render overlaps one unrelated headless Godot process; exact image/correctness results remain valid, and no render timing is claimed."
+    }
+  },
+  "rejected_or_intermediate": [
+    {
+      "runs": [
+        "domain-android01",
+        "surface-desktop01",
+        "surface-android01"
+      ],
+      "result": "First cache prototype passed exact outputs and reduced cold work, but inserted per-triangle branching into posed queries; observed roughly 5-8% Linux and 3-5% Android regressions. Rejected."
+    },
+    {
+      "runs": [
+        "surface-desktop02",
+        "surface-android02",
+        "surface-desktop03",
+        "surface-desktop04",
+        "surface-android03",
+        "domain-desktop02",
+        "domain-android02"
+      ],
+      "result": "Separated mean-query path, then skipped empty buckets. Numerically passing intermediate designs. Final adds explicit opt-in so sparse/default consumers do not allocate or fill triangle storage."
+    },
+    {
+      "runs": [
+        "render-desktop-after01",
+        "render-android-after01"
+      ],
+      "result": "Fixture adapter parse failure: inherited installed Field statically types Surface.begin_frame with one argument. New production code and full-field tests accept the optional second argument. Corrected only the render adapter with a cast to the selected query subclass; reruns pass. Failed records retained, excluded from acceptance."
+    }
+  ],
+  "runtime_scope": {
+    "desktop_reused_pack": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/candidate01",
+    "desktop_build_sha256": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "surface": "The exact changed begin_frame/sample/helper bodies are loaded as a typed child of the installed Surface. Unchanged constructor, sector index and vertex methods are inherited and source-audited.",
+    "field": "CPU/lifetime tests load the complete production Field with only its Surface preload redirected. Render tests use the exact domain body with the same new query factory and an old-runtime type cast, inside the installed interaction controller; actual contacts also use the selected query.",
+    "android": "Existing org.cursedlands.performance app and unchanged prior native validation adapter. Native/worker/domain/render fixtures load the two already-qualified absent water kernels. Both Compatibility render arms retain the accepted a916f95 WaterTextureData substitution; Mobile uses the unchanged native shader path. No engine, pack or installed helper replaced.",
+    "normal_installed_android_game_touched": false,
+    "new_export_or_apk": false,
+    "normal_device_state": {
+      "package": "org.cursedlands.performance",
+      "serial": "9a7e6425",
+      "private_process_stopped": true,
+      "absent": {
+        "bench.json": true,
+        "validation.json": true,
+        "qa-water": true,
+        "water-native-runtime.so": true
+      },
+      "unchanged": {
+        "settings.cfg": {
+          "exact": true,
+          "sha256": "a6d3fdeba6fa0e2a8751d7f12ad6afcaa2cb6d50734d64d69f6cdaae831e3b3e"
+        },
+        "renderer.cfg": {
+          "exact": true,
+          "sha256": "85196ecfb5c62c1c82d416b49f6d8c5f47fa86f275ae66f6cb475e9c9a6c6aae"
+        }
+      }
+    },
+    "limits": "Source/method substitution is not a fresh complete-current-source package. Original RMX3890/Adreno610 and RTX3050 report causes, Windows/device acceptance and the distinct Adreno650 Mobile cloud/material lighting flicker remain open."
+  },
+  "next_work": "Cold query/constructor/index and remaining water-level/positive-waterfall geometry costs remain measurable. Surface phase-grid construction takes about 6-7 ms on this Android even for an unposed-only consumer; any lazy/shared approach still needs an exact phase/ownership/lifetime check. Do not resume playthroughs, create packages, or repeat the Mobile shader ablation grid without new evidence.",
+  "scratch": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010",
+  "raw_runs": [
+    {
+      "label": "domain-android01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/domain-android01/run.json",
+      "sha256": "debfee3790b372ab645877bd1e97ac4872c5ce89ee21ca6362bed31515c32ee2",
+      "accepted_final": false,
+      "errors": [],
+      "seconds": 10.028006553649902,
+      "renderer": "gl_compatibility",
+      "native": "baseline",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "domain-android02",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/domain-android02/run.json",
+      "sha256": "8f2cf787515e57af9ba6e14960d578d4b0990d08e293ea656c177a1473fa5fcf",
+      "accepted_final": false,
+      "errors": [],
+      "seconds": 18.183438777923584,
+      "renderer": "gl_compatibility",
+      "native": "candidate",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "domain-android03",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/domain-android03/run.json",
+      "sha256": "c57bee5e2bdd41aebfd563dc2956e5d6eb3a76da311889fadfd8a58d41f69741",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 18.18657422065735,
+      "renderer": "gl_compatibility",
+      "native": "candidate",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "domain-android04",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/domain-android04/run.json",
+      "sha256": "7c096433b0a8be516234e933ef86886b392372505c991c987122d07056b60bdf",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 18.21034336090088,
+      "renderer": "gl_compatibility",
+      "native": "candidate",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "domain-astral01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/domain-astral01/run.json",
+      "sha256": "b24217549322f5b5bbf1ec761a7ff0974d50eac4c93273daaf3e6e1f5f253eb1",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 12.172711829014588,
+      "return_code": 0,
+      "other_engines_absent": true,
+      "campaign": "astral"
+    },
+    {
+      "label": "domain-desktop02",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/domain-desktop02/run.json",
+      "sha256": "209d76a5ba40c77e3c43fbbb53ec8ea5af61b1324aeb9af3f42c100b266356d5",
+      "accepted_final": false,
+      "errors": [],
+      "seconds": 10.15146254596766,
+      "return_code": 0,
+      "other_engines_absent": true,
+      "campaign": "base"
+    },
+    {
+      "label": "domain-desktop03",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/domain-desktop03/run.json",
+      "sha256": "e37e6a05cafa2f9672913f1dddfcfa5616a547a4130d037a5fe0f890700bfb42",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 10.153026071959175,
+      "return_code": 0,
+      "other_engines_absent": true,
+      "campaign": "base"
+    },
+    {
+      "label": "domain-desktop04",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/domain-desktop04/run.json",
+      "sha256": "2f201f501f6ffb46c355bf8f11de2cbf94709389932e9c3a4f565f6d2956c079",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 10.138766418967862,
+      "return_code": 0,
+      "other_engines_absent": true,
+      "campaign": "base"
+    },
+    {
+      "label": "lifetime-android-native01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/lifetime-android-native01/run.json",
+      "sha256": "e9cc39414a3d3b6fcf9e979e22a63b430766a6c14807a8b59f97f25c69ac4d58",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 8.034569263458252,
+      "renderer": "gl_compatibility",
+      "native": "candidate",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "lifetime-android-worker01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/lifetime-android-worker01/run.json",
+      "sha256": "c5031ebe4e4bf7ee12031d54ba9b5660cf5ba0c1f8049461b781166915fcf4f2",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 8.105249881744385,
+      "renderer": "gl_compatibility",
+      "native": "candidate",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "lifetime-desktop01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/lifetime-desktop01/run.json",
+      "sha256": "6cb6dcf16085d5b900fdfea14a2c5d0b4905cee2c9ba3974e67226126a58e440",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 5.127999977034051,
+      "return_code": 0,
+      "other_engines_absent": true,
+      "campaign": "base"
+    },
+    {
+      "label": "profile-android01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/profile-android01/run.json",
+      "sha256": "3a9537a6c39e2f5a1d39ac97dabb2bc9406173c0473f87ecdadf3ee1656b094f",
+      "accepted_final": false,
+      "errors": [],
+      "seconds": 9.028654098510742,
+      "renderer": "gl_compatibility",
+      "native": "baseline",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "render-android-after01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after01/run.json",
+      "sha256": "812f268dcbba8e1a2b80ef2894736b9ea9dc361d9a18489fa70338ef67ae62d1",
+      "accepted_final": false,
+      "errors": [
+        "10-10 19:17:47.864 31156 31188 E godot   : SCRIPT ERROR: Parse Error: Too many arguments for \"begin_frame()\" call. Expected at most 1 but received 2.",
+        "10-10 19:17:47.864 31156 31188 E godot   : SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+        "10-10 19:17:47.866 31156 31188 E godot   : SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+        "10-10 19:17:47.870 31156 31188 E godot   : ERROR: Failed to load script \"user://qa-water/render_device_candidate.gd\" with error \"Compilation failed\"."
+      ],
+      "seconds": 6.061038494110107,
+      "renderer": "gl_compatibility",
+      "native": "candidate",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": false
+    },
+    {
+      "label": "render-android-after02",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-after02/run.json",
+      "sha256": "13e1113c9f4f1625c3ab4b0f0ac906f4bf3636ad1bef7845e2819f966c2347f9",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 14.978301763534546,
+      "renderer": "gl_compatibility",
+      "native": "candidate",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "render-android-before01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-android-before01/run.json",
+      "sha256": "98e35bbc6a2fa2786113180beef9774803d58855049bbb07b6e82c186e7e39d2",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 14.802207946777344,
+      "renderer": "gl_compatibility",
+      "native": "candidate",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "render-desktop-after01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after01/run.json",
+      "sha256": "f42c18e41b3ba292d07b20cbdb480be1e6960a30c68d4f265b4b48aad30ea031",
+      "accepted_final": false,
+      "errors": [
+        "SCRIPT ERROR: Parse Error: Too many arguments for \"begin_frame()\" call. Expected at most 1 but received 2.",
+        "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+        "ERROR: Failed to load script \"/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after01/tool-source.gd\" with error \"Compilation failed\"."
+      ],
+      "seconds": 4.118634955026209,
+      "return_code": -15,
+      "other_engines_absent": true,
+      "campaign": "base"
+    },
+    {
+      "label": "render-desktop-after02",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-after02/run.json",
+      "sha256": "8d2cf87d8b7b17179b10bf90757822ce97ca75dd754332cf7ff080841036935e",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 17.202155639999546,
+      "return_code": 0,
+      "other_engines_absent": false,
+      "campaign": "base"
+    },
+    {
+      "label": "render-desktop-before01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-desktop-before01/run.json",
+      "sha256": "45946b63db8b3f681786dd9814e593a0a1f2391058668489da4936be228f1190",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 17.16554770601215,
+      "return_code": 0,
+      "other_engines_absent": true,
+      "campaign": "base"
+    },
+    {
+      "label": "render-mobile-after01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-after01/run.json",
+      "sha256": "aed49120d527fcd376e0198267827b4a3653ae7443378e71130c95b0d28ddf52",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 13.650891304016113,
+      "renderer": "mobile",
+      "native": "candidate",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "render-mobile-before01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/render-mobile-before01/run.json",
+      "sha256": "a46e9d51a06d06f6d25ad102d4d2ba05513eb0c671d369f716c0142d2b8e002b",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 13.61518406867981,
+      "renderer": "mobile",
+      "native": "candidate",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "surface-android01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/surface-android01/run.json",
+      "sha256": "4c541eb20b3c06d2ed547a4c016b82094a18f886cda8f70b36c1ec44e2ef2eed",
+      "accepted_final": false,
+      "errors": [],
+      "seconds": 15.066614389419556,
+      "renderer": "gl_compatibility",
+      "native": "baseline",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "surface-android02",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/surface-android02/run.json",
+      "sha256": "c9ecc789cdbb63ba92022841c6e6a1ca688002da665a84da7cfcd858710fe129",
+      "accepted_final": false,
+      "errors": [],
+      "seconds": 15.145840644836426,
+      "renderer": "gl_compatibility",
+      "native": "baseline",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "surface-android03",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/surface-android03/run.json",
+      "sha256": "08c5ecbb6b1fc9093c72d5b5d81d620514d86bd8783039d6a4a900c38324ebf3",
+      "accepted_final": false,
+      "errors": [],
+      "seconds": 15.052986860275269,
+      "renderer": "gl_compatibility",
+      "native": "baseline",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "surface-android04",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/surface-android04/run.json",
+      "sha256": "34362a659ce6f8fb40d314927b3d700c164dcd99cd801ba6301a24d2bc98ae08",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 16.03058695793152,
+      "renderer": "gl_compatibility",
+      "native": "baseline",
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "completion_seen": true
+    },
+    {
+      "label": "surface-desktop01",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/surface-desktop01/run.json",
+      "sha256": "5c05ae6799c32a10fe8ee514bc36589851ec27e0454239d926305d1c6720543e",
+      "accepted_final": false,
+      "errors": [],
+      "seconds": 8.142516650957987,
+      "return_code": 0,
+      "other_engines_absent": true,
+      "campaign": "base"
+    },
+    {
+      "label": "surface-desktop02",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/surface-desktop02/run.json",
+      "sha256": "c54812619628017c1655dd219f86d95dc656c3b27ee414054cff0437b492134d",
+      "accepted_final": false,
+      "errors": [],
+      "seconds": 8.134555838012602,
+      "return_code": 0,
+      "other_engines_absent": true,
+      "campaign": "base"
+    },
+    {
+      "label": "surface-desktop03",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/surface-desktop03/run.json",
+      "sha256": "66ae731c517d4ecedf1212be57718e8efc78e92e4e2468aab0b93744444374f9",
+      "accepted_final": false,
+      "errors": [],
+      "seconds": 8.122306042991113,
+      "return_code": 0,
+      "other_engines_absent": true,
+      "campaign": "base"
+    },
+    {
+      "label": "surface-desktop04",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/surface-desktop04/run.json",
+      "sha256": "7db29b736b461881004792e1254276997960cd1d5840975c59e05cec7e310a50",
+      "accepted_final": false,
+      "errors": [],
+      "seconds": 8.145326855010353,
+      "return_code": 0,
+      "other_engines_absent": true,
+      "campaign": "base"
+    },
+    {
+      "label": "surface-desktop05",
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/surface-query-cost-20261010/surface-desktop05/run.json",
+      "sha256": "e7f2e468e18780fcd115ae0e95b0693b45a2279d1969cb62103365cff1050c6a",
+      "accepted_final": true,
+      "errors": [],
+      "seconds": 9.160089388024062,
+      "return_code": 0,
+      "other_engines_absent": true,
+      "campaign": "base"
+    }
+  ]
+}
