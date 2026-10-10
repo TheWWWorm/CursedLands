@@ -69,7 +69,7 @@ func scene() -> void:
 			check(Gfx._cloud_frame==field.frame,"consumer toggle keeps phases and weather")
 			var land:=terrain._land_mat.shader.code;var water:=terrain._water_mat.shader.code
 			check(land.contains("ei_cloud_sun")==bool(flags&1),"land only samples enabled cloud shadows")
-			check(water.contains("vec3 R = ei_lin(ei_cloud_sky")==bool(flags&2),"water only marches enabled cloud reflections")
+			check(water.contains("ei_cloud_sky(ei_sky,wpos,")==bool(flags&2),"water only marches enabled cloud reflections")
 			check(water.contains("ei_cloud_sun(wpos)")==bool(flags&1),"water sunlight follows shadow setting")
 			if flags==0:check(land==native_land and water==native_water,"sky-only uses exact cloud-free surface programs")
 			if Clouds.mode()>1:

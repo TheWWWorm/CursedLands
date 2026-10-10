@@ -1,0 +1,4278 @@
+{
+  "date": "2026-10-10",
+  "feature": "Skip noncontributing volumetric cloud reflection rays on Forward+",
+  "base_commit": "76095f7a03a7ac8d36bd48d264f340abef9ccacc",
+  "status": "Accepted source change on the qualified Forward+ volume path. No export, APK, delivery package or device installation.",
+  "user_scope": {
+    "main_thread_only": true,
+    "playthroughs": false,
+    "new_packages": false
+  },
+  "source_sha256": {
+    "game/src/game/gfx.gd": "010cfc3569b15f4834067b6d602aea91a201fc0738c2579ea02b0b38b758c16a",
+    "game/src/game/fx/cloud_reflection_shader.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a",
+    "tools/tests/cloud_controls.gd": "bbc92c51c4aa683df681021a59a3d550e01bd8120b6818a53d2e98ea80c9f39d",
+    "tools/tests/cloud_reflection_skip.gd": "ad5c51366dcaf33103d82502e003ed7e8c0be39bc01172068fd90157db978fa0"
+  },
+  "implementation": {
+    "dispatch": "Gfx.compose invokes a pure source helper only inside the existing enabled enhanced-water cloud-reflection branch. The optimized placement requires Clouds.mode()>1 and forward_plus. Sheet, Mobile, Compatibility and unsupported compositions retain their exact legacy injection.",
+    "math": "Preserve the original SSR call, confidence/weight arithmetic, fractional blending and final output. Delay the original cloud colour call until final reflection weight and opaque-screen confidence are known. Skip only exactly zero weight or exactly full SSR confidence, with no threshold.",
+    "quality": "Unchanged density, ray samples (64/3 for reflected volume rays), light samples, precision, sky, shadow field and noise. Volume texture lookups already use explicit LOD; this branch introduces no implicit-derivative texture sampling.",
+    "ownership": "No new GPU texture, history, cache or scene owner. Independent sky/shadow/reflection controls and opt-in defaults are unchanged.",
+    "fallback": "If any expected composition marker is not unique, return the previous cloud-call injection.",
+    "audit": {
+      "helper_exact": true,
+      "full_Gfx_copy_only_removes_class_name_and_redirects_helper_preload": true,
+      "full_controls_fixture_only_adds_composition_hooks_and_reporting": true,
+      "original_cloud_and_water_sources_unchanged_since_reused_PCK_commit": [
+        "game/src/game/fx/clouds.gd",
+        "game/src/game/fx/cloud_volume.gd",
+        "game/src/ei/terrain.gd"
+      ],
+      "cost_prototype_transformation_identical_across_all_runs": true,
+      "complete_saved_candidate_matches_helper_reconstruction": true
+    }
+  },
+  "performance": {
+    "scope": "3840x2160 enhanced-water viewport GPU timestamps on Linux RTX3090 Ti; actual zone1/zone11 terrain, fixed low river camera, cloud reflections on, cloud shadows off, waves off, materials on. Sky background is plain colour, so this measures the scene with water-cloud reflections, not sky marching or whole-game FPS. No actors or authored scenery objects. The separate box scene adds an artificial opaque reflector.",
+    "method": "Sequential isolated ABBA: 2.5s preheat each complete program, 256 warm-up frames and 360 measured samples per arm. Same simulated cloud clock and inputs per arm, uncapped display. Report mean of two arm medians, with raw distributions and GPU/process logs retained.",
+    "accepted_summary": "Final exact production helper: zone1 mixed weather 4.4900 to 3.4845 ms (22.4% less). Source-equivalent prototypes: fair 20.6%, storm 19.6%, zone11 14.3%. Artificial reflector 57.7%; not representative of typical gameplay. SSR-off 0.36% difference, no speedup claim.",
+    "results": {
+      "qualified-map-forward01": {
+        "before_arm_medians_ms": [
+          4.46000003814697,
+          4.51999998092651
+        ],
+        "after_arm_medians_ms": [
+          3.47900009155273,
+          3.49000000953674
+        ],
+        "before_ms": 4.49000000953674,
+        "after_ms": 3.484500050544735,
+        "reduction_percent": 22.39420839323668,
+        "checks": 20,
+        "failures": 0,
+        "isolated": true,
+        "rows": [
+          {
+            "arm": 0,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 10.264,
+              "median": 4.546,
+              "min": 0.609,
+              "p95": 8.213
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1674.492,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.216000005602837,
+              "median": 0.0970000028610229,
+              "min": 0.0780000016093254,
+              "p95": 0.141000002622604
+            },
+            "viewport_gpu_ms": {
+              "max": 4.57399988174438,
+              "median": 4.46000003814697,
+              "min": 4.31799983978271,
+              "p95": 4.52699995040894
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 0,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 1,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 17.229,
+              "median": 7.191,
+              "min": 0.59,
+              "p95": 8.747
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1660.747,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.277999997138977,
+              "median": 0.0949999988079071,
+              "min": 0.0780000016093254,
+              "p95": 0.13400000333786
+            },
+            "viewport_gpu_ms": {
+              "max": 3.66100001335144,
+              "median": 3.47900009155273,
+              "min": 3.41199994087219,
+              "p95": 3.54999995231628
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 1,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 2,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 16.18,
+              "median": 7.129,
+              "min": 0.586,
+              "p95": 8.75
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1609.654,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.228000000119209,
+              "median": 0.0949999988079071,
+              "min": 0.0759999975562096,
+              "p95": 0.128000006079674
+            },
+            "viewport_gpu_ms": {
+              "max": 3.65599989891052,
+              "median": 3.49000000953674,
+              "min": 3.42199993133545,
+              "p95": 3.56200003623962
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 2,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 3,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 15.805,
+              "median": 4.597,
+              "min": 0.597,
+              "p95": 8.292
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1694.966,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.230000004172325,
+              "median": 0.0970000028610229,
+              "min": 0.0790000036358833,
+              "p95": 0.133000001311302
+            },
+            "viewport_gpu_ms": {
+              "max": 4.63899993896484,
+              "median": 4.51999998092651,
+              "min": 4.37200021743774,
+              "p95": 4.59100008010864
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 3,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "restore-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "cache-repeat-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "quality",
+            "delta": {
+              "changed_pixels": 0,
+              "mean_max_channel_delta": 0.0,
+              "peak_delta": 0,
+              "pixels_over_2": 0,
+              "pixels_over_8": 0
+            },
+            "path": "water",
+            "quality": 3
+          }
+        ]
+      },
+      "reflection-box-forward01": {
+        "before_arm_medians_ms": [
+          4.27899980545044,
+          4.30999994277954
+        ],
+        "after_arm_medians_ms": [
+          1.817999958992,
+          1.817999958992
+        ],
+        "before_ms": 4.29449987411499,
+        "after_ms": 1.817999958992,
+        "reduction_percent": 57.666782808634885,
+        "checks": 19,
+        "failures": 0,
+        "isolated": true,
+        "rows": [
+          {
+            "arm": 0,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 34,
+              "median": 34,
+              "min": 34,
+              "p95": 34
+            },
+            "frame_wall_ms": {
+              "max": 16.1,
+              "median": 4.363,
+              "min": 0.608,
+              "p95": 8.386
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1668.604,
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": true,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.28999999165535,
+              "median": 0.101000003516674,
+              "min": 0.0799999982118607,
+              "p95": 0.172999992966652
+            },
+            "viewport_gpu_ms": {
+              "max": 4.44199991226196,
+              "median": 4.27899980545044,
+              "min": 4.14300012588501,
+              "p95": 4.36499977111816
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 0,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 1,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 34,
+              "median": 34,
+              "min": 34,
+              "p95": 34
+            },
+            "frame_wall_ms": {
+              "max": 16.021,
+              "median": 7.34,
+              "min": 0.6,
+              "p95": 8.636
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1774.402,
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": true,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.25900000333786,
+              "median": 0.0970000028610229,
+              "min": 0.0799999982118607,
+              "p95": 0.135000005364418
+            },
+            "viewport_gpu_ms": {
+              "max": 1.91799998283386,
+              "median": 1.817999958992,
+              "min": 1.76999998092651,
+              "p95": 1.86800003051758
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 1,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 2,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 34,
+              "median": 34,
+              "min": 34,
+              "p95": 34
+            },
+            "frame_wall_ms": {
+              "max": 16.072,
+              "median": 7.292,
+              "min": 0.567,
+              "p95": 8.527
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1663.936,
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": true,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.25,
+              "median": 0.0970000028610229,
+              "min": 0.0799999982118607,
+              "p95": 0.158999994397163
+            },
+            "viewport_gpu_ms": {
+              "max": 1.91799998283386,
+              "median": 1.817999958992,
+              "min": 1.77400004863739,
+              "p95": 1.86800003051758
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 2,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 3,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 34,
+              "median": 34,
+              "min": 34,
+              "p95": 34
+            },
+            "frame_wall_ms": {
+              "max": 15.238,
+              "median": 4.439,
+              "min": 0.599,
+              "p95": 8.551
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1724.642,
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": true,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.300000011920929,
+              "median": 0.0979999974370003,
+              "min": 0.0799999982118607,
+              "p95": 0.126000002026558
+            },
+            "viewport_gpu_ms": {
+              "max": 4.48299980163574,
+              "median": 4.30999994277954,
+              "min": 4.18300008773804,
+              "p95": 4.40100002288818
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 3,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "restore-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "cache-repeat-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "quality",
+            "delta": {
+              "changed_pixels": 0,
+              "mean_max_channel_delta": 0.0,
+              "peak_delta": 0,
+              "pixels_over_2": 0,
+              "pixels_over_8": 0
+            },
+            "path": "water",
+            "quality": 3
+          }
+        ]
+      },
+      "reflection-map-forward01": {
+        "before_arm_medians_ms": [
+          4.44399976730347,
+          4.5
+        ],
+        "after_arm_medians_ms": [
+          3.48399996757507,
+          3.49900007247925
+        ],
+        "before_ms": 4.471999883651735,
+        "after_ms": 3.4915000200271598,
+        "reduction_percent": 21.925310579926073,
+        "checks": 19,
+        "failures": 0,
+        "isolated": true,
+        "rows": [
+          {
+            "arm": 0,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 15.525,
+              "median": 4.568,
+              "min": 0.558,
+              "p95": 8.518
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1737.342,
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.254999995231628,
+              "median": 0.0970000028610229,
+              "min": 0.0780000016093254,
+              "p95": 0.143999993801117
+            },
+            "viewport_gpu_ms": {
+              "max": 4.56400012969971,
+              "median": 4.44399976730347,
+              "min": 4.28700017929077,
+              "p95": 4.51599979400635
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 0,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 1,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 17.289,
+              "median": 7.139,
+              "min": 0.589,
+              "p95": 8.74
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1622.931,
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.224000006914139,
+              "median": 0.0949999988079071,
+              "min": 0.0780000016093254,
+              "p95": 0.128000006079674
+            },
+            "viewport_gpu_ms": {
+              "max": 3.63100004196167,
+              "median": 3.48399996757507,
+              "min": 3.41599988937378,
+              "p95": 3.53999996185303
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 1,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 2,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 16.337,
+              "median": 7.124,
+              "min": 0.568,
+              "p95": 8.828
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1598.578,
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.243000000715256,
+              "median": 0.096000000834465,
+              "min": 0.0759999975562096,
+              "p95": 0.136000007390976
+            },
+            "viewport_gpu_ms": {
+              "max": 3.63700008392334,
+              "median": 3.49900007247925,
+              "min": 3.4210000038147,
+              "p95": 3.57800006866455
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 2,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 3,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 15.896,
+              "median": 4.577,
+              "min": 0.619,
+              "p95": 8.232
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1721.951,
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.246999993920326,
+              "median": 0.0970000028610229,
+              "min": 0.0790000036358833,
+              "p95": 0.133000001311302
+            },
+            "viewport_gpu_ms": {
+              "max": 4.67399978637695,
+              "median": 4.5,
+              "min": 4.32800006866455,
+              "p95": 4.59899997711182
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 3,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "restore-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "cache-repeat-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "quality",
+            "delta": {
+              "changed_pixels": 0,
+              "mean_max_channel_delta": 0.0,
+              "peak_delta": 0,
+              "pixels_over_2": 0,
+              "pixels_over_8": 0
+            },
+            "path": "water",
+            "quality": 3
+          }
+        ]
+      },
+      "reflection-fair-forward01": {
+        "before_arm_medians_ms": [
+          2.84299993515015,
+          2.84999990463257
+        ],
+        "after_arm_medians_ms": [
+          2.2590000629425,
+          2.2590000629425
+        ],
+        "before_ms": 2.84649991989136,
+        "after_ms": 2.2590000629425,
+        "reduction_percent": 20.63937725216176,
+        "checks": 20,
+        "failures": 0,
+        "isolated": true,
+        "rows": [
+          {
+            "arm": 0,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 16.755,
+              "median": 7.276,
+              "min": 0.564,
+              "p95": 8.604
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1691.506,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.280000001192093,
+              "median": 0.096000000834465,
+              "min": 0.0780000016093254,
+              "p95": 0.133000001311302
+            },
+            "viewport_gpu_ms": {
+              "max": 2.86700010299683,
+              "median": 2.84299993515015,
+              "min": 2.78500008583069,
+              "p95": 2.85999989509583
+            },
+            "warmup": 256,
+            "weather_case": "fair"
+          },
+          {
+            "arm": 0,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 1,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 9.794,
+              "median": 7.219,
+              "min": 0.582,
+              "p95": 8.582
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1670.068,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.223000004887581,
+              "median": 0.0970000028610229,
+              "min": 0.0740000009536743,
+              "p95": 0.13400000333786
+            },
+            "viewport_gpu_ms": {
+              "max": 2.28800010681152,
+              "median": 2.2590000629425,
+              "min": 2.23499989509583,
+              "p95": 2.27800011634827
+            },
+            "warmup": 256,
+            "weather_case": "fair"
+          },
+          {
+            "arm": 1,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 2,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 15.934,
+              "median": 7.216,
+              "min": 0.559,
+              "p95": 8.795
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1728.428,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.222000002861023,
+              "median": 0.096000000834465,
+              "min": 0.0790000036358833,
+              "p95": 0.136000007390976
+            },
+            "viewport_gpu_ms": {
+              "max": 2.29299998283386,
+              "median": 2.2590000629425,
+              "min": 2.23300004005432,
+              "p95": 2.27999997138977
+            },
+            "warmup": 256,
+            "weather_case": "fair"
+          },
+          {
+            "arm": 2,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 3,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 17.165,
+              "median": 7.35,
+              "min": 0.583,
+              "p95": 8.686
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1696.52,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.25,
+              "median": 0.0949999988079071,
+              "min": 0.0759999975562096,
+              "p95": 0.129999995231628
+            },
+            "viewport_gpu_ms": {
+              "max": 2.88100004196167,
+              "median": 2.84999990463257,
+              "min": 2.79299998283386,
+              "p95": 2.86800003051758
+            },
+            "warmup": 256,
+            "weather_case": "fair"
+          },
+          {
+            "arm": 3,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "restore-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "cache-repeat-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "quality",
+            "delta": {
+              "changed_pixels": 0,
+              "mean_max_channel_delta": 0.0,
+              "peak_delta": 0,
+              "pixels_over_2": 0,
+              "pixels_over_8": 0
+            },
+            "path": "water",
+            "quality": 3
+          }
+        ]
+      },
+      "reflection-storm-forward01": {
+        "before_arm_medians_ms": [
+          2.88599991798401,
+          2.89499998092651
+        ],
+        "after_arm_medians_ms": [
+          2.32399988174438,
+          2.32299995422363
+        ],
+        "before_ms": 2.8904999494552603,
+        "after_ms": 2.3234999179840052,
+        "reduction_percent": 19.615984825673884,
+        "checks": 20,
+        "failures": 0,
+        "isolated": true,
+        "rows": [
+          {
+            "arm": 0,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 17.688,
+              "median": 7.271,
+              "min": 0.57,
+              "p95": 8.578
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1681.503,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.275000005960464,
+              "median": 0.0970000028610229,
+              "min": 0.0780000016093254,
+              "p95": 0.148000001907349
+            },
+            "viewport_gpu_ms": {
+              "max": 2.91799998283386,
+              "median": 2.88599991798401,
+              "min": 2.83999991416931,
+              "p95": 2.90400004386902
+            },
+            "warmup": 256,
+            "weather_case": "storm"
+          },
+          {
+            "arm": 0,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 1,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 15.975,
+              "median": 7.285,
+              "min": 0.564,
+              "p95": 8.692
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1649.369,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.239999994635582,
+              "median": 0.0949999988079071,
+              "min": 0.0790000036358833,
+              "p95": 0.138999998569489
+            },
+            "viewport_gpu_ms": {
+              "max": 2.35899996757507,
+              "median": 2.32399988174438,
+              "min": 2.30200004577637,
+              "p95": 2.34400010108948
+            },
+            "warmup": 256,
+            "weather_case": "storm"
+          },
+          {
+            "arm": 1,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 2,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 15.632,
+              "median": 7.124,
+              "min": 0.599,
+              "p95": 8.617
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1623.33,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.25,
+              "median": 0.0970000028610229,
+              "min": 0.0780000016093254,
+              "p95": 0.148000001907349
+            },
+            "viewport_gpu_ms": {
+              "max": 2.3510000705719,
+              "median": 2.32299995422363,
+              "min": 2.29999995231628,
+              "p95": 2.34400010108948
+            },
+            "warmup": 256,
+            "weather_case": "storm"
+          },
+          {
+            "arm": 2,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 3,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 16.637,
+              "median": 7.315,
+              "min": 0.565,
+              "p95": 8.65
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1645.23,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.217999994754791,
+              "median": 0.0930000022053719,
+              "min": 0.0750000029802322,
+              "p95": 0.123999997973442
+            },
+            "viewport_gpu_ms": {
+              "max": 2.92899990081787,
+              "median": 2.89499998092651,
+              "min": 2.85500001907349,
+              "p95": 2.91499996185303
+            },
+            "warmup": 256,
+            "weather_case": "storm"
+          },
+          {
+            "arm": 3,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "restore-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "cache-repeat-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "quality",
+            "delta": {
+              "changed_pixels": 0,
+              "mean_max_channel_delta": 0.0,
+              "peak_delta": 0,
+              "pixels_over_2": 0,
+              "pixels_over_8": 0
+            },
+            "path": "water",
+            "quality": 3
+          }
+        ]
+      },
+      "reflection-ingos-forward01": {
+        "before_arm_medians_ms": [
+          3.21099996566772,
+          3.21700000762939
+        ],
+        "after_arm_medians_ms": [
+          2.75500011444092,
+          2.75699996948242
+        ],
+        "before_ms": 3.213999986648555,
+        "after_ms": 2.75600004196167,
+        "reduction_percent": 14.250153907575813,
+        "checks": 20,
+        "failures": 0,
+        "isolated": true,
+        "rows": [
+          {
+            "arm": 0,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 89,
+              "median": 89,
+              "min": 89,
+              "p95": 89
+            },
+            "frame_wall_ms": {
+              "max": 16.333,
+              "median": 7.077,
+              "min": 0.627,
+              "p95": 8.706
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1731.827,
+            "map": "zone11",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.344999998807907,
+              "median": 0.119999997317791,
+              "min": 0.0989999994635582,
+              "p95": 0.170000001788139
+            },
+            "viewport_gpu_ms": {
+              "max": 3.25600004196167,
+              "median": 3.21099996566772,
+              "min": 3.17400002479553,
+              "p95": 3.23300004005432
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 0,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 1,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 89,
+              "median": 89,
+              "min": 89,
+              "p95": 89
+            },
+            "frame_wall_ms": {
+              "max": 16.634,
+              "median": 7.161,
+              "min": 0.601,
+              "p95": 8.461
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1723.039,
+            "map": "zone11",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.349000006914139,
+              "median": 0.123000003397465,
+              "min": 0.0979999974370003,
+              "p95": 0.179000005125999
+            },
+            "viewport_gpu_ms": {
+              "max": 2.84299993515015,
+              "median": 2.75500011444092,
+              "min": 2.72099995613098,
+              "p95": 2.80100011825562
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 1,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 2,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 89,
+              "median": 89,
+              "min": 89,
+              "p95": 89
+            },
+            "frame_wall_ms": {
+              "max": 11.93,
+              "median": 7.142,
+              "min": 0.609,
+              "p95": 8.393
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1634.03,
+            "map": "zone11",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.273999989032745,
+              "median": 0.119999997317791,
+              "min": 0.101000003516674,
+              "p95": 0.164000004529953
+            },
+            "viewport_gpu_ms": {
+              "max": 2.8199999332428,
+              "median": 2.75699996948242,
+              "min": 2.72300004959106,
+              "p95": 2.80100011825562
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 2,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 3,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 89,
+              "median": 89,
+              "min": 89,
+              "p95": 89
+            },
+            "frame_wall_ms": {
+              "max": 9.774,
+              "median": 7.081,
+              "min": 0.601,
+              "p95": 8.591
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1744.051,
+            "map": "zone11",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.331000000238419,
+              "median": 0.123000003397465,
+              "min": 0.0939999967813492,
+              "p95": 0.186000004410744
+            },
+            "viewport_gpu_ms": {
+              "max": 3.25500011444092,
+              "median": 3.21700000762939,
+              "min": 3.1800000667572,
+              "p95": 3.24000000953674
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 3,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "restore-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "cache-repeat-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "quality",
+            "delta": {
+              "changed_pixels": 0,
+              "mean_max_channel_delta": 0.0,
+              "peak_delta": 0,
+              "pixels_over_2": 0,
+              "pixels_over_8": 0
+            },
+            "path": "water",
+            "quality": 3
+          }
+        ]
+      },
+      "reflection-none-forward01": {
+        "before_arm_medians_ms": [
+          4.13700008392334,
+          4.18400001525879
+        ],
+        "after_arm_medians_ms": [
+          4.13399982452393,
+          4.15700006484985
+        ],
+        "before_ms": 4.1605000495910645,
+        "after_ms": 4.14549994468689,
+        "reduction_percent": 0.36053610684727566,
+        "checks": 20,
+        "failures": 0,
+        "isolated": true,
+        "rows": [
+          {
+            "arm": 0,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 15.336,
+              "median": 6.575,
+              "min": 0.558,
+              "p95": 8.628
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1633.284,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 0,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.216000005602837,
+              "median": 0.0949999988079071,
+              "min": 0.0780000016093254,
+              "p95": 0.126000002026558
+            },
+            "viewport_gpu_ms": {
+              "max": 4.28800010681152,
+              "median": 4.13700008392334,
+              "min": 4.02099990844727,
+              "p95": 4.20599985122681
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 0,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 1,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 15.732,
+              "median": 7.258,
+              "min": 0.589,
+              "p95": 8.6
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1754.935,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 0,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.289000004529953,
+              "median": 0.096000000834465,
+              "min": 0.0750000029802322,
+              "p95": 0.131999999284744
+            },
+            "viewport_gpu_ms": {
+              "max": 4.24700021743774,
+              "median": 4.13399982452393,
+              "min": 4.03299999237061,
+              "p95": 4.21500015258789
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 1,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 2,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 17.436,
+              "median": 7.371,
+              "min": 0.593,
+              "p95": 8.698
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1784.199,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 0,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.300999999046326,
+              "median": 0.096000000834465,
+              "min": 0.0790000036358833,
+              "p95": 0.140000000596046
+            },
+            "viewport_gpu_ms": {
+              "max": 4.27299976348877,
+              "median": 4.15700006484985,
+              "min": 4.06199979782104,
+              "p95": 4.23299980163574
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 2,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 3,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 16.957,
+              "median": 6.589,
+              "min": 0.59,
+              "p95": 8.482
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1717.726,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 0,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.226999998092651,
+              "median": 0.096000000834465,
+              "min": 0.0790000036358833,
+              "p95": 0.146999999880791
+            },
+            "viewport_gpu_ms": {
+              "max": 4.32999992370605,
+              "median": 4.18400001525879,
+              "min": 4.05800008773804,
+              "p95": 4.25899982452393
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 3,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "restore-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "cache-repeat-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "quality",
+            "delta": {
+              "changed_pixels": 0,
+              "mean_max_channel_delta": 0.0,
+              "peak_delta": 0,
+              "pixels_over_2": 0,
+              "pixels_over_8": 0
+            },
+            "path": "water",
+            "quality": 3
+          }
+        ]
+      },
+      "reflection-map-mobile01": {
+        "before_arm_medians_ms": [
+          3.57100009918213,
+          3.57999992370605
+        ],
+        "after_arm_medians_ms": [
+          2.77800011634827,
+          2.78600001335144
+        ],
+        "before_ms": 3.57550001144409,
+        "after_ms": 2.7820000648498553,
+        "reduction_percent": 22.192698756942587,
+        "checks": 20,
+        "failures": 1,
+        "isolated": true,
+        "rows": [
+          {
+            "arm": 0,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 16.071,
+              "median": 7.083,
+              "min": 0.579,
+              "p95": 8.766
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1565.777,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.200000002980232,
+              "median": 0.0820000022649765,
+              "min": 0.063000001013279,
+              "p95": 0.115000002086163
+            },
+            "viewport_gpu_ms": {
+              "max": 3.64299988746643,
+              "median": 3.57100009918213,
+              "min": 3.46600008010864,
+              "p95": 3.61500000953674
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 0,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 1,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 10.573,
+              "median": 7.26,
+              "min": 0.541,
+              "p95": 8.495
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1795.635,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.208000004291534,
+              "median": 0.0829999968409538,
+              "min": 0.0659999996423721,
+              "p95": 0.120999999344349
+            },
+            "viewport_gpu_ms": {
+              "max": 2.8989999294281,
+              "median": 2.77800011634827,
+              "min": 2.70000004768372,
+              "p95": 2.84400010108948
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 1,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 2,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 17.228,
+              "median": 7.077,
+              "min": 0.503,
+              "p95": 8.528
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1624.324,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.28099998831749,
+              "median": 0.0829999968409538,
+              "min": 0.0659999996423721,
+              "p95": 0.122000001370907
+            },
+            "viewport_gpu_ms": {
+              "max": 2.91000008583069,
+              "median": 2.78600001335144,
+              "min": 2.71300005912781,
+              "p95": 2.84800004959106
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 2,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "arm": 3,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 33,
+              "median": 33,
+              "min": 33,
+              "p95": 33
+            },
+            "frame_wall_ms": {
+              "max": 15.821,
+              "median": 7.132,
+              "min": 0.521,
+              "p95": 8.741
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1567.223,
+            "map": "zone1",
+            "path": "water",
+            "quality": 3,
+            "reflection_mode": 2,
+            "reflector": false,
+            "samples": 360,
+            "viewport_cpu_ms": {
+              "max": 0.194000005722046,
+              "median": 0.0799999982118607,
+              "min": 0.0610000006854534,
+              "p95": 0.10700000077486
+            },
+            "viewport_gpu_ms": {
+              "max": 3.7279999256134,
+              "median": 3.57999992370605,
+              "min": 3.46900010108948,
+              "p95": 3.68300008773804
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 3,
+            "case": "held-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "restore-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "cache-repeat-control",
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "path": "water",
+            "quality": 3
+          },
+          {
+            "case": "quality",
+            "delta": {
+              "changed_pixels": 2,
+              "mean_max_channel_delta": 4.82253086419753e-07,
+              "peak_delta": 2,
+              "pixels_over_2": 0,
+              "pixels_over_8": 0
+            },
+            "path": "water",
+            "quality": 3
+          }
+        ]
+      }
+    },
+    "mask": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualified-map-forward01/reflection-skip-mask.png",
+      "sha256": "a10d37c25dbba3123df10411a200a194a75c89e7ecb26eac0627cce35111cf99",
+      "water_pixels": 1755560,
+      "exact_full_SSR_pixels": 763657,
+      "full_fraction": 0.43499339242179136,
+      "zero_weight_pixels": 0,
+      "meaning": "Diagnostic unshaded ALBEDO RGB = full-confidence, zero-weight, water. Captured after all cost arms; its shader cost is excluded."
+    }
+  },
+  "acceptance": {
+    "final_runs": [
+      "qualified-map-forward01",
+      "composition-forward01",
+      "composition-mobile01",
+      "contract-forward04",
+      "contract-mobile04",
+      "contract-gl04"
+    ],
+    "tracked_checks": 1130,
+    "failures": 0,
+    "matrices": {
+      "contract-forward04": {
+        "checks": 218,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(11, 11)",
+            "pipelines_start": "(11, 11)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(11, 11)",
+            "pipelines_start": "(11, 11)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(11, 11)",
+            "pipelines_start": "(11, 11)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(13, 13)",
+            "pipelines_start": "(11, 11)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(15, 15)",
+            "pipelines_start": "(15, 15)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(15, 15)",
+            "pipelines_start": "(15, 15)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(15, 15)",
+            "pipelines_start": "(15, 15)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(17, 17)",
+            "pipelines_start": "(15, 15)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(19, 19)",
+            "pipelines_start": "(19, 19)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(19, 19)",
+            "pipelines_start": "(19, 19)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(19, 19)",
+            "pipelines_start": "(19, 19)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(21, 21)",
+            "pipelines_start": "(19, 19)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(23, 23)",
+            "pipelines_start": "(23, 23)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(23, 23)",
+            "pipelines_start": "(23, 23)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(23, 23)",
+            "pipelines_start": "(23, 23)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(25, 25)",
+            "pipelines_start": "(23, 23)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(27, 27)",
+            "pipelines_start": "(27, 27)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(27, 27)",
+            "pipelines_start": "(27, 27)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(27, 27)",
+            "pipelines_start": "(27, 27)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(29, 29)",
+            "pipelines_start": "(27, 27)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(31, 31)",
+            "pipelines_start": "(31, 31)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(31, 31)",
+            "pipelines_start": "(31, 31)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(31, 31)",
+            "pipelines_start": "(31, 31)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(33, 33)",
+            "pipelines_start": "(31, 31)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(35, 35)",
+            "pipelines_start": "(35, 35)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(35, 35)",
+            "pipelines_start": "(35, 35)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(35, 35)",
+            "pipelines_start": "(35, 35)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(37, 37)",
+            "pipelines_start": "(35, 35)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 3,
+            "zero_weight_pixels": 230400
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(41, 41)",
+            "pipelines_start": "(41, 41)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(41, 41)",
+            "pipelines_start": "(41, 41)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(41, 41)",
+            "pipelines_start": "(41, 41)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(43, 43)",
+            "pipelines_start": "(41, 41)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(45, 45)",
+            "pipelines_start": "(45, 45)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(45, 45)",
+            "pipelines_start": "(45, 45)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(45, 45)",
+            "pipelines_start": "(45, 45)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": true,
+            "pipelines_end": "(47, 47)",
+            "pipelines_start": "(45, 45)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 3
+          }
+        ]
+      },
+      "contract-mobile04": {
+        "checks": 218,
+        "failures": 0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(7, 7)",
+            "pipelines_start": "(7, 7)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(7, 7)",
+            "pipelines_start": "(7, 7)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(7, 7)",
+            "pipelines_start": "(7, 7)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(9, 9)",
+            "pipelines_start": "(7, 7)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(11, 11)",
+            "pipelines_start": "(11, 11)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(11, 11)",
+            "pipelines_start": "(11, 11)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(11, 11)",
+            "pipelines_start": "(11, 11)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(13, 13)",
+            "pipelines_start": "(11, 11)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(15, 15)",
+            "pipelines_start": "(15, 15)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(15, 15)",
+            "pipelines_start": "(15, 15)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(15, 15)",
+            "pipelines_start": "(15, 15)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(17, 17)",
+            "pipelines_start": "(15, 15)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(19, 19)",
+            "pipelines_start": "(19, 19)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(19, 19)",
+            "pipelines_start": "(19, 19)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(19, 19)",
+            "pipelines_start": "(19, 19)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(21, 21)",
+            "pipelines_start": "(19, 19)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(23, 23)",
+            "pipelines_start": "(23, 23)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(23, 23)",
+            "pipelines_start": "(23, 23)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(23, 23)",
+            "pipelines_start": "(23, 23)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(25, 25)",
+            "pipelines_start": "(23, 23)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(27, 27)",
+            "pipelines_start": "(27, 27)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(27, 27)",
+            "pipelines_start": "(27, 27)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(27, 27)",
+            "pipelines_start": "(27, 27)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(29, 29)",
+            "pipelines_start": "(27, 27)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(31, 31)",
+            "pipelines_start": "(31, 31)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(31, 31)",
+            "pipelines_start": "(31, 31)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(31, 31)",
+            "pipelines_start": "(31, 31)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(33, 33)",
+            "pipelines_start": "(31, 31)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 3,
+            "zero_weight_pixels": 230400
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(37, 37)",
+            "pipelines_start": "(37, 37)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(37, 37)",
+            "pipelines_start": "(37, 37)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(37, 37)",
+            "pipelines_start": "(37, 37)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(39, 39)",
+            "pipelines_start": "(37, 37)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(41, 41)",
+            "pipelines_start": "(41, 41)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(41, 41)",
+            "pipelines_start": "(41, 41)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(41, 41)",
+            "pipelines_start": "(41, 41)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(43, 43)",
+            "pipelines_start": "(41, 41)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 3
+          }
+        ]
+      },
+      "contract-gl04": {
+        "checks": 218,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 0
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 1
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 2
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 3
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 0
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 1
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 2
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 3
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 0
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 1
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 2
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 3
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 0
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 1
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 2
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 3
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 0
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 1
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 2
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 3
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 0
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 1
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 2
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 3
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 0
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 1
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 2
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 3,
+            "zero_weight_pixels": 230400
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 0
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 1
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 2
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 3
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 0
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 1
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 2
+          },
+          {
+            "bytes": 3686400,
+            "exact": true,
+            "format": 11,
+            "held": true,
+            "optimized": false,
+            "pipelines_end": "(0, 0)",
+            "pipelines_start": "(0, 0)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 3
+          }
+        ]
+      }
+    },
+    "image_scope": "108 paired 640x360 raw HDR image comparisons, plus held candidate and restored reference controls: qualities1/2/3 x SSR off/Natural/Mirror x static/rain+waves/level-offset/flat zero-weight case on three backends. Forward+ changes 24 cases; its sheet cases and all Mobile/Compatibility cases are unchanged-program controls. Vulkan FORMAT_RGBH (14), Compatibility FORMAT_RGBAF (11), not only 8-bit PNG comparisons. Pipeline counters are identical in the 27 authored-river states per backend. Flat-patch first use can compile new mesh/program variants during the warm-up intervals; those counts are retained, and every raw candidate/held/restored comparison remains exact.",
+    "zero_weight_fixture": "A controlled flat water patch above the real river uses the real water material and exact upward mesh normals, zero ripple array, waves/rain off and a distant orthographic camera. It covers all 230400 pixels with exactly zero final weight. Other cases use the real river plus a small opaque reflector; no shader math is rewritten for image comparisons. The diagnostic mask rewrites output only after comparisons.",
+    "composition": {
+      "composition-forward01": {
+        "checks": 235,
+        "composition": {
+          "changed": 6,
+          "checked": 81,
+          "policies": {
+            "quality0-shadows0-reflections0-changed0": 15,
+            "quality1-shadows0-reflections0-changed0": 9,
+            "quality1-shadows0-reflections1-changed0": 3,
+            "quality1-shadows1-reflections0-changed0": 3,
+            "quality1-shadows1-reflections1-changed0": 3,
+            "quality2-shadows0-reflections0-changed0": 9,
+            "quality2-shadows0-reflections1-changed0": 4,
+            "quality2-shadows0-reflections1-changed1": 2,
+            "quality2-shadows1-reflections0-changed0": 3,
+            "quality2-shadows1-reflections1-changed0": 2,
+            "quality2-shadows1-reflections1-changed1": 1,
+            "quality3-shadows0-reflections0-changed0": 15,
+            "quality3-shadows0-reflections1-changed0": 4,
+            "quality3-shadows0-reflections1-changed1": 2,
+            "quality3-shadows1-reflections0-changed0": 3,
+            "quality3-shadows1-reflections1-changed0": 2,
+            "quality3-shadows1-reflections1-changed1": 1
+          },
+          "unchanged": 75
+        },
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": []
+      },
+      "composition-mobile01": {
+        "checks": 221,
+        "composition": {
+          "changed": 0,
+          "checked": 75,
+          "policies": {
+            "quality0-shadows0-reflections0-changed0": 15,
+            "quality1-shadows0-reflections0-changed0": 9,
+            "quality1-shadows0-reflections1-changed0": 3,
+            "quality1-shadows1-reflections0-changed0": 3,
+            "quality1-shadows1-reflections1-changed0": 3,
+            "quality2-shadows0-reflections0-changed0": 9,
+            "quality2-shadows0-reflections1-changed0": 3,
+            "quality2-shadows1-reflections0-changed0": 3,
+            "quality2-shadows1-reflections1-changed0": 3,
+            "quality3-shadows0-reflections0-changed0": 15,
+            "quality3-shadows0-reflections1-changed0": 3,
+            "quality3-shadows1-reflections0-changed0": 3,
+            "quality3-shadows1-reflections1-changed0": 3
+          },
+          "unchanged": 75
+        },
+        "failures": 0,
+        "renderer": "mobile",
+        "rows": []
+      }
+    },
+    "composition_scope": "Complete current Gfx source loaded under a private class and used to recompose every registered shader from its original inputs. Existing PCK owns registrations, uniforms, cloud producers and cleanup. 81 Forward+ and 75 Mobile dispatches each assert full source equality with the qualified boundary and exact eligibility; Forward+ changes six invocations, Mobile zero. Rendered controls check settings labels/persistence/discard, independent sky/shadow/reflection images, shared noise, shadow producer/texture retirement, master off and original-water exclusion."
+  },
+  "retained_rejections_and_fixture_failures": [
+    {
+      "labels": [
+        "fair-forward01",
+        "mixed-forward01"
+      ],
+      "decision": "Do not promote the High-sky sunlight-loop height exit. Mixed weather fails a strict held candidate image despite only about 2.9% measured cost reduction. Fair result also observes another headless engine during execution and is excluded from isolated timing claims. No production sky change; light_hdr.gd was prepared but never executed."
+    },
+    {
+      "labels": [
+        "reflection-map-mobile01"
+      ],
+      "decision": "Do not enable the optimized Mobile variant. Two pixels differ, peak 2/255, while held, repeated and restored controls are exact. Mobile performance result is rejected. The cause is not established and this desktop volume difference is separate from the unresolved Adreno650 sheet/material-water flicker."
+    },
+    {
+      "labels": [
+        "contract-forward01"
+      ],
+      "decision": "One original sheet restored-reference image differs before timed preheating. Optimized comparisons are exact. Retained failure; longer preheat final runs pass without changing the pixel criterion. Initial driver specialization is a hypothesis, not a demonstrated cause."
+    },
+    {
+      "labels": [
+        "contract-forward02",
+        "contract-mobile02",
+        "contract-gl02",
+        "contract-forward03",
+        "contract-mobile03"
+      ],
+      "decision": "Image comparisons all pass; zero-weight coverage assertion fails (0 or7 pixels versus required >250). The first fixture mistakenly addressed ripple_amount, which is a varying; correcting the ripple array did not make authored river normals exactly flat. Replaced the edge case with an explicit controlled flat patch. Pixel equality checks and coverage threshold stay strict."
+    },
+    {
+      "labels": [
+        "composition-source01"
+      ],
+      "decision": "Headless UI-label checks fail nine width assertions. Excluded from layout acceptance; both rendered complete-composition settings tests pass all checks."
+    },
+    {
+      "labels": [
+        "reflection-fair-forward01",
+        "reflection-storm-forward01",
+        "reflection-ingos-forward01",
+        "reflection-none-forward01",
+        "reflection-map-mobile01"
+      ],
+      "decision": "Early diagnostic masks put colour in EMISSION under unshaded mode and therefore rendered black. They are invalid coverage evidence, not performance images. Correct ALBEDO masks are used only for the final stated coverage counts."
+    }
+  ],
+  "runtime_and_delivery": {
+    "engine_and_PCK": "Reused /home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/candidate01, unchanged a916f95 private PCK and engine. Source substitution qualifies the helper and full Gfx.compose boundary; not complete-current-source package acceptance.",
+    "build_sha256": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "latest_delivery": "1.0.3-local.20261010.9 / source 473beb9",
+    "packages_created": false,
+    "native_binaries_changed": false,
+    "android_this_change": "No Android app changes or device runs. Android volume modes are unsupported by the existing constrained-platform policy, and the new production dispatch keeps the legacy sheet injection. No new Android first-load acceptance is claimed.",
+    "outstanding": "Original RMX3890/Adreno610 first-load exit and Linux RTX3050/CachyOS report remain unresolved. Only Retroid Pocket5 is available; Windows/current-package and unavailable hardware acceptance remain open. Existing Adreno650 Mobile material-water flicker remains unresolved."
+  },
+  "evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010",
+  "all_raw_runs": [
+    {
+      "label": "composition-forward01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/composition-forward01/run.json",
+      "receipt_sha256": "3d580d64af93187f41e94806617fb8a9cd4b5181804a6ded020475d45f26163b",
+      "return_code": 0,
+      "seconds": 50.389281351992395,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-controls.json",
+      "checks": 235,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualified_controls.gd": "bae1418f9e4d8ea3b084d1536b56ae316ac79134aa53626ffe4e022ce9ec156d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "434d2b85e72c3754d344257aaba8089f776e92cd0e566b7368ccc9a50d63c693",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualified_composition.gd": "2a5df3d051398709ec9d36b67f252d841da2b8e7977295a1f08ce46aede25c51",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_gfx.gd": "4b3402572bd1a68166ad9670247197a41bd71767345658be0b1bb75130f8a5d2",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "54d00a7a4db5f2c371487f31d4a099423fa956bbcfdc217d0f20ba85f5be4476"
+    },
+    {
+      "label": "composition-mobile01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/composition-mobile01/run.json",
+      "receipt_sha256": "03b86ed3bb53145cda1fde052ed5267d7437a0e244f37533f6cf23dbfa0b756d",
+      "return_code": 0,
+      "seconds": 47.37355028203456,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-controls.json",
+      "checks": 221,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualified_controls.gd": "bae1418f9e4d8ea3b084d1536b56ae316ac79134aa53626ffe4e022ce9ec156d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "434d2b85e72c3754d344257aaba8089f776e92cd0e566b7368ccc9a50d63c693",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualified_composition.gd": "2a5df3d051398709ec9d36b67f252d841da2b8e7977295a1f08ce46aede25c51",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_gfx.gd": "4b3402572bd1a68166ad9670247197a41bd71767345658be0b1bb75130f8a5d2",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "b1f2635dd78977c0d8410951c5c8a72c751768daf2abd0136f7688a989c77f9c"
+    },
+    {
+      "label": "composition-source01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/composition-source01/run.json",
+      "receipt_sha256": "2dc8014af777ad800436df9fc6deec208a84879035c1db730dfc6fe0ea4d0228",
+      "return_code": 1,
+      "seconds": 4.0957952159806155,
+      "termination_reason": null,
+      "errors": [
+        "FAIL label fits: en gfx_clouds",
+        "FAIL label fits: en gfx_cloud_shadows",
+        "FAIL label fits: en gfx_cloud_reflections",
+        "FAIL label fits: ru gfx_clouds",
+        "FAIL label fits: ru gfx_cloud_shadows",
+        "FAIL label fits: ru gfx_cloud_reflections",
+        "FAIL label fits: de gfx_clouds",
+        "FAIL label fits: de gfx_cloud_shadows",
+        "FAIL label fits: de gfx_cloud_reflections"
+      ],
+      "other_engines_absent": true,
+      "result_file": "cloud-controls.json",
+      "checks": 36,
+      "failures": 9,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualified_controls.gd": "bae1418f9e4d8ea3b084d1536b56ae316ac79134aa53626ffe4e022ce9ec156d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "434d2b85e72c3754d344257aaba8089f776e92cd0e566b7368ccc9a50d63c693",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualified_composition.gd": "2a5df3d051398709ec9d36b67f252d841da2b8e7977295a1f08ce46aede25c51",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_gfx.gd": "4b3402572bd1a68166ad9670247197a41bd71767345658be0b1bb75130f8a5d2",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "1c1f7b202400d3273c53a8805dbc13116cceb9f7d3fc597afbfcf21d813f28c4"
+    },
+    {
+      "label": "contract-forward01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/contract-forward01/run.json",
+      "receipt_sha256": "1ee53efb6f8bc99acf46cc83223a7f875f0007ed8ecb0f456ec341b916c25622",
+      "return_code": 1,
+      "seconds": 48.37677083001472,
+      "termination_reason": null,
+      "errors": [
+        "FAIL restored reference q1-ssr0-state0"
+      ],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-contract.json",
+      "checks": 163,
+      "failures": 1,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualify_contract.gd": "ba91c655a4e0a444a9f9e6398b64ada6d1b6526eb0fb657a06019592de2913e7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_reflection_skip.gd": "aacaac8f91aa8dfea9d5d551c5a9d6c70d8dc8f772a112285dc0395ee356c798",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "1ce52967aa599cf4173c3095f6f5d87e4f2c226da818aa898587e1aa5ee844c9"
+    },
+    {
+      "label": "contract-forward02",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/contract-forward02/run.json",
+      "receipt_sha256": "4b5715d7840c58593055a91ef5ac9c144f2d0d1f0a99315c3365a82645a0e0e3",
+      "return_code": 1,
+      "seconds": 101.69229789898964,
+      "termination_reason": null,
+      "errors": [
+        "FAIL top-down case positively exercises exactly zero reflection weight"
+      ],
+      "other_engines_absent": false,
+      "result_file": "cloud-reflection-contract.json",
+      "checks": 209,
+      "failures": 1,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualify_contract.gd": "ba91c655a4e0a444a9f9e6398b64ada6d1b6526eb0fb657a06019592de2913e7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_reflection_skip.gd": "80e66526804e7eb9c67b75f267c4a05ffd6fd5f90fbcba170da6bc48c75da7ce",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "53b76adc9fe639273873c7d7962c9b5169d9c970338db6e170b72f84d8376ae8"
+    },
+    {
+      "label": "contract-forward03",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/contract-forward03/run.json",
+      "receipt_sha256": "c41c37c217b96030f32c33d57b35e0724273c164dfb2feff3fb1ce16389a6902",
+      "return_code": 1,
+      "seconds": 102.69080899702385,
+      "termination_reason": null,
+      "errors": [
+        "FAIL top-down case positively exercises exactly zero reflection weight"
+      ],
+      "other_engines_absent": false,
+      "result_file": "cloud-reflection-contract.json",
+      "checks": 218,
+      "failures": 1,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualify_contract.gd": "ba91c655a4e0a444a9f9e6398b64ada6d1b6526eb0fb657a06019592de2913e7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_reflection_skip.gd": "714dc0ff9e83a75dd450b32fc4cac66b96d7f1c19fc9929895f979374065b5ee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "2b57c897589d638f27103b5aef806fc6b2c258e1c71f476c32732bc39d8ede5e"
+    },
+    {
+      "label": "contract-forward04",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/contract-forward04/run.json",
+      "receipt_sha256": "6688be3feb0aaae01e1f32c52236f2028d8878361d15c9e1e5bdfd0883c8e873",
+      "return_code": 0,
+      "seconds": 101.69118057895685,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-contract.json",
+      "checks": 218,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualify_contract.gd": "ba91c655a4e0a444a9f9e6398b64ada6d1b6526eb0fb657a06019592de2913e7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_reflection_skip.gd": "ad5c51366dcaf33103d82502e003ed7e8c0be39bc01172068fd90157db978fa0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "3bae39a226bf0d668a18c810e0e0713666aacbcac35b0934846fcbfcc8c7b2dc"
+    },
+    {
+      "label": "contract-gl01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/contract-gl01/run.json",
+      "receipt_sha256": "9f0e8aca47519e8fecc25ef437e1569bb9f346553640a40bfb4c10d610927892",
+      "return_code": 0,
+      "seconds": 20.22991325100884,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-contract.json",
+      "checks": 163,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualify_contract.gd": "ba91c655a4e0a444a9f9e6398b64ada6d1b6526eb0fb657a06019592de2913e7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_reflection_skip.gd": "aacaac8f91aa8dfea9d5d551c5a9d6c70d8dc8f772a112285dc0395ee356c798",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "1e44018e948666e4d2664ef7ccba217d7da277e0a89257a7ffcf0d2e67c02e16"
+    },
+    {
+      "label": "contract-gl02",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/contract-gl02/run.json",
+      "receipt_sha256": "ad2562082a1ff0254ef47e2a38ff325d05b9b836bee14e3bc4524f2d3f0baa9a",
+      "return_code": 1,
+      "seconds": 64.48979937599506,
+      "termination_reason": null,
+      "errors": [
+        "FAIL top-down case positively exercises exactly zero reflection weight"
+      ],
+      "other_engines_absent": false,
+      "result_file": "cloud-reflection-contract.json",
+      "checks": 218,
+      "failures": 1,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualify_contract.gd": "ba91c655a4e0a444a9f9e6398b64ada6d1b6526eb0fb657a06019592de2913e7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_reflection_skip.gd": "714dc0ff9e83a75dd450b32fc4cac66b96d7f1c19fc9929895f979374065b5ee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "efbd7a9d54acfbf05494ebe746d995c3ccaf2c5192524d820dec641493de8353"
+    },
+    {
+      "label": "contract-gl04",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/contract-gl04/run.json",
+      "receipt_sha256": "e39d9d4c3d98abc5e5d8c47d2dfb2aa8c57935803adbbf0067cd1cb585fb9eb8",
+      "return_code": 0,
+      "seconds": 64.50074856699212,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-contract.json",
+      "checks": 218,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualify_contract.gd": "ba91c655a4e0a444a9f9e6398b64ada6d1b6526eb0fb657a06019592de2913e7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_reflection_skip.gd": "ad5c51366dcaf33103d82502e003ed7e8c0be39bc01172068fd90157db978fa0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "a2381038e85aa67868438c2a2af76d0449871e566b485461b9a221092d1877d1"
+    },
+    {
+      "label": "contract-mobile01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/contract-mobile01/run.json",
+      "receipt_sha256": "d3ed53a13cc4257467b1137845ba661e7b219f8333628b7dd97ed8ecd03d4eef",
+      "return_code": 0,
+      "seconds": 46.36657430004561,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-contract.json",
+      "checks": 163,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualify_contract.gd": "ba91c655a4e0a444a9f9e6398b64ada6d1b6526eb0fb657a06019592de2913e7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_reflection_skip.gd": "aacaac8f91aa8dfea9d5d551c5a9d6c70d8dc8f772a112285dc0395ee356c798",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "04d87282af729425408d66808f51ce87284e26cb537e76781d1812cec40d2082"
+    },
+    {
+      "label": "contract-mobile02",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/contract-mobile02/run.json",
+      "receipt_sha256": "3ec3bc4980f83e11cf9d54756cf4fc5eee7f1fda8e99baec79e81761b6665883",
+      "return_code": 1,
+      "seconds": 101.7065342530259,
+      "termination_reason": null,
+      "errors": [
+        "FAIL top-down case positively exercises exactly zero reflection weight"
+      ],
+      "other_engines_absent": false,
+      "result_file": "cloud-reflection-contract.json",
+      "checks": 209,
+      "failures": 1,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualify_contract.gd": "ba91c655a4e0a444a9f9e6398b64ada6d1b6526eb0fb657a06019592de2913e7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_reflection_skip.gd": "80e66526804e7eb9c67b75f267c4a05ffd6fd5f90fbcba170da6bc48c75da7ce",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "af7801416d87ae6979e3c05f4be6c0c00366a331cb937f7d1daf82105b3d953c"
+    },
+    {
+      "label": "contract-mobile03",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/contract-mobile03/run.json",
+      "receipt_sha256": "995c5e03827eefd4a122c68dc3fe7fece8ca17b9a89f4d0a6f8addb17b354159",
+      "return_code": 1,
+      "seconds": 101.73424850200536,
+      "termination_reason": null,
+      "errors": [
+        "FAIL top-down case positively exercises exactly zero reflection weight"
+      ],
+      "other_engines_absent": false,
+      "result_file": "cloud-reflection-contract.json",
+      "checks": 218,
+      "failures": 1,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualify_contract.gd": "ba91c655a4e0a444a9f9e6398b64ada6d1b6526eb0fb657a06019592de2913e7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_reflection_skip.gd": "714dc0ff9e83a75dd450b32fc4cac66b96d7f1c19fc9929895f979374065b5ee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "1927564aa2feaca9687b4f3549f73883e6e28d150369fba123c1f9b2e4a889a2"
+    },
+    {
+      "label": "contract-mobile04",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/contract-mobile04/run.json",
+      "receipt_sha256": "db989e57e8fef4cc0dd877c3d5f048e6eca859cc84200f4c737bdfd313e70e2a",
+      "return_code": 0,
+      "seconds": 101.69520817999728,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-contract.json",
+      "checks": 218,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualify_contract.gd": "ba91c655a4e0a444a9f9e6398b64ada6d1b6526eb0fb657a06019592de2913e7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_reflection_skip.gd": "ad5c51366dcaf33103d82502e003ed7e8c0be39bc01172068fd90157db978fa0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "a5b49d082376e4db93a3af32201037131311078a25a885e6137552d4faa8d40b"
+    },
+    {
+      "label": "fair-forward01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/fair-forward01/run.json",
+      "receipt_sha256": "3c8315e2990f59afedb458e9d82031ae232b0a60887891e4ed84b1b396e2c311",
+      "return_code": 0,
+      "seconds": 34.31386367499363,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": false,
+      "result_file": "cloud-light-exit.json",
+      "checks": 19,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/light_exit_scene.gd": "70d032b6ee5340b5828b4fea560ecacf26a5fbe39d7e9723a1d1d1945764d56d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/light_exit_probe.gd": "3d2984ba1b55b9353d7924afc2e759e4612abda2030719ef85a7a0d3430f2df5"
+      },
+      "result_sha256": "da14fa2259fb20fdc48404bf219eab40eae71e87fc020a77c7be1348ad47d76b"
+    },
+    {
+      "label": "mixed-forward01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/mixed-forward01/run.json",
+      "receipt_sha256": "d6a6f7d6ab07fa0d53325deda8a518153489c51fb4ced76219cd8aa61676b55f",
+      "return_code": 1,
+      "seconds": 44.369547079957556,
+      "termination_reason": null,
+      "errors": [
+        "FAIL held clock exact sky-3-1"
+      ],
+      "other_engines_absent": true,
+      "result_file": "cloud-light-exit.json",
+      "checks": 19,
+      "failures": 1,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/light_exit_scene.gd": "70d032b6ee5340b5828b4fea560ecacf26a5fbe39d7e9723a1d1d1945764d56d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/light_exit_probe.gd": "3d2984ba1b55b9353d7924afc2e759e4612abda2030719ef85a7a0d3430f2df5"
+      },
+      "result_sha256": "06577a2c33e52257dc8c0cfabc8a26b7dd62dc165aadf9eee736761d3384702d"
+    },
+    {
+      "label": "qualified-map-forward01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualified-map-forward01/run.json",
+      "receipt_sha256": "7738eb6d27a6808b4d46470833185840d3370c9db3fc9e0640e4a4a6db4f7065",
+      "return_code": 0,
+      "seconds": 31.275000107008964,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-skip.json",
+      "checks": 20,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualified_scene.gd": "0f4228d0856db99d33a8802ee867cb1677bcbf70eb97c83885a603e1ce0397c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualified_probe.gd": "6f50720854e8ced166178cecfc9f1dec9cb42b8c3bdcd6887a3eb368709cffef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "0c21c4c113b6a1a4580c2fb3051e7823d8e6e8226977a47ecdbd996d3dabcc2b"
+    },
+    {
+      "label": "reflection-box-forward01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection-box-forward01/run.json",
+      "receipt_sha256": "e1039faad7d1e4b28523105142183e093ba833b83eb2e3142ebce5470182c3ba",
+      "return_code": 0,
+      "seconds": 30.251538075041026,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-skip.json",
+      "checks": 19,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_scene.gd": "94d3f267ea63a4f682c96cf33671266616f2478fe22327c87ca6f9006000d718",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_probe.gd": "175918b1cc32c959f152b835edecd883168b1557c1384733b78eeb5971b7bdf9"
+      },
+      "result_sha256": "d54e9c3ad7c1babd9122228e8e88c9adba842b2d9e48fe023b0e870fa6dfa87a"
+    },
+    {
+      "label": "reflection-fair-forward01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection-fair-forward01/run.json",
+      "receipt_sha256": "bd414ec16dc85ad3375aea49fd90c63e978a88e813751feacdefd650f0eb1f2f",
+      "return_code": 0,
+      "seconds": 31.287419889995363,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-skip.json",
+      "checks": 20,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_scene.gd": "f9e33dab9b704bea47e4282bbee84198faf3ef97b17b0189427b4cf2cf9ce44c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_probe.gd": "26b5d5feabc34acd6de0c6f7bb82c27c368f8c8ed37730d4d6f1ed6838f9ab3c"
+      },
+      "result_sha256": "0920037ca4773772402b986f20591249b802e2f0f4047c30e1c02455ec02f62d"
+    },
+    {
+      "label": "reflection-ingos-forward01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection-ingos-forward01/run.json",
+      "receipt_sha256": "3f7945d474d853fe7554db86b86ce68a0a644d5357819078e1f67eb71910da10",
+      "return_code": 0,
+      "seconds": 32.29298572399421,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-skip.json",
+      "checks": 20,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_scene.gd": "f9e33dab9b704bea47e4282bbee84198faf3ef97b17b0189427b4cf2cf9ce44c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_probe.gd": "26b5d5feabc34acd6de0c6f7bb82c27c368f8c8ed37730d4d6f1ed6838f9ab3c"
+      },
+      "result_sha256": "588519adae9e2e9e81eac5b5c2f97fcfbdbbe1501feb056d5391a3e5843f9425"
+    },
+    {
+      "label": "reflection-map-forward01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection-map-forward01/run.json",
+      "receipt_sha256": "d2028af71608894fa5e9ed1c986420362b40ea14ba4e8c197fd3cdd9dad0c154",
+      "return_code": 0,
+      "seconds": 30.26575274200877,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-skip.json",
+      "checks": 19,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_scene.gd": "94d3f267ea63a4f682c96cf33671266616f2478fe22327c87ca6f9006000d718",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_probe.gd": "175918b1cc32c959f152b835edecd883168b1557c1384733b78eeb5971b7bdf9"
+      },
+      "result_sha256": "e2f280ce7396b24b705c9846076c8c896ec011777fc6bf44847ae398218dce9c"
+    },
+    {
+      "label": "reflection-map-mobile01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection-map-mobile01/run.json",
+      "receipt_sha256": "4549548e7d1b4580becd9259633862d72663d839dfbffbbeb5e7f5c415955668",
+      "return_code": 1,
+      "seconds": 36.289428553020116,
+      "termination_reason": null,
+      "errors": [
+        "FAIL candidate exact water 3"
+      ],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-skip.json",
+      "checks": 20,
+      "failures": 1,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_scene.gd": "f9e33dab9b704bea47e4282bbee84198faf3ef97b17b0189427b4cf2cf9ce44c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_probe.gd": "26b5d5feabc34acd6de0c6f7bb82c27c368f8c8ed37730d4d6f1ed6838f9ab3c"
+      },
+      "result_sha256": "8157dda0b42e24c8c89c5007ac3dda46db726d14e9bf795f9dbf7de0cf3c92e7"
+    },
+    {
+      "label": "reflection-none-forward01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection-none-forward01/run.json",
+      "receipt_sha256": "7087b093b3504d5a562cbd407a2af5053f53a4d619ea161313bc474a99ba7d53",
+      "return_code": 0,
+      "seconds": 32.27296774898423,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-skip.json",
+      "checks": 20,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_scene.gd": "f9e33dab9b704bea47e4282bbee84198faf3ef97b17b0189427b4cf2cf9ce44c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_probe.gd": "26b5d5feabc34acd6de0c6f7bb82c27c368f8c8ed37730d4d6f1ed6838f9ab3c"
+      },
+      "result_sha256": "15da56d41fb8be2070d5d93a457d65d417f61c5deab8ced95b333966060613d6"
+    },
+    {
+      "label": "reflection-storm-forward01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection-storm-forward01/run.json",
+      "receipt_sha256": "9380ff40068388ee3122b350fb3d993e2db92d96456f32b26d3ff39848366b1c",
+      "return_code": 0,
+      "seconds": 31.282686268968973,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-skip.json",
+      "checks": 20,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_scene.gd": "f9e33dab9b704bea47e4282bbee84198faf3ef97b17b0189427b4cf2cf9ce44c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/reflection_skip_probe.gd": "26b5d5feabc34acd6de0c6f7bb82c27c368f8c8ed37730d4d6f1ed6838f9ab3c"
+      },
+      "result_sha256": "dbdf0d0c10ba244cf6b4a0ed138f03e99880996d7f30d6abfcd9e5bdd4fe67bf"
+    },
+    {
+      "label": "source-contract01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/source-contract01/run.json",
+      "receipt_sha256": "1b1e88348230d0d53997844846f0c123a68bbce9591d664178c2edc6a55fbf6d",
+      "return_code": 0,
+      "seconds": 4.113700939982664,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-contract.json",
+      "checks": 8,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/qualify_contract.gd": "ba91c655a4e0a444a9f9e6398b64ada6d1b6526eb0fb657a06019592de2913e7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_reflection_skip.gd": "aacaac8f91aa8dfea9d5d551c5a9d6c70d8dc8f772a112285dc0395ee356c798",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "e46f498efbd9e5d24a24087c6b925c47fd663b190bd275848ed300325fc8db2a"
+    },
+    {
+      "label": "zero-forward01",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/zero-forward01/run.json",
+      "receipt_sha256": "dc9e58b4accdc8bcd4a6bc98bdf8ab7e8c208b4ecca34fe3581f8abb02490763",
+      "return_code": 0,
+      "seconds": 14.1717995100189,
+      "termination_reason": null,
+      "errors": [],
+      "other_engines_absent": true,
+      "result_file": "cloud-reflection-contract.json",
+      "checks": 18,
+      "failures": 0,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/zero_probe.gd": "c877c8f8b2c6fff071a6c415cb1390e2d6392f066f690439c52680749c5d5c8e",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-light-exit-20261010/candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a"
+      },
+      "result_sha256": "eb28b951be9082ebd9c1f22923c0155791935890dc20463a40559dc3a5dec216"
+    }
+  ],
+  "evidence_files": {
+    "candidate_gfx.gd": "4b3402572bd1a68166ad9670247197a41bd71767345658be0b1bb75130f8a5d2",
+    "candidate_reflection.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a",
+    "cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+    "clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+    "create_receipt.py": "88b11962f8854e12b91582e6e0c7e6f9248bac4c53194a44cb831d963fdf5606",
+    "light_exit_probe.gd": "3d2984ba1b55b9353d7924afc2e759e4612abda2030719ef85a7a0d3430f2df5",
+    "light_exit_scene.gd": "70d032b6ee5340b5828b4fea560ecacf26a5fbe39d7e9723a1d1d1945764d56d",
+    "light_hdr.gd": "cd3f24275265d3162c35c74e759995638cbcf25e2bdf2451f006a15cbe8b4e9e",
+    "qualified_composition.gd": "2a5df3d051398709ec9d36b67f252d841da2b8e7977295a1f08ce46aede25c51",
+    "qualified_controls.gd": "bae1418f9e4d8ea3b084d1536b56ae316ac79134aa53626ffe4e022ce9ec156d",
+    "qualified_probe.gd": "6f50720854e8ced166178cecfc9f1dec9cb42b8c3bdcd6887a3eb368709cffef",
+    "qualified_scene.gd": "0f4228d0856db99d33a8802ee867cb1677bcbf70eb97c83885a603e1ce0397c4",
+    "qualify_contract.gd": "ba91c655a4e0a444a9f9e6398b64ada6d1b6526eb0fb657a06019592de2913e7",
+    "reflection_skip_probe.gd": "a8d5bf7383777eaaff9f808a2af1f81f167a76783b9475ca3b7bd012e41df519",
+    "reflection_skip_scene.gd": "ff1fd223ae53190ef45a125dc15de5653cb293d7293e45077152a3ef9ef4e44d",
+    "run_acceptance.py": "7d06b641a3138e15a1286ea3b5e00a27940fcb30d9588fb76f4488528d636a30",
+    "run_desktop.py": "eb2dc3f4c8e3194b47c68ceadaa9733bf96435aea87cbeb490fe5a277e9d6bc5",
+    "run_reflection_suite.py": "ee382837c0fdf6624f3452dd50fbd1c3b781ef5c96991b634dbad9a1de70311a",
+    "water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+    "zero_probe.gd": "c877c8f8b2c6fff071a6c415cb1390e2d6392f066f690439c52680749c5d5c8e"
+  },
+  "saved_composed_programs": {
+    "qualified-map-forward01/reflection-candidate.gdshader": "37dcc8412d51bfa3f737ff70c5cd42ab1a38f4cfaca6dbc7029f7f71a4844e54",
+    "qualified-map-forward01/reflection-reference.gdshader": "bd8ab7a9998b647cdf726ab51518e38ea0b024f95713c93292494e1e23d504d1"
+  }
+}

@@ -264,9 +264,11 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 			"ei_sun*ei_cloud_sun(p)*max(dot(n,ei_sun_dir),0.0)")
 	if cloud_reflections:
 		# Enhanced water has its own Fresnel/SSR composition and bypasses
-		# Godot's sky IBL. Sample the same sheet on its reflected world ray.
-		code = code.replace("vec3 R = ei_lin(ei_sky);",
-			"vec3 R = ei_lin(ei_cloud_sky(ei_sky,wpos,reflect(normalize((INV_VIEW_MATRIX*vec4(vdir,0.0)).xyz),wn),ei_ambient,ei_sun));")
+		# Godot's sky IBL. Sample the shared clouds on its reflected world ray.
+		# Forward+ volume rays may be completely replaced by opaque SSR.
+		# Keep the existing sheet and Mobile programs until separately qualified.
+		code = preload("res://src/game/fx/cloud_reflection_shader.gd").inject(code,
+			Clouds.mode()>1 and RenderingServer.get_current_rendering_method()=="forward_plus")
 	if cloud_shadows and code.contains("#define EI_WATER_FX"):
 		code = code.replace("G = ei_lin(min(ei_sun, vec3(1.0))) *", "G = ei_lin(min(ei_sun, vec3(1.0))) * ei_cloud_sun(wpos) *")
 	if lit:
