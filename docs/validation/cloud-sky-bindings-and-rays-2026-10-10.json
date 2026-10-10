@@ -1,0 +1,812 @@
+{
+  "date": "2026-10-10",
+  "feature": "Sky-stage bindings, exact view-ray readback and Vulkan camera constants",
+  "base_commit": "eabc8d9",
+  "production_change": null,
+  "scope": {
+    "main_thread_only": true,
+    "playthroughs": false,
+    "new_packages": false,
+    "latest_delivery": "1.0.3-local.20261010.9, source 473beb9",
+    "desktop": "Existing a916f95 private executable/PCK/game helper, with complete eabc8d9 sky script substitution except class_name. Cloud-volume source is unchanged since that runtime. Instrumented programs are scratch diagnostics.",
+    "native_diagnostic": "One temporary read-only LD_PRELOAD library was compiled with gcc -shared -fPIC -O2 -Wall -Wextra -Werror sky_push_trace.c -o libsky_push_trace.so -ldl -pthread and loaded only into push-mixed01. No engine/game helper/package/installed runtime was built or modified.",
+    "android": "Read-only adb devices inventory. No app launch, installation, device write or playthrough.",
+    "qualification": "No new production optimization or complete-source package acceptance. Strict scene image gates remain open."
+  },
+  "source_sha256": {
+    "game/src/game/sky.gd": "16959e684ecb8423f89e7cba036a6839a53bb647f388c18aa45a5509a6f3506c",
+    "game/src/game/fx/cloud_volume.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+    "game/src/game/fx/clouds.gd": "19b7121aa68409540c08a6f7c2acc6e1bd86b3989364a47b086ea9a7397925cf"
+  },
+  "findings": {
+    "sky_bindings": "All eight captures in bindings-mixed01 match all 64 expected global floats and 24 material/POSITION/codec floats inside the actual half-resolution sky pass. Four sets of 64 actual sky texture texels plus sampled lower-screen EYEDIR components remain fixed. Shared canvas samples, full source texture bytes/identities and callback camera matrices remain fixed. This closes the prior gap between canvas-only globals and sky-stage bindings for these observations.",
+    "native_cloud_states": {
+      "description": "After excluding diagnostic rows, the two states exactly match earlier uninstrumented buffers cropped to the same area. Current bounded and restored unbounded programs can both reach each state.",
+      "top1073rows_sha256": [
+        "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585",
+        "7cccf67eea6e34d2ad6d7ba836b424583c39445c44767e124923da0c8a6e3b9b"
+      ],
+      "changed_pixels": 50055,
+      "per_channel_changed": [
+        8414,
+        8114,
+        8278,
+        31862
+      ],
+      "per_channel_peak": [
+        0.031005859375,
+        0.031005859375,
+        0.03076171875,
+        0.00589752197265625
+      ]
+    },
+    "view_ray_readback": {
+      "scope": "Cross-capture join: each ray component was captured in a separate shader run and aligned using its complete exact red scattering state. This is not simultaneous full-vector readback and does not prove the sole cause of cloud variation.",
+      "pixels": 2056320,
+      "red_states": [
+        "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+        "c65d45d1a7b48c1a5a039f210abfce9c1eea8b80315278ccff43ec4eda23ce5e"
+      ],
+      "components": {
+        "x": {
+          "changed_pixels": 251372,
+          "max_absolute_delta": 1.7881393432617188e-07,
+          "word_sha256": [
+            "e2711b5c0e5bb5fe8e5d45fdb5542682d2667e94e8fd6ecfaf2f580046477441",
+            "f4ae4e2dd00dadbba5fbd98d5443c51d947ea80c31ebb859fb2ee09e25468533"
+          ]
+        },
+        "y": {
+          "changed_pixels": 1420089,
+          "max_absolute_delta": 1.7881393432617188e-07,
+          "word_sha256": [
+            "5b864d565d25d04f2edbc38d0b4f7ad28c8f5d0d90220d1b4cd3e65fdb26761f",
+            "f6d899f2b4f506c67c3b3dbdc9f6ac4f5ba50bbc5eed2fa891632d4eaa7a7ac2"
+          ]
+        },
+        "z": {
+          "changed_pixels": 287481,
+          "max_absolute_delta": 1.7881393432617188e-07,
+          "word_sha256": [
+            "55f42c74b05b866c0daef08e058d04ba55c5937977be0ebaa693ee42f013d8c2",
+            "14ce15c0971bc75fd8397129a4023338a2821a45ecbf57a9c5a1254e4a9abd17"
+          ]
+        }
+      },
+      "union_changed_pixels": 1571799,
+      "red_changes_with_same_joined_ray": 0,
+      "same_joined_ray_red_peak": 0.0,
+      "same_joined_ray_examples": []
+    },
+    "screen_uv_y": "All eight corrected SCREEN_UV.y component maps in rays-uvy-mixed01 are bit-identical while red scattering reaches both original states. SCREEN_UV is a remapped interpolant; its equality alone does not prove the underlying uv_interp bits match.",
+    "ray_codec": "G/B encode 11-bit chunks with +0.125 padding and floor decode; alpha encodes 10 bits with round decode. Padding avoids an original half-float/debanding tie. Rows 1071\u20131072 exercise all possible chunk values in both RGB channels and alpha; all 32 corrected capture controls decode without error. Bottom 9 half-resolution rows excluded from ray analysis. No nonfinite/out-of-unit component values. Each component is captured in a separate run.",
+    "vulkan_camera": {
+      "scope": "Read-only per-child Vulkan push-constant interception; records forward unchanged. All 96-byte calls matching the fixture camera position were retained. Each view and cubemap class has exactly one complete 96-byte state, including time==0. No engine or production binary modified.",
+      "record_count": 16708,
+      "log_sha256": "e52f00a77b0b0ad7c6c1a1dc9ef83cd0891eb8a35aa8f9bac845e47a3df55a77",
+      "summary": {
+        "cubemap": {
+          "record_count": 5004,
+          "state_count_excluding_time": 1,
+          "pipeline_layouts": [
+            138659704348192,
+            138659706545104,
+            138659709855456,
+            138659731509392
+          ],
+          "time_range": [
+            0.0,
+            0.0
+          ],
+          "states": [
+            {
+              "count": 5004,
+              "sha256": "b659fdf398b50107ea58dfa09d1d42cebda5ae8ccec5b134d2e024f3bfbfc4fc",
+              "values": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                100.0,
+                10.0,
+                -100.0,
+                0.10000000149011612,
+                0.800000011920929,
+                1.0,
+                1.0
+              ]
+            }
+          ],
+          "complete_96_byte_states": [
+            {
+              "sha256": "cd754a3941b329c28fd39ab230e19962ad6d3f7e5a0799cf36150b9e7663ac17",
+              "values": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                100.0,
+                10.0,
+                -100.0,
+                0.0,
+                0.10000000149011612,
+                0.800000011920929,
+                1.0,
+                1.0
+              ]
+            }
+          ],
+          "complete_96_byte_state_count": 1
+        },
+        "view": {
+          "record_count": 11704,
+          "state_count_excluding_time": 1,
+          "pipeline_layouts": [
+            138659609345600,
+            138659665384480,
+            138659874080752,
+            138659875581040
+          ],
+          "time_range": [
+            0.0,
+            0.0
+          ],
+          "states": [
+            {
+              "count": 11704,
+              "sha256": "457c33eb05e9ac7dc162a6248cfa834e446a7cfca13700039055b074ceffd9e9",
+              "values": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.9876883625984192,
+                0.15643447637557983,
+                0.0,
+                0.0,
+                -0.15643447637557983,
+                0.9876883625984192,
+                0.0,
+                0.0,
+                0.7330642342567444,
+                0.0,
+                -1.3032252788543701,
+                100.0,
+                10.0,
+                -100.0,
+                0.10000000149011612,
+                0.800000011920929,
+                1.0,
+                1.0
+              ]
+            }
+          ],
+          "complete_96_byte_states": [
+            {
+              "sha256": "1833e6f84c4180230c821b581cb5d7bc61aa072df02e3822ded575f633f89508",
+              "values": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.9876883625984192,
+                0.15643447637557983,
+                0.0,
+                0.0,
+                -0.15643447637557983,
+                0.9876883625984192,
+                0.0,
+                0.0,
+                0.7330642342567444,
+                0.0,
+                -1.3032252788543701,
+                100.0,
+                10.0,
+                -100.0,
+                0.0,
+                0.10000000149011612,
+                0.800000011920929,
+                1.0,
+                1.0
+              ]
+            }
+          ],
+          "complete_96_byte_state_count": 1
+        }
+      },
+      "captures": [
+        {
+          "label": "0-first",
+          "capture_unix": [
+            1791661029.69459,
+            1791661030.10934
+          ],
+          "last_view_push_unix": 1791661029.6883223,
+          "constant_sha256_excluding_time": "457c33eb05e9ac7dc162a6248cfa834e446a7cfca13700039055b074ceffd9e9",
+          "cloud_sha256": "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585"
+        },
+        {
+          "label": "0-held",
+          "capture_unix": [
+            1791661032.50266,
+            1791661032.89866
+          ],
+          "last_view_push_unix": 1791661032.4953752,
+          "constant_sha256_excluding_time": "457c33eb05e9ac7dc162a6248cfa834e446a7cfca13700039055b074ceffd9e9",
+          "cloud_sha256": "7cccf67eea6e34d2ad6d7ba836b424583c39445c44767e124923da0c8a6e3b9b"
+        },
+        {
+          "label": "1-first",
+          "capture_unix": [
+            1791661044.4599,
+            1791661044.83062
+          ],
+          "last_view_push_unix": 1791661044.453717,
+          "constant_sha256_excluding_time": "457c33eb05e9ac7dc162a6248cfa834e446a7cfca13700039055b074ceffd9e9",
+          "cloud_sha256": "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585"
+        },
+        {
+          "label": "1-held",
+          "capture_unix": [
+            1791661047.13322,
+            1791661047.57923
+          ],
+          "last_view_push_unix": 1791661047.1133556,
+          "constant_sha256_excluding_time": "457c33eb05e9ac7dc162a6248cfa834e446a7cfca13700039055b074ceffd9e9",
+          "cloud_sha256": "950f2fd007f9b5a023dbe1a23da2936cad27a8a64cfa7db79fa27b0e7e2d4585"
+        },
+        {
+          "label": "2-first",
+          "capture_unix": [
+            1791661057.94831,
+            1791661058.28003
+          ],
+          "last_view_push_unix": 1791661057.9419315,
+          "constant_sha256_excluding_time": "457c33eb05e9ac7dc162a6248cfa834e446a7cfca13700039055b074ceffd9e9",
+          "cloud_sha256": "7cccf67eea6e34d2ad6d7ba836b424583c39445c44767e124923da0c8a6e3b9b"
+        },
+        {
+          "label": "2-held",
+          "capture_unix": [
+            1791661060.62233,
+            1791661061.03955
+          ],
+          "last_view_push_unix": 1791661060.5920537,
+          "constant_sha256_excluding_time": "457c33eb05e9ac7dc162a6248cfa834e446a7cfca13700039055b074ceffd9e9",
+          "cloud_sha256": "7cccf67eea6e34d2ad6d7ba836b424583c39445c44767e124923da0c8a6e3b9b"
+        },
+        {
+          "label": "3-first",
+          "capture_unix": [
+            1791661071.56106,
+            1791661071.96993
+          ],
+          "last_view_push_unix": 1791661071.55468,
+          "constant_sha256_excluding_time": "457c33eb05e9ac7dc162a6248cfa834e446a7cfca13700039055b074ceffd9e9",
+          "cloud_sha256": "7cccf67eea6e34d2ad6d7ba836b424583c39445c44767e124923da0c8a6e3b9b"
+        },
+        {
+          "label": "3-held",
+          "capture_unix": [
+            1791661074.28808,
+            1791661074.68241
+          ],
+          "last_view_push_unix": 1791661074.2819412,
+          "constant_sha256_excluding_time": "457c33eb05e9ac7dc162a6248cfa834e446a7cfca13700039055b074ceffd9e9",
+          "cloud_sha256": "7cccf67eea6e34d2ad6d7ba836b424583c39445c44767e124923da0c8a6e3b9b"
+        }
+      ]
+    },
+    "interpretation": "Derived viewing rays vary with up to 1.7881393432617188e-7 absolute component difference despite fixed observed sky bindings and complete Vulkan camera constants. The red cloud states exactly match the non-ray diagnostic. A cross-capture join places every 8,414 changed red pixel within the union of changed ray pixels, but it is not simultaneous vector readback and does not establish sole causation. No driver defect, FMA, pipeline-switch or interpolation hypothesis is proved. The separate 57-pixel/peak1 final-sky difference remains unresolved."
+  },
+  "all_run_totals": {
+    "runs": 8,
+    "checks": 638,
+    "failures": 25,
+    "meaning": "Diagnostic totals, including two rejected codecs and failed unchanged/candidate controls; not release acceptance."
+  },
+  "measurement_limits": [
+    "No cost/FPS claim; instrumented outputs and synchronous GPU readbacks alter the workload.",
+    "rays-x-mixed01 overlaps another project's headless Godot process; other seven runs observe none.",
+    "Prior eabc8d9 seam acceptance remains 5 runs / 40 checks / 0 failures and is not rerun or rolled into this diagnostic total.",
+    "Cloud type specialization, explicit LOD and sunlight-loop candidates remain scratch-only.",
+    "The original RMX3890/Adreno610 and RTX3050/CachyOS reports, Windows acceptance, full-source package acceptance and separate Adreno650 Mobile water flicker remain open."
+  ],
+  "priority_revalidation": {
+    "devices": "Only Retroid Pocket 5, serial 9a7e6425, connected. Matching original report devices unavailable.",
+    "report_files": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/feedback/2026-10-10-device-reports/android-insta-crash.txt",
+        "bytes": 3454,
+        "mtime": 1791621491.9497235,
+        "sha256": "f4c51007f715c6da8e001ee0dc5c7cdbe60962dbd60c57cdb7a4b3aa5f2e3ddf"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/feedback/2026-10-10-device-reports/android-settings-no-buttons.png",
+        "bytes": 1630329,
+        "mtime": 1791621585.4804027,
+        "sha256": "f09c37f81f4e3a7f55e331da204e31e200a2692c224846386a0ef67f39fcb3ba"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/feedback/2026-10-10-device-reports/linux-gameplay-reported-crash.txt",
+        "bytes": 1420,
+        "mtime": 1791621790.5344222,
+        "sha256": "efa29ae4b00eb6a2cf30c9b8527470cc0086de45286a469c07267be54601df2e"
+      }
+    ],
+    "android_report": "Experimental 6 RMX3890/Adreno610 exits during gz1g first load; no fatal stack.",
+    "linux_report": "Experimental 6 RTX3050/CachyOS reports texture/teardown errors, followed by clean exit. No newly established fatal crash."
+  },
+  "next_actions": [
+    "Investigate actual view-ray generation and relevant pipeline/rasterization state; whole scene equality cannot be attributed to a cloud optimization while its upstream ray values differ.",
+    "Retain a corrected byte codec with exhaustive integer controls and preserve red scattering when investigating rays.",
+    "Do not repeat completed type/LOD/Mobile grids or canvas-only/global-texture audits without new evidence.",
+    "Retain eabc8d9 seam repair, c34f19d reflection skip, existing cloud control separation and corrected owner-Environment cost fixture.",
+    "No playthroughs or new packages unless requested."
+  ],
+  "evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010",
+  "analysis_files": {
+    "analyse_rays.py": "ff120c5069e36fb8ea47cc4353c59db094463e06f75ea8aed1ab96c83aac2d74",
+    "analyse_ray_states.py": "1d96e00c2d1eb0f3ff3a0a746dec276dbb39858a60a6753e4bef6eef053c99e2",
+    "ray-state-analysis.json": "b513144ff6ccc3dcfcdd6ade2ac42afd39db7a9de71535de8b36f3b7661c672e",
+    "sky_push_trace.c": "8dfeb0b719111a4073c63227f5c5d8460dd48c5f5a0b83da07cc494f366381a7",
+    "libsky_push_trace.so": "0854b6501653e65319836edbb265259230fcd4a78396aff3b06b3b94f9d0eaa9",
+    "push-mixed01/push-analysis.json": "bb75f2fcf6525522590bd996acf2178a074a30e7406731da18f32aff8df87465"
+  },
+  "post_run_state": {
+    "owned_desktop_validation_processes": [],
+    "existing_runtime_hashes_match_all_runs": true,
+    "production_source_unchanged": true,
+    "android_activity": "No writes or launches; only read-only inventory."
+  },
+  "all_raw_runs": [
+    {
+      "label": "bindings-mixed01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bindings-mixed01",
+      "checks": 85,
+      "failures": 4,
+      "exit_code": 1,
+      "errors": [
+        "FAIL held sky 0",
+        "FAIL raw held cloud buffer 0",
+        "FAIL exact sky candidate",
+        "FAIL exact raw cloud buffer candidate"
+      ],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffers.gd": "5be255a9c4ca7658249afa600ac503c2da7dec0d055c777c4e9d1829cc477de9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_background.gd": "3a9291d043c0312a5e97412cbc9dda3c56ca4a3e43dc5eddb0acd4cbf798c3cb",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_binding_probe.gd": "1e79ea37daf588ef385e21b33136862d0746c7e5aca2e74441820f04d44dab89",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "frozen_results_sha256": {
+        "run.json": "4b0e068b977c108844eee2d454ef8c3f2e05c4a4c41ca879d976a3fe7bb84f4c",
+        "cloud-sky-inputs.json": "c1aece73878590f50de454fb9770fd75f744e7de5902900403cb9ada044a8edd",
+        "candidate.gdshader": "ca198fe5e44864fee1a9d03fca1a7ad5e21ae10941fea3e6a8303dfdaeba3f6d",
+        "reference.gdshader": "33a6bb4f3791004827b76c0dbe56851d85793b3e7882cf94c709bf5c698c4488"
+      },
+      "native_buffers_sha256": {
+        "half-0-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-0-held.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-1-first.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-1-held.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-2-first.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-2-held.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-3-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-3-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d"
+      },
+      "interpretation": "Sky binding readback with original cloud RGBA outside bottom diagnostic strip; real whole-image/native-buffer equality failures retained."
+    },
+    {
+      "label": "rays-y-mixed01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/rays-y-mixed01",
+      "checks": 78,
+      "failures": 1,
+      "exit_code": 1,
+      "errors": [
+        "FAIL exact raw cloud buffer repeat"
+      ],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffers.gd": "8d955522affe23f3cf9c84e06efabcdc8b2658670fd90ef0cea80a2b6d8c5b5a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_binding_probe.gd": "ed0dfbd7e510effec10cd66b5887bd97512385ad559aad23f5782ca96307b1b9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "frozen_results_sha256": {
+        "run.json": "4dbf611ed0eca25461fb9f88f7dc2b0a60deb1651eceb26d594ba0f24c0a3048",
+        "cloud-sky-inputs.json": "0f742f4d159b7e1bc3a8343b6318ea4795df26361f61f0023d547d04daa4702e",
+        "candidate.gdshader": "110af5d29243823b79884f97a24dc087f1c4d26cab4991d27b7eb72d95a5a604",
+        "reference.gdshader": "e14763fbc4ba2dbe05178495440a5acfe463493613e93dca801be0a1cde5348c"
+      },
+      "native_buffers_sha256": {
+        "half-0-first.bin": "aad12448604c2a41d310a798e7e6059b3801c213a1216062f57c8062c9b65d94",
+        "half-0-held.bin": "aad12448604c2a41d310a798e7e6059b3801c213a1216062f57c8062c9b65d94",
+        "half-1-first.bin": "aad12448604c2a41d310a798e7e6059b3801c213a1216062f57c8062c9b65d94",
+        "half-1-held.bin": "aad12448604c2a41d310a798e7e6059b3801c213a1216062f57c8062c9b65d94",
+        "half-2-first.bin": "d991d43cf2f4fe87f996a97eee09d02e56eacde0a61f651d388eb78f3cd956a3",
+        "half-2-held.bin": "d991d43cf2f4fe87f996a97eee09d02e56eacde0a61f651d388eb78f3cd956a3",
+        "half-3-first.bin": "aad12448604c2a41d310a798e7e6059b3801c213a1216062f57c8062c9b65d94",
+        "half-3-held.bin": "aad12448604c2a41d310a798e7e6059b3801c213a1216062f57c8062c9b65d94"
+      },
+      "interpretation": "Rejected ray codec: unpadded RGB integer chunks can round onto half-integer ties after sky debanding/half-float storage. Retain raw results; do not use their decoded rays as exact evidence. X happens to pass native equality but does not validate this codec."
+    },
+    {
+      "label": "rays-x-mixed01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/rays-x-mixed01",
+      "checks": 78,
+      "failures": 0,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": false,
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffers.gd": "8d955522affe23f3cf9c84e06efabcdc8b2658670fd90ef0cea80a2b6d8c5b5a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_binding_probe.gd": "ed0dfbd7e510effec10cd66b5887bd97512385ad559aad23f5782ca96307b1b9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "frozen_results_sha256": {
+        "run.json": "2019080ab4e86c8d90579b153f88675dfa0722056c78345b052f2910062c24a2",
+        "cloud-sky-inputs.json": "3bfa4a6860df16d59fc1a7c8d8a385a8bc4179e0c23511200c76c334f1207397",
+        "candidate.gdshader": "685340ce928a6e0f0024cbbf4a3e8da643ec2eead02947d62155e7cce95b3e60",
+        "reference.gdshader": "d25b6315c62dfcf889dc72d7cdfe049f9560c7c6b69ff1f35e330fb13d3a6297"
+      },
+      "native_buffers_sha256": {
+        "half-0-first.bin": "2ef78abb1bbd4123be5c3d8cd54c584e8332a761f9c62bd3085a0815528fabdc",
+        "half-0-held.bin": "2ef78abb1bbd4123be5c3d8cd54c584e8332a761f9c62bd3085a0815528fabdc",
+        "half-1-first.bin": "2ef78abb1bbd4123be5c3d8cd54c584e8332a761f9c62bd3085a0815528fabdc",
+        "half-1-held.bin": "2ef78abb1bbd4123be5c3d8cd54c584e8332a761f9c62bd3085a0815528fabdc",
+        "half-2-first.bin": "2ef78abb1bbd4123be5c3d8cd54c584e8332a761f9c62bd3085a0815528fabdc",
+        "half-2-held.bin": "2ef78abb1bbd4123be5c3d8cd54c584e8332a761f9c62bd3085a0815528fabdc",
+        "half-3-first.bin": "2ef78abb1bbd4123be5c3d8cd54c584e8332a761f9c62bd3085a0815528fabdc",
+        "half-3-held.bin": "2ef78abb1bbd4123be5c3d8cd54c584e8332a761f9c62bd3085a0815528fabdc"
+      },
+      "interpretation": "Rejected ray codec: unpadded RGB integer chunks can round onto half-integer ties after sky debanding/half-float storage. Retain raw results; do not use their decoded rays as exact evidence. X happens to pass native equality but does not validate this codec."
+    },
+    {
+      "label": "rays-y-mixed02",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/rays-y-mixed02",
+      "checks": 78,
+      "failures": 3,
+      "exit_code": 1,
+      "errors": [
+        "FAIL exact raw cloud buffer candidate",
+        "FAIL exact raw cloud buffer restore",
+        "FAIL exact raw cloud buffer repeat"
+      ],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffers.gd": "8d955522affe23f3cf9c84e06efabcdc8b2658670fd90ef0cea80a2b6d8c5b5a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_binding_probe.gd": "3fa85c8a7ff5ffc42cc8f2c18edf66ac51424218a7c562aa350c34fe29aead8e",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "frozen_results_sha256": {
+        "run.json": "9e29fa419aa853ae94edb4297f3405b528ec07aa3c95fc7327ce41676672bc56",
+        "cloud-sky-inputs.json": "83bc39a45b2b79f3741b91dc0f6a4c7e715286b2ff3c55243167263521947e39",
+        "candidate.gdshader": "0d8c69876b07cd820c247da590c8f9bfeaf94c3ab0145fe939ebdf434f3b3063",
+        "reference.gdshader": "c18644daf7672ee4e65dc8db0189a946757a68cebfc4d154a547989d9c6b487f"
+      },
+      "native_buffers_sha256": {
+        "half-0-first.bin": "75437c2a869a613e08e06ec8cbca3016f00ef91a0a5ece0681efcd1540b6edb7",
+        "half-0-held.bin": "75437c2a869a613e08e06ec8cbca3016f00ef91a0a5ece0681efcd1540b6edb7",
+        "half-1-first.bin": "c7ca1b047d4ef6dc4de914efaac736e64696a0cff96b4045ebc1452a7696c240",
+        "half-1-held.bin": "c7ca1b047d4ef6dc4de914efaac736e64696a0cff96b4045ebc1452a7696c240",
+        "half-2-first.bin": "75437c2a869a613e08e06ec8cbca3016f00ef91a0a5ece0681efcd1540b6edb7",
+        "half-2-held.bin": "75437c2a869a613e08e06ec8cbca3016f00ef91a0a5ece0681efcd1540b6edb7",
+        "half-3-first.bin": "c7ca1b047d4ef6dc4de914efaac736e64696a0cff96b4045ebc1452a7696c240",
+        "half-3-held.bin": "c7ca1b047d4ef6dc4de914efaac736e64696a0cff96b4045ebc1452a7696c240"
+      },
+      "ray_codec": {
+        "capture_count": 8,
+        "pixels_per_capture": 2056320,
+        "full_range_codec_errors": 0,
+        "red_state_count": 2,
+        "component_state_count": 2,
+        "analysis_sha256": "ad09bc9b59a9fbdeac1673b3432c19f48aeecf63c76c18da6f02f878daaa1bdc",
+        "analysis_file": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/rays-y-mixed02/ray-analysis.json"
+      },
+      "interpretation": "Valid scratch input diagnosis. True red scattering is retained; other channels carry ray/screen-coordinate data. Whole-sky image gates are omitted because those images are intentionally invalid as scene colour. Native equality failures remain recorded. No acceptance or timing claim."
+    },
+    {
+      "label": "rays-x-mixed02",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/rays-x-mixed02",
+      "checks": 78,
+      "failures": 3,
+      "exit_code": 1,
+      "errors": [
+        "FAIL exact raw cloud buffer candidate",
+        "FAIL exact raw cloud buffer restore",
+        "FAIL exact raw cloud buffer repeat"
+      ],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffers.gd": "8d955522affe23f3cf9c84e06efabcdc8b2658670fd90ef0cea80a2b6d8c5b5a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_binding_probe.gd": "3fa85c8a7ff5ffc42cc8f2c18edf66ac51424218a7c562aa350c34fe29aead8e",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "frozen_results_sha256": {
+        "run.json": "828ecae8b4e15553f92c46e0f9f83dee6b11212a180a9a2b4de9e5cb47308986",
+        "cloud-sky-inputs.json": "a33996921f4e0a0a76fb1d58fa03193d698a2d3ab8927a6ac4acfc517043366a",
+        "candidate.gdshader": "9622acbb0b2e0291886ac9733a27754df41eea9700b3598f0798a3040c5c7b9b",
+        "reference.gdshader": "91125f78ae4ee13db50ad3e51874c8ca1ff3b68523d2cdb0deb9e85d92b85c18"
+      },
+      "native_buffers_sha256": {
+        "half-0-first.bin": "cf95a1066e1221893c13a7a4234831bd95b8417e9b1ee40cb89731f994ee7579",
+        "half-0-held.bin": "cf95a1066e1221893c13a7a4234831bd95b8417e9b1ee40cb89731f994ee7579",
+        "half-1-first.bin": "a22309dd48ea8385f70cb60dd74ced425b73270e48e91f3693107814eb3eb205",
+        "half-1-held.bin": "a22309dd48ea8385f70cb60dd74ced425b73270e48e91f3693107814eb3eb205",
+        "half-2-first.bin": "cf95a1066e1221893c13a7a4234831bd95b8417e9b1ee40cb89731f994ee7579",
+        "half-2-held.bin": "cf95a1066e1221893c13a7a4234831bd95b8417e9b1ee40cb89731f994ee7579",
+        "half-3-first.bin": "a22309dd48ea8385f70cb60dd74ced425b73270e48e91f3693107814eb3eb205",
+        "half-3-held.bin": "a22309dd48ea8385f70cb60dd74ced425b73270e48e91f3693107814eb3eb205"
+      },
+      "ray_codec": {
+        "capture_count": 8,
+        "pixels_per_capture": 2056320,
+        "full_range_codec_errors": 0,
+        "red_state_count": 2,
+        "component_state_count": 2,
+        "analysis_sha256": "8686fa7c8444adf6708442c747518a92fbfa55ff1daaf79b3902f1da01147967",
+        "analysis_file": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/rays-x-mixed02/ray-analysis.json"
+      },
+      "interpretation": "Valid scratch input diagnosis. True red scattering is retained; other channels carry ray/screen-coordinate data. Whole-sky image gates are omitted because those images are intentionally invalid as scene colour. Native equality failures remain recorded. No acceptance or timing claim."
+    },
+    {
+      "label": "rays-uvy-mixed01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/rays-uvy-mixed01",
+      "checks": 78,
+      "failures": 3,
+      "exit_code": 1,
+      "errors": [
+        "FAIL raw held cloud buffer 3",
+        "FAIL exact raw cloud buffer restore",
+        "FAIL exact raw cloud buffer repeat"
+      ],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffers.gd": "8d955522affe23f3cf9c84e06efabcdc8b2658670fd90ef0cea80a2b6d8c5b5a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_binding_probe.gd": "e1f5c604d905e44f9a715191dd81b58276e3901400c071ea3408586733e9757c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "frozen_results_sha256": {
+        "run.json": "016b5a2e0a4e2bfd1ff20e506d84317839d98515ae1a275d176f540c69307134",
+        "cloud-sky-inputs.json": "5ec8bc5347ec41abfcfbbbdea42721c3846cc0bf484b55d8de912a2f2e9ed359",
+        "candidate.gdshader": "6e1782042676ddf7d5384e1ef6be8a24c6c8d4707eeb502768ee2cc38b38024b",
+        "reference.gdshader": "623852fcb2bc907d24e3d71024194628e2007c76959cfc86ecb587f13f6af943"
+      },
+      "native_buffers_sha256": {
+        "half-0-first.bin": "436d00e88eec35809dc9acb33afde25e1bf519762f08e56fc164f96fa55e1404",
+        "half-0-held.bin": "436d00e88eec35809dc9acb33afde25e1bf519762f08e56fc164f96fa55e1404",
+        "half-1-first.bin": "436d00e88eec35809dc9acb33afde25e1bf519762f08e56fc164f96fa55e1404",
+        "half-1-held.bin": "436d00e88eec35809dc9acb33afde25e1bf519762f08e56fc164f96fa55e1404",
+        "half-2-first.bin": "23f602227e3fa4b46839762e3285855704dbfc4b0ab20baf5da7bae360b91110",
+        "half-2-held.bin": "23f602227e3fa4b46839762e3285855704dbfc4b0ab20baf5da7bae360b91110",
+        "half-3-first.bin": "23f602227e3fa4b46839762e3285855704dbfc4b0ab20baf5da7bae360b91110",
+        "half-3-held.bin": "436d00e88eec35809dc9acb33afde25e1bf519762f08e56fc164f96fa55e1404"
+      },
+      "ray_codec": {
+        "capture_count": 8,
+        "pixels_per_capture": 2056320,
+        "full_range_codec_errors": 0,
+        "red_state_count": 2,
+        "component_state_count": 1,
+        "analysis_sha256": "c33404f4813540dfe54d673382bb5ecc08899af725e923448277640e2d83f4ac",
+        "analysis_file": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/rays-uvy-mixed01/ray-analysis.json"
+      },
+      "interpretation": "Valid scratch input diagnosis. True red scattering is retained; other channels carry ray/screen-coordinate data. Whole-sky image gates are omitted because those images are intentionally invalid as scene colour. Native equality failures remain recorded. No acceptance or timing claim."
+    },
+    {
+      "label": "rays-z-mixed02",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/rays-z-mixed02",
+      "checks": 78,
+      "failures": 4,
+      "exit_code": 1,
+      "errors": [
+        "FAIL raw held cloud buffer 0",
+        "FAIL raw held cloud buffer 2",
+        "FAIL exact raw cloud buffer candidate",
+        "FAIL exact raw cloud buffer restore"
+      ],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffers.gd": "8d955522affe23f3cf9c84e06efabcdc8b2658670fd90ef0cea80a2b6d8c5b5a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_binding_probe.gd": "e1f5c604d905e44f9a715191dd81b58276e3901400c071ea3408586733e9757c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "frozen_results_sha256": {
+        "run.json": "416d1314dcb0ae78d9419fb8ef06487b816db3415444055bfd178625631f04f5",
+        "cloud-sky-inputs.json": "fd711fbf3e927efd84b70e3f7c34e881a84b28ac0c39c0591bf8725b5a0bd2b3",
+        "candidate.gdshader": "700981fcf6534fbe2cacd66859d2853a9b1c041d90ae19eebb7840ff5042d616",
+        "reference.gdshader": "d429b8e706ae8574205a041dcdeb49dccd32910baf8d4ca51dd1793f20da9c64"
+      },
+      "native_buffers_sha256": {
+        "half-0-first.bin": "687fb5906402e19d0a88aab1cbf3ca3dbc999e05d18be466b411ae864e13355b",
+        "half-0-held.bin": "8e56ae9dbdfcf1de8b48b55273a0ffc9c05899a07b26f64eb9e48815e06f094a",
+        "half-1-first.bin": "8e56ae9dbdfcf1de8b48b55273a0ffc9c05899a07b26f64eb9e48815e06f094a",
+        "half-1-held.bin": "8e56ae9dbdfcf1de8b48b55273a0ffc9c05899a07b26f64eb9e48815e06f094a",
+        "half-2-first.bin": "8e56ae9dbdfcf1de8b48b55273a0ffc9c05899a07b26f64eb9e48815e06f094a",
+        "half-2-held.bin": "687fb5906402e19d0a88aab1cbf3ca3dbc999e05d18be466b411ae864e13355b",
+        "half-3-first.bin": "8e56ae9dbdfcf1de8b48b55273a0ffc9c05899a07b26f64eb9e48815e06f094a",
+        "half-3-held.bin": "8e56ae9dbdfcf1de8b48b55273a0ffc9c05899a07b26f64eb9e48815e06f094a"
+      },
+      "ray_codec": {
+        "capture_count": 8,
+        "pixels_per_capture": 2056320,
+        "full_range_codec_errors": 0,
+        "red_state_count": 2,
+        "component_state_count": 2,
+        "analysis_sha256": "6d52277b50c23349331f28724c2ec961fa4a1040deec1af227e996563e78db4f",
+        "analysis_file": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/rays-z-mixed02/ray-analysis.json"
+      },
+      "interpretation": "Valid scratch input diagnosis. True red scattering is retained; other channels carry ray/screen-coordinate data. Whole-sky image gates are omitted because those images are intentionally invalid as scene colour. Native equality failures remain recorded. No acceptance or timing claim."
+    },
+    {
+      "label": "push-mixed01",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/push-mixed01",
+      "checks": 85,
+      "failures": 7,
+      "exit_code": 1,
+      "errors": [
+        "FAIL held sky 0",
+        "FAIL raw held cloud buffer 0",
+        "FAIL exact sky candidate",
+        "FAIL exact sky restore",
+        "FAIL exact raw cloud buffer restore",
+        "FAIL exact sky repeat",
+        "FAIL exact raw cloud buffer repeat"
+      ],
+      "warnings": [],
+      "termination_reason": null,
+      "other_engines_absent": true,
+      "runtime_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffers.gd": "69da159b70c739cadf14e91bc0534356971217eb520976e6f0eed4bc09884860",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_background.gd": "9852d363c54dbc3a31e9ee45787c3569c98637272f7394840749aec4392a22dd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/bounds_reference.gd": "e423403e236ccee4966ffe626b7e69db2d361056f28c3e89129cc53fac55f618",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_buffer_probe.gd": "19f36cde614ffd67571778a87e3238e1e881049117874abdc16ad3504fff605f",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_binding_probe.gd": "e1f5c604d905e44f9a715191dd81b58276e3901400c071ea3408586733e9757c",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/sky_push_trace.c": "8dfeb0b719111a4073c63227f5c5d8460dd48c5f5a0b83da07cc494f366381a7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-bindings-20261010/libsky_push_trace.so": "0854b6501653e65319836edbb265259230fcd4a78396aff3b06b3b94f9d0eaa9"
+      },
+      "frozen_results_sha256": {
+        "run.json": "112ac707a9dd92ec907e27435cc7c203a25ad41085109efbed231f2c48af9d13",
+        "cloud-sky-inputs.json": "66734722b211ce5850cb0d6bf6fad7446b13dbd7c7bd51e8425b4043eadc408e",
+        "candidate.gdshader": "ca198fe5e44864fee1a9d03fca1a7ad5e21ae10941fea3e6a8303dfdaeba3f6d",
+        "reference.gdshader": "33a6bb4f3791004827b76c0dbe56851d85793b3e7882cf94c709bf5c698c4488"
+      },
+      "native_buffers_sha256": {
+        "half-0-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-0-held.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-1-first.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-1-held.bin": "8c40bdf6a350ef6eee12dd402b55c64c9580f614d9f2c6511b933df89d8edc5d",
+        "half-2-first.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-2-held.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-3-first.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd",
+        "half-3-held.bin": "7845ffe027a9d910348aa8c8f03d3cbc0cc49595c56d9be261fefe0df43c50cd"
+      },
+      "interpretation": "Sky binding readback with original cloud RGBA outside bottom diagnostic strip; real whole-image/native-buffer equality failures retained."
+    }
+  ]
+}
