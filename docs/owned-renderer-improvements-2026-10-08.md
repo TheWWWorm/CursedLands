@@ -5696,3 +5696,37 @@ routes remain open. Main thread only.
 The packaging audit also found two missing tracked Godot UID sidecars for the
 transition scripts. They now retain the IDs from the qualified pack, preventing a
 fresh export from generating different IDs. Script bytes and behavior are unchanged.
+
+## Shared cloud-shadow field — 10 October
+
+Forward+ volumetric clouds now share one 512×512 HDR directional attenuation
+field between surface receivers. Projecting each receiver into the same sun
+column replaces eight density samples per fragment with one filtered lookup.
+The map-centred 1024 m domain uses approximately 2 MiB of colour storage. The
+original integrator remains the fallback for its boundaries, low sun, and
+receivers within the cloud layer. This does not alter sky/reflection ray steps,
+cloud shapes, noise assets or the existing default-off setting.
+
+The producer is a child of the active receiving viewport and is published only
+after attachment. Night suspends its work; viewport transfer and disabling
+clouds free its actual GPU texture. Mobile, Compatibility and headless retain
+their previous paths. No new graphics option was added.
+
+[Qualification](validation/cloud-shadow-field-2026-10-10.json): **189/0** final
+checks across eight runs, including 8,071,342 projected GPU sample positions.
+Worst measured absolute attenuation error is 0.0023365. Held state, reference
+restoration and repeated captures are exact. The fair 4K view is unchanged;
+mixed terrain and enhanced-water comparisons differ by at most one RGB byte.
+
+Serial 4K Linux RTX3090 Ti ABBA measurements, including producer cost:
+
+| Fixture | Direct GPU medians | Shared GPU medians | Mean reduction |
+| --- | --- | --- | --- |
+| bz2g terrain, fair Ingos weather | 2.690 / 2.691 ms | 2.102 / 2.102 ms | 21.9% |
+| bz2g terrain, mixed Ingos weather | 3.288 / 3.295 ms | 2.120 / 2.128 ms | 35.5% |
+| zone1 enhanced water, mixed weather | 6.378 / 6.458 ms | 5.063 / 5.077 ms | 21.0% |
+
+These are controlled viewport workloads, not whole-game FPS or full Ingos
+multiplayer. Sky/reflection costs, Windows D3D12/Vulkan and the user's RTX4090
+Mobile remain unqualified. The receipt retains failed exploratory runs, invalid
+zero-timestamp attempts, exact source/pack hashes, commands and GPU logs.

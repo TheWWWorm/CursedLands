@@ -5,6 +5,7 @@ extends RefCounted
 const Wind = preload("res://src/game/fx/weather_wind.gd")
 const Volume = preload("res://src/game/fx/cloud_volume.gd")
 const VolumeNoise = preload("res://src/game/fx/cloud_volume_noise.gd")
+const ShadowField = preload("res://src/game/fx/cloud_shadow_field.gd")
 const HEIGHT := 160.0
 const COMMON := """
 global uniform sampler2D ei_cloud_noise : filter_linear_mipmap, repeat_enable;
@@ -65,6 +66,12 @@ vec3 ei_cloud_sky(vec3 base,vec3 origin,vec3 ray,vec3 cloud_ambient,vec3 sun) {
 
 static func shadow_source() -> String:
 	if mode()<2: return SHADOW
+	if RenderingServer.get_current_rendering_method()=="forward_plus":
+		return SHADOW.replace("ei_cloud_sun(","ei_cloud_sheet_sun(")+ShadowField.LOOKUP+"""
+float ei_cloud_sun(vec3 p){
+	return ei_cv_storm.z<.5?ei_cloud_sheet_sun(p):cv_shadow_field(p);
+}
+"""
 	return SHADOW.replace("ei_cloud_sun(","ei_cloud_sheet_sun(")+"""
 float ei_cloud_sun(vec3 p){
 	return ei_cv_storm.z<.5?ei_cloud_sheet_sun(p):cv_shadow(p,ei_sun_dir);

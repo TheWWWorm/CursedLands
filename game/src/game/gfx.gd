@@ -13,6 +13,7 @@ static var _cloud_owner := 0
 static var _cloud_frame := {"state":Vector4.ZERO,"phases":Vector4.ZERO,"twinkle":Vector2.ZERO}
 static var _cloud_volume_noise: Clouds.VolumeNoise
 static var _cloud_volume_tried := false
+static var _cloud_shadow_field: Clouds.ShadowField
 
 
 ## ---------------------------------------------------------------- original lighting
@@ -695,6 +696,8 @@ static func ensure_globals() -> void:
 	RenderingServer.global_shader_parameter_add(&"ei_cv_detail", RenderingServer.GLOBAL_VAR_TYPE_SAMPLER3D, null)
 	RenderingServer.global_shader_parameter_add(&"ei_cv_weather", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
 	RenderingServer.global_shader_parameter_add(&"ei_cv_storm", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
+	RenderingServer.global_shader_parameter_add(&"ei_cv_shadow_field", RenderingServer.GLOBAL_VAR_TYPE_SAMPLER2D, null)
+	RenderingServer.global_shader_parameter_add(&"ei_cv_shadow_domain", RenderingServer.GLOBAL_VAR_TYPE_VEC4, Vector4.ZERO)
 	for layer in 6:
 		RenderingServer.global_shader_parameter_add(StringName("ei_cv_phase%d"%layer),RenderingServer.GLOBAL_VAR_TYPE_VEC3,Vector3.ZERO)
 	for i in PASS_LIGHTS:
@@ -727,11 +730,19 @@ static func set_cloud_frame(owner: int, frame: Dictionary) -> void:
 			RenderingServer.global_shader_parameter_set(&"ei_cv_storm",frame.volume.storm)
 			for layer in 6:
 				RenderingServer.global_shader_parameter_set(StringName("ei_cv_phase%d"%layer),frame.volume.phases[layer])
+			if RenderingServer.get_current_rendering_method()=="forward_plus":
+				var receiver:=instance_from_id(owner) as Node
+				if receiver and receiver.is_inside_tree():
+					if not _cloud_shadow_field: _cloud_shadow_field=Clouds.ShadowField.new()
+					var extent: Vector2=receiver.size_ei() if receiver is EITerrain else _border_size
+					_cloud_shadow_field.update(receiver,extent,frame.state.y>0.0)
 	else:
 		_release_cloud_volume()
 
 
 static func _release_cloud_volume() -> void:
+	if _cloud_shadow_field:
+		_cloud_shadow_field.release();_cloud_shadow_field=null
 	if _cloud_volume_noise==null and not _cloud_volume_tried: return
 	if _globals:
 		RenderingServer.global_shader_parameter_set(&"ei_cv_storm",Vector4.ZERO)

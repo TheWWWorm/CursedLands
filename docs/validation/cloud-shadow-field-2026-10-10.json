@@ -1,0 +1,1039 @@
+{
+  "date": "2026-10-10",
+  "feature": "Shared Forward+ directional cloud-shadow integration",
+  "status": "Accepted for local test; bounded approximation, no sky/reflection shape change or default rollout",
+  "base_commit": "019d99f2a614f7e2d273d707b3157912a9ba5512",
+  "implementation": {
+    "texture": [
+      512,
+      512
+    ],
+    "span_metres": 1024,
+    "sample_spacing_metres": 2,
+    "colour_storage_approx_mib": 2,
+    "format": "HDR half-float colour; readback RGBH or RGBAH",
+    "domain": "Map-centred snapped column coordinates xz-height*normalised_sun.xz/normalised_sun.y",
+    "eligibility": "Forward+ volume clouds, receiver below volume base, sun elevation >=0.18, within half-texel inset. Otherwise original per-receiver integrator. Disabled/night/above-volume return original visibility policy.",
+    "lifetime": "One producer under active receiving viewport; deferred attach before publishing; pause uses same clock/global values; night suspends draws; viewport transfer/cloud disable clears global handles and frees old GPU RID.",
+    "settings": "No new setting. Clouds and V1/V8 stay default-off; Mobile/Compatibility/headless retain prior paths."
+  },
+  "candidate": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate02",
+    "build_sha256": "f78bd46b845b566cf080da3c9fa140f07c37d9601d1f87fc0135d8a3b00308e2",
+    "base_commit": "019d99f2a614f7e2d273d707b3157912a9ba5512",
+    "production_changes": {
+      "src/game/fx/clouds.gd": "e9a901680648b0cc15f58bc24c5bb80d23de34a99da231cade3f56eabf927081",
+      "src/game/gfx.gd": "76c6a0155f25beff94342a2bec487161e18aab1335e15a8b7cf88a52b1f572fc",
+      "src/game/fx/cloud_shadow_field.gd": "eb2e71b494f9e7627c399c49fc9eae150e0cbd1199d95fc0f8dbda399b8aa890"
+    },
+    "steps": [
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate02/stage",
+          "--editor",
+          "--import",
+          "--quit"
+        ],
+        "return_code": 0,
+        "seconds": 5.87406425102381,
+        "errors": []
+      },
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate02/stage",
+          "--export-pack",
+          "Linux",
+          "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate02/CursedLands.pck"
+        ],
+        "return_code": 0,
+        "seconds": 5.172783774964046,
+        "errors": []
+      }
+    ],
+    "private_candidate": true,
+    "added_resources": [
+      "src/game/fx/cloud_shadow_field.gd.remap",
+      "src/game/fx/cloud_shadow_field.gdc"
+    ],
+    "removed_resources": [],
+    "pack_changes": [
+      ".godot/uid_cache.bin",
+      "src/game/fx/clouds.gdc",
+      "src/game/gfx.gdc"
+    ],
+    "preserved_unchanged_scene": ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn",
+    "resource_count": 684,
+    "files": {
+      "CursedLands.pck": "771d6467e8f9c8db807500f30fae0c00ce19f56878ad5b36e10801689a7c039f",
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    }
+  },
+  "production_acceptance": {
+    "checks": 189,
+    "failures": 0,
+    "runs": 8
+  },
+  "runs": {
+    "lifecycle-forward04": {
+      "checks": 55,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-forward04/run.json",
+      "manifest_sha256": "3ab093f1b6701212bb010dd17ba072d01ff6b35efd6bd0d7555844b6ff752166",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-forward04/cloud-shadow-field-lifecycle.json",
+      "result_sha256": "382945d9a6d44d0babe4b19e550b05430dc8258be280c9b77906793a4de315a3",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate02/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-forward04/tool-source.gd"
+      ],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "44706a27da911a5ae0134a64d90f99bc598215de5652faf87404f3b049edf73a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "captures": {},
+      "other_engines_absent": true,
+      "warnings": [],
+      "gpu_clock_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-forward04/gpu-clocks.log",
+      "gpu_process_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-forward04/gpu-processes.log"
+    },
+    "lifecycle-mobile02": {
+      "checks": 6,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-mobile02/run.json",
+      "manifest_sha256": "a8e646fd3c6954c0f93171ab2a2b57d3fb29cb1e54917e15d60bdec4178347f9",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-mobile02/cloud-shadow-field-lifecycle.json",
+      "result_sha256": "df899728763b6e22d6dbe43cf500fcfc576b4bfa86f35747fa9177f410ceeb71",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate02/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-mobile02/tool-source.gd"
+      ],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "44706a27da911a5ae0134a64d90f99bc598215de5652faf87404f3b049edf73a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "captures": {},
+      "other_engines_absent": true,
+      "warnings": [],
+      "gpu_clock_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-mobile02/gpu-clocks.log",
+      "gpu_process_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-mobile02/gpu-processes.log"
+    },
+    "lifecycle-compatibility02": {
+      "checks": 6,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-compatibility02/run.json",
+      "manifest_sha256": "9b203f822251c81f6cd1294f5a94552baa9d166e3db4bd3d6660765cfedf5944",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-compatibility02/cloud-shadow-field-lifecycle.json",
+      "result_sha256": "c4adbf0b27948a59f2ca648048e85bb290de55d56ef2f726c6ad1b54eaec8c06",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate02/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-compatibility02/tool-source.gd"
+      ],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "44706a27da911a5ae0134a64d90f99bc598215de5652faf87404f3b049edf73a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "captures": {},
+      "other_engines_absent": true,
+      "warnings": [
+        "WARNING: The Compatibility renderer does not support overriding the GPU with the --gpu-index command line argument. Falling back to the default GPU for OpenGL applications.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "gpu_clock_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-compatibility02/gpu-clocks.log",
+      "gpu_process_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-compatibility02/gpu-processes.log"
+    },
+    "lifecycle-headless02": {
+      "checks": 6,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-headless02/run.json",
+      "manifest_sha256": "083deee5231fedbe888f48dbe5d64bbca0971d27a37413a1c787bf48f902b643",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-headless02/cloud-shadow-field-lifecycle.json",
+      "result_sha256": "f88c0281f0a70864dd0f7f89ba3fb0a9cf1279bb32df06d914e9ec7cad057298",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate02/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-headless02/tool-source.gd"
+      ],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "44706a27da911a5ae0134a64d90f99bc598215de5652faf87404f3b049edf73a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "captures": {},
+      "other_engines_absent": true,
+      "warnings": [],
+      "gpu_clock_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-headless02/gpu-clocks.log",
+      "gpu_process_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/lifecycle-headless02/gpu-processes.log"
+    },
+    "projection-forward02": {
+      "checks": 83,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/projection-forward02/run.json",
+      "manifest_sha256": "a2f87048b5bc3422d5e94c4acfbc2dbc2b3df8c48b4964ce5bfc5a07c808aa25",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/projection-forward02/shadow-probe.json",
+      "result_sha256": "fe873ecbf2408a1d5ae2380a64a1ce2a50c766b5d53ede6fa43b62b61187e33e",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate02/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/projection-forward02/tool-source.gd"
+      ],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field_projection.gd": "caa01b7c3fbebf482f8245d298fedf8a6e75d4a518f4bbfa0d610b867b8579fd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "captures": {
+        "probe-scaled-sun.png": "cf537d90a84a3a0bcebeababeda006a0acaa4d09659414724c707181e79e26c4",
+        "probe-night.png": "4ca8cb705cb5db19fd9ac930e992f9dbd0afb233aee55e54e6cf717541e8f5e9",
+        "probe-ingos.png": "e0e80992504b52ea997a3ff0fab7fc8a531a8e03d24154423d7006ac8fdc9554",
+        "probe-gipat.png": "4ca8cb705cb5db19fd9ac930e992f9dbd0afb233aee55e54e6cf717541e8f5e9",
+        "probe-suslanger.png": "4ca8cb705cb5db19fd9ac930e992f9dbd0afb233aee55e54e6cf717541e8f5e9",
+        "probe-storm.png": "606fb613bb98ea0b2ba074dca5f553494f425ca66997af6f3a95f06c3a22f21b",
+        "probe-low-sun.png": "df0ddb794a20134e1fefe3455dccb30d837fc224a5436175dd0ab263c7dc9aee"
+      },
+      "other_engines_absent": true,
+      "warnings": [],
+      "gpu_clock_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/projection-forward02/gpu-clocks.log",
+      "gpu_process_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/projection-forward02/gpu-processes.log"
+    },
+    "integrated-fair02": {
+      "checks": 11,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-fair02/run.json",
+      "manifest_sha256": "05df12dbeab282344a2b51930b7c97e1800806e42a7ef6630425900362127d4c",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-fair02/shadow-field.json",
+      "result_sha256": "14598fcc3dd0d26e1f6a6b5473e33f28138f26951fc89c2580d6fc5de0bbafbe",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate02/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-fair02/tool-source.gd",
+        "--weather=fair",
+        "--grid=512"
+      ],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated.gd": "439a6ab721e4807faf7821132144704380abde39ecca8724b94a4b01d2285950",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/field.gd": "ec0d15b7c2a0df694c7f271d19818b9832cfc76bdc119a6021ee737b22733a00",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/cloud_bounds_ground.gd": "1164276d1095b4a0a1349780dd687a44ace6172ea63ba1cdafefc401f76154a8",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee"
+      },
+      "captures": {
+        "shadow-3.png": "939b85e265c0f2daa14515aa5cbceb265033bb6632e73b14f2c2f8a526083041",
+        "shadow-0.png": "939b85e265c0f2daa14515aa5cbceb265033bb6632e73b14f2c2f8a526083041",
+        "shadow-2.png": "939b85e265c0f2daa14515aa5cbceb265033bb6632e73b14f2c2f8a526083041",
+        "shadow-1.png": "939b85e265c0f2daa14515aa5cbceb265033bb6632e73b14f2c2f8a526083041"
+      },
+      "other_engines_absent": true,
+      "warnings": [],
+      "gpu_clock_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-fair02/gpu-clocks.log",
+      "gpu_process_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-fair02/gpu-processes.log"
+    },
+    "integrated-mixed02": {
+      "checks": 11,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-mixed02/run.json",
+      "manifest_sha256": "f658c806a4d44cd5e941add6754167775d8447d85c024c6f49474e047016143a",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-mixed02/shadow-field.json",
+      "result_sha256": "de9b39db3055fb653fdd4dcfd8b2f60769f8ec710767d0e5775a0f1b5981b907",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate02/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-mixed02/tool-source.gd",
+        "--weather=mixed",
+        "--grid=512"
+      ],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated.gd": "439a6ab721e4807faf7821132144704380abde39ecca8724b94a4b01d2285950",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/field.gd": "ec0d15b7c2a0df694c7f271d19818b9832cfc76bdc119a6021ee737b22733a00",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/cloud_bounds_ground.gd": "1164276d1095b4a0a1349780dd687a44ace6172ea63ba1cdafefc401f76154a8",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee"
+      },
+      "captures": {
+        "shadow-3.png": "2aa878f6946f41f05086f1fa987ca36d1fd20d7db8d6f24566be1522a7bc74ca",
+        "shadow-0.png": "2aa878f6946f41f05086f1fa987ca36d1fd20d7db8d6f24566be1522a7bc74ca",
+        "shadow-2.png": "bc1f024e714e865306469d5d78d6da5a110ed7b84bd04fb0e636f6046bd35078",
+        "shadow-1.png": "bc1f024e714e865306469d5d78d6da5a110ed7b84bd04fb0e636f6046bd35078"
+      },
+      "other_engines_absent": true,
+      "warnings": [],
+      "gpu_clock_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-mixed02/gpu-clocks.log",
+      "gpu_process_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-mixed02/gpu-processes.log"
+    },
+    "integrated-water02": {
+      "checks": 11,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-water02/run.json",
+      "manifest_sha256": "afbe726f5560d453c202399e7fcb18d0210922e33ca6a3bbc33fed4c76b20b1c",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-water02/shadow-field.json",
+      "result_sha256": "fc5f082dd651c9be2c6fe35729b92c79126f79a2555e795cfd2642c746af9817",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate02/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-water02/tool-source.gd",
+        "--weather=mixed",
+        "--grid=512"
+      ],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated_water.gd": "5a4c2837ef5c001aac24ad6d0e74eda8c602c0f0e39893f7a437118c77fa5d76",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated.gd": "439a6ab721e4807faf7821132144704380abde39ecca8724b94a4b01d2285950",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/field.gd": "ec0d15b7c2a0df694c7f271d19818b9832cfc76bdc119a6021ee737b22733a00",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/cloud_bounds_ground.gd": "1164276d1095b4a0a1349780dd687a44ace6172ea63ba1cdafefc401f76154a8",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee"
+      },
+      "captures": {
+        "shadow-3.png": "ee0a1a6a27a99ee50dc15d0102c8941e6720194b2a9fd3b916a1c2f0be37cde2",
+        "shadow-0.png": "ee0a1a6a27a99ee50dc15d0102c8941e6720194b2a9fd3b916a1c2f0be37cde2",
+        "shadow-2.png": "20f2f472724fa4376ca6974b99479745035d9f0d01e963a9cf75e57805e4f6d6",
+        "shadow-1.png": "20f2f472724fa4376ca6974b99479745035d9f0d01e963a9cf75e57805e4f6d6"
+      },
+      "other_engines_absent": true,
+      "warnings": [],
+      "gpu_clock_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-water02/gpu-clocks.log",
+      "gpu_process_log": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/integrated-water02/gpu-processes.log"
+    }
+  },
+  "performance": [
+    {
+      "run": "integrated-fair02",
+      "viewport": [
+        3840,
+        2160
+      ],
+      "direct_gpu_ms": [
+        2.69000005722046,
+        2.69099998474121
+      ],
+      "shared_gpu_ms_including_producer": [
+        2.10199998319149,
+        2.10200008004904
+      ],
+      "producer_gpu_ms": [
+        0.034000001847744,
+        0.034000001847744
+      ],
+      "improvement_percent": 21.873257192766328,
+      "quality": {
+        "changed_pixels": 0,
+        "mean_max_channel_delta": 0.0,
+        "peak_delta": 0,
+        "pixels_over_2": 0,
+        "pixels_over_8": 0
+      },
+      "held_restore_repeat_exact": true,
+      "arms": [
+        {
+          "arm": 0,
+          "cache_gpu_ms": {
+            "max": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "p95": 0.0
+          },
+          "cached": false,
+          "case": "cost",
+          "draws": 12,
+          "frame_wall_ms": {
+            "max": 9.672,
+            "median": 7.52,
+            "min": 0.555,
+            "p95": 8.589
+          },
+          "frames_drawn": 240,
+          "grid": 512,
+          "span": 1024.0,
+          "sum_gpu_ms": {
+            "max": 2.71199989318848,
+            "median": 2.69000005722046,
+            "min": 2.68300008773804,
+            "p95": 2.70300006866455
+          },
+          "viewport_cpu_ms": {
+            "max": 0.200000002980232,
+            "median": 0.0850000008940697,
+            "min": 0.063000001013279,
+            "p95": 0.141000002622604
+          },
+          "viewport_gpu_ms": {
+            "max": 2.71199989318848,
+            "median": 2.69000005722046,
+            "min": 2.68300008773804,
+            "p95": 2.70300006866455
+          },
+          "weather": "fair"
+        },
+        {
+          "arm": 1,
+          "cache_gpu_ms": {
+            "max": 0.0370000004768372,
+            "median": 0.034000001847744,
+            "min": 0.0320000015199184,
+            "p95": 0.0359999984502792
+          },
+          "cached": true,
+          "case": "cost",
+          "draws": 12,
+          "frame_wall_ms": {
+            "max": 15.96,
+            "median": 7.474,
+            "min": 0.544,
+            "p95": 8.672
+          },
+          "frames_drawn": 240,
+          "grid": 512,
+          "span": 1024.0,
+          "sum_gpu_ms": {
+            "max": 2.12300005927682,
+            "median": 2.10199998319149,
+            "min": 2.09299994260073,
+            "p95": 2.11499992385507
+          },
+          "viewport_cpu_ms": {
+            "max": 0.189999997615814,
+            "median": 0.0810000002384186,
+            "min": 0.0649999976158142,
+            "p95": 0.12899999320507
+          },
+          "viewport_gpu_ms": {
+            "max": 2.08800005912781,
+            "median": 2.06800007820129,
+            "min": 2.05999994277954,
+            "p95": 2.08100008964539
+          },
+          "weather": "fair"
+        },
+        {
+          "arm": 2,
+          "cache_gpu_ms": {
+            "max": 0.0390000008046627,
+            "median": 0.034000001847744,
+            "min": 0.0320000015199184,
+            "p95": 0.0359999984502792
+          },
+          "cached": true,
+          "case": "cost",
+          "draws": 12,
+          "frame_wall_ms": {
+            "max": 16.175,
+            "median": 7.644,
+            "min": 0.565,
+            "p95": 8.983
+          },
+          "frames_drawn": 240,
+          "grid": 512,
+          "span": 1024.0,
+          "sum_gpu_ms": {
+            "max": 2.12399998679757,
+            "median": 2.10200008004904,
+            "min": 2.09400003775954,
+            "p95": 2.11600001901388
+          },
+          "viewport_cpu_ms": {
+            "max": 0.224999994039536,
+            "median": 0.0790000036358833,
+            "min": 0.0640000030398369,
+            "p95": 0.109999999403954
+          },
+          "viewport_gpu_ms": {
+            "max": 2.08899998664856,
+            "median": 2.06800007820129,
+            "min": 2.06100010871887,
+            "p95": 2.08100008964539
+          },
+          "weather": "fair"
+        },
+        {
+          "arm": 3,
+          "cache_gpu_ms": {
+            "max": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "p95": 0.0
+          },
+          "cached": false,
+          "case": "cost",
+          "draws": 12,
+          "frame_wall_ms": {
+            "max": 9.978,
+            "median": 7.512,
+            "min": 0.575,
+            "p95": 8.735
+          },
+          "frames_drawn": 240,
+          "grid": 512,
+          "span": 1024.0,
+          "sum_gpu_ms": {
+            "max": 2.71399998664856,
+            "median": 2.69099998474121,
+            "min": 2.68400001525879,
+            "p95": 2.7039999961853
+          },
+          "viewport_cpu_ms": {
+            "max": 0.214000001549721,
+            "median": 0.0820000022649765,
+            "min": 0.0659999996423721,
+            "p95": 0.116999998688698
+          },
+          "viewport_gpu_ms": {
+            "max": 2.71399998664856,
+            "median": 2.69099998474121,
+            "min": 2.68400001525879,
+            "p95": 2.7039999961853
+          },
+          "weather": "fair"
+        }
+      ]
+    },
+    {
+      "run": "integrated-mixed02",
+      "viewport": [
+        3840,
+        2160
+      ],
+      "direct_gpu_ms": [
+        3.28800010681152,
+        3.29500007629395
+      ],
+      "shared_gpu_ms_including_producer": [
+        2.12000002712011,
+        2.12799992412329
+      ],
+      "producer_gpu_ms": [
+        0.0469999983906746,
+        0.0469999983906746
+      ],
+      "improvement_percent": 35.47015292289656,
+      "quality": {
+        "changed_pixels": 158747,
+        "mean_max_channel_delta": 0.0191390576774691,
+        "peak_delta": 1,
+        "pixels_over_2": 0,
+        "pixels_over_8": 0
+      },
+      "held_restore_repeat_exact": true,
+      "arms": [
+        {
+          "arm": 0,
+          "cache_gpu_ms": {
+            "max": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "p95": 0.0
+          },
+          "cached": false,
+          "case": "cost",
+          "draws": 12,
+          "frame_wall_ms": {
+            "max": 16.005,
+            "median": 7.081,
+            "min": 0.572,
+            "p95": 8.72
+          },
+          "frames_drawn": 240,
+          "grid": 512,
+          "span": 1024.0,
+          "sum_gpu_ms": {
+            "max": 3.32100009918213,
+            "median": 3.28800010681152,
+            "min": 3.26999998092651,
+            "p95": 3.31200003623962
+          },
+          "viewport_cpu_ms": {
+            "max": 0.172000005841255,
+            "median": 0.0799999982118607,
+            "min": 0.0610000006854534,
+            "p95": 0.101999998092651
+          },
+          "viewport_gpu_ms": {
+            "max": 3.32100009918213,
+            "median": 3.28800010681152,
+            "min": 3.26999998092651,
+            "p95": 3.31200003623962
+          },
+          "weather": "mixed"
+        },
+        {
+          "arm": 1,
+          "cache_gpu_ms": {
+            "max": 0.0500000007450581,
+            "median": 0.0469999983906746,
+            "min": 0.0450000017881393,
+            "p95": 0.0489999987185001
+          },
+          "cached": true,
+          "case": "cost",
+          "draws": 12,
+          "frame_wall_ms": {
+            "max": 16.75,
+            "median": 7.47,
+            "min": 0.568,
+            "p95": 8.823
+          },
+          "frames_drawn": 240,
+          "grid": 512,
+          "span": 1024.0,
+          "sum_gpu_ms": {
+            "max": 2.2579999640584,
+            "median": 2.12000002712011,
+            "min": 2.10999989137053,
+            "p95": 2.1310001090169
+          },
+          "viewport_cpu_ms": {
+            "max": 0.187999993562698,
+            "median": 0.0780000016093254,
+            "min": 0.063000001013279,
+            "p95": 0.108999997377396
+          },
+          "viewport_gpu_ms": {
+            "max": 2.21099996566772,
+            "median": 2.07200002670288,
+            "min": 2.06399989128113,
+            "p95": 2.08400011062622
+          },
+          "weather": "mixed"
+        },
+        {
+          "arm": 2,
+          "cache_gpu_ms": {
+            "max": 0.0500000007450581,
+            "median": 0.0469999983906746,
+            "min": 0.0450000017881393,
+            "p95": 0.0489999987185001
+          },
+          "cached": true,
+          "case": "cost",
+          "draws": 12,
+          "frame_wall_ms": {
+            "max": 15.55,
+            "median": 7.52,
+            "min": 0.586,
+            "p95": 8.689
+          },
+          "frames_drawn": 240,
+          "grid": 512,
+          "span": 1024.0,
+          "sum_gpu_ms": {
+            "max": 2.15499994531274,
+            "median": 2.12799992412329,
+            "min": 2.11899995431304,
+            "p95": 2.14399988204241
+          },
+          "viewport_cpu_ms": {
+            "max": 0.172000005841255,
+            "median": 0.0780000016093254,
+            "min": 0.0610000006854534,
+            "p95": 0.119000002741814
+          },
+          "viewport_gpu_ms": {
+            "max": 2.10599994659424,
+            "median": 2.07999992370605,
+            "min": 2.07200002670288,
+            "p95": 2.09599995613098
+          },
+          "weather": "mixed"
+        },
+        {
+          "arm": 3,
+          "cache_gpu_ms": {
+            "max": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "p95": 0.0
+          },
+          "cached": false,
+          "case": "cost",
+          "draws": 12,
+          "frame_wall_ms": {
+            "max": 16.311,
+            "median": 7.116,
+            "min": 0.585,
+            "p95": 8.788
+          },
+          "frames_drawn": 240,
+          "grid": 512,
+          "span": 1024.0,
+          "sum_gpu_ms": {
+            "max": 3.32500004768372,
+            "median": 3.29500007629395,
+            "min": 3.26900005340576,
+            "p95": 3.31399989128113
+          },
+          "viewport_cpu_ms": {
+            "max": 0.164000004529953,
+            "median": 0.0820000022649765,
+            "min": 0.0659999996423721,
+            "p95": 0.123000003397465
+          },
+          "viewport_gpu_ms": {
+            "max": 3.32500004768372,
+            "median": 3.29500007629395,
+            "min": 3.26900005340576,
+            "p95": 3.31399989128113
+          },
+          "weather": "mixed"
+        }
+      ]
+    },
+    {
+      "run": "integrated-water02",
+      "viewport": [
+        3840,
+        2160
+      ],
+      "direct_gpu_ms": [
+        6.37799978256226,
+        6.45800018310547
+      ],
+      "shared_gpu_ms_including_producer": [
+        5.06300008296967,
+        5.07700002193451
+      ],
+      "producer_gpu_ms": [
+        0.0509999990463257,
+        0.0520000010728836
+      ],
+      "improvement_percent": 21.003426830589767,
+      "quality": {
+        "changed_pixels": 29692,
+        "mean_max_channel_delta": 0.00357976466049383,
+        "peak_delta": 1,
+        "pixels_over_2": 0,
+        "pixels_over_8": 0
+      },
+      "held_restore_repeat_exact": true,
+      "arms": [
+        {
+          "arm": 0,
+          "cache_gpu_ms": {
+            "max": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "p95": 0.0
+          },
+          "cached": false,
+          "case": "cost",
+          "draws": 33,
+          "frame_wall_ms": {
+            "max": 8.009,
+            "median": 6.436,
+            "min": 4.704,
+            "p95": 6.538
+          },
+          "frames_drawn": 240,
+          "grid": 512,
+          "span": 1024.0,
+          "sum_gpu_ms": {
+            "max": 6.48899984359741,
+            "median": 6.37799978256226,
+            "min": 6.24700021743774,
+            "p95": 6.43699979782104
+          },
+          "viewport_cpu_ms": {
+            "max": 0.35699999332428,
+            "median": 0.170000001788139,
+            "min": 0.140000000596046,
+            "p95": 0.211999997496605
+          },
+          "viewport_gpu_ms": {
+            "max": 6.48899984359741,
+            "median": 6.37799978256226,
+            "min": 6.24700021743774,
+            "p95": 6.43699979782104
+          },
+          "weather": "mixed"
+        },
+        {
+          "arm": 1,
+          "cache_gpu_ms": {
+            "max": 0.063000001013279,
+            "median": 0.0509999990463257,
+            "min": 0.0469999983906746,
+            "p95": 0.0610000006854534
+          },
+          "cached": true,
+          "case": "cost",
+          "draws": 33,
+          "frame_wall_ms": {
+            "max": 9.717,
+            "median": 5.15,
+            "min": 0.737,
+            "p95": 8.158
+          },
+          "frames_drawn": 240,
+          "grid": 512,
+          "span": 1024.0,
+          "sum_gpu_ms": {
+            "max": 5.20000016689301,
+            "median": 5.06300008296967,
+            "min": 4.93100011348724,
+            "p95": 5.1670001745224
+          },
+          "viewport_cpu_ms": {
+            "max": 0.230000004172325,
+            "median": 0.167999997735023,
+            "min": 0.136999994516373,
+            "p95": 0.199000000953674
+          },
+          "viewport_gpu_ms": {
+            "max": 5.14900016784668,
+            "median": 5.01000022888184,
+            "min": 4.88000011444092,
+            "p95": 5.11800003051758
+          },
+          "weather": "mixed"
+        },
+        {
+          "arm": 2,
+          "cache_gpu_ms": {
+            "max": 0.0540000014007092,
+            "median": 0.0520000010728836,
+            "min": 0.0469999983906746,
+            "p95": 0.0529999993741512
+          },
+          "cached": true,
+          "case": "cost",
+          "draws": 33,
+          "frame_wall_ms": {
+            "max": 16.837,
+            "median": 5.155,
+            "min": 0.749,
+            "p95": 8.562
+          },
+          "frames_drawn": 240,
+          "grid": 512,
+          "span": 1024.0,
+          "sum_gpu_ms": {
+            "max": 5.26300011202693,
+            "median": 5.07700002193451,
+            "min": 4.91999995708466,
+            "p95": 5.19099994003773
+          },
+          "viewport_cpu_ms": {
+            "max": 0.321000009775162,
+            "median": 0.168999999761581,
+            "min": 0.138999998569489,
+            "p95": 0.208000004291534
+          },
+          "viewport_gpu_ms": {
+            "max": 5.20900011062622,
+            "median": 5.02600002288818,
+            "min": 4.86899995803833,
+            "p95": 5.13899993896484
+          },
+          "weather": "mixed"
+        },
+        {
+          "arm": 3,
+          "cache_gpu_ms": {
+            "max": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "p95": 0.0
+          },
+          "cached": false,
+          "case": "cost",
+          "draws": 33,
+          "frame_wall_ms": {
+            "max": 12.89,
+            "median": 6.518,
+            "min": 0.814,
+            "p95": 6.666
+          },
+          "frames_drawn": 240,
+          "grid": 512,
+          "span": 1024.0,
+          "sum_gpu_ms": {
+            "max": 6.60200023651123,
+            "median": 6.45800018310547,
+            "min": 6.32000017166138,
+            "p95": 6.56400012969971
+          },
+          "viewport_cpu_ms": {
+            "max": 0.744000017642975,
+            "median": 0.171000003814697,
+            "min": 0.141000002622604,
+            "p95": 0.248999997973442
+          },
+          "viewport_gpu_ms": {
+            "max": 6.60200023651123,
+            "median": 6.45800018310547,
+            "min": 6.32000017166138,
+            "p95": 6.56400012969971
+          },
+          "weather": "mixed"
+        }
+      ]
+    }
+  ],
+  "performance_scope": "Linux RTX3090 Ti Forward+/Vulkan. Serial 4K viewport ABBA, 3-second preheat per program, 128 warmup +240 measured frames per arm, equal game-clock interval. Ground is original bz2g terrain under Ingos weather parameters, not a full Ingos original-MP scene. Enhanced-water fixture is original zone1. Producer GPU cost is included. Sky and reflection ray march unchanged. Whole-game FPS, Windows and RTX4090 Mobile are unmeasured. Clock/process logs retained; idle Python/ComfyUI and Xorg contexts were not terminated. No competing Godot/game engines observed.",
+  "projection": {
+    "checks": 83,
+    "sample_positions": 8071342,
+    "worst_absolute_attenuation_error": 0.00233650207519531,
+    "assertion_limit": 0.004,
+    "observed_below_one_in_255": true,
+    "coverage": "Seven weather/sun cases, five heights incl. below/inside/above volume, two clocks, outside-domain edges, 12 single-frame sun/weather/owner/enable jumps. Includes scaled non-unit sun guard and unpublished first-frame fallback."
+  },
+  "source_sha256": {
+    "game/src/game/fx/cloud_shadow_field.gd": "eb2e71b494f9e7627c399c49fc9eae150e0cbd1199d95fc0f8dbda399b8aa890",
+    "game/src/game/fx/cloud_shadow_field.gd.uid": "8e293352954be0057b9a9eb0591492af085152147554b775e78f7a1ebc6d0a28",
+    "game/src/game/fx/clouds.gd": "e9a901680648b0cc15f58bc24c5bb80d23de34a99da231cade3f56eabf927081",
+    "game/src/game/gfx.gd": "76c6a0155f25beff94342a2bec487161e18aab1335e15a8b7cf88a52b1f572fc"
+  },
+  "unchanged_source_sha256": {
+    "game/src/game/fx/cloud_volume.gd": "1a3b9639dc723109c80b612bdf4c5b89be039fc92f9e913c15cbc69fac7bcc39",
+    "game/src/game/fx/cloud_volume_noise.gd": "a2d57c9a764e97256d93e478451d4c337980bfe396a08d756ebd175f79284a2c",
+    "game/src/game/fx/waterfall_field.gd": "499b4bfaabae4565bd35ff9178c4b4b4d6d20f4da9a2a64df9a89a6f8bc53bdf",
+    "game/src/game/fx/waterfall_shader.gd": "d26f34c0fc2467e5a328737b4d8873d07ca81394d950df2fda3658f5703155f1",
+    "game/src/game/fx/waterfalls.gd": "fa3f0920a283b53c0944d0c45340fc732694f5ef151323f52237d70dfc87b590",
+    "game/src/ei/game_data.gd": "5142494a56df5b53c526049443e207967535b5170c7d9f3e3aac58ffa0b5fa6c"
+  },
+  "test_sha256": {
+    "tools/tests/cloud_shadow_field.gd": "44706a27da911a5ae0134a64d90f99bc598215de5652faf87404f3b049edf73a",
+    "tools/tests/cloud_shadow_field_projection.gd": "caa01b7c3fbebf482f8245d298fedf8a6e75d4a518f4bbfa0d610b867b8579fd"
+  },
+  "excluded_attempts": {
+    "field-fair01, field-mixed02, field-storm03, field-mixed-separate04, control05, field-profile07, field-private08": "Zero GPU timestamps, including unmodified control. Excluded timings. Explicit private minimum display/settings profile later yielded valid timestamps; no proved engine cause. --private-display was not implemented; no Xvfb was created or changed.",
+    "field-profile06": "Fixture parse failure: attempted method not bound to GDScript; removed.",
+    "probe01": "Fixture uniform altitude collided with existing shader local; renamed probe_altitude.",
+    "probe03": "256 grid failed one dynamic error bound at 0.0040283; tolerance was not widened. 512 grid selected and qualified.",
+    "lifecycle-forward02": "Three test-only failures: opaque HDR readback is RGBH, not only RGBAH. Test accepts either 16-bit representation; production unchanged.",
+    "integrated-probe02": "Earlier narrower fixture inherited misleading grid metadata; final projection-forward02 asserts actual integrated dimensions and supersedes it.",
+    "candidate01": "Earlier cloud-volume regression 99/0, superseded candidate02 adds normalized-sun guard. Actual final package will re-run volume and lifecycle tests.",
+    "other_prototypes": "Retained in scratch; results are not substituted for final candidate02 measurements."
+  },
+  "limits": [
+    "Only solar attenuation is shared. Cloud sky/water-reflection cost and full-game performance remain open.",
+    "Two-metre grid is an approximation, not pixel-identical for all scenes. Fair fixture exact; mixed terrain/water maximum RGB difference one byte; 8.07M direct attenuation samples max 0.0023365.",
+    "Map centre and 1024m domain are fixed; unusually large maps and low-angle rays use original fallback outside the field.",
+    "Forward+ desktop Linux qualified. Windows D3D12/Vulkan, RTX4090 Mobile, long travel/menu/viewport device acceptance still required."
+  ]
+}
