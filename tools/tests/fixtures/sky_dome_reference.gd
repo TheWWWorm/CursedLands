@@ -1,32 +1,5 @@
-class_name EISky
 extends RefCounted
-## The original sky: the original draws the figure figures.res "nask0sky.fig"
-## (object at CGame) with textures.res "Sky00" ("Sky01"
-## caves, (0x3d, …)) every frame before the scene
-## (: z-write off, culling off, specular ; puts it
-## at the camera position − 16 m in height and, outside caves, turns it about
-## the vertical axis by game ticks × 0.000333 rad). Its vertex colours come
-##  (called by the daylight update): diffuse =
-## the Lights [ambient] colour (texture × diffuse), specular rgb = [sunlight]
-## × max(0, normal · light)² × 150 (the figure's stored normals, not turned
-## with the dome, so the lit side turns with it), specular alpha (the D3D vertex fog factor)
-## = sqrt(−normal.z) for vertices at height ≥ 1, else 0; the fog / clear colour
-## is the Lights [sky] colour. In caves passes black ambient and
-## sunlight, so the dome fades from black to the cave's sky colour.
-##
-## nask0sky.fig is an older figure format (version 0x12, 6 variants, faces of
-## 13 u32: 3 vertex, 3 uv, 3 normal indices + 4 zero) the remake's EIFigure does
-## not read. The dome is a surface of revolution of 7 rings (radius, height,
-## v, mean normal z) and its u runs 0.996 → 0.004 over every 60° of azimuth (the
-## texture repeats 6 times around); the values below are read from the file.
-## The shader intersects the view ray with that ring profile, which gives the
-## same mapping without the mesh, as a Godot sky (reflections, radiance).
-##
-## The sun direction is: azimuth = hour · π / 12, elevation
-## 60° − |hour − 12| · 3.75° between 4 and 20 h, else rising from 30° to 75° at
-## midnight (moonlight); light travels along (cos az cos el, sin az cos el,
-## −sin el) in EI space.
-
+## Frozen original sky program at c34f19d, before shared ring-boundary selection.
 const SHADER := """
 shader_type sky;
 render_mode use_debanding;
@@ -114,10 +87,7 @@ void sky() {
 			continue;   // ray parallel to the ring band: no hit (avoids 0 / 0 = NaN)
 		}
 		float s = (zi * rho - RR[i] * e.z) / den;
-		// Select the first shared angular boundary above the ray. Separate
-		// rounded s intervals can reject both bands at their common ring.
-		if (e.z * RR[0] >= (ZZ[0] - EYE) * rho && e.z * RR[i + 1] <= (ZZ[i + 1] - EYE) * rho) {
-			s = clamp(s, 0.0, 1.0);
+		if (s >= 0.0 && s <= 1.0 && (RR[i] + s * (RR[i + 1] - RR[i])) * rho + (zi + s * (ZZ[i + 1] - ZZ[i])) * e.z > 0.0) {
 			col = dome(i, s, cs, u, l);
 			hit = true;
 			break;
@@ -163,78 +133,3 @@ void sky() {
 	#endif
 }
 """
-
-## The figure turns by ticks × 0.000333 rad; one tick is 55 ms.
-const SPIN_PER_SECOND := 0.00033333333 / 0.055
-const Clouds = preload("res://src/game/fx/clouds.gd")
-
-
-static func material(cave: bool) -> ShaderMaterial:
-	Gfx.ensure_globals()   # ei_flash
-	var m := ShaderMaterial.new()
-	m.shader = Shader.new()
-	m.shader.code = SHADER
-	m.set_meta("clouds",false)
-	var tex := GameData.get_texture("sky01" if cave else "sky00") if GameData.textures else null
-	if tex:
-		m.set_shader_parameter("tex", tex)
-	return m
-
-
-## Sun (light) direction in EI space at `hour`.
-static func light_dir_ei(hour: float) -> Vector3:
-	var el: float
-	if hour >= 4.0 and hour <= 20.0:
-		el = (2.0 - absf(hour - 12.0) / 8.0) * 30.0
-	elif hour < 4.0:
-		el = (4.0 - hour) / 4.0 * 45.0 + 30.0
-	else:
-		el = (hour - 20.0) / 4.0 * 45.0 + 30.0
-	el = deg_to_rad(el)
-	var az := hour / 12.0 * PI
-	return Vector3(cos(az) * cos(el), sin(az) * cos(el), -sin(el))
-
-
-## Per-frame colours from the Lights file (ambient, sunlight, sky at `hour`);
-## caves get black ambient and sunlight as.
-static func update(m: ShaderMaterial, lights: EILights, hour: float, cave: bool, fancy: bool, env: Environment = null) -> void:
-	if m == null:
-		return
-	var clouds := Clouds.mode() if not cave else 0
-	if int(m.get_meta("clouds",0)) != clouds:
-		m.shader.code = Clouds.sky_source(SHADER) if clouds>0 else SHADER
-		m.set_meta("clouds",clouds)
-	if clouds >= 2:
-		m.set_shader_parameter("cloud_radiance", radiance_needed(env))
-	var sky := lights.sample("sky", hour) if lights else Color(0.18, 0.71, 0.85)
-	var amb := lights.sample("ambient", hour) if lights else Color(0.5, 0.53, 0.49)
-	var sun := lights.sample("sunlight", hour) if lights else Color.WHITE
-	if cave:
-		amb = Color.BLACK
-		sun = Color.BLACK
-	# as Vector3: a Color would reach the shader converted to linear
-	m.set_shader_parameter("sky_col", Vector3(sky.r, sky.g, sky.b))
-	m.set_shader_parameter("ambient", Vector3(amb.r, amb.g, amb.b))
-	m.set_shader_parameter("sun_col", Vector3(sun.r, sun.g, sun.b))
-	m.set_shader_parameter("light_dir", light_dir_ei(hour))
-	m.set_shader_parameter("fancy", 1.0 if fancy and not cave else 0.0)
-	m.set_shader_parameter("night", 1.0 if Gfx.sun_day(sun) < 0.25 else 0.0)
-
-
-## Conservative opt-out: colour ambient alone cannot sample the sky. Fog can
-## still sample it even with AMBIENT_SOURCE_COLOR, so retain its full volume.
-## Read the environment, not options: menus and gameplay configure it differently.
-static func radiance_needed(env: Environment) -> bool:
-	if env == null:
-		return true
-	if env.reflected_light_source != Environment.REFLECTION_SOURCE_DISABLED:
-		return true
-	if env.ambient_light_source not in [Environment.AMBIENT_SOURCE_COLOR, Environment.AMBIENT_SOURCE_DISABLED]:
-		return true
-	return env.volumetric_fog_enabled or env.sdfgi_enabled \
-		or (env.fog_enabled and env.fog_aerial_perspective > 0.0)
-
-
-static func set_spin(m: ShaderMaterial, angle: float) -> void:
-	if m:
-		m.set_shader_parameter("spin", fmod(angle, TAU))
