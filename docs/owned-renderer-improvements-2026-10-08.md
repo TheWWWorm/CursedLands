@@ -8,7 +8,7 @@ Starting commit: `3172ede12a5f41b0182c34a70b5eeda787c95e52`
 
 The source audit and priorities are in
 [OWNED_RENDERER_IMPROVEMENT_HANDOFF.md](/home/llm2x/Documents/EI/OWNED_RENDERER_IMPROVEMENT_HANDOFF.md).
-**Latest local test, 10 October:** `1.0.3-local.20261010.4`: [Windows ZIP](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.4-windows-x86_64.zip) and [Linux archive](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.4-linux-x86_64.tar.gz), source `8e3c115`, protocol 13. Both contain the same 682-resource / 265-script pack and all twelve desktop engine patches. Adds rendered-depth focus and bounded horizon blending to the existing default-off Depth of field option; inherits .3 terrain-contact lighting, rounded/lit pebbles, grass and gameplay fixes. The actual Linux package passes **160/0** in six Forward+/Mobile runs: native focus/lifetime, image protection, three contact maps, New Game, original-MP travel/menu restoration and live menu options. Loading/travel expose zero HUD frames; both archive readbacks pass. The V8 source receipt separately retains **456/0 in 21 accepted runs** and 26 exact legacy image pairs, plus failed diagnostics. The .3 closer-snow **1 failure/112 checks**, earlier Mobile/Compatibility numerical residuals and expensive V1 cold preparation remain open. Windows execution, target-device performance and full physical routes are unqualified; no stable release is claimed. [Package receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-4.json).
+**Latest local test, 10 October:** `1.0.3-local.20261010.5`: [Windows ZIP](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.5-windows-x86_64.zip) and [Linux archive](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.5-linux-x86_64.tar.gz), source `e31b7a3`, protocol 13. Adds the Nalo rescue-return dialogue fix (`42ac26c`) and a stable resource identity. Both packs are identical, contain 682 resources / 265 scripts, and retain the .4 engines with twelve patches. Only two compiled dialogue scripts and the displayed version differ from .4; renderer assets and native binaries are unchanged. The actual Linux package passes **33/0** fresh-save/native-dialogue/party-return checks; source qualification separately passes **161/0**. Both archives read back exactly. Previous stone lighting, contact shading, grass, loading/menu and depth-of-field validation is inherited from .4. Windows runtime, target-device performance, V1 cold preparation/numerical residuals and full organic campaign routes remain open; this is a local test, not stable 1.0.3. [Package receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-5.json).
 
 **V1 material lighting integrated, 10 October:** `1c96136` copies installed packed terrain normals, native shoreline inputs and dense footprint COLOR into the existing contact band, including relief, rain highlights, tracks and material-specific directional shadow response. Lazy world-owned storage and pending mesh reservations stay bounded at 128 tiles. Forward+ final cases pass **640/0**, data/ownership/source checks **286/0**; three maps retain 12 exact native Off/restored images and unchanged draw counts. Compatibility retains **1 failure/544 checks**. Mobile retains **23/501** with the short wait and **4/501** with a separate three-second capture pre-roll: the remaining differences are single pixels at 1–6/255. They are preserved as failed strict assertions, including the new Compatibility 1/255 upper pixel; no universal pixel-parity claim. The current shipped-build controls pass 52/0 per backend. All shader/backend paths compile and exit normally. The option remains default-off; preparation/device/Windows acceptance stays open. The six integrated production files exactly match the rendered private candidate. [Evidence](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/ground-contact-lighting-integration-2026-10-10.json). Included in local20261010.3. The additional closer snow view retains one Forward+ upper-pixel 1/255 residual; see the package receipt. Main thread only; broader gameplay/renderer scope is still active.
 
@@ -5456,6 +5456,31 @@ This extends the prior physical key-theft route, whose chapter entry was
 prepared. It is not a full organic campaign or recruited-party playthrough.
 No Windows, rendered-camera, physical-input, two-peer or WAN acceptance is added.
 User saves/settings remain unchanged; all work stays in the main thread.
+
+
+## Nalo return local packages — 10 October, .5
+
+Local20261010.5 packages `e31b7a3` for Linux and Windows. It includes the
+`42ac26c` Nalo rescue-return fix and commits the already-qualified generated
+resource identifier so a clean export preserves the original identity. The
+first clean export stopped when it regenerated that missing UID; the stopped
+attempt remains recorded. The final 682-resource / 265-script pack differs
+from the qualified candidate only in its displayed version. Compared with .4,
+only that version and two compiled dialogue scripts change. Both native
+runtimes/helpers, all twelve engine patches, renderer assets and protocol 13
+are unchanged. Linux and Windows packs are byte-identical.
+
+The actual Linux package passes **33 checks with zero failures**, resuming a
+fresh cell-open save through the native return, normal Nalo conversation,
+main-party restoration and another save. The separate source receipt retains
+**161/0** including other reload points and scoped interaction controls. Both
+archives pass full file-by-file readback; Linux executable permissions and
+Windows PE/import checks pass. The .4 rendered checks are inherited, not rerun
+for this dialogue change. Windows runtime, full organic campaign/recruited-party
+routes, WAN/physical input and previous renderer preparation/numerical/device
+limits remain open. This is a local test build, not stable 1.0.3.
+
+[Package evidence](validation/local-feedback-build-2026-10-10-5.json).
 
 ## Next work in the established order
 

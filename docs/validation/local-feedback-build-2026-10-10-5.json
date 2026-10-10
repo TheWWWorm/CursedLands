@@ -1,0 +1,156 @@
+{
+  "version": "1.0.3-local.20261010.5",
+  "source_commit": "e31b7a39615e37ad9ca4fc51e6e29fe8d54115d7",
+  "protocol": 13,
+  "engine_patch_count": 12,
+  "published": false,
+  "checks": 33,
+  "failures": 0,
+  "headless": true,
+  "windows_runtime_tested": false,
+  "build_receipt": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-5/build.json",
+  "build_receipt_sha256": "eeff1ff653d9480b84ab977684f0c8c5b2c689f460fbbac2ba200f89f3f505f8",
+  "runtime_check": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-5/nalo-return01",
+    "run_sha256": "aabc7116df4f654b64aeed34f6d6bbb4a680ed2cefde31f8fdbf23000a541792",
+    "result_sha256": "6b8f74162a6961355e57f4eef0633e1c7f103df37717db5d51283fbe1bc95860",
+    "source_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+    },
+    "scope": "Actual Linux .5 pack: fresh cell-open save -> authored camp -> normal Nalo topic and UI completion -> original party return -> save."
+  },
+  "source_validation": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/nalo-rescue-return-2026-10-10.json",
+    "sha256": "15b4b4bf7ddff54fed474c818aa70566f73f54940f5cdd327006b8eafd6da1f9",
+    "checks": 161,
+    "failures": 0
+  },
+  "inherited_renderer_validation": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-4.json",
+    "sha256": "54108eff8693ad83aafbfa0d59082a366819eca0496bc38f81b4a2d402f82fa3",
+    "scope": "The .4 renderer/engine/menu checks are inherited, not rerun for two dialogue scripts and version metadata."
+  },
+  "pack_resources": 682,
+  "compiled_scripts": 265,
+  "linux_windows_pack_byte_identical": true,
+  "pack_changes_from_qualified_candidate": [
+    "project.binary"
+  ],
+  "windows_pe_audit": {
+    "CursedLands.exe": {
+      "architecture": "PE x86_64",
+      "imports": [
+        "ADVAPI32.dll",
+        "AVRT.dll",
+        "bcrypt.dll",
+        "CRYPT32.dll",
+        "dwmapi.dll",
+        "DWrite.dll",
+        "GDI32.dll",
+        "HID.DLL",
+        "IMM32.dll",
+        "IPHLPAPI.DLL",
+        "KERNEL32.dll",
+        "api-ms-win-core-processthreads-l1-1-3.dll",
+        "api-ms-win-security-base-l1-2-1.dll",
+        "api-ms-win-security-lsalookup-l2-1-0.dll",
+        "msvcrt.dll",
+        "ntdll.dll",
+        "ole32.dll",
+        "OLEAUT32.dll",
+        "SHCORE.dll",
+        "SHELL32.dll",
+        "SHLWAPI.dll",
+        "USER32.dll",
+        "WINMM.dll",
+        "WS2_32.dll",
+        "WSOCK32.dll"
+      ]
+    },
+    "libterrain_search.dll": {
+      "architecture": "PE x86_64",
+      "imports": [
+        "KERNEL32.dll",
+        "msvcrt.dll"
+      ]
+    }
+  },
+  "initial_build_diagnostic": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-5/attempt01",
+    "log_sha256": "89accfb923121c438e5218560c4d0944b4c0dfc7432d32b9e69aac802683a161",
+    "reason": "Fresh import regenerated the missing authored_village_talk UID. The qualified UID is now committed; final pack differs from the candidate only in displayed version."
+  },
+  "limits": [
+    "Windows runtime and the user's 4090 Mobile remain untested; PE/import checks do not establish runtime acceptance.",
+    "These Linux checks are headless save/dialogue correctness checks, not rendering or performance measurements.",
+    "Earlier chapter entry was prepared; the rescue tail and main-hero return do not establish a full campaign or recruited-party route.",
+    "V1 and V8 remain off by default. Inherited terrain-contact cold preparation and strict Mobile/Compatibility/snow pixel residuals remain open.",
+    "Original multiplayer, co-op WAN, physical input and target-device performance retain their existing limits. No stable 1.0.3 release."
+  ],
+  "packages": {
+    "linux-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.5-linux-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.5-linux-x86_64.tar.gz",
+      "archive_bytes": 36530654,
+      "archive_sha256": "8b7a74081c36d6835015552261330f5a475657b20776b69322b7b174b22e1f06",
+      "archive_readback_exact": true,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "SHA256SUMS.txt": "2d3915cdd4c42334a45ec28897beeedc48291732bea85f748f913afe694c0d2f",
+        "BUILD-INFO.json": "3619439dee63f5e218470b32c4fd6e70e4a60feb582eb80c1b317d401e7664ba",
+        "Play.sh": "75835f261e9acd2b45973152790cabf255b05b649f0f059997c1de9ba4e3ec2b",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "59b3058d26854e80ddbdbbd4993dc2cc1dd22221fc8bbc7d0b26d97dc95347d9",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    },
+    "windows-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.5-windows-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.5-windows-x86_64.zip",
+      "archive_bytes": 37737009,
+      "archive_sha256": "6c233735011dae84690ebab12ac94bf4a14ffd0a52eae1c9149f7cd2de3102f2",
+      "archive_readback_exact": true,
+      "files": {
+        "SHA256SUMS.txt": "d04c7bb706541b938bfbd80dba87c12f56527987c1287b997e5665cd04f1b447",
+        "BUILD-INFO.json": "0c424c49ce36fff0bcd108bb35f7530f0f1dc88065c3cc8aed942e453e993a16",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "libterrain_search.dll": "14906b040d4b6a5e1e217b9bfb21214f48700b6709163be584cc98e584f45106",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "59b3058d26854e80ddbdbbd4993dc2cc1dd22221fc8bbc7d0b26d97dc95347d9",
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    }
+  },
+  "game_source_changes_from_local_20261010_4": [
+    "game/src/game/script/authored_village_talk.gd",
+    "game/src/game/script/authored_village_talk.gd.uid",
+    "game/src/game/script/briefings.gd"
+  ],
+  "production_sha256": {
+    "game/src/game/script/authored_village_talk.gd": "a8fadea7b8ef615ae09405edba96b0b252ffb37486ddb3ccad300f738f6d3f70",
+    "game/src/game/script/authored_village_talk.gd.uid": "9c0e406573a5005d5441935be358a675cbfdc079f1387f4b8f91e46654ed609c",
+    "game/src/game/script/briefings.gd": "f29fecf31a020650f09083547e23059d478437e0968f8376b2ecf7c5f2d4f1aa"
+  },
+  "artifacts": {
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-5/build.py": "ecfc11949238c534212347fcfae4121f7144aaacb251d99b4f8ec91dd0c744e2",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-5/build.json": "eeff1ff653d9480b84ab977684f0c8c5b2c689f460fbbac2ba200f89f3f505f8",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-5/build-run.log": "0076f75090e14855e354690f5830764bc682ca94feb065d25c88c83efed6c9de",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-5/run.py": "e27e3e7f14ce9f4068341603634ae70b8aa83fe40ab0f18a8558990ae962ca5f",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-5/nalo-return01-command.log": "9401dd3be506b8d4873f5477c37cef0909a533a0e12e6b989a4b4383e7b543ea",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-5/package.py": "a0cdea133518a2f4509e50c3aba894957852b86a6ae64fb438cada92e16c7177",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-5/package.json": "c997d9447382f873558577bd9815cf68956b6942fb95baad565cf4b588aeaaae",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-5/packaging.log": "9c4a348fe5db16fdfda3fa0a71b3890437f7b43b15c3939d9e2af0c07f29a230",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-5/record.py": "267ba6d80f4fde61c157874980c67e81868a94f5792b1ea01a77c95bd215b546"
+  }
+}

@@ -370,3 +370,27 @@ This extends the prior physical key-theft route, whose chapter entry was
 prepared. It is not a full organic campaign or recruited-party playthrough.
 No Windows, rendered-camera, physical-input, two-peer or WAN acceptance is added.
 User saves/settings remain unchanged; all work stays in the main thread.
+
+## Nalo return local packages — 10 October, .5
+
+Local20261010.5 packages `e31b7a3` for Linux and Windows. It includes the
+`42ac26c` Nalo rescue-return fix and commits the already-qualified generated
+resource identifier so a clean export preserves the original identity. The
+first clean export stopped when it regenerated that missing UID; the stopped
+attempt remains recorded. The final 682-resource / 265-script pack differs
+from the qualified candidate only in its displayed version. Compared with .4,
+only that version and two compiled dialogue scripts change. Both native
+runtimes/helpers, all twelve engine patches, renderer assets and protocol 13
+are unchanged. Linux and Windows packs are byte-identical.
+
+The actual Linux package passes **33 checks with zero failures**, resuming a
+fresh cell-open save through the native return, normal Nalo conversation,
+main-party restoration and another save. The separate source receipt retains
+**161/0** including other reload points and scoped interaction controls. Both
+archives pass full file-by-file readback; Linux executable permissions and
+Windows PE/import checks pass. The .4 rendered checks are inherited, not rerun
+for this dialogue change. Windows runtime, full organic campaign/recruited-party
+routes, WAN/physical input and previous renderer preparation/numerical/device
+limits remain open. This is a local test build, not stable 1.0.3.
+
+[Package evidence](validation/local-feedback-build-2026-10-10-5.json).
