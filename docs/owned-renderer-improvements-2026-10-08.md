@@ -5692,3 +5692,7 @@ and recorded numerical residuals, Windows/WAN/device acceptance and full gamepla
 routes remain open. Main thread only.
 
 [Validation and frozen inputs](validation/terrain-pair-sectors-2026-10-10.json).
+
+The packaging audit also found two missing tracked Godot UID sidecars for the
+transition scripts. They now retain the IDs from the qualified pack, preventing a
+fresh export from generating different IDs. Script bytes and behavior are unchanged.
