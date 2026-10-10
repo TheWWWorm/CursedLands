@@ -172,7 +172,26 @@ joins pending work. Desktop tests cover numeric parity and that lifecycle.
 The River currents option defaults off. See `tools/tests/water_current.gd`,
 `water_current_render.gd`, and the renderer handoff for acceptance evidence.
 
-The 10 October Retroid Pocket 5 checks load only the two newly added classes
+`WaterSurfaceKernel` accelerates the dense mean-water triangle queries used by
+wave-domain construction. The script keeps sector discovery, bucket order, the
+16-sector LRU and posed-wave queries. Each native sector owns only its decoded
+material IDs and per-frame posed vertices; packed mesh inputs are shared. It
+recomputes cheap triangle arithmetic instead of retaining the script triangle
+cache. Scalar/vector rounding, overlap ties, live lava flags and lazy vertex
+invalidation follow the script. There are no scene, navigation, GPU or worker
+references in this main-thread helper. `-- --ei-script-water-surface` selects the
+unchanged script path; older libraries select it automatically.
+
+Linux x86-64, Windows x86-64 and Android ARM64 helper libraries are rebuilt from
+the same source. This Windows rebuild also includes the preceding current and
+wave kernels that were absent from its old DLL. Bounded Linux checks load the
+complete new helper with the existing private engine/PCK. Android checks expose the new class through a
+private adapter alongside the installed helper; they do not establish complete
+APK acceptance. Windows runtime acceptance remains open. See
+`tools/tests/water_surface_native.gd` and the
+[mean-water receipt](../../../../docs/validation/water-surface-native-2026-10-10.json).
+
+The earlier 10 October Retroid Pocket 5 current/wave checks load only those two classes
 through a private GDExtension adapter, compiled from the same production headers.
 The installed app and its older helper remain unchanged. Current-field rebuilds
 in three maps fall from roughly 76–116 ms in script to 1.3–2.9 ms compiled;
@@ -180,9 +199,10 @@ the 128² wave solver retains exact output with much lower CPU cost. These are
 bounded kernel/callback measurements, not whole-game FPS or full-APK acceptance.
 Use `tools/benchmarks/water_wave_solver.gd` for equal-input ABBA solver comparisons.
 The [Android water receipt](../../../../docs/validation/android-water-native-2026-10-10.json)
-records device controls and the inherited Compatibility empty-wave visibility
-failure. Both water options remain off by default. Browser/fallback and broader
-device costs, water-domain construction and the visibility failure remain open.
+records the earlier device controls and Compatibility empty-wave visibility
+failure. The later `a916f95` sampler-budget correction fixes that visibility
+case. Both water options remain off by default. The separate Adreno Mobile
+cloud/material-water instability and broader device acceptance remain open.
 
 Use CMake 3.22+, a C++17 compiler, Python 3, and the MIT-licensed
 [godot-cpp bindings](https://github.com/godotengine/godot-cpp) at commit

@@ -1,0 +1,2230 @@
+{
+  "date": "2026-10-10",
+  "feature": "Native mean-water triangle queries for dense wave domains",
+  "base_commit": "c797d6f9c556f179cdfbb6c5743f9fffe4395ae1",
+  "status": "Accepted source and native helper updates. No export, APK or delivery archive; existing private engine/PCK and installed Android QA app reused.",
+  "user_scope": {
+    "main_thread_only": true,
+    "playthroughs": false,
+    "new_packages": false
+  },
+  "source_sha256": {
+    "game/src/game/fx/water_surface.gd": "a3dbb093560ce3185d00a38ce5fb0589395665dab947a549be6ac0003ba0370d",
+    "game/src/native/source/water_surface.h": "770686c3c0a2af7e259c21c692d89322b95f7a5a97698ae1d042b9a12c2cd16a",
+    "game/src/native/source/nav_kernel.cpp": "be702a8ebd66c45ecc03d1706eb3daded23922126229a1ca8285484fecd80fc4",
+    "game/src/native/source/CMakeLists.txt": "9c5568cb03de0f914df86cd034350672ed7071ce4fdd344e413a88b713127d07",
+    "game/src/native/source/build_profile.json": "f1eab604e2153c0e47a4e9739c31f5a429f49be1ef8e4c5d282566435648816f",
+    "game/src/native/source/README.md": "caeab65caee4189994a84c65d6e8242c6e58185f4697aa0105decb00604b783f",
+    "tools/tests/water_surface_native.gd": "5a39428db20ead84b47494ccc2d68af60f48072c46e3dd7ce5460a8ac48e0ba5"
+  },
+  "implementation": {
+    "dispatch": "Only the existing cache_mean opt-in uses WaterSurfaceKernel when present. --ei-script-water-surface or older/absent native libraries retain the unchanged script triangle cache. Initialization rejection also retains that fallback.",
+    "ownership": "One RefCounted per admitted cached sector. Script still owns discovery, bucket order, weak node/mesh identity, and the 16-sector LRU. Native geometry uses shared packed arrays; owned vectors contain decoded material bytes, lazy posed vertices and ready bytes. Main thread only; no scene, navigation, GPU or worker references.",
+    "math": "Same float32 vector/cross boundaries, float64 scalar expression order, barycentric tolerances, highest surface and first equal-height owner. Lazy vertex offset/transform evaluation follows frame epochs; lava flags remain live. Native arithmetic is cheap enough to omit the script per-triangle cache.",
+    "unchanged": "Posed query loop and wave preparation, shaders, navigation, domain admission, solver, graphics presets, independent cloud controls, protocol, .8/.9 fixes.",
+    "audit": {
+      "complete_surface_scripts_match_source": true,
+      "full_field_scripts_only_redirect_surface_preload": true,
+      "compiled_header_and_registration_match_source": true,
+      "baseline_library_snapshots_preserved": true
+    }
+  },
+  "profile": {
+    "scope": "Instrumented call/stage counts, not clean timing comparisons; wrappers add overhead. Corrected fixture uses the full c797d6f Surface and Field.",
+    "android": {
+      "rows": [
+        {
+          "constructor_us": 12,
+          "map": "zone1",
+          "mean_calls": 591,
+          "mean_us": 34489,
+          "plain_domain_us": 45844,
+          "profiled_domain_us": 51761,
+          "sample_calls": 516,
+          "sample_us": 47154,
+          "sector_calls": 591,
+          "sector_us": 8952,
+          "triangles_tested": 14928,
+          "vertex_calls": 3540,
+          "vertex_misses": 1372,
+          "vertex_us": 4686
+        },
+        {
+          "constructor_us": 286,
+          "map": "zone11",
+          "mean_calls": 680,
+          "mean_us": 41896,
+          "plain_domain_us": 52262,
+          "profiled_domain_us": 59452,
+          "sample_calls": 625,
+          "sample_us": 54612,
+          "sector_calls": 685,
+          "sector_us": 8331,
+          "triangles_tested": 18472,
+          "vertex_calls": 4146,
+          "vertex_misses": 1588,
+          "vertex_us": 5570
+        },
+        {
+          "constructor_us": 246,
+          "map": "zone8",
+          "mean_calls": 728,
+          "mean_us": 40683,
+          "plain_domain_us": 53514,
+          "profiled_domain_us": 60566,
+          "sample_calls": 605,
+          "sample_us": 54427,
+          "sector_calls": 728,
+          "sector_us": 9265,
+          "triangles_tested": 17408,
+          "vertex_calls": 4248,
+          "vertex_misses": 1634,
+          "vertex_us": 5740
+        }
+      ]
+    }
+  },
+  "cost": {
+    "scope": "CPU domain method, including constructor and sector work for fresh fields. Two fresh-process paired ABBA runs per platform; four before and four after values per map/category. Not GPU cost, whole-game FPS, map load or complete water-level callback.",
+    "platforms": {
+      "android": "Retroid Pocket 5 / Android 33 / Adreno 650",
+      "desktop": "Linux AMD Ryzen 5950X, headless CPU; GPU oracle uses RTX3090 Ti"
+    },
+    "paired_domain": {
+      "desktop": {
+        "zone1": {
+          "fresh": {
+            "before_ms": 23.218,
+            "after_ms": 9.6875,
+            "reduction_pct": 58.2759066241709,
+            "before_us": [
+              23301,
+              23076,
+              23491,
+              23135
+            ],
+            "after_us": [
+              10206,
+              9627,
+              9748,
+              9545
+            ]
+          },
+          "cached": {
+            "before_ms": 2.0095,
+            "after_ms": 2.053,
+            "reduction_pct": -2.164717591440657,
+            "before_us": [
+              2154,
+              1960,
+              2059,
+              1932
+            ],
+            "after_us": [
+              2093,
+              2072,
+              2034,
+              2002
+            ]
+          },
+          "moving": {
+            "before_ms": 3.2305,
+            "after_ms": 2.2515,
+            "reduction_pct": 30.304906361244388,
+            "before_us": [
+              3266,
+              3106,
+              3337,
+              3195
+            ],
+            "after_us": [
+              2259,
+              2233,
+              2369,
+              2244
+            ]
+          }
+        },
+        "zone11": {
+          "fresh": {
+            "before_ms": 26.7335,
+            "after_ms": 9.7825,
+            "reduction_pct": 63.40733536573961,
+            "before_us": [
+              26771,
+              27599,
+              26696,
+              25997
+            ],
+            "after_us": [
+              10809,
+              9671,
+              9894,
+              9570
+            ]
+          },
+          "cached": {
+            "before_ms": 1.9885,
+            "after_ms": 2.061,
+            "reduction_pct": -3.6459642946945037,
+            "before_us": [
+              2060,
+              1917,
+              2061,
+              1906
+            ],
+            "after_us": [
+              2108,
+              2121,
+              2012,
+              2014
+            ]
+          },
+          "moving": {
+            "before_ms": 2.423,
+            "after_ms": 2.037,
+            "reduction_pct": 15.930664465538591,
+            "before_us": [
+              2456,
+              2383,
+              2523,
+              2390
+            ],
+            "after_us": [
+              2001,
+              2026,
+              2048,
+              2061
+            ]
+          }
+        },
+        "zone8": {
+          "fresh": {
+            "before_ms": 27.1135,
+            "after_ms": 11.115,
+            "reduction_pct": 59.00566138639422,
+            "before_us": [
+              27416,
+              27027,
+              27161,
+              27066
+            ],
+            "after_us": [
+              11137,
+              10974,
+              11347,
+              11093
+            ]
+          },
+          "cached": {
+            "before_ms": 2.7265,
+            "after_ms": 2.7565,
+            "reduction_pct": -1.1003117549972519,
+            "before_us": [
+              2820,
+              2669,
+              2784,
+              2604
+            ],
+            "after_us": [
+              2810,
+              2802,
+              2711,
+              2650
+            ]
+          },
+          "moving": {
+            "before_ms": 3.1785,
+            "after_ms": 2.6355,
+            "reduction_pct": 17.08352996696555,
+            "before_us": [
+              3283,
+              3154,
+              3203,
+              3124
+            ],
+            "after_us": [
+              2714,
+              2661,
+              2607,
+              2610
+            ]
+          }
+        }
+      },
+      "android": {
+        "zone1": {
+          "fresh": {
+            "before_ms": 45.7245,
+            "after_ms": 19.5255,
+            "reduction_pct": 57.29751008758981,
+            "before_us": [
+              46635,
+              45607,
+              45842,
+              45576
+            ],
+            "after_us": [
+              19428,
+              19691,
+              19623,
+              19422
+            ]
+          },
+          "cached": {
+            "before_ms": 3.715,
+            "after_ms": 3.8875,
+            "reduction_pct": -4.643337819650073,
+            "before_us": [
+              3723,
+              3690,
+              3824,
+              3707
+            ],
+            "after_us": [
+              3954,
+              3809,
+              4005,
+              3821
+            ]
+          },
+          "moving": {
+            "before_ms": 6.0375,
+            "after_ms": 4.345,
+            "reduction_pct": 28.033126293995856,
+            "before_us": [
+              6023,
+              6104,
+              6025,
+              6050
+            ],
+            "after_us": [
+              4311,
+              4379,
+              4399,
+              4259
+            ]
+          }
+        },
+        "zone11": {
+          "fresh": {
+            "before_ms": 52.655,
+            "after_ms": 20.2665,
+            "reduction_pct": 61.51077770392175,
+            "before_us": [
+              53113,
+              51974,
+              53492,
+              52197
+            ],
+            "after_us": [
+              20078,
+              20227,
+              20306,
+              20477
+            ]
+          },
+          "cached": {
+            "before_ms": 3.836,
+            "after_ms": 4.1435,
+            "reduction_pct": -8.016162669447358,
+            "before_us": [
+              3914,
+              3729,
+              3956,
+              3758
+            ],
+            "after_us": [
+              4285,
+              4025,
+              4254,
+              4033
+            ]
+          },
+          "moving": {
+            "before_ms": 4.7415,
+            "after_ms": 4.2495,
+            "reduction_pct": 10.3764631445745,
+            "before_us": [
+              4670,
+              4751,
+              4732,
+              4779
+            ],
+            "after_us": [
+              4202,
+              4153,
+              4321,
+              4297
+            ]
+          }
+        },
+        "zone8": {
+          "fresh": {
+            "before_ms": 54.0215,
+            "after_ms": 22.972,
+            "reduction_pct": 57.47619003544885,
+            "before_us": [
+              54283,
+              53470,
+              54541,
+              53760
+            ],
+            "after_us": [
+              23076,
+              22976,
+              22968,
+              22788
+            ]
+          },
+          "cached": {
+            "before_ms": 5.2245,
+            "after_ms": 5.441,
+            "reduction_pct": -4.143937218872629,
+            "before_us": [
+              5220,
+              5229,
+              5316,
+              5218
+            ],
+            "after_us": [
+              5446,
+              5436,
+              5586,
+              5319
+            ]
+          },
+          "moving": {
+            "before_ms": 6.152,
+            "after_ms": 5.475,
+            "reduction_pct": 11.004551365409633,
+            "before_us": [
+              6134,
+              6225,
+              6170,
+              6125
+            ],
+            "after_us": [
+              5470,
+              5435,
+              5587,
+              5480
+            ]
+          }
+        }
+      }
+    },
+    "cached_followup": {
+      "scope": "The short broad fixture shows cached medians 0.17\u20130.31 ms slower on Android. Cached calls issue no triangle queries. A separate 32-round ABBA/BAAB alternating run after eight warm-up rounds confirms exact data and no sector visits; medians differ by 0.032\u20130.044 ms (about 1%) on Android, 0.0065\u20130.018 ms on Linux. No cached-path speedup is claimed. Raw earlier values are retained.",
+      "results": {
+        "desktop": {
+          "zone1": {
+            "before_median_ms": 1.9805,
+            "after_median_ms": 1.9985,
+            "before_us": [
+              1978,
+              1973,
+              2019,
+              1982,
+              1931,
+              1964,
+              2016,
+              1980,
+              1952,
+              2014,
+              1997,
+              2163,
+              2010,
+              1999,
+              2038,
+              2368,
+              1996,
+              1990,
+              1930,
+              2062,
+              1974,
+              2037,
+              1930,
+              2166,
+              2199,
+              1942,
+              2188,
+              1912,
+              2186,
+              1938,
+              1922,
+              1954,
+              1934,
+              1916,
+              1957,
+              1994,
+              1984,
+              1930,
+              1990,
+              1954,
+              1987,
+              1980,
+              2009,
+              2053,
+              2064,
+              1975,
+              1973,
+              2003,
+              1972,
+              1940,
+              2008,
+              1954,
+              1950,
+              1981,
+              2437,
+              1952,
+              1924,
+              1862,
+              2017,
+              1901,
+              2439,
+              2037,
+              1953,
+              1905
+            ],
+            "after_us": [
+              1989,
+              2051,
+              1981,
+              1969,
+              1974,
+              1995,
+              1997,
+              1984,
+              1965,
+              2070,
+              2015,
+              2085,
+              2016,
+              2030,
+              2049,
+              1969,
+              2019,
+              2000,
+              2622,
+              1986,
+              1950,
+              2007,
+              2381,
+              2087,
+              2269,
+              2392,
+              1959,
+              2305,
+              1953,
+              1960,
+              1941,
+              1952,
+              1950,
+              1974,
+              1989,
+              2011,
+              1940,
+              1945,
+              2005,
+              1969,
+              1989,
+              1975,
+              2060,
+              2031,
+              2120,
+              2033,
+              2049,
+              2004,
+              2006,
+              1964,
+              2171,
+              2059,
+              2052,
+              1950,
+              2281,
+              2025,
+              2242,
+              1898,
+              1972,
+              1924,
+              1939,
+              2263,
+              1985,
+              1949
+            ]
+          },
+          "zone11": {
+            "before_median_ms": 1.87,
+            "after_median_ms": 1.8845,
+            "before_us": [
+              1858,
+              1869,
+              1877,
+              1862,
+              1860,
+              1869,
+              1869,
+              1887,
+              1906,
+              1906,
+              1867,
+              1895,
+              1847,
+              1859,
+              1848,
+              1907,
+              1879,
+              1979,
+              1867,
+              1877,
+              1869,
+              1876,
+              1853,
+              1884,
+              1865,
+              1872,
+              1861,
+              1867,
+              1843,
+              1895,
+              1870,
+              1908,
+              1851,
+              1837,
+              1902,
+              1874,
+              1889,
+              1861,
+              1880,
+              1944,
+              1878,
+              1870,
+              1893,
+              1907,
+              1860,
+              1870,
+              1874,
+              1863,
+              1868,
+              1902,
+              1879,
+              1877,
+              1872,
+              1875,
+              1882,
+              1865,
+              1847,
+              1854,
+              1869,
+              1851,
+              1883,
+              1858,
+              1868,
+              1861
+            ],
+            "after_us": [
+              1869,
+              1968,
+              1884,
+              1886,
+              1882,
+              1898,
+              1885,
+              1884,
+              1896,
+              1917,
+              1885,
+              1890,
+              1870,
+              1889,
+              1869,
+              1927,
+              1850,
+              1892,
+              1874,
+              1896,
+              1865,
+              1875,
+              1871,
+              1878,
+              1877,
+              1874,
+              1863,
+              1886,
+              1948,
+              1904,
+              1884,
+              1910,
+              1870,
+              1853,
+              1900,
+              1890,
+              1906,
+              1871,
+              1896,
+              1867,
+              1884,
+              1890,
+              1890,
+              1878,
+              1880,
+              1877,
+              1888,
+              1869,
+              1891,
+              1915,
+              1915,
+              1875,
+              1939,
+              1879,
+              1914,
+              1871,
+              1872,
+              1875,
+              1888,
+              1867,
+              1946,
+              1899,
+              1876,
+              1888
+            ]
+          },
+          "zone8": {
+            "before_median_ms": 2.6515,
+            "after_median_ms": 2.658,
+            "before_us": [
+              2668,
+              2635,
+              2624,
+              2656,
+              2630,
+              2621,
+              2637,
+              2680,
+              2643,
+              2712,
+              2646,
+              2683,
+              2632,
+              2637,
+              2632,
+              2641,
+              2657,
+              2661,
+              2654,
+              2701,
+              2683,
+              2657,
+              2672,
+              2663,
+              2650,
+              2629,
+              2650,
+              2689,
+              2631,
+              2653,
+              2636,
+              2677,
+              2645,
+              2610,
+              2652,
+              2650,
+              2644,
+              2655,
+              2701,
+              2627,
+              2665,
+              2642,
+              2655,
+              2665,
+              2669,
+              2618,
+              2631,
+              2623,
+              2636,
+              2647,
+              2704,
+              2677,
+              2671,
+              2656,
+              2644,
+              2629,
+              2658,
+              2659,
+              2651,
+              2641,
+              2651,
+              2654,
+              2663,
+              2661
+            ],
+            "after_us": [
+              2678,
+              2646,
+              2637,
+              2666,
+              2666,
+              2634,
+              2650,
+              2652,
+              2651,
+              2697,
+              2667,
+              2721,
+              2655,
+              2659,
+              2647,
+              2676,
+              2661,
+              2658,
+              2673,
+              2739,
+              2687,
+              2662,
+              2655,
+              2654,
+              2667,
+              2659,
+              2642,
+              2649,
+              2654,
+              2664,
+              2651,
+              2658,
+              2666,
+              2652,
+              2643,
+              2645,
+              2646,
+              2650,
+              2655,
+              2645,
+              2659,
+              2639,
+              2654,
+              2638,
+              2724,
+              2684,
+              2652,
+              2646,
+              2661,
+              2652,
+              2771,
+              2707,
+              2669,
+              2688,
+              2651,
+              2664,
+              2662,
+              2655,
+              2681,
+              2637,
+              2681,
+              2655,
+              2661,
+              2666
+            ]
+          }
+        },
+        "android": {
+          "zone1": {
+            "before_median_ms": 3.4505,
+            "after_median_ms": 3.4825,
+            "before_us": [
+              3444,
+              3388,
+              3402,
+              3470,
+              3398,
+              3450,
+              3442,
+              3451,
+              3448,
+              3450,
+              3418,
+              3431,
+              3409,
+              3419,
+              3372,
+              3516,
+              3480,
+              3566,
+              3521,
+              3520,
+              3511,
+              3594,
+              3529,
+              3509,
+              3470,
+              3503,
+              3433,
+              3460,
+              3397,
+              3435,
+              3445,
+              3471,
+              3418,
+              3376,
+              3506,
+              3415,
+              3407,
+              3373,
+              3484,
+              3418,
+              3430,
+              3442,
+              3460,
+              3403,
+              3434,
+              3429,
+              3654,
+              3452,
+              3605,
+              3540,
+              3707,
+              3529,
+              3604,
+              3443,
+              3551,
+              3461,
+              3523,
+              3417,
+              3495,
+              3369,
+              3479,
+              3430,
+              3502,
+              3522
+            ],
+            "after_us": [
+              3455,
+              3406,
+              3378,
+              3525,
+              3473,
+              3482,
+              3425,
+              3486,
+              3432,
+              3451,
+              3394,
+              3516,
+              3408,
+              3461,
+              3486,
+              3697,
+              3437,
+              3568,
+              3477,
+              3768,
+              3642,
+              3586,
+              3505,
+              3564,
+              3473,
+              3551,
+              3408,
+              3532,
+              3407,
+              3410,
+              3396,
+              3450,
+              3424,
+              3388,
+              3679,
+              3484,
+              3456,
+              3405,
+              3473,
+              3409,
+              3507,
+              3519,
+              3426,
+              3434,
+              3433,
+              3419,
+              3605,
+              3483,
+              3701,
+              3560,
+              3720,
+              3677,
+              3613,
+              3525,
+              3598,
+              3558,
+              3540,
+              3444,
+              3545,
+              3412,
+              3528,
+              3494,
+              3488,
+              3436
+            ]
+          },
+          "zone11": {
+            "before_median_ms": 3.4595,
+            "after_median_ms": 3.494,
+            "before_us": [
+              3427,
+              3448,
+              3373,
+              3516,
+              3477,
+              3571,
+              3587,
+              3641,
+              3483,
+              3476,
+              3364,
+              3493,
+              3398,
+              3456,
+              3627,
+              3699,
+              3657,
+              3660,
+              3449,
+              3501,
+              3359,
+              3528,
+              3378,
+              3505,
+              3338,
+              3460,
+              3345,
+              3434,
+              3416,
+              3419,
+              3370,
+              3439,
+              3426,
+              3333,
+              3469,
+              3459,
+              3478,
+              3489,
+              3729,
+              3537,
+              3520,
+              3394,
+              3494,
+              3279,
+              3410,
+              3376,
+              3832,
+              3675,
+              3653,
+              3493,
+              3472,
+              3375,
+              3432,
+              3302,
+              3447,
+              3401,
+              3490,
+              3378,
+              3466,
+              3354,
+              3515,
+              3429,
+              3502,
+              3355
+            ],
+            "after_us": [
+              3452,
+              3521,
+              3395,
+              3630,
+              3611,
+              3822,
+              3809,
+              3649,
+              3432,
+              3556,
+              3378,
+              3498,
+              3378,
+              3641,
+              3836,
+              3975,
+              3798,
+              3630,
+              3415,
+              3570,
+              3392,
+              3485,
+              3362,
+              3471,
+              3350,
+              3495,
+              3393,
+              3439,
+              3356,
+              3460,
+              3406,
+              3509,
+              3500,
+              3390,
+              3482,
+              3526,
+              3629,
+              3551,
+              3898,
+              3527,
+              3640,
+              3460,
+              3503,
+              3379,
+              3520,
+              3405,
+              3950,
+              3844,
+              3874,
+              3490,
+              3627,
+              3446,
+              3494,
+              3397,
+              3470,
+              3399,
+              3513,
+              3399,
+              3478,
+              3364,
+              3498,
+              3494,
+              3490,
+              3426
+            ]
+          },
+          "zone8": {
+            "before_median_ms": 4.6545,
+            "after_median_ms": 4.6985,
+            "before_us": [
+              4661,
+              4744,
+              4589,
+              4685,
+              4606,
+              4674,
+              4563,
+              4711,
+              4579,
+              4748,
+              4561,
+              4684,
+              4540,
+              4698,
+              4550,
+              4721,
+              4617,
+              4690,
+              4601,
+              4696,
+              4626,
+              4683,
+              4572,
+              4661,
+              4551,
+              4726,
+              4630,
+              4704,
+              4554,
+              4656,
+              4570,
+              4769,
+              4653,
+              4538,
+              4668,
+              4571,
+              4712,
+              4553,
+              4678,
+              4559,
+              4700,
+              4602,
+              4668,
+              4550,
+              4670,
+              4555,
+              4747,
+              4576,
+              4673,
+              4550,
+              4714,
+              4582,
+              4722,
+              4564,
+              4683,
+              4601,
+              4701,
+              4556,
+              4711,
+              4596,
+              4658,
+              4568,
+              4801,
+              4530
+            ],
+            "after_us": [
+              4732,
+              4780,
+              4591,
+              4773,
+              4589,
+              4805,
+              4579,
+              4767,
+              4607,
+              4804,
+              4600,
+              4771,
+              4606,
+              4713,
+              4633,
+              4790,
+              4566,
+              4778,
+              4589,
+              4797,
+              4658,
+              4783,
+              4621,
+              4778,
+              4592,
+              4760,
+              4607,
+              4752,
+              4578,
+              4773,
+              4657,
+              4798,
+              4706,
+              4574,
+              4704,
+              4596,
+              4747,
+              4655,
+              4762,
+              4611,
+              4698,
+              4616,
+              4699,
+              4608,
+              4766,
+              4570,
+              4745,
+              4631,
+              4745,
+              4619,
+              4752,
+              4585,
+              4755,
+              4607,
+              4759,
+              4652,
+              4762,
+              4590,
+              4727,
+              4558,
+              4795,
+              4634,
+              4850,
+              4665
+            ]
+          }
+        }
+      }
+    }
+  },
+  "memory": {
+    "scope": "Optional cache element payload only, excluding dictionary/allocator/RefCounted overhead. Existing script posed/ready buffers are unchanged. Native vectors use 14 bytes per mesh vertex on these builds, replacing 45 script bytes per allocated triangle. The LRU/clear/mesh replacement/surface retirement controls release native owners.",
+    "maps": {
+      "zone1/mean/cold": {
+        "script_triangle_bytes": 199800,
+        "native_vector_capacity_bytes": 69930,
+        "saved_bytes": 129870,
+        "reduction_percent": 65.0
+      },
+      "zone11/mean/cold": {
+        "script_triangle_bytes": 173880,
+        "native_vector_capacity_bytes": 60858,
+        "saved_bytes": 113022,
+        "reduction_percent": 65.0
+      },
+      "zone8/mean/cold": {
+        "script_triangle_bytes": 198360,
+        "native_vector_capacity_bytes": 69426,
+        "saved_bytes": 128934,
+        "reduction_percent": 65.0
+      }
+    }
+  },
+  "validation": {
+    "final_run_count": 22,
+    "checks": 14865,
+    "failures": 0,
+    "runs": [
+      {
+        "run": "domain-desktop02",
+        "results": {
+          "water-wave-domain.json": {
+            "checks": 2221,
+            "failures": 0,
+            "sha256": "186a404197316cad4f6986d36e9a1fc59d6c441efe60b2e47ce9673829bbdeb8"
+          }
+        },
+        "run_json_sha256": "8fd97d5562122c58e3abbbe7cd17813c7b62b2839275a335710b1a53c41c3fe6",
+        "other_desktop_engines_absent": true,
+        "private_device_restored": null
+      },
+      {
+        "run": "domain-desktop03",
+        "results": {
+          "water-wave-domain.json": {
+            "checks": 2221,
+            "failures": 0,
+            "sha256": "5a03acaf08100652f9c343501ae3403a06063775eb8defca3e404d9d83e6b6ff"
+          }
+        },
+        "run_json_sha256": "58c127eb3a0166377905573538cf475a96ec29a17244e6f938756e4a0eda6a0c",
+        "other_desktop_engines_absent": true,
+        "private_device_restored": null
+      },
+      {
+        "run": "domain-android02",
+        "results": {
+          "water-wave-domain.json": {
+            "checks": 2221,
+            "failures": 0,
+            "sha256": "6258379f493bf35668a18f1aed4acc3182c8f4443cb6751f2583061961ffa4b0"
+          }
+        },
+        "run_json_sha256": "15195745f31f1e8ec7f2b5908a61d5352f4ba90cc52c34396ef870f8470dba8d",
+        "other_desktop_engines_absent": null,
+        "private_device_restored": true
+      },
+      {
+        "run": "domain-android03",
+        "results": {
+          "water-wave-domain.json": {
+            "checks": 2221,
+            "failures": 0,
+            "sha256": "095719c52ad1a540d3e94e822dd98ee8b072c69cd719aa6e3ce300293eb1e913"
+          }
+        },
+        "run_json_sha256": "78dce5febe838e22a9ef4fb7510a18190c45a9f8baf612bca9197203f122e483",
+        "other_desktop_engines_absent": null,
+        "private_device_restored": true
+      },
+      {
+        "run": "domain-astral01",
+        "results": {
+          "water-wave-domain.json": {
+            "checks": 2152,
+            "failures": 0,
+            "sha256": "68dc97d62e3eb43782c79e5d0fa2d087eb2cd05924b025367d6b7b9a0514b1c8"
+          }
+        },
+        "run_json_sha256": "e714cce9d4dddb01280889463278ae753315326dc0753b808c6c1a57bfcc3c3b",
+        "other_desktop_engines_absent": true,
+        "private_device_restored": null
+      },
+      {
+        "run": "surface-desktop03",
+        "results": {
+          "surface-cache.json": {
+            "checks": 576,
+            "failures": 0,
+            "sha256": "6fac83df7c889561ab11a0f320f2d878e25acee27da424cc0b88734720b91ea7"
+          }
+        },
+        "run_json_sha256": "04cddc733a0668e3a9aa857acaaef1e36f76ac42976ec1d5983e650012f51c98",
+        "other_desktop_engines_absent": true,
+        "private_device_restored": null
+      },
+      {
+        "run": "surface-android03",
+        "results": {
+          "surface-cache.json": {
+            "checks": 576,
+            "failures": 0,
+            "sha256": "c4641fc168e35d137de1c4b6cafa94a84d4ad8ef9a80a9472907a24df637a795"
+          }
+        },
+        "run_json_sha256": "e8a3a442ca7bddcba8678030471ede46bbe4f7434e92ed4ca420dce3e4ba1eba",
+        "other_desktop_engines_absent": null,
+        "private_device_restored": true
+      },
+      {
+        "run": "surface-desktop-optout01",
+        "results": {
+          "surface-cache.json": {
+            "checks": 423,
+            "failures": 0,
+            "sha256": "d06a080154c44d5216b0b91f456c674a8c8d897e50b8e02d7afc8972b6d9cdd3"
+          }
+        },
+        "run_json_sha256": "50e18443aa8080fc8558cd0fe74f05c5158110733bf86d2f2df091f39cf2bc82",
+        "other_desktop_engines_absent": true,
+        "private_device_restored": null
+      },
+      {
+        "run": "surface-android-optout01",
+        "results": {
+          "surface-cache.json": {
+            "checks": 423,
+            "failures": 0,
+            "sha256": "1d9d375075f77af37d2dc1f9c848ce3f826eb0b8ef867e107ca4d6a87a307c90"
+          }
+        },
+        "run_json_sha256": "4257b87d7f771e7f3290f1638583fde80f983dda7d9baeccbecd0366b2e06d12",
+        "other_desktop_engines_absent": null,
+        "private_device_restored": true
+      },
+      {
+        "run": "surface-android-absent01",
+        "results": {
+          "surface-cache.json": {
+            "checks": 396,
+            "failures": 0,
+            "sha256": "0d60eab79eaa4c80a53e42dc3124ea026d724b294e070306a618e2e5fca06174"
+          }
+        },
+        "run_json_sha256": "20f2989b08a3c9e33fd570592577fc048abe7320d9c6ceddbb5841f1ff616710",
+        "other_desktop_engines_absent": null,
+        "private_device_restored": true
+      },
+      {
+        "run": "surface-cache-before01",
+        "results": {
+          "surface-cache.json": {
+            "checks": 346,
+            "failures": 0,
+            "sha256": "708a3d6d3eb6fe66cdc7bce8b8912ce1a3a49bf27a523ad9afee0da8ce7508f7"
+          }
+        },
+        "run_json_sha256": "98d4db2928de259d38ee8b6a1ac0419a242839fba9b82d1f332eee865ead0a3d",
+        "other_desktop_engines_absent": true,
+        "private_device_restored": null
+      },
+      {
+        "run": "lifetime-desktop01",
+        "results": {
+          "water-wave-field.json": {
+            "checks": 31,
+            "failures": 0,
+            "sha256": "7ace33942ba81b6fa7d41527679c3691b6e3a3e3766884208f34e99e4b9b932a"
+          }
+        },
+        "run_json_sha256": "be67f50fe6a0090bf68a233fa823c7c30843b6b6978feced5b791fa2e406b0f8",
+        "other_desktop_engines_absent": true,
+        "private_device_restored": null
+      },
+      {
+        "run": "lifetime-android-native01",
+        "results": {
+          "water-wave-field.json": {
+            "checks": 31,
+            "failures": 0,
+            "sha256": "9abd1002e7470b860f074af5e57565989ba745ef6afcfd843f113a3a78f87a58"
+          }
+        },
+        "run_json_sha256": "ebfd90e72509f13510d17f15108d9dbad5c4c49501c1f3bfd82dd481318ba61b",
+        "other_desktop_engines_absent": null,
+        "private_device_restored": true
+      },
+      {
+        "run": "lifetime-android-worker01",
+        "results": {
+          "water-wave-field.json": {
+            "checks": 31,
+            "failures": 0,
+            "sha256": "a4563fe8326d6e6bed787ebc4e5739054691febfa182179aabe85744f955254b"
+          }
+        },
+        "run_json_sha256": "d9045ef2f73d3b72af5965a28ae8044df75bba905ee766c41f615825fabe6af4",
+        "other_desktop_engines_absent": null,
+        "private_device_restored": true
+      },
+      {
+        "run": "cached-desktop01",
+        "results": {
+          "cached-cost.json": {
+            "checks": 396,
+            "failures": 0,
+            "sha256": "75a1de9777ac98e3b764e921a9d282fe3fb01133c7c3923d708be3a3671fa27e"
+          }
+        },
+        "run_json_sha256": "5fc13add6ea6b337094f49b271d00438f2b445e375d5cfe2351d6c7ff2ae6a7e",
+        "other_desktop_engines_absent": true,
+        "private_device_restored": null
+      },
+      {
+        "run": "cached-android01",
+        "results": {
+          "cached-cost.json": {
+            "checks": 396,
+            "failures": 0,
+            "sha256": "b836dcb39f56d7fd83d5d7a05ac85a9e184e19e6184da2cd5c03d5ac26ba232c"
+          }
+        },
+        "run_json_sha256": "9613831dd1ed12a2cdb719c9f73a78863e4570a371d3e47a1951a89ae77e4d34",
+        "other_desktop_engines_absent": null,
+        "private_device_restored": true
+      },
+      {
+        "run": "render-desktop-baseline01",
+        "results": {
+          "water-surface.json": {
+            "checks": 32,
+            "failures": 0,
+            "sha256": "f876d1e5d1691f357a6f55caecc00c8166a37772419aa8e8dd30beffb8d033a4"
+          }
+        },
+        "run_json_sha256": "0f0c6a46455067d21e48c420d70434cdfbe7ee85506355d2cb69fbc526d61ae5",
+        "other_desktop_engines_absent": true,
+        "private_device_restored": null
+      },
+      {
+        "run": "render-desktop-candidate01",
+        "results": {
+          "water-surface.json": {
+            "checks": 36,
+            "failures": 0,
+            "sha256": "ca01b046d3c14bc84f33ead8d9b5dd3d105fac301fa8310593a0822e6881ee99"
+          }
+        },
+        "run_json_sha256": "ae2c994e73b5fd9dd87203052d79f499fabda593ea9d0811ea999ed831eef06e",
+        "other_desktop_engines_absent": true,
+        "private_device_restored": null
+      },
+      {
+        "run": "render-android-baseline01",
+        "results": {
+          "water-surface.json": {
+            "checks": 32,
+            "failures": 0,
+            "sha256": "f83d26e75bf9fb8f3ef3487fc2eaff5e3cf7a9bc42fd131c31250848373d7ce1"
+          }
+        },
+        "run_json_sha256": "a196343050531920f15b1b70a77537c81ba7879ccd5a9a97667064bdd3c76e83",
+        "other_desktop_engines_absent": null,
+        "private_device_restored": true
+      },
+      {
+        "run": "render-android-candidate01",
+        "results": {
+          "water-surface.json": {
+            "checks": 36,
+            "failures": 0,
+            "sha256": "e4c73b7267f15a546c6329ed50415847d924d2aa3c66181f5b903a0ea435816c"
+          }
+        },
+        "run_json_sha256": "b594ca8198b06004b66c8ea534064a3e116a3d89a1f87031970c9b48e4961f1d",
+        "other_desktop_engines_absent": null,
+        "private_device_restored": true
+      },
+      {
+        "run": "render-mobile-baseline01",
+        "results": {
+          "water-surface.json": {
+            "checks": 32,
+            "failures": 0,
+            "sha256": "d5a7a12d962b917b9c77ff3ee420dff4a46f093481b7d37084de0ae7bd259b2c"
+          }
+        },
+        "run_json_sha256": "3ac14e9406d5a39b3d9e9805e990ae56b81c01d6493855460ace6e6c145a2df0",
+        "other_desktop_engines_absent": null,
+        "private_device_restored": true
+      },
+      {
+        "run": "render-mobile-candidate01",
+        "results": {
+          "water-surface.json": {
+            "checks": 36,
+            "failures": 0,
+            "sha256": "311eb49ce25859bb4ee018ef4f0d6eec80352aa5feedbc5b200e28fc2abe40e0"
+          }
+        },
+        "run_json_sha256": "cf2a31e06e624e09804f2a94fab3b80bed40a154a36463983e2a103066a47085",
+        "other_desktop_engines_absent": null,
+        "private_device_restored": true
+      }
+    ],
+    "coverage": "Synthetic overlapping/degenerate/sliver/negative cases; 3,528 randomized queries with 2,928 hits per native contract run; rotated/mirrored/scaled transforms, live lava, levels and same/next-frame caches; invalid native input admission; 20-sector LRU eviction and ownership; both forced and absent-library fallbacks; base zones 1/11/8 and LiA 1/10/26 exact domains; native and scalar-worker field lifetimes.",
+    "render_scope": "Five held states each on Linux Compatibility, Android Compatibility and Android Mobile. Full old/new Surface sources; cache_mean enabled, with native-positive controls for waves-off and mean-offset. All 15 arrays of 4,096 expected float32 heights and 15 CPU/GPU error/coverage-image pairs are exact. These are height agreement images, not whole-scene appearance captures.",
+    "render_comparisons": [
+      {
+        "platform": "desktop",
+        "mode": "base",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "592cd475ff604c8d1af6ea0868ee08e2990e17c49581c5b4fc222c3c31377638",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 0.0,
+        "after_wave_ticks": 0.0
+      },
+      {
+        "platform": "desktop",
+        "mode": "moving",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "9c8229d07aec410d263e7675569b3b1b3e082dddb69bcc38c224a30511b2b66b",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 134.0,
+        "after_wave_ticks": 134.0
+      },
+      {
+        "platform": "desktop",
+        "mode": "waves-off",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "6a0657f2ac1f1afd5db10e45d3d0d3981fe252a97844c6ba2f3547fff55efd72",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 134.0,
+        "after_wave_ticks": 134.0
+      },
+      {
+        "platform": "desktop",
+        "mode": "mean-offset",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "5ee3868616cc05e658429e27f63f00d38a39c214c3f040f1272e3c8ae9d6f231",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 134.0,
+        "after_wave_ticks": 134.0
+      },
+      {
+        "platform": "desktop",
+        "mode": "offset",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "6c425b899689e67c9bb57b22b6ae84dd6acb4fede4811ff69504176fc2b8021b",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 134.0,
+        "after_wave_ticks": 134.0
+      },
+      {
+        "platform": "android",
+        "mode": "base",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "592cd475ff604c8d1af6ea0868ee08e2990e17c49581c5b4fc222c3c31377638",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 0.0,
+        "after_wave_ticks": 0.0
+      },
+      {
+        "platform": "android",
+        "mode": "moving",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "9c8229d07aec410d263e7675569b3b1b3e082dddb69bcc38c224a30511b2b66b",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 134.0,
+        "after_wave_ticks": 134.0
+      },
+      {
+        "platform": "android",
+        "mode": "waves-off",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "6a0657f2ac1f1afd5db10e45d3d0d3981fe252a97844c6ba2f3547fff55efd72",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 134.0,
+        "after_wave_ticks": 134.0
+      },
+      {
+        "platform": "android",
+        "mode": "mean-offset",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "5ee3868616cc05e658429e27f63f00d38a39c214c3f040f1272e3c8ae9d6f231",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 134.0,
+        "after_wave_ticks": 134.0
+      },
+      {
+        "platform": "android",
+        "mode": "offset",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "6c425b899689e67c9bb57b22b6ae84dd6acb4fede4811ff69504176fc2b8021b",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 134.0,
+        "after_wave_ticks": 134.0
+      },
+      {
+        "platform": "mobile",
+        "mode": "base",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "592cd475ff604c8d1af6ea0868ee08e2990e17c49581c5b4fc222c3c31377638",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 0.0,
+        "after_wave_ticks": 0.0
+      },
+      {
+        "platform": "mobile",
+        "mode": "moving",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "9c8229d07aec410d263e7675569b3b1b3e082dddb69bcc38c224a30511b2b66b",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 134.0,
+        "after_wave_ticks": 134.0
+      },
+      {
+        "platform": "mobile",
+        "mode": "waves-off",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "6a0657f2ac1f1afd5db10e45d3d0d3981fe252a97844c6ba2f3547fff55efd72",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 134.0,
+        "after_wave_ticks": 134.0
+      },
+      {
+        "platform": "mobile",
+        "mode": "mean-offset",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "5ee3868616cc05e658429e27f63f00d38a39c214c3f040f1272e3c8ae9d6f231",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 134.0,
+        "after_wave_ticks": 134.0
+      },
+      {
+        "platform": "mobile",
+        "mode": "offset",
+        "changed_pixels": 0,
+        "height_arrays_exact": true,
+        "height_sha256": "6c425b899689e67c9bb57b22b6ae84dd6acb4fede4811ff69504176fc2b8021b",
+        "png_bytes_exact": true,
+        "dimensions": [
+          64,
+          64
+        ],
+        "before_error_m": 0.0,
+        "after_error_m": 0.0,
+        "before_wave_ticks": 134.0,
+        "after_wave_ticks": 134.0
+      }
+    ]
+  },
+  "build": {
+    "scope": "Three local helper compilations only. Existing desktop executable/PCK copied unchanged, with the complete new Linux helper beside them. Android loads the new Surface class through a supported private GDExtension adapter; domain/solver runs also load the previously qualified two-class water adapter. The installed helper/app remain unchanged. This does not establish complete-current-source package acceptance.",
+    "libraries": {
+      "linux": {
+        "before_sha256": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "after_sha256": "f5441dd965e7d2f1dfd634ebbde86e46996bf79bc542432cf111f4c780d6d105",
+        "bytes": 3101872
+      },
+      "windows": {
+        "before_sha256": "40a2e9ed88b7a92164902937d0466cf9d7ce3ae661be79af929d0aab4ab191c3",
+        "after_sha256": "089ae99e06360afc73b4fcb2cac6f190f868d8455727fb253cb31795935fb343",
+        "bytes": 2371072
+      },
+      "android": {
+        "before_sha256": "ed3e78c5b014cc344ab8abbd632c6c44394e487a4b6cdc67b0ef1a0c935bf479",
+        "after_sha256": "25e0b2234492f39d3b2fb5147d4585ef220506d544e2d789a2e3a6dd4dea4574",
+        "bytes": 1354456
+      }
+    },
+    "binary_class_name_audit": {
+      "linux": {
+        "present_before": [
+          "TerrainWindowFrontier",
+          "TerrainSearchKernel",
+          "UnitSimulationState",
+          "UnitSimulationLease",
+          "UnitNoticeLifetime",
+          "UnitQueryKernel",
+          "PerceptionKernel",
+          "TerrainColorField",
+          "WaterCurrentKernel",
+          "WaterWaveKernel",
+          "ParticleDrawBuffer",
+          "ScreenRectKernel",
+          "NavigationBuildKernel",
+          "AIActivityKernel",
+          "MotionSplineKernel",
+          "MmpTextureKernel",
+          "AudioDecodeKernel",
+          "FireParticleKernel",
+          "SpellParticleKernel",
+          "GrassFieldKernel",
+          "GrassChunkJob",
+          "NavTurnKernel",
+          "SoftGroundMeshJob",
+          "UnitPresentationKernel",
+          "NetSmoothKernel"
+        ],
+        "added_class_names": [
+          "WaterSurfaceKernel"
+        ],
+        "missing_after": []
+      },
+      "windows": {
+        "present_before": [
+          "TerrainWindowFrontier",
+          "TerrainSearchKernel",
+          "UnitSimulationState",
+          "UnitSimulationLease",
+          "UnitNoticeLifetime",
+          "UnitQueryKernel",
+          "PerceptionKernel",
+          "TerrainColorField",
+          "ParticleDrawBuffer",
+          "ScreenRectKernel",
+          "NavigationBuildKernel",
+          "AIActivityKernel",
+          "MotionSplineKernel",
+          "MmpTextureKernel",
+          "AudioDecodeKernel",
+          "FireParticleKernel",
+          "SpellParticleKernel",
+          "GrassFieldKernel",
+          "GrassChunkJob",
+          "NavTurnKernel",
+          "SoftGroundMeshJob",
+          "UnitPresentationKernel",
+          "NetSmoothKernel"
+        ],
+        "added_class_names": [
+          "WaterCurrentKernel",
+          "WaterSurfaceKernel",
+          "WaterWaveKernel"
+        ],
+        "missing_after": []
+      },
+      "android": {
+        "present_before": [
+          "TerrainWindowFrontier",
+          "TerrainSearchKernel",
+          "UnitSimulationState",
+          "UnitSimulationLease",
+          "UnitNoticeLifetime",
+          "UnitQueryKernel",
+          "PerceptionKernel",
+          "TerrainColorField",
+          "WaterCurrentKernel",
+          "WaterWaveKernel",
+          "ParticleDrawBuffer",
+          "ScreenRectKernel",
+          "NavigationBuildKernel",
+          "AIActivityKernel",
+          "MotionSplineKernel",
+          "MmpTextureKernel",
+          "AudioDecodeKernel",
+          "FireParticleKernel",
+          "SpellParticleKernel",
+          "GrassFieldKernel",
+          "GrassChunkJob",
+          "NavTurnKernel",
+          "SoftGroundMeshJob",
+          "UnitPresentationKernel",
+          "NetSmoothKernel"
+        ],
+        "added_class_names": [
+          "WaterSurfaceKernel"
+        ],
+        "missing_after": []
+      }
+    },
+    "windows_scope": "Cross-compilation and static dependency checks only. This DLL now also includes WaterCurrentKernel and WaterWaveKernel, which were absent from its previous binary. Native Windows runtime and physical-device acceptance remain open; class-name presence is not runtime validation.",
+    "windows_imports": [
+      "KERNEL32.dll",
+      "msvcrt.dll"
+    ],
+    "godot_cpp_commit": "507ed9d840c01a3c5b2a39af8bb4000bfac30bf5",
+    "compiler_policy": "Godot 4.7 API / template_release / C++17 / Release / -ffp-contract=off for helper and godot-cpp. Android NDK 29.0.14206865, API24, arm64-v8a, c++_static. Windows MinGW x86_64 with static C++/GCC runtime.",
+    "inputs_sha256": {
+      "source/surface_validation.cpp": "a97a3811fa8e223d65b50510dbb55ad5e362ae488e2614ae464871d4e1aa3adf",
+      "source/CMakeLists.txt": "f7cdc2aed087f768d2335ce1ddf09b360ac676928c7dd6b5c8f89492c0130a4e",
+      "build-android/libwater_surface_validation.so": "7b2ad82633e724f2a3dc8c5ccb61e85fac8a680cf189e4d9ef9b9884e08f324a",
+      "native-build/libwater_native_validation.so": "49f214524529866e8fe271370a7c94a6b1065b70e931e54dac41766236b091d3",
+      "water_surface_validation.gdextension": "afc6d903bece90d5dd4868d949381b81195deaa7609557d51cee516d85b9e588",
+      "runtime/CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+      "runtime/CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0"
+    },
+    "logs_sha256": {
+      "configure-windows.log": "6691ff8c9baa8dfee71396f3daf5b7d40a760832b9567ef11ccfdacacc851cb8",
+      "configure-linux.log": "2d4e778bc1fe15d9a3de9b181f2d137bca035782b0fe742eb8ed420e40be78ed",
+      "configure-android.log": "aaf3e5edbca8421e997e4544186e119e326a1d8cb1a2f93325756d8fd145cfe1",
+      "compile-linux.log": "2856082018c5c7dd337bfb03f14b5d8f6cbf14866e1cf70adaa05324ba1c3c58",
+      "compile-windows.log": "3acf521298b06d2664a7f1275e704d474c8a9439dd11579532461536d1988df9",
+      "compile-android.log": "1970912deb94050ba4ed1c67371fef579c941d09e34a629b0ca1f6093bb350b9"
+    },
+    "latest_delivery": "1.0.3-local.20261010.9, source 473beb9; delivery files unchanged"
+  },
+  "device_restoration": {
+    "files": {
+      "settings.cfg": {
+        "unchanged": true,
+        "sha256": "a6d3fdeba6fa0e2a8751d7f12ad6afcaa2cb6d50734d64d69f6cdaae831e3b3e"
+      },
+      "renderer.cfg": {
+        "unchanged": true,
+        "sha256": "85196ecfb5c62c1c82d416b49f6d8c5f47fa86f275ae66f6cb475e9c9a6c6aae"
+      }
+    },
+    "temporary_directory_absent": true,
+    "validation_autorun_absent": true,
+    "bench_autorun_absent": true,
+    "qa_process_stopped": true,
+    "temporary_outputs_absent": true,
+    "cached_cost_output_absent": true,
+    "rechecked_after_cached_cost_run": true
+  },
+  "raw_runs": [
+    {
+      "run": "cached-android01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "9613831dd1ed12a2cdb719c9f73a78863e4570a371d3e47a1951a89ae77e4d34"
+    },
+    {
+      "run": "cached-desktop01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": 0,
+      "restored": null,
+      "run_json_sha256": "5fc13add6ea6b337094f49b271d00438f2b445e375d5cfe2351d6c7ff2ae6a7e"
+    },
+    {
+      "run": "domain-android01",
+      "final_acceptance": false,
+      "errors": [
+        "10-10 20:03:32.230 11826 11859 E godot   : SCRIPT ERROR: Parse Error: Could not resolve super class inheritance from \"user://qa-water/domain_qualification.gd\".",
+        "10-10 20:03:32.234 11826 11859 E godot   : ERROR: Failed to load script \"user://qa-water/qualify_domain.gd\" with error \"Parse error\".",
+        "10-10 20:03:32.234 11826 11859 E godot   : ERROR: Required object \"rp_child\" is null."
+      ],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "d7bccefe99e4bba0aa7c17ef730be06d86aaa88a4458bacec72461ad28a49280"
+    },
+    {
+      "run": "domain-android02",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "15195745f31f1e8ec7f2b5908a61d5352f4ba90cc52c34396ef870f8470dba8d"
+    },
+    {
+      "run": "domain-android03",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "78dce5febe838e22a9ef4fb7510a18190c45a9f8baf612bca9197203f122e483"
+    },
+    {
+      "run": "domain-astral01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": 0,
+      "restored": null,
+      "run_json_sha256": "e714cce9d4dddb01280889463278ae753315326dc0753b808c6c1a57bfcc3c3b"
+    },
+    {
+      "run": "domain-desktop01",
+      "final_acceptance": false,
+      "errors": [
+        "SCRIPT ERROR: Parse Error: Could not resolve super class inheritance from \"/home/llm2x/Documents/EI/local/scratchpad/surface-native-cost-20261010/domain-desktop01/domain_qualification.gd\".",
+        "ERROR: Failed to load script \"/home/llm2x/Documents/EI/local/scratchpad/surface-native-cost-20261010/domain-desktop01/tool-source.gd\" with error \"Parse error\".",
+        "ERROR: Required object \"rp_child\" is null."
+      ],
+      "return_code": -15,
+      "restored": null,
+      "run_json_sha256": "a530ccd3c9f18dc5177cc802a476ec335fa5a3283e251e91f6a031e7b593a603"
+    },
+    {
+      "run": "domain-desktop02",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": 0,
+      "restored": null,
+      "run_json_sha256": "8fd97d5562122c58e3abbbe7cd17813c7b62b2839275a335710b1a53c41c3fe6"
+    },
+    {
+      "run": "domain-desktop03",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": 0,
+      "restored": null,
+      "run_json_sha256": "58c127eb3a0166377905573538cf475a96ec29a17244e6f938756e4a0eda6a0c"
+    },
+    {
+      "run": "lifetime-android-native01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "ebfd90e72509f13510d17f15108d9dbad5c4c49501c1f3bfd82dd481318ba61b"
+    },
+    {
+      "run": "lifetime-android-worker01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "d9045ef2f73d3b72af5965a28ae8044df75bba905ee766c41f615825fabe6af4"
+    },
+    {
+      "run": "lifetime-desktop01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": 0,
+      "restored": null,
+      "run_json_sha256": "be67f50fe6a0090bf68a233fa823c7c30843b6b6978feced5b791fa2e406b0f8"
+    },
+    {
+      "run": "profile-android01",
+      "final_acceptance": false,
+      "errors": [
+        "10-10 19:59:39.150 10677 10709 E godot   : SCRIPT ERROR: Parse Error: Value of type \"user://qa-water/profiled_surface.gd\" cannot be assigned to a variable of type \"res://src/game/fx/water_surface.gd\".",
+        "10-10 19:59:39.158 10677 10709 E godot   : ERROR: Failed to load script \"user://qa-water/profile.gd\" with error \"Parse error\".",
+        "10-10 19:59:39.158 10677 10709 E godot   : ERROR: Required object \"rp_child\" is null."
+      ],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "5453788f1842dad7389586f18ab893c54767bec0f58be064477140d58d8eabec"
+    },
+    {
+      "run": "profile-android02",
+      "final_acceptance": false,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "500041bbea232fb4df5de62c23aab22297dfaf18567c88b8bceef017572612c8"
+    },
+    {
+      "run": "render-android-baseline01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "a196343050531920f15b1b70a77537c81ba7879ccd5a9a97667064bdd3c76e83"
+    },
+    {
+      "run": "render-android-candidate01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "b594ca8198b06004b66c8ea534064a3e116a3d89a1f87031970c9b48e4961f1d"
+    },
+    {
+      "run": "render-desktop-baseline01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": 0,
+      "restored": null,
+      "run_json_sha256": "0f0c6a46455067d21e48c420d70434cdfbe7ee85506355d2cb69fbc526d61ae5"
+    },
+    {
+      "run": "render-desktop-candidate01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": 0,
+      "restored": null,
+      "run_json_sha256": "ae2c994e73b5fd9dd87203052d79f499fabda593ea9d0811ea999ed831eef06e"
+    },
+    {
+      "run": "render-mobile-baseline01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "3ac14e9406d5a39b3d9e9805e990ae56b81c01d6493855460ace6e6c145a2df0"
+    },
+    {
+      "run": "render-mobile-candidate01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "cf2a31e06e624e09804f2a94fab3b80bed40a154a36463983e2a103066a47085"
+    },
+    {
+      "run": "surface-android-absent01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "20f2989b08a3c9e33fd570592577fc048abe7320d9c6ceddbb5841f1ff616710"
+    },
+    {
+      "run": "surface-android-optout01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "4257b87d7f771e7f3290f1638583fde80f983dda7d9baeccbecd0366b2e06d12"
+    },
+    {
+      "run": "surface-android01",
+      "final_acceptance": false,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "19ff84cc965d284688fd98be9a355c8f1e83a865a1ae8df855961c1f4c2ac119"
+    },
+    {
+      "run": "surface-android02",
+      "final_acceptance": false,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "7d17166a587eed0d490edfd6f0ad2d2cdc1c11b6e7cd0aec0ebe4cec1b55cdf6"
+    },
+    {
+      "run": "surface-android03",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": null,
+      "restored": true,
+      "run_json_sha256": "e8a3a442ca7bddcba8678030471ede46bbe4f7434e92ed4ca420dce3e4ba1eba"
+    },
+    {
+      "run": "surface-cache-before01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": 0,
+      "restored": null,
+      "run_json_sha256": "98d4db2928de259d38ee8b6a1ac0419a242839fba9b82d1f332eee865ead0a3d"
+    },
+    {
+      "run": "surface-desktop-optout01",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": 0,
+      "restored": null,
+      "run_json_sha256": "50e18443aa8080fc8558cd0fe74f05c5158110733bf86d2f2df091f39cf2bc82"
+    },
+    {
+      "run": "surface-desktop01",
+      "final_acceptance": false,
+      "errors": [],
+      "return_code": 0,
+      "restored": null,
+      "run_json_sha256": "092bd5758b26c1a6bbb22d5ec6d4d996c3a9bfefef9a1579d484d1f00726ea9f"
+    },
+    {
+      "run": "surface-desktop02",
+      "final_acceptance": false,
+      "errors": [],
+      "return_code": 0,
+      "restored": null,
+      "run_json_sha256": "37cfe02bbb06cc3195e646c8ca950f854bb3a93104e20a1594bbde55507b4d22"
+    },
+    {
+      "run": "surface-desktop03",
+      "final_acceptance": true,
+      "errors": [],
+      "return_code": 0,
+      "restored": null,
+      "run_json_sha256": "04cddc733a0668e3a9aa857acaaef1e36f76ac42976ec1d5983e650012f51c98"
+    }
+  ],
+  "retained_failed_attempts": "profile-android01 used the PCK Surface type instead of the redirected full source; domain-desktop01 and domain-android01 had a fixture indentation parse error. All were corrected without production code changes; failed runs and restoration records are retained. Earlier surface01/02 runs predate the added ownership controls and are supplementary only.",
+  "evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/surface-native-cost-20261010",
+  "remaining": [
+    "Cold Android domain construction still costs roughly 20\u201323 ms; indexing and other measured water/effect work remain candidates for profiling.",
+    "Adreno 650 Mobile cloud/material-water flicker remains unresolved; no completed shader-ablation grid is repeated.",
+    "Original RMX3890/Adreno 610 and Linux RTX3050 reports remain unresolved; those devices are unavailable here.",
+    "Windows runtime and complete-current-source package acceptance remain open. No playthroughs or unsolicited packages."
+  ]
+}

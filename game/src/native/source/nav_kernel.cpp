@@ -26,6 +26,7 @@
 #include "perception_batch.h"
 #include "terrain_color.h"
 #include "water_current.h"
+#include "water_surface.h"
 #include "water_wave.h"
 #include "particle_draw.h"
 #include "unit_presentation.h"
@@ -553,6 +554,7 @@ static void initialize_kernel(ModuleInitializationLevel level) {
         GDREGISTER_CLASS(PerceptionKernel);
         GDREGISTER_CLASS(TerrainColorField);
         GDREGISTER_CLASS(WaterCurrentKernel);
+        GDREGISTER_CLASS(WaterSurfaceKernel);
         GDREGISTER_CLASS(WaterWaveKernel);
         GDREGISTER_CLASS(ParticleDrawBuffer);
         GDREGISTER_CLASS(ScreenRectKernel);

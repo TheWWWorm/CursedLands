@@ -12,6 +12,7 @@ var _frame := 0
 var _phase := PackedFloat32Array()
 var _waves := true
 var _cache_mean := false
+var _native_mean := ClassDB.class_exists(&"WaterSurfaceKernel") and not "--ei-script-water-surface" in OS.get_cmdline_user_args()
 var _margin := 0.0
 
 
@@ -158,6 +159,12 @@ func sample(point: Vector2) -> Dictionary:
 func _sample_mean(record: Dictionary, xf: Transform3D, point: Vector2, bucket: Vector2i, best: Dictionary) -> Dictionary:
 	var triangles: PackedInt32Array = record.buckets.get(bucket,PackedInt32Array())
 	if triangles.is_empty(): return best
+	if _native_mean:
+		if not record.has("mean_kernel"):
+			var kernel: RefCounted = ClassDB.instantiate(&"WaterSurfaceKernel")
+			record.mean_kernel = kernel if kernel.initialize(record.vertices,record.indices,record.uv2) else null
+		if record.mean_kernel != null:
+			return record.mean_kernel.sample_mean(point,xf,triangles,terrain.water_offsets,terrain._lava,_frame,best)
 	# Mean-surface batches revisit triangles many times. Cache only their
 	# geometry, once per begin_frame, leaving live liquid flags below.
 	# Preserve vector rounding and float64 determinants/height arithmetic.
