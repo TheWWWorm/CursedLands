@@ -52,14 +52,16 @@ static func font() -> Font:
 ## other 800×600 screens; UVs below are in 256ths of that image).
 static func tex(name: String) -> Texture2D:
 	name = name.to_lower()
+	# The first-run import screen uses these helpers before archives exist.
+	# A failed lookup then must not survive into the newly imported game.
+	if not GameData.is_open():
+		return null
 	if not _tex.has(name):
-		var t: Texture2D = null
-		if GameData.is_open():
-			var img := GameData.load_image(name)
-			if img:
-				img.flip_y()
-				t = ImageTexture.create_from_image(img)
-		_tex[name] = t
+		var img := GameData.load_image(name)
+		if img == null or img.is_empty():
+			return null
+		img.flip_y()
+		_tex[name] = ImageTexture.create_from_image(img)
 	return _tex[name]
 
 

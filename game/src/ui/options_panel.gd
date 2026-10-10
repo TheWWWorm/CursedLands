@@ -42,7 +42,7 @@ extends Interface800
 ## the renderer row asks first when stepped to Forward+ (experimental on
 ## phones, ✗ puts it back) and ✓ with it changed offers a restart. Graphics
 ## rows 6..8: detect graphics automatically, "Detect best settings" (the
-## graphics test now), "Original look" (PRESET_ROW); rows 9..13 link to the
+## graphics test now), "Graphics preset" (PRESET_ROW); rows 9..13 link to the
 ## remake's graphics sections. Remake: its sections as link rows (SECTIONS,
 ## rows 0..9: World and textures, Terrain and vegetation, Lighting and shadows,
 ## Water, Weather and effects, Camera, Interface and controls, Gamepad,
@@ -351,7 +351,9 @@ func _show_group(g: int) -> void:
 	elif _group == 0:   # Graphics: the graphics test, Original look, the graphics sections
 		_rows[DETECT_ROW] = {"kind": "link", "name": "", "detect": true,
 			"label": RemakeText.t(DETECT_LINK[0]), "tip": _remake_tip(DETECT_LINK)}
-		_rows[GFX_LOOK_ROW] = _look_row()
+		_rows[GFX_LOOK_ROW] = {"kind":"switch", "name":"graphics_preset", "max":GfxPresets.NAMES.size(),
+			"choices":RemakeText.tl(GfxPresets.NAMES), "label":RemakeText.t("Graphics preset"),
+			"tip":RemakeText.t("Choose Original, Low, Medium or High, then confirm with ✓. Selecting a preset turns off automatic detection. Advanced changes become Custom. Clouds, terrain contact blending and depth of field remain optional.")}
 		for i in GRAPHICS_LINKS.size():
 			_rows[GRAPHICS_LINK_ROW + i] = _section_link(GRAPHICS_LINKS[i])
 	elif _parent(_group) >= 0:
@@ -475,7 +477,7 @@ func _assign(act: String, sc: int) -> void:
 	_refresh_keys()
 
 
-## Row 12 of the remake graphics pages (LOOK_PAGES) and Graphics row 8: the "Original look" toggle
+## Row 12 of the remake graphics pages retains the Original look shortcut.
 ## (GfxDetect.original_look_*). Checked while every gfx_* switch is off (the
 ## 2000 renderer's look; the always-on quality settings in project.godot keep
 ## their colours). A press while unchecked switches them all off; a press
@@ -514,6 +516,8 @@ func _toggle_original_look() -> void:
 
 func _switch_text(row: Dictionary) -> String:
 	var v := int(_values.get(row.name, 0))
+	if row.name == "graphics_preset" and v == GfxPresets.DETECTED:
+		return RemakeText.t("Detected")
 	var choices: Array = row.get("choices", [])
 	if not choices.is_empty():
 		return String(choices[clampi(v, 0, choices.size() - 1)])
@@ -525,6 +529,14 @@ func _switch_text(row: Dictionary) -> String:
 
 func _set_value(name: String, v: int) -> void:
 	var was := int(_values.get(name, 0))
+	if name == "graphics_preset":
+		var preset_values := GfxPresets.values(v)
+		for key: String in preset_values:
+			_values[key] = preset_values[key]
+		_values.auto_graphics = 0
+	elif v != was and GfxPresets.controls(name):
+		_values.graphics_preset = GfxPresets.CUSTOM
+		_values.auto_graphics = 0
 	_values[name] = v
 	if name == "renderer" and v == RendererChoice.FORWARD_PLUS and was != v and RendererChoice.available():
 		_ask_experimental(was)
@@ -602,9 +614,11 @@ func _apply() -> void:
 		var from := _look_from if _look_from != -2 else GfxDetect.original_look_from(rec, _snapshot)
 		GfxDetect.save_record(GfxDetect.original_look_record(rec, look, from))
 	var renderer := int(_values.get("renderer", 0)) != GameData.option("renderer")
+	var changes := {}
 	for n in _values:
 		if int(_values[n]) != GameData.option(n):
-			GameData.set_option(n, int(_values[n]))
+			changes[n] = int(_values[n])
+	GameData.set_options(changes)
 	if renderer and get_parent():
 		RendererChoice.ask_restart(get_parent(), game_files)   # applies at the next start
 

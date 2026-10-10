@@ -49,6 +49,7 @@ static func is_up(b) -> bool:
 
 
 func _ready() -> void:
+	add_to_group("pad_panel")
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	tooltip_text = " "
@@ -70,9 +71,33 @@ func _draw() -> void:
 	panel(Rect2(200, r.top, 400, r.bottom - r.top))
 	text_block(Rect2(215, r.top + 15, 370, 200), title, 2, Interface800.colorref(0x31b3ff), HORIZONTAL_ALIGNMENT_CENTER)
 	text_block(Rect2(215, r.top + r.t + 30, 370, 400), message, 2, TEXT, HORIZONTAL_ALIGNMENT_CENTER)
-	sprite(ui, r.ok, [81, 2, 155, 50])
+	_action(ui, r.ok, true)
 	if not ok_only:
-		sprite(ui, r.cancel, [160, 2, 234, 50])
+		_action(ui, r.cancel, false)
+
+
+## Keep decisions visible even when original UI artwork is unavailable.
+## The same rectangles serve artwork, fallback drawing and touch input.
+func _action(ui: Texture2D, r: Rect2, yes: bool) -> void:
+	if ui:
+		sprite(ui, r, [81, 2, 155, 50] if yes else [160, 2, 234, 50])
+		return
+	panel(r)
+	var c := r.get_center()
+	var points := [c + Vector2(-16, 0), c + Vector2(-4, 12), c + Vector2(18, -14)] if yes else \
+		[c + Vector2(-13, -13), c + Vector2(13, 13), c + Vector2(-13, 13), c + Vector2(13, -13)]
+	var col := Color(0.65, 0.85, 0.5) if yes else Color(0.95, 0.55, 0.45)
+	var width := maxf(2.0, kv().y * 3.0)
+	draw_line(p8(points[0]), p8(points[1]), col, width, true)
+	draw_line(p8(points[1 if yes else 2]), p8(points[2 if yes else 3]), col, width, true)
+
+
+func pad_targets() -> Array:
+	var r := _rects()
+	var targets := [{"id": "ok", "rect": pad_rect(r.ok)}]
+	if not ok_only:
+		targets.append({"id": "cancel", "rect": pad_rect(r.cancel)})
+	return targets
 
 
 func _get_tooltip(at: Vector2) -> String:
@@ -88,6 +113,12 @@ func _get_tooltip(at: Vector2) -> String:
 func _answer(yes: bool) -> void:
 	sound("messbox\\ok" if yes else "messbox\\cancel")
 	answered.emit(yes)
+	queue_free()
+
+
+func _dismiss() -> void:
+	sound("messbox\\cancel")
+	dismissed.emit()
 	queue_free()
 
 
@@ -110,9 +141,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		KEY_ENTER, KEY_KP_ENTER: _answer(true)
 		KEY_ESCAPE:
 			if esc_closes:
-				sound("messbox\\cancel")
-				dismissed.emit()
-				queue_free()
+				_dismiss()
 			else:
 				_answer(false)
 		_: return

@@ -3923,7 +3923,11 @@ func _draw_step(_dt: float, placement_ready := false) -> void:
 	# gap played the attack -> neutral cross clip and back on every repeated
 	# attack click, and clicks a second apart kept the strike from starting.
 	var cmd := order if not order.is_empty() or orders.is_empty() else orders[0]
-	if alert and controller >= 0 and world and world.authority and cmd.get("type", "") not in ["attack","direct_attack"] and not _pending_hit.has("direction"):
+	# Direction attacks commit one swing and clear their order. Stay ready
+	# while directly controlled, including the cooldown gap; otherwise each
+	# swing adds an attack-to-neutral-to-attack transition. Releasing direct
+	# control returns to the ordinary command-based stance below.
+	if alert and not direct_controlled and controller >= 0 and world and world.authority and cmd.get("type", "") not in ["attack","direct_attack"] and not _pending_hit.has("direction"):
 		alert = false
 	_update_pose()
 	if not dead:

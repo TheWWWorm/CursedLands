@@ -16,6 +16,7 @@ const GRASS_TYPES := [0, 5, 11]
 const BLADES := 14
 const BLADE_ROWS := 8
 const NEAR_RANGE := 18.0
+const LOD_HYSTERESIS := 2.0
 # Full leaf envelope, including the largest width/lean and wind offset.
 # Roots alone can be outside a wall while their curved tips pass through it.
 const SCENERY_RADIUS := 0.56
@@ -200,14 +201,8 @@ func _process(_dt: float) -> void:
 	var camera := get_viewport().get_camera_3d()
 	if camera == null:
 		return
-	# Ground intersection follows a tilted field/menu camera, rather than its
-	# elevated position. This also puts visible grass in the graphics test.
-	var p := camera.global_position
-	var ray := -camera.global_basis.z
-	if ray.y < -0.05:
-		var h := terrain.height_at(p.x, -p.z)
-		p += ray * maxf((h - p.y) / ray.y, 0.0)
-		p += ray * maxf((terrain.height_at(p.x, -p.z) - p.y) / ray.y, 0.0)
+	var p := _camera_focus(camera)
+	_view_focus = Vector2(p.x,p.z)
 	var focus := Vector2i(floori(p.x / CHUNK), floori(-p.z / CHUNK))
 	if focus != _focus:
 		_focus = focus
@@ -249,6 +244,21 @@ func _process(_dt: float) -> void:
 			_build_chunk(key)
 		if Time.get_ticks_usec() - start >= BUILD_US:
 			break
+
+
+func _camera_focus(camera: Camera3D) -> Vector3:
+	var eye := camera.global_position
+	var ray := -camera.global_basis.z
+	var height := maxf(eye.y-terrain.height_at(eye.x,-eye.z),0.0)
+	# Shoulder views keep their near bed around the player. Elevated views
+	# follow the ground under the sight line, with a bounded, continuous
+	# horizon limit instead of jumping back to the eye at a pitch threshold.
+	var blend := smoothstep(4.0,16.0,height)
+	var limit := RANGE/maxf(Vector2(ray.x,ray.z).length(),0.001)
+	var travel := clampf(height/maxf(-ray.y,0.05),0.0,limit)
+	var hit := eye+ray*travel
+	travel=clampf(travel+(hit.y-terrain.height_at(hit.x,-hit.z))/maxf(-ray.y,0.05),0.0,limit)
+	return eye+ray*travel*blend
 
 
 func _clear_grass() -> void:
@@ -800,11 +810,21 @@ func _update_submissions(focus: Vector2) -> void:
 	if transform != _cull_transform:
 		for key: Vector2i in _chunks: _cache_root_bounds(key,_chunks[key],transform)
 	_cull_focus = focus; _cull_transform = transform; _cull_step = CULL_MAX_STEP
-	for node: Chunk in _chunks.values(): _cull_chunk(node,focus)
+	for key: Vector2i in _chunks:
+		var node: Chunk = _chunks[key]
+		node.multimesh.mesh = _chunk_mesh(key)
+		_cull_chunk(node,focus)
 
 
 func _chunk_mesh(key: Vector2i) -> ArrayMesh:
-	return _mesh if Vector2(key - _focus).length_squared() * CHUNK * CHUNK <= NEAR_RANGE * NEAR_RANGE else _far_mesh
+	var centre := (Vector2(key)+Vector2.ONE*0.5)*CHUNK
+	var focus := Vector2(_view_focus.x,-_view_focus.y) if _view_focus.is_finite() else (Vector2(_focus)+Vector2.ONE*0.5)*CHUNK
+	var radius := NEAR_RANGE
+	if _chunks.has(key):
+		# Continuous distance avoids an 8m LOD jump at a stream-cell edge;
+		# separate enter/leave radii prevent small reversals from toggling it.
+		radius += LOD_HYSTERESIS if _chunks[key].multimesh.mesh == _mesh else -LOD_HYSTERESIS
+	return _mesh if centre.distance_squared_to(focus) <= radius*radius else _far_mesh
 
 
 ## Coherent growth patches cross chunk boundaries; the independent seeded

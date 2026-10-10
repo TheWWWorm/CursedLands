@@ -80,9 +80,10 @@ const OPTIONS := [
 	# graphics test leave it.
 	["renderer", 1, 3, 12, 12, 0],
 	# The graphics test on the first start / a new GPU (GfxDetect), on the
-	# Graphics page (row 6; row 7 "Detect best settings", 8 "Original look").
-	# Not gfx_*: the Original look preset leaves it.
+	# Graphics page: detection controls and the explicit preset selector.
+	# Neither key is a gfx_* effect switched by the Original look shortcut.
 	["auto_graphics", 1, 2, 0, 6, 1],
+	["graphics_preset", 1, 6, 0, 8, 0],
 	# World and textures (group 13). Terrain and vegetation have their own
 	# page (22). Native map-border fog is always active; see Gfx.BORDER_FOG.
 	["gfx_hd_textures", 1, 2, 13, 0, 1], ["gfx_materials", 1, 2, 13, 1, 1],
@@ -356,6 +357,7 @@ const REMAKE_OPTIONS := {
 ## screen). "marks" = EnableBloodprints and "footprints" = EnableFootprints
 ## switch the ground marks (GroundMarks).
 const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_kbd",
+	"graphics_preset",
 	"item_icon_fit", "ui_active_buttons", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion",
 	"power_mouse", "scroll_border", "rubber_select", "marks", "footprints", "select_type", "show_path", "brightness", "contrast", "gamma",
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
@@ -699,17 +701,27 @@ func option(name: String) -> int:
 
 
 func set_option(name: String, value: int) -> void:
-	options[name] = value
-	if not (name.begins_with("volume_") or name in ["brightness", "contrast", "gamma"]):   # not per slider step
-		trace("option %s = %d" % [name, value])
-	if name == "difficulty":
-		difficulty = value
-	if name == "renderer":
-		RendererChoice.choose(value)   # for the next start
-	if name == "resolution":
-		var list := resolutions()
-		var size: Vector2i = list[clampi(value, 0, list.size() - 1)]
-		resolution_size = "native" if value <= 0 else "%dx%d" % [size.x, size.y]
+	var values := {}
+	values[name] = value
+	set_options(values)
+
+
+## Publish a complete settings choice once. Presets can change dozens of
+## effects; rebuilding every listener after each intermediate value causes
+## repeated resource/shader preparation and exposes partial configurations.
+func set_options(values: Dictionary) -> void:
+	if values.is_empty(): return
+	for name: String in values:
+		var value := int(values[name])
+		options[name] = value
+		if not (name.begins_with("volume_") or name in ["brightness", "contrast", "gamma"]):
+			trace("option %s = %d" % [name, value])
+		if name == "difficulty": difficulty = value
+		if name == "renderer": RendererChoice.choose(value)   # for the next start
+		if name == "resolution":
+			var list := resolutions()
+			var size: Vector2i = list[clampi(value, 0, list.size() - 1)]
+			resolution_size = "native" if value <= 0 else "%dx%d" % [size.x, size.y]
 	_apply_audio()
 	_apply_display()
 	_apply_window()

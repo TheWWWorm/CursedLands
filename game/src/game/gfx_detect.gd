@@ -539,6 +539,7 @@ func _run() -> void:
 	result = res
 	var vals := result_values(res, _base, kind)
 	_set_values(vals)
+	GameData.options.graphics_preset = GfxPresets.DETECTED
 	GameData.save_settings()
 	_apply_live()
 	_restore_env()
@@ -964,6 +965,7 @@ class Watchdog extends Interface800:
 		var vals := GfxDetect.result_values({"tier": t, "fps": int(rec.get("fps", 0))}, GfxDetect.base_values(), GfxDetect.device_kind())
 		for k: String in vals:
 			GameData.options[k] = int(vals[k])
+		GameData.options.graphics_preset = GfxPresets.DETECTED
 		GameData.save_settings()
 		GameData._apply_window()
 		GameData.options_changed.emit()

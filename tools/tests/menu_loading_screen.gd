@@ -9,6 +9,7 @@ var covered := 0
 var captured := false
 var covered_captured := false
 var new_game := false
+var requested_zone := "bz1g"
 
 func check(ok: bool, label: String) -> void:
 	checks += 1
@@ -38,13 +39,15 @@ func _ready() -> void:
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,
 		"net_directory":0,"auto_graphics":0,"control_mode":1,"scroll_border":0},true)
 	new_game = OS.get_cmdline_user_args().has("--new-game")
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--zone="):requested_zone=arg.trim_prefix("--zone=")
 	check(LocalHost.available(),"rendered single-player uses the simulation service")
 	if not new_game:
 		var st:=CampaignState.new();st.ensure_hero(0,"Human Hero")
-		st.current_zone="bz1g";st.visited["bz1g"]=true
+		st.current_zone=requested_zone;st.visited[requested_zone]=true
 		DirAccess.make_dir_recursive_absolute(SaveInfo.directory())
 		check(st.save(SaveInfo.path("quick"))==OK,"prepare disposable camp save")
-		SaveInfo.write("quick",st.get_var(0,"gtime"),"gipat","bz1g")
+		SaveInfo.write("quick",st.get_var(0,"gtime"),"gipat",requested_zone)
 		if OS.get_cmdline_user_args().has("--legacy-info"):
 			DirAccess.remove_absolute(SaveInfo.path("quick","info.sav"))
 	var menu:=load("res://src/ui/main_menu.gd").new() as Control
@@ -70,7 +73,7 @@ func _ready() -> void:
 		await get_tree().process_frame
 	monitoring=false
 	check(session != null and session.local_host.frontend and session.local_host.process_id>0,"menu starts a real separate simulation process")
-	check(session.world != null and session.zone_id==("gz1g" if new_game else "bz1g") and not session.loading_game,"menu reaches the requested playable zone")
+	check(session.world != null and session.zone_id==("gz1g" if new_game else requested_zone) and not session.loading_game,"menu reaches the requested playable zone")
 	check(covered>0,"loading picture covers service startup")
 	check(exposed==0,"no presented HUD frame before loading picture")
 	check(LoadingScreen._current==null,"loading picture closes after successful load")
@@ -80,8 +83,12 @@ func _ready() -> void:
 		"zone":session.zone_id,"worker":session.local_host.frontend,"worker_pid":session.local_host.process_id},"\t"))
 	check(not await session.load_game_shown("missing-slot"),"missing save returns failure")
 	check(LoadingScreen._current==null,"failed load cleans up loading picture")
-	await session.local_host.stop()
-	session.game.queue_free();session.queue_free()
+	if OS.get_cmdline_user_args().has("--back-to-menu"):
+		await main.back_to_menu()
+		check(main.session == null and main.game == null, "real menu return clears game and session")
+	else:
+		await session.local_host.stop()
+		session.game.queue_free();session.queue_free()
 	for i in 8:await get_tree().process_frame
 	print("MENU_LOADING_SCREEN ",checks," checks ",failures," failures")
 	get_tree().quit(1 if failures else 0)

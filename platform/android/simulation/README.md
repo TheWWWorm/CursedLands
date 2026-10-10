@@ -21,7 +21,8 @@ replacement. A fresh process is required for each new native engine instance.
 
 To build a template, use the Godot commit in `engine_patches/godot-4.7/README.md`:
 
-1. Apply the six common engine patches, then `android-headless-service.patch`.
+1. Apply all twelve common engine patches in the order documented in the engine
+   README, then `android-headless-service.patch`.
 2. Run `python3 platform/android/simulation/install_into_engine.py /path/to/godot`
    from this repository. It installs the Java plugin and private manifest entries
    into the template source, and checks conflicting entries.
@@ -35,6 +36,16 @@ To build a template, use the Godot commit in `engine_patches/godot-4.7/README.md
    benchmark tools and test bootstrap changes. The template and APK must not
    have `android:debuggable` enabled. Stock templates have no
    `EISimulation` singleton and retain the inline host automatically.
+
+The 10 October local continuation rebuilds Android from the same pinned Godot
+commit with all twelve common desktop patches plus the service patch. Its
+release engine was tested in an isolated, debuggable private container on
+Retroid Pocket 5: settings/presets/attack/pollen/startup162 checks, Mobile startup10,
+service lifecycle22 and real Home/resume12, all passing. These are bounded
+qualification checks, not a reproduction of the reported Adreno610 load exit.
+See [the device/settings receipt](../../../docs/validation/device-settings-gameplay-2026-10-10.json)
+for native hashes, frozen fixtures and platform limits. Player APKs must still
+use a clean non-debuggable release template and exclude the private bootstrap.
 
 The device lifecycle test is `tools/tests/android_simulation_lifecycle.gd` (and
 its `android_service_counter.gd` child). It checks immediate cancellation,

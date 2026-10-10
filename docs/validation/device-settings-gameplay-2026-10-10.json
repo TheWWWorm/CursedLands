@@ -1,0 +1,1167 @@
+{
+  "date": "2026-10-10",
+  "status": "Source fixes qualified; updated delivery packages pending; broader goal remains active. Main thread only.",
+  "baseline": "Local .8 (source62ec87c) confirmed by the user for pollen/cloud complaints; canonical HEAD55cd627 before this pass.",
+  "source_sha256": {
+    "game/src/ei/game_data.gd": "2926e25aba7553c18679757e9ccf281b6b40c2a65ff006d03341e2624d4453cb",
+    "game/src/ei/remake_text.gd": "29acc153d6af584a0d0d5039a491633195c22250ab4a8ca3efe0e3b5540593b5",
+    "game/src/game/fx/ambient_particles.gd": "a10a7a45ce43ed33d1ddc495ea130d50117c87b2984cd2c4a7eb2d1673152f37",
+    "game/src/game/fx/terrain_details.gd": "baa1dd773f2b5ebd5cacde29d84040314900542f13b6940cb6217a9024425d9b",
+    "game/src/game/gfx_detect.gd": "6dcf0fba2a999efd9523af0c50e459ffbdd3aa9d680a65c890f70ea4aa6ba7a4",
+    "game/src/game/unit.gd": "31e30e977ea5e534b86b41bea88bccdedb1c8a0f944e20116081251f3915e164",
+    "game/src/ui/interface800.gd": "5593bd7a2a5115cfea438260b81815b064be42554fc2078c8ca86d3712909c99",
+    "game/src/ui/message_box.gd": "0bb9711aabc4bd5eccc5850084fcd4538546a81bbe1ce0ed61f5fdf5aea2f9e7",
+    "game/src/ui/options_panel.gd": "7faa6fa05780114fbf1ba9bb08d57ed3ca1d99099e65c9e0b6c95392e9ef978e",
+    "game/src/game/gfx_presets.gd": "94d754e194a96407cf2fa4586b2d3a315618b94017529956db08f8a982995711",
+    "game/src/game/gfx_presets.gd.uid": "c36c468ae20e617e2e9769eb5f72ee236a5b8a85432a489776ef2c6ed2de1910"
+  },
+  "changes": [
+    "Interface800 no longer stores failed texture lookups before archives open. Actual pre-import CampaignChoices followed by same-process GameData.open reproduces the old null saveload cache; vector tick/X also keeps message actions visible if the atlas is unavailable.",
+    "Settings uses its existing X and tick. No added Back/Назад button. Save/discard persistence, Escape to continue editing, touch, controller targets and Android system Back are exercised.",
+    "Direct control keeps alert stance across the empty-order interval between melee swings. Hit timing, weapon cooldown, command authority and ordinary non-direct stance behavior are unchanged.",
+    "Near-grass focus blends from eye XZ at low camera heights to bounded terrain-ray focus overhead; the ray is continuous at the horizon. Near/far detail has2m hysteresis and uses continuous chunk-centre distance. Root generation and far-grass production code are unchanged.",
+    "Pollen removes the circular wandering component and doubles the rise period30→60s; other particle species retain motion. Local .8 was already FPS-independent: baseline and candidate rendered poses match at30/60/144/240Hz. This is a deliberate slower-motion adjustment, not a fixed FPS dependency.",
+    "Graphics exposes Original/Low/Medium/High plus Custom and Detected source labels, using the established backend-safe detection ladder. The five advanced graphics pages remain. Applying multiple settings publishes one notification/save, avoiding intermediate effect rebuilds."
+  ],
+  "regressions": {
+    "settings": {
+      "baseline": "47 checks,4 failures",
+      "candidate": "47/0 desktop;48/0 Android including real OSBack"
+    },
+    "stance": {
+      "baseline": "27 checks,12 failures;356 neutral frames;observed swing gap3.52s for2.75s weapon cooldown",
+      "candidate": "31/0;0 neutral frames;2.86s swing gap at55ms fixture steps"
+    },
+    "grass": {
+      "baseline": "6 checks,2 failures;39.4806m focus jump;39 detail switches for repeated small boundary moves",
+      "candidate": "6/0;zero focus jumps/detail switches in the same low-camera sweep;200/0 authored meadow/camera checks;117/0 roots/envelope and1403/0 distant LOD checks"
+    },
+    "pollen": {
+      "baseline": "16 checks,2 requested-motion-target failures;0.133333m rise in2s",
+      "candidate": "16/0 across three desktop renderers and physical Android;0.066665m rise in2s"
+    },
+    "presets": "57/0 perdesktopbackend/Android plus398/0 general navigation; pre-batch implementation57/1 notification count; final one update notification"
+  },
+  "linux_report": {
+    "finding": "Reported fatal crash is not established by the supplied E6 log, which ends clean exit. Bound Callable disconnection is supported by Object base comparator; the SceneCache bind/unbind hypothesis is rejected. No speculative engine patch was added.",
+    "bounded_reproduction": "Real bidirectional ENet cache connection/teardown73/0 on both E6 and .8 engines. NewGame plus failed-load and actual menu return completed without empty Image/tree_exited errors. E6 loading-cover test fails2checks with660exposedframes; current retains the .8 fix with0exposedframes.",
+    "remaining": "Matching RTX3050/CachyOS report workload and native crash evidence remain unavailable. A clean controlled run does not close an intermittent report."
+  },
+  "android": {
+    "device": "Retroid Pocket5, Android33, Adreno650; not reported RMX3890 Android35 Adreno610.",
+    "package": "Private org.cursedlands.performance version71; normal org.cursedlands.engine and its userdata untouched.",
+    "engine": {
+      "base_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "archive_sha256": "b3d705612228c09083d55a89ed3ea7381e6181387ecfdb74fd5cf9733b28eee6",
+      "patches": {
+        "render-thread-shutdown": "0d7dc8b88c8708df9948002477f7bf14d9cf6e718251b0dc798606c5572b712e",
+        "queued-image-snapshot": "e747f95b3d324582130e1e0ba24a3f17e2a3a2da350474fca61e4970243a4fe3",
+        "unobserved-pose": "fdef4bafc6d2c9a94ef628fd692b7845fd9ed0e1ffd168b21a6a0c8e1ea45978",
+        "preserve-character-track-caches": "5b938580ef002448d35f0c1535dcde2021032f6eb1385be56815f157aa99a3b8",
+        "prepare-character-track-caches": "693f6eac8fee284b4493a8eb49c7bf9a2426d4e0c8a9f2ef3f96d4147c0ce1bb",
+        "cache-unobserved-track-eligibility": "788b24561c8f377f1f4f8aea4a33b05d9b21f31b6bc1772699156131a80173b8",
+        "mobile-shader-recompile-lock": "02bc97dd57f9b3388d71837b30b036e814ae5bf6e6fca3b3cf3948d260c746b6",
+        "forward-shader-recompile-lifetime": "6620cefedded50733fa65e71164dc8918c8a0ac02387d54252aedf6f185b701e",
+        "far-dof-sharp-guard": "c6070bfbfbf5e36014d37d2b58a74ae8ff156202aa063134cebd0b21610e7286",
+        "sky-subpass-alpha": "a2ba63fac3d1ec8804f96bf3cdeb45b7f2c1597e1ac410f1739df812d82f3a67",
+        "worker-thread-language-shutdown": "dc402e5bdc3b595d3dc50886a144da55d6a7d199dc2efaf348df394bd4b5321e",
+        "far-dof-reference": "9c906ae637c9df620f1976d7b6c3bfe6aed4e236c91fcf27b40afeb8bacf3954",
+        "android-headless-service": "91871d272668a087edfa1e9978df7d6974acacd10c4c78a458ab83483e672e0b"
+      },
+      "engine_path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-engine/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "command": [
+        "python3",
+        "-m",
+        "SCons",
+        "target=template_release",
+        "debug_symbols=yes",
+        "lto=none",
+        "production=yes",
+        "optimize=speed",
+        "module_mono_enabled=no",
+        "module_openxr_enabled=no",
+        "module_jolt_physics_enabled=no",
+        "module_fbx_enabled=no",
+        "module_gltf_enabled=no",
+        "module_lightmapper_rd_enabled=no",
+        "module_csg_enabled=no",
+        "module_theora_enabled=no",
+        "module_webrtc_enabled=no",
+        "module_webxr_enabled=no",
+        "-j8",
+        "platform=android",
+        "arch=arm64",
+        "swappy=yes"
+      ],
+      "started": 1791624576.6815593,
+      "status": "built",
+      "exit": 0,
+      "elapsed": 248.7631130218506,
+      "swappy_files": {
+        "swappy_common.h": "0264e382f8c63908848fe866da8feb756dbc5b5f66149249c7362ac8b4a1203f",
+        "swappyVk.h": "8b89ca6cff681f5914fcabfbedb082144d5ac7ab97b579b8b00958b3f9478b8b",
+        "LICENSE": "f2bdf6f48abaa135ee6feba72d3b2eb2fa242352a9e558585d1084f6f2a45811",
+        "armeabi-v7a/libswappy_static.a": "d4c29b80da05b61095e332cdd734ecb71083b122a379a8f6d6b2ec5358d5426d",
+        "x86/libswappy_static.a": "a75b413c2c84fa421808ddffc11a00decef76d76123c192f8784ba37fe9fc9b5",
+        "common/gamesdk_common.h": "2f57b4ff274ae96105a91b718c142dcdf429736a5a1cbdfc86cdf3390ab4aa00",
+        "x86_64/libswappy_static.a": "36256209a6628c63deeb52a2d0050538f74f70f20ffb173fa9cf3a462b2d706a",
+        "arm64-v8a/libswappy_static.a": "4e7a74ea57678b30f518537ef2e06bb144a7d15fe93774af18d4ed56c519e68d"
+      },
+      "stripped_sha256": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e"
+    },
+    "container": {
+      "source_template": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/android/headless-debug-container-03.apk",
+      "template_sha256": "24886371c1146087494587c8ce6886dd2affa85e6b1e3bb19809c28c3e4c80ff",
+      "new_template": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-engine/headless-debug-container-12-common.apk",
+      "new_sha256": "0f093c60ddd0a23b1a030ab86d92f359e0cd7346f6eac815a066912e10f1ad4c",
+      "replacement": "lib/arm64-v8a/libgodot_android.so",
+      "engine_sha256": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e"
+    },
+    "apk": {
+      "private_package": "org.cursedlands.performance",
+      "version_code": 71,
+      "production_pack": "candidate07",
+      "bootstrap": "validation.json only in private APK",
+      "engine_sha256": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+      "native_sha256": "231ad722fd1f9eb0b5b47d7c9a386931a95b9f7ccb404fd7773a1fc651564fb7",
+      "apk_sha256": "0a811adc9579596cef2a95d1c63ece2cd778b0ff90c7d4e999f7c21cf29a5e2f"
+    },
+    "qualification": "206/0:162Compatibility feedback checks;10Mobile NewGame/menu;22independent-service lifecycle;12realHome/resume (12031ms away,0.55s boundary simulation advance, authoritative autosave and clean shutdown).",
+    "remaining": "The supplied Adreno610 foreground-loading exit still lacks a fatal stack/reproduction. No universal Android crash fix claim."
+  },
+  "preserved": "Existing .8 common twelve-patch Linux/Windows runtimes and nativehelper, Natural terrain specialization, shared cloudsolarfield, menu/load material fixes, protocol13 and all prior gameplay fixes. Android newly rebuilds the same twelve commonpatches plus Androidservice. Clouds/V1/V8 stay default-off.",
+  "unqualified_diagnostics": [
+    "Initial grass synthetic floor fixture was malformed and segfaulted in FarGrass construction; corrected QuietFar fixture is the regression evidence.",
+    "Exploratory distant-grass planner angle sweep found no tile-budget boundary. Its failed expectation and source are retained in scratch, excluded from the permanent suite. No distant-planner fix is claimed.",
+    "Worker-display SceneTree fixture is not usable with this release-template CLI: --tool expectsNode, while --script still entersMain and dummyworkerconfig exits before assertions. Neither run counts as pass.",
+    "Early Android runner file-existence/readback races and post-success KeyError were harness failures. Final version71 runs use verified writes and require completion markers.",
+    "Cloudphasehoist remains scratch-only (about1–3% observed GPUgain and nonexactpixels). Additional cloud optimization is ongoing; no new cloud speedup included in this checkpoint.",
+    "Later cloud-light-density runs returned zero viewport CPU/GPU timestamps, including a same-source candidate05 control that previously yielded valid timings. --gpu-profile reported only root canvas cost. These runs are excluded from GPU-performance conclusions. Current light-specialization fair images are exact in held/restored comparisons, but no optimization is accepted without valid timing."
+  ],
+  "runs": {
+    "baseline-final-dialog02": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/baseline-final-dialog02",
+      "run_sha256": "b69f9a4f8680093ee588f7320d384b071275437c98ddac81b67bc14bf8567f24",
+      "log_sha256": "bc279b6412a4e344fb3fa5a4cf16fc08589c73c41e19452295bb80fdf5b29d23",
+      "completion_lines": [],
+      "errors": [
+        "FAIL pre-import miss is not retained",
+        "FAIL no-archives ok visibly drawn",
+        "FAIL no-archives cancel visibly drawn",
+        "FAIL first import resolves button atlas without restart"
+      ],
+      "exit": 1,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/first_import_dialog.gd": "94e0bf4eec0e588ce717d2e9145ac92a1614324e4e975a711bfbd8882c825795"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "ae7031e5a35a541aa84493a8e270453fd6cd64c4bd1f3e04c706dbe382f57cc0",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 6.1226621469832025,
+      "other_engines_absent": false,
+      "captures": {
+        "first-import-no-archives.png": "ebfe5758517bb1e3d858fc90e35f920f4d25e141bb52688466ed69550f385daf",
+        "first-import-en-unsaved.png": "427bed911d8ab85cdd91149b63bc5ef46979e1bb3f4a946d527eaa9f9cedcfb0",
+        "first-import-ru-unsaved.png": "f881e2cbd68c5748c535bbefc49bcdca3b6415b86e51a3257ad1be601064c6e7",
+        "first-import-de-unsaved.png": "e5724452ac17a1f52fcd5b8e5b22c2a0e863e0e8ed631795f1aa64f3ad8d2589"
+      }
+    },
+    "dialog-final-fp": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/dialog-final-fp",
+      "run_sha256": "ecfaa498a9dab724211626fc2484768147b9ede426b3a515e031ca94c5ae9ff3",
+      "log_sha256": "f5306259abc99ee0d8822349efc5eff5d6d47f4e00612785ad049fb19666e0de",
+      "completion_lines": [],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/first_import_dialog.gd": "94e0bf4eec0e588ce717d2e9145ac92a1614324e4e975a711bfbd8882c825795"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 9.136112209002022,
+      "other_engines_absent": false,
+      "captures": {
+        "first-import-no-archives.png": "522c26e586433122ab7248ad8267c884fce4e7d67a5a6c72842b5f6cbeffdc2e",
+        "first-import-en-unsaved.png": "003468c0621de24b20e5b0397e1d3b223cdb1fc3e4e533e9d8a68ab6f0769ad0",
+        "first-import-ru-unsaved.png": "6671e29a7626aa681180e03d2dee221b0d2ca5a3552f426dde8dd12f7acbbe93",
+        "first-import-de-unsaved.png": "c10cae99c9548e13819dac4e32959c0e984fcc07fa2bfb84ffa2158e7b4555a6"
+      }
+    },
+    "stance-baseline": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/stance-baseline",
+      "run_sha256": "4bd0da91fab5ccd0534d5b8d9c89983c7add02276b4312d5ba1873ac089949d7",
+      "log_sha256": "27126c5938bc8caa933d8b1d4cedb15b45acea0a547bbff1180067a05b67b2d0",
+      "completion_lines": [
+        "DIRECT_ATTACK_STANCE 27 checks 12 failures"
+      ],
+      "errors": [
+        "FAIL direct control keeps combat readiness between swings",
+        "FAIL real model does not return to neutral between swings",
+        "FAIL swing 1 adds no repeated stance delay",
+        "FAIL swing 2 adds no repeated stance delay",
+        "FAIL swing 3 adds no repeated stance delay",
+        "FAIL swing 4 adds no repeated stance delay",
+        "FAIL swing 5 adds no repeated stance delay",
+        "FAIL swing 6 adds no repeated stance delay",
+        "FAIL swing 7 adds no repeated stance delay",
+        "FAIL swing 8 adds no repeated stance delay",
+        "FAIL swing 9 adds no repeated stance delay",
+        "FAIL ready stance is replicated to clients"
+      ],
+      "exit": 1,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_attack_stance.gd": "6c5106b25d03d0d8b7ad24e78a99cccd050cf0517778819920732f0f713f4861"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "944bfadaffac9294c6b6460f41556d9c556bb8aa638a6cd24d6ccdabdac6407d",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 4.117100573028438,
+      "other_engines_absent": true,
+      "captures": {}
+    },
+    "stance-candidate": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/stance-candidate",
+      "run_sha256": "3896d352afaa489e8c5eb438f0797d8f15986f994e6e9665d1d9a5060ce22d4e",
+      "log_sha256": "760df374dec0d0de9ebc4add783e79ed05d8f09fa9356c994b171e9a2d9aec98",
+      "completion_lines": [
+        "DIRECT_ATTACK_STANCE 31 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_attack_stance.gd": "6c5106b25d03d0d8b7ad24e78a99cccd050cf0517778819920732f0f713f4861"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "6428d44428d377de4681a79e74e0855b7112eaba6eeb6ff873439aa21c217f62",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 5.103902116010431,
+      "other_engines_absent": true,
+      "captures": {}
+    },
+    "grass-camera-baseline02": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/grass-camera-baseline02",
+      "run_sha256": "7b5e0f78eecb45a5ef30d1aa722f50ba9eafba5b291f1e63273485a65bf13e49",
+      "log_sha256": "080b7d04a45bee1e8e3ca4b92dcfc1552848c8ea8ec6d5fbc4c6e2124216f1a4",
+      "completion_lines": [
+        "GRASS_CAMERA_STABILITY 6 checks 2 failures"
+      ],
+      "errors": [
+        "FAIL shoulder pitch across the old horizon cutoff has no focus jump",
+        "FAIL small repeated cell crossings do not alternate mesh detail"
+      ],
+      "exit": 1,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/grass_camera_stability.gd": "ff5fff98d8e156749abf4b065c0d3b33f97f5c561a3d5f73b450f857a868e427"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "944bfadaffac9294c6b6460f41556d9c556bb8aa638a6cd24d6ccdabdac6407d",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 4.117071082000621,
+      "other_engines_absent": true,
+      "captures": {}
+    },
+    "grass-camera-candidate": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/grass-camera-candidate",
+      "run_sha256": "9c73631502fdf59f99ad07b73fb08465924b2716b3c16bf5160d9b322705e505",
+      "log_sha256": "06bd52242c49d90e7dbf267b1b0b48f9b489f0049fd532e887e17d1e7d1e89b1",
+      "completion_lines": [
+        "GRASS_CAMERA_STABILITY 6 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/grass_camera_stability.gd": "ff5fff98d8e156749abf4b065c0d3b33f97f5c561a3d5f73b450f857a868e427"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "484e38938858647bc7e6469b1f7b29c0cae4d538975f118194827426c30e1378",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 4.111270473047625,
+      "other_engines_absent": true,
+      "captures": {}
+    },
+    "pollen-baseline": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/pollen-baseline",
+      "run_sha256": "5a752d13bd25a05fd6cda59fae06da2bbc2b54a5383d301647cd7b00ec406038",
+      "log_sha256": "aa07530b014d698185100bd20e9f4965fa77819b6d9e5af6781695aab4ea9727",
+      "completion_lines": [
+        "POLLEN_MOTION 16 checks 2 failures"
+      ],
+      "errors": [
+        "FAIL calm pollen has no circular horizontal orbit",
+        "FAIL two-second rise stays a slow float"
+      ],
+      "exit": 1,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/pollen_motion.gd": "266b1b085ac9b4c87f86642007cdbe6e30fab945ec2f0da048f899a8e48984dc"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "484e38938858647bc7e6469b1f7b29c0cae4d538975f118194827426c30e1378",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 5.081455205043312,
+      "other_engines_absent": false,
+      "captures": {
+        "pollen-motion-1.0.png": "185fc31420e4a3fe62ac409c2801112bafe29b4c483b4f4c0407f7948fcada6a",
+        "pollen-motion-0.5.png": "c06cb5dec4e34f13a2ccdbabf953538919fb26fa327be56ffe52cfc62105c532",
+        "pollen-motion-1.5.png": "a710db2d769df16ab2351ea4f59e096c444ebafda64d47eaec22bc3aada080bc",
+        "pollen-motion-2.0.png": "a5ee1d12a1a5beb73ee2dbbd44998df6d79588a5a252d42715e4b70ecedf8d6b",
+        "pollen-motion-0.0.png": "c65828933c43c7b80d3b547101c2887ebebb065190c85f9b11e60bf321e3997c"
+      }
+    },
+    "pollen-candidate": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/pollen-candidate",
+      "run_sha256": "a0d0a961147f1780221b6d810fb364f9192f97d2193c0dca05eb9209bddb2f12",
+      "log_sha256": "69edd7b25aabbbf71cddb7d1e1e877607db01f8cbf5ace418a3f64e191568748",
+      "completion_lines": [
+        "POLLEN_MOTION 16 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/pollen_motion.gd": "266b1b085ac9b4c87f86642007cdbe6e30fab945ec2f0da048f899a8e48984dc"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "551283517b38706dff66d4041ba5b07cb3b0e7bc7e0ba7b1c81fd4597e013240",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 5.131656200974248,
+      "other_engines_absent": true,
+      "captures": {
+        "pollen-motion-1.0.png": "c84d7c338dffb6373c0ce2d43d2f484c73fab1535caa6fedd97cce22a3672c24",
+        "pollen-motion-0.5.png": "e6bae4ca3dea5911e26a5923df4c56f40dd2a0ad4e3e8ff29484de8f445bba78",
+        "pollen-motion-1.5.png": "2614a844b03c4f7a0a09a3cb382c66f4a1106e290bdd549891db261e19bcea05",
+        "pollen-motion-2.0.png": "3cd6543bb44c1ceeba19dd7854570a2fa7ddecf56c5a6409dccbcd154001aa30",
+        "pollen-motion-0.0.png": "c54126a799bce5f736de53bf972360c2f8e9aaced11cb6ad2b584b737fb66013"
+      }
+    },
+    "pollen-final-fp": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/pollen-final-fp",
+      "run_sha256": "bb941f910892824e377a4ef468ab4e29053451a7e58d7a47d14e123b332dc33a",
+      "log_sha256": "fbd71c63f4dc42b1c0150d1aafc9f62b226c8a5215e13e8a265bf56e8cabf4ad",
+      "completion_lines": [
+        "POLLEN_MOTION 16 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/pollen_motion.gd": "266b1b085ac9b4c87f86642007cdbe6e30fab945ec2f0da048f899a8e48984dc"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 7.106322198989801,
+      "other_engines_absent": true,
+      "captures": {
+        "pollen-motion-1.0.png": "a49245c79a15c4871ccaf447cd1d30c65607392342040d97d7526add2632a012",
+        "pollen-motion-0.5.png": "f91850a8ad800548ebefde2bfd581b573fdc27e5e148a34d129ab9edd657e906",
+        "pollen-motion-1.5.png": "e4db08fd8540cb07daf82a6f628bbfaa5dbbc2ea1d8f0704d001e437b77555b8",
+        "pollen-motion-2.0.png": "3dd990f78eab87c640759954970e676109d65abdb0fe28dd6be06858f9790887",
+        "pollen-motion-0.0.png": "f3a8c2d1a15ee6e718f9a800857dd2640bcfedeb57204e27f6bdfcb3fec24746"
+      }
+    },
+    "pollen-final-mobile": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/pollen-final-mobile",
+      "run_sha256": "f420d0046f57363620119853c3be1c73b9f3a0247f035004d74dafb47186d451",
+      "log_sha256": "274d0dd8db101adb0367a65c588ee6b6dd5fd6b6e2f5c81ed8e9e7a4f1b5550c",
+      "completion_lines": [
+        "POLLEN_MOTION 16 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/pollen_motion.gd": "266b1b085ac9b4c87f86642007cdbe6e30fab945ec2f0da048f899a8e48984dc"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 6.102201350964606,
+      "other_engines_absent": true,
+      "captures": {
+        "pollen-motion-1.0.png": "9454fd8e7cdafea7a08205df1216129f8a46877aa17640cba2e60de4c4fddf4d",
+        "pollen-motion-0.5.png": "6783c63c0349bdf188c29d58ea215860a8a40312883e2d786859caf7facf0466",
+        "pollen-motion-1.5.png": "4157d1ff43e8384de8c73f0a02f2a31c1a674a1e599d588bf1474bc944785f4f",
+        "pollen-motion-2.0.png": "d239b9259d6fc617081b3d4bcadaa707165c182253d3caa645a060c40bdbfdc3",
+        "pollen-motion-0.0.png": "9b11bc0d2042ff350592ad251d60f41e0861d03b4a9a9747863cb5c9f305245a"
+      }
+    },
+    "presets-unbatched": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/presets-unbatched",
+      "run_sha256": "29e99845ff65d5127c5dbb22b39fbfa65f6a5f897dc8357d00d84d4db098c2bd",
+      "log_sha256": "dc657a67cef763d7394aafe4ceb065f32f979ceffa4c183a56b615d903d1d3ae",
+      "completion_lines": [
+        "GRAPHICS_PRESETS 57 checks 1 failures"
+      ],
+      "errors": [
+        "FAIL applying a preset publishes one complete settings change"
+      ],
+      "exit": 1,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_presets.gd": "08662992c0c16f7c4e49858423fdbb44d8055faa75336c22540bf37e17d42298"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "746907d6fef9f9eb94848ba29daebed2b85ea98c68edf1bf57ca7448dd00cd7a",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 5.095864166971296,
+      "other_engines_absent": true,
+      "captures": {
+        "graphics-presets-de.png": "dc6e08d1b95bd8ac2ea27adaf2055c22cf7bed12ccb0b7131750ec490b2f064d",
+        "graphics-presets-ru.png": "9d43355496a9bc5db82bbe5dd1d202f36e69811d0463b0e27e011d0d8a0fb4fa",
+        "graphics-presets-en.png": "01126e81537bd6c04df00dcbd10c1fa1e1092fca12c69a4d732295abe1d0ee6f"
+      }
+    },
+    "presets-final-gl": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/presets-final-gl",
+      "run_sha256": "ea8304dab92cb181282dad783635d3927484df85f13d4f95a54c638414b3c944",
+      "log_sha256": "fd266bef1a97d77025a1839aba05c70f2381b7e985ece41a7c644c4100786c2f",
+      "completion_lines": [
+        "GRAPHICS_PRESETS 57 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_presets.gd": "08662992c0c16f7c4e49858423fdbb44d8055faa75336c22540bf37e17d42298"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 5.096472368983086,
+      "other_engines_absent": false,
+      "captures": {
+        "graphics-presets-de.png": "dc6e08d1b95bd8ac2ea27adaf2055c22cf7bed12ccb0b7131750ec490b2f064d",
+        "graphics-presets-ru.png": "9d43355496a9bc5db82bbe5dd1d202f36e69811d0463b0e27e011d0d8a0fb4fa",
+        "graphics-presets-en.png": "01126e81537bd6c04df00dcbd10c1fa1e1092fca12c69a4d732295abe1d0ee6f"
+      }
+    },
+    "presets-final-fp": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/presets-final-fp",
+      "run_sha256": "5416c615d6aa6520117b6849bd6016fb02f37801445f64d4f461423be02bf26f",
+      "log_sha256": "6644efe0d61064d2566bc6fcf1e33d8891e0b3c8d2c944a6ee8d12946f8fac20",
+      "completion_lines": [
+        "GRAPHICS_PRESETS 57 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_presets.gd": "08662992c0c16f7c4e49858423fdbb44d8055faa75336c22540bf37e17d42298"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 8.135631089971866,
+      "other_engines_absent": false,
+      "captures": {
+        "graphics-presets-de.png": "29310d7f629fee017a0524a03d65f9d182a5a65ee726e9ad8506b3e74954136a",
+        "graphics-presets-ru.png": "ca2e10df49a258d39fbf068d59d5cdaa4cc0d90e9e6724f29808bff584ee752a",
+        "graphics-presets-en.png": "3963b08a03168c7d5d68b600d6a2c822e1e3acf0237d3fda4fae4d7ec0c8b732"
+      }
+    },
+    "graphics-navigation-final": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/graphics-navigation-final",
+      "run_sha256": "d70115d733cd16c64699285ef632315f3a9b14e2dc9ad0d5180ddf0282316bb2",
+      "log_sha256": "5e1d678176579accdd5372581007b8e88dc801fe6dc39f7c85751cca1b3c49a7",
+      "completion_lines": [
+        "GRAPHICS_OPTIONS 398 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/graphics_options.gd": "f3a6b76a7e683e1a6c11ff91a7e36332136328925074ef905883c05ceae9f7bb"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 6.130899904994294,
+      "other_engines_absent": true,
+      "captures": {
+        "graphics-options-en-remake.png": "ac3f85b21e5f28a95882b07e79559ce4a301c8ee02cb85e0044254ccbd4d2fa1",
+        "graphics-options-ru-r_effects.png": "2e6b00181759d857383de05f18dece5a4bca6c6dbbfaa798ce49fe885a67f2f3",
+        "graphics-options-ru-r_world.png": "de4b7070baf336e6f908653fb4b319ce0412e28315ff9cbfc0d85cff050d6a40",
+        "graphics-options-en-r_water.png": "6e53f6728bd83ec0988cf298abd91698d933e423145e9a985b28bfb1d1a9b090",
+        "graphics-options-ru-remake.png": "0557d63d0d0b61cc88db5165570749c85fcd399d8de7d6ada2006d5fce81f952",
+        "graphics-options-de-r_water.png": "2b91f9ba45a3ea89ae4034808eb2e9f8a1bcadd17e586c9dd78b7c9a72c62199",
+        "graphics-options-en-r_effects.png": "47687dc09097247558e241d75ad99ad377f3662e996feefc7af37737ba7fca68",
+        "graphics-options-ru-r_lighting.png": "ddaed56a4d2ba9b8d3b69c21b4a095db616f129afee3fb509f76d6c16a9d194a",
+        "graphics-options-ru-graphics.png": "44ddfdc238d2d7a22d3972d21100ccd2e4047aab5ee1e4d3335a7b394dbf1371",
+        "graphics-options-de-r_terrain.png": "0488f524240147490ae19d9fb900ad4be82946af3490aa2ed3a87ea4e0f8c6b7",
+        "graphics-options-de-remake.png": "bfb19ac54797979cf9abc0fdee9c049722953fbc2569e5c6ad9dbcf760edd2f8",
+        "graphics-options-ru-r_water.png": "1d0bba2b2cf8da1d6fd7d3f3c2a67f51e5f878e6d274ec864314b6fd6cff5993",
+        "graphics-options-de-r_world.png": "30cf296493ebf4ff65703648fc3264b35d2835e23a5b08851dcc98b30f5f8cb9",
+        "graphics-options-de-graphics.png": "22cbb14431a9a6b3679c91d99d79a9ffe906669ac17a95e5e191abd05dd72eb7",
+        "graphics-options-en-r_world.png": "ea9af6a3e4df7b672ad7cb2d89d4396b7588a41f428fa512ac10918d3bc46778",
+        "graphics-options-en-r_lighting.png": "7dad49251550c76bc535bf9dd46a7084a1709eab0c7c90577760ac816719872e",
+        "graphics-options-ru-r_terrain.png": "01c590842b5eee50ca0bb59c14ac4043446ff79f542996cad30ccf2dc69b642a",
+        "graphics-options-en-graphics.png": "d089b4738bb70666b1ad32e70a8459532d22bfb9a5df284e2937fa0e15f940fb",
+        "graphics-options-de-r_effects.png": "826e7ea39708b542d01762c53f0d829164820f016eb5149293e88d5805fb4119",
+        "graphics-options-de-r_lighting.png": "523dd48f166afb7305d47cdfd82f816d52efd91220ffd3ba47fee9623a4be4f2",
+        "graphics-options-en-r_terrain.png": "8b7ad8f6af367bc11cedec2806a04647c7b7a013f725ff39bbed2f8ce357e0e1"
+      }
+    },
+    "menu-labels-final": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/menu-labels-final",
+      "run_sha256": "d829e8af9ec611b694a5ca2c0c9090db598e57b8df8d2fad186f78c69f6ce995",
+      "log_sha256": "7805cf7da5c6f458b0cf5681c061d56ee93a0fc73f552c6d1d51f91c6a5fbc08",
+      "completion_lines": [
+        "MENU_MATERIAL_REFRESH checks=46 failures=0"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_material_refresh.gd": "4726a4cb53983aa7968a9ebd902aae7b64f1568d014b5d3c99f6bdcfa9a15ad7"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 118.81771821295843,
+      "other_engines_absent": false,
+      "captures": {
+        "menu-material-startup-on-hover.png": "3f3b960b4617cdd5ff63318cb5dbad9c131bcb84d654bd0a23f537d14af95694",
+        "menu-material-startup-off-live-options.png": "b532db7e2f46835309d95f9c53c115ec978574433ac2ba39369c5194e38bf5fc",
+        "menu-material-startup-off-initial.png": "b3f7ae00ca1fcd27095f06478916fde01ab34431ec6afa7c2fe9bad6932b229b",
+        "menu-material-startup-off-contact-on-again.png": "a4d4be34baf1d6766892efd7680ea863136a06f5e979055e2edaf92a5acbcb6c",
+        "menu-material-startup-on-initial.png": "7460d7f6bad5f9bce2cf7f31edb46be2abbebc5b5f935a2abaaf40c22ac43bfd",
+        "menu-material-startup-off-hover.png": "a4d4be34baf1d6766892efd7680ea863136a06f5e979055e2edaf92a5acbcb6c",
+        "menu-material-startup-on-contact-on-again.png": "3f3b960b4617cdd5ff63318cb5dbad9c131bcb84d654bd0a23f537d14af95694",
+        "menu-material-startup-off-contact-off.png": "dd9adad6d3d6a9e5c73df3144cafed1420833f1c1c8659aa618e794ac81e12d0",
+        "menu-material-startup-on-live-options.png": "3f4bf15db225629e48e737c3ed0a71b217ba234272ffd40de135f7d942939934",
+        "menu-material-startup-on-contact-off.png": "b32e547a6ebd1b8c51dc910da437c32f6c7e421a352a9b61531ffe6f96c03d0e"
+      }
+    },
+    "direct-combat-final": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/direct-combat-final",
+      "run_sha256": "f3a2a1f0aeefca20ae9d6465fe7e0b6fdc88630592364eccfc9675dd3e6e22fa",
+      "log_sha256": "b94ad15b8994c73eaf4258d43743920abbfa333241d43b8e56bf7f8f5296db7f",
+      "completion_lines": [
+        "DIRECT_COMBAT 30 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_combat.gd": "5bd37b70572bee31338f3f6130523f1f5060b3950ab9db34a3d685aee059bc7d"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 3.1012392329867,
+      "other_engines_absent": true,
+      "captures": {}
+    },
+    "direct-input-final": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/direct-input-final",
+      "run_sha256": "c64b38f243db746d37224d8b58d7ae634c0d670af876e3ee90c272ca72ad051f",
+      "log_sha256": "7a782fdf0d840d59e41cbe896bfab2209fc8c093d555fcda21cc3c2b8445240f",
+      "completion_lines": [
+        "DIRECT_CONTROLS 34 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/direct_controls.gd": "542576203705e5f94955cb9a0f4e9769eb274d99e8eb8b414dbe2ea8e6b0eb4a"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 52.4369381259894,
+      "other_engines_absent": false,
+      "captures": {
+        "third-person-field.png": "8572c88906016778c364db424141aeca9bc5a50c36b428a82475b059915d6890"
+      }
+    },
+    "grass-envelope-final": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/grass-envelope-final",
+      "run_sha256": "dd9089591146e4453151e9b48eb193e6165bb3fb1934ac55ec9ee1a378522435",
+      "log_sha256": "71e108a7048f4bac71383fdd1b601352e13963abb82cc6bba84d1fb129ca5e67",
+      "completion_lines": [
+        "GRASS_STREAM_ENVELOPE checks=117 failures=0"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/grass_stream_envelope.gd": "d74c725775f5e1659b6ec29f4dfda441d10d5314830317a324e6c4938a5812e8"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 6.103062112990301,
+      "other_engines_absent": true,
+      "captures": {}
+    },
+    "far-grass-lod-final": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/far-grass-lod-final",
+      "run_sha256": "2556f11ab27ff9da680bf48814f68963b61df1cfb10be40c2dce3807deb3a761",
+      "log_sha256": "0505cd717c23be0c996fc9f990edd6fa77ecb62219f0215ab3973044d8a46e82",
+      "completion_lines": [
+        "FAR_GRASS_LOD checks=1403 failures=0"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/far_grass_lod.gd": "be8d5660f5e8baa05bb5500cdb76ae51c157bdcc13b6e5ea5401c078a1de454a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/far_grass.gd": "01f525e1c6339306ac25110fd86a6d76a98ea95b03b92a935721d5813c3228eb"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 9.12263851199532,
+      "other_engines_absent": true,
+      "captures": {
+        "far-lod-arrival-middle.png": "6daab1f27bdff9f51c4dc88d72261413e3f17c72ebf785d7353897a6540dd84d",
+        "far-lod-coarse.png": "ecb8ca15bd0095805b9cf2a4e4b6a0d6c406aca560bd1c70709c8b287165fead",
+        "far-lod-empty.png": "0c95e592578101b1c0efdc3697de9930ba1d40347ab1ec4bfc8f2af497d9da5c",
+        "far-lod-fine.png": "ecb8ca15bd0095805b9cf2a4e4b6a0d6c406aca560bd1c70709c8b287165fead",
+        "far-lod-arrival-start.png": "0c95e592578101b1c0efdc3697de9930ba1d40347ab1ec4bfc8f2af497d9da5c",
+        "far-lod-arrival-end.png": "ecb8ca15bd0095805b9cf2a4e4b6a0d6c406aca560bd1c70709c8b287165fead"
+      }
+    },
+    "grass-authored-camera": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/grass-authored-camera",
+      "run_sha256": "43bcdf1f041e6dad1c6694293fa575585554f74ec0eb9aafb7d4afb40e794aee",
+      "log_sha256": "53c36846f108ac87ee86525882d8d07fd78aef5bacca3456f4d5a4ca495025e0",
+      "completion_lines": [
+        "FAR_GRASS_SCENE checks=200 failures=0"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/grass_authored_camera.gd": "ac0f63bdd02f1b562ef3821eed111db7f6c48bb2b8f4ce6771c848bdbb693492",
+        "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/far_grass.gd": "01f525e1c6339306ac25110fd86a6d76a98ea95b03b92a935721d5813c3228eb"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 19.191683602984995,
+      "other_engines_absent": false,
+      "captures": {
+        "far-grass-overhead-on.png": "fbec989cf119e7404ae6fdf7a13963a314aa852dadb32271f98ac264684aad5b",
+        "far-grass-shoulder-up-on.png": "8e3bef18eed2ceaa0c5ac3524497a3f0427b999c72abfad8e9543cfcf9a083d2",
+        "far-grass-shoulder-down-on.png": "f759a44b1be4f52feadef226466031601aa0491f8e3327e53a2a79e9509a5d88"
+      }
+    },
+    "baseline-teardown02": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/baseline-teardown02",
+      "run_sha256": "1f1f701a53b5b479f690c4cd97876d1baaff5f876c4c85a0dd8339ad18f7ab81",
+      "log_sha256": "723f6b9893c888cf059c7249e06744c606800c68c4b507953d5f57eebe342c8e",
+      "completion_lines": [],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/multiplayer_cache_teardown.gd": "d7227e8457c7d5a8313cad25c96aade8a6f436ff4ff40b5efeefe7c798bc8c0c"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "e4c652bb45ffa01ea81671cfe8d03921b097528ff1da59c5fe3c1ff33103fd34",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 4.090537927986588,
+      "other_engines_absent": true,
+      "captures": {}
+    },
+    "runtime6-teardown": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/runtime6-teardown",
+      "run_sha256": "98ee96f0a84d79f3e4825e4cd91fec1ac7c70538b9b6ce47920005ae5cdd4d41",
+      "log_sha256": "7b7995a45925531000171da3448cabf01371ddc6deb26b638b94338108e13976",
+      "completion_lines": [],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/multiplayer_cache_teardown.gd": "d7227e8457c7d5a8313cad25c96aade8a6f436ff4ff40b5efeefe7c798bc8c0c"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CursedLands.pck": "e4c652bb45ffa01ea81671cfe8d03921b097528ff1da59c5fe3c1ff33103fd34",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "elapsed_seconds": 4.0981888879905455,
+      "other_engines_absent": true,
+      "captures": {}
+    },
+    "current-real-menu": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/current-real-menu",
+      "run_sha256": "3615679353d34e48426f253732995b928feb6d21de26300f8b88dd3391f32bf8",
+      "log_sha256": "d4d63b05314e7fa20f331cba7d8a312e0a79d397c0828aa39f638af6ab2cf3f7",
+      "completion_lines": [
+        "MENU_LOADING_SCREEN 10 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "d7d6b618b88233ad6b70553fc4859295a27593f65775958c59e5ed5178bb3ea9"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "e4c652bb45ffa01ea81671cfe8d03921b097528ff1da59c5fe3c1ff33103fd34",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 37.30593778495677,
+      "other_engines_absent": false,
+      "captures": {
+        "menu-covered.png": "26c7c05ac5802100a0e9b9bd9a049de35274a3bee236dad725876bf08d700b46"
+      }
+    },
+    "experimental6-real-menu": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/experimental6-real-menu",
+      "run_sha256": "4709977b3edff247ffa865dd02cb58eaa1466e81d3efa8f5cd9eb6843592617a",
+      "log_sha256": "640163898a67230c7b19b009f267dc6defeae48c7a103566ebb722326eedd4c0",
+      "completion_lines": [
+        "MENU_LOADING_SCREEN 10 checks 2 failures"
+      ],
+      "errors": [
+        "FAIL loading picture covers service startup",
+        "FAIL no presented HUD frame before loading picture"
+      ],
+      "exit": 1,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "d7d6b618b88233ad6b70553fc4859295a27593f65775958c59e5ed5178bb3ea9"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CursedLands.pck": "05433b7f29f58f7e187c95952670c716b3a89f25ec5d340925b3b5337f183fe2",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "elapsed_seconds": 36.30963141401298,
+      "other_engines_absent": false,
+      "captures": {
+        "menu-uncovered.png": "dc6137ecaf69181694f5b26b51319f36dbbfb36879ab3194a1305ae7768c7d8a"
+      }
+    },
+    "android-runtime12-dialog": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-runtime12-dialog",
+      "run_sha256": "c54d94d9d25ee23bad4c4b9b4cc88ffb42d329d89c70798e8b49238ca0f10e7d",
+      "log_sha256": "ee25953f2b42ab48b03ad7c65c60c3a0c72b0bf36839e57a7721efaa50e60b7b",
+      "completion_lines": [],
+      "errors": [],
+      "exit": null,
+      "completion_seen": true,
+      "source_sha256": "94e0bf4eec0e588ce717d2e9145ac92a1614324e4e975a711bfbd8882c825795",
+      "build_sha256": null,
+      "elapsed_seconds": 9.844262838363647,
+      "other_engines_absent": null,
+      "captures": {
+        "first-import-no-archives.png": "994babc05b8a927422397669e2ac634ebdef0c6a23d0bcf6b8e007987efd953b",
+        "first-import-en-unsaved.png": "02350b3fdc4c110275e7f78f7636f65f7e94ae535b6875178759797e50e4de87",
+        "first-import-ru-unsaved.png": "88ad02f76f6b6fe1f4ff3f9191d9794515cbdf7278410384455045c40b1a0841",
+        "first-import-de-unsaved.png": "d5f817d9222c4343ded3cbf637cd3f652d180a349235a87a51366c2ea1fdde54"
+      },
+      "result": {
+        "android": true,
+        "checks": 48,
+        "device": "Retroid Pocket 5",
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "viewport": "(1920.0, 1080.0)"
+      }
+    },
+    "android-runtime12-presets": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-runtime12-presets",
+      "run_sha256": "db85c6f342eebe9846d92528273ba12510844e527105db1f3e5c7e7b55cdfd25",
+      "log_sha256": "5dbfb09d7f5e1f0730a29715ac9d61972d7b3965a872601d38d4e6c32a7ff9f9",
+      "completion_lines": [
+        "GRAPHICS_PRESETS 57 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": null,
+      "completion_seen": true,
+      "source_sha256": "08662992c0c16f7c4e49858423fdbb44d8055faa75336c22540bf37e17d42298",
+      "build_sha256": null,
+      "elapsed_seconds": 5.679280042648315,
+      "other_engines_absent": null,
+      "captures": {
+        "graphics-presets-de.png": "e00c31ad1c4a6c83e5344e936dbf2da09cf5106fd83969f4446f66f8a5362e96",
+        "graphics-presets-ru.png": "393574689014d35acb3650d619d4e9e7f16f9cdfa82086ed2b2e755a6285ef75",
+        "graphics-presets-en.png": "c7a566b69439241baa90c1dbfa097bc0c3f8422697dd20697b8917da3e073e3e"
+      },
+      "result": {
+        "checks": 57,
+        "failures": 0
+      }
+    },
+    "android-runtime12-stance": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-runtime12-stance",
+      "run_sha256": "d75d88b3609faef019509290d3074a698448281e31c9c90cc3540de228e1948f",
+      "log_sha256": "9cd4dd84044c5cfaf4c8150edd89a6f82a13ceec5854ee892ce0d0967820ca96",
+      "completion_lines": [
+        "DIRECT_ATTACK_STANCE 31 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": null,
+      "completion_seen": true,
+      "source_sha256": "6c5106b25d03d0d8b7ad24e78a99cccd050cf0517778819920732f0f713f4861",
+      "build_sha256": null,
+      "elapsed_seconds": 5.6104090213775635,
+      "other_engines_absent": null,
+      "captures": {},
+      "result": {
+        "checks": 31,
+        "failures": 0,
+        "neutral_frames": 0,
+        "neutral_pose_frames": 0,
+        "starts": [
+          {
+            "clip": "uattack10",
+            "cooldown": 2.75,
+            "lock": 1.1,
+            "time": 0.055
+          },
+          {
+            "clip": "uattack05",
+            "cooldown": 2.75,
+            "lock": 1.375,
+            "time": 2.915
+          },
+          {
+            "clip": "uattack10",
+            "cooldown": 2.75,
+            "lock": 1.1,
+            "time": 5.775
+          },
+          {
+            "clip": "uattack10",
+            "cooldown": 2.75,
+            "lock": 1.1,
+            "time": 8.63499999999998
+          },
+          {
+            "clip": "uattack04",
+            "cooldown": 2.75,
+            "lock": 1.375,
+            "time": 11.495
+          },
+          {
+            "clip": "uattack04",
+            "cooldown": 2.75,
+            "lock": 1.375,
+            "time": 14.355
+          },
+          {
+            "clip": "uattack09",
+            "cooldown": 2.75,
+            "lock": 1.32,
+            "time": 17.2149999999999
+          },
+          {
+            "clip": "uattack08",
+            "cooldown": 2.75,
+            "lock": 1.32,
+            "time": 20.0749999999999
+          },
+          {
+            "clip": "uattack04",
+            "cooldown": 2.75,
+            "lock": 1.375,
+            "time": 22.9349999999999
+          },
+          {
+            "clip": "uattack09",
+            "cooldown": 2.75,
+            "lock": 1.32,
+            "time": 25.7949999999999
+          },
+          {
+            "clip": "uattack10",
+            "cooldown": 2.75,
+            "lock": 1.1,
+            "time": 28.6549999999999
+          },
+          {
+            "clip": "uattack05",
+            "cooldown": 2.75,
+            "lock": 1.375,
+            "time": 31.5149999999999
+          }
+        ]
+      }
+    },
+    "android-runtime12-pollen": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-runtime12-pollen",
+      "run_sha256": "a766e84a9c75976bc47f517c509f65b4d7cdedaf85b7c339fc2eff2236f1ddd2",
+      "log_sha256": "97db7244f4b845564015e985bfa659ba0dde1d567dfc393d3f238324260157a4",
+      "completion_lines": [
+        "POLLEN_MOTION 16 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": null,
+      "completion_seen": true,
+      "source_sha256": "266b1b085ac9b4c87f86642007cdbe6e30fab945ec2f0da048f899a8e48984dc",
+      "build_sha256": null,
+      "elapsed_seconds": 5.667584180831909,
+      "other_engines_absent": null,
+      "captures": {
+        "pollen-motion-2.0.png": "39b65d6e3dd2367a00f23a99d5c3e33b0091bba1e413040de8575b91623c5e32",
+        "pollen-motion-0.0.png": "640216f153035072219d740e251c25c9494ec9edea18ee797da9a7b248fefd92"
+      },
+      "result": {
+        "checks": 16,
+        "clocks": [
+          {
+            "fps": 30,
+            "seconds": 2.0
+          },
+          {
+            "fps": 60,
+            "seconds": 2.0
+          },
+          {
+            "fps": 144,
+            "seconds": 2.0
+          },
+          {
+            "fps": 240,
+            "seconds": 2.0
+          }
+        ],
+        "failures": 0,
+        "positions": [
+          [
+            0.0,
+            127.5,
+            168.559982299805
+          ],
+          [
+            0.5,
+            127.5,
+            160.027282714844
+          ],
+          [
+            1.0,
+            127.500007629395,
+            151.495666503906
+          ],
+          [
+            1.5,
+            127.499984741211,
+            142.961196899414
+          ],
+          [
+            2.0,
+            127.5,
+            134.424728393555
+          ]
+        ],
+        "two_second_drift_m": 0.0,
+        "two_second_rise_m": 0.0666704177856445
+      }
+    },
+    "android-runtime12-menu": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-runtime12-menu",
+      "run_sha256": "b2bf7f8e4ddd5190bc1902308a3b5ff27fddc8cc48f880f18c93bfea3f3a017f",
+      "log_sha256": "90289c13d0b3265b1ff7ab2a9cf6ba42ecc44dd424188dc2e85c375289c1a852",
+      "completion_lines": [
+        "MENU_LOADING_SCREEN 10 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": null,
+      "completion_seen": true,
+      "source_sha256": "e8fd2c283ccce2afbd07542f664006d191fa06f988e10622f5262889856f84f1",
+      "build_sha256": null,
+      "elapsed_seconds": 25.73244309425354,
+      "other_engines_absent": null,
+      "captures": {
+        "menu-covered.png": "7d95bc03bbb77086c6b05e743531aaa956e7fb6c79352cfb7e0958c056df6616"
+      },
+      "result": {
+        "covered": 334,
+        "deferred": true,
+        "exposed": 0,
+        "new_game": true,
+        "worker": true,
+        "worker_pid": 1,
+        "zone": "gz1g",
+        "checks": 10,
+        "failures": 0
+      }
+    },
+    "android-runtime12-mobile-menu": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-runtime12-mobile-menu",
+      "run_sha256": "80a305e8237877ecc2a395ae2e129166ca0509b5cedddb9cd08a02a797e8c569",
+      "log_sha256": "5c576b412836af82b7ccce399ef42b3c60c4beca9961881409282889428e1b5d",
+      "completion_lines": [
+        "MENU_LOADING_SCREEN 10 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": null,
+      "completion_seen": true,
+      "source_sha256": "e8fd2c283ccce2afbd07542f664006d191fa06f988e10622f5262889856f84f1",
+      "build_sha256": null,
+      "elapsed_seconds": 34.65214920043945,
+      "other_engines_absent": null,
+      "captures": {
+        "menu-covered.png": "3f13eb9ab3069cb5dd67515becc7d0875243e0e3dfd41452dc1522856e8af2e3"
+      },
+      "result": {
+        "covered": 317,
+        "deferred": true,
+        "exposed": 0,
+        "new_game": true,
+        "worker": true,
+        "worker_pid": 1,
+        "zone": "gz1g",
+        "checks": 10,
+        "failures": 0
+      }
+    },
+    "android-runtime12-service": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-runtime12-service",
+      "run_sha256": "5605af50c5fb6ac4715f250d0ba122453ac500d9cae0117bd2ff5da4fcb805fe",
+      "log_sha256": "87c234f8e7fc9573a3a2f38a2888e827d6d9e9fa124a672fa75da0d8f5dad39c",
+      "completion_lines": [],
+      "errors": [],
+      "exit": null,
+      "completion_seen": true,
+      "source_sha256": "419185600aa184b1ee3519dba12c2db7798c0762423a8aea13e4e25081d6973c",
+      "build_sha256": null,
+      "elapsed_seconds": 16.497349500656128,
+      "other_engines_absent": null,
+      "captures": {},
+      "result": {
+        "checks": 22,
+        "error": "",
+        "failures": 0,
+        "pids": [
+          10653.0,
+          10689.0
+        ]
+      }
+    },
+    "android-runtime12-background": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-runtime12-background",
+      "run_sha256": "6ce63be0f995b974f5d3610485efe80a1fdf1a24dbb6fc60a781be24bbfac26a",
+      "log_sha256": "74ca01d242b4994abb0ded73902d40b6292c307145868f8d813eb6ef7e38e565",
+      "completion_lines": [],
+      "errors": [],
+      "exit": null,
+      "completion_seen": true,
+      "source_sha256": "212b064a5dac53db8dd1a11d1bb604ca9072ae012e1b024c1e5ad31158f328a4",
+      "build_sha256": null,
+      "elapsed_seconds": 77.31859922409058,
+      "other_engines_absent": null,
+      "captures": {},
+      "result": {
+        "background_ms": 12031,
+        "background_sim_delta": 0.549999999999999,
+        "checks": 12,
+        "failures": 0,
+        "sim_after": 1.705,
+        "sim_before": 1.155
+      }
+    },
+    "linux-gz3g-current": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/linux-gz3g-current",
+      "run_sha256": "176b4139c8dc58f588c1badc996a761ca61eb99275fbc78069d00f7aa4b39cc0",
+      "log_sha256": "905d34195e53e5e895f07874ed395f79941b3ff4cc7919bdd6f7f0256bd64595",
+      "completion_lines": [
+        "MENU_LOADING_SCREEN 10 checks 0 failures"
+      ],
+      "errors": [],
+      "exit": 0,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "c0b901c68d4216d5fa08975b66cded6f2c8487e68f0cf3927fb0117f94b05664"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "0cd7b4e242929a328a4d9f226810797a61dfc1f23278b3159d090f99f7e7b784",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "elapsed_seconds": 41.33477600401966,
+      "other_engines_absent": false,
+      "captures": {
+        "menu-covered.png": "bd95c4b08724bdc864d6a3be89b2d2f17661639f8ada1727a639f1bf1d575f51"
+      }
+    },
+    "linux-gz3g-experimental6": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/linux-gz3g-experimental6",
+      "run_sha256": "a50fd1fd83be5e792bd56f242ae7364dd92513d9e738f8fad9dcca5c4049c511",
+      "log_sha256": "e4231584284c6f48d18c738bd2f390ded2c1bd2951afc13841c701b4133e7def",
+      "completion_lines": [
+        "MENU_LOADING_SCREEN 10 checks 1 failures"
+      ],
+      "errors": [
+        "FAIL no presented HUD frame before loading picture"
+      ],
+      "exit": 1,
+      "completion_seen": null,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "c0b901c68d4216d5fa08975b66cded6f2c8487e68f0cf3927fb0117f94b05664"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "5796d69b6eb9c256b3b22acb449f3ebe3f63d5eaf506645dc99859740ff9c98a",
+        "CursedLands.pck": "05433b7f29f58f7e187c95952670c716b3a89f25ec5d340925b3b5337f183fe2",
+        "libterrain_search.so": "94c2ae2691a7eb96a26068ddc54c376fcdb32bb97d4b1923028fcec73f8cfa82"
+      },
+      "elapsed_seconds": 41.32064747501863,
+      "other_engines_absent": false,
+      "captures": {
+        "menu-covered.png": "299d7fa774861836f749d2490feed5c0ded445862d84d4ee8c83639637fe2728",
+        "menu-uncovered.png": "b0a8526c9e093c77b90eec7b1f45e5e5cbe44ca005ccaa347bc92ae2e55fa6b0"
+      }
+    }
+  },
+  "remaining_goal": [
+    "Measured old/new effect and preset costs; retain worthwhile optimizations with image/motion validation.",
+    "Full Shaina/Fairuz infiltration/escape/hand-in;laterJun/Jigran/finale;largerparties/reconnect/solo/originalMP.",
+    "Windows/remoteWAN/physicalinput/audio acceptance;no stable1.0.3 approval or publicE6 asset replacement.",
+    "Package .9 desktop/Android;audit original-data/test exclusion;update both handoffs."
+  ]
+}

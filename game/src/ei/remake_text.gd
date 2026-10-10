@@ -51,6 +51,10 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Graphics preset": ["Качество графики", "Grafikprofil"],
+	"Custom": ["Вручную", "Benutzerdefiniert"],
+	"Detected": ["Автоподбор", "Ermittelt"],
+	"Choose Original, Low, Medium or High, then confirm with ✓. Selecting a preset turns off automatic detection. Advanced changes become Custom. Clouds, terrain contact blending and depth of field remain optional.": ["Выберите исходную, низкую, среднюю или высокую графику и подтвердите кнопкой ✓. Выбор отключает автоподбор. Отдельные изменения переводят настройки в ручной режим. Облака, сопряжение объектов с рельефом и глубина резкости включаются отдельно.", "Original, Niedrig, Mittel oder Hoch wählen und mit ✓ bestätigen. Die Wahl deaktiviert die automatische Erkennung. Einzelne Änderungen wechseln zu Benutzerdefiniert. Wolken, Geländeübergänge an Objekten und Tiefenschärfe bleiben optional."],
 	"Water contact and wakes": ["Следы и пена на воде", "Wasserkontakt und Kielwasser"],
 	"Underwater caustics": ["Каустика под водой", "Unterwasserkaustik"],
 	"River currents": ["Речные течения", "Flussströmungen"],
