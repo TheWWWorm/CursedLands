@@ -1,0 +1,1265 @@
+{
+  "date": "2026-10-10",
+  "base_commit": "a946c8eee85a3550013c9bc02034eda83e988139",
+  "production_source": "f56a904195d5f6da0d078b7204ea69fe470ca409",
+  "package": "1.0.3-local.20261010.7 Linux x86_64",
+  "protocol": 13,
+  "published": false,
+  "production_changes": [],
+  "decision": "Retain route validation only. Existing production code passes Jun native transition/ENet/independent solo continuation and the Shaina/Fairuz entry boundary; no new product fix or build is justified by these runs.",
+  "scope": [
+    "Jun starts from an explicitly prepared q.gz19k.q72h=2 / b.bz7g.R72=1 boundary with a distinct protagonist and bag. No dialogue completion, transformation, actor placement or later quest flag is forced.",
+    "The unchanged original bz7g MOB supplies all subsequent dialogues, waits, copy operations, redeployment and LeaveToZone. Scripts are not dispatched directly by the fixture.",
+    "The network guest begins with an independently saved matching story boundary and distinct stats, name, money and inventory. Normal join/bring admission, native authority changes, save/package RPC and actual received files are used. The origin file remains unchanged.",
+    "ENet uses two MultiplayerAPI roots in one Godot process. CampaignState.watch is bound to the authority because it is a process-global hook. This is not a multi-process transport, WAN or physical keyboard/mouse test.",
+    "Shaina is the authored party name; the merc8 character in the supplied LiA data is Fairuz. Its prepared boundary contains the FSusel protagonist after q7h, without the companion Kel. The actual brief_23 conversation creates the role, starts q8h and travels to the native entrance; the original hero and bag stay parked."
+  ],
+  "accepted_runs": {
+    "jun-solo01": {
+      "scope": "Prepared q72h return; normal R72/Rick dialogue, timed transformation, Deva/Rick follow-ups and original gz20g travel.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-solo01",
+      "checks": 68,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 8.257469979987945,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-solo01/tool-source.gd"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "7480bb867abde0bb32e56984a25ab7c74105aff962f8051b351f45d5a91ffd1b",
+        "run.log": "026334eed85f13bdcf2d130cdc1444ed065fe15980f4bc9c32c3a8c1facb309c",
+        "jun-route.json": "e1c3d2a8a095c9d352aaae1f0d7b276bfd315169dd5921ff40394a8499a13e4f"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "9c57f0221695809467cf5688770f42e16b3b1591440ba7b72f28c3f992ab73a6",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "9c57f0221695809467cf5688770f42e16b3b1591440ba7b72f28c3f992ab73a6"
+      },
+      "saves": {
+        "jun_route_complete": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-solo01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_route_complete.sav",
+          "sha256": "45cd3f5b27e63c4d2444edc3ae25eaab3bda9fd44c48e2514774b490f85f7376"
+        }
+      }
+    },
+    "jun-before-body01": {
+      "scope": "Normal dialogue starts native transformation; save while JPC=1, Polymorph=0 before body replacement.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-before-body01",
+      "checks": 13,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 4.254703358979896,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-before-body01/tool-source.gd",
+        "--stop-stage=before-body"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "9e4f1c993c3c13949c2001e91f41bbf2c5a61d3d261d41fe07ab3698e68b9661",
+        "run.log": "671d35665ae0b6d5c9019f36cdda4eb2d30fe7e413e11df8de825095dfe493d3",
+        "jun-route.json": "012d12c03ca6161c57f04c230bc4302cb4cd4671b80fc63e09158ec38f53eb49"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "9c57f0221695809467cf5688770f42e16b3b1591440ba7b72f28c3f992ab73a6",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "9c57f0221695809467cf5688770f42e16b3b1591440ba7b72f28c3f992ab73a6"
+      },
+      "saves": {
+        "jun_before_body": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-before-body01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_before_body.sav",
+          "sha256": "35020fb3168784bb011192b933388b2bf163ff460205e65efb1bb606fa690283"
+        }
+      }
+    },
+    "jun-after-body01": {
+      "scope": "Native body replacement completes; save while Polymorph=7 before the sleeping follow-up.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-after-body01",
+      "checks": 31,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 4.755246246000752,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-after-body01/tool-source.gd",
+        "--stop-stage=after-body"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "15713d5a53ba59863ed98e4fbc58b0da594160eb2b76d297b844508d98a3be85",
+        "run.log": "b4f2e3bf9e088f3d62e50718b46bba27e89aad68b2ba00d2be25001aefb67dac",
+        "jun-route.json": "e493e50ddef06171517ebf8f3289ba9ee200f2839c8f32ffd974658d1ef5ab2a"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "9c57f0221695809467cf5688770f42e16b3b1591440ba7b72f28c3f992ab73a6",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "9c57f0221695809467cf5688770f42e16b3b1591440ba7b72f28c3f992ab73a6"
+      },
+      "saves": {
+        "jun_after_body": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-after-body01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_after_body.sav",
+          "sha256": "df337b8f9475417f2ccbc17c8025e1e0536319c8953e1049b5ea2936ed816bc8"
+        }
+      }
+    },
+    "jun-reload-before01": {
+      "scope": "Fresh solo process resumes the pre-body native timer and completes the remaining normal route.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-reload-before01",
+      "checks": 63,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 8.257739876047708,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-reload-before01/tool-source.gd",
+        "--resume-save=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-before-body01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_before_body.sav"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "db569d44dc7bd3cea4fe070f2f9c5054bd9d60632c14d64f858f3ea8feb575be",
+        "run.log": "95f45da2747e3ff41fa53db26b8d2eeb443f79f05ae9e897ed072f2c0750fb1d",
+        "jun-route.json": "3d5867a473c3dcb2659520867d991ab2f577caedc79178546d9b0b102d8aceda"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "9c57f0221695809467cf5688770f42e16b3b1591440ba7b72f28c3f992ab73a6",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "9c57f0221695809467cf5688770f42e16b3b1591440ba7b72f28c3f992ab73a6"
+      },
+      "saves": {
+        "jun_route_complete": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-reload-before01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_route_complete.sav",
+          "sha256": "64950220af0d7697f290154ef99df798b015045a233d9380e3d0dd6d609f791d"
+        }
+      }
+    },
+    "jun-reload-after01": {
+      "scope": "Fresh solo process resumes the post-body native timer and completes the remaining normal route.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-reload-after01",
+      "checks": 61,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 8.25769985403167,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-reload-after01/tool-source.gd",
+        "--resume-save=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-after-body01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_after_body.sav"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "3b8f726e82f97b5fc607b8a88b565b4563dadb378c4a75e80fa7cb5999ad5fb9",
+        "run.log": "0e85e1ed59a011e5fb5da760cc2d463caf4071886f9e58b34043c8a422ac3067",
+        "jun-route.json": "8c2e5570155a0ffac8d0e51238d480c0cfeb70c2920f0e3f8bcd11fa4cf26014"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "9c57f0221695809467cf5688770f42e16b3b1591440ba7b72f28c3f992ab73a6",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "9c57f0221695809467cf5688770f42e16b3b1591440ba7b72f28c3f992ab73a6"
+      },
+      "saves": {
+        "jun_route_complete": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-reload-after01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_route_complete.sav",
+          "sha256": "a43b98e1dfe809401ab95ea6c1046c3222f07c5f11b85d22d346ac1906290cd8"
+        }
+      }
+    },
+    "jun-reload-complete01": {
+      "scope": "Fresh solo process retains completed Jun body, inventory, dialogue flags and gz20g location.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-reload-complete01",
+      "checks": 28,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 7.757212691998575,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-reload-complete01/tool-source.gd",
+        "--resume-save=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-solo01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_route_complete.sav",
+        "--completed"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "e125c99aaee100192b837cd7dca0dcc0d4803954cbefff893abb64f19375d7c4",
+        "run.log": "aca66df14649900b9a7cfe3de4de0505e55276cdfbdff8093e02bbbab70e2ccd",
+        "jun-route.json": "d7c20f95f1a7a825054a253a84218b8ce66933e6e56316bdd81f4ef10d1851b1"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "9c57f0221695809467cf5688770f42e16b3b1591440ba7b72f28c3f992ab73a6",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "9c57f0221695809467cf5688770f42e16b3b1591440ba7b72f28c3f992ab73a6"
+      },
+      "saves": {}
+    },
+    "jun-net02": {
+      "scope": "Real loopback ENet guest with independent matching origin shares the normal route and receives a personal save.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net02",
+      "checks": 106,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 9.258282931987196,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net02/tool-source.gd"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "b1437a7f3cfe3223ab18ecaea91ceb2f7727d057c8db29a4dd2cccdd57faec92",
+        "run.log": "e7a12f2d9cf4264e76aeef24e5f3de9f4137bcad7e0544f314c96a25990be1ed",
+        "jun-route.json": "8ca86720eb755d5a1d810a41498da0a274424090fc8b40790f9b4951ed39aae6"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_net.gd": "17f6f019ae77fcdc1db8e025a34cfa737051fe4e1ee0c8f51e809bdc1debb2ad",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "17f6f019ae77fcdc1db8e025a34cfa737051fe4e1ee0c8f51e809bdc1debb2ad"
+      },
+      "saves": {
+        "jun_guest_return": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net02/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_guest_return.sav",
+          "sha256": "acf8e82bd625949c29b5ae9c75db7a94e065336e4c20be582e3d8c65ba358e31"
+        },
+        "jun_route_complete": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net02/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_route_complete.sav",
+          "sha256": "bfa9ff235ca5e3c5a4421159666824adb74b23607f87d928305c7222f1eb6220"
+        }
+      }
+    },
+    "jun-net-before01": {
+      "scope": "Real ENet guest receives a personal save during the native pre-body timer.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net-before01",
+      "checks": 51,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 4.754618795996066,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net-before01/tool-source.gd",
+        "--stop-stage=before-body"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "8730b94976f2609511d6da6fe47e9009d62ec56bf85142fd937a2ac50b36df97",
+        "run.log": "d6f16fc12265c5edb1f1b956b1a22345f01038060279909e75e261b375ee4509",
+        "jun-route.json": "ddb2d7a05311b93ad026f3d4cae0b8e5c3f55760121cdf45714b85bb8c54ff43"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_net.gd": "17f6f019ae77fcdc1db8e025a34cfa737051fe4e1ee0c8f51e809bdc1debb2ad",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "17f6f019ae77fcdc1db8e025a34cfa737051fe4e1ee0c8f51e809bdc1debb2ad"
+      },
+      "saves": {
+        "jun_before_body": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net-before01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_before_body.sav",
+          "sha256": "c6e673d4ca02483cb1eddef4611286c2090eb49a7756988eb68d909095d97a23"
+        },
+        "jun_guest_return": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net-before01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_guest_return.sav",
+          "sha256": "fe5d1fcb311112f3ca10dd9f438e29bb9d72f995fefbd51e4bc7bd2df65f0e34"
+        }
+      }
+    },
+    "jun-net-after01": {
+      "scope": "Real ENet guest receives a personal save during the native post-body timer.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net-after01",
+      "checks": 69,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 5.255067404010333,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net-after01/tool-source.gd",
+        "--stop-stage=after-body"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "e434f835c279057e63925009d6f815a91a99a41d6f6f2d72eaba70ee9b42d023",
+        "run.log": "8fe8dd4e3f199a1429f20fb5d0dc2158e14e312f47963c7422c7fb438c0f8045",
+        "jun-route.json": "c7d267fd653151df8904ce39d9ccae6c3f124b19dcc05571ebbf7c5593c9cf55"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_net.gd": "17f6f019ae77fcdc1db8e025a34cfa737051fe4e1ee0c8f51e809bdc1debb2ad",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "17f6f019ae77fcdc1db8e025a34cfa737051fe4e1ee0c8f51e809bdc1debb2ad"
+      },
+      "saves": {
+        "jun_after_body": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net-after01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_after_body.sav",
+          "sha256": "8cd7d8c4f3eace0962b82178716e863c898d197ed8f1f06e69c44ba7cadda66a"
+        },
+        "jun_guest_return": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net-after01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_guest_return.sav",
+          "sha256": "9e58dd3a1a87621bdaffcf51730622d4cb296000f6d98c5d28d19bf5834ea839"
+        }
+      }
+    },
+    "jun-guest-solo-before01": {
+      "scope": "Fresh independent process resumes the ENet-received pre-body save and finishes the normal route.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-guest-solo-before01",
+      "checks": 63,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 8.25780591397779,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-guest-solo-before01/tool-source.gd",
+        "--resume-save=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net-before01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_guest_return.sav"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "6da3bc1222763c001e6e7a4195d0478f04bfcd7dee207bd38a9d372d0283595f",
+        "run.log": "bd44fc616ed18ff28cf30aed673c85341271985cbcc813ed9760afaa522a1625",
+        "jun-route.json": "316548d3739f5da2aa70bb93d47a8461d9f44a1a35dae0e7a5b775e76757cd6c"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b"
+      },
+      "saves": {
+        "jun_route_complete": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-guest-solo-before01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_route_complete.sav",
+          "sha256": "0af5e40adc94f9459848f1621087a5235d0a4c51038c61539e7ebef2a64b80be"
+        }
+      }
+    },
+    "jun-guest-solo-after01": {
+      "scope": "Fresh independent process resumes the ENet-received post-body save and finishes the normal route.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-guest-solo-after01",
+      "checks": 61,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 8.260757173004095,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-guest-solo-after01/tool-source.gd",
+        "--resume-save=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net-after01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_guest_return.sav"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "cbca0568a0d0d4dbceeb4d3974ac676f7740047ad70430d24be91d72ff409fd2",
+        "run.log": "bb2e92e8d46f1159700874dec4c7b22fdcd0acbe858611e3efa2a267e215bed9",
+        "jun-route.json": "75f4c1b4ed826250a90f0fa1b4478020134eb36b7dfc38f3cf8405f8854dc077"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b"
+      },
+      "saves": {
+        "jun_route_complete": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-guest-solo-after01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_route_complete.sav",
+          "sha256": "25bc9435099f9c634e1df6c3a2234b45bd1d0001e316da2671e587d9a712170c"
+        }
+      }
+    },
+    "jun-guest-solo-complete01": {
+      "scope": "Fresh independent process loads the completed ENet-received guest save at gz20g with its own character data.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-guest-solo-complete01",
+      "checks": 28,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 7.506981918006204,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-guest-solo-complete01/tool-source.gd",
+        "--resume-save=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net02/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_guest_return.sav",
+        "--completed"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "802ed907f802670b91c3984ba2ab6ca830271740e72340423c428bcebf8e4982",
+        "run.log": "4dcc82250607b276bab08eceb5ae08494f886293d1fabaa950f9e5ee3d71cb9a",
+        "jun-route.json": "bef171582340b9ac014013a65b43fedb11976420f9a9a57282cfd954a63519d5"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b"
+      },
+      "saves": {}
+    },
+    "shaina-entry01": {
+      "scope": "Prepared FSusel/q7h boundary; normal brief_23 conversation creates Fairuz (internal party Shaina), starts q8h and travels to its original entrance.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-entry01",
+      "checks": 26,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 15.763663161022123,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-entry01/tool-source.gd"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "591ec518af42b16fdf780798c4fea3ab4e29f17bf8ca2252680d911f5d14ba4f",
+        "run.log": "868cce8fee8630ad926c2fd552dd2a161eec252724b9dbf797633bf5b454bc04",
+        "shaina-entry.json": "60e9bbf96b59ca92b943160abc34a0e8c70769ee45977385ea3751352cbc486f"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shaina_disguise_entry.gd": "bec13add3133d15babde3bbdaa130cc5fe866870f729dba517f7c0aee9627021",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "bec13add3133d15babde3bbdaa130cc5fe866870f729dba517f7c0aee9627021"
+      },
+      "saves": {
+        "shaina_entry_complete": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-entry01/isolated/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/shaina_entry_complete.sav",
+          "sha256": "83852085737503539fd8c0e966531d9d3b90bcf93bc9dc6b6c5343a62dd3c90c"
+        }
+      }
+    },
+    "shaina-entry-reload01": {
+      "scope": "Fresh process retains original disguise body, q8h, destination and the parked FSusel protagonist/bag.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-entry-reload01",
+      "checks": 21,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 12.510951481002849,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-entry-reload01/tool-source.gd",
+        "--resume-save=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-entry01/isolated/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/shaina_entry_complete.sav"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "5d2467b297ae0b266f044d2f8e8341322f66b042b99b13c4540d34c437ec9004",
+        "run.log": "55da7cddb0735e4df16798bec866340ae51921ae16aaab936803b3d213486dcc",
+        "shaina-entry.json": "a34ec6adc73f04bae77b70ac10b2ab370daa64103532d411bb930e18f8e62273"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shaina_disguise_entry.gd": "bec13add3133d15babde3bbdaa130cc5fe866870f729dba517f7c0aee9627021",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "bec13add3133d15babde3bbdaa130cc5fe866870f729dba517f7c0aee9627021"
+      },
+      "saves": {
+        "shaina_entry_complete": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-entry-reload01/isolated/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/shaina_entry_complete.sav",
+          "sha256": "83852085737503539fd8c0e966531d9d3b90bcf93bc9dc6b6c5343a62dd3c90c"
+        }
+      }
+    }
+  },
+  "exploratory_runs": {
+    "jun-net01": {
+      "scope": "Fixture compared raw native StringName/int skill dictionaries against canonical String/float network dictionaries. Numeric skills were identical; comparison corrected and net02 plus pending-network runs pass. No product change.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net01",
+      "checks": 106,
+      "failures": [
+        "guest transformation keeps own skills"
+      ],
+      "errors": [],
+      "return_code": 1,
+      "seconds": 9.258231192012317,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net01/tool-source.gd"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "f19013171d3718122d9a20e8660146e169e60cd77a8e6e2e423f41b83f00a8a0",
+        "run.log": "fe638b0c06ac4ee22f76db0bfba73910e5b4cb6ddfb1f08a7ca623d2c38d4ea0",
+        "jun-route.json": "774a504f72920d52ebfa0a3c325d772deca20337f0fa49985820afdb66dd9686"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_net.gd": "c87d9dc64ec7a0a695d0eb0085931c9b9769fba420886ffdaae803eb372f07a5",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "c87d9dc64ec7a0a695d0eb0085931c9b9769fba420886ffdaae803eb372f07a5"
+      },
+      "saves": {
+        "jun_guest_return": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_guest_return.sav",
+          "sha256": "a648eea240285820c52c75391d9d8f3f8409a88d996757431eecc6000140f7aa"
+        },
+        "jun_route_complete": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/jun-net01/isolated/data/godot/app_userdata/Cursed Lands/saves/jun_route_complete.sav",
+          "sha256": "6bc4e4a35a25feb5ea6e6489ba2c9c01eb55e36baf6cff367edb962e275cc956"
+        }
+      }
+    },
+    "shaina-solo01": {
+      "scope": "Fixture sent NPC interact instead of the UI use_lever command. Character stayed at entry; not product evidence.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-solo01",
+      "checks": 33,
+      "failures": [
+        "normal interaction advances q.gz2h.q8h.1"
+      ],
+      "errors": [],
+      "return_code": 1,
+      "seconds": 74.81148785003461,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-solo01/tool-source.gd"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "33f840b314666552e9b1991488418d03c24b7e502b2f43fc1e00fe163364f081",
+        "run.log": "e8256d0bf04ad5d49ec4dc1ab9d4d60f66f03c4a5c9647c71198e7ffcd57c7e5",
+        "shaina-route.json": "9878cc7d9a024b357499ed4409c914ed218febf4d7a300dd53dac4d33aedb82c"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shaina_disguise_route.gd": "b123e7cb3cec9d05b5f831a98fded3024d34927568b6be0d81184b0a2a501397",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "b123e7cb3cec9d05b5f831a98fded3024d34927568b6be0d81184b0a2a501397"
+      },
+      "saves": {
+        "shaina_entry": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-solo01/isolated/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/shaina_entry.sav",
+          "sha256": "635d9ebebe021070f2d23f570920cef1f90a0dfb137255064a9537677badcf9f"
+        }
+      }
+    },
+    "shaina-solo02": {
+      "scope": "Correct Use command and normal path; character died near (121.01,191.01) before the gate. Does not establish a progression defect.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-solo02",
+      "checks": 34,
+      "failures": [
+        "normal interaction advances q.gz2h.q8h.1"
+      ],
+      "errors": [],
+      "return_code": 1,
+      "seconds": 38.78251551196445,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-solo02/tool-source.gd"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "bbf1939bfc92135d6f53cc475b14f8c18eeb16904414a17ddc46f3f166070aa6",
+        "run.log": "a7f0a11cce21adcaa1e663d37f88732ff19e08c60671d0a33833044b40ef1f30",
+        "shaina-route.json": "950849d5cd32c07df4e83a8e5d225626ec6d40ffefa965a0cde3f2503e3ce005"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shaina_disguise_route.gd": "3ecd66ce548a9701d9848f01e4ff976ae628f85774a611f976c670f224d62b76",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "3ecd66ce548a9701d9848f01e4ff976ae628f85774a611f976c670f224d62b76"
+      },
+      "saves": {
+        "shaina_entry": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-solo02/isolated/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/shaina_entry.sav",
+          "sha256": "2f29d1aa41ffe5356d75e3dea13dc5964f1e5c384904fe7a6aedd06d31f3f2da"
+        }
+      }
+    },
+    "shaina-entry-inspect01": {
+      "scope": "Invocation omitted the lost_in_astral save subdirectory; input file missing. Corrected in inspect02.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-entry-inspect01",
+      "checks": 2,
+      "failures": [
+        "fresh process loads Shaina checkpoint",
+        "native Shaina route has no runtime errors"
+      ],
+      "errors": [
+        "Condition \"err != OK\" is true. Returning: err Failed to open '/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-solo02/isolated/data/godot/app_userdata/Cursed Lands/saves/shaina_entry.sav'. (core/io/dir_access.cpp:426 copy)"
+      ],
+      "return_code": 1,
+      "seconds": 2.502897694008425,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-entry-inspect01/tool-source.gd",
+        "--resume-save=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-solo02/isolated/data/godot/app_userdata/Cursed Lands/saves/shaina_entry.sav",
+        "--inspect-only"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "5aaced5f63749a0577271f1ba90611683154e8119490ccfc3010d7cac7dd4a67",
+        "run.log": "8649260715e1578c407ae23b1a0b41c9484823e5d8bd71a1d375fe2a3452a267",
+        "shaina-route.json": "e330256761c88ea919fc33120358c3a376ed3d8c92ace9316e10e7cc7edf5971"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shaina_disguise_route.gd": "1e885a6a328138a9362ad00ad13260b80057fecea8a27b1d70f76a04d3625fdd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "1e885a6a328138a9362ad00ad13260b80057fecea8a27b1d70f76a04d3625fdd"
+      },
+      "saves": {}
+    },
+    "shaina-entry-inspect02": {
+      "scope": "Read-only original object/nearby actor/briefing inspection, not a mission-completion test.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-entry-inspect02",
+      "checks": 9,
+      "failures": [],
+      "errors": [],
+      "return_code": 0,
+      "seconds": 12.510957595019136,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-entry-inspect02/tool-source.gd",
+        "--resume-save=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-solo02/isolated/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/shaina_entry.sav",
+        "--inspect-only"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "37532ae18b157b5e8947847f4007281bef09d635251f8f8964ae43edc4c28fd2",
+        "run.log": "ea0eb704bf60bec2aa3aa10c0d228af8558ee0c12b7fe196275de87b3991553d",
+        "shaina-route.json": "a9ca29f66c29f7884c8c38f53b7228e6be1d5d30a1c62f11fe7aa8b7c072a923"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shaina_disguise_route.gd": "1e885a6a328138a9362ad00ad13260b80057fecea8a27b1d70f76a04d3625fdd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "1e885a6a328138a9362ad00ad13260b80057fecea8a27b1d70f76a04d3625fdd"
+      },
+      "saves": {}
+    },
+    "shaina-stealth01": {
+      "scope": "Ordinary crawl/defensive commands kept character alive. First requested waypoint was not walkable; movement ended around (108,208), outside the fixture endpoint tolerance.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-stealth01",
+      "checks": 27,
+      "failures": [
+        "stealth waypoint (110.0, 216.0) reaches a movement outcome"
+      ],
+      "errors": [],
+      "return_code": 1,
+      "seconds": 37.28086912597064,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-stealth01/tool-source.gd",
+        "--resume-save=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-solo02/isolated/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/shaina_entry.sav",
+        "--stealth-route"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "c3f661ee3fc19600164222c4e29e6522fd257b3afa64d41c82362ebcd4d07dd0",
+        "run.log": "d4885168dd7f14d634c3b6ed85168eaab909c187b46177332ddf18fa7d4a5520",
+        "shaina-route.json": "07446941fa83b673be961bd57083947f13879f25c5c8d7a3f4619b809cc2e6ba"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shaina_disguise_route.gd": "c56ba9c0196df93e876991b86b004ca07b405be912e246600b6920265d97dec1",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "c56ba9c0196df93e876991b86b004ca07b405be912e246600b6920265d97dec1"
+      },
+      "saves": {
+        "shaina_entry": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-stealth01/isolated/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/shaina_entry.sav",
+          "sha256": "2f29d1aa41ffe5356d75e3dea13dc5964f1e5c384904fe7a6aedd06d31f3f2da"
+        }
+      }
+    },
+    "shaina-stealth02": {
+      "scope": "Corrected walkable waypoints (108,208), (108,198), (108,188) were reached alive with 42.94 HP. Character died during the subsequent normal gate Use approach. Gate and q8h.1 remained incomplete; full infiltration/return is unqualified.",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-stealth02",
+      "checks": 37,
+      "failures": [
+        "normal interaction advances q.gz2h.q8h.1"
+      ],
+      "errors": [],
+      "return_code": 1,
+      "seconds": 44.03671132901218,
+      "termination_reason": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-stealth02/tool-source.gd",
+        "--resume-save=/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-solo02/isolated/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/shaina_entry.sav",
+        "--stealth-route"
+      ],
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "hashes": {
+        "run.json": "2d7b3f55d52ad9c29ceb5f12eef3df996e6d2554d1618b74bc40f7461175b379",
+        "run.log": "d93e079bb0823ff05458d20ea331c9781d1fb8b67e25a1c7d9eb1d5c2e6f9d33",
+        "shaina-route.json": "7e45345e183de55d3901fd0175cc087da64f5ac948732f14813f4b747172c2fc"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/shaina_disguise_route.gd": "717f84210efb71ac00bd90b080c2cdcf58c76919f31b9ec0685938c89f48bae9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+      },
+      "frozen_source_sha256": {
+        "jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tool-source.gd": "717f84210efb71ac00bd90b080c2cdcf58c76919f31b9ec0685938c89f48bae9"
+      },
+      "saves": {
+        "shaina_entry": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-stealth02/isolated/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/shaina_entry.sav",
+          "sha256": "2f29d1aa41ffe5356d75e3dea13dc5964f1e5c384904fe7a6aedd06d31f3f2da"
+        },
+        "shaina_gate_approach": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-stealth02/isolated/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/shaina_gate_approach.sav",
+          "sha256": "c39d9df6e81142485b8cb1dbf6909d88520a942eb5fc76aa23a42aac120e81e0"
+        }
+      }
+    }
+  },
+  "limits": [
+    "All runs are headless Linux using the existing .7 executable/pack/helper; command line gl_compatibility does not constitute rendering acceptance.",
+    "Jun coverage ends at the native gz20g arrival. Earlier campaign quests, recruited parties, later Jun chapter gameplay, absent/reconnecting guests and dissimilar/conflicting source campaigns are not newly qualified here.",
+    "Shaina/Fairuz full physical infiltration, chest pickup, escape, hand-in and live ENet progression remain open. The bounded physical attempts stopped in combat; no quest or actor workaround was added.",
+    "Windows runtime, internet latency, device input and all earlier renderer/performance limitations remain open. Existing .7 Linux/Windows archives were not changed or rebuilt."
+  ],
+  "reproduction": {
+    "runner": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/run.py",
+      "sha256": "e27e3e7f14ce9f4068341603634ae70b8aa83fe40ab0f18a8558990ae962ca5f"
+    },
+    "isolation": "Each run has its own XDG data/config/cache and frozen relative fixture dependencies. No player files are modified.",
+    "shaina_full_attempt_source": "/home/llm2x/Documents/EI/local/scratchpad/temporary-party-routes-20261010/shaina-route-source",
+    "retained_tests": {
+      "tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+      "tools/tests/jun_transformation_net.gd": "17f6f019ae77fcdc1db8e025a34cfa737051fe4e1ee0c8f51e809bdc1debb2ad",
+      "tools/tests/shaina_disguise_entry.gd": "bec13add3133d15babde3bbdaa130cc5fe866870f729dba517f7c0aee9627021"
+    }
+  },
+  "acceptance": {
+    "checks": 689,
+    "failures": 0,
+    "jun_checks": 642,
+    "shaina_entry_checks": 47
+  },
+  "original_mob_hashes": {
+    "maps/bz7g.mob": "1d8c2c6054331aeae0ec8382f14c8c244ccfec815a16fd5598d82cec9acdbd98",
+    "maps/bz5h.mob": "805df7256c13937dfbff6d724c107892d847eff1c629aa85d5cf663aae8bd5ac"
+  }
+}
