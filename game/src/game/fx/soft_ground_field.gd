@@ -16,6 +16,8 @@ var _empty := Image.create(1, 1, false, Image.FORMAT_RGBAF)
 var _slots := {} # sector key -> array layer
 var _images: Array[Image] = [] # existing sector images, not extra CPU copies
 var _dirty := false
+var _dense_sources := {} # accepted sector -> tile -> immutable COLOR handles
+var _dense_colors: WeakRef
 
 
 func _init(width := 1, height := 1) -> void:
@@ -58,6 +60,14 @@ func update(key: Vector2i) -> void:
 
 func install(key: Vector2i, dense: Dictionary) -> void:
 	assert(_slots.has(key))
+	# Retain only accepted COLOR handles so a later contact consumer can join
+	# without reading a GPU mesh or rebuilding native interpolation.
+	var colors := {}
+	for id: int in dense:
+		if dense[id] != null: colors[id] = dense[id][Mesh.ARRAY_COLOR]
+	_dense_sources[key] = colors
+	var contact := _dense_colors.get_ref() as GroundDenseColors if _dense_colors else null
+	if contact: contact.install(key,colors)
 	var slot: int = _slots[key]
 	# R = layer + 1 only AFTER the sector installs its track material.
 	# G distinguishes visible dense tiles from pending mesh jobs.
@@ -70,6 +80,9 @@ func install(key: Vector2i, dense: Dictionary) -> void:
 
 
 func uninstall(key: Vector2i) -> void:
+	_dense_sources.erase(key)
+	var contact := _dense_colors.get_ref() as GroundDenseColors if _dense_colors else null
+	if contact: contact.uninstall(key)
 	_tile_image.fill_rect(Rect2i(key * 16, Vector2i(16, 16)), Color(0, 0, 0, 0))
 	_dirty = true
 
@@ -92,3 +105,12 @@ func flush(time: float) -> void:
 	if not _slots.is_empty():
 		_clock_image.set_pixel(0, 0, Color(time, 0, 0, 0))
 		clock.update(_clock_image)
+
+
+func contact_colors() -> GroundDenseColors:
+	var contact := _dense_colors.get_ref() as GroundDenseColors if _dense_colors else null
+	if contact == null:
+		contact = GroundDenseColors.new(_tile_image.get_width(),_tile_image.get_height())
+		for key: Vector2i in _dense_sources: contact.install(key,_dense_sources[key])
+		_dense_colors = weakref(contact)
+	return contact

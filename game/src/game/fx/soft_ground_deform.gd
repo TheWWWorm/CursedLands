@@ -193,8 +193,11 @@ func _add_mark(mark: Dictionary) -> void:
 				continue
 			var ids := _mark_tiles(mark, key)
 			var needed := 0
+			var installed: Dictionary = field._dense_sources.get(key,{})
 			for id: int in ids:
-				needed += int(not rec.tiles.has(id))
+				# Expired geometry can remain installed until its replacement is
+				# accepted. Revisiting it consumes its existing reservation.
+				needed += int(not rec.tiles.has(id) and not installed.has(id))
 			# Reserve the complete footfall. A capacity reset halfway through its
 			# tiles would otherwise discard part of this newest footprint too.
 			_make_room(key, needed)
@@ -228,7 +231,7 @@ static func _tile_ids(p: Vector2, extent: Vector2, key: Vector2i) -> PackedInt32
 
 
 func _make_room(keep: Vector2i, needed: int = 1) -> void:
-	while tile_count() + needed > MAX_TILES and sectors.size() > 1:
+	while _reserved_tile_count() + needed > MAX_TILES and sectors.size() > 1:
 		var oldest := keep
 		var time := INF
 		for key: Vector2i in sectors:
@@ -236,7 +239,7 @@ func _make_room(keep: Vector2i, needed: int = 1) -> void:
 				oldest = key
 				time = sectors[key].last
 		_restore(oldest)
-	if tile_count() + needed > MAX_TILES:
+	if _reserved_tile_count() + needed > MAX_TILES:
 		# A very long walk within a single sector also has a strict ceiling.
 		# Discard its old tracks as a group; the next footfall starts afresh.
 		var rec: Dictionary = sectors[keep]
@@ -255,6 +258,19 @@ func _make_room(keep: Vector2i, needed: int = 1) -> void:
 		field.flush(_age)
 		var shadow := (rec.shadow as WeakRef).get_ref() as MeshInstance3D
 		if shadow: shadow.mesh = null
+
+
+# Worker snapshots retire asynchronously. Count both logical pending/ready
+# tiles and the still-installed mesh until _apply_mesh replaces it; accepting
+# another sector first must not exceed the exact dense-lookup layer cap.
+func _reserved_tile_count() -> int:
+	var count := tile_count()
+	if field:
+		for key: Vector2i in sectors:
+			var installed: Dictionary = field._dense_sources.get(key,{})
+			for id: int in installed:
+				if not sectors[key].tiles.has(id): count += 1
+	return count
 
 
 func tile_count() -> int:

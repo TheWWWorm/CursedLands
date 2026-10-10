@@ -15,6 +15,15 @@ func stamp(value: float) -> Image:
 	image.fill(Color(value, value * 0.5, 0, 1))
 	return image
 
+func dense_fixture() -> Array:
+	var arrays := []
+	arrays.resize(Mesh.ARRAY_MAX)
+	var colors := PackedColorArray()
+	colors.resize(8 * 153) # Eight parents, each with the native 16-way lattice.
+	colors.fill(Color(0, 0, 0, 0))
+	arrays[Mesh.ARRAY_COLOR] = colors
+	return arrays
+
 func capture(view: SubViewport) -> Image:
 	for i in 3:
 		RenderingServer.force_draw()
@@ -63,7 +72,7 @@ void fragment() {
 		check(field.texture.get_rid() == rid, "growth preserves bound RID " + str(i))
 		check(field._images[i] == image, "no retained CPU copy " + str(i))
 		check(field._tile_image.get_pixelv(key * 16).r == 0, "pending mesh not exposed " + str(i))
-		field.install(key, {0: [1], 17: null})
+		field.install(key, {0: dense_fixture(), 17: null})
 		field.flush(12.0)
 		var pixels := await capture(view)
 		for j in range(i + 1):
@@ -82,7 +91,7 @@ void fragment() {
 	check(pixels.get_pixel(16, 0).r < 0.01 and pixels.get_pixel(16, 0).g < 0.01, "eviction hides old sector")
 	var replacement := stamp(0.33)
 	check(field.allocate(Vector2i(1, 0), replacement) == 1, "reuse vacant layer")
-	field.install(Vector2i(1, 0), {17: [1]})
+	field.install(Vector2i(1, 0), {17: dense_fixture()})
 	field.flush(25.0)
 	pixels = await capture(view)
 	check(absf(pixels.get_pixel(17, 1).r - 0.33) < 0.006 and pixels.get_pixel(17, 1).g > 0.99, "replacement renders new contents")
@@ -97,7 +106,7 @@ void fragment() {
 	check(field.texture.get_rid() == rid and field.tiles.get_rid() == tile_rid and field.clock.get_rid() == clock_rid, "clear preserves resource bindings")
 	check((await capture(view)).get_pixel(0, 0).r < 0.01, "empty field samples no old layer")
 	check(field.allocate(Vector2i.ZERO, stamp(0.61)) == 0, "reuse after clear")
-	field.install(Vector2i.ZERO, {0:[1]})
+	field.install(Vector2i.ZERO, {0:dense_fixture()})
 	field.flush(42.0)
 	pixels = await capture(view)
 	check(absf(pixels.get_pixel(0, 0).r - 0.61) < 0.006 and absf(pixels.get_pixel(0, 0).b - 0.42) < 0.006, "existing material sees new storage after clear")

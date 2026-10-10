@@ -23,6 +23,15 @@ func terrain_fixture() -> EITerrain:
 	terrain.heights.resize(33 * 33); terrain.heights.fill(0.0)
 	terrain.land_xy.resize(33 * 33); terrain.land_xy.fill(Vector2.ZERO)
 	terrain.land_n.resize(33 * 33); terrain.land_n.fill(Vector3.UP)
+	# The production contact data reads the source sector arrays, including
+	# ArrayMesh normal packing and sector-owned light input bytes.
+	var sector := EITerrainSector.new(); sector.name = "Sector_0_0"
+	sector._arrays.resize(Mesh.ARRAY_MAX)
+	var normals := PackedVector3Array(); normals.resize(16*16*9); normals.fill(Vector3.UP)
+	var colors := PackedColorArray(); colors.resize(16*16*9); colors.fill(Color(0,0,0,0))
+	sector._arrays[Mesh.ARRAY_NORMAL] = normals
+	sector._arrays[Mesh.ARRAY_COLOR] = colors
+	terrain.add_child(sector)
 	terrain._land_mat = ShaderMaterial.new()
 	terrain._land_mat.shader = Gfx.make_shader(EITerrain.TERRAIN_SHADER, true, true)
 	var atlas := Texture2DArray.new()

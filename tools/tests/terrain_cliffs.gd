@@ -73,7 +73,7 @@ func analytic() -> void:
 	check(source.find("c=cliff_albedo")>source.find("c = clamp(c +") and source.find("c=cliff_albedo")<source.find("float mac ="),"projection follows contrast and shares macro/weather response")
 	check(not GroundContactShader.source(EIFigure.OBJECT_SHADER).contains("cliff_albedo"),"default contact source does not compile extra sampling")
 	var contact := GroundContactShader.source(EIFigure.OBJECT_SHADER,true)
-	check(contact.count("vec3 cliff_albedo(")==1 and contact.count("contact_ground_light(grid,height,result.normal,result.diffuse,result.specular);")==1,"contact uses one shared projection and one lighting query")
+	check(contact.count("vec3 cliff_albedo(")==1 and contact.count("contact_ground_light(grid,height,camera,projection,result.normal,result.diffuse,result.specular,relief_frame,height_gradient,compression,result.light_inputs);")==1,"contact uses one shared projection and one lighting query")
 
 func maps() -> void:
 	var names := ["zone1","zone8","zone11","zone13","zone15"]
