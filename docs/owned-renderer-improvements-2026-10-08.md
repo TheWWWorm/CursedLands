@@ -8,9 +8,9 @@ Starting commit: `3172ede12a5f41b0182c34a70b5eeda787c95e52`
 
 The source audit and priorities are in
 [OWNED_RENDERER_IMPROVEMENT_HANDOFF.md](/home/llm2x/Documents/EI/OWNED_RENDERER_IMPROVEMENT_HANDOFF.md).
-**Latest local test, 10 October:** `1.0.3-local.20261010.2`: [Windows ZIP](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.2-windows-x86_64.zip) and [Linux archive](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.2-linux-x86_64.tar.gz), source `451203a`, protocol 13. Both contain the same 680-resource / 264-script pack and all eleven desktop engine patches. Includes rounded/lit pebbles, exclusive grass/stone placement, distant grass, previous gameplay fixes, conditional cloud radiance savings and the worker shutdown repair. The actual Linux Forward+ package passes 141 checks with the separate rendering thread: cloud consumers/menu, New Game, original-MP travel/menu restoration and live graphics options. Zero exposed HUD frames; all four processes exit normally. Earlier .1 package coverage (315 checks) is inherited. Archives read back exactly. Windows execution, full physical routes and stable-release acceptance remain open; V1 scratch code is excluded. [Receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-2.json).
+**Latest local test, 10 October:** `1.0.3-local.20261010.3`: [Windows ZIP](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.3-windows-x86_64.zip) and [Linux archive](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.3-linux-x86_64.tar.gz), source `208805a` (production lighting `1c96136`), protocol 13. Both contain the same 682-resource / 265-script pack and all eleven desktop engine patches. Includes terrain-matched V1 material lighting, default-off, plus prior rounded/lit pebbles, grass and gameplay fixes. The actual Linux Forward+ package passes **292/0** across six runs: three maps, snow tracks, Enhanced shoreline, New Game, original-MP travel/menu restoration and live graphics options. Twenty-four snow captures match the prior qualified candidate exactly; zero exposed loading/travel HUD frames. A separate closer snow view retains **1 strict failure/112 checks**, one upper-object blue byte 8→7 under a local light. Existing Mobile/Compatibility residuals and expensive cold preparation remain open. Both archive readbacks pass. Windows execution, target-device performance and full physical routes remain untested; no stable release is claimed. [Receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-3.json).
 
-**V1 material lighting integrated, 10 October:** `1c96136` copies installed packed terrain normals, native shoreline inputs and dense footprint COLOR into the existing contact band, including relief, rain highlights, tracks and material-specific directional shadow response. Lazy world-owned storage and pending mesh reservations stay bounded at 128 tiles. Forward+ final cases pass **640/0**, data/ownership/source checks **286/0**; three maps retain 12 exact native Off/restored images and unchanged draw counts. Compatibility retains **1 failure/544 checks**. Mobile retains **23/501** with the short wait and **4/501** with a separate three-second capture pre-roll: the remaining differences are single pixels at 1–6/255. They are preserved as failed strict assertions, including the new Compatibility 1/255 upper pixel; no universal pixel-parity claim. The current shipped-build controls pass 52/0 per backend. All shader/backend paths compile and exit normally. The option remains default-off; preparation/device/Windows acceptance stays open. The six integrated production files exactly match the rendered private candidate. [Evidence](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/ground-contact-lighting-integration-2026-10-10.json). Latest downloadable `.20261010.2` packages remain at `451203a` and exclude this source change. Main thread only; broader gameplay/renderer scope is still active.
+**V1 material lighting integrated, 10 October:** `1c96136` copies installed packed terrain normals, native shoreline inputs and dense footprint COLOR into the existing contact band, including relief, rain highlights, tracks and material-specific directional shadow response. Lazy world-owned storage and pending mesh reservations stay bounded at 128 tiles. Forward+ final cases pass **640/0**, data/ownership/source checks **286/0**; three maps retain 12 exact native Off/restored images and unchanged draw counts. Compatibility retains **1 failure/544 checks**. Mobile retains **23/501** with the short wait and **4/501** with a separate three-second capture pre-roll: the remaining differences are single pixels at 1–6/255. They are preserved as failed strict assertions, including the new Compatibility 1/255 upper pixel; no universal pixel-parity claim. The current shipped-build controls pass 52/0 per backend. All shader/backend paths compile and exit normally. The option remains default-off; preparation/device/Windows acceptance stays open. The six integrated production files exactly match the rendered private candidate. [Evidence](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/ground-contact-lighting-integration-2026-10-10.json). Included in local20261010.3. The additional closer snow view retains one Forward+ upper-pixel 1/255 residual; see the package receipt. Main thread only; broader gameplay/renderer scope is still active.
 
 **9 October checkpoint (historical).** The user resumed the larger renderer and
 gameplay goal. Continue on `fix/catacomb-coop-deck` in
@@ -5312,6 +5312,31 @@ and target-device performance remain untested. These are local tests, not a
 published stable release. V1 scratch files remain excluded.
 
 [Package receipt](validation/local-feedback-build-2026-10-10-2.json).
+
+## V1 local packages and preparation follow-up — 10 October, .3
+
+Local20261010.3 packages the six V1 production files from `1c96136`, with
+source checkpoint `208805a`, for both Linux and Windows. The packs are identical
+and differ from the qualified private candidate only in the displayed version.
+The actual Linux Forward+ package passes 292 checks in six runs. An additional
+2.4m close-up of the snow barrack retains one failed strict upper-pixel check
+(blue 8→7); it is preserved, not relabeled as passed. Test consolidation had
+accidentally applied the short bridge's camera to every scene. The canonical
+fixture now preserves the original 3.8m/+1m house/snow and 2.4m/+0.22m bridge
+cameras through explicit overrides. All 24 restored snow captures match the
+prior qualified candidate exactly. No pixel thresholds or production code changed.
+
+The first cold-cache comparison completed three arms and stopped before the
+fourth on a foreign-renderer preflight. Four further normal-frame cost runs
+retain 192/0 checks and twelve exact image pairs for a zero-colour-weight early
+exit. All overlap foreign engine work; no isolated performance claim is made.
+The early exit has no convincing measured benefit and is rejected. Existing
+20-second-class Compatibility cold first draws, numerical backend residuals,
+Windows/physical-device acceptance and full gameplay routes remain open.
+The feature stays default-off. These are local tests, not stable 1.0.3.
+
+[Package evidence](validation/local-feedback-build-2026-10-10-3.json) and
+[cost follow-up](validation/ground-contact-cost-followup-2026-10-10.json).
 
 ## Next work in the established order
 

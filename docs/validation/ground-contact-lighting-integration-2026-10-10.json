@@ -891,5 +891,36 @@
     "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/preparation-declined.json",
     "sha256": "9dd2c25aed13c4e0f93f941cbcfd1d3ed6e49680b6ae51ce1d6ba84fb2519dc0",
     "status": "Preflight declined because another renderer was active; no benchmark launched."
+  },
+  "local_package_followup": {
+    "version": "1.0.3-local.20261010.3",
+    "source_commit": "208805a88d110c752baebe2ae1124e48d202c1f5",
+    "production_source_unchanged": true,
+    "receipt": "docs/validation/local-feedback-build-2026-10-10-3.json",
+    "checks": 292,
+    "failures": 0,
+    "retained_additional_zoom_check": {
+      "checks": 112,
+      "failures": 1,
+      "renderer": "forward_plus",
+      "scene": "zone11 snow barrack, 2.4m span",
+      "pixel": [
+        550,
+        40
+      ],
+      "off": [
+        8,
+        8,
+        8
+      ],
+      "on": [
+        8,
+        8,
+        7
+      ]
+    },
+    "fixture_followup": "Restored scene-specific cameras after consolidation inherited the short bridge framing. Snow 3.8m/+1m produces 24 byte-identical prior captures; bridge stays 2.4m/+0.22m. Thresholds unchanged.",
+    "cost_receipt": "docs/validation/ground-contact-cost-followup-2026-10-10.json",
+    "cost_decision": "Zero-weight early exit rejected; no production changes. Timings overlap other engine work, no isolated improvement claimed."
   }
 }

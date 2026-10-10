@@ -1,12 +1,11 @@
 extends Node
-## Shoreline bridge camera adaptation: 2.4m span and upper mask at +0.22m
-## fit the unchanged 0.59m-tall authored bridge. Other controls are inherited.
+## A close view of an authored rigid wall root under enhanced lighting.
 ## Run the same script against frozen baseline/candidate packs. Native lit
 ## captures are the evidence; masks only classify their pixels. This is not
 ## a terrain/figure RGB-parity test (their full material responses differ).
 const SIZE := Vector2i(800, 600)
 const VIEW_DIRECTION := Vector3(0.6, 0.0, 0.8)
-const SPAN := 2.4
+const SPAN := 3.8
 const PAINTED_MARKER := "result.normal=normalize(relief_frame[2]-"
 var checks := 0
 var failures := 0
@@ -22,6 +21,14 @@ var anchor_witness := {}
 var mask_on: Image
 var captures := {}
 var capture_settle_ms := 0
+
+
+func camera_span() -> float:
+	return SPAN
+
+
+func upper_mask_offset() -> float:
+	return 1.0
 
 
 func check(ok: bool, label: String) -> void:
@@ -306,7 +313,7 @@ func run_scene() -> void:
 	for other: Node3D in map.object_nodes: other.visible = other == object
 	var anchor := root_anchor(object, map.terrain)
 	if not anchor.is_finite(): view.free(); return
-	var camera := Camera3D.new(); camera.projection = Camera3D.PROJECTION_ORTHOGONAL; camera.size = SPAN
+	var camera := Camera3D.new(); camera.projection = Camera3D.PROJECTION_ORTHOGONAL; camera.size = camera_span()
 	camera.near = 0.05; camera.far = 100; view.add_child(camera)
 	camera.position = anchor + VIEW_DIRECTION * 9.0 + Vector3.UP * 3.6
 	camera.position.y = maxf(camera.position.y, map.terrain.height_at(camera.position.x, -camera.position.z) + 1.0)
@@ -327,7 +334,7 @@ func run_scene() -> void:
 	var record: Dictionary = object.get_meta("ei")
 	fixture = {"map":map_name, "object":object_name, "nid":record.nid, "template":record.template,
 		"texture":record.texture, "placement":str(placement), "anchor":str(anchor), "camera":str(camera.global_transform),
-		"span":SPAN, "size":[SIZE.x, SIZE.y], "composed":composed, "parts":original_meshes.size(), "anchor_witness":anchor_witness}
+		"span":camera_span(), "upper_mask_offset":upper_mask_offset(), "size":[SIZE.x, SIZE.y], "composed":composed, "parts":original_meshes.size(), "anchor_witness":anchor_witness}
 	print("GROUND_CONTACT_RELIEF_SCENE_FIXTURE ", JSON.stringify(fixture))
 	RenderingServer.global_shader_parameter_set(&"ei_border", Vector4.ZERO)
 	RenderingServer.global_shader_parameter_set(&"ei_fog", Vector3(90, 100, 0))
@@ -335,9 +342,9 @@ func run_scene() -> void:
 		map.terrain.color_cache.prepare(camera); map.terrain.color_cache.set_process(false)
 	await frames(30)
 	GameData.options.gfx_ground_contact = 0; owner.refresh()
-	var off_mask := await mask(view, map, object, anchor.y + 0.22, "off-mask")
+	var off_mask := await mask(view, map, object, anchor.y + upper_mask_offset(), "off-mask")
 	GameData.options.gfx_ground_contact = 1; owner.refresh()
-	mask_on = await mask(view, map, object, anchor.y + 0.22, "on-mask")
+	mask_on = await mask(view, map, object, anchor.y + upper_mask_offset(), "on-mask")
 	var scope := coverage(off_mask, mask_on)
 	check(scope.object_pixels > 2000 and scope.band_pixels > 100 and scope.upper_pixels > 1000, "non-vacuous authored wall, contact band and upper surface " + str(scope))
 	check(scope.silhouette_mismatches == 0, "native alpha/cutout silhouette exact between Off and On")

@@ -2,6 +2,12 @@ extends "ground_contact_relief_scene.gd"
 ## Original mesh/placement, dry shoreline bridge edge with nonzero native k.
 ## The bridge is above the liquid plane; this is not an underwater crossing.
 var original_materials := true
+func camera_span() -> float:
+	return 2.4
+func upper_mask_offset() -> float:
+	# The unchanged authored bridge is only 0.59m tall. Keep its established
+	# close framing separate from the taller house and snow-barrack cases.
+	return 0.22
 func run_scene() -> void:
 	original_materials=not OS.get_cmdline_user_args().has("--shore-enhanced")
 	GameData.options.gfx_materials=int(not original_materials)

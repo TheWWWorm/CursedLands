@@ -1,0 +1,1580 @@
+{
+  "date": "2026-10-10",
+  "decision": "Do not integrate the zero-weight early exit. Images match, but there is no convincing performance benefit; all measured candidate/baseline cost runs overlap other engines. Canonical production source remains 1c96136.",
+  "scope": "RTX 3090 Linux Compatibility, held authored bz2g near/far, 800x600; fresh private Godot/NVIDIA caches followed by warm reuse. No installed settings, saves or caches changed. No Windows, device, gameplay-FPS or isolated comparative-performance claim.",
+  "candidate": {
+    "base_commit": "208805a88d110c752baebe2ae1124e48d202c1f5",
+    "base_shader_sha256": "6e60836ab43c9336d202906376d9cfbb913675c7fe9a3a3429189e7b82e9e88f",
+    "candidate_shader_sha256": "4e5cef16768cde50adedef280d35818e677f89a39e678774f41b3e62066607d3",
+    "scope": "Scratch only. Skip copied terrain lighting/relief where exact contact blend weight is zero; preserve contact dark skirt. No accepted optimization yet."
+  },
+  "candidate_export": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-zero-weight-20261010/candidate01/export.json",
+    "sha256": "aa79d59b8f5804129eeb9c72d56d85cfef641ca39129d79cc34547b4879b2b0e"
+  },
+  "cost_runs": {
+    "baseline": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-zero-weight-20261010/cost-baseline-gl01/report.json",
+      "sha256": "18c3aba3949d7884a7b4ef9064f9b431080fef9be08c2f3bf0c0472a4f76b0b1",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--contact-map=bz2g",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/ground-contact-zero-weight-20261010/cost-baseline-gl01/fixture/ground_contact_cost.gd"
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "CursedLands.pck": "1d247f18fdd6f40c490257396ff59384ce20d0f38847dabc2c3c10319b2dadf6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "ground_contact_cost.gd": "756bd0ddeff3966e789ca49003960071875e1271c84cd1e734b0bff52e2e0b37",
+        "ground_contact.gd": "cdf2937168d886e43ec8be34f338fda4ff32665d2e8eec4ea61d23363a122e0d",
+        "ground_contact_cost.py": "8633c467f3edfc090121be4596510565962dfd0fbe59fe32d447e1b778a7828c"
+      },
+      "cold_warm_png_identical": true,
+      "runs": {
+        "cold": {
+          "checks": 48,
+          "failures": 0,
+          "timing_qualified_against_other_engines": false,
+          "rows": [
+            {
+              "distance": "near",
+              "off": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 6738.328,
+                "frame_wall_ms": {
+                  "max": 1.579,
+                  "median": 1.153,
+                  "min": 1.095,
+                  "p95": 1.273
+                },
+                "refresh_ms": 1.356,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 302.785,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 1.21700000762939,
+                  "median": 0.837999999523163,
+                  "min": 0.805999994277954,
+                  "p95": 0.922999978065491
+                },
+                "viewport_gpu_ms": {
+                  "max": 3.90000009536743,
+                  "median": 0.519999980926514,
+                  "min": 0.455000013113022,
+                  "p95": 0.561999976634979
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 21247.134,
+                "frame_wall_ms": {
+                  "max": 9.304,
+                  "median": 2.365,
+                  "min": 1.625,
+                  "p95": 4.484
+                },
+                "refresh_ms": 78.151,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 449.055,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 3.43400001525879,
+                  "median": 1.64600002765656,
+                  "min": 1.27300000190735,
+                  "p95": 3.13499999046326
+                },
+                "viewport_gpu_ms": {
+                  "max": 3.51999998092651,
+                  "median": 1.72699999809265,
+                  "min": 1.50399994850159,
+                  "p95": 2.41899991035461
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "repeat_on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 3.161,
+                "frame_wall_ms": {
+                  "max": 10.468,
+                  "median": 2.327,
+                  "min": 1.648,
+                  "p95": 4.574
+                },
+                "refresh_ms": 9.54,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 258.658,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 3.49799990653992,
+                  "median": 1.63900005817413,
+                  "min": 1.27300000190735,
+                  "p95": 3.08699989318848
+                },
+                "viewport_gpu_ms": {
+                  "max": 4.05100011825562,
+                  "median": 1.79999995231628,
+                  "min": 1.5110000371933,
+                  "p95": 2.42600011825562
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "restored": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 3.978,
+                "frame_wall_ms": {
+                  "max": 11.701,
+                  "median": 1.391,
+                  "min": 1.091,
+                  "p95": 2.898
+                },
+                "refresh_ms": 8.442,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 165.881,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 4.16900014877319,
+                  "median": 0.999000012874603,
+                  "min": 0.797999978065491,
+                  "p95": 1.97399997711182
+                },
+                "viewport_gpu_ms": {
+                  "max": 0.538999974727631,
+                  "median": 0.462999999523163,
+                  "min": 0.458000004291534,
+                  "p95": 0.505999982357025
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "difference": {
+                "changed": 2123,
+                "mean": 0.05201875,
+                "peak": 58
+              },
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "off": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 2.48,
+                "frame_wall_ms": {
+                  "max": 7.192,
+                  "median": 1.373,
+                  "min": 1.149,
+                  "p95": 4.864
+                },
+                "refresh_ms": 2.109,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 172.137,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 2.39400005340576,
+                  "median": 0.971000015735626,
+                  "min": 0.879999995231628,
+                  "p95": 2.06100010871887
+                },
+                "viewport_gpu_ms": {
+                  "max": 0.444000005722046,
+                  "median": 0.391999989748001,
+                  "min": 0.386999994516373,
+                  "p95": 0.41499999165535
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 193.124,
+                "frame_wall_ms": {
+                  "max": 3.847,
+                  "median": 1.743,
+                  "min": 1.595,
+                  "p95": 2.541
+                },
+                "refresh_ms": 99.309,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 226.143,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 2.8510000705719,
+                  "median": 1.40900003910065,
+                  "min": 1.33500003814697,
+                  "p95": 2.00300002098083
+                },
+                "viewport_gpu_ms": {
+                  "max": 1.3400000333786,
+                  "median": 0.819999992847443,
+                  "min": 0.809000015258789,
+                  "p95": 0.860000014305115
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "repeat_on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 3.148,
+                "frame_wall_ms": {
+                  "max": 10.309,
+                  "median": 1.683,
+                  "min": 1.622,
+                  "p95": 2.148
+                },
+                "refresh_ms": 7.097,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 167.734,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 2.46900010108948,
+                  "median": 1.39199995994568,
+                  "min": 1.34599995613098,
+                  "p95": 1.72399997711182
+                },
+                "viewport_gpu_ms": {
+                  "max": 1.07000005245209,
+                  "median": 0.820999979972839,
+                  "min": 0.808000028133392,
+                  "p95": 0.865000009536743
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "restored": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 3.239,
+                "frame_wall_ms": {
+                  "max": 2.567,
+                  "median": 1.255,
+                  "min": 1.159,
+                  "p95": 2.022
+                },
+                "refresh_ms": 5.819,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 114.108,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 1.99800002574921,
+                  "median": 0.936999976634979,
+                  "min": 0.888000011444092,
+                  "p95": 1.5809999704361
+                },
+                "viewport_gpu_ms": {
+                  "max": 0.446000009775162,
+                  "median": 0.39300000667572,
+                  "min": 0.386000007390976,
+                  "p95": 0.42399999499321
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "difference": {
+                "changed": 108,
+                "mean": 0.00246458333333333,
+                "peak": 25
+              },
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        },
+        "warm": {
+          "checks": 48,
+          "failures": 0,
+          "timing_qualified_against_other_engines": false,
+          "rows": [
+            {
+              "distance": "near",
+              "off": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 193.857,
+                "frame_wall_ms": {
+                  "max": 6.892,
+                  "median": 1.384,
+                  "min": 1.072,
+                  "p95": 2.613
+                },
+                "refresh_ms": 1.807,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 172.167,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 2.72000002861023,
+                  "median": 0.945999979972839,
+                  "min": 0.795000016689301,
+                  "p95": 1.92599999904633
+                },
+                "viewport_gpu_ms": {
+                  "max": 1.10000002384186,
+                  "median": 0.465000003576279,
+                  "min": 0.456999987363815,
+                  "p95": 0.526000022888184
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 194.254,
+                "frame_wall_ms": {
+                  "max": 7.7,
+                  "median": 2.294,
+                  "min": 1.637,
+                  "p95": 4.553
+                },
+                "refresh_ms": 100.112,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 240.446,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 4.71099996566772,
+                  "median": 1.51300001144409,
+                  "min": 1.25300002098083,
+                  "p95": 2.91400003433228
+                },
+                "viewport_gpu_ms": {
+                  "max": 3.36100006103516,
+                  "median": 1.82799994945526,
+                  "min": 1.50899994373322,
+                  "p95": 2.70600008964539
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "repeat_on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 3.232,
+                "frame_wall_ms": {
+                  "max": 11.692,
+                  "median": 2.581,
+                  "min": 1.655,
+                  "p95": 6.258
+                },
+                "refresh_ms": 9.253,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 253.176,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 4.08099985122681,
+                  "median": 1.85399997234344,
+                  "min": 1.27999997138977,
+                  "p95": 3.16799998283386
+                },
+                "viewport_gpu_ms": {
+                  "max": 3.77900004386902,
+                  "median": 1.73199999332428,
+                  "min": 1.51699995994568,
+                  "p95": 2.36100006103516
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "restored": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 5.821,
+                "frame_wall_ms": {
+                  "max": 9.09,
+                  "median": 1.455,
+                  "min": 1.092,
+                  "p95": 3.773
+                },
+                "refresh_ms": 6.27,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 171.86,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 3.21399998664856,
+                  "median": 1.05099999904633,
+                  "min": 0.809000015258789,
+                  "p95": 2.03200006484985
+                },
+                "viewport_gpu_ms": {
+                  "max": 0.529999971389771,
+                  "median": 0.465999990701675,
+                  "min": 0.458999991416931,
+                  "p95": 0.514999985694885
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "difference": {
+                "changed": 2123,
+                "mean": 0.05201875,
+                "peak": 58
+              },
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "off": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 3.318,
+                "frame_wall_ms": {
+                  "max": 5.293,
+                  "median": 1.218,
+                  "min": 1.129,
+                  "p95": 2.019
+                },
+                "refresh_ms": 2.15,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 175.982,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 2.19700002670288,
+                  "median": 0.897000014781952,
+                  "min": 0.864000022411346,
+                  "p95": 1.71200001239777
+                },
+                "viewport_gpu_ms": {
+                  "max": 0.467999994754791,
+                  "median": 0.393999993801117,
+                  "min": 0.388000011444092,
+                  "p95": 0.426999986171722
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 203.718,
+                "frame_wall_ms": {
+                  "max": 10.329,
+                  "median": 2.029,
+                  "min": 1.649,
+                  "p95": 4.914
+                },
+                "refresh_ms": 102.941,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 269.534,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 5.83099985122681,
+                  "median": 1.67400002479553,
+                  "min": 1.33800005912781,
+                  "p95": 3.35400009155273
+                },
+                "viewport_gpu_ms": {
+                  "max": 1.557000041008,
+                  "median": 0.824999988079071,
+                  "min": 0.811999976634979,
+                  "p95": 0.869000017642975
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "repeat_on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 3.351,
+                "frame_wall_ms": {
+                  "max": 8.978,
+                  "median": 2.211,
+                  "min": 1.624,
+                  "p95": 4.573
+                },
+                "refresh_ms": 9.691,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 253.703,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 6.89099979400635,
+                  "median": 1.78699994087219,
+                  "min": 1.33500003814697,
+                  "p95": 3.41799998283386
+                },
+                "viewport_gpu_ms": {
+                  "max": 1.29700005054474,
+                  "median": 0.827000021934509,
+                  "min": 0.813000023365021,
+                  "p95": 0.865000009536743
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "restored": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 3.841,
+                "frame_wall_ms": {
+                  "max": 7.53,
+                  "median": 1.427,
+                  "min": 1.137,
+                  "p95": 2.982
+                },
+                "refresh_ms": 6.048,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 191.858,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 3.29800009727478,
+                  "median": 1.06400001049042,
+                  "min": 0.870999991893768,
+                  "p95": 2.17899990081787
+                },
+                "viewport_gpu_ms": {
+                  "max": 0.444999992847443,
+                  "median": 0.395000010728836,
+                  "min": 0.388999998569489,
+                  "p95": 0.432000011205673
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "difference": {
+                "changed": 108,
+                "mean": 0.00246458333333333,
+                "peak": 25
+              },
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    "candidate": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-zero-weight-20261010/cost-candidate-gl01/report.json",
+      "sha256": "245192ed7e3ab33d90f3b78f79ca29946631a98e0896c60e56b22ece8a722d7f",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-zero-weight-20261010/candidate01/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--contact-map=bz2g",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/ground-contact-zero-weight-20261010/cost-candidate-gl01/fixture/ground_contact_cost.gd"
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "CursedLands.pck": "ddee88e38fd792c3e8b2386755321480dd4d466520d979d63e0f1fa1ce5e2c72",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "fixture_sha256": {
+        "ground_contact_cost.gd": "756bd0ddeff3966e789ca49003960071875e1271c84cd1e734b0bff52e2e0b37",
+        "ground_contact.gd": "cdf2937168d886e43ec8be34f338fda4ff32665d2e8eec4ea61d23363a122e0d",
+        "ground_contact_cost.py": "8633c467f3edfc090121be4596510565962dfd0fbe59fe32d447e1b778a7828c"
+      },
+      "cold_warm_png_identical": true,
+      "runs": {
+        "cold": {
+          "checks": 48,
+          "failures": 0,
+          "timing_qualified_against_other_engines": false,
+          "rows": [
+            {
+              "distance": "near",
+              "off": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 6512.727,
+                "frame_wall_ms": {
+                  "max": 3.185,
+                  "median": 1.13,
+                  "min": 1.059,
+                  "p95": 1.956
+                },
+                "refresh_ms": 1.665,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 191.172,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 1.3860000371933,
+                  "median": 0.819999992847443,
+                  "min": 0.791000008583069,
+                  "p95": 1.17200005054474
+                },
+                "viewport_gpu_ms": {
+                  "max": 3.06399989128113,
+                  "median": 0.47299998998642,
+                  "min": 0.458999991416931,
+                  "p95": 1.66400003433228
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 20417.031,
+                "frame_wall_ms": {
+                  "max": 8.061,
+                  "median": 2.263,
+                  "min": 1.698,
+                  "p95": 4.116
+                },
+                "refresh_ms": 74.741,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 468.6,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 3.90100002288818,
+                  "median": 1.45500004291534,
+                  "min": 1.27600002288818,
+                  "p95": 2.88599991798401
+                },
+                "viewport_gpu_ms": {
+                  "max": 3.67400002479553,
+                  "median": 1.97699999809265,
+                  "min": 1.62800002098083,
+                  "p95": 2.70900011062622
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "repeat_on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 7.852,
+                "frame_wall_ms": {
+                  "max": 9.128,
+                  "median": 2.335,
+                  "min": 1.718,
+                  "p95": 4.07
+                },
+                "refresh_ms": 10.559,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 277.167,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 3.21000003814697,
+                  "median": 1.57700002193451,
+                  "min": 1.28600001335144,
+                  "p95": 2.94199991226196
+                },
+                "viewport_gpu_ms": {
+                  "max": 4.00799989700317,
+                  "median": 1.98500001430511,
+                  "min": 1.62999999523163,
+                  "p95": 2.77900004386902
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "restored": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 4.541,
+                "frame_wall_ms": {
+                  "max": 1.846,
+                  "median": 1.164,
+                  "min": 1.116,
+                  "p95": 1.304
+                },
+                "refresh_ms": 7.843,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 139.187,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 1.09899997711182,
+                  "median": 0.851999998092651,
+                  "min": 0.822000026702881,
+                  "p95": 0.925000011920929
+                },
+                "viewport_gpu_ms": {
+                  "max": 1.19700002670288,
+                  "median": 0.469999998807907,
+                  "min": 0.462999999523163,
+                  "p95": 0.505999982357025
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "difference": {
+                "changed": 2123,
+                "mean": 0.05201875,
+                "peak": 58
+              },
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "off": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 3.236,
+                "frame_wall_ms": {
+                  "max": 7.863,
+                  "median": 1.24,
+                  "min": 1.164,
+                  "p95": 2.309
+                },
+                "refresh_ms": 3.386,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 191.726,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 2.33800005912781,
+                  "median": 0.924000024795532,
+                  "min": 0.888000011444092,
+                  "p95": 1.69400000572205
+                },
+                "viewport_gpu_ms": {
+                  "max": 0.458000004291534,
+                  "median": 0.395999997854233,
+                  "min": 0.389999985694885,
+                  "p95": 0.42399999499321
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 245.322,
+                "frame_wall_ms": {
+                  "max": 12.822,
+                  "median": 2.485,
+                  "min": 1.688,
+                  "p95": 4.332
+                },
+                "refresh_ms": 97.646,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 306.136,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 3.48499989509583,
+                  "median": 1.98800003528595,
+                  "min": 1.38800001144409,
+                  "p95": 3.24300003051758
+                },
+                "viewport_gpu_ms": {
+                  "max": 1.51199996471405,
+                  "median": 0.842999994754791,
+                  "min": 0.830999970436096,
+                  "p95": 0.887000024318695
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "repeat_on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 5.704,
+                "frame_wall_ms": {
+                  "max": 9.967,
+                  "median": 1.923,
+                  "min": 1.673,
+                  "p95": 4.403
+                },
+                "refresh_ms": 10.593,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 258.615,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 7.11700010299683,
+                  "median": 1.53799998760223,
+                  "min": 1.36899995803833,
+                  "p95": 3.41700005531311
+                },
+                "viewport_gpu_ms": {
+                  "max": 1.50499999523163,
+                  "median": 0.843999981880188,
+                  "min": 0.830999970436096,
+                  "p95": 0.884999990463257
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "restored": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 3.347,
+                "frame_wall_ms": {
+                  "max": 2.432,
+                  "median": 1.217,
+                  "min": 1.148,
+                  "p95": 1.679
+                },
+                "refresh_ms": 5.922,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 118.213,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 1.44500005245209,
+                  "median": 0.901000022888184,
+                  "min": 0.873000025749207,
+                  "p95": 1.19900000095367
+                },
+                "viewport_gpu_ms": {
+                  "max": 0.449999988079071,
+                  "median": 0.397000014781952,
+                  "min": 0.386999994516373,
+                  "p95": 0.435000002384186
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "difference": {
+                "changed": 108,
+                "mean": 0.00246458333333333,
+                "peak": 25
+              },
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        },
+        "warm": {
+          "checks": 48,
+          "failures": 0,
+          "timing_qualified_against_other_engines": false,
+          "rows": [
+            {
+              "distance": "near",
+              "off": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 169.535,
+                "frame_wall_ms": {
+                  "max": 2.399,
+                  "median": 1.183,
+                  "min": 1.08,
+                  "p95": 1.567
+                },
+                "refresh_ms": 1.936,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 128.879,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 1.57799994945526,
+                  "median": 0.851999998092651,
+                  "min": 0.811999976634979,
+                  "p95": 1.13100004196167
+                },
+                "viewport_gpu_ms": {
+                  "max": 0.941999971866608,
+                  "median": 0.465999990701675,
+                  "min": 0.46000000834465,
+                  "p95": 0.51800000667572
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 163.96,
+                "frame_wall_ms": {
+                  "max": 9.663,
+                  "median": 2.273,
+                  "min": 1.716,
+                  "p95": 3.44
+                },
+                "refresh_ms": 78.014,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 212.943,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 3.03699994087219,
+                  "median": 1.37100005149841,
+                  "min": 1.26999998092651,
+                  "p95": 2.65000009536743
+                },
+                "viewport_gpu_ms": {
+                  "max": 3.52900004386902,
+                  "median": 2.03200006484985,
+                  "min": 1.64499998092651,
+                  "p95": 2.68300008773804
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "repeat_on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 3.362,
+                "frame_wall_ms": {
+                  "max": 8.213,
+                  "median": 2.292,
+                  "min": 1.735,
+                  "p95": 3.952
+                },
+                "refresh_ms": 7.037,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 249.514,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 3.71799993515015,
+                  "median": 1.34200000762939,
+                  "min": 1.27600002288818,
+                  "p95": 2.72099995613098
+                },
+                "viewport_gpu_ms": {
+                  "max": 3.5789999961853,
+                  "median": 2.04399991035461,
+                  "min": 1.63800001144409,
+                  "p95": 2.67899990081787
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "restored": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 3.351,
+                "frame_wall_ms": {
+                  "max": 8.823,
+                  "median": 1.129,
+                  "min": 1.086,
+                  "p95": 2.023
+                },
+                "refresh_ms": 9.697,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 112.263,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 1.95899999141693,
+                  "median": 0.828999996185303,
+                  "min": 0.811999976634979,
+                  "p95": 1.48099994659424
+                },
+                "viewport_gpu_ms": {
+                  "max": 0.929000020027161,
+                  "median": 0.465999990701675,
+                  "min": 0.460999995470047,
+                  "p95": 0.505999982357025
+                },
+                "visible_draws": {
+                  "max": 1067,
+                  "median": 1067,
+                  "min": 1067,
+                  "p95": 1067
+                },
+                "visible_primitives": {
+                  "max": 50669,
+                  "median": 50669,
+                  "min": 50669,
+                  "p95": 50669
+                },
+                "warmup_frames": 96
+              },
+              "difference": {
+                "changed": 2123,
+                "mean": 0.05201875,
+                "peak": 58
+              },
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            },
+            {
+              "distance": "far",
+              "off": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 2.851,
+                "frame_wall_ms": {
+                  "max": 10.493,
+                  "median": 1.346,
+                  "min": 1.142,
+                  "p95": 2.767
+                },
+                "refresh_ms": 2.103,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 121.801,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 2.22300004959106,
+                  "median": 0.966000020503998,
+                  "min": 0.879000008106232,
+                  "p95": 2.02999997138977
+                },
+                "viewport_gpu_ms": {
+                  "max": 0.476999998092651,
+                  "median": 0.395000010728836,
+                  "min": 0.388999998569489,
+                  "p95": 0.430999994277954
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 213.347,
+                "frame_wall_ms": {
+                  "max": 3.795,
+                  "median": 1.766,
+                  "min": 1.622,
+                  "p95": 2.483
+                },
+                "refresh_ms": 79.861,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 225.745,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 3.26200008392334,
+                  "median": 1.42900002002716,
+                  "min": 1.36300003528595,
+                  "p95": 2.32800006866455
+                },
+                "viewport_gpu_ms": {
+                  "max": 0.992999970912933,
+                  "median": 0.842999994754791,
+                  "min": 0.829999983310699,
+                  "p95": 0.882000029087067
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "repeat_on": {
+                "base_materials": 18,
+                "contact_materials": 99,
+                "first_frame_ms": 3.334,
+                "frame_wall_ms": {
+                  "max": 3.201,
+                  "median": 1.696,
+                  "min": 1.597,
+                  "p95": 1.828
+                },
+                "refresh_ms": 7.593,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 170.405,
+                "sample_frames": 240,
+                "surface_texture_bytes": 545040,
+                "viewport_cpu_ms": {
+                  "max": 2.59299993515015,
+                  "median": 1.38900005817413,
+                  "min": 1.34200000762939,
+                  "p95": 1.46000003814697
+                },
+                "viewport_gpu_ms": {
+                  "max": 1.22000002861023,
+                  "median": 0.843999981880188,
+                  "min": 0.829999983310699,
+                  "p95": 0.882000029087067
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "restored": {
+                "base_materials": 0,
+                "contact_materials": 0,
+                "first_frame_ms": 4.083,
+                "frame_wall_ms": {
+                  "max": 3.669,
+                  "median": 1.248,
+                  "min": 1.166,
+                  "p95": 1.7
+                },
+                "refresh_ms": 6.232,
+                "registered_parts": 668,
+                "remaining_warmup_ms": 120.87,
+                "sample_frames": 240,
+                "surface_texture_bytes": 0,
+                "viewport_cpu_ms": {
+                  "max": 1.53199994564056,
+                  "median": 0.933000028133392,
+                  "min": 0.880999982357025,
+                  "p95": 1.28400003910065
+                },
+                "viewport_gpu_ms": {
+                  "max": 0.449000000953674,
+                  "median": 0.395000010728836,
+                  "min": 0.388999998569489,
+                  "p95": 0.42399999499321
+                },
+                "visible_draws": {
+                  "max": 1107,
+                  "median": 1107,
+                  "min": 1107,
+                  "p95": 1107
+                },
+                "visible_primitives": {
+                  "max": 71505,
+                  "median": 71505,
+                  "min": 71505,
+                  "p95": 71505
+                },
+                "warmup_frames": 96
+              },
+              "difference": {
+                "changed": 108,
+                "mean": 0.00246458333333333,
+                "peak": 25
+              },
+              "restoration": {
+                "changed": 0,
+                "mean": 0.0,
+                "peak": 0
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "images": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-zero-weight-20261010/image-comparison.json",
+    "sha256": "15dd24cbcdee862cf8799ede23a1228dcecf5aac8713199a8aea25c230122a73",
+    "matched_pairs": 12,
+    "captures": 24,
+    "all_png_and_rgb_exact": true
+  },
+  "preparation_comparison": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/preparation02/report.json",
+    "sha256": "aa2b3991d0e3b1d5c585f554a8d2e05438d4c876f1a73303ffb2ca4225740714",
+    "status": "Incomplete: baseline cold/warm and candidate cold completed; no candidate warm run recorded. The original run stopped before its fourth arm when a foreign renderer appeared.",
+    "monitor": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ground-contact-relief-20261009/full-surface/integration-20261010/preparation02/process-monitor.json",
+      "sha256": "4a4025fa7b563952fac6103b6e383b407533e555d918f8cc5190038f0df9b502",
+      "scope": "Started after benchmark dispatch. Includes a headless engine during the tail of baseline cold, the complete baseline warm and candidate cold; another rendered engine overlaps candidate cold at its end. Does not establish complete cold-comparison isolation."
+    },
+    "runs": {
+      "baseline_cold": {
+        "checks": 10,
+        "failures": 0,
+        "near_on_warmup_ms": 13192,
+        "other_game_processes_at_start": "PID ELAPSED COMMAND",
+        "other_game_processes_at_end": "PID ELAPSED COMMAND"
+      },
+      "baseline_warm": {
+        "checks": 10,
+        "failures": 0,
+        "near_on_warmup_ms": 300,
+        "other_game_processes_at_start": "PID ELAPSED COMMAND",
+        "other_game_processes_at_end": "PID ELAPSED COMMAND"
+      },
+      "candidate_cold": {
+        "checks": 10,
+        "failures": 0,
+        "near_on_warmup_ms": 19140,
+        "other_game_processes_at_start": "PID ELAPSED COMMAND",
+        "other_game_processes_at_end": "PID ELAPSED COMMAND\n2398407       1 godot-4 --path /home/llm2x/Documents/etherlords/remake --audio-driver Dummy --script res://tools/verify_duel_mode_ui.gd"
+      }
+    }
+  },
+  "limits": [
+    "The ~21.2 vs ~20.4 second normal-frame cold first-draw measurements are diagnostic only; they do not demonstrate a compiler improvement.",
+    "Warm near-view GPU medians are 1.828 vs 2.032 ms, far 0.825 vs 0.843 ms. This is adverse evidence for promotion, not an isolated causal regression proof.",
+    "Native Off/restored pixels and all geometry/draw counters remain unchanged in this single held map. No broader scene/backend qualification was needed after rejection.",
+    "Existing strict Mobile/Compatibility V1 residuals remain unchanged and retained in the integration receipt.",
+    "Default-off V1 still has expensive cold preparation. The accepted lighting feature remains available for opt-in local testing; this rejected variant is excluded."
+  ],
+  "cost_checks": 192,
+  "cost_failures": 0
+}

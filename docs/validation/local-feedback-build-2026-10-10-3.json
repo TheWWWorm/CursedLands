@@ -1,0 +1,1307 @@
+{
+  "version": "1.0.3-local.20261010.3",
+  "source_commit": "208805a88d110c752baebe2ae1124e48d202c1f5",
+  "protocol": 13,
+  "published": false,
+  "build_receipt": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/build.json",
+  "build_receipt_sha256": "c3ee3fa639df51329f58dc9b58ce2fbacdda46207e14e6243e51689a16a94d3e",
+  "checks": 292,
+  "failures": 0,
+  "runs": {
+    "contact-maps01": {
+      "checks": 30,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/contact-maps01",
+      "receipt_sha256": "d60ba1cb385e7a3af844f1b9510ea0b2436571cb14ad5c79143e2d658a909684",
+      "observations": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 30,
+        "editor": false,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2218,
+              "mean": 0.0513020833333333,
+              "peak": 59
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 0.367000013589859,
+              "cpu_p95_ms": 0.915000021457672,
+              "draws": 646,
+              "gpu_median_ms": 0.704999983310699,
+              "gpu_p95_ms": 0.827000021934509,
+              "warmup_ms": 5797
+            },
+            "on": {
+              "cpu_median_ms": 0.59799998998642,
+              "cpu_p95_ms": 0.760999977588654,
+              "draws": 646,
+              "gpu_median_ms": 2.72000002861023,
+              "gpu_p95_ms": 3.96900010108948,
+              "warmup_ms": 2265
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.428999990224838,
+              "cpu_p95_ms": 0.615000009536743,
+              "draws": 646,
+              "gpu_median_ms": 0.763999998569489,
+              "gpu_p95_ms": 0.940999984741211,
+              "warmup_ms": 173
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 103,
+              "mean": 0.00236666666666667,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 0.444999992847443,
+              "cpu_p95_ms": 0.689999997615814,
+              "draws": 860,
+              "gpu_median_ms": 0.686999976634979,
+              "gpu_p95_ms": 0.935000002384186,
+              "warmup_ms": 172
+            },
+            "on": {
+              "cpu_median_ms": 0.538999974727631,
+              "cpu_p95_ms": 0.896000027656555,
+              "draws": 860,
+              "gpu_median_ms": 1.92799997329712,
+              "gpu_p95_ms": 2.87100005149841,
+              "warmup_ms": 192
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.439999997615814,
+              "cpu_p95_ms": 0.938000023365021,
+              "draws": 860,
+              "gpu_median_ms": 1.0,
+              "gpu_p95_ms": 1.1710000038147,
+              "warmup_ms": 180
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 3,
+            "contact_materials": 72,
+            "difference": {
+              "changed": 3106,
+              "mean": 0.122422916666667,
+              "peak": 104
+            },
+            "distance": "near",
+            "focus": "(84.42931, 12.86823, -82.66885)",
+            "map": "bz10k",
+            "object": "WinterFirTree00-1090",
+            "off": {
+              "cpu_median_ms": 0.194999992847443,
+              "cpu_p95_ms": 0.259999990463257,
+              "draws": 195,
+              "gpu_median_ms": 2.1489999294281,
+              "gpu_p95_ms": 2.66000008583069,
+              "warmup_ms": 173
+            },
+            "on": {
+              "cpu_median_ms": 0.197999998927116,
+              "cpu_p95_ms": 0.264999985694885,
+              "draws": 195,
+              "gpu_median_ms": 2.47699999809265,
+              "gpu_p95_ms": 3.97499990463257,
+              "warmup_ms": 189
+            },
+            "registered_parts": 268,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.181999996304512,
+              "cpu_p95_ms": 0.234999999403954,
+              "draws": 195,
+              "gpu_median_ms": 0.598999977111816,
+              "gpu_p95_ms": 0.721000015735626,
+              "warmup_ms": 172
+            },
+            "template": "nafltr59"
+          },
+          {
+            "base_materials": 3,
+            "contact_materials": 72,
+            "difference": {
+              "changed": 94,
+              "mean": 0.00203333333333333,
+              "peak": 26
+            },
+            "distance": "far",
+            "focus": "(84.42931, 12.86823, -82.66885)",
+            "map": "bz10k",
+            "object": "WinterFirTree00-1090",
+            "off": {
+              "cpu_median_ms": 0.244000002741814,
+              "cpu_p95_ms": 0.393999993801117,
+              "draws": 339,
+              "gpu_median_ms": 0.679000020027161,
+              "gpu_p95_ms": 0.787999987602234,
+              "warmup_ms": 170
+            },
+            "on": {
+              "cpu_median_ms": 0.261999994516373,
+              "cpu_p95_ms": 0.404000014066696,
+              "draws": 339,
+              "gpu_median_ms": 1.03999996185303,
+              "gpu_p95_ms": 1.20000004768372,
+              "warmup_ms": 185
+            },
+            "registered_parts": 268,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.248999997973442,
+              "cpu_p95_ms": 0.488000005483627,
+              "draws": 339,
+              "gpu_median_ms": 0.841000020503998,
+              "gpu_p95_ms": 0.898000001907349,
+              "warmup_ms": 179
+            },
+            "template": "nafltr59"
+          },
+          {
+            "base_materials": 13,
+            "contact_materials": 133,
+            "difference": {
+              "changed": 1690,
+              "mean": 0.0668083333333333,
+              "peak": 58
+            },
+            "distance": "near",
+            "focus": "(54.08064, 23.01896, -44.75)",
+            "map": "bz13h",
+            "object": "HadoganDome00-43320",
+            "off": {
+              "cpu_median_ms": 0.418999999761581,
+              "cpu_p95_ms": 1.07700002193451,
+              "draws": 430,
+              "gpu_median_ms": 2.03500008583069,
+              "gpu_p95_ms": 3.07999992370605,
+              "warmup_ms": 179
+            },
+            "on": {
+              "cpu_median_ms": 0.405000001192093,
+              "cpu_p95_ms": 0.624000012874603,
+              "draws": 430,
+              "gpu_median_ms": 2.89299988746643,
+              "gpu_p95_ms": 4.89599990844727,
+              "warmup_ms": 197
+            },
+            "registered_parts": 725,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.476999998092651,
+              "cpu_p95_ms": 0.862999975681305,
+              "draws": 430,
+              "gpu_median_ms": 0.646000027656555,
+              "gpu_p95_ms": 0.762000024318695,
+              "warmup_ms": 178
+            },
+            "template": "stbuho39"
+          },
+          {
+            "base_materials": 13,
+            "contact_materials": 133,
+            "difference": {
+              "changed": 772,
+              "mean": 0.0320208333333333,
+              "peak": 40
+            },
+            "distance": "far",
+            "focus": "(54.08064, 23.01896, -44.75)",
+            "map": "bz13h",
+            "object": "HadoganDome00-43320",
+            "off": {
+              "cpu_median_ms": 0.554000020027161,
+              "cpu_p95_ms": 0.802999973297119,
+              "draws": 1000,
+              "gpu_median_ms": 0.679000020027161,
+              "gpu_p95_ms": 0.950999975204468,
+              "warmup_ms": 172
+            },
+            "on": {
+              "cpu_median_ms": 0.634999990463257,
+              "cpu_p95_ms": 0.737999975681305,
+              "draws": 1000,
+              "gpu_median_ms": 2.12299990653992,
+              "gpu_p95_ms": 3.13700008392334,
+              "warmup_ms": 186
+            },
+            "registered_parts": 725,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.591000020503998,
+              "cpu_p95_ms": 0.799000024795532,
+              "draws": 1000,
+              "gpu_median_ms": 0.98199999332428,
+              "gpu_p95_ms": 1.16499996185303,
+              "warmup_ms": 179
+            },
+            "template": "stbuho39"
+          }
+        ],
+        "size": "800x600"
+      },
+      "captures": {
+        "ground-contact-map-forward_plus-bz10k-far-restored.png": "5b94fd89e57bc63bfbdcb160ec45112656e5f4c30f1ef05b8fb3400f1cee01b4",
+        "ground-contact-map-forward_plus-bz10k-far-on.png": "0629252581c93f5af1821d407f3aad3392e42409bd65e53344fa7df76383e7e9",
+        "ground-contact-map-forward_plus-bz10k-near-off.png": "bdd34786978b8de45e35c550651488ac41b90d39b2cb901906edd6354c41c1ca",
+        "ground-contact-map-forward_plus-bz10k-far-off.png": "5b94fd89e57bc63bfbdcb160ec45112656e5f4c30f1ef05b8fb3400f1cee01b4",
+        "ground-contact-map-forward_plus-bz13h-far-off.png": "3d3d80340e62eba398a09ce8b3ca789abfb8198e74837b71b0a35686a8637ea2",
+        "ground-contact-map-forward_plus-bz13h-near-on.png": "14c4f581d7e912942b23729c4fc6859e6716d0e07a72e3a1760940f6cf855cf9",
+        "ground-contact-map-forward_plus-bz13h-near-off.png": "edfdffc34edf51eac2ad69ddd19ab23aa4cef81f7591acadcaa06021e74539b8",
+        "ground-contact-map-forward_plus-bz10k-near-on.png": "c5c6364a23649710ce0957d773af29a218787ab697f7ffefad974b4c05c027fa",
+        "ground-contact-map-forward_plus-bz2g-near-off.png": "114449c0cefe8c9da99d1d96f0c8f54139f98ecddd71b7bda9c49c4312ce1f32",
+        "ground-contact-map-forward_plus-bz2g-near-on.png": "7b69183ee43b369445cfe18b7786cafbc9f9280c7a0c5c1892f4b2fe5f54c1a4",
+        "ground-contact-map-forward_plus-bz2g-far-restored.png": "33f31c0194453b62f5242fbcfd1bea7234d7ce1da94c5e7fa29d653882332557",
+        "ground-contact-map-forward_plus-bz13h-far-on.png": "9ecaacc98988d300ef3d49c67fc2cd69455ae57310bfb3aaaed7701d868d8cfc",
+        "ground-contact-map-forward_plus-bz2g-far-off.png": "33f31c0194453b62f5242fbcfd1bea7234d7ce1da94c5e7fa29d653882332557",
+        "ground-contact-map-forward_plus-bz2g-near-restored.png": "114449c0cefe8c9da99d1d96f0c8f54139f98ecddd71b7bda9c49c4312ce1f32",
+        "ground-contact-map-forward_plus-bz13h-far-restored.png": "3d3d80340e62eba398a09ce8b3ca789abfb8198e74837b71b0a35686a8637ea2",
+        "ground-contact-map-forward_plus-bz2g-far-on.png": "4fc86c16d20b67a54793f15bb6da602079a74026d941f6934b63aa0112392b1d",
+        "ground-contact-map-forward_plus-bz13h-near-restored.png": "edfdffc34edf51eac2ad69ddd19ab23aa4cef81f7591acadcaa06021e74539b8",
+        "ground-contact-map-forward_plus-bz10k-near-restored.png": "bdd34786978b8de45e35c550651488ac41b90d39b2cb901906edd6354c41c1ca"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "CursedLands.pck": "f52111022aef3389a2467feade8525286d5c2934b29cd2b390e6c608ecfcc8a5",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/ground_contact.gd": "cdf2937168d886e43ec8be34f338fda4ff32665d2e8eec4ea61d23363a122e0d"
+      }
+    },
+    "contact-tracks02": {
+      "checks": 112,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/contact-tracks02",
+      "receipt_sha256": "81da4992e31e0b77f66e757c18d92fe0f3580ee5a4171aa7ed4612a04777693a",
+      "observations": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "baseline_directory": "",
+        "captures": {
+          "local-light-disabled": "2f0f6e8cff33e3a65a5a6fc588d884ed89d5755dbc91a4fba701a8bfc7171cd5",
+          "local-light-held": "0cd7346f2784b921114dfab31b51c315dc2925c3080f59dc7651e223fc71e68e",
+          "local-light-off": "144d1ec625cf0910d07d9def16474a97ecf09b04aebd972a38481e3e0ead0a06",
+          "local-light-on": "0cd7346f2784b921114dfab31b51c315dc2925c3080f59dc7651e223fc71e68e",
+          "local-light-restored": "144d1ec625cf0910d07d9def16474a97ecf09b04aebd972a38481e3e0ead0a06",
+          "off-mask": "343a4028e2f4248554bc512ea4b726676a90477b9cad8523c103c8601e16b2b6",
+          "on-mask": "37010357b9ca462003024c9472c2360e0001f1e34262092fe989d97a75a41ed6",
+          "packed-point-held": "ec335ff8108828e606f3691a18e59c53c28282e25af75840ad2ff7174d1e220f",
+          "packed-point-off": "e8cd28b1223a0ff242b51b1c8e3512067d39d3ff3479223178e1e4df39c1fa9c",
+          "packed-point-on": "ec335ff8108828e606f3691a18e59c53c28282e25af75840ad2ff7174d1e220f",
+          "packed-point-restored": "e8cd28b1223a0ff242b51b1c8e3512067d39d3ff3479223178e1e4df39c1fa9c",
+          "sun-held": "467f7ae6bc17f73764fe264fae6bb08b777f9f722c42357cabb85f031afd6674",
+          "sun-off": "44f1ff392abc9fbc155eef7e4bf022030ed4ede8e5318b802b777597d3ef2418",
+          "sun-on": "467f7ae6bc17f73764fe264fae6bb08b777f9f722c42357cabb85f031afd6674",
+          "sun-restored": "44f1ff392abc9fbc155eef7e4bf022030ed4ede8e5318b802b777597d3ef2418",
+          "tracks-local-light-normal-disabled": "83619e9dcb4931bc317a037a9e1d06acf356279d9c8b2943df08ae10345f5ed2",
+          "tracks-local-light-normal-restored": "0cd7346f2784b921114dfab31b51c315dc2925c3080f59dc7651e223fc71e68e",
+          "tracks-local-light-on": "0cd7346f2784b921114dfab31b51c315dc2925c3080f59dc7651e223fc71e68e",
+          "tracks-packed-point-normal-disabled": "039490e2796effc3139bb379c9984328b0a70310ae536ed013ab9728830310cf",
+          "tracks-packed-point-normal-restored": "ec335ff8108828e606f3691a18e59c53c28282e25af75840ad2ff7174d1e220f",
+          "tracks-packed-point-on": "ec335ff8108828e606f3691a18e59c53c28282e25af75840ad2ff7174d1e220f",
+          "tracks-sun-normal-disabled": "636e55c64848e7131f27dfe279deb80ae69fff70c0b37deb1a42e5cc29d53fdc",
+          "tracks-sun-normal-restored": "467f7ae6bc17f73764fe264fae6bb08b777f9f722c42357cabb85f031afd6674",
+          "tracks-sun-on": "467f7ae6bc17f73764fe264fae6bb08b777f9f722c42357cabb85f031afd6674"
+        },
+        "checks": 112,
+        "failures": 0,
+        "fixture": {
+          "anchor": "(129.6497, 8.711053, -156.1539)",
+          "anchor_witness": {
+            "bounds": "[P: (123.3282, 8.710678, -165.2368), S: (11.28325, 3.817787, 11.11324)]",
+            "closest_vertex_bilinear_gap": 0.0165168424591364,
+            "dry_crossings": 8,
+            "edge": [
+              "(133.0585, 8.711053, -159.8094)",
+              "(129.14, 8.711053, -155.6073)"
+            ],
+            "footprints": {
+              "clock": 123.0,
+              "controlled_stamps": true,
+              "ground_type": 9,
+              "installed_sectors": 1,
+              "positions": [
+                "(130.0697, 155.5939)",
+                "(129.9317, 155.7779)",
+                "(129.7937, 155.9619)",
+                "(129.6557, 156.1459)",
+                "(129.5177, 156.3299)"
+              ]
+            },
+            "land_triangle": [
+              "(129.0, 8.6659, -157.0)",
+              "(130.0595, 8.736, -156.0)",
+              "(129.0, 8.6752, -156.0)"
+            ],
+            "native_edges": 207,
+            "nearby_land_triangles": 228
+          },
+          "camera": "[X: (0.8, 0.0, -0.6), Y: (-0.172409, 0.957826, -0.229879), Z: (0.574695, 0.287348, 0.766261), O: (135.0497, 12.31105, -148.9539)]",
+          "composed": false,
+          "coverage": {
+            "band_pixels": 24498,
+            "object_pixels": 257465,
+            "silhouette_mismatches": 0,
+            "upper_pixels": 168364
+          },
+          "map": "zone11",
+          "nid": 1651,
+          "object": "Barrack00-6",
+          "parts": 4,
+          "placement": "[X: (-0.731354, 0.0, -0.681998), Y: (0.0, 1.0, 0.0), Z: (0.681998, 0.0, -0.731354), O: (127.938, 8.710953, -160.6515)]",
+          "size": [
+            800,
+            600
+          ],
+          "span": 3.8,
+          "template": "stbuho19",
+          "texture": "kanianhouse00",
+          "upper_mask_offset": 1.0
+        },
+        "painted_ablation": false,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "band": {
+              "changed_pixels": 21909,
+              "mean_byte_delta": 25.5484529349335,
+              "over_two_bytes": 19844,
+              "peak_byte_delta": 95,
+              "pixels": 24498
+            },
+            "held": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 480000
+            },
+            "light": "sun",
+            "outside_band": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 455502
+            },
+            "restored": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 480000
+            },
+            "upper": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 168364
+            }
+          },
+          {
+            "band_normal_response": {
+              "changed_pixels": 2464,
+              "mean_byte_delta": 0.836027430810678,
+              "over_two_bytes": 1747,
+              "peak_byte_delta": 38,
+              "pixels": 24498
+            },
+            "light": "tracks-sun",
+            "outside_band": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 455502
+            },
+            "scope": "Native field stamps and installed terrain; only copied-ground normal ablated, no geometry or colour change."
+          },
+          {
+            "band": {
+              "changed_pixels": 21172,
+              "mean_byte_delta": 37.5035921299698,
+              "over_two_bytes": 18174,
+              "peak_byte_delta": 105,
+              "pixels": 24498
+            },
+            "held": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 480000
+            },
+            "light": "packed-point",
+            "outside_band": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 455502
+            },
+            "restored": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 480000
+            },
+            "upper": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 168364
+            }
+          },
+          {
+            "band_normal_response": {
+              "changed_pixels": 2310,
+              "mean_byte_delta": 0.525798024328517,
+              "over_two_bytes": 1389,
+              "peak_byte_delta": 37,
+              "pixels": 24498
+            },
+            "light": "tracks-packed-point",
+            "outside_band": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 455502
+            },
+            "scope": "Native field stamps and installed terrain; only copied-ground normal ablated, no geometry or colour change."
+          },
+          {
+            "band": {
+              "changed_pixels": 20676,
+              "mean_byte_delta": 5.93436198873377,
+              "over_two_bytes": 16035,
+              "peak_byte_delta": 39,
+              "pixels": 24498
+            },
+            "held": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 480000
+            },
+            "light": "local-light",
+            "light_contribution": {
+              "changed_pixels": 19540,
+              "mean_byte_delta": 13.7897379377908,
+              "over_two_bytes": 18169,
+              "peak_byte_delta": 55,
+              "pixels": 24498
+            },
+            "outside_band": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 455502
+            },
+            "restored": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 480000
+            },
+            "upper": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 168364
+            }
+          },
+          {
+            "band_normal_response": {
+              "changed_pixels": 2228,
+              "mean_byte_delta": 0.580618826026614,
+              "over_two_bytes": 1455,
+              "peak_byte_delta": 22,
+              "pixels": 24498
+            },
+            "light": "tracks-local-light",
+            "outside_band": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 455502
+            },
+            "scope": "Native field stamps and installed terrain; only copied-ground normal ablated, no geometry or colour change."
+          }
+        ],
+        "scope": "Authored rigid wall-root lighting; no full terrain/figure RGB parity, shadow, frame-time or device claim."
+      },
+      "captures": {
+        "ground-contact-relief-scene-zone11-local-light-restored.png": "144d1ec625cf0910d07d9def16474a97ecf09b04aebd972a38481e3e0ead0a06",
+        "ground-contact-relief-scene-zone11-packed-point-restored.png": "e8cd28b1223a0ff242b51b1c8e3512067d39d3ff3479223178e1e4df39c1fa9c",
+        "ground-contact-relief-scene-zone11-sun-off.png": "44f1ff392abc9fbc155eef7e4bf022030ed4ede8e5318b802b777597d3ef2418",
+        "ground-contact-relief-scene-zone11-tracks-sun-normal-disabled.png": "636e55c64848e7131f27dfe279deb80ae69fff70c0b37deb1a42e5cc29d53fdc",
+        "ground-contact-relief-scene-zone11-tracks-local-light-on.png": "0cd7346f2784b921114dfab31b51c315dc2925c3080f59dc7651e223fc71e68e",
+        "ground-contact-relief-scene-zone11-local-light-on.png": "0cd7346f2784b921114dfab31b51c315dc2925c3080f59dc7651e223fc71e68e",
+        "ground-contact-relief-scene-zone11-on-mask.png": "37010357b9ca462003024c9472c2360e0001f1e34262092fe989d97a75a41ed6",
+        "ground-contact-relief-scene-zone11-local-light-disabled.png": "2f0f6e8cff33e3a65a5a6fc588d884ed89d5755dbc91a4fba701a8bfc7171cd5",
+        "ground-contact-relief-scene-zone11-tracks-local-light-normal-restored.png": "0cd7346f2784b921114dfab31b51c315dc2925c3080f59dc7651e223fc71e68e",
+        "ground-contact-relief-scene-zone11-local-light-held.png": "0cd7346f2784b921114dfab31b51c315dc2925c3080f59dc7651e223fc71e68e",
+        "ground-contact-relief-scene-zone11-tracks-packed-point-normal-restored.png": "ec335ff8108828e606f3691a18e59c53c28282e25af75840ad2ff7174d1e220f",
+        "ground-contact-relief-scene-zone11-tracks-local-light-normal-disabled.png": "83619e9dcb4931bc317a037a9e1d06acf356279d9c8b2943df08ae10345f5ed2",
+        "ground-contact-relief-scene-zone11-packed-point-held.png": "ec335ff8108828e606f3691a18e59c53c28282e25af75840ad2ff7174d1e220f",
+        "ground-contact-relief-scene-zone11-sun-on.png": "467f7ae6bc17f73764fe264fae6bb08b777f9f722c42357cabb85f031afd6674",
+        "ground-contact-relief-scene-zone11-packed-point-on.png": "ec335ff8108828e606f3691a18e59c53c28282e25af75840ad2ff7174d1e220f",
+        "ground-contact-relief-scene-zone11-tracks-packed-point-normal-disabled.png": "039490e2796effc3139bb379c9984328b0a70310ae536ed013ab9728830310cf",
+        "ground-contact-relief-scene-zone11-local-light-off.png": "144d1ec625cf0910d07d9def16474a97ecf09b04aebd972a38481e3e0ead0a06",
+        "ground-contact-relief-scene-zone11-tracks-sun-normal-restored.png": "467f7ae6bc17f73764fe264fae6bb08b777f9f722c42357cabb85f031afd6674",
+        "ground-contact-relief-scene-zone11-tracks-packed-point-on.png": "ec335ff8108828e606f3691a18e59c53c28282e25af75840ad2ff7174d1e220f",
+        "ground-contact-relief-scene-zone11-packed-point-off.png": "e8cd28b1223a0ff242b51b1c8e3512067d39d3ff3479223178e1e4df39c1fa9c",
+        "ground-contact-relief-scene-zone11-tracks-sun-on.png": "467f7ae6bc17f73764fe264fae6bb08b777f9f722c42357cabb85f031afd6674",
+        "ground-contact-relief-scene-zone11-sun-restored.png": "44f1ff392abc9fbc155eef7e4bf022030ed4ede8e5318b802b777597d3ef2418",
+        "ground-contact-relief-scene-zone11-off-mask.png": "343a4028e2f4248554bc512ea4b726676a90477b9cad8523c103c8601e16b2b6",
+        "ground-contact-relief-scene-zone11-sun-held.png": "467f7ae6bc17f73764fe264fae6bb08b777f9f722c42357cabb85f031afd6674"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "CursedLands.pck": "f52111022aef3389a2467feade8525286d5c2934b29cd2b390e6c608ecfcc8a5",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact_tracks_scene.gd": "c4b85b4ccbb95e884e25734a01a1182ecb8010187c664b28f8d1f92253cc0245",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact_relief_scene.gd": "538296456d76129d751bf8b4a77a08867a3515e38ab821d09c0cba83df7e11b2"
+      }
+    },
+    "contact-shore01": {
+      "checks": 72,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/contact-shore01",
+      "receipt_sha256": "f6c08d340409976c6f8892787e1d3b367eb586cff3ee0ee8da1fe5909d26571b",
+      "observations": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "baseline_directory": "",
+        "captures": {
+          "local-light-disabled": "f7acdd026eb0eec8e2c14965ff97aab55c769d6c28555eae13b23239ead1eed9",
+          "local-light-held": "5c111aa15930f4ae979dfa2f8f0060ef9c22361f42b45da01e4bf30c8898808b",
+          "local-light-off": "ffdfa03d4157307589c443889628efd85d1f9e766ecb18dd0292335d63a4f7a0",
+          "local-light-on": "5c111aa15930f4ae979dfa2f8f0060ef9c22361f42b45da01e4bf30c8898808b",
+          "local-light-restored": "ffdfa03d4157307589c443889628efd85d1f9e766ecb18dd0292335d63a4f7a0",
+          "off-mask": "3e5cb21758431ec835f4ebf5a2127485292358525d1adbacfee918eed6283f2b",
+          "on-mask": "6c5c50ea34b22d75bab9e5291f11493c978d01e3cbd5a8226a311f7ce7d5a18f",
+          "packed-point-held": "960d19b0f0975dc120df87272df787ad89572b7acc13b8e202b7799908be7361",
+          "packed-point-off": "dc208ff5cadf9e4fe578b7b7fe030f70b42d930d668838c6b14d351c45ba5327",
+          "packed-point-on": "960d19b0f0975dc120df87272df787ad89572b7acc13b8e202b7799908be7361",
+          "packed-point-restored": "dc208ff5cadf9e4fe578b7b7fe030f70b42d930d668838c6b14d351c45ba5327",
+          "shore-inputs-local-light-disabled": "513540d0e3ce99582a0b6111b6faa1b9f811404530c54636f04dac575186e0c6",
+          "shore-inputs-local-light-on": "5c111aa15930f4ae979dfa2f8f0060ef9c22361f42b45da01e4bf30c8898808b",
+          "shore-inputs-local-light-restored": "5c111aa15930f4ae979dfa2f8f0060ef9c22361f42b45da01e4bf30c8898808b",
+          "shore-inputs-packed-point-disabled": "3733d28bfbd842f17f6c873d6a8e2f1ed91871a20a4addececde2475fc01d5e5",
+          "shore-inputs-packed-point-on": "960d19b0f0975dc120df87272df787ad89572b7acc13b8e202b7799908be7361",
+          "shore-inputs-packed-point-restored": "960d19b0f0975dc120df87272df787ad89572b7acc13b8e202b7799908be7361",
+          "shore-inputs-sun-disabled": "7757fa82dbe99b6da02199e48ce6d9f8c112f95c74151bdac54681ad1a0d26ac",
+          "shore-inputs-sun-on": "c1656cf9c8eab4c0938695c013fe0e93716284e8bfec78d1aaec9b9ed6cc1696",
+          "shore-inputs-sun-restored": "c1656cf9c8eab4c0938695c013fe0e93716284e8bfec78d1aaec9b9ed6cc1696",
+          "sun-held": "c1656cf9c8eab4c0938695c013fe0e93716284e8bfec78d1aaec9b9ed6cc1696",
+          "sun-off": "10a82a3beec17f07c89d3907db26bc881b768fff123112e784916f5a51f8b98d",
+          "sun-on": "c1656cf9c8eab4c0938695c013fe0e93716284e8bfec78d1aaec9b9ed6cc1696",
+          "sun-restored": "10a82a3beec17f07c89d3907db26bc881b768fff123112e784916f5a51f8b98d"
+        },
+        "checks": 72,
+        "failures": 0,
+        "fixture": {
+          "anchor": "(144.2602, 5.9647, -86.87621)",
+          "anchor_witness": {
+            "E": [
+              0,
+              0,
+              0
+            ],
+            "alpha_bytes": [
+              49,
+              0,
+              7
+            ],
+            "liquid_plane_crossing": false,
+            "margin_over_cell_water": 0.206113815307617,
+            "native_interpolated_k": 0.110131070017815,
+            "native_triangle": 1473,
+            "original_materials": false,
+            "packed_point_offset": "(0.35, 2.2, 0.4)",
+            "sector": [
+              4,
+              2
+            ]
+          },
+          "camera": "[X: (0.8, 0.0, -0.6), Y: (-0.172409, 0.957826, -0.229879), Z: (0.574695, 0.287348, 0.766261), O: (149.6602, 9.5647, -79.67622)]",
+          "composed": false,
+          "coverage": {
+            "band_pixels": 15579,
+            "object_pixels": 119972,
+            "silhouette_mismatches": 0,
+            "upper_pixels": 93206
+          },
+          "map": "zone1",
+          "nid": 1982,
+          "object": "OrcBridge00-5",
+          "parts": 1,
+          "placement": "[X: (0.951056, 0.0, -0.309017), Y: (0.0, 1.0, 0.0), Z: (0.309017, 0.0, 0.951056), O: (146.617, 5.891166, -89.2432)]",
+          "size": [
+            800,
+            600
+          ],
+          "span": 2.4,
+          "template": "stbr6",
+          "texture": "orcbridge00",
+          "upper_mask_offset": 0.22
+        },
+        "painted_ablation": false,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "band": {
+              "changed_pixels": 13362,
+              "mean_byte_delta": 9.71140638038385,
+              "over_two_bytes": 9385,
+              "peak_byte_delta": 35,
+              "pixels": 15579
+            },
+            "held": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 480000
+            },
+            "light": "sun",
+            "outside_band": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 464421
+            },
+            "restored": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 480000
+            },
+            "upper": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 93206
+            }
+          },
+          {
+            "band": {
+              "changed_pixels": 687,
+              "mean_byte_delta": 0.0889659156556904,
+              "over_two_bytes": 212,
+              "peak_byte_delta": 4,
+              "pixels": 15579
+            },
+            "light": "shore-inputs-sun",
+            "outside_band": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 464421
+            },
+            "scope": "Ablates only copied-ground packed vertex E/k; native object/terrain data and all shader code unchanged."
+          },
+          {
+            "band": {
+              "changed_pixels": 12635,
+              "mean_byte_delta": 11.3283265934912,
+              "over_two_bytes": 8683,
+              "peak_byte_delta": 35,
+              "pixels": 15579
+            },
+            "held": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 480000
+            },
+            "light": "packed-point",
+            "outside_band": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 464421
+            },
+            "restored": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 480000
+            },
+            "upper": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 93206
+            }
+          },
+          {
+            "band": {
+              "changed_pixels": 697,
+              "mean_byte_delta": 0.124975929135375,
+              "over_two_bytes": 443,
+              "peak_byte_delta": 5,
+              "pixels": 15579
+            },
+            "light": "shore-inputs-packed-point",
+            "outside_band": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 464421
+            },
+            "scope": "Ablates only copied-ground packed vertex E/k; native object/terrain data and all shader code unchanged."
+          },
+          {
+            "band": {
+              "changed_pixels": 10412,
+              "mean_byte_delta": 2.2229283009179,
+              "over_two_bytes": 4806,
+              "peak_byte_delta": 12,
+              "pixels": 15579
+            },
+            "held": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 480000
+            },
+            "light": "local-light",
+            "light_contribution": {
+              "changed_pixels": 8828,
+              "mean_byte_delta": 3.89042942422492,
+              "over_two_bytes": 6726,
+              "peak_byte_delta": 19,
+              "pixels": 15579
+            },
+            "outside_band": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 464421
+            },
+            "restored": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 480000
+            },
+            "upper": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 93206
+            }
+          },
+          {
+            "band": {
+              "changed_pixels": 110,
+              "mean_byte_delta": 0.00706078695680082,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 1,
+              "pixels": 15579
+            },
+            "light": "shore-inputs-local-light",
+            "outside_band": {
+              "changed_pixels": 0,
+              "mean_byte_delta": 0.0,
+              "over_two_bytes": 0,
+              "peak_byte_delta": 0,
+              "pixels": 464421
+            },
+            "scope": "Ablates only copied-ground packed vertex E/k; native object/terrain data and all shader code unchanged."
+          }
+        ],
+        "scope": "Authored rigid wall-root lighting; no full terrain/figure RGB parity, shadow, frame-time or device claim."
+      },
+      "captures": {
+        "ground-contact-relief-scene-zone1-shore-inputs-packed-point-disabled.png": "3733d28bfbd842f17f6c873d6a8e2f1ed91871a20a4addececde2475fc01d5e5",
+        "ground-contact-relief-scene-zone1-off-mask.png": "3e5cb21758431ec835f4ebf5a2127485292358525d1adbacfee918eed6283f2b",
+        "ground-contact-relief-scene-zone1-on-mask.png": "6c5c50ea34b22d75bab9e5291f11493c978d01e3cbd5a8226a311f7ce7d5a18f",
+        "ground-contact-relief-scene-zone1-shore-inputs-packed-point-restored.png": "960d19b0f0975dc120df87272df787ad89572b7acc13b8e202b7799908be7361",
+        "ground-contact-relief-scene-zone1-packed-point-off.png": "dc208ff5cadf9e4fe578b7b7fe030f70b42d930d668838c6b14d351c45ba5327",
+        "ground-contact-relief-scene-zone1-packed-point-restored.png": "dc208ff5cadf9e4fe578b7b7fe030f70b42d930d668838c6b14d351c45ba5327",
+        "ground-contact-relief-scene-zone1-shore-inputs-sun-on.png": "c1656cf9c8eab4c0938695c013fe0e93716284e8bfec78d1aaec9b9ed6cc1696",
+        "ground-contact-relief-scene-zone1-sun-off.png": "10a82a3beec17f07c89d3907db26bc881b768fff123112e784916f5a51f8b98d",
+        "ground-contact-relief-scene-zone1-shore-inputs-packed-point-on.png": "960d19b0f0975dc120df87272df787ad89572b7acc13b8e202b7799908be7361",
+        "ground-contact-relief-scene-zone1-local-light-restored.png": "ffdfa03d4157307589c443889628efd85d1f9e766ecb18dd0292335d63a4f7a0",
+        "ground-contact-relief-scene-zone1-shore-inputs-local-light-disabled.png": "513540d0e3ce99582a0b6111b6faa1b9f811404530c54636f04dac575186e0c6",
+        "ground-contact-relief-scene-zone1-sun-restored.png": "10a82a3beec17f07c89d3907db26bc881b768fff123112e784916f5a51f8b98d",
+        "ground-contact-relief-scene-zone1-shore-inputs-sun-disabled.png": "7757fa82dbe99b6da02199e48ce6d9f8c112f95c74151bdac54681ad1a0d26ac",
+        "ground-contact-relief-scene-zone1-sun-held.png": "c1656cf9c8eab4c0938695c013fe0e93716284e8bfec78d1aaec9b9ed6cc1696",
+        "ground-contact-relief-scene-zone1-packed-point-held.png": "960d19b0f0975dc120df87272df787ad89572b7acc13b8e202b7799908be7361",
+        "ground-contact-relief-scene-zone1-shore-inputs-local-light-on.png": "5c111aa15930f4ae979dfa2f8f0060ef9c22361f42b45da01e4bf30c8898808b",
+        "ground-contact-relief-scene-zone1-sun-on.png": "c1656cf9c8eab4c0938695c013fe0e93716284e8bfec78d1aaec9b9ed6cc1696",
+        "ground-contact-relief-scene-zone1-shore-inputs-sun-restored.png": "c1656cf9c8eab4c0938695c013fe0e93716284e8bfec78d1aaec9b9ed6cc1696",
+        "ground-contact-relief-scene-zone1-local-light-on.png": "5c111aa15930f4ae979dfa2f8f0060ef9c22361f42b45da01e4bf30c8898808b",
+        "ground-contact-relief-scene-zone1-shore-inputs-local-light-restored.png": "5c111aa15930f4ae979dfa2f8f0060ef9c22361f42b45da01e4bf30c8898808b",
+        "ground-contact-relief-scene-zone1-packed-point-on.png": "960d19b0f0975dc120df87272df787ad89572b7acc13b8e202b7799908be7361",
+        "ground-contact-relief-scene-zone1-local-light-disabled.png": "f7acdd026eb0eec8e2c14965ff97aab55c769d6c28555eae13b23239ead1eed9",
+        "ground-contact-relief-scene-zone1-local-light-off.png": "ffdfa03d4157307589c443889628efd85d1f9e766ecb18dd0292335d63a4f7a0",
+        "ground-contact-relief-scene-zone1-local-light-held.png": "5c111aa15930f4ae979dfa2f8f0060ef9c22361f42b45da01e4bf30c8898808b"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "CursedLands.pck": "f52111022aef3389a2467feade8525286d5c2934b29cd2b390e6c608ecfcc8a5",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact_shoreline_scene.gd": "d7f2a9161c8bd74aed530bba8240891ac91cd0931615b321713bf87cad689b04",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ground_contact_relief_scene.gd": "538296456d76129d751bf8b4a77a08867a3515e38ab821d09c0cba83df7e11b2"
+      }
+    },
+    "new-game01": {
+      "checks": 9,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/new-game01",
+      "receipt_sha256": "311ac74edc6bcc572ad46025b426995a5430cc1ff8a1f920cb940555c6a26d0b",
+      "observations": {
+        "covered": 719,
+        "deferred": false,
+        "exposed": 0,
+        "new_game": true,
+        "worker": true,
+        "worker_pid": 2426688,
+        "zone": "gz1g"
+      },
+      "captures": {
+        "menu-covered.png": "26c7c05ac5802100a0e9b9bd9a049de35274a3bee236dad725876bf08d700b46"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "CursedLands.pck": "f52111022aef3389a2467feade8525286d5c2934b29cd2b390e6c608ecfcc8a5",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "9f3742d29ad2137ef4c9e9a82a536d64d4a2417a2f66ebd10e84bf90a88ff8a7"
+      }
+    },
+    "original-mp01": {
+      "checks": 23,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/original-mp01",
+      "receipt_sha256": "7a4650f704aaceba5a8956b8512b61ce73dc4f28d52868797c747d17163c88f3",
+      "observations": {
+        "checks": 23,
+        "failures": 0,
+        "frames": {
+          "start": {
+            "covered": 727,
+            "exposed": 0,
+            "transition": 0
+          },
+          "travel": {
+            "covered": 571,
+            "exposed": 0,
+            "transition": 0
+          }
+        },
+        "menu_creatures": {
+          "after": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          },
+          "before": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          }
+        },
+        "menu_database": [
+          {
+            "label": "before",
+            "lmp_db": false
+          },
+          {
+            "label": "after",
+            "lmp_db": false
+          }
+        ],
+        "scope": "Real menu and separate native multiplayer authority; controlled public quest/travel commands; presented loading frames and exact menu creature texture/layer retention. Linux execution, not Windows performance or physical exit-route validation.",
+        "travel_exposed_frames_after_one_second": 0,
+        "travel_request_to_loading_ms": 242
+      },
+      "captures": {
+        "lmp-travel-covered.png": "81a7d39c018e915cc6e1f1097bdbfcfae04feca31cce929de0bd6e5c5b049c0b",
+        "lmp-menu-after.png": "4a0c10549032c0848d00e4410bfc34888e2398742d76aadf14468f2d1f967c34",
+        "lmp-start-covered.png": "e7fbf3adbac1cc909c33426ec3c963053d4958228a2476780f624701f01013f4",
+        "lmp-menu-before.png": "a3d6876176b5fc7ae2aba3e7fd19deced4038b0e88d736b050d1beac1546e2e0"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "CursedLands.pck": "f52111022aef3389a2467feade8525286d5c2934b29cd2b390e6c608ecfcc8a5",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_lmp_flow.gd": "c01452e95c4db9104b388783b223f11802118e570edab51c1cf8df0a3ee60285"
+      }
+    },
+    "menu-material01": {
+      "checks": 46,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/menu-material01",
+      "receipt_sha256": "f614252358f921367ec459f80f8ac2dcf8cfff50ba1e43aec96e9ca69bd43ee7",
+      "observations": {
+        "checks": 46,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 0,
+            "hover_references": 6,
+            "label": "startup-off-initial",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-off-live-options",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-off-hover",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 0,
+            "hover_references": 6,
+            "label": "startup-off-contact-off",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-off-contact-on-again",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-initial",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-live-options",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-hover",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 0,
+            "hover_references": 6,
+            "label": "startup-on-contact-off",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-contact-on-again",
+            "labels": 6,
+            "wrong_labels": []
+          }
+        ]
+      },
+      "captures": {
+        "menu-material-startup-on-hover.png": "3387f4dc909c247c70dfa8118f9857b9443c69b915555e37f473ea3fdecd624b",
+        "menu-material-startup-off-live-options.png": "9d2f1964b92d612569ef10f11677b996d925db7001f802afb00832b409bfdb15",
+        "menu-material-startup-off-initial.png": "90f7062d1ef4b3b300f756659365b0a222c17aaaadad05832b1357ca22d312d1",
+        "menu-material-startup-off-contact-on-again.png": "caef85e86f26a7f2844d2fc744aadfca00c52e4904a4472d1e35ace0ff367733",
+        "menu-material-startup-on-initial.png": "38166da67a27f6cf8decb5dd32f4d89dfbdc993fed272e75185b9015364f6207",
+        "menu-material-startup-off-hover.png": "caef85e86f26a7f2844d2fc744aadfca00c52e4904a4472d1e35ace0ff367733",
+        "menu-material-startup-on-contact-on-again.png": "3387f4dc909c247c70dfa8118f9857b9443c69b915555e37f473ea3fdecd624b",
+        "menu-material-startup-off-contact-off.png": "d716b1662fa805de084b16be8402b299a04ed32e378d0427aeb1a6c7b4cc053e",
+        "menu-material-startup-on-live-options.png": "e60c3207f8fe48bdf038eae23154c2dae0ff028970b8acd55399f5a70de69023",
+        "menu-material-startup-on-contact-off.png": "9dd4b29082d9b2e683be0483cb376ebe5d8ca10e907a464d53f1705bd8dafe5d"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "CursedLands.pck": "f52111022aef3389a2467feade8525286d5c2934b29cd2b390e6c608ecfcc8a5",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_material_refresh.gd": "4726a4cb53983aa7968a9ebd902aae7b64f1568d014b5d3c99f6bdcfa9a15ad7"
+      }
+    }
+  },
+  "packages": {
+    "linux-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.3-linux-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.3-linux-x86_64.tar.gz",
+      "archive_bytes": 36511114,
+      "archive_sha256": "08c8e583bb4d925ea5ab20b3d499968a24c9276a84c030f517a25d11e584e266",
+      "archive_readback_exact": true,
+      "files": {
+        "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+        "SHA256SUMS.txt": "d2c0649e122fb1c22a7060899fb302698fea3789cbaeffa32f0e48bed917a411",
+        "BUILD-INFO.json": "358940c6c96f681375dc4313e75c5b10c461a15d749d00242fbe793a7590af2f",
+        "Play.sh": "75835f261e9acd2b45973152790cabf255b05b649f0f059997c1de9ba4e3ec2b",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "f52111022aef3389a2467feade8525286d5c2934b29cd2b390e6c608ecfcc8a5",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "LOCAL-TEST-NOTES.txt": "8d6d25d8507a14b385e0b8ac93b950a2256e6d53496275f42bbebab2031f8598",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    },
+    "windows-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.3-windows-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.3-windows-x86_64.zip",
+      "archive_bytes": 37725170,
+      "archive_sha256": "b10a685a1c6e18690be8380f4012fa2971ee6637ba49fba0cc0dc62df016b766",
+      "archive_readback_exact": true,
+      "files": {
+        "SHA256SUMS.txt": "862a07759388051bec0ed2968bec61413dc08191aa1e2db2e6b8a2416e1020ba",
+        "BUILD-INFO.json": "b2c16bc4caaab70ce8cb21209b4c1f59e3594f296b14c46da9b6740a561c07fc",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "libterrain_search.dll": "14906b040d4b6a5e1e217b9bfb21214f48700b6709163be584cc98e584f45106",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "f52111022aef3389a2467feade8525286d5c2934b29cd2b390e6c608ecfcc8a5",
+        "CursedLands.exe": "d4536e65a3fd8d6082e424341a190d2b5c310dcf0d532ba229cf8db8844c5b86",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "LOCAL-TEST-NOTES.txt": "8d6d25d8507a14b385e0b8ac93b950a2256e6d53496275f42bbebab2031f8598",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    }
+  },
+  "limits": [
+    "Windows PE/source/archive checks only; no Windows execution or performance claim.",
+    "Linux Forward+ checks use separate rendering thread and isolated profiles; foreign processes may overlap.",
+    "The original-multiplayer fixture uses public quest/travel commands, not a walked exit route.",
+    "Integrated V1 lighting is included, still default-off. Cold preparation, target-device performance and existing Mobile/Compatibility strict pixel residuals remain open.",
+    "An additional tighter-camera snow diagnostic retains one one-byte upper-object local-light difference among 112 checks; it is recorded separately, not treated as passed.",
+    "Cloud radiance is omitted only without consumers; screen cloud detail and the existing environment policy are preserved.",
+    "The worker shutdown fix is patch11. No Windows execution or target-device FPS claim.",
+    "Earlier package315/0 pebble/grass, Continue and LiA coverage and .2 cloud-consumer evidence are inherited, not rerun for these six V1 source files."
+  ],
+  "retained_extra_zoom_diagnostic": {
+    "checks": 112,
+    "failures": 1,
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/contact-tracks01",
+    "receipt_sha256": "746cd381eb3c6fcc6e63e56322867f8bfa3ee26720af0edb859318efe98f357e",
+    "result_sha256": "d47b91e94171250c368c4a163c7dbcdc3b53c50f777468ffa94edd24143a9a31",
+    "description": {
+      "scope": "Additional zoomed snow scene: committed shared fixture had inherited the 2.4m bridge camera; prior qualified snow used 3.8m. This new one-byte failure is retained, not relabeled as a passing run.",
+      "upper_residual": [
+        {
+          "x": 550,
+          "y": 40,
+          "off": [
+            8,
+            8,
+            8
+          ],
+          "on": [
+            8,
+            8,
+            7
+          ],
+          "mask": [
+            255,
+            0,
+            255
+          ]
+        }
+      ],
+      "camera_span": 2.4,
+      "upper_mask_height": 0.22
+    },
+    "scope": "Shared test consolidation inherited the bridge 2.4m camera in the snow case. The established snow framing is 3.8m. This additional closer-view numerical residual remains a strict failure."
+  },
+  "game_changes_from_local_20261010_2": [
+    "game/src/game/fx/ground_contact_shader.gd",
+    "game/src/game/fx/ground_dense_colors.gd",
+    "game/src/game/fx/ground_dense_colors.gd.uid",
+    "game/src/game/fx/ground_surface_data.gd",
+    "game/src/game/fx/soft_ground_deform.gd",
+    "game/src/game/fx/soft_ground_field.gd"
+  ],
+  "production_lighting_commit": "1c961367174532478a660fe84e5ef30ee2314a90",
+  "inherited_package_evidence": [
+    "docs/validation/local-feedback-build-2026-10-10.json",
+    "docs/validation/local-feedback-build-2026-10-10-2.json"
+  ],
+  "integration_evidence": "docs/validation/ground-contact-lighting-integration-2026-10-10.json",
+  "cost_evidence": "docs/validation/ground-contact-cost-followup-2026-10-10.json",
+  "fixture_framing_audit": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/fixture-framing-audit.json",
+    "sha256": "e2eb483e9c7f0b5e44b612f354834fc6f5dc3da284c358ff83d121d8684dd871",
+    "snow_png_pairs_exact": 24,
+    "description": "Restore original 3.8m/+1m snow/house camera; the shoreline subclass retains its original 2.4m/+0.22m camera. Pixel thresholds are unchanged. The additional closer snow failure is preserved."
+  },
+  "artifacts": {
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/build.py": "6eb52c6d59b463e1b8f057b6f6106650c48392fc11f37444dceee5037d05230d",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/build.json": "c3ee3fa639df51329f58dc9b58ce2fbacdda46207e14e6243e51689a16a94d3e",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/suite.py": "b994ac259e46adcf4974896c7fafff728504f7ae27678d3b84c54479ed8cd20f",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/run.py": "e27e3e7f14ce9f4068341603634ae70b8aa83fe40ab0f18a8558990ae962ca5f",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/package.py": "9ed4955976739abb97bc3d37b7094fcd71c4063c7cbbdd2e6c3742b7a5d7be68",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/package.json": "670a1ba468711e03dcea49bb099fb9678080d282e3d2e402588c60d772659d42",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/packaging.log": "6b414a7158004349022640162f8624be4dcccffdbaa25bb465188409f6c0a923",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/record.py": "11c13a50945d1e24aab81ee95d7ab61e19d71cab8bfc4d55a726c9076701d081",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/contact-package-comparison.json": "b0d0c8d60c0d4ee7a08ec798d3e835061de2a88c570341dee164721ba598c9de",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/fixture-framing-audit.json": "e2eb483e9c7f0b5e44b612f354834fc6f5dc3da284c358ff83d121d8684dd871"
+  }
+}
