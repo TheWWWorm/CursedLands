@@ -4,7 +4,8 @@ extends RefCounted
 ## A 32 m window at 25 cm retains the reference's ~1 m/s propagation speed;
 ## older native libraries use the same scalar solver on one bounded worker.
 const SIZE := 128
-const CELL := 0.25
+const CELLS_PER_METRE := 4
+const CELL := 1.0/CELLS_PER_METRE
 const STEP := 1.0/30.0
 const COURANT := 0.0175
 const DAMPING := 0.955
@@ -88,26 +89,28 @@ static func shifted(previous: PackedFloat32Array, delta: Vector2i) -> PackedFloa
 func _domain(terrain: EITerrain) -> void:
 	var start := Time.get_ticks_usec()
 	domain.resize(SIZE*SIZE*4); domain.fill(0)
-	# Navigation stores an upper corner, which can be metres above a sloping
-	# river's visible surface. Query the actual unposed triangles instead.
-	# Cache one height/gradient per metre; window motion samples only new strips.
-	# Keep only this window's cells, not a growing map-wide history.
+	# Query each original metre cell once, then fill its quarter-metre block.
+	# Clipped first/last blocks keep arbitrary quarter-cell window origins.
+	# The actual unposed triangles, selection order and slope evaluation are
+	# unchanged. Only this window's samples survive for the next movement.
 	if _surface == null: _surface = Surface.new(terrain)
 	_surface.begin_frame(false)
-	var cells := {}; var samples := {}; var width := terrain.sectors_x*32
+	var samples := {}; var width := terrain.sectors_x*32
 	var flow: RefCounted = terrain._current
-	for y in SIZE:
-		for x in SIZE:
-			var point := (Vector2(origin)+Vector2(x+0.5,y+0.5))*CELL
-			var cell := Vector2i(floori(point.x),floori(-point.y))
-			if not cells.has(cell):
-				var value := Vector4.ZERO
-				var sample := {}
-				if cell.x >= 0 and cell.y >= 0 and cell.x < width and cell.y < terrain.sectors_y*32:
-					var at := cell.y*width+cell.x
-					var midpoint := Vector2(cell.x+0.5,-cell.y-0.5)
-					if not terrain.liquid_ground[at] in [13,14,255]:
-						sample = _cells[cell] if _cells.has(cell) else _surface.sample(midpoint)
+	var first := Vector2i(floori(origin.x*CELL),floori(origin.y*CELL))
+	var last := Vector2i(ceili((origin.x+SIZE)*CELL),ceili((origin.y+SIZE)*CELL))
+	for z in range(first.y,last.y):
+		var y0 := maxi(z*CELLS_PER_METRE-origin.y,0)
+		var y1 := mini((z+1)*CELLS_PER_METRE-origin.y,SIZE)
+		for x in range(first.x,last.x):
+			var cell := Vector2i(x,-z-1)
+			var value := Vector4.ZERO
+			var sample := {}
+			var midpoint := Vector2(cell.x+0.5,-cell.y-0.5)
+			if cell.x >= 0 and cell.y >= 0 and cell.x < width and cell.y < terrain.sectors_y*32:
+				var at := cell.y*width+cell.x
+				if not terrain.liquid_ground[at] in [13,14,255]:
+					sample = _cells[cell] if _cells.has(cell) else _surface.sample(midpoint)
 					var m := int(sample.get("material",-1))
 					var h := float(sample.get("height",-INF))
 					if m >= 0 and m < terrain.materials.size() and is_finite(h) and not sample.get("lava",false):
@@ -115,15 +118,21 @@ func _domain(terrain: EITerrain) -> void:
 						if int(terrain.materials[m].get("type",0)) in [2,3] and e.r+e.g+e.b == 0.0 and terrain._lava[m] == 0.0 and h > terrain.height_at(cell.x+0.5,cell.y+0.5)+0.04:
 							var velocity := Vector2.ZERO
 							if flow:
-								var gradient: Vector3 = flow.sample(Vector2(cell.x+0.5,-cell.y-0.5))
+								var gradient: Vector3 = flow.sample(midpoint)
 								velocity = Current.velocity(Vector2(gradient.x,gradient.y))
 							value = Vector4(h,velocity.x,velocity.y,m+1)
-				cells[cell] = value; samples[cell] = sample
-			var value: Vector4 = cells[cell]; var at := (y*SIZE+x)*4
-			if value.w > 0:
-				var slope: Vector2 = samples[cell].slope
-				value.x+=slope.dot(point-Vector2(cell.x+0.5,-cell.y-0.5))
-			domain[at]=value.x; domain[at+1]=value.y; domain[at+2]=value.z; domain[at+3]=value.w
+			samples[cell] = sample
+			if value.w <= 0: continue # The initialized dry block stays zero.
+			var slope: Vector2 = sample.slope
+			var x0 := maxi(x*CELLS_PER_METRE-origin.x,0)
+			var x1 := mini((x+1)*CELLS_PER_METRE-origin.x,SIZE)
+			for gy in range(y0,y1):
+				for gx in range(x0,x1):
+					var point := (Vector2(origin)+Vector2(gx+0.5,gy+0.5))*CELL
+					var posed := value
+					posed.x += slope.dot(point-midpoint)
+					var at := (gy*SIZE+gx)*4
+					domain[at]=posed.x; domain[at+1]=value.y; domain[at+2]=value.z; domain[at+3]=value.w
 	_cells=samples
 	_levels = terrain._level.duplicate(); _flow_build = flow.builds if flow else -1
 	last_domain_us = Time.get_ticks_usec()-start

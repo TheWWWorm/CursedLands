@@ -1,0 +1,713 @@
+{
+  "date": "2026-10-10",
+  "feature": "Wave-domain construction in metre-sized blocks",
+  "base_commit": "12978cc0dbd967d4f7dcc8044ca20990e1d4050c",
+  "status": "Source optimization accepted after exact domain/cache checks, measured CPU comparisons, lifetime checks and exact rendered pairs. No new pack, APK or delivery archive.",
+  "user_scope": {
+    "main_thread_only": true,
+    "playthroughs": false,
+    "new_packages": false
+  },
+  "source_sha256": {
+    "game/src/game/fx/water_wave_field.gd": "9498f08984598fdbe3b10129deb98ceb68609c397944fbf11d4a996158c7980d",
+    "tools/tests/water_wave_domain.gd": "047790bca45c02745d074bf58114637e73c362fb9acb3dce85742635a842f017",
+    "tools/tests/water_wave_domain_reference.gd": "ae197e690ec84cdd54e41767a93c82eb6879b82f0740baa427494600819782fc"
+  },
+  "implementation": {
+    "change": "Classify each original metre cell once and fill its clipped quarter-metre block. Skip already-zero dry blocks. Remove the temporary classification Dictionary and repeated per-quarter-sample cache lookups.",
+    "preserved": "Same 128x128 / 25 cm domain, unposed triangle queries, metre-cell query order, slope calculation and Vector4 rounding, current sampling, admission rules, level/flow invalidation keys and bounded sample cache. Solver, worker lifecycle, clocks, navigation, shaders, options/defaults and cloud controls are unchanged.",
+    "memory": "No new retained cache or GPU resource. Domain and wave texture each remain 262144 bytes of float data; at most 1089 retained metre samples and 16 existing surface-query sectors. The redundant per-call classification Dictionary is removed; allocator overhead is not quantified.",
+    "exact_original_oracle_body": true,
+    "exact_tested_candidate_script": true,
+    "exact_rendered_override_method_body": true
+  },
+  "correctness": {
+    "base_android": {
+      "checks": 1701,
+      "failures": 0,
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/qualify-android02/run.json"
+    },
+    "base_linux": {
+      "checks": 1701,
+      "failures": 0,
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/qualify-linux02/run.json"
+    },
+    "base_scope": "Three real maps (zone1/zone11/zone8) plus a fully covered sloped plane: 130 domain builds per ABBA arm. Exact float bytes, retained samples and invalidation keys; all 16 quarter-cell origin alignments, negative/map-edge/dry/teleport windows, real nonzero currents, scripted level offsets/restoration, lava, emissive and excluded ground controls. Cache bounds and original terrain/navigation preservation are asserted.",
+    "astral_linux": {
+      "checks": 1648,
+      "failures": 0,
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/qualify-astral02/run.json"
+    },
+    "astral_scope": "126 builds per ABBA arm on zone1, zone10 and zone26. River foci use the earlier positive waterfall census and verified matching rendered-triangle/navigation owners. Same exact comparisons and controls; no campaign progression.",
+    "lifetime_android_native": {
+      "checks": 31,
+      "failures": 0,
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/lifetime-android-native01/run.json"
+    },
+    "lifetime_android_worker": {
+      "checks": 31,
+      "failures": 0,
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/lifetime-android-worker01/run.json"
+    },
+    "lifetime_linux": {
+      "checks": 31,
+      "failures": 0,
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/lifetime-linux01/run.json"
+    },
+    "lifetime_scope": "Existing analytic solver and production lifetime checks with the whole new Field script: fixed steps, pause, window movement, rewind, flooding, immutable navigation and disable/clear. The Android scalar worker is confirmed pending when clear joins it.",
+    "renderer_runs": {
+      "render-linux-baseline01": {
+        "checks": 29,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/render-linux-baseline01/run.json"
+      },
+      "render-linux-candidate01": {
+        "checks": 29,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/render-linux-candidate01/run.json"
+      },
+      "render-android-gl_compatibility-baseline01": {
+        "checks": 29,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/render-android-gl_compatibility-baseline01/run.json"
+      },
+      "render-android-gl_compatibility-candidate01": {
+        "checks": 29,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/render-android-gl_compatibility-candidate01/run.json"
+      },
+      "render-android-mobile-baseline01": {
+        "checks": 28,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/render-android-mobile-baseline01/run.json"
+      },
+      "render-android-mobile-candidate01": {
+        "checks": 28,
+        "failures": 0,
+        "record": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/render-android-mobile-candidate01/run.json"
+      }
+    },
+    "exact_png_pairs": 33,
+    "image_comparisons": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/image-comparisons.json",
+    "render_scope": "Actual controller, posed actor, persistent numerical field, hidden actor/trail, pause/speed/travel guards, late rain-cover publication and clear/re-enable. Linux and Android Compatibility use the sloping zone8 river with native current/wave kernels; Android Mobile uses the standard zone1 water scene. Before/after images are exact within each platform."
+  },
+  "performance": {
+    "scope": "Elapsed CPU domain-method calls only. ABBA before/after/after/before on separate Field owners with equal inputs; correctness comparisons occur after timing. Two isolated qualification runs per platform. Fresh, cached and 4.25 m window-shift cases are compared at the same positions. No GPU, whole-game FPS or total level-rebuild claim.",
+    "android": "Retroid Pocket 5 / Android 33 / Adreno 650, actual private Compatibility runtime, hidden held terrain.",
+    "linux": "AMD Ryzen 9 5950X / Linux, existing private executable with headless rendering for CPU comparisons. Rendered parity separately uses RTX3090 Ti Compatibility.",
+    "comparisons": {
+      "android": [
+        {
+          "map": "zone1",
+          "case": "fresh",
+          "baseline_us": [
+            75517,
+            75157,
+            77237,
+            76939
+          ],
+          "candidate_us": [
+            67273,
+            67272,
+            68003,
+            67837
+          ],
+          "baseline_median_us": 76228.0,
+          "candidate_median_us": 67555.0,
+          "reduction_percent": 11.377708978328172
+        },
+        {
+          "map": "zone1",
+          "case": "cached",
+          "baseline_us": [
+            11295,
+            11404,
+            11060,
+            11039,
+            11443,
+            11483,
+            11189,
+            11225
+          ],
+          "candidate_us": [
+            3812,
+            3660,
+            3398,
+            3453,
+            3858,
+            3713,
+            3457,
+            3475
+          ],
+          "baseline_median_us": 11260.0,
+          "candidate_median_us": 3567.5,
+          "reduction_percent": 68.3170515097691
+        },
+        {
+          "map": "zone1",
+          "case": "window_shift",
+          "baseline_us": [
+            14493,
+            14629,
+            14459,
+            14529,
+            14859,
+            14853,
+            14731,
+            14749
+          ],
+          "candidate_us": [
+            6916,
+            6910,
+            6889,
+            6839,
+            7030,
+            7021,
+            7002,
+            6930
+          ],
+          "baseline_median_us": 14680.0,
+          "candidate_median_us": 6923.0,
+          "reduction_percent": 52.84059945504087
+        },
+        {
+          "map": "zone11",
+          "case": "fresh",
+          "baseline_us": [
+            86769,
+            86007,
+            87571,
+            86558
+          ],
+          "candidate_us": [
+            78208,
+            78603,
+            78629,
+            78859
+          ],
+          "baseline_median_us": 86663.5,
+          "candidate_median_us": 78616.0,
+          "reduction_percent": 9.285916216169433
+        },
+        {
+          "map": "zone11",
+          "case": "cached",
+          "baseline_us": [
+            11671,
+            11517,
+            11316,
+            11228,
+            11675,
+            11520,
+            11259,
+            11160
+          ],
+          "candidate_us": [
+            3879,
+            3787,
+            3510,
+            3502,
+            3947,
+            3865,
+            3560,
+            3460
+          ],
+          "baseline_median_us": 11416.5,
+          "candidate_median_us": 3673.5,
+          "reduction_percent": 67.82288792537116
+        },
+        {
+          "map": "zone11",
+          "case": "window_shift",
+          "baseline_us": [
+            12734,
+            12664,
+            19938,
+            20157,
+            12783,
+            12848,
+            20046,
+            20111
+          ],
+          "candidate_us": [
+            4964,
+            5035,
+            12277,
+            12190,
+            4991,
+            5023,
+            12347,
+            12344
+          ],
+          "baseline_median_us": 16393.0,
+          "candidate_median_us": 8612.5,
+          "reduction_percent": 47.462331482950034
+        },
+        {
+          "map": "zone8",
+          "case": "fresh",
+          "baseline_us": [
+            86191,
+            85923,
+            87019,
+            86309
+          ],
+          "candidate_us": [
+            78155,
+            77887,
+            78697,
+            78620
+          ],
+          "baseline_median_us": 86250.0,
+          "candidate_median_us": 78387.5,
+          "reduction_percent": 9.115942028985502
+        },
+        {
+          "map": "zone8",
+          "case": "cached",
+          "baseline_us": [
+            13209,
+            13211,
+            11762,
+            11896,
+            12755,
+            12795,
+            11752,
+            11933
+          ],
+          "candidate_us": [
+            5537,
+            5493,
+            4232,
+            4260,
+            5324,
+            5288,
+            4254,
+            4197
+          ],
+          "baseline_median_us": 12344.0,
+          "candidate_median_us": 4774.0,
+          "reduction_percent": 61.3253402462735
+        },
+        {
+          "map": "zone8",
+          "case": "window_shift",
+          "baseline_us": [
+            14205,
+            14155,
+            18326,
+            18482,
+            14147,
+            14241,
+            18308,
+            18565
+          ],
+          "candidate_us": [
+            6755,
+            6621,
+            10807,
+            10747,
+            6702,
+            6614,
+            10858,
+            10860
+          ],
+          "baseline_median_us": 16274.5,
+          "candidate_median_us": 8751.0,
+          "reduction_percent": 46.228762788411316
+        },
+        {
+          "map": "synthetic 100% water coverage",
+          "case": "cached",
+          "baseline_us": [
+            16150,
+            16211
+          ],
+          "candidate_us": [
+            9470,
+            9412
+          ],
+          "baseline_median_us": 16180.5,
+          "candidate_median_us": 9441.0,
+          "reduction_percent": 41.65198850468156
+        }
+      ],
+      "linux": [
+        {
+          "map": "zone1",
+          "case": "fresh",
+          "baseline_us": [
+            39087,
+            38701,
+            39102,
+            44874
+          ],
+          "candidate_us": [
+            33926,
+            34091,
+            34080,
+            34032
+          ],
+          "baseline_median_us": 39094.5,
+          "candidate_median_us": 34056.0,
+          "reduction_percent": 12.888002148639831
+        },
+        {
+          "map": "zone1",
+          "case": "cached",
+          "baseline_us": [
+            6559,
+            6320,
+            6367,
+            6217,
+            7263,
+            6308,
+            6229,
+            6125
+          ],
+          "candidate_us": [
+            2018,
+            2052,
+            1863,
+            1873,
+            1946,
+            1932,
+            1838,
+            1788
+          ],
+          "baseline_median_us": 6314.0,
+          "candidate_median_us": 1902.5,
+          "reduction_percent": 69.86854608805828
+        },
+        {
+          "map": "zone1",
+          "case": "window_shift",
+          "baseline_us": [
+            8154,
+            8070,
+            8258,
+            8031,
+            8095,
+            7949,
+            8117,
+            8094
+          ],
+          "candidate_us": [
+            3696,
+            3599,
+            3563,
+            3570,
+            3726,
+            3564,
+            3602,
+            3600
+          ],
+          "baseline_median_us": 8094.5,
+          "candidate_median_us": 3599.5,
+          "reduction_percent": 55.53153375748965
+        },
+        {
+          "map": "zone11",
+          "case": "fresh",
+          "baseline_us": [
+            44101,
+            43681,
+            44431,
+            43845
+          ],
+          "candidate_us": [
+            38785,
+            38845,
+            39235,
+            39615
+          ],
+          "baseline_median_us": 43973.0,
+          "candidate_median_us": 39040.0,
+          "reduction_percent": 11.218247561003347
+        },
+        {
+          "map": "zone11",
+          "case": "cached",
+          "baseline_us": [
+            6542,
+            6276,
+            6295,
+            6118,
+            6473,
+            6277,
+            6186,
+            6094
+          ],
+          "candidate_us": [
+            1939,
+            1930,
+            1663,
+            1664,
+            1963,
+            1966,
+            1699,
+            1694
+          ],
+          "baseline_median_us": 6276.5,
+          "candidate_median_us": 1814.5,
+          "reduction_percent": 71.09057595793834
+        },
+        {
+          "map": "zone11",
+          "case": "window_shift",
+          "baseline_us": [
+            7016,
+            6987,
+            10819,
+            10478,
+            7019,
+            6891,
+            10702,
+            10499
+          ],
+          "candidate_us": [
+            2476,
+            2504,
+            6041,
+            6033,
+            2520,
+            2513,
+            6088,
+            6071
+          ],
+          "baseline_median_us": 8748.5,
+          "candidate_median_us": 4276.5,
+          "reduction_percent": 51.11733440018289
+        },
+        {
+          "map": "zone8",
+          "case": "fresh",
+          "baseline_us": [
+            44210,
+            43841,
+            44305,
+            44129
+          ],
+          "candidate_us": [
+            39380,
+            39369,
+            39692,
+            39743
+          ],
+          "baseline_median_us": 44169.5,
+          "candidate_median_us": 39536.0,
+          "reduction_percent": 10.490270435481497
+        },
+        {
+          "map": "zone8",
+          "case": "cached",
+          "baseline_us": [
+            7154,
+            6998,
+            6725,
+            6471,
+            7133,
+            6929,
+            6582,
+            6446
+          ],
+          "candidate_us": [
+            2748,
+            2740,
+            2210,
+            2181,
+            2779,
+            2747,
+            2184,
+            2177
+          ],
+          "baseline_median_us": 6827.0,
+          "candidate_median_us": 2475.0,
+          "reduction_percent": 63.74688735901568
+        },
+        {
+          "map": "zone8",
+          "case": "window_shift",
+          "baseline_us": [
+            7974,
+            7795,
+            10030,
+            9924,
+            7816,
+            7683,
+            9932,
+            9826
+          ],
+          "candidate_us": [
+            3527,
+            3519,
+            5482,
+            5564,
+            3411,
+            3424,
+            5497,
+            5489
+          ],
+          "baseline_median_us": 8900.0,
+          "candidate_median_us": 4504.5,
+          "reduction_percent": 49.387640449438194
+        },
+        {
+          "map": "synthetic 100% water coverage",
+          "case": "cached",
+          "baseline_us": [
+            9160,
+            8931
+          ],
+          "candidate_us": [
+            5367,
+            5326
+          ],
+          "baseline_median_us": 9045.5,
+          "candidate_median_us": 5346.5,
+          "reduction_percent": 40.89326184290532
+        }
+      ]
+    },
+    "summary": "Android cached real-map builds: 11.26/11.42/12.34 ms -> 3.57/3.67/4.77 ms (61-68% less). Window shifts: 14.68/16.39/16.27 -> 6.92/8.61/8.75 ms (46-53% less). Fresh builds: 76.23/86.66/86.25 -> 67.56/78.62/78.39 ms (9-11% less). Fully wet cached plane: 16.18 -> 9.44 ms. Fresh query work remains costly.",
+    "linux_summary": "Cached builds: 6.31/6.28/6.83 -> 1.90/1.81/2.48 ms; window shifts about 49-56% less; fresh builds about 10-13% less. Fully wet cached plane: 9.05 -> 5.35 ms.",
+    "no_other_linux_engines_during_cost_runs": true
+  },
+  "runtime_scope": {
+    "desktop_reused_pack": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/candidate01",
+    "desktop_build_sha256": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "method": "Load the exact complete new Field script for CPU/lifetime checks. For the typed production interaction controller, inject a subclass of the installed Field containing the exact new domain method before the first step; assert its script identity after actual motion. All other Field/controller methods remain installed production behavior.",
+    "android": "Existing org.cursedlands.performance app. The previously qualified native-water adapter supplies only the two absent kernel classes. Both Compatibility render arms also load the exact accepted a916f95 WaterTextureData helper; Mobile leaves it inactive. No installed engine/pack/helper replacement.",
+    "limits": "This is source/method substitution in existing private runtimes, not a fresh complete-current-source Android or desktop package. No original RMX3890/Adreno610, RTX3050-report, Windows, full campaign or network acceptance is added.",
+    "normal_installed_android_game_touched": false,
+    "restoration": {
+      "package": "org.cursedlands.performance",
+      "normal_installed_game_touched": false,
+      "files": {
+        "settings.cfg": {
+          "before_sha256": "a6d3fdeba6fa0e2a8751d7f12ad6afcaa2cb6d50734d64d69f6cdaae831e3b3e",
+          "after_sha256": "a6d3fdeba6fa0e2a8751d7f12ad6afcaa2cb6d50734d64d69f6cdaae831e3b3e",
+          "exact": true
+        },
+        "renderer.cfg": {
+          "before_sha256": "85196ecfb5c62c1c82d416b49f6d8c5f47fa86f275ae66f6cb475e9c9a6c6aae",
+          "after_sha256": "85196ecfb5c62c1c82d416b49f6d8c5f47fa86f275ae66f6cb475e9c9a6c6aae",
+          "exact": true
+        },
+        "keyboard.ini": {
+          "before_sha256": null,
+          "after_sha256": null,
+          "exact": true
+        },
+        "validation.json": {
+          "before_sha256": null,
+          "after_sha256": null,
+          "exact": true
+        },
+        "water-native-runtime.so": {
+          "before_sha256": null,
+          "after_sha256": null,
+          "exact": true
+        }
+      },
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "diagnostic_leftovers": [],
+      "all_runs_restored": true
+    }
+  },
+  "retained_failed_control": {
+    "run": "qualify-astral01",
+    "checks": 550,
+    "failures": 1,
+    "reason": "All numerical/cache comparisons passed, but the sole still-water zone1 focus supplied no nonzero current and failed the explicit positive-flow coverage check. The final fixture adds verified zone10/zone26 river locations; no threshold or assertion was removed."
+  },
+  "remaining_work": [
+    "Fresh wave-domain construction still takes about 68-79 ms on the sampled Android maps; investigate cold surface-query/index work separately.",
+    "Remaining water-level/positive-waterfall geometry and other measured effect costs remain open.",
+    "Keep the unresolved Mobile cloud/material-water flicker and original Android/Linux reports distinct from this CPU optimization.",
+    "Keep playthroughs stopped and delivery packages on request."
+  ],
+  "raw_records": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/compare-android01/run.json",
+      "sha256": "51c85bef66d07b7b659214f6667f5e3798781a6c58a600934d6870a3c4ae3e8c"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/compare-linux01/run.json",
+      "sha256": "847aa9aada30344f47dbbf8fc4512f5d0c9934f967c974295d91ad5c794db5a2"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/lifetime-android-native01/run.json",
+      "sha256": "e16bfd2824e86f2d0b54ca351d4c9c7cef46d4a4705d7810566f44541fc9cd60"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/lifetime-android-worker01/run.json",
+      "sha256": "881c59c7adb7a87d92c7f94ce5b82807957d2737e9ee4fa8e615084ebecacca8"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/lifetime-linux01/run.json",
+      "sha256": "ca447ac9f54c79c03d66c4e64b806153cb5e8c6cda1330836b2f49029f99d083"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/profile-android01/run.json",
+      "sha256": "188d1ae83cd396e00b929cdfc81be140ba6096829d21cdbb234f342ffdc87027"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/profile-linux01/run.json",
+      "sha256": "812cb1dac7400555bf55ca884c37d997394b5106915a609e5d67d0636d5d235e"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/qualify-android01/run.json",
+      "sha256": "65d817a58f7469004864885652732d2c7000c31d8740cbea39da17023c318d6c"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/qualify-android02/run.json",
+      "sha256": "17f34bcf2b99f1d1661475b60af55462056567a06377aa750d58e77702fbfdee"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/qualify-astral01/run.json",
+      "sha256": "b7d8fc0cc61b35fce804315f65091fd39baba334ada3a3576081c27ccbfa1851"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/qualify-astral02/run.json",
+      "sha256": "2cfe1b966a707081bc3ca8a71948c9a5238719bdbda5fa9a8c222f6c22807bb9"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/qualify-linux01/run.json",
+      "sha256": "50db0dd4b03e87fbfe6c961d7a6079aeb0bd74c0987ba340b26c25dc5cbbde25"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/qualify-linux02/run.json",
+      "sha256": "908993361df058867cab302a901954620af96a1adcd817cee013133ab6f0a5c0"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/render-android-gl_compatibility-baseline01/run.json",
+      "sha256": "fc932ae45a08a1eb2caa7f779b906cc20dd1cdfa492c77d6f001960bf17da703"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/render-android-gl_compatibility-candidate01/run.json",
+      "sha256": "7cd4c4aa8c79bca3def5d8cd7c4f0e93bc8a92cf231db49cc2618ac1e5035d03"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/render-android-mobile-baseline01/run.json",
+      "sha256": "efb7e7523f9fa479b4d42dc5d4ec2839d6764a854e78a83a362d7de93035073b"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/render-android-mobile-candidate01/run.json",
+      "sha256": "b2f49e811d8a6d90362ba54e10c1948ffcb0446c5d2d586752713cd3843029b1"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/render-linux-baseline01/run.json",
+      "sha256": "f06ea1886ad7395115cc8a5ed1cfda13d03cbf0af60fe90489ffa7b54961168f"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/wave-domain-cost-20261010/render-linux-candidate01/run.json",
+      "sha256": "576b1c9edf626c495b067fb0e7245149c5691920aa14e61d4a68253ab6884b44"
+    }
+  ]
+}
