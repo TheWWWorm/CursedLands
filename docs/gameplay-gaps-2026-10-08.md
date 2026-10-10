@@ -337,3 +337,29 @@ protocol 13 and save schema are unchanged. The separate in-progress renderer
 candidate is excluded from this qualified gameplay export. No supplied save,
 original asset or installed build was modified. Other q71h/q72h source leads,
 full routes and platform coverage remain open; they are not part of this fix.
+
+## Nalo rescue return — 10 October
+
+`42ac26c` fixes an actual progression blocker after the Nalo rescue. The original
+`bz13h` prison display has no route from the rescued hero to Nalo, even with the
+cell open and all 17 actors ignored. Remake walk-to-talk therefore prevented
+the offered `Kr61` conversation. The exact original campaign, map, completed
+rescue, `HeroAlone` party, cage layout, named actor, unchanged display position
+and offered topic now select native conversation staging. Selection revalidates
+the initiating hero and topic. Other conversations and reachable paths retain
+ordinary approach behavior; no quest flags, rewards or save schema changed.
+
+The retained living checkpoint physically reaches the keyed cell through one
+normal door-use command: 13.789 m, 321 simulation ticks and no combat. The native
+script completes the rescue, consumes its key and returns to the prison village.
+Fresh loads before and after that return now complete the real dialogue through
+normal topic/skip/next controls, restore the original main hero's stats and gear,
+and return to `gz15h`; a further fresh load preserves that result. The final
+candidate passes **161 checks with zero failures**. Baseline approach failures
+and the first candidate's unnecessary open-gate timing restriction remain in
+the [receipt](validation/nalo-rescue-return-2026-10-10.json).
+
+This extends the prior physical key-theft route, whose chapter entry was
+prepared. It is not a full organic campaign or recruited-party playthrough.
+No Windows, rendered-camera, physical-input, two-peer or WAN acceptance is added.
+User saves/settings remain unchanged; all work stays in the main thread.

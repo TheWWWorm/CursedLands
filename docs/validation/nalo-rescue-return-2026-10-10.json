@@ -1,0 +1,246 @@
+{
+  "implementation_commit": "42ac26c917bd885880fc214c4975e21e7ebf6f12",
+  "protocol": 13,
+  "published": false,
+  "problem": "After q61h rescue, original bz13h places the HeroAlone party across disconnected prison scenery from Nalo. Remake walk-to-talk prevents selecting the native Kr61 return dialogue.",
+  "change": "Reuse original instant dialogue staging only for original campaign bz13h, completed q61h, HeroAlone party, cage layout, the unchanged named Nalo display actor, an offered Kr61 topic, and a disconnected static path. Revalidate the same topic and initiating hero when selected. No quest, reward, map geometry or save-schema changes.",
+  "physical_continuation": {
+    "input_save": "/home/llm2x/Documents/EI/local/scratchpad/nalo-route-audit-20261009/walk-informed01/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_informed_living_stop.sav",
+    "input_sha256": "5a0c5cfbfbdec99a0c594aa200ecffe24a00f6876bee51f3a803a2fc3dab4781",
+    "unchanged_source": true,
+    "distance_walked_metres": 13.7892992980778,
+    "simulation_ticks": 321,
+    "commands": [
+      {
+        "cmd": {
+          "t": "use_lever",
+          "target": 338795,
+          "units": [
+            1500000001
+          ]
+        },
+        "phase": "ordinary keyed cell-door approach and use",
+        "time": 0.0
+      }
+    ],
+    "combat": [],
+    "result": "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/rescue01/nalo-rescue-continuation.json",
+    "result_sha256": "4a1fadeb0c882eb829b5e1351d4508dc5cfdb5c501f085b7c94d15c6b91c3a89",
+    "result_scope": "Ordinary keyed cell-door approach finishes rescue, consumes key and runs native return to bz13h/HeroAlone. Earlier prepared chapter entry and physical key-theft route remain separately documented."
+  },
+  "acceptance": {
+    "checks": 161,
+    "failures": 0,
+    "runs": {
+      "guard02": {
+        "checks": 59,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/guard02",
+        "run_sha256": "cb8133655baf5b5d2020f5cfb0ebf31c926fd3159cad5d6a3517e33895014756",
+        "log_sha256": "90c4e09dc73ab7164e220f674583f533b9b0bff810dcfeb0c4dacef5211c1e45",
+        "result_sha256": "cd44c994c2efabbc1c8acc3ae76282f494039970fd9d048d63cd604c3c2fc798",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/authored_village_talk.gd": "d81a0d8af6f9d214fb9ca8e22e4b7a86c642c805b9a44d211173728b0e516322"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "83eff734b382eb8ffde7f60209e98005a500cb1c96a00eed901758ad4e92b594",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      },
+      "reload-cell03": {
+        "checks": 33,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/reload-cell03",
+        "run_sha256": "52586c8ce5a89bd213287ec9dd510405f37477c749a39c5a6208a932a65048a3",
+        "log_sha256": "10fa3c8180cd1dd2e614c661b66faa386d2601e5f4eb01d4ce82b7ba10ecca06",
+        "result_sha256": "6b8f74162a6961355e57f4eef0633e1c7f103df37717db5d51283fbe1bc95860",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "83eff734b382eb8ffde7f60209e98005a500cb1c96a00eed901758ad4e92b594",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      },
+      "reload-camp03": {
+        "checks": 30,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/reload-camp03",
+        "run_sha256": "9b2b9c936974b743c4131ca15b0cb29c447c6dd62b8f40eae0684e9aab1bfa46",
+        "log_sha256": "76722bbb5dfb2533dc06b51a26fb9857e1f732bfa55f9df123f6bfde63f7e5fc",
+        "result_sha256": "6997234c94706603cd72dbcc8953de1f651105331b9946eab7bf36f7a206e9b8",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "83eff734b382eb8ffde7f60209e98005a500cb1c96a00eed901758ad4e92b594",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      },
+      "reload-finished02": {
+        "checks": 23,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/reload-finished02",
+        "run_sha256": "6f93b3a23d9c2d88f9e8cfe8cebbff9199f7bde2c0012d62aec0ac45e86af929",
+        "log_sha256": "18befbd968439bad0d52edd8a0148266b44ce2817e25661c6a00238aaa380b04",
+        "result_sha256": "1a734932fcbb25782feba11cd9b616912f85d76f4019557cff8eefacc14f3bd8",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "83eff734b382eb8ffde7f60209e98005a500cb1c96a00eed901758ad4e92b594",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      },
+      "approach02": {
+        "checks": 16,
+        "failures": 0,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/approach02",
+        "run_sha256": "a9cea994a5c909c2c002dc18cda0018dbe3cd044c275582407aeec15d39d917b",
+        "log_sha256": "e7bf1a6fbeceb9873ad482f2c92a71094ce9bb3e0d0d9318cc112344911c738b",
+        "result_sha256": null,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/dialogue_approach.gd": "97bfb01d86ba39456118c42510261a364f26d3dedcf8fffbc7b1e12f9170b4c8"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "83eff734b382eb8ffde7f60209e98005a500cb1c96a00eed901758ad4e92b594",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        }
+      }
+    },
+    "scope": "Linux headless original-data world, ordinary interaction/topic and UI skip/next controls. Fresh process resumes cell-open pending return, camp arrival, and completed main-party return. Original hero stats and gear, native completion and key removal persist."
+  },
+  "retained_diagnostics": {
+    "reload-cell01": {
+      "note": "Unchanged .4 resumes the saved native return but fails to approach Nalo.",
+      "checks": 13,
+      "failures": [
+        "ordinary approach opens Nalo topics"
+      ],
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/reload-cell01",
+      "run_sha256": "680aeabb0061efd909e76a3e2a35d42ec0fc6a6e02170dfe05ef734b0acf177e",
+      "result_sha256": "b4599087655b106c66af3a8cd261e8a5e7f92bcafff4e98cfeb3404943fcee41"
+    },
+    "reload-camp01": {
+      "note": "Unchanged .4 fresh camp load has the same failed approach; open cell, valid topic, live actors.",
+      "checks": 10,
+      "failures": [
+        "ordinary approach opens Nalo topics"
+      ],
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/reload-camp01",
+      "run_sha256": "eb7464c606c9aafea7fed60cc17652275739d708bbd0a7e8c0afb41668503461",
+      "result_sha256": "f974098b1d8e27dcfb93eb4843f2b4d99f6f3c80ef2335eeb5d246fdf8f77f86"
+    },
+    "camp-placement01": {
+      "note": "Both endpoints are walkable, but the original layout has no route even with all 17 actors ignored. Logical/physical cell state is open.",
+      "checks": 9,
+      "failures": [],
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/camp-placement01",
+      "run_sha256": "e7c095b9b6eec076554a9bbd64df5d0cf52fd833e7deb55385946c96210f5071",
+      "result_sha256": "6b9ee856e8e97721d95f6885c956a0bd42cce6496179365d4e8a90719f842234"
+    },
+    "reload-cell02": {
+      "note": "Candidate02 incorrectly required the display gate to open before dialogue. The offered topic precedes that native script tick, so immediate arrival failed. Candidate03 removes only this unnecessary gate predicate.",
+      "checks": 13,
+      "failures": [
+        "ordinary approach opens Nalo topics"
+      ],
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/reload-cell02",
+      "run_sha256": "61ad524f0abe82db46d8a1bf062c7e6aaf5e290df65258628030cb83b03b8bbf",
+      "result_sha256": "2a4122627ba47203c03e9559e586e09d77feac2e09fca7fd3ac5b3475667422a"
+    }
+  },
+  "build": {
+    "base_commit": "49de4271effe1f2480e4545aa0ecac60396da683",
+    "production_changes": {
+      "src/game/script/authored_village_talk.gd": "a8fadea7b8ef615ae09405edba96b0b252ffb37486ddb3ccad300f738f6d3f70",
+      "src/game/script/briefings.gd": "f29fecf31a020650f09083547e23059d478437e0968f8376b2ecf7c5f2d4f1aa"
+    },
+    "steps": [
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/candidate03/stage",
+          "--editor",
+          "--import",
+          "--quit"
+        ],
+        "return_code": 0,
+        "seconds": 6.231777990004048,
+        "errors": []
+      },
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/candidate03/stage",
+          "--export-pack",
+          "Linux",
+          "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/candidate03/CursedLands.pck"
+        ],
+        "return_code": 0,
+        "seconds": 5.891004553006496,
+        "errors": []
+      }
+    ],
+    "private_candidate": true,
+    "pack_changes": [
+      "src/game/script/authored_village_talk.gdc",
+      "src/game/script/briefings.gdc"
+    ],
+    "preserved_unchanged_scene": ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn",
+    "resource_count": 682,
+    "files": {
+      "CursedLands.pck": "83eff734b382eb8ffde7f60209e98005a500cb1c96a00eed901758ad4e92b594",
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    }
+  },
+  "initial_pack_attempt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/candidate01",
+    "note": "Import/export succeeded; pack verifier stopped on the editor-regenerated unchanged main scene. Following candidates preserve the qualified unchanged scene; exactly two compiled production scripts differ from .4."
+  },
+  "limits": [
+    "The earlier q60h/q61h chapter entry was prepared. This is a physical rescue tail and native chapter return, not a complete organic campaign playthrough.",
+    "The resumed main-party fixture contains the original hero; broader recruited-party routes remain open.",
+    "No Windows, physical input, rendered camera, real two-peer ENet or WAN acceptance is added. Existing other gameplay and renderer limits remain.",
+    "Headless isolated profiles preserve all user saves/settings. Foreign rendered processes overlap runs; elapsed times are not performance results.",
+    "The previous .4 local archives do not contain this Nalo fix; a later package is recorded separately."
+  ],
+  "artifacts": {
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/rescue.gd": "8f40b3b54e14cf7ac7dcb751db37e390caaf3a4e40fe6fe714f9ec1b4db3a32d",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/reload.gd": "461c95873ab3d0237324fb876a18dfa43cd5f9f60fd9b79da8bf35069a873add",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/build.py": "1fa013979d02915b3e59ffac6f21a68b87fb35342375454d8685bbd95af665d6",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/run.py": "e27e3e7f14ce9f4068341603634ae70b8aa83fe40ab0f18a8558990ae962ca5f",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/record.py": "3803a8e44dc87c5f7ddb61cb4bb0ec325097a36bac9ee2233f82dcea72bf2cd5",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/candidate03/build.json": "33c0457d6d18e3fcf6898d381cf99acae3b76bbecc3a77e81dd005ce6ec198b7",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/candidate03/source.patch": "4a7cf04e9addb6124419ce04f4076064acca6ac8164938da9018640fb0327722"
+  },
+  "checkpoint_saves": {
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/rescue01/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_resume_authored_return.sav": "a99089ee8befe0c56f40a6abae72455adfb75b1483fa8578f335bede59380daa",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/rescue01/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_resume_cell_opened.sav": "b397463f68ff9a3ec6c5edfa0f967bf5bec3175fecf81dfc5c2acaa214b3eafb",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/rescue01/isolated/data/godot/app_userdata/Cursed Lands/saves/rescue_input.sav": "5a0c5cfbfbdec99a0c594aa200ecffe24a00f6876bee51f3a803a2fc3dab4781",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/rescue01/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_resume_authored_return.info.sav": "1d654980ae82f5db45637eae9b1c84d44bb0642b7965de2e82e9d4592150b10d",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/rescue01/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_resume_cell_opened.info.sav": "f00d762c9403f35572034ac56da3244052a978c743f04f6148feecd752731c76",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/reload-cell03/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_full_return.info.sav": "404a36f6c5380272f271ea56b6f46080e78ca7ef608c8705a218994db079f75c",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/reload-cell03/isolated/data/godot/app_userdata/Cursed Lands/saves/reload_input.sav": "b397463f68ff9a3ec6c5edfa0f967bf5bec3175fecf81dfc5c2acaa214b3eafb",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/reload-cell03/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_full_return.sav": "218f4bae799346b9532030341b377f334165fffe400dbf054a0eceeadc7d7ddc",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/reload-camp03/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_full_return.info.sav": "1521bce3e8f06d8e4acf12328275aeb4f817477fd99a53e5de97a9cae9176345",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/reload-camp03/isolated/data/godot/app_userdata/Cursed Lands/saves/reload_input.sav": "a99089ee8befe0c56f40a6abae72455adfb75b1483fa8578f335bede59380daa",
+    "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/reload-camp03/isolated/data/godot/app_userdata/Cursed Lands/saves/nalo_full_return.sav": "4712776b7af3b5653f401be024d39c9d64086eaa9a073a0097100a4f21f685bd"
+  },
+  "stable_generated_uid": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/game/src/game/script/authored_village_talk.gd.uid",
+    "sha256": "9c0e406573a5005d5441935be358a675cbfdc079f1387f4b8f91e46654ed609c",
+    "source": "/home/llm2x/Documents/EI/local/scratchpad/nalo-rescue-continuation-20261010/candidate03/stage/src/game/script/authored_village_talk.gd.uid",
+    "reason": "The first .5 clean export regenerated an untracked UID. Commit the qualified existing identifier so clean exports and the previously validated main scene retain exactly the same resource identities."
+  }
+}
