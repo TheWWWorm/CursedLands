@@ -1,0 +1,1554 @@
+{
+  "date": "2026-10-10",
+  "status": "Completed failed diagnostic ablations; no engine or production shader patch adopted. Investigation stopped under the user's appearance-based quality direction.",
+  "scope": "Private existing Linux runtime; ordinary mixed sky versus lookup-only scratch candidate. Temporary LD_PRELOAD records actual shader modules and draw/pipeline state; optional exact-byte-matched SPIR-V substitutions only in child validation process. Not timing or release acceptance.",
+  "totals": {
+    "runs": 6,
+    "checks": 501,
+    "failures": 16
+  },
+  "findings": [
+    "Read-only recorder reproduces native cloud changes on restoring the original pipeline, layout, viewport, scissor and camera push constants.",
+    "Seven NoContraction decorations in camera prelude do not make candidate/reference native cloud buffers exact. Scalar expansion of matrix and normalization arithmetic also fails and changes within an unchanged reference; no root cause is established.",
+    "SCREEN_UV.y and separate raw uv_interp.x/y bit probes remain fixed across eight captures each while reproducing known red cloud A/B states. X and Y were captured in separate diagnostic runs, not simultaneously. These probes do not establish all original-program intermediate arithmetic.",
+    "All four declared patch programs per patched run were verified in fragment modules used by actual sky draws. Raw-UV runs change one operand in each of two half-resolution modules; two full-resolution modules are forwarded byte-identically.",
+    "No arithmetic patch, recorded-ray texture or disabled display feature enters production. Original strict check failures remain recorded; user subsequently allows numerical and visual differences when clouds still look good."
+  ],
+  "unchanged_build_hashes": {
+    "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+    "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+    "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+  },
+  "runs": [
+    {
+      "label": "spirv-observed-mixed01",
+      "checks": 87,
+      "failures": 3,
+      "other_engines_absent": false,
+      "errors": [
+        "FAIL exact sky candidate",
+        "FAIL exact sky restore",
+        "FAIL exact raw cloud buffer restore"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-spirv-20261010/spirv-observed-mixed01",
+      "actual_sky_draws": 17156,
+      "actual_sky_fragment_programs": 8,
+      "restored_reference_same_observed_draw_state": true,
+      "restored_reference_cloud_buffer_changed": true,
+      "evidence_sha256": {
+        "run.json": "2a52e84255e60e3e99c9c50986ecd988d5449fae847b91584c0b3b58d4008e4d",
+        "cloud-sky-inputs.json": "c990aae9557369d85014e2c98f84e8dbdb0bfccda973611df88470f86ffd80e5",
+        "draw-analysis.json": "d7f8fb1d06f2847b21b980e3a874cba12a8f271c9b4f23c5e60cadaccba7bed1",
+        "spirv-analysis.json": "ecb779393c6697df760237cd78abe56ac1f273a92b252914ddcb4d1dc91e09c6"
+      }
+    },
+    {
+      "label": "no-contraction-mixed01",
+      "checks": 87,
+      "failures": 2,
+      "other_engines_absent": false,
+      "errors": [
+        "FAIL exact sky candidate",
+        "FAIL exact raw cloud buffer candidate"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-spirv-20261010/no-contraction-mixed01",
+      "actual_sky_draws": 17092,
+      "actual_sky_fragment_programs": 8,
+      "restored_reference_same_observed_draw_state": true,
+      "restored_reference_cloud_buffer_changed": false,
+      "evidence_sha256": {
+        "run.json": "f2a0959dbd548724bbfd0322b6911953e9bb1e6d48fb5d13b44382254db86cb9",
+        "cloud-sky-inputs.json": "d7c0e828646c13e3b2340a6155e0192cea1e4dd4be41e0b023c15e458cbc4805",
+        "draw-analysis.json": "b074f6c24a3ab9e76f8a318446ec5c0cf3c5db07f744aacb5de90f87eaa62139",
+        "spirv-analysis.json": "7ea8be4004dd57eb2636bc393814cf3a5e5fa977c51f2ea84335d209d5e9d563"
+      },
+      "patch_manifest": {
+        "scope": "Diagnostic interception restricted to four exact captured camera-view fragment programs. Adds NoContraction decorations to seven pre-normalization arithmetic results: UV scaling/add, projection add/div for X/Y, orientation MatrixTimesVector. No other words, normalization instruction, cloud density, output arithmetic or resource binding change. Both production-reference and lookup-candidate view passes receive the same restriction; this is not an unmodified-production comparison.",
+        "specification": "https://registry.khronos.org/SPIR-V/specs/unified1/SPIRV.html#_a_id_decoration_a_decoration",
+        "rows": [
+          {
+            "slot": 0,
+            "captured_module": 406,
+            "original_sha256": "e872723a9d26bf4a68d200ddfa58bd3561516b1b3dea2659aca2da668b5f566f",
+            "patched_sha256": "590e3d73cbafb39f471f9758d30b95211925c8ef11db9da04ae89486859687d2",
+            "original_bytes": 30448,
+            "patched_bytes": 30532,
+            "targets": [
+              {
+                "opcode": 142,
+                "result_id": 2045,
+                "word_offset": 1990
+              },
+              {
+                "opcode": 129,
+                "result_id": 2047,
+                "word_offset": 2000
+              },
+              {
+                "opcode": 129,
+                "result_id": 2061,
+                "word_offset": 2032
+              },
+              {
+                "opcode": 136,
+                "result_id": 2064,
+                "word_offset": 2047
+              },
+              {
+                "opcode": 129,
+                "result_id": 2070,
+                "word_offset": 2079
+              },
+              {
+                "opcode": 136,
+                "result_id": 2073,
+                "word_offset": 2094
+              },
+              {
+                "opcode": 145,
+                "result_id": 2083,
+                "word_offset": 2141
+              }
+            ],
+            "insertion_word_offset": 637
+          },
+          {
+            "slot": 1,
+            "captured_module": 408,
+            "original_sha256": "cfeae48fa315240ed5e456d541b6677d258cd209dc291d4826ade11b6542ee1f",
+            "patched_sha256": "2f089caecc2388c59ecc24a764484e425fb85fc6a2022235d65338e64e5e8f7a",
+            "original_bytes": 46068,
+            "patched_bytes": 46152,
+            "targets": [
+              {
+                "opcode": 142,
+                "result_id": 2045,
+                "word_offset": 2146
+              },
+              {
+                "opcode": 129,
+                "result_id": 2047,
+                "word_offset": 2156
+              },
+              {
+                "opcode": 129,
+                "result_id": 2061,
+                "word_offset": 2188
+              },
+              {
+                "opcode": 136,
+                "result_id": 2064,
+                "word_offset": 2203
+              },
+              {
+                "opcode": 129,
+                "result_id": 2070,
+                "word_offset": 2235
+              },
+              {
+                "opcode": 136,
+                "result_id": 2073,
+                "word_offset": 2250
+              },
+              {
+                "opcode": 145,
+                "result_id": 2083,
+                "word_offset": 2297
+              }
+            ],
+            "insertion_word_offset": 619
+          },
+          {
+            "slot": 2,
+            "captured_module": 424,
+            "original_sha256": "c8734fe0da762e2295758c5328e44146feea26f74a0a5ccd9648e03b19babed8",
+            "patched_sha256": "dc03d4b7bc3ec8ab132c47377a2314e957e905fafdedf96c10f56660b1238d4b",
+            "original_bytes": 30448,
+            "patched_bytes": 30532,
+            "targets": [
+              {
+                "opcode": 142,
+                "result_id": 2052,
+                "word_offset": 1990
+              },
+              {
+                "opcode": 129,
+                "result_id": 2054,
+                "word_offset": 2000
+              },
+              {
+                "opcode": 129,
+                "result_id": 2068,
+                "word_offset": 2032
+              },
+              {
+                "opcode": 136,
+                "result_id": 2071,
+                "word_offset": 2047
+              },
+              {
+                "opcode": 129,
+                "result_id": 2077,
+                "word_offset": 2079
+              },
+              {
+                "opcode": 136,
+                "result_id": 2080,
+                "word_offset": 2094
+              },
+              {
+                "opcode": 145,
+                "result_id": 2090,
+                "word_offset": 2141
+              }
+            ],
+            "insertion_word_offset": 637
+          },
+          {
+            "slot": 3,
+            "captured_module": 426,
+            "original_sha256": "4a9f5bd4f5481b23777a392abc139fb82ec5b2f58f8c4477a6357f3b262d1f78",
+            "patched_sha256": "bec8f43fd1abefb92d7c2349e361c5dcc41d8cf1c5cc7ac732debd340b9f6918",
+            "original_bytes": 46276,
+            "patched_bytes": 46360,
+            "targets": [
+              {
+                "opcode": 142,
+                "result_id": 2052,
+                "word_offset": 2146
+              },
+              {
+                "opcode": 129,
+                "result_id": 2054,
+                "word_offset": 2156
+              },
+              {
+                "opcode": 129,
+                "result_id": 2068,
+                "word_offset": 2188
+              },
+              {
+                "opcode": 136,
+                "result_id": 2071,
+                "word_offset": 2203
+              },
+              {
+                "opcode": 129,
+                "result_id": 2077,
+                "word_offset": 2235
+              },
+              {
+                "opcode": 136,
+                "result_id": 2080,
+                "word_offset": 2250
+              },
+              {
+                "opcode": 145,
+                "result_id": 2090,
+                "word_offset": 2297
+              }
+            ],
+            "insertion_word_offset": 619
+          }
+        ]
+      },
+      "all_four_patch_programs_observed_in_actual_sky_draws": true
+    },
+    {
+      "label": "scalar-rays-mixed01",
+      "checks": 87,
+      "failures": 6,
+      "other_engines_absent": true,
+      "errors": [
+        "FAIL held sky 0",
+        "FAIL raw held cloud buffer 0",
+        "FAIL exact sky candidate",
+        "FAIL exact raw cloud buffer candidate",
+        "FAIL exact sky restore",
+        "FAIL exact raw cloud buffer restore"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-spirv-20261010/scalar-rays-mixed01",
+      "actual_sky_draws": 17098,
+      "actual_sky_fragment_programs": 8,
+      "restored_reference_same_observed_draw_state": true,
+      "restored_reference_cloud_buffer_changed": true,
+      "evidence_sha256": {
+        "run.json": "749ab445b46b88486d4608fdfcb70caabaf3831dc341d7ff84f48e2f79b641af",
+        "cloud-sky-inputs.json": "640302407a95c9f415f4472d5c25b1e5d1f65a7e6137f3159e46bfaabfdd06bc",
+        "draw-analysis.json": "881efb05bc75f292d870db1ffb61753744d58f0fe79e5d3c5f6f33dd2167424d",
+        "spirv-analysis.json": "27950259498c0bd21209bd0f6e50b44b52fb0b617bde7c027f8598235c4c8681"
+      },
+      "patch_manifest": {
+        "scope": "Diagnostic byte-matched view-fragment substitution only. Replace one MatrixTimesVector with column products and left-associated adds; replace one GLSL Normalize with explicit component squares, left-associated adds, GLSL InverseSqrt and vector scale. Decorate all 17 relevant pre-normalization/expanded arithmetic results NoContraction. InverseSqrt retains its specified implementation precision; no exact original-map, performance or production acceptance claim. Other instructions and bindings remain unchanged.",
+        "specification": "https://registry.khronos.org/SPIR-V/specs/unified1/SPIRV.html#_a_id_decoration_a_decoration",
+        "rows": [
+          {
+            "slot": 0,
+            "captured_module": 406,
+            "original_sha256": "e872723a9d26bf4a68d200ddfa58bd3561516b1b3dea2659aca2da668b5f566f",
+            "patched_sha256": "9c9565723b0343580adaea794ce7d8babfd700c3d3875e54353f446c71c6303e",
+            "original_bytes": 30448,
+            "patched_bytes": 31032,
+            "original_id_bound": 3201,
+            "new_id_bound": 3220,
+            "matrix_result_id": 2083,
+            "normalized_result_id": 2085,
+            "no_contraction_ids": [
+              2045,
+              2047,
+              2061,
+              2064,
+              2070,
+              2073,
+              3203,
+              3206,
+              3209,
+              3210,
+              2083,
+              3212,
+              3214,
+              3216,
+              3217,
+              3218,
+              2085
+            ],
+            "replaced_word_offsets": [
+              2141,
+              2153
+            ],
+            "matrix_instruction_words": [
+              327761,
+              7,
+              3201,
+              2081,
+              0,
+              327761,
+              6,
+              3202,
+              2082,
+              0,
+              327822,
+              7,
+              3203,
+              3201,
+              3202,
+              327761,
+              7,
+              3204,
+              2081,
+              1,
+              327761,
+              6,
+              3205,
+              2082,
+              1,
+              327822,
+              7,
+              3206,
+              3204,
+              3205,
+              327761,
+              7,
+              3207,
+              2081,
+              2,
+              327761,
+              6,
+              3208,
+              2082,
+              2,
+              327822,
+              7,
+              3209,
+              3207,
+              3208,
+              327809,
+              7,
+              3210,
+              3203,
+              3206,
+              327809,
+              7,
+              2083,
+              3210,
+              3209
+            ],
+            "normalization_instruction_words": [
+              327761,
+              6,
+              3211,
+              2084,
+              0,
+              327813,
+              6,
+              3212,
+              3211,
+              3211,
+              327761,
+              6,
+              3213,
+              2084,
+              1,
+              327813,
+              6,
+              3214,
+              3213,
+              3213,
+              327761,
+              6,
+              3215,
+              2084,
+              2,
+              327813,
+              6,
+              3216,
+              3215,
+              3215,
+              327809,
+              6,
+              3217,
+              3212,
+              3214,
+              327809,
+              6,
+              3218,
+              3217,
+              3216,
+              393228,
+              6,
+              3219,
+              1,
+              32,
+              3218,
+              327822,
+              7,
+              2085,
+              2084,
+              3219
+            ]
+          },
+          {
+            "slot": 1,
+            "captured_module": 408,
+            "original_sha256": "cfeae48fa315240ed5e456d541b6677d258cd209dc291d4826ade11b6542ee1f",
+            "patched_sha256": "8acd7fd2fbac9eaa2769b5894c430fab2de9909e156c66ad59a4051a31242182",
+            "original_bytes": 46068,
+            "patched_bytes": 46652,
+            "original_id_bound": 3201,
+            "new_id_bound": 3220,
+            "matrix_result_id": 2083,
+            "normalized_result_id": 2085,
+            "no_contraction_ids": [
+              2045,
+              2047,
+              2061,
+              2064,
+              2070,
+              2073,
+              3203,
+              3206,
+              3209,
+              3210,
+              2083,
+              3212,
+              3214,
+              3216,
+              3217,
+              3218,
+              2085
+            ],
+            "replaced_word_offsets": [
+              2297,
+              2309
+            ],
+            "matrix_instruction_words": [
+              327761,
+              7,
+              3201,
+              2081,
+              0,
+              327761,
+              6,
+              3202,
+              2082,
+              0,
+              327822,
+              7,
+              3203,
+              3201,
+              3202,
+              327761,
+              7,
+              3204,
+              2081,
+              1,
+              327761,
+              6,
+              3205,
+              2082,
+              1,
+              327822,
+              7,
+              3206,
+              3204,
+              3205,
+              327761,
+              7,
+              3207,
+              2081,
+              2,
+              327761,
+              6,
+              3208,
+              2082,
+              2,
+              327822,
+              7,
+              3209,
+              3207,
+              3208,
+              327809,
+              7,
+              3210,
+              3203,
+              3206,
+              327809,
+              7,
+              2083,
+              3210,
+              3209
+            ],
+            "normalization_instruction_words": [
+              327761,
+              6,
+              3211,
+              2084,
+              0,
+              327813,
+              6,
+              3212,
+              3211,
+              3211,
+              327761,
+              6,
+              3213,
+              2084,
+              1,
+              327813,
+              6,
+              3214,
+              3213,
+              3213,
+              327761,
+              6,
+              3215,
+              2084,
+              2,
+              327813,
+              6,
+              3216,
+              3215,
+              3215,
+              327809,
+              6,
+              3217,
+              3212,
+              3214,
+              327809,
+              6,
+              3218,
+              3217,
+              3216,
+              393228,
+              6,
+              3219,
+              1,
+              32,
+              3218,
+              327822,
+              7,
+              2085,
+              2084,
+              3219
+            ]
+          },
+          {
+            "slot": 2,
+            "captured_module": 424,
+            "original_sha256": "c8734fe0da762e2295758c5328e44146feea26f74a0a5ccd9648e03b19babed8",
+            "patched_sha256": "173aedddef541f6782b0471bf9556329aee8e214d9134c8f8a589d5e4850765a",
+            "original_bytes": 30448,
+            "patched_bytes": 31032,
+            "original_id_bound": 3208,
+            "new_id_bound": 3227,
+            "matrix_result_id": 2090,
+            "normalized_result_id": 2092,
+            "no_contraction_ids": [
+              2052,
+              2054,
+              2068,
+              2071,
+              2077,
+              2080,
+              3210,
+              3213,
+              3216,
+              3217,
+              2090,
+              3219,
+              3221,
+              3223,
+              3224,
+              3225,
+              2092
+            ],
+            "replaced_word_offsets": [
+              2141,
+              2153
+            ],
+            "matrix_instruction_words": [
+              327761,
+              7,
+              3208,
+              2088,
+              0,
+              327761,
+              6,
+              3209,
+              2089,
+              0,
+              327822,
+              7,
+              3210,
+              3208,
+              3209,
+              327761,
+              7,
+              3211,
+              2088,
+              1,
+              327761,
+              6,
+              3212,
+              2089,
+              1,
+              327822,
+              7,
+              3213,
+              3211,
+              3212,
+              327761,
+              7,
+              3214,
+              2088,
+              2,
+              327761,
+              6,
+              3215,
+              2089,
+              2,
+              327822,
+              7,
+              3216,
+              3214,
+              3215,
+              327809,
+              7,
+              3217,
+              3210,
+              3213,
+              327809,
+              7,
+              2090,
+              3217,
+              3216
+            ],
+            "normalization_instruction_words": [
+              327761,
+              6,
+              3218,
+              2091,
+              0,
+              327813,
+              6,
+              3219,
+              3218,
+              3218,
+              327761,
+              6,
+              3220,
+              2091,
+              1,
+              327813,
+              6,
+              3221,
+              3220,
+              3220,
+              327761,
+              6,
+              3222,
+              2091,
+              2,
+              327813,
+              6,
+              3223,
+              3222,
+              3222,
+              327809,
+              6,
+              3224,
+              3219,
+              3221,
+              327809,
+              6,
+              3225,
+              3224,
+              3223,
+              393228,
+              6,
+              3226,
+              1,
+              32,
+              3225,
+              327822,
+              7,
+              2092,
+              2091,
+              3226
+            ]
+          },
+          {
+            "slot": 3,
+            "captured_module": 426,
+            "original_sha256": "4a9f5bd4f5481b23777a392abc139fb82ec5b2f58f8c4477a6357f3b262d1f78",
+            "patched_sha256": "abd006123ccee17180298516aa61385a7269400f46d142671d1e36c6c9a86d9a",
+            "original_bytes": 46276,
+            "patched_bytes": 46860,
+            "original_id_bound": 3208,
+            "new_id_bound": 3227,
+            "matrix_result_id": 2090,
+            "normalized_result_id": 2092,
+            "no_contraction_ids": [
+              2052,
+              2054,
+              2068,
+              2071,
+              2077,
+              2080,
+              3210,
+              3213,
+              3216,
+              3217,
+              2090,
+              3219,
+              3221,
+              3223,
+              3224,
+              3225,
+              2092
+            ],
+            "replaced_word_offsets": [
+              2297,
+              2309
+            ],
+            "matrix_instruction_words": [
+              327761,
+              7,
+              3208,
+              2088,
+              0,
+              327761,
+              6,
+              3209,
+              2089,
+              0,
+              327822,
+              7,
+              3210,
+              3208,
+              3209,
+              327761,
+              7,
+              3211,
+              2088,
+              1,
+              327761,
+              6,
+              3212,
+              2089,
+              1,
+              327822,
+              7,
+              3213,
+              3211,
+              3212,
+              327761,
+              7,
+              3214,
+              2088,
+              2,
+              327761,
+              6,
+              3215,
+              2089,
+              2,
+              327822,
+              7,
+              3216,
+              3214,
+              3215,
+              327809,
+              7,
+              3217,
+              3210,
+              3213,
+              327809,
+              7,
+              2090,
+              3217,
+              3216
+            ],
+            "normalization_instruction_words": [
+              327761,
+              6,
+              3218,
+              2091,
+              0,
+              327813,
+              6,
+              3219,
+              3218,
+              3218,
+              327761,
+              6,
+              3220,
+              2091,
+              1,
+              327813,
+              6,
+              3221,
+              3220,
+              3220,
+              327761,
+              6,
+              3222,
+              2091,
+              2,
+              327813,
+              6,
+              3223,
+              3222,
+              3222,
+              327809,
+              6,
+              3224,
+              3219,
+              3221,
+              327809,
+              6,
+              3225,
+              3224,
+              3223,
+              393228,
+              6,
+              3226,
+              1,
+              32,
+              3225,
+              327822,
+              7,
+              2092,
+              2091,
+              3226
+            ]
+          }
+        ]
+      },
+      "all_four_patch_programs_observed_in_actual_sky_draws": true
+    },
+    {
+      "label": "uvy-source-mixed01",
+      "checks": 80,
+      "failures": 2,
+      "other_engines_absent": true,
+      "errors": [
+        "FAIL exact raw cloud buffer candidate",
+        "FAIL exact raw cloud buffer restore"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-spirv-20261010/uvy-source-mixed01",
+      "actual_sky_draws": 17028,
+      "actual_sky_fragment_programs": 8,
+      "restored_reference_same_observed_draw_state": true,
+      "restored_reference_cloud_buffer_changed": true,
+      "evidence_sha256": {
+        "run.json": "9087cff4aad25c94ececa28235c82e82c538fb9265fea6ea1322d5c9cdd56646",
+        "cloud-sky-inputs.json": "f95ff618cbdfd4c0e8863209f91199aa73aadfb96a78f008166170c115dc52c6",
+        "draw-analysis.json": "e69442002e13e83ab9340796f945d06947b64e49d829ae4d435c77a770187904",
+        "spirv-analysis.json": "603ebf6c326d66eba85216aecb453f7b395bde473ffe7f1c4d2e88f405b20be8",
+        "scalar-map-analysis.json": "c76103b9b0c7ea7cf3a0619a2c2340822a8d3003580e75517e610c136758700f"
+      },
+      "scalar_map_analysis": {
+        "scope": "Exact 11+11+10-bit native half-float codec. All exhaustive byte-strip checks pass. Preserves actual red output; final encoded-colour images are diagnostic only. Scalar meaning determined by run arguments and any exact SPIR-V substitutions; an unpatched uvy run encodes remapped SCREEN_UV.y. Excludes bottom nine rows.",
+        "rows": [
+          {
+            "file": "half-0-first.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "ba5c4739c8e4166815ba39e606b1d3f161a6a4d6fd4a2d340c9d89f02c8257e6",
+            "raw_sha256": "23f602227e3fa4b46839762e3285855704dbfc4b0ab20baf5da7bae360b91110",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": 0.0004630088806152344,
+            "scalar_max": 0.9912036657333374
+          },
+          {
+            "file": "half-0-held.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "ba5c4739c8e4166815ba39e606b1d3f161a6a4d6fd4a2d340c9d89f02c8257e6",
+            "raw_sha256": "23f602227e3fa4b46839762e3285855704dbfc4b0ab20baf5da7bae360b91110",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": 0.0004630088806152344,
+            "scalar_max": 0.9912036657333374
+          },
+          {
+            "file": "half-1-first.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "c65d45d1a7b48c1a5a039f210abfce9c1eea8b80315278ccff43ec4eda23ce5e",
+            "scalar_sha256": "ba5c4739c8e4166815ba39e606b1d3f161a6a4d6fd4a2d340c9d89f02c8257e6",
+            "raw_sha256": "436d00e88eec35809dc9acb33afde25e1bf519762f08e56fc164f96fa55e1404",
+            "vs_first": {
+              "red_changed": 8414,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 8414,
+              "red_peak": 0.031005859375,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": 0.0004630088806152344,
+            "scalar_max": 0.9912036657333374
+          },
+          {
+            "file": "half-1-held.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "c65d45d1a7b48c1a5a039f210abfce9c1eea8b80315278ccff43ec4eda23ce5e",
+            "scalar_sha256": "ba5c4739c8e4166815ba39e606b1d3f161a6a4d6fd4a2d340c9d89f02c8257e6",
+            "raw_sha256": "436d00e88eec35809dc9acb33afde25e1bf519762f08e56fc164f96fa55e1404",
+            "vs_first": {
+              "red_changed": 8414,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 8414,
+              "red_peak": 0.031005859375,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": 0.0004630088806152344,
+            "scalar_max": 0.9912036657333374
+          },
+          {
+            "file": "half-2-first.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "c65d45d1a7b48c1a5a039f210abfce9c1eea8b80315278ccff43ec4eda23ce5e",
+            "scalar_sha256": "ba5c4739c8e4166815ba39e606b1d3f161a6a4d6fd4a2d340c9d89f02c8257e6",
+            "raw_sha256": "436d00e88eec35809dc9acb33afde25e1bf519762f08e56fc164f96fa55e1404",
+            "vs_first": {
+              "red_changed": 8414,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 8414,
+              "red_peak": 0.031005859375,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": 0.0004630088806152344,
+            "scalar_max": 0.9912036657333374
+          },
+          {
+            "file": "half-2-held.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "c65d45d1a7b48c1a5a039f210abfce9c1eea8b80315278ccff43ec4eda23ce5e",
+            "scalar_sha256": "ba5c4739c8e4166815ba39e606b1d3f161a6a4d6fd4a2d340c9d89f02c8257e6",
+            "raw_sha256": "436d00e88eec35809dc9acb33afde25e1bf519762f08e56fc164f96fa55e1404",
+            "vs_first": {
+              "red_changed": 8414,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 8414,
+              "red_peak": 0.031005859375,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": 0.0004630088806152344,
+            "scalar_max": 0.9912036657333374
+          },
+          {
+            "file": "half-3-first.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "c65d45d1a7b48c1a5a039f210abfce9c1eea8b80315278ccff43ec4eda23ce5e",
+            "scalar_sha256": "ba5c4739c8e4166815ba39e606b1d3f161a6a4d6fd4a2d340c9d89f02c8257e6",
+            "raw_sha256": "436d00e88eec35809dc9acb33afde25e1bf519762f08e56fc164f96fa55e1404",
+            "vs_first": {
+              "red_changed": 8414,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 8414,
+              "red_peak": 0.031005859375,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": 0.0004630088806152344,
+            "scalar_max": 0.9912036657333374
+          },
+          {
+            "file": "half-3-held.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "c65d45d1a7b48c1a5a039f210abfce9c1eea8b80315278ccff43ec4eda23ce5e",
+            "scalar_sha256": "ba5c4739c8e4166815ba39e606b1d3f161a6a4d6fd4a2d340c9d89f02c8257e6",
+            "raw_sha256": "436d00e88eec35809dc9acb33afde25e1bf519762f08e56fc164f96fa55e1404",
+            "vs_first": {
+              "red_changed": 8414,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 8414,
+              "red_peak": 0.031005859375,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": 0.0004630088806152344,
+            "scalar_max": 0.9912036657333374
+          }
+        ]
+      }
+    },
+    {
+      "label": "raw-uvy-mixed01",
+      "checks": 80,
+      "failures": 1,
+      "other_engines_absent": true,
+      "errors": [
+        "FAIL exact raw cloud buffer restore"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-spirv-20261010/raw-uvy-mixed01",
+      "actual_sky_draws": 17038,
+      "actual_sky_fragment_programs": 8,
+      "restored_reference_same_observed_draw_state": true,
+      "restored_reference_cloud_buffer_changed": true,
+      "evidence_sha256": {
+        "run.json": "63b205d3e91e675f7e8ba0814880f6f287d88e2e7b3b986982fe35ff96a140fb",
+        "cloud-sky-inputs.json": "8708fb4dbfa18b8b21c9970d43d0886797ee963a35afcd8bc74d121f52579f17",
+        "draw-analysis.json": "3dc0ee95e85a64f9a08f9323dc1c3539984e94858a49c6666e19eb99efdef1ee",
+        "spirv-analysis.json": "9e521bf1a3ba8cc8d8457de49d8e7f4df097271924647aecada3ad9a4038fa1b",
+        "scalar-map-analysis.json": "32c664cf31eb578e8f2679eb691d297b2f2d30eeefe7c1de8c824ac2299a4b8e"
+      },
+      "patch_manifest": {
+        "scope": "Diagnostic output probe only. In two half-resolution fragment modules, redirect the one floatBitsToUint(SCREEN_UV.y) encoder operand to the existing raw uv_interp.y load actually used by camera projection. Cloud marching, ray generation, metadata/codec rows and all remaining instruction words stay byte-identical. Full-view modules are byte-identical identity matches for the four-slot diagnostic interceptor. Encoded-colour images are not quality evidence.",
+        "rows": [
+          {
+            "slot": 0,
+            "captured_module": 408,
+            "pass": "3840x2160",
+            "change_kind": "identity_forward",
+            "changes": [],
+            "dataflow": null,
+            "original_sha256": "e8aacc758d0e569aefa8bb41b5b854df8e6709d715d2c97052afc25281c0a662",
+            "patched_sha256": "e8aacc758d0e569aefa8bb41b5b854df8e6709d715d2c97052afc25281c0a662",
+            "bytes": 30448
+          },
+          {
+            "slot": 1,
+            "captured_module": 406,
+            "pass": "1920x1080",
+            "change_kind": "raw_uvy_encoder_operand",
+            "changes": [
+              {
+                "word_offset": 2848,
+                "old": 2191,
+                "new": 2067
+              }
+            ],
+            "dataflow": {
+              "input_variable_id": 2043,
+              "input_vector_load_id": 2044,
+              "remapped_vector_id": 2047,
+              "encoded_remapped_y_id": 2191,
+              "encoded_raw_y_id": 2067
+            },
+            "original_sha256": "02741023fd24526b4e5639caf351bd87fa630184c8fc17af6011ba1c5a60fd0c",
+            "patched_sha256": "52644bf32adc8b63205552f45eb2688996e3d908c88e16d37cf9ef67f45288b4",
+            "bytes": 47132
+          },
+          {
+            "slot": 2,
+            "captured_module": 422,
+            "pass": "3840x2160",
+            "change_kind": "identity_forward",
+            "changes": [],
+            "dataflow": null,
+            "original_sha256": "50e56b40124912d08d1e23b5937df5fb747007b03f11746d8c20737312b1f3ab",
+            "patched_sha256": "50e56b40124912d08d1e23b5937df5fb747007b03f11746d8c20737312b1f3ab",
+            "bytes": 30448
+          },
+          {
+            "slot": 3,
+            "captured_module": 424,
+            "pass": "1920x1080",
+            "change_kind": "raw_uvy_encoder_operand",
+            "changes": [
+              {
+                "word_offset": 2848,
+                "old": 2198,
+                "new": 2074
+              }
+            ],
+            "dataflow": {
+              "input_variable_id": 2050,
+              "input_vector_load_id": 2051,
+              "remapped_vector_id": 2054,
+              "encoded_remapped_y_id": 2198,
+              "encoded_raw_y_id": 2074
+            },
+            "original_sha256": "c91a6c8dba76b39335fa9fc75e88303fc2f9c8045f9b12f8027bdd87158be0d8",
+            "patched_sha256": "8b2d5d73fbcc547a08e4c6f726fd22872d91397179f1ced10cf91a76129380c7",
+            "bytes": 47340
+          }
+        ]
+      },
+      "all_four_patch_programs_observed_in_actual_sky_draws": true,
+      "scalar_map_analysis": {
+        "scope": "Exact 11+11+10-bit native half-float codec. All exhaustive byte-strip checks pass. Preserves actual red output; final encoded-colour images are diagnostic only. Scalar meaning determined by run arguments and any exact SPIR-V substitutions; an unpatched uvy run encodes remapped SCREEN_UV.y. Excludes bottom nine rows.",
+        "rows": [
+          {
+            "file": "half-0-first.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "e437120188950b8c58b353114be7d718ff1c5e87ecf090fbbe9dae373a30c079",
+            "raw_sha256": "92efc622a58d83ab4c31f34a4e3a8c8fb62bb195cd0dd6ae1e8373a91339cc7e",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9990739822387695,
+            "scalar_max": 0.9824073910713196
+          },
+          {
+            "file": "half-0-held.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "e437120188950b8c58b353114be7d718ff1c5e87ecf090fbbe9dae373a30c079",
+            "raw_sha256": "92efc622a58d83ab4c31f34a4e3a8c8fb62bb195cd0dd6ae1e8373a91339cc7e",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9990739822387695,
+            "scalar_max": 0.9824073910713196
+          },
+          {
+            "file": "half-1-first.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "e437120188950b8c58b353114be7d718ff1c5e87ecf090fbbe9dae373a30c079",
+            "raw_sha256": "92efc622a58d83ab4c31f34a4e3a8c8fb62bb195cd0dd6ae1e8373a91339cc7e",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9990739822387695,
+            "scalar_max": 0.9824073910713196
+          },
+          {
+            "file": "half-1-held.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "e437120188950b8c58b353114be7d718ff1c5e87ecf090fbbe9dae373a30c079",
+            "raw_sha256": "92efc622a58d83ab4c31f34a4e3a8c8fb62bb195cd0dd6ae1e8373a91339cc7e",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9990739822387695,
+            "scalar_max": 0.9824073910713196
+          },
+          {
+            "file": "half-2-first.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "e437120188950b8c58b353114be7d718ff1c5e87ecf090fbbe9dae373a30c079",
+            "raw_sha256": "92efc622a58d83ab4c31f34a4e3a8c8fb62bb195cd0dd6ae1e8373a91339cc7e",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9990739822387695,
+            "scalar_max": 0.9824073910713196
+          },
+          {
+            "file": "half-2-held.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "e437120188950b8c58b353114be7d718ff1c5e87ecf090fbbe9dae373a30c079",
+            "raw_sha256": "92efc622a58d83ab4c31f34a4e3a8c8fb62bb195cd0dd6ae1e8373a91339cc7e",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9990739822387695,
+            "scalar_max": 0.9824073910713196
+          },
+          {
+            "file": "half-3-first.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "c65d45d1a7b48c1a5a039f210abfce9c1eea8b80315278ccff43ec4eda23ce5e",
+            "scalar_sha256": "e437120188950b8c58b353114be7d718ff1c5e87ecf090fbbe9dae373a30c079",
+            "raw_sha256": "bec59f899ed32816e593a02cfeda385a5c88bb9ad622d7f0c1d936dcc7ee23dd",
+            "vs_first": {
+              "red_changed": 8414,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 8414,
+              "red_peak": 0.031005859375,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9990739822387695,
+            "scalar_max": 0.9824073910713196
+          },
+          {
+            "file": "half-3-held.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "c65d45d1a7b48c1a5a039f210abfce9c1eea8b80315278ccff43ec4eda23ce5e",
+            "scalar_sha256": "e437120188950b8c58b353114be7d718ff1c5e87ecf090fbbe9dae373a30c079",
+            "raw_sha256": "bec59f899ed32816e593a02cfeda385a5c88bb9ad622d7f0c1d936dcc7ee23dd",
+            "vs_first": {
+              "red_changed": 8414,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 8414,
+              "red_peak": 0.031005859375,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9990739822387695,
+            "scalar_max": 0.9824073910713196
+          }
+        ]
+      }
+    },
+    {
+      "label": "raw-uvx-mixed01",
+      "checks": 80,
+      "failures": 2,
+      "other_engines_absent": true,
+      "errors": [
+        "FAIL exact raw cloud buffer candidate",
+        "FAIL exact raw cloud buffer repeat"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-sky-spirv-20261010/raw-uvx-mixed01",
+      "actual_sky_draws": 17058,
+      "actual_sky_fragment_programs": 8,
+      "restored_reference_same_observed_draw_state": true,
+      "restored_reference_cloud_buffer_changed": false,
+      "evidence_sha256": {
+        "run.json": "02f621586c998f0f55ff983f6285c73963bca969e6960b321614a4e8409c2153",
+        "cloud-sky-inputs.json": "7b0397cc59911b48964e14a0d516b6f262ce85a46cf5d742014191fab2214e9b",
+        "draw-analysis.json": "5579c7e822d39b2d577924e92a3669290d3cee73fc946815c568b650812bab76",
+        "spirv-analysis.json": "d2899d283683a8d5284f935fa0be72754887fe7ae5184c4a1f80635dbdc17364",
+        "scalar-map-analysis.json": "a8b0f40530cd7bf6be941ae8134fd2ff8fa3dd434805f0bea240edc99293fc80"
+      },
+      "patch_manifest": {
+        "scope": "Diagnostic output probe only. In two half-resolution fragment modules, redirect the one floatBitsToUint(SCREEN_UV.y) encoder operand to the existing raw uv_interp.x load actually used by camera projection. Cloud marching, ray generation, metadata/codec rows and all remaining instruction words stay byte-identical. Full-view modules are byte-identical identity matches for the four-slot diagnostic interceptor. Encoded-colour images are not quality evidence.",
+        "rows": [
+          {
+            "slot": 0,
+            "captured_module": 408,
+            "pass": "3840x2160",
+            "change_kind": "identity_forward",
+            "changes": [],
+            "dataflow": null,
+            "original_sha256": "e8aacc758d0e569aefa8bb41b5b854df8e6709d715d2c97052afc25281c0a662",
+            "patched_sha256": "e8aacc758d0e569aefa8bb41b5b854df8e6709d715d2c97052afc25281c0a662",
+            "bytes": 30448
+          },
+          {
+            "slot": 1,
+            "captured_module": 406,
+            "pass": "1920x1080",
+            "change_kind": "raw_uvx_encoder_operand",
+            "changes": [
+              {
+                "word_offset": 2848,
+                "old": 2191,
+                "new": 2053
+              }
+            ],
+            "dataflow": {
+              "input_variable_id": 2043,
+              "input_vector_load_id": 2044,
+              "remapped_vector_id": 2047,
+              "encoded_remapped_y_id": 2191,
+              "encoded_raw_x_id": 2053
+            },
+            "original_sha256": "02741023fd24526b4e5639caf351bd87fa630184c8fc17af6011ba1c5a60fd0c",
+            "patched_sha256": "c9a1b78c9e0a8a38c637871d71ebf59988e121c0d34806d48f00998b4813ec35",
+            "bytes": 47132
+          },
+          {
+            "slot": 2,
+            "captured_module": 422,
+            "pass": "3840x2160",
+            "change_kind": "identity_forward",
+            "changes": [],
+            "dataflow": null,
+            "original_sha256": "50e56b40124912d08d1e23b5937df5fb747007b03f11746d8c20737312b1f3ab",
+            "patched_sha256": "50e56b40124912d08d1e23b5937df5fb747007b03f11746d8c20737312b1f3ab",
+            "bytes": 30448
+          },
+          {
+            "slot": 3,
+            "captured_module": 424,
+            "pass": "1920x1080",
+            "change_kind": "raw_uvx_encoder_operand",
+            "changes": [
+              {
+                "word_offset": 2848,
+                "old": 2198,
+                "new": 2060
+              }
+            ],
+            "dataflow": {
+              "input_variable_id": 2050,
+              "input_vector_load_id": 2051,
+              "remapped_vector_id": 2054,
+              "encoded_remapped_y_id": 2198,
+              "encoded_raw_x_id": 2060
+            },
+            "original_sha256": "c91a6c8dba76b39335fa9fc75e88303fc2f9c8045f9b12f8027bdd87158be0d8",
+            "patched_sha256": "c50660249ef942f53d80599b0e49ea67e5f321d9a39c7d6ffad17dc77159b5f6",
+            "bytes": 47340
+          }
+        ]
+      },
+      "all_four_patch_programs_observed_in_actual_sky_draws": true,
+      "scalar_map_analysis": {
+        "scope": "Exact 11+11+10-bit native half-float codec. All exhaustive byte-strip checks pass. Preserves actual red output; final encoded-colour images are diagnostic only. Scalar meaning determined by run arguments and any exact SPIR-V substitutions; an unpatched uvy run encodes remapped SCREEN_UV.y. Excludes bottom nine rows.",
+        "rows": [
+          {
+            "file": "half-0-first.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "221eb5871a241f2b1b2882fc4d78a4b748b856137154c0f96981e3ba3ffc8601",
+            "raw_sha256": "731890e84016cd816d5ab7da844cd8a565bde79a427ec33f5808df5942dc4359",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9994791150093079,
+            "scalar_max": 0.9994789958000183
+          },
+          {
+            "file": "half-0-held.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "221eb5871a241f2b1b2882fc4d78a4b748b856137154c0f96981e3ba3ffc8601",
+            "raw_sha256": "731890e84016cd816d5ab7da844cd8a565bde79a427ec33f5808df5942dc4359",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9994791150093079,
+            "scalar_max": 0.9994789958000183
+          },
+          {
+            "file": "half-1-first.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "c65d45d1a7b48c1a5a039f210abfce9c1eea8b80315278ccff43ec4eda23ce5e",
+            "scalar_sha256": "221eb5871a241f2b1b2882fc4d78a4b748b856137154c0f96981e3ba3ffc8601",
+            "raw_sha256": "a62f1a29851cf4b895df2ff761aa52047e3eb01b3097598ca2bb652463d9417b",
+            "vs_first": {
+              "red_changed": 8414,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 8414,
+              "red_peak": 0.031005859375,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9994791150093079,
+            "scalar_max": 0.9994789958000183
+          },
+          {
+            "file": "half-1-held.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "c65d45d1a7b48c1a5a039f210abfce9c1eea8b80315278ccff43ec4eda23ce5e",
+            "scalar_sha256": "221eb5871a241f2b1b2882fc4d78a4b748b856137154c0f96981e3ba3ffc8601",
+            "raw_sha256": "a62f1a29851cf4b895df2ff761aa52047e3eb01b3097598ca2bb652463d9417b",
+            "vs_first": {
+              "red_changed": 8414,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 8414,
+              "red_peak": 0.031005859375,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9994791150093079,
+            "scalar_max": 0.9994789958000183
+          },
+          {
+            "file": "half-2-first.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "221eb5871a241f2b1b2882fc4d78a4b748b856137154c0f96981e3ba3ffc8601",
+            "raw_sha256": "731890e84016cd816d5ab7da844cd8a565bde79a427ec33f5808df5942dc4359",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9994791150093079,
+            "scalar_max": 0.9994789958000183
+          },
+          {
+            "file": "half-2-held.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "221eb5871a241f2b1b2882fc4d78a4b748b856137154c0f96981e3ba3ffc8601",
+            "raw_sha256": "731890e84016cd816d5ab7da844cd8a565bde79a427ec33f5808df5942dc4359",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9994791150093079,
+            "scalar_max": 0.9994789958000183
+          },
+          {
+            "file": "half-3-first.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "221eb5871a241f2b1b2882fc4d78a4b748b856137154c0f96981e3ba3ffc8601",
+            "raw_sha256": "731890e84016cd816d5ab7da844cd8a565bde79a427ec33f5808df5942dc4359",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9994791150093079,
+            "scalar_max": 0.9994789958000183
+          },
+          {
+            "file": "half-3-held.bin",
+            "pixels": 2056320,
+            "full_range_codec_errors": 0,
+            "bad_integer_chunks": 0,
+            "red_sha256": "a0d73d7b21d60cd68773c9510031d8411fac4128f156e9a147058fbd88465ad1",
+            "scalar_sha256": "221eb5871a241f2b1b2882fc4d78a4b748b856137154c0f96981e3ba3ffc8601",
+            "raw_sha256": "731890e84016cd816d5ab7da844cd8a565bde79a427ec33f5808df5942dc4359",
+            "vs_first": {
+              "red_changed": 0,
+              "scalar_changed": 0,
+              "both_changed": 0,
+              "red_changed_without_scalar_change": 0,
+              "red_peak": 0.0,
+              "scalar_peak": 0.0
+            },
+            "scalar_min": -0.9994791150093079,
+            "scalar_max": 0.9994789958000183
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,3656 @@
+{
+  "date": "2026-10-10",
+  "status": "Accepted in production source: fixed-cumulus specialization and 160 High sky view samples, with appearance-based qualification. No delivered package change.",
+  "quality_direction": {
+    "user": "Overall new clouds have not been in a new release; they may change as long as they still look good.",
+    "effect": "Appearance and measured performance guide acceptance. Exact native/image equality is retained as diagnostic evidence, not a requirement. Earlier tiny scattering and original renderer A/B variation are not claimed fixed."
+  },
+  "source_audit": {
+    "source_policy": "Current production clouds and sky are copied exactly apart from the local Volume preload and removal of EISky class registration; current volume copied byte-identically. Existing PCK supplies other runtime classes.",
+    "source_sha256": {
+      "game/src/game/fx/clouds.gd": "ecf5c56c27972161478b7dee1563e6cca8bbbd11bcceb3211835e950b4a356fd",
+      "game/src/game/fx/cloud_volume.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+      "game/src/game/sky.gd": "16959e684ecb8423f89e7cba036a6839a53bb647f388c18aa45a5509a6f3506c"
+    },
+    "COMMON_byte_identical": true,
+    "COMMON_sha256": "bafc4c079707e502eb2260a7028f94e5023cd0804ead1e11fe25983b2a308fd4",
+    "final_high_budget": {
+      "view_steps": 160,
+      "light_steps": 5,
+      "resolution": "half",
+      "Low": "96/3 quarter unchanged",
+      "reflection": "64/3 unchanged"
+    }
+  },
+  "generated_shader_audit": {
+    "generated_High_shader_identical_across_measured_candidate_and_final_production": true,
+    "sha256_by_run": {
+      "budget160-fair01": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e",
+      "budget160-mixed01": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e",
+      "budget160-storm01": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e",
+      "budget160-views-fair01": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e",
+      "final-views-storm01": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e",
+      "final-views-mixed01": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e",
+      "final-views-mobile01": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e"
+    }
+  },
+  "implementation": [
+    "High sky specializes exactly fixed cumulus (base .5, spread 0) from the existing density body; other types keep the general body.",
+    "High view quadrature changes 192 to160. Half-resolution, five light samples, normal camera and Sky debanding remain. No temporal history or new texture/cache.",
+    "Low, sheet clouds, shared reflection/shadow density and independent consumer controls remain. COMMON is byte-identical."
+  ],
+  "performance": [
+    {
+      "label": "budget160-fair01",
+      "checks": 27,
+      "failures": 0,
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "viewport": [
+        3840,
+        2160
+      ],
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "evidence_sha256": {
+        "run.json": "7636d980d9b4309b54bf37b5f8c55fa83b4c4d13a7c7c954caccf8bc0f5f5340",
+        "cloud-type-guard.json": "e8122dd6e77ff1e83a2e3c2766a6f39c94c6acc95207c612c360cef4e2c7148f",
+        "reference.gdshader": "22f895c258dec9447423ad7cbc0c2bdf5c12d5e6441c231a958f76256cd5faeb",
+        "candidate.gdshader": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e",
+        "bounds-sky-3-3.png": "41660f8bc135812f0fb3c582723300a03dca422a4934f041ee6d2c3f9f4abb32",
+        "bounds-sky-3-1.png": "a295dec69e2f4193ea0523849fe8fbb068358c5f9b09b1362b5c788954a7ccfc",
+        "bounds-sky-3-2.png": "a295dec69e2f4193ea0523849fe8fbb068358c5f9b09b1362b5c788954a7ccfc",
+        "bounds-sky-3-0.png": "41660f8bc135812f0fb3c582723300a03dca422a4934f041ee6d2c3f9f4abb32"
+      },
+      "cost": {
+        "reference_ms": 3.013999938964845,
+        "candidate_ms": 2.351500034332275,
+        "reduction_percent": 21.980753750781588,
+        "method": "Mean of two medians each, ABBA, 256 warmup and 360 samples per arm; actual GPU timestamps, moving cloud clock. Artificial isolated sky, not whole-game FPS.",
+        "weather": "fair",
+        "candidate_sample_budget": 160,
+        "reference_sample_budget": 192,
+        "arms": [
+          {
+            "arm": 0,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0
+            },
+            "frame_wall_ms": {
+              "max": 30.048,
+              "median": 7.206,
+              "min": 0.525,
+              "p95": 8.792
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1678.572,
+            "path": "sky",
+            "quality": 3,
+            "sample_budget": 160,
+            "samples": 360,
+            "unix_end": 1791666049.43395,
+            "unix_start": 1791666047.75524,
+            "viewport_cpu_ms": {
+              "max": 0.216000005602837,
+              "median": 0.0869999974966049,
+              "min": 0.0689999982714653,
+              "p95": 0.136000007390976
+            },
+            "viewport_gpu_ms": {
+              "max": 3.10400009155273,
+              "median": 3.00399994850159,
+              "min": 2.93400001525879,
+              "p95": 3.06299996376038
+            },
+            "warmup": 256,
+            "weather_case": "fair"
+          },
+          {
+            "arm": 1,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0
+            },
+            "frame_wall_ms": {
+              "max": 16.929,
+              "median": 7.358,
+              "min": 0.537,
+              "p95": 8.807
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1734.466,
+            "path": "sky",
+            "quality": 3,
+            "sample_budget": 160,
+            "samples": 360,
+            "unix_end": 1791666059.23897,
+            "unix_start": 1791666057.50437,
+            "viewport_cpu_ms": {
+              "max": 0.237000003457069,
+              "median": 0.0850000008940697,
+              "min": 0.0689999982714653,
+              "p95": 0.11599999666214
+            },
+            "viewport_gpu_ms": {
+              "max": 2.43099999427795,
+              "median": 2.34899997711182,
+              "min": 2.28399991989136,
+              "p95": 2.38700008392334
+            },
+            "warmup": 256,
+            "weather_case": "fair"
+          },
+          {
+            "arm": 2,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0
+            },
+            "frame_wall_ms": {
+              "max": 16.054,
+              "median": 7.294,
+              "min": 0.535,
+              "p95": 8.684
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1679.803,
+            "path": "sky",
+            "quality": 3,
+            "sample_budget": 160,
+            "samples": 360,
+            "unix_end": 1791666068.62605,
+            "unix_start": 1791666066.94612,
+            "viewport_cpu_ms": {
+              "max": 0.224999994039536,
+              "median": 0.0860000029206276,
+              "min": 0.068000003695488,
+              "p95": 0.166999995708466
+            },
+            "viewport_gpu_ms": {
+              "max": 2.42600011825562,
+              "median": 2.35400009155273,
+              "min": 2.30299997329712,
+              "p95": 2.38599991798401
+            },
+            "warmup": 256,
+            "weather_case": "fair"
+          },
+          {
+            "arm": 3,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0
+            },
+            "frame_wall_ms": {
+              "max": 16.39,
+              "median": 7.706,
+              "min": 0.516,
+              "p95": 8.934
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1774.698,
+            "path": "sky",
+            "quality": 3,
+            "sample_budget": 160,
+            "samples": 360,
+            "unix_end": 1791666078.14117,
+            "unix_start": 1791666076.36633,
+            "viewport_cpu_ms": {
+              "max": 0.202000007033348,
+              "median": 0.0850000008940697,
+              "min": 0.0689999982714653,
+              "p95": 0.109999999403954
+            },
+            "viewport_gpu_ms": {
+              "max": 3.10500001907349,
+              "median": 3.0239999294281,
+              "min": 2.95700001716614,
+              "p95": 3.07500004768372
+            },
+            "warmup": 256,
+            "weather_case": "fair"
+          }
+        ],
+        "foreign_engine_observations_during_arms_with_half_second_margins": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 376447,
+            "mean_max_channel_delta": 0.202350260416667,
+            "peak_delta": 47,
+            "pixels_over_2": 207971,
+            "pixels_over_8": 54427
+          },
+          "path": "sky",
+          "quality": 3
+        }
+      ]
+    },
+    {
+      "label": "budget160-mixed01",
+      "checks": 27,
+      "failures": 0,
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "viewport": [
+        3840,
+        2160
+      ],
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "evidence_sha256": {
+        "run.json": "733968c8085d92550579b090f571e2d46bb54998550b6f252974acb91b6ac1e0",
+        "cloud-type-guard.json": "3822e6880a2063dd0821e6b2f5b8bc38a024517184756688df6e74a1b26e24ca",
+        "reference.gdshader": "22f895c258dec9447423ad7cbc0c2bdf5c12d5e6441c231a958f76256cd5faeb",
+        "candidate.gdshader": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e",
+        "bounds-held-sky-3-0.png": "c394b40b4709fc94b4f4e050c069e34a9d944e632f6bf03367ff91207801ac5e",
+        "bounds-held-sky-3-2.png": "fa7532754bd6426f5f445bfba15c36eeaaf9964b1651155cbf09ba95c001b48b",
+        "bounds-sky-3-3.png": "4f8269a53285dbe4d705bc959e267b59874aafc6262706a02a49daf69ec22330",
+        "bounds-sky-3-1.png": "ec45183f435007091ee6d286519d572ebdeaa29cb5a49cfe323787906ac3814f",
+        "bounds-sky-3-2.png": "ec45183f435007091ee6d286519d572ebdeaa29cb5a49cfe323787906ac3814f",
+        "bounds-sky-3-0.png": "4f8269a53285dbe4d705bc959e267b59874aafc6262706a02a49daf69ec22330"
+      },
+      "cost": {
+        "reference_ms": 6.197000026702884,
+        "candidate_ms": 5.277999877929686,
+        "reduction_percent": 14.829758670537762,
+        "method": "Mean of two medians each, ABBA, 256 warmup and 360 samples per arm; actual GPU timestamps, moving cloud clock. Artificial isolated sky, not whole-game FPS.",
+        "weather": "mixed",
+        "candidate_sample_budget": 160,
+        "reference_sample_budget": 192,
+        "arms": [
+          {
+            "arm": 0,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0
+            },
+            "frame_wall_ms": {
+              "max": 12.823,
+              "median": 6.422,
+              "min": 0.676,
+              "p95": 7.694
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 2305.258,
+            "path": "sky",
+            "quality": 3,
+            "sample_budget": 160,
+            "samples": 360,
+            "unix_end": 1791666267.92256,
+            "unix_start": 1791666265.61715,
+            "viewport_cpu_ms": {
+              "max": 0.507000029087067,
+              "median": 0.0920000001788139,
+              "min": 0.0719999969005585,
+              "p95": 0.184000000357628
+            },
+            "viewport_gpu_ms": {
+              "max": 6.61100006103516,
+              "median": 6.35500001907349,
+              "min": 5.92399978637695,
+              "p95": 6.51300001144409
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 1,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0
+            },
+            "frame_wall_ms": {
+              "max": 15.993,
+              "median": 5.467,
+              "min": 0.667,
+              "p95": 8.054
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1973.443,
+            "path": "sky",
+            "quality": 3,
+            "sample_budget": 160,
+            "samples": 360,
+            "unix_end": 1791666281.51402,
+            "unix_start": 1791666279.54045,
+            "viewport_cpu_ms": {
+              "max": 0.246999993920326,
+              "median": 0.0879999995231628,
+              "min": 0.0649999976158142,
+              "p95": 0.122000001370907
+            },
+            "viewport_gpu_ms": {
+              "max": 5.68100023269653,
+              "median": 5.35799980163574,
+              "min": 4.88100004196167,
+              "p95": 5.54899978637695
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 2,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0
+            },
+            "frame_wall_ms": {
+              "max": 16.01,
+              "median": 5.275,
+              "min": 0.691,
+              "p95": 6.067
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1921.243,
+            "path": "sky",
+            "quality": 3,
+            "sample_budget": 160,
+            "samples": 360,
+            "unix_end": 1791666291.42251,
+            "unix_start": 1791666289.50115,
+            "viewport_cpu_ms": {
+              "max": 0.200000002980232,
+              "median": 0.0879999995231628,
+              "min": 0.0710000023245811,
+              "p95": 0.136999994516373
+            },
+            "viewport_gpu_ms": {
+              "max": 5.50299978256226,
+              "median": 5.19799995422363,
+              "min": 4.85400009155273,
+              "p95": 5.3899998664856
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          },
+          {
+            "arm": 3,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0
+            },
+            "frame_wall_ms": {
+              "max": 7.271,
+              "median": 6.103,
+              "min": 5.084,
+              "p95": 6.427
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 2195.817,
+            "path": "sky",
+            "quality": 3,
+            "sample_budget": 160,
+            "samples": 360,
+            "unix_end": 1791666305.23361,
+            "unix_start": 1791666303.03765,
+            "viewport_cpu_ms": {
+              "max": 0.225999996066093,
+              "median": 0.090999998152256,
+              "min": 0.0719999969005585,
+              "p95": 0.145999997854233
+            },
+            "viewport_gpu_ms": {
+              "max": 6.43800020217896,
+              "median": 6.03900003433228,
+              "min": 5.77199983596802,
+              "p95": 6.36600017547607
+            },
+            "warmup": 256,
+            "weather_case": "mixed"
+          }
+        ],
+        "foreign_engine_observations_during_arms_with_half_second_margins": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 57,
+            "peak_delta": 1,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 5343,
+            "peak_delta": 3,
+            "pixels_over_2": 4
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 1909741,
+            "mean_max_channel_delta": 0.296199966242284,
+            "peak_delta": 29,
+            "pixels_over_2": 116425,
+            "pixels_over_8": 6397
+          },
+          "path": "sky",
+          "quality": 3
+        }
+      ]
+    },
+    {
+      "label": "budget160-storm01",
+      "checks": 27,
+      "failures": 0,
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "viewport": [
+        3840,
+        2160
+      ],
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "evidence_sha256": {
+        "run.json": "a68ca36ac9e3a3e444a4166adfd96e9d81f373b9f8a47bcb70357c688f15df5c",
+        "cloud-type-guard.json": "73d452b47afdb053f2f748f4e801febcd0b6ec890cb37115771ffd385e2ecf0d",
+        "reference.gdshader": "22f895c258dec9447423ad7cbc0c2bdf5c12d5e6441c231a958f76256cd5faeb",
+        "candidate.gdshader": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e",
+        "bounds-sky-3-3.png": "4ac23e1113c3245908f1f4e56fe5f536035c0c3f9ceb6952d73308c5a18c6be4",
+        "bounds-sky-3-1.png": "350f32bf5e233b2fb1dce5c09112809a5f647705813f991293cf5e7705d79b04",
+        "bounds-sky-3-2.png": "350f32bf5e233b2fb1dce5c09112809a5f647705813f991293cf5e7705d79b04",
+        "bounds-sky-3-0.png": "4ac23e1113c3245908f1f4e56fe5f536035c0c3f9ceb6952d73308c5a18c6be4"
+      },
+      "cost": {
+        "reference_ms": 3.682000041008,
+        "candidate_ms": 3.2730000019073504,
+        "reduction_percent": 11.108094365709997,
+        "method": "Mean of two medians each, ABBA, 256 warmup and 360 samples per arm; actual GPU timestamps, moving cloud clock. Artificial isolated sky, not whole-game FPS.",
+        "weather": "storm",
+        "candidate_sample_budget": 160,
+        "reference_sample_budget": 192,
+        "arms": [
+          {
+            "arm": 0,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0
+            },
+            "frame_wall_ms": {
+              "max": 16.556,
+              "median": 7.094,
+              "min": 0.566,
+              "p95": 8.547
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1643.301,
+            "path": "sky",
+            "quality": 3,
+            "sample_budget": 160,
+            "samples": 360,
+            "unix_end": 1791666188.95447,
+            "unix_start": 1791666187.31105,
+            "viewport_cpu_ms": {
+              "max": 0.225999996066093,
+              "median": 0.0839999988675117,
+              "min": 0.068000003695488,
+              "p95": 0.122000001370907
+            },
+            "viewport_gpu_ms": {
+              "max": 3.79699993133545,
+              "median": 3.67000007629395,
+              "min": 3.57999992370605,
+              "p95": 3.73799991607666
+            },
+            "warmup": 256,
+            "weather_case": "storm"
+          },
+          {
+            "arm": 1,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0
+            },
+            "frame_wall_ms": {
+              "max": 16.566,
+              "median": 7.179,
+              "min": 0.557,
+              "p95": 8.637
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1817.985,
+            "path": "sky",
+            "quality": 3,
+            "sample_budget": 160,
+            "samples": 360,
+            "unix_end": 1791666197.86036,
+            "unix_start": 1791666196.04225,
+            "viewport_cpu_ms": {
+              "max": 0.228000000119209,
+              "median": 0.0879999995231628,
+              "min": 0.0670000016689301,
+              "p95": 0.136999994516373
+            },
+            "viewport_gpu_ms": {
+              "max": 3.39400005340576,
+              "median": 3.26799988746643,
+              "min": 3.20700001716614,
+              "p95": 3.32699990272522
+            },
+            "warmup": 256,
+            "weather_case": "storm"
+          },
+          {
+            "arm": 2,
+            "cached": true,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0
+            },
+            "frame_wall_ms": {
+              "max": 16.95,
+              "median": 7.194,
+              "min": 0.532,
+              "p95": 9.051
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 1771.827,
+            "path": "sky",
+            "quality": 3,
+            "sample_budget": 160,
+            "samples": 360,
+            "unix_end": 1791666206.77853,
+            "unix_start": 1791666205.00658,
+            "viewport_cpu_ms": {
+              "max": 0.248999997973442,
+              "median": 0.0890000015497208,
+              "min": 0.068000003695488,
+              "p95": 0.137999996542931
+            },
+            "viewport_gpu_ms": {
+              "max": 3.42199993133545,
+              "median": 3.27800011634827,
+              "min": 3.21000003814697,
+              "p95": 3.34100008010864
+            },
+            "warmup": 256,
+            "weather_case": "storm"
+          },
+          {
+            "arm": 3,
+            "cached": false,
+            "case": "cost",
+            "clock_end": 430.25,
+            "clock_start": 424.266666666667,
+            "draws": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "p95": 0
+            },
+            "frame_wall_ms": {
+              "max": 58.033,
+              "median": 7.358,
+              "min": 0.509,
+              "p95": 16.111
+            },
+            "frames_drawn": 360,
+            "loop_total_ms": 2070.864,
+            "path": "sky",
+            "quality": 3,
+            "sample_budget": 160,
+            "samples": 360,
+            "unix_end": 1791666216.18284,
+            "unix_start": 1791666214.11183,
+            "viewport_cpu_ms": {
+              "max": 0.257999986410141,
+              "median": 0.090999998152256,
+              "min": 0.0670000016689301,
+              "p95": 0.194000005722046
+            },
+            "viewport_gpu_ms": {
+              "max": 3.81599998474121,
+              "median": 3.69400000572205,
+              "min": 3.59800004959106,
+              "p95": 3.76200008392334
+            },
+            "warmup": 256,
+            "weather_case": "storm"
+          }
+        ],
+        "foreign_engine_observations_during_arms_with_half_second_margins": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "comparisons": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 1561262,
+            "mean_max_channel_delta": 0.188436535493827,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "sky",
+          "quality": 3
+        }
+      ]
+    }
+  ],
+  "quality_metrics": [
+    {
+      "label": "budget160-views-fair01",
+      "checks": 33,
+      "failures": 0,
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "viewport": [
+        1200,
+        675
+      ],
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_views.gd": "b9a91346ca6e49f124fe1fe899b1920ba5529e859fe3e50d583da30623c6f1b9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "evidence_sha256": {
+        "run.json": "436864058bde5e52939d515bd1a4a66acb151e1ebdab8506d2b947ac24033c50",
+        "cloud-views.json": "479060d32dd54036ac1d9e4c14f5ab87166925a341cb0795822b2a11e081e823",
+        "reference.gdshader": "22f895c258dec9447423ad7cbc0c2bdf5c12d5e6441c231a958f76256cd5faeb",
+        "candidate.gdshader": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e",
+        "view-upward-0-4.png": "a43a83b4f71cfa0eab76879bf8240f749a849142e11d1e6c3be08584b4768db4",
+        "view-low-evening-0-2.png": "c566281495262e837bbad1a19309e4c68eec8f995f56dd583a9db125faa32e0d",
+        "view-forward-1-2.png": "f55b56f02566e107ccfab20cfcbe1d3c05e820374e2c8650017c29a7e8304653",
+        "view-low-evening-1-0.png": "df60dd86ebfaeb230b33f628242ab35a20ed5792b35596e30bbb72459da533fb",
+        "view-low-evening-0-4.png": "2fccc978d9bad4743b9f9d7ab9cf736510226c4db58570657248fb8097ed67fb",
+        "view-upward-1-4.png": "0950a65344acd7b4b64ec29527b123e68e4de63fe5de8ea42f326e218dc8863c",
+        "view-forward-1-0.png": "e71ca715cf13d7f774ba54bbb23d4c0fc62af61e16b67dc5bcdc47d06036ba26",
+        "view-forward-1-4.png": "6247fcd83ec8b75b28f4590d0220bd2c6c1b762fda3e735fedaef1f6581f0be7",
+        "view-forward-0-4.png": "0abaccd0646e0111da88315aa0401ca7b038b2abd34ea71483f1e8695d13091b",
+        "view-upward-0-0.png": "24e98e4d799e4469675ba2bfa5108d34cd7f4a7b2e3c79101863b3e3111b7ca8",
+        "view-low-evening-0-0.png": "9b5ca50284afbc4430e26df5ad89d6808cc08d54df9baa2f4c1e896609f6e6c1",
+        "view-forward-0-2.png": "29f6c5c72e7e5c883128388e1a634df27449451fe14b3923c5c9a38abc1e87f2",
+        "view-forward-0-0.png": "3bb694bd5e8e398387d37e51ad2d7ad50ad3e6560decdcb59f01d3dcf43dde8d",
+        "view-low-evening-1-4.png": "407c349a84b17187e202735ca4d2aa67f249e8ebe9f6af507a79e4e6b4577eb9",
+        "view-upward-1-2.png": "b8ae669dc0dd09b8930ab051f6a6dd26ca9cbae429fd5edbde96eefbcba8d666",
+        "view-upward-1-0.png": "41158f0e6378d1deb4c049e838f8317091f6ff2ad6185239c3ba6b338d1b7add",
+        "view-low-evening-1-2.png": "bd1d9a65f59488c68c3cdbb7b38585200184b2d85ceb4f1403f9e4d4d08f8465",
+        "view-upward-0-2.png": "08c03edd3e29175b49d21cfa2077fec2a403fcd6f882bd62db7e9b80e1664fd0"
+      },
+      "comparisons": [
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 222352,
+            "mean_max_channel_delta": 0.688745679012346,
+            "peak_delta": 66,
+            "pixels_over_2": 33899,
+            "pixels_over_8": 16640
+          },
+          "step": 1,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 222118,
+            "mean_max_channel_delta": 0.686320987654321,
+            "peak_delta": 63,
+            "pixels_over_2": 33677,
+            "pixels_over_8": 16354
+          },
+          "step": 2,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 222622,
+            "mean_max_channel_delta": 0.687028395061728,
+            "peak_delta": 64,
+            "pixels_over_2": 33657,
+            "pixels_over_8": 16407
+          },
+          "step": 3,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 222654,
+            "mean_max_channel_delta": 0.685161728395062,
+            "peak_delta": 59,
+            "pixels_over_2": 33242,
+            "pixels_over_8": 16311
+          },
+          "step": 4,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 222883,
+            "mean_max_channel_delta": 0.707085185185185,
+            "peak_delta": 67,
+            "pixels_over_2": 34526,
+            "pixels_over_8": 17159
+          },
+          "step": 1,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 222442,
+            "mean_max_channel_delta": 0.708635802469136,
+            "peak_delta": 69,
+            "pixels_over_2": 34327,
+            "pixels_over_8": 17312
+          },
+          "step": 2,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 222901,
+            "mean_max_channel_delta": 0.70987037037037,
+            "peak_delta": 70,
+            "pixels_over_2": 34408,
+            "pixels_over_8": 17231
+          },
+          "step": 3,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 222855,
+            "mean_max_channel_delta": 0.705128395061728,
+            "peak_delta": 63,
+            "pixels_over_2": 34117,
+            "pixels_over_8": 17029
+          },
+          "step": 4,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 36255,
+            "mean_max_channel_delta": 0.132462962962963,
+            "peak_delta": 24,
+            "pixels_over_2": 15435,
+            "pixels_over_8": 1593
+          },
+          "step": 0,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 36134,
+            "mean_max_channel_delta": 0.13161975308642,
+            "peak_delta": 34,
+            "pixels_over_2": 15332,
+            "pixels_over_8": 1550
+          },
+          "step": 1,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 36236,
+            "mean_max_channel_delta": 0.129755555555556,
+            "peak_delta": 28,
+            "pixels_over_2": 15149,
+            "pixels_over_8": 1386
+          },
+          "step": 2,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 36123,
+            "mean_max_channel_delta": 0.131649382716049,
+            "peak_delta": 28,
+            "pixels_over_2": 15235,
+            "pixels_over_8": 1515
+          },
+          "step": 3,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 35867,
+            "mean_max_channel_delta": 0.130871604938272,
+            "peak_delta": 28,
+            "pixels_over_2": 15084,
+            "pixels_over_8": 1514
+          },
+          "step": 4,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 189872,
+            "mean_max_channel_delta": 0.284913580246914,
+            "peak_delta": 35,
+            "pixels_over_2": 7105,
+            "pixels_over_8": 1479
+          },
+          "step": 1,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 190594,
+            "mean_max_channel_delta": 0.286049382716049,
+            "peak_delta": 34,
+            "pixels_over_2": 7128,
+            "pixels_over_8": 1532
+          },
+          "step": 2,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 191527,
+            "mean_max_channel_delta": 0.287151851851852,
+            "peak_delta": 33,
+            "pixels_over_2": 7091,
+            "pixels_over_8": 1503
+          },
+          "step": 3,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 190848,
+            "mean_max_channel_delta": 0.286506172839506,
+            "peak_delta": 35,
+            "pixels_over_2": 7102,
+            "pixels_over_8": 1506
+          },
+          "step": 4,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 189896,
+            "mean_max_channel_delta": 0.284969135802469,
+            "peak_delta": 35,
+            "pixels_over_2": 7034,
+            "pixels_over_8": 1551
+          },
+          "step": 1,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 190564,
+            "mean_max_channel_delta": 0.28659012345679,
+            "peak_delta": 33,
+            "pixels_over_2": 7135,
+            "pixels_over_8": 1551
+          },
+          "step": 2,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 191599,
+            "mean_max_channel_delta": 0.288760493827161,
+            "peak_delta": 32,
+            "pixels_over_2": 7187,
+            "pixels_over_8": 1602
+          },
+          "step": 3,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 190857,
+            "mean_max_channel_delta": 0.286767901234568,
+            "peak_delta": 35,
+            "pixels_over_2": 7166,
+            "pixels_over_8": 1556
+          },
+          "step": 4,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 6621,
+            "mean_max_channel_delta": 0.00926666666666667,
+            "peak_delta": 4,
+            "pixels_over_2": 93,
+            "pixels_over_8": 0
+          },
+          "step": 0,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 6639,
+            "mean_max_channel_delta": 0.00935061728395062,
+            "peak_delta": 4,
+            "pixels_over_2": 88,
+            "pixels_over_8": 0
+          },
+          "step": 1,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 6588,
+            "mean_max_channel_delta": 0.00932716049382716,
+            "peak_delta": 4,
+            "pixels_over_2": 104,
+            "pixels_over_8": 0
+          },
+          "step": 2,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 6644,
+            "mean_max_channel_delta": 0.00945061728395062,
+            "peak_delta": 4,
+            "pixels_over_2": 126,
+            "pixels_over_8": 0
+          },
+          "step": 3,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 6642,
+            "mean_max_channel_delta": 0.00936296296296296,
+            "peak_delta": 5,
+            "pixels_over_2": 113,
+            "pixels_over_8": 0
+          },
+          "step": 4,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 210016,
+            "mean_max_channel_delta": 0.695327160493827,
+            "peak_delta": 56,
+            "pixels_over_2": 47638,
+            "pixels_over_8": 15896
+          },
+          "step": 1,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 210230,
+            "mean_max_channel_delta": 0.695983950617284,
+            "peak_delta": 56,
+            "pixels_over_2": 47916,
+            "pixels_over_8": 15965
+          },
+          "step": 2,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 210263,
+            "mean_max_channel_delta": 0.701279012345679,
+            "peak_delta": 57,
+            "pixels_over_2": 48078,
+            "pixels_over_8": 16106
+          },
+          "step": 3,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 209675,
+            "mean_max_channel_delta": 0.700164197530864,
+            "peak_delta": 54,
+            "pixels_over_2": 48147,
+            "pixels_over_8": 16066
+          },
+          "step": 4,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 210508,
+            "mean_max_channel_delta": 0.713349382716049,
+            "peak_delta": 56,
+            "pixels_over_2": 48318,
+            "pixels_over_8": 16669
+          },
+          "step": 1,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 210836,
+            "mean_max_channel_delta": 0.712139506172839,
+            "peak_delta": 60,
+            "pixels_over_2": 48803,
+            "pixels_over_8": 16655
+          },
+          "step": 2,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 210999,
+            "mean_max_channel_delta": 0.719428395061728,
+            "peak_delta": 60,
+            "pixels_over_2": 49066,
+            "pixels_over_8": 16932
+          },
+          "step": 3,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 210324,
+            "mean_max_channel_delta": 0.717822222222222,
+            "peak_delta": 59,
+            "pixels_over_2": 49180,
+            "pixels_over_8": 16936
+          },
+          "step": 4,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 48141,
+            "mean_max_channel_delta": 0.120417283950617,
+            "peak_delta": 23,
+            "pixels_over_2": 11237,
+            "pixels_over_8": 776
+          },
+          "step": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 47960,
+            "mean_max_channel_delta": 0.119098765432099,
+            "peak_delta": 23,
+            "pixels_over_2": 11064,
+            "pixels_over_8": 790
+          },
+          "step": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 48532,
+            "mean_max_channel_delta": 0.121938271604938,
+            "peak_delta": 24,
+            "pixels_over_2": 11330,
+            "pixels_over_8": 871
+          },
+          "step": 2,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 48700,
+            "mean_max_channel_delta": 0.123379012345679,
+            "peak_delta": 24,
+            "pixels_over_2": 11548,
+            "pixels_over_8": 883
+          },
+          "step": 3,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 48723,
+            "mean_max_channel_delta": 0.121483950617284,
+            "peak_delta": 24,
+            "pixels_over_2": 11266,
+            "pixels_over_8": 813
+          },
+          "step": 4,
+          "view": "low-evening"
+        }
+      ]
+    },
+    {
+      "label": "final-views-storm01",
+      "checks": 33,
+      "failures": 0,
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "viewport": [
+        1200,
+        675
+      ],
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_views.gd": "b9a91346ca6e49f124fe1fe899b1920ba5529e859fe3e50d583da30623c6f1b9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "25f916127990ffdad0a100be880657bc89689ee78e30dc693fcf5f03213e9741",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "evidence_sha256": {
+        "run.json": "60b7f996baf222c6d823c028b4b27d733859bee3c37c72ddc38f5a5912310e67",
+        "cloud-views.json": "c4a942559090c4bc93435550e1c41440d4d839a8a1a7c0750cddfe5b742b5ee1",
+        "reference.gdshader": "22f895c258dec9447423ad7cbc0c2bdf5c12d5e6441c231a958f76256cd5faeb",
+        "candidate.gdshader": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e",
+        "view-upward-0-4.png": "d440d8ba714e639b0874f0cc5d20905e5d5ab87dcf2c963983872f9426299715",
+        "view-low-evening-0-2.png": "4fc1f2153977a09437bdcf911b5a50c6050df1cf620d570d53b430e205e83a88",
+        "view-forward-1-2.png": "5d204e5e4bea8f04542f086d4d9f35573d1e21cd4c0456e49fb24356b21da91d",
+        "view-low-evening-1-0.png": "d8ab12e993971b1f16664a39113bcfc1cfde3bc2f97000c2ce8c5db70076527b",
+        "view-low-evening-0-4.png": "e61903e094ba52b6abf9048dec1c3a9a9c7939f9e07459ca36a8628a0802f16f",
+        "view-upward-1-4.png": "2ad922e66ff1a36a5fcf0078110f83f35f6aaa32665b5fc250584c2a414dfb57",
+        "view-forward-1-0.png": "64b0b619511c16f30bcf6fd55535f3f8959070672f7baff4fa68188edf57fb08",
+        "view-forward-1-4.png": "2b9b7279e8e948dfc03966d593e98fa85025c8c0ea9e508aead2fa19da5698d4",
+        "view-forward-0-4.png": "8838a3fff321fe6c93d42b08905871ff4bbd7497b1beab63f39cc21959bdfd6b",
+        "view-upward-0-0.png": "4695a99cb20af45dbfde839e5a5098f496ca7760db75db399c86c84121052ba3",
+        "view-low-evening-0-0.png": "f7bff6eb66746160763f76214096688cee63cf2772cc907a688baef0af359cba",
+        "view-forward-0-2.png": "b0eccddfbe648e1afb064e364f901a7622a25096d74114b41793422ffefe70ae",
+        "view-forward-0-0.png": "08d22fa9ec28497151ca1500e15372a35a18f23600b274e02e95ed643b1a2929",
+        "view-low-evening-1-4.png": "e672494356dc2929685415f6357d51c40248d58abbd4cd36c6b0c31ab19f53ba",
+        "view-upward-1-2.png": "e49cc56e064b92aa966ff53727e4c72e8b6d64e8246ba98136ec6ad40fbe2de7",
+        "view-upward-1-0.png": "5364e3a533d4d22c30554bac912dd0960eeea9e358b03f21fbd5d0166e6f9923",
+        "view-low-evening-1-2.png": "3629c55e4faa7b3557a6854603c708361fd938152acd35c54d339786d2afeef4",
+        "view-upward-0-2.png": "5ea37658c4bf99107f50fb2407db3b16f7c9ada06c5ad38b05d960f0c722039b"
+      },
+      "comparisons": [
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 273589,
+            "mean_max_channel_delta": 0.34693950617284,
+            "peak_delta": 6,
+            "pixels_over_2": 432,
+            "pixels_over_8": 0
+          },
+          "step": 1,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 273406,
+            "mean_max_channel_delta": 0.346388888888889,
+            "peak_delta": 6,
+            "pixels_over_2": 322,
+            "pixels_over_8": 0
+          },
+          "step": 2,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 273531,
+            "mean_max_channel_delta": 0.346916049382716,
+            "peak_delta": 6,
+            "pixels_over_2": 465,
+            "pixels_over_8": 0
+          },
+          "step": 3,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 273343,
+            "mean_max_channel_delta": 0.346362962962963,
+            "peak_delta": 6,
+            "pixels_over_2": 353,
+            "pixels_over_8": 0
+          },
+          "step": 4,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 276171,
+            "mean_max_channel_delta": 0.35097037037037,
+            "peak_delta": 7,
+            "pixels_over_2": 422,
+            "pixels_over_8": 0
+          },
+          "step": 1,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 277015,
+            "mean_max_channel_delta": 0.351637037037037,
+            "peak_delta": 6,
+            "pixels_over_2": 296,
+            "pixels_over_8": 0
+          },
+          "step": 2,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 277179,
+            "mean_max_channel_delta": 0.352485185185185,
+            "peak_delta": 7,
+            "pixels_over_2": 448,
+            "pixels_over_8": 0
+          },
+          "step": 3,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 276316,
+            "mean_max_channel_delta": 0.351058024691358,
+            "peak_delta": 6,
+            "pixels_over_2": 317,
+            "pixels_over_8": 0
+          },
+          "step": 4,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 198839,
+            "mean_max_channel_delta": 0.246004938271605,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 0,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 198355,
+            "mean_max_channel_delta": 0.245348148148148,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 1,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 198326,
+            "mean_max_channel_delta": 0.245297530864198,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 2,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 198649,
+            "mean_max_channel_delta": 0.245704938271605,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 3,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 198693,
+            "mean_max_channel_delta": 0.245801234567901,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 4,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 243640,
+            "mean_max_channel_delta": 0.30439012345679,
+            "peak_delta": 8,
+            "pixels_over_2": 452,
+            "pixels_over_8": 0
+          },
+          "step": 1,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 243666,
+            "mean_max_channel_delta": 0.304348148148148,
+            "peak_delta": 8,
+            "pixels_over_2": 435,
+            "pixels_over_8": 0
+          },
+          "step": 2,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 244030,
+            "mean_max_channel_delta": 0.304843209876543,
+            "peak_delta": 7,
+            "pixels_over_2": 454,
+            "pixels_over_8": 0
+          },
+          "step": 3,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 243401,
+            "mean_max_channel_delta": 0.304067901234568,
+            "peak_delta": 7,
+            "pixels_over_2": 440,
+            "pixels_over_8": 0
+          },
+          "step": 4,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 247775,
+            "mean_max_channel_delta": 0.309659259259259,
+            "peak_delta": 8,
+            "pixels_over_2": 447,
+            "pixels_over_8": 0
+          },
+          "step": 1,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 248229,
+            "mean_max_channel_delta": 0.310361728395062,
+            "peak_delta": 7,
+            "pixels_over_2": 469,
+            "pixels_over_8": 0
+          },
+          "step": 2,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 248098,
+            "mean_max_channel_delta": 0.31018024691358,
+            "peak_delta": 7,
+            "pixels_over_2": 445,
+            "pixels_over_8": 0
+          },
+          "step": 3,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 247201,
+            "mean_max_channel_delta": 0.309037037037037,
+            "peak_delta": 7,
+            "pixels_over_2": 433,
+            "pixels_over_8": 0
+          },
+          "step": 4,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 308287,
+            "mean_max_channel_delta": 0.38060987654321,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 0,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 307726,
+            "mean_max_channel_delta": 0.37991975308642,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 1,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 307404,
+            "mean_max_channel_delta": 0.379535802469136,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 2,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 307624,
+            "mean_max_channel_delta": 0.379798765432099,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 3,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 307260,
+            "mean_max_channel_delta": 0.379354320987654,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 4,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 232112,
+            "mean_max_channel_delta": 0.29119012345679,
+            "peak_delta": 8,
+            "pixels_over_2": 204,
+            "pixels_over_8": 0
+          },
+          "step": 1,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 233305,
+            "mean_max_channel_delta": 0.29273950617284,
+            "peak_delta": 7,
+            "pixels_over_2": 181,
+            "pixels_over_8": 0
+          },
+          "step": 2,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 232955,
+            "mean_max_channel_delta": 0.292553086419753,
+            "peak_delta": 8,
+            "pixels_over_2": 207,
+            "pixels_over_8": 0
+          },
+          "step": 3,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 233236,
+            "mean_max_channel_delta": 0.292687654320988,
+            "peak_delta": 7,
+            "pixels_over_2": 192,
+            "pixels_over_8": 0
+          },
+          "step": 4,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 234744,
+            "mean_max_channel_delta": 0.294760493827161,
+            "peak_delta": 8,
+            "pixels_over_2": 191,
+            "pixels_over_8": 0
+          },
+          "step": 1,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 235855,
+            "mean_max_channel_delta": 0.296151851851852,
+            "peak_delta": 7,
+            "pixels_over_2": 181,
+            "pixels_over_8": 0
+          },
+          "step": 2,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 235282,
+            "mean_max_channel_delta": 0.295717283950617,
+            "peak_delta": 7,
+            "pixels_over_2": 207,
+            "pixels_over_8": 0
+          },
+          "step": 3,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 235520,
+            "mean_max_channel_delta": 0.295867901234568,
+            "peak_delta": 7,
+            "pixels_over_2": 178,
+            "pixels_over_8": 0
+          },
+          "step": 4,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 133173,
+            "mean_max_channel_delta": 0.164420987654321,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 133879,
+            "mean_max_channel_delta": 0.165293827160494,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 134055,
+            "mean_max_channel_delta": 0.165511111111111,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 2,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 134855,
+            "mean_max_channel_delta": 0.166497530864198,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 3,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 134673,
+            "mean_max_channel_delta": 0.166266666666667,
+            "peak_delta": 2,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "step": 4,
+          "view": "low-evening"
+        }
+      ]
+    },
+    {
+      "label": "final-views-mixed01",
+      "checks": 33,
+      "failures": 0,
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "viewport": [
+        1200,
+        675
+      ],
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_views.gd": "b9a91346ca6e49f124fe1fe899b1920ba5529e859fe3e50d583da30623c6f1b9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "25f916127990ffdad0a100be880657bc89689ee78e30dc693fcf5f03213e9741",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "evidence_sha256": {
+        "run.json": "ca18fc4fb4ddb031ff0be36a059968a19c2f639a4ad78b9abcc29e02f09cf7e1",
+        "cloud-views.json": "db1a115a6d6750a3411d66aaa14de2daaf74f528fd7be73026618c204118cb06",
+        "reference.gdshader": "22f895c258dec9447423ad7cbc0c2bdf5c12d5e6441c231a958f76256cd5faeb",
+        "candidate.gdshader": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e",
+        "view-upward-0-4.png": "6f76275cc003fc835a50eff19f52b0a47bdcef336aa0dcd7a09f71550243f1cd",
+        "view-low-evening-0-2.png": "2b7a38b0abb00932976da17c2be28be854f5d3c3cd50fd4882fc00f8999365c4",
+        "view-forward-1-2.png": "8aac9c1ceb1dbc5cc731bd75f3fbf5353fcc6bcdfc709cadab5f51b896bcbbf7",
+        "view-low-evening-1-0.png": "4930c6386121895e4f4fee7c26002476faececffd9b3161ebd3009bff24f7867",
+        "view-low-evening-0-4.png": "4f3c1e465c856a5e5964b67405904d9180e786b8e7a3d668b8caba9382980621",
+        "view-upward-1-4.png": "98da85178eadb1bdc9a72e816781723ac3d1eb37918b143a7cf33d59f9857e4a",
+        "view-forward-1-0.png": "c226ba9809eb50799deb47e438b8e108bbe7e95d1f650b84ff8759b26b0a3709",
+        "view-forward-1-4.png": "23afc5d33558c1306c36ddf37be48bc0c7d0fdeb6c90a222a40254a4068bfc59",
+        "view-forward-0-4.png": "55c1d3b0e1712451710990672bd963c3a452f0742f24fb4430b86065d8ad4b4b",
+        "view-upward-0-0.png": "1d762ea47c724235a1e3767ad434fa0da7a25a88a6d6da2ba37a10f69e7e1d06",
+        "view-low-evening-0-0.png": "ff9efa1705430e1753f447180777f6b858c8e9063266487297e878ca02c731ea",
+        "view-forward-0-2.png": "e87f407c4411696454402ca05a57c39e81ed8788a05b521e0e0a76d4eea690ed",
+        "view-forward-0-0.png": "4a1d401bb1d7ded21c64441deba4ad1732da88190a47da779ac1d804a5e9ec91",
+        "view-low-evening-1-4.png": "ee0ee6d98ea68fb7a4e4b19729796df64fe41cb99b90d4cfa5125c38e12cec4a",
+        "view-upward-1-2.png": "295a1d09941ed782c0111d45d7989a76863b111fedcde3821f6781f4003dc08c",
+        "view-upward-1-0.png": "ec38d583f707eaef1d64f9ac225e46b6e94bf9943e153331a3399afc4781e0e9",
+        "view-low-evening-1-2.png": "b2f1c39cde159d02248985f06b531131573eead6eaebe50e883a2cd4fbf5597a",
+        "view-upward-0-2.png": "28ad61007c9de4e7c09d02af77cbb30a5f06a4f228b67f795365d742705f6340"
+      },
+      "comparisons": [
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 467301,
+            "mean_max_channel_delta": 1.80876049382716,
+            "peak_delta": 60,
+            "pixels_over_2": 169129,
+            "pixels_over_8": 34710
+          },
+          "step": 1,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 468262,
+            "mean_max_channel_delta": 1.81064567901235,
+            "peak_delta": 67,
+            "pixels_over_2": 168885,
+            "pixels_over_8": 34795
+          },
+          "step": 2,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 469331,
+            "mean_max_channel_delta": 1.82084567901235,
+            "peak_delta": 79,
+            "pixels_over_2": 169544,
+            "pixels_over_8": 34964
+          },
+          "step": 3,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 469336,
+            "mean_max_channel_delta": 1.81670740740741,
+            "peak_delta": 73,
+            "pixels_over_2": 169442,
+            "pixels_over_8": 34879
+          },
+          "step": 4,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 468066,
+            "mean_max_channel_delta": 1.81581358024691,
+            "peak_delta": 64,
+            "pixels_over_2": 169412,
+            "pixels_over_8": 34972
+          },
+          "step": 1,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 468790,
+            "mean_max_channel_delta": 1.82202098765432,
+            "peak_delta": 75,
+            "pixels_over_2": 169476,
+            "pixels_over_8": 35393
+          },
+          "step": 2,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 469930,
+            "mean_max_channel_delta": 1.83123209876543,
+            "peak_delta": 76,
+            "pixels_over_2": 169939,
+            "pixels_over_8": 35450
+          },
+          "step": 3,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 469913,
+            "mean_max_channel_delta": 1.82736049382716,
+            "peak_delta": 71,
+            "pixels_over_2": 170076,
+            "pixels_over_8": 35244
+          },
+          "step": 4,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 192446,
+            "mean_max_channel_delta": 0.288298765432099,
+            "peak_delta": 23,
+            "pixels_over_2": 8883,
+            "pixels_over_8": 311
+          },
+          "step": 0,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 192500,
+            "mean_max_channel_delta": 0.290028395061728,
+            "peak_delta": 26,
+            "pixels_over_2": 9021,
+            "pixels_over_8": 411
+          },
+          "step": 1,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 192884,
+            "mean_max_channel_delta": 0.290171604938272,
+            "peak_delta": 23,
+            "pixels_over_2": 8929,
+            "pixels_over_8": 420
+          },
+          "step": 2,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 192808,
+            "mean_max_channel_delta": 0.290376543209877,
+            "peak_delta": 24,
+            "pixels_over_2": 9210,
+            "pixels_over_8": 387
+          },
+          "step": 3,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 192240,
+            "mean_max_channel_delta": 0.29007037037037,
+            "peak_delta": 20,
+            "pixels_over_2": 9276,
+            "pixels_over_8": 425
+          },
+          "step": 4,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 576629,
+            "mean_max_channel_delta": 2.01915432098765,
+            "peak_delta": 66,
+            "pixels_over_2": 206599,
+            "pixels_over_8": 29898
+          },
+          "step": 1,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 576094,
+            "mean_max_channel_delta": 2.01128765432099,
+            "peak_delta": 65,
+            "pixels_over_2": 206040,
+            "pixels_over_8": 29494
+          },
+          "step": 2,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 576024,
+            "mean_max_channel_delta": 2.00629135802469,
+            "peak_delta": 64,
+            "pixels_over_2": 205420,
+            "pixels_over_8": 29318
+          },
+          "step": 3,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 575327,
+            "mean_max_channel_delta": 1.99627901234568,
+            "peak_delta": 62,
+            "pixels_over_2": 204671,
+            "pixels_over_8": 28874
+          },
+          "step": 4,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 577327,
+            "mean_max_channel_delta": 2.02185061728395,
+            "peak_delta": 66,
+            "pixels_over_2": 207039,
+            "pixels_over_8": 29948
+          },
+          "step": 1,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 577279,
+            "mean_max_channel_delta": 2.01418271604938,
+            "peak_delta": 67,
+            "pixels_over_2": 206349,
+            "pixels_over_8": 29563
+          },
+          "step": 2,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 576560,
+            "mean_max_channel_delta": 2.00858518518519,
+            "peak_delta": 65,
+            "pixels_over_2": 205647,
+            "pixels_over_8": 29292
+          },
+          "step": 3,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 576578,
+            "mean_max_channel_delta": 1.99897530864198,
+            "peak_delta": 65,
+            "pixels_over_2": 204643,
+            "pixels_over_8": 28913
+          },
+          "step": 4,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 207446,
+            "mean_max_channel_delta": 0.260417283950617,
+            "peak_delta": 5,
+            "pixels_over_2": 462,
+            "pixels_over_8": 0
+          },
+          "step": 0,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 207192,
+            "mean_max_channel_delta": 0.260054320987654,
+            "peak_delta": 7,
+            "pixels_over_2": 454,
+            "pixels_over_8": 0
+          },
+          "step": 1,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 205616,
+            "mean_max_channel_delta": 0.257643209876543,
+            "peak_delta": 8,
+            "pixels_over_2": 363,
+            "pixels_over_8": 0
+          },
+          "step": 2,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 206379,
+            "mean_max_channel_delta": 0.258345679012346,
+            "peak_delta": 7,
+            "pixels_over_2": 353,
+            "pixels_over_8": 0
+          },
+          "step": 3,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 204707,
+            "mean_max_channel_delta": 0.255906172839506,
+            "peak_delta": 6,
+            "pixels_over_2": 258,
+            "pixels_over_8": 0
+          },
+          "step": 4,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 388556,
+            "mean_max_channel_delta": 1.16477407407407,
+            "peak_delta": 55,
+            "pixels_over_2": 100850,
+            "pixels_over_8": 16594
+          },
+          "step": 1,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 389412,
+            "mean_max_channel_delta": 1.16312592592593,
+            "peak_delta": 59,
+            "pixels_over_2": 100932,
+            "pixels_over_8": 16522
+          },
+          "step": 2,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 390230,
+            "mean_max_channel_delta": 1.16245308641975,
+            "peak_delta": 50,
+            "pixels_over_2": 100757,
+            "pixels_over_8": 16370
+          },
+          "step": 3,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 390532,
+            "mean_max_channel_delta": 1.15967530864198,
+            "peak_delta": 56,
+            "pixels_over_2": 99832,
+            "pixels_over_8": 16314
+          },
+          "step": 4,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 389581,
+            "mean_max_channel_delta": 1.17287407407407,
+            "peak_delta": 56,
+            "pixels_over_2": 101186,
+            "pixels_over_8": 16912
+          },
+          "step": 1,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 389415,
+            "mean_max_channel_delta": 1.16773827160494,
+            "peak_delta": 57,
+            "pixels_over_2": 101075,
+            "pixels_over_8": 16674
+          },
+          "step": 2,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 390793,
+            "mean_max_channel_delta": 1.16612098765432,
+            "peak_delta": 54,
+            "pixels_over_2": 100486,
+            "pixels_over_8": 16425
+          },
+          "step": 3,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 390454,
+            "mean_max_channel_delta": 1.16585185185185,
+            "peak_delta": 55,
+            "pixels_over_2": 100147,
+            "pixels_over_8": 16580
+          },
+          "step": 4,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 146222,
+            "mean_max_channel_delta": 0.216754320987654,
+            "peak_delta": 26,
+            "pixels_over_2": 6245,
+            "pixels_over_8": 334
+          },
+          "step": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 146464,
+            "mean_max_channel_delta": 0.216451851851852,
+            "peak_delta": 22,
+            "pixels_over_2": 6184,
+            "pixels_over_8": 317
+          },
+          "step": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 147020,
+            "mean_max_channel_delta": 0.217650617283951,
+            "peak_delta": 32,
+            "pixels_over_2": 6386,
+            "pixels_over_8": 308
+          },
+          "step": 2,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 145775,
+            "mean_max_channel_delta": 0.216414814814815,
+            "peak_delta": 28,
+            "pixels_over_2": 6358,
+            "pixels_over_8": 322
+          },
+          "step": 3,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 145837,
+            "mean_max_channel_delta": 0.215933333333333,
+            "peak_delta": 23,
+            "pixels_over_2": 6386,
+            "pixels_over_8": 307
+          },
+          "step": 4,
+          "view": "low-evening"
+        }
+      ]
+    },
+    {
+      "label": "final-views-mobile01",
+      "checks": 33,
+      "failures": 0,
+      "renderer": "mobile",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "viewport": [
+        1200,
+        675
+      ],
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_views.gd": "1a08c9b2c9bd8bac4c0d82ed9cd74ac5444c43d0503fc9a48a0f26a69dd60520",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "c40ba109d93eea0f0dfabc37237eafa64db48f905a24775b10fb94c82ea644b7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "25f916127990ffdad0a100be880657bc89689ee78e30dc693fcf5f03213e9741",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "evidence_sha256": {
+        "run.json": "5fe6e7a288f8be32c7bfa40a29c7207bbfd756ba986dad6b271838a10935ca8e",
+        "cloud-views.json": "c4288a84fb750059650d4a4819501f843692e30d88908b8101168f65cef5f384",
+        "reference.gdshader": "22f895c258dec9447423ad7cbc0c2bdf5c12d5e6441c231a958f76256cd5faeb",
+        "candidate.gdshader": "260dc87016c593200e0b59da43e2c7d4fa1ce417193b5c51f5b2be3d4b0ed09e",
+        "view-upward-0-4.png": "5faf93de7c4c51f8607e2d137815fc9d6c604aba7c0bbc58f8cc08d5a5ff0550",
+        "view-low-evening-0-2.png": "639a86064093e880f8004445b8b8e1683a292555df1cdd8b3a6a0a38a1d1341a",
+        "view-forward-1-2.png": "3e6932a396e23a144eaa2eb99d1185d0a4b3fac23bc3a126ff0eb9d49219173b",
+        "view-low-evening-1-0.png": "f54a2af94a670453f94d614e16d72d9953d63956d3711f26db49e4b05301b5c1",
+        "view-low-evening-0-4.png": "16805703c37f60a69390bf5771b30db976943766924c565649661b73a6a3b6a5",
+        "view-upward-1-4.png": "f003b8c0e1b88887650cf7b4fa9b9d97c180e7d9a64c0de34da723417e111154",
+        "view-forward-1-0.png": "e749c0811d9b526c7e96511f9c46523707878b9c881e332d3f4e97d2d0e43e06",
+        "view-forward-1-4.png": "17e3d0458893f25724a5104cc41f7f0bda591c268ad10b3e4169a4840b5add16",
+        "view-forward-0-4.png": "d0aa97152c441bac8af6161f2adca619299179fbb2d3c8964202e27b171bd669",
+        "view-upward-0-0.png": "455199a614a9ad49fd9a00e1cc42de30aeb1d0cf6ef92883a7e62032fb390600",
+        "view-low-evening-0-0.png": "f54135abb725b2872f0b938d6e2c7e1bc72995407c3813fc7c31c7ce5b674e18",
+        "view-forward-0-2.png": "d26743383244dde1a05906c2e4d079145de9552fd06d34d0eb361ef03b607761",
+        "view-forward-0-0.png": "e5bb3950beccaa9b52140960a6d97d66384384788ec714ed06efd4920be8c58a",
+        "view-low-evening-1-4.png": "8b5bd458b54b491de064a40c505916bb2bfbf16bf3e499d05b871c9b2e1e1fbf",
+        "view-upward-1-2.png": "81de1d30a15debd933c269ab67d8eb1e26946d414da988822a46c47f42efea0a",
+        "view-upward-1-0.png": "f51f0384e6c9595b1ab27210825b177e756177e9f8fcbe89f528c0b9e64de37d",
+        "view-low-evening-1-2.png": "dbb744f060d8e82938e6608a9b5f0883eafa41d0a92cd90586b9ceb071ae46f2",
+        "view-upward-0-2.png": "3d0e1f3cb2f073eb3ce8b8b1358c0e7135b250c432d5e5b62c84d8201235d509"
+      },
+      "comparisons": [
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 443193,
+            "mean_max_channel_delta": 1.87775679012346,
+            "peak_delta": 61,
+            "pixels_over_2": 180307,
+            "pixels_over_8": 35340
+          },
+          "step": 1,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 444006,
+            "mean_max_channel_delta": 1.88023209876543,
+            "peak_delta": 67,
+            "pixels_over_2": 180154,
+            "pixels_over_8": 35310
+          },
+          "step": 2,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 445269,
+            "mean_max_channel_delta": 1.89089259259259,
+            "peak_delta": 79,
+            "pixels_over_2": 180818,
+            "pixels_over_8": 35478
+          },
+          "step": 3,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 445238,
+            "mean_max_channel_delta": 1.88645679012346,
+            "peak_delta": 72,
+            "pixels_over_2": 180574,
+            "pixels_over_8": 35380
+          },
+          "step": 4,
+          "variant": 0,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 443981,
+            "mean_max_channel_delta": 1.88627037037037,
+            "peak_delta": 65,
+            "pixels_over_2": 180743,
+            "pixels_over_8": 35534
+          },
+          "step": 1,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 444607,
+            "mean_max_channel_delta": 1.89227037037037,
+            "peak_delta": 75,
+            "pixels_over_2": 180834,
+            "pixels_over_8": 35868
+          },
+          "step": 2,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 445845,
+            "mean_max_channel_delta": 1.90155802469136,
+            "peak_delta": 76,
+            "pixels_over_2": 181079,
+            "pixels_over_8": 35961
+          },
+          "step": 3,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 446108,
+            "mean_max_channel_delta": 1.89901851851852,
+            "peak_delta": 72,
+            "pixels_over_2": 181378,
+            "pixels_over_8": 35796
+          },
+          "step": 4,
+          "variant": 1,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 171474,
+            "mean_max_channel_delta": 0.301922222222222,
+            "peak_delta": 23,
+            "pixels_over_2": 10255,
+            "pixels_over_8": 325
+          },
+          "step": 0,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 171744,
+            "mean_max_channel_delta": 0.303860493827161,
+            "peak_delta": 26,
+            "pixels_over_2": 10411,
+            "pixels_over_8": 418
+          },
+          "step": 1,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 172062,
+            "mean_max_channel_delta": 0.303659259259259,
+            "peak_delta": 23,
+            "pixels_over_2": 10338,
+            "pixels_over_8": 433
+          },
+          "step": 2,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 171505,
+            "mean_max_channel_delta": 0.302867901234568,
+            "peak_delta": 24,
+            "pixels_over_2": 10534,
+            "pixels_over_8": 404
+          },
+          "step": 3,
+          "view": "forward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 171461,
+            "mean_max_channel_delta": 0.303566666666667,
+            "peak_delta": 20,
+            "pixels_over_2": 10644,
+            "pixels_over_8": 427
+          },
+          "step": 4,
+          "view": "forward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 536996,
+            "mean_max_channel_delta": 2.09045925925926,
+            "peak_delta": 66,
+            "pixels_over_2": 216587,
+            "pixels_over_8": 30253
+          },
+          "step": 1,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 536423,
+            "mean_max_channel_delta": 2.08371234567901,
+            "peak_delta": 65,
+            "pixels_over_2": 215990,
+            "pixels_over_8": 29892
+          },
+          "step": 2,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 536001,
+            "mean_max_channel_delta": 2.0771037037037,
+            "peak_delta": 64,
+            "pixels_over_2": 215494,
+            "pixels_over_8": 29618
+          },
+          "step": 3,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 535840,
+            "mean_max_channel_delta": 2.06897777777778,
+            "peak_delta": 63,
+            "pixels_over_2": 214724,
+            "pixels_over_8": 29241
+          },
+          "step": 4,
+          "variant": 0,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 537828,
+            "mean_max_channel_delta": 2.09513827160494,
+            "peak_delta": 66,
+            "pixels_over_2": 216996,
+            "pixels_over_8": 30338
+          },
+          "step": 1,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 536895,
+            "mean_max_channel_delta": 2.08658148148148,
+            "peak_delta": 67,
+            "pixels_over_2": 216371,
+            "pixels_over_8": 29908
+          },
+          "step": 2,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 536465,
+            "mean_max_channel_delta": 2.08034444444444,
+            "peak_delta": 65,
+            "pixels_over_2": 215690,
+            "pixels_over_8": 29748
+          },
+          "step": 3,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 536817,
+            "mean_max_channel_delta": 2.0727024691358,
+            "peak_delta": 66,
+            "pixels_over_2": 214908,
+            "pixels_over_8": 29277
+          },
+          "step": 4,
+          "variant": 1,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 179735,
+            "mean_max_channel_delta": 0.264740740740741,
+            "peak_delta": 5,
+            "pixels_over_2": 1456,
+            "pixels_over_8": 0
+          },
+          "step": 0,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 178478,
+            "mean_max_channel_delta": 0.263065432098765,
+            "peak_delta": 7,
+            "pixels_over_2": 1494,
+            "pixels_over_8": 0
+          },
+          "step": 1,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 178302,
+            "mean_max_channel_delta": 0.262745679012346,
+            "peak_delta": 8,
+            "pixels_over_2": 1427,
+            "pixels_over_8": 0
+          },
+          "step": 2,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 178835,
+            "mean_max_channel_delta": 0.263277777777778,
+            "peak_delta": 7,
+            "pixels_over_2": 1427,
+            "pixels_over_8": 0
+          },
+          "step": 3,
+          "view": "upward"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 176810,
+            "mean_max_channel_delta": 0.259956790123457,
+            "peak_delta": 6,
+            "pixels_over_2": 1321,
+            "pixels_over_8": 0
+          },
+          "step": 4,
+          "view": "upward"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 355745,
+            "mean_max_channel_delta": 1.24386543209877,
+            "peak_delta": 54,
+            "pixels_over_2": 110875,
+            "pixels_over_8": 17038
+          },
+          "step": 1,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 355987,
+            "mean_max_channel_delta": 1.2421037037037,
+            "peak_delta": 60,
+            "pixels_over_2": 110772,
+            "pixels_over_8": 16974
+          },
+          "step": 2,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 356520,
+            "mean_max_channel_delta": 1.24124814814815,
+            "peak_delta": 49,
+            "pixels_over_2": 110561,
+            "pixels_over_8": 16881
+          },
+          "step": 3,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 356346,
+            "mean_max_channel_delta": 1.23833703703704,
+            "peak_delta": 55,
+            "pixels_over_2": 109497,
+            "pixels_over_8": 16754
+          },
+          "step": 4,
+          "variant": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 356608,
+            "mean_max_channel_delta": 1.25263950617284,
+            "peak_delta": 56,
+            "pixels_over_2": 111049,
+            "pixels_over_8": 17313
+          },
+          "step": 1,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 356619,
+            "mean_max_channel_delta": 1.24781358024691,
+            "peak_delta": 56,
+            "pixels_over_2": 110918,
+            "pixels_over_8": 17136
+          },
+          "step": 2,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 357156,
+            "mean_max_channel_delta": 1.24537654320988,
+            "peak_delta": 53,
+            "pixels_over_2": 110329,
+            "pixels_over_8": 16872
+          },
+          "step": 3,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "motion",
+          "delta": {
+            "changed_pixels": 356580,
+            "mean_max_channel_delta": 1.24519135802469,
+            "peak_delta": 55,
+            "pixels_over_2": 109829,
+            "pixels_over_8": 17036
+          },
+          "step": 4,
+          "variant": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 121505,
+            "mean_max_channel_delta": 0.228630864197531,
+            "peak_delta": 26,
+            "pixels_over_2": 7631,
+            "pixels_over_8": 340
+          },
+          "step": 0,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 121802,
+            "mean_max_channel_delta": 0.228969135802469,
+            "peak_delta": 22,
+            "pixels_over_2": 7596,
+            "pixels_over_8": 336
+          },
+          "step": 1,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 122138,
+            "mean_max_channel_delta": 0.230274074074074,
+            "peak_delta": 32,
+            "pixels_over_2": 7797,
+            "pixels_over_8": 322
+          },
+          "step": 2,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 121470,
+            "mean_max_channel_delta": 0.229733333333333,
+            "peak_delta": 28,
+            "pixels_over_2": 7804,
+            "pixels_over_8": 344
+          },
+          "step": 3,
+          "view": "low-evening"
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 120939,
+            "mean_max_channel_delta": 0.22761975308642,
+            "peak_delta": 22,
+            "pixels_over_2": 7712,
+            "pixels_over_8": 315
+          },
+          "step": 4,
+          "view": "low-evening"
+        }
+      ]
+    }
+  ],
+  "rejected_budget": {
+    "view_samples": 128,
+    "fair_reduction_percent": 33.64408253577342,
+    "mixed_reduction_percent": 24.551668575357443,
+    "reason": "Visible increased streaking on fair-cloud edges. Numerical screens passed, but visual review rejected it. Not in production."
+  },
+  "gates": {
+    "cost_image_screen": "Numeric candidate screen: mean max-channel delta <2/255 and pixels over8/255 <2%; does not replace visual review. Held/repeat/restored screens allow at most6000 changed pixels and peak4/255 at4K, reflecting recorded original renderer variation.",
+    "multi_view_screen": "Mean max-channel delta <3/255 and peak <160/255 at1200x675, plus actual image review; three camera/light-direction views, five camera/time steps, three weather cases. Fallback sky colours, not authored-map dusk lighting.",
+    "HDR": "Direct canvas HDR reference uses the same sample count as candidate and retains exact comparison;110 cases901120 rays per renderer.",
+    "platform_limits": "Existing Android private runtime lacks ei_sky_subpass_alpha and does not support native High volumes. Initial attempted HDR run stopped at capability guard. Final Mobile and Compatibility fallback tests run current source and restore all private state. Native volumetric Android qualification remains pending a suitable runtime."
+  },
+  "android_unsupported_attempt": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/production-hdr-android01",
+    "run_sha256": "c800add5d17ee1773606e7b2d8d0eeb49f8536aa01cf820bb36f391d74380c12",
+    "checks_seen": 1,
+    "failed_capability_check": 1,
+    "result_json_emitted": false,
+    "state_restored": true,
+    "interpretation": "Harness prerequisite failed on installed older QA runtime; not a new runtime or shader crash."
+  },
+  "runs": [
+    {
+      "label": "budget160-fair01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/budget160-fair01",
+      "accepted_shader_validation": true,
+      "checks": 27,
+      "failures": 0,
+      "result_sha256": "e8122dd6e77ff1e83a2e3c2766a6f39c94c6acc95207c612c360cef4e2c7148f",
+      "run_sha256": "7636d980d9b4309b54bf37b5f8c55fa83b4c4d13a7c7c954caccf8bc0f5f5340",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "scope": "Current background-only environment passed to EISky; fixed-cumulus density specialization. Four-second held settling after timed intervals. Appearance-based evaluation authorized by user; sample budget recorded per arm; no whole-game FPS claim.",
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "errors": [],
+      "other_engines_absent": true,
+      "visual_review": {
+        "status": "Accepted appearance, with measured performance benefit",
+        "reviewed": [
+          "bounds-sky-3-1.png",
+          "../fair-edge-comparison.png"
+        ],
+        "notes": "160 samples retain rounded cloud bodies and acceptable edge detail at ordinary framing; 128 has more pronounced streaking and is rejected. Across three weather cases, sampled camera-step image changes remain close to reference with no numerical spike. Low-evening fixture uses fallback sky colours and a lower sun direction; it is not authored-map dusk lighting."
+      }
+    },
+    {
+      "label": "budget160-mixed01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/budget160-mixed01",
+      "accepted_shader_validation": true,
+      "checks": 27,
+      "failures": 0,
+      "result_sha256": "3822e6880a2063dd0821e6b2f5b8bc38a024517184756688df6e74a1b26e24ca",
+      "run_sha256": "733968c8085d92550579b090f571e2d46bb54998550b6f252974acb91b6ac1e0",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "scope": "Current background-only environment passed to EISky; fixed-cumulus density specialization. Four-second held settling after timed intervals. Appearance-based evaluation authorized by user; sample budget recorded per arm; no whole-game FPS claim.",
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "errors": [],
+      "other_engines_absent": true,
+      "visual_review": {
+        "status": "Accepted appearance at ordinary 4K framing",
+        "reviewed": [
+          "bounds-sky-3-1.png"
+        ],
+        "notes": "Mixed retains rounded varied cloud bodies and clear gaps; storm retains the dark dense overcast. No objectionable added streaking or broad banding seen in these views. Final extra camera views are recorded separately."
+      }
+    },
+    {
+      "label": "budget160-storm01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/budget160-storm01",
+      "accepted_shader_validation": true,
+      "checks": 27,
+      "failures": 0,
+      "result_sha256": "73d452b47afdb053f2f748f4e801febcd0b6ec890cb37115771ffd385e2ecf0d",
+      "run_sha256": "a68ca36ac9e3a3e444a4166adfd96e9d81f373b9f8a47bcb70357c688f15df5c",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "scope": "Current background-only environment passed to EISky; fixed-cumulus density specialization. Four-second held settling after timed intervals. Appearance-based evaluation authorized by user; sample budget recorded per arm; no whole-game FPS claim.",
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "errors": [],
+      "other_engines_absent": true,
+      "visual_review": {
+        "status": "Accepted appearance at ordinary 4K framing",
+        "reviewed": [
+          "bounds-sky-3-1.png"
+        ],
+        "notes": "Mixed retains rounded varied cloud bodies and clear gaps; storm retains the dark dense overcast. No objectionable added streaking or broad banding seen in these views. Final extra camera views are recorded separately."
+      }
+    },
+    {
+      "label": "budget160-views-fair01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/budget160-views-fair01",
+      "accepted_shader_validation": true,
+      "checks": 33,
+      "failures": 0,
+      "result_sha256": "479060d32dd54036ac1d9e4c14f5ab87166925a341cb0795822b2a11e081e823",
+      "run_sha256": "436864058bde5e52939d515bd1a4a66acb151e1ebdab8506d2b947ac24033c50",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_views.gd": "b9a91346ca6e49f124fe1fe899b1920ba5529e859fe3e50d583da30623c6f1b9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "scope": "Frozen current High sky versus previous source: three viewing/lighting conditions, five small camera/time steps each. Native camera and default sky debanding; qualitative review required; no gameplay or FPS claim.",
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "errors": [],
+      "other_engines_absent": true,
+      "visual_review": {
+        "status": "Accepted appearance, with measured performance benefit",
+        "reviewed": [
+          "view-upward-1-0.png",
+          "view-low-evening-1-0.png"
+        ],
+        "notes": "160 samples retain rounded cloud bodies and acceptable edge detail at ordinary framing; 128 has more pronounced streaking and is rejected. Across three weather cases, sampled camera-step image changes remain close to reference with no numerical spike. Low-evening fixture uses fallback sky colours and a lower sun direction; it is not authored-map dusk lighting."
+      }
+    },
+    {
+      "label": "final-views-storm01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/final-views-storm01",
+      "accepted_shader_validation": true,
+      "checks": 33,
+      "failures": 0,
+      "result_sha256": "c4a942559090c4bc93435550e1c41440d4d839a8a1a7c0750cddfe5b742b5ee1",
+      "run_sha256": "60b7f996baf222c6d823c028b4b27d733859bee3c37c72ddc38f5a5912310e67",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_views.gd": "b9a91346ca6e49f124fe1fe899b1920ba5529e859fe3e50d583da30623c6f1b9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "25f916127990ffdad0a100be880657bc89689ee78e30dc693fcf5f03213e9741",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "scope": "Frozen current High sky versus previous source: three viewing/lighting conditions, five small camera/time steps each. Native camera and default sky debanding; qualitative review required; no gameplay or FPS claim.",
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "errors": [],
+      "other_engines_absent": true,
+      "visual_review": {
+        "status": "Accepted appearance in reviewed views",
+        "reviewed": [
+          "view-upward-1-0.png",
+          "view-low-evening-1-0.png"
+        ],
+        "notes": "Cloud mass, gaps and shading remain coherent during the sampled views; no new broad bands or broken silhouettes seen. Low-evening uses fallback sky colours and lower sun direction, not authored-map dusk lighting. Five camera/time samples are a focused motion check, not complete gameplay acceptance."
+      }
+    },
+    {
+      "label": "final-views-mixed01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/final-views-mixed01",
+      "accepted_shader_validation": true,
+      "checks": 33,
+      "failures": 0,
+      "result_sha256": "db1a115a6d6750a3411d66aaa14de2daaf74f528fd7be73026618c204118cb06",
+      "run_sha256": "ca18fc4fb4ddb031ff0be36a059968a19c2f639a4ad78b9abcc29e02f09cf7e1",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_views.gd": "b9a91346ca6e49f124fe1fe899b1920ba5529e859fe3e50d583da30623c6f1b9",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "25f916127990ffdad0a100be880657bc89689ee78e30dc693fcf5f03213e9741",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "scope": "Frozen current High sky versus previous source: three viewing/lighting conditions, five small camera/time steps each. Native camera and default sky debanding; qualitative review required; no gameplay or FPS claim.",
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "errors": [],
+      "other_engines_absent": true,
+      "visual_review": {
+        "status": "Accepted appearance in reviewed views",
+        "reviewed": [
+          "view-upward-1-0.png",
+          "view-low-evening-1-0.png"
+        ],
+        "notes": "Cloud mass, gaps and shading remain coherent during the sampled views; no new broad bands or broken silhouettes seen. Low-evening uses fallback sky colours and lower sun direction, not authored-map dusk lighting. Five camera/time samples are a focused motion check, not complete gameplay acceptance."
+      }
+    },
+    {
+      "label": "final-hdr-forward01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/final-hdr-forward01",
+      "accepted_shader_validation": true,
+      "checks": 118,
+      "failures": 0,
+      "result_sha256": "655f9af26ff905e312c4b1aef874419cf36112411e2d130b99c50f86302c117c",
+      "run_sha256": "c63db5a363dc22790340e446c8f52b4884b4cbf490c5ceb083aee520f8b06a75",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/production_hdr.gd": "b9debc7c273d0c29d51861c73b0cf4b9b9f1807a830d3bb3556d90e4d3505c57",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "25f916127990ffdad0a100be880657bc89689ee78e30dc693fcf5f03213e9741",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/fixtures/cloud_volume_reference.gd": "925b92f4b6a947e5427b4c7caba9d053c0c28165dd00eeb889fa6094831c3017"
+      },
+      "scope": "Frozen 6957127 integrator versus production, HDR scattering and transmittance, including rays originating below/inside/above the cloud layer. No gameplay route or FPS claim.",
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "errors": [],
+      "other_engines_absent": true,
+      "HDR": {
+        "cases": 110,
+        "pixels": 901120,
+        "maximum_error": 0.0,
+        "note": "Each arm uses the same 96/3 or 160/5 sample budget. This checks density specialization and conservative bounds, not 192 versus 160 image equivalence."
+      }
+    },
+    {
+      "label": "final-hdr-mobile01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/final-hdr-mobile01",
+      "accepted_shader_validation": true,
+      "checks": 118,
+      "failures": 0,
+      "result_sha256": "81b5546fa1dae50e111ca44a614c4271a4791e1cd8db4600386993528d4c3017",
+      "run_sha256": "41f87f97a2e84faac8d68057ed213ceb4aeb267b0d3b1ccd658c73f4b8d3f952",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/production_hdr.gd": "b9debc7c273d0c29d51861c73b0cf4b9b9f1807a830d3bb3556d90e4d3505c57",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "25f916127990ffdad0a100be880657bc89689ee78e30dc693fcf5f03213e9741",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/fixtures/cloud_volume_reference.gd": "925b92f4b6a947e5427b4c7caba9d053c0c28165dd00eeb889fa6094831c3017"
+      },
+      "scope": "Frozen 6957127 integrator versus production, HDR scattering and transmittance, including rays originating below/inside/above the cloud layer. No gameplay route or FPS claim.",
+      "renderer": "mobile",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "errors": [],
+      "other_engines_absent": true,
+      "HDR": {
+        "cases": 110,
+        "pixels": 901120,
+        "maximum_error": 0.0,
+        "note": "Each arm uses the same 96/3 or 160/5 sample budget. This checks density specialization and conservative bounds, not 192 versus 160 image equivalence."
+      }
+    },
+    {
+      "label": "final-fallback-mobile01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/final-fallback-mobile01",
+      "accepted_shader_validation": true,
+      "checks": 16,
+      "failures": 0,
+      "result_sha256": "0b6c23a750d5225fe36dd20889a43ec38d6e40a7b8aed5b09e3041687a20b417",
+      "run_sha256": "cb3b5445a60b52d10c96777fafabc2b06f073f5fadac15e029c5dc938fc93ff2",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/device_fallback.gd": "6b5d0d54f869215f6cb26b8cadef4578ed635a3f62f2c916799ea6ff8a0f9581",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "25f916127990ffdad0a100be880657bc89689ee78e30dc693fcf5f03213e9741",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/dispatch.gd": "91380c051d027f007599028db8647c47294d3e4b5cd9b6a3be1c5eae835199ed"
+      },
+      "scope": "Current cloud/volume/sky source in existing private app. Unsupported volume falls back; this is not native High-volume Android acceptance.",
+      "renderer": "mobile",
+      "adapter": "Adreno (TM) 650",
+      "errors": [],
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true
+    },
+    {
+      "label": "final-fallback-gl01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/final-fallback-gl01",
+      "accepted_shader_validation": true,
+      "checks": 16,
+      "failures": 0,
+      "result_sha256": "8b39580fa1080c52cf303a8b995012d5a5315bfe45f5eaee9c0fc02dfba50c42",
+      "run_sha256": "34743e617080b0aa7e623a9696f9fe99c3dbe84f51fd84b0cd9267bd8b1f8adb",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/device_fallback.gd": "6b5d0d54f869215f6cb26b8cadef4578ed635a3f62f2c916799ea6ff8a0f9581",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "25f916127990ffdad0a100be880657bc89689ee78e30dc693fcf5f03213e9741",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/dispatch.gd": "91380c051d027f007599028db8647c47294d3e4b5cd9b6a3be1c5eae835199ed"
+      },
+      "scope": "Current cloud/volume/sky source in existing private app. Unsupported volume falls back; this is not native High-volume Android acceptance.",
+      "renderer": "gl_compatibility",
+      "adapter": "Adreno (TM) 650",
+      "errors": [],
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true
+    },
+    {
+      "label": "production-mixed01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/production-mixed01",
+      "accepted_shader_validation": false,
+      "checks": 26,
+      "failures": 0,
+      "result_sha256": "25a3bdff386c654336a65360200c66af08fe6e8f35eb53cbf7d00aea9e8b3c64",
+      "run_sha256": "c3264728906815e288c512b747b820f275bb5663612f903942e1423667c42c11",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "scope": "Current background-only environment passed to EISky; fixed-cumulus density specialization. Four-second held settling after timed intervals. Appearance-based evaluation authorized by user; sample budget recorded per arm; no whole-game FPS claim.",
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "errors": [],
+      "other_engines_absent": false
+    },
+    {
+      "label": "budget128-fair01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/budget128-fair01",
+      "accepted_shader_validation": false,
+      "checks": 27,
+      "failures": 0,
+      "result_sha256": "72a022e05536b313ce5e7614eebd95a937532e053944e4a7a9048d1a4d2d5bd7",
+      "run_sha256": "3b6954fa2546a238d1fa9fc71c1cd2a9662fc8122f3c39680d99256d560491cc",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "scope": "Current background-only environment passed to EISky; fixed-cumulus density specialization. Four-second held settling after timed intervals. Appearance-based evaluation authorized by user; sample budget recorded per arm; no whole-game FPS claim.",
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "errors": [],
+      "other_engines_absent": true,
+      "visual_review": {
+        "status": "Rejected for promotion after visual review",
+        "reason": "At ordinary 4K camera framing, 128 view samples exaggerate horizontal/oblique streaking on the left and right fair-cloud edges relative to 192 samples. Numeric screen passes but is not sufficient for quality.",
+        "reviewed": [
+          "bounds-sky-3-0.png",
+          "bounds-sky-3-1.png"
+        ],
+        "changes": "Only scratch shader ray budget plus current fixed-cumulus source; no production sample change."
+      }
+    },
+    {
+      "label": "budget128-mixed01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/budget128-mixed01",
+      "accepted_shader_validation": false,
+      "checks": 27,
+      "failures": 0,
+      "result_sha256": "b009370f6ebc2b6c674cf502f590895beb4e9b3d0a9d4f064de3d9761c8d8e2d",
+      "run_sha256": "45a28a9af296e7b4753a6c0e8f6b0feaa7020f56398106abb2b9f211f0ca1a10",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "b82b9db16884c53df3873b738ba56db6aa8ff3f437cec56e9eeb7752d4dff26a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "scope": "Current background-only environment passed to EISky; fixed-cumulus density specialization. Four-second held settling after timed intervals. Appearance-based evaluation authorized by user; sample budget recorded per arm; no whole-game FPS claim.",
+      "renderer": "forward_plus",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "errors": [],
+      "other_engines_absent": true
+    },
+    {
+      "label": "fallback-mobile01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/fallback-mobile01",
+      "accepted_shader_validation": false,
+      "checks": 16,
+      "failures": 0,
+      "result_sha256": "0b6c23a750d5225fe36dd20889a43ec38d6e40a7b8aed5b09e3041687a20b417",
+      "run_sha256": "2129abb648579a1ec898e5c47ceecbdde79973380efebbaa591835d8a150eec4",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/device_fallback.gd": "6b5d0d54f869215f6cb26b8cadef4578ed635a3f62f2c916799ea6ff8a0f9581",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/dispatch.gd": "91380c051d027f007599028db8647c47294d3e4b5cd9b6a3be1c5eae835199ed"
+      },
+      "scope": "Current cloud/volume/sky source in existing private app. Unsupported volume falls back; this is not native High-volume Android acceptance.",
+      "renderer": "mobile",
+      "adapter": "Adreno (TM) 650",
+      "errors": [],
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true
+    },
+    {
+      "label": "fallback-gl01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/fallback-gl01",
+      "accepted_shader_validation": false,
+      "checks": 16,
+      "failures": 0,
+      "result_sha256": "8b39580fa1080c52cf303a8b995012d5a5315bfe45f5eaee9c0fc02dfba50c42",
+      "run_sha256": "39917ce1d76170ec35025e0cfbbe31fed4b4791346dc00b302a563641ea06139",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/device_fallback.gd": "6b5d0d54f869215f6cb26b8cadef4578ed635a3f62f2c916799ea6ff8a0f9581",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "e223936ca1d57e5dc4c2cbdfefcd71c5758f3806d638a16451f973303fe660ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/dispatch.gd": "91380c051d027f007599028db8647c47294d3e4b5cd9b6a3be1c5eae835199ed"
+      },
+      "scope": "Current cloud/volume/sky source in existing private app. Unsupported volume falls back; this is not native High-volume Android acceptance.",
+      "renderer": "gl_compatibility",
+      "adapter": "Adreno (TM) 650",
+      "errors": [],
+      "restored": true,
+      "private_process_stopped": true,
+      "temporary_directory_removed": true
+    },
+    {
+      "label": "final-views-mobile01",
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/final-views-mobile01",
+      "accepted_shader_validation": true,
+      "checks": 33,
+      "failures": 0,
+      "result_sha256": "c4288a84fb750059650d4a4819501f843692e30d88908b8101168f65cef5f384",
+      "run_sha256": "5fe6e7a288f8be32c7bfa40a29c7207bbfd756ba986dad6b271838a10935ca8e",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_views.gd": "1a08c9b2c9bd8bac4c0d82ed9cd74ac5444c43d0503fc9a48a0f26a69dd60520",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality_cost.gd": "c40ba109d93eea0f0dfabc37237eafa64db48f905a24775b10fb94c82ea644b7",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/clouds.gd": "4a7943d3cbb231ee41856ca0a515e867a65f347f8072cb46c157aec9becf4746",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_source.gd": "25f916127990ffdad0a100be880657bc89689ee78e30dc693fcf5f03213e9741",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_source.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_before.gd": "d8801f807fa08f1dd6027e14fad474d1abfef0609fa23c5f6cedccc7d11678c4",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cloud_volume_before.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/cumulus_probe.gd": "3a79ee2a7508ec723931a89f598ffc2628cd937bb3fe51419ad7b4f52ff6bd6d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/sky_candidate.gd": "e4d376db791110760ae52fef811f18258f143ce78b2273b2f12359f82a3f7bc0"
+      },
+      "scope": "Frozen current High sky versus previous source: three viewing/lighting conditions, five small camera/time steps each. Native camera and default sky debanding; qualitative review required; no gameplay or FPS claim.",
+      "renderer": "mobile",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "errors": [],
+      "other_engines_absent": true,
+      "visual_review": {
+        "status": "Accepted appearance on Linux Mobile renderer",
+        "reviewed": [
+          "view-upward-1-0.png"
+        ],
+        "notes": "Same rounded banks and gaps as Forward+ in the inspected upward mixed-weather view. All three camera views and five camera/time steps pass broad numerical screens. This is NVIDIA desktop Mobile, not Adreno native-volume acceptance."
+      }
+    }
+  ],
+  "scope_limits": [
+    "Measured GPU times are isolated4K Linux Forward+ sky costs onRTX3090Ti with artificial Ingos weather and no radiance consumer. Not whole-game FPS or Android performance.",
+    "Matching original RMX3890/Adreno610 and RTX3050/CachyOS, Windows and full-current-source package acceptance remain open.",
+    "The separate Adreno650 Mobile water flicker and earlier sky numeric A/B variability remain unresolved.",
+    "No playthrough, new export/package/APK, installation, game helper rebuild or normal Android app change. Latest delivered build remains1.0.3-local.20261010.9, source473beb9."
+  ],
+  "previous_arithmetic_diagnostics": "cloud-sky-spirv-diagnostics-2026-10-10.json",
+  "totals": {
+    "accepted_shader_runs": 11,
+    "accepted_shader_checks": 481,
+    "accepted_shader_failures": 0,
+    "completed_quality_runs_including_rejected_and_preliminary": 16,
+    "completed_quality_checks": 593,
+    "completed_quality_failures": 0,
+    "separate_Android_capability_attempt_failures": 1
+  },
+  "post_run_state": {
+    "unix_time": 1791666665.2954578,
+    "unchanged_build_sha256": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "unchanged_feedback_sha256": {
+      "android-insta-crash.txt": "f4c51007f715c6da8e001ee0dc5c7cdbe60962dbd60c57cdb7a4b3aa5f2e3ddf",
+      "android-settings-no-buttons.png": "f09c37f81f4e3a7f55e331da204e31e200a2692c224846386a0ef67f39fcb3ba",
+      "linux-gameplay-reported-crash.txt": "efa29ae4b00eb6a2cf30c9b8527470cc0086de45286a469c07267be54601df2e"
+    },
+    "owned_validation_processes": [],
+    "private_android_stopped": true,
+    "temporary_android_fixture_removed": true,
+    "private_state_restored_in_all_five_android_attempts": true,
+    "devices": "List of devices attached\n9a7e6425\tdevice",
+    "package_export_install_performed": false,
+    "game_helper_or_engine_rebuild_performed": false
+  },
+  "analysis_artifacts": {
+    "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/analyse_quality.py": "b137c07606599f427812c6e9d40e9d94f0cd9f20a2ad5a19912e2a4078491ec9",
+    "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/quality-analysis.json": "5cc8b235ee9e4ff497f1d5873a7dc63e1e0b202bb4df05073a613c09ccd12869",
+    "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/source-audit.json": "4ec2a9be5ea8e31f041bfe3dbe7d62b30c44e1c807877bf8b4b533281a9a8b87",
+    "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/accepted-shader-audit.json": "3153aea2e1be5a8d5b57212fdc6e265324f10e3c70103e897ba52b3cfd825b5d",
+    "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/fair-edge-comparison.png": "ad8ab98a7f7bbdab553112da809c6549dc3d203ea3951f29fa4cf097e795143e",
+    "/home/llm2x/Documents/EI/local/scratchpad/cloud-quality-budget-20261010/post-run-state.json": "64c0a0f421d36aad54c53c3769c119f8f8ede57e3b6b3d0cf3f2cf2489782d2d"
+  }
+}

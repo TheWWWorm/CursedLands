@@ -5,7 +5,7 @@ const Volume = preload("res://src/game/fx/cloud_volume.gd")
 const Reference = preload("fixtures/cloud_volume_reference.gd")
 const PROBE := """
 uniform vec3 probe_origin;
-uniform int probe_steps = 192;
+uniform int probe_steps = 160;
 uniform int probe_light_steps = 5;
 uniform float probe_yaw = 0.0;
 void fragment(){
@@ -50,6 +50,7 @@ func _ready() -> void:
 	for quality:int in [1,2,3]:
 		GameData.options.gfx_clouds=quality
 		check(Clouds.sky_source(EISky.SHADER).contains("cv_ray_bounds()")==bool(quality==3),"bounds only enter High sky: "+str(quality))
+		check(Clouds.sky_source(EISky.SHADER).contains("cv_density_cumulus(")==bool(quality==3),"fixed cumulus specialization only enters High sky: "+str(quality))
 	GameData.options.gfx_clouds=3
 	var seen_cloud:=false
 	for config:Dictionary in cases:
@@ -62,7 +63,7 @@ func _ready() -> void:
 		Gfx.set_cloud_frame(view.get_instance_id(),frame)
 		RenderingServer.global_shader_parameter_set(&"ei_sun_dir",SUN)
 		for quality:int in [2,3]:
-			material.set_shader_parameter("probe_steps",96 if quality==2 else 192)
+			material.set_shader_parameter("probe_steps",96 if quality==2 else 160)
 			material.set_shader_parameter("probe_light_steps",3 if quality==2 else 5)
 			for altitude:float in [-40.0,2469.0,2471.0,4919.0,5900.0]:
 				material.set_shader_parameter("probe_origin",Vector3(-7200,altitude,12500))

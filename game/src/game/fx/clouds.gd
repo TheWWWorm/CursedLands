@@ -152,6 +152,7 @@ static func sky_source(original: String) -> String:
 	var pass_flag := "AT_HALF_RES_PASS" if half else "AT_QUARTER_RES_PASS"
 	var pass_colour := "HALF_RES_COLOR" if half else "QUARTER_RES_COLOR"
 	source=source.replace("render_mode use_debanding;","render_mode use_debanding, "+("use_half_res_pass" if half else "use_quarter_res_pass")+";")
+	# High uses 160 view samples; 128 visibly streaked fair-cloud edges.
 	var low_pass := """
 	if (%s) {
 		// Dense midpoint quadrature remains stable without temporal history
@@ -162,7 +163,7 @@ static func sky_source(original: String) -> String:
 		}
 		COLOR=clouds.rgb;ALPHA=clouds.a;
 	} else {
-""" % [pass_flag,192 if half else 96,5 if half else 3]
+""" % [pass_flag,160 if half else 96,5 if half else 3]
 	# Godot's sky processor cannot return early. Keep the original dome and
 	# final composition in the other branch of the subpass selection.
 	source=source.insert(source.rfind("}"),"\t}\n")

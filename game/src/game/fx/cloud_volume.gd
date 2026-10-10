@@ -156,7 +156,7 @@ var frame := {"weather":Vector4.ZERO,"storm":Vector4.ZERO,"phases":[]}
 
 static func sky_source() -> String:
 	if _sky_source.is_empty():
-		_sky_source=COMMON.replace("float cv_phase(",SKY_BOUNDS+"float cv_phase(")
+		_sky_source=_cumulus_sky_density(COMMON).replace("float cv_phase(",SKY_BOUNDS+"float cv_phase(")
 		_sky_source=_sky_source.replace(" for(int i=0;i<256;i++){",
 			" vec2 ray_bounds=cv_ray_bounds();\n for(int i=0;i<256;i++){")
 		var sample_line := " float dt=segment_begin*(ratio-1.0),local_height;vec3 p=origin+ray*t;"
@@ -167,6 +167,32 @@ static func sky_source() -> String:
  if(p.y<ray_bounds.x){t*=ratio;segment_begin*=ratio;continue;}
 """)
 	return _sky_source
+
+
+static func _cumulus_sky_density(source: String) -> String:
+	# Fair weather has a uniform cumulus type. A constant copy lets the GPU
+	# discard the unused type lookup and stratus/nimbus work at each sample.
+	# Generate both paths from one density body; water and shadows keep COMMON.
+	var start := source.find("float cv_density(")
+	var end := source.find("\nfloat cv_phase(",start)
+	if start<0 or end<=start:
+		push_error("Cloud sky density definition is missing")
+		return source
+	var original := source.substr(start,end-start)
+	var begin := original.find(" float type_noise=")
+	var finish := original.find(" float stratus=",begin)
+	if begin<0 or finish<=begin:
+		push_error("Cloud sky type definition is missing")
+		return source
+	var general := original.replace("float cv_density(","float cv_density_general(")
+	var cumulus := (original.substr(0,begin)+" const float type_=.5;\n"+original.substr(finish)).replace("float cv_density(","float cv_density_cumulus(")
+	var dispatch := """
+float cv_density(vec3 p,float footprint,out float local_height){
+ if(ei_cv_weather.z==.5 && ei_cv_weather.w==0.0){return cv_density_cumulus(p,footprint,local_height);}
+ return cv_density_general(p,footprint,local_height);
+}
+"""
+	return source.substr(0,start)+general+"\n"+cumulus+dispatch+source.substr(end)
 
 
 
