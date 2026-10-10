@@ -21,6 +21,9 @@ var builds := 0
 var build_us := 0
 var candidates := 0
 var levels := PackedFloat32Array()
+var _indexed := false
+var _eligible := PackedInt32Array()
+var _cardinal := PackedInt32Array()
 
 
 func _init(terrain: EITerrain = null) -> void:
@@ -58,6 +61,21 @@ func _init(terrain: EITerrain = null) -> void:
 	refresh(terrain._level)
 
 
+## The authored snapshot is immutable. Keep its row-major candidate order
+## and cardinal neighbours once; flood updates only change height/exposure.
+func _index() -> void:
+	for i in rest.size():
+		if owners[i]>=0 and is_finite(rest[i]) and is_finite(bed[i]): _eligible.append(i)
+	_cardinal.resize(_eligible.size()*4)
+	for k in _eligible.size():
+		var i := _eligible[k]; var x := i%size.x
+		_cardinal[k*4] = i+1 if x+1<size.x else -1
+		_cardinal[k*4+1] = i-1 if x>0 else -1
+		_cardinal[k*4+2] = i+size.x if i+size.x<rest.size() else -1
+		_cardinal[k*4+3] = i-size.x if i>=size.x else -1
+	_indexed = true
+
+
 func refresh(next_levels: PackedFloat32Array) -> bool:
 	if levels == next_levels and builds > 0: return false
 	levels = next_levels.duplicate()
@@ -65,38 +83,44 @@ func refresh(next_levels: PackedFloat32Array) -> bool:
 	var count := size.x*size.y
 	if size.x < 2 or size.y < 2 or count > 4194304 or rest.size() != count or owners.size() != count or bed.size() != count: return false
 	var started := Time.get_ticks_usec()
+	if not _indexed: _index()
 	layer.resize(count); layer.fill(INF)
 	exposed.resize(count); exposed.fill(INF)
 	var active := PackedInt32Array()
-	for i in count:
+	for k in _eligible.size():
+		var i := _eligible[k]
 		var m := owners[i]
-		if m < 0 or m >= levels.size() or not is_finite(rest[i]) or not is_finite(bed[i]): continue
+		if m >= levels.size(): continue
 		var height := rest[i]+levels[m]
 		if not is_finite(height): continue
 		layer[i] = height
 		if height < bed[i]-0.05: continue
-		exposed[i] = height; active.append(i)
+		exposed[i] = height; active.append(k)
 	var spikes := PackedByteArray(); spikes.resize(count)
-	for i in active:
-		var p := Vector2i(i%size.x,i/size.x)
+	var potential := PackedInt32Array()
+	for k in active:
+		var i := _eligible[k]
 		var above := 0; var below := 0; var neighbours := 0
-		for d: Vector2i in NEIGHBOURS:
-			var q := p+d
-			if not valid(q): continue
+		for d in 4:
+			var other := _cardinal[k*4+d]
+			if other<0 or not is_finite(exposed[other]): continue
 			neighbours += 1
-			var difference := exposed[q.y*size.x+q.x]-exposed[i]
+			var difference := exposed[other]-exposed[i]
 			above += int(difference >= EDGE_DROP); below += int(difference <= -EDGE_DROP)
 		spikes[i] = int(neighbours >= 2 and (above == neighbours or below == neighbours))
+		# Only these vertices can satisfy the identical edge predicate below.
+		# Flat water needs no second cardinal scan or cluster-start scan.
+		if not spikes[i] and above+below>0: potential.append(k)
 	var edges := PackedByteArray(); edges.resize(count)
-	for i in active:
-		if spikes[i]: continue
-		var p := Vector2i(i%size.x,i/size.x)
-		for d: Vector2i in NEIGHBOURS:
-			var q := p+d
-			if valid(q) and not spikes[q.y*size.x+q.x] and absf(exposed[i]-exposed[q.y*size.x+q.x]) >= EDGE_DROP:
+	for k in potential:
+		var i := _eligible[k]
+		for d in 4:
+			var other := _cardinal[k*4+d]
+			if other>=0 and is_finite(exposed[other]) and not spikes[other] and absf(exposed[i]-exposed[other]) >= EDGE_DROP:
 				edges[i] = 1; break
 	var seen := PackedByteArray(); seen.resize(count)
-	for start in active:
+	for k in potential:
+		var start := _eligible[k]
 		if not edges[start] or seen[start]: continue
 		var cluster := PackedInt32Array()
 		var stack := PackedInt32Array([start]); seen[start] = 1

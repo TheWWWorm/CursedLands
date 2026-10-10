@@ -91,8 +91,12 @@ func case(map: String, positive: bool) -> void:
 	helper.hide()
 	var hidden := await snap(view,map+"-hidden-control")
 	var weak := weakref(helper.field)
+	var query: Variant=helper.get("_surface")
+	var weak_query := weakref(query) if query!=null else null
+	query=null
 	GameData.options.gfx_waterfalls=0; terrain.apply_gfx()
 	check(terrain._waterfalls==null and weak.get_ref()==null,"disable releases snapshot and renderer "+map)
+	check(weak_query==null or weak_query.get_ref()==null,"disable releases retained triangle query "+map)
 	check(difference(hidden,await snap(view,map+"-disabled")).changed_pixels==0,"disable restores exact underlying water "+map)
 	GameData.options.gfx_water=0; terrain.apply_gfx()
 	var original := await snap(view,map+"-original")

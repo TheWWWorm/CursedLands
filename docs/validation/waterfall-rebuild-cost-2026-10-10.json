@@ -1,0 +1,1177 @@
+{
+  "date": "2026-10-10",
+  "feature": "Waterfall level-change CPU rebuild optimization",
+  "base_commit": "681be31f13d7175f97e3f654b94ba58aa18c7c19",
+  "status": "Qualified source and private desktop export; no delivery archive or APK created",
+  "user_scope": {
+    "main_thread_only": true,
+    "no_playthroughs": true,
+    "delivery_packages_only_on_request": true
+  },
+  "implementation": {
+    "field": "Index immutable eligible water vertices and cardinal neighbors once in original row-major order. Recompute dynamic heights/exposure with the original arithmetic. Restrict the identical edge predicate and cluster-start scan to nonspike vertices with a qualifying height difference. Cluster growth, classification and limits are unchanged.",
+    "query": "Retain the existing WaterSurface triangle index across rebuilds. Call begin_frame(false) for every rebuild to invalidate posed vertices and reevaluate current levels. Existing weak mesh identity checks and 16-sector eviction bound remain. Clear the query on owner exit; never allocate it for an empty fall list.",
+    "preserved": "Original .8/.9 fixes, independent cloud consumers, V1 fixes, protocol 13, all default options, authored water/navigation data, flow, waterfall records, mesh geometry, shader sources and effect timing."
+  },
+  "performance_scope": "Elapsed CPU stages of actual terrain.set_water_offset and deferred waterfall callbacks on held hidden terrain. Same maps and ordered level changes in each arm. Used-material refresh medians aggregate 12 matching changes across two runs per build; sample ranges include deliberately disappearing falls. State hashes are computed after timing. No GPU, whole-game FPS, mission playthrough or full loading-time claim.",
+  "desktop_performance": {
+    "order": [
+      "baseline03",
+      "candidate02-cost",
+      "candidate03-cost",
+      "baseline04"
+    ],
+    "checks_per_run": 81,
+    "failures": 0,
+    "exact_state_field_comparisons_against_first_run": {
+      "candidate02-cost": 240,
+      "candidate03-cost": 240,
+      "baseline04": 240
+    },
+    "maps": [
+      {
+        "map": "zone11",
+        "baseline": {
+          "refresh_ms": {
+            "median": 67.645,
+            "min": 41.151,
+            "max": 75.896,
+            "samples": [
+              67.151,
+              67.559,
+              66.05,
+              70.791,
+              41.151,
+              73.487,
+              68.712,
+              67.491,
+              67.731,
+              69.744,
+              43.577,
+              75.896
+            ]
+          },
+          "classification_ms": {
+            "median": 44.328500000000005,
+            "min": 41.029,
+            "max": 47.905,
+            "samples": [
+              43.504,
+              44.074,
+              46.177,
+              44.993,
+              41.029,
+              42.136,
+              45.367,
+              45.541,
+              47.905,
+              44.188,
+              43.424,
+              44.469
+            ]
+          },
+          "mesh_ms": {
+            "median": 23.401,
+            "min": 0.111,
+            "max": 31.417,
+            "samples": [
+              23.634,
+              23.471,
+              19.859,
+              25.784,
+              0.111,
+              31.34,
+              23.331,
+              21.937,
+              19.812,
+              25.542,
+              0.138,
+              31.417
+            ]
+          },
+          "initialization_ms": [
+            105.429,
+            103.806
+          ],
+          "native_current": [
+            true,
+            true
+          ],
+          "retained_cache_payload": {
+            "index_bytes": 0,
+            "query_array_bytes": 0,
+            "query_sectors": 0
+          }
+        },
+        "candidate": {
+          "refresh_ms": {
+            "median": 27.1725,
+            "min": 7.426,
+            "max": 35.401,
+            "samples": [
+              27.706,
+              26.52,
+              24.496,
+              30.568,
+              7.426,
+              35.401,
+              28.034,
+              26.639,
+              25.998,
+              30.78,
+              7.586,
+              35.358
+            ]
+          },
+          "classification_ms": {
+            "median": 7.705500000000001,
+            "min": 7.287,
+            "max": 8.832,
+            "samples": [
+              7.676,
+              7.735,
+              8.082,
+              8.335,
+              7.287,
+              7.398,
+              7.675,
+              7.744,
+              8.832,
+              8.216,
+              7.444,
+              7.483
+            ]
+          },
+          "mesh_ms": {
+            "median": 19.451500000000003,
+            "min": 0.127,
+            "max": 27.995,
+            "samples": [
+              20.015,
+              18.773,
+              16.401,
+              22.223,
+              0.127,
+              27.995,
+              20.345,
+              18.888,
+              17.152,
+              22.552,
+              0.127,
+              27.868
+            ]
+          },
+          "initialization_ms": [
+            76.912,
+            78.499
+          ],
+          "native_current": [
+            true,
+            true
+          ],
+          "retained_cache_payload": {
+            "index_bytes": 391020,
+            "query_array_bytes": 50016,
+            "query_sectors": 1
+          }
+        },
+        "refresh_median_reduction_percent": 59.83073397886023
+      },
+      {
+        "map": "zone13",
+        "baseline": {
+          "refresh_ms": {
+            "median": 57.254000000000005,
+            "min": 35.563,
+            "max": 62.353,
+            "samples": [
+              55.116,
+              57.122,
+              58.293,
+              54.71,
+              35.563,
+              60.71,
+              57.386,
+              59.244,
+              59.849,
+              56.387,
+              37.765,
+              62.353
+            ]
+          },
+          "classification_ms": {
+            "median": 39.028999999999996,
+            "min": 35.426,
+            "max": 42.666,
+            "samples": [
+              38.759,
+              39.716,
+              40.741,
+              36.85,
+              35.426,
+              37.13,
+              41.221,
+              42.304,
+              42.666,
+              38.895,
+              37.636,
+              39.163
+            ]
+          },
+          "mesh_ms": {
+            "median": 17.2835,
+            "min": 0.119,
+            "max": 23.569,
+            "samples": [
+              16.337,
+              17.393,
+              17.542,
+              17.847,
+              0.125,
+              23.569,
+              16.15,
+              16.926,
+              17.174,
+              17.484,
+              0.119,
+              23.182
+            ]
+          },
+          "initialization_ms": [
+            88.666,
+            88.39
+          ],
+          "native_current": [
+            true,
+            true
+          ],
+          "retained_cache_payload": {
+            "index_bytes": 0,
+            "query_array_bytes": 0,
+            "query_sectors": 0
+          }
+        },
+        "candidate": {
+          "refresh_ms": {
+            "median": 20.6605,
+            "min": 6.267,
+            "max": 26.377,
+            "samples": [
+              19.389,
+              20.39,
+              20.787,
+              20.615,
+              6.267,
+              26.269,
+              19.761,
+              20.795,
+              21.134,
+              20.706,
+              6.432,
+              26.377
+            ]
+          },
+          "classification_ms": {
+            "median": 6.774,
+            "min": 6.176,
+            "max": 7.388,
+            "samples": [
+              6.841,
+              7.001,
+              7.269,
+              6.695,
+              6.176,
+              6.553,
+              6.953,
+              7.134,
+              7.388,
+              6.707,
+              6.321,
+              6.668
+            ]
+          },
+          "mesh_ms": {
+            "median": 13.579,
+            "min": 0.082,
+            "max": 19.709,
+            "samples": [
+              12.537,
+              13.379,
+              13.509,
+              13.906,
+              0.082,
+              19.709,
+              12.796,
+              13.649,
+              13.734,
+              13.987,
+              0.102,
+              19.701
+            ]
+          },
+          "initialization_ms": [
+            66.304,
+            70.443
+          ],
+          "native_current": [
+            true,
+            true
+          ],
+          "retained_cache_payload": {
+            "index_bytes": 367240,
+            "query_array_bytes": 95864,
+            "query_sectors": 2
+          }
+        },
+        "refresh_median_reduction_percent": 63.91431166381389
+      },
+      {
+        "map": "zone8",
+        "baseline": {
+          "refresh_ms": {
+            "median": 84.917,
+            "min": 79.286,
+            "max": 89.264,
+            "samples": [
+              83.34,
+              85.431,
+              83.896,
+              83.771,
+              79.286,
+              84.403,
+              88.632,
+              89.111,
+              89.264,
+              88.196,
+              83.851,
+              87.679
+            ]
+          },
+          "classification_ms": {
+            "median": 84.89699999999999,
+            "min": 79.266,
+            "max": 89.248,
+            "samples": [
+              83.323,
+              85.41,
+              83.875,
+              83.752,
+              79.266,
+              84.384,
+              88.614,
+              89.095,
+              89.248,
+              88.176,
+              83.833,
+              87.659
+            ]
+          },
+          "mesh_ms": {
+            "median": 0.007,
+            "min": 0.005,
+            "max": 0.008,
+            "samples": [
+              0.006,
+              0.007,
+              0.008,
+              0.008,
+              0.007,
+              0.007,
+              0.007,
+              0.005,
+              0.006,
+              0.007,
+              0.006,
+              0.007
+            ]
+          },
+          "initialization_ms": [
+            140.87,
+            139.379
+          ],
+          "native_current": [
+            true,
+            true
+          ],
+          "retained_cache_payload": {
+            "index_bytes": 0,
+            "query_array_bytes": 0,
+            "query_sectors": 0
+          }
+        },
+        "candidate": {
+          "refresh_ms": {
+            "median": 17.142000000000003,
+            "min": 15.568,
+            "max": 20.016,
+            "samples": [
+              17.088,
+              17.226,
+              20.016,
+              18.808,
+              15.568,
+              17.337,
+              17.073,
+              17.135,
+              17.149,
+              16.971,
+              15.738,
+              17.198
+            ]
+          },
+          "classification_ms": {
+            "median": 17.134999999999998,
+            "min": 15.551,
+            "max": 19.996,
+            "samples": [
+              17.069,
+              17.207,
+              19.996,
+              18.785,
+              15.551,
+              17.322,
+              17.064,
+              17.128,
+              17.142,
+              16.965,
+              15.719,
+              17.184
+            ]
+          },
+          "mesh_ms": {
+            "median": 0.0055,
+            "min": 0.002,
+            "max": 0.008,
+            "samples": [
+              0.007,
+              0.006,
+              0.008,
+              0.008,
+              0.005,
+              0.006,
+              0.003,
+              0.002,
+              0.002,
+              0.002,
+              0.007,
+              0.005
+            ]
+          },
+          "initialization_ms": [
+            80.4,
+            80.75
+          ],
+          "native_current": [
+            true,
+            true
+          ],
+          "retained_cache_payload": {
+            "index_bytes": 697900,
+            "query_array_bytes": 0,
+            "query_sectors": 0
+          }
+        },
+        "refresh_median_reduction_percent": 79.8132293886972
+      }
+    ]
+  },
+  "desktop_environment": "Linux Ubuntu 24.04, RTX 3090 Ti, Compatibility, same .8 engine and native helper. All four ABBA runs have zero other engine processes at start or in 250 ms process observations. CPU clocks are not pinned. GPU process/clock logs remain in each run.",
+  "android_performance": {
+    "order": [
+      "device-baseline01",
+      "device-candidate01",
+      "device-candidate02",
+      "device-baseline02"
+    ],
+    "checks_per_run": 81,
+    "failures": 0,
+    "exact_state_field_comparisons_against_first_run": {
+      "device-candidate01": 240,
+      "device-candidate02": 240,
+      "device-baseline02": 240
+    },
+    "maps": [
+      {
+        "map": "zone11",
+        "baseline": {
+          "refresh_ms": {
+            "median": 133.7695,
+            "min": 82.73,
+            "max": 147.314,
+            "samples": [
+              137.276,
+              133.03,
+              129.534,
+              137.227,
+              82.73,
+              147.314,
+              134.509,
+              132.861,
+              129.057,
+              136.408,
+              83.172,
+              147.094
+            ]
+          },
+          "classification_ms": {
+            "median": 85.85249999999999,
+            "min": 82.285,
+            "max": 89.704,
+            "samples": [
+              88.039,
+              88.279,
+              89.704,
+              85.321,
+              82.285,
+              85.22,
+              86.384,
+              88.029,
+              89.242,
+              84.739,
+              82.763,
+              85.185
+            ]
+          },
+          "mesh_ms": {
+            "median": 46.4555,
+            "min": 0.317,
+            "max": 62.069,
+            "samples": [
+              49.21,
+              44.725,
+              39.805,
+              51.841,
+              0.347,
+              62.069,
+              48.104,
+              44.807,
+              39.791,
+              51.581,
+              0.317,
+              61.885
+            ]
+          },
+          "initialization_ms": [
+            210.626,
+            209.118
+          ],
+          "native_current": [
+            false,
+            false
+          ],
+          "retained_cache_payload": {
+            "index_bytes": 0,
+            "query_array_bytes": 0,
+            "query_sectors": 0
+          }
+        },
+        "candidate": {
+          "refresh_ms": {
+            "median": 56.981,
+            "min": 16.233,
+            "max": 72.131,
+            "samples": [
+              59.382,
+              55.029,
+              50.737,
+              61.64,
+              16.266,
+              72.131,
+              58.933,
+              54.797,
+              50.41,
+              61.002,
+              16.233,
+              70.682
+            ]
+          },
+          "classification_ms": {
+            "median": 16.615000000000002,
+            "min": 15.878,
+            "max": 17.629,
+            "samples": [
+              16.824,
+              17.037,
+              17.401,
+              16.406,
+              15.882,
+              16.348,
+              16.876,
+              17.148,
+              17.629,
+              16.347,
+              15.878,
+              16.377
+            ]
+          },
+          "mesh_ms": {
+            "median": 39.998000000000005,
+            "min": 0.328,
+            "max": 55.759,
+            "samples": [
+              42.533,
+              37.966,
+              33.31,
+              45.211,
+              0.356,
+              55.759,
+              42.03,
+              37.623,
+              32.749,
+              44.628,
+              0.328,
+              54.287
+            ]
+          },
+          "initialization_ms": [
+            162.632,
+            165.818
+          ],
+          "native_current": [
+            false,
+            false
+          ],
+          "retained_cache_payload": {
+            "index_bytes": 391020,
+            "query_array_bytes": 50016,
+            "query_sectors": 1
+          }
+        },
+        "refresh_median_reduction_percent": 57.40359349478019
+      },
+      {
+        "map": "zone13",
+        "baseline": {
+          "refresh_ms": {
+            "median": 111.26650000000001,
+            "min": 71.009,
+            "max": 120.233,
+            "samples": [
+              109.047,
+              114.064,
+              115.759,
+              108.901,
+              71.469,
+              119.964,
+              108.878,
+              113.486,
+              118.26,
+              108.543,
+              71.009,
+              120.233
+            ]
+          },
+          "classification_ms": {
+            "median": 76.1335,
+            "min": 70.606,
+            "max": 83.343,
+            "samples": [
+              77.168,
+              79.828,
+              81.889,
+              74.215,
+              71.059,
+              75.244,
+              77.023,
+              79.653,
+              83.343,
+              73.782,
+              70.606,
+              73.891
+            ]
+          },
+          "mesh_ms": {
+            "median": 34.0245,
+            "min": 0.373,
+            "max": 46.321,
+            "samples": [
+              31.853,
+              34.204,
+              33.845,
+              34.661,
+              0.373,
+              44.692,
+              31.831,
+              33.807,
+              34.889,
+              34.735,
+              0.374,
+              46.321
+            ]
+          },
+          "initialization_ms": [
+            176.789,
+            176.327
+          ],
+          "native_current": [
+            false,
+            false
+          ],
+          "retained_cache_payload": {
+            "index_bytes": 0,
+            "query_array_bytes": 0,
+            "query_sectors": 0
+          }
+        },
+        "candidate": {
+          "refresh_ms": {
+            "median": 40.938500000000005,
+            "min": 13.931,
+            "max": 50.472,
+            "samples": [
+              38.546,
+              41.362,
+              42.064,
+              41.076,
+              13.931,
+              50.472,
+              38.228,
+              40.801,
+              41.4,
+              40.743,
+              15.201,
+              49.876
+            ]
+          },
+          "classification_ms": {
+            "median": 14.946,
+            "min": 13.624,
+            "max": 16.183,
+            "samples": [
+              15.006,
+              15.63,
+              16.063,
+              14.611,
+              13.624,
+              14.49,
+              15.116,
+              15.508,
+              16.183,
+              14.886,
+              14.878,
+              14.65
+            ]
+          },
+          "mesh_ms": {
+            "median": 25.488999999999997,
+            "min": 0.284,
+            "max": 35.962,
+            "samples": [
+              23.515,
+              25.709,
+              25.974,
+              26.434,
+              0.284,
+              35.962,
+              23.09,
+              25.269,
+              25.188,
+              25.829,
+              0.288,
+              35.203
+            ]
+          },
+          "initialization_ms": [
+            135.367,
+            134.036
+          ],
+          "native_current": [
+            false,
+            false
+          ],
+          "retained_cache_payload": {
+            "index_bytes": 367240,
+            "query_array_bytes": 95864,
+            "query_sectors": 2
+          }
+        },
+        "refresh_median_reduction_percent": 63.206805282811985
+      },
+      {
+        "map": "zone8",
+        "baseline": {
+          "refresh_ms": {
+            "median": 168.91500000000002,
+            "min": 160.428,
+            "max": 171.528,
+            "samples": [
+              169.001,
+              170.423,
+              171.528,
+              169.627,
+              161.736,
+              168.829,
+              167.681,
+              169.205,
+              170.221,
+              168.201,
+              160.428,
+              168.645
+            ]
+          },
+          "classification_ms": {
+            "median": 168.879,
+            "min": 160.345,
+            "max": 171.481,
+            "samples": [
+              168.963,
+              170.386,
+              171.481,
+              169.55,
+              161.651,
+              168.795,
+              167.648,
+              169.165,
+              170.171,
+              168.138,
+              160.345,
+              168.596
+            ]
+          },
+          "mesh_ms": {
+            "median": 0.014499999999999999,
+            "min": 0.01,
+            "max": 0.017,
+            "samples": [
+              0.014,
+              0.012,
+              0.017,
+              0.017,
+              0.015,
+              0.01,
+              0.012,
+              0.013,
+              0.017,
+              0.012,
+              0.016,
+              0.017
+            ]
+          },
+          "initialization_ms": [
+            280.64,
+            280.912
+          ],
+          "native_current": [
+            false,
+            false
+          ],
+          "retained_cache_payload": {
+            "index_bytes": 0,
+            "query_array_bytes": 0,
+            "query_sectors": 0
+          }
+        },
+        "candidate": {
+          "refresh_ms": {
+            "median": 38.341499999999996,
+            "min": 34.992,
+            "max": 39.441,
+            "samples": [
+              38.536,
+              38.337,
+              39.441,
+              38.194,
+              34.992,
+              38.185,
+              38.346,
+              38.833,
+              38.246,
+              39.165,
+              35.804,
+              39.168
+            ]
+          },
+          "classification_ms": {
+            "median": 38.305499999999995,
+            "min": 34.945,
+            "max": 39.395,
+            "samples": [
+              38.506,
+              38.293,
+              39.395,
+              38.152,
+              34.945,
+              38.14,
+              38.318,
+              38.783,
+              38.213,
+              39.118,
+              35.757,
+              39.124
+            ]
+          },
+          "mesh_ms": {
+            "median": 0.015,
+            "min": 0.009,
+            "max": 0.017,
+            "samples": [
+              0.009,
+              0.014,
+              0.015,
+              0.015,
+              0.015,
+              0.014,
+              0.01,
+              0.017,
+              0.01,
+              0.017,
+              0.016,
+              0.016
+            ]
+          },
+          "initialization_ms": [
+            175.302,
+            175.988
+          ],
+          "native_current": [
+            false,
+            false
+          ],
+          "retained_cache_payload": {
+            "index_bytes": 697900,
+            "query_array_bytes": 0,
+            "query_sectors": 0
+          }
+        },
+        "refresh_median_reduction_percent": 77.30130539028505
+      }
+    ]
+  },
+  "android_scope": "Retroid Pocket 5 / Android 33 / Adreno 650 Compatibility, existing org.cursedlands.performance private QA app. Candidate subclass adapters copy the changed production field and waterfall methods, retaining installed base types and unchanged methods. Four runs pass 81/0 each, with exact per-platform geometry/state controls. Current-field GDScript fallback is active and explicitly polled to completion. This is bounded production-source substitution, not full-current-source APK acceptance or a claim about RMX3890/Adreno 610.",
+  "android_restore": "Private settings, renderer, validation configuration, keyboard and injected script files read back exactly after every run; private process stopped. Normal org.cursedlands.engine untouched. No install or new APK.",
+  "render_acceptance": {
+    "runs": [
+      {
+        "baseline": "baseline-render-gl01",
+        "candidate": "candidate-render-gl01",
+        "checks_per_build": 46,
+        "failures": 0,
+        "exact_png_pairs": 24
+      },
+      {
+        "baseline": "baseline-render-forward01",
+        "candidate": "candidate-render-forward01",
+        "checks_per_build": 46,
+        "failures": 0,
+        "exact_png_pairs": 24
+      },
+      {
+        "baseline": "baseline-render-mobile01",
+        "candidate": "candidate-render-mobile01",
+        "checks_per_build": 46,
+        "failures": 0,
+        "exact_png_pairs": 24
+      },
+      {
+        "baseline": "baseline-astral-render01",
+        "candidate": "candidate-astral-render01",
+        "checks_per_build": 36,
+        "failures": 0,
+        "exact_png_pairs": 18
+      }
+    ],
+    "exact_png_pairs": 90,
+    "scope": "Base positive/flat scenes on Compatibility, Forward+ and Mobile; two LiA positive scenes on Compatibility. Includes held time, motion, flood, disable, water dependency and owner/query retirement. Representative on/flood images visually inspected."
+  },
+  "adversarial_fields": {
+    "baseline_and_candidate_checks_each": 193,
+    "failures": 0,
+    "cases": 96,
+    "states": 768,
+    "positive_states": 274,
+    "entire_result_json_exact": true,
+    "scope": "Seeded coherent/irregular grids, edge thresholds, burial, conflicting/mixed owners, missing levels, huge levels, NaN/Inf input, flood restoration and immutable source arrays."
+  },
+  "map_census": {
+    "base_candidate": {
+      "maps": 22,
+      "checks": 258,
+      "failures": 0
+    },
+    "astral_baseline_and_candidate_each": {
+      "maps": 40,
+      "checks": 444,
+      "failures": 0
+    },
+    "astral_classification_and_geometry_records_exact": true,
+    "scope": "Production snapshot and controller bounds, positive waterfall emitter roles, level coalescing/restoration, default-off behavior and owner release. All base and LiA authored maps; no campaign progression."
+  },
+  "memory_tradeoff": "Retained CPU array payload in sampled maps: 441036, 463104 and 697900 bytes (0.42-0.67 MiB), excluding Dictionary/Object allocator overhead. Vertex/cardinal index is 20 bytes per eligible source vertex. Existing triangle query remains bounded to 16 sectors and retains weak mesh refs; no new GPU resource or shader variant. The tested flat-water map never allocated a triangle query and retained only its eligible index.",
+  "private_build": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/water-rebuild-cost-20261010/candidate01",
+    "baseline_path": "/home/llm2x/Documents/EI/local/scratchpad/contact-sampler-budget-20261010/candidate05",
+    "metadata_sha256": "ca3ba2f62c53854c28b08819bb3a2f42975bf4f8d5e77acb885f95a60eef3239",
+    "canonical_runtime_files_exact": 702,
+    "changed_runtime_files": [
+      "src/game/fx/waterfalls.gd",
+      "src/game/fx/waterfall_field.gd"
+    ],
+    "engine_and_native_helper_unchanged": true,
+    "import_export_errors": [
+      [],
+      []
+    ],
+    "artifact_sha256": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "327cef55c73e4e7b77d03cdd3a75caad209c037334df68c31a2ac9d0c17e7a80",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    }
+  },
+  "source_sha256": {
+    "game/src/game/fx/waterfalls.gd": "cec39fc4f9d4c2f059786637ca1cd11975242bb0c8da11f0c7f0f36772b0d373",
+    "game/src/game/fx/waterfall_field.gd": "eb901e23553277da65c01d6bb936477135fb9a910fb8f2c52eda23fd3bdf8aae"
+  },
+  "test_sha256": {
+    "tools/benchmarks/water_rebuild.gd": "a382ad7fe2784770b8e89fb45039c54c218438819fe9999e268f3b951f27a7e5",
+    "tools/benchmarks/water_rebuild_falls.gd": "ecec1362bb7186fd92d308f68e24114513a1d5a3c01ba07ca1be00fb65b780b4",
+    "tools/tests/waterfall_levels.gd": "5a8fe2cc1511b394cbaf4b631dc86467a4d177a33c87d4b1c42c3dc5ecb4da3a",
+    "tools/tests/waterfall_render.gd": "7343d7172b8972789646e88e5903478a016cdaa303027f7337a234064ec338b9",
+    "tools/tests/waterfalls.gd": "78609af637f7fb9d8b4b9245a440fe911cc1b696b6495cf7f32d294a86b9e4f5"
+  },
+  "evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/water-rebuild-cost-20261010",
+  "runs": {
+    "baseline03": {
+      "run_metadata_sha256": "f8ad6ae7873df1ab61ff9e777109524810ae6e179a13d247d47553001b082093",
+      "result_files_sha256": {
+        "water-rebuild.json": "aa994366328b20cf3dfbaaddb981a45eb64219cd2efbb53b0392431917645751"
+      }
+    },
+    "candidate02-cost": {
+      "run_metadata_sha256": "b612da5aa95ae8bfaeed92c20719b2063186a0294f72b8099b1e83b6d2897c88",
+      "result_files_sha256": {
+        "water-rebuild.json": "362fc7524941a33c4c5cb1780f88eb892aa0b6c7b1626af3976eda2a1fd28aad"
+      }
+    },
+    "candidate03-cost": {
+      "run_metadata_sha256": "51dd1905d7399849d908f3d27ccf5c4cc3a7b459cad93d6e3d5281469f6d3501",
+      "result_files_sha256": {
+        "water-rebuild.json": "2c8cdb5b0ed1b8f3030a1e73e33bd54fabd75e488a41228ceb7ed5328c65836e"
+      }
+    },
+    "baseline04": {
+      "run_metadata_sha256": "cec083885495f55952c16ed58735c8dd49a153cacb3dd3e1bc9f3327ebda8076",
+      "result_files_sha256": {
+        "water-rebuild.json": "41555877f455ee540483f0b8ce7b8d79077515bd8dafe26e0f93f785728ad833"
+      }
+    },
+    "device-baseline01": {
+      "run_metadata_sha256": "3dd42ef7a6c5fb2bec1cca53fd960a3e50cd605f2f557f5a70938848dc023424",
+      "result_files_sha256": {
+        "water-rebuild.json": "554ab889aef6a64078f7a466009260571bea98dce98f4a687572afd7a23260c6"
+      }
+    },
+    "device-candidate01": {
+      "run_metadata_sha256": "e1f62d3e3765d23aef23b1cf1ce9da5f0778797ccf9feca6f92d2fa7cb427d86",
+      "result_files_sha256": {
+        "water-rebuild.json": "b60aaeeb859f9efdce6ddf89182e8c1ec1476bdc9a445263cd38c748840567e9"
+      }
+    },
+    "device-candidate02": {
+      "run_metadata_sha256": "96c92598a7a86c9e8f0508d0fc26aaaaba62f2370f5b19a2cc32dd3e86b6727c",
+      "result_files_sha256": {
+        "water-rebuild.json": "5fc6f06371c17666c5149f1be7f628fcabbf9b95def8703bf9fa33a5cc7d7779"
+      }
+    },
+    "device-baseline02": {
+      "run_metadata_sha256": "5ed8e1dc5d568c6c7b893012c00b429c4cf2dce0de9ea2aeeb7edf67121f1bf4",
+      "result_files_sha256": {
+        "water-rebuild.json": "170b89b195f7efdfc39bf77600ea66c5ef5802341c58fb94cd2d6b44653e0682"
+      }
+    },
+    "baseline-levels01": {
+      "run_metadata_sha256": "055ffbbd317a40c3dfb247102e45da7c43b58d1ad55e9f704924d61db4953534",
+      "result_files_sha256": {
+        "waterfall-levels.json": "ff9b6381a6e38be44873fa87cc134f20703e213dab541368fd620f1ed88c81df"
+      }
+    },
+    "candidate-levels01": {
+      "run_metadata_sha256": "56b788419cfad4ccc261765dceb2c29c512f8bec3a642747799892ac1a486535",
+      "result_files_sha256": {
+        "waterfall-levels.json": "ff9b6381a6e38be44873fa87cc134f20703e213dab541368fd620f1ed88c81df"
+      }
+    },
+    "candidate-field-census01": {
+      "run_metadata_sha256": "3ef01f0dc93478f8b40394615eed1e8339fbe0eba2065e5cc8d656c3c8a76a8c",
+      "result_files_sha256": {
+        "waterfalls.json": "1f142c50f17bba78480c5029006aff4e9edeac69fd666dee1910fc0a8ef826fd"
+      }
+    },
+    "baseline-astral-census01": {
+      "run_metadata_sha256": "dfc5ad99f9d55b9d2ae80c5afbf13d62567a6cb7287ebb63eab0a9b84eeea030",
+      "result_files_sha256": {
+        "waterfalls.json": "ba171f7a9cc8fe127775d7d8ff45195fcaedbb829588ac97dab8cd1b85475e18"
+      }
+    },
+    "candidate-astral-census01": {
+      "run_metadata_sha256": "6a70a251c2cf21058b98774cc968e2148071717246e6d5a643efc7895b1036b5",
+      "result_files_sha256": {
+        "waterfalls.json": "cac51fff32fd78e4788f3df39fe85fa7031fab35f512c448706e16a42c30abec"
+      }
+    },
+    "baseline-render-gl01": {
+      "run_metadata_sha256": "e57cbef7576472e27aea9cd3fdcf7fce68e6894bb48d216592fbb66854a0607d",
+      "result_files_sha256": {
+        "waterfalls-render.json": "3758c58291fa91b0bc27ff7f687b35063f9c4914f667ad0575c5732258483b92"
+      }
+    },
+    "candidate-render-gl01": {
+      "run_metadata_sha256": "7326cd7ce1b7e28a424bbbe05b959f7a4f301f59fb84472b0562138d3d0a51c4",
+      "result_files_sha256": {
+        "waterfalls-render.json": "3758c58291fa91b0bc27ff7f687b35063f9c4914f667ad0575c5732258483b92"
+      }
+    },
+    "baseline-render-forward01": {
+      "run_metadata_sha256": "eed0ed6dac7c66302be33aeffd99d177e5703865926abbb571adba6e64958527",
+      "result_files_sha256": {
+        "waterfalls-render.json": "f2b6663e91b3d2f87696f93f74d9f8a8efd95465ba742b5f875286bcf70307f0"
+      }
+    },
+    "candidate-render-forward01": {
+      "run_metadata_sha256": "8a9963cc5158ace61f43344cc0886be6d52d68c0984a44987a3ef296dbb1d415",
+      "result_files_sha256": {
+        "waterfalls-render.json": "f2b6663e91b3d2f87696f93f74d9f8a8efd95465ba742b5f875286bcf70307f0"
+      }
+    },
+    "baseline-render-mobile01": {
+      "run_metadata_sha256": "bdfa21df8bd8f1831325e31b97b3ff8a05075588e79f144f6f9ca096a2c2587f",
+      "result_files_sha256": {
+        "waterfalls-render.json": "284c7cc5395c43c7ab4b710c4fd9b798593aedad3d9d4354ab17fa023eb4af62"
+      }
+    },
+    "candidate-render-mobile01": {
+      "run_metadata_sha256": "3bd63f491d86421829b166704bd41d75f588e3011dddcdd7c70efd8352b57ccf",
+      "result_files_sha256": {
+        "waterfalls-render.json": "284c7cc5395c43c7ab4b710c4fd9b798593aedad3d9d4354ab17fa023eb4af62"
+      }
+    },
+    "baseline-astral-render01": {
+      "run_metadata_sha256": "3cfd13b22d81db4a418ebe5e8971f5f93e51dddb9649fce20f6f26b337fbb3a7",
+      "result_files_sha256": {
+        "waterfalls-render.json": "b22a45da43f8a284b7d9842701887853bf498ee3c8a273a160d72353ac765e0b"
+      }
+    },
+    "candidate-astral-render01": {
+      "run_metadata_sha256": "a04f4e541c5564c2e16ed2bbd767494a579ef6eef50a054572c54254f1c37b8f",
+      "result_files_sha256": {
+        "waterfalls-render.json": "b22a45da43f8a284b7d9842701887853bf498ee3c8a273a160d72353ac765e0b"
+      }
+    }
+  },
+  "evidence_scripts_sha256": {
+    "analyze.py": "cc204f16069de7b93c0a23c47bbb5b056bfd84084cfac47d58f5113d8004f541",
+    "run.py": "5cdc69b697ecea695a37944b805fff2403fd72d610946a151193a0eb8ccaaa6e",
+    "build.py": "d96157be808800e6ee931f08caa6b79cd0de719cf8359b288192e46f0ee139b1",
+    "cost_abba.py": "61c6db37dbe807ffdaa1c121545beddb8fe473a4270c9b91626ca3fb60854592",
+    "qualify.py": "f08486f15e06960c78c8c703e820f647da82dde6251da950b7b0708473810ffb",
+    "qualify_astral.py": "afa9df6bca871ca59bd0e4e4bbbb3c9e7610c53488b36cd2d44cbae049eea6cb",
+    "prepare_device.py": "e70fedb4be4933290b8deec5d79f3551d6d43ec2ef05a399e481fd1b11a8ca3a",
+    "device_run.py": "8cfb949b252d15cbcf4169c79e13229b6744dd6e3404fe2120fa64f47b690dbc"
+  },
+  "preliminary_runs": "baseline01, baseline02 and candidate01-cost remain as exploratory stage profiles. Final cost conclusions use the later ABBA runs and completed current-worker polling. No timing run in the final comparison was contended.",
+  "remaining": [
+    "Waterfall refresh is still synchronous; remaining positive-scene geometry rebuilds can exceed a frame budget on Android.",
+    "Level setter scans, GDScript fallback current-field rebuilds and the broader old/new effect ranking remain open.",
+    "V1 remaining cold preparation and non-power-of-two page cost, original RMX3890/Adreno610 and Linux RTX3050 reports, Windows and wider hardware acceptance remain open.",
+    "Latest delivered build remains local.20261010.9; later private source fixes are undelivered. No new delivery is authorized."
+  ]
+}

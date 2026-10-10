@@ -18,11 +18,13 @@ var _terrain: EITerrain
 var _shell: ShaderMaterial
 var _spray: ShaderMaterial
 var _dirty := false
+var _surface: Surface
 
 
 func configure(terrain: EITerrain) -> void:
 	name = "Waterfalls"; _terrain = terrain
 	set_process(false)
+	_surface = null
 	field = Field.new(terrain)
 	_rebuild()
 
@@ -63,6 +65,8 @@ func _refresh() -> void:
 
 
 func _exit_tree() -> void:
+	if _surface: _surface.clear()
+	_surface = null
 	field = null; _terrain = null; _shell = null; _spray = null
 
 
@@ -76,21 +80,23 @@ func _rebuild() -> void:
 		_shell.render_priority = ParticleFx.RENDER_PRIORITY
 		_spray = ShaderMaterial.new(); _spray.shader = Programs.spray()
 		_spray.render_priority = ParticleFx.RENDER_PRIORITY+1
-	var surface := Surface.new(_terrain); surface.begin_frame(false)
+	# Preserve the existing bounded, weak-mesh triangle index across floods.
+	# begin_frame invalidates posed vertices, so every new level is evaluated.
+	if _surface == null: _surface = Surface.new(_terrain)
+	_surface.begin_frame(false)
 	for fall: Dictionary in field.falls:
 		var arrays := _shell_arrays(fall)
 		if arrays[Mesh.ARRAY_VERTEX].is_empty(): continue
 		var node := _draw(arrays,_shell,"Foam_%d"%int(fall.id))
 		var count: int = arrays[Mesh.ARRAY_VERTEX].size()
 		shell_vertices += count
-		var spray := _spray_arrays(fall,surface)
+		var spray := _spray_arrays(fall,_surface)
 		var number: int = spray[Mesh.ARRAY_VERTEX].size()/6
 		if number: _draw(spray,_spray,"Spray_%d"%int(fall.id))
 		sprites += number
 		var roles := [0,0,0]
 		for i in range(0,spray[Mesh.ARRAY_COLOR].size(),6): roles[roundi(spray[Mesh.ARRAY_COLOR][i].b*3.0)] += 1
 		sites.append({"id":fall.id,"shell_vertices":count,"sprites":number,"lip":roles[0],"impact":roles[1],"mist":roles[2],"bounds":str(node.get_aabb())})
-	surface.clear()
 	sync_parameters()
 
 
