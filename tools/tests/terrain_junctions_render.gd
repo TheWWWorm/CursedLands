@@ -20,6 +20,7 @@ void fragment() { ALBEDO=vec3(int(UV2.y+0.5)==target_id ? 1.0 : 0.0); }
 
 func land_materials(terrain: EITerrain) -> Array[ShaderMaterial]:
 	var result: Array[ShaderMaterial]=[terrain._land_mat]
+	if terrain._pair_land_mat: result.append(terrain._pair_land_mat)
 	if is_instance_valid(terrain.color_cache):
 		for entry: Dictionary in terrain.color_cache._resident.values():result.append(entry.material)
 	if is_instance_valid(terrain.details.soft_ground):

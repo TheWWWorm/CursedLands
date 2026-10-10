@@ -15,7 +15,9 @@ var _override: Material
 var _layers: int
 var _bounds: AABB
 var _parts: Array[MeshInstance3D] = []
+var _meshes: Array[ArrayMesh] = []
 var _subdivided := false
+var tile_origin := Vector2i.ZERO
 
 
 static func preferred() -> bool:
@@ -44,6 +46,16 @@ func set_subdivided(value: bool) -> void:
 		_rebuild(value)
 
 
+func set_base_material(material: Material) -> void:
+	if _material == material: return
+	_material = material
+	# Soft-ground deformation can temporarily replace a piece's mesh. Update
+	# its retained source, so restoring it uses the current terrain options,
+	# without overwriting the live trail material or a cache override.
+	for mesh in _meshes:
+		mesh.surface_set_material(0, material)
+
+
 func get_surface_override_material(_surface: int) -> Material:
 	return _override
 
@@ -63,6 +75,7 @@ func _rebuild(subdivided: bool) -> void:
 	for piece in _parts:
 		piece.free()
 	_parts.clear()
+	_meshes.clear()
 	_subdivided = subdivided
 	if not subdivided:
 		_add_piece(_arrays)
@@ -76,6 +89,7 @@ func _add_piece(arrays: Array) -> void:
 	var mesh := ArrayMesh.new()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 	mesh.surface_set_material(0, _material)
+	_meshes.append(mesh)
 	var piece := MeshInstance3D.new()
 	piece.mesh = mesh
 	piece.layers = _layers

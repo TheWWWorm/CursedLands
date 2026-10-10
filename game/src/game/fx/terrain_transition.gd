@@ -27,6 +27,7 @@ var rejected_support_geometry := 0
 var admitted_families := {2:0, 3:0, 4:0}
 var build_us := 0
 var _shaders := {}
+var _pair_sectors := {}
 
 
 func _init(terrain: EITerrain = null, verified: Dictionary = {}) -> void:
@@ -247,13 +248,32 @@ func _valid_tile(terrain: EITerrain, x: int, y: int) -> bool:
 	return true
 
 
-func source(original: String) -> String:
-	return TransitionShader.source(original, junctions > 0) if admitted > 0 else original
+## Classification is immutable map metadata, cached once per requested
+## sector. The extra tile covers all four painted-relief offsets, including
+## fragments at sector edges. Unsupported/unknown fields keep the full path.
+func pair_sector_allowed(origin: Vector2i) -> bool:
+	if admitted == 0 or junctions == 0 or rows.size() != tile_size.x * tile_size.y \
+		or origin.x < 0 or origin.y < 0 or origin.x % 16 != 0 or origin.y % 16 != 0 \
+		or origin.x + 16 > tile_size.x or origin.y + 16 > tile_size.y:
+		return false
+	if _pair_sectors.has(origin): return _pair_sectors[origin]
+	for y in range(maxi(0, origin.y - 1), mini(tile_size.y, origin.y + 17)):
+		for x in range(maxi(0, origin.x - 1), mini(tile_size.x, origin.x + 17)):
+			if ((int(rows[y * tile_size.x + x].b) >> 20) & 15) != 0:
+				_pair_sectors[origin] = false
+				return false
+	_pair_sectors[origin] = true
+	return true
 
 
-func shader(original: String) -> Shader:
-	if not _shaders.has(original): _shaders[original] = Gfx.make_shader(source(original), true, true)
-	return _shaders[original]
+func source(original: String, pair_only := false) -> String:
+	return TransitionShader.source(original, junctions > 0, pair_only) if admitted > 0 else original
+
+
+func shader(original: String, pair_only := false) -> Shader:
+	var key := str(int(pair_only)) + original
+	if not _shaders.has(key): _shaders[key] = Gfx.make_shader(source(original, pair_only), true, true)
+	return _shaders[key]
 
 
 func bind(material: ShaderMaterial) -> void:

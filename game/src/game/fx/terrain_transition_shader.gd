@@ -284,7 +284,28 @@ vec3 transition_junction_sample(ivec2 cell,vec2 p,vec2 dx,vec2 dy,vec4 row,vec4 
 	return code
 
 
-static func source(original: String, junctions := false) -> String:
+## Used only where the complete sector and its relief-sampling halo have
+## no junction influence. Keep the pair arithmetic and the four relief taps
+## identical; removing the unreachable junction branch reduces GPU work.
+static func _pair_only_junction_functions() -> String:
+	var code := _reuse_junction_functions()
+	var start := code.find("vec3 ground_sample(")
+	var end := code.find("void transition_relief_samples(", start)
+	return code.substr(0, start) + """vec3 ground_sample(ivec2 cell,vec2 p,vec2 dx,vec2 dy,out vec4 traits) {
+	ivec2 shift=ivec2(floor(p)); cell+=shift; p-=vec2(shift);
+	vec4 row=transition_row(cell);
+	vec4 original_traits;
+	vec3 original=transition_original_sample(cell,p,dx,dy,original_traits);
+	vec4 legacy_traits=original_traits;
+	vec2 cached_slots=vec2(-1.0); vec3 cached_a=vec3(0.0); vec3 cached_b=vec3(0.0);
+	vec3 legacy=transition_pair_sample(cell,p,dx,dy,row,original,legacy_traits,cached_slots,cached_a,cached_b);
+	traits=legacy_traits;
+	return legacy;
+}
+""" + code.substr(end)
+
+
+static func source(original: String, junctions := false, pair_only := false) -> String:
 	var code := original.replace("shader_type spatial;", "shader_type spatial;\n#define EI_TERRAIN_TRANSITIONS")
 	code = code.replace("vec3 ground_sample(", "vec3 transition_original_sample(")
 	var functions := FUNCTIONS
@@ -306,7 +327,7 @@ static func source(original: String, junctions := false) -> String:
 	cached_slots=vec2(-1.0); cached_a=vec3(0.0); cached_b=vec3(0.0);""")
 			functions = functions.replace("""	vec3 a=transition_fill(row.r,grid,dx,dy); vec3 b=transition_fill(row.g,grid,dx,dy);""", """	vec3 a=transition_fill(row.r,grid,dx,dy); vec3 b=transition_fill(row.g,grid,dx,dy);
 	cached_slots=row.rg; cached_a=a; cached_b=b;""")
-			functions += _reuse_junction_functions()
+			functions += _pair_only_junction_functions() if pair_only else _reuse_junction_functions()
 		else:
 			functions += JUNCTION_FUNCTIONS
 		# These exact blocks keep their four coordinates and downstream math.

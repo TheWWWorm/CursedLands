@@ -5649,3 +5649,46 @@ recruited-party, WAN/input and prior renderer/device limitations remain open.
 This is a local test package, not a stable 1.0.3 release.
 
 [Package evidence](validation/local-feedback-build-2026-10-10-6.json).
+
+## Natural terrain sector specialization — 10 October
+
+The complete junction shader previously ran on every sector of any map containing
+a three/four-material junction. Forward+ now classifies each original 16×16-tile
+sector and its full one-tile relief halo from immutable map metadata. A sector with
+no junction influence uses the exact pair sampler without the unreachable junction
+branch. Unknown and junction-influenced sectors retain the complete shader. The
+classification is cached for the map field's lifetime.
+
+One additional shared material uses the same atlas and metadata textures. Rain
+cover, water levels and caustic scroll update both materials; live settings rebuild
+their complete parameter set. Retained source meshes receive current base materials
+without replacing deformation or colour-cache owners. Dense footprint receivers
+keep the complete sampler. Original/Detailed, Mobile and Compatibility retain their
+previous shader selection. No graphics setting or persistent texture cache was added.
+
+On the second Linux RTX3090 Ti using render offload, the production 4K ABBA runs
+measure 12.8–14.7% less viewport GPU time in three eligible close views and
+5.1–18.1% less in wider mixed-sector views. Every comparison/restoration image is
+byte-identical, with unchanged draws and triangles. Both shaders were prewarmed,
+then each arm used 256 warmup and 480 sampled normal frames. The CPU/frame wall
+clock includes offload presentation overhead; these are terrain GPU measurements,
+not full-game FPS or Windows RTX4090 Mobile acceptance. GPU clocks were not locked;
+clocks, per-process GPU activity and foreign-engine observations are retained. The
+1440p exploratory timings varied with clock changes and do not support a broad
+1440p claim.
+
+Forward+ lifecycle/composition checks pass **1764/0**, Mobile **1533/0**, and
+Compatibility **1533/0**, including wet materials, cliff projection, water changes,
+actual footprint installation, option reversal and map disposal. Source-mesh
+ownership/deformation regression passes **17957/0**, junction metadata **7515/0**,
+and real-map transition regression **75/0**; the two production cost runs add
+**156/0**. This totals **30533/0** current qualification checks; many headless checks
+are unchanged geometry/metadata regression assertions, not separate player routes.
+
+The fixed-four-material-loop experiment is rejected: no repeatable saving, with
+two strict one-pixel 1/255 mismatches retained. Earlier relief-row sharing, colour
+caches and cloud experiments remain unpromoted. Cloud cost, V1 cold preparation
+and recorded numerical residuals, Windows/WAN/device acceptance and full gameplay
+routes remain open. Main thread only.
+
+[Validation and frozen inputs](validation/terrain-pair-sectors-2026-10-10.json).

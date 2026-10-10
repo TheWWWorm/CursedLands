@@ -1,0 +1,3878 @@
+{
+  "date": "2026-10-10",
+  "base_commit": "c7e4b179e1ce29809e2f788ad100d0b9e65a714c",
+  "decision": "Integrate Forward+ per-sector pair shader selection; keep the full Natural shader on every sector with junction influence in its complete one-tile halo. Other renderers retain the previous sampler.",
+  "source_sha256": {
+    "src/ei/terrain.gd": "46808a3f659cfa6006df037a320e1220e7cd88c3491cb14de4572933a7f57265",
+    "src/ei/terrain_sector.gd": "51e23c785f6a21a86d12f2cae10dbbe220d8b80c1c51138266bf9e1b3fa9be46",
+    "src/game/fx/terrain_transition.gd": "3eb281314e662ad944a03f8f8f4079f4fcf9b3df9cd43f2620ac19564cafc518",
+    "src/game/fx/terrain_transition_shader.gd": "5253cb154d154447116f7b99603812c61a023aeafb0e4a53668a8f6aa38e4a11"
+  },
+  "private_candidate": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/candidate01",
+    "build_sha256": "f63d357ce3ff7fabe166fb1ee169472f62ecf48c2ac544d990ca85915240a9e7",
+    "pack": "c54b4f3d488235f649e1f101740aa35de19671c5dbb3b483b512247043093358",
+    "compiled_resources_changed": [
+      "src/ei/terrain.gdc",
+      "src/ei/terrain_sector.gdc",
+      "src/game/fx/terrain_transition.gdc",
+      "src/game/fx/terrain_transition_shader.gdc"
+    ],
+    "resources": 682
+  },
+  "design": [
+    "Reuse immutable transition metadata; cache each 16x16 tile sector classification while its map field exists. Do not infer uniformity from a camera view.",
+    "The halo includes all four relief taps and map bounds. Full junction geometry, warping, donor selection and sampling arithmetic remain intact.",
+    "One shared additional ShaderMaterial per terrain references the original textures. No new texture, material atlas, geometry, draw, map asset or user-facing setting.",
+    "Water levels, rain cover and caustic scroll propagate to both shared materials. Live option changes copy all current parameters.",
+    "Sector source meshes retain current base materials through subdivision, cache overrides and real footprint deformation. Dense footprint receivers keep the full sampler."
+  ],
+  "environment": {
+    "platform": "Linux",
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "backend": "Forward+ / Vulkan",
+    "viewport": [
+      3840,
+      2160
+    ],
+    "offload_environment": {
+      "__NV_PRIME_RENDER_OFFLOAD": "1",
+      "__NV_PRIME_RENDER_OFFLOAD_PROVIDER": "NVIDIA-G0",
+      "__VK_LAYER_NV_optimus": "NVIDIA_only"
+    },
+    "isolation": "Private XDG profiles. No other Godot engine observed during timings. The desktop renders on GPU0; GPU1 retains inactive ComfyUI/Xorg allocations. pmon/dmon retained. No desktop, driver clocks or unrelated process was modified.",
+    "timing": "Both shaders prewarmed, then ABBA with 256 warmup and 480 sampled normal frames per arm. Use measured viewport GPU timestamps. Offload presentation adds wall-clock overhead; clocks were not locked."
+  },
+  "production_acceptance": {
+    "checks": 30533,
+    "failures": 0,
+    "runs": {
+      "lifecycle-forward02": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/lifecycle-forward02",
+        "run_sha256": "dcce9adf5e66e2b7be9907228823c265e051d11e875d6e1e1f4e956c9fe951ce",
+        "log_sha256": "c13cf7698f1339ce25c69549f458fdb296d4cb3a05fabe657a8398de71faa1fe",
+        "fixture_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_pair_sectors.gd": "210cfcfc387fa753d1ac500824f4b9dfe639aeda5b936f0b3c33709e517d2a12"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "c54b4f3d488235f649e1f101740aa35de19671c5dbb3b483b512247043093358",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "checks": 1764,
+        "failures": 0,
+        "warnings": [],
+        "other_engines_absent": true,
+        "result_sha256": "3c6af81709238bbba63ed314527cafc4f90b960c4a7b97002eaf530da67adaa0",
+        "result_file": "terrain-pair-sectors.json",
+        "result": {
+          "checks": 1764,
+          "failures": 0,
+          "records": [
+            {
+              "draws": 14,
+              "exact": true,
+              "triangles": 24632,
+              "view": "zone15-boundaries"
+            },
+            {
+              "draws": 87,
+              "exact": true,
+              "triangles": 139896,
+              "view": "zone15-oblique"
+            },
+            {
+              "draws": 87,
+              "exact": true,
+              "triangles": 139896,
+              "view": "zone15-reenabled"
+            },
+            {
+              "draws": 87,
+              "exact": true,
+              "triangles": 139896,
+              "view": "zone15-composed"
+            },
+            {
+              "draws": 9,
+              "exact": true,
+              "triangles": 18432,
+              "view": "zone12-boundaries"
+            },
+            {
+              "draws": 51,
+              "exact": true,
+              "triangles": 94496,
+              "view": "zone12-oblique"
+            },
+            {
+              "draws": 51,
+              "exact": true,
+              "triangles": 94496,
+              "view": "zone12-reenabled"
+            },
+            {
+              "draws": 51,
+              "exact": true,
+              "triangles": 94496,
+              "view": "zone12-composed"
+            },
+            {
+              "draws": 9,
+              "exact": true,
+              "triangles": 18432,
+              "view": "zone11-boundaries"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 30720,
+              "view": "zone11-oblique"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 30720,
+              "view": "zone11-reenabled"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 30720,
+              "view": "zone11-composed"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 32760,
+              "view": "zone11-deformed"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 30720,
+              "view": "zone11-tracks-disabled"
+            }
+          ],
+          "renderer": "forward_plus"
+        }
+      },
+      "lifecycle-mobile02": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/lifecycle-mobile02",
+        "run_sha256": "18c763f4b5c1566d973deff8f994252cbb4aa6060486279dbfadc0c2039954dd",
+        "log_sha256": "b8cf08b289ce3aade5752a427ccedb5691f57b6e3fa31fae15d6d24ac84f6994",
+        "fixture_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_pair_sectors.gd": "210cfcfc387fa753d1ac500824f4b9dfe639aeda5b936f0b3c33709e517d2a12"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "c54b4f3d488235f649e1f101740aa35de19671c5dbb3b483b512247043093358",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "checks": 1533,
+        "failures": 0,
+        "warnings": [],
+        "other_engines_absent": true,
+        "result_sha256": "cdf9340dc5382772c68db6941e0f2d0d034273366606a8be116e1bf2a209f67e",
+        "result_file": "terrain-pair-sectors.json",
+        "result": {
+          "checks": 1533,
+          "failures": 0,
+          "records": [
+            {
+              "draws": 14,
+              "exact": true,
+              "triangles": 24632,
+              "view": "zone15-boundaries"
+            },
+            {
+              "draws": 87,
+              "exact": true,
+              "triangles": 139896,
+              "view": "zone15-oblique"
+            },
+            {
+              "draws": 87,
+              "exact": true,
+              "triangles": 139896,
+              "view": "zone15-reenabled"
+            },
+            {
+              "draws": 87,
+              "exact": true,
+              "triangles": 139896,
+              "view": "zone15-composed"
+            },
+            {
+              "draws": 9,
+              "exact": true,
+              "triangles": 18432,
+              "view": "zone12-boundaries"
+            },
+            {
+              "draws": 51,
+              "exact": true,
+              "triangles": 94496,
+              "view": "zone12-oblique"
+            },
+            {
+              "draws": 51,
+              "exact": true,
+              "triangles": 94496,
+              "view": "zone12-reenabled"
+            },
+            {
+              "draws": 51,
+              "exact": true,
+              "triangles": 94496,
+              "view": "zone12-composed"
+            },
+            {
+              "draws": 9,
+              "exact": true,
+              "triangles": 18432,
+              "view": "zone11-boundaries"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 30720,
+              "view": "zone11-oblique"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 30720,
+              "view": "zone11-reenabled"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 30720,
+              "view": "zone11-composed"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 32760,
+              "view": "zone11-deformed"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 30720,
+              "view": "zone11-tracks-disabled"
+            }
+          ],
+          "renderer": "mobile"
+        }
+      },
+      "lifecycle-compatibility01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/lifecycle-compatibility01",
+        "run_sha256": "7d24486369d214817f260514c5ddd37a126193627c09ef7c865d4ed62624741b",
+        "log_sha256": "d9995b2c51ab45b8ff32b347b1aeeb63e5a5a8b7fed1d4f6719af20eea216548",
+        "fixture_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_pair_sectors.gd": "210cfcfc387fa753d1ac500824f4b9dfe639aeda5b936f0b3c33709e517d2a12"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "c54b4f3d488235f649e1f101740aa35de19671c5dbb3b483b512247043093358",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "checks": 1533,
+        "failures": 0,
+        "warnings": [
+          "WARNING: The Compatibility renderer does not support overriding the GPU with the --gpu-index command line argument. Falling back to the default GPU for OpenGL applications.",
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "other_engines_absent": true,
+        "result_sha256": "cbf1fd4ae1da6831a74ab8b78fe769a11e433ed8b10c73a56e0e15b796d15089",
+        "result_file": "terrain-pair-sectors.json",
+        "result": {
+          "checks": 1533,
+          "failures": 0,
+          "records": [
+            {
+              "draws": 14,
+              "exact": true,
+              "triangles": 24632,
+              "view": "zone15-boundaries"
+            },
+            {
+              "draws": 87,
+              "exact": true,
+              "triangles": 139896,
+              "view": "zone15-oblique"
+            },
+            {
+              "draws": 87,
+              "exact": true,
+              "triangles": 139896,
+              "view": "zone15-reenabled"
+            },
+            {
+              "draws": 87,
+              "exact": true,
+              "triangles": 139896,
+              "view": "zone15-composed"
+            },
+            {
+              "draws": 9,
+              "exact": true,
+              "triangles": 18432,
+              "view": "zone12-boundaries"
+            },
+            {
+              "draws": 51,
+              "exact": true,
+              "triangles": 94496,
+              "view": "zone12-oblique"
+            },
+            {
+              "draws": 51,
+              "exact": true,
+              "triangles": 94496,
+              "view": "zone12-reenabled"
+            },
+            {
+              "draws": 51,
+              "exact": true,
+              "triangles": 94496,
+              "view": "zone12-composed"
+            },
+            {
+              "draws": 9,
+              "exact": true,
+              "triangles": 18432,
+              "view": "zone11-boundaries"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 30720,
+              "view": "zone11-oblique"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 30720,
+              "view": "zone11-reenabled"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 30720,
+              "view": "zone11-composed"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 32760,
+              "view": "zone11-deformed"
+            },
+            {
+              "draws": 15,
+              "exact": true,
+              "triangles": 30720,
+              "view": "zone11-tracks-disabled"
+            }
+          ],
+          "renderer": "gl_compatibility"
+        }
+      },
+      "sector-ownership01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/sector-ownership01",
+        "run_sha256": "9771e6c6c85a7d8495e3c0124c6da1f3bbb0698f557fb96aee38031b2bdbb99b",
+        "log_sha256": "17d2218cb4da33202bac65079434e93f6b35a3782a2e79cbf3c91ca9c6f45621",
+        "fixture_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_sector.gd": "03487b30faa1dd523bcf470ad912904d92a42da8eb52784600f38c14a7315bb8"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "c54b4f3d488235f649e1f101740aa35de19671c5dbb3b483b512247043093358",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "checks": 17957,
+        "failures": 0,
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "other_engines_absent": true,
+        "result": {
+          "checks": 17957,
+          "failures": 0
+        }
+      },
+      "junction-regression01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/junction-regression01",
+        "run_sha256": "28edff590f2c3ae9058e343c616459c11c792901fd9f5893da19f40deb53e0f9",
+        "log_sha256": "8a558af559d2920d82aa9b4f330469d4ad3b216f7b1cf8e9337d4895f1c47ee0",
+        "fixture_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_junctions.gd": "ce5a010b27345e10a5e36ce3e30f6a8026963d7a3724a3cf28064bbfe1638f89"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "c54b4f3d488235f649e1f101740aa35de19671c5dbb3b483b512247043093358",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "checks": 7515,
+        "failures": 0,
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "other_engines_absent": true,
+        "result": {
+          "checks": 7515,
+          "failures": 0
+        }
+      },
+      "transition-regression01": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/transition-regression01",
+        "run_sha256": "bd9705a6fd85f95ac10fd50fc8070463b22087b6faa2084c32f780c79f972a2e",
+        "log_sha256": "8aabad355138b2a2c9bf689fe2d5719e0b801620b963575bf3bbabbb6500c1bd",
+        "fixture_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_transitions.gd": "4d53840418f7c16adb49f5e787eb614d594d4dff1e8632c49a24cdc582c4e348"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "c54b4f3d488235f649e1f101740aa35de19671c5dbb3b483b512247043093358",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "checks": 75,
+        "failures": 0,
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "other_engines_absent": true,
+        "result_sha256": "dd94559c3c7d6c152936200c617281b822516230cc18b88520505b4a5270272f",
+        "result_file": "terrain-transitions.json",
+        "result": {
+          "checks": 75,
+          "failures": 0,
+          "maps": [
+            {
+              "admitted": 3869,
+              "build_us": 144579,
+              "bytes": 393216,
+              "classified": 3917,
+              "conflicting": 43,
+              "donors": {
+                "2": 5,
+                "3": 2,
+                "6": 470,
+                "38": 48
+              },
+              "junctions": 116,
+              "map": "zone1",
+              "missing_donor": 0,
+              "rejected_geometry": 5
+            },
+            {
+              "admitted": 22269,
+              "build_us": 656348,
+              "bytes": 1572864,
+              "classified": 22488,
+              "conflicting": 165,
+              "donors": {
+                "10": 159,
+                "11": 254,
+                "12": 148,
+                "26": 5,
+                "27": 0,
+                "34": 3
+              },
+              "junctions": 122,
+              "map": "zone11",
+              "missing_donor": 53,
+              "rejected_geometry": 1
+            },
+            {
+              "admitted": 9840,
+              "build_us": 313042,
+              "bytes": 983040,
+              "classified": 9898,
+              "conflicting": 58,
+              "donors": {
+                "17": 5,
+                "18": 10,
+                "22": 64,
+                "25": 11,
+                "40": 7,
+                "43": 4
+              },
+              "junctions": 222,
+              "map": "zone15",
+              "missing_donor": 0,
+              "rejected_geometry": 0
+            }
+          ]
+        }
+      }
+    }
+  },
+  "performance": {
+    "production4k02": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/production4k02",
+      "run_sha256": "20e420ee78dd31de753160cf12c5b1345a740e744c5a5d13b86b7fbd37928d50",
+      "log_sha256": "974c28e0dbfe5d6df5dda9a304a964ed0e7ce64b5714074023771caf60b55b5e",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/production_pair_cost.gd": "9219dcb840919c75fe30e8acd7c38cdaac808f860dd29e4d654e16dbaae4f50d"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "c54b4f3d488235f649e1f101740aa35de19671c5dbb3b483b512247043093358",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "checks": 78,
+      "failures": 0,
+      "warnings": [],
+      "other_engines_absent": true,
+      "result_sha256": "d25f8343811c822608343c355f0e2801d831ef54f55f4ceebb49574015bcdb5c",
+      "result_file": "terrain-pair-sector-cost.json",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090 Ti",
+        "checks": 78,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 9840,
+              "build_us": 308910,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 15.889,
+              "median": 7.413,
+              "min": 0.415,
+              "p95": 8.807
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 0,
+            "sample_end_unix": 1791611865.79167,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.115000002086163,
+              "median": 0.046000000089407,
+              "min": 0.0370000004768372,
+              "p95": 0.0649999976158142
+            },
+            "viewport_gpu_ms": {
+              "max": 2.97300004959106,
+              "median": 2.94799995422363,
+              "min": 2.9300000667572,
+              "p95": 2.95900011062622
+            },
+            "visible_draws": {
+              "max": 2,
+              "median": 2,
+              "min": 2,
+              "p95": 2
+            },
+            "visible_primitives": {
+              "max": 3056,
+              "median": 3056,
+              "min": 3056,
+              "p95": 3056
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 9840,
+              "build_us": 308910,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 16.966,
+              "median": 7.236,
+              "min": 0.448,
+              "p95": 8.97
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 1,
+            "sample_end_unix": 1791611871.5967,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.122000001370907,
+              "median": 0.0469999983906746,
+              "min": 0.0370000004768372,
+              "p95": 0.063000001013279
+            },
+            "viewport_gpu_ms": {
+              "max": 2.55299997329712,
+              "median": 2.53099989891052,
+              "min": 2.50699996948242,
+              "p95": 2.54200005531311
+            },
+            "visible_draws": {
+              "max": 2,
+              "median": 2,
+              "min": 2,
+              "p95": 2
+            },
+            "visible_primitives": {
+              "max": 3056,
+              "median": 3056,
+              "min": 3056,
+              "p95": 3056
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 9840,
+              "build_us": 308910,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 16.559,
+              "median": 7.5,
+              "min": 0.421,
+              "p95": 9.015
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 1,
+            "sample_end_unix": 1791611877.48632,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.120999999344349,
+              "median": 0.046000000089407,
+              "min": 0.0370000004768372,
+              "p95": 0.0579999983310699
+            },
+            "viewport_gpu_ms": {
+              "max": 2.55699992179871,
+              "median": 2.52699995040894,
+              "min": 2.51999998092651,
+              "p95": 2.53900003433228
+            },
+            "visible_draws": {
+              "max": 2,
+              "median": 2,
+              "min": 2,
+              "p95": 2
+            },
+            "visible_primitives": {
+              "max": 3056,
+              "median": 3056,
+              "min": 3056,
+              "p95": 3056
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 9840,
+              "build_us": 308910,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 16.124,
+              "median": 7.465,
+              "min": 0.445,
+              "p95": 8.918
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 0,
+            "sample_end_unix": 1791611883.44347,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.129999995231628,
+              "median": 0.046000000089407,
+              "min": 0.0370000004768372,
+              "p95": 0.061999998986721
+            },
+            "viewport_gpu_ms": {
+              "max": 2.99799990653992,
+              "median": 2.96399998664856,
+              "min": 2.94300007820129,
+              "p95": 2.98000001907349
+            },
+            "visible_draws": {
+              "max": 2,
+              "median": 2,
+              "min": 2,
+              "p95": 2
+            },
+            "visible_primitives": {
+              "max": 3056,
+              "median": 3056,
+              "min": 3056,
+              "p95": 3056
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 14319,
+              "build_us": 485179,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 16.166,
+              "median": 7.335,
+              "min": 0.447,
+              "p95": 8.907
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 0,
+            "sample_end_unix": 1791611892.69594,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.13400000333786,
+              "median": 0.0439999997615814,
+              "min": 0.0359999984502792,
+              "p95": 0.061999998986721
+            },
+            "viewport_gpu_ms": {
+              "max": 2.93700003623962,
+              "median": 2.91300010681152,
+              "min": 2.89100003242493,
+              "p95": 2.93099999427795
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 14319,
+              "build_us": 485179,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 19.168,
+              "median": 7.323,
+              "min": 0.417,
+              "p95": 9.045
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 1,
+            "sample_end_unix": 1791611897.14197,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.128000006079674,
+              "median": 0.0439999997615814,
+              "min": 0.0359999984502792,
+              "p95": 0.0599999986588955
+            },
+            "viewport_gpu_ms": {
+              "max": 2.5,
+              "median": 2.48099994659424,
+              "min": 2.47300004959106,
+              "p95": 2.49399995803833
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 14319,
+              "build_us": 485179,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 16.489,
+              "median": 7.423,
+              "min": 0.429,
+              "p95": 8.883
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 1,
+            "sample_end_unix": 1791611901.6115,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.138999998569489,
+              "median": 0.0450000017881393,
+              "min": 0.0350000001490116,
+              "p95": 0.0659999996423721
+            },
+            "viewport_gpu_ms": {
+              "max": 2.50999999046326,
+              "median": 2.48799991607666,
+              "min": 2.47399997711182,
+              "p95": 2.49699997901917
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 14319,
+              "build_us": 485179,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 16.381,
+              "median": 7.348,
+              "min": 0.432,
+              "p95": 8.764
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 0,
+            "sample_end_unix": 1791611906.20238,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.153999999165535,
+              "median": 0.0439999997615814,
+              "min": 0.034000001847744,
+              "p95": 0.061999998986721
+            },
+            "viewport_gpu_ms": {
+              "max": 2.93300008773804,
+              "median": 2.91199994087219,
+              "min": 2.90199995040894,
+              "p95": 2.92499995231628
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 22269,
+              "build_us": 649080,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 16.302,
+              "median": 7.148,
+              "min": 0.434,
+              "p95": 8.678
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 0,
+            "sample_end_unix": 1791611914.83722,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.127000004053116,
+              "median": 0.0450000017881393,
+              "min": 0.0359999984502792,
+              "p95": 0.0599999986588955
+            },
+            "viewport_gpu_ms": {
+              "max": 3.25699996948242,
+              "median": 3.23300004005432,
+              "min": 3.22000002861023,
+              "p95": 3.24499988555908
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 22269,
+              "build_us": 649080,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 16.394,
+              "median": 7.449,
+              "min": 0.436,
+              "p95": 8.775
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 1,
+            "sample_end_unix": 1791611919.48058,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.138999998569489,
+              "median": 0.0450000017881393,
+              "min": 0.0359999984502792,
+              "p95": 0.0710000023245811
+            },
+            "viewport_gpu_ms": {
+              "max": 2.83800005912781,
+              "median": 2.81900000572205,
+              "min": 2.80399990081787,
+              "p95": 2.83200001716614
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 22269,
+              "build_us": 649080,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 16.413,
+              "median": 7.366,
+              "min": 0.438,
+              "p95": 8.871
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 1,
+            "sample_end_unix": 1791611924.06423,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.164000004529953,
+              "median": 0.0450000017881393,
+              "min": 0.0359999984502792,
+              "p95": 0.068000003695488
+            },
+            "viewport_gpu_ms": {
+              "max": 2.97900009155273,
+              "median": 2.82800006866455,
+              "min": 2.80299997329712,
+              "p95": 2.84100008010864
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 22269,
+              "build_us": 649080,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 10.567,
+              "median": 7.68,
+              "min": 0.456,
+              "p95": 8.665
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 0,
+            "sample_end_unix": 1791611928.71844,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.34799998998642,
+              "median": 0.0450000017881393,
+              "min": 0.0359999984502792,
+              "p95": 0.0649999976158142
+            },
+            "viewport_gpu_ms": {
+              "max": 3.26999998092651,
+              "median": 3.2409999370575,
+              "min": 3.23200011253357,
+              "p95": 3.25300002098083
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          }
+        ],
+        "scope": "Production per-sector material selection compared ABBA to forced full shader; exact captures checked; offloaded second GPU timestamps are not full-game FPS or Windows acceptance.",
+        "variant": "production-pair-sector-4k",
+        "viewport": [
+          3840,
+          2160
+        ]
+      },
+      "summary": [
+        {
+          "map": "zone15",
+          "tile": [
+            40,
+            56
+          ],
+          "gpu_arm_medians_ms": [
+            2.94799995422363,
+            2.53099989891052,
+            2.52699995040894,
+            2.96399998664856
+          ],
+          "baseline_mean_of_arm_medians_ms": 2.9559999704360953,
+          "candidate_mean_of_arm_medians_ms": 2.52899992465973,
+          "saving_percent": 14.44519790415866,
+          "draws": 2,
+          "triangles": 3056
+        },
+        {
+          "map": "zone12",
+          "tile": [
+            40,
+            72
+          ],
+          "gpu_arm_medians_ms": [
+            2.91300010681152,
+            2.48099994659424,
+            2.48799991607666,
+            2.91199994087219
+          ],
+          "baseline_mean_of_arm_medians_ms": 2.9125000238418552,
+          "candidate_mean_of_arm_medians_ms": 2.48449993133545,
+          "saving_percent": 14.69528202584643,
+          "draws": 1,
+          "triangles": 2048
+        },
+        {
+          "map": "zone11",
+          "tile": [
+            216,
+            168
+          ],
+          "gpu_arm_medians_ms": [
+            3.23300004005432,
+            2.81900000572205,
+            2.82800006866455,
+            3.2409999370575
+          ],
+          "baseline_mean_of_arm_medians_ms": 3.23699998855591,
+          "candidate_mean_of_arm_medians_ms": 2.8235000371933,
+          "saving_percent": 12.774172160163658,
+          "draws": 1,
+          "triangles": 2048
+        }
+      ],
+      "gpu-clocks.log_sha256": "96144ed6cad3ba5a5a0531fc6183f1142ac618d89e0bd964a5629e3a72f95f22",
+      "gpu-processes.log_sha256": "6dd64873c1adadb3c6a8446e495c17f9083339198774eca66348b9dde8705b6e"
+    },
+    "production-mixed4k01": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/production-mixed4k01",
+      "run_sha256": "278d2a88f990a56dee11b6d3d1659164f150ac625038cca7e158d704ba9ed1dc",
+      "log_sha256": "8530fb6d34e4873bd0878eaace24434f550b5f640b0126d65488349a7e295111",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/production_mixed_cost.gd": "9f12b622c5c05e6bbf45dca24b07d09bbecd5b4623cf381b1216a3d061ef5a25"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "c54b4f3d488235f649e1f101740aa35de19671c5dbb3b483b512247043093358",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "checks": 78,
+      "failures": 0,
+      "warnings": [],
+      "other_engines_absent": true,
+      "result_sha256": "be90ff60e3da4d5b99238f7997c38a2d07a9934d182351bd193fdd4ed4d17fe4",
+      "result_file": "terrain-pair-sector-cost.json",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090 Ti",
+        "checks": 78,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 9840,
+              "build_us": 317229,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 16.226,
+              "median": 7.268,
+              "min": 0.436,
+              "p95": 8.591
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 0,
+            "sample_end_unix": 1791612113.72108,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.284000009298325,
+              "median": 0.0500000007450581,
+              "min": 0.0399999991059303,
+              "p95": 0.0759999975562096
+            },
+            "viewport_gpu_ms": {
+              "max": 3.70700001716614,
+              "median": 3.66199994087219,
+              "min": 3.64499998092651,
+              "p95": 3.68400001525879
+            },
+            "visible_draws": {
+              "max": 14,
+              "median": 14,
+              "min": 14,
+              "p95": 14
+            },
+            "visible_primitives": {
+              "max": 24632,
+              "median": 24632,
+              "min": 24632,
+              "p95": 24632
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 9840,
+              "build_us": 317229,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 16.113,
+              "median": 7.218,
+              "min": 0.447,
+              "p95": 8.751
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 1,
+            "sample_end_unix": 1791612120.42448,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.149000003933907,
+              "median": 0.0509999990463257,
+              "min": 0.0410000011324883,
+              "p95": 0.0710000023245811
+            },
+            "viewport_gpu_ms": {
+              "max": 3.51300001144409,
+              "median": 3.47900009155273,
+              "min": 3.44700002670288,
+              "p95": 3.50200009346008
+            },
+            "visible_draws": {
+              "max": 14,
+              "median": 14,
+              "min": 14,
+              "p95": 14
+            },
+            "visible_primitives": {
+              "max": 24632,
+              "median": 24632,
+              "min": 24632,
+              "p95": 24632
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 9840,
+              "build_us": 317229,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 10.226,
+              "median": 6.923,
+              "min": 0.458,
+              "p95": 8.692
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 1,
+            "sample_end_unix": 1791612127.03324,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.171000003814697,
+              "median": 0.0509999990463257,
+              "min": 0.0410000011324883,
+              "p95": 0.0719999969005585
+            },
+            "viewport_gpu_ms": {
+              "max": 3.53699994087219,
+              "median": 3.50099992752075,
+              "min": 3.46300005912781,
+              "p95": 3.5220000743866
+            },
+            "visible_draws": {
+              "max": 14,
+              "median": 14,
+              "min": 14,
+              "p95": 14
+            },
+            "visible_primitives": {
+              "max": 24632,
+              "median": 24632,
+              "min": 24632,
+              "p95": 24632
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 9840,
+              "build_us": 317229,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 11.427,
+              "median": 7.127,
+              "min": 0.458,
+              "p95": 8.433
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 0,
+            "sample_end_unix": 1791612133.59729,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.13400000333786,
+              "median": 0.0500000007450581,
+              "min": 0.0399999991059303,
+              "p95": 0.0740000009536743
+            },
+            "viewport_gpu_ms": {
+              "max": 3.73200011253357,
+              "median": 3.69700002670288,
+              "min": 3.65100002288818,
+              "p95": 3.71499991416931
+            },
+            "visible_draws": {
+              "max": 14,
+              "median": 14,
+              "min": 14,
+              "p95": 14
+            },
+            "visible_primitives": {
+              "max": 24632,
+              "median": 24632,
+              "min": 24632,
+              "p95": 24632
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 14319,
+              "build_us": 484619,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 16.394,
+              "median": 7.191,
+              "min": 0.438,
+              "p95": 8.747
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 0,
+            "sample_end_unix": 1791612143.7493,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.155000001192093,
+              "median": 0.0480000004172325,
+              "min": 0.0379999987781048,
+              "p95": 0.0710000023245811
+            },
+            "viewport_gpu_ms": {
+              "max": 3.53099989891052,
+              "median": 3.48399996757507,
+              "min": 3.46000003814697,
+              "p95": 3.51300001144409
+            },
+            "visible_draws": {
+              "max": 9,
+              "median": 9,
+              "min": 9,
+              "p95": 9
+            },
+            "visible_primitives": {
+              "max": 18432,
+              "median": 18432,
+              "min": 18432,
+              "p95": 18432
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 14319,
+              "build_us": 484619,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 16.786,
+              "median": 7.434,
+              "min": 0.434,
+              "p95": 8.865
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 1,
+            "sample_end_unix": 1791612149.49691,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.203999996185303,
+              "median": 0.0480000004172325,
+              "min": 0.0379999987781048,
+              "p95": 0.0759999975562096
+            },
+            "viewport_gpu_ms": {
+              "max": 2.875,
+              "median": 2.84800004959106,
+              "min": 2.83500003814697,
+              "p95": 2.85899996757507
+            },
+            "visible_draws": {
+              "max": 9,
+              "median": 9,
+              "min": 9,
+              "p95": 9
+            },
+            "visible_primitives": {
+              "max": 18432,
+              "median": 18432,
+              "min": 18432,
+              "p95": 18432
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 14319,
+              "build_us": 484619,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 14.139,
+              "median": 7.299,
+              "min": 0.416,
+              "p95": 8.797
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 1,
+            "sample_end_unix": 1791612155.24028,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.13400000333786,
+              "median": 0.0489999987185001,
+              "min": 0.0390000008046627,
+              "p95": 0.0740000009536743
+            },
+            "viewport_gpu_ms": {
+              "max": 2.8840000629425,
+              "median": 2.8510000705719,
+              "min": 2.83299994468689,
+              "p95": 2.86500000953674
+            },
+            "visible_draws": {
+              "max": 9,
+              "median": 9,
+              "min": 9,
+              "p95": 9
+            },
+            "visible_primitives": {
+              "max": 18432,
+              "median": 18432,
+              "min": 18432,
+              "p95": 18432
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 14319,
+              "build_us": 484619,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 16.834,
+              "median": 7.202,
+              "min": 0.455,
+              "p95": 8.789
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 0,
+            "sample_end_unix": 1791612160.9002,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.135000005364418,
+              "median": 0.0480000004172325,
+              "min": 0.0370000004768372,
+              "p95": 0.0700000002980232
+            },
+            "viewport_gpu_ms": {
+              "max": 3.51300001144409,
+              "median": 3.47699999809265,
+              "min": 3.44300007820129,
+              "p95": 3.49600005149841
+            },
+            "visible_draws": {
+              "max": 9,
+              "median": 9,
+              "min": 9,
+              "p95": 9
+            },
+            "visible_primitives": {
+              "max": 18432,
+              "median": 18432,
+              "min": 18432,
+              "p95": 18432
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 22269,
+              "build_us": 659767,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 16.546,
+              "median": 7.321,
+              "min": 0.41,
+              "p95": 8.371
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 0,
+            "sample_end_unix": 1791612170.38954,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.136999994516373,
+              "median": 0.0480000004172325,
+              "min": 0.0379999987781048,
+              "p95": 0.0780000016093254
+            },
+            "viewport_gpu_ms": {
+              "max": 3.80599999427795,
+              "median": 3.68600010871887,
+              "min": 3.65300011634827,
+              "p95": 3.77099990844727
+            },
+            "visible_draws": {
+              "max": 9,
+              "median": 9,
+              "min": 9,
+              "p95": 9
+            },
+            "visible_primitives": {
+              "max": 18432,
+              "median": 18432,
+              "min": 18432,
+              "p95": 18432
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 22269,
+              "build_us": 659767,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 15.474,
+              "median": 7.402,
+              "min": 0.441,
+              "p95": 8.732
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 1,
+            "sample_end_unix": 1791612176.41411,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.629000008106232,
+              "median": 0.0489999987185001,
+              "min": 0.0390000008046627,
+              "p95": 0.0769999995827675
+            },
+            "viewport_gpu_ms": {
+              "max": 3.30900001525879,
+              "median": 3.28299999237061,
+              "min": 3.24499988555908,
+              "p95": 3.2960000038147
+            },
+            "visible_draws": {
+              "max": 9,
+              "median": 9,
+              "min": 9,
+              "p95": 9
+            },
+            "visible_primitives": {
+              "max": 18432,
+              "median": 18432,
+              "min": 18432,
+              "p95": 18432
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 22269,
+              "build_us": 659767,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 16.823,
+              "median": 7.136,
+              "min": 0.414,
+              "p95": 8.666
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 1,
+            "sample_end_unix": 1791612182.24371,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.137999996542931,
+              "median": 0.0480000004172325,
+              "min": 0.0390000008046627,
+              "p95": 0.0700000002980232
+            },
+            "viewport_gpu_ms": {
+              "max": 3.41300010681152,
+              "median": 3.28600001335144,
+              "min": 3.25099992752075,
+              "p95": 3.30100011825562
+            },
+            "visible_draws": {
+              "max": 9,
+              "median": 9,
+              "min": 9,
+              "p95": 9
+            },
+            "visible_primitives": {
+              "max": 18432,
+              "median": 18432,
+              "min": 18432,
+              "p95": 18432
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 22269,
+              "build_us": 659767,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 16.686,
+              "median": 7.309,
+              "min": 0.398,
+              "p95": 8.694
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 0,
+            "sample_end_unix": 1791612188.04941,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.155000001192093,
+              "median": 0.0480000004172325,
+              "min": 0.0350000001490116,
+              "p95": 0.0710000023245811
+            },
+            "viewport_gpu_ms": {
+              "max": 3.84800004959106,
+              "median": 3.67700004577637,
+              "min": 3.6489999294281,
+              "p95": 3.69899988174438
+            },
+            "visible_draws": {
+              "max": 9,
+              "median": 9,
+              "min": 9,
+              "p95": 9
+            },
+            "visible_primitives": {
+              "max": 18432,
+              "median": 18432,
+              "min": 18432,
+              "p95": 18432
+            },
+            "warmup_frames": 256
+          }
+        ],
+        "scope": "Production per-sector material selection compared ABBA to forced full shader; exact captures checked; offloaded second GPU timestamps are not full-game FPS or Windows acceptance.",
+        "variant": "production-mixed-sectors-4k",
+        "viewport": [
+          3840,
+          2160
+        ]
+      },
+      "summary": [
+        {
+          "map": "zone15",
+          "tile": [
+            40,
+            56
+          ],
+          "gpu_arm_medians_ms": [
+            3.66199994087219,
+            3.47900009155273,
+            3.50099992752075,
+            3.69700002670288
+          ],
+          "baseline_mean_of_arm_medians_ms": 3.679499983787535,
+          "candidate_mean_of_arm_medians_ms": 3.49000000953674,
+          "saving_percent": 5.150155594123168,
+          "draws": 14,
+          "triangles": 24632
+        },
+        {
+          "map": "zone12",
+          "tile": [
+            40,
+            72
+          ],
+          "gpu_arm_medians_ms": [
+            3.48399996757507,
+            2.84800004959106,
+            2.8510000705719,
+            3.47699999809265
+          ],
+          "baseline_mean_of_arm_medians_ms": 3.48049998283386,
+          "candidate_mean_of_arm_medians_ms": 2.84950006008148,
+          "saving_percent": 18.129576953441415,
+          "draws": 9,
+          "triangles": 18432
+        },
+        {
+          "map": "zone11",
+          "tile": [
+            216,
+            168
+          ],
+          "gpu_arm_medians_ms": [
+            3.68600010871887,
+            3.28299999237061,
+            3.28600001335144,
+            3.67700004577637
+          ],
+          "baseline_mean_of_arm_medians_ms": 3.6815000772476196,
+          "candidate_mean_of_arm_medians_ms": 3.2845000028610247,
+          "saving_percent": 10.783649763859355,
+          "draws": 9,
+          "triangles": 18432
+        }
+      ],
+      "gpu-clocks.log_sha256": "04ab53dbfa9d8510c18f20d410dbfb75f1212fdcf9f8c30691c2a2401801cee7",
+      "gpu-processes.log_sha256": "229b17ced0ee5c0724cf29215613d1e748e87c5000c1866c06a529f8e3194a5e"
+    }
+  },
+  "prior_prototypes": {
+    "pair-1440": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/pair-sector02",
+      "run_sha256": "297a3e9f77adc3bd5e50553d7e5c184992e59c11590bed0d93f18fafe314d3dd",
+      "log_sha256": "f80993cd94e5e917b79bd35dc8cb3aff84d0e00a269f8b3ca5be03889e74a53e",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/pair_sector_cost.gd": "37e8789fa1b4dd01fc1d0b0f024fe03a589f5c6e3df53cfd3c1230609a1b7eed",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/pair_specialization.gd": "fb07b44356b2801ade7528c61f032243678572d6a850b42f299f3875da8f6fe9"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "8c4a3a674e90013b6cf69c1decf4f31dd551d7395d4967b91b71e93d3b36cf80",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "checks": 75,
+      "failures": 0,
+      "warnings": [],
+      "other_engines_absent": true,
+      "result_sha256": "1a9fb57c7e730720d1d45e38f9d8168cf2800df85f57c51400a252ed2388cd6e",
+      "result_file": "terrain-pair-sector-cost.json",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090 Ti",
+        "checks": 75,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 9840,
+              "build_us": 303853,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 17.273,
+              "median": 7.459,
+              "min": 0.443,
+              "p95": 8.924
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 0,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.143999993801117,
+              "median": 0.046000000089407,
+              "min": 0.0370000004768372,
+              "p95": 0.0710000023245811
+            },
+            "viewport_gpu_ms": {
+              "max": 1.74899995326996,
+              "median": 1.68799996376038,
+              "min": 1.39699995517731,
+              "p95": 1.74000000953674
+            },
+            "visible_draws": {
+              "max": 2,
+              "median": 2,
+              "min": 2,
+              "p95": 2
+            },
+            "visible_primitives": {
+              "max": 3056,
+              "median": 3056,
+              "min": 3056,
+              "p95": 3056
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 9840,
+              "build_us": 303853,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 17.168,
+              "median": 7.216,
+              "min": 0.419,
+              "p95": 8.974
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 1,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.151999995112419,
+              "median": 0.0469999983906746,
+              "min": 0.0350000001490116,
+              "p95": 0.0640000030398369
+            },
+            "viewport_gpu_ms": {
+              "max": 1.61300003528595,
+              "median": 1.56200003623962,
+              "min": 1.22000002861023,
+              "p95": 1.60899996757507
+            },
+            "visible_draws": {
+              "max": 2,
+              "median": 2,
+              "min": 2,
+              "p95": 2
+            },
+            "visible_primitives": {
+              "max": 3056,
+              "median": 3056,
+              "min": 3056,
+              "p95": 3056
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 9840,
+              "build_us": 303853,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 16.712,
+              "median": 7.291,
+              "min": 0.449,
+              "p95": 9.04
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 1,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.118000000715256,
+              "median": 0.046000000089407,
+              "min": 0.0370000004768372,
+              "p95": 0.0610000006854534
+            },
+            "viewport_gpu_ms": {
+              "max": 1.57299995422363,
+              "median": 1.54499995708466,
+              "min": 1.53900003433228,
+              "p95": 1.56900000572205
+            },
+            "visible_draws": {
+              "max": 2,
+              "median": 2,
+              "min": 2,
+              "p95": 2
+            },
+            "visible_primitives": {
+              "max": 3056,
+              "median": 3056,
+              "min": 3056,
+              "p95": 3056
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 9840,
+              "build_us": 303853,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 16.278,
+              "median": 7.221,
+              "min": 0.43,
+              "p95": 8.9
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 0,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.159999996423721,
+              "median": 0.0469999983906746,
+              "min": 0.0370000004768372,
+              "p95": 0.0689999982714653
+            },
+            "viewport_gpu_ms": {
+              "max": 1.69200003147125,
+              "median": 1.53299999237061,
+              "min": 1.43700003623962,
+              "p95": 1.682000041008
+            },
+            "visible_draws": {
+              "max": 2,
+              "median": 2,
+              "min": 2,
+              "p95": 2
+            },
+            "visible_primitives": {
+              "max": 3056,
+              "median": 3056,
+              "min": 3056,
+              "p95": 3056
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 14319,
+              "build_us": 459399,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 17.305,
+              "median": 7.442,
+              "min": 0.407,
+              "p95": 8.879
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 0,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.164000004529953,
+              "median": 0.046000000089407,
+              "min": 0.034000001847744,
+              "p95": 0.0670000016689301
+            },
+            "viewport_gpu_ms": {
+              "max": 1.65900003910065,
+              "median": 1.51400005817413,
+              "min": 1.39800000190735,
+              "p95": 1.64999997615814
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 14319,
+              "build_us": 459399,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 16.923,
+              "median": 7.312,
+              "min": 0.409,
+              "p95": 8.929
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 1,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.116999998688698,
+              "median": 0.046000000089407,
+              "min": 0.0359999984502792,
+              "p95": 0.0700000002980232
+            },
+            "viewport_gpu_ms": {
+              "max": 1.59800004959106,
+              "median": 1.5,
+              "min": 1.49100005626678,
+              "p95": 1.5900000333786
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 14319,
+              "build_us": 459399,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 17.035,
+              "median": 7.476,
+              "min": 0.42,
+              "p95": 9.057
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 1,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.128000006079674,
+              "median": 0.046000000089407,
+              "min": 0.0350000001490116,
+              "p95": 0.0710000023245811
+            },
+            "viewport_gpu_ms": {
+              "max": 1.55200004577637,
+              "median": 1.5440000295639,
+              "min": 1.50199997425079,
+              "p95": 1.54799997806549
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 14319,
+              "build_us": 459399,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 16.828,
+              "median": 7.333,
+              "min": 0.421,
+              "p95": 8.855
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 0,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.209000006318092,
+              "median": 0.0450000017881393,
+              "min": 0.0359999984502792,
+              "p95": 0.0610000006854534
+            },
+            "viewport_gpu_ms": {
+              "max": 1.80799996852875,
+              "median": 1.52499997615814,
+              "min": 1.48500001430511,
+              "p95": 1.65100002288818
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 22269,
+              "build_us": 630269,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 17.185,
+              "median": 7.178,
+              "min": 0.425,
+              "p95": 9.009
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 0,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.116999998688698,
+              "median": 0.046000000089407,
+              "min": 0.0359999984502792,
+              "p95": 0.0820000022649765
+            },
+            "viewport_gpu_ms": {
+              "max": 1.55799996852875,
+              "median": 1.53699994087219,
+              "min": 1.52799999713898,
+              "p95": 1.55099999904633
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 22269,
+              "build_us": 630269,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 16.178,
+              "median": 7.214,
+              "min": 0.451,
+              "p95": 8.879
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 1,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.119000002741814,
+              "median": 0.0450000017881393,
+              "min": 0.0370000004768372,
+              "p95": 0.0610000006854534
+            },
+            "viewport_gpu_ms": {
+              "max": 1.66799998283386,
+              "median": 1.45000004768372,
+              "min": 1.43499994277954,
+              "p95": 1.65900003910065
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 22269,
+              "build_us": 630269,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 16.158,
+              "median": 7.48,
+              "min": 0.449,
+              "p95": 8.967
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 1,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.120999999344349,
+              "median": 0.0450000017881393,
+              "min": 0.0350000001490116,
+              "p95": 0.0649999976158142
+            },
+            "viewport_gpu_ms": {
+              "max": 1.66400003433228,
+              "median": 1.44400000572205,
+              "min": 1.43499994277954,
+              "p95": 1.65600001811981
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 22269,
+              "build_us": 630269,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 17.065,
+              "median": 7.338,
+              "min": 0.448,
+              "p95": 9.027
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 0,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.120999999344349,
+              "median": 0.0450000017881393,
+              "min": 0.0359999984502792,
+              "p95": 0.0649999976158142
+            },
+            "viewport_gpu_ms": {
+              "max": 1.66100001335144,
+              "median": 1.60899996757507,
+              "min": 1.59899997711182,
+              "p95": 1.64400005340576
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          }
+        ],
+        "scope": "Scratch pair-only program in statically verified sectors compared ABBA to current Natural shader; exact captures checked; offloaded second GPU timestamps are not full-game FPS or Windows acceptance.",
+        "variant": "pair-sector",
+        "viewport": [
+          2560,
+          1440
+        ]
+      }
+    },
+    "pair-4k": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/pair-sector4k01",
+      "run_sha256": "b28828805847281233027e58fbbad197161554216c81d7a3219a2fccf22b9c77",
+      "log_sha256": "7c709033e9d7f3e1df0487e7b5aa531a0559f6143ea9d91213283e7b55dc5aff",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/pair_sector_4k_cost.gd": "f0b6b70bd784ea5a203cc1f1007c29478a4eda1c55919c0d2e0f752603fee173",
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/pair_specialization.gd": "fb07b44356b2801ade7528c61f032243678572d6a850b42f299f3875da8f6fe9"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "8c4a3a674e90013b6cf69c1decf4f31dd551d7395d4967b91b71e93d3b36cf80",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "checks": 75,
+      "failures": 0,
+      "warnings": [],
+      "other_engines_absent": true,
+      "result_sha256": "2ad272ab2feb05d9ca9c4ccb203280330977b6338a326d0385115ca1defd7fcd",
+      "result_file": "terrain-pair-sector-cost.json",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090 Ti",
+        "checks": 75,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 9840,
+              "build_us": 303597,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 15.853,
+              "median": 7.583,
+              "min": 0.444,
+              "p95": 8.835
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 0,
+            "sample_end_unix": 1791611472.67171,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.153999999165535,
+              "median": 0.0469999983906746,
+              "min": 0.0379999987781048,
+              "p95": 0.0659999996423721
+            },
+            "viewport_gpu_ms": {
+              "max": 3.10999989509583,
+              "median": 2.95799994468689,
+              "min": 2.94799995422363,
+              "p95": 2.96900010108948
+            },
+            "visible_draws": {
+              "max": 2,
+              "median": 2,
+              "min": 2,
+              "p95": 2
+            },
+            "visible_primitives": {
+              "max": 3056,
+              "median": 3056,
+              "min": 3056,
+              "p95": 3056
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 9840,
+              "build_us": 303597,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 18.326,
+              "median": 7.582,
+              "min": 0.433,
+              "p95": 8.991
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 1,
+            "sample_end_unix": 1791611478.67337,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.120999999344349,
+              "median": 0.0469999983906746,
+              "min": 0.0379999987781048,
+              "p95": 0.0640000030398369
+            },
+            "viewport_gpu_ms": {
+              "max": 2.55999994277954,
+              "median": 2.53600001335144,
+              "min": 2.52600002288818,
+              "p95": 2.54900002479553
+            },
+            "visible_draws": {
+              "max": 2,
+              "median": 2,
+              "min": 2,
+              "p95": 2
+            },
+            "visible_primitives": {
+              "max": 3056,
+              "median": 3056,
+              "min": 3056,
+              "p95": 3056
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 9840,
+              "build_us": 303597,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 16.915,
+              "median": 7.552,
+              "min": 0.445,
+              "p95": 9.085
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 1,
+            "sample_end_unix": 1791611484.67345,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.141000002622604,
+              "median": 0.0469999983906746,
+              "min": 0.0379999987781048,
+              "p95": 0.0649999976158142
+            },
+            "viewport_gpu_ms": {
+              "max": 2.55699992179871,
+              "median": 2.53900003433228,
+              "min": 2.52699995040894,
+              "p95": 2.54900002479553
+            },
+            "visible_draws": {
+              "max": 2,
+              "median": 2,
+              "min": 2,
+              "p95": 2
+            },
+            "visible_primitives": {
+              "max": 3056,
+              "median": 3056,
+              "min": 3056,
+              "p95": 3056
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 9840,
+              "build_us": 303597,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 16.767,
+              "median": 7.443,
+              "min": 0.449,
+              "p95": 8.824
+            },
+            "label": "zone15-pair-sector",
+            "map": "zone15",
+            "mode": 0,
+            "sample_end_unix": 1791611490.51841,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              56
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.12899999320507,
+              "median": 0.0469999983906746,
+              "min": 0.0379999987781048,
+              "p95": 0.0670000016689301
+            },
+            "viewport_gpu_ms": {
+              "max": 2.99000000953674,
+              "median": 2.96700000762939,
+              "min": 2.95799994468689,
+              "p95": 2.98000001907349
+            },
+            "visible_draws": {
+              "max": 2,
+              "median": 2,
+              "min": 2,
+              "p95": 2
+            },
+            "visible_primitives": {
+              "max": 3056,
+              "median": 3056,
+              "min": 3056,
+              "p95": 3056
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 14319,
+              "build_us": 461064,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 16.451,
+              "median": 7.294,
+              "min": 0.438,
+              "p95": 8.761
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 0,
+            "sample_end_unix": 1791611499.77729,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.119000002741814,
+              "median": 0.0450000017881393,
+              "min": 0.0359999984502792,
+              "p95": 0.0560000017285347
+            },
+            "viewport_gpu_ms": {
+              "max": 3.05800008773804,
+              "median": 2.90599989891052,
+              "min": 2.89199995994568,
+              "p95": 2.9210000038147
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 14319,
+              "build_us": 461064,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 16.704,
+              "median": 7.474,
+              "min": 0.431,
+              "p95": 9.183
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 1,
+            "sample_end_unix": 1791611504.29377,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.146999999880791,
+              "median": 0.0450000017881393,
+              "min": 0.0350000001490116,
+              "p95": 0.068000003695488
+            },
+            "viewport_gpu_ms": {
+              "max": 2.50099992752075,
+              "median": 2.48699998855591,
+              "min": 2.47099995613098,
+              "p95": 2.49399995803833
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 14319,
+              "build_us": 461064,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 17.559,
+              "median": 7.521,
+              "min": 0.443,
+              "p95": 8.997
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 1,
+            "sample_end_unix": 1791611508.82314,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.120999999344349,
+              "median": 0.0450000017881393,
+              "min": 0.0359999984502792,
+              "p95": 0.0670000016689301
+            },
+            "viewport_gpu_ms": {
+              "max": 2.50200009346008,
+              "median": 2.48699998855591,
+              "min": 2.48000001907349,
+              "p95": 2.49499988555908
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 14319,
+              "build_us": 461064,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 17.046,
+              "median": 7.511,
+              "min": 0.445,
+              "p95": 9.012
+            },
+            "label": "zone12-pair-sector",
+            "map": "zone12",
+            "mode": 0,
+            "sample_end_unix": 1791611513.39391,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              40,
+              72
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.219999998807907,
+              "median": 0.0450000017881393,
+              "min": 0.0359999984502792,
+              "p95": 0.0829999968409538
+            },
+            "viewport_gpu_ms": {
+              "max": 2.95600008964539,
+              "median": 2.91899991035461,
+              "min": 2.90899991989136,
+              "p95": 2.93799996376038
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 22269,
+              "build_us": 624140,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 15.962,
+              "median": 7.436,
+              "min": 0.45,
+              "p95": 8.687
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 0,
+            "sample_end_unix": 1791611522.13112,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.180000007152557,
+              "median": 0.046000000089407,
+              "min": 0.0359999984502792,
+              "p95": 0.090999998152256
+            },
+            "viewport_gpu_ms": {
+              "max": 3.40000009536743,
+              "median": 3.25,
+              "min": 3.22099995613098,
+              "p95": 3.26399993896484
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 22269,
+              "build_us": 624140,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 16.606,
+              "median": 7.422,
+              "min": 0.414,
+              "p95": 8.877
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 1,
+            "sample_end_unix": 1791611526.78777,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.146999999880791,
+              "median": 0.046000000089407,
+              "min": 0.0370000004768372,
+              "p95": 0.0719999969005585
+            },
+            "viewport_gpu_ms": {
+              "max": 2.85199999809265,
+              "median": 2.82800006866455,
+              "min": 2.80399990081787,
+              "p95": 2.84299993515015
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 22269,
+              "build_us": 624140,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 15.98,
+              "median": 7.483,
+              "min": 0.448,
+              "p95": 8.74
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 1,
+            "sample_end_unix": 1791611531.4783,
+            "sample_frames": 480,
+            "shader_sha256": "709e759a5f5b824ac3b2c667c2599fcdb36d2f32db22653a226a03d079e0258d",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.123999997973442,
+              "median": 0.046000000089407,
+              "min": 0.0370000004768372,
+              "p95": 0.068000003695488
+            },
+            "viewport_gpu_ms": {
+              "max": 2.83999991416931,
+              "median": 2.82399988174438,
+              "min": 2.8050000667572,
+              "p95": 2.83200001716614
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 22269,
+              "build_us": 624140,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 17.2,
+              "median": 7.461,
+              "min": 0.432,
+              "p95": 8.709
+            },
+            "label": "zone11-pair-sector",
+            "map": "zone11",
+            "mode": 0,
+            "sample_end_unix": 1791611536.10534,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              216,
+              168
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.125,
+              "median": 0.046000000089407,
+              "min": 0.0370000004768372,
+              "p95": 0.0689999982714653
+            },
+            "viewport_gpu_ms": {
+              "max": 3.39599990844727,
+              "median": 3.25,
+              "min": 3.2409999370575,
+              "p95": 3.26300001144409
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          }
+        ],
+        "scope": "Scratch pair-only program in statically verified sectors compared ABBA to current Natural shader; exact captures checked; offloaded second GPU timestamps are not full-game FPS or Windows acceptance.",
+        "variant": "pair-sector-4k",
+        "viewport": [
+          3840,
+          2160
+        ]
+      },
+      "summary": [
+        {
+          "map": "zone15",
+          "tile": [
+            40,
+            56
+          ],
+          "gpu_arm_medians_ms": [
+            2.95799994468689,
+            2.53600001335144,
+            2.53900003433228,
+            2.96700000762939
+          ],
+          "baseline_mean_of_arm_medians_ms": 2.9624999761581403,
+          "candidate_mean_of_arm_medians_ms": 2.5375000238418597,
+          "saving_percent": 14.34599006705929,
+          "draws": 2,
+          "triangles": 3056
+        },
+        {
+          "map": "zone12",
+          "tile": [
+            40,
+            72
+          ],
+          "gpu_arm_medians_ms": [
+            2.90599989891052,
+            2.48699998855591,
+            2.48699998855591,
+            2.91899991035461
+          ],
+          "baseline_mean_of_arm_medians_ms": 2.912499904632565,
+          "candidate_mean_of_arm_medians_ms": 2.48699998855591,
+          "saving_percent": 14.609439656971768,
+          "draws": 1,
+          "triangles": 2048
+        },
+        {
+          "map": "zone11",
+          "tile": [
+            216,
+            168
+          ],
+          "gpu_arm_medians_ms": [
+            3.25,
+            2.82800006866455,
+            2.82399988174438,
+            3.25
+          ],
+          "baseline_mean_of_arm_medians_ms": 3.25,
+          "candidate_mean_of_arm_medians_ms": 2.825999975204465,
+          "saving_percent": 13.046154609093382,
+          "draws": 1,
+          "triangles": 2048
+        }
+      ],
+      "gpu-clocks.log_sha256": "0cc65a703c756c9ac742d804fce598a357cd6bd7f177e731c2db2a5a5909a8eb",
+      "gpu-processes.log_sha256": "5cc85d578cdbba296642706d538000846007fd6a6af6fe498980a2ff9057fc58"
+    },
+    "fixed-material-loop-rejected": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/junction-loop01",
+      "run_sha256": "cdd188a985ca432c3a5e18362471abb9759ee1056d046bae9fab9726e2e61c5e",
+      "log_sha256": "7eb757759cc7eb7de135d01d15e9dabdd7893a079fa6f120ef3d398c36d12b25",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/junction_loop_cost.gd": "d19fce1167bbafe479893c5a695ff1ae371cb5b60ff0927350e3a47f994fd75f"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "8c4a3a674e90013b6cf69c1decf4f31dd551d7395d4967b91b71e93d3b36cf80",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "checks": 72,
+      "failures": 2,
+      "warnings": [],
+      "other_engines_absent": true,
+      "result_sha256": "39d857f09d7c28fb8f6c558d2397d93fb916afc012fff7d3c1d978049da36f16",
+      "result_file": "terrain-loop-cost.json",
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090 Ti",
+        "checks": 72,
+        "failures": 2,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 9840,
+              "build_us": 302549,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 16.365,
+              "median": 7.354,
+              "min": 0.427,
+              "p95": 9.019
+            },
+            "label": "three-families",
+            "map": "zone15",
+            "mode": 0,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              69,
+              19
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.140000000596046,
+              "median": 0.0450000017881393,
+              "min": 0.0359999984502792,
+              "p95": 0.063000001013279
+            },
+            "viewport_gpu_ms": {
+              "max": 1.79299998283386,
+              "median": 1.62300002574921,
+              "min": 1.51900005340576,
+              "p95": 1.76300001144409
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 9840,
+              "build_us": 302549,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 16.691,
+              "median": 7.556,
+              "min": 0.428,
+              "p95": 9.107
+            },
+            "label": "three-families",
+            "map": "zone15",
+            "mode": 1,
+            "sample_frames": 480,
+            "shader_sha256": "24be2a915334921ec76fa1481a870d00ad8f42172ec0baf2098e9a82dce98ac5",
+            "tile": [
+              69,
+              19
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.130999997258186,
+              "median": 0.0450000017881393,
+              "min": 0.0359999984502792,
+              "p95": 0.0640000030398369
+            },
+            "viewport_gpu_ms": {
+              "max": 1.71200001239777,
+              "median": 1.63199996948242,
+              "min": 1.3860000371933,
+              "p95": 1.69799995422363
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 9840,
+              "build_us": 302549,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 16.508,
+              "median": 7.392,
+              "min": 0.423,
+              "p95": 8.984
+            },
+            "label": "three-families",
+            "map": "zone15",
+            "mode": 1,
+            "sample_frames": 480,
+            "shader_sha256": "24be2a915334921ec76fa1481a870d00ad8f42172ec0baf2098e9a82dce98ac5",
+            "tile": [
+              69,
+              19
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.122000001370907,
+              "median": 0.0450000017881393,
+              "min": 0.0359999984502792,
+              "p95": 0.0590000003576279
+            },
+            "viewport_gpu_ms": {
+              "max": 1.76600003242493,
+              "median": 1.50399994850159,
+              "min": 1.48099994659424,
+              "p95": 1.64999997615814
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 9840,
+              "build_us": 302549,
+              "bytes": 983040
+            },
+            "frame_wall_ms": {
+              "max": 17.649,
+              "median": 7.038,
+              "min": 0.419,
+              "p95": 8.957
+            },
+            "label": "three-families",
+            "map": "zone15",
+            "mode": 0,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              69,
+              19
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.126000002026558,
+              "median": 0.0450000017881393,
+              "min": 0.0350000001490116,
+              "p95": 0.0649999976158142
+            },
+            "viewport_gpu_ms": {
+              "max": 1.61600005626678,
+              "median": 1.58399999141693,
+              "min": 1.57099997997284,
+              "p95": 1.60199999809265
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 14319,
+              "build_us": 471197,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 16.497,
+              "median": 7.451,
+              "min": 0.441,
+              "p95": 9.004
+            },
+            "label": "four-families",
+            "map": "zone12",
+            "mode": 0,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              67,
+              127
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.13400000333786,
+              "median": 0.0469999983906746,
+              "min": 0.0370000004768372,
+              "p95": 0.0769999995827675
+            },
+            "viewport_gpu_ms": {
+              "max": 1.61500000953674,
+              "median": 1.59300005435944,
+              "min": 1.57000005245209,
+              "p95": 1.60699999332428
+            },
+            "visible_draws": {
+              "max": 4,
+              "median": 4,
+              "min": 4,
+              "p95": 4
+            },
+            "visible_primitives": {
+              "max": 8192,
+              "median": 8192,
+              "min": 8192,
+              "p95": 8192
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 14319,
+              "build_us": 471197,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 16.928,
+              "median": 7.594,
+              "min": 0.433,
+              "p95": 8.895
+            },
+            "label": "four-families",
+            "map": "zone12",
+            "mode": 1,
+            "sample_frames": 480,
+            "shader_sha256": "24be2a915334921ec76fa1481a870d00ad8f42172ec0baf2098e9a82dce98ac5",
+            "tile": [
+              67,
+              127
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.193000003695488,
+              "median": 0.0469999983906746,
+              "min": 0.0370000004768372,
+              "p95": 0.0750000029802322
+            },
+            "viewport_gpu_ms": {
+              "max": 1.72699999809265,
+              "median": 1.65100002288818,
+              "min": 1.51400005817413,
+              "p95": 1.7150000333786
+            },
+            "visible_draws": {
+              "max": 4,
+              "median": 4,
+              "min": 4,
+              "p95": 4
+            },
+            "visible_primitives": {
+              "max": 8192,
+              "median": 8192,
+              "min": 8192,
+              "p95": 8192
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 14319,
+              "build_us": 471197,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 16.444,
+              "median": 7.467,
+              "min": 0.437,
+              "p95": 9.005
+            },
+            "label": "four-families",
+            "map": "zone12",
+            "mode": 1,
+            "sample_frames": 480,
+            "shader_sha256": "24be2a915334921ec76fa1481a870d00ad8f42172ec0baf2098e9a82dce98ac5",
+            "tile": [
+              67,
+              127
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.151999995112419,
+              "median": 0.0469999983906746,
+              "min": 0.0350000001490116,
+              "p95": 0.0659999996423721
+            },
+            "viewport_gpu_ms": {
+              "max": 1.79100000858307,
+              "median": 1.54100000858307,
+              "min": 1.52400004863739,
+              "p95": 1.72000002861023
+            },
+            "visible_draws": {
+              "max": 4,
+              "median": 4,
+              "min": 4,
+              "p95": 4
+            },
+            "visible_primitives": {
+              "max": 8192,
+              "median": 8192,
+              "min": 8192,
+              "p95": 8192
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 14319,
+              "build_us": 471197,
+              "bytes": 1310720
+            },
+            "frame_wall_ms": {
+              "max": 17.2,
+              "median": 7.591,
+              "min": 0.434,
+              "p95": 9.027
+            },
+            "label": "four-families",
+            "map": "zone12",
+            "mode": 0,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              67,
+              127
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.13400000333786,
+              "median": 0.046000000089407,
+              "min": 0.0359999984502792,
+              "p95": 0.0649999976158142
+            },
+            "viewport_gpu_ms": {
+              "max": 1.7849999666214,
+              "median": 1.62800002098083,
+              "min": 1.61300003528595,
+              "p95": 1.67299997806549
+            },
+            "visible_draws": {
+              "max": 4,
+              "median": 4,
+              "min": 4,
+              "p95": 4
+            },
+            "visible_primitives": {
+              "max": 8192,
+              "median": 8192,
+              "min": 8192,
+              "p95": 8192
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 0,
+            "field": {
+              "admitted": 22269,
+              "build_us": 630457,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 17.279,
+              "median": 7.248,
+              "min": 0.423,
+              "p95": 8.977
+            },
+            "label": "existing-pair",
+            "map": "zone11",
+            "mode": 0,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              69,
+              87
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.137999996542931,
+              "median": 0.046000000089407,
+              "min": 0.0370000004768372,
+              "p95": 0.061999998986721
+            },
+            "viewport_gpu_ms": {
+              "max": 1.57299995422363,
+              "median": 1.54499995708466,
+              "min": 1.47200000286102,
+              "p95": 1.56200003623962
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 1,
+            "field": {
+              "admitted": 22269,
+              "build_us": 630457,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 16.865,
+              "median": 7.46,
+              "min": 0.447,
+              "p95": 8.911
+            },
+            "label": "existing-pair",
+            "map": "zone11",
+            "mode": 1,
+            "sample_frames": 480,
+            "shader_sha256": "24be2a915334921ec76fa1481a870d00ad8f42172ec0baf2098e9a82dce98ac5",
+            "tile": [
+              69,
+              87
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.156000003218651,
+              "median": 0.046000000089407,
+              "min": 0.0370000004768372,
+              "p95": 0.0640000030398369
+            },
+            "viewport_gpu_ms": {
+              "max": 1.71399998664856,
+              "median": 1.5440000295639,
+              "min": 1.51400005817413,
+              "p95": 1.70700001716614
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 2,
+            "field": {
+              "admitted": 22269,
+              "build_us": 630457,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 16.456,
+              "median": 7.526,
+              "min": 0.442,
+              "p95": 8.906
+            },
+            "label": "existing-pair",
+            "map": "zone11",
+            "mode": 1,
+            "sample_frames": 480,
+            "shader_sha256": "24be2a915334921ec76fa1481a870d00ad8f42172ec0baf2098e9a82dce98ac5",
+            "tile": [
+              69,
+              87
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.142000004649162,
+              "median": 0.0450000017881393,
+              "min": 0.0370000004768372,
+              "p95": 0.0659999996423721
+            },
+            "viewport_gpu_ms": {
+              "max": 1.817999958992,
+              "median": 1.53999996185303,
+              "min": 1.52400004863739,
+              "p95": 1.71399998664856
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          },
+          {
+            "arm": 3,
+            "field": {
+              "admitted": 22269,
+              "build_us": 630457,
+              "bytes": 1572864
+            },
+            "frame_wall_ms": {
+              "max": 16.19,
+              "median": 7.382,
+              "min": 0.431,
+              "p95": 8.912
+            },
+            "label": "existing-pair",
+            "map": "zone11",
+            "mode": 0,
+            "sample_frames": 480,
+            "shader_sha256": "32adbf59af7f84ee936bd7cd6b9e5a6081b25856b20684ccd74bbff1aaf85412",
+            "tile": [
+              69,
+              87
+            ],
+            "viewport_cpu_ms": {
+              "max": 0.148000001907349,
+              "median": 0.046000000089407,
+              "min": 0.0370000004768372,
+              "p95": 0.0649999976158142
+            },
+            "viewport_gpu_ms": {
+              "max": 1.72300004959106,
+              "median": 1.45500004291534,
+              "min": 1.44099998474121,
+              "p95": 1.60399997234344
+            },
+            "visible_draws": {
+              "max": 1,
+              "median": 1,
+              "min": 1,
+              "p95": 1
+            },
+            "visible_primitives": {
+              "max": 2048,
+              "median": 2048,
+              "min": 2048,
+              "p95": 2048
+            },
+            "warmup_frames": 256
+          }
+        ],
+        "scope": "Scratch constant-bound junction loops compared ABBA to current Natural shader; exact captures checked; offloaded second GPU timestamps are not full-game FPS or Windows acceptance.",
+        "variant": "junction-constant",
+        "viewport": [
+          2560,
+          1440
+        ]
+      },
+      "image_differences": [
+        {
+          "image": "junction-cost-existing-pair-arm1.png",
+          "changed_pixels": 0,
+          "peak_byte_delta": 0
+        },
+        {
+          "image": "junction-cost-existing-pair-arm2.png",
+          "changed_pixels": 0,
+          "peak_byte_delta": 0
+        },
+        {
+          "image": "junction-cost-existing-pair-arm3.png",
+          "changed_pixels": 0,
+          "peak_byte_delta": 0
+        },
+        {
+          "image": "junction-cost-four-families-arm1.png",
+          "changed_pixels": 1,
+          "peak_byte_delta": 1
+        },
+        {
+          "image": "junction-cost-four-families-arm2.png",
+          "changed_pixels": 1,
+          "peak_byte_delta": 1
+        },
+        {
+          "image": "junction-cost-four-families-arm3.png",
+          "changed_pixels": 0,
+          "peak_byte_delta": 0
+        },
+        {
+          "image": "junction-cost-three-families-arm1.png",
+          "changed_pixels": 0,
+          "peak_byte_delta": 0
+        },
+        {
+          "image": "junction-cost-three-families-arm2.png",
+          "changed_pixels": 0,
+          "peak_byte_delta": 0
+        },
+        {
+          "image": "junction-cost-three-families-arm3.png",
+          "changed_pixels": 0,
+          "peak_byte_delta": 0
+        }
+      ]
+    }
+  },
+  "classification_scan": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-gpu-profile-20261010/sector-scan01/terrain-sector-scan.json",
+    "sha256": "ca7697e6fb33e6a45e489f8153383911e581d7d29e696648286b7e255579d236",
+    "maps": [
+      {
+        "junction_count": 222,
+        "map": "zone15",
+        "sectors": 120,
+        "tile_size": [
+          160,
+          192
+        ],
+        "eligible_count": 51
+      },
+      {
+        "junction_count": 101,
+        "map": "zone12",
+        "sectors": 160,
+        "tile_size": [
+          160,
+          256
+        ],
+        "eligible_count": 90
+      },
+      {
+        "junction_count": 122,
+        "map": "zone11",
+        "sectors": 192,
+        "tile_size": [
+          256,
+          192
+        ],
+        "eligible_count": 85
+      }
+    ]
+  },
+  "excluded_diagnostics": [
+    {
+      "label": "baseline01",
+      "reason": "GPU1 without render-offload could not create a presentation queue; no rendered result."
+    },
+    {
+      "label": "pair-sector01",
+      "reason": "External fixture variable shadow parse error; no rendered result."
+    },
+    {
+      "label": "production4k01",
+      "reason": "External fixture variable shadow parse error; no rendered result."
+    }
+  ],
+  "limits": [
+    "Viewport terrain work is not full-game FPS. The user Windows RTX4090 Mobile/default renderer remains untested; this does not establish a fix for the reported 9 FPS case.",
+    "1440p prototype timings varied with GPU clock changes and do not establish a general gain at that resolution. Repeated 4K close and mixed-section measurements are the qualified cost evidence.",
+    "Only statically eligible sectors use the simpler shader; occupied junction sectors and deformed receivers still use the complete path.",
+    "The fixed-four-material-loop variant retained two strict one-pixel failures and no repeatable saving, and remains excluded. Earlier Natural texture-cache/metadata-sharing and cloud experiments remain unpromoted.",
+    "Cloud cost, V1 cold preparation/numerical residuals, broader target-device performance, WAN and full campaign routes remain open. This is not stable-release acceptance."
+  ]
+}

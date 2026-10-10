@@ -709,6 +709,7 @@ var _cliffs: TerrainCliff
 const Transitions = preload("res://src/game/fx/terrain_transition.gd")
 var _transitions: Transitions
 var _land_mat: ShaderMaterial
+var _pair_land_mat: ShaderMaterial
 var _caustics: RefCounted
 var _current: RefCounted
 var _current_dirty := false
@@ -996,6 +997,7 @@ func _build(arc: EIResArchive) -> void:
 				_liquid_xy(wverts[0], land[0], water_mats, sx, sy)
 				land.append(_underwater(land[0], wverts[0], vert_mats))
 			var mi := EITerrainSector.new()
+			mi.tile_origin = Vector2i(sx * TILES, sy * TILES)
 			mi.configure(_mesh_arrays(land, land_tex, PackedInt32Array(), Vector2i(sx * TILES, sy * TILES)),
 				land_mat, SHADOW_RECEIVER_LAYER | DECAL_LAYER, EITerrainSector.preferred() and not Gfx.on("gfx_soft_ground"))
 			mi.name = "Sector_%d_%d" % [sx, sy]
@@ -1104,6 +1106,7 @@ func apply_gfx() -> void:
 	else:
 		_land_mat.set_shader_parameter("cliff_tiles",null)
 		_land_mat.set_shader_parameter("cliff_flatness",null)
+	var transition_base := ""
 	if Transitions.requested():
 		if _transitions == null: _transitions = Transitions.new(self)
 	else:
@@ -1111,7 +1114,7 @@ func apply_gfx() -> void:
 	if _transitions != null and _transitions.admitted > 0:
 		# Mode 1 and 2 share Gfx's terrain-detail define, but have different
 		# live samplers. An explicit source swap also works while paused.
-		var transition_base := WaterCaustics.source(TERRAIN_SHADER) if _caustics != null and _caustics.admitted > 0 else TERRAIN_SHADER
+		transition_base = WaterCaustics.source(TERRAIN_SHADER) if _caustics != null and _caustics.admitted > 0 else TERRAIN_SHADER
 		if _cliffs != null: transition_base = _cliffs.source(transition_base)
 		_land_mat.shader = _transitions.shader(transition_base)
 		_transitions.bind(_land_mat)
@@ -1214,9 +1217,21 @@ func apply_gfx() -> void:
 		details.apply_options()
 	# Turning off deformation first joins its jobs and restores their meshes.
 	# Only then may the sector replace its presentation children.
+	_pair_land_mat = null
+	var specialize := _transitions != null and _transitions.junctions > 0 \
+		and RenderingServer.get_current_rendering_method() == "forward_plus"
 	for sector in get_children():
 		if sector is EITerrainSector:
 			sector.set_subdivided(EITerrainSector.preferred() and not Gfx.on("gfx_soft_ground"))
+			var material := _land_mat
+			if specialize and _transitions.pair_sector_allowed(sector.tile_origin):
+				if _pair_land_mat == null:
+					# One shared variant per terrain, with the same textures and
+					# complete live-option parameter set. No per-sector texture cache.
+					_pair_land_mat = _land_mat.duplicate() as ShaderMaterial
+					_pair_land_mat.shader = _transitions.shader(transition_base, true)
+				material = _pair_land_mat
+			sector.set_base_material(material)
 
 	if is_inside_tree() and not is_instance_valid(color_cache) and TerrainColorCache.available():
 		color_cache = TerrainColorCache.create(self)
@@ -1244,6 +1259,12 @@ func land_shader_source() -> String:
 	return _transitions.source(code) if _transitions != null else code
 
 
+func _set_land_parameter(parameter: StringName, value: Variant) -> void:
+	_land_mat.set_shader_parameter(parameter, value)
+	if _pair_land_mat:
+		_pair_land_mat.set_shader_parameter(parameter, value)
+
+
 ## SurfaceWeather's static cover map affects rendering only. Keep it across
 ## water shader switches; water-level changes are evaluated in the shader.
 func set_rain_cover(image: Image) -> void:
@@ -1251,7 +1272,7 @@ func set_rain_cover(image: Image) -> void:
 		return
 	_rain_cover = ImageTexture.create_from_image(image)
 	if _land_mat:
-		_land_mat.set_shader_parameter("rain_cover", _rain_cover)
+		_set_land_parameter(&"rain_cover", _rain_cover)
 	if is_instance_valid(color_cache):
 		color_cache.sync_parameter("rain_cover", _rain_cover)
 	if _water_mat and _water_mat.shader in [_water_fx_shader,_water_interaction_shader,_water_current_shader,_water_current_contact_shader,_water_wave_shader,_water_current_wave_shader]:
@@ -1402,7 +1423,7 @@ func set_water_offset(mat: int, offset: float) -> Rect2i:
 			if m >= 0 and m < 64:
 				_level[m] = water_offsets[m]
 		_water_mat.set_shader_parameter("level", _level)
-		_land_mat.set_shader_parameter("level", _level)
+		_set_land_parameter(&"level", _level)
 	if is_instance_valid(_waterfalls): _waterfalls.request_refresh()
 	if _current != null and not _current_dirty:
 		_current_dirty = true
@@ -1618,7 +1639,7 @@ func _update_wave_parameters() -> void:
 		_water_mat.set_shader_parameter("river_phase",fposmod(_waves.time_ticks()*WaveState.TICK/0.9,1.0))
 	if _caustics != null and _caustics.admitted > 0:
 		var scroll := WaterCaustics.scroll(_waves.time_ticks()*WaveState.TICK)
-		_land_mat.set_shader_parameter("caustic_scroll",scroll)
+		_set_land_parameter(&"caustic_scroll",scroll)
 		if is_instance_valid(color_cache): color_cache.sync_parameter("caustic_scroll",scroll)
 		if is_instance_valid(details) and is_instance_valid(details.soft_ground):
 			details.soft_ground.sync_parameter(&"caustic_scroll",scroll)
