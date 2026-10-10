@@ -5730,3 +5730,13 @@ These are controlled viewport workloads, not whole-game FPS or full Ingos
 multiplayer. Sky/reflection costs, Windows D3D12/Vulkan and the user's RTX4090
 Mobile remain unqualified. The receipt retains failed exploratory runs, invalid
 zero-timestamp attempts, exact source/pack hashes, commands and GPU logs.
+
+## Pollen motion feedback — 10 October
+
+The user confirmed the small yellow object floats in the air. Regional pollen
+now has 4 cm horizontal sway instead of 22 cm, a 0.18 rad/s phase rate instead
+of 0.7, and a 30-second upward cycle instead of 18. Other particle kinds retain
+their previous motion. The [rendered checks](validation/pollen-drift-2026-10-10.json)
+pass **192/0** across Forward+, Mobile and Compatibility on desktop Linux,
+including pause, advancing time, threats, reload and cleanup. Windows/Android
+visual acceptance is still open.

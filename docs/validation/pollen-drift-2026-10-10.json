@@ -1,0 +1,152 @@
+{
+  "date": "2026-10-10",
+  "feature": "Gentler close-view pollen drift",
+  "user_report": "Small yellow floating object spins too quickly and too far; user confirmed it floats in the air, not attached to a plant.",
+  "scope": "Only regional pollen kind 0. Other particle types, weather/threat fading, population bounds, game-time pause and settings unchanged.",
+  "change": {
+    "horizontal_sway_metres": {
+      "before": 0.22,
+      "after": 0.04
+    },
+    "angular_rate_radians_per_second": {
+      "before": 0.7,
+      "after": 0.18
+    },
+    "rise_cycle_seconds": {
+      "before": 18,
+      "after": 30
+    }
+  },
+  "checks": 192,
+  "failures": 0,
+  "runs": {
+    "pollen-forward03": {
+      "checks": 64,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/pollen-forward03/run.json",
+      "manifest_sha256": "00a8c8b67cafa28db10bb34506d848667b01542696d374e502b8d8dd4847f0e2",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/pollen-forward03/ambient-receipt.json",
+      "result_sha256": "0eabdeff31c74f57b1c671111c5a237f3ecb34542e2d6b49c4a76a8ca9609a74",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate03/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/pollen-forward03/tool-source.gd",
+        "--ambient-render-only",
+        "--ambient-kind=0"
+      ],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ambient_life.gd": "078ec0a8278ba76dfee65b9f7ab2d048dfe9b91383106884ef844829c6e2ea5e"
+      },
+      "captures": {
+        "ambient-held.png": "b100c460c67655bb1621b1b3bbf389722477c2193de87e762c1220eb19aab757",
+        "ambient-particles.png": "b100c460c67655bb1621b1b3bbf389722477c2193de87e762c1220eb19aab757",
+        "ambient-animals.png": "3c867a6ebe9235194fd347a707c56e8482cfff49a38b5e9221b231922a2e5978",
+        "ambient-advanced.png": "329415636cd16beacb33ef0a437b1340948f5f23167a374bbd278716bbe4a348",
+        "ambient-on.png": "b100c460c67655bb1621b1b3bbf389722477c2193de87e762c1220eb19aab757",
+        "ambient-off.png": "3c867a6ebe9235194fd347a707c56e8482cfff49a38b5e9221b231922a2e5978"
+      }
+    },
+    "pollen-mobile03": {
+      "checks": 64,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/pollen-mobile03/run.json",
+      "manifest_sha256": "ce469f0a8809ba0cbe9787198e94565cbffa5c7d0a6b05c62957fb53609285f9",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/pollen-mobile03/ambient-receipt.json",
+      "result_sha256": "7b884fa9d735b6bf4981733a4fb7202b598a8d109a5a0c3bdbd06cd1d3798038",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate03/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "mobile",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/pollen-mobile03/tool-source.gd",
+        "--ambient-render-only",
+        "--ambient-kind=0"
+      ],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ambient_life.gd": "078ec0a8278ba76dfee65b9f7ab2d048dfe9b91383106884ef844829c6e2ea5e"
+      },
+      "captures": {
+        "ambient-held.png": "ad5defda734929fce0edbb6ceacb277a1588a8d4d10f06ef442b4341fbfb06bc",
+        "ambient-particles.png": "ad5defda734929fce0edbb6ceacb277a1588a8d4d10f06ef442b4341fbfb06bc",
+        "ambient-animals.png": "a03a42ff1cd4d294bb333cf84613177efbc6c9e4649a5bc9bf58c88db2abe8e4",
+        "ambient-advanced.png": "436130fd62b83e4e69ea2b8d63713a6b96c80956176a9cb361d8eb2b7fc3c18f",
+        "ambient-on.png": "ad5defda734929fce0edbb6ceacb277a1588a8d4d10f06ef442b4341fbfb06bc",
+        "ambient-off.png": "a03a42ff1cd4d294bb333cf84613177efbc6c9e4649a5bc9bf58c88db2abe8e4"
+      }
+    },
+    "pollen-compatibility03": {
+      "checks": 64,
+      "failures": 0,
+      "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/pollen-compatibility03/run.json",
+      "manifest_sha256": "d9a0ca0c0ddbcd935c210c0047e7d4694d169e3413b80aa00dd93cd733cda3b8",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/pollen-compatibility03/ambient-receipt.json",
+      "result_sha256": "c8f5203ea443a5a2cae02c6798ff2220a069bcdcc668c632d9c1a8e3eb14ed4a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate03/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/pollen-compatibility03/tool-source.gd",
+        "--ambient-render-only",
+        "--ambient-kind=0"
+      ],
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ambient_life.gd": "078ec0a8278ba76dfee65b9f7ab2d048dfe9b91383106884ef844829c6e2ea5e"
+      },
+      "captures": {
+        "ambient-held.png": "f57ac4016564154d48565e5d34f40a3211b7e8c04d3680c2ca19c271e0a95bad",
+        "ambient-particles.png": "f57ac4016564154d48565e5d34f40a3211b7e8c04d3680c2ca19c271e0a95bad",
+        "ambient-animals.png": "af42e47f8707101e77420d260954be46a8645d947aaabc32444cb7a094f71f32",
+        "ambient-advanced.png": "fa1c78fc33b4e153c939942a7a2d01b5debb434faf0cd2af5c06ef1726afc597",
+        "ambient-on.png": "f57ac4016564154d48565e5d34f40a3211b7e8c04d3680c2ca19c271e0a95bad",
+        "ambient-off.png": "af42e47f8707101e77420d260954be46a8645d947aaabc32444cb7a094f71f32"
+      }
+    }
+  },
+  "source_sha256": {
+    "game/src/game/fx/ambient_particles.gd": "377b6cb250a6a306a82fca0b31c226e1b22462726f069c8bf4d0819fa0e92e16"
+  },
+  "candidate": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/candidate03",
+  "limits": [
+    "Rendered ambient lifecycle/motion/pause/threat/reload controls pass on three desktop Linux renderers. Subjective speed acceptance and Android/Windows runtime remain open.",
+    "No performance claim; this is a small motion adjustment. The second and third particle axes and fade remain driven by the same existing pausable world clock."
+  ]
+}

@@ -21,10 +21,12 @@ varying vec3 world_point;
 void vertex() {
 	kind = INSTANCE_CUSTOM.g;
 	float seed = INSTANCE_CUSTOM.r;
-	float period = kind == 1.0 ? 12.0 : (kind == 4.0 ? 4.0 : 18.0);
+	float period = kind == 0.0 ? 30.0 : (kind == 1.0 ? 12.0 : (kind == 4.0 ? 4.0 : 18.0));
 	float phase = fract(seconds / period + seed);
-	float wave = seconds * 0.7 + seed * 31.0;
-	vec3 offset = vec3(sin(wave) * 0.22, 0.0, cos(wave * 0.8) * 0.22);
+	// Pollen should drift, not orbit conspicuously beside the close camera.
+	float wave = seconds * (kind == 0.0 ? 0.18 : 0.7) + seed * 31.0;
+	float wander = kind == 0.0 ? 0.04 : 0.22;
+	vec3 offset = vec3(sin(wave) * wander, 0.0, cos(wave * 0.8) * wander);
 	float height = 0.3 + phase * 2.0;
 	if (kind == 1.0) height = 0.15 + (1.0-phase) * 3.0;
 	if (kind == 4.0) height = 0.10 + phase * 2.5;
