@@ -28,7 +28,7 @@ func fixture(terrain: EITerrain, centre: Vector3) -> Dictionary:
 	var view := SubViewport.new(); view.size = Vector2i(SIZE,SIZE); view.own_world_3d = true
 	view.render_target_update_mode = SubViewport.UPDATE_ALWAYS; view.msaa_3d = Viewport.MSAA_DISABLED
 	if not Portability.compatibility(): view.screen_space_aa = Viewport.SCREEN_SPACE_AA_DISABLED
-	add_child(view); view.add_child(terrain)
+	add_child(view); view.add_child(terrain); terrain.set_process(false)
 	var camera := Camera3D.new(); camera.projection = Camera3D.PROJECTION_ORTHOGONAL; camera.size = 4
 	camera.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	view.add_child(camera); camera.position = centre+Vector3.UP*60
@@ -119,6 +119,8 @@ void fragment() {
 	check(absf(adjusted.r-0.25)<0.003,"capture colour space calibrated")
 	material.set_shader_parameter("calibration",false)
 	var surface := Surface.new(t)
+	var initial_heights := PackedFloat32Array()
+	t._water_mat.set_shader_parameter("waves",1.0)
 	for mode in ["base","moving","waves-off","offset"]:
 		if mode == "moving": t._waves.advance(7.37)
 		if mode == "waves-off": t._water_mat.set_shader_parameter("waves",0.0)
@@ -129,6 +131,7 @@ void fragment() {
 		for name: String in ["wave_phase","wave_ticks","wave_amplitude","wave_gradient","wind","level","waves"]:
 			var value: Variant = t._water_mat.get_shader_parameter(name)
 			if value != null: material.set_shader_parameter(name,value)
+		var held_clock := t._waves.time_ticks()
 		surface.begin_frame()
 		var expected := PackedFloat32Array(); var present := PackedByteArray()
 		var cpu_started := Time.get_ticks_usec()
@@ -138,8 +141,16 @@ void fragment() {
 				var result: Dictionary = surface.sample(Vector2(ray.x,ray.z))
 				expected.append(result.get("height",-1000000.0)); present.append(int(not result.is_empty()))
 		var query_us := Time.get_ticks_usec()-cpu_started
+		var moved_samples := 0
+		if mode == "base": initial_heights = expected.duplicate()
+		if mode == "moving":
+			for i in expected.size():
+				if expected[i] > -10000 and initial_heights[i] > -10000 and absf(expected[i]-initial_heights[i]) > 0.00001: moved_samples += 1
+			check(moved_samples > 0,"authored wave clock changes the sampled surface")
 		material.set_shader_parameter("expected_height",ImageTexture.create_from_image(Image.create_from_data(SIZE,SIZE,false,Image.FORMAT_RF,expected.to_byte_array())))
 		await frames(6); image = f.view.get_texture().get_image()
+		check(t._waves.time_ticks() == held_clock,"capture retains the explicit wave clock "+mode)
+		var digest := HashingContext.new(); digest.start(HashingContext.HASH_SHA256); digest.update(expected.to_byte_array())
 		var max_error := 0.0; var missing := 0; var holes := 0; var covered := 0
 		for y in range(1,SIZE-1):
 			for x in range(1,SIZE-1):
@@ -152,12 +163,13 @@ void fragment() {
 		check(missing == 0 and holes == 0,"query and raster coverage agree "+mode)
 		check(max_error < 0.002,"wave/offset surface agrees within 2 mm "+mode)
 		rows.append({"mode":mode,"max_height_error_m":max_error,"missing":missing,"holes":holes,"covered":covered,
-			"4096_query_us":query_us,"cache_sectors":surface._sectors.size(),"focus":str(centre)})
+			"4096_query_us":query_us,"moved_height_samples":moved_samples,"wave_ticks":held_clock,"height_sha256":digest.finish().hex_encode(),"cache_sectors":surface._sectors.size(),"focus":str(centre)})
 		image.save_png("user://water-surface-"+mode+".png")
 		print("WATER_SURFACE_VIEW ",JSON.stringify(rows.back()))
 	f.view.free(); surface = null; await frames(8)
 
 func _ready() -> void:
+	Engine.time_scale = 0; process_mode = Node.PROCESS_MODE_ALWAYS
 	for key: String in ["gfx_hd_textures","gfx_ground_contact","gfx_soft_ground","gfx_grass","gfx_terrain","confine_mouse","gfx_volumetric","gfx_ssao","gfx_bloom","vsync"]:
 		GameData.options[key] = 0
 	GameData.options["gfx_water"] = 1; Gfx.ensure_globals()

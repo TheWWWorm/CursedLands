@@ -9,7 +9,7 @@ var terrain: EITerrain
 var _sectors := {}
 var _stamp := 0
 var _frame := 0
-var _phase := WaveState.phase_grid()
+var _phase := PackedFloat32Array()
 var _waves := true
 var _cache_mean := false
 var _margin := 0.0
@@ -34,6 +34,8 @@ func begin_frame(deformed := true, cache_mean := false) -> void:
 	var value: Variant = terrain._water_mat.get_shader_parameter("waves") if terrain._water_mat else null
 	_waves = deformed and (value == null or float(value) > 0.5)
 	_cache_mean = cache_mean and not _waves
+	# Keep animated preparation at frame start; static-only consumers skip it.
+	if _waves and _phase.is_empty(): _phase = WaveState.phase_grid()
 
 
 func _sector(key: Vector2i) -> Dictionary:
@@ -87,6 +89,8 @@ func _vertex(record: Dictionary, index: int, transform: Transform3D) -> Vector3:
 	p.y += float(terrain.water_offsets.get(material,0.0))
 	var world := transform*p
 	if _waves and material < terrain.materials.size():
+		# A first implicit frame may reach a vertex without begin_frame().
+		if _phase.is_empty(): _phase = WaveState.phase_grid()
 		var authored: Dictionary = terrain.materials[material]
 		var ei := Vector3(world.x,-world.z,world.y)
 		var cell := Vector2i(posmod(floori(ei.x+0.5),32),posmod(floori(ei.y+0.5),32))
