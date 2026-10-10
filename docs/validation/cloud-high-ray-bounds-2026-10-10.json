@@ -1,0 +1,4678 @@
+{
+  "date": "2026-10-10",
+  "feature": "High sky ray-only empty-space skipping",
+  "base_commit": "6957127",
+  "status": "Qualified source change in private desktop export; not a new delivery package",
+  "user_scope": {
+    "main_thread_only": true,
+    "no_playthroughs": true,
+    "delivery_packages_only_on_request": true
+  },
+  "implementation": {
+    "enabled": "Volume High sky, both supported desktop renderers. Existing Low, moving sheet, reflection and ground-shadow sources retained.",
+    "algorithm": "Compute conservative union of the admitted vertical profiles once per ray. Skip the empty prefix with the original t/segment multiplication recurrence and stop after the empty suffix. Retain every surviving sample position, 192/5 High integration, half-resolution sky pass, density, light march, weather phases and composition.",
+    "bounds_proof": [
+      "Stratus support is within [0,.13]: bottom=.012*w.y >=0, top=.08+.05*w.y <=.13.",
+      "Cumulus bottom cb=.125+.05*w.y-.05*sqrt(wc) >=.075. Top ct=.155+.05*w.y+sqrt(wc)*(.25+.30*w.y) <=.755 for w.y,wc in [0,1].",
+      "Nimbus bottom nb=.02+mix(.05,.17,closure)*(1-w.y)+.04*(1-wc) >=.02 and top=.5+.5*sqrt(wc) <=1.",
+      "Admit each profile whenever its weight can be nonzero in clamp(type_base +/- abs(type_spread),0,1); take the union and expand by .0001 normalized height (.36m) for floating-point boundaries. Rays already require positive y, so the sampled altitude is monotone."
+    ],
+    "resources": "No additional GPU textures, passes or globals. One lazily generated source string.",
+    "settings": "No new options or default changes; independent shadows/reflections and .8/.9 fixes retained."
+  },
+  "source_acceptance": {
+    "checks": 736,
+    "failures": 0,
+    "runs": [
+      "hdr-forward01",
+      "hdr-mobile01",
+      "volume-forward01",
+      "volume-mobile01",
+      "volume-gl01",
+      "controls-forward01"
+    ],
+    "hdr_samples_per_renderer": 901120,
+    "hdr_renderers": [
+      "forward_plus",
+      "mobile"
+    ],
+    "hdr_scope": "Eleven weather/type scenarios, two step counts, five eye heights below/inside/above the layer. Exact captured HDR scattering and transmittance against frozen pre-optimization integrator; both tests additionally prove unchanged surface COMMON and High-only sky selection."
+  },
+  "performance_acceptance": {
+    "runs": [
+      "integrated-fair-forward02",
+      "integrated-fair-mobile01",
+      "integrated-mixed-forward01",
+      "integrated-storm-forward01",
+      "integrated-clearing-forward01"
+    ],
+    "checks": 105,
+    "failures": 0,
+    "scope": "Actual integrated source versus complete reference shader within one process, 3840x2160 sky-only view on Linux RTX3090 Ti, same moving cloud interval 424.2667..430.25s. ABBA, 2.5s preheat per program, 256 warmup and 360 measured frames per arm. Parent viewport GPU timestamps; background radiance generation retained. No whole-game FPS or Windows/Android hardware claim.",
+    "clean_processes": true
+  },
+  "private_build": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/candidate01",
+    "metadata_sha256": "29c730326aa33619fa56dc2ea82decfe235a179eb30e6a53ad3c37e6737ed3ef",
+    "all_700_canonical_game_files_match": true,
+    "import_export_errors": [
+      [],
+      []
+    ]
+  },
+  "source_sha256": {
+    "game/src/game/fx/cloud_volume.gd": "24a5d246b5397f49a0ba630b4256bb111521e4e657d96bebb9d497c968ae1999",
+    "game/src/game/fx/clouds.gd": "19b7121aa68409540c08a6f7c2acc6e1bd86b3989364a47b086ea9a7397925cf"
+  },
+  "test_sha256": {
+    "tools/tests/cloud_ray_bounds.gd": "4857b3e5552818cc88ebf5827c7e85a8830b6d7438b03c31a3aac7d39cbca6ec",
+    "tools/tests/fixtures/cloud_volume_reference.gd": "925b92f4b6a947e5427b4c7caba9d053c0c28165dd00eeb889fa6094831c3017"
+  },
+  "runs": {
+    "hdr-forward01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/hdr-forward01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/hdr-forward01/run.json",
+        "sha256": "b13ac82dd8abe3dff1ca637145337cec6d126d7f2a5d021264f9cd2c8415041a"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/hdr-forward01/cloud-ray-bounds.json",
+        "sha256": "560a1e19c66783c28f6b594fe180bd9fa30c89b2a56af2562e2c0790fec729dd"
+      },
+      "checks": 115,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": "forward_plus",
+      "seconds": 10.113384424999822,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_ray_bounds.gd": "4857b3e5552818cc88ebf5827c7e85a8830b6d7438b03c31a3aac7d39cbca6ec",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/fixtures/cloud_volume_reference.gd": "925b92f4b6a947e5427b4c7caba9d053c0c28165dd00eeb889fa6094831c3017"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "d038264e6c09fb9ed09df2f0da0e2dcbe40e67ac4d6964ff6208325ae1a42af6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {},
+      "timings": {},
+      "image_deltas": []
+    },
+    "hdr-mobile01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/hdr-mobile01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/hdr-mobile01/run.json",
+        "sha256": "f9b5a0cf2b7ce9607d7a34ffdaf848c45e7c1173c70b8af48c43fa9fd50356a0"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/hdr-mobile01/cloud-ray-bounds.json",
+        "sha256": "4d6108cd3b498ecec2a28439812f3fd615bd90b3beba6692171e2245034b5ecc"
+      },
+      "checks": 115,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": "mobile",
+      "seconds": 9.137999130995013,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_ray_bounds.gd": "4857b3e5552818cc88ebf5827c7e85a8830b6d7438b03c31a3aac7d39cbca6ec",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/fixtures/cloud_volume_reference.gd": "925b92f4b6a947e5427b4c7caba9d053c0c28165dd00eeb889fa6094831c3017"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "d038264e6c09fb9ed09df2f0da0e2dcbe40e67ac4d6964ff6208325ae1a42af6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {},
+      "timings": {},
+      "image_deltas": []
+    },
+    "volume-forward01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/volume-forward01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/volume-forward01/run.json",
+        "sha256": "2c8cd89e9ab2d857abfb4ca1e72ec91b4a1c50431eba5baa561b1f96da9ed718"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/volume-forward01/cloud-volume.json",
+        "sha256": "6018bfe2601eb5693542ebf4a280dbcbdb22f779112365938837cf954a664340"
+      },
+      "checks": 99,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": null,
+      "seconds": 35.27551929303445,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_volume.gd": "263ff14e1e39c56778f1af864a93bc1c7ae21633610354dfd1e0e128ae0aa2ce",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "d038264e6c09fb9ed09df2f0da0e2dcbe40e67ac4d6964ff6208325ae1a42af6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "volume-quality3-held.png": "141ac18b6bd620b99f083bb461a581b30a8c8b3adef128c1ad3d788f95bd8b50",
+        "volume-night.png": "3a417e0eac671b0608f97593b45d4d0fd63c955ee63c6fce5fe3a0252af45b3b",
+        "volume-restored.png": "1861283db3fbbf363dd57898ed6381933e117b50ba02f03c31553331ab7650f8",
+        "volume-reflection-on.png": "86dc373ae3b979c2f871059c6aaf1a8c345c847fa4807c1bb9165f440c67e1af",
+        "volume-quality2-held.png": "1ef13c85d6f4c37157b8157f0675865419045e9c58281b529bcb58b2aec3d1f2",
+        "volume-rain.png": "4a04d1fdc694623c1d431e8d5f29a193e18a809faf834a1e6615681c3b646ae7",
+        "volume-quality1.png": "f67a2e5ad5f34a7ddb01dd431a077010df1399b700ff54037683b895efaa6d82",
+        "volume-cave-cleared.png": "1861283db3fbbf363dd57898ed6381933e117b50ba02f03c31553331ab7650f8",
+        "volume-quality2.png": "1ef13c85d6f4c37157b8157f0675865419045e9c58281b529bcb58b2aec3d1f2",
+        "volume-fair.png": "141ac18b6bd620b99f083bb461a581b30a8c8b3adef128c1ad3d788f95bd8b50",
+        "volume-off.png": "1861283db3fbbf363dd57898ed6381933e117b50ba02f03c31553331ab7650f8",
+        "volume-quality3.png": "141ac18b6bd620b99f083bb461a581b30a8c8b3adef128c1ad3d788f95bd8b50",
+        "volume-moved.png": "d7a8fa0c35a35b8af79bb9c64bd6f27d2aaf248457ae1320433efbebc71c52b2",
+        "volume-reflection-off.png": "fa1addf16bd9101b19761a9bd79fb63034eaa32c47fb7338f877e53bfe571de1",
+        "volume-storm-empty.png": "e82d14e0b6cc4513e612cf91be7d9077b8371c20e0ccd618a3446b7ecb131aef",
+        "volume-night-held.png": "3a417e0eac671b0608f97593b45d4d0fd63c955ee63c6fce5fe3a0252af45b3b",
+        "volume-quality3-empty.png": "e82d14e0b6cc4513e612cf91be7d9077b8371c20e0ccd618a3446b7ecb131aef",
+        "volume-quality1-held.png": "f67a2e5ad5f34a7ddb01dd431a077010df1399b700ff54037683b895efaa6d82",
+        "volume-quality2-empty.png": "d7d6256b94da638fdee8df05b69aaa3230f1b962fe824d569009f336aa3c7c5f"
+      },
+      "timings": {},
+      "image_deltas": []
+    },
+    "volume-mobile01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/volume-mobile01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/volume-mobile01/run.json",
+        "sha256": "454604f7ea136394807fc9cedc55d688e7adb4346be6370402edb29f56540695"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/volume-mobile01/cloud-volume.json",
+        "sha256": "6db639fcd794aa69932acfea696e183b996558cebd370b152c362d7179e1919d"
+      },
+      "checks": 99,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": null,
+      "seconds": 33.273942925967276,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_volume.gd": "263ff14e1e39c56778f1af864a93bc1c7ae21633610354dfd1e0e128ae0aa2ce",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "d038264e6c09fb9ed09df2f0da0e2dcbe40e67ac4d6964ff6208325ae1a42af6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "volume-quality3-held.png": "fcabe6495f8542a8c80a1d2448e5a8b8ae44db5c122d29d7eb64b317b3f1f469",
+        "volume-night.png": "00bbd19dd8b0d8ed6055e3d5e89d5cb8467459eab2f725423a5167391ee3be17",
+        "volume-restored.png": "8d204dc353b477037f8829d2f387532fa66769e6f77a195ee128efdaca4db9ac",
+        "volume-reflection-on.png": "b381b73d1475817ac516be135a2a97205b945e30ddb560b4b4f0d0566333e989",
+        "volume-quality2-held.png": "2654c0d923c9bd5c7bef05ea42030d372f19ea1fffed3e82d1052685a5f91be8",
+        "volume-rain.png": "b2a182e3a585a2ab9e5100892d51d9ae1d568d19853ef52a9be77c0470100360",
+        "volume-quality1.png": "a8d21f0fc5cbd78a90e4da9d8796a2c84936a83c854ef92f80dd1643ad63a67e",
+        "volume-cave-cleared.png": "8d204dc353b477037f8829d2f387532fa66769e6f77a195ee128efdaca4db9ac",
+        "volume-quality2.png": "2654c0d923c9bd5c7bef05ea42030d372f19ea1fffed3e82d1052685a5f91be8",
+        "volume-fair.png": "fcabe6495f8542a8c80a1d2448e5a8b8ae44db5c122d29d7eb64b317b3f1f469",
+        "volume-off.png": "8d204dc353b477037f8829d2f387532fa66769e6f77a195ee128efdaca4db9ac",
+        "volume-quality3.png": "fcabe6495f8542a8c80a1d2448e5a8b8ae44db5c122d29d7eb64b317b3f1f469",
+        "volume-moved.png": "903c083e205dc68d099ebd88b39769126809cc67524252567dc272512d89b5ec",
+        "volume-reflection-off.png": "ae887a7efa287fffc2d4aad61ea71f59bd47cb9123dc1df825016f9dc304ef55",
+        "volume-storm-empty.png": "fdf22d54b79e9dfe4e45b7a64c326f89ac3d1e3a111cab1028fef8f047035000",
+        "volume-night-held.png": "00bbd19dd8b0d8ed6055e3d5e89d5cb8467459eab2f725423a5167391ee3be17",
+        "volume-quality3-empty.png": "fdf22d54b79e9dfe4e45b7a64c326f89ac3d1e3a111cab1028fef8f047035000",
+        "volume-quality1-held.png": "a8d21f0fc5cbd78a90e4da9d8796a2c84936a83c854ef92f80dd1643ad63a67e",
+        "volume-quality2-empty.png": "2000af28a64af25277f0c06fea7cec804c0823a3b83e1c9347bb124484f12c19"
+      },
+      "timings": {},
+      "image_deltas": []
+    },
+    "volume-gl01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/volume-gl01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/volume-gl01/run.json",
+        "sha256": "9de826664da36f208ee948a9c5ae35c9f493f3984f1a53dee395bd698cfa4c38"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/volume-gl01/cloud-volume.json",
+        "sha256": "b24b9daa948025f99be1262a46d7e82bd24593d37d804bcd277338c3c71487b6"
+      },
+      "checks": 73,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: The Compatibility renderer does not support overriding the GPU with the --gpu-index command line argument. Falling back to the default GPU for OpenGL applications.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "renderer": null,
+      "seconds": 37.29203839000547,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_volume.gd": "263ff14e1e39c56778f1af864a93bc1c7ae21633610354dfd1e0e128ae0aa2ce",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "d038264e6c09fb9ed09df2f0da0e2dcbe40e67ac4d6964ff6208325ae1a42af6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "volume-quality3-held.png": "48fc768458321160f712d9ca71c2d94838d7ede77e6acd64b8bba8341d89f213",
+        "volume-night.png": "9556effdfea07f921b5af9d8aeef457be355606cca4bda0d8f47428439ceb137",
+        "volume-restored.png": "030d2fa4652fdf59cf0e6b7de084712c2a59ef1df0efb4425c0eb3b902ce7abf",
+        "volume-reflection-on.png": "975e4e251a83529b86667a5deee9b725863bd1c52351f3b172d8c016c060809d",
+        "volume-quality2-held.png": "48fc768458321160f712d9ca71c2d94838d7ede77e6acd64b8bba8341d89f213",
+        "volume-rain.png": "38f0bd9f5faf961b12878c9cea4d3379836d65d57d17b6e43a59c168289944a5",
+        "volume-quality1.png": "48fc768458321160f712d9ca71c2d94838d7ede77e6acd64b8bba8341d89f213",
+        "volume-cave-cleared.png": "030d2fa4652fdf59cf0e6b7de084712c2a59ef1df0efb4425c0eb3b902ce7abf",
+        "volume-quality2.png": "48fc768458321160f712d9ca71c2d94838d7ede77e6acd64b8bba8341d89f213",
+        "volume-fair.png": "48fc768458321160f712d9ca71c2d94838d7ede77e6acd64b8bba8341d89f213",
+        "volume-off.png": "030d2fa4652fdf59cf0e6b7de084712c2a59ef1df0efb4425c0eb3b902ce7abf",
+        "volume-quality3.png": "48fc768458321160f712d9ca71c2d94838d7ede77e6acd64b8bba8341d89f213",
+        "volume-moved.png": "46f1d59ff2570adefe9edad04c40a1ef34200b46662c4a95b455b6222583f7fa",
+        "volume-reflection-off.png": "ba10559415bd47c86b856d3291a8e78292a299e6e2604976bd0a9ff110605e8e",
+        "volume-night-held.png": "9556effdfea07f921b5af9d8aeef457be355606cca4bda0d8f47428439ceb137",
+        "volume-quality1-held.png": "48fc768458321160f712d9ca71c2d94838d7ede77e6acd64b8bba8341d89f213"
+      },
+      "timings": {},
+      "image_deltas": []
+    },
+    "controls-forward01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/controls-forward01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/controls-forward01/run.json",
+        "sha256": "0e48f114ffa3b9ac64f39a71d5113adcd68074cdf8fc4c679c729abe424cff95"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/controls-forward01/cloud-controls.json",
+        "sha256": "41624aac02cf7f19e32067ecb69c0765fcbe99c38f424d659d18d9952b8deafe"
+      },
+      "checks": 235,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": "forward_plus",
+      "seconds": 50.41944007895654,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_controls.gd": "97c9c23e29ef3af73170695edfe39f036a3acf2b8d5b55cdfe06b2b633f83ad2",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "434d2b85e72c3754d344257aaba8089f776e92cd0e566b7368ccc9a50d63c693",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "d038264e6c09fb9ed09df2f0da0e2dcbe40e67ac4d6964ff6208325ae1a42af6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "split-surface-q2-flags0-5.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-sky-q3-flags0-0.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-sky-q2-flags0-4.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-sky-q3-flags0-4.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-surface-q2-flags3-4.png": "655b7f477cd05aa85e04c6980604cf60f9b3e7132bb85c80c711dd941ace405d",
+        "split-sky-q2-flags3-3.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-sky-q1-flags3-3.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q2-flags2-3.png": "a0373f7bf9f6e96db94184c39b6691e553f080380587bb116a3bde98956fc3f0",
+        "split-sky-q1-flags0-4.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q1-flags2-3.png": "85f5f21b35ff2240b0d8c67f1dc9d5eb094c9ba2ac16a2872977cdcaf434e3bb",
+        "split-surface-q1-flags0-5.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "cloud-controls-de.png": "b6caaa0acbf0054b7858fee0f635e98b9d2e27b9ac8d1d17c7e776b6c3ca30d7",
+        "cloud-controls-ru.png": "11401890de7d1987cf4b972549bf49defdbdc95db357fc197c25ad205c45405f",
+        "cloud-controls-en.png": "9ba7fc90a0704729a2f122ad5557892df6960777f13bc850582e0f1477eb0776",
+        "split-surface-q3-flags3-4.png": "655b7f477cd05aa85e04c6980604cf60f9b3e7132bb85c80c711dd941ace405d",
+        "split-surface-q1-flags0-1.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-sky-q3-flags1-1.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-sky-q2-flags0-0.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-surface-q2-flags1-2.png": "49d3944fa5c67a7415bf21ac08bb58ff9071be24dbe582c32b68fb785f772793",
+        "split-sky-q3-flags2-2.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-surface-q2-flags0-1.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-surface-q3-flags2-3.png": "a0373f7bf9f6e96db94184c39b6691e553f080380587bb116a3bde98956fc3f0",
+        "split-sky-q2-flags1-1.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-sky-q1-flags2-2.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-sky-q2-flags2-2.png": "e7047e9953996d4fd2e3cd8ec9c51d6be6d3bb1157f09eb55ee236b83fd4d40e",
+        "split-surface-q1-flags1-2.png": "fa74e333db9b0edb1755c1adcb65754db0690d02b42bd787a8d1c94e090af2ac",
+        "split-sky-q3-flags3-3.png": "2a900d3821a6a0e6772557db584b5cc7c02f29fd2d45add1f806d742b366fb5a",
+        "split-sky-q1-flags1-1.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q3-flags0-1.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5",
+        "split-surface-q3-flags1-2.png": "49d3944fa5c67a7415bf21ac08bb58ff9071be24dbe582c32b68fb785f772793",
+        "split-sky-q1-flags0-0.png": "9ea470e834f3e30baff5a591a7c3d4138b889696b4392368c83a8c5c22ddb056",
+        "split-surface-q1-flags3-4.png": "8743c5af7fb0f97f83412590b494042bf34b2df32549a60fdbebf7d022e8a3f3",
+        "split-surface-q3-flags0-5.png": "bdac85d7814c6eb59a3325f68afe011c4520231d34d6a0115b265523016cf5d5"
+      },
+      "timings": {},
+      "image_deltas": []
+    },
+    "integrated-fair-forward02": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-fair-forward02",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-fair-forward02/run.json",
+        "sha256": "5420dc5efcc4e430cc00c1f7c85e24fdbc32ad99dcc668c9e13eb6566ae12855"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-fair-forward02/cloud-ray-bounds.json",
+        "sha256": "3b7f4bc6e5bd18086b1a017853ab8e824a1639c899e0e224c12e024d5b121d2d"
+      },
+      "checks": 21,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": "forward_plus",
+      "seconds": 34.280930982960854,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated_scene.gd": "6a7e4635f86f9d1c870a27c682769a0669ff18b5ef62962db98485a471c6faa3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated_probe.gd": "ade81f07a7fee706b75ce6af2efe047f7bc426064b622579590b1422174ba476"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "d038264e6c09fb9ed09df2f0da0e2dcbe40e67ac4d6964ff6208325ae1a42af6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "bounds-sky-3-3.png": "41660f8bc135812f0fb3c582723300a03dca422a4934f041ee6d2c3f9f4abb32",
+        "bounds-sky-3-1.png": "41660f8bc135812f0fb3c582723300a03dca422a4934f041ee6d2c3f9f4abb32",
+        "bounds-sky-3-2.png": "41660f8bc135812f0fb3c582723300a03dca422a4934f041ee6d2c3f9f4abb32",
+        "bounds-sky-3-0.png": "41660f8bc135812f0fb3c582723300a03dca422a4934f041ee6d2c3f9f4abb32"
+      },
+      "timings": {
+        "sky": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.395,
+                "median": 6.379,
+                "min": 0.549,
+                "p95": 8.838
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1731.48,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.215000003576279,
+                "median": 0.0860000029206276,
+                "min": 0.0689999982714653,
+                "p95": 0.133000001311302
+              },
+              "viewport_gpu_ms": {
+                "max": 4.27600002288818,
+                "median": 4.08500003814697,
+                "min": 3.97499990463257,
+                "p95": 4.17500019073486
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.482,
+                "median": 7.072,
+                "min": 0.58,
+                "p95": 8.592
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1606.953,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.266999989748001,
+                "median": 0.0850000008940697,
+                "min": 0.0659999996423721,
+                "p95": 0.126000002026558
+              },
+              "viewport_gpu_ms": {
+                "max": 3.51500010490417,
+                "median": 3.37400007247925,
+                "min": 3.27600002288818,
+                "p95": 3.44199991226196
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 15.607,
+                "median": 7.054,
+                "min": 0.552,
+                "p95": 8.609
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1584.981,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.20100000500679,
+                "median": 0.0850000008940697,
+                "min": 0.0659999996423721,
+                "p95": 0.123000003397465
+              },
+              "viewport_gpu_ms": {
+                "max": 3.52099990844727,
+                "median": 3.38700008392334,
+                "min": 3.31299996376038,
+                "p95": 3.45799994468689
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.119,
+                "median": 7.432,
+                "min": 0.536,
+                "p95": 9.04
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1751.806,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.223000004887581,
+                "median": 0.0860000029206276,
+                "min": 0.0649999976158142,
+                "p95": 0.128000006079674
+              },
+              "viewport_gpu_ms": {
+                "max": 4.34700012207031,
+                "median": 4.10500001907349,
+                "min": 3.9909999370575,
+                "p95": 4.19799995422363
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 4.0950000286102295,
+          "candidate_mean_of_arm_medians_ms": 3.380500078201295,
+          "reduction_percent": 17.448106115189045
+        }
+      },
+      "image_deltas": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "sky",
+          "quality": 3
+        }
+      ]
+    },
+    "integrated-fair-mobile01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-fair-mobile01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-fair-mobile01/run.json",
+        "sha256": "5dd031ba62fe89566f349c793fbf811feb6984961e9567737a8a17074a5f9ad7"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-fair-mobile01/cloud-ray-bounds.json",
+        "sha256": "18c0b55beb1182c235226359e9b4ae5b11989648a727a7c21cdd73dc50f4eedd"
+      },
+      "checks": 21,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": "mobile",
+      "seconds": 34.31240830000024,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated_scene.gd": "6a7e4635f86f9d1c870a27c682769a0669ff18b5ef62962db98485a471c6faa3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated_probe.gd": "ade81f07a7fee706b75ce6af2efe047f7bc426064b622579590b1422174ba476"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "d038264e6c09fb9ed09df2f0da0e2dcbe40e67ac4d6964ff6208325ae1a42af6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "bounds-sky-3-3.png": "94d0627ba0d0e817bc6beafc595c92d604c72fa5296a22f476e423bda7b32db5",
+        "bounds-sky-3-1.png": "94d0627ba0d0e817bc6beafc595c92d604c72fa5296a22f476e423bda7b32db5",
+        "bounds-sky-3-2.png": "94d0627ba0d0e817bc6beafc595c92d604c72fa5296a22f476e423bda7b32db5",
+        "bounds-sky-3-0.png": "94d0627ba0d0e817bc6beafc595c92d604c72fa5296a22f476e423bda7b32db5"
+      },
+      "timings": {
+        "sky": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.06,
+                "median": 7.582,
+                "min": 0.542,
+                "p95": 8.756
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1779.983,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.199000000953674,
+                "median": 0.0750000029802322,
+                "min": 0.0599999986588955,
+                "p95": 0.116999998688698
+              },
+              "viewport_gpu_ms": {
+                "max": 4.09700012207031,
+                "median": 3.98200011253357,
+                "min": 3.88599991798401,
+                "p95": 4.0479998588562
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.719,
+                "median": 7.167,
+                "min": 0.564,
+                "p95": 8.561
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1702.895,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.181999996304512,
+                "median": 0.0740000009536743,
+                "min": 0.0599999986588955,
+                "p95": 0.103000000119209
+              },
+              "viewport_gpu_ms": {
+                "max": 3.36199998855591,
+                "median": 3.24699997901917,
+                "min": 3.17600011825562,
+                "p95": 3.29999995231628
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.442,
+                "median": 7.202,
+                "min": 0.517,
+                "p95": 8.793
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1759.691,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.177000001072884,
+                "median": 0.0750000029802322,
+                "min": 0.0599999986588955,
+                "p95": 0.105999998748302
+              },
+              "viewport_gpu_ms": {
+                "max": 3.34299993515015,
+                "median": 3.24699997901917,
+                "min": 3.17000007629395,
+                "p95": 3.30599999427795
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.475,
+                "median": 7.232,
+                "min": 0.515,
+                "p95": 8.595
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1692.914,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.25,
+                "median": 0.0750000029802322,
+                "min": 0.0579999983310699,
+                "p95": 0.119999997317791
+              },
+              "viewport_gpu_ms": {
+                "max": 4.13399982452393,
+                "median": 3.98900008201599,
+                "min": 3.86500000953674,
+                "p95": 4.07800006866455
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 3.98550009727478,
+          "candidate_mean_of_arm_medians_ms": 3.24699997901917,
+          "reduction_percent": 18.52967256883482
+        }
+      },
+      "image_deltas": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "sky",
+          "quality": 3
+        }
+      ]
+    },
+    "integrated-mixed-forward01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-mixed-forward01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-mixed-forward01/run.json",
+        "sha256": "695b2def8df5a20bbc9592b1772b4279b152dd472e1b9454fbe37fa02ed2d2f6"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-mixed-forward01/cloud-ray-bounds.json",
+        "sha256": "679e2206ddd2bb1f467677f223d4cb440ca398a16be8dac78a421a6027b3948d"
+      },
+      "checks": 21,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": "forward_plus",
+      "seconds": 41.31482062803116,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated_scene.gd": "6a7e4635f86f9d1c870a27c682769a0669ff18b5ef62962db98485a471c6faa3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated_probe.gd": "ade81f07a7fee706b75ce6af2efe047f7bc426064b622579590b1422174ba476"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "d038264e6c09fb9ed09df2f0da0e2dcbe40e67ac4d6964ff6208325ae1a42af6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "bounds-sky-3-3.png": "9f055d84d28d3ea17a8c46883c53ac0d8f357c110f60dc983c093322bcc6ac07",
+        "bounds-sky-3-1.png": "9f055d84d28d3ea17a8c46883c53ac0d8f357c110f60dc983c093322bcc6ac07",
+        "bounds-sky-3-2.png": "9f055d84d28d3ea17a8c46883c53ac0d8f357c110f60dc983c093322bcc6ac07",
+        "bounds-sky-3-0.png": "9f055d84d28d3ea17a8c46883c53ac0d8f357c110f60dc983c093322bcc6ac07"
+      },
+      "timings": {
+        "sky": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2199.64, 5800.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 14.633,
+                "median": 7.631,
+                "min": 4.207,
+                "p95": 8.127
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 2794.57,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.231000006198883,
+                "median": 0.0930000022053719,
+                "min": 0.0719999969005585,
+                "p95": 0.160999998450279
+              },
+              "viewport_gpu_ms": {
+                "max": 14.5480003356934,
+                "median": 7.57399988174438,
+                "min": 7.11100006103516,
+                "p95": 8.04100036621094
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2199.64, 5800.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 11.83,
+                "median": 7.272,
+                "min": 2.807,
+                "p95": 7.518
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 2626.79,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.223000004887581,
+                "median": 0.0920000001788139,
+                "min": 0.0719999969005585,
+                "p95": 0.164000004529953
+              },
+              "viewport_gpu_ms": {
+                "max": 7.53599977493286,
+                "median": 7.21099996566772,
+                "min": 7.02199983596802,
+                "p95": 7.44299983978271
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2199.64, 5800.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 8.405,
+                "median": 7.459,
+                "min": 5.895,
+                "p95": 7.816
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 2684.448,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.300000011920929,
+                "median": 0.0930000022053719,
+                "min": 0.0710000023245811,
+                "p95": 0.175999999046326
+              },
+              "viewport_gpu_ms": {
+                "max": 7.9229998588562,
+                "median": 7.39699983596802,
+                "min": 6.94899988174438,
+                "p95": 7.73600006103516
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2199.64, 5800.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 10.245,
+                "median": 7.376,
+                "min": 4.479,
+                "p95": 7.65
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 2653.309,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.264999985694885,
+                "median": 0.0900000035762787,
+                "min": 0.0719999969005585,
+                "p95": 0.150999993085861
+              },
+              "viewport_gpu_ms": {
+                "max": 7.81799983978271,
+                "median": 7.30999994277954,
+                "min": 6.87900018692017,
+                "p95": 7.56599998474121
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 7.44199991226196,
+          "candidate_mean_of_arm_medians_ms": 7.30399990081787,
+          "reduction_percent": 1.8543404067596359
+        }
+      },
+      "image_deltas": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "sky",
+          "quality": 3
+        }
+      ]
+    },
+    "integrated-storm-forward01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-storm-forward01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-storm-forward01/run.json",
+        "sha256": "72e7683f935f271d9d42b717e923eee4f3241b02f0868ed794384c214ef22279"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-storm-forward01/cloud-ray-bounds.json",
+        "sha256": "baf9f8dba8ea35b2f830d3f4c4fbf9b45c91aa7def7524366ba2c0196144aab5"
+      },
+      "checks": 21,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": "forward_plus",
+      "seconds": 32.27356599300401,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated_scene.gd": "6a7e4635f86f9d1c870a27c682769a0669ff18b5ef62962db98485a471c6faa3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated_probe.gd": "ade81f07a7fee706b75ce6af2efe047f7bc426064b622579590b1422174ba476"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "d038264e6c09fb9ed09df2f0da0e2dcbe40e67ac4d6964ff6208325ae1a42af6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "bounds-sky-3-3.png": "4ac23e1113c3245908f1f4e56fe5f536035c0c3f9ceb6952d73308c5a18c6be4",
+        "bounds-sky-3-1.png": "4ac23e1113c3245908f1f4e56fe5f536035c0c3f9ceb6952d73308c5a18c6be4",
+        "bounds-sky-3-2.png": "4ac23e1113c3245908f1f4e56fe5f536035c0c3f9ceb6952d73308c5a18c6be4",
+        "bounds-sky-3-0.png": "4ac23e1113c3245908f1f4e56fe5f536035c0c3f9ceb6952d73308c5a18c6be4"
+      },
+      "timings": {
+        "sky": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2271.64, 5800.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 9.263,
+                "median": 4.598,
+                "min": 0.614,
+                "p95": 7.926
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1697.298,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.207000002264977,
+                "median": 0.0869999974966049,
+                "min": 0.0700000002980232,
+                "p95": 0.116999998688698
+              },
+              "viewport_gpu_ms": {
+                "max": 4.77799987792969,
+                "median": 4.50799989700317,
+                "min": 4.27400016784668,
+                "p95": 4.69500017166138
+              },
+              "warmup": 256,
+              "weather_case": "storm"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2271.64, 5800.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.136,
+                "median": 4.493,
+                "min": 0.526,
+                "p95": 8.679
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1711.093,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.204999998211861,
+                "median": 0.0850000008940697,
+                "min": 0.0700000002980232,
+                "p95": 0.118000000715256
+              },
+              "viewport_gpu_ms": {
+                "max": 7.77500009536743,
+                "median": 4.27400016784668,
+                "min": 4.08400011062622,
+                "p95": 4.47300004959106
+              },
+              "warmup": 256,
+              "weather_case": "storm"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2271.64, 5800.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.372,
+                "median": 4.512,
+                "min": 0.586,
+                "p95": 8.613
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1742.765,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.204999998211861,
+                "median": 0.0850000008940697,
+                "min": 0.0689999982714653,
+                "p95": 0.13400000333786
+              },
+              "viewport_gpu_ms": {
+                "max": 4.53499984741211,
+                "median": 4.30399990081787,
+                "min": 4.10900020599365,
+                "p95": 4.43800020217896
+              },
+              "warmup": 256,
+              "weather_case": "storm"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2271.64, 5800.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.317,
+                "median": 4.649,
+                "min": 0.604,
+                "p95": 8.02
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1702.202,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.233999997377396,
+                "median": 0.0879999995231628,
+                "min": 0.0700000002980232,
+                "p95": 0.140000000596046
+              },
+              "viewport_gpu_ms": {
+                "max": 4.80900001525879,
+                "median": 4.55100011825562,
+                "min": 4.25400018692017,
+                "p95": 4.69600009918213
+              },
+              "warmup": 256,
+              "weather_case": "storm"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 4.5295000076293945,
+          "candidate_mean_of_arm_medians_ms": 4.289000034332275,
+          "reduction_percent": 5.309636226780567
+        }
+      },
+      "image_deltas": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "sky",
+          "quality": 3
+        }
+      ]
+    },
+    "integrated-clearing-forward01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-clearing-forward01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-clearing-forward01/run.json",
+        "sha256": "31ce07c087403f0b3c95bfa9197495ad8b1dc8b3afe103579421933f6d1fb018"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-clearing-forward01/cloud-ray-bounds.json",
+        "sha256": "2e40cf029994740f08dd9a063e23e7a627b600550c7f2de819b36f535ac2290c"
+      },
+      "checks": 21,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": "forward_plus",
+      "seconds": 32.26695518102497,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated_scene.gd": "6a7e4635f86f9d1c870a27c682769a0669ff18b5ef62962db98485a471c6faa3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated_probe.gd": "ade81f07a7fee706b75ce6af2efe047f7bc426064b622579590b1422174ba476"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "d038264e6c09fb9ed09df2f0da0e2dcbe40e67ac4d6964ff6208325ae1a42af6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "bounds-sky-3-3.png": "8780b9e708dd01cdadc6fbd9913bf878fa4702458e9ea84f0717ffa8fd26766c",
+        "bounds-sky-3-1.png": "8780b9e708dd01cdadc6fbd9913bf878fa4702458e9ea84f0717ffa8fd26766c",
+        "bounds-sky-3-2.png": "8780b9e708dd01cdadc6fbd9913bf878fa4702458e9ea84f0717ffa8fd26766c",
+        "bounds-sky-3-0.png": "8780b9e708dd01cdadc6fbd9913bf878fa4702458e9ea84f0717ffa8fd26766c"
+      },
+      "timings": {
+        "sky": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2199.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 17.759,
+                "median": 4.502,
+                "min": 0.558,
+                "p95": 8.457
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1732.151,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.237000003457069,
+                "median": 0.0860000029206276,
+                "min": 0.0689999982714653,
+                "p95": 0.128000006079674
+              },
+              "viewport_gpu_ms": {
+                "max": 4.54899978637695,
+                "median": 4.26000022888184,
+                "min": 4.01700019836426,
+                "p95": 4.46999979019165
+              },
+              "warmup": 256,
+              "weather_case": "clearing"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2199.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 17.218,
+                "median": 7.115,
+                "min": 0.579,
+                "p95": 8.587
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1737.46,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.28099998831749,
+                "median": 0.0839999988675117,
+                "min": 0.068000003695488,
+                "p95": 0.118000000715256
+              },
+              "viewport_gpu_ms": {
+                "max": 4.56099987030029,
+                "median": 4.15899991989136,
+                "min": 3.98600006103516,
+                "p95": 4.37599992752075
+              },
+              "warmup": 256,
+              "weather_case": "clearing"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2199.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.801,
+                "median": 4.436,
+                "min": 0.589,
+                "p95": 8.445
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1695.821,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.209999993443489,
+                "median": 0.0860000029206276,
+                "min": 0.0700000002980232,
+                "p95": 0.112000003457069
+              },
+              "viewport_gpu_ms": {
+                "max": 4.53599977493286,
+                "median": 4.16200017929077,
+                "min": 4.00799989700317,
+                "p95": 4.43800020217896
+              },
+              "warmup": 256,
+              "weather_case": "clearing"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2199.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 15.868,
+                "median": 4.472,
+                "min": 0.555,
+                "p95": 8.595
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1653.987,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.384999990463257,
+                "median": 0.0860000029206276,
+                "min": 0.0689999982714653,
+                "p95": 0.12899999320507
+              },
+              "viewport_gpu_ms": {
+                "max": 4.60799980163574,
+                "median": 4.27500009536743,
+                "min": 4.0310001373291,
+                "p95": 4.44199991226196
+              },
+              "warmup": 256,
+              "weather_case": "clearing"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 4.267500162124636,
+          "candidate_mean_of_arm_medians_ms": 4.1605000495910645,
+          "reduction_percent": 2.5073253302537513
+        }
+      },
+      "image_deltas": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "sky",
+          "quality": 3
+        }
+      ]
+    },
+    "fair01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/fair01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/fair01/run.json",
+        "sha256": "487cbe9d4d64c772b78da70f4c1289d85995456072d79527142bac8640d8fd60"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/fair01/cloud-ray-bounds.json",
+        "sha256": "2c2c05220aabd0a3dabaa5f5d80a2db995b3931f4f97efc782e74935ba7b9f51"
+      },
+      "checks": 38,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": "forward_plus",
+      "seconds": 80.5431074280059,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/ray_bounds_scene.gd": "de5cd45205aef65b62f317e8347365a2a3c77be93f37e487059b99690d0feb07",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/ray_bounds_probe.gd": "9ce8a0fe327b77275253a4ba2b7deeb863a20ba513137f5f392e925715589d56"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "a8e8ddb4925b361cfe6fb097f7346ae6345a7957a2bd102a13d99de48a5ba32c",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "bounds-water-3-0.png": "436f590357bf7ee9d1b9a191f0b896e557b49085d10117b7c3223c81359ef3c1",
+        "bounds-water-3-2.png": "436f590357bf7ee9d1b9a191f0b896e557b49085d10117b7c3223c81359ef3c1",
+        "bounds-sky-3-3.png": "41660f8bc135812f0fb3c582723300a03dca422a4934f041ee6d2c3f9f4abb32",
+        "bounds-sky-3-1.png": "41660f8bc135812f0fb3c582723300a03dca422a4934f041ee6d2c3f9f4abb32",
+        "bounds-water-3-3.png": "436f590357bf7ee9d1b9a191f0b896e557b49085d10117b7c3223c81359ef3c1",
+        "bounds-sky-3-2.png": "41660f8bc135812f0fb3c582723300a03dca422a4934f041ee6d2c3f9f4abb32",
+        "bounds-sky-3-0.png": "41660f8bc135812f0fb3c582723300a03dca422a4934f041ee6d2c3f9f4abb32",
+        "bounds-water-3-1.png": "436f590357bf7ee9d1b9a191f0b896e557b49085d10117b7c3223c81359ef3c1"
+      },
+      "timings": {
+        "sky": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.905,
+                "median": 6.844,
+                "min": 0.575,
+                "p95": 8.48
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1649.5,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.234999999403954,
+                "median": 0.0879999995231628,
+                "min": 0.0689999982714653,
+                "p95": 0.140000000596046
+              },
+              "viewport_gpu_ms": {
+                "max": 4.22100019454956,
+                "median": 4.07200002670288,
+                "min": 3.96700000762939,
+                "p95": 4.1560001373291
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.417,
+                "median": 7.109,
+                "min": 0.574,
+                "p95": 8.927
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1702.679,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.246999993920326,
+                "median": 0.0869999974966049,
+                "min": 0.0700000002980232,
+                "p95": 0.155000001192093
+              },
+              "viewport_gpu_ms": {
+                "max": 3.51399993896484,
+                "median": 3.34899997711182,
+                "min": 3.27099990844727,
+                "p95": 3.41599988937378
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.746,
+                "median": 7.075,
+                "min": 0.578,
+                "p95": 8.664
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1611.637,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.273999989032745,
+                "median": 0.0890000015497208,
+                "min": 0.0649999976158142,
+                "p95": 0.135000005364418
+              },
+              "viewport_gpu_ms": {
+                "max": 3.47699999809265,
+                "median": 3.35400009155273,
+                "min": 3.2720000743866,
+                "p95": 3.42300009727478
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.11,
+                "median": 7.434,
+                "min": 0.566,
+                "p95": 8.822
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1772.52,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.239999994635582,
+                "median": 0.0869999974966049,
+                "min": 0.0710000023245811,
+                "p95": 0.130999997258186
+              },
+              "viewport_gpu_ms": {
+                "max": 4.27699995040894,
+                "median": 4.07200002670288,
+                "min": 3.94899988174438,
+                "p95": 4.14699983596802
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 4.07200002670288,
+          "candidate_mean_of_arm_medians_ms": 3.351500034332275,
+          "reduction_percent": 17.694007555152147
+        },
+        "water": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 16.102,
+                "median": 7.226,
+                "min": 0.591,
+                "p95": 8.848
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1668.107,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.229000002145767,
+                "median": 0.0939999967813492,
+                "min": 0.0780000016093254,
+                "p95": 0.143999993801117
+              },
+              "viewport_gpu_ms": {
+                "max": 2.56699991226196,
+                "median": 2.54399991035461,
+                "min": 2.48799991607666,
+                "p95": 2.55800008773804
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 15.342,
+                "median": 7.193,
+                "min": 0.569,
+                "p95": 8.647
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1649.715,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.225999996066093,
+                "median": 0.096000000834465,
+                "min": 0.0780000016093254,
+                "p95": 0.131999999284744
+              },
+              "viewport_gpu_ms": {
+                "max": 2.36999988555908,
+                "median": 2.33899998664856,
+                "min": 2.28999996185303,
+                "p95": 2.35500001907349
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 16.894,
+                "median": 7.191,
+                "min": 0.601,
+                "p95": 8.591
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1626.192,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.246999993920326,
+                "median": 0.0939999967813492,
+                "min": 0.0740000009536743,
+                "p95": 0.13400000333786
+              },
+              "viewport_gpu_ms": {
+                "max": 2.3659999370575,
+                "median": 2.34100008010864,
+                "min": 2.29099988937378,
+                "p95": 2.35800004005432
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 15.81,
+                "median": 7.209,
+                "min": 0.588,
+                "p95": 8.739
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1649.73,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.247999995946884,
+                "median": 0.096000000834465,
+                "min": 0.0729999989271164,
+                "p95": 0.141000002622604
+              },
+              "viewport_gpu_ms": {
+                "max": 2.69400000572205,
+                "median": 2.55100011825562,
+                "min": 2.49900007247925,
+                "p95": 2.56800007820129
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 2.5475000143051147,
+          "candidate_mean_of_arm_medians_ms": 2.3400000333786,
+          "reduction_percent": 8.145239637343614
+        }
+      },
+      "image_deltas": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "water",
+          "quality": 3
+        }
+      ]
+    },
+    "mixed01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/mixed01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/mixed01/run.json",
+        "sha256": "35b2d6e971ffa1ec35b4724e1426937387c48e73dfe2cbbe10df1fb6608bfbed"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/mixed01/cloud-ray-bounds.json",
+        "sha256": "0ca8caa8a2d0355589e7c880fffbac60b064bbd60fdd3f426ee3b1ba0f57d372"
+      },
+      "checks": 38,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": "forward_plus",
+      "seconds": 64.48991042003036,
+      "other_engines_absent": false,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/ray_bounds_scene.gd": "abb6820babd2fbac4ee8ea329528cb475305e9e773f4ed41e7a104a3a03fb774",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/ray_bounds_probe.gd": "9ce8a0fe327b77275253a4ba2b7deeb863a20ba513137f5f392e925715589d56"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "a8e8ddb4925b361cfe6fb097f7346ae6345a7957a2bd102a13d99de48a5ba32c",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "bounds-water-3-0.png": "eba6faf11af553d73c52db1d05a17364adbb7cf9aceea070f1b0fdceec0378d9",
+        "bounds-water-3-2.png": "eba6faf11af553d73c52db1d05a17364adbb7cf9aceea070f1b0fdceec0378d9",
+        "bounds-sky-3-3.png": "9f055d84d28d3ea17a8c46883c53ac0d8f357c110f60dc983c093322bcc6ac07",
+        "bounds-sky-3-1.png": "9f055d84d28d3ea17a8c46883c53ac0d8f357c110f60dc983c093322bcc6ac07",
+        "bounds-water-3-3.png": "eba6faf11af553d73c52db1d05a17364adbb7cf9aceea070f1b0fdceec0378d9",
+        "bounds-sky-3-2.png": "9f055d84d28d3ea17a8c46883c53ac0d8f357c110f60dc983c093322bcc6ac07",
+        "bounds-sky-3-0.png": "9f055d84d28d3ea17a8c46883c53ac0d8f357c110f60dc983c093322bcc6ac07",
+        "bounds-water-3-1.png": "eba6faf11af553d73c52db1d05a17364adbb7cf9aceea070f1b0fdceec0378d9"
+      },
+      "timings": {
+        "sky": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2199.64, 5800.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 8.724,
+                "median": 7.298,
+                "min": 5.798,
+                "p95": 7.528
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 2606.436,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.217999994754791,
+                "median": 0.0890000015497208,
+                "min": 0.0689999982714653,
+                "p95": 0.129999995231628
+              },
+              "viewport_gpu_ms": {
+                "max": 7.59000015258789,
+                "median": 7.2350001335144,
+                "min": 6.63500022888184,
+                "p95": 7.44299983978271
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2199.64, 5800.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 8.61,
+                "median": 7.042,
+                "min": 5.407,
+                "p95": 7.209
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 2536.032,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.261999994516373,
+                "median": 0.0879999995231628,
+                "min": 0.0710000023245811,
+                "p95": 0.13400000333786
+              },
+              "viewport_gpu_ms": {
+                "max": 7.33199977874756,
+                "median": 6.98099994659424,
+                "min": 6.79099988937378,
+                "p95": 7.1230001449585
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2199.64, 5800.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 8.399,
+                "median": 7.116,
+                "min": 5.911,
+                "p95": 7.401
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 2568.441,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.428999990224838,
+                "median": 0.0890000015497208,
+                "min": 0.0700000002980232,
+                "p95": 0.172000005841255
+              },
+              "viewport_gpu_ms": {
+                "max": 7.625,
+                "median": 7.05600023269653,
+                "min": 6.83099985122681,
+                "p95": 7.28700017929077
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2199.64, 5800.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 12.724,
+                "median": 7.157,
+                "min": 6.421,
+                "p95": 7.374
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 2590.259,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.216999992728233,
+                "median": 0.0930000022053719,
+                "min": 0.0710000023245811,
+                "p95": 0.158000007271767
+              },
+              "viewport_gpu_ms": {
+                "max": 12.6479997634888,
+                "median": 7.0939998626709,
+                "min": 6.80700016021729,
+                "p95": 7.28399991989136
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 7.16449999809265,
+          "candidate_mean_of_arm_medians_ms": 7.018500089645385,
+          "reduction_percent": 2.037824111747266
+        },
+        "water": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2199.64, 5800.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 9.636,
+                "median": 4.899,
+                "min": 0.604,
+                "p95": 8.499
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1735.286,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.216999992728233,
+                "median": 0.0949999988079071,
+                "min": 0.0780000016093254,
+                "p95": 0.127000004053116
+              },
+              "viewport_gpu_ms": {
+                "max": 4.4689998626709,
+                "median": 4.26599979400635,
+                "min": 4.05299997329712,
+                "p95": 4.40700006484985
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2199.64, 5800.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 15.424,
+                "median": 4.716,
+                "min": 0.608,
+                "p95": 8.041
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1762.105,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.243000000715256,
+                "median": 0.0970000028610229,
+                "min": 0.0790000036358833,
+                "p95": 0.136999994516373
+              },
+              "viewport_gpu_ms": {
+                "max": 4.79500007629395,
+                "median": 4.64799976348877,
+                "min": 4.40399980545044,
+                "p95": 4.7189998626709
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2199.64, 5800.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 9.631,
+                "median": 4.754,
+                "min": 0.627,
+                "p95": 7.739
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1742.216,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.24099999666214,
+                "median": 0.0970000028610229,
+                "min": 0.0790000036358833,
+                "p95": 0.140000000596046
+              },
+              "viewport_gpu_ms": {
+                "max": 5.11399984359741,
+                "median": 4.69700002670288,
+                "min": 4.44700002670288,
+                "p95": 4.80499982833862
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2199.64, 5800.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 16.828,
+                "median": 4.528,
+                "min": 0.591,
+                "p95": 8.469
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1725.103,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.263000011444092,
+                "median": 0.0979999974370003,
+                "min": 0.0790000036358833,
+                "p95": 0.162000000476837
+              },
+              "viewport_gpu_ms": {
+                "max": 4.52699995040894,
+                "median": 4.3769998550415,
+                "min": 4.06799983978271,
+                "p95": 4.47100019454956
+              },
+              "warmup": 256,
+              "weather_case": "mixed"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 4.321499824523926,
+          "candidate_mean_of_arm_medians_ms": 4.672499895095825,
+          "reduction_percent": -8.122181761526903
+        }
+      },
+      "image_deltas": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "water",
+          "quality": 3
+        }
+      ]
+    },
+    "storm01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/storm01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/storm01/run.json",
+        "sha256": "36560d30452991d81bc462e364a2a2d4fe2a0b6d8481be70eac897fc5de00703"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/storm01/cloud-ray-bounds.json",
+        "sha256": "8b4176aef486127231ab004554aae72732e200f5a49d9d4342801ab896b2f0ff"
+      },
+      "checks": 38,
+      "failures": 1,
+      "return_code": 1,
+      "errors": [
+        "FAIL held clock exact sky-3-1"
+      ],
+      "warnings": [],
+      "renderer": "forward_plus",
+      "seconds": 58.4333508759737,
+      "other_engines_absent": false,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/ray_bounds_scene.gd": "abb6820babd2fbac4ee8ea329528cb475305e9e773f4ed41e7a104a3a03fb774",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/ray_bounds_probe.gd": "9ce8a0fe327b77275253a4ba2b7deeb863a20ba513137f5f392e925715589d56"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "a8e8ddb4925b361cfe6fb097f7346ae6345a7957a2bd102a13d99de48a5ba32c",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "bounds-held-sky-3-1.png": "0636773bbf7ffecf183656f68b8c2c0c613500b355f3c692f9489004b3e6b1a3",
+        "bounds-water-3-0.png": "7d5c4a9662c39a83de82bfad8e881a8106e7b246e23baf70e21d99fa82a56b1b",
+        "bounds-water-3-2.png": "7d5c4a9662c39a83de82bfad8e881a8106e7b246e23baf70e21d99fa82a56b1b",
+        "bounds-sky-3-3.png": "4ac23e1113c3245908f1f4e56fe5f536035c0c3f9ceb6952d73308c5a18c6be4",
+        "bounds-sky-3-1.png": "4ac23e1113c3245908f1f4e56fe5f536035c0c3f9ceb6952d73308c5a18c6be4",
+        "bounds-water-3-3.png": "7d5c4a9662c39a83de82bfad8e881a8106e7b246e23baf70e21d99fa82a56b1b",
+        "bounds-sky-3-2.png": "4ac23e1113c3245908f1f4e56fe5f536035c0c3f9ceb6952d73308c5a18c6be4",
+        "bounds-sky-3-0.png": "4ac23e1113c3245908f1f4e56fe5f536035c0c3f9ceb6952d73308c5a18c6be4",
+        "bounds-water-3-1.png": "7d5c4a9662c39a83de82bfad8e881a8106e7b246e23baf70e21d99fa82a56b1b"
+      },
+      "timings": {
+        "sky": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2271.64, 5800.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 9.977,
+                "median": 4.632,
+                "min": 0.591,
+                "p95": 8.235
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1732.282,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.203999996185303,
+                "median": 0.0869999974966049,
+                "min": 0.0689999982714653,
+                "p95": 0.123999997973442
+              },
+              "viewport_gpu_ms": {
+                "max": 8.22000026702881,
+                "median": 4.52600002288818,
+                "min": 4.2649998664856,
+                "p95": 4.64599990844727
+              },
+              "warmup": 256,
+              "weather_case": "storm"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2271.64, 5800.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.496,
+                "median": 4.499,
+                "min": 0.584,
+                "p95": 8.546
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1725.393,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.228000000119209,
+                "median": 0.0869999974966049,
+                "min": 0.0700000002980232,
+                "p95": 0.130999997258186
+              },
+              "viewport_gpu_ms": {
+                "max": 4.52899980545044,
+                "median": 4.25,
+                "min": 4.07499980926514,
+                "p95": 4.42600011825562
+              },
+              "warmup": 256,
+              "weather_case": "storm"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2271.64, 5800.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.339,
+                "median": 6.032,
+                "min": 0.573,
+                "p95": 8.571
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1742.824,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.202999994158745,
+                "median": 0.0860000029206276,
+                "min": 0.0689999982714653,
+                "p95": 0.127000004053116
+              },
+              "viewport_gpu_ms": {
+                "max": 4.3730001449585,
+                "median": 4.19700002670288,
+                "min": 4.05499982833862,
+                "p95": 4.28999996185303
+              },
+              "warmup": 256,
+              "weather_case": "storm"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2271.64, 5800.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 17.091,
+                "median": 4.769,
+                "min": 0.581,
+                "p95": 8.629
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1772.636,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.310000002384186,
+                "median": 0.0879999995231628,
+                "min": 0.0710000023245811,
+                "p95": 0.14300000667572
+              },
+              "viewport_gpu_ms": {
+                "max": 4.91599988937378,
+                "median": 4.43300008773804,
+                "min": 4.18599987030029,
+                "p95": 4.80900001525879
+              },
+              "warmup": 256,
+              "weather_case": "storm"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 4.47950005531311,
+          "candidate_mean_of_arm_medians_ms": 4.22350001335144,
+          "reduction_percent": 5.714924406754496
+        },
+        "water": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2271.64, 5800.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 15.821,
+                "median": 7.109,
+                "min": 0.6,
+                "p95": 8.657
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1629.594,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.261000007390976,
+                "median": 0.0949999988079071,
+                "min": 0.0790000036358833,
+                "p95": 0.137999996542931
+              },
+              "viewport_gpu_ms": {
+                "max": 2.65599989891052,
+                "median": 2.61700010299683,
+                "min": 2.57999992370605,
+                "p95": 2.63700008392334
+              },
+              "warmup": 256,
+              "weather_case": "storm"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2271.64, 5800.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 16.27,
+                "median": 7.683,
+                "min": 0.608,
+                "p95": 8.6
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1853.536,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.238000005483627,
+                "median": 0.096000000834465,
+                "min": 0.0729999989271164,
+                "p95": 0.153999999165535
+              },
+              "viewport_gpu_ms": {
+                "max": 2.73000001907349,
+                "median": 2.70000004768372,
+                "min": 2.66000008583069,
+                "p95": 2.71799993515015
+              },
+              "warmup": 256,
+              "weather_case": "storm"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2271.64, 5800.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 14.939,
+                "median": 7.921,
+                "min": 0.594,
+                "p95": 8.352
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1908.168,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.221000000834465,
+                "median": 0.0970000028610229,
+                "min": 0.0759999975562096,
+                "p95": 0.138999998569489
+              },
+              "viewport_gpu_ms": {
+                "max": 2.73300004005432,
+                "median": 2.70000004768372,
+                "min": 2.65899991989136,
+                "p95": 2.71799993515015
+              },
+              "warmup": 256,
+              "weather_case": "storm"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2271.64, 5800.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 16.203,
+                "median": 7.794,
+                "min": 0.517,
+                "p95": 8.476
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1760.993,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.218999996781349,
+                "median": 0.0979999974370003,
+                "min": 0.0769999995827675,
+                "p95": 0.153999999165535
+              },
+              "viewport_gpu_ms": {
+                "max": 2.65499997138977,
+                "median": 2.61500000953674,
+                "min": 2.57800006866455,
+                "p95": 2.63499999046326
+              },
+              "warmup": 256,
+              "weather_case": "storm"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 2.616000056266785,
+          "candidate_mean_of_arm_medians_ms": 2.70000004768372,
+          "reduction_percent": -3.2110087771484386
+        }
+      },
+      "image_deltas": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 434,
+            "peak_delta": 11,
+            "pixels_over_2": 1
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "water",
+          "quality": 3
+        }
+      ]
+    },
+    "clearing01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clearing01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clearing01/run.json",
+        "sha256": "b3c2044a9afe79a677229cc09aeb2788357c05c21395a46c0721a91e5346f892"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clearing01/cloud-ray-bounds.json",
+        "sha256": "0176265d0b435b303c125563a52e80d4cafdbd4844a2ab3556ffc9bfdd77095f"
+      },
+      "checks": 38,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": "forward_plus",
+      "seconds": 55.44662907504244,
+      "other_engines_absent": false,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/ray_bounds_scene.gd": "abb6820babd2fbac4ee8ea329528cb475305e9e773f4ed41e7a104a3a03fb774",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/ray_bounds_probe.gd": "9ce8a0fe327b77275253a4ba2b7deeb863a20ba513137f5f392e925715589d56"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "a8e8ddb4925b361cfe6fb097f7346ae6345a7957a2bd102a13d99de48a5ba32c",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "bounds-water-3-0.png": "69bb800ab8c7dd4177ccd0d32915efe53639a001af9f6f2db0832168c71adeb6",
+        "bounds-water-3-2.png": "69bb800ab8c7dd4177ccd0d32915efe53639a001af9f6f2db0832168c71adeb6",
+        "bounds-sky-3-3.png": "8780b9e708dd01cdadc6fbd9913bf878fa4702458e9ea84f0717ffa8fd26766c",
+        "bounds-sky-3-1.png": "8780b9e708dd01cdadc6fbd9913bf878fa4702458e9ea84f0717ffa8fd26766c",
+        "bounds-water-3-3.png": "69bb800ab8c7dd4177ccd0d32915efe53639a001af9f6f2db0832168c71adeb6",
+        "bounds-sky-3-2.png": "8780b9e708dd01cdadc6fbd9913bf878fa4702458e9ea84f0717ffa8fd26766c",
+        "bounds-sky-3-0.png": "8780b9e708dd01cdadc6fbd9913bf878fa4702458e9ea84f0717ffa8fd26766c",
+        "bounds-water-3-1.png": "69bb800ab8c7dd4177ccd0d32915efe53639a001af9f6f2db0832168c71adeb6"
+      },
+      "timings": {
+        "sky": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2199.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.702,
+                "median": 5.095,
+                "min": 0.564,
+                "p95": 8.581
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1766.198,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.23199999332428,
+                "median": 0.0860000029206276,
+                "min": 0.0689999982714653,
+                "p95": 0.128000006079674
+              },
+              "viewport_gpu_ms": {
+                "max": 5.14499998092651,
+                "median": 4.23400020599365,
+                "min": 4.03000020980835,
+                "p95": 4.93400001525879
+              },
+              "warmup": 256,
+              "weather_case": "clearing"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2199.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.337,
+                "median": 6.122,
+                "min": 0.578,
+                "p95": 8.786
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1733.348,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.248999997973442,
+                "median": 0.0850000008940697,
+                "min": 0.0659999996423721,
+                "p95": 0.125
+              },
+              "viewport_gpu_ms": {
+                "max": 4.49399995803833,
+                "median": 4.21000003814697,
+                "min": 4.0310001373291,
+                "p95": 4.42799997329712
+              },
+              "warmup": 256,
+              "weather_case": "clearing"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2199.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 15.8,
+                "median": 6.868,
+                "min": 0.551,
+                "p95": 8.625
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1755.38,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.305000007152557,
+                "median": 0.0860000029206276,
+                "min": 0.0689999982714653,
+                "p95": 0.140000000596046
+              },
+              "viewport_gpu_ms": {
+                "max": 4.50099992752075,
+                "median": 4.16800022125244,
+                "min": 4.01200008392334,
+                "p95": 4.3769998550415
+              },
+              "warmup": 256,
+              "weather_case": "clearing"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2199.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.28,
+                "median": 6.118,
+                "min": 0.554,
+                "p95": 8.664
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1720.376,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.238000005483627,
+                "median": 0.0860000029206276,
+                "min": 0.0689999982714653,
+                "p95": 0.150000005960464
+              },
+              "viewport_gpu_ms": {
+                "max": 4.52600002288818,
+                "median": 4.21000003814697,
+                "min": 3.99499988555908,
+                "p95": 4.43200016021729
+              },
+              "warmup": 256,
+              "weather_case": "clearing"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 4.22200012207031,
+          "candidate_mean_of_arm_medians_ms": 4.189000129699705,
+          "reduction_percent": 0.7816198819630249
+        },
+        "water": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2199.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 9.681,
+                "median": 7.383,
+                "min": 0.58,
+                "p95": 8.526
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1740.887,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.218999996781349,
+                "median": 0.0949999988079071,
+                "min": 0.0780000016093254,
+                "p95": 0.129999995231628
+              },
+              "viewport_gpu_ms": {
+                "max": 2.2039999961853,
+                "median": 2.16799998283386,
+                "min": 2.11299991607666,
+                "p95": 2.19199991226196
+              },
+              "warmup": 256,
+              "weather_case": "clearing"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2199.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 15.906,
+                "median": 7.263,
+                "min": 0.599,
+                "p95": 8.605
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1746.193,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.252000004053116,
+                "median": 0.0970000028610229,
+                "min": 0.0780000016093254,
+                "p95": 0.149000003933907
+              },
+              "viewport_gpu_ms": {
+                "max": 2.29200005531311,
+                "median": 2.24499988555908,
+                "min": 2.18600010871887,
+                "p95": 2.2739999294281
+              },
+              "warmup": 256,
+              "weather_case": "clearing"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2199.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 16.722,
+                "median": 7.251,
+                "min": 0.573,
+                "p95": 8.664
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1745.67,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.229000002145767,
+                "median": 0.0989999994635582,
+                "min": 0.0790000036358833,
+                "p95": 0.162000000476837
+              },
+              "viewport_gpu_ms": {
+                "max": 2.40700006484985,
+                "median": 2.24600005149841,
+                "min": 2.19300007820129,
+                "p95": 2.2720000743866
+              },
+              "warmup": 256,
+              "weather_case": "clearing"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2199.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 16.598,
+                "median": 7.424,
+                "min": 0.596,
+                "p95": 8.592
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1732.339,
+              "path": "water",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.218999996781349,
+                "median": 0.096000000834465,
+                "min": 0.0780000016093254,
+                "p95": 0.137999996542931
+              },
+              "viewport_gpu_ms": {
+                "max": 2.20300006866455,
+                "median": 2.16300010681152,
+                "min": 2.10700011253357,
+                "p95": 2.19400000572205
+              },
+              "warmup": 256,
+              "weather_case": "clearing"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 2.16550004482269,
+          "candidate_mean_of_arm_medians_ms": 2.245499968528745,
+          "reduction_percent": -3.6942933294930924
+        }
+      },
+      "image_deltas": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "water",
+          "quality": 3
+        }
+      ]
+    },
+    "fair-low01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/fair-low01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/fair-low01/run.json",
+        "sha256": "0a474684066799132e8db98f188b8bcc9cb14d882d5f555c888981da3657070c"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/fair-low01/cloud-ray-bounds.json",
+        "sha256": "31f8ea8c24b002ca83375cf50936f7283036a01cccd3fdde5fc1e606ef87c93b"
+      },
+      "checks": 38,
+      "failures": 0,
+      "return_code": 0,
+      "errors": [],
+      "warnings": [],
+      "renderer": "forward_plus",
+      "seconds": 56.43026781902881,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/ray_bounds_scene.gd": "abb6820babd2fbac4ee8ea329528cb475305e9e773f4ed41e7a104a3a03fb774",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/ray_bounds_probe.gd": "9ce8a0fe327b77275253a4ba2b7deeb863a20ba513137f5f392e925715589d56"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "a8e8ddb4925b361cfe6fb097f7346ae6345a7957a2bd102a13d99de48a5ba32c",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "bounds-sky-2-2.png": "5d1d1f3bac6be87c71aa9b38c8218911f81580216c84791dde56e2a30c67ea67",
+        "bounds-water-2-2.png": "436f590357bf7ee9d1b9a191f0b896e557b49085d10117b7c3223c81359ef3c1",
+        "bounds-sky-2-1.png": "5d1d1f3bac6be87c71aa9b38c8218911f81580216c84791dde56e2a30c67ea67",
+        "bounds-sky-2-3.png": "5d1d1f3bac6be87c71aa9b38c8218911f81580216c84791dde56e2a30c67ea67",
+        "bounds-water-2-0.png": "436f590357bf7ee9d1b9a191f0b896e557b49085d10117b7c3223c81359ef3c1",
+        "bounds-sky-2-0.png": "5d1d1f3bac6be87c71aa9b38c8218911f81580216c84791dde56e2a30c67ea67",
+        "bounds-water-2-1.png": "436f590357bf7ee9d1b9a191f0b896e557b49085d10117b7c3223c81359ef3c1",
+        "bounds-water-2-3.png": "436f590357bf7ee9d1b9a191f0b896e557b49085d10117b7c3223c81359ef3c1"
+      },
+      "timings": {
+        "sky": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 15.892,
+                "median": 7.36,
+                "min": 0.565,
+                "p95": 8.947
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1731.047,
+              "path": "sky",
+              "quality": 2,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.226999998092651,
+                "median": 0.0850000008940697,
+                "min": 0.0670000016689301,
+                "p95": 0.127000004053116
+              },
+              "viewport_gpu_ms": {
+                "max": 1.80400002002716,
+                "median": 1.36300003528595,
+                "min": 1.30599999427795,
+                "p95": 1.77400004863739
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 15.675,
+                "median": 7.224,
+                "min": 0.542,
+                "p95": 8.596
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1662.566,
+              "path": "sky",
+              "quality": 2,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.25,
+                "median": 0.0850000008940697,
+                "min": 0.0689999982714653,
+                "p95": 0.120999999344349
+              },
+              "viewport_gpu_ms": {
+                "max": 1.63800001144409,
+                "median": 1.52499997615814,
+                "min": 1.44900000095367,
+                "p95": 1.61300003528595
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.513,
+                "median": 7.602,
+                "min": 0.551,
+                "p95": 8.648
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1817.817,
+              "path": "sky",
+              "quality": 2,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.256999999284744,
+                "median": 0.0850000008940697,
+                "min": 0.0689999982714653,
+                "p95": 0.126000002026558
+              },
+              "viewport_gpu_ms": {
+                "max": 1.65499997138977,
+                "median": 1.54100000858307,
+                "min": 1.49600005149841,
+                "p95": 1.60199999809265
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 15.904,
+                "median": 7.264,
+                "min": 0.57,
+                "p95": 8.638
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1694.473,
+              "path": "sky",
+              "quality": 2,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.23199999332428,
+                "median": 0.0850000008940697,
+                "min": 0.0689999982714653,
+                "p95": 0.129999995231628
+              },
+              "viewport_gpu_ms": {
+                "max": 1.71200001239777,
+                "median": 1.57599997520447,
+                "min": 1.21200001239777,
+                "p95": 1.69500005245209
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 1.46950000524521,
+          "candidate_mean_of_arm_medians_ms": 1.532999992370605,
+          "reduction_percent": -4.321196794742366
+        },
+        "water": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 16.107,
+                "median": 7.548,
+                "min": 0.598,
+                "p95": 8.811
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1684.078,
+              "path": "water",
+              "quality": 2,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.24600000679493,
+                "median": 0.0939999967813492,
+                "min": 0.0729999989271164,
+                "p95": 0.131999999284744
+              },
+              "viewport_gpu_ms": {
+                "max": 2.58699989318848,
+                "median": 2.55599999427795,
+                "min": 2.50300002098083,
+                "p95": 2.57299995422363
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 15.891,
+                "median": 7.4,
+                "min": 0.586,
+                "p95": 8.727
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1719.672,
+              "path": "water",
+              "quality": 2,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.259999990463257,
+                "median": 0.096000000834465,
+                "min": 0.0780000016093254,
+                "p95": 0.133000001311302
+              },
+              "viewport_gpu_ms": {
+                "max": 2.38700008392334,
+                "median": 2.34800004959106,
+                "min": 2.29399991035461,
+                "p95": 2.36800003051758
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 16.817,
+                "median": 7.146,
+                "min": 0.558,
+                "p95": 8.61
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1649.485,
+              "path": "water",
+              "quality": 2,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.279000014066696,
+                "median": 0.0949999988079071,
+                "min": 0.0790000036358833,
+                "p95": 0.13400000333786
+              },
+              "viewport_gpu_ms": {
+                "max": 2.38199996948242,
+                "median": 2.3529999256134,
+                "min": 2.29900002479553,
+                "p95": 2.37199997901917
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 33,
+                "median": 33,
+                "min": 33,
+                "p95": 33
+              },
+              "frame_wall_ms": {
+                "max": 16.337,
+                "median": 7.706,
+                "min": 0.581,
+                "p95": 8.9
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1783.393,
+              "path": "water",
+              "quality": 2,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.24099999666214,
+                "median": 0.096000000834465,
+                "min": 0.0790000036358833,
+                "p95": 0.136000007390976
+              },
+              "viewport_gpu_ms": {
+                "max": 2.59699988365173,
+                "median": 2.5699999332428,
+                "min": 2.51799988746643,
+                "p95": 2.58400011062622
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 2.562999963760375,
+          "candidate_mean_of_arm_medians_ms": 2.3504999876022303,
+          "reduction_percent": 8.291064345017373
+        }
+      },
+      "image_deltas": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "sky",
+          "quality": 2
+        },
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "water",
+          "quality": 2
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 0,
+            "mean_max_channel_delta": 0.0,
+            "peak_delta": 0,
+            "pixels_over_2": 0,
+            "pixels_over_8": 0
+          },
+          "path": "water",
+          "quality": 2
+        }
+      ]
+    },
+    "integrated-fair-forward01": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-fair-forward01",
+      "run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-fair-forward01/run.json",
+        "sha256": "b7435db18cd92abb011421b817f528588331e6d5a4dbbb3ef0c334fbeac92d48"
+      },
+      "results": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated-fair-forward01/cloud-ray-bounds.json",
+        "sha256": "7901604c497afea0017255fd5b9fac3b3d7c2bd59e0c3e025921f2255513c5b9"
+      },
+      "checks": 20,
+      "failures": 1,
+      "return_code": 1,
+      "errors": [
+        "FAIL candidate exact sky 3",
+        "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+      ],
+      "warnings": [
+        "WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+      ],
+      "renderer": "forward_plus",
+      "seconds": 32.304270896012895,
+      "other_engines_absent": true,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated_scene.gd": "f0025bc4c0bf7dd2f64581c6afd96e13ea4ebb546e001614ffbf1fdc6cacbd7e",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/cloud_path_cost_4k.gd": "32cfb971bc4717e6d4e49beb1c2e46f2efd7a7187899222adf0968689dd557ef",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/clouds.gd": "86d06903c9c03261e642f8a3e6fed0abcb83527b7ece312026d248e88ab3f3ae",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/water_interaction.gd": "37d580c4ac099a83e8287a0c6e6cb98a703f3d45fed856644c23726799a1eaee",
+        "/home/llm2x/Documents/EI/local/scratchpad/cloud-ray-bounds-20261010/integrated_probe.gd": "800d7a966d63d136ca6fe05e510e95aa96805586ec0f78aca9710c3d24b51b55"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "d038264e6c09fb9ed09df2f0da0e2dcbe40e67ac4d6964ff6208325ae1a42af6",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "images_sha256": {
+        "bounds-sky-3-3.png": "8643b02879959f9926e3a479ae5cac25c1b9874bf4341a83859d3b080314cc73",
+        "bounds-sky-3-1.png": "41660f8bc135812f0fb3c582723300a03dca422a4934f041ee6d2c3f9f4abb32",
+        "bounds-sky-3-2.png": "41660f8bc135812f0fb3c582723300a03dca422a4934f041ee6d2c3f9f4abb32",
+        "bounds-sky-3-0.png": "8643b02879959f9926e3a479ae5cac25c1b9874bf4341a83859d3b080314cc73"
+      },
+      "timings": {
+        "sky": {
+          "arms": [
+            {
+              "arm": 0,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.212,
+                "median": 7.243,
+                "min": 0.453,
+                "p95": 8.787
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1666.352,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.118000000715256,
+                "median": 0.0390000008046627,
+                "min": 0.0309999994933605,
+                "p95": 0.061999998986721
+              },
+              "viewport_gpu_ms": {
+                "max": 0.697000026702881,
+                "median": 0.64300000667572,
+                "min": 0.29899999499321,
+                "p95": 0.691999971866608
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 1,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.4,
+                "median": 7.118,
+                "min": 0.545,
+                "p95": 8.652
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1605.947,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.207000002264977,
+                "median": 0.0850000008940697,
+                "min": 0.0670000016689301,
+                "p95": 0.126000002026558
+              },
+              "viewport_gpu_ms": {
+                "max": 3.4539999961853,
+                "median": 3.34999990463257,
+                "min": 3.26200008392334,
+                "p95": 3.41499996185303
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 2,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": true,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.001,
+                "median": 6.99,
+                "min": 0.574,
+                "p95": 8.534
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1556.398,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.225999996066093,
+                "median": 0.0850000008940697,
+                "min": 0.0689999982714653,
+                "p95": 0.123000003397465
+              },
+              "viewport_gpu_ms": {
+                "max": 3.49300003051758,
+                "median": 3.36899995803833,
+                "min": 3.29299998283386,
+                "p95": 3.43899989128113
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            },
+            {
+              "arm": 3,
+              "bounds": "(2469.64, 4918.36)",
+              "cached": false,
+              "case": "cost",
+              "clock_end": 430.25,
+              "clock_start": 424.266666666667,
+              "draws": {
+                "max": 0,
+                "median": 0,
+                "min": 0,
+                "p95": 0
+              },
+              "frame_wall_ms": {
+                "max": 16.593,
+                "median": 7.328,
+                "min": 0.478,
+                "p95": 8.832
+              },
+              "frames_drawn": 360,
+              "loop_total_ms": 1664.912,
+              "path": "sky",
+              "quality": 3,
+              "samples": 360,
+              "viewport_cpu_ms": {
+                "max": 0.0949999988079071,
+                "median": 0.0390000008046627,
+                "min": 0.0309999994933605,
+                "p95": 0.0520000010728836
+              },
+              "viewport_gpu_ms": {
+                "max": 0.916000008583069,
+                "median": 0.861000001430511,
+                "min": 0.728999972343445,
+                "p95": 0.908999979496002
+              },
+              "warmup": 256,
+              "weather_case": "fair"
+            }
+          ],
+          "baseline_mean_of_arm_medians_ms": 0.7520000040531155,
+          "candidate_mean_of_arm_medians_ms": 3.35949993133545,
+          "reduction_percent": -346.7420097378298
+        }
+      },
+      "image_deltas": [
+        {
+          "arm": 0,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 1,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 2,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "arm": 3,
+          "case": "held-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "restore-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "cache-repeat-control",
+          "delta": {
+            "changed_pixels": 0,
+            "peak_delta": 0,
+            "pixels_over_2": 0
+          },
+          "path": "sky",
+          "quality": 3
+        },
+        {
+          "case": "quality",
+          "delta": {
+            "changed_pixels": 8294400,
+            "mean_max_channel_delta": 171.686656177662,
+            "peak_delta": 245,
+            "pixels_over_2": 8294400,
+            "pixels_over_8": 8294400
+          },
+          "path": "sky",
+          "quality": 3
+        }
+      ]
+    }
+  },
+  "excluded_or_limited": {
+    "prototype_surface_branching": "Applying bounds to the 64-step water reflection march produced mixed/storm regressions; Low sky showed no consistent saving. Both are excluded from production; original programs retained. These diagnostic weather runs overlapped other Godot processes and are not clean timing acceptance.",
+    "storm01": "Prototype held sky repeat changed 434 pixels, peak11, one pixel over2. Failure retained; no tolerance relaxed. Source comparison and later direct HDR tests are separate evidence, not an erasure of this residual.",
+    "integrated-fair-forward01": "Invalid comparison helper yielded a black reference and leaked a resource at teardown. All timings/images excluded. Helper renamed and complete shader source readback added; corrected runs use reference_shader and retain nonempty full program hashes.",
+    "earlier_cloud_variants": "No resurrection of weather-field caching, phase hoisting, lower spatial resolution or all-density-call height guard. This optimization skips empty view iterations in High only.",
+    "shaina_probe": "Stopped per explicit user scope change. Partial movement is neither a completed mission nor a gameplay failure; no campaign/health edits were made."
+  },
+  "limits": [
+    "No new delivery archive/APK; latest .9 remains source473beb9 and does not contain this or6957127 cloud change.",
+    "Performance is scene/backend-specific. Full-game costs, other GPUs and physical Windows/Android behavior are not measured here.",
+    "Older strict4K held-image residuals remain in prior receipts; no universal exact sky-pixel stability claim.",
+    "Continue measured old/new-effect optimization and targeted regression/device checks; campaign playthroughs are no longer requested."
+  ]
+}

@@ -5809,3 +5809,74 @@ events removed. Actual changed programs and fade copies retain their identity
 and correct source. The full cold menu regression still takes about 88.6 s;
 this is an isolated preparation improvement, not a general loading/FPS claim.
 Android and Windows acceptance of this increment remains open.
+
+
+## Scope correction — 10 October, no playthroughs
+
+The user explicitly said, “You don't need to do playthroughs.” Campaign route
+completion and long playthroughs are removed from active work. The private
+Shaina/Fairuz probe was stopped during ordinary movement; partial waypoints
+are not a completed mission. Retain the existing route evidence without
+extending it. Continue measured renderer/effect optimization and bounded
+regression/device checks tied to concrete changes or reports. Main thread only;
+no new delivery packages or APKs unless requested. Earlier backlog paragraphs
+requiring organic campaign completion are superseded by this instruction.
+
+
+## High cloud sky: skip guaranteed-empty view samples — 10 October
+
+High sky clouds now skip the empty prefix and stop after the empty suffix of
+an upward ray. The bounds come from the union of the admitted stratus,
+cumulus and nimbus vertical profiles. The original sample recurrence and all
+surviving positions remain unchanged, as do the 192 view / 5 light samples,
+half-resolution pass, density, light march, wind phases and composition.
+There is no new GPU texture, pass or setting. Low clouds and every surface
+reflection/shadow program retain their previous code. Earlier cloud switches
+and all .8/.9 fixes remain intact.
+
+The High-only restriction follows measurement: the all-path prototype did
+not establish a useful Low-sky gain and showed water regressions in the
+mixed/storm diagnostics. Those broader changes are excluded. This differs
+from the older per-density-call height guard: only High view traversal skips
+work; the lighting-density function is untouched.
+
+The integrated private export passes **841/0 checks**: 736 functional/rendered
+assertions and 105 measured-scene controls. Two direct HDR fixtures compare
+901,120 rays each against the frozen `6957127` integrator on Forward+ and
+Mobile, including eleven weather/type states and eye heights below, inside
+and above the cloud layer. Captured scattering and transmittance match exactly.
+Existing cloud lifecycle, pause/motion and fallback tests pass on all three
+desktop backends. Independent cloud controls pass on Forward+.
+
+Clean serial 4K sky-only ABBA measurements on Linux RTX3090 Ti, including the
+existing background radiance work, give these mean arm-median GPU times:
+
+| Renderer / weather | Previous | High sky bounds | Reduction |
+| --- | ---: | ---: | ---: |
+| Forward+ / fair | 4.095 ms | 3.381 ms | 17.4% |
+| Mobile / fair | 3.986 ms | 3.247 ms | 18.5% |
+| Forward+ / mixed | 7.442 ms | 7.304 ms | 1.9% |
+| Forward+ / storm | 4.530 ms | 4.289 ms | 5.3% |
+| Forward+ / clearing | 4.268 ms | 4.161 ms | 2.5% |
+
+Every integrated held/reference/restored image is exact in these five runs,
+with no other Godot/game engine observed. Mixed/clearing differences are small
+relative to variation; do not call them established general gains. These are
+viewport GPU measurements, not whole-game FPS or physical Android/Windows
+results. Low remains the cheaper quality choice.
+
+Failed diagnostics remain recorded: an early storm held repeat changed 434
+pixels (peak 11) while another renderer was active; an initial integrated
+comparison helper produced a black reference and a teardown resource error.
+That entire timing run is excluded. The corrected helper uses a distinct
+name and verifies/readbacks complete shader sources; all five corrected runs
+exit cleanly. Earlier 4K stability residuals are not erased or reclassified.
+
+No delivery archive or APK was created. The source is qualified in
+`local/scratchpad/cloud-ray-bounds-20261010/candidate01`; all 700 canonical
+runtime files match its recorded inputs. Latest delivery .9 remains at
+`473beb9`. Main-thread work continues on expensive old/new effects and
+bounded regression/device reports; campaign playthroughs were explicitly
+removed from scope by the user.
+
+[Source, exact-image and timing evidence](validation/cloud-high-ray-bounds-2026-10-10.json).

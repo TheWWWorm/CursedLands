@@ -1,16 +1,5 @@
 extends RefCounted
-## R1-inspired volumetric extension of the existing cloud owner. The old
-## moving sheet remains value1. Volume low/high use Godot's quarter/half sky
-## passes, with the same density in water reflections and solar attenuation.
-## The game's low camera needs more clear sky than R1's original layer.
-## Fair cumulus uses rounded, separated masses; deep types belong to storms.
-const BASE := 2200.0
-const TOP := 5800.0
-const LAYERS := [[.932327,.361615,47000.0],[.417595,-.908638,19300.0],
-	[.764842,.644218,73100.0],[.891568,.452886,1700.0],
-	[.305817,-.952090,2850.0],[.621610,.783327,317.0]]
-const EVOLUTION := [[6.0,-4.0,0.0],[-14.0,10.0,0.0],[10.0,6.0,0.0],
-	[4.0,-3.0,14.0],[-6.0,5.0,-10.0],[8.0,4.0,12.0]]
+## Frozen cloud integrator from 6957127, before ray-only empty-space skipping.
 const COMMON := """
 global uniform sampler3D ei_cv_shape : filter_linear, repeat_enable;
 global uniform sampler3D ei_cv_detail : filter_linear, repeat_enable;
@@ -128,72 +117,3 @@ float cv_shadow(vec3 p,vec3 sun){
  return 1.0-ei_cloud_state.y*(1.0-exp(-max(0.0,depth)/200.0));
 }
 """
-const SKY_BOUNDS := """
-// Conservative union of all vertical profiles admitted by the type range.
-// Stratus ends at .13, cumulus lies in [.075,.755], nimbus in [.02,1].
-// The small outward margin covers float rounding at profile boundaries.
-vec2 cv_ray_bounds(){
- float low=clamp(ei_cv_weather.z-abs(ei_cv_weather.w),0.0,1.0);
- float high=clamp(ei_cv_weather.z+abs(ei_cv_weather.w),0.0,1.0);
- float bottom=1.0,top=0.0;
- if(low<.5){bottom=0.0;top=.13;}
- if(high>0.0 && low<1.0){bottom=min(bottom,.075);top=max(top,.755);}
- if(high>.5){bottom=min(bottom,.02);top=1.0;}
- return vec2(CV_BASE)+(CV_TOP-CV_BASE)*(vec2(bottom,top)+vec2(-.0001,.0001));
-}
-"""
-
-
-# High sky marches benefit from skipping empty profiles. Low and reflection
-# marches keep their original source: extra branches measured slower there.
-# The generated High source is immutable after creation.
-static var _sky_source := ""
-
-var phases: Array[PackedFloat64Array] = []
-var closure := -1.0
-var frame := {"weather":Vector4.ZERO,"storm":Vector4.ZERO,"phases":[]}
-
-
-static func sky_source() -> String:
-	if _sky_source.is_empty():
-		_sky_source=COMMON.replace("float cv_phase(",SKY_BOUNDS+"float cv_phase(")
-		_sky_source=_sky_source.replace(" for(int i=0;i<256;i++){",
-			" vec2 ray_bounds=cv_ray_bounds();\n for(int i=0;i<256;i++){")
-		var sample_line := " float dt=segment_begin*(ratio-1.0),local_height;vec3 p=origin+ray*t;"
-		_sky_source=_sky_source.replace(sample_line,sample_line+"""
- // Preserve the original recurrence and every surviving sample position.
- // Density along the light ray is intentionally unchanged.
- if(p.y>ray_bounds.y){break;}
- if(p.y<ray_bounds.x){t*=ratio;segment_begin*=ratio;continue;}
-""")
-	return _sky_source
-
-
-
-func reset(seed_value: int) -> void:
-	phases.clear();closure=-1.0
-	for i in 6:
-		var f := preload("res://src/game/fx/weather_wind.gd").lattice(seed_value,20+i)
-		phases.append(PackedFloat64Array([f,fposmod(f+.31,1.0),fposmod(f+.73,1.0)]))
-
-
-func sample(dt: float,wind: Vector4,storm: float,coverage: float,allod: String) -> Dictionary:
-	var target := clampf(storm,0.0,1.0)
-	if closure<0.0: closure=target
-	else: closure=move_toward(closure,target,maxf(dt,0.0)/(90.0 if target>closure else 120.0))
-	var speed := 10.0+6.0*clampf(wind.z,0.0,1.0)+10.0*target
-	var shader_phases: Array[Vector3] = []
-	for i in 6:
-		var ex: float=EVOLUTION[i][0]*(1.0+.8*target)-wind.x*speed
-		var ez: float=EVOLUTION[i][1]*(1.0+.8*target)-wind.y*speed
-		var ey: float=EVOLUTION[i][2]*(1.0+.8*target)
-		var layer: Array=LAYERS[i]
-		var delta := [(layer[0]*ex-layer[1]*ez)/layer[2],(layer[1]*ex+layer[0]*ez)/layer[2],ey/layer[2]]
-		for axis in 3: phases[i][axis]=fposmod(phases[i][axis]+float(delta[axis])*maxf(dt,0.0),1.0)
-		shader_phases.append(Vector3(phases[i][0],phases[i][1],phases[i][2]))
-	var type_ := lerpf(.5,.06,closure)
-	type_=lerpf(type_,.92,target)
-	var density := .9 if allod.to_lower()=="ingos" else (.85 if allod.to_lower()=="suslanger" else 1.0)
-	frame={"weather":Vector4(lerpf(coverage,1.0,closure),lerpf(density,1.3,closure),type_,.06*closure*(1-target)+.24*target),
-		"storm":Vector4(target,closure,1,0),"phases":shader_phases}
-	return frame

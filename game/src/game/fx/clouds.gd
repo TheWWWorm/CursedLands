@@ -61,9 +61,9 @@ static func reflections_enabled() -> bool:
 	return mode()>0 and GameData.option("gfx_cloud_reflections")>0 and GameData.option("gfx_water")>0
 
 
-static func common_source() -> String:
+static func common_source(view_bounds := false) -> String:
 	if mode()<2: return COMMON
-	return COMMON.replace("vec3 ei_cloud_sky(","vec3 ei_cloud_sheet(")+Volume.COMMON+"""
+	return COMMON.replace("vec3 ei_cloud_sky(","vec3 ei_cloud_sheet(")+(Volume.sky_source() if view_bounds else Volume.COMMON)+"""
 vec3 ei_cloud_sky(vec3 base,vec3 origin,vec3 ray,vec3 cloud_ambient,vec3 sun) {
 	if(ei_cv_storm.z<.5){return ei_cloud_sheet(base,origin,ray,cloud_ambient,sun);}
 	vec4 cloud=cv_march(origin,ray,ei_sun_dir,cloud_ambient,sun,64,3,.5);
@@ -135,7 +135,7 @@ func sample(seconds: float, identity: String, allod: String, wind: Vector4,
 
 static func sky_source(original: String) -> String:
 	var quality := mode()
-	var common := COMMON if quality<2 else "global uniform vec3 ei_sun_dir;\n"+common_source()
+	var common := COMMON if quality<2 else "global uniform vec3 ei_sun_dir;\n"+common_source(quality==3)
 	var source := original.replace("float hash13(vec3 p) {",common+"\nfloat hash13(vec3 p) {")
 	# The legacy fancy sky twinkles in shader TIME. In cloud mode use two
 	# independently wrapped game-clock phases, including during paused nights.
