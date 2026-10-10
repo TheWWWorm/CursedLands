@@ -1,0 +1,1990 @@
+{
+  "version": "1.0.3-local.20261010.4",
+  "source_commit": "8e3c1152ddb3693a21b3b269b317d048229bec13",
+  "protocol": 13,
+  "engine_patch_count": 12,
+  "published": false,
+  "build_receipt": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/build.json",
+  "build_receipt_sha256": "ee2f30189c21ebc652e9be2250c17fc06491831c9945e09cb9fa34d12386b852",
+  "checks": 160,
+  "failures": 0,
+  "runs": {
+    "depth-native01": {
+      "checks": 36,
+      "failures": 0,
+      "renderer": "forward_plus",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/depth-native01",
+      "receipt_sha256": "6f7f60eeac01c749441ed11448a3671d78ea8735a14fac391ef2aac84785a8a8",
+      "log_sha256": "065faff0530f7785db0d5a222a305bd1041296b745f5d9d5250d61d35a0507d0",
+      "observations": {
+        "checks": 36,
+        "failures": 0,
+        "samples": [
+          {
+            "allocated": false,
+            "focus": [],
+            "label": "off",
+            "previous_valid": 0,
+            "textures": {},
+            "time": 6.367898
+          },
+          {
+            "allocated": true,
+            "focus": [
+              20.0,
+              20.0
+            ],
+            "label": "first",
+            "previous_valid": 0,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 6.494368
+          },
+          {
+            "allocated": true,
+            "focus": [
+              20.0,
+              20.0
+            ],
+            "label": "outlier",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 6.736104
+          },
+          {
+            "allocated": true,
+            "focus": [
+              20.6798934936523,
+              20.0475196838379
+            ],
+            "label": "smoothing-0",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 6.760799
+          },
+          {
+            "allocated": true,
+            "focus": [
+              27.0580081939697,
+              26.2636318206787
+            ],
+            "label": "smoothing-1",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 6.828016
+          },
+          {
+            "allocated": true,
+            "focus": [
+              32.00927734375,
+              31.1636428833008
+            ],
+            "label": "smoothing-2",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 6.877305
+          },
+          {
+            "allocated": true,
+            "focus": [
+              36.811595916748,
+              36.0586318969727
+            ],
+            "label": "smoothing-3",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 6.927718
+          },
+          {
+            "allocated": true,
+            "focus": [
+              41.4577941894531,
+              40.7129402160645
+            ],
+            "label": "smoothing-4",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 6.97748
+          },
+          {
+            "allocated": true,
+            "focus": [
+              45.8566703796387,
+              45.1611480712891
+            ],
+            "label": "smoothing-5",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 7.02728
+          },
+          {
+            "allocated": true,
+            "focus": [
+              49.9470596313477,
+              49.3066444396973
+            ],
+            "label": "smoothing-6",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 7.077504
+          },
+          {
+            "allocated": true,
+            "focus": [
+              53.6942100524902,
+              53.105827331543
+            ],
+            "label": "smoothing-7",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 7.127314
+          },
+          {
+            "allocated": true,
+            "focus": [
+              57.0950355529785,
+              56.576488494873
+            ],
+            "label": "smoothing-8",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 7.177491
+          },
+          {
+            "allocated": true,
+            "focus": [
+              60.1164970397949,
+              59.6471672058105
+            ],
+            "label": "smoothing-9",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 7.227317
+          },
+          {
+            "allocated": true,
+            "focus": [
+              62.8158111572266,
+              62.3889312744141
+            ],
+            "label": "smoothing-10",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 7.277507
+          },
+          {
+            "allocated": true,
+            "focus": [
+              65.1895980834961,
+              64.8249130249023
+            ],
+            "label": "smoothing-11",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 7.327368
+          },
+          {
+            "allocated": true,
+            "focus": [
+              67.2755584716797,
+              66.958869934082
+            ],
+            "label": "smoothing-12",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 7.377674
+          },
+          {
+            "allocated": true,
+            "focus": [
+              69.0855941772461,
+              68.80908203125
+            ],
+            "label": "smoothing-13",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 7.427751
+          },
+          {
+            "allocated": true,
+            "focus": [
+              70.6650924682617,
+              70.4130859375
+            ],
+            "label": "smoothing-14",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 7.477509
+          },
+          {
+            "allocated": true,
+            "focus": [
+              79.9812240600586,
+              79.9806976318359
+            ],
+            "label": "settled",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 9.36083
+          },
+          {
+            "allocated": true,
+            "focus": [
+              7.00000047683716,
+              7.00000047683716
+            ],
+            "label": "cut",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 9.394382
+          },
+          {
+            "allocated": true,
+            "focus": [
+              599.999328613281,
+              599.999328613281
+            ],
+            "label": "sky",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 9.427469
+          },
+          {
+            "allocated": true,
+            "focus": [
+              2.00000095367432,
+              2.00000071525574
+            ],
+            "label": "near-clamp",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 9.461043
+          },
+          {
+            "allocated": true,
+            "focus": [
+              36.9999237060547,
+              36.9999237060547
+            ],
+            "label": "orthogonal",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                640,
+                360,
+                1,
+                96
+              ],
+              "work_b": [
+                640,
+                360,
+                1,
+                96
+              ]
+            },
+            "time": 9.494455
+          },
+          {
+            "allocated": true,
+            "focus": [
+              36.9999237060547,
+              36.9999237060547
+            ],
+            "label": "odd-resize",
+            "previous_valid": 0,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                501,
+                376,
+                1,
+                96
+              ],
+              "work_b": [
+                501,
+                376,
+                1,
+                96
+              ]
+            },
+            "time": 9.544335
+          },
+          {
+            "allocated": true,
+            "focus": [
+              36.9999237060547,
+              36.9999237060547
+            ],
+            "label": "large-resize",
+            "previous_valid": 0,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                334,
+                481,
+                1,
+                96
+              ],
+              "work_b": [
+                334,
+                481,
+                1,
+                96
+              ]
+            },
+            "time": 9.585862
+          },
+          {
+            "allocated": true,
+            "focus": [
+              90.9999847412109,
+              90.9999847412109
+            ],
+            "label": "second-view",
+            "previous_valid": 0,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                320,
+                240,
+                1,
+                96
+              ],
+              "work_b": [
+                320,
+                240,
+                1,
+                96
+              ]
+            },
+            "time": 10.461119
+          },
+          {
+            "allocated": true,
+            "focus": [
+              36.9999237060547,
+              36.9999237060547
+            ],
+            "label": "first-view-retained",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                334,
+                481,
+                1,
+                96
+              ],
+              "work_b": [
+                334,
+                481,
+                1,
+                96
+              ]
+            },
+            "time": 10.471153
+          },
+          {
+            "allocated": false,
+            "focus": [],
+            "label": "disabled",
+            "previous_valid": 0,
+            "textures": {},
+            "time": 10.495309
+          },
+          {
+            "allocated": true,
+            "focus": [
+              90.9999847412109,
+              90.9999847412109
+            ],
+            "label": "second-view-retained",
+            "previous_valid": 4,
+            "textures": {
+              "focus_a": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "focus_b": [
+                1,
+                1,
+                1,
+                99
+              ],
+              "work_a": [
+                320,
+                240,
+                1,
+                96
+              ],
+              "work_b": [
+                320,
+                240,
+                1,
+                96
+              ]
+            },
+            "time": 10.502726
+          }
+        ]
+      },
+      "observations_sha256": "5f59f15379f832cbfd8ccf7c87860c2fa3d01c8e7d4019c133d2b2bec32fb01e",
+      "captures": {
+        "strong.png": "cd737ca6ce5484c60f769e8a1714a3882ab6cdcca09904f878efccd03061d1b0",
+        "off.png": "94a8babec0f55a2f3882421153287668f13dc20c8215f3be6a8d8265628761bf",
+        "default.png": "3a5c1d78b7f7fa835b55c7f42785d3bf48f662a80895c241d182ba55d9fa4b43"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "c47122a95b3ad8a13f350f5a00301c44be6591dffab4d69c508679b1dbad03a7",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_native.gd": "eba4a3c38a5f80ad3b50578d173bdc71c16e5b527411662a8eaddb4137f5f2dc",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+      },
+      "other_processes_at_start": [],
+      "other_processes_at_end": [
+        {
+          "pid": 2518774,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2519140,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    "depth-mobile01": {
+      "checks": 16,
+      "failures": 0,
+      "renderer": "mobile",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/depth-mobile01",
+      "receipt_sha256": "136167618f253a10a1b22e638dbfb5630edcf6753de066628a87fbc597f23702",
+      "log_sha256": "6152d3ca00c984c91e7c5ef5a66c3a722666ce5df6af043b70dd65c5f2078c67",
+      "observations": null,
+      "observations_sha256": null,
+      "captures": {
+        "dof-low-on.png": "885c7f9a2f307f40946a39e1ec5bf94bd3abc516e482ba0d752123477eb6e5b2",
+        "dof-tactical-off.png": "a195d3668826240337ef713760cf0985445191955b629ff69d82d86134eaf22e",
+        "dof-low-off.png": "a195d3668826240337ef713760cf0985445191955b629ff69d82d86134eaf22e",
+        "dof-low-restored.png": "a195d3668826240337ef713760cf0985445191955b629ff69d82d86134eaf22e",
+        "dof-tactical-on.png": "a195d3668826240337ef713760cf0985445191955b629ff69d82d86134eaf22e"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "c47122a95b3ad8a13f350f5a00301c44be6591dffab4d69c508679b1dbad03a7",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd": "90409bda13e0f551b3c7c293deafbf1965b0072da5ccffecfdcf0f9a4b8e622c"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 2518774,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2519140,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 2518774,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2519403,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    "contact-maps01": {
+      "checks": 30,
+      "failures": 0,
+      "renderer": "forward_plus",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/contact-maps01",
+      "receipt_sha256": "8590b51f36d8f2c18a48b68ff7a26dbe5f192e493e3800929a76e60593d8fed4",
+      "log_sha256": "cafdb887247b6a086f5b78a4fc424d04e5e90a3884ea591e8846c884b3773f6c",
+      "observations": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 30,
+        "editor": false,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 2218,
+              "mean": 0.0513020833333333,
+              "peak": 59
+            },
+            "distance": "near",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 0.40599998831749,
+              "cpu_p95_ms": 0.583999991416931,
+              "draws": 646,
+              "gpu_median_ms": 0.689999997615814,
+              "gpu_p95_ms": 0.857999980449677,
+              "warmup_ms": 5567
+            },
+            "on": {
+              "cpu_median_ms": 0.598999977111816,
+              "cpu_p95_ms": 0.990000009536743,
+              "draws": 646,
+              "gpu_median_ms": 2.61299991607666,
+              "gpu_p95_ms": 3.91899991035461,
+              "warmup_ms": 2295
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.446999996900558,
+              "cpu_p95_ms": 0.739000022411346,
+              "draws": 646,
+              "gpu_median_ms": 0.75,
+              "gpu_p95_ms": 0.888999998569489,
+              "warmup_ms": 177
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 18,
+            "contact_materials": 99,
+            "difference": {
+              "changed": 103,
+              "mean": 0.00236666666666667,
+              "peak": 21
+            },
+            "distance": "far",
+            "focus": "(69.6434, 11.36386, -40.651)",
+            "map": "bz2g",
+            "object": "LeafTree00-3715",
+            "off": {
+              "cpu_median_ms": 0.507000029087067,
+              "cpu_p95_ms": 0.843999981880188,
+              "draws": 860,
+              "gpu_median_ms": 0.800999999046326,
+              "gpu_p95_ms": 0.958999991416931,
+              "warmup_ms": 181
+            },
+            "on": {
+              "cpu_median_ms": 0.488000005483627,
+              "cpu_p95_ms": 0.694000005722046,
+              "draws": 860,
+              "gpu_median_ms": 1.89600002765656,
+              "gpu_p95_ms": 2.84200000762939,
+              "warmup_ms": 195
+            },
+            "registered_parts": 668,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.42399999499321,
+              "cpu_p95_ms": 0.609000027179718,
+              "draws": 860,
+              "gpu_median_ms": 0.977999985218048,
+              "gpu_p95_ms": 1.15199995040894,
+              "warmup_ms": 178
+            },
+            "template": "nafltr56"
+          },
+          {
+            "base_materials": 3,
+            "contact_materials": 72,
+            "difference": {
+              "changed": 3106,
+              "mean": 0.122422916666667,
+              "peak": 104
+            },
+            "distance": "near",
+            "focus": "(84.42931, 12.86823, -82.66885)",
+            "map": "bz10k",
+            "object": "WinterFirTree00-1090",
+            "off": {
+              "cpu_median_ms": 0.187999993562698,
+              "cpu_p95_ms": 0.259999990463257,
+              "draws": 195,
+              "gpu_median_ms": 1.94799995422363,
+              "gpu_p95_ms": 3.01600003242493,
+              "warmup_ms": 179
+            },
+            "on": {
+              "cpu_median_ms": 0.199000000953674,
+              "cpu_p95_ms": 0.24099999666214,
+              "draws": 195,
+              "gpu_median_ms": 2.65400004386902,
+              "gpu_p95_ms": 5.28499984741211,
+              "warmup_ms": 193
+            },
+            "registered_parts": 268,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.187000006437302,
+              "cpu_p95_ms": 0.324000000953674,
+              "draws": 195,
+              "gpu_median_ms": 0.606000006198883,
+              "gpu_p95_ms": 0.728999972343445,
+              "warmup_ms": 175
+            },
+            "template": "nafltr59"
+          },
+          {
+            "base_materials": 3,
+            "contact_materials": 72,
+            "difference": {
+              "changed": 94,
+              "mean": 0.00203333333333333,
+              "peak": 26
+            },
+            "distance": "far",
+            "focus": "(84.42931, 12.86823, -82.66885)",
+            "map": "bz10k",
+            "object": "WinterFirTree00-1090",
+            "off": {
+              "cpu_median_ms": 0.208000004291534,
+              "cpu_p95_ms": 0.358999997377396,
+              "draws": 339,
+              "gpu_median_ms": 0.694000005722046,
+              "gpu_p95_ms": 0.867999970912933,
+              "warmup_ms": 174
+            },
+            "on": {
+              "cpu_median_ms": 0.241999998688698,
+              "cpu_p95_ms": 0.546000003814697,
+              "draws": 339,
+              "gpu_median_ms": 1.05499994754791,
+              "gpu_p95_ms": 1.24699997901917,
+              "warmup_ms": 191
+            },
+            "registered_parts": 268,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.217999994754791,
+              "cpu_p95_ms": 0.351999998092651,
+              "draws": 339,
+              "gpu_median_ms": 0.84799998998642,
+              "gpu_p95_ms": 0.973999977111816,
+              "warmup_ms": 175
+            },
+            "template": "nafltr59"
+          },
+          {
+            "base_materials": 13,
+            "contact_materials": 133,
+            "difference": {
+              "changed": 1690,
+              "mean": 0.0668083333333333,
+              "peak": 58
+            },
+            "distance": "near",
+            "focus": "(54.08064, 23.01896, -44.75)",
+            "map": "bz13h",
+            "object": "HadoganDome00-43320",
+            "off": {
+              "cpu_median_ms": 0.419999986886978,
+              "cpu_p95_ms": 1.31400001049042,
+              "draws": 430,
+              "gpu_median_ms": 2.07999992370605,
+              "gpu_p95_ms": 3.23399996757507,
+              "warmup_ms": 175
+            },
+            "on": {
+              "cpu_median_ms": 0.477999985218048,
+              "cpu_p95_ms": 0.908999979496002,
+              "draws": 430,
+              "gpu_median_ms": 2.51200008392334,
+              "gpu_p95_ms": 5.02099990844727,
+              "warmup_ms": 194
+            },
+            "registered_parts": 725,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.391000002622604,
+              "cpu_p95_ms": 0.528999984264374,
+              "draws": 430,
+              "gpu_median_ms": 0.564000010490417,
+              "gpu_p95_ms": 0.694000005722046,
+              "warmup_ms": 177
+            },
+            "template": "stbuho39"
+          },
+          {
+            "base_materials": 13,
+            "contact_materials": 133,
+            "difference": {
+              "changed": 772,
+              "mean": 0.0320208333333333,
+              "peak": 40
+            },
+            "distance": "far",
+            "focus": "(54.08064, 23.01896, -44.75)",
+            "map": "bz13h",
+            "object": "HadoganDome00-43320",
+            "off": {
+              "cpu_median_ms": 0.574999988079071,
+              "cpu_p95_ms": 0.787999987602234,
+              "draws": 1000,
+              "gpu_median_ms": 0.810999989509583,
+              "gpu_p95_ms": 0.984000027179718,
+              "warmup_ms": 175
+            },
+            "on": {
+              "cpu_median_ms": 0.677999973297119,
+              "cpu_p95_ms": 1.00499999523163,
+              "draws": 1000,
+              "gpu_median_ms": 2.13199996948242,
+              "gpu_p95_ms": 3.16899991035461,
+              "warmup_ms": 194
+            },
+            "registered_parts": 725,
+            "restoration": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0
+            },
+            "restored": {
+              "cpu_median_ms": 0.574999988079071,
+              "cpu_p95_ms": 0.855000019073486,
+              "draws": 1000,
+              "gpu_median_ms": 0.952000021934509,
+              "gpu_p95_ms": 1.21700000762939,
+              "warmup_ms": 178
+            },
+            "template": "stbuho39"
+          }
+        ],
+        "size": "800x600"
+      },
+      "observations_sha256": "bfbb05a4076701f39f377365b81cc2569c108ed0b51f635d05de392dc9e2a2f2",
+      "captures": {
+        "ground-contact-map-forward_plus-bz10k-far-restored.png": "5b94fd89e57bc63bfbdcb160ec45112656e5f4c30f1ef05b8fb3400f1cee01b4",
+        "ground-contact-map-forward_plus-bz10k-far-on.png": "0629252581c93f5af1821d407f3aad3392e42409bd65e53344fa7df76383e7e9",
+        "ground-contact-map-forward_plus-bz10k-near-off.png": "bdd34786978b8de45e35c550651488ac41b90d39b2cb901906edd6354c41c1ca",
+        "ground-contact-map-forward_plus-bz10k-far-off.png": "5b94fd89e57bc63bfbdcb160ec45112656e5f4c30f1ef05b8fb3400f1cee01b4",
+        "ground-contact-map-forward_plus-bz13h-far-off.png": "3d3d80340e62eba398a09ce8b3ca789abfb8198e74837b71b0a35686a8637ea2",
+        "ground-contact-map-forward_plus-bz13h-near-on.png": "14c4f581d7e912942b23729c4fc6859e6716d0e07a72e3a1760940f6cf855cf9",
+        "ground-contact-map-forward_plus-bz13h-near-off.png": "edfdffc34edf51eac2ad69ddd19ab23aa4cef81f7591acadcaa06021e74539b8",
+        "ground-contact-map-forward_plus-bz10k-near-on.png": "c5c6364a23649710ce0957d773af29a218787ab697f7ffefad974b4c05c027fa",
+        "ground-contact-map-forward_plus-bz2g-near-off.png": "114449c0cefe8c9da99d1d96f0c8f54139f98ecddd71b7bda9c49c4312ce1f32",
+        "ground-contact-map-forward_plus-bz2g-near-on.png": "7b69183ee43b369445cfe18b7786cafbc9f9280c7a0c5c1892f4b2fe5f54c1a4",
+        "ground-contact-map-forward_plus-bz2g-far-restored.png": "33f31c0194453b62f5242fbcfd1bea7234d7ce1da94c5e7fa29d653882332557",
+        "ground-contact-map-forward_plus-bz13h-far-on.png": "9ecaacc98988d300ef3d49c67fc2cd69455ae57310bfb3aaaed7701d868d8cfc",
+        "ground-contact-map-forward_plus-bz2g-far-off.png": "33f31c0194453b62f5242fbcfd1bea7234d7ce1da94c5e7fa29d653882332557",
+        "ground-contact-map-forward_plus-bz2g-near-restored.png": "114449c0cefe8c9da99d1d96f0c8f54139f98ecddd71b7bda9c49c4312ce1f32",
+        "ground-contact-map-forward_plus-bz13h-far-restored.png": "3d3d80340e62eba398a09ce8b3ca789abfb8198e74837b71b0a35686a8637ea2",
+        "ground-contact-map-forward_plus-bz2g-far-on.png": "4fc86c16d20b67a54793f15bb6da602079a74026d941f6934b63aa0112392b1d",
+        "ground-contact-map-forward_plus-bz13h-near-restored.png": "edfdffc34edf51eac2ad69ddd19ab23aa4cef81f7591acadcaa06021e74539b8",
+        "ground-contact-map-forward_plus-bz10k-near-restored.png": "bdd34786978b8de45e35c550651488ac41b90d39b2cb901906edd6354c41c1ca"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "c47122a95b3ad8a13f350f5a00301c44be6591dffab4d69c508679b1dbad03a7",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/benchmarks/ground_contact.gd": "cdf2937168d886e43ec8be34f338fda4ff32665d2e8eec4ea61d23363a122e0d"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 2518774,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2519403,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 2520929,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2521412,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ]
+    },
+    "new-game01": {
+      "checks": 9,
+      "failures": 0,
+      "renderer": "forward_plus",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/new-game01",
+      "receipt_sha256": "3c40378a929fb5257c95823f2d18248069c5fc5309b64e72719fda25d4fac3da",
+      "log_sha256": "754e7020ac4a978a480039e0eaf419308d92d5a129aabd5f982983de27224124",
+      "observations": {
+        "covered": 701,
+        "deferred": false,
+        "exposed": 0,
+        "new_game": true,
+        "worker": true,
+        "worker_pid": 2524705,
+        "zone": "gz1g"
+      },
+      "observations_sha256": "1858c6fdafcb8f16d0bfb36ca18b9bc75975060c3e4a676695df73036729a221",
+      "captures": {
+        "menu-covered.png": "26c7c05ac5802100a0e9b9bd9a049de35274a3bee236dad725876bf08d700b46"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "c47122a95b3ad8a13f350f5a00301c44be6591dffab4d69c508679b1dbad03a7",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_loading_screen.gd": "9f3742d29ad2137ef4c9e9a82a536d64d4a2417a2f66ebd10e84bf90a88ff8a7"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 2520929,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2521412,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 2525616,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    "original-mp01": {
+      "checks": 23,
+      "failures": 0,
+      "renderer": "forward_plus",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/original-mp01",
+      "receipt_sha256": "bf2efc81ba4a348b69f4aacefb2ede1c7692b1584f62b8e2e92c515d41ad4064",
+      "log_sha256": "d801cfd8e7f43e85a61c195b3dbef26fb7698d8911600884427f3d552d184765",
+      "observations": {
+        "checks": 23,
+        "failures": 0,
+        "frames": {
+          "start": {
+            "covered": 599,
+            "exposed": 0,
+            "transition": 0
+          },
+          "travel": {
+            "covered": 567,
+            "exposed": 0,
+            "transition": 0
+          }
+        },
+        "menu_creatures": {
+          "after": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          },
+          "before": {
+            "Boar-87": {
+              "layers": "[\"unanwibo\", [\"boar00\"]]",
+              "textures": [
+                "5e17d60a147f08e01a0da025e89941fd3f994a5ff1a747211fb4c551260946a0"
+              ]
+            },
+            "OgreGipatF7-187": {
+              "layers": "[\"unmoog1\", [\"ogre00\"]]",
+              "textures": [
+                "3ea19745f5e23dd60db0fb5851aee561bd4128ff8dc0124ab729961b5f40269b"
+              ]
+            },
+            "White Wolf-76": {
+              "layers": "[\"unanwiwo\", [\"wolf01\"]]",
+              "textures": [
+                "0178bed0093da941e84851ee5cf11648d85d7e39782e5bda5007bb82eddeb65d"
+              ]
+            }
+          }
+        },
+        "menu_database": [
+          {
+            "label": "before",
+            "lmp_db": false
+          },
+          {
+            "label": "after",
+            "lmp_db": false
+          }
+        ],
+        "scope": "Real menu and separate native multiplayer authority; controlled public quest/travel commands; presented loading frames and exact menu creature texture/layer retention. Linux execution, not Windows performance or physical exit-route validation.",
+        "travel_exposed_frames_after_one_second": 0,
+        "travel_request_to_loading_ms": 259
+      },
+      "observations_sha256": "f9b669ced0adea5e13513f9153e527a1ca7632c27219a22b52a5848d34ec8eb2",
+      "captures": {
+        "lmp-travel-covered.png": "81a7d39c018e915cc6e1f1097bdbfcfae04feca31cce929de0bd6e5c5b049c0b",
+        "lmp-menu-after.png": "71a384a550e190a39be38e5659dc05a9b40dff4e06a0bd2fab3629f2040e7230",
+        "lmp-start-covered.png": "e7fbf3adbac1cc909c33426ec3c963053d4958228a2476780f624701f01013f4",
+        "lmp-menu-before.png": "115ccfaf0503cf05458f80487c80b7598cf32394e9a323a483cb5308c5759419"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "c47122a95b3ad8a13f350f5a00301c44be6591dffab4d69c508679b1dbad03a7",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_lmp_flow.gd": "c01452e95c4db9104b388783b223f11802118e570edab51c1cf8df0a3ee60285"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 2525616,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2525893,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 2527962,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2528036,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ]
+    },
+    "menu-material01": {
+      "checks": 46,
+      "failures": 0,
+      "renderer": "forward_plus",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/menu-material01",
+      "receipt_sha256": "2b86a81d89ef8823e129de516e6f961699628c334fb0457838a3382775c8d492",
+      "log_sha256": "7a73c4fe4c11f28b7cb2e82e2cbd9f72a5b84873f0e04ce362a923c5dcff559d",
+      "observations": {
+        "checks": 46,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 0,
+            "hover_references": 6,
+            "label": "startup-off-initial",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-off-live-options",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-off-hover",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 0,
+            "hover_references": 6,
+            "label": "startup-off-contact-off",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-off-contact-on-again",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-initial",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/cidle",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-live-options",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-hover",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 0,
+            "hover_references": 6,
+            "label": "startup-on-contact-off",
+            "labels": 6,
+            "wrong_labels": []
+          },
+          {
+            "animation": "ei/uspecial01",
+            "changed": [],
+            "contact": 1,
+            "hover_references": 6,
+            "label": "startup-on-contact-on-again",
+            "labels": 6,
+            "wrong_labels": []
+          }
+        ]
+      },
+      "observations_sha256": "fa95ccf7329c719a08f9d7841056fed408fe1aa54586da7f163882df38ad5cbd",
+      "captures": {
+        "menu-material-startup-on-hover.png": "3387f4dc909c247c70dfa8118f9857b9443c69b915555e37f473ea3fdecd624b",
+        "menu-material-startup-off-live-options.png": "9d2f1964b92d612569ef10f11677b996d925db7001f802afb00832b409bfdb15",
+        "menu-material-startup-off-initial.png": "90f7062d1ef4b3b300f756659365b0a222c17aaaadad05832b1357ca22d312d1",
+        "menu-material-startup-off-contact-on-again.png": "caef85e86f26a7f2844d2fc744aadfca00c52e4904a4472d1e35ace0ff367733",
+        "menu-material-startup-on-initial.png": "24de0cafc2a7a30e04d6361a0771e956774b13e9dfcd87cf09e08b2d9c136b19",
+        "menu-material-startup-off-hover.png": "caef85e86f26a7f2844d2fc744aadfca00c52e4904a4472d1e35ace0ff367733",
+        "menu-material-startup-on-contact-on-again.png": "3387f4dc909c247c70dfa8118f9857b9443c69b915555e37f473ea3fdecd624b",
+        "menu-material-startup-off-contact-off.png": "d716b1662fa805de084b16be8402b299a04ed32e378d0427aeb1a6c7b4cc053e",
+        "menu-material-startup-on-live-options.png": "e60c3207f8fe48bdf038eae23154c2dae0ff028970b8acd55399f5a70de69023",
+        "menu-material-startup-on-contact-off.png": "9dd4b29082d9b2e683be0483cb376ebe5d8ca10e907a464d53f1705bd8dafe5d"
+      },
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "c47122a95b3ad8a13f350f5a00301c44be6591dffab4d69c508679b1dbad03a7",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+      },
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/menu_material_refresh.gd": "4726a4cb53983aa7968a9ebd902aae7b64f1568d014b5d3c99f6bdcfa9a15ad7"
+      },
+      "other_processes_at_start": [
+        {
+          "pid": 2527962,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        },
+        {
+          "pid": 2528036,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        }
+      ],
+      "other_processes_at_end": [
+        {
+          "pid": 2532239,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": false
+        },
+        {
+          "pid": 2532529,
+          "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+          "headless": true
+        }
+      ]
+    }
+  },
+  "packages": {
+    "linux-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.4-linux-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.4-linux-x86_64.tar.gz",
+      "archive_bytes": 36530572,
+      "archive_sha256": "547078119ea74aba21faf3cd3e1ca6a4324870e60981fae80aa4b7f1a3a5befc",
+      "archive_readback_exact": true,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "SHA256SUMS.txt": "aee95809795b77cb67cf2cbdaf3fae27c15667a16717a0541c021efd41c2624f",
+        "BUILD-INFO.json": "c0047f2b6db24373ed66d353449e50d5de6ad9a9baa99d5402331bb625e9d794",
+        "Play.sh": "75835f261e9acd2b45973152790cabf255b05b649f0f059997c1de9ba4e3ec2b",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "c47122a95b3ad8a13f350f5a00301c44be6591dffab4d69c508679b1dbad03a7",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "LOCAL-TEST.txt": "621ab029c90c0baf1cce55af45e9012d18f4d57ece1a87f79fe43f54917efedf",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    },
+    "windows-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.4-windows-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.4-windows-x86_64.zip",
+      "archive_bytes": 37737516,
+      "archive_sha256": "3316fb5301cb9e4cf44677eab6a9f47eb70aedcab0aee63de4aa4b1a667cccd3",
+      "archive_readback_exact": true,
+      "files": {
+        "SHA256SUMS.txt": "413028975bcb091065632b5adf9286156733af6028c5c7989f96f3042e9de47c",
+        "BUILD-INFO.json": "19e1223300447d83e48186387b5aebba336662a9be9da45f43eafcae28efa45e",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "libterrain_search.dll": "14906b040d4b6a5e1e217b9bfb21214f48700b6709163be584cc98e584f45106",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "c47122a95b3ad8a13f350f5a00301c44be6591dffab4d69c508679b1dbad03a7",
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "LOCAL-TEST.txt": "e8f1b081f57be453e3474681a2cf71ebceb65d116b041fee8d1c2cba931ddc52",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    }
+  },
+  "inherited_previous_package": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-3.json",
+    "sha256": "c1b713ce8d3af2c6d02600f0f602fac658913cdc3c100ecc33fd1ae378a440c1"
+  },
+  "retained_previous_extra_zoom_diagnostic": {
+    "checks": 112,
+    "failures": 1,
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-3/contact-tracks01",
+    "receipt_sha256": "746cd381eb3c6fcc6e63e56322867f8bfa3ee26720af0edb859318efe98f357e",
+    "result_sha256": "d47b91e94171250c368c4a163c7dbcdc3b53c50f777468ffa94edd24143a9a31",
+    "description": {
+      "scope": "Additional zoomed snow scene: committed shared fixture had inherited the 2.4m bridge camera; prior qualified snow used 3.8m. This new one-byte failure is retained, not relabeled as a passing run.",
+      "upper_residual": [
+        {
+          "x": 550,
+          "y": 40,
+          "off": [
+            8,
+            8,
+            8
+          ],
+          "on": [
+            8,
+            8,
+            7
+          ],
+          "mask": [
+            255,
+            0,
+            255
+          ]
+        }
+      ],
+      "camera_span": 2.4,
+      "upper_mask_height": 0.22
+    },
+    "scope": "Shared test consolidation inherited the bridge 2.4m camera in the snow case. The established snow framing is 3.8m. This additional closer-view numerical residual remains a strict failure."
+  },
+  "windows_pe_audit": {
+    "CursedLands.exe": {
+      "architecture": "PE x86_64",
+      "imports": [
+        "ADVAPI32.dll",
+        "AVRT.dll",
+        "bcrypt.dll",
+        "CRYPT32.dll",
+        "dwmapi.dll",
+        "DWrite.dll",
+        "GDI32.dll",
+        "HID.DLL",
+        "IMM32.dll",
+        "IPHLPAPI.DLL",
+        "KERNEL32.dll",
+        "api-ms-win-core-processthreads-l1-1-3.dll",
+        "api-ms-win-security-base-l1-2-1.dll",
+        "api-ms-win-security-lsalookup-l2-1-0.dll",
+        "msvcrt.dll",
+        "ntdll.dll",
+        "ole32.dll",
+        "OLEAUT32.dll",
+        "SHCORE.dll",
+        "SHELL32.dll",
+        "SHLWAPI.dll",
+        "USER32.dll",
+        "WINMM.dll",
+        "WS2_32.dll",
+        "WSOCK32.dll"
+      ]
+    },
+    "libterrain_search.dll": {
+      "architecture": "PE x86_64",
+      "imports": [
+        "KERNEL32.dll",
+        "msvcrt.dll"
+      ]
+    }
+  },
+  "limits": [
+    "Windows PE/source/archive checks only; no Windows execution or target-device performance claim.",
+    "Linux correctness checks use the separate rendering thread and isolated profiles. Foreign engine processes overlap; these are not performance measurements.",
+    "The original-multiplayer fixture uses public quest/travel commands, not a walked exit route.",
+    "Depth of field remains off by default. The feature requires the patched Forward+ or Mobile engine. MetalFX, stereo and physical devices are unqualified.",
+    "Integrated V1 material lighting remains default-off. Cold preparation and the retained Mobile/Compatibility strict pixel residuals remain open.",
+    "The previous .3 package retains an additional tighter snow view with one failed upper-object blue-byte assertion among 112 checks; it is inherited, not relabeled or rerun here.",
+    "Previous pebble/grass, snow-track, shoreline, Continue and LiA coverage is inherited from the .1/.2/.3 receipts, not rerun in full for this V8 change.",
+    "Protocol remains 13. Full physical gameplay routes and WAN/Windows acceptance are still open; this is not stable 1.0.3."
+  ],
+  "game_changes_from_local_20261010_3": [
+    "game/src/ei/game_data.gd",
+    "game/src/ei/remake_text.gd",
+    "game/src/ui/camera_depth_of_field.gd"
+  ],
+  "new_engine_patch": {
+    "path": "engine_patches/godot-4.7/far-dof-reference.patch",
+    "sha256": "9c906ae637c9df620f1976d7b6c3bfe6aed4e236c91fcf27b40afeb8bacf3954",
+    "engine_base": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "native_source_roundtrip": {
+      "files": 11,
+      "all_exact": true,
+      "sha256": {
+        "core/os/os.cpp": "26187ef96f3a3c0e008e71192758811b7c6840219ef6740d99d26fbc74452354",
+        "servers/rendering/storage/camera_attributes_storage.h": "c9d873c692a86646dc401c0ff3b4144f7ce4fa7e87e6dc63dadd7f875c2452f3",
+        "servers/rendering/storage/camera_attributes_storage.cpp": "1e75932acd26ac425b398fd64e1a836da1f85f2ab764b77d5a429bc415dfc0c5",
+        "servers/rendering/rendering_server.h": "48af4abd50357b9a2b0012566f1354b9e56a66327adcefb7798b226eb3998a58",
+        "servers/rendering/rendering_server.cpp": "4f668673a2096da2f7949326d7e37fc49f63b91bd74ef32a4d11a35cc3ee5ce7",
+        "servers/rendering/rendering_server_default.h": "4c5332cb15a83f38cc9ae89957ea659dc67f0478bf377b133dac68831ee87b78",
+        "servers/rendering/renderer_rd/renderer_scene_render_rd.h": "560283b1c2bbb6e119cf84ab35aef09353c2f4acfd70f5f3d698df06475dff8e",
+        "servers/rendering/renderer_rd/renderer_scene_render_rd.cpp": "3b89d9cc6c19933a4c74afc13e5d795989723f32336f446e06773d140ab8cd24",
+        "servers/rendering/renderer_rd/effects/far_dof.h": "fa68c3ec153809143be2fdafafa33ec27dbe421fae78c12e0e2c9e0f008068bd",
+        "servers/rendering/renderer_rd/effects/far_dof.cpp": "a0beeb52b3d4eb6911f15aeac1e3fbbe055b5f885b1d18dcd0ebeb62b38f2328",
+        "servers/rendering/renderer_rd/shaders/effects/far_dof.glsl": "9dda02ad4575e750c1cc10cc002906b0764c16af1f85b2ec2e0cd97cc4d2247e"
+      }
+    }
+  },
+  "integration_evidence": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/camera-depth-focus-2026-10-10.json",
+    "sha256": "fa3262b3246d588645785dc6b258961b1b36a39640afe7702fead8fac3e855a3",
+    "acceptance": {
+      "runs": 21,
+      "checks": 456,
+      "failures": 0,
+      "legacy_exact_pairs": 26,
+      "failed_focus_assertions_retained": 8,
+      "failed_hdr_assertions_retained": 1,
+      "hdr": {
+        "forward_input": [
+          8,
+          12,
+          16
+        ],
+        "forward_environment_exposure": 0.02,
+        "mobile_input": [
+          1.25,
+          1.5,
+          1.75
+        ],
+        "mobile_environment_exposure": 0.2,
+        "forward_off_on_rgb": [
+          0.4353,
+          0.5255,
+          0.6
+        ],
+        "tolerance": "at most one output byte; observed Forward+ and Mobile samples unchanged"
+      }
+    }
+  },
+  "inherited_package_evidence": [
+    "docs/validation/local-feedback-build-2026-10-10.json",
+    "docs/validation/local-feedback-build-2026-10-10-2.json",
+    "docs/validation/local-feedback-build-2026-10-10-3.json"
+  ],
+  "pack_resources": 682,
+  "compiled_scripts": 265,
+  "linux_windows_pack_byte_identical": true,
+  "changed_resources_from_qualified_depth_candidate": [
+    "project.binary",
+    "src/ei/game_data.gdc",
+    "src/ei/remake_text.gdc"
+  ],
+  "native_helper_source_unchanged_since": "e2e7e0af17d0a7cd7f7de20eea2e910e33038204",
+  "retained_initial_package_diagnostic": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/attempt01",
+    "log_sha256": "f5e0406074a216dc9b39f0b69e71afc55300600f3d5b0ce28c823b7dbab3e009",
+    "description": "The initial validator expected hyphenated compiled-script suffixes. The actual three differing resources were exactly project.binary, src/ei/game_data.gdc and src/ei/remake_text.gdc. The expected paths were corrected and both platforms rebuilt and qualified. No production change or published artifact came from the stopped attempt."
+  },
+  "visually_inspected_package_captures": {
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/contact-maps01/ground-contact-map-forward_plus-bz2g-near-on.png": "7b69183ee43b369445cfe18b7786cafbc9f9280c7a0c5c1892f4b2fe5f54c1a4",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/original-mp01/lmp-menu-after.png": "71a384a550e190a39be38e5659dc05a9b40dff4e06a0bd2fab3629f2040e7230",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/depth-native01/default.png": "3a5c1d78b7f7fa835b55c7f42785d3bf48f662a80895c241d182ba55d9fa4b43"
+  },
+  "artifacts": {
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/build.py": "a635b50f49b17fa6b2395d0c28fb832d084e8f125a2325de5c37f81246a9f381",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/build.json": "ee2f30189c21ebc652e9be2250c17fc06491831c9945e09cb9fa34d12386b852",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/build-run.log": "2cf8248b02e5f2f5dfdcf173a45d45a2397a971ee080afc0ed42902836beb333",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/suite.py": "a77063c6a29f8a2d25062d2a04a975e5368bcc62f380eda362858bb3430dda63",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/suite.log": "d0dbc4815991583e6e6a845c3961a2d4da4ce68ac28f412aca7df73b7441a58b",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/run.py": "e27e3e7f14ce9f4068341603634ae70b8aa83fe40ab0f18a8558990ae962ca5f",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/package.py": "d9ecb6518c8a6e1f6c0781847c540abb90a795851ed82781b18c38ba8ba9be4f",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/package.json": "541a1d3d3a59f94228bbb67798fa294b26e1eb68dac2761a16bfbe90b7c4cba6",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/packaging.log": "707d0f4b4b0f4815998c55bd0a7d346ca5008c0ea9954b7cee1e69d8aa64c5bc",
+    "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-4/record.py": "5b3c7383a8a90b956479656efd23b0a7731058222771d5a91e3ab1901a8e7cf6"
+  }
+}

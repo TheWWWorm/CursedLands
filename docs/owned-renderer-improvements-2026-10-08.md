@@ -8,7 +8,7 @@ Starting commit: `3172ede12a5f41b0182c34a70b5eeda787c95e52`
 
 The source audit and priorities are in
 [OWNED_RENDERER_IMPROVEMENT_HANDOFF.md](/home/llm2x/Documents/EI/OWNED_RENDERER_IMPROVEMENT_HANDOFF.md).
-**Latest local test, 10 October:** `1.0.3-local.20261010.3`: [Windows ZIP](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.3-windows-x86_64.zip) and [Linux archive](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.3-linux-x86_64.tar.gz), source `208805a` (production lighting `1c96136`), protocol 13. Both contain the same 682-resource / 265-script pack and all eleven desktop engine patches. Includes terrain-matched V1 material lighting, default-off, plus prior rounded/lit pebbles, grass and gameplay fixes. The actual Linux Forward+ package passes **292/0** across six runs: three maps, snow tracks, Enhanced shoreline, New Game, original-MP travel/menu restoration and live graphics options. Twenty-four snow captures match the prior qualified candidate exactly; zero exposed loading/travel HUD frames. A separate closer snow view retains **1 strict failure/112 checks**, one upper-object blue byte 8→7 under a local light. Existing Mobile/Compatibility residuals and expensive cold preparation remain open. Both archive readbacks pass. Windows execution, target-device performance and full physical routes remain untested; no stable release is claimed. [Receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-3.json).
+**Latest local test, 10 October:** `1.0.3-local.20261010.4`: [Windows ZIP](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.4-windows-x86_64.zip) and [Linux archive](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.4-linux-x86_64.tar.gz), source `8e3c115`, protocol 13. Both contain the same 682-resource / 265-script pack and all twelve desktop engine patches. Adds rendered-depth focus and bounded horizon blending to the existing default-off Depth of field option; inherits .3 terrain-contact lighting, rounded/lit pebbles, grass and gameplay fixes. The actual Linux package passes **160/0** in six Forward+/Mobile runs: native focus/lifetime, image protection, three contact maps, New Game, original-MP travel/menu restoration and live menu options. Loading/travel expose zero HUD frames; both archive readbacks pass. The V8 source receipt separately retains **456/0 in 21 accepted runs** and 26 exact legacy image pairs, plus failed diagnostics. The .3 closer-snow **1 failure/112 checks**, earlier Mobile/Compatibility numerical residuals and expensive V1 cold preparation remain open. Windows execution, target-device performance and full physical routes are unqualified; no stable release is claimed. [Package receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-4.json).
 
 **V1 material lighting integrated, 10 October:** `1c96136` copies installed packed terrain normals, native shoreline inputs and dense footprint COLOR into the existing contact band, including relief, rain highlights, tracks and material-specific directional shadow response. Lazy world-owned storage and pending mesh reservations stay bounded at 128 tiles. Forward+ final cases pass **640/0**, data/ownership/source checks **286/0**; three maps retain 12 exact native Off/restored images and unchanged draw counts. Compatibility retains **1 failure/544 checks**. Mobile retains **23/501** with the short wait and **4/501** with a separate three-second capture pre-roll: the remaining differences are single pixels at 1–6/255. They are preserved as failed strict assertions, including the new Compatibility 1/255 upper pixel; no universal pixel-parity claim. The current shipped-build controls pass 52/0 per backend. All shader/backend paths compile and exit normally. The option remains default-off; preparation/device/Windows acceptance stays open. The six integrated production files exactly match the rendered private candidate. [Evidence](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/ground-contact-lighting-integration-2026-10-10.json). Included in local20261010.3. The additional closer snow view retains one Forward+ upper-pixel 1/255 residual; see the package receipt. Main thread only; broader gameplay/renderer scope is still active.
 
@@ -5377,6 +5377,39 @@ runtime, the user's 4090 Mobile, MetalFX/stereo devices and long routes remain
 unqualified. The temporary-texture bound is recorded, but these correctness runs
 are not a frame-time benchmark. Installed templates and published releases remain
 unchanged.
+
+## V8 local packages — 10 October, .4
+
+Local20261010.4 packages `8e3c115` for Linux and Windows, with the same 682
+resources, 265 compiled scripts and protocol 13. Both release engines include
+all twelve common patches. Compared with .3, only the camera-depth helper and
+two translated-help source files change the game pack. Compared with the
+qualified V8 private pack, only those help resources and the displayed version
+differ. Both packs are byte-identical; full archive readback and Linux executable
+permissions pass. The native helpers are unchanged.
+
+Six final-package runs pass **160 checks with zero failures**: native focus and
+texture lifetime (36), Mobile image protection (16), terrain contact on three
+maps (30), New Game loading (9), original-multiplayer travel/menu restoration
+(23) and live menu material refresh (46). Every run uses an isolated profile
+and the separate rendering thread. No empty HUD is exposed during loading or
+travel. The menu's restored creatures, a terrain-contact map and the depth test
+image were also inspected. Foreign engine processes overlap these runs; they
+are correctness checks, not a performance benchmark.
+
+The initial pack validator used an incorrect hyphenated compiled-script suffix;
+it stopped on exactly the three expected resources. That attempt is retained,
+the path assertion was corrected, and both platforms were rebuilt and tested.
+No production code changed to satisfy that packaging assertion.
+
+The source-level **456/0 in 21 accepted runs** remains separate evidence, with
+its failed/non-qualifying diagnostics preserved. The .3 tighter snow view still
+has one strict numerical failure among 112 checks; older V1 backend residuals
+and expensive cold preparation also remain open. Both optional effects stay
+off by default. Windows execution, the user's 4090 Mobile and full physical
+gameplay routes remain unqualified. No stable release is claimed.
+
+[Package evidence](validation/local-feedback-build-2026-10-10-4.json).
 
 ## Next work in the established order
 
