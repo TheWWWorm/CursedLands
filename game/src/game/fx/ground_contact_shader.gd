@@ -452,9 +452,54 @@ const RELIEF_CALLS := """vec3 left=ground_sample(tile,local-step_uv,dx,dy,unused
 
 
 static func compact_relief(code: String) -> String:
+	# GLES cold preparation expands one complete terrain sampler instead of three.
+	if RenderingServer.get_current_rendering_method() == "gl_compatibility": return compact_samples(code)
 	# Retain Mobile's program until the physical-device repeat control is stable.
 	if RenderingServer.get_current_rendering_method() == "mobile": return code
 	if not code.contains(RELIEF_CALLS): return code
 	code=code.replace("// Terrain's native light model",RELIEF_FUNCTION+"\n// Terrain's native light model")
 	return code.replace(RELIEF_CALLS,"""vec3 left; vec3 right; vec3 down; vec3 up;
 		contact_relief_samples(tile,local,step_uv,dx,dy,left,right,down,up);""")
+
+
+static func compact_samples(code: String) -> String:
+	if RenderingServer.get_current_rendering_method() == "mobile": return code
+	if not code.contains(RELIEF_CALLS): return code
+	code=code.replace("// Terrain's native light model",SAMPLE_FUNCTION+"\n// Terrain's native light model")
+	code=code.replace(SAMPLE_CALLS,"""	vec4 traits; vec3 albedo; vec3 mean;
+	vec3 left; vec3 right; vec3 down; vec3 up;
+	contact_ground_samples(tile,uv-vec2(tile),dx,dy,detail>0.0,albedo,mean,traits,left,right,down,up);""")
+	return code.replace(RELIEF_CALLS,"")
+
+const SAMPLE_FUNCTION := """
+uniform int contact_sample_passes = 6;
+void contact_ground_samples(ivec2 tile,vec2 local,vec2 dx,vec2 dy,bool relief,
+        out vec3 albedo,out vec3 mean,out vec4 traits,
+        out vec3 left,out vec3 right,out vec3 down,out vec3 up) {
+    albedo=vec3(0.0); mean=vec3(0.0); traits=vec4(0.0);
+    left=vec3(0.0); right=vec3(0.0); down=vec3(0.0); up=vec3(0.0);
+    float border=8.0*source_texel*tiles_per_axis;
+    vec2 step_uv=vec2(source_texel*tiles_per_axis*1.5/(1.0-2.0*border),0.0);
+    for (int i=0;i<contact_sample_passes;i++) {
+        if (i>=2 && !relief) { break; }
+        vec2 point=local; vec2 gx=dx; vec2 gy=dy;
+        if (i==1) { gx=dx*4.0; gy=dy*4.0; }
+        if (i==2) { point=local-step_uv; }
+        if (i==3) { point=local+step_uv; }
+        if (i==4) { point=local-step_uv.yx; }
+        if (i==5) { point=local+step_uv.yx; }
+        vec4 sampled_traits;
+        vec3 color=ground_sample(tile,point,gx,gy,sampled_traits);
+        if (i==0) { albedo=color; traits=sampled_traits; }
+        if (i==1) { mean=color; }
+        if (i==2) { left=color; }
+        if (i==3) { right=color; }
+        if (i==4) { down=color; }
+        if (i==5) { up=color; }
+    }
+}
+"""
+const SAMPLE_CALLS := """	vec4 traits;
+	vec3 albedo=ground_sample(tile,uv-vec2(tile),dx,dy,traits);
+	vec4 mean_traits;
+	vec3 mean=ground_sample(tile,uv-vec2(tile),dx*4.0,dy*4.0,mean_traits);"""

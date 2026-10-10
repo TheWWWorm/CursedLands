@@ -141,6 +141,9 @@ func _stamp(p: Vector2, extent: Vector2, angle: float, presence: float) -> void:
 	var radius := maxf(extent.x,extent.y)+CELL
 	var first := Vector2i(((p-Vector2.ONE*radius)/CELL).floor())
 	var last := Vector2i(((p+Vector2.ONE*radius)/CELL).floor())
+	# The footprint transform is shared by every cell in this stamp.
+	var rotation := Transform2D(-angle,Vector2.ZERO)
+	var support := extent+Vector2.ONE*CELL*0.5
 	for y in range(first.y,last.y+1):
 		for x in range(first.x,last.x+1):
 			var cell := Vector2i(x,y)
@@ -150,13 +153,13 @@ func _stamp(p: Vector2, extent: Vector2, angle: float, presence: float) -> void:
 			var delta := location-p
 			# Half a texel of support yields smooth sub-cell motion after the
 			# GPU's linear filtering, including narrow standing figures.
-			var q := delta.rotated(-angle)/(extent+Vector2.ONE*CELL*0.5)
+			var q := rotation.basis_xform(delta)/support
 			var weight := (1.0-smoothstep(0.15,1.0,q.length()))*presence
 			if weight <= 1.0/255.0: continue
-			var direction := delta.normalized() if delta.length_squared() > 0.00001 else Vector2.from_angle(angle+PI*0.5)
 			var old: Vector3 = _cells.get(cell,Vector3.ZERO)
 			if weight <= old.z: continue
 			if not _cells.has(cell) and _cells.size() >= MAX_CELLS: continue
+			var direction := delta.normalized() if delta.length_squared() > 0.00001 else Vector2.from_angle(angle+PI*0.5)
 			var value := Vector3(direction.x*weight,direction.y*weight,weight)
 			_cells[cell] = value; _write(cell,value)
 

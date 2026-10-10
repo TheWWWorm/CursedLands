@@ -1,0 +1,487 @@
+{
+  "date": "2026-10-11",
+  "baseline_commit": "39c7db4",
+  "scope": "Additional setting-cost reductions; continuous river validation and final release checks recorded separately.",
+  "runs": {
+    "water-domain-desktop02": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/water-domain-desktop02",
+      "run_sha256": "f359c76c54eba65f7e7e120ce9f7be2b4cb4a572f90b4c18c308772971ff8753",
+      "result_sha256": "b76c115951a7e0b959b2bf543c81a52ca8acd15dd61c74bf61d2dfc9b3f8075d",
+      "checks": 2221,
+      "failures": 0,
+      "sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/domain_qualification.gd": "d02d64eb87458ccc704595e95b4c909103400bc03f5cced7c485052379d63f84",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/candidate_field.gd": "3a6118a347a82fe60f0f2e77c8069d2a1d2f93cfa229bf16a44de565112f6434",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/surface.gd": "a3dbb093560ce3185d00a38ce5fb0589395665dab947a549be6ac0003ba0370d",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/baseline_field.gd": "eba6f52bd9254eb13cd07b03f48dd0c6deb044b95637752cb4dba3ca202c3ce5"
+      },
+      "restored": null,
+      "other_engines_absent": true
+    },
+    "water-domain-android01": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/water-domain-android01",
+      "run_sha256": "3f842caf0f82ae3e594b334f58553b1bd2f8c6353f04ae8be73947b2ed3ccd68",
+      "result_sha256": "278c57ae00cf71d0266c27722243cb93ad186ec44eda017f19c00a6753478152",
+      "checks": 2221,
+      "failures": 0,
+      "sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/domain_qualification.gd": "d02d64eb87458ccc704595e95b4c909103400bc03f5cced7c485052379d63f84",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/candidate_field.gd": "3a6118a347a82fe60f0f2e77c8069d2a1d2f93cfa229bf16a44de565112f6434",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/surface.gd": "a3dbb093560ce3185d00a38ce5fb0589395665dab947a549be6ac0003ba0370d",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/baseline_field.gd": "eba6f52bd9254eb13cd07b03f48dd0c6deb044b95637752cb4dba3ca202c3ce5",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/dispatch.gd": "27751cd85b3e0e6b2b09d4e80d40e22768ea0f8c529f2c552deee67003947466"
+      },
+      "restored": true,
+      "other_engines_absent": null
+    },
+    "vegetation-desktop02": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/vegetation-desktop02",
+      "run_sha256": "ac47fa7095738f58e0d02963dfb9fb82cdca62dcb9137d9cd91979ec75b2a6e5",
+      "result_sha256": "d027aa2ebaf0098fcbe80a123beeccc5bc828e382b2168159082faceb55f6229",
+      "checks": 14400,
+      "failures": 0,
+      "sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/vegetation_cost.gd": "14a756c6252ed9f1d0fecc9d6d7a059cbb85db3c69592d9515a72ebe90d1f2fa",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/baseline_vegetation.gd": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/candidate_vegetation.gd": "ec9164b4726cf4f28843da845721d7f544f3f38c82e984fd1bdedd8e39ce9b25"
+      },
+      "restored": null,
+      "other_engines_absent": true
+    },
+    "vegetation-android01": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/vegetation-android01",
+      "run_sha256": "40d958744a8e77460057a65648c5e532ab7f7bc8f7f568a9f2b72aa9f0a767f5",
+      "result_sha256": "f79961d9a0e55c65598433e88a66408a5529d6fc0374790ac5e644338f5f6db1",
+      "checks": 14400,
+      "failures": 0,
+      "sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/vegetation_cost.gd": "14a756c6252ed9f1d0fecc9d6d7a059cbb85db3c69592d9515a72ebe90d1f2fa",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/baseline_vegetation.gd": "ac0626c478dc23824842cbc978d010015f7494799e41bbf9d15dec480d58813d",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/candidate_vegetation.gd": "ec9164b4726cf4f28843da845721d7f544f3f38c82e984fd1bdedd8e39ce9b25",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/dispatch.gd": "27751cd85b3e0e6b2b09d4e80d40e22768ea0f8c529f2c552deee67003947466"
+      },
+      "restored": true,
+      "other_engines_absent": null
+    },
+    "contact-baseline-cold02": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/contact-baseline-cold02",
+      "run_sha256": "f7a60e30ad3aa9fe887c9ebebbaa72c188b2c185371ae552506734c5eca9efc2",
+      "result_sha256": "20f25d60054e0ba8c4f7a223280969b30d224443623f7b24cfaf6a5f7a892b23",
+      "checks": 10,
+      "failures": 0,
+      "sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/contact_baseline_cost.gd": "fee17ad179291c9e0e37e551f203c38fb1b4a1568c38d26a44650dde4d528951",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/baseline_owner.gd": "b50f922b9bb30a4bd28872ec6bd90c674662b5b5b942c064c19d261ea5ee2880",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/baseline_contact.gd": "369f1e1e55502f87948a294e83c3f11b4dc151ff21091f1cfb53c32c28204042"
+      },
+      "restored": null,
+      "other_engines_absent": true
+    },
+    "contact-candidate-cold01": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/contact-candidate-cold01",
+      "run_sha256": "c617564066805e3bd573177193a10b103487e1babdcd06c4397ab47a15791605",
+      "result_sha256": "06b990a2fee0233fbb57b062f2145535eaf586353e0d3351b81df3187fbe3938",
+      "checks": 10,
+      "failures": 0,
+      "sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/contact_candidate_cost.gd": "f8ab582e726082334dceae7f2a5c09bbfca587a379557a3280c09cb5a9ea686a",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/candidate_owner.gd": "f0f62263692c96b15b66e39dd6332580dcf2c981afa02dd264228a0b460b4019",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/candidate_contact.gd": "f13004087aa64e2897d42854e5e58dbb1ebcbd661bcd42b6fc35c89b9ba6ecd4"
+      },
+      "restored": null,
+      "other_engines_absent": false
+    },
+    "contact-candidate-cold02": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/contact-candidate-cold02",
+      "run_sha256": "4ccde3affe6d399bbb17a5f599d20dddb55f73fb8660587c5a44ec1abb8b2395",
+      "result_sha256": "cdc2095b000172f1fc1a777b3d1356a2fb4fa2a28a06d250be41e3ed6b8bcffb",
+      "checks": 10,
+      "failures": 0,
+      "sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/contact_candidate_cost.gd": "f8ab582e726082334dceae7f2a5c09bbfca587a379557a3280c09cb5a9ea686a",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/candidate_owner.gd": "f0f62263692c96b15b66e39dd6332580dcf2c981afa02dd264228a0b460b4019",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/candidate_contact.gd": "f13004087aa64e2897d42854e5e58dbb1ebcbd661bcd42b6fc35c89b9ba6ecd4"
+      },
+      "restored": null,
+      "other_engines_absent": true
+    },
+    "contact-baseline-cold03": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/contact-baseline-cold03",
+      "run_sha256": "ced0e5eb6f0c95adc000bba59a00551ec832b89a9604ad09662eaf2a2899c856",
+      "result_sha256": "b6f85c07168e4c45a21fe5084bd4687d50125a0e03e938ce7d3e9b5c7c29c59f",
+      "checks": 10,
+      "failures": 0,
+      "sources": {
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/contact_baseline_cost.gd": "fee17ad179291c9e0e37e551f203c38fb1b4a1568c38d26a44650dde4d528951",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/baseline_owner.gd": "b50f922b9bb30a4bd28872ec6bd90c674662b5b5b942c064c19d261ea5ee2880",
+        "/home/llm2x/Documents/EI/local/scratchpad/settings-cost-release-20261011/baseline_contact.gd": "369f1e1e55502f87948a294e83c3f11b4dc151ff21091f1cfb53c32c28204042"
+      },
+      "restored": null,
+      "other_engines_absent": true
+    }
+  },
+  "performance": {
+    "water-domain-desktop02": {
+      "dense-sloped-plane": {
+        "reference_us": 5599.75,
+        "candidate_us": 4151.0,
+        "percent_less": 25.8716907004777
+      },
+      "zone1/still": {
+        "reference_us": 1958.0,
+        "candidate_us": 1659.5,
+        "percent_less": 15.245148110316652
+      },
+      "zone11/still": {
+        "reference_us": 1881.5,
+        "candidate_us": 1689.0,
+        "percent_less": 10.231198511825667
+      },
+      "zone8/still": {
+        "reference_us": 2701.0,
+        "candidate_us": 2100.0,
+        "percent_less": 22.251018141429103
+      }
+    },
+    "water-domain-android01": {
+      "dense-sloped-plane": {
+        "reference_us": 9549.75,
+        "candidate_us": 7832.25,
+        "percent_less": 17.984763999057563
+      },
+      "zone1/still": {
+        "reference_us": 3743.0,
+        "candidate_us": 3507.0,
+        "percent_less": 6.30510285866952
+      },
+      "zone11/still": {
+        "reference_us": 3865.0,
+        "candidate_us": 3770.5,
+        "percent_less": 2.4450194049159157
+      },
+      "zone8/still": {
+        "reference_us": 5322.0,
+        "candidate_us": 4724.0,
+        "percent_less": 11.236377301766254
+      }
+    },
+    "vegetation-desktop02": [
+      {
+        "actors": 1,
+        "arm": 0,
+        "median_us": 3,
+        "p95_us": 30
+      },
+      {
+        "actors": 1,
+        "arm": 1,
+        "median_us": 2,
+        "p95_us": 28
+      },
+      {
+        "actors": 1,
+        "arm": 2,
+        "median_us": 2,
+        "p95_us": 27
+      },
+      {
+        "actors": 1,
+        "arm": 3,
+        "median_us": 2,
+        "p95_us": 28
+      },
+      {
+        "actors": 16,
+        "arm": 0,
+        "median_us": 169,
+        "p95_us": 277
+      },
+      {
+        "actors": 16,
+        "arm": 1,
+        "median_us": 165,
+        "p95_us": 266
+      },
+      {
+        "actors": 16,
+        "arm": 2,
+        "median_us": 164,
+        "p95_us": 263
+      },
+      {
+        "actors": 16,
+        "arm": 3,
+        "median_us": 168,
+        "p95_us": 271
+      },
+      {
+        "actors": 32,
+        "arm": 0,
+        "median_us": 317,
+        "p95_us": 505
+      },
+      {
+        "actors": 32,
+        "arm": 1,
+        "median_us": 310,
+        "p95_us": 484
+      },
+      {
+        "actors": 32,
+        "arm": 2,
+        "median_us": 306,
+        "p95_us": 484
+      },
+      {
+        "actors": 32,
+        "arm": 3,
+        "median_us": 314,
+        "p95_us": 500
+      },
+      {
+        "actors": 48,
+        "arm": 0,
+        "median_us": 462,
+        "p95_us": 510
+      },
+      {
+        "actors": 48,
+        "arm": 1,
+        "median_us": 447,
+        "p95_us": 492
+      },
+      {
+        "actors": 48,
+        "arm": 2,
+        "median_us": 442,
+        "p95_us": 491
+      },
+      {
+        "actors": 48,
+        "arm": 3,
+        "median_us": 462,
+        "p95_us": 518
+      }
+    ],
+    "vegetation-android01": [
+      {
+        "actors": 1,
+        "arm": 0,
+        "median_us": 16,
+        "p95_us": 83
+      },
+      {
+        "actors": 1,
+        "arm": 1,
+        "median_us": 17,
+        "p95_us": 84
+      },
+      {
+        "actors": 1,
+        "arm": 2,
+        "median_us": 17,
+        "p95_us": 83
+      },
+      {
+        "actors": 1,
+        "arm": 3,
+        "median_us": 17,
+        "p95_us": 84
+      },
+      {
+        "actors": 16,
+        "arm": 0,
+        "median_us": 313,
+        "p95_us": 493
+      },
+      {
+        "actors": 16,
+        "arm": 1,
+        "median_us": 304,
+        "p95_us": 479
+      },
+      {
+        "actors": 16,
+        "arm": 2,
+        "median_us": 303,
+        "p95_us": 485
+      },
+      {
+        "actors": 16,
+        "arm": 3,
+        "median_us": 312,
+        "p95_us": 494
+      },
+      {
+        "actors": 32,
+        "arm": 0,
+        "median_us": 568,
+        "p95_us": 904
+      },
+      {
+        "actors": 32,
+        "arm": 1,
+        "median_us": 552,
+        "p95_us": 880
+      },
+      {
+        "actors": 32,
+        "arm": 2,
+        "median_us": 553,
+        "p95_us": 878
+      },
+      {
+        "actors": 32,
+        "arm": 3,
+        "median_us": 565,
+        "p95_us": 908
+      },
+      {
+        "actors": 48,
+        "arm": 0,
+        "median_us": 822,
+        "p95_us": 908
+      },
+      {
+        "actors": 48,
+        "arm": 1,
+        "median_us": 795,
+        "p95_us": 894
+      },
+      {
+        "actors": 48,
+        "arm": 2,
+        "median_us": 796,
+        "p95_us": 887
+      },
+      {
+        "actors": 48,
+        "arm": 3,
+        "median_us": 822,
+        "p95_us": 907
+      }
+    ],
+    "contact_cold_ms_abba": [
+      16052,
+      13356,
+      13249,
+      15901
+    ],
+    "contact_cold_reduction_percent": 16.737082590054143
+  },
+  "limits": [
+    "CPU field timings exclude contact selection, map loading and rendering; they are not whole-game FPS.",
+    "GLES-only six-call contact compaction; Forward+ retains the previous four-relief-call compaction and Mobile remains unchanged.",
+    "The grass-field gain is small and does not claim the whole 32-character update has been reduced by the same percentage."
+  ],
+  "contact_captures_exact": [
+    {
+      "pair": [
+        "contact-baseline-cold02",
+        "contact-candidate-cold01"
+      ],
+      "name": "ground-contact-map-gl_compatibility-bz2g-near-on.png",
+      "sha256": "d18181b2066bd720c4f69b2f3bf6454087b1090df9c47063afbe432a36e75244"
+    },
+    {
+      "pair": [
+        "contact-baseline-cold02",
+        "contact-candidate-cold01"
+      ],
+      "name": "ground-contact-map-gl_compatibility-bz2g-far-on.png",
+      "sha256": "cafde9b5ca54c08366da48e84495b7b51159b67c0038dd1d6ba55b4d38d3255b"
+    },
+    {
+      "pair": [
+        "contact-baseline-cold02",
+        "contact-candidate-cold01"
+      ],
+      "name": "ground-contact-map-gl_compatibility-bz2g-far-restored.png",
+      "sha256": "27fc402145f6231f76a84f98190a6ceb7fec2a07fdd7bb40a14fb607f51caa1f"
+    },
+    {
+      "pair": [
+        "contact-baseline-cold02",
+        "contact-candidate-cold01"
+      ],
+      "name": "ground-contact-map-gl_compatibility-bz2g-near-restored.png",
+      "sha256": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+    },
+    {
+      "pair": [
+        "contact-baseline-cold02",
+        "contact-candidate-cold01"
+      ],
+      "name": "ground-contact-map-gl_compatibility-bz2g-far-off.png",
+      "sha256": "27fc402145f6231f76a84f98190a6ceb7fec2a07fdd7bb40a14fb607f51caa1f"
+    },
+    {
+      "pair": [
+        "contact-baseline-cold02",
+        "contact-candidate-cold01"
+      ],
+      "name": "ground-contact-map-gl_compatibility-bz2g-near-off.png",
+      "sha256": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+    },
+    {
+      "pair": [
+        "contact-baseline-cold03",
+        "contact-candidate-cold02"
+      ],
+      "name": "ground-contact-map-gl_compatibility-bz2g-near-on.png",
+      "sha256": "d18181b2066bd720c4f69b2f3bf6454087b1090df9c47063afbe432a36e75244"
+    },
+    {
+      "pair": [
+        "contact-baseline-cold03",
+        "contact-candidate-cold02"
+      ],
+      "name": "ground-contact-map-gl_compatibility-bz2g-far-on.png",
+      "sha256": "cafde9b5ca54c08366da48e84495b7b51159b67c0038dd1d6ba55b4d38d3255b"
+    },
+    {
+      "pair": [
+        "contact-baseline-cold03",
+        "contact-candidate-cold02"
+      ],
+      "name": "ground-contact-map-gl_compatibility-bz2g-far-restored.png",
+      "sha256": "27fc402145f6231f76a84f98190a6ceb7fec2a07fdd7bb40a14fb607f51caa1f"
+    },
+    {
+      "pair": [
+        "contact-baseline-cold03",
+        "contact-candidate-cold02"
+      ],
+      "name": "ground-contact-map-gl_compatibility-bz2g-near-restored.png",
+      "sha256": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+    },
+    {
+      "pair": [
+        "contact-baseline-cold03",
+        "contact-candidate-cold02"
+      ],
+      "name": "ground-contact-map-gl_compatibility-bz2g-far-off.png",
+      "sha256": "27fc402145f6231f76a84f98190a6ceb7fec2a07fdd7bb40a14fb607f51caa1f"
+    },
+    {
+      "pair": [
+        "contact-baseline-cold03",
+        "contact-candidate-cold02"
+      ],
+      "name": "ground-contact-map-gl_compatibility-bz2g-near-off.png",
+      "sha256": "0a8285d681471e6f158ece7dcfc1b15edfd8580338cba29e5c266b628823575e"
+    }
+  ],
+  "sources": {
+    "game/src/game/fx/water_wave_field.gd": "eb218f7fcc211455b63d9db2bdd4e242132afd0b4e9bef0ab633355a180c6c12",
+    "game/src/game/fx/vegetation_interaction.gd": "e999b431302615cf2a30fc01cecd1124bc137082b564b6a39c8feda7b95499cb",
+    "game/src/game/fx/ground_contact_shader.gd": "76e0b82524c5863166fcb91c2e9f93491fd33123d60dc5a78e8d96a120780205"
+  },
+  "excluded_setup_attempts": {
+    "water-domain-desktop01": "Old pack supplied an older Surface method; frozen current Surface and matching native helper corrected the prerequisite.",
+    "vegetation-desktop01": "External fixture needed an explicit integer iterator type.",
+    "contact-baseline-cold01": "External fixture used the wrong campaign data root."
+  }
+}

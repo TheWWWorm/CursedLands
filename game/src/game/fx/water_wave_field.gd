@@ -88,7 +88,7 @@ static func shifted(previous: PackedFloat32Array, delta: Vector2i) -> PackedFloa
 
 func _domain(terrain: EITerrain) -> void:
 	var start := Time.get_ticks_usec()
-	domain.resize(SIZE*SIZE*4); domain.fill(0)
+	var packed := PackedVector4Array(); packed.resize(SIZE*SIZE)
 	# Query each original metre cell once, then fill its quarter-metre block.
 	# Clipped first/last blocks keep arbitrary quarter-cell window origins.
 	# The actual unposed triangles, selection order and slope evaluation are
@@ -131,8 +131,11 @@ func _domain(terrain: EITerrain) -> void:
 					var point := (Vector2(origin)+Vector2(gx+0.5,gy+0.5))*CELL
 					var posed := value
 					posed.x += slope.dot(point-midpoint)
-					var at := (gy*SIZE+gx)*4
-					domain[at]=posed.x; domain[at+1]=value.y; domain[at+2]=value.z; domain[at+3]=value.w
+					packed[gy*SIZE+gx] = posed
+	# One vector store per cell avoids four interpreted channel writes.
+	# Packed vectors follow real_t; retain float32 solver storage in double builds.
+	var bytes := packed.to_byte_array()
+	domain = bytes.to_float32_array() if bytes.size() == SIZE*SIZE*16 else PackedFloat32Array(bytes.to_float64_array())
 	_cells=samples
 	_levels = terrain._level.duplicate(); _flow_build = flow.builds if flow else -1
 	last_domain_us = Time.get_ticks_usec()-start
