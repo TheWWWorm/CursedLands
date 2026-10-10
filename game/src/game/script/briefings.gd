@@ -121,9 +121,8 @@ func topic(player: int, var_name: String, uid: int) -> void:
 				vm.session.broadcast({"t": "shop", "player": player, "constr": n})
 				return
 			var original := context.size()==2 and int(context[0])==uid \
-				and var_name==preload("res://src/game/script/authored_village_talk.gd").TOPIC \
 				and preload("res://src/game/script/authored_village_talk.gd").original_stage( \
-					vm.session, vm.world.units.get(int(context[1])), t, player)
+					vm.session, vm.world.units.get(int(context[1])), t, player, var_name)
 			play_named(id, var_name, player, t, original, not original)
 			return
 

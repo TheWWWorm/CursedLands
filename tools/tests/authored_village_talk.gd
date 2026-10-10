@@ -167,6 +167,38 @@ func _ready() -> void:
 		"unreachable field click always uses the ordinary approach")
 	heroes[0].orders.clear(); heroes[0].order={}; heroes[0].order_failed=true; vm._check_interactions()
 	check(not heroes[0].has_meta("interact") and topic_count()==previous,"unreachable field failure never opens fallback topics")
+
+	# The completed base rescue has the same authored display constraint,
+	# but its own chapter and exact-topic admission requirements.
+	var haburu := npc
+	s.state.campaign_id=CampaignProfile.ORIGINAL; s.zone_id="bz13h"
+	s.state.current_party="HeroAlone"; s.state.set_var(0,"q.gz15h.q61h",2)
+	w.zone={"id":"bz13h","type":"brief","cage":true}; w.levers={42999:{"state":1}}
+	heroes[0].pos=Vector2(61,59.95)
+	npc=add_actor(ScriptVM.name_id("Nalo"),-1,AuthoredTalk.NALO_DISPLAY_POSITION,"Nalo")
+	s.state.set_var(0,AuthoredTalk.NALO_TOPIC,1)
+	check(fallback(),"completed rescue admits original Nalo staging")
+	check(not AuthoredTalk.original_stage(s,heroes[0],npc,0,"b.Nalo.Kr60"),"another Nalo topic cannot use rescue staging")
+	s.state.current_party="Pretty"; check(not fallback(),"Nalo's active player party cannot use return staging"); s.state.current_party="HeroAlone"
+	s.state.set_var(0,"q.gz15h.q61h",1); check(not fallback(),"unfinished rescue cannot use return staging"); s.state.set_var(0,"q.gz15h.q61h",2)
+	w.levers[42999].state=0; check(fallback(),"offered return topic works while native cell-opening script is pending"); w.levers[42999].state=1
+	w.zone.cage=false; check(not fallback(),"changed prison staging layout is excluded"); w.zone.cage=true
+	npc.pos+=Vector2(0.1,0); check(not fallback(),"modified Nalo display placement is excluded"); npc.pos=AuthoredTalk.NALO_DISPLAY_POSITION
+	nav.route_open=true; check(not fallback(),"reachable Nalo keeps normal approach"); nav.route_open=false
+	s.state.set_var(0,AuthoredTalk.NALO_TOPIC,2); check(not fallback(),"completed Nalo topic is excluded"); s.state.set_var(0,AuthoredTalk.NALO_TOPIC,1)
+	previous=topic_count(); click()
+	check(topic_count()==previous+1 and b._original_village_topics.has(0),"normal prison click opens scoped Nalo topics")
+	select(0,AuthoredTalk.NALO_TOPIC)
+	check(b.started[-1].var==AuthoredTalk.NALO_TOPIC and b.started[-1].instant and not b.started[-1].approached,
+		"valid rescue topic chooses original instant staging")
+	check(b._original_village_topics.is_empty(),"Nalo topic consumes its host context")
+	click(); s.state.current_party=""; select(0,AuthoredTalk.NALO_TOPIC)
+	check(not b.started[-1].instant and b.started[-1].approached,"Nalo selection revalidates active rescue party")
+	s.state.current_party="HeroAlone"
+	click(); s.state.set_var(0,"b.Nalo.Kr60",1); select(0,"b.Nalo.Kr60")
+	check(not b.started[-1].instant and b.started[-1].approached,"another offered Nalo topic cannot inherit rescue context")
+	click(); s.apply_command({"t":"move","units":[heroes[0].uid],"x":61.0,"y":60.0},0)
+	check(not b._original_village_topics.has(0),"replacement movement clears Nalo context")
 	check(errors.messages.is_empty(),"command and topic controls have no runtime errors")
 	var result := {"checks":checks, "failures":failures, "errors":errors.messages,
 		"scope":"Host-authoritative command/topic dispatch for players 0 and 1 with a controlled static route; not an ENet transport or native scene run."}
@@ -174,6 +206,6 @@ func _ready() -> void:
 	OS.remove_logger(errors)
 	w.units={}; nav.ignored.clear(); restored.vm=null; b.vm=null; vm.briefings=null; vm.world=null; vm.session=null
 	for u in heroes: u.free()
-	npc.free(); other.free(); s.world=null; w.vm=null; w.session=null; w.free(); s.free()
+	npc.free(); haburu.free(); other.free(); s.world=null; w.vm=null; w.session=null; w.free(); s.free()
 	print("LIA_HABURU_GUARDS ",checks," checks ",failures.size()," failures")
 	get_tree().quit(1 if not failures.is_empty() else 0)
