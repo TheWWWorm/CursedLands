@@ -73,6 +73,10 @@ func _ready() -> void:
 			RenderingServer.camera_attributes_set_dof_blur_quality(quality,false)
 			print("DOF_TEST_QUALITY override=",quality)
 	setup()
+	# Nine small rendered focus targets; the GPU does not use the rig pivot.
+	for k in 9:
+		var uv := Vector2(.5,.5) + Vector2(k%3-1,k/3-1)*.05
+		board(Rect2(uv-Vector2(.012,.012),Vector2(.024,.024)),20,Vector2i(0,0))
 	# Actual dialogue font and translucent HUD background over focused detail.
 	var text_layer:=CanvasLayer.new();viewport.add_child(text_layer)
 	var backing:=ColorRect.new();backing.position=Vector2(610,510);backing.size=Vector2(560,150);backing.color=Color(0,0,0,0.7);text_layer.add_child(backing)
@@ -103,7 +107,7 @@ func _ready() -> void:
 	print("DOF_EDGE distant_red_bleed=",bleed)
 	check(bleed==0.0,"foreground colour does not make a distant halo")
 	check(before.get_region(Rect2i(358,180,103,230)).get_data()==after.get_region(Rect2i(358,180,103,230)).get_data(),"foreground silhouette edge remains exact")
-	check(before.get_region(Rect2i(640,162,400,11)).get_data()==after.get_region(Rect2i(640,162,400,11)).get_data(),"sky at terrain horizon remains exact")
+	check(before.get_region(Rect2i(640,150,400,10)).get_data()==after.get_region(Rect2i(640,150,400,10)).get_data(),"sky beyond the horizon blur radius remains exact")
 	fx.update(camera,target,0.1,false)
 	var restored:=await picture("low-restored")
 	check(before.get_data()==restored.get_data() and camera.attributes==null,"switching off restores exact image and attributes")

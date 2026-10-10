@@ -22,9 +22,9 @@ func _ready() -> void:
 	var monotonic := true
 	for i in range(-10,89): monotonic = monotonic and CameraDepthOfField.pitch_factor(i) >= CameraDepthOfField.pitch_factor(i+1)
 	check(monotonic,"pitch ramp stays bounded and monotonic across camera range")
-	check(not CameraDepthOfField.lens(50,20,1080).active and not CameraDepthOfField.lens(80,20,1080).active,"tactical views disable lens")
-	check(CameraDepthOfField.lens(25,20,1080).active and is_equal_approx(CameraDepthOfField.lens(25,20,1080).begin,40.0),"far blur starts behind focus margin")
-	check(CameraDepthOfField.supported("forward_plus")==OS.has_feature("ei_far_dof_guard") and CameraDepthOfField.supported("mobile")==OS.has_feature("ei_far_dof_guard") and not CameraDepthOfField.supported("gl_compatibility"),"backend policy requires native sharp-edge guard")
+	check(not CameraDepthOfField.lens(50,1080).active and not CameraDepthOfField.lens(80,1080).active,"tactical views disable lens")
+	check(CameraDepthOfField.lens(25,1080).active and is_equal_approx(CameraDepthOfField.lens(25,1080).margin,1.0),"far blur retains R1 focus margin")
+	check(CameraDepthOfField.supported("forward_plus")==OS.has_feature("ei_far_dof_reference") and CameraDepthOfField.supported("mobile")==OS.has_feature("ei_far_dof_reference") and not CameraDepthOfField.supported("gl_compatibility"),"backend policy requires native median-depth lens")
 	check(GameData.option("gfx_depth_of_field")==0,"effect default is off")
 	var viewport:=SubViewport.new();viewport.size=Vector2i(1280,720);viewport.own_world_3d=true;add_child(viewport)
 	var game := BareGame.new(); viewport.add_child(game)
@@ -48,15 +48,13 @@ func _ready() -> void:
 	else:
 		check(camera.attributes!=original and camera.attributes.exposure_multiplier==0.75 and not original.dof_blur_far_enabled,"enabled lens clones prior exposure without modifying owner")
 		check(camera.attributes.dof_blur_far_enabled and not camera.attributes.dof_blur_near_enabled,"only far field blurs")
-		var first: float=fx._focus
+		var first: float=camera.attributes.dof_blur_amount
 		fx.update(camera,aim(camera,25,40),0.1,true)
-		check(fx._focus>first and fx._focus<40.0,"zoom/target changes focus smoothly")
-		for i in 30: fx.update(camera,aim(camera,25,40),0.1,true)
-		check(absf(fx._focus-40.0)<0.01,"focus settles without oscillation")
+		check(is_equal_approx(camera.attributes.dof_blur_amount,first),"rig target does not supply GPU focus or zoom narrowing")
 		fx.update(camera,aim(camera,50),0.1,true)
-		check(camera.attributes==original and fx._attributes==null and fx._focus==0.0,"tactical view restores owner and drops focus history")
+		check(camera.attributes==original and fx._attributes==null,"tactical view restores owner and releases lens")
 		fx.update(camera,aim(camera,25,12),0.1,true)
-		check(is_equal_approx(fx._focus,12.0),"reactivating starts at current target")
+		check(camera.attributes!=original and camera.attributes.dof_blur_far_enabled,"reactivating requests a fresh native lens")
 		fx.update(camera,target,0.1,false)
 		check(camera.attributes==original and fx._attributes==null,"disable restores exact attributes")
 		camera.attributes=null

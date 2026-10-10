@@ -16,6 +16,7 @@ build instructions. Adding a patch here does not update installed templates.
 9. `far-dof-sharp-guard.patch`
 10. `sky-subpass-alpha.patch`
 11. `worker-thread-language-shutdown.patch`
+12. `far-dof-reference.patch`
 
 The first two patches repair separate-render-thread shutdown and snapshot
 mutable images for queued texture uploads. The third lets an unobserved looping
@@ -69,8 +70,9 @@ resolution with at least Medium quality; a far-only Circle request uses the
 protected Hexagon filter. Near-enabled blur retains its original path, quality
 and shape. This deliberately changes far-only filtering and costs more than
 its old half-resolution path. It does not add render targets. The game's
-optional lens remains off by default and checks the native
+initial optional lens checked the native
 `OS.has_feature("ei_far_dof_guard")` capability before allocating a helper.
+The current lens uses the twelfth patch below and remains off by default.
 That capability is defined by the patch, never by this project's export tags;
 stock and older runtimes leave the option inactive. Linux strict pixel checks,
 26 unchanged near-blur control images, the build recipe and four-file source
@@ -127,3 +129,24 @@ Four Linux separate-thread runs pass 207 checks and terminate normally, with
 66 captures unchanged across the engine patch. Linux and Windows release
 templates build; Windows execution remains untested. See
 [`cloud-radiance-2026-10-10.json`](../../docs/validation/cloud-radiance-2026-10-10.json).
+
+The twelfth adds an explicitly enabled far-field pass for Forward+ and Mobile.
+Nine centre-depth samples select the median; two 1×1 R32F textures hold its
+0.3-second logarithmic GPU history. The other four draws prefilter, gather,
+fill and composite the far field with sharp-foreground rejection and bounded
+terrain coverage over the sky edge. Work textures use ceil half resolution,
+or ceil third resolution above 1440 pixels tall, with 16 or 40 gather taps.
+The shader adapts R1's depth convention to Godot reverse-Z and retains linear
+HDR before tonemapping. Per-view histories reset on attribute changes, explicit
+camera cuts, projection-mode changes, resize and reactivation. Named textures
+are released when the effect becomes inactive. Canvas UI is drawn separately.
+
+`RenderingServer.camera_attributes_set_far_dof` is opt-in and defaults to false;
+manual far blur and near-enabled blur retain the existing BokehDOF path.
+`OS.has_feature("ei_far_dof_reference")` comes from the native patch, never an
+export tag. The game keeps the existing option and preserves camera exposure
+and other attribute owners. Compatibility and older runtimes leave it inactive.
+See [`camera-depth-focus-2026-10-10.json`](../../docs/validation/camera-depth-focus-2026-10-10.json)
+for GPU focus/image/resource checks and exact legacy controls. Linux and Windows
+templates were compiled; Windows runtime and representative device costs remain
+separate acceptance work. No installed templates are replaced by this recipe.

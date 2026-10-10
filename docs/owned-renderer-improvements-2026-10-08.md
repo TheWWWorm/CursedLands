@@ -5338,6 +5338,46 @@ The feature stays default-off. These are local tests, not stable 1.0.3.
 [Package evidence](validation/local-feedback-build-2026-10-10-3.json) and
 [cost follow-up](validation/ground-contact-cost-followup-2026-10-10.json).
 
+## V8: rendered-depth focus and horizon blend — 10 October
+
+The existing optional depth-of-field setting now uses the pinned R1 median-depth
+lens on patched Forward+ and Mobile. Nine central rendered-depth samples feed a
+0.3-second logarithmic GPU focus history, clamped to 2–600 metres. The rig target
+only scales camera-cut detection. Tactical views, other camera-attribute owners,
+physical exposure policies and unsupported runtimes keep their existing behaviour.
+No setting or default was added; the translated help now describes visible-scene
+focus instead of a target-distance proxy.
+
+The twelfth common engine patch supplies `ei_far_dof_reference` and the explicit
+RenderingServer opt-in. Five raster passes use per-view 1×1 focus ping-pong and
+ceil half/third-resolution work textures. Far terrain can cover adjacent sky
+within its blur radius while sharp silhouettes and Canvas UI remain protected.
+The adapted shader handles Godot reverse-Z and retains pre-tonemap colour;
+Mobile keeps its existing packed scene-buffer range. Inactive effects retire
+the named textures and their dependent resources. Ordinary manual far blur and
+near-enabled blur continue through the existing BokehDOF path.
+
+[The retained receipt](validation/camera-depth-focus-2026-10-10.json) records
+**456 passing checks in 21 accepted runs**, including 26 exact legacy pairs,
+16/40-tap filters, 4× MSAA, scaled depth, FSR2 colour/depth resolution differences,
+non-clipped HDR colour, explicit cuts, orthographic depth, odd/tall resize,
+independent viewports, resource-RID retirement and the actual Dead City dialogue
+camera on both backends. Focus response measures approximately 0.3 seconds.
+The first game-hosted fixture produced eight exact-depth failures because its
+teleporting diagnostic boards were physically interpolated. Their own viewports
+now explicitly use instantaneous geometry, matching the standalone fixture;
+unchanged production code passes the same assertions. An HDR diagnostic also
+exceeded Mobile's existing radiance range; the final test uses distinct,
+non-clipped values within that range. Failed and non-qualifying runs remain in
+the receipt. No tolerance was widened to admit them.
+
+Linux and Windows release engines compile. The patch round-trip reproduces all
+11 changed native source files exactly; Windows PE/import checks pass. Windows
+runtime, the user's 4090 Mobile, MetalFX/stereo devices and long routes remain
+unqualified. The temporary-texture bound is recorded, but these correctness runs
+are not a frame-time benchmark. Installed templates and published releases remain
+unchanged.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** shipped unit/preview materials now share
@@ -5430,9 +5470,9 @@ The feature stays default-off. These are local tests, not stable 1.0.3.
    the one-pixel baseline Compatibility residual and contaminated timing explicit;
    clean device/long-route cost, wider anti-repetition, transition side projection
    and geometry rounding remain open.
-   V8 now applies the optional camera policy with a capability-gated
-   native far-only guard. Their larger parity/device follow-ups are explicit in
-   their receipts. V7 remains dependent on verified campaign layout data.
+   V8 now uses capability-gated median-depth GPU focus and bounded horizon
+   blending, with per-view history and HDR/resource/legacy acceptance above.
+   Broader device and performance follow-ups remain explicit in the receipt. V7 remains dependent on verified campaign layout data.
 7. **Gameplay continuation:** U39–U44 and the separate U45 premature-completion
    fix are committed. The supplied queen autosave has two living required
    creatures; original death-gate completion is verified. A distinct looted,

@@ -1,0 +1,2140 @@
+{
+  "date": "2026-10-10",
+  "source_parent": "957d904",
+  "reference_commit": "0092dc6e1d7c4aab3f74644a79e9bfca11ecf293",
+  "reference_file": "Source/depth_of_field.h",
+  "engine_base": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "common_patch_count": 12,
+  "root": "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010",
+  "implementation": {
+    "capability": "ei_far_dof_reference",
+    "default_enabled": false,
+    "explicit_rendering_server_opt_in": true,
+    "focus": "median of nine central depth taps, 2..600; logarithmic GPU history, 0.3 second real-time constant",
+    "passes": 5,
+    "gather_taps": {
+      "very_low_low": 16,
+      "medium_high": 40
+    },
+    "work_divisor": "2, or 3 above 1440 colour pixels tall; ceil dimensions",
+    "temporary_gpu_bytes_per_view": "ceil(width/divisor)*ceil(height/divisor)*16 + 8",
+    "foreground": "nearest reverse-Z depth of five protects sharp silhouettes; zero sharp gather weight",
+    "sky": "never contributes blur; receives bounded far-terrain coverage at horizon",
+    "hdr": "retains linear colour through composite before tonemapping",
+    "game_ownership": "camera exposure and other owners retained; target used only to scale camera-cut threshold; no CPU depth readback",
+    "inactive": "no helper on older/Compatibility runtime; named textures released when inactive",
+    "resource_history": "per viewport/view; reset on new attributes, requested cuts, projection mode, size and reactivation"
+  },
+  "runs": [
+    {
+      "label": "native-forward02",
+      "checks": 35,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-project/FarDOFProbe",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy"
+        ],
+        "native_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "sources": {
+          "export_presets.cfg": "bcc6c2e1744ccd2598f677c634fbae53a0525023c356fe28e960dde4d8488460",
+          "main.gd.uid": "63e00e1833893134e2ca441e002c8e7b1cfb71adb6f2687102628a6d380cefe8",
+          "project.godot": "c477c9431015e2cd5579a7ffe838e52e9ffb6cf61f48bd854c4d712e351f92f4",
+          "main.tscn": "1e8b828cd4f6c07f31a855ca0833f1aa0041cab7c68882c82abbab596fecb629",
+          "main.gd": "039e6bf8e47fb8df6b9868e3c6b43aebd5455c1a9ffa1a23934ba98ca1684baa",
+          "probe.gd.uid": "97394b2e0440bc3229331f7a1673525775c18bc97ca72ef25cb6885b1994b67e",
+          "probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "started": 1791604045.2731676,
+        "pck_sha256": "f2bbf560408f663fb283d06ba34fa87c44de2277d1737e7a91023b57cf3efab1",
+        "pid": 2480737,
+        "return_code": 0,
+        "seconds": 7.259333289985079,
+        "errors": [],
+        "captures": {
+          "strong.png": "2bbe41f67366ae54458909fb2e15d7f8386b401851ddada98832bbb16a2b6c21",
+          "off.png": "94a8babec0f55a2f3882421153287668f13dc20c8215f3be6a8d8265628761bf",
+          "default.png": "86eef16d6b64cadefb8cc185a402c12b90253b29f6a1992363f18ca4bdd599f6"
+        }
+      },
+      "files": {
+        "strong.png": "2bbe41f67366ae54458909fb2e15d7f8386b401851ddada98832bbb16a2b6c21",
+        "off.png": "94a8babec0f55a2f3882421153287668f13dc20c8215f3be6a8d8265628761bf",
+        "default.png": "86eef16d6b64cadefb8cc185a402c12b90253b29f6a1992363f18ca4bdd599f6",
+        "run.log": "c946b95c7e8c8d9bd99638aef77d0bfd8cccfbdf492a1bb8dda920189396142f",
+        "run.json": "f5853ad8572554ad97b96934cfef7e6f8173ad8b513d6a5ce0b8a777956c8288",
+        "focus.json": "ee6a0847e5da25794d30153695f8bf055a49b548d1a83f708890cc0512068431"
+      },
+      "measured_log_focus_seconds": 0.30034718601305554
+    },
+    {
+      "label": "native-mobile01",
+      "checks": 35,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-project/FarDOFProbe",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy"
+        ],
+        "native_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "sources": {
+          "export_presets.cfg": "bcc6c2e1744ccd2598f677c634fbae53a0525023c356fe28e960dde4d8488460",
+          "main.gd.uid": "63e00e1833893134e2ca441e002c8e7b1cfb71adb6f2687102628a6d380cefe8",
+          "project.godot": "c477c9431015e2cd5579a7ffe838e52e9ffb6cf61f48bd854c4d712e351f92f4",
+          "main.tscn": "1e8b828cd4f6c07f31a855ca0833f1aa0041cab7c68882c82abbab596fecb629",
+          "main.gd": "039e6bf8e47fb8df6b9868e3c6b43aebd5455c1a9ffa1a23934ba98ca1684baa",
+          "probe.gd.uid": "97394b2e0440bc3229331f7a1673525775c18bc97ca72ef25cb6885b1994b67e",
+          "probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "started": 1791604087.9827666,
+        "pck_sha256": "f2bbf560408f663fb283d06ba34fa87c44de2277d1737e7a91023b57cf3efab1",
+        "pid": 2482107,
+        "return_code": 0,
+        "seconds": 6.761419529037084,
+        "errors": [],
+        "captures": {
+          "strong.png": "55cf1a23638085d6c0be4e51c0817a0a10321add33bd8841cd5dc067787650b7",
+          "off.png": "94a8babec0f55a2f3882421153287668f13dc20c8215f3be6a8d8265628761bf",
+          "default.png": "5b22c902d349bfe171740dee14cc28524666bfb0bd4562ccf19a2203fa32c413"
+        }
+      },
+      "files": {
+        "strong.png": "55cf1a23638085d6c0be4e51c0817a0a10321add33bd8841cd5dc067787650b7",
+        "off.png": "94a8babec0f55a2f3882421153287668f13dc20c8215f3be6a8d8265628761bf",
+        "default.png": "5b22c902d349bfe171740dee14cc28524666bfb0bd4562ccf19a2203fa32c413",
+        "run.log": "ae7ae34bf84ef9e5107305172a4b1e2ccc1742454741e9cfe2facb7e5a50a716",
+        "run.json": "daa6c989caef5e28a102b9460e77a70123df13b157128a5ad6eb88de139e0890",
+        "focus.json": "308cde7fd162c18149c1c5f7fbe8ecef60646fa032a07f76483bc8ab0634d588"
+      },
+      "measured_log_focus_seconds": 0.30122284151237655
+    },
+    {
+      "label": "native-forward-msaa-low02",
+      "checks": 36,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-project/FarDOFProbe",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--msaa",
+          "--low"
+        ],
+        "native_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "sources": {
+          "export_presets.cfg": "bcc6c2e1744ccd2598f677c634fbae53a0525023c356fe28e960dde4d8488460",
+          "main.gd.uid": "63e00e1833893134e2ca441e002c8e7b1cfb71adb6f2687102628a6d380cefe8",
+          "project.godot": "c477c9431015e2cd5579a7ffe838e52e9ffb6cf61f48bd854c4d712e351f92f4",
+          "main.tscn": "1e8b828cd4f6c07f31a855ca0833f1aa0041cab7c68882c82abbab596fecb629",
+          "main.gd": "595e6698231b9d4847acb635d51780ed49f830d403a2cdded9f85002a4ec8dff",
+          "probe.gd.uid": "97394b2e0440bc3229331f7a1673525775c18bc97ca72ef25cb6885b1994b67e",
+          "probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "started": 1791604202.751191,
+        "pck_sha256": "27ef0fb80e612ee3962b1c46a34d379a83ae2422f82efac1d663b5c8c2d5f154",
+        "pid": 2485064,
+        "return_code": 0,
+        "seconds": 7.511298075027298,
+        "errors": [],
+        "captures": {
+          "strong.png": "43f71a041c2398df4dc24a19b2868ca66844008a8f01dd5433f59e1f16c03bcb",
+          "off.png": "f78dc404d81c66b040c3867e8278c3b7dd6d77d263c2d9dbbb6a99d41998f7d6",
+          "default.png": "3ea895cbf8c9d489f143d0bbe8968838014e87a35c0c2f33892868da183e2f79"
+        }
+      },
+      "files": {
+        "strong.png": "43f71a041c2398df4dc24a19b2868ca66844008a8f01dd5433f59e1f16c03bcb",
+        "off.png": "f78dc404d81c66b040c3867e8278c3b7dd6d77d263c2d9dbbb6a99d41998f7d6",
+        "default.png": "3ea895cbf8c9d489f143d0bbe8968838014e87a35c0c2f33892868da183e2f79",
+        "run.log": "558c8d279349ee13b8ebf3bf5338bc1384cc512ee3d01ffc5eb75ade18a59301",
+        "run.json": "7e9339cf7abf8664dbeb324a01c1555dced8a30c9d415cb80c8adfac07583ce0",
+        "focus.json": "e6a485bcb5667e1157f8f65a96a4aa139c2040672d51b3bd20a734eaba84d705"
+      },
+      "measured_log_focus_seconds": 0.2998774540754449
+    },
+    {
+      "label": "native-mobile-msaa-low01",
+      "checks": 36,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-project/FarDOFProbe",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--msaa",
+          "--low"
+        ],
+        "native_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "sources": {
+          "export_presets.cfg": "bcc6c2e1744ccd2598f677c634fbae53a0525023c356fe28e960dde4d8488460",
+          "main.gd.uid": "63e00e1833893134e2ca441e002c8e7b1cfb71adb6f2687102628a6d380cefe8",
+          "project.godot": "c477c9431015e2cd5579a7ffe838e52e9ffb6cf61f48bd854c4d712e351f92f4",
+          "main.tscn": "1e8b828cd4f6c07f31a855ca0833f1aa0041cab7c68882c82abbab596fecb629",
+          "main.gd": "595e6698231b9d4847acb635d51780ed49f830d403a2cdded9f85002a4ec8dff",
+          "probe.gd.uid": "97394b2e0440bc3229331f7a1673525775c18bc97ca72ef25cb6885b1994b67e",
+          "probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "started": 1791604235.2274437,
+        "pck_sha256": "27ef0fb80e612ee3962b1c46a34d379a83ae2422f82efac1d663b5c8c2d5f154",
+        "pid": 2486270,
+        "return_code": 0,
+        "seconds": 6.259934633038938,
+        "errors": [],
+        "captures": {
+          "strong.png": "d877623382214a244e08bd69914193bcf9f1f5b3f9b686b002a5be93b02af33d",
+          "off.png": "b2a0d00e94bc26b0dcb9ab71458a5268d844805a9b79414b4984b3ef976a5df5",
+          "default.png": "3228ebab2d31db68389393bdb3e6de8be5feb86dfa15d3e3e03742c3e79cb0ca"
+        }
+      },
+      "files": {
+        "strong.png": "d877623382214a244e08bd69914193bcf9f1f5b3f9b686b002a5be93b02af33d",
+        "off.png": "b2a0d00e94bc26b0dcb9ab71458a5268d844805a9b79414b4984b3ef976a5df5",
+        "default.png": "3228ebab2d31db68389393bdb3e6de8be5feb86dfa15d3e3e03742c3e79cb0ca",
+        "run.log": "cd577b2e9ce793fff4d8bf2010f4d761a96134fbb94ccb95f366232f1f9896c6",
+        "run.json": "0d885cfd2826cf078930f015951b64beac2efa2e9e34108241d921155becb439",
+        "focus.json": "1d811c0d66c7dfc141ed24473367a35578b488d3a064f9bf406635a901426169"
+      },
+      "measured_log_focus_seconds": 0.2999724545007613
+    },
+    {
+      "label": "native-forward-scaled01",
+      "checks": 8,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-project/FarDOFProbe",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--scale-probe"
+        ],
+        "native_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "sources": {
+          "export_presets.cfg": "bcc6c2e1744ccd2598f677c634fbae53a0525023c356fe28e960dde4d8488460",
+          "main.gd.uid": "63e00e1833893134e2ca441e002c8e7b1cfb71adb6f2687102628a6d380cefe8",
+          "project.godot": "c477c9431015e2cd5579a7ffe838e52e9ffb6cf61f48bd854c4d712e351f92f4",
+          "main.tscn": "1e8b828cd4f6c07f31a855ca0833f1aa0041cab7c68882c82abbab596fecb629",
+          "main.gd": "e88966b3dfbb9d771191c9b239ba7fdbf27d81a839c1db93713c527e510a8192",
+          "probe.gd.uid": "97394b2e0440bc3229331f7a1673525775c18bc97ca72ef25cb6885b1994b67e",
+          "probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "started": 1791604389.0537355,
+        "pck_sha256": "ed5db97b5ba164c5738874aaceef0b36a250c5bd374377a4a63afe5a2e1ccab7",
+        "pid": 2490684,
+        "return_code": 0,
+        "seconds": 5.262420749000739,
+        "errors": [],
+        "captures": {}
+      },
+      "files": {
+        "run.log": "052680625545293265af1b25521c6cebffc32f2b962f938a207b3e2f885195d1",
+        "run.json": "c67614bfc4434dfad305060a939591aa13f29f18ddc760ac7eb1284ca68befc5",
+        "focus.json": "a9f98398adeb89ffdd1707c674c8fd479d7a937337b0a9b5307ae3cfb300dd12"
+      }
+    },
+    {
+      "label": "native-mobile-scaled01",
+      "checks": 6,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-project/FarDOFProbe",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--scale-probe",
+          "--msaa"
+        ],
+        "native_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "sources": {
+          "export_presets.cfg": "bcc6c2e1744ccd2598f677c634fbae53a0525023c356fe28e960dde4d8488460",
+          "main.gd.uid": "63e00e1833893134e2ca441e002c8e7b1cfb71adb6f2687102628a6d380cefe8",
+          "project.godot": "c477c9431015e2cd5579a7ffe838e52e9ffb6cf61f48bd854c4d712e351f92f4",
+          "main.tscn": "1e8b828cd4f6c07f31a855ca0833f1aa0041cab7c68882c82abbab596fecb629",
+          "main.gd": "e88966b3dfbb9d771191c9b239ba7fdbf27d81a839c1db93713c527e510a8192",
+          "probe.gd.uid": "97394b2e0440bc3229331f7a1673525775c18bc97ca72ef25cb6885b1994b67e",
+          "probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "started": 1791604431.7396786,
+        "pck_sha256": "ed5db97b5ba164c5738874aaceef0b36a250c5bd374377a4a63afe5a2e1ccab7",
+        "pid": 2491983,
+        "return_code": 0,
+        "seconds": 2.753733005025424,
+        "errors": [],
+        "captures": {}
+      },
+      "files": {
+        "run.log": "42e7ee3b8abccdc275ff0f869b53ee1ebb32801dd921091563d671a7a341d19d",
+        "run.json": "3b4fae2cf67e0829e66d9ab25d1637b1c183ec7d539c2b67377e219bf487ab9f",
+        "focus.json": "fd410ac71e448a3137b2c44a73b3ef660751c6d28663a5087164f9a0e121189d"
+      }
+    },
+    {
+      "label": "policy-headless01",
+      "checks": 26,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/policy-headless01/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 2.0023229549988173,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/fixtures/policy.gd": "98c5133b0be39480c819278f42da369a86b96a5f769208706bfc18580497024b"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 2482488,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 2483498,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2482488,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "captures": {},
+        "input_profile": {}
+      },
+      "files": {
+        "tool-source.gd": "98c5133b0be39480c819278f42da369a86b96a5f769208706bfc18580497024b",
+        "run.log": "105e1699c00a10295941a0d7096482cbf084d0aec9d62e6f54eaa48b100dbfa7",
+        "run.json": "fa9c2b62bbd7da496cd1490df5d8edf6d77e116314862f5a4914208e7bb8c97e"
+      }
+    },
+    {
+      "label": "policy-compatibility01",
+      "checks": 14,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/policy-compatibility01/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 2.252488425001502,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field.gd": "98c5133b0be39480c819278f42da369a86b96a5f769208706bfc18580497024b"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 2498901,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2498901,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+            "headless": false
+          }
+        ],
+        "captures": {},
+        "input_profile": {}
+      },
+      "files": {
+        "tool-source.gd": "98c5133b0be39480c819278f42da369a86b96a5f769208706bfc18580497024b",
+        "run.log": "93125acf9e0c9d96fad638616b9441efe5547f93e4b9f760f1ca102191c70861",
+        "run.json": "70e0ca775cb2000ed52a420bfe42707bc321e15376c06fcfacb554c79210e0ba"
+      }
+    },
+    {
+      "label": "policy-older-runtime01",
+      "checks": 14,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/control01/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/policy-older-runtime01/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 2.002346797962673,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field.gd": "98c5133b0be39480c819278f42da369a86b96a5f769208706bfc18580497024b"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 2504533,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2504533,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+            "headless": false
+          }
+        ],
+        "captures": {},
+        "input_profile": {}
+      },
+      "files": {
+        "tool-source.gd": "98c5133b0be39480c819278f42da369a86b96a5f769208706bfc18580497024b",
+        "run.log": "ec489961dbe1e44e29702f5719dcf93c9dde1fca2d541dc39566310b7715a53f",
+        "run.json": "2e64aaa3a9aa829c277a1bde94394f740939d0272a04c1401ba1a179346226e9"
+      }
+    },
+    {
+      "label": "legacy-forward-control01",
+      "checks": 13,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/control01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/legacy-forward-control01/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 7.259203388006426,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_legacy.gd": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd": "7b703f91782e3577a14b158a7ac8195b66d8769dcce1f9c8cbf4ee36a4e970f2"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 2485971,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2487065,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "captures": {
+          "dof-legacy-2-1-near.png": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf",
+          "dof-legacy-off.png": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601",
+          "dof-legacy-1-2-near.png": "3c45b257f4cc0bc093706b4e13defa5f382cbc9d76946caed775c033e89899ed",
+          "dof-legacy-0-1-near-far.png": "b23c5ca420efbfac574f9805763c8ae11a4059dfaf61458e73239dbe4260dfe7",
+          "dof-legacy-2-1-near-far.png": "6d4fcae3ef1d7e5ac035e234cd8870752007530cf3b71f4c0daeb3ed962e1d2b",
+          "dof-legacy-0-2-near-far.png": "4869e7326cbcfcee701a39ba24a515ef9fadbf5b84537c88d439ae71a04c7261",
+          "dof-legacy-2-2-near.png": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf",
+          "dof-legacy-0-1-near.png": "26b2cfbf853798b185c3ff409655eea7456fb8012ad00cde81550f281acaedf0",
+          "dof-legacy-2-2-near-far.png": "fccab8ec38ea143935e74a68ca7823f3ddd8b57002332def31971a91001ed198",
+          "dof-legacy-1-1-near-far.png": "1a76c133d530bb199c238f85c9e43986f14a55a20486a952fdaeb64f235f2c9d",
+          "dof-legacy-1-2-near-far.png": "b3b5af9af9980e82d04db46e7791a8b07585a16b8c975c4bb4a89e8ae08303f0",
+          "dof-legacy-0-2-near.png": "de2840359e30c379655417ef295cf5c3ce357e07cb0c30f5631fb987a608ca61",
+          "dof-legacy-1-1-near.png": "9753dabcf78005e47db480a6e56e0bc46b0093a612f861a36598a24fc4d70303"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "dof-legacy-2-1-near.png": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf",
+        "dof-legacy-off.png": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601",
+        "dof-legacy-1-2-near.png": "3c45b257f4cc0bc093706b4e13defa5f382cbc9d76946caed775c033e89899ed",
+        "dof-legacy-0-1-near-far.png": "b23c5ca420efbfac574f9805763c8ae11a4059dfaf61458e73239dbe4260dfe7",
+        "camera_depth_of_field_render.gd": "7b703f91782e3577a14b158a7ac8195b66d8769dcce1f9c8cbf4ee36a4e970f2",
+        "dof-legacy-2-1-near-far.png": "6d4fcae3ef1d7e5ac035e234cd8870752007530cf3b71f4c0daeb3ed962e1d2b",
+        "dof-legacy-0-2-near-far.png": "4869e7326cbcfcee701a39ba24a515ef9fadbf5b84537c88d439ae71a04c7261",
+        "dof-legacy-2-2-near.png": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf",
+        "dof-legacy-0-1-near.png": "26b2cfbf853798b185c3ff409655eea7456fb8012ad00cde81550f281acaedf0",
+        "dof-legacy-2-2-near-far.png": "fccab8ec38ea143935e74a68ca7823f3ddd8b57002332def31971a91001ed198",
+        "tool-source.gd": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+        "dof-legacy-1-1-near-far.png": "1a76c133d530bb199c238f85c9e43986f14a55a20486a952fdaeb64f235f2c9d",
+        "run.log": "41776c4754aa2e927eaadb7422bfa3454d680ab793ede180e2eff6e6aadd7ca0",
+        "dof-legacy-1-2-near-far.png": "b3b5af9af9980e82d04db46e7791a8b07585a16b8c975c4bb4a89e8ae08303f0",
+        "dof-legacy-0-2-near.png": "de2840359e30c379655417ef295cf5c3ce357e07cb0c30f5631fb987a608ca61",
+        "run.json": "6e59937ab0e862dba641c05694be6c572c654b1fae2c11f079c74d6a40d6b6ff",
+        "dof-legacy-1-1-near.png": "9753dabcf78005e47db480a6e56e0bc46b0093a612f861a36598a24fc4d70303"
+      }
+    },
+    {
+      "label": "legacy-forward-candidate01",
+      "checks": 39,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/legacy-forward-candidate01/tool-source.gd",
+          "--dof-reference=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/legacy-forward-control01"
+        ],
+        "return_code": 0,
+        "seconds": 8.011255190998781,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_legacy.gd": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd": "7b703f91782e3577a14b158a7ac8195b66d8769dcce1f9c8cbf4ee36a4e970f2"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 2487958,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2487958,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "captures": {
+          "dof-legacy-2-1-near.png": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf",
+          "dof-legacy-off.png": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601",
+          "dof-legacy-1-2-near.png": "3c45b257f4cc0bc093706b4e13defa5f382cbc9d76946caed775c033e89899ed",
+          "dof-legacy-0-1-near-far.png": "b23c5ca420efbfac574f9805763c8ae11a4059dfaf61458e73239dbe4260dfe7",
+          "dof-legacy-2-1-near-far.png": "6d4fcae3ef1d7e5ac035e234cd8870752007530cf3b71f4c0daeb3ed962e1d2b",
+          "dof-legacy-0-2-near-far.png": "4869e7326cbcfcee701a39ba24a515ef9fadbf5b84537c88d439ae71a04c7261",
+          "dof-legacy-2-2-near.png": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf",
+          "dof-legacy-0-1-near.png": "26b2cfbf853798b185c3ff409655eea7456fb8012ad00cde81550f281acaedf0",
+          "dof-legacy-2-2-near-far.png": "fccab8ec38ea143935e74a68ca7823f3ddd8b57002332def31971a91001ed198",
+          "dof-legacy-1-1-near-far.png": "1a76c133d530bb199c238f85c9e43986f14a55a20486a952fdaeb64f235f2c9d",
+          "dof-legacy-1-2-near-far.png": "b3b5af9af9980e82d04db46e7791a8b07585a16b8c975c4bb4a89e8ae08303f0",
+          "dof-legacy-0-2-near.png": "de2840359e30c379655417ef295cf5c3ce357e07cb0c30f5631fb987a608ca61",
+          "dof-legacy-1-1-near.png": "9753dabcf78005e47db480a6e56e0bc46b0093a612f861a36598a24fc4d70303"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "dof-legacy-2-1-near.png": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf",
+        "dof-legacy-off.png": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601",
+        "dof-legacy-1-2-near.png": "3c45b257f4cc0bc093706b4e13defa5f382cbc9d76946caed775c033e89899ed",
+        "dof-legacy-0-1-near-far.png": "b23c5ca420efbfac574f9805763c8ae11a4059dfaf61458e73239dbe4260dfe7",
+        "camera_depth_of_field_render.gd": "7b703f91782e3577a14b158a7ac8195b66d8769dcce1f9c8cbf4ee36a4e970f2",
+        "dof-legacy-2-1-near-far.png": "6d4fcae3ef1d7e5ac035e234cd8870752007530cf3b71f4c0daeb3ed962e1d2b",
+        "dof-legacy-0-2-near-far.png": "4869e7326cbcfcee701a39ba24a515ef9fadbf5b84537c88d439ae71a04c7261",
+        "dof-legacy-2-2-near.png": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf",
+        "dof-legacy-0-1-near.png": "26b2cfbf853798b185c3ff409655eea7456fb8012ad00cde81550f281acaedf0",
+        "dof-legacy-2-2-near-far.png": "fccab8ec38ea143935e74a68ca7823f3ddd8b57002332def31971a91001ed198",
+        "tool-source.gd": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+        "dof-legacy-1-1-near-far.png": "1a76c133d530bb199c238f85c9e43986f14a55a20486a952fdaeb64f235f2c9d",
+        "run.log": "6ccaf6ba1587bd2da80206115e4c163700e2db5d8c5d5c77fc8e7732dfa1dd3a",
+        "dof-legacy-1-2-near-far.png": "b3b5af9af9980e82d04db46e7791a8b07585a16b8c975c4bb4a89e8ae08303f0",
+        "dof-legacy-0-2-near.png": "de2840359e30c379655417ef295cf5c3ce357e07cb0c30f5631fb987a608ca61",
+        "run.json": "45b38a6206d4c246bab572e43a5f20ce51ab3e8435e6957e57bba0bf73fd842d",
+        "dof-legacy-1-1-near.png": "9753dabcf78005e47db480a6e56e0bc46b0093a612f861a36598a24fc4d70303"
+      }
+    },
+    {
+      "label": "legacy-mobile-control01",
+      "checks": 13,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/control01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/legacy-mobile-control01/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 6.763391586020589,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_legacy.gd": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd": "7b703f91782e3577a14b158a7ac8195b66d8769dcce1f9c8cbf4ee36a4e970f2"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "76a77649a361fa06134d3d6bd29e2eceb66a189360c772b3be6bb9757239021b",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 2493207,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2493207,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "captures": {
+          "dof-legacy-2-1-near.png": "6830bdbabbda9b013191fd2e9b4d0960afd1706237655a399835696c7cca82fe",
+          "dof-legacy-off.png": "21216376dc79c01344ee36ced20f160856b1fee6f4b6c3e7061ae583fe814b16",
+          "dof-legacy-1-2-near.png": "988bc808f8b9009693d3ae3a714fe00825e9273ab1c80a5f3d21eb0d7d0a73f5",
+          "dof-legacy-0-1-near-far.png": "56712b3a75fcc1f984816a7bf37652e54533880cb65a5e78b87ea2cd15ffcc7c",
+          "dof-legacy-2-1-near-far.png": "5be3cb9c1263036920d6001fcf1744cd88d31a567eb5182c5bc3dd64d746d3b5",
+          "dof-legacy-0-2-near-far.png": "4272bef85c5522bb33f2a54243fc75f21a69a6ebb3629ec8fea9f9cc43f65469",
+          "dof-legacy-2-2-near.png": "c349a8d18e4084836abc9843617515abb221658eeab9e477caa01fb528f818f8",
+          "dof-legacy-0-1-near.png": "3b14ed78133776221cdb9eff2dc3aecdcd03e93aa718fc0780b3b882a2b677d4",
+          "dof-legacy-2-2-near-far.png": "9ebf7d4d603f2e0bc5a6f6b6c7cb44c27a822f1acee9f646ca6af5c4b1a46111",
+          "dof-legacy-1-1-near-far.png": "6d2d6f4b7a72640e225c254227ba0b37cd287c892eefdd6791f980e1bf616ef7",
+          "dof-legacy-1-2-near-far.png": "3dcdaffebf4875799449c51c22086933915123626982810338a6c9983cea6494",
+          "dof-legacy-0-2-near.png": "b15357f3d82c6ea141506a2bcb413ca2eb6b6c706ef99a372a955c7c0d4ba19d",
+          "dof-legacy-1-1-near.png": "7d5ac672786e3786be0fd632e172fba20aa9a1bf4035c96b370a0edb68513da6"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "dof-legacy-2-1-near.png": "6830bdbabbda9b013191fd2e9b4d0960afd1706237655a399835696c7cca82fe",
+        "dof-legacy-off.png": "21216376dc79c01344ee36ced20f160856b1fee6f4b6c3e7061ae583fe814b16",
+        "dof-legacy-1-2-near.png": "988bc808f8b9009693d3ae3a714fe00825e9273ab1c80a5f3d21eb0d7d0a73f5",
+        "dof-legacy-0-1-near-far.png": "56712b3a75fcc1f984816a7bf37652e54533880cb65a5e78b87ea2cd15ffcc7c",
+        "camera_depth_of_field_render.gd": "7b703f91782e3577a14b158a7ac8195b66d8769dcce1f9c8cbf4ee36a4e970f2",
+        "dof-legacy-2-1-near-far.png": "5be3cb9c1263036920d6001fcf1744cd88d31a567eb5182c5bc3dd64d746d3b5",
+        "dof-legacy-0-2-near-far.png": "4272bef85c5522bb33f2a54243fc75f21a69a6ebb3629ec8fea9f9cc43f65469",
+        "dof-legacy-2-2-near.png": "c349a8d18e4084836abc9843617515abb221658eeab9e477caa01fb528f818f8",
+        "dof-legacy-0-1-near.png": "3b14ed78133776221cdb9eff2dc3aecdcd03e93aa718fc0780b3b882a2b677d4",
+        "dof-legacy-2-2-near-far.png": "9ebf7d4d603f2e0bc5a6f6b6c7cb44c27a822f1acee9f646ca6af5c4b1a46111",
+        "tool-source.gd": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+        "dof-legacy-1-1-near-far.png": "6d2d6f4b7a72640e225c254227ba0b37cd287c892eefdd6791f980e1bf616ef7",
+        "run.log": "15d7de64490efe6a786637ccd35306ab31fe8eb6c65c8db4d50356280d21bcac",
+        "dof-legacy-1-2-near-far.png": "3dcdaffebf4875799449c51c22086933915123626982810338a6c9983cea6494",
+        "dof-legacy-0-2-near.png": "b15357f3d82c6ea141506a2bcb413ca2eb6b6c706ef99a372a955c7c0d4ba19d",
+        "run.json": "b82e31d4f2ca32e4a78542801b5736837bee42f98a6d4e69abe0169b44a87404",
+        "dof-legacy-1-1-near.png": "7d5ac672786e3786be0fd632e172fba20aa9a1bf4035c96b370a0edb68513da6"
+      }
+    },
+    {
+      "label": "legacy-mobile-candidate01",
+      "checks": 39,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/legacy-mobile-candidate01/tool-source.gd",
+          "--dof-reference=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/legacy-mobile-control01"
+        ],
+        "return_code": 0,
+        "seconds": 6.008170936955139,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_legacy.gd": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd": "7b703f91782e3577a14b158a7ac8195b66d8769dcce1f9c8cbf4ee36a4e970f2"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "dof-legacy-2-1-near.png": "6830bdbabbda9b013191fd2e9b4d0960afd1706237655a399835696c7cca82fe",
+          "dof-legacy-off.png": "21216376dc79c01344ee36ced20f160856b1fee6f4b6c3e7061ae583fe814b16",
+          "dof-legacy-1-2-near.png": "988bc808f8b9009693d3ae3a714fe00825e9273ab1c80a5f3d21eb0d7d0a73f5",
+          "dof-legacy-0-1-near-far.png": "56712b3a75fcc1f984816a7bf37652e54533880cb65a5e78b87ea2cd15ffcc7c",
+          "dof-legacy-2-1-near-far.png": "5be3cb9c1263036920d6001fcf1744cd88d31a567eb5182c5bc3dd64d746d3b5",
+          "dof-legacy-0-2-near-far.png": "4272bef85c5522bb33f2a54243fc75f21a69a6ebb3629ec8fea9f9cc43f65469",
+          "dof-legacy-2-2-near.png": "c349a8d18e4084836abc9843617515abb221658eeab9e477caa01fb528f818f8",
+          "dof-legacy-0-1-near.png": "3b14ed78133776221cdb9eff2dc3aecdcd03e93aa718fc0780b3b882a2b677d4",
+          "dof-legacy-2-2-near-far.png": "9ebf7d4d603f2e0bc5a6f6b6c7cb44c27a822f1acee9f646ca6af5c4b1a46111",
+          "dof-legacy-1-1-near-far.png": "6d2d6f4b7a72640e225c254227ba0b37cd287c892eefdd6791f980e1bf616ef7",
+          "dof-legacy-1-2-near-far.png": "3dcdaffebf4875799449c51c22086933915123626982810338a6c9983cea6494",
+          "dof-legacy-0-2-near.png": "b15357f3d82c6ea141506a2bcb413ca2eb6b6c706ef99a372a955c7c0d4ba19d",
+          "dof-legacy-1-1-near.png": "7d5ac672786e3786be0fd632e172fba20aa9a1bf4035c96b370a0edb68513da6"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "dof-legacy-2-1-near.png": "6830bdbabbda9b013191fd2e9b4d0960afd1706237655a399835696c7cca82fe",
+        "dof-legacy-off.png": "21216376dc79c01344ee36ced20f160856b1fee6f4b6c3e7061ae583fe814b16",
+        "dof-legacy-1-2-near.png": "988bc808f8b9009693d3ae3a714fe00825e9273ab1c80a5f3d21eb0d7d0a73f5",
+        "dof-legacy-0-1-near-far.png": "56712b3a75fcc1f984816a7bf37652e54533880cb65a5e78b87ea2cd15ffcc7c",
+        "camera_depth_of_field_render.gd": "7b703f91782e3577a14b158a7ac8195b66d8769dcce1f9c8cbf4ee36a4e970f2",
+        "dof-legacy-2-1-near-far.png": "5be3cb9c1263036920d6001fcf1744cd88d31a567eb5182c5bc3dd64d746d3b5",
+        "dof-legacy-0-2-near-far.png": "4272bef85c5522bb33f2a54243fc75f21a69a6ebb3629ec8fea9f9cc43f65469",
+        "dof-legacy-2-2-near.png": "c349a8d18e4084836abc9843617515abb221658eeab9e477caa01fb528f818f8",
+        "dof-legacy-0-1-near.png": "3b14ed78133776221cdb9eff2dc3aecdcd03e93aa718fc0780b3b882a2b677d4",
+        "dof-legacy-2-2-near-far.png": "9ebf7d4d603f2e0bc5a6f6b6c7cb44c27a822f1acee9f646ca6af5c4b1a46111",
+        "tool-source.gd": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+        "dof-legacy-1-1-near-far.png": "6d2d6f4b7a72640e225c254227ba0b37cd287c892eefdd6791f980e1bf616ef7",
+        "run.log": "52e21ab53d5a450f7778a05e885f980dc92168894c55aefec4be1fcb2028067b",
+        "dof-legacy-1-2-near-far.png": "3dcdaffebf4875799449c51c22086933915123626982810338a6c9983cea6494",
+        "dof-legacy-0-2-near.png": "b15357f3d82c6ea141506a2bcb413ca2eb6b6c706ef99a372a955c7c0d4ba19d",
+        "run.json": "3dc1deb29c44ff0ffe566ed1f2ed49381e6c6cef34c2cbad3cd1f5c8c7212532",
+        "dof-legacy-1-1-near.png": "7d5ac672786e3786be0fd632e172fba20aa9a1bf4035c96b370a0edb68513da6"
+      }
+    },
+    {
+      "label": "render-forward01",
+      "checks": 16,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/render-forward01/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 7.507303686987143,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/fixtures/render.gd": "90409bda13e0f551b3c7c293deafbf1965b0072da5ccffecfdcf0f9a4b8e622c"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "dof-low-on.png": "14bd5a226f1af22cf6c358cbd6ab3222de4b2f067db74907b277abdd62d71288",
+          "dof-tactical-off.png": "030f4364072af63f4f90aa543fddcee25a146c37587b6078d2688d2aed01e4f6",
+          "dof-low-off.png": "030f4364072af63f4f90aa543fddcee25a146c37587b6078d2688d2aed01e4f6",
+          "dof-low-restored.png": "030f4364072af63f4f90aa543fddcee25a146c37587b6078d2688d2aed01e4f6",
+          "dof-tactical-on.png": "030f4364072af63f4f90aa543fddcee25a146c37587b6078d2688d2aed01e4f6"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "dof-low-on.png": "14bd5a226f1af22cf6c358cbd6ab3222de4b2f067db74907b277abdd62d71288",
+        "dof-tactical-off.png": "030f4364072af63f4f90aa543fddcee25a146c37587b6078d2688d2aed01e4f6",
+        "dof-low-off.png": "030f4364072af63f4f90aa543fddcee25a146c37587b6078d2688d2aed01e4f6",
+        "tool-source.gd": "90409bda13e0f551b3c7c293deafbf1965b0072da5ccffecfdcf0f9a4b8e622c",
+        "run.log": "67d122c5d26fd1399ea8c41a7f46256bdbcc1087b2dca38de202d2e7f92dd97a",
+        "dof-low-restored.png": "030f4364072af63f4f90aa543fddcee25a146c37587b6078d2688d2aed01e4f6",
+        "dof-tactical-on.png": "030f4364072af63f4f90aa543fddcee25a146c37587b6078d2688d2aed01e4f6",
+        "run.json": "c384c7940b89492ada5739400ae978e7ea29f57a8b509c71a4b430096a903abf"
+      }
+    },
+    {
+      "label": "render-mobile01",
+      "checks": 16,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/render-mobile01/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 5.5061371980118565,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_render.gd": "90409bda13e0f551b3c7c293deafbf1965b0072da5ccffecfdcf0f9a4b8e622c"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "dof-low-on.png": "885c7f9a2f307f40946a39e1ec5bf94bd3abc516e482ba0d752123477eb6e5b2",
+          "dof-tactical-off.png": "a195d3668826240337ef713760cf0985445191955b629ff69d82d86134eaf22e",
+          "dof-low-off.png": "a195d3668826240337ef713760cf0985445191955b629ff69d82d86134eaf22e",
+          "dof-low-restored.png": "a195d3668826240337ef713760cf0985445191955b629ff69d82d86134eaf22e",
+          "dof-tactical-on.png": "a195d3668826240337ef713760cf0985445191955b629ff69d82d86134eaf22e"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "dof-low-on.png": "885c7f9a2f307f40946a39e1ec5bf94bd3abc516e482ba0d752123477eb6e5b2",
+        "dof-tactical-off.png": "a195d3668826240337ef713760cf0985445191955b629ff69d82d86134eaf22e",
+        "dof-low-off.png": "a195d3668826240337ef713760cf0985445191955b629ff69d82d86134eaf22e",
+        "tool-source.gd": "90409bda13e0f551b3c7c293deafbf1965b0072da5ccffecfdcf0f9a4b8e622c",
+        "run.log": "fab33a265be28931ec803fd91fcf4b834ded46fb06307215f09f7847af75eeac",
+        "dof-low-restored.png": "a195d3668826240337ef713760cf0985445191955b629ff69d82d86134eaf22e",
+        "dof-tactical-on.png": "a195d3668826240337ef713760cf0985445191955b629ff69d82d86134eaf22e",
+        "run.json": "1046a490a076d6124dfccb68deabdbccb9f2f3ac5aa90c01dfc95e2a8263877f"
+      }
+    },
+    {
+      "label": "scene-forward01",
+      "checks": 12,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/scene-forward01/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 22.278651826025452,
+        "timeout_seconds": 240,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/fixtures/scene.gd": "a132e1792ee3f8b5cdeafd32bc4ee524b602277be96ac0fefd214c5bd9bb424e",
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/fixtures/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [
+          {
+            "pid": 2491048,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2493207,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "captures": {
+          "dof-dialogue-off.png": "169a688cd8a2c9aa21c1293542acc8b4a8ca70ec600d349a7d81083469cc959f",
+          "dof-dialogue.png": "56a44dadbedee9cc3af8c905b47f0d8c0b45301854524aca73b238a970427740"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+        "tool-source.gd": "a132e1792ee3f8b5cdeafd32bc4ee524b602277be96ac0fefd214c5bd9bb424e",
+        "dof-dialogue-off.png": "169a688cd8a2c9aa21c1293542acc8b4a8ca70ec600d349a7d81083469cc959f",
+        "run.log": "2c249d8d0e7dac1216c79cb6ac5fb4754dbf2232ee0ef3b81f54351bdabee3fb",
+        "dof-dialogue.png": "56a44dadbedee9cc3af8c905b47f0d8c0b45301854524aca73b238a970427740",
+        "run.json": "b5a8d6a11c432f426c1b983b82a9dc0a254c987cb8586e0dd97baa8905c66e2b"
+      }
+    },
+    {
+      "label": "scene-mobile01",
+      "checks": 12,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/scene-mobile01/tool-source.gd"
+        ],
+        "return_code": 0,
+        "seconds": 18.76621024304768,
+        "timeout_seconds": 240,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/fixtures/scene.gd": "a132e1792ee3f8b5cdeafd32bc4ee524b602277be96ac0fefd214c5bd9bb424e",
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/fixtures/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "dof-dialogue-off.png": "9b764f0bcfe606cef28e13a1d8df1c848c162c7f6f169c59a09924ba2075f1ab",
+          "dof-dialogue.png": "85e0e4af7840d54080772c6d66122d4aebf0197b66b9099185d9f6f58c4f23aa"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+        "tool-source.gd": "a132e1792ee3f8b5cdeafd32bc4ee524b602277be96ac0fefd214c5bd9bb424e",
+        "dof-dialogue-off.png": "9b764f0bcfe606cef28e13a1d8df1c848c162c7f6f169c59a09924ba2075f1ab",
+        "run.log": "193ec73e48cb84d35f40ccca8aa1a8a2efd9be1926ead88f915e9e87f76aebb9",
+        "dof-dialogue.png": "85e0e4af7840d54080772c6d66122d4aebf0197b66b9099185d9f6f58c4f23aa",
+        "run.json": "8d6e2c7e696d86ed16d764b9b709f17eb15505be284b6d76b5c0597c01e71c6f"
+      }
+    },
+    {
+      "label": "native-high-forward02",
+      "checks": 36,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-high-forward02/tool-source.gd",
+          "--high"
+        ],
+        "return_code": 0,
+        "seconds": 11.260776865994558,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_native.gd": "6402e540a2c959c4a8f8673b7d93ae365fd1967fa61331ebbc4df8e3d4ebded0",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "strong.png": "cd737ca6ce5484c60f769e8a1714a3882ab6cdcca09904f878efccd03061d1b0",
+          "off.png": "94a8babec0f55a2f3882421153287668f13dc20c8215f3be6a8d8265628761bf",
+          "default.png": "3a5c1d78b7f7fa835b55c7f42785d3bf48f662a80895c241d182ba55d9fa4b43"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "strong.png": "cd737ca6ce5484c60f769e8a1714a3882ab6cdcca09904f878efccd03061d1b0",
+        "camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11",
+        "off.png": "94a8babec0f55a2f3882421153287668f13dc20c8215f3be6a8d8265628761bf",
+        "default.png": "3a5c1d78b7f7fa835b55c7f42785d3bf48f662a80895c241d182ba55d9fa4b43",
+        "tool-source.gd": "6402e540a2c959c4a8f8673b7d93ae365fd1967fa61331ebbc4df8e3d4ebded0",
+        "run.log": "8cc5a39f7e33415dbf1744a1d9d4b9eaf28de747e9b27f9769ba475052507b8a",
+        "run.json": "8acc9e40f5b18c36b787670a72390759c84352a09632585a80ac5c81d233db2c",
+        "focus.json": "d87d141c75c1b3634a9867908d8b7e1114b71b6c48de8fae670c94cf6f8796ca"
+      },
+      "measured_log_focus_seconds": 0.29597408582040163
+    },
+    {
+      "label": "native-high-mobile02",
+      "checks": 36,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-high-mobile02/tool-source.gd",
+          "--high",
+          "--msaa"
+        ],
+        "return_code": 0,
+        "seconds": 9.008567048003897,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_native.gd": "6402e540a2c959c4a8f8673b7d93ae365fd1967fa61331ebbc4df8e3d4ebded0",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "strong.png": "e2a88a5f70de6875c0731bef1ba69c9ffa201dd45e314f45a389c5fdabdce79e",
+          "off.png": "4322cadd6e55c80c2c3020faebd1a8f0db35ff0f52ffb1d0af634ae86960207d",
+          "default.png": "348962860af578ffe49dac4165ad6afe1cbb22ca6a26633dc0506752250087e1"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "strong.png": "e2a88a5f70de6875c0731bef1ba69c9ffa201dd45e314f45a389c5fdabdce79e",
+        "camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11",
+        "off.png": "4322cadd6e55c80c2c3020faebd1a8f0db35ff0f52ffb1d0af634ae86960207d",
+        "default.png": "348962860af578ffe49dac4165ad6afe1cbb22ca6a26633dc0506752250087e1",
+        "tool-source.gd": "6402e540a2c959c4a8f8673b7d93ae365fd1967fa61331ebbc4df8e3d4ebded0",
+        "run.log": "c3ec3d03e8ed06cecbd60f44ce0bf6225ddaca88ddbdfff17602ede4da167881",
+        "run.json": "96fbf5a69559b382f32e5c40e51adafff4a265fc1be10f3c5da3fc5f4b3f022d",
+        "focus.json": "e791b20096328f11a0de3d0783a3d79ac3b32df878103a251a53dd5e59c6d0c9"
+      },
+      "measured_log_focus_seconds": 0.2961333085805054
+    },
+    {
+      "label": "native-hdr-forward02",
+      "checks": 7,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-hdr-forward02/tool-source.gd",
+          "--hdr-probe"
+        ],
+        "return_code": 0,
+        "seconds": 7.006750593020115,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_native.gd": "58e17d517ff4e357c9f7f008aab56076014f5adf7da6fdd264123249511ecbb8",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "hdr-on.png": "44d83d02ba9c2b724650e2755a91a4b6d870d32f7584019d60b49bb59de41f5e",
+          "hdr-off.png": "c0fad5c88ce59eba318056cecbe9ac36b99863471b34fc71016f2db28fd90f60"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11",
+        "hdr-on.png": "44d83d02ba9c2b724650e2755a91a4b6d870d32f7584019d60b49bb59de41f5e",
+        "tool-source.gd": "58e17d517ff4e357c9f7f008aab56076014f5adf7da6fdd264123249511ecbb8",
+        "run.log": "20f9ae5463f5f3af179c2bd9a55401dd64cf32233558aed6301e4e4c6cf4da40",
+        "hdr-off.png": "c0fad5c88ce59eba318056cecbe9ac36b99863471b34fc71016f2db28fd90f60",
+        "run.json": "d9c852c02127eec512802ea3de4236cdaa58c6d2362b9f972a7c032fecdc4b44"
+      }
+    },
+    {
+      "label": "native-hdr-mobile03",
+      "checks": 7,
+      "failures": 0,
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-hdr-mobile03/tool-source.gd",
+          "--hdr-probe"
+        ],
+        "return_code": 0,
+        "seconds": 5.255397708970122,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_native.gd": "eba4a3c38a5f80ad3b50578d173bdc71c16e5b527411662a8eaddb4137f5f2dc",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "hdr-on.png": "a479e080a9ebf11f821b272d5cf228cc96e3e050146e48ac3dacc435b39eeb4e",
+          "hdr-off.png": "2a2b725273170e389acc290284d28525f7f9841a78a38b6c9fa1f05dbb934ad1"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11",
+        "hdr-on.png": "a479e080a9ebf11f821b272d5cf228cc96e3e050146e48ac3dacc435b39eeb4e",
+        "tool-source.gd": "eba4a3c38a5f80ad3b50578d173bdc71c16e5b527411662a8eaddb4137f5f2dc",
+        "run.log": "f022185b3534226fe4e715536b23b4b2dfdd331dbd7dc796685b19dc4ff715fb",
+        "hdr-off.png": "2a2b725273170e389acc290284d28525f7f9841a78a38b6c9fa1f05dbb934ad1",
+        "run.json": "363bc9aede4f2e3c9f094a77b8511170e4f01779699171a7ffabb1fbbb4975d4"
+      }
+    }
+  ],
+  "diagnostics": [
+    {
+      "label": "native-forward01",
+      "reason": "Launch rejected because release templates do not permit --path. Replaced with an exported fixture pack; no shader was exercised.",
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/engine/bin/godot.linuxbsd.template_release.x86_64",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/test-project",
+          "--script",
+          "res://main.gd",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy"
+        ],
+        "native_sha256": "25aff5994e52a1c7240feee8a0cd09dd889bdcc88a6346274d760df02efadb60",
+        "sources": {
+          "project.godot": "07cd3c8d2e3ca89b8a0f2f1d1e35a2f01bd52c25087fb0e5b92e29c42ba489a7",
+          "main.gd": "06efd7ee7078948c210af10cb6cc178178499bf1bf1fe85fda0d371ff16d2041",
+          "probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "started": 1791603972.5761058,
+        "pid": 2478297,
+        "return_code": 1,
+        "seconds": 0.25117845297791064,
+        "errors": [
+          "ERROR: `--path` was specified on the command line, but this Godot binary was compiled without support for path overrides. Aborting."
+        ],
+        "captures": {}
+      },
+      "files": {
+        "run.log": "c786c09387e117ee5e33698180bd63361d08d6ecde5eeae3775a395d9f96df5b",
+        "run.json": "3ffa66a65e57a48a3d6612e216c3e6a7fbbad248564d5ed86b048531864ff053"
+      }
+    },
+    {
+      "label": "native-forward-msaa-low01",
+      "reason": "New test had an untyped Dictionary expression; the parse error was corrected before its GPU run.",
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-project/FarDOFProbe",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--msaa",
+          "--low"
+        ],
+        "native_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "sources": {
+          "export_presets.cfg": "bcc6c2e1744ccd2598f677c634fbae53a0525023c356fe28e960dde4d8488460",
+          "main.gd.uid": "63e00e1833893134e2ca441e002c8e7b1cfb71adb6f2687102628a6d380cefe8",
+          "project.godot": "c477c9431015e2cd5579a7ffe838e52e9ffb6cf61f48bd854c4d712e351f92f4",
+          "main.tscn": "1e8b828cd4f6c07f31a855ca0833f1aa0041cab7c68882c82abbab596fecb629",
+          "main.gd": "0e56b4821311efafd0c4af2083ff53c33140bf83509ebc3d63cccaffe5c0934b",
+          "probe.gd.uid": "97394b2e0440bc3229331f7a1673525775c18bc97ca72ef25cb6885b1994b67e",
+          "probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "started": 1791604152.6828096,
+        "pck_sha256": "2b6e8c1087cc875b717fbe49838673f56b4d33647da854f620a52856b6fb30ac",
+        "pid": 2483587,
+        "terminated": "script error",
+        "return_code": -15,
+        "seconds": 2.4667268409975804,
+        "errors": [
+          "SCRIPT ERROR: Parse Error: Cannot infer the type of \"measured_seconds\" variable because the value doesn't have a set type.",
+          "ERROR: Failed to load script \"res://main.gd\" with error \"Parse error\"."
+        ],
+        "captures": {}
+      },
+      "files": {
+        "run.log": "bdd933536f8800f0d8321eb9393d9cfbe4da88e3d7aa2eecfc604d1db2e44d84",
+        "run.json": "259718cc4e973001c563340c5209bf085a61eb06fc2b55525820f835a16511f7"
+      }
+    },
+    {
+      "label": "native-high-forward01",
+      "reason": "Four exact-depth assertions failed because the game-hosted diagnostic boards interpolated between teleports. The instantaneous fixture now explicitly disables physics interpolation in its own viewports; unchanged production engine passes exact assertions in native-high-forward02.",
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-high-forward01/tool-source.gd",
+          "--high"
+        ],
+        "return_code": 1,
+        "seconds": 11.010545523953624,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [
+          "FAIL explicit camera cut discards old focus",
+          "FAIL near geometry uses bounded minimum focus",
+          "FAIL orthographic reverse-Z depth is reconstructed correctly",
+          "FAIL second viewport does not overwrite first focus history"
+        ],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_native.gd": "b73288de9221768a1a1454db6a754aef19a0c7dd08e3a667aa02b7277f10004c",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "strong.png": "cd737ca6ce5484c60f769e8a1714a3882ab6cdcca09904f878efccd03061d1b0",
+          "off.png": "94a8babec0f55a2f3882421153287668f13dc20c8215f3be6a8d8265628761bf",
+          "default.png": "3a5c1d78b7f7fa835b55c7f42785d3bf48f662a80895c241d182ba55d9fa4b43"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "strong.png": "cd737ca6ce5484c60f769e8a1714a3882ab6cdcca09904f878efccd03061d1b0",
+        "camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11",
+        "off.png": "94a8babec0f55a2f3882421153287668f13dc20c8215f3be6a8d8265628761bf",
+        "default.png": "3a5c1d78b7f7fa835b55c7f42785d3bf48f662a80895c241d182ba55d9fa4b43",
+        "tool-source.gd": "b73288de9221768a1a1454db6a754aef19a0c7dd08e3a667aa02b7277f10004c",
+        "run.log": "37702961b0c658830292762a1a2452eba6ed06632e2edea054203d78796aebae",
+        "run.json": "4e0c9bd9967dd28a17e17519f7c6170cc4bc1ff78edeeb7832145c107cd15088",
+        "focus.json": "fa9cee709186b1f981754aedec14695777c4e9739993f1a2ca0535f5f7f1407a"
+      }
+    },
+    {
+      "label": "native-high-mobile01",
+      "reason": "Same four interpolated-fixture failures retained. Corrected instantaneous fixture passes, including 4x MSAA, in native-high-mobile02.",
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-high-mobile01/tool-source.gd",
+          "--high"
+        ],
+        "return_code": 1,
+        "seconds": 9.259270474023651,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [
+          "FAIL explicit camera cut discards old focus",
+          "FAIL near geometry uses bounded minimum focus",
+          "FAIL orthographic reverse-Z depth is reconstructed correctly",
+          "FAIL second viewport does not overwrite first focus history"
+        ],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_native.gd": "80fbc70ef5e2fa40369243997d49c89f0fa1a53bfc2a2bb2519c7d53c2d319ab",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "strong.png": "2cfe98facb70e2250a15645d08e3b05bb7c8447d54467a3d2225fede9d32ab45",
+          "off.png": "0d2b7471400b73c76aef7233833d9c7e08350a426b1ebe3aa4fe88476f8fcc9b",
+          "default.png": "5e20cca00f23215c6e5e5e45e25609fbc8292712723b92fc354fd1c46143e80b"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "strong.png": "2cfe98facb70e2250a15645d08e3b05bb7c8447d54467a3d2225fede9d32ab45",
+        "camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11",
+        "off.png": "0d2b7471400b73c76aef7233833d9c7e08350a426b1ebe3aa4fe88476f8fcc9b",
+        "default.png": "5e20cca00f23215c6e5e5e45e25609fbc8292712723b92fc354fd1c46143e80b",
+        "tool-source.gd": "80fbc70ef5e2fa40369243997d49c89f0fa1a53bfc2a2bb2519c7d53c2d319ab",
+        "run.log": "a8b24b93b95a621c9a21ada35cc7f5e1ec9f80e037c28de7febf2beae2cf2a3f",
+        "run.json": "1d9324c977d20e758757c77e154cecf03dbf9a1a1354f301c6f5ab18ddd5e832",
+        "focus.json": "98531b8b2b19be4cdb98ef269e613fac69673b096b8ece68e430ec4fc0ba5294"
+      }
+    },
+    {
+      "label": "native-hdr-forward01",
+      "reason": "Excluded from acceptance: the initial camera-exposure probe clipped to white and could not establish HDR preservation. Replaced with non-clipped environment-tonemap exposure and a strict non-clipping assertion.",
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-hdr-forward01/tool-source.gd",
+          "--hdr-probe"
+        ],
+        "return_code": 0,
+        "seconds": 7.25700144295115,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_native.gd": "6402e540a2c959c4a8f8673b7d93ae365fd1967fa61331ebbc4df8e3d4ebded0",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "hdr-on.png": "381cc909027b81e5491b3e76101246f1a817fcf006791346fb0d99d32e8359c5",
+          "hdr-off.png": "c916d9d072d5b810dec8681790b4d1dff54b59bff4d188400a95b410edf2d074"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11",
+        "hdr-on.png": "381cc909027b81e5491b3e76101246f1a817fcf006791346fb0d99d32e8359c5",
+        "tool-source.gd": "6402e540a2c959c4a8f8673b7d93ae365fd1967fa61331ebbc4df8e3d4ebded0",
+        "run.log": "1538e71646b5dab2c67e12d7cb2e8d17f77477724ee57933800b41c0d77a52b6",
+        "hdr-off.png": "c916d9d072d5b810dec8681790b4d1dff54b59bff4d188400a95b410edf2d074",
+        "run.json": "afe96d5c4ce13ffe810e1de2f031ddbd41cca4f03fb0eb10078271ea09beb4a0"
+      }
+    },
+    {
+      "label": "native-hdr-mobile01",
+      "reason": "Excluded from acceptance for the same clipped-to-white HDR probe. Corrected native-hdr-mobile03 tests unsaturated output.",
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-hdr-mobile01/tool-source.gd",
+          "--hdr-probe"
+        ],
+        "return_code": 0,
+        "seconds": 5.505618811992463,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_native.gd": "6402e540a2c959c4a8f8673b7d93ae365fd1967fa61331ebbc4df8e3d4ebded0",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "hdr-on.png": "79f010396990c8e051ee32f7ea680acd47d1f7e1cb8a4bfb5073c146b0b90150",
+          "hdr-off.png": "4b10f1e0c13a1f4e9d12decf27de16243697ef1f2db07e632364a6a4201bc4be"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11",
+        "hdr-on.png": "79f010396990c8e051ee32f7ea680acd47d1f7e1cb8a4bfb5073c146b0b90150",
+        "tool-source.gd": "6402e540a2c959c4a8f8673b7d93ae365fd1967fa61331ebbc4df8e3d4ebded0",
+        "run.log": "ac6e330fb96c32ea10a814a1665d0dd990776cbc3ede4183157de60d53b54537",
+        "hdr-off.png": "4b10f1e0c13a1f4e9d12decf27de16243697ef1f2db07e632364a6a4201bc4be",
+        "run.json": "b23be0b0f170bdb6c75dbc026186db0b08a2e05399730cdb30375eb4bd85f8e4"
+      }
+    },
+    {
+      "label": "native-hdr-mobile02",
+      "reason": "The non-clipping assertion exposed Mobile existing packed source-buffer radiance limit of 2. Final fixture uses distinct radiances 1.25/1.5/1.75 inside that range; no renderer format was changed.",
+      "run": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/candidate01/CursedLands.x86_64",
+          "--render-thread",
+          "separate",
+          "--rendering-method",
+          "mobile",
+          "--windowed",
+          "--resolution",
+          "800x600",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-hdr-mobile02/tool-source.gd",
+          "--hdr-probe"
+        ],
+        "return_code": 1,
+        "seconds": 5.255551966023631,
+        "timeout_seconds": 180,
+        "termination_reason": null,
+        "errors": [
+          "FAIL exposure reveals bright linear HDR input without display clipping"
+        ],
+        "warnings": [
+          "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+        ],
+        "campaign": "base",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_native.gd": "58e17d517ff4e357c9f7f008aab56076014f5adf7da6fdd264123249511ecbb8",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "8e7bfd42409c471e279703775876678ba4c763364041a68a1522890c3ca25e59",
+          "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+        },
+        "other_processes_at_start": [],
+        "other_processes_at_end": [],
+        "captures": {
+          "hdr-on.png": "841e5e03c546b0e65b11b7a6b278c8682dc2fe55a4a955ecaabca7cb885264b9",
+          "hdr-off.png": "b76206501534f20fbc31440a4de30d5321aaef3f26bb3bdec9e7b8bf5cfcfdbe"
+        },
+        "input_profile": {}
+      },
+      "files": {
+        "camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11",
+        "hdr-on.png": "841e5e03c546b0e65b11b7a6b278c8682dc2fe55a4a955ecaabca7cb885264b9",
+        "tool-source.gd": "58e17d517ff4e357c9f7f008aab56076014f5adf7da6fdd264123249511ecbb8",
+        "run.log": "45ad5a1decffd3261f6538f29b8ceff98cf32a6951fdbf16658425aca4db805e",
+        "hdr-off.png": "b76206501534f20fbc31440a4de30d5321aaef3f26bb3bdec9e7b8bf5cfcfdbe",
+        "run.json": "d3aacfba36c024b8e87e18db891c4888c1f987f5b45b122a3ac9c5d5cfa727dd"
+      }
+    }
+  ],
+  "limits": [
+    "Windows cross-compile and PE/import checks only; no Windows runtime or 4090 Mobile timing acceptance.",
+    "Linux Vulkan tests used an RTX 3090. Some runs overlapped unrelated processes; no performance claim is made.",
+    "This adapts the pinned R1 algorithm to Godot reverse-Z and pre-tonemap HDR; it is not an exact R1/D3D11 image comparison.",
+    "MetalFX, stereo devices and long gameplay routes remain unqualified."
+  ],
+  "acceptance": {
+    "runs": 21,
+    "checks": 456,
+    "failures": 0,
+    "legacy_exact_pairs": 26,
+    "failed_focus_assertions_retained": 8,
+    "failed_hdr_assertions_retained": 1,
+    "hdr": {
+      "forward_input": [
+        8,
+        12,
+        16
+      ],
+      "forward_environment_exposure": 0.02,
+      "mobile_input": [
+        1.25,
+        1.5,
+        1.75
+      ],
+      "mobile_environment_exposure": 0.2,
+      "forward_off_on_rgb": [
+        0.4353,
+        0.5255,
+        0.6
+      ],
+      "tolerance": "at most one output byte; observed Forward+ and Mobile samples unchanged"
+    }
+  },
+  "legacy_pairs": [
+    {
+      "renderer": "forward",
+      "capture": "dof-legacy-0-1-near-far.png",
+      "sha256": "b23c5ca420efbfac574f9805763c8ae11a4059dfaf61458e73239dbe4260dfe7"
+    },
+    {
+      "renderer": "forward",
+      "capture": "dof-legacy-0-1-near.png",
+      "sha256": "26b2cfbf853798b185c3ff409655eea7456fb8012ad00cde81550f281acaedf0"
+    },
+    {
+      "renderer": "forward",
+      "capture": "dof-legacy-0-2-near-far.png",
+      "sha256": "4869e7326cbcfcee701a39ba24a515ef9fadbf5b84537c88d439ae71a04c7261"
+    },
+    {
+      "renderer": "forward",
+      "capture": "dof-legacy-0-2-near.png",
+      "sha256": "de2840359e30c379655417ef295cf5c3ce357e07cb0c30f5631fb987a608ca61"
+    },
+    {
+      "renderer": "forward",
+      "capture": "dof-legacy-1-1-near-far.png",
+      "sha256": "1a76c133d530bb199c238f85c9e43986f14a55a20486a952fdaeb64f235f2c9d"
+    },
+    {
+      "renderer": "forward",
+      "capture": "dof-legacy-1-1-near.png",
+      "sha256": "9753dabcf78005e47db480a6e56e0bc46b0093a612f861a36598a24fc4d70303"
+    },
+    {
+      "renderer": "forward",
+      "capture": "dof-legacy-1-2-near-far.png",
+      "sha256": "b3b5af9af9980e82d04db46e7791a8b07585a16b8c975c4bb4a89e8ae08303f0"
+    },
+    {
+      "renderer": "forward",
+      "capture": "dof-legacy-1-2-near.png",
+      "sha256": "3c45b257f4cc0bc093706b4e13defa5f382cbc9d76946caed775c033e89899ed"
+    },
+    {
+      "renderer": "forward",
+      "capture": "dof-legacy-2-1-near-far.png",
+      "sha256": "6d4fcae3ef1d7e5ac035e234cd8870752007530cf3b71f4c0daeb3ed962e1d2b"
+    },
+    {
+      "renderer": "forward",
+      "capture": "dof-legacy-2-1-near.png",
+      "sha256": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf"
+    },
+    {
+      "renderer": "forward",
+      "capture": "dof-legacy-2-2-near-far.png",
+      "sha256": "fccab8ec38ea143935e74a68ca7823f3ddd8b57002332def31971a91001ed198"
+    },
+    {
+      "renderer": "forward",
+      "capture": "dof-legacy-2-2-near.png",
+      "sha256": "62d32e49aa66224c228b52294d5b7872b5b37707f5dcc02444d0bb0cf810becf"
+    },
+    {
+      "renderer": "forward",
+      "capture": "dof-legacy-off.png",
+      "sha256": "07713507c90de1907adac4d70f0486b9b3b185bbefb1c4d7f89c2140b371f601"
+    },
+    {
+      "renderer": "mobile",
+      "capture": "dof-legacy-0-1-near-far.png",
+      "sha256": "56712b3a75fcc1f984816a7bf37652e54533880cb65a5e78b87ea2cd15ffcc7c"
+    },
+    {
+      "renderer": "mobile",
+      "capture": "dof-legacy-0-1-near.png",
+      "sha256": "3b14ed78133776221cdb9eff2dc3aecdcd03e93aa718fc0780b3b882a2b677d4"
+    },
+    {
+      "renderer": "mobile",
+      "capture": "dof-legacy-0-2-near-far.png",
+      "sha256": "4272bef85c5522bb33f2a54243fc75f21a69a6ebb3629ec8fea9f9cc43f65469"
+    },
+    {
+      "renderer": "mobile",
+      "capture": "dof-legacy-0-2-near.png",
+      "sha256": "b15357f3d82c6ea141506a2bcb413ca2eb6b6c706ef99a372a955c7c0d4ba19d"
+    },
+    {
+      "renderer": "mobile",
+      "capture": "dof-legacy-1-1-near-far.png",
+      "sha256": "6d2d6f4b7a72640e225c254227ba0b37cd287c892eefdd6791f980e1bf616ef7"
+    },
+    {
+      "renderer": "mobile",
+      "capture": "dof-legacy-1-1-near.png",
+      "sha256": "7d5ac672786e3786be0fd632e172fba20aa9a1bf4035c96b370a0edb68513da6"
+    },
+    {
+      "renderer": "mobile",
+      "capture": "dof-legacy-1-2-near-far.png",
+      "sha256": "3dcdaffebf4875799449c51c22086933915123626982810338a6c9983cea6494"
+    },
+    {
+      "renderer": "mobile",
+      "capture": "dof-legacy-1-2-near.png",
+      "sha256": "988bc808f8b9009693d3ae3a714fe00825e9273ab1c80a5f3d21eb0d7d0a73f5"
+    },
+    {
+      "renderer": "mobile",
+      "capture": "dof-legacy-2-1-near-far.png",
+      "sha256": "5be3cb9c1263036920d6001fcf1744cd88d31a567eb5182c5bc3dd64d746d3b5"
+    },
+    {
+      "renderer": "mobile",
+      "capture": "dof-legacy-2-1-near.png",
+      "sha256": "6830bdbabbda9b013191fd2e9b4d0960afd1706237655a399835696c7cca82fe"
+    },
+    {
+      "renderer": "mobile",
+      "capture": "dof-legacy-2-2-near-far.png",
+      "sha256": "9ebf7d4d603f2e0bc5a6f6b6c7cb44c27a822f1acee9f646ca6af5c4b1a46111"
+    },
+    {
+      "renderer": "mobile",
+      "capture": "dof-legacy-2-2-near.png",
+      "sha256": "c349a8d18e4084836abc9843617515abb221658eeab9e477caa01fb528f818f8"
+    },
+    {
+      "renderer": "mobile",
+      "capture": "dof-legacy-off.png",
+      "sha256": "21216376dc79c01344ee36ced20f160856b1fee6f4b6c3e7061ae583fe814b16"
+    }
+  ],
+  "native_sources": {
+    "core/os/os.cpp": "26187ef96f3a3c0e008e71192758811b7c6840219ef6740d99d26fbc74452354",
+    "servers/rendering/storage/camera_attributes_storage.h": "c9d873c692a86646dc401c0ff3b4144f7ce4fa7e87e6dc63dadd7f875c2452f3",
+    "servers/rendering/storage/camera_attributes_storage.cpp": "1e75932acd26ac425b398fd64e1a836da1f85f2ab764b77d5a429bc415dfc0c5",
+    "servers/rendering/rendering_server.h": "48af4abd50357b9a2b0012566f1354b9e56a66327adcefb7798b226eb3998a58",
+    "servers/rendering/rendering_server.cpp": "4f668673a2096da2f7949326d7e37fc49f63b91bd74ef32a4d11a35cc3ee5ce7",
+    "servers/rendering/rendering_server_default.h": "4c5332cb15a83f38cc9ae89957ea659dc67f0478bf377b133dac68831ee87b78",
+    "servers/rendering/renderer_rd/renderer_scene_render_rd.h": "560283b1c2bbb6e119cf84ab35aef09353c2f4acfd70f5f3d698df06475dff8e",
+    "servers/rendering/renderer_rd/renderer_scene_render_rd.cpp": "3b89d9cc6c19933a4c74afc13e5d795989723f32336f446e06773d140ab8cd24",
+    "servers/rendering/renderer_rd/effects/far_dof.h": "fa68c3ec153809143be2fdafafa33ec27dbe421fae78c12e0e2c9e0f008068bd",
+    "servers/rendering/renderer_rd/effects/far_dof.cpp": "a0beeb52b3d4eb6911f15aeac1e3fbbe055b5f885b1d18dcd0ebeb62b38f2328",
+    "servers/rendering/renderer_rd/shaders/effects/far_dof.glsl": "9dda02ad4575e750c1cc10cc002906b0764c16af1f85b2ec2e0cd97cc4d2247e"
+  },
+  "baseline_native_sources": {
+    "core/os/os.cpp": "6b0702eab6eaa737ea48c5ea6ad948c0190d58084b9358dcd9e6cdefe39b2b85",
+    "servers/rendering/storage/camera_attributes_storage.h": "9cfb73a83cb4f1992ab400a2eebe14df7b70dc51cbd0aa66d45e143e5c4f5fec",
+    "servers/rendering/storage/camera_attributes_storage.cpp": "43cfc6c02eccdaf9d5125b7ea5bf16e1e87d401e71477daada9195f423f7f53a",
+    "servers/rendering/rendering_server.h": "5e0e9b836f0c2e41c7237c0a72b76c5d60f632bd8294294a5f28ff1b975c2cd8",
+    "servers/rendering/rendering_server.cpp": "b108f62d9d6113061dd1261e7bef51515fbdba9080b4393245e84cecc67ad7ca",
+    "servers/rendering/rendering_server_default.h": "d6b8278026fbaf10e64fcec3a6b10b5c84730c7dac931d60d7c00b9a47933de5",
+    "servers/rendering/renderer_rd/renderer_scene_render_rd.h": "574585965892af415d48a03919c0c94d07e0dc167dc41f35e60e638b89800fc4",
+    "servers/rendering/renderer_rd/renderer_scene_render_rd.cpp": "a39eb541966b8afd8a663390f679fb5ac4aa58ad44a6571b159bc581943bfc7c"
+  },
+  "patch_roundtrip": {
+    "files": 11,
+    "all_exact": true,
+    "sha256": {
+      "core/os/os.cpp": "26187ef96f3a3c0e008e71192758811b7c6840219ef6740d99d26fbc74452354",
+      "servers/rendering/storage/camera_attributes_storage.h": "c9d873c692a86646dc401c0ff3b4144f7ce4fa7e87e6dc63dadd7f875c2452f3",
+      "servers/rendering/storage/camera_attributes_storage.cpp": "1e75932acd26ac425b398fd64e1a836da1f85f2ab764b77d5a429bc415dfc0c5",
+      "servers/rendering/rendering_server.h": "48af4abd50357b9a2b0012566f1354b9e56a66327adcefb7798b226eb3998a58",
+      "servers/rendering/rendering_server.cpp": "4f668673a2096da2f7949326d7e37fc49f63b91bd74ef32a4d11a35cc3ee5ce7",
+      "servers/rendering/rendering_server_default.h": "4c5332cb15a83f38cc9ae89957ea659dc67f0478bf377b133dac68831ee87b78",
+      "servers/rendering/renderer_rd/renderer_scene_render_rd.h": "560283b1c2bbb6e119cf84ab35aef09353c2f4acfd70f5f3d698df06475dff8e",
+      "servers/rendering/renderer_rd/renderer_scene_render_rd.cpp": "3b89d9cc6c19933a4c74afc13e5d795989723f32336f446e06773d140ab8cd24",
+      "servers/rendering/renderer_rd/effects/far_dof.h": "fa68c3ec153809143be2fdafafa33ec27dbe421fae78c12e0e2c9e0f008068bd",
+      "servers/rendering/renderer_rd/effects/far_dof.cpp": "a0beeb52b3d4eb6911f15aeac1e3fbbe055b5f885b1d18dcd0ebeb62b38f2328",
+      "servers/rendering/renderer_rd/shaders/effects/far_dof.glsl": "9dda02ad4575e750c1cc10cc002906b0764c16af1f85b2ec2e0cd97cc4d2247e"
+    }
+  },
+  "windows_pe": {
+    "CursedLands.exe": {
+      "sha256": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+      "bytes": 94036992,
+      "imports": [
+        "ADVAPI32.dll",
+        "AVRT.dll",
+        "bcrypt.dll",
+        "CRYPT32.dll",
+        "dwmapi.dll",
+        "DWrite.dll",
+        "GDI32.dll",
+        "HID.DLL",
+        "IMM32.dll",
+        "IPHLPAPI.DLL",
+        "KERNEL32.dll",
+        "api-ms-win-core-processthreads-l1-1-3.dll",
+        "api-ms-win-security-base-l1-2-1.dll",
+        "api-ms-win-security-lsalookup-l2-1-0.dll",
+        "msvcrt.dll",
+        "ntdll.dll",
+        "ole32.dll",
+        "OLEAUT32.dll",
+        "SHCORE.dll",
+        "SHELL32.dll",
+        "SHLWAPI.dll",
+        "USER32.dll",
+        "WINMM.dll",
+        "WS2_32.dll",
+        "WSOCK32.dll"
+      ]
+    },
+    "libterrain_search.dll": {
+      "sha256": "14906b040d4b6a5e1e217b9bfb21214f48700b6709163be584cc98e584f45106",
+      "bytes": 2352640,
+      "imports": [
+        "KERNEL32.dll",
+        "msvcrt.dll"
+      ]
+    }
+  },
+  "builds": {
+    "build-01": {
+      "command": [
+        "nice",
+        "-n",
+        "10",
+        "python3",
+        "-m",
+        "SCons",
+        "-j2",
+        "platform=linuxbsd",
+        "target=template_release",
+        "debug_symbols=yes",
+        "lto=none",
+        "production=yes",
+        "optimize=speed",
+        "wayland=no",
+        "module_mono_enabled=no",
+        "module_openxr_enabled=no",
+        "module_jolt_physics_enabled=no",
+        "module_fbx_enabled=no",
+        "module_gltf_enabled=no",
+        "module_lightmapper_rd_enabled=no",
+        "module_csg_enabled=no",
+        "module_theora_enabled=no",
+        "module_webrtc_enabled=no",
+        "module_webxr_enabled=no",
+        "accesskit=no"
+      ],
+      "environment": {
+        "PYTHONPATH": "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/scons"
+      },
+      "cwd": "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/engine",
+      "started": 1791603546.3373337,
+      "exit_code": 0,
+      "finished": 1791603947.560934
+    },
+    "build-windows-01": {
+      "command": [
+        "nice",
+        "-n",
+        "10",
+        "python3",
+        "-m",
+        "SCons",
+        "-j4",
+        "platform=windows",
+        "arch=x86_64",
+        "target=template_release",
+        "debug_symbols=no",
+        "lto=none",
+        "production=yes",
+        "optimize=speed",
+        "use_mingw=yes",
+        "use_static_cpp=yes",
+        "mingw_prefix=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/native-deps/mingw/root/usr",
+        "mesa_libs=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/windows-deps/mesa",
+        "use_pix=no",
+        "module_mono_enabled=no",
+        "module_openxr_enabled=no",
+        "accesskit=no"
+      ],
+      "environment": {
+        "PYTHONPATH": "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/scons"
+      },
+      "cwd": "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/engine",
+      "started": 1791604269.7028396,
+      "exit_code": 255,
+      "finished": 1791604269.84277,
+      "diagnostic": "Cross-compiler preflight needed MINGW_PREFIX; corrected environment and full successful build recorded in build-windows-02."
+    },
+    "build-windows-02": {
+      "command": [
+        "nice",
+        "-n",
+        "10",
+        "python3",
+        "-m",
+        "SCons",
+        "-j4",
+        "platform=windows",
+        "arch=x86_64",
+        "target=template_release",
+        "debug_symbols=no",
+        "lto=none",
+        "production=yes",
+        "optimize=speed",
+        "use_mingw=yes",
+        "use_static_cpp=yes",
+        "mingw_prefix=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/native-deps/mingw/root/usr",
+        "mesa_libs=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/windows-deps/mesa",
+        "use_pix=no",
+        "module_mono_enabled=no",
+        "module_openxr_enabled=no",
+        "accesskit=no"
+      ],
+      "environment": {
+        "PYTHONPATH": "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/scons",
+        "MINGW_PREFIX": "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/native-deps/mingw/root/usr"
+      },
+      "cwd": "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/engine",
+      "started": 1791604306.6392255,
+      "exit_code": 0,
+      "finished": 1791604528.107108
+    }
+  },
+  "source_sha256": {
+    "game/src/ui/camera_depth_of_field.gd": "e44f901b53eeba2f0b59ae48a88b8191b6ca96e5b4c13e85b5289cc5dc3f50c8",
+    "game/src/ei/game_data.gd": "5142494a56df5b53c526049443e207967535b5170c7d9f3e3aac58ffa0b5fa6c",
+    "game/src/ei/remake_text.gd": "7a09794a7dd7274a2e48f506f5166d5ee6a0322e80eb5f90b839047375541cf2",
+    "engine_patches/godot-4.7/far-dof-reference.patch": "9c906ae637c9df620f1976d7b6c3bfe6aed4e236c91fcf27b40afeb8bacf3954",
+    "tools/tests/camera_depth_of_field.gd": "98c5133b0be39480c819278f42da369a86b96a5f769208706bfc18580497024b",
+    "tools/tests/camera_depth_of_field_render.gd": "90409bda13e0f551b3c7c293deafbf1965b0072da5ccffecfdcf0f9a4b8e622c",
+    "tools/tests/camera_depth_of_field_scene.gd": "0d8b7af4acb3344d36be717d07ac2e9a4bd19a3ef92d9449aa219f59d8658c19",
+    "tools/tests/camera_depth_of_field_native.gd": "eba4a3c38a5f80ad3b50578d173bdc71c16e5b527411662a8eaddb4137f5f2dc",
+    "tools/tests/camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11"
+  },
+  "artifacts": {
+    "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/build-01.log": "1871751e96b1ace28bbbda4fd316855bf6efb7579e77f0dbfd3f8f80e6dd97fd",
+    "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/build-windows-01.log": "a817de2e671c5f058a83031914a05b44b749fb9f999248cc0f6d45bbfc9501fd",
+    "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/build-windows-02.log": "80a235f620573c4ee9ee1e641e8243dbabd11b092100aee172b4ad4ce8e75339",
+    "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/far-dof-reference.patch": "9c906ae637c9df620f1976d7b6c3bfe6aed4e236c91fcf27b40afeb8bacf3954",
+    "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/native-source-manifest.json": "307bdf191253f6a5c7ab5c3af6f9df7dfd338016bb389804a7e54ac8372ed961",
+    "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/baseline-manifest.json": "25000b8776ff94e487bcd834b5eb92dcf374ed23cd7194892e4cc0ae88877cb5",
+    "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/windows-pe.json": "8899ecb2dfe8390648295fbeece5c30062b109eef73f232f2eeae4da1b529f8b",
+    "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/run_game.py": "c89a8d2b92fdcc76b9d4f160d2aabd12b680b734b825d8e2f3dc5cd5b114dde8",
+    "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/run_native.py": "2f56793455c541f3d1c42f0a7d71f881fe6b1d46e1898e5a3da64c3459a9781b",
+    "/home/llm2x/Documents/EI/local/scratchpad/depth-focus-20261010/record.py": "395790308a884d197608988780b7f371474638e4b2cd71a6540e64a2ee730b3b"
+  }
+}

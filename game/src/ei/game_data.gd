@@ -313,7 +313,7 @@ const REMAKE_OPTIONS := {
 	"gfx_ssao": ["Ambient occlusion", "Soft contact shadows (SSAO)."],
 	"gfx_bloom": ["Bloom", "Glow around bright lights."],
 	"gfx_weather_mist": ["Local water mist", "Thin drifting mist above verified water and swamp surfaces, strongest on misty mornings and after rain. Requires Volumetric fog and the Forward+ renderer."],
-	"gfx_depth_of_field": ["Depth of field", "Softens the distant background at low camera angles, focusing on the camera target. Tactical views stay sharp. Requires a compatible Forward+ or Mobile build. Off by default."],
+	"gfx_depth_of_field": ["Depth of field", "Softens the distant background at low camera angles. Focus follows the visible scene smoothly; tactical views stay sharp. Requires a compatible Forward+ or Mobile build. Off by default."],
 	"gfx_terrain_cliffs": ["Steep rock textures", "Side-projected textures on verified natural rock cliffs. Requires Terrain detail. Preserves paths, other terrain artwork and geometry. Off by default."],
 	"gfx_severed_limbs": ["Severed limbs fly off", "A severed head, arm or leg is cut from the figure and thrown to the ground, where it lies for a while. Off: as the original, the part stays on the body, bloodied."],
 	"display_mode": ["Display mode", "Windowed, fullscreen, or a borderless window covering the screen."],

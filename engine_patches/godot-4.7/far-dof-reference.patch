@@ -1,0 +1,720 @@
+diff --git a/core/os/os.cpp b/core/os/os.cpp
+--- a/core/os/os.cpp
++++ b/core/os/os.cpp
+@@ -475,6 +475,9 @@
+ 	}
+ 
+ 	// Native capability, never supplied by an export custom feature.
++	if (p_feature == "ei_far_dof_reference") {
++		return true;
++	}
+ 	if (p_feature == "ei_far_dof_guard") {
+ 		return true;
+ 	}
+diff --git a/servers/rendering/storage/camera_attributes_storage.h b/servers/rendering/storage/camera_attributes_storage.h
+--- a/servers/rendering/storage/camera_attributes_storage.h
++++ b/servers/rendering/storage/camera_attributes_storage.h
+@@ -56,6 +56,10 @@
+ 		float dof_blur_near_distance = 2;
+ 		float dof_blur_near_transition = 1;
+ 		float dof_blur_amount = 0.1;
++		bool far_dof_enabled = false;
++		float far_dof_margin = 1.0;
++		float far_dof_seconds = 0.3;
++		uint64_t far_dof_version = 0;
+ 	};
+ 
+ 	RSE::DOFBlurQuality dof_blur_quality = RSE::DOF_BLUR_QUALITY_MEDIUM;
+@@ -89,6 +93,12 @@
+ 	float camera_attributes_get_dof_near_distance(RID p_camera_attributes);
+ 	float camera_attributes_get_dof_near_transition(RID p_camera_attributes);
+ 	float camera_attributes_get_dof_blur_amount(RID p_camera_attributes);
++
++	void camera_attributes_set_far_dof(RID p_camera_attributes, bool p_enabled, float p_margin, float p_seconds, bool p_reset);
++	bool camera_attributes_get_far_dof_enabled(RID p_camera_attributes);
++	float camera_attributes_get_far_dof_margin(RID p_camera_attributes);
++	float camera_attributes_get_far_dof_seconds(RID p_camera_attributes);
++	uint64_t camera_attributes_get_far_dof_version(RID p_camera_attributes);
+ 
+ 	_FORCE_INLINE_ bool camera_attributes_uses_dof(RID p_camera_attributes) {
+ 		CameraAttributes *cam_attributes = camera_attributes_owner.get_or_null(p_camera_attributes);
+diff --git a/servers/rendering/storage/camera_attributes_storage.cpp b/servers/rendering/storage/camera_attributes_storage.cpp
+--- a/servers/rendering/storage/camera_attributes_storage.cpp
++++ b/servers/rendering/storage/camera_attributes_storage.cpp
+@@ -188,3 +188,41 @@
+ 	ERR_FAIL_NULL_V(cam_attributes, 0);
+ 	return cam_attributes->auto_exposure_version;
+ }
++
++// Explicit opt-in: ordinary manual/physical and near-enabled blur retain their
++// existing pipeline. History belongs to the viewport, never to a global camera.
++void RendererCameraAttributes::camera_attributes_set_far_dof(RID p_camera_attributes, bool p_enabled, float p_margin, float p_seconds, bool p_reset) {
++	CameraAttributes *attributes = camera_attributes_owner.get_or_null(p_camera_attributes);
++	ERR_FAIL_NULL(attributes);
++	ERR_FAIL_COND(!Math::is_finite(p_margin) || !Math::is_finite(p_seconds));
++	if (attributes->far_dof_enabled != p_enabled || p_reset) {
++		attributes->far_dof_version++;
++	}
++	attributes->far_dof_enabled = p_enabled;
++	attributes->far_dof_margin = CLAMP(p_margin, 0.0f, 4.0f);
++	attributes->far_dof_seconds = CLAMP(p_seconds, 0.01f, 10.0f);
++}
++
++bool RendererCameraAttributes::camera_attributes_get_far_dof_enabled(RID p_camera_attributes) {
++	CameraAttributes *attributes = camera_attributes_owner.get_or_null(p_camera_attributes);
++	ERR_FAIL_NULL_V(attributes, false);
++	return attributes->far_dof_enabled;
++}
++
++float RendererCameraAttributes::camera_attributes_get_far_dof_margin(RID p_camera_attributes) {
++	CameraAttributes *attributes = camera_attributes_owner.get_or_null(p_camera_attributes);
++	ERR_FAIL_NULL_V(attributes, 1.0);
++	return attributes->far_dof_margin;
++}
++
++float RendererCameraAttributes::camera_attributes_get_far_dof_seconds(RID p_camera_attributes) {
++	CameraAttributes *attributes = camera_attributes_owner.get_or_null(p_camera_attributes);
++	ERR_FAIL_NULL_V(attributes, 0.3);
++	return attributes->far_dof_seconds;
++}
++
++uint64_t RendererCameraAttributes::camera_attributes_get_far_dof_version(RID p_camera_attributes) {
++	CameraAttributes *attributes = camera_attributes_owner.get_or_null(p_camera_attributes);
++	ERR_FAIL_NULL_V(attributes, 0);
++	return attributes->far_dof_version;
++}
+diff --git a/servers/rendering/rendering_server.h b/servers/rendering/rendering_server.h
+--- a/servers/rendering/rendering_server.h
++++ b/servers/rendering/rendering_server.h
+@@ -705,6 +705,7 @@
+ 	virtual void camera_attributes_set_dof_blur_quality(RSE::DOFBlurQuality p_quality, bool p_use_jitter) = 0;
+ 
+ 	virtual void camera_attributes_set_dof_blur_bokeh_shape(RSE::DOFBokehShape p_shape) = 0;
++	virtual void camera_attributes_set_far_dof(RID p_camera_attributes, bool p_enabled, float p_margin, float p_seconds, bool p_reset) = 0;
+ 
+ 	virtual void camera_attributes_set_dof_blur(RID p_camera_attributes, bool p_far_enable, float p_far_distance, float p_far_transition, bool p_near_enable, float p_near_distance, float p_near_transition, float p_amount) = 0;
+ 	virtual void camera_attributes_set_exposure(RID p_camera_attributes, float p_multiplier, float p_exposure_normalization) = 0;
+diff --git a/servers/rendering/rendering_server.cpp b/servers/rendering/rendering_server.cpp
+--- a/servers/rendering/rendering_server.cpp
++++ b/servers/rendering/rendering_server.cpp
+@@ -3185,6 +3185,7 @@
+ 
+ 	ClassDB::bind_method(D_METHOD("camera_attributes_set_dof_blur_quality", "quality", "use_jitter"), &RenderingServer::camera_attributes_set_dof_blur_quality);
+ 	ClassDB::bind_method(D_METHOD("camera_attributes_set_dof_blur_bokeh_shape", "shape"), &RenderingServer::camera_attributes_set_dof_blur_bokeh_shape);
++	ClassDB::bind_method(D_METHOD("camera_attributes_set_far_dof", "camera_attributes", "enabled", "margin", "seconds", "reset"), &RenderingServer::camera_attributes_set_far_dof);
+ 
+ 	ClassDB::bind_method(D_METHOD("camera_attributes_set_dof_blur", "camera_attributes", "far_enable", "far_distance", "far_transition", "near_enable", "near_distance", "near_transition", "amount"), &RenderingServer::camera_attributes_set_dof_blur);
+ 	ClassDB::bind_method(D_METHOD("camera_attributes_set_exposure", "camera_attributes", "multiplier", "normalization"), &RenderingServer::camera_attributes_set_exposure);
+diff --git a/servers/rendering/rendering_server_default.h b/servers/rendering/rendering_server_default.h
+--- a/servers/rendering/rendering_server_default.h
++++ b/servers/rendering/rendering_server_default.h
+@@ -939,6 +939,7 @@
+ 
+ 	FUNC2(camera_attributes_set_dof_blur_quality, RSE::DOFBlurQuality, bool)
+ 	FUNC1(camera_attributes_set_dof_blur_bokeh_shape, RSE::DOFBokehShape)
++	FUNC5(camera_attributes_set_far_dof, RID, bool, float, float, bool)
+ 
+ 	FUNC8(camera_attributes_set_dof_blur, RID, bool, float, float, bool, float, float, float)
+ 	FUNC3(camera_attributes_set_exposure, RID, float, float)
+diff --git a/servers/rendering/renderer_rd/renderer_scene_render_rd.h b/servers/rendering/renderer_rd/renderer_scene_render_rd.h
+--- a/servers/rendering/renderer_rd/renderer_scene_render_rd.h
++++ b/servers/rendering/renderer_rd/renderer_scene_render_rd.h
+@@ -32,6 +32,7 @@
+ 
+ #include "servers/rendering/renderer_compositor.h"
+ #include "servers/rendering/renderer_rd/effects/bokeh_dof.h"
++#include "servers/rendering/renderer_rd/effects/far_dof.h"
+ #include "servers/rendering/renderer_rd/effects/copy_effects.h"
+ #include "servers/rendering/renderer_rd/effects/debug_effects.h"
+ #include "servers/rendering/renderer_rd/effects/fsr.h"
+@@ -61,6 +62,7 @@
+ protected:
+ 	RendererRD::ForwardIDStorage *forward_id_storage = nullptr;
+ 	RendererRD::BokehDOF *bokeh_dof = nullptr;
++	RendererRD::FarDOF *far_dof = nullptr;
+ 	RendererRD::CopyEffects *copy_effects = nullptr;
+ 	RendererRD::DebugEffects *debug_effects = nullptr;
+ 	RendererRD::Luminance *luminance = nullptr;
+diff --git a/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp b/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
+--- a/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
++++ b/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
+@@ -500,7 +500,28 @@
+ 		using_dof = false;
+ 	}
+ 
+-	if (can_use_effects && using_dof) {
++	bool reference_far_dof = can_use_effects && using_dof &&
++			RSG::camera_attributes->camera_attributes_get_far_dof_enabled(p_render_data->camera_attributes) &&
++			RSG::camera_attributes->camera_attributes_get_dof_far_enabled(p_render_data->camera_attributes) &&
++			!RSG::camera_attributes->camera_attributes_get_dof_near_enabled(p_render_data->camera_attributes);
++	if (reference_far_dof) {
++		if (!far_dof) {
++			far_dof = memnew(RendererRD::FarDOF);
++		}
++		RENDER_TIMESTAMP("Far depth of field");
++		RD::get_singleton()->draw_command_begin_label("Far depth of field");
++		for (uint32_t i = 0; i < rb->get_view_count(); i++) {
++			RID source = use_upscaled_texture ? rb->get_upscaled_texture(i) : rb->get_internal_texture(i);
++			RID depth = (!can_use_storage && p_use_msaa) ? rb->get_texture_slice(RB_SCOPE_BUFFERS, RB_TEX_BACK_DEPTH, i, 0) : rb->get_depth_texture(i);
++			const Projection &projection = p_render_data->scene_data->view_projection[i];
++			far_dof->process(rb, i, source, depth, color_size, p_render_data->camera_attributes, projection.get_z_near(), projection.get_z_far(), p_render_data->scene_data->cam_orthogonal);
++		}
++		RD::get_singleton()->draw_command_end_label();
++	} else if (far_dof) {
++		far_dof->clear(rb);
++	}
++
++	if (can_use_effects && using_dof && !reference_far_dof) {
+ 		RENDER_TIMESTAMP("Depth of Field");
+ 		RD::get_singleton()->draw_command_begin_label("DOF");
+ 
+@@ -1892,6 +1913,9 @@
+ 	if (bokeh_dof) {
+ 		memdelete(bokeh_dof);
+ 	}
++	if (far_dof) {
++		memdelete(far_dof);
++	}
+ 	if (copy_effects) {
+ 		memdelete(copy_effects);
+ 	}
+diff --git a/servers/rendering/renderer_rd/effects/far_dof.h b/servers/rendering/renderer_rd/effects/far_dof.h
+new file mode 100644
+--- /dev/null
++++ b/servers/rendering/renderer_rd/effects/far_dof.h
+@@ -0,0 +1,91 @@
++/**************************************************************************/
++/*  far_dof.h                                                             */
++/**************************************************************************/
++/*                         This file is part of:                          */
++/*                             GODOT ENGINE                               */
++/*                        https://godotengine.org                         */
++/**************************************************************************/
++/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */
++/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */
++/*                                                                        */
++/* Permission is hereby granted, free of charge, to any person obtaining  */
++/* a copy of this software and associated documentation files (the        */
++/* "Software"), to deal in the Software without restriction, including    */
++/* without limitation the rights to use, copy, modify, merge, publish,    */
++/* distribute, sublicense, and/or sell copies of the Software, and to     */
++/* permit persons to whom the Software is furnished to do so, subject to  */
++/* the following conditions:                                              */
++/*                                                                        */
++/* The above copyright notice and this permission notice shall be         */
++/* included in all copies or substantial portions of the Software.        */
++/*                                                                        */
++/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,        */
++/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */
++/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */
++/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */
++/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   */
++/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE      */
++/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
++/**************************************************************************/
++
++#pragma once
++
++#include "servers/rendering/renderer_rd/pipeline_cache_rd.h"
++#include "servers/rendering/renderer_rd/shaders/effects/far_dof.glsl.gen.h"
++#include "servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.h"
++
++#define RB_FAR_DOF SNAME("far_dof")
++
++namespace RendererRD {
++
++// Opt-in R1 far-field lens: median depth focus, bounded downsampled gather,
++// foreground rejection and terrain coverage over the otherwise sharp sky.
++class FarDOF {
++	struct PushConstant {
++		uint32_t full_size[2];
++		uint32_t work_size[2];
++		float z_near;
++		float z_far;
++		float aperture;
++		float margin;
++		float focus_blend;
++		float divisor;
++		uint32_t orthogonal;
++		float fill_share;
++	};
++
++	enum Mode { FOCUS, PREFILTER, GATHER_LOW, GATHER_HIGH, FILL, COMPOSITE, MODE_MAX };
++	FarDofShaderRD shader;
++	RID shader_version;
++	PipelineCacheRD pipelines[MODE_MAX];
++
++	struct History {
++		RID attributes;
++		uint64_t version = 0;
++		uint64_t last_usec = 0;
++		uint32_t current = 0;
++		bool valid = false;
++		bool orthogonal = false;
++	};
++
++	class Buffers : public RenderBufferCustomDataRD {
++		GDCLASS(Buffers, RenderBufferCustomDataRD);
++
++	public:
++		Size2i size;
++		Vector<History> history;
++		virtual void configure(RenderSceneBuffersRD *p_buffers) override;
++		virtual void free_data() override;
++	};
++
++	Ref<Buffers> get_buffers(Ref<RenderSceneBuffersRD> p_buffers, Size2i p_size);
++	void draw(Mode p_mode, RID p_target, RID p_depth, RID p_source, RID p_focus, const PushConstant &p_params);
++
++public:
++	FarDOF();
++	~FarDOF();
++	void clear(Ref<RenderSceneBuffersRD> p_buffers);
++	void process(Ref<RenderSceneBuffersRD> p_buffers, uint32_t p_view, RID p_source, RID p_depth, Size2i p_size, RID p_attributes, float p_near, float p_far, bool p_orthogonal);
++};
++
++} // namespace RendererRD
+diff --git a/servers/rendering/renderer_rd/effects/far_dof.cpp b/servers/rendering/renderer_rd/effects/far_dof.cpp
+new file mode 100644
+--- /dev/null
++++ b/servers/rendering/renderer_rd/effects/far_dof.cpp
+@@ -0,0 +1,182 @@
++/**************************************************************************/
++/*  far_dof.cpp                                                           */
++/**************************************************************************/
++/*                         This file is part of:                          */
++/*                             GODOT ENGINE                               */
++/*                        https://godotengine.org                         */
++/**************************************************************************/
++/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */
++/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */
++/*                                                                        */
++/* Permission is hereby granted, free of charge, to any person obtaining  */
++/* a copy of this software and associated documentation files (the        */
++/* "Software"), to deal in the Software without restriction, including    */
++/* without limitation the rights to use, copy, modify, merge, publish,    */
++/* distribute, sublicense, and/or sell copies of the Software, and to     */
++/* permit persons to whom the Software is furnished to do so, subject to  */
++/* the following conditions:                                              */
++/*                                                                        */
++/* The above copyright notice and this permission notice shall be         */
++/* included in all copies or substantial portions of the Software.        */
++/*                                                                        */
++/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,        */
++/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */
++/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */
++/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */
++/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   */
++/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE      */
++/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
++/**************************************************************************/
++
++#include "far_dof.h"
++
++#include "core/os/os.h"
++#include "servers/rendering/renderer_rd/framebuffer_cache_rd.h"
++#include "servers/rendering/renderer_rd/storage_rd/material_storage.h"
++#include "servers/rendering/renderer_rd/uniform_set_cache_rd.h"
++#include "servers/rendering/rendering_server_globals.h"
++#include "servers/rendering/storage/camera_attributes_storage.h"
++
++using namespace RendererRD;
++
++FarDOF::FarDOF() {
++	Vector<String> modes;
++	modes.push_back("\n#define MODE_FOCUS\n");
++	modes.push_back("\n#define MODE_PREFILTER\n");
++	modes.push_back("\n#define MODE_GATHER\n#define DOF_TAPS 16\n");
++	modes.push_back("\n#define MODE_GATHER\n#define DOF_TAPS 40\n");
++	modes.push_back("\n#define MODE_FILL\n");
++	modes.push_back("\n#define MODE_COMPOSITE\n");
++	shader.initialize(modes);
++	shader_version = shader.version_create();
++	for (int i = 0; i < MODE_MAX; i++) {
++		RD::PipelineColorBlendState blend = i == COMPOSITE ? RD::PipelineColorBlendState::create_blend() : RD::PipelineColorBlendState::create_disabled();
++		// Keep the existing scene alpha; only the resolved RGB is overlaid.
++		if (i == COMPOSITE) {
++			blend.attachments.write[0].write_a = false;
++		}
++		pipelines[i].setup(shader.version_get_shader(shader_version, i), RD::RENDER_PRIMITIVE_TRIANGLES,
++				RD::PipelineRasterizationState(), RD::PipelineMultisampleState(), RD::PipelineDepthStencilState(), blend, 0);
++	}
++}
++
++FarDOF::~FarDOF() {
++	for (int i = 0; i < MODE_MAX; i++) {
++		pipelines[i].clear();
++	}
++	shader.version_free(shader_version);
++}
++
++void FarDOF::Buffers::configure(RenderSceneBuffersRD *p_buffers) {
++	size = Size2i();
++	history.clear();
++	history.resize(p_buffers->get_view_count());
++}
++
++void FarDOF::Buffers::free_data() {
++	// Textures are named resources owned by RenderSceneBuffersRD. Its resize,
++	// cleanup and destruction free their RIDs and dependent framebuffer sets.
++	history.clear();
++	size = Size2i();
++}
++
++void FarDOF::clear(Ref<RenderSceneBuffersRD> p_buffers) {
++	if (p_buffers->has_custom_data(RB_FAR_DOF)) {
++		Ref<Buffers> buffers = p_buffers->get_custom_data(RB_FAR_DOF);
++		buffers->free_data();
++		p_buffers->clear_context(RB_FAR_DOF);
++		p_buffers->set_custom_data(RB_FAR_DOF, Ref<RenderBufferCustomDataRD>());
++	}
++}
++
++Ref<FarDOF::Buffers> FarDOF::get_buffers(Ref<RenderSceneBuffersRD> p_buffers, Size2i p_size) {
++	if (p_buffers->has_custom_data(RB_FAR_DOF)) {
++		Ref<Buffers> buffers = p_buffers->get_custom_data(RB_FAR_DOF);
++		if (buffers->size == p_size && buffers->history.size() == int(p_buffers->get_view_count())) {
++			return buffers;
++		}
++		clear(p_buffers);
++	}
++	Ref<Buffers> buffers;
++	buffers.instantiate();
++	buffers->configure(p_buffers.ptr());
++	buffers->size = p_size;
++	const uint32_t divisor = p_size.height > 1440 ? 3 : 2;
++	Size2i work((p_size.width + divisor - 1) / divisor, (p_size.height + divisor - 1) / divisor);
++	const uint32_t usage = RD::TEXTURE_USAGE_COLOR_ATTACHMENT_BIT | RD::TEXTURE_USAGE_SAMPLING_BIT | RD::TEXTURE_USAGE_CAN_COPY_FROM_BIT;
++	p_buffers->create_texture(RB_FAR_DOF, SNAME("work_a"), RD::DATA_FORMAT_R16G16B16A16_SFLOAT, usage, RD::TEXTURE_SAMPLES_1, work);
++	p_buffers->create_texture(RB_FAR_DOF, SNAME("work_b"), RD::DATA_FORMAT_R16G16B16A16_SFLOAT, usage, RD::TEXTURE_SAMPLES_1, work);
++	for (StringName name : { SNAME("focus_a"), SNAME("focus_b") }) {
++		RID texture = p_buffers->create_texture(RB_FAR_DOF, name, RD::DATA_FORMAT_R32_SFLOAT, usage | RD::TEXTURE_USAGE_CAN_COPY_TO_BIT, RD::TEXTURE_SAMPLES_1, Size2i(1, 1));
++		RD::get_singleton()->texture_clear(texture, Color(2, 0, 0), 0, 1, 0, p_buffers->get_view_count());
++	}
++	p_buffers->set_custom_data(RB_FAR_DOF, buffers);
++	return buffers;
++}
++
++void FarDOF::draw(Mode p_mode, RID p_target, RID p_depth, RID p_source, RID p_focus, const PushConstant &p_params) {
++	RID program = shader.version_get_shader(shader_version, p_mode);
++	RID fb = FramebufferCacheRD::get_singleton()->get_cache(p_target);
++	RID sampler = MaterialStorage::get_singleton()->sampler_rd_get_default(RSE::CANVAS_ITEM_TEXTURE_FILTER_LINEAR, RSE::CANVAS_ITEM_TEXTURE_REPEAT_DISABLED);
++	UniformSetCacheRD *cache = UniformSetCacheRD::get_singleton();
++	RD::DrawListID list = RD::get_singleton()->draw_list_begin(fb);
++	RD::get_singleton()->draw_list_bind_render_pipeline(list, pipelines[p_mode].get_render_pipeline(RD::INVALID_ID, RD::get_singleton()->framebuffer_get_format(fb)));
++	if (p_mode == FOCUS || p_mode == PREFILTER || p_mode == COMPOSITE) {
++		RD::Uniform input(RD::UNIFORM_TYPE_SAMPLER_WITH_TEXTURE, 0, Vector<RID>({ sampler, p_depth }));
++		RD::get_singleton()->draw_list_bind_uniform_set(list, cache->get_cache(program, 0, input), 0);
++	}
++	if (p_mode != FOCUS) {
++		RD::Uniform input(RD::UNIFORM_TYPE_SAMPLER_WITH_TEXTURE, 0, Vector<RID>({ sampler, p_source }));
++		RD::get_singleton()->draw_list_bind_uniform_set(list, cache->get_cache(program, 1, input), 1);
++	}
++	if (p_mode != FILL) {
++		RD::Uniform input(RD::UNIFORM_TYPE_SAMPLER_WITH_TEXTURE, 0, Vector<RID>({ sampler, p_focus }));
++		RD::get_singleton()->draw_list_bind_uniform_set(list, cache->get_cache(program, 2, input), 2);
++	}
++	RD::get_singleton()->draw_list_set_push_constant(list, &p_params, sizeof(PushConstant));
++	RD::get_singleton()->draw_list_draw(list, false, 1u, 3u);
++	RD::get_singleton()->draw_list_end();
++}
++
++void FarDOF::process(Ref<RenderSceneBuffersRD> p_buffers, uint32_t p_view, RID p_source, RID p_depth, Size2i p_size, RID p_attributes, float p_near, float p_far, bool p_orthogonal) {
++	Ref<Buffers> buffers = get_buffers(p_buffers, p_size);
++	ERR_FAIL_UNSIGNED_INDEX(p_view, uint32_t(buffers->history.size()));
++	History &history = buffers->history.write[p_view];
++	uint64_t version = RSG::camera_attributes->camera_attributes_get_far_dof_version(p_attributes);
++	uint64_t now = OS::get_singleton()->get_ticks_usec();
++	float seconds = RSG::camera_attributes->camera_attributes_get_far_dof_seconds(p_attributes);
++	bool reset = !history.valid || history.attributes != p_attributes || history.version != version || history.orthogonal != p_orthogonal;
++	float blend = reset ? 1.0f : 1.0f - Math::exp(-MIN(double(now - history.last_usec) / 1000000.0, 10.0) / seconds);
++	uint32_t divisor = p_size.height > 1440 ? 3 : 2;
++	bool high = RSG::camera_attributes->camera_attributes_get_dof_blur_quality() >= RSE::DOF_BLUR_QUALITY_MEDIUM;
++	PushConstant params = {};
++	params.full_size[0] = p_size.width;
++	params.full_size[1] = p_size.height;
++	params.work_size[0] = (p_size.width + divisor - 1) / divisor;
++	params.work_size[1] = (p_size.height + divisor - 1) / divisor;
++	params.z_near = p_near;
++	params.z_far = p_far;
++	params.orthogonal = p_orthogonal;
++	// The game supplies the unzoomed full-resolution aperture from the
++	// existing pitch/strength setting. The GPU focus applies zoom narrowing.
++	params.aperture = RSG::camera_attributes->camera_attributes_get_dof_blur_amount(p_attributes) * 64.0f / divisor;
++	params.margin = RSG::camera_attributes->camera_attributes_get_far_dof_margin(p_attributes);
++	params.focus_blend = blend;
++	params.divisor = divisor;
++	params.fill_share = 1.8f / Math::sqrt(high ? 40.0f : 16.0f);
++	RID focus[2] = { p_buffers->get_texture_slice(RB_FAR_DOF, SNAME("focus_a"), p_view, 0), p_buffers->get_texture_slice(RB_FAR_DOF, SNAME("focus_b"), p_view, 0) };
++	RID work_a = p_buffers->get_texture_slice(RB_FAR_DOF, SNAME("work_a"), p_view, 0);
++	RID work_b = p_buffers->get_texture_slice(RB_FAR_DOF, SNAME("work_b"), p_view, 0);
++	uint32_t next = history.current ^ 1u;
++	draw(FOCUS, focus[next], p_depth, RID(), focus[history.current], params);
++	draw(PREFILTER, work_a, p_depth, p_source, focus[next], params);
++	draw(high ? GATHER_HIGH : GATHER_LOW, work_b, RID(), work_a, focus[next], params);
++	draw(FILL, work_a, RID(), work_b, RID(), params);
++	draw(COMPOSITE, p_source, p_depth, work_a, focus[next], params);
++	history.current = next;
++	history.attributes = p_attributes;
++	history.version = version;
++	history.last_usec = now;
++	history.orthogonal = p_orthogonal;
++	history.valid = true;
++}
+diff --git a/servers/rendering/renderer_rd/shaders/effects/far_dof.glsl b/servers/rendering/renderer_rd/shaders/effects/far_dof.glsl
+new file mode 100644
+--- /dev/null
++++ b/servers/rendering/renderer_rd/shaders/effects/far_dof.glsl
+@@ -0,0 +1,252 @@
++// Adapted from owned renderer R1 0092dc6e, Source/depth_of_field.h.
++// Reverse-Z and linear HDR are Godot-specific: sky is zero depth and the
++// composite keeps HDR colour before Godot's tonemapper. No CPU depth readback.
++#[vertex]
++#version 450
++#VERSION_DEFINES
++void main() {
++	vec2 position = gl_VertexIndex == 0 ? vec2(-1.0, -1.0) : (gl_VertexIndex == 1 ? vec2(-1.0, 3.0) : vec2(3.0, -1.0));
++	gl_Position = vec4(position, 0.0, 1.0);
++}
++
++#[fragment]
++#version 450
++#VERSION_DEFINES
++layout(push_constant, std430) uniform Params {
++	uvec2 full_size;
++	uvec2 work_size;
++	float z_near;
++	float z_far;
++	float aperture;
++	float margin;
++	float focus_blend;
++	float divisor;
++	bool orthogonal;
++	float fill_share;
++} params;
++
++#if defined(MODE_FOCUS) || defined(MODE_PREFILTER) || defined(MODE_COMPOSITE)
++layout(set = 0, binding = 0) uniform sampler2D source_depth;
++#endif
++#ifndef MODE_FOCUS
++layout(set = 1, binding = 0) uniform sampler2D source_color;
++#endif
++#ifndef MODE_FILL
++layout(set = 2, binding = 0) uniform sampler2D focus_texture;
++#endif
++#ifdef MODE_FOCUS
++layout(location = 0) out float focus_out;
++#else
++layout(location = 0) out vec4 frag_color;
++#endif
++
++const float FOCUS_MIN = 2.0;
++const float FOCUS_MAX = 600.0;
++const float MAX_RADIUS = 24.0;
++#if defined(MODE_FOCUS) || defined(MODE_PREFILTER) || defined(MODE_COMPOSITE)
++float load_depth(ivec2 p) {
++	p = clamp(p, ivec2(0), ivec2(params.full_size) - 1);
++	// Depth can be at internal resolution while colour was temporally upscaled.
++	ivec2 size = textureSize(source_depth, 0);
++	ivec2 at = clamp(ivec2((vec2(p) + 0.5) / vec2(params.full_size) * vec2(size)), ivec2(0), size - 1);
++	return texelFetch(source_depth, at, 0).r;
++}
++float view_depth(float raw) {
++	return params.orthogonal ? params.z_far - raw * (params.z_far - params.z_near) :
++		params.z_near * params.z_far / (params.z_near + raw * (params.z_far - params.z_near));
++}
++bool sky(float raw) { return raw <= 0.0; }
++#endif
++#ifndef MODE_FOCUS
++vec4 load_work(ivec2 p) { return texelFetch(source_color, clamp(p, ivec2(0), ivec2(params.work_size) - 1), 0); }
++float aperture(float focus) { return params.aperture * clamp(40.0 / focus, 0.5, 1.0); }
++float sample_weight(float coc, float distance_) { return clamp(coc - distance_ + 1.0, 0.0, 1.0) * clamp(coc - 0.5, 0.0, 1.0); }
++vec3 safe_color(vec3 c) {
++	return vec3(isnan(c.r) ? 0.0 : clamp(c.r, 0.0, 64.0), isnan(c.g) ? 0.0 : clamp(c.g, 0.0, 64.0), isnan(c.b) ? 0.0 : clamp(c.b, 0.0, 64.0));
++}
++#endif
++#if defined(MODE_PREFILTER) || defined(MODE_COMPOSITE)
++float circle_size(float raw, float focus) {
++	return aperture(focus) * clamp(1.0 - focus * (1.0 + params.margin) / max(view_depth(raw), 1e-6), 0.0, 1.0);
++}
++#endif
++
++#ifdef MODE_FOCUS
++void main() {
++	float values[9];
++	for (int k = 0; k < 9; k++) {
++		vec2 uv = vec2(0.5) + vec2(k % 3 - 1, k / 3 - 1) * 0.05;
++		float depth = load_depth(ivec2(uv * vec2(params.full_size)));
++		float distance_ = sky(depth) ? FOCUS_MAX : view_depth(depth);
++		values[k] = isnan(distance_) || isinf(distance_) ? FOCUS_MAX : clamp(distance_, FOCUS_MIN, FOCUS_MAX);
++	}
++	for (int a = 0; a < 8; a++) {
++		for (int b = 0; b < 8 - a; b++) {
++			float lo = min(values[b], values[b + 1]);
++			float hi = max(values[b], values[b + 1]);
++			values[b] = lo; values[b + 1] = hi;
++		}
++	}
++	float previous = max(texelFetch(focus_texture, ivec2(0), 0).r, FOCUS_MIN);
++	focus_out = exp(mix(log(previous), log(values[4]), params.focus_blend));
++}
++#endif
++
++#ifdef MODE_PREFILTER
++void main() {
++	float focus = texelFetch(focus_texture, ivec2(0), 0).r;
++	vec2 centre = gl_FragCoord.xy * params.divisor;
++	float q = params.divisor * 0.25;
++	vec3 sum = vec3(0.0); float weight = 0.0; float coc = 0.0; bool all_sky = true;
++	for (int k = 0; k < 4; k++) {
++		vec2 pos = centre + vec2((k & 1) != 0 ? q : -q, (k & 2) != 0 ? q : -q);
++		float depth = load_depth(ivec2(pos));
++		float c = sky(depth) ? 0.0 : circle_size(depth, focus);
++		all_sky = all_sky && sky(depth);
++		float w = c + 1e-4;
++		sum += safe_color(textureLod(source_color, pos / vec2(params.full_size), 0.0).rgb) * w;
++		weight += w; coc = max(coc, c);
++	}
++	frag_color = vec4(sum / weight, all_sky ? -1.0 : coc);
++}
++#endif
++
++#ifdef MODE_GATHER
++#if DOF_TAPS == 16
++const vec3 taps[DOF_TAPS] = vec3[DOF_TAPS](
++	vec3(0.176777, 0.000000, 0.176777),
++	vec3(-0.225772, 0.206826, 0.306186),
++	vec3(0.034558, -0.393771, 0.395285),
++	vec3(0.284571, 0.371173, 0.467707),
++	vec3(-0.522223, -0.092374, 0.530330),
++	vec3(0.494695, -0.314685, 0.586302),
++	vec3(-0.165466, 0.615525, 0.637377),
++	vec3(-0.315561, -0.607594, 0.684653),
++	vec3(0.684642, 0.250030, 0.728869),
++	vec3(-0.712256, 0.294009, 0.770552),
++	vec3(0.343355, -0.733729, 0.810093),
++	vec3(0.253730, 0.808932, 0.847791),
++	vec3(-0.764746, -0.443186, 0.883883),
++	vec3(0.897134, -0.197232, 0.918559),
++	vec3(-0.547507, 0.778772, 0.951972),
++	vec3(-0.126487, -0.976090, 0.984251)
++);
++#elif DOF_TAPS == 40
++const vec3 taps[DOF_TAPS] = vec3[DOF_TAPS](
++	vec3(0.111803, 0.000000, 0.111803),
++	vec3(-0.142791, 0.130808, 0.193649),
++	vec3(0.021856, -0.249043, 0.250000),
++	vec3(0.179979, 0.234750, 0.295804),
++	vec3(-0.330283, -0.058422, 0.335410),
++	vec3(0.312873, -0.199024, 0.370810),
++	vec3(-0.104650, 0.389292, 0.403113),
++	vec3(-0.199579, -0.384276, 0.433013),
++	vec3(0.433006, 0.158133, 0.460977),
++	vec3(-0.450470, 0.185948, 0.487340),
++	vec3(0.217156, -0.464051, 0.512348),
++	vec3(0.160473, 0.511614, 0.536190),
++	vec3(-0.483668, -0.280295, 0.559017),
++	vec3(0.567397, -0.124741, 0.580948),
++	vec3(-0.346274, 0.492539, 0.602080),
++	vec3(-0.079997, -0.617333, 0.622495),
++	vec3(0.491105, 0.413904, 0.642262),
++	vec3(-0.660873, 0.027329, 0.661438),
++	vec3(0.482056, -0.479710, 0.680074),
++	vec3(-0.032251, 0.697467, 0.698212),
++	vec3(-0.458678, -0.549649, 0.715891),
++	vec3(0.726597, 0.097763, 0.733144),
++	vec3(-0.615644, 0.428349, 0.750000),
++	vec3(0.168229, -0.747796, 0.766485),
++	vec3(0.389106, 0.679041, 0.782624),
++	vec3(-0.760664, -0.242673, 0.798436),
++	vec3(0.738888, -0.341385, 0.813941),
++	vec3(-0.320105, 0.764874, 0.829156),
++	vec3(-0.285687, -0.794282, 0.844097),
++	vec3(0.760181, 0.399530, 0.858778),
++	vec3(-0.844370, 0.222573, 0.873212),
++	vec3(0.479946, -0.746426, 0.887412),
++	vec3(0.152674, 0.888364, 0.901388),
++	vec3(-0.723539, -0.560349, 0.915150),
++	vec3(0.925538, -0.076679, 0.928709),
++	vec3(-0.639742, 0.691542, 0.942072),
++	vec3(0.004660, -0.955237, 0.955249),
++	vec3(0.650550, 0.717136, 0.968246),
++	vec3(-0.976884, -0.090537, 0.981071),
++	vec3(0.791565, -0.600770, 0.993730)
++);
++#endif
++void main() {
++	vec4 center = load_work(ivec2(gl_FragCoord.xy));
++	if (center.a < 0.0) {
++		float reach = min(aperture(texelFetch(focus_texture, ivec2(0), 0).r), MAX_RADIUS);
++		if (reach < 0.5) { frag_color = center; return; }
++		vec3 sum = vec3(0.0); float weight = 0.0;
++		for (int k = 0; k < DOF_TAPS; k++) {
++			vec4 s = load_work(ivec2(floor(gl_FragCoord.xy + taps[k].xy * reach)));
++			float w = sample_weight(s.a, taps[k].z * reach);
++			sum += s.rgb * w; weight += w;
++		}
++		frag_color = weight > 0.0 ? vec4(sum / weight, -1.0 - clamp(2.0 * weight / float(DOF_TAPS), 0.0, 1.0)) : center;
++		return;
++	}
++	float radius = min(center.a, MAX_RADIUS);
++	if (radius < 0.5) { frag_color = center; return; }
++	vec3 sum = center.rgb; float weight = 1.0;
++	for (int k = 0; k < DOF_TAPS; k++) {
++		vec4 s = load_work(ivec2(floor(gl_FragCoord.xy + taps[k].xy * radius)));
++		float w = sample_weight(s.a, taps[k].z * radius);
++		sum += s.rgb * w; weight += w;
++	}
++	frag_color = vec4(sum / weight, center.a);
++}
++#endif
++
++#ifdef MODE_FILL
++void main() {
++	vec4 center = load_work(ivec2(gl_FragCoord.xy));
++	float radius = min(center.a, MAX_RADIUS);
++	if (radius < 0.5) { frag_color = center; return; }
++	float reach = radius * params.fill_share;
++	vec3 sum = center.rgb; float weight = 1.0;
++	for (int k = 0; k < 8; k++) {
++		vec2 offset = vec2(cos(float(k) * 0.785398), sin(float(k) * 0.785398)) * reach;
++		vec4 s = load_work(ivec2(floor(gl_FragCoord.xy + offset)));
++		float w = sample_weight(s.a, reach);
++		sum += s.rgb * w; weight += w;
++	}
++	frag_color = vec4(sum / weight, center.a);
++}
++#endif
++
++#ifdef MODE_COMPOSITE
++void main() {
++	float focus = texelFetch(focus_texture, ivec2(0), 0).r;
++	ivec2 p = ivec2(gl_FragCoord.xy);
++	vec2 work = gl_FragCoord.xy / params.divisor - 0.5;
++	ivec2 base = ivec2(floor(work)); vec2 f = work - vec2(base);
++	vec3 sum = vec3(0.0); float weight = 0.0;
++	if (sky(load_depth(p))) {
++		for (int k = 0; k < 4; k++) {
++			ivec2 offset = ivec2(k & 1, k >> 1);
++			vec4 s = load_work(base + offset);
++			float coverage = s.a < 0.0 ? -1.0 - s.a : clamp(s.a - 0.5, 0.0, 1.0);
++			float w = (offset.x != 0 ? f.x : 1.0 - f.x) * (offset.y != 0 ? f.y : 1.0 - f.y) * coverage;
++			sum += s.rgb * w; weight += w;
++		}
++		if (weight < 1.0 / 255.0) { discard; }
++		frag_color = vec4(safe_color(sum / weight), clamp(weight, 0.0, 1.0));
++		return;
++	}
++	// Reverse-Z nearest of five: erode the far blur by one full-size pixel.
++	float depth = max(max(load_depth(p), load_depth(p + ivec2(1, 0))), max(load_depth(p - ivec2(1, 0)), max(load_depth(p + ivec2(0, 1)), load_depth(p - ivec2(0, 1)))));
++	float coc = circle_size(depth, focus);
++	if (coc < 0.25) { discard; }
++	for (int k = 0; k < 4; k++) {
++		ivec2 offset = ivec2(k & 1, k >> 1);
++		vec4 s = load_work(base + offset);
++		float w = (offset.x != 0 ? f.x : 1.0 - f.x) * (offset.y != 0 ? f.y : 1.0 - f.y) * (clamp(s.a - 0.25, 0.0, 1.0) + 1e-3);
++		sum += s.rgb * w; weight += w;
++	}
++	frag_color = vec4(safe_color(sum / weight), smoothstep(0.25, 1.5, coc));
++}
++#endif
