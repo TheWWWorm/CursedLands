@@ -1,0 +1,119 @@
+{
+  "captures": [
+    {
+      "camera": "[X: (-0.59306, 0.0, -0.805158), Y: (-0.319238, 0.918039, 0.235143), Z: (0.739166, 0.396491, -0.544452), O: (86.50356, 16.2335, -108.8177)]",
+      "image": "user://waterfall-preview-0.png"
+    },
+    {
+      "camera": "[X: (-0.829147, 0.0, -0.55903), Y: (-0.164137, 0.955925, 0.243446), Z: (0.534391, 0.29361, -0.792603), O: (84.4183, 15.2335, -114.0762)]",
+      "image": "user://waterfall-preview-1.png"
+    },
+    {
+      "camera": "[X: (-0.999626, 0.0, -0.027358), Y: (-0.010547, 0.9227, 0.385373), Z: (0.025243, 0.385518, -0.922355), O: (75.90726, 19.2335, -122.1113)]",
+      "image": "user://waterfall-preview-2.png"
+    }
+  ],
+  "fall": {
+    "bottom": 7.16857099533081,
+    "bottom_owner": 1,
+    "direction": "(0.396653, 0.917969)",
+    "id": 50861,
+    "lip": "(74.53577, 98.7685)",
+    "run": 3.94386291503906,
+    "steepness": 1.55427923026329,
+    "top": 13.2984352111816,
+    "top_owner": 1,
+    "vertices": 12,
+    "width": 3.75390625
+  },
+  "focus": "(75.31795, 10.2335, -100.5787)",
+  "scope": "Original terrain and placed scenery, controlled camera and lighting; no edited geometry or generated image.",
+  "settings": {
+    "gfx_water": 1,
+    "gfx_waterfalls": 1
+  },
+  "size": [
+    1600,
+    1000
+  ],
+  "terrain": "zone11",
+  "zone": {
+    "allod": "ingos",
+    "exits": {
+      "1": {
+        "area": "[P: (496.0, 332.0), S: (13.0, 31.0)]",
+        "deploy": "[P: (489.0, 332.0), S: (7.0, 10.0)]",
+        "passtime": 12.0,
+        "remove": "[P: (496.0, 332.0), S: (13.0, 31.0)]",
+        "to": "gz11k_gz12k",
+        "to_exit": 1,
+        "view": 105.4
+      },
+      "2": {
+        "area": "[P: (496.0, 189.0), S: (12.0, 25.0)]",
+        "deploy": "[P: (496.0, 189.0), S: (12.0, 9.0)]",
+        "passtime": 13.0,
+        "remove": "[P: (496.0, 189.0), S: (12.0, 25.0)]",
+        "to": "gz11k_gz13k",
+        "to_exit": 1,
+        "view": 2.78706
+      },
+      "3": {
+        "area": "[P: (502.0, 75.0), S: (7.0, 7.0)]",
+        "deploy": "[P: (497.0, 75.0), S: (5.0, 8.0)]",
+        "passtime": 22.0,
+        "remove": "[P: (502.0, 75.0), S: (7.0, 7.0)]",
+        "to": "gz11k_gz13dk",
+        "to_exit": 1,
+        "view": 83.1368
+      },
+      "4": {
+        "area": "[P: (54.0, 202.0), S: (3.0, 3.0)]",
+        "deploy": "[P: (54.0, 202.0), S: (3.0, 3.0)]",
+        "to": "none",
+        "to_exit": 0,
+        "view": 190.728
+      },
+      "5": {
+        "area": "[P: (330.0, 265.0), S: (14.0, 5.0)]",
+        "deploy": "[P: (330.0, 255.0), S: (14.0, 5.0)]",
+        "remove": "[P: (330.0, 265.0), S: (14.0, 5.0)]",
+        "to": "bz8k",
+        "to_exit": 1,
+        "view": 195.472
+      },
+      "6": {
+        "area": "[P: (288.0, 86.0), S: (14.0, 8.0)]",
+        "deploy": "[P: (300.0, 92.0), S: (10.0, 7.0)]",
+        "remove": "[P: (288.0, 86.0), S: (14.0, 8.0)]",
+        "to": "bz9k",
+        "to_exit": 1,
+        "view": 322.528
+      }
+    },
+    "figure": "ingm311",
+    "id": "gz11k",
+    "minimap": "zone11map",
+    "mob": "zone11",
+    "mpr": "zone11",
+    "objtex": "zone11quest",
+    "position": "(-1.097, -0.285, -0.163)",
+    "size": "(16, 12)",
+    "sky": "normal",
+    "type": "game",
+    "weather": "snow"
+  },
+  "requested_image": "/home/llm2x/Downloads/CursedLands-waterfall-Ingos-zone11.png",
+  "sha256": "99bf076f080d4217596189a9fc6f21e39d01f8dee48ee871e2c9dbb73d96c6d8",
+  "source_pack_sha256": "771d6467e8f9c8db807500f30fae0c00ce19f56878ad5b36e10801689a7c039f",
+  "manifest": "/home/llm2x/Documents/EI/local/scratchpad/cloud-shadow-field-20261010/waterfall-preview03/run.json",
+  "manifest_sha256": "a3b99d3cf309a51bf45d04a39c78d421bdc24309b7bca77bb2ba02a1fdaa2691",
+  "qualification": false,
+  "capture_note": "Controlled original zone11/gz11k terrain and placed scenery; actual GPU image, not full gameplay UI. Standalone scenery preview emitted 1960 !is_inside_tree() transform errors and is not used as clean runtime acceptance. Images saved; no fatal/script error. Earlier preview01 omitted saving because save_png was inside a release-disabled assert; fixed in fixture.",
+  "preview_errors": {
+    "count": 1960,
+    "unique": [
+      "ERROR: Condition \"!is_inside_tree()\" is true. Returning: Transform3D()"
+    ]
+  }
+}

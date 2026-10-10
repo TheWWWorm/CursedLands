@@ -1,0 +1,265 @@
+{
+  "version": "1.0.3-local.20261010.8",
+  "source_commit": "62ec87c984d13f2d2c5e1859e25c76047c96f845",
+  "protocol": 13,
+  "engine_patch_count": 12,
+  "published": false,
+  "checks": 218,
+  "failures": 0,
+  "headless": false,
+  "windows_runtime_tested": false,
+  "build_receipt": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-8/build.json",
+  "build_receipt_sha256": "17ef79e451660444fd186893d20cba1421ef17745a0e42f6a8d0830de5742a5f",
+  "runtime_checks": {
+    "volume-live01": {
+      "checks": 99,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-8/volume-live01",
+      "run_sha256": "c62583fd47b5b2bf928999dba9187f7792596cecc3c700647ef66dc943d33ac9",
+      "result_sha256": "c25e758ffe7af306091dfdf208ac651162c88981d2689709de897f2a5be5b293",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_volume.gd": "de6bbb5dbaee75b598b9608a6aca9003cf3307e9936fe1bdeacabb4123ab751d",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.8-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-8/volume-live01/tool-source.gd"
+      ],
+      "captures": {
+        "volume-quality3-held.png": "141ac18b6bd620b99f083bb461a581b30a8c8b3adef128c1ad3d788f95bd8b50",
+        "volume-night.png": "3a417e0eac671b0608f97593b45d4d0fd63c955ee63c6fce5fe3a0252af45b3b",
+        "volume-restored.png": "1861283db3fbbf363dd57898ed6381933e117b50ba02f03c31553331ab7650f8",
+        "volume-reflection-on.png": "86dc373ae3b979c2f871059c6aaf1a8c345c847fa4807c1bb9165f440c67e1af",
+        "volume-quality2-held.png": "1ef13c85d6f4c37157b8157f0675865419045e9c58281b529bcb58b2aec3d1f2",
+        "volume-rain.png": "4a04d1fdc694623c1d431e8d5f29a193e18a809faf834a1e6615681c3b646ae7",
+        "volume-quality1.png": "f67a2e5ad5f34a7ddb01dd431a077010df1399b700ff54037683b895efaa6d82",
+        "volume-cave-cleared.png": "1861283db3fbbf363dd57898ed6381933e117b50ba02f03c31553331ab7650f8",
+        "volume-quality2.png": "1ef13c85d6f4c37157b8157f0675865419045e9c58281b529bcb58b2aec3d1f2",
+        "volume-fair.png": "141ac18b6bd620b99f083bb461a581b30a8c8b3adef128c1ad3d788f95bd8b50",
+        "volume-off.png": "1861283db3fbbf363dd57898ed6381933e117b50ba02f03c31553331ab7650f8",
+        "volume-quality3.png": "141ac18b6bd620b99f083bb461a581b30a8c8b3adef128c1ad3d788f95bd8b50",
+        "volume-moved.png": "d7a8fa0c35a35b8af79bb9c64bd6f27d2aaf248457ae1320433efbebc71c52b2",
+        "volume-reflection-off.png": "fa1addf16bd9101b19761a9bd79fb63034eaa32c47fb7338f877e53bfe571de1",
+        "volume-storm-empty.png": "e82d14e0b6cc4513e612cf91be7d9077b8371c20e0ccd618a3446b7ecb131aef",
+        "volume-night-held.png": "3a417e0eac671b0608f97593b45d4d0fd63c955ee63c6fce5fe3a0252af45b3b",
+        "volume-quality3-empty.png": "e82d14e0b6cc4513e612cf91be7d9077b8371c20e0ccd618a3446b7ecb131aef",
+        "volume-quality1-held.png": "f67a2e5ad5f34a7ddb01dd431a077010df1399b700ff54037683b895efaa6d82",
+        "volume-quality2-empty.png": "d7d6256b94da638fdee8df05b69aaa3230f1b962fe824d569009f336aa3c7c5f"
+      }
+    },
+    "field-live01": {
+      "checks": 55,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-8/field-live01",
+      "run_sha256": "a5d7a3e0064cef70e80d132bc762b8f914ce785382dadce6def54a2e36dca061",
+      "result_sha256": "382945d9a6d44d0babe4b19e550b05430dc8258be280c9b77906793a4de315a3",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/cloud_shadow_field.gd": "44706a27da911a5ae0134a64d90f99bc598215de5652faf87404f3b049edf73a",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      },
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.8-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-8/field-live01/tool-source.gd"
+      ],
+      "captures": {}
+    },
+    "pollen-live01": {
+      "checks": 64,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-8/pollen-live01",
+      "run_sha256": "4e30cf0b2b8b693ba226bce302aafb94f470ae3fa7e1312ceb275bf1dfea8f5f",
+      "result_sha256": "6e447d0a836dafde1694910c68aa6b86ff0180070118283ec8a800f861e2af73",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/ambient_life.gd": "078ec0a8278ba76dfee65b9f7ab2d048dfe9b91383106884ef844829c6e2ea5e"
+      },
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.8-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-8/pollen-live01/tool-source.gd",
+        "--ambient-render-only",
+        "--ambient-kind=0"
+      ],
+      "captures": {
+        "ambient-held.png": "b100c460c67655bb1621b1b3bbf389722477c2193de87e762c1220eb19aab757",
+        "ambient-particles.png": "b100c460c67655bb1621b1b3bbf389722477c2193de87e762c1220eb19aab757",
+        "ambient-animals.png": "3c867a6ebe9235194fd347a707c56e8482cfff49a38b5e9221b231922a2e5978",
+        "ambient-advanced.png": "329415636cd16beacb33ef0a437b1340948f5f23167a374bbd278716bbe4a348",
+        "ambient-on.png": "b100c460c67655bb1621b1b3bbf389722477c2193de87e762c1220eb19aab757",
+        "ambient-off.png": "3c867a6ebe9235194fd347a707c56e8482cfff49a38b5e9221b231922a2e5978"
+      }
+    }
+  },
+  "runtime_scope": "Actual Linux .8 pack, Forward+/Vulkan: cloud-volume regression, live shadow field ownership/night/disable/deferred-attachment and real GPU RID release; pollen ambient lifetime, pause, motion, threats and map reload. No package timing/FPS claim.",
+  "source_validation": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/cloud-shadow-field-2026-10-10.json",
+      "sha256": "fd26c8a581d8ac2d8f5b0875c79fa46ffe2b0b1a8f3a5c79366223ffbde056b4",
+      "checks": 189,
+      "failures": 0
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/pollen-drift-2026-10-10.json",
+      "sha256": "e9ad2a8f01352ad0c57e3a8b830812fa22a59ecf46f99fe554f5b97be0549961",
+      "checks": 192,
+      "failures": 0
+    }
+  ],
+  "inherited_validation": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-7.json",
+    "sha256": "a28d3ed32fcf1bfe9d63b309b1f17e8c5bde7631663bc9f24b9529109897917e",
+    "scope": "Previous terrain, pebble/grass/material, original-MP visibility/loading/menu, co-op continuity and captive/Nalo fixes retained. No gameplay/native-binary changes. Temporary-party Jun/Shaina entry validation at019d99f is also retained, but full route acceptance remains open."
+  },
+  "pack_resources": 684,
+  "compiled_scripts": 266,
+  "linux_windows_pack_byte_identical": true,
+  "pack_changes_from_qualified_candidate": [
+    "project.binary"
+  ],
+  "windows_pe_audit": {
+    "CursedLands.exe": {
+      "architecture": "PE x86_64",
+      "imports": [
+        "ADVAPI32.dll",
+        "AVRT.dll",
+        "bcrypt.dll",
+        "CRYPT32.dll",
+        "dwmapi.dll",
+        "DWrite.dll",
+        "GDI32.dll",
+        "HID.DLL",
+        "IMM32.dll",
+        "IPHLPAPI.DLL",
+        "KERNEL32.dll",
+        "api-ms-win-core-processthreads-l1-1-3.dll",
+        "api-ms-win-security-base-l1-2-1.dll",
+        "api-ms-win-security-lsalookup-l2-1-0.dll",
+        "msvcrt.dll",
+        "ntdll.dll",
+        "ole32.dll",
+        "OLEAUT32.dll",
+        "SHCORE.dll",
+        "SHELL32.dll",
+        "SHLWAPI.dll",
+        "USER32.dll",
+        "WINMM.dll",
+        "WS2_32.dll",
+        "WSOCK32.dll"
+      ]
+    },
+    "libterrain_search.dll": {
+      "architecture": "PE x86_64",
+      "imports": [
+        "KERNEL32.dll",
+        "msvcrt.dll"
+      ]
+    }
+  },
+  "uid_export_note": {
+    "failed_first_attempt": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-8/attempt01",
+    "reason": "Fresh import assigned different UIDs to clouds.gd and ambient_particles.gd, whose sidecars were absent. Resource audit rejected that export. No failed package was delivered.",
+    "resolution": "62ec87c commits exactly the qualified candidate sidecars. Final fresh exports match all684 candidate resources except displayed version; no code/shader changes in this metadata fix.",
+    "uids": {
+      "clouds.gd": "uid://b0r5e88waljtk",
+      "ambient_particles.gd": "uid://bg20no0is1h0d",
+      "cloud_shadow_field.gd": "uid://ccpu4yyckiayl"
+    }
+  },
+  "limits": [
+    "Windows execution and the user's RTX4090 Mobile remain untested. PE/import checks are not runtime acceptance.",
+    "Measured cloud improvements are21.0\u201335.5% in three controlled4K Linux viewport workloads including field cost; not whole-game FPS. Solar attenuation only; sky/reflection cost remains.",
+    "Shared field is a bounded2m approximation. Fair image exact; mixed terrain/water maxoneRGB byte; direct attenuation max0.0023365 across8.07M samples.",
+    "V1 cold preparation/numerical residuals, broader old/new effect costs, Android startup/settings and Linux reported texture/teardown errors remain open. No Android build or fix in this checkpoint.",
+    "Clouds/V1/V8 remain default-off. Presets, device/WAN/full campaign routes and stable1.0.3 acceptance remain unfinished."
+  ],
+  "packages": {
+    "linux-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.8-linux-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.8-linux-x86_64.tar.gz",
+      "archive_bytes": 36537893,
+      "archive_sha256": "17c236306e2d6ccf7c328387dfda227d0789d3d87bc111e2e735434615b419a0",
+      "archive_readback_exact": true,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "SHA256SUMS.txt": "c3b1a53b43b04dfa359d4ffa0cd334e9fc7c6d05966801ae057d3459cd0a0b40",
+        "BUILD-INFO.json": "1ede37c8c66ffc4f1e06224849ab27a75c1950d37c5d370f92c61efc4e36f23d",
+        "Play.sh": "75835f261e9acd2b45973152790cabf255b05b649f0f059997c1de9ba4e3ec2b",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "ae7031e5a35a541aa84493a8e270453fd6cd64c4bd1f3e04c706dbe382f57cc0",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    },
+    "windows-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.8-windows-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.8-windows-x86_64.zip",
+      "archive_bytes": 37743391,
+      "archive_sha256": "4dbb9e834836a404f520308b56934b6251bebd8a96d1892c8b9610cc82e7597e",
+      "archive_readback_exact": true,
+      "files": {
+        "SHA256SUMS.txt": "17ef1687a83f1695abd81c24724af2f7190339b1f719515ff344ea1ed2689b6a",
+        "BUILD-INFO.json": "efee5482f33379315ef57721f2e2f0eddf6a3c4947728d801a23f4f113581bdb",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "libterrain_search.dll": "14906b040d4b6a5e1e217b9bfb21214f48700b6709163be584cc98e584f45106",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "ae7031e5a35a541aa84493a8e270453fd6cd64c4bd1f3e04c706dbe382f57cc0",
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    }
+  }
+}

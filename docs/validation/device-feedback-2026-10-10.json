@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-10",
+  "status": "Recorded for next agent; no crash/settings fix or device execution in the current cloud pass",
+  "user_scope": "Finish cloud optimization and hand over. Include optimization attempts for expensive new and old effects, exposed general graphics presets and measured performance impact. Main thread only.",
+  "reports": [
+    {
+      "id": "android-settings-actions",
+      "priority": "High: settings modal traps touch user",
+      "evidence": "/home/llm2x/Documents/EI/local/feedback/2026-10-10-device-reports/android-settings-no-buttons.png",
+      "sha256": "f09c37f81f4e3a7f55e331da204e31e200a2692c224846386a0ef67f39fcb3ba",
+      "observed": "Russian unsaved-settings prompt is visible; neither confirm nor cancel buttons are visible. User reports settings cannot be saved or closed.",
+      "device_scope": "Android; exact device/build of this screenshot was not established. Do not assume it is the same RMX3890 as the separate crash log.",
+      "entry_points": [
+        "game/src/ui/options_panel.gd:_ask_unsaved",
+        "game/src/ui/message_box.gd:_draw/_rects/_gui_input",
+        "game/src/ui/interface800.gd",
+        "game/src/platform/touch_input.gd"
+      ],
+      "next": "Prioritize first-load resource initialization and texture availability, comparing first and second game loads in fresh/existing profiles. Also inspect saveload button rect clipping and mouse/touch routing, including Android Back; keep save/discard/cancel accessible and verify persistence/reopen. Second-load recovery is evidence, not a proven cache/layout cause.",
+      "followup": "User reports the save-settings elements appeared on the second game load. Intermittent/first-load-sensitive failure; exact process restart vs map reload is unspecified."
+    },
+    {
+      "id": "android-gz1g-loading-exit",
+      "priority": "High: reported load crash",
+      "evidence": "/home/llm2x/Documents/EI/local/feedback/2026-10-10-device-reports/android-insta-crash.txt",
+      "sha256": "f4c51007f715c6da8e001ee0dc5c7cdbe60962dbd60c57cdb7a4b3aa5f2e3ddf",
+      "user_description": "Запускаю игру, появляется худ, а карты мира нету и вылет",
+      "version": "1.0.3-experimental.6",
+      "device": "RMX3890, Android 35.U.R4T2.202607150024, Adreno 610, OpenGL ES 3.2 Compatibility",
+      "observed": "Session 24fdfd8f82c6 ends unexpectedly during gz1g load from host. Last logs: loading screen presented at frame 8/+80163 ms, zone load +80164 ms. Next report preserves that unexpected foreground load end. No fatal stack, exception, native backtrace or allocation failure is included.",
+      "caveats": [
+        "memory_mb=-1 is unavailable data, not measured memory pressure.",
+        "Separate session fc51bf438136 was closed by Android in background and explicitly marked not a crash; do not conflate it with 24fdfd8f82c6.",
+        "Prior session screen1080x2400@60, current menu2400x1080@90; orientation/refresh change is context, not established cause.",
+        "Original look tier5 with automatic graphics; terrain/sharp_units/detailed_heads/sky/wind/firelight/lava_light/foliage_light/contact_shadows/bloom enabled, water/grass/HD off. Exact original options are preserved in raw log."
+      ],
+      "next": "Trace startup/host-assisted gz1g loading on Compatibility, collect native Android logcat/tombstone or OS exit reason if reproducible, distinguish renderer failure, memory pressure and lifecycle/rotation. Validate HUD remains covered until ready."
+    },
+    {
+      "id": "linux-texture-and-teardown-errors",
+      "priority": "Investigate reported gameplay crash and errors",
+      "evidence": "/home/llm2x/Documents/EI/local/feedback/2026-10-10-device-reports/linux-gameplay-reported-crash.txt",
+      "sha256": "efa29ae4b00eb6a2cf30c9b8527470cc0086de45286a469c07267be54601df2e",
+      "version": "1.0.3-experimental.6",
+      "device": "CachyOS Linux, RTX3050 Laptop, Forward+/Vulkan",
+      "observed": "Empty Image texture update error, then gz3g load succeeds; 20-material shader warmup takes6398 ms, first picture583 ms. Return to main menu emits four nonexistent tree_exited disconnect errors for NetStatus, Session, LocalHost and PlayerSwap. Excerpt ends clean exit.",
+      "caveats": [
+        "User calls this a gameplay crash; this excerpt itself does not establish a fatal crash or its cause.",
+        "From host alone does not identify original multiplayer vs campaign co-op or network role.",
+        "Warm-up time is reported device evidence, not a controlled benchmark."
+      ],
+      "next": "Trace ImageTexture update lifetimes and cleanup signal ownership; reproduce on current source without assuming reported errors are the fatal cause. Request full crash/native evidence only when needed."
+    }
+  ],
+  "requested_followup": [
+    {
+      "goal": "Expose general graphics presets",
+      "status": "Not implemented by this pass",
+      "details": "Player-facing Original/Low/Medium/High (final tier names may follow existing policy) plus Custom/manual advanced settings. Existing five graphics pages remain useful. Presets must be deterministic, persist/reopen, respect backend capabilities, and allow manual overrides; distinguish explicit choice from automatic detection."
+    },
+    {
+      "goal": "Measure and optimize expensive old and new effects",
+      "status": "Remaining goal, not a performance guarantee",
+      "details": "Profile original rendering and every added graphics option/preset on representative maps and devices. Measure CPU/GPU frame time, stutter percentiles, cold compilation/map load/setting-apply cost and memory; compare fixed camera/weather and record backend/resolution. Rank the largest costs and try targeted caching/batching/shader simplification, retaining original art and acceptable motion/quality. Keep only measured wins; document rejected experiments and avoid repeating them without new evidence."
+    }
+  ],
+  "scope_boundary": "Current pass completes shared cloud solar attenuation and gentler pollen, produces desktop .8 local builds, updates handoffs and stops. Android crash/settings and Linux error reports remain open, as do cloud sky/reflection cost and broader route/device coverage."
+}
