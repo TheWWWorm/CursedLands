@@ -511,7 +511,7 @@ func _update_daylight() -> void:
 	_sky_mat.ground_horizon_color = sky
 	_sky_mat.ground_bottom_color = sky
 	if _sky_shader:
-		EISky.update(_sky_shader, _lights, hour, _sky_cave, Gfx.on("gfx_sky"))
+		EISky.update(_sky_shader, _lights, hour, _sky_cave, Gfx.on("gfx_sky"), _env)
 		Gfx.update_volumetric(_env, _sun.light_color, _sky_cave)
 		_env.volumetric_fog_albedo = sky.lerp(Color.WHITE, 0.5)
 

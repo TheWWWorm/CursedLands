@@ -5249,6 +5249,48 @@ whether it belongs in an existing quality choice. Do not repeat these six
 prototypes or claim the Windows 9 FPS report resolved. The Natural sector cache
 and V1 terrain-contact composition remain separate, unpromoted scratch work.
 
+## Cloud radiance ownership and shutdown repair — 10 October
+
+The selected optimization keeps Low's quarter-resolution 96/3 integration
+and High's half-resolution 192/5 integration. It skips cloud-volume marching
+only in the radiance octmap when the owning Environment has no consumer.
+Screen-space cloud samples and base sky generation remain unchanged. There is
+no weather cache, new graphics control or implicit quality reduction.
+
+`EISky.update` accepts the actual Environment from Game and MenuScene. Unknown
+owners retain full radiance, as do enabled reflections, sky-capable ambient,
+volumetric fog, aerial-perspective fog and SDFGI. Source inspection and rendered
+negative controls confirm that volumetric fog consumes sky radiance even with
+colour ambient. The existing water/reflection policy is preserved; this is
+therefore a conditional saving, including the menu, rather than a universal
+gameplay cloud reduction.
+
+The production guard preserves every pixel in the authored Ingos original-MP
+snow map, Gipat rain and Gipat night static/panning comparisons (90 checks).
+Consumer tests exercise reflection, ambient, both fog paths, live changes and
+the actual menu. An isolated 1440p moving-sky ABBA sample measures Low at
+1.60–1.66 ms full versus 1.08–1.11 ms omitted, and High at 5.85–5.93 versus
+4.37–4.48 ms. This is viewport GPU time on Linux RTX3090, not full-game or
+Windows performance. Three strict High held checks still differ by 1/255,
+including an original arm; their failures remain recorded.
+
+Separate-thread teardown exposed an intermittent native shutdown hang.
+The debugger captured empty queues and four sleeping workers, with only one
+acknowledging `PRE_EXIT_LANGUAGES`. The eleventh desktop patch wakes missing
+acknowledgements after the queues drain, including when the observing worker
+already acknowledged before processing more work. Normal scheduling is
+unchanged. Four patched Linux process runs exit normally and pass 207 checks;
+all 66 native before/after images are exact. The Windows template cross-build
+and unchanged import audit pass; Windows execution remains open.
+
+[Evidence](validation/cloud-radiance-2026-10-10.json) retains all 32 investigation
+runs, including invalid early fixtures, the wrong-map snow probe, strict
+residuals, intermittent exit failures and debugger harness failures. The
+quarter-resolution High and weather-cache prototypes remain unpromoted.
+Existing V1 scratch changes are excluded. Updated local packages are recorded
+separately; neither this change nor a local package establishes stable release
+or target-device acceptance.
+
 ## Next work in the established order
 
 1. **P1/P2 remaining texture work:** shipped unit/preview materials now share

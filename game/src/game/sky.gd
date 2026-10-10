@@ -194,13 +194,15 @@ static func light_dir_ei(hour: float) -> Vector3:
 
 ## Per-frame colours from the Lights file (ambient, sunlight, sky at `hour`);
 ## caves get black ambient and sunlight as.
-static func update(m: ShaderMaterial, lights: EILights, hour: float, cave: bool, fancy: bool) -> void:
+static func update(m: ShaderMaterial, lights: EILights, hour: float, cave: bool, fancy: bool, env: Environment = null) -> void:
 	if m == null:
 		return
 	var clouds := Clouds.mode() if not cave else 0
 	if int(m.get_meta("clouds",0)) != clouds:
 		m.shader.code = Clouds.sky_source(SHADER) if clouds>0 else SHADER
 		m.set_meta("clouds",clouds)
+	if clouds >= 2:
+		m.set_shader_parameter("cloud_radiance", radiance_needed(env))
 	var sky := lights.sample("sky", hour) if lights else Color(0.18, 0.71, 0.85)
 	var amb := lights.sample("ambient", hour) if lights else Color(0.5, 0.53, 0.49)
 	var sun := lights.sample("sunlight", hour) if lights else Color.WHITE
@@ -214,6 +216,20 @@ static func update(m: ShaderMaterial, lights: EILights, hour: float, cave: bool,
 	m.set_shader_parameter("light_dir", light_dir_ei(hour))
 	m.set_shader_parameter("fancy", 1.0 if fancy and not cave else 0.0)
 	m.set_shader_parameter("night", 1.0 if Gfx.sun_day(sun) < 0.25 else 0.0)
+
+
+## Conservative opt-out: colour ambient alone cannot sample the sky. Fog can
+## still sample it even with AMBIENT_SOURCE_COLOR, so retain its full volume.
+## Read the environment, not options: menus and gameplay configure it differently.
+static func radiance_needed(env: Environment) -> bool:
+	if env == null:
+		return true
+	if env.reflected_light_source != Environment.REFLECTION_SOURCE_DISABLED:
+		return true
+	if env.ambient_light_source not in [Environment.AMBIENT_SOURCE_COLOR, Environment.AMBIENT_SOURCE_DISABLED]:
+		return true
+	return env.volumetric_fog_enabled or env.sdfgi_enabled \
+		or (env.fog_enabled and env.fog_aerial_perspective > 0.0)
 
 
 static func set_spin(m: ShaderMaterial, angle: float) -> void:

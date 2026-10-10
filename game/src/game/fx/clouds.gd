@@ -129,6 +129,10 @@ static func sky_source(original: String) -> String:
 	var marker := "\t// The opaque map perimeter fades to ei_fog_col."
 	assert(source.contains(marker),"cloud sky insertion point changed")
 	if quality<2: return source.replace(marker,SKY+"\n"+marker)
+	# A background-only sky still gets an octmap update in Godot. Its volume
+	# is unused unless the owning environment enables a radiance consumer.
+	# Unknown callers keep the complete sky, including baked panoramas.
+	source=source.replace("void sky() {","uniform bool cloud_radiance = true;\nvoid sky() {")
 	var half := quality==3
 	var pass_flag := "AT_HALF_RES_PASS" if half else "AT_QUARTER_RES_PASS"
 	var pass_colour := "HALF_RES_COLOR" if half else "QUARTER_RES_COLOR"
@@ -137,7 +141,10 @@ static func sky_source(original: String) -> String:
 	if (%s) {
 		// Dense midpoint quadrature remains stable without temporal history
 		// or the structured grain of a sparsely jittered paused sky.
-		vec4 clouds=cv_march(POSITION,EYEDIR,ei_sun_dir,ambient,sun_col,%d,%d,.5);
+		vec4 clouds=vec4(0,0,0,1);
+		if (!AT_CUBEMAP_PASS || cloud_radiance) {
+			clouds=cv_march(POSITION,EYEDIR,ei_sun_dir,ambient,sun_col,%d,%d,.5);
+		}
 		COLOR=clouds.rgb;ALPHA=clouds.a;
 	} else {
 """ % [pass_flag,192 if half else 96,5 if half else 3]

@@ -1,0 +1,1534 @@
+{
+  "date": "2026-10-10",
+  "baseline_checkpoint": "f9d54a229d022b6307b7658f4d44cf7c75af038d",
+  "status": "Guarded cloud radiance and worker shutdown patch qualified locally; downloadable packages recorded separately.",
+  "work_mode": "Main thread only; no agents used or reactivated.",
+  "implementation": [
+    "Preserve Low quarter-resolution 96/3 and High half-resolution 192/5 integration and every screen-space cloud sample.",
+    "Omit volume marching only from the unused radiance octmap; keep base sky generation. No weather cache, extra texture, quality downgrade or new setting.",
+    "EISky reads the owning Environment. Keep full volume for unknown owners, enabled reflection, sky-capable ambient, volumetric fog, aerial-perspective fog or SDFGI.",
+    "Menu and Game pass their actual Environment, without changing the existing water/reflection/environment policy.",
+    "Native PRE_EXIT_LANGUAGES wake-up: after queues drain, signal still-unacknowledged workers, including when the reporting worker already acknowledged earlier. Normal scheduling unchanged."
+  ],
+  "limits": [
+    "Linux Vulkan RTX3090 functional evidence. No Windows RTX4090 Mobile/D3D12 execution or claim that the reported 9 FPS case is fixed.",
+    "Optimizes only scenes without a radiance consumer. Gameplay with water reflections or volumetric fog retains the full original cost; menus can still benefit.",
+    "Run36 has strict one-level held-frame residuals, also on an original arm. These failures are preserved, not reclassified as passes.",
+    "Run36 has no foreign renderer at endpoint snapshots; this is not continuous device isolation. Most functional runs overlap foreign rendering work and make no performance claim.",
+    "Native regression covers four successful process exits after an intermittent reproducible failure, not exhaustive thread scheduling or platform coverage.",
+    "Frozen view fixture scope text inherits an earlier quarter-resolution description. Its guarded variant actually retains High half resolution.",
+    "Unrelated V1 ground-contact scratch changes are excluded and untouched. Original broader handoff/platform/route work remains open."
+  ],
+  "native_acceptance": {
+    "checks": 207,
+    "failures": 0,
+    "actual_process_exit_passes": 4,
+    "labels": [
+      "cloud-radiance-native50",
+      "cloud-radiance-native51",
+      "cloud-radiance-native52",
+      "cloud-radiance-native53"
+    ],
+    "unchanged_engine_control_images": 66
+  },
+  "runs": [
+    {
+      "label": "cloud-crash22",
+      "interpretation": "Debugger diagnosed the run21 fixture null dereference; debugger exit code is not an application pass.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-crash22/run.json",
+        "sha256": "d7789bad2f3b7db762d76e69ba1894b9462a07e0f6d0035bb670ab214773be05"
+      },
+      "return_code": 0,
+      "seconds": 8.504987047985196,
+      "process_snapshots": {},
+      "files": {
+        "gdb.log": "eee48850bde29b5c17c7235c32efc330173d726b38859eb79f3d2e7ce2559dbd",
+        "run.json": "d7789bad2f3b7db762d76e69ba1894b9462a07e0f6d0035bb670ab214773be05"
+      }
+    },
+    {
+      "label": "cloud-radiance-baseline43",
+      "interpretation": "Common lifecycle fixture on previous local.1 pack/runtime: 25 checks and actual exit pass.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-baseline43/run.json",
+        "sha256": "460e0b1f7d6a81aaf1942682b7d83a21897f4352a4622a975468e82551ab845c"
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "seconds": 20.530437338049524,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2275471,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2275471,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-baseline43/cloud-radiance.json",
+      "checks": 25,
+      "failures": 0,
+      "files": {
+        "cloud-radiance-aerial-first.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-held.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-ambient-first.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-held.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-background-2-first.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-held.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-3-first.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-held.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-first.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-return-held.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-menu-auto.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-menu-complete.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-reflection-first.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-held.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-volumetric-first.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-held.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance.json": "287516b63121601b021878ee0057d97c9c89d97708f88575364e5ee9cae440c2",
+        "run.json": "460e0b1f7d6a81aaf1942682b7d83a21897f4352a4622a975468e82551ab845c",
+        "run.log": "e8b46c4af6b131d4762b579856a87aad731023ac8e13f8c19efa5482c1c8638e",
+        "tool-source.gd": "49d5d5a7a453db726387e7b7f03ac0edc5338234aa43f1c114bd2922c0b07908",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-consumers29",
+      "interpretation": "Negative reflection control invalid with black ambient (engine specular occlusion); rejected.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-consumers29/run.json",
+        "sha256": "affb0f948eeb7b76a91cca27daa5214486bba548252f46335b48eed669eee11d"
+      },
+      "return_code": 1,
+      "termination_reason": null,
+      "seconds": 16.532407143036835,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2254678,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2254678,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-consumers29/cloud-radiance.json",
+      "checks": 57,
+      "failures": 1,
+      "files": {
+        "cloud-radiance-aerial-auto.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-complete.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-restored.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-unsafe-control.png": "26f6e9798abe87d43744428f8f2983e7a2e49d9f435624eba6007bc555370ebe",
+        "cloud-radiance-ambient-auto.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-complete.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-restored.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-unsafe-control.png": "7b56e767e46b012181cd32be56ee49c54a4a57bab2b000a5b3352bb340e9333e",
+        "cloud-radiance-background-2-auto.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-complete.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-restored.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-3-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-reflection-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-reflection-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-reflection-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-reflection-unsafe-control.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-volumetric-auto.png": "3f4c96bc4fe1bd580049fb7a4f1b92a5db6d500160910fc50519c8c05938654c",
+        "cloud-radiance-volumetric-complete.png": "3f4c96bc4fe1bd580049fb7a4f1b92a5db6d500160910fc50519c8c05938654c",
+        "cloud-radiance-volumetric-restored.png": "3f4c96bc4fe1bd580049fb7a4f1b92a5db6d500160910fc50519c8c05938654c",
+        "cloud-radiance-volumetric-unsafe-control.png": "8819c1036ec00466d022066e1f901dbafff751a59907976b00336ec797b06b11",
+        "cloud-radiance.json": "d4973d09d1361f471b620d0131ebb1deb39d476c8761b064739a4e23fa491aad",
+        "run.json": "affb0f948eeb7b76a91cca27daa5214486bba548252f46335b48eed669eee11d",
+        "run.log": "1b07734c38614ca8dfa18400ce1159deafe32861381d0c7c601ecf674bf06ee4",
+        "tool-source.gd": "b41e695ddefcccd0f1a3024df7936c17d48267cc5ed15aa86b729aba52605c72",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-consumers30",
+      "interpretation": "Roughness change did not repair the black-ambient fixture; rejected.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-consumers30/run.json",
+        "sha256": "5b9895943197b9dea971e555518094a7dce9dabc7580a5fc8ac805eeae759522"
+      },
+      "return_code": 1,
+      "termination_reason": null,
+      "seconds": 15.524532891984563,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2257339,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2257884,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-consumers30/cloud-radiance.json",
+      "checks": 57,
+      "failures": 1,
+      "files": {
+        "cloud-radiance-aerial-auto.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-complete.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-restored.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-unsafe-control.png": "26f6e9798abe87d43744428f8f2983e7a2e49d9f435624eba6007bc555370ebe",
+        "cloud-radiance-ambient-auto.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-complete.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-restored.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-unsafe-control.png": "7b56e767e46b012181cd32be56ee49c54a4a57bab2b000a5b3352bb340e9333e",
+        "cloud-radiance-background-2-auto.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-complete.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-restored.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-3-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-reflection-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-reflection-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-reflection-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-reflection-unsafe-control.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-volumetric-auto.png": "3f4c96bc4fe1bd580049fb7a4f1b92a5db6d500160910fc50519c8c05938654c",
+        "cloud-radiance-volumetric-complete.png": "3f4c96bc4fe1bd580049fb7a4f1b92a5db6d500160910fc50519c8c05938654c",
+        "cloud-radiance-volumetric-restored.png": "3f4c96bc4fe1bd580049fb7a4f1b92a5db6d500160910fc50519c8c05938654c",
+        "cloud-radiance-volumetric-unsafe-control.png": "8819c1036ec00466d022066e1f901dbafff751a59907976b00336ec797b06b11",
+        "cloud-radiance.json": "d4973d09d1361f471b620d0131ebb1deb39d476c8761b064739a4e23fa491aad",
+        "run.json": "5b9895943197b9dea971e555518094a7dce9dabc7580a5fc8ac805eeae759522",
+        "run.log": "fd1fb17756c3fb08198c07b7a994348ddb3ef0d4347fbc07112e1d2f538a47c1",
+        "tool-source.gd": "45bcee483ea2b5c7f11c0ca119954a433b195f763e8694ab16d2adb021b7ac37",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-consumers32",
+      "interpretation": "Toon BRDF did not repair the black-ambient fixture; rejected.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-consumers32/run.json",
+        "sha256": "bf3f7631d52705b5d772c55f9c658ac683a3eda4e8813e2c6d15f529c8232c6e"
+      },
+      "return_code": 1,
+      "termination_reason": null,
+      "seconds": 15.773883335990831,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2259784,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2259784,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-consumers32/cloud-radiance.json",
+      "checks": 57,
+      "failures": 1,
+      "files": {
+        "cloud-radiance-aerial-auto.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-complete.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-restored.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-unsafe-control.png": "26f6e9798abe87d43744428f8f2983e7a2e49d9f435624eba6007bc555370ebe",
+        "cloud-radiance-ambient-auto.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-complete.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-restored.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-unsafe-control.png": "7b56e767e46b012181cd32be56ee49c54a4a57bab2b000a5b3352bb340e9333e",
+        "cloud-radiance-background-2-auto.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-complete.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-restored.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-3-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-reflection-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-reflection-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-reflection-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-reflection-unsafe-control.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-volumetric-auto.png": "3f4c96bc4fe1bd580049fb7a4f1b92a5db6d500160910fc50519c8c05938654c",
+        "cloud-radiance-volumetric-complete.png": "3f4c96bc4fe1bd580049fb7a4f1b92a5db6d500160910fc50519c8c05938654c",
+        "cloud-radiance-volumetric-restored.png": "3f4c96bc4fe1bd580049fb7a4f1b92a5db6d500160910fc50519c8c05938654c",
+        "cloud-radiance-volumetric-unsafe-control.png": "8819c1036ec00466d022066e1f901dbafff751a59907976b00336ec797b06b11",
+        "cloud-radiance.json": "d4973d09d1361f471b620d0131ebb1deb39d476c8761b064739a4e23fa491aad",
+        "run.json": "bf3f7631d52705b5d772c55f9c658ac683a3eda4e8813e2c6d15f529c8232c6e",
+        "run.log": "b61ac4cb416c5faaa205a8a7f1672135c426c608b8e998a88121d20caf7d77cd",
+        "tool-source.gd": "fbec07e9bff1dedeea17313aa3b2a63a3c1d643d299b04feb9e6ee739531181e",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-consumers33",
+      "interpretation": "Corrected grey-ambient fixture verifies reflection, ambient and both fog consumers; all checks pass.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-consumers33/run.json",
+        "sha256": "49a1cd2f8481680cd1cf6ed09f0d4f022924999302ae519d0036a576f3e48f80"
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "seconds": 14.017407678009477,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2262375,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2262375,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-consumers33/cloud-radiance.json",
+      "checks": 57,
+      "failures": 0,
+      "files": {
+        "cloud-radiance-aerial-auto.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-complete.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-restored.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-unsafe-control.png": "26f6e9798abe87d43744428f8f2983e7a2e49d9f435624eba6007bc555370ebe",
+        "cloud-radiance-ambient-auto.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-complete.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-restored.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-unsafe-control.png": "7b56e767e46b012181cd32be56ee49c54a4a57bab2b000a5b3352bb340e9333e",
+        "cloud-radiance-background-2-auto.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-complete.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-restored.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-3-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-auto.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-return-complete.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-return-restored.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-reflection-auto.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-complete.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-restored.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-unsafe-control.png": "403eef3027ddcaac279190fc659418eb66597abd54280d8a8f0709f610101ec8",
+        "cloud-radiance-volumetric-auto.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-complete.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-restored.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-unsafe-control.png": "8c60a78fa9a358edbd007e50e8c2f700e5d74ab2d44018f796bd855d48430605",
+        "cloud-radiance.json": "9e7120cea7834e6c79a24309fc97e1feb2988736ecaf3ed698a2b049d9716998",
+        "run.json": "49a1cd2f8481680cd1cf6ed09f0d4f022924999302ae519d0036a576f3e48f80",
+        "run.log": "32118cc82ca1d650c69c3b11bcf9be12b895115f502a9fcce17e5121833f04cc",
+        "tool-source.gd": "38be68deb8e538876c17fe4110e0a723eb95c7695d293d11d987819d50a8df22",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-consumers38",
+      "interpretation": "All 63 image/policy checks passed; process hung at native shutdown and timed out. Overall failure.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-consumers38/run.json",
+        "sha256": "1a03adae933bc80d07b9e0a0799baed5a24fd4b348c8c39f08fc4b06a5b2f6d4"
+      },
+      "return_code": -15,
+      "termination_reason": "timeout",
+      "seconds": 240.2773049780517,
+      "process_snapshots": {
+        "other_processes_at_start": [],
+        "other_processes_at_end": [
+          {
+            "pid": 2271194,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 2272725,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/radiance-candidate28/CursedLands.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-consumers38/cloud-radiance.json",
+      "checks": 63,
+      "failures": 0,
+      "files": {
+        "cloud-radiance-aerial-auto.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-complete.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-restored.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-unsafe-control.png": "26f6e9798abe87d43744428f8f2983e7a2e49d9f435624eba6007bc555370ebe",
+        "cloud-radiance-ambient-auto.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-complete.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-restored.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-unsafe-control.png": "7b56e767e46b012181cd32be56ee49c54a4a57bab2b000a5b3352bb340e9333e",
+        "cloud-radiance-background-2-auto.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-complete.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-restored.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-3-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-auto.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-return-complete.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-return-restored.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-menu-auto.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-menu-complete.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-reflection-auto.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-complete.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-restored.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-unsafe-control.png": "403eef3027ddcaac279190fc659418eb66597abd54280d8a8f0709f610101ec8",
+        "cloud-radiance-volumetric-auto.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-complete.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-restored.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-unsafe-control.png": "8c60a78fa9a358edbd007e50e8c2f700e5d74ab2d44018f796bd855d48430605",
+        "cloud-radiance.json": "07b14cdb89a93024a2bdc54704b9a2fa5c2aa22b65f6bf4471c6a45195a06c4b",
+        "exit-gdb.log": "734ba920970bc38353a56fc79116cc8fd0cc21c5e1334e0d2b71d501ae53bc32",
+        "run.json": "1a03adae933bc80d07b9e0a0799baed5a24fd4b348c8c39f08fc4b06a5b2f6d4",
+        "run.log": "cecc363e4bcd7d3b11e3b543fb35b599426f4ae8e0c56e99d88ba4e23af4f34c",
+        "tool-source.gd": "e107182f3635c059f8996c32716333878090152a71bd5960694032cab0a2da17",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-consumers42",
+      "interpretation": "Separate-thread repeat exits normally and passes 63 checks; intermittent failures retained.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-consumers42/run.json",
+        "sha256": "506dae0a47244556ccc5a27b7fcd8a1ec22e418ba7fa1b702baef59a565b040b"
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "seconds": 23.534322753024753,
+      "process_snapshots": {
+        "other_processes_at_start": [],
+        "other_processes_at_end": [
+          {
+            "pid": 2273562,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-consumers42/cloud-radiance.json",
+      "checks": 63,
+      "failures": 0,
+      "files": {
+        "cloud-radiance-aerial-auto.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-complete.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-restored.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-unsafe-control.png": "26f6e9798abe87d43744428f8f2983e7a2e49d9f435624eba6007bc555370ebe",
+        "cloud-radiance-ambient-auto.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-complete.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-restored.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-unsafe-control.png": "7b56e767e46b012181cd32be56ee49c54a4a57bab2b000a5b3352bb340e9333e",
+        "cloud-radiance-background-2-auto.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-complete.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-restored.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-3-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-auto.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-return-complete.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-return-restored.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-menu-auto.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-menu-complete.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-reflection-auto.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-complete.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-restored.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-unsafe-control.png": "403eef3027ddcaac279190fc659418eb66597abd54280d8a8f0709f610101ec8",
+        "cloud-radiance-volumetric-auto.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-complete.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-restored.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-unsafe-control.png": "8c60a78fa9a358edbd007e50e8c2f700e5d74ab2d44018f796bd855d48430605",
+        "cloud-radiance.json": "07b14cdb89a93024a2bdc54704b9a2fa5c2aa22b65f6bf4471c6a45195a06c4b",
+        "run.json": "506dae0a47244556ccc5a27b7fcd8a1ec22e418ba7fa1b702baef59a565b040b",
+        "run.log": "80f864e22df898f184963239e25b6fcbb2a66d08749089b8116ef51a6ace1100",
+        "tool-source.gd": "e107182f3635c059f8996c32716333878090152a71bd5960694032cab0a2da17",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-cost36",
+      "interpretation": "Production uniform ABBA at 1440p. Quality images equal, but three strict High held checks fail by 1/255 (23,23,2281 pixels; last is original arm). Not an overall acceptance pass.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-cost36/run.json",
+        "sha256": "12649b8a6aa6ac3ae3f749de4e5650076803a42c50954eafde10b5b0bfcf555f"
+      },
+      "return_code": 1,
+      "termination_reason": null,
+      "seconds": 42.543783635948785,
+      "process_snapshots": {
+        "other_processes_at_start": [],
+        "other_processes_at_end": []
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-cost36/cloud-radiance-work.json",
+      "checks": 36,
+      "failures": 3,
+      "files": {
+        "cloud-radiance-work.json": "cd3307c9c086fe305176eb465da8a292a5556be061b28b2fce9e13547be9d54c",
+        "cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "radiance-held-sky-3-1.png": "feb56bf80868e18cf0617b337323b51a8d63b0a8ef43f4ee5dafbe7c0a74b7ce",
+        "radiance-held-sky-3-2.png": "feb56bf80868e18cf0617b337323b51a8d63b0a8ef43f4ee5dafbe7c0a74b7ce",
+        "radiance-held-sky-3-3.png": "9b68c5ab67e81946f2fb6e89519fa95cf15e0a7c6a666408e7f2fc7c1876db55",
+        "radiance-sky-2-0.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+        "radiance-sky-2-1.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+        "radiance-sky-2-2.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+        "radiance-sky-2-3.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+        "radiance-sky-3-0.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+        "radiance-sky-3-1.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+        "radiance-sky-3-2.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+        "radiance-sky-3-3.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+        "run.json": "12649b8a6aa6ac3ae3f749de4e5650076803a42c50954eafde10b5b0bfcf555f",
+        "run.log": "e073eb3aa5204ac399ddc003d052cc7e5fa1270334b153098953e920fe09cfa6",
+        "tool-source.gd": "8731d5c62f2555a19f0372904d970f711ecf7c38ea312cd35f6a10e16e36a94a",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-exit40",
+      "interpretation": "Debugger stopped at debuginfod prompt before application start. Harness failure, excluded.",
+      "files": {
+        "gdb.log": "9833a81fb33c20bd08a9b78f56ca95df7dfd6da959bc9c84a75c4b93d1a5b049"
+      }
+    },
+    {
+      "label": "cloud-radiance-exit41",
+      "interpretation": "Same fixture exits normally under debugger; does not negate intermittent failures.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-exit41/run.json",
+        "sha256": "6a0e50e19dab6fe6afb7b4078d4152121926855ffc01b8a428131a804cd47b25"
+      },
+      "seconds": 24.640033504983876,
+      "process_snapshots": {},
+      "files": {
+        "gdb.log": "b2b73157d331213606cd366cfe0e1390d795a869a70cd0614426ef8b1396fe3b",
+        "run.json": "6a0e50e19dab6fe6afb7b4078d4152121926855ffc01b8a428131a804cd47b25"
+      }
+    },
+    {
+      "label": "cloud-radiance-exit45",
+      "interpretation": "Debugger redirection dropped arguments; ordinary application launched instead of fixture. Excluded.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-exit45/run.json",
+        "sha256": "f27903ebaa2540a4bce12ca983394371774f38cc7a765b02d033d69eebb179f3"
+      },
+      "seconds": 63.05155704700155,
+      "returned_to_debugger": true,
+      "clean_exit_logged": false,
+      "process_snapshots": {},
+      "files": {
+        "game.log": "1fddb37673a6227d247f3bfad697f2ec40bcc2f26c40a2eca1249e4d0e4f01c2",
+        "gdb.log": "c59e6c77e99e5a9a18cfc902a5d357d190504236937ea4107915fd57839445a3",
+        "run.json": "f27903ebaa2540a4bce12ca983394371774f38cc7a765b02d033d69eebb179f3"
+      }
+    },
+    {
+      "label": "cloud-radiance-exit46",
+      "interpretation": "Shutdown stall reproduced; stripped executable with separate symbols gave unreliable native unwinding.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-exit46/run.json",
+        "sha256": "58b0634ead55af452018c3483b4ce06251070da75dd6cb51b7226fba35baa411"
+      },
+      "seconds": 30.39357601699885,
+      "returned_to_debugger": false,
+      "clean_exit_logged": true,
+      "process_snapshots": {},
+      "files": {
+        "game.log": "d6872ae6694d61090ea9f750e806f02a8bf39508068cb7ebad2f31d7d83bca0d",
+        "gdb.log": "4e9ab96767a2acc6a376899a4d64909597879fa1b7c424f030f0ee6a29bd1bd7",
+        "run.json": "58b0634ead55af452018c3483b4ce06251070da75dd6cb51b7226fba35baa411"
+      }
+    },
+    {
+      "label": "cloud-radiance-exit47",
+      "interpretation": "Matching unstripped executable reproduces shutdown stall with fully symbolized worker/main thread backtraces.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-exit47/run.json",
+        "sha256": "13f8e91a758950b5b3b2ce76032c49df18337e44a90360dec7f63be021f6d55f"
+      },
+      "seconds": 29.209603879018687,
+      "returned_to_debugger": false,
+      "clean_exit_logged": true,
+      "process_snapshots": {},
+      "files": {
+        "game.log": "f69702380edf30494a8b66681014d5b3c08b5a7f80c67bf8a15245a2119badf6",
+        "gdb.log": "a2819fa9a175546ec9fe75d1bc7fbcf5b230951f0e0182b030cfa64bbaf152c7",
+        "run.json": "13f8e91a758950b5b3b2ce76032c49df18337e44a90360dec7f63be021f6d55f"
+      }
+    },
+    {
+      "label": "cloud-radiance-exit48",
+      "interpretation": "Unmodified native repeat exited normally under debugger. The clean_exit_logged flag only observes polling, not final log contents.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-exit48/run.json",
+        "sha256": "e1a35e054f43d7685f6114bb9ba6a688f76778061f776eb42d0bb9142c35548a"
+      },
+      "seconds": 19.57097215799149,
+      "returned_to_debugger": true,
+      "clean_exit_logged": false,
+      "process_snapshots": {},
+      "files": {
+        "game.log": "431c2826b3a092429b00c5eef403c8a845e2eb31fda71f7b8a05bd9d56d957ea",
+        "gdb.log": "ca9c71102efdc57fdc107ff591f948eed1e9568fb9c84460928aebc5dea3706c",
+        "run.json": "e1a35e054f43d7685f6114bb9ba6a688f76778061f776eb42d0bb9142c35548a"
+      }
+    },
+    {
+      "label": "cloud-radiance-exit49",
+      "interpretation": "Stall reproduced and pool inspected: PRE_EXIT_LANGUAGES, empty queues, 1/4 idle acknowledgements; all workers asleep.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-exit49/run.json",
+        "sha256": "fb52f12027aad12dff9a66e13f9a480cb00261966b6679ec4adb071ac9718f8c"
+      },
+      "seconds": 29.48419523303164,
+      "returned_to_debugger": false,
+      "clean_exit_logged": true,
+      "process_snapshots": {},
+      "files": {
+        "game.log": "b27431e34eaa9834d308f6695116fe63aec4b235d98effffb18f597ac72914d8",
+        "gdb.log": "754e4f53a720dea1a19220d269e7a8837ca08a57bd51b1f8ec2081cb2a5fd9a9",
+        "run.json": "fb52f12027aad12dff9a66e13f9a480cb00261966b6679ec4adb071ac9718f8c"
+      }
+    },
+    {
+      "label": "cloud-radiance-ingos34",
+      "interpretation": "Production guard: actual original-MP Ingos bz2mpg / bz8k with scenery, actor and visible snow sky, 1440p. Full static and panning images equal.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-ingos34/run.json",
+        "sha256": "db51de839dc2600a5498887be8ed5a6bbfa063c0cebb35dee98cd83b7335acd4"
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "seconds": 33.540863649046514,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2262375,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2262375,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-ingos34/cloud-resolution-views.json",
+      "checks": 30,
+      "failures": 0,
+      "files": {
+        "cloud-resolution-views.json": "574525078822984a4526e41e307171f40810bb001aa5c33837205ee8bb9c10ad",
+        "cloud-view-base-held.png": "83b8d166ac8b34d42f0dd8ce44da59ae9ef889ff9163cca34f48519e6bd49b26",
+        "cloud-view-base-pan-0.png": "143abdd18732189b293a0d5058c361cf580dd8c266f8fd827a904c372ab4c92f",
+        "cloud-view-base-pan-120.png": "25c31541e64ebf768e0d0a5163fb3ebe4c81c7c0f3e3f3b8820feaa6eac196b3",
+        "cloud-view-base-pan-30.png": "a38c069228782861922eb09a5875117a528c45a1758637c1875af42e42c9ec85",
+        "cloud-view-base-pan-60.png": "422c5a812fbddf26708ef7c64498e9233fdf14e60615fecc2b83ad96e13f66c2",
+        "cloud-view-base-pan-90.png": "873337ae83aff30b75f6c3259fd2d1b9264317caf15bc6d907b7637091b5eeaa",
+        "cloud-view-base-restore.png": "83b8d166ac8b34d42f0dd8ce44da59ae9ef889ff9163cca34f48519e6bd49b26",
+        "cloud-view-base.png": "83b8d166ac8b34d42f0dd8ce44da59ae9ef889ff9163cca34f48519e6bd49b26",
+        "cloud-view-guarded-held.png": "83b8d166ac8b34d42f0dd8ce44da59ae9ef889ff9163cca34f48519e6bd49b26",
+        "cloud-view-guarded-pan-0.png": "143abdd18732189b293a0d5058c361cf580dd8c266f8fd827a904c372ab4c92f",
+        "cloud-view-guarded-pan-120.png": "25c31541e64ebf768e0d0a5163fb3ebe4c81c7c0f3e3f3b8820feaa6eac196b3",
+        "cloud-view-guarded-pan-30.png": "a38c069228782861922eb09a5875117a528c45a1758637c1875af42e42c9ec85",
+        "cloud-view-guarded-pan-60.png": "422c5a812fbddf26708ef7c64498e9233fdf14e60615fecc2b83ad96e13f66c2",
+        "cloud-view-guarded-pan-90.png": "873337ae83aff30b75f6c3259fd2d1b9264317caf15bc6d907b7637091b5eeaa",
+        "cloud-view-guarded.png": "83b8d166ac8b34d42f0dd8ce44da59ae9ef889ff9163cca34f48519e6bd49b26",
+        "cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "cloud_radiance_probe.gd": "1d04af4801b3e1b51a39b7591176162c1b6949bde7a785ccfa2dad2596209edf",
+        "cloud_resolution_probe.gd": "5290cde42c3d87fcad67fdc19555bb60bd471e9c4951d4b84c1efd3816efa14a",
+        "cloud_resolution_scene.gd": "3b2a44a34319d48153205e60ab271778a9114a4af01ec184de058c8bce460f95",
+        "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "run.json": "db51de839dc2600a5498887be8ed5a6bbfa063c0cebb35dee98cd83b7335acd4",
+        "run.log": "a4d172c7d1a8fc0e61b0e9b41e910b70258b33e5361f248eeddccbd9d7cbe9fe",
+        "tool-source.gd": "10e09702e7d8605c5c56908dc444e99bc142378bd20f5b6ffea1d814fb3c81b7",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-lifecycle44",
+      "interpretation": "Common fixture on candidate pack: 25 image checks pass, but shutdown times out. All 16 images equal to run43.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-lifecycle44/run.json",
+        "sha256": "ae71cd6e04424019fb68104370bd3b321bcb9f052c0c0f16a2cf19ed198756c4"
+      },
+      "return_code": -15,
+      "termination_reason": "timeout",
+      "seconds": 75.3673717629863,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2277496,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": []
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-lifecycle44/cloud-radiance.json",
+      "checks": 25,
+      "failures": 0,
+      "files": {
+        "baseline-comparison.json": "3537edddbe511d8de42e49e9bab3a967767feeb25a6a31de4ab64e3e98a2ef51",
+        "cloud-radiance-aerial-first.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-held.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-ambient-first.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-held.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-background-2-first.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-held.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-3-first.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-held.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-first.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-return-held.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-menu-auto.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-menu-complete.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-reflection-first.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-held.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-volumetric-first.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-held.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance.json": "287516b63121601b021878ee0057d97c9c89d97708f88575364e5ee9cae440c2",
+        "run.json": "ae71cd6e04424019fb68104370bd3b321bcb9f052c0c0f16a2cf19ed198756c4",
+        "run.log": "329495e488f5f0eaa0d13bb24e219e793acc8e0f3dc7d9bb0472dbdd99bc63ed",
+        "tool-source.gd": "49d5d5a7a453db726387e7b7f03ac0edc5338234aa43f1c114bd2922c0b07908",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-mobile39",
+      "interpretation": "Mobile image/policy checks pass with safe render thread.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-mobile39/run.json",
+        "sha256": "76e1227496f00f1e787ee8178b86d670352158e5855a025e780b24fc7e0d9ab4"
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "seconds": 15.269786183023825,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2267841,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/radiance-candidate28/CursedLands.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2267841,
+            "executable": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/radiance-candidate28/CursedLands.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-mobile39/cloud-radiance.json",
+      "checks": 56,
+      "failures": 0,
+      "files": {
+        "cloud-radiance-aerial-auto.png": "ab103a8b590e2fdc89ccf998585e8f04234a6fd4055ae7bf8560939d97dfb453",
+        "cloud-radiance-aerial-complete.png": "ab103a8b590e2fdc89ccf998585e8f04234a6fd4055ae7bf8560939d97dfb453",
+        "cloud-radiance-aerial-restored.png": "ab103a8b590e2fdc89ccf998585e8f04234a6fd4055ae7bf8560939d97dfb453",
+        "cloud-radiance-aerial-unsafe-control.png": "75b27757360f8e7e497648bd3188e01ce0aaee67d1c84d1c5961fe91f54f19c3",
+        "cloud-radiance-ambient-auto.png": "2b1fc50115a4f91cb8dcd204e44bf97d27110a19a8c11dcbf436c212f9357353",
+        "cloud-radiance-ambient-complete.png": "2b1fc50115a4f91cb8dcd204e44bf97d27110a19a8c11dcbf436c212f9357353",
+        "cloud-radiance-ambient-restored.png": "2b1fc50115a4f91cb8dcd204e44bf97d27110a19a8c11dcbf436c212f9357353",
+        "cloud-radiance-ambient-unsafe-control.png": "4ccd7b00d6881e7b8a7a47152b8278b1eaf0272fab670d90067c078b2aed5a12",
+        "cloud-radiance-background-2-auto.png": "2f2fddd45600375cbbd75b88f0ad26a24a7144b59fa8d131d3fa807e37187a46",
+        "cloud-radiance-background-2-complete.png": "2f2fddd45600375cbbd75b88f0ad26a24a7144b59fa8d131d3fa807e37187a46",
+        "cloud-radiance-background-2-restored.png": "2f2fddd45600375cbbd75b88f0ad26a24a7144b59fa8d131d3fa807e37187a46",
+        "cloud-radiance-background-3-auto.png": "ed54548bc8a84b1ed1caec0bf5e65e91561bac189820b52f38613f61be53c41a",
+        "cloud-radiance-background-3-complete.png": "ed54548bc8a84b1ed1caec0bf5e65e91561bac189820b52f38613f61be53c41a",
+        "cloud-radiance-background-3-restored.png": "ed54548bc8a84b1ed1caec0bf5e65e91561bac189820b52f38613f61be53c41a",
+        "cloud-radiance-background-return-auto.png": "61bcf86338a326832f4a250b6c05eaa74af74821066e284482f63e227e45190d",
+        "cloud-radiance-background-return-complete.png": "61bcf86338a326832f4a250b6c05eaa74af74821066e284482f63e227e45190d",
+        "cloud-radiance-background-return-restored.png": "61bcf86338a326832f4a250b6c05eaa74af74821066e284482f63e227e45190d",
+        "cloud-radiance-menu-auto.png": "641e8a9b053e9b0bbd911b283a4cc08bdd08a777da92faa00c3df9e4c6ee5cc8",
+        "cloud-radiance-menu-complete.png": "641e8a9b053e9b0bbd911b283a4cc08bdd08a777da92faa00c3df9e4c6ee5cc8",
+        "cloud-radiance-reflection-auto.png": "996118eaf075a4a94b447c1276953572769b41b2ca97df6d74bb28d5ce92dccb",
+        "cloud-radiance-reflection-complete.png": "996118eaf075a4a94b447c1276953572769b41b2ca97df6d74bb28d5ce92dccb",
+        "cloud-radiance-reflection-restored.png": "996118eaf075a4a94b447c1276953572769b41b2ca97df6d74bb28d5ce92dccb",
+        "cloud-radiance-reflection-unsafe-control.png": "0b34370132f71738160687c02111f3c09464126ac8f31f9b0c9f142e7b5f2aa2",
+        "cloud-radiance.json": "0402c90d61abe9dfa687930755264809a66bbf375b780cce7d7a2ba7da06c154",
+        "run.json": "76e1227496f00f1e787ee8178b86d670352158e5855a025e780b24fc7e0d9ab4",
+        "run.log": "98125ed28a8bed33d3adaef054eb30986ef482dfcd758fa0cbda06f0929ba3b2",
+        "tool-source.gd": "e107182f3635c059f8996c32716333878090152a71bd5960694032cab0a2da17",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-native50",
+      "interpretation": "Patched native runtime, same candidate pack: 63 checks and actual separate-thread Forward+ process exit pass.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-native50/run.json",
+        "sha256": "53a40f1ce96507e3f59f62b6077c8e8c4169fd2203be677fa5818930d868c2ad"
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "seconds": 22.033115845988505,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2302956,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 2303421,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2304601,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 2305375,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-native50/cloud-radiance.json",
+      "checks": 63,
+      "failures": 0,
+      "files": {
+        "cloud-radiance-aerial-auto.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-complete.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-restored.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-unsafe-control.png": "26f6e9798abe87d43744428f8f2983e7a2e49d9f435624eba6007bc555370ebe",
+        "cloud-radiance-ambient-auto.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-complete.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-restored.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-unsafe-control.png": "7b56e767e46b012181cd32be56ee49c54a4a57bab2b000a5b3352bb340e9333e",
+        "cloud-radiance-background-2-auto.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-complete.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-restored.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-3-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-auto.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-return-complete.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-return-restored.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-menu-auto.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-menu-complete.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-reflection-auto.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-complete.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-restored.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-unsafe-control.png": "403eef3027ddcaac279190fc659418eb66597abd54280d8a8f0709f610101ec8",
+        "cloud-radiance-volumetric-auto.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-complete.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-restored.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-unsafe-control.png": "8c60a78fa9a358edbd007e50e8c2f700e5d74ab2d44018f796bd855d48430605",
+        "cloud-radiance.json": "07b14cdb89a93024a2bdc54704b9a2fa5c2aa22b65f6bf4471c6a45195a06c4b",
+        "run.json": "53a40f1ce96507e3f59f62b6077c8e8c4169fd2203be677fa5818930d868c2ad",
+        "run.log": "b5747aec551e08ffd6b5cabd9245c52bf5789aea591a6ab24112deca9aef8c1b",
+        "tool-source.gd": "e107182f3635c059f8996c32716333878090152a71bd5960694032cab0a2da17",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-native51",
+      "interpretation": "Independent cold-profile repeat: 63 checks and actual process exit pass.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-native51/run.json",
+        "sha256": "ccf0c64d53c6a3eae719f428b15e40b61d6b261c63e6a5bb4c1190920d01f05a"
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "seconds": 21.27462474600179,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2307616,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 2308138,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2308427,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 2309456,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-native51/cloud-radiance.json",
+      "checks": 63,
+      "failures": 0,
+      "files": {
+        "cloud-radiance-aerial-auto.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-complete.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-restored.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-unsafe-control.png": "26f6e9798abe87d43744428f8f2983e7a2e49d9f435624eba6007bc555370ebe",
+        "cloud-radiance-ambient-auto.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-complete.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-restored.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-unsafe-control.png": "7b56e767e46b012181cd32be56ee49c54a4a57bab2b000a5b3352bb340e9333e",
+        "cloud-radiance-background-2-auto.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-complete.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-restored.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-3-auto.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-complete.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-restored.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-auto.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-return-complete.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-return-restored.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-menu-auto.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-menu-complete.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-reflection-auto.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-complete.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-restored.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-unsafe-control.png": "403eef3027ddcaac279190fc659418eb66597abd54280d8a8f0709f610101ec8",
+        "cloud-radiance-volumetric-auto.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-complete.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-restored.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-unsafe-control.png": "8c60a78fa9a358edbd007e50e8c2f700e5d74ab2d44018f796bd855d48430605",
+        "cloud-radiance.json": "07b14cdb89a93024a2bdc54704b9a2fa5c2aa22b65f6bf4471c6a45195a06c4b",
+        "run.json": "ccf0c64d53c6a3eae719f428b15e40b61d6b261c63e6a5bb4c1190920d01f05a",
+        "run.log": "aee6df9e473d720099b44733630ca0032463fc967159b24245054d9a528495e6",
+        "tool-source.gd": "e107182f3635c059f8996c32716333878090152a71bd5960694032cab0a2da17",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-native52",
+      "interpretation": "Previously hanging common lifecycle fixture, patched runtime: 25 checks and actual process exit pass.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-native52/run.json",
+        "sha256": "95387345fc705f1d98c332f4e784bf55840538970c8340c2533e0fb578fac170"
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "seconds": 18.77360293996753,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2308427,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 2309456,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2310374,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 2310511,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-native52/cloud-radiance.json",
+      "checks": 25,
+      "failures": 0,
+      "files": {
+        "cloud-radiance-aerial-first.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-aerial-held.png": "c9a9558f0dee6f499976105bf12b99111b108ce369a0ff4e877bacd9892c8893",
+        "cloud-radiance-ambient-first.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-ambient-held.png": "4e34492b034b0f99d3c5bc7e6aaf0215917f31ad12e1337dd15e4d2a0be2f6f6",
+        "cloud-radiance-background-2-first.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-2-held.png": "8d1a66e428360e506fc9edb18210c70e643c45521d7562aa0b6f48958df56ff3",
+        "cloud-radiance-background-3-first.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-3-held.png": "1c507bb09368c44d43b5018c5070161e8d66b849f0614b8c584580c145866611",
+        "cloud-radiance-background-return-first.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-background-return-held.png": "1363c3da08da2f0ece78762be18fde38b6edc824cc3352bb0c9f6c5f39f318c8",
+        "cloud-radiance-menu-auto.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-menu-complete.png": "3108d3d06d1cb10f0e4714b3089b573b7597f6ed6d61a69cee4e5a78fa541950",
+        "cloud-radiance-reflection-first.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-reflection-held.png": "00322b1fd968c0305e8099146f2dbe8c91488a291368445642dc75113537945d",
+        "cloud-radiance-volumetric-first.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance-volumetric-held.png": "b129aabda0fbe03950aeb9e6ff9215e83e6b1bcd19cfe916592e8dec8dcfbc05",
+        "cloud-radiance.json": "287516b63121601b021878ee0057d97c9c89d97708f88575364e5ee9cae440c2",
+        "run.json": "95387345fc705f1d98c332f4e784bf55840538970c8340c2533e0fb578fac170",
+        "run.log": "b5b2996ce441236117a238c2352801cabea7f389925df3fecfbdd73ccfd76b15",
+        "tool-source.gd": "49d5d5a7a453db726387e7b7f03ac0edc5338234aa43f1c114bd2922c0b07908",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-native53",
+      "interpretation": "Patched runtime Mobile separate-thread: 56 checks and actual process exit pass.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-native53/run.json",
+        "sha256": "fbbd8a86b26f64a87c0ca9233cd4b27f9b73347f370b5d6e301803939f2f64bb"
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "seconds": 17.021282038011122,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2310374,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          },
+          {
+            "pid": 2310511,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2310908,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          },
+          {
+            "pid": 2311586,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": true
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-native53/cloud-radiance.json",
+      "checks": 56,
+      "failures": 0,
+      "files": {
+        "cloud-radiance-aerial-auto.png": "ab103a8b590e2fdc89ccf998585e8f04234a6fd4055ae7bf8560939d97dfb453",
+        "cloud-radiance-aerial-complete.png": "ab103a8b590e2fdc89ccf998585e8f04234a6fd4055ae7bf8560939d97dfb453",
+        "cloud-radiance-aerial-restored.png": "ab103a8b590e2fdc89ccf998585e8f04234a6fd4055ae7bf8560939d97dfb453",
+        "cloud-radiance-aerial-unsafe-control.png": "75b27757360f8e7e497648bd3188e01ce0aaee67d1c84d1c5961fe91f54f19c3",
+        "cloud-radiance-ambient-auto.png": "2b1fc50115a4f91cb8dcd204e44bf97d27110a19a8c11dcbf436c212f9357353",
+        "cloud-radiance-ambient-complete.png": "2b1fc50115a4f91cb8dcd204e44bf97d27110a19a8c11dcbf436c212f9357353",
+        "cloud-radiance-ambient-restored.png": "2b1fc50115a4f91cb8dcd204e44bf97d27110a19a8c11dcbf436c212f9357353",
+        "cloud-radiance-ambient-unsafe-control.png": "4ccd7b00d6881e7b8a7a47152b8278b1eaf0272fab670d90067c078b2aed5a12",
+        "cloud-radiance-background-2-auto.png": "2f2fddd45600375cbbd75b88f0ad26a24a7144b59fa8d131d3fa807e37187a46",
+        "cloud-radiance-background-2-complete.png": "2f2fddd45600375cbbd75b88f0ad26a24a7144b59fa8d131d3fa807e37187a46",
+        "cloud-radiance-background-2-restored.png": "2f2fddd45600375cbbd75b88f0ad26a24a7144b59fa8d131d3fa807e37187a46",
+        "cloud-radiance-background-3-auto.png": "ed54548bc8a84b1ed1caec0bf5e65e91561bac189820b52f38613f61be53c41a",
+        "cloud-radiance-background-3-complete.png": "ed54548bc8a84b1ed1caec0bf5e65e91561bac189820b52f38613f61be53c41a",
+        "cloud-radiance-background-3-restored.png": "ed54548bc8a84b1ed1caec0bf5e65e91561bac189820b52f38613f61be53c41a",
+        "cloud-radiance-background-return-auto.png": "61bcf86338a326832f4a250b6c05eaa74af74821066e284482f63e227e45190d",
+        "cloud-radiance-background-return-complete.png": "61bcf86338a326832f4a250b6c05eaa74af74821066e284482f63e227e45190d",
+        "cloud-radiance-background-return-restored.png": "61bcf86338a326832f4a250b6c05eaa74af74821066e284482f63e227e45190d",
+        "cloud-radiance-menu-auto.png": "641e8a9b053e9b0bbd911b283a4cc08bdd08a777da92faa00c3df9e4c6ee5cc8",
+        "cloud-radiance-menu-complete.png": "641e8a9b053e9b0bbd911b283a4cc08bdd08a777da92faa00c3df9e4c6ee5cc8",
+        "cloud-radiance-reflection-auto.png": "996118eaf075a4a94b447c1276953572769b41b2ca97df6d74bb28d5ce92dccb",
+        "cloud-radiance-reflection-complete.png": "996118eaf075a4a94b447c1276953572769b41b2ca97df6d74bb28d5ce92dccb",
+        "cloud-radiance-reflection-restored.png": "996118eaf075a4a94b447c1276953572769b41b2ca97df6d74bb28d5ce92dccb",
+        "cloud-radiance-reflection-unsafe-control.png": "0b34370132f71738160687c02111f3c09464126ac8f31f9b0c9f142e7b5f2aa2",
+        "cloud-radiance.json": "0402c90d61abe9dfa687930755264809a66bbf375b780cce7d7a2ba7da06c154",
+        "run.json": "fbbd8a86b26f64a87c0ca9233cd4b27f9b73347f370b5d6e301803939f2f64bb",
+        "run.log": "2037e50af433b81f9f77284e48a1c763465c39c5b6e7d751bcec7b0862a1f7df",
+        "tool-source.gd": "e107182f3635c059f8996c32716333878090152a71bd5960694032cab0a2da17",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-night37",
+      "interpretation": "Production guard: Gipat night at 1080p; full static and panning images equal.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-night37/run.json",
+        "sha256": "1316feaf1ed919070ac33ccb8440cd9af5a51b630bb24360c81496549a772784"
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "seconds": 29.034481214999687,
+      "process_snapshots": {
+        "other_processes_at_start": [],
+        "other_processes_at_end": []
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-night37/cloud-resolution-views.json",
+      "checks": 30,
+      "failures": 0,
+      "files": {
+        "cloud-resolution-views.json": "23e85bdafc87ea9f9e0c8f9d1770c39f0a8c8da387ffa746cc05caf0db403f82",
+        "cloud-view-base-held.png": "c857d6822462ec4320effdc4eb4284edda6a58c55d81263a535f9e420b128cfc",
+        "cloud-view-base-pan-0.png": "bd4406a7f913fe0f898540fd72736f9ff6dc2d2275fa924194d2ef861b71ab2a",
+        "cloud-view-base-pan-120.png": "11da0d5ae5d3bf09560ea50766175c78982001a0bc4192dd0b2381a2d02cac16",
+        "cloud-view-base-pan-30.png": "b84c395db9e7995d899c95dcd1883ed08aaf6101e444e279530d4af9ceb87875",
+        "cloud-view-base-pan-60.png": "b26ad24efa561057a2f2f0ab46d9a0fb5e189cb4e094480ddfa8e51bc1910373",
+        "cloud-view-base-pan-90.png": "cc00e2a9245ee6e82c3a52bd13393c6344f11ca65e093042f7da6eeef2ff6f7d",
+        "cloud-view-base-restore.png": "c857d6822462ec4320effdc4eb4284edda6a58c55d81263a535f9e420b128cfc",
+        "cloud-view-base.png": "c857d6822462ec4320effdc4eb4284edda6a58c55d81263a535f9e420b128cfc",
+        "cloud-view-guarded-held.png": "c857d6822462ec4320effdc4eb4284edda6a58c55d81263a535f9e420b128cfc",
+        "cloud-view-guarded-pan-0.png": "bd4406a7f913fe0f898540fd72736f9ff6dc2d2275fa924194d2ef861b71ab2a",
+        "cloud-view-guarded-pan-120.png": "11da0d5ae5d3bf09560ea50766175c78982001a0bc4192dd0b2381a2d02cac16",
+        "cloud-view-guarded-pan-30.png": "b84c395db9e7995d899c95dcd1883ed08aaf6101e444e279530d4af9ceb87875",
+        "cloud-view-guarded-pan-60.png": "b26ad24efa561057a2f2f0ab46d9a0fb5e189cb4e094480ddfa8e51bc1910373",
+        "cloud-view-guarded-pan-90.png": "cc00e2a9245ee6e82c3a52bd13393c6344f11ca65e093042f7da6eeef2ff6f7d",
+        "cloud-view-guarded.png": "c857d6822462ec4320effdc4eb4284edda6a58c55d81263a535f9e420b128cfc",
+        "cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "cloud_radiance_probe.gd": "1d04af4801b3e1b51a39b7591176162c1b6949bde7a785ccfa2dad2596209edf",
+        "cloud_resolution_probe.gd": "5290cde42c3d87fcad67fdc19555bb60bd471e9c4951d4b84c1efd3816efa14a",
+        "cloud_resolution_scene.gd": "3b2a44a34319d48153205e60ab271778a9114a4af01ec184de058c8bce460f95",
+        "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "run.json": "1316feaf1ed919070ac33ccb8440cd9af5a51b630bb24360c81496549a772784",
+        "run.log": "8b967fb9e233f8393bf456590369f52e8dafe64b9a5500936602b55bf9974a40",
+        "tool-source.gd": "10e09702e7d8605c5c56908dc444e99bc142378bd20f5b6ffea1d814fb3c81b7",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-rain35",
+      "interpretation": "Production guard: Gipat rain at 1080p; full static and panning images equal.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-rain35/run.json",
+        "sha256": "6fbe20597f184bc534122fe3344f9943fdadb1f3bbac1961d044be227528ea1a"
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "seconds": 29.034648330009077,
+      "process_snapshots": {
+        "other_processes_at_start": [],
+        "other_processes_at_end": []
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-rain35/cloud-resolution-views.json",
+      "checks": 30,
+      "failures": 0,
+      "files": {
+        "cloud-resolution-views.json": "3ba9c3276aad29145bf34022b5084041727343c5e46cfce00d3d41c76a3e66f9",
+        "cloud-view-base-held.png": "3c8bf8f8701890483275bb15d0ab89a361f90f583a8c5b4d49680c4a098c4339",
+        "cloud-view-base-pan-0.png": "1cb996d59550870deadab411635b6736716a51522a0cc08aab55340b68e91975",
+        "cloud-view-base-pan-120.png": "ea9b0b8b998493f47e151c814e99f83efbe0d98f53c1f409dd354045dc3cf66c",
+        "cloud-view-base-pan-30.png": "2bbecaaffadaf59ad2c6dfa6e05bfcf247becde3cfb9984ab43d3cd386442ff2",
+        "cloud-view-base-pan-60.png": "9d2c099174ba843f57f1d53213c29fdb914a55449adc8b81fc1ae11b08302404",
+        "cloud-view-base-pan-90.png": "0eba86814669e28f8627fe3fda281f5bbfa1568ce0cd60de7c28cca753e2e115",
+        "cloud-view-base-restore.png": "3c8bf8f8701890483275bb15d0ab89a361f90f583a8c5b4d49680c4a098c4339",
+        "cloud-view-base.png": "3c8bf8f8701890483275bb15d0ab89a361f90f583a8c5b4d49680c4a098c4339",
+        "cloud-view-guarded-held.png": "3c8bf8f8701890483275bb15d0ab89a361f90f583a8c5b4d49680c4a098c4339",
+        "cloud-view-guarded-pan-0.png": "1cb996d59550870deadab411635b6736716a51522a0cc08aab55340b68e91975",
+        "cloud-view-guarded-pan-120.png": "ea9b0b8b998493f47e151c814e99f83efbe0d98f53c1f409dd354045dc3cf66c",
+        "cloud-view-guarded-pan-30.png": "2bbecaaffadaf59ad2c6dfa6e05bfcf247becde3cfb9984ab43d3cd386442ff2",
+        "cloud-view-guarded-pan-60.png": "9d2c099174ba843f57f1d53213c29fdb914a55449adc8b81fc1ae11b08302404",
+        "cloud-view-guarded-pan-90.png": "0eba86814669e28f8627fe3fda281f5bbfa1568ce0cd60de7c28cca753e2e115",
+        "cloud-view-guarded.png": "3c8bf8f8701890483275bb15d0ab89a361f90f583a8c5b4d49680c4a098c4339",
+        "cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "cloud_radiance_probe.gd": "1d04af4801b3e1b51a39b7591176162c1b6949bde7a785ccfa2dad2596209edf",
+        "cloud_resolution_probe.gd": "5290cde42c3d87fcad67fdc19555bb60bd471e9c4951d4b84c1efd3816efa14a",
+        "cloud_resolution_scene.gd": "3b2a44a34319d48153205e60ab271778a9114a4af01ec184de058c8bce460f95",
+        "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "run.json": "6fbe20597f184bc534122fe3344f9943fdadb1f3bbac1961d044be227528ea1a",
+        "run.log": "b8b515277d4b6c61ca2272e9f2919cc031c1869bf10fd13b10238b01671e2ba2",
+        "tool-source.gd": "10e09702e7d8605c5c56908dc444e99bc142378bd20f5b6ffea1d814fb3c81b7",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-snow31",
+      "interpretation": "Wrong scene: bz2g resolves to Gipat, sky not visible. Not Ingos or sky-quality acceptance.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-snow31/run.json",
+        "sha256": "384b66701ae0edbfeba12121f9764cabff9c17f5f27fb4e84b59dfbea985b0a7"
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "seconds": 36.30514552304521,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2257884,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2259327,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-snow31/cloud-resolution-views.json",
+      "checks": 29,
+      "failures": 0,
+      "files": {
+        "cloud-resolution-views.json": "79b243ac33075b4304a60b2b8578ec59c9e1d4e1207afa6f311700a0cda2bcd6",
+        "cloud-view-base-held.png": "c5df4ccc23416d9835027b669fa51a318f65b13dbf45620cb410d58b19389d35",
+        "cloud-view-base-pan-0.png": "4ed3b583b7b97a33fa2de06815fc9f88bf8fe3522eb0cfdfcefd50b1f34fd131",
+        "cloud-view-base-pan-120.png": "d32c1f70fadec5d7d4fc0e6b4209ff8cefadf454883bec230253e6d207b30af4",
+        "cloud-view-base-pan-30.png": "2a55263eb442a1f163f4283f02c9128e58659e92755abc7b772b068a8aa4cd8c",
+        "cloud-view-base-pan-60.png": "c5df4ccc23416d9835027b669fa51a318f65b13dbf45620cb410d58b19389d35",
+        "cloud-view-base-pan-90.png": "3587e89d1b57b9147fbdfb58c2f75fe99bc84038a37ddcde90bb78cf0824a963",
+        "cloud-view-base-restore.png": "c5df4ccc23416d9835027b669fa51a318f65b13dbf45620cb410d58b19389d35",
+        "cloud-view-base.png": "c5df4ccc23416d9835027b669fa51a318f65b13dbf45620cb410d58b19389d35",
+        "cloud-view-guarded-held.png": "c5df4ccc23416d9835027b669fa51a318f65b13dbf45620cb410d58b19389d35",
+        "cloud-view-guarded-pan-0.png": "4ed3b583b7b97a33fa2de06815fc9f88bf8fe3522eb0cfdfcefd50b1f34fd131",
+        "cloud-view-guarded-pan-120.png": "d32c1f70fadec5d7d4fc0e6b4209ff8cefadf454883bec230253e6d207b30af4",
+        "cloud-view-guarded-pan-30.png": "2a55263eb442a1f163f4283f02c9128e58659e92755abc7b772b068a8aa4cd8c",
+        "cloud-view-guarded-pan-60.png": "c5df4ccc23416d9835027b669fa51a318f65b13dbf45620cb410d58b19389d35",
+        "cloud-view-guarded-pan-90.png": "3587e89d1b57b9147fbdfb58c2f75fe99bc84038a37ddcde90bb78cf0824a963",
+        "cloud-view-guarded.png": "c5df4ccc23416d9835027b669fa51a318f65b13dbf45620cb410d58b19389d35",
+        "cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "cloud_radiance_probe.gd": "1d04af4801b3e1b51a39b7591176162c1b6949bde7a785ccfa2dad2596209edf",
+        "cloud_resolution_probe.gd": "5290cde42c3d87fcad67fdc19555bb60bd471e9c4951d4b84c1efd3816efa14a",
+        "cloud_resolution_scene.gd": "3b2a44a34319d48153205e60ab271778a9114a4af01ec184de058c8bce460f95",
+        "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "run.json": "384b66701ae0edbfeba12121f9764cabff9c17f5f27fb4e84b59dfbea985b0a7",
+        "run.log": "872e954241328478b913d4bd543f27e02036483db8b1a9d13b5505bfcd304e94",
+        "tool-source.gd": "52cab8ac8d1affaacf772afb42c5d322a0777a2dccdde5959ca48008af60a3fd",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance-views27",
+      "interpretation": "Unconditional omission on Gipat. Terrain/figure screenshots do not establish absence of generic radiance consumers.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-views27/run.json",
+        "sha256": "592009ee81d7a3f36e17a86f4fc042b7e7e4af46f9d0c27f13113f0e562473f6"
+      },
+      "return_code": 0,
+      "termination_reason": null,
+      "seconds": 30.036707764025778,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2235691,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2235691,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance-views27/cloud-resolution-views.json",
+      "checks": 29,
+      "failures": 0,
+      "files": {
+        "cloud-resolution-views.json": "4545fbd40afbaed9fc03349c2175178ed886775653efa2b46ce35a95bab234e7",
+        "cloud-view-base-held.png": "fbba9cdda801b302567542e51d4b5c89c1440fbecd38f5e3688152b885f567e3",
+        "cloud-view-base-pan-0.png": "2f09a00866d22b00d0d36becab6c52c53f097a03e987e05268106e465120e820",
+        "cloud-view-base-pan-120.png": "ab402e575449469e7b027d44eba081ceabef37145dae98381db3f8b676dfd67d",
+        "cloud-view-base-pan-30.png": "5695ad185fef44e34684e685c4e12c349f48511a90672423ddb7483b943a0931",
+        "cloud-view-base-pan-60.png": "9efedaac0778fc305e297a18645c47fa54e58df0a726c9eb186aa9fc3bc71bda",
+        "cloud-view-base-pan-90.png": "4d93056e76684932135d4f84182b366d48e043c41dcdbc7855160f013f9a7655",
+        "cloud-view-base-restore.png": "fbba9cdda801b302567542e51d4b5c89c1440fbecd38f5e3688152b885f567e3",
+        "cloud-view-base.png": "fbba9cdda801b302567542e51d4b5c89c1440fbecd38f5e3688152b885f567e3",
+        "cloud-view-radiance-held.png": "fbba9cdda801b302567542e51d4b5c89c1440fbecd38f5e3688152b885f567e3",
+        "cloud-view-radiance-pan-0.png": "2f09a00866d22b00d0d36becab6c52c53f097a03e987e05268106e465120e820",
+        "cloud-view-radiance-pan-120.png": "ab402e575449469e7b027d44eba081ceabef37145dae98381db3f8b676dfd67d",
+        "cloud-view-radiance-pan-30.png": "5695ad185fef44e34684e685c4e12c349f48511a90672423ddb7483b943a0931",
+        "cloud-view-radiance-pan-60.png": "9efedaac0778fc305e297a18645c47fa54e58df0a726c9eb186aa9fc3bc71bda",
+        "cloud-view-radiance-pan-90.png": "4d93056e76684932135d4f84182b366d48e043c41dcdbc7855160f013f9a7655",
+        "cloud-view-radiance.png": "fbba9cdda801b302567542e51d4b5c89c1440fbecd38f5e3688152b885f567e3",
+        "cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "cloud_radiance_probe.gd": "1d04af4801b3e1b51a39b7591176162c1b6949bde7a785ccfa2dad2596209edf",
+        "cloud_resolution_probe.gd": "5290cde42c3d87fcad67fdc19555bb60bd471e9c4951d4b84c1efd3816efa14a",
+        "cloud_resolution_scene.gd": "3b2a44a34319d48153205e60ab271778a9114a4af01ec184de058c8bce460f95",
+        "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "run.json": "592009ee81d7a3f36e17a86f4fc042b7e7e4af46f9d0c27f13113f0e562473f6",
+        "run.log": "552cb20cde8588e38394b5b27643c3afd1f60710f346f3591b304b562047f5f6",
+        "tool-source.gd": "34005742e633a4bfbe425e20e6faf061c6d38510abce58359014b9ba4bfc7593",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-radiance26",
+      "interpretation": "Unconditional radiance omission prototype; two strict held checks failed. Not the guarded production change.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance26/run.json",
+        "sha256": "980b0d1347164eb919f697435300451942ac36330bf85d7b9df32f33a37db6f5"
+      },
+      "return_code": 1,
+      "termination_reason": null,
+      "seconds": 44.059486591024324,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2232392,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2234612,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-radiance26/cloud-radiance-work.json",
+      "checks": 36,
+      "failures": 2,
+      "files": {
+        "cloud-radiance-work.json": "0085f394892ca922abedfcd9bf291538f7914efa42e39c4a0ac8bd88749e820a",
+        "cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "cloud_radiance_probe.gd": "1d04af4801b3e1b51a39b7591176162c1b6949bde7a785ccfa2dad2596209edf",
+        "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "radiance-held-sky-3-2.png": "9b68c5ab67e81946f2fb6e89519fa95cf15e0a7c6a666408e7f2fc7c1876db55",
+        "radiance-held-sky-3-3.png": "9b68c5ab67e81946f2fb6e89519fa95cf15e0a7c6a666408e7f2fc7c1876db55",
+        "radiance-sky-2-0.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+        "radiance-sky-2-1.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+        "radiance-sky-2-2.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+        "radiance-sky-2-3.png": "73ab09babac5325e9068a06673e86b4a40bf73c5b01b3f09dfddbff2dc95d593",
+        "radiance-sky-3-0.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+        "radiance-sky-3-1.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+        "radiance-sky-3-2.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+        "radiance-sky-3-3.png": "521ccc351532c0809250caeb74cf63b7c380858cb9f1641186fd3ae17af4d25b",
+        "run.json": "980b0d1347164eb919f697435300451942ac36330bf85d7b9df32f33a37db6f5",
+        "run.log": "8ce052c5a3c083f31225b5d982f8bcfe81c0088c1d706d564bc1845e0d0d54b3",
+        "tool-source.gd": "883cded52af898d004bf0c9d25db794a91f625aa2ec9577f9b29a5db68c038f5",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-views21",
+      "interpretation": "Fixture crashed while dereferencing optional null terrain details; not an application acceptance run.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-views21/run.json",
+        "sha256": "9461ddb461110b58ceaa0b5545bc9404e13df57ba8e17e577fc7bdc717221868"
+      },
+      "return_code": -11,
+      "termination_reason": null,
+      "seconds": 8.507691375969443,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2222344,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2222344,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "files": {
+        "cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "cloud_resolution_probe.gd": "5290cde42c3d87fcad67fdc19555bb60bd471e9c4951d4b84c1efd3816efa14a",
+        "cloud_resolution_scene.gd": "3b2a44a34319d48153205e60ab271778a9114a4af01ec184de058c8bce460f95",
+        "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "run.json": "9461ddb461110b58ceaa0b5545bc9404e13df57ba8e17e577fc7bdc717221868",
+        "run.log": "dc1e0efe7fbe18925bc574a9af975053c8eef4437855650062d33995b2fb765a",
+        "tool-source.gd": "3e01ae5f68ab41545a7e8629a47436683d0af189a00f5bcf2c833f0e8cabfdf8",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-views23",
+      "interpretation": "Fixture indentation parse error; rejected.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-views23/run.json",
+        "sha256": "da07ee50e413b8462b096aacfda5046f77b4fff515f82480439aea69edbbdc0e"
+      },
+      "return_code": -15,
+      "termination_reason": "script error",
+      "seconds": 6.98152808699524,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2229065,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2229065,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "files": {
+        "cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "cloud_resolution_probe.gd": "5290cde42c3d87fcad67fdc19555bb60bd471e9c4951d4b84c1efd3816efa14a",
+        "cloud_resolution_scene.gd": "3b2a44a34319d48153205e60ab271778a9114a4af01ec184de058c8bce460f95",
+        "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "run.json": "da07ee50e413b8462b096aacfda5046f77b4fff515f82480439aea69edbbdc0e",
+        "run.log": "20b04fbcf89a2a393e294d96def00c948e146f9f8597eb1dc1cd187cf8218122",
+        "tool-source.gd": "03b3b17886e2cc2f00c02e3f7dcc3cc71422c1d6fd806bc6ad88d7e5803803a5",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-views24",
+      "interpretation": "Second null details fixture dereference; rejected.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-views24/run.json",
+        "sha256": "5eb1e99e1f568e831fa8918862d85cb022399a6bb92076dc8e4ea84466013f04"
+      },
+      "return_code": -11,
+      "termination_reason": null,
+      "seconds": 9.768710082047619,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2230763,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2230763,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "files": {
+        "cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "cloud_resolution_probe.gd": "5290cde42c3d87fcad67fdc19555bb60bd471e9c4951d4b84c1efd3816efa14a",
+        "cloud_resolution_scene.gd": "3b2a44a34319d48153205e60ab271778a9114a4af01ec184de058c8bce460f95",
+        "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "run.json": "5eb1e99e1f568e831fa8918862d85cb022399a6bb92076dc8e4ea84466013f04",
+        "run.log": "abeeea4a3ecab82e56c97bb09b3dad6dac57b252518e04f2dabe35e4175e5e68",
+        "tool-source.gd": "87deb3a3b922e109a0fc4a80c881012d704149d6e3406d51891eef9da3deb782",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    },
+    {
+      "label": "cloud-views25",
+      "interpretation": "Quarter-resolution High prototype, unpromoted: changed fine detail and failed two strict held/restoration controls.",
+      "run_receipt": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-views25/run.json",
+        "sha256": "9916c535811d546cc84b417997f665fca9b3291de6171fd24332c3ea999670e0"
+      },
+      "return_code": 1,
+      "termination_reason": null,
+      "seconds": 35.83408060402144,
+      "process_snapshots": {
+        "other_processes_at_start": [
+          {
+            "pid": 2232392,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ],
+        "other_processes_at_end": [
+          {
+            "pid": 2232392,
+            "executable": "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+            "headless": false
+          }
+        ]
+      },
+      "result_file": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud-views25/cloud-resolution-views.json",
+      "checks": 29,
+      "failures": 2,
+      "files": {
+        "cloud-resolution-views.json": "51f3d4eb8081b5ca74eff02068d50917d5b5d5daac425d19a0c27024079c7306",
+        "cloud-view-base-held.png": "fbba9cdda801b302567542e51d4b5c89c1440fbecd38f5e3688152b885f567e3",
+        "cloud-view-base-pan-0.png": "2f09a00866d22b00d0d36becab6c52c53f097a03e987e05268106e465120e820",
+        "cloud-view-base-pan-120.png": "ab402e575449469e7b027d44eba081ceabef37145dae98381db3f8b676dfd67d",
+        "cloud-view-base-pan-30.png": "5695ad185fef44e34684e685c4e12c349f48511a90672423ddb7483b943a0931",
+        "cloud-view-base-pan-60.png": "9efedaac0778fc305e297a18645c47fa54e58df0a726c9eb186aa9fc3bc71bda",
+        "cloud-view-base-pan-90.png": "4d93056e76684932135d4f84182b366d48e043c41dcdbc7855160f013f9a7655",
+        "cloud-view-base-restore.png": "fbba9cdda801b302567542e51d4b5c89c1440fbecd38f5e3688152b885f567e3",
+        "cloud-view-base.png": "c2ca5ccdf131b503ccb66a2132f980c887a95e713dd3fcd988f9ed3085d620df",
+        "cloud-view-quarter-held.png": "35dbb146e986faf3a3882cc0ebfe3762d105a7e1e4cb1277d676433f2de90b63",
+        "cloud-view-quarter-pan-0.png": "8e657f4f60cf63b1a3636e0fd2afa1a370259be9b5375867d98b49ff59d78e35",
+        "cloud-view-quarter-pan-120.png": "6db48593e311b36a22c44062f042ab58d415e6f4340984b26db31f93a1978b85",
+        "cloud-view-quarter-pan-30.png": "e6e710baf8cdf45bfbc7fe1c48017f8368456d7667bb696fe060ebf37b07ad1e",
+        "cloud-view-quarter-pan-60.png": "d2e1f26a2a66f4ff88d2b71095e1ec1643d96495f534734093ba13748e6fc33c",
+        "cloud-view-quarter-pan-90.png": "0c1d1ef0ab88c64b033ca5aa620cd4f595ee20916f251c3c663a74ded64b0cef",
+        "cloud-view-quarter.png": "35dbb146e986faf3a3882cc0ebfe3762d105a7e1e4cb1277d676433f2de90b63",
+        "cloud_path_cost.gd": "f9dcd41fa3796a7f53088a296aa955e50a54f2b334cdeb3735ed5aef21a8fe55",
+        "cloud_resolution_probe.gd": "5290cde42c3d87fcad67fdc19555bb60bd471e9c4951d4b84c1efd3816efa14a",
+        "cloud_resolution_scene.gd": "3b2a44a34319d48153205e60ab271778a9114a4af01ec184de058c8bce460f95",
+        "clouds.gd": "39124f216492c59d0d8245a370ec98e96070dd9dc21f1156d5765f2639a105da",
+        "run.json": "9916c535811d546cc84b417997f665fca9b3291de6171fd24332c3ea999670e0",
+        "run.log": "8109a46a74b543dc19faaf74a7225a68bfece37eeb79e666ceda7d6aea74f776",
+        "tool-source.gd": "eb45bd3e22b26701bd7898d23c9bb22fe5c8482b45a4d05e618982543f0644bb",
+        "water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72"
+      }
+    }
+  ],
+  "artifacts": {
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/radiance-candidate28/export.json": "28b00d2bde2971a8fa377319afd1ad6a4e3c4fcec332b70b7c3646742e8d7451",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/radiance-native50/manifest.json": "5fa1eabb9e1d511ef2c5a48ccef8d6c2f012459e95ca4a51eeb2a842ffcee012",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/native-worker-exit-build.json": "44283d72f1f3ef198cbc469c958709942455ce21fc95351514516c11b67f27d9",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/native-worker-exit-command.json": "5c208d3f58bbe30c5ddec8f12a7dfe9620bbec2bb3f8900af129360a942fed9f",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/native-worker-exit-build.log": "89315708d1b55557ceb0466a00267e933539e745750fe7462b66567cac4b064c",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/native-worker-exit-windows-build.json": "de6ffa84e82345c01051ee3be1dbbc007bb433899c6ad5d86b830f136c291771",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/native-worker-exit-windows-command.json": "dfd9d21c3d2da04be6d11aa3a36ff01042d9ef31518f2458782b5fe8a832d44b",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/native-worker-exit-windows.log": "279f78eb6f7d6ae1e4b9a8a971554d295192c54de8f46e93ece8a26b544734fd",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/native-worker-exit-windows-pe.json": "50a37f77227c7e36ed524ed613bae64435e0ece99c8b63ec84e9b9e5973faf5d",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/native-worker-exit-pixel-controls.json": "7ccb7fa3b0338d951f1f026d3837b50fe410a24bb0ee0dcc805524b2c5fd77c0",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/worker-thread-language-shutdown.patch": "dc402e5bdc3b595d3dc50886a144da55d6a7d199dc2efaf348df394bd4b5321e",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/run.py": "e27e3e7f14ce9f4068341603634ae70b8aa83fe40ab0f18a8558990ae962ca5f",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/debug_exit.py": "4d6a3d72007fa20ee5cc905efeb368549f44b3afd72033bddfa998afc89bfc82",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_resolution_views.gd": "10e09702e7d8605c5c56908dc444e99bc142378bd20f5b6ffea1d814fb3c81b7",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_radiance_guard_cost.gd": "8731d5c62f2555a19f0372904d970f711ecf7c38ea312cd35f6a10e16e36a94a",
+    "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/cloud_radiance_lifecycle.gd": "49d5d5a7a453db726387e7b7f03ac0edc5338234aa43f1c114bd2922c0b07908"
+  },
+  "production_and_test_sha256": {
+    "game/src/game/fx/clouds.gd": "eee028491014309c189c3828ee2c442e11fc317cf21938c38ec64d11699d8ee7",
+    "game/src/game/sky.gd": "df7864c09d9bee4040f3a70539b8115ece8d9d17de831138555f4f0463dab5af",
+    "game/src/game/game.gd": "8eb5c2548fd54d386177c7308066f8681ad326a5badb9989c9738113e8bc1e52",
+    "game/src/game/gfx.gd": "f61e2506b68de153d9772026f46f1cb699a86e4583fe36bd6ebe7ce8dcbfb679",
+    "game/src/ui/menu_scene.gd": "dcc925c702368af3ddd29aedb6aedadae63cb96a65edde382589dc44061a4222",
+    "tools/tests/cloud_radiance.gd": "e107182f3635c059f8996c32716333878090152a71bd5960694032cab0a2da17",
+    "engine_patches/godot-4.7/worker-thread-language-shutdown.patch": "dc402e5bdc3b595d3dc50886a144da55d6a7d199dc2efaf348df394bd4b5321e"
+  },
+  "moving_sky_cost_ms": {
+    "2": {
+      "full": [
+        1.59700000286102,
+        1.66499996185303
+      ],
+      "unused_radiance_omitted": [
+        1.08000004291534,
+        1.10599994659424
+      ]
+    },
+    "3": {
+      "full": [
+        5.93400001525879,
+        5.85300016403198
+      ],
+      "unused_radiance_omitted": [
+        4.48400020599365,
+        4.37099981307983
+      ]
+    }
+  }
+}

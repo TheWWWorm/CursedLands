@@ -169,7 +169,7 @@ func set_hour(h: float) -> void:
 		_sun.basis = Game.sun_basis(gd) if Portability.compatibility() else \
 			Basis.looking_at(gd, Vector3.FORWARD if absf(gd.y) > 0.99 else Vector3.UP)
 		Gfx.update_original(_env, _sun, _lights, h, false)
-		EISky.update(_sky, _lights, h, false, Gfx.on("gfx_sky"))
+		EISky.update(_sky, _lights, h, false, Gfx.on("gfx_sky"), _env)
 		return
 	# Phones / web: the shadow map is aimed along a held direction, re-aimed
 	# after Game.SUN_MAX_LAG_DEG (Game._aim_sun); the light keeps the clock.
@@ -178,7 +178,7 @@ func set_hour(h: float) -> void:
 	_sun.basis = Game.sun_basis(_held_sun)
 	Gfx.update_original(_env, _sun, _lights, h, false)
 	RenderingServer.global_shader_parameter_set(&"ei_sun_dir", -gd)
-	EISky.update(_sky, _lights, h, false, Gfx.on("gfx_sky"))
+	EISky.update(_sky, _lights, h, false, Gfx.on("gfx_sky"), _env)
 
 
 static func create() -> MenuScene:

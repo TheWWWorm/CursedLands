@@ -15,6 +15,7 @@ build instructions. Adding a patch here does not update installed templates.
 8. `forward-shader-recompile-lifetime.patch`
 9. `far-dof-sharp-guard.patch`
 10. `sky-subpass-alpha.patch`
+11. `worker-thread-language-shutdown.patch`
 
 The first two patches repair separate-render-thread shutdown and snapshot
 mutable images for queued texture uploads. The third lets an unobserved looping
@@ -114,3 +115,15 @@ through events, blending, library edits, target replacement and tree reentry.
 `tests/unobserved_eligibility.gd` compares normal and deferred players through
 looping, reverse playback, event-track insertion with blocked signals, track
 removal/path changes, resource replacement, and tree reentry.
+
+The eleventh wakes workers that have not acknowledged language shutdown once
+both task queues drain. Previously, a worker could see pending work at the
+initial shutdown notification, return to sleep, and never be notified after
+another worker finished the queue. A captured hang has empty queues, all four
+workers asleep, and only one acknowledgement. The patch affects only
+`RUNLEVEL_PRE_EXIT_LANGUAGES`; normal task scheduling and rendering are unchanged.
+It is separate from the first patch's later RenderingDevice ownership repair.
+Four Linux separate-thread runs pass 207 checks and terminate normally, with
+66 captures unchanged across the engine patch. Linux and Windows release
+templates build; Windows execution remains untested. See
+[`cloud-radiance-2026-10-10.json`](../../docs/validation/cloud-radiance-2026-10-10.json).

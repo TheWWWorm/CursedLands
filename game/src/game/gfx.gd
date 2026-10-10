@@ -1073,8 +1073,10 @@ const GLOW_LUMINANCE_CAP := 8.0
 static func apply_env(env: Environment) -> void:
 	apply_surface_options()
 	refresh_border()
-	# Enhanced water uses the live sky as SSR's off-screen fallback. The
-	# original terrain/figure/unit shaders disable ambient light and radiance.
+	# Preserve environment reflections for ordinary materials. Enhanced water
+	# supplies its own analytic cloud reflection; EI terrain/figure/unit
+	# shaders disable ambient light and radiance. Volumetric fog also samples
+	# sky radiance independently of this switch.
 	env.reflected_light_source = Environment.REFLECTION_SOURCE_SKY if on("gfx_water") else Environment.REFLECTION_SOURCE_DISABLED
 	env.ssao_enabled = on("gfx_ssao")
 	env.glow_enabled = on("gfx_bloom")
