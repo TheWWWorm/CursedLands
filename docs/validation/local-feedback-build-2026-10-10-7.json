@@ -1,0 +1,142 @@
+{
+  "version": "1.0.3-local.20261010.7",
+  "source_commit": "f56a904195d5f6da0d078b7204ea69fe470ca409",
+  "protocol": 13,
+  "engine_patch_count": 12,
+  "published": false,
+  "checks": 1764,
+  "failures": 0,
+  "headless": false,
+  "windows_runtime_tested": false,
+  "build_receipt": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-7/build.json",
+  "build_receipt_sha256": "49d38b86044963f9247a42788f1dd3d929b81430f5fb648bb886ee990661a454",
+  "runtime_checks": {
+    "terrain-live01": {
+      "checks": 1764,
+      "failures": 0,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-7/terrain-live01",
+      "run_sha256": "4c8007cc00b499c6b4d5d65212966084bdde3e3a5a8fe6cc4d97abf8d6263f0b",
+      "result_sha256": "3c6af81709238bbba63ed314527cafc4f90b960c4a7b97002eaf530da67adaa0",
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/terrain_pair_sectors.gd": "210cfcfc387fa753d1ac500824f4b9dfe639aeda5b936f0b3c33709e517d2a12"
+      }
+    }
+  },
+  "runtime_scope": "Actual Linux .7 pack: Forward+/Vulkan, original zone15/zone12/zone11, sector boundaries, oblique views, complete live option reversal, wet materials, cliff projection, water offsets, rain cover, caustic advancement, real footprint installation/cleanup and map unload. Fourteen actual optimized/full image pairs and their restoration controls are exact.",
+  "source_validation": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/terrain-pair-sectors-2026-10-10.json",
+    "sha256": "df996eecfc6561da7a670462fff7f7fea8b5ec413c3ae7f2646e0f4abbfb09e6",
+    "checks": 30533,
+    "failures": 0
+  },
+  "inherited_validation": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-6.json",
+    "sha256": "e1627530d6f232b26593a5b5ee926e6331d2a98e3fe1a21ee83a7ed202aa737e",
+    "scope": "The .6 gameplay, original MP, co-op continuity, pebble lighting, grass, loading/menu, V1 and V8 validation remain applicable outside the four changed terrain/material-owner scripts. No gameplay or native-binary changes."
+  },
+  "pack_resources": 682,
+  "compiled_scripts": 265,
+  "linux_windows_pack_byte_identical": true,
+  "pack_changes_from_qualified_candidate": [
+    "project.binary"
+  ],
+  "windows_pe_audit": {
+    "CursedLands.exe": {
+      "architecture": "PE x86_64",
+      "imports": [
+        "ADVAPI32.dll",
+        "AVRT.dll",
+        "bcrypt.dll",
+        "CRYPT32.dll",
+        "dwmapi.dll",
+        "DWrite.dll",
+        "GDI32.dll",
+        "HID.DLL",
+        "IMM32.dll",
+        "IPHLPAPI.DLL",
+        "KERNEL32.dll",
+        "api-ms-win-core-processthreads-l1-1-3.dll",
+        "api-ms-win-security-base-l1-2-1.dll",
+        "api-ms-win-security-lsalookup-l2-1-0.dll",
+        "msvcrt.dll",
+        "ntdll.dll",
+        "ole32.dll",
+        "OLEAUT32.dll",
+        "SHCORE.dll",
+        "SHELL32.dll",
+        "SHLWAPI.dll",
+        "USER32.dll",
+        "WINMM.dll",
+        "WS2_32.dll",
+        "WSOCK32.dll"
+      ]
+    },
+    "libterrain_search.dll": {
+      "architecture": "PE x86_64",
+      "imports": [
+        "KERNEL32.dll",
+        "msvcrt.dll"
+      ]
+    }
+  },
+  "limits": [
+    "Windows runtime and the user's RTX4090 Mobile remain untested. PE/import checks are not runtime acceptance.",
+    "Qualified 4K measurements show 5.1\u201318.1% lower viewport terrain GPU time in three mixed-sector views, not full-game FPS. No claim of fixing the reported Windows 9 FPS case.",
+    "Only statically eligible Forward+ Natural sectors use the new variant; occupied junctions and deformed receivers keep the full shader. Other renderers retain their previous sampler.",
+    "Cloud cost, V1 cold preparation/numerical residuals, Windows/WAN/device performance and complete organic campaign routes remain open. V1/V8 remain off by default. This is not a stable 1.0.3 release."
+  ],
+  "packages": {
+    "linux-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-linux-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.7-linux-x86_64.tar.gz",
+      "archive_bytes": 36531679,
+      "archive_sha256": "49b189abe547f64d880c25ee8acf091b55d2ae84da69ce2979dedba4f4af5170",
+      "archive_readback_exact": true,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "SHA256SUMS.txt": "23ca795243fdcd38b4e9679a8b7714e83d1855a53dfdd3267ef885590d5055c9",
+        "BUILD-INFO.json": "f43d85d68646fd0d7d7522a64f313a79b3a4b4e9153c41c0df4730181941ec7c",
+        "Play.sh": "75835f261e9acd2b45973152790cabf255b05b649f0f059997c1de9ba4e3ec2b",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    },
+    "windows-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-local.20261010.7-windows-x86_64",
+      "archive": "/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.7-windows-x86_64.zip",
+      "archive_bytes": 37739901,
+      "archive_sha256": "9da4fbe60c8a0ae84d041f2bcaa3122534ff3a5f799363beeefd1dafdad5ccf6",
+      "archive_readback_exact": true,
+      "files": {
+        "SHA256SUMS.txt": "71e8c9dd0a25ebbd788464e6f1a18f1256a58b3278b610473c004c68a4d0e82c",
+        "BUILD-INFO.json": "6f4ef8e4aeb7a040dc97aa588abcf93c474fd59bcc9fe655de5946a1223a739f",
+        "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+        "libterrain_search.dll": "14906b040d4b6a5e1e217b9bfb21214f48700b6709163be584cc98e584f45106",
+        "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+        "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+        "CursedLands.pck": "cf92a1d274eda1c4ea6705414148d4df716248b809482059eca068e915eba71f",
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+        "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+        "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+        "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      }
+    }
+  },
+  "uid_export_note": {
+    "failed_first_attempt": "/home/llm2x/Documents/EI/local/scratchpad/local-feedback-build-20261010-7/attempt01",
+    "reason": "Fresh export assigned new UIDs to two transition scripts with missing tracked sidecars. The archive comparison rejected that pack before any package was delivered.",
+    "resolution": "Commit f56a904 tracks the exact UID sidecars from the qualified candidate. Final Linux/Windows packs are identical and differ from the qualified pack only in project.binary.",
+    "ids": {
+      "terrain_transition.gd": "uid://c7t5tidma70fw",
+      "terrain_transition_shader.gd": "uid://bcvo3quy40jmp"
+    }
+  }
+}

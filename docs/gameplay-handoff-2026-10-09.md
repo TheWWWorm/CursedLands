@@ -1,6 +1,6 @@
 # Gameplay handoff — 9 October 2026
 
-**Latest local test, 10 October:** `1.0.3-local.20261010.6`: [Windows ZIP](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.6-windows-x86_64.zip) and [Linux archive](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.6-linux-x86_64.tar.gz), source `b408eaf`, protocol 13. Adds Nalo rescue-entry and original Gipat captive-dialogue fixes (`218eafa`). Both packs are identical, contain 682 resources / 265 scripts, and retain the engines with twelve patches. Only one compiled dialogue admission script and the displayed version differ from .5; renderer assets and native binaries are unchanged. The actual Linux package passes **37/0** fresh-save/native-dialogue/rescue-entry/escape checks; source qualification separately passes **250/0** including pending/completed reloads and the prior Nalo return. Both archives read back exactly. Previous stone lighting, contact shading, grass, loading/menu and depth-of-field validation is inherited. Windows runtime, target-device performance, V1 cold preparation/numerical residuals and full organic campaign routes remain open; this is a local test, not stable 1.0.3. [Package receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-6.json).
+**Latest local test, 10 October:** `1.0.3-local.20261010.7`: [Windows ZIP](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.7-windows-x86_64.zip) and [Linux archive](/home/llm2x/Downloads/CursedLands-1.0.3-local.20261010.7-linux-x86_64.tar.gz), source `f56a904`, protocol 13. Adds automatic Forward+ Natural terrain specialization from `d0dcd88`: only sectors whose complete relief halo has no junction influence use the simpler shader. Three wider 4K Linux terrain views show 5.1–18.1% lower viewport GPU time with exact images and unchanged geometry/draws; this is not full-game FPS or Windows acceptance. Current source qualification passes **30533/0**; the actual Linux package passes **1764/0** rendered boundary, live-setting, wet-material and footprint checks. Linux/Windows packs are byte-identical, retain 682 resources / 265 scripts and the existing twelve-patch runtimes; both archives read back exactly. Previous stone lighting, grass, loading/menu, co-op and .6 captive/Nalo fixes remain included. V1/V8 stay default-off; cloud cost, V1 cold preparation/numerical residuals, Windows/device/WAN and full organic campaign routes remain open. This is a local test, not stable 1.0.3. [Package receipt](/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/docs/validation/local-feedback-build-2026-10-10-7.json).
 
 **Working mode: main thread only.** The 9 October checkpoint/package statements below are historical; the latest status is above and in the dated follow-ups.
 
@@ -443,3 +443,9 @@ recruited-party, WAN/input and prior renderer/device limitations remain open.
 This is a local test package, not a stable 1.0.3 release.
 
 [Package evidence](validation/local-feedback-build-2026-10-10-6.json).
+
+Local20261010.7 packages `f56a904`, adding qualified Natural terrain sector
+specialization and stable script UID sidecars. Gameplay and native binaries remain
+unchanged from .6; its Nalo entry/return and original captive dialogue validation
+is inherited. The actual .7 Linux pack passes 1764 rendered terrain lifecycle
+checks; Windows runtime and full campaign/WAN/device acceptance remain open.
