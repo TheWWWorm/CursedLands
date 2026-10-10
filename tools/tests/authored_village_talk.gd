@@ -20,11 +20,13 @@ class ProbeSession extends Session:
 
 class ProbeNav extends NavGrid:
 	var route_open := false
+	var partial_route := false
 	var ignored: Array = []
 	func find_path(a: Vector2, z: Vector2, ignore: Array = [], _avoid: Array = [], _extra := 0.0,
 			_cls := WALK_CLASS, _flat := false, _facing := NAN, _limit := 1e6,
 			_min_radius := 0.0, _retry := false, _moving_at := Vector2.INF) -> PackedVector2Array:
 		ignored=ignore.duplicate()
+		if partial_route: return PackedVector2Array([a,a+Vector2(0.25,0.25)])
 		return PackedVector2Array([a,z]) if route_open else PackedVector2Array()
 
 class ProbeBriefings extends Briefings:
@@ -199,6 +201,65 @@ func _ready() -> void:
 	check(not b.started[-1].instant and b.started[-1].approached,"another offered Nalo topic cannot inherit rescue context")
 	click(); s.apply_command({"t":"move","units":[heroes[0].uid],"x":61.0,"y":60.0},0)
 	check(not b._original_village_topics.has(0),"replacement movement clears Nalo context")
+	# The entry handoff is separately offered after the q60h route. Its
+	# normal briefing supplies q61h and switches to the original Nalo role.
+	s.state.set_var(0,"q.gz15h.q61h",0); s.state.set_var(0,"q.gz15h.q60h",2)
+	s.state.set_var(0,AuthoredTalk.NALO_ENTRY_TOPIC,1)
+	check(fallback(),"offered first Nalo conversation is reachable through original staging")
+	check(AuthoredTalk.original_stage(s,heroes[0],npc,0,AuthoredTalk.NALO_ENTRY_TOPIC),"completed q60h admits only Nalo entry staging")
+	check(not AuthoredTalk.original_stage(s,heroes[0],npc,0,AuthoredTalk.NALO_TOPIC),"entry phase cannot use rescue-return staging")
+	s.state.set_var(0,"q.gz15h.q60h",1); check(not fallback(),"unfinished q60h cannot use entry staging"); s.state.set_var(0,"q.gz15h.q60h",2)
+	click(); select(0,AuthoredTalk.NALO_ENTRY_TOPIC)
+	check(b.started[-1].var==AuthoredTalk.NALO_ENTRY_TOPIC and b.started[-1].instant and not b.started[-1].approached,
+		"normal first-topic selection starts authored Nalo staging")
+	check(b._original_village_topics.is_empty(),"entry topic consumes its own transient context")
+	s.state.set_var(0,AuthoredTalk.NALO_ENTRY_TOPIC,2); check(not fallback(),"completed entry conversation cannot repeat"); s.state.set_var(0,AuthoredTalk.NALO_ENTRY_TOPIC,1)
+	click(); s.state.set_var(0,"q.gz15h.q61h",2); select(0,AuthoredTalk.NALO_ENTRY_TOPIC)
+	check(not b.started[-1].instant and b.started[-1].approached,"entry selection revalidates a changed rescue phase")
+	# The original Gipat captive scene offers conversations outside the pen.
+	# Its native path search returns a short partial route inside the cage.
+	var nalo := npc
+	s.zone_id="bz4g"; s.state.current_party=""; w.zone={"id":"bz4g","type":"brief","cage":true}
+	s.state.set_var(0,"b.bz4g.Ha29",2)
+	heroes[0].pos=Vector2(74.75,86.25)
+	npc=add_actor(ScriptVM.name_id("HWLeader"),-1,AuthoredTalk.CAPTIVE_LEADER_POSITION,"HWLeader")
+	s.state.set_var(0,AuthoredTalk.CAPTIVE_LEADER_TOPIC,1)
+	check(fallback(),"offered captive commander topic admits disconnected original staging")
+	nav.partial_route=true
+	check(fallback(),"partial route inside the pen cannot masquerade as a reachable conversation")
+	nav.partial_route=false; nav.route_open=true
+	check(not fallback(),"a complete captive route still uses normal approach"); nav.route_open=false
+	s.state.set_var(0,"b.bz4g.Ha29",1); check(not fallback(),"unfinished camp arrival cannot bypass its story"); s.state.set_var(0,"b.bz4g.Ha29",2)
+	s.state.current_party="HeroAlone"; check(not fallback(),"unrelated temporary party is excluded from captive dialogue"); s.state.current_party=""
+	w.zone.cage=false; check(not fallback(),"changed captive layout is excluded"); w.zone.cage=true
+	npc.pos+=Vector2(.1,0); check(not fallback(),"moved commander does not inherit display staging"); npc.pos=AuthoredTalk.CAPTIVE_LEADER_POSITION
+	s.state.set_var(0,AuthoredTalk.CAPTIVE_LEADER_TOPIC,2); check(not fallback(),"completed commander conversation is excluded"); s.state.set_var(0,AuthoredTalk.CAPTIVE_LEADER_TOPIC,1)
+	nav.partial_route=true; previous=topic_count(); click()
+	check(topic_count()==previous+1 and b._original_village_topics.has(0),"normal captive click opens scoped commander topics")
+	select(0,AuthoredTalk.CAPTIVE_LEADER_TOPIC)
+	check(b.started[-1].var==AuthoredTalk.CAPTIVE_LEADER_TOPIC and b.started[-1].instant,"commander selection starts original staging")
+	click(); nav.partial_route=false; nav.route_open=true; select(0,AuthoredTalk.CAPTIVE_LEADER_TOPIC)
+	check(not b.started[-1].instant and b.started[-1].approached,"commander selection rechecks a newly reachable route")
+	nav.route_open=false
+	var commander := npc
+	npc=add_actor(ScriptVM.name_id("OLiz"),-1,AuthoredTalk.CAPTIVE_LIZARD_POSITION,"OLiz")
+	s.state.set_var(0,AuthoredTalk.CAPTIVE_LIZARD_TOPIC,1)
+	check(fallback(),"offered Hermit proposal admits original staging")
+	check(not AuthoredTalk.original_stage(s,heroes[0],npc,0,AuthoredTalk.CAPTIVE_ESCAPE_TOPIC),"escape cannot use proposal staging before the offer")
+	click(); select(0,AuthoredTalk.CAPTIVE_LIZARD_TOPIC)
+	check(b.started[-1].var==AuthoredTalk.CAPTIVE_LIZARD_TOPIC and b.started[-1].instant,"proposal selection starts original staging")
+	s.state.set_var(0,AuthoredTalk.CAPTIVE_LIZARD_TOPIC,2)
+	check(not fallback(),"completed proposal cannot invent an escape offer")
+	s.state.set_var(0,AuthoredTalk.CAPTIVE_ESCAPE_TOPIC,1)
+	check(fallback(),"native offered escape follows the completed proposal")
+	check(not AuthoredTalk.original_stage(s,heroes[0],npc,0,AuthoredTalk.CAPTIVE_LIZARD_TOPIC),"escape phase excludes the completed proposal")
+	click(); select(0,AuthoredTalk.CAPTIVE_ESCAPE_TOPIC)
+	check(b.started[-1].var==AuthoredTalk.CAPTIVE_ESCAPE_TOPIC and b.started[-1].instant,"offered escape selection starts original staging")
+	click(); s.state.set_var(0,AuthoredTalk.CAPTIVE_LIZARD_TOPIC,1); select(0,AuthoredTalk.CAPTIVE_ESCAPE_TOPIC)
+	check(not b.started[-1].instant and b.started[-1].approached,"escape selection revalidates its prerequisite")
+	s.state.set_var(0,AuthoredTalk.CAPTIVE_LIZARD_TOPIC,2); s.state.set_var(0,AuthoredTalk.CAPTIVE_ESCAPE_TOPIC,2)
+	check(not fallback(),"completed escape cannot replay")
+	check(b._original_village_topics.is_empty(),"captive dialogue leaves no stale topic context")
 	check(errors.messages.is_empty(),"command and topic controls have no runtime errors")
 	var result := {"checks":checks, "failures":failures, "errors":errors.messages,
 		"scope":"Host-authoritative command/topic dispatch for players 0 and 1 with a controlled static route; not an ENet transport or native scene run."}
@@ -206,6 +267,6 @@ func _ready() -> void:
 	OS.remove_logger(errors)
 	w.units={}; nav.ignored.clear(); restored.vm=null; b.vm=null; vm.briefings=null; vm.world=null; vm.session=null
 	for u in heroes: u.free()
-	npc.free(); haburu.free(); other.free(); s.world=null; w.vm=null; w.session=null; w.free(); s.free()
+	npc.free(); nalo.free(); commander.free(); haburu.free(); other.free(); s.world=null; w.vm=null; w.session=null; w.free(); s.free()
 	print("LIA_HABURU_GUARDS ",checks," checks ",failures.size()," failures")
 	get_tree().quit(1 if not failures.is_empty() else 0)
