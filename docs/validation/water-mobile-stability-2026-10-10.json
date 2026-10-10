@@ -1,0 +1,1098 @@
+{
+  "date": "2026-10-10",
+  "feature": "Held enhanced-water stability on Android Mobile",
+  "base_commit": "a916f95ca4af2872f42a1c825f949292edf89037",
+  "status": "Open reproducible rendering defect; no production change accepted. Added a bounded regression fixture and retained diagnostic evidence.",
+  "user_scope": {
+    "main_thread_only": true,
+    "no_playthroughs": true,
+    "new_packages": false,
+    "normal_installed_android_game_touched": false
+  },
+  "source_sha256": {
+    "tools/tests/water_light_stability.gd": "69d935e6d71eef1a6c94ea5934f7207628f54a2624cd06dd4a133ce04a849418"
+  },
+  "reproducer": {
+    "scene": "zone1, 640x480, actual terrain and enhanced-water shader; held camera, native water clock and cloud phases; geometric waves, Mirror SSR, rain, native sun shadows and empty contact field.",
+    "states": [
+      "cloud consumers off / materials on",
+      "both cloud consumers on / materials on",
+      "both cloud consumers on / materials off",
+      "both cloud consumers on / materials on again",
+      "cloud consumers off / materials on again"
+    ],
+    "sampling": "240 presented frames after each settings transition, then eight captures separated by eight presented frames. Compare all seven later captures exactly with the first. Record camera/clock/source invariants and draw/specialization compilation counts.",
+    "threshold": "Zero changed RGB pixels. No relaxation or expected-failure conversion.",
+    "production_runtime": "No shader rewrite or native-water adapter in the final regression. Existing private Android app and existing a916f95-equivalent desktop PCK reused; no export, APK or archive created."
+  },
+  "android": {
+    "device": "Retroid Pocket 5 / Android 33 / Adreno 650 / Vulkan 1.1.128 / Forward Mobile",
+    "package": "org.cursedlands.performance, existing private validation app",
+    "final": {
+      "checks": 50,
+      "failures": 5,
+      "rows": [
+        {
+          "phase": 0,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0,
+          "cloud_consumers": false,
+          "per_pixel_materials": true,
+          "draw_and_specialization_counts": "(3, 6)",
+          "counts_unchanged": true
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 2,
+          "comparisons": 7,
+          "max_changed_pixels": 47,
+          "max_channel_delta": 175,
+          "cloud_consumers": true,
+          "per_pixel_materials": true,
+          "draw_and_specialization_counts": "(3, 9)",
+          "counts_unchanged": true
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0,
+          "cloud_consumers": true,
+          "per_pixel_materials": false,
+          "draw_and_specialization_counts": "(3, 12)",
+          "counts_unchanged": true
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 53,
+          "max_channel_delta": 175,
+          "cloud_consumers": true,
+          "per_pixel_materials": true,
+          "draw_and_specialization_counts": "(3, 15)",
+          "counts_unchanged": true
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0,
+          "cloud_consumers": false,
+          "per_pixel_materials": true,
+          "draw_and_specialization_counts": "(3, 18)",
+          "counts_unchanged": true
+        }
+      ],
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/regression-mobile02/run.json"
+    },
+    "conclusion": "Flicker remains after warm-up with unchanged compilation counts, camera, clock and shader. Only cloud-consumer + per-pixel-material phases fail; off/material-disabled controls are exact. Cause not established. Do not call this a driver bug or claim the original RMX3890 failure is fixed.",
+    "scope": "The private Android pack is older than a916f95. Nevertheless all five captured composed water programs are byte-identical to the current-source desktop programs in this test. This is not full-current-source Android acceptance.",
+    "restoration": {
+      "package": "org.cursedlands.performance",
+      "normal_installed_game_touched": false,
+      "files": {
+        "settings.cfg": {
+          "before_sha256": "a6d3fdeba6fa0e2a8751d7f12ad6afcaa2cb6d50734d64d69f6cdaae831e3b3e",
+          "after_sha256": "a6d3fdeba6fa0e2a8751d7f12ad6afcaa2cb6d50734d64d69f6cdaae831e3b3e",
+          "exact": true
+        },
+        "renderer.cfg": {
+          "before_sha256": "85196ecfb5c62c1c82d416b49f6d8c5f47fa86f275ae66f6cb475e9c9a6c6aae",
+          "after_sha256": "85196ecfb5c62c1c82d416b49f6d8c5f47fa86f275ae66f6cb475e9c9a6c6aae",
+          "exact": true
+        },
+        "keyboard.ini": {
+          "before_sha256": null,
+          "after_sha256": null,
+          "exact": true
+        },
+        "validation.json": {
+          "before_sha256": null,
+          "after_sha256": null,
+          "exact": true
+        },
+        "water-native-runtime.so": {
+          "before_sha256": null,
+          "after_sha256": null,
+          "exact": true
+        }
+      },
+      "private_process_stopped": true,
+      "temporary_directory_removed": true,
+      "diagnostic_leftovers": [],
+      "all_runs_restored": true
+    }
+  },
+  "desktop": {
+    "device": "Linux / NVIDIA RTX 3090 Ti / Mobile",
+    "final": {
+      "checks": 50,
+      "failures": 0,
+      "rows": [
+        {
+          "phase": 0,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0,
+          "cloud_consumers": false,
+          "per_pixel_materials": true,
+          "draw_and_specialization_counts": "(5, 6)",
+          "counts_unchanged": true
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0,
+          "cloud_consumers": true,
+          "per_pixel_materials": true,
+          "draw_and_specialization_counts": "(7, 9)",
+          "counts_unchanged": true
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0,
+          "cloud_consumers": true,
+          "per_pixel_materials": false,
+          "draw_and_specialization_counts": "(9, 12)",
+          "counts_unchanged": true
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0,
+          "cloud_consumers": true,
+          "per_pixel_materials": true,
+          "draw_and_specialization_counts": "(11, 15)",
+          "counts_unchanged": true
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0,
+          "cloud_consumers": false,
+          "per_pixel_materials": true,
+          "draw_and_specialization_counts": "(13, 18)",
+          "counts_unchanged": true
+        }
+      ],
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/regression-linux-mobile02/run.json"
+    },
+    "existing_build": "/home/llm2x/Documents/EI/local/scratchpad/water-wave-empty-20261010/candidate01",
+    "build_sha256": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "f801c0647188c43c234135b47a07075af477afb1c25fb3df64b46233f03ce4b1",
+      "libterrain_search.so": "d20a296e4076d7cff681c24fbda0d853d1e272de499b22592c855eeade4a783e"
+    },
+    "all_five_composed_water_sources_exact_to_android": true,
+    "no_other_engine_processes": true,
+    "initial_unwarmed_control": {
+      "checks": 50,
+      "failures": 14,
+      "rows": [
+        {
+          "phase": 0,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0,
+          "cloud_consumers": false,
+          "per_pixel_materials": true
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 43,
+          "max_channel_delta": 3,
+          "cloud_consumers": true,
+          "per_pixel_materials": true
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 40,
+          "max_channel_delta": 3,
+          "cloud_consumers": true,
+          "per_pixel_materials": false
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0,
+          "cloud_consumers": true,
+          "per_pixel_materials": true
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0,
+          "cloud_consumers": false,
+          "per_pixel_materials": true
+        }
+      ],
+      "record": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/regression-linux-mobile01/run.json"
+    },
+    "warmup_reason": "The initial short-wait run changed once after settings transitions, then held those pixels. Its maximum delta was 3. The final 240-frame warm-up removes that desktop transition; it does not remove Android flicker. Background specialization is a plausible explanation for the desktop transition, not a proven cause."
+  },
+  "initial_android_regression": {
+    "checks": 50,
+    "failures": 6,
+    "rows": [
+      {
+        "phase": 0,
+        "changed_comparisons": 0,
+        "comparisons": 7,
+        "max_changed_pixels": 0,
+        "max_channel_delta": 0,
+        "cloud_consumers": false,
+        "per_pixel_materials": true
+      },
+      {
+        "phase": 1,
+        "changed_comparisons": 3,
+        "comparisons": 7,
+        "max_changed_pixels": 83,
+        "max_channel_delta": 177,
+        "cloud_consumers": true,
+        "per_pixel_materials": true
+      },
+      {
+        "phase": 2,
+        "changed_comparisons": 0,
+        "comparisons": 7,
+        "max_changed_pixels": 0,
+        "max_channel_delta": 0,
+        "cloud_consumers": true,
+        "per_pixel_materials": false
+      },
+      {
+        "phase": 3,
+        "changed_comparisons": 3,
+        "comparisons": 7,
+        "max_changed_pixels": 84,
+        "max_channel_delta": 175,
+        "cloud_consumers": true,
+        "per_pixel_materials": true
+      },
+      {
+        "phase": 4,
+        "changed_comparisons": 0,
+        "comparisons": 7,
+        "max_changed_pixels": 0,
+        "max_channel_delta": 0,
+        "cloud_consumers": false,
+        "per_pixel_materials": true
+      }
+    ],
+    "record": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/regression-mobile01/run.json"
+  },
+  "diagnostic_probes": [
+    {
+      "run": "hold01",
+      "observation": "Held camera/clock, clouds off/on, empty history/contact toggles, clouds off again. Flicker already occurs without changing settings or history.",
+      "phases": [
+        {
+          "phase": 0,
+          "changed_comparisons": 0,
+          "comparisons": 5,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 5,
+          "comparisons": 5,
+          "max_changed_pixels": 84,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 3,
+          "comparisons": 5,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 4,
+          "comparisons": 5,
+          "max_changed_pixels": 81,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 2,
+          "comparisons": 5,
+          "max_changed_pixels": 37,
+          "max_channel_delta": 172
+        },
+        {
+          "phase": 5,
+          "changed_comparisons": 0,
+          "comparisons": 5,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        }
+      ]
+    },
+    {
+      "run": "ablation01",
+      "observation": "Disable Mirror SSR, native sun shadows, rain, geometric waves, runtime cloud enable or shadow strength separately: no complete stability fix.",
+      "phases": [
+        {
+          "phase": 0,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 100,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 29,
+          "max_channel_delta": 91
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 2,
+          "comparisons": 7,
+          "max_changed_pixels": 81,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 73,
+          "max_channel_delta": 173
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 60,
+          "max_channel_delta": 189
+        },
+        {
+          "phase": 5,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 6,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 82,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 7,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 90,
+          "max_channel_delta": 177
+        }
+      ]
+    },
+    {
+      "run": "code02",
+      "observation": "Make sky or sun cloud function constant separately: still flickers. Both constant: held captures exact. Local cloud uniforms, branchless sky and forced texture packing: still flicker.",
+      "phases": [
+        {
+          "phase": 0,
+          "changed_comparisons": 4,
+          "comparisons": 7,
+          "max_changed_pixels": 81,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 71,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 4,
+          "comparisons": 7,
+          "max_changed_pixels": 83,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 120,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 5,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 6,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 47,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 7,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 108,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 8,
+          "changed_comparisons": 6,
+          "comparisons": 7,
+          "max_changed_pixels": 104,
+          "max_channel_delta": 177
+        }
+      ]
+    },
+    {
+      "run": "depth01",
+      "observation": "Frozen ImageTexture, constant cloud texture/density, fixed UV, constant depth, no SSR or shoreline depth, disabled depth writes/tests: flicker persists. These are diagnostic source changes, not accepted substitutes.",
+      "phases": [
+        {
+          "phase": 0,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 120,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 47,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 181
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 84,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 76,
+          "max_channel_delta": 83
+        },
+        {
+          "phase": 5,
+          "changed_comparisons": 5,
+          "comparisons": 7,
+          "max_changed_pixels": 18,
+          "max_channel_delta": 105
+        },
+        {
+          "phase": 6,
+          "changed_comparisons": 5,
+          "comparisons": 7,
+          "max_changed_pixels": 84,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 7,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 42,
+          "max_channel_delta": 171
+        },
+        {
+          "phase": 8,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 9,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 120,
+          "max_channel_delta": 177
+        }
+      ]
+    },
+    {
+      "run": "branch02",
+      "observation": "Branchless cloud helpers and compile-time cloud uniforms still flicker. Removing per-pixel material lighting or using unshaded rendering stabilizes this held scene but removes requested rendering behavior.",
+      "phases": [
+        {
+          "phase": 0,
+          "changed_comparisons": 4,
+          "comparisons": 7,
+          "max_changed_pixels": 110,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 2,
+          "comparisons": 7,
+          "max_changed_pixels": 47,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 53,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 2,
+          "comparisons": 7,
+          "max_changed_pixels": 83,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 5,
+          "changed_comparisons": 6,
+          "comparisons": 7,
+          "max_changed_pixels": 78,
+          "max_channel_delta": 155
+        },
+        {
+          "phase": 6,
+          "changed_comparisons": 6,
+          "comparisons": 7,
+          "max_changed_pixels": 90,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 7,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 8,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 9,
+          "changed_comparisons": 6,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        }
+      ]
+    },
+    {
+      "run": "lighting01",
+      "observation": "Constant normal, wpos receiver, fragment-cached normal, return-matrix and separate output variables: no complete stability fix.",
+      "phases": [
+        {
+          "phase": 0,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 108,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 89,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 2,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 81,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 84,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 5,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 90,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 6,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 7,
+          "changed_comparisons": 4,
+          "comparisons": 7,
+          "max_changed_pixels": 83,
+          "max_channel_delta": 177
+        }
+      ]
+    },
+    {
+      "run": "finite01",
+      "observation": "Finite-output sentinels do not identify a NaN/Inf source; simplified light or unshaded fragment-only lighting is stable. The unchanged complete lighting path remains unstable.",
+      "phases": [
+        {
+          "phase": 0,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 90,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 5,
+          "comparisons": 7,
+          "max_changed_pixels": 67,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 83,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 4,
+          "comparisons": 7,
+          "max_changed_pixels": 53,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 5,
+          "changed_comparisons": 2,
+          "comparisons": 7,
+          "max_changed_pixels": 37,
+          "max_channel_delta": 172
+        },
+        {
+          "phase": 6,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 7,
+          "changed_comparisons": 1,
+          "comparisons": 7,
+          "max_changed_pixels": 81,
+          "max_channel_delta": 177
+        }
+      ]
+    },
+    {
+      "run": "cache02",
+      "observation": "Pack three water scalars into one varying, alone or with full diffuse/specular calculation cached from fragment to light: still flickers. No candidate retained.",
+      "phases": [
+        {
+          "phase": 0,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 108,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 5,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 4,
+          "comparisons": 7,
+          "max_changed_pixels": 67,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 120,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 2,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 5,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 120,
+          "max_channel_delta": 177
+        }
+      ]
+    },
+    {
+      "run": "factor01",
+      "observation": "A minimal directional-only light function using the original per-pixel colour and draw-factor calculations is stable. Keep-full-path max/divisor/receiver changes still flicker.",
+      "phases": [
+        {
+          "phase": 0,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 90,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 5,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 6,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 108,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 7,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 74,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 8,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 47,
+          "max_channel_delta": 175
+        }
+      ]
+    },
+    {
+      "run": "lightbranch01",
+      "observation": "Compiling out point-light branches stabilizes this sun-only scene. Removing surface highlights or transmission alone does not. This removes lighting features and is diagnostic only.",
+      "phases": [
+        {
+          "phase": 0,
+          "changed_comparisons": 5,
+          "comparisons": 7,
+          "max_changed_pixels": 47,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 4,
+          "comparisons": 7,
+          "max_changed_pixels": 53,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 1,
+          "comparisons": 7,
+          "max_changed_pixels": 22,
+          "max_channel_delta": 170
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 83,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 5,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 82,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 6,
+          "changed_comparisons": 0,
+          "comparisons": 7,
+          "max_changed_pixels": 0,
+          "max_channel_delta": 0
+        },
+        {
+          "phase": 7,
+          "changed_comparisons": 2,
+          "comparisons": 7,
+          "max_changed_pixels": 47,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 8,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        }
+      ]
+    },
+    {
+      "run": "lightlayout01",
+      "observation": "Equivalent directional-first branch order, unrolled point-light loops and their combination: still flicker.",
+      "phases": [
+        {
+          "phase": 0,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 71,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 1,
+          "changed_comparisons": 2,
+          "comparisons": 7,
+          "max_changed_pixels": 67,
+          "max_channel_delta": 175
+        },
+        {
+          "phase": 2,
+          "changed_comparisons": 4,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 3,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 4,
+          "changed_comparisons": 7,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        },
+        {
+          "phase": 5,
+          "changed_comparisons": 3,
+          "comparisons": 7,
+          "max_changed_pixels": 118,
+          "max_channel_delta": 177
+        }
+      ]
+    }
+  ],
+  "rejected_or_incomplete_fixtures": [
+    {
+      "run": "code01",
+      "reason": "Runtime global_shader_parameter_get emits an engine error and is editor-only; removed from the fixture. Do not repeat."
+    },
+    {
+      "run": "branch01",
+      "reason": "Godot shader mix(float,float,bool) overload is unsupported; corrected in branch02 with vector mix."
+    },
+    {
+      "run": "cache01",
+      "reason": "Adding two fragment-to-light vec3 varyings exceeded Mobile capacity (29 used / 28 supported). Packing existing scalars allowed cache02 to compile, but did not fix flicker."
+    }
+  ],
+  "limitations": [
+    "No production fix, performance win or whole-game FPS result from these diagnostics.",
+    "No new APK or delivery archive; all earlier production fixes remain at a916f95.",
+    "No campaign playthrough, original Adreno 610 or RTX3050 report reproduction, Windows or broader hardware acceptance."
+  ],
+  "next_work": [
+    "Use the strict held-scene fixture as a rendering gate; preserve failed controls.",
+    "Do not repeat the feature-ablation/layout/caching grid without new evidence. Investigate compiled Mobile shader behavior or obtain an independent device/driver comparison before choosing a workaround.",
+    "Continue measured wave-domain construction/remaining water rebuild costs and original Android/Linux report validation within the user scope."
+  ],
+  "raw_records": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/ablation01/run.json",
+      "sha256": "d51e35920ebd20855f9f95acdfdd9e12baba1c3843e8590fbae4c799eca42a7e"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/branch01/run.json",
+      "sha256": "be814a884336a61b781fa5761e9d571ed825d99b38668f6ae76ecf65af186ae5"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/branch02/run.json",
+      "sha256": "0bb047f7f3c7b6adf80114c479d10f19660f928c8e452e8bda70141e03852da1"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/cache01/run.json",
+      "sha256": "310dcf463dbc66c0631da338e713ab5e65c00b32a330f9b7c2aa41e1729ba23c"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/cache02/run.json",
+      "sha256": "4ce809371f4240b84b85e174d313780ecef9440db4d92a10028a837ddd6989ec"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/code01/run.json",
+      "sha256": "5a3e24b42b27086102c87eb47c2b76b2f4031977e88784e14b297d05a83ec1df"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/code02/run.json",
+      "sha256": "f13b548c0ede5223a6d67a34959516f2334b0aed05baad820c49ce91507c4329"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/depth01/run.json",
+      "sha256": "f6a606296fb49654ed1ea63d8a9cb6a1c5200d99a287c8a066e377ccb40fd86a"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/factor01/run.json",
+      "sha256": "0b849b31d196e83bd8922dedde8f643bd6dc1d824671effc8eba4b92246ebd3c"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/finite01/run.json",
+      "sha256": "d5b54897d8ee0b5eff6ff11dc9525d95554d3b516f45ef2cc420faec92aecf0c"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/hold01/run.json",
+      "sha256": "e60f5fa93c06be93dc4cd23db0d810c554f339724b80ea465c40218f3515c9a6"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/lightbranch01/run.json",
+      "sha256": "83b6192731cfec637b916b62b91d8eaa2efb5f17225595448b8c45aa0406c62b"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/lighting01/run.json",
+      "sha256": "9171c5134d07d1fa14479908ef49361061000e5d4460cee445c097ae4e376efa"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/lightlayout01/run.json",
+      "sha256": "9b4acaed2f022275eff16267af700c086632038a5215086fde52eb1580ca0095"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/regression-linux-mobile01/run.json",
+      "sha256": "597e4a740065f7dba8646049749d22e16c8d732a49eeecaf4d3efb0e8523d1b2"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/regression-linux-mobile02/run.json",
+      "sha256": "1fb14215eeec44041d916bee2c6cf6e4ab68ab854f6bce662ae9b3bdf993182c"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/regression-mobile01/run.json",
+      "sha256": "c6358b3ff656bcec17768db1390ccca3f7150064f8108dd87a1115799d06ae9f"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/water-mobile-stability-20261010/regression-mobile02/run.json",
+      "sha256": "561268522163a18a952751211caca66955d476ea38542ded975a60adced7483d"
+    }
+  ]
+}
