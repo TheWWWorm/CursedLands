@@ -1,0 +1,2612 @@
+{
+  "date": "2026-10-11",
+  "version": "1.0.4-experimental.3",
+  "status": "Qualified release payloads; publication is recorded separately after upload verification.",
+  "release_url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.4-experimental.3",
+  "game_source_commit": "6a062339eec102dfc8853edf545ead117c9c5583",
+  "previous_release_commit": "dfe6dda4356cdb3af7ec749200437e2bb367ed78",
+  "network_protocol": 15,
+  "mod_api": 1,
+  "source_scope": {
+    "included": "Paid casts, potions, taming, stable pet and hero references, co-op return projection, save-state gaps, later trap registration, spell-sound teardown, Forward+ Mirror scene reflections, combat-aware health visibility.",
+    "isolation": "Prepared from the prior release in a separate checkout. Pending menu, first-person, stamina, control, health-bar animation and other unrelated edits remain in the original working checkout.",
+    "source_delta_audit": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/archive-readback.json",
+      "sha256": "82408e17a0e8c1f0b9323a36309aa6f768daa0ffdbf2f49e4711830889ac146b"
+    },
+    "development_suite": "488 checks in lia-save-repair-2026-10-11.json; not added to the packaged totals. The packaged suite has 487 because the first-person self-bar control belongs to excluded pending camera work."
+  },
+  "environment": {
+    "linux": "Ubuntu 24.04, NVIDIA RTX 3090 Ti, existing twelve-patch Godot 4.7 release runtime. Forward+ visual checks; headless save checks.",
+    "android": "Retroid Pocket 5, Android 13, Adreno 650, Compatibility; private QA application with the public compiled game scripts except one fixture entry hook.",
+    "network": "Real loopback ENet guest returns and late trap registration; a separate process using the previous public package verifies protocol refusal.",
+    "isolation": "Disposable desktop XDG profiles; Android private app and profile restored, public app untouched.",
+    "performance": "Functional checks; no new performance claim. Some independent checks ran concurrently."
+  },
+  "packaged_save_and_health": {
+    "checks": 487,
+    "failures": 0,
+    "runs": [
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/save_depth.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-cast",
+          "--case=cast"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 6.21,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 8,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74",
+        "label": "package-cast",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-cast/run.json",
+          "sha256": "73eb102ff2bccd3fc789fbf654d2f1e5c9f96bfecb6705f5448a26114fb85a9c"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-cast/run.log",
+          "sha256": "75f58785b5cec1c77a81afeb0ec80b747666f9005ab28c78cfd7473db7c8a445"
+        },
+        "checks": 8
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/save_consumed_cast.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-potion"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 6.01,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 8,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "a7a71f839bb4f100d552fe226a998f95ff9932b88e3fb59b3235b9dfc3d93303",
+        "label": "package-potion",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-potion/run.json",
+          "sha256": "e577efa01162a39d25799cc707e6d1504c3e49e7d3d9e348f0ae2d954ed77925"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-potion/run.log",
+          "sha256": "1618fa6b843a088f3dbc5c1fae1624f44b416461096e68282239d4da49007599"
+        },
+        "checks": 8
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/save_depth.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-taming",
+          "--case=taming"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 6.21,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 18,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74",
+        "label": "package-taming",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-taming/run.json",
+          "sha256": "03b7a5a4320a8536408f59370ece14de64c4e414d2b655d388709c06ffcc993d"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-taming/run.log",
+          "sha256": "568c7b60f3e4d9e5e1204d708824dae809e12b2bb05d6615f9bd8f5111f2b1f7"
+        },
+        "checks": 18
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/save_depth.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-pet",
+          "--case=pet"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 6.01,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 8,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74",
+        "label": "package-pet",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-pet/run.json",
+          "sha256": "491dbd32985a3ecf0acf4e002b60718872521f756d8c44928fde788522d93ea1"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-pet/run.log",
+          "sha256": "9a15262fa0c306b0616f644be91ffebd81ae4684f2bb784c0f06bda684dc3094"
+        },
+        "checks": 8
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/save_depth.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-boundaries",
+          "--case=boundaries"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 14.21,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 30,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74",
+        "label": "package-boundaries",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-boundaries/run.json",
+          "sha256": "ffa966cf98c1816fec371a3401edb50f1651733d67b6256703bfa000b2eb2917"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-boundaries/run.log",
+          "sha256": "8e08d788105db47848d87e17d89ae72258527ab6fa3dd1074b2f8af26844b5c3"
+        },
+        "checks": 30
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/save_depth.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-pet-travel-3",
+          "--case=pet_travel"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 25.83,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 27,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74",
+        "label": "package-pet-travel-3",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-pet-travel-3/run.json",
+          "sha256": "ad052a6ce2f1c6bb7cbe6754e5e101031a8901a8283eeeb29753a9a9727ce574"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-pet-travel-3/run.log",
+          "sha256": "dc1fcc29d8aeb1c61626c91f87544af4c878e05aa60bac7018a3be9d32864e26"
+        },
+        "checks": 27
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/save_state_fields.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-fields"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 6.01,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 18,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "06e7ce9d4c6e370956e72bfafde059ad661a46dde7584cf9b842e8ee5c2eeffa",
+        "label": "package-fields",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-fields/run.json",
+          "sha256": "7b608ee27210b22796a88e278bdd1108e4f184b6fa3b266cc637de4918ceb2ca"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-fields/run.log",
+          "sha256": "c6d2aa8eb99d475b21340ede1b827f2241becf5ac453395739614a1762821a9e"
+        },
+        "checks": 18
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/save_frozen_clock.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-clock"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 12.61,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 6,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "8aa4f285be3f092030de1d14e388f21376efa4c43d6bc3c0a4099ef29332d140",
+        "label": "package-clock",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-clock/run.json",
+          "sha256": "f9e66f086d6b1685c53444f48429341e7ec54023bc8fa159b2de24e0879bbbac"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-clock/run.log",
+          "sha256": "aa8c3cbb473ceee7f6267ca6dd0519739ca1029fb43f8c38fb4f1eddbbed32d4"
+        },
+        "checks": 6
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/save_actor_refs.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-actor-refs-4"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 2.0,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 14,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "bb06822f806eb9c971a2f249a2bfcd2900fdd0ffa0077fc9b0b8f9c2cbdd439b",
+        "label": "package-actor-refs-4",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-actor-refs-4/run.json",
+          "sha256": "7cbc9196f09368a80cf457eadcda36951e62def957d129eaeb712124df0861e3"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-actor-refs-4/run.log",
+          "sha256": "38a6e16ec57f5ce87f71d4d66067f36413e28fc34a25fca7ab75f61aa6962033"
+        },
+        "checks": 14
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/script_hero_references.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-hero-refs"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 2.0,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 11,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "4ed8f447a3a483cd10b2e302f5e6c1a0968ec741a63ebc4d655d0fa2a2e17959",
+        "label": "package-hero-refs",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-hero-refs/run.json",
+          "sha256": "ab7a817b57f1d01ce0dddea8b49ef9e1fface2a26a439968119b889f4418ddd7"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-hero-refs/run.log",
+          "sha256": "ece39b8b3019c0292cacb38e8e478ec14a49a8c39a0ec1972660650d48ab0a1c"
+        },
+        "checks": 11
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/coop_vm_projection.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-vm-projection-2"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 2.6,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 21,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "91ebe397d05ca17de9663fa1b4b4c5b8f34a516ba1345f2f0fcc469485bbcffc",
+        "label": "package-vm-projection-2",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-vm-projection-2/run.json",
+          "sha256": "03d7d7d00ef32c01007da46015cb5a656212257e30373bff480c5d158b091ca8"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-vm-projection-2/run.log",
+          "sha256": "de123cbe487e41af95db7a3a982d6ce567388d08ce50a7456907248626cba6d4"
+        },
+        "checks": 21
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/health_bar_visibility.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-health"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 5.01,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 24,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "cd0af549727d70214fe87f33a89ade4d7990bcbce41467160c09765ed34bfa6b",
+        "label": "package-health",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-health/run.json",
+          "sha256": "332dfc299984e441ad2fbcb504dcb64efc6bec47af2779508965085284992158"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-health/run.log",
+          "sha256": "a196f56c36ecaba10f58cffd2f7fce261d70a0d38f4006c7c7aea944c6289334"
+        },
+        "checks": 24
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/delayed_cast_lifetime.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-cast-lifetime"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 3.4,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 32,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "74da1743c48568e9421936df179a47537d456bfae2680a95eb7fe16620d17c1d",
+        "count_source": "DELAYED_CAST_LIFETIME checks=32 failures=0",
+        "label": "package-cast-lifetime",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-cast-lifetime/run.json",
+          "sha256": "bbdda650a9f38693b8690934cdc941fa36a4bbb809e02ca7dbe5544591e9ad85"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-cast-lifetime/run.log",
+          "sha256": "a23c1c2fad66bf1318b23041593a2f6e203999ac1d1129076dd418f91d48116d"
+        },
+        "checks": 32
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/repeated_spells.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-repeated-spells"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 4.01,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 86,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "7e4c207d9b7f65133e7e081a8cf33ba7a76610a0bc8c438f8211864ac3ef3970",
+        "label": "package-repeated-spells",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-repeated-spells/run.json",
+          "sha256": "8e5d04983faf09976b9632c8f135494f6f73ad4550c687583ef6c07ae84ce9fc"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-repeated-spells/run.log",
+          "sha256": "552f8f42fcfd348924fc34024d5bbc11152e793e6e0cd6f4f4d0f1e784ebef72"
+        },
+        "checks": 86
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/campaign_roster.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-roster"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 2.4,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 64,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "49cce7a4e6aea418f2dd348ce22082fe719e34ca37174c186805b1aa3da4010d",
+        "label": "package-roster",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-roster/run.json",
+          "sha256": "c0f4fb3ff103c2974d8d45cca962da72920ef00c85c4d2a6173f6d7a975422f4"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-roster/run.log",
+          "sha256": "9c9864792955477a732724f9bb0778e521b110afcf613617eeef226120824f4b"
+        },
+        "checks": 64
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/coop_save_effects.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-guest"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 13.61,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 31,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "aeee7f5ad9e6f32777138c11766fd02b4d51aff6d0fba32806e615f452a56731",
+        "label": "package-guest",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-guest/run.json",
+          "sha256": "78ea8ac80ff2fc4bd3d662c1f765b5c9f2489a2ff321a2f41ec10c6d58912a5e"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-guest/run.log",
+          "sha256": "c49b617a9655f4a89be522f4b1b2b19bb4c2b1ef29639dd20534c14496294682"
+        },
+        "checks": 31
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/lia_trap_registration.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-traps"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 8.01,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 27,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "2007e265fbbbc36a42ae7e01038ba474cb6ff1481cc859fda3c7902cbd38630d",
+        "label": "package-traps",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-traps/run.json",
+          "sha256": "039f0284dfe9858d0e62faa04b8a6fff0797f6aabd3b8f154a8158c983eb4802"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-traps/run.log",
+          "sha256": "12e295a1540e731e69e393c823f6b72bab6576754862738c6adf3f51e6ffcfa9"
+        },
+        "checks": 27
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/coop_vm_projection.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-vm-projection-base"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 2.4,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 36,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "91ebe397d05ca17de9663fa1b4b4c5b8f34a516ba1345f2f0fcc469485bbcffc",
+        "label": "package-vm-projection-base",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-vm-projection-base/run.json",
+          "sha256": "24f90982d4d902fed1ee8118b8a6c5af01ae1229a76eb705535f86440d8d1f1a"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-vm-projection-base/run.log",
+          "sha256": "bcf247cdf225b3a05c44b93d63a44ab5a8890223126732a9858c26cdca181901"
+        },
+        "checks": 36
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/save_state_fields.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-fields-base"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 7.81,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 18,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "06e7ce9d4c6e370956e72bfafde059ad661a46dde7584cf9b842e8ee5c2eeffa",
+        "label": "package-fields-base",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-fields-base/run.json",
+          "sha256": "26628304642364a789f44a23ed567207c5756dacd72a12bce8ec3db49d19caf3"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-fields-base/run.log",
+          "sha256": "68d12d31fd995e25964d5e1065a6c36ff0c4525945a3b2ea9e69a771188c6cfd"
+        },
+        "checks": 18
+      }
+    ]
+  },
+  "reflection_geometry": {
+    "command": [
+      "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/water_reflection_geometry.gd",
+      "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-geometry"
+    ],
+    "return_code": 0,
+    "termination": null,
+    "seconds": 2.0,
+    "errors": [],
+    "warnings": [],
+    "failed_checks": [],
+    "passed_checks": 32,
+    "build_sha256": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+    },
+    "fixture_sha256": "ba7b2c548dfbea14be0513885dd420a1cd6207babb2b115491080fdc26c93122",
+    "label": "package-geometry",
+    "metadata": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-geometry/run.json",
+      "sha256": "8fa852cb649ba2e86a57f9a5bfac2d7e2fda8a7a7733646df81d7d4d8559a33b"
+    },
+    "log": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-geometry/run.log",
+      "sha256": "e00be7ff75a36b9a7c0e5625a49a4b4e3f179a8babc19237b366046a11585bff"
+    },
+    "checks": 32
+  },
+  "rendered_reflections": {
+    "checks": 21,
+    "failures": 0,
+    "bridge_views": 30,
+    "tree_views": 27,
+    "motion_frames": 61,
+    "runs": [
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--gpu-index",
+          "1",
+          "--windowed",
+          "--resolution",
+          "1280x758",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/water_reflection_angles.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-angles"
+        ],
+        "campaign": "base",
+        "return_code": 0,
+        "termination": null,
+        "seconds": 60.55228205100866,
+        "errors": [],
+        "warnings": [],
+        "fixture_sha256": "e921a7ec321c18cbae9c268b250ac22d54faf2baaa62dcbbfaceb98b151879f8",
+        "engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "label": "package-mirror-angles",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-angles/run.json",
+          "sha256": "f95cbf59ce1f838d525ef8ebbe672f631c3bd5bd2f283df53784aab541943b10"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-angles/run.log",
+          "sha256": "34fb7e5cb90feb6729a9038751f3875739210f118cb6025ab64b2ac621d5f617"
+        },
+        "checks": 6,
+        "results": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-angles/reflection.json",
+          "sha256": "c9f1cf7ba8e521958bb30f406ac87560b2b39a5ab457eaaeddeac7308793e18d"
+        },
+        "compared_views": 30,
+        "capture_sha256": {
+          "00-planar.png": "bc2a4b3e3277ac166ca9d5b40997be279ccff68c6e109cca140431df399d4392",
+          "00-previous.png": "6d51aa9ab9f55a13a531bcd80a0116284b14029e63b64c0ca6005365691f29fe",
+          "01-planar.png": "b9051729782c5a63d49e85c30be0bd31a31799e80b7e660a18fdb12ead4c0cd8",
+          "01-previous.png": "82fbfa9ef85d5f46dabb5782531de0238022bf7022abca63bfde964686d142c3",
+          "02-planar.png": "71826204d951093e3634787804b9d0966607c9927538c56f065f678fea0af325",
+          "02-previous.png": "083ca243fdacabb286a0b1e1c34e1c62efbf129b4930fdcc1054676aa6adfabb",
+          "03-planar.png": "ee951387c6a8a748b7fe7eb67b958add9f1af48d4af2f4e4c8403e00e79dceaa",
+          "03-previous.png": "52b0fcf2d77654f0afbdd6f4b4fd5cf906a317a554a9e02aa17fb33edfe517e1",
+          "04-planar.png": "2d75523191413642fa8aca43e25be7e12b0b4fcdb62a0ae6c7a7618ad7944fbd",
+          "04-previous.png": "4b332427461c01d4602d7278b618553537ba99f7cb1a1b46d82ee8c220181987",
+          "05-planar.png": "87329ac690c9d2b62174dd1afaa0833512e58f063467cdf83dd235f40976304d",
+          "05-previous.png": "91d45f36d2dc23594692086d1d7b03556b934de5150e12e1b0dfd5573d383dd3",
+          "06-planar.png": "c8f6e62790e91adf60ffaa57e23629c6220a5568f7a0b585361b5bb2bea080ed",
+          "06-previous.png": "cd6a2cfa9830825c97955ea3faad803278fa29bc347eb20dfc31db49ad3c5e22",
+          "07-planar.png": "4b5cd56bc8084f11b18b91614992e6d6e192ae741776952c7690b634750a75fd",
+          "07-previous.png": "765cb7d4590eba559ea1431e0f6531ea3d6bde531eaf42c633ccee95464145e8",
+          "08-planar.png": "2e76935d71a6b2b25374081a08cdf711cc032af7b008997f67b59ad44e2b20ba",
+          "08-previous.png": "3af03aace7ac944ed849a3893d4738e81887a8cdcbed6487aaf4e880f84873ae",
+          "09-planar.png": "b47a6e30fdf704ce51e00b89a948cf546b177ae1f2e4359ac96bb00f15cd3747",
+          "09-previous.png": "e653b8132a9dcef9b656ea2174230f95e15952b22a43db422e9e30969312fa12",
+          "10-planar.png": "d56fb74b32113ece19a0d83faafaf2b80fdf624bb0b6a8dea6877ca83b062d19",
+          "10-previous.png": "a13b81a523506cbf09647b6b8459cf799afd61e73316678c9d09f757a6f91713",
+          "11-planar.png": "1ae07c1b4b16c485d87cfa88bae1765b36b4fa72ae275f5d88b249da83b53ec0",
+          "11-previous.png": "07304a961520fe72864571c79148c070b85583dbd90498c64ac763bade8877c3",
+          "12-planar.png": "d62ba43451a0f4fd1f91fe59120d22e7a30dfb80cd77e70940ca513587db7f25",
+          "12-previous.png": "dd2f9056af5dff24ff647bff137094d48d9a4ad29b4e988db2fb997e57630ef3",
+          "13-planar.png": "4b3770b2d37f6306bf457583913407ce8db89d37b3831f8cedcefdb739880573",
+          "13-previous.png": "334f674cbc68c592822a88177e12e8fc31c2d3254d7aea23701399f4603df5b4",
+          "14-planar.png": "589eb98de38f3922e4cbe7ed5f2bd8faf777bf677606a311ff6e9d4aaa6bdbfa",
+          "14-previous.png": "59aafb89e9ac5dc87647815d5a7efa70a29def5e9b4c0caf16d5316cbd14de54",
+          "15-planar.png": "aa6913bc6d954a323e6efe9455f00bbede9428c0b963e382bc5999d38d254921",
+          "15-previous.png": "fa4a4d7544e3ae8f4360628569252143d154c0cbab1daa61c8911e0c0a9ccdaa",
+          "16-planar.png": "e2b2b5b89a86177159cad954fa39350461ed32672c9df0b47a6a14cb5a7dc5bc",
+          "16-previous.png": "109abc6dab287abad3256ec5d8f742124af5ea2d8ecc6f83d28c0f93d43efd01",
+          "17-planar.png": "e01eb262df68da6e9df1b12fc30db1c81e288763c9322e87a7712fd0893ae331",
+          "17-previous.png": "9a6b34e7afd58d167efaff77907771dc23dcd2916573ab7ce9b40692fe65ded4",
+          "18-planar.png": "0eaae42263f520e36fbc10c8f21c85cd8abda9676a3ee2690699fe7d2150f9d5",
+          "18-previous.png": "5df80cacab46a5f4cd86005fff470a2a8252a68f3cb21fde80150d624b7d37c8",
+          "19-planar.png": "47fc63940c8d1de014813e370b8d4f5f5ac5163a5dbaff721ff7557ccac56d80",
+          "19-previous.png": "b08737eb8896b299c805cd0e43818a7d426f9129cee9757d50f3b9f364a39771",
+          "20-planar.png": "5b6512d48c2cf0cf8115e6308de40c88592fbc40c48744527f86aef7e8b212e4",
+          "20-previous.png": "0344001195d0ed9f4f1949e1c1f80560c7dc8ee0a95b679cfba5b50e5208611f",
+          "21-planar.png": "06fbafbba5b67cdb07236d4be90417fc498493ccd961cc2567c5fda6847804b3",
+          "21-previous.png": "d858ae5efb29abdbbc42957c6f2ae03ed3fbf7cbc979a78ea6f50c0816e1fa7d",
+          "22-planar.png": "0d55bec90986034f0d4cee695ccb6be040100099c2bddbc02c327fce86650fbe",
+          "22-previous.png": "b159e5da27b6d4a00668c8836d39245212922ce5b7f993d7e90a9782b77ae441",
+          "23-planar.png": "1c60ce8eb132de9084c070fdd8d2e38a0c0bc595110a013ed76dccf2116b555e",
+          "23-previous.png": "6b280a1510c88b6ec474f9e097b81b5a833b1c48066a7e18016ab237fb834a9c",
+          "24-planar.png": "44ff91cc81587de6b37487e56fbfa92f2c667006e898c1e76d2810a057cc7d43",
+          "24-previous.png": "85a7fd29f58336e2de13444559d180b543a7140b6964bb52a9ed94413bd4676c",
+          "25-planar.png": "24acb1fab6c22fa453fd7c5736c547ea54bbb49695e9f14cbbf074bf2fd95753",
+          "25-previous.png": "05cd314be815f5e93d878909cfc7db008733f33d57b5e17d48dad603509f750b",
+          "26-planar.png": "95a140a1f8e9aa70267fd20b711266de25096ed1f1b829572835be22303a8d5d",
+          "26-previous.png": "7d42706c7631e124c98297b3161a14b55524f920bdc3d893e54769143b7e4487",
+          "27-planar.png": "0104aeab44a29368042be7e597d31cbd684a2d30fdf02112837e939ecf2ce21c",
+          "27-previous.png": "e097b7a5553d3ba331b1bcc802418cd5a23ad8a4ef0a423a420fb4c6c12e4d94",
+          "28-planar.png": "a8cd3472f6dabdc144c6dbd7a71f64909eb849b4937a963b3db865a1638d438e",
+          "28-previous.png": "b2d8e92478e843c20919ce1a645f7c46c1b58d657def99241d9c2b8fbe0f35d6",
+          "29-planar.png": "abcf83feb7c4495adfe43c00a841e7ef402dfef1725706bc618b4829835c35e4",
+          "29-previous.png": "e348b35eab6ea7a7dad863ea88c6ac517bd95ef81808f33abbe93c58587f33c9",
+          "motion-000.png": "5bcbe85d13eec2934fcd94ce91b9960f43937d1992bfdeecb18433da90843061",
+          "motion-001.png": "02f1cfe3b8efb851f258bf9c05dd98b96b5ba7202eb91982b0f1d661451a9bcb",
+          "motion-002.png": "b4ecf2bfb72b0b9352c45b891a86a7ebc4b4f8bbd17232c7b48396f8e46ca568",
+          "motion-003.png": "99f0ec9f8214a31e7d2a301c02c6bd203d27fcf20b551e79faf8cdcd15927eca",
+          "motion-004.png": "f0e47b0db32d39a0f53a058c6011f2f2fe43ba0340707a159c63d3a9979afb37",
+          "motion-005.png": "c2f50c1d8fa4f973fbb64708e46249a4703e91dc5a59bfa0d44f5d3315a1a20e",
+          "motion-006.png": "01067431c0ae6925dd36fccf067a95a7d2b3efeeec0830f197ec649486c71e17",
+          "motion-007.png": "ff2c63bafce28b9dab29710f7ad770140fef297b7fa9724233b28eab045b5c0f",
+          "motion-008.png": "dfda6cd35264abfb0c86e4e43f203ad48269712961c1311007aae72e000e24f9",
+          "motion-009.png": "f47ad94ba487267dde3474edf09e373a84757a6c9473334cb743e2227b190138",
+          "motion-010.png": "1c132bfbb433c16ae239c2946964e8b2acda47955421cee7b25f5dc6cb059fb5",
+          "motion-011.png": "29f01b0ce13a190c651d955d739cc32c4cd407169d21bb8e0df4d81d1af5ad14",
+          "motion-012.png": "7dbc2d8a032510acb109ce3a7af07163f43ec501129b2291c826424290c2684e",
+          "motion-013.png": "f039a3083319fdc1168182f2fb7ff2b8018c4c642ce02299dcbbcd463fd45641",
+          "motion-014.png": "12c9a6fe1640cf14685416c0d00873b2c809d223f2b9d0da0b9a74f8bcd54b8a",
+          "motion-015.png": "fdab22103684d603f2e09fde0f9a56e5e58b89b2f2d9532e271a989661267e7a",
+          "motion-016.png": "ae2ae4b674d9eb659fe1deee607e26bf36c037bb8ec1e7eab991bec6bb693c64",
+          "motion-017.png": "bd57920b1445fbea685f95620a37a10a2a378800863b9a4578edb0c1b9309006",
+          "motion-018.png": "ffc0f84474ac25bebedb4c203804d7b73d8a1d29d66d1863fda45ef3f2d420ca",
+          "motion-019.png": "642a30fa2bdae81bf58690a27b7e769704d13a96d12b5b4e8c3a8c24852376d5",
+          "motion-020.png": "f985a6109e8dcc310be17bde521132f90086228a5ce4184c6fe08d0958168cd6",
+          "motion-021.png": "6871a9c84b5c655219b07a0ca142f4d6073475b44536064b5d53f57ab233a9e4",
+          "motion-022.png": "fc81b741460cde5464931bf03b38c37bcb3a4c0a3dc129d9aae35056a272362c",
+          "motion-023.png": "fa4cd82f82fa9dcfda14b6ef629299cbc476eda9ba83c2d641c9922926297c2d",
+          "motion-024.png": "9c436cceb9d0efbc87aff4ab0d9e9f173c96cb48de4caa60bf5fb3eb0d9879d5",
+          "motion-025.png": "2d2137bf8fc0d395d108556a4bf8512a04070b4a8fdfa2aac023822ee8456e62",
+          "motion-026.png": "8940d51b0f50ee0c4e1c9d4dfea6f32f29d29049a23c52e03f5f5f6a92ac99ed",
+          "motion-027.png": "99875570704d6cd1a9b9f046e3330637e068a5d5f8dbc890b91cc00be3cebafb",
+          "motion-028.png": "461a2deafba73226bd64395848616a47e3f9ef3876f0df1e1a505074f73ddb3a",
+          "motion-029.png": "18f25c9a9e0a350a82747ca23243061180acf2920caf4d6f226b01aa6cf2083d",
+          "motion-030.png": "7d2173b96cf4e0fc3f2c8204085c9d9aeb0dbb82e45140d1f0b2d879c45c6b37",
+          "motion-031.png": "a367b5fc8e2bb56b219cb5780be7d9428f6c084a5445507ebd3fbb06cf626ce2",
+          "motion-032.png": "82854e202fe96c6a288241fbfce48e96bddac27cf593ea30309438cf668303ab",
+          "motion-033.png": "940407e8bb154746aab33064ba9cd0bc84ef0c5d33000aa840dfb862daa4c3be",
+          "motion-034.png": "02cfa842e979556185f749dd005b9af221597066c9cae34428be3959ea614394",
+          "motion-035.png": "0a1b9a898f631296ce5d6cfdaba64f694a0d7e88add7e0971ec81935abda6e52",
+          "motion-036.png": "6628a03645dd13f2d4afa2c0d54f21d4e9cfac04caecdd7739a17472bbfe8518",
+          "motion-037.png": "17f1e0ea69fe0ed3c5120b790fe40511b12dc521b36c7cc354700fc6e1771c77",
+          "motion-038.png": "46c17c693237f1ca50800aeee325b6547f1bb6f81618be68c9ad813aa7597d4d",
+          "motion-039.png": "dcf0af254c77488b03b1f57c44ba1a748b24245b28b82235fa5d65548e5f8698",
+          "motion-040.png": "49ebd6dc6fd6bbc2d770bfc83ef8bd7b21d4921027c7b6a9bdfc4a675a47be21",
+          "motion-041.png": "f4d277cb731ee285536fde2b5884ecc233e130f2401f4bd9649ceb42e221ff76",
+          "motion-042.png": "b05ec2a18c88a468fec4f28c934822a37e6813efca065df4a4e163fda1b59c32",
+          "motion-043.png": "2cfdea8c59d8985623f15cc1e954d867e04cd6c1449504c5f5422440abf3bb79",
+          "motion-044.png": "60b1ce4b1e3c40bfe18f4b289914bdd1702da7b807eeb3140cb34807e9b3a596",
+          "motion-045.png": "7103df27b39edfdfa24d1c39e04dd8f478e771b4bdfe39b8d7fb839419c184fe",
+          "motion-046.png": "137f008f97a946747b87696dedfb808bcd4473abe533bc34ab876f298c1d9c89",
+          "motion-047.png": "6f1f9d2343d7f7887e4b640d5f07b0078881cd40df845edbba6652a1cb26331f",
+          "motion-048.png": "44c1debf3fb596084b39a4d73e5a6e71bd9c113ed8df0442de30a292220542e6",
+          "motion-049.png": "b10b72a88261d5176088cecaf94fb55fb2bd73443698b06bc5718ca0982d7496",
+          "motion-050.png": "0404137fc362429ee2c5461dbefe3389b79cb063a5dec92f5d2511c830b76654",
+          "motion-051.png": "c69057b97dc03a6c4a671a7fcb66fa0d4269e38da5ab4c2860598303dbf6943a",
+          "motion-052.png": "44a81f02835c06f340b18681462bc6a09f2b7d37eb5a99c53bd6ed8add82fc1a",
+          "motion-053.png": "20baf6322af1077f33b1e808119b46367d73f12c604f0ac99ad99f61d7eee7af",
+          "motion-054.png": "839fea916cfb3eabef5753a593dfea47fee7f2ff473648fd431e08f226fff9d0",
+          "motion-055.png": "8e5673c2e1aea141bb3a93914835700e313057e6883a4136827138d866461dd5",
+          "motion-056.png": "38495e49a02d06b0e88bfc70d755f4d7185638960c8e983aab1df64627839bf8",
+          "motion-057.png": "fa5de292403eb9e23974fad20d89dc060a5ab1c794431561d2124b845af81842",
+          "motion-058.png": "48364109abc6c33b01b565406b2bdde0c698c1785a25b828dea9d589b506fae6",
+          "motion-059.png": "491eccfac2563b32a7411fcb07fa4005e91a671812e896596cbd770bdd9c28a5",
+          "motion-060.png": "d937dee1fe6b97aa447d3a1d0b87ac413b4e2f8257e2b4d4df020ef88406fe77"
+        }
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--gpu-index",
+          "1",
+          "--windowed",
+          "--resolution",
+          "1280x758",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/water_reflection_tree_angles.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-trees"
+        ],
+        "campaign": "base",
+        "return_code": 0,
+        "termination": null,
+        "seconds": 46.5367843080312,
+        "errors": [],
+        "warnings": [],
+        "fixture_sha256": "29f3da038450905cbbefd3c48e2fd2fec77746e014f5b54e59442f8cdf5fda5c",
+        "engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "label": "package-mirror-trees",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-trees/run.json",
+          "sha256": "dfdfbe753ff6c49205e45239d07ccc45bbf41c6a859d662846bc6c1cc423a59b"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-trees/run.log",
+          "sha256": "7175f71efdbf9c5ac7581eeec896b01d9d6ba3fb6ad314babb18cdba8a20f765"
+        },
+        "checks": 6,
+        "results": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-trees/reflection.json",
+          "sha256": "83f3f8d45c9207814d4d4cb8db04b1b463eaee5212a3b53199fa8cdbb23e5a90"
+        },
+        "compared_views": 27,
+        "capture_sha256": {
+          "00-planar.png": "72679de499b34c0dbe557041d80141f66abd0532da5c210686ea400db1ba006e",
+          "00-previous.png": "54143f0c4c5f413a508a5f38d47d8edc5590ce0027901d6fe305dcee20ff8b6f",
+          "01-planar.png": "d5f7574daa069c88cf4e131ab4d23b3e53bf7af6b29197675b1dcb7ee27b347e",
+          "01-previous.png": "c8651a9e91527e8afd05e06d32af2c48e5cbf102f7f5a77b1707c1e915468423",
+          "02-planar.png": "0cf4ea6327f7e5a2b5cfdc0b6188f8bb83b9580a5ec1573d104510e1c60fc0f7",
+          "02-previous.png": "28bae98042647f063aae16aaeb63cc58daf0e54092961f665ead4714c9bd2202",
+          "03-planar.png": "91bfbc4f2c90c295efd641324ff5fc470a12cd31063482add4ce09f7d94608d2",
+          "03-previous.png": "03028a07b94dd22924b3a766918039214c76e810226bd0bacb0d17a2b5bb42ec",
+          "04-planar.png": "cccccbfd75e39a87038f4cf7065b9bc04408f64bb7932ad21d29b8ba9ea653eb",
+          "04-previous.png": "3675fd4aac972c16fa2f5d3f9badbc04f5f0a0b10a7f029e42d375d30d8beaf8",
+          "05-planar.png": "dcd0e2904fddb14f563057af83387b4a1f8e4e9106e2be04dc470795a035552a",
+          "05-previous.png": "e19514bf1abe9f15b3ba30c9d7c99191aff80a7f728e1b3271ad0baedf668ba3",
+          "06-planar.png": "adcb394bcfaac52a27e0163a5e8288cbae3c9bcc840dc1ad6ee463cda3afcc38",
+          "06-previous.png": "38bccae678f0f655690fddf78c64aa3df7bc0b116d889e39ab7d72f1f362f50b",
+          "07-planar.png": "1b66e8f6236851a0df42f88ef2f6a15e8319bee7995aef1c597eaecf5d52aedb",
+          "07-previous.png": "37f846ddb434c59001b647c67e71964806e914468beb7daf67a2e0e8f41986c8",
+          "08-planar.png": "06fb291c0380245049e8bc575eca2dfe4443f64551a746547f27f01303136e49",
+          "08-previous.png": "d631450851b6b339b4089b2c08ce1c8366483ccea31e583a6bdf6cb01a4eb278",
+          "09-planar.png": "a529f5a4ebe1df5db2d150505228fc494d1a3f77125262053df5f2c2691e226f",
+          "09-previous.png": "cb634d9f460f0267dd1090d6f864847fee2d85985d108ecfeb998b7b502cadc4",
+          "10-planar.png": "c81fc43bfeb403ac350a665c02f313432c735a7425101e1c344d415790eb04fc",
+          "10-previous.png": "77e3280e445006b1ec757712ecccfd6b949efb9a961ae6f1626ebdeb2074ae71",
+          "11-planar.png": "fe3f82f2033bb5aeccb5822cc509f70adf2df4b78fdd067ebe928833e2a299e2",
+          "11-previous.png": "ca429d5b4916c4d4afd7b055f0bebda4f12b857b3b5065893018f2ead2d6d7c1",
+          "12-planar.png": "c4ff449a62de75bcc784a74c093007a16ab6b0d7b1762f104c701def41963d5f",
+          "12-previous.png": "f278aa1eab92d8b71a8b7d12224b106cd268208c3fcf1b985fb62884fc4f36bf",
+          "13-planar.png": "5a9a97669e40bd26348491da9ce9fed44e3c989b9d2989646594546c5b4d706a",
+          "13-previous.png": "d9ca3070cbad0882c4a99f61a5ac16ea2ec4b8ddd0c667a0d8c3d9e7e21e175b",
+          "14-planar.png": "235ddfa54fcc77a002ff630a68ee6071030e6c02105b08ab31ef74a0ee18854c",
+          "14-previous.png": "11ae94375126f0654e9b7958092e011c9e35a8a15c22e3eafe02e019b27a30a3",
+          "15-planar.png": "f82aaa106d968757e91d5e892e87ab63c8bd3f4a075ef39656053259c7699596",
+          "15-previous.png": "dd8ac6c5bf408ba787098735c141783c32d2cf196dec8631c5afc2d91530ccb7",
+          "16-planar.png": "1ea9da0ff8fc0b33460bb4e4be9093ba90624f28afd770a73c8c484544184292",
+          "16-previous.png": "aef0b4c4be791087d5a642d546c36f4a599fddb07f0c707d76d04756db441444",
+          "17-planar.png": "c69834e5257a09b447ac9630f317d3baa0bf16800140f2d5ca26a6107135a7b2",
+          "17-previous.png": "00c852b45abfa11cfe874740dbf1593776256603e5900df25e49edae21432fd1",
+          "18-planar.png": "f6828ac440e88bef04d5754e6a8980de275f954e92ea50420eb1bad7ad51b2f1",
+          "18-previous.png": "9cc2d0040a071bd42919455da891d86f13a80ff8fccdfea53d92170c0d63af31",
+          "19-planar.png": "8e4501a9408330289b9209f67b01ff7519d64bf6c031da86d76afcfbba0f48cc",
+          "19-previous.png": "1eaba6fe7d6e2918809ec22b1d554e25fe5461d105a522a65653ece690e8782d",
+          "20-planar.png": "45e2fc027d0bbde88a9590c9004352813d41f0f8886b655f479fca94467e5044",
+          "20-previous.png": "8c3c2db6bb887ae53e242b518af3e75a84d83ba69cf8861765617c6a0bb03204",
+          "21-planar.png": "ace47a7da2e1036cdebdddc61f7bce1591f97ab7b64e59bbc798011b3d321d62",
+          "21-previous.png": "a75a74cba75d13a3e52bc517f7abf86aa9ae68784c089c97f1b9215121c210ad",
+          "22-planar.png": "2f5af45c2091b5e7f1d2a706488009db3c40d43f9182d33269f973c54dd03607",
+          "22-previous.png": "ccc6c679233f81ff0b31ac5678c424f3db7e72bc89dfce4d58a3ed03694ba51a",
+          "23-planar.png": "5f6e9fa1e54dcdc2503547e95a30d90fbcd5760f6514c33389867c1666a3ff91",
+          "23-previous.png": "a760c484155c6f893b2b34723cd294b9d5c342510ecf08bf6b9d9f3459728a2c",
+          "24-planar.png": "17ce0688ee18f5cff2f68ce6b81a96baf5b623bf1cbb457d8eb237154925b52b",
+          "24-previous.png": "f62bc5372595ac89c4028cac22c5d9bc23c933e2e5f48a94ee7677e0b8e2b5f4",
+          "25-planar.png": "8e2ec0e32006f1ad64d30ba2e5b785972f00dac931210e4edc6be157be7b517e",
+          "25-previous.png": "40c1838c6d38b29d3c48745432904dbb61ec9baa4841f1e90a0d4d3076aef41a",
+          "26-planar.png": "1a701235bc231f16b732c010f9038982e10969a30d2e8e5b4d6c5a73389a2c83",
+          "26-previous.png": "80392d85694efb7514542c5634a65bd3349f66a4e201d49adb966b7f214d3bbb",
+          "motion-000.png": "cecb599b288399400ec250b8b2b305735a961b83ac00aa596d1c1fbd1098673a",
+          "motion-001.png": "733f378e5e597a577747ef575dfc6bcf233648aa7cf0c4970246ea6581324944",
+          "motion-002.png": "2228b2740654d8b8e1d59b97ec9b7f50a77109d8a73a2fa8cf4ed1d1857fec71",
+          "motion-003.png": "36c1e86eaa0b944c31e2914d5f0c7481a1348313f93c22119a83d3cef5a82bd7",
+          "motion-004.png": "f9cfab20fe5d8034abc255d60e7abdc40dbdc846d7187a14aac03343a71197c4",
+          "motion-005.png": "68ecc9952a3093eca5964d4dacde6a3f66678404d3491242870e41b9ce9b2d58",
+          "motion-006.png": "dd70b66d739dac35b6260e4406a9ee06727c6cec786bd044d5b1e8975c1fe9a6",
+          "motion-007.png": "a523ce29d33b8ab65036bf21beda1baafb0d2f7385fa6c4f75f8c6f39e6e1fe7",
+          "motion-008.png": "00838e8443170ec95c01cbca23d71a456efc8152b981dcbde25a1b9fbb7dc218",
+          "motion-009.png": "006320c61b7bda800bc951161358c898b7cce03f8e0c160d84cb7ff4fbdc7388",
+          "motion-010.png": "093c39127b106f233730fb22160e605c39c4cd53b5da0756c0ba2d657267a537",
+          "motion-011.png": "7c5a73d8c57cd4f8207d7a00e935a7287a87a253d2680c2221a6169e66cd3e72",
+          "motion-012.png": "ffb51ab42550e4955f6d9b5617e5d58b7c266ae700580ee3bb6d724062d30b8d",
+          "motion-013.png": "9fe8a8bfd9972a76396b004df7b6a004d1193764328366e4032a192a9109a20d",
+          "motion-014.png": "54df3dc9d3bf893e9cb4e242adef2d31f1c44778084f6a23d0b8e198e5da5136",
+          "motion-015.png": "72679de499b34c0dbe557041d80141f66abd0532da5c210686ea400db1ba006e",
+          "motion-016.png": "af195ef23268d53c11ea52ca09229c3762607ecbb147aee8813a486c416ac8cf",
+          "motion-017.png": "13a29a6b96213dce33fe89988e168257b6302d4f1f3359c346530d9492117533",
+          "motion-018.png": "809b01b355f89f234a38c47aa85b762a534e3a7fffdd4180b67d2cb1efdd0578",
+          "motion-019.png": "9ce2a9c473901eddd74f9aa0ce13b70d1811b7462502955cc1a4e974867f7398",
+          "motion-020.png": "cade0612e6401273b3aefa64467028a54066f043e0957801e85bd92e4ccfcc9a",
+          "motion-021.png": "6f09b26b10ede0a625d540831a2b205c497914449073544fa59834464f9d3d23",
+          "motion-022.png": "c106e4e580c8d907caa6c236dd9789f897354754c681563c0fefb38e1d490ed1",
+          "motion-023.png": "c469c1cc7da19aad76966f83d03b1bb3afc66910ef9bfae2df2dc04194c7c196",
+          "motion-024.png": "c5ed775cd41beb5501b8f712a3f6be0b1caefacf1217bc6091299a45958b9007",
+          "motion-025.png": "bbe9447d91352f6c856908785eec5ed1456dc8166d2d5236e46013d8b1ee9241",
+          "motion-026.png": "c353ad598d3118b12590c74da75bb68982f2ec011ec4b91e8ba4df413e105f3b",
+          "motion-027.png": "4fbe471037afed93d9af8155bcc881131551de4700f077cf852441222c8d35e3",
+          "motion-028.png": "4ed043dc1d4bfcb74d8186643aaafbb499a2381d242c1b3bb993f845374f63e2",
+          "motion-029.png": "e37e1c698229fd70ab567d8910a8e2b9ca2ece0b4365fc9f3f1e6ab6f21484d4",
+          "motion-030.png": "86dce0db49de6fe2dbcab7465695be5ffca700ef086444e4509dd5809411593d"
+        }
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--gpu-index",
+          "1",
+          "--windowed",
+          "--resolution",
+          "1280x758",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/water_reflection_motion.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-motion"
+        ],
+        "campaign": "base",
+        "return_code": 0,
+        "termination": null,
+        "seconds": 37.03050616802648,
+        "errors": [],
+        "warnings": [],
+        "fixture_sha256": "4eedb4642aa05676b7a87e56fce246d23541b1caf003562555074a20b6e7f141",
+        "engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "label": "package-mirror-motion",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-motion/run.json",
+          "sha256": "54f75c1ac0d442a3058418e978ce78d3c5ad7caddf4512234ce5afd4bf138af4"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-motion/run.log",
+          "sha256": "d9fa4dd7b36390aa4e0f1371302e2068b1a257b66f1c9a54e1287bbd46b60a96"
+        },
+        "checks": 5,
+        "results": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-motion/reflection.json",
+          "sha256": "6855c996c52f80576cffa908aa9760ec241ea4a7a435ca3cffa2b6953c3b6cc5"
+        },
+        "compared_views": 0,
+        "capture_sha256": {
+          "motion-000.png": "01574d4ccd37d8b9f657d19eea3e6a2bb4ab7055af688f64a83801ab57d68682",
+          "motion-001.png": "b2640326b490f6876b2c9c98db011ccda827206f3a27e711c511c4d3d375d5b2",
+          "motion-002.png": "ce48224a5563858ee321d52ebf1674a57aed09dab532bd2c6e03c99e64b18ee3",
+          "motion-003.png": "f29a95f3a18d511615bf887b2190a01aaa3bffe677cee9aa916f0709d09f4b40",
+          "motion-004.png": "ab4bd894235029dee3208ce64b6bac13d79989e9651b0e1660a93a5ad0cde5dc",
+          "motion-005.png": "bd146cf1022af2ee6ad736b5d648e52bc0d3c518ae8a149cb3c983dd9965c3ba",
+          "motion-006.png": "eb84ba51f14ec120e6818393e309c5b7e4c417dad2010f2b657e0fc02d33ae24",
+          "motion-007.png": "45c1b22f5cda1960b42898be33bf5c5080748156542446d5bb91e195a886b08c",
+          "motion-008.png": "2ed351544053e00d47e5d4a410dc586936c207ceabf871ee56e86edb236014c7",
+          "motion-009.png": "2eac54f257edae8859dd0c31e0a1a458ec89bf6225325e9c19019fa0215df6d3",
+          "motion-010.png": "713286ff973907db1716c9fe91d9a9ddee6ed445753702db456b89a8121119e6",
+          "motion-011.png": "4def47570a79c8b5f9cdc58a96b51c64c899e9adc5a66fb3d71e8bb27e242be0",
+          "motion-012.png": "d59ccab0c994ceadbeeda139e3911db975da487a931c8cd4377d17ea6527e20a",
+          "motion-013.png": "79f65ea475afbffe250183d2ddfe0548adbed9dd20e634d9f5c588450c14aa29",
+          "motion-014.png": "aa1a987c0c7e99214290431091ed8a1cd8c31507b0fe8f3e2457e97c2a750720",
+          "motion-015.png": "ccb4c849f36eb603f563754c61dda3694a577e8ea3d7ece90bcc02cedc172bb4",
+          "motion-016.png": "549de44a62bf70fb6e83e2e08bce08c268230c74596bd457f31a09fb9dff755d",
+          "motion-017.png": "3d4b9de8c7dd0dbed409bddc3d75d8022e216a0cb367e17f93e3097faab66c19",
+          "motion-018.png": "b9ca3e53850d78e501e8cf4b9353e700380911fcb5aed1af8cbd8531666c7e18",
+          "motion-019.png": "2de86cd65adf6120e01bee2cc482298e693e948c0b7aeb23abc223fa2d55cb0d",
+          "motion-020.png": "1b5ba44467452b3d31bf849d775ba1d33b319701f1a946c6b7101efe391524fe",
+          "motion-021.png": "bdca6d1e4f77eed83b7caa8d70d7f0489805004c30546761a89cfe7f74eec0a5",
+          "motion-022.png": "29db2dca50a6756589dce0a844145c447b23d521f65f5d73537bd85d7138ea32",
+          "motion-023.png": "6f66cd43eadf97c0ba8e2ac922bf676577a4fa3bd38261ecfa5032cb2dc59675",
+          "motion-024.png": "b925ab4156128e32dfc72a772cf96d0f254a9ed50cc93ae272bbc723a990ed82",
+          "motion-025.png": "cbaf1c7f7adb3f911e10e7fd013840823c6907cec97ef04d8a7ff6c014842986",
+          "motion-026.png": "17eeb1e3646a3dc1fe5889c157b4cfa2ca84d59929178f79d6cd6f0309d97692",
+          "motion-027.png": "e58d5ac0b6d2ca6f70062380aaca1b8072d1e8fbb3904e03900fa460f1b526bd",
+          "motion-028.png": "d450e277f0fe851eea6f2edef04a52bb45e79deedada665ed0002b282daea16e",
+          "motion-029.png": "24a70c9760149528f154cb34b50441ff7103d4b0c6f2534f2698431650c61208",
+          "motion-030.png": "6f05d531cd3580b415a098536b8bcb3079a32594d634b5d3df4659a4fe0758e2",
+          "motion-031.png": "c616ed05251d41d19402edcecca70b6c12bb54595037ac045d3f42a5304e8386",
+          "motion-032.png": "a7f6540a4a2b71a04f1a1b0e1b1fdb38a7c81115d56a3f9c5ad92d903419f3ba",
+          "motion-033.png": "1da85fa1cf93e5dcd00ac9642c6facfb0d0f8840971a84dc2866b36a18ba0c86",
+          "motion-034.png": "847c989dd48f1e99b6e5723e8f8b00a51f7e4b5ea4b0ebbf2a725d10afcb311b",
+          "motion-035.png": "414f2bb99508caf9914546e238700d141668b218d8c8c580c88703d4949708bf",
+          "motion-036.png": "cd1cfefc326e1235d4c74241a8da7620231d5e6708501ac6f40c97a297678725",
+          "motion-037.png": "06f952a24df7b90da4d5f9596b2e1aeb2a9ef3dc25485beef76d3702edf681c5",
+          "motion-038.png": "52ee1434fb33fb923171cc677e3465b058488207e9285863a7795195ec267e84",
+          "motion-039.png": "87bc44beae7f1eb86def538e401c146a9a461ad622b4a6f21eb41d139b7d8477",
+          "motion-040.png": "89d9eaaf38297d55fa44880829755314d30ecd281dccd5c5a91271b7406beac1",
+          "motion-041.png": "b6d0ade5797ec87bfab9e4408eab0f5423c71322ffaea3d02a6a8248499ec732",
+          "motion-042.png": "ef6f9e62713142d518cb2e1e491d79e210768235943d8b66b17a37beed1b6019",
+          "motion-043.png": "fd8f0aa0461b7c1f3b5e42a7a255eadbeee96ac2852254393bbe9102942179ba",
+          "motion-044.png": "8a8d74e2c2b4afb2b100213b618e2e40f0f1f7834fe30591d222f9e02a2ca2a2",
+          "motion-045.png": "14467ac2b107c390b328fe7dd2673ff3dfc0ca5cfaf9e896602cc610ff9476f5",
+          "motion-046.png": "9419110987dbfa4c3502f49e7249262e38d3d6f8c301ff88ef9d1540662c558b",
+          "motion-047.png": "838fe67362d0de71e928ccb54dac4ac0edeb57853dcd7d863ddf7a7fe874192d",
+          "motion-048.png": "6f74161cd47a749c43dbd29837037c01386ad323a8c086af877c77172298e293",
+          "motion-049.png": "d6ee2c84fdba3a7b8ecaeea1f0433be198f147ff0ddfe1d030e17b0606ac9010",
+          "motion-050.png": "15019b169f79135349d693e02ef28751ba1bdbc4df1ed1c65d7a50e7b18e3cd5",
+          "motion-051.png": "e2bbd187a9169b10982834dfa36ebc410b28930610f679e711441dd3b3361e5b",
+          "motion-052.png": "1c53def127546939bdd82f33b5f27fe22b4c63d1270734ccd21efe89a67cf39c",
+          "motion-053.png": "4f6ac2f195528ee9d90e9f944fc8cbdf58e3f3e9f859f4825091449a155963a4",
+          "motion-054.png": "91da7197bd36aadb8e3b1d2799a790dfbd33d46a191e141a3d4464bc9eff78d4",
+          "motion-055.png": "beaf8c1abd507fa2e6cca76ce72cb9dc3d0ff527a243606047bfdfddfb34b938",
+          "motion-056.png": "c5505c43886770e92afe7cea1fa8fd5eb1f4b092a68111a7f4eb70cfbae86949",
+          "motion-057.png": "421ada219f59d6a5af8fca5f2b4d2d4df5bb6b9a03437c057a18fb19f9337e54",
+          "motion-058.png": "869e412f8d80526b19577b55fa6a3f8bcf59b1da02254635febd6831b68ddb61",
+          "motion-059.png": "54445acd5e68bbf2f42d362a337b7aa2ff8d50e16f0ba54f81b0d635976af0bc",
+          "motion-060.png": "1f78aee987f0e41e3d08e0e2a291535f787a3daac1b1580eec295bf311f5efcb"
+        },
+        "clear_camera_frames": 61
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "forward_plus",
+          "--gpu-index",
+          "1",
+          "--windowed",
+          "--resolution",
+          "1280x758",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/lia-save-repair-20261011/tests/reflection_features.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-features"
+        ],
+        "campaign": "base",
+        "return_code": 0,
+        "termination": null,
+        "seconds": 24.521621229010634,
+        "errors": [],
+        "warnings": [],
+        "fixture_sha256": "3a52da30eae704d5335ce4f3f8094be551ccccbc574f5ecc28d3ca5bc07d1684",
+        "engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "label": "package-mirror-features",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-features/run.json",
+          "sha256": "b1fc115518dccc858f5bacf18161f9e818d587d99bfff716ff4f6934aa782b9e"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-features/run.log",
+          "sha256": "2fabef2661c50581bf650c53b6a2ac34c41e7bf4c03bea9fc15f832abd4bb135"
+        },
+        "checks": 4,
+        "results": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-mirror-features/reflection.json",
+          "sha256": "e6e5868930e2ac63c26be0987b3d95f5b503a14bfe7925e55e1a0a0b798b4556"
+        },
+        "compared_views": 4,
+        "capture_sha256": {
+          "09-planar.png": "6d8ee81e626ba8f759d32faebbae82772ac3807abc328fc0f2665b8b7ff9fd5c",
+          "09-previous.png": "94f6f21f91a556fa41b779ce1a332781eb332e1d9a7cc2f6e53856a1ab3eeb6d",
+          "10-planar.png": "16382708fc5f5ae39a00188c265ee1b823d1b4e91f9fb17e13bffd4cc07edcf5",
+          "10-previous.png": "ae15124e7137976084564c24d5020b24ab22f668d61b88b2950ebb3f638a3937",
+          "11-planar.png": "8afba43e0ed3c2e1bcd83bbe8ba56a42f76092ed1b1c2a389cbaf5839a5cab99",
+          "11-previous.png": "656879590026ee9a5dd177739c9d869423c84c032cf21b6d2d04fba8abebdac8",
+          "19-planar.png": "95c6cac9bfe63893a37410e7e6d9a38e04904d778d880e107ba74bbe8e5cdf9a",
+          "19-previous.png": "3cb227fffafee4b9eb7aa2b6ae266d3958a3289421817d7d4824780bba53b13c"
+        }
+      }
+    ],
+    "limits": "Fixed prepared cameras in gz3g/zone3obr after Gipat village, not the exact original screenshot camera. Four tree-fixture orbit samples cross terrain and are excluded from motion acceptance; the independent fixed-position angle sweep is the accepted motion control."
+  },
+  "protocol_compatibility": {
+    "checks": 7,
+    "runs": [
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/protocol_compatibility.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/protocol-host",
+          "--role=host",
+          "--coordination=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/protocol-coordination"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 4.4,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 4,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+        },
+        "fixture_sha256": "675fb71a092480392bd90a3d819dd83f8ea4cc1bfe11098f8b6d57a9422da093",
+        "label": "protocol-host",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/protocol-host/run.json",
+          "sha256": "27139703d6a7c7b82ddaa6e32561ea00275eb890c005294947d502c7e92b557b"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/protocol-host/run.log",
+          "sha256": "09fcb5412c4c4e16f8024599558e93c03071790a5f32c68937c26e73f85f7ee0"
+        },
+        "checks": 4
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.2-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/protocol_compatibility.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/protocol-old-client",
+          "--role=client",
+          "--coordination=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/protocol-coordination"
+        ],
+        "return_code": 0,
+        "termination": null,
+        "seconds": 2.4,
+        "errors": [],
+        "warnings": [],
+        "failed_checks": [],
+        "passed_checks": 3,
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "44e8314490618c2ba33376d3fed066245adda4ea7b953e839bde11494c50736b"
+        },
+        "fixture_sha256": "675fb71a092480392bd90a3d819dd83f8ea4cc1bfe11098f8b6d57a9422da093",
+        "label": "protocol-old-client",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/protocol-old-client/run.json",
+          "sha256": "72326181c698c9b5a18ee1c08ee962c944b67bed6b67cce73b409434203642e3"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/protocol-old-client/run.log",
+          "sha256": "e7b35974950e67939dc06b5c532b42848da36edb35f76269798fc2e24d044ec6"
+        },
+        "checks": 3
+      }
+    ],
+    "fixture": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/protocol_compatibility.gd",
+      "sha256": "675fb71a092480392bd90a3d819dd83f8ea4cc1bfe11098f8b6d57a9422da093"
+    },
+    "result": "Protocol 14 client receives explicit refusal and is not admitted to protocol 15 host."
+  },
+  "android": {
+    "checks": 62,
+    "failures": 0,
+    "runs": [
+      {
+        "package": "org.cursedlands.performance",
+        "device": "9a7e6425",
+        "renderer": "gl_compatibility",
+        "native": "candidate",
+        "script": "tests/save_state_fields.gd",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/save_state_fields.gd": "06e7ce9d4c6e370956e72bfafde059ad661a46dde7584cf9b842e8ee5c2eeffa",
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+        },
+        "validation_mode": "Full 1.0.4 experimental private APK; production engine/helper and all game sources except the explicit private entry hook",
+        "fixture_sha256": {
+          "dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408",
+          "request.json": "13e08240279b33e83971e72da43abd686eb7de98541eec773e99fe79b00e7b1b",
+          "tests/save_state_fields.gd": "06e7ce9d4c6e370956e72bfafde059ad661a46dde7584cf9b842e8ee5c2eeffa"
+        },
+        "fixture_arguments_substitution": false,
+        "request": {
+          "tool": "tests/save_state_fields.gd",
+          "renderer": "gl_compatibility",
+          "args": [],
+          "native": true
+        },
+        "start": 1791722651.6279113,
+        "restored": true,
+        "errors": [],
+        "completion_seen": true,
+        "all_outputs_present": true,
+        "results": {
+          "save-probe.json": {
+            "after": {
+              "hero_body": {
+                "gait": 0,
+                "magic": [],
+                "mana": 18.6810697594971,
+                "parts": [
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ]
+                ]
+              },
+              "hero_facing": 0.987654,
+              "hero_gait": 0,
+              "hero_hp": 37.7085229250842,
+              "hero_mana": 18.6810697594971,
+              "hero_order": {},
+              "hero_orders": [],
+              "lasting": [
+                {
+                  "at": [
+                    0.0,
+                    0.0
+                  ],
+                  "counter": 0,
+                  "k": "shot",
+                  "pos": [
+                    52.5,
+                    13.2581100463867,
+                    -138.0
+                  ],
+                  "roll": {
+                    "aim": -1,
+                    "backstab": false,
+                    "bs_mul": 5.0,
+                    "dmg": 10.6015625,
+                    "hit": true,
+                    "types": [
+                      1.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "source": [
+                    "hero_slot",
+                    0,
+                    0
+                  ],
+                  "target": [
+                    "uid",
+                    663
+                  ]
+                },
+                {
+                  "at": [
+                    0.0,
+                    0.0
+                  ],
+                  "counter": 0,
+                  "direct": true,
+                  "direction": "(1.0, 0.0, 0.0)",
+                  "k": "shot",
+                  "pos": [
+                    52.5,
+                    13.1987199783325,
+                    -138.0
+                  ],
+                  "remaining": 1.3,
+                  "roll": {
+                    "aim": -1,
+                    "backstab": false,
+                    "bs_mul": 5.0,
+                    "dmg": 10.3615283966064,
+                    "hit": true,
+                    "types": [
+                      1.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "source": [
+                    "hero_slot",
+                    0,
+                    0
+                  ],
+                  "target": []
+                }
+              ],
+              "npc_ai_state": 3,
+              "npc_body": {
+                "gait": 0,
+                "hate": {
+                  "factions": [
+                    0
+                  ],
+                  "zone": "gz1g"
+                },
+                "magic": [],
+                "mana": 4.37,
+                "parts": [
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ]
+                ]
+              },
+              "npc_facing": -1.234567,
+              "npc_gait": 0,
+              "npc_hate": {
+                "f": [
+                  0
+                ],
+                "w": 515748398571
+              },
+              "npc_hates": true,
+              "npc_id": 663,
+              "npc_is_enemy": true,
+              "npc_mana": 4.37,
+              "npc_max_mana": 19.0,
+              "npc_name": "Ogre",
+              "npc_order": {},
+              "npc_order_failed": false,
+              "npc_orders": [
+                {
+                  "ai": true,
+                  "aim": -1,
+                  "story": true,
+                  "target": "U1500000001:<Node3D#673940790835>",
+                  "type": "attack"
+                }
+              ],
+              "npc_proto": "OgreTutor",
+              "projectiles": 2
+            },
+            "assertions": [
+              {
+                "label": "actual map has ordinary NPC with mana and no character override",
+                "ok": true
+              },
+              {
+                "label": "prepared neutral diplomacy before personal hostility",
+                "ok": true
+              },
+              {
+                "label": "production personal-hostility path makes neutral NPC hostile",
+                "ok": true
+              },
+              {
+                "label": "full Session save succeeds",
+                "ok": true
+              },
+              {
+                "label": "full Session load succeeds",
+                "ok": true
+              },
+              {
+                "label": "hero facing survives full save/load",
+                "ok": true
+              },
+              {
+                "label": "hero mana survives full save/load",
+                "ok": true
+              },
+              {
+                "label": "hero gait survives full save/load",
+                "ok": true
+              },
+              {
+                "label": "uncommitted manual movement retains the stop-on-load policy",
+                "ok": true
+              },
+              {
+                "label": "ordinary NPC mana survives full save/load",
+                "ok": true
+              },
+              {
+                "label": "ordinary NPC facing survives full save/load",
+                "ok": true
+              },
+              {
+                "label": "ordinary NPC gait survives full save/load",
+                "ok": true
+              },
+              {
+                "label": "personal hostility survives full save/load",
+                "ok": true
+              },
+              {
+                "label": "personally hostile neutral NPC remains an enemy after load",
+                "ok": true
+              },
+              {
+                "label": "pending script Attack order and state survive load",
+                "ok": true
+              },
+              {
+                "label": "script Attack rebinds its target to the restored hero",
+                "ok": true
+              },
+              {
+                "label": "targeted and direct arrows both survive full save/load",
+                "ok": true
+              },
+              {
+                "label": "hero wounds survive full save/load",
+                "ok": true
+              }
+            ],
+            "before": {
+              "hero_body": {
+                "gait": 0,
+                "magic": [],
+                "mana": 18.6810697594971,
+                "parts": [
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ]
+                ]
+              },
+              "hero_facing": 0.987654,
+              "hero_gait": 0,
+              "hero_hp": 37.7085229250842,
+              "hero_mana": 18.6810697594971,
+              "hero_order": {},
+              "hero_orders": [
+                {
+                  "run": false,
+                  "to": "(55.5, 138.0)",
+                  "type": "move"
+                }
+              ],
+              "lasting": [
+                {
+                  "at": [
+                    0.0,
+                    0.0
+                  ],
+                  "counter": 0,
+                  "k": "shot",
+                  "pos": [
+                    52.5,
+                    13.2581100463867,
+                    -138.0
+                  ],
+                  "roll": {
+                    "aim": -1,
+                    "backstab": false,
+                    "bs_mul": 5.0,
+                    "dmg": 10.6015625,
+                    "hit": true,
+                    "types": [
+                      1.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "source": [
+                    "hero_slot",
+                    0,
+                    0
+                  ],
+                  "target": [
+                    "uid",
+                    663
+                  ]
+                },
+                {
+                  "at": [
+                    0.0,
+                    0.0
+                  ],
+                  "counter": 0,
+                  "direct": true,
+                  "direction": "(1.0, 0.0, 0.0)",
+                  "k": "shot",
+                  "pos": [
+                    52.5,
+                    13.1987199783325,
+                    -138.0
+                  ],
+                  "remaining": 1.3,
+                  "roll": {
+                    "aim": -1,
+                    "backstab": false,
+                    "bs_mul": 5.0,
+                    "dmg": 10.3615283966064,
+                    "hit": true,
+                    "types": [
+                      1.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "source": [
+                    "hero_slot",
+                    0,
+                    0
+                  ],
+                  "target": []
+                }
+              ],
+              "npc_ai_state": 3,
+              "npc_body": {
+                "gait": 0,
+                "hate": {
+                  "factions": [
+                    0
+                  ],
+                  "zone": "gz1g"
+                },
+                "magic": [],
+                "mana": 4.37,
+                "parts": [
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ]
+                ]
+              },
+              "npc_facing": -1.234567,
+              "npc_gait": 0,
+              "npc_hate": {
+                "f": [
+                  0
+                ],
+                "w": 288014470390
+              },
+              "npc_hates": true,
+              "npc_id": 663,
+              "npc_is_enemy": true,
+              "npc_mana": 4.37,
+              "npc_max_mana": 19.0,
+              "npc_name": "Ogre",
+              "npc_order": {},
+              "npc_order_failed": true,
+              "npc_orders": [
+                {
+                  "ai": true,
+                  "aim": -1,
+                  "story": true,
+                  "target": "U1500000001:<Node3D#507980560489>",
+                  "type": "attack"
+                }
+              ],
+              "npc_proto": "OgreTutor",
+              "projectiles": 2
+            },
+            "campaign": "cursed_lands",
+            "checks": 18,
+            "failures": [],
+            "saved_hero": {
+              "armors": [
+                "hadagan low shirt.wool",
+                "hadagan low pants.wool",
+                "hadagan low boots.wool",
+                "hadagan low gloves.wool"
+              ],
+              "body": {
+                "gait": 0,
+                "magic": [],
+                "mana": 18.6810697594971,
+                "parts": [
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ],
+                  [
+                    0.993605419691591,
+                    3
+                  ]
+                ]
+              },
+              "complexion": "(0.2, 0.35, 0.9)",
+              "dex": 30.0,
+              "exp": 0.0,
+              "exp_total": 271.0,
+              "facing": 0.987654,
+              "follow_live": [],
+              "gait": 0,
+              "hp": 37.7085229250842,
+              "int": 25.0,
+              "level": 1,
+              "mana": 18.6810697594971,
+              "name": "Zak",
+              "no_natural_armor": true,
+              "perks": [
+                "bs1"
+              ],
+              "pos": "(52.5, 138.0)",
+              "prototype": "Human Hero",
+              "quick": [],
+              "skills": {
+                "astral": 9,
+                "melee": 10,
+                "science": 3,
+                "sense": 12
+              },
+              "spells": [
+                "healing",
+                "eagle_sight"
+              ],
+              "str": 23.0,
+              "training_refund": {
+                "credit": 0.0,
+                "version": 2
+              },
+              "weapons": [
+                "cheat dagger.bronze"
+              ]
+            },
+            "saved_keys": [
+              "version",
+              "campaign_id",
+              "mod_config",
+              "vars",
+              "gs_tables",
+              "gs_reconstructed",
+              "heroes",
+              "zones",
+              "visited",
+              "quests",
+              "money",
+              "items",
+              "quest_items",
+              "parties",
+              "current_party",
+              "party_bags",
+              "experience",
+              "mercs",
+              "pets",
+              "side_quests",
+              "shops",
+              "current_zone",
+              "world_time",
+              "day",
+              "coop",
+              "camera"
+            ],
+            "saved_npc": [
+              153.072845458984,
+              110.660202026367,
+              80.0,
+              6,
+              false,
+              {
+                "gait": 0,
+                "hate": {
+                  "factions": [
+                    0
+                  ],
+                  "zone": "gz1g"
+                },
+                "magic": [],
+                "mana": 4.37,
+                "parts": [
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ],
+                  [
+                    1.0,
+                    3
+                  ]
+                ]
+              },
+              -1.234567
+            ]
+          }
+        },
+        "elapsed": 14.5198814868927,
+        "mod_directories_restored": true,
+        "private_process_stopped": true,
+        "temporary_directory_removed": true,
+        "label": "android-fields-final",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-fields-final/run.json",
+          "sha256": "c4c94f52c03fa98912c482ab70d7685efd68c5e3c5a7bffa20a31bc00599a008"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-fields-final/engine.log",
+          "sha256": "3f37b5c44d457afdffa0c4d6470c96609fcfe158f57447095af1a856dbcfc67e"
+        },
+        "checks": 18
+      },
+      {
+        "package": "org.cursedlands.performance",
+        "device": "9a7e6425",
+        "renderer": "gl_compatibility",
+        "native": "candidate",
+        "script": "tests/save_depth.gd",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/save_depth.gd": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74",
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+        },
+        "validation_mode": "Full 1.0.4 experimental private APK; production engine/helper and all game sources except the explicit private entry hook",
+        "fixture_sha256": {
+          "dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408",
+          "request.json": "2eba6d09f588a83a9be3b0c01db645fe4eb2de86dccf4de9303f5c49c8beb0f9",
+          "tests/save_depth.gd": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74"
+        },
+        "fixture_arguments_substitution": false,
+        "request": {
+          "tool": "tests/save_depth.gd",
+          "renderer": "gl_compatibility",
+          "args": [],
+          "native": true
+        },
+        "start": 1791722666.7585025,
+        "restored": true,
+        "errors": [],
+        "completion_seen": true,
+        "all_outputs_present": true,
+        "results": {
+          "deep-save.json": {
+            "after": {
+              "action": "cast",
+              "drain_hp": 35.4834091700337,
+              "hp": 15.4834091700337,
+              "lock": 2.64,
+              "mana": 30.4893777283707,
+              "pending": 1
+            },
+            "before": {
+              "action": "cast",
+              "delay": 0.715,
+              "hp": 15.4834091700337,
+              "lasting": [
+                {
+                  "at": [
+                    52.5,
+                    138.0
+                  ],
+                  "caster": [
+                    "hero_slot",
+                    0,
+                    0
+                  ],
+                  "k": "cast",
+                  "paid": true,
+                  "spell": "healing",
+                  "target": [
+                    "hero_slot",
+                    0,
+                    0
+                  ],
+                  "ticks": 13.0
+                }
+              ],
+              "lock": 2.64,
+              "mana": 30.4893777283707,
+              "original_mana": 50.4893777283707
+            },
+            "campaign": "cursed_lands",
+            "checks": [
+              {
+                "label": "normal cast schedules a delayed effect",
+                "ok": true
+              },
+              {
+                "label": "mana is paid before the healing effect",
+                "ok": true
+              },
+              {
+                "label": "save during cast succeeds",
+                "ok": true
+              },
+              {
+                "label": "control: continuing without load delivers healing",
+                "ok": true
+              },
+              {
+                "label": "load during cast succeeds",
+                "ok": true
+              },
+              {
+                "label": "already paid mana survives load",
+                "ok": true
+              },
+              {
+                "label": "pending paid cast survives load",
+                "ok": true
+              },
+              {
+                "label": "loaded paid cast eventually delivers healing",
+                "ok": true
+              }
+            ],
+            "control_hp": 35.4834091700337,
+            "scenario": "cast"
+          }
+        },
+        "elapsed": 14.557562351226807,
+        "mod_directories_restored": true,
+        "private_process_stopped": true,
+        "temporary_directory_removed": true,
+        "label": "android-paid-cast",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-paid-cast/run.json",
+          "sha256": "65b090501b3c77c8505a3065a34feecbac36ff84c586a0815dba6edbcf61ddce"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-paid-cast/engine.log",
+          "sha256": "0b657caf77d9cbb84763e56ed71d4bbe6eb778ca6e64b77088b5d8c26710f38e"
+        },
+        "checks": 8
+      },
+      {
+        "package": "org.cursedlands.performance",
+        "device": "9a7e6425",
+        "renderer": "gl_compatibility",
+        "native": "candidate",
+        "script": "tests/save_depth.gd",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/save_depth.gd": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74",
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+        },
+        "validation_mode": "Full 1.0.4 experimental private APK; production engine/helper and all game sources except the explicit private entry hook",
+        "fixture_sha256": {
+          "dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408",
+          "request.json": "fddcc08ba4552c13da1ab7c9c3488d1a0a702ccab579d97ec172d9c342c9ccd9",
+          "tests/save_depth.gd": "bd071a0bba47b95d08cc9c8ee35a7869930e4d5c91094094b391d07e122ba33c"
+        },
+        "fixture_arguments_substitution": true,
+        "request": {
+          "tool": "tests/save_depth.gd",
+          "renderer": "gl_compatibility",
+          "args": [
+            "--case=pet"
+          ],
+          "native": true
+        },
+        "start": 1791722681.9306374,
+        "restored": true,
+        "errors": [],
+        "completion_seen": true,
+        "all_outputs_present": true,
+        "results": {
+          "deep-save.json": {
+            "after": {
+              "pet": {
+                "controller": 0,
+                "faction": 0,
+                "hostile": false,
+                "name": "Ogre",
+                "original_faction": 6,
+                "peace": [
+                  0
+                ],
+                "pet": true,
+                "proto": "OgreTutor",
+                "stage": 3,
+                "tamer_faction": 0,
+                "uid": 1500000002
+              },
+              "shot_count": 1,
+              "shots": [
+                {
+                  "at": [
+                    0.0,
+                    0.0
+                  ],
+                  "counter": 0,
+                  "k": "shot",
+                  "pos": [
+                    52.5,
+                    13.2581100463867,
+                    -138.0
+                  ],
+                  "roll": {
+                    "aim": -1,
+                    "backstab": false,
+                    "bs_mul": 5.0,
+                    "dmg": 10.6015625,
+                    "hit": true,
+                    "types": [
+                      1.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "source": [
+                    "hero_slot",
+                    0,
+                    0
+                  ],
+                  "target": [
+                    "pet",
+                    "45e9072cda57681d466a3a9dd57cbb7c"
+                  ]
+                }
+              ],
+              "vm_is_pet": true,
+              "vm_null": false
+            },
+            "before": {
+              "pet": {
+                "controller": 0,
+                "faction": 0,
+                "hostile": false,
+                "name": "Ogre",
+                "original_faction": 6,
+                "peace": [
+                  0
+                ],
+                "pet": true,
+                "proto": "OgreTutor",
+                "stage": 3,
+                "tamer_faction": 0,
+                "uid": 663
+              },
+              "shots": [
+                {
+                  "at": [
+                    0.0,
+                    0.0
+                  ],
+                  "counter": 0,
+                  "k": "shot",
+                  "pos": [
+                    52.5,
+                    13.2581100463867,
+                    -138.0
+                  ],
+                  "roll": {
+                    "aim": -1,
+                    "backstab": false,
+                    "bs_mul": 5.0,
+                    "dmg": 10.6015625,
+                    "hit": true,
+                    "types": [
+                      1.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "source": [
+                    "hero_slot",
+                    0,
+                    0
+                  ],
+                  "target": [
+                    "pet",
+                    "45e9072cda57681d466a3a9dd57cbb7c"
+                  ]
+                }
+              ],
+              "spell_ref": [
+                "pet",
+                "45e9072cda57681d466a3a9dd57cbb7c"
+              ],
+              "vm_ref": {
+                "actor": [
+                  "pet",
+                  "45e9072cda57681d466a3a9dd57cbb7c"
+                ],
+                "u": 663
+              }
+            },
+            "campaign": "cursed_lands",
+            "checks": [
+              {
+                "label": "production charm reaches pet stage 1",
+                "ok": true
+              },
+              {
+                "label": "production charm reaches pet stage 2",
+                "ok": true
+              },
+              {
+                "label": "production charm reaches pet stage 3",
+                "ok": true
+              },
+              {
+                "label": "save with a pet-referencing shot and VM value",
+                "ok": true
+              },
+              {
+                "label": "reload pet references",
+                "ok": true
+              },
+              {
+                "label": "exactly one fully tamed pet restored",
+                "ok": true
+              },
+              {
+                "label": "saved VM object reference resolves to restored pet",
+                "ok": true
+              },
+              {
+                "label": "saved targeted arrow resolves to restored pet",
+                "ok": true
+              }
+            ],
+            "scenario": "pet"
+          }
+        },
+        "elapsed": 14.552597999572754,
+        "mod_directories_restored": true,
+        "private_process_stopped": true,
+        "temporary_directory_removed": true,
+        "label": "android-pet",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-pet/run.json",
+          "sha256": "dde22800f22e79dd274b52ac19ae70b225682f42efea2de7c3bc376a34c0647a"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-pet/engine.log",
+          "sha256": "b4a1306d3cea7e88c494b43a6531be18741d6a03751784efb744815d168af180"
+        },
+        "checks": 8
+      },
+      {
+        "package": "org.cursedlands.performance",
+        "device": "9a7e6425",
+        "renderer": "gl_compatibility",
+        "native": "candidate",
+        "script": "tests/health_bar_visibility.gd",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/health_bar_visibility.gd": "cd0af549727d70214fe87f33a89ade4d7990bcbce41467160c09765ed34bfa6b",
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+        },
+        "validation_mode": "Full 1.0.4 experimental private APK; production engine/helper and all game sources except the explicit private entry hook",
+        "fixture_sha256": {
+          "dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408",
+          "request.json": "7ddd8c9498cfdc7807b9d45341aafc556175ce7eb57e044d0aaf401af27540ab",
+          "tests/health_bar_visibility.gd": "cd0af549727d70214fe87f33a89ade4d7990bcbce41467160c09765ed34bfa6b"
+        },
+        "fixture_arguments_substitution": false,
+        "request": {
+          "tool": "tests/health_bar_visibility.gd",
+          "renderer": "gl_compatibility",
+          "args": [],
+          "native": true
+        },
+        "start": 1791722737.187522,
+        "restored": true,
+        "errors": [],
+        "completion_seen": true,
+        "all_outputs_present": true,
+        "results": {
+          "health-bar-visibility.json": {
+            "campaign": "cursed_lands",
+            "checks": [
+              {
+                "label": "third-person full-health character and idle enemy have no bar",
+                "ok": true
+              },
+              {
+                "label": "hurt character and enemy show their bars",
+                "ok": true
+              },
+              {
+                "label": "issued attack shows full-health target before its first simulation tick",
+                "ok": true
+              },
+              {
+                "label": "active attack keeps healthy enemy bar without showing healthy hero bar",
+                "ok": true
+              },
+              {
+                "label": "healing to full during combat keeps the enemy bar",
+                "ok": true
+              },
+              {
+                "label": "enemy attacking the party shows its bar before taking damage",
+                "ok": true
+              },
+              {
+                "label": "stale target and combat stance alone do not show an idle full-health enemy",
+                "ok": true
+              },
+              {
+                "label": "committed attack keeps target bar after a movement order",
+                "ok": true
+              },
+              {
+                "label": "hostile spell target keeps full-health bar",
+                "ok": true
+              },
+              {
+                "label": "paid cast keeps its healthy target visible after its order is consumed",
+                "ok": true
+              },
+              {
+                "label": "finished cast does not leave a permanent healthy-target bar",
+                "ok": true
+              },
+              {
+                "label": "direct-view fixture aims at an actual enemy silhouette",
+                "ok": true
+              },
+              {
+                "label": "merely aiming at a healthy idle enemy keeps its bar hidden",
+                "ok": true
+              },
+              {
+                "label": "direct attack input shows healthy enemy under the crosshair",
+                "ok": true
+              },
+              {
+                "label": "committed direct swing keeps full-health target bar after button release",
+                "ok": true
+              },
+              {
+                "label": "client snapshot retains enemy-to-party combat relationship",
+                "ok": true
+              },
+              {
+                "label": "older snapshot clears missing combat relationship safely",
+                "ok": true
+              },
+              {
+                "label": "damaged remote enemy still shows its bar",
+                "ok": true
+              },
+              {
+                "label": "fully healed remote enemy hides its bar after combat ends",
+                "ok": true
+              },
+              {
+                "label": "combat never exposes a hidden enemy",
+                "ok": true
+              },
+              {
+                "label": "dead target loses its bar",
+                "ok": true
+              },
+              {
+                "label": "Always input mode also hides full-health idle enemies",
+                "ok": true
+              },
+              {
+                "label": "classic view retains full-health combat target bar",
+                "ok": true
+              },
+              {
+                "label": "ending combat fades out the healthy enemy bar",
+                "ok": true
+              }
+            ],
+            "failures": 0
+          }
+        },
+        "elapsed": 20.598621129989624,
+        "mod_directories_restored": true,
+        "private_process_stopped": true,
+        "temporary_directory_removed": true,
+        "label": "android-health",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-health/run.json",
+          "sha256": "1e8e88decc0abe6ab8ea73ef03dad7d6e19278adb24008cec1561b1cb4c4eb8b"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-health/engine.log",
+          "sha256": "b72dd54c5e8f14fdcc99366fa564c275808454567df2d2fafa37d8dfcdb8a802"
+        },
+        "checks": 24
+      },
+      {
+        "package": "org.cursedlands.performance",
+        "device": "9a7e6425",
+        "renderer": "gl_compatibility",
+        "native": "candidate",
+        "script": "tests/water_reflection_fallback.gd",
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/repo/tools/tests/water_reflection_fallback.gd": "1757827c9060708f938d2218814dc6f8c038a42e4d636a305bda8a61530301c8",
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+        },
+        "validation_mode": "Full 1.0.4 experimental private APK; production engine/helper and all game sources except the explicit private entry hook",
+        "fixture_sha256": {
+          "dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408",
+          "request.json": "91e121510bca3aa905fec37786a3ae103c327d90ddaffd92002e4d36ae9539cc",
+          "tests/water_reflection_fallback.gd": "1757827c9060708f938d2218814dc6f8c038a42e4d636a305bda8a61530301c8"
+        },
+        "fixture_arguments_substitution": false,
+        "request": {
+          "tool": "tests/water_reflection_fallback.gd",
+          "renderer": "gl_compatibility",
+          "args": [],
+          "native": true
+        },
+        "start": 1791722758.4436336,
+        "restored": true,
+        "errors": [],
+        "completion_seen": true,
+        "all_outputs_present": true,
+        "results": {
+          "reflection-fallback.json": {
+            "checks": 4,
+            "failures": []
+          }
+        },
+        "elapsed": 26.11931800842285,
+        "mod_directories_restored": true,
+        "private_process_stopped": true,
+        "temporary_directory_removed": true,
+        "label": "android-reflection-fallback",
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-reflection-fallback/run.json",
+          "sha256": "51186794fd67dd96e9bd9e9b51cbd863f0146857e61da8c3873587faf64ffd36"
+        },
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-reflection-fallback/engine.log",
+          "sha256": "b15d41806a1df1810257e5a8c4f20993531618037e2675265961a6f7eee512f3"
+        },
+        "checks": 4
+      }
+    ],
+    "private_pack": {
+      "private_package": "org.cursedlands.performance",
+      "version_code": 78,
+      "production_pack": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64",
+      "bootstrap": "validation.json only in private APK",
+      "engine_sha256": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+      "native_sha256": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58",
+      "apk_sha256": "ffa4f1ae55ac7a0e27d3dd5df0b2730eb468e0e055da194deb90c69a59c4bffd"
+    },
+    "cleanup": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/device-cleanup.json",
+      "sha256": "9d6fd3bf3868aab930a8387ea2795feb34ce384ecfb88303ed1a03bbfe0d7af1"
+    }
+  },
+  "build": {
+    "version": "1.0.4-experimental.3",
+    "source_commit": "6a062339eec102dfc8853edf545ead117c9c5583",
+    "production_scripts": 276,
+    "all_platform_compiled_scripts_identical": true,
+    "android_version_code": 21,
+    "android_public_application_id": "org.cursedlands.engine",
+    "android_public_debuggable": false,
+    "android_public_certificate_retained": true,
+    "private_android_differences": [
+      "assets/src/main.gdc"
+    ],
+    "native_binaries": "Previous qualified desktop and Android runtimes/helpers reused without changes. macOS uses the official universal template and script navigation.",
+    "no_original_assets_saves_or_private_hooks": true,
+    "assets": [
+      {
+        "name": "CursedLands-1.0.4-experimental.3-linux-x86_64.tar.gz",
+        "bytes": 36642979,
+        "sha256": "a82f3e30e4322772eaa541cef81e67dce2260f271f7c81addfd4d195dfc24729"
+      },
+      {
+        "name": "CursedLands-1.0.4-experimental.3-windows-x86_64.zip",
+        "bytes": 37844675,
+        "sha256": "56ba8ce6ff7a00422cddafc907f2188d6444725754d9129f90345a68bff5f189"
+      },
+      {
+        "name": "CursedLands-1.0.4-experimental.3-macos-universal.zip",
+        "bytes": 64150946,
+        "sha256": "76e1ad8df40390afd3a2beb1084d5845266cd90886f77fea016d39de2e7bd3f3"
+      },
+      {
+        "name": "CursedLands-1.0.4-experimental.3-android.apk",
+        "bytes": 30378908,
+        "sha256": "23e4eb9adfd9192659c618b0c0fbe25fe8b9411c0b8bf9c492afe3066ea46593"
+      },
+      {
+        "name": "Quick-recovery-1.0.0.eimod",
+        "bytes": 546,
+        "sha256": "f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b"
+      }
+    ],
+    "checksums": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/assets/SHA256SUMS.txt",
+      "sha256": "a7952b0fadb6e8d63002c07f9328f6b7b56ded3af756307d097b752566c4c53a"
+    },
+    "audits": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/build.json",
+        "sha256": "5a71dd181ddc4e0b4a05d885543e032d5bf5b7e0e0373404995bf2758d3d8728"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-build.json",
+        "sha256": "4bfca4b4408130ecf636c9b45cb04ba586da56c0adb1b7216ab032b9bdf8b5d0"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-audit.json",
+        "sha256": "4071bcd1ce5ce1857c1eb7ad769acd3c75dab87bd604c6a365eb65eafb277e65"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/package-audit.json",
+        "sha256": "3d77777cd850aee0f087b7a0317c59eff526fb78061a38e2cdb4638f701c2ae4"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/archive-readback.json",
+        "sha256": "82408e17a0e8c1f0b9323a36309aa6f768daa0ffdbf2f49e4711830889ac146b"
+      }
+    ]
+  },
+  "shutdown_followup": {
+    "packaged_result": "The combined cloud/wave/wind/reflection scene exits normally in 24.52 seconds with the final packaged Linux build; no errors or warnings.",
+    "prior_failures": "Development stock and eleven-patch runtime shutdown timeouts remain recorded in lia-save-repair-2026-10-11.json. Both runtime and isolated source differ from that development checkout, so this does not assign a precise cause or claim all shutdown configurations repaired."
+  },
+  "excluded_attempts": [
+    {
+      "case": "Initial release source import",
+      "reason": "Health-bar selection retained two animation-cache references without their fields; removed before the accepted import, exports and all packaged checks.",
+      "evidence": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/build.json-initial",
+        "sha256": "9beef51dbe3c8025672bbe779b802e2d05abdc92aef1c30ef4334eef47435165"
+      }
+    },
+    {
+      "case": "android-fields initial cleanup",
+      "reason": "All 18 behavior checks passed but immediate tar readback raced restoration. Later readback matched all 55 original files. Runner now waits for verified restoration; android-fields-final passed with cleanup. The first run is excluded from accepted counts.",
+      "evidence": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-fields/run.json",
+        "sha256": "a34b42bc5701b4bb969dedef579628caa9259438430615114f3e3e6b9bbd72b2"
+      },
+      "restoration": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-3-20261011/android-fields/independent-restoration.json",
+        "sha256": "fb1c2a0aa6b74d959483687de46e26ccce9424bab50409f8a5f4dadabaf29888"
+      }
+    }
+  ],
+  "limits": [
+    "Prepared save states and loopback networking are not full campaign-route or multi-machine acceptance.",
+    "Windows and macOS are cross-built and archive-audited; execution on those operating systems was not tested. macOS is unsigned and not notarized.",
+    "Android checks cover Compatibility on one Retroid Pocket 5; Mobile/Vulkan execution was not tested for this package.",
+    "Mirror geometry reflections apply to Forward+ and one selected nearby water plane; other paths retain screen-space tracing.",
+    "Story checkpoint/debug controls remain outside this release."
+  ]
+}

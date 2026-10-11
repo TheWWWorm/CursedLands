@@ -8,7 +8,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The newest preview is [**1.0.4 Experimental 2**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.4-experimental.2), with mod profiles and options, Android simulation fixes, improved third-person movement and co-op save compatibility checks before loading. See its [release notes](docs/releases/1.0.4-experimental.2.md).
+The newest preview is [**1.0.4 Experimental 3**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.4-experimental.3), with deeper save-state persistence, co-op return fixes, geometry reflections for Mirror water and combat-aware health bars. See its [release notes](docs/releases/1.0.4-experimental.3.md).
 
 The current stable release is **1.0.3**. [Downloads](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.3) are available for Linux, Windows, Android and macOS. See the [release notes](docs/releases/1.0.3.md) for the graphics, controls, gameplay and co-op changes, measured performance improvements and remaining platform limits.
 

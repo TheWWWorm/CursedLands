@@ -2,6 +2,10 @@
 
 11 October 2026. Follow-up to the [playability and save audit](lost-in-astral-completeness-2026-10-11.md).
 
+## Experimental 3 package
+
+The repairs are included in [1.0.4 Experimental 3](releases/1.0.4-experimental.3.md). Its isolated package passes 487 save/health checks, 32 reflection-geometry checks, the 57-view bridge/tree matrix and clear-camera sweep, and 62 Android checks. The packaged combined-effects scene exits normally; the development-runtime failures below remain historical investigation evidence. The [package validation](validation/experimental-1.0.4-3-2026-10-11.json) records the exact source scope, platform limits and network protocol 15 requirement.
+
 ## Working checkout repair
 
 Paid delayed casts now keep their remaining delay and already-paid state, including consumed healing potions. Taming stages, faction history and peace masks survive reload. Persistent pet identities reconnect VM variables, effects and projectiles after save/load and travel, including dead and looted pets. Guest-return projection maps physical actor references without confusing a same-named host with the guest.
