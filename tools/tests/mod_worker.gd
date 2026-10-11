@@ -61,9 +61,11 @@ func _ready() -> void:
 		check(answer.get("ok", false) and await until(func(): return not s._remote_loading and s.mod_config.rules.sandbox_invulnerable == 1), "real worker reload restores saved effective rules")
 	var pid := s.local_host.process_id
 	await s.local_host.stop()
-	check(not OS.is_process_running(pid), "authority child stops cleanly")
+	# Android start() returns a service binding handle, not an OS process ID.
+	check(not s.local_host._android_backend.is_running(pid) if s.local_host._android_backend else not OS.is_process_running(pid), "authority child stops cleanly")
 	g.queue_free(); s.queue_free()
 	for i in 5: await get_tree().process_frame
 	check(ModStore.session() == null, "owner teardown detaches rules")
+	FileAccess.open("user://mod-worker.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures}))
 	print("MOD_WORKER ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

@@ -2291,6 +2291,8 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				if direction == Vector2.ZERO:
 					u.stop_steering()
 				elif u.direct_controlled:
+					if bool(cmd.get("run",false)) and u.stance != GameUnit.STANCE_NONE:
+						u.change_posture(GameUnit.STANCE_NONE)
 					var steering := {"type":"direct_move","direction":direction.limit_length(),
 						"run":bool(cmd.get("run",false)),"until":Time.get_ticks_msec()+500,
 						"village_limit":village_move_limit()}

@@ -49,6 +49,13 @@ func _ready() -> void:
 	check(absf(hero.pos.distance_to(start)-full*0.5)<0.1,"half stick tilt gives proportional movement")
 	place();send(Vector2(20,0));tick(12)
 	check(absf(hero.pos.distance_to(start)-full)<0.1,"authority clamps oversized input to normal speed")
+	place();hero.set_gait(1);hero._anim_lock=0
+	s.apply_command({"t":"direct_move","units":[hero.uid],"direction":Vector2.RIGHT,"run":true},0)
+	check(hero.stance==GameUnit.STANCE_NONE,"Shift-run requests standing through normal posture clearance")
+	hero._anim_lock=0;hero.mana=hero.max_mana
+	var stamina:=hero.mana;tick(12)
+	check(hero.pos.distance_to(start)>full*1.2 and hero.mana<stamina,"run input increases speed and consumes normal stamina")
+	hero.set_gait(2)
 	place()
 	for v:Variant in [Vector2(NAN,0),Vector2(INF,0),Vector2(1e30,0),Vector3.RIGHT,"right"]:
 		s.apply_command({"t":"direct_move","units":[hero.uid],"direction":v},0)

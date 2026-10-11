@@ -141,5 +141,6 @@ func _ready() -> void:
 	check(not direct.active(),"classic mode remains available with a gamepad")
 	PadInput.active="kbm"
 	game.queue_free();session.queue_free();await frames()
+	FileAccess.open("user://direct-controls.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures,"connected_gamepads":Input.get_connected_joypads().map(func(id):return {"id":id,"name":Input.get_joy_name(id),"guid":Input.get_joy_guid(id)})}))
 	print("DIRECT_CONTROLS ",checks," checks ",failures," failures")
 	get_tree().quit(1 if failures else 0)
