@@ -202,7 +202,9 @@ func captures(label: String) -> void:
 	if DisplayServer.get_name()=="headless": return
 	await RenderingServer.frame_post_draw
 	for pair: Array in [[get_viewport(),"owner"],[viewport,"guest"]]:
+		var started := Time.get_ticks_msec()
 		check(pair[0].get_texture().get_image().save_png("user://transport-"+label+"-"+pair[1]+".png")==OK,"capture "+label+" "+pair[1])
+		print("CAPTURE_COST ",pair[1]," ms=",Time.get_ticks_msec()-started)
 
 
 func phase(sector: int) -> void:
@@ -214,10 +216,12 @@ func phase(sector: int) -> void:
 	check(host.my_index==0 and guest.my_index==1 and host.players.size()==2 and guest.players.size()==2,"protocol18 owner and guest have distinct live slots")
 	await host.local_host.request("clock",{"sector":sector})
 	hg.rig.distance=CameraRig.M_DEFAULT_DISTANCE; gg.rig.distance=CameraRig.M_DEFAULT_DISTANCE
-	work={"commands":[],"motion":{},"census":[],"frame_ms":[]}
+	work={"commands":[],"motion":{},"census":[],"frame_ms":[],"slow_frames":[]}
 	follow(); await wait_real(2.0); follow()
 	Engine.max_fps=60
-	await captures("%dx-start"%sector)
+	# Capture only after timing stops. A 5K PNG can block this frontend for
+	# several seconds while the authority continues, leaving a synthetic
+	# snapshot backlog immediately before the first measured frame.
 	var ids := []
 	for u: GameUnit in guest.world.party_units(): ids.append(u.uid)
 	var target_uid: int=guest.party_units(1)[0].uid
@@ -231,7 +235,13 @@ func phase(sector: int) -> void:
 	while Time.get_ticks_msec()<started+int(seconds*1000):
 		var now := Time.get_ticks_msec(); var elapsed := now-started; var dt := now-previous
 		if dt>0: work.frame_ms.append(dt)
-		if dt>100: print("LAG_FRAME ",elapsed," ",dt," merges ",guest.coop.merged_count)
+		if dt>100:
+			var slow := {"wall_ms":elapsed,"frame_ms":dt,"progress_saves":guest.coop.merged_count,
+				"process_seconds":Performance.get_monitor(Performance.TIME_PROCESS),
+				"physics_seconds":Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS),
+				"draw_compilations":Performance.get_monitor(Performance.PIPELINE_COMPILATIONS_DRAW)}
+			work.slow_frames.append(slow)
+			print("LAG_FRAME ",JSON.stringify(slow))
 		previous=now
 		if now>=next_move:
 			# Walk around the supplied save's positions without rewriting them.
@@ -259,7 +269,7 @@ func phase(sector: int) -> void:
 	var loss := paired_loss(target_uid)
 	var row := {"speed":sector,"wall_seconds":duration,"owner_observer":owner_summary,"guest":guest_summary,
 		"paired_delivery":loss,"motion":work.motion,"census":work.census,"commands":work.commands,
-		"frontend_frame_gap_ms":stats(work.frame_ms),"population":guest.world.units.size(),
+		"frontend_frame_gap_ms":stats(work.frame_ms),"slow_frames":work.slow_frames,"population":guest.world.units.size(),
 		"guest_anchor":[guest_anchor.x,guest_anchor.y]}
 	for m: Dictionary in work.motion.values(): m.erase("last_pos"); m.erase("last_draw")
 	check(guest_summary.party_updates>seconds*4,"sustained guest snapshots at %dx"%sector)
