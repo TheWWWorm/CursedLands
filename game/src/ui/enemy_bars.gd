@@ -87,14 +87,10 @@ func active() -> bool:
 
 func _process(dt: float) -> void:
 	var on := active()
-	if game and _world != game.world:
-		_world = game.world
-		_alpha.clear(); _health.clear(); _units.clear()
 	if not on:
 		if visible:
 			visible = false
 			_alpha.clear()
-			_health.clear()
 			drawn = {}
 		return
 	visible = true
