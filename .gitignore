@@ -4,6 +4,8 @@ game/.godot/
 builds/
 *.tmp
 *.log
+__pycache__/
+*.pyc
 *.zip
 *.tar.gz
 *.x86_64

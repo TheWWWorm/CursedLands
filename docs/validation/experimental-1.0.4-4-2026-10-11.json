@@ -1,0 +1,1574 @@
+{
+  "release": "1.0.4-experimental.4",
+  "date": "2026-10-11",
+  "status": "qualified for publication",
+  "game_source_commit": "faa0775df85af6aa5c5315547319dd51caf91efa",
+  "base_release_commit": "6f5f4b4436d05db944c3afaa07c4b7e47113cbef",
+  "network_protocol": 16,
+  "mod_api": 1,
+  "scope": "All completed pending gameplay, menu, graphics and converter work captured for this release, plus all previous experimental changes. A separate ongoing package-API-2 legacy-mod extension is outside this completed snapshot.",
+  "inherited_android_and_coop_fixes_verified_in_ancestry": [
+    "045bb0a",
+    "a9e597c"
+  ],
+  "build": {
+    "linux_windows_engine_patches": 12,
+    "android_engine_patches": 13,
+    "android_version_code": 22,
+    "godot_editor": "4.7 stable official 5b4e0cb0f",
+    "compiled_scripts": 277,
+    "production_scripts_byte_identical_across_four_platforms": true,
+    "committed_game_source_exact": true,
+    "android_public_certificate_matches": true,
+    "android_debuggable": false,
+    "assets_contain_no_original_game_or_third_party_mod_data": true,
+    "details": {
+      "version": "1.0.4-experimental.4",
+      "source_commit": "faa0775df85af6aa5c5315547319dd51caf91efa",
+      "platforms": {
+        "linux-x86_64": {
+          "resources": 706,
+          "scripts": 277,
+          "production_scripts_identical": true,
+          "files": {
+            "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+            "BUILD-INFO.json": "51791eb3dea0412f23a6f2526f0d704dd9084af323e24a9d1caca734edf27708",
+            "Play.sh": "75835f261e9acd2b45973152790cabf255b05b649f0f059997c1de9ba4e3ec2b",
+            "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+            "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+            "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+            "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200",
+            "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+            "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+            "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+            "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+            "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+          }
+        },
+        "windows-x86_64": {
+          "resources": 706,
+          "scripts": 277,
+          "production_scripts_identical": true,
+          "files": {
+            "BUILD-INFO.json": "cbbe69a44b1be5d31745c2f239026b38e61904b839bd642f14e6af715bcffb47",
+            "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+            "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+            "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+            "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+            "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200",
+            "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+            "NATIVE_NAVIGATION_NOTICES.txt": "a220aaa05ae0d52c1366e166da6aa114049e4e0327d156fbd268325d22aff517",
+            "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+            "icon.svg": "25c9306728089c8108e2210b9a3cd8e3b378da90f26959722f2f2423540662d2",
+            "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+          }
+        },
+        "macos-universal": {
+          "resources": 704,
+          "scripts": 277,
+          "production_scripts_identical": true,
+          "files": {
+            "CursedLands.zip": "a089e4ca9f5c56b1ca73c542f2f2d78769dbcebdeda99488a09bcaa61ead71fc",
+            "BUILD-INFO.json": "29c502bcba1289635ec48e7386086a98b8fed9253f487cf605e14e26ecb2d309",
+            "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+            "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+            "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+            "THIRD_PARTY_NOTICES.md": "155e90bf4d7dfe7eae2a6d0db6ad3e4716fe78e3edb8223dca05db825f8e92ba",
+            "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+          }
+        }
+      },
+      "android": {
+        "version": "1.0.4-experimental.4",
+        "apk_sha256": "01fc359e1e10c5918727d678e5a24f1db9fa2379a5ac624dc6f3872113175f47",
+        "resources": 713,
+        "compiled_scripts": 277,
+        "all_compiled_scripts_byte_identical_to_desktop": true,
+        "expected_production_scripts_exact": true,
+        "no_original_game_data_saves_or_private_probes": true,
+        "engine_arguments": [
+          "--xr_mode_regular",
+          "--xr-mode",
+          "off",
+          "--fullscreen",
+          "--background_color",
+          "#000000"
+        ],
+        "sparse_pack": {
+          "format": 4,
+          "resources": 713,
+          "all_resource_sizes_and_md5_match": true,
+          "template_baseline_profiles": {
+            "dexopt/baseline.prof": {
+              "bytes": 1177,
+              "sha256": "4442960fb3fefc2020d4675b3fa13bb1017c4718e9144912ff7f2567262216b8"
+            },
+            "dexopt/baseline.profm": {
+              "bytes": 142,
+              "sha256": "df4de3e1028dedbb7787c99a666a9d79cc23407c6640bd5e86877734a2a88d28"
+            }
+          }
+        },
+        "native_libraries": {
+          "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+          "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+          "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+        },
+        "debuggable": false,
+        "same_public_certificate": true,
+        "release_template_provenance": {
+          "base_template": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/experimental5-android-engine/platform/android/java/app/build/outputs/apk/standard/release/android_release.apk",
+          "base_sha256": "4a8f9803960ea65a1f7e0ebe585ff489499dd14d618f4dcf96b660ea1adddd7d",
+          "release_template": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-engine/android_release_12_common.apk",
+          "release_template_sha256": "1b2ec1cae200db13c510db8d5246e31887aec2a6e7876afc926883c9dc0e5ee8",
+          "engine_sha256": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+          "libcxx_sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+          "java_sources_identical": 70,
+          "manifests_semantically_identical": true,
+          "libcxx_note": "The new build copies an unstripped NDK29 library; stripping it reproduces the exact release/private template bytes."
+        },
+        "normal_installed_app_untouched": true
+      },
+      "committed_game_source_exact": true
+    }
+  },
+  "acceptance": {
+    "packaged_save_checks": 488,
+    "packaged_menu_control_profile_checks": 594,
+    "packaged_mod_import_checks": 79,
+    "packaged_coop_saved_settings_checks": 47,
+    "cross_version_protocol_checks": 7,
+    "reflection_geometry_checks": 32,
+    "rendered_reflection_checks": 21,
+    "android_checks": 119,
+    "python_converter_tests": 19,
+    "tools_bundle_standalone_tests": 19,
+    "failures": 0
+  },
+  "packaged_save_runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/save_depth.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-cast",
+        "--case=cast"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 6.01,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 8,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/save_consumed_cast.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-potion"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 6.01,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 8,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "a7a71f839bb4f100d552fe226a998f95ff9932b88e3fb59b3235b9dfc3d93303"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/save_depth.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-taming",
+        "--case=taming"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 6.21,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 18,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/save_depth.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-pet",
+        "--case=pet"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 6.01,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 8,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/save_depth.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-boundaries",
+        "--case=boundaries"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 14.01,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 30,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/save_depth.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-pet-travel-3",
+        "--case=pet_travel"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 25.03,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 27,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/save_state_fields.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-fields"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 6.21,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 18,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "06e7ce9d4c6e370956e72bfafde059ad661a46dde7584cf9b842e8ee5c2eeffa"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/save_frozen_clock.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-clock"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 12.81,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 6,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "8aa4f285be3f092030de1d14e388f21376efa4c43d6bc3c0a4099ef29332d140"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/save_actor_refs.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-actor-refs-4"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 2.0,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 14,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "bb06822f806eb9c971a2f249a2bfcd2900fdd0ffa0077fc9b0b8f9c2cbdd439b"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/script_hero_references.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-hero-refs"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 2.0,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 11,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "4ed8f447a3a483cd10b2e302f5e6c1a0968ec741a63ebc4d655d0fa2a2e17959"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/coop_vm_projection.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-vm-projection-2"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 2.6,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 21,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "91ebe397d05ca17de9663fa1b4b4c5b8f34a516ba1345f2f0fcc469485bbcffc"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/health_bar_visibility.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-health"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 5.01,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 25,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "9c98f3ab68c44b2f2226de10e3f9aa46b0ae7cc6470571117398d6c6c709d09a"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/delayed_cast_lifetime.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-cast-lifetime"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 3.0,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 32,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "74da1743c48568e9421936df179a47537d456bfae2680a95eb7fe16620d17c1d"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/repeated_spells.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-repeated-spells"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 3.0,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 86,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "7e4c207d9b7f65133e7e081a8cf33ba7a76610a0bc8c438f8211864ac3ef3970"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/campaign_roster.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-roster"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 2.2,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 64,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "49cce7a4e6aea418f2dd348ce22082fe719e34ca37174c186805b1aa3da4010d"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/coop_save_effects.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-guest"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 13.01,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 31,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "aeee7f5ad9e6f32777138c11766fd02b4d51aff6d0fba32806e615f452a56731"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/lia_trap_registration.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-traps"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 8.01,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 27,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "2007e265fbbbc36a42ae7e01038ba474cb6ff1481cc859fda3c7902cbd38630d"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/coop_vm_projection.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-vm-projection-base"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 2.2,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 36,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "91ebe397d05ca17de9663fa1b4b4c5b8f34a516ba1345f2f0fcc469485bbcffc"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/save_state_fields.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/package-fields-base"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 7.41,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 18,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "06e7ce9d4c6e370956e72bfafde059ad661a46dde7584cf9b842e8ee5c2eeffa"
+    }
+  ],
+  "menu_control_runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/mod_menus.gd",
+        "--package=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/quick-recovery.eimod"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 27.63,
+      "passed_checks": 43,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "fixture_sha256": "88711812eed19d5837aa3abefa134d746469d048a85044efef9cd5c17b390f45",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/graphics_presets.gd"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 3.8,
+      "passed_checks": 222,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "fixture_sha256": "c63326605fb598fe1d315b6a97f4c3132a6113a42a44ae5a0f7ba286a9836bb8",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/direct_controls.gd"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 45.85,
+      "passed_checks": 49,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "fixture_sha256": "b8b58ac4ec3f685502d5c0a8794070e4fdeaa173bd75368cab4c3054cd370a7f",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/first_person_models.gd"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 2.8,
+      "passed_checks": 11,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "6ce5895edfe251c054a42b242fe346eb74cc70a2296bc40cf73a60597a147c90",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/direct_attack_stance.gd"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 2.8,
+      "passed_checks": 39,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "ebeb5bbd892487977b925f7a00b53dff7a361a3a6e383d8572da52679ebaaf36",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/direct_movement.gd"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 6.61,
+      "passed_checks": 26,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "397fc5ee4ffa85405ec3fae57b6d4d7474fa4ac7fcb38a2c7da901a3cf0bea84",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/direct_view_regressions.gd"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 7.01,
+      "passed_checks": 34,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "88bdf4c0d1d5871552b88cb002d00db0331d12e1d90cbaaf1a12c5c67402f00c",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/direct_coop.gd"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 28.83,
+      "passed_checks": 19,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "3cf39286f4f98ff17617598f9c85198f90cf3c80533b0c7264ce1ea306f59b02",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/mod_profiles.gd",
+        "--mod-tests"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 2.2,
+      "passed_checks": 83,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "5d5345115d8f3fd3f548364368e95d45776f9275a4258ba6552a981909c42538",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/control_mode_options.gd"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 3.4,
+      "passed_checks": 14,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.",
+        "WARNING: 10 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+      ],
+      "fixture_sha256": "b7059a2d3348bfd9cfc9234bfb462266b4ccf4394988084928933694822b9539",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/mod_worker.gd",
+        "--package=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/quick-recovery.eimod"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 37.63,
+      "passed_checks": 22,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "fixture_sha256": "b217b38765e8afe01e519a98673cbecc442c192325676651c671b117ea223a24",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/loading_cover.gd"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 3.2,
+      "passed_checks": 6,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "fixture_sha256": "649519771317668701d6eb3d284f2029059064eff13cae715f0502e362db73d8",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/menu_loading_screen.gd",
+        "--continue",
+        "--back-to-menu"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 45.64,
+      "passed_checks": 13,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "fixture_sha256": "471c3d63d6fc9d274ea8700badc85a290001a3c930c5498f082e5e46a2921832",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "separate",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/menu_loading_screen.gd",
+        "--new-game",
+        "--back-to-menu"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 41.44,
+      "passed_checks": 13,
+      "errors": [],
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "fixture_sha256": "471c3d63d6fc9d274ea8700badc85a290001a3c930c5498f082e5e46a2921832",
+      "pack_sha256": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    }
+  ],
+  "mod_import_runs": [
+    {
+      "label": "legacy-import",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/legacy_mod_import.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/legacy-import",
+        "--mod-tests",
+        "--package=/home/llm2x/Documents/EI/local/scratchpad/legacy-mod-converter-20261011/converted/test.legacy-converter.eimod",
+        "--expected=/home/llm2x/Documents/EI/local/scratchpad/legacy-mod-converter-20261011/expected.json"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 2.4,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 17,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "7cfbc1ea60b4d490ec957ae8d837f9bf15218db39c8d4b2e4b023a9e6c438594"
+    },
+    {
+      "label": "legacy-assets",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/legacy_mod_assets.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/legacy-assets",
+        "--mod-tests",
+        "--package=/home/llm2x/Documents/EI/local/scratchpad/legacy-mod-real-tests-20261011/asset-sample-converted/test.real-legacy-assets.eimod",
+        "--expected=/home/llm2x/Documents/EI/local/scratchpad/legacy-mod-real-tests-20261011/assets-expected.json"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 3.6,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 62,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "d8774f9043fba15c8efd42090b21d1d6d03c10776270dd3b6dbcb911d128585e"
+    }
+  ],
+  "coop_saved_settings_runs": [
+    {
+      "label": "coop-mod-rejection",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/mod_load_rejection.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/coop-mod-rejection",
+        "--package=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/quick-recovery.eimod"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 28.04,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 29,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "700a9b75a9141e1a2ac7d3dac129274b7791a58794d44b3d250ac1cdac840e69"
+    },
+    {
+      "label": "coop-mod-join",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/mod_load_join.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/coop-mod-join",
+        "--package=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/quick-recovery.eimod"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 11.01,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 18,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "e881e89e0788b32cffe17131c583f6934e1e7569ce0df9312e24deb98b2a1a7e"
+    }
+  ],
+  "protocol_runs": [
+    {
+      "label": "protocol-host",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/protocol_compatibility.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/protocol-host",
+        "--role=host",
+        "--coordination=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/protocol-coordination"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 4.2,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 4,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+      },
+      "fixture_sha256": "f89095605540f1b83a889449126fbb6aab38afb070bf85a352ee00aafa16a6fd"
+    },
+    {
+      "label": "protocol-old-client",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.3-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/protocol_compatibility.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/protocol-old-client",
+        "--role=client",
+        "--coordination=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/protocol-coordination"
+      ],
+      "return_code": 0,
+      "termination": null,
+      "seconds": 2.4,
+      "errors": [],
+      "warnings": [],
+      "failed_checks": [],
+      "passed_checks": 3,
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "1ae675fc30a9578bd92160c97cdacee97508521a4b566f45eb036b641d22f4d5"
+      },
+      "fixture_sha256": "f89095605540f1b83a889449126fbb6aab38afb070bf85a352ee00aafa16a6fd"
+    }
+  ],
+  "reflection_geometry": {
+    "label": "reflection-geometry",
+    "command": [
+      "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/water_reflection_geometry.gd",
+      "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/reflection-geometry"
+    ],
+    "return_code": 0,
+    "termination": null,
+    "seconds": 2.0,
+    "errors": [],
+    "warnings": [],
+    "failed_checks": [],
+    "passed_checks": 32,
+    "build_sha256": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "5aede7a9ab3050c83f96d4f7761005be6c5ce7af8efacc399a4a1782067cf200"
+    },
+    "fixture_sha256": "ba7b2c548dfbea14be0513885dd420a1cd6207babb2b115491080fdc26c93122"
+  },
+  "reflection_runs": [
+    {
+      "label": "mirror-bridge",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "1280x758",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/water_reflection_angles.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/mirror-bridge"
+      ],
+      "campaign": "base",
+      "return_code": 0,
+      "termination": null,
+      "seconds": 59.79980866401456,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "e921a7ec321c18cbae9c268b250ac22d54faf2baaa62dcbbfaceb98b151879f8",
+      "engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "checks": 6,
+      "poses": 30,
+      "image_count": 121,
+      "evidence_sha256": "abe972264d5ba3b9d5d876e2448e2bb9c01ccff6eae03da490c0006867c42bcf"
+    },
+    {
+      "label": "mirror-trees",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "1280x758",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/water_reflection_tree_angles.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/mirror-trees"
+      ],
+      "campaign": "base",
+      "return_code": 0,
+      "termination": null,
+      "seconds": 45.03821857197909,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "29f3da038450905cbbefd3c48e2fd2fec77746e014f5b54e59442f8cdf5fda5c",
+      "engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "checks": 6,
+      "poses": 27,
+      "image_count": 85,
+      "evidence_sha256": "f7ee66bc5b64e67513d9c0d1d039caed8a01fd71e46385cd2f1a2df2caf5828b"
+    },
+    {
+      "label": "mirror-motion",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "1280x758",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/water_reflection_motion.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/mirror-motion"
+      ],
+      "campaign": "base",
+      "return_code": 0,
+      "termination": null,
+      "seconds": 36.0297363709542,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "4eedb4642aa05676b7a87e56fce246d23541b1caf003562555074a20b6e7f141",
+      "engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "checks": 5,
+      "poses": 0,
+      "image_count": 61,
+      "evidence_sha256": "1849cec40822af462fa5b3fd01ccea4d31d54b2691572c4baefb678c89f7391b"
+    },
+    {
+      "label": "mirror-effects",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.4-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "1280x758",
+        "--position",
+        "-10000,-10000",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/../lia-save-repair-20261011/tests/reflection_features.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/mirror-effects"
+      ],
+      "campaign": "base",
+      "return_code": 0,
+      "termination": null,
+      "seconds": 23.520293675013818,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "3a52da30eae704d5335ce4f3f8094be551ccccbc574f5ecc28d3ca5bc07d1684",
+      "engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "checks": 4,
+      "poses": 4,
+      "image_count": 8,
+      "evidence_sha256": "999156f033c989d56c51ad20bcb7482d99236ad65eefc2d76f7102995d372363"
+    }
+  ],
+  "android_runs": [
+    {
+      "label": "android-controls",
+      "checks": 34,
+      "failures": 0,
+      "elapsed_seconds": 14.388389348983765,
+      "campaign": "base",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/direct_view_regressions.gd": "88bdf4c0d1d5871552b88cb002d00db0331d12e1d90cbaaf1a12c5c67402f00c",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/third_person_kbm.gd": "e102ccfddea5c0cc197f67b9165a8de48b1378529f2522ec7b602c2b38dd5c21",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+      },
+      "settings_and_profile_restored": true,
+      "logs": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/android-controls",
+      "details": null
+    },
+    {
+      "label": "android-worker",
+      "checks": 22,
+      "failures": 0,
+      "elapsed_seconds": 28.72448992729187,
+      "campaign": "base",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/mod_worker.gd": "b217b38765e8afe01e519a98673cbecc442c192325676651c671b117ea223a24",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+      },
+      "settings_and_profile_restored": true,
+      "logs": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/android-worker",
+      "details": null
+    },
+    {
+      "label": "android-background-final",
+      "checks": 12,
+      "failures": 0,
+      "elapsed_seconds": 81.79724764823914,
+      "campaign": "astral",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/single_player_android_background.gd": "212b064a5dac53db8dd1a11d1bb604ca9072ae012e1b024c1e5ad31158f328a4",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+      },
+      "settings_and_profile_restored": true,
+      "logs": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/android-background-final",
+      "details": {
+        "single-background-result.json": {
+          "background_ms": 12503,
+          "background_sim_delta": 0.220000000000001,
+          "checks": 12,
+          "failures": 0,
+          "sim_after": 2.475,
+          "sim_before": 2.255
+        }
+      }
+    },
+    {
+      "label": "android-health",
+      "checks": 25,
+      "failures": 0,
+      "elapsed_seconds": 13.707122325897217,
+      "campaign": "base",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/health_bar_visibility.gd": "9c98f3ab68c44b2f2226de10e3f9aa46b0ae7cc6470571117398d6c6c709d09a",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+      },
+      "settings_and_profile_restored": true,
+      "logs": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/android-health",
+      "details": null
+    },
+    {
+      "label": "android-loads",
+      "checks": 26,
+      "failures": 0,
+      "elapsed_seconds": 46.86180877685547,
+      "campaign": "base",
+      "fixture_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/repo/tools/tests/android_local_lifecycle.gd": "a07f6b1e2c880e21794ccbedfc2ff6ffe872c5e06a8cd4dcee335f23f3bd6189",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+      },
+      "settings_and_profile_restored": true,
+      "logs": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011/android-loads",
+      "details": null
+    }
+  ],
+  "android_private_build_source_audit": {
+    "only_changed_script": [
+      "assets/src/main.gdc"
+    ],
+    "public_sha256": "01fc359e1e10c5918727d678e5a24f1db9fa2379a5ac624dc6f3872113175f47",
+    "private_sha256": "d1f37b139b4fe7699e5e5de7566f987170954dd643bde71696579a132dc99a1f"
+  },
+  "android_restore": {
+    "package": "org.cursedlands.performance",
+    "original_apk_restored_byte_identically": true,
+    "apk_sha256": "961975fc5c277c4e23b2da42d21429eda0439070734609f0101e0a6f3e991aea",
+    "public_app_untouched": true,
+    "all_accepted_runs_restored_settings_mods_saves_and_characters": true,
+    "no_private_app_process_or_autorun_remains": true
+  },
+  "tools_bundle": {
+    "files": [
+      "tools/convert_legacy_mod.py",
+      "tools/package_mod.py",
+      "tools/tests/test_legacy_mod_converter.py",
+      "game/src/ei/database.gd",
+      "game/src/game/mod_schema.gd",
+      "docs/mods.md",
+      "docs/legacy-mod-converter.md",
+      "docs/legacy-mod-compatibility.md",
+      "docs/validation/legacy-mod-converter-2026-10-11.json",
+      "docs/validation/legacy-mod-real-mods-2026-10-11.json",
+      "LICENSE.md",
+      "examples/mods/quick-recovery/mod.json"
+    ],
+    "exact_source_readback": true,
+    "standalone_tests": 19,
+    "example_byte_identical": true,
+    "artifact": {
+      "name": "CursedLands-1.0.4-experimental.4-tools.zip",
+      "bytes": 45515,
+      "sha256": "1034232052bae399d771d7dd8439a52fddb00721737a5d968ff1eb564be08fe8"
+    }
+  },
+  "loading": {
+    "feature-continue": {
+      "covered": 809,
+      "deferred": false,
+      "exposed": 0,
+      "final_cover": 1,
+      "new_game": false,
+      "premature_hud": 0,
+      "worker": true,
+      "worker_pid": 761038,
+      "zone": "bz1g"
+    },
+    "feature-new-game": {
+      "covered": 677,
+      "deferred": false,
+      "exposed": 0,
+      "final_cover": 1,
+      "new_game": true,
+      "premature_hud": 0,
+      "worker": true,
+      "worker_pid": 762406,
+      "zone": "gz1g"
+    }
+  },
+  "non_acceptance_attempts": [
+    {
+      "label": "feature-direct",
+      "reason": "Connected Keychron keyboard system-control endpoint was exposed as a gamepad and opened the system wheel. A diagnostic repeat passed 49/49 unchanged. Final repeat excluded that hardware endpoint with SDL_GAMECONTROLLER_IGNORE_DEVICES=0x3434/0x0280 and passed 49/49 with no connected gamepads. Injected keyboard/mouse/gamepad events still run."
+    },
+    {
+      "label": "android-background",
+      "reason": "Astral fixture was initially supplied with base-game data and was refused. Corrected the private runner campaign selection; real Home/return and autosave then passed 12/12. Both attempts restored the profile."
+    },
+    {
+      "label": "early menu screenshots",
+      "reason": "Fixture reopened dialogs before the closed frame had been presented, recapturing old dialog artwork. Added presentation waits to the fixture; final full menu checks and visual inspection passed. Game sources did not change."
+    }
+  ],
+  "limits": [
+    "Windows and macOS are cross-built and archive-inspected; no target-OS execution. macOS uses the stock universal runtime, is unsigned and not notarized.",
+    "Linux rendered UI checks use Compatibility; water checks use Forward+. Android rendered checks use Compatibility on Retroid/Adreno 650.",
+    "Control events are injected; no physical gamepad acceptance or new performance benchmark.",
+    "No full campaign-route or multi-machine acceptance.",
+    "Legacy converter remains API 1 in this release; the six inspected complete legacy mods remain blocked. The real-asset probe is intentionally partial and its assets are not distributed."
+  ],
+  "assets": [
+    {
+      "name": "CursedLands-1.0.4-experimental.4-linux-x86_64.tar.gz",
+      "bytes": 36659893,
+      "sha256": "a1f5b13ac02979d644515db9783f50cfb06e1297a4027dd7ec5d0c05100c739f"
+    },
+    {
+      "name": "CursedLands-1.0.4-experimental.4-windows-x86_64.zip",
+      "bytes": 37861596,
+      "sha256": "60ef25b481658d0405187e49570fa3e5f717ad7e7c0a82acb18ca102e6930c07"
+    },
+    {
+      "name": "CursedLands-1.0.4-experimental.4-macos-universal.zip",
+      "bytes": 64167820,
+      "sha256": "7252311e53c9fcb94383e9f763f759f04025d48af230d7df65d07fc48b4b88f9"
+    },
+    {
+      "name": "CursedLands-1.0.4-experimental.4-android.apk",
+      "bytes": 30407743,
+      "sha256": "01fc359e1e10c5918727d678e5a24f1db9fa2379a5ac624dc6f3872113175f47"
+    },
+    {
+      "name": "CursedLands-1.0.4-experimental.4-tools.zip",
+      "bytes": 45515,
+      "sha256": "1034232052bae399d771d7dd8439a52fddb00721737a5d968ff1eb564be08fe8"
+    },
+    {
+      "name": "Quick-recovery-1.0.0.eimod",
+      "bytes": 546,
+      "sha256": "f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b"
+    }
+  ],
+  "checksums_sha256": "07a3b1bebebd5de734bbe52b1775110d99fc871a30b208e82c3528b855a752fc",
+  "local_evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-4-20261011"
+}

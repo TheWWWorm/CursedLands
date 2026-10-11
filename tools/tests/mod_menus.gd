@@ -41,6 +41,7 @@ func _ready() -> void:
 	panel.pad_press("right", "down")
 	check(slider.value == before + slider.step, "controller changes focused slider")
 	panel.close()
+	await frames()
 	check(ModStore.capability("revival.seconds") == before, "Cancel discards unapplied value")
 	panel.open("options")
 	panel._values["example.quick-recovery:seconds"] = 8.5
@@ -71,6 +72,7 @@ func _ready() -> void:
 			panel.pad_press("right", "down")
 			check(control.value == before and not control.editable, "guest controller cannot edit locked option")
 	panel.close()
+	await frames()
 	s.free()
 	var event := InputEventKey.new()
 	event.keycode = KEY_ESCAPE; event.pressed = true
@@ -102,6 +104,7 @@ func _ready() -> void:
 	options.free()
 	get_tree().root.size = Vector2i(1280,720)
 	panel.close()
+	await frames()
 	var menu := load("res://src/ui/main_menu.gd").new() as Control
 	add_child(menu)
 	await shot("main-menu")
@@ -122,6 +125,8 @@ func _ready() -> void:
 	check(setup.level == 1 and setup._draft.rules.revive == 1, "mod draft and setup difficulty stay in sync")
 	check(ModStore.effective().rules == prior, "draft changes do not leak into preferences")
 	setup._cancel()
+	# Present the closed dialog before taking the next opening's backdrop.
+	await frames()
 	await menu._on_board("new")
 	check(setup.level == 0 and setup._draft.rules.revive == 1, "cancelled customizations are not reused on another New Game")
 	for viewport in [Vector2i(2560,1440), Vector2i(800,600), Vector2i(540,960)]:
