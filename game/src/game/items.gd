@@ -181,6 +181,16 @@ static func with_charge(id: String, c: float) -> String:
 	return _with_state(unworn(id), wear(id), e - clampf(c, 0.0, e) if c < e else 0.0)
 
 
+## Native item vtable +0x18 (006a0030), called after each world tick for
+## depleted items: current += maximum * 0.001f, clamped to maximum.
+## Weapon, armour and quick-item setters all use the same 0x3a83126f rate.
+static func recharge(id: String) -> String:
+	if "~" not in id or spent(id) <= 0.0:
+		return id
+	var e := energy(id)
+	return with_charge(id, minf(e, _f32(charge(id) + e * _f32(0.001))))
+
+
 ## Maximum durability: prototype durability x material durability (item builder).
 static func max_durability(id: String) -> float:
 	var i := info(id)
@@ -252,18 +262,7 @@ static func from_spec(s: String) -> Array:
 
 
 static func parse_stack(s: String) -> Array:
-	var native := s.strip_edges().to_lower()
-	if native.begins_with("prototype.") or native.begins_with("modifier.") \
-			or native.begins_with("rune.") \
-			or native.begins_with("spell container[") or native.begins_with("spell container ["):
-		return from_spec(s)
-	s = s.strip_edges()
-	var n := 1
-	var b := s.find("[")
-	if b >= 0:
-		n = maxi(1, s.substr(b + 1).to_int())
-		s = s.substr(0, b).strip_edges()
-	return [s.to_lower(), n]
+	return from_spec(s)
 
 
 ## Native loot3007/2/3 and ready spell3008 remain distinct even with no runes.

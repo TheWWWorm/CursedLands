@@ -374,7 +374,7 @@ func melee(att: GameUnit, def: GameUnit, roll := {}) -> void:
 ## direct path has no life test): the charge is spent and the
 ## spell shown; an area spell still reaches the living round it.
 func weapon_spell(att: GameUnit, def: GameUnit) -> void:
-	if not att.has_meta("hero"):
+	if not att.has_meta("hero") or not Spells.unit_casts_allowed(world):
 		return
 	var h: Dictionary = att.get_meta("hero")
 	var ws: Array = h.get("weapons", [])
@@ -440,7 +440,7 @@ func missed(def: GameUnit, src: GameUnit) -> void:
 ## the unit lives, only Healing fires. Each needs its charge to
 ## hold the stamina cost, which it loses; the spell is cast at the wearer.
 func armor_spells(u: GameUnit, struck: bool) -> void:
-	if not u.has_meta("hero"):
+	if not u.has_meta("hero") or not Spells.unit_casts_allowed(world):
 		return
 	var h: Dictionary = u.get_meta("hero")
 	var armors: Array = h.get("armors", [])

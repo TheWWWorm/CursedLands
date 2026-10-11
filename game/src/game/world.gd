@@ -920,6 +920,9 @@ func _tick_body(dt: float) -> void:
 	_trap_t += dt
 	while _trap_t >= GameUnit.TICK:
 		_trap_t -= GameUnit.TICK
+		if session:
+			session._ic_spells()
+			session._recharge_items()
 		started = Time.get_ticks_usec() if profile_simulation else 0
 		traps.tick()
 		profile_record("traps",started)

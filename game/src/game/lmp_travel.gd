@@ -6,7 +6,7 @@ extends RefCounted
 
 const FIELDS := ["world", "zone_id", "_snap_at_ms", "_snap_count", "_last_snap", "_exit_t",
 	"_leave_armed", "_auto_exit", "_auto_world", "travel_options", "_travel_ev", "map_open",
-	"_dialog_ev", "_alone_exit", "_alone_world", "_ic_t", "_lmp_entrance"]
+	"_dialog_ev", "_alone_exit", "_alone_world", "_lmp_entrance"]
 
 var session: Session
 var contexts := {}                 # zone id -> the world's Session fields
@@ -213,7 +213,7 @@ func _new_context(id: String) -> Dictionary:
 	return {"world": null, "zone_id": id, "_snap_at_ms": 0, "_snap_count": 0,
 		"_last_snap": {}, "_exit_t": 0.0, "_leave_armed": -1, "_auto_exit": -1,
 		"_auto_world": null, "travel_options": [], "_travel_ev": {}, "map_open": false,
-		"_dialog_ev": {}, "_alone_exit": {}, "_alone_world": null, "_ic_t": 0.0,
+		"_dialog_ev": {}, "_alone_exit": {}, "_alone_world": null,
 		"_lmp_entrance": 1, "world_time": session.state.world_time, "day": session.state.day}
 
 

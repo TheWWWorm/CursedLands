@@ -887,12 +887,8 @@ func _enter_zone(id: String, entrance: int, autosave := true) -> void:
 	# LoadSave): its loading screen also shows frames 1 and 5.
 	LoadingScreen.begin(get_tree(), z, LoadingScreen.SAVED_ZONE if state.zones.has(id) else LoadingScreen.NEW_ZONE)
 	_build_world(z, true)
-	# Belt items come into a zone full: the party's units are made anew from
-	# the hero records with each belt item's = (the
-	# records' copies are refilled as well when the units are written back,
-	# ). Weapons and armour go through the plain
-	# copy (world), which keeps, so
-	# their charge carries over and never refills.
+	# Belt items come into a zone full. Weapons and armour carry their
+	# current charge across the transfer and continue recharging in the world.
 	for k in state.heroes:
 		for h: Dictionary in state.heroes[k]:
 			var q = h.get("quick", [])
@@ -3637,7 +3633,6 @@ func notify_got(player: int, items: Array, money := 0, broken := false) -> void:
 
 # ------------------------------------------------------------------ replication
 
-var _ic_t := 0.0
 var snap_usec := 0   # host: time spent building and sending snapshots (tools report it)
 
 
@@ -3652,9 +3647,13 @@ var snap_usec := 0   # host: time spent building and sending snapshots (tools re
 ##  and the countdown becomes duration − 3, or 8 when
 ## that is below 1. A charge short of the cost fires nothing.
 func _ic_spells() -> void:
+	# cast_unit rejects village casts. Do not consume charge or start a
+	# cooldown for an effect that cannot be dispatched there.
+	if not world.authority or not Spells.unit_casts_allowed(world):
+		return
 	var protos: Array = GameData.db.table("spell_prototypes")
 	var spent := false
-	for u: GameUnit in world.units.values():
+	for u: GameUnit in world.party_units():
 		if u.dead or not u.has_meta("hero"):
 			continue
 		var h: Dictionary = u.get_meta("hero")
@@ -3696,6 +3695,42 @@ func _ic_spells() -> void:
 		_state_dirty = true
 
 
+## Items recharge after the authoritative 55 ms world step, including in
+## camp and after save/load. Spare weapons, belts and carried copies use the
+## same rate; neither the owner's health nor the active weapon stops it.
+func _recharge_items() -> void:
+	if not world.authority:
+		return
+	var bags: Array[Array] = []
+	var owners := {}
+	for u: GameUnit in world.party_units():
+		if not u.has_meta("hero"):
+			continue
+		var h: Dictionary = u.get_meta("hero")
+		for key in ["armors", "weapons", "quick"]:
+			if _recharge_list(h.get(key, [])):
+				_state_dirty = true
+		owners[loot_player(u)] = true
+	for owner: int in owners:
+		var bag := coop.owner_bag(owner)
+		# Several co-op class heroes can share the very same campaign bag.
+		if bags.any(func(other: Array): return is_same(other, bag)):
+			continue
+		bags.append(bag)
+		if _recharge_list(bag):
+			_state_dirty = true
+
+
+static func _recharge_list(items: Array) -> bool:
+	var changed := false
+	for i in items.size():
+		var next := Items.recharge(items[i])
+		if next != items[i]:
+			items[i] = next
+			changed = true
+	return changed
+
+
 func _physics_process(dt: float) -> void:
 	if get_tree().paused or loading_game or movie_active() or local_host.awaiting_view:
 		return
@@ -3719,10 +3754,6 @@ func _tick_world_session(dt: float) -> void:
 			_exit_t = 0.25
 			_check_exits()
 			SmileFaces.battle_tick(self)   # remake option "smile_faces": a won fight
-		_ic_t += dt
-		while _ic_t >= GameUnit.TICK:
-			_ic_t -= GameUnit.TICK
-			_ic_spells()
 		# Campaign state (vars, quests, items) reaches clients in batches.
 		if not lmp_travel:
 			_sync_t -= dt

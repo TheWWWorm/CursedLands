@@ -379,7 +379,7 @@ static func cast_unit(world: GameWorld, caster: GameUnit, spell: String, target:
 	if caster == null or not is_instance_valid(caster) or p.proto.is_empty() \
 			or p.code in ["possession", "link", "charm"]:
 		return
-	if (world.session and world.session.shop_available()) or (not world.session and bool(world.zone.get("village", false))):
+	if not unit_casts_allowed(world):
 		return
 	var n := int(p.targets)
 	var flags := int(p.flags)
@@ -410,6 +410,11 @@ static func cast_unit(world: GameWorld, caster: GameUnit, spell: String, target:
 				and passes_filter(world, caster, pick, int(p.filter)):
 			_cast_unit_one(world, caster, spell, p, pick, pick.pos, auto_heal)
 			n -= 1
+
+
+## Charged equipment checks the same dispatch gate before spending energy.
+static func unit_casts_allowed(world: GameWorld) -> bool:
+	return not world.session.shop_available() if world.session else not bool(world.zone.get("village", false))
 
 
 static func _cast_unit_one(world: GameWorld, caster: GameUnit, spell: String, p: Dictionary,
