@@ -92,8 +92,14 @@ func scene(map_name: String) -> void:
 			var code := t._water_mat.shader.code
 			check(code.contains("global uniform sampler2D ei_cloud_noise")==(clouds!=0),"cloud sampler follows the actual composed program")
 			var samplers := 0
-			for match_ in RegEx.create_from_string("(?:global )?uniform sampler[^;]+;").search_all(code):
-				if not "hint_depth_texture" in match_.get_string() and not "hint_screen_texture" in match_.get_string(): samplers+=1
+			# Count the renderer's preprocessed local uniforms: the source also
+			# contains a Forward+-only mirror texture which GLES does not bind.
+			var local_uniforms := {}
+			for uniform: Dictionary in t._water_mat.shader.get_shader_uniform_list(): local_uniforms[uniform.name]=true
+			check(local_uniforms.has("atlases"),"compiled water uniforms are available for the sampler audit")
+			for match_ in RegEx.create_from_string("(global )?uniform sampler\\w+ (\\w+)[^;]+;").search_all(code):
+				if "hint_depth_texture" in match_.get_string() or "hint_screen_texture" in match_.get_string(): continue
+				if match_.get_string(1)!="" or local_uniforms.has(match_.get_string(2)): samplers+=1
 			if Portability.compatibility() and not legacy:
 				check(samplers<=9,"water leaves GLES scene depth and screen slots available")
 			var label := map_name+"-cloud"+str(clouds)+"-mode"+str(mode)
