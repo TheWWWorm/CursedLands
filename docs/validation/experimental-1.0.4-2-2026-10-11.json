@@ -1,0 +1,627 @@
+{
+  "date": "2026-10-11",
+  "version": "1.0.4-experimental.2",
+  "status": "Qualified release payloads; publication is recorded separately after upload verification.",
+  "release_url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.4-experimental.2",
+  "game_source_commit": "a9e597c91845aeada89aeb4c6a2bb2808fbd5e77",
+  "previous_release_commit": "ffbe648f2c62c44dab0925b6d4ac94f380631b6f",
+  "network_protocol": 14,
+  "mod_api": 1,
+  "changes": [
+    "Validate saved mod compatibility before disabling the current world or notifying connected peers of loading.",
+    "Preserve current simulation, commands, saving, pause, speed and command generation when a save is refused.",
+    "During restoration of different saved mod values by a host alone, refuse transitional joins with a retry notice; admit matching guests after completion."
+  ],
+  "environment": {
+    "desktop": "Ubuntu 24.04 x86_64; production Godot 4.7 with the existing twelve engine patches and native helper",
+    "rendered_desktop": "Compatibility renderer on NVIDIA GeForce RTX 3090 Ti",
+    "android": "Retroid Pocket 5, Android 13, Adreno 650, Compatibility renderer; private QA package 77 for final payload, 76 for prior release spell-input checks",
+    "input": "Synthetic Godot keyboard, mouse and gamepad events through normal handlers; no manual controller acceptance claim",
+    "network": "Actual ENet host/guest peers in independent SceneMultiplayer branches in one process for load refusal and transitional joins; separate authority process/service in worker checks",
+    "isolation": "Disposable desktop XDG state and device mod profiles; settings, saves and profile directories restored. Public Android application untouched.",
+    "timings": "Elapsed times are diagnostic only; some functional tests overlap other task-owned builds or tests. No performance claim."
+  },
+  "final_payload_checks": {
+    "checks": 140,
+    "failures": 0,
+    "runs": [
+      {
+        "run": "mod-load-sync-final",
+        "checks": 29,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/mod-load-sync-final/run.log",
+          "sha256": "5730b9de23da5cb26787568f4a1f1e1228af2f996f751505182df8e2026c0ceb"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/mod-load-sync-final/run.json",
+          "sha256": "274f7470b94d11d8aa01a6fb06797429167d4f815e6ce5e5167da304f8f00549"
+        },
+        "seconds": 29.257826301967725,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/mod_load_rejection.gd": "700a9b75a9141e1a2ac7d3dac129274b7791a58794d44b3d250ac1cdac840e69",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "44e8314490618c2ba33376d3fed066245adda4ea7b953e839bde11494c50736b",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "independent_completion_verification": null
+      },
+      {
+        "run": "mod-worker",
+        "checks": 19,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/mod-worker/run.log",
+          "sha256": "e932374d00145c0da3535843a221c6935d1e4d24403b668e8b515ed90758ec09"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/mod-worker/run.json",
+          "sha256": "834f0fbd1cc2f926ac9a82647e01f8578111cff3b8330f4b36c288d19d0e0619"
+        },
+        "seconds": 17.182966356980614,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/mod_worker.gd": "68cd60a59245cdaca2b7a2af3c4d8f628b20081817f0193cb151c411437abc44"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "44e8314490618c2ba33376d3fed066245adda4ea7b953e839bde11494c50736b",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "independent_completion_verification": null
+      },
+      {
+        "run": "android-mod-load-final",
+        "checks": 29,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/android-mod-load-final/engine.log",
+          "sha256": "51cbecff9d4bb2fae59cd919908d6b22507e8020acc11ca2f988c5b32fedd923"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/android-mod-load-final/run.json",
+          "sha256": "a6fa1a2edb5c204c0b510d4944b85fae49bca6bfec69b2ed46df912fb0bc11cc"
+        },
+        "seconds": 27.48923945426941,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/mod_load_rejection.gd": "700a9b75a9141e1a2ac7d3dac129274b7791a58794d44b3d250ac1cdac840e69",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317",
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+        },
+        "build_sha256": {},
+        "warnings": [],
+        "independent_completion_verification": null
+      },
+      {
+        "run": "android-mod-join",
+        "checks": 18,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/android-mod-join/engine.log",
+          "sha256": "961e31a9e92c9fd367cf2e5493871302bdc1e07cc0b7287d17348ac31fe13bdb"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/android-mod-join/run.json",
+          "sha256": "bbf2fdf7799e829b650983ebb05559e4457ef47433790287f7bb15bcf3ee5f01"
+        },
+        "seconds": 21.359044790267944,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/mod_load_join.gd": "e881e89e0788b32cffe17131c583f6934e1e7569ce0df9312e24deb98b2a1a7e",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317",
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+        },
+        "build_sha256": {},
+        "warnings": [],
+        "independent_completion_verification": null
+      },
+      {
+        "run": "android-mod-worker",
+        "checks": 19,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/android-mod-worker/engine.log",
+          "sha256": "68ffa4b9bcc8b876278634fc34bc1ac4d3fa3c94a68b4eeaabebf04c9092e7df"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/android-mod-worker/run.json",
+          "sha256": "71fcec03a276397dbfadbe279fe004ea7f7696437b66865a1980605000a621ee"
+        },
+        "seconds": 27.48141574859619,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/mod_worker.gd": "68cd60a59245cdaca2b7a2af3c4d8f628b20081817f0193cb151c411437abc44",
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+        },
+        "build_sha256": {},
+        "warnings": [],
+        "independent_completion_verification": null
+      },
+      {
+        "run": "android-lifecycle",
+        "checks": 26,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/android-lifecycle/engine.log",
+          "sha256": "71762f68810e7d85bf16e7db674015f69e799985c611894ac497d6924769e603"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/android-lifecycle/run.json",
+          "sha256": "a9fad1ac0f73401b29f1a00217932abb3c0c1c861fa56734045f77b17b72ff7b"
+        },
+        "seconds": 46.19365096092224,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/android_local_lifecycle.gd": "a07f6b1e2c880e21794ccbedfc2ff6ffe872c5e06a8cd4dcee335f23f3bd6189",
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+        },
+        "build_sha256": {},
+        "warnings": [],
+        "independent_completion_verification": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/android-lifecycle/qualification.json",
+          "sha256": "4015b1556c6bbe70a91f8bf56ea362dc7829b103b198bfdaa7372a70370965c8"
+        }
+      }
+    ]
+  },
+  "identical_compiled_candidate_checks": {
+    "checks": 66,
+    "failures": 0,
+    "runs": [
+      {
+        "run": "mod-load-fixed",
+        "checks": 19,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/mod-load-fixed/run.log",
+          "sha256": "49c4e23e94bc8d41d9d6f5d6979517aa9e7f0cb91f590b9cce24f4a9242cc528"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/mod-load-fixed/run.json",
+          "sha256": "efb904735e369b16c4611bb96b9e5534460218b7ab145cba866552de33de0e46"
+        },
+        "seconds": 26.253545558953192,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/mod_load_rejection.gd": "060c174fdc2c68858d5b38ade25f98ed0bbe4e880906d696c4953efbaebef31d",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "98e2d9d59bf80623da26b478ddf7d79865e97a5faee48da84519ca6b1aafac56",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "independent_completion_verification": null
+      },
+      {
+        "run": "mod-load-edges-shown",
+        "checks": 29,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/mod-load-edges-shown/run.log",
+          "sha256": "d9f8e6ac62c198aac7b2665f49ea031f94269a46f7704d9970977658423e0fbf"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/mod-load-edges-shown/run.json",
+          "sha256": "c4d2c55732449e256456d7390010120e96f61c4b9e3611a4e6a4565f66f5d5e5"
+        },
+        "seconds": 30.270959500980098,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/mod_load_rejection.gd": "700a9b75a9141e1a2ac7d3dac129274b7791a58794d44b3d250ac1cdac840e69",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "98e2d9d59bf80623da26b478ddf7d79865e97a5faee48da84519ca6b1aafac56",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.",
+          "WARNING: LanDiscovery: port 27016 is in use; this game is not listed on the local network."
+        ],
+        "independent_completion_verification": null
+      },
+      {
+        "run": "mod-load-join",
+        "checks": 18,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/mod-load-join/run.log",
+          "sha256": "2b3bd834ee01db6ca512b2c5a408df5738af1a3edff506698cb6866de86fc037"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/mod-load-join/run.json",
+          "sha256": "89054d01761f6d50ad21614234f1030884a30bee278a272fdee66d992cccc2e8"
+        },
+        "seconds": 13.154466933978256,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/mod_load_join.gd": "e881e89e0788b32cffe17131c583f6934e1e7569ce0df9312e24deb98b2a1a7e",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "98e2d9d59bf80623da26b478ddf7d79865e97a5faee48da84519ca6b1aafac56",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "independent_completion_verification": null
+      }
+    ],
+    "qualification": {
+      "candidate": "goal-audit-20261011/candidate",
+      "final_source_commit": "a9e597c91845aeada89aeb4c6a2bb2808fbd5e77",
+      "compiled_scripts_identical": 274,
+      "candidate_native_binaries_unchanged": true,
+      "only_game_source_change_after_candidate": "project.godot version: 1.0.4-experimental.1 to 1.0.4-experimental.2"
+    },
+    "join_method": "Hold the real host loading transition open across a real guest hello, restore the saved state, then reconnect with matching options."
+  },
+  "additional_previous_release_checks": {
+    "checks": 1136,
+    "failures": 0,
+    "runs": [
+      {
+        "run": "lmp-corrected",
+        "checks": 23,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/lmp-corrected/run.log",
+          "sha256": "6c141cf51dcdc7df0c864393479e9e9443275a80deea09e2ece95b44857c15de"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/lmp-corrected/run.json",
+          "sha256": "ffa47097b4081c3e6e9b0843b49be5a9521f6c9bfb24844dcd65cf10a4ab1f0f"
+        },
+        "seconds": 25.2262221010169,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/local_host_lmp.gd": "4cd01c91f390b82f872f64fe3cc8ba01f3eee153dabf08a37c2696606bc208e2"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "bf3b5d1c13f1aac60aa74eb64780e6a1659c04bc315e1a1c83a6e3ae3029efe7",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "independent_completion_verification": null
+      },
+      {
+        "run": "repeat-input-headless-v2",
+        "checks": 371,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/repeat-input-headless-v2/run.log",
+          "sha256": "bf38d36a03c356e107ecc234bf3c3e4a2567977cbd060ea73c8d8cb313e0e798"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/repeat-input-headless-v2/run.json",
+          "sha256": "1c5251b6edc1db24714798da6241921d5b44148deb73a762e5528eea98b7e826"
+        },
+        "seconds": 13.137247550999746,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/repeated_spells_input.gd": "e4c6af0078f94fbcba5cf5514167b6595882945d710a18ed74b156d601f3f29c",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/third_person_kbm.gd": "e102ccfddea5c0cc197f67b9165a8de48b1378529f2522ec7b602c2b38dd5c21"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "bf3b5d1c13f1aac60aa74eb64780e6a1659c04bc315e1a1c83a6e3ae3029efe7",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "independent_completion_verification": null
+      },
+      {
+        "run": "repeat-input-rendered-v2",
+        "checks": 371,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/repeat-input-rendered-v2/run.log",
+          "sha256": "a365678414fdcfd4c6cbd89838c05fa835fc1f62c6d914cc0c1af32dc036efe5"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/repeat-input-rendered-v2/run.json",
+          "sha256": "3a4661a46731809860c668c62edeffeb09fcfac8c902354d1f0717b0a9ea8ea0"
+        },
+        "seconds": 27.26017939002486,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/repeated_spells_input.gd": "e4c6af0078f94fbcba5cf5514167b6595882945d710a18ed74b156d601f3f29c",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/third_person_kbm.gd": "e102ccfddea5c0cc197f67b9165a8de48b1378529f2522ec7b602c2b38dd5c21"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "bf3b5d1c13f1aac60aa74eb64780e6a1659c04bc315e1a1c83a6e3ae3029efe7",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+        },
+        "warnings": [
+          "WARNING: The Compatibility renderer does not support overriding the GPU with the --gpu-index command line argument. Falling back to the default GPU for OpenGL applications.",
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "independent_completion_verification": null
+      },
+      {
+        "run": "android-repeat-input",
+        "checks": 371,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/android-repeat-input/engine.log",
+          "sha256": "eb39313c925192e7aa9df247544a15f2b0db586fb9c9feb21dd24eda6c1fbebc"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/android-repeat-input/run.json",
+          "sha256": "0ccbe5ba8fd7ca929158a2d3a0f6f1f623c581df81418e3f81fcf1747c7641f3"
+        },
+        "seconds": 38.455333948135376,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/repeated_spells_input.gd": "e4c6af0078f94fbcba5cf5514167b6595882945d710a18ed74b156d601f3f29c",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/third_person_kbm.gd": "e102ccfddea5c0cc197f67b9165a8de48b1378529f2522ec7b602c2b38dd5c21",
+          "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+        },
+        "build_sha256": {},
+        "warnings": [],
+        "independent_completion_verification": null
+      }
+    ],
+    "inheritance": "Experimental 2 changes only Session loading compatibility/admission methods and project version; the complete compiled-script comparison is recorded in archive-readback.json. Final payload checks cover the changed methods.",
+    "spell_input_method": "Original gz1g scene and native models/animations; prepared actors; HUD slot click, keyboard hotkey, LB/D-pad/A selection and target confirmation; queued host command, normal stamina, effect application, refresh and expiry. Actor and spell-timer ticks are stepped by the fixture.",
+    "spell_cases": "Weakness, slow, strength and healing, each cast three times through classic, keyboard third-person and gamepad input: 36 casts per run.",
+    "multiplayer_fixture_correction": "The base bz1mpg allows walking/running and rejects crawling/kneeling. The corrected test checks these rules and verifies crawl/walk in the quest field; no production change was required."
+  },
+  "diagnostic_comparisons": {
+    "load_refusal": [
+      {
+        "run": "mod-load-baseline",
+        "checks": 19,
+        "failures": 6,
+        "accepted": false,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/mod-load-baseline/run.log",
+          "sha256": "0fba550dbf758e7e5f5adf6fc7c11605babfe52e913ea9e340728beb6e9b0831"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/mod-load-baseline/run.json",
+          "sha256": "2e0ef424692bb7c5c880981971ef86b048d4356f2a4e91c25ec96833802bf7f0"
+        },
+        "seconds": 31.282279864011798,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/mod_load_rejection.gd": "060c174fdc2c68858d5b38ade25f98ed0bbe4e880906d696c4953efbaebef31d",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "bf3b5d1c13f1aac60aa74eb64780e6a1659c04bc315e1a1c83a6e3ae3029efe7",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "independent_completion_verification": null
+      },
+      {
+        "run": "mod-load-fixed",
+        "checks": 19,
+        "failures": 0,
+        "accepted": true,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/mod-load-fixed/run.log",
+          "sha256": "49c4e23e94bc8d41d9d6f5d6979517aa9e7f0cb91f590b9cce24f4a9242cc528"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/mod-load-fixed/run.json",
+          "sha256": "efb904735e369b16c4611bb96b9e5534460218b7ab145cba866552de33de0e46"
+        },
+        "seconds": 26.253545558953192,
+        "source_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/mod_load_rejection.gd": "060c174fdc2c68858d5b38ade25f98ed0bbe4e880906d696c4953efbaebef31d",
+          "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317"
+        },
+        "build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "98e2d9d59bf80623da26b478ddf7d79865e97a5faee48da84519ca6b1aafac56",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+        },
+        "warnings": [
+          "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+        ],
+        "independent_completion_verification": null
+      }
+    ],
+    "baseline_failure": "Different valid saved mod values were rejected after the loading transition began, leaving host/guest loading flags set and the simulation disabled.",
+    "multiplayer_fixture_baseline": {
+      "run": "lmp-baseline",
+      "checks": 19,
+      "failures": 2,
+      "accepted": false,
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/lmp-baseline/run.log",
+        "sha256": "754334a641e193de4bee68e7ef8666153d3ba5afcbe91542ea334f5e86a0300d"
+      },
+      "metadata": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/lmp-baseline/run.json",
+        "sha256": "6e0cd4975f856ea36c7b3d1dc31bc63641e5a0b0c0e428f8a53afa29d37e8b1c"
+      },
+      "seconds": 34.31825521599967,
+      "source_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/local_host_lmp_baseline.gd": "56bd18e158214dd560eb3ce29cb94ef284049e869ba784921c535c6ac763839e"
+      },
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "bf3b5d1c13f1aac60aa74eb64780e6a1659c04bc315e1a1c83a6e3ae3029efe7",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+      },
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "independent_completion_verification": null
+    }
+  },
+  "prior_release_qualification": {
+    "record": "experimental-1.0.4-2026-10-11.json",
+    "scope": "Mod profiles, menus, shared rules and authority; Android lifecycle and delayed-owner handling; direct movement, combat recovery and pickup on keyboard/gamepad.",
+    "basis": "All native binaries are unchanged. Session is the only changed compiled script. New save-load/worker tests cover its changed methods."
+  },
+  "existing_original_campaign_qualification": {
+    "issue": "https://github.com/TheWWWorm/CursedLands/issues/1",
+    "record": "experimental-1.0.4-2026-10-11.json",
+    "scope": "Original Evil Islands captive dialogue in both conversation orders, rune construction, repeated spells. The captive fix 218eafa is already in stable 1.0.3. No new dialogue or spell production changes in this release."
+  },
+  "build": {
+    "source_commit": "a9e597c91845aeada89aeb4c6a2bb2808fbd5e77",
+    "production_scripts": 274,
+    "all_platform_compiled_scripts_identical": true,
+    "android_public_application_id": "org.cursedlands.engine",
+    "android_public_version_code": 20,
+    "android_public_debuggable": false,
+    "android_public_certificate_retained": true,
+    "android_private": {
+      "private_package": "org.cursedlands.performance",
+      "version_code": 77,
+      "production_pack": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.2-linux-x86_64",
+      "bootstrap": "validation.json only in private APK",
+      "engine_sha256": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+      "native_sha256": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58",
+      "apk_sha256": "9e456cc042aebae03420c919ddf782fce381390ab62635dd9658032eb528039f"
+    },
+    "private_android_differences": [
+      "assets/src/main.gdc"
+    ],
+    "native_binaries": "Qualified 1.0.3 engines/helpers reused unchanged; Android includes its existing thirteenth service patch. macOS uses official universal Godot and the script implementations.",
+    "no_original_assets_saves_or_private_hooks_in_public_payloads": true,
+    "audits": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/build.json",
+        "sha256": "262ad2f2f25b44c816f56ee87a9f1a137f811ec67e4ae8880bc954a4f5a302d1"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/android-build.json",
+        "sha256": "12fe04af34532b7d91e4cf9e6114d878d157fccf4250d44b96c332d99b7fb4dc"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/android-audit.json",
+        "sha256": "8de339229a17c36771bb2c3c34565cb2cedf712ae56bb649e1fa164d0816f3cf"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/package-audit.json",
+        "sha256": "2ac7bf9a1ecf6a10161a5d4fed55f673cac37b9091fd858ee84cdfe38b9873d2"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/archive-readback.json",
+        "sha256": "844936b0bda17aa39d12b9325528299700eb8dfd51d0c5a51fa3928f5b23961c"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/candidate-qualification.json",
+        "sha256": "32028d485f384f665569041ca90d43191bac76aefd95926920c5aec98d515326"
+      }
+    ],
+    "assets": [
+      {
+        "name": "CursedLands-1.0.4-experimental.2-linux-x86_64.tar.gz",
+        "bytes": 36631152,
+        "sha256": "d811590965222a564b30324452b39a9192121e9bf88916526e378fb9fdc59788"
+      },
+      {
+        "name": "CursedLands-1.0.4-experimental.2-windows-x86_64.zip",
+        "bytes": 37833148,
+        "sha256": "377938cf3d448f9c3cdb65ead018a2339c7459e6c381700a2dabfb5e9ff97cbb"
+      },
+      {
+        "name": "CursedLands-1.0.4-experimental.2-macos-universal.zip",
+        "bytes": 64139519,
+        "sha256": "95675bbc6682db149ead1f2645f653d2103f75b3e341f56d2852ab461111fa83"
+      },
+      {
+        "name": "CursedLands-1.0.4-experimental.2-android.apk",
+        "bytes": 30378576,
+        "sha256": "287aa9c5e1576ad400663aba1ab277cdf2bb5024fda4b8f4ae17219598987b61"
+      },
+      {
+        "name": "Quick-recovery-1.0.0.eimod",
+        "bytes": 546,
+        "sha256": "f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b"
+      }
+    ],
+    "checksums": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/assets/SHA256SUMS.txt",
+      "sha256": "e12a02137eb45fad4ad1035d21e39a221e9acb3d93bdec5fd5714d54d4480021"
+    }
+  },
+  "superseded_attempts": [
+    {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/repeat-input-headless",
+      "reason": "All 371 assertions passed, but unregistered synthetic joypad 42 triggered metadata lookup error. Fixture now selects explicit Xbox glyphs; final headless/rendered/Android runs have no errors."
+    },
+    {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/repeat-input-rendered",
+      "reason": "Same synthetic joypad metadata fixture issue; replaced by repeat-input-rendered-v2."
+    },
+    {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/mod-load-sync",
+      "reason": "Relative package path failed fixture import. Stopped and rerun with an absolute path as mod-load-sync-final."
+    },
+    {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/android-mod-load",
+      "reason": "29 assertions passed; runner stopped on output-file creation before fixture cleanup/completion marker. Runner now waits for the marker and output; android-mod-load-final completed cleanly."
+    },
+    {
+      "run": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-2-20261011/android-lifecycle",
+      "reason": "Invocation used ANDROID_FREEZE_PROBE instead of the actual ANDROID_FREEZE_REPORT marker. Engine log/result independently confirm 26/0, worker shutdown and clean exit; qualification.json records acceptance without rewriting the original runner metadata. Runner now checks the requested marker against fixture source before launch."
+    }
+  ],
+  "cleanup": {
+    "private_package": "org.cursedlands.performance",
+    "private_version_code": 72,
+    "restored_private_apk_sha256": "961975fc5c277c4e23b2da42d21429eda0439070734609f0101e0a6f3e991aea",
+    "no_private_process": true,
+    "no_test_autorun": true,
+    "restored_recorded_settings": true,
+    "restored_settings": {
+      "settings.cfg": true,
+      "renderer.cfg": true,
+      "keyboard.ini": true,
+      "gamepad.ini": true,
+      "mod_settings.json": true
+    },
+    "settings_sha256": {
+      "settings.cfg": "a6d3fdeba6fa0e2a8751d7f12ad6afcaa2cb6d50734d64d69f6cdaae831e3b3e",
+      "renderer.cfg": "85196ecfb5c62c1c82d416b49f6d8c5f47fa86f275ae66f6cb475e9c9a6c6aae",
+      "keyboard.ini": null,
+      "gamepad.ini": null,
+      "mod_settings.json": null
+    },
+    "settings_baseline": "/home/llm2x/Documents/EI/local/scratchpad/goal-audit-20261011/android-repeat-input",
+    "public_app_not_installed_or_modified_by_tests": true,
+    "all_device_fixtures_restored_their_recorded_save_and_mod_state": true
+  },
+  "limits": [
+    "No Galaxy A17 device-specific acceptance.",
+    "No complete campaign or manual physical-controller/touch playthrough.",
+    "Load refusal/join tests use local ENet peers, not WAN or a multi-device session.",
+    "Windows/macOS were cross-built and structurally audited, not launched on their target operating systems. macOS is unsigned and not notarized.",
+    "No new browser build or interactive browser/native-file-picker acceptance.",
+    "Private QA logs/captures may remain; saved state, options and test autorun paths are restored."
+  ]
+}
