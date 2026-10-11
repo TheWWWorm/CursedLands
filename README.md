@@ -70,7 +70,7 @@ In a camp's skills screen, **Refund all points** returns the experience spent on
 
 Training purchases apply immediately. The default interface hides the unused Accept/Cancel controls on the skills screen and explains this; trade controls still reflect the current transaction.
 
-## Mods and game rules (development source)
+## Mods and game rules (experimental)
 
 1.0.4 Experimental 1 includes **Mods and rules** in the main menu, Options and the in-game menu. Named profiles keep their own saves and network characters; data mods can provide configurable revival, texture/sound replacements and selected balance patches. Shared rules follow the host, and sandbox profiles keep cheat-enabled progress separate. See the [player and mod-author guide](docs/mods.md) and [Quick recovery example](examples/mods/quick-recovery/mod.json). These additions require the experimental build; stable 1.0.3 does not include them.
 

@@ -1,0 +1,661 @@
+{
+  "date": "2026-10-11",
+  "status": "Qualified release payloads; publication is recorded separately after upload verification.",
+  "version": "1.0.4-experimental.1",
+  "release_url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.4-experimental.1",
+  "game_source_commit": "0722d7332a71083b2ea6aef25e54fc25c0a22b6d",
+  "base_commit": "723025cd544559752bab397ff0f8b32df2c08388",
+  "network_protocol": 14,
+  "mod_api": 1,
+  "environment": {
+    "desktop": "Ubuntu 24.04 x86_64, production Godot 4.7 engine with existing twelve engine patches and native helper",
+    "rendered_desktop": "Compatibility renderer, NVIDIA GeForce RTX 3090 Ti; menu and layout checks, no performance measurements",
+    "android": "Retroid Pocket 5, Android 13, Adreno 650, Compatibility renderer, private QA package version 76",
+    "android_gamepad": [
+      {
+        "guid": "58626f7820576972656c65737320436f",
+        "id": 0,
+        "name": "Xbox Series X Controller"
+      }
+    ],
+    "input_method": "Injected Godot keyboard/gamepad events through normal input handlers; Home/return through ADB. No manual physical-controller playthrough.",
+    "isolation": "Disposable desktop XDG state. Device fixtures back up and restore settings, named saves, autosave and mod/profile directories; public application unchanged."
+  },
+  "final_payload_checks": {
+    "checks": 221,
+    "failures": 0,
+    "runs": [
+      {
+        "run": "direct-controls",
+        "checks": 34,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/direct-controls/run.log",
+          "sha256": "0eb271fbd1d33b1104512ddf8d927818ae1246c9c970011f8ab5eeed35e2102a"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/direct-controls/run.json",
+          "sha256": "283384213c90a316b7bf3f907bca779fcaa96c2477986787bd2edcb4b1b7c423"
+        },
+        "seconds": 13.17025173699949
+      },
+      {
+        "run": "direct-movement",
+        "checks": 26,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/direct-movement/run.log",
+          "sha256": "d784f2f790a9bf30eeca5a1d8fba769bf7e20e5469b007a3cb092b3662825f20"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/direct-movement/run.json",
+          "sha256": "ab5998f316eadb06317f137ab34b5701606fa9ed717e9b6bc5d597436f64ca1d"
+        },
+        "seconds": 9.14337261300534
+      },
+      {
+        "run": "direct-coop",
+        "checks": 19,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/direct-coop/run.log",
+          "sha256": "be722785ecf357dd4005c78bb4a54209d8d9e2b5917bc5139d342c9529a429bc"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/direct-coop/run.json",
+          "sha256": "74e1018aedfcb519d5c24dfc038e361ea4d9b9fe59dcc8f1ed2d870a5e04c337"
+        },
+        "seconds": 33.2978157660109
+      },
+      {
+        "run": "mod-worker",
+        "checks": 19,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/mod-worker/run.log",
+          "sha256": "d793d6b1e33a7e5c9d639276f903697f7b1aa781676c0d87163ea7c144ed93aa"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/mod-worker/run.json",
+          "sha256": "30f05b190c900bb148359182b00d6b89bee80b2446dde4867349e8ea2876e38c"
+        },
+        "seconds": 18.243663659959566
+      },
+      {
+        "run": "android-controls",
+        "checks": 35,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-controls/engine.log",
+          "sha256": "736a94109a9cabfa8bfeece1843e248f3c8ca58c43906e42ac7179f73e619a63"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-controls/run.json",
+          "sha256": "345d08ac65aea3d640e6d9791b43f9417f288322a6697e5eab0a0bf4f58052d4"
+        },
+        "seconds": 23.786516904830933,
+        "saved_state_restored": true
+      },
+      {
+        "run": "android-movement",
+        "checks": 26,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-movement/engine.log",
+          "sha256": "a9f342c971531737392c289ffba5e51f693df77a7363f414f76900f1114fadf9"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-movement/run.json",
+          "sha256": "c9e1a7e831ae04228209f3781e3e6b67fbb064acdf308cc71b14602b39710136"
+        },
+        "seconds": 13.285965919494629,
+        "saved_state_restored": true
+      },
+      {
+        "run": "android-mod-worker",
+        "checks": 19,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-mod-worker/engine.log",
+          "sha256": "6e7ae49c5d3a58144fed9cd8f0b48e4980c43d13b376687c953134a20335cdb2"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-mod-worker/run.json",
+          "sha256": "37486a1202ca32f0805ace8336f7077b2f6fe44356a3786d0027e78a411750fe"
+        },
+        "seconds": 27.89647674560547,
+        "saved_state_restored": true
+      },
+      {
+        "run": "android-lifecycle",
+        "checks": 26,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-lifecycle/engine.log",
+          "sha256": "6b018ddb6a7c3bf2b214f4c1ecfa2fa641eb1c37fa340a182976016079855851"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-lifecycle/run.json",
+          "sha256": "c6ac6e1076172de00f90ba4883df02909c647b0a6d63f60118ee723208175ed2"
+        },
+        "seconds": 44.94824028015137,
+        "saved_state_restored": true
+      },
+      {
+        "run": "android-background",
+        "checks": 12,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-background/engine.log",
+          "sha256": "ec9c5d5b0705d3449dfaa51016e93007ddad272ffd75697b55a43f14a4e0d1ba"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-background/run.json",
+          "sha256": "bd19c9296b003905392acd55a7cb694b4621e261eb05b9d133baa93e69473b8f"
+        },
+        "seconds": 38.533183574676514,
+        "saved_state_restored": true
+      },
+      {
+        "run": "android-slow-owner",
+        "checks": 5,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-slow-owner/engine.log",
+          "sha256": "e96dd4af1ed4b80e92065948b0f42a47cf34ef53313809411eeae0fac4dd0e54"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-slow-owner/run.json",
+          "sha256": "813593a33632107c9380407733d0dc85d6623ee0fb31596147a357ff0103c7d1"
+        },
+        "seconds": 147.93166637420654,
+        "saved_state_restored": true
+      }
+    ]
+  },
+  "inherited_packaged_checks": {
+    "source_commit": "045bb0a1e446e6f7acae417a85afe15efd7050b6",
+    "checks": 291,
+    "failures": 0,
+    "basis": "Full compiled-script comparison found only Session changed: explicit direct run input now requests the normal standing transition. Final desktop/Android movement, control, worker and ENet checks rerun the affected paths.",
+    "runs": [
+      {
+        "run": "mod-profiles",
+        "checks": 83,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/mod-profiles/run.log",
+          "sha256": "5b79bdfb3f841f5ddcddd9484902ff3226c3cc08a625df5578e9b50f829c64c4"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/mod-profiles/run.json",
+          "sha256": "ddc621b2881125baa5c35672ea2edf54258453d641ccb5e661e5b73d03f4df17"
+        },
+        "seconds": 4.108480966009665
+      },
+      {
+        "run": "mod-profiles-astral",
+        "checks": 83,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/mod-profiles-astral/run.log",
+          "sha256": "05659d0102e7e37250169bd254bfe33d73aad12b6eeabe85a6dea6c478be8ebb"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/mod-profiles-astral/run.json",
+          "sha256": "ecd903f1914c738eb77c40793ef97e0f2f4a6694d6d45623d6c53960a71f2ab2"
+        },
+        "seconds": 5.276402571005747
+      },
+      {
+        "run": "mod-effects",
+        "checks": 12,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/mod-effects/run.log",
+          "sha256": "90eb5e80fee24982d73d1e5b08809f4e1188acc665037427ddd8aaed9f4c4145"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/mod-effects/run.json",
+          "sha256": "4d132c4ab0ae2529950406fdec0fc0275e33f05b6d7dfd85e6c5711843d187b8"
+        },
+        "seconds": 10.159267560986336
+      },
+      {
+        "run": "mod-menus",
+        "checks": 28,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/mod-menus/run.log",
+          "sha256": "54568dcebdf2830677873c728456fd9f2e94c13800d4c8d6c8566f2d8ce5f60c"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/mod-menus/run.json",
+          "sha256": "8cf0e214cdb50d92b718e06bdaa0b305028aea842ab06ab8ea7273071b454a57"
+        },
+        "seconds": 24.245765255007427
+      },
+      {
+        "run": "network-host",
+        "checks": 18,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/network-host/run.log",
+          "sha256": "7fe54fcbcff627c7041c94038ac6cc817ab473d7ad1ef4c5771f7083e9eef890"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/network-host/run.json",
+          "sha256": "fa3f3af853e692ceec1b1b427e7229dce45c0509a8c895344970564b40416e2d"
+        },
+        "seconds": 9.137123849010095
+      },
+      {
+        "run": "network-client",
+        "checks": 14,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/network-client/run.log",
+          "sha256": "c5625671ef4b946e778b58e9b7ecf364ebf45d6c27d3912dd1f14c9993c00001"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/network-client/run.json",
+          "sha256": "7dc504edbc1641d3cd6dd59f8b56f3d50afb5f1541e65ff701926a8f9ffef600"
+        },
+        "seconds": 4.113205411005765
+      },
+      {
+        "run": "network-reject",
+        "checks": 8,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/network-reject/run.log",
+          "sha256": "5d1b7ad5797f858c759c266251bfe5548ee7b50bb8b9a6cdfb93028535e68e3e"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/network-reject/run.json",
+          "sha256": "4e3679ddf427e2cd3bfacc461ebc08c2db733267bb2dd3bc587cde728f690ed8"
+        },
+        "seconds": 4.106310053030029
+      },
+      {
+        "run": "direct-stance",
+        "checks": 34,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/direct-stance/run.log",
+          "sha256": "7b9f447b143d8a618bbcdaba8851bd72d277406cab35f0eec8e470c12bc69e62"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/direct-stance/run.json",
+          "sha256": "fdf3eac96c7900cfba7f6e78194bb31db0ce04308ad5075ce3336d671fabb196"
+        },
+        "seconds": 5.141247969993856
+      },
+      {
+        "run": "menu-new-game",
+        "checks": 11,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/menu-new-game/run.log",
+          "sha256": "f61f430acbdff857686496047d97974a6037c660093b1dfb42a381fd04687819"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-20261011/menu-new-game/run.json",
+          "sha256": "1925f1d06220797e02eb938cbcc2624d82d9a8a613f91588814365ce3f90ecd1"
+        },
+        "seconds": 54.550639697001316
+      }
+    ]
+  },
+  "coverage": [
+    "Original campaign new game, opening speech/dialogue, menu saves and repeated load, prepared original captive dialogue via real Android service",
+    "Android service suspend/resume with running and intentionally paused clocks, fresh background autosave and clean worker shutdown",
+    "125-second delayed owner frame loop with ENet alive, subsequent simulation and save, real disconnect cleanup",
+    "Direct movement, analog speed, normal stamina/posture, immediate release/reversal, wall/actor collision, obstacle sliding and input lease expiry",
+    "Ownership and scripted movement guards, direct attack recovery, gamepad/keyboard pickup, mode and focus changes, real ENet command routing",
+    "Mod schema/import/profile isolation, original and Lost in Astral data, generated wide/narrow menus, options and cancellation",
+    "Separate simulation mod settings and sandbox/save/load, actual effects, network admission/refusal and host authority"
+  ],
+  "background_resume_result": {
+    "background_ms": 12573,
+    "background_sim_delta": 0.11,
+    "checks": 12,
+    "failures": 0,
+    "sim_after": 2.09,
+    "sim_before": 1.98
+  },
+  "slow_owner_result": {
+    "checks": 5,
+    "failures": 0,
+    "rows": [
+      {
+        "label": "actual client loading frame exercised slow renderer",
+        "ok": true
+      },
+      {
+        "label": "client finishes loading its visible world",
+        "ok": true
+      },
+      {
+        "label": "local authority survives slow loading with a live owner",
+        "ok": true
+      },
+      {
+        "label": "world runs after slow loading",
+        "ok": true
+      },
+      {
+        "label": "saving still works after slow loading",
+        "ok": true
+      }
+    ]
+  },
+  "build": {
+    "all_platforms_have_identical_274_production_scripts": true,
+    "desktop_packs_identical": true,
+    "android_public_version_code": 19,
+    "android_public_application_id": "org.cursedlands.engine",
+    "android_public_signing_certificate_retained": true,
+    "android_public_debuggable": false,
+    "android_private_validation": {
+      "private_package": "org.cursedlands.performance",
+      "version_code": 76,
+      "production_pack": "public",
+      "bootstrap": "validation.json only in private APK",
+      "engine_sha256": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+      "native_sha256": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58",
+      "apk_sha256": "4cea2606c6c77324d196ed927885a5e31bb649e3710c5489c2f00efe825c1f25"
+    },
+    "android_private_compiled_script_difference": [
+      "assets/src/main.gdc"
+    ],
+    "native_engines_and_helpers": "Existing qualified 1.0.3 binaries reused without changes; macOS uses universal official Godot script implementation.",
+    "audits": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/build.json",
+        "sha256": "2dbe9a8f31f329963fbc7a58e9715e62226f63ec91c5c657f676eae244273a20"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-build.json",
+        "sha256": "8763f2faef98dd15f24172cabaf01a43bf654bb53e01eb475149bcb9a1fb28a5"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/android-audit.json",
+        "sha256": "7931596d47282c524d5ce8dc8583cfb731d89902db03c40e5cf8c4d76dfeffac"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/package-audit.json",
+        "sha256": "b5de697710d80d1109f62ee6b179a0b60974d096a1f59ae510c2841f533fe2cb"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/archive-readback.json",
+        "sha256": "bd55f77fdfc88feab8e8195ee8bb46b3e325c35de36beb200ebce2fd98910597"
+      }
+    ],
+    "archive_readback": {
+      "all_desktop_members_match": true,
+      "example_contains_no_owned_assets": true,
+      "predecessor_changed_compiled_scripts": [
+        "src/game/session.gdc"
+      ],
+      "delta": "Preserve normal standing transition for explicit direct run input.",
+      "assets": [
+        {
+          "name": "CursedLands-1.0.4-experimental.1-linux-x86_64.tar.gz",
+          "bytes": 36630398,
+          "sha256": "8c37ec9173540bf190e93e543043ace9ad321dfd39b4a393c8f16f2a1826d21d"
+        },
+        {
+          "name": "CursedLands-1.0.4-experimental.1-windows-x86_64.zip",
+          "bytes": 37832801,
+          "sha256": "7a94bf15010f5f56186eccf278ce7ea038647073434087c853d567f44b715fa5"
+        },
+        {
+          "name": "CursedLands-1.0.4-experimental.1-macos-universal.zip",
+          "bytes": 64139193,
+          "sha256": "17a8bc7044778dc462ed1374d1ea980f1fc770e982bfb96837d29001c6253772"
+        },
+        {
+          "name": "CursedLands-1.0.4-experimental.1-android.apk",
+          "bytes": 30378576,
+          "sha256": "005f315ce4d1ff6098c556b71a6923878206370d8224c8eed24dd7366833b53d"
+        },
+        {
+          "name": "Quick-recovery-1.0.0.eimod",
+          "bytes": 546,
+          "sha256": "f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b"
+        }
+      ]
+    },
+    "no_original_assets_player_saves_or_private_validation_hooks_in_public_payloads": true,
+    "checksums": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-final-20261011/assets/SHA256SUMS.txt",
+      "sha256": "b679a8ebdaed1e7c671e2a131ed5fce6cd49e01ba61343d6c8272d49f02d69c5"
+    }
+  },
+  "diagnostic_comparisons": {
+    "method": "Controlled baseline/fixed checks with original game data; independent of device-specific attribution.",
+    "runs": [
+      {
+        "run": "freeze-stable-final",
+        "checks": 26,
+        "failures": 1,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/freeze-stable-final/engine.log",
+          "sha256": "620042cf08cc8e2d4e71744836f436e921b25473a03cbb0c0e19a4a205cf91b2"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/freeze-stable-final/run.json",
+          "sha256": "c148703171b5717140e7ed48e4ee10bb753ec355d9891dbae86dfa74eee419df"
+        },
+        "seconds": 52.078588008880615,
+        "saved_state_restored": true
+      },
+      {
+        "run": "freeze-fixed",
+        "checks": 26,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/freeze-fixed/engine.log",
+          "sha256": "fd034de12d2ed72c6bd44e0727a31f054c32b2788f8bf022a684016860fbbd4b"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/freeze-fixed/run.json",
+          "sha256": "af0bcaf368bd06fac5feb1ba6f1ce4ccfe85d6fe2d3e26399ea5e543fa12a7f9"
+        },
+        "seconds": 44.72252559661865,
+        "saved_state_restored": true
+      },
+      {
+        "run": "slow-load-baseline",
+        "checks": 5,
+        "failures": 3,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/slow-load-baseline/engine.log",
+          "sha256": "5a6c9e5263dc7add97466dbc63af461fbe084a38736ffab2943d2fff73906ba5"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/slow-load-baseline/run.json",
+          "sha256": "0a4ff6dcde8b61b20148c81245ed5a33f3ee05741315f8c05a0846e35374176b"
+        },
+        "seconds": 150.60525703430176,
+        "saved_state_restored": true
+      },
+      {
+        "run": "slow-load-fixed",
+        "checks": 5,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/slow-load-fixed/engine.log",
+          "sha256": "bdefd637fa342a2f924aea4661e04c6d00fb4145b59f74c26e9857c4a1eb68d1"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/slow-load-fixed/run.json",
+          "sha256": "a2dfd717acba817cf88e7ba47830917ce64e76dda30b152821c0f562243f1797"
+        },
+        "seconds": 147.62874841690063,
+        "saved_state_restored": true
+      },
+      {
+        "run": "stance-stable",
+        "checks": 34,
+        "failures": 3,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/stance-stable/run.log",
+          "sha256": "f18735eb7e26352a22d444eae64f21a7953744757bc0c6103557fced9349b357"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/stance-stable/run.json",
+          "sha256": "59a91cbf0cb57f34dea8fd35476b4c4b2f714b947c5b54afb4c8780360d63332"
+        },
+        "seconds": 5.104576607001945
+      },
+      {
+        "run": "stance-fixed",
+        "checks": 34,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/stance-fixed/run.log",
+          "sha256": "1918964a4c1e071d89003838ad33a34ba91ff273a7de6c1cfb995d8d5aaaa476"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/stance-fixed/run.json",
+          "sha256": "0c4547dda9dc86fe0e5351eea03bb6d0a0556bb5d36f25a2ae18effa37d04fd3"
+        },
+        "seconds": 5.126528949011117
+      },
+      {
+        "run": "kbm-fixed",
+        "checks": 97,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/kbm-fixed/run.log",
+          "sha256": "a5811b6afbf9584d73eb41fc971758b48bc1b55fdcf0d04e2eb82bd705bbed3b"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/kbm-fixed/run.json",
+          "sha256": "c304688ffacedf14ee147698e0edcf82be605422ab6e6e074e1497284f38a251"
+        },
+        "seconds": 23.240679483977146
+      }
+    ],
+    "baseline_log_capture_note": "The earlier slow-owner baseline outlasted the logcat stream. Its final engine and worker logs were pulled separately; its early-exit runner metadata is not a successful acceptance run."
+  },
+  "existing_original_game_regressions": {
+    "issue": "https://github.com/TheWWWorm/CursedLands/issues/1",
+    "scope": "Original Evil Islands, not Lost in Astral. Captive staging fix 218eafa is already in stable 1.0.3; no additional dialogue or spell changes in this release.",
+    "runs": [
+      {
+        "run": "prison-stable",
+        "checks": 21,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/prison-stable/run.log",
+          "sha256": "a359e7eac7cc0d9ceb4ba1a379874dfea55422386c6c4ae37d6cb36acc322ba5"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/prison-stable/run.json",
+          "sha256": "0ed84682964c3eb522e13d8678c7b1a389d2ec36d7b42b5e17002eea4c832e0c"
+        },
+        "seconds": 12.16474689100869
+      },
+      {
+        "run": "prison-commander-stable",
+        "checks": 27,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/prison-commander-stable/run.log",
+          "sha256": "ff592aeab8f9d2c10563b06bdb660ef83a3603a72017a07e176fcd169fea8e98"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/prison-commander-stable/run.json",
+          "sha256": "ccce64edb6c1d00f72fdde5b165facf1c16f22c20d2773a8a3f163dbe1e5a695"
+        },
+        "seconds": 12.162251758971252
+      },
+      {
+        "run": "construct-android-stable-final",
+        "checks": 30,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/construct-android-stable-final/engine.log",
+          "sha256": "c8c6b7177de7eafb464cacc4c2076e70b50ee9c2da53eb97b0279043b4045be3"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/construct-android-stable-final/run.json",
+          "sha256": "67ac965d185b7a788ad0b212755ba80f5a2f4e448e961738309b65870474646e"
+        },
+        "counters": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/construct-android-stable-final/spell-construction.json",
+          "sha256": "c4497fceb56e64a1d287eb4a5ee2bb42ec0a3275e7525ba761623d19e1ae8396"
+        },
+        "seconds": 14.1326265335083,
+        "saved_state_restored": true
+      },
+      {
+        "run": "recast-android-stable",
+        "checks": 86,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/recast-android-stable/engine.log",
+          "sha256": "0c3f727d7dd2bf9a7198194f8f611a9a43be48fe85627faa1d328f2341567f3a"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/recast-android-stable/run.json",
+          "sha256": "c257795c5186bf701b515c84061300bc5353408b2c2598527ad92e17c2c1cd13"
+        },
+        "seconds": 6.6761815547943115,
+        "saved_state_restored": true
+      },
+      {
+        "run": "recast-stable",
+        "checks": 86,
+        "failures": 0,
+        "log": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/recast-stable/run.log",
+          "sha256": "76106d5c94c0064ec66dbfb9a0ef8af5374d2974716fe9dfec8a404f0505e91e"
+        },
+        "metadata": {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-reports-20261011/recast-stable/run.json",
+          "sha256": "af743ad2b3f6cdb0fd66319da726db712993646916b4e3ddd47603f3b8926315"
+        },
+        "seconds": 5.126942222996149
+      }
+    ],
+    "method": "Prepared original captive arrival, both conversation orders through normal dialogue controls; actual rune construction and repeated weak/slow/strength/healing effects. Temporary status refresh is checked separately from stacking."
+  },
+  "earlier_mod_development_record": "mod-menus-2026-10-11.json",
+  "superseded_attempts": [
+    "Predecessor Android mod-worker fixture interpreted an Android service handle as an OS PID. Corrected platform-specific shutdown observation passes 19/0 in final APK.",
+    "Predecessor Home/resume fixture inspected world state before frontend load completed. Final fixture awaits load completion, exercises Home for over twelve seconds, and passes 12/0.",
+    "Initial headless mouse fixture assumed operating-system capture. The final fixture supplies capture only during synthetic mouse injection and resets it before later cases.",
+    "Unavailable Xvfb command did not run the game. Rendered checks used the existing NVIDIA display.",
+    "Initial sparse-pack audit expected res:// prefixes while the decoder returns stripped paths; corrected audit passes exact resource/script comparisons.",
+    "Earlier development parse/setup attempts are superseded by the recorded successful runs; the mod development receipt retains its separate baseline gait limitations."
+  ],
+  "cleanup": {
+    "private_package": "org.cursedlands.performance",
+    "private_version_code": 72,
+    "restored_private_apk_sha256": "961975fc5c277c4e23b2da42d21429eda0439070734609f0101e0a6f3e991aea",
+    "no_private_process": true,
+    "no_test_autorun": true,
+    "restored_recorded_settings": true,
+    "restored_settings": {
+      "settings.cfg": true,
+      "renderer.cfg": true,
+      "keyboard.ini": true,
+      "gamepad.ini": true,
+      "mod_settings.json": true
+    },
+    "public_app_not_installed_or_modified_by_tests": true,
+    "all_device_fixtures_restored_their_recorded_save_and_mod_state": true
+  },
+  "limits": [
+    "No Galaxy A17 device-specific reproduction or acceptance.",
+    "No full campaign, manual physical-controller/touch, WAN or multi-device co-op playthrough.",
+    "Windows/macOS are cross-built and structurally audited; not launched on those operating systems. macOS is unsigned and not notarized.",
+    "No new browser build or browser mod-import acceptance.",
+    "The earlier mod development original-multiplayer gait suite has two assertions failing on both baseline and candidate; it is not claimed as a clean suite.",
+    "Private device settings/saves/mod directories are restored; test logs and captures may remain in the private QA application."
+  ]
+}
