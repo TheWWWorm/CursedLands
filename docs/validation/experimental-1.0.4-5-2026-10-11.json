@@ -1,0 +1,320 @@
+{
+  "release": "1.0.4-experimental.5",
+  "date": "2026-10-11",
+  "status": "qualified for publication",
+  "game_source_commit": "8057003b788738adad5d3320f9e7f0cd84bfde33",
+  "base_release_commit": "7be5541c3e5453cfe824d3fca30cfbcad45ffb79",
+  "network_protocol": 17,
+  "mod_api": 1,
+  "scope": "Player-facing gameplay, interface and Mirror reflection fixes; capped armour absorption and optional shared stamina recovery on Experimental 4.",
+  "build": {
+    "compiled_scripts": 277,
+    "production_scripts_byte_identical_across_four_platforms": true,
+    "committed_game_source_exact": true,
+    "linux_windows_engine_patches": 12,
+    "android_engine_patches": 13,
+    "android_version_code": 23,
+    "android_public_certificate_matches": true,
+    "android_debuggable": false,
+    "no_original_game_data_or_user_saves": true,
+    "source_script_changes": [
+      "src/ei/game_data.gdc",
+      "src/ei/remake_text.gdc",
+      "src/ei/terrain.gdc",
+      "src/ei/unit_model.gdc",
+      "src/game/campaign_map.gdc",
+      "src/game/campaign_state.gdc",
+      "src/game/combat.gdc",
+      "src/game/direct_combat.gdc",
+      "src/game/direct_control.gdc",
+      "src/game/fx/particle_system.gdc",
+      "src/game/fx/water_reflection.gdc",
+      "src/game/gfx.gdc",
+      "src/game/mod_schema.gdc",
+      "src/game/nav_grid.gdc",
+      "src/game/net_status.gdc",
+      "src/game/session.gdc",
+      "src/game/spells.gdc",
+      "src/game/unit.gdc",
+      "src/ui/camera_rig.gdc",
+      "src/ui/camp_view.gdc",
+      "src/ui/difficulty_panel.gdc",
+      "src/ui/item_view.gdc",
+      "src/ui/mod_panel.gdc",
+      "src/ui/paperdoll.gdc",
+      "src/ui/party_faces.gdc",
+      "src/ui/settings_dialog.gdc",
+      "src/ui/spell_slots.gdc"
+    ]
+  },
+  "linux_packaged_checks": [
+    {
+      "suite": "test-player-feedback",
+      "passed_checks": 46,
+      "return_code": 0,
+      "seconds": 2.4,
+      "fixture_sha256": "eb4eaf83183a41ba57309893a9fa981a5076a0c6c6b28bc689318dd4e9f66dce",
+      "warnings": [],
+      "engine_errors": [],
+      "fixture": "player_feedback.gd"
+    },
+    {
+      "suite": "test-stamina",
+      "passed_checks": 22,
+      "return_code": 0,
+      "seconds": 2.2,
+      "fixture_sha256": "954c7c5f88dc07f2df9ba03bb40a69f15046f83cb1ea3a12c124b8b8b7f5b464",
+      "warnings": [],
+      "engine_errors": [],
+      "fixture": "stamina_regen.gd"
+    },
+    {
+      "suite": "test-lia-save",
+      "passed_checks": 17,
+      "return_code": 0,
+      "seconds": 19.82,
+      "fixture_sha256": "911bc2cb3a71325e5a8e27683d824a4096c621a2041a35c1e4f663f4a3fb7090",
+      "warnings": [],
+      "engine_errors": [],
+      "fixture": "lia_player_save.gd"
+    },
+    {
+      "suite": "test-feedback-visuals",
+      "passed_checks": 21,
+      "return_code": 0,
+      "seconds": 8.61,
+      "fixture_sha256": "73a2b6492f165a3aaea9e7465d3d679cd296feb37af7aba76f2e2bda3a9b9c87",
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "engine_errors": [],
+      "fixture": "feedback_visuals.gd"
+    },
+    {
+      "suite": "test-worker",
+      "passed_checks": 25,
+      "return_code": 0,
+      "seconds": 16.42,
+      "fixture_sha256": "6f716329abd7bcdff8bba1d3b6ef37af221128b55054d8db2c45a41a51397e31",
+      "warnings": [],
+      "engine_errors": [],
+      "fixture": "mod_worker.gd"
+    },
+    {
+      "suite": "test-direct-movement",
+      "passed_checks": 26,
+      "return_code": 0,
+      "seconds": 7.21,
+      "fixture_sha256": "397fc5ee4ffa85405ec3fae57b6d4d7474fa4ac7fcb38a2c7da901a3cf0bea84",
+      "warnings": [],
+      "engine_errors": [],
+      "fixture": "direct_movement.gd"
+    },
+    {
+      "suite": "test-direct-combat",
+      "passed_checks": 30,
+      "return_code": 0,
+      "seconds": 2.2,
+      "fixture_sha256": "427dfba4905d2dd3d17175348b1f82853dee97317a346961571ef4e18dddce0d",
+      "warnings": [],
+      "engine_errors": [],
+      "fixture": "direct_combat.gd"
+    },
+    {
+      "suite": "test-dialogue",
+      "passed_checks": 54,
+      "return_code": 0,
+      "seconds": 6.41,
+      "fixture_sha256": "641ed44374708ce406f9954292045c0b3ddc77e04347246b667c7a3ee6782d40",
+      "warnings": [],
+      "engine_errors": [],
+      "fixture": "dialogue_poses.gd"
+    },
+    {
+      "suite": "test-direct-controls-final",
+      "passed_checks": 52,
+      "return_code": 0,
+      "seconds": 47.25,
+      "fixture_sha256": "c5240465cbd70d68d83612db5d907a5e29e0112ff7a2b993f949e4a1612c9bbc",
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "engine_errors": [],
+      "fixture": "direct_controls.gd"
+    },
+    {
+      "suite": "test-direct-stance",
+      "passed_checks": 39,
+      "return_code": 0,
+      "seconds": 4.2,
+      "fixture_sha256": "ebeb5bbd892487977b925f7a00b53dff7a361a3a6e383d8572da52679ebaaf36",
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "engine_errors": [],
+      "fixture": "direct_attack_stance.gd"
+    },
+    {
+      "suite": "test-mod-menus",
+      "passed_checks": 43,
+      "return_code": 0,
+      "seconds": 26.42,
+      "fixture_sha256": "88711812eed19d5837aa3abefa134d746469d048a85044efef9cd5c17b390f45",
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "engine_errors": [],
+      "fixture": "mod_menus.gd"
+    },
+    {
+      "suite": "test-camp-inventory",
+      "passed_checks": 92,
+      "return_code": 0,
+      "seconds": 39.24,
+      "fixture_sha256": "07a5b70baebe7b9a964dee50348358851b1658db55486510cd5bd2b29682ce37",
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.",
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ],
+      "engine_errors": [],
+      "fixture": "camp_inventory_ui.gd"
+    },
+    {
+      "suite": "test-water-combat",
+      "passed_checks": 15,
+      "return_code": 0,
+      "seconds": 28.43,
+      "fixture_sha256": "c7a1a998c04d96a29fcbdb8820e18195636dceeeab2e4b8cd90257b79e5644f4",
+      "warnings": [
+        "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature."
+      ],
+      "engine_errors": [],
+      "fixture": "water_reflection_combat.gd"
+    },
+    {
+      "suite": "protocol-host",
+      "passed_checks": 4,
+      "return_code": 0,
+      "seconds": 4.61,
+      "fixture_sha256": "95b8e49b21c40869189bcf1465abfb2ad089c603898b3978a8889dfb3baf465b",
+      "warnings": [],
+      "engine_errors": [],
+      "fixture": "protocol_compatibility.gd"
+    },
+    {
+      "suite": "protocol-old-client",
+      "passed_checks": 3,
+      "return_code": 0,
+      "seconds": 2.6,
+      "fixture_sha256": "95b8e49b21c40869189bcf1465abfb2ad089c603898b3978a8889dfb3baf465b",
+      "warnings": [],
+      "engine_errors": [],
+      "fixture": "protocol_compatibility.gd"
+    }
+  ],
+  "linux_passed_checks": 489,
+  "android_checks": [
+    {
+      "suite": "android-stamina",
+      "checks": 22,
+      "engine_errors": [],
+      "renderer": "gl_compatibility",
+      "device": "Retroid Pocket 5",
+      "source_sha256": {
+        "stamina_regen.gd": "954c7c5f88dc07f2df9ba03bb40a69f15046f83cb1ea3a12c124b8b8b7f5b464",
+        "dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+      },
+      "private_settings_and_campaign_saves_restored": true
+    },
+    {
+      "suite": "android-feedback",
+      "checks": 42,
+      "engine_errors": [],
+      "renderer": "gl_compatibility",
+      "device": "Retroid Pocket 5",
+      "source_sha256": {
+        "player_feedback.gd": "eb4eaf83183a41ba57309893a9fa981a5076a0c6c6b28bc689318dd4e9f66dce",
+        "dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+      },
+      "private_settings_and_campaign_saves_restored": true
+    },
+    {
+      "suite": "android-worker",
+      "checks": 25,
+      "engine_errors": [],
+      "renderer": "gl_compatibility",
+      "device": "Retroid Pocket 5",
+      "source_sha256": {
+        "mod_worker.gd": "6f716329abd7bcdff8bba1d3b6ef37af221128b55054d8db2c45a41a51397e31",
+        "dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408"
+      },
+      "private_settings_and_campaign_saves_restored": true
+    }
+  ],
+  "android_passed_checks": 89,
+  "android_qualification": {
+    "mode": "Private QA APK with identical gameplay scripts and native helper; explicit main entry hook and matching patched debug engine. Shipping release APK is separately audited.",
+    "source_comparison": {
+      "production_script_count": 277,
+      "identical_scripts": 276,
+      "changed": [
+        "assets/src/main.gdc"
+      ],
+      "difference": "Explicit private validation entry hook; production APK has no hook"
+    },
+    "restoration": {
+      "private_qa_apk_restored_exactly": true,
+      "production_package_untouched": true
+    }
+  },
+  "tools_bundle": {
+    "standalone_python_checks": 19,
+    "exact_source_readback": true,
+    "example_byte_identical": true
+  },
+  "assets": [
+    {
+      "name": "CursedLands-1.0.4-experimental.5-linux-x86_64.tar.gz",
+      "bytes": 36671181,
+      "sha256": "dfb903a21f3f17a518e548213051e4f8be22ff6d621fc4c46e8fa15955b0265e"
+    },
+    {
+      "name": "CursedLands-1.0.4-experimental.5-windows-x86_64.zip",
+      "bytes": 37873713,
+      "sha256": "2e45c3d9770fc8169cfef5983e00bb9f5673f0c86fccf49af1781f688e7004ae"
+    },
+    {
+      "name": "CursedLands-1.0.4-experimental.5-macos-universal.zip",
+      "bytes": 64180063,
+      "sha256": "ae5874ea98aaf3745311fe8bb8d02e868310eea0b53dd43402827bacae045678"
+    },
+    {
+      "name": "CursedLands-1.0.4-experimental.5-android.apk",
+      "bytes": 30411839,
+      "sha256": "dc842639af7ded2d2a224457f93325cfbeb80bd1781bdbacc57028a1bc4241c9"
+    },
+    {
+      "name": "CursedLands-1.0.4-experimental.5-tools.zip",
+      "bytes": 45707,
+      "sha256": "4ac6d92ac8f166382f86893902bdc9496df839014841d977678016d81f00a2f4"
+    },
+    {
+      "name": "Quick-recovery-1.0.0.eimod",
+      "bytes": 546,
+      "sha256": "f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b"
+    }
+  ],
+  "limits": [
+    "Windows and macOS cross-built and audited; no native runtime test on those operating systems.",
+    "macOS is unsigned and not notarized.",
+    "No full campaign playthrough or physical multi-machine acceptance.",
+    "Forward+ Mirror geometry renders one selected water level; other levels and missing coverage use reflected sky.",
+    "Melee reach changed; projectile aiming remains unchanged."
+  ],
+  "diagnostics": [
+    "Early offscreen control runs encountered an unexpected open system wheel during asynchronous OS focus changes. The synthetic fixture now maintains focus between dispatched events; the final rendered run passes 52 checks, and the preceding headless run passes 51. No production code changed for this test adjustment."
+  ]
+}

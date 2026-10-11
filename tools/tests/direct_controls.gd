@@ -11,7 +11,12 @@ func check(ok: bool, label: String) -> void:
 	if not ok: failures += 1; printerr("FAIL ",label)
 
 func frames(n := 4) -> void:
-	for i in n: await get_tree().process_frame
+	# Offscreen render runs can receive asynchronous OS focus notifications.
+	# Keep this synthetic input fixture focused between dispatched events.
+	for i in n:
+		await get_tree().process_frame
+		if is_instance_valid(game) and is_instance_valid(game.rig):
+			game.rig._window_focused = true
 
 func key(code: Key, down: bool) -> void:
 	var e := InputEventKey.new();e.keycode=code;e.physical_keycode=code;e.pressed=down
