@@ -34,10 +34,11 @@ func _ready() -> void:
 	var result := await s.local_host.start(0,1,true)
 	check(result == OK and s.local_host.frontend and not s.is_host, "separate authority starts and authenticates owner")
 	if result != OK: get_tree().quit(1); return
-	s.request_mod_rules({"sandbox_invulnerable":1, "free_run":1}, {"example.quick-recovery:seconds":7.5})
+	s.request_mod_rules({"sandbox_invulnerable":1, "free_run":1, "stamina_regen":1}, {"example.quick-recovery:seconds":7.5})
 	check(await until(func(): return acked), "owner receives explicit settings acknowledgement")
 	check(problem == "" and ModStore.capability("revival.seconds") == 7.5 and s.mod_config.rules.sandbox_invulnerable == 1, "worker publishes accepted effective values")
 	check(s.mod_config.rules.get("free_run", 0) == 1, "worker publishes free-running rule to the client")
+	check(s.mod_config.rules.get("stamina_regen", 0) == 1, "worker publishes the stamina regeneration rule to the client")
 	check(ModStore.profile().values["example.quick-recovery:seconds"] == 3, "running edits leave next-run defaults intact")
 	acked = false
 	s._rpc_mod_rules.rpc_id(1, {"sandbox_invulnerable":0}, {}, int(s.mod_config.revision)-1)
@@ -55,13 +56,15 @@ func _ready() -> void:
 		var saved := CampaignState.load_from(SaveInfo.path("mod_worker"))
 		check(saved != null and saved.mod_config.sandbox and saved.mod_config.values["example.quick-recovery:seconds"] == 7.5, "save captures effective sandbox and mod options")
 		check(saved != null and saved.mod_config.rules.get("free_run", 0) == 1, "save captures free-running rule")
+		check(saved != null and saved.mod_config.rules.get("stamina_regen", 0) == 1, "save captures stamina regeneration rule")
 		check(not FileAccess.file_exists(CampaignProfile.save_directory(GameData.campaign_id).path_join("mod_worker.sav")), "ordinary save namespace untouched")
 		acked = false
-		s.request_mod_rules({"sandbox_invulnerable":0, "free_run":0}, {})
+		s.request_mod_rules({"sandbox_invulnerable":0, "free_run":0, "stamina_regen":0}, {})
 		check(await until(func(): return acked) and problem == "", "live sandbox toggle changes after saving")
 		answer = await s.local_host.request("load", {"slot":"mod_worker"})
 		check(answer.get("ok", false) and await until(func(): return not s._remote_loading and s.mod_config.rules.sandbox_invulnerable == 1), "real worker reload restores saved effective rules")
 		check(s.mod_config.rules.get("free_run", 0) == 1, "real worker reload restores saved free-running rule")
+		check(s.mod_config.rules.get("stamina_regen", 0) == 1, "real worker reload restores saved stamina regeneration rule")
 	var pid := s.local_host.process_id
 	await s.local_host.stop()
 	# Android start() returns a service binding handle, not an OS process ID.

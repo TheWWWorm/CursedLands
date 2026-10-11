@@ -2589,7 +2589,12 @@ func merc_changed(n: int, hired: bool, player := -1, leave_npc := true, script_r
 		var rec: Dictionary = npc.info.duplicate() if npc else _find_merc_record(n)
 		if rec.is_empty():
 			return
-		var m := state.make_merc(n, rec, CampaignState.script_character(npc))
+		var character := CampaignState.script_character(npc)
+		# Script reads can create a fresh prototype-backed character record.
+		# Only a previously recruited record may supersede dismissed progress.
+		if state.dismissed_mercs.has(n) and int(character.get("merc", -1)) != n:
+			character = {}
+		var m := state.make_merc(n, rec, character)
 		m.controller = player if player >= 0 and players_include(player) else _merc_owner()
 		if npc:
 			#  adds a roster entry, not a new server unit. Keep its
@@ -2609,6 +2614,7 @@ func merc_changed(n: int, hired: bool, player := -1, leave_npc := true, script_r
 		sync_state()
 	elif not hired and state.mercs.has(n):
 		var m: Dictionary = state.mercs[n]
+		state.dismissed_mercs[n] = m.duplicate(true)
 		state.mercs.erase(n)
 		for u: GameUnit in world.units.values():
 			if u.has_meta("hero") and is_same(u.get_meta("hero"), m):
@@ -2665,6 +2671,8 @@ func _set_merc_control(u: GameUnit, m: Dictionary, hired: bool) -> void:
 		u.faction = int(m.get("village_faction", 0))
 		u.mode = String(m.get("village_mode", "standard"))
 		u.set_meta("npc_character", m.duplicate(true))
+		if m.has("merc"):
+			state.dismissed_mercs[int(m.merc)] = u.get_meta("npc_character")
 	# Explicit empty lists are mutable inventory, not absent prototype defaults.
 	# The model already wears this same kit; no figure/playback reset is needed.
 	u.info.armors = PackedStringArray(m.get("armors", []))

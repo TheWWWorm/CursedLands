@@ -2198,9 +2198,8 @@ func _draw() -> void:
 			var rect := _r(_slot_rect(k).grow(-10.0))
 			draw_texture_rect(picture, rect, false)
 			if Items.is_spell_container(id):
-				# Keep the shop price and stack count clear. Camp cells have room
-				# for one strip below the price; the small HUD uses two rows.
-				SpellSlots.draw_runes(self, Items.spell_code(id), rect.grow_individual(0, 0, 0, 10.0 * s), Color.WHITE, 8)
+				# Transparent inscriptions above the artwork leave the price clear.
+				SpellSlots.draw_runes(self, Items.spell_code(id), rect)
 	# Selection.
 	for k in _content:
 		if _key_shown(k) and _content[k][0] != "" and _content[k][0] == selected_id and _content[k][1] == selected_where:
@@ -2642,7 +2641,8 @@ func _draw_item_info(x0: float, id: String) -> void:
 		_t(Rect2(x0 + 15, y, 170, 15), r, 0, Interface800.TEXT)
 		y += 15.0
 	if inf.has("wrap"):
-		_tb(Rect2(x0 + 15, y, 170, 15), inf.wrap, 0, Interface800.TEXT, 3, HORIZONTAL_ALIGNMENT_LEFT)
+		var lines := mini(3, maxi(0, floori((415.0 - y) / _lh(0))))
+		_tb(Rect2(x0 + 15, y, 170, 15), inf.wrap, 0, Interface800.TEXT, lines, HORIZONTAL_ALIGNMENT_LEFT)
 
 
 ## The fields of _draw_item_info for one item: {name, rows, gap, desc,
@@ -2709,7 +2709,7 @@ func _item_info(id: String) -> Dictionary:
 		if not mods.is_empty():
 			var t := _lbl(19)
 			for m in mods:
-				t += " " + Spells.mod_title(m) + ","
+				t += " " + Spells.mod_short_title(m) + ","
 			out.wrap = t.trim_suffix(",") + "."
 		return out
 	if k == "rune":

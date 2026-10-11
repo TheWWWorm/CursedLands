@@ -346,6 +346,10 @@ func _act(action: String, variant: int, blend: float, with_start: bool) -> float
 			begin_dialogue(false)
 		if _dialogue_active:
 			return player.get_animation("ei/" + _dialogue_clip).length
+	if action == "idle" and not village_idle_clip.is_empty():
+		if _current != village_idle_clip or not player.is_playing():
+			play(village_idle_clip, blend, true)
+		return player.get_animation("ei/" + village_idle_clip).length
 	var clip := ""
 	var requested := code_for(action) if _ACTION_CODE.has(action) else -1
 	var cyc := requested >= 0 and requested & STAGE_CYCLE != 0
@@ -430,6 +434,9 @@ const DIALOGUE_SPEAK := [1, 6, 7, 8]
 const DIALOGUE_LISTEN := [2, 10, 12, 13]
 var _dialogue_active := false
 var _dialogue_clip := ""
+## A peaceful village dragon rests in its authored listening pose between
+## conversations. Movement, attacks and script animations still take priority.
+var village_idle_clip := ""
 
 
 func dialogue_clip(speaking: bool, special := 0) -> String:
@@ -645,6 +652,9 @@ func _process(_dt: float) -> void:
 	# throughout the conversation instead of falling back to flying idle.
 	if _dialogue_active and _current == _dialogue_clip and player and not player.is_playing():
 		begin_dialogue(false)
+		return
+	if not village_idle_clip.is_empty() and _current == village_idle_clip and player and not player.is_playing():
+		play(village_idle_clip, 0.0, true)
 		return
 	if _resume != "" and player and not player.is_playing():
 		var r := _resume

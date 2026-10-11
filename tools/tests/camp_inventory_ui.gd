@@ -97,7 +97,7 @@ func _ready() -> void:
 	st.shops[1] = {"restock": false, "goods": goods, "sold": {}}
 	var panel: InventoryPanel = game.hud._inventory
 	panel.open(true, 1); camp = panel._camp
-	check(camp.item_info_text("spell:" + spell).contains(Spells.mod_title("e1")), "inventory text includes installed rune names")
+	check(camp.item_info_text("spell:" + spell).contains(Spells.mod_short_title("e1")), "inventory text includes installed rune inscriptions")
 	camp.set_process(false) # Deterministic hold timing, while input dispatch stays live.
 	camp._set_bag_filter(4)
 	camp.set_mode("spellconstr")

@@ -525,9 +525,14 @@ vec2 rain_rings(vec2 p, float now) {
 // before transparent water). Alpha blends the result over the reflected sky.
 vec4 water_ssr(vec3 origin, vec3 normal, mat4 proj, mat4 inv_proj, mat4 inv_view) {
 #if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
-	if (mirror > 0.5 && planar_enabled) {
+	if (mirror > 0.5) {
+		// Never splice screen-space silhouettes into missing regions of the
+		// mirror: their different projection leaves hard outlines and patches.
+		if (!planar_enabled) { return vec4(0.0); }
 		vec3 point = (inv_view * vec4(origin, 1.0)).xyz;
-		if (abs(point.y - planar_height) < 0.45) {
+		float plane_coverage = 1.0 - smoothstep(0.15, 0.75, abs(point.y - planar_height));
+		if (plane_coverage > 0.0) {
+			point.y = planar_height;
 			vec3 wn = (inv_view * vec4(normal, 0.0)).xyz;
 			point.xz += wn.xz * min(length(origin) * 0.1, 1.0);
 			vec4 clip = planar_projection * planar_view * vec4(point, 1.0);
@@ -535,8 +540,11 @@ vec4 water_ssr(vec3 origin, vec3 normal, mat4 proj, mat4 inv_proj, mat4 inv_view
 			if (clip.w <= 0.0 || any(lessThan(uv, vec2(0.0))) || any(greaterThan(uv, vec2(1.0)))) { return vec4(0.0); }
 			vec4 colour = textureLod(planar_texture, uv, 0.0);
 			// Transparent viewports contain premultiplied edge colours.
-			return vec4(colour.rgb / max(colour.a, 0.001), colour.a);
+			vec2 edge = min(uv, vec2(1.0) - uv);
+			float coverage = plane_coverage * smoothstep(0.0, 0.025, min(edge.x, edge.y));
+			return vec4(colour.rgb / max(colour.a, 0.001), colour.a * coverage);
 		}
+		return vec4(0.0);
 	}
 #endif
 	vec3 ray = reflect(normalize(origin), normal);

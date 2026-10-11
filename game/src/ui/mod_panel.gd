@@ -97,7 +97,7 @@ func _show_page(page: String) -> void:
 		child.queue_free()
 	_controls.clear()
 	_rows.clear()
-	_summary.text = "%s · %s · %s: %d%s" % [CampaignChoices.title(GameData.campaign_id), ModStore.effective().name, RemakeText.t("Mods"), ModStore.effective().packages.size(),
+	_summary.text = "%s · %s · %s: %d%s" % [CampaignChoices.title(GameData.campaign_id), RemakeText.t(str(ModStore.effective().name)), RemakeText.t("Mods"), ModStore.effective().packages.size(),
 		" · " + RemakeText.t("Sandbox saves") if ModStore.effective().get("sandbox", false) else ""]
 	for button in _tabs.get_children():
 		button.set_pressed_no_signal(button.get_meta("page") == page)
@@ -176,7 +176,7 @@ func _profiles_page() -> void:
 		_label(str(m.get("description", "")), section)
 		var campaigns := PackedStringArray()
 		for id in m.campaigns: campaigns.append(CampaignChoices.title(id))
-		_label(("Shared gameplay" if ModSchema.gameplay(m) else "Your device") + " · " + ", ".join(campaigns), section)
+		_label(RemakeText.t("Shared gameplay" if ModSchema.gameplay(m) else "Your device") + " · " + ", ".join(campaigns), section)
 		for relation in ["requires", "after", "conflicts"]:
 			if not m.get(relation, []).is_empty(): _label(relation.capitalize() + ": " + ", ".join(m[relation]), section)
 	if not keys.is_empty():
@@ -199,7 +199,7 @@ func _rules_page(sandbox: bool) -> void:
 	_label("Choose the rules for this game. Changes stay in setup until you start." if not draft.is_empty() else "Adjust this run. Rules marked At camp can only change in a village.", _body)
 	if sandbox: _label("Sandbox saves stay separate. Turning a cheat off does not undo rewards already earned.", _body)
 	var groups := {"Campaign": ["difficulty", "unit_fog", "start_zones", "mechanism_motion", "distant_ai", "auto_exit"],
-		"Party": ["sp_full_xp", "revive", "merc_travel", "free_run"],
+		"Party": ["sp_full_xp", "revive", "merc_travel", "free_run", "stamina_regen"],
 		"Co-op": ["coop_full_xp", "coop_scale", "coop_share_loot", "coop_clock"]}
 	if sandbox: groups = {"Sandbox": ["sandbox_invulnerable", "sandbox_mana"]}
 	for group in groups:
@@ -216,6 +216,8 @@ func _rules_page(sandbox: bool) -> void:
 			text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			row.add_child(text)
 			_label(definition[0], text)
+			if key == "stamina_regen":
+				_label(GameData.REMAKE_OPTIONS[key][1], text)
 			var locked := ModStore.editable(key)
 			var help: String = locked if locked != "" else {"camp":"At camp", "live":"Any time", "new_game":"Before starting"}[definition[2]]
 			var note := _label(help, text)
@@ -273,7 +275,7 @@ func _options_page() -> void:
 		slider.editable = locked == ""
 		number.editable = locked == ""
 		slider.value_changed.connect(func(value): _values[o.key] = value)
-		var reset := _button("Reset to %s" % str(o.default), section, func():
+		var reset := _button(RemakeText.t("Reset to %s") % str(o.default), section, func():
 			_values[o.key] = o.default
 			slider.value = float(o.default))
 		reset.disabled = locked != ""

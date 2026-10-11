@@ -441,6 +441,7 @@ func follow(u: Node3D) -> void:
 	if modern():
 		if u:
 			center_on(u.position)
+		_track = u
 		return
 	_track = u
 	_pan_v = Vector2.ZERO
@@ -478,7 +479,7 @@ func presentation_focus() -> Vector3:
 		return _held_target
 	var game := get_parent() as Game
 	if game and game.direct and game.direct.active():
-		var u := game.direct.leader()
+		var u := game.direct.view_target()
 		if is_instance_valid(u):
 			return u.global_position + Vector3.UP * clampf(u.figure_half_z * 1.6, 0.6, 2.8)
 	return global_position
@@ -1100,6 +1101,7 @@ func _detach() -> void:
 	if not _free or _vel == Vector3.ZERO:
 		_goal = position
 	_free = true
+	_track = null
 
 
 func _screen_to_ground(v: Vector2) -> Vector3:
@@ -1221,7 +1223,9 @@ static func _unwrap(a: float, ref: float) -> float:
 ## manual pan; Home, a hero hotkey or a portrait double-click reattaches.
 func _follow(g: Game, _dt: float) -> void:
 	_follow_unit = null
-	if g and not g.selected.is_empty() and is_instance_valid(g.selected[0]) \
+	if is_instance_valid(_track) and _track is GameUnit and not _track.dead and g and _track.world == g.world:
+		_follow_unit = _track
+	elif g and not g.selected.is_empty() and is_instance_valid(g.selected[0]) \
 			and not g.selected[0].dead and g.selected[0].world == g.world:
 		_follow_unit = g.selected[0]
 	if _follow_unit == null or _free or GameData.option("cam_follow") != 1:

@@ -1201,7 +1201,7 @@ static func torch_halo(radius: float, color: Color) -> MeshInstance3D:
 	ensure_globals()
 	if _halo_shader == null:
 		_halo_shader = Shader.new()
-		_halo_shader.code = HALO_SHADER
+		_halo_shader.code = WaterReflection.screen_effect_source(HALO_SHADER)
 		_halo_mesh = QuadMesh.new()
 		_halo_mesh.size = Vector2(1, 1)
 	var m := ShaderMaterial.new()
@@ -1321,7 +1321,7 @@ static func heat_haze(width: float) -> MeshInstance3D:
 		# before transparent flames/halos, or it paints the background over them.
 		_haze_mat.render_priority = -50
 		_haze_mat.shader = Shader.new()
-		_haze_mat.shader.code = HAZE_SHADER
+		_haze_mat.shader.code = WaterReflection.screen_effect_source(HAZE_SHADER)
 		_haze_mat.set_shader_parameter("noise_tex", noise("haze", 128, 0.06, 3))
 	var mi := MeshInstance3D.new()
 	var q := QuadMesh.new()

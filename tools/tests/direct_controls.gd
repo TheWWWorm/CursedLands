@@ -99,6 +99,11 @@ func _ready() -> void:
 	hero=session.party_units(0)[0];hero.blocked=false
 	game.selected.assign([hero]);game.rig.release();await frames(12)
 	game.rig._window_focused=true;await frames()
+	hero.set_gait(2)
+	key(KEY_CTRL,true);key(KEY_CTRL,false);await frames()
+	check(hero.gait()==1,"Ctrl crouches in third-person mode")
+	key(KEY_CTRL,true);key(KEY_CTRL,false);await frames()
+	check(hero.gait()==2,"Ctrl stands back up")
 	# Native attack animation schedules one actual impact without a target.
 	hero.orders.clear();hero.order={};hero._attack_cd=0;hero._anim_lock=0;hero.alert=true
 	hero.stance=GameUnit.STANCE_NONE;hero.facing=0;hero._update_pose();hero._anim_lock=0
@@ -118,6 +123,9 @@ func _ready() -> void:
 		print("DIRECT_IMAGE ",ProjectSettings.globalize_path("user://third-person-field.png"))
 	# The same controls in first person, with only this world model's head hidden.
 	GameData.options.control_mode=3;await frames(8)
+	key(KEY_CTRL,true);key(KEY_CTRL,false);await frames()
+	check(hero.gait()==1,"Ctrl crouches in first-person mode")
+	key(KEY_CTRL,true);key(KEY_CTRL,false);await frames()
 	check(direct.active() and direct.first_person() and direct.usable(),"first-person controls activate without leaving direct control")
 	check(hero.model._head_hidden and not hero.model._head.visible,"first person hides the controlled head and attached hair/helmet")
 	check(hero.model.is_visible_in_tree() and hero.model.find_children("*", "MeshInstance3D", true, false).any(func(m):return m.is_visible_in_tree()),"first person retains visible body geometry")

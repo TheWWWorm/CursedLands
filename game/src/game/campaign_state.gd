@@ -38,6 +38,8 @@ var side_quests := {}     # quest map id -> "active" | "done" | "rewarded" | "re
 var experience := 0.0     # experience not yet distributed
 ## Hired mercenaries: number N (script var apartyn<N>) -> hero record + controller.
 var mercs := {}
+## Progress survives scripted dismissal and replacement map actors.
+var dismissed_mercs := {}
 ## Fully tamed units (Spells.tame stage 3) travelling with the party:
 ## [{rec, hp, controller, pos, party}]. the original puts them in the
 ## tamer's party, whose members go to the next zone.
@@ -536,7 +538,8 @@ func party_records(player: int) -> Array:
 
 ## Hero record for mercenary N created from its NPC unit (or its map record).
 func make_merc(n: int, rec: Dictionary, current: Dictionary = {}) -> Dictionary:
-	var m := current.duplicate(true) if not current.is_empty() else npc_character(rec)
+	var previous: Dictionary = current if not current.is_empty() else dismissed_mercs.get(n, {})
+	var m := previous.duplicate(true) if not previous.is_empty() else npc_character(rec)
 	m.merc = n
 	m.controller = 0
 	m.party = current_party
@@ -546,6 +549,7 @@ func make_merc(n: int, rec: Dictionary, current: Dictionary = {}) -> Dictionary:
 		# Existing saved NPCs retain credit for their older ability prices.
 		TrainingRefund.prepare(m)
 	mercs[n] = m
+	dismissed_mercs.erase(n)
 	return m
 
 
@@ -1075,6 +1079,10 @@ func store_zone(id: String, world: GameWorld) -> void:
 				"owner": int(u.get_meta("lmp_owner")), "conn": int(u.get_meta("lmp_conn", 0)), "blood_pool": u.blood_pool_state()})
 			continue
 		present[u.uid] = true
+		if u.has_meta("npc_character"):
+			var character: Dictionary = u.get_meta("npc_character")
+			if character.has("merc"):
+				dismissed_mercs[int(character.merc)] = character.duplicate(true)
 		if u.has_meta("detached_party_npc") or u.has_meta("pet_id"):
 			var rec: Dictionary = u.info.duplicate(true)
 			rec.nid = u.uid
@@ -1337,7 +1345,7 @@ func to_dict() -> Dictionary:
 	var tables := gs_metadata()
 	return {"version": 2, "campaign_id": campaign_id, "mod_config": mod_config, "vars": vars, "gs_tables": tables, "gs_reconstructed": gs_reconstructed, "heroes": heroes, "zones": zones, "visited": visited,
 		"quests": quests, "money": money, "items": items, "quest_items": quest_items,
-		"parties": parties, "current_party": current_party, "party_bags": party_bags, "experience": experience, "mercs": mercs, "pets": pets, "side_quests": side_quests, "shops": shops, "current_zone": current_zone,
+		"parties": parties, "current_party": current_party, "party_bags": party_bags, "experience": experience, "mercs": mercs, "dismissed_mercs": dismissed_mercs, "pets": pets, "side_quests": side_quests, "shops": shops, "current_zone": current_zone,
 		"world_time": world_time, "day": day, "coop": coop, "camera": camera}
 
 

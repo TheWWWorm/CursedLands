@@ -61,25 +61,37 @@ static func rune_icons(spell: String) -> Array[Texture2D]:
 	var out: Array[Texture2D] = []
 	for code: String in Spells.mods_of(spell).slice(0, Spells.MAX_MODS):
 		var name := String(Items.look("rune:" + code).get("texture", ""))
-		out.append(icon(name) if not name.is_empty() else null)
+		var key := "rune:" + name
+		if not _icons.has(key):
+			var index := name.trim_prefix("modifier").to_int()
+			var atlas := icon("modifiers2")
+			if atlas and name.begins_with("modifier") and index >= 0 and index < 28:
+				var glyph := AtlasTexture.new()
+				glyph.atlas = atlas
+				var cell := atlas.get_width() / 8.0
+				glyph.region = Rect2(Vector2(index % 8, index / 8) * cell, Vector2.ONE * cell)
+				glyph.filter_clip = true
+				_icons[key] = glyph
+			else:
+				_icons[key] = icon(name) if not name.is_empty() else null
+		out.append(_icons[key])
 	return out
 
 
-## A compact strip along the lower edge preserves the full-colour spell art.
-## Two rows keep eight installed runes readable even in the small HUD slots.
+## Original transparent inscriptions sit over the top of the spell picture.
+## Two rows retain all eight installed runes without covering price/count text.
 static func draw_runes(canvas: CanvasItem, spell: String, rect: Rect2, tint := Color.WHITE, columns := 4) -> void:
 	var runes := rune_icons(spell)
 	if runes.is_empty():
 		return
-	var side := rect.size.x / float(maxi(5, columns))
+	columns = maxi(1, columns)
+	var side := rect.size.x / float(maxi(6, columns))
 	var cols := mini(columns, runes.size())
-	var rows := ceili(runes.size() / float(columns))
-	var origin := Vector2(rect.end.x - cols * side, rect.end.y - rows * side)
+	var origin := Vector2(rect.get_center().x - cols * side * 0.5, rect.position.y + rect.size.y * 0.04)
 	for i in runes.size():
 		var cell := Rect2(origin + Vector2(i % columns, i / columns) * side, Vector2.ONE * side)
-		canvas.draw_rect(cell, Color(0.03, 0.03, 0.04, 0.85))
 		if runes[i]:
-			canvas.draw_texture_rect(runes[i], cell.grow(-side * 0.07), false, tint)
+			canvas.draw_texture_rect(runes[i], cell, false, tint)
 
 
 ## Additive pass for the picked cell: + (0x40, 0x40, 0x40) where the picture is.

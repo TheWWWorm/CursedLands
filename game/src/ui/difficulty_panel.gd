@@ -74,7 +74,7 @@ func _choose(value: int) -> void:
 	for i in _choices.size(): _choices[i].set_pressed_no_signal(i == level)
 
 func _refresh_summary() -> void:
-	_summary.text = CampaignChoices.title(GameData.campaign_id) + "\n" + str(ModStore.profile().name)
+	_summary.text = CampaignChoices.title(GameData.campaign_id) + "\n" + RemakeText.t(str(ModStore.profile().name))
 
 func _open_mods() -> void:
 	_mods.draft = _draft if _new_game else {}

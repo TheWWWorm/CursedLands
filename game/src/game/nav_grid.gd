@@ -3133,8 +3133,17 @@ func step_blocker(u: GameUnit, q: Vector2, result: Dictionary, next_cell := Vect
 		# Preserve the fast same-cell exit before querying or sorting neighbours.
 		var cq := next_cell if next_cell.x >= 0 else cell(q)
 		if cq == cell(u.pos): return null
-		return _unit_queries.step_blocker(u, q, cq, units_around(q, 10.0), result)
+		var blocker: GameUnit = _unit_queries.step_blocker(u, q, cq, units_around(q, 10.0), result)
+		if blocker == null or not _separating_overlap(u, q, blocker): return blocker
+		# Quantized stamps can rise even while overlapping bodies separate.
+		# Recheck all neighbours so escaping one body cannot cross another.
 	return step_blocker_script(u, q, result, next_cell)
+
+
+static func _separating_overlap(u: GameUnit, q: Vector2, other: GameUnit) -> bool:
+	var radius := u.body_radius() + other.body_radius()
+	var before := u.pos.distance_squared_to(other.pos)
+	return before < radius * radius and q.distance_squared_to(other.pos) > before + 0.000001
 
 
 func step_blocker_script(u: GameUnit, q: Vector2, result: Dictionary, next_cell := Vector2i(-1, -1)) -> GameUnit:
@@ -3147,7 +3156,7 @@ func step_blocker_script(u: GameUnit, q: Vector2, result: Dictionary, next_cell 
 	var vq := [0, 0]
 	var v0 := [0, 0]
 	for o: GameUnit in near:
-		if o == u or o.dead:
+		if o == u or o.dead or _separating_overlap(u, q, o):
 			continue
 		var k := stamp_key(o.body_radius())
 		var oc := cell(o.pos)
@@ -3159,7 +3168,7 @@ func step_blocker_script(u: GameUnit, q: Vector2, result: Dictionary, next_cell 
 		return null
 	var thr := stamp_threshold(r_me) & 255
 	for o: GameUnit in near:
-		if o == u or o.dead or q.distance_to(o.pos) >= r_me + o.body_radius():
+		if o == u or o.dead or _separating_overlap(u, q, o) or q.distance_to(o.pos) >= r_me + o.body_radius():
 			continue
 		var oc := cell(o.pos)
 		var offset := c0 - oc

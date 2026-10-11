@@ -5,6 +5,13 @@ const WATER_LAYER := 1 << 16
 ## Camera masks have 32 bits; bit 20 is outside the default 20 scene layers.
 ## No geometry uses this marker. Ordinary cameras and shadow views omit it.
 const CAMERA_MARKER := 1 << 20
+## Screen-copy effects and projected gameplay markers belong to the main
+## view. They have no physical reflected surface and can expose their quads.
+const OMIT_SCREEN_EFFECT := """
+#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
+ if ((CAMERA_VISIBLE_LAYERS & 1048576u) != 0u) { discard; }
+#endif
+"""
 const REACH := 64.0
 const MAX_SIZE := 1024.0
 const CLIP := """
@@ -28,6 +35,10 @@ static func supported() -> bool:
 
 static func clip_source(code: String) -> String:
 	return code.replace("void fragment() {", "void fragment() {" + CLIP)
+
+
+static func screen_effect_source(code: String) -> String:
+	return code.replace("void fragment() {", "void fragment() {" + OMIT_SCREEN_EFFECT)
 
 
 static func reflected_transform(source: Transform3D, height: float) -> Transform3D:

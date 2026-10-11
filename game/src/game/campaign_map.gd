@@ -141,6 +141,13 @@ func _parse(text: String) -> void:
 			"view": exit.view = float(w[0])
 			"passtime": exit.passtime = float(w[0])
 			"deployangle": exit.deploy_angle = float(w[0])
+	# Some authored exits (including LiA gz1h -> gz2h) supply only deploy.
+	# The shared area is also the exit trigger unless an explicit remove
+	# rectangle overrides it. Preserve one-way entrance-only records.
+	for zone: Dictionary in zones.values():
+		for ex: Dictionary in zone.get("exits", {}).values():
+			if ex.get("to", "none") != "none" and not ex.has("remove") and ex.has("deploy"):
+				ex.remove = ex.deploy
 
 
 ## the original (global map route): depth-first walk from `start`

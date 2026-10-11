@@ -35,10 +35,14 @@ func _ready() -> void:
 	var dragon: GameUnit = host.world.units.get(DRAGON)
 	check(dragon != null and dragon.model.template == "unmodg","original Dead City SKD uses dragon model")
 	if dragon == null: await finish(); return
+	var resting_clip := dragon.model.village_idle_clip
+	check(resting_clip=="ubriefing02" and dragon.model._current==resting_clip,"village dragon rests before a conversation")
+	dragon.model.village_idle_clip=""; dragon.model.act("idle",1,0.0)
 	dragon.model.player.advance(0.4)
 	var flying_bottom := bottom(dragon)
 	print("DRAGON_IDLE clip=",dragon.model._current," bottom=",flying_bottom," altitude=",dragon.proto.altitude)
 	check(dragon.model._current=="cidle" and dragon.race.locomotion==2,"ordinary flying idle and movement class remain authored")
+	dragon.model.village_idle_clip=resting_clip; dragon.model.act("idle",1,0.0)
 	client = branch(true); GameData.player_name = "Dragon Guest"
 	check(client.join("127.0.0.1",29944)==OK,"connect dialogue guest")
 	check(await until(loaded),"guest receives original Dead City actor")
@@ -100,7 +104,7 @@ func _ready() -> void:
 	for s: Session in [host,client]:
 		var u: GameUnit = s.world.units[DRAGON]
 		u._set_action("idle"); u.model.player.advance(0.4)
-		check(u.model._current=="cidle","peer %d releases dialogue pose on close"%s.my_index)
+		check(u.model._current=="ubriefing02","peer %d returns to the resting village pose on close"%s.my_index)
 	check(dragon.race.locomotion==2 and dragon.proto.altitude==7.0,"dialogue never rewrites flying physics or prototype altitude")
 	print("DIALOGUE_POSES ",checks," checks ",failures," failures")
 	await finish()

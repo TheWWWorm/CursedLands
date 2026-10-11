@@ -470,6 +470,8 @@ func setup(w: GameWorld, record: Dictionary) -> bool:
 	# interpolated transform).
 	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
 	model.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+	if world.zone.get("type", "") == "brief" and model.template.to_lower().begins_with("unmod"):
+		model.village_idle_clip = model.dialogue_clip(false)
 	# Measured in the idle pose (Approx.: the pose of the original's box is not known
 	# the rest pose holds the arms out).
 	model.act("idle", 1, 0.0)
@@ -1508,23 +1510,38 @@ func free_running() -> bool:
 	return world.ai != null and not world.ai._player_in_combat(controller)
 
 
-func _tick(dt: float) -> void:
-	if _sandbox_mana():
-		mana = max_mana
-	var started := Time.get_ticks_usec() if world.profile_simulation else 0
-	# the original runs its logic in 55 ms ticks. Every 15 ticks
-	#  health gains max x race "health regen" x (1 + vitality/100)
-	# and stamina max x race "mana regen" x (1 + spirit/100), stamina only while
-	# the unit is idle.
+func always_regenerate_stamina() -> bool:
+	if controller < 0 or not has_meta("hero") or world == null: return false
+	if world.session and not world.session.mod_config.is_empty():
+		return int(world.session.mod_config.rules.get("stamina_regen", 0)) == 1
+	return GameData.option("stamina_regen") == 1
+
+
+## Original recovery cadence: 15 logic ticks. The optional party rule removes
+## the idle restriction and floors stamina recovery at the HP recovery amount.
+func _regenerate(dt: float) -> void:
+	if dead: return
+	var continuous := always_regenerate_stamina()
 	_regen_t += dt
 	while _regen_t >= TICK * 15.0:
 		_regen_t -= TICK * 15.0
 		var rm := 1.0
 		for b in buffs.values():
 			rm *= float(b.get("regen_mul", 1.0))
-		heal(max_hp * float(race.get("health_regen", 0.0)) * (1.0 + float(stats.get("regen_hp", 0.0)) / 100.0) * rm)
-		if is_idle():
-			mana = minf(max_mana, mana + max_mana * float(race.get("mana_regen", 0.0)) * (1.0 + float(stats.get("regen_mana", 0.0)) / 100.0))
+		var health := max_hp * float(race.get("health_regen", 0.0)) * (1.0 + float(stats.get("regen_hp", 0.0)) / 100.0) * rm
+		var stamina := max_mana * float(race.get("mana_regen", 0.0)) * (1.0 + float(stats.get("regen_mana", 0.0)) / 100.0)
+		heal(health)
+		if continuous:
+			stamina = maxf(stamina, maxf(0.0, health))
+		if continuous or is_idle():
+			mana = minf(max_mana, mana + stamina)
+
+
+func _tick(dt: float) -> void:
+	if _sandbox_mana():
+		mana = max_mana
+	var started := Time.get_ticks_usec() if world.profile_simulation else 0
+	_regenerate(dt)
 	# Running characters lose max stamina / 150 per tick and
 	# walk once it is gone.
 	if has_meta("hero") and action == "run" and not _sandbox_mana() and not free_running():
@@ -2275,7 +2292,10 @@ func _blocked_by(b: GameUnit, standing: bool, next := Vector2.INF) -> void:
 			_wait_on = weakref(b)
 			_set_action("idle")
 			return
-	if temporary_moving or standing or speed() > b.speed():
+	# Stable IDs break a head-on tie between equally fast actors.
+	var head_on := not path.is_empty() and not b.path.is_empty() \
+		and (path[0] - pos).normalized().dot((b.path[0] - b.pos).normalized()) < -0.25
+	if temporary_moving or standing or speed() > b.speed() or (head_on and uid > b.uid):
 		var goal: Vector2 = path[-1] if not path.is_empty() else order.get("to",pos)
 		_avoid = b
 		_avoid_at = next if temporary_moving or not standing else Vector2.INF

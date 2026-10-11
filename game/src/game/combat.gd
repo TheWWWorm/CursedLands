@@ -131,10 +131,10 @@ func hit_chance(att: GameUnit, def: GameUnit) -> float:
 ## D = min + random(range); per damage type i the target's natural armour is
 ## subtracted (max(0, D * factor_i - armour_i)), then every armour layer worn on
 ## the struck body part (GameUnit.hit_part: random location)
-## outer layer first. The remainder comes off that part's health. May be 0 when
-## armour stops the blow.
+## outer layer first. Armour can absorb at most 80% of each incoming type;
+## the remainder comes off that part's health.
 ## Wear: each worn piece loses the damage that
-## got through it (stops at the layer that stops the blow); the attacker's
+## got through it (stops once the absorption budget is exhausted); the attacker's
 ## weapon in hand at the blow ((attacker); for a bow or
 ## crossbow the shooter's at the arrow's arrival) loses what
 ## the natural armour and the layers absorbed. Collected in `last_wear` for
@@ -175,16 +175,18 @@ func absorb(def: GameUnit, dmg: float, f: PackedFloat32Array, part := "torso") -
 		# (D·f − max(D·f − armour, 0)), ECX = param_4) and then what
 		# the layers absorbed: D·f − max(left, 0) in all.
 		var raw := dmg * f[t]
-		var d := raw - (armour[t] * k if t < armour.size() else 0.0)
-		if d <= 0.0:
-			last_wear.weapon += maxf(raw, 0.0)
-			continue
-		for w: Array in worn:
-			d -= w[1][t]
-			for i: int in w[0]:
-				last_wear.armors[i] = last_wear.armors.get(i, 0.0) + maxf(d, 0.0)
-			if d <= 0.0:
-				break
+		# Damage threshold: all natural/worn layers share one 80% budget.
+		# Apply the floor per incoming type so unrelated resistances cannot
+		# consume another type's guaranteed damage.
+		var minimum := maxf(raw, 0.0) * 0.2
+		var d := maxf(minimum, raw - (armour[t] * k if t < armour.size() else 0.0))
+		if d > minimum:
+			for w: Array in worn:
+				d = maxf(minimum, d - w[1][t])
+				for i: int in w[0]:
+					last_wear.armors[i] = last_wear.armors.get(i, 0.0) + d
+				if d <= minimum:
+					break
 		last_wear.weapon += raw - maxf(d, 0.0)
 		last_types[t] = maxf(d, 0.0)
 		total += maxf(d, 0.0)

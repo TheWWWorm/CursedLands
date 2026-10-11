@@ -104,7 +104,7 @@ func _ready() -> void:
 	check(a.orders.size()==1 and a.orders[0].type=="direct_attack","explicit direction attack is permitted in the field")
 	a.orders.clear();a._attack_cd=1.0
 	s.apply_command({"t":"direct_attack","units":[a.uid],"direction":Vector3.RIGHT},0)
-	check(a.orders.is_empty(),"repeated requests cannot bypass weapon cooldown")
+	check(a.orders.size()==1 and a._attack_cd==1.0 and a._pending_hit.is_empty(),"buffered attack cannot bypass weapon cooldown or create an early impact")
 	s.world=null;s.free();w.free()
 	print("DIRECT_COMBAT ",checks," checks ",failures," failures")
 	get_tree().quit(1 if failures else 0)

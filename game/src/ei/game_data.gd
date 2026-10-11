@@ -179,6 +179,7 @@ const OPTIONS := [
 	# Optional approximation for distant NPC decisions; exact behavior is the default.
 	["distant_ai", 1, 2, 18, 8, 0],
 	["free_run", 1, 2, 18, 9, 0],
+	["stamina_regen", 1, 2, 18, 10, 0],
 	# Network and co-op (group 19): the co-op host's rules — full experience
 	# for every party member (XpRules), monster scaling to the player count
 	# (MobScaling: Off / Light / Normal / Strong), shared loot
@@ -335,6 +336,7 @@ const REMAKE_OPTIONS := {
 	"smile_faces": ["Smiling portraits", "The party's portraits smile for a few seconds after a won fight (every living member), when a hero takes loot from a body or chest, and when a quest is finished or rewarded (the whole party). Co-op: also the hero who gets a copy of shared loot. A hit still shows pain at once. Off: as the original, a portrait smiles only after its character's kill."],
 	"coop_player_names": ["Player names above heroes", "Co-op: each player's name, in their colour, above their hero's head, so the heroes are easy to tell apart. Hidden while the hero cannot be seen. Single player is not affected. Off: as the original, no names."],
 	"free_run": ["Free running outside combat", "Running costs no stamina while the party is out of combat. Combat running and spell costs stay normal. Injuries and carrying limits still apply. The host controls this rule."],
+	"stamina_regen": ["Always regenerate stamina", "Party stamina regenerates during movement and combat, at least as fast as health. Running and spells still consume stamina. The host controls this rule."],
 	"sp_full_xp": ["Full experience for companions", "Single player: your hero and every companion (hired mercenaries such as Khador) each get the whole experience of a kill or quest. Off: as the original, which splits it equally among the living party."],
 	"start_zones": ["Starting areas on the travel map", "The area where the campaign begins (the ruins where Zak wakes up) becomes a place on the travel map once you have left it, so the party can go back. You arrive at its path from the village; what was killed or taken there stays so, and the opening scenes do not play again. Co-op: the host's setting counts. Off: as the original, where its piece only leads to the village."],
 	"aim_press_once": ["Aim keys: press once", "Press an aimed-strike key (Num 8 head, Num 5 body …) once: its cursor stays until the next click. A click on a creature attacks it at that part; a click elsewhere, a right click, Esc or the same key again cancels it; another aim key switches. Off: as the original, the key must be held while clicking."],
@@ -380,7 +382,7 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"gfx_sharp_units", "q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale", "phys_interp",
 	"control_mode", "character_light", "camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow", "village_start_view",
-	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "distant_ai", "path_through", "sp_full_xp", "free_run", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot", "enemy_hp_bars", "smile_faces",
+	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "distant_ai", "path_through", "sp_full_xp", "free_run", "stamina_regen", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot", "enemy_hp_bars", "smile_faces",
 	"pad_enabled", "pad_rumble", "pad_deadzone", "pad_cursor_speed", "pad_target_radius", "pad_wheel_pause", "pad_glyphs", "pad_swap_sticks", "pad_light", "pad_gyro", "pad_gyro_sensitivity", "auto_graphics", "renderer"]
 signal options_changed
 const GFX_REV := 4

@@ -1,6 +1,6 @@
 # Mods, profiles and game rules
 
-Available in **1.0.4 Experimental 4**, using mod API 1 and network protocol 16. Stable 1.0.3 does not include this feature.
+Available in **1.0.4 Experimental 5**, using mod API 1 and network protocol 17. Stable 1.0.3 does not include this feature.
 
 Open **Options → Remake → Game setup → Mods and rules** from the main menu or in-game Esc menu. The multiplayer screen also opens **Game setup**. **New Game** opens a fresh setup with standard difficulty and rules; use its **Mods and rules** button for optional changes before starting. Cancelling discards that new-game draft.
 
@@ -21,11 +21,14 @@ Mouse, keyboard focus and controller navigation use the same controls. D-pad up/
 
 ## Co-op compatibility
 
-Everyone needs network protocol **16** (Experimental 4). The host checks the mod API, campaign, sandbox classification, ordered gameplay package IDs/versions/content hashes and effective mod option values before admitting a player. Existing original-map checks and database synchronization remain in place. No package is downloaded automatically.
+Everyone needs network protocol **17** (Experimental 5). The host checks the mod API, campaign, sandbox classification, ordered gameplay package IDs/versions/content hashes and effective mod option values before admitting a player. Existing original-map checks and database synchronization remain in place. No package is downloaded automatically.
 
 Built-in host rules, such as full XP or shared loot, are published to guests without changing their local defaults. Gameplay mod values must match when joining. Choose the same package versions and values in the menu before connecting. A continued host save supplies its saved configuration before the lobby opens; stop hosting to choose a different save.
 
 Experimental 4 adds **Free running outside combat**, disabled by default. It removes running stamina drain while the authority considers the party out of combat; injuries, carrying limits and spell costs still apply. Existing saves without this rule keep it disabled.
+
+Experimental 5 adds **Always regenerate stamina** under **Game rules → Party**, disabled by default. Living party members recover stamina while moving or fighting, with each recovery pulse at least as large as their HP regeneration amount, including at full health. A higher normal stamina recovery rate is retained. Running and spell costs still apply. This live setting is saved with the campaign and synchronized by the host; older saves default to Off.
+
 
 Experimental 2 checks saved mod compatibility before pausing a running group for loading. Refusing a save preserves the current game, pause state and speed. When a host without guests restores different saved mod values, new players can join after loading finishes with the matching values.
 

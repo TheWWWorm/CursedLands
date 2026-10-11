@@ -19,7 +19,9 @@ func build_shell(title: String, preferred: Vector2) -> void:
 	add_to_group("pad_panel")
 	_preferred = preferred
 	theme = Theme.new()
-	theme.default_font = Interface800.font()
+	# Controls are scaled with the dialog. Rasterize a private font at the
+	# display scale instead of magnifying the small 22 px glyph cache.
+	theme.default_font = Interface800.font().duplicate()
 	theme.default_font_size = 22
 	for type in ["Label", "Button", "OptionButton", "CheckButton", "LineEdit", "SpinBox", "PopupMenu"]:
 		theme.set_color("font_color", type, INK)
@@ -49,7 +51,6 @@ func build_shell(title: String, preferred: Vector2) -> void:
 	dialog_body.add_theme_constant_override("separation", 16)
 	_surface.add_child(dialog_body)
 	var heading := make_label(title, dialog_body)
-	heading.add_theme_font_override("font", Interface800.font())
 	heading.add_theme_font_size_override("font_size", 32)
 	heading.add_theme_color_override("font_color", GOLD)
 	_surface.resized.connect(_center_surface)
@@ -71,6 +72,8 @@ func layout_shell() -> void:
 	if _surface == null: return
 	var safe := Portability.safe_rect(size).grow(-16)
 	_ui_scale = clampf(minf(safe.size.x / 1248.0, safe.size.y / 768.0), 1.0, 3.0)
+	if theme.default_font is FontFile or theme.default_font is SystemFont:
+		theme.default_font.oversampling = _ui_scale
 	_surface.scale = Vector2.ONE * _ui_scale
 	_surface.size = _preferred.min(safe.size / _ui_scale)
 	_center_surface()
@@ -116,6 +119,7 @@ func make_button(value: String, parent: Node, action: Callable) -> Button:
 	button.text = RemakeText.t(value)
 	button.custom_minimum_size.y = 46
 	CampaignChoices.style_button(button)
+	button.add_theme_font_override("font", theme.default_font)
 	button.add_theme_font_size_override("font_size", 22)
 	button.pressed.connect(action)
 	parent.add_child(button)

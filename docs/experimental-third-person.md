@@ -6,6 +6,7 @@ Choose **Options → Remake → Camera → Control mode**. **Auto (gamepad)** is
 | --- | --- |
 | WASD | Move relative to the camera; selected companions follow |
 | Shift while moving | Run, using the normal stamina and posture rules |
+| Ctrl | Toggle crouch/sneak in third- or first-person mode, where the zone permits it |
 | Mouse | Turn and tilt the view |
 | Left mouse button / RT | Swing or shoot in the aimed direction; hold to repeat after the weapon cooldown; cast a selected spell |
 | E / A | Talk, loot, revive or use the object under the crosshair; pick up nearby loot without exact aiming; confirm a nearby open area exit. A also confirms the selected spell target. |

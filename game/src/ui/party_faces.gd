@@ -210,16 +210,19 @@ func _gui_input(e: InputEvent) -> void:
 			# different caster while the spell/item is still armed.
 			accept_event()
 			return
-		if i >= 0 and _cells[i][2] and is_instance_valid(_cells[i][0]):
+		if i >= 0 and is_instance_valid(_cells[i][0]):
 			# a click selects, a double click
 			# makes the camera follow the unit.
 			# Remake (touch): one tap does both — a double tap is awkward there.
 			if e.double_click:
 				game.rig.follow(_cells[i][0])
-			else:
+				if game.direct: game.direct.focus_portrait(_cells[i][0])
+			elif _cells[i][2]:
 				game.selected = [_cells[i][0]]
 				if TouchInput.enabled:
 					game.rig.follow(_cells[i][0])
+			elif TouchInput.enabled:
+				game.rig.follow(_cells[i][0])
 			accept_event()
 
 

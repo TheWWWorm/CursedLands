@@ -126,6 +126,11 @@ static func mod_title(code: String) -> String:
 	return t if t else String(mod_row(code).get("name", code))
 
 
+static func mod_short_title(code: String) -> String:
+	var lines := GameData.text("modifier " + code.to_lower()).strip_edges().split("\n")
+	return String(lines[-1]).strip_edges() if lines.size() >= 3 else code.to_upper()
+
+
 const MAX_MODS := 8   # original: up to 8 runes per spell
 
 
@@ -920,7 +925,7 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 		if b.get("resist", "") in [school, "all"]:
 			prot = maxf(prot, float(b.get("armor", 0.0)))
 	var arm := (armour[t] if t < armour.size() else 0.0) + prot
-	var dmg := power - arm * af * world.combat.difficulty(u, "Absorption")
+	var dmg := maxf(maxf(power, 0.0) * 0.2, power - arm * af * world.combat.difficulty(u, "Absorption"))
 	# the record's roll (= FLT_MAX) always lands; the
 	# struck armour spells fire before the damage ((1)).
 	world.combat.armor_spells(u, true)
@@ -957,16 +962,17 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 			var walk := func(i: int, amount: float, wear: bool) -> float:
 				var r := float(u.parts[i].max) / maxf(lethal * u.max_hp, 0.0001)
 				var d := amount
+				# Natural and worn protection share the same incoming-damage
+				# floor, including the attacker's co-op damage scaling.
+				var minimum := maxf(power, 0.0) * 0.2 * (amount / dmg)
 				for l: Array in Combat.worn_layers(armors, u.part_group(i)):
-					d -= float((l[1] as PackedFloat32Array)[t]) * af
+					if d <= minimum: break
+					d = maxf(minimum, d - float((l[1] as PackedFloat32Array)[t]) * af)
 					if wear:
 						for it in (l[0] as Array).map(func(j: int) -> String: return armors[j]):
 							var j := armors.find(it)   # a broken piece left the list
 							if j >= 0:
 								world.combat.wear_item(u, armors, j, maxf(d, 0.0) * r, false)
-					if d <= 0.0:
-						d = 0.0
-						break
 				if wear:
 					absorbed[0] += (amount - d) * r
 				return d

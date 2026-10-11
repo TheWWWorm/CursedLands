@@ -13,6 +13,7 @@ extends Node3D
 const TICK := 0.055
 const DRAW_DIST := 90.0
 const EFFECT_SHADER := preload("res://src/game/fx/particle.gdshader")
+const WaterReflection := preload("res://src/game/fx/water_reflection.gd")
 ## The world draw draws the land, the figures and
 ## the water first, then, with z writes off (D3D state 0xe = 0), the effects:
 ## world, the particle emitters (far to near) and the
@@ -409,17 +410,19 @@ func add_light(at: Vector3, color: Color, radius: float, secs := -1.0, energy :=
 	l.omni_range = maxf(absf(radius), 0.1)
 	l.light_energy = energy
 	l.shadow_enabled = false
-	l.light_volumetric_fog_energy = Gfx.torch_fog_energy()   # option gfx_torch_glow
-	l.add_to_group(&"gfx_torch_glow")
+	var glow := spell or kind == "fire"
+	l.light_volumetric_fog_energy = Gfx.torch_fog_energy() if glow else 0.0
+	if glow: l.add_to_group(&"gfx_torch_glow")
 	l.add_to_group(Gfx.POINT_LIGHT_GROUP)
 	add_child(l)
-	var halo := Gfx.torch_halo(absf(radius), color)
-	l.add_child(halo)
+	var halo := Gfx.torch_halo(absf(radius), color) if glow else null
+	if halo: l.add_child(halo)
 	l.global_position = godot(at)
 	var d := {"light": l, "until": -1 if secs < 0.0 else tick + roundi(secs / TICK), "pos": at,
 		"step": Vector3.ZERO, "ticks": 0, "energy": energy, "age": 0,
 		"duration_ticks": -1 if secs < 0.0 else maxi(1, roundi(secs / TICK)),
-		"kind": kind if kind == "fire" else ("spell" if spell else ""), "halo": halo.material_override}
+		"kind": kind if kind == "fire" else ("spell" if spell else "")}
+	if halo: d.halo = halo.material_override
 	# Only identified torches and spell lights enter the optional remake
 	# lighting path. Script point lights keep the original max() behaviour.
 	LocalLighting.prepare_particle(d)
@@ -722,14 +725,14 @@ static func through_on() -> bool:
 ## The material of an emitter (by type, texture, blend and option path_through).
 func _material_of(e: FxEmitter) -> ShaderMaterial:
 	return _material(e.texture, e.add == 1, e.type in GLOW_TYPES, e.type in LIT_TYPES, e.type == 0x2001,
-		e.type in THROUGH_TYPES and through_on())
+		e.type in THROUGH_TYPES and through_on(), e.type in THROUGH_TYPES)
 
 
-func _material(tex: String, additive: bool, glow := false, lit := false, fire := false, through := false) -> ShaderMaterial:
-	var key := tex + ("+" if additive else "") + ("*" if glow else "") + ("~" if lit and not additive else "") + ("#fire" if fire else "") + ("@through" if through else "")
+func _material(tex: String, additive: bool, glow := false, lit := false, fire := false, through := false, marker := false) -> ShaderMaterial:
+	var key := tex + ("+" if additive else "") + ("*" if glow else "") + ("~" if lit and not additive else "") + ("#fire" if fire else "") + ("@through" if through else "") + ("@marker" if marker else "")
 	if not _mats.has(key):
 		var m := ShaderMaterial.new()
-		m.shader = _shader(additive, through)
+		m.shader = _shader(additive, through, marker)
 		m.render_priority = RENDER_PRIORITY + 2 if through else RENDER_PRIORITY
 		m.set_shader_parameter("through_alpha", THROUGH_ALPHA if through else 0.0)
 		m.set_meta("through", through)
@@ -744,10 +747,10 @@ func _material(tex: String, additive: bool, glow := false, lit := false, fire :=
 static var _shaders := {}
 
 
-static func _shader(additive: bool, through := false) -> Shader:
-	var key := int(additive) + 2 * int(through)
+static func _shader(additive: bool, through := false, marker := false) -> Shader:
+	var key := int(additive) + 2 * int(through) + 4 * int(marker)
 	if not _shaders.has(key):
-		if not additive and not through:
+		if not additive and not through and not marker:
 			_shaders[key] = EFFECT_SHADER
 		else:
 			var s := Shader.new()
@@ -756,6 +759,10 @@ static func _shader(additive: bool, through := false) -> Shader:
 				s.code = s.code.replace("blend_mix", "blend_add")
 			if through:
 				s.code = s.code.replace("depth_draw_never,", "depth_draw_never, depth_test_disabled,")
+			# Target/path indicators stay in the main view even with the
+			# optional through-obstacles display disabled.
+			if marker or through:
+				s.code = WaterReflection.screen_effect_source(s.code)
 			_shaders[key] = s
 	return _shaders[key]
 

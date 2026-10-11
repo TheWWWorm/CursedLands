@@ -92,7 +92,11 @@ static func melee_target(u: GameUnit, direction: Vector3) -> GameUnit:
 		var b := origin(t)
 		var aimed_y := a.y + direction.y * d / maxf(Vector2(direction.x,direction.z).length(),0.1)
 		var floor_y := u.world.ground_at(t.pos.x,t.pos.y)
-		if aimed_y < floor_y - 0.2 or aimed_y > floor_y + t.figure_half_z*2.0 + 0.2: continue
+		# A melee swing sweeps down from the hands. A chest-height crosshair
+		# must still reach a rat at the attacker's feet. Range, vertical body
+		# separation and the scenery sweep continue to reject unreachable hits.
+		var sweep := maxf(0.3, u.figure_half_z * 1.4)
+		if aimed_y < floor_y - sweep or aimed_y > floor_y + t.figure_half_z*2.0 + sweep: continue
 		if d < best and scene_fraction(u.world,a,b) == 1.0:
 			found = t; best = d
 	return found

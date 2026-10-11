@@ -25,6 +25,7 @@ var _move_run := false
 var _move_refresh := 0.0
 var _view_model: EIUnitModel
 var _could_control := false
+var _portrait_target: GameUnit
 
 
 class Reticle extends Control:
@@ -117,6 +118,7 @@ func _process(delta: float) -> void:
 	var on := active()
 	var u := leader() if on else null
 	if on != _was_active:
+		_portrait_target = null
 		_was_active = on
 		pointer = false
 		_fire = false
@@ -137,6 +139,7 @@ func _process(delta: float) -> void:
 			if is_instance_valid(_hero): game.rig.center_on(_hero.global_position)
 	if on and (_world != game.world or _hero != u):
 		if _world != game.world:
+			_portrait_target = null
 			_move_id = -1
 			_control_id = -2
 			_saved_pose = game.rig.pose()
@@ -158,7 +161,7 @@ func _process(delta: float) -> void:
 	if _could_control and not can and u and game.world == game.session.world and not game.session.loading_game:
 		game.session.submit({"t":"direct_cancel","units":[u.uid]})
 	_could_control = can
-	_update_view_model(u.model if on and u and first_person() and not game.rig.held and not game.session.movie_active() else null)
+	_update_view_model(u.model if on and u and first_person() and not is_instance_valid(_portrait_target) and not game.rig.held and not game.session.movie_active() else null)
 	_capture(can and PadInput.active != "pad")
 	if not can:
 		_fire = false
@@ -188,6 +191,7 @@ func handle_input(e: InputEvent) -> bool:
 	if not active(): return false
 	if e is InputEventKey and e.physical_keycode == KEY_TAB and e.pressed and not e.echo and not game.hud.blocks_camera():
 		pointer = not pointer
+		_portrait_target = null
 		return true
 	if not usable() or pointer: return false
 	if e is InputEventMouseMotion:
@@ -205,6 +209,11 @@ func handle_input(e: InputEvent) -> bool:
 		return true
 	if e is InputEventKey:
 		if e.physical_keycode in [KEY_W,KEY_A,KEY_S,KEY_D]: return true
+		if e.physical_keycode == KEY_CTRL:
+			if e.pressed and not e.echo:
+				var u := leader()
+				game.hud.set_move_mode("walk" if u.gait() == 1 else "sneak")
+			return true
 		if e.physical_keycode == KEY_E:
 			if e.pressed and not e.echo:
 				if game.has_spell_target(): cast_self()
@@ -345,7 +354,7 @@ func keyboard_hint() -> String:
 		return RemakeText.t("WASD: move   Mouse: look   Left click: cast   Right click: cancel   Tab: pointer")
 	return RemakeText.t("WASD: move   Mouse: look   Left click: attack   E: interact   Tab: pointer" \
 		if game.session.command_allowed({"t":"direct_attack"}) else \
-		"WASD: move   Mouse: look   E: interact   Tab: pointer")
+		"WASD: move   Mouse: look   E: interact   Tab: pointer") + "   " + RemakeText.t("Ctrl: crouch")
 
 
 func interaction_hint() -> Dictionary:
@@ -435,8 +444,24 @@ func interact() -> void:
 		game.issue({"t":"move","units":[leader().uid],"x":action.at.x,"y":action.at.y,"exit":action.exit})
 
 
+func focus_portrait(u: GameUnit) -> void:
+	if not active(): return
+	stop_move()
+	pointer = true
+	_portrait_target = u
+	_update_view_model(null)
+	apply_camera()
+
+
+func view_target() -> GameUnit:
+	if pointer and is_instance_valid(_portrait_target) and not _portrait_target.dead and _portrait_target.world == game.world:
+		return _portrait_target
+	return leader()
+
+
 func apply_camera() -> void:
-	var u := leader()
+	var u := view_target()
+	var inspecting := pointer and is_instance_valid(_portrait_target) and u == _portrait_target
 	if u == null or game.rig.held or game.session.movie_active(): return
 	var rig := game.rig
 	rig._opening_view = null
@@ -448,13 +473,14 @@ func apply_camera() -> void:
 	var fraction := DirectCombat.scene_fraction(game.world,pivot,wanted,0.18)
 	var eye := pivot.lerp(wanted,maxf(0.0,fraction-0.02))
 	rig.position = u.global_position
-	_update_view_model(u.model if first_person() else null)
-	if first_person():
+	var eyes := first_person() and not inspecting
+	_update_view_model(u.model if eyes else null)
+	if eyes:
 		eye = u.model.eye_position() if u.model else pivot
 		# A small forward offset clears the neck while retaining chest/legs.
 		eye += Vector3(cos(heading),0,-sin(heading)) * 0.08
-	rig.camera.fov = 75.0 if first_person() else 65.0
-	rig.camera.near = 0.03 if first_person() else 0.08
+	rig.camera.fov = 75.0 if eyes else 65.0
+	rig.camera.near = 0.03 if eyes else 0.08
 	rig.camera.global_position = eye
 	rig.camera.look_at(eye+forward,Vector3.UP)
 

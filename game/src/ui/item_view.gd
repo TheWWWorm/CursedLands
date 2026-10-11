@@ -80,6 +80,8 @@ var _angle := 0.0
 var _speed := 0.0
 var _pulse := -1   # PULSE index, -1 = none
 var _phase := 0.0
+var _fit_camera: Camera3D
+var _fit_points := PackedVector3Array()
 
 
 func _ready() -> void:
@@ -119,6 +121,8 @@ func show_item(id: String) -> void:
 	for ch in _vp.get_children():
 		ch.queue_free()
 	_model = null
+	_fit_camera = null
+	_fit_points.clear()
 	var look := Items.look(id) if id else {}
 	if look.is_empty():
 		return
@@ -189,13 +193,12 @@ func show_item(id: String) -> void:
 	m.quaternion = EISpace.quat(q.w, q.x, q.y, q.z)
 	var box := AABB()
 	var first := true
-	var radius := 0.0
 	for mi: MeshInstance3D in m.find_children("*", "MeshInstance3D", true, false):
 		var local_xf := m.global_transform.affine_inverse() * mi.global_transform
 		var raw_box := mi.get_aabb()
-		for corner in 8:
-			var p := raw_box.position + raw_box.size * Vector3(1 if corner & 1 else 0, 1 if corner & 2 else 0, 1 if corner & 4 else 0)
-			radius = maxf(radius, (local_xf * p).length())
+		if fit_slot and mi.mesh:
+			for p: Vector3 in mi.mesh.get_faces():
+				_fit_points.append(local_xf * p)
 		var b: AABB = m.transform * local_xf * raw_box
 		box = b if first else box.merge(b)
 		first = false
@@ -229,11 +232,8 @@ func show_item(id: String) -> void:
 	# the same right/down/forward basis, including camp, belt and weapons.
 	cam.rotation_degrees = Vector3(90, 0, 0)
 	if fit_slot:
-		# A sphere around the figure origin contains every possible hovered
-		# orientation, so a long hammer cannot spill into another icon.
-		cam.size = maxf(radius * 2.1, 0.1) * maxf(1.0, 1.0 / aspect)
-		cam.position = Vector3(0, -radius - 2.0, 0)
-		cam.far = radius * 2.0 + 4.0
+		_fit_camera = cam
+		_fit_slot()
 	elif px > 0.0 and at.z > 0.0:
 		# The original's perspective (see the header): camera at the origin, the
 		# figure at ((sx/400 − 1)·K·d, (sy/400 − 0.75)·K·d, d) with y down;
@@ -256,6 +256,19 @@ func show_item(id: String) -> void:
 		cam.size = maxf(box.size.z, box.size.x / aspect) * 1.1
 		cam.position = box.get_center() + Vector3(0, -box.size.length() - 2.0, 0)
 	_vp.add_child(cam)
+
+
+func _fit_slot() -> void:
+	if _fit_camera == null or _fit_points.is_empty(): return
+	# Fit visible geometry, not the distance to the equipment attachment
+	# origin. Offset bows and long thin weapons otherwise shrink in their cell.
+	var box := AABB(_model.transform * _fit_points[0], Vector3.ZERO)
+	for p: Vector3 in _fit_points:
+		box = box.expand(_model.transform * p)
+	var aspect := size.x / maxf(size.y, 1.0)
+	_fit_camera.size = maxf(0.1, maxf(box.size.z, box.size.x / maxf(aspect, 0.01)) * 1.12)
+	_fit_camera.position = box.get_center() + Vector3(0, -box.size.y * 0.5 - 2.0, 0)
+	_fit_camera.far = box.size.y + 4.0
 
 
 ##  loads the authored centre and relative min/max at complexion
@@ -313,3 +326,4 @@ func _process(dt: float) -> void:
 	# weapon axis through its rest pose, tumbling an axe end over end.
 	var q := Quaternion(_axis, _angle) * _base
 	_model.quaternion = EISpace.quat(q.w, q.x, q.y, q.z)
+	if fit_slot: _fit_slot()
