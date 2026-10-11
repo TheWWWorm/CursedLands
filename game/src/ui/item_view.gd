@@ -82,6 +82,7 @@ var _pulse := -1   # PULSE index, -1 = none
 var _phase := 0.0
 var _fit_camera: Camera3D
 var _fit_points := PackedVector3Array()
+var _fit_center := Vector3.ZERO
 
 
 func _ready() -> void:
@@ -91,6 +92,7 @@ func _ready() -> void:
 	_vp.own_world_3d = true
 	_vp.transparent_bg = true
 	add_child(_vp)
+	resized.connect(_fit_slot)
 
 
 func _apply_add() -> void:
@@ -123,6 +125,7 @@ func show_item(id: String) -> void:
 	_model = null
 	_fit_camera = null
 	_fit_points.clear()
+	_fit_center = Vector3.ZERO
 	var look := Items.look(id) if id else {}
 	if look.is_empty():
 		return
@@ -260,15 +263,34 @@ func show_item(id: String) -> void:
 
 func _fit_slot() -> void:
 	if _fit_camera == null or _fit_points.is_empty(): return
-	# Fit visible geometry, not the distance to the equipment attachment
-	# origin. Offset bows and long thin weapons otherwise shrink in their cell.
-	var box := AABB(_model.transform * _fit_points[0], Vector3.ZERO)
+	# Centre the visible geometry, not its equipment attachment origin. Fit
+	# the complete turn once: fitting each frame makes thin materials pulse
+	# as they turn edge-on and the camera repeatedly zooms in and out.
+	var local_box := AABB(_fit_points[0], Vector3.ZERO)
 	for p: Vector3 in _fit_points:
-		box = box.expand(_model.transform * p)
+		local_box = local_box.expand(p)
+	_fit_center = local_box.get_center()
+	var rest := Basis(EISpace.quat(_base.w, _base.x, _base.y, _base.z))
+	var axis := EISpace.vec(_axis)
+	var box := AABB()
+	var first := true
+	for p: Vector3 in _fit_points:
+		var point := rest * (p - _fit_center)
+		var centre := point
+		var extent := Vector3.ZERO
+		if axis != Vector3.ZERO:
+			centre = axis * point.dot(axis)
+			var radius := (point - centre).length()
+			extent = Vector3(sqrt(maxf(0.0, 1.0-axis.x*axis.x)),
+				sqrt(maxf(0.0, 1.0-axis.y*axis.y)), sqrt(maxf(0.0, 1.0-axis.z*axis.z))) * radius
+		var orbit := AABB(centre - extent, extent * 2.0)
+		box = orbit if first else box.merge(orbit)
+		first = false
 	var aspect := size.x / maxf(size.y, 1.0)
 	_fit_camera.size = maxf(0.1, maxf(box.size.z, box.size.x / maxf(aspect, 0.01)) * 1.12)
 	_fit_camera.position = box.get_center() + Vector3(0, -box.size.y * 0.5 - 2.0, 0)
 	_fit_camera.far = box.size.y + 4.0
+	_model.position = -(_model.basis * _fit_center)
 
 
 ##  loads the authored centre and relative min/max at complexion
@@ -326,4 +348,4 @@ func _process(dt: float) -> void:
 	# weapon axis through its rest pose, tumbling an axe end over end.
 	var q := Quaternion(_axis, _angle) * _base
 	_model.quaternion = EISpace.quat(q.w, q.x, q.y, q.z)
-	if fit_slot: _fit_slot()
+	if fit_slot: _model.position = -(_model.basis * _fit_center)

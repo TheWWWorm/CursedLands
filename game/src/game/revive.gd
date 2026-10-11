@@ -87,8 +87,11 @@ static func begin(s: Session, u: GameUnit, t: GameUnit) -> void:
 ## Host: the body rises with RISE_HP. A mercenary is the party's again (its
 ## record kept while it lay dead, see GameWorld.on_death).
 static func finish(s: Session, t: GameUnit) -> void:
-	t.rise(ModStore.capability("revival.health"))
 	var h: Dictionary = t.get_meta("hero")
+	# XP earned while downed changes the pools only when the body rises.
+	# Refresh first so the configured revival HP remains an absolute amount.
+	XpRules._refresh_pools(t, h)
+	t.rise(ModStore.capability("revival.health"))
 	if h.has("merc"):
 		var n := int(h.merc)
 		h.erase("fallen")

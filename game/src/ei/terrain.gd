@@ -456,7 +456,7 @@ vec3 tile_sample(int code, vec2 p, vec2 dx, vec2 dy) {
 	int per_row = int(tiles_per_axis);
 	float border = 8.0 * source_texel * tiles_per_axis;
 	float interior = 1.0 - 2.0 * border;
-	vec2 local = vec2(border) + (vec2(0.5) + tile_turn(p - 0.5, rotation)) * interior;
+	vec2 local = vec2(border) + (vec2(0.5) + tile_turn(clamp(p, vec2(0.0), vec2(1.0)) - 0.5, rotation)) * interior;
 	local = clamp(vec2(local.x, 1.0 - local.y), vec2(0.0), vec2(1.0));
 	vec2 origin = vec2(float(tile % per_row), float(per_row - 1 - tile / per_row));
 	vec2 uv = (origin + local) / tiles_per_axis;
@@ -486,14 +486,25 @@ vec3 water_texture(vec3 own, vec2 dx, vec2 dy) {
 	int cx = tile_code(c + ivec2(st.x, 0), c0);
 	int cy = tile_code(c + ivec2(0, st.y), c0);
 	int cxy = tile_code(c + st, c0);
-	if (c0 == code && cx == code && cy == code && cxy == code) { return own; }
 	vec2 w = 0.5 * (1.0 - smoothstep(vec2(0.0), vec2(0.5), min(q, 1.0 - q)));
-	vec2 p = fract(g);
-	vec3 a = c0 == code ? own : tile_sample(c0, p, dx, dy);
-	vec3 b = cx == c0 ? a : tile_sample(cx, p, dx, dy);
-	vec3 d = cy == c0 ? a : tile_sample(cy, p, dx, dy);
-	vec3 e = cxy == c0 ? a : tile_sample(cxy, p, dx, dy);
+	// Every sample stays anchored to its own cell. Reusing fract(g) made all
+	// four samples jump together at integer coordinates, exposing a square
+	// grid even when the blend weights were smooth or tiles shared a code.
+	vec3 a = tile_sample(c0, g - vec2(c), dx, dy);
+	vec3 b = tile_sample(cx, g - vec2(c + ivec2(st.x, 0)), dx, dy);
+	vec3 d = tile_sample(cy, g - vec2(c + ivec2(0, st.y)), dx, dy);
+	vec3 e = tile_sample(cxy, g - vec2(c + st), dx, dy);
 	return mix(mix(a, b, w.x), mix(d, e, w.x), w.y);
+}
+// Blend reflected radiance and its strength together. Interpolating colour
+// and strength separately boosts bright sky at partially covered silhouette
+// pixels, drawing a light outline around a dark reflected object.
+vec4 reflection_over_sky(vec3 sky, float weight, vec4 scene, float minimum_weight) {
+	float scene_weight = max(weight, minimum_weight);
+	float coverage = clamp(scene.a, 0.0, 1.0);
+	float result_weight = mix(weight, scene_weight, coverage);
+	vec3 radiance = mix(weight * sky, scene_weight * scene.rgb, coverage);
+	return vec4(radiance / max(result_weight, 0.000001), result_weight);
 }
 vec3 scene_pos(vec2 uv, mat4 inv_proj) {
 	float z = textureLod(depth_tex, uv, 0.0).r;
@@ -662,8 +673,9 @@ void fragment() {
 			vec3 sn = normalize(gn + vec3(slope.x * mix(1.0, 0.25, mirror) + rain_slope.x, 0.0, slope.y * mix(1.0, 0.25, mirror) + rain_slope.y));
 			vec4 r = water_ssr(VERTEX, normalize((VIEW_MATRIX * vec4(sn, 0.0)).xyz), PROJECTION_MATRIX, INV_PROJECTION_MATRIX, INV_VIEW_MATRIX);
 			float wm = min(fres * mix(2.0, 6.0, mirror), mix(0.2, 0.35, mirror));
-			R = mix(R, r.rgb, r.a);
-			w = mix(w, max(w, wm), r.a);
+			vec4 reflected = reflection_over_sky(R, w, r, wm);
+			R = reflected.rgb;
+			w = reflected.a;
 		}
 		w *= (1.0 - foam) * shore;
 		// Sun glint, peak 20/255 of the sun colour like the original vertex

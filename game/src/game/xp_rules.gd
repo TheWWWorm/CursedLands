@@ -27,8 +27,9 @@ extends RefCounted
 ## Remake: the network branch is used in online co-op for kills and
 ## QuestComplete of every campaign quest (the campaign has no LMP mission
 ## quest); "Full experience" (on by default, co-op only) gives every co-op
-## player's hero and every living mercenary the whole amount instead. Single
-## player always follows the original (equal split over the living party: heroes
+## player's hero and every living or revivable mercenary the whole amount instead.
+## Downed party members remain eligible while revival is enabled. Single
+## player otherwise follows the original equal split over the party: heroes,
 ## mercenaries and tamed animals. Animals keep their own unit XP record;
 ## only a matching hero also has a separate saved roster record.
 
@@ -166,7 +167,7 @@ static func on_kill(s: Session, victim: GameUnit, killer: GameUnit) -> void:
 	give(s, float(victim.proto.get("experience", 1.0)), "kill", p)
 
 
-## Branch "player given": equal shares over the player's living party units.
+## Branch "player given": equal shares over living or revivable party units.
 ## Remake option "sp_full_xp" (`full`): each hero / mercenary gets all of it.
 static func _party_split(s: Session, amount: float, player: int, full := false) -> Array:
 	var members := []
@@ -174,7 +175,7 @@ static func _party_split(s: Session, amount: float, player: int, full := false) 
 	if w == null:
 		return []
 	for u: GameUnit in w.units.values():
-		if not u.dead and party_of(u) == player:
+		if (not u.dead or Revive.revivable(s, u)) and party_of(u) == player:
 			members.append(u)
 	var out := []
 	if members.is_empty():
@@ -215,7 +216,7 @@ static func _network_split(s: Session, amount: float) -> Array:
 
 
 ## Remake "Full experience": every connected player's heroes (alive or not,
-## as the original's network branch) and every living mercenary get it all.
+## as the original's network branch) and every living or revivable mercenary.
 static func _full(s: Session, amount: float) -> Array:
 	var out := []
 	for u: GameUnit in s.world.units.values():
@@ -223,7 +224,7 @@ static func _full(s: Session, amount: float) -> Array:
 			continue
 		var h: Dictionary = u.get_meta("hero")
 		if h.has("merc"):
-			if not u.dead:
+			if not u.dead or Revive.revivable(s, u):
 				out.append([u, h, amount])
 		elif u.controller >= 0 and s.players_include(u.controller):
 			out.append([u, h, amount])

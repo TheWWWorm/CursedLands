@@ -84,7 +84,7 @@ func _run()->void:
 			var materials:=Items.materials_for("bp:"+String(row.name).to_lower())
 			ids.append(String(row.name).to_lower()+("."+String(materials[0].name).to_lower() if not materials.is_empty() else ""))
 			if ids.size()==3:break
-	ids.append_array(["stone axe.rock","gipat medium plate.thin","tiny potion 1"])
+	ids.append_array(["material.thin","material.bronze","tiny potion 1"])
 	var views:Array[ItemView]=[]
 	for i in ids.size():
 		var cell:=ColorRect.new();cell.color=Color(.15,.13,.10);cell.position=Vector2(80+i*230,360);cell.size=Vector2(210,210);add_child(cell)
@@ -95,8 +95,12 @@ func _run()->void:
 	for v:ItemView in views:
 		if v._model==null:continue
 		v.spin=true;v.set_process(false)
+		var camera_size:=v._fit_camera.size
+		var camera_position:=v._fit_camera.position
+		var stable:=true
 		for i in 32:
 			v._process(.055)
+			stable=stable and is_equal_approx(camera_size,v._fit_camera.size) and camera_position.is_equal_approx(v._fit_camera.position)
 			await frames(1)
 			var rect:=Rect2(Vector2.ZERO,v._vp.size)
 			for p:Vector3 in v._fit_points:
@@ -104,6 +108,7 @@ func _run()->void:
 					print("FIT_DETAIL ",v.item," view=",v._vp.size," camera=",v._fit_camera.size," position=",v._fit_camera.position," point=",v._model.global_transform*p," screen=",v._fit_camera.unproject_position(v._model.global_transform*p))
 					check(false,"rotating item fits cell: "+v.item);break
 		check(v._fit_camera.size>0,"rotating item has a valid fit: "+v.item)
+		check(stable,"hover rotates without zoom pulsing: "+v.item)
 	var world:=GameWorld.new();add_child(world);world.set_process(false);world.set_physics_process(false)
 	var human:=GameUnit.new();world.add_child(human)
 	var human_ok:=human.setup(world,{"nid":124,"prototype":"Human Hero"})

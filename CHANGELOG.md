@@ -19,6 +19,14 @@
 - Complete Russian and German settings/rule text and built-in mod captions.
 - Play the transaction sound after confirmed sales and the clock sound when
   clients receive a shared pause or speed change.
+- Keep item-preview framing constant throughout hover rotation, including
+  flat leather and metal materials.
+- Keep water-texture samples anchored to their individual tiles across
+  blended borders, and blend reflection colour with its coverage and strength
+  together to avoid bright silhouette outlines.
+- Award experience to downed companions while revival remains available.
+  Preserve those gains in saves and apply updated health/stamina pools when
+  the companion rises with the configured revival health.
 
 ## 1.0.3-experimental.6 — experimental release, 8 October 2026
 
