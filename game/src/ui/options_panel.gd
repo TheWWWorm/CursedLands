@@ -176,7 +176,9 @@ var _look_from := -2    # remake: Original look switched on here over this detec
 var _came_from := 0     # remake: the group button whose page was shown last (a sub-page's way back)
 ## Remake: the "Game files…" row can be used (opened from the main menu).
 var game_files := false
-var _mods_panel: ModPanel
+var _game_setup: DifficultyPanel
+var _preset_picker: OptionButton
+var _preset_scale := Vector2.ZERO
 
 
 func _ready() -> void:
@@ -193,6 +195,21 @@ func _ready() -> void:
 	add_child(_board)
 	_tutorial = TutorialPanel.new()
 	add_child(_tutorial)
+	_preset_picker = OptionButton.new()
+	_preset_picker.fit_to_longest_item = false
+	CampaignChoices.style_button(_preset_picker)
+	add_child(_preset_picker)
+	for id in GfxPresets.ORDER:
+		_preset_picker.add_item(RemakeText.t(GfxPresets.NAMES[id]), id)
+		_preset_picker.set_item_disabled(_preset_picker.item_count - 1, id in [GfxPresets.CUSTOM, GfxPresets.DETECTED])
+	_preset_picker.item_selected.connect(func(index):
+		_set_value("graphics_preset", _preset_picker.get_item_id(index))
+		_sel = GFX_LOOK_ROW)
+	_preset_picker.get_popup().add_theme_font_override("font", font())
+	_preset_picker.get_popup().add_theme_stylebox_override("panel", SettingsDialog.plate(Color("24241c"), Color("8b7953"), 8))
+	_preset_picker.get_popup().add_theme_color_override("font_color", TEXT)
+	_preset_picker.get_popup().add_theme_color_override("font_hover_color", TEXT)
+	_preset_picker.get_popup().add_theme_stylebox_override("hover", SettingsDialog.plate(BAR, Color.TRANSPARENT, 4))
 	resized.connect(queue_redraw)
 
 
@@ -346,7 +363,7 @@ func _show_group(g: int) -> void:
 	if _group == REMAKE_GROUP:   # the sections, then the game data rows
 		for i in SECTIONS.size():
 			_rows[i] = _section_link(SECTIONS[i])
-		_rows[10] = {"kind":"link", "name":"", "mods":true, "label":RemakeText.t("Mod options and rules…"), "tip":RemakeText.t("Configure installed mods and the rules for this run.")}
+		_rows[10] = {"kind":"link", "name":"", "mods":true, "label":RemakeText.t("Game setup…"), "tip":RemakeText.t("Difficulty, gameplay rules and optional mods.")}
 		_rows[FILES_ROW] = {"kind": "link", "name": "", "files": true, "disabled": not game_files,
 			"label": RemakeText.t(FILES_LINK[0]),
 			"tip": _remake_tip(FILES_LINK) + "\n" + RemakeText.t("Current game files: %s") % DataSwitch.describe()
@@ -357,9 +374,9 @@ func _show_group(g: int) -> void:
 	elif _group == 0:   # Graphics: the graphics test, Original look, the graphics sections
 		_rows[DETECT_ROW] = {"kind": "link", "name": "", "detect": true,
 			"label": RemakeText.t(DETECT_LINK[0]), "tip": _remake_tip(DETECT_LINK)}
-		_rows[GFX_LOOK_ROW] = {"kind":"switch", "name":"graphics_preset", "max":GfxPresets.NAMES.size(),
+		_rows[GFX_LOOK_ROW] = {"kind":"dropdown", "name":"graphics_preset", "max":GfxPresets.NAMES.size(),
 			"choices":RemakeText.tl(GfxPresets.NAMES), "label":RemakeText.t("Graphics preset"),
-			"tip":RemakeText.t("Choose Original, Low, Medium or High, then confirm with ✓. Selecting a preset turns off automatic detection. Advanced changes become Custom. Clouds, terrain contact blending and depth of field remain optional.")}
+			"tip":RemakeText.t("Choose a graphics level, then confirm with ✓. Ultra enables every remake effect at its highest quality. Volumetric fog, ambient occlusion, water reflections and depth of field need Forward+ for the full effect. Manual changes become Custom.")}
 		for i in GRAPHICS_LINKS.size():
 			_rows[GRAPHICS_LINK_ROW + i] = _section_link(GRAPHICS_LINKS[i])
 	elif _parent(_group) >= 0:
@@ -561,25 +578,26 @@ func _toggle(r: int) -> void:
 	var row: Dictionary = _rows[r]
 	if row.get("disabled", false): return
 	match row.kind:
+		"dropdown":
+			_preset_picker.show_popup()
 		"switch":
 			sound("messbox\\ok")
 			_set_value(row.name, (int(_values.get(row.name, 0)) + 1) % int(row.max))
 		"link":
 			sound("messbox\\ok" if row.get("preset", false) else "save\\select")   # Original look: a switch's sound
 			if row.get("mods", false):
-				_mods_panel = ModPanel.new()
-				add_child(_mods_panel)
-				_mods_panel.closed.connect(func():
+				_game_setup = DifficultyPanel.new()
+				add_child(_game_setup)
+				_game_setup.closed.connect(func():
 					for key in ModSchema.RULES:
 						if _snapshot.has(key) and GameData.option(key) != _snapshot[key]:
 							_values[key] = GameData.option(key)
 							_snapshot[key] = _values[key]
-					_mods_panel.queue_free()
-					_mods_panel = null
+					_game_setup.queue_free()
+					_game_setup = null
 					_show_group(_group))
-				_mods_panel.open("options")
-				for key in ModSchema.RULES:
-					if _values.has(key) and ModStore.editable(key) == "": _mods_panel._rules[key] = _values[key]
+				_game_setup.open(false)
+				_sync_preset_picker()
 			elif row.get("detect", false):
 				_apply()
 				_close()
@@ -721,6 +739,29 @@ func _ask_experimental(was: int) -> void:
 
 # ------------------------------------------------------------------ drawing
 
+func _sync_preset_picker() -> void:
+	if _preset_picker == null: return
+	_preset_picker.visible = _group == 0 and not hide_text and not MessageBox.is_up(_box) and not (is_instance_valid(_game_setup) and _game_setup.visible)
+	if not _preset_picker.visible: return
+	var rect := r8(Rect2(530, _row_y(GFX_LOOK_ROW), 160, 24))
+	_preset_picker.position = rect.position
+	if _preset_scale != kv():
+		_preset_scale = kv()
+		for state in ["normal", "hover", "pressed", "disabled", "focus"]:
+			var style := _preset_picker.get_theme_stylebox(state).duplicate() as StyleBox
+			style.content_margin_left = 8 * kv().x
+			style.content_margin_right = 16 * kv().x
+			style.content_margin_top = 0
+			style.content_margin_bottom = 0
+			_preset_picker.add_theme_stylebox_override(state, style)
+		_preset_picker.add_theme_font_size_override("font_size", font_px(1))
+		var popup := _preset_picker.get_popup()
+		popup.add_theme_font_size_override("font_size", font_px(1))
+		popup.add_theme_constant_override("v_separation", maxi(8, roundi(8 * kv().y)))
+	_preset_picker.size = rect.size
+	_preset_picker.select(_preset_picker.get_item_index(int(_values.get("graphics_preset", GfxPresets.CUSTOM))))
+
+
 func group_font_px(g: int) -> int:
 	var fs := font_px(1)
 	var label := _group_label(g)
@@ -752,6 +793,7 @@ static func _slider_rect(r: int) -> Rect2:
 
 
 func _draw() -> void:
+	_sync_preset_picker()
 	if MessageBox.is_up(_box):
 		return   # the frozen frame and the box only
 	var ui := tex("saveload")
@@ -837,7 +879,7 @@ func _get_tooltip(at: Vector2) -> String:
 
 
 func _gui_input(e: InputEvent) -> void:
-	if not visible or MessageBox.is_up(_box) or _tutorial.visible:
+	if not visible or MessageBox.is_up(_box) or _tutorial.visible or (is_instance_valid(_game_setup) and _game_setup.visible):
 		return
 	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT:
 		if not e.pressed:
@@ -914,7 +956,7 @@ func _process(dt: float) -> void:
 func _unhandled_key_input(e: InputEvent) -> void:
 	if not visible or not (e is InputEventKey and e.pressed):
 		return
-	if MessageBox.is_up(_box) or _tutorial.visible:
+	if MessageBox.is_up(_box) or _tutorial.visible or (is_instance_valid(_game_setup) and _game_setup.visible):
 		return
 	if _waiting:
 		_key_pressed(e)
@@ -942,7 +984,9 @@ func _unhandled_key_input(e: InputEvent) -> void:
 			var i := TAB_ORDER.find(_tab()) + (-1 if e.keycode == KEY_PAGEUP else 1)
 			_show_group(TAB_ORDER[posmod(i, TAB_ORDER.size())])
 		KEY_LEFT, KEY_RIGHT:
-			if _rows.has(_sel) and _rows[_sel].kind == "slider":
+			if _rows.has(_sel) and _rows[_sel].kind == "dropdown":
+				_preset_picker.show_popup()
+			elif _rows.has(_sel) and _rows[_sel].kind == "slider":
 				var row: Dictionary = _rows[_sel]
 				var d := -1 if e.keycode == KEY_LEFT else 1
 				_set_value(row.name, clampi(int(_values.get(row.name, 0)) + d, 0, int(row.max)))

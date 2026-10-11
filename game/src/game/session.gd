@@ -1778,10 +1778,10 @@ func _alone_exit_check() -> void:
 ## box and no check of the other members, so hired mercenaries (and other
 ## heroes) need not be in the exit. Remake: the host's leader (co-op: the host
 ## decides, as for field exits); fired once per stay in the rect, so "Stay here"
-## on the global map does not reopen it at once. Default policy now requires
-## a deliberate exit-ground click before arrival (user request).
+## on the global map does not reopen it at once. Pointer controls require
+## an exit click; direct keyboard/gamepad movement leaves by walking in.
 func _village_exit_check() -> void:
-	var automatic := GameData.option("auto_exit") == 1
+	var automatic := GameData.option("auto_exit") == 1 or walking_to_exit(0)
 	var exits: Dictionary = world.zone.get("exits", {})
 	var n := -1
 	var inside := false
@@ -2245,7 +2245,8 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 					mo.move_group = group
 				if limit.z > 0.0:
 					mo.village_limit = limit
-					mo.to = Vector2(limit.x,limit.y) + (mo.to-Vector2(limit.x,limit.y)).limit_length(limit.z)
+					if not (bool(cmd.get("walk_exit", false)) and village_exit_path(mo.to, player)):
+						mo.to = Vector2(limit.x,limit.y) + (mo.to-Vector2(limit.x,limit.y)).limit_length(limit.z)
 				if cmd.get("line", false):
 					# The gamepad stick's moves (PadField): straight where the
 					# line can be walked (GameUnit._do_move, NavGrid.direct_line).
@@ -2255,6 +2256,7 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 					# motivation's state 2 (UnitAI.swarm_tick), round the point.
 					mo.swarm = c
 				mine[i].command(mo)
+				if bool(cmd.get("walk_exit", false)): mine[i].set_meta("walk_exit", true)
 		"leave_exit":   # the leave-zone box's ✓
 			var lx: Dictionary = world.zone.get("exits", {}).get(int(cmd.get("exit", -1)), {})
 			if not lx.is_empty() and (lmp_travel != null or player == leave_player()):
@@ -2287,7 +2289,9 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			for u: GameUnit in world.unit_rows():
 				if u.controller == player:
 					u.direct_controlled = u.uid == leader_id and not u.dead
-					if not u.direct_controlled: u.stop_steering()
+					if not u.direct_controlled:
+						u.stop_steering()
+						u.cancel_direct_attack()
 		"direct_move":
 			var direction: Variant = cmd.get("direction")
 			if not direction is Vector2 or not direction.is_finite() or not is_finite(direction.length_squared()): return
@@ -2306,11 +2310,14 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 						u.order.merge(steering,true)
 					else:
 						u.command(steering)
+		"direct_cancel":
+			for u in mine: u.cancel_direct_attack()
 		"direct_attack":
 			var direction: Variant = cmd.get("direction")
 			if not direction is Vector3 or not direction.is_finite() or not is_finite(direction.length_squared()) or direction.length_squared() < 0.5: return
 			for u in mine:
-				if u._attack_cd > 0.0 or u._anim_lock > 0.0 or not u._pending_hit.is_empty(): continue
+				# One replaceable request survives recovery. The unit tick still
+				# owns cooldown/animation timing and the committed impact.
 				u.command({"type":"direct_attack","direction":direction.normalized()})
 		"attack":
 			if target:
@@ -2413,6 +2420,7 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				thief.set_meta("interact", [target, player, "steal"])
 		"loot":   # any dead unit (checks only = dead)
 			if target and target.dead and lootable(target, player, _pid_of(player)) and not mine.is_empty():
+				if mine[0].looting(target): return
 				# Approach to just inside the loot reach (ScriptVM._interact_reach).
 				var lr := maxf(0.3, world.vm._interact_reach(mine[0], target) - 0.1)
 				_double_stand(mine[0], cmd, target.pos, lr)
@@ -2996,6 +3004,35 @@ func village_move_limit() -> Vector3:
 		var barrier: GameUnit = world.units.get(1001009)
 		if barrier == null or barrier.dead: return Vector3.ZERO
 	return world.zone.get("restrict", Vector3.ZERO)
+
+
+## Authority-side input policy: crossing an open village exit is a deliberate
+## action when steering, without requiring an E/A prompt or a ground click.
+func walking_to_exit(player: int) -> bool:
+	if world == null: return false
+	for u: GameUnit in world.units.values():
+		if u.controller == player and not u.dead and u.has_meta("hero") \
+				and (u.direct_controlled or u.has_meta("walk_exit")): return true
+	return false
+
+
+## Keep authored village bounds away from exits, but allow a walkable corridor
+## from the circle to each open exit. Navigation, actors and story gates still
+## decide whether each step can be taken.
+func village_exit_path(at: Vector2, player: int) -> bool:
+	if not shop_available(): return false
+	var limit := village_move_limit()
+	if limit.z <= 0.0: return false
+	var center := Vector2(limit.x, limit.y)
+	for n: int in world.zone.get("exits", {}):
+		var ex: Dictionary = world.zone.exits[n]
+		if not ex.has("remove") or not _exit_is_open(n, player): continue
+		var area: Rect2 = ex.remove
+		var end := area.get_center()
+		var start := center + (end-center).limit_length(limit.z)
+		var closest := Geometry2D.get_closest_point_to_segment(at, start, end)
+		if area.grow(0.5).has_point(at) or at.distance_to(closest) <= 1.5: return true
+	return false
 
 
 ## Character management (equipment, belt, skills, abilities, spells): in a

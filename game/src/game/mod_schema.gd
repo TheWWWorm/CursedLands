@@ -2,11 +2,14 @@ class_name ModSchema
 extends RefCounted
 ## Versioned data contract. A menu definition grants no executable capability.
 const API := 1
+## Rules added after API 1 saves shipped. Missing entries retain these defaults.
+const ADDED_DEFAULTS := {"free_run": 0}
 const RULES := {
 	"difficulty": ["Difficulty", ["Normal", "Easy"], "new_game"],
 	"unit_fog": ["Unit visibility", ["Off", "On"], "new_game"],
 	"start_zones": ["Revisit starting areas", ["Off", "On"], "new_game"],
 	"sp_full_xp": ["Full experience in single player", ["Off", "On"], "camp"],
+	"free_run": ["Free running outside combat", ["Off", "On"], "live"],
 	"revive": ["Revive fallen party members", ["Off", "On"], "camp"],
 	"merc_travel": ["Mercenaries travel between regions", ["Off", "On"], "camp"],
 	"auto_exit": ["Automatic zone departure", ["Off", "On"], "live"],

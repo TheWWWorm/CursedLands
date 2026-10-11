@@ -1,0 +1,148 @@
+{
+  "date": "2026-10-11",
+  "base_commit": "dfe6dda4356cdb3af7ec749200437e2bb367ed78",
+  "source_state": "working tree, uncommitted",
+  "source_patch_sha256": "c5ca0314847f245465faf8de92932869c439a20f175278d9e6cd7d69b737f454",
+  "build": "/home/llm2x/Documents/EI/local/builds/CursedLands-menu-controls-20261011-linux-x86_64",
+  "pack_sha256": "0257cbb0d27c3935fcf3ef218625f4c9d466d2d313ec3332f4902d6fea132984",
+  "environment": {
+    "platform": "Linux x86_64",
+    "engine": "Godot 4.7, patched release runtime for packaged checks",
+    "gpu": "NVIDIA GeForce RTX 3090 Ti",
+    "rendered_checks": "OpenGL compatibility",
+    "assets": "installed original Evil Islands data; no original data included in build"
+  },
+  "checks": 615,
+  "failures": 0,
+  "runs": [
+    {
+      "suite": "mod_menus",
+      "checks": 43,
+      "failures": 0,
+      "mode": "rendered source",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/ui3/run.log"
+    },
+    {
+      "suite": "graphics_presets",
+      "checks": 222,
+      "failures": 0,
+      "mode": "packaged, separate rendering thread",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/gfx2/run.log"
+    },
+    {
+      "suite": "direct_controls",
+      "checks": 49,
+      "failures": 0,
+      "mode": "rendered source",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/direct5/run.log"
+    },
+    {
+      "suite": "first_person_models",
+      "checks": 11,
+      "failures": 0,
+      "mode": "headless source",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/models2/run.log"
+    },
+    {
+      "suite": "direct_attack_stance",
+      "checks": 39,
+      "failures": 0,
+      "mode": "headless source",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/attack2/run.log"
+    },
+    {
+      "suite": "direct_movement",
+      "checks": 26,
+      "failures": 0,
+      "mode": "headless source",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/movement1/run.log"
+    },
+    {
+      "suite": "direct_view_regressions",
+      "checks": 34,
+      "failures": 0,
+      "mode": "headless source",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/regress3/run.log"
+    },
+    {
+      "suite": "health_bar_visibility",
+      "checks": 21,
+      "failures": 0,
+      "mode": "headless source",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/health2/run.log"
+    },
+    {
+      "suite": "direct_coop",
+      "checks": 19,
+      "failures": 0,
+      "mode": "real ENet sessions, headless",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/coop2/run.log"
+    },
+    {
+      "suite": "mod_profiles",
+      "checks": 83,
+      "failures": 0,
+      "mode": "headless source",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/mods1/run.log"
+    },
+    {
+      "suite": "control_mode_options",
+      "checks": 14,
+      "failures": 0,
+      "mode": "packaged, separate rendering thread",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/mode3/run.log"
+    },
+    {
+      "suite": "mod_worker",
+      "checks": 22,
+      "failures": 0,
+      "mode": "packaged frontend and separate simulation worker",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/worker2/run.log"
+    },
+    {
+      "suite": "loading_cover",
+      "checks": 6,
+      "failures": 0,
+      "mode": "packaged, separate rendering thread",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/cover2/run.log"
+    },
+    {
+      "suite": "menu_loading_screen_continue",
+      "checks": 13,
+      "failures": 0,
+      "mode": "packaged, separate rendering thread",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/loadpack1/run.log",
+      "covered_presented_frames": 818,
+      "exposed_presented_frames": 0,
+      "premature_hud_frames": 0
+    },
+    {
+      "suite": "menu_loading_screen_new_game",
+      "checks": 13,
+      "failures": 0,
+      "mode": "final package, separate rendering thread",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/loadpack3/run.log",
+      "covered_presented_frames": 763,
+      "exposed_presented_frames": 0,
+      "premature_hud_frames": 0
+    }
+  ],
+  "export_log": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/export-final.log",
+  "test_runner": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/run_test.py",
+  "visuals": {
+    "game_setup": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/ui3/data/godot/app_userdata/Cursed Lands/setup-2560x1440.png",
+    "mod_rules": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/ui3/data/godot/app_userdata/Cursed Lands/rules-2560x1440.png",
+    "graphics_dropdown": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/gfx2/data/godot/app_userdata/Cursed Lands/graphics-presets-en.png",
+    "camera_options": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/mode3/data/godot/app_userdata/Cursed Lands/control-mode-options.png",
+    "first_person": "/home/llm2x/Documents/EI/local/scratchpad/menu-settings-20261011/direct5/data/godot/app_userdata/Cursed Lands/first-person-body.png"
+  },
+  "scope_notes": [
+    "New Game, Continue, a failed load and return to menu covered with a real simulation process. Missing loading artwork covered by a separate opaque-cover test.",
+    "UI layouts inspected at 2560x1440, 1280x720, 800x600 and 540x960.",
+    "Graphics option coverage checked for Compatibility, Mobile and Forward+; rendered screenshots use Compatibility. No new GPU cost benchmark was performed.",
+    "Input and gamepad paths are exercised programmatically; no physical gamepad or Windows/macOS/Android acceptance run.",
+    "Native animation tests cover repeated loot input in all three camera modes, one queued attack during recovery and preserved committed impacts.",
+    "Model tests cover ordinary and smoothed joints, body/head visibility and health-bar anchor motion.",
+    "Some earlier passing runs precede final label and head-anchor changes; the affected camera options, graphics presets, model regression and exported startup were rerun."
+  ]
+}

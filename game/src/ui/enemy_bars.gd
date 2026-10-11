@@ -41,7 +41,9 @@ var game: Game
 var drawn := {}
 var _atlas: Texture2D
 var _alpha := {}       # uid -> current alpha
-static var _tops := {}  # uid -> [height above the feet, ms measured]
+static var _tops := {}  # instance id -> [height, render frame, model id]
+var _health := {}      # uid -> {instance, value, from, target, elapsed}
+var _world: GameWorld
 var _units := {}       # uid -> [unit, target alpha] of this frame
 
 
@@ -87,10 +89,14 @@ func active() -> bool:
 
 func _process(dt: float) -> void:
 	var on := active()
+	if game and _world != game.world:
+		_world = game.world
+		_alpha.clear(); _health.clear(); _units.clear()
 	if not on:
 		if visible:
 			visible = false
 			_alpha.clear()
+			_health.clear()
 			drawn = {}
 		return
 	visible = true
@@ -124,6 +130,7 @@ func entries() -> Array:
 	for u: GameUnit in w.visible_units():
 		if u.dead or u.hidden or not u.visible or (u.controller >= 0 and not direct) or u.model == null or u.max_hp <= 0.0:
 			continue
+		if direct and game.direct.first_person() and u == game.direct.leader(): continue
 		if not direct and not (w.is_enemy(lead, u) or w.is_enemy(u, lead)):
 			continue
 		var close := false
@@ -158,8 +165,22 @@ func _step(dt: float) -> void:
 			_alpha[uid] = float(_alpha[uid]) - rate
 			if float(_alpha[uid]) <= 0.0:
 				_alpha.erase(uid)
-				_tops.erase(uid)
+				_health.erase(uid)
 	for uid in want:
+		var u: GameUnit = want[uid][0]
+		var instance := u.get_instance_id()
+		var fraction := clampf(u.hp / maxf(u.max_hp, 0.01), 0.0, 1.0)
+		var health: Dictionary = _health.get(uid, {})
+		if health.is_empty() or health.instance != instance:
+			health = {"instance":instance, "value":fraction, "from":fraction, "target":fraction, "elapsed":0.12}
+			_alpha.erase(uid)
+		if not is_equal_approx(health.target, fraction):
+			health.from = health.value
+			health.target = fraction
+			health.elapsed = 0.0
+		health.elapsed = minf(0.12, health.elapsed + dt)
+		health.value = lerpf(health.from, health.target, health.elapsed / 0.12)
+		_health[uid] = health
 		var a := float(_alpha.get(uid, 0.0))
 		var t: float = want[uid][1]
 		a = minf(a + rate, t) if a < t else maxf(a - rate, t)
@@ -191,7 +212,7 @@ func _draw() -> void:
 		var r := Rect2(at - Vector2(size.x * 0.5, size.y), size)
 		if r.end.x < 0.0 or r.position.x > vs.x or r.end.y < 0.0 or r.position.y > vs.y:
 			continue
-		var f := clampf(u.hp / maxf(u.max_hp, 0.01), 0.0, 1.0)
+		var f := health_fraction(u)
 		var mod := Color(1, 1, 1, a)
 		_region(r, FRAME_UV, mod, Color(0.05, 0.05, 0.05))
 		var fill := Rect2(r.position + Vector2(5.0, 0.0) * k, Vector2(FILL_UV.size.x * f, FILL_UV.size.y) * k)
@@ -214,19 +235,36 @@ static func stack_px(vs: Vector2) -> float:
 	return (LIFT + FRAME_UV.size.y + 3.0) * k
 
 
-## Height of the unit's head top above its feet, measured every half second
-## (it follows the pose: crouching, lying).
+## Interpolate only the amount, over 120 ms; deaths and hidden actors disappear
+## immediately. A new unit instance never inherits a replaced unit's health.
+func health_fraction(u: GameUnit) -> float:
+	var health: Dictionary = _health.get(u.uid, {})
+	return float(health.value) if health.get("instance", 0) == u.get_instance_id() else clampf(u.hp / maxf(u.max_hp, 0.01), 0.0, 1.0)
+
+
+## Follow the actual rendered pose every frame. A half-second height cache
+## caused visible steps during walks, stance changes and attack animations.
 static func head_top(u: GameUnit) -> float:
-	var uid := u.uid
-	var now := Time.get_ticks_msec()
-	var c: Array = _tops.get(uid, [])
-	if c.is_empty() or now - int(c[1]) > 500:
-		var best := -INF
-		var hd := u.model.find_child("hd", true, false) as Node3D
-		for mi: Node in (hd.get_children() if hd else u.model.find_children("*", "MeshInstance3D", true, false)):
-			if mi is MeshInstance3D and (mi as MeshInstance3D).mesh and (mi as MeshInstance3D).is_visible_in_tree():
-				var b: AABB = (mi as MeshInstance3D).global_transform * (mi as MeshInstance3D).get_aabb()
-				best = maxf(best, b.end.y)
-		c = [best - u.global_position.y if best != -INF else 1.9, now]
-		_tops[uid] = c
-	return float(c[0])
+	if u.model == null: return u.figure_half_z * 2.0
+	var id := u.get_instance_id()
+	var frame := Engine.get_process_frames()
+	var model_id := u.model.get_instance_id()
+	var cached: Array = _tops.get(id, [])
+	if not cached.is_empty() and cached[1] == frame and cached[2] == model_id: return cached[0]
+	var best := -INF
+	var head := u.model.find_child("hd", true, false) as Node3D
+	# Smoothed figures keep the head's geometry in a shared skin. Its source
+	# mesh and animated part transform still describe the top of the head.
+	if head and head.is_visible_in_tree() and head.has_meta("weld_mesh"):
+		var mesh: Mesh = head.get_meta("weld_mesh")[0]
+		var bounds: AABB = head.global_transform * mesh.get_aabb()
+		best = bounds.end.y
+	var meshes := (head if head else u.model).find_children("*", "MeshInstance3D", true, false)
+	for node: MeshInstance3D in meshes:
+		if node.mesh and node.is_visible_in_tree():
+			var bounds: AABB = node.global_transform * node.get_aabb()
+			best = maxf(best, bounds.end.y)
+	var height := best - u.global_position.y if best != -INF else u.figure_half_z * 2.0
+	if _tops.size() > 512: _tops.clear()
+	_tops[id] = [height, frame, model_id]
+	return height

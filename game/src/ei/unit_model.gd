@@ -267,6 +267,11 @@ var _morph_parts: Array = []
 ## and the original head mesh and hair node it replaces.
 var _detail: MeshInstance3D
 var _plain_head: Array[Node3D] = []
+var _head: Node3D
+var _eye_offset := Vector3(0, 0.12, 0)
+var _welded_head: MeshInstance3D
+var _head_hidden := false
+var _head_visible := true
 
 
 ## `unit` is a map object dictionary from EIMob (or a synthetic one with
@@ -932,6 +937,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 				n.animation_parent.animation_children.append(n)
 		parent.add_child(n)
 		nodes[p] = n
+		if p == "hd": _head = n
 		rest_pos[p] = rest_pos.get(par_name, Vector3.ZERO) + n.position if parent != self else n.position
 		if mesh_for.has(p):
 			var fig: Dictionary = parts[mesh_for[p]]
@@ -941,6 +947,9 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 			var morph: Dictionary = morphs.get(p, {}) if mesh_for[p] == p else {}
 			var mesh := EIFigure.build_mesh(fig, complexion) if morph.is_empty() \
 					else EIFigure.build_anim_morph_mesh(fig, complexion, morph.names, morph.frames)
+			if p == "hd":
+				var bounds := mesh.get_aabb()
+				_eye_offset = bounds.get_center() + Vector3.UP * bounds.size.y * 0.15
 			var part_mat: Material = wmat if weapon_parts.has(p) else (hmat if helm_parts.has(p) else mat)
 			if not ui_preview:
 				part_mat = FigureMaterial.part_material(part_mat, fig.get("material", 0), lighting_parts)
@@ -1152,13 +1161,17 @@ func _weld(nodes: Dictionary, rest_pos: Dictionary, parent_of: Dictionary, welde
 		joints[c] = [rest_pos[c], axis.normalized() if length > 1e-5 else Vector3.DOWN,
 			clampf(length * 0.25, 0.02, 0.06)]
 	var surf := {}   # material -> [pos, nrm, uv, bones, weights, idx]
+	var head_surf := {}
 	for p: String in welded:
 		var mesh: ArrayMesh = welded[p][0]
 		var m: Material = welded[p][1]
-		if not surf.has(m):
-			surf[m] = [PackedVector3Array(), PackedVector3Array(), PackedVector2Array(),
+		var ancestor := p
+		while ancestor != "" and ancestor != "hd": ancestor = parent_of.get(ancestor, "")
+		var surfaces: Dictionary = head_surf if ancestor == "hd" else surf
+		if not surfaces.has(m):
+			surfaces[m] = [PackedVector3Array(), PackedVector3Array(), PackedVector2Array(),
 				PackedInt32Array(), PackedFloat32Array(), PackedInt32Array()]
-		var s: Array = surf[m]
+		var s: Array = surfaces[m]
 		var arr := mesh.surface_get_arrays(0)
 		# The joints this part takes part in: [joint, other bone, side] where
 		# side = +1 if this part is the child (its body lies along +axis).
@@ -1192,28 +1205,49 @@ func _weld(nodes: Dictionary, rest_pos: Dictionary, parent_of: Dictionary, welde
 		s[2].append_array(arr[Mesh.ARRAY_TEX_UV])
 		for i: int in arr[Mesh.ARRAY_INDEX]:
 			s[5].append(base + i)
-	var body := ArrayMesh.new()
-	var mats := []
-	for m: Material in surf:
-		var s: Array = surf[m]
-		var arrays := []
-		arrays.resize(Mesh.ARRAY_MAX)
-		arrays[Mesh.ARRAY_VERTEX] = s[0]
-		arrays[Mesh.ARRAY_NORMAL] = s[1]
-		arrays[Mesh.ARRAY_TEX_UV] = s[2]
-		arrays[Mesh.ARRAY_BONES] = s[3]
-		arrays[Mesh.ARRAY_WEIGHTS] = s[4]
-		arrays[Mesh.ARRAY_INDEX] = s[5]
-		body.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-		mats.append(m)
-	var mi := MeshInstance3D.new()
-	mi.name = "Body"
-	mi.mesh = body
-	for i in mats.size():
-		mi.set_surface_override_material(i, mats[i])
-	skel.add_child(mi)
-	mi.skin = skin
-	mi.skeleton = NodePath("..")
+	# The head uses the same skin/joint weights but a separate visual, so
+	# first person can hide it without shrinking bones or hiding the body.
+	for head: bool in [false, true]:
+		var surfaces: Dictionary = head_surf if head else surf
+		if surfaces.is_empty(): continue
+		var body := ArrayMesh.new()
+		var mats := []
+		for m: Material in surfaces:
+			var s: Array = surfaces[m]
+			var arrays := []
+			arrays.resize(Mesh.ARRAY_MAX)
+			arrays[Mesh.ARRAY_VERTEX] = s[0]
+			arrays[Mesh.ARRAY_NORMAL] = s[1]
+			arrays[Mesh.ARRAY_TEX_UV] = s[2]
+			arrays[Mesh.ARRAY_BONES] = s[3]
+			arrays[Mesh.ARRAY_WEIGHTS] = s[4]
+			arrays[Mesh.ARRAY_INDEX] = s[5]
+			body.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+			mats.append(m)
+		var mi := MeshInstance3D.new()
+		mi.name = "Head" if head else "Body"
+		mi.mesh = body
+		for i in mats.size():
+			mi.set_surface_override_material(i, mats[i])
+		skel.add_child(mi)
+		mi.skin = skin
+		mi.skeleton = NodePath("..")
+		if head: _welded_head = mi
+
+
+## Camera-only visibility. Bone transforms and gameplay geometry stay intact;
+## portraits and other peers use separate model instances.
+func set_head_hidden(hidden: bool) -> void:
+	if _head_hidden == hidden: return
+	_head_hidden = hidden
+	if is_instance_valid(_head):
+		if hidden: _head_visible = _head.visible
+		_head.visible = false if hidden else _head_visible
+	if is_instance_valid(_welded_head): _welded_head.visible = not hidden and _head_visible
+
+
+func eye_position() -> Vector3:
+	return _head.to_global(_eye_offset) if is_instance_valid(_head) else global_position + Vector3.UP * 1.6
 
 
 ## Option gfx_detailed_heads: the HUD face model in place of the original
@@ -1245,7 +1279,12 @@ func set_part_visible(part: String, on: bool) -> void:
 	var n := find_child(part, true, false) as Node3D
 	if n == null:
 		return
-	n.visible = on
+	if part == "hd":
+		_head_visible = on
+		n.visible = on and not _head_hidden
+		if is_instance_valid(_welded_head): _welded_head.visible = on and not _head_hidden
+	else:
+		n.visible = on
 	n.scale = Vector3.ONE if on else Vector3.ONE * 0.001
 
 

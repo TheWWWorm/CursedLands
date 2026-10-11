@@ -1087,6 +1087,15 @@ func _legs_ratio() -> float:
 
 # ------------------------------------------------------------------ orders API
 
+## Repeated pickup input is idempotent through both approach and use phases.
+## Movement or a different target can still replace the action normally.
+func looting(corpse: GameUnit) -> bool:
+	var approach: Array = get_meta("interact", [])
+	if not approach.is_empty() and approach[0] == corpse: return true
+	if order.get("sub", "") == "loot" and order.get("loot_target", -1) == corpse.uid: return true
+	return orders.any(func(o): return o.get("sub", "") == "loot" and o.get("loot_target", -1) == corpse.uid)
+
+
 func command(o: Dictionary, queue := false) -> void:
 	if dead:
 		return
@@ -1094,6 +1103,7 @@ func command(o: Dictionary, queue := false) -> void:
 		# A replacement order cancels the pending arrival interaction.
 		# Callers attach the new interaction after posting its approach.
 		remove_meta("interact")
+		remove_meta("walk_exit")
 		_wait_on = null
 		orders.clear()
 		order = {}
@@ -1204,7 +1214,7 @@ func race_factors(col: String, k: float) -> PackedFloat32Array:
 
 
 func cannot_run() -> bool:
-	return run_refusal() != 0 or (has_meta("hero") and max_mana > 0.0 and mana <= 0.0)
+	return run_refusal() != 0 or (has_meta("hero") and max_mana > 0.0 and mana <= 0.0 and not free_running())
 
 
 ## (1): 2 = carrying more than the maximum load, 1 = a leg below
@@ -1487,6 +1497,17 @@ func _sandbox_mana() -> bool:
 	return controller >= 0 and world.session != null and world.session.mod_config.get("sandbox", false) and GameData.option("sandbox_mana") == 1
 
 
+## This is a shared gameplay rule, resolved by the authority's party danger
+## state, never the local camera or input mode. Spell costs are independent.
+func free_running() -> bool:
+	if controller < 0 or not has_meta("hero") or world == null: return false
+	var enabled := GameData.option("free_run")
+	if world.session and not world.session.mod_config.is_empty():
+		enabled = int(world.session.mod_config.rules.get("free_run", 0))
+	if enabled == 0 or _attack_cd > 0.0 or not _pending_hit.is_empty(): return false
+	return world.ai != null and not world.ai._player_in_combat(controller)
+
+
 func _tick(dt: float) -> void:
 	if _sandbox_mana():
 		mana = max_mana
@@ -1506,7 +1527,7 @@ func _tick(dt: float) -> void:
 			mana = minf(max_mana, mana + max_mana * float(race.get("mana_regen", 0.0)) * (1.0 + float(stats.get("regen_mana", 0.0)) / 100.0))
 	# Running characters lose max stamina / 150 per tick and
 	# walk once it is gone.
-	if has_meta("hero") and action == "run" and not _sandbox_mana():
+	if has_meta("hero") and action == "run" and not _sandbox_mana() and not free_running():
 		mana = maxf(0.0, mana - max_mana / 150.0 * dt / TICK)
 	_attack_cd -= dt
 	# Native54d960 compares integer ticks, including equality. Do not let
@@ -2212,6 +2233,8 @@ func _walk_action() -> void:
 func _outside_village_move(at: Vector2) -> bool:
 	var limit: Vector3 = order.get("village_limit", Vector3.ZERO)
 	if limit.z <= 0.0: return false
+	if (order.get("type", "") == "direct_move" or has_meta("walk_exit")) \
+			and world.session and world.session.village_exit_path(at, controller): return false
 	var center := Vector2(limit.x,limit.y)
 	var d := at.distance_squared_to(center)
 	# A character outside the circle in an older save can walk back in.
@@ -2531,6 +2554,12 @@ static func _strike_delay_ticks(base: float, act: float, armed := true) -> int:
 
 
 ## A single committed swing/shot. Never approaches or locks on to a victim.
+## Discard only an unstarted buffered swing. A committed hit still resolves.
+func cancel_direct_attack() -> void:
+	if order.get("type", "") == "direct_attack": order = {}
+	orders = orders.filter(func(o): return o.get("type", "") != "direct_attack")
+
+
 func _do_direct_attack(dt: float) -> void:
 	alert = true
 	var d: Vector3 = order.direction

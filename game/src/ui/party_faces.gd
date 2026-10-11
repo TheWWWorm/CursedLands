@@ -109,9 +109,8 @@ func _units() -> Array:
 
 
 func rebuild() -> void:
-	for c in _cells:
-		c[1].queue_free()
-	_cells.clear()
+	# Inventory/XP/state notifications usually leave the face unchanged.
+	# Keep its viewport and animation alive; show_unit compares the look.
 	_sig = ""
 
 
@@ -119,19 +118,27 @@ func _process(_dt: float) -> void:
 	if game == null or game.world == null:
 		return
 	var list := _units()
-	var sig := ",".join(list.map(func(e): return "%d%s" % [e[0].uid, "o" if e[1] else "x"]))
+	var sig := ",".join(list.map(func(e): return "%d%s" % [e[0].get_instance_id(), "o" if e[1] else "x"]))
 	if sig != _sig:
-		rebuild()
 		_sig = sig
+		var previous := _cells.duplicate()
+		_cells.clear()
 		for e in list:
-			var p := Portrait.new()
-			p.view_size = Vector2i(56, 76)
-			p.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			add_child(p)
+			var p: Portrait
+			for cell in previous:
+				if is_instance_valid(cell[0]) and cell[0] == e[0]:
+					p = cell[1]
+					previous.erase(cell)
+					break
+			if p == null:
+				p = Portrait.new()
+				p.view_size = Vector2i(56, 76)
+				p.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				add_child(p)
 			p.show_unit(e[0])
-			if not e[1]:
-				p.modulate = Color(0.5, 0.5, 0.5)
+			p.modulate = Color.WHITE if e[1] else Color(0.5, 0.5, 0.5)
 			_cells.append([e[0], p, e[1]])
+		for cell in previous: cell[1].queue_free()
 	_update_fit()
 	for i in _cells.size():
 		var r := _cell(i)

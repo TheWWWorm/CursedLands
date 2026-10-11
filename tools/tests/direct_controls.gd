@@ -38,14 +38,15 @@ func _ready() -> void:
 	hero.blocked=false;hero.order={};hero.orders.clear();hero._anim_lock=0.0
 	game.selected.assign([hero]);game.rig.release()
 	await frames(12)
+	game.rig._window_focused=true;await frames()
 	var direct := game.direct
 	print("DIRECT_SCENE hero=",hero.pos," usable=",direct.usable()," bars=",EnemyBars.of(game).active())
 	check(hero.direct_controlled,"idle combat AI is suspended for the controlled hero")
 	check(direct.active() and direct.usable(),"experimental mode is active in a real camp")
 	check(is_equal_approx(game.rig.camera.fov,65.0) and is_equal_approx(game.rig.camera.near,0.08),"shoulder camera uses its own lens")
-	check(EnemyBars.of(game).active(),"experimental bars stay on even with classic enemy-bar option off")
+	check(not EnemyBars.of(game).active() and not game.hud._field.visible,"safe zone hides health bars and combat HUD in third person")
 	var entries := EnemyBars.of(game).entries()
-	check(entries.any(func(row):return row[0]==hero and row[1]==1.0),"hero at full health has a persistent bar")
+	check(not entries.any(func(row):return row[0]==hero and row[1]>0.0),"hero at full health has no overhead bar")
 	var at := game.rig.camera.global_position
 	var pivot := hero.global_position+Vector3.UP*clampf(hero.figure_half_z*1.6,0.6,2.8)
 	check(at.distance_to(pivot)<=6.5 and at.distance_to(pivot)>0.1,"camera is behind the shoulder at close range")
@@ -60,7 +61,7 @@ func _ready() -> void:
 	check(d.is_equal_approx(Vector2.from_angle(direct.heading)),"forward movement follows camera heading")
 	GameData.options.pad_enabled=0
 	key(KEY_W,true);await frames()
-	check(hero.orders.size()>0 and hero.orders[-1].type=="direct_move" and hero.orders[-1].direction.is_equal_approx(d),"W sends camera-relative steering through the host")
+	check(hero.orders.size()>0 and hero.orders[-1].type=="direct_move" and hero.orders[-1].direction.dot(direct.ground_direction(Vector2.UP))>0.995,"W sends camera-relative steering through the host")
 	check(hero.orders[-1].get("village_limit",Vector3.ZERO)==session.village_move_limit(),"W retains the scripted camp boundary")
 	key(KEY_W,false);await frames()
 	check(hero.orders.is_empty() and hero.order.is_empty(),"releasing W stops steering without a return-to-position order")
@@ -97,6 +98,7 @@ func _ready() -> void:
 	world=session.world;world.set_physics_process(false);world.set_process(false);world.vm.instances.clear()
 	hero=session.party_units(0)[0];hero.blocked=false
 	game.selected.assign([hero]);game.rig.release();await frames(12)
+	game.rig._window_focused=true;await frames()
 	# Native attack animation schedules one actual impact without a target.
 	hero.orders.clear();hero.order={};hero._attack_cd=0;hero._anim_lock=0;hero.alert=true
 	hero.stance=GameUnit.STANCE_NONE;hero.facing=0;hero._update_pose();hero._anim_lock=0
@@ -108,15 +110,49 @@ func _ready() -> void:
 	check(hero.path.is_empty() and hero._goal==Vector2.INF,"swing never creates a pursuit route")
 	var cooldown := hero._attack_cd
 	session.apply_command({"t":"direct_attack","units":[hero.uid],"direction":Vector3.LEFT},0)
-	check(hero.orders.is_empty() and hero._attack_cd==cooldown,"holding attack cannot reset a committed swing")
+	check(hero.orders.size()==1 and hero.orders[0].type=="direct_attack" and hero._attack_cd==cooldown,"early attack buffers one swing without resetting the committed swing")
 	hero._sync_transform(0.0);direct.heading=hero.facing
 	if DisplayServer.get_name()!="headless":
 		await frames(12);await RenderingServer.frame_post_draw
 		check(get_viewport().get_texture().get_image().save_png("user://third-person-field.png")==OK,"shoulder view screenshot saved")
 		print("DIRECT_IMAGE ",ProjectSettings.globalize_path("user://third-person-field.png"))
+	# The same controls in first person, with only this world model's head hidden.
+	GameData.options.control_mode=3;await frames(8)
+	check(direct.active() and direct.first_person() and direct.usable(),"first-person controls activate without leaving direct control")
+	check(hero.model._head_hidden and not hero.model._head.visible,"first person hides the controlled head and attached hair/helmet")
+	check(hero.model.is_visible_in_tree() and hero.model.find_children("*", "MeshInstance3D", true, false).any(func(m):return m.is_visible_in_tree()),"first person retains visible body geometry")
+	check(game.rig.camera.global_position.distance_to(hero.model.eye_position())<0.15,"first-person eye tracks the original animated head")
+	check(is_equal_approx(game.rig.camera.fov,75.0) and is_equal_approx(game.rig.camera.near,0.03),"first-person lens preserves nearby body")
+	check(not game.character_light_enabled() and game._hero_lights.is_empty(),"character circle light defaults off in direct views")
+	GameData.options.character_light=2;await frames()
+	check(game.character_light_enabled() and not game._hero_lights.is_empty(),"character light On creates the actual lights")
+	GameData.options.character_light=1;await frames()
+	check(game._hero_lights.is_empty(),"character light Off removes the lights")
+	GameData.options.character_light=0
+	var faces := game.hud._faces
+	faces._process(0)
+	var portrait: Portrait=faces._cells[0][1]
+	var viewport_id := portrait._vp.get_instance_id()
+	for i in 15:
+		faces.rebuild();faces._process(0)
+	check(faces._cells[0][1]==portrait and portrait._vp.get_instance_id()==viewport_id,"routine party refresh retains portrait and rendered viewport")
+	var slots: SpellSlots=game.hud._slots
+	check(slots.shortcut_label(0)==EIKeymap.key_of_id(30),"first spell displays its actual key binding")
+	if DisplayServer.get_name()!="headless":
+		direct.tilt=-0.3;direct.apply_camera();await frames(8);await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().save_png("user://first-person-field.png")
+		direct.tilt=-1.15;direct.apply_camera();await frames(8);await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().save_png("user://first-person-body.png")
+	game.rig.held=true;await frames()
+	check(not hero.model._head_hidden,"scripted camera restores head visibility")
+	game.rig.held=false;await frames()
+	check(hero.model._head_hidden,"head is hidden again when first-person camera resumes")
+	GameData.options.control_mode=2;await frames()
+	check(not hero.model._head_hidden and hero.model._head.visible,"returning to third person restores the head")
 	GameData.options.control_mode=1;await frames()
 	check(not hero.direct_controlled,"classic switch restores ordinary idle combat AI")
 	check(not direct.active() and not direct._captured,"classic switch releases captured mouse")
+	check(game.character_light_enabled() and not game._hero_lights.is_empty(),"Auto retains the original character light in classic view")
 	check(game.rig.camera.fov==CameraRig.MODERN_FOV,"classic switch restores its lens")
 	GameData.options.pad_enabled=1
 	GameData.options.control_mode=0;PadInput._set_active("kbm");await frames()

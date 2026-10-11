@@ -8,7 +8,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The newest preview is [**1.0.4 Experimental 3**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.4-experimental.3), with deeper save-state persistence, co-op return fixes, geometry reflections for Mirror water and combat-aware health bars. See its [release notes](docs/releases/1.0.4-experimental.3.md).
+The newest preview is [**1.0.4 Experimental 4**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.4-experimental.4), combining the save, reflection and Android fixes with first-person controls, revised game setup and options, additional graphics presets, optional free running, smoother health bars and a legacy mod conversion tool. See its [release notes](docs/releases/1.0.4-experimental.4.md).
 
 The current stable release is **1.0.3**. [Downloads](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.3) are available for Linux, Windows, Android and macOS. See the [release notes](docs/releases/1.0.3.md) for the graphics, controls, gameplay and co-op changes, measured performance improvements and remaining platform limits.
 
@@ -72,7 +72,7 @@ Training purchases apply immediately. The default interface hides the unused Acc
 
 ## Mods and game rules (experimental)
 
-1.0.4 Experimental includes **Mods and rules** in the main menu, Options and the in-game menu. Named profiles keep their own saves and network characters; data mods can provide configurable revival, texture/sound replacements and selected balance patches. Shared rules follow the host, and sandbox profiles keep cheat-enabled progress separate. See the [player and mod-author guide](docs/mods.md) and [Quick recovery example](examples/mods/quick-recovery/mod.json). These additions require the experimental build; stable 1.0.3 does not include them.
+1.0.4 Experimental includes **Game setup → Mods and rules**, accessible from New Game, multiplayer and **Options → Remake**. Named profiles keep their own saves and network characters; data mods can provide configurable revival, texture/sound replacements and selected balance patches. Shared rules follow the host, and sandbox profiles keep cheat-enabled progress separate. See the [player and mod-author guide](docs/mods.md), [Quick recovery example](examples/mods/quick-recovery/mod.json) and [legacy mod converter](docs/legacy-mod-converter.md). These additions require the experimental build; stable 1.0.3 does not include them.
 
 ## Co-op
 

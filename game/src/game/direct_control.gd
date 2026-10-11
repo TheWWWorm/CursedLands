@@ -23,6 +23,8 @@ var _move_id := -1
 var _move_vector := Vector2.ZERO
 var _move_run := false
 var _move_refresh := 0.0
+var _view_model: EIUnitModel
+var _could_control := false
 
 
 class Reticle extends Control:
@@ -72,7 +74,11 @@ func _ready() -> void:
 
 
 static func wants(mode: int, pad: bool) -> bool:
-	return mode == 2 or (mode == 0 and pad)
+	return mode in [2, 3] or (mode == 0 and pad)
+
+
+func first_person() -> bool:
+	return GameData.option("control_mode") == 3
 
 
 func active() -> bool:
@@ -149,6 +155,10 @@ func _process(delta: float) -> void:
 			_control_id = control_id
 	if not on: _world = game.world
 	var can := usable() and not pointer
+	if _could_control and not can and u and game.world == game.session.world and not game.session.loading_game:
+		game.session.submit({"t":"direct_cancel","units":[u.uid]})
+	_could_control = can
+	_update_view_model(u.model if on and u and first_person() and not game.rig.held and not game.session.movie_active() else null)
 	_capture(can and PadInput.active != "pad")
 	if not can:
 		_fire = false
@@ -205,7 +215,8 @@ func handle_input(e: InputEvent) -> bool:
 
 func look(delta: Vector2) -> void:
 	heading = wrapf(heading - delta.x * (-1.0 if GameData.option("camera_reverse_x") else 1.0),-PI,PI)
-	tilt = clampf(tilt - delta.y * (-1.0 if GameData.option("camera_reverse_y") else 1.0),-1.1,0.8)
+	tilt = clampf(tilt - delta.y * (-1.0 if GameData.option("camera_reverse_y") else 1.0),
+		-1.45 if first_person() else -1.1, 1.35 if first_person() else 0.8)
 
 
 func pad_step(move: Vector2, look_axis: Vector2, dt: float) -> void:
@@ -437,10 +448,22 @@ func apply_camera() -> void:
 	var fraction := DirectCombat.scene_fraction(game.world,pivot,wanted,0.18)
 	var eye := pivot.lerp(wanted,maxf(0.0,fraction-0.02))
 	rig.position = u.global_position
-	rig.camera.fov = 65.0
-	rig.camera.near = 0.08
+	_update_view_model(u.model if first_person() else null)
+	if first_person():
+		eye = u.model.eye_position() if u.model else pivot
+		# A small forward offset clears the neck while retaining chest/legs.
+		eye += Vector3(cos(heading),0,-sin(heading)) * 0.08
+	rig.camera.fov = 75.0 if first_person() else 65.0
+	rig.camera.near = 0.03 if first_person() else 0.08
 	rig.camera.global_position = eye
 	rig.camera.look_at(eye+forward,Vector3.UP)
+
+
+func _update_view_model(model: EIUnitModel) -> void:
+	if _view_model == model: return
+	if is_instance_valid(_view_model): _view_model.set_head_hidden(false)
+	_view_model = model
+	if is_instance_valid(_view_model): _view_model.set_head_hidden(true)
 
 
 func _notification(what: int) -> void:
@@ -452,6 +475,7 @@ func _notification(what: int) -> void:
 
 
 func _exit_tree() -> void:
+	_update_view_model(null)
 	stop_move()
 	_capture(false)
 	if _control_id >= 0 and is_instance_valid(game.session) and is_instance_valid(game.world):

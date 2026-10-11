@@ -1,0 +1,1077 @@
+{
+  "date": "2026-10-11",
+  "scope": "Six complete extracted legacy mod packages through the CLI converter, plus a separate intentionally partial real-asset runtime diagnostic. No complete-mod gameplay claim.",
+  "checkout": {
+    "head": "dfe6dda4356cdb3af7ec749200437e2bb367ed78",
+    "working_tree": "uncommitted; includes unrelated in-progress changes"
+  },
+  "converter": {
+    "path": "tools/convert_legacy_mod.py",
+    "sha256": "765f020130ae49c69448f81c7c3b0a47c99be50a0e3b59eb8f9640cc68d41035",
+    "mod_api": 1,
+    "package_limit_bytes": 134217728
+  },
+  "summary": {
+    "full_mods_tested": 6,
+    "full_mods_converted": 0,
+    "full_mods_blocked": 6,
+    "crashes": 0,
+    "partial_packages_emitted_for_blocked_full_mods": 0
+  },
+  "base": {
+    "final_full_mod_runs": "Russian game resources extracted from the owned EvilIslands-ru.eipack; cp1251.",
+    "resource_sha256": {
+      "ru": {
+        "res/aiinfo.res": "4c322ae1dd6f1673f77c089ea41ba44f164f918441af8581b5c2d06d75e8e675",
+        "res/database.res": "2c1d19ddcd023b5e28c06531cec45400541ff3ce9961d33a63efc1863b210d3a",
+        "res/databaselmp.res": "fef36cac8ade53997767c02fd4b6e9f94e48fa9879968ac8a28bdffe2cce0a7a",
+        "res/figures.res": "c0fac796c10d2bad2ac5a0cc0f3c8abc62e295d89110e9907ae876f5663c6496",
+        "res/gfx.res": "4cd5f927eb02bcf36f267e7fd71746e754b77aba327760ea68f8ea294f9ca26e",
+        "res/materials.res": "255c8ea1e616f1d4350bc3369bcb22dccd68ffcd24d9dcb59913fd5683784880",
+        "res/menus.res": "13f482b0756cea407683784151245d7e84fc2a2f312d0864705a0d81d286fd44",
+        "res/music.reg": "f5ab99ba9d014a81edca60891d49c20e4061b80d3e8f804233e49b70b4e9c295",
+        "res/outro.res": "9629d3415d4541c0f98d58a473d8a57c2e9bb168cf24d7ee3c5b28fa2c11c1c3",
+        "res/redress.res": "48b64971f449958798e86cef9add181cac03d354f84c237ad5a6fe3b0e44ef34",
+        "res/sfx.res": "c54f246d600bed3585fa4a4ab51d69bb4995d9c65a5025bb99232cd4fde76894",
+        "res/smessbase.reg": "0ab3afbb3069156de24de5fad45987517001ea7f849ded036cce8dc47af39acd",
+        "res/speech.res": "fac78d55fda5807b9a1b3d4100f6c5a11b66f2097f5510d007d710907c1443bd",
+        "res/streamsn.reg": "fa351911312dd7bd06d7c1dac574ca46a539bc47e8915497091d602f7f8193e1",
+        "res/sysmsg.txt": "19dc4713b2fcd612010f94e0c68f3e1773539a897db5100f1b2d505451ad7605",
+        "res/texts.res": "96d8e49a3472f93d92ec8b4ad4286fa7662d78fc4577fe2335832542014b3a5a",
+        "res/textslmp.res": "131ef49858bcaf8259ddfb64293462354630791d84438381bb1219b3a1c6461e",
+        "res/textures.res": "79548fbd94e797fe9edc3e990eb0231a350571b2cef575b009fa972f0002268c"
+      },
+      "en": {
+        "aiinfo.res": "4c322ae1dd6f1673f77c089ea41ba44f164f918441af8581b5c2d06d75e8e675",
+        "database.res": "50e5899fd7d467e11ea152122148f6911319cf339bf7717f1e205d38c63b13b0",
+        "databaselmp.res": "172c16ddbe4d94552641686172db3d943a6f77b4d13621b68995d7c0750d16ef",
+        "figures.res": "200d8b7968813bf154b4e5b6d84fd3ce362f7aae5c743ae2b5e0cc4023045c15",
+        "gfx.res": "4cd5f927eb02bcf36f267e7fd71746e754b77aba327760ea68f8ea294f9ca26e",
+        "materials.res": "255c8ea1e616f1d4350bc3369bcb22dccd68ffcd24d9dcb59913fd5683784880",
+        "menus.res": "8fc8036e6fda767de356a4c6f3a0f0557db367c51495c63ac2594bb01a1371ab",
+        "music.reg": "07446a9e653fdce074fd0fb7669cb36ba57ceb5d7f52f42be2f1803a0b93adf7",
+        "outro.res": "c840548f188c9378b95f0fdd12202b3610cf156e0f753f242fce2460b68975cb",
+        "redress.res": "4a674a71784d7d6c21ed1099ac16a6a80dc881630c6e1395861d7310955784ac",
+        "sfx.res": "9646bdf262b1d8d0ed1cf202a1bce98a91d06ea9ac789acd20f26b560146ff14",
+        "smessbase.reg": "0cd1665675edf5b4e8f2c83d6fd7231c002d5d15b3d35d3fed550e43d2d839da",
+        "speech.res": "0cc6dc97d531c37bbb7513517f7f97c783fcaf6ea6103941673cd9cf7cc4fbc4",
+        "streamsn.reg": "fa351911312dd7bd06d7c1dac574ca46a539bc47e8915497091d602f7f8193e1",
+        "sysmsg.txt": "56430e832314aa24445f5fb266e827dd79b04af3c3cd42e03d247da9417daac5",
+        "texts.res": "7480721148bf443901bad59ea184606d7a09c97d565040560778ea4663cd5c41",
+        "textslmp.res": "f319bed351c528a1ec77bbfb6266e76c30d456df260dd62578bf03e4cb774c6d",
+        "textures.res": "79548fbd94e797fe9edc3e990eb0231a350571b2cef575b009fa972f0002268c"
+      }
+    },
+    "eitweaks_language_check": {
+      "matching_common_entries_russian": 3156,
+      "common_entries_russian": 3167,
+      "matching_common_entries_english": 61,
+      "common_entries_english": 3133
+    }
+  },
+  "integrity": {
+    "source_and_base_files_unchanged": true,
+    "verified_after_corrected_eitweaks_run": true,
+    "file_counts": {
+      "extracted": 763,
+      "ru": 18,
+      "en": 18
+    },
+    "fingerprints_path": "/home/llm2x/Documents/EI/local/scratchpad/legacy-mod-real-tests-20261011/input-fingerprints.json",
+    "fingerprints_sha256": "1fde0aab847c473b9d4a2b99848e6e3b414eb692ff3211d61e2be7fbf28e8df1"
+  },
+  "cases": [
+    {
+      "key": "eitweaks",
+      "mod": "EItweaks",
+      "version": "1.0.1",
+      "source_url": "https://github.com/BGforgeNet/EItweaks/releases/download/v1/eitweaks-v1.0.1.zip",
+      "download_bytes": 2177021,
+      "download_sha256": "f43d2027e8fea46eb21582a22fdeeb5078848547e8517b8e94d6a0ee43fff91b",
+      "mod_root": "extracted/eitweaks/eitweaks",
+      "encoding": "cp1251",
+      "base_language": "ru",
+      "exit_code": 1,
+      "status": "blocked",
+      "blocker_counts": {
+        "unsupported_config": 4,
+        "unsupported_database": 4,
+        "unsupported_table": 3,
+        "unsupported_field": 464,
+        "unsupported_archive": 11,
+        "unsupported_file": 4
+      },
+      "candidate_overrides": 1,
+      "candidate_patches": 58,
+      "candidate_asset_bytes": 101948,
+      "unchanged_entries": 3213,
+      "report": "reports-ru/eitweaks/conversion-report.json",
+      "report_sha256": "367a81bd115d09976fd8eae8f0d1b1198fdb29bdac9e6d744b17a1d4d2710e91",
+      "package_count": 0,
+      "notes": [
+        "The archive also bundles game.exe outside the mod directory; inventoried and never executed.",
+        "Packaged texts are Russian. The final run uses the Russian base."
+      ],
+      "blocker_examples": {
+        "unsupported_config": [
+          {
+            "code": "unsupported_config",
+            "location": "dev/gamedebugfile",
+            "message": "Requires a compatibility adapter: 'eitweaks.log'"
+          },
+          {
+            "code": "unsupported_config",
+            "location": "config/keyboard.ini",
+            "message": "Requires a compatibility adapter: 'config\\\\keyboard.ini'"
+          },
+          {
+            "code": "unsupported_config",
+            "location": "config/movie.ini",
+            "message": "Requires a compatibility adapter: 'config\\\\movie.ini'"
+          }
+        ],
+        "unsupported_database": [
+          {
+            "code": "unsupported_database",
+            "location": "database.res/acks.db",
+            "message": "This database entry is outside API 1."
+          },
+          {
+            "code": "unsupported_database",
+            "location": "database.res/items.idb",
+            "message": "This database entry is outside API 1."
+          },
+          {
+            "code": "unsupported_database",
+            "location": "database.res/levers.ldb",
+            "message": "This database entry is outside API 1."
+          }
+        ],
+        "unsupported_table": [
+          {
+            "code": "unsupported_table",
+            "location": "database.res/units.udb/section-1",
+            "message": "This table cannot be patched by API 1."
+          },
+          {
+            "code": "unsupported_table",
+            "location": "database.res/units.udb/section-2",
+            "message": "This table cannot be patched by API 1."
+          },
+          {
+            "code": "unsupported_table",
+            "location": "database.res/units.udb/section-4",
+            "message": "This table cannot be patched by API 1."
+          }
+        ],
+        "unsupported_field": [
+          {
+            "code": "unsupported_field",
+            "location": "database.res/units.udb/Human Hero/field-2",
+            "message": "This field change cannot be represented by API 1."
+          },
+          {
+            "code": "unsupported_field",
+            "location": "database.res/units.udb/Human Hero Hadagan/field-2",
+            "message": "This field change cannot be represented by API 1."
+          },
+          {
+            "code": "unsupported_field",
+            "location": "database.res/units.udb/Human Mercenary Warrior/field-2",
+            "message": "This field change cannot be represented by API 1."
+          }
+        ],
+        "unsupported_archive": [
+          {
+            "code": "unsupported_archive",
+            "location": "texts.res/armor gipat_high_gloves tanned_thin",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          },
+          {
+            "code": "unsupported_archive",
+            "location": "texts.res/instr gipat_high_gloves",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          },
+          {
+            "code": "unsupported_archive",
+            "location": "texts.res/instr stone_battle_hammer",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          }
+        ],
+        "unsupported_file": [
+          {
+            "code": "unsupported_file",
+            "location": "config/keyboard.ini",
+            "message": "File has no equivalent in the API 1 package."
+          },
+          {
+            "code": "unsupported_file",
+            "location": "config/movie.ini",
+            "message": "File has no equivalent in the API 1 package."
+          },
+          {
+            "code": "unsupported_file",
+            "location": "config/tutorial.ini",
+            "message": "File has no equivalent in the API 1 package."
+          }
+        ]
+      }
+    },
+    {
+      "key": "universal",
+      "mod": "Universal Mod",
+      "version": "0.8.6-beta",
+      "source_url": "https://github.com/Kyr4l/ei-universal-mod/releases/download/0.8.6/Universal-Mod-beta-0.8.6-.zip",
+      "download_bytes": 918267776,
+      "download_sha256": "25c99a51e0bb5f67f72c4bca24664e2ad6f824e4fd4adf7e162758d7525f05a5",
+      "mod_root": "extracted/universal/Universal-Mod",
+      "encoding": "cp1251",
+      "base_language": "ru",
+      "exit_code": 1,
+      "status": "blocked",
+      "blocker_counts": {
+        "native_plugin": 3,
+        "unsupported_config": 9,
+        "unsupported_database": 5,
+        "new_archive_entry": 2082,
+        "unsupported_field": 72,
+        "database_records": 2,
+        "unsupported_table": 5,
+        "unsupported_archive": 77,
+        "archive_precedence": 13,
+        "unsupported_file": 410,
+        "package_limits": 1
+      },
+      "candidate_overrides": 406,
+      "candidate_patches": 24,
+      "candidate_asset_bytes": 780236248,
+      "unchanged_entries": 134,
+      "report": "reports-final/universal/conversion-report.json",
+      "report_sha256": "66ee7acec76af9fbfc0372de69f7c404a8b84dc1be00138e759a9428c6bacd88",
+      "package_count": 0,
+      "notes": [
+        "Default bundled Russian resources tested. Includes optional English language files.",
+        "DEV.Plugin points to um.dll; both um.dll and um-engine.dll have PE machine type 0x014c."
+      ],
+      "blocker_examples": {
+        "native_plugin": [
+          {
+            "code": "native_plugin",
+            "location": "dev/plugin",
+            "message": "Requires a compatibility adapter: 'um.dll'"
+          },
+          {
+            "code": "native_plugin",
+            "location": "um-engine.dll",
+            "message": "Native code needs a manual feature port."
+          },
+          {
+            "code": "native_plugin",
+            "location": "um.dll",
+            "message": "Native code needs a manual feature port."
+          }
+        ],
+        "unsupported_config": [
+          {
+            "code": "unsupported_config",
+            "location": "mpzone/suslanger",
+            "message": "Requires a compatibility adapter: ['zone15', 'zone17', 'zone18', 'zone19', 'zone20', '']"
+          },
+          {
+            "code": "unsupported_config",
+            "location": "mpzone/gipath",
+            "message": "Requires a compatibility adapter: ['zone1', 'zone2', 'zone3', 'zone3xobr', 'zone5', 'zone6x', 'zone11dun2', 'zone7', 'zone8x', 'zone9x', 'zone91', 'zone92', '']"
+          },
+          {
+            "code": "unsupported_config",
+            "location": "mpzone/jigran",
+            "message": "Requires a compatibility adapter: ['zone0j', 'zone31', 'zone32', 'zone33', 'zone34', 'zone35', '']"
+          }
+        ],
+        "unsupported_database": [
+          {
+            "code": "unsupported_database",
+            "location": "database.res/acks.db",
+            "message": "This database entry is outside API 1."
+          },
+          {
+            "code": "unsupported_database",
+            "location": "database.res/unmosk.adb",
+            "message": "This database entry is outside API 1."
+          },
+          {
+            "code": "unsupported_database",
+            "location": "databaselmp.res/items.idb",
+            "message": "This database entry is outside API 1."
+          }
+        ],
+        "new_archive_entry": [
+          {
+            "code": "new_archive_entry",
+            "location": "database.res/unmosk2.adb",
+            "message": "New entries and their references need a newer mod API."
+          },
+          {
+            "code": "new_archive_entry",
+            "location": "figures.res/battle00.mmp",
+            "message": "New entries and their references need a newer mod API."
+          },
+          {
+            "code": "new_archive_entry",
+            "location": "figures.res/beholder03.mmp",
+            "message": "New entries and their references need a newer mod API."
+          }
+        ],
+        "unsupported_field": [
+          {
+            "code": "unsupported_field",
+            "location": "databaselmp.res/perks.pdb/Swords Specialist/field-19",
+            "message": "This field change cannot be represented by API 1."
+          },
+          {
+            "code": "unsupported_field",
+            "location": "databaselmp.res/perks.pdb/Swords Expert/field-19",
+            "message": "This field change cannot be represented by API 1."
+          },
+          {
+            "code": "unsupported_field",
+            "location": "databaselmp.res/perks.pdb/Swords Master/field-19",
+            "message": "This field change cannot be represented by API 1."
+          }
+        ],
+        "database_records": [
+          {
+            "code": "database_records",
+            "location": "databaselmp.res/spells.sdb",
+            "message": "Adding or removing database records needs a newer mod API."
+          },
+          {
+            "code": "database_records",
+            "location": "databaselmp.res/units.udb",
+            "message": "Adding or removing database records needs a newer mod API."
+          }
+        ],
+        "unsupported_table": [
+          {
+            "code": "unsupported_table",
+            "location": "databaselmp.res/spells.sdb/section-2",
+            "message": "This table cannot be patched by API 1."
+          },
+          {
+            "code": "unsupported_table",
+            "location": "databaselmp.res/spells.sdb/section-5",
+            "message": "This table cannot be patched by API 1."
+          },
+          {
+            "code": "unsupported_table",
+            "location": "databaselmp.res/units.udb/section-1",
+            "message": "This table cannot be patched by API 1."
+          }
+        ],
+        "unsupported_archive": [
+          {
+            "code": "unsupported_archive",
+            "location": "figures.res/initlimt10item.fig",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          },
+          {
+            "code": "unsupported_archive",
+            "location": "figures.res/initlimt11item.fig",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          },
+          {
+            "code": "unsupported_archive",
+            "location": "figures.res/initlimt12item.fig",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          }
+        ],
+        "archive_precedence": [
+          {
+            "code": "archive_precedence",
+            "location": "textures.res/battle00.mmp",
+            "message": "Multiple archives provide different bytes; legacy precedence needs an explicit adapter."
+          },
+          {
+            "code": "archive_precedence",
+            "location": "textures.res/bz14h000.mmp",
+            "message": "Multiple archives provide different bytes; legacy precedence needs an explicit adapter."
+          },
+          {
+            "code": "archive_precedence",
+            "location": "textures.res/bz18h000.mmp",
+            "message": "Multiple archives provide different bytes; legacy precedence needs an explicit adapter."
+          }
+        ],
+        "unsupported_file": [
+          {
+            "code": "unsupported_file",
+            "location": "config/ai.reg",
+            "message": "File has no equivalent in the API 1 package."
+          },
+          {
+            "code": "unsupported_file",
+            "location": "config/lightscavejigran.ini",
+            "message": "File has no equivalent in the API 1 package."
+          },
+          {
+            "code": "unsupported_file",
+            "location": "config/lightsjigran.ini",
+            "message": "File has no equivalent in the API 1 package."
+          }
+        ],
+        "package_limits": [
+          {
+            "code": "package_limits",
+            "location": "mod",
+            "message": "Converted content exceeds API 1 package limits."
+          }
+        ]
+      }
+    },
+    {
+      "key": "hdlands",
+      "mod": "HD Lands",
+      "version": "1.4.0",
+      "source_url": "https://hd-lands.gipat.ru/wp-content/uploads/2021/10/hd-lands-v-1.4.0.7z",
+      "download_bytes": 244608954,
+      "download_sha256": "f08f8c11058dbbe3cb12a1ca75b6263a5eec12fae0e62ffd1f47be359bc4ed1c",
+      "mod_root": "extracted/hdlands/HD Lands v 1.4.0",
+      "encoding": "cp1251",
+      "base_language": "ru",
+      "exit_code": 1,
+      "status": "blocked",
+      "blocker_counts": {
+        "unsupported_archive": 2,
+        "new_archive_entry": 9,
+        "unsupported_file": 1,
+        "package_limits": 1
+      },
+      "candidate_overrides": 294,
+      "candidate_patches": 0,
+      "candidate_asset_bytes": 754422056,
+      "unchanged_entries": 5,
+      "report": "reports-final/hdlands/conversion-report.json",
+      "report_sha256": "e496ac93c6cc96e955a4f67c0285e7a92f61a46e623ab163f4b23f790a0b8cbd",
+      "package_count": 0,
+      "notes": [
+        "Archive/title identify 1.4.0; the embedded MOD.Version still says 1.1.0.",
+        "Credits/version text, nine new texture entries and additionally.zip also block full conversion."
+      ],
+      "blocker_examples": {
+        "unsupported_archive": [
+          {
+            "code": "unsupported_archive",
+            "location": "outro.res/outro.rtf",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          },
+          {
+            "code": "unsupported_archive",
+            "location": "texts.res/string version_name",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          }
+        ],
+        "new_archive_entry": [
+          {
+            "code": "new_archive_entry",
+            "location": "textures.res/!rainsnow.mmp",
+            "message": "New entries and their references need a newer mod API."
+          },
+          {
+            "code": "new_archive_entry",
+            "location": "textures.res/!sky00.mmp",
+            "message": "New entries and their references need a newer mod API."
+          },
+          {
+            "code": "new_archive_entry",
+            "location": "textures.res/astralold.mmp",
+            "message": "New entries and their references need a newer mod API."
+          }
+        ],
+        "unsupported_file": [
+          {
+            "code": "unsupported_file",
+            "location": "additionally.zip",
+            "message": "File has no equivalent in the API 1 package."
+          }
+        ],
+        "package_limits": [
+          {
+            "code": "package_limits",
+            "location": "mod",
+            "message": "Converted content exceeds API 1 package limits."
+          }
+        ]
+      }
+    },
+    {
+      "key": "hg",
+      "mod": "HG Mod",
+      "version": "3.6.17",
+      "source_url": "https://allods.gipat.ru/files/ei/mods/HG_3_6_17.7z",
+      "download_bytes": 75297452,
+      "download_sha256": "98fb7db68da56f1790b7a14f15ff109086d1cad794199b4388a98fe0bc7edb8a",
+      "mod_root": "extracted/hg/HG 3617",
+      "encoding": "cp1251",
+      "base_language": "ru",
+      "exit_code": 1,
+      "status": "blocked",
+      "blocker_counts": {
+        "unsupported_config": 7,
+        "unsupported_database": 6,
+        "database_records": 4,
+        "unsupported_field": 405,
+        "database_value": 6,
+        "unsupported_table": 12,
+        "new_archive_entry": 7963,
+        "unsupported_archive": 175,
+        "archive_precedence": 1,
+        "unsupported_file": 202,
+        "native_plugin": 1
+      },
+      "candidate_overrides": 15,
+      "candidate_patches": 222,
+      "candidate_asset_bytes": 1557698,
+      "unchanged_entries": 379,
+      "report": "reports-final/hg/conversion-report.json",
+      "report_sha256": "33bf8e997f982e06ba95c793cffa422516bf5faefd2c7e6864a5870866b9b07b",
+      "package_count": 0,
+      "notes": [
+        "Historical release. Uninstall.exe is reported as native content; this does not establish an in-game native dependency."
+      ],
+      "blocker_examples": {
+        "unsupported_config": [
+          {
+            "code": "unsupported_config",
+            "location": "dev/chathtmlfile",
+            "message": "Requires a compatibility adapter: 'chat HGJ.htm'"
+          },
+          {
+            "code": "unsupported_config",
+            "location": "mpzone/suslanger",
+            "message": "Requires a compatibility adapter: ['zone15', 'zone16', 'zone17', 'zone18', 'zone19', 'zone19a', 'zone21', '']"
+          },
+          {
+            "code": "unsupported_config",
+            "location": "mpzone/gipath",
+            "message": "Requires a compatibility adapter: ['zone0', 'zone1', 'zone2', 'zone3obr', 'zone3h', 'zone4', 'zone5_1', 'zone6', 'zone7', 'zone8', 'zone9', 'zone9b', 'zone10', '']"
+          }
+        ],
+        "unsupported_database": [
+          {
+            "code": "unsupported_database",
+            "location": "database.res/items.idb",
+            "message": "This database entry is outside API 1."
+          },
+          {
+            "code": "unsupported_database",
+            "location": "database.res/levers.ldb",
+            "message": "This database entry is outside API 1."
+          },
+          {
+            "code": "unsupported_database",
+            "location": "database.res/prints.db",
+            "message": "This database entry is outside API 1."
+          }
+        ],
+        "database_records": [
+          {
+            "code": "database_records",
+            "location": "database.res/perks.pdb",
+            "message": "Adding or removing database records needs a newer mod API."
+          },
+          {
+            "code": "database_records",
+            "location": "database.res/units.udb",
+            "message": "Adding or removing database records needs a newer mod API."
+          },
+          {
+            "code": "database_records",
+            "location": "databaselmp.res/perks.pdb",
+            "message": "Adding or removing database records needs a newer mod API."
+          }
+        ],
+        "unsupported_field": [
+          {
+            "code": "unsupported_field",
+            "location": "database.res/spells.sdb/Fire Arrow/field-7",
+            "message": "This field change cannot be represented by API 1."
+          },
+          {
+            "code": "unsupported_field",
+            "location": "database.res/spells.sdb/Fire Arrow/field-19",
+            "message": "This field change cannot be represented by API 1."
+          },
+          {
+            "code": "unsupported_field",
+            "location": "database.res/spells.sdb/Fire Arrow/field-22",
+            "message": "This field change cannot be represented by API 1."
+          }
+        ],
+        "database_value": [
+          {
+            "code": "database_value",
+            "location": "database.res/spells.sdb/Teleport/field-3",
+            "message": "Value or record name exceeds API 1 limits."
+          },
+          {
+            "code": "database_value",
+            "location": "database.res/spells.sdb/Rick Magic/field-3",
+            "message": "Value or record name exceeds API 1 limits."
+          },
+          {
+            "code": "database_value",
+            "location": "database.res/spells.sdb/Curse Magic/field-3",
+            "message": "Value or record name exceeds API 1 limits."
+          }
+        ],
+        "unsupported_table": [
+          {
+            "code": "unsupported_table",
+            "location": "database.res/spells.sdb/section-2",
+            "message": "This table cannot be patched by API 1."
+          },
+          {
+            "code": "unsupported_table",
+            "location": "database.res/spells.sdb/section-4",
+            "message": "This table cannot be patched by API 1."
+          },
+          {
+            "code": "unsupported_table",
+            "location": "database.res/spells.sdb/section-5",
+            "message": "This table cannot be patched by API 1."
+          }
+        ],
+        "new_archive_entry": [
+          {
+            "code": "new_archive_entry",
+            "location": "database.res/unmosk2.adb",
+            "message": "New entries and their references need a newer mod API."
+          },
+          {
+            "code": "new_archive_entry",
+            "location": "database.res/unmosk3.adb",
+            "message": "New entries and their references need a newer mod API."
+          },
+          {
+            "code": "new_archive_entry",
+            "location": "database.res/unmosk5.adb",
+            "message": "New entries and their references need a newer mod API."
+          }
+        ],
+        "unsupported_archive": [
+          {
+            "code": "unsupported_archive",
+            "location": "figures.res/infaunhufefa2face.fig",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          },
+          {
+            "code": "unsupported_archive",
+            "location": "figures.res/infaunhufefa3face.fig",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          },
+          {
+            "code": "unsupported_archive",
+            "location": "figures.res/infaunhufefa4face.fig",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          }
+        ],
+        "archive_precedence": [
+          {
+            "code": "archive_precedence",
+            "location": "figures.res/resbuild.exe  skrót.lnk",
+            "message": "Multiple archives provide different bytes; legacy precedence needs an explicit adapter."
+          }
+        ],
+        "unsupported_file": [
+          {
+            "code": "unsupported_file",
+            "location": "camera/mainmenu.cam",
+            "message": "File has no equivalent in the API 1 package."
+          },
+          {
+            "code": "unsupported_file",
+            "location": "config/ai.reg",
+            "message": "File has no equivalent in the API 1 package."
+          },
+          {
+            "code": "unsupported_file",
+            "location": "config/music.reg",
+            "message": "File has no equivalent in the API 1 package."
+          }
+        ],
+        "native_plugin": [
+          {
+            "code": "native_plugin",
+            "location": "uninstall.exe",
+            "message": "Native code needs a manual feature port."
+          }
+        ]
+      }
+    },
+    {
+      "key": "jamaisvu",
+      "mod": "Jamais vu",
+      "version": "1.0001",
+      "source_url": "https://allods.gipat.ru/files/ei/mods/jamais_vu_1_0001.zip",
+      "download_bytes": 9202751,
+      "download_sha256": "aeb2cad49e7d5d88bdd89769a5a70c4cfb12a7b1c615ff3b08a6abbe7ab86cee",
+      "mod_root": "extracted/jamaisvu/Jamais-vu",
+      "encoding": "cp1251",
+      "base_language": "ru",
+      "exit_code": 1,
+      "status": "blocked",
+      "blocker_counts": {
+        "unsupported_config": 3,
+        "unsupported_database": 4,
+        "unsupported_field": 281,
+        "database_value": 1,
+        "unsupported_table": 7,
+        "database_records": 1,
+        "unsupported_archive": 536,
+        "new_archive_entry": 18,
+        "unsupported_file": 44
+      },
+      "candidate_overrides": 0,
+      "candidate_patches": 182,
+      "candidate_asset_bytes": 0,
+      "unchanged_entries": 2686,
+      "report": "reports-final/jamaisvu/conversion-report.json",
+      "report_sha256": "025cd1e677d846417f4cd22bfd5580c536cd9ced931f3ebe2382dacec8883cab",
+      "package_count": 0,
+      "notes": [
+        "Historical 1.0001 release, not the newer 1.35. Only the outer DOS-encoded folder was renamed for local extraction."
+      ],
+      "blocker_examples": {
+        "unsupported_config": [
+          {
+            "code": "unsupported_config",
+            "location": "config/ai.reg",
+            "message": "Requires a compatibility adapter: 'config\\\\ai.reg'"
+          },
+          {
+            "code": "unsupported_config",
+            "location": "mod/addonversion",
+            "message": "Requires a compatibility adapter: '0.11.0.0'"
+          },
+          {
+            "code": "unsupported_config",
+            "location": "mod/forceshowtutorial",
+            "message": "Requires a compatibility adapter: 1"
+          }
+        ],
+        "unsupported_database": [
+          {
+            "code": "unsupported_database",
+            "location": "database.res/acks.db",
+            "message": "This database entry is outside API 1."
+          },
+          {
+            "code": "unsupported_database",
+            "location": "database.res/items.idb",
+            "message": "This database entry is outside API 1."
+          },
+          {
+            "code": "unsupported_database",
+            "location": "database.res/levers.ldb",
+            "message": "This database entry is outside API 1."
+          }
+        ],
+        "unsupported_field": [
+          {
+            "code": "unsupported_field",
+            "location": "database.res/perks.pdb/Swords Specialist/field-20",
+            "message": "This field change cannot be represented by API 1."
+          },
+          {
+            "code": "unsupported_field",
+            "location": "database.res/perks.pdb/Swords Specialist/field-21",
+            "message": "This field change cannot be represented by API 1."
+          },
+          {
+            "code": "unsupported_field",
+            "location": "database.res/perks.pdb/Swords Expert/field-19",
+            "message": "This field change cannot be represented by API 1."
+          }
+        ],
+        "database_value": [
+          {
+            "code": "database_value",
+            "location": "database.res/spells.sdb/Stun/field-3",
+            "message": "Value or record name exceeds API 1 limits."
+          }
+        ],
+        "unsupported_table": [
+          {
+            "code": "unsupported_table",
+            "location": "database.res/spells.sdb/section-2",
+            "message": "This table cannot be patched by API 1."
+          },
+          {
+            "code": "unsupported_table",
+            "location": "database.res/spells.sdb/section-3",
+            "message": "This table cannot be patched by API 1."
+          },
+          {
+            "code": "unsupported_table",
+            "location": "database.res/spells.sdb/section-4",
+            "message": "This table cannot be patched by API 1."
+          }
+        ],
+        "database_records": [
+          {
+            "code": "database_records",
+            "location": "database.res/units.udb",
+            "message": "Adding or removing database records needs a newer mod API."
+          }
+        ],
+        "unsupported_archive": [
+          {
+            "code": "unsupported_archive",
+            "location": "texts.res/armor gipat_brigand_leggins tiger_hide_white",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          },
+          {
+            "code": "unsupported_archive",
+            "location": "texts.res/armor gipat_brigand_pants tiger_hide",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          },
+          {
+            "code": "unsupported_archive",
+            "location": "texts.res/armor gipat_brigand_pants tiger_hide_white",
+            "message": "API 1 supports MMP textures, WAV sound, MP3 speech and selected numeric database fields."
+          }
+        ],
+        "new_archive_entry": [
+          {
+            "code": "new_archive_entry",
+            "location": "texts.res/armor kania_special_highest_leggins meteoric",
+            "message": "New entries and their references need a newer mod API."
+          },
+          {
+            "code": "new_archive_entry",
+            "location": "texts.res/armor kania_special_highest_leggins_meteoric",
+            "message": "New entries and their references need a newer mod API."
+          },
+          {
+            "code": "new_archive_entry",
+            "location": "texts.res/armor kania_special_highest_plate meteoric",
+            "message": "New entries and their references need a newer mod API."
+          }
+        ],
+        "unsupported_file": [
+          {
+            "code": "unsupported_file",
+            "location": "config/ai.reg",
+            "message": "File has no equivalent in the API 1 package."
+          },
+          {
+            "code": "unsupported_file",
+            "location": "maps/setting.mob",
+            "message": "File has no equivalent in the API 1 package."
+          },
+          {
+            "code": "unsupported_file",
+            "location": "maps/zone1.mob",
+            "message": "File has no equivalent in the API 1 package."
+          }
+        ]
+      }
+    },
+    {
+      "key": "xpmates",
+      "mod": "XP Mates",
+      "version": "1.0",
+      "source_url": "https://allods.gipat.ru/files/ei/mods/xp-mates.zip",
+      "download_bytes": 466735,
+      "download_sha256": "da60b453830d240d404bddcc065719ef3b8dac52c3968bfb505e7c12214c9f69",
+      "mod_root": "extracted/xpmates/XP-Mates",
+      "encoding": "cp1251",
+      "base_language": "ru",
+      "exit_code": 1,
+      "status": "blocked",
+      "blocker_counts": {
+        "unsupported_config": 3,
+        "native_plugin": 1,
+        "unsupported_file": 10,
+        "no_changes": 1
+      },
+      "candidate_overrides": 0,
+      "candidate_patches": 0,
+      "candidate_asset_bytes": 0,
+      "unchanged_entries": 0,
+      "report": "reports-final/xpmates/conversion-report.json",
+      "report_sha256": "b2d697e1fe84301aff98454bf6a8b19765645f29b34b117ce217c1283856aebc",
+      "package_count": 0,
+      "notes": [
+        "Contains addon.dll and nine Lua files; no supported data changes."
+      ],
+      "blocker_examples": {
+        "unsupported_config": [
+          {
+            "code": "unsupported_config",
+            "location": "mod/addonversion",
+            "message": "Requires a compatibility adapter: '0.12.1.0'"
+          },
+          {
+            "code": "unsupported_config",
+            "location": "mod/forceshowtutorial",
+            "message": "Requires a compatibility adapter: 0"
+          },
+          {
+            "code": "unsupported_config",
+            "location": "config/ai.reg",
+            "message": "Requires a compatibility adapter: 'config\\\\ai.reg'"
+          }
+        ],
+        "native_plugin": [
+          {
+            "code": "native_plugin",
+            "location": "addon.dll",
+            "message": "Native code needs a manual feature port."
+          }
+        ],
+        "unsupported_file": [
+          {
+            "code": "unsupported_file",
+            "location": "config/ai.reg",
+            "message": "File has no equivalent in the API 1 package."
+          },
+          {
+            "code": "unsupported_file",
+            "location": "lua/class.lua",
+            "message": "File has no equivalent in the API 1 package."
+          },
+          {
+            "code": "unsupported_file",
+            "location": "lua/client_server.lua",
+            "message": "File has no equivalent in the API 1 package."
+          }
+        ],
+        "no_changes": [
+          {
+            "code": "no_changes",
+            "location": "mod",
+            "message": "No supported changes relative to this base installation."
+          }
+        ]
+      }
+    }
+  ],
+  "python_regressions": {
+    "command": "python3 -m unittest discover -s tools/tests -p 'test_legacy_mod_converter.py' -v",
+    "tests": 19,
+    "failures": 0,
+    "test_sha256": "d00ab49ef52150f48363739066fd8e5f527bfd78ead546a90f03f4bd515b8a38"
+  },
+  "asset_runtime_probe": {
+    "scope": "Seven selected HD Lands textures and one EItweaks WAV only. This is not a full mod conversion.",
+    "checks": 62,
+    "failures": 0,
+    "exit_code": 0,
+    "engine": "Godot 4.7 stable official 5b4e0cb0f, Linux x86_64",
+    "test": "tools/tests/legacy_mod_assets.gd",
+    "test_sha256": "d8774f9043fba15c8efd42090b21d1d6d03c10776270dd3b6dbcb911d128585e",
+    "project": "/home/llm2x/Documents/EI/local/scratchpad/legacy-mod-real-tests-20261011/runtime",
+    "base_game": "Owned English installation; disposable XDG config/data/cache directories.",
+    "package": "/home/llm2x/Documents/EI/local/scratchpad/legacy-mod-real-tests-20261011/asset-sample-converted/test.real-legacy-assets.eimod",
+    "package_sha256": "0c23ec4ee982acfdb2b9e34e9061e3de75fc86697c89612392dd0616c004a435",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/legacy-mod-real-tests-20261011/assets-runtime.log",
+    "log_sha256": "96c1f0345bd33e8db6ad873af134697d3c831d7217d207afa6f2855cf6c827f1",
+    "assets": [
+      {
+        "archive": "textures.res",
+        "entry": "altar00.mmp",
+        "sha256": "4088bbe6d7298f7b4e1b3cd01576fbac990c4c590f5f41886035fb172a91dc49",
+        "width": 512,
+        "height": 512,
+        "format": "DXT1",
+        "source_mod": "HD Lands 1.4.0",
+        "source_archive": "objtextures.res"
+      },
+      {
+        "archive": "textures.res",
+        "entry": "goblin00.mmp",
+        "sha256": "88cdc7037dc23928cf1a78bd452cbf363f9e92e9053aa7fe9be3287e523ad601",
+        "width": 512,
+        "height": 512,
+        "format": "DXT1",
+        "source_mod": "HD Lands 1.4.0",
+        "source_archive": "objtextures.res"
+      },
+      {
+        "archive": "textures.res",
+        "entry": "zonemainmenunew002.mmp",
+        "sha256": "ade9d3775124dc12101a3b2bc689347dd0390a01b1e4191d6f73781924d3952c",
+        "width": 2048,
+        "height": 2048,
+        "format": "DXT1",
+        "source_mod": "HD Lands 1.4.0",
+        "source_archive": "textures.res"
+      },
+      {
+        "archive": "textures.res",
+        "entry": "lizardman00.mmp",
+        "sha256": "240fe9c15f87c3619f2f95e7e2749241331f023161bab69b90dd9934d08b8ba1",
+        "width": 512,
+        "height": 512,
+        "format": "DXT3",
+        "source_mod": "HD Lands 1.4.0",
+        "source_archive": "objtextures.res"
+      },
+      {
+        "archive": "textures.res",
+        "entry": "battle00.mmp",
+        "sha256": "650abb3d88640816570e77ec36af8e37ecf057b4bc2282620a328b526339c984",
+        "width": 2048,
+        "height": 2048,
+        "format": "DXT3",
+        "source_mod": "HD Lands 1.4.0",
+        "source_archive": "objtextures.res"
+      },
+      {
+        "archive": "textures.res",
+        "entry": "cave01.mmp",
+        "sha256": "d97169eb18ac3b6690601968f487cc107e8d21f45d331b8450181b7b6d4ab80c",
+        "width": 512,
+        "height": 512,
+        "format": "DXT3",
+        "source_mod": "HD Lands 1.4.0",
+        "source_archive": "objtextures.res"
+      },
+      {
+        "archive": "textures.res",
+        "entry": "skill0009.mmp",
+        "sha256": "d0ff7e366bd38d5a300af5b00e18f9924f9ea9bb195b6338388228bb3f3c6db4",
+        "width": 64,
+        "height": 64,
+        "format": "PNT3",
+        "source_mod": "HD Lands 1.4.0",
+        "source_archive": "objtextures.res"
+      },
+      {
+        "archive": "sfx.res",
+        "entry": "acks/hh/scenario/169.wav",
+        "sha256": "ffa942ed8823fd0636e1ac46853aa023c87aee3b1bff14038ffc0702e470baa8",
+        "source_mod": "EItweaks 1.0.1",
+        "source_archive": "res/sfx.res"
+      }
+    ],
+    "covers": [
+      "actual importer and profile activation",
+      "archive resolver byte hashes",
+      "normal and mipmapped game image loading; expected dimensions and mip chains",
+      "actual WAV decoder",
+      "default-profile restoration and original archive hashes",
+      "runtime high-byte archive name decoding"
+    ],
+    "gameplay_zone_started": false
+  },
+  "local_evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/legacy-mod-real-tests-20261011",
+  "limitations": [
+    "Historical versions explicitly identified; no extrapolation to newer HG or Jamais vu releases.",
+    "No complete legacy mod is playable as a result of these tests.",
+    "No downloaded native code or Lua code executed.",
+    "No Windows, macOS, Android, multiplayer or gameplay route tested.",
+    "Candidate deltas do not measure behavioral compatibility."
+  ]
+}

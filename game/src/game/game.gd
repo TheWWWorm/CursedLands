@@ -604,13 +604,20 @@ const HERO_LIGHT_RADIUS := 10.0
 var _hero_lights := {}   # GameUnit -> OmniLight3D
 
 
+func character_light_enabled() -> bool:
+	var mode := GameData.option("character_light")
+	return mode == 2 or (mode == 0 and not (direct and direct.active()))
+
+
 func _update_hero_lights() -> void:
+	var enabled := character_light_enabled()
 	for k in _hero_lights.keys():
 		var u: GameUnit = k if is_instance_valid(k) else null
-		if u == null or u.dead or u.controller < 0 or u.world != world:
+		if u == null or u.dead or u.controller < 0 or u.world != world or not enabled:
 			if is_instance_valid(_hero_lights[k]):
 				_hero_lights[k].queue_free()
 			_hero_lights.erase(k)
+	if not enabled: return
 	for u: GameUnit in world.party_units():
 		if u.controller < 0 or u.dead or u.hidden:
 			continue
@@ -626,6 +633,7 @@ func _update_hero_lights() -> void:
 			l.add_to_group(Gfx.POINT_LIGHT_GROUP)
 			add_child(l)
 			_hero_lights[u] = l
+		l.visible = not u.hidden
 		l.global_position = u.global_position + Vector3(0.0, 2.0, 0.0)
 
 

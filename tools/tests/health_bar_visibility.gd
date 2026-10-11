@@ -104,6 +104,8 @@ func _run() -> void:
 	check(not wanted(foe),"combat never exposes a hidden enemy")
 	foe.hidden=false;foe.dead=true
 	check(not wanted(foe),"dead target loses its bar")
+	reset();GameData.options.control_mode=3;hero.hp*=0.5
+	check(not wanted(hero),"first-person camera still hides its own overhead bar")
 	GameData.options.control_mode=0;reset()
 	check(not wanted(foe),"Always input mode also hides full-health idle enemies")
 	hero.order={"type":"attack","target":foe}

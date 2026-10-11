@@ -52,6 +52,11 @@ static func tl(list: Array) -> Array:
 ## English → [Russian, German].
 const TEXTS := {
 	"Graphics preset": ["Качество графики", "Grafikprofil"],
+	"Very high": ["Очень высокое", "Sehr hoch"],
+	"Third person": ["От третьего лица", "Dritte Person"],
+	"First person": ["От первого лица", "Erste Person"],
+	"Character light": ["Подсветка персонажей", "Figurenlicht"],
+	"Free running outside combat": ["Бег без затрат вне боя", "Kostenloser Lauf außerhalb des Kampfes"],
 	"Custom": ["Вручную", "Benutzerdefiniert"],
 	"Detected": ["Автоподбор", "Ermittelt"],
 	"Choose Original, Low, Medium or High, then confirm with ✓. Selecting a preset turns off automatic detection. Advanced changes become Custom. Clouds, terrain contact blending and depth of field remain optional.": ["Выберите исходную, низкую, среднюю или высокую графику и подтвердите кнопкой ✓. Выбор отключает автоподбор. Отдельные изменения переводят настройки в ручной режим. Облака, сопряжение объектов с рельефом и глубина резкости включаются отдельно.", "Original, Niedrig, Mittel oder Hoch wählen und mit ✓ bestätigen. Die Wahl deaktiviert die automatische Erkennung. Einzelne Änderungen wechseln zu Benutzerdefiniert. Wolken, Geländeübergänge an Objekten und Tiefenschärfe bleiben optional."],

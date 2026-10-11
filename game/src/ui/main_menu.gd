@@ -29,8 +29,6 @@ var _campaign_bar: VBoxContainer
 var _campaign_error: Label
 var _coop_button: Button
 var _opening_panel := false
-var _mods: ModPanel
-var _mods_button: Button
 
 
 func _ready() -> void:
@@ -72,13 +70,6 @@ func _ready() -> void:
 	_campaigns.current = GameData.campaign_id
 	_campaigns.selected.connect(_select_campaign)
 	_campaign_bar.add_child(_campaigns)
-	_mods_button = Button.new()
-	_refresh_mod_label()
-	_mods_button.clip_text = true
-	_mods_button.custom_minimum_size.y = 44
-	CampaignChoices.style_button(_mods_button)
-	_mods_button.pressed.connect(func(): _open_mods("profiles"))
-	_campaign_bar.add_child(_mods_button)
 	# The expansion's original signpost deliberately has no Multiplayer
 	# board. Its remake co-op gets a visible entry beside the game choices.
 	if GameData.campaign_id == CampaignProfile.ASTRAL:
@@ -124,16 +115,12 @@ func _ready() -> void:
 			_add_viewer_link()
 		_difficulty = DifficultyPanel.new()
 		add_child(_difficulty)
-		_difficulty.accepted.connect(func(lvl: int):
-			GameData.set_option("difficulty", lvl)   # settings
+		_difficulty.accepted.connect(func(_lvl: int):
 			_single())
 		_load = LoadPanel.new()
 		add_child(_load)
 		_load.load_requested.connect(_load_slot)
 		add_child(_options)
-		_mods = ModPanel.new()
-		add_child(_mods)
-		_mods.closed.connect(_refresh_mod_label)
 		# Remake: the graphics test on the first start or a new GPU (GfxDetect),
 		# over this island once the startup screen is gone.
 		GfxDetect.auto_start.call_deferred()
@@ -176,7 +163,7 @@ func _ready() -> void:
 			_hero.select(_hero.item_count - 1)
 	_hero.tooltip_text = RemakeText.t("The hero you play when you join someone's campaign (the host plays Zak).")
 	hero_row.add_child(_hero)
-	_button(box, RemakeText.t("New campaign (single player)"), _single)
+	_button(box, RemakeText.t("New campaign (single player)"), func(): _difficulty.open())
 	if Session.latest_save():
 		_button(box, RemakeText.t("Continue (last save)"), _continue)
 	_button(box, RemakeText.t("Options"), func(): _options.open())
@@ -202,9 +189,9 @@ func _ready() -> void:
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD
 	box.add_child(_status)
 	add_child(_options)
-	_mods = ModPanel.new()
-	add_child(_mods)
-	_mods.closed.connect(_refresh_mod_label)
+	_difficulty = DifficultyPanel.new()
+	add_child(_difficulty)
+	_difficulty.accepted.connect(func(_lvl): _single())
 
 
 ## Options ✓ with another text / voice language: the menu (signpost labels,
@@ -255,8 +242,6 @@ func campaign_pad_targets() -> Array:
 			targets.append({"rect": _campaigns.buttons[id].get_global_rect(), "id": "campaign_" + id})
 		if _coop_button:
 			targets.append({"rect": _coop_button.get_global_rect(), "id": "campaign_coop"})
-		if _mods_button:
-			targets.append({"rect": _mods_button.get_global_rect(), "id": "mods"})
 	return targets
 
 
@@ -294,11 +279,7 @@ func _on_board(action: String) -> void:
 		if DisplayServer.get_name() != "headless":
 			await RenderingServer.frame_post_draw
 	match action:
-		"new":
-			_mods.continue_action = func():
-				_difficulty.open()
-				_difficulty.level = GameData.option("difficulty")
-			_open_mods("rules")
+		"new": _difficulty.open()
 		"load": _load.open()        # case 1: the Load screen (no slide-in)
 		"multiplayer": _net.open()
 		"options": _options.open()
@@ -309,7 +290,7 @@ func _on_board(action: String) -> void:
 
 ## No screen over the signpost (its boards take clicks and the gamepad).
 func pad_menu_free() -> bool:
-	return not (_opening_panel or (_mods != null and _mods.visible) or _panel.visible or _options.visible or has_node("Credits") or _difficulty.visible or _load.visible \
+	return not (_opening_panel or _panel.visible or _options.visible or has_node("Credits") or _difficulty.visible or (_load != null and _load.visible) \
 			or (_chars and _chars.visible))
 
 
@@ -348,7 +329,7 @@ func _make_session() -> Session:
 
 func _single() -> void:
 	if ModStore.mode_error("single_player") != "":
-		_open_mods("profiles")
+		_show_setup_error(ModStore.mode_error("single_player"))
 		return
 	var s := _make_session()
 	s.players = {1: {"index": 0, "name": GameData.player_name}}
@@ -356,6 +337,7 @@ func _single() -> void:
 	_music.stream_paused = true
 	await MovieSequence.start(get_parent(), PackedStringArray(["intro"])).done
 	_music.stream_paused = false
+	await s.hold_loading("gz1g")
 	start_game.emit(s)
 	s.new_campaign(false)
 
@@ -369,11 +351,11 @@ func _load_slot(slot: String) -> void:
 	var data: Variant = CampaignState.read_data(SaveInfo.path(slot))
 	var error := ModStore.saved_error(data.get("mod_config", {})) if data is Dictionary else "The save cannot be read."
 	if error != "":
-		_open_mods("profiles")
-		_mods._status.text = error
+		_show_setup_error(error)
 		return
 	var s := _make_session()
 	var main := get_parent()
+	await s.hold_loading(str(data.get("current_zone", "gz1g")))
 	start_game.emit(s)
 	if not await s.load_game_shown(slot):
 		await main.back_to_menu()
@@ -508,6 +490,11 @@ func _start_coop() -> void:
 	var campaign_session := _session
 	var slot := _net.start_slot if _net else ""
 	var main := get_parent()
+	var start_zone := "gz1g"
+	if not slot.is_empty():
+		var saved: Variant = CampaignState.read_data(SaveInfo.path(slot))
+		if saved is Dictionary: start_zone = str(saved.get("current_zone", "gz1g"))
+	await campaign_session.hold_loading(start_zone)
 	start_game.emit(campaign_session)
 	if slot:
 		if not await campaign_session.load_game_shown(slot):
@@ -515,14 +502,9 @@ func _start_coop() -> void:
 		return
 	campaign_session.new_campaign()
 
-func _open_mods(page: String) -> void:
-	if _mods == null: return
-	if page != "rules": _mods.continue_action = Callable()
-	_mods.open(page)
-
-func _refresh_mod_label() -> void:
-	_mods_button.text = RemakeText.t("Mods and rules") + " · " + str(ModStore.profile().name)
-	_mods_button.tooltip_text = _mods_button.text
+func _show_setup_error(error: String) -> void:
+	_difficulty.open(false)
+	_difficulty._status.text = error
 
 
 ## Back on the Multiplayer screen's first page: to the signpost; an open

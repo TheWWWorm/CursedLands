@@ -123,7 +123,7 @@ var _internet: Control
 ## the host page; drawing and row layout must not deserialize world state.
 var _start_slots: Array = [""]
 var _start_titles := {}
-var _mods_button: Button
+var _setup_button: Button
 
 
 func _ready() -> void:
@@ -152,20 +152,20 @@ func _ready() -> void:
 		_ask_password(g))
 	_internet.closed.connect(func(): grab_focus(); queue_redraw())
 	add_to_group("pad_panel")   # remake: gamepad snap targets (pad_targets, pad_press)
-	_mods_button = Button.new()
-	_mods_button.text = RemakeText.t("Mods and rules")
-	_mods_button.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	_mods_button.offset_left = -220
-	_mods_button.offset_right = -16
-	_mods_button.offset_top = -50
-	_mods_button.offset_bottom = -6
-	CampaignChoices.style_button(_mods_button)
-	add_child(_mods_button)
-	_mods_button.pressed.connect(func():
-		var panel := ModPanel.new()
+	_setup_button = Button.new()
+	_setup_button.text = RemakeText.t("Game setup…")
+	_setup_button.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	_setup_button.offset_left = -220
+	_setup_button.offset_right = -16
+	_setup_button.offset_top = -50
+	_setup_button.offset_bottom = -6
+	CampaignChoices.style_button(_setup_button)
+	add_child(_setup_button)
+	_setup_button.pressed.connect(func():
+		var panel := DifficultyPanel.new()
 		add_child(panel)
 		panel.closed.connect(panel.queue_free)
-		panel.open())
+		panel.open(false))
 
 
 ## The co-op port: Session.PORT, or --port=N on the command line (remake).
@@ -1441,7 +1441,7 @@ func _process(dt: float) -> void:
 ## targets are clicked at their centre, as the mouse does.
 func pad_targets() -> Array:
 	var out: Array = []
-	if _mods_button != null: out.append({"rect": _mods_button.get_global_rect(), "id": "mods"})
+	if _setup_button != null: out.append({"rect": _setup_button.get_global_rect(), "id": "setup"})
 	for id: String in _targets:
 		if id == "ok" and _ok_label().is_empty():
 			continue
@@ -1492,8 +1492,8 @@ func pad_press(action: String, phase: String) -> bool:
 			_activate(String(h.row.id), -1 if action == "left" else 1)
 			return true
 		"interact":
-			if PadInput.ui and PadInput.ui.focus_id() == "mods":
-				if phase == "down": _mods_button.pressed.emit()
+			if PadInput.ui and PadInput.ui.focus_id() == "setup":
+				if phase == "down": _setup_button.pressed.emit()
 				return true
 			var h := _pad_row()
 			if phase != "down" or h.is_empty():

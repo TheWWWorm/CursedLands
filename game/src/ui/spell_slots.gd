@@ -146,7 +146,7 @@ func _process(_dt: float) -> void:
 		_usable.append(Spells.known_usable(u, String(spells[i])))
 	# The unit's instance, not its uid: a reload (Session.load_game) builds the
 	# party anew with the same uids, and _unit must not stay the freed one.
-	var sig := "%s:%s:%s:%s:%s" % [u.get_instance_id() if u else 0, ",".join(spells), size, game.pending_spell, _usable]
+	var sig := "%s:%s:%s:%s:%s:%s" % [u.get_instance_id() if u else 0, ",".join(spells), size, game.pending_spell, _usable, shortcut_label(0)]
 	if sig == _sig:
 		return
 	_sig = sig
@@ -234,8 +234,7 @@ func _sound(f: String) -> void:
 
 
 func _draw() -> void:
-	# No cell frames or key numbers: only makes the hit
-	# rectangles; a cell shows just its spell picture.
+	# Direct views keep the assigned shortcut visible while the mouse looks.
 	_glow_tex = null
 	for i in _entries.size():
 		if TouchInput.enabled and (i < _first or i >= _first + _capacity()): continue
@@ -251,6 +250,15 @@ func _draw() -> void:
 				_glow_tex = tex
 				_glow_rect = r
 		draw_runes(self, String(e[0]), r, Color.WHITE if _usable[i] else Color(0.4, 0.4, 0.4))
+		var shortcut := shortcut_label(i)
+		if not shortcut.is_empty():
+			var font := Interface800.font()
+			var fs := maxi(12, roundi(r.size.y * 0.34))
+			var width := font.get_string_size(shortcut, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
+			var badge := Rect2(r.position, Vector2(width + 6, fs + 4))
+			draw_rect(badge, Color(0,0,0,0.85))
+			draw_string(font, badge.position + Vector2(3,fs), shortcut, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, Interface800.TEXT)
+
 	_glow.queue_redraw()
 	if TouchInput.enabled and _entries.size() > _capacity():
 		var x := size.x * 0.5
@@ -258,3 +266,7 @@ func _draw() -> void:
 			draw_colored_polygon(PackedVector2Array([Vector2(x - 4, 5), Vector2(x, 1), Vector2(x + 4, 5)]), Interface800.TEXT)
 		if _first + _capacity() < _entries.size():
 			draw_colored_polygon(PackedVector2Array([Vector2(x - 4, size.y - 5), Vector2(x, size.y - 1), Vector2(x + 4, size.y - 5)]), Interface800.TEXT)
+
+
+func shortcut_label(index: int) -> String:
+	return EIKeymap.key_of_id(30 + index) if game and game.direct and game.direct.active() else ""

@@ -64,11 +64,9 @@ var _look_speed := 1.0
 var _selection_q := Quaternion.IDENTITY
 var _rng := RandomNumberGenerator.new()
 ## Remake: the live portrait of each unit (instance id -> Portrait).
-## PartyFaces.rebuild (on every "inventory" event: a kill's experience, loot,
-## a state sync) frees the cells and makes new portraits; the new one takes
-## over the old one's expression, red flash and last health. Before this the
-## kill's smile (ack 0x30, with the kill's experience right after it) and
-## often the pain face were dropped at once and never seen.
+## PartyFaces retains portraits across inventory/XP refreshes. If another
+## portrait replaces one (a different UI or roster), inherit its expression,
+## red flash and last health instead of replaying or losing those effects.
 static var _live := {}
 ## A live portrait freed before its successor was made (the rebuild came from
 ## a callback after this frame's PartyFaces._process, e.g. a theft or loot at

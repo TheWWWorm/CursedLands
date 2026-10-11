@@ -54,6 +54,27 @@ func _ready() -> void:
 	check(a.direct_controlled and not a.alert,"released attack returns to relaxed stance without leaving shoulder mode")
 	check(a.model.pose_state==EIUnitModel.ST_NEUTRAL,"released attack returns the real model to neutral")
 	check(int(a.snapshot()[6]) & (1<<8) == 0,"relaxed stance reaches remote clients")
+	# A single early press must survive the full recovery without retries.
+	s.apply_command({"t":"direct_attack","units":[a.uid],"direction":Vector3.RIGHT},0)
+	for tick in 100:
+		a.tick(GameUnit.TICK);a._draw_step(GameUnit.TICK);a.model.player.advance(GameUnit.TICK)
+		if a._pending_hit.has("direction"): break
+	var committed := a._pending_hit.duplicate()
+	var delay := a._attack_cd
+	for i in 20: s.apply_command({"t":"direct_attack","units":[a.uid],"direction":Vector3.LEFT},0)
+	check(a.orders.size()==1 and a.orders[0].direction==Vector3.LEFT,"spam retains one latest buffered swing")
+	check(a._pending_hit==committed and a._attack_cd==delay,"buffering cannot interrupt or accelerate committed attack")
+	var next_swing := false
+	for tick in 300:
+		a.tick(GameUnit.TICK);a._draw_step(GameUnit.TICK);a.model.player.advance(GameUnit.TICK)
+		if a._pending_hit.get("direction",Vector3.ZERO)==Vector3.LEFT:
+			next_swing=true;break
+	check(next_swing,"early input swings after recovery without another button press")
+	s.apply_command({"t":"direct_attack","units":[a.uid],"direction":Vector3.RIGHT},0)
+	s.apply_command({"t":"direct_cancel","units":[a.uid]},1)
+	check(a.orders.size()==1,"another player cannot cancel the buffered input")
+	s.apply_command({"t":"direct_cancel","units":[a.uid]},0)
+	check(a.orders.is_empty() and not a._pending_hit.is_empty(),"menu cancellation discards only the buffered swing")
 	a.order={}; a.orders.clear(); a._pending_hit={}; a.action="idle"; a._anim_lock=0.0
 	s.apply_command({"t":"direct_control","leader":-1},0)
 	a._draw_step(GameUnit.TICK)

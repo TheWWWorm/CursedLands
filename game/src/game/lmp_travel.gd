@@ -506,11 +506,11 @@ func _party_exit(player: int) -> int:
 
 
 func check_exits() -> void:
-	var automatic := GameData.option("auto_exit") == 1
 	var w := session.world
 	for player: int in registered(session.zone_id):
 		if loading(player):
 			continue
+		var automatic := GameData.option("auto_exit") == 1 or (session.shop_available() and session.walking_to_exit(player))
 		var o: Dictionary = owners[player]
 		var n := _party_exit(player)
 		if int(o.auto) == -2:

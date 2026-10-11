@@ -1,5 +1,5 @@
 class_name ModPanel
-extends Control
+extends SettingsDialog
 ## Generated controls share the game's font/plate style and work with focus,
 ## touch and PadUI. Package changes are explicit restart transactions.
 signal closed
@@ -7,9 +7,8 @@ var _body: VBoxContainer
 var _scroll: ScrollContainer
 var _status: Label
 var _summary: Label
-var _tabs: GridContainer
+var _tabs: HFlowContainer
 var _apply: Button
-var _continue: Button
 var _page := "rules"
 var _rules := {}
 var _values := {}
@@ -23,69 +22,58 @@ var _chooser: OptionButton
 var _pending_profile := ""
 var _web_callback: JavaScriptObject
 var _modal: FileDialog
-var continue_action: Callable
+var draft: Dictionary = {}
+var _rows: Array[BoxContainer] = []
 
 func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	mouse_filter = Control.MOUSE_FILTER_STOP
-	add_to_group("pad_panel")
-	var shade := ColorRect.new()
-	shade.color = Color(0.01, 0.015, 0.01, 0.94)
-	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(shade)
-	var margin := MarginContainer.new()
-	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	for side in ["left", "right", "top", "bottom"]: margin.add_theme_constant_override("margin_" + side, 20)
-	add_child(margin)
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 10)
-	margin.add_child(box)
-	var title := _label("Mods and rules", box)
-	title.add_theme_font_size_override("font_size", 26)
-	_summary = _label("", box)
-	_tabs = GridContainer.new()
-	_tabs.columns = 4 if size.x >= 1000 else 2
-	resized.connect(func(): _tabs.columns = 4 if size.x >= 1000 else 2)
-	box.add_child(_tabs)
-	for page in ["profiles", "rules", "options", "sandbox"]:
-		var button := _button({"profiles":"Profiles and mods", "rules":"Game rules", "options":"Mod options", "sandbox":"Sandbox"}[page], _tabs, func(): _show_page(page))
+	build_shell("Mods and rules", Vector2(980, 740))
+	_summary = _label("", dialog_body)
+	_summary.add_theme_color_override("font_color", MUTED)
+	_tabs = HFlowContainer.new()
+	_tabs.add_theme_constant_override("h_separation", 8)
+	_tabs.add_theme_constant_override("v_separation", 8)
+	dialog_body.add_child(_tabs)
+	for page in ["rules", "profiles", "options", "sandbox"]:
+		var button := _button({"profiles":"Profiles & mods", "rules":"Game rules", "options":"Mod options", "sandbox":"Sandbox"}[page], _tabs, func(): _show_page(page))
 		button.set_meta("page", page)
-		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		button.toggle_mode = true
 	_scroll = ScrollContainer.new()
 	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_scroll.follow_focus = true
-	box.add_child(_scroll)
+	dialog_body.add_child(_scroll)
 	_body = VBoxContainer.new()
 	_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_body.add_theme_constant_override("separation", 12)
+	_body.add_theme_constant_override("separation", 14)
 	_scroll.add_child(_body)
-	_status = _label("", box)
-	_status.custom_minimum_size.y = 42
+	_status = _label("", dialog_body)
+	_status.add_theme_color_override("font_color", GOLD)
+	_status.custom_minimum_size.y = 28
 	var actions := HBoxContainer.new()
-	box.add_child(actions)
-	_apply = _button("Apply", actions, _accept)
-	_button("Cancel / Back", actions, close)
-	_continue = _button("Continue", actions, func():
-		if _accept() and continue_action.is_valid():
-			var action := continue_action
-			continue_action = Callable()
-			close()
-			action.call())
-	visible = false
+	actions.alignment = BoxContainer.ALIGNMENT_END
+	actions.add_theme_constant_override("separation", 12)
+	dialog_body.add_child(actions)
+	_button("Back", actions, close)
+	_apply = _button("Apply changes", actions, _accept)
+	resized.connect(_layout_rows)
+
+func _layout_rows() -> void:
+	for row in _rows:
+		if is_instance_valid(row): row.vertical = _surface.size.x < 700
+	layout_shell.call_deferred()
 
 func open(page := "rules") -> void:
+	capture_background()
 	visible = true
 	var s := ModStore.session()
 	if s != null and not s.mod_rules_result.is_connected(_applied): s.mod_rules_result.connect(_applied)
-	_continue.visible = continue_action.is_valid()
 	var config := ModStore.effective()
-	_rules = config.rules.duplicate(true)
-	_values = config.values.duplicate(true)
+	_rules = draft.get("rules", config.rules).duplicate(true)
+	_values = draft.get("values", config.values).duplicate(true)
 	_base_rules = _rules.duplicate(true)
 	_base_values = _values.duplicate(true)
 	_base_revision = int(config.revision)
+	_status.text = ""
 	_packages = ModStore.profile().packages.duplicate()
 	_pending_profile = ModStore.active_id()
 	_show_page(page)
@@ -97,23 +85,10 @@ func close() -> void:
 	closed.emit()
 
 func _label(text: String, parent: Node) -> Label:
-	var label := Label.new()
-	label.text = RemakeText.t(text)
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.add_theme_font_override("font", Interface800.font())
-	label.add_theme_font_size_override("font_size", 18)
-	label.add_theme_color_override("font_color", Interface800.TEXT)
-	parent.add_child(label)
-	return label
+	return make_label(text, parent)
 
 func _button(text: String, parent: Node, action: Callable) -> Button:
-	var button := Button.new()
-	button.text = RemakeText.t(text)
-	button.custom_minimum_size.y = 44
-	CampaignChoices.style_button(button)
-	button.pressed.connect(action)
-	parent.add_child(button)
-	return button
+	return make_button(text, parent, action)
 
 func _show_page(page: String) -> void:
 	_page = page
@@ -121,10 +96,11 @@ func _show_page(page: String) -> void:
 		_body.remove_child(child)
 		child.queue_free()
 	_controls.clear()
+	_rows.clear()
 	_summary.text = "%s · %s · %s: %d%s" % [CampaignChoices.title(GameData.campaign_id), ModStore.effective().name, RemakeText.t("Mods"), ModStore.effective().packages.size(),
 		" · " + RemakeText.t("Sandbox saves") if ModStore.effective().get("sandbox", false) else ""]
 	for button in _tabs.get_children():
-		button.disabled = button.get_meta("page") == page
+		button.set_pressed_no_signal(button.get_meta("page") == page)
 		button.visible = button.get_meta("page") != "sandbox" or ModStore.effective().get("sandbox", false)
 	_apply.visible = page in ["rules", "options"]
 	match page:
@@ -132,9 +108,11 @@ func _show_page(page: String) -> void:
 		"rules": _rules_page(false)
 		"options": _options_page()
 		"sandbox": _rules_page(true)
+	_layout_rows()
 	_collect_controls(self)
 	_scroll.scroll_vertical = 0
-	if not _controls.is_empty(): _controls[0].grab_focus.call_deferred()
+	for button in _tabs.get_children():
+		if button.get_meta("page") == page: button.grab_focus.call_deferred()
 
 func _collect_controls(parent: Node) -> void:
 	for child in parent.get_children():
@@ -169,7 +147,7 @@ func _profiles_page() -> void:
 	_profile_name.max_length = 80
 	_profile_name.custom_minimum_size.y = 44
 	_body.add_child(_profile_name)
-	var create := VBoxContainer.new()
+	var create := HFlowContainer.new()
 	_body.add_child(create)
 	_button("Create profile", create, func(): _create(false))
 	_button("Create sandbox profile", create, func(): _create(true))
@@ -190,16 +168,17 @@ func _profiles_page() -> void:
 		row.custom_minimum_size.y = 44
 		row.button_pressed = key in _packages
 		row.disabled = ModStore.active_id() == "default"
-		_body.add_child(row)
+		var section := card(_body)
+		section.add_child(row)
 		row.toggled.connect(func(on):
 			if on: _packages.append(key)
 			else: _packages.erase(key))
-		_label(str(m.get("description", "")), _body)
+		_label(str(m.get("description", "")), section)
 		var campaigns := PackedStringArray()
 		for id in m.campaigns: campaigns.append(CampaignChoices.title(id))
-		_label(("Shared gameplay" if ModSchema.gameplay(m) else "Your device") + " · " + ", ".join(campaigns), _body)
+		_label(("Shared gameplay" if ModSchema.gameplay(m) else "Your device") + " · " + ", ".join(campaigns), section)
 		for relation in ["requires", "after", "conflicts"]:
-			if not m.get(relation, []).is_empty(): _label(relation.capitalize() + ": " + ", ".join(m[relation]), _body)
+			if not m.get(relation, []).is_empty(): _label(relation.capitalize() + ": " + ", ".join(m[relation]), section)
 	if not keys.is_empty():
 		_button("Activate selected mods and restart", _body, func():
 			var error := ModStore.set_packages(_packages)
@@ -212,34 +191,55 @@ func _create(sandbox: bool) -> void:
 	var error := ModStore.create_profile(_profile_name.text, sandbox)
 	if error != "": _status.text = error
 	else:
+		if not draft.is_empty(): draft.merge(ModStore.new_game_defaults(), true)
 		open("profiles")
 		_status.text = RemakeText.t("Profile created. Start a new game or copy an existing save below.")
 
 func _rules_page(sandbox: bool) -> void:
-	_label("Changes affect this run when playing, or the next run from the main menu. Guests can inspect shared rules; only the host changes them.", _body)
-	if sandbox: _label("This profile keeps sandbox saves and characters separate. Turning a cheat off does not undo items or experience already earned.", _body)
-	for key in ModSchema.RULES:
-		if key.begins_with("sandbox_") != sandbox: continue
-		var definition: Array = ModSchema.RULES[key]
-		_label(definition[0] + " · " + {"camp":"At camp", "live":"Live", "new_game":"New game"}[definition[2]], _body)
-		var row := OptionButton.new()
-		row.custom_minimum_size.y = 44
-		for label in definition[1]: row.add_item(RemakeText.t(label))
-		row.select(int(_rules.get(key, 0)))
-		var locked := ModStore.editable(key)
-		row.disabled = locked != ""
-		row.item_selected.connect(func(index): _rules[key] = index)
-		_body.add_child(row)
-		if locked != "": _label(locked, _body)
+	_label("Choose the rules for this game. Changes stay in setup until you start." if not draft.is_empty() else "Adjust this run. Rules marked At camp can only change in a village.", _body)
+	if sandbox: _label("Sandbox saves stay separate. Turning a cheat off does not undo rewards already earned.", _body)
+	var groups := {"Campaign": ["difficulty", "unit_fog", "start_zones", "mechanism_motion", "distant_ai", "auto_exit"],
+		"Party": ["sp_full_xp", "revive", "merc_travel", "free_run"],
+		"Co-op": ["coop_full_xp", "coop_scale", "coop_share_loot", "coop_clock"]}
+	if sandbox: groups = {"Sandbox": ["sandbox_invulnerable", "sandbox_mana"]}
+	for group in groups:
+		var section := card(_body)
+		var heading := _label(group, section)
+		heading.add_theme_color_override("font_color", GOLD)
+		for key in groups[group]:
+			var definition: Array = ModSchema.RULES[key]
+			var row := BoxContainer.new()
+			row.add_theme_constant_override("separation", 16)
+			section.add_child(row)
+			_rows.append(row)
+			var text := VBoxContainer.new()
+			text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			row.add_child(text)
+			_label(definition[0], text)
+			var locked := ModStore.editable(key)
+			var help: String = locked if locked != "" else {"camp":"At camp", "live":"Any time", "new_game":"Before starting"}[definition[2]]
+			var note := _label(help, text)
+			note.add_theme_color_override("font_color", MUTED)
+			note.add_theme_font_size_override("font_size", 16)
+			var choice := OptionButton.new()
+			choice.custom_minimum_size = Vector2(220, 46)
+			choice.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			choice.size_flags_horizontal = Control.SIZE_FILL
+			choice.fit_to_longest_item = false
+			for label in definition[1]: choice.add_item(RemakeText.t(label))
+			choice.select(int(_rules.get(key, 0)))
+			choice.disabled = locked != ""
+			choice.item_selected.connect(func(index): _rules[key] = index)
+			row.add_child(choice)
 	if sandbox:
 		_apply.visible = true
 		for action in ["heal", "gold"]:
 			var button := _button("Heal living party" if action == "heal" else "Give 1,000 gold", _body, func(): _sandbox(action))
 			button.disabled = ModStore.session() == null or not ModStore.session().can_manage_game()
 	else:
-		_button("Restore game defaults in this editor", _body, func():
-			for o in GameData.OPTIONS:
-				if ModSchema.RULES.has(o[0]) and ModStore.editable(o[0]) == "": _rules[o[0]] = o[5]
+		_button("Restore default rules", _body, func():
+			for key in ModStore.new_game_defaults().rules:
+				if ModStore.editable(key) == "": _rules[key] = ModStore.new_game_defaults().rules[key]
 			_show_page("rules"))
 
 func _options_page() -> void:
@@ -248,10 +248,11 @@ func _options_page() -> void:
 		_label("No enabled mods provide configurable options. Use Profiles and mods to enable an installed package.", _body)
 		return
 	for o in definitions:
-		_label(o.mod_title + " · " + o.label + " · " + RemakeText.t("At camp"), _body)
-		_label(o.get("help", ""), _body)
+		var section := card(_body)
+		_label(o.mod_title + " · " + o.label, section)
+		make_label(o.get("help", ""), section, true)
 		var row := HBoxContainer.new()
-		_body.add_child(row)
+		section.add_child(row)
 		var slider := HSlider.new()
 		slider.min_value = o.min
 		slider.max_value = o.max
@@ -272,7 +273,7 @@ func _options_page() -> void:
 		slider.editable = locked == ""
 		number.editable = locked == ""
 		slider.value_changed.connect(func(value): _values[o.key] = value)
-		var reset := _button("Default: %s" % str(o.default), _body, func():
+		var reset := _button("Reset to %s" % str(o.default), section, func():
 			_values[o.key] = o.default
 			slider.value = float(o.default))
 		reset.disabled = locked != ""
@@ -295,6 +296,13 @@ func _accept() -> bool:
 		if error == "": error = ModStore.editable(key)
 	if error == "" and not values.is_empty(): error = ModStore.editable("revive")
 	if error != "": _status.text = error; return false
+	if not draft.is_empty():
+		draft.rules = _rules.duplicate(true)
+		draft.values = _values.duplicate(true)
+		_base_rules = _rules.duplicate(true)
+		_base_values = _values.duplicate(true)
+		_status.text = RemakeText.t("Changes kept for this game. Back returns to setup.")
+		return true
 	error = ModStore.apply_settings(rules, values)
 	var s := ModStore.session()
 	var pending: bool = s != null and s.local_host.frontend and (not rules.is_empty() or not values.is_empty())

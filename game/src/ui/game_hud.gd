@@ -33,8 +33,6 @@ var _death_notice: GameOverNotice   # remake option "sp_death_notice"
 var _players_btn: PlayersPanel.EscButton   # remake: the co-op host's player list
 var _esc_hints: Control   # remake: the gamepad prompts under the Esc signpost
 var _players_panel: PlayersPanel
-var _mods_panel: ModPanel
-var _mods_btn: Button
 var _pause_before: Variant = null   # interface manager: the pause state to restore
 var _dialog: DialogPanel
 var _travel: Control
@@ -65,6 +63,7 @@ var _dial_layout_key: Array = []
 
 
 func _ready() -> void:
+	visible = false
 	_safe_root = Control.new()
 	_safe_root.name = "SafeArea"
 	_safe_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -165,19 +164,8 @@ func _ready() -> void:
 	_players_btn = PlayersPanel.EscButton.new()
 	_players_btn.pressed.connect(open_players)
 	_add_ui(_players_btn)
-	_mods_btn = Button.new()
-	_mods_btn.text = RemakeText.t("Mods and rules")
-	_mods_btn.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	_mods_btn.position = Vector2(20, -66)
-	_mods_btn.size = Vector2(250, 44)
-	CampaignChoices.style_button(_mods_btn)
-	_mods_btn.pressed.connect(open_mods)
-	_mods_btn.visible = false
-	_add_ui(_mods_btn)
 	_menu.pad_extra = func() -> Array:
-		var targets := [{"rect": _players_btn.pad_rect(PlayersPanel.EscButton.R), "id": "players"}] if _players_btn.visible else []
-		if _mods_btn.visible: targets.append({"rect": _mods_btn.get_global_rect(), "id": "mods"})
-		return targets
+		return [{"rect": _players_btn.pad_rect(PlayersPanel.EscButton.R), "id": "players"}] if _players_btn.visible else []
 	# Remake: the gamepad's prompts under the signpost (A / B, Y quick save,
 	# X held quick load), shown while the controller drives.
 	_esc_hints = Control.new()
@@ -193,9 +181,6 @@ func _ready() -> void:
 	_options = OptionsPanel.new()
 	_add_ui(_options)
 	_options.closed.connect(_close_menu)
-	_mods_panel = ModPanel.new()
-	_mods_panel.closed.connect(_close_menu)
-	_add_ui(_mods_panel)
 	_save_load = LoadPanel.new()
 	_add_ui(_save_load)
 	_save_load.closed.connect(func():
@@ -486,8 +471,13 @@ func inspect_quest_item(item: String) -> void:
 ## The unit under the mouse is shown by the unit panel (shows
 ## the hovered unit, else the selected one); the original draws no name label
 ## the cursor, so the remake's earlier one is gone.
+func sync_visibility() -> void:
+	visible = game != null and is_instance_valid(game.world) and game.world == game.session.world \
+		and not game.session.loading_game and not game.session._remote_loading and not game.session._zone_holding
+
+
 func _process(_dt: float) -> void:
-	if _mods_btn: _mods_btn.visible = _menu.visible
+	sync_visibility()
 	_layout_safe_area()
 	_layout_dials()
 	var host_online: bool = game != null and game.session != null and game.session.multiplayer_game and game.session.can_manage_game()
@@ -499,7 +489,7 @@ func _process(_dt: float) -> void:
 	if hints:
 		_esc_hints.queue_redraw()
 	# Village ("brief" zone) = the village screen without CInterface3D.
-	var field: bool = game == null or game.session == null or not game.session.shop_available() or (game.direct and game.direct.active())
+	var field: bool = game == null or game.session == null or not game.session.shop_available()
 	if field != _field_on or (not field and _field.visible):
 		_field_on = field
 		_field.visible = field
@@ -651,6 +641,7 @@ func on_event(e: Dictionary) -> void:
 		"saved":
 			notify("string notify_saving")
 		"load_begin":
+			visible = false
 			_inventory._camp.reset_transactions()
 			_close_for_host_load(bool(e.get("travel", false)))
 		"load_end":
@@ -1061,12 +1052,6 @@ func open_players() -> void:
 	_players_panel.session = game.session
 	_players_panel.open()
 
-func open_mods() -> void:
-	if not _esc_open: _open_menu()
-	_menu.visible = false
-	_mods_panel.open()
-
-
 func toggle_menu() -> void:
 	if _esc_open:
 		_close_menu()
@@ -1103,7 +1088,6 @@ func _close_menu() -> void:
 	if is_instance_valid(_quit_box):
 		_quit_box.queue_free()
 	_players_panel.close()
-	_mods_panel.close()
 	if _pause_before != null:
 		get_tree().paused = bool(_pause_before)
 		_pause_before = null
@@ -1112,7 +1096,6 @@ func _close_menu() -> void:
 ## The Esc signpost's boards (click handler: buttons\menu\ok.wav
 ## then board 0 Save, 1 Load, 2 Return, 3 Exit, 4 Options).
 func _on_signpost(action: String) -> void:
-	if action == "mods": open_mods(); return
 	if action != "exit":
 		_on_esc_board(action)
 		return
@@ -1218,7 +1201,7 @@ func _panel_open() -> bool:
 	if quests_screen != null:
 		return true
 	for panel in [_inventory, _journal, _side_quests, _tutorial, _movie, _options, _save_load,
-			_game_over_box, _quit_box, _players_panel, _item_info_box, _mods_panel]:
+			_game_over_box, _quit_box, _players_panel, _item_info_box]:
 		if is_instance_valid(panel) and panel.visible:
 			return true
 	# Remake (gamepad): the game-over notice takes the pad (PadUI snaps to its

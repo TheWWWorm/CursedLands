@@ -271,7 +271,7 @@ func _walk_goal(u: GameUnit, d: Vector2) -> Vector2:
 func _submit_move(u: GameUnit, to: Vector2, line := false) -> void:
 	if GameSound.blocked(u):
 		return
-	var cmd := {"t": "move", "units": [u.uid], "x": to.x, "y": to.y, "run": false}
+	var cmd := {"t": "move", "units": [u.uid], "x": to.x, "y": to.y, "run": false, "walk_exit": true}
 	if game.direct and game.direct.active() and PadInput.active != "pad":
 		cmd.run = Input.is_physical_key_pressed(KEY_SHIFT)
 	if line:

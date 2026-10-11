@@ -1157,7 +1157,7 @@ func _check_interactions() -> void:
 						if is_instance_valid(u) and not u.dead and is_instance_valid(t) and not t.dead:
 							session.coop.with_purse(Session.loot_player(u), session.steal.bind(u, t), true)})   # a joiner's own bag
 			elif t is GameUnit and Session.lootable(t) and world.units.has(t.uid):
-				u.command({"type": "use", "sub": "loot", "at": t.pos, "done": func():
+				u.command({"type": "use", "sub": "loot", "loot_target": t.uid, "at": t.pos, "done": func():
 					if is_instance_valid(u) and not u.dead and is_instance_valid(t) and world.units.has(t.uid):
 						session.coop.with_purse(Session.loot_player(u), session.take_loot.bind(u, t), true)})
 			elif not (t is GameUnit):

@@ -6,6 +6,8 @@ var failures := 0
 var monitoring := false
 var exposed := 0
 var covered := 0
+var premature_hud := 0
+var final_cover := 0
 var captured := false
 var covered_captured := false
 var new_game := false
@@ -18,7 +20,10 @@ func check(ok: bool, label: String) -> void:
 
 func presented() -> void:
 	if not monitoring or session == null or session.game == null: return
-	if session.world != null and not session.loading_game and not session._remote_loading: return
+	if session.world != null and not session.loading_game and not session._remote_loading:
+		if LoadingScreen._current != null: final_cover += 1
+		return
+	if session.game.hud.visible: premature_hud += 1
 	if LoadingScreen._current != null:
 		covered += 1
 		if not covered_captured:
@@ -62,9 +67,7 @@ func _ready() -> void:
 		# is skipped, as after Esc; the worker/load transition is unchanged.
 		MoviePlayer.enabled = false
 		await menu._on_board("new")
-		check(menu._mods.visible and menu._mods._continue.visible,"New Game opens its rules review")
-		menu._mods._continue.pressed.emit()
-		check(menu._difficulty.visible,"New Game opens its difficulty panel")
+		check(menu._difficulty.visible and not menu._difficulty._mods.visible,"New Game opens setup with mods closed")
 		menu._difficulty._accept()
 	elif OS.get_cmdline_user_args().has("--continue"):
 		menu._continue()
@@ -73,7 +76,11 @@ func _ready() -> void:
 	var deadline:=Time.get_ticks_msec()+90000
 	while (session==null or session.world==null or session.loading_game or session._remote_loading) and Time.get_ticks_msec()<deadline:
 		await get_tree().process_frame
+	for i in 4: await get_tree().process_frame
 	monitoring=false
+	check(premature_hud == 0, "HUD stays hidden for every unfinished-world frame")
+	check(final_cover > 0, "cover stays through the first completed-world frame")
+	check(session.game.hud.visible, "HUD becomes visible only with ready world")
 	check(session != null and session.local_host.frontend and session.local_host.process_id>0,"menu starts a real separate simulation process")
 	check(session.world != null and session.zone_id==("gz1g" if new_game else requested_zone) and not session.loading_game,"menu reaches the requested playable zone")
 	check(covered>0,"loading picture covers service startup")
@@ -81,9 +88,10 @@ func _ready() -> void:
 	check(LoadingScreen._current==null,"loading picture closes after successful load")
 	print("MENU_LOADING_FRAMES covered=",covered," exposed=",exposed)
 	FileAccess.open("user://menu-loading-screen.json",FileAccess.WRITE).store_string(JSON.stringify({
-		"new_game":new_game,"deferred":LoadingScreen.deferred(),"covered":covered,"exposed":exposed,
+		"new_game":new_game,"deferred":LoadingScreen.deferred(),"covered":covered,"exposed":exposed,"premature_hud":premature_hud,"final_cover":final_cover,
 		"zone":session.zone_id,"worker":session.local_host.frontend,"worker_pid":session.local_host.process_id},"\t"))
 	check(not await session.load_game_shown("missing-slot"),"missing save returns failure")
+	for i in 3: await get_tree().process_frame
 	check(LoadingScreen._current==null,"failed load cleans up loading picture")
 	if OS.get_cmdline_user_args().has("--back-to-menu"):
 		await main.back_to_menu()

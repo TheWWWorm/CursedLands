@@ -1,150 +1,122 @@
 class_name DifficultyPanel
-extends Interface800
-## The New Game difficulty box of the original (main menu board 0,:
-## a message box ("option_difficulty", "", 3, 1) with
-## s: build, click, keys
-## ), in 800×600 units stretched to the window:
-## - T = height of «string option_difficulty» (font 2, wordbreak, 370 wide),
-##   D = height of «tip option_difficulty» (font 1, 370 wide); H = T + D + 108,
-##   top = (550 − H) / 2, bottom = top + H, R = top + T + 30;
-## - panel (200,top)-(600,bottom) in the 5 px saveload frame
-## - title (215,top+15)-(585,..) font 2 centred, COLORREF
-## - checkboxes (400−w,R)-(421−w,R+21) easy and (400−w,R+24)-(421−w,R+45) hard,
-##   saveload UV 209,55-230,76 (checked: u − 23), labels «string difficulty_easy /
-##   _hard» at (430−w, R / R+24) font 2 (the remake centres them on the box), w = ((width easy + width hard) / 2 + 30) / 2;
-## - the tip text from (215, top+T+93), font 1, left, wordbreak
-## - ✓ (263,bottom+26)-(337,bottom+74) UV 81,2-155,50 tip 50100, ✗ (463,..)-(537,..)
-##   UV 160,2-234,50 tip 50101.
-## Hard (Normal, 0) is always checked first. A box click picks it (no sound); ✓ /
-## Enter stores the choice as the Difficulty Level (messbox\ok.wav, result
-## the intro and the new campaign); ✗ / Esc closes (messbox\cancel.wav).
-
+extends SettingsDialog
+## Game setup owns a new campaign's draft. Opening/cancelling never writes
+## preferences; each new campaign starts from the shipped gameplay defaults.
 signal accepted(level: int)
 signal cancelled
-
-var level := 0      # 1 easy (Novice), 0 hard (Normal)
-var _dim: Interface800.Backdrop
-var _lay := {}
-
+signal closed
+var level := 0
+var _new_game := true
+var _draft := {}
+var _choices: Array[Button] = []
+var _mods: ModPanel
+var _mods_button: Button
+var _summary: Label
+var _status: Label
+var _start: Button
 
 func _ready() -> void:
-	visible = false
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	mouse_filter = Control.MOUSE_FILTER_STOP
-	tooltip_text = " "
-	_dim = Interface800.dim_layer()
-	add_child(_dim)
-	resized.connect(queue_redraw)
+	build_shell("Game setup", Vector2(650, 590))
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.follow_focus = true
+	dialog_body.add_child(scroll)
+	var content := VBoxContainer.new()
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.add_theme_constant_override("separation", 16)
+	scroll.add_child(content)
+	_summary = make_label("", content, true)
+	var section := card(content)
+	make_label("Difficulty", section)
+	var group := ButtonGroup.new()
+	for choice in [[0, "Normal", "The standard challenge, with the original combat balance."],
+			[1, "Easy", "A gentler challenge for exploring the story."]]:
+		var button := make_button(choice[1], section, func(): _choose(choice[0]))
+		button.toggle_mode = true
+		button.button_group = group
+		_choices.append(button)
+		make_label(choice[2], section, true).add_theme_font_size_override("font_size", 17)
+	_mods_button = make_button("Mods and rules…", content, _open_mods)
+	_mods_button.tooltip_text = RemakeText.t("Optional profiles, gameplay rules and installed mods.")
+	_status = make_label("", content, true)
+	_status.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var actions := HBoxContainer.new()
+	actions.add_theme_constant_override("separation", 12)
+	dialog_body.add_child(actions)
+	make_button("Back", actions, _cancel).size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_start = make_button("Start game", actions, _accept)
+	_start.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_mods = ModPanel.new()
+	add_child(_mods)
+	_mods.closed.connect(func():
+		_choose(int(_draft.rules.difficulty) if _new_game else GameData.option("difficulty"))
+		_refresh_summary()
+		_mods_button.grab_focus())
 
-
-func open() -> void:
-	level = 0
-	_dim.capture()   # the frame, frozen and greyed
+func open(new_game := true) -> void:
+	_new_game = new_game
+	_draft = ModStore.new_game_defaults() if new_game else {}
+	_start.text = RemakeText.t("Start game" if new_game else "Done")
+	_status.text = RemakeText.t("Standard rules. Customize them with Mods and rules.") if new_game else ""
+	_choose(int(_draft.rules.difficulty) if new_game else GameData.option("difficulty"))
+	for button in _choices:
+		button.disabled = not new_game and ModStore.editable("difficulty") != ""
+	capture_background()
 	visible = true
-	queue_redraw()
+	layout_shell()
+	_refresh_summary()
+	_start.grab_focus.call_deferred()
 
+func _choose(value: int) -> void:
+	level = value
+	if _new_game and not _draft.is_empty(): _draft.rules.difficulty = level
+	for i in _choices.size(): _choices[i].set_pressed_no_signal(i == level)
 
-func _layout() -> Dictionary:
-	var title := _t("string option_difficulty", "Difficulty level")
-	var desc := GameData.text("tip option_difficulty").strip_edges()
-	var t: float = wrap_text(title, 370, 2).size() * line_h(2)
-	var d: float = wrap_text(desc, 370, 1).size() * line_h(1) if desc else 0.0
-	var h := t + d + 108.0
-	var top := floorf((550.0 - h) / 2.0)
-	var easy := _t("string difficulty_easy", "Novice")
-	var hard := _t("string difficulty_hard", "Normal")
-	var w := floorf((floorf((text_width(easy, 2) + text_width(hard, 2)) / 2.0) + 30.0) / 2.0)
-	var r := top + t + 30.0
-	return {"title": title, "desc": desc, "t": t, "top": top, "bottom": top + h, "r": r, "w": w,
-		"easy": easy, "hard": hard,
-		"ok": Rect2(263, top + h + 26, 74, 48), "cancel": Rect2(463, top + h + 26, 74, 48),
-		"box_easy": Rect2(400 - w, r, 21, 21), "box_hard": Rect2(400 - w, r + 24, 21, 21)}
+func _refresh_summary() -> void:
+	_summary.text = CampaignChoices.title(GameData.campaign_id) + "\n" + str(ModStore.profile().name)
 
-
-func _draw() -> void:
-	_lay = _layout()
-	var L := _lay
-	var ui := tex("saveload")
-	panel(Rect2(200, L.top, 400, L.bottom - L.top))
-	text_block(Rect2(215, L.top + 15, 370, 200), L.title, 2, Interface800.colorref(0x31b3ff), HORIZONTAL_ALIGNMENT_CENTER)
-	for i in 2:
-		var box: Rect2 = L.box_easy if i == 0 else L.box_hard
-		var on := (level == 1) == (i == 0)
-		var du := -23 if on else 0
-		sprite(ui, box, [209 + du, 55, 230 + du, 76])
-		# The original draws from the box's top (no DT_VCENTER), which centres the
-		# 19 px Times line on the 21 px box only at 4:3; the remake's fonts
-		# follow the width and the boxes the height, so the label is centred
-		# on the box by its own line box instead.
-		text_vc(Rect2(430 - L.w, box.position.y, 200, box.size.y), L.easy if i == 0 else L.hard, 2)
-	if L.desc:
-		text_block(Rect2(215, L.top + L.t + 93, 370, 300), L.desc, 1)
-	sprite(ui, L.ok, [81, 2, 155, 50])
-	sprite(ui, L.cancel, [160, 2, 234, 50])
-
-
-##  order: 0 ✓, 1 ✗, 2 easy box, 3 hard box.
-func _hit(p: Vector2) -> String:
-	if _lay.is_empty():
-		_lay = _layout()
-	for k in ["ok", "cancel", "box_easy", "box_hard"]:
-		if (_lay[k] as Rect2).has_point(p):
-			return k
-	return ""
-
-
-func _get_tooltip(at: Vector2) -> String:
-	match _hit(to800(at)):
-		"ok": return GameData.text("tip 50100").strip_edges()
-		"cancel": return GameData.text("tip 50101").strip_edges()
-	return ""
-
+func _open_mods() -> void:
+	_mods.draft = _draft if _new_game else {}
+	_mods.open("rules")
 
 func _accept() -> void:
-	sound("messbox\\ok")
+	if _mods.visible: return
+	var error := ""
+	if _new_game:
+		_draft.rules.difficulty = level
+		error = ModStore.apply_settings(_draft.rules, _draft.values)
+	elif ModStore.editable("difficulty") == "":
+		error = ModStore.apply_rules({"difficulty": level})
+	if error != "":
+		_status.text = error
+		return
 	visible = false
-	accepted.emit(level)
-
+	if _new_game: accepted.emit(level)
+	closed.emit()
 
 func _cancel() -> void:
-	sound("messbox\\cancel")
+	if _mods.visible: return
 	visible = false
 	cancelled.emit()
+	closed.emit()
 
-
-func _gui_input(e: InputEvent) -> void:
-	if not visible:
-		return
-	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT and e.pressed:
-		match _hit(to800(e.position)):
-			"ok": _accept()
-			"cancel": _cancel()
-			"box_easy":
-				level = 1
-				queue_redraw()
-			"box_hard":
-				level = 0
-				queue_redraw()
-	if e is InputEventMouseButton:
-		accept_event()
-
-
-## Enter = ✓, Esc = ✗.
-func _unhandled_key_input(e: InputEvent) -> void:
-	if not visible or not (e is InputEventKey and e.pressed):
-		return
-	match e.keycode:
-		KEY_ENTER, KEY_KP_ENTER: _accept()
-		KEY_ESCAPE: _cancel()
-		_: return
+func _unhandled_key_input(event: InputEvent) -> void:
+	if not visible or _mods.visible or not (event is InputEventKey and event.pressed): return
+	if event.keycode == KEY_ESCAPE: _cancel()
+	elif event.keycode in [KEY_ENTER, KEY_KP_ENTER]: _accept()
+	else: return
 	get_viewport().set_input_as_handled()
 
+func pad_targets() -> Array:
+	var out := []
+	for button in [_choices[0], _choices[1], _mods_button, _start, _start.get_parent().get_child(0)]:
+		if not button.disabled: out.append({"rect": button.get_global_rect(), "id": button})
+	return out
 
-## A "string <id>" text; missing from texts.res, the original's gives
-## the id itself (the German texts.res has no difficulty_easy / _hard /
-## option_difficulty). `fallback` only without game data (tools).
-static func _t(key: String, fallback: String) -> String:
-	if GameData.texts == null:
-		return fallback
-	var t := GameData.text(key).strip_edges()
-	return t if t else key.trim_prefix("string ")
+func pad_press(action: String, phase: String) -> bool:
+	if _mods.visible: return false
+	if action in ["cancel", "menu"]:
+		if phase == "down": _cancel()
+		return true
+	return false

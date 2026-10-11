@@ -13,11 +13,10 @@ func _ready() -> void:
 	var image := Image.create(800,600,false,Image.FORMAT_RGB8); image.fill(Color(.04,.04,.04))
 	var panel := OptionsPanel.new(); add_child(panel); panel.open(image)
 	check(panel._rows[8].name=="graphics_preset","main Graphics page exposes the preset selector")
-	for preset in [1,2,3,4]:
+	for preset in [GfxPresets.ORIGINAL, GfxPresets.VERY_LOW, GfxPresets.LOW, GfxPresets.MEDIUM, GfxPresets.HIGH, GfxPresets.VERY_HIGH, GfxPresets.ULTRA]:
 		panel._set_value("graphics_preset",preset)
 		check(panel._switch_text(panel._rows[8])==RemakeText.t(GfxPresets.NAMES[preset]),"explicit preset label "+str(preset))
 		check(panel._values.auto_graphics==0,"explicit preset disables detection "+str(preset))
-		check(panel._values.gfx_clouds==0 and panel._values.gfx_cloud_shadows==0 and panel._values.gfx_cloud_reflections==0 and panel._values.gfx_ground_contact==0 and panel._values.gfx_depth_of_field==0,"expensive optional effects stay opt-in "+str(preset))
 		if preset==1:
 			var off := true
 			for key: String in panel._values:
@@ -53,17 +52,42 @@ func _ready() -> void:
 	check(panel._switch_text(panel._rows[8])==RemakeText.t("Detected"),"measured automatic choice has its own label")
 	panel._values.graphics_preset=GfxPresets.CUSTOM
 	for method in ["gl_compatibility","mobile","forward_plus"]:
-		for preset in [1,2,3,4]:
+		for preset in [GfxPresets.ORIGINAL, GfxPresets.VERY_LOW, GfxPresets.LOW, GfxPresets.MEDIUM, GfxPresets.HIGH, GfxPresets.VERY_HIGH, GfxPresets.ULTRA]:
 			var values := GfxPresets.values(preset,method)
 			check(not values.has("renderer") and not values.has("resolution") and not values.has("control_mode"),"preset preserves renderer, display and controls "+method+str(preset))
-			if method!="forward_plus": check(values.gfx_ssao==0 and values.gfx_volumetric==0 and values.gfx_water_reflections==0,"unsupported screen effects stay off "+method+str(preset))
+			if method!="forward_plus" and preset != GfxPresets.ULTRA: check(values.gfx_ssao==0 and values.gfx_volumetric==0 and values.gfx_water_reflections==0,"unsupported screen effects stay off "+method+str(preset))
 			if method=="gl_compatibility": check(values.q_aa==0,"Compatibility preset avoids unsupported SMAA "+str(preset))
+	for method in ["gl_compatibility", "mobile", "forward_plus"]:
+		var last := {}
+		for preset in GfxPresets.ORDER:
+			if preset in [GfxPresets.CUSTOM, GfxPresets.DETECTED]: continue
+			var values := GfxPresets.values(preset, method)
+			if not last.is_empty():
+				var nondecreasing := true
+				for key in values:
+					if values[key] < last[key]: nondecreasing = false
+				check(nondecreasing and last != values, "distinct gradual preset " + method + str(preset))
+			last = values
+			if preset == GfxPresets.ULTRA:
+				for o in GameData.OPTIONS:
+					if String(o[0]).begins_with("gfx_"): check(values[o[0]] == int(o[2])-1, "Ultra maxes " + o[0] + " on " + method)
+	check(panel._preset_picker is OptionButton, "graphics preset is an actual dropdown")
+	panel._set_value("graphics_preset", GfxPresets.ULTRA)
+	panel._sync_preset_picker()
+	check(panel._preset_picker.get_selected_id() == GfxPresets.ULTRA, "dropdown selects Ultra by stable saved ID")
+	panel._preset_picker.select(panel._preset_picker.get_item_index(GfxPresets.HIGH))
+	panel._preset_picker.item_selected.emit(panel._preset_picker.selected)
+	check(panel._values.graphics_preset == GfxPresets.HIGH and panel._values.gfx_water_waves == 1, "dropdown applies High including water effects")
 	for lang in ["en","ru","de"]:
 		RemakeText.lang=lang; panel._show_group(0)
 		await frames()
 		if DisplayServer.get_name()!="headless":
 			await RenderingServer.frame_post_draw
+			panel._preset_picker.show_popup()
+			await frames()
+			await RenderingServer.frame_post_draw
 			check(get_viewport().get_texture().get_image().save_png("user://graphics-presets-"+lang+".png")==OK,"capture localized preset selector "+lang)
+		panel._preset_picker.get_popup().hide()
 	panel._restore(); panel._close(); panel.free()
 	FileAccess.open("user://graphics-presets.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures},"\t"))
 	print("GRAPHICS_PRESETS ",checks," checks ",failures," failures")

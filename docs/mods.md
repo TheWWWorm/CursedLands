@@ -1,8 +1,8 @@
 # Mods, profiles and game rules
 
-Available in **1.0.4 Experimental**, using mod API 1 and network protocol 15. Stable 1.0.3 does not include this feature.
+Available in **1.0.4 Experimental 4**, using mod API 1 and network protocol 16. Stable 1.0.3 does not include this feature.
 
-Open **Mods and rules** above the main-menu signpost, from the multiplayer screen, or beside the in-game Esc menu. **Options → Remake → Mod options and rules** opens the same editor. New Game includes a rules review before the difficulty screen.
+Open **Options → Remake → Game setup → Mods and rules** from the main menu or in-game Esc menu. The multiplayer screen also opens **Game setup**. **New Game** opens a fresh setup with standard difficulty and rules; use its **Mods and rules** button for optional changes before starting. Cancelling discards that new-game draft.
 
 ## Playing with a profile
 
@@ -21,9 +21,11 @@ Mouse, keyboard focus and controller navigation use the same controls. D-pad up/
 
 ## Co-op compatibility
 
-Everyone needs network protocol **15** (this source revision). The host checks the mod API, campaign, sandbox classification, ordered gameplay package IDs/versions/content hashes and effective mod option values before admitting a player. Existing original-map checks and database synchronization remain in place. No package is downloaded automatically.
+Everyone needs network protocol **16** (Experimental 4). The host checks the mod API, campaign, sandbox classification, ordered gameplay package IDs/versions/content hashes and effective mod option values before admitting a player. Existing original-map checks and database synchronization remain in place. No package is downloaded automatically.
 
 Built-in host rules, such as full XP or shared loot, are published to guests without changing their local defaults. Gameplay mod values must match when joining. Choose the same package versions and values in the menu before connecting. A continued host save supplies its saved configuration before the lobby opens; stop hosting to choose a different save.
+
+Experimental 4 adds **Free running outside combat**, disabled by default. It removes running stamina drain while the authority considers the party out of combat; injuries, carrying limits and spell costs still apply. Existing saves without this rule keep it disabled.
 
 Experimental 2 checks saved mod compatibility before pausing a running group for loading. Refusing a save preserves the current game, pause state and speed. When a host without guests restores different saved mod values, new players can join after loading finishes with the matching values.
 
@@ -38,6 +40,8 @@ python3 tools/package_mod.py examples/mods/quick-recovery quick-recovery.eimod
 ```
 
 The result is an ordinary ZIP with `mod.json` at its root. The packaging tool includes only the manifest and declared replacement files, with stable timestamps/order. The game performs authoritative schema validation on import and activation.
+
+For an existing legacy mod, the source-tree [legacy converter](legacy-mod-converter.md) can translate supported resource and numeric database changes into this format. DLL dependencies and unsupported content produce a compatibility report and block package creation.
 
 Required manifest fields:
 

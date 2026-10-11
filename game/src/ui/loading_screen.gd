@@ -66,6 +66,7 @@ var _deferred := false   # drawn by the main loop's own frames (`deferred`)
 var _early := false      # shown by `hold` ahead of the load's own `begin`
 var _holding := false    # `hold` waiting for its frames to be presented
 var _idle := 0           # main-loop frames with the screen up outside a hold
+var _finishing := false
 var _waiting_remote := false   # co-op host is rebuilding, no local stages yet
 
 
@@ -146,24 +147,22 @@ static func movie_for(zone: Dictionary) -> String:
 
 ## Opens the screen for a zone load and shows its first frame (0, a joiner 8).
 static func begin(tree: SceneTree, zone: Dictionary, kind := NEW_ZONE) -> void:
-	if _current and is_instance_valid(_current) and (_current._early or _current._waiting_remote) and not _current._holding:
+	if _current and is_instance_valid(_current) and (_current._early or _current._waiting_remote) and not _current._holding and not _current._finishing:
 		_current._early = false   # shown by `hold` for this load: kept
 		_current._kind = kind
 		_current._idle = 0
 		return
-	end()
+	if is_instance_valid(_current): _current._remove()
 	if DisplayServer.get_name() == "headless":
 		return
 	if Engine.get_process_frames() == 0:
 		return   # called from a _ready during scene setup: the root is busy adding children
-	if GameData.root.is_empty():
-		return
 	var src := GameData.root.path_join("movies/%s.bik" % movie_for(zone))
 	var bink := EIBink.new()
 	if not GameFiles.exists(src) or not bink.open(src):
-		return   #  only logs "Can't open video file" and draws nothing
+		bink = null   # Missing progress art must never expose an unfinished view.
 	var ls := LoadingScreen.new()
-	ls.visible = false   # drawn through the RenderingServer below
+	ls.layer = 1001   # fallback text; movie and opaque backing use the raw canvas below
 	ls._kind = kind
 	ls._bink = bink
 	ls._deferred = deferred()
@@ -182,8 +181,16 @@ static func begin(tree: SceneTree, zone: Dictionary, kind := NEW_ZONE) -> void:
 	ls._frame = rs.canvas_item_create()
 	rs.canvas_item_set_parent(ls._frame, ls._item)
 	rs.canvas_item_set_material(ls._frame, ls._mat.get_rid())
-	if ls._deferred:
-		rs.frame_post_draw.connect(ls._posted)
+	rs.frame_post_draw.connect(ls._posted)
+	if bink == null:
+		var label := Label.new()
+		label.text = RemakeText.t("Loading…")
+		label.add_theme_font_size_override("font_size", 32)
+		label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		ls.add_child(label)
+	ls.get_viewport().size_changed.connect(ls._draw_frame)
 	_current = ls
 	ls._show(8 if kind == CLIENT else 0)
 
@@ -225,23 +232,21 @@ static func objects_done() -> void:
 		_current._show(5)
 
 
-## Last frame (11), then the screen goes.
+## End the load only after an ordinary main-loop frame has presented the
+## completed world underneath. force_draw is not a presentation fence for
+## queued renderers: removing the canvas immediately can expose stale UI.
 static func end() -> void:
 	var ls := _current
-	if ls and is_instance_valid(ls):
-		ls._show(11)
-	_current = null
-	if ls and is_instance_valid(ls):
-		if ls._deferred and not ls.is_queued_for_deletion():
-			ls._remove_after_draw()   # frame 11 over the zone's first frame
-		else:
-			ls._remove()
+	if not is_instance_valid(ls) or ls._finishing: return
+	ls._finishing = true
+	ls._show(11)
+	ls._remove_after_draw()
 
 
-## Deferred path: one more ordinary frame with the screen (the last frame
-## drawn), then it goes.
 func _remove_after_draw() -> void:
 	set_process(false)
+	await get_tree().process_frame
+	if is_queued_for_deletion(): return
 	await RenderingServer.frame_post_draw
 	_remove()
 
@@ -249,6 +254,7 @@ func _remove_after_draw() -> void:
 func _remove() -> void:
 	if is_queued_for_deletion():
 		return
+	if _current == self: _current = null
 	if RenderingServer.frame_post_draw.is_connected(_posted):
 		RenderingServer.frame_post_draw.disconnect(_posted)
 	RenderingServer.free_rid(_frame)
@@ -258,21 +264,20 @@ func _remove() -> void:
 
 
 ## A load builds synchronously between `begin` (after `hold`) and `end`, so
-## the main loop never runs a frame in between: a screen still up two frames
-## later belongs to a load that stopped on an error, and goes.
+## normal main-loop frames may still occur during a worker/async stage. Keep
+## the opaque cover until success or failure explicitly completes the load.
 func _process(_dt: float) -> void:
-	if _current != self or _holding or _waiting_remote:
+	if _current != self or _holding or _waiting_remote or _finishing:
 		return
 	_idle += 1
-	if _idle >= 2:
-		push_warning("loading screen left up by an unfinished load: removed")
-		end()
+	if _idle == 2:
+		push_warning("loading screen is waiting for an explicit load completion")
 
 
 ## The deferred screen takes all input while it is up (the old zone runs on
 ## behind it during `hold`).
 func _input(_e: InputEvent) -> void:
-	if _current == self and (_deferred or _waiting_remote):
+	if _current == self:
 		get_viewport().set_input_as_handled()
 
 
@@ -284,6 +289,11 @@ func _posted() -> void:
 ## Decodes forward to `frame` (clamped to the last one) and draws it; an
 ## earlier frame keeps the one shown.
 func _show(frame: int) -> void:
+	if _bink == null:
+		_decoded = maxi(_decoded, frame)
+		_draw_frame()
+		if on_frame.is_valid(): on_frame.call(_decoded)
+		return
 	frame = mini(frame, _bink.frame_count - 1)
 	if frame <= _decoded:
 		#  still blits/flips the retained picture at every call.
@@ -314,8 +324,9 @@ func _draw_frame() -> void:
 	rs.canvas_item_clear(_item)
 	rs.canvas_item_clear(_frame)
 	rs.canvas_item_add_rect(_item, Rect2(Vector2.ZERO, screen), Color.BLACK)
-	var ts := Vector2(_tex[0].get_size())
-	var k := minf(screen.x / ts.x, screen.y / ts.y)
-	rs.canvas_item_add_texture_rect(_frame, Rect2((screen - ts * k) * 0.5, ts * k), _tex[0].get_rid())
+	if _tex[0] != null:
+		var ts := Vector2(_tex[0].get_size())
+		var k := minf(screen.x / ts.x, screen.y / ts.y)
+		rs.canvas_item_add_texture_rect(_frame, Rect2((screen - ts * k) * 0.5, ts * k), _tex[0].get_rid())
 	if not _deferred:
 		rs.force_draw(true, 0.0)

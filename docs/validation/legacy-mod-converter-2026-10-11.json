@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-11",
+  "status": "implemented in source; no build, commit, push or publication",
+  "scope": "Conservative command-line conversion into mod API 1; native plugin behavior is not converted",
+  "python": {
+    "command": "python3 -m unittest discover -s tools/tests -p 'test_legacy_mod_converter.py' -v",
+    "tests": 16,
+    "failures": 0
+  },
+  "runtime": {
+    "engine": "Godot 4.7 stable official 5b4e0cb0f, Linux x86_64",
+    "checks": 17,
+    "failures": 0,
+    "exit_code": 0,
+    "test": "tools/tests/legacy_mod_import.gd",
+    "project": "/home/llm2x/Documents/EI/local/scratchpad/legacy-mod-converter-20261011/runtime",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/legacy-mod-converter-20261011/runtime.log",
+    "log_sha256": "81d59122b693ca9d71542e2cae796f243149a226da7a13e5cd509cd97bee7362",
+    "fixture": "Private generated legacy archive overlays based on the owned English game installation",
+    "covers": [
+      "actual ModStore import and normal GameData activation",
+      "monster hp / spell duration / perk cost edits",
+      "WAV archive resolution and game decoder",
+      "default profile and content restoration",
+      "original database and sound archive hashes unchanged"
+    ],
+    "isolation": "Private copied project and disposable XDG config/data/cache; no zone or gameplay route"
+  },
+  "legacy_config": {
+    "source": "https://github.com/Kyr4l/ei-universal-mod/blob/7d7a69558740fd48516f8ba15803bbcedca14925/Universal-Mod/config.reg",
+    "result": "DEV.Plugin = um.dll detected and blocks packaging; only config.reg downloaded, not a full mod compatibility test",
+    "report": "/home/llm2x/Documents/EI/local/scratchpad/legacy-mod-converter-20261011/universal-config-report.json"
+  },
+  "limits": [
+    "No DLL, SpellAddon behavior, map/script, model, translation or new-record conversion",
+    "No complete legacy mod playthrough",
+    "No Windows/macOS/Android execution",
+    "No game picker integration; source-tree Python tool"
+  ]
+}

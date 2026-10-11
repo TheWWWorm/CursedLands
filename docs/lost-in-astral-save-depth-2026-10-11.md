@@ -2,9 +2,9 @@
 
 11 October 2026. Follow-up to the [playability and save audit](lost-in-astral-completeness-2026-10-11.md).
 
-## Experimental 3 package
+## Published experimental package
 
-The repairs are included in [1.0.4 Experimental 3](releases/1.0.4-experimental.3.md). Its isolated package passes 487 save/health checks, 32 reflection-geometry checks, the 57-view bridge/tree matrix and clear-camera sweep, and 62 Android checks. The packaged combined-effects scene exits normally; the development-runtime failures below remain historical investigation evidence. The [package validation](validation/experimental-1.0.4-3-2026-10-11.json) records the exact source scope, platform limits and network protocol 15 requirement.
+The save, reflection and health-visibility repairs are available in [1.0.4 Experimental 3](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.4-experimental.3) for Linux, Windows, Android ARM64 and macOS. The isolated package passes 487 save/health checks, 32 reflection-geometry checks, the 57-view bridge/tree matrix and clear-camera sweep, and 62 Android checks. Its combined-effects scene exits normally. [Package validation](https://github.com/TheWWWorm/CursedLands/blob/v1.0.4-experimental.3/docs/validation/experimental-1.0.4-3-2026-10-11.json) records the exact scope and remaining limits. Co-op requires network protocol 15. The working-checkout and development-runtime notes below are retained as historical evidence.
 
 ## Working checkout repair
 

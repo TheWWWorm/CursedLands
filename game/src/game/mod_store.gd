@@ -71,6 +71,20 @@ static func snapshot() -> Dictionary:
 		"name": p.name, "rules": rules, "values": values, "packages": packages,
 		"sandbox": bool(p.get("sandbox", false)), "revision": 0}
 
+## A fresh setup never inherits the previous run's rule overrides.
+static func new_game_defaults() -> Dictionary:
+	var rules := {}
+	for key in ModSchema.RULES: rules[key] = 0
+	for o in GameData.OPTIONS:
+		if rules.has(o[0]): rules[o[0]] = int(o[5])
+	# Non-sandbox profiles cannot submit sandbox rules, even when disabled.
+	if not profile().get("sandbox", false):
+		for key in rules.keys():
+			if key.begins_with("sandbox_"): rules.erase(key)
+	var values := {}
+	for o in option_definitions(): values[o.key] = o.default
+	return {"rules": rules, "values": values}
+
 static func effective() -> Dictionary:
 	var s := session()
 	return s.mod_config if s != null and not s.mod_config.is_empty() else snapshot()
@@ -78,7 +92,7 @@ static func effective() -> Dictionary:
 static func option(key: String, fallback: int) -> int:
 	if not ModSchema.RULES.has(key) or not _loaded: return fallback
 	var s := session()
-	if s != null and not s.mod_config.is_empty(): return int(s.mod_config.rules.get(key, fallback))
+	if s != null and not s.mod_config.is_empty(): return int(s.mod_config.rules.get(key, ModSchema.ADDED_DEFAULTS.get(key, fallback)))
 	return int(profile().rules.get(key, fallback))
 
 static func capability(binding: String) -> float:
@@ -201,7 +215,8 @@ static func configuration_error(config: Variant) -> String:
 	if var_to_bytes(config).size() > MAX_MANIFEST: return "Mod configuration is too large."
 	if not config.get("name") is String or config.name.length() > 80 or not ModSchema.identifier(config.get("profile")): return "Invalid profile metadata."
 	if not config.get("sandbox") is bool or not ModSchema.finite_number(config.get("revision")) or config.revision < 0 or config.revision != floorf(config.revision): return "Invalid mod configuration metadata."
-	if config.rules.size() != ModSchema.RULES.size(): return "The shared rule list is incomplete."
+	for key in ModSchema.RULES:
+		if not config.rules.has(key) and not ModSchema.ADDED_DEFAULTS.has(key): return "The shared rule list is incomplete."
 	if config.values.size() != option_definitions().size(): return "The shared mod options are incomplete."
 	var error := rule_error(config.rules)
 	if error != "": return error

@@ -83,7 +83,7 @@ const OPTIONS := [
 	# Graphics page: detection controls and the explicit preset selector.
 	# Neither key is a gfx_* effect switched by the Original look shortcut.
 	["auto_graphics", 1, 2, 0, 6, 1],
-	["graphics_preset", 1, 6, 0, 8, 0],
+	["graphics_preset", 1, 9, 0, 8, 0],
 	# World and textures (group 13). Terrain and vegetation have their own
 	# page (22). Native map-border fog is always active; see Gfx.BORDER_FOG.
 	["gfx_hd_textures", 1, 2, 13, 0, 1], ["gfx_materials", 1, 2, 13, 1, 1],
@@ -130,7 +130,8 @@ const OPTIONS := [
 	["cam_zoom_speed", 0, 100, 16, 5, 50], ["cam_wasd", 1, 2, 16, 7, 1],
 	["village_start_view", 1, 2, 16, 6, 0],
 	# Rows 8 and 9 are occupied by EIKeymap's camera-turn bindings.
-	["control_mode", 1, 3, 16, 10, 0],
+	["control_mode", 1, 4, 16, 10, 0],
+	["character_light", 1, 3, 16, 11, 0],
 	# Interface and controls (group 17).
 	# Small health bars over visible hostile units (EnemyBars): 0 off (the
 	# original, which shows a unit's health only in the unit panel), 1 auto
@@ -177,6 +178,7 @@ const OPTIONS := [
 	["mechanism_motion", 1, 2, 18, 7, 0],
 	# Optional approximation for distant NPC decisions; exact behavior is the default.
 	["distant_ai", 1, 2, 18, 8, 0],
+	["free_run", 1, 2, 18, 9, 0],
 	# Network and co-op (group 19): the co-op host's rules — full experience
 	# for every party member (XpRules), monster scaling to the player count
 	# (MobScaling: Off / Light / Normal / Strong), shared loot
@@ -211,7 +213,8 @@ const DISPLAY_CHOICES := {
 	"vsync": ["Off", "On", "Adaptive"],
 	"render_scale": ["50 %", "67 %", "75 %", "85 %", "100 %", "125 %", "150 %", "200 %"],
 	"camera_style": ["Original", "Modern"],
-	"control_mode": ["Auto (gamepad)", "Classic", "Third person (experimental)"],
+	"control_mode": ["Auto (gamepad)", "Classic", "Third person", "First person"],
+	"character_light": ["Auto", "Off", "On"],
 	"q_aa": ["Off", "SMAA", "MSAA 4×", "MSAA 4× + SMAA", "TAA", "FSR 2"],
 	"q_shadows": ["Low", "Medium", "High", "Ultra"],
 	"q_aniso": ["Off", "2×", "4×", "8×", "16×"],
@@ -328,9 +331,10 @@ const REMAKE_OPTIONS := {
 	"confine_mouse": ["Keep mouse in window", "The pointer cannot leave the game window (e.g. onto a second monitor) while the game has focus; it is free again when you switch away."],
 	"sp_death_notice": ["Game-over notice at the hero's death", "Single player: when your main hero dies, the game-over sound plays at once and a small notice appears at the top of the screen, with Load, Main menu and Hide. The game is not paused and your companions fight on; leaving the area still ends the game. Off: as the original, nothing appears until the party tries to leave the area."],
 	"revive": ["Companions can revive the hero", "Select a living hero or companion and click a fallen party member (your hero, another player's hero or a hired companion): they walk to the body and tend it for 5 seconds, and it gets up with 1 health. Another order stops it; there is no other limit, but it is slow in a fight. Party bodies stay where they fell. Co-op: fallen heroes wait for help instead of rising after 5 seconds; changing the area still brings them back. Off: as the original, the dead stay dead."],
-	"enemy_hp_bars": ["Off", "Auto", "Always"],
+	"enemy_hp_bars": ["Enemy health bars", "A small health bar over nearby visible enemies who are hurt or fighting your party. Enemies in combat keep their bar at full health. Auto: while you play with a controller or by touch. Always: with every input. Off: as the original, health only in the unit panel. Third-person views show hurt characters and enemies in combat."],
 	"smile_faces": ["Smiling portraits", "The party's portraits smile for a few seconds after a won fight (every living member), when a hero takes loot from a body or chest, and when a quest is finished or rewarded (the whole party). Co-op: also the hero who gets a copy of shared loot. A hit still shows pain at once. Off: as the original, a portrait smiles only after its character's kill."],
 	"coop_player_names": ["Player names above heroes", "Co-op: each player's name, in their colour, above their hero's head, so the heroes are easy to tell apart. Hidden while the hero cannot be seen. Single player is not affected. Off: as the original, no names."],
+	"free_run": ["Free running outside combat", "Running costs no stamina while the party is out of combat. Combat running and spell costs stay normal. Injuries and carrying limits still apply. The host controls this rule."],
 	"sp_full_xp": ["Full experience for companions", "Single player: your hero and every companion (hired mercenaries such as Khador) each get the whole experience of a kill or quest. Off: as the original, which splits it equally among the living party."],
 	"start_zones": ["Starting areas on the travel map", "The area where the campaign begins (the ruins where Zak wakes up) becomes a place on the travel map once you have left it, so the party can go back. You arrive at its path from the village; what was killed or taken there stays so, and the opening scenes do not play again. Co-op: the host's setting counts. Off: as the original, where its piece only leads to the village."],
 	"aim_press_once": ["Aim keys: press once", "Press an aimed-strike key (Num 8 head, Num 5 body …) once: its cursor stays until the next click. A click on a creature attacks it at that part; a click elsewhere, a right click, Esc or the same key again cancels it; another aim key switches. Off: as the original, the key must be held while clicking."],
@@ -338,7 +342,8 @@ const REMAKE_OPTIONS := {
 	"phys_interp": ["Smooth motion", "Creatures are drawn between the game's 60 steps a second, so they move smoothly on screens faster than 60 Hz. Visual only."],
 	"render_scale": ["Render scale", "Resolution of the 3D view relative to the window: below 100 % faster, above it sharper (supersampling)."],
 	"gfx_far_view": ["Far view", "See 260 m instead of 100 m, with a long soft fade into the fog; off: the original 100 m view with its short fog band."],
-	"control_mode": ["Control mode", "Auto uses third person with a gamepad and classic controls with a mouse. Third person: WASD moves, mouse looks, left click attacks, E interacts, Tab releases the pointer. Gamepad: sticks move and look, RT attacks, A interacts, LT + RT opens the system wheel. Visible health bars stay on. Attacks can hit friendly characters outside safe zones. Attacks and spells are disabled in safe zones."],
+	"character_light": ["Character light", "Circular light around player characters. Auto enables it in classic view and disables it in third and first person. Off and On override this for every camera mode."],
+	"control_mode": ["Control mode", "Auto uses third person with a gamepad and classic controls with a mouse. Third / first person: WASD moves, mouse looks, left click attacks, E interacts, Tab releases the pointer. Gamepad: sticks move and look, RT attacks, A interacts, LT + RT opens the system wheel. Combat HUD and health bars are hidden in safe zones. Attacks can hit friendly characters outside safe zones. Attacks and spells are disabled in safe zones."],
 	"camera_style": ["Camera style", "Original: the 2000 game's camera. Modern: responsive pan, smooth zoom and terrain clearance. Middle drag turns; Alt + middle drag or right drag tilts; Shift + middle drag pans. Home centres; optional hero follow and see-through objects."],
 	"cam_pan_speed": ["Camera pan speed (modern)", "Speed of the modern camera's panning (keys, screen edges)."],
 	"cam_rotate_speed": ["Camera turn speed (modern)", "Speed of the modern camera's turning and tilting (drag, keys)."],
@@ -374,8 +379,8 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light", "gfx_detailed_heads",
 	"gfx_sharp_units", "q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale", "phys_interp",
-	"control_mode", "camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow", "village_start_view",
-	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "distant_ai", "path_through", "sp_full_xp", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot", "enemy_hp_bars", "smile_faces",
+	"control_mode", "character_light", "camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow", "village_start_view",
+	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "distant_ai", "path_through", "sp_full_xp", "free_run", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot", "enemy_hp_bars", "smile_faces",
 	"pad_enabled", "pad_rumble", "pad_deadzone", "pad_cursor_speed", "pad_target_radius", "pad_wheel_pause", "pad_glyphs", "pad_swap_sticks", "pad_light", "pad_gyro", "pad_gyro_sensitivity", "auto_graphics", "renderer"]
 signal options_changed
 const GFX_REV := 4

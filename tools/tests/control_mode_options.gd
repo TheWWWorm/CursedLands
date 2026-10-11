@@ -50,7 +50,18 @@ func _ready() -> void:
 	check(cfg.load(GameData.CONFIG_PATH) == OK and cfg.get_value("options", "control_mode", -1) == 2, "choice persists in settings file")
 	check(DirectControl.wants(GameData.option("control_mode"), false), "saved choice enables keyboard/mouse third person")
 	panel.open(); camera_page(); row = mode_row()
-	check(row >= 0 and panel._switch_text(panel._rows[row]) == RemakeText.t("Third person (experimental)"), "reopened settings show the selected mode")
+	check(row >= 0 and panel._switch_text(panel._rows[row]) == RemakeText.t("Third person"), "reopened settings show the selected mode")
+	click(Vector2(590, 168 + 24 * row))
+	check(panel._values.control_mode == 3 and panel._switch_text(panel._rows[row]) == RemakeText.t("First person"), "first-person choice is available and readable")
+	var light_row := -1
+	for at: int in panel._rows:
+		if panel._rows[at].name == "character_light": light_row = at
+	check(light_row >= 0 and panel._values.character_light == 0, "character light defaults to camera-dependent Auto")
+	if light_row >= 0: click(Vector2(590, 168 + 24 * light_row))
+	click(Vector2(250, 550))
+	cfg.load(GameData.CONFIG_PATH)
+	check(GameData.option("control_mode") == 3 and cfg.get_value("options", "control_mode", -1) == 3, "first-person choice persists")
+	check(GameData.option("character_light") == 1 and cfg.get_value("options", "character_light", -1) == 1, "character light override persists")
 	panel.queue_free(); await frames()
 	print("CONTROL_MODE_OPTIONS ", checks, " checks ", failures, " failures")
 	get_tree().quit(1 if failures else 0)
