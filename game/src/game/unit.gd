@@ -234,6 +234,9 @@ var mode := "standard": # AI mode: standard / sentry / guard / follow / fear / a
 var aggressive := true
 var mode_data := {}
 var target: GameUnit
+var _remote_combat_target := -1 # presentation only, from the authority snapshot
+var _cast_bar_target: WeakRef
+var _cast_bar_until := -INF
 var strike_aim := -1        # aimed part of the last strike (the original order)
 ## The strike in progress misses (unit, set with the strike's animation
 ## command): its clip sounds "weapons\miss.wav"
@@ -2904,6 +2907,8 @@ func _do_cast(dt: float) -> void:
 	action = "cast" if hold == 0 else "cast:%d" % hold
 	var cast_t := float(plan.fire) * TICK
 	_anim_lock = maxf(len + hold * TICK, cast_t)
+	_cast_bar_target = weakref(t) if is_instance_valid(t) else null
+	_cast_bar_until = world.time + _anim_lock
 	var spell: String = order.spell
 	order = order.get("then", {})   # monsters go back to fighting
 	GameSound.spell(Spells.parse(spell).code, global_position, "start")
@@ -3992,6 +3997,21 @@ func _draw_step(_dt: float, placement_ready := false) -> void:
 	_last_pos = pos
 
 
+## UI combat relationship, including an issued order before its first tick and
+## a committed hit after the attacker starts moving. Stale AI `target` pointers
+## and a combat stance alone do not keep a healthy enemy's bar visible.
+func combat_target_id() -> int:
+	if world and not world.authority: return _remote_combat_target
+	if dead: return -1
+	var victim = _pending_hit.get("target")
+	if not is_instance_valid(victim):
+		var current := order if not order.is_empty() or orders.is_empty() else orders[0]
+		victim = current.get("target") if current.get("type", "") in ["attack", "cast"] else null
+	if not is_instance_valid(victim) and _cast_bar_target and world and world.time < _cast_bar_until:
+		victim = _cast_bar_target.get_ref()
+	return victim.uid if is_instance_valid(victim) and victim is GameUnit and not victim.dead else -1
+
+
 ## Compact replicated state for network snapshots: ..., mana (0.1 steps),
 ## each body part's HP as a byte (cur / max x 255), and the effective maximum
 ## HP and mana (clients build units from the prototype, without the host's
@@ -4005,7 +4025,7 @@ func _draw_step(_dt: float, placement_ready := false) -> void:
 ## effect list and the client's own vision (eagle eye) need them. Remake-only
 ## Element 12 optionally carries this party member's noticed and seen-corpse
 ## ids, so clients use the host's retained perception in this world.
-## wire format.
+## Element 15 optionally carries a combat target ID for health-bar visibility.
 func snapshot() -> Array:
 	var ph := PackedByteArray()
 	for p: UnitBodyPart in parts:
@@ -4018,7 +4038,7 @@ func snapshot() -> Array:
 		| (int(strike_miss) << 24) | (int(resting) << 25) | (int(blocked) << 26)
 		| (int(village_talk_ready()) << 27), snappedf(mana, 1.0 / 16.0), ph,
 		snappedf(_max_hp, 1.0 / 16.0), snappedf(max_mana, 1.0 / 16.0), _buff_snapshot(), _perception_snapshot(),
-		snappedf(_move_speed, 1.0 / 256.0), _action_serial]
+		snappedf(_move_speed, 1.0 / 256.0), _action_serial, combat_target_id()]
 
 
 var _perception_wire_ids := []
@@ -4164,6 +4184,10 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 	resting = bool(flags & (1 << 25))
 	_talk_remote_ready = bool(flags & (1 << 27))
 	_apply_perception_snapshot(s[12] if s.size() > 12 else null)
+	# Optional trailing field: older peers omit it; no order is installed on
+	# the client. Keep the ID so arrival order of actor snapshots is irrelevant.
+	_remote_combat_target = int(s[15]) if s.size() > 15 and (s[15] is int or s[15] is float) \
+		and is_finite(float(s[15])) and float(s[15]) == float(int(s[15])) and int(s[15]) > 0 else -1
 	_remote_move_speed = s.size() > 13 and (s[13] is int or s[13] is float) \
 		and is_finite(float(s[13])) and float(s[13]) >= 0.0
 	if _remote_move_speed:

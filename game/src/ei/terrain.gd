@@ -3,6 +3,9 @@ extends Node3D
 ## Builds terrain and water from a map's .mpr archive (header .mp + sector .sec files)
 ## and its tile atlases "<map>NNN.mmp" in textures.res.
 
+const WaterReflection = preload("res://src/game/fx/water_reflection.gd")
+var _reflection: WaterReflection
+
 const WaveState := preload("res://src/ei/water_waves.gd")
 
 const MP_MAGIC := 0xCE4AF672
@@ -299,7 +302,8 @@ void fragment() {
 ## - drifting procedural ripple normals (and rain rings) drive only the
 ##   reflection and glints, not the diffuse light;
 ## - Fresnel reflection of the sky colour and, with gfx_water_reflections,
-##   screen-space reflections of the scene (Mirror: a stronger mix, capped);
+##   scene reflections (Mirror: a bounded reflected camera on Forward+;
+##   Natural and other renderers: screen-space tracing), with a capped mix;
 ## - sun glints whose peak is the original's vertex specular cap of 20/255;
 ## - a soft shore: the alpha fades over the last 0.25 m of depth;
 ## - breaking surf on explicitly identified sea coasts;
@@ -345,6 +349,13 @@ uniform sampler2D phase_tex : filter_nearest, repeat_enable;   //  grid
 uniform float lava[64];
 uniform float surf[64];
 uniform float ripple[64];
+#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
+uniform bool planar_enabled = false;
+uniform float planar_height = 0.0;
+uniform sampler2D planar_texture : source_color, filter_linear, repeat_disable;
+uniform mat4 planar_projection;
+uniform mat4 planar_view;
+#endif
 uniform bool reflections = true;
 uniform float mirror = 1.0; // Mirror style; Natural uses 0
 uniform bool blend_tiles = true;
@@ -509,10 +520,25 @@ vec2 rain_rings(vec2 p, float now) {
 	}
 	return sum;
 }
-// Screen-space reflection traced through the opaque depth / colour copy
-// (Godot's own SSR pass runs before transparent water). Alpha = confidence,
-// faded at the screen edge and the ray limit.
+// Mirror uses a reflected geometry view for the selected water level. The
+// lower-cost fallback traces the opaque depth/colour copy (Godot SSR runs
+// before transparent water). Alpha blends the result over the reflected sky.
 vec4 water_ssr(vec3 origin, vec3 normal, mat4 proj, mat4 inv_proj, mat4 inv_view) {
+#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
+	if (mirror > 0.5 && planar_enabled) {
+		vec3 point = (inv_view * vec4(origin, 1.0)).xyz;
+		if (abs(point.y - planar_height) < 0.45) {
+			vec3 wn = (inv_view * vec4(normal, 0.0)).xyz;
+			point.xz += wn.xz * min(length(origin) * 0.1, 1.0);
+			vec4 clip = planar_projection * planar_view * vec4(point, 1.0);
+			vec2 uv = vec2(clip.x, -clip.y) / clip.w * 0.5 + 0.5;
+			if (clip.w <= 0.0 || any(lessThan(uv, vec2(0.0))) || any(greaterThan(uv, vec2(1.0)))) { return vec4(0.0); }
+			vec4 colour = textureLod(planar_texture, uv, 0.0);
+			// Transparent viewports contain premultiplied edge colours.
+			return vec4(colour.rgb / max(colour.a, 0.001), colour.a);
+		}
+	}
+#endif
 	vec3 ray = reflect(normalize(origin), normal);
 	vec3 start = origin + normal * 0.08;
 	float previous = 0.0;
@@ -619,7 +645,7 @@ void fragment() {
 		vec3 R = ei_lin(ei_sky);
 		float w = fres + min(length(rain_slope) * 0.6, 0.18);
 		if (reflections) {
-			// Mirror: a calmer surface for the traced ray, so reflected
+			// Mirror: a calmer surface for scene sampling, so reflected
 			// trees and cliffs stay recognisable.
 			vec3 sn = normalize(gn + vec3(slope.x * mix(1.0, 0.25, mirror) + rain_slope.x, 0.0, slope.y * mix(1.0, 0.25, mirror) + rain_slope.y));
 			vec4 r = water_ssr(VERTEX, normalize((VIEW_MATRIX * vec4(sn, 0.0)).xyz), PROJECTION_MATRIX, INV_PROJECTION_MATRIX, INV_VIEW_MATRIX);
@@ -1009,6 +1035,7 @@ func _build(arc: EIResArchive) -> void:
 				var wm := _make_mesh(wverts, water_tex, water_mats, wmat, Vector2i.ZERO, vert_mats)
 				if wm:
 					wm.name = "Water_%d_%d" % [sx, sy]
+					wm.layers = WaterReflection.WATER_LAYER
 					wm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 					wm.extra_cull_margin = 8.0   # SetWaterLevel moves it in the shader
 					add_child(wm)
@@ -1087,6 +1114,14 @@ func apply_gfx() -> void:
 	_update_cloud_parameters()
 	if _water_mat == null:
 		return
+	if WaterReflection.supported() and Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") == 2:
+		if not is_instance_valid(_reflection):
+			_reflection = WaterReflection.new()
+			_reflection.terrain = self
+			add_child(_reflection)
+	elif is_instance_valid(_reflection):
+		_reflection.free()
+		_reflection = null
 	var fx := GameData.option("gfx_water") != 0
 	if fx and Gfx.on("gfx_water_caustics"):
 		if _caustics == null: _caustics = WaterCaustics.new(self)
@@ -1454,6 +1489,7 @@ func set_water_offset(mat: int, offset: float) -> Rect2i:
 			hi = hi.max(c)
 	if hi.x < 0:
 		return Rect2i()
+	if is_instance_valid(_reflection): _reflection.request_refresh()
 	if is_instance_valid(details):
 		details.water_changed()
 	return Rect2i(lo, hi - lo + Vector2i.ONE)

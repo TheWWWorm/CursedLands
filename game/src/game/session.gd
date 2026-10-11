@@ -1089,10 +1089,13 @@ func _spawn_pet(pet: Dictionary, p: Vector2, facing := 0.0) -> GameUnit:
 		u.controller = int(pet.controller) if players_include(int(pet.controller)) else _merc_owner()
 		if u.controller != int(pet.controller):
 			u.set_meta("lent_of", int(pet.controller))
-		u.faction = 0
+		u.faction = int(pet.get("faction", 0))
 		u.mode = "player"
 		u.facing = facing
 		u.set_meta("tame_stage", 3)
+		if String(pet.get("id", "")).is_empty():
+			pet.id = preload("res://src/game/actor_refs.gd").pet_key(u)
+		u.set_meta("pet_id", String(pet.id))
 		u.set_meta("pet", pet)
 		if pet.get("xp_stats") is Dictionary:
 			XpRules.restore_unit_record(u, pet.xp_stats)

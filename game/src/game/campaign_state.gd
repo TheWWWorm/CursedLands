@@ -725,6 +725,7 @@ func store_party_positions(world: GameWorld) -> void:
 			h.mana = u.mana
 			h.pos = u.pos
 			h.gait = u.gait()
+			h.facing = u.facing
 			h.body = body_state(u)
 			# A party member lying dead stays so in a save (the original saves every
 			# unit whole), put back by restore_party_positions.
@@ -833,7 +834,8 @@ func collect_pets(world: GameWorld) -> void:
 			var rec := u.info.duplicate()
 			rec.erase("nid")
 			var owner := int(u.get_meta("lent_of", u.get_meta("orphan_of", u.controller)))
-			var pet := {"rec": rec, "hp": u.hp, "mana": u.mana, "controller": owner, "pos": u.pos, "body": body_state(u), "party": deployed}
+			var pet := {"rec": rec, "hp": u.hp, "mana": u.mana, "controller": owner, "pos": u.pos, "facing": u.facing,
+				"id": preload("res://src/game/actor_refs.gd").pet_key(u), "faction":u.faction, "body": body_state(u), "party": deployed}
 			if u.has_meta("xp_stats") and u.get_meta("xp_stats") is Dictionary:
 				pet.xp_stats = u.get_meta("xp_stats").duplicate(true)
 				pet.mana = u.mana
@@ -851,6 +853,7 @@ func restore_party_positions(world: GameWorld) -> void:
 	for u: GameUnit in world.units.values():
 		if u.has_meta("pet") and u.get_meta("pet").has("pos"):
 			u.pos = u.get_meta("pet").pos
+			u.facing = float(u.get_meta("pet").get("facing", u.facing))
 		if u.has_meta("pet") and u.get_meta("pet").get("body") is Dictionary:
 			apply_body(u, u.get_meta("pet").body)
 		if u.has_meta("hero"):
@@ -863,6 +866,8 @@ func restore_party_positions(world: GameWorld) -> void:
 				u.mana = minf(float(h.mana), u.max_mana)
 			if h.has("gait"):
 				u.restore_gait(int(h.gait))
+			if h.has("facing"):
+				u.facing = float(h.facing)
 			if h.get("body") is Dictionary:
 				apply_body(u, h.body)
 			if h.get("dead", false) and not u.dead:
@@ -922,10 +927,21 @@ static func body_state(u: GameUnit) -> Dictionary:
 		var ev = shown.get("%d:%s" % [u.uid, code])
 		var s := float(ev[0].get("s", 1.0)) if ev is Array and not ev.is_empty() and ev[0] is Dictionary else -1.0
 		magic.append([k, left, b, s, code])
-	var out := {"parts": parts, "magic": magic}
+	var out := {"parts": parts, "magic": magic, "mana": u.mana, "gait": u.gait()}
+	if u.world and (u._anim_lock > 0.0 or u._attack_cd > 0.0 or not u._pending_hit.is_empty()):
+		var hit := u._pending_hit.duplicate(true)
+		if hit.has("target"): hit.target = Spells._caster_ref(hit.target)
+		out.phase = {"zone":String(u.world.zone.get("id", "")), "action":u.action,
+			"lock":maxf(0.0, u._anim_lock), "cooldown":maxf(0.0, u._attack_cd), "hit":hit,
+			"cast_target":Spells._caster_ref(u._cast_bar_target.get_ref() if u._cast_bar_target else null),
+			"cast_left":maxf(0.0, u._cast_bar_until - u.world.time)}
+	for key in ["tame_stage", "tame_original_faction", "tame_faction", "peace"]:
+		if u.has_meta(key): out[key] = u.get_meta(key).duplicate(true) if u.get_meta(key) is Array else u.get_meta(key)
+	var hate: Dictionary = u.get_meta("hate", {})
+	if u.world and int(hate.get("w", 0)) == u.world.get_instance_id():
+		out.hate = {"zone":String(u.world.zone.get("id", "")), "factions":Array(hate.get("f", [])).duplicate()}
 	if u.has_meta("npc_character") and not u.has_meta("hero"):
 		out.npc_character = u.get_meta("npc_character").duplicate(true)
-		out.mana = u.mana
 	return out
 
 
@@ -937,7 +953,16 @@ static func apply_body(u: GameUnit, st: Dictionary) -> void:
 		return
 	if st.get("npc_character") is Dictionary:
 		apply_npc_character(u, st.npc_character)
-		u.mana = clampf(float(st.get("mana", u.mana)), 0.0, u.max_mana)
+	u.mana = clampf(float(st.get("mana", u.mana)), 0.0, u.max_mana)
+	if st.has("gait"): u.restore_gait(int(st.gait))
+	for key in ["tame_stage", "tame_original_faction", "tame_faction", "peace"]:
+		if st.has(key): u.set_meta(key, st[key].duplicate(true) if st[key] is Array else st[key])
+	if st.get("hate") is Dictionary and u.world and String(st.hate.get("zone", "")) == String(u.world.zone.get("id", "")):
+		u.set_meta("hate", {"w":u.world.get_instance_id(), "f":Array(st.hate.get("factions", [])).duplicate()})
+	if st.get("phase") is Dictionary and u.world and String(st.phase.get("zone", "")) == String(u.world.zone.get("id", "")):
+		var phases: Dictionary = u.world.get_meta("restored_actions", {})
+		phases[u.uid] = st.phase.duplicate(true)
+		u.world.set_meta("restored_actions", phases)
 	var now := u.world.time if u.world else 0.0
 	var fx := []
 	for e in st.get("magic", []):
@@ -985,6 +1010,21 @@ static func apply_body(u: GameUnit, st: Dictionary) -> void:
 func replay_restored(world: GameWorld) -> void:
 	if world == null or world.session == null:
 		return
+	var phases: Dictionary = world.get_meta("restored_actions", {})
+	world.remove_meta("restored_actions")
+	for uid in phases:
+		var u: GameUnit = world.units.get(int(uid))
+		if u == null or u.dead: continue
+		var phase: Dictionary = phases[uid]
+		u._anim_lock = float(phase.get("lock", 0.0))
+		u._attack_cd = float(phase.get("cooldown", 0.0))
+		u.action = String(phase.get("action", "idle"))
+		var hit: Dictionary = phase.get("hit", {}).duplicate(true)
+		if hit.has("target"): hit.target = Spells._caster_of(world, hit.target)
+		u._pending_hit = hit
+		var target := Spells._caster_of(world, phase.get("cast_target", []))
+		u._cast_bar_target = weakref(target) if target else null
+		u._cast_bar_until = world.time + float(phase.get("cast_left", 0.0))
 	var q: Array = world.get_meta("restored_magic", [])
 	world.remove_meta("restored_magic")
 	for ev: Dictionary in q:
@@ -1035,11 +1075,13 @@ func store_zone(id: String, world: GameWorld) -> void:
 				"owner": int(u.get_meta("lmp_owner")), "conn": int(u.get_meta("lmp_conn", 0)), "blood_pool": u.blood_pool_state()})
 			continue
 		present[u.uid] = true
-		if u.has_meta("detached_party_npc"):
+		if u.has_meta("detached_party_npc") or u.has_meta("pet_id"):
 			var rec: Dictionary = u.info.duplicate(true)
 			rec.nid = u.uid
 			rec.position = Vector3(u.pos.x, u.pos.y, 0)
 			z.detached.append(rec)
+		if u.has_meta("pet_id"):
+			z.get_or_add("pet_ids", {})[u.uid] = u.get_meta("pet_id")
 		if u.has_meta("script_control"):
 			z.get_or_add("controls", {})[u.uid] = u.controller
 		# Original unit saves keep the mutable carried bag, including script
@@ -1062,6 +1104,15 @@ func store_zone(id: String, world: GameWorld) -> void:
 	# Looted corpses (Session.take_loot) are off the world but WasLooted still
 	# sees them (GameWorld.looted).
 	z.looted = world.looted.keys()
+	# A travelling pet's corpse has no authored map record to recreate its
+	# tombstone from. Keep its identity even after looting removes the body.
+	for u: GameUnit in world.looted.values():
+		if not u.has_meta("pet_id"): continue
+		var rec := u.info.duplicate(true)
+		rec.nid = u.uid
+		rec.position = Vector3(u.pos.x, u.pos.y, 0)
+		z.detached.append(rec)
+		z.get_or_add("pet_ids", {})[u.uid] = u.get_meta("pet_id")
 	if world.map:
 		for r: Dictionary in world.map.unit_records:
 			if not present.has(int(r.nid)):
@@ -1215,6 +1266,9 @@ func restore_zone(id: String, world: GameWorld) -> void:
 			u.restore_blood_pool(pools.get(nid, pools.get(str(nid))) if pools is Dictionary else null)
 			if z.get("loot", {}).has(nid):
 				u.set_meta("loot", z.loot[nid])
+	for nid in z.get("pet_ids", {}):
+		var u: GameUnit = world.units.get(int(nid), world.looted.get(int(nid)))
+		if u: u.set_meta("pet_id", String(z.pet_ids[nid]))
 	for nid in z.units:
 		var u: GameUnit = world.units.get(int(nid))
 		if u:

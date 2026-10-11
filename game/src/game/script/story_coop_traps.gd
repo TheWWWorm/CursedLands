@@ -23,7 +23,10 @@ const PRISON_DAMAGE_CHAIN := ["VTriger#0#113",
 	"VCheck#0#118","VTriger#0#156","VCheck#0#119","VTriger#0#157","VCheck#0#120","VTriger#0#158",
 	"VCheck#0#121","VTriger#0#159","VCheck#0#122","VTriger#0#160"]
 const PRISON_DAMAGE_SIGNATURE := "bbf53da90e2290af92114110db2fd0f1b4dcca3541a1b3a9e0d8366d26617394"
-const NATIVE_REGISTRATIONS := [PRISON_REGISTER,PRISON_DAMAGE_REGISTER]
+const ASTRAL_REGISTRATIONS := ["Trap#0#1", "Trap#1#1"]
+const ASTRAL_SIGNATURES := ["fb360e911b160ea684c10d400a2d88a521b3c2211f23c1a298a9d548b4fe30c9",
+	"496e82c285fcacdfb194a58498ca8bd1857ef9d60d4f909d8d2b35caf10b2b40"]
+const NATIVE_REGISTRATIONS := [PRISON_REGISTER,PRISON_DAMAGE_REGISTER,"Trap#0#1","Trap#1#1"]
 const PRISON_ACTOR := &"prison_actor_reference"
 const PRISON_LAST := &"prison_actor_tick"
 const PRISON_INTRUDER := &"prison_intruder_reference"
@@ -42,8 +45,26 @@ static func _replace_calls(body: Array, names: Array) -> void:
 
 
 static func apply(ast: ScriptParser, zone: String) -> void:
+	if zone == "gz13g": apply_astral_registration(ast)
 	if not FAMILIES.has(zone): return
 	apply_family(ast, FAMILIES[zone])
+
+
+## Keep the original area/quest activation, per-actor conditions and damage.
+## Once its native For has run, admit each later character exactly once.
+static func apply_astral_registration(ast: ScriptParser) -> void:
+	for i in ASTRAL_REGISTRATIONS.size():
+		var root: String = ASTRAL_REGISTRATIONS[i]
+		if ast.scripts.has(root+WATCH): continue
+		var family := ["Trap#%d#2" % i, "Trap#%d#3" % i]
+		var definitions := []
+		for name: String in ["VCheck#0#1", root] + family:
+			definitions.append([name, ast.scripts.get(name, {})])
+		if JSON.stringify(definitions,"",true,true).sha256_text() != ASTRAL_SIGNATURES[i]: continue
+		ast.scripts[root+WATCH] = {"params":[], "blocks":[{"conds":[],
+			"body":[[P.S_CALL,"RemakeTrapJoin",[[P.N_STR,root]]]]}],
+			"registration":{"children":[family[0]], "caller":"VCheck#0#1", "family":family,
+				"quest":"q.gz13g.q17g.%d" % (2 if i == 0 else 4), "reactivate":true}}
 
 
 ## This original prison registers one native area wait per deployed hero.
@@ -135,7 +156,11 @@ static func arm(vm: ScriptVM, name: String, args: Array, caller: String) -> void
 	var def: Dictionary = vm.ast.scripts.get(name+WATCH,{})
 	if def.is_empty() or not vm.session.lmp.is_empty(): return
 	if def.has("registration"):
-		if caller != def.registration.caller or vm.instances.any(func(i):return i.sname == name+WATCH): return
+		if caller != def.registration.caller: return
+		for watcher: ScriptVM.Instance in vm.instances:
+			if watcher.sname != name+WATCH or watcher.killed: continue
+			if def.registration.get("reactivate", false): watcher.locals[SEEN] = []
+			return
 		vm.spawn(name+WATCH,[])
 		return   # the native For runs first and records its actual children
 	if caller != "" and caller != def.trap.caller: return
@@ -238,6 +263,10 @@ static func restore_registration(vm: ScriptVM, saved: Dictionary) -> void:
 
 
 static func _join_registration(vm: ScriptVM, root: String, inst: ScriptVM.Instance) -> void:
+	var registration: Dictionary = vm.ast.scripts[root+WATCH].registration
+	if registration.has("quest") and vm.session.state.get_var(0, registration.quest) == 2.0:
+		inst.killed = true
+		return
 	# A saved or newly spawned For(Heroes) still owns its remaining items.
 	if vm.instances.any(func(i):return i.sname == root and (not i.killed or not i.frames.is_empty())): return
 	var seen: Array = inst.locals.get(SEEN,[])

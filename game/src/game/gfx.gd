@@ -9,6 +9,7 @@ extends RefCounted
 
 static var _noise_cache := {}
 const Clouds = preload("res://src/game/fx/clouds.gd")
+const WaterReflection = preload("res://src/game/fx/water_reflection.gd")
 const WaterTextureData = preload("res://src/game/fx/water_texture_data.gd")
 static var _cloud_owner := 0
 static var _cloud_frame := {"state":Vector4.ZERO,"phases":Vector4.ZERO,"twinkle":Vector2.ZERO}
@@ -53,6 +54,7 @@ const GLOBALS := {
 	&"ei_sky": Color(0.18, 0.71, 0.85),   # Lights [sky]: the clear colour
 	&"ei_sun_dir": Color(0.0, 0.0, 0.0),   # world direction towards the sun (update_original)
 	&"ei_surface_fx": Color(1.0, 1.0, 1.0),   # materials, leaf backlight, rain surfaces
+	&"ei_water_mirror": Color(0.0, 0.0, 0.0), # active reflected-view clipping height
 	&"ei_weather": Color(0.0, 0.0, 0.0),   # wetness, current rain intensity, reserved
 	&"ei_sun_pass": Color(0.0, 0.0, 0.0),   # 1: the sun is drawn in its own additive pass (GLES3, shadowed)
 	&"ei_unit_sharp": Color(1.0, -0.5, 0.0),   # gfx_sharp_units: on, mip bias (EIUnitModel.SHARP_FETCH)
@@ -86,6 +88,7 @@ global uniform vec4 ei_plc2;
 global uniform vec4 ei_plc3;
 global uniform vec3 ei_surface_fx;
 global uniform vec3 ei_weather;
+global uniform vec3 ei_water_mirror;
 uniform vec4 ei_material_diffuse = vec4(1.0);
 uniform vec3 ei_material_emissive = vec3(0.0);
 vec3 ei_lin(vec3 c) {
@@ -301,7 +304,7 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 		code = _blend_fog(code, lit)
 	if lit and LocalLightShader.enabled():
 		code = _function_tail(code, "fragment", LocalLightShader.CAPTURE)
-	return WaterTextureData.source(GroundContactData.source(code))
+	return WaterReflection.clip_source(WaterTextureData.source(GroundContactData.source(code)))
 
 
 ## Insert after the stage's complete body, including nested option branches.

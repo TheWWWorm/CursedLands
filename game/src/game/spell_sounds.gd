@@ -49,6 +49,19 @@ func _init(m: SoundMixer, w: GameWorld) -> void:
 	world = w
 
 
+## The owning GameSound stops the mixer on a world change. Discard callbacks
+## before dropping this RefCounted: their self captures otherwise form a cycle
+## whenever a long-lived trap/spell sound is still pending at load or exit.
+func clear() -> void:
+	_later.clear()
+	_movers.clear()
+	_effects.clear()
+	_warns.clear()
+	_firework_lists.clear()
+	world = null
+	mixer = null
+
+
 func _after(secs: float, f: Callable) -> void:
 	_later.append({"at": _clock + maxf(secs, 0.0), "f": f})
 

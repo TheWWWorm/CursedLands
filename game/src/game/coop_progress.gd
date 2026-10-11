@@ -330,7 +330,7 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 		# Where the hero stands: the host's world when the save moves there,
 		# else where it was in the joiner's own game.
 		var src: Dictionary = pkg.hero if move and context == null and pkg.get("hero") is Dictionary else old
-		for k in ["pos", "mana", "gait"]:
+		for k in ["pos", "mana", "gait", "facing"]:
 			if src.has(k):
 				h[k] = src[k]
 			else:
@@ -598,7 +598,7 @@ func _replace_personal_source(e: Dictionary, data: Dictionary, player_name: Stri
 	var roles: Dictionary = session.state.coop.get(GuestRoles.KEY, {})
 	var had_role := roles.has(idx)
 	roles.erase(idx)
-	for key in ["unit_name", "pos", "hp", "mana", "body", "dead", "blood_pool", "follow", "follow_live"]:
+	for key in ["unit_name", "pos", "hp", "mana", "facing", "body", "dead", "blood_pool", "follow", "follow_live"]:
 		if previous.has(key): hero[key] = previous[key]
 	session.state.heroes[idx] = [hero]
 	var restored_role := GuestRoles.restore_import(session, idx, data.get("party_context"))
@@ -1264,6 +1264,8 @@ func package(e: Dictionary) -> Dictionary:
 	for p in session.players.values():
 		if int(p.index) == 0:
 			host = String(p.name)
+	hero = PartyProgress.project_bodies(hero, int(e.idx))
+	party_context = PartyProgress.project_bodies(party_context, int(e.idx))
 	return {"campaign_id": st.campaign_id, "mod_config": session.mod_config, "host": host, "orig_name": e.orig_name, "hero": hero, "vars": (e.credits.vars as Dictionary).duplicate(),
 		"visited": (e.credits.visited as Dictionary).keys(), "side_quests": (e.credits.side_quests as Dictionary).duplicate(),
 		"quest_items": (e.credits.quest_items as Dictionary).duplicate(), "zones": zones,
@@ -1353,6 +1355,7 @@ static func sanitize_hero(d) -> Dictionary:
 	h.complexion = c if c is Vector3 else GameUnit.proto_complexion(GameData.db.find("monster_prototypes", proto))
 	h.aggressive = bool(d.get("aggressive", true)) if d.get("aggressive") is bool else true
 	h.gait = clampi(int(_num(d.get("gait", 2), 2.0)), 0, 3)
+	if d.has("facing"): h.facing = _num(d.facing, 0.0)
 	if d.get("pos") is Vector2:
 		h.pos = d.pos
 	if d.get("mana") is float:

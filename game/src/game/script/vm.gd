@@ -679,7 +679,7 @@ func _call(name: String, a: Array, inst: Instance):
 				# The native script calls the same AI state-3 setter as the
 				# Aggression motivation (LiA 516c30, base 5d7b50). Its target
 				# participates in the next AI choice, including its keep bonus.
-				u.command({"type": "attack", "target": target, "aim": -1, "ai": true})
+				u.command({"type": "attack", "target": target, "aim": -1, "ai": true, "story": true})
 				u.set_meta("ai_state", 3)
 				u.set_meta("ai_target", target)
 		"Cast":
@@ -689,7 +689,7 @@ func _call(name: String, a: Array, inst: Instance):
 				var spell := String(slots[0]).strip_edges().to_lower() if not slots.is_empty() else ""
 				u.set_meta("ai_state", 4)
 				if not spell.is_empty() and not Spells.parse(spell).proto.is_empty():
-					u.command({"type": "cast", "spell": spell, "point": Vector2(_num(v[1]), _num(v[2]))})
+					u.command({"type": "cast", "spell": spell, "point": Vector2(_num(v[1]), _num(v[2])), "story": true})
 		# Builtin 0x2 MoveToPoint(unit, x, y) ->: AI state 1 and a
 		# move order to the point.
 		"MoveToPoint":
@@ -794,7 +794,7 @@ func _call(name: String, a: Array, inst: Instance):
 			if fu and ft and fu != ft and not fu.dead:
 				fu.set_meta("ai_state", 6)
 				fu.set_meta("ai_target", ft)
-				fu.command({"type": "follow", "target": ft, "dist": 2.0})
+				fu.command({"type": "follow", "target": ft, "dist": 2.0, "story": true})
 		# Builtin 0x31 UMPlayer(unit): motivations dropped, the
 		# Player motivation added (type 6: the player units' one —
 		# engage noticed enemies when aggressive, no calm walk; UnitAI._player)
@@ -1841,7 +1841,7 @@ func save_state() -> Dictionary:
 			d.wu = _ser(inst.wait_unit)
 		insts.append(d)
 	var saved := {"globals": g, "instances": insts, "areas": areas, "alarms": _alarm_save(), "qobjs": qobjs, "sciences": sciences,
-		"story_orders": _save_story_orders(),
+		"story_orders": _save_story_orders(), "time_fixed": time_fixed,
 		"script_ai": _save_script_ai(),
 		"briefing_queue": _ser(briefings._after_movie) if briefings else [],
 		"world_done": _world_done.duplicate(),
@@ -1880,6 +1880,7 @@ func _alarm_load(al) -> void:
 
 func _restore(d: Dictionary) -> void:
 	d = preload("res://src/game/script/coop_vm_state.gd").restore(self,d)
+	time_fixed = bool(d.get("time_fixed", false))
 	for row: Dictionary in d.get("script_ai", []):
 		var u = _deser(row.get("actor"))
 		if not u is GameUnit or u.dead or u.has_meta("hero"): continue
@@ -1900,10 +1901,13 @@ func _restore(d: Dictionary) -> void:
 	for row: Dictionary in d.get("story_orders", []):
 		var u = _deser(row.get("actor"))
 		if not u is GameUnit or u.dead: continue
-		for order: Dictionary in row.get("orders", []):
-			if order.get("type") in ["move", "rotate", "anim"]:
-				u.command(order.duplicate(true), true)
-				if order.type != "anim": u.set_meta("ai_state", 1)
+		for saved_order: Dictionary in row.get("orders", []):
+			var order: Dictionary = _deser(saved_order)
+			if order.get("type") in ["move", "rotate", "anim", "attack", "cast", "follow"]:
+				if order.type in ["attack", "follow"] and not is_instance_valid(order.get("target")): continue
+				u.command(order, true)
+				if order.type != "anim": u.set_meta("ai_state", 3 if order.type == "attack" else (4 if order.type == "cast" else 1))
+				if order.type == "attack": u.set_meta("ai_target", order.target)
 	if briefings:
 		var pending = _deser(d.get("briefing_queue", []))
 		if pending is Array:
@@ -2006,7 +2010,7 @@ func _save_story_orders() -> Array:
 			orders.append({"type":"anim", "name":u._story_clip, "story":true})
 		for order: Dictionary in [u.order] + u.orders:
 			if order.get("story", false) or order.get("story_move", false) or order.get("story_yield", false):
-				orders.append(order.duplicate(true))
+				orders.append(_ser(order))
 		if not orders.is_empty(): out.append({"actor":_ser(u), "orders":orders})
 	return out
 
@@ -2048,26 +2052,41 @@ func _ser(v):
 		return null   # a unit the script removed (RemoveUnitFromServer)
 	if v is GameUnit:
 		var key := _hero_key(v)
-		return {"u": v.uid, "h": key} if not key.is_empty() else {"u": v.uid}
+		if v.has_meta("pet_id") or int(v.get_meta("tame_stage", 0)) >= 3:
+			return {"u":v.uid, "actor":preload("res://src/game/actor_refs.gd").of(v)}
+		var out := {"u": v.uid, "h": key} if not key.is_empty() else {"u": v.uid}
+		var ref := preload("res://src/game/actor_refs.gd").of(v)
+		if out.has("h") and ref.size() >= 4: out.role = ref[3]
+		return out
 	if v is Node3D:
 		return {"o": _obj_id(v)} if is_instance_valid(v) else null
 	if v is Array:
 		return v.map(_ser)
+	if v is Dictionary:
+		var out := {}
+		for k in v: out[k] = _ser(v[k])
+		return out
 	return v
 
 
 func _deser(v):
 	if v is Dictionary:
+		if v.has("actor") and v.has("u"):
+			return preload("res://src/game/actor_refs.gd").resolve(world, v.actor)
 		if v.has("h"):
 			# Stable hero identity is authoritative even when that player is
 			# absent. A new deployment can reuse its numeric id for another
 			# hero or actor; resolving that fallback would change the script's
 			# subject. Plain numeric references still preserve legacy actors.
-			return _hero_by_key(v.h)
+			var u := _hero_by_key(v.h)
+			return u if u == null or not v.has("role") or String(u.get_meta("hero").get("unit_name", "")) == String(v.role) else null
 		if v.has("u"):   # a looted corpse taken off the world stays known (WasLooted)
 			return world.units.get(int(v.u), world.looted.get(int(v.u)))
 		if v.has("o"):
 			return world.objects.get(int(v.o))
+		var out := {}
+		for k in v: out[k] = _deser(v[k])
+		return out
 	if v is Array:
 		return v.map(_deser)
 	return v
@@ -2080,14 +2099,7 @@ func _deser(v):
 ## the hero by [player, roster index] so a load finds the same hero again.
 ## Mercenaries keep their name's id (Session._spawn_merc) and need none.
 func _hero_key(u: GameUnit) -> Array:
-	if not u.has_meta("hero") or u.get_meta("hero").has("merc") or session == null or session.state == null:
-		return []
-	var owner := int(u.get_meta("orphan_of", u.controller))
-	var roster: Array = session.state.heroes.get(owner, [])
-	for i in roster.size():
-		if is_same(roster[i], u.get_meta("hero")):
-			return [owner, i]
-	return []
+	return preload("res://src/game/actor_refs.gd").hero_key(u, session.state if session else null)
 
 
 func _hero_by_key(key) -> GameUnit:

@@ -11,6 +11,18 @@ static func capture(st: CampaignState) -> Dictionary:
 		"mercs": st.mercs, "pets": st.pets}.duplicate(true)
 
 
+## Project only the transmitted copy. Private checkpoint contexts retain host
+## identities so repeated packages never project an already-solo reference.
+static func project_bodies(value: Variant, player: int) -> Variant:
+	if value is Array: return value.map(func(v): return project_bodies(v, player))
+	if value is Dictionary:
+		var out := {}
+		for key in value:
+			out[key] = preload("res://src/game/actor_refs.gd").project_value(value[key], player) if key == "body" else project_bodies(value[key], player)
+		return out
+	return value
+
+
 static func record_ok(h: Variant) -> bool:
 	if not h is Dictionary or not h.get("prototype") is String:
 		return false
@@ -95,7 +107,7 @@ static func personal(st: CampaignState, hero: Dictionary, purse: Dictionary, pos
 			if old.has(k): h[k] = old[k]
 			elif k == "unit_name": h.erase(k)   # keep the original main Hero fallback
 		var body: Dictionary = hero if positions and st.current_party == name else old
-		for k in ["pos", "mana", "gait", "hp", "body", "dead", "blood_pool"]:
+		for k in ["pos", "mana", "gait", "facing", "hp", "body", "dead", "blood_pool"]:
 			if body.has(k): h[k] = body[k].duplicate(true) if body[k] is Dictionary or body[k] is Array else body[k]
 			elif k in ["pos", "mana", "gait"]: h.erase(k)
 		if roster.is_empty(): roster.append(h)

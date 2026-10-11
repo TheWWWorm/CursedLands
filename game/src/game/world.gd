@@ -395,6 +395,8 @@ func spawn_unit(record: Dictionary) -> GameUnit:
 
 func new_uid() -> int:
 	_next_uid += 1
+	while units.has(_next_uid) or looted.has(_next_uid) or objects.has(_next_uid):
+		_next_uid += 1
 	return _next_uid
 
 

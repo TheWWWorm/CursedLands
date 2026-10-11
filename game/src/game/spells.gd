@@ -6,6 +6,7 @@ extends RefCounted
 ## dispatcher and the stat fold (see apply).
 
 const TARGET_POINT := 116
+const ActorRefs := preload("res://src/game/actor_refs.gd")
 ## Native 683910 chooses damage by spell index, independently of the
 ## knowledge school in spells.sdb. Rick/Curse Magic use domination knowledge
 ## but deal fire/electrical damage, like Fire Arrow/Lightning respectively.
@@ -521,9 +522,9 @@ static func _start_lasting(world: GameWorld, caster, p: Dictionary, at: Vector2,
 ## first (RemoveObject, summons) — so no callback meets a freed capture.
 class WorldTimers extends Node:
 	var pending: Array[Dictionary] = []
-	func queue(secs: float, f: Callable) -> void:
+	func queue(secs: float, f: Callable, saved := {}) -> void:
 		var w := get_parent() as GameWorld
-		pending.append({"left": secs, "f": f, "created_step": w._logic_step if w else -1})
+		pending.append({"left": secs, "f": f, "saved": saved, "created_step": w._logic_step if w else -1})
 	func _tick(dt: float, world_step := false) -> void:
 		# One authoritative world can be hidden or temporarily unoccupied.
 		# Its delays consume only that world's running time, never base time.
@@ -554,6 +555,10 @@ class WorldTimers extends Node:
 static func cast_after(world: GameWorld, caster: GameUnit, spell: String, target: GameUnit, at: Vector2, secs: float) -> void:
 	var caster_ref := _ref(caster)
 	var target_ref := _ref(target)
+	# Payment belongs to GameUnit._do_cast. Restoration only schedules delivery,
+	# never re-enters that cost/consumption path. The timer is removed before fire.
+	var saved := {"k":"cast", "paid":true, "spell":spell, "caster":_caster_ref(caster),
+		"target":_caster_ref(target), "at":[at.x, at.y]}
 	_after(world, secs, func():
 		var c: GameUnit = _deref(caster_ref)
 		if c == null or c.dead or not is_instance_valid(world) or c.world != world:
@@ -566,10 +571,10 @@ static func cast_after(world: GameWorld, caster: GameUnit, spell: String, target
 		if c != null and is_instance_valid(world) and c.world == world \
 				and int(parse(spell).proto.get("type_id", 0)) != 1:
 			world.ai.noise_event(c, c.detect(3) * 2.0)
-	)
+	, false, saved)
 
 
-static func _after(world: GameWorld, secs: float, f: Callable, always := false) -> void:
+static func _after(world: GameWorld, secs: float, f: Callable, always := false, saved := {}) -> void:
 	if not is_instance_valid(world) or not world.is_inside_tree():
 		return
 	var n = world.get_node_or_null("SpellTimers")
@@ -578,7 +583,7 @@ static func _after(world: GameWorld, secs: float, f: Callable, always := false) 
 		n.name = "SpellTimers"
 		world.add_child(n)
 	if world.authority:
-		n.queue(secs, f)
+		n.queue(secs, f, saved)
 		return
 	world.get_tree().create_timer(secs, always).timeout.connect(n.fire.bind(f))
 
@@ -639,25 +644,11 @@ static func _keep_lasting(world: GameWorld, id: int, rec: Dictionary) -> int:
 ## A caster as the save keeps it: a party unit by its record's name and
 ## player (party units get new ids when they are deployed), others by id.
 static func _caster_ref(caster) -> Array:
-	if caster == null or not is_instance_valid(caster) or not (caster is GameUnit):
-		return []
-	var u: GameUnit = caster
-	if u.has_meta("hero"):
-		var h: Dictionary = u.get_meta("hero")
-		return ["hero", String(h.get("unit_name", h.get("name", ""))), u.controller]
-	return ["uid", u.uid]
+	return ActorRefs.of(caster)
 
 
 static func _caster_of(world: GameWorld, ref: Array) -> GameUnit:
-	if ref.size() >= 2 and ref[0] == "uid":
-		return world.units.get(int(ref[1]))
-	if ref.size() >= 3 and ref[0] == "hero":
-		for u: GameUnit in world.units.values():
-			if u.has_meta("hero") and u.controller == int(ref[2]):
-				var h: Dictionary = u.get_meta("hero")
-				if String(h.get("unit_name", h.get("name", ""))) == String(ref[1]):
-					return u
-	return null
+	return ActorRefs.resolve(world, ref)
 
 
 ## For CampaignState.store_zone. Arrows and bolts in flight (Projectile, the
@@ -668,15 +659,26 @@ static func save_lasting(world: GameWorld) -> Array:
 	if world == null:
 		return []
 	var out: Array = _lasting(world).values().duplicate(true) if world.has_meta("lasting_spells") else []
+	var timers := world.get_node_or_null("SpellTimers") as WorldTimers
+	if timers:
+		for timer: Dictionary in timers.pending:
+			if timer.get("saved", {}).is_empty(): continue
+			var rec: Dictionary = timer.saved.duplicate(true)
+			rec.ticks = maxf(0.0, float(timer.left) / GameUnit.TICK)
+			out.append(rec)
 	if world.ai:
 		out.append_array(world.ai.save_dangers())
 	for c in world.get_children():
-		if c is Projectile and c.apply_hit and not c.is_queued_for_deletion() and is_instance_valid(c.target) \
-				and not c.target.dead:
+		if c is Projectile and c.apply_hit and not c.is_queued_for_deletion() \
+				and (c._direct or (is_instance_valid(c.target) and not c.target.dead)):
 			var gp: Vector3 = c.global_position
 			out.append({"k": "shot", "source": _caster_ref(c.source), "target": _caster_ref(c.target),
 				"pos": [gp.x, gp.y, gp.z], "roll": c.roll.duplicate(true), "at": [0.0, 0.0], "counter": 0})
-	return out
+			if c._direct:
+				out[-1].direct = true
+				out[-1].direction = c._direction
+				out[-1].remaining = c._remaining
+	return ActorRefs.refresh_value(world, out)
 
 
 ## Host (CampaignState.replay_restored): saved lasting effects run on from
@@ -689,6 +691,12 @@ static func restore_lasting(world: GameWorld, list: Array, shown := {}) -> void:
 		if not r is Dictionary:
 			continue
 		var rec: Dictionary = r
+		if String(rec.get("k", "")) == "cast":
+			var caster := _caster_of(world, rec.get("caster", []))
+			if caster and not caster.dead and rec.get("paid", false) and float(rec.get("ticks", -1)) >= 0.0:
+				cast_after(world, caster, String(rec.spell),
+					_caster_of(world, rec.get("target", [])), Vector2(float(rec.at[0]), float(rec.at[1])), float(rec.ticks) * GameUnit.TICK)
+			continue
 		if String(rec.get("k", "")) == "danger":
 			if world.ai:
 				world.ai.restore_danger(rec)
@@ -742,16 +750,23 @@ static func restore_lasting(world: GameWorld, list: Array, shown := {}) -> void:
 			"shot":   # an arrow / bolt in flight (save_lasting): on from where it was
 				_lasting(world).erase(id)
 				var tu := _caster_of(world, rec.get("target", []))
-				if tu and not tu.dead:
+				if (tu and not tu.dead) or bool(rec.get("direct", false)):
 					var pr := Projectile.new()
 					pr.world = world
 					pr.target = tu
 					pr.roll = Dictionary(rec.get("roll", {}))   # (before the shooter: kept as it was)
 					pr.source = _caster_of(world, rec.get("source", []))
+					pr._direct = bool(rec.get("direct", false))
+					if pr._direct:
+						pr._direction = rec.get("direction", Vector3.ZERO)
+						pr._remaining = float(rec.get("remaining", 0.0))
 					world.add_child(pr)
 					pr.global_position = Vector3(float(rec.pos[0]), float(rec.pos[1]), float(rec.pos[2]))
 					if pr.source and world.session:
-						world.session.broadcast({"t": "arrow", "a": pr.source.uid, "b": tu.uid})
+						if pr._direct:
+							world.session.broadcast({"t":"direct_arrow", "a":pr.source.uid, "direction":pr._direction, "start":pr.global_position})
+						else:
+							world.session.broadcast({"t": "arrow", "a": pr.source.uid, "b": tu.uid})
 			_:
 				_lasting(world).erase(id)
 
@@ -1078,6 +1093,7 @@ static func tame(world: GameWorld, tamer: GameUnit, u: GameUnit, power: float) -
 		return false
 	var stage := int(u.get_meta("tame_stage", 0)) + 1
 	u.set_meta("tame_stage", stage)
+	u.set_meta("tame_faction", tamer.faction)
 	match stage:
 		1:
 			var peace: Array = u.get_meta("peace", [])
@@ -1087,11 +1103,13 @@ static func tame(world: GameWorld, tamer: GameUnit, u: GameUnit, power: float) -
 			u.order = {}
 			u.target = null
 		2:
+			u.set_meta("tame_original_faction", u.faction)
 			u.faction = tamer.faction
 		_:
 			u.faction = tamer.faction
 			u.controller = tamer.controller
 			u.mode = "player"
+			ActorRefs.pet_key(u)
 	return true   # no text-window line (shows nothing)
 
 

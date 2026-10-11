@@ -1,6 +1,6 @@
 # Mods, profiles and game rules
 
-Available in **1.0.4 Experimental**, using mod API 1 and network protocol 14. Stable 1.0.3 does not include this feature.
+Available in **1.0.4 Experimental**, using mod API 1 and network protocol 15. Stable 1.0.3 does not include this feature.
 
 Open **Mods and rules** above the main-menu signpost, from the multiplayer screen, or beside the in-game Esc menu. **Options → Remake → Mod options and rules** opens the same editor. New Game includes a rules review before the difficulty screen.
 
@@ -21,7 +21,7 @@ Mouse, keyboard focus and controller navigation use the same controls. D-pad up/
 
 ## Co-op compatibility
 
-Everyone needs network protocol **14** (this source revision). The host checks the mod API, campaign, sandbox classification, ordered gameplay package IDs/versions/content hashes and effective mod option values before admitting a player. Existing original-map checks and database synchronization remain in place. No package is downloaded automatically.
+Everyone needs network protocol **15** (this source revision). The host checks the mod API, campaign, sandbox classification, ordered gameplay package IDs/versions/content hashes and effective mod option values before admitting a player. Existing original-map checks and database synchronization remain in place. No package is downloaded automatically.
 
 Built-in host rules, such as full XP or shared loot, are published to guests without changing their local defaults. Gameplay mod values must match when joining. Choose the same package versions and values in the menu before connecting. A continued host save supplies its saved configuration before the lobby opens; stop hosting to choose a different save.
 

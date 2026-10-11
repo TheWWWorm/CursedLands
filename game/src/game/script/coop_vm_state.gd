@@ -3,14 +3,18 @@ extends RefCounted
 ## serialized VM state; never change the authority's live actors or threads.
 const KEY := "coop_return"
 const P := preload("res://src/game/script/script_parser.gd")
+const ActorRefs := preload("res://src/game/actor_refs.gd")
 
 static func mark_zones(zones: Dictionary, player: int) -> Dictionary:
 	var out: Dictionary = zones.duplicate()
 	if player <= 0: return out
 	for name in out:
 		var zone: Variant = out[name]
-		if zone is Dictionary and zone.get("vm") is Dictionary and not zone.vm.is_empty():
-			out[name] = zone.duplicate()
+		if not zone is Dictionary: continue
+		out[name] = zone.duplicate()
+		for key in zone:
+			if key != "vm": out[name][key] = ActorRefs.project_value(zone[key], player)
+		if zone.get("vm") is Dictionary and not zone.vm.is_empty():
 			out[name].vm = zone.vm.duplicate()
 			out[name].vm[KEY] = {"version":1,"player":player}
 	return out
@@ -25,7 +29,8 @@ static func _hero(value: Variant) -> Array:
 
 static func _ref(value: Dictionary, index: int) -> Dictionary:
 	var out := value.duplicate(true)
-	out.h = [0,index]
+	var projected := ActorRefs.project(["hero_slot", int(value.h[0]), index], int(value.h[0]), true)
+	out.h = [projected[1], projected[2]]
 	return out
 
 
@@ -38,6 +43,28 @@ static func _value(value: Variant, player: int) -> Variant:
 	if value is Array:
 		var out := []
 		for i in _indices(value,player,false): out.append(_value(value[i],player))
+		return out
+	if value is Dictionary:
+		var out := {}
+		for key in value: out[key] = _value(value[key], player)
+		return out
+	return value
+
+
+static func _physical_value(value: Variant, player: int) -> Variant:
+	var hero := _hero(value)
+	if not hero.is_empty():
+		var identity := ["hero_slot", hero[0], hero[1]]
+		if value.has("role"): identity.append(value.role)
+		var ref := ActorRefs.project(identity, player)
+		if ref.is_empty(): return null
+		var out: Dictionary = value.duplicate(true)
+		out.h = [ref[1], ref[2]]
+		return out
+	if value is Array: return value.map(func(v): return _physical_value(v, player))
+	if value is Dictionary:
+		var out := {}
+		for key in value: out[key] = _physical_value(value[key], player)
 		return out
 	return value
 
@@ -132,21 +159,24 @@ static func _frames(vm: ScriptVM, row: Dictionary, globals: Dictionary, player: 
 ## called family against that role, so saved instruction indexes remain valid
 ## and its original idle copy cannot execute the same action a second time.
 static func _family_equal(a: Variant, b: Variant, names: Array, mapping: Dictionary) -> bool:
-	if a is Array and b is Array:
+	if a is Array or b is Array:
+		if not a is Array or not b is Array: return false
 		if a.size() != b.size(): return false
-		if a.size() == 3 and a[0] == P.S_CALL and a[1] in names:
-			if b[0] != P.S_CALL or not b[1] is String: return false
+		if a.size() == 3 and a[0] is int and a[0] == P.S_CALL and a[1] is String and a[1] in names:
+			if not b[0] is int or b[0] != P.S_CALL or not b[1] is String: return false
 			if mapping.has(a[1]) and mapping[a[1]] != b[1]: return false
 			mapping[a[1]] = b[1]
 			return _family_equal(a[2],b[2],names,mapping)
 		for i in a.size():
 			if not _family_equal(a[i],b[i],names,mapping): return false
 		return true
-	if a is Dictionary and b is Dictionary:
+	if a is Dictionary or b is Dictionary:
+		if not a is Dictionary or not b is Dictionary: return false
 		if a.size() != b.size(): return false
 		for key in a:
 			if not b.has(key) or not _family_equal(a[key],b[key],names,mapping): return false
 		return true
+	if typeof(a) != typeof(b) and not ((a is int or a is float) and (b is int or b is float)): return false
 	return a == b
 
 
@@ -335,6 +365,7 @@ static func restore(vm: ScriptVM, saved: Dictionary) -> Dictionary:
 		var hero := _hero(row.get("actor"))
 		if not hero.is_empty() and (int(hero[0]) not in [0,player] or (int(hero[0]) == 0 and own.has(int(hero[1])))): continue
 		row.actor = _value(row.get("actor"),player)
+		row.orders = _physical_value(row.get("orders", []), player)
 		out.story_orders.append(row)
 	for row in out.get("script_ai",[]):
 		row.actor = _value(row.get("actor"),player)

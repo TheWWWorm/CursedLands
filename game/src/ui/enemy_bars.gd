@@ -16,8 +16,8 @@ extends Control
 ## Clutter (remake choice): only enemies within RANGE m of the camera's
 ## look-at point or of a selected party member, at most MAX of them (the
 ## nearest to the look-at point first). Auto shows a bar once the unit is
-## hurt, and over the controller's highlighted target (PadField.target_unit)
-## at full health too; Always shows every bar. Bars fade in / out over
+## hurt, or while the enemy is fighting the local party, even at full health.
+## Always enables bars with every input. Bars fade in / out over
 ## FADE_S. Only units that are drawn: not hidden, not in the fog of war
 ## (UnitFog clears `visible`), not dead, in front of the camera and on the
 ## screen; not on the village screen or under a movie. Drawn on a canvas
@@ -81,16 +81,20 @@ func _ready() -> void:
 
 func active() -> bool:
 	var s := game.session if game else null
-	return s != null and game.world != null and (input_shows() or (game.direct and game.direct.active())) and (not s.shop_available() or (game.direct and game.direct.active())) \
+	return s != null and game.world != null and (input_shows() or (game.direct and game.direct.active())) and not s.shop_available() and not s.loading_game and not s._remote_loading and not s._zone_holding \
 			and not (game.hud and game.hud._movie and game.hud._movie.visible)
 
 
 func _process(dt: float) -> void:
 	var on := active()
+	if game and _world != game.world:
+		_world = game.world
+		_alpha.clear(); _health.clear(); _units.clear()
 	if not on:
 		if visible:
 			visible = false
 			_alpha.clear()
+			_health.clear()
 			drawn = {}
 		return
 	visible = true
@@ -107,10 +111,11 @@ func entries() -> Array:
 		return out
 	var lead: GameUnit = mine[0]
 	var direct := game.direct != null and game.direct.active()
-	var always := direct or GameData.option(OPTION) == ALWAYS
-	var hl: GameUnit = null
-	if PadInput.field != null and is_instance_valid(PadInput.field) and PadInput.active == "pad":
-		hl = PadInput.field.call("target_unit")
+	var aimed: GameUnit = null
+	if direct and game.direct.usable() and not game.direct.pointer:
+		var actor := game.direct.leader()
+		if actor and (game.direct._fire or actor.action == "attack" or actor.action.begins_with("cast")):
+			aimed = game.pick_unit(get_viewport_rect().size * 0.5, actor)
 	var focus := Vector2.INF
 	if game.rig:
 		focus = Vector2(game.rig.position.x, -game.rig.position.z)
@@ -133,9 +138,15 @@ func entries() -> Array:
 		if not close:
 			continue
 		var hurt := u.hp < u.max_hp - 0.01
-		out.append([u, 1.0 if always or hurt or u == hl else 0.0,
+		var fighting := false
+		for ally: GameUnit in mine:
+			if w.is_enemy(ally, u) or w.is_enemy(u, ally):
+				if u == aimed or ally.combat_target_id() == u.uid or u.combat_target_id() == ally.uid:
+					fighting = true
+					break
+		out.append([u, 1.0 if hurt or fighting else 0.0,
 			u.pos.distance_squared_to(focus) if focus != Vector2.INF else 0.0])
-	out.sort_custom(func(a, b): return float(a[2]) < float(b[2]))
+	out.sort_custom(func(a, b): return float(a[1]) > float(b[1]) if a[1] != b[1] else float(a[2]) < float(b[2]))
 	if not direct and out.size() > MAX:
 		out.resize(MAX)
 	return out
@@ -175,7 +186,7 @@ func _draw() -> void:
 		var a := float(_alpha[uid])
 		var e: Array = _units.get(uid, [])
 		var u: GameUnit = e[0] if not e.is_empty() else game.world.units.get(uid)
-		if a <= 0.0 or u == null or not is_instance_valid(u) or u.dead or not u.visible or u.model == null:
+		if a <= 0.0 or u == null or not is_instance_valid(u) or u.dead or u.hidden or not u.visible or u.model == null:
 			continue
 		var top := u.global_position + Vector3.UP * head_top(u)
 		if cam.is_position_behind(top):

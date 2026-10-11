@@ -1,0 +1,1209 @@
+{
+  "date": "2026-10-11",
+  "purpose": "Investigate Lost in Astral playability, co-op adaptations, save semantic coverage and debug-menu extension. No production fixes applied.",
+  "baseline": {
+    "canonical_checkout": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+    "head": "dfe6dda4356cdb3af7ec749200437e2bb367ed78",
+    "game_source_commit": "a9e597c91845aeada89aeb4c6a2bb2808fbd5e77",
+    "game_source_matches_head": true,
+    "package": "CursedLands-1.0.4-experimental.2-linux-x86_64",
+    "protocol": 14,
+    "package_sha256": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "44e8314490618c2ba33376d3fed066245adda4ea7b953e839bde11494c50736b",
+      "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+    },
+    "original_exe_sha256": {
+      "astral": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff",
+      "base": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+    }
+  },
+  "static_census": {
+    "scripts": 130,
+    "script_definitions": 2642,
+    "map_records": 121,
+    "parse_errors": [],
+    "used_builtin_names_with_dispatcher_entries": 112,
+    "call_sites": 40915,
+    "unresolved_calls": {
+      "BuyHaburuMain#2#1#0": {
+        "bz23k.mob": 1
+      },
+      "BuyHaburuMain#2#2#0": {
+        "bz23k.mob": 1
+      },
+      "BuyHaburuMain#2#3#0": {
+        "bz23k.mob": 1
+      },
+      "BuyHaburuMain#2#4#0": {
+        "bz23k.mob": 1
+      },
+      "BuyHaburuMain#2#5#0": {
+        "bz23k.mob": 1
+      }
+    },
+    "missing_resource_references": [
+      {
+        "resource": [
+          "mov1",
+          "mob",
+          "1mov"
+        ],
+        "script_references": []
+      },
+      {
+        "resource": [
+          "cz3h",
+          "mob",
+          "cz3h"
+        ],
+        "script_references": []
+      },
+      {
+        "resource": [
+          "cz4h",
+          "mob",
+          "cz4h"
+        ],
+        "script_references": [
+          {
+            "file": "zone2.mob",
+            "script": "VCheck#6#2",
+            "call": [
+              6,
+              "LeaveToZone",
+              [
+                [
+                  0,
+                  0.0
+                ],
+                [
+                  1,
+                  "cz4h"
+                ],
+                [
+                  0,
+                  0.0
+                ]
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "resource": [
+          "gz17g",
+          "mob",
+          "zone17"
+        ],
+        "script_references": []
+      },
+      {
+        "resource": [
+          "gz17g",
+          "mpr",
+          "zone17"
+        ],
+        "script_references": []
+      },
+      {
+        "resource": [
+          "bz15g",
+          "mob",
+          "bz15g"
+        ],
+        "script_references": []
+      }
+    ],
+    "heroes_loops": [
+      {
+        "file": "cz3j.mob",
+        "script": "VTeleport#0#1"
+      },
+      {
+        "file": "zone11dun1.mob",
+        "script": "Water#0#1"
+      },
+      {
+        "file": "zone13.mob",
+        "script": "Trap#0#1"
+      },
+      {
+        "file": "zone13.mob",
+        "script": "Trap#1#1"
+      },
+      {
+        "file": "zone35.mob",
+        "script": "VTeleport#0#1"
+      },
+      {
+        "file": "zone35.mob",
+        "script": "VTeleport#1#1"
+      },
+      {
+        "file": "zonefinal.mob",
+        "script": "VTeleport#0#1"
+      },
+      {
+        "file": "zonefinal.mob",
+        "script": "VTeleport#1#1"
+      }
+    ],
+    "census_file": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/census-astral-1/census.json",
+    "census_sha256": "1190363edc8a2ad07423c2abd34cc697960ceef9f2d65deb4a3520b80110c4e1",
+    "analysis_file": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/static-audit.json",
+    "analysis_sha256": "a8f74688b7ec48e773b4610e5584859e887ad51782aed2d1cfbd8663d1d6c299",
+    "caveat": "Syntactic call resolution and asset references are not behavioral or full-route proof."
+  },
+  "fresh_runs": [
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.2-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/census.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/census-astral-1"
+      ],
+      "campaign": "astral",
+      "return_code": 0,
+      "termination": null,
+      "seconds": 6.755846221989486,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "987bd81e815f5296a6d4746e6b616e64024717955e2c22aab3e73c6ce83f58af",
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "44e8314490618c2ba33376d3fed066245adda4ea7b953e839bde11494c50736b",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+      },
+      "label": "census-astral-1",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/census-astral-1/run.log",
+      "details": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/census-astral-1/census.json",
+      "pass_lines": 0,
+      "fail_lines": 0,
+      "interpretation": "Focused regression/census; not full campaign acceptance."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.2-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo/tools/tests/campaign_roster.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/campaign-roster-1"
+      ],
+      "campaign": "astral",
+      "return_code": 0,
+      "termination": null,
+      "seconds": 2.2522342290030792,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "49cce7a4e6aea418f2dd348ce22082fe719e34ca37174c186805b1aa3da4010d",
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "44e8314490618c2ba33376d3fed066245adda4ea7b953e839bde11494c50736b",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+      },
+      "label": "campaign-roster-1",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/campaign-roster-1/run.log",
+      "pass_lines": 64,
+      "fail_lines": 0,
+      "interpretation": "Focused regression/census; not full campaign acceptance."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.2-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save_probe.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save-astral-1"
+      ],
+      "campaign": "astral",
+      "return_code": 0,
+      "termination": null,
+      "seconds": 6.005442071997095,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "4201427360d209288fec58bf673ea4528368f59f4bfaab28849682a18050bd8d",
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "44e8314490618c2ba33376d3fed066245adda4ea7b953e839bde11494c50736b",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+      },
+      "label": "save-astral-1",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save-astral-1/run.log",
+      "details": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save-astral-1/save-probe.json",
+      "pass_lines": 7,
+      "fail_lines": 7,
+      "interpretation": "FAIL assertions document reproduced missing state; engine completed without errors."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.2-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save_probe.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save-base-1"
+      ],
+      "campaign": "base",
+      "return_code": 0,
+      "termination": null,
+      "seconds": 7.506417382042855,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "4201427360d209288fec58bf673ea4528368f59f4bfaab28849682a18050bd8d",
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "44e8314490618c2ba33376d3fed066245adda4ea7b953e839bde11494c50736b",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+      },
+      "label": "save-base-1",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save-base-1/run.log",
+      "details": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save-base-1/save-probe.json",
+      "pass_lines": 7,
+      "fail_lines": 7,
+      "interpretation": "FAIL assertions document reproduced missing state; engine completed without errors."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.2-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save_probe_v2.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save-astral-2"
+      ],
+      "campaign": "astral",
+      "return_code": 0,
+      "termination": null,
+      "seconds": 6.2557989039924,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "72f5f823c8fcd638eee3b632b35e81e2814ab5b07793aa9547b632803f150abc",
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "44e8314490618c2ba33376d3fed066245adda4ea7b953e839bde11494c50736b",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+      },
+      "label": "save-astral-2",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save-astral-2/run.log",
+      "details": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save-astral-2/save-probe.json",
+      "pass_lines": 9,
+      "fail_lines": 9,
+      "interpretation": "FAIL assertions document reproduced missing state; engine completed without errors.",
+      "observations": {
+        "after": {
+          "hero_body": {
+            "magic": [],
+            "parts": [
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ]
+            ]
+          },
+          "hero_facing": 2.35619449019234,
+          "hero_gait": 0,
+          "hero_hp": 12.7120125644199,
+          "hero_mana": 5.07344464883536,
+          "hero_order": {},
+          "hero_orders": [],
+          "lasting": [
+            {
+              "at": [
+                0.0,
+                0.0
+              ],
+              "counter": 0,
+              "k": "shot",
+              "pos": [
+                16.0,
+                11.3468379974365,
+                -94.5
+              ],
+              "roll": {
+                "aim": -1,
+                "backstab": false,
+                "bs_mul": 3.0,
+                "dmg": 20.2960376739502,
+                "hit": true,
+                "types": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "source": [
+                "hero",
+                "\u041a\u0438\u0440",
+                0
+              ],
+              "target": [
+                "uid",
+                1121
+              ]
+            }
+          ],
+          "npc_ai_state": 0,
+          "npc_body": {
+            "magic": [],
+            "parts": [
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ]
+            ]
+          },
+          "npc_facing": -1.234567,
+          "npc_gait": 2,
+          "npc_hate": {},
+          "npc_hates": false,
+          "npc_id": 1121,
+          "npc_is_enemy": false,
+          "npc_mana": 9.0,
+          "npc_max_mana": 9.0,
+          "npc_name": "Scrab0-21",
+          "npc_order": {},
+          "npc_order_failed": false,
+          "npc_orders": [],
+          "npc_proto": "zonezero Scrab",
+          "projectiles": 1
+        },
+        "assertions": [
+          {
+            "label": "actual map has ordinary NPC with mana and no character override",
+            "ok": true
+          },
+          {
+            "label": "prepared neutral diplomacy before personal hostility",
+            "ok": true
+          },
+          {
+            "label": "production personal-hostility path makes neutral NPC hostile",
+            "ok": true
+          },
+          {
+            "label": "full Session save succeeds",
+            "ok": true
+          },
+          {
+            "label": "full Session load succeeds",
+            "ok": true
+          },
+          {
+            "label": "hero facing survives full save/load",
+            "ok": false
+          },
+          {
+            "label": "hero mana survives full save/load",
+            "ok": true
+          },
+          {
+            "label": "hero gait survives full save/load",
+            "ok": true
+          },
+          {
+            "label": "manual move queue survives full save/load",
+            "ok": false
+          },
+          {
+            "label": "ordinary NPC mana survives full save/load",
+            "ok": false
+          },
+          {
+            "label": "ordinary NPC facing survives full save/load",
+            "ok": true
+          },
+          {
+            "label": "ordinary NPC gait survives full save/load",
+            "ok": false
+          },
+          {
+            "label": "personal hostility survives full save/load",
+            "ok": false
+          },
+          {
+            "label": "personally hostile neutral NPC remains an enemy after load",
+            "ok": false
+          },
+          {
+            "label": "pending script Attack order and state survive load",
+            "ok": false
+          },
+          {
+            "label": "internal order_failed flag survives full save/load",
+            "ok": false
+          },
+          {
+            "label": "targeted and direct arrows both survive full save/load",
+            "ok": false
+          },
+          {
+            "label": "hero wounds survive full save/load",
+            "ok": true
+          }
+        ],
+        "before": {
+          "hero_body": {
+            "magic": [],
+            "parts": [
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ]
+            ]
+          },
+          "hero_facing": 0.987654,
+          "hero_gait": 0,
+          "hero_hp": 12.7120125644199,
+          "hero_mana": 5.07344464883536,
+          "hero_order": {},
+          "hero_orders": [
+            {
+              "run": false,
+              "to": "(19.0, 94.5)",
+              "type": "move"
+            }
+          ],
+          "lasting": [
+            {
+              "at": [
+                0.0,
+                0.0
+              ],
+              "counter": 0,
+              "k": "shot",
+              "pos": [
+                16.0,
+                11.3468379974365,
+                -94.5
+              ],
+              "roll": {
+                "aim": -1,
+                "backstab": false,
+                "bs_mul": 3.0,
+                "dmg": 20.2960376739502,
+                "hit": true,
+                "types": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "source": [
+                "hero",
+                "\u041a\u0438\u0440",
+                0
+              ],
+              "target": [
+                "uid",
+                1121
+              ]
+            }
+          ],
+          "npc_ai_state": 3,
+          "npc_body": {
+            "magic": [],
+            "parts": [
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ]
+            ]
+          },
+          "npc_facing": -1.234567,
+          "npc_gait": 0,
+          "npc_hate": {
+            "f": [
+              0
+            ],
+            "w": 287142055262
+          },
+          "npc_hates": true,
+          "npc_id": 1121,
+          "npc_is_enemy": true,
+          "npc_mana": 2.07,
+          "npc_max_mana": 9.0,
+          "npc_name": "Scrab0-21",
+          "npc_order": {},
+          "npc_order_failed": true,
+          "npc_orders": [
+            {
+              "ai": true,
+              "aim": -1,
+              "target": "U1500000001:<Node3D#469275521529>",
+              "type": "attack"
+            }
+          ],
+          "npc_proto": "zonezero Scrab",
+          "projectiles": 2
+        },
+        "campaign": "lost_in_astral",
+        "checks": 18,
+        "failures": [
+          "hero facing survives full save/load",
+          "manual move queue survives full save/load",
+          "ordinary NPC mana survives full save/load",
+          "ordinary NPC gait survives full save/load",
+          "personal hostility survives full save/load",
+          "personally hostile neutral NPC remains an enemy after load",
+          "pending script Attack order and state survive load",
+          "internal order_failed flag survives full save/load",
+          "targeted and direct arrows both survive full save/load"
+        ],
+        "saved_hero": {
+          "armors": [
+            "hadagan medium pants.wool"
+          ],
+          "body": {
+            "magic": [],
+            "parts": [
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ],
+              [
+                0.978423445340857,
+                3
+              ]
+            ]
+          },
+          "complexion": "(0.25, 0.7, 0.9)",
+          "dex": 25.0,
+          "exp": 0.0,
+          "exp_total": 1.0,
+          "follow_live": [],
+          "gait": 0,
+          "hp": 12.7120125644199,
+          "int": 25.0,
+          "level": 1,
+          "mana": 5.07344464883536,
+          "name": "\u041a\u0438\u0440",
+          "no_natural_armor": true,
+          "perks": [],
+          "pos": "(16.0, 94.5)",
+          "prototype": "Human Hero",
+          "quick": [],
+          "skills": {
+            "astral": 12,
+            "science": 2
+          },
+          "spells": [
+            "healing {}"
+          ],
+          "str": 25.0,
+          "training_refund": {
+            "credit": 0.0,
+            "version": 2
+          },
+          "weapons": [
+            "cheat dagger.bronze"
+          ]
+        },
+        "saved_keys": [
+          "version",
+          "campaign_id",
+          "mod_config",
+          "vars",
+          "gs_tables",
+          "gs_reconstructed",
+          "heroes",
+          "zones",
+          "visited",
+          "quests",
+          "money",
+          "items",
+          "quest_items",
+          "parties",
+          "current_party",
+          "party_bags",
+          "experience",
+          "mercs",
+          "pets",
+          "side_quests",
+          "shops",
+          "current_zone",
+          "world_time",
+          "day",
+          "coop",
+          "camera"
+        ],
+        "saved_npc": [
+          26.7280006408691,
+          172.988006591797,
+          10.0,
+          4,
+          false,
+          {
+            "magic": [],
+            "parts": [
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ],
+              [
+                1.0,
+                3
+              ]
+            ]
+          },
+          -1.234567
+        ]
+      }
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.2-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/clock_probe.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/clock-astral-1"
+      ],
+      "campaign": "astral",
+      "return_code": 0,
+      "termination": null,
+      "seconds": 12.761382881028112,
+      "errors": [],
+      "warnings": [],
+      "fixture_sha256": "25d20333a8516d461824767e159fbb2c1631e767cf7bdf54ca8104ae13ebe6ef",
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "44e8314490618c2ba33376d3fed066245adda4ea7b953e839bde11494c50736b",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+      },
+      "label": "clock-astral-1",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/clock-astral-1/run.log",
+      "details": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/clock-astral-1/clock-probe.json",
+      "pass_lines": 4,
+      "fail_lines": 2,
+      "interpretation": "FAIL assertions document reproduced missing state; engine completed without errors.",
+      "observations": {
+        "after": {
+          "fixed": false,
+          "hours": 0.3,
+          "vm": {
+            "alarms": [
+              [
+                false,
+                0,
+                0.0,
+                0.0
+              ],
+              [
+                false,
+                0,
+                0.0,
+                0.0
+              ],
+              [
+                false,
+                0,
+                0.0,
+                0.0
+              ],
+              [
+                false,
+                0,
+                0.0,
+                0.0
+              ],
+              [
+                false,
+                0,
+                0.0,
+                0.0
+              ]
+            ],
+            "areas": {},
+            "briefing_queue": [],
+            "fx_auto": -1,
+            "globals": {
+              "NULL": null,
+              "VSS#i#val": null,
+              "i": null
+            },
+            "instances": [
+              {
+                "b": 0,
+                "f": [
+                  {
+                    "i": 3
+                  }
+                ],
+                "i": 3,
+                "k": true,
+                "l": {
+                  "this": null
+                },
+                "p": 0.0,
+                "s": "VTriger#0#1",
+                "w": 0.19
+              }
+            ],
+            "qobjs": {},
+            "quest": "",
+            "sciences": {},
+            "script_ai": [],
+            "story_orders": [],
+            "world_done": {}
+          }
+        },
+        "after_tick_hours": 0.305050505050505,
+        "assertions": [
+          {
+            "label": "original cz1h VTriger#0#1 freezes clock",
+            "ok": true
+          },
+          {
+            "label": "clock remains frozen before save",
+            "ok": true
+          },
+          {
+            "label": "full Session save succeeds",
+            "ok": true
+          },
+          {
+            "label": "full Session load succeeds",
+            "ok": true
+          },
+          {
+            "label": "authored clock-freeze flag survives save/load",
+            "ok": false
+          },
+          {
+            "label": "clock remains frozen after load",
+            "ok": false
+          }
+        ],
+        "before": {
+          "fixed": true,
+          "hours": 0.3,
+          "vm": {
+            "alarms": [
+              [
+                false,
+                0,
+                0.0,
+                0.0
+              ],
+              [
+                false,
+                0,
+                0.0,
+                0.0
+              ],
+              [
+                false,
+                0,
+                0.0,
+                0.0
+              ],
+              [
+                false,
+                0,
+                0.0,
+                0.0
+              ],
+              [
+                false,
+                0,
+                0.0,
+                0.0
+              ]
+            ],
+            "areas": {},
+            "briefing_queue": [],
+            "fx_auto": -1,
+            "globals": {
+              "NULL": null,
+              "VSS#i#val": null,
+              "i": null
+            },
+            "instances": [
+              {
+                "b": 0,
+                "f": [
+                  {
+                    "i": 3
+                  }
+                ],
+                "i": 3,
+                "k": true,
+                "l": {
+                  "this": null
+                },
+                "p": 0.0,
+                "s": "VTriger#0#1",
+                "w": 0.44
+              }
+            ],
+            "qobjs": {},
+            "quest": "",
+            "sciences": {},
+            "script_ai": [],
+            "story_orders": [],
+            "world_done": {}
+          }
+        }
+      }
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.2-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late_traps.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late-traps-1"
+      ],
+      "campaign": "astral",
+      "return_code": 0,
+      "termination": null,
+      "seconds": 6.755851826979779,
+      "errors": [
+        "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+      ],
+      "warnings": [
+        "WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+      ],
+      "fixture_sha256": "2e7b49b6a604e7f66986ecc9c5d72f9693b7bbe8ba23507779d33d0694a10840",
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "44e8314490618c2ba33376d3fed066245adda4ea7b953e839bde11494c50736b",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+      },
+      "label": "late-traps-1",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late-traps-1/run.log",
+      "details": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late-traps-1/late-traps.json",
+      "pass_lines": 15,
+      "fail_lines": 0,
+      "interpretation": "Diagnostic confirms late-join bypass, but teardown logged a resource leak; not a clean acceptance run."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.2-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late_traps_v2.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late-traps-2"
+      ],
+      "campaign": "astral",
+      "return_code": 0,
+      "termination": null,
+      "seconds": 6.755011558008846,
+      "errors": [
+        "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+      ],
+      "warnings": [
+        "WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+      ],
+      "fixture_sha256": "b4ce9abc56db093ad53bb616b9af65984d6f6dda319b7a44ee3b7f0e032ccf8c",
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "44e8314490618c2ba33376d3fed066245adda4ea7b953e839bde11494c50736b",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+      },
+      "label": "late-traps-2",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late-traps-2/run.log",
+      "details": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late-traps-2/late-traps.json",
+      "pass_lines": 15,
+      "fail_lines": 0,
+      "interpretation": "Diagnostic confirms late-join bypass, but teardown logged a resource leak; not a clean acceptance run."
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.2-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late_traps_standalone.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late-traps-3"
+      ],
+      "campaign": "astral",
+      "return_code": 0,
+      "termination": null,
+      "seconds": 7.006331515032798,
+      "errors": [
+        "ERROR: 1 resources still in use at exit (run with --verbose for details)."
+      ],
+      "warnings": [
+        "WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+      ],
+      "fixture_sha256": "115854a58d0e1979c9e44dc697123d4259d86d772a45d934a606ebe5d72948bf",
+      "build_sha256": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "44e8314490618c2ba33376d3fed066245adda4ea7b953e839bde11494c50736b",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+      },
+      "label": "late-traps-3",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late-traps-3/run.log",
+      "details": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late-traps-3/late-traps.json",
+      "pass_lines": 15,
+      "fail_lines": 0,
+      "interpretation": "Diagnostic confirms late-join bypass, but teardown logged a resource leak; not a clean acceptance run.",
+      "observations": {
+        "checks": 15,
+        "failures": 0,
+        "observations": [
+          {
+            "instances": [],
+            "late_guest_dead": false,
+            "quest_stage": 0.0,
+            "trap": 0
+          },
+          {
+            "instances": [],
+            "late_guest_dead": false,
+            "quest_stage": 0.0,
+            "trap": 1
+          }
+        ],
+        "scope": "one process, two real ENet peers, prepared actual gz13g script activation; passing diagnostic confirms bypass"
+      }
+    }
+  ],
+  "fixtures": {
+    "run_probe.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/run_probe.py",
+      "sha256": "378e8cb1a1974da63fa1b577dcb06045cc9188c3e81a892b7a8a6679d111d43a"
+    },
+    "census.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/census.gd",
+      "sha256": "987bd81e815f5296a6d4746e6b616e64024717955e2c22aab3e73c6ce83f58af"
+    },
+    "analyze_census.py": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/analyze_census.py",
+      "sha256": "f5d2e9aa831b6c916303c36ada573bcf6afa31d0bceed7c039338be9d45ac8d1"
+    },
+    "save_probe.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save_probe.gd",
+      "sha256": "4201427360d209288fec58bf673ea4528368f59f4bfaab28849682a18050bd8d"
+    },
+    "save_probe_v2.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/save_probe_v2.gd",
+      "sha256": "72f5f823c8fcd638eee3b632b35e81e2814ab5b07793aa9547b632803f150abc"
+    },
+    "clock_probe.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/clock_probe.gd",
+      "sha256": "25d20333a8516d461824767e159fbb2c1631e767cf7bdf54ca8104ae13ebe6ef"
+    },
+    "late_traps.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late_traps.gd",
+      "sha256": "2e7b49b6a604e7f66986ecc9c5d72f9693b7bbe8ba23507779d33d0694a10840"
+    },
+    "late_traps_v2.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late_traps_v2.gd",
+      "sha256": "b4ce9abc56db093ad53bb616b9af65984d6f6dda319b7a44ee3b7f0e032ccf8c"
+    },
+    "late_traps_standalone.gd": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/late_traps_standalone.gd",
+      "sha256": "115854a58d0e1979c9e44dc697123d4259d86d772a45d934a606ebe5d72948bf"
+    }
+  },
+  "native_reference": {
+    "method": "Read-only Ghidra headless, existing LostInAstral /game.exe project; noanalysis. Targeted disassembly checked where inferred decompiler types lose arguments. No original executable gameplay run.",
+    "relevant_functions": [
+      "0x499a50 map-object writer",
+      "0x4b0f90 unit writer",
+      "0x4b0670 unit reader",
+      "0x4c3900 unit-logic writer",
+      "0x4a7410 raw 0x704-byte stats writer",
+      "0x518b40 AI stream writer"
+    ],
+    "rejected_exploratory_addresses": {
+      "0x4b08a0": "No function found",
+      "0x4d5120": "Unrelated rendering; excluded from conclusions"
+    },
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/native",
+    "artifacts": {
+      "499a50.c": "7f5955d8fe79f93809c5d0d48bc24f2b4558e2bb79832393aa8a68ec182da22c",
+      "4a7410.c": "8d7e58fdc4589eb1330e20ee2b607d97d5177deaaa05abc2c3e8507a34b45b26",
+      "4b0670.c": "361b2e9d9a79aa2097d6286d007fd441f195a7ae613152fba5a35871a399165b",
+      "4b0f90.c": "ccf1e68b547af6bb2ccc5b479aa7b4cc3ad2f7b2bd9ec26d3c009a73147126a3",
+      "4bfa00.c": "127774903d2885b2363125811fbf4c82fde6cdf7982cd28ee35b339ed6e21bd8",
+      "4c3900.c": "4669b3e1c62b054bf37788d9953cbfecf403cb6d2a5f375e51ceb56ed54c8d16",
+      "4d5120.c": "d4207721019de8928bcbca9e273419a473a9a9c91b4cd8d319cd3c70df052be5",
+      "518b40.c": "c4fc3d269c7f987a60db303d78f1629470684b498a46b8f566691e6ae61ddf56",
+      "logic-writer.asm": "b1a42c4e80a14b04e3383bd510e6712f94174bc23e06447c39bab6c74a62ef48",
+      "stats-writer.asm": "1b480a920ad2c86024e901518900d4cf86bf3a479af051982b1f5c416956224c",
+      "unit-writer.asm": "b1082c55a92e97ffe52ed3e38eea049ded9a7ea4a0e28cb4f841a644c56315e8"
+    },
+    "logs": [
+      "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/native-headless.log",
+      "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/native-ghidra.log",
+      "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/native-more-headless.log",
+      "/home/llm2x/Documents/EI/local/scratchpad/lia-completeness-20261011/native-more-ghidra.log"
+    ]
+  },
+  "limits": [
+    "No whole-campaign playthrough or universal completion guarantee.",
+    "Fresh runs use the current Linux exported package with original assets, isolated XDG data/config/cache, headless mode and prepared state. No user saves modified.",
+    "Co-op trap test uses two real loopback ENet peers in one process with unrelated simulation paused; not WAN, Windows or physical input acceptance.",
+    "Save probes exercise real full Session disk save/load, but prepare edge states explicitly. Script Attack is a direct production builtin call, not an organically reached complete combat scene.",
+    "Initial save_probe.gd mistakenly labels internal order_failed as IsActionFailed. There is no such builtin; save_probe_v2.gd corrects the label. Do not treat it as proof of an authored script predicate defect.",
+    "Ordinary NPC posture loss is distinct from scripted Lie/Crawl/Run, which is separately saved by script_ai.",
+    "Free-aim projectile is a remake feature, so its loss is not evidence of missing original functionality.",
+    "Transient combat/AI fidelity, original RNG continuation, every later chapter branch and independently resumed final-chapter guest saves remain unqualified."
+  ]
+}

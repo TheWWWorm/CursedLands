@@ -88,6 +88,7 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	if spells: spells.clear()
 	if instance == self:
 		instance = null
 
@@ -123,6 +124,7 @@ func _zone_start(w: GameWorld) -> void:
 		ambient.stop()
 	ambient = null
 	units = null
+	if spells: spells.clear()
 	spells = null
 	if weather:
 		weather.stop()
