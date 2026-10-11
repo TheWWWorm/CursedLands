@@ -1142,7 +1142,7 @@ func village_talk_ready() -> bool:
 
 static func _talk_order_command(o: Dictionary) -> int:
 	match String(o.get("type", "")):
-		"move": return 1
+		"move", "direct_move": return 1
 		"rotate": return 2
 		"attack", "direct_attack": return 3
 		"cast": return 4
@@ -1480,7 +1480,13 @@ func tick(dt: float) -> void:
 	if world.profile_simulation: world.profile_record("unit_stamp",started,uid)
 
 
+func _sandbox_mana() -> bool:
+	return controller >= 0 and world.session != null and world.session.mod_config.get("sandbox", false) and GameData.option("sandbox_mana") == 1
+
+
 func _tick(dt: float) -> void:
+	if _sandbox_mana():
+		mana = max_mana
 	var started := Time.get_ticks_usec() if world.profile_simulation else 0
 	# the original runs its logic in 55 ms ticks. Every 15 ticks
 	#  health gains max x race "health regen" x (1 + vitality/100)
@@ -1497,7 +1503,7 @@ func _tick(dt: float) -> void:
 			mana = minf(max_mana, mana + max_mana * float(race.get("mana_regen", 0.0)) * (1.0 + float(stats.get("regen_mana", 0.0)) / 100.0))
 	# Running characters lose max stamina / 150 per tick and
 	# walk once it is gone.
-	if has_meta("hero") and action == "run":
+	if has_meta("hero") and action == "run" and not _sandbox_mana():
 		mana = maxf(0.0, mana - max_mana / 150.0 * dt / TICK)
 	_attack_cd -= dt
 	# Native54d960 compares integer ticks, including equality. Do not let
@@ -1583,6 +1589,7 @@ func _tick(dt: float) -> void:
 	_talk_posted = 9
 	match order.type:
 		"move": _do_move(dt)
+		"direct_move": _do_direct_move(dt)
 		"attack": _do_attack(dt)
 		"direct_attack": _do_direct_attack(dt)
 		"follow":
@@ -1772,6 +1779,51 @@ func _seated_story_pose() -> bool:
 func _play_clip(clip: String, restart := false) -> float:
 	model.play(clip, 0.1, restart)
 	return model.player.get_animation("ei/" + clip).length
+
+
+## Shoulder controls walk only the held direction. Each authority tick checks
+## terrain, slopes, actors and village bounds; a blocked direction may slide
+## along an axis, but never starts a route around the obstacle.
+func _do_direct_move(dt: float) -> void:
+	if not direct_controlled or blocked or Time.get_ticks_msec() > int(order.until):
+		stop_steering()
+		_set_action("idle")
+		return
+	running = stance == STANCE_NONE and (gait_run or bool(order.get("run",false)))
+	var v: Vector2 = order.direction
+	var offset := v * speed() * dt
+	var from := pos
+	var steps: Array[Vector2] = [offset]
+	if absf(offset.x) > 0.0001 and absf(offset.y) > 0.0001:
+		var x := Vector2(offset.x,0)
+		var y := Vector2(0,offset.y)
+		steps.append(x if absf(offset.x) >= absf(offset.y) else y)
+		steps.append(y if absf(offset.x) >= absf(offset.y) else x)
+	for step: Vector2 in steps:
+		var q := pos + step * world.nav.step_factor(pos,pos+step,move_class())
+		if _outside_village_move(q) or not world.nav.direct_line(self,q): continue
+		if world.nav.step_blocker(self,q,{}) != null: continue
+		pos = q
+		break
+	path = PackedVector2Array()
+	_goal = Vector2.INF
+	_turn_to(v.angle(),dt)
+	_moving = pos.distance_squared_to(from) > 0.00000001
+	_move_speed = pos.distance_to(from) / dt if dt > 0.0 else 0.0
+	_draw_line_goal = pos + (pos-from) if _moving else Vector2.INF
+	if _moving: _walk_action()
+	else: _set_action("idle")
+
+
+func stop_steering() -> void:
+	# A late key-up must not cancel a loot/use order or a committed strike.
+	if order.get("type","") == "direct_move":
+		order = {}
+		path = PackedVector2Array()
+		_moving = false
+		_move_speed = 0.0
+		_draw_line_goal = Vector2.INF
+	orders = orders.filter(func(o: Dictionary): return o.get("type","") != "direct_move")
 
 
 func _do_move(dt: float) -> void:
@@ -2839,10 +2891,10 @@ func _do_cast(dt: float) -> void:
 		if world.session == null or not world.session.consume_quick(self, String(order.item)):
 			order = {}
 			return
-	elif mana < _spell_cost(sp):
+	elif mana < _spell_cost(sp) and not _sandbox_mana():
 		order = order.get("then", {})
 		return
-	else:
+	elif not _sandbox_mana():
 		mana -= _spell_cost(sp)
 	var clip := _cast_clip()
 	var plan := _cast_plan(sp, clip)
@@ -3024,6 +3076,8 @@ static func is_dying_hp(v: float) -> bool:
 ## preserve bit4 from the pre-armour record; `types` here
 ## normally contains only what armour left for body-part severance.
 func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFloat32Array(), hit_flags := 0, layers := Callable(), owner_only := false) -> void:
+	if controller >= 0 and world.session != null and world.session.mod_config.get("sandbox", false) and GameData.option("sandbox_invulnerable") == 1:
+		return
 	if dead:
 		return
 	if source and is_instance_valid(source):
@@ -3923,11 +3977,11 @@ func _draw_step(_dt: float, placement_ready := false) -> void:
 	# gap played the attack -> neutral cross clip and back on every repeated
 	# attack click, and clicks a second apart kept the strike from starting.
 	var cmd := order if not order.is_empty() or orders.is_empty() else orders[0]
-	# Direction attacks commit one swing and clear their order. Stay ready
-	# while directly controlled, including the cooldown gap; otherwise each
-	# swing adds an attack-to-neutral-to-attack transition. Releasing direct
-	# control returns to the ordinary command-based stance below.
-	if alert and not direct_controlled and controller >= 0 and world and world.authority and cmd.get("type", "") not in ["attack","direct_attack"] and not _pending_hit.has("direction"):
+	# Keep readiness across repeated swings, then relax after the cooldown
+	# and a short input gap. Walking away also ends readiness once the
+	# committed impact/animation finishes; direct control is not a stance.
+	var ready: bool = direct_controlled and _attack_cd > -0.3 and cmd.get("type", "") != "direct_move"
+	if alert and not ready and controller >= 0 and world and world.authority and cmd.get("type", "") not in ["attack","direct_attack"] and not _pending_hit.has("direction") and (not direct_controlled or _anim_lock <= 0.0):
 		alert = false
 	_update_pose()
 	if not dead:

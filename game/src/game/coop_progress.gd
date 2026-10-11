@@ -68,6 +68,7 @@ var session: Session
 
 # ---------------------------------------------------------------- host state
 var _pending := {}      # pid -> sanitized bring data
+var mod_refused := {}
 ## lowercase player name -> entry (see _new_entry)
 var joiners := {}
 var _zone := ""         # zone the entries' in_sync refers to
@@ -162,7 +163,7 @@ func client_hello() -> void:
 			if applied[id] is Dictionary:
 				seq[String(id)] = int(_num(applied[id].get("seq", 0), 0.0))
 	var bag := main_bag(st)
-	_rpc_bring.rpc_id(1, {"campaign_id": st.campaign_id, "hero": main_hero(st), "vars": view, "visited": st.visited.keys(),
+	_rpc_bring.rpc_id(1, {"campaign_id": st.campaign_id, "mod_config": st.mod_config if not st.mod_config.is_empty() else ModStore.snapshot(), "hero": main_hero(st), "vars": view, "visited": st.visited.keys(),
 		"side_quests": st.side_quests, "quest_items": st.quest_items, "zone": st.current_zone, "seq": seq,
 		"money": int(bag.money), "items": bag.items, "party_context": PartyProgress.capture(st), "new_origin": _origin_new})
 
@@ -177,6 +178,7 @@ func _load_origin() -> CampaignState:
 ## A new campaign as Session.new_campaign starts it (Zak, at the ruins).
 static func fresh_state() -> CampaignState:
 	var st := CampaignState.new()
+	st.mod_config = ModStore.snapshot()
 	st.ensure_hero(0, "Human Hero")
 	st.visited["gz1g"] = true
 	return st
@@ -211,6 +213,8 @@ static func main_bag(st: CampaignState) -> Dictionary:
 
 @rpc("authority", "call_remote", "reliable")
 func _rpc_package(pkg: Dictionary) -> void:
+	var mods: Variant = pkg.get("mod_config", {})
+	if ModStore.configuration_error(mods) != "" or ModStore.progress_signature(mods) != ModStore.progress_signature(session.mod_config): return
 	var st: CampaignState = null
 	if _origin_slot:
 		st = CampaignState.load_from(SaveInfo.path(_origin_slot))
@@ -219,6 +223,7 @@ func _rpc_package(pkg: Dictionary) -> void:
 	if st == null or not CampaignProfile.matches(pkg.get("campaign_id", CampaignProfile.ORIGINAL), st.campaign_id):
 		return
 	merge(st, pkg)
+	st.mod_config = session.mod_config.duplicate(true)
 	if _merged_slot.is_empty():
 		var d := Time.get_datetime_dict_from_system()
 		var host := String(pkg.get("host", "host"))
@@ -372,6 +377,11 @@ func _rpc_bring(data: Dictionary) -> void:
 	if not session.is_host or not CampaignProfile.matches(data.get("campaign_id", CampaignProfile.ORIGINAL), session.state.campaign_id):
 		return
 	var pid := multiplayer.get_remote_sender_id()
+	var mods: Variant = data.get("mod_config", {})
+	if ModStore.configuration_error(mods) != "" or ModStore.progress_signature(mods) != ModStore.progress_signature(session.mod_config):
+		mod_refused[pid] = true
+		return
+	mod_refused.erase(pid)
 	var h := sanitize_hero(data.get("hero", {}))
 	if h.is_empty():
 		return
@@ -1254,7 +1264,7 @@ func package(e: Dictionary) -> Dictionary:
 	for p in session.players.values():
 		if int(p.index) == 0:
 			host = String(p.name)
-	return {"campaign_id": st.campaign_id, "host": host, "orig_name": e.orig_name, "hero": hero, "vars": (e.credits.vars as Dictionary).duplicate(),
+	return {"campaign_id": st.campaign_id, "mod_config": session.mod_config, "host": host, "orig_name": e.orig_name, "hero": hero, "vars": (e.credits.vars as Dictionary).duplicate(),
 		"visited": (e.credits.visited as Dictionary).keys(), "side_quests": (e.credits.side_quests as Dictionary).duplicate(),
 		"quest_items": (e.credits.quest_items as Dictionary).duplicate(), "zones": zones,
 		"purse": {"money": int(purse.get("money", 0)), "items": (purse.get("items", []) as Array).duplicate()},

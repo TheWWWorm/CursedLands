@@ -8,6 +8,8 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
+The newest preview is [**1.0.4 Experimental 1**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.4-experimental.1), with mod profiles and options, Android simulation fixes and improved third-person movement. See its [release notes](docs/releases/1.0.4-experimental.1.md).
+
 The current stable release is **1.0.3**. [Downloads](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.3) are available for Linux, Windows, Android and macOS. See the [release notes](docs/releases/1.0.3.md) for the graphics, controls, gameplay and co-op changes, measured performance improvements and remaining platform limits.
 
 ## Screenshots
@@ -67,6 +69,10 @@ The setup screen and main menu let you choose **Main game — Evil Islands** or 
 In a camp's skills screen, **Refund all points** returns the experience spent on training for redistribution. Starting skills and attributes, free quest rewards and total earned experience are kept. Older characters are supported when their paid training can be reconstructed safely.
 
 Training purchases apply immediately. The default interface hides the unused Accept/Cancel controls on the skills screen and explains this; trade controls still reflect the current transaction.
+
+## Mods and game rules (development source)
+
+1.0.4 Experimental 1 includes **Mods and rules** in the main menu, Options and the in-game menu. Named profiles keep their own saves and network characters; data mods can provide configurable revival, texture/sound replacements and selected balance patches. Shared rules follow the host, and sandbox profiles keep cheat-enabled progress separate. See the [player and mod-author guide](docs/mods.md) and [Quick recovery example](examples/mods/quick-recovery/mod.json). These additions require the experimental build; stable 1.0.3 does not include them.
 
 ## Co-op
 

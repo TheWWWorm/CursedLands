@@ -45,6 +45,15 @@ func _ready() -> void:
 		check(gap+0.0001 >= float(starts[i-1].cooldown),"swing %d respects weapon and animation cooldown"%i)
 		check(gap <= float(starts[i-1].cooldown)+GameUnit.TICK*6.1,"swing %d adds no repeated stance delay"%i)
 	check(int(a.snapshot()[6]) & (1<<8) != 0,"ready stance is replicated to clients")
+	# Releasing attack must relax even while the shoulder mode stays active.
+	for tick in 300:
+		w.time += GameUnit.TICK
+		a.tick(GameUnit.TICK)
+		a._draw_step(GameUnit.TICK)
+		a.model.player.advance(GameUnit.TICK)
+	check(a.direct_controlled and not a.alert,"released attack returns to relaxed stance without leaving shoulder mode")
+	check(a.model.pose_state==EIUnitModel.ST_NEUTRAL,"released attack returns the real model to neutral")
+	check(int(a.snapshot()[6]) & (1<<8) == 0,"relaxed stance reaches remote clients")
 	a.order={}; a.orders.clear(); a._pending_hit={}; a.action="idle"; a._anim_lock=0.0
 	s.apply_command({"t":"direct_control","leader":-1},0)
 	a._draw_step(GameUnit.TICK)

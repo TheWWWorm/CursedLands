@@ -1,0 +1,252 @@
+{
+  "date": "2026-10-11",
+  "status": "implemented in development source; no release build, commit, push or publication",
+  "base_commit": "723025cd544559752bab397ff0f8b32df2c08388",
+  "mod_api": 1,
+  "network_protocol": 14,
+  "environment": {
+    "engine": "Godot 4.7 stable, official Linux x86_64",
+    "rendered_ui": "Compatibility / llvmpipe, private owned Xvfb :97; 1280x720 and 540x960",
+    "isolation": "Disposable XDG directories; user scopes with MemoryMax=6G and MemorySwapMax=0. No full playthroughs. Original game data read only."
+  },
+  "accepted_checks": 319,
+  "accepted_failures": 0,
+  "runs": [
+    {
+      "run": "unit7",
+      "fixture": "tools/tests/mod_profiles.gd",
+      "campaign": "base",
+      "checks": 83,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/unit7/run.log",
+      "log_sha256": "e05a32fcadcc8b6f8df13f6d326dd93c908a75cdfb6f0db5d809de1aed8e087f"
+    },
+    {
+      "run": "lia-unit3",
+      "fixture": "tools/tests/mod_profiles.gd",
+      "campaign": "astral",
+      "checks": 83,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/lia-unit3/run.log",
+      "log_sha256": "e0098a9d0a414413b7943cebd6fb0744ab52ab5acccd930b983f763900f6e56e"
+    },
+    {
+      "run": "ui5",
+      "fixture": "tools/tests/mod_menus.gd",
+      "campaign": "base",
+      "checks": 28,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/ui5/run.log",
+      "log_sha256": "9b455b408470c78722e584b35d6ad7f9e297cd735154c437cf5cab5712628ce9"
+    },
+    {
+      "run": "worker3",
+      "fixture": "tools/tests/mod_worker.gd",
+      "campaign": "base",
+      "checks": 19,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/worker3/run.log",
+      "log_sha256": "d98b294024c2ad82a0cb7cbf7a2397699827d164404d22c8943d2e21eb6a2980"
+    },
+    {
+      "run": "effects2",
+      "fixture": "tools/tests/mod_effects.gd",
+      "campaign": "base",
+      "checks": 12,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/effects2/run.log",
+      "log_sha256": "d6393784e7c544c5f6ce8f78ede5785de335679757dd670a2087c0bd0489686e"
+    },
+    {
+      "run": "net2/host",
+      "fixture": "tools/tests/mod_network.gd",
+      "campaign": "base",
+      "checks": 18,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/net2/host/run.log",
+      "log_sha256": "f6e98d160f360b3e0fa791bde6dc36b59a6703d9ec1e1a77b31d46cf9f369ccc"
+    },
+    {
+      "run": "net2/client",
+      "fixture": "tools/tests/mod_network.gd",
+      "campaign": "base",
+      "checks": 14,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/net2/client/run.log",
+      "log_sha256": "a8d87574275d5b99654c60b75208f5a7b7ddf55e48d1c8d04f162d5f149e3c0e"
+    },
+    {
+      "run": "net2/reject",
+      "fixture": "tools/tests/mod_network.gd",
+      "campaign": "base",
+      "checks": 8,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/net2/reject/run.log",
+      "log_sha256": "197fc1e047d6d5f2dd35e107624d3357aabcb844142145dcc84a820e2de7bcf2"
+    },
+    {
+      "run": "graphics2",
+      "fixture": "tools/tests/graphics_presets.gd",
+      "campaign": "base",
+      "checks": 54,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/graphics2/run.log",
+      "log_sha256": "3d389cd2ded6146befd6a8d6b905b2b2ff17855cc12a9630f5d82f0a96bbec1c"
+    }
+  ],
+  "coverage": [
+    "ZIP/schema validation and atomic patch rejection",
+    "asset replacement through the actual WAV decoder",
+    "profile save/MP namespaces and legacy saves",
+    "sandbox copy/backup/character progression boundaries",
+    "per-run persistence without changing next-run defaults",
+    "invalid config recovery with byte-identical retained original",
+    "real ENet admission/refusal, guest authority, brought hero and reconnect",
+    "separate simulation process acknowledgements, stale-edit refusal, sandbox command and save/load",
+    "actual unit damage, mana, heal and configured revival HP",
+    "generated controls, Apply/Cancel, controller handlers, read-only guests, narrow layout and menu entry points",
+    "existing graphics preset batching/persistence regression"
+  ],
+  "original_multiplayer_comparison": {
+    "outcome": "Two gait assertions fail identically on candidate and unchanged base. Character creation, authority startup, zone travel, persistence and shutdown checks pass. Not a clean LMP suite.",
+    "runs": [
+      {
+        "run": "lmp",
+        "checks": 19,
+        "failures": 2,
+        "failed_assertions": [
+          "FAIL LOCAL_HOST_LMP owner command reaches authority",
+          "FAIL LOCAL_HOST_LMP commands work after return"
+        ],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/lmp/run.log",
+        "log_sha256": "6a1313a070a8dcc73c17959129b82ec53ca340925aab9700d2e98ca285d4232a"
+      },
+      {
+        "run": "baseline",
+        "checks": 19,
+        "failures": 2,
+        "failed_assertions": [
+          "FAIL LOCAL_HOST_LMP owner command reaches authority",
+          "FAIL LOCAL_HOST_LMP commands work after return"
+        ],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/baseline/run.log",
+        "log_sha256": "0ade3604f0b0986a62342197de01e7d0b3b16be5c5505f665f981cc157ef88c5"
+      }
+    ],
+    "baseline_method": "Reflink runtime copy; restore all modified tracked game files from base commit, remove four new mod scripts, refresh editor imports; unchanged local_host_lmp fixture and independent XDG directories."
+  },
+  "images": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/ui5/data/godot/app_userdata/Cursed Lands/mod-esc-menu.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "90b36eebd8a6bb8f554932aa1dda7cb978c274cddb0a575bd64865bd057c110e"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/ui5/data/godot/app_userdata/Cursed Lands/mod-main-menu.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "0d522c1e415c7f14f7a28647233039bb8679c088d97844084152a946d7788be3"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/ui5/data/godot/app_userdata/Cursed Lands/mod-options-narrow.png",
+      "width": 540,
+      "height": 960,
+      "sha256": "c9e90ed457af89d4aca40bdae6832fc9a4de440bc2f817b5cbc1c65165ead732"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/ui5/data/godot/app_userdata/Cursed Lands/mod-options-wide.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "22efa0c47fd44813bce02c1e24f47ba820f556a44b74587bd719ea67f8634454"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/ui5/data/godot/app_userdata/Cursed Lands/mod-profiles-narrow.png",
+      "width": 540,
+      "height": 960,
+      "sha256": "a12f82bf52abfc620a3dae8b11a8e5b1e66ebc8bdd1f8c08612c7541cfa3b7d7"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/ui5/data/godot/app_userdata/Cursed Lands/mod-profiles-wide.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "ff4358cb7f0682504058cd7809ed9d07205494fa99763e3a9ae0ff0c2ab59d5e"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/ui5/data/godot/app_userdata/Cursed Lands/mod-rules-narrow.png",
+      "width": 540,
+      "height": 960,
+      "sha256": "2c0f85bfeaab6739aea2a2802289eb27c8a11786110446def8f897736c0abf3d"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/ui5/data/godot/app_userdata/Cursed Lands/mod-sandbox-wide.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "d9bf7a6e7290858b8a84cbad20d6b662476f9c04d646209529246498f70e0649"
+    }
+  ],
+  "visual_review": "Wide/narrow options, profile manager, rules, main-menu and Esc placement inspected. Count caption changed to Mods: N after capture; layout unchanged.",
+  "example_package": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/mod-menus-20261011/quick-recovery.eimod",
+    "sha256": "f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b",
+    "contains_owned_game_assets": false,
+    "build": "python3 tools/package_mod.py examples/mods/quick-recovery <output>"
+  },
+  "superseded_runs": [
+    {
+      "run": "parse and unit3",
+      "reason": "Inferred-Variant parser errors corrected with explicit Array/String types; unit3 interrupted after diagnosis."
+    },
+    {
+      "run": "ui1",
+      "reason": "DisplayServer resize did not produce narrow viewport. Replaced with Window resizing and exact viewport-size assertion."
+    },
+    {
+      "run": "effects",
+      "reason": "Fixture lacked Game owner, causing attach_world errors and leaks despite passing assertions. Repaired fixture passes cleanly in effects2."
+    },
+    {
+      "run": "unit6",
+      "reason": "Recovery assertion compared parsed JSON floats against original integer Variants. Backup was present and byte-identical. Final assertion checks exact bytes and passes."
+    },
+    {
+      "run": "other earlier numbered runs",
+      "reason": "Passing development checkpoints; accepted runs above supersede them."
+    }
+  ],
+  "limits": [
+    "No full campaign or physical-device playthrough",
+    "No native Windows/macOS/Android or browser import/reload acceptance",
+    "Controller logic tested synthetically; physical controller/touch hardware untested",
+    "Scripting, custom campaigns, migrations, discovery, profile export/deletion and broader authoring remain outside API 1"
+  ],
+  "source_sha256_at_record_time": {
+    "examples/mods/quick-recovery/mod.json": "e806a19bcdf28e9f318e9e2b9ac7897b850a0b5bd19e4914d9b28ca7ae8f8242",
+    "game/src/ei/game_data.gd": "bff92e19514aed054f55baa012c42f740f8ba7b0d642ad770ed3a19776ac89af",
+    "game/src/ei/res_archive.gd": "07b52170d0ba1b74ca76cc19cdc29abafd96c30da706db2990cb1564b5d504cc",
+    "game/src/game/campaign_state.gd": "a2f77f0db845b0e5c2de47c965bfe4b66c54f6e87d6781f28a95bd128ab30628",
+    "game/src/game/coop_progress.gd": "3ce566fadc9a7ede0e333d3c9aee8f7b0bc7dcedbb043ff86eefc1285de2949f",
+    "game/src/game/local_host.gd": "1a2f53ae2b1ad6466eca32ee1b19b2d5fe6fbac856c8f366b2a65d04b9cdff52",
+    "game/src/game/mod_schema.gd": "8e7dde6a58cf66f3ed1b08df3012eb359d67d93b1c3466d7528cb0594ecf0077",
+    "game/src/game/mod_store.gd": "cef46a834536700256d8836a80f26c8b0a4fece76963f37a15df087baf3ac4e4",
+    "game/src/game/mod_zip.gd": "90b9b3889136324d03cfb595ee4b15e15bf70f1cc9c479690c9686cebf58f9b5",
+    "game/src/game/mp_character.gd": "cd0e93cc94610c2846ded3cc93e58fe448349bd0137abc1cb761ced5c4c1ea72",
+    "game/src/game/net_status.gd": "481fcc9e0990b615f57b76131e17364ff76234eb8f8a275a3094c37a665d04bc",
+    "game/src/game/revive.gd": "9e4d13dddbbf45a17128da4b6fa66f38dee53086ba6bdf7515ab2c73c078980d",
+    "game/src/game/save_info.gd": "fa3f9889dee8ac7d6d6afc110af35e88bc04e08848c18ddbea7bb4dc9c194f17",
+    "game/src/game/session.gd": "4938a3ed98d42ab38b9c10696c8b9ad41a8ef186fc1e9be698e5a24946c185cd",
+    "game/src/game/unit.gd": "c5ac9368bd9c8bf03e6213516fd691d1fa62c140838cc2b3a4c80e66d058fbcb",
+    "game/src/ui/game_hud.gd": "b9ab8d35c82b2d29fa67c5a8b1178bf1bcae603c3149f5ca784b6454fd006631",
+    "game/src/ui/main_menu.gd": "aabdc1f9b6d8001a7f5e52d79b02bf808adcceba4df741342e536ff3b21ab06f",
+    "game/src/ui/mod_panel.gd": "9ae7e3a9d00bf2e72ec9450699827b9e962a480d0ae00026a3bd7ac7028c560f",
+    "game/src/ui/network_panel.gd": "ffe63fff12829c1aabc1a1c99aa4bc286b7170456901d3002f81bd4be5bf439b",
+    "game/src/ui/options_panel.gd": "55b2143605ff5d01f50ef8509c01faf76878744a4b81884051e42dc28205844d",
+    "game/src/ui/save_transfer.gd": "4bad376a70cac0f05549dd8376b83f50fd9b95b2ab48935efac9ee696a884472",
+    "tools/package_mod.py": "f9d42ef407c0b93f74afc2ab1d76472972fd67748f49bb1912888ddb0cfc2c86",
+    "tools/tests/mod_effects.gd": "7888752d6169b85a6ab0c36310d61cad06acc7f7ddad5e3142333089be2ba610",
+    "tools/tests/mod_menus.gd": "8ad9e277760e82c3da9ccae7a5e025d834dab5e62d5e9074544d6499ef73ecde",
+    "tools/tests/mod_network.gd": "9a3b619c4707805641617fa0ee2774e56f51ffef4f231f4f4052b3235939050f",
+    "tools/tests/mod_profiles.gd": "5d5345115d8f3fd3f548364368e95d45776f9275a4258ba6552a981909c42538",
+    "tools/tests/mod_worker.gd": "7f02d107fba3d791fa93f8321c4a3ed634980719d68cf9621f90254035a3d590"
+  }
+}

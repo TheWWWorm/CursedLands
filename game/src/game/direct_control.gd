@@ -1,7 +1,7 @@
 class_name DirectControl
 extends Node
 ## Per-player experimental shoulder controls. The authority receives ordinary
-## navigation orders and a direction for each strike, never client positions.
+## steering input and a direction for each strike, never client positions.
 
 var game: Game
 var heading := 0.0
@@ -19,6 +19,10 @@ var _control_id := -2
 var _saved_pose := {}
 var _saved_near := 0.05
 var _overlay: Control
+var _move_id := -1
+var _move_vector := Vector2.ZERO
+var _move_run := false
+var _move_refresh := 0.0
 
 
 class Reticle extends Control:
@@ -127,8 +131,11 @@ func _process(delta: float) -> void:
 			if is_instance_valid(_hero): game.rig.center_on(_hero.global_position)
 	if on and (_world != game.world or _hero != u):
 		if _world != game.world:
+			_move_id = -1
 			_control_id = -2
 			_saved_pose = game.rig.pose()
+		else:
+			stop_move()
 		_world = game.world
 		_hero = u
 		_neutral = true
@@ -216,7 +223,40 @@ func step(move: Vector2, dt: float) -> void:
 		field()._stop_moving()
 		if _repeat <= 0.0: attack()
 	else:
-		field()._direct_move(move,dt)
+		steer(move,dt)
+
+
+## Refresh a short-lived authority input. Releasing the stick/key stops the
+## current steering order, without replacing a newly posted interaction.
+func steer(move: Vector2, dt: float) -> void:
+	var u := leader()
+	if u == null or move == Vector2.ZERO or GameSound.blocked(u):
+		stop_move()
+		return
+	var v := ground_direction(move) * minf(move.length(),1.0)
+	var run := PadInput.active != "pad" and Input.is_physical_key_pressed(KEY_SHIFT)
+	_move_refresh -= dt
+	var start := _move_id != u.uid
+	if start:
+		stop_move()
+		_move_id = u.uid
+		var others := game.selected.filter(func(s): return is_instance_valid(s) and s != u and not s.dead)
+		if not others.is_empty():
+			game.issue({"t":"follow","units":others.map(func(s: GameUnit): return s.uid),"target":u.uid})
+	if start or _move_refresh <= 0.0 or v.distance_to(_move_vector) > 0.03 or run != _move_run:
+		_move_refresh = 0.1
+		_move_vector = v
+		_move_run = run
+		game.session.submit({"t":"direct_move","units":[u.uid],"direction":v,"run":run})
+
+
+func stop_move() -> void:
+	if _move_id < 0: return
+	var id := _move_id
+	_move_id = -1
+	_move_vector = Vector2.ZERO
+	if game.world and game.world == _world:
+		game.session.submit({"t":"direct_move","units":[id],"direction":Vector2.ZERO})
 
 
 func pad_action(action: String, phase: String) -> bool:
@@ -313,7 +353,7 @@ func interaction_hint() -> Dictionary:
 		title = WorldLabels.lever_title(game.world,int(action.lever))
 	else:
 		verb = "Exit"
-	return {"text":"E: " + RemakeText.t(verb) + (" — " + title if not title.is_empty() else ""),"enabled":true}
+	return {"text":"E: " + RemakeText.t(verb) + (" — " + title if not title.is_empty() else ""),"verb":RemakeText.t(verb),"enabled":true}
 
 
 ## Nearby small bodies/piles need no exact silhouette hit. This only chooses
@@ -370,7 +410,11 @@ func _interaction_target(nearby: bool) -> Dictionary:
 
 func interact() -> void:
 	if not usable() or pointer or _neutral or get_tree().paused: return
-	var action := _interaction_target(PadInput.active != "pad")
+	var action := _interaction_target(true)
+	if action.is_empty(): return
+	stop_move()
+	# A held stick must be released before it can cancel the approach/use.
+	_neutral = true
 	if action.has("unit"):
 		# Talking, looting and reviving keep their ordinary approach orders.
 		game.order_on(action.unit,false)
@@ -401,12 +445,14 @@ func apply_camera() -> void:
 
 func _notification(what: int) -> void:
 	if what in [NOTIFICATION_APPLICATION_FOCUS_OUT,NOTIFICATION_WM_WINDOW_FOCUS_OUT]:
+		stop_move()
 		_fire = false
 		_neutral = true
 		_capture(false)
 
 
 func _exit_tree() -> void:
+	stop_move()
 	_capture(false)
 	if _control_id >= 0 and is_instance_valid(game.session) and is_instance_valid(game.world):
 		game.session.submit({"t":"direct_control","leader":-1})

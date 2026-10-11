@@ -337,14 +337,14 @@ func _rpc_chat(idx: int, player_name: String, text: String) -> void:
 # drops the connection.
 
 ## Remake co-op protocol; raise it when the messages change incompatibly.
-const PROTOCOL := 13   # per-actor snapshot sequencing and packed perception history
+const PROTOCOL := 14   # required mod configuration and authoritative rule snapshots
 const CoopDb := preload("res://src/game/coop_db.gd")
 
 
 func _ready() -> void:
 	_start_world_hash()
 	# Remake (CoopDb): a joiner takes the host's database numbers.
-	multiplayer.connected_to_server.connect(send_db_digests)
+	# Session sends database digests only after mod compatibility admission.
 	multiplayer.connected_to_server.connect(func(): _refused = false)   # joined again (another password)
 
 
@@ -387,7 +387,7 @@ static func reset_game_files() -> void:
 
 @rpc("any_peer", "call_remote", "reliable")
 func _rpc_db_digests(theirs: Dictionary) -> void:
-	if not session.is_host or bool(theirs.get("#lmp", false)) != GameData.lmp_db:
+	if not session.is_host or not session.players.has(multiplayer.get_remote_sender_id()) or bool(theirs.get("#lmp", false)) != GameData.lmp_db:
 		return   # of the other database: it sends them again once it switched
 	theirs.erase("#lmp")
 	var rows: Dictionary = CoopDb.rows_for(theirs)

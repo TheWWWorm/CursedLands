@@ -36,12 +36,13 @@ const CLAN_SEP := " | "
 ## selection screen's in the original. Kept in user:, mp/selected.cfg.
 static var selected := ""
 static var _loaded_sel := false
+static var _selection_dir := ""
 
 
 # ---------------------------------------------------------------- files
 
 static func dir_path() -> String:
-	return DIR
+	return ModStore.save_directory(DIR.trim_suffix("/")) + "/"
 
 
 ## The characters on disk, as lists them: every "*.mp" that reads
@@ -50,7 +51,7 @@ static func dir_path() -> String:
 ## [{file, data}]
 static func list() -> Array:
 	var out := []
-	var d := DirAccess.open(DIR)
+	var d := DirAccess.open(dir_path())
 	if d == null:
 		return out
 	var names := Array(d.get_files()).filter(func(f): return String(f).to_lower().ends_with(".mp") and _numbered(f))
@@ -69,7 +70,7 @@ static func _numbered(f: String) -> bool:
 
 
 static func load_file(f: String) -> Dictionary:
-	var fa := FileAccess.open(DIR + f, FileAccess.READ)
+	var fa := FileAccess.open(dir_path() + f, FileAccess.READ)
 	if fa == null or fa.get_length() < 8:
 		return {}
 	if fa.get_buffer(4).get_string_from_ascii() != MAGIC or fa.get_32() > VERSION:
@@ -77,6 +78,7 @@ static func load_file(f: String) -> Dictionary:
 	var v = fa.get_var(false)
 	if not v is Dictionary or not one_hero(v):
 		return {}
+	if ModStore.saved_error(v.get("mod_config", {})) != "": return {}
 	return v
 
 
@@ -85,14 +87,15 @@ static func load_file(f: String) -> Dictionary:
 static func save_file(f: String, data: Dictionary) -> bool:
 	if not _numbered(f) or not one_hero(data):
 		return false
-	DirAccess.make_dir_recursive_absolute(DIR)
-	var tmp := DIR + "temp.mp"
-	if FileAccess.file_exists(DIR + f):
-		DirAccess.rename_absolute(DIR + f, tmp)
-	var fa := FileAccess.open(DIR + f, FileAccess.WRITE)
+	if ModStore.saved_error(data.get("mod_config", {})) != "": return false
+	DirAccess.make_dir_recursive_absolute(dir_path())
+	var tmp := dir_path() + "temp.mp"
+	if FileAccess.file_exists(dir_path() + f):
+		DirAccess.rename_absolute(dir_path() + f, tmp)
+	var fa := FileAccess.open(dir_path() + f, FileAccess.WRITE)
 	if fa == null:
 		if FileAccess.file_exists(tmp):
-			DirAccess.rename_absolute(tmp, DIR + f)
+			DirAccess.rename_absolute(tmp, dir_path() + f)
 		return false
 	fa.store_buffer(MAGIC.to_ascii_buffer())
 	fa.store_32(VERSION)
@@ -106,7 +109,7 @@ static func save_file(f: String, data: Dictionary) -> bool:
 ## DeleteFileA(dir + entry).
 static func delete_file(f: String) -> void:
 	if _numbered(f):
-		DirAccess.remove_absolute(DIR + f)
+		DirAccess.remove_absolute(dir_path() + f)
 	if f == selected:
 		select("")
 
@@ -114,7 +117,7 @@ static func delete_file(f: String) -> void:
 ## "%d.mp" with the largest number among "<dir>*.mp" + 1.
 static func next_file() -> String:
 	var n := 0
-	var d := DirAccess.open(DIR)
+	var d := DirAccess.open(dir_path())
 	if d:
 		for f: String in d.get_files():
 			if f.to_lower().ends_with(".mp") and _numbered(f):
@@ -123,22 +126,27 @@ static func next_file() -> String:
 
 
 static func select(f: String) -> void:
+	_selection_dir = dir_path()
 	selected = f
 	_loaded_sel = true
-	DirAccess.make_dir_recursive_absolute(DIR)
+	DirAccess.make_dir_recursive_absolute(dir_path())
 	var cfg := ConfigFile.new()
 	cfg.set_value("mp", "selected", f)
-	cfg.save(DIR + "selected.cfg")
+	cfg.save(dir_path() + "selected.cfg")
 
 
 ## The selected character's file ("" when none or gone).
 static func selected_file() -> String:
+	if _selection_dir != dir_path():
+		_selection_dir = dir_path()
+		_loaded_sel = false
+		selected = ""
 	if not _loaded_sel:
 		_loaded_sel = true
 		var cfg := ConfigFile.new()
-		if cfg.load(DIR + "selected.cfg") == OK:
+		if cfg.load(dir_path() + "selected.cfg") == OK:
 			selected = String(cfg.get_value("mp", "selected", ""))
-	if selected and not FileAccess.file_exists(DIR + selected):
+	if selected and not FileAccess.file_exists(dir_path() + selected):
 		selected = ""
 	return selected
 
@@ -266,7 +274,7 @@ static func create(proto_name: String) -> Dictionary:
 	h.voice = String(v[1][0] if is_female(proto_name) and not v[1].is_empty() else (v[0][0] if not v[0].is_empty() else ""))
 	TrainingRefund.start(h)
 	reshape(h)
-	return {"heroes": [h], "money": int(npc.get("money", 0)), "items": []}
+	return {"heroes": [h], "mod_config": ModStore.effective().duplicate(true), "money": int(npc.get("money", 0)), "items": []}
 
 
 static func is_female(proto_name: String) -> bool:
@@ -359,6 +367,8 @@ static func finish(data: Dictionary, weapon: String, belt: String, spell: String
 ## bag (player) is not part of the party record, so a
 ## character always arrives with an empty one.
 static func accept(data) -> Dictionary:
+	if not data is Dictionary or ModStore.saved_error(data.get("mod_config", {})) != "": return {}
+	if not data.get("mod_config", {}).is_empty() and ModStore.progress_signature(data.mod_config) != ModStore.progress_signature(ModStore.effective()): return {}
 	if not one_hero(data):
 		return {}
 	var h := CoopProgress.sanitize_hero(hero_of(data))
@@ -379,4 +389,4 @@ static func record(hero: Dictionary, money: int, _items: Array) -> Dictionary:
 	for k in ["pos", "unit_name", "mana", "controller"]:
 		h.erase(k)
 	h.hp = -1.0
-	return {"heroes": [h], "money": money, "items": []}
+	return {"heroes": [h], "mod_config": ModStore.effective().duplicate(true), "money": money, "items": []}

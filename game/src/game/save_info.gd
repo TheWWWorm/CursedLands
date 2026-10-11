@@ -32,7 +32,7 @@ static func path(slot: String, ext := "sav") -> String:
 
 
 static func directory() -> String:
-	return CampaignProfile.save_directory(GameData.campaign_id)
+	return ModStore.save_directory(CampaignProfile.save_directory(GameData.campaign_id))
 
 
 static func files() -> PackedStringArray:

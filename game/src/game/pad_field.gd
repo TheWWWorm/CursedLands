@@ -280,6 +280,7 @@ func _submit_move(u: GameUnit, to: Vector2, line := false) -> void:
 
 
 func _stop_moving() -> void:
+	if game.direct: game.direct.stop_move()
 	if not _moving:
 		return
 	_moving = false
@@ -558,7 +559,8 @@ func hints() -> Array:
 		out.append([B, RemakeText.t("Cancel")])
 		return out
 	if game.direct and game.direct.active():
-		return [[PadInput.button_of("system"),RemakeText.t("Attack / cast"),game.session.command_allowed({"t":"direct_attack"})], [A,RemakeText.t("Interact")],
+		var interaction := game.direct.interaction_hint()
+		return [[PadInput.button_of("system"),RemakeText.t("Attack / cast"),game.session.command_allowed({"t":"direct_attack"})], [A,interaction.get("verb",RemakeText.t("Interact")),not interaction.is_empty()],
 			[X,RemakeText.t("Aimed strike")], [PadInput.button_of("actions"),RemakeText.t("Spells")],
 			[PadInput.button_of("items"),RemakeText.t("Items")], [PadInput.button_of("cursor"),RemakeText.t("Pointer")]]
 	if game.pending_spell != "":

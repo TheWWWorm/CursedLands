@@ -68,7 +68,7 @@ func start(port: int, limit: int, solo := false) -> Error:
 	_config = directory.path_join("%d-%d.cfg" % [OS.get_process_id(), Time.get_ticks_usec()])
 	var config := {"token": _token, "parent": OS.get_process_id(), "port": port, "single_player": solo,
 		"limit": limit, "password": session.password, "name": GameData.player_name,
-		"hero": GameData.hero_class, "options": GameData.options.duplicate(true)}
+		"hero": GameData.hero_class, "options": GameData.options.duplicate(true), "mods": session.mod_config.duplicate(true)}
 	var file := FileAccess.open(_config, FileAccess.WRITE)
 	if file == null:
 		single_player = false
@@ -149,6 +149,8 @@ func configure(path: String) -> Dictionary:
 	GameData.player_name = String(config.get("name", "Player"))
 	GameData.hero_class = String(config.get("hero", GameData.hero_class))
 	GameData.options.merge(config.get("options", {}), true)
+	if ModStore.configuration_error(config.get("mods")) != "": return {}
+	session.mod_config = config.mods.duplicate(true)
 	GameData.difficulty = GameData.option("difficulty")
 	session.password = String(config.get("password", ""))
 	return config
@@ -185,6 +187,7 @@ func _rpc_owner(token: String) -> void:
 	var host: Dictionary = session.players[1]
 	session.players.erase(1)
 	session.players[pid] = host
+	session._rpc_mod_config.rpc_id(pid, session.mod_config)
 	session._rpc_welcome.rpc_id(pid, 0)
 	session._rpc_players.rpc(session.players)
 	_rpc_owned.rpc_id(pid)
@@ -290,6 +293,9 @@ func _rpc_request(serial: int, command: String, data: Dictionary) -> void:
 			result.bytes = session.save_bytes_needed()
 		"clock":
 			session.set_coop_clock(int(data.get("sector", -1)))
+		"sandbox":
+			result.error = session.sandbox_action(str(data.get("action", "")))
+			result.ok = result.error == ""
 		"lobby":
 			session.set_lobby_mode(data)
 		"kick":
@@ -428,7 +434,8 @@ func _options_changed() -> void:
 @rpc("any_peer", "call_remote", "reliable")
 func _rpc_options(options: Dictionary) -> void:
 	if authorized(multiplayer.get_remote_sender_id()):
-		GameData.options.merge(options, true)
+		for key in options:
+			if not ModSchema.RULES.has(key): GameData.options[key] = options[key]
 		GameData.difficulty = GameData.option("difficulty")
 		GameData.options_changed.emit()
 		Engine.max_fps = FRAME_RATE
@@ -449,8 +456,8 @@ func _process(dt: float) -> void:
 		return
 	_heartbeat = 0.0
 	if worker:
-		var parent_gone := OS.has_feature("linuxbsd") and parent_id > 0 and not CrashReport.alive(parent_id)
-		if parent_gone or Time.get_ticks_msec() - _owner_seen > 120000:
+		if _owner_gone():
+			GameData.trace("local simulation owner exited")
 			get_tree().quit()
 		_send_router()
 	elif frontend and _ready_owner and CoopProgress.peer_alive(multiplayer, 1):
@@ -460,6 +467,16 @@ func _process(dt: float) -> void:
 			if pose != _last_camera:
 				_last_camera = pose
 				_rpc_camera.rpc_id(1, pose)
+
+
+func _owner_gone() -> bool:
+	# Cold zone/shader builds pump ENet but cannot run the owner's frame
+	# heartbeat. A live local process must not lose its authority merely
+	# because that build takes longer than two minutes on a slower device.
+	if parent_id > 0 and (OS.has_feature("linuxbsd") or
+			(OS.has_feature("android") and Engine.has_singleton("EISimulation"))):
+		return not CrashReport.alive(parent_id)
+	return Time.get_ticks_msec() - _owner_seen > 120000
 
 
 ## The local view receives its controlled units after each worker frame,
@@ -590,5 +607,7 @@ func _notification(what: int) -> void:
 		# Android suspends this service with its owner. The owner's focus-out
 		# save RPC can still be queued, so persist authority before suspension
 		# instead of depending on the app surviving until the next resume.
-		get_tree().paused = true
+		# The service stops its frame loop itself. Do not also pause the tree:
+		# the owner's unchanged clock would not be resent after resuming, so
+		# a different focus/lifecycle ordering could leave simulation frozen.
 		session.save_game("autosave")

@@ -76,7 +76,7 @@ static func begin(s: Session, u: GameUnit, t: GameUnit) -> void:
 	if not revivable(s, t):
 		return
 	var at := t.pos
-	u.command({"type": "use", "sub": "revive", "at": at, "hold": SECS,
+	u.command({"type": "use", "sub": "revive", "at": at, "hold": ModStore.capability("revival.seconds"),
 		"check": func() -> bool:
 			return revivable(s, t) and t.pos.distance_to(at) <= MOVED,
 		"done": func():
@@ -87,7 +87,7 @@ static func begin(s: Session, u: GameUnit, t: GameUnit) -> void:
 ## Host: the body rises with RISE_HP. A mercenary is the party's again (its
 ## record kept while it lay dead, see GameWorld.on_death).
 static func finish(s: Session, t: GameUnit) -> void:
-	t.rise(RISE_HP)
+	t.rise(ModStore.capability("revival.health"))
 	var h: Dictionary = t.get_meta("hero")
 	if h.has("merc"):
 		var n := int(h.merc)

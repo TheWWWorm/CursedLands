@@ -10,6 +10,7 @@ const ENTRY_SIZE := 22
 var _path := ""
 var _file: FileAccess
 var _bytes: PackedByteArray
+var _archive_name := ""
 ## lowercase name -> Vector2i(offset, size)
 var entries := {}
 
@@ -20,6 +21,7 @@ static func open_path(path: String) -> EIResArchive:
 			return null
 		var archive := EIResArchive.new()
 		archive._path = path
+		archive._archive_name = path.get_file().to_lower()
 		return archive if archive._parse() else null
 	var actual := GameFiles.resolve(path)
 	var f := FileAccess.open(actual, FileAccess.READ) if not actual.is_empty() else null
@@ -28,6 +30,7 @@ static func open_path(path: String) -> EIResArchive:
 		return null
 	var a := EIResArchive.new()
 	a._file = f
+	a._archive_name = path.get_file().to_lower()
 	return a if a._parse() else null
 
 
@@ -42,10 +45,12 @@ static func is_archive(bytes: PackedByteArray) -> bool:
 
 
 func has(name: String) -> bool:
-	return entries.has(name.to_lower())
+	return entries.has(name.to_lower()) or not ModStore.override_path(_archive_name, name).is_empty()
 
 
 func read(name: String) -> PackedByteArray:
+	var replacement := ModStore.override_path(_archive_name, name)
+	if not replacement.is_empty(): return FileAccess.get_file_as_bytes(replacement)
 	var e: Variant = entries.get(name.to_lower())
 	if e == null:
 		return PackedByteArray()

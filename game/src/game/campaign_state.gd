@@ -3,6 +3,8 @@ extends RefCounted
 ## Everything that persists across zones and in save games.
 
 var campaign_id := GameData.campaign_id
+## Empty on legacy saves; new runs freeze their rules and required packages.
+var mod_config: Dictionary = {}
 
 ## Global script variables (GSGetVar/GSSetVar). Index 0 is the shared campaign
 ## state used by all original scripts; in co-op it is the party's shared progress.
@@ -1279,7 +1281,7 @@ func restore_zone(id: String, world: GameWorld) -> void:
 
 func to_dict() -> Dictionary:
 	var tables := gs_metadata()
-	return {"version": 2, "campaign_id": campaign_id, "vars": vars, "gs_tables": tables, "gs_reconstructed": gs_reconstructed, "heroes": heroes, "zones": zones, "visited": visited,
+	return {"version": 2, "campaign_id": campaign_id, "mod_config": mod_config, "vars": vars, "gs_tables": tables, "gs_reconstructed": gs_reconstructed, "heroes": heroes, "zones": zones, "visited": visited,
 		"quests": quests, "money": money, "items": items, "quest_items": quest_items,
 		"parties": parties, "current_party": current_party, "party_bags": party_bags, "experience": experience, "mercs": mercs, "pets": pets, "side_quests": side_quests, "shops": shops, "current_zone": current_zone,
 		"world_time": world_time, "day": day, "coop": coop, "camera": camera}
@@ -1346,6 +1348,7 @@ static func load_from(path: String) -> CampaignState:
 	if not compatible_data(value):
 		return null
 	var d: Dictionary = value
+	if ModStore.saved_error(d.get("mod_config", {})) != "": return null
 	var s := CampaignState.new()
 	for k in d:
 		if k != "version" and k in s:

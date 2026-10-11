@@ -123,6 +123,7 @@ var _internet: Control
 ## the host page; drawing and row layout must not deserialize world state.
 var _start_slots: Array = [""]
 var _start_titles := {}
+var _mods_button: Button
 
 
 func _ready() -> void:
@@ -151,6 +152,20 @@ func _ready() -> void:
 		_ask_password(g))
 	_internet.closed.connect(func(): grab_focus(); queue_redraw())
 	add_to_group("pad_panel")   # remake: gamepad snap targets (pad_targets, pad_press)
+	_mods_button = Button.new()
+	_mods_button.text = RemakeText.t("Mods and rules")
+	_mods_button.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	_mods_button.offset_left = -220
+	_mods_button.offset_right = -16
+	_mods_button.offset_top = -50
+	_mods_button.offset_bottom = -6
+	CampaignChoices.style_button(_mods_button)
+	add_child(_mods_button)
+	_mods_button.pressed.connect(func():
+		var panel := ModPanel.new()
+		add_child(panel)
+		panel.closed.connect(panel.queue_free)
+		panel.open())
 
 
 ## The co-op port: Session.PORT, or --port=N on the command line (remake).
@@ -318,8 +333,8 @@ func _rows() -> Array:
 		"hint": RemakeText.t("Your name in the co-op game.")})
 	match page:
 		HOST_COOP:
-			out.append({"id": "start", "kind": "choice", "label": RemakeText.t("Start from"), "value": _start_title(), "on": true,
-				"hint": RemakeText.t("A new game, or one of your saves: it is continued with your friends in it; save as usual.")})
+			out.append({"id": "start", "kind": "choice", "label": RemakeText.t("Start from"), "value": _start_title(), "on": not locked,
+				"hint": RemakeText.t("Choose a new game or a save before hosting. Its saved mod rules apply to the whole lobby.")})
 		HOST_LMP:
 			out.append({"id": "base", "kind": "choice", "label": RemakeText.t("Base"), "value": LmpMode.base_title(lmp_base), "on": true,
 				"hint": RemakeText.t("The party starts there; its quest giver offers the quests.")})
@@ -1426,6 +1441,7 @@ func _process(dt: float) -> void:
 ## targets are clicked at their centre, as the mouse does.
 func pad_targets() -> Array:
 	var out: Array = []
+	if _mods_button != null: out.append({"rect": _mods_button.get_global_rect(), "id": "mods"})
 	for id: String in _targets:
 		if id == "ok" and _ok_label().is_empty():
 			continue
@@ -1476,6 +1492,9 @@ func pad_press(action: String, phase: String) -> bool:
 			_activate(String(h.row.id), -1 if action == "left" else 1)
 			return true
 		"interact":
+			if PadInput.ui and PadInput.ui.focus_id() == "mods":
+				if phase == "down": _mods_button.pressed.emit()
+				return true
 			var h := _pad_row()
 			if phase != "down" or h.is_empty():
 				return false

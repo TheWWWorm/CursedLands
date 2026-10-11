@@ -532,7 +532,10 @@ func open(path: String) -> String:
 		return RemakeText.t("Could not read the game archives in res/.")
 	_open_text_archives()   # first: sets the code page the database strings use
 	campaign_id = CampaignProfile.detect(texts)
+	ModStore.mount()
 	db = EIDatabase.load_from(dbres)
+	if ModStore.startup_error.is_empty():
+		ModStore.startup_error = ModStore.patch_database(db, false)
 	# The quest maps' (maps/z*q*.mq / .mob) quest items — armorykey00, pyrkey,
 	# goldnuggets ... with script ids 80-86 (QObjGetItem) — exist only in
 	# res/databaseLMP.res, the database the original loads for its multiplayer game
@@ -650,6 +653,10 @@ func use_lmp_database(on: bool) -> bool:
 			return false
 		_db_main = db
 		db = EIDatabase.load_from(arc, true)
+		if ModStore.patch_database(db, true) != "":
+			db = _db_main
+			_db_main = null
+			return false
 	else:
 		db = _db_main if _db_main else db
 		_db_main = null
@@ -681,7 +688,7 @@ func save_settings() -> void:
 		cfg.set_value("games", id, campaign_roots[id])
 	cfg.set_value("player", "name", player_name)
 	cfg.set_value("player", "hero", hero_class)
-	cfg.set_value("game", "difficulty", difficulty)
+	cfg.set_value("game", "difficulty", int(options.get("difficulty", 0)))
 	for k in options:
 		cfg.set_value("options", k, options[k])
 	cfg.set_value("remake", "gfx", _gfx_rev)
@@ -700,7 +707,7 @@ func save_settings() -> void:
 func option(name: String) -> int:
 	if FIXED_OPTIONS.has(name):
 		return FIXED_OPTIONS[name]
-	return int(options.get(name, 0))
+	return ModStore.option(name, int(options.get(name, 0)))
 
 
 func set_option(name: String, value: int) -> void:
@@ -713,6 +720,18 @@ func set_option(name: String, value: int) -> void:
 ## effects; rebuilding every listener after each intermediate value causes
 ## repeated resource/shader preparation and exposes partial configurations.
 func set_options(values: Dictionary) -> void:
+	if values.is_empty(): return
+	values = values.duplicate()
+	var rules := {}
+	for key in values.keys():
+		if ModSchema.RULES.has(key):
+			rules[key] = values[key]
+			values.erase(key)
+	if not rules.is_empty():
+		var problem := ModStore.apply_rules(rules, values.is_empty())
+		if problem != "":
+			push_warning(problem)
+			return
 	if values.is_empty(): return
 	for name: String in values:
 		var value := int(values[name])

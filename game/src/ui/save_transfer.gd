@@ -82,6 +82,9 @@ func restore(text: String) -> String:
 		if name.ends_with(".sav") and not name.ends_with(".info.sav"):
 			if bytes.size() < 4 or bytes.decode_u32(0) != bytes.size() - 4 or not CampaignState.compatible_data(bytes_to_var(bytes.slice(4))):
 				return "The backup contains an invalid save or a save from a different campaign."
+			var saved: Dictionary = bytes_to_var(bytes.slice(4))
+			var mod_error := ModStore.saved_error(saved.get("mod_config", {}))
+			if mod_error != "": return mod_error
 		total += bytes.size()
 		if total > LIMIT:
 			return "Save backup is too large."

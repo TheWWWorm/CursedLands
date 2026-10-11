@@ -1319,7 +1319,7 @@ const ORDER_ACKS := {"move": EIAcks.MOVE, "attack": EIAcks.ATTACK, "cast": EIAck
 ## the blocked Zak to talk to the elder (b.elder.s1 → FrTP → unblock).
 static func block_refuses(t: String, village: bool) -> bool:
 	# Follow's separate message handler does not read the bit.
-	return (ORDER_ACKS.has(t) or t == "direct_attack") and t != "follow" and not (village and t == "interact")
+	return (ORDER_ACKS.has(t) or t in ["direct_attack", "direct_move"]) and t != "follow" and not (village and t == "interact")
 
 
 func issue(cmd: Dictionary) -> void:

@@ -176,6 +176,7 @@ var _look_from := -2    # remake: Original look switched on here over this detec
 var _came_from := 0     # remake: the group button whose page was shown last (a sub-page's way back)
 ## Remake: the "Game files…" row can be used (opened from the main menu).
 var game_files := false
+var _mods_panel: ModPanel
 
 
 func _ready() -> void:
@@ -329,6 +330,10 @@ func _show_group(g: int) -> void:
 		_rows[int(o[4])] = {"kind": "slider" if int(o[1]) == 0 else "switch", "name": name,
 			"max": choices.size() if not choices.is_empty() else int(o[2]), "label": label, "tip": tip,
 			"choices": choices}
+		if ModSchema.RULES.has(name):
+			var reason := ModStore.editable(name)
+			_rows[int(o[4])].disabled = reason != ""
+			if reason != "": _rows[int(o[4])].tip += "\n" + RemakeText.t(reason)
 	for a: Array in EIKeymap.ACTIONS:
 		if int(a[2]) != _group:
 			continue
@@ -341,6 +346,7 @@ func _show_group(g: int) -> void:
 	if _group == REMAKE_GROUP:   # the sections, then the game data rows
 		for i in SECTIONS.size():
 			_rows[i] = _section_link(SECTIONS[i])
+		_rows[10] = {"kind":"link", "name":"", "mods":true, "label":RemakeText.t("Mod options and rules…"), "tip":RemakeText.t("Configure installed mods and the rules for this run.")}
 		_rows[FILES_ROW] = {"kind": "link", "name": "", "files": true, "disabled": not game_files,
 			"label": RemakeText.t(FILES_LINK[0]),
 			"tip": _remake_tip(FILES_LINK) + "\n" + RemakeText.t("Current game files: %s") % DataSwitch.describe()
@@ -528,6 +534,7 @@ func _switch_text(row: Dictionary) -> String:
 
 
 func _set_value(name: String, v: int) -> void:
+	if ModSchema.RULES.has(name) and ModStore.editable(name) != "": return
 	var was := int(_values.get(name, 0))
 	if name == "graphics_preset":
 		var preset_values := GfxPresets.values(v)
@@ -552,13 +559,28 @@ func _toggle(r: int) -> void:
 	if not _rows.has(r):
 		return
 	var row: Dictionary = _rows[r]
+	if row.get("disabled", false): return
 	match row.kind:
 		"switch":
 			sound("messbox\\ok")
 			_set_value(row.name, (int(_values.get(row.name, 0)) + 1) % int(row.max))
 		"link":
 			sound("messbox\\ok" if row.get("preset", false) else "save\\select")   # Original look: a switch's sound
-			if row.get("detect", false):
+			if row.get("mods", false):
+				_mods_panel = ModPanel.new()
+				add_child(_mods_panel)
+				_mods_panel.closed.connect(func():
+					for key in ModSchema.RULES:
+						if _snapshot.has(key) and GameData.option(key) != _snapshot[key]:
+							_values[key] = GameData.option(key)
+							_snapshot[key] = _values[key]
+					_mods_panel.queue_free()
+					_mods_panel = null
+					_show_group(_group))
+				_mods_panel.open("options")
+				for key in ModSchema.RULES:
+					if _values.has(key) and ModStore.editable(key) == "": _mods_panel._rules[key] = _values[key]
+			elif row.get("detect", false):
 				_apply()
 				_close()
 				GfxDetect.start(true)
@@ -616,6 +638,7 @@ func _apply() -> void:
 	var renderer := int(_values.get("renderer", 0)) != GameData.option("renderer")
 	var changes := {}
 	for n in _values:
+		if ModSchema.RULES.has(n) and (_values[n] == _snapshot.get(n) or ModStore.editable(n) != ""): continue
 		if int(_values[n]) != GameData.option(n):
 			changes[n] = int(_values[n])
 	GameData.set_options(changes)

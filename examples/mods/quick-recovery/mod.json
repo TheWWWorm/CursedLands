@@ -1,0 +1,33 @@
+{
+  "api": 1,
+  "id": "example.quick-recovery",
+  "version": "1.0.0",
+  "title": "Quick recovery",
+  "description": "Choose how long revival takes and how much health a revived party member receives. Enable the built-in revival rule first.",
+  "campaigns": ["cursed_lands", "lost_in_astral"],
+  "modes": ["single_player", "campaign_coop"],
+  "options": [
+    {
+      "id": "seconds",
+      "label": "Revival time in seconds",
+      "help": "How long a nearby party member must help. Change this at camp.",
+      "type": "number",
+      "min": 1,
+      "max": 30,
+      "step": 0.5,
+      "default": 3,
+      "binding": "revival.seconds"
+    },
+    {
+      "id": "health",
+      "label": "Health after revival (HP)",
+      "help": "Total health after revival, limited by the character's maximum HP. Change this at camp.",
+      "type": "integer",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 25,
+      "binding": "revival.health"
+    }
+  ]
+}

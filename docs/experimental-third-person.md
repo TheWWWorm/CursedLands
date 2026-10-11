@@ -8,7 +8,7 @@ Choose **Options → Remake → Camera → Control mode**. **Auto (gamepad)** is
 | Shift while moving | Run, using the normal stamina and posture rules |
 | Mouse | Turn and tilt the view |
 | Left mouse button / RT | Swing or shoot in the aimed direction; hold to repeat after the weapon cooldown; cast a selected spell |
-| E / A | Talk, loot, revive or use the object under the crosshair; confirm a nearby open area exit. A also confirms the selected spell target. |
+| E / A | Talk, loot, revive or use the object under the crosshair; pick up nearby loot without exact aiming; confirm a nearby open area exit. A also confirms the selected spell target. |
 | Tab / R3 | Release the pointer for the HUD and existing point-and-click actions |
 | Mouse wheel | Adjust shoulder distance |
 | Right mouse button | Cancel spell targeting |
@@ -21,13 +21,15 @@ Choose **Options → Remake → Camera → Control mode**. **Auto (gamepad)** is
 
 Visible living characters within the health-bar range keep their bars, including full-health allies and village characters. The view follows the drawn, interpolated hero position. Walls and floors shorten the camera arm using the current navigation geometry, including moving doors and floors. Dialogues and movies retain ownership of their cameras.
 
-Each weapon swing is a committed animation. Contact is checked against nearby bodies in its arc at the impact time; turning away, being too far away, another floor or a solid obstruction prevents contact. Arrows travel straight and can miss a moving target. Geometric contact replaces the normal weapon hit/miss roll in this mode. Damage, armour, wounds, equipment wear and weapon spells still use the combat system. Spells retain their existing targeting and resource rules.
+Movement follows held input directly on the authority, without choosing a route around obstacles. Releasing input stops at the authority position. Diagonal input can slide along a wall; actors, slopes, stance clearance and village boundaries still block movement. Stick tilt controls speed within the selected gait. Interaction takes priority until held movement is released.
+
+Each weapon swing is a committed animation. The hero stays ready between repeated swings and relaxes after attack recovery, or when walking away. Contact is checked against nearby bodies in its arc at the impact time; turning away, being too far away, another floor or a solid obstruction prevents contact. Arrows travel straight and can miss a moving target. Geometric contact replaces the normal weapon hit/miss roll in this mode. Damage, armour, wounds, equipment wear and weapon spells still use the combat system. Spells retain their existing targeting and resource rules.
 
 The controlled leader's idle combat AI is suspended until classic controls return or the player disconnects. This prevents an unrequested pursuit after a missed swing. Selected companions retain their own follow/combat behavior. Mode ownership is transient and does not change saved aggression preferences.
 
 The host validates ownership, direction, cooldown and script blocks. The new commands use the existing area/load-generation fence. Following the player’s later request, safe zones reject direct attacks and spell casts at both input and host authority. Free attacks can still hit friendly characters outside safe zones. Authored camp walking limits, blocked characters, closed exits and scripted escape orders still apply. Movement held across a loading screen needs to be released before it can start in the new area.
 
-Experimental 6 shipped these controls with protocol **11**, but a Camera key-binding row overwrote the control-mode selector. The local follow-up moves the selector to its own row. Current development uses protocol **13** (per-actor snapshot ordering and packed visibility history, plus the widened Catacombs lift); peers need matching builds. The selector and safe-zone follow-up are not yet published.
+Experimental 6 shipped these controls with protocol **11**, but a Camera key-binding row overwrote the control-mode selector. The local follow-up moves the selector to its own row. 1.0.4 Experimental 1 uses protocol **14**, including mod/profile matching; peers need matching builds. The selector and safe-zone changes were included in 1.0.3.
 
 [Follow-up validation](gameplay-controls-followup-validation.json) records the reproduced hidden selector in the published package, ten passing rendered settings checks, and 108 passing input, authority, real ENet and camp-escape checks. The earlier device validation below predates this follow-up.
 

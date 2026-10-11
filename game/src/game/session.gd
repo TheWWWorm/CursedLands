@@ -7,6 +7,7 @@ extends Node
 
 signal players_changed
 signal message(text: String)
+signal mod_rules_result(problem: String)
 ## Client: the host sent a zone (the game view must exist before it loads).
 signal zone_received
 ## A network character was written to its file (MpCharacter; tests).
@@ -120,6 +121,7 @@ var _loading_zone_id := ""
 ## Monotonic water-state revisions across zone changes and same-zone reloads.
 var _water_seq := 0
 var _water_received := -1
+var mod_config: Dictionary = {}
 
 
 func _ready() -> void:
@@ -128,6 +130,8 @@ func _ready() -> void:
 	campaign = CampaignMap.load_from(GameData.texts)
 	campaign.load_lmp()   # the original multiplayer maps (LmpMode)
 	state = CampaignState.new()
+	mod_config = ModStore.snapshot()
+	ModStore.attach(self)
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	# Remake co-op: a brought hero and the joiner's own progress (CoopProgress).
@@ -169,7 +173,7 @@ func _ready() -> void:
 		if local_host.frontend:
 			local_host.hello()
 			return
-		_rpc_hello.rpc_id(1, GameData.player_name, GameData.hero_class, NetStatus.PROTOCOL, NetStatus.world_hash(), join_password))
+		_rpc_hello.rpc_id(1, GameData.player_name, GameData.hero_class, NetStatus.PROTOCOL, NetStatus.world_hash(), join_password, mod_config))
 	multiplayer.server_disconnected.connect(func():
 		_cancel_movie()
 		_cancel_remote_load()
@@ -425,6 +429,11 @@ func _rpc_clock(enabled: bool, paused: bool, rate: int) -> void:
 ## player menu plays it before calling this with `intro` false; otherwise
 ## (co-op, **approx.**) every peer sees it once the first zone is built.
 func new_campaign(intro := true) -> void:
+	var mod_error := ModStore.mode_error("campaign_coop" if multiplayer_game else "single_player")
+	if mod_error != "":
+		message.emit(mod_error)
+		return
+	GameData.difficulty = GameData.option("difficulty")
 	# The menu has finished the intro and is handing over to the game. Cover
 	# the first zone before worker startup can yield an empty game view.
 	var first_zone := campaign.zone("gz1g")
@@ -445,6 +454,7 @@ func new_campaign(intro := true) -> void:
 		Shops.network = false
 	swap.cancel_all()
 	state = CampaignState.new()
+	state.mod_config = mod_config.duplicate(true)
 	coop.campaign_started()
 	for pid in players:
 		state.ensure_hero(players[pid].index, _hero_proto(players[pid].index), String(players[pid].name))
@@ -460,6 +470,7 @@ func new_campaign(intro := true) -> void:
 ## (SideQuests.lmp_offer, as a new server's). `quest` (tests)
 ## takes that quest straight away.
 func new_lmp_game(base: String, quest := "", pk := 0) -> bool:
+	if ModStore.mode_error("original_multiplayer") != "": return false
 	if not LmpMode.available() or not lmp_characters_ready():
 		return false
 	base = base.to_lower()
@@ -611,8 +622,7 @@ func _rpc_mp_party(rec: Dictionary) -> void:
 func _mp_save(rec: Dictionary) -> void:
 	if mp_file.is_empty() or lmp.is_empty() or not MpCharacter.one_hero(rec):
 		return
-	MpCharacter.save_file(mp_file, rec)
-	mp_saved.emit(rec)
+	if MpCharacter.save_file(mp_file, rec): mp_saved.emit(rec)
 
 
 ## Host, every frame: pending and periodic sends.
@@ -699,6 +709,7 @@ func players_same_zone(a: int, b: int) -> bool:
 
 ## Leaving the multiplayer game (back to the menu): the campaign database again.
 func _exit_tree() -> void:
+	ModStore.detach(self)
 	if lmp_travel:
 		lmp_travel.session = null
 		lmp_travel = null
@@ -2270,7 +2281,25 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 		"direct_control":
 			var leader_id := int(cmd.get("leader",-1))
 			for u: GameUnit in world.unit_rows():
-				if u.controller == player: u.direct_controlled = u.uid == leader_id and not u.dead
+				if u.controller == player:
+					u.direct_controlled = u.uid == leader_id and not u.dead
+					if not u.direct_controlled: u.stop_steering()
+		"direct_move":
+			var direction: Variant = cmd.get("direction")
+			if not direction is Vector2 or not direction.is_finite() or not is_finite(direction.length_squared()): return
+			for u in mine:
+				if direction == Vector2.ZERO:
+					u.stop_steering()
+				elif u.direct_controlled:
+					var steering := {"type":"direct_move","direction":direction.limit_length(),
+						"run":bool(cmd.get("run",false)),"until":Time.get_ticks_msec()+500,
+						"village_limit":village_move_limit()}
+					# Updating the held direction does not cancel a committed
+					# swing, nor repeatedly restart an animation or route.
+					if u.order.get("type","") == "direct_move":
+						u.order.merge(steering,true)
+					else:
+						u.command(steering)
 		"direct_attack":
 			var direction: Variant = cmd.get("direction")
 			if not direction is Vector3 or not direction.is_finite() or not is_finite(direction.length_squared()) or direction.length_squared() < 0.5: return
@@ -4258,7 +4287,7 @@ func quest_text(key: String) -> String:
 # ------------------------------------------------------------------ players
 
 @rpc("any_peer", "call_remote", "reliable")
-func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5 := "", pw := "") -> void:
+func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5 := "", pw := "", mods: Dictionary = {}) -> void:
 	if not is_host:
 		return
 	var pid := multiplayer.get_remote_sender_id()
@@ -4275,6 +4304,13 @@ func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5
 			and MpCharacter.accept(_lmp_character(pid)).is_empty():
 		net.refuse_character(pid)
 		return
+	var mod_error := ModStore.configuration_error(mods)
+	if mod_error.is_empty() and ModStore.progress_signature(mods) != ModStore.progress_signature(mod_config):
+		mod_error = "Mod option values differ. Match the host's mod options before joining."
+	if coop.mod_refused.has(pid): mod_error = "The selected hero requires a different mod profile."
+	if mod_error != "":
+		net._reject(pid, "Mod configuration", mod_error)
+		return
 	# Preserve this fact before a same-address reconnect retires its previous
 	# transport. An active copy may reconnect, but cannot replace its hero/bag.
 	var replacing_live := players.values().any(func(p): return int(p.index) > 0 \
@@ -4287,6 +4323,7 @@ func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5
 		idx = _player_slot(player_name)
 	var in_game := world != null
 	players[pid] = {"index": idx, "name": player_name, "hero": hero_class, "colour": NetStatus.free_colour(players)}
+	_rpc_mod_config.rpc_id(pid, mod_config)
 	_rpc_players.rpc(players)
 	_rpc_welcome.rpc_id(pid, idx)
 	if not in_game and not lobby_mode.is_empty():
@@ -4431,6 +4468,7 @@ func _spawn_late_joiner(idx: int, pid: int) -> void:
 @rpc("authority", "call_remote", "reliable")
 func _rpc_welcome(idx: int) -> void:
 	my_index = idx
+	net.send_db_digests()
 
 
 @rpc("authority", "call_remote", "reliable")
@@ -4457,6 +4495,7 @@ func _relax_timeout(pid: int) -> void:
 
 
 func _on_peer_disconnected(pid: int) -> void:
+	coop.mod_refused.erase(pid)
 	if _building:   # noticed by NetStatus.keep_alive inside a zone build
 		_on_peer_disconnected.call_deferred(pid)
 		return
@@ -4564,6 +4603,7 @@ func save_game(slot: String, save_name := "", frame: Image = null) -> Error:
 ## Save screen measures the previous autosave / zone departure, missing new
 ## script frames, lasting effects and current party bodies.
 func _capture_save_state() -> void:
+	if state != null: state.mod_config = mod_config.duplicate(true)
 	if not is_host or not lmp.is_empty() or loading_game or coop.purse_active() or state == null or world == null:
 		return
 	state.collect_pets(world)
@@ -4803,6 +4843,15 @@ func _read_save(slot: String) -> CampaignState:
 func _load_state(slot: String, s: CampaignState) -> bool:
 	if not is_host or not lmp.is_empty() or s == null or not zone_exists(s.current_zone):
 		return false
+	if ModStore.mode_error("campaign_coop" if multiplayer_game else "single_player") != "": return false
+	if ModStore.saved_error(s.mod_config) != "": return false
+	var config: Dictionary = s.mod_config.duplicate(true) if not s.mod_config.is_empty() else mod_config.duplicate(true)
+	# A running group cannot change progression compatibility under its guests.
+	if online and players.size() > 1 and ModStore.progress_signature(config) != ModStore.progress_signature(mod_config): return false
+	config.profile = ModStore.active_id()
+	mod_config = config
+	s.mod_config = config.duplicate(true)
+	_publish_mod_config()
 	swap.cancel_all()
 	coop.before_load(slot, s)
 	# Players connected now who joined after that save was made (co-op class
@@ -4847,3 +4896,83 @@ func _load_state(slot: String, s: CampaignState) -> bool:
 	GameData.trace("load %s done in %s" % [slot, zone_id])
 	_finish_host_load()
 	return true
+
+
+## Shared settings have their own authority transaction; local preferences
+## never become simulation settings merely because a UI settings file changed.
+func request_mod_rules(rules: Dictionary, values: Dictionary) -> void:
+	if not can_manage_game(): return
+	if is_host:
+		var problem := apply_mod_rules(rules, values)
+		if problem != "": message.emit(problem)
+	elif local_host.frontend:
+		_rpc_mod_rules.rpc_id(1, rules, values, int(mod_config.get("revision", 0)))
+
+
+func apply_mod_rules(rules: Dictionary, values: Dictionary) -> String:
+	if not is_host: return "Only the host can change game rules."
+	if rules.is_empty() and values.is_empty(): return ""
+	var problem := ModStore.rule_error(rules)
+	if problem == "": problem = ModStore.values_error(values)
+	if problem != "": return problem
+	for key in rules:
+		problem = ModStore.editable(key, self)
+		if problem != "": return problem
+	if not values.is_empty():
+		problem = ModStore.editable("revive", self)
+		if problem != "": return problem
+	mod_config.rules.merge(rules, true)
+	mod_config.values.merge(values, true)
+	mod_config.revision = int(mod_config.get("revision", 0)) + 1
+	state.mod_config = mod_config.duplicate(true)
+	_publish_mod_config()
+	return ""
+
+
+func _publish_mod_config() -> void:
+	if is_host and online:
+		for pid in players:
+			if int(pid) != 1 and CoopProgress.peer_alive(multiplayer, int(pid)):
+				_rpc_mod_config.rpc_id(int(pid), mod_config)
+	GameData.difficulty = GameData.option("difficulty")
+	GameData.options_changed.emit()
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_mod_rules(rules: Dictionary, values: Dictionary, revision: int) -> void:
+	var pid := multiplayer.get_remote_sender_id()
+	if not is_host or not local_host.authorized(pid): return
+	if var_to_bytes([rules, values]).size() > 65536: return
+	var problem := "Rules changed; reopen the menu and try again." if revision != int(mod_config.get("revision", 0)) else apply_mod_rules(rules, values)
+	if problem != "": _rpc_event.rpc_id(pid, {"t": "msg", "text": problem})
+	_rpc_mod_rules_result.rpc_id(pid, problem)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_mod_rules_result(problem: String) -> void:
+	mod_rules_result.emit(problem)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_mod_config(config: Dictionary) -> void:
+	if is_host or ModStore.configuration_error(config) != "": return
+	mod_config = config.duplicate(true)
+	mod_config.profile = ModStore.active_id()
+	state.mod_config = mod_config.duplicate(true)
+	GameData.difficulty = GameData.option("difficulty")
+	GameData.options_changed.emit()
+
+
+func sandbox_action(action: String) -> String:
+	if not is_host or not mod_config.get("sandbox", false): return "Sandbox actions require a sandbox host."
+	if world == null or loading_game or movie_active() or not lmp.is_empty(): return "Sandbox actions are unavailable here."
+	match action:
+		"heal":
+			for unit: GameUnit in world.units.values():
+				if unit.controller >= 0 and not unit.dead:
+					unit.heal(unit.max_hp)
+					unit.mana = unit.max_mana
+		"gold": state.money = mini(state.money + 1000, 99999999)
+		_: return "Unknown sandbox action."
+	sync_state()
+	return ""

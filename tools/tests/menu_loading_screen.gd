@@ -62,6 +62,8 @@ func _ready() -> void:
 		# is skipped, as after Esc; the worker/load transition is unchanged.
 		MoviePlayer.enabled = false
 		await menu._on_board("new")
+		check(menu._mods.visible and menu._mods._continue.visible,"New Game opens its rules review")
+		menu._mods._continue.pressed.emit()
 		check(menu._difficulty.visible,"New Game opens its difficulty panel")
 		menu._difficulty._accept()
 	elif OS.get_cmdline_user_args().has("--continue"):

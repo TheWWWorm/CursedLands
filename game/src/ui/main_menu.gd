@@ -29,6 +29,8 @@ var _campaign_bar: VBoxContainer
 var _campaign_error: Label
 var _coop_button: Button
 var _opening_panel := false
+var _mods: ModPanel
+var _mods_button: Button
 
 
 func _ready() -> void:
@@ -70,6 +72,13 @@ func _ready() -> void:
 	_campaigns.current = GameData.campaign_id
 	_campaigns.selected.connect(_select_campaign)
 	_campaign_bar.add_child(_campaigns)
+	_mods_button = Button.new()
+	_refresh_mod_label()
+	_mods_button.clip_text = true
+	_mods_button.custom_minimum_size.y = 44
+	CampaignChoices.style_button(_mods_button)
+	_mods_button.pressed.connect(func(): _open_mods("profiles"))
+	_campaign_bar.add_child(_mods_button)
 	# The expansion's original signpost deliberately has no Multiplayer
 	# board. Its remake co-op gets a visible entry beside the game choices.
 	if GameData.campaign_id == CampaignProfile.ASTRAL:
@@ -122,6 +131,9 @@ func _ready() -> void:
 		add_child(_load)
 		_load.load_requested.connect(_load_slot)
 		add_child(_options)
+		_mods = ModPanel.new()
+		add_child(_mods)
+		_mods.closed.connect(_refresh_mod_label)
 		# Remake: the graphics test on the first start or a new GPU (GfxDetect),
 		# over this island once the startup screen is gone.
 		GfxDetect.auto_start.call_deferred()
@@ -190,6 +202,9 @@ func _ready() -> void:
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD
 	box.add_child(_status)
 	add_child(_options)
+	_mods = ModPanel.new()
+	add_child(_mods)
+	_mods.closed.connect(_refresh_mod_label)
 
 
 ## Options ✓ with another text / voice language: the menu (signpost labels,
@@ -240,6 +255,8 @@ func campaign_pad_targets() -> Array:
 			targets.append({"rect": _campaigns.buttons[id].get_global_rect(), "id": "campaign_" + id})
 		if _coop_button:
 			targets.append({"rect": _coop_button.get_global_rect(), "id": "campaign_coop"})
+		if _mods_button:
+			targets.append({"rect": _mods_button.get_global_rect(), "id": "mods"})
 	return targets
 
 
@@ -277,7 +294,11 @@ func _on_board(action: String) -> void:
 		if DisplayServer.get_name() != "headless":
 			await RenderingServer.frame_post_draw
 	match action:
-		"new": _difficulty.open()   #  case 0: the difficulty box first
+		"new":
+			_mods.continue_action = func():
+				_difficulty.open()
+				_difficulty.level = GameData.option("difficulty")
+			_open_mods("rules")
 		"load": _load.open()        # case 1: the Load screen (no slide-in)
 		"multiplayer": _net.open()
 		"options": _options.open()
@@ -288,7 +309,7 @@ func _on_board(action: String) -> void:
 
 ## No screen over the signpost (its boards take clicks and the gamepad).
 func pad_menu_free() -> bool:
-	return not (_opening_panel or _panel.visible or _options.visible or has_node("Credits") or _difficulty.visible or _load.visible \
+	return not (_opening_panel or (_mods != null and _mods.visible) or _panel.visible or _options.visible or has_node("Credits") or _difficulty.visible or _load.visible \
 			or (_chars and _chars.visible))
 
 
@@ -326,6 +347,9 @@ func _make_session() -> Session:
 
 
 func _single() -> void:
+	if ModStore.mode_error("single_player") != "":
+		_open_mods("profiles")
+		return
 	var s := _make_session()
 	s.players = {1: {"index": 0, "name": GameData.player_name}}
 	# the original: Intro.bik first, then the game loads (Session.new_campaign).
@@ -337,18 +361,22 @@ func _single() -> void:
 
 
 func _continue() -> void:
-	var s := _make_session()
-	start_game.emit(s)
-	if not await s.load_game_shown(Session.latest_save()):
-		s.new_campaign()
+	_load_slot(Session.latest_save())
 
 
 
 func _load_slot(slot: String) -> void:
+	var data: Variant = CampaignState.read_data(SaveInfo.path(slot))
+	var error := ModStore.saved_error(data.get("mod_config", {})) if data is Dictionary else "The save cannot be read."
+	if error != "":
+		_open_mods("profiles")
+		_mods._status.text = error
+		return
 	var s := _make_session()
+	var main := get_parent()
 	start_game.emit(s)
 	if not await s.load_game_shown(slot):
-		s.new_campaign()
+		await main.back_to_menu()
 
 
 func _set_status(t: String) -> void:
@@ -362,7 +390,18 @@ func _set_status(t: String) -> void:
 func _host(max_players := Session.MAX_PLAYERS) -> void:
 	if _session and _session.online:
 		return
+	var problem := ModStore.mode_error("original_multiplayer" if _net and _net.lmp_base else "campaign_coop")
+	var config := ModStore.snapshot()
+	if problem == "" and _net and _net.start_slot and not _net.lmp_base:
+		var saved: Variant = CampaignState.read_data(SaveInfo.path(_net.start_slot))
+		problem = ModStore.saved_error(saved.get("mod_config", {})) if saved is Dictionary else "The save cannot be read."
+		if problem == "" and not saved.get("mod_config", {}).is_empty(): config = saved.mod_config.duplicate(true)
+	if problem != "":
+		_set_status(problem)
+		return
 	var s := _make_session()
+	s.mod_config = config
+	s.mod_config.profile = ModStore.active_id()
 	var port := _port()
 	s.password = _net.password.strip_edges() if _net else ""
 	var err := await s.start_host(port, max_players)
@@ -391,6 +430,8 @@ func _host(max_players := Session.MAX_PLAYERS) -> void:
 func _join(address := "") -> void:
 	if _session and _session.online:
 		return
+	var problem := ModStore.mode_error("original_multiplayer" if _net and _net.page == NetworkPanel.JOIN_LMP else "campaign_coop")
+	if problem != "": _set_status(problem); return
 	if address.is_empty():   # --join=<ip> on the command line
 		address = _addr_default
 	if OS.has_feature("web") and not (address.begins_with("ws://") or address.begins_with("wss://")):
@@ -464,10 +505,24 @@ func _start_coop() -> void:
 			ok = s.new_lmp_game(base)
 		if not ok: LoadingScreen.end()
 		return
-	start_game.emit(_session)
-	if _net and _net.start_slot and await _session.load_game_shown(_net.start_slot):   # the host's save, continued
+	var campaign_session := _session
+	var slot := _net.start_slot if _net else ""
+	var main := get_parent()
+	start_game.emit(campaign_session)
+	if slot:
+		if not await campaign_session.load_game_shown(slot):
+			await main.back_to_menu()
 		return
-	_session.new_campaign()
+	campaign_session.new_campaign()
+
+func _open_mods(page: String) -> void:
+	if _mods == null: return
+	if page != "rules": _mods.continue_action = Callable()
+	_mods.open(page)
+
+func _refresh_mod_label() -> void:
+	_mods_button.text = RemakeText.t("Mods and rules") + " · " + str(ModStore.profile().name)
+	_mods_button.tooltip_text = _mods_button.text
 
 
 ## Back on the Multiplayer screen's first page: to the signpost; an open

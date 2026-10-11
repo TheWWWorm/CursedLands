@@ -50,18 +50,20 @@ func _ready() -> void:
 	var pivot := hero.global_position+Vector3.UP*clampf(hero.figure_half_z*1.6,0.6,2.8)
 	check(at.distance_to(pivot)<=6.5 and at.distance_to(pivot)>0.1,"camera is behind the shoulder at close range")
 	check(DirectCombat.point_clear(world,at),"actual camp camera does not sit in a solid span or floor")
+	if DisplayServer.get_name()=="headless": direct._captured=true # route mouse events without OS capture
 	var face := direct.heading
 	var motion := InputEventMouseMotion.new();motion.relative=Vector2(60,-20)
 	Input.parse_input_event(motion);await frames()
 	check(not is_equal_approx(direct.heading,face),"mouse motion turns shoulder view")
+	if DisplayServer.get_name()=="headless": direct._captured=false
 	var d := direct.ground_direction(Vector2(0,-1))
 	check(d.is_equal_approx(Vector2.from_angle(direct.heading)),"forward movement follows camera heading")
 	GameData.options.pad_enabled=0
 	key(KEY_W,true);await frames()
-	check(hero.orders.size()>0 and hero.orders[-1].type=="move" and hero.orders[-1].get("line",false),"W posts bounded straight movement through the host")
+	check(hero.orders.size()>0 and hero.orders[-1].type=="direct_move" and hero.orders[-1].direction.is_equal_approx(d),"W sends camera-relative steering through the host")
 	check(hero.orders[-1].get("village_limit",Vector3.ZERO)==session.village_move_limit(),"W retains the scripted camp boundary")
 	key(KEY_W,false);await frames()
-	check(hero.orders.size()>0 and hero.orders[-1].to.is_equal_approx(hero.pos),"releasing W posts one stop")
+	check(hero.orders.is_empty() and hero.order.is_empty(),"releasing W stops steering without a return-to-position order")
 	key(KEY_TAB,true);key(KEY_TAB,false);await frames()
 	check(direct.pointer and not direct._captured,"Tab frees pointer for the HUD")
 	key(KEY_TAB,true);key(KEY_TAB,false);await frames()
@@ -121,8 +123,9 @@ func _ready() -> void:
 	hero.order={};hero.orders.clear();hero._anim_lock=0;hero._pending_hit={};hero._attack_cd=0
 	axis(JOY_AXIS_LEFT_Y,-0.8);await frames()
 	check(direct.active(),"gamepad automatically activates the experimental mode")
-	check(not hero.orders.is_empty() and hero.orders[-1].type=="move","first gamepad stick input immediately moves")
+	check(not hero.orders.is_empty() and hero.orders[-1].type=="direct_move","first gamepad stick input immediately steers")
 	axis(JOY_AXIS_LEFT_Y,0);await frames()
+	check(hero.orders.is_empty(),"releasing gamepad stick stops steering")
 	var yaw := direct.heading
 	direct.pad_step(Vector2.ZERO,Vector2(1,0.5),0.1)
 	check(direct.heading!=yaw,"gamepad right stick looks rather than zooming")
