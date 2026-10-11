@@ -63,23 +63,36 @@ func _ready() -> void:
 	check(not session.world.authority and not game.my_units().is_empty(), "owner controls a replicated party")
 	check(session.lmp_generation > 0 and String(session.lmp.get("quest", "")) == quest, "quest and generation synchronized")
 	var hero: GameUnit = game.my_units()[0]
-	var gait := 0 if hero.gait() != 0 else 2
+	# Villages permit walk/run, but deliberately refuse crawl/kneel. Use a
+	# permitted gait to prove that the owner's command reaches the worker.
+	var gait := 3 if hero.gait() != 3 else 2
 	session.submit({"t":"gait", "units":[hero.uid], "gait":gait})
 	check(await until(func(): return hero.gait() == gait, 5), "owner command reaches authority")
+	session.submit({"t":"gait", "units":[hero.uid], "gait":0})
+	await get_tree().create_timer(0.4).timeout
+	check(hero.gait() == gait, "base refuses crawling without losing permitted gait")
 	var before := session.lmp_generation
 	session.submit({"t":"travel", "zone":quest, "entrance":1})
 	if not check(await until(func(): return session.zone_id == quest and not session._remote_loading, 45), "owner receives quest after travel"):
 		await finish(); return
 	check(session.lmp_generation > before, "quest advances generation")
 	check(not game.my_units().is_empty() and session.my_index == 0, "quest preserves owner party")
+	hero = game.my_units()[0]
+	session.submit({"t":"gait", "units":[hero.uid], "gait":0})
+	check(await until(func(): return hero.gait() == 0, 5), "field permits crawling through authority")
+	session.submit({"t":"gait", "units":[hero.uid], "gait":2})
+	check(await until(func(): return hero.gait() == 2, 5), "field returns to walking through authority")
 	before = session.lmp_generation
 	session.submit({"t":"travel", "zone":"bz1mpg", "entrance":1})
 	if not check(await until(func(): return session.zone_id == "bz1mpg" and not session._remote_loading, 45), "owner returns to base"):
 		await finish(); return
 	check(session.lmp_generation > before, "return advances generation")
 	hero = game.my_units()[0]
-	gait = 0 if hero.gait() != 0 else 2
+	gait = 3 if hero.gait() != 3 else 2
 	session.submit({"t":"gait", "units":[hero.uid], "gait":gait})
 	check(await until(func(): return hero.gait() == gait, 5), "commands work after return")
+	session.submit({"t":"gait", "units":[hero.uid], "gait":1})
+	await get_tree().create_timer(0.4).timeout
+	check(hero.gait() == gait, "return to base restores the posture restriction")
 	check(MpCharacter.load_file("1.mp").heroes[0].name == "OwnerTest", "local character persists")
 	await finish()

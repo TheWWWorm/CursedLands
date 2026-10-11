@@ -1,6 +1,6 @@
 # Mods, profiles and game rules
 
-Available in **1.0.4 Experimental 1**, using mod API 1 and network protocol 14. Stable 1.0.3 does not include this feature.
+Available in **1.0.4 Experimental**, using mod API 1 and network protocol 14. Stable 1.0.3 does not include this feature.
 
 Open **Mods and rules** above the main-menu signpost, from the multiplayer screen, or beside the in-game Esc menu. **Options → Remake → Mod options and rules** opens the same editor. New Game includes a rules review before the difficulty screen.
 
@@ -24,6 +24,8 @@ Mouse, keyboard focus and controller navigation use the same controls. D-pad up/
 Everyone needs network protocol **14** (this source revision). The host checks the mod API, campaign, sandbox classification, ordered gameplay package IDs/versions/content hashes and effective mod option values before admitting a player. Existing original-map checks and database synchronization remain in place. No package is downloaded automatically.
 
 Built-in host rules, such as full XP or shared loot, are published to guests without changing their local defaults. Gameplay mod values must match when joining. Choose the same package versions and values in the menu before connecting. A continued host save supplies its saved configuration before the lobby opens; stop hosting to choose a different save.
+
+Experimental 2 checks saved mod compatibility before pausing a running group for loading. Refusing a save preserves the current game, pause state and speed. When a host without guests restores different saved mod values, new players can join after loading finishes with the matching values.
 
 Texture/audio-only packages are local presentation choices and do not have to match. Any package with options or database patches is classified as shared gameplay by the engine. Authors cannot bypass matching with a cosmetic flag. Dependencies and load order are part of the resolved configuration. Imported heroes and returned co-op progress must remain within a compatible gameplay profile. Existing built-in co-op XP/loot options retain their prior progression behavior.
 

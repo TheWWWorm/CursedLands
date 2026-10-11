@@ -118,6 +118,7 @@ var _lmp_loading_generation := 0
 var _remote_load_end_serial := -1
 var _loading_world_mode := Node.PROCESS_MODE_PAUSABLE
 var _loading_zone_id := ""
+var _loading_mod_change := false
 ## Monotonic water-state revisions across zone changes and same-zone reloads.
 var _water_seq := 0
 var _water_received := -1
@@ -4302,6 +4303,11 @@ func _rpc_hello(player_name: String, hero_class: String, protocol := 0, maps_md5
 	# is dropped (it must not push the real player out).
 	if password != "" and pw.left(PASSWORD_MAX) != password and net.refuse(pid, protocol, maps_md5, player_name, pw):
 		return
+	# A solo host can restore different saved option values. Do not admit a
+	# guest against the old configuration while that transition is in flight.
+	if loading_game and _loading_mod_change:
+		net._reject(pid, "Mod configuration", "Wait for the host to finish loading before joining.")
+		return
 	if (not lmp.is_empty() or String(lobby_mode.get("mode", "")) == "lmp") \
 			and MpCharacter.accept(_lmp_character(pid)).is_empty():
 		net.refuse_character(pid)
@@ -4657,9 +4663,9 @@ func load_game(slot: String) -> bool:
 	if not _may_load():
 		return false
 	var s := _read_save(slot)
-	if s == null or not zone_exists(s.current_zone):
+	if not _can_load_saved_state(s):
 		return false
-	_begin_host_load(s.current_zone)
+	_begin_host_load(s.current_zone, true, s.mod_config)
 	# Synchronous tools / engine callers keep their bool-returning API. The
 	# UI uses load_game_shown and waits for every connected client's ack.
 	_flush_load_notice()
@@ -4686,10 +4692,10 @@ func load_game_shown(slot: String) -> bool:
 		LoadingScreen.end()
 		return false
 	var s := _read_save(slot)
-	if s == null or not zone_exists(s.current_zone):
+	if not _can_load_saved_state(s):
 		LoadingScreen.end()
 		return false
-	_begin_host_load(s.current_zone)
+	_begin_host_load(s.current_zone, true, s.mod_config)
 	await _wait_load_clients()
 	if LoadingScreen.deferred() and zone_exists(s.current_zone):
 		await LoadingScreen.hold(get_tree(), campaign.zone(s.current_zone), LoadingScreen.SAVED_ZONE)
@@ -4703,11 +4709,13 @@ func _may_load() -> bool:
 	return lmp.is_empty() and not loading_game
 
 
-func _begin_host_load(id: String, cancel_movie := true) -> void:
+func _begin_host_load(id: String, cancel_movie := true, saved_mods: Dictionary = {}) -> void:
 	if cancel_movie:
 		_cancel_movie()
 	loading_game = true
 	_loading_zone_id = id
+	_loading_mod_change = not saved_mods.is_empty() \
+		and ModStore.progress_signature(saved_mods) != ModStore.progress_signature(mod_config)
 	_load_serial += 1
 	_load_waiting.clear()
 	if world:
@@ -4779,6 +4787,7 @@ func _rpc_load_ready(serial: int) -> void:
 func _finish_host_load() -> void:
 	loading_game = false
 	_loading_zone_id = ""
+	_loading_mod_change = false
 	_load_waiting.clear()
 	if online:
 		for pid in players:
@@ -4842,14 +4851,21 @@ func _read_save(slot: String) -> CampaignState:
 	return s
 
 
-func _load_state(slot: String, s: CampaignState) -> bool:
+## Check compatibility before disabling the current world or telling peers to
+## load. A refused save must leave their current clock and command fence intact.
+func _can_load_saved_state(s: CampaignState) -> bool:
 	if not is_host or not lmp.is_empty() or s == null or not zone_exists(s.current_zone):
 		return false
 	if ModStore.mode_error("campaign_coop" if multiplayer_game else "single_player") != "": return false
 	if ModStore.saved_error(s.mod_config) != "": return false
-	var config: Dictionary = s.mod_config.duplicate(true) if not s.mod_config.is_empty() else mod_config.duplicate(true)
+	var config: Dictionary = s.mod_config if not s.mod_config.is_empty() else mod_config
 	# A running group cannot change progression compatibility under its guests.
-	if online and players.size() > 1 and ModStore.progress_signature(config) != ModStore.progress_signature(mod_config): return false
+	return not (online and players.size() > 1 and ModStore.progress_signature(config) != ModStore.progress_signature(mod_config))
+
+
+func _load_state(slot: String, s: CampaignState) -> bool:
+	if not _can_load_saved_state(s): return false
+	var config: Dictionary = s.mod_config.duplicate(true) if not s.mod_config.is_empty() else mod_config.duplicate(true)
 	config.profile = ModStore.active_id()
 	mod_config = config
 	s.mod_config = config.duplicate(true)
