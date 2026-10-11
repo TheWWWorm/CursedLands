@@ -279,6 +279,8 @@ func host(port := PORT, limit := MAX_PLAYERS) -> Error:
 	var err: Error = peer.create_server(port) if socket_mode else peer.create_server(port, max_players + (1 if local_host.worker else 0))
 	if err != OK:
 		return err
+	if peer is ENetMultiplayerPeer:
+		peer.get_host().compress(ENetConnection.COMPRESS_RANGE_CODER)
 	multiplayer.multiplayer_peer = peer if socket_mode else NetSim.wrap(peer)   # (tools: --netsim)
 	online = true
 	is_host = true
@@ -345,6 +347,8 @@ func join(address: String, port := PORT) -> Error:
 	var err: Error = peer.create_client(address) if socket_mode else peer.create_client(address, port)
 	if err != OK:
 		return err
+	if peer is ENetMultiplayerPeer:
+		peer.get_host().compress(ENetConnection.COMPRESS_RANGE_CODER)
 	multiplayer.multiplayer_peer = peer if socket_mode else NetSim.wrap(peer)   # (tools: --netsim)
 	online = true
 	is_host = false
@@ -421,8 +425,11 @@ func _send_clock(pid := 0) -> void:
 func _rpc_clock(enabled: bool, paused: bool, rate: int) -> void:
 	if local_host.single_player:
 		return
+	var changed := enabled and (clock_paused != paused or clock_speed != clampi(rate, 0, 1))
 	host_clock = enabled
 	_apply_clock(paused if enabled else false, rate if enabled else 0)
+	if changed and game and game.sound:
+		game.sound.ui("buttons\\battle\\clock.wav")
 
 
 ## the original: "new game" (message) plays Movies\Intro.bik
@@ -4548,6 +4555,12 @@ func _relax_timeout(pid: int) -> void:
 	var p := enet.get_peer(pid)
 	if p:
 		p.set_timeout(0, PEER_TIMEOUT_MS, PEER_TIMEOUT_MS)
+		# ENet's RTT-based throttle mistakes a busy/loading frontend for link
+		# congestion. It can fall to zero and discard party snapshots for
+		# seconds after frames recover. We already bound snapshot cadence and
+		# packet size; retain latest-state delivery through frame-time spikes.
+		# Actual UDP loss still uses the ordinary periodic snapshot recovery.
+		p.throttle_configure(1000, ENetPacketPeer.PACKET_THROTTLE_SCALE, 0)
 
 
 func _on_peer_disconnected(pid: int) -> void:

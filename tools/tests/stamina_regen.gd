@@ -38,13 +38,16 @@ func _ready() -> void:
 	for action in ["direct_move","move","attack","cast"]:
 		u.hp=50.0;u.mana=50.0;u.order={"type":action}
 		recover()
-		check(is_equal_approx(u.mana,54.0) and is_equal_approx(u.hp,54.0),"on recovers at least HP amount during "+action)
+		check(is_equal_approx(u.mana,54.0) and is_equal_approx(u.hp,54.0),"on recovers exactly HP amount during "+action)
 	u.hp=100.0;u.mana=50.0;recover()
-	check(is_equal_approx(u.mana,54.0),"full health does not remove the stamina floor")
+	check(is_equal_approx(u.mana,54.0),"full health does not remove the stamina rate")
 	u.buffs={"regeneration":{"regen_mul":2.0}};u.mana=50.0;recover()
-	check(is_equal_approx(u.mana,58.0),"health regeneration buffs also raise the stamina floor")
+	check(is_equal_approx(u.mana,58.0),"health regeneration buffs also raise the stamina rate")
 	u.buffs={};u.race.mana_regen=0.1;u.mana=50.0;recover()
-	check(is_equal_approx(u.mana,60.0),"higher native stamina recovery is retained")
+	check(is_equal_approx(u.mana,54.0),"higher native stamina rate does not accelerate continuous recovery")
+	u.order={};u.mana=50.0;recover()
+	check(is_equal_approx(u.mana,60.0),"standing idle retains faster native stamina recovery")
+	u.order={"type":"attack"}
 	u.mana=99.0;recover()
 	check(u.mana==100.0,"recovery cannot exceed maximum stamina")
 	u.race.mana_regen=0.005;u.controller=-1;u.mana=50.0;recover()

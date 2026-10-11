@@ -337,7 +337,7 @@ func _rpc_chat(idx: int, player_name: String, text: String) -> void:
 # drops the connection.
 
 ## Remake co-op protocol; raise it when the messages change incompatibly.
-const PROTOCOL := 17   # shared stamina recovery rule and capped armour absorption
+const PROTOCOL := 18   # selectable armour formula and HP-rate stamina recovery
 const CoopDb := preload("res://src/game/coop_db.gd")
 
 

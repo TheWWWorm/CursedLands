@@ -2,6 +2,19 @@ extends Node
 var failures:=0
 var checks:=0
 var out:="user://feedback-visuals"
+class InfoPreview extends CampView:
+	var rects: Array[Rect2] = []
+	var item := "spell:strength{d1;d1}"
+	func _ready() -> void: pass
+	func _process(_delta: float) -> void: pass
+	func _draw() -> void:
+		draw_rect(Rect2(Vector2.ZERO,size),Color(0.11,0.10,0.08))
+		rects.clear()
+		_draw_item_info(300,item)
+		_t(Rect2(315,410,170,20),"Навыки/Заклинания")
+	func _t(r: Rect2, txt: String, fi := 0, col := Interface800.TEXT, align := HORIZONTAL_ALIGNMENT_LEFT) -> void:
+		if not txt.is_empty(): rects.append(Rect2(r.position,Vector2(r.size.x,_lh(fi))))
+		super._t(r,txt,fi,col,align)
 func check(ok:bool,label:String)->void:
 	checks+=1
 	if not ok:failures+=1
@@ -48,6 +61,22 @@ func _run()->void:
 		await shot("stamina-rule-ru")
 		check(panel._mods._body.size.x<=panel._mods._scroll.size.x,"long translated rule descriptions fit the dialog")
 	panel.queue_free();await frames()
+	for locale in ["ru","de"]:
+		RemakeText.lang=locale
+		var rules:=ModPanel.new();add_child(rules);rules.open("rules")
+		await shot("rules-"+locale)
+		rules.free();await frames()
+	RemakeText.lang="ru"
+	var info:=InfoPreview.new();info.size=Vector2(1440,1080);info.position=Vector2(240,0);add_child(info)
+	for item:String in ["spell:strength{d1;d1}","spell:fireball{e1;e1;r1;r1;a1;a1;m1;m1}","gipat medium plate.thin"]:
+		info.item=item;info.queue_redraw();await frames()
+		var bottom:=0.0;var fits:=true
+		for rect:Rect2 in info.rects:
+			if rect.position.y<bottom-0.01:fits=false
+			bottom=rect.end.y
+		check(fits,"all rendered item text rows remain separate: "+item)
+		await shot("item-info-"+str(info.item.hash()))
+	info.free()
 	var cards:=RuneCards.new();cards.position=Vector2(200,35);add_child(cards)
 	var ids: Array[String]=[]
 	for row:Dictionary in GameData.db.table("weapons"):
@@ -76,6 +105,14 @@ func _run()->void:
 					check(false,"rotating item fits cell: "+v.item);break
 		check(v._fit_camera.size>0,"rotating item has a valid fit: "+v.item)
 	var world:=GameWorld.new();add_child(world);world.set_process(false);world.set_physics_process(false)
+	var human:=GameUnit.new();world.add_child(human)
+	var human_ok:=human.setup(world,{"nid":124,"prototype":"Human Hero"})
+	check(human_ok,"ordinary human preview model loads")
+	if not human_ok: get_tree().quit(1); return
+	var human_doll:=Paperdoll.new();human_doll.exe_rect=UnitPanel.FIG;human_doll.view_size=Vector2i(320,440);human_doll.position=Vector2(1220,610);human_doll.size=Vector2(320,440);add_child(human_doll);human_doll.show_unit(human)
+	await frames()
+	var native_scale:=1.0/float(GameData.db.find("monster_prototypes","Human Hero").get("info_scale",1.0))
+	check(is_equal_approx(human_doll._pivot.basis.get_scale().x,native_scale),"ordinary character retains original authored preview scale")
 	var names:Array[String]=[]
 	for row:Dictionary in GameData.db.table("monster_prototypes"):
 		if String(row.name).to_lower().contains("troll") and String(row.name).to_lower().contains("black"):names.append(row.name)

@@ -121,6 +121,7 @@ const OPTIONS := [
 	# Severed limbs hidden and thrown off (SeveredLimb); off = the original,
 	# which keeps the part on the figure (GameUnit._show_severed).
 	["gfx_severed_limbs", 1, 2, 15, 4, 1],
+	["gfx_rain_puddles", 1, 2, 15, 5, 0],
 	# Camera (group 16; CameraRig, CameraFade): style (0 original, 1 modern),
 	# follow, see-through, the modern camera's pan / turn / zoom speeds
 	# (50 = ×1), the WASD layout (default on: user request); rows 8 / 9 are the
@@ -180,6 +181,7 @@ const OPTIONS := [
 	["distant_ai", 1, 2, 18, 8, 0],
 	["free_run", 1, 2, 18, 9, 0],
 	["stamina_regen", 1, 2, 18, 10, 0],
+	["armor_formula", 1, 2, 18, 11, 0],
 	# Network and co-op (group 19): the co-op host's rules — full experience
 	# for every party member (XpRules), monster scaling to the player count
 	# (MobScaling: Off / Light / Normal / Strong), shared loot
@@ -207,6 +209,7 @@ const FIXED_OPTIONS := {"shadow_units": 1, "shadow_buildings": 1, "shadow_flora"
 ## Labels of the remake's multiple-choice rows (value = index); "resolution"
 ## is built from the monitor (resolutions()).
 const DISPLAY_CHOICES := {
+	"armor_formula": ["Original", "20% minimum damage"],
 	"gfx_clouds": ["Off", "Moving layer", "Volume: Low", "Volume: High"],
 	"mechanism_motion": ["Fast drop", "Original timing"],
 	"display_mode": ["Windowed", "Fullscreen", "Borderless fullscreen"],
@@ -336,7 +339,9 @@ const REMAKE_OPTIONS := {
 	"smile_faces": ["Smiling portraits", "The party's portraits smile for a few seconds after a won fight (every living member), when a hero takes loot from a body or chest, and when a quest is finished or rewarded (the whole party). Co-op: also the hero who gets a copy of shared loot. A hit still shows pain at once. Off: as the original, a portrait smiles only after its character's kill."],
 	"coop_player_names": ["Player names above heroes", "Co-op: each player's name, in their colour, above their hero's head, so the heroes are easy to tell apart. Hidden while the hero cannot be seen. Single player is not affected. Off: as the original, no names."],
 	"free_run": ["Free running outside combat", "Running costs no stamina while the party is out of combat. Combat running and spell costs stay normal. Injuries and carrying limits still apply. The host controls this rule."],
-	"stamina_regen": ["Always regenerate stamina", "Party stamina regenerates during movement and combat, at least as fast as health. Running and spells still consume stamina. The host controls this rule."],
+	"armor_formula": ["Armour formula", "Original armour can absorb all damage. The optional formula limits total natural and worn armour absorption to 80%, leaving at least 20% of each incoming damage type. Applies to attacks and spells. The host controls this rule."],
+	"gfx_rain_puddles": ["Rain puddles", "Shallow reflective patches gather on exposed, nearly level ground during rain and dry afterwards. Requires Rain on surfaces. Off by default."],
+	"stamina_regen": ["Always regenerate stamina", "While moving, fighting or casting, party stamina regenerates at the health regeneration rate, even at full health. Standing idle retains the original faster stamina recovery. Running and spells still consume stamina. The host controls this rule."],
 	"sp_full_xp": ["Full experience for companions", "Single player: your hero and every companion (hired mercenaries such as Khador) each get the whole experience of a kill or quest. Off: as the original, which splits it equally among the living party."],
 	"start_zones": ["Starting areas on the travel map", "The area where the campaign begins (the ruins where Zak wakes up) becomes a place on the travel map once you have left it, so the party can go back. You arrive at its path from the village; what was killed or taken there stays so, and the opening scenes do not play again. Co-op: the host's setting counts. Off: as the original, where its piece only leads to the village."],
 	"aim_press_once": ["Aim keys: press once", "Press an aimed-strike key (Num 8 head, Num 5 body …) once: its cursor stays until the next click. A click on a creature attacks it at that part; a click elsewhere, a right click, Esc or the same key again cancels it; another aim key switches. Off: as the original, the key must be held while clicking."],
@@ -378,11 +383,11 @@ const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_
 	"gfx_clouds", "gfx_cloud_shadows", "gfx_cloud_reflections", "gfx_terrain_cliffs", "gfx_weather_mist",
 	"gfx_ssao", "gfx_bloom", "gfx_depth_of_field", "gfx_far_view", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
-	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_lava_light", "gfx_detailed_heads",
+	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_rain_puddles", "gfx_lava_light", "gfx_detailed_heads",
 	"gfx_sharp_units", "q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale", "phys_interp",
 	"control_mode", "character_light", "camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow", "village_start_view",
-	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "distant_ai", "path_through", "sp_full_xp", "free_run", "stamina_regen", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot", "enemy_hp_bars", "smile_faces",
+	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "distant_ai", "path_through", "sp_full_xp", "free_run", "stamina_regen", "armor_formula", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot", "enemy_hp_bars", "smile_faces",
 	"pad_enabled", "pad_rumble", "pad_deadzone", "pad_cursor_speed", "pad_target_radius", "pad_wheel_pause", "pad_glyphs", "pad_swap_sticks", "pad_light", "pad_gyro", "pad_gyro_sensitivity", "auto_graphics", "renderer"]
 signal options_changed
 const GFX_REV := 4

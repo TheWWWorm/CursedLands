@@ -24,6 +24,7 @@ func check(ok: bool, label: String) -> void:
 func _ready() -> void: _run.call_deferred()
 func _run() -> void:
 	GameData.difficulty = 0
+	GameData.options.armor_formula = 1
 	var w := GameWorld.new(); add_child(w); w.set_process(false); w.set_physics_process(false)
 	var c := DamageCombat.new(w);w.combat=c
 	var u := GameUnit.new(); w.add_child(u); u.world = w
@@ -56,6 +57,11 @@ func _run() -> void:
 	protected.hp=100.0;protected.stats.armor.fill(500.0)
 	Spells._spell_damage(w,null,{"code":"fireball","subtype":"fire","duration":1,"effect":0.00001},protected)
 	check(absf(100.0-protected.hp-0.000002)<0.00000001,"very small spell pulses retain the same proportional damage floor")
+	GameData.options.armor_formula = 0
+	check(is_zero_approx(c.absorb(u,100,PackedFloat32Array([0,0,1,0,0,0,0]))), "original armour can absorb all incoming damage")
+	protected.hp=100.0
+	Spells._spell_damage(w,null,{"code":"fireball","subtype":"fire","duration":1,"effect":100.0},protected)
+	check(is_equal_approx(protected.hp,100.0),"original spell armour has no forced damage floor")
 	u.pos = Vector2(5,5); u._radius_base = .3; u.figure_half_z = .9; u.stats.range = 0.0; u.uid = 1
 	w.set_unit(1,u)
 	var rat := GameUnit.new(); w.add_child(rat); rat.world = w; rat.uid = 2

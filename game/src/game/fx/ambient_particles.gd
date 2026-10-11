@@ -81,6 +81,10 @@ var _cell := Vector2i(0x7fffffff,0x7fffffff)
 
 func _init() -> void:
 	name = "RegionalParticles"
+	# These are stationary anchors animated by the shader's terrain clock.
+	# Rebuilding assigns different cells to slots; interpolating those slots
+	# blends unrelated seeds, particle kinds and positions for a frame.
+	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	material = ShaderMaterial.new(); material.shader = Gfx.make_shader(SHADER,false)
 	material.render_priority = 2

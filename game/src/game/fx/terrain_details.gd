@@ -122,6 +122,10 @@ var _submission_culling := not OS.get_cmdline_user_args().has("--ei-no-vegetatio
 var _cover_lods := not OS.get_cmdline_user_args().has("--ei-no-cover-lod")
 
 class Chunk extends MultiMeshInstance3D:
+	func _init() -> void:
+		# Fixed roots, with wind and LOD fades entirely in the shader.
+		physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+
 	var cover: MeshInstance3D
 	var mounds: MeshInstance3D
 	var plant_bounds := Rect2()

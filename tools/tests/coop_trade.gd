@@ -70,12 +70,14 @@ func _ready() -> void:
 	for i in 8: other.append("kind%d"%i)
 	check(camp._pile_accepts(other,"kind0") and not camp._pile_accepts(other,"kind8"),"a full pile accepts existing types but not a ninth type")
 	var g:=client.game as ObservedGame; g.inventories.clear(); g.results.clear()
+	camp.press_sounds.clear()
 	camp._on_yes()
 	check(camp.trade_wait and not camp.deal_info()[2],"confirmation disables duplicate submission while waiting")
 	camp._on_yes(); camp._move_now(potion,"sell")
 	check(camp.sell_pile.size()==20,"pending offer cannot be mutated")
 	check(await until(func():return not camp.trade_wait and not g.results.is_empty()),"one atomic trade result returns")
 	check(g.results.size()==1 and g.results[0].ok,"one confirmed request settles once")
+	check(camp.press_sounds.size()==1 and String(camp.press_sounds[0]).ends_with("buy.wav"),"confirmed sale plays one transaction sound")
 	check(client.state.items==[potion,potion,potion,potion],"all twenty sales and four purchases arrive together")
 	check(g.inventories.size()==1 and g.inventories[0]==client.state.items,"client receives one final inventory update")
 	check(client.state.money==222+20*Items.sell_price(potion)-4*Items.buy_price(potion),"guest pays the net deal price")
@@ -104,6 +106,7 @@ func _ready() -> void:
 	var worn := Items.with_wear(weapon,1.0)
 	st.items=[weapon,worn];st.money=0
 	check(worn!=weapon and host._trade_apply({"shop":1,"sell":[worn],"buy":[]}) and st.items==[weapon],"selling a worn copy preserves its pristine twin")
+	camp.press_sounds.clear()
 	camp.sell_pile=[potion];camp.trade_wait=true
 	camp.trade_result({"req":camp._trade_req,"ok":false})
 	check(not camp.trade_wait and camp.sell_pile==[potion],"rejected offer remains available for correction")
@@ -112,6 +115,7 @@ func _ready() -> void:
 	camp.reset_transactions()
 	camp.trade_result({"req":old_request,"ok":true})
 	check(not camp.trade_wait and camp.sell_pile.is_empty() and camp._trade_req!=old_request,"zone transfer cancels pending offers and fences late results")
+	check(camp.press_sounds.is_empty(),"failed or stale sale does not play a success sound")
 	if DisplayServer.get_name()!="headless":
 		st.items=[]
 		for i in 20: st.items.append(potion)

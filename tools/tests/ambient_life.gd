@@ -380,7 +380,7 @@ func _ready() -> void:
 		"gfx_grass":0,"gfx_biome_cover":0,"gfx_water":0,"gfx_water_waves":0,"gfx_taa":0,"gfx_ssao":0,"gfx_volumetric":0},true)
 	campaign=CampaignMap.load_from(GameData.texts)
 	view=SubViewport.new(); view.size=Vector2i(1280,900); view.own_world_3d=true
-	view.physics_interpolation_mode=Node.PHYSICS_INTERPOLATION_MODE_OFF; view.render_target_update_mode=SubViewport.UPDATE_ALWAYS; add_child(view)
+	view.physics_interpolation_mode=Node.PHYSICS_INTERPOLATION_MODE_ON; view.render_target_update_mode=SubViewport.UPDATE_ALWAYS; add_child(view)
 	camera=Camera3D.new(); view.add_child(camera)
 	var env:=WorldEnvironment.new(); env.name="AmbientEnvironment"; env.environment=Environment.new(); Gfx.setup_original_env(env.environment)
 	env.environment.background_mode=Environment.BG_COLOR; env.environment.background_color=Color(0.13,0.18,0.23); view.add_child(env)

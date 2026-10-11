@@ -388,7 +388,11 @@ func _exe_frame() -> void:
 		* Basis(Vector3(0, 0, 1), h * 0.4)
 	_pivot.transform = Transform3D((to_godot * rot * ei_local.inverse()).scaled_local(Vector3.ONE / b),
 		to_godot * Vector3(x, y, EXE_DEPTH))
-	_fit_large_preview()
+	# Redressable characters (the original race class 0x32) keep their
+	# authored scale, including hats and weapons entering the label margin.
+	var race := GameData.db.find("race_models", proto.get("base_race", ""))
+	if int(race.get("type_id", 0)) != 0x32:
+		_fit_large_preview()
 
 
 func _fit_large_preview() -> void:

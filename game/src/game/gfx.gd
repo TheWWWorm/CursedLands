@@ -56,6 +56,7 @@ const GLOBALS := {
 	&"ei_surface_fx": Color(1.0, 1.0, 1.0),   # materials, leaf backlight, rain surfaces
 	&"ei_water_mirror": Color(0.0, 0.0, 0.0), # active reflected-view clipping height
 	&"ei_weather": Color(0.0, 0.0, 0.0),   # wetness, current rain intensity, reserved
+	&"ei_rain_puddles": Color(0.0, 0.0, 0.0), # optional rain accumulation on flat ground
 	&"ei_sun_pass": Color(0.0, 0.0, 0.0),   # 1: the sun is drawn in its own additive pass (GLES3, shadowed)
 	&"ei_unit_sharp": Color(1.0, -0.5, 0.0),   # gfx_sharp_units: on, mip bias (EIUnitModel.SHARP_FETCH)
 	&"ei_flash": Color(0.0, 0.0, 0.0),   # x: remake lightning sky brighten (ParticleFx soft flash, EISky)
@@ -88,7 +89,15 @@ global uniform vec4 ei_plc2;
 global uniform vec4 ei_plc3;
 global uniform vec3 ei_surface_fx;
 global uniform vec3 ei_weather;
+global uniform vec3 ei_rain_puddles;
 global uniform vec3 ei_water_mirror;
+// Stable depressions fill gradually with accumulated rain, only on flat,
+// exposed ground. The same mask is used by terrain and contact blending.
+float ei_puddle_mask(float wet, float up, float grass, float noise) {
+	return ei_rain_puddles.x * smoothstep(0.35,0.95,wet)
+		* smoothstep(0.94,0.995,up) * (1.0-grass)
+		* smoothstep(0.48,0.64,noise);
+}
 uniform vec4 ei_material_diffuse = vec4(1.0);
 uniform vec3 ei_material_emissive = vec3(0.0);
 vec3 ei_lin(vec3 c) {
@@ -786,6 +795,7 @@ static func apply_surface_options() -> void:
 	apply_unit_sharpness()
 	RenderingServer.global_shader_parameter_set(&"ei_surface_fx", Vector3(
 		float(on("gfx_materials")), float(on("gfx_foliage_light")), float(on("gfx_weather_surfaces"))))
+	RenderingServer.global_shader_parameter_set(&"ei_rain_puddles", Vector3(float(on("gfx_rain_puddles")), 0.0, 0.0))
 	if not on("gfx_weather_surfaces"):
 		set_surface_weather(0.0, 0.0)
 	if not on("gfx_clouds"): clear_clouds()

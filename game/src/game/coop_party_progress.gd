@@ -18,7 +18,8 @@ static func project_bodies(value: Variant, player: int) -> Variant:
 	if value is Dictionary:
 		var out := {}
 		for key in value:
-			out[key] = preload("res://src/game/actor_refs.gd").project_value(value[key], player) if key == "body" else project_bodies(value[key], player)
+			var body_key: bool = (key is String or key is StringName) and key == "body"
+			out[key] = preload("res://src/game/actor_refs.gd").project_value(value[key], player) if body_key else project_bodies(value[key], player)
 		return out
 	return value
 

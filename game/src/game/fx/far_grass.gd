@@ -479,6 +479,7 @@ static func install(job: Job, geometry: ArrayMesh, shader_material: ShaderMateri
 	assert(job.done)
 	var multi := MultiMesh.new(); multi.transform_format = MultiMesh.TRANSFORM_3D
 	var node := MultiMeshInstance3D.new()
+	node.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	multi.use_colors = true; multi.use_custom_data = true; multi.mesh = geometry
 	multi.instance_count = job.count
 	var buffer := job.buffer.duplicate()

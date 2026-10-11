@@ -131,8 +131,8 @@ func hit_chance(att: GameUnit, def: GameUnit) -> float:
 ## D = min + random(range); per damage type i the target's natural armour is
 ## subtracted (max(0, D * factor_i - armour_i)), then every armour layer worn on
 ## the struck body part (GameUnit.hit_part: random location)
-## outer layer first. Armour can absorb at most 80% of each incoming type;
-## the remainder comes off that part's health.
+## outer layer first. The optional armour rule leaves 20% of each incoming
+## type; Original allows full absorption. The remainder damages that part.
 ## Wear: each worn piece loses the damage that
 ## got through it (stops once the absorption budget is exhausted); the attacker's
 ## weapon in hand at the blow ((attacker); for a bow or
@@ -175,10 +175,10 @@ func absorb(def: GameUnit, dmg: float, f: PackedFloat32Array, part := "torso") -
 		# (D·f − max(D·f − armour, 0)), ECX = param_4) and then what
 		# the layers absorbed: D·f − max(left, 0) in all.
 		var raw := dmg * f[t]
-		# Damage threshold: all natural/worn layers share one 80% budget.
+		# With the optional rule, natural/worn layers share one 80% budget.
 		# Apply the floor per incoming type so unrelated resistances cannot
 		# consume another type's guaranteed damage.
-		var minimum := maxf(raw, 0.0) * 0.2
+		var minimum := armor_minimum(def, raw)
 		var d := maxf(minimum, raw - (armour[t] * k if t < armour.size() else 0.0))
 		if d > minimum:
 			for w: Array in worn:
@@ -191,6 +191,13 @@ func absorb(def: GameUnit, dmg: float, f: PackedFloat32Array, part := "torso") -
 		last_types[t] = maxf(d, 0.0)
 		total += maxf(d, 0.0)
 	return total
+
+
+static func armor_minimum(u: GameUnit, incoming: float) -> float:
+	var formula := GameData.option("armor_formula")
+	if u.world and u.world.session and not u.world.session.mod_config.is_empty():
+		formula = int(u.world.session.mod_config.rules.get("armor_formula", 0))
+	return maxf(incoming, 0.0) * 0.2 if formula == 1 else 0.0
 
 
 ## The armour layers worn on `part`, outer first: [[indices in armors], sum].

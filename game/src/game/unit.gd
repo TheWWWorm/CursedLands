@@ -1518,7 +1518,7 @@ func always_regenerate_stamina() -> bool:
 
 
 ## Original recovery cadence: 15 logic ticks. The optional party rule removes
-## the idle restriction and floors stamina recovery at the HP recovery amount.
+## the idle restriction at the HP rate; standing idle retains native recovery.
 func _regenerate(dt: float) -> void:
 	if dead: return
 	var continuous := always_regenerate_stamina()
@@ -1531,8 +1531,8 @@ func _regenerate(dt: float) -> void:
 		var health := max_hp * float(race.get("health_regen", 0.0)) * (1.0 + float(stats.get("regen_hp", 0.0)) / 100.0) * rm
 		var stamina := max_mana * float(race.get("mana_regen", 0.0)) * (1.0 + float(stats.get("regen_mana", 0.0)) / 100.0)
 		heal(health)
-		if continuous:
-			stamina = maxf(stamina, maxf(0.0, health))
+		if continuous and not is_idle():
+			stamina = maxf(0.0, health)
 		if continuous or is_idle():
 			mana = minf(max_mana, mana + stamina)
 

@@ -42,14 +42,21 @@ static func wrap(peer: ENetMultiplayerPeer) -> MultiplayerPeer:
 	s.jitter = float(cfg[1]) / 1000.0
 	s.loss = clampf(float(cfg[2]) / 100.0, 0.0, 1.0)
 	s._rng.seed = hash(Time.get_ticks_usec())
-	peer.peer_connected.connect(func(id):
-		s._peers[id] = true
-		s.peer_connected.emit(id))
-	peer.peer_disconnected.connect(func(id):
-		s._peers.erase(id)
-		s.peer_disconnected.emit(id))
+	# Named callbacks do not capture the wrapper in its own inner peer.
+	peer.peer_connected.connect(s._on_connected)
+	peer.peer_disconnected.connect(s._on_disconnected)
 	print("netsim: latency %d ms, jitter %d ms, loss %.1f %%" % [cfg[0], cfg[1], cfg[2]])
 	return s
+
+
+func _on_connected(id: int) -> void:
+	_peers[id] = true
+	peer_connected.emit(id)
+
+
+func _on_disconnected(id: int) -> void:
+	_peers.erase(id)
+	peer_disconnected.emit(id)
 
 
 ## [latency_ms, jitter_ms, loss_pct] from --netsim= (--netstat = [0, 0, 0]); [] = off.
@@ -106,8 +113,7 @@ func _flush_due() -> void:
 	while not _out.is_empty() and float(_out[0][0]) <= now:
 		var it: Array = _out.pop_front()
 		var target := int(it[1])
-		if target > 0 and (inner.get_peer(target) == null \
-				or inner.get_peer(target).get_state() != ENetPacketPeer.STATE_CONNECTED):
+		if target > 0 and not _peers.has(target):
 			continue
 		inner.set_target_peer(target)
 		inner.transfer_channel = int(it[2])
@@ -217,10 +223,12 @@ func _is_refusing_new_connections() -> bool:
 
 
 func _disconnect_peer(peer: int, force: bool) -> void:
+	_peers.erase(peer)
 	inner.disconnect_peer(peer, force)
 
 
 func _close() -> void:
 	_out.clear()
 	_in.clear()
+	_peers.clear()
 	inner.close()

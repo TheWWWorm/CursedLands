@@ -36,6 +36,7 @@ func _ready() -> void:
 	var camera := Camera3D.new(); view.add_child(camera); camera.projection=Camera3D.PROJECTION_ORTHOGONAL
 	camera.size=0.5; camera.position=Vector3(0,1.18,2); camera.make_current()
 	pollen=Particles.new(); view.add_child(pollen)
+	check(not pollen.is_physics_interpolated_and_enabled(),"shader-driven regional particles never interpolate recycled instance slots")
 	pollen.multimesh.instance_count=1; pollen.multimesh.visible_instance_count=1
 	pollen.multimesh.set_instance_transform(0,Transform3D.IDENTITY)
 	pollen.multimesh.set_instance_custom_data(0,Color(0.4,0,0.055,0))

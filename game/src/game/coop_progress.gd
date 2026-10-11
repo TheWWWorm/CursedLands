@@ -63,6 +63,10 @@ static var bring_slot := ""
 
 const SEND_EVERY := 15.0
 const SCALE_EVERY := 1.0
+const MAX_PROGRESS_BYTES := 64 * 1024 * 1024
+
+## The last cumulative transfer, for connection/performance diagnostics.
+var transfer_stats := {}
 
 var session: Session
 
@@ -211,7 +215,27 @@ static func main_bag(st: CampaignState) -> Dictionary:
 	return {"money": int(b.get("money", 0)), "items": b.get_or_add("items", [])}
 
 
-@rpc("authority", "call_remote", "reliable")
+## Large cumulative saves must not hold up clock, inventory and command
+## replies on the gameplay channel. Compress before ENet fragments them.
+@rpc("authority", "call_remote", "reliable", 2)
+func _rpc_progress(payload: PackedByteArray, size: int) -> void:
+	var started := Time.get_ticks_usec()
+	var pkg := decode_progress(payload, size)
+	if pkg.is_empty(): return
+	transfer_stats = {"raw_bytes":size, "wire_bytes":payload.size(), "decode_us":Time.get_ticks_usec()-started}
+	_rpc_package(pkg)
+	transfer_stats["receive_us"] = Time.get_ticks_usec()-started
+
+
+static func decode_progress(payload: PackedByteArray, size: int) -> Dictionary:
+	if size <= 0 or size > MAX_PROGRESS_BYTES or payload.is_empty() or payload.size() > MAX_PROGRESS_BYTES:
+		return {}
+	var raw := payload.decompress(size, FileAccess.COMPRESSION_ZSTD)
+	if raw.size() != size: return {}
+	var value: Variant = bytes_to_var(raw) # never instantiate objects from a peer
+	return value if value is Dictionary else {}
+
+
 func _rpc_package(pkg: Dictionary) -> void:
 	var mods: Variant = pkg.get("mod_config", {})
 	if ModStore.configuration_error(mods) != "" or ModStore.progress_signature(mods) != ModStore.progress_signature(session.mod_config): return
@@ -1298,7 +1322,11 @@ func send_all() -> void:
 		e.seq = int(e.get("seq", 0)) + 1
 		pkg.sid = String(e.get("sid", ""))
 		pkg.seq = e.seq
-		_rpc_package.rpc_id(int(e.pid), pkg)
+		var started := Time.get_ticks_usec()
+		var raw := var_to_bytes(pkg)
+		var packed := raw.compress(FileAccess.COMPRESSION_ZSTD)
+		transfer_stats = {"raw_bytes":raw.size(), "wire_bytes":packed.size(), "encode_us":Time.get_ticks_usec()-started}
+		_rpc_progress.rpc_id(int(e.pid), packed, raw.size())
 
 
 # ---------------------------------------------------------------- validation

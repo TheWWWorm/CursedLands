@@ -41,6 +41,8 @@ static func open(w: GameWorld, t: GameUnit, secs: float, player: int, c: GameUni
 
 func _ready() -> void:
 	_mm = MultiMeshInstance3D.new()
+	# Each update replaces the set of visible grid cells, not moving actors.
+	_mm.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	var q := PlaneMesh.new()

@@ -317,6 +317,7 @@ func _show(m: Material, kind: int) -> Array[Node]:
 			gi = mi
 		else:
 			var mmi := MultiMeshInstance3D.new()
+			mmi.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 			mmi.multimesh = _multimesh(kind)
 			mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED if kind == GRASS else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			gi = mmi

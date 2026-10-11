@@ -925,7 +925,7 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 		if b.get("resist", "") in [school, "all"]:
 			prot = maxf(prot, float(b.get("armor", 0.0)))
 	var arm := (armour[t] if t < armour.size() else 0.0) + prot
-	var dmg := maxf(maxf(power, 0.0) * 0.2, power - arm * af * world.combat.difficulty(u, "Absorption"))
+	var dmg := maxf(Combat.armor_minimum(u, power), power - arm * af * world.combat.difficulty(u, "Absorption"))
 	# the record's roll (= FLT_MAX) always lands; the
 	# struck armour spells fire before the damage ((1)).
 	world.combat.armor_spells(u, true)
@@ -964,7 +964,7 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 				var d := amount
 				# Natural and worn protection share the same incoming-damage
 				# floor, including the attacker's co-op damage scaling.
-				var minimum := maxf(power, 0.0) * 0.2 * (amount / dmg)
+				var minimum := Combat.armor_minimum(u, power) * (amount / dmg)
 				for l: Array in Combat.worn_layers(armors, u.part_group(i)):
 					if d <= minimum: break
 					d = maxf(minimum, d - float((l[1] as PackedFloat32Array)[t]) * af)

@@ -290,6 +290,10 @@ ContactResult contact_prepare(vec3 world,vec3 wn,float band,float distance_to_ey
 		float wet=ei_weather.x*(1.0-smoothstep(0.08,0.40,cover-height))*smoothstep(-0.04,0.10,height-water_y)*smoothstep(0.05,0.65,abs(result.normal.y));
 		albedo*=1.0-wet*mix(0.23,0.08,traits.z);
 		result.surface=vec3(wet*mix(0.65,0.15,traits.z),mix(0.35,0.65,traits.z),0.0);
+		float puddle=ei_puddle_mask(wet,abs(result.normal.y),traits.z,texture(macro_tex,result.point.xz*0.19).r);
+		albedo=mix(albedo,albedo*0.72+ei_sky*0.15,puddle);
+		result.surface.xy=mix(result.surface.xy,vec2(0.95,0.07),puddle);
+		result.normal=normalize(mix(result.normal,vec3(0.0,1.0,0.0),puddle));
 	}
 	vec2 state=texelFetch(query_tiles,clamp(tile,ivec2(0),textureSize(query_tiles,0)-1),0).rg;
 	if (soft_ground && state.x>0.5 && compression>0.0) {

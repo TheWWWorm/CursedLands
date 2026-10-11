@@ -1,5 +1,25 @@
 # Changelog
 
+## Unreleased — co-op and interface fixes
+
+- Compress cumulative co-op progress, send it on a separate reliable channel,
+  and compress ENet traffic. Keep the rate-limited snapshot stream active when
+  frontend frame delays increase acknowledgement times. Network protocol is 18;
+  all peers must use the same build.
+- Disable physics interpolation on shader-driven particles, recycled particle
+  buffers and stationary vegetation batches.
+- Keep continuous stamina recovery at the health regeneration rate during
+  activity, while retaining native stamina recovery when standing idle.
+- Add an armour formula choice: original absorption or at least 20% damage
+  passing through natural and worn armour. The host controls the saved rule.
+- Add optional rain puddles on exposed, nearly flat ground, with drying after
+  rain and matching terrain contact shading.
+- Fit camp descriptions and rune text above the lower controls, preserve the
+  authored size of ordinary character previews, and fit oversized creatures.
+- Complete Russian and German settings/rule text and built-in mod captions.
+- Play the transaction sound after confirmed sales and the clock sound when
+  clients receive a shared pause or speed change.
+
 ## 1.0.3-experimental.6 — experimental release, 8 October 2026
 
 - Extend separated simulation to ordinary single-player and include the

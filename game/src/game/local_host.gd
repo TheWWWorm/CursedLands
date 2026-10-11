@@ -82,6 +82,10 @@ func start(port: int, limit: int, solo := false) -> Error:
 	if OS.has_feature("editor"):
 		arguments.append_array(["--path", ProjectSettings.globalize_path("res://")])
 	arguments.append_array(["--", "--ei-path=" + GameData.root, "--local-host-config=" + _config])
+	# Network diagnostics must cover the actual authority's outbound traffic.
+	for argument in OS.get_cmdline_user_args():
+		if argument == "--netstat" or argument.begins_with("--netsim="):
+			arguments.append(argument)
 	frontend = true
 	session.upnp.remote = true
 	session.host_port = port
@@ -291,6 +295,17 @@ func _rpc_request(serial: int, command: String, data: Dictionary) -> void:
 			result.notified = error not in [OK, ERR_BUSY, ERR_UNAUTHORIZED, ERR_UNAVAILABLE]
 		"measure_save":
 			result.bytes = session.save_bytes_needed()
+		"network_stats":
+			result.peers = {}
+			var enet := NetSim.enet_of(multiplayer)
+			if enet:
+				for peer_id in multiplayer.get_peers():
+					var peer := enet.get_peer(peer_id)
+					if peer:
+						result.peers[peer_id] = {"rtt_ms":peer.get_statistic(ENetPacketPeer.PEER_ROUND_TRIP_TIME),
+							"throttle":peer.get_statistic(ENetPacketPeer.PEER_PACKET_THROTTLE),
+							"throttle_limit":peer.get_statistic(ENetPacketPeer.PEER_PACKET_THROTTLE_LIMIT)}
+			result.progress = session.coop.transfer_stats.duplicate()
 		"clock":
 			session.set_coop_clock(int(data.get("sector", -1)))
 		"sandbox":

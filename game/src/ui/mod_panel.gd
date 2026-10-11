@@ -140,7 +140,7 @@ func _profiles_page() -> void:
 	_chooser.item_selected.connect(func(index): _pending_profile = str(_chooser.get_item_metadata(index)))
 	_button("Use selected profile and restart", _body, func():
 		var error := ModStore.select_profile(_pending_profile)
-		if error != "": _status.text = error
+		if error != "": _status.text = RemakeText.t(error)
 		else: ModStore.restart(get_tree()))
 	_profile_name = LineEdit.new()
 	_profile_name.placeholder_text = RemakeText.t("Name for a new profile")
@@ -162,7 +162,7 @@ func _profiles_page() -> void:
 	for key in keys:
 		var m: Dictionary = ModStore.catalog[key]
 		var row := CheckButton.new()
-		row.text = "%s  %s" % [m.title, m.version]
+		row.text = "%s  %s" % [RemakeText.t(m.title), m.version]
 		row.clip_text = true
 		row.tooltip_text = row.text
 		row.custom_minimum_size.y = 44
@@ -182,14 +182,14 @@ func _profiles_page() -> void:
 	if not keys.is_empty():
 		_button("Activate selected mods and restart", _body, func():
 			var error := ModStore.set_packages(_packages)
-			if error != "": _status.text = error
+			if error != "": _status.text = RemakeText.t(error)
 			else: ModStore.restart(get_tree()))
 	if ModStore.active_id() != "default": _copy_page()
 	for problem in ModStore.errors: _label(problem, _body)
 
 func _create(sandbox: bool) -> void:
 	var error := ModStore.create_profile(_profile_name.text, sandbox)
-	if error != "": _status.text = error
+	if error != "": _status.text = RemakeText.t(error)
 	else:
 		if not draft.is_empty(): draft.merge(ModStore.new_game_defaults(), true)
 		open("profiles")
@@ -199,7 +199,7 @@ func _rules_page(sandbox: bool) -> void:
 	_label("Choose the rules for this game. Changes stay in setup until you start." if not draft.is_empty() else "Adjust this run. Rules marked At camp can only change in a village.", _body)
 	if sandbox: _label("Sandbox saves stay separate. Turning a cheat off does not undo rewards already earned.", _body)
 	var groups := {"Campaign": ["difficulty", "unit_fog", "start_zones", "mechanism_motion", "distant_ai", "auto_exit"],
-		"Party": ["sp_full_xp", "revive", "merc_travel", "free_run", "stamina_regen"],
+		"Party": ["sp_full_xp", "revive", "merc_travel", "free_run", "stamina_regen", "armor_formula"],
 		"Co-op": ["coop_full_xp", "coop_scale", "coop_share_loot", "coop_clock"]}
 	if sandbox: groups = {"Sandbox": ["sandbox_invulnerable", "sandbox_mana"]}
 	for group in groups:
@@ -216,7 +216,7 @@ func _rules_page(sandbox: bool) -> void:
 			text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			row.add_child(text)
 			_label(definition[0], text)
-			if key == "stamina_regen":
+			if key in ["stamina_regen", "armor_formula"]:
 				_label(GameData.REMAKE_OPTIONS[key][1], text)
 			var locked := ModStore.editable(key)
 			var help: String = locked if locked != "" else {"camp":"At camp", "live":"Any time", "new_game":"Before starting"}[definition[2]]
@@ -251,7 +251,7 @@ func _options_page() -> void:
 		return
 	for o in definitions:
 		var section := card(_body)
-		_label(o.mod_title + " · " + o.label, section)
+		_label(RemakeText.t(o.mod_title) + " · " + RemakeText.t(o.label), section)
 		make_label(o.get("help", ""), section, true)
 		var row := HBoxContainer.new()
 		section.add_child(row)
@@ -297,7 +297,7 @@ func _accept() -> bool:
 	for key in rules:
 		if error == "": error = ModStore.editable(key)
 	if error == "" and not values.is_empty(): error = ModStore.editable("revive")
-	if error != "": _status.text = error; return false
+	if error != "": _status.text = RemakeText.t(error); return false
 	if not draft.is_empty():
 		draft.rules = _rules.duplicate(true)
 		draft.values = _values.duplicate(true)
@@ -312,13 +312,13 @@ func _accept() -> bool:
 		_base_rules = _rules.duplicate(true)
 		_base_values = _values.duplicate(true)
 		_base_revision = int(ModStore.effective().revision)
-	_status.text = error if error != "" else RemakeText.t("Changes sent to the host." if pending else "Settings applied.")
+	_status.text = RemakeText.t(error) if error != "" else RemakeText.t("Changes sent to the host." if pending else "Settings applied.")
 	return error == ""
 
 func _applied(problem: String) -> void:
 	if not visible: return
 	if problem == "": open(_page)
-	_status.text = problem if problem != "" else RemakeText.t("Settings applied.")
+	_status.text = RemakeText.t(problem) if problem != "" else RemakeText.t("Settings applied.")
 
 func _sandbox(action: String) -> void:
 	var s := ModStore.session()
@@ -328,7 +328,7 @@ func _sandbox(action: String) -> void:
 		var answer: Dictionary = await s.local_host.request("sandbox", {"action": action})
 		error = str(answer.get("error", "")) if answer.get("ok", false) else str(answer.get("error", "Sandbox action failed."))
 	else: error = s.sandbox_action(action)
-	_status.text = error if error != "" else RemakeText.t("Sandbox action completed.")
+	_status.text = RemakeText.t(error) if error != "" else RemakeText.t("Sandbox action completed.")
 
 func _copy_page() -> void:
 	var base := CampaignProfile.save_directory(GameData.campaign_id)
@@ -340,7 +340,7 @@ func _copy_page() -> void:
 	if choices.item_count == 0: choices.free(); return
 	_label("Copy a Current defaults save into this profile. The original save is kept.", _body)
 	_body.add_child(choices)
-	_button("Copy selected save", _body, func(): _status.text = ModStore.copy_default_save(choices.get_item_text(choices.selected)))
+	_button("Copy selected save", _body, func(): _status.text = RemakeText.t(ModStore.copy_default_save(choices.get_item_text(choices.selected))))
 
 func _import() -> void:
 	if OS.has_feature("web"):
@@ -367,7 +367,7 @@ func _import() -> void:
 
 func _imported(error: String) -> void:
 	_show_page("profiles")
-	_status.text = error if error != "" else RemakeText.t("Mod installed. Enable it in a named profile when ready.")
+	_status.text = RemakeText.t(error) if error != "" else RemakeText.t("Mod installed. Enable it in a named profile when ready.")
 
 func _input(event: InputEvent) -> void:
 	if not visible or is_instance_valid(_modal): return

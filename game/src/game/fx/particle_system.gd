@@ -941,6 +941,10 @@ func _draw(t: float) -> void:
 		var n := e.parts.size()
 		if ef.mmi == null:
 			ef.mmi = MultiMeshInstance3D.new()
+			# The draw buffer already samples the effect's render-time pose.
+			# Slots are recycled when particles expire; physics interpolation
+			# would blend unrelated particles and upload from the wrong thread.
+			ef.mmi.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 			ef.mmi.top_level = true
 			ef.mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			ef.mmi.sorting_use_aabb_center = false

@@ -221,7 +221,8 @@ func set_speed(sector: int) -> void:
 		if session.coop_clock_enabled() and not session.can_manage_game():
 			session.message.emit(RemakeText.t("Only the host can change game speed."))
 		elif session.coop_clock_enabled():
-			sound.ui("buttons\\battle\\clock.wav")
+			if not session.local_host.frontend:
+				sound.ui("buttons\\battle\\clock.wav")
 			session.set_coop_clock(sector)
 		return
 	sound.ui("buttons\\battle\\clock.wav")

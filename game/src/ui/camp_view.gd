@@ -1270,6 +1270,7 @@ func trade_result(e: Dictionary) -> void:
 	if not trade_wait or int(e.get("req", -1)) != _trade_req: return
 	trade_wait = false
 	if bool(e.get("ok", false)):
+		_ui_sound("buttons\\camp\\buy.wav")
 		buy_pile.clear()
 		sell_pile.clear()
 	else:
@@ -1508,7 +1509,7 @@ func _press_side(b: String) -> void:
 			"exit": wav = "buttons\\globalmap\\transit.wav"
 			"accept": wav = "buttons\\camp\\buy.wav"
 			"cancel": wav = "buttons\\messbox\\cancel.wav"
-		if b in ["exit", "accept", "cancel"] or b != mode:
+		if (b in ["exit", "accept", "cancel"] or b != mode) and not (b == "accept" and mode in ["itemtrade", "spelltrade"]):
 			GameSound.instance.ui(wav)
 	match b:
 		"exit": exit_pressed.emit()
@@ -2628,21 +2629,29 @@ func _draw_item_info(x0: float, id: String) -> void:
 	if _ctrl and Items.spell_of(id) != "":
 		id = "spell:" + Items.spell_of(id)
 	var inf := _item_info(id)
-	_tb(Rect2(x0 + 15, 110, 170, 15), inf.name, 0, Color.WHITE, 2)
-	var y := 140.0
+	var h := _lh(0)
+	var name_lines := _tb(Rect2(x0 + 15, 110, 170, h), inf.name, 0, Color.WHITE, 2)
+	var y := maxf(140.0, 110.0 + name_lines * h + 4.0)
 	for r: String in inf.rows:
 		_t(Rect2(x0 + 15, y, 170, 15), r, 0, Interface800.TEXT)
-		y += 15.0
+		y += maxf(15.0, h)
 	y += float(inf.gap)
-	if inf.desc != "":
-		_tb(Rect2(x0 + 15, y, 170, 15), inf.desc, 0, Interface800.TEXT, int(inf.lines))
-	y += float(inf.tail_at)
+	# The title/deal controls start at 410. Lay out every wrapped line using
+	# the actual font metrics and reserve the trailing rows before the body.
+	var remaining := maxi(0, floori((400.0 - y) / h))
+	var tail_lines := mini(inf.tail.size(), remaining)
+	var wrap_lines := mini(3, _wrap(inf.get("wrap", ""), 170, 0).size()) if inf.has("wrap") else 0
+	wrap_lines = mini(wrap_lines, remaining - tail_lines)
+	var desc_lines := mini(int(inf.lines), remaining - tail_lines - wrap_lines)
+	if inf.desc != "" and desc_lines > 0:
+		y += _tb(Rect2(x0 + 15, y, 170, h), inf.desc, 0, Interface800.TEXT, desc_lines) * h
 	for r: String in inf.tail:
+		if tail_lines <= 0: break
 		_t(Rect2(x0 + 15, y, 170, 15), r, 0, Interface800.TEXT)
-		y += 15.0
-	if inf.has("wrap"):
-		var lines := mini(3, maxi(0, floori((415.0 - y) / _lh(0))))
-		_tb(Rect2(x0 + 15, y, 170, 15), inf.wrap, 0, Interface800.TEXT, lines, HORIZONTAL_ALIGNMENT_LEFT)
+		y += h
+		tail_lines -= 1
+	if wrap_lines > 0:
+		_tb(Rect2(x0 + 15, y, 170, h), inf.wrap, 0, Interface800.TEXT, wrap_lines, HORIZONTAL_ALIGNMENT_LEFT)
 
 
 ## The fields of _draw_item_info for one item: {name, rows, gap, desc,
