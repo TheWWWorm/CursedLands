@@ -130,16 +130,12 @@ varying float ei_k;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D surface_tex : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform vec3 unit_emission = vec3(0.0);
-// Only the controlled figure clips around the first-person eye. World
-// geometry keeps the short camera near plane; shadow geometry stays whole.
-uniform float ei_first_person_radius = 0.0;
 """ + SHARP_FETCH + WOUND_FETCH + """
 void vertex() {
 	ei_e = max(unit_emission, ei_material_emissive);
 	ei_k = 0.0;
 }
 void fragment() {
-	if (ei_first_person_radius > 0.0 && !IN_SHADOW_PASS && length(VERTEX) < ei_first_person_radius) { discard; }
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
 	vec4 t = ei_unit_tex(albedo_tex, UV);
 	if (wound_enabled) { t = ei_unit_wound(t, ei_unit_tex(wound_tex, UV)); }
@@ -276,6 +272,10 @@ var _eye_offset := Vector3(0, 0.12, 0)
 var _welded_head: MeshInstance3D
 var _head_hidden := false
 var _head_visible := true
+var _view_torso: MeshInstance3D
+var _view_neck := {}
+var _view_body_original: ArrayMesh
+var _view_body_closed: ArrayMesh
 
 
 ## `unit` is a map object dictionary from EIMob (or a synthetic one with
@@ -909,6 +909,14 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 
 	# --- node hierarchy (base parts + extras that have meshes)
 	var weld: bool = bool(unit.get("smooth_joints", smooth_joints)) and bool(unit.get("weld", true))
+	if not ui_preview and model.bones.has("hd") and model.bones.has("lh1") and model.bones.has("rh1"):
+		var head := EISpace.vec(EIFigure.bone_pos(model.bones.hd, complexion))
+		var left := EISpace.vec(EIFigure.bone_pos(model.bones.lh1, complexion))
+		var right := EISpace.vec(EIFigure.bone_pos(model.bones.rh1, complexion))
+		var shoulder := maxf(left.y, right.y)
+		if head.y > shoulder + 0.02:
+			_view_neck = {"center":head, "collar":lerpf(shoulder, head.y, 0.42),
+				"radius":absf(left.x - right.x) * 0.35, "surface":0, "first":0, "count":0}
 	var morphs := EIAnim.morphs(template)
 	var nodes := {}
 	var geometry_parts: Array[WeakRef] = []
@@ -982,6 +990,9 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 			mi.mesh = mesh
 			mi.material_override = part_mat
 			n.add_child(mi)
+			if p == "bd" and not _view_neck.is_empty() and morph.is_empty():
+				_view_torso = mi
+				_view_neck.count = mesh.surface_get_array_len(0)
 	if weld:
 		_weld(nodes, rest_pos, parent_of_node, welded)
 
@@ -1180,6 +1191,7 @@ func _weld(nodes: Dictionary, rest_pos: Dictionary, parent_of: Dictionary, welde
 			clampf(length * 0.25, 0.02, 0.06)]
 	var surf := {}   # material -> [pos, nrm, uv, bones, weights, idx]
 	var head_surf := {}
+	var torso_material: Material
 	for p: String in welded:
 		var mesh: ArrayMesh = welded[p][0]
 		var m: Material = welded[p][1]
@@ -1199,6 +1211,12 @@ func _weld(nodes: Dictionary, rest_pos: Dictionary, parent_of: Dictionary, welde
 		for c: String in children.get(p, []):
 			mine.append([joints[c], bone_of[c], -1.0])
 		var base: int = s[0].size()
+		if p == "bd" and not _view_neck.is_empty():
+			torso_material = m
+			_view_neck.first = base
+			_view_neck.count = arr[Mesh.ARRAY_VERTEX].size()
+			_view_neck.center += rest_pos[p]
+			_view_neck.collar += rest_pos[p].y
 		for v: Vector3 in arr[Mesh.ARRAY_VERTEX]:
 			var mv: Vector3 = v + rest_pos[p]
 			s[0].append(mv)
@@ -1241,6 +1259,7 @@ func _weld(nodes: Dictionary, rest_pos: Dictionary, parent_of: Dictionary, welde
 			arrays[Mesh.ARRAY_WEIGHTS] = s[4]
 			arrays[Mesh.ARRAY_INDEX] = s[5]
 			body.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+			if m == torso_material: _view_neck.surface = mats.size()
 			mats.append(m)
 		var mi := MeshInstance3D.new()
 		mi.name = "Head" if head else "Body"
@@ -1251,6 +1270,7 @@ func _weld(nodes: Dictionary, rest_pos: Dictionary, parent_of: Dictionary, welde
 		mi.skin = skin
 		mi.skeleton = NodePath("..")
 		if head: _welded_head = mi
+		elif torso_material != null: _view_torso = mi
 
 
 ## Camera-only visibility. Bone transforms and gameplay geometry stay intact;
@@ -1264,21 +1284,19 @@ func set_head_hidden(hidden: bool) -> void:
 	if is_instance_valid(_welded_head): _welded_head.visible = not hidden and _head_visible
 
 
-## The stabilized eye no longer follows the animated neck. Clip only nearby
-## pixels of this model so a walking/casting torso cannot fill the view.
-## Materials here belong to this model; shared portrait-head materials are
-## below the hidden head and deliberately excluded.
+## Preserve the visible chest. The local first-person body has a closed
+## collar instead of a neck or a view-dependent hole through the torso.
+## Its shadow uses the same closed surface: a hidden neck must not cast a
+## hollow-looking silhouette onto the collar. Restore the original on exit.
 func set_first_person_view(on: bool) -> void:
 	set_head_hidden(on)
-	_set_view_clip(self, 0.4 if on else 0.0)
-
-func _set_view_clip(node: Node, radius: float) -> void:
-	if node == _head: return
-	if node is MeshInstance3D:
-		for i in node.mesh.get_surface_count():
-			var material := node.get_active_material(i) as LitMaterial
-			if material: material.set_shader_parameter("ei_first_person_radius", radius)
-	for child in node.get_children(): _set_view_clip(child, radius)
+	if not is_instance_valid(_view_torso): return
+	if on and _view_body_closed == null:
+		_view_body_original = _view_torso.mesh
+		_view_body_closed = FirstPersonBody.make(_view_body_original, _view_neck.surface,
+			_view_neck.first, _view_neck.count, _view_neck.center, _view_neck.collar, _view_neck.radius)
+	if _view_body_closed == null: return
+	_view_torso.mesh = _view_body_closed if on else _view_body_original
 
 
 ## A stable eye anchor from the authored resting pose. Reading its tracks

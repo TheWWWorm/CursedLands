@@ -1,0 +1,279 @@
+{
+  "version": "1.0.4-feedback.6",
+  "date": "2026-10-12",
+  "base_commit": "0a2ef4000e91cf77a3ad5a5f5174441cff86fd68",
+  "scope": "First-person torso visibility and closed collar; stable camera and original third-person mesh retained",
+  "source_tests": [
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso",
+      "label": "rendered-camera",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 37.532,
+      "checks": 158,
+      "failures": [],
+      "details": {
+        "checks": 158,
+        "failures": [],
+        "variants": [
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/rendered-camera.log",
+      "log_sha256": "b9b9d2ba673c50b52d0e7adc3124b4c6eb8d5840804761de2e39a0dc19ec308e"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso",
+      "label": "female-poses",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso.gd",
+        "--mod-tests",
+        "--female"
+      ],
+      "exit_code": 0,
+      "seconds": 39.28,
+      "checks": 162,
+      "failures": [],
+      "details": {
+        "checks": 162,
+        "failures": [],
+        "variants": [
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/female-poses.log",
+      "log_sha256": "c890bb2c2b6f55be7f8511954505281324eaf25ac558477159c407cabdab53be"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_camera_stability",
+      "label": "camera-final",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_camera_stability.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 9.007,
+      "checks": 25,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/camera-final.log",
+      "log_sha256": "3280bd8b107e676fc9590934ca5dbe575b6d4e208254808c5bedc91168a0648b"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_models",
+      "label": "model-regression",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_models.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 4.753,
+      "checks": 11,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/model-regression.log",
+      "log_sha256": "d1710f3c5b00d1927447f0ce7c5054cc2afb8f84b9b4b9039eef107fa98bd9da"
+    }
+  ],
+  "source_test_checks": 356,
+  "source_test_failures": 0,
+  "source_sha256": {
+    "game/project.godot": "4b0d842afecb8f942405ec1cd1df00c68daec729582f5c4f6b91dc8cc0af35f4",
+    "game/src/ei/first_person_body.gd": "de157abf28eac613184fd38e14a5c272f8a763c060732a40b21c07916a294393",
+    "game/src/ei/first_person_body.gd.uid": "4c675cff94d53e144c6650b9f72862b6f320dbc4f6333d180233363b16d0d183",
+    "game/src/ei/unit_model.gd": "9740bf95fff99f9c75cbce31851e0c4fbb7072303816b944aff0e623d39e1569",
+    "game/src/game/direct_control.gd": "bbd128af3fea5d4acef905c15e81523ec11c4c176dcfbb8d52d2e511f0cfedb8",
+    "tools/tests/first_person_torso.gd": "da6af5d99f5a6e93aaeb09ad73911e9f47ed6604099d21238afe9ad145e69b43",
+    "tools/tests/hd_interface_views.gd": "a21bdcee4d3c052f3258f3c15d49b21c90d1cb40209cad8f81e565f3fe23af71"
+  },
+  "coverage": [
+    "Male and female humanoids, three physiques, rigid and smoothed bodies",
+    "Closed collar geometry, opaque atlas sample, correct cap winding, original mesh immutability and restoration",
+    "Rendered idle, walk, run, attack and cast at level and downward views",
+    "Female crouching and crawling; camera posture transition and ownership regressions"
+  ],
+  "investigation_notes": [
+    "Initial cap generation needed tangents for the additional vertices and separate boundary loops for garment hems.",
+    "Caps use one opaque front-neck texel rather than interpolating across disconnected atlas islands.",
+    "An original-mesh shadow proxy cast the removed neck onto the collar; the final view uses the same closed mesh for both rendering and shadows.",
+    "Early ray probes used fixed points outside a smaller neck; final probes cover the actual collar fan and check winding and alpha as well."
+  ],
+  "limits": [
+    "Tests use isolated profiles and prepared native campaign poses, without modifying user saves.",
+    "Rendered source tests on Linux OpenGL Compatibility; packaged Vulkan validation pending.",
+    "No multiplayer protocol or movement changes. No WAN benchmark repeated.",
+    "Windows runtime not tested."
+  ],
+  "package_validation": "pending"
+}

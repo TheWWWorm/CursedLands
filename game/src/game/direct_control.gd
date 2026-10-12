@@ -678,7 +678,9 @@ func apply_camera(dt := 0.0) -> void:
 			var eased := _eye_offset.lerp(anchor, 1.0-exp(-minf(dt,0.1)*18.0))
 			_eye_offset = _eye_offset.move_toward(eased, minf(dt,0.1)*2.5)
 		eye = u.model.to_global(_eye_offset) if u.model else u.global_position + _eye_offset
-		eye += Vector3(cos(heading),0,-sin(heading)) * 0.08
+		# Eyes sit ahead of the collar: looking down sees the chest, while
+		# walking neck/shoulder motion stays behind the near part of the view.
+		eye += Vector3(cos(heading),0,-sin(heading)) * 0.28
 		_shoulder_unit = null
 	else:
 		var wanted := pivot - forward*zoom + right*0.55

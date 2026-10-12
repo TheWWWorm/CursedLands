@@ -45,13 +45,13 @@ func _ready() -> void:
 				g.direct.tilt=tilt
 				for f in 45:g.direct.apply_camera(1.0/60)
 				var body:=hero.model.get_node("Skeleton/Body") as MeshInstance3D
-				check(float((body.get_active_material(0) as ShaderMaterial).get_shader_parameter("ei_first_person_radius"))>0,"first-person clips only nearby controlled body")
+				check(body.mesh == hero.model._view_body_closed,"first person uses the closed collar without clipping the chest")
 				check(hero.model._head_hidden,"head remains hidden through moving pose")
 				if i==3:await shot("first-person-%s-%s"%[act,"down" if tilt<0 else "level"])
 	GameData.options.control_mode=2;g.direct.apply_camera(1.0/60)
 	check(not hero.model._head_hidden,"third person restores head and hair")
 	var body:=hero.model.get_node("Skeleton/Body") as MeshInstance3D
-	check(float((body.get_active_material(0) as ShaderMaterial).get_shader_parameter("ei_first_person_radius"))==0,"third person removes body clipping")
+	check(body.mesh == hero.model._view_body_original,"third person restores the authored torso")
 	g.direct.tilt=-0.1;hero.action="walk";hero.model.act("walk",1,0);g.direct.apply_camera(1.0/60)
 	await shot("third-person-walk")
 	g.queue_free();s.queue_free();await frames(10)
