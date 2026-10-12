@@ -4132,7 +4132,9 @@ func _on_event(event: Dictionary) -> void:
 			"add_mob":
 				world.add_mob_objects(String(event.file))
 			"lever":
-				if world.levers.has(int(event.nid)) and event.has("enabled"):   # EnableLever
+				if event.has("science"):   # SetScience changes cursor eligibility too
+					world.lever_sys.restore_science(int(event.nid), event.science)
+				elif world.levers.has(int(event.nid)) and event.has("enabled"):   # EnableLever
 					world.levers[int(event.nid)].enabled = bool(event.enabled)
 				elif world.levers.has(int(event.nid)):
 					if event.has("motion"):

@@ -308,7 +308,23 @@ func export_row(nid: int) -> Array:
 		data = _ordinary_payload(nid)
 	if not data.is_empty():
 		row.append(data)
+	# Keep legacy motion tails intact. Authored lock changes also belong in
+	# zone snapshots: clients never restore the authoritative script VM.
+	var node: Node3D = world.objects.get(nid)
+	var science: Array = world.levers[nid].get("science", DEFAULT_SCIENCE)
+	if is_instance_valid(node) and science != Array(node.get_meta("ei", {}).get("lever_science", DEFAULT_SCIENCE)):
+		if row.size() == 3: row.append({})
+		row.append(science.duplicate())
 	return row
+
+
+func restore_science(nid: int, value: Variant) -> void:
+	if not world.levers.has(nid) or not value is Array or value.size() != 3:
+		return
+	for field in value:
+		if not field is int: return
+	if value[0] < 0 or value[0] > 15: return
+	world.levers[nid].science = value.duplicate()
 
 
 # Saved and replicated rows share one importer. A legacy row keeps its
@@ -321,6 +337,8 @@ func restore_row(nid: int, row: Variant) -> void:
 	restore(nid, int(row[0]), float(row[1]))
 	if row.size() > 2:
 		world.levers[nid].enabled = bool(row[2])
+	if row.size() > 4:
+		restore_science(nid, row[4])
 	if row.size() > 3:
 		if _valid_ordinary(nid, row[3]):
 			var target := float(row[3].target)

@@ -1465,23 +1465,38 @@ func _pick_ground_forward(from: Vector3, dir: Vector3) -> Variant:
 ## Usable lever (switch, chest) under the cursor, or -1.
 func pick_lever(p: Vector2) -> int:
 	var cam := rig.camera
+	var view := GameUnit.MeshScreenRect.camera_context(cam)
+	var to_view := cam.get_camera_transform().affine_inverse()
 	var best := -1
+	var depth := INF
+	var nearby := -1
 	var bd := 40.0
 	for nid in world.levers:
 		if not world.lever_sys.usable(nid):
 			continue
 		var obj = world.objects.get(nid)
-		if obj == null or not is_instance_valid(obj) or not obj.visible:
+		if obj == null or not is_instance_valid(obj) or not obj.is_visible_in_tree():
 			continue
 		var o: Node3D = obj
+		# Gates and cages can be many metres across, with their origin under
+		# the floor or in the middle of the enclosure. Use the same clipped,
+		# currently morphed part bounds as creature selection. The small
+		# origin assist remains a fallback for distant switches and chests.
+		for mi: MeshInstance3D in world.lever_sys._morph.get(nid, {}).get("meshes", []):
+			var rect := GameUnit.MeshScreenRect.of_context(mi, cam, view)
+			if not _in_rect(rect, p): continue
+			var z := maxf(0.0, -(to_view * mi.global_position).z)
+			if z < depth:
+				depth = z
+				best = nid
 		var wp := o.global_position + Vector3.UP * 0.6
 		if cam.is_position_behind(wp):
 			continue
 		var d := cam.unproject_position(wp).distance_to(p)
 		if d < bd:
 			bd = d
-			best = nid
-	return best
+			nearby = nid
+	return best if best >= 0 else nearby
 
 
 ## The unit under the cursor, as the original (mouse move

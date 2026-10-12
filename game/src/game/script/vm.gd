@@ -937,6 +937,9 @@ func _call(name: String, a: Array, inst: Instance):
 						flags |= 1 << k
 				sciences[id] = [flags, int(_num(v[1])), int(_num(v[2]))]
 				world.levers[id].science = sciences[id]
+				# The playing frontend (including local-process solo) does not
+				# execute scripts. Its cursor must receive an authored unlock.
+				session.broadcast({"t": "lever", "nid": id, "science": sciences[id]})
 		# Builtin 0xb8 SetWaterLevel(material, level, ticks)
 		#  (see GameWorld.set_water_level).
 		"SetWaterLevel":
