@@ -109,7 +109,130 @@
     "No physical touchscreen validation is performed."
   ],
   "previous_gameplay_validation": "direct-figure-shape-2026-10-12.json",
-  "compiled_package_checks": [],
+  "compiled_package_checks": [
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/long_dropdowns",
+      "label": "dropdown-package-long",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.10-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/long_dropdowns.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 14.76,
+      "checks": 91,
+      "failures": 0,
+      "details": {
+        "cases": [
+          {
+            "content_scale": 1.0,
+            "entries": 64,
+            "label": "1280x720-saves",
+            "position": "(204, 352)",
+            "scroll_end": 1767.0,
+            "scroll_max": 1772.0,
+            "size": "(864, 360)"
+          },
+          {
+            "content_scale": 1.83333337306976,
+            "entries": 64,
+            "label": "2560x1440-saves",
+            "position": "(480, 772)",
+            "scroll_end": 1767.0,
+            "scroll_max": 1772.0,
+            "size": "(1584, 660)"
+          },
+          {
+            "content_scale": 2.77083325386047,
+            "entries": 64,
+            "label": "3840x2160-saves",
+            "position": "(711, 1155)",
+            "scroll_end": 1768.0,
+            "scroll_max": 1773.0,
+            "size": "(2394, 997)"
+          },
+          {
+            "content_scale": 1.0,
+            "entries": 64,
+            "label": "540x960-saves",
+            "position": "(40, 592)",
+            "scroll_end": 1767.0,
+            "scroll_max": 1772.0,
+            "size": "(452, 360)"
+          },
+          {
+            "content_scale": 1.0,
+            "entries": 64,
+            "label": "800x600-saves",
+            "position": "(40, 232)",
+            "scroll_end": 1767.0,
+            "scroll_max": 1772.0,
+            "size": "(712, 360)"
+          },
+          {
+            "content_scale": 1.0,
+            "entries": 42,
+            "label": "1280x720-profiles",
+            "position": "(204, 290)",
+            "scroll_end": 1041.0,
+            "scroll_max": 1046.0,
+            "size": "(577, 360)"
+          }
+        ],
+        "checks": 91,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/dropdown-package-long.log",
+      "log_sha256": "921e043ae3b7712238ed59f3a000a64aa7d2b2c8d9539020f8291d90cff26617"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/mod_ui_access",
+      "label": "dropdown-package-ui",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.10-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/mod_ui_access.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 12.009,
+      "checks": 57,
+      "failures": 0,
+      "details": {
+        "checks": 57,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/dropdown-package-ui.log",
+      "log_sha256": "9e3cb9aeb8577d5e7ae8d81e0a13f749ba1a71c00e9e49d2c8a0e56ccf0638f2"
+    }
+  ],
   "screenshots": {
     "540x960": {
       "path": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/dropdown-long-final/data/godot/app_userdata/Cursed Lands/dropdown-540x960-saves.png",
@@ -118,6 +241,32 @@
     "3840x2160": {
       "path": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/dropdown-long-final/data/godot/app_userdata/Cursed Lands/dropdown-3840x2160-saves.png",
       "sha256": "c282264bf573d7f9ef7c206008890ad1182b9db6d332fde0401ddd6bd1cbc395"
+    }
+  },
+  "compiled_package_source": "dc5b9a7bdc6e766ce28e8989bd11a7d40507ac6a",
+  "compiled_game_tree": "a718e376a3b9c9d994542b7fc5b8ba5047427b74",
+  "builds": {
+    "linux-x86_64": {
+      "source_commit": "dc5b9a7bdc6e766ce28e8989bd11a7d40507ac6a",
+      "game_tree": "a718e376a3b9c9d994542b7fc5b8ba5047427b74",
+      "target_os_runtime_tested": true,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "10a9bdf81ee8fc5223d978f3b2b15db73d8ca0338b3f134ae2f8ce4e842600eb",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+      }
+    },
+    "windows-x86_64": {
+      "source_commit": "dc5b9a7bdc6e766ce28e8989bd11a7d40507ac6a",
+      "game_tree": "a718e376a3b9c9d994542b7fc5b8ba5047427b74",
+      "target_os_runtime_tested": false,
+      "files": {
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "CursedLands.pck": "10a9bdf81ee8fc5223d978f3b2b15db73d8ca0338b3f134ae2f8ce4e842600eb",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+      }
     }
   }
 }
