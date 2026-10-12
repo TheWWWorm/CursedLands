@@ -411,6 +411,11 @@ func _fit_large_preview() -> void:
 		var screen := Vector2(p.x, -p.y) * (400.0 / (EXE_K * maxf(-p.z, 0.01))) + Vector2(400, 300)
 		bounds = Rect2(screen, Vector2.ZERO) if i == 0 else bounds.expand(screen)
 		box = box.expand(p)
+	# Experimental 2 used the authored scale and foot position. A normal
+	# creature can extend into the bar/name margins without being oversized;
+	# recentering those figures made boars, wolves and rats float and shrink.
+	if bounds.size.x <= exe_rect.size.x and bounds.size.y <= exe_rect.size.y:
+		return
 	var area := Rect2(exe_rect.position + Vector2(8, 24), exe_rect.size - Vector2(16, 54))
 	if area.encloses(bounds): return
 	var fit := minf(1.0, minf(area.size.x / maxf(bounds.size.x, 1.0), area.size.y / maxf(bounds.size.y, 1.0))) * 0.94

@@ -62,6 +62,8 @@ func _ready() -> void:
 		for preset in GfxPresets.ORDER:
 			if preset in [GfxPresets.CUSTOM, GfxPresets.DETECTED]: continue
 			var values := GfxPresets.values(preset, method)
+			if method == "forward_plus" and preset in [GfxPresets.HIGH, GfxPresets.VERY_HIGH, GfxPresets.ULTRA]:
+				check(values.gfx_water_reflections == 2, "enabled preset reflections use Mirror " + str(preset))
 			if not last.is_empty():
 				var nondecreasing := true
 				for key in values:
@@ -78,6 +80,13 @@ func _ready() -> void:
 	panel._preset_picker.select(panel._preset_picker.get_item_index(GfxPresets.HIGH))
 	panel._preset_picker.item_selected.emit(panel._preset_picker.selected)
 	check(panel._values.graphics_preset == GfxPresets.HIGH and panel._values.gfx_water_waves == 1, "dropdown applies High including water effects")
+	var defaults := GfxDetect.base_values({})
+	check(defaults.gfx_water_reflections == 2, "desktop defaults use Mirror")
+	for tier in [0, 1]:
+		check(GfxDetect.tier_values(tier, defaults).gfx_water_reflections == 2, "automatic tier keeps Mirror " + str(tier))
+	panel._set_value("gfx_water_reflections", 1)
+	panel._accept(); panel.open(image)
+	check(panel._values.gfx_water_reflections == 1 and panel._values.graphics_preset == GfxPresets.CUSTOM, "explicit Natural choice persists as Custom")
 	for lang in ["en","ru","de"]:
 		RemakeText.lang=lang; panel._show_group(0)
 		await frames()
@@ -91,4 +100,6 @@ func _ready() -> void:
 	panel._restore(); panel._close(); panel.free()
 	FileAccess.open("user://graphics-presets.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures},"\t"))
 	print("GRAPHICS_PRESETS ",checks," checks ",failures," failures")
+	TexUpscale.shutdown()
+	await frames()
 	get_tree().quit(1 if failures else 0)

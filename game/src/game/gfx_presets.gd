@@ -24,8 +24,9 @@ static func values(preset: int, method: String = RenderingServer.get_current_ren
 	maximum.merge({"q_aa":3, "q_shadows":3, "q_aniso":4, "q_shadow_fit":1, "render_scale":4})
 	var result := GfxDetect.tier_values(TIERS[preset], maximum)
 	# Low already draws clouds; High and Very high increase their quality.
-	# Ultra reserves the costly cloud shadows/reflections, full water
-	# reflections, highest shadow/terrain quality and cinematic effects.
+	# Ultra reserves the costly cloud shadows/reflections, highest
+	# shadow/terrain quality and cinematic effects. Enabled water reflections
+	# keep Mirror, the default appearance, across the quality presets.
 	if preset != ULTRA:
 		result.gfx_depth_of_field = 0
 		result.gfx_terrain = mini(result.gfx_terrain, 1)
@@ -33,7 +34,6 @@ static func values(preset: int, method: String = RenderingServer.get_current_ren
 		result.gfx_cloud_shadows = 0
 		result.gfx_cloud_reflections = 0
 		result.gfx_ground_contact = 0
-		result.gfx_water_reflections = mini(result.gfx_water_reflections, 1)
 		result.q_shadows = mini(result.q_shadows, 2)
 	if preset in [ORIGINAL, VERY_LOW]: result.q_aa = 0
 	elif preset in [LOW, MEDIUM]: result.q_aa = 1

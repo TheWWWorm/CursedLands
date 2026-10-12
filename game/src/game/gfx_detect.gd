@@ -88,7 +88,6 @@ static func tier_values(tier: int, base: Dictionary) -> Dictionary:
 		v.gfx_depth_of_field = 0
 		v.gfx_weather_mist = 0
 		v.gfx_torch_glow = 0
-		v.gfx_water_reflections = mini(v.gfx_water_reflections, 1)
 		v.q_shadows = mini(v.q_shadows, 1)
 		v.q_aa = mini(v.q_aa, 1)   # MSAA / TAA / FSR 2 → SMAA
 	if tier >= 2:

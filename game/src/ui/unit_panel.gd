@@ -14,7 +14,7 @@ extends Control
 ##     85,2-90,42; bottom anchored at220 and Y scale15/effective info_scale), frame
 ##     (−5,−5)-(185,225) 5 wide (UV 4,55-90,60), small icon
 ##     (164,204)-(180,220) (UV 211,2-227,18);
-##   * name word-wrapped in (5,5)-(155,20) of the figure area.
+##   * name fitted to one line in (5,5)-(155,20) of the figure area.
 ## Texts are GDI COLORREF (beige) with a 1 px shadow
 ## text rects are relative to the figure area (x + 20).
 ## General view: health bar (40,190)-(140,195) green (UV
@@ -89,6 +89,8 @@ var _sp := 0.0    # slide progress 0 open.. 1 closed
 var _off := 0.0   # slide in 800×600 px
 var _height_key: Array = []
 var _base_height_factor := 1.0
+var _name_fit_key := []
+var _name_fit_size := 0
 ## First four part-type weights.
 const HEIGHT_RULER_UV := Rect2(85.5, 2.5, 5, 40)
 const PART_WEIGHT := [10.0, 30.0, 15.0, 15.0]
@@ -293,7 +295,7 @@ func _draw_over() -> void:
 	var uvf := Rect2(4, 55, 86, 5)
 	if _off < 180.0:
 		if _unit:
-			_text(c, Rect2(5, 5, 150, 15), _unit.display_name, TEXT, HORIZONTAL_ALIGNMENT_CENTER)
+			_text(c, Rect2(5, 5, 150, 15), _unit.display_name, TEXT, HORIZONTAL_ALIGNMENT_CENTER, true)
 			match mode:
 				"general": _draw_general(c, _unit)
 				"parts":
@@ -345,12 +347,22 @@ func _draw_height_ruler(c: CanvasItem, u: GameUnit) -> void:
 ## Text in a figure-area rect (x + 20) with the 1 px shadow
 ## CInterface3D font 0 (the panel's draws pass font 0: Times
 ## New Roman, 0.01733 × width em = 13.9 px at 800).
-func _text(c: CanvasItem, r: Rect2, s: String, col := TEXT, align := HORIZONTAL_ALIGNMENT_LEFT) -> void:
+func _text(c: CanvasItem, r: Rect2, s: String, col := TEXT, align := HORIZONTAL_ALIGNMENT_LEFT, fit_name := false) -> void:
 	var k := _k()
 	var font := Interface800.font()
 	var fs := maxi(6, int(round(800.0 * Interface800.FONT_EM[0] * k)))
-	var pos := (r.position + Vector2(20, 0)) * k + Vector2(0, font.get_ascent(fs))
 	var sh := maxf(1.0, round(k))
+	if fit_name:
+		var key := [s, fs, r.size.x * k]
+		if key != _name_fit_key:
+			_name_fit_key = key
+			_name_fit_size = fs
+			# Preserve short names at the normal size. Measure the complete
+			# translated name and its shadow instead of clipping its last letters.
+			while _name_fit_size > 1 and font.get_string_size(s, HORIZONTAL_ALIGNMENT_LEFT, -1, _name_fit_size).x + sh > r.size.x * k:
+				_name_fit_size -= 1
+		fs = _name_fit_size
+	var pos := (r.position + Vector2(20, 0)) * k + Vector2(0, font.get_ascent(fs))
 	c.draw_string(font, pos + Vector2(sh, sh), s, align, r.size.x * k, fs, Interface800.SHADOW)
 	c.draw_string(font, pos, s, align, r.size.x * k, fs, col)
 
