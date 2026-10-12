@@ -261,7 +261,9 @@
     "Male and female humanoids, three physiques, rigid and smoothed bodies",
     "Closed collar geometry, opaque atlas sample, correct cap winding, original mesh immutability and restoration",
     "Rendered idle, walk, run, attack and cast at level and downward views",
-    "Female crouching and crawling; camera posture transition and ownership regressions"
+    "Female crouching and crawling; camera posture transition and ownership regressions",
+    "Packaged Linux male crouching and crawling; animated walking, running, attacks and casting with the shipping PCK",
+    "HD Lands 1.4.0 shop, stats, character and first-person interface checks"
   ],
   "investigation_notes": [
     "Initial cap generation needed tangents for the additional vertices and separate boundary loops for garment hems.",
@@ -271,9 +273,180 @@
   ],
   "limits": [
     "Tests use isolated profiles and prepared native campaign poses, without modifying user saves.",
-    "Rendered source tests on Linux OpenGL Compatibility; packaged Vulkan validation pending.",
+    "Rendered source tests on Linux OpenGL Compatibility; packaged Linux Vulkan Forward+ tests also passed.",
     "No multiplayer protocol or movement changes. No WAN benchmark repeated.",
     "Windows runtime not tested."
   ],
-  "package_validation": "pending"
+  "package_validation": {
+    "linux": "Passed using the shipped executable and production PCK on Vulkan Forward+, NVIDIA RTX 3090.",
+    "windows": "Package structure, native imports and resource equivalence checked; Windows runtime not run.",
+    "hd_textures": "Actual installed HD Lands 1.4.0 texture pack enabled in an isolated profile; 35 interface and first-person checks passed."
+  },
+  "source_commit": "a2d94a5efe34e516756562f68eae882642599dd7",
+  "game_tree": "dd4576c03d76accfd4c59b56349d25b8da3e3619",
+  "package_tests": [
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso",
+      "label": "package-torso",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.6-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 105.567,
+      "checks": 162,
+      "failures": [],
+      "details": {
+        "checks": 162,
+        "failures": [],
+        "variants": [
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/package-torso.log",
+      "log_sha256": "973d9b3b0bd6b79884ed25cc4154a2b6b6e302f1b32a959d1476ea05132a63ae"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/hd_interface_views",
+      "label": "package-hd",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.6-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/hd_interface_views.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 61.288,
+      "checks": 35,
+      "failures": [],
+      "details": {
+        "checks": 35,
+        "failures": []
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/package-hd.log",
+      "log_sha256": "2c7812ba405a81bba47362ad47237c26fc948ca34f34632530700e910f15cca1"
+    }
+  ],
+  "package_test_checks": 197,
+  "package_test_failures": 0,
+  "package_integrity": {
+    "compiled_scripts": 284,
+    "resource_count": 722,
+    "engine_patch_count": 12,
+    "linux_windows_pck_identical": true,
+    "pck_sha256": "4ca8e5b8b5e681166b2ac3a0e3a2ee8196e135dd936b212986fb9e2f750fda95",
+    "production_pck_used_without_test_overlay": true,
+    "original_game_assets_mods_and_user_saves_excluded": true,
+    "source_files_match_packaged_snapshot": true,
+    "network_protocol": 21
+  },
+  "screenshots": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/profiles/package-torso/data/godot/app_userdata/Cursed Lands/torso-idle-feet.png",
+      "sha256": "c3dc8da9e4b77f9f2bf5035b1aa1f96541fe73d603c8a2f993aed96644ad6adf",
+      "visually_reviewed": true
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/profiles/package-torso/data/godot/app_userdata/Cursed Lands/torso-run-feet.png",
+      "sha256": "085dbfd491f3151dbd6f749767ad91be83cb6c1b562b1ba14961a180cf0bdd14",
+      "visually_reviewed": true
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/profiles/package-torso/data/godot/app_userdata/Cursed Lands/torso-gait1-walk.png",
+      "sha256": "bd10c7ea7c3e86f19b89a5e794385ea4aa409bf4991f91e5c0c7391361678d99",
+      "visually_reviewed": true
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/first-person-torso-20261012/profiles/package-hd/data/godot/app_userdata/Cursed Lands/first-person-walk-down.png",
+      "sha256": "234d12ce3b0bf96d721bb063bf683b3d6999ac8317e2feb0c55c26335e7b3a91",
+      "visually_reviewed": true
+    }
+  ]
 }
