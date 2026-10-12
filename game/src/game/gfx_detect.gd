@@ -54,6 +54,8 @@ const MAX_STEPS := {"desktop": 6, "handheld": 5, "web": 3}
 const DEADLINE_S := 12.0
 ## Views drawn per frame in the stress mode.
 const STRESS := 2
+const RECOVERY_NOTICE := "The previous graphics test did not finish. Your earlier settings were restored and automatic testing was skipped. You can retry Detect best settings from Options."
+static var recovered_test := false
 
 ## The options the ladder sets: every gfx_* switch and the render quality.
 static func keys() -> PackedStringArray:
@@ -339,14 +341,47 @@ static func load_record(path := GameData.CONFIG_PATH) -> Dictionary:
 
 
 ## Replaces the [gfx_detect] section (GameData.save_settings keeps it).
-static func save_record(rec: Dictionary, path := GameData.CONFIG_PATH) -> void:
+static func save_record(rec: Dictionary, path := GameData.CONFIG_PATH) -> Error:
 	var cfg := ConfigFile.new()
 	cfg.load(path)
 	if cfg.has_section(SECTION):
 		cfg.erase_section(SECTION)
 	for k: String in rec:
 		cfg.set_value(SECTION, k, rec[k])
-	cfg.save(path)
+	return cfg.save(path)
+
+
+## Called before GameData reads or applies display settings. A test may die in
+## a driver call, including the first draw with its final settings. Keep its
+## rollback values on disk until that draw has completed. Only graphics keys
+## are restored; saves, controls, renderer choice and game data stay separate.
+static func recover_test(cfg: ConfigFile, path := GameData.CONFIG_PATH) -> bool:
+	if not cfg.get_value(SECTION, "testing", false):
+		return false
+	var pid := int(cfg.get_value(SECTION, "pid", 0))
+	if pid != OS.get_process_id() and CrashReport.alive(pid):
+		return false   # another live instance owns the test
+	var before: Variant = cfg.get_value(SECTION, "before", {})
+	if not before is Dictionary or before.is_empty():
+		return false
+	var allowed := keys()
+	allowed.append_array(["fps_limit", "graphics_preset"])
+	for k: String in before:
+		if k in allowed and before[k] is int:
+			cfg.set_value("options", k, before[k])
+	var stage := String(cfg.get_value(SECTION, "stage", "preparing"))
+	cfg.erase_section(SECTION)
+	cfg.set_value(SECTION, "version", VERSION)
+	cfg.set_value(SECTION, "fingerprint", fingerprint())
+	cfg.set_value(SECTION, "tier", -1)
+	cfg.set_value(SECTION, "interrupted", 1)
+	cfg.set_value(SECTION, "interrupted_stage", stage)
+	var error := cfg.save(path)
+	if error != OK:
+		push_warning("Could not save recovered graphics settings: " + str(error))
+	recovered_test = true
+	GameData.trace("graphics detection interrupted at %s: restoring previous settings; automatic test skipped" % stage)
+	return true
 
 
 static func _matches(current: Dictionary, values: Dictionary) -> bool:
@@ -361,7 +396,7 @@ static func _matches(current: Dictionary, values: Dictionary) -> bool:
 ## First start: no record and the graphics as the platform defaults; another
 ## GPU / renderer: only while the settings are still those detection chose.
 static func auto_reason(rec: Dictionary, current: Dictionary, base: Dictionary, fp: String, enabled: bool) -> String:
-	if not enabled:
+	if not enabled or rec.get("testing", false) or rec.get("interrupted", 0):
 		return ""
 	if rec.is_empty():
 		return "first" if _matches(current, base) else "manual"
@@ -449,6 +484,9 @@ static func auto_start() -> void:
 	if Array(args).any(func(a): return String(a).begins_with("--tool=")) and not args.has("--gfx-detect"):
 		return
 	Watchdog.ensure()
+	if recovered_test:
+		recovered_test = false
+		_offer_recovery((Engine.get_main_loop() as SceneTree).current_scene)
 	var rec := load_record()
 	var reason := auto_reason(rec, GameData.options, base_values(), fingerprint(), GameData.option("auto_graphics") != 0)
 	if reason == "manual":
@@ -459,6 +497,22 @@ static func auto_start() -> void:
 		start(false)
 
 
+## Queue behind the crash report / renderer notice instead of covering it.
+static func _offer_recovery(parent: Node) -> void:
+	if not is_instance_valid(parent) or not parent.is_inside_tree():
+		return
+	for child in parent.find_children("*", "", true, false):
+		if child is MessageBox and child.visible and not child.is_queued_for_deletion():
+			child.tree_exited.connect(func(): _offer_recovery(parent), CONNECT_ONE_SHOT)
+			return
+	var box := MessageBox.new()
+	box.title = RemakeText.t("Graphics")
+	box.message = RemakeText.t(RECOVERY_NOTICE)
+	box.ok_only = true
+	box.esc_closes = true
+	parent.add_child(box)
+
+
 ## Starts the test (one at a time) over whatever the main view shows.
 static func start(manual_run: bool) -> GfxDetect:
 	var tree := Engine.get_main_loop() as SceneTree
@@ -467,6 +521,10 @@ static func start(manual_run: bool) -> GfxDetect:
 	for n in tree.root.get_children():
 		if n is GfxDetect and not n.is_queued_for_deletion():
 			return n
+	var rec := load_record()
+	var pid := int(rec.get("pid", 0))
+	if rec.get("testing", false) and pid != OS.get_process_id() and CrashReport.alive(pid):
+		return null
 	var d := GfxDetect.new()
 	d.manual = manual_run
 	tree.root.add_child(d)
@@ -491,6 +549,9 @@ var _old_vsync := DisplayServer.VSYNC_ENABLED
 var _env: Environment
 var _env_saved := {}
 var _step := 0
+var _record_before := {}
+var _pending := {}
+var _testing := false
 
 
 func _ready() -> void:
@@ -514,6 +575,16 @@ func _run() -> void:
 	for k in keys():
 		_before[k] = GameData.option(k)
 	_before.fps_limit = GameData.option("fps_limit")
+	_before.graphics_preset = GameData.option("graphics_preset")
+	_record_before = load_record()
+	_pending = {"version": VERSION, "fingerprint": fingerprint(), "tier": -1,
+		"testing": true, "pid": OS.get_process_id(), "before": _before,
+		"stage": "preparing", "date": Time.get_datetime_string_from_system()}
+	if save_record(_pending) != OK:
+		_overlay.visible = false
+		_message(RemakeText.t("Graphics test skipped; the settings are unchanged."))
+		return
+	_testing = true
 	_prepare()
 	var screen := DisplayServer.screen_get_size()
 	var start := start_tier(kind, RenderingServer.get_video_adapter_name(), screen, OS.get_processor_count())
@@ -529,29 +600,57 @@ func _run() -> void:
 		res = await _choose_async(start, cfg)
 	_finish_measuring()
 	if _cancelled:
-		_set_values(_before)
-		_apply_live()
-		_restore_env()
-		if not manual:
-			save_record({"version": VERSION, "fingerprint": fingerprint(), "tier": -1, "cancelled": 1})
-		_overlay.visible = false
-		_message(RemakeText.t("Graphics test skipped; the settings are unchanged."))
+		_cancel_test()
 		return
 	result = res
 	var vals := result_values(res, _base, kind)
 	_set_values(vals)
 	GameData.options.graphics_preset = GfxPresets.DETECTED
-	GameData.save_settings()
+	_pending.stage = "result tier %d" % int(res.tier)
+	save_record(_pending)
 	_apply_live()
 	_restore_env()
+	# Applying settings can queue shader compilation / buffer work. Do not
+	# commit success before the renderer has actually presented those frames.
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+	if _cancelled:
+		_cancel_test()
+		return
+	GameData.save_settings()
 	save_record({"version": VERSION, "fingerprint": fingerprint(), "tier": int(res.tier),
 		"fps": int(res.fps), "values": vals, "start": start, "mode": _mode,
 		"zone_factor": margin,
 		"costs": res.costs, "date": Time.get_datetime_string_from_system()})
+	_testing = false
 	GameData.trace("graphics detection: tier %d (%s), fps cap %d, mode %s, costs %s" % [res.tier, TIER_NAMES[res.tier], res.fps, _mode, res.costs])
 	_overlay.visible = false
 	_message(RemakeText.t("Graphics set to %s for this device. You can change this in Options.") % tier_label(int(res.tier), int(res.fps)))
 	finished.emit(res)
+
+
+func _cancel_test() -> void:
+	_set_values(_before)
+	_apply_live()
+	_restore_env()
+	save_record(_record_before if manual else {"version": VERSION,
+		"fingerprint": fingerprint(), "tier": -1, "cancelled": 1})
+	_testing = false
+	_overlay.visible = false
+	_message(RemakeText.t("Graphics test skipped; the settings are unchanged."))
+
+
+func _exit_tree() -> void:
+	if not _testing:
+		return
+	# A normal quit / scene replacement during a test is cancellation, not a
+	# failed driver trial. A process crash never reaches this cleanup.
+	_set_values(_before)
+	_finish_measuring()
+	_restore_env()
+	save_record(_record_before if manual else {"version": VERSION,
+		"fingerprint": fingerprint(), "tier": -1, "cancelled": 1})
+	_testing = false
 
 
 static func tier_label(tier: int, fps: int) -> String:
@@ -655,6 +754,9 @@ func _apply_tier(t: int) -> void:
 
 ## One tier's frame cost (ms): the 75th percentile after the warm-up.
 func _measure(t: int) -> float:
+	_pending.stage = "tier %d" % t
+	save_record(_pending)
+	GameData.trace("graphics detection: applying tier %d" % t)
 	_apply_tier(t)
 	var dur: float = MEASURE_S[kind]
 	await _frames(WARM_S, 10)   # shader compiles and buffer reallocation

@@ -51,6 +51,7 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"The previous graphics test did not finish. Your earlier settings were restored and automatic testing was skipped. You can retry Detect best settings from Options.": ["Предыдущая проверка графики не завершилась. Прежние настройки восстановлены, автоматическая проверка пропущена. Повторить её можно кнопкой «Подобрать лучшие настройки» в настройках графики.", "Der vorige Grafiktest wurde nicht abgeschlossen. Die vorherigen Einstellungen wurden wiederhergestellt und der automatische Test übersprungen. Sie können den Test in den Optionen erneut starten."],
 	"Quick recovery": ["Быстрое восстановление", "Schnelle Erholung"],
 	"Choose how long revival takes and how much health a revived party member receives. Enable the built-in revival rule first.": ["Выберите длительность воскрешения и здоровье воскрешённого члена отряда. Сначала включите встроенное правило воскрешения.", "Dauer der Wiederbelebung und Gesundheit wiederbelebter Gruppenmitglieder festlegen. Zuerst die integrierte Wiederbelebungsregel aktivieren."],
 	"Revival time in seconds": ["Время воскрешения в секундах", "Wiederbelebungsdauer in Sekunden"],

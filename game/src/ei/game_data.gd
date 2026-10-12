@@ -460,6 +460,8 @@ func _ready() -> void:
 	GameFiles.initialize()
 	var cfg := ConfigFile.new()
 	if cfg.load(CONFIG_PATH) == OK:
+		if not Array(OS.get_cmdline_user_args()).any(func(a): return a.begins_with("--local-host-config=")):
+			GfxDetect.recover_test(cfg)
 		root = cfg.get_value("game", "root", "")
 		for id: String in [CampaignProfile.ORIGINAL, CampaignProfile.ASTRAL]:
 			var installed: Variant = cfg.get_value("games", id, "")

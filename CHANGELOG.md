@@ -2,6 +2,9 @@
 
 ## Unreleased — co-op and interface fixes
 
+- Preserve graphics settings until automatic calibration has rendered its
+  result. Restore previous settings after an interrupted test and skip its
+  automatic retry; record the last graphics tier before applying it.
 - Compress cumulative co-op progress, send it on a separate reliable channel,
   and compress ENet traffic. Keep the rate-limited snapshot stream active when
   frontend frame delays increase acknowledgement times. Network protocol is 18;

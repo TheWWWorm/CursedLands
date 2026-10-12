@@ -1,0 +1,222 @@
+{
+  "date": "2026-10-12",
+  "change": "Restore graphics settings after an interrupted calibration and skip automatic retry. Commit a successful result only after rendering it.",
+  "base_commit": "6869a365ae230fc55c7ccd59390bfcd2ec0dea38",
+  "status": "Recovery behavior verified; reported Realme menu crash not reproduced or diagnosed. Android test APK built and audited, not executed on Realme.",
+  "source_files": {
+    "game/src/ei/game_data.gd": "a81d066dbe40e1c66bb02ae95c0fd9d4df09ab866828cc6adfccff0656cebcf2",
+    "game/src/ei/remake_text.gd": "d43a7001a98f507dc1547a43934243f5cfc4d0fe05704c04b1ac39410ae04a6a",
+    "game/src/game/gfx_detect.gd": "1e234b1c64c8d95f8b4abac158d9a1ae9d238db246391d539cce34519606bf4a",
+    "tools/tests/graphics_detection_recovery.gd": "69565160b9d9a30909e21d2d75284ce7248d3a2b4e76cfdeeb5951707347ed00",
+    "CHANGELOG.md": "f769a51f49cc31bd63c688e518d76b62f2fb61badaa19c4ce67e40fcf21318a5",
+    "tools/tests/graphics_detection_startup.gd": "3a99b408d700dedaf8a78c3c54cf5cf83c4fa65d77e9a5378103bb03b0b61ab3"
+  },
+  "investigation": {
+    "report_device": "Forum text names Realme 14; profile reportedly lists Realme 6 4/64/128. Exact model, APK version, install history and crash log unavailable.",
+    "version_comparison": "Repository v1.0.0 to v1.0.1 changes the graphics-calibration revision from 1 to 3 and adds a rerun after that revision changes when settings remain unmodified. Rendering changes include native vertex lighting and water waves. These differences are candidates, not a confirmed device crash cause.",
+    "confirmed_gap": "The unchanged Feedback 3 build automatically reran graphics calibration after its process was deliberately terminated during a tier. No pending-test record existed.",
+    "baseline_logs": [
+      "baseline/launch-0.log",
+      "baseline/launch-1.log"
+    ]
+  },
+  "qualification": {
+    "engine": "Feedback 3 patched Linux template, Compatibility, NVIDIA RTX 3090 Ti; handheld calibration path requested explicitly",
+    "unit_and_preset_checks": 259,
+    "failures": 0,
+    "checks": [
+      {
+        "test": "graphics_detection_recovery",
+        "exit_code": 0,
+        "errors": [],
+        "result": [
+          "GRAPHICS_DETECTION_RECOVERY {\"checks\":30,\"failures\":0}"
+        ],
+        "tool_sha256": "69565160b9d9a30909e21d2d75284ce7248d3a2b4e76cfdeeb5951707347ed00",
+        "log_sha256": "6551991e0e3311976d2d8088af05ade87a47c095e837c5782e4232140dda4b55"
+      },
+      {
+        "test": "graphics_presets",
+        "exit_code": 0,
+        "errors": [],
+        "result": [
+          "GRAPHICS_PRESETS 229 checks 0 failures"
+        ],
+        "tool_sha256": "e5abe9fa13fe3ea1ddba7959b7d65516f9cf521e32269a66f703ac9fbd477cdd",
+        "log_sha256": "7514dff76e2f92bd674950ac61fd3bd4c86d59c7f44cc0eb60c0c078c7662b46"
+      }
+    ],
+    "four_rendered_starts": [
+      {
+        "cmd": [
+          "/home/llm2x/Documents/EI/local/feedback/2026-10-12-android-menu/runtime/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "960x540",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--no-movies",
+          "--gfx-handheld",
+          "--gfx-detect",
+          "--tool=/home/llm2x/Documents/EI/local/feedback/2026-10-12-android-menu/startup_probe.gd",
+          "--prepare-detection"
+        ],
+        "return_code": -9,
+        "seconds": 21.120997324003838,
+        "killed_during_test": true,
+        "restarted_detection": true,
+        "completed": false,
+        "errors": []
+      },
+      {
+        "cmd": [
+          "/home/llm2x/Documents/EI/local/feedback/2026-10-12-android-menu/runtime/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "960x540",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--no-movies",
+          "--gfx-handheld",
+          "--gfx-detect",
+          "--tool=/home/llm2x/Documents/EI/local/feedback/2026-10-12-android-menu/startup_probe.gd",
+          "--expect-no-test"
+        ],
+        "return_code": 0,
+        "seconds": 15.42634728300618,
+        "killed_during_test": false,
+        "restarted_detection": false,
+        "completed": true,
+        "errors": []
+      },
+      {
+        "cmd": [
+          "/home/llm2x/Documents/EI/local/feedback/2026-10-12-android-menu/runtime/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "960x540",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--no-movies",
+          "--gfx-handheld",
+          "--gfx-detect",
+          "--tool=/home/llm2x/Documents/EI/local/feedback/2026-10-12-android-menu/startup_probe.gd",
+          "--manual-detection"
+        ],
+        "return_code": 0,
+        "seconds": 17.823622353025712,
+        "killed_during_test": false,
+        "restarted_detection": true,
+        "completed": true,
+        "errors": []
+      },
+      {
+        "cmd": [
+          "/home/llm2x/Documents/EI/local/feedback/2026-10-12-android-menu/runtime/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "960x540",
+          "--position",
+          "-10000,-10000",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--no-movies",
+          "--gfx-handheld",
+          "--gfx-detect",
+          "--tool=/home/llm2x/Documents/EI/local/feedback/2026-10-12-android-menu/startup_probe.gd",
+          "--expect-no-test"
+        ],
+        "return_code": 0,
+        "seconds": 13.021889441995881,
+        "killed_during_test": false,
+        "restarted_detection": false,
+        "completed": true,
+        "errors": []
+      }
+    ],
+    "startup_fixture_sha256": "79252cc41f5ce43a408289fff312f3b784d8e006c3c896d352f43fe4612b8006",
+    "cancellation_control": "cancel/launch-1.json",
+    "orderly_exit_control": "clean-exit/launch-0.json",
+    "all_280_compiled_scripts_identical_between_final_desktop_pack_and_android_apk": true,
+    "desktop_pack_sha256": "94d75b60367dbdbd3718abe31b3976f5e595ef7f68c004dbc151ec90d8043c4b"
+  },
+  "additional_findings": [
+    {
+      "test": "menu_material_refresh with every optional effect enabled",
+      "result": "Timed out at the ground-contact switch in the stock editor (120 s) and patched template (240 s). The unchanged Feedback 3 package also stalled at the same switch; a debugger interrupt showed the main thread inside libnvidia-glcore.so.580.178.04. This broader Compatibility case remains open and is not counted as passing. No connection to the Realme report has been established.",
+      "evidence": [
+        "check-menu_material_refresh/run.log",
+        "native-menu_material_refresh/run.log",
+        "baseline-menu-stall/gdb.log"
+      ]
+    }
+  ],
+  "test_harness_notes": [
+    "Two earlier development launches had a fixture type-inference parse error. The fixture was corrected; final qualification has no script errors.",
+    "An initial desktop staging copy contained concurrent navigation/control edits. Those files were replaced with the qualified Feedback 3 versions; final qualification and APK audit use an exact matching script set. Concurrent workspace edits were preserved."
+  ],
+  "puddles": {
+    "included_in": "Feedback 2/3 desktop changes and this Android test APK",
+    "not_in": "Existing 1.0.4-experimental.5 Android APK",
+    "setting": "Rain puddles / Дождевые лужи / Regenpfützen",
+    "default": "Off",
+    "requires": "Rain on surfaces",
+    "behavior": "Rain wets exposed, nearly level ground; puddle patches fade as it dries.",
+    "current_apk_setting_and_shader_verified": true,
+    "earlier_visual_validation": "local/feedback/2026-10-12-ancient-equipment/qualified2-rain_puddles-lia-render.log"
+  },
+  "android_artifact": {
+    "path": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.3-menu-test.1-android/CursedLands.apk",
+    "version": "1.0.4-feedback.3-menu-test.1",
+    "version_code": 24,
+    "protocol": 20,
+    "sha256": "50c3f673fef7ea65283de9cf8a665ce8278d14764388beaa789622f3ce9c1baa",
+    "bytes": 30449174,
+    "release_signed": true,
+    "public_signing_certificate_matches": true,
+    "debuggable": false,
+    "no_private_bootstrap_original_assets_or_saves": true,
+    "device_runtime_tested": false
+  },
+  "limits": [
+    "No Realme device or crash log was available. Recovery prevents repetition of an interrupted calibration, not every cause of an Android startup crash.",
+    "No hardware blacklist, renderer replacement or automatic reduction of the user graphics settings was added.",
+    "Current physical Retroid app was left undisturbed; this APK was not installed there."
+  ],
+  "evidence_directory": "/home/llm2x/Documents/EI/local/feedback/2026-10-12-android-menu",
+  "primary_device_sources": [
+    "https://www.realme.com/sg/realme-6/specs",
+    "https://www.mediatek.com/id/realme-6",
+    "https://www.realme.com/pk/realme-14-5g/specs"
+  ]
+}
