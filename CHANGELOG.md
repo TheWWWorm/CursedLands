@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.4-experimental.7 — experimental release, 12 October 2026
+
+- Keep long dropdowns within the display, with mouse-wheel and keyboard scrolling and the selected entry visible on reopening.
+- Preserve the original character shape in direct control and rebuilt HUD/inventory previews. Retain movement during melee and bow attacks.
+- Keep one visible first-person body and weapon, hide the collar while running and looking down, and retain the complete head shadow.
+- Cycle top-down, third-person and first-person views with F6. Tap Ctrl to crouch or stand; hold Ctrl to lie down. Keep the camera-control guide above the follow icon.
+- Show Talk only for characters with available topics. Retain the Ingos workers' kneeling poses between scripted cycles.
+- Retain snow contact and footprints after model rebuilds and moving attacks, including strafing.
+- Cast selected direct-view spells from the current position. Out-of-range targets retain spell selection and show a range hint without an approach command or stamina cost. Tactical approach casting is unchanged.
+- Restore minimap marker colours with HD atlases and match mirror draw distance to the main camera.
+
+See [release notes](docs/releases/1.0.4-experimental.7.md) for compatibility and platform limits.
+
 ## 1.0.4-experimental.6 — experimental release, 12 October 2026
 
 - Compress co-op campaign progress and movement snapshots, keep snapshots flowing
