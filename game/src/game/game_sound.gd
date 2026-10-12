@@ -259,12 +259,16 @@ func _process(dt: float) -> void:
 	if weather:
 		weather.tick(_ticks + _tick_acc / TICK)
 	_tick_acc += dt
+	var sample_combat := true
 	while _tick_acc >= TICK:
 		_tick_acc -= TICK
-		_world_tick()
+		# The world already completed its frame before this audio batch.
+		# Catch-up audio ticks see the same unit positions and orders.
+		_world_tick(sample_combat)
+		sample_combat = false
 
 
-func _world_tick() -> void:
+func _world_tick(sample_combat := true) -> void:
 	_ticks += 1
 	if _ticks == SFX_TICK:
 		mixer.sfx_on = true
@@ -277,7 +281,7 @@ func _world_tick() -> void:
 	if _world.authority and weather:
 		weather.host_tick(_ticks)
 	if _world.authority:
-		_send_combat_flags()
+		if sample_combat: _send_combat_flags()
 		_bored_tick()
 	music.tick(combat_flag)
 

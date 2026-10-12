@@ -229,7 +229,15 @@ func _bind(c: Chan, s: Dictionary, at: float) -> void:
 	c.handle = int(s.handle)
 	c.snd = s
 	c.player.stream = s.stream
-	AudioServer.set_bus_send(AudioServer.get_bus_index(c.bus), "Voice" if int(s.cat) == CAT_SPEECH else "SFX")
+	var bus := AudioServer.get_bus_index(c.bus)
+	var destination := &"Voice" if int(s.cat) == CAT_SPEECH else &"SFX"
+	if AudioServer.get_bus_send(bus) != destination:
+		# Godot 4.7's set_bus_send does not lock. The mixer reads this
+		# StringName twice (has / lookup); its intermediate reassignment
+		# can yield a null destination while the audio thread is mixing.
+		AudioServer.lock()
+		AudioServer.set_bus_send(bus, destination)
+		AudioServer.unlock()
 	_apply(c)
 	c.player.play(at)
 

@@ -337,7 +337,7 @@ func _ready() -> void:
 		check(renderer_info.display!="headless" and renderer_info.method=="forward_plus" \
 			and required_adapter.to_lower() in String(renderer_info.adapter).to_lower(),
 			"actual Forward+ renderer uses required hardware adapter "+required_adapter)
-	check(NetStatus.PROTOCOL==19,"all frontend scripts require protocol19")
+	check(NetStatus.PROTOCOL==20,"all frontend scripts require protocol20")
 	check(not source.is_empty() and FileAccess.file_exists(source),"explicit disposable source save exists")
 	if failures: await finish(); return
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,"net_directory":0,"net_websocket":0,

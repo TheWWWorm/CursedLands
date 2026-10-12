@@ -588,6 +588,19 @@ func _player_in_combat(p: int) -> bool:
 		_combat_time = world.time
 		_combat_cache.clear()
 	if not _combat_cache.has(p):
+		# Flag 2 requires a living attack/hostile-cast order somewhere in the
+		# world. Walking parties otherwise repeat the full shared-sight and
+		# detection-ratio calculation for every player on every logic tick.
+		# Scan at each uncached player query: an earlier actor may have begun
+		# attacking during this same tick. Hidden attackers still count.
+		var hostile_order := false
+		for actor: GameUnit in world.unit_rows():
+			if not actor.dead and GameSound._hostile_act(actor):
+				hostile_order = true
+				break
+		if not hostile_order:
+			_combat_cache[p] = false
+			return false
 		var sound := GameSound.instance
 		var probe := sound == null or sound._world != world
 		if probe:

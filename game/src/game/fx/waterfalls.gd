@@ -26,7 +26,19 @@ func configure(terrain: EITerrain) -> void:
 	set_process(false)
 	_surface = null
 	field = Field.new(terrain)
-	_rebuild()
+	if is_inside_tree(): _rebuild()
+
+
+func _ready() -> void:
+	# Map construction and saved water levels precede scene attachment.
+	# Spray anchors need the water meshes' world transforms, which only
+	# become valid once the terrain enters the tree. Live option changes
+	# still configure/rebuild immediately after add_child returns.
+	if field != null and is_instance_valid(_terrain):
+		_dirty = false
+		field.refresh(_terrain._level)
+		_rebuild()
+		visible = true
 
 
 ## Called at the end of terrain.apply_gfx, after all water uniforms exist.
@@ -57,6 +69,7 @@ func request_refresh() -> void:
 
 
 func _refresh() -> void:
+	if not _dirty or not is_inside_tree(): return
 	_dirty = false
 	if not is_instance_valid(_terrain) or field == null: return
 	if field.refresh(_terrain._level): _rebuild()

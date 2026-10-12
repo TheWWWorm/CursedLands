@@ -55,8 +55,14 @@ var _snapshot_serial := 0
 var _snap_count := 0
 var _last_snap := {}
 var _exit_t := 0.0
-var _sync_t := 0.0
+var _state_sync_at_ms := 0
+var _state_serial := 0
+var _state_waiting := {} # newest reliable campaign document awaiting its peer
+var _state_pending := {} # recompute current state after acknowledgement
 var _state_dirty := false
+var _input_out := NetInput.new()
+var _input_in := {} # peer -> ordered command stream, shared by both transports
+var _input_retry_at := 0
 var _leave_armed := -1      # exit a deliberate ground click armed (leave-zone box, _arm_exit)
 var _auto_exit := -1        # remake: exit the host party stands in (box shown / standing there on entry)
 var _auto_world: GameWorld
@@ -201,6 +207,7 @@ func _movie_ack(pid: int, serial: int) -> void:
 
 
 func _process(_dt: float) -> void:
+	_send_input_due()
 	if not is_host or not movie_active(): return
 	for pid in _movie_wait.keys():
 		if int(pid) != 1 and (not online or not players.has(pid) or not CoopProgress.peer_alive(multiplayer, int(pid))):
@@ -354,6 +361,8 @@ func join(address: String, port := PORT) -> Error:
 	multiplayer.multiplayer_peer = peer if socket_mode else NetSim.wrap(peer)   # (tools: --netsim)
 	online = true
 	is_host = false
+	_input_out = NetInput.new()
+	_input_retry_at = 0
 	_water_received = -1
 	_pool_epoch = -1
 	return OK
@@ -1255,7 +1264,7 @@ func _apply_lmp_event(id: String, generation: int, ev: Dictionary) -> void:
 @rpc("authority", "call_remote", "unreliable")
 func _rpc_lmp_snap(id: String, generation: int, snaps: Array, time: float, serial: int) -> void:
 	if not lmp.is_empty() and id == zone_id and generation == lmp_generation:
-		_apply_snap(snaps, time, serial)
+		_apply_snap(NetSnapshot.unpack(snaps), time, serial)
 
 
 ## Client, web / mobile: host messages that came while _rpc_zone waited for
@@ -2108,14 +2117,65 @@ func submit(cmd: Dictionary) -> void:
 		else:
 			coop.with_purse(my_index, apply_command.bind(cmd, my_index))
 	else:
+		if NetSim.enet_of(multiplayer) != null:
+			cmd = _input_out.prepare(cmd)
 		_rpc_cmd.rpc_id(1, cmd)
+		_send_input_due()
+
+
+## Wall-time retries continue through pauses and loads. Commands from an old
+## world still consume their sequence before the generation fence rejects
+## them; otherwise a transfer could permanently block the next valid order.
+func _send_input_due() -> void:
+	if is_host or not online or _input_out.pending.is_empty(): return
+	if not CoopProgress.peer_alive(multiplayer, 1): return
+	var now := Time.get_ticks_msec()
+	if now < _input_retry_at: return
+	_input_retry_at = now + NetInput.RETRY_MS
+	var bytes := _input_out.packet()
+	if not bytes.is_empty(): _rpc_cmd_fast.rpc_id(1, bytes)
+
+
+@rpc("any_peer", "call_remote", "unreliable", 2)
+func _rpc_cmd_fast(bytes: PackedByteArray) -> void:
+	var pid := multiplayer.get_remote_sender_id()
+	if not is_host or not players.has(pid) or bytes.size() > NetInput.PACKET_BYTES: return
+	var commands = bytes_to_var(bytes)
+	if not commands is Array: return
+	for cmd in commands:
+		if cmd is Dictionary and cmd.has("_input_seq"):
+			_receive_cmd(cmd, pid)
+	_ack_input(pid)
+
+
+@rpc("authority", "call_remote", "unreliable", 2)
+func _rpc_cmd_ack(seq: int) -> void:
+	if not is_host: _input_out.acknowledge(seq)
+
+
+func _ack_input(pid: int) -> void:
+	if _input_in.has(pid): _rpc_cmd_ack.rpc_id(pid, _input_in[pid].last)
 
 
 @rpc("any_peer", "call_remote", "reliable")
 func _rpc_cmd(cmd: Dictionary) -> void:
-	if not is_host:
-		return
 	var pid := multiplayer.get_remote_sender_id()
+	if not is_host or not players.has(pid): return
+	_receive_cmd(cmd, pid)
+	if cmd.has("_input_seq"): _ack_input(pid)
+
+
+func _receive_cmd(cmd: Dictionary, pid: int) -> void:
+	if not is_host or not players.has(pid): return
+	if not cmd.has("_input_seq"):
+		_dispatch_cmd(cmd, pid)
+		return
+	if not _input_in.has(pid): _input_in[pid] = NetInput.new()
+	for ordered: Dictionary in _input_in[pid].receive(cmd):
+		_dispatch_cmd(ordered, pid)
+
+
+func _dispatch_cmd(cmd: Dictionary, pid: int) -> void:
 	if String(cmd.get("t", "")) == "movie_done":
 		if players.has(pid): _movie_ack(pid, int(cmd.get("serial", -1)))
 		return
@@ -3741,11 +3801,7 @@ func _physics_process(dt: float) -> void:
 		_mp_tick(dt)
 	if lmp_travel and is_host:
 		lmp_travel.physics(dt)
-		_sync_t -= dt
-		if online and (_state_dirty and _sync_t <= 0.0 or _sync_t <= -5.0):
-			_state_dirty = false
-			_sync_t = 0.5
-			sync_state()
+		_sync_state_due()
 		return
 	_tick_world_session(dt)
 
@@ -3759,11 +3815,7 @@ func _tick_world_session(dt: float) -> void:
 			SmileFaces.battle_tick(self)   # remake option "smile_faces": a won fight
 		# Campaign state (vars, quests, items) reaches clients in batches.
 		if not lmp_travel:
-			_sync_t -= dt
-		if not lmp_travel and online and (_state_dirty and _sync_t <= 0.0 or _sync_t <= -5.0):
-			_state_dirty = false
-			_sync_t = 0.5
-			sync_state()
+			_sync_state_due()
 	if not (online and is_host and world):
 		return
 	# Network cadence is wall time. Doubling simulation speed must not double
@@ -3818,6 +3870,7 @@ func _send_snapshot_records(snaps: Array, time: float, recipient := 0) -> void:
 
 func _send_snap(snaps: Array, time: float, recipient := 0) -> void:
 	_snapshot_serial += 1
+	snaps = NetSnapshot.pack(snaps)
 	if recipient > 0:
 		_rpc_snap.rpc_id(recipient, snaps, time, _load_serial, _snapshot_serial)
 	elif lmp_travel:
@@ -3830,7 +3883,7 @@ func _send_snap(snaps: Array, time: float, recipient := 0) -> void:
 func _rpc_snap(snaps: Array, t: float, generation := -1, serial := -1) -> void:
 	if not lmp.is_empty() or generation != _pool_epoch:
 		return   # actual LMP requires the owner-scoped generation wrapper
-	_apply_snap(snaps, t, serial)
+	_apply_snap(NetSnapshot.unpack(snaps), t, serial)
 
 
 func _apply_snap(snaps: Array, t: float, serial := -1) -> void:
@@ -4050,12 +4103,38 @@ func broadcast(event: Dictionary) -> void:
 @rpc("authority", "call_remote", "reliable")
 func _rpc_event(event: Dictionary) -> void:
 	if _zone_holding or _remote_loading:
-		_zone_held.append(_on_event.bind(event))
+		_zone_held.append(_apply_event.bind(event))
 		return
+	_apply_event(event)
+
+
+func _apply_event(event: Dictionary) -> void:
 	_on_event(event)
+	var serial: Variant = event.get("_state_seq")
+	if not is_host and online and serial is int and serial > 0:
+		_rpc_state_ack.rpc_id(1, serial)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_state_ack(serial: int) -> void:
+	if is_host:
+		_state_ack(multiplayer.get_remote_sender_id(), serial)
+
+
+func _state_ack(pid: int, serial: int) -> void:
+	if not _state_waiting.has(pid) or _state_waiting[pid] != serial: return
+	_state_waiting.erase(pid)
+	if _state_pending.has(pid):
+		_state_pending.erase(pid)
+		# Build from today's authority state, not an earlier frozen document
+		# that could overwrite events already delivered while it was pending.
+		_sync_state_to(pid, true)
 
 
 func _on_event(event: Dictionary) -> void:
+	if event.get("t") == "state_zip":
+		event = NetState.unpack(event)
+		if event.is_empty(): return
 	var t := String(event.get("t", ""))
 	if t == "lmp_load_begin":
 		var generation := int(event.get("generation", 0))
@@ -4298,7 +4377,21 @@ func mark_dirty() -> void:
 	_state_dirty = true
 
 
+func _sync_state_due() -> void:
+	# Full campaign state has the same wall-time budget at either game speed.
+	# Several catch-up physics callbacks must not queue duplicate documents.
+	var now := Time.get_ticks_msec()
+	if online and ((_state_dirty and now >= _state_sync_at_ms) or now >= _state_sync_at_ms + 5000):
+		_state_dirty = false
+		_state_sync_at_ms = now + 500
+		_sync_state_to(0, true)
+
+
 func sync_state() -> void:
+	_sync_state_to(0, false)
+
+
+func _sync_state_to(only_pid: int, periodic: bool) -> void:
 	if coop.purse_active():   # a joiner's purse stands in: sent once it is put back
 		mark_dirty()
 		return
@@ -4314,6 +4407,7 @@ func sync_state() -> void:
 			"lmp_settings": lmp}   # host options / effective stats
 		# Each peer sees its own purse and bag (CoopProgress.state_for).
 		for pid in multiplayer.get_peers():
+			if only_pid > 0 and pid != only_pid: continue
 			if CoopProgress.peer_alive(multiplayer, pid):
 				if lmp_travel and players.has(pid):
 					var idx := int(players[pid].index)
@@ -4324,10 +4418,20 @@ func sync_state() -> void:
 						own.world_time = state.world_time
 						own.day = state.day
 						own.lmp_locations = lmp_locations
-						lmp_travel.send_event(pid, own))
+						lmp_travel.send_event(pid, NetState.pack(own)))
 				else:
-					_rpc_event.rpc_id(pid, coop.state_for(pid, ev))
-	if game and (lmp_travel == null or game.world == world):
+					if periodic and _state_waiting.has(pid):
+						_state_pending[pid] = true
+						continue
+					# Transactions must publish their state before their result event.
+					# Coalesce only periodic refreshes, never explicit action results.
+					_state_pending.erase(pid)
+					_state_serial += 1
+					_state_waiting[pid] = _state_serial
+					var packet := NetState.pack(coop.state_for(pid, ev))
+					packet["_state_seq"] = _state_serial
+					_rpc_event.rpc_id(pid, packet)
+	if only_pid == 0 and game and (lmp_travel == null or game.world == world):
 		game.on_event({"t": "inventory"})
 
 
@@ -4609,6 +4713,9 @@ func _relax_timeout(pid: int) -> void:
 
 
 func _on_peer_disconnected(pid: int) -> void:
+	_input_in.erase(pid)
+	_state_waiting.erase(pid)
+	_state_pending.erase(pid)
 	coop.mod_refused.erase(pid)
 	if _building:   # noticed by NetStatus.keep_alive inside a zone build
 		_on_peer_disconnected.call_deferred(pid)
@@ -4816,6 +4923,8 @@ func _may_load() -> bool:
 
 
 func _begin_host_load(id: String, cancel_movie := true, saved_mods: Dictionary = {}) -> void:
+	_state_waiting.clear()
+	_state_pending.clear()
 	if cancel_movie:
 		_cancel_movie()
 	loading_game = true

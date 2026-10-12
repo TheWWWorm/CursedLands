@@ -10,6 +10,12 @@ class World extends GameWorld:
 	func sight_ray(a: GameUnit, b: GameUnit) -> float:
 		return 0.0001 if closed and (a.pos.x < 100.0) != (b.pos.x < 100.0) else 1.0
 
+class CountSound extends GameSound:
+	var flag_reads := 0
+	func player_combat_flag(player: int) -> int:
+		flag_reads += 1
+		return super.player_combat_flag(player)
+
 class Host extends Session:
 	var flags := {}
 	func broadcast(e: Dictionary) -> void:
@@ -49,7 +55,8 @@ func _ready() -> void:
 	var w := World.new()
 	var host := Host.new(); host.world = w; w.session = host
 	host.state = CampaignState.new()
-	var sound := GameSound.new(); sound._world = w
+	var sound := CountSound.new(); sound._world = w
+	var previous_sound := GameSound.instance; GameSound.instance = sound
 	var reference := GameSound.new(); reference._world = w; reference._unit_query = null
 	var rng := RandomNumberGenerator.new(); rng.seed = 859030
 	var actors: Array[GameUnit] = []
@@ -79,6 +86,8 @@ func _ready() -> void:
 			if rng.randf()<0.2: u.order = {"type":"attack","target":actors[rng.randi_range(0,31)]}
 			elif rng.randf()<0.15: u.order = {"type":"cast","spell":"fireball","target":actors[0]}
 			u.controller = i if i<4 and trial%13 != i else -1
+		if trial%8 == 0:
+			for actor in actors: actor.order = {"type":"move","to":actor.pos+Vector2(20,0)}
 		w.set_relation(0,1,0 if trial%5 == 0 else 2)
 		w.set_relation(1,0,0 if trial%7 == 0 else 2)
 		var expected := {}
@@ -91,8 +100,38 @@ func _ready() -> void:
 		check(host.flags == expected,"all-player flags trial %d: %s / %s" % [trial,host.flags,expected])
 		for player in 4:
 			check(sound.player_combat_flag(player) == original(reference,player),"standalone flag stays current")
+			var reads := sound.flag_reads
+			check(w.ai._player_in_combat(player) == (original(reference,player)==2),"running danger uses the same combat predicate")
+			if trial%8 == 0: check(sound.flag_reads==reads,"peaceful movement skips full shared-sight calculations")
+	# Another actor can enter combat between two owners' queries in one tick.
+	w.time = 200.0; host.online = true; host.lmp = {}; w.closed = false; w.zone.type = "game"
+	w.set_relation(0,1,2); w.set_relation(1,0,2)
+	for i in actors.size():
+		actors[i].dead = false; actors[i].hidden = false; actors[i].order = {}
+		actors[i].controller = i if i<4 else -1
+	check(not w.ai._player_in_combat(0),"no attack order means no combat")
+	actors[4].order = {"type":"attack","target":actors[1]}
+	check(w.ai._player_in_combat(1),"new attack is observed by a later owner in the same tick")
+	actors[4].dead = true; w.time += GameUnit.TICK
+	check(not w.ai._player_in_combat(1),"a dead actor's stale attack does not sustain combat")
+	# Audio catch-up samples one unchanged world, while every sound tick
+	# must still advance. Compare flags, counters and RNG with full queries.
+	w.time = 250.0
+	for actor in actors: actor.set_meta("perceived",w.time)
+	var batch_flags := []
+	var batch_rng := []
+	for sample: GameSound in [reference,sound]:
+		sample.music = MusicSystem.new(); sample.mixer = SoundMixer.new()
+		sample._combat_near.clear(); sample._sent_flags.clear(); host.flags.clear()
+		seed(671211)
+		for i in 6: sample._world_tick(sample==reference or i==0)
+		batch_flags.append(host.flags.duplicate()); batch_rng.append(randi())
+		check(sample._ticks==6,"audio catch-up retains every tick")
+		sample.music.free(); sample.mixer.free()
+	check(batch_flags[0]==batch_flags[1] and batch_rng[0]==batch_rng[1],"one combat sample preserves catch-up flags and RNG")
 	w.units = {}
 	for u in actors: u.free()
+	GameSound.instance = previous_sound
 	sound.free(); reference.free(); w.free(); host.world = null; host.free()
 	print("COMBAT_INPUTS ",checks," checks ",failures," failures")
 	get_tree().quit(1 if failures else 0)

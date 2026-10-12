@@ -7,7 +7,10 @@ class ObservedGame extends Game:
 	var results: Array = []
 	func on_event(e: Dictionary) -> void:
 		if e.get("t","") == "inventory": inventories.append(session.state.items.duplicate())
-		if e.get("t","") == "trade_result": results.append(e.duplicate())
+		if e.get("t","") == "trade_result":
+			var result := e.duplicate()
+			result.items_at_result = session.state.items.duplicate()
+			results.append(result)
 		super.on_event(e)
 var host: Session
 var client: Session
@@ -71,6 +74,10 @@ func _ready() -> void:
 	check(camp._pile_accepts(other,"kind0") and not camp._pile_accepts(other,"kind8"),"a full pile accepts existing types but not a ninth type")
 	var g:=client.game as ObservedGame; g.inventories.clear(); g.results.clear()
 	camp.press_sounds.clear()
+	# Hold a periodic document outstanding beyond the next transaction.
+	# The explicit trade state must still precede the result on the wire.
+	host._state_waiting[pid]=host._state_serial+10000
+	host._state_pending[pid]=true
 	camp._on_yes()
 	check(camp.trade_wait and not camp.deal_info()[2],"confirmation disables duplicate submission while waiting")
 	camp._on_yes(); camp._move_now(potion,"sell")
@@ -78,12 +85,29 @@ func _ready() -> void:
 	check(await until(func():return not camp.trade_wait and not g.results.is_empty()),"one atomic trade result returns")
 	check(g.results.size()==1 and g.results[0].ok,"one confirmed request settles once")
 	check(camp.press_sounds.size()==1 and String(camp.press_sounds[0]).ends_with("buy.wav"),"confirmed sale plays one transaction sound")
+	check(g.results[0].items_at_result==[potion,potion,potion,potion] and not host._state_pending.has(pid),"transaction state precedes its result despite an outstanding periodic update")
 	check(client.state.items==[potion,potion,potion,potion],"all twenty sales and four purchases arrive together")
 	check(g.inventories.size()==1 and g.inventories[0]==client.state.items,"client receives one final inventory update")
 	check(client.state.money==222+20*Items.sell_price(potion)-4*Items.buy_price(potion),"guest pays the net deal price")
 	check(host.state.money==111 and host.state.items==["rune:r1"],"host's purse is untouched")
 	check(camp.sell_pile.is_empty() and camp.buy_pile.is_empty() and camp.bag_count(potion)==4,"acknowledged offer clears onto the settled inventory")
 	check(host.shop_count(potion,{"shop":1})==56,"shop counts settle with the bag")
+	# Small transactions use the same redundant UDP path as movement. Both
+	# copies, including a late duplicate after settlement, must settle once.
+	g.inventories.clear(); g.results.clear(); camp.press_sounds.clear()
+	var money_before := client.state.money
+	camp._move_now(potion,"bag"); camp._move_now(potion,"shop")
+	camp._on_yes()
+	var retry: Dictionary = client._input_out.pending.get(client._input_out.serial,{})
+	check(not retry.is_empty(),"small real trade enters the bounded fast retry path")
+	if not retry.is_empty():
+		client._rpc_cmd_fast.rpc_id(1,var_to_bytes([retry,retry]))
+		client._rpc_cmd.rpc_id(1,retry)
+	check(await until(func():return not camp.trade_wait and not g.results.is_empty()),"redundant small trade settles")
+	if not retry.is_empty(): client._rpc_cmd_fast.rpc_id(1,var_to_bytes([retry]))
+	for i in 8: await get_tree().process_frame
+	check(g.results.size()==1 and g.inventories.size()==1 and camp.press_sounds.size()==1,"duplicate transports produce one inventory, result and sale sound")
+	check(client.state.items.size()==4 and client.state.money==money_before+Items.sell_price(potion)-Items.buy_price(potion),"duplicate trade packets charge the purse exactly once")
 	# All-or-nothing on the authority. These failure cases used to be a
 	# sequence of sales followed by individually rejected purchases.
 	var st:=host.state
