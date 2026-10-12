@@ -494,6 +494,83 @@
       "Tab changes the lower hint to Return to mouse look.",
       "F6 changes to a tactical view with a return-to-perspective hint."
     ],
-    "note": "Final hint font increased from 11 to 12 px minimum after visual review; packaged render verification follows."
+    "note": "Final font size, translated compact labels, contextual cursor/tactical return hints and settings screens rendered and reviewed. Root-only native-library placement loaded without errors.",
+    "final_runs": [
+      {
+        "case": "final-hud-render",
+        "checks": 13,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/final-hud-render/run.log",
+        "log_sha256": "02b11d917f8b28659147637b5a63b11ad912af6544454a3ecec4d23221921172"
+      },
+      {
+        "case": "final-settings-render",
+        "checks": 24,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/final-settings-render/run.log",
+        "log_sha256": "4fc5ada9b3d948c30c7523ddfebc4c989dc4a5693eb9b58e499788dcfca8cd06"
+      }
+    ],
+    "tested_pack_sha256": "cce3269339d8ab6bf116feb7b21c2bd383143be7302f6348742cdba189d82b0b",
+    "source_sha256": {
+      "game/src/game/direct_control.gd": "740e4ef77d918db3aa8397106f31a2c8ceda612b9d8cfa2eaa56747cbff2b521",
+      "game/src/ei/game_data.gd": "83d738b5f62a1147efda9db49477938314fda8cc6eb7ceccfe39ccd819844ed6",
+      "game/src/ei/remake_text.gd": "1a74095c3502a6efbb795aeee7446a290cd46b475623c4b5bd7a919316484f08"
+    }
+  },
+  "combined_build": {
+    "source_commit": "4737a5560bb21324f662ff7de7737f72e6129cc0",
+    "control_commit": "37126373d1e5d0b9015dabe41189bd63ca7fc767",
+    "texture_backport_commit": "4737a5560bb21324f662ff7de7737f72e6129cc0",
+    "committed_game_files_exact": true,
+    "game_files_verified": 731,
+    "rendered_bytecode_matches": [
+      "src/game/direct_control.gd",
+      "src/game/direct_combat.gd",
+      "src/game/direct_pose.gd",
+      "src/game/unit.gd",
+      "src/ei/game_data.gd",
+      "src/ui/options_panel.gd"
+    ],
+    "export_errors": [],
+    "native_library_placement": "Beside the executable; exported Linux runtime loaded both libraries with no errors.",
+    "windows": "PE x86-64 imports and resource export checked; target OS runtime not available.",
+    "packaged_checks": [
+      {
+        "case": "packaged-settings",
+        "checks": 24,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/packaged-settings/run.log",
+        "log_sha256": "85963a046646b92bcf1b726267de8f034d7799812b0abf25f54f3f670c77ffe4"
+      },
+      {
+        "case": "packaged-coop",
+        "checks": 25,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/packaged-coop/run.log",
+        "log_sha256": "ae278adbade20d932a2e02257b7d9d1895c683755372049190980c61427d1792"
+      },
+      {
+        "case": "packaged-feedback",
+        "checks": 12,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/packaged-feedback/run.log",
+        "log_sha256": "63785d106454ae465188d5512791b4105f56e0b21ff03d4c69067415f0be6ccd"
+      }
+    ],
+    "files": {
+      "linux-x86_64": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "3f70640ef1d3dfaaf49936d18b9ae59a8a521b892114e757719046b06a68cbb3",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+      },
+      "windows-x86_64": {
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "CursedLands.pck": "3f70640ef1d3dfaaf49936d18b9ae59a8a521b892114e757719046b06a68cbb3",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+      }
+    }
   }
 }
