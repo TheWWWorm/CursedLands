@@ -132,6 +132,20 @@ const OPTIONS := [
 	["village_start_view", 1, 2, 16, 6, 0],
 	# Rows 8 and 9 are occupied by EIKeymap's camera-turn bindings.
 	["control_mode", 1, 4, 16, 10, 0],
+	["direct_fov_first", 1, 13, 24, 0, 5],
+	["direct_fov_third", 1, 13, 24, 1, 3],
+	["direct_mouse_first", 0, 100, 24, 2, 50],
+	["direct_mouse_third", 0, 100, 24, 3, 50],
+	["direct_invert_x", 1, 2, 24, 4, 0],
+	["direct_invert_y", 1, 2, 24, 5, 0],
+	["direct_hints", 1, 3, 24, 6, 1],
+	["direct_pad_x", 0, 100, 26, 0, 50],
+	["direct_pad_y", 0, 100, 26, 1, 50],
+	["direct_pad_deadzone", 0, 40, 26, 2, 13],
+	["direct_pad_curve", 1, 3, 26, 3, 1],
+	["direct_pad_invert_x", 1, 2, 26, 4, 0],
+	["direct_pad_invert_y", 1, 2, 26, 5, 0],
+
 	["character_light", 1, 3, 16, 11, 0],
 	# Interface and controls (group 17).
 	# Small health bars over visible hostile units (EnemyBars): 0 off (the
@@ -209,6 +223,10 @@ const FIXED_OPTIONS := {"shadow_units": 1, "shadow_buildings": 1, "shadow_flora"
 ## Labels of the remake's multiple-choice rows (value = index); "resolution"
 ## is built from the monitor (resolutions()).
 const DISPLAY_CHOICES := {
+	"direct_hints": ["Off", "Compact", "Full guide"],
+	"direct_fov_first": ["50°", "55°", "60°", "65°", "70°", "75°", "80°", "85°", "90°", "95°", "100°", "105°", "110°"],
+	"direct_fov_third": ["50°", "55°", "60°", "65°", "70°", "75°", "80°", "85°", "90°", "95°", "100°", "105°", "110°"],
+	"direct_pad_curve": ["Linear", "Precision", "Fine"],
 	"armor_formula": ["Original", "20% minimum damage"],
 	"gfx_clouds": ["Off", "Moving layer", "Volume: Low", "Volume: High"],
 	"mechanism_motion": ["Fast drop", "Original timing"],
@@ -246,9 +264,38 @@ var resolution_size := "native"
 ## Terrain and vegetation (22) and Water (23) are direct graphics sections.
 const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "camera", "items",
 	"spells", "cshots", "windows", "remake", "screen", "r_world", "r_lighting", "r_effects",
-	"r_camera", "r_interface", "r_game", "r_coop", "gamepad", "gamepad_buttons", "r_terrain", "r_water"]
+	"r_camera", "r_interface", "r_game", "r_coop", "gamepad", "gamepad_buttons", "r_terrain", "r_water", "direct_view", "direct_keys", "direct_pad"]
 ## Labels and tips of the remake's own option rows (texts.res has none).
 const REMAKE_OPTIONS := {
+	"direct_hints": ["Control guide", "Compact shows a small view/cursor shortcut hint. Full guide adds movement keys and crosshair explanations. Off hides the lower guide."],
+	"direct_fov_first": ["First-person FOV", "Vertical field of view in first person."],
+	"direct_fov_third": ["Third-person FOV", "Vertical field of view in third person."],
+	"direct_mouse_first": ["First-person look speed", "Mouse sensitivity in first person. The midpoint is the default speed."],
+	"direct_mouse_third": ["Third-person look speed", "Mouse sensitivity in third person. The midpoint is the default speed."],
+	"direct_invert_x": ["Invert mouse horizontal", "Reverse horizontal mouse look in first and third person."],
+	"direct_invert_y": ["Invert mouse vertical", "Reverse vertical mouse look in first and third person."],
+	"direct_pad_x": ["Horizontal aim speed", "Controller horizontal look speed in first and third person."],
+	"direct_pad_y": ["Vertical aim speed", "Controller vertical look speed in first and third person."],
+	"direct_pad_deadzone": ["Aim stick deadzone", "Deadzone for the look stick, from 5% to 45%. Movement keeps its own deadzone."],
+	"direct_pad_curve": ["Aim response", "Linear, precise near the centre, or a stronger response curve for fine aiming."],
+	"direct_pad_invert_x": ["Invert stick horizontal", "Reverse horizontal controller look in first and third person."],
+	"direct_pad_invert_y": ["Invert stick vertical", "Reverse vertical controller look in first and third person."],
+	"direct_view": ["First / third person", "Separate view and look settings. V switches perspective; F6 toggles tactical view while keeping the selected hero and orders."],
+	"direct_keys": ["Direct-control keys", "These bindings apply to first and third person. Left click also attacks; the keys below can be changed independently of tactical controls."],
+	"direct_pad": ["Controller aiming", "Controller aiming settings. Hold Modifier + Pointer to switch perspective; Modifier + Quests toggles tactical view."],
+	"direct_forward": ["Move forward", "Change this key for first and third person."],
+	"direct_back": ["Move backward", "Change this key for first and third person."],
+	"direct_left": ["Strafe left", "Change this key for first and third person."],
+	"direct_right": ["Strafe right", "Change this key for first and third person."],
+	"direct_interact": ["Interact / self cast", "Change this key for first and third person."],
+	"direct_pointer": ["Release pointer", "Change this key for first and third person."],
+	"direct_posture": ["Crouch / stand", "Change this key for first and third person."],
+	"direct_aim": ["Aimed strike", "Change this key for first and third person."],
+	"direct_perspective": ["First / third person", "Change this key for first and third person."],
+	"direct_tactical": ["Tactical view / return", "Change this key for first and third person."],
+	"direct_sprint": ["Run while held", "Change this key for first and third person."],
+	"direct_attack": ["Attack / cast", "Change this key for first and third person."],
+
 	"item_icon_fit": ["Fit items inside icons", "Keeps long inventory and shop items inside their icon cells while they turn. Off: the original fixed model scale."],
 	"ui_active_buttons": ["Bright usable camp buttons", "Available camp modes and Exit are bright. Skills apply immediately, so their inactive Accept and Cancel controls are hidden. Deal controls show whether a transaction can be made or undone. Off: the original button layout and tint."],
 	"coop_clock": ["Shared pause and speed", "Co-op host: pause the game or switch to 2x speed for everyone. Clients follow the host's speed. Off: co-op always runs at normal speed."],
@@ -371,7 +418,8 @@ const REMAKE_OPTIONS := {
 ## Options the remake applies (a row missing here is greyed out on the Options
 ## screen). "marks" = EnableBloodprints and "footprints" = EnableFootprints
 ## switch the ground marks (GroundMarks).
-const OPTIONS_APPLIED := ["volume_sfx", "volume_stream", "volume_voice", "power_kbd",
+const OPTIONS_APPLIED := ["direct_hints", "direct_fov_first", "direct_fov_third", "direct_mouse_first", "direct_mouse_third", "direct_invert_x", "direct_invert_y", "direct_pad_x", "direct_pad_y", "direct_pad_deadzone", "direct_pad_curve", "direct_pad_invert_x", "direct_pad_invert_y",
+	"volume_sfx", "volume_stream", "volume_voice", "power_kbd",
 	"graphics_preset",
 	"item_icon_fit", "ui_active_buttons", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion",
 	"power_mouse", "scroll_border", "rubber_select", "marks", "footprints", "select_type", "show_path", "brightness", "contrast", "gamma",

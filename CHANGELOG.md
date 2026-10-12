@@ -1,5 +1,24 @@
 # Changelog
 
+## Unreleased — direct controls
+
+- Allow movement during first- and third-person weapon attacks while retaining
+  committed impacts and cooldowns. Blend locomotion through the lower body,
+  with strafing, backpedaling and synchronized hair/equipment attachments.
+- Follow native walking curves through short terrain corners and narrow
+  openings. Preserve collision, posture and village movement limits.
+- Retain the Alt-selected body part for direct melee and ranged attacks.
+- Stabilize the first-person eye during locomotion and attacks, ease posture
+  height changes, and use an external view for scripted lying animations.
+- Show weapon readiness, confirmed contacts, blocked shots, friendly bodies
+  and melee reach through the crosshair.
+- Add perspective and tactical-view shortcuts, separate FOV and mouse speeds,
+  direct-control key bindings, and controller aim settings.
+- Use a compact control guide with contextual return hints; provide full
+  explanations and a hidden-guide option in the direct-view settings.
+- Replicate direct movement, recovery and confirmed-hit state. Network
+  protocol is 21; all peers must use the same build.
+
 ## Unreleased — co-op and interface fixes
 
 - Preserve graphics settings until automatic calibration has rendered its
@@ -7,8 +26,7 @@
   automatic retry; record the last graphics tier before applying it.
 - Compress cumulative co-op progress, send it on a separate reliable channel,
   and compress ENet traffic. Keep the rate-limited snapshot stream active when
-  frontend frame delays increase acknowledgement times. Network protocol is 18;
-  all peers must use the same build.
+  frontend frame delays increase acknowledgement times. This transport update introduced protocol 18.
 - Disable physics interpolation on shader-driven particles, recycled particle
   buffers and stationary vegetation batches.
 - Keep continuous stamina recovery at the health regeneration rate during

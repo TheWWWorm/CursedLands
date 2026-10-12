@@ -707,7 +707,7 @@ func _shake_tick(delta: float, add: bool) -> void:
 
 func _process(delta: float) -> void:
 	if get_parent() is Game and get_parent().direct and get_parent().direct.active():
-		get_parent().direct.apply_camera()
+		get_parent().direct.apply_camera(delta)
 		return
 	if _opening_view is Transform3D:
 		if _input_blocked():

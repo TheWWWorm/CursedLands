@@ -66,8 +66,8 @@ func _ready() -> void:
 	check(d.is_equal_approx(Vector2.from_angle(direct.heading)),"forward movement follows camera heading")
 	GameData.options.pad_enabled=0
 	key(KEY_W,true);await frames()
-	check(hero.orders.size()>0 and hero.orders[-1].type=="direct_move" and hero.orders[-1].direction.dot(direct.ground_direction(Vector2.UP))>0.995,"W sends camera-relative steering through the host")
-	check(hero.orders[-1].get("village_limit",Vector3.ZERO)==session.village_move_limit(),"W retains the scripted camp boundary")
+	check(not hero.direct_steering.is_empty() and hero.direct_steering.direction.dot(direct.ground_direction(Vector2.UP))>0.995,"W sends camera-relative steering through the host")
+	check(hero.direct_steering.get("village_limit",Vector3.ZERO)==session.village_move_limit(),"W retains the scripted camp boundary")
 	key(KEY_W,false);await frames()
 	check(hero.orders.is_empty() and hero.order.is_empty(),"releasing W stops steering without a return-to-position order")
 	key(KEY_TAB,true);key(KEY_TAB,false);await frames()
@@ -79,7 +79,7 @@ func _ready() -> void:
 	session.loading_game=true;key(KEY_W,true);await frames()
 	check(not direct.usable() and direct._control_id == -2,"loading barrier rejects movement and defers registration")
 	session.loading_game=false;hero.orders.clear();hero.order={};await frames()
-	check(hero.direct_controlled and not direct._neutral and (not hero.orders.is_empty() or not hero.order.is_empty()),"held keyboard movement resumes after a completed load")
+	check(hero.direct_controlled and not direct._neutral and not hero.direct_steering.is_empty(),"held keyboard movement resumes after a completed load")
 	key(KEY_W,false);await frames()
 	check(not direct._neutral,"releasing movement rearms direct controls")
 	var held := Transform3D(Basis.IDENTITY,Vector3(4,9,5))
@@ -136,7 +136,8 @@ func _ready() -> void:
 	check(direct.active() and direct.first_person() and direct.usable(),"first-person controls activate without leaving direct control")
 	check(hero.model._head_hidden and not hero.model._head.visible,"first person hides the controlled head and attached hair/helmet")
 	check(hero.model.is_visible_in_tree() and hero.model.find_children("*", "MeshInstance3D", true, false).any(func(m):return m.is_visible_in_tree()),"first person retains visible body geometry")
-	check(game.rig.camera.global_position.distance_to(hero.model.eye_position())<0.15,"first-person eye tracks the original animated head")
+	await frames(30) # allow the previous posture-height transition to settle
+	check(game.rig.camera.global_position.distance_to(hero.model.to_global(hero.model.view_eye_offset(EIUnitModel.ST_NEUTRAL)))<0.15,"first-person eye uses the stable authored posture anchor")
 	check(is_equal_approx(game.rig.camera.fov,75.0) and is_equal_approx(game.rig.camera.near,0.03),"first-person lens preserves nearby body")
 	check(not game.character_light_enabled() and game._hero_lights.is_empty(),"character circle light defaults off in direct views")
 	GameData.options.character_light=2;await frames()
@@ -174,7 +175,7 @@ func _ready() -> void:
 	hero.order={};hero.orders.clear();hero._anim_lock=0;hero._pending_hit={};hero._attack_cd=0
 	axis(JOY_AXIS_LEFT_Y,-0.8);await frames()
 	check(direct.active(),"gamepad automatically activates the experimental mode")
-	check(not hero.orders.is_empty() and hero.orders[-1].type=="direct_move","first gamepad stick input immediately steers")
+	check(not hero.direct_steering.is_empty(),"first gamepad stick input immediately steers")
 	axis(JOY_AXIS_LEFT_Y,0);await frames()
 	check(hero.orders.is_empty(),"releasing gamepad stick stops steering")
 	var yaw := direct.heading

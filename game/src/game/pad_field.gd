@@ -172,7 +172,7 @@ func _process(dt: float) -> void:
 			_ls_wait = false
 		ls = Vector2.ZERO
 	if game.direct and game.direct.active() and not cursor_mode:
-		game.direct.pad_step(ls,rs,real)
+		game.direct.pad_step(ls,PadInput.stick(false, 0.05 + GameData.option("direct_pad_deadzone") / 100.0),real)
 		# Shoulder aiming still needs an explicit friendly target: the caster
 		# cannot be hit by its own crosshair, and allies may stand behind it.
 		if friendly_spell() or Time.get_ticks_msec() < _manual_until:
@@ -609,7 +609,7 @@ func _on_action(a: String, phase: String) -> void:
 		_in_wheel.erase(a)
 	elif _in_wheel.has(a):
 		return
-	if not cursor_mode and game.direct and game.direct.active() and game.direct.pad_action(a,phase): return
+	if not cursor_mode and game.direct and game.direct.pad_action(a,phase): return
 	if cursor_mode and _cursor_action(a, phase, mod):
 		return
 	match [a, phase]:
@@ -857,7 +857,7 @@ func cycle_party(step: int) -> void:
 ## Release confirms a mouse direction; Escape/right click cancels. With no
 ## enemy under the pointer it arms the next strike instead of issuing one.
 func _input(e: InputEvent) -> void:
-	if e is InputEventKey and (e.physical_keycode == KEY_ALT or e.keycode == KEY_ALT):
+	if e is InputEventKey and ((EIKeymap.direct_event(e) == "direct_aim") if game.direct and game.direct.active() else (e.physical_keycode == KEY_ALT or e.keycode == KEY_ALT)):
 		if e.pressed and not e.echo and not _keyboard_aim:
 			if game.world == null or leader() == null or game.direct.transitioning() or game.session.movie_active() \
 					or game.hud.blocks_camera() or not game.rig._window_focused or not game.session.command_allowed({"t":"attack"}): return
@@ -910,6 +910,9 @@ func finish_keyboard_aim() -> void:
 	last_aim = int(entry.id[1])
 	game.cancel_touch_target()
 	game.touch_aim = last_aim
+	# Direct controls keep aiming with the camera. A classic target order
+	# would consume the selection before the next directional strike.
+	if game.direct and game.direct.active() and not game.direct.pointer: return
 	var u: GameUnit = _ring_target.get("unit")
 	if is_instance_valid(u) and not u.dead and u.world == game.world:
 		game.forced_on("aim", u, null)

@@ -1,6 +1,6 @@
 class_name DirectControl
 extends Node
-## Per-player experimental shoulder controls. The authority receives ordinary
+## Per-player first/third-person controls. The authority receives ordinary
 ## steering input and a direction for each strike, never client positions.
 
 var game: Game
@@ -24,38 +24,91 @@ var _move_vector := Vector2.ZERO
 var _move_run := false
 var _move_refresh := 0.0
 var _view_model: EIUnitModel
+var _eye_model: EIUnitModel
+var _eye_offset := Vector3.ZERO
+var _shoulder_unit: GameUnit
+var _shoulder_fraction := 1.0
 var _could_control := false
 var _portrait_target: GameUnit
 var _load_resume := false
 var _look_id := -1
 var _look_refresh := 0.0
+var _last_perspective := 2
+var _tactical_return := false
+var _pad_switch := {}
+var _feedback := {}
+var _feedback_due := 0.0
+var _hit_unit: GameUnit
+var _hit_serial := 0
+var _hit_until := 0
+
 
 
 class Reticle extends Control:
 	var controls: DirectControl
 	func _draw() -> void:
-		if not controls.usable() or controls.pointer: return
+		var guide := GameData.option("direct_hints")
+		var hint_scale := size.y / 720.0
+		if controls._tactical_return and not controls.active():
+			if guide > 0 and controls.can_switch() and PadInput.active != "pad":
+				var label := "Return to first person" if controls._last_perspective == 3 else "Return to third person"
+				_draw_hint(Interface800.font(),controls.key_label("tactical")+": "+RemakeText.t(label),size.y-132.0*hint_scale,hint_scale,Interface800.TEXT,false)
+			return
+		if not controls.usable(): return
+		if controls.pointer:
+			if guide > 0 and PadInput.active != "pad":
+				_draw_hint(Interface800.font(),controls.key_label("pointer")+": "+RemakeText.t("Return to mouse look"),size.y-132.0*hint_scale,hint_scale,Interface800.TEXT,false)
+			return
 		var at := size * 0.5
+		var state := controls._feedback
+		var ready: bool = state.get("ready", false)
+		var kind: String = state.get("kind", "neutral")
+		var k := clampf(size.y / 900.0, 0.7, 1.6)
+		var colour := Color("eeeece") if ready else Color("8f9298")
+		if kind == "friendly": colour = Color("f4c45d")
+		elif kind == "blocked": colour = Color("ed9165")
+		elif kind == "reach": colour = Color("a9e2b0")
+		var gap := 3.0 if ready else 5.0
 		for d: Vector2 in [Vector2.RIGHT,Vector2.LEFT,Vector2.UP,Vector2.DOWN]:
-			draw_line(at+d*4.0,at+d*9.0,Color(0,0,0,0.7),3.0)
-			draw_line(at+d*4.0,at+d*9.0,Color(1,1,1,0.9),1.0)
+			draw_line(at+d*gap*k,at+d*(gap+4.0)*k,Color(0,0,0,0.8),3.0*k)
+			draw_line(at+d*gap*k,at+d*(gap+4.0)*k,colour,1.5*k)
+		if kind == "reach": draw_circle(at, 2.0*k, colour)
+		elif kind == "blocked": draw_line(at+Vector2(-3,3)*k,at+Vector2(3,-3)*k,colour,2.0*k)
+		elif kind == "friendly":
+			draw_polyline(PackedVector2Array([at+Vector2(0,-3)*k,at+Vector2(3,0)*k,at+Vector2(0,3)*k,at+Vector2(-3,0)*k,at+Vector2(0,-3)*k]),colour,1.5*k)
+		if Time.get_ticks_msec() < controls._hit_until:
+			for d: Vector2 in [Vector2(1,1),Vector2(-1,1),Vector2(1,-1),Vector2(-1,-1)]:
+				draw_line(at+d*7.0*k,at+d*10.0*k,Color(1,1,1),2.0*k)
+		var status: String = RemakeText.t(state.get("text", ""))
+		if guide < 2:
+			if kind == "friendly": status = RemakeText.t("Friendly")
+			elif state.get("text", "") == "Recovering": status = ""
+		if guide == 2 and state.get("recovering",false) and state.get("text","") != "Recovering":
+			status += " · " + RemakeText.t("Recovering")
+		if not status.is_empty(): _draw_hint(Interface800.font(),status,at.y+23.0*k,k,colour)
 		if PadInput.active != "pad":
 			var font := Interface800.font()
-			var text := controls.keyboard_hint()
-			var k := size.y / 600.0
-			_draw_hint(font,text,size.y-128.0*k,k)
+			k = size.y / 720.0
+			if guide == 2:
+				_draw_hint(font,controls.keyboard_hint(),size.y-151.0*k,k)
+				_draw_hint(font,controls.keyboard_extra_hint(),size.y-132.0*k,k)
+			elif guide == 1:
+				_draw_hint(font,controls.keyboard_compact_hint(),size.y-132.0*k,k,Interface800.TEXT,false)
 			var action := controls.interaction_hint()
 			if not action.is_empty():
-				_draw_hint(font,action.text,size.y*0.5+36.0*k,k,
+				_draw_hint(font,action.text,size.y*0.5+42.0*k,k,
 					Interface800.TEXT if action.enabled else Interface800.GREY)
-	func _draw_hint(font: Font,text: String,y: float,k: float,colour := Interface800.TEXT) -> void:
+	func _draw_hint(font: Font,text: String,y: float,k: float,colour := Interface800.TEXT,backing := true) -> void:
 		var fs := maxi(12,roundi(13.0*k))
 		var width := font.get_string_size(text,HORIZONTAL_ALIGNMENT_LEFT,-1,fs).x
 		if width > size.x-100.0*k:
 			fs = maxi(10,floori(fs*(size.x-100.0*k)/width))
 			width = font.get_string_size(text,HORIZONTAL_ALIGNMENT_LEFT,-1,fs).x
 		var from := Vector2((size.x-width)*0.5,y)
-		draw_rect(Rect2(from-Vector2(8,fs+4),Vector2(width+16,fs+10)),Color(0,0,0,0.65))
+		if backing:
+			draw_rect(Rect2(from-Vector2(4,fs+2),Vector2(width+8,fs+5)),Color(0,0,0,0.55))
+		else:
+			draw_string_outline(font,from,text,HORIZONTAL_ALIGNMENT_LEFT,-1,fs,maxi(1,roundi(k)),Color(0,0,0,0.9))
 		draw_string(font,from,text,HORIZONTAL_ALIGNMENT_LEFT,-1,fs,colour)
 
 
@@ -183,18 +236,21 @@ func _process(delta: float) -> void:
 	if _could_control and not can and u and game.world == game.session.world and not transitioning():
 		game.session.submit({"t":"direct_cancel","units":[u.uid]})
 	_could_control = can
-	_update_view_model(u.model if on and u and first_person() and not is_instance_valid(_portrait_target) and not game.rig.held and not game.session.movie_active() else null)
+	_update_view_model(u.model if on and u and _first_person_view(u) and not is_instance_valid(_portrait_target) and not game.rig.held and not game.session.movie_active() else null)
 	_capture(can and PadInput.active != "pad")
 	if not can:
 		_fire = false
 		_neutral = true
 		if on and field(): field()._stop_moving()
 	elif PadInput.active != "pad":
-		var move := Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),
-			float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W))).limit_length()
+		var move := Vector2(float(EIKeymap.held("direct_right",2))-float(EIKeymap.held("direct_left",2)),
+			float(EIKeymap.held("direct_back",2))-float(EIKeymap.held("direct_forward",2))).limit_length()
 		step(move, minf(delta/maxf(Engine.time_scale,0.001),0.1))
-	_overlay.visible = on
-	if on: _overlay.queue_redraw()
+	_overlay.visible = on or _tactical_return
+	if on:
+		_update_feedback(delta)
+	if on or _tactical_return:
+		_overlay.queue_redraw()
 
 
 func _capture(want: bool) -> void:
@@ -209,15 +265,56 @@ func _input(e: InputEvent) -> void:
 		if handle_input(e): get_viewport().set_input_as_handled()
 
 
+func can_switch() -> bool:
+	if game.world == null or leader() == null or game.simulation_only or transitioning() \
+		or not game.rig._window_focused or game.rig.held or game.session.movie_active() or game.hud.blocks_camera(): return false
+	var f := field()
+	if f and f.wheel.visible: return false
+	var focus := get_viewport().gui_get_focus_owner()
+	return not (focus is LineEdit or focus is TextEdit)
+
+
+func _set_view_mode(mode: int) -> void:
+	# View consumers poll this local preference each frame. A quick switch
+	# must not reapply the display mode or rebuild terrain/material options.
+	GameData.options.control_mode = mode
+	GameData.save_settings()
+
+
+func switch_view(tactical := false) -> void:
+	if not can_switch(): return
+	if tactical:
+		if active():
+			_last_perspective = 3 if first_person() else 2
+			_tactical_return = true
+			stop_move()
+			_fire = false
+			_set_view_mode(1)
+		else:
+			_set_view_mode(_last_perspective)
+			_tactical_return = false
+	else:
+		_last_perspective = 2 if first_person() else 3 if active() else _last_perspective
+		_set_view_mode(_last_perspective)
+		_tactical_return = false
+		_eye_model = null
+		_shoulder_unit = null
+
+
 func handle_input(e: InputEvent) -> bool:
+	var key := EIKeymap.direct_event(e) if e is InputEventKey else ""
+	if key == "direct_perspective" or (key == "direct_tactical" and (active() or _tactical_return)):
+		if not can_switch(): return false
+		if e.pressed and not e.echo: switch_view(key == "direct_tactical")
+		return true
 	if not active(): return false
-	if e is InputEventKey and e.physical_keycode == KEY_TAB and e.pressed and not e.echo and not game.hud.blocks_camera():
+	if key == "direct_pointer" and e.pressed and not e.echo and can_switch():
 		pointer = not pointer
 		_portrait_target = null
 		return true
 	if not usable() or pointer: return false
 	if e is InputEventMouseMotion:
-		look(e.relative * 0.0025)
+		look(e.relative * 0.0025 * look_gain(GameData.option("direct_mouse_first" if first_person() else "direct_mouse_third")))
 		return true
 	if e is InputEventMouseButton:
 		if e.button_index == MOUSE_BUTTON_LEFT:
@@ -230,13 +327,17 @@ func handle_input(e: InputEvent) -> bool:
 			zoom = clampf(zoom + (-0.3 if e.button_index == MOUSE_BUTTON_WHEEL_UP else 0.3),1.5,6.0)
 		return true
 	if e is InputEventKey:
-		if e.physical_keycode in [KEY_W,KEY_A,KEY_S,KEY_D]: return true
-		if e.physical_keycode == KEY_CTRL:
+		if key in ["direct_forward","direct_back","direct_left","direct_right","direct_sprint"]: return true
+		if key == "direct_attack":
+			_fire = e.pressed
+			if e.pressed and not e.echo: attack()
+			return true
+		if key == "direct_posture":
 			if e.pressed and not e.echo:
 				var u := leader()
 				game.hud.set_move_mode("walk" if u.gait() == 1 else "sneak")
 			return true
-		if e.physical_keycode == KEY_E:
+		if key == "direct_interact":
 			if e.pressed and not e.echo:
 				if game.has_spell_target(): cast_self()
 				else: interact()
@@ -244,15 +345,21 @@ func handle_input(e: InputEvent) -> bool:
 	return false
 
 
-func look(delta: Vector2) -> void:
-	heading = wrapf(heading - delta.x * (-1.0 if GameData.option("camera_reverse_x") else 1.0),-PI,PI)
-	tilt = clampf(tilt - delta.y * (-1.0 if GameData.option("camera_reverse_y") else 1.0),
+static func look_gain(value: int) -> float:
+	return pow(2.0, (clampi(value,0,100) - 50) / 25.0)
+
+
+func look(delta: Vector2, pad := false) -> void:
+	heading = wrapf(heading - delta.x * (-1.0 if GameData.option("direct_pad_invert_x" if pad else "direct_invert_x") else 1.0),-PI,PI)
+	tilt = clampf(tilt - delta.y * (-1.0 if GameData.option("direct_pad_invert_y" if pad else "direct_invert_y") else 1.0),
 		-1.45 if first_person() else -1.1, 1.35 if first_person() else 0.8)
 
 
 func pad_step(move: Vector2, look_axis: Vector2, dt: float) -> void:
 	if not usable(): return
-	look(look_axis*dt*2.2)
+	var exponent: float = [1.0,1.6,2.2][clampi(GameData.option("direct_pad_curve"),0,2)]
+	var shaped := look_axis.normalized() * pow(minf(look_axis.length(),1.0),exponent)
+	look(shaped * Vector2(look_gain(GameData.option("direct_pad_x")),look_gain(GameData.option("direct_pad_y"))) * dt * 2.2,true)
 	step(move,dt)
 
 
@@ -267,11 +374,8 @@ func step(move: Vector2, dt: float) -> void:
 		_look_refresh = 0.1
 		game.session.submit({"t":"direct_look","units":[u.uid],"heading":heading})
 	_repeat = maxf(0.0,_repeat-dt)
-	if _fire:
-		field()._stop_moving()
-		if _repeat <= 0.0: attack()
-	else:
-		steer(move,dt)
+	steer(move,dt)
+	if _fire and _repeat <= 0.0: attack()
 
 
 ## Refresh a short-lived authority input. Releasing the stick/key stops the
@@ -282,7 +386,7 @@ func steer(move: Vector2, dt: float) -> void:
 		stop_move()
 		return
 	var v := ground_direction(move) * minf(move.length(),1.0)
-	var run := PadInput.active != "pad" and Input.is_physical_key_pressed(KEY_SHIFT)
+	var run := PadInput.active != "pad" and EIKeymap.held("direct_sprint",2)
 	_move_refresh -= dt
 	var start := _move_id != u.uid
 	if start:
@@ -308,6 +412,18 @@ func stop_move() -> void:
 
 
 func pad_action(action: String, phase: String) -> bool:
+	# Consume the whole chord, even if the modifier is released first.
+	if _pad_switch.has(action):
+		if phase == "down": _pad_switch.erase(action)
+		else:
+			if phase == "hold": _pad_switch[action] = false
+			if phase == "tap" or (phase == "up" and not _pad_switch[action]): _pad_switch.erase(action)
+			return true
+	if action in ["cursor","view"] and PadInput.held("mod") and can_switch():
+		if phase == "down":
+			_pad_switch[action] = true
+			switch_view(action == "view")
+		return true
 	if not usable(): return false
 	if action == "system": # RT by default; LT+RT retains the system wheel.
 		if PadInput.held("mod"): return false
@@ -337,9 +453,9 @@ func attack() -> void:
 	if not usable() or pointer or _neutral or get_tree().paused: return
 	if not game.session.command_allowed({"t":"direct_cast" if game.pending_spell != "" else "direct_attack"}): return
 	var u := leader()
-	field()._stop_moving()
 	_repeat = 0.2
 	if game.pending_spell != "":
+		field()._stop_moving()
 		var p := get_viewport().get_visible_rect().size*0.5
 		var target := game.pick_unit(p,leader())
 		if PadInput.active == "pad" and field().target_unit() != null:
@@ -378,19 +494,28 @@ func cast_self() -> void:
 
 
 func keyboard_hint() -> String:
-	if game.has_spell_target():
-		return RemakeText.t("WASD: move   Mouse: look   Left click: cast   Right click: cancel   Tab: pointer")
-	var can_attack := game.session.command_allowed({"t":"direct_attack"})
-	return RemakeText.t("WASD: move   Mouse: look   Left click: attack   E: interact   Tab: pointer" \
-		if can_attack else \
-		"WASD: move   Mouse: look   E: interact   Tab: pointer") + "   " + RemakeText.t("Ctrl: crouch") \
-		+ ("   " + RemakeText.t("Alt: aimed strike") if can_attack else "")
+	var movement := "/".join([key_label("forward"),key_label("left"),key_label("back"),key_label("right")])
+	return RemakeText.t("%s: move   Mouse: look   %s: attack/cast   %s: interact   %s: pointer") % [movement,
+		RemakeText.t("Left click"),key_label("interact"),key_label("pointer")]
+
+
+func keyboard_extra_hint() -> String:
+	return RemakeText.t("%s: crouch   %s: aimed strike   %s: view   %s: tactical") % [key_label("posture"),key_label("aim"),key_label("perspective"),key_label("tactical")]
+
+
+func keyboard_compact_hint() -> String:
+	return RemakeText.t("%s: first/third person   %s: tactical view   %s: show cursor") % [key_label("perspective"),key_label("tactical"),key_label("pointer")]
+
+
+func key_label(action: String) -> String:
+	var key := EIKeymap.key_of("direct_"+action,2)
+	return key if not key.is_empty() else "—"
 
 
 func interaction_hint() -> Dictionary:
 	if game.has_spell_target():
 		if not field().friendly_spell(): return {}
-		return {"text":"E: " + RemakeText.t("Cast on self"),"enabled":not _self_target().is_empty()}
+		return {"text":key_label("interact")+": " + RemakeText.t("Cast on self"),"enabled":not _self_target().is_empty()}
 	var action := _interaction_target(true)
 	if action.is_empty(): return {}
 	var verb := "Use"
@@ -403,7 +528,7 @@ func interaction_hint() -> Dictionary:
 		title = WorldLabels.lever_title(game.world,int(action.lever))
 	else:
 		verb = "Exit"
-	return {"text":"E: " + RemakeText.t(verb) + (" — " + title if not title.is_empty() else ""),"verb":RemakeText.t(verb),"enabled":true}
+	return {"text":key_label("interact")+": " + RemakeText.t(verb) + (" — " + title if not title.is_empty() else ""),"verb":RemakeText.t(verb),"enabled":true}
 
 
 ## Nearby small bodies/piles need no exact silhouette hit. This only chooses
@@ -522,27 +647,53 @@ func view_target() -> GameUnit:
 	return leader()
 
 
-func apply_camera() -> void:
+## Scripted full-body poses (including the opening wake-up) are framed from
+## outside the body. Direct eyes resume when normal player actions resume.
+func _first_person_view(u: GameUnit) -> bool:
+	return first_person() and not u.action.begins_with("anim:")
+
+
+func apply_camera(dt := 0.0) -> void:
 	var u := view_target()
 	var inspecting := pointer and is_instance_valid(_portrait_target) and u == _portrait_target
-	if u == null or game.rig.held or game.session.movie_active(): return
+	if u == null or game.rig.held or game.session.movie_active():
+		_eye_model = null
+		_shoulder_unit = null
+		return
 	var rig := game.rig
 	rig._opening_view = null
-	# Drawn pose follows packet interpolation, never the newest network sample.
 	var pivot := u.global_position + Vector3.UP * clampf(u.figure_half_z*1.6,0.6,2.8)
 	var forward := direction()
 	var right := Vector3(sin(heading),0,cos(heading))
-	var wanted := pivot - forward*zoom + right*0.55
-	var fraction := DirectCombat.scene_fraction(game.world,pivot,wanted,0.18)
-	var eye := pivot.lerp(wanted,maxf(0.0,fraction-0.02))
-	rig.position = u.global_position
-	var eyes := first_person() and not inspecting
+	var eyes := _first_person_view(u) and not inspecting
 	_update_view_model(u.model if eyes else null)
+	var eye := pivot
 	if eyes:
-		eye = u.model.eye_position() if u.model else pivot
-		# A small forward offset clears the neck while retaining chest/legs.
+		var state := EIUnitModel.ST_WARRY if u.stance == GameUnit.STANCE_KNEEL else EIUnitModel.ST_LIE if u.stance == GameUnit.STANCE_CRAWL else EIUnitModel.ST_NEUTRAL
+		var anchor := u.model.view_eye_offset(state) if u.model else Vector3(0, u.figure_half_z*1.88, 0)
+		if _eye_model != u.model or u.model == null:
+			_eye_offset = anchor
+			_eye_model = u.model
+		elif dt > 0.0:
+			var eased := _eye_offset.lerp(anchor, 1.0-exp(-minf(dt,0.1)*18.0))
+			_eye_offset = _eye_offset.move_toward(eased, minf(dt,0.1)*2.5)
+		eye = u.model.to_global(_eye_offset) if u.model else u.global_position + _eye_offset
 		eye += Vector3(cos(heading),0,-sin(heading)) * 0.08
-	rig.camera.fov = 75.0 if eyes else 65.0
+		_shoulder_unit = null
+	else:
+		var wanted := pivot - forward*zoom + right*0.55
+		var fraction := maxf(0.0, DirectCombat.scene_fraction(game.world,pivot,wanted,0.18)-0.02)
+		# Shorten immediately at a wall; ease back out instead of snapping
+		# between successive half-metre terrain samples.
+		if _shoulder_unit != u or fraction < _shoulder_fraction:
+			_shoulder_fraction = fraction
+		elif dt > 0.0:
+			_shoulder_fraction = lerpf(_shoulder_fraction, fraction, 1.0-exp(-minf(dt,0.1)*10.0))
+		_shoulder_unit = u
+		eye = pivot.lerp(wanted,_shoulder_fraction)
+		_eye_model = null
+	rig.position = u.global_position
+	rig.camera.fov = 50.0 + 5.0 * GameData.option("direct_fov_first" if eyes else "direct_fov_third")
 	rig.camera.near = 0.03 if eyes else 0.08
 	rig.camera.global_position = eye
 	rig.camera.look_at(eye+forward,Vector3.UP)
@@ -569,3 +720,33 @@ func _exit_tree() -> void:
 	_capture(false)
 	if _control_id >= 0 and is_instance_valid(game.session) and is_instance_valid(game.world):
 		game.session.submit({"t":"direct_control","leader":-1})
+
+
+func _update_feedback(dt: float) -> void:
+	var u := leader()
+	if _hit_unit != u:
+		_hit_unit = u
+		_hit_serial = u.direct_hit_serial if u else 0
+		_hit_until = 0
+	elif u and u.direct_hit_serial != _hit_serial:
+		_hit_serial = u.direct_hit_serial
+		_hit_until = Time.get_ticks_msec() + 180
+	_feedback_due -= dt
+	if _feedback_due > 0.0: return
+	_feedback_due = 0.08
+	_feedback = {}
+	if u == null or not usable() or pointer: return
+	var allowed := game.session.command_allowed({"t":"direct_attack"}) and not get_tree().paused and not GameSound.blocked(u)
+	var recovery := maxf(u._attack_cd,u._anim_lock) if game.world.authority else u.direct_recovery
+	if game.has_spell_target():
+		_feedback = {"kind":"neutral","ready":false,"text":"Spell selected"}
+		return
+	if not allowed:
+		_feedback = {"kind":"neutral","ready":false,"text":""}
+		return
+	var cam := game.rig.camera
+	_feedback = DirectCombat.preview(u,cam.global_position,-cam.global_basis.z)
+	_feedback.ready = recovery <= 0.0
+	if recovery > 0.0:
+		_feedback.recovering = true
+		if _feedback.get("text", "").is_empty(): _feedback.text = "Recovering"

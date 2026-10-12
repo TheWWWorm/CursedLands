@@ -1,0 +1,365 @@
+{
+  "scope": "Normal-game Linux camera, posture, controls and Alt selected-part regressions; rendered visual review of five camera poses. Original movement fixes unchanged from the prior direct-controls test. No ENet or Windows validation.",
+  "automated_checks": 94,
+  "runs": [
+    {
+      "label": "final-camera-checks",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/camera-blend-20261012/final-camera-checks/run.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-blend-20261012/final-camera-checks/run.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-camera-test-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--fixed-fps",
+        "30",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/direct_camera_stability.gd",
+        "--automated"
+      ],
+      "return_code": 0,
+      "seconds": 7.0,
+      "results": [
+        {
+          "file": "/home/llm2x/Documents/EI/local/scratchpad/camera-blend-20261012/final-camera-checks/data/godot/app_userdata/Cursed Lands/direct-camera-stability.json",
+          "report": {
+            "assertions": [
+              {
+                "label": "first-person camera: loaded scene accepts third-person keyboard input",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: camera leaves skeleton intact",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: stable view through idle at gait 2",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: camera leaves skeleton intact",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: stable view through walk at gait 2",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: camera leaves skeleton intact",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: stable view through attack at gait 2",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: camera leaves skeleton intact",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: stable view through idle at gait 1",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: camera leaves skeleton intact",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: stable view through walk at gait 1",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: camera leaves skeleton intact",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: stable view through idle at gait 0",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: camera leaves skeleton intact",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: stable view through walk at gait 0",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: head stays hidden in player-controlled first person",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: posture height changes ease without a one-frame jump",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: camera follows actor translation immediately",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: mouse look remains immediate",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: opening lie-down uses an external view",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: opening camera stays clear of the lying body",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: camera does not replace the opening animation",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: first-person view resumes after scripted pose",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: shoulder view eases out after obstruction clears",
+                "ok": true
+              },
+              {
+                "label": "first-person camera: scripted camera retains ownership",
+                "ok": true
+              }
+            ],
+            "checks": 25,
+            "failures": [],
+            "max_posture_step": 0.0416694730520248,
+            "measurements": [
+              {
+                "action": "idle",
+                "camera_range": "(0.0, 0.0, 0.0)",
+                "gait": 2,
+                "head_range": "(0.049133, 0.014959, 0.113899)"
+              },
+              {
+                "action": "walk",
+                "camera_range": "(0.0, 0.0, 0.0)",
+                "gait": 2,
+                "head_range": "(0.020111, 0.063197, 0.051132)"
+              },
+              {
+                "action": "attack",
+                "camera_range": "(0.0, 0.0, 0.0)",
+                "gait": 2,
+                "head_range": "(0.362602, 0.132123, 0.069504)"
+              },
+              {
+                "action": "idle",
+                "camera_range": "(0.0, 0.0, 0.0)",
+                "gait": 1,
+                "head_range": "(0.006752, 0.020103, 0.002731)"
+              },
+              {
+                "action": "walk",
+                "camera_range": "(0.0, 0.0, 0.0)",
+                "gait": 1,
+                "head_range": "(0.035141, 0.124934, 0.01561)"
+              },
+              {
+                "action": "idle",
+                "camera_range": "(0.0, 0.0, 0.0)",
+                "gait": 0,
+                "head_range": "(0.016388, 0.032723, 0.026215)"
+              },
+              {
+                "action": "walk",
+                "camera_range": "(0.0, 0.0, 0.0)",
+                "gait": 0,
+                "head_range": "(0.04464, 0.077957, 0.085854)"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "label": "final-controls-checks",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/camera-blend-20261012/final-controls-checks/run.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-blend-20261012/final-controls-checks/run.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-camera-test-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--fixed-fps",
+        "30",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/direct_controls.gd",
+        "--automated"
+      ],
+      "return_code": 0,
+      "seconds": 11.51,
+      "results": [
+        {
+          "file": "/home/llm2x/Documents/EI/local/scratchpad/camera-blend-20261012/final-controls-checks/data/godot/app_userdata/Cursed Lands/direct-controls.json",
+          "report": {
+            "checks": 52,
+            "connected_gamepads": [
+              {
+                "guid": "0300a56b343400008002000011010000",
+                "id": 0,
+                "name": "Keychron K8 Pro System Control"
+              }
+            ],
+            "failures": 0
+          }
+        }
+      ]
+    },
+    {
+      "label": "final-aim-checks",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/camera-blend-20261012/final-aim-checks/run.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-blend-20261012/final-aim-checks/run.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-camera-test-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--fixed-fps",
+        "30",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/direct_aim_selection.gd",
+        "--automated"
+      ],
+      "return_code": 0,
+      "seconds": 9.52,
+      "results": [
+        {
+          "file": "/home/llm2x/Documents/EI/local/scratchpad/camera-blend-20261012/final-aim-checks/data/godot/app_userdata/Cursed Lands/direct_aim_selection.json",
+          "report": {
+            "assertions": [
+              {
+                "label": "Alt aimed direct attacks: loaded scene accepts third-person keyboard input",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: crosshair identifies the live enemy in mode 2",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: Alt opens the body-part selector",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: Alt confirmation retains selected leg with an enemy in the crosshair in mode 2",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: Alt selection in direct mode does not issue a classic chase attack",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: next direct attack carries the selected leg in mode 2",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: committed hit retains leg selection",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: projectile damage record retains selected leg",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: resolved melee impact damages only the selected leg in mode 2",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: crosshair identifies the live enemy in mode 3",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: Alt opens the body-part selector",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: Alt confirmation retains selected leg with an enemy in the crosshair in mode 3",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: Alt selection in direct mode does not issue a classic chase attack",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: next direct attack carries the selected leg in mode 3",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: committed hit retains leg selection",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: projectile damage record retains selected leg",
+                "ok": true
+              },
+              {
+                "label": "Alt aimed direct attacks: resolved melee impact damages only the selected leg in mode 3",
+                "ok": true
+              }
+            ],
+            "checks": 17,
+            "failures": []
+          }
+        }
+      ]
+    },
+    {
+      "label": "camera-packaged",
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/camera-blend-20261012/camera-packaged/run.json",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/camera-blend-20261012/camera-packaged/run.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/camera-blend-20261012/packs/normal/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1152x720",
+        "--position",
+        "-10000,-10000",
+        "--fixed-fps",
+        "30",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://camera_views.gd",
+        "--automated"
+      ],
+      "return_code": 0,
+      "seconds": 21.02,
+      "results": [
+        {
+          "file": "/home/llm2x/Documents/EI/local/scratchpad/camera-blend-20261012/camera-packaged/data/godot/app_userdata/Cursed Lands/trial-result.json",
+          "report": {
+            "assertions": [
+              {
+                "label": "first-person camera: loaded scene accepts third-person keyboard input",
+                "ok": true
+              }
+            ],
+            "checks": 1,
+            "failures": [],
+            "max_posture_step": 0.0,
+            "measurements": []
+          }
+        }
+      ]
+    }
+  ],
+  "pack_sha256": "ad50b7b9a78384bcbd000b65c819519aa6e90c816ed5689822091bbd5ede5f4e"
+}

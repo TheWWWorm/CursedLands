@@ -1,0 +1,499 @@
+{
+  "date": "2026-10-12",
+  "version": "1.0.4-feedback.4",
+  "protocol": 21,
+  "status": "passed",
+  "environment": "Linux x86-64; patched Godot 4.7 runtime; original Evil Islands assets; NVIDIA RTX 3090 for rendered cases",
+  "integration_thread": "01a12ce2-b4e1-7911-9500-03e40aab8d9c",
+  "source_base_commit": "9e1a8ed7862216c350bf57f1411dca864ed3a965",
+  "source_sha256": {
+    "game/src/game/direct_control.gd": "b51a337d9f1cbc4ddec6f34648edf12a7f7fbd7dc04ca748d8c1385051bdb345",
+    "game/src/game/direct_combat.gd": "0a7021671b9a75833cff87d9d556f48b977a8fb1216bb7410894cc636110651d",
+    "game/src/game/direct_pose.gd": "c4e84a00a8aafd65fe4911835806761b0529892c1c9cde380960182717f77b43",
+    "game/src/game/unit.gd": "5a148d3e12241fad5d66041f2cd476c9aec84d11517d21c23b4882e264d05c92",
+    "game/src/game/nav_grid.gd": "2ea344d0f3b517d8eb2681eeabe49746adf7c96bd8ed43c74b834bcbbabad05f",
+    "game/src/game/session.gd": "9e5201b665c466bf378785d46ee7dc7cc0202d3f3c0c99ca3d57e55e2e45d2e8",
+    "game/src/game/net_status.gd": "03656ea32966a6234bebdb1862c2085fbd5df7ac4ecddce984e097f152fdcaf2",
+    "game/src/game/pad_field.gd": "5f5522d058bd916d66f210fbd231a1631acb3e53e2fb8274291161355a57af84",
+    "game/src/ei/game_data.gd": "881bd12b220472fcda9f718fb356f6ee0c2fad27ec1dca8150ada0b8f4fab497",
+    "game/src/ei/keymap.gd": "d2efa23ab2c69bc069c2220523f29ad42d89b764421ab359a64866e906badcff",
+    "game/src/ei/unit_model.gd": "d4f017dd7e4d811f4b1d1d1bb943553302f6379dd601a0bba21abdfb506ace3c",
+    "game/src/ui/options_panel.gd": "ccc575203601ab21d64919c018ccb91ff6d85b92777ca452314dd99570d43f84",
+    "game/src/ui/camera_rig.gd": "9848a81767129bfe2061f548b4bb39167705d85f025107fec9b603d1dd9d1a14",
+    "game/src/platform/pad_input.gd": "15c21033baab16fdb631f14c952a0e2297916c5f033b7e9450dc0164085e6bc9"
+  },
+  "tested_pack_sha256": "dcb6135a7ff23a6495305d1e966916a78a35fc524809e0ced15684b49780068c",
+  "suite_checks": 1157,
+  "rendered_recheck_assertions": 52,
+  "tests": [
+    {
+      "case": "verified-combat",
+      "fixture": "tests/direct_combat.gd",
+      "checks": 30,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 2.25,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-combat/run.log",
+      "log_sha256": "d1c6392ae79d467178e39eb0a94c9ccb50293a25a88b58aab69442353036ec67"
+    },
+    {
+      "case": "verified-controls",
+      "fixture": "tests/direct_controls.gd",
+      "checks": 52,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 12.26,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-controls/run.log",
+      "log_sha256": "3649669ec7268f254040c3a85bd2433deeb26a3cf44e91bfafaf32677cc34fca"
+    },
+    {
+      "case": "verified-aim",
+      "fixture": "tests/direct_aim_selection.gd",
+      "checks": 17,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 7.0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-aim/run.log",
+      "log_sha256": "18d4e84a07c110dfe079f1f18d5bac0a381b9f984ad2a2e11d98c273536715a1"
+    },
+    {
+      "case": "verified-movement",
+      "fixture": "tests/direct_movement.gd",
+      "checks": 33,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 7.26,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-movement/run.log",
+      "log_sha256": "67ee348d84c7ab20b549ef5f668c21fc5ed498077b8d4b911100450ed2e201b7"
+    },
+    {
+      "case": "verified-passages",
+      "fixture": "tests/direct_passages.gd",
+      "checks": 53,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 7.51,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-passages/run.log",
+      "log_sha256": "d5fc7d336847d4846eaec70de6b1e58a633f9a0086352ab800e29d675ae91524"
+    },
+    {
+      "case": "verified-camera",
+      "fixture": "tests/direct_camera_stability.gd",
+      "checks": 25,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 7.26,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-camera/run.log",
+      "log_sha256": "9947b57882cb05d80108d2b7a0744939305dcb695eb777eac3e1fe6a2d14c927"
+    },
+    {
+      "case": "verified-feedback",
+      "fixture": "tests/direct_feedback.gd",
+      "checks": 12,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 2.5,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-feedback/run.log",
+      "log_sha256": "2921b19c623a0800b1deefabdad496a838da2daadc4294fe075ee2170fd5f506"
+    },
+    {
+      "case": "verified-settings",
+      "fixture": "tests/direct_settings.gd",
+      "checks": 24,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 7.77,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-settings/run.log",
+      "log_sha256": "93cc3bdd7307c120db572286bcf34e9027ccf936b1d489d2ebf0e651035b56a2"
+    },
+    {
+      "case": "verified-coop",
+      "fixture": "tests/direct_coop.gd",
+      "checks": 25,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 19.52,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-coop/run.log",
+      "log_sha256": "1f9aa4a5583504da1535be5e79b8c44e15a3cd37aaf4b3f3f42ce4d971c90e4c"
+    },
+    {
+      "case": "verified-sword",
+      "fixture": "tests/direct_moving_attacks.gd",
+      "checks": 15,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 10.52,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-sword/run.log",
+      "log_sha256": "637ecea207453c8c0c44faa49c48d4f73f31730d60897f86e4ad9736934a3280",
+      "moving_attack_metrics": {
+        "attack_starts": [
+          {
+            "clip": "uattack08",
+            "remaining": 1.65,
+            "time": 1.87
+          },
+          {
+            "clip": "uattack04",
+            "remaining": 1.65,
+            "time": 3.52
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.65,
+            "time": 5.17
+          },
+          {
+            "clip": "uattack09",
+            "remaining": 1.65,
+            "time": 6.81999999999999
+          },
+          {
+            "clip": "uattack09",
+            "remaining": 1.65,
+            "time": 8.46999999999998
+          },
+          {
+            "clip": "uattack05",
+            "remaining": 1.65,
+            "time": 10.12
+          },
+          {
+            "clip": "uattack04",
+            "remaining": 1.65,
+            "time": 11.77
+          }
+        ],
+        "camera_motion": 0.0,
+        "checks": 15,
+        "distance": 6.24076080322266,
+        "failures": [],
+        "first_person": false,
+        "joint_angle_error": 0.0009765625,
+        "joint_position_error": 0.0,
+        "leg_changes": 194,
+        "moving_frames": 117,
+        "run": false,
+        "torso_error": 0.000690533954184502,
+        "weapon": "sword"
+      }
+    },
+    {
+      "case": "verified-bow",
+      "fixture": "tests/direct_moving_attacks.gd",
+      "checks": 13,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 11.02,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-bow/run.log",
+      "log_sha256": "b951777a594621900a71382b3b71140d7f78e0c4b02c88bd22be16d3e9a6e871",
+      "moving_attack_metrics": {
+        "attack_starts": [
+          {
+            "clip": "uattack01",
+            "remaining": 3.245,
+            "time": 1.87
+          },
+          {
+            "clip": "uattack03",
+            "remaining": 4.18,
+            "time": 5.17
+          },
+          {
+            "clip": "uattack02",
+            "remaining": 3.025,
+            "time": 9.40499999999998
+          },
+          {
+            "clip": "uattack02",
+            "remaining": 3.025,
+            "time": 12.485
+          }
+        ],
+        "camera_motion": 0.000247573567321524,
+        "checks": 13,
+        "distance": 8.2408447265625,
+        "failures": [],
+        "first_person": true,
+        "joint_angle_error": 0.00119603995699435,
+        "joint_position_error": 0.0,
+        "leg_changes": 260,
+        "moving_frames": 157,
+        "run": false,
+        "torso_error": 0.000690533954184502,
+        "weapon": "bow"
+      }
+    },
+    {
+      "case": "verified-run",
+      "fixture": "tests/direct_moving_attacks.gd",
+      "checks": 15,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 10.77,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-run/run.log",
+      "log_sha256": "185e52f3bb8c681cf53e5962e2c467bc7ffe2ae46e292b9bf92e929eb92ef6ac",
+      "moving_attack_metrics": {
+        "attack_starts": [
+          {
+            "clip": "uattack09",
+            "remaining": 1.65,
+            "time": 1.87
+          },
+          {
+            "clip": "uattack05",
+            "remaining": 1.65,
+            "time": 3.52
+          },
+          {
+            "clip": "uattack08",
+            "remaining": 1.65,
+            "time": 5.17
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.65,
+            "time": 6.81999999999999
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.65,
+            "time": 8.46999999999998
+          },
+          {
+            "clip": "uattack05",
+            "remaining": 1.65,
+            "time": 10.12
+          },
+          {
+            "clip": "uattack08",
+            "remaining": 1.65,
+            "time": 11.77
+          }
+        ],
+        "camera_motion": 0.0,
+        "checks": 15,
+        "distance": 14.7008726447821,
+        "failures": [],
+        "first_person": false,
+        "joint_angle_error": 0.0009765625,
+        "joint_position_error": 0.0,
+        "leg_changes": 153,
+        "moving_frames": 92,
+        "run": true,
+        "torso_error": 0.0,
+        "weapon": "sword"
+      }
+    },
+    {
+      "case": "verified-stance",
+      "fixture": "tests/direct_attack_stance.gd",
+      "checks": 39,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 4.26,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-stance/run.log",
+      "log_sha256": "ae27bc022f4f223a476a73bec3b1c1bbeb5b8aa07db6dfc65123c05f4d8f1485"
+    },
+    {
+      "case": "verified-views",
+      "fixture": "tests/direct_view_regressions.gd",
+      "checks": 34,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 8.26,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-views/run.log",
+      "log_sha256": "a818ceca8f8fd7f9c564cdc7a0e626de6aa9c6c5c09caa816a6b6cc2f8248ae5"
+    },
+    {
+      "case": "verified-keyboard-final",
+      "fixture": "tests/third_person_kbm.gd",
+      "checks": 97,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 28.81,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-keyboard-final/run.log",
+      "log_sha256": "311c1dac5c8c7cf9ba06d4d701b6e2af2b5092dcaae7e6897d73301bb6719c75"
+    },
+    {
+      "case": "verified-stamina",
+      "fixture": "tests/stamina_regen.gd",
+      "checks": 24,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 2.25,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-stamina/run.log",
+      "log_sha256": "08230e249c229dc18fff126b0fad8dd196b7b236269513c4527723380f776ab1"
+    },
+    {
+      "case": "verified-snapshots",
+      "fixture": "tests/snapshot_codec.gd",
+      "checks": 209,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 2.5,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-snapshots/run.log",
+      "log_sha256": "100a1e28119ce3ad16f81488ad5447fd3772ee9904c0883db9982ea184c301ad"
+    },
+    {
+      "case": "verified-previews-final",
+      "fixture": "tests/preview_framing.gd",
+      "checks": 88,
+      "failures": 0,
+      "rendered": true,
+      "seconds": 11.52,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-previews-final/run.log",
+      "log_sha256": "af92194330adf31b843ab7c42c1607364bd6ea94aefbd1981a8ab9b597bccf0f"
+    },
+    {
+      "case": "verified-rules",
+      "fixture": "tests/feedback_rules.gd",
+      "checks": 352,
+      "failures": 0,
+      "rendered": false,
+      "seconds": 2.5,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/verified-rules/run.log",
+      "log_sha256": "5ceb1665e091143f1e0aa25f2415f4f27658c0ddf30b641edbf0c4666b1fb204"
+    },
+    {
+      "case": "sword-render",
+      "fixture": "tests/direct_moving_attacks.gd",
+      "checks": 15,
+      "failures": 0,
+      "rendered": true,
+      "seconds": 34.77,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/sword-render/run.log",
+      "log_sha256": "1de9a3def033071244d64362e315e0328c6a5a4e2d1fe3819b74dcc21a570426",
+      "moving_attack_metrics": {
+        "attack_starts": [
+          {
+            "clip": "uattack10",
+            "remaining": 1.65,
+            "time": 1.925
+          },
+          {
+            "clip": "uattack04",
+            "remaining": 1.54,
+            "time": 3.685
+          },
+          {
+            "clip": "uattack08",
+            "remaining": 1.485,
+            "time": 5.39
+          },
+          {
+            "clip": "uattack09",
+            "remaining": 1.65,
+            "time": 6.87499999999999
+          },
+          {
+            "clip": "uattack09",
+            "remaining": 1.595,
+            "time": 8.57999999999998
+          },
+          {
+            "clip": "uattack05",
+            "remaining": 1.65,
+            "time": 10.175
+          },
+          {
+            "clip": "uattack04",
+            "remaining": 1.485,
+            "time": 11.99
+          }
+        ],
+        "camera_motion": 0.0,
+        "checks": 15,
+        "distance": 7.09646606445312,
+        "failures": [],
+        "first_person": false,
+        "joint_angle_error": 0.0009765625,
+        "joint_position_error": 0.0,
+        "leg_changes": 109,
+        "moving_frames": 38,
+        "run": false,
+        "torso_error": 0.000690533954184502,
+        "weapon": "sword"
+      }
+    },
+    {
+      "case": "bow-render-final",
+      "fixture": "tests/direct_moving_attacks.gd",
+      "checks": 13,
+      "failures": 0,
+      "rendered": true,
+      "seconds": 35.8,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/bow-render-final/run.log",
+      "log_sha256": "313226b930c0de6019f4d1c429129f59f14b1dc1a38f348417e70258d415e02e",
+      "moving_attack_metrics": {
+        "attack_starts": [
+          {
+            "clip": "uattack03",
+            "remaining": 4.015,
+            "time": 2.255
+          },
+          {
+            "clip": "uattack03",
+            "remaining": 4.18,
+            "time": 6.32499999999999
+          },
+          {
+            "clip": "uattack01",
+            "remaining": 3.025,
+            "time": 10.78
+          },
+          {
+            "clip": "uattack03",
+            "remaining": 4.18,
+            "time": 13.86
+          }
+        ],
+        "camera_motion": 0.000247573567321524,
+        "checks": 13,
+        "distance": 7.875732421875,
+        "failures": [],
+        "first_person": true,
+        "joint_angle_error": 0.0009765625,
+        "joint_position_error": 0.0,
+        "leg_changes": 111,
+        "moving_frames": 42,
+        "run": false,
+        "torso_error": 0.000690533954184502,
+        "weapon": "bow"
+      }
+    },
+    {
+      "case": "settings-render-final",
+      "fixture": "tests/direct_settings.gd",
+      "checks": 24,
+      "failures": 0,
+      "rendered": true,
+      "seconds": 20.01,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/settings-render-final/run.log",
+      "log_sha256": "09f7cc600c351f200879377e915429b10367d66ca6088d63d03e735756666be2"
+    }
+  ],
+  "visual_review": [
+    "English, Russian and German direct camera, keyboard and controller settings at 1152px width.",
+    "Third-person sword: forward, strafe and backward attack poses; hair and equipment attachment alignment.",
+    "First-person bow: actual camera and reticle; blocked-shot and recovery status; camera stability during movement."
+  ],
+  "scope_notes": [
+    "Moving attacks use existing authored upper-body clips with lower-body locomotion blending; no new first-person hand animations.",
+    "Real ENet host/client commands and snapshot replication are covered; long WAN sessions and physical controller feel are not certified.",
+    "Linux rendered and headless checks; Windows is packaged but not runtime-tested.",
+    "Navigation-based camera/scenery collision, not exact decorative triangle collision.",
+    "Earlier failed setup runs are retained locally; final keyboard fixture freezes periodic fog updates during explicit visibility cases, and preview comparison supplies the released scripts."
+  ],
+  "compact_hud_followup": {
+    "case": "compact-hud-render",
+    "checks": 13,
+    "failures": 0,
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/direct-controls-20261012/compact-hud-render/run.log",
+    "visual_review": [
+      "Compact guide in English, Russian and German.",
+      "Tab changes the lower hint to Return to mouse look.",
+      "F6 changes to a tactical view with a return-to-perspective hint."
+    ],
+    "note": "Final hint font increased from 11 to 12 px minimum after visual review; packaged render verification follows."
+  }
+}

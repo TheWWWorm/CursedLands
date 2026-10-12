@@ -16,7 +16,7 @@ extends RefCounted
 ## the original key table (72-byte entries: scan code, keyboard.ini name
 ## a GetKeyNameText buffer filled at start-up): the keys the
 ## game knows. Scan codes ≥ 0x100 are the extended keys.
-const KEYS := [[0x02, "1"], [0x03, "2"], [0x04, "3"], [0x05, "4"], [0x06, "5"], [0x07, "6"],
+const KEYS := [[0x1d, "CTRL"], [0x38, "ALT"], [0x2a, "SHIFT"], [0x02, "1"], [0x03, "2"], [0x04, "3"], [0x05, "4"], [0x06, "5"], [0x07, "6"],
 	[0x08, "7"], [0x09, "8"], [0x0a, "9"], [0x0b, "0"], [0x0c, "-"], [0x0d, "+"], [0x0f, "TAB"],
 	[0x10, "Q"], [0x11, "W"], [0x12, "E"], [0x13, "R"], [0x14, "T"], [0x15, "Y"], [0x16, "U"],
 	[0x17, "I"], [0x18, "O"], [0x19, "P"], [0x1a, "["], [0x1b, "]"], [0x1e, "A"], [0x1f, "S"],
@@ -34,7 +34,7 @@ const KEYS := [[0x02, "1"], [0x03, "2"], [0x04, "3"], [0x05, "4"], [0x06, "5"], 
 
 ## keyboard.ini names → Godot keys (US layout; letters, digits and F keys by
 ## OS.find_keycode_from_string).
-const NAMES := {"-": KEY_MINUS, "+": KEY_EQUAL, "TAB": KEY_TAB, "[": KEY_BRACKETLEFT,
+const NAMES := {"CTRL": KEY_CTRL, "ALT": KEY_ALT, "SHIFT": KEY_SHIFT, "-": KEY_MINUS, "+": KEY_EQUAL, "TAB": KEY_TAB, "[": KEY_BRACKETLEFT,
 	"]": KEY_BRACKETRIGHT, ";": KEY_SEMICOLON, "'": KEY_APOSTROPHE, "\\": KEY_BACKSLASH,
 	",": KEY_COMMA, ".": KEY_PERIOD, "/": KEY_SLASH, "KP_STAR": KEY_KP_MULTIPLY, "SPACE": KEY_SPACE,
 	"CAPSLOCK": KEY_CAPSLOCK, "PAUSE": KEY_PAUSE, "KP_HOME": KEY_KP_7, "KP_UP": KEY_KP_8,
@@ -65,7 +65,19 @@ const ACTIONS := [[1, "pause", 3, 4], [2, "decel", 3, 3], [3, "accel", 3, 2], [4
 	[57, "select3", 4, 2], [58, "select_all", 4, 4], [59, "tutorial_script", 10, 10],
 	# Remake-only actions (not in the original): the modern camera's turn keys
 	# (CameraRig), on the Remake › Camera page (group 16) rows 8 and 9.
-	[100, "camera_rotate_left", 16, 8], [101, "camera_rotate_right", 16, 9]]
+	[100, "camera_rotate_left", 16, 8], [101, "camera_rotate_right", 16, 9],
+	[102, "direct_forward", 25, 0],
+	[103, "direct_back", 25, 1],
+	[104, "direct_left", 25, 2],
+	[105, "direct_right", 25, 3],
+	[106, "direct_interact", 25, 4],
+	[107, "direct_pointer", 25, 5],
+	[108, "direct_posture", 25, 6],
+	[109, "direct_aim", 25, 7],
+	[110, "direct_perspective", 25, 8],
+	[111, "direct_tactical", 25, 9],
+	[112, "direct_sprint", 25, 10],
+	[113, "direct_attack", 25, 11]]
 ## Keys the remake's own actions get when nothing is bound to them and the key
 ## is free (Delete / End turn the camera, as in Divinity: Original Sin 2).
 const REMAKE_DEFAULTS := {"camera_rotate_left": "DEL", "camera_rotate_right": "END"}
@@ -73,7 +85,7 @@ const REMAKE_DEFAULTS := {"camera_rotate_left": "DEL", "camera_rotate_right": "E
 ## Windows key names as GetKeyNameText(scan << 16) gives them on an English
 ## system (the US layout's key name tables; the original fills its key table with
 ## them, and the Options screen shows them); others as the ini name.
-const DISPLAY_NAMES := {"-": "-", "+": "=", "TAB": "Tab", "KP_STAR": "Num *", "SPACE": "Space",
+const DISPLAY_NAMES := {"CTRL": "Ctrl", "ALT": "Alt", "SHIFT": "Shift", "-": "-", "+": "=", "TAB": "Tab", "KP_STAR": "Num *", "SPACE": "Space",
 	"CAPSLOCK": "Caps Lock", "PAUSE": "Pause", "KP_HOME": "Num 7", "KP_UP": "Num 8",
 	"KP_PGUP": "Num 9", "KP_MINUS": "Num -", "KP_LEFT": "Num 4", "KP_CENTER": "Num 5",
 	"KP_RIGHT": "Num 6", "KP_PLUS": "Num +", "KP_END": "Num 1", "KP_DOWN": "Num 2",
@@ -84,6 +96,21 @@ const DISPLAY_NAMES := {"-": "-", "+": "=", "TAB": "Tab", "KP_STAR": "Num *", "S
 
 const USER_FILE := "user://keyboard.ini"
 const WASD_FILE := "user://keyboard_wasd.ini"
+const DIRECT_FILE := "user://keyboard_direct.ini"
+const DIRECT_DEFAULTS := {"W": "direct_forward", "S": "direct_back", "A": "direct_left", "D": "direct_right", "E": "direct_interact", "TAB": "direct_pointer", "CTRL": "direct_posture", "ALT": "direct_aim", "V": "direct_perspective", "F6": "direct_tactical", "SHIFT": "direct_sprint", "F": "direct_attack"}
+static var _direct_map := {}
+static var _direct_loaded := false
+
+static func direct_defaults() -> Dictionary:
+	_tables()
+	var out := {}
+	for sc: int in _names:
+		if DIRECT_DEFAULTS.has(_names[sc]): out[sc] = DIRECT_DEFAULTS[_names[sc]]
+	return out
+
+static func direct_event(e: InputEventKey) -> String:
+	return String(_active_map(2).get(scan_code(e.physical_keycode if e.physical_keycode else e.keycode), ""))
+
 ## Separate, editable layout: switching back never rewrites the classic keys.
 const WASD_DEFAULTS := {"W": "camera_up", "S": "camera_down", "A": "camera_left",
 	"D": "camera_right", "Q": "camera_rotate_left", "E": "camera_rotate_right",
@@ -134,6 +161,11 @@ static func wasd_active() -> bool:
 
 static func _active_map(profile := -1) -> Dictionary:
 	_ensure()
+	if profile == 2:
+		if not _direct_loaded:
+			_direct_loaded = true
+			_direct_map = _read_map(DIRECT_FILE) if FileAccess.file_exists(DIRECT_FILE) else direct_defaults()
+		return _direct_map
 	if profile == 1 or (profile == -1 and wasd_active()):
 		if not _wasd_loaded:
 			_wasd_loaded = true
@@ -158,7 +190,7 @@ static func wasd_defaults(base: Dictionary) -> Dictionary:
 		if act in out.values():
 			continue
 		for key: Array in KEYS:
-			if not out.has(int(key[0])) and not key[1] in ["B", "J", "G"]:
+			if not out.has(int(key[0])) and not key[1] in ["B", "J", "G", "CTRL", "ALT", "SHIFT"]:
 				out[int(key[0])] = act
 				break
 	return out
@@ -213,8 +245,8 @@ static func display_name(ini_key: String) -> String:
 
 
 ## The keyboard.ini names of the keys bound to `act`, in scan code order.
-static func keys_for(act: String) -> PackedStringArray:
-	var map := _active_map()
+static func keys_for(act: String, profile := -1) -> PackedStringArray:
+	var map := _active_map(profile)
 	var out := PackedStringArray()
 	for s: int in _sorted(map):
 		if map[s] == act:
@@ -222,8 +254,8 @@ static func keys_for(act: String) -> PackedStringArray:
 	return out
 
 
-static func key_of(act: String) -> String:
-	var k := keys_for(act)
+static func key_of(act: String, profile := -1) -> String:
+	var k := keys_for(act, profile)
 	return display_name(k[0]) if not k.is_empty() else ""
 
 
@@ -258,7 +290,7 @@ static func set_bindings(m: Dictionary, profile := -1) -> void:
 static func save(profile := -1) -> void:
 	var map := _active_map(profile)
 	var wasd := profile == 1 or (profile == -1 and wasd_active())
-	var f := FileAccess.open(WASD_FILE if wasd else USER_FILE, FileAccess.WRITE)
+	var f := FileAccess.open(DIRECT_FILE if profile == 2 else WASD_FILE if wasd else USER_FILE, FileAccess.WRITE)
 	if f == null:
 		return
 	var out := ""

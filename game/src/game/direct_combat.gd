@@ -112,3 +112,31 @@ static func contact(u: GameUnit, t: GameUnit, carried := {}) -> void:
 	u.world.on_attack(u,t)
 	u.world.combat.melee(u,t,record)
 	u.world.combat.weapon_spell(u,t)
+	u.direct_hit_serial += 1
+
+
+## Same muzzle, range, body and scenery tests as a real direct attack. This is
+## advisory: the host checks again at impact. Never reveal unseen creatures.
+static func preview(u: GameUnit, eye: Vector3, look: Vector3) -> Dictionary:
+	var w := u.world
+	var camera_end := eye + look.normalized() * 60.0
+	var camera_wall := scene_fraction(w,eye,camera_end)
+	var aim := ray_body(w,u,eye,camera_end,camera_wall)
+	var point := eye.lerp(camera_end,float(aim.fraction))
+	var from := origin(u)
+	var direction := (point-from).normalized()
+	var ranged: bool = u.stats.get("ranged",false)
+	var reach := clampf(float(u.stats.get("reach",30.0)),1.0,100.0) if ranged else u.body_radius()+maxf(0.6,float(u.stats.get("range",0.0)))+2.0
+	var end := from + direction * minf(reach,from.distance_to(point)+0.25)
+	var wall := scene_fraction(w,from,end)
+	var hit := ray_body(w,u,from,end,wall)
+	var target: GameUnit = hit.unit if ranged else melee_target(u,direction)
+	if target and not target.fogged and not target.hidden and target.visible:
+		if not w.is_enemy(u,target): return {"kind":"friendly","text":"Friendly in line of fire"}
+		return {"kind":"reach","text":"" if ranged else "In reach"}
+	if wall < 1.0 or (camera_wall < 1.0 and aim.unit == null and from.distance_to(point) < reach):
+		return {"kind":"blocked","text":"Obstructed"}
+	var aimed: GameUnit = aim.unit
+	if not ranged and aimed and not aimed.hidden and not aimed.fogged and aimed.visible:
+		return {"kind":"far","text":"Out of reach"}
+	return {"kind":"neutral","text":""}

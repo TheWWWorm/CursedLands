@@ -1,14 +1,21 @@
-# Experimental third-person controls
+# First- and third-person controls
 
-Choose **Options → Remake → Camera → Control mode**. **Auto (gamepad)** is the default: a gamepad uses the shoulder view, while keyboard/mouse and touch use the existing controls. **Classic** keeps the existing controls with every input device. **Third person (experimental)** enables the shoulder view for keyboard/mouse too.
+Choose **Options → Remake → Camera → Control mode**. **Auto (gamepad)** is the default: a gamepad uses the shoulder view, while keyboard/mouse and touch use the existing controls. **Classic** keeps the existing controls with every input device. **Third person** and **First person** enable direct control for keyboard/mouse too.
+
+**Options → Remake → Camera → First / third person** provides separate FOV and mouse sensitivity for both views, mouse inversion, a separate editable key layout, and controller aim speeds, deadzone, response curve and axis inversion. The bindings below are defaults. Direct-control bindings are saved separately from tactical keyboard layouts.
+
+The default Compact control guide shows one small line for perspective, tactical view and the mouse cursor. It changes to a return hint while using the cursor or tactical view. Choose Full guide for the movement keys and additional crosshair explanations, or Off to hide the lower guide.
 
 | Input | Action |
 | --- | --- |
+| V / LT + R3 | Switch first/third person |
+| F6 / LT + View | Toggle tactical view and return to the previous perspective; retain selection and ordinary orders |
+| Alt | Choose a body part for the next attack, including a target already under the crosshair |
 | WASD | Move relative to the camera; selected companions follow |
 | Shift while moving | Run, using the normal stamina and posture rules |
 | Ctrl | Toggle crouch/sneak in third- or first-person mode, where the zone permits it |
 | Mouse | Turn and tilt the view |
-| Left mouse button / RT | Swing or shoot in the aimed direction; hold to repeat after the weapon cooldown; cast a selected spell |
+| Left mouse button / F / RT | Swing or shoot in the aimed direction; hold to repeat after the weapon cooldown; cast a selected spell |
 | E / A | Talk, loot, revive or use the object under the crosshair; pick up nearby loot without exact aiming; confirm a nearby open area exit. A also confirms the selected spell target. |
 | Tab / R3 | Release the pointer for the HUD and existing point-and-click actions |
 | Mouse wheel | Adjust shoulder distance |
@@ -20,15 +27,21 @@ Choose **Options → Remake → Camera → Control mode**. **Auto (gamepad)** is
 | X on an enemy | Open the six-part aimed-strike wheel; stick or D-pad selects, A confirms |
 | LT + RT | System wheel (RT by itself attacks in this mode) |
 
-Visible living characters within the health-bar range keep their bars, including full-health allies and village characters. The view follows the drawn, interpolated hero position. Walls and floors shorten the camera arm using the current navigation geometry, including moving doors and floors. Dialogues and movies retain ownership of their cameras.
+Hurt characters and enemies fighting the party show health bars in direct views. Safe zones hide combat UI. The view follows the drawn, interpolated hero position. Walls and floors shorten the camera arm using the current navigation geometry, including moving doors and floors. Dialogues and movies retain ownership of their cameras.
 
-Movement follows held input directly on the authority, without choosing a route around obstacles. Releasing input stops at the authority position. Diagonal input can slide along a wall; actors, slopes, stance clearance and village boundaries still block movement. Stick tilt controls speed within the selected gait. Interaction takes priority until held movement is released.
+Movement follows held input on the authority. Short native walking curves handle corners in narrow openings; they never create a distant navigation destination. Releasing input stops at the authority position. Diagonal input can slide along a wall; actors, slopes, stance clearance and village boundaries still block movement. Stick tilt controls speed within the selected gait. Interaction takes priority until held movement is released.
 
-Each weapon swing is a committed animation. The hero stays ready between repeated swings and relaxes after attack recovery, or when walking away. Contact is checked against nearby bodies in its arc at the impact time; turning away, being too far away, another floor or a solid obstruction prevents contact. Arrows travel straight and can miss a moving target. Geometric contact replaces the normal weapon hit/miss roll in this mode. Damage, armour, wounds, equipment wear and weapon spells still use the combat system. Spells retain their existing targeting and resource rules.
+Moving attacks are enabled by default in both direct views. Steering remains separate from the committed swing and is reduced to 65% during its animation. Standing locomotion blends into the lower body while the original upper-body attack continues; strafing and backpedaling retain the view heading. Hair and equipment attachments use the same final pose as the weighted body. Each weapon swing keeps its original impact and cooldown. The hero stays ready between repeated swings and relaxes after attack recovery, or when walking away. Contact is checked against nearby bodies in its arc at the impact time; turning away, being too far away, another floor or a solid obstruction prevents contact. Arrows travel straight and can miss a moving target. Geometric contact replaces the normal weapon hit/miss roll in this mode. Damage, armour, wounds, equipment wear and weapon spells still use the combat system. Spells retain their existing targeting and resource rules.
 
 The controlled leader's idle combat AI is suspended until classic controls return or the player disconnects. This prevents an unrequested pursuit after a missed swing. Selected companions retain their own follow/combat behavior. Mode ownership is transient and does not change saved aggression preferences.
 
-The host validates ownership, direction, cooldown and script blocks. The new commands use the existing area/load-generation fence. Safe zones reject direct attacks and spell casts at both input and host authority. Free attacks can still hit friendly characters outside safe zones. Authored camp walking limits, blocked characters, closed exits and scripted escape orders still apply. Movement held across a loading screen needs to be released before it can start in the new area.
+The host validates ownership, direction, cooldown and script blocks. The new commands use the existing area/load-generation fence. Safe zones reject direct attacks and spell casts at both input and host authority. Free attacks can still hit friendly characters outside safe zones. Authored camp walking limits, blocked characters, closed exits and scripted escape orders still apply. Keyboard movement can resume after a loading barrier. Held attacks and controller sticks must first return to neutral.
+
+The crosshair contracts when the weapon is ready and expands during recovery. A green centre indicates a reachable enemy, amber warns of a friendly body, and an orange slash indicates obstructing geometry. Melee labels distinguish in-reach and out-of-reach targets. A brief diagonal flash confirms an actual weapon contact; co-op uses the host's hit sequence, never an inferred health change. Geometry is checked again at impact, so a moving target can still evade a swing.
+
+The first-person eye uses a stable authored posture anchor, with eased standing/crouching/crawling height changes. Scripted lying poses use an external view until direct movement resumes. Third-person wall clearance shortens immediately and eases back outward.
+
+The combined Feedback 4 candidate uses protocol **21**. All peers must use the same build. [Current validation](validation/direct-controls-2026-10-12.json) covers this update; earlier results below retain their original scope.
 
 Experimental 6 shipped these controls with protocol **11**, but a Camera key-binding row overwrote the control-mode selector. The local follow-up moves the selector to its own row. 1.0.4 Experimental 1 uses protocol **14**, including mod/profile matching; peers need matching builds. The selector and safe-zone changes were included in 1.0.3.
 

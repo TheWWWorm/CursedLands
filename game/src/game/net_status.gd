@@ -337,7 +337,7 @@ func _rpc_chat(idx: int, player_name: String, text: String) -> void:
 # drops the connection.
 
 ## Remake co-op protocol; raise it when the messages change incompatibly.
-const PROTOCOL := 20   # compressed campaign state on the ordered gameplay channel
+const PROTOCOL := 21   # independent direct steering, pose and confirmed-hit state
 const CoopDb := preload("res://src/game/coop_db.gd")
 
 

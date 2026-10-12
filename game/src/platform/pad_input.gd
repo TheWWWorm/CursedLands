@@ -385,13 +385,13 @@ func deadzone() -> float:
 
 ## A stick with a radial deadzone, rescaled so the edge of the deadzone is 0
 ## (0..1 length). Option pad_swap_sticks swaps the two.
-func stick(left := true) -> Vector2:
+func stick(left := true, aim_deadzone := -1.0) -> Vector2:
 	if GameData.option("pad_swap_sticks") != 0:
 		left = not left
 	var v := Vector2(float(_axes.get(JOY_AXIS_LEFT_X if left else JOY_AXIS_RIGHT_X, 0.0)),
 		float(_axes.get(JOY_AXIS_LEFT_Y if left else JOY_AXIS_RIGHT_Y, 0.0)))
 	var l := v.length()
-	var dz := deadzone()
+	var dz := clampf(aim_deadzone, 0.0, 0.95) if aim_deadzone >= 0.0 else deadzone()
 	if l <= dz or not enabled():
 		return Vector2.ZERO
 	return v / l * clampf((l - dz) / (1.0 - dz), 0.0, 1.0)

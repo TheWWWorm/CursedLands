@@ -2379,10 +2379,13 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 						"village_limit":village_move_limit()}
 					# Updating the held direction does not cancel a committed
 					# swing, nor repeatedly restart an animation or route.
-					if u.order.get("type","") == "direct_move":
-						u.order.merge(steering,true)
-					else:
-						u.command(steering)
+					if u.direct_steering.is_empty():
+						if u.order.get("type", "") != "direct_attack": u.order = {}
+						u.orders = u.orders.filter(func(o): return o.get("type", "") == "direct_attack")
+						u.path = PackedVector2Array()
+						u.remove_meta("interact")
+						u.remove_meta("walk_exit")
+					u.direct_steering = steering
 		"direct_cancel":
 			for u in mine: u.cancel_direct_attack()
 		"direct_attack":

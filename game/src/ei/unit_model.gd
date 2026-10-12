@@ -904,7 +904,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		hmat = wmat.duplicate()
 
 	# --- node hierarchy (base parts + extras that have meshes)
-	var weld: bool = smooth_joints and bool(unit.get("weld", true))
+	var weld: bool = bool(unit.get("smooth_joints", smooth_joints)) and bool(unit.get("weld", true))
 	var morphs := EIAnim.morphs(template)
 	var nodes := {}
 	var geometry_parts: Array[WeakRef] = []
@@ -1254,6 +1254,48 @@ func set_head_hidden(hidden: bool) -> void:
 		if hidden: _head_visible = _head.visible
 		_head.visible = false if hidden else _head_visible
 	if is_instance_valid(_welded_head): _welded_head.visible = not hidden and _head_visible
+
+
+## A stable eye anchor from the authored resting pose. Reading its tracks
+## avoids moving the live skeleton or inheriting attack/walk head motion.
+var _view_eyes := {}
+
+func view_eye_offset(state: int) -> Vector3:
+	if _view_eyes.has(state): return _view_eyes[state]
+	var clip := ""
+	var rest_state := ST_ATTACK if state == ST_NEUTRAL and not has_neutral() else state
+	var query := rest_state | AC_IDLE | STAGE_CYCLE | MOD_1
+	for e: Dictionary in adb:
+		if _same(int(e.code), query, false) and has_anim(e.name):
+			clip = e.name
+			if int(e.code) & 0x7fff == 0: break
+	if clip.is_empty() or not is_instance_valid(_head):
+		return Vector3(0, 1.6, 0)
+	var anim := player.get_animation("ei/" + clip)
+	var chain: Array[EIAnimPart] = []
+	var node := _head as EIAnimPart
+	while node:
+		chain.push_front(node)
+		node = node.animation_parent
+	var rotations := {}
+	var positions := {}
+	for i in anim.get_track_count():
+		var path := anim.track_get_path(i)
+		var part := get_node_or_null(NodePath(path.get_concatenated_names())) as EIAnimPart
+		if not part in chain: continue
+		if anim.track_get_type(i) == Animation.TYPE_VALUE:
+			rotations[part] = anim.value_track_interpolate(i, 0.0)
+		elif anim.track_get_type(i) == Animation.TYPE_POSITION_3D:
+			positions[part] = anim.position_track_interpolate(i, 0.0)
+	var rotation := Quaternion.IDENTITY
+	var at := Vector3.ZERO
+	for part: EIAnimPart in chain:
+		at += rotation * (positions.get(part, part.position) as Vector3)
+		var key: Quaternion = rotations.get(part, Quaternion.IDENTITY)
+		rotation = key if EIAnim.absolute or part.animation_parent == null else (rotation * key if EIAnim.parent_first else key * rotation)
+	var eye := at + rotation * _eye_offset
+	_view_eyes[state] = eye
+	return eye
 
 
 func eye_position() -> Vector3:

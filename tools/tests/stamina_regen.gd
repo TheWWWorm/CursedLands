@@ -32,7 +32,9 @@ func _ready() -> void:
 	recover()
 	check(is_equal_approx(u.hp,54.0) and u.mana==50.0,"off keeps normal HP recovery and no movement stamina recovery")
 	check(not u.always_regenerate_stamina(),"host rule overrides local preference")
-	u.order = {}; recover()
+	u.order = {}; u.direct_steering={"direction":Vector2.RIGHT};recover()
+	check(u.mana==50.0,"independent direct steering retains active stamina rules")
+	u.direct_steering.clear();recover()
 	check(is_equal_approx(u.mana,50.5),"off retains normal idle stamina rate")
 	s.mod_config.rules.stamina_regen = 1
 	for action in ["direct_move","move","attack","cast"]:

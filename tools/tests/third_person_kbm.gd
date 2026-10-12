@@ -46,6 +46,9 @@ func order_target(t: GameUnit) -> bool:
 	return hero.orders.size()==1 and hero.orders[0].get("target")==t
 func prepare() -> void:
 	s.set_physics_process(false);s.world.set_process(false);s.world.set_physics_process(false);s.world.vm.instances.clear()
+	# These cases set visibility explicitly. The periodic fog refresh must
+	# not replace a prepared hidden/fogged/invisible state between key events.
+	g.get_node("UnitFog").set_process(false)
 	hero=s.party_units(0)[0];hero.blocked=false;g.selected.assign([hero]);g.rig.release()
 	var h:Dictionary=hero.get_meta("hero");h.skills={"astral":100,"fire":100};h.spells=["healing{}","arrow{}","healing{e1;e1}"];h.int=25.0
 	Combat.hero_stats(hero,h);hero.mana=hero.max_mana

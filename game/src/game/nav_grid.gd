@@ -2651,8 +2651,12 @@ func _shortcut_ok(L: Layer, a: Vector2, b: Vector2, along: int, flat: bool) -> b
 func _line_cost(L: Layer, a: Vector2, b: Vector2, flat: bool, actors := true) -> int:
 	var A := L.astar
 	var steps := int(a.distance_to(b) * 4.0) + 1
-	var px := floori(a.x / CELL)
-	var py := floori(a.y / CELL)
+	# Direct steering must use the same native boundary ties as direct_line.
+	# floor() selects the opposite side of some exact half-metre boundaries,
+	# making an open passage fail its slope/terrain check against a wall cell.
+	var first := Vector2i(floori(a.x / CELL), floori(a.y / CELL)) if actors else cell(a)
+	var px := first.x
+	var py := first.y
 	var sx := size.x
 	if px < 0 or py < 0 or px >= sx or py >= size.y:
 		return -1
@@ -2663,8 +2667,9 @@ func _line_cost(L: Layer, a: Vector2, b: Vector2, flat: bool, actors := true) ->
 	var total := 0
 	for s in range(1, steps + 1):
 		var p := a.lerp(b, float(s) / steps)
-		var cx := floori(p.x / CELL)
-		var cy := floori(p.y / CELL)
+		var current := Vector2i(floori(p.x / CELL), floori(p.y / CELL)) if actors else cell(p)
+		var cx := current.x
+		var cy := current.y
 		if cx == px and cy == py:
 			continue
 		if cx < 0 or cy < 0 or cx >= sx or cy >= size.y or (actors and A.is_point_solid(Vector2i(cx, cy))):

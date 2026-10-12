@@ -171,6 +171,15 @@ var fogged := false   # out of this player's sight (UnitFog, client-side only)
 # --- orders
 ## Transient input ownership; never written into the character/save.
 var direct_controlled := false
+## Independent held input: a swing keeps its original clip and impact deadline.
+var direct_steering := {}
+var direct_motion := Vector2.ZERO
+var direct_hit_serial := 0
+var direct_recovery := 0.0
+var _direct_pose: DirectPose
+var _direct_joints := false
+var _direct_previous := Vector2.INF
+var _direct_terrain := {}
 var direct_heading := NAN
 var direct_look_until := 0
 var orders: Array[Dictionary] = []:
@@ -638,16 +647,17 @@ func figure_info() -> Dictionary:
 	shown.complexion = figure_complexion()
 	# An actual effective zero build is not the absent-map-override sentinel.
 	shown.effective_complexion = true
+	if _direct_joints: shown.smooth_joints = true
 	return shown
 
 
 ## Refresh only when magic changed the build. Preserve the playing mixer,
 ## blend, queue and clock when the native translation height factor matches;
 ## otherwise restore the same clip/phase under the updated height factor.
-func refresh_figure() -> void:
+func refresh_figure(force := false) -> void:
 	if model == null:
 		return
-	if model.get_meta("complexion", Vector3.INF) == figure_complexion():
+	if not force and model.get_meta("complexion", Vector3.INF) == figure_complexion():
 		return
 	var shown := figure_info()
 	# The replacement copies the old rig's current keys and transforms.
@@ -1104,6 +1114,7 @@ func command(o: Dictionary, queue := false) -> void:
 	if dead:
 		return
 	if not queue:
+		if o.get("type", "") not in ["direct_attack", "direct_move"]: stop_steering()
 		# A replacement order cancels the pending arrival interaction.
 		# Callers attach the new interaction after posting its approach.
 		remove_meta("interact")
@@ -1146,7 +1157,7 @@ func attack(t: GameUnit, queue := false, aim := -1, run := false, path_notice :=
 
 
 func is_idle() -> bool:
-	return order.is_empty() and orders.is_empty() and _anim_lock <= 0.0
+	return order.is_empty() and orders.is_empty() and direct_steering.is_empty() and _anim_lock <= 0.0
 
 
 ## The original village dialogue gate, not the simulation's is_idle().
@@ -1481,6 +1492,9 @@ func client_tick_effects() -> void:
 
 func tick(dt: float) -> void:
 	var started := Time.get_ticks_usec() if world.profile_simulation else 0
+	if _direct_pose: _direct_pose.restore_pose()
+	direct_motion = Vector2.ZERO
+	_direct_previous = pos
 	_moving = false
 	_move_speed = 0.0
 	_draw_motion_active = false
@@ -1569,6 +1583,7 @@ func _tick(dt: float) -> void:
 		# (0x10, 0x20 and the AI's "already has it"), the
 		# command / AI code, nor any effect switch but the visuals
 		# . Like enlarge / shrink it only shows.
+	_step_direct_steering(dt)
 	if not _pending_hit.is_empty():
 		_pending_hit.t -= dt
 		# Native549160 completes when the integer end counter is reached.
@@ -1589,6 +1604,10 @@ func _tick(dt: float) -> void:
 		world.ai.player_perceive(self)
 	if _anim_lock > 0.0:
 		_anim_lock -= dt
+		return
+	if direct_controlled and order.is_empty() and orders.is_empty() and not direct_steering.is_empty():
+		if _moving: _walk_action()
+		else: _set_action("idle")
 		return
 	if direct_controlled and not blocked and is_finite(direct_heading) \
 		and Time.get_ticks_msec() <= direct_look_until and order.is_empty() and orders.is_empty():
@@ -1830,10 +1849,81 @@ func _play_clip(clip: String, restart := false) -> float:
 	return model.player.get_animation("ei/" + clip).length
 
 
-## Shoulder controls walk only the held direction. Each authority tick checks
-## terrain, slopes, actors and village bounds; a blocked direction may slide
-## along an axis, but never starts a route around the obstacle.
-func _do_direct_move(dt: float) -> void:
+## A short native curve bridges raster corners that ordinary walking rounds.
+## It is bounded to the held direction, expires with steering and never gives
+## the unit a destination order. Actor sweeps and village limits still apply.
+func _direct_terrain_step(v: Vector2, dt: float, may_start: bool) -> Vector2:
+	var nav := world.nav
+	var forward := v.normalized()
+	var velocity := speed() * v.length()
+	if not _direct_terrain.is_empty() and (not pos.is_equal_approx(_direct_terrain.at) \
+			or forward.dot(_direct_terrain.direction) < 0.98 \
+			or not is_equal_approx(velocity, _direct_terrain.speed) \
+			or nav.map_rev != _direct_terrain.revision or move_class() != _direct_terrain.cls):
+		_direct_terrain.clear()
+	if _direct_terrain.is_empty():
+		if not may_start or velocity <= 0.001: return Vector2.INF
+		var goal := pos + forward * 1.0
+		var route := nav.find_path(pos, goal, [self], [], 0.0, move_class(), false, facing)
+		if route.is_empty(): return Vector2.INF
+		var progress := (route[-1] - pos).dot(forward)
+		if progress < 0.25 or progress > 1.5: return Vector2.INF
+		var record := nav.motion_record(pos, route, move_class())
+		var cells: Array[Vector2i] = []; cells.assign(record.cells)
+		var spline := MotionSpline.new()
+		spline.build(pos, route[-1], cells, record.values, velocity * TICK / NavGrid.CELL, 1e8, forward.angle())
+		if not is_finite(spline.duration): return Vector2.INF
+		# Bound the actual native curve; cell centres overstate a corner's
+		# detour because native walking uses the shared edge of those cells.
+		var length := 0.0
+		var previous := pos
+		for i in range(1, 33):
+			var point: Vector2 = spline.sample(spline.duration * float(i) / 32.0).p
+			length += previous.distance_to(point)
+			previous = point
+			var offset := point - pos
+			if offset.dot(forward) < -0.05 or absf(offset.cross(forward)) > 0.75: return Vector2.INF
+		if length > 2.0: return Vector2.INF
+		_direct_terrain = {"motion":spline,"time":0.0,"direction":forward,"speed":velocity,
+			"revision":nav.map_rev,"cls":move_class(),"at":pos}
+	var motion: NavSpline = _direct_terrain.motion
+	var time := minf(float(_direct_terrain.time) + dt / TICK, motion.duration)
+	var next: Vector2 = motion.sample(time).p
+	if (next - pos).dot(v) < -0.01 * v.length() or _outside_village_move(next) or nav.steering_blocker(self, next) != null:
+		_direct_terrain.clear()
+		return Vector2.INF
+	_direct_terrain.time = time
+	_direct_terrain.at = next
+	if time >= motion.duration: _direct_terrain.clear()
+	return next
+
+
+## Held movement uses straight steps, short native terrain corners or wall
+## sliding. Release/reversal stays immediate; it never issues a move order.
+func _step_direct_steering(dt: float) -> void:
+	if direct_steering.is_empty(): return
+	if not direct_controlled or blocked or Time.get_ticks_msec() > int(direct_steering.until):
+		stop_steering()
+		return
+	# Posture transitions, spellcasting and scripted poses retain their locks.
+	if action.begins_with("anim:") or (_anim_lock > 0.0 and action != "attack"):
+		return
+	resting = false
+	var saved := order
+	var from := pos
+	order = direct_steering.duplicate()
+	if action == "attack" and _anim_lock > 0.0:
+		order.direction *= 0.65
+	_do_direct_move(dt, true)
+	order = saved
+	direct_motion = pos - from
+	_talk_command = 1 if _moving else 0
+	_talk_posted = 9
+	if _moving and running and action == "attack" and has_meta("hero") and not _sandbox_mana() and not free_running():
+		mana = maxf(0.0, mana - max_mana / 150.0 * dt / TICK)
+
+
+func _do_direct_move(dt: float, layered := false) -> void:
 	if not direct_controlled or blocked or Time.get_ticks_msec() > int(order.until):
 		stop_steering()
 		_set_action("idle")
@@ -1842,6 +1932,9 @@ func _do_direct_move(dt: float) -> void:
 	var v: Vector2 = order.direction
 	var offset := v * speed() * dt
 	var from := pos
+	# Try the corner before axis sliding: a tiny sideways component can
+	# otherwise keep making negligible progress forever at a grid corner.
+	var guided := _direct_terrain_step(v, dt, not world.nav.direct_line(self, pos + offset, false))
 	var steps: Array[Vector2] = [offset]
 	var obstacle := world.nav.steering_blocker(self, pos + offset)
 	if obstacle:
@@ -1854,6 +1947,9 @@ func _do_direct_move(dt: float) -> void:
 		steps.append(x if absf(offset.x) >= absf(offset.y) else y)
 		steps.append(y if absf(offset.x) >= absf(offset.y) else x)
 	for step: Vector2 in steps:
+		if guided != Vector2.INF:
+			pos = guided
+			break
 		var q := pos + step * world.nav.step_factor(pos,pos+step,move_class())
 		if _outside_village_move(q) or not world.nav.direct_line(self,q,false): continue
 		if world.nav.steering_blocker(self,q) != null: continue
@@ -1861,15 +1957,20 @@ func _do_direct_move(dt: float) -> void:
 		break
 	path = PackedVector2Array()
 	_goal = Vector2.INF
-	_turn_to(direct_heading if is_finite(direct_heading) and Time.get_ticks_msec() <= direct_look_until else v.angle(),dt)
+	if not layered or _anim_lock <= 0.0:
+		_turn_to(direct_heading if is_finite(direct_heading) and Time.get_ticks_msec() <= direct_look_until else v.angle(),dt)
 	_moving = pos.distance_squared_to(from) > 0.00000001
 	_move_speed = pos.distance_to(from) / dt if dt > 0.0 else 0.0
 	_draw_line_goal = pos + (pos-from) if _moving else Vector2.INF
-	if _moving: _walk_action()
-	else: _set_action("idle")
+	if not layered:
+		if _moving: _walk_action()
+		else: _set_action("idle")
 
 
 func stop_steering() -> void:
+	direct_steering.clear()
+	direct_motion = Vector2.ZERO
+	_direct_terrain.clear()
 	# A late key-up must not cancel a loot/use order or a committed strike.
 	if order.get("type","") == "direct_move":
 		order = {}
@@ -2566,6 +2667,10 @@ func _motion_future_sample(ticks: float) -> Dictionary:
 
 
 func _draw_motion_sample(fraction: float) -> Dictionary:
+	# Interpolate actual direct steps: extrapolating would overshoot a wall
+	# or snap back on key-up. Ordinary path curves retain their native clock.
+	if direct_controlled and _direct_previous != Vector2.INF and _direct_previous.distance_squared_to(pos) < 4.0:
+		return {"p":_direct_previous.lerp(pos,clampf(fraction,0.0,1.0)), "d":Vector2.from_angle(facing), "v":_move_speed / SPEED_SCALE}
 	if _draw_motion_active and _motion != null and not path.is_empty() and _motion_path == path:
 		return _motion_future_sample(fraction)
 	if _draw_line_goal != Vector2.INF and path.size() == 1 and path[0] == _draw_line_goal \
@@ -2602,7 +2707,10 @@ func _do_direct_attack(dt: float) -> void:
 		change_posture(STANCE_NONE)
 		return
 	if not _turn_to(Vector2(d.x,-d.z).angle(),dt): return
-	if _attack_cd > 0.0 or _update_pose(): return
+	if _attack_cd > 0.0:
+		if _moving: _walk_action()
+		return
+	if _update_pose(): return
 	var len := maxf(model.act("attack",randi_range(1,3),0.05),0.6)
 	action = "attack"
 	_anim_lock = len
@@ -3574,6 +3682,18 @@ func _process(dt: float) -> void:
 
 
 func _present_frame(dt: float) -> void:
+	if _direct_pose: _direct_pose.restore_pose()
+	_present_native_frame(dt)
+	if direct_controlled and not _direct_joints and model and model.get_node_or_null("hp/bd"):
+		_direct_joints = true
+		# Reuse the existing mixer, including its crossfade and queued clips.
+		refresh_figure(true)
+	if direct_controlled and _direct_pose == null:
+		_direct_pose = DirectPose.new(self)
+		add_child(_direct_pose)
+
+
+func _present_native_frame(dt: float) -> void:
 	if _screen == null:
 		return
 	# Current peers send movement speed explicitly, so hidden animation does
@@ -3787,6 +3907,7 @@ static var native_unobserved_pose := ClassDB.class_has_method("AnimationPlayer",
 func anim_flush(defer_pose := false) -> void:
 	if not defer_pose and _presentation_sleeping and not _presentation_advancing:
 		wake_presentation()
+	if _direct_pose: _direct_pose.restore_pose()
 	if _anim_acc > 0.0 and model and model.player:
 		if world and is_instance_valid(world.ground_marks):
 			world.ground_marks.queue_unit(self)
@@ -3959,7 +4080,7 @@ func _sync_transform(draw_dt := -1.0) -> void:
 	var p := pos
 	var yaw := facing
 	_draw_move_speed = _move_speed
-	if world.authority and (_draw_motion_active or _draw_line_goal != Vector2.INF):
+	if world.authority and (_draw_motion_active or _draw_line_goal != Vector2.INF or (direct_controlled and _direct_previous != Vector2.INF)):
 		#  evaluates the existing path at integer server time
 		# plus the draw-clock remainder.
 		var sample := _draw_motion_sample(world.logic_fraction())
@@ -4093,14 +4214,18 @@ func snapshot() -> Array:
 	for p: UnitBodyPart in parts:
 		ph.append(clampi(roundi(float(p.cur) / maxf(float(p.max), 0.001) * 255.0), 0, 255))
 	# Co-op bandwidth: values on a binary grid fit 4-byte floats in var_to_bytes.
-	return [uid, snappedf(pos.x, 1.0 / 64.0), snappedf(pos.y, 1.0 / 64.0), snappedf(facing, 1.0 / 256.0), action,
+	var row := [uid, snappedf(pos.x, 1.0 / 64.0), snappedf(pos.y, 1.0 / 64.0), snappedf(facing, 1.0 / 256.0), action,
 		snappedf(hp, 1.0 / 64.0), int(dead) | (int(hidden) << 1) | (severed_mask() << 2)
 		| (int(alert) << 8) | (stance << 9) | (limp << 11) | (int(not aggressive) << 13)
 		| (clampi(faction, 0, 31) << 14) | (clampi(controller + 1, 0, 15) << 19) | (int(gait_run) << 23)
 		| (int(strike_miss) << 24) | (int(resting) << 25) | (int(blocked) << 26)
-		| (int(village_talk_ready()) << 27), snappedf(mana, 1.0 / 16.0), ph,
+		| (int(village_talk_ready()) << 27) | (int(direct_controlled) << 28), snappedf(mana, 1.0 / 16.0), ph,
 		snappedf(_max_hp, 1.0 / 16.0), snappedf(max_mana, 1.0 / 16.0), _buff_snapshot(), _perception_snapshot(),
 		snappedf(_move_speed, 1.0 / 256.0), _action_serial, combat_target_id()]
+	if direct_controlled:
+		row.append(PackedInt32Array([roundi(direct_motion.x * 4096.0), roundi(direct_motion.y * 4096.0),
+			ceili(maxf(0.0, maxf(_attack_cd, _anim_lock)) * 1000.0), direct_hit_serial, int(running)]))
+	return row
 
 
 var _perception_wire_ids := []
@@ -4245,6 +4370,15 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 	blocked = bool(flags & (1 << 26))
 	resting = bool(flags & (1 << 25))
 	_talk_remote_ready = bool(flags & (1 << 27))
+	direct_controlled = bool(flags & (1 << 28))
+	direct_motion = Vector2.ZERO
+	direct_recovery = 0.0
+	if direct_controlled and s.size() > 16 and s[16] is PackedInt32Array and s[16].size() == 5:
+		var state: PackedInt32Array = s[16]
+		direct_motion = Vector2(state[0], state[1]) / 4096.0
+		direct_recovery = maxf(0.0, state[2] / 1000.0)
+		direct_hit_serial = state[3]
+		running = bool(state[4])
 	_apply_perception_snapshot(s[12] if s.size() > 12 else null)
 	# Optional trailing field: older peers omit it; no order is installed on
 	# the client. Keep the ID so arrival order of actor snapshots is irrelevant.

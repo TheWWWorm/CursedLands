@@ -14,7 +14,7 @@ func tick(n := 1) -> void:
 		s.world.vm._check_interactions()
 
 func place() -> void:
-	reset();hero.pos=start;hero._perceive_next=INF;hero.ai_next=INF
+	reset();hero.stop_steering();hero.pos=start;hero._perceive_next=INF;hero.ai_next=INF
 	s.world.nav.track_unit(hero);hero._sync_transform(0)
 
 func _ready() -> void:
@@ -62,10 +62,10 @@ func _ready() -> void:
 	check(hero.orders.is_empty(),"malformed and overflowing steering inputs are refused")
 	send(Vector2.RIGHT,1);check(hero.orders.is_empty(),"another player cannot steer this hero")
 	hero.blocked=true;send(Vector2.RIGHT);check(hero.orders.is_empty(),"script-blocked hero cannot be steered");hero.blocked=false
-	send(Vector2.RIGHT);tick();hero.order.until=Time.get_ticks_msec()-1;at=hero.pos;tick(10)
+	send(Vector2.RIGHT);tick();hero.direct_steering.until=Time.get_ticks_msec()-1;at=hero.pos;tick(10)
 	check(hero.pos==at and hero.is_idle(),"missing input refresh expires without runaway movement")
 	place();send(Vector2.RIGHT);tick()
-	hero.order.village_limit=Vector3(start.x,start.y,0.8);tick(70)
+	hero.direct_steering.village_limit=Vector3(start.x,start.y,0.8);tick(70)
 	check(hero.pos.distance_to(start)<=0.801,"steering respects the scripted village movement boundary")
 	place()
 	var layer:=nav.layer(hero.move_class())

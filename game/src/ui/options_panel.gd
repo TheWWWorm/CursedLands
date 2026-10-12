@@ -89,6 +89,9 @@ const SCREEN_GROUP := 12   # the remake's Screen tab
 const WORLD_GROUP := 13    # Remake › World and textures (also Graphics › …)
 const LIGHT_GROUP := 14    # Remake › Lighting and shadows (also Graphics › …)
 const EFFECTS_GROUP := 15  # Remake › Weather and effects (also Graphics › …)
+const DIRECT_GROUP := 24
+const DIRECT_KEYS_GROUP := 25
+const DIRECT_PAD_GROUP := 26
 const CAMERA_GROUP := 16   # Remake › Camera
 const INTERFACE_GROUP := 17   # Remake › Interface and controls
 const GAMEPLAY_GROUP := 18 # Remake › Gameplay
@@ -107,7 +110,7 @@ const SECTIONS := [WORLD_GROUP, TERRAIN_GROUP, LIGHT_GROUP, WATER_GROUP, EFFECTS
 ## The remake pages and the page their « row (and Esc / B) leads back to; the
 ## parent's button is lit while one is up. The graphics sections also hang
 ## under Graphics (GRAPHICS_LINKS) when opened from there (`_came_from`).
-const PARENT := {WORLD_GROUP: REMAKE_GROUP, LIGHT_GROUP: REMAKE_GROUP,
+const PARENT := {DIRECT_GROUP: CAMERA_GROUP, DIRECT_KEYS_GROUP: DIRECT_GROUP, DIRECT_PAD_GROUP: DIRECT_GROUP, WORLD_GROUP: REMAKE_GROUP, LIGHT_GROUP: REMAKE_GROUP,
 	EFFECTS_GROUP: REMAKE_GROUP, CAMERA_GROUP: REMAKE_GROUP, INTERFACE_GROUP: REMAKE_GROUP,
 	GAMEPLAY_GROUP: REMAKE_GROUP, COOP_GROUP: REMAKE_GROUP, PAD_GROUP: REMAKE_GROUP,
 	PAD_BUTTONS_GROUP: PAD_GROUP, TERRAIN_GROUP: REMAKE_GROUP, WATER_GROUP: REMAKE_GROUP}
@@ -292,6 +295,8 @@ func _section_label(g: int) -> String:
 ## The group button's label, or for a remake page its path as the title
 ## ("Remake › Gamepad › Buttons", "Graphics › Water").
 func _group_label(g: int) -> String:
+	if g in [DIRECT_KEYS_GROUP, DIRECT_PAD_GROUP]:
+		return "%s › %s" % [_section_label(DIRECT_GROUP), _section_label(g)]
 	if _parent(g) >= 0:
 		return "%s › %s" % [_group_label(_parent(g)), _section_label(g)]
 	return _section_label(g)
@@ -332,6 +337,7 @@ func _show_group(g: int) -> void:
 	if _group in TAB_ORDER:
 		_came_from = _group
 	_rows.clear()
+	_select_key_profile()
 	for o: Array in GameData.OPTIONS:
 		if int(o[3]) != _group:
 			continue
@@ -384,7 +390,14 @@ func _show_group(g: int) -> void:
 			"label": "« " + _section_label(_parent(_group)), "tip": ""}
 		if _group in LOOK_PAGES:
 			_rows[PRESET_ROW] = _look_row()
-		if _group == PAD_GROUP:
+		if _group == CAMERA_GROUP:
+			_rows[12] = _section_link(DIRECT_GROUP)
+		elif _group == DIRECT_GROUP:
+			_rows[11] = _section_link(DIRECT_PAD_GROUP)
+			_rows[12] = _section_link(DIRECT_KEYS_GROUP)
+		elif _group == DIRECT_KEYS_GROUP:
+			_rows[12] = {"kind":"link", "name":"", "direct_defaults":true, "label":RemakeText.t("Default keys"), "tip":""}
+		elif _group == PAD_GROUP:
 			_rows[11] = {"kind": "link", "name": "", "gyro_calibrate": true,
 				"label": RemakeText.t(PAD_GYRO_CALIBRATE[0]), "tip": _remake_tip(PAD_GYRO_CALIBRATE)}
 			_rows[BUTTONS_ROW] = {"kind": "link", "name": "", "to": PAD_BUTTONS_GROUP,
@@ -411,12 +424,12 @@ func _show_group(g: int) -> void:
 ## editable copies of the bindings. The remake
 ## lists all aliases so the WASD layout's arrows / Delete / End are visible.
 func _load_keys() -> void:
-	_key_profiles = {0: EIKeymap.bindings(0), 1: EIKeymap.bindings(1)}
+	_key_profiles = {0: EIKeymap.bindings(0), 1: EIKeymap.bindings(1), 2: EIKeymap.bindings(2)}
 	_select_key_profile()
 
 
 func _select_key_profile() -> void:
-	var profile := 1 if int(_values.get("camera_style", 1)) == 1 and int(_values.get("cam_wasd", 0)) == 1 else 0
+	var profile := 2 if _group == DIRECT_KEYS_GROUP else 1 if int(_values.get("camera_style", 1)) == 1 and int(_values.get("cam_wasd", 0)) == 1 else 0
 	_kmap = _key_profiles[profile]
 	_klist.clear()
 	for a: Array in EIKeymap.ACTIONS:
@@ -607,6 +620,10 @@ func _toggle(r: int) -> void:
 					_rows[r].tip = "<messbox>" + RemakeText.t("No gyroscope is available.") + "</messbox>"
 					_sel = r
 					queue_redraw()
+			elif row.get("direct_defaults", false):
+				_key_profiles[2] = EIKeymap.direct_defaults()
+				_select_key_profile()
+				_refresh_keys()
 			elif row.get("pad_defaults", false):
 				_pad_map = PadInput.DEFAULTS.duplicate()
 				_refresh_pad()
