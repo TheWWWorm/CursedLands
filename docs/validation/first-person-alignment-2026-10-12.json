@@ -539,9 +539,321 @@
     "tools/tests/first_person_torso.gd": "b7702e8cc2442fcde72217f2926f3747189e47f329f6e4c5651bdd49f1b08957",
     "tools/tests/direct_moving_attacks.gd": "7b918be9d18d7f58ceca38e8127fd33093faeb7b81a3aa25bfdbcdb418a10257"
   },
-  "package_status": "Pending export and packaged Vulkan/HD checks.",
+  "package_status": "Passed Linux Vulkan runtime checks and Windows package structure checks.",
   "limitations": [
     "Windows binary will receive structural validation only; no Windows runtime is available in this session.",
     "No co-op network or simulation behavior is changed or WAN-tested in this camera correction."
-  ]
+  ],
+  "source_commit": "c369fb748d34549a2a5bf75f334ddab158b1c975",
+  "game_tree": "f1e56a99b073c0a4b1583483aae06297ee47661e",
+  "package_tests": [
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso",
+      "label": "package-torso",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.7-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 106.574,
+      "checks": 222,
+      "failures": [],
+      "details": {
+        "checks": 222,
+        "failures": [],
+        "variants": [
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/package-torso.log",
+      "log_sha256": "d91863192cf19b405156f6f0ba9b1ae99deed564dba2e1ac1c0e0d741d70b5d0"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/hd_interface_views",
+      "label": "package-hd",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.7-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/hd_interface_views.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 60.54,
+      "checks": 35,
+      "failures": [],
+      "details": {
+        "checks": 35,
+        "failures": []
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/package-hd.log",
+      "log_sha256": "912c91a89e2dbc5be4b5a63cdc5af0761cf59bdbffa517bf5fa92003d6b47ab2"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks",
+      "label": "package-moving-attacks",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.7-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks.gd",
+        "--mod-tests",
+        "--first-person"
+      ],
+      "exit_code": 0,
+      "seconds": 33.27,
+      "checks": 17,
+      "failures": [],
+      "details": {
+        "aligned_frames": 1887,
+        "attack_starts": [
+          {
+            "clip": "uattack09",
+            "remaining": 1.65,
+            "time": 1.87
+          },
+          {
+            "clip": "uattack05",
+            "remaining": 1.65,
+            "time": 3.52
+          },
+          {
+            "clip": "uattack08",
+            "remaining": 1.65,
+            "time": 5.17
+          },
+          {
+            "clip": "uattack09",
+            "remaining": 1.65,
+            "time": 6.81999999999999
+          },
+          {
+            "clip": "uattack09",
+            "remaining": 1.65,
+            "time": 8.46999999999998
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.65,
+            "time": 10.12
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.65,
+            "time": 11.77
+          }
+        ],
+        "camera_motion": 0.00263672578148544,
+        "checks": 17,
+        "collar_error": 2.64735504629243e-08,
+        "distance": 6.45124053955078,
+        "failures": [],
+        "first_person": true,
+        "joint_angle_error": 0.0009765625,
+        "joint_position_error": 0.0,
+        "leg_changes": 787,
+        "moving_frames": 121,
+        "run": false,
+        "torso_error": 0.0009765625,
+        "weapon": "sword"
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/package-moving-attacks.log",
+      "log_sha256": "9e5320c0349f4c4b2d94c9c87c6f6f337dc306403c7de6206e290eaa91e4d3b9"
+    }
+  ],
+  "package_test_checks": 274,
+  "package_test_failures": 0,
+  "total_checks": 939,
+  "package_integrity": {
+    "snapshot_game_files_exact": true,
+    "linux_windows_script_bytecode_identical": true,
+    "matched_compiled_scripts": 284,
+    "all_pack_resources_identical": true,
+    "original_game_assets_saves_and_dev_tools_excluded": true,
+    "reused_patched_runtime": "Feedback 6 runtime, 12 engine patches; executable hashes verified against its BUILD-INFO.json.",
+    "platforms": {
+      "linux-x86_64": {
+        "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.7-linux-x86_64",
+        "info": {
+          "version": "1.0.4-feedback.7",
+          "source_commit": "c369fb748d34549a2a5bf75f334ddab158b1c975",
+          "game_tree": "f1e56a99b073c0a4b1583483aae06297ee47661e",
+          "protocol": 21,
+          "platform": "linux-x86_64",
+          "target_os_runtime_tested": true,
+          "engine_patch_count": 12,
+          "compiled_scripts": 284,
+          "resource_count": 722,
+          "files": {
+            "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+            "CursedLands.pck": "fa4bf99fcf6a95f5af4eff61d3dc304b7d4f7cc01b1833355af4313aff9146f4",
+            "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+            "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+          }
+        }
+      },
+      "windows-x86_64": {
+        "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.7-windows-x86_64",
+        "info": {
+          "version": "1.0.4-feedback.7",
+          "source_commit": "c369fb748d34549a2a5bf75f334ddab158b1c975",
+          "game_tree": "f1e56a99b073c0a4b1583483aae06297ee47661e",
+          "protocol": 21,
+          "platform": "windows-x86_64",
+          "target_os_runtime_tested": false,
+          "engine_patch_count": 12,
+          "compiled_scripts": 284,
+          "resource_count": 722,
+          "files": {
+            "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+            "CursedLands.pck": "fa4bf99fcf6a95f5af4eff61d3dc304b7d4f7cc01b1833355af4313aff9146f4",
+            "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+            "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+          }
+        }
+      }
+    }
+  },
+  "visual_review": {
+    "screenshots": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/profiles/render-instance-male/data/godot/app_userdata/Cursed Lands/torso-idle-feet.png",
+        "sha256": "9a06aafeaa130d0b3afa9211c34199a8dc3e8b1056d3d0f086f897b942c4ee3d"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/profiles/render-instance-male/data/godot/app_userdata/Cursed Lands/torso-run-feet.png",
+        "sha256": "7878b68dd935fc9843b517a7c061e03bc89fa111e69b1f304f5ddf6f0cd8b511"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/profiles/render-instance-female/data/godot/app_userdata/Cursed Lands/torso-idle-feet.png",
+        "sha256": "61ec77e9a0d7c483b29e5ea09e84883ecd5ebb1a366cf9c73ebffcd47b797b83"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/profiles/package-torso/data/godot/app_userdata/Cursed Lands/torso-idle-feet.png",
+        "sha256": "6889ccaf2feda2bf49a4793712fbddcb3d170bbc333e2be35fac2acfdae138ae"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/profiles/package-torso/data/godot/app_userdata/Cursed Lands/torso-gait1-walk.png",
+        "sha256": "daea6e9c889095b6710349984257fb2678d1ee57bcaab2abc5114baa35db32a4"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/profiles/package-torso/data/godot/app_userdata/Cursed Lands/torso-gait0-idle.png",
+        "sha256": "b6189c3be641f5c9f0831a8a4b1fb179d467536d22caa3fab307fe50de7bcd30"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/profiles/package-hd/data/godot/app_userdata/Cursed Lands/first-person-walk-down.png",
+        "sha256": "d5fdda4e5f0c0b0c60a4dd5905112d063f5c97f7877e465118dc76017d07abed"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/profiles/package-hd/data/godot/app_userdata/Cursed Lands/hd-hud.png",
+        "sha256": "ee34cce39eaed7a6eda24c83628d39a4fadd7183a67854685be486cf35ab0121"
+      }
+    ],
+    "result": "Standing torso is centred under the viewpoint in OpenGL and Vulkan; no visible neck opening in the inspected standing/moving views. Low postures and the original third-person model are retained.",
+    "renderers": [
+      "OpenGL compatibility / Mesa llvmpipe",
+      "Vulkan Forward+ / NVIDIA RTX 3090"
+    ],
+    "hd_pack": "Installed community.hd-lands-textures@1.4.0; 302 texture overrides. HUD, tutorial, first-person movement/attacks and return to third person checked."
+  },
+  "pushed": false,
+  "published": false
 }
