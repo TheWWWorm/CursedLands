@@ -74,10 +74,9 @@ const ACTIONS := [[1, "pause", 3, 4], [2, "decel", 3, 3], [3, "accel", 3, 2], [4
 	[107, "direct_pointer", 25, 5],
 	[108, "direct_posture", 25, 6],
 	[109, "direct_aim", 25, 7],
-	[110, "direct_perspective", 25, 8],
-	[111, "direct_tactical", 25, 9],
-	[112, "direct_sprint", 25, 10],
-	[113, "direct_attack", 25, 11]]
+	[111, "direct_tactical", 25, 8],
+	[112, "direct_sprint", 25, 9],
+	[113, "direct_attack", 25, 10]]
 ## Keys the remake's own actions get when nothing is bound to them and the key
 ## is free (Delete / End turn the camera, as in Divinity: Original Sin 2).
 const REMAKE_DEFAULTS := {"camera_rotate_left": "DEL", "camera_rotate_right": "END"}
@@ -97,7 +96,7 @@ const DISPLAY_NAMES := {"CTRL": "Ctrl", "ALT": "Alt", "SHIFT": "Shift", "-": "-"
 const USER_FILE := "user://keyboard.ini"
 const WASD_FILE := "user://keyboard_wasd.ini"
 const DIRECT_FILE := "user://keyboard_direct.ini"
-const DIRECT_DEFAULTS := {"W": "direct_forward", "S": "direct_back", "A": "direct_left", "D": "direct_right", "E": "direct_interact", "TAB": "direct_pointer", "CTRL": "direct_posture", "ALT": "direct_aim", "V": "direct_perspective", "F6": "direct_tactical", "SHIFT": "direct_sprint", "F": "direct_attack"}
+const DIRECT_DEFAULTS := {"W": "direct_forward", "S": "direct_back", "A": "direct_left", "D": "direct_right", "E": "direct_interact", "TAB": "direct_pointer", "CTRL": "direct_posture", "ALT": "direct_aim", "F6": "direct_tactical", "SHIFT": "direct_sprint", "F": "direct_attack"}
 static var _direct_map := {}
 static var _direct_loaded := false
 

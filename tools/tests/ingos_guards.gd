@@ -13,10 +13,10 @@ func _ready()->void:
 	var w:=s.world;w.set_process(false);w.set_physics_process(false)
 	var actors:Array[GameUnit]=[];var replicas:Array[GameUnit]=[];var dips:=0;var remote_dips:=0
 	for u:GameUnit in w.units.values():
-		if u.info.name not in ["AGuard1","AGuard2"]:continue
+		if u.info.name not in ["AGuard1","AGuard2","Eda1","Eda2"]:continue
 		actors.append(u)
 		var r:=GameUnit.new();r.setup(w,u.info);add_child(r);replicas.append(r)
-	check(actors.size()==2,"both authored Ingos gate guards found")
+	check(actors.size()==4,"both authored Ingos gate guards and camp workers found")
 	var serials:=[]
 	for i in 400:
 		w.time+=GameUnit.TICK;w.vm.tick(GameUnit.TICK)
@@ -24,11 +24,12 @@ func _ready()->void:
 			var u:GameUnit=actors[n];u.tick(GameUnit.TICK);u.model.player.advance(GameUnit.TICK)
 			var r:GameUnit=replicas[n];r.apply_snapshot(u.snapshot());r.model.player.advance(GameUnit.TICK)
 			if i>10:
-				if u.action!="anim:uspecial10":dips+=1
-				if r.action!="anim:uspecial10":remote_dips+=1
+				var expected := "anim:uspecial08" if u.info.name in ["Eda1","Eda2"] else "anim:uspecial10"
+				if u.action!=expected:dips+=1
+				if r.action!=expected:remote_dips+=1
 		if i==10:
 			for u:GameUnit in actors:serials.append(u._action_serial)
-	check(dips==0,"no idle-pose interruption across seven authored guard cycles")
+	check(dips==0,"no idle-pose interruption across repeated authored guard and work cycles")
 	check(remote_dips==0,"co-op snapshots preserve the same uninterrupted pose")
 	for n in actors.size():
 		var u:GameUnit=actors[n]

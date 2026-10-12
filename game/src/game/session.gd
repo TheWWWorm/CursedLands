@@ -2441,6 +2441,7 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			if u and not u.dead and not u.blocked and Spells.known_usable(u, spell):
 				var tu: GameUnit = world.units.get(int(cmd.get("target", -1)))
 				u.command({"type": "cast", "spell": spell, "target": tu, "path_notice": true, "known_spell": true,
+					"in_place": cmd.t == "direct_cast",
 					"point": Vector2(float(cmd.get("x", u.pos.x)), float(cmd.get("y", u.pos.y)))})
 		"train":
 			var u := _hero_unit(int(cmd.get("unit", -1)), player)
@@ -2978,7 +2979,8 @@ func _item_command(cmd: Dictionary, player: int) -> void:
 				var at := tu.pos if tu else Vector2(float(cmd.get("x", 0.0)), float(cmd.get("y", 0.0)))
 				if point and at == Vector2.ZERO:
 					return   # native point pick's (0, 0) invalid sentinel
-				u.command({"type": "cast", "spell": sp, "target": null if point else tu, "item": item, "point": at})
+				u.command({"type": "cast", "spell": sp, "target": null if point else tu, "item": item, "point": at,
+					"in_place": bool(cmd.get("in_place", false))})
 				return
 			var tgt := u
 			if Spells.offensive(sp):

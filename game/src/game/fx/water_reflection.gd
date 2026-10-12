@@ -96,7 +96,11 @@ func _process(dt: float) -> void:
 	camera.size = source.size
 	camera.frustum_offset = source.frustum_offset
 	camera.near = source.near
-	camera.far = minf(source.far, REACH)
+	# The reflected bank has the same view depth as its virtual image. A
+	# shorter far plane cuts distant banks off at eye level, then reveals
+	# them as pitching down reduces their depth. REACH only bounds the water
+	# surface search; geometry must use the main view's draw distance.
+	camera.far = source.far
 	camera.global_transform = reflected_transform(source.get_camera_transform(), plane)
 	camera.cull_mask = (source.cull_mask & ~WATER_LAYER) | CAMERA_MARKER
 	RenderingServer.global_shader_parameter_set(&"ei_water_mirror", Vector3(plane, 0, 0))

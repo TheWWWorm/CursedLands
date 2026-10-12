@@ -4,16 +4,17 @@ Choose **Options → Remake → Camera → Control mode**. **Auto (gamepad)** is
 
 **Options → Remake → Camera → First / third person** provides separate FOV and mouse sensitivity for both views, mouse inversion, a separate editable key layout, and controller aim speeds, deadzone, response curve and axis inversion. The bindings below are defaults. Direct-control bindings are saved separately from tactical keyboard layouts.
 
-The default Compact control guide shows one small line for perspective, tactical view and the mouse cursor. It changes to a return hint while using the cursor or tactical view. Choose Full guide for the movement keys and additional crosshair explanations, or Off to hide the lower guide.
+The default Compact control guide shows one small line for camera mode and the mouse cursor. It changes to a return hint while using the cursor. Both guides keep clear of the camera-follow icon. Choose Full guide for the movement keys and additional crosshair explanations, or Off to hide the lower guide.
 
 | Input | Action |
 | --- | --- |
-| V / LT + R3 | Switch first/third person |
-| F6 / LT + View | Toggle tactical view and return to the previous perspective; retain selection and ordinary orders |
+| F6 | Cycle top-down → third person → first person; retain selection and ordinary orders |
+| LT + R3 | Switch first/third person on gamepad |
+| LT + View | Toggle tactical view and return to the previous perspective on gamepad |
 | Alt | Choose a body part for the next attack, including a target already under the crosshair |
 | WASD | Move relative to the camera; selected companions follow |
 | Shift while moving | Run, using the normal stamina and posture rules |
-| Ctrl | Toggle crouch/sneak in third- or first-person mode, where the zone permits it |
+| Ctrl | Tap to crouch or stand; hold to lie down, where the zone permits it. Releasing after a hold leaves the character prone; tap again to stand. |
 | Mouse | Turn and tilt the view |
 | Left mouse button / F / RT | Swing or shoot in the aimed direction; hold to repeat after the weapon cooldown; cast a selected spell |
 | E / A | Talk, loot, revive or use the object under the crosshair; pick up nearby loot without exact aiming; confirm a nearby open area exit. A also confirms the selected spell target. |
@@ -39,9 +40,11 @@ The host validates ownership, direction, cooldown and script blocks. The new com
 
 The crosshair contracts when the weapon is ready and expands during recovery. A green centre indicates a reachable enemy, amber warns of a friendly body, and an orange slash indicates obstructing geometry. Melee labels distinguish in-reach and out-of-reach targets. A brief diagonal flash confirms an actual weapon contact; co-op uses the host's hit sequence, never an inferred health change. Geometry is checked again at impact, so a moving target can still evade a swing.
 
-The first-person eye uses a stable authored posture anchor, with eased standing/crouching/crawling height changes. It sits ahead of the collar so looking down shows the torso and legs. The local body has a closed collar in place of the hidden neck, without clipping a hole through the chest. Its rendered body, arms and weapon stay centred laterally beneath the eye after the final animation pose, without adding camera bob or moving gameplay geometry. Leaving first person restores the original mesh and render transforms. Scripted lying poses use an external view until direct movement resumes. Third-person wall clearance shortens immediately and eases back outward.
+Selected spells in direct views cast from the character's current position. An out-of-range target leaves the spell selected and shows an out-of-range hint; it does not issue an approach command. Tactical controls retain the ordinary move-into-range behavior.
 
-The combined Feedback 4 candidate uses protocol **21**. All peers must use the same build. [Current validation](validation/direct-controls-2026-10-12.json) covers this update; earlier results below retain their original scope.
+The first-person eye uses a stable authored posture anchor, with eased standing/crouching/crawling height changes. Looking down shows the torso and legs. The local body has a closed collar in place of the hidden neck, without clipping a hole through the chest. Its rendered body, arms and weapon stay centred beneath the eye after the final animation pose, with enough clearance to keep the collar below the view. This does not add camera bob or move gameplay geometry. The complete original figure, including the head, casts the shadow. Leaving first person restores the original mesh and render transforms. Scripted lying poses use an external view until direct movement resumes. Third-person wall clearance shortens immediately and eases back outward.
+
+The local Feedback 8 candidate uses protocol **21**. All peers must use the same build. [Current validation](validation/direct-view-feedback-2026-10-12.json) covers the camera, posture, spell-range and Ingos presentation changes; earlier results below retain their original scope. The earlier [direct-control validation](validation/direct-controls-2026-10-12.json) covers the initial settings and input work.
 
 Experimental 6 shipped these controls with protocol **11**, but a Camera key-binding row overwrote the control-mode selector. The local follow-up moves the selector to its own row. 1.0.4 Experimental 1 uses protocol **14**, including mod/profile matching; peers need matching builds. The selector and safe-zone changes were included in 1.0.3.
 

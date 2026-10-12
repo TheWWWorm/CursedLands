@@ -292,6 +292,19 @@ func marker_unit() -> GameUnit:
 	return null
 
 
+func marker_screen_rect() -> Rect2:
+	if not is_visible_in_tree(): return Rect2()
+	var followed := marker_unit()
+	for cell in _cells:
+		if cell[0] != followed: continue
+		var i := _cells.find(cell)
+		var r := _cell(i)
+		var from := _p(Vector2(r.get_center().x - 10, 478))
+		var to := _p(Vector2(r.get_center().x + 10, 498))
+		return get_global_transform_with_canvas() * Rect2(from, to-from)
+	return Rect2()
+
+
 ## A 3 px textured strip along from -> to (800×600 points).
 func _strip(from: Vector2, to: Vector2, uv: Rect2, mod: Color) -> void:
 	var d := (to - from).normalized().orthogonal() * 1.5

@@ -1,6 +1,9 @@
 extends "third_person_kbm.gd"
 ## Native humanoid geometry and rendered local view; no save or network changes.
 var variants := []
+var rim_visible := 0
+var shadow_visible := false
+var missing_head_shadow := false
 
 func geometry_cases() -> void:
 	for prototype: String in ["Human Hero", "Human Mercenary Thief"]:
@@ -36,7 +39,7 @@ func geometry_cases() -> void:
 				var pixels := texture.get_image()
 				var sample := Vector2i((cap_uv * Vector2(pixels.get_size())).floor())
 				check(cap_intact and pixels.get_pixelv(sample).a > 0.99, label + " cap faces up and samples an opaque atlas region")
-				check(m._view_torso.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_ON, label + " closed torso also casts its own shadow")
+				check(m._view_torso.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_OFF and m._view_shadows.any(func(row):return row.source == m._view_torso and row.shadow.mesh == original and row.shadow.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY), label + " original torso casts the complete shadow independently of the view mesh")
 				var cached := m._view_torso.mesh
 				m.set_first_person_view(false)
 				check(m._view_torso.mesh == original and not m._head_hidden, label + " restores third person")
@@ -66,6 +69,11 @@ func shot(label: String) -> void:
 	await frames(3)
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://"+label+".png")
+	shadow_visible = shadow_visible or hero.model._view_shadows.any(func(row):return row.shadow.cast_shadow != GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY)
+	var head_shadows := 0
+	for row: Dictionary in hero.model._view_shadows:
+		if hero.model._head.is_ancestor_of(row.source) and row.shadow.visible: head_shadows += 1
+	if hero.model._view_active: missing_head_shadow = missing_head_shadow or head_shadows == 0
 
 func _ready() -> void:
 	mode = "first-person torso"
@@ -74,6 +82,7 @@ func _ready() -> void:
 		"auto_graphics":0,"control_mode":3,"pad_enabled":0,"confine_mouse":0,"blood":0,"gfx_detailed_heads":1},true)
 	geometry_cases()
 	if DisplayServer.get_name() != "headless":
+		GameData.options.display_mode=0;GameData.resolution_size="1280x720";GameData.options.resolution=GameData.resolutions().find(Vector2i(1280,720))
 		RenderingServer.set_render_loop_enabled(true)
 		PadInput.active="kbm";s=Session.new();add_child(s);g=Game.new();g.session=s;s.game=g;add_child(g)
 		s.state=CampaignState.new();s.state.ensure_hero(0,"Human Mercenary Thief" if OS.get_cmdline_user_args().has("--female") else "Human Hero")
@@ -81,6 +90,7 @@ func _ready() -> void:
 		hero.set_process(false);hero.set_physics_process(false);hero.pos=Vector2(69.82051,128);hero.facing=0;hero._sync_transform(0);hero._anim_lock=0
 		hero.direct_controlled=true;hero._direct_joints=true;hero.refresh_figure(true)
 		g.direct.heading=0;GameData.options.control_mode=3
+		GameData._window_gen+=1;get_window().mode=Window.MODE_WINDOWED;get_window().size=Vector2i(1280,720)
 		hero.model.player.callback_mode_process=AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 		for act:String in ["idle","walk","run","attack","cast"]:
 			hero.action=act;hero.model.act(act,1,0)
@@ -94,6 +104,8 @@ func _ready() -> void:
 					var collar := hero.model._view_chest.to_global(hero.model._view_collar) + hero.model._view_shift
 					check(absf((collar-g.rig.camera.global_position).dot(g.rig.camera.global_basis.x)) < .0001,
 						"%s phase %d pitch %.2f centres the rendered collar under the camera" % [act,sample,tilt])
+					for vertex:Vector3 in hero.model._view_rim:
+						if g.rig.camera.is_position_in_frustum(hero.model._view_chest.to_global(vertex)+hero.model._view_shift):rim_visible+=1
 					if sample==2:await shot("torso-%s-%s" % [act, "level" if tilt==0 else "down" if tilt> -1.4 else "feet"])
 		for gait:int in [1,0]:
 			hero.restore_gait(gait);hero._anim_lock=0
@@ -105,8 +117,14 @@ func _ready() -> void:
 				for f in 120:g.direct.apply_camera(1.0/60)
 				check(hero.model._view_torso.mesh==hero.model._view_body_closed,"low posture retains closed torso")
 				await shot("torso-gait%d-%s" % [gait,act])
+		check(rim_visible==0,"sealed neck rim stays outside the actual camera frustum through moving poses")
+		check(not shadow_visible,"deferred shadow options never expose the shadow-only duplicate")
+		check(not missing_head_shadow,"head and hair retain visible shadow-only geometry")
+		g._apply_shadows(s.world);await frames(2)
+		check(hero.model._view_shadows.all(func(row):return row.shadow.cast_shadow==GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY and row.source.cast_shadow==GeometryInstance3D.SHADOW_CASTING_SETTING_OFF),"reapplying graphics options preserves one visible figure")
 		GameData.options.control_mode=2;g.direct.tilt=-0.1;g.direct.apply_camera(1.0/60)
 		check(hero.model._view_torso.mesh==hero.model._view_body_original,"switch restores original world torso")
+		check(hero.model._view_shadows.all(func(row):return not row.shadow.visible),"leaving first person hides every shadow copy")
 		await shot("torso-third-person")
 		g.queue_free();s.queue_free();await frames(10)
 	print("FIRST_PERSON_TORSO ", JSON.stringify({"checks":checks,"failures":failures,"variants":variants}))

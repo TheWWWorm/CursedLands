@@ -1834,12 +1834,16 @@ func _clip_hit_ticks(clip: String) -> float:
 
 ## Authored village ambient poses persist between their repeated specials.
 ## A short script Sleep must not insert an unrelated idle animation. Limit
-## the hold to the known seated clips and the two Ingos gate guards; orders
+## the hold to known seated/work clips and the Ingos gate guards; orders
 ## and combat still replace it normally.
 func _ambient_story_pose() -> bool:
 	if controller >= 0 or world == null or world.zone.get("type", "") != "brief" \
-		or model == null or model.template != "unhuma":
+		or model == null:
 		return false
+	if model.template == "unhufe":
+		return _story_clip == "uspecial08" and world.zone.get("mpr", "") == "bz8k" \
+			and info.get("name", "") in ["Eda1", "Eda2"]
+	if model.template != "unhuma": return false
 	return _story_clip in ["uspecial13", "uspecial15"] or (_story_clip == "uspecial10" \
 		and world.zone.get("id", "") == "bz8k" and info.get("name", "") in ["AGuard1", "AGuard2"])
 
@@ -3046,6 +3050,12 @@ func _do_cast(dt: float) -> void:
 	# An AI cast reaches its option's range (the prototype's attack range on
 	# a weapon-type-16 unit).
 	if pos.distance_to(at) > float(order.get("range", sp.range)):
+		if order.get("in_place", false):
+			# A distant target must not commandeer direct steering. This check
+			# also covers a target moving out of reach while the cast was queued.
+			path = PackedVector2Array()
+			_fail_order(EIAcks.CANT_CAST)
+			return
 		if path.is_empty():
 			path = _path_to(at, t)
 			motion_notice(at, notice_mode, float(order.get("range", sp.range)), bool(order.get("full_path", false)))

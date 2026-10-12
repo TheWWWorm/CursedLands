@@ -15,16 +15,22 @@ func _ready() -> void:
 	var orders:=hero.orders.duplicate(true)
 	var selection:=g.selected.duplicate()
 	g.direct.heading=0.8;g.direct.tilt=0.15
-	await key(KEY_V)
-	check(GameData.option("control_mode")==3 and is_equal_approx(g.direct.heading,0.8),"V switches perspective and preserves look direction")
+	await key(KEY_F6)
+	check(GameData.option("control_mode")==3 and is_equal_approx(g.direct.heading,0.8),"F6 switches third to first person and preserves look direction")
 	check(hero.orders==orders and g.selected==selection,"perspective switch preserves selected hero and orders")
 	await key(KEY_F6);g.direct._process(0.0)
 	check(not g.direct.active() and hero.orders==orders and g.selected==selection,"tactical switch preserves selection and ordinary orders")
 	await key(KEY_F6);g.direct._process(0.0)
-	check(g.direct.first_person() and hero.orders==orders,"tactical return restores the previous perspective")
-	g.hud._inventory.visible=true;await key(KEY_V)
+	check(GameData.option("control_mode")==2 and hero.orders==orders,"F6 cycles from top-down to third person")
+	await key(KEY_F6)
+	check(g.direct.first_person(),"F6 completes the three-mode cycle")
+	await key(KEY_V)
+	check(g.direct.first_person() and EIKeymap.key_of("direct_perspective",2).is_empty(),"V no longer switches camera modes")
+	g.hud._inventory.visible=true;await key(KEY_F6)
 	check(g.direct.first_person(),"perspective binding cannot switch beneath inventory")
 	g.hud._inventory.visible=false
+	await posture_cases()
+	GameData.options.control_mode=3
 	var defaults:=EIKeymap.bindings(2);var classic:=EIKeymap.bindings(0)
 	var panel:=OptionsPanel.new();add_child(panel);panel.open();panel._tutorial.visible=false
 	panel._show_group(OptionsPanel.DIRECT_GROUP)
@@ -87,3 +93,30 @@ func _ready() -> void:
 	panel.queue_free();g.queue_free();s.queue_free();await frames(10);TexUpscale.shutdown()
 	print("DIRECT_SETTINGS ",checks," checks ",failures.size()," failures")
 	get_tree().quit(0 if failures.is_empty() else 1)
+
+func posture_cases() -> void:
+	hero.set_process(false);hero.set_physics_process(false)
+	for camera_mode in [2,3]:
+		GameData.options.control_mode=camera_mode
+		for start in [2,1]:
+			reset();hero.restore_gait(start);hero._anim_lock=0
+			var e:=InputEventKey.new();e.physical_keycode=KEY_CTRL;e.keycode=KEY_CTRL;e.pressed=true
+			Input.parse_input_event(e);await frames(1)
+			g.direct._advance_posture(DirectControl.PRONE_HOLD+.01)
+			check(hero.gait()==0,"held Ctrl lies down from posture %d in view %d"%[start,camera_mode])
+			e=InputEventKey.new();e.physical_keycode=KEY_CTRL;e.keycode=KEY_CTRL
+			Input.parse_input_event(e);await frames(1)
+			check(hero.gait()==0,"release after hold preserves prone posture")
+			hero._anim_lock=0;await key(KEY_CTRL)
+			check(hero.gait()==2,"tap Ctrl stands up from prone")
+			hero._anim_lock=0;await key(KEY_CTRL)
+			check(hero.gait()==1,"tap Ctrl still crouches")
+		reset();hero.restore_gait(2);hero._anim_lock=0
+		var e:=InputEventKey.new();e.physical_keycode=KEY_CTRL;e.keycode=KEY_CTRL;e.pressed=true
+		Input.parse_input_event(e);await frames(1)
+		g.direct.pointer=true;g.direct._advance_posture(1.0)
+		e=InputEventKey.new();e.physical_keycode=KEY_CTRL;e.keycode=KEY_CTRL
+		Input.parse_input_event(e);await frames(1)
+		check(hero.gait()==2,"releasing pointer cancels an unfinished posture hold")
+		g.direct.pointer=false
+	reset();hero.restore_gait(2)

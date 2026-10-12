@@ -91,7 +91,8 @@ func _ready() -> void:
 	var img := GameData.load_image("battle00") if GameData.is_open() else null
 	if img:
 		for i in 4:   # UVs index the image rows as stored (no V flip)
-			_mark_col.append(img.get_pixel(240 + 4 * i, 252))
+			var texel := Vector2(240.5 + 4 * i, 252.5) * Vector2(img.get_size()) / 256.0
+			_mark_col.append(img.get_pixelv(Vector2i(texel)))
 		img.flip_y()
 		_atlas = ImageTexture.create_from_image(img)
 

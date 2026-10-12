@@ -1,0 +1,1181 @@
+{
+  "candidate": "1.0.4-feedback.8",
+  "base_commit": "e979b221a9942f9295d9055748db85f09dc3eafb",
+  "published": false,
+  "protocol": 21,
+  "scope": "Focused Linux source/runtime validation against native base and LiA data, plus the installed HD Lands texture package. No real WAN latency claim.",
+  "checks": [
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/ingos_direct_feedback",
+      "label": "ingos-native",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/ingos_direct_feedback.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 17.761,
+      "checks": 57,
+      "failures": [],
+      "details": {
+        "checks": 57,
+        "failures": [],
+        "hd": false,
+        "measurements": [
+          {
+            "contacts": 112,
+            "new_marks": 4,
+            "smooth": false,
+            "snow_sectors": 1
+          },
+          {
+            "contacts": 110,
+            "new_marks": 3,
+            "smooth": true,
+            "snow_sectors": 1
+          },
+          {
+            "atlas": "(256.0, 256.0)",
+            "minimap_colours": "[(0.0, 1.0, 0.0, 1.0), (1.0, 1.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.451, 1.0)]"
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/ingos-native.log",
+      "log_sha256": "648475327d534a45497cc4ac1bacba58c1ee4026f93cbb2e9e91308f43957756"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/ingos_direct_feedback",
+      "label": "ingos-hd",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/ingos_direct_feedback.gd",
+        "--mod-tests",
+        "--hd"
+      ],
+      "exit_code": 0,
+      "seconds": 21.515,
+      "checks": 59,
+      "failures": [],
+      "details": {
+        "checks": 59,
+        "failures": [],
+        "hd": true,
+        "measurements": [
+          {
+            "contacts": 112,
+            "new_marks": 4,
+            "smooth": false,
+            "snow_sectors": 1
+          },
+          {
+            "contacts": 110,
+            "new_marks": 3,
+            "smooth": true,
+            "snow_sectors": 1
+          },
+          {
+            "atlas": "(2048.0, 2048.0)",
+            "minimap_colours": "[(0.0, 1.0, 0.0, 1.0), (1.0, 1.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.451, 1.0)]"
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/ingos-hd.log",
+      "log_sha256": "507238c4756463d7d288f05de6c9ea644a1f8f0a9b6b56b20d407c4b5d183f1a"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/ingos_guards",
+      "label": "ingos-actors",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/ingos_guards.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 16.26,
+      "checks": 15,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/ingos-actors.log",
+      "log_sha256": "ebb1e3d32794448f9a56cc763f39b19e91483830283568191c2731efbc977aa3"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_settings",
+      "label": "controls",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_settings.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 9.507,
+      "checks": 44,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/controls.log",
+      "log_sha256": "86b05304b9b6a247bba2734229dbc3110e2b91bc727caf557a903566b0413fbd"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_alignment",
+      "label": "alignment-native",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_alignment.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 6.505,
+      "checks": 84,
+      "failures": [],
+      "details": {
+        "checks": 84,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "Human Hero smooth=false build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 4.79864447088181e-17,
+            "max_uncorrected_lateral": 0.154697418212891
+          },
+          {
+            "case": "Human Hero smooth=false build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 4.99442190913311e-17,
+            "max_uncorrected_lateral": 0.193160057067871
+          },
+          {
+            "case": "Human Hero smooth=false build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.61953306761223e-17,
+            "max_uncorrected_lateral": 0.116013526916504
+          },
+          {
+            "case": "Human Hero smooth=true build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 4.79864447088181e-17,
+            "max_uncorrected_lateral": 0.154697418212891
+          },
+          {
+            "case": "Human Hero smooth=true build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 4.99442190913311e-17,
+            "max_uncorrected_lateral": 0.193921089172363
+          },
+          {
+            "case": "Human Hero smooth=true build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.61953306761223e-17,
+            "max_uncorrected_lateral": 0.116013526916504
+          },
+          {
+            "case": "Human Mercenary Thief smooth=false build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 5.09998967675733e-17,
+            "max_uncorrected_lateral": 0.121773719787598
+          },
+          {
+            "case": "Human Mercenary Thief smooth=false build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 5.28464848408693e-17,
+            "max_uncorrected_lateral": 0.157156944274902
+          },
+          {
+            "case": "Human Mercenary Thief smooth=false build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.72088453021815e-17,
+            "max_uncorrected_lateral": 0.0917987823486328
+          },
+          {
+            "case": "Human Mercenary Thief smooth=true build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 5.09998967675733e-17,
+            "max_uncorrected_lateral": 0.121132850646973
+          },
+          {
+            "case": "Human Mercenary Thief smooth=true build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 5.28464848408693e-17,
+            "max_uncorrected_lateral": 0.157156944274902
+          },
+          {
+            "case": "Human Mercenary Thief smooth=true build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.72088453021815e-17,
+            "max_uncorrected_lateral": 0.0917987823486328
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/alignment-native.log",
+      "log_sha256": "ddd709f6ead4952085a4d5b7c8bae2eac68b2e248ec8d484bd0fc5c0a3d020e4"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_alignment",
+      "label": "alignment-lia",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_alignment.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 6.505,
+      "checks": 84,
+      "failures": [],
+      "details": {
+        "checks": 84,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "Human Hero smooth=false build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 4.83674176291804e-17,
+            "max_uncorrected_lateral": 0.156542778015137
+          },
+          {
+            "case": "Human Hero smooth=false build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 4.90050977808424e-17,
+            "max_uncorrected_lateral": 0.195816993713379
+          },
+          {
+            "case": "Human Hero smooth=false build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.71928443204123e-17,
+            "max_uncorrected_lateral": 0.117945671081543
+          },
+          {
+            "case": "Human Hero smooth=true build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 4.83674176291804e-17,
+            "max_uncorrected_lateral": 0.155916213989258
+          },
+          {
+            "case": "Human Hero smooth=true build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 4.90050977808424e-17,
+            "max_uncorrected_lateral": 0.195816993713379
+          },
+          {
+            "case": "Human Hero smooth=true build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.71928443204123e-17,
+            "max_uncorrected_lateral": 0.117945671081543
+          },
+          {
+            "case": "merc2 smooth=false build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 5.1572173402562e-17,
+            "max_uncorrected_lateral": 0.12294864654541
+          },
+          {
+            "case": "merc2 smooth=false build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 5.29885018258773e-17,
+            "max_uncorrected_lateral": 0.159255027770996
+          },
+          {
+            "case": "merc2 smooth=false build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.88711375350007e-17,
+            "max_uncorrected_lateral": 0.0895042419433594
+          },
+          {
+            "case": "merc2 smooth=true build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 5.1572173402562e-17,
+            "max_uncorrected_lateral": 0.12294864654541
+          },
+          {
+            "case": "merc2 smooth=true build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 5.29885018258773e-17,
+            "max_uncorrected_lateral": 0.223997116088867
+          },
+          {
+            "case": "merc2 smooth=true build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.88711375350007e-17,
+            "max_uncorrected_lateral": 0.0895042419433594
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/alignment-lia.log",
+      "log_sha256": "b6e3c13b10f6cb2109268112ef52d92c674d8be07a97598f73627a3f71733d21"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso",
+      "label": "torso-fixed",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 26.017,
+      "checks": 227,
+      "failures": [],
+      "details": {
+        "checks": 227,
+        "failures": [],
+        "variants": [
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/torso-fixed.log",
+      "log_sha256": "cc998672391ad431d11e9983951e9aaab3f71172f86f4411793a45c700afa4ae"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso",
+      "label": "torso-female",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso.gd",
+        "--mod-tests",
+        "--female"
+      ],
+      "exit_code": 0,
+      "seconds": 25.268,
+      "checks": 227,
+      "failures": [],
+      "details": {
+        "checks": 227,
+        "failures": [],
+        "variants": [
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/torso-female.log",
+      "log_sha256": "936440e0f56d46b0dcbb993d537d20b26cc303b7a5c55bcb1db6b2b04d3d5686"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_camera_stability",
+      "label": "camera-stability",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_camera_stability.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 8.506,
+      "checks": 25,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/camera-stability.log",
+      "log_sha256": "84a3df48cf47f99cf7d51a02d916b5a91545cea6ef4a7fe3fa4a8615d584a8e8"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/water_reflection_distance",
+      "label": "lake-reflections",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/water_reflection_distance.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 28.517,
+      "checks": 16,
+      "failures": [],
+      "details": {
+        "checks": 16,
+        "failures": [],
+        "rows": [
+          {
+            "camera": "(122.5, 8.912667, -88.5)",
+            "pitch": 0.0,
+            "plane": 6.31217096598961,
+            "restored_pixels": 7905,
+            "yaw": 0.0
+          },
+          {
+            "camera": "(122.5, 8.912667, -88.5)",
+            "pitch": -0.4,
+            "plane": 6.31217720169781,
+            "restored_pixels": 9254,
+            "yaw": 0.0
+          },
+          {
+            "camera": "(122.5, 8.912667, -88.5)",
+            "pitch": -0.7,
+            "plane": 6.31217786124944,
+            "restored_pixels": 10281,
+            "yaw": 0.0
+          },
+          {
+            "camera": "(122.5, 8.912667, -88.5)",
+            "pitch": 0.0,
+            "plane": 6.31217112217995,
+            "restored_pixels": 7575,
+            "yaw": 0.2
+          },
+          {
+            "camera": "(122.5, 8.912667, -88.5)",
+            "pitch": -0.4,
+            "plane": 6.31217628488736,
+            "restored_pixels": 8446,
+            "yaw": 0.2
+          },
+          {
+            "camera": "(122.5, 8.912667, -88.5)",
+            "pitch": -0.7,
+            "plane": 6.31217607478898,
+            "restored_pixels": 12893,
+            "yaw": 0.2
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/lake-reflections.log",
+      "log_sha256": "dea18855d369e6e06acc41886b84088648f7215626e84f762e84977215794194"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_view_presentation",
+      "label": "presentation-hd",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_view_presentation.gd",
+        "--mod-tests",
+        "--hd"
+      ],
+      "exit_code": 0,
+      "seconds": 21.014,
+      "checks": 18,
+      "failures": [],
+      "details": {
+        "checks": 18,
+        "failures": [],
+        "measurements": [
+          {
+            "head_shadow_pixels": 1340,
+            "smooth": false
+          },
+          {
+            "head_shadow_pixels": 1395,
+            "smooth": true
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/presentation-hd.log",
+      "log_sha256": "6919e68a9cfcab30652fc346f0ea6e4a259b4000d47843e1f171aec395984e60"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_coop",
+      "label": "controls-enet",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_coop.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 18.513,
+      "checks": 32,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/controls-enet.log",
+      "log_sha256": "061370a1e7e757956cdad094499f8bf851c9f4ba474fde07cf736247dd817ca3"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_running_down",
+      "label": "running-down",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_running_down.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 51.535,
+      "checks": 28,
+      "failures": [],
+      "details": {
+        "checks": 28,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "armor=false fov=75",
+            "distance": 26.0911217480898,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 357,
+            "seconds": 6
+          },
+          {
+            "case": "armor=false fov=50",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=false fov=110",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=75",
+            "distance": 26.0911217480898,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=50",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=110",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/running-down.log",
+      "log_sha256": "d9902699d32f8d353985116937cfefa9754fdc936fe3cd397c30d675186ebd14"
+    }
+  ],
+  "issues": [
+    {
+      "change": "Keep the sealed collar below the first-person camera after the final pose; retain a single visible body and complete shadow.",
+      "evidence": [
+        "running-down",
+        "torso-fixed",
+        "torso-female",
+        "presentation-hd",
+        "alignment-native",
+        "alignment-lia"
+      ],
+      "cause": "The fixed eye offset did not clear the animated collar. The initial shadow copy was also made visible by the deferred graphics-settings pass; that pass now preserves shadow-only casting."
+    },
+    {
+      "change": "Restrict Talk to current available village topics.",
+      "evidence": [
+        "ingos-native",
+        "ingos-hd"
+      ]
+    },
+    {
+      "change": "Hold the Ingos workers’ authored kneeling pose between script animation calls.",
+      "evidence": [
+        "ingos-actors"
+      ]
+    },
+    {
+      "change": "Use retained native foot geometry for smoothed models and the composed lower-body step cycle for moving attacks.",
+      "evidence": [
+        "ingos-native",
+        "ingos-hd"
+      ],
+      "cause": "Smoothed bodies have no separate visible foot mesh child. The previous contact query consequently returned no sole."
+    },
+    {
+      "change": "Cast direct-control spells in place and reject out-of-range targets without consuming stamina or starting an approach.",
+      "evidence": [
+        "ingos-native",
+        "ingos-hd",
+        "controls-enet"
+      ],
+      "native_fireworks_range_metres": 30
+    },
+    {
+      "change": "Sample minimap marker colours in scaled atlas coordinates.",
+      "evidence": [
+        "ingos-hd",
+        "presentation-hd"
+      ],
+      "cause": "Native 256-pixel coordinates sampled the wrong part of the 2048-pixel HD atlas."
+    },
+    {
+      "change": "Match mirror geometry distance to the main view.",
+      "evidence": [
+        "lake-reflections"
+      ],
+      "cause": "A separate 64-metre reflection far plane clipped distant banks at eye level."
+    },
+    {
+      "change": "Cycle top-down, third person and first person with F6; remove the separate V binding. Hold Ctrl to lie down; tap to crouch or stand.",
+      "evidence": [
+        "controls",
+        "controls-enet"
+      ]
+    },
+    {
+      "change": "Place the camera-control guide above the actual camera-follow marker bounds.",
+      "evidence": [
+        "presentation-hd"
+      ]
+    }
+  ],
+  "reviewed_images": [
+    "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/running-down/data/godot/app_userdata/Cursed Lands/running-down-armorfalse-fov5-frame100.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/running-down/data/godot/app_userdata/Cursed Lands/running-down-armortrue-fov5-frame230.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/running-down/data/godot/app_userdata/Cursed Lands/running-down-armortrue-fov12-frame100.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/ingos-hd/data/godot/app_userdata/Cursed Lands/shadow-complete-true.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/ingos-hd/data/godot/app_userdata/Cursed Lands/ingos-hud-guide2.png"
+  ],
+  "limits": [
+    "Scripted tests inject controls and sample deterministic authority ticks; they are not a full chapter playthrough.",
+    "Shadow pixel comparison uses the native figure on a controlled planar receiver.",
+    "The HD snow check validates footfall events and deformation pressure; full platform rendering remains limited to the recorded Linux checks.",
+    "ENet is two local sessions, not an Internet or ZeroTier performance benchmark.",
+    "Windows runtime and physical Android/macOS devices were not retested for this batch."
+  ],
+  "source_files": {
+    "game/src/main.gd": "99770b7709ff24376126282fc232712426095074d31b0be4f60c3a37bc879b52",
+    "game/src/platform/pad_gyro.gd": "0aa128beea31dcce40084b12339f5c4a6006b0715617d4b3b16920a4807642c9",
+    "game/src/platform/renderer_choice.gd": "cded91e9b5f8d6091789fdb1fca1d39fef5cf69caecea643b3242dee45a9d9d2",
+    "game/src/platform/pad_ui.gd": "e5dbdeeb08c6c6c53cb349c7d5d217e9d4513ca5580200ae0a32096fde3bd33b",
+    "game/src/platform/touch_input.gd": "1443f3e38dc9b9bc5a227681d27c63dac25428eff5fee5c29b3278d0ac63e143",
+    "game/src/platform/data_switch.gd": "9e56b62e78aa15698fa43926044ed0abadc152534fefc9695599e7847dfb4867",
+    "game/src/platform/windows_native_startup.gd": "4a1540bd4693b0b94e4b71c1ca06e8c45f0b024c56795ae84cdda43729c6ae41",
+    "game/src/platform/portability.gd": "6ec17950f2bb45117d1b34410ba19da3996f3bfea53c4722498f83a3de45763e",
+    "game/src/platform/pad_input.gd": "15c21033baab16fdb631f14c952a0e2297916c5f033b7e9450dc0164085e6bc9",
+    "game/src/platform/web_cursor.gd": "890fbbf27db8c274bf64800b34f8efa4b4eaf2bbddb2001c52799d570af1a87e",
+    "game/src/platform/data_import.gd": "ab317ea76e1e12278a1d53ab88b696e211e757b39453df3d26fd95040ce978ec",
+    "game/src/platform/read_cursor.gd": "91b1e255a43bedd1fa7759973431f4f50474714c84caa9ec944c9ca264903f41",
+    "game/src/platform/crash_report.gd": "dd12fcea5976320218054f7a66bb54da55761164fbc2bb732d2457700efdabba",
+    "game/src/platform/game_files.gd": "9a66aca761b4ea50018b70a15b073a50aa7673ba116c5602bd04454db740c92d",
+    "game/src/platform/web_music.gd": "caf971f0f1cffc94fbb875a37507a4bb8f613385c62a9458e85bc3e175793fec",
+    "game/src/ui/camera_rig.gd": "9848a81767129bfe2061f548b4bb39167705d85f025107fec9b603d1dd9d1a14",
+    "game/src/ui/crash_report_box.gd": "c3c4bb632b55af0540d4624ebb5dcf4256e0dd9c4982922b1c753a335ecce53b",
+    "game/src/ui/credits_panel.gd": "8b3334a9e75939fb3ca58d99a987ff09c135433a1cb5265fc9c460eefad8292a",
+    "game/src/ui/inventory_panel.gd": "497e8b0b7d3eff4b959e2a07ac352107b21c3d9c8a76f624888942791233e009",
+    "game/src/ui/map_viewer.gd": "cdc6cd3bea07459479035c6b0791df849a3b6a40628af00475c7aa12feac7992",
+    "game/src/ui/base_strip.gd": "c30ebd6588c8355519f72ef9db26c50791623a7b38fe7f9cecbf65cd90581eb7",
+    "game/src/ui/settings_dialog.gd": "56f06082a33407d1bc99bc49cf544bbd33365acc731d39fa4b423514aa40e049",
+    "game/src/ui/mesh_screen_rect.gd": "0732633d62dd75c58aeea35687f3b139c00b9649008b303830a5525290a71376",
+    "game/src/ui/party_faces.gd": "d141dad214cbf1dc11c94975676df4016f720a02d14c23d12c92209540809b8a",
+    "game/src/ui/menu_scene.gd": "dcc925c702368af3ddd29aedb6aedadae63cb96a65edde382589dc44061a4222",
+    "game/src/ui/enemy_bars.gd": "982982a66e2abf3734bc6543f9935f99d6cd66d8bfd649998f9737d3ecf802c1",
+    "game/src/ui/game_hud.gd": "9bfe8292c700c8f9c2135eb675e527cac4531290ee283c44504509b0c3ebc73e",
+    "game/src/ui/unit_panel.gd": "88b7a7fa85ea74e9d9017eec9ffe5811458eedff6ab077cf9c8c1e6cdd58dfd2",
+    "game/src/ui/difficulty_panel.gd": "142261bc7085a42ceae3869129008c3130e73c937d18f1613e6e345efaf38a43",
+    "game/src/ui/chat_overlay.gd": "86c831fd12c152912a23a0260c887b52dde0a10793f96c535ad536d482ec5d67",
+    "game/src/ui/main_menu.gd": "a71fd2091e419429de28a8cd6a995f9cd3cc1dc3f461bea93b10b6b6f92cbc55",
+    "game/src/ui/pad_prompts.gd": "9d75b686e1799f64073316aae61e4208f57f87a65d11f1f1dbefdf037ac11149",
+    "game/src/ui/portable_setup.gd": "3a04fcd904f020b015e1eef4f2eb9c209595a4a7caab8edce9a521cd196ccc44",
+    "game/src/ui/loading_screen.gd": "bbfa07c3af16a287c9ad9775d12b939942d7d99a2303377b26558bccf94e5242",
+    "game/src/ui/hud_dial.gd": "3e876e5a8359158db3968c49489e90de1ff870f41a47e72e740baa5e786b8324",
+    "game/src/ui/world_labels.gd": "4a1bfd3c6007834615676103717a73e0d636be65a2fbb9335ba3f6aabcbbb6ea",
+    "game/src/ui/minimap.gd": "0fdd30128328824b7fdd3c67a2ae293d092ab26a6a9da915c8a2b6f7e55033c6",
+    "game/src/ui/action_strip.gd": "84ee6b4cf8a5648393b4fb7d9bc02eb375df62b61e05d133b27567ab350464e7",
+    "game/src/ui/notify_line.gd": "1af667503a9b9eb13ddd5194f9901187dd90f6e94ccf3e0b4da3355ede9b78f8",
+    "game/src/ui/flying_hp.gd": "4dafa9efd85b7e599095ff0f068c9b3935e47348b7815b722d7c6e1e2fc5c542",
+    "game/src/ui/belt_strip.gd": "c46144ae12ba79be58605cb63e4087e9ee8730fa23a62ac3a682d34754cddb00",
+    "game/src/ui/item_view.gd": "4d9a651e0e0eb177e1b8ffcb3192b2bbedec7c050584a71d2a85876d967a5264",
+    "game/src/ui/pad_wheel.gd": "92b71f1aa2310fb0b15272204566b15ba27f830a957accde3865bcaabb82c5a5",
+    "game/src/ui/zone_objectives.gd": "97e2b0b0b961b22fc662b3723f00322da40b79819a7aaf7818e7bda2cb438b9b",
+    "game/src/ui/portrait.gd": "41dfffd1d5831e92757e794affffd9405895c71029a7495ed73daa05c31cd9f4",
+    "game/src/ui/interface800.gd": "abb84fbe48b33aebf911624ec5e1932f19e521d88dc70330e6142a959f5bd883",
+    "game/src/ui/options_panel.gd": "ccc575203601ab21d64919c018ccb91ff6d85b92777ca452314dd99570d43f84",
+    "game/src/ui/dialog_panel.gd": "a64d560d1bb1d3248e20bee5f895b8ff11b7281151e89633c2ea69a64ceb019b",
+    "game/src/ui/campaign_choices.gd": "4b9e629e96e7e20940902e8e6c6eb4344f27228ee64d48537ec846b21ee601e6",
+    "game/src/ui/save_transfer.gd": "4bad376a70cac0f05549dd8376b83f50fd9b95b2ab48935efac9ee696a884472",
+    "game/src/ui/mp_char_panel.gd": "77cad14db35cef8002a1aa629a6d1f88fd75667aaafb54f61d8d5a464d2c28ab",
+    "game/src/ui/paperdoll.gd": "9eb20f72e61460a4ae845449c260c789de6e61cbe5ca52d49ed6f78e6185a873",
+    "game/src/ui/touch_actions.gd": "17fcec9e61ad7dab905eb08fc250c0e4e1c50b57d507bd8f310c8eb5b49eaaa6",
+    "game/src/ui/interface_board.gd": "dc6ad8d8b2e4c0116e7d497bf1d3af2ec540a2664b7cd9b107d2436cf75dde42",
+    "game/src/ui/camera_fade.gd": "92fb47eeaa0321f3afd3cf451ea23f61ac9a3770d6f7e6fd57741dd488ecd0d2",
+    "game/src/ui/weapon_bar.gd": "ce0a53ba78bed7c0a3bfb7b93ff5e65b0456ec6a08803c4848e03813687bc045",
+    "game/src/ui/game_cursor.gd": "773792ab6350c13a4ec82f660a1056d660addf2260fb02603a8550cee0690639",
+    "game/src/ui/revive_overlay.gd": "0b912689fd86e062c464f8e001ee3313a04b434ae2758c6d767091febaa373bb",
+    "game/src/ui/player_names.gd": "224dfd166ed5c892e2e0f83b8b362d0530e393d1ee95acbcce6adb09bf5de340",
+    "game/src/ui/players_panel.gd": "6daaabf6dea19d35b3bf3b84f6bf379c25dbc1d90cfc713489acb004ebd45c6f",
+    "game/src/ui/tutorial_panel.gd": "1d032d6f3c659d5202fc2f0b4457f80c1f317ff197b0542c60fd96de74695fd8",
+    "game/src/ui/network_panel.gd": "232d34c1dcd6c1431bc2f35663052aeb890b867c7d15b86751470bba53925a93",
+    "game/src/ui/startup_screen.gd": "23b7daee1cd605e0c3dff63f34a8034fe835185f16e4575eae09e5642bce3681",
+    "game/src/ui/spell_slots.gd": "f4849b0531559946ffd6b364c4d73a2de47b27e1e9d06756bdb25a42aa405a35",
+    "game/src/ui/setup_screen.gd": "b20f6bcc47d33814c4e6921db30eea023aa250fec675da5513a8bbab7d3acdf0",
+    "game/src/ui/side_quest_panel.gd": "2843395eeba79156d64ee02cd315a51f4942939f4c122f58ead6afc6047e903a",
+    "game/src/ui/journal_panel.gd": "2dacee9c2029e64e56b1de33df3826f377adb9d4ab732c98e6af34658d6da8e2",
+    "game/src/ui/mod_panel.gd": "09117f0086579e76b61bb51b2b1c675522133789f62b7f2d3c5e795bf7233088",
+    "game/src/ui/message_log.gd": "1f0dccc93e741eedba2ba051dd04915a2d884f4807c217c26a32c2fa0bbcdcfb",
+    "game/src/ui/selection_frame.gd": "bbc8555ebd6baef44b7123d618b22057d57a5f484b6828b7fbb28e1d0716efa9",
+    "game/src/ui/esc_signpost.gd": "e454e166cc3526ff70055837b0caff4d41d825be57d673ab8557ea1db36823b3",
+    "game/src/ui/village_name.gd": "62681450bd00e932920d28895627e4e1d6c6e6fee0d61fc61b56059276880e8b",
+    "game/src/ui/movie_sequence.gd": "8e328f596014905afdbcea0e014210484e6832f42317185c0f04977367445866",
+    "game/src/ui/player_list.gd": "92ae0a2fb919e1b8aadbdbc3f49968b16ff317b896c1e29ed41e630112994984",
+    "game/src/ui/travel_map.gd": "0cb06d2df42d79276baac4ad55b2ab3cee3728a8c54f6f866394c5bfb274e686",
+    "game/src/ui/touch_text_edit.gd": "5a997b665eb2c29e33d90949c9f83d51927c73adbfd870c8db3aaa5d33e51506",
+    "game/src/ui/camp_view.gd": "0897037eecd457d93346da99eadc8225b2fe73cf8e33171145ceb4ee295e2229",
+    "game/src/ui/message_box.gd": "0bb9711aabc4bd5eccc5850084fcd4538546a81bbe1ce0ed61f5fdf5aea2f9e7",
+    "game/src/ui/chat_line.gd": "330cc12f7564dfd21eede7e616580be78484ea0b3d289775e288e408b745e319",
+    "game/src/ui/movie_player.gd": "18413f84219fa0f22251134839fd33200cd1239575904968a05515646d352015",
+    "game/src/ui/internet_panel.gd": "949e15a6576b6ced36398fcda875bcdb02245e9ddef60454e392e7065631d09e",
+    "game/src/ui/load_panel.gd": "93cea4b6ccc79561211cfc4f1dbdfff954030de5d5cd03d8efb92ef91d7e357c",
+    "game/src/ui/camera_depth_of_field.gd": "e44f901b53eeba2f0b59ae48a88b8191b6ca96e5b4c13e85b5289cc5dc3f50c8",
+    "game/src/ui/game_over_notice.gd": "af8070a07ad7c9ed715f0ac80c81251f331baa75c1cbb08b679c6b21526f07a4",
+    "game/src/ei/water_waves.gd": "24f3708a5dd0870da4750bdc89496d498fcb6bf596442fb9c25607d0740c548e",
+    "game/src/ei/game_data.gd": "06eb27333557123d9de0e0549a88426c999f4ff06bd83556047ae40d076b3251",
+    "game/src/ei/unit_model.gd": "713b7308d20df8b21bb3a2a741d90ca4a029919588068ad5c0ce0fe1ec552027",
+    "game/src/ei/anim_part.gd": "3283f29bd60c6a6ed6beec2f0fbbae8d8c3e409eae6e69f4f503d6d13971fe3d",
+    "game/src/ei/astral_disc_import.gd": "6280eb6519978761e51141ee348ad5cf2b8f1dee292ad9c8edac975190a2c02d",
+    "game/src/ei/bink.gd": "be55b928a24c06a1f7cff6605bab22011967b2f150c6f182dac1bfc4094f99e3",
+    "game/src/ei/map_scene.gd": "ceccd63e4b562c7427d2c08290e8fee4a261730c097c43ee419d39b0c5574b2e",
+    "game/src/ei/mmp_texture.gd": "1c4aed0ea7cb368ca135c47cbe1d27e2266f31f81fa61f3281d610259b8fe609",
+    "game/src/ei/catacomb_lift.gd": "cd8c0e31ebfcb4b85f7d3fc72a5a1a71120805dcae24969b910989ab37eeb98f",
+    "game/src/ei/text.gd": "e27f07d6d87975122f5377285c09b6fdee6d9b8d4b40960c97bc7838cf416ea0",
+    "game/src/ei/mob_reader.gd": "f2e21805dbeb2c6af25cf614ab7aec8b93e76c3efaaf3591286f909b0e4e3e10",
+    "game/src/ei/figure_geometry.gd": "5570f1030a7a1d6a7e0cbe0c9549f6a12bd792afc744f4a7c425bbd91ea9a897",
+    "game/src/ei/first_person_body.gd": "de157abf28eac613184fd38e14a5c272f8a763c060732a40b21c07916a294393",
+    "game/src/ei/crt_random.gd": "acc03ff81f4529edbfe1ade1accfcbe70d135d24772e0837111068274e2bc873",
+    "game/src/ei/figure_material.gd": "30f9de045ace9e6f7d3e497fab28a02350e242f8a00074de8e8b6f25f7b547e9",
+    "game/src/ei/terrain.gd": "12fcf4ceb74e30216f112ed64d7e9d87aa95c096a8a759d544884866f3147c3a",
+    "game/src/ei/database.gd": "247e79904d80cb02beb9094430183d15d0621284e351fbac70d9df39d24aacc6",
+    "game/src/ei/ei_space.gd": "1e874061e8045b3c3dded3b37c82d8d03b89b4ffb8a9d579905dc8e5a5d4c5a7",
+    "game/src/ei/lzma.gd": "5ad3bc3328d2d03d2f4c4aaa326545fbc23dbd3b7d207b90d996777f8356e8b7",
+    "game/src/ei/ei_audio.gd": "31adaa24ec21213fd9428a2eabfaeb24311f70d8ddacd07e87c0ba1c9620780c",
+    "game/src/ei/detailed_head.gd": "e0f3fb8f4c205b0745cd9a4ed80263b878622df7b08388b999e4c09184149391",
+    "game/src/ei/bink_audio.gd": "0091141172fe3426cfd7a00976e8e137e878066f84ff04750a5986f1d92bf246",
+    "game/src/ei/lights.gd": "c7d651a759f5030764f8e33479b3e171f4913a67b7fb05c65b2a146466dc192c",
+    "game/src/ei/terrain_sector.gd": "51e23c785f6a21a86d12f2cae10dbbe220d8b80c1c51138266bf9e1b3fa9be46",
+    "game/src/ei/remake_text.gd": "d9be2877af02ca418ebc96e1b809b4ec25a9328f307824e4a15ae9d9e48d8331",
+    "game/src/ei/keymap.gd": "61e43e225c7b47ed5032e7ed435dc4ace43910db312fee7ec0d43e29c06d5d32",
+    "game/src/ei/figure.gd": "3c51bf837534b7b8ae1b4e3081d7fda5dbdc17df741ab9800c4024745098c085",
+    "game/src/ei/anim.gd": "22547ec0641f0f230e2d0a645af27be627cf8d3618f09b50fc2ca8d80ed57346",
+    "game/src/ei/iso_archive.gd": "6d491d57c714b4d4fb482a5ef121b309119488f6b6efedf64d5775c5fe366041",
+    "game/src/ei/camera_track.gd": "5f0ad5ef6493e8fd247f17c18b5cb2e6e23c0ca74d0618b6a374eeaa9fba3a63",
+    "game/src/ei/inno_setup.gd": "206a64296645352e9bc45cdac34c5fb609b95799fcf2af9052dd1e6168fee10f",
+    "game/src/ei/res_archive.gd": "6a497a4393aaf7881002da7a97b3b9a1c67ab1a7f32ed053eb304d19ffa1bd9e",
+    "game/src/ei/acks.gd": "fedb0d5c4cb14ea21d1b8b03396eb1d5f1325eca3a5d259c185d69c51afe5aaf",
+    "game/src/ei/reg_file.gd": "4e689d4bbe5ad5aa6d16294bc711aebd087688d0007712fe0a511add6fdf000a",
+    "game/src/ei/bink_cache.gd": "618b7f37795376245c0cf254d2084debe4432402871aba891517d4e6d767adbc",
+    "game/src/game/order_marks.gd": "f1383e4b136d93f263ee7f3bde10a064218ad98c791d1d84b1f0e3067a69b96c",
+    "game/src/game/ai_activity.gd": "0b6b8d29aba56de8577e7cc0acce8a4837e1e052b0c2d8fc1a3c86e9bfc9f0c8",
+    "game/src/game/perks.gd": "b8a9eeaf30e525f2043117a5f4231faed19cd749f1f06beb7996674255d48403",
+    "game/src/game/mod_schema.gd": "e015e5a30387fc526bc1d3753363ae33650f77e026408ff93ee82be147a570fb",
+    "game/src/game/dialog_camera.gd": "8c7e2903679fa67c9e8d203224fccb883a5d8e2f7a9ed3eb0cc5dfbfb41a370a",
+    "game/src/game/mob_scaling.gd": "cc0d918f9d490236493ae70f8794713fe8b155574d716ba93f985021995fc4ab",
+    "game/src/game/pad_field.gd": "9a98bf4f3b7751e98a57e4cb8fe151d3de79b582c006f03571b975d24efce22a",
+    "game/src/game/coop_progress.gd": "ec15f4b2ce73f51c37b1a019727268ff379465f6a76ee6b4a854176d0d08836d",
+    "game/src/game/nav_blocks.gd": "4c7c831abbe2c7af391c5dd27dd25ab4e48a631aeb88fbe76c0546956e09db35",
+    "game/src/game/distant_ai.gd": "dbdaf9ae7c5bd32f50acb8f73597d06cf1103945af3ed2f08ff1913e4ea69c21",
+    "game/src/game/mod_catalog.gd": "5ec0e95ee6568bb0129d3b4300b8df7840a0aaebf8dcef9afb68b12dd9718462",
+    "game/src/game/mp_character.gd": "cd0e93cc94610c2846ded3cc93e58fe448349bd0137abc1cb761ced5c4c1ea72",
+    "game/src/game/local_host.gd": "10dd5e9379ab2b360a0016f4fb327fbe22df4da9c1e1ab8bffb3db22495a7d40",
+    "game/src/game/net_status.gd": "03656ea32966a6234bebdb1862c2085fbd5df7ac4ecddce984e097f152fdcaf2",
+    "game/src/game/sky.gd": "861b5c11fea5b9ef0b69cb9b057a304cd4801a16efd3fbd08f3028f024c7c93b",
+    "game/src/game/shadow_diag.gd": "836b6e7608c9b9ddd25f977847194a7f729a748551c4a9efb54a297c544ae41a",
+    "game/src/game/gfx.gd": "7ec0700ed568f4cbd3ffd68b8b0de9d2eaf36e91e1b16cef5530d42f4f35f177",
+    "game/src/game/corpse_pools.gd": "7db544ba6f4616f6e5509760423a408c84818abcdb432d8ebd5023246bebfcae",
+    "game/src/game/net_input.gd": "b9124f8589808fdc9b47d1d3badf665cc636e422728fa519cd123d4583fe5a26",
+    "game/src/game/direct_combat.gd": "0a7021671b9a75833cff87d9d556f48b977a8fb1216bb7410894cc636110651d",
+    "game/src/game/spells.gd": "71028c53f3e1e431a2588fad7d42588df1a461916d0d4766001980579cbe255c",
+    "game/src/game/net_state.gd": "3160404ef9d189071b5d9c7e035f41354e608cc0af7c7dac516085b6adbd87a2",
+    "game/src/game/direct_pose.gd": "c4e84a00a8aafd65fe4911835806761b0529892c1c9cde380960182717f77b43",
+    "game/src/game/spell_sounds.gd": "7ee844eb895b06556724ca2f62e46715f5560426b27fe2cb68b2cb3616817946",
+    "game/src/game/save_info.gd": "fa3f9889dee8ac7d6d6afc110af35e88bc04e08848c18ddbea7bb4dc9c194f17",
+    "game/src/game/net_snapshot.gd": "7cf128a40c253e87c643bfaa1161372d1f67d4aeb0a8050f367c86f1fc73201b",
+    "game/src/game/actor_refs.gd": "e2c100b61e6a5b5901a30c2f71b91e2caf4fe5317f73adfb83295cf990ec2277",
+    "game/src/game/coop_db.gd": "94bff80921f5359d1f030794502705961413c630e62c05fda0227014a05424bd",
+    "game/src/game/mod_download.gd": "f7cd21e79b4f392e00577c97c12c5b7bfc95c261f2b28e46639c0be9196761d5",
+    "game/src/game/shops.gd": "91f35cccd1549c934843dbab3a339c837fe930c2eba74f24f4f2a78d16e98fc4",
+    "game/src/game/ambient_sound.gd": "65096b14e9b395a78c4c578ecf893eed0f1cb380d1257eb7ce8d1bc34ca7d440",
+    "game/src/game/mod_store.gd": "44492c8143c93d37670df3318dc6396aeb45c972a2399b3f2a04d28e8abaf2d8",
+    "game/src/game/lan_discovery.gd": "cc86b06e579b95cb7aa64d1f7755305d9c4407226e09c915085c5f7e581f321c",
+    "game/src/game/player_swap.gd": "6c1e899bcee1ef3c60d6b82008085e9892f7ea1536157432b81327f739d9199c",
+    "game/src/game/mod_zip.gd": "f5ea47f80948098531d92982761fef46a0a5682cc661ec05f49513280c1097d5",
+    "game/src/game/nav_grid.gd": "2ea344d0f3b517d8eb2681eeabe49746adf7c96bd8ed43c74b834bcbbabad05f",
+    "game/src/game/lmp_travel.gd": "7de6b436c2b84f3cd221d8578eb229307868cf0a538b04eaa06bbd952d20db24",
+    "game/src/game/body_part.gd": "b7ccaf74b5163c71e52688f5f908b3677caa0b7eb2ac997316e83ad47f02c947",
+    "game/src/game/revive.gd": "0c37371fb6dc02cfabf7985333deef2bfe3e924cf23ff4db78fa1d3a76671fef",
+    "game/src/game/unit_fog.gd": "7691960d72c2a2a03badb4326dba0876adf405d1362f70537b6dc154408f96a0",
+    "game/src/game/items.gd": "a050ae0f9f9703b14932bc99a67456b88ff4b834159b4df990a0be54b79e5f78",
+    "game/src/game/training_refund.gd": "4aa8a504a2eb8eaa8fefe127bcb1f77a80c2ab896a19e49f844ae6eb62006cc9",
+    "game/src/game/gfx_detect.gd": "1e234b1c64c8d95f8b4abac158d9a1ae9d238db246391d539cce34519606bf4a",
+    "game/src/game/skills.gd": "ad4a001a2db04e1a096f251b78a3f3b8054628844eb1c9c5b720dc6a7d967fbd",
+    "game/src/game/unit_sounds.gd": "ef679aae85a84ae96a6a544385af28d7bd28beb520d8f1d840575b17e0c37d0f",
+    "game/src/game/surface_materials.gd": "f4a005e558d1af102db912ab496c38435cf4896080093b3837d73e05a9d90de4",
+    "game/src/game/traps.gd": "4f7e1be5a7b39d187f7c06b4394992ff1ba1b510aa28fc417e724f2f7b50acf6",
+    "game/src/game/game.gd": "3805aaa70d004a9e0310ddfeb53d4a4b9b3081256d3f860871c18ac56313f0d8",
+    "game/src/game/lmp_mode.gd": "c86a99c6cf5e55fad160d73d5700748ee3500ef7065383ff2b559e21017e242a",
+    "game/src/game/weather.gd": "0aa4661441ced16b64aadd47431a8a8a47d4e4b08126c65f15941f5074bd22c8",
+    "game/src/game/upnp_port.gd": "721ba99399c6f994b099251409c454df5a8e7a46aff5fad73f1ce9d835326e11",
+    "game/src/game/tornado.gd": "efcb45ba70cd9c6eadac1e54ee45edf2303865df11184372f111fde35ad4acb2",
+    "game/src/game/net_smooth.gd": "7285a92c5d9a29af5b98d07cbb98dcc6be9d1aa3002b097a903f8ee1fdc81700",
+    "game/src/game/xp_rules.gd": "3327996708e9ce3fe83b8b24554000d742c9b5fa1cea3039c7fceaefe0d1f48b",
+    "game/src/game/unit_wounds.gd": "7ce19d06ae90948644357ac653d27d6b8ae271b084f0dcb5ed813ca196cb52be",
+    "game/src/game/nav_spline.gd": "abfb966c48d47459da9f86548444f1a54110e7aa8fd75708865e4655b0970985",
+    "game/src/game/tex_upscale_texture.gd": "d2c84c17341be6c0ff018f6d588cd78b4864f56250e81d2691def6b963e467be",
+    "game/src/game/side_quests.gd": "2ebe05ff695ba157e7c6e5115659a16a8905f928c38e21d9b52ca8312a497544",
+    "game/src/game/gfx_presets.gd": "7506de4dd55a0a3bdfc88b4ac1bada687fd91339d664879ccb407a30c282f99a",
+    "game/src/game/game_sound.gd": "8158e30e8e8d70823f38df0ae0317129e2f2ded35b01d25c985b806594cd2bb8",
+    "game/src/game/coop_party_progress.gd": "c87b3972ece53de8c8f2c96d38772bbb7ba585fae51b45b79a79dfbf0ba452f0",
+    "game/src/game/nav_turn.gd": "a13869c348ddf1a18635571b22ef13517b2ed945a6f2f43d1c7312221aac020a",
+    "game/src/game/vision_fog.gd": "8df02d201df0821622eeaea2c390285a20fecdb9230ec7172daae5a9f1b278ce",
+    "game/src/game/music_system.gd": "ec3b7086a422b9d5931727c6f22474f109ba6313844af2efdb7138cd17659147",
+    "game/src/game/session.gd": "9d7596c94edc2f9db14dbb96afe46a4194fab40d468dcb657c65d3edcf1b25c6",
+    "game/src/game/world.gd": "fab74de6464d8177f24f0f063b648a712d7021e9b466daea0221e7af36ce11b4",
+    "game/src/game/spell_fx.gd": "9aa6e92621304450964f73df6434fba007c9032a97077ec4f446be3b1798dc13",
+    "game/src/game/unit.gd": "7e38fed3e0fdd5b4054b0d651ca09bd5f708a16534f6658e037b4ac62ede3c20",
+    "game/src/game/combat.gd": "8630f52eaa426cdca09fdce996298fb50ce0d10ec376b267d31d447402b43458",
+    "game/src/game/campaign_profile.gd": "66ff5cf575b770937c0862064ed05fadc64956fba5dc5d58cbd245f1af31ce20",
+    "game/src/game/tex_upscale.gd": "0f13cadea2b2b96b73e97469612b74ed05e4e5400b2bbf7aa7bd349da9bc0079",
+    "game/src/game/campaign_map.gd": "5fb68823b853f7a35ee063975d77263fcf7c34398e9bec195623d2e59c62b695",
+    "game/src/game/coop_guest_roles.gd": "31eb28ddd70629dd73877bdbd65e72eda1839f4a088da63ef94eaf6f6e43c7f8",
+    "game/src/game/direct_control.gd": "f7ab18117aaa168729fe9c54737cfd16261222a6e433e2693b2f2e5fc6684c22",
+    "game/src/game/flash_log.gd": "79abf3b5255d9b970fb41ac550f6d5674f0c2072f056b9a3bbd3d3674d3163f3",
+    "game/src/game/net_sim.gd": "3ab0ff6bbe1ff5df9813168be8a4d253e54967bf94d56a27642370903afc10bc",
+    "game/src/game/shader_warmup.gd": "0ffb6a063ec8966da41e085f786cd7c0cec8c4fa007660a6cff5738ccd9b3ff8",
+    "game/src/game/ai.gd": "37f91657087888a53622e29eb3abf3ce83e67413a711d88612be2a73a8a772df",
+    "game/src/game/smile_faces.gd": "34ece2b2bd496408d46a65b52fc9f8b3318a5d6037e4c97423f41cb535acaffe",
+    "game/src/game/levers.gd": "a3c8664d01469424c02d5db972d2022d24fcb82bbbe074f616e4ba2fdf7b2c1f",
+    "game/src/game/projectile.gd": "b6721c35e354afd2b205deafecc97643a44076ce702c7f95b05df32d8d37f587",
+    "game/src/game/campaign_state.gd": "4390f1c346574d1edb352de93ae736eeca744211ed33989622a5e4de2aa6d076",
+    "game/src/game/internet_directory.gd": "5b6f1b7269313894373ad112a01e79687862ea22c28723bfcfb3f862482cc9bc",
+    "game/src/game/sound_mixer.gd": "4378dc00a10782e3e405219e9d1b3386ad623f658e1fe33d00a7742cd2c4ce6f",
+    "game/src/game/script/briefings.gd": "f29fecf31a020650f09083547e23059d478437e0968f8376b2ecf7c5f2d4f1aa",
+    "game/src/game/script/authored_village_talk.gd": "11a0c4406b9663596ac395f6ee03a6d7918521b31b03c86f38031d91577da4ef",
+    "game/src/game/script/coop_vm_state.gd": "b071a76622d7d54fe71e6c543c7be0d599e8306b241526c2e889e50d7864b832",
+    "game/src/game/script/camp_grants.gd": "5b4e74e2a655245ffadde263a374e7dab86e79ecbf432769ad208894b8094531",
+    "game/src/game/script/story_coop_effects.gd": "7d432cb6007f390e7bf625f7537b2ba37fcc3d22b901fc301f5d57270ea77540",
+    "game/src/game/script/story_compat.gd": "7735a300285942db48b0abd28592ee4125b7e407f35c60e2d99fb7ba5aa594a5",
+    "game/src/game/script/script_parser.gd": "e71f9f06412e38a586c6cfb9158a1e680e656dcad07a31c79dea6583d3484919",
+    "game/src/game/script/story_coop_predicates.gd": "b69f35cd8487f141cab14d2cbc377278dbf4443d9474b5a28e5ca4e53676f33c",
+    "game/src/game/script/story_coop_traps.gd": "949f52ae47c3a1d559492ee37fe012dfb18c136103d61e99f4fd614ab90876f5",
+    "game/src/game/script/vm.gd": "58504f5ce368cc016df4a6f9bcc732e8e946451308ce29ddaa0d60d4c609ff3a",
+    "game/src/game/script/gs_table.gd": "95e01b21ce54a1eca18373876b1473269ab60445b1a54694de6bce15a22c7c4b",
+    "game/src/game/fx/weather_mist.gd": "81e0a685997c2b6dddb01028ac0094e7aabf358c5655e6e218e31e2ef4f5570a",
+    "game/src/game/fx/ground_marks.gd": "021b990bf52082d1938e8fc5552814e87715eb3ee30415b1afdc6fb31e096f14",
+    "game/src/game/fx/waterfall_shader.gd": "d26f34c0fc2467e5a328737b4d8873d07ca81394d950df2fda3658f5703155f1",
+    "game/src/game/fx/water_texture_data.gd": "5dc6b740c394cb5735a09ee3a1c18225a33bdd52da6f784ce8d4fb578d7562eb",
+    "game/src/game/fx/ambient_life.gd": "c5fab396161eda910ba6e43c9172114b93594d12a486b4ab7ed5c0953976a50e",
+    "game/src/game/fx/cloud_reflection_shader.gd": "17b43cd11b9033d6b1c51c79ac9584117011cc67eda84776c5147fc3631aa13a",
+    "game/src/game/fx/ambient_models.gd": "d1e84944763337e305917431e8773a4a1fde6586436f842ea52064f7aac5084e",
+    "game/src/game/fx/water_interaction.gd": "c691ff44ef64ce326050852bdc2852ac5c3b7f538149d98a383d734ebafdcb18",
+    "game/src/game/fx/ambient_habitats.gd": "086dfae474e3224631c532579e1a2cc6d29cb6be2c1f19e3dd5397056118119b",
+    "game/src/game/fx/waterfalls.gd": "17d24e4d6bc32f5689cef65381e53786a79b23273bf765c8542200aa6f28091b",
+    "game/src/game/fx/biome_cover_mesh.gd": "e18d15737606991fcdda7602b2844c8280bc88baac2112d765f654f3b54ff9af",
+    "game/src/game/fx/biome_sand_tiles.gd": "6d4b1c9378c1cf146404db4286a48ad7286ae5d30962979529224f1911a30b8a",
+    "game/src/game/fx/clouds.gd": "ecf5c56c27972161478b7dee1563e6cca8bbbd11bcceb3211835e950b4a356fd",
+    "game/src/game/fx/severed_limb.gd": "897d2f4719d8c15ea3504d8bfaf2aff930b2e005c2f74ca7e2411f5ab5d383d7",
+    "game/src/game/fx/scenery_light_groups.gd": "db4961190b0e59a4e240915a00a6461d9f4fef21d9fa5f0c562692b1d28a91f0",
+    "game/src/game/fx/terrain_transition.gd": "3eb281314e662ad944a03f8f8f4079f4fcf9b3df9cd43f2620ac19564cafc518",
+    "game/src/game/fx/cloud_shadow_field.gd": "eb2e71b494f9e7627c399c49fc9eae150e0cbd1199d95fc0f8dbda399b8aa890",
+    "game/src/game/fx/local_lighting.gd": "84b98d94aa2427fc43c92db3e5c7c3abac340f70a3919b3aa19875e68500966f",
+    "game/src/game/fx/biome_cover_tiles.gd": "bc3f3f77f83e8a75b5d59f8acffff13d9c13642ccbeaf956844d2e6bc96f3d68",
+    "game/src/game/fx/ground_contact_shader.gd": "49a59f9b33f085872a02adfb90d648f8f5e6ba753fa9156dfa2b078e3543dd6c",
+    "game/src/game/fx/water_wave_shader.gd": "1ad74048746e5b2a39f7e8bc0d38f1fa97ebeeb8059f216f54a36e97715757c2",
+    "game/src/game/fx/water_caustics.gd": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+    "game/src/game/fx/biome_mounds.gd": "35c0bd1e2d0aa128cbd61d0f23d6eac60be957928c93bcb5684e7b689b1984a5",
+    "game/src/game/fx/terrain_details.gd": "2134b6fba483d9045fdd4c76171693036eba48aa66a84c9a4cdd7cb8bfd30689",
+    "game/src/game/fx/terrain_cliff_tiles.gd": "dfc06c159a77314746467e2479d0a4425677524e3c1aa9467fd96a6d2c361bbb",
+    "game/src/game/fx/fx_ground.gd": "36178826193f86bb3b8e0d66a40a4f9a58109daf79df10143f460012708fb664",
+    "game/src/game/fx/ground_contact.gd": "3b920dac4ddc7ea9632c5a57e0cf8de5f7e6c5b67cfd64e05868e3e42bd8fa28",
+    "game/src/game/fx/soft_ground_deform.gd": "860c690ced0636aea1c59988a6471aeb3987a96b651f9a2a448f13fe22e5151b",
+    "game/src/game/fx/weather_wind.gd": "fb42547a9ec04cc025c95bf9d6b7964227aeab3398431292f87797f4f6ec728d",
+    "game/src/game/fx/ground_contact_data.gd": "9f9a9337a0c06c597ec588da5ae3f12bb716084f402a7b98b4bf2d5306dd1366",
+    "game/src/game/fx/weather_mist_sources.gd": "f5507b2f48f267779f489011fc370a3ba3995130eb6d281cd2daea85a3c396fe",
+    "game/src/game/fx/biome_cover_region_mesh.gd": "3c8f21b5718b4b4627cff95fa84af33a9a77234bc09f56e1f41c049e1084d6d2",
+    "game/src/game/fx/water_wave_field.gd": "eb218f7fcc211455b63d9db2bdd4e242132afd0b4e9bef0ab633355a180c6c12",
+    "game/src/game/fx/particle_system.gd": "19e3a4d2fea944b99e77f06d70396364eda4356a70bdc1b85035bbad74f437f7",
+    "game/src/game/fx/cloud_volume.gd": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+    "game/src/game/fx/terrain_transition_tiles.gd": "752a5f38b3bdc1c92acdf5eb859262139f0ffdcfac81426f06f8b17e75f4086e",
+    "game/src/game/fx/terrain_cliff.gd": "c7514da2f24d164c5df21bc2886add5072de9bc4ab32f654504a638f3b957ec1",
+    "game/src/game/fx/water_reflection.gd": "81ded507976837847de42b848307ab63c87dc2978c3d894952d0d92df6b5ab5d",
+    "game/src/game/fx/terrain_cliff_shader.gd": "47b1659665afc2d269811b341063e2f98f280b57c1f549df59e88530293a5b72",
+    "game/src/game/fx/biome_cover_regions.gd": "36dc82c8f345153089ab2bdd36cb97bd02df0e823826078198c1825d52f36d3c",
+    "game/src/game/fx/surface_weather.gd": "6aee03f9cb085a230dc4fb11b61c77b731b76adf440c7371e3a6f175af8a6ba2",
+    "game/src/game/fx/soft_ground_field.gd": "ff04e60936782bb80976279a7af28bfd5bb8d15d6795476fd751c0d1dc3c05fa",
+    "game/src/game/fx/rain_snow.gd": "1956127832d814937c70bd2e4b2a834ed7a042e5f1014cc6b684e4fd4e1539c6",
+    "game/src/game/fx/quest_bird.gd": "ba4f656c61fe31f97faa8d5381910463f388ffab8cd12fb6b9b7da194e69fb92",
+    "game/src/game/fx/lightning.gd": "da37ae88b347c41197bf50da386fc7f38e371ef3cca317c364948e8fd9612493",
+    "game/src/game/fx/far_grass.gd": "39d66433c8442c1e87b425b9172755251e73972d40b03777311bfaa4c79151f0",
+    "game/src/game/fx/quest_lights.gd": "097a8eaeb77803705df44446d6d01b4daef302d2c97b86cce8816d1fc801706d",
+    "game/src/game/fx/water_current.gd": "57e533c289a9bb194cb7363239017b6f73af015ff49e524a0a999ed52bc5dc92",
+    "game/src/game/fx/terrain_color_cache.gd": "716fcd2dcbc6f604c207b7256694d2ef59bc89595734168934661645f0a8a01a",
+    "game/src/game/fx/fx_types.gd": "137211d3b919a506fcf25692aca56923af12d6db69c5f1fd46e279c27de0c0a9",
+    "game/src/game/fx/scenery_batch_watch.gd": "b0af74667003955c9d91f8c5141f494a0fc030f9fab560ecbd8dd66656e40f1c",
+    "game/src/game/fx/cloud_volume_noise.gd": "a2d57c9a764e97256d93e478451d4c337980bfe396a08d756ebd175f79284a2c",
+    "game/src/game/fx/ground_surface_shader.gd": "2b386991ff213a41d1df8589d0f347ca17ec6932dfde03f9d1b30f61032f347d",
+    "game/src/game/fx/vegetation_interaction.gd": "e999b431302615cf2a30fc01cecd1124bc137082b564b6a39c8feda7b95499cb",
+    "game/src/game/fx/ambient_particles.gd": "e6a7417f844087cad4af070b24afda76492ed8708b1a19f1d1790d4c34dda8ee",
+    "game/src/game/fx/biome_cover.gd": "ea3cabcb47f52dadf69c37cf4bbadb0e9d758bf5fcb69939f532d8164878f9ae",
+    "game/src/game/fx/water_interaction_shader.gd": "b65a4420bc155a5539080c0706b8ce1f4b9f2c674156a4883a5fdac05617d653",
+    "game/src/game/fx/biome_cover_contact.gd": "0010a9b2ee1a6f9946351f14f307f551fec634283d4f75141a38c80b7b56eaf3",
+    "game/src/game/fx/fx_emitter.gd": "5f8500351c4e1dc0c5ee0693186ed7278890c39d3f3433230bf1e9ac135c8665",
+    "game/src/game/fx/waterfall_field.gd": "eb901e23553277da65c01d6bb936477135fb9a910fb8f2c52eda23fd3bdf8aae",
+    "game/src/game/fx/ground_surface_data.gd": "74bca835fa9ca7c809212a03b37eaac08463e0fdc04b2768e1181111361196b3",
+    "game/src/game/fx/water_surface.gd": "a3dbb093560ce3185d00a38ce5fb0589395665dab947a549be6ac0003ba0370d",
+    "game/src/game/fx/terrain_transition_shader.gd": "5253cb154d154447116f7b99603812c61a023aeafb0e4a53668a8f6aa38e4a11",
+    "game/src/game/fx/local_light_shader.gd": "d856b1cdc4e0143aee769b84aa9e1819988c55f2fc21966405b35f23c1352a74",
+    "game/src/game/fx/scenery_batches.gd": "84f0b413d9f1c11737de4b73a2bc806c4e8607c38c747a01cf1a6223f2d7baa6",
+    "game/src/game/fx/biome_cover_water.gd": "af5851a50b7e72205993d10b7246e10d997cf3e7a7cf768cc0a234b2ce2384ab",
+    "game/src/game/fx/ground_dense_colors.gd": "4d5ce25dbcbd70ba58950d1cac1fa6e356e082589fa5a1f20f6c0c29891f84c3",
+    "game/src/game/fx/water_current_shader.gd": "2f8bf1a57a3e3953ae3e504fdce635c100cdd34a63b74a192826ba4ad1c56442",
+    "game/src/game/fx/contact_shadows.gd": "9e7eed47d131fffcbacb961e35e610e2920ac57e230c6a51f05eca362267ac76",
+    "game/src/game/fx/ambient_ground.gd": "443d0e07738ef50f59c773a2b8125e9cb41bab25f894d11540c339823d5521fd"
+  }
+}

@@ -280,8 +280,11 @@ var _view_chest: Node3D
 var _view_collar := Vector3.ZERO
 var _view_eye := Vector3.ZERO
 var _view_right := Vector3.ZERO
+var _view_bottom := Vector3.ZERO
+var _view_rim := PackedVector3Array()
 var _view_shift := Vector3.ZERO
 var _view_meshes: Array[MeshInstance3D] = []
+var _view_shadows: Array[Dictionary] = []
 var _view_active := false
 
 
@@ -1295,8 +1298,8 @@ func set_head_hidden(hidden: bool) -> void:
 
 ## Preserve the visible chest. The local first-person body has a closed
 ## collar instead of a neck or a view-dependent hole through the torso.
-## Its shadow uses the same closed surface: a hidden neck must not cast a
-## hollow-looking silhouette onto the collar. Restore the original on exit.
+## Its shadow retains the complete original figure. Restore the original
+## visible mesh and normal shadow casting on exit.
 func set_first_person_view(on: bool) -> void:
 	_view_active = on
 	if not on:
@@ -1310,6 +1313,16 @@ func set_first_person_view(on: bool) -> void:
 		_view_body_original = _view_torso.mesh
 		_view_body_closed = FirstPersonBody.make(_view_body_original, _view_neck.surface,
 			_view_neck.first, _view_neck.count, _view_neck.center, _view_neck.collar, _view_neck.radius)
+		# Store the whole lowered neck rim in the chest bone's local space.
+		# The camera clearance must follow the final running/attack pose, not
+		# just the idle collar centre. Welded vertices are in model rest space.
+		var before: PackedVector3Array = _view_body_original.surface_get_arrays(_view_neck.surface)[Mesh.ARRAY_VERTEX]
+		var after: PackedVector3Array = _view_body_closed.surface_get_arrays(_view_neck.surface)[Mesh.ARRAY_VERTEX]
+		# Collar and head share x/z; the rest translation is the difference
+		# between the mesh-space and authored chest-space collar positions.
+		var rest := Vector3(_view_neck.center.x - _view_collar.x, _view_neck.collar - _view_collar.y, _view_neck.center.z - _view_collar.z)
+		for i in before.size():
+			if before[i] != after[i]: _view_rim.append(after[i] - rest)
 	if _view_body_closed == null: return
 	_view_torso.mesh = _view_body_closed if on else _view_body_original
 	if on and _view_meshes.is_empty():
@@ -1324,14 +1337,16 @@ func set_first_person_view(on: bool) -> void:
 		# DirectPose finishes after the camera callback. Read the final pose
 		# just before rendering, so turning/strafe blends cannot lag a frame.
 		RenderingServer.frame_pre_draw.connect(_align_first_person_body)
+	_set_first_person_shadows(on)
 
 
 ## Keep the collar beneath the stable viewpoint, without making the camera
 ## inherit idle sway or attack lunges. Only the local rendered figure moves
-## sideways; its bones, hit geometry and other model instances do not move.
-func align_first_person_body(eye: Vector3, right: Vector3) -> void:
+## beneath the eye; its bones, hit geometry and other instances do not move.
+func align_first_person_body(eye: Vector3, right: Vector3, bottom := Vector3.ZERO) -> void:
 	_view_eye = eye
 	_view_right = Vector3(right.x, 0.0, right.z).normalized()
+	_view_bottom = bottom
 	_align_first_person_body()
 
 
@@ -1340,7 +1355,72 @@ func _align_first_person_body() -> void:
 			or not is_instance_valid(_view_chest) or not is_inside_tree(): return
 	flush_pending_pose()
 	var collar := _view_chest.to_global(_view_collar)
-	_set_first_person_shift(_view_right * (_view_eye - collar).dot(_view_right))
+	var shift := _view_right * (_view_eye - collar).dot(_view_right)
+	var forward := Vector3(_view_right.z, 0.0, -_view_right.x)
+	var slope := _view_bottom.dot(forward)
+	if slope > 0.001:
+		var clearance := 0.0
+		for v: Vector3 in _view_rim:
+			clearance = maxf(clearance, (_view_chest.to_global(v) + shift - _view_eye).dot(_view_bottom) + 0.015)
+		# Put the sealed neck below the bottom frustum plane. Leaning and
+		# wider FOVs need more clearance than the idle pose's fixed eye offset.
+		shift -= forward * clearance / slope
+	_set_first_person_shift(shift)
+	_update_first_person_shadows()
+
+
+## The close-view torso has camera clearance and a sealed neck. Shadows use
+## the original complete figure at its authored pose, including head/hair.
+func _set_first_person_shadows(on: bool) -> void:
+	if on and _view_shadows.is_empty():
+		for node in find_children("*", "MeshInstance3D", true, false):
+			var source := node as MeshInstance3D
+			if source.mesh == null: continue
+			var shadow := MeshInstance3D.new()
+			shadow.name = "ViewShadow"
+			shadow.mesh = _view_body_original if source == _view_torso else source.mesh
+			shadow.skin = source.skin
+			shadow.material_override = source.material_override
+			for i in source.mesh.get_surface_count(): shadow.set_surface_override_material(i, source.get_surface_override_material(i))
+			shadow.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+			add_child(shadow)
+			var skeleton := source.get_node_or_null(source.skeleton) if not source.skeleton.is_empty() else null
+			if skeleton is Skeleton3D: shadow.skeleton = shadow.get_path_to(skeleton)
+			_view_shadows.append({"source":source,"shadow":shadow,"cast":source.cast_shadow})
+	for row: Dictionary in _view_shadows:
+		row.source.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if on else row.cast
+		row.shadow.visible = on
+	if on: _update_first_person_shadows()
+
+
+## Game applies shadow options to newly added geometry on a deferred call.
+## A shadow-only copy must never become visible geometry during that pass.
+func apply_view_shadow_option(mesh: GeometryInstance3D, enabled: bool) -> bool:
+	for row: Dictionary in _view_shadows:
+		if row.source == mesh:
+			row.cast = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if enabled else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if _view_active else row.cast
+			return true
+		if row.shadow == mesh:
+			mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+			mesh.visible = _view_active and enabled
+			return true
+	return false
+
+
+func _update_first_person_shadows() -> void:
+	for row: Dictionary in _view_shadows:
+		var source: MeshInstance3D = row.source
+		var shadow: MeshInstance3D = row.shadow
+		var shown: bool = row.cast != GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		var n: Node3D = source
+		while n != null and n != self:
+			if not (_head_hidden and n == _head): shown = shown and n.visible
+			if n == _head: shown = shown and _head_visible
+			n = n.get_parent_node_3d()
+		shadow.visible = shown
+		shadow.layers = source.layers
+		shadow.global_transform = source.global_transform
 
 
 func _set_first_person_shift(shift: Vector3) -> void:

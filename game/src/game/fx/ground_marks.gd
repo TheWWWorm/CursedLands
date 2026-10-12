@@ -104,7 +104,7 @@ static func of(w: GameWorld) -> GroundMarks:
 func _ready() -> void:
 	# Animation advances enqueue their owners. Drain after unit/model drawing,
 	# so paused and unchanged figures cost nothing per rendered frame.
-	process_priority = 1
+	process_priority = 11 # after DirectPose's final lower-body composition
 	world.ground_marks = self
 	world.unit_spawned.connect(queue_unit)
 	world.unit_died.connect(_unit_died)
@@ -452,6 +452,15 @@ func _drain_units() -> void:
 func _step_frames(u: GameUnit, st: StepState) -> void:
 	var pl := u.model.player
 	var anim: StringName = pl.current_animation
+	var raw := pl.current_animation_position
+	var reverse := false
+	# During a strafing strike the player's upper clip is an attack, while
+	# the feet follow DirectPose's independent walk cycle, including reverse.
+	var pose := u._direct_pose
+	if pose and pose.model == u.model and pose.weight > 0.0 and not pose.lower_clip.is_empty():
+		anim = StringName("ei/" + pose.lower_clip)
+		raw = pose.phase
+		reverse = pose.playback_direction < 0.0
 	if anim == &"":
 		_clear_deform_contacts(st)
 		st.clip = ""
@@ -462,7 +471,6 @@ func _step_frames(u: GameUnit, st: StepState) -> void:
 		return
 	# Early out while the pose has not moved (idle units, and the off-screen
 	# ones the animation LOD steps only now and then).
-	var raw := pl.current_animation_position
 	if raw == st.raw and anim == st.anim:
 		return
 	st.raw = raw
@@ -503,7 +511,7 @@ func _step_frames(u: GameUnit, st: StepState) -> void:
 			break
 		if f < 0:
 			continue
-		if _passed(prev, cur, f):
+		if _passed(-prev, -cur, -f) if reverse else _passed(prev, cur, f):
 			_step_shake(u)
 			_step(u, i, st)
 			break
@@ -632,18 +640,21 @@ func _sole_contact(n: Node3D) -> Dictionary:
 			return {}
 	var points := PackedVector3Array()
 	var bottom := INF
+	# Smoothed figures retain the authored part mesh for gameplay geometry,
+	# but render it in one skinned body. Its sole still follows this foot bone.
+	# There is no MeshInstance child after switching to direct controls.
+	if n.has_meta("weld_mesh") and n.is_visible_in_tree():
+		var mesh: ArrayMesh = n.get_meta("weld_mesh")[0]
+		for vertex: Vector3 in _sole_vertices(mesh):
+			var p := n.global_transform * vertex
+			points.append(p)
+			bottom = minf(bottom, p.y)
 	for child: Node in n.get_children():
 		var mi := child as MeshInstance3D
 		if mi == null or mi.mesh == null or not mi.visible:
 			continue
-		var key := mi.mesh.get_instance_id()
-		if not _sole_meshes.has(key):
-			var vertices := PackedVector3Array()
-			for surface in mi.mesh.get_surface_count():
-				vertices.append_array(mi.mesh.surface_get_arrays(surface)[Mesh.ARRAY_VERTEX])
-			_sole_meshes[key] = {"ref": weakref(mi.mesh), "vertices": vertices}
 		var transform := mi.global_transform
-		for vertex: Vector3 in _sole_meshes[key].vertices:
+		for vertex: Vector3 in _sole_vertices(mi.mesh):
 			var p := transform * vertex
 			points.append(p)
 			bottom = minf(bottom, p.y)
@@ -668,6 +679,16 @@ func _sole_contact(n: Node3D) -> Dictionary:
 		return {}
 	var extent := ((hi - lo) * 0.5).clamp(Vector2(0.025, 0.045), Vector2(0.32, 0.46))
 	return {"p": p, "extent": extent, "angle": forward.angle() - PI * 0.5, "height": bottom}
+
+
+func _sole_vertices(mesh: Mesh) -> PackedVector3Array:
+	var key := mesh.get_instance_id()
+	if not _sole_meshes.has(key):
+		var vertices := PackedVector3Array()
+		for surface in mesh.get_surface_count():
+			vertices.append_array(mesh.surface_get_arrays(surface)[Mesh.ARRAY_VERTEX])
+		_sole_meshes[key] = {"ref": weakref(mesh), "vertices": vertices}
+	return _sole_meshes[key].vertices
 
 
 # ------------------------------------------------------------------ unit helpers

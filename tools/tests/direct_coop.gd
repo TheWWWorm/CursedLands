@@ -87,6 +87,28 @@ func _ready() -> void:
 	guest.blocked=false
 	client.submit({"t":"direct_attack","units":[guest.uid],"direction":Vector3(NAN,0,0)});await frames()
 	check(guest.orders.is_empty(),"non-finite aim is rejected over network")
+	# The guest's distant ground cast must not turn into an approach on the
+	# authority. A nearby cast still executes and spends native stamina.
+	var caster: Dictionary = guest.get_meta("hero")
+	caster.spells=["fireworks{}"];caster.skills={"sense":100};caster.int=25.0
+	Combat.hero_stats(guest,caster)
+	for distance: float in [10.0,35.0]:
+		guest.order={};guest.orders.clear();guest.path=PackedVector2Array()
+		guest._anim_lock=0;guest._pending_hit={};guest._attack_cd=0;guest.action="idle"
+		guest.stop_steering();guest.mana=guest.max_mana
+		var start:=guest.pos;var mana:=guest.mana;var at:=start+Vector2(distance,0)
+		client.submit({"t":"direct_cast","unit":guest.uid,"spell":"fireworks{}","x":at.x,"y":at.y});await frames()
+		check(guest.orders.size()==1 and guest.orders[0].get("in_place",false),"network ground spell preserves in-place casting")
+		for tick in 60:
+			guest._tick(GameUnit.TICK)
+			if guest.action.begins_with("cast") or (guest.order.is_empty() and guest.orders.is_empty()):break
+		check(guest.pos==start and guest.path.is_empty(),"network ground cast never issues a move")
+		check(guest.mana<mana if distance<30 else guest.mana==mana,"network cast spends stamina only within native range")
+	guest.order={};guest.orders.clear();guest._anim_lock=0;guest._pending_hit={};guest.action="idle"
+	client.submit({"t":"gait","units":[guest.uid],"gait":0});await frames()
+	host._send_snapshot_records([guest.snapshot()],host.world.time);await frames()
+	check(guest.gait()==0 and client.world.units[guest.uid].gait()==0,"prone posture reaches host and client")
+	guest.restore_gait(2);guest._anim_lock=0
 	# New projectile event is presentation-only on the client.
 	var delivered := {}
 	client.world.child_entered_tree.connect(func(n: Node):

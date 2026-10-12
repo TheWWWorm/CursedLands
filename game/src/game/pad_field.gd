@@ -382,6 +382,8 @@ func _candidates(stick: Vector2) -> Array:
 			continue
 		var score := dist
 		var enemy := not o.dead and game.world.is_enemy(u, o)
+		if pend.is_empty() and not o.dead and not enemy and not game.can_talk_to(o):
+			continue
 		if friendly and (enemy or game.pending_target(o).is_empty()):
 			continue
 		# Teammates are targets only when explicitly healing / using an item
@@ -431,7 +433,7 @@ const VILLAGE_RADIUS := 80.0
 
 
 func _has_topics(u: GameUnit) -> bool:
-	return not Briefings.pending_for(game.session.state, u, game.session.my_index).is_empty()
+	return game.can_talk_to(u)
 
 
 func _same(a: Dictionary, b: Dictionary) -> bool:
@@ -751,7 +753,7 @@ func act() -> void:
 	game._double = PadInput.was_double("interact")
 	if game.pending_spell != "":
 		var u := target_unit()
-		if game.has_spell_target() and game.pending_target(u, reticle).is_empty():
+		if game.has_spell_target() and not game.pending_in_range(game.pending_target(u, reticle)):
 			return
 		if reticle != null and u == null:
 			game.cast_on(null, null, reticle)

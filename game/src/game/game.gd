@@ -321,7 +321,7 @@ func _update_cursor() -> void:
 		# living unit under the point, 15 (move) over an open zone exit as in
 		# the field. Its name label is VillageName's.
 		if u and not u.dead:
-			if u.village_talk_ready() and not Briefings.pending_for(session.state, u, session.my_index).is_empty():
+			if can_talk_to(u):
 				k = "cursor_talk"
 		elif _over_open_exit(p):
 			k = "cursor_move"
@@ -956,6 +956,11 @@ func _click(p: Vector2, add: bool) -> void:
 	order_on(pick_unit(p), add, p)
 
 
+func can_talk_to(u: GameUnit) -> bool:
+	return is_instance_valid(u) and not u.dead and session.shop_available() and u.village_talk_ready() \
+		and not Briefings.pending_for(session.state, u, session.my_index).is_empty()
+
+
 ## The click rules on a known target: the mouse passes the unit under the
 ## pointer and the screen point `p` (for the lever and ground picks); the
 ## gamepad (PadField) its highlighted unit, or `lever` / `ground` (EI xy)
@@ -977,7 +982,7 @@ func order_on(u: GameUnit, add: bool, p: Variant = null, lever := -1, ground: Va
 		if party.is_empty():
 			return
 		if u and not u.dead:
-			if u.village_talk_ready() and not Briefings.pending_for(session.state, u, session.my_index).is_empty():
+			if can_talk_to(u):
 				issue({"t": "interact", "units": [party[0].uid], "target": u.uid})
 			return
 		var at = pick_ground(p) if p != null else ground
@@ -1213,11 +1218,21 @@ func pending_target(u: GameUnit, ground: Variant = null) -> Dictionary:
 
 
 func pending_cursor(u: GameUnit, ground: Variant = null) -> String:
-	return "cursor_spell" if not pending_target(u, ground).is_empty() else "cursor_spellcancel"
+	var target := pending_target(u, ground)
+	return "cursor_spell" if not target.is_empty() and pending_in_range(target) else "cursor_spellcancel"
+
+
+## Direct views cast from the player's chosen position. Tactical orders may
+## still approach. This is feedback only; the authority rechecks at execution.
+func pending_in_range(target: Dictionary) -> bool:
+	if target.is_empty(): return false
+	if direct == null or not direct.active(): return true
+	var at: Vector2 = target.at if target.point else target.target.pos
+	return target.caster.pos.distance_to(at) <= float(Spells.parse(target.spell).range)
 
 
 func can_cast_portrait(u: GameUnit) -> bool:
-	return is_instance_valid(u) and not u.dead and not pending_target(u).is_empty()
+	return is_instance_valid(u) and not u.dead and pending_in_range(pending_target(u))
 
 
 func cast_portrait(u: GameUnit) -> bool:
@@ -1249,13 +1264,14 @@ func cast_on(u: GameUnit, p: Variant = null, ground: Variant = null, lever := -1
 				issue({"t": "use_lever", "units": [caster.uid], "target": lv, "run": _double})
 		return
 	var target_info := pending_target(u, pick_ground(p) if p != null else ground)
-	if target_info.is_empty():
+	if target_info.is_empty() or not pending_in_range(target_info):
 		return
 	caster = target_info.caster
 	var cmd := {"t": "cast", "unit": caster.uid, "spell": target_info.spell}
 	if not String(target_info.item).is_empty():
 		cmd.t = "use"
 		cmd.item = target_info.item
+		cmd.in_place = direct != null and direct.active()
 	if not target_info.point:
 		cmd.target = target_info.target.uid
 	else:
@@ -1623,6 +1639,7 @@ func _shadow_for(obj: Variant) -> void:
 	var p: Node = n
 	while p and p != world:
 		if p is GameUnit:
+			if p.model and p.model.apply_view_shadow_option(n, GameData.option("shadow_units") != 0): return
 			n.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if GameData.option("shadow_units") \
 				else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			return
