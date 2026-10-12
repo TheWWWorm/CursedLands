@@ -276,6 +276,13 @@ var _view_torso: MeshInstance3D
 var _view_neck := {}
 var _view_body_original: ArrayMesh
 var _view_body_closed: ArrayMesh
+var _view_chest: Node3D
+var _view_collar := Vector3.ZERO
+var _view_eye := Vector3.ZERO
+var _view_right := Vector3.ZERO
+var _view_shift := Vector3.ZERO
+var _view_meshes: Array[MeshInstance3D] = []
+var _view_active := false
 
 
 ## `unit` is a map object dictionary from EIMob (or a synthetic one with
@@ -917,6 +924,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		if head.y > shoulder + 0.02:
 			_view_neck = {"center":head, "collar":lerpf(shoulder, head.y, 0.42),
 				"radius":absf(left.x - right.x) * 0.35, "surface":0, "first":0, "count":0}
+			_view_collar = Vector3(head.x, _view_neck.collar, head.z)
 	var morphs := EIAnim.morphs(template)
 	var nodes := {}
 	var geometry_parts: Array[WeakRef] = []
@@ -960,6 +968,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		parent.add_child(n)
 		nodes[p] = n
 		if p == "hd": _head = n
+		if p == "bd": _view_chest = n
 		rest_pos[p] = rest_pos.get(par_name, Vector3.ZERO) + n.position if parent != self else n.position
 		if mesh_for.has(p):
 			var fig: Dictionary = parts[mesh_for[p]]
@@ -1289,6 +1298,12 @@ func set_head_hidden(hidden: bool) -> void:
 ## Its shadow uses the same closed surface: a hidden neck must not cast a
 ## hollow-looking silhouette onto the collar. Restore the original on exit.
 func set_first_person_view(on: bool) -> void:
+	_view_active = on
+	if not on:
+		_view_right = Vector3.ZERO
+		_set_first_person_shift(Vector3.ZERO)
+		if RenderingServer.frame_pre_draw.is_connected(_align_first_person_body):
+			RenderingServer.frame_pre_draw.disconnect(_align_first_person_body)
 	set_head_hidden(on)
 	if not is_instance_valid(_view_torso): return
 	if on and _view_body_closed == null:
@@ -1297,6 +1312,47 @@ func set_first_person_view(on: bool) -> void:
 			_view_neck.first, _view_neck.count, _view_neck.center, _view_neck.collar, _view_neck.radius)
 	if _view_body_closed == null: return
 	_view_torso.mesh = _view_body_closed if on else _view_body_original
+	if on and _view_meshes.is_empty():
+		# Move renderer instances only. Materials can be shared by heads,
+		# highlight copies and severed limbs; never put the offset on them.
+		for node in find_children("*", "MeshInstance3D", true, false):
+			var mesh := node as MeshInstance3D
+			if mesh == _welded_head or (is_instance_valid(_head) and _head.is_ancestor_of(mesh)): continue
+			if mesh.mesh == null: continue
+			_view_meshes.append(mesh)
+	if on and not RenderingServer.frame_pre_draw.is_connected(_align_first_person_body):
+		# DirectPose finishes after the camera callback. Read the final pose
+		# just before rendering, so turning/strafe blends cannot lag a frame.
+		RenderingServer.frame_pre_draw.connect(_align_first_person_body)
+
+
+## Keep the collar beneath the stable viewpoint, without making the camera
+## inherit idle sway or attack lunges. Only the local rendered figure moves
+## sideways; its bones, hit geometry and other model instances do not move.
+func align_first_person_body(eye: Vector3, right: Vector3) -> void:
+	_view_eye = eye
+	_view_right = Vector3(right.x, 0.0, right.z).normalized()
+	_align_first_person_body()
+
+
+func _align_first_person_body() -> void:
+	if not _view_active or _view_right == Vector3.ZERO or _view_body_closed == null \
+			or not is_instance_valid(_view_chest) or not is_inside_tree(): return
+	flush_pending_pose()
+	var collar := _view_chest.to_global(_view_collar)
+	_set_first_person_shift(_view_right * (_view_eye - collar).dot(_view_right))
+
+
+func _set_first_person_shift(shift: Vector3) -> void:
+	_view_shift = shift
+	for mesh in _view_meshes:
+		if is_instance_valid(mesh) and mesh.is_inside_tree():
+			# Flush animation notifications before overriding the render
+			# transform. The node/skeleton still retain the authored pose.
+			mesh.force_update_transform()
+			var presented := mesh.global_transform
+			presented.origin += shift
+			RenderingServer.instance_set_transform(mesh.get_instance(), presented)
 
 
 ## A stable eye anchor from the authored resting pose. Reading its tracks

@@ -1,0 +1,547 @@
+{
+  "version": "1.0.4-feedback.7",
+  "date": "2026-10-12",
+  "base_commit": "7a889dc96a6086cfaed7776402f90baf531ee8de",
+  "scope": "Centre the locally rendered first-person torso, arms and equipment under the stable camera after the final animation pose. Preserve the closed collar and original gameplay geometry.",
+  "implementation": {
+    "alignment": "Horizontal camera-right translation of renderer instances only, sampled from the animated collar just before drawing.",
+    "preserved": [
+      "camera position",
+      "vertical and forward animation motion",
+      "animation bones",
+      "mesh-node transforms",
+      "hit geometry",
+      "shared materials",
+      "other characters and previews"
+    ],
+    "exit": "Restore original render transforms and disconnect the pre-draw callback."
+  },
+  "source_tests": [
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_alignment",
+      "label": "geometry-instances",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_alignment.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 6.505,
+      "checks": 84,
+      "failures": [],
+      "details": {
+        "checks": 84,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "Human Hero smooth=false build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 4.79864447088181e-17,
+            "max_uncorrected_lateral": 0.154070854187012
+          },
+          {
+            "case": "Human Hero smooth=false build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 4.99442190913311e-17,
+            "max_uncorrected_lateral": 0.193160057067871
+          },
+          {
+            "case": "Human Hero smooth=false build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.61953306761223e-17,
+            "max_uncorrected_lateral": 0.116013526916504
+          },
+          {
+            "case": "Human Hero smooth=true build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 4.79864447088181e-17,
+            "max_uncorrected_lateral": 0.154697418212891
+          },
+          {
+            "case": "Human Hero smooth=true build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 4.99442190913311e-17,
+            "max_uncorrected_lateral": 0.193921089172363
+          },
+          {
+            "case": "Human Hero smooth=true build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.61953306761223e-17,
+            "max_uncorrected_lateral": 0.116013526916504
+          },
+          {
+            "case": "Human Mercenary Thief smooth=false build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 5.09998967675733e-17,
+            "max_uncorrected_lateral": 0.121773719787598
+          },
+          {
+            "case": "Human Mercenary Thief smooth=false build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 5.28464848408693e-17,
+            "max_uncorrected_lateral": 0.157876968383789
+          },
+          {
+            "case": "Human Mercenary Thief smooth=false build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.72088453021815e-17,
+            "max_uncorrected_lateral": 0.0917987823486328
+          },
+          {
+            "case": "Human Mercenary Thief smooth=true build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 5.09998967675733e-17,
+            "max_uncorrected_lateral": 0.121773719787598
+          },
+          {
+            "case": "Human Mercenary Thief smooth=true build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 5.28464848408693e-17,
+            "max_uncorrected_lateral": 0.181686401367188
+          },
+          {
+            "case": "Human Mercenary Thief smooth=true build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.72088453021815e-17,
+            "max_uncorrected_lateral": 0.0917987823486328
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/geometry-instances.log",
+      "log_sha256": "c15d5c91b0c480889d23fffc234d88e244802bc6c1c28f90d6cf50ce121db6a4"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_alignment",
+      "label": "lia-geometry-final",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_alignment.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 6.255,
+      "checks": 84,
+      "failures": [],
+      "details": {
+        "checks": 84,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "Human Hero smooth=false build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 4.83674176291804e-17,
+            "max_uncorrected_lateral": 0.155916213989258
+          },
+          {
+            "case": "Human Hero smooth=false build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 4.90050977808424e-17,
+            "max_uncorrected_lateral": 0.195816993713379
+          },
+          {
+            "case": "Human Hero smooth=false build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.71928443204123e-17,
+            "max_uncorrected_lateral": 0.117454528808594
+          },
+          {
+            "case": "Human Hero smooth=true build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 4.83674176291804e-17,
+            "max_uncorrected_lateral": 0.156542778015137
+          },
+          {
+            "case": "Human Hero smooth=true build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 4.90050977808424e-17,
+            "max_uncorrected_lateral": 0.195055961608887
+          },
+          {
+            "case": "Human Hero smooth=true build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.71928443204123e-17,
+            "max_uncorrected_lateral": 0.117454528808594
+          },
+          {
+            "case": "merc2 smooth=false build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 5.1572173402562e-17,
+            "max_uncorrected_lateral": 0.123589515686035
+          },
+          {
+            "case": "merc2 smooth=false build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 5.29885018258773e-17,
+            "max_uncorrected_lateral": 0.159255027770996
+          },
+          {
+            "case": "merc2 smooth=false build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.88711375350007e-17,
+            "max_uncorrected_lateral": 0.0895042419433594
+          },
+          {
+            "case": "merc2 smooth=true build=(0.5, 0.5, 0.5)",
+            "max_corrected_lateral": 5.1572173402562e-17,
+            "max_uncorrected_lateral": 0.123589515686035
+          },
+          {
+            "case": "merc2 smooth=true build=(0.1, 0.2, 0.8)",
+            "max_corrected_lateral": 5.29885018258773e-17,
+            "max_uncorrected_lateral": 0.158535003662109
+          },
+          {
+            "case": "merc2 smooth=true build=(0.9, 0.8, 0.2)",
+            "max_corrected_lateral": 4.88711375350007e-17,
+            "max_uncorrected_lateral": 0.0895042419433594
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/lia-geometry-final.log",
+      "log_sha256": "d1f7ac727b4a7fc270ab68da33e2495a92c2a5628a26927c62acfc532f072eb2"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso",
+      "label": "render-instance-male",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 39.036,
+      "checks": 222,
+      "failures": [],
+      "details": {
+        "checks": 222,
+        "failures": [],
+        "variants": [
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/render-instance-male.log",
+      "log_sha256": "0399580374b97b31133d4098581e148052ce1102114a6df9caa58094d6a8cbc6"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso",
+      "label": "render-instance-female",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_torso.gd",
+        "--mod-tests",
+        "--female"
+      ],
+      "exit_code": 0,
+      "seconds": 38.779,
+      "checks": 222,
+      "failures": [],
+      "details": {
+        "checks": 222,
+        "failures": [],
+        "variants": [
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Hero smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 13
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=false build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.5, 0.5, 0.5)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.1, 0.2, 0.8)",
+            "lowered": 18
+          },
+          {
+            "added_vertices": 15,
+            "case": "Human Mercenary Thief smooth=true build=(0.9, 0.8, 0.2)",
+            "lowered": 18
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/render-instance-female.log",
+      "log_sha256": "360fb07b506d22ba60735d275be255e39a590539291833c5ec8407d67f0d0d0e"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_camera_stability",
+      "label": "camera-instances",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_camera_stability.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 8.756,
+      "checks": 25,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/camera-instances.log",
+      "log_sha256": "7a936f55726d1bbde0c17657a3c3696efef1c85ae68784f66fbc8a9e8835dfda"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_models",
+      "label": "models-instances",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_models.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 4.757,
+      "checks": 11,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/models-instances.log",
+      "log_sha256": "d918510ece388227271babbd6731073e7413cb4dbacf014b0ef7fd0bfe652666"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks",
+      "label": "moving-attacks",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks.gd",
+        "--mod-tests",
+        "--first-person"
+      ],
+      "exit_code": 0,
+      "seconds": 45.551,
+      "checks": 17,
+      "failures": [],
+      "details": {
+        "aligned_frames": 220,
+        "attack_starts": [
+          {
+            "clip": "uattack09",
+            "remaining": 1.595,
+            "time": 1.925
+          },
+          {
+            "clip": "uattack09",
+            "remaining": 1.65,
+            "time": 3.52
+          },
+          {
+            "clip": "uattack04",
+            "remaining": 1.65,
+            "time": 5.17
+          },
+          {
+            "clip": "uattack08",
+            "remaining": 1.65,
+            "time": 6.81999999999999
+          },
+          {
+            "clip": "uattack04",
+            "remaining": 1.595,
+            "time": 8.52499999999998
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.65,
+            "time": 10.12
+          },
+          {
+            "clip": "uattack08",
+            "remaining": 1.65,
+            "time": 11.77
+          }
+        ],
+        "camera_motion": 0.000804421899374574,
+        "checks": 17,
+        "collar_error": 2.43498767815709e-08,
+        "distance": 6.633056640625,
+        "failures": [],
+        "first_person": true,
+        "joint_angle_error": 0.0009765625,
+        "joint_position_error": 0.0,
+        "leg_changes": 97,
+        "moving_frames": 95,
+        "run": false,
+        "torso_error": 0.000690533954184502,
+        "weapon": "sword"
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-alignment-20261012/moving-attacks.log",
+      "log_sha256": "c4e69495ac154b3a8465f337ae6e194f03d5afe74d4631d80ea8d08dd98ed88d"
+    }
+  ],
+  "source_test_checks": 665,
+  "source_test_failures": 0,
+  "coverage": [
+    "Base game and LiA male/female humanoids, three physiques, rigid and smooth geometry.",
+    "1,728 pose/heading combinations per campaign: standing, crouching and crawling; idle, walk, run, attack and cast as available.",
+    "OpenGL rendered male/female views at level, downward and steep downward pitch; posture changes and restoration to third person.",
+    "Live moving attacks with final rendered-frame alignment, weapon/hair attachment checks and stable camera checks."
+  ],
+  "source_sha256": {
+    "game/src/ei/unit_model.gd": "f3bcc2eb0fb9a633f440beb0b0fc69de692ed85c64b15a5408d30ecf1a1f5cf4",
+    "game/src/game/direct_control.gd": "5b708684b53580c251e66a4aa70718da065665d70160e690d5797528b3165e70",
+    "game/project.godot": "a602613628b320f142436b56fc8b4f5d37aed0a52b2a70dd51f0bdc465969dce",
+    "tools/tests/first_person_alignment.gd": "1127aa5c75cd1c7bccbfb444d7a3b804807425d13edafdd7a5eedabca2cc5a49",
+    "tools/tests/first_person_torso.gd": "b7702e8cc2442fcde72217f2926f3747189e47f329f6e4c5651bdd49f1b08957",
+    "tools/tests/direct_moving_attacks.gd": "7b918be9d18d7f58ceca38e8127fd33093faeb7b81a3aa25bfdbcdb418a10257"
+  },
+  "package_status": "Pending export and packaged Vulkan/HD checks.",
+  "limitations": [
+    "Windows binary will receive structural validation only; no Windows runtime is available in this session.",
+    "No co-op network or simulation behavior is changed or WAN-tested in this camera correction."
+  ]
+}

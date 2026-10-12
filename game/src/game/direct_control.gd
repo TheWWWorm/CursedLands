@@ -681,6 +681,7 @@ func apply_camera(dt := 0.0) -> void:
 		# Eyes sit ahead of the collar: looking down sees the chest, while
 		# walking neck/shoulder motion stays behind the near part of the view.
 		eye += Vector3(cos(heading),0,-sin(heading)) * 0.28
+		if u.model: u.model.align_first_person_body(eye, right)
 		_shoulder_unit = null
 	else:
 		var wanted := pivot - forward*zoom + right*0.55

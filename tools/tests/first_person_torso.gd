@@ -91,6 +91,9 @@ func _ready() -> void:
 					g.direct.tilt=tilt
 					for f in 40:g.direct.apply_camera(1.0/60)
 					check(hero.model._view_torso.mesh == hero.model._view_body_closed and hero.model._head_hidden, "%s phase %d pitch %.2f keeps closed torso and hidden head" % [act,sample,tilt])
+					var collar := hero.model._view_chest.to_global(hero.model._view_collar) + hero.model._view_shift
+					check(absf((collar-g.rig.camera.global_position).dot(g.rig.camera.global_basis.x)) < .0001,
+						"%s phase %d pitch %.2f centres the rendered collar under the camera" % [act,sample,tilt])
 					if sample==2:await shot("torso-%s-%s" % [act, "level" if tilt==0 else "down" if tilt> -1.4 else "feet"])
 		for gait:int in [1,0]:
 			hero.restore_gait(gait);hero._anim_lock=0

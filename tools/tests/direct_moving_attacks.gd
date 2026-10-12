@@ -23,6 +23,8 @@ var last_leg:=Quaternion.IDENTITY
 var capture_dir:=""
 var capture_frame:=0
 var sampled_frames:=0
+var aligned_frames:=0
+var maximum_collar_error:=0.0
 
 func frames(n:=4) -> void:
 	for i in n:
@@ -81,6 +83,16 @@ func _ready() -> void:
 	get_window().mode=Window.MODE_WINDOWED;get_window().size=Vector2i(1152,720)
 	get_viewport().scaling_3d_scale=1.0
 	get_tree().paused=false;set_process(true)
+	if fp and DisplayServer.get_name() != "headless":
+		RenderingServer.frame_post_draw.connect(_check_body_alignment)
+
+func _check_body_alignment() -> void:
+	if not is_processing() or not is_instance_valid(hero) or hero.model == null: return
+	var model:=hero.model
+	if not model._view_active or model._view_chest == null: return
+	var collar:=model._view_chest.to_global(model._view_collar)+model._view_shift
+	maximum_collar_error=maxf(maximum_collar_error,absf((collar-g.rig.camera.global_position).dot(g.rig.camera.global_basis.x)))
+	aligned_frames+=1
 
 func _process(dt:float) -> void:
 	elapsed=s.world.draw_time();sampled_frames+=1;g.rig._window_focused=true
@@ -135,8 +147,10 @@ func _finish() -> void:
 	check(maximum_joint_error<0.001 and maximum_joint_angle<0.005,"weighted body and hair/weapon attachments share the final pose")
 	for i in range(1,starts.size()):check(starts[i].time-starts[i-1].time>=starts[i-1].remaining-GameUnit.TICK*1.1,"movement does not shorten attack cooldown")
 	if fp:check(maximum_camera_motion<0.01,"first-person eye remains steady during moving attacks")
+	if fp and DisplayServer.get_name() != "headless":
+		check(aligned_frames>60 and maximum_collar_error<0.001,"body remains centred after the live movement/attack pose is drawn")
 	check(hero.direct_steering.is_empty(),"releasing movement clears independent input")
-	var report:={"checks":checks,"failures":failures,"weapon":weapon,"first_person":fp,"run":run_case,"attack_starts":starts,"moving_frames":moving_frames,"distance":moving_distance,"leg_changes":leg_changes,"joint_position_error":maximum_joint_error,"joint_angle_error":maximum_joint_angle,"torso_error":maximum_torso_error,"camera_motion":maximum_camera_motion}
+	var report:={"checks":checks,"failures":failures,"weapon":weapon,"first_person":fp,"run":run_case,"attack_starts":starts,"moving_frames":moving_frames,"distance":moving_distance,"leg_changes":leg_changes,"joint_position_error":maximum_joint_error,"joint_angle_error":maximum_joint_angle,"torso_error":maximum_torso_error,"camera_motion":maximum_camera_motion,"aligned_frames":aligned_frames,"collar_error":maximum_collar_error}
 	FileAccess.open("user://direct-moving-attacks.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	print("MOVING_ATTACKS ",JSON.stringify(report))
 	if not capture_dir.is_empty() and not observer and DisplayServer.get_name() != "headless":
