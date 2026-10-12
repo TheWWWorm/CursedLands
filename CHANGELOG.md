@@ -1,57 +1,67 @@
 # Changelog
 
-## Unreleased — direct controls
+## 1.0.4-experimental.6 — experimental release, 12 October 2026
 
-- Allow movement during first- and third-person weapon attacks while retaining
-  committed impacts and cooldowns. Blend locomotion through the lower body,
-  with strafing, backpedaling and synchronized hair/equipment attachments.
-- Follow native walking curves through short terrain corners and narrow
-  openings. Preserve collision, posture and village movement limits.
-- Retain the Alt-selected body part for direct melee and ranged attacks.
-- Stabilize the first-person eye during locomotion and attacks, ease posture
-  height changes, and use an external view for scripted lying animations.
-- Show weapon readiness, confirmed contacts, blocked shots, friendly bodies
-  and melee reach through the crosshair.
-- Add perspective and tactical-view shortcuts, separate FOV and mouse speeds,
-  direct-control key bindings, and controller aim settings.
-- Use a compact control guide with contextual return hints; provide full
-  explanations and a hidden-guide option in the direct-view settings.
-- Replicate direct movement, recovery and confirmed-hit state. Network
-  protocol is 21; all peers must use the same build.
-
-## Unreleased — co-op and interface fixes
-
-- Add an optional HD Lands 1.4.0 texture download for the base campaign on
-  Windows and Linux, with verified source downloads, cancellation, separate
-  profile activation and preserved original textures. Accept larger terrain
-  atlases without changing map layout or applying a second upscale.
-- Preserve graphics settings until automatic calibration has rendered its
-  result. Restore previous settings after an interrupted test and skip its
-  automatic retry; record the last graphics tier before applying it.
-- Compress cumulative co-op progress, send it on a separate reliable channel,
-  and compress ENet traffic. Keep the rate-limited snapshot stream active when
-  frontend frame delays increase acknowledgement times. This transport update introduced protocol 18.
-- Disable physics interpolation on shader-driven particles, recycled particle
-  buffers and stationary vegetation batches.
-- Keep continuous stamina recovery at the health regeneration rate during
-  activity, while retaining native stamina recovery when standing idle.
-- Add an armour formula choice: original absorption or at least 20% damage
-  passing through natural and worn armour. The host controls the saved rule.
+- Compress co-op campaign progress and movement snapshots, keep snapshots flowing
+  during delayed acknowledgements, and retry small ordered input independently of
+  reliable-packet backoff. Party snapshots update at up to 20 Hz. Reduce repeated
+  visibility work during non-combat movement and audio catch-up.
+- Synchronize scripted mechanism locks for active players and late joiners; select
+  gates and cages using their visible parts. [Issue #2](https://github.com/TheWWWorm/CursedLands/issues/2).
+- Add an optional HD Lands 1.4.0 texture download for the base campaign on Windows
+  and Linux. Installation preserves the original textures and uses a separate mod
+  profile. Larger terrain and interface atlases retain their original coordinates.
+- Open Mods and rules directly from the main menu. Combine installed mods and
+  downloads, add labelled On/Off switches and Apply & restart, and use compact
+  profile controls with correctly scaled dropdowns.
+- Correct HD HUD frames, bars, tutorial buttons, shops, stats, camp controls,
+  maps and dialog borders. Preserve stone grain and border thickness on settings
+  buttons. Complete Russian and German settings and mod-menu text.
+- Restore ordinary character previews to their authored framing, retain bounds
+  for oversized creatures, shrink long names to fit, and fit camp descriptions
+  and rune text above the lower controls. Keep item size constant during hover
+  rotation, including leather and metal materials.
+- Allow movement during first- and third-person attacks while retaining impacts
+  and cooldowns. Blend locomotion through the lower body, including strafing and
+  backpedaling; keep the head, hair and equipment attached to the final pose.
+- Keep the first-person camera steady, show the torso with a closed collar, and
+  centre the rendered body beneath the camera. Restore the original figure when
+  leaving first person. Use an external view for scripted lying animations.
+- Resume direct controls after zone transitions, update the minimap from the
+  controlled character, improve nearby chest/mechanism selection, and follow
+  narrow passages while sliding around other characters. Turn the body with the
+  view, including while strafing.
+- Hold Alt to select an attack body part. Add view shortcuts, separate FOV and
+  mouse-speed settings, configurable direct-control bindings, controller aim
+  options, and crosshair feedback for readiness, contacts, obstructions and reach.
+- Give focus to a revived character when it is the only living character under
+  the player's control. Downed companions continue earning XP while revival is
+  available. Keep newly recruited companions' equipment linked to inventory.
+- Recharge enchanted equipment at the original rate and retain enchantments in
+  corpse loot. Periodic equipment spells follow simulation pause/speed and village
+  casting restrictions. Recognize equipment material names with surrounding spaces.
+- Set assembly and disassembly fees to **5%** of the completed item's value,
+  including spells. Missing components retain their normal purchase prices.
+  Include runes and signed base-price adjustments in enchanted-item prices.
+- Restore the activated tunnel golem's Guard motivations and preserve the two
+  Ingos gate guards' scripted poses between animation cycles.
+- Continuous stamina recovery uses the HP regeneration rate during activity;
+  the faster native stamina rate remains available when standing idle.
+- Add a saved, host-controlled armour formula choice: original absorption or a
+  minimum of 20% damage passing through natural and worn armour.
 - Add optional rain puddles on exposed, nearly flat ground, with drying after
-  rain and matching terrain contact shading.
-- Fit camp descriptions and rune text above the lower controls, preserve the
-  authored size of ordinary character previews, and fit oversized creatures.
-- Complete Russian and German settings/rule text and built-in mod captions.
-- Play the transaction sound after confirmed sales and the clock sound when
-  clients receive a shared pause or speed change.
-- Keep item-preview framing constant throughout hover rotation, including
-  flat leather and metal materials.
-- Keep water-texture samples anchored to their individual tiles across
-  blended borders, and blend reflection colour with its coverage and strength
-  together to avoid bright silhouette outlines.
-- Award experience to downed companions while revival remains available.
-  Preserve those gains in saves and apply updated health/stamina pools when
-  the companion rises with the configured revival health.
+  rain. Correct water tile sampling and reflected-edge blending; graphics presets
+  retain Mirror when reflections are enabled.
+- Stabilize environmental particles, reduce desert dust size, prepare regional
+  effects beneath the loading screen, and restore waterfall spray after loading.
+- Play the transaction sound after confirmed sales and the clock sound on shared
+  pause/speed changes. Keep sound-channel routing changes under the audio lock.
+- Animate loading-screen lettering at launch and during map loading in both
+  campaigns. Recover the previous graphics settings after interrupted automatic
+  calibration and avoid repeating that failed automatic attempt.
+
+
+See [release notes](docs/releases/1.0.4-experimental.6.md) for compatibility and platform limits.
 
 ## 1.0.3-experimental.6 — experimental release, 8 October 2026
 

@@ -4,11 +4,11 @@ Play **Evil Islands: Curse of the Lost Soul** («Проклятые земли»
 
 This is a separate game engine, built in Godot, in the spirit of OpenMW and fheroes2: it reads the Evil Islands files you already own (maps, models, textures, animations, sounds, music, texts, scripts and game tables) and plays them with natively written rendering, combat, AI, scripting and interface systems that follow the original game's rules.
 
-> **You need your own copy of the game you want to play.** No game data ships with this engine: no models, textures, music, sounds, videos, texts or maps. Nothing is downloaded for you. The original game's **GOG version** is the main tested edition. The expansion can use an installed folder, a data pack or the supported two-disc ISO edition.
+> **You need your own copy of the game you want to play.** No game data ships with this engine: no models, textures, music, sounds, videos, texts or maps. No original game data is downloaded for you. The original game's **GOG version** is the main tested edition. The expansion can use an installed folder, a data pack or the supported two-disc ISO edition.
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The newest preview is [**1.0.4 Experimental 5**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.4-experimental.5), adding rune and interface fixes, village dragon rest, direct-control crouching and melee improvements, companion progress persistence, LiA departures, corrected Mirror reflections, capped armour absorption and optional continuous stamina recovery. See its [release notes](docs/releases/1.0.4-experimental.5.md).
+The newest preview is [**1.0.4 Experimental 6**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.4-experimental.6), adding co-op transport improvements, optional HD textures, revised mod menus, gameplay and pricing fixes, rain puddles, and first-/third-person movement and camera updates. See its [release notes](docs/releases/1.0.4-experimental.6.md).
 
 The current stable release is **1.0.3**. [Downloads](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.3) are available for Linux, Windows, Android and macOS. See the [release notes](docs/releases/1.0.3.md) for the graphics, controls, gameplay and co-op changes, measured performance improvements and remaining platform limits.
 
