@@ -782,11 +782,11 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	var helm_surface := SurfaceResponse.DULL
 	var helm_parts := {}
 	for w: String in wears:
-		var nm := w.get_slice("@", 0).get_slice("|", 0).split(".")
-		var a := db.find("armors", nm[0])
+		var item := Items.info(w)
+		var a: Dictionary = item.row if item.table == "armors" else {}
 		if a.is_empty():
 			continue
-		armors.append([a, db.find("materials", nm[1] if nm.size() > 1 else "")])
+		armors.append([a, item.mat])
 	armors.sort_custom(func(x, y):
 		var xi := ARMOR_ORDER.find(x[0].type)
 		var yi := ARMOR_ORDER.find(y[0].type)
@@ -840,13 +840,13 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	if not unit.has("weapons") and String(proto.get("weapon", "")) != "":
 		weapons = [proto.weapon]
 	for w: String in weapons.slice(0, 1):
-		var nm := w.get_slice("@", 0).get_slice("|", 0).split(".")
-		var wd := db.find("weapons", nm[0])
+		var item := Items.info(w)
+		var wd: Dictionary = item.row if item.table == "weapons" else {}
 		if wd.is_empty():
 			continue
 		weapon_type = wd.type
 		var t1: int = wd.get("texture1", 1)
-		var mat := db.find("materials", nm[1] if nm.size() > 1 else "")
+		var mat: Dictionary = item.mat
 		weapon_surface = SurfaceResponse.equipment(mat)
 		if WEAPON_PREFIX.has(wd.type):
 			weapon_layer = ("%s_%02d.%s.%d" % [WEAPON_PREFIX[wd.type], t1, mat.get("code", ""), wd.get("texture2", 0)])

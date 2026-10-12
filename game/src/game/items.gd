@@ -20,8 +20,8 @@ static func info(id: String) -> Dictionary:
 	var material := ""
 	var dot := base.rfind(".")
 	if dot > 0:
-		material = base.substr(dot + 1)
-		base = base.substr(0, dot)
+		material = base.substr(dot + 1).strip_edges()
+		base = base.substr(0, dot).strip_edges()
 	var out := {"id": id, "base": base, "material": material, "table": "", "row": {}, "mat": {}}
 	for t in TABLES:
 		var row := GameData.db.find(t, base)
@@ -496,7 +496,9 @@ static func blueprint_kind(bp: String) -> String:
 ##   spells buy 1, sell 0.5, construct 0.2, deconstruct 0.1,
 ##   items  buy 1, sell 0.5, construct 0.2, deconstruct 0.1, repair 0.2.
 ## Record 5 has all nine at 0 (Shops.coef); `coef` holds the open trader's set.
-const COEF := [1.0, 0.5, 0.2, 0.1, 1.0, 0.5, 0.2, 0.1, 0.2]
+## Assembly and disassembly service fees are 5%; buying missing components
+## still uses the trader's ordinary purchase price.
+const COEF := [1.0, 0.5, 0.05, 0.05, 1.0, 0.5, 0.05, 0.05, 0.2]
 static var coef: Array = COEF
 enum Deal {SPELL_BUY, SPELL_SELL, SPELL_CONSTR, SPELL_DECONSTR, BUY, SELL, CONSTR, DECONSTR, REPAIR}
 
@@ -534,7 +536,7 @@ static func repair_price(id: String) -> int:
 ## ). An item is its blueprint ("bp:<prototype>", camp item type
 ## 0x3007 kind 2: weapon / armour / quick item prototype) plus as many units of
 ## one material ("material.<name>") as the prototype's "components", of the
-## prototype's material type. Building costs coef[6] x the price of every piece
+## prototype's material type. Building costs coef[6] x the completed item price
 ## (plus the buy price of pieces taken from the shop); taking a deconstructable
 ## weapon, armour or wand (quick item whose material type is not "none",
 ## ) apart costs coef[7] x its price and gives the pieces back.
@@ -588,12 +590,14 @@ static func constr_piece_price(id: String) -> int:
 	return int(price(id) * float(coef[Deal.CONSTR]))
 
 
-static func construct_price(bp: String, mat: String) -> int:
-	return int(price(bp) * float(coef[Deal.CONSTR])) + components(bp) * int(price(material_unit(mat)) * float(coef[Deal.CONSTR]))
+static func construct_price(bp: String, mat: String, spell := "") -> int:
+	var item := bp.trim_prefix("bp:") + "." + mat
+	if spell != "": item += "|" + spell.trim_prefix("spell:")
+	return int(price(item) * float(coef[Deal.CONSTR]))
 
 
 static func deconstruct_price(id: String) -> int:
-	return deal_price(plain(id), Deal.DECONSTR)
+	return int(price(id) * float(coef[Deal.DECONSTR]))
 
 
 ## Weapon damage range (x = min, y = max). the original item builder (
@@ -648,25 +652,32 @@ static func weight(id: String) -> float:
 
 
 static func price(id: String) -> int:
+	return maxi(1, int(_price(id)))
+
+
+## Native item construction (5b6fc0) keeps the signed prototype adjustment;
+## installing a spell (5b3710) adds its full rune-inclusive value once. Clamp
+## only the completed item, otherwise authored quest wands become windfalls.
+static func _price(id: String) -> float:
 	if "@" in id:
-		return price(unworn(id))
+		return _price(unworn(id))
 	if is_spell_container(id) or is_keystone(id):
 		# The spell builder adds every rune's price to the keystone's.
-		return maxi(1, int(float(Spells.parse(spell_code(id)).price)))
+		return float(Spells.parse(spell_code(id)).price)
 	if id.begins_with("rune:"):
-		return maxi(1, int(float(Spells.mod_row(id.substr(5)).get("price", 100.0))))
+		return float(Spells.mod_row(id.substr(5)).get("price", 100.0))
 	if id.begins_with("bp:"):
-		return maxi(1, int(float(blueprint_row(id).row.get("price", 1.0))))
+		return float(blueprint_row(id).row.get("price", 1.0))
 	if "|" in id:
-		return price(plain(id)) + price("spell:" + Spells.parse(spell_of(id)).code) * 2
+		return _price(plain(id)) + _price("spell:" + spell_of(id))
 	var i := info(id)
 	var p := float(i.row.get("price", 1.0))
 	if i.base == "material" and not i.mat.is_empty():
-		return int(float(i.mat.get("price", 1.0)))
+		return float(i.mat.get("price", 1.0))
 	if not i.mat.is_empty():
 		# the original item builder: prototype price + components x material price.
 		p = p + float(i.row.get("components", 0)) * float(i.mat.get("price", 0.0))
-	return maxi(1, int(p))
+	return p
 
 
 ## A wand: a quick item with a material whose prototype item_id

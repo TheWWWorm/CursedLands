@@ -83,6 +83,7 @@ var _phase := 0.0
 var _fit_camera: Camera3D
 var _fit_points := PackedVector3Array()
 var _fit_center := Vector3.ZERO
+var _look_key := []
 
 
 func _ready() -> void:
@@ -117,8 +118,13 @@ void fragment() {
 
 
 func show_item(id: String) -> void:
-	if id == item:
+	# Wear/charge belong to the inventory copy, not its geometry. Recharging
+	# must not rebuild every weapon viewport (or restart its hover animation).
+	var key := [Items.unworn(id), camp, belt, info, fit_slot, quest, unit_px, screen_at, size]
+	if item != "~" and key == _look_key:
+		item = id
 		return
+	_look_key = key
 	item = id
 	for ch in _vp.get_children():
 		ch.queue_free()

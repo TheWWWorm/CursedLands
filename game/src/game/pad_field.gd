@@ -55,6 +55,7 @@ var _last_level := -1
 var _log_mode := 0
 var _in_wheel := {}   # actions whose current press began in an open wheel
 var _ls_wait := false  # a wheel closed with the left stick tilted: no walking until it is let go
+var _keyboard_aim := false
 
 const LB_PAGES := ["spells", "actions"]
 const RB_PAGES := ["belt", "weapons"]
@@ -142,6 +143,10 @@ func _process(dt: float) -> void:
 	var pad := PadInput.active == "pad"
 	game.rig.pad_no_edge = pad and not cursor_mode
 	game.hud.unit_panel.ignore_hover = pad and not cursor_mode
+	if _keyboard_aim:
+		if game.world == null or leader() == null or game.direct.transitioning() or game.session.movie_active() or game.hud.blocks_camera() or not game.rig._window_focused:
+			close_wheel()
+		return
 	if world_info and not PadInput.held("gait"):
 		world_info = false   # the release went to a menu, or the pad was unplugged
 	if not pad and game.direct and game.direct.active(): return
@@ -848,6 +853,78 @@ func cycle_party(step: int) -> void:
 
 # ------------------------------------------------------------------ wheels
 
+## Alt uses the same six body-part sectors without requiring a controller.
+## Release confirms a mouse direction; Escape/right click cancels. With no
+## enemy under the pointer it arms the next strike instead of issuing one.
+func _input(e: InputEvent) -> void:
+	if e is InputEventKey and (e.physical_keycode == KEY_ALT or e.keycode == KEY_ALT):
+		if e.pressed and not e.echo and not _keyboard_aim:
+			if game.world == null or leader() == null or game.direct.transitioning() or game.session.movie_active() \
+					or game.hud.blocks_camera() or not game.rig._window_focused or not game.session.command_allowed({"t":"attack"}): return
+			var focus := get_viewport().gui_get_focus_owner()
+			if focus is LineEdit or focus is TextEdit: return
+			open_keyboard_aim()
+		elif not e.pressed and _keyboard_aim:
+			finish_keyboard_aim()
+		else: return
+		get_viewport().set_input_as_handled()
+	elif _keyboard_aim:
+		if e is InputEventMouseMotion:
+			var centre: Vector2 = wheel._geom()[0]
+			var offset: Vector2 = wheel.get_global_transform_with_canvas().affine_inverse() * e.position - centre
+			if offset.length() < minf(wheel.size.x, wheel.size.y) * 0.04: wheel.selected = -1
+			else: wheel.flick(offset.normalized())
+		elif e is InputEventMouseButton and e.pressed:
+			if e.button_index == MOUSE_BUTTON_LEFT: finish_keyboard_aim()
+			elif e.button_index == MOUSE_BUTTON_RIGHT: close_wheel()
+		elif e is InputEventKey and e.pressed and e.keycode == KEY_ESCAPE:
+			close_wheel()
+		get_viewport().set_input_as_handled()
+
+
+func open_keyboard_aim() -> void:
+	var direct := game.direct and game.direct.active() and not game.direct.pointer
+	var point := get_viewport().get_visible_rect().size * 0.5 if direct else get_viewport().get_mouse_position()
+	var u := game.pick_unit(point, leader())
+	close_wheel()
+	_ring_target = {"unit":u} if u and not u.dead and game.world.is_enemy(leader(), u) else {}
+	_stop_moving()
+	if game.direct:
+		game.direct.stop_move()
+		game.direct._fire = false
+		game.direct._capture(false)
+	_keyboard_aim = true
+	_wheel_kind = "aim"
+	wheel.title = RemakeText.t("Aimed strike")
+	wheel.pages = PackedStringArray()
+	wheel.hints = []
+	wheel.open(aim_entries())
+	get_viewport().warp_mouse(wheel.get_global_transform_with_canvas() * wheel._geom()[0])
+	_hold_pause(true)
+
+
+func finish_keyboard_aim() -> void:
+	var entry := wheel.current()
+	close_wheel()
+	if entry.is_empty(): return
+	last_aim = int(entry.id[1])
+	game.cancel_touch_target()
+	game.touch_aim = last_aim
+	var u: GameUnit = _ring_target.get("unit")
+	if is_instance_valid(u) and not u.dead and u.world == game.world:
+		game.forced_on("aim", u, null)
+		game.touch_aim = -1
+
+
+static func aim_entries() -> Array:
+	var out := []
+	for i in 6:
+		var strip: Array = []
+		for f: Image in GameCursor.frames(Game.AIM_CURSORS[i]): strip.append(ImageTexture.create_from_image(f))
+		out.append({"id":["aim",i], "label":_orig("action_"+AIM_ACTIONS[i],AIM_ACTIONS[i]),
+			"caption":RemakeText.t(TouchActions.PARTS[i]), "strip":strip, "angle":AIM_ANGLES[i], "tip":RemakeText.t("Aimed strike")})
+	return out
+
 func open_wheel(kind: String, button: String) -> void:
 	_stop_moving()
 	_wheel_kind = kind
@@ -1046,15 +1123,8 @@ func _ring_entries() -> Array:
 		if enemy:
 			# Six equally sized sectors; ordinary attack stays on A / RT and
 			# Use/Steal on the actions page. Feet no longer need narrow flicks.
-			for i in 6:
-				var strip: Array = []
-				for f: Image in GameCursor.frames(Game.AIM_CURSORS[i]):
-					strip.append(ImageTexture.create_from_image(f))
-				var label := _orig("action_" + AIM_ACTIONS[i], AIM_ACTIONS[i])
-				out.append({"id": ["aim", i], "label": label, "caption": RemakeText.t(TouchActions.PARTS[i]),
-					"strip": strip, "angle": AIM_ANGLES[i], "tip": RemakeText.t("Aimed strike")})
-				if i == last_aim:
-					pre = out.size() - 1
+			out = aim_entries()
+			pre = last_aim
 		else:
 			out.append({"id": ["interact"], "label": RemakeText.t("Talk"), "icon": _cursor("cursor_talk")})
 			out.append({"id": ["steal"], "label": Skills.title("science"), "icon": _cursor("cursor_steal"),
@@ -1119,6 +1189,7 @@ func open_ring(ground: Variant = null) -> void:
 
 
 func close_wheel() -> void:
+	_keyboard_aim = false
 	wheel.close()
 	_wheel_kind = ""
 	_ls_wait = PadInput.stick(true) != Vector2.ZERO

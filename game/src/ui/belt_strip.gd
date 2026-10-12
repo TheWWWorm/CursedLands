@@ -109,7 +109,6 @@ func _process(_dt: float) -> void:
 		_views[i].screen_at = Vector3(695.0 - 50.0 * (i % 4), 575.0 if i < 4 else 525.0, 20.0 / sc)
 		_views[i].add_color = Color8(0x40, 0x40, 0x40) if picked else Color(0, 0, 0)
 		_views[i].visible = not _items[i].is_empty()
-		_views[i].item = "~"
 		_views[i].show_item(_items[i])
 	queue_redraw()
 

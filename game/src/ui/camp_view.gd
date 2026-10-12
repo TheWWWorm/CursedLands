@@ -863,8 +863,8 @@ func _spell_accepts(it: String) -> bool:
 
 
 ##  mode 3: [label, total, ✓ possible]. A ready spell: take
-## apart, trunc(price × 0.1) (deal mode 3); a keystone + runes: build,
-## Σ trunc(piece × 0.2) (mode 2) when accepts it (else no label
+## apart, trunc(price × 0.05) (deal mode 3); a keystone + runes: build,
+## trunc(result price × 0.05) (mode 2) when accepted (else no label
 ## and 0). A piece from the trader adds its buy price (mode 0).
 func _spell_deal() -> Array:
 	if s_spell == "":
@@ -875,8 +875,6 @@ func _spell_deal() -> Array:
 	var pieces: Array = [_s_item()] + s_runes
 	var froms: Array = [s_from] + s_rune_from
 	for i in pieces.size():
-		if not ready:
-			total += Items.deal_price(pieces[i], Items.Deal.SPELL_CONSTR)
 		if froms[i] == "shop":
 			total += Items.deal_price(pieces[i], Items.Deal.SPELL_BUY)
 			ok = ok and shop_left(pieces[i]) >= 0
@@ -888,6 +886,7 @@ func _spell_deal() -> Array:
 	if not Spells.constr_buildable(
 			hud.game.session.party_units(hud.game.session.my_index), spell_preview()):
 		return ["", 0, false]
+	total += Items.deal_price("spell:" + spell_preview(), Items.Deal.SPELL_CONSTR)
 	return ["camp_spell_constr", total, ok]
 
 
@@ -1173,12 +1172,10 @@ func constr_cost() -> int:
 		return 0
 	var st := hud.game.session.state
 	var n := Items.components(c_bp)
-	var cost := Items.construct_price(c_bp, c_mat)
+	var cost := Items.construct_price(c_bp, c_mat, c_spell)
 	cost += maxi(0, n - st.items.count(Items.material_unit(c_mat))) * Items.buy_price(Items.material_unit(c_mat))
 	if not c_bp in st.items:
 		cost += Items.buy_price(c_bp)
-	if c_spell != "":
-		cost += Items.constr_piece_price("spell:" + c_spell.trim_prefix("spell:"))   # (piece, 6)
 	return cost
 
 

@@ -89,8 +89,29 @@ func _ready() -> void:
 	var actor:=body(start+Vector2(2,0),0,false);actor._perceive_next=INF;actor.ai_next=INF;nav.track_unit(actor)
 	send(Vector2.RIGHT);tick(80);blocked=hero.pos
 	check(blocked.x<actor.pos.x,"standing actor blocks forward movement")
+	# Reproduce arrival inside another actor's standing navigation stamp.
+	place();actor.pos=start+Vector2(hero.body_radius()*0.3,0);nav.track_unit(actor)
+	send(Vector2.LEFT);tick(12)
+	check(hero.pos.x<start.x-0.25,"overlapping arrival can back away from another character")
+	place();actor.pos=start+Vector2(1.5,0.2);nav.track_unit(actor)
+	send(Vector2(1,-0.6).normalized());tick(18)
+	check(hero.pos.y<start.y-0.35 and hero.pos.distance_to(actor.pos)>=hero.body_radius()+actor.body_radius()-0.01,"diagonal steering slides clear without entering another body")
+	place();actor.pos=start+Vector2(1.5,0);nav.track_unit(actor)
+	check(nav.steering_blocker(hero,actor.pos+Vector2(3,0))==actor,"long step cannot tunnel through a character")
+	send(Vector2.RIGHT);tick(80);blocked=hero.pos
 	s.world.remove_unit(actor);send(Vector2.RIGHT);tick(12)
 	check(hero.pos.x>blocked.x+0.2,"movement resumes when the actor leaves")
+	place();hero.facing=0
+	s.apply_command({"t":"direct_look","units":[hero.uid],"heading":PI*0.5},0);tick(12)
+	check(absf(wrapf(hero.facing-PI*0.5,-PI,PI))<0.01 and hero.pos==start,"head rotation turns the idle body without moving it")
+	send(Vector2.RIGHT);tick(6)
+	check(hero.pos.x>start.x and absf(wrapf(hero.facing-PI*0.5,-PI,PI))<0.01,"strafe keeps body facing the view rather than the movement")
+	hero._sync_transform(0.016)
+	check(absf(wrapf(hero._xf_facing-PI*0.5,-PI,PI))<0.01,"rendered body keeps the view heading while strafing")
+	s.apply_command({"t":"direct_look","units":[hero.uid],"heading":NAN},0)
+	s.apply_command({"t":"direct_look","units":[hero.uid],"heading":0},1)
+	check(is_equal_approx(hero.direct_heading,PI*0.5),"invalid and foreign look packets cannot change facing")
+	hero.direct_heading=NAN
 	place();var loot:=body(free_point());sky()
 	# Exercise the actual interaction while movement is held, then key-up.
 	g.direct.steer(Vector2.UP,0.1);tick()

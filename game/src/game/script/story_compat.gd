@@ -2,6 +2,17 @@ extends RefCounted
 ## Narrow repairs to authored script contracts, without editing game assets.
 const P := preload("res://src/game/script/script_parser.gd")
 
+
+## Earlier saves could retain the activated tunnel golem with Guard's
+## calm behaviour but no combat motivations. Idle/deactivated and custom
+## motivation lists are deliberately left alone.
+static func restore_tunnel_guard(vm: ScriptVM) -> void:
+	if vm.session.state.campaign_id != CampaignProfile.ORIGINAL or String(vm.world.zone.get("id", "")) != "gz10g": return
+	var u: GameUnit = vm.world.units.get(59)
+	if u == null or u.dead or u.mode != "guard" or u.has_meta("um") \
+		or String(u.info.get("name", "")) != "GolemSd": return
+	u.set_meta("um", {"fight":"aggression", "susp":true, "corpse":true, "fear":0})
+
 static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 	if campaign != CampaignProfile.ASTRAL:
 		if campaign == CampaignProfile.ORIGINAL:

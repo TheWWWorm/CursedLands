@@ -68,6 +68,7 @@ var _holding := false    # `hold` waiting for its frames to be presented
 var _idle := 0           # main-loop frames with the screen up outside a hold
 var _finishing := false
 var _waiting_remote := false   # co-op host is rebuilding, no local stages yet
+var _wait_elapsed := 0.0
 
 
 ## True where a forced draw does not reach the screen (see the header): the
@@ -245,9 +246,20 @@ static func end() -> void:
 
 func _remove_after_draw() -> void:
 	set_process(false)
-	await get_tree().process_frame
-	if is_queued_for_deletion(): return
-	await RenderingServer.frame_post_draw
+	# Deferred scenery, effect and viewport updates can first appear on the
+	# frame after their world is enabled. Keep the loading cover through those
+	# real draws, including any synchronous first-use pipeline compilation.
+	# Finish after two stable draws, with a small bound for animated scenes.
+	var previous := -1
+	var stable := 0
+	for i in 8:
+		await get_tree().process_frame
+		if is_queued_for_deletion(): return
+		await RenderingServer.frame_post_draw
+		var count := int(Performance.get_monitor(Performance.PIPELINE_COMPILATIONS_DRAW))
+		stable = stable + 1 if count == previous else 0
+		previous = count
+		if i >= 2 and stable >= 2: break
 	_remove()
 
 
@@ -266,8 +278,17 @@ func _remove() -> void:
 ## A load builds synchronously between `begin` (after `hold`) and `end`, so
 ## normal main-loop frames may still occur during a worker/async stage. Keep
 ## the opaque cover until success or failure explicitly completes the load.
-func _process(_dt: float) -> void:
-	if _current != self or _holding or _waiting_remote or _finishing:
+func _process(dt: float) -> void:
+	if _current != self or _holding or _finishing:
+		return
+	if _waiting_remote:
+		# A separate simulation service has no canvas on which to present
+		# its build stages. Reveal the original progress art while waiting,
+		# reserving its final frames for the local world becoming ready.
+		_wait_elapsed += dt / maxf(Engine.time_scale, 0.001)
+		if _wait_elapsed >= 0.35 and _decoded < 7:
+			_wait_elapsed = 0.0
+			_show(_decoded + 1)
 		return
 	_idle += 1
 	if _idle == 2:

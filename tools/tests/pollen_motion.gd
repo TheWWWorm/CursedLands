@@ -36,6 +36,12 @@ func _ready() -> void:
 	var camera := Camera3D.new(); view.add_child(camera); camera.projection=Camera3D.PROJECTION_ORTHOGONAL
 	camera.size=0.5; camera.position=Vector3(0,1.18,2); camera.make_current()
 	pollen=Particles.new(); view.add_child(pollen)
+	var second := Particles.new()
+	check(second.material != pollen.material and second.material.shader == pollen.material.shader,"regional views keep independent parameters and share the warmed shader")
+	var warm := ShaderWarmup._multimesh(ShaderWarmup.REGIONAL)
+	check(warm.use_custom_data == pollen.multimesh.use_custom_data and warm.use_colors == pollen.multimesh.use_colors,"regional warm-up uses the actual instance format")
+	check(Particles.particle_size(5) <= 0.10,"desert dust stays below ten centimetres")
+	second.free()
 	check(not pollen.is_physics_interpolated_and_enabled(),"shader-driven regional particles never interpolate recycled instance slots")
 	pollen.multimesh.instance_count=1; pollen.multimesh.visible_instance_count=1
 	pollen.multimesh.set_instance_transform(0,Transform3D.IDENTITY)

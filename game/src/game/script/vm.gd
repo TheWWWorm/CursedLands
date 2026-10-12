@@ -93,6 +93,7 @@ static func create(w: GameWorld, s: Session) -> ScriptVM:
 		vm._start_world(vm.ast.world)
 	else:
 		vm._restore(restored)
+		preload("res://src/game/script/story_compat.gd").restore_tunnel_guard(vm)
 		preload("res://src/game/script/story_compat.gd").recover(vm)
 	if not quest_world.is_empty() and String(restored.get("quest", "")) != String(w.get_meta("quest_mob", "")):
 		vm._start_world(quest_world, quest_src)
@@ -779,10 +780,20 @@ func _call(name: String, a: Array, inst: Instance):
 		# others (UnitAI._fear_priority).
 		"UMFear": _um_add(v[0], {"fear": 1 if n < 2 or _truthy(v[1]) else 0})
 		"UMSentry", "Sentry": _mode(v[0], "sentry", {"point": Vector2(_num(v[1]), _num(v[2]))})
-		# Builtins 0x26 UMGuard / 0x33 Guard (unit, x, y, radius)
+		# Builtin 0x33 Guard replaces the full motivation list, unlike
+		# UMGuard: LiA 51c980 adds Guard, Suspection, Aggression,
+		# CorpseWatcher and Fear(0), then resets the current AI state.
+		"Guard":
+			var u := _unit(v[0])
+			if u and not (u.has_meta("hero") and u.controller >= 0):
+				u.set_meta("um", {"fight":"aggression", "susp":true, "corpse":true, "fear":0})
+				u.order = {}; u.orders.clear(); u.path = PackedVector2Array()
+				u.remove_meta("ai_state"); u.remove_meta("ai_target")
+				_mode(u, "guard", {"point":Vector2(_num(v[1]),_num(v[2])), "radius":_num(v[3]), "stay":-1.0})
+		# Builtin 0x26 UMGuard (unit, x, y, radius)
 		#  with stay −1; 0x27 UMGuardEx (unit, x, y, radius, stay).
 		# A negative radius / stay takes ai.reg GuardRadius / GuardStayTime.
-		"UMGuard", "Guard", "UMGuardEx": _mode(v[0], "guard", {"point": Vector2(_num(v[1]), _num(v[2])),
+		"UMGuard", "UMGuardEx": _mode(v[0], "guard", {"point": Vector2(_num(v[1]), _num(v[2])),
 			"radius": _num(v[3]) if n > 3 else -1.0, "stay": _num(v[4]) if name == "UMGuardEx" and n > 4 else -1.0})
 		"UMFollow": _mode(v[0], "follow", {"target": _unit(v[1])})
 		# Builtin 0x3b Follow(unit, target) ->: AI state 6 with the

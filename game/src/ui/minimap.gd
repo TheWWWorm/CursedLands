@@ -172,6 +172,9 @@ func _process(_dt: float) -> void:
 ## camera object's / 37c, the point
 ## sets on a map click), else the selected hero.
 func _center() -> Vector2:
+	if game.direct and game.direct.active():
+		var u := game.direct.view_target()
+		if is_instance_valid(u): return Vector2(u.global_position.x, -u.global_position.z)
 	if game.rig:
 		var at: Array = game.rig.pose()["at"]
 		return Vector2(at[0], -at[2])   # Godot (x, −z) = EI (x, y)

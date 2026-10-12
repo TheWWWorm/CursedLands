@@ -26,6 +26,9 @@ var _move_refresh := 0.0
 var _view_model: EIUnitModel
 var _could_control := false
 var _portrait_target: GameUnit
+var _load_resume := false
+var _look_id := -1
+var _look_refresh := 0.0
 
 
 class Reticle extends Control:
@@ -99,11 +102,17 @@ func leader() -> GameUnit:
 
 func usable() -> bool:
 	if not active() or leader() == null or not game.rig._window_focused or game.rig.held \
-		or game.session.loading_game or game.session.movie_active() or game.hud.blocks_camera(): return false
+		or transitioning() or game.session.movie_active() or game.hud.blocks_camera(): return false
 	var f := field()
 	if f and (f.cursor_mode or f.wheel.visible): return false
 	var focus := get_viewport().gui_get_focus_owner()
 	return not (focus is LineEdit or focus is TextEdit)
+
+
+func transitioning() -> bool:
+	return game.session.loading_game or game.session._remote_loading or game.session._zone_holding \
+		or game.world != game.session.world or game.session.map_open \
+		or (game.world != null and game.world.process_mode == Node.PROCESS_MODE_DISABLED)
 
 
 func direction() -> Vector3:
@@ -140,6 +149,8 @@ func _process(delta: float) -> void:
 	if on and (_world != game.world or _hero != u):
 		if _world != game.world:
 			_portrait_target = null
+			pointer = false
+			_load_resume = true
 			_move_id = -1
 			_control_id = -2
 			_saved_pose = game.rig.pose()
@@ -150,7 +161,13 @@ func _process(delta: float) -> void:
 		_neutral = true
 		_fire = false
 		if u: heading = u.facing
-	if game.world and not game.session.loading_game and not game.session.movie_active():
+	if transitioning():
+		# Re-register control only after the destination's authority accepts
+		# input. A rejected one-shot registration otherwise leaves WASD inert.
+		_control_id = -2
+		_move_id = -1
+		_load_resume = true
+	if game.world and not transitioning() and not game.session.movie_active():
 		var control_id := u.uid if on and u else -1
 		if control_id != _control_id:
 			if control_id >= 0 or _control_id >= 0:
@@ -158,7 +175,12 @@ func _process(delta: float) -> void:
 			_control_id = control_id
 	if not on: _world = game.world
 	var can := usable() and not pointer
-	if _could_control and not can and u and game.world == game.session.world and not game.session.loading_game:
+	if can and _load_resume:
+		_load_resume = false
+		# Keyboard movement may continue through a loading screen. A held
+		# attack and a controller stick still need their normal release gate.
+		_neutral = PadInput.active == "pad" or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+	if _could_control and not can and u and game.world == game.session.world and not transitioning():
 		game.session.submit({"t":"direct_cancel","units":[u.uid]})
 	_could_control = can
 	_update_view_model(u.model if on and u and first_person() and not is_instance_valid(_portrait_target) and not game.rig.held and not game.session.movie_active() else null)
@@ -238,6 +260,12 @@ func step(move: Vector2, dt: float) -> void:
 	if _neutral:
 		if move == Vector2.ZERO and not _fire: _neutral = false
 		return
+	var u := leader()
+	_look_refresh -= dt
+	if u and not GameSound.blocked(u) and (_look_id != u.uid or _look_refresh <= 0.0):
+		_look_id = u.uid
+		_look_refresh = 0.1
+		game.session.submit({"t":"direct_look","units":[u.uid],"heading":heading})
 	_repeat = maxf(0.0,_repeat-dt)
 	if _fire:
 		field()._stop_moving()
@@ -325,7 +353,7 @@ func attack() -> void:
 		_fire = false
 		return
 	var d := (aim_point()-DirectCombat.origin(u)).normalized()
-	game.issue({"t":"direct_attack","units":[u.uid],"direction":d})
+	game.issue({"t":"direct_attack","units":[u.uid],"direction":d,"aim":game.held_aim()})
 
 
 ## Keyboard E has an explicit self action while a friendly spell/item is
@@ -352,9 +380,11 @@ func cast_self() -> void:
 func keyboard_hint() -> String:
 	if game.has_spell_target():
 		return RemakeText.t("WASD: move   Mouse: look   Left click: cast   Right click: cancel   Tab: pointer")
+	var can_attack := game.session.command_allowed({"t":"direct_attack"})
 	return RemakeText.t("WASD: move   Mouse: look   Left click: attack   E: interact   Tab: pointer" \
-		if game.session.command_allowed({"t":"direct_attack"}) else \
-		"WASD: move   Mouse: look   E: interact   Tab: pointer") + "   " + RemakeText.t("Ctrl: crouch")
+		if can_attack else \
+		"WASD: move   Mouse: look   E: interact   Tab: pointer") + "   " + RemakeText.t("Ctrl: crouch") \
+		+ ("   " + RemakeText.t("Alt: aimed strike") if can_attack else "")
 
 
 func interaction_hint() -> Dictionary:
@@ -406,6 +436,9 @@ func _interaction_target(nearby: bool) -> Dictionary:
 	if u == null: return {}
 	var p := get_viewport().get_visible_rect().size*0.5
 	var target := game.pick_unit(p,u)
+	var near_lever := _nearby_lever() if nearby else -1
+	if near_lever >= 0 and (target == null or u.pos.distance_to(target.pos) > 4.0):
+		return {"lever":near_lever}
 	if target:
 		if not nearby: # Keep the controller's existing exact-target interaction.
 			if not target.dead and not game.session.shop_available() and game.world.is_enemy(u,target): return {}
@@ -418,6 +451,7 @@ func _interaction_target(nearby: bool) -> Dictionary:
 	var lever := game.pick_lever(p)
 	if lever >= 0: return {"lever":lever}
 	if nearby:
+		if near_lever >= 0: return {"lever":near_lever}
 		target = _nearby_loot()
 		if target: return {"unit":target}
 	for id in game.world.zone.get("exits",{}):
@@ -426,6 +460,35 @@ func _interaction_target(nearby: bool) -> Dictionary:
 		var area: Rect2 = exit.remove
 		if area.grow(2.0).has_point(u.pos): return {"exit":id,"at":area.get_center()}
 	return {}
+
+
+## Low chests and small switches need not put their origin exactly under
+## the crosshair. Prefer the nearest usable object in front of the hero;
+## the ordinary authority use order still handles approach and reach.
+func _nearby_lever() -> int:
+	var u := leader()
+	if u == null: return -1
+	var forward := Vector2.from_angle(heading)
+	var best := INF
+	var found := -1
+	for nid: int in game.world.levers:
+		if not game.world.lever_sys.usable(nid): continue
+		var obj: Node3D = game.world.objects.get(nid)
+		if not is_instance_valid(obj) or not obj.is_visible_in_tree(): continue
+		var point := obj.global_position + Vector3.UP * 0.6
+		var offset := Vector2(point.x, -point.z) - u.pos
+		var distance := offset.length()
+		if distance > 4.0 or offset.dot(forward) < distance * 0.5 \
+			or game.rig.camera.is_position_behind(point) \
+			or absf(point.y - DirectCombat.origin(u).y) > 2.0: continue
+		var from := DirectCombat.origin(u)
+		# The endpoint can lie inside the object's own small footprint.
+		if from.distance_to(point) * (1.0 - DirectCombat.scene_fraction(game.world,from,point)) > 0.65: continue
+		var score := distance + (1.0 - offset.normalized().dot(forward)) * 2.0
+		if score < best:
+			best = score
+			found = nid
+	return found
 
 
 func interact() -> void:

@@ -20,6 +20,7 @@ const MAX_PLAYERS := 6
 ## the original: the password field is 20 bytes.
 const PASSWORD_MAX := 20
 const SNAP_RATE := 0.1
+const PARTY_SNAP_RATE := 0.05
 const SNAP_CHUNK := 8
 const SNAP_BYTES := 1100    # payload budget of one snapshot packet (MTU 1392)
 const LmpTravel := preload("res://src/game/lmp_travel.gd")
@@ -49,6 +50,7 @@ var players := {1: {"index": 0, "name": "Player", "colour": 1}}
 var max_players := MAX_PLAYERS   # host: this game's Max Players (host itself included)
 var zone_id := ""
 var _snap_at_ms := 0
+var _party_snap_at_ms := 0
 var _snapshot_serial := 0
 var _snap_count := 0
 var _last_snap := {}
@@ -2293,8 +2295,16 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				if u.controller == player:
 					u.direct_controlled = u.uid == leader_id and not u.dead
 					if not u.direct_controlled:
+						u.direct_heading = NAN
 						u.stop_steering()
 						u.cancel_direct_attack()
+		"direct_look":
+			var angle: Variant = cmd.get("heading")
+			if not (angle is float or angle is int) or not is_finite(float(angle)): return
+			for u in mine:
+				if u.direct_controlled:
+					u.direct_heading = wrapf(float(angle), -PI, PI)
+					u.direct_look_until = Time.get_ticks_msec() + 500
 		"direct_move":
 			var direction: Variant = cmd.get("direction")
 			if not direction is Vector2 or not direction.is_finite() or not is_finite(direction.length_squared()): return
@@ -2321,7 +2331,7 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			for u in mine:
 				# One replaceable request survives recovery. The unit tick still
 				# owns cooldown/animation timing and the committed impact.
-				u.command({"type":"direct_attack","direction":direction.normalized()})
+				u.command({"type":"direct_attack","direction":direction.normalized(),"aim":clampi(int(cmd.get("aim",-1)),-1,5)})
 		"attack":
 			if target:
 				for u in mine:
@@ -3229,7 +3239,8 @@ func _construct(cmd: Dictionary, player: int = 0) -> void:
 	if not bp.begins_with("bp:") or not Items.materials_for(bp).any(func(m): return String(m.name).to_lower() == mat):
 		return
 	var need := {bp: 1, Items.material_unit(mat): Items.components(bp)}
-	var cost := Items.construct_price(bp, mat)
+	var spell := String(cmd.get("spell", "")).to_lower()
+	var cost := Items.construct_price(bp, mat, spell)
 	var take := {}
 	for piece: String in need:
 		var have := state.items.count(piece)
@@ -3242,11 +3253,8 @@ func _construct(cmd: Dictionary, player: int = 0) -> void:
 	# Optional spell slot (: the spell lying in the pile
 	# goes onto the item and is used up): "spell:<id>" from the
 	# bag, or a known spell of hero "unit". It must fit the item (
-	# mode 5, Items.can_enchant) and, as every pile piece, adds trunc(its price
-	# × the constructor coefficient) to the deal (mode 5
-	# (piece, 6)).
+	# mode 5, Items.can_enchant). The service fee above includes its value.
 	var item := "%s.%s" % [bp.substr(3), mat]
-	var spell := String(cmd.get("spell", "")).to_lower()
 	var known: Array = []
 	if spell != "":
 		if not spell.begins_with("spell:"):
@@ -3260,7 +3268,6 @@ func _construct(cmd: Dictionary, player: int = 0) -> void:
 			return
 		if not Items.can_enchant(item, spell.trim_prefix("spell:")):
 			return
-		cost += Items.constr_piece_price("spell:" + spell.trim_prefix("spell:"))
 	if state.money < cost:
 		return
 	state.money -= cost
@@ -3339,13 +3346,13 @@ func spell_constr_offered(sid: int) -> bool:
 ## the remake lists them in the bag row; in the original the hero puts the
 ## spell into the bag first).
 ## - A ready spell alone = take apart: costs trunc(price ×
-##   0.1) (mode 3); it is replaced by its keystone ("Prototype", = the
+##   0.05) (mode 3); it is replaced by its keystone ("Prototype", = the
 ##   spell's prototype) and one rune per modifier byte, in that order.
 ## - A keystone + runes = build: the builder takes the keystone
 ##    and each rune (per type), and
 ##   the built spell must fit the party's best knowledge (≥ its complexity
 ## ) and stamina (≥ __ftol of its cost). Costs
-##   Σ trunc(piece price × 0.2) (mode 2). The pile is emptied and the new spell
+##   trunc(result price × 0.05) (mode 2). The pile is emptied and the new spell
 ##   container takes its place.
 ## Each piece from the trader also costs its buy price (mode 0) and leaves the
 ## goods. Money: party −= the total; ✓ is dimmed when it is short.
@@ -3411,17 +3418,6 @@ func _spell_constr_apply(cmd: Dictionary, player: int) -> Dictionary:
 	for id: String in need.shop:
 		if shop_count(id, cmd) < int(need.shop[id]):
 			return {}
-	# The deal (mode 3, prices with the record's coef).
-	var coef := Shops.coef(sid)
-	var cost := 0
-	if take_apart:
-		cost = int(float(Items.price(ids[0])) * float(coef[Items.Deal.SPELL_DECONSTR]))
-	else:
-		for id in ids:
-			cost += int(float(Items.price(id)) * float(coef[Items.Deal.SPELL_CONSTR]))
-	for i in ids.size():
-		if froms[i] == "shop":
-			cost += int(float(Items.price(ids[i])) * float(coef[Items.Deal.SPELL_BUY]))
 	var built := spell
 	if not take_apart:
 		for i in range(1, ids.size()):
@@ -3431,6 +3427,13 @@ func _spell_constr_apply(cmd: Dictionary, player: int) -> Dictionary:
 			built = Spells.with_mod(built, code)
 		if not Spells.constr_buildable(party_units(player), built):
 			return {}
+	# Charge the service once on the complete result, including its runes.
+	var coef := Shops.coef(sid)
+	var rate := Items.Deal.SPELL_DECONSTR if take_apart else Items.Deal.SPELL_CONSTR
+	var cost := int(Items.price("spell:" + built) * float(coef[rate]))
+	for i in ids.size():
+		if froms[i] == "shop":
+			cost += int(Items.price(ids[i]) * float(coef[Items.Deal.SPELL_BUY]))
 	if state.money < cost:
 		return {}
 	# Settle money and pieces together.
@@ -3766,14 +3769,20 @@ func _tick_world_session(dt: float) -> void:
 	# Network cadence is wall time. Doubling simulation speed must not double
 	# packet bursts, including multiple physics callbacks in one worker frame.
 	var now := Time.get_ticks_msec()
-	if now < _snap_at_ms:
+	var full_update := now >= _snap_at_ms
+	if not full_update and now < _party_snap_at_ms:
 		return
-	_snap_at_ms = now + int(SNAP_RATE * 1000.0)
-	_snap_count += 1
+	_party_snap_at_ms = now + int(PARTY_SNAP_RATE * 1000.0)
+	if full_update:
+		_snap_at_ms = now + int(SNAP_RATE * 1000.0)
+		_snap_count += 1
 	var t0 := Time.get_ticks_usec()
 	var snaps := []
-	var near := NetSmooth.near_points(world)
-	for u: GameUnit in world.units.values():
+	var near := NetSmooth.near_points(world) if full_update else PackedVector2Array()
+	# Player motion and stopping reach every peer at 20 Hz; the busy map's
+	# NPC census keeps its 10 Hz/interest-filtered cadence and packet budget.
+	var units := world.units.values() if full_update else world.party_units()
+	for u: GameUnit in units:
 		# Bandwidth (remake): the periodic full refresh is spread over 20
 		# ticks, units far from every player's heroes go at a fifth of the rate.
 		# Resend party state every update: losing the final stop packet used to
@@ -4348,7 +4357,7 @@ func _relink_heroes() -> void:
 		if u.controller < 0:
 			continue
 		for h: Dictionary in state.heroes.get(u.controller, []):
-			if String(h.get("guest_unit_name", h.get("unit_name", h.name))) == String(u.info.get("name", "")):
+			if String(h.get("guest_unit_name", h.get("unit_name", h.name))).to_lower() == String(u.info.get("name", "")).to_lower():
 				u.set_meta("hero", h)
 				u.display_name = h.name
 				Combat.sync_natural_armor(u, h)   # as on the host (cleared when deployed)
@@ -4356,7 +4365,10 @@ func _relink_heroes() -> void:
 		for m: Dictionary in state.mercs.values():
 			if not state.merc_party_active(m):
 				continue
-			if int(m.get("controller", -1)) == u.controller and String(state.merc_record(m).name) == String(u.info.get("name", "")):
+			var previous: Dictionary = u.get_meta("hero", {})
+			var same_merc: bool = previous.has("merc") and previous.merc == m.get("merc", -1)
+			var same_name := String(state.merc_record(m).name).to_lower() == String(u.info.get("name", "")).to_lower()
+			if int(m.get("controller", -1)) == u.controller and (same_merc or same_name):
 				u.set_meta("hero", m)
 				u.display_name = m.name
 				Combat.sync_natural_armor(u, m)

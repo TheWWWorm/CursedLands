@@ -2,6 +2,7 @@ extends MultiMeshInstance3D
 ## At most 192 world-anchored quads. Camera movement changes the admitted
 ## cells, never their seeds or animation phase. The shader has no wall clock.
 const Habitats = preload("res://src/game/fx/ambient_habitats.gd")
+static var _shared_shader: Shader
 const MAX_PARTICLES := 192
 const SPACING := 8.0
 const RANGE := 25.0
@@ -79,6 +80,21 @@ var records: Array[Dictionary] = []
 var _cell := Vector2i(0x7fffffff,0x7fffffff)
 
 
+## Keep the program across camera/zone resets, and expose the same material
+## to loading-screen warm-up before the first regional particle is admitted.
+static func make_material() -> ShaderMaterial:
+	if _shared_shader == null:
+		_shared_shader = Gfx.make_shader(SHADER,false)
+	var out := ShaderMaterial.new()
+	out.shader = _shared_shader
+	out.render_priority = 2
+	return out
+
+
+static func particle_size(kind: int) -> float:
+	return 0.13 if kind == 1 else (0.09 if kind == 5 else 0.055)
+
+
 func _init() -> void:
 	name = "RegionalParticles"
 	# These are stationary anchors animated by the shader's terrain clock.
@@ -86,8 +102,7 @@ func _init() -> void:
 	# blends unrelated seeds, particle kinds and positions for a frame.
 	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	material = ShaderMaterial.new(); material.shader = Gfx.make_shader(SHADER,false)
-	material.render_priority = 2
+	material = make_material()
 	material_override = material
 	multimesh = MultiMesh.new(); multimesh.transform_format = MultiMesh.TRANSFORM_3D
 	multimesh.use_custom_data = true
@@ -113,7 +128,7 @@ func rebuild(field: Habitats, centre: Vector2, force := false) -> void:
 				if kinds.is_empty(): continue
 				var seed := field.random(key,102+lane*5)
 				var kind := int(kinds[mini(int(seed*kinds.size()),kinds.size()-1)])
-				var size := 0.055 if kind not in [1,5] else (0.13 if kind==1 else 0.60)
+				var size := particle_size(kind)
 				records.append({"key":Vector3i(x,y,lane),"point":Vector3(p.x,float(hit.height),-p.y),"kind":kind,"seed":seed,"size":size})
 				if records.size()>=MAX_PARTICLES: break
 			if records.size()>=MAX_PARTICLES: break

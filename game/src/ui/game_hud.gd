@@ -284,6 +284,27 @@ func on_world(w: GameWorld) -> void:
 	_rebuild_party()
 
 
+## Build the initial HUD figures while the loading cover is still present.
+## Their transparent SubViewports (including the doll's 4x MSAA) use different
+## render pipelines from world geometry. Warming only world materials leaves
+## these pipelines to compile on the first playable frame.
+func prepare_previews() -> Array:
+	_layout_dials()
+	_weapons._process(0.0)
+	_belt._process(0.0)
+	unit_panel._t = 0.0
+	unit_panel._process(0.0)
+	unit_panel._doll._process(0.0)
+	var out := []
+	for view: SubViewport in _field.find_children("*", "SubViewport", true, false):
+		if view.get_camera_3d() == null: continue
+		out.append([view, view.render_target_update_mode])
+		view.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+		for n: Node3D in view.find_children("*", "Node3D", true, false):
+			n.force_update_transform()
+	return out
+
+
 func _on_died(_u: GameUnit, _k: GameUnit) -> void:
 	pass   # no death line in the original's message log (see _on_combat)
 

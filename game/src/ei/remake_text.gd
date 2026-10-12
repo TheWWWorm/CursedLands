@@ -84,6 +84,7 @@ const TEXTS := {
 	"Return to the main menu to import mods.": ["Для импорта модов вернитесь в главное меню.", "Zum Importieren von Mods ins Hauptmenü zurückkehren."],
 	"Return to the main menu to switch profiles.": ["Для смены профиля вернитесь в главное меню.", "Zum Wechseln des Profils ins Hauptmenü zurückkehren."],
 	"Ctrl: crouch": ["Ctrl: присесть", "Strg: ducken"],
+	"Alt: aimed strike": ["Alt: прицельный удар", "Alt: gezielter Schlag"],
 	"Game setup": ["Настройка игры", "Spieleinstellungen"],
 	"Current defaults": ["Текущие настройки", "Aktuelle Vorgaben"],
 	"Difficulty": ["Сложность", "Schwierigkeitsgrad"],

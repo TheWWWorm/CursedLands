@@ -205,11 +205,23 @@ func _process(dt: float) -> void:
 ## may stay empty: can toggle the last unit off, and
 ## clears its command widgets. The unit panel can still show a hovered unit
 ## (prefers over the selected).
+var _revived_focus: GameUnit
+
 func _keep_selection() -> void:
 	var keep := selected.filter(func(s): return is_instance_valid(s) and not s.dead \
 			and s.controller == session.my_index)
 	if keep.size() != selected.size():
 		selected.assign(keep)
+	# The reliable revival notice can precede the snapshot clearing `dead`.
+	# Wait for that actor, without selecting somebody else's party or stealing
+	# focus from another living character.
+	if is_instance_valid(_revived_focus) and not _revived_focus.dead:
+		var mine := my_units()
+		if selected.is_empty() and mine.size() == 1 and mine[0] == _revived_focus:
+			selected.assign(mine)
+			rig.focus(_revived_focus.position)
+			rig.follow(_revived_focus)
+		_revived_focus = null
 
 
 ## Clock dial sectors: 0 pause on/off, 1 normal speed, 2
@@ -472,7 +484,7 @@ func forced_on(m: String, u: GameUnit, g: Variant) -> void:
 ## update: sun, ambient and sky (fog) colours from the allod's
 ## config/Lights[Cave]<Allod>.ini interpolated per hour, the sun direction, the
 ## fog start; the far plane is FarClipDistance (Gfx).
-func _update_daylight() -> void:
+func _update_daylight(advance := true) -> void:
 	var zid := String(world.zone.get("id", ""))
 	var new_zone := zid != _lights_zone
 	if new_zone:
@@ -488,7 +500,7 @@ func _update_daylight() -> void:
 	var ld := Vector3(0.5, 0.5, -0.70710677) if _sky_cave else EISky.light_dir_ei(hour)
 	var gd := EISpace.vec(ld).normalized()
 	_aim_sun(gd, new_zone)
-	if not get_tree().paused:
+	if advance and not get_tree().paused:
 		_sky_spin += get_process_delta_time() * EISky.SPIN_PER_SECOND
 	if not _sky_cave:
 		EISky.set_spin(_sky_shader, _sky_spin)
@@ -648,6 +660,7 @@ func _apply_sky() -> void:
 
 ## Called by Session when a zone has been loaded.
 func attach_world(w: GameWorld) -> void:
+	_revived_focus = null
 	if world and world != w:
 		if session.lmp_travel and session.lmp_travel.contains(world):
 			# The host's base view and quest view are independent of its server:
@@ -682,6 +695,9 @@ func attach_world(w: GameWorld) -> void:
 	# A newly attached view may begin paused or held for co-op arrival.
 	# Publish its own environment before it renders using the old world's wind.
 	if w.terrain: w.terrain._update_wind_parameters(true)
+	# Warm the destination's sky/light configuration, rather than compiling
+	# its first actual sky shader after the loading cover has gone away.
+	_update_daylight(false)
 	_apply_shadows(w)
 	_fit_shadows()
 	var pfx := ParticleFx.of(w)
@@ -1269,6 +1285,11 @@ func electrical_hit(e: Dictionary) -> void:
 func on_event(e: Dictionary) -> void:
 	sound.on_event(e)   # sounds of broadcast events (GameSound)
 	match String(e.get("t", "")):
+		"revived":
+			var u: GameUnit = world.units.get(int(e.get("uid", -1))) if world else null
+			if u and u.controller == session.my_index:
+				_revived_focus = u
+				_keep_selection()
 		"load_begin":
 			cancel_touch_target()
 			_dragging = false

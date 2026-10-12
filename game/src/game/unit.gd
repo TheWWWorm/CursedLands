@@ -171,6 +171,8 @@ var fogged := false   # out of this player's sight (UnitFog, client-side only)
 # --- orders
 ## Transient input ownership; never written into the character/save.
 var direct_controlled := false
+var direct_heading := NAN
+var direct_look_until := 0
 var orders: Array[Dictionary] = []:
 	set(value):
 		orders = value
@@ -1588,7 +1590,10 @@ func _tick(dt: float) -> void:
 	if _anim_lock > 0.0:
 		_anim_lock -= dt
 		return
-	if action != "anim:" + _story_clip or not _seated_story_pose():
+	if direct_controlled and not blocked and is_finite(direct_heading) \
+		and Time.get_ticks_msec() <= direct_look_until and order.is_empty() and orders.is_empty():
+		_turn_to(direct_heading, dt)
+	if action != "anim:" + _story_clip or not _ambient_story_pose():
 		_story_clip = ""
 	if _talk_command == 10 and order.is_empty():
 		_talk_command = 11 if resting else 0
@@ -1601,7 +1606,7 @@ func _tick(dt: float) -> void:
 			if world.time >= ai_next:
 				world.ai.think(self)
 			if orders.is_empty():
-				# Authored village sitters repeat their seated special after
+				# Authored village actors repeat their ambient special after
 				# a Sleep. Keep its final pose across that gap. The command
 				# is idle; AI and queued orders still run and can replace it.
 				if _story_clip.is_empty():
@@ -1648,7 +1653,7 @@ func _tick(dt: float) -> void:
 		"anim":
 			_story_clip = String(order.name) if order.get("story", false) else ""
 			_anim_lock = model.act(order.name, int(order.get("variant", 1)), 0.1) if not model.has_anim(order.name) \
-				else _play_clip(order.name, _seated_story_pose())
+				else _play_clip(order.name, _ambient_story_pose())
 			action = "anim:" + String(order.name)
 			order = {}
 		"rotate":
@@ -1808,13 +1813,16 @@ func _clip_hit_ticks(clip: String) -> float:
 	return float(maxi(1, int(float(f) / k)))
 
 
-## These unhuma ambient specials are seated throughout their authored clips.
-## Village scripts repeat them after Sleep, leaving a short command-idle gap.
-## This presentation hold is limited to NPC village seats, not other scripted
-## one-shots, party actions or gameplay maps. A new order still replaces it.
-func _seated_story_pose() -> bool:
-	return controller < 0 and world != null and world.zone.get("type", "") == "brief" \
-		and model != null and model.template == "unhuma" and _story_clip in ["uspecial13", "uspecial15"]
+## Authored village ambient poses persist between their repeated specials.
+## A short script Sleep must not insert an unrelated idle animation. Limit
+## the hold to the known seated clips and the two Ingos gate guards; orders
+## and combat still replace it normally.
+func _ambient_story_pose() -> bool:
+	if controller >= 0 or world == null or world.zone.get("type", "") != "brief" \
+		or model == null or model.template != "unhuma":
+		return false
+	return _story_clip in ["uspecial13", "uspecial15"] or (_story_clip == "uspecial10" \
+		and world.zone.get("id", "") == "bz8k" and info.get("name", "") in ["AGuard1", "AGuard2"])
 
 
 func _play_clip(clip: String, restart := false) -> float:
@@ -1835,6 +1843,11 @@ func _do_direct_move(dt: float) -> void:
 	var offset := v * speed() * dt
 	var from := pos
 	var steps: Array[Vector2] = [offset]
+	var obstacle := world.nav.steering_blocker(self, pos + offset)
+	if obstacle:
+		var normal := (pos - obstacle.pos).normalized()
+		var slide := offset - normal * minf(0.0, offset.dot(normal))
+		if not slide.is_zero_approx(): steps.append(slide)
 	if absf(offset.x) > 0.0001 and absf(offset.y) > 0.0001:
 		var x := Vector2(offset.x,0)
 		var y := Vector2(0,offset.y)
@@ -1842,13 +1855,13 @@ func _do_direct_move(dt: float) -> void:
 		steps.append(y if absf(offset.x) >= absf(offset.y) else x)
 	for step: Vector2 in steps:
 		var q := pos + step * world.nav.step_factor(pos,pos+step,move_class())
-		if _outside_village_move(q) or not world.nav.direct_line(self,q): continue
-		if world.nav.step_blocker(self,q,{}) != null: continue
+		if _outside_village_move(q) or not world.nav.direct_line(self,q,false): continue
+		if world.nav.steering_blocker(self,q) != null: continue
 		pos = q
 		break
 	path = PackedVector2Array()
 	_goal = Vector2.INF
-	_turn_to(v.angle(),dt)
+	_turn_to(direct_heading if is_finite(direct_heading) and Time.get_ticks_msec() <= direct_look_until else v.angle(),dt)
 	_moving = pos.distance_squared_to(from) > 0.00000001
 	_move_speed = pos.distance_to(from) / dt if dt > 0.0 else 0.0
 	_draw_line_goal = pos + (pos-from) if _moving else Vector2.INF
@@ -2595,7 +2608,7 @@ func _do_direct_attack(dt: float) -> void:
 	_anim_lock = len
 	var a_w := float(stats.get("weapon_actions",proto.get("tuning_actions",50.0)))
 	_attack_cd = maxf(_strike_delay_ticks(a_w,actions(),stats.has("weapon_actions"))*TICK,len)
-	strike_aim = -1
+	strike_aim = int(order.get("aim", -1))
 	strike_miss = false
 	_pending_hit = {"t":_hit_ticks()*TICK,"direction":d}
 	order = {}
@@ -3953,7 +3966,7 @@ func _sync_transform(draw_dt := -1.0) -> void:
 		if not sample.is_empty():
 			p = sample.p
 			var direction: Vector2 = sample.d
-			if direction != Vector2.ZERO:
+			if direction != Vector2.ZERO and not direct_controlled:
 				yaw = direction.angle()
 			_draw_move_speed = direction.length() * float(sample.v) * SPEED_SCALE
 	if not world.authority:

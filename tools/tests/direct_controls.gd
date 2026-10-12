@@ -74,10 +74,12 @@ func _ready() -> void:
 	check(direct.pointer and not direct._captured,"Tab frees pointer for the HUD")
 	key(KEY_TAB,true);key(KEY_TAB,false);await frames()
 	check(not direct.pointer,"Tab returns to camera controls")
-	# Input held across a loading overlay must not become a new-map movement.
+	# Keyboard movement resumes once a loading barrier has finished; held
+	# attacks and gamepad sticks retain their separate neutral-input gate.
 	session.loading_game=true;key(KEY_W,true);await frames()
+	check(not direct.usable() and direct._control_id == -2,"loading barrier rejects movement and defers registration")
 	session.loading_game=false;hero.orders.clear();hero.order={};await frames()
-	check(hero.orders.is_empty() and direct._neutral,"held movement cannot cross a loading boundary")
+	check(hero.direct_controlled and not direct._neutral and (not hero.orders.is_empty() or not hero.order.is_empty()),"held keyboard movement resumes after a completed load")
 	key(KEY_W,false);await frames()
 	check(not direct._neutral,"releasing movement rearms direct controls")
 	var held := Transform3D(Basis.IDENTITY,Vector3(4,9,5))

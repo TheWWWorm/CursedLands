@@ -1810,13 +1810,13 @@ func _memo_erase(key: Array) -> void:
 
 
 ## No closed cell (the A* grid) on the straight line from `a` to `b` but their own.
-func _leg_clear(L: Layer, a: Vector2, b: Vector2) -> bool:
+func _leg_clear(L: Layer, a: Vector2, b: Vector2, actors := true) -> bool:
 	var ca := cell(a)
 	var cb := cell(b)
 	var steps := int(a.distance_to(b) * 64.0) + 1
 	for i in range(1, steps):
 		var c := cell(a.lerp(b, float(i) / steps))
-		if c != ca and c != cb and (not _in(c) or L.astar.is_point_solid(c)):
+		if c != ca and c != cb and (not _in(c) or (L.astar.is_point_solid(c) if actors else L.land[c.y * size.x + c.x] != 0)):
 			return false
 	return true
 
@@ -1832,13 +1832,18 @@ func _leg_clear(L: Layer, a: Vector2, b: Vector2) -> bool:
 ## The search's smoothing keeps a staircase of cell centres off the 45°
 ## lines (SMOOTH_SLACK); a stick re-aimed five times a second walked each
 ## new staircase from its first step and wiggled from side to side.
-func direct_line(u: GameUnit, b: Vector2) -> bool:
+func direct_line(u: GameUnit, b: Vector2, actors := true) -> bool:
 	var L := layer(u.move_class())
 	var a := u.pos
 	var ca := cell(a)
 	var cb := cell(b)
 	if not _in(ca) or not _in(cb):
 		return false
+	if not actors:
+		# Continuous steering checks body sweeps separately, including escape
+		# from overlaps. Another actor's grid stamp must not close our start.
+		return L.land[ca.y * size.x + ca.x] == 0 and L.land[cb.y * size.x + cb.x] == 0 \
+			and _leg_clear(L, a, b, false) and _line_cost(L, a, b, false, false) >= 0
 	var lift := u._occ_cell.x >= 0
 	if lift:
 		_stamp(u._occ_cell, u._occ_r, -1)
@@ -2643,7 +2648,7 @@ func _shortcut_ok(L: Layer, a: Vector2, b: Vector2, along: int, flat: bool) -> b
 ## The cost of walking the straight line from `a` to `b` (sampled every 25 cm,
 ## like line_clear) cell by cell with _step_cost; -1 when a cell on it is
 ## closed on the A* grid or a step is refused.
-func _line_cost(L: Layer, a: Vector2, b: Vector2, flat: bool) -> int:
+func _line_cost(L: Layer, a: Vector2, b: Vector2, flat: bool, actors := true) -> int:
 	var A := L.astar
 	var steps := int(a.distance_to(b) * 4.0) + 1
 	var px := floori(a.x / CELL)
@@ -2662,7 +2667,7 @@ func _line_cost(L: Layer, a: Vector2, b: Vector2, flat: bool) -> int:
 		var cy := floori(p.y / CELL)
 		if cx == px and cy == py:
 			continue
-		if cx < 0 or cy < 0 or cx >= sx or cy >= size.y or A.is_point_solid(Vector2i(cx, cy)):
+		if cx < 0 or cy < 0 or cx >= sx or cy >= size.y or (actors and A.is_point_solid(Vector2i(cx, cy))):
 			return -1
 		var ax := absi(cx - px)
 		var ay := absi(cy - py)
@@ -3128,6 +3133,22 @@ func units_around_script(p: Vector2, r: float, ordered := true) -> Array:
 ## ). Re-quantizing the interpolated point can increase a stamp
 ## before the node's descending step, trapping overlapping party members.
 ## Point-only callers, including straight stick movement, keep their cell.
+func steering_blocker(u: GameUnit, q: Vector2) -> GameUnit:
+	var step := q - u.pos
+	if step.is_zero_approx(): return null
+	for other: GameUnit in units_around(u.pos, step.length() + u.body_radius() + 2.0):
+		if other == u or other.dead: continue
+		var radius := u.body_radius() + other.body_radius()
+		var offset := u.pos - other.pos
+		# An arrival/revival can overlap an actor. Allow only motion away,
+		# never through its centre to the opposite side.
+		if offset.length_squared() < radius * radius \
+			and offset.dot(step) >= -0.000001 and q.distance_squared_to(other.pos) > offset.length_squared(): continue
+		var t := clampf(-offset.dot(step) / step.length_squared(), 0.0, 1.0)
+		if (offset + step * t).length_squared() < radius * radius - 0.000001: return other
+	return null
+
+
 func step_blocker(u: GameUnit, q: Vector2, result: Dictionary, next_cell := Vector2i(-1, -1)) -> GameUnit:
 	if _unit_queries and q.is_finite() and u.pos.is_finite():
 		# Preserve the fast same-cell exit before querying or sorting neighbours.

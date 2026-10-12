@@ -22,6 +22,11 @@ func _ready() -> void:
 	a.action="idle"
 	# Force one real cadence opportunity, then discard its simulated packet.
 	sender._snap_at_ms=0;sender._tick_world_session(.2);sender.sent.clear()
+	sender._snap_at_ms=Time.get_ticks_msec()+1000;sender._party_snap_at_ms=0
+	sender._tick_world_session(.001)
+	check(sender.sent.size()==1 and not sender.sent[0].is_empty() and sender.sent[0].all(func(row):return int(row[0])==a.uid),"intermediate update promptly repeats party motion without an NPC burst")
+	sender.sent.clear();sender._tick_world_session(.001)
+	check(sender.sent.is_empty(),"repeated physics callbacks cannot burst party packets")
 	sender._snap_at_ms=0;sender._tick_world_session(.2)
 	check(sender.sent.size()==1 and sender.sent[0].any(func(s):return int(s[0])==a.uid and s[4]=="idle"),"lost final stop is repeated at the very next update")
 	sender.sent.clear();sender._snap_at_ms=0

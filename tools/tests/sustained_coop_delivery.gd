@@ -209,7 +209,7 @@ func captures(label: String) -> void:
 
 func phase(sector: int) -> void:
 	check(await host.load_game_shown("transport_source"),"load untouched authored Portal save at %dx"%sector)
-	check(await until(func():return guest.zone_id=="gz1h" and host.zone_id=="gz1h" and not guest._remote_loading and not guest.loading_game and not host._remote_loading and not host.loading_game and not guest.party_units(1).is_empty()),"both peers reach Portal at %dx"%sector)
+	check(await until(func():return guest.zone_id=="gz1h" and host.zone_id=="gz1h" and not guest._remote_loading and not guest.loading_game and not host._remote_loading and not host.loading_game and not guest.party_units(1).is_empty() and LoadingScreen._current==null),"both peers reach playable Portal at %dx"%sector)
 	if failures: return
 	check(host.world.units.size()>=350 and guest.world.units.size()>=350,"authored busy population retained at %dx"%sector)
 	check(host.local_host.frontend and not host.local_host.single_player and not host.world.authority and not guest.world.authority,"real worker owns simulation and both views are co-op replicas")
@@ -217,7 +217,7 @@ func phase(sector: int) -> void:
 	await host.local_host.request("clock",{"sector":sector})
 	hg.rig.distance=CameraRig.M_DEFAULT_DISTANCE; gg.rig.distance=CameraRig.M_DEFAULT_DISTANCE
 	work={"commands":[],"motion":{},"census":[],"frame_ms":[],"slow_frames":[]}
-	follow(); await wait_real(2.0); follow()
+	follow()
 	Engine.max_fps=60
 	# Capture only after timing stops. A 5K PNG can block this frontend for
 	# several seconds while the authority continues, leaving a synthetic
@@ -344,6 +344,16 @@ func _ready() -> void:
 		"auto_graphics":0,"control_mode":1,"coop_clock":1,"auto_exit":0,"scroll_border":0,"confine_mouse":0,
 		"vsync":0,"fps_limit":0,"q_aa":0,"q_shadows":0},true)
 	GameData.options.merge(GfxPresets.values(GfxPresets.HIGH),true)
+	# Match menu startup: deferred window/AA configuration must finish before
+	# warming the loaded worlds. Report the actual output, not CLI dimensions.
+	for i in 4: await get_tree().process_frame
+	GameData._apply_window()
+	await get_tree().process_frame
+	renderer_info.window_size=DisplayServer.window_get_size()
+	renderer_info.viewport_size=get_viewport().get_visible_rect().size
+	renderer_info.msaa=get_viewport().msaa_3d
+	renderer_info.render_scale=get_viewport().scaling_3d_scale
+	print("SUSTAINED_DISPLAY ",JSON.stringify(renderer_info))
 	Engine.max_fps=60
 	host=ObservedSession.new(); get_parent().add_child(host); get_parent().session=host
 	hg=Game.new(); hg.session=host; host.game=hg; get_parent().add_child(hg); get_parent().game=hg
@@ -358,7 +368,8 @@ func _ready() -> void:
 	guest=ObservedSession.new(); main.add_child(guest)
 	gg=Game.new(); gg.session=guest; guest.game=gg; main.add_child(gg)
 	DirAccess.make_dir_recursive_absolute(SaveInfo.directory())
-	FileAccess.open(SaveInfo.path("lag_origin"),FileAccess.WRITE).store_buffer(FileAccess.get_file_as_bytes(source))
+	var origin := FileAccess.open(SaveInfo.path("lag_origin"),FileAccess.WRITE)
+	origin.store_buffer(FileAccess.get_file_as_bytes(source)); origin.close()
 	CoopProgress.bring_slot="lag_origin"
 	GameData.player_name="Sustained Guest"
 	check(guest.join("127.0.0.1",29942)==OK,"guest joins actual service by ENet")

@@ -31,6 +31,10 @@ func _ready() -> void:
 	guest.blocked=false;guest.order={};guest.orders.clear();guest._anim_lock=0;guest._attack_cd=0
 	client.submit({"t":"direct_control","leader":guest.uid});await frames()
 	check(guest.direct_controlled and not own.direct_controlled,"client enables manual control only for its hero")
+	client.submit({"t":"direct_look","units":[guest.uid],"heading":1.2});await frames()
+	check(is_equal_approx(guest.direct_heading,1.2),"guest look rotation reaches the authority")
+	client.submit({"t":"direct_look","units":[own.uid],"heading":2.4});await frames()
+	check(is_nan(own.direct_heading),"network look cannot rotate another player's body")
 	client.submit({"t":"direct_move","units":[guest.uid],"direction":Vector2(0.4,0.2)});await frames()
 	check(guest.orders.size()==1 and guest.orders[0].type=="direct_move" and guest.orders[0].direction==Vector2(0.4,0.2),"network steering preserves analog input at authority")
 	check(guest.orders.size()==1 and guest.orders[0].village_limit==host.village_move_limit(),"network steering retains village boundary")

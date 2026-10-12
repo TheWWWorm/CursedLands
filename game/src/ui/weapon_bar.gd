@@ -77,7 +77,6 @@ func _process(_dt: float) -> void:
 	_place_views()
 	_sig = sig
 	for i in SLOTS:
-		_views[i].item = "~"   # force a rebuild after a resize
 		_views[i].show_item(_items[i] if i < _items.size() else "")
 	queue_redraw()
 

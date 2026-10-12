@@ -78,6 +78,15 @@ func _process(_dt: float) -> void:
 	var session := current.session
 	if session and (session.loading_game or session._zone_holding or session._remote_loading or session.movie_active()): return
 	if session and session.lmp_travel and not session.lmp_travel.can_tick(current): return
+	prepare_world()
+
+
+## Loading preparation uses the same local residents and actual mesh formats
+## as play, without advancing the simulation or waiting for its first frame.
+func prepare_world() -> void:
+	var current: GameWorld = game.world if is_instance_valid(game) else null
+	if not is_instance_valid(current) or not is_instance_valid(current.terrain): return
+	var session := current.session
 	var p := current.terrain.to_local(game.rig.global_position)
 	step(current,Vector2(p.x,-p.z),current.terrain._waves.time_ticks()*EIWaterWaves.TICK,
 		session.state.world_time if session and session.state else 12.0)

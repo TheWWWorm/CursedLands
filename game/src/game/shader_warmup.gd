@@ -39,12 +39,13 @@ const BATCH := 2
 const DIST := 0.5         # metres in front of the camera (near plane 0.05..0.1)
 const LIGHT_RANGE := 0.03
 const GROUP_GAP := 0.08
-enum {MESH, PARTICLE, INSTANCED, GRASS}
+enum {MESH, PARTICLE, INSTANCED, GRASS, REGIONAL, COLORED}
 
 static var _warmed := {}   # key -> true
 static var _keep: Array[Material] = []   # _shader_holder copies
 static var _quad: QuadMesh
 static var _mms := {}   # kind -> MultiMesh
+static var _formats := {} # vertex format -> zero-area mesh of that exact format
 
 
 static func active() -> bool:
@@ -61,6 +62,17 @@ static func run(game: Game) -> void:
 	var cam := game.rig.camera
 	if cam == null or not cam.is_inside_tree():
 		return
+	var ambient := game.get_node_or_null("AmbientLife")
+	if ambient: ambient.prepare_world()
+	var previews := game.hud.prepare_previews() if game.hud else []
+	var forced := LoadingScreen._current != null and not (OS.has_feature("web") or LoadingScreen.force_deferred)
+	if not previews.is_empty():
+		if forced:
+			RenderingServer.force_draw(true, 0.0)
+			RenderingServer.force_sync()
+			_restore_previews(previews)
+		else:
+			_finish_previews(game.get_tree(), previews)
 	if game.world.terrain:
 		var terrain:=game.world.terrain
 		if not is_instance_valid(terrain.color_cache) and TerrainColorCache.available():
@@ -75,10 +87,21 @@ static func run(game: Game) -> void:
 	# (any spell or fire light), then the other effects.
 	for add in [false, true]:
 		for through in [true, false]:
-			var pm := ShaderMaterial.new()
-			pm.shader = ParticleFx._shader(add, through)
-			_add(items, seen, pm, env, PARTICLE)
-	for m: Material in _zone_materials(game.world) + _effect_materials(game):
+			for marker in [false, true]:
+				# Path/target indicators have a separate reflection-exclusion
+				# shader even when their through-obstacles option is off.
+				var pm := ShaderMaterial.new()
+				pm.shader = ParticleFx._shader(add, through, marker)
+				_add(items, seen, pm, env, PARTICLE)
+	# Regional particles are admitted only after loading finishes, so they
+	# are absent from _zone_materials. Their MultiMesh has custom data but
+	# no instance colours; warm that exact format before play resumes.
+	if Gfx.on("gfx_ambient_particles"):
+		var regional := preload("res://src/game/fx/ambient_particles.gd").make_material()
+		_add(items, seen, regional, env, REGIONAL)
+	for variant: Array in _zone_materials(game.world):
+		_add(items, seen, variant[0], env, variant[1], variant[2])
+	for m: Material in _effect_materials(game):
 		_add(items, seen, m, env, MESH)
 	if game.world.terrain and game.world.terrain.details and game.world.terrain.details._material:
 		var grass := game.world.terrain.details
@@ -94,7 +117,6 @@ static func run(game: Game) -> void:
 	w.position = Vector3(0, 0, -maxf(DIST, cam.near * 4.0))
 	w._make_groups()
 	# Under the loading screen: draw batch by batch, stop at the budget.
-	var forced := LoadingScreen._current != null and not (OS.has_feature("web") or LoadingScreen.force_deferred)
 	if forced:
 		# The zone's first picture, under the loading screen: its programs
 		# were built on the first frame of play before; not counted.
@@ -108,7 +130,7 @@ static func run(game: Game) -> void:
 		var n := items.size() if not forced else mini(i + BATCH, items.size())
 		var shown: Array[Node] = []
 		for j in range(i, n):
-			shown.append_array(w._show(items[j][1], items[j][2]))
+			shown.append_array(w._show(items[j][1], items[j][2], items[j][3]))
 			_warmed[items[j][0]] = true
 			if items[j][1] is BaseMaterial3D:
 				_keep.append(_shader_holder(items[j][1]))
@@ -135,6 +157,17 @@ static func run(game: Game) -> void:
 		w.queue_free()
 	else:
 		w._free_after(2)
+
+
+static func _restore_previews(previews: Array) -> void:
+	for pair: Array in previews:
+		if is_instance_valid(pair[0]): pair[0].render_target_update_mode = pair[1]
+
+
+static func _finish_previews(tree: SceneTree, previews: Array) -> void:
+	await tree.process_frame
+	await RenderingServer.frame_post_draw
+	_restore_previews(previews)
 
 
 ## A BaseMaterial3D's shader is freed with the last material of its kind (a
@@ -168,17 +201,18 @@ static func _push(cam: Camera3D, w: Node3D) -> void:
 			(c as Node3D).force_update_transform()
 
 
-static func _add(items: Array, seen: Dictionary, m: Material, env: String, kind: int) -> void:
+static func _add(items: Array, seen: Dictionary, m: Material, env: String, kind: int, mesh: Mesh = null) -> void:
 	if m == null:
 		return
 	var k := _mat_key(m) + ("i%d" % kind if kind != MESH else "")
+	if mesh: k += ":v%d" % mesh.get_instance_id()
 	if k.is_empty() or seen.has(k):
 		return
 	seen[k] = true
 	var key := k + "|" + env
 	if _warmed.has(key):
 		return
-	items.append([key, m, kind])
+	items.append([key, m, kind, mesh])
 
 
 ## One material per shader: a ShaderMaterial by its shader, a BaseMaterial3D
@@ -223,8 +257,8 @@ static func _shadowed_points() -> bool:
 	return Gfx.on("gfx_firelight") or Gfx.on("gfx_lava_light")
 
 
-static func _zone_materials(w: GameWorld) -> Array[Material]:
-	var out: Array[Material] = []
+static func _zone_materials(w: GameWorld) -> Array:
+	var out: Array = []
 	var objects := {}
 	var faded := {}   # Shader -> true
 	if w.map:
@@ -237,6 +271,16 @@ static func _zone_materials(w: GameWorld) -> Array[Material]:
 		if not haze and g.is_in_group(&"gfx_heat_haze"):
 			continue   # never shown on this renderer (Gfx.heat_haze_on)
 		var ms: Array[Material] = []
+		var kind := MESH
+		var source: Mesh
+		if g is MultiMeshInstance3D and g.multimesh:
+			var mm: MultiMesh = g.multimesh
+			source = mm.mesh
+			kind = GRASS if mm.use_colors and mm.use_custom_data else \
+				COLORED if mm.use_colors else REGIONAL if mm.use_custom_data else INSTANCED
+		elif g is MeshInstance3D:
+			source = g.mesh
+		var mesh := _zero_format(source)
 		if g.material_override:
 			ms.append(g.material_override)
 		var mi := g as MeshInstance3D
@@ -245,7 +289,7 @@ static func _zone_materials(w: GameWorld) -> Array[Material]:
 				var m := mi.get_active_material(s)
 				if m:
 					ms.append(m)
-		out.append_array(ms)
+		for m: Material in ms: out.append([m, kind, mesh])
 		# A map object the camera comes close to is drawn with CameraFade's
 		# dither copy of its material.
 		var sm := g.material_override as ShaderMaterial
@@ -255,8 +299,35 @@ static func _zone_materials(w: GameWorld) -> Array[Material]:
 			if d:
 				var dm := ShaderMaterial.new()
 				dm.shader = d
-				out.append(dm)
+				out.append([dm, kind, mesh])
 	return out
+
+
+## RD pipelines include vertex layout and instancing, not just the shader.
+## A plain QuadMesh cannot warm a colored/compressed native figure or map
+## surface. Keep one collapsed surface per layout, preserving its format.
+static func _zero_format(source: Mesh) -> Mesh:
+	if source == null or source.get_surface_count() == 0: return null
+	var format: int
+	var primitive: int
+	if source is ArrayMesh:
+		format = source.surface_get_format(0)
+		primitive = source.surface_get_primitive_type(0)
+	else:
+		var surface := RenderingServer.mesh_get_surface(source.get_rid(), 0)
+		format = int(surface.get("format", 0))
+		primitive = int(surface.get("primitive", Mesh.PRIMITIVE_TRIANGLES))
+	var key := str(format) + ":" + str(primitive)
+	if _formats.has(key): return _formats[key]
+	var arrays := source.surface_get_arrays(0)
+	if arrays.is_empty() or not arrays[Mesh.ARRAY_VERTEX] is PackedVector3Array: return null
+	var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+	vertices.fill(Vector3.ZERO); arrays[Mesh.ARRAY_VERTEX] = vertices
+	var mesh := ArrayMesh.new()
+	var flags := format & (Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS | Mesh.ARRAY_FLAG_COMPRESS_ATTRIBUTES)
+	mesh.add_surface_from_arrays(primitive, arrays, [], {}, flags)
+	_formats[key] = mesh
+	return mesh
 
 
 static func _object_of(n: Node, objects: Dictionary) -> bool:
@@ -307,18 +378,18 @@ func _make_groups() -> void:
 			g.add_child(l)
 
 
-func _show(m: Material, kind: int) -> Array[Node]:
+func _show(m: Material, kind: int, source: Mesh = null) -> Array[Node]:
 	var out: Array[Node] = []
 	for g in get_children():
 		var gi: GeometryInstance3D
 		if kind == MESH:
 			var mi := MeshInstance3D.new()
-			mi.mesh = _zero_quad()
+			mi.mesh = source if source else _zero_quad()
 			gi = mi
 		else:
 			var mmi := MultiMeshInstance3D.new()
 			mmi.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
-			mmi.multimesh = _multimesh(kind)
+			mmi.multimesh = _multimesh(kind, source)
 			mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED if kind == GRASS else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			gi = mmi
 		gi.material_override = m
@@ -331,20 +402,22 @@ func _show(m: Material, kind: int) -> Array[Node]:
 ## One instance, all rows 0: for particle.gdshader a particle of size 0 at
 ## the origin (ParticleFx's format: colours and custom data), for the
 ## VisionFog overlay a cell of scale 0.
-static func _multimesh(kind: int) -> MultiMesh:
-	if not _mms.has(kind):
+static func _multimesh(kind: int, source: Mesh = null) -> MultiMesh:
+	var key := str(kind) + (":%d" % source.get_instance_id() if source else "")
+	if not _mms.has(key):
 		var mm := MultiMesh.new()
 		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.use_colors = kind in [PARTICLE, GRASS]
-		mm.use_custom_data = kind in [PARTICLE, GRASS]
-		mm.mesh = _zero_quad()
+		mm.use_colors = kind in [PARTICLE, GRASS, COLORED]
+		mm.use_custom_data = kind in [PARTICLE, GRASS, REGIONAL]
+		mm.mesh = source if source else _zero_quad()
 		mm.instance_count = 1
 		mm.set_instance_transform(0, Transform3D(Basis(Vector3.ZERO, Vector3.ZERO, Vector3.ZERO), Vector3.ZERO))
-		if kind in [PARTICLE, GRASS]:
+		if kind in [PARTICLE, GRASS, COLORED]:
 			mm.set_instance_color(0, Color(0, 0, 0, 0))
+		if kind in [PARTICLE, GRASS, REGIONAL]:
 			mm.set_instance_custom_data(0, Color(0, 0, 0, 0))
-		_mms[kind] = mm
-	return _mms[kind]
+		_mms[key] = mm
+	return _mms[key]
 
 
 ## A quad of size 0: every draw state and program as for a real one, no
