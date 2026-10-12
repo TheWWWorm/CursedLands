@@ -351,7 +351,7 @@ static func title(id: String) -> String:
 	if id.begins_with("rune:"):
 		return RemakeText.t("Rune: ") + Spells.mod_title(id.substr(5))
 	if id.begins_with("bp:"):
-		return "%s: %s" % [blueprint_kind(id), title(id.substr(3))]
+		return "%s: %s" % [blueprint_kind(id), blueprint_name(id)]
 	var i := info(id)
 	var key_base := String(i.base).replace(" ", "_")
 	var key_mat := String(i.material).replace(" ", "_")
@@ -468,14 +468,25 @@ static func log_name(id: String) -> String:
 	if id.begins_with("rune:"):
 		return Spells.mod_title(id.substr(5))
 	if id.begins_with("bp:"):
-		var b := info(id.substr(3))
-		var t := GameData.text("instr " + String(b.base).replace(" ", "_")) if GameData.texts else ""
-		return t.get_slice("\n", 0).strip_edges() if t else title(id.substr(3))
+		return blueprint_name(id)
 	return title(plain(id))
 
 
-## "Weapon blueprint" etc. (texts string item_*_shape); heavy armour is the
-## helm, cuirass and leggings layer (camphelp 4-10).
+## Name of the recipe, including wands with only a material-specific title.
+static func blueprint_name(bp: String) -> String:
+	var base := String(info(bp.substr(3)).base)
+	var text := GameData.text("instr " + base.replace(" ", "_"))
+	if text: return text.get_slice("\n", 0).strip_edges()
+	# Special wands (goblin doll / dragon horn) have no instruction text.
+	# Their authored material-specific item name is still localized.
+	for material: Dictionary in materials_for(bp):
+		var name := String(material.name).to_lower()
+		text = GameData.text("qitem " + base.replace(" ", "_") + " " + name.replace(" ", "_"))
+		if text: return text.get_slice("\n", 0).strip_edges()
+	return title(bp.substr(3))
+
+
+## "Weapon blueprint" etc. (texts string item_*_shape).
 static func blueprint_kind(bp: String) -> String:
 	var r := blueprint_row(bp)
 	var key := "item_wand_shape"

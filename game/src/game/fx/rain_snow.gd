@@ -191,7 +191,7 @@ func _init(g: Node) -> void:
 	mesh = _grid_mesh()
 	_mat = ShaderMaterial.new()
 	var sh := Shader.new()
-	sh.code = SHADER
+	sh.code = preload("res://src/game/fx/water_reflection.gd").screen_effect_source(SHADER)
 	_mat.shader = sh
 	_mat.render_priority = RENDER_PRIORITY
 	_mat.set_shader_parameter("tex", GameData.get_texture("rainsnow"))

@@ -30,6 +30,9 @@ const SEL_VERTS := [Vector2(3, 2), Vector2(-3, 2), Vector2(0, -5), Vector2(2, 1.
 const SEL_TRIS := [0, 4, 3, 0, 1, 4, 1, 5, 4, 1, 2, 5, 2, 3, 5, 2, 0, 3]
 const SEL_SIZE := 0.5   # CornerSize, settings
 var _lit := {}   # GameUnit -> model it lightened (select_type 0)
+var _talk_units: Array[GameUnit] = []
+var _talk_world: GameWorld
+var _talk_scan := 0.0
 var _bright := {}   # unit material -> its lightened copy
 var _flash := {}    # GameUnit -> seconds of white flash left (figure ticks)
 ## The emissive (1) pushes (RGB 1.0).
@@ -182,6 +185,9 @@ func _update_lit() -> void:
 	if game and game.quest_lights:
 		for u: GameUnit in game.quest_lights.white_units():
 			want[u] = u.model
+	for u: GameUnit in _talk_units:
+		if is_instance_valid(u) and not u.dead and u.world == game.world and u.model and u.visible:
+			want[u] = u.model
 	for u in _lit.keys():
 		if not want.has(u) or want[u] != _lit[u]:
 			if is_instance_valid(_lit[u]):
@@ -256,7 +262,35 @@ func _bright_of(base: Material) -> Material:
 	return b
 
 
+func _refresh_talk_units() -> void:
+	_talk_units.clear()
+	if game == null or game.world == null or game.session == null: return
+	# Index pending owners once; most units have no conversation variables.
+	var owners := {}
+	var ids := {}
+	var keys := game.session.state.gs_keys(0, "b.", true)
+	if game.session.my_index != 0:
+		keys.append_array(game.session.state.gs_keys(game.session.my_index, "b.", true))
+	for key: String in keys:
+		if game.session.state.get_pvar(game.session.my_index, key) != 1.0: continue
+		var parts := key.split(".")
+		if parts.size() != 3: continue
+		owners[parts[1]] = true
+		ids[ScriptVM.name_id(parts[1])] = true
+	for u: GameUnit in game.world.unit_rows():
+		if not owners.has(String(u.info.get("name", "")).to_lower()) and not ids.has(u.uid): continue
+		if u.dead or not u.visible or u.model == null: continue
+		if game.session.shop_available() and not u.village_talk_ready(): continue
+		if not Briefings.pending_for(game.session.state, u, game.session.my_index).is_empty():
+			_talk_units.append(u)
+
+
 func _process(dt: float) -> void:
+	_talk_scan -= dt
+	if game and (_talk_world != game.world or _talk_scan <= 0.0):
+		_talk_world = game.world
+		_talk_scan = 0.25
+		_refresh_talk_units()
 	_im.clear_surfaces()
 	for u in _flash.keys():
 		_flash[u] -= dt

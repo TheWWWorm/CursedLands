@@ -651,7 +651,9 @@ func _unhandled_key_input(e: InputEvent) -> void:
 			close("tutorial\\ok")
 			get_viewport().set_input_as_handled()
 			return
-		if EIKeymap.event_action(e) == "obj":
+		var direct := session.game.direct if session.game else null
+		var quests_key := EIKeymap.direct_event(e) == "direct_quests" if direct and direct.active() else EIKeymap.event_action(e) == "obj"
+		if quests_key:
 			close("messbox\\ok")
 			get_viewport().set_input_as_handled()
 			return

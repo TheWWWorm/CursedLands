@@ -63,7 +63,7 @@ func tick() -> void:
 ## 607320 scans a temporary copy of the raw GS hash (460ee0), sorted only
 ## online by byte _stricmp. Old saves can only reconstruct their discarded
 ## spelling/insertion order from the dictionary they still contain.
-func interact(_unit: GameUnit, target: Object, player: int, original_stage := false) -> void:
+func interact(_unit: GameUnit, target: Object, player: int, original_stage := false, assortment := false) -> void:
 	clear_original_topics(player)
 	if not active.is_empty() or not (target is GameUnit):
 		return
@@ -72,7 +72,13 @@ func interact(_unit: GameUnit, target: Object, player: int, original_stage := fa
 		return
 	var options := []
 	var constr := []
-	for e: Array in available_for(t, player):
+	var entries := available_for(t, player)
+	var grouped := _smith_assortment(t, entries)
+	var has_assortment := false
+	for e: Array in entries:
+		var purchase := grouped and String(e[1]).to_lower().begins_with("buy_") and String(e[1]).to_lower() != "buy_1"
+		if purchase: has_assortment = true
+		if grouped and purchase != assortment: continue
 		if String(e[1]).to_lower().begins_with("constr"):
 			constr = e
 			continue
@@ -81,6 +87,11 @@ func interact(_unit: GameUnit, target: Object, player: int, original_stage := fa
 			text = vm.session.quest_text("briefing " + String(e[1]))
 		var title := text.get_slice("\n", 0).strip_edges() if text else ""
 		options.append({"var": "b.%s.%s" % e, "title": title})
+	if grouped:
+		if assortment:
+			options.push_front({"var": "@smith_back", "title": RemakeText.t("Back")})
+		elif has_assortment:
+			options.push_front({"var": "@smith_assortment", "title": GameData.text("briefing buy_1").get_slice("\n", 0).strip_edges()})
 	if not constr.is_empty():
 		var title := GameData.text("briefing constr").get_slice("\n", 0).strip_edges()
 		options.append({"var": "b.%s.%s" % constr, "title": title})
@@ -105,7 +116,11 @@ func topic(player: int, var_name: String, uid: int) -> void:
 	var t: GameUnit = vm.world.units.get(uid)
 	if not active.is_empty() or t == null or t.dead:
 		return
-	for e: Array in available_for(t, player):
+	var entries := available_for(t, player)
+	if var_name in ["@smith_assortment", "@smith_back"] and _smith_assortment(t, entries):
+		interact(null, t, player, false, var_name == "@smith_assortment")
+		return
+	for e: Array in entries:
 		if "b.%s.%s" % e == var_name:
 			var id := String(e[1])
 			if id.to_lower().begins_with("constr"):
@@ -125,6 +140,14 @@ func topic(player: int, var_name: String, uid: int) -> void:
 					vm.session, vm.world.units.get(int(context[1])), t, player, var_name)
 			play_named(id, var_name, player, t, original, not original)
 			return
+
+
+func _smith_assortment(u: GameUnit, entries: Array) -> bool:
+	if vm.session.state.campaign_id != CampaignProfile.ASTRAL or vm.world.zone.get("id", "") != "bz5h" \
+		or (u.uid != ScriptVM.name_id("NSheriff") and String(u.info.get("name", "")).to_lower() != "nsheriff"): return false
+	for entry: Array in entries:
+		if String(entry[1]).to_lower().begins_with("buy_") and String(entry[1]).to_lower() != "buy_1": return true
+	return false
 
 
 func available(npc: String) -> Array:

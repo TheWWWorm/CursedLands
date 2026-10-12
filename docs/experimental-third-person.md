@@ -4,7 +4,7 @@ Choose **Options → Remake → Camera → Control mode**. **Auto (gamepad)** is
 
 **Options → Remake → Camera → First / third person** provides separate FOV and mouse sensitivity for both views, mouse inversion, a separate editable key layout, and controller aim speeds, deadzone, response curve and axis inversion. The bindings below are defaults. Direct-control bindings are saved separately from tactical keyboard layouts.
 
-The default Compact control guide shows one small line for camera mode and the mouse cursor. It changes to a return hint while using the cursor. Both guides keep clear of the camera-follow icon. Choose Full guide for the movement keys and additional crosshair explanations, or Off to hide the lower guide.
+The default Compact control guide shows one small line for camera mode, the mouse cursor and quests. It changes to a return hint while using the cursor. Both guides keep clear of the camera-follow icon. Choose Full guide for the movement keys and additional crosshair explanations, or Off to hide the lower guide.
 
 | Input | Action |
 | --- | --- |
@@ -18,6 +18,7 @@ The default Compact control guide shows one small line for camera mode and the m
 | Mouse | Turn and tilt the view |
 | Left mouse button / F / RT | Swing or shoot in the aimed direction; hold to repeat after the weapon cooldown; cast a selected spell |
 | E / A | Talk, loot, revive or use the object under the crosshair; pick up nearby loot without exact aiming; confirm a nearby open area exit. A also confirms the selected spell target. |
+| Q | Open or close quests in first/third person; tactical view retains its quest binding (Tab by default) |
 | Tab / R3 | Release the pointer for the HUD and existing point-and-click actions |
 | Mouse wheel | Adjust shoulder distance |
 | Right mouse button | Cancel spell targeting |
@@ -44,7 +45,7 @@ Selected spells in direct views cast from the character's current position. An o
 
 The first-person eye uses a stable authored posture anchor, with eased standing/crouching/crawling height changes. Looking down shows the torso and legs. The local body has a closed collar in place of the hidden neck, without clipping a hole through the chest. Its rendered body, arms and weapon stay centred beneath the eye after the final animation pose, with enough clearance to keep the collar below the view. This does not add camera bob or move gameplay geometry. The complete original figure, including the head, casts the shadow. Leaving first person restores the original mesh and render transforms. Scripted lying poses use an external view until direct movement resumes. Third-person wall clearance shortens immediately and eases back outward.
 
-1.0.4 Experimental 7 uses protocol **21**. All peers must use the same build. [Figure validation](validation/direct-figure-shape-2026-10-12.json) covers body shape, rebuilt previews and moving attacks. [Feedback 8 validation](validation/direct-view-feedback-2026-10-12.json) covers the camera, posture, spell-range and Ingos presentation changes; earlier results below retain their original scope. The earlier [direct-control validation](validation/direct-controls-2026-10-12.json) covers the initial settings and input work.
+1.0.4 uses protocol **21**. All peers must use the same build. [Figure validation](validation/direct-figure-shape-2026-10-12.json) covers body shape, rebuilt previews and moving attacks. [Feedback 8 validation](validation/direct-view-feedback-2026-10-12.json) covers the camera, posture, spell-range and Ingos presentation changes; earlier results below retain their original scope. The earlier [direct-control validation](validation/direct-controls-2026-10-12.json) covers the initial settings and input work.
 
 1.0.3 Experimental 6 shipped these controls with protocol **11**, but a Camera key-binding row overwrote the control-mode selector. The local follow-up moves the selector to its own row. 1.0.4 Experimental 1 uses protocol **14**, including mod/profile matching; peers need matching builds. The selector and safe-zone changes were included in 1.0.3.
 

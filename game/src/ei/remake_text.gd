@@ -267,6 +267,7 @@ const TEXTS := {
 	"Change this rule at camp.": ["Это правило можно изменить в лагере.", "Diese Regel im Lager ändern."],
 	"Name for a new profile": ["Название нового профиля", "Name des neuen Profils"],
 	"Profile created. Start a new game or copy an existing save below.": ["Профиль создан. Начните новую игру или скопируйте сохранение ниже.", "Profil erstellt. Ein neues Spiel starten oder unten einen Spielstand kopieren."],
+	"Profile created. Original saves have been copied into it.": ["Профиль создан. В него скопированы исходные сохранения.", "Profil erstellt. Die ursprünglichen Spielstände wurden hineinkopiert."],
 	"Rules changed; reopen the menu and try again.": ["Правила изменились. Откройте меню заново и повторите попытку.", "Die Regeln wurden geändert. Das Menü erneut öffnen und noch einmal versuchen."],
 	"Sandbox saves": ["Сохранения песочницы", "Sandbox-Spielstände"],
 	"Sandbox saves stay separate. Turning a cheat off does not undo rewards already earned.": ["Сохранения песочницы хранятся отдельно. Отключение читов не отменяет уже полученные награды.", "Sandbox-Spielstände bleiben getrennt. Das Ausschalten eines Cheats entfernt bereits erhaltene Belohnungen nicht."],

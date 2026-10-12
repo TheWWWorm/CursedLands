@@ -153,6 +153,29 @@ func _run() -> void:
 		var shown := await capture("marker-%d-visible" % through, reflection)
 		check(shown.mirror == hidden.mirror, "target marker is not reflected, through=%d" % through)
 		check(shown.main != hidden.main, "target marker remains visible, through=%d" % through)
+	# Camera-centred weather must remain in the main view only. The old
+	# shader is a negative control using the exact same frozen mesh/clock.
+	fx.hide()
+	var weather := FxRainSnow.new(game)
+	game.add_child(weather)
+	weather.set_process(false)
+	var shader := weather._mat.shader
+	var guarded := shader.code
+	weather._mat.set_shader_parameter("cam_ei", Vector3(camera.global_position.x,-camera.global_position.z,camera.global_position.y))
+	weather._mat.set_shader_parameter("density",64)
+	weather._mat.set_shader_parameter("t_now",1250.0)
+	for kind in [1,2]:
+		weather._mat.set_shader_parameter("mode",kind)
+		weather._mat.set_shader_parameter("tab",PackedInt32Array(FxRainSnow.RAIN_TAB if kind == 1 else FxRainSnow.SNOW_TAB))
+		weather.hide()
+		var dry := await capture("weather-%d-hidden" % kind,reflection)
+		weather.show(); shader.code = FxRainSnow.SHADER
+		var old_weather := await capture("weather-%d-old" % kind,reflection)
+		shader.code = guarded
+		var fixed_weather := await capture("weather-%d-fixed" % kind,reflection)
+		check(old_weather.mirror != dry.mirror, "old precipitation appears in mirror, mode=%d" % kind)
+		check(fixed_weather.mirror == dry.mirror, "precipitation no longer reflected, mode=%d" % kind)
+		check(fixed_weather.main != dry.main, "precipitation remains visible in main view, mode=%d" % kind)
 	FileAccess.open(out.path_join("verification.json"), FileAccess.WRITE).store_string(JSON.stringify({
 		"zone": "gz9g", "map": "zone9", "actor": actor.uid, "water": str(pond),
 		"plane": reflection.plane, "observations": observations, "checks": checks,
@@ -161,5 +184,5 @@ func _run() -> void:
 	session.queue_free()
 	await frames(10)
 	TexUpscale.shutdown()
-	print("WATER_REFLECTION_COMBAT checks=", checks, " failures=", failures.size())
+	print("WATER_REFLECTION_COMBAT ", checks, " checks ", failures.size(), " failures")
 	get_tree().quit(int(not failures.is_empty()))

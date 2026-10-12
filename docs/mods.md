@@ -7,11 +7,11 @@ Open **Mods and rules** directly from the main menu. During play it is also avai
 ## Playing with a profile
 
 1. On **Mods**, download a listed mod or import a `.eimod`/`.zip` package. Installation does not enable it.
-2. Turn its switch **On**, then choose **Apply & restart**. Starting from **Original saves** creates a separate **Modded game** profile in the same transaction. Existing saves are retained.
+2. Turn its switch **On**, then choose **Apply & restart**. Starting from **Original saves** creates a separate **Modded game** profile in the same transaction. Compatible original campaign saves are copied into the new profile.
 3. Use **Profiles** to create additional named profiles, copy an original save, or switch back to **Original saves** with **Switch & restart**. Choose **Create sandbox profile** only for sandbox commands.
 4. Configure **Game rules** and any available **Mod options**, then select **Apply changes**. **Back** discards pending edits. In a running game, edits affect that run; from the main menu, they set the next run's defaults.
 
-Named profiles have separate campaign saves and original-multiplayer character folders. Original saves keeps the existing save locations and reads legacy saves. The manager can explicitly copy an ordinary save into a named profile; its source is retained. A sandbox save or character cannot be loaded or imported into an ordinary profile through the game's save, backup or network paths.
+Named profiles have separate campaign saves and original-multiplayer character folders. Original saves keeps the existing save locations and reads legacy saves. Creating a profile copies compatible original saves for the active campaign, including their names, timestamps and thumbnails. Source saves remain unchanged, and switching profiles does not copy again or replace later progress. The manager can also explicitly copy an ordinary save into a named profile. A sandbox save or character cannot be loaded or imported into an ordinary profile through the game's save, backup or network paths.
 
 Rules say when they can change: **New game**, **At camp**, or **Live**. Guests can inspect shared rules; the host controls them. Running changes are stored in the save, so changing next-run defaults does not change an existing campaign. Package activation and profile switching require the main menu and a restart.
 

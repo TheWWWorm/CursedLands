@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.4 — stable release, 13 October 2026
+
+- Highlight characters with available conversations using the same material effect as character selection.
+- Keep the Lost in Astral smith's completed Assortment introduction separate from his purchase catalogue. Add a Back entry and retain all authored offers.
+- Display localized rune reward and wand blueprint names in dialogue, tooltips and item details.
+- Use **Q** to open and close quests in first- and third-person views; **Tab** toggles the pointer. The quest key is configurable, and existing custom bindings are retained.
+- Choose co-op host saves and client heroes from scrollable dropdowns with save names and dates.
+- Copy compatible original campaign saves, metadata and thumbnails when creating a mod profile, including automatic profiles created when enabling mods. Later profile switches retain the copied campaign's progress.
+- Keep camera-centred rain and snow out of mirror-water reflections.
+
+
+Includes the 1.0.4 preview changes below. See [release notes](docs/releases/1.0.4.md) for compatibility and platform limits.
+
 ## 1.0.4-experimental.7 — experimental release, 12 October 2026
 
 - Keep long dropdowns within the display, with mouse-wheel and keyboard scrolling and the selected entry visible on reopening.

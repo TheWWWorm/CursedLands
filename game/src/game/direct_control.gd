@@ -331,6 +331,9 @@ func handle_input(e: InputEvent) -> bool:
 		_cancel_posture()
 		return true
 	if not active(): return false
+	if key == "direct_quests" and can_switch():
+		if e.pressed and not e.echo: game.open_quests()
+		return true
 	if key == "direct_pointer" and e.pressed and not e.echo and can_switch():
 		pointer = not pointer
 		_portrait_target = null
@@ -540,11 +543,11 @@ func keyboard_hint() -> String:
 
 
 func keyboard_extra_hint() -> String:
-	return RemakeText.t("%s: crouch (hold: lie down)   %s: aimed strike   %s: camera") % [key_label("posture"),key_label("aim"),key_label("tactical")]
+	return RemakeText.t("%s: crouch (hold: lie down)   %s: aimed strike   %s: camera") % [key_label("posture"),key_label("aim"),key_label("tactical")] + "   " + key_label("quests") + ": " + RemakeText.t("Quests")
 
 
 func keyboard_compact_hint() -> String:
-	return RemakeText.t("%s: camera mode   %s: show cursor") % [key_label("tactical"),key_label("pointer")]
+	return RemakeText.t("%s: camera mode   %s: show cursor") % [key_label("tactical"),key_label("pointer")] + "   " + key_label("quests") + ": " + RemakeText.t("Quests")
 
 
 func hint_baseline() -> float:

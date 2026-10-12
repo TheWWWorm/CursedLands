@@ -76,7 +76,7 @@ const ACTIONS := [[1, "pause", 3, 4], [2, "decel", 3, 3], [3, "accel", 3, 2], [4
 	[109, "direct_aim", 25, 7],
 	[111, "direct_tactical", 25, 8],
 	[112, "direct_sprint", 25, 9],
-	[113, "direct_attack", 25, 10]]
+	[113, "direct_attack", 25, 10], [114, "direct_quests", 25, 11]]
 ## Keys the remake's own actions get when nothing is bound to them and the key
 ## is free (Delete / End turn the camera, as in Divinity: Original Sin 2).
 const REMAKE_DEFAULTS := {"camera_rotate_left": "DEL", "camera_rotate_right": "END"}
@@ -96,7 +96,7 @@ const DISPLAY_NAMES := {"CTRL": "Ctrl", "ALT": "Alt", "SHIFT": "Shift", "-": "-"
 const USER_FILE := "user://keyboard.ini"
 const WASD_FILE := "user://keyboard_wasd.ini"
 const DIRECT_FILE := "user://keyboard_direct.ini"
-const DIRECT_DEFAULTS := {"W": "direct_forward", "S": "direct_back", "A": "direct_left", "D": "direct_right", "E": "direct_interact", "TAB": "direct_pointer", "CTRL": "direct_posture", "ALT": "direct_aim", "F6": "direct_tactical", "SHIFT": "direct_sprint", "F": "direct_attack"}
+const DIRECT_DEFAULTS := {"W": "direct_forward", "S": "direct_back", "A": "direct_left", "D": "direct_right", "E": "direct_interact", "TAB": "direct_pointer", "CTRL": "direct_posture", "ALT": "direct_aim", "F6": "direct_tactical", "SHIFT": "direct_sprint", "F": "direct_attack", "Q": "direct_quests"}
 static var _direct_map := {}
 static var _direct_loaded := false
 
@@ -164,6 +164,15 @@ static func _active_map(profile := -1) -> Dictionary:
 		if not _direct_loaded:
 			_direct_loaded = true
 			_direct_map = _read_map(DIRECT_FILE) if FileAccess.file_exists(DIRECT_FILE) else direct_defaults()
+			# Upgrade older direct layouts once; keep custom keys and later unbinding.
+			if FileAccess.file_exists(DIRECT_FILE) and not "# direct quests v1" in FileAccess.get_file_as_string(DIRECT_FILE):
+				if not "direct_quests" in _direct_map.values():
+					for candidate in [KEY_Q, KEY_J, KEY_F7]:
+						var sc := scan_code(candidate)
+						if not _direct_map.has(sc):
+							_direct_map[sc] = "direct_quests"
+							break
+				save(2)
 		return _direct_map
 	if profile == 1 or (profile == -1 and wasd_active()):
 		if not _wasd_loaded:
@@ -292,7 +301,7 @@ static func save(profile := -1) -> void:
 	var f := FileAccess.open(DIRECT_FILE if profile == 2 else WASD_FILE if wasd else USER_FILE, FileAccess.WRITE)
 	if f == null:
 		return
-	var out := ""
+	var out := "# direct quests v1\r\n" if profile == 2 else ""
 	for s: int in _sorted(map):
 		if _names.has(s):
 			out += "%s %s\r\n" % [_names[s], map[s]]

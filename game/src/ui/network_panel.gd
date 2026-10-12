@@ -124,6 +124,7 @@ var _internet: Control
 var _start_slots: Array = [""]
 var _start_titles := {}
 var _setup_button: Button
+var _save_choice: ScrollOptionButton
 
 
 func _ready() -> void:
@@ -152,6 +153,25 @@ func _ready() -> void:
 		_ask_password(g))
 	_internet.closed.connect(func(): grab_focus(); queue_redraw())
 	add_to_group("pad_panel")   # remake: gamepad snap targets (pad_targets, pad_press)
+	_save_choice = ScrollOptionButton.new()
+	_save_choice.fit_to_longest_item = false
+	_save_choice.clip_text = true
+	CampaignChoices.style_button(_save_choice)
+	_save_choice.add_theme_font_size_override("font_size", 14)
+	for state: String in ["normal", "hover", "pressed", "hover_pressed", "disabled"]:
+		var style := _save_choice.get_theme_stylebox(state).duplicate() as StyleBox
+		style.content_margin_top = 2
+		style.content_margin_bottom = 2
+		_save_choice.add_theme_stylebox_override(state, style)
+	var popup := _save_choice.get_popup()
+	popup.add_theme_font_override("font", Interface800.font())
+	popup.add_theme_font_size_override("font_size", 16)
+	popup.add_theme_stylebox_override("panel", SettingsDialog.plate(Color("171710"), Color("8b7953"), 8))
+	popup.add_theme_stylebox_override("hover", SettingsDialog.plate(BAR, Color.TRANSPARENT, 4))
+	popup.add_theme_color_override("font_color", TEXT)
+	popup.add_theme_constant_override("v_separation", 8)
+	add_child(_save_choice)
+	_save_choice.item_selected.connect(_save_selected)
 	_setup_button = Button.new()
 	_setup_button.text = RemakeText.t("Game setup…")
 	_setup_button.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
@@ -198,9 +218,9 @@ func show_page(p: int) -> void:
 	_hover = ""
 	_book_sel = -1
 	_lan_sel = -1
+	if p in [HOST_COOP, JOIN_COOP]: _refresh_start_saves()
 	if p == HOST_COOP:
 		lmp_base = ""
-		_refresh_start_saves()
 	elif p == HOST_LMP and not lmp_base in LmpMode.BASES:
 		lmp_base = LmpMode.BASES[0]
 	_sel = -1
@@ -212,6 +232,8 @@ func show_page(p: int) -> void:
 	elif (p == JOIN_COOP or p == JOIN_LMP) and address.strip_edges() in ["", "ws://", "wss://"]:
 		_focus = "addr"
 	_targets.clear()
+	_rebuild_save_choices()
+	_sync_save_choice()
 	queue_redraw()
 
 
@@ -333,7 +355,7 @@ func _rows() -> Array:
 		"hint": RemakeText.t("Your name in the co-op game.")})
 	match page:
 		HOST_COOP:
-			out.append({"id": "start", "kind": "choice", "label": RemakeText.t("Start from"), "value": _start_title(), "on": not locked,
+			out.append({"id": "start", "kind": "dropdown", "label": RemakeText.t("Start from"), "value": _start_title(), "on": not locked,
 				"hint": RemakeText.t("Choose a new game or a save before hosting. Its saved mod rules apply to the whole lobby.")})
 		HOST_LMP:
 			out.append({"id": "base", "kind": "choice", "label": RemakeText.t("Base"), "value": LmpMode.base_title(lmp_base), "on": true,
@@ -365,7 +387,7 @@ func _rows() -> Array:
 			"value": _on_off(GameData.option("net_websocket") != 0), "on": not hosting,
 			"hint": RemakeText.t("Leave this off unless a friend plays the browser version. Browser players can only reach a secure wss:// address, which needs an HTTPS proxy in front of this port. With it on, the others join with ws://address:port, and the router is not opened automatically (forward TCP port %d by hand).") % port})
 	if page == JOIN_COOP:
-		out.append({"id": "bring", "kind": "choice", "label": RemakeText.t("Your hero"), "value": _bring_title(CoopProgress.bring_slot),
+		out.append({"id": "bring", "kind": "dropdown", "label": RemakeText.t("Your hero"), "value": _bring_title(CoopProgress.bring_slot),
 			"on": not joining, "hint": _bring_hint()})
 		if CoopProgress.bring_slot == "":
 			out.append({"id": "class", "kind": "choice", "label": RemakeText.t("Class"), "value": _class_title(hero_class()),
@@ -424,6 +446,64 @@ func _refresh_start_saves() -> void:
 			_start_titles[i.slot] = "%s  %s" % [i.display_name(), i.date_text()]
 	if not _start_titles.has(start_slot):
 		start_slot = ""
+	if not CoopProgress.bring_slot in ["", CoopProgress.NEW] and not _start_titles.has(CoopProgress.bring_slot):
+		CoopProgress.bring_slot = ""
+
+
+func _rebuild_save_choices() -> void:
+	_save_choice.get_popup().hide()
+	_save_choice.clear()
+	if page not in [HOST_COOP, JOIN_COOP]: return
+	var slots := _start_choices() if page == HOST_COOP else _bring_choices()
+	for slot: String in slots:
+		var title: String = _start_titles.get(slot, RemakeText.t("A new game (the beginning of the story)")) if page == HOST_COOP else _bring_title(slot)
+		_save_choice.add_item(title)
+		_save_choice.set_item_metadata(_save_choice.item_count - 1, slot)
+		_save_choice.set_item_tooltip(_save_choice.item_count - 1, title)
+
+
+func _sync_save_choice() -> void:
+	if _save_choice == null: return
+	_save_choice.visible = page in [HOST_COOP, JOIN_COOP] and not (_internet and _internet.visible)
+	if not _save_choice.visible:
+		_save_choice.get_popup().hide()
+		return
+	var id := "start" if page == HOST_COOP else "bring"
+	var rows := _rows()
+	for i in rows.size():
+		if rows[i].id != id: continue
+		var rect := r8(Rect2(400, _row_rect(i).position.y, 285, _row_h()))
+		var factor := minf(kv().x, kv().y)
+		_save_choice.position = rect.position
+		_save_choice.scale = Vector2.ONE * factor
+		_save_choice.size = rect.size / factor
+		_save_choice.disabled = not rows[i].on
+		if _save_choice.disabled: _save_choice.get_popup().hide()
+		var slot := start_slot if page == HOST_COOP else CoopProgress.bring_slot
+		for j in _save_choice.item_count:
+			if _save_choice.get_item_metadata(j) == slot: _save_choice.select(j); break
+		_save_choice.tooltip_text = rows[i].value
+		break
+
+
+func _save_selected(index: int) -> void:
+	var id := "start" if page == HOST_COOP else "bring"
+	if not page in [HOST_COOP, JOIN_COOP] or not _row_on(id): return
+	var slot := String(_save_choice.get_item_metadata(index))
+	if page == HOST_COOP: start_slot = slot
+	else: CoopProgress.bring_slot = slot
+	_focus = ""
+	sound("save\\select")
+	_sync_save_choice()
+	queue_redraw()
+
+
+func _open_save_choices() -> void:
+	_sync_save_choice()
+	if _save_choice.visible and not _save_choice.disabled:
+		_focus = ""
+		_save_choice.grab_focus()
+		_save_choice.show_popup()
 
 
 func _start_choices() -> Array:
@@ -1030,19 +1110,14 @@ func _class_title(proto: String) -> String:
 ## (nothing kept), "new" a new campaign Zak, or the hero of one of its saves
 ## (progress comes back as a new save, CoopProgress).
 func _bring_choices() -> Array:
-	var out := ["", CoopProgress.NEW]
-	for i: SaveInfo in SaveInfo.list():
-		if not i.error:
-			out.append(i.slot)
-	return out
+	return ["", CoopProgress.NEW] + _start_slots.slice(1)
 
 
 func _bring_title(slot: String, with_class := false) -> String:
 	match slot:
 		"": return RemakeText.t("A co-op hero (nothing kept)") + (" — " + _class_title(hero_class()) if with_class else "")
 		CoopProgress.NEW: return RemakeText.t("A new %s (start fresh)") % CampaignState.hero_name()
-	var i := SaveInfo.read(slot)
-	return RemakeText.t("Hero from the save “%s”") % i.display_name()
+	return RemakeText.t("Hero from the save “%s”") % String(_start_titles.get(slot, slot))
 
 
 # ------------------------------------------------------------------ actions
@@ -1065,9 +1140,9 @@ func _activate(id: String, dir := 0) -> void:
 				else:
 					TouchTextEdit.open(self, address, 256, func(v): address = v; queue_redraw(), "Server address")
 			return
-		"start":
-			var ch := _start_choices()
-			start_slot = ch[posmod(maxi(0, ch.find(start_slot)) + step, ch.size())]
+		"start", "bring":
+			_open_save_choices()
+			return
 		"base":
 			lmp_base = LmpMode.BASES[posmod(maxi(0, LmpMode.BASES.find(lmp_base)) + step, LmpMode.BASES.size())]
 			if hosting:
@@ -1084,9 +1159,6 @@ func _activate(id: String, dir := 0) -> void:
 			GameData.set_option("net_upnp", 0 if GameData.option("net_upnp") == 1 else 1)
 		"websocket":
 			GameData.set_option("net_websocket", 0 if GameData.option("net_websocket") else 1)
-		"bring":
-			var ch := _bring_choices()
-			CoopProgress.bring_slot = ch[posmod(maxi(0, ch.find(CoopProgress.bring_slot)) + step, ch.size())]
 		"class":
 			hero = posmod(hero + step, Session.coop_classes().size())
 		"char":
@@ -1302,6 +1374,8 @@ func _gui_input(e: InputEvent) -> void:
 			if not rows[r].on:
 				break
 			match String(rows[r].kind):
+				"dropdown":
+					_activate(id)
 				"choice":
 					_activate(id, -1 if right or p.x < 545 else 1)
 				"slider":
@@ -1340,7 +1414,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		KEY_ENTER, KEY_KP_ENTER:
 			var rows := _rows() if page != MODES else []
 			if _focus == "" and page != MODES and _sel >= 0 and _sel < rows.size() \
-					and String(rows[_sel].kind) in ["choice", "switch", "link"] and rows[_sel].on:
+					and String(rows[_sel].kind) in ["choice", "dropdown", "switch", "link"] and rows[_sel].on:
 				_activate(String(rows[_sel].id))
 			else:
 				_focus = ""
@@ -1367,7 +1441,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		KEY_LEFT, KEY_RIGHT:
 			if _focus == "" and page != MODES:
 				var rows := _rows()
-				if _sel >= 0 and _sel < rows.size() and rows[_sel].on and String(rows[_sel].kind) in ["choice", "slider"]:
+				if _sel >= 0 and _sel < rows.size() and rows[_sel].on and String(rows[_sel].kind) in ["choice", "dropdown", "slider"]:
 					_activate(String(rows[_sel].id), -1 if k.keycode == KEY_LEFT else 1)
 		KEY_BACKSPACE:
 			_type("", true)
@@ -1413,6 +1487,7 @@ func _process(dt: float) -> void:
 		lan.scan(scan)
 	if not visible:
 		return
+	_sync_save_choice()
 	_caret_t += dt
 	if _copied_t > 0.0:
 		_copied_t -= dt
@@ -1485,7 +1560,7 @@ func pad_press(action: String, phase: String) -> bool:
 			_focus = ""   # the D-pad leaves a text field
 		"left", "right":
 			var h := _pad_row()
-			if h.is_empty() or not h.row.on or not String(h.row.kind) in ["choice", "slider"]:
+			if h.is_empty() or not h.row.on or not String(h.row.kind) in ["choice", "dropdown", "slider"]:
 				_focus = ""
 				return false
 			_sel = h.i

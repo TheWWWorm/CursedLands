@@ -106,6 +106,16 @@ func _ready() -> void:
 	hero=session.party_units(0)[0];hero.blocked=false
 	game.selected.assign([hero]);game.rig.release();await frames(12)
 	game.rig._window_focused=true;await frames()
+	for mode in [2, 3]:
+		GameData.options.control_mode = mode
+		await frames()
+		key(KEY_Q, true); key(KEY_Q, false); await frames()
+		check(game.hud.quests_screen != null, "Q opens quests in direct mode " + str(mode))
+		key(KEY_Q, true); key(KEY_Q, false); await frames()
+		check(game.hud.quests_screen == null, "Q closes quests in direct mode " + str(mode))
+		check(not direct.pointer, "quest shortcut keeps the camera pointer mode")
+	GameData.options.control_mode = 2
+	await frames()
 	hero.set_gait(2)
 	key(KEY_CTRL,true);key(KEY_CTRL,false);await frames()
 	check(hero.gait()==1,"Ctrl crouches in third-person mode")
@@ -137,7 +147,7 @@ func _ready() -> void:
 	check(hero.model._head_hidden and not hero.model._head.visible,"first person hides the controlled head and attached hair/helmet")
 	check(hero.model.is_visible_in_tree() and hero.model.find_children("*", "MeshInstance3D", true, false).any(func(m):return m.is_visible_in_tree()),"first person retains visible body geometry")
 	await frames(30) # allow the previous posture-height transition to settle
-	check(game.rig.camera.global_position.distance_to(hero.model.to_global(hero.model.view_eye_offset(EIUnitModel.ST_NEUTRAL)))<0.15,"first-person eye uses the stable authored posture anchor")
+	check(game.rig.camera.global_position.distance_to(hero.model.to_global(hero.model.view_eye_offset(EIUnitModel.ST_NEUTRAL))+Vector3(cos(direct.heading),0,-sin(direct.heading))*0.28)<0.15,"first-person eye uses the stable authored posture anchor")
 	check(is_equal_approx(game.rig.camera.fov,75.0) and is_equal_approx(game.rig.camera.near,0.03),"first-person lens preserves nearby body")
 	check(not game.character_light_enabled() and game._hero_lights.is_empty(),"character circle light defaults off in direct views")
 	GameData.options.character_light=2;await frames()

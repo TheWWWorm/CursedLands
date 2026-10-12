@@ -312,7 +312,7 @@ func _create(sandbox: bool) -> void:
 	else:
 		if not draft.is_empty(): draft.merge(ModStore.new_game_defaults(), true)
 		open("profiles")
-		_status.text = RemakeText.t("Profile created. Start a new game or copy an existing save below.")
+		_status.text = RemakeText.t("Profile created. Original saves have been copied into it.")
 
 func _rules_page(sandbox: bool) -> void:
 	_label("Choose the rules for this game. Changes stay in setup until you start." if not draft.is_empty() else "Adjust this run. Rules marked At camp can only change in a village.", _body)

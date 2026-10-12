@@ -294,6 +294,7 @@ const REMAKE_OPTIONS := {
 	"direct_tactical": ["Cycle camera mode", "Cycle top-down, third-person and first-person views."],
 	"direct_sprint": ["Run while held", "Change this key for first and third person."],
 	"direct_attack": ["Attack / cast", "Change this key for first and third person."],
+	"direct_quests": ["Quests", "Change this key for first and third person."],
 
 	"item_icon_fit": ["Fit items inside icons", "Keeps long inventory and shop items inside their icon cells while they turn. Off: the original fixed model scale."],
 	"ui_active_buttons": ["Bright usable camp buttons", "Available camp modes and Exit are bright. Skills apply immediately, so their inactive Accept and Cancel controls are hidden. Deal controls show whether a transaction can be made or undone. Off: the original button layout and tint."],

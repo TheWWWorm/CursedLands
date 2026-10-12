@@ -59,17 +59,22 @@ static func detach(s: Node) -> void:
 		GameData.difficulty = GameData.option("difficulty")
 
 static func snapshot() -> Dictionary:
-	var p := profile()
+	return _profile_snapshot(active_id(), profile(), _mounted)
+
+static func _profile_snapshot(id: String, p: Dictionary, order: Array) -> Dictionary:
 	var rules := {}
 	for key in ModSchema.RULES:
 		rules[key] = int(p.rules.get(key, GameData.options.get(key, 0)))
 	var packages := []
-	for key in _mounted:
+	for key in order:
 		var m: Dictionary = catalog[key]
 		packages.append({"id": m.id, "version": m.version, "digest": m._digest, "gameplay": ModSchema.gameplay(m)})
 	var values := {}
-	for o in option_definitions(): values[o.key] = p.values.get(o.key, o.default)
-	return {"api": ModSchema.API, "campaign": GameData.campaign_id, "profile": active_id(),
+	for key in order:
+		for o in catalog[key].get("options", []):
+			var name: String = catalog[key].id + ":" + o.id
+			values[name] = p.values.get(name, o.default)
+	return {"api": ModSchema.API, "campaign": GameData.campaign_id, "profile": id,
 		"name": p.name, "rules": rules, "values": values, "packages": packages,
 		"sandbox": bool(p.get("sandbox", false)), "revision": 0}
 
@@ -267,14 +272,22 @@ static func create_profile(title: String, sandbox := false, initial_packages: Va
 	if not sandbox:
 		p.rules.sandbox_invulnerable = 0
 		p.rules.sandbox_mana = 0
+	var checked := resolve(p)
+	if checked.error != "": return checked.error
+	var destination := CampaignProfile.save_directory(GameData.campaign_id).path_join("mods/" + id)
+	if DirAccess.dir_exists_absolute(destination): return "Could not create a new save folder."
+	var error := _seed_profile_saves(destination, _profile_snapshot(id, p, checked.order))
+	if error != "": return error
 	var next := profiles.duplicate(true)
 	next[id] = p
 	var selection := selected.duplicate(true)
 	selection[GameData.campaign_id] = id
-	var error := _write_config(next, selection)
+	error = _write_config(next, selection)
 	if error == "":
 		profiles = next
 		selected = selection
+	else:
+		_remove_tree(destination)
 	return error
 
 static func select_profile(id: String) -> String:
@@ -532,6 +545,39 @@ static func _remove_tree(path: String) -> void:
 	for name in DirAccess.get_directories_at(path): _remove_tree(path.path_join(name))
 	DirAccess.remove_absolute(path)
 
+## Copy only this campaign's ordinary saves into the new, unused namespace.
+## Keep slot names (including quick/auto), timestamps and thumbnails. The
+## source data is never rewritten and later profile switches never recopy it.
+static func _seed_profile_saves(destination: String, config: Dictionary) -> String:
+	var base := CampaignProfile.save_directory(GameData.campaign_id)
+	if not DirAccess.dir_exists_absolute(base): return ""
+	for name in DirAccess.get_files_at(base):
+		if not name.ends_with(".sav") or name.ends_with(".info.sav"): continue
+		var data: Variant = CampaignState.read_data(base.path_join(name))
+		if not CampaignState.compatible_data(data): continue
+		var original: Variant = data.get("mod_config", {})
+		if not original is Dictionary or original.get("sandbox", false) or not original.get("packages", []).is_empty(): continue
+		data.mod_config = config.duplicate(true)
+		var error := _write_save_copy(data, base.path_join(name.get_basename()), destination.path_join(name.get_basename()))
+		if error != "":
+			_remove_tree(destination)
+			return error
+	return ""
+
+static func _write_save_copy(data: Dictionary, source: String, destination: String) -> String:
+	if DirAccess.make_dir_recursive_absolute(destination.get_base_dir()) != OK: return "Could not create the save copy."
+	var file := FileAccess.open(destination + ".sav", FileAccess.WRITE)
+	if file == null: return "Could not create the save copy."
+	file.store_var(data, false)
+	file.flush()
+	var error := file.get_error()
+	file.close()
+	if error != OK: return "Could not finish the save copy."
+	for extension in [".info.sav", ".shot.png"]:
+		if FileAccess.file_exists(source + extension) and DirAccess.copy_absolute(source + extension, destination + extension) != OK:
+			return "Could not finish the save copy."
+	return ""
+
 static func copy_default_save(slot: String) -> String:
 	if session() != null or active_id() == "default": return "Choose a named profile from the main menu first."
 	if not ModSchema.identifier(slot): return "Invalid save name."
@@ -544,15 +590,9 @@ static func copy_default_save(slot: String) -> String:
 	data.mod_config = snapshot()
 	var new_slot := "copy_" + Crypto.new().generate_random_bytes(6).hex_encode()
 	var destination := save_directory(base).path_join(new_slot)
-	DirAccess.make_dir_recursive_absolute(destination.get_base_dir())
-	var file := FileAccess.open(destination + ".sav", FileAccess.WRITE)
-	if file == null: return "Could not create the save copy."
-	file.store_var(data, false)
-	file.flush()
-	var error := file.get_error()
-	file.close()
-	if error != OK: DirAccess.remove_absolute(destination + ".sav"); return "Could not finish the save copy."
-	for extension in [".info.sav", ".shot.png"]:
-		if FileAccess.file_exists(base.path_join(slot + extension)):
-			DirAccess.copy_absolute(base.path_join(slot + extension), destination + extension)
+	var error := _write_save_copy(data, base.path_join(slot), destination)
+	if error != "":
+		for extension in [".sav", ".info.sav", ".shot.png"]:
+			if FileAccess.file_exists(destination + extension): DirAccess.remove_absolute(destination + extension)
+		return error
 	return "Save copied to this profile: " + new_slot
