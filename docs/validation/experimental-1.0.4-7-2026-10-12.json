@@ -1,0 +1,520 @@
+{
+  "release": "1.0.4-experimental.7",
+  "date": "2026-10-12",
+  "status": "qualified for experimental publication",
+  "game_source_commit": "3b91e3450784f7f06d21b91f1e30c0d187a539da",
+  "base_release_commit": "e979b221a9942f9295d9055748db85f09dc3eafb",
+  "game_tree": "8850ed45a456f7f0c00b5aa4ffd2ca5ba5794cfb",
+  "network_protocol": 21,
+  "session_mod_api": 1,
+  "texture_package_api": 2,
+  "scope": "Changes through Feedback 10, released as Experimental 7. The promotion changes the version and documentation; all 285 production scripts are byte-identical to the tested Feedback 10 package.",
+  "feedback10_comparison": {
+    "compared_versions": [
+      "1.0.4-feedback.10",
+      "1.0.4-experimental.7"
+    ],
+    "compiled_scripts": 285,
+    "all_game_script_bytecode_identical": true
+  },
+  "build": {
+    "compiled_scripts": 285,
+    "production_script_bytecode_identical_across_four_platforms": true,
+    "committed_game_source_exact": true,
+    "linux_windows_engine_patches": 12,
+    "android_engine_patches": 13,
+    "android_version_code": 26,
+    "android_public_certificate_matches": true,
+    "android_debuggable": false,
+    "android_native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "no_original_game_data_saves_or_private_test_hooks": true,
+    "macos_stock_engine": true,
+    "windows_macos_runtime_tested": false
+  },
+  "component_hashes": {
+    "linux-x86_64": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "42d7083c0d3328f77c4304289e341466e367fc6bcf752cf33466df81327c16ed",
+      "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+      "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+    },
+    "windows-x86_64": {
+      "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+      "CursedLands.pck": "42d7083c0d3328f77c4304289e341466e367fc6bcf752cf33466df81327c16ed",
+      "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+      "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+    },
+    "macos-universal": {
+      "CursedLands.zip": "835705fb4daf30c9815af05992b7e1991c99e59a9ef5c410e0225d2d45f087ac"
+    }
+  },
+  "android_apk_sha256": "fb3a1c6f4f7b258159215f4d853ee04b437ebd6ecd5729713629e9e0b2800386",
+  "linux_release_checks": [
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/long_dropdowns",
+      "label": "exp7-long-dropdowns",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.7-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/long_dropdowns.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 13.259,
+      "checks": 91,
+      "failures": 0,
+      "details": {
+        "cases": [
+          {
+            "content_scale": 1.0,
+            "entries": 64,
+            "label": "1280x720-saves",
+            "position": "(204, 352)",
+            "scroll_end": 1767.0,
+            "scroll_max": 1772.0,
+            "size": "(864, 360)"
+          },
+          {
+            "content_scale": 1.83333337306976,
+            "entries": 64,
+            "label": "2560x1440-saves",
+            "position": "(480, 772)",
+            "scroll_end": 1767.0,
+            "scroll_max": 1772.0,
+            "size": "(1584, 660)"
+          },
+          {
+            "content_scale": 2.77083325386047,
+            "entries": 64,
+            "label": "3840x2160-saves",
+            "position": "(711, 1155)",
+            "scroll_end": 1768.0,
+            "scroll_max": 1773.0,
+            "size": "(2394, 997)"
+          },
+          {
+            "content_scale": 1.0,
+            "entries": 64,
+            "label": "540x960-saves",
+            "position": "(40, 592)",
+            "scroll_end": 1767.0,
+            "scroll_max": 1772.0,
+            "size": "(452, 360)"
+          },
+          {
+            "content_scale": 1.0,
+            "entries": 64,
+            "label": "800x600-saves",
+            "position": "(40, 232)",
+            "scroll_end": 1767.0,
+            "scroll_max": 1772.0,
+            "size": "(712, 360)"
+          },
+          {
+            "content_scale": 1.0,
+            "entries": 42,
+            "label": "1280x720-profiles",
+            "position": "(204, 290)",
+            "scroll_end": 1041.0,
+            "scroll_max": 1046.0,
+            "size": "(577, 360)"
+          }
+        ],
+        "checks": 91,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/exp7-long-dropdowns.log",
+      "log_sha256": "a04abe88fc35464424982a07bdaf3ad6475e1282120e9fcaeb79cc6628082989"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_figure_shape",
+      "label": "exp7-figure-shape",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.7-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_figure_shape.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 22.513,
+      "checks": 18,
+      "failures": [],
+      "details": {
+        "checks": 18,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "world after entering direct control",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "new HUD/inventory preview after direct control",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after equipment rebuild false",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "preview after equipment rebuild false",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after equipment rebuild true",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "preview after equipment rebuild true",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 2",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 1",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 1",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 2",
+            "max_chest_deformation": 0.0
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/exp7-figure-shape.log",
+      "log_sha256": "e1f98a3e6f81e027d3c6764447ef88257abcd114dd83d1314b8316ba03023118"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_running_down",
+      "label": "exp7-running-down",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.7-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_running_down.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 49.031,
+      "checks": 28,
+      "failures": [],
+      "details": {
+        "checks": 28,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "armor=false fov=75",
+            "distance": 26.0911217480898,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 357,
+            "seconds": 6
+          },
+          {
+            "case": "armor=false fov=50",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=false fov=110",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=75",
+            "distance": 26.0911217480898,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=50",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=110",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/exp7-running-down.log",
+      "log_sha256": "f5987ca4942aab870899452a5dc595530951b78625f2479ec4a757c35d3d669e"
+    }
+  ],
+  "linux_passed_checks": 137,
+  "android_checks": [
+    {
+      "suite": "android-figure-shape",
+      "checks": 18,
+      "failures": 0,
+      "details": {
+        "checks": 18,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "world after entering direct control",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "new HUD/inventory preview after direct control",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after equipment rebuild false",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "preview after equipment rebuild false",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after equipment rebuild true",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "preview after equipment rebuild true",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 2",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 1",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 1",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 2",
+            "max_chest_deformation": 0.0
+          }
+        ]
+      },
+      "engine_log_sha256": "f44f82b7afef4f556d87677a2ce50c86273533d03e3fa52e084275f3bdda49f7",
+      "private_data_restored": true,
+      "renderer": "gl_compatibility",
+      "fixture_sha256": {
+        "dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408",
+        "request.json": "e6ef355c32a589d755e5970c40cca13270a9fe20c524a5f88e16a164b5062033",
+        "tests/third_person_kbm.gd": "f0a3ecad31be04c6eb5ace5238837ca3010fa7e1449bdd1d27adbdb4cbadcc27",
+        "tests/direct_figure_shape.gd": "bda1ff4df0c20bc31921d40fa96a70ce6a30b6c750c7902949e6cb9eab538ec9"
+      }
+    },
+    {
+      "suite": "android-dropdowns",
+      "checks": 29,
+      "failures": 0,
+      "details": {
+        "cases": [
+          {
+            "content_scale": 1.32942712306976,
+            "entries": 64,
+            "label": "retroid-saves",
+            "position": "(380, 577)",
+            "scroll_end": 1768.0,
+            "scroll_max": 1773.0,
+            "size": "(1148, 478)"
+          },
+          {
+            "content_scale": 1.32942712306976,
+            "entries": 42,
+            "label": "retroid-profiles",
+            "position": "(380, 444)",
+            "scroll_end": 1042.0,
+            "scroll_max": 1047.0,
+            "size": "(767, 478)"
+          }
+        ],
+        "checks": 29,
+        "failures": 0,
+        "viewport": "(1920.0, 1080.0)"
+      },
+      "engine_log_sha256": "4536d3281a5795e94d54f3aad07cb4d924386871d93d344a5c4502284c3f2f3b",
+      "private_data_restored": true,
+      "renderer": "gl_compatibility",
+      "fixture_sha256": {
+        "android_dropdowns.gd": "5d8e621944f0f2429552f3fc7df441136947dd7fde9853351e84e4728c04f44d",
+        "dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408",
+        "request.json": "c97639ffd25effd3b660e8456e36dae06fd26e5e42cfa62be16bcfcda254a5a9",
+        "tests/long_dropdowns.gd": "271ce0520544f0c0ef57b34162ed256dec4b30a724a99b39461cdb89418ecda9"
+      }
+    }
+  ],
+  "android_passed_checks": 47,
+  "android_qualification": {
+    "device": "Retroid Pocket 5",
+    "renderer": "Compatibility",
+    "mode": "Separate private QA package with identical production scripts and native libraries; only main.gdc contains a private test entry. The public signed APK was separately audited. Dropdown input was synthetic keyboard/mouse input, not physical touch.",
+    "script_audit": {
+      "production_scripts": 285,
+      "identical_game_scripts": 284,
+      "only_script_difference": [
+        "assets/src/main.gdc"
+      ],
+      "all_native_libraries_byte_identical": true,
+      "public_apk_sha256": "fb3a1c6f4f7b258159215f4d853ee04b437ebd6ecd5729713629e9e0b2800386",
+      "private_apk_sha256": "b90ff7aebfb5ddd642427fb109659d8a0eb5a17c8e0a72ee691bf0f10a90287e"
+    },
+    "restoration": {
+      "original_private_apk_restored": true,
+      "restored_private_apk_sha256": "961975fc5c277c4e23b2da42d21429eda0439070734609f0101e0a6f3e991aea",
+      "normal_package_version_unchanged": true,
+      "normal_package_version": [
+        "versionCode=18 minSdk=24 targetSdk=36",
+        "versionName=1.0.3"
+      ],
+      "private_profiles_settings_saves_restored": true
+    }
+  },
+  "prior_qualification": [
+    {
+      "path": "docs/validation/experimental-1.0.4-6-2026-10-12.json",
+      "sha256": "2b68ea4cfaff1df8da01e9c6cc7b41e2d227dd0f9180c0e0ffdb220ef9111810"
+    },
+    {
+      "path": "docs/validation/direct-view-feedback-2026-10-12.json",
+      "sha256": "c90708cff5ad90f50337c7687567d90f20764edc86e5057fba12c2caeb83260e"
+    },
+    {
+      "path": "docs/validation/direct-figure-shape-2026-10-12.json",
+      "sha256": "6823abf0ffd3ed1967076e7e76638569d0dda078277d899d2635bc012e738856"
+    },
+    {
+      "path": "docs/validation/dropdown-scrolling-2026-10-12.json",
+      "sha256": "909fb1e073c8fd074ec4714d5dc6e243ae741d98a5c6d19eb3bf76d00ee61deb"
+    }
+  ],
+  "prior_scope": "The referenced Feedback 8/9/10 records include moving melee and bow attacks, base/LiA/HD character shapes and previews, first-person rendering, F6/Ctrl controls, Ingos actors, ground spells, snow contacts, HD minimap colours, local co-op and mirror distance. Only the three Linux and two Android suites above were rerun during this release promotion. Prior Internet/ZeroTier and Realme limitations remain unchanged.",
+  "visual_review": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/exp7-running-down/data/godot/app_userdata/Cursed Lands/running-down-armortrue-fov5-frame100.png",
+      "sha256": "9b1e267ef0977b450ea665fb786841b347c2d8835d0e36b72a9476e374528a21",
+      "observation": "Running while looking straight down: one body/weapon, torso visible, no neck opening."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/exp7-long-dropdowns/data/godot/app_userdata/Cursed Lands/dropdown-3840x2160-saves.png",
+      "sha256": "c282264bf573d7f9ef7c206008890ad1182b9db6d332fde0401ddd6bd1cbc395",
+      "observation": "4K UI: bounded popup with final row visible and scrollbar."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-7-20261012/android-figure-shape/zak-rigid-chest.png",
+      "sha256": "fdce0b646208f5d58619713c4bee185e4d0b341f36c4c63188a8795f829bc66d",
+      "observation": "Retroid: original chest shape, matching HUD preview, attached hair and weapon."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-7-20261012/android-dropdowns/dropdown-retroid-saves.png",
+      "sha256": "2327173fb4cf41255385c5a98bac9ed8d8c5c5b37bd8dda57d5cb6a6197e9f2e",
+      "observation": "Retroid: bounded save list, visible last entry and scrollbar."
+    }
+  ],
+  "mod_tools": {
+    "files": [
+      "tools/convert_legacy_mod.py",
+      "tools/package_mod.py",
+      "tools/tests/test_legacy_mod_converter.py",
+      "game/src/ei/database.gd",
+      "game/src/game/mod_schema.gd",
+      "docs/mods.md",
+      "docs/legacy-mod-converter.md",
+      "docs/legacy-mod-compatibility.md",
+      "docs/validation/legacy-mod-converter-2026-10-11.json",
+      "docs/validation/legacy-mod-real-mods-2026-10-11.json",
+      "LICENSE.md",
+      "examples/mods/quick-recovery/mod.json"
+    ],
+    "exact_source_readback": true,
+    "standalone_tests": 19,
+    "example_byte_identical": true,
+    "artifact": {
+      "name": "CursedLands-1.0.4-experimental.7-tools.zip",
+      "bytes": 47175,
+      "sha256": "058bb6d14866faa1a457ab394df0da6726fd2ed14c9070b7780e922b61a49c40"
+    }
+  },
+  "limits": [
+    "Windows and macOS are cross-built and package-audited; neither OS was runtime-tested.",
+    "macOS is unsigned, not notarized, and uses script fallbacks.",
+    "HD Lands catalogue download remains limited to Windows/Linux and the base campaign.",
+    "No full campaign or actual Internet/ZeroTier end-to-end qualification was performed for this release. Severe bandwidth impairment can still produce large reliable-ping outliers.",
+    "Realme startup-crash report remains unconfirmed; Retroid success does not establish compatibility with the unknown Realme configuration.",
+    "Mirror geometry uses one selected water level at a time.",
+    "Android dropdown tests use synthetic keyboard/mouse input; physical touchscreen dragging was not tested."
+  ]
+}
