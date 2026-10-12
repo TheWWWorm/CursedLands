@@ -1,0 +1,827 @@
+{
+  "candidate": "1.0.4-feedback.9",
+  "base_commit": "75a55e0",
+  "published": false,
+  "protocol": 21,
+  "scope": "Native base/LiA geometry checks, installed HD texture package, rendered Linux movement/attack and first-person running checks. No Windows, Android or WAN runtime claim.",
+  "cause": "Entering direct control set a persistent presentation flag that enabled synthetic joint weights. Arm and hip joints displaced 43 of 63 torso vertices in the sampled native Zak mesh. Paperdoll rebuilds inherited the flag from figure_info after equipment or complexion changes.",
+  "change": "Direct control retains the native rigid model and no longer rebuilds it into the optional smoothing experiment. The transient pose composer remains active for moving attacks.",
+  "reproduction": {
+    "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_figure_shape",
+    "label": "zak-shape-regression-before",
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--audio-driver",
+      "Dummy",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+      "--rendering-method",
+      "forward_plus",
+      "--render-thread",
+      "safe",
+      "--resolution",
+      "1280x720",
+      "--windowed",
+      "--position",
+      "-10000,-10000",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_figure_shape.gd",
+      "--mod-tests"
+    ],
+    "exit_code": 1,
+    "seconds": 16.512,
+    "checks": 12,
+    "failures": [
+      "direct figure shape: world after entering direct control retains the rigid authored chest across 60 animation frames",
+      "direct figure shape: new HUD/inventory preview after direct control retains the rigid authored chest across 60 animation frames",
+      "direct figure shape: world after equipment rebuild false retains the rigid authored chest across 60 animation frames",
+      "direct figure shape: preview after equipment rebuild false retains the rigid authored chest across 60 animation frames",
+      "direct figure shape: world after equipment rebuild true retains the rigid authored chest across 60 animation frames",
+      "direct figure shape: preview after equipment rebuild true retains the rigid authored chest across 60 animation frames",
+      "direct figure shape: world after camera mode 2 retains the rigid authored chest across 60 animation frames",
+      "direct figure shape: world after camera mode 1 retains the rigid authored chest across 60 animation frames",
+      "direct figure shape: world after camera mode 1 retains the rigid authored chest across 60 animation frames",
+      "direct figure shape: world after camera mode 2 retains the rigid authored chest across 60 animation frames"
+    ],
+    "details": {
+      "checks": 12,
+      "failures": [
+        "direct figure shape: world after entering direct control retains the rigid authored chest across 60 animation frames",
+        "direct figure shape: new HUD/inventory preview after direct control retains the rigid authored chest across 60 animation frames",
+        "direct figure shape: world after equipment rebuild false retains the rigid authored chest across 60 animation frames",
+        "direct figure shape: preview after equipment rebuild false retains the rigid authored chest across 60 animation frames",
+        "direct figure shape: world after equipment rebuild true retains the rigid authored chest across 60 animation frames",
+        "direct figure shape: preview after equipment rebuild true retains the rigid authored chest across 60 animation frames",
+        "direct figure shape: world after camera mode 2 retains the rigid authored chest across 60 animation frames",
+        "direct figure shape: world after camera mode 1 retains the rigid authored chest across 60 animation frames",
+        "direct figure shape: world after camera mode 1 retains the rigid authored chest across 60 animation frames",
+        "direct figure shape: world after camera mode 2 retains the rigid authored chest across 60 animation frames"
+      ],
+      "measurements": [
+        {
+          "case": "world after entering direct control",
+          "max_chest_deformation": 0.124433852732182
+        },
+        {
+          "case": "new HUD/inventory preview after direct control",
+          "max_chest_deformation": 0.124432191252708
+        },
+        {
+          "case": "world after equipment rebuild false",
+          "max_chest_deformation": 0.124433852732182
+        },
+        {
+          "case": "preview after equipment rebuild false",
+          "max_chest_deformation": 0.124432191252708
+        },
+        {
+          "case": "world after equipment rebuild true",
+          "max_chest_deformation": 0.124433852732182
+        },
+        {
+          "case": "preview after equipment rebuild true",
+          "max_chest_deformation": 0.124432191252708
+        },
+        {
+          "case": "world after camera mode 2",
+          "max_chest_deformation": 0.124433852732182
+        },
+        {
+          "case": "world after camera mode 1",
+          "max_chest_deformation": 0.124433852732182
+        },
+        {
+          "case": "world after camera mode 1",
+          "max_chest_deformation": 0.124433852732182
+        },
+        {
+          "case": "world after camera mode 2",
+          "max_chest_deformation": 0.124433852732182
+        }
+      ]
+    },
+    "errors": [
+      "FAIL direct figure shape: world after entering direct control retains the rigid authored chest across 60 animation frames",
+      "FAIL direct figure shape: new HUD/inventory preview after direct control retains the rigid authored chest across 60 animation frames",
+      "FAIL direct figure shape: world after equipment rebuild false retains the rigid authored chest across 60 animation frames",
+      "FAIL direct figure shape: preview after equipment rebuild false retains the rigid authored chest across 60 animation frames",
+      "FAIL direct figure shape: world after equipment rebuild true retains the rigid authored chest across 60 animation frames",
+      "FAIL direct figure shape: preview after equipment rebuild true retains the rigid authored chest across 60 animation frames",
+      "FAIL direct figure shape: world after camera mode 2 retains the rigid authored chest across 60 animation frames",
+      "FAIL direct figure shape: world after camera mode 1 retains the rigid authored chest across 60 animation frames",
+      "FAIL direct figure shape: world after camera mode 1 retains the rigid authored chest across 60 animation frames",
+      "FAIL direct figure shape: world after camera mode 2 retains the rigid authored chest across 60 animation frames"
+    ],
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/zak-shape-regression-before.log",
+    "log_sha256": "80f0e11c3ccdbb2b627b9a1cb3d9378b3187a837dee8999e2fa77fd8eb971eb7"
+  },
+  "checks": [
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_figure_shape",
+      "label": "zak-shape-final",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_figure_shape.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 24.517,
+      "checks": 18,
+      "failures": [],
+      "details": {
+        "checks": 18,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "world after entering direct control",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "new HUD/inventory preview after direct control",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after equipment rebuild false",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "preview after equipment rebuild false",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after equipment rebuild true",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "preview after equipment rebuild true",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 2",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 1",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 1",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 2",
+            "max_chest_deformation": 0.0
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/zak-shape-final.log",
+      "log_sha256": "657b18bd30103f54e18fe8299abc2805cb5523ea2efac4fcdde0c210c91aa75d"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_figure_shape",
+      "label": "zak-shape-hd",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_figure_shape.gd",
+        "--mod-tests",
+        "--hd"
+      ],
+      "exit_code": 0,
+      "seconds": 33.018,
+      "checks": 14,
+      "failures": [],
+      "details": {
+        "checks": 14,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "world after entering direct control",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "new HUD/inventory preview after direct control",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after equipment rebuild false",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "preview after equipment rebuild false",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after equipment rebuild true",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "preview after equipment rebuild true",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 2",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 1",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 1",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 2",
+            "max_chest_deformation": 0.0
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/zak-shape-hd.log",
+      "log_sha256": "5ebebe762bbb63d1bee0ac0929540d09582d61f61bdbe101cf64daab7bc64e07"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_figure_shape",
+      "label": "zak-shape-lia-fixed",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_figure_shape.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 57.038,
+      "checks": 12,
+      "failures": [],
+      "details": {
+        "checks": 12,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "world after entering direct control",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "new HUD/inventory preview after direct control",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after equipment rebuild false",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "preview after equipment rebuild false",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after equipment rebuild true",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "preview after equipment rebuild true",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 2",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 1",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 1",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 2",
+            "max_chest_deformation": 0.0
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/zak-shape-lia-fixed.log",
+      "log_sha256": "05126ca8357d371c28e49111726e11d8daedeb16942af087886ff5b2aa0ef000"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks",
+      "label": "zak-moving-sword-fixed",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks.gd",
+        "--mod-tests",
+        "--observer",
+        "--run",
+        "--capture-dir=/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/sword-fixed"
+      ],
+      "exit_code": 0,
+      "seconds": 35.774,
+      "checks": 15,
+      "failures": [],
+      "details": {
+        "aligned_frames": 0,
+        "attack_starts": [
+          {
+            "clip": "uattack09",
+            "remaining": 1.54,
+            "time": 2.145
+          },
+          {
+            "clip": "uattack08",
+            "remaining": 1.595,
+            "time": 3.74
+          },
+          {
+            "clip": "uattack04",
+            "remaining": 1.65,
+            "time": 5.335
+          },
+          {
+            "clip": "uattack09",
+            "remaining": 1.43,
+            "time": 7.20499999999999
+          },
+          {
+            "clip": "uattack08",
+            "remaining": 1.43,
+            "time": 8.85499999999998
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.43,
+            "time": 10.505
+          },
+          {
+            "clip": "uattack09",
+            "remaining": 1.43,
+            "time": 12.155
+          }
+        ],
+        "camera_motion": 0.0,
+        "checks": 15,
+        "collar_error": 0.0,
+        "distance": 11.6500784158707,
+        "failures": [],
+        "first_person": false,
+        "joint_angle_error": 0.0,
+        "joint_position_error": 0.0,
+        "leg_changes": 65,
+        "moving_frames": 18,
+        "moving_seconds": 2.23264229169155,
+        "run": true,
+        "torso_error": 0.0009765625,
+        "weapon": "sword"
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/zak-moving-sword-fixed.log",
+      "log_sha256": "fc666fa336603633584713fdc85a4909f22980cff826ff42a64b6b41a2af487a"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks",
+      "label": "zak-moving-bow",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks.gd",
+        "--mod-tests",
+        "--observer",
+        "--bow",
+        "--capture-dir=/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/bow"
+      ],
+      "exit_code": 0,
+      "seconds": 37.025,
+      "checks": 13,
+      "failures": [],
+      "details": {
+        "aligned_frames": 0,
+        "attack_starts": [
+          {
+            "clip": "uattack02",
+            "remaining": 3.025,
+            "time": 1.87
+          },
+          {
+            "clip": "uattack01",
+            "remaining": 3.19,
+            "time": 5.005
+          },
+          {
+            "clip": "uattack02",
+            "remaining": 2.86,
+            "time": 8.41499999999998
+          },
+          {
+            "clip": "uattack03",
+            "remaining": 4.18,
+            "time": 11.33
+          },
+          {
+            "clip": "uattack03",
+            "remaining": 3.96,
+            "time": 15.7849999999999
+          }
+        ],
+        "camera_motion": 0.0,
+        "checks": 13,
+        "collar_error": 0.0,
+        "distance": 8.60317230224609,
+        "failures": [],
+        "first_person": false,
+        "joint_angle_error": 0.0,
+        "joint_position_error": 0.0,
+        "leg_changes": 131,
+        "moving_frames": 47,
+        "moving_seconds": 5.17580079160753,
+        "run": false,
+        "torso_error": 0.000690533954184502,
+        "weapon": "bow"
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/zak-moving-bow.log",
+      "log_sha256": "c33e5e309bfa142264ff51ce903296d68e6c3d242d67a5cfe416999093a634d0"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks",
+      "label": "zak-moving-first-person",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks.gd",
+        "--mod-tests",
+        "--first-person",
+        "--capture-dir=/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/first-person"
+      ],
+      "exit_code": 0,
+      "seconds": 36.274,
+      "checks": 17,
+      "failures": [],
+      "details": {
+        "aligned_frames": 248,
+        "attack_starts": [
+          {
+            "clip": "uattack05",
+            "remaining": 1.485,
+            "time": 2.035
+          },
+          {
+            "clip": "uattack05",
+            "remaining": 1.65,
+            "time": 3.52
+          },
+          {
+            "clip": "uattack08",
+            "remaining": 1.54,
+            "time": 5.28
+          },
+          {
+            "clip": "uattack04",
+            "remaining": 1.43,
+            "time": 7.03999999999999
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.54,
+            "time": 8.57999999999998
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.65,
+            "time": 10.12
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.485,
+            "time": 11.935
+          }
+        ],
+        "camera_motion": 0.000984458019956946,
+        "checks": 17,
+        "collar_error": 2.60656900508138e-08,
+        "distance": 6.30606079101562,
+        "failures": [],
+        "first_person": true,
+        "joint_angle_error": 0.0,
+        "joint_position_error": 0.0,
+        "leg_changes": 101,
+        "moving_frames": 34,
+        "moving_seconds": 3.85781179162407,
+        "run": false,
+        "torso_error": 0.000690533954184502,
+        "weapon": "sword"
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/zak-moving-first-person.log",
+      "log_sha256": "ad64fc5ccc5704832f82e502900cdf07ada7e32e6e6b89c4b550db92a1f265a1"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_running_down",
+      "label": "zak-running-down",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_running_down.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 52.035,
+      "checks": 28,
+      "failures": [],
+      "details": {
+        "checks": 28,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "armor=false fov=75",
+            "distance": 26.0911217480898,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 357,
+            "seconds": 6
+          },
+          {
+            "case": "armor=false fov=50",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=false fov=110",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=75",
+            "distance": 26.0911217480898,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=50",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=110",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/zak-running-down.log",
+      "log_sha256": "7c84b31ec98fa206b2fd514cc22f60b65814769e5ae01386df0dd169e05f5edb"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks",
+      "label": "zak-moving-front-final",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks.gd",
+        "--mod-tests",
+        "--observer",
+        "--run",
+        "--capture-dir=/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/front-final"
+      ],
+      "exit_code": 0,
+      "seconds": 36.272,
+      "checks": 15,
+      "failures": [],
+      "details": {
+        "aligned_frames": 0,
+        "attack_starts": [
+          {
+            "clip": "uattack10",
+            "remaining": 1.54,
+            "time": 2.2
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.54,
+            "time": 3.85
+          },
+          {
+            "clip": "uattack08",
+            "remaining": 1.54,
+            "time": 5.5
+          },
+          {
+            "clip": "uattack05",
+            "remaining": 1.54,
+            "time": 7.14999999999999
+          },
+          {
+            "clip": "uattack04",
+            "remaining": 1.595,
+            "time": 8.74499999999998
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.65,
+            "time": 10.34
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.595,
+            "time": 12.045
+          }
+        ],
+        "camera_motion": 0.0,
+        "checks": 15,
+        "collar_error": 0.0,
+        "distance": 11.9420299530029,
+        "failures": [],
+        "first_person": false,
+        "joint_angle_error": 0.0,
+        "joint_position_error": 0.0,
+        "leg_changes": 58,
+        "moving_frames": 20,
+        "moving_seconds": 2.34272099996802,
+        "observer": true,
+        "run": true,
+        "torso_error": 0.0,
+        "weapon": "sword"
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/zak-moving-front-final.log",
+      "log_sha256": "6d9d42d6f211878d397a729e8c3083f724dc20e1b04b78e60a6ac811aaf909bd"
+    }
+  ],
+  "test_notes": [
+    "The initial PNG-capture moving-sword run travelled 11.49 world units during committed swings but failed an absolute rendered-frame-count threshold (18 versus >20). The fixture now requires travel, elapsed movement time and multiple moving frames; it does not assume a minimum capture FPS.",
+    "HD and LiA shape runs preceded the additional six assertions that camera modes actually select the matching first-person body presentation; they include all 600 posed-chest comparisons and both equipment rebuilds.",
+    "Moving-attack observer screenshots are test-only camera views. First-person runs use the real player camera.",
+    "Rendering uses original native game assets in isolated test profiles. Test dummies are distinct actors, not renderer duplicates."
+  ],
+  "reviewed_images": [
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/idle0.25.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/run0.25.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/zak-shape-final/data/godot/app_userdata/Cursed Lands/zak-rigid-chest.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/sword-fixed/frame-0013.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/sword-fixed/frame-0015.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/sword-fixed/frame-0016.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/sword-fixed/frame-0023.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/bow/frame-0009.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/bow/frame-0018.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/bow/frame-0028.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/first-person/frame-0013.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/first-person/frame-0022.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/first-person/frame-0030.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/zak-running-down/data/godot/app_userdata/Cursed Lands/running-down-armorfalse-fov5-frame100.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/zak-running-down/data/godot/app_userdata/Cursed Lands/running-down-armortrue-fov5-frame230.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/front-final/frame-0015.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/zak-body-shape-20261012/front-final/frame-0023.png"
+  ],
+  "source_sha256": {
+    "docs/experimental-third-person.md": "ba5b5debc8920d2ff6fcb7e84436575578c3b013b02d27132592e30793df9568",
+    "game/project.godot": "4f19fd2a9456d4b496e6a052b93159886348da5bc22695eec193397e1086d139",
+    "game/src/game/unit.gd": "a54448acc77e912bb80e85947ae225badd1dd626705c9a4453a63d0e9249da10",
+    "tools/tests/direct_moving_attacks.gd": "620b7b8670d645934486435246fe7a2318e9659bf53c5acf1b43be90e0902482",
+    "tools/tests/first_person_running_down.gd": "a41b265acbf4eb59f1801eb119ca0ba98a596419605924a3a82632c9ddc5abcf",
+    "tools/tests/first_person_torso.gd": "34a04ba4eb2dc8931c164d7ee166bcd2edbc344f4f9f8dcab77f36fa8c690868",
+    "tools/tests/hd_interface_views.gd": "5c295fde1d306e11abd939b7672a352b01ee3982823e7c7bd450a5c22c5991bb",
+    "tools/tests/ingos_direct_feedback.gd": "686984ed6acaf8e6e057de5bafc929312d7a6497f010b813464289e99c8f1ea9",
+    "tools/tests/direct_figure_shape.gd": "bda1ff4df0c20bc31921d40fa96a70ce6a30b6c750c7902949e6cb9eab538ec9"
+  },
+  "limitations": [
+    "Focused movement sequences, not a chapter playthrough.",
+    "Linux runtime coverage; Windows is cross-built only.",
+    "No network protocol or simulation changes."
+  ]
+}

@@ -88,7 +88,7 @@ func _ready() -> void:
 		s.state=CampaignState.new();s.state.ensure_hero(0,"Human Mercenary Thief" if OS.get_cmdline_user_args().has("--female") else "Human Hero")
 		await s.enter_zone("gz1g",1,false);await prepare()
 		hero.set_process(false);hero.set_physics_process(false);hero.pos=Vector2(69.82051,128);hero.facing=0;hero._sync_transform(0);hero._anim_lock=0
-		hero.direct_controlled=true;hero._direct_joints=true;hero.refresh_figure(true)
+		hero.direct_controlled=true;hero._present_frame(1.0/60)
 		g.direct.heading=0;GameData.options.control_mode=3
 		GameData._window_gen+=1;get_window().mode=Window.MODE_WINDOWED;get_window().size=Vector2i(1280,720)
 		hero.model.player.callback_mode_process=AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL

@@ -67,7 +67,7 @@ func snow() -> void:
 	check(anchor!=Vector2.INF,"authored Ingos has a walkable snow witness")
 	if anchor==Vector2.INF:return
 	for smooth:bool in [false,true]:
-		hero._direct_joints=smooth;hero.refresh_figure(true)
+		hero.info.smooth_joints=smooth;hero.refresh_figure(true)
 		hero.restore_gait(2);hero._anim_lock=0;hero.action="walk";hero.model.act("walk",1,0)
 		var contacts:=0
 		var before:=marks.foot_marks.size()

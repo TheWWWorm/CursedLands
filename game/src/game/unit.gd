@@ -177,7 +177,6 @@ var direct_motion := Vector2.ZERO
 var direct_hit_serial := 0
 var direct_recovery := 0.0
 var _direct_pose: DirectPose
-var _direct_joints := false
 var _direct_previous := Vector2.INF
 var _direct_terrain := {}
 var direct_heading := NAN
@@ -647,7 +646,6 @@ func figure_info() -> Dictionary:
 	shown.complexion = figure_complexion()
 	# An actual effective zero build is not the absent-map-override sentinel.
 	shown.effective_complexion = true
-	if _direct_joints: shown.smooth_joints = true
 	return shown
 
 
@@ -3694,10 +3692,8 @@ func _process(dt: float) -> void:
 func _present_frame(dt: float) -> void:
 	if _direct_pose: _direct_pose.restore_pose()
 	_present_native_frame(dt)
-	if direct_controlled and not _direct_joints and model and model.get_node_or_null("hp/bd"):
-		_direct_joints = true
-		# Reuse the existing mixer, including its crossfade and queued clips.
-		refresh_figure(true)
+	# DirectPose changes the pose, not the native rigid mesh. Synthetic
+	# joint weights deform the chest and leak into rebuilt UI previews.
 	if direct_controlled and _direct_pose == null:
 		_direct_pose = DirectPose.new(self)
 		add_child(_direct_pose)

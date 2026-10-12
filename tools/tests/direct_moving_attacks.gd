@@ -11,6 +11,7 @@ var dummy:GameUnit
 var last_position:=Vector2.ZERO
 var moving_frames:=0
 var moving_distance:=0.0
+var moving_seconds:=0.0
 var starts:=[]
 var seen_serial:=-1
 var maximum_joint_error:=0.0
@@ -25,6 +26,7 @@ var capture_frame:=0
 var sampled_frames:=0
 var aligned_frames:=0
 var maximum_collar_error:=0.0
+var capture_samples:=[]
 
 func frames(n:=4) -> void:
 	for i in n:
@@ -85,6 +87,16 @@ func _ready() -> void:
 	get_tree().paused=false;set_process(true)
 	if fp and DisplayServer.get_name() != "headless":
 		RenderingServer.frame_post_draw.connect(_check_body_alignment)
+	if observer:
+		g.rig.set_process(false)
+		RenderingServer.frame_pre_draw.connect(_observer_camera)
+
+func _observer_camera() -> void:
+	if not is_instance_valid(hero) or not is_instance_valid(g): return
+	var pivot:=hero.model.to_global(Vector3.UP)
+	g.rig.camera.global_position=hero.model.to_global(Vector3(1.0,1.7,3.2))
+	g.rig.camera.look_at(pivot,Vector3.UP)
+	g.rig.camera.fov=50
 
 func _check_body_alignment() -> void:
 	if not is_processing() or not is_instance_valid(hero) or hero.model == null: return
@@ -98,6 +110,7 @@ func _process(dt:float) -> void:
 	elapsed=s.world.draw_time();sampled_frames+=1;g.rig._window_focused=true
 	if hero.action=="attack" and hero._anim_lock>0 and hero.pos.distance_to(last_position)>0.00001:
 		moving_frames+=1;moving_distance+=hero.pos.distance_to(last_position)
+		moving_seconds+=dt
 	last_position=hero.pos
 	if hero.action=="attack" and seen_serial!=hero._action_serial:
 		seen_serial=hero._action_serial;starts.append({"time":s.world.time,"remaining":hero._attack_cd,"clip":hero.model._current})
@@ -118,10 +131,6 @@ func _process(dt:float) -> void:
 		var offset:=g.rig.camera.global_position-hero.global_position
 		if camera_offset!=Vector3.INF:maximum_camera_motion=maxf(maximum_camera_motion,offset.distance_to(camera_offset))
 		camera_offset=offset
-	if observer:
-		hero.model.set_head_hidden(false)
-		var pivot:=hero.global_position+Vector3.UP
-		g.rig.camera.global_position=pivot+Vector3(-2.2,1.0,3.2);g.rig.camera.look_at(pivot,Vector3.UP)
 	var move:=Vector2.ZERO
 	if elapsed>=1 and elapsed<3.4:move=Vector2.UP
 	elif elapsed>=3.4 and elapsed<5.8:move=Vector2.RIGHT
@@ -129,6 +138,7 @@ func _process(dt:float) -> void:
 	elif elapsed>=8.2 and elapsed<10.6:move=Vector2.LEFT
 	g.direct._move_refresh=0;g.direct._neutral=false;g.direct._fire=elapsed>=0.6 and elapsed<11.7
 	g.direct.step(move,dt);g.direct._update_feedback(dt);g.direct._overlay.queue_redraw()
+	if observer: _observer_camera()
 	if not capture_dir.is_empty() and sampled_frames%4==0:
 		_capture_frame()
 	if elapsed>16.0 and hero._pending_hit.is_empty() and hero.orders.is_empty() and hero.order.is_empty():
@@ -136,21 +146,29 @@ func _process(dt:float) -> void:
 
 func _capture_frame() -> void:
 	await RenderingServer.frame_post_draw
+	capture_samples.append({"frame":capture_frame,"time":elapsed,"action":hero.action,"moving":hero._moving,
+		"direction":str(hero.direct_motion),"clip":hero.model._current,"phase":hero.model.player.current_animation_position})
 	get_viewport().get_texture().get_image().save_png(capture_dir.path_join("frame-%04d.png"%capture_frame));capture_frame+=1
 
 func _finish() -> void:
 	s.world.set_process(false);s.world.set_physics_process(false)
 	check(starts.size()>=3,"repeated native attacks start")
-	check(moving_frames>20 and moving_distance>1,"authority moves during committed swings")
+	# PNG capture can reduce the rendered frame count without changing the
+	# simulation. Require sustained travel/time, plus multiple moving frames.
+	check(moving_frames>5 and moving_seconds>.5 and moving_distance>1,"authority moves during committed swings")
 	check(leg_changes>15,"legs animate throughout moving attacks")
 	check(maximum_torso_error<0.005,"blend preserves authored upper-body orientation")
-	check(maximum_joint_error<0.001 and maximum_joint_angle<0.005,"weighted body and hair/weapon attachments share the final pose")
+	check(maximum_joint_error<0.001 and maximum_joint_angle<0.005,"body and hair/weapon attachments share the final pose")
 	for i in range(1,starts.size()):check(starts[i].time-starts[i-1].time>=starts[i-1].remaining-GameUnit.TICK*1.1,"movement does not shorten attack cooldown")
 	if fp:check(maximum_camera_motion<0.01,"first-person eye remains steady during moving attacks")
 	if fp and DisplayServer.get_name() != "headless":
 		check(aligned_frames>60 and maximum_collar_error<0.001,"body remains centred after the live movement/attack pose is drawn")
 	check(hero.direct_steering.is_empty(),"releasing movement clears independent input")
 	var report:={"checks":checks,"failures":failures,"weapon":weapon,"first_person":fp,"run":run_case,"attack_starts":starts,"moving_frames":moving_frames,"distance":moving_distance,"leg_changes":leg_changes,"joint_position_error":maximum_joint_error,"joint_angle_error":maximum_joint_angle,"torso_error":maximum_torso_error,"camera_motion":maximum_camera_motion,"aligned_frames":aligned_frames,"collar_error":maximum_collar_error}
+	report.moving_seconds=moving_seconds
+	report.observer=observer
+	if not capture_dir.is_empty():
+		FileAccess.open(capture_dir.path_join("frames.json"),FileAccess.WRITE).store_string(JSON.stringify(capture_samples,"\t"))
 	FileAccess.open("user://direct-moving-attacks.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	print("MOVING_ATTACKS ",JSON.stringify(report))
 	if not capture_dir.is_empty() and not observer and DisplayServer.get_name() != "headless":

@@ -19,7 +19,7 @@ func _ready() -> void:
 	await s.enter_zone("gz11k",1,false);await prepare()
 	GameData._window_gen+=1;get_window().mode=Window.MODE_WINDOWED;get_window().size=Vector2i(1280,720)
 	hero.set_process(false);hero.set_physics_process(false);hero._perceive_next=INF;hero.ai_next=INF
-	hero.direct_controlled=true;hero._direct_joints=true;hero.refresh_figure(true)
+	hero.direct_controlled=true;hero._present_frame(1.0/60)
 	var start:=hero.pos;var found:=false
 	for ring in 32:
 		for angle in 16:

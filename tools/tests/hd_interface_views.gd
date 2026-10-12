@@ -16,10 +16,10 @@ func _ready() -> void:
 	s.state=CampaignState.new();s.state.ensure_hero(0,"Human Hero")
 	await s.enter_zone("gz1g",1,false);await prepare()
 	hero.set_process(false);hero.set_physics_process(false);hero.pos=Vector2(69.82051,128);hero.facing=0;hero._sync_transform(0);hero._anim_lock=0
-	hero.direct_controlled=true;hero._direct_joints=true;hero.refresh_figure(true)
+	hero.direct_controlled=true;hero._present_frame(1.0/60)
 	g.direct.heading=0;g.direct.tilt=-0.1;hero.action="idle";hero.model.act("idle",1,0)
 	GameData.options.control_mode=2;g.direct.apply_camera(1.0/60)
-	check(hero.model._detail!=null and hero.model.detailed_head_shown(),"smoothed model retains configured portrait head")
+	check(hero.model._detail!=null and hero.model.detailed_head_shown(),"direct-control model retains configured portrait head")
 	check(hero.model._welded_head==null,"face and hair are rigid attachments rather than different skinning paths")
 	check(g.hud.unit_panel._atlas.get_width()==2048,"HUD uses full authored HD texture")
 	var image:=await shot("hd-hud")
@@ -44,13 +44,13 @@ func _ready() -> void:
 			for tilt:float in [0.0,-1.15]:
 				g.direct.tilt=tilt
 				for f in 45:g.direct.apply_camera(1.0/60)
-				var body:=hero.model.get_node("Skeleton/Body") as MeshInstance3D
+				var body:=hero.model._view_torso
 				check(body.mesh == hero.model._view_body_closed,"first person uses the closed collar without clipping the chest")
 				check(hero.model._head_hidden,"head remains hidden through moving pose")
 				if i==3:await shot("first-person-%s-%s"%[act,"down" if tilt<0 else "level"])
 	GameData.options.control_mode=2;g.direct.apply_camera(1.0/60)
 	check(not hero.model._head_hidden,"third person restores head and hair")
-	var body:=hero.model.get_node("Skeleton/Body") as MeshInstance3D
+	var body:=hero.model._view_torso
 	check(body.mesh == hero.model._view_body_original,"third person restores the authored torso")
 	g.direct.tilt=-0.1;hero.action="walk";hero.model.act("walk",1,0);g.direct.apply_camera(1.0/60)
 	await shot("third-person-walk")
