@@ -1,0 +1,293 @@
+{
+  "release": "1.0.4-experimental.6",
+  "date": "2026-10-12",
+  "status": "qualified for experimental publication",
+  "game_source_commit": "a20a6e66a482cce19a4f115f5f0c02fdaaa16e50",
+  "base_release_commit": "9b47872fdb4e5dff74a5daa744076b1deeb329b7",
+  "game_tree": "34147b24cbec0eaa6cc302c716f8f7e80ed8ab64",
+  "network_protocol": 21,
+  "session_mod_api": 1,
+  "texture_package_api": 2,
+  "scope": "All changes through Feedback 7, released as Experimental 6; release version and documentation update only.",
+  "feedback7_comparison": {
+    "comparison": "Experimental 6 vs validated Feedback 7",
+    "all_game_script_bytecode_identical": true,
+    "compiled_scripts": 284,
+    "feedback7_pack_sha256": "fa4bf99fcf6a95f5af4eff61d3dc304b7d4f7cc01b1833355af4313aff9146f4",
+    "experimental6_pack_sha256": "79afe89a5096caedade2a246b9d2c7ab840ae07a09eec735e298754cdd259ee8"
+  },
+  "build": {
+    "compiled_scripts": 284,
+    "production_script_bytecode_identical_across_four_platforms": true,
+    "committed_game_source_exact": true,
+    "linux_windows_engine_patches": 12,
+    "android_engine_patches": 13,
+    "android_version_code": 25,
+    "android_public_certificate_matches": true,
+    "android_debuggable": false,
+    "android_native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "no_original_game_data_saves_or_private_test_hooks": true,
+    "macos_stock_engine": true,
+    "windows_macos_runtime_tested": false
+  },
+  "component_hashes": {
+    "linux-x86_64": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "79afe89a5096caedade2a246b9d2c7ab840ae07a09eec735e298754cdd259ee8",
+      "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+      "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+    },
+    "windows-x86_64": {
+      "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+      "CursedLands.pck": "79afe89a5096caedade2a246b9d2c7ab840ae07a09eec735e298754cdd259ee8",
+      "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+      "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+    },
+    "macos-universal": {
+      "CursedLands.zip": "6c8685060c9e6b28e79d54cef6f4b98745b7747d11902d754472a324c236792e"
+    }
+  },
+  "android_apk_sha256": "e52665be6c450212282dec2df9517c5d793031a6e5e15a84f59b9f8db710b444",
+  "linux_release_camera": {
+    "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks",
+    "label": "release-camera",
+    "command": [
+      "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-experimental.6-linux-x86_64/CursedLands.x86_64",
+      "--audio-driver",
+      "Dummy",
+      "--rendering-method",
+      "forward_plus",
+      "--render-thread",
+      "safe",
+      "--resolution",
+      "1280x720",
+      "--windowed",
+      "--position",
+      "-10000,-10000",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_moving_attacks.gd",
+      "--mod-tests",
+      "--first-person"
+    ],
+    "exit_code": 0,
+    "seconds": 32.773,
+    "checks": 17,
+    "failures": [],
+    "details": {
+      "aligned_frames": 1884,
+      "attack_starts": [
+        {
+          "clip": "uattack08",
+          "remaining": 1.65,
+          "time": 1.87
+        },
+        {
+          "clip": "uattack05",
+          "remaining": 1.65,
+          "time": 3.52
+        },
+        {
+          "clip": "uattack04",
+          "remaining": 1.65,
+          "time": 5.17
+        },
+        {
+          "clip": "uattack08",
+          "remaining": 1.65,
+          "time": 6.81999999999999
+        },
+        {
+          "clip": "uattack10",
+          "remaining": 1.65,
+          "time": 8.46999999999998
+        },
+        {
+          "clip": "uattack10",
+          "remaining": 1.65,
+          "time": 10.12
+        },
+        {
+          "clip": "uattack10",
+          "remaining": 1.65,
+          "time": 11.77
+        }
+      ],
+      "camera_motion": 0.00309155276045203,
+      "checks": 17,
+      "collar_error": 2.64745505518249e-08,
+      "distance": 6.29531860351562,
+      "failures": [],
+      "first_person": true,
+      "joint_angle_error": 0.00119603995699435,
+      "joint_position_error": 0.0,
+      "leg_changes": 764,
+      "moving_frames": 118,
+      "run": false,
+      "torso_error": 0.0009765625,
+      "weapon": "sword"
+    },
+    "errors": [],
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-6-20261012/release-camera.log",
+    "log_sha256": "fe3eac9313a4351318d472dbce29a18fccca9c45bc2adb6ba3482b6ad7901253"
+  },
+  "android_checks": [
+    {
+      "suite": "android-torso",
+      "checks": 222,
+      "failures": 0,
+      "engine_log_sha256": "cb1a459a38e919f80c8ef169988a2695ad3ed5ed3e61f7f4b92e5a0be7fec5d3",
+      "private_data_restored": true,
+      "renderer": "gl_compatibility"
+    },
+    {
+      "suite": "android-startup",
+      "checks": 6,
+      "failures": 0,
+      "engine_log_sha256": "8cc2dd6ac2fa0edc43bd567f2d15df32602b3216f713a566eba9a275df0493da",
+      "private_data_restored": true,
+      "renderer": "gl_compatibility"
+    },
+    {
+      "suite": "android-worker",
+      "checks": 25,
+      "failures": 0,
+      "engine_log_sha256": "9916e7ff4f8e3780ff07978529601ff8d0f98f8b11e327ae19a25df87e55a8fd",
+      "private_data_restored": true,
+      "renderer": "gl_compatibility"
+    }
+  ],
+  "android_passed_checks": 253,
+  "android_qualification": {
+    "device": "Retroid Pocket 5",
+    "renderer": "Compatibility",
+    "mode": "Separate private QA package with identical game scripts and native libraries; only main.gdc has an explicit private test entry. Public signed APK was separately audited.",
+    "script_audit": {
+      "compiled_scripts": 284,
+      "identical_gameplay_scripts": 283,
+      "changed": [
+        "assets/src/main.gdc"
+      ],
+      "purpose": "Explicit private test entry hook only.",
+      "native_libraries_byte_identical": true,
+      "private_apk_sha256": "83a3925a2f4e4faad29d6e991dd19f603ab40e865018825fa57b619f1abe79eb"
+    },
+    "restoration": {
+      "original_private_apk_restored": true,
+      "sha256": "961975fc5c277c4e23b2da42d21429eda0439070734609f0101e0a6f3e991aea",
+      "private_process_stopped": true,
+      "normal_package_version_unchanged": true,
+      "test_profiles_saves_and_settings_restored": true,
+      "worker_cleanup_note": "Immediate cleanup sample still saw the exiting frontend; confirmed stopped before restoring the original QA APK."
+    }
+  },
+  "prior_qualification": [
+    {
+      "path": "docs/validation/direct-controls-2026-10-12.json",
+      "sha256": "697dc914c34936f4ed577fc2f2037971d23f361215859a2497e6e887e0c08f72"
+    },
+    {
+      "path": "docs/validation/direct-camera-2026-10-12.json",
+      "sha256": "58efe43312800231020c73bce36ab16872c8127246a431ee71447563ea0e0598"
+    },
+    {
+      "path": "docs/validation/hd-textures-2026-10-12.json",
+      "sha256": "7887efec569cf1dc3d72c03bf8d45d78a67513c3c13901da96ea271467b9a0ec"
+    },
+    {
+      "path": "docs/validation/ui-hd-followup-2026-10-12.json",
+      "sha256": "cdf6dec0debd24bcd6dd8cb79ff17b640d510537cd277372ed7c2364f6aeeba8"
+    },
+    {
+      "path": "docs/validation/first-person-torso-2026-10-12.json",
+      "sha256": "9f90de0d8c5f5a2da5d5786349ab511ba3cf33d84711ffd2eaa3c45749ed2308"
+    },
+    {
+      "path": "docs/validation/first-person-alignment-2026-10-12.json",
+      "sha256": "e65f42f1c1a8f48357bd6b866fe54a65d6b5ed12bcf8856ad877ae4d77114960"
+    },
+    {
+      "path": "docs/validation/android-menu-recovery-2026-10-12.json",
+      "sha256": "498977d6c3653fdf3fb2ae42cf382d27d824f86bc0703413c32c1001216740b0"
+    }
+  ],
+  "prior_wan_qualification": {
+    "build": "Feedback 3 transport qualification; protocol 20. Later direct-control changes use protocol 21 and separate local co-op qualification. These measurements were not repeated for Experimental 6.",
+    "scenarios": [
+      {
+        "case": "snapshot-lia-poor-2x",
+        "checks": 77,
+        "failures": 0,
+        "seconds": 120,
+        "speed": 2,
+        "run_sha256": "805474c397b704d418a5695e41b80d0ab03a7c58adde80c4efb1149c3476fee9",
+        "scope": "Linux NVIDIA with real ENet datagram impairment; existing NPC orders driven by the fixture. Separate authority, owner and guest views in one process; optional extra guest uses its own process and link. Emulated WAN, not actual ZeroTier or Windows; no full-playthrough claim.",
+        "tested_build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "91e9ec4eb235dd8d3961ce19802e425957247888f8c167015b6e802f24700e68",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+        }
+      },
+      {
+        "case": "snapshot-lia-spikes-1x",
+        "checks": 77,
+        "failures": 0,
+        "seconds": 120,
+        "speed": 1,
+        "run_sha256": "55f10e98d5bed4cd86abe9335b86f40a30a6906de0a7edc4fde8961f13b60584",
+        "scope": "Linux NVIDIA with real ENet datagram impairment; existing NPC orders driven by the fixture. Separate authority, owner and guest views in one process; optional extra guest uses its own process and link. Emulated WAN, not actual ZeroTier or Windows; no full-playthrough claim.",
+        "tested_build_sha256": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "91e9ec4eb235dd8d3961ce19802e425957247888f8c167015b6e802f24700e68",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+        }
+      }
+    ],
+    "remaining_limit": "Input/presentation criteria passed; under the 512 kbps impairment, reliable status ping on the auxiliary peer reached 31.49 seconds and the independent client reached 1.646 seconds. Actual ZeroTier routing was not tested.",
+    "excluded_baseline": "The unequipped base-campaign stress party died during the route, so the base/LiA comparison was excluded."
+  },
+  "visual_review": {
+    "android_torso": {
+      "path": "android-torso/torso-idle-feet.png",
+      "sha256": "dd30b08a24762d1061a0de1ab332a135500fb8b2ce34caeae7e89a2d645bdf5c",
+      "observation": "Torso is centred beneath the viewpoint; head hidden and collar closed."
+    }
+  },
+  "mod_tools": {
+    "files": [
+      "tools/convert_legacy_mod.py",
+      "tools/package_mod.py",
+      "tools/tests/test_legacy_mod_converter.py",
+      "game/src/ei/database.gd",
+      "game/src/game/mod_schema.gd",
+      "docs/mods.md",
+      "docs/legacy-mod-converter.md",
+      "docs/legacy-mod-compatibility.md",
+      "docs/validation/legacy-mod-converter-2026-10-11.json",
+      "docs/validation/legacy-mod-real-mods-2026-10-11.json",
+      "LICENSE.md",
+      "examples/mods/quick-recovery/mod.json"
+    ],
+    "exact_source_readback": true,
+    "standalone_tests": 19,
+    "example_byte_identical": true,
+    "artifact": {
+      "name": "CursedLands-1.0.4-experimental.6-tools.zip",
+      "bytes": 47174,
+      "sha256": "16765de30efb9e742e8ba1a0d667abd89ebdffe768120d14cdb844db044d0f05"
+    }
+  },
+  "limits": [
+    "Windows and macOS are cross-built and package-audited; neither OS was runtime-tested.",
+    "macOS is unsigned, not notarized, and uses script fallbacks.",
+    "HD Lands catalogue download remains limited to Windows/Linux and the base campaign.",
+    "No full campaign or actual Internet/ZeroTier end-to-end qualification. Severe bandwidth impairment can still produce large reliable-ping outliers.",
+    "Realme startup-crash report remains unconfirmed; Retroid success does not establish compatibility with the unknown Realme configuration.",
+    "Mirror geometry uses one selected water level at a time."
+  ]
+}
