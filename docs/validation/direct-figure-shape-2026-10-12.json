@@ -823,5 +823,203 @@
     "Focused movement sequences, not a chapter playthrough.",
     "Linux runtime coverage; Windows is cross-built only.",
     "No network protocol or simulation changes."
-  ]
+  ],
+  "compiled_package_checks": [
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_figure_shape",
+      "label": "zak-package-shape",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.9-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_figure_shape.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 22.766,
+      "checks": 18,
+      "failures": [],
+      "details": {
+        "checks": 18,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "world after entering direct control",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "new HUD/inventory preview after direct control",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after equipment rebuild false",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "preview after equipment rebuild false",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after equipment rebuild true",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "preview after equipment rebuild true",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 2",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 1",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 1",
+            "max_chest_deformation": 0.0
+          },
+          {
+            "case": "world after camera mode 2",
+            "max_chest_deformation": 0.0
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/zak-package-shape.log",
+      "log_sha256": "87ff7f9cafa5bf13d08ac8de5d78b379895ba70e4049b2ca15434c7c544a6e47"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_running_down",
+      "label": "zak-package-running-down",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.9-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_running_down.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 49.032,
+      "checks": 28,
+      "failures": [],
+      "details": {
+        "checks": 28,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "armor=false fov=75",
+            "distance": 26.0911217480898,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 357,
+            "seconds": 6
+          },
+          {
+            "case": "armor=false fov=50",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=false fov=110",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=75",
+            "distance": 26.0911217480898,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=50",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=110",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/zak-package-running-down.log",
+      "log_sha256": "add79574a3f1aff77da0fbd5aba26be224b2eeeaaa63b0e7520d36ebd30f62fd"
+    }
+  ],
+  "compiled_package_source": "d2f2d5a18443eac228832d26cb4ab69f61552be1",
+  "compiled_game_tree": "8b5d98dde2058473d87dce80382050e5cb6fd8c6",
+  "builds": {
+    "linux-x86_64": {
+      "source_commit": "d2f2d5a18443eac228832d26cb4ab69f61552be1",
+      "game_tree": "8b5d98dde2058473d87dce80382050e5cb6fd8c6",
+      "target_os_runtime_tested": true,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "CursedLands.pck": "c5b118244143f8b2651d560fcf2058a3b46771db6c40407f6801f957a93bbc0e",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+      }
+    },
+    "windows-x86_64": {
+      "source_commit": "d2f2d5a18443eac228832d26cb4ab69f61552be1",
+      "game_tree": "8b5d98dde2058473d87dce80382050e5cb6fd8c6",
+      "target_os_runtime_tested": false,
+      "files": {
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "CursedLands.pck": "c5b118244143f8b2651d560fcf2058a3b46771db6c40407f6801f957a93bbc0e",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+      }
+    }
+  }
 }
