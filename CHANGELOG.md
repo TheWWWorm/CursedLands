@@ -21,6 +21,10 @@
 
 ## Unreleased — co-op and interface fixes
 
+- Add an optional HD Lands 1.4.0 texture download for the base campaign on
+  Windows and Linux, with verified source downloads, cancellation, separate
+  profile activation and preserved original textures. Accept larger terrain
+  atlases without changing map layout or applying a second upscale.
 - Preserve graphics settings until automatic calibration has rendered its
   result. Restore previous settings after an interrupted test and skip its
   automatic retry; record the last graphics tier before applying it.

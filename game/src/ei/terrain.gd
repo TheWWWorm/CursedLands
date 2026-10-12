@@ -747,6 +747,8 @@ const DECAL_LAYER := 1 << 18
 var _atlases: TextureLayered
 var _detail_atlases: TextureLayered
 var _atlas_hd := false
+## Pixel resolution may exceed the map header's logical atlas/tile sizes.
+var _atlas_source_size := 512
 const TERRAIN_GUTTER := 8
 var _water_mat: ShaderMaterial
 var _waves := WaveState.new()
@@ -908,19 +910,23 @@ func _parse_header(d: PackedByteArray) -> bool:
 
 
 func _load_atlases() -> void:
-	_atlas_hd = Gfx.on("gfx_hd_textures") # applies on zone load, also for lazy detail
+	_atlas_source_size = texture_size
+	for i in int(get_meta("textures_count")):
+		var bytes := GameData.textures.read("%s%03d.mmp" % [resource_prefix, i])
+		if bytes.size() < EIMmp.DATA_OFFSET or bytes.decode_u32(0) != EIMmp.MAGIC: continue
+		var width := bytes.decode_u32(4)
+		if width >= texture_size and width <= 8192 and width == bytes.decode_u32(8) and width % texture_size == 0:
+			_atlas_source_size = maxi(_atlas_source_size, width)
+	# Authored high-resolution atlases already supply extra detail. Do not
+	# double them again; retain map UVs and normalized sampling borders.
+	_atlas_hd = Gfx.on("gfx_hd_textures") and _atlas_source_size == texture_size
 	var resident := _atlas_hd and TexUpscaleTexture.can_try_array(int(get_meta("textures_count")))
 	var images: Array[Image] = []
 	for i in int(get_meta("textures_count")):
 		# These atlases are sampled unchanged. Keep authored mips and eligible
 		# compressed blocks; HD and padded detail still need decoded pixels.
-		var img := GameData.load_image("%s%03d" % [resource_prefix, i], not _atlas_hd)
-		if img == null or img.get_width() != texture_size or img.get_height() != texture_size:
-			push_warning("Missing terrain atlas %s%03d" % [resource_prefix, i])
-			var n := texture_size * (2 if _atlas_hd and not resident else 1)
-			img = Image.create(n, n, false, Image.FORMAT_RGBA8)
-			img.fill(Color.MAGENTA)
-		elif _atlas_hd and not resident:
+		var img := _atlas_image(i, not _atlas_hd)
+		if _atlas_hd and not resident:
 			img = TexUpscale.up2(img, false)
 		# Keep the CPU path per-layer: retaining all raw sources would add
 		# temporary image memory on constrained/Compatibility backends.
@@ -940,6 +946,21 @@ func _load_atlases() -> void:
 				break
 		var texture := Texture2DArray.new(); texture.create_from_images(images)
 		_atlases = texture
+
+
+func _atlas_image(index: int, authored_mips := false) -> Image:
+	var img := GameData.load_image("%s%03d" % [resource_prefix, index], authored_mips)
+	if img == null or img.get_width() < texture_size or img.get_width() != img.get_height() or img.get_width() % texture_size != 0:
+		push_warning("Missing terrain atlas %s%03d" % [resource_prefix, index])
+		img = Image.create(_atlas_source_size, _atlas_source_size, false, Image.FORMAT_RGBA8)
+		img.fill(Color.MAGENTA)
+	elif img.get_width() != _atlas_source_size:
+		# A partial texture pack can mix original and larger replacement layers.
+		# Texture arrays need one size; only those smaller layers are resampled.
+		if img.is_compressed(): img.decompress()
+		img.clear_mipmaps()
+		img.resize(_atlas_source_size, _atlas_source_size, Image.INTERPOLATE_LANCZOS)
+	return img
 
 
 ## Edge-extruded gutters isolate packed tiles during upscale and filtering.
@@ -974,12 +995,10 @@ func _ensure_detail_atlases() -> void:
 		return
 	var resident := _atlas_hd and TexUpscaleTexture.can_try_array(int(get_meta("textures_count")))
 	var images: Array[Image] = []
+	var scale := _atlas_source_size / texture_size
 	for i in int(get_meta("textures_count")):
-		var source := GameData.load_image("%s%03d" % [resource_prefix, i])
-		if source == null or source.get_width() != texture_size or source.get_height() != texture_size:
-			source = Image.create(texture_size, texture_size, false, Image.FORMAT_RGBA8)
-			source.fill(Color.MAGENTA)
-		var img := padded_atlas(source, tile_size, TERRAIN_GUTTER)
+		var source := _atlas_image(i)
+		var img := padded_atlas(source, tile_size * scale, TERRAIN_GUTTER * scale)
 		if _atlas_hd and not resident: img = TexUpscale.up2(img, false)
 		if not resident: img.generate_mipmaps()
 		images.append(img)

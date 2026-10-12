@@ -47,6 +47,15 @@ SOFTWARE.
 
 Exported builds embed the Godot Engine (MIT license) and its third-party components; their notices are distributed with each export.
 
+## Community archive decoder
+
+The optional community downloader uses the public-domain decoding subset of
+Igor Pavlov's LZMA SDK 26.04. Source, upstream notices and build instructions
+are in `game/src/native/archive`; provenance and binding/runtime notices are
+listed in `game/src/native/NATIVE_ARCHIVE_NOTICES.txt`. Distribute those notices
+with the archive helper. The catalogue links to the original publisher;
+third-party mod assets are not bundled with the game.
+
 ## Original game content
 
 Evil Islands: Curse of the Lost Soul («Проклятые земли»), its program, text, models, textures, animation, movies and audio are not licensed by this project. They remain the property of their respective rights holders. No game content is included in this repository or in its releases.

@@ -24,6 +24,9 @@ var _web_callback: JavaScriptObject
 var _modal: FileDialog
 var draft: Dictionary = {}
 var _rows: Array[BoxContainer] = []
+var _download: ModDownload
+var _download_progress: ProgressBar
+var _download_status: Label
 
 func _ready() -> void:
 	build_shell("Mods and rules", Vector2(980, 740))
@@ -33,8 +36,8 @@ func _ready() -> void:
 	_tabs.add_theme_constant_override("h_separation", 8)
 	_tabs.add_theme_constant_override("v_separation", 8)
 	dialog_body.add_child(_tabs)
-	for page in ["rules", "profiles", "options", "sandbox"]:
-		var button := _button({"profiles":"Profiles & mods", "rules":"Game rules", "options":"Mod options", "sandbox":"Sandbox"}[page], _tabs, func(): _show_page(page))
+	for page in ["rules", "profiles", "downloads", "options", "sandbox"]:
+		var button := _button({"profiles":"Profiles & mods", "downloads":"Downloads", "rules":"Game rules", "options":"Mod options", "sandbox":"Sandbox"}[page], _tabs, func(): _show_page(page))
 		button.set_meta("page", page)
 		button.toggle_mode = true
 	_scroll = ScrollContainer.new()
@@ -56,6 +59,10 @@ func _ready() -> void:
 	_button("Back", actions, close)
 	_apply = _button("Apply changes", actions, _accept)
 	resized.connect(_layout_rows)
+	_download = ModDownload.new()
+	add_child(_download)
+	_download.changed.connect(_download_changed)
+	_download.completed.connect(_download_completed)
 
 func _layout_rows() -> void:
 	for row in _rows:
@@ -81,6 +88,7 @@ func open(page := "rules") -> void:
 
 func close() -> void:
 	if not visible: return
+	_download.cancel()
 	visible = false
 	closed.emit()
 
@@ -105,6 +113,7 @@ func _show_page(page: String) -> void:
 	_apply.visible = page in ["rules", "options"]
 	match page:
 		"profiles": _profiles_page()
+		"downloads": _downloads_page()
 		"rules": _rules_page(false)
 		"options": _options_page()
 		"sandbox": _rules_page(true)
@@ -122,6 +131,10 @@ func _collect_controls(parent: Node) -> void:
 		_collect_controls(child)
 
 func _profiles_page() -> void:
+	if _download.busy:
+		_label("Finish or cancel the download before changing profiles.", _body)
+		_button("Show download", _body, func(): _show_page("downloads"))
+		return
 	var running := ModStore.session() != null
 	if running:
 		_label("Return to the main menu to change profiles or installed packages. Game rules and mod options remain available here.", _body)
@@ -152,6 +165,7 @@ func _profiles_page() -> void:
 	_button("Create profile", create, func(): _create(false))
 	_button("Create sandbox profile", create, func(): _create(true))
 	_button("Import mod package…", _body, _import)
+	_button("Download mods…", _body, func(): _show_page("downloads"))
 	if not OS.has_feature("web") and not Portability.constrained():
 		_button("Open mods folder", _body, func():
 			DirAccess.make_dir_recursive_absolute(ModStore.ROOT)
@@ -186,6 +200,58 @@ func _profiles_page() -> void:
 			else: ModStore.restart(get_tree()))
 	if ModStore.active_id() != "default": _copy_page()
 	for problem in ModStore.errors: _label(problem, _body)
+
+func _downloads_page() -> void:
+	_label("Download tested mods from their original sources. After installation, enable them in a named profile and restart.", _body)
+	if ModStore.session() != null:
+		_label("Return to the main menu to import mods.", _body)
+		return
+	if _download.busy:
+		var progress_card := card(_body)
+		_label(str(_download.item.title), progress_card)
+		_download_status = _label("", progress_card)
+		_download_progress = ProgressBar.new()
+		_download_progress.custom_minimum_size.y = 24
+		progress_card.add_child(_download_progress)
+		_button("Cancel download", progress_card, _download.cancel)
+		_download_changed()
+	for item in ModCatalog.ENTRIES:
+		var section := card(_body)
+		var heading := _label(RemakeText.t(item.title) + "  " + item.version, section)
+		heading.add_theme_color_override("font_color", GOLD)
+		_label(item.description, section)
+		var actions := HFlowContainer.new()
+		actions.add_theme_constant_override("h_separation", 12)
+		actions.add_theme_constant_override("v_separation", 8)
+		section.add_child(actions)
+		var installed := ModStore.catalog.has(ModCatalog.key(item))
+		if installed:
+			_label("Installed", section)
+			_button("Choose profile…", actions, func(): _show_page("profiles")).disabled = _download.busy
+		else:
+			var error := ModCatalog.unavailable(item)
+			var button := _button("Download & install", actions, func(): _start_download(item.id))
+			button.disabled = _download.busy or not error.is_empty()
+			if not error.is_empty(): _label(error, section)
+		_button("Source page", actions, func(): OS.shell_open(item.source))
+		_label(RemakeText.t("By %s · Download %s · Allow %s free space") % [item.author, String.humanize_size(item.bytes), String.humanize_size(item.space_bytes)], section)
+		_label(item.source.trim_prefix("https://").trim_suffix("/"), section)
+		_label(item.notes, section)
+
+func _start_download(id: String) -> void:
+	var error := _download.start(id)
+	_status.text = RemakeText.t(error)
+	_show_page("downloads")
+
+func _download_changed() -> void:
+	if not _download.busy or _page != "downloads": return
+	if is_instance_valid(_download_status): _download_status.text = RemakeText.t(_download.status)
+	if is_instance_valid(_download_progress): _download_progress.value = _download.fraction * 100.0
+
+func _download_completed(_error: String) -> void:
+	if visible:
+		_show_page(_page)
+		_status.text = RemakeText.t(_download.status)
 
 func _create(sandbox: bool) -> void:
 	var error := ModStore.create_profile(_profile_name.text, sandbox)

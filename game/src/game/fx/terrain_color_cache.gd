@@ -110,7 +110,7 @@ func _select(camera:Camera3D)->void:
 		if _resident.has(record.key):_resident[record.key].used=_serial
 
 func _density()->int:
-	return clampi((terrain.tile_size-16)*(2 if terrain._atlas_hd else 1),16,192)
+	return clampi((terrain.tile_size-16)*(terrain._atlas_source_size/terrain.texture_size)*(2 if terrain._atlas_hd else 1),16,192)
 
 func _start_jobs()->void:
 	if not _enabled:return

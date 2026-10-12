@@ -1,6 +1,6 @@
 # Mods, profiles and game rules
 
-Available in **1.0.4 Experimental 5**, using mod API 1 and network protocol 17. Stable 1.0.3 does not include this feature.
+Profiles and game rules were introduced in **1.0.4 Experimental 5**. The saved-session mod API remains 1; all co-op peers must use the same game build. Stable 1.0.3 does not include this feature.
 
 Open **Options → Remake → Game setup → Mods and rules** from the main menu or in-game Esc menu. The multiplayer screen also opens **Game setup**. **New Game** opens a fresh setup with standard difficulty and rules; use its **Mods and rules** button for optional changes before starting. Cancelling discards that new-game draft.
 
@@ -19,9 +19,44 @@ In a sandbox profile, **Sandbox** offers invulnerable party, unlimited party man
 
 Mouse, keyboard focus and controller navigation use the same controls. D-pad up/down moves focus, left/right changes a choice or number, A activates, Y applies, and B goes back. Controls are at least 44 pixels high and pages scroll on narrow screens. Desktop/Android use the native package picker; the browser uses a local file chooser.
 
+## HD Lands texture download (next release)
+
+From the main menu, open **Mods and rules → Downloads → HD Lands textures →
+Download & install**. The Windows and Linux apps fetch the pinned HD Lands
+1.4.0 archive from its original publisher, verify its size and SHA-256, then
+install the texture package. Progress and cancellation remain available.
+Downloading does not enable the package: choose a named profile, select the
+installed pack, and use **Activate selected mods and restart**.
+
+This entry supports the base campaign, not Lost in Astral. It installs 302
+textures and the original readme/changelog; the malformed `astralold.mmp`,
+launcher settings, branding and optional artwork are omitted. Original game
+files and saves are retained. Selecting **Current defaults** and restarting
+restores the original textures. Texture choices do not need to match between
+co-op peers.
+
+The archive is 233.2 MiB and installation requires 2 GiB free storage. Its
+solid 7z decoder temporarily uses approximately 0.8 GiB additional memory.
+This download is disabled on Android pending device qualification; the browser
+and macOS builds do not include the archive installer. This catalogue entry
+does not provide general legacy-mod or Jamais Vu support.
+
+The larger textures retain the map's logical tile layout, including detail
+gutters and mixed-resolution atlas layers. Authored HD atlases are not doubled
+again by the built-in HD texture option.
+
+Package API 2 is accepted only for texture packs in this release: `textures.res`
+MMP overrides and optional `.txt`, `.md` or `.rst` documentation in
+`attachments`. Its total package limit is 1 GiB, with 128 MiB per asset and
+1 MiB for `mod.json`. Members are staged individually. Other resource types,
+gameplay options/patches and legacy scripts/maps are rejected for API 2.
+API 1 packages retain their existing capabilities and limits; the saved-session
+mod API remains 1. The existing command-line packaging/conversion tools still
+target API 1; the Downloads page creates its own texture package.
+
 ## Co-op compatibility
 
-Everyone needs network protocol **17** (Experimental 5). The host checks the mod API, campaign, sandbox classification, ordered gameplay package IDs/versions/content hashes and effective mod option values before admitting a player. Existing original-map checks and database synchronization remain in place. No package is downloaded automatically.
+Everyone needs the same network protocol, as listed in the build's release notes. The host checks the mod API, campaign, sandbox classification, ordered gameplay package IDs/versions/content hashes and effective mod option values before admitting a player. Existing original-map checks and database synchronization remain in place. No package is downloaded automatically.
 
 Built-in host rules, such as full XP or shared loot, are published to guests without changing their local defaults. Gameplay mod values must match when joining. Choose the same package versions and values in the menu before connecting. A continued host save supplies its saved configuration before the lobby opens; stop hosting to choose a different save.
 
@@ -83,7 +118,7 @@ An `overrides` entry maps an existing archive entry to a package-relative file:
 }
 ```
 
-Supported archives are `textures.res` (MMP), `sfx.res` (game-supported WAV), and `speech.res` (MP3). Use forward slashes in archive entry names. Textures must use an entry ending in `.mmp`. Supply files in the formats the existing readers accept. The overlay is consulted by those readers and leaves the player's source archives intact. It is not a filesystem-wide replacement mechanism. New entries can be read by name, but automatic archive directory listings still enumerate original entries; use replacements for existing content.
+Supported API 1 archives are `textures.res` (MMP), `sfx.res` (game-supported WAV), and `speech.res` (MP3). Use forward slashes in archive entry names. Textures must use an entry ending in `.mmp`. Supply files in the formats the existing readers accept. The overlay is consulted by those readers and leaves the player's source archives intact. It is not a filesystem-wide replacement mechanism. New entries can be read by name and are included in archive suffix listings. API 2 accepts only texture overrides and documentation, as described above.
 
 ### Numeric database patches
 
@@ -117,6 +152,6 @@ Saves and multiplayer characters store the effective configuration and package f
 
 Config writes use a temporary file and rename; imports stage a complete package before installing its folder. An unreadable profile file is retained as a recovery copy before a later config write. Invalid dependency/conflict selections leave the previous selection unchanged. Save-copy and backup import preflight the progression boundary before writing.
 
-Packages are limited to 128 MiB compressed and total uncompressed, 4,096 entries, and a 1 MiB manifest. Import validates the ZIP directory before decompression; encrypted, multi-disk, ZIP64, symlink, duplicate/case-colliding and unsafe paths are rejected. Undeclared files are rejected. Arbitrary scenes, GDScript, native code and executable hooks are unsupported.
+API 1 packages are limited to 128 MiB compressed and total uncompressed; texture-only API 2 packages allow 1 GiB total with a 128 MiB per-member limit. Both allow 4,096 entries and a 1 MiB manifest. Import validates the ZIP directory before decompression; encrypted, multi-disk, ZIP64, symlink, duplicate/case-colliding and unsafe paths are rejected. Undeclared files are rejected. Arbitrary scenes, GDScript, native code and executable hooks are unsupported.
 
 The broader [design](mod-menus-and-options.md) remains a roadmap. Profile export/deletion, mod discovery/updates, automatic save migration, custom campaigns, scripting, extra sandbox authoring commands, search and translated mod schemas remain future work. Current UI strings use the existing translation helper with English fallback. The [Experimental 2 validation record](validation/experimental-1.0.4-2-2026-10-11.json) covers Linux and Retroid package, input and simulation checks. Interactive acceptance of the native Android file picker and browser import remains outstanding.

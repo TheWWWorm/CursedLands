@@ -5,6 +5,7 @@ const CONFIG := "user://mod_settings.json"
 const ROOT := "user://mods"
 const MAX_MANIFEST := 1048576
 const MAX_PACKAGE := 134217728
+const MAX_EXTENDED_PACKAGE := 1073741824
 static var profiles: Dictionary = {}
 static var selected: Dictionary = {}
 static var catalog: Dictionary = {}
@@ -13,6 +14,7 @@ static var startup_error := ""
 static var _loaded := false
 static var _session: WeakRef
 static var _archives: Dictionary = {}
+static var data_revision := 0
 static var _mounted: Array = []
 static var _config_bad := false
 
@@ -338,20 +340,34 @@ static func rescan() -> void:
 		if folder != key or catalog.has(key):
 			errors.append("Invalid installed package folder: " + folder)
 			continue
-		var hashes := {}
-		for a in m.get("overrides", []):
-			var path := base.path_join(a.file)
-			var asset := FileAccess.open(path, FileAccess.READ)
-			if asset == null or asset.get_length() > MAX_PACKAGE:
-				error = "Missing or oversized asset: " + a.file
-				break
-			hashes[a.file] = FileAccess.get_sha256(path)
-		if error != "":
-			errors.append(key + ": " + error)
+		var result := inspect_package(base, m)
+		if not result.error.is_empty():
+			errors.append(key + ": " + result.error)
 			continue
-		m._digest = ModSchema.digest({"manifest": m, "files": hashes})
-		m._root = base
-		catalog[key] = m
+		catalog[key] = result.package
+
+## Read-only verification can run on an installer worker. Publishing the
+## resulting entry does not need to rehash every installed pack on the UI thread.
+static func inspect_package(base: String, manifest: Dictionary, cancelled := Callable()) -> Dictionary:
+	var error := ModSchema.manifest_error(manifest)
+	if not error.is_empty(): return {"error": error}
+	var file := FileAccess.open(base.path_join("mod.json"), FileAccess.READ)
+	if file == null or file.get_length() > MAX_MANIFEST: return {"error": "Missing or oversized mod.json."}
+	if ModSchema.canonical(JSON.parse_string(file.get_as_text())) != ModSchema.canonical(manifest): return {"error": "The staged manifest does not match the package."}
+	var total := file.get_length()
+	var hashes := {}
+	for name in ModSchema.asset_files(manifest):
+		if cancelled.is_valid() and cancelled.call(): return {"error": "Download cancelled."}
+		var path := base.path_join(name)
+		var asset := FileAccess.open(path, FileAccess.READ)
+		if asset == null or asset.get_length() > MAX_PACKAGE: return {"error": "Missing or oversized asset: " + name}
+		total += asset.get_length()
+		if total > package_limit(int(manifest.api)): return {"error": "Installed mod exceeds its package limit."}
+		hashes[name] = FileAccess.get_sha256(path)
+	var entry := manifest.duplicate(true)
+	entry._digest = ModSchema.digest({"manifest": manifest, "files": hashes})
+	entry._root = base
+	return {"error": "", "package": entry}
 
 static func resolve(p: Dictionary) -> Dictionary:
 	var nodes := {}
@@ -394,6 +410,7 @@ static func resolve(p: Dictionary) -> Dictionary:
 static func mount() -> String:
 	initialize()
 	_archives.clear()
+	data_revision += 1
 	_mounted.clear()
 	var checked := resolve(profile())
 	startup_error = checked.error
@@ -413,6 +430,16 @@ static func mount() -> String:
 static func override_path(archive: String, entry: String) -> String:
 	return str(_archives.get(archive.to_lower() + "/" + entry.to_lower(), ""))
 
+static func override_entries(archive: String) -> Array:
+	var out := []
+	var prefix := archive.to_lower() + "/"
+	for path: String in _archives:
+		if path.begins_with(prefix): out.append(path.substr(prefix.length()))
+	return out
+
+static func package_limit(api: int) -> int:
+	return MAX_PACKAGE if api == 1 else MAX_EXTENDED_PACKAGE
+
 static func patch_database(db: RefCounted, multiplayer_db: bool) -> String:
 	var pending := []
 	for key in _mounted:
@@ -431,52 +458,72 @@ static func patch_database(db: RefCounted, multiplayer_db: bool) -> String:
 static func import_package(path: String) -> String:
 	initialize()
 	if session() != null: return "Return to the main menu to import mods."
-	var inspected := ModZip.inspect(path, MAX_PACKAGE)
-	if inspected.error != "": return inspected.error
-	var file := FileAccess.open(path, FileAccess.READ)
-	if file == null or file.get_length() > MAX_PACKAGE: return "Package cannot be read or is too large."
-	file.close()
+	var staging := ROOT.path_join(".import-" + Crypto.new().generate_random_bytes(8).hex_encode())
+	var result := stage_package(path, staging)
+	var error: String = result.error
+	if error.is_empty(): error = publish_package(staging, result.manifest)
+	if not error.is_empty(): _remove_tree(staging)
+	return error
+
+static func stage_package(path: String, staging: String, cancelled := Callable()) -> Dictionary:
+	var inspected := ModZip.inspect(path, MAX_EXTENDED_PACKAGE, MAX_PACKAGE)
+	if inspected.error != "": return {"error": inspected.error}
 	var zip := ZIPReader.new()
-	if zip.open(path) != OK: return "Choose a ZIP or .eimod package containing mod.json."
+	if zip.open(path) != OK: return {"error": "Choose a ZIP or .eimod package containing mod.json."}
 	var names := zip.get_files()
-	if names.size() > 4096 or "mod.json" not in names: zip.close(); return "Missing mod.json or too many package files."
+	if names.size() > 4096 or "mod.json" not in names: zip.close(); return {"error": "Missing mod.json or too many package files."}
 	var seen := {}
 	for name in names:
 		if name.ends_with("/"): continue
-		if not ModSchema.safe_path(name) or seen.has(name.to_lower()): zip.close(); return "Unsafe or duplicate package path."
+		if not ModSchema.safe_path(name) or seen.has(name.to_lower()): zip.close(); return {"error": "Unsafe or duplicate package path."}
 		seen[name.to_lower()] = true
 	var bytes := zip.read_file("mod.json")
-	if bytes.size() != inspected.sizes["mod.json"]: zip.close(); return "Damaged manifest."
+	if bytes.size() != inspected.sizes["mod.json"]: zip.close(); return {"error": "Damaged manifest."}
 	var m: Variant = JSON.parse_string(bytes.get_string_from_utf8())
 	var error := ModSchema.manifest_error(m)
-	if error != "": zip.close(); return error
+	if error != "": zip.close(); return {"error": error}
+	var limit := package_limit(int(m.api))
+	if bytes.size() > MAX_MANIFEST or names.size() > 4096: zip.close(); return {"error": "Package directory exceeds its API limit."}
+	if inspected.total > limit or inspected.compressed > limit: zip.close(); return {"error": "Package exceeds the limit for its API version."}
 	var allowed := {"mod.json": true}
-	for a in m.get("overrides", []): allowed[a.file] = true
-	var payload := {"mod.json": bytes}
-	var total := bytes.size()
+	for name in ModSchema.asset_files(m): allowed[name] = true
+	var empty_allowed: Array = m.get("attachments", []).duplicate()
 	for name in names:
 		if name.ends_with("/"): continue
-		if not allowed.has(name): zip.close(); return "Undeclared file: " + name
-		if name == "mod.json": continue
-		var data := zip.read_file(name)
-		if data.size() != inspected.sizes.get(name, -1): zip.close(); return "Damaged package member."
-		total += data.size()
-		if data.is_empty() or data.size() > MAX_PACKAGE or total > MAX_PACKAGE: zip.close(); return "Package assets are empty or too large."
-		payload[name] = data
-	zip.close()
+		if not allowed.has(name): zip.close(); return {"error": "Undeclared file: " + name}
 	for name in allowed:
-		if not payload.has(name): return "Missing asset: " + name
+		if not inspected.sizes.has(name): zip.close(); return {"error": "Missing asset: " + name}
 	var destination := ROOT.path_join(m.id + "@" + m.version)
+	if DirAccess.dir_exists_absolute(destination): zip.close(); return {"error": "This version is already installed. Use a new version to preserve existing saves."}
+	# Inflate and stage one member at a time. HD resource packs may contain
+	# hundreds of MiB; their total size must not become the importer's heap size.
+	for name in allowed:
+		if cancelled.is_valid() and cancelled.call(): zip.close(); _remove_tree(staging); return {"error": "Download cancelled."}
+		var data := zip.read_file(name)
+		if data.size() != inspected.sizes[name] or (data.is_empty() and name not in empty_allowed):
+			zip.close(); _remove_tree(staging); return {"error": "Damaged or empty package member: " + name}
+		error = atomic_write(staging.path_join(name), data)
+		if error != "": zip.close(); _remove_tree(staging); return {"error": error}
+	zip.close()
+	return {"error": "", "manifest": m}
+
+static func publish_package(staging: String, manifest: Dictionary, inspected: Dictionary = {}) -> String:
+	if session() != null: return "Return to the main menu to import mods."
+	var error := ModSchema.manifest_error(manifest)
+	if not error.is_empty(): return error
+	var destination := ROOT.path_join(manifest.id + "@" + manifest.version)
 	if DirAccess.dir_exists_absolute(destination): return "This version is already installed. Use a new version to preserve existing saves."
-	var staging := ROOT.path_join(".import-" + Crypto.new().generate_random_bytes(8).hex_encode())
-	for name in payload:
-		error = atomic_write(staging.path_join(name), payload[name])
-		if error != "": _remove_tree(staging); return error
-	if DirAccess.rename_absolute(staging, destination) != OK: _remove_tree(staging); return "Could not install the package."
-	rescan()
+	if inspected.is_empty(): inspected = inspect_package(staging, manifest)
+	if not inspected.error.is_empty(): return inspected.error
+	var entry: Dictionary = inspected.package.duplicate(true)
+	if entry.get("_root", "") != staging or entry.get("id") != manifest.id or entry.get("version") != manifest.version: return "The staged manifest does not match the package."
+	if DirAccess.rename_absolute(staging, destination) != OK: return "Could not install the package."
+	entry._root = destination
+	catalog[manifest.id + "@" + manifest.version] = entry
 	return ""
 
 static func _remove_tree(path: String) -> void:
+	if not DirAccess.dir_exists_absolute(path): return
 	for name in DirAccess.get_files_at(path): DirAccess.remove_absolute(path.path_join(name))
 	for name in DirAccess.get_directories_at(path): _remove_tree(path.path_join(name))
 	DirAccess.remove_absolute(path)

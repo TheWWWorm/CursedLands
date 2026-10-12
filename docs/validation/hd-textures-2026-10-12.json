@@ -1,0 +1,938 @@
+{
+  "date": "2026-10-12",
+  "scope": "HD Lands texture loading and curated installer backport only",
+  "release_checkout": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo",
+  "branch": "fix/lia-coop-feedback",
+  "base_commit": "37126373d1e5d0b9015dabe41189bd63ca7fc767",
+  "legacy_source_checkout": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+  "included": [
+    "Authored high-resolution and mixed-resolution terrain atlases without changing logical map UVs",
+    "Texture-only package API 2 with bounded member-by-member staging and documentation",
+    "Pinned HTTPS HD Lands 1.4.0 recipe, background extraction and hashing, cancellation, immutable publication",
+    "EN/RU/DE Downloads page and profile workflow",
+    "Native 7z decoder source, platform libraries, notices and export exclusions"
+  ],
+  "deferred": [
+    "Jamais Vu and generic legacy campaigns",
+    "Lua runtimes and script hooks",
+    "Map/database/figure/menu/redress replacement support",
+    "General automatic legacy-mod conversion",
+    "Android large-download enablement"
+  ],
+  "compatibility": {
+    "session_mod_api": 1,
+    "package_api": 2,
+    "catalog_campaign": "cursed_lands",
+    "catalog_enabled_platforms": [
+      "Windows x86-64",
+      "Linux x86-64"
+    ],
+    "android": "Download disabled; native library retained for later qualification",
+    "macos_web": "No decoder; catalogue unavailable",
+    "source_data_replaced": false,
+    "save_profiles_isolated": true,
+    "cosmetic_packages_required_by_peer": false
+  },
+  "publisher_archive": {
+    "url": "https://hd-lands.gipat.ru/wp-content/uploads/2021/10/hd-lands-v-1.4.0.7z",
+    "bytes": 244608954,
+    "sha256": "f08f8c11058dbbe3cb12a1ca75b6263a5eec12fae0e62ffd1f47be359bc4ed1c",
+    "texture_count": 302,
+    "texture_bytes": 768753296,
+    "documentation": [
+      "readme.txt",
+      "changelog.txt"
+    ],
+    "omitted": [
+      "Malformed astralold.mmp",
+      "Launcher/settings/branding/optional artwork"
+    ],
+    "installed_bytes_including_manifest_and_documentation": 768793311,
+    "documentation_bytes": 5128
+  },
+  "passing_checks": 1429,
+  "failures": 0,
+  "tests": [
+    {
+      "test": "mod_downloads",
+      "label": "exported-downloads",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/exports/linux/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_downloads.gd",
+        "--mod-tests",
+        "--fixture=/home/llm2x/Documents/EI/local/scratchpad/mod-downloads-20261012/fixtures"
+      ],
+      "exit_code": 0,
+      "seconds": 2.67,
+      "checks": 42,
+      "failures": 0,
+      "details": {
+        "checks": 42,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/exported-downloads.log",
+      "log_sha256": "029b363cf09c6974568502c699d9741289318640e27b5eb4477060fc2079da24"
+    },
+    {
+      "test": "mod_profiles",
+      "label": "final-profiles",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_profiles.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 3.97,
+      "checks": 83,
+      "failures": 0,
+      "details": {
+        "checks": 83,
+        "details": [],
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/final-profiles.log",
+      "log_sha256": "01b626c5d5e23a5ac7028accd6a7da62b4b80f7b0cf98eedd79dd8aac5e2edca"
+    },
+    {
+      "test": "terrain_mod_atlas",
+      "label": "terrain_mod_atlas",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://terrain_mod_atlas.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 4.371,
+      "checks": 16,
+      "failures": 0,
+      "details": {
+        "checks": 16,
+        "failures": 0,
+        "headless": false
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/terrain_mod_atlas.log",
+      "log_sha256": "04dcc5548b47fbd8a5e6003fdc413fad0102829499077d477c2e8b3858283924"
+    },
+    {
+      "test": "mod_texture_packages",
+      "label": "combined-packages",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/combined",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_texture_packages.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 5.051,
+      "checks": 43,
+      "failures": 0,
+      "details": {
+        "checks": 43,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/combined-packages.log",
+      "log_sha256": "d8288c1350db1bd8e5fce63802501f2d72df1b36c2b6ac19c39f3ef22498e303"
+    },
+    {
+      "test": "mod_downloads_ui",
+      "label": "release-download-ui",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/combined",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_downloads_ui.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 5.775,
+      "checks": 43,
+      "failures": 0,
+      "details": {
+        "checks": 43,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/release-download-ui.log",
+      "log_sha256": "01a7763c5090868630a34d425f049a4ddb9032daa3e98c1ce9a53214d531985d"
+    },
+    {
+      "test": "mod_downloads_cancel",
+      "label": "final-cancel",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_downloads_cancel.gd",
+        "--mod-tests",
+        "--archive=/home/llm2x/Documents/EI/local/scratchpad/legacy-mod-real-tests-20261011/downloads/hd-lands-v-1.4.0.7z"
+      ],
+      "exit_code": 0,
+      "seconds": 5.223,
+      "checks": 14,
+      "failures": 0,
+      "details": {
+        "checks": 14,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/final-cancel.log",
+      "log_sha256": "3ebded5d3c4000bdf45934fc6ac863005def22c25e3cd83c9194c620ef3b84f8"
+    },
+    {
+      "test": "mod_downloads_live",
+      "label": "final-live",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_downloads_live.gd",
+        "--mod-tests",
+        "--download-real"
+      ],
+      "exit_code": 0,
+      "seconds": 40.119,
+      "checks": 625,
+      "failures": 0,
+      "details": {
+        "checks": 625,
+        "failures": 0,
+        "frames": 4400,
+        "max_installer_frame_ms": 43.439,
+        "seconds": 33.462
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/final-live.log",
+      "log_sha256": "3502e0bb6250db57004004f2775b9b81ede1c6c52bbf4c49b753fbef1117f1dd"
+    },
+    {
+      "test": "mod_downloads_world",
+      "label": "final-world",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_downloads_world.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 140.966,
+      "checks": 16,
+      "failures": 0,
+      "details": {
+        "checks": 16,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/final-world.log",
+      "log_sha256": "9d5996723e712f422b81f60cbea716f169211a49a066daa867d33c67da009457"
+    },
+    {
+      "test": "mod_texture_coop",
+      "label": "final-coop-plain-host",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_texture_coop.gd",
+        "--mod-tests",
+        "--role=host",
+        "--coordination=/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/coop-client-hd-2"
+      ],
+      "exit_code": 0,
+      "seconds": 41.756,
+      "checks": 12,
+      "failures": 0,
+      "details": {
+        "checks": 12,
+        "failures": 0,
+        "hd": false,
+        "role": "host"
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/final-coop-plain-host.log",
+      "log_sha256": "826d3a86214e43102a0518928afcdebafcfa8f8e7ad4c129af1f4c8988628b08"
+    },
+    {
+      "test": "mod_texture_coop",
+      "label": "final-coop-hd-client",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_texture_coop.gd",
+        "--mod-tests",
+        "--role=client",
+        "--hd",
+        "--coordination=/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/coop-client-hd-2"
+      ],
+      "exit_code": 0,
+      "seconds": 41.705,
+      "checks": 14,
+      "failures": 0,
+      "details": {
+        "checks": 14,
+        "failures": 0,
+        "hd": true,
+        "role": "client"
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/final-coop-hd-client.log",
+      "log_sha256": "24e9703e30e5fff047a86b18196984b05ce1582cdc0fdcbe4e60cab7992e34ab"
+    },
+    {
+      "test": "terrain_compressed",
+      "label": "final-terrain-compressed",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://terrain_compressed.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 6.958,
+      "checks": 251,
+      "failures": 0,
+      "details": {
+        "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+        "campaign": "cursed_lands",
+        "checks": 251,
+        "compressed_maps": 2,
+        "failures": 0,
+        "headless": false,
+        "maps": 2,
+        "payload_bytes": 2796416,
+        "renderer": "gl_compatibility",
+        "rgba_bytes": 22369600,
+        "rows": [
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 17,
+            "layers": 2,
+            "name": "fixture opaque BC1",
+            "payload_bytes": 112,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 340,
+            "exact_mip_readback": false,
+            "format": 17,
+            "layers": 1,
+            "name": "fixture single layer",
+            "payload_bytes": 56,
+            "rgba_bytes": 340
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 18,
+            "layers": 2,
+            "name": "fixture opaque BC2",
+            "payload_bytes": 224,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture mixed BC1/BC2",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture transparent first",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture transparent last",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture missing first",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture missing last",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture invalid payload",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture wrong height",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 174760,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture large missing tail",
+            "payload_bytes": 174760,
+            "rgba_bytes": 174760
+          },
+          {
+            "bytes_read_back": 11184800,
+            "compressed_eligible": true,
+            "exact_mip_readback": false,
+            "format": 17,
+            "layers": 8,
+            "load_us": 12082,
+            "name": "bz2g",
+            "payload_bytes": 1398208,
+            "prefix": "bz2g",
+            "rgba_bytes": 11184800
+          },
+          {
+            "bytes_read_back": 11184800,
+            "compressed_eligible": true,
+            "exact_mip_readback": false,
+            "format": 17,
+            "layers": 8,
+            "load_us": 12695,
+            "name": "bz13h",
+            "payload_bytes": 1398208,
+            "prefix": "bz13h",
+            "rgba_bytes": 11184800
+          }
+        ],
+        "s3tc": true
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/final-terrain-compressed.log",
+      "log_sha256": "aa357c35cfc26fda81ea387192118a43f2757702de0418a8eb564d993999c841"
+    },
+    {
+      "test": "terrain_compressed",
+      "label": "combined-lia-terrain-fixed",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/combined",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=res://terrain_compressed.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 4.422,
+      "checks": 227,
+      "failures": 0,
+      "details": {
+        "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+        "campaign": "lost_in_astral",
+        "checks": 227,
+        "compressed_maps": 2,
+        "failures": 0,
+        "headless": false,
+        "maps": 3,
+        "payload_bytes": 5767284,
+        "renderer": "gl_compatibility",
+        "rgba_bytes": 16777200,
+        "rows": [
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 17,
+            "layers": 2,
+            "name": "fixture opaque BC1",
+            "payload_bytes": 112,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 340,
+            "exact_mip_readback": false,
+            "format": 17,
+            "layers": 1,
+            "name": "fixture single layer",
+            "payload_bytes": 56,
+            "rgba_bytes": 340
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 18,
+            "layers": 2,
+            "name": "fixture opaque BC2",
+            "payload_bytes": 224,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture mixed BC1/BC2",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture transparent first",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture transparent last",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture missing first",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture missing last",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture invalid payload",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 680,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture wrong height",
+            "payload_bytes": 680,
+            "rgba_bytes": 680
+          },
+          {
+            "bytes_read_back": 174760,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 2,
+            "name": "fixture large missing tail",
+            "payload_bytes": 174760,
+            "rgba_bytes": 174760
+          },
+          {
+            "bytes_read_back": 11184800,
+            "compressed_eligible": true,
+            "exact_mip_readback": false,
+            "format": 17,
+            "layers": 8,
+            "load_us": 9170,
+            "name": "zone1",
+            "payload_bytes": 1398208,
+            "prefix": "zone19",
+            "rgba_bytes": 11184800
+          },
+          {
+            "bytes_read_back": 1398100,
+            "compressed_eligible": true,
+            "exact_mip_readback": false,
+            "format": 17,
+            "layers": 1,
+            "load_us": 1072,
+            "name": "zone3dun1",
+            "payload_bytes": 174776,
+            "prefix": "zone3dun1",
+            "rgba_bytes": 1398100
+          },
+          {
+            "bytes_read_back": 4194300,
+            "compressed_eligible": false,
+            "exact_mip_readback": false,
+            "format": 5,
+            "layers": 3,
+            "load_us": 8110,
+            "name": "zonefinal",
+            "payload_bytes": 4194300,
+            "prefix": "zonefinal",
+            "rgba_bytes": 4194300
+          }
+        ],
+        "s3tc": true
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/combined-lia-terrain-fixed.log",
+      "log_sha256": "1ac12d404bcb43078fd28b4d1b24538ec03e1122fb792260ac2119c327350b94"
+    },
+    {
+      "test": "mod_menus",
+      "label": "combined-menus",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/combined",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_menus.gd",
+        "--mod-tests",
+        "--package=/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/quick-recovery.eimod"
+      ],
+      "exit_code": 0,
+      "seconds": 35.296,
+      "checks": 43,
+      "failures": 0,
+      "details": {
+        "checks": 43,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/combined-menus.log",
+      "log_sha256": "637dd1954b4f18fa5abe2062f58c82588eddbca578350f6f92c5008a09cbb34f"
+    }
+  ],
+  "installer_responsiveness": {
+    "before_max_frame_ms": 2124.306,
+    "after_max_frame_ms": 43.439,
+    "measurement": "Main-thread frame interval while the real download/installer was busy; isolated Linux test. Not a network-latency benchmark.",
+    "change": "Hash and verify the staged package on the installer worker, then publish without rescanning every installed package."
+  },
+  "coop": {
+    "transport": "Real ENet over localhost in separate processes and XDG profiles",
+    "duration_seconds": 20,
+    "scenario": "Original-texture host and downloaded-HD-texture client; four long movement orders each",
+    "motion": [
+      {
+        "commands": 4,
+        "distance": 24.6727584116161,
+        "hd": false,
+        "max_frame_ms": 32,
+        "role": "host",
+        "simulation_seconds": 20.0199999999999
+      },
+      {
+        "commands": 4,
+        "distance": 24.9863328784704,
+        "hd": true,
+        "max_frame_ms": 349,
+        "role": "client",
+        "simulation_seconds": 25.8499999999999
+      }
+    ],
+    "scope": "Cosmetic-package compatibility and replicated movement only; not a ZeroTier/WAN performance qualification."
+  },
+  "exports": {
+    "linux": {
+      "entries": 744,
+      "pack_sha256": "784d8c8b589866483efc302838d0dd439d936b59eadf7c01a224030404baa23a",
+      "archive_extension_present": true,
+      "archive_notice_present": true,
+      "decoder_source_excluded": true,
+      "library": "libmod_archive.so",
+      "library_sha256": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+    },
+    "windows": {
+      "entries": 744,
+      "pack_sha256": "784d8c8b589866483efc302838d0dd439d936b59eadf7c01a224030404baa23a",
+      "archive_extension_present": true,
+      "archive_notice_present": true,
+      "decoder_source_excluded": true,
+      "library": "libmod_archive.dll",
+      "library_sha256": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+    },
+    "macos": {
+      "entries": 741,
+      "pack_sha256": "431cae12a154af0f70463967ac7482b901627bb645b3ef65b7998583463ca467",
+      "archive_extension_present": false,
+      "archive_notice_present": true,
+      "decoder_source_excluded": true,
+      "library": null,
+      "library_sha256": null
+    }
+  },
+  "exports_are_validation_only": true,
+  "export_source_snapshot": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/combined-source.json",
+  "later_control_files_imported_and_ui_retested": [
+    "game/src/ei/game_data.gd",
+    "game/src/ei/remake_text.gd",
+    "game/src/game/direct_control.gd"
+  ],
+  "screenshots": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/profiles/final-live/data/godot/app_userdata/Cursed Lands/downloaded-hd-lands-village.png",
+      "sha256": "6c0b4fea5027a6ae2464b4e4080b21a5fc7592e559f6c09b5f8ca82e2434c202"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/profiles/release-download-ui/data/godot/app_userdata/Cursed Lands/downloads-en-540.png",
+      "sha256": "6c7631bdc36f79f62e64a4acd4b3dc571997f43d051125025130c5fa09ae5687"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/profiles/release-download-ui/data/godot/app_userdata/Cursed Lands/downloads-en-1280.png",
+      "sha256": "7e4c0b7a1feb7eac8b6792a9b24b9151811e1580fb20843cc8d78c4d971b96df"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/profiles/release-download-ui/data/godot/app_userdata/Cursed Lands/downloads-ru-540.png",
+      "sha256": "f24b81d73ac45960af3ae87390d8303193f14e697f36dbad2092cee6aed1c1c4"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/profiles/release-download-ui/data/godot/app_userdata/Cursed Lands/downloads-ru-1280.png",
+      "sha256": "acd45aac50c8330b95b489feb54370387158d65cb0c22a0ac157dd954083adae"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/profiles/release-download-ui/data/godot/app_userdata/Cursed Lands/downloads-de-540.png",
+      "sha256": "2642d2d1c7429c64307fc06fce3c016ba6ebd03b4c61020d751a968d16a8c64f"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/profiles/release-download-ui/data/godot/app_userdata/Cursed Lands/downloads-de-1280.png",
+      "sha256": "7954567923435ef4aab1407a26fbc90a21be848708e810f2b5a1e369376736cf"
+    }
+  ],
+  "reviewed_screenshots": [
+    "downloaded-hd-lands-village.png",
+    "downloads-ru-540.png",
+    "downloads-de-1280.png"
+  ],
+  "backport_file_sha256": {
+    "CHANGELOG.md": "bb07bc56117b9ca5359c1b6ce0ef38f1957a91b155ecc2f8f7e9691e74ec5e48",
+    "THIRD_PARTY_NOTICES.md": "42fea15f445074b0f20ad4e660934c9ddc96975a4ed64bfd42a506996f899e10",
+    "docs/mods.md": "1219fbf7a7fa832e651876a7950fb1e899aa70f93c57ca366aa52e14e65e899f",
+    "game/export_presets.cfg": "581cab0c9fd8579d69391ffc6795ea66e54085e26dd9953a9f68265b88004132",
+    "game/src/ei/remake_text.gd": "1a74095c3502a6efbb795aeee7446a290cd46b475623c4b5bd7a919316484f08",
+    "game/src/ei/res_archive.gd": "6a497a4393aaf7881002da7a97b3b9a1c67ab1a7f32ed053eb304d19ffa1bd9e",
+    "game/src/ei/terrain.gd": "12fcf4ceb74e30216f112ed64d7e9d87aa95c096a8a759d544884866f3147c3a",
+    "game/src/game/fx/terrain_color_cache.gd": "716fcd2dcbc6f604c207b7256694d2ef59bc89595734168934661645f0a8a01a",
+    "game/src/game/mod_catalog.gd": "5ec0e95ee6568bb0129d3b4300b8df7840a0aaebf8dcef9afb68b12dd9718462",
+    "game/src/game/mod_catalog.gd.uid": "1e8ee4e962fd305dd6c6fec2f8ee6f9b7e3add434ca638b4b881760ec07db53f",
+    "game/src/game/mod_download.gd": "f7cd21e79b4f392e00577c97c12c5b7bfc95c261f2b28e46639c0be9196761d5",
+    "game/src/game/mod_download.gd.uid": "4db01de0d700065126009e27296a240f19b0412b8f8c6efe38349ec996b610d5",
+    "game/src/game/mod_schema.gd": "e015e5a30387fc526bc1d3753363ae33650f77e026408ff93ee82be147a570fb",
+    "game/src/game/mod_store.gd": "2a0c3c10418372c47006cb1c8da151efa64d70545514ea6cbcf8047d702f17da",
+    "game/src/game/mod_zip.gd": "f5ea47f80948098531d92982761fef46a0a5682cc661ec05f49513280c1097d5",
+    "game/src/native/NATIVE_ARCHIVE_NOTICES.txt": "f667bf5b36eb65f615c817d7d54b3096d6cbaac3c39507c4e6c91ecad62f0dbe",
+    "game/src/native/archive/CMakeLists.txt": "d74fce49b444f632864445826135192668646081d921c2d31a2eda83efde2c96",
+    "game/src/native/archive/README.md": "67b3bf5dbac9df6e5f7a2c81cd40272efc69e07a0ffe7b05668caf14d76a78a1",
+    "game/src/native/archive/build_profile.json": "1f30e99dc4a24692068a858a86294d5e6899dfbdf0f921426ce683174431c2e2",
+    "game/src/native/archive/mod_archive.cpp": "2adedeecabda5e1987e01302db06019e2320a7359204e30d2bba9282117e547f",
+    "game/src/native/archive/vendor/lzma-26.04/7z.h": "efbe9391f40ff82547e71e75bab0d3f9650391ee01b60dcefa13291c76bb2417",
+    "game/src/native/archive/vendor/lzma-26.04/7zArcIn.c": "328a0e1c4515eaafd0cd4a517a64111d214121c71b7a7f1a27a3a6263164d83f",
+    "game/src/native/archive/vendor/lzma-26.04/7zBuf.c": "34f1bbf82091c59663c2b14c0d6d3321d4bb189098f6e597e849d0a824a61e04",
+    "game/src/native/archive/vendor/lzma-26.04/7zBuf.h": "88e9233f4acae553bb835e667b3aca271975eff8c6fb280e28cfd190500277bc",
+    "game/src/native/archive/vendor/lzma-26.04/7zBuf2.c": "5e64b31339ed340d5d57857f1decbb17e42ac741465e37c113184a662bb22da1",
+    "game/src/native/archive/vendor/lzma-26.04/7zCrc.c": "d13ee23c3e66e0b7dbdaa91cdfa8a154145847421c1ab5ea131f536ab45e420b",
+    "game/src/native/archive/vendor/lzma-26.04/7zCrc.h": "39931db69404c46c018f5241845c02ab161f166de1dada882df87db5b3581b7f",
+    "game/src/native/archive/vendor/lzma-26.04/7zCrcOpt.c": "1489340e2441a6b9828ed444832ec95bfaac730ca19654f7dabd01355e8b3efd",
+    "game/src/native/archive/vendor/lzma-26.04/7zDec.c": "d5bf11ac446d3aa0b9fd84fbba040ca5e3cdbe18c5a6727339239417d06aed7a",
+    "game/src/native/archive/vendor/lzma-26.04/7zStream.c": "b387e633a5ec9ff80f4585b88f995a4f3ca1c9714a7457cf3eb28b56f33f27f3",
+    "game/src/native/archive/vendor/lzma-26.04/7zTypes.h": "126c3ce886391042443fcc82764d26be7aacda2298588c6ec9bb7ce8c7b47732",
+    "game/src/native/archive/vendor/lzma-26.04/7zWindows.h": "228be01470e87c8cee44ee2e6c1cc2a431ed26ec3a325edfbaa166b7ef4f492e",
+    "game/src/native/archive/vendor/lzma-26.04/Bcj2.c": "ab3cd1db08e40406676200150d37a5176f8bfc1f51ba78d43fbffb626b3d54f8",
+    "game/src/native/archive/vendor/lzma-26.04/Bcj2.h": "02d4cec99b5f682edce072ee281e4f4b5b3f393df8ffca75e78e276aefc21982",
+    "game/src/native/archive/vendor/lzma-26.04/Bra.c": "d95436aa03d08bf898538b082ce0b036cf7a49390489fc5bdc3072637617b2ce",
+    "game/src/native/archive/vendor/lzma-26.04/Bra.h": "ee0ddc7215e6f2639909070face1102f734aa0386c211fa169b3d719e7fd8f0f",
+    "game/src/native/archive/vendor/lzma-26.04/Bra86.c": "513bd33ab1efd5b51d699dfe9ec7dc9f6b09e885c2d5317eff3cdc7b54193295",
+    "game/src/native/archive/vendor/lzma-26.04/BraIA64.c": "fea2763de6989761acb79cef3d3ba5a203be73a877ea6799b9adef5f39fcc6f4",
+    "game/src/native/archive/vendor/lzma-26.04/Compiler.h": "cfafaa89ba98a7f4f38cc589533fc03facb98ae1176dfe29d58217767ed5f149",
+    "game/src/native/archive/vendor/lzma-26.04/CpuArch.c": "7bdfbc300d458950ba5008d152d6de1ce1bd40395a23619dd0c07f2c7947b56d",
+    "game/src/native/archive/vendor/lzma-26.04/CpuArch.h": "207f823fe5c7c0e3b13349f27f6e53946844da1dd4bcfa3abc72bd1357b833c5",
+    "game/src/native/archive/vendor/lzma-26.04/Delta.c": "c16f15ccad543c2ef7659641d69553de4e28ff3413db3d22417f6b36fac4b876",
+    "game/src/native/archive/vendor/lzma-26.04/Delta.h": "b09eae281931648ee79153516208093a454fe9c46e8d8ea7afd1cb72fd39873a",
+    "game/src/native/archive/vendor/lzma-26.04/Lzma2Dec.c": "18c2fff9594dc9ab523087963f0a740ab5ffaea457746385c86771f32c8ef4a2",
+    "game/src/native/archive/vendor/lzma-26.04/Lzma2Dec.h": "9f91dc1124b0767ceb77dd084259899bd4bcf88182dba906cdd182ab674fe31c",
+    "game/src/native/archive/vendor/lzma-26.04/LzmaDec.c": "8a9d33dd01259a71b3c3cfbf645d06944bef65a152d307671372c332e9e0e022",
+    "game/src/native/archive/vendor/lzma-26.04/LzmaDec.h": "3a3b0ece1ba58601a8265a421a91b9720b39ee92ce898fadecb22f052bc3011f",
+    "game/src/native/archive/vendor/lzma-26.04/Ppmd.h": "0356e2eb0258e3723bf49355d97e52a712a9abfdda60f177410a406353e056dd",
+    "game/src/native/archive/vendor/lzma-26.04/Ppmd7.h": "dbb8572208a5670dd01be9121c3a65870ccc50d82b47dd959f5f811be7f0e459",
+    "game/src/native/archive/vendor/lzma-26.04/Precomp.h": "88acadbc12902012872fa29337c86564bb8f9198d6be416aad6119bb537425d1",
+    "game/src/native/archive/vendor/lzma-26.04/RotateDefs.h": "7592940d5dff6d0e0f2003fcd48040909819e2129d401d5aa56811b300b1624d",
+    "game/src/native/archive/vendor/lzma-26.04/lzma-sdk.txt": "b6be2de40819b3ba00b329548abaeaba97589e1a6169442ec78b062b3337247b",
+    "game/src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+    "game/src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+    "game/src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+    "game/src/native/mod_archive.gdextension": "8b796d6e0191a435e94ec1662f692a9541e6fcf5b743d99d40ffaf2e8b4f1e03",
+    "game/src/native/mod_archive.gdextension.uid": "8a683bbcc0b0a681a7dcae1e917189c0349c2109c81f6023ff009e87b56f4d4b",
+    "game/src/ui/mod_panel.gd": "3a007ceef421ef2ccca05af0db642fd5b07a1c2df72362163b9a6d60d31f5fe1",
+    "tools/tests/make_mod_download_fixtures.py": "c29aaefb2c74fa6cc56e66f0679c8eb6061ead95c8f8c6900c5362eb1eac8c86",
+    "tools/tests/mod_downloads.gd": "f00d2a88605ebcf97d393d555d006b5ad3e2d93498c6e199c2ae4c1b39704eb2",
+    "tools/tests/mod_downloads_cancel.gd": "f0a2d221a78366702901cb5dc8ae3bf6cfdd9fa1250ce9d9a1be0a6dcc593afd",
+    "tools/tests/mod_downloads_live.gd": "ba2f1e60f0d1de234dd697669af7e4aa4b17c5bd804b012758655373573fb602",
+    "tools/tests/mod_downloads_ui.gd": "b43a877d2b8548b0f9d9b49d9abec413713c40de06d3e9ba4efad7e01fb52a85",
+    "tools/tests/mod_downloads_world.gd": "bdd6b6ce5371616c1a50ef7a7250c967899db8600d01de45772d10eb898383ea",
+    "tools/tests/mod_texture_coop.gd": "c0174eb98d733c4fbbe5ee820975670c5d4ae76bccd9df5a24dfe170408ad3b9",
+    "tools/tests/mod_texture_packages.gd": "64e62938418bbcac2b334654cb3dba18c8e1484b53bcc3b3d12ecd72ad9c9e7f",
+    "tools/tests/terrain_mod_atlas.gd": "9d5af0281997faf805fcbd026d7f7b07fe68ba7964d96dfd3e839ad1c084f642"
+  },
+  "harness_corrections": [
+    "Movement fixture now passes GameUnit objects to pathfinding instead of IDs; rerun passed on both peers.",
+    "Existing mod-menu fixture needed its documented example package and an unconfined pointer on the shared virtual display; corrected run passed.",
+    "Combined LiA terrain fixture needed its mmp_texture.gd base class; corrected run passed.",
+    "Validation export used an absolute output path; exported release binaries run beside their PCK without editor-only --path overrides."
+  ],
+  "limitations": [
+    "Windows export, DLL dependency and byte-integrity checks passed; no Windows runtime was available.",
+    "Android device installation and HD rendering are not qualified; download remains disabled.",
+    "macOS archive exclusion was checked in the exported pack; no macOS runtime was available.",
+    "Web was not re-exported; generated Web presets must exclude native archive source, libraries and mod_archive.gdextension, as the macOS preset does.",
+    "No full campaign playthrough or WAN co-op performance claim.",
+    "Other chat changes continue independently; the separate import/UI rerun covers its committed control-label changes at validation time."
+  ],
+  "evidence_directory": "/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012",
+  "public_release_created": false,
+  "diff_check": {
+    "project_changes": "Passed",
+    "vendor": "Unmodified LZMA SDK files retain upstream CRLF and whitespace; excluded from project formatting checks."
+  }
+}

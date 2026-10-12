@@ -2,6 +2,10 @@ class_name ModSchema
 extends RefCounted
 ## Versioned data contract. A menu definition grants no executable capability.
 const API := 1
+## Package versions are separate from the saved/session API. This release
+## accepts API 2 texture packs only; broader legacy resource mods stay gated.
+const PACKAGE_API := 2
+const RESOURCE_ARCHIVES := ["textures.res"]
 ## Rules added after API 1 saves shipped. Missing entries retain these defaults.
 const ADDED_DEFAULTS := {"free_run": 0, "stamina_regen": 0, "armor_formula": 0}
 const RULES := {
@@ -75,7 +79,9 @@ static func value_error(definition: Dictionary, value: Variant) -> String:
 
 static func manifest_error(m: Variant) -> String:
 	if not m is Dictionary: return "The manifest must be an object."
-	if m.get("api", 0) != API: return "This mod needs a different mod API version."
+	if not finite_number(m.get("api")) or m.api != floorf(m.api) or m.api < 1 or m.api > PACKAGE_API: return "This mod needs a different mod API version."
+	for unsupported in ["lua", "files", "force_script_tutorials", "skip_start_animation"]:
+		if m.has(unsupported): return "This build supports texture packages, not legacy gameplay mods."
 	for key in ["id", "version"]:
 		if not identifier(m.get(key)): return "Invalid mod " + key + "."
 	if not m.get("title") is String or m.title.is_empty() or m.title.length() > 100: return "Invalid mod title."
@@ -110,6 +116,11 @@ static func manifest_error(m: Variant) -> String:
 		if not a is Dictionary or not safe_path(a.get("file")) or not safe_path(a.get("entry")): return "Invalid override path."
 		if a.get("archive", "") not in ["textures.res", "sfx.res", "speech.res"]: return "Unsupported archive; API 1 supports texture and sound replacements."
 		if a.archive == "textures.res" and not a.entry.ends_with(".mmp"): return "Texture overrides must be MMP files."
+		if m.api == 2 and not resource_entry(a.archive, a.entry): return "Package API 2 currently supports texture packs only."
+	if not m.get("attachments", []) is Array or m.get("attachments", []).size() > 64: return "Invalid mod documentation."
+	if m.api == 1 and not m.get("attachments", []).is_empty(): return "Mod documentation needs package API 2."
+	for path in m.get("attachments", []):
+		if not safe_path(path) or path.get_extension().to_lower() not in ["txt", "md", "rst"]: return "Invalid mod documentation path."
 	if not m.get("patches", []) is Array or m.get("patches", []).size() > 1024: return "Invalid database patches."
 	for p in m.get("patches", []):
 		if not p is Dictionary or not PATCH_FIELDS.has(p.get("table", "")): return "Unsupported database table."
@@ -117,7 +128,17 @@ static func manifest_error(m: Variant) -> String:
 		if p.get("field", "") not in PATCH_FIELDS[p.table]: return "Unsupported database field."
 		if not finite_number(p.get("value")) or p.value < 0 or p.value > 1000000: return "Invalid database value."
 		if p.get("database", "campaign") not in ["campaign", "multiplayer"]: return "Invalid database target."
+	if m.api == 2 and gameplay(m): return "Package API 2 currently supports texture packs only."
 	return ""
+
+static func resource_entry(archive: String, entry: String) -> bool:
+	return archive == "textures.res" and entry.ends_with(".mmp")
+
+static func asset_files(m: Dictionary) -> Array:
+	var out: Array = m.get("attachments", []).duplicate()
+	for a in m.get("overrides", []):
+		if a.file not in out: out.append(a.file)
+	return out
 
 static func gameplay(m: Dictionary) -> bool:
 	return not m.get("options", []).is_empty() or not m.get("patches", []).is_empty()

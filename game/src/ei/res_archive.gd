@@ -59,7 +59,10 @@ func read(name: String) -> PackedByteArray:
 
 func names_with_suffix(suffix: String) -> PackedStringArray:
 	var out := PackedStringArray()
-	for n: String in entries:
+	var names := entries.keys()
+	for n in ModStore.override_entries(_archive_name):
+		if n not in names: names.append(n)
+	for n: String in names:
 		if n.ends_with(suffix):
 			out.append(n)
 	out.sort()

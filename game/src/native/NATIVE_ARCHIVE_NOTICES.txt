@@ -1,0 +1,18 @@
+Community download archive decoder
+=================================
+
+The project wrapper (src/native/archive/mod_archive.cpp) is Apache-2.0.
+The decoder includes a subset of Igor Pavlov's LZMA SDK 26.04 (2026-10-05).
+The LZMA SDK is in the public domain. Original notices remain in every source
+file; its documentation is retained at archive/vendor/lzma-26.04/lzma-sdk.txt.
+
+Official source: https://www.7-zip.org/sdk.html
+Archive: https://github.com/ip7z/7zip/releases/download/26.04/lzma2604.7z
+SHA-256: bd98058d0e12c5da970dd4e5e1d8fa24f2d704914d96e69c28f92ed45421a439
+
+Godot C++ bindings are MIT licensed; see NATIVE_NAVIGATION_NOTICES.txt for the
+bindings and statically linked Windows compiler-runtime notices, and
+NATIVE_ANDROID_NOTICES.txt for the Android runtime notices. Preserve these
+notices alongside the native libraries in distributed builds.
+
+No third-party mod assets are included in these libraries or the catalog.

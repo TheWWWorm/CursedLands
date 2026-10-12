@@ -2,7 +2,7 @@ class_name ModZip
 extends RefCounted
 ## Inspect classic ZIP central-directory sizes before ZIPReader allocates an
 ## inflated member. Reject encrypted, multi-disk, ZIP64 and symlink packages.
-static func inspect(path: String, limit: int) -> Dictionary:
+static func inspect(path: String, limit: int, file_limit := 134217728) -> Dictionary:
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null or file.get_length() < 22 or file.get_length() > limit: return {"error":"Package cannot be read or is too large."}
 	var length := file.get_length()
@@ -32,7 +32,7 @@ static func inspect(path: String, limit: int) -> Dictionary:
 		var name_size := header.decode_u16(28)
 		var extra := header.decode_u16(30) + header.decode_u16(32)
 		var mode := (header.decode_u32(38) >> 16) & 0xf000
-		if flags & 1 or method not in [0, 8] or mode == 0xa000 or header.decode_u16(34) != 0 or header.decode_u32(42) >= start or compressed > limit or unpacked > limit:
+		if flags & 1 or method not in [0, 8] or mode == 0xa000 or header.decode_u16(34) != 0 or header.decode_u32(42) >= start or compressed > file_limit or unpacked > file_limit:
 			return {"error":"Encrypted, linked or oversized ZIP entry."}
 		var name := file.get_buffer(name_size).get_string_from_utf8()
 		if not ModSchema.safe_path(name.trim_suffix("/")) or seen.has(name.trim_suffix("/").to_lower()): return {"error":"Unsafe or duplicate ZIP path."}
@@ -43,4 +43,4 @@ static func inspect(path: String, limit: int) -> Dictionary:
 		file.seek(file.get_position() + extra)
 	if file.get_position() != start + size: return {"error":"Invalid ZIP directory length."}
 	if not sizes.has("mod.json") or sizes["mod.json"] > 1048576: return {"error":"Missing or oversized mod.json."}
-	return {"error":"", "sizes":sizes}
+	return {"error":"", "sizes":sizes, "total":total, "compressed":length}

@@ -1,0 +1,8 @@
+[configuration]
+entry_symbol = "mod_archive_init"
+compatibility_minimum = "4.7"
+reloadable = false
+[libraries]
+linux.x86_64 = "res://src/native/bin/libmod_archive.so"
+windows.x86_64 = "res://src/native/bin/libmod_archive.dll"
+android.arm64 = "res://src/native/bin/libmod_archive_android.so"
