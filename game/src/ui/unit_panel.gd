@@ -256,7 +256,7 @@ func _strip(ci: CanvasItem, from: Vector2, to: Vector2, width: float, uv: Rect2)
 		return
 	var d := (to - from).normalized().orthogonal() * width * 0.5
 	var pts := PackedVector2Array([_p(from - d), _p(to - d), _p(to + d), _p(from + d)])
-	var s := _atlas.get_size()
+	var s := Vector2(256, 256)
 	var uvs := PackedVector2Array([uv.position / s, Vector2(uv.end.x, uv.position.y) / s, uv.end / s,
 		Vector2(uv.position.x, uv.end.y) / s])
 	ci.draw_primitive(pts, PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE]), uvs, _atlas)
@@ -267,9 +267,9 @@ func _region(ci: CanvasItem, dst: Rect2, uv: Rect2, mod := Color.WHITE) -> void:
 		if uv == HEIGHT_RULER_UV:
 			# These native endpoints already include half a texel. A second
 			# region clamp would inset the repeated ruler again.
-			ci.draw_texture_rect_region(_atlas, _r(dst), uv, mod, false, false)
+			ci.draw_texture_rect_region(_atlas, _r(dst), Interface800.atlas_region(_atlas, uv), mod, false, false)
 		else:
-			ci.draw_texture_rect_region(_atlas, _r(dst), uv, mod)
+			ci.draw_texture_rect_region(_atlas, _r(dst), Interface800.atlas_region(_atlas, uv), mod)
 
 
 ## Below the figure: the dark strip, the figure's backdrop and the tabs.

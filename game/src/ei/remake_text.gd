@@ -51,6 +51,22 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Original saves": ["Основные сохранения", "Ursprüngliche Spielstände"],
+	"Copy a save from the original profile. The original is kept.": ["Скопируйте основное сохранение в этот профиль. Исходное сохранение останется на месте.", "Einen Spielstand aus dem ursprünglichen Profil kopieren. Das Original bleibt erhalten."],
+	"No enabled mods provide configurable options.": ["У включённых модов нет дополнительных настроек.", "Die aktivierten Mods haben keine weiteren Einstellungen."],
+	"Installed. Turn the mod on, then apply and restart.": ["Установлено. Включите мод, затем примените изменения и перезапустите игру.", "Installiert. Mod einschalten, dann anwenden und neu starten."],
+	"Cannot use together with: %s": ["Несовместим с: %s", "Nicht zusammen verwendbar mit: %s"],
+	"Requires: %s": ["Требуется: %s", "Benötigt: %s"],
+	"This mod is for a different campaign.": ["Этот мод предназначен для другой кампании.", "Dieser Mod ist für eine andere Kampagne."],
+	"Choose mods for this profile, then apply and restart.": ["Выберите моды для этого профиля, затем примените изменения и перезапустите игру.", "Mods für dieses Profil wählen, dann anwenden und neu starten."],
+	"Enabling mods creates a separate game profile. Your existing saves stay unchanged.": ["При включении модов создаётся отдельный профиль. Ваши прежние сохранения останутся без изменений.", "Beim Aktivieren von Mods wird ein eigenes Profil erstellt. Vorhandene Spielstände bleiben unverändert."],
+	"Return to the main menu to install or enable mods.": ["Для установки и включения модов вернитесь в главное меню.", "Zum Installieren oder Aktivieren von Mods ins Hauptmenü zurückkehren."],
+	"Sandbox profiles allow cheats and keep their saves separate.": ["Профили песочницы позволяют использовать читы и хранят сохранения отдельно.", "Sandbox-Profile erlauben Cheats und speichern Spielstände getrennt."],
+	"Modded game": ["Игра с модами", "Spiel mit Mods"],
+	"Apply & restart": ["Применить и перезапустить", "Anwenden & neu starten"],
+	"Switch & restart": ["Выбрать и перезапустить", "Wechseln & neu starten"],
+	"Profiles have separate saves and enabled mods. Switching profiles restarts the game.": ["У каждого профиля свои сохранения и моды. При смене профиля игра перезапускается.", "Jedes Profil hat eigene Spielstände und Mods. Ein Profilwechsel startet das Spiel neu."],
+	"Profiles": ["Профили", "Profile"],
 	"Verifying installed textures…": ["Проверка установленных текстур…", "Installierte Texturen werden geprüft…"],
 	"The staged manifest does not match the package.": ["Описание подготовленного пакета не соответствует его содержимому.", "Das vorbereitete Manifest entspricht nicht dem Paket."],
 	"Could not unpack the downloaded archive.": ["Не удалось распаковать загруженный архив.", "Das heruntergeladene Archiv konnte nicht entpackt werden."],

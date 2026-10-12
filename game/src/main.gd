@@ -98,9 +98,7 @@ func _start() -> void:
 			menu.call_deferred("_join")
 
 
-## The first main menu: the original shows frame 0
-## Movies\Progres.bik after the startup movies while the databases and the
-## menu load (StartupScreen); tools/startup_shot.gd calls this too.
+## Complete the launch progress animation before enabling the main menu.
 func open_menu() -> Control:
 	var splash := StartupScreen.open(self)
 	if splash:
@@ -109,7 +107,7 @@ func open_menu() -> Control:
 	menu.start_game.connect(start_game)
 	add_child(menu)
 	if splash:
-		splash.finish()
+		await splash.finish()
 	return menu
 
 

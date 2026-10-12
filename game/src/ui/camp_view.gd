@@ -2093,17 +2093,17 @@ func _get_tooltip(pos: Vector2) -> String:
 	return ""
 
 
-## A sprite: `uv` in texture pixels; a negative width / height mirrors it
+## A sprite: `uv` in original 256-unit atlas coordinates; a negative width / height mirrors it
 ## (the original's u0 > u1 / v0 > v1 sprites).
 func _region(tex: String, dest: Rect2, uv: Rect2, mod := Color.WHITE) -> void:
 	if not _tex.has(tex):
 		return
 	var t: Texture2D = _tex[tex]
 	if uv.size.x >= 0.0 and uv.size.y >= 0.0:
-		draw_texture_rect_region(t, _r(dest), uv, mod)
+		draw_texture_rect_region(t, _r(dest), Interface800.atlas_region(t, uv), mod)
 		return
 	var r := _r(dest)
-	var ts := t.get_size()
+	var ts := Vector2(256, 256)
 	var u0 := uv.position / ts
 	var u1 := (uv.position + uv.size) / ts
 	draw_primitive(PackedVector2Array([r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y)]),

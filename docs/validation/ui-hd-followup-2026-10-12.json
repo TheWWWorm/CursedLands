@@ -1,0 +1,526 @@
+{
+  "date": "2026-10-12",
+  "version": "1.0.4-feedback.5",
+  "base_commit": "122293e7c577f2219238c4fa2d3d0d0f56b22c4c",
+  "scope": "Mod UI, authored HD interface atlases, rigid head attachments, first-person body clipping, launch lighting animation",
+  "source_test_checks": 462,
+  "source_test_failures": 0,
+  "source_tests": [
+    {
+      "test": "tools/mod_ui_access",
+      "label": "ui-final",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/mod_ui_access.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 11.758,
+      "checks": 61,
+      "failures": 0,
+      "details": {
+        "checks": 61,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/ui-final.log",
+      "log_sha256": "ad96dceb42ff73e64a75d34d6ff157ea9367e51a91c3234dd91cb7ced1be63a6"
+    },
+    {
+      "test": "tools/startup_animation",
+      "label": "startup-base-checked",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/startup_animation.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 23.521,
+      "checks": 6,
+      "failures": 0,
+      "details": {
+        "checks": 6,
+        "failures": 0,
+        "stages": {
+          "0": 4124139025,
+          "1": 1974911496,
+          "2": 2577475699,
+          "3": 4109896094,
+          "4": 745141086,
+          "5": 1518957293,
+          "6": 1901077337,
+          "7": 2368703210,
+          "8": 3955046723,
+          "9": 1187287849,
+          "10": 2289014953,
+          "11": 1684052707
+        }
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/startup-base-checked.log",
+      "log_sha256": "6a1aeb07d9c43335f6e455735d853882d5442a95b5edf37e6c027be52f9a8cae"
+    },
+    {
+      "test": "tools/startup_animation",
+      "label": "startup-lia",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=res://tools/startup_animation.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 22.518,
+      "checks": 6,
+      "failures": 0,
+      "details": {
+        "checks": 6,
+        "failures": 0,
+        "stages": {
+          "0": 3716192203,
+          "1": 2499183545,
+          "2": 2466640448,
+          "3": 3739780554,
+          "4": 193365125,
+          "5": 3164046173,
+          "6": 1871086421,
+          "7": 1380303451,
+          "8": 2850099129,
+          "9": 2729417160,
+          "10": 4091671173,
+          "11": 3131566825
+        }
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/startup-lia.log",
+      "log_sha256": "2470ee7a7789ccd88a3cf95f20d8d4446a351f55fd8d21ddc3b7f8a87d3276de"
+    },
+    {
+      "test": "tools/hd_interface_views",
+      "label": "hd-world-gpu",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/hd_interface_views.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 53.792,
+      "checks": 35,
+      "failures": [],
+      "details": {
+        "checks": 35,
+        "failures": []
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/hd-world-gpu.log",
+      "log_sha256": "6986fd41d2af2ccb43929845c1c486b7790f057996a58481c2fc3e8fea4457b6"
+    },
+    {
+      "test": "tools/head_attachment",
+      "label": "heads",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/head_attachment.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 5.004,
+      "checks": 36,
+      "failures": 0,
+      "details": {
+        "checks": 36,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/heads.log",
+      "log_sha256": "fe0107ad7cc779104d1a28e8f7bff9b2f8e83eec4fd6642845da2bf746988f19"
+    },
+    {
+      "test": "tools/first_person_models",
+      "label": "models-check",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/first_person_models.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 4.522,
+      "checks": 11,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/models-check.log",
+      "log_sha256": "8f342b3429fc0e95c709ce78f10ba25747bb9256247cf6ef5cf360b18aceea35"
+    },
+    {
+      "test": "tools/direct_camera_stability",
+      "label": "camera-check",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/direct_camera_stability.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 8.527,
+      "checks": 25,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/camera-check.log",
+      "log_sha256": "513c966b8d2765d306e3c7ccca55d4b430a586d7212a99863ecb35a1c0eeae7e"
+    },
+    {
+      "test": "tools/mod_profiles",
+      "label": "profile-regression",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/mod_profiles.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 4.003,
+      "checks": 83,
+      "failures": 0,
+      "details": {
+        "checks": 83,
+        "details": [],
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/profile-regression.log",
+      "log_sha256": "0ba9f97c587dffc45d6268b7f42d6cf9ad2431dcf4387916a331fa1e72098ba7"
+    },
+    {
+      "test": "tools/direct_moving_attacks",
+      "label": "moving-attacks",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/runtime",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/direct_moving_attacks.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 25.022,
+      "checks": 15,
+      "failures": [],
+      "details": {
+        "attack_starts": [
+          {
+            "clip": "uattack04",
+            "remaining": 1.65,
+            "time": 1.87
+          },
+          {
+            "clip": "uattack10",
+            "remaining": 1.65,
+            "time": 3.52
+          },
+          {
+            "clip": "uattack09",
+            "remaining": 1.65,
+            "time": 5.17
+          },
+          {
+            "clip": "uattack05",
+            "remaining": 1.65,
+            "time": 6.81999999999999
+          },
+          {
+            "clip": "uattack05",
+            "remaining": 1.65,
+            "time": 8.46999999999998
+          },
+          {
+            "clip": "uattack05",
+            "remaining": 1.65,
+            "time": 10.12
+          },
+          {
+            "clip": "uattack09",
+            "remaining": 1.65,
+            "time": 11.77
+          }
+        ],
+        "camera_motion": 0.0,
+        "checks": 15,
+        "distance": 6.29926300048828,
+        "failures": [],
+        "first_person": false,
+        "joint_angle_error": 0.0009765625,
+        "joint_position_error": 0.0,
+        "leg_changes": 943,
+        "moving_frames": 118,
+        "run": false,
+        "torso_error": 0.0009765625,
+        "weapon": "sword"
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/moving-attacks.log",
+      "log_sha256": "aade18db16eff61235987dc2204b520bf0629615d8e2e5c5b14f191d174c55f9"
+    },
+    {
+      "test": "tools/mod_downloads_ui",
+      "label": "downloads-regression",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/mod_downloads_ui.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 9.507,
+      "checks": 43,
+      "failures": 0,
+      "details": {
+        "checks": 43,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/downloads-regression.log",
+      "log_sha256": "2ce28f5e7d4ec5d3faafc38f5abd4a17d9032ae05f38d98ff012d22bff8be508"
+    },
+    {
+      "test": "tools/mod_menus",
+      "label": "menus-regression-gl",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/mod_menus.gd",
+        "--mod-tests",
+        "--package=/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/quick-recovery.eimod"
+      ],
+      "exit_code": 0,
+      "seconds": 32.029,
+      "checks": 43,
+      "failures": 0,
+      "details": {
+        "checks": 43,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/menus-regression-gl.log",
+      "log_sha256": "112aee141bc6ce67b22a15d200f203afd0e4ca17e2f403e95c924afa5bedf47e"
+    },
+    {
+      "test": "tools/hd_camp_ui",
+      "label": "hd-camp-final",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/hd_camp_ui.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 103.63,
+      "checks": 98,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/hd-camp-final.log",
+      "log_sha256": "d98e21a7a9ea1eb4cfac20ec49e657982f50620418775cb6c6589ff707e8dc10"
+    }
+  ],
+  "source_sha256": {
+    "game/project.godot": "4cf77cf99f521075a2d0f9da8a4a32fcf89176d780c78c62ff4681165e628a1f",
+    "game/src/ei/detailed_head.gd": "e0f3fb8f4c205b0745cd9a4ed80263b878622df7b08388b999e4c09184149391",
+    "game/src/ei/remake_text.gd": "902fa044fc2ec1f499b8e19c281c6a686abb4ead83d0ba5537f9f3255d8c82de",
+    "game/src/ei/unit_model.gd": "da1bb006c292581904e048849efb2648689eff54475870d58bc9d7fd3de9f739",
+    "game/src/game/direct_control.gd": "6442257743411e0e7ec86121b7f9435256588237b51df886d81a7900f6a6d8b9",
+    "game/src/game/mod_store.gd": "44492c8143c93d37670df3318dc6396aeb45c972a2399b3f2a04d28e8abaf2d8",
+    "game/src/main.gd": "99770b7709ff24376126282fc232712426095074d31b0be4f60c3a37bc879b52",
+    "game/src/ui/camp_view.gd": "0897037eecd457d93346da99eadc8225b2fe73cf8e33171145ceb4ee295e2229",
+    "game/src/ui/campaign_choices.gd": "4b9e629e96e7e20940902e8e6c6eb4344f27228ee64d48537ec846b21ee601e6",
+    "game/src/ui/dialog_panel.gd": "a64d560d1bb1d3248e20bee5f895b8ff11b7281151e89633c2ea69a64ceb019b",
+    "game/src/ui/enemy_bars.gd": "982982a66e2abf3734bc6543f9935f99d6cd66d8bfd649998f9737d3ecf802c1",
+    "game/src/ui/hud_dial.gd": "3e876e5a8359158db3968c49489e90de1ff870f41a47e72e740baa5e786b8324",
+    "game/src/ui/interface800.gd": "abb84fbe48b33aebf911624ec5e1932f19e521d88dc70330e6142a959f5bd883",
+    "game/src/ui/main_menu.gd": "a71fd2091e419429de28a8cd6a995f9cd3cc1dc3f461bea93b10b6b6f92cbc55",
+    "game/src/ui/message_log.gd": "1f0dccc93e741eedba2ba051dd04915a2d884f4807c217c26a32c2fa0bbcdcfb",
+    "game/src/ui/minimap.gd": "2434047a3358fbaecab36eb633dbee1643e81d1b8d5aa3a02e9f8a28cb54f19d",
+    "game/src/ui/mod_panel.gd": "09117f0086579e76b61bb51b2b1c675522133789f62b7f2d3c5e795bf7233088",
+    "game/src/ui/party_faces.gd": "691ddd8dff79c23809170ed39be00dc1c32d2c81632cbbebc2d594939a6b4be4",
+    "game/src/ui/settings_dialog.gd": "56f06082a33407d1bc99bc49cf544bbd33365acc731d39fa4b423514aa40e049",
+    "game/src/ui/startup_screen.gd": "23b7daee1cd605e0c3dff63f34a8034fe835185f16e4575eae09e5642bce3681",
+    "game/src/ui/travel_map.gd": "0cb06d2df42d79276baac4ad55b2ab3cee3728a8c54f6f866394c5bfb274e686",
+    "game/src/ui/tutorial_panel.gd": "1d032d6f3c659d5202fc2f0b4457f80c1f317ff197b0542c60fd96de74695fd8",
+    "game/src/ui/unit_panel.gd": "88b7a7fa85ea74e9d9017eec9ffe5811458eedff6ab077cf9c8c1e6cdd58dfd2",
+    "game/src/ui/zone_objectives.gd": "97e2b0b0b961b22fc662b3723f00322da40b79819a7aaf7818e7bda2cb438b9b",
+    "tools/tests/first_person_models.gd": "394bf1d2edc54db6c8570182bd00d35c6d3861483deec734b134650a7ae8c537",
+    "tools/tests/hd_camp_ui.gd": "09dcf2b772a7c9f0e2829bab15f01c82b1efa2915972cf425a81da52d627f2a2",
+    "tools/tests/hd_interface_views.gd": "d8bde89498f1e3042991ef1973b44a580cf09d19f165cc8fb734780fedd048c9",
+    "tools/tests/head_attachment.gd": "605a8c8e49b71a4afecc99aa6f37116732ded57d41bf4caa1836a253e473436a",
+    "tools/tests/mod_ui_access.gd": "3412432b88ac6c45bbf88ab541b96567b32f90e45e01477ed755bba2fd5042d6",
+    "tools/tests/startup_animation.gd": "5c53edc956ca8c6182d149c631c8f13af7a59795134beddd18bf5c24e0b22a63"
+  },
+  "rendered_hd_camp_screens": [
+    "Equipment and armour/weapon stats",
+    "Skills and abilities",
+    "Item shop",
+    "Spell shop",
+    "Item assembly/disassembly",
+    "Spell assembly/disassembly",
+    "Repair",
+    "Options",
+    "Load dialog",
+    "Mods while the HD package is active"
+  ],
+  "rendered_camp_resolutions": [
+    [
+      1280,
+      960
+    ],
+    [
+      2560,
+      1440
+    ]
+  ],
+  "hd_package": "community.hd-lands-textures@1.4.0 (302 original publisher textures; unchanged installed package)",
+  "manual_visual_review": [
+    "Gold HUD frames and original-colour bars; all three tutorial buttons visible.",
+    "EN/RU/DE mod menu, Off/On switch, compact high-DPI profile popup.",
+    "Camp equipment, stats, item shop, spell workshop and repair screenshots.",
+    "HD options, load dialog, and mod menu preserve border width and stone grain.",
+    "First-person walking and attack views at level and downward pitch remain clear of neck/torso obstruction."
+  ],
+  "limits": [
+    "Rendered acceptance on Linux only; Windows runtime, Android and macOS not exercised in this pass.",
+    "Campaign fixtures prepare items, experience and positions in isolated profiles; no user saves were modified.",
+    "HD Lands catalogue entry targets the base campaign, not Lost in Astral.",
+    "This pass does not change transport or repeat the previous WAN/co-op benchmarks."
+  ],
+  "package_validation": "pending",
+  "investigation_notes": [
+    "An initial GPU camp fixture was resized by the desktop window manager; its layout-size assertions failed. The corrected fixture waits for mode changes and confirms each actual viewport size. All 98 checks pass at the stated sizes.",
+    "The stock Godot editor reported compute push-constant validation diagnostics during the mod-menu GPU run (43 functional checks passed); production-template verification is pending. The OpenGL run passes without errors."
+  ]
+}

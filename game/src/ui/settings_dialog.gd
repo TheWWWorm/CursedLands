@@ -34,7 +34,13 @@ func build_shell(title: String, preferred: Vector2) -> void:
 	sample.free()
 	theme.set_stylebox("normal", "LineEdit", plate(Color(0,0,0,0.6), Color("716248"), 12))
 	theme.set_stylebox("panel", "PopupMenu", plate(Color("171710"), Color("8b7953"), 10))
-	theme.set_constant("v_separation", "PopupMenu", 14)
+	theme.set_constant("v_separation", "PopupMenu", 10)
+	for enabled in [false, true]:
+		var icon := Image.new()
+		icon.load_svg_from_string('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="26"><rect x="1" y="1" width="46" height="24" rx="12" fill="%s" stroke="#a89b76" stroke-width="2"/><circle cx="%d" cy="13" r="8" fill="%s"/></svg>' % ["#756031" if enabled else "#25251f", 35 if enabled else 13, "#f4e6b4" if enabled else "#aaa99f"])
+		var texture := ImageTexture.create_from_image(icon)
+		for suffix in ["", "_disabled"]:
+			theme.set_icon(("checked" if enabled else "unchecked") + suffix, "CheckButton", texture)
 	theme.set_stylebox("hover", "PopupMenu", plate(Interface800.BAR, Color.TRANSPARENT, 4))
 	theme.set_color("font_hover_color", "PopupMenu", INK)
 	_backdrop = Interface800.dim_layer()
@@ -101,8 +107,10 @@ func capture_background() -> void:
 
 func _scale_popups(node: Node) -> void:
 	if node is OptionButton:
-		node.get_popup().add_theme_font_size_override("font_size", roundi(20 * _ui_scale))
-		node.get_popup().add_theme_constant_override("v_separation", roundi(14 * _ui_scale))
+		# OptionButton already propagates its canvas scale to the popup.
+		# Multiplying the font here again makes 4K choices three times too big.
+		node.get_popup().add_theme_font_size_override("font_size", 20)
+		node.get_popup().add_theme_constant_override("v_separation", 10)
 	for child in node.get_children(): _scale_popups(child)
 
 func make_label(value: String, parent: Node, muted := false) -> Label:

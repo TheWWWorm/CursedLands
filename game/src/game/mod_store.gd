@@ -251,7 +251,7 @@ static func store_profile(id: String, p: Dictionary) -> String:
 	if error == "": profiles = next
 	return error
 
-static func create_profile(title: String, sandbox := false) -> String:
+static func create_profile(title: String, sandbox := false, initial_packages: Variant = null) -> String:
 	if session() != null: return "Return to the main menu to create a profile."
 	title = title.strip_edges().left(80)
 	if title.is_empty(): return "Enter a profile name."
@@ -259,6 +259,10 @@ static func create_profile(title: String, sandbox := false) -> String:
 	var p := profile().duplicate(true)
 	p.name = title
 	p.sandbox = sandbox
+	if initial_packages != null:
+		p.packages = initial_packages.duplicate()
+		var problem: String = resolve(p).error
+		if problem != "": return problem
 	p.rules = snapshot().rules
 	if not sandbox:
 		p.rules.sandbox_invulnerable = 0

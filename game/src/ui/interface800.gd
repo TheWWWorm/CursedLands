@@ -65,6 +65,13 @@ static func tex(name: String) -> Texture2D:
 	return _tex[name]
 
 
+## UI source coordinates use the original 256-unit atlas, regardless of
+## the replacement image's resolution. Keep HD texels on the GPU.
+static func atlas_region(texture: Texture2D, uv: Rect2) -> Rect2:
+	var scale := texture.get_size() / 256.0
+	return Rect2(uv.position * scale, uv.size * scale)
+
+
 static func clear_cache() -> void:
 	_tex.clear()
 

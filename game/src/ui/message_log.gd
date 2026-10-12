@@ -293,7 +293,7 @@ func _strip(from: Vector2, to: Vector2, width: float, uv: Rect2) -> void:
 		return
 	var d := (to - from).normalized().orthogonal() * width * 0.5
 	var pts := PackedVector2Array([_p(from - d), _p(to - d), _p(to + d), _p(from + d)])
-	var s := _atlas.get_size()
+	var s := Vector2(256, 256)
 	var uvs := PackedVector2Array([uv.position / s, Vector2(uv.end.x, uv.position.y) / s, uv.end / s,
 		Vector2(uv.position.x, uv.end.y) / s])
 	draw_polygon(pts, PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE]), uvs, _atlas)
@@ -308,7 +308,7 @@ func _draw() -> void:
 		var uv: Rect2 = BUTTONS[b][1]
 		var lit: bool = (mode == 0) == (b == "messages")
 		if _atlas:
-			draw_texture_rect_region(_atlas, _r(BUTTONS[b][0]), uv, Color.WHITE if lit else Color(0.5, 0.5, 0.5))
+			draw_texture_rect_region(_atlas, _r(BUTTONS[b][0]), Interface800.atlas_region(_atlas, uv), Color.WHITE if lit else Color(0.5, 0.5, 0.5))
 	# Frame: (180,−5)-(620,100), 5 wide.
 	var uvf := Rect2(4, 55, 86, 5)
 	_strip(Vector2(180, -2.5), Vector2(620, -2.5), 5.0, uvf)

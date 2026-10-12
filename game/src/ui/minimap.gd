@@ -291,7 +291,7 @@ func _strip(from: Vector2, to: Vector2, width: float, uv: Rect2) -> void:
 		return
 	var d := (to - from).normalized().orthogonal() * width * 0.5
 	var pts := PackedVector2Array([_pt(from - d), _pt(to - d), _pt(to + d), _pt(from + d)])
-	var s := _atlas.get_size()
+	var s := Vector2(256, 256)
 	var uvs := PackedVector2Array([uv.position / s, Vector2(uv.end.x, uv.position.y) / s, uv.end / s,
 		Vector2(uv.position.x, uv.end.y) / s])
 	draw_primitive(pts, PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE]), uvs, _atlas)
@@ -345,7 +345,7 @@ func _draw() -> void:
 		if uv.has_area() and _atlas:
 			# N lit while runs, + / − while held.
 			var c := 1.0 if (_north_lit > 0.0 if b == "north" else _held == b) else 0.5
-			draw_texture_rect_region(_atlas, _r(BUTTONS[b][0]), uv, Color(c, c, c))
+			draw_texture_rect_region(_atlas, _r(BUTTONS[b][0]), Interface800.atlas_region(_atlas, uv), Color(c, c, c))
 	# Frame: (615,−5)-(805,165), 5 wide, sliding with the panel.
 	var uvf := Rect2(4, 55, 86, 5)
 	_strip(Vector2(615, 2.5 - 5), Vector2(805, 2.5 - 5), 5.0, uvf)

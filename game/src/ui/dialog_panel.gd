@@ -550,7 +550,7 @@ func _frame(r: Rect2, w := 5.0, ci: CanvasItem = null, kv := Vector2.ZERO) -> vo
 		return
 	var o := [r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y)]
 	var ii := [o[0] + Vector2(w, w), o[1] + Vector2(-w, w), o[2] - Vector2(w, w), o[3] + Vector2(w, -w)]
-	var s := _ui.get_size()
+	var s := Vector2(256, 256)
 	var uo0 := Vector2(FRAME_UV[0], FRAME_UV[2]) / s
 	var uo1 := Vector2(FRAME_UV[1], FRAME_UV[2]) / s
 	var ui0 := Vector2(FRAME_UV[0], FRAME_UV[3]) / s

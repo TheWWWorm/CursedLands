@@ -28,7 +28,7 @@ extends RefCounted
 ## women: 8 of the 57 unhufe prototypes have a face texture), any worn helmet
 ## (the hd.armorNN meshes and the armoured hair variants are authored around
 ## the original hd; the face model's hair is part of its one mesh, so it
-## would poke through), and the welded body (EIUnitModel.smooth_joints).
+## would poke through). Limb smoothing retains the same head and hair.
 
 ## Complexion the fit is computed at (the body head's shape varies with it;
 ## the result is mapped to the unit's head box afterwards).

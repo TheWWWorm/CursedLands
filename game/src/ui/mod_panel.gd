@@ -9,7 +9,7 @@ var _status: Label
 var _summary: Label
 var _tabs: HFlowContainer
 var _apply: Button
-var _page := "rules"
+var _page := "mods"
 var _rules := {}
 var _values := {}
 var _base_rules := {}
@@ -29,15 +29,15 @@ var _download_progress: ProgressBar
 var _download_status: Label
 
 func _ready() -> void:
-	build_shell("Mods and rules", Vector2(980, 740))
+	build_shell("Mods and rules", Vector2(920, 660))
 	_summary = _label("", dialog_body)
 	_summary.add_theme_color_override("font_color", MUTED)
 	_tabs = HFlowContainer.new()
 	_tabs.add_theme_constant_override("h_separation", 8)
 	_tabs.add_theme_constant_override("v_separation", 8)
 	dialog_body.add_child(_tabs)
-	for page in ["rules", "profiles", "downloads", "options", "sandbox"]:
-		var button := _button({"profiles":"Profiles & mods", "downloads":"Downloads", "rules":"Game rules", "options":"Mod options", "sandbox":"Sandbox"}[page], _tabs, func(): _show_page(page))
+	for page in ["mods", "rules", "profiles", "options", "sandbox"]:
+		var button := _button({"mods":"Mods", "profiles":"Profiles", "rules":"Game rules", "options":"Mod options", "sandbox":"Sandbox"}[page], _tabs, func(): _show_page(page))
 		button.set_meta("page", page)
 		button.toggle_mode = true
 	_scroll = ScrollContainer.new()
@@ -47,29 +47,36 @@ func _ready() -> void:
 	dialog_body.add_child(_scroll)
 	_body = VBoxContainer.new()
 	_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_body.add_theme_constant_override("separation", 14)
+	_body.add_theme_constant_override("separation", 10)
 	_scroll.add_child(_body)
+	_body.minimum_size_changed.connect(_fit_height.call_deferred)
 	_status = _label("", dialog_body)
 	_status.add_theme_color_override("font_color", GOLD)
-	_status.custom_minimum_size.y = 28
+	_status.add_theme_font_size_override("font_size", 18)
 	var actions := HBoxContainer.new()
 	actions.alignment = BoxContainer.ALIGNMENT_END
 	actions.add_theme_constant_override("separation", 12)
 	dialog_body.add_child(actions)
 	_button("Back", actions, close)
-	_apply = _button("Apply changes", actions, _accept)
+	_apply = _button("Apply changes", actions, _apply_current)
 	resized.connect(_layout_rows)
 	_download = ModDownload.new()
 	add_child(_download)
 	_download.changed.connect(_download_changed)
 	_download.completed.connect(_download_completed)
 
+func _fit_height() -> void:
+	var height := minf(660.0, maxf(360.0, _surface.get_combined_minimum_size().y + _body.get_combined_minimum_size().y))
+	if absf(_preferred.y - height) < 1.0: return
+	_preferred.y = height
+	layout_shell()
+
 func _layout_rows() -> void:
 	for row in _rows:
 		if is_instance_valid(row): row.vertical = _surface.size.x < 700
 	layout_shell.call_deferred()
 
-func open(page := "rules") -> void:
+func open(page := "mods") -> void:
 	capture_background()
 	visible = true
 	var s := ModStore.session()
@@ -99,21 +106,24 @@ func _button(text: String, parent: Node, action: Callable) -> Button:
 	return make_button(text, parent, action)
 
 func _show_page(page: String) -> void:
+	if page == "downloads": page = "mods"
 	_page = page
 	for child in _body.get_children():
 		_body.remove_child(child)
 		child.queue_free()
 	_controls.clear()
 	_rows.clear()
-	_summary.text = "%s · %s · %s: %d%s" % [CampaignChoices.title(GameData.campaign_id), RemakeText.t(str(ModStore.effective().name)), RemakeText.t("Mods"), ModStore.effective().packages.size(),
+	_summary.text = "%s · %s · %s: %d%s" % [CampaignChoices.title(GameData.campaign_id), RemakeText.t("Original saves") if ModStore.active_id() == "default" else str(ModStore.effective().name), RemakeText.t("Mods"), ModStore.effective().packages.size(),
 		" · " + RemakeText.t("Sandbox saves") if ModStore.effective().get("sandbox", false) else ""]
 	for button in _tabs.get_children():
 		button.set_pressed_no_signal(button.get_meta("page") == page)
-		button.visible = button.get_meta("page") != "sandbox" or ModStore.effective().get("sandbox", false)
-	_apply.visible = page in ["rules", "options"]
+		button.visible = (button.get_meta("page") != "sandbox" or ModStore.effective().get("sandbox", false)) and (button.get_meta("page") != "options" or not ModStore.option_definitions().is_empty())
+	_apply.visible = page in ["mods", "rules", "options", "sandbox"]
+	_apply.text = RemakeText.t("Apply & restart" if page == "mods" else "Apply changes")
+	_apply.disabled = false
 	match page:
 		"profiles": _profiles_page()
-		"downloads": _downloads_page()
+		"mods": _mods_page()
 		"rules": _rules_page(false)
 		"options": _options_page()
 		"sandbox": _rules_page(true)
@@ -130,82 +140,88 @@ func _collect_controls(parent: Node) -> void:
 			_controls.append(child)
 		_collect_controls(child)
 
+func _process(_dt: float) -> void:
+	if not visible: return
+	_status.visible = not _status.text.is_empty()
+	if _page == "mods":
+		_apply.disabled = _download.busy or ModStore.session() != null or _packages == ModStore.profile().packages
+
+func _apply_current() -> void:
+	if _page != "mods":
+		_accept()
+		return
+	var error := _save_packages()
+	if error != "": _status.text = RemakeText.t(error)
+	else: ModStore.restart(get_tree())
+
+## Validate before creating anything; failed selections cannot switch profiles.
+func _save_packages() -> String:
+	var profile := ModStore.profile().duplicate(true)
+	profile.packages = _packages
+	var error: String = ModStore.resolve(profile).error
+	if error != "": return error
+	if ModStore.active_id() == "default":
+		return ModStore.create_profile(RemakeText.t("Modded game"), false, _packages)
+	return ModStore.set_packages(_packages)
+
+func _row(parent: Node) -> BoxContainer:
+	var row := BoxContainer.new()
+	row.add_theme_constant_override("separation", 10)
+	parent.add_child(row)
+	_rows.append(row)
+	return row
+
 func _profiles_page() -> void:
 	if _download.busy:
 		_label("Finish or cancel the download before changing profiles.", _body)
-		_button("Show download", _body, func(): _show_page("downloads"))
+		_button("Show download", _body, func(): _show_page("mods"))
 		return
-	var running := ModStore.session() != null
-	if running:
+	if ModStore.session() != null:
 		_label("Return to the main menu to change profiles or installed packages. Game rules and mod options remain available here.", _body)
-		for p in ModStore.effective().packages: _label(p.id + " " + p.version, _body)
 		return
-	_label("Profiles keep separate saves and network characters. Activation restarts the game. Installed versions stay available for old saves.", _body)
+	make_label("Profiles have separate saves and enabled mods. Switching profiles restarts the game.", _body, true)
+	var selection := _row(_body)
 	_chooser = OptionButton.new()
-	_chooser.custom_minimum_size.y = 44
-	_body.add_child(_chooser)
-	_chooser.add_item(RemakeText.t("Current defaults"))
+	_chooser.custom_minimum_size = Vector2(180, 44)
+	_chooser.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_chooser.fit_to_longest_item = false
+	selection.add_child(_chooser)
+	_chooser.add_item(RemakeText.t("Original saves"))
 	_chooser.set_item_metadata(0, "default")
 	for id in ModStore.profiles:
 		_chooser.add_item(str(ModStore.profiles[id].name))
 		_chooser.set_item_metadata(_chooser.item_count - 1, id)
 		if id == ModStore.active_id(): _chooser.select(_chooser.item_count - 1)
-	_chooser.item_selected.connect(func(index): _pending_profile = str(_chooser.get_item_metadata(index)))
-	_button("Use selected profile and restart", _body, func():
+	var use := _button("Switch & restart", selection, func():
 		var error := ModStore.select_profile(_pending_profile)
 		if error != "": _status.text = RemakeText.t(error)
 		else: ModStore.restart(get_tree()))
+	use.disabled = true
+	_chooser.item_selected.connect(func(index):
+		_pending_profile = str(_chooser.get_item_metadata(index))
+		use.disabled = _pending_profile == ModStore.active_id())
+	var create := _row(_body)
 	_profile_name = LineEdit.new()
 	_profile_name.placeholder_text = RemakeText.t("Name for a new profile")
 	_profile_name.max_length = 80
-	_profile_name.custom_minimum_size.y = 44
-	_body.add_child(_profile_name)
-	var create := HFlowContainer.new()
-	_body.add_child(create)
+	_profile_name.custom_minimum_size = Vector2(180, 44)
+	_profile_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	create.add_child(_profile_name)
 	_button("Create profile", create, func(): _create(false))
-	_button("Create sandbox profile", create, func(): _create(true))
-	_button("Import mod package…", _body, _import)
-	_button("Download mods…", _body, func(): _show_page("downloads"))
-	if not OS.has_feature("web") and not Portability.constrained():
-		_button("Open mods folder", _body, func():
-			DirAccess.make_dir_recursive_absolute(ModStore.ROOT)
-			OS.shell_open(ProjectSettings.globalize_path(ModStore.ROOT)))
-	if ModStore.catalog.is_empty(): _label("No mods installed. Import a .eimod or ZIP package containing mod.json.", _body)
-	var keys := ModStore.catalog.keys()
-	keys.sort()
-	for key in keys:
-		var m: Dictionary = ModStore.catalog[key]
-		var row := CheckButton.new()
-		row.text = "%s  %s" % [RemakeText.t(m.title), m.version]
-		row.clip_text = true
-		row.tooltip_text = row.text
-		row.custom_minimum_size.y = 44
-		row.button_pressed = key in _packages
-		row.disabled = ModStore.active_id() == "default"
-		var section := card(_body)
-		section.add_child(row)
-		row.toggled.connect(func(on):
-			if on: _packages.append(key)
-			else: _packages.erase(key))
-		_label(str(m.get("description", "")), section)
-		var campaigns := PackedStringArray()
-		for id in m.campaigns: campaigns.append(CampaignChoices.title(id))
-		_label(RemakeText.t("Shared gameplay" if ModSchema.gameplay(m) else "Your device") + " · " + ", ".join(campaigns), section)
-		for relation in ["requires", "after", "conflicts"]:
-			if not m.get(relation, []).is_empty(): _label(relation.capitalize() + ": " + ", ".join(m[relation]), section)
-	if not keys.is_empty():
-		_button("Activate selected mods and restart", _body, func():
-			var error := ModStore.set_packages(_packages)
-			if error != "": _status.text = RemakeText.t(error)
-			else: ModStore.restart(get_tree()))
+	var advanced := HFlowContainer.new()
+	_body.add_child(advanced)
+	_button("Create sandbox profile", advanced, func(): _create(true))
+	make_label("Sandbox profiles allow cheats and keep their saves separate.", _body, true)
 	if ModStore.active_id() != "default": _copy_page()
-	for problem in ModStore.errors: _label(problem, _body)
 
-func _downloads_page() -> void:
-	_label("Download tested mods from their original sources. After installation, enable them in a named profile and restart.", _body)
-	if ModStore.session() != null:
-		_label("Return to the main menu to import mods.", _body)
-		return
+func _mods_page() -> void:
+	var running := ModStore.session() != null
+	if running:
+		make_label("Return to the main menu to install or enable mods.", _body, true)
+	elif ModStore.active_id() == "default":
+		make_label("Enabling mods creates a separate game profile. Your existing saves stay unchanged.", _body, true)
+	else:
+		make_label("Choose mods for this profile, then apply and restart.", _body, true)
 	if _download.busy:
 		var progress_card := card(_body)
 		_label(str(_download.item.title), progress_card)
@@ -215,28 +231,65 @@ func _downloads_page() -> void:
 		progress_card.add_child(_download_progress)
 		_button("Cancel download", progress_card, _download.cancel)
 		_download_changed()
-	for item in ModCatalog.ENTRIES:
+	var keys := ModStore.catalog.keys()
+	keys.sort()
+	for key in keys:
+		var m: Dictionary = ModStore.catalog[key]
 		var section := card(_body)
-		var heading := _label(RemakeText.t(item.title) + "  " + item.version, section)
-		heading.add_theme_color_override("font_color", GOLD)
-		_label(item.description, section)
-		var actions := HFlowContainer.new()
-		actions.add_theme_constant_override("h_separation", 12)
-		actions.add_theme_constant_override("v_separation", 8)
-		section.add_child(actions)
-		var installed := ModStore.catalog.has(ModCatalog.key(item))
-		if installed:
-			_label("Installed", section)
-			_button("Choose profile…", actions, func(): _show_page("profiles")).disabled = _download.busy
-		else:
+		var row := _row(section)
+		var title := _label("%s  %s" % [RemakeText.t(m.title), m.version], row)
+		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		var toggle := CheckButton.new()
+		toggle.custom_minimum_size = Vector2(130, 44)
+		toggle.set_pressed_no_signal(key in _packages)
+		toggle.text = RemakeText.t("On" if toggle.button_pressed else "Off")
+		toggle.tooltip_text = RemakeText.t(m.title)
+		toggle.disabled = running or _download.busy or GameData.campaign_id not in m.campaigns
+		row.add_child(toggle)
+		toggle.toggled.connect(func(on):
+			if on and key not in _packages: _packages.append(key)
+			elif not on: _packages.erase(key)
+			toggle.text = RemakeText.t("On" if on else "Off"))
+		make_label(str(m.get("description", "")), section, true)
+		if GameData.campaign_id not in m.campaigns:
+			make_label("This mod is for a different campaign.", section, true)
+		# Show relevant relationships with readable titles. A conflict with a
+		# legacy package that is not even installed is not an error message.
+		for relation in ["requires", "conflicts"]:
+			var titles := PackedStringArray()
+			for id in m.get(relation, []):
+				var found := false
+				for other in ModStore.catalog.values():
+					if other.id == id:
+						titles.append(RemakeText.t(other.title)); found = true; break
+				if not found and relation == "requires": titles.append(id)
+			if not titles.is_empty():
+				make_label(RemakeText.t("Requires: %s" if relation == "requires" else "Cannot use together with: %s") % ", ".join(titles), section, true)
+	if not running:
+		for item in ModCatalog.ENTRIES:
+			if ModStore.catalog.has(ModCatalog.key(item)): continue
+			var section := card(_body)
+			_label(RemakeText.t(item.title) + "  " + item.version, section)
+			make_label(item.description, section, true)
+			var actions := HFlowContainer.new()
+			actions.add_theme_constant_override("h_separation", 12)
+			section.add_child(actions)
 			var error := ModCatalog.unavailable(item)
 			var button := _button("Download & install", actions, func(): _start_download(item.id))
 			button.disabled = _download.busy or not error.is_empty()
-			if not error.is_empty(): _label(error, section)
-		_button("Source page", actions, func(): OS.shell_open(item.source))
-		_label(RemakeText.t("By %s · Download %s · Allow %s free space") % [item.author, String.humanize_size(item.bytes), String.humanize_size(item.space_bytes)], section)
-		_label(item.source.trim_prefix("https://").trim_suffix("/"), section)
-		_label(item.notes, section)
+			_button("Source page", actions, func(): OS.shell_open(item.source))
+			if not error.is_empty(): make_label(error, section, true)
+			make_label(RemakeText.t("By %s · Download %s · Allow %s free space") % [item.author, String.humanize_size(item.bytes), String.humanize_size(item.space_bytes)], section, true)
+		var actions := HFlowContainer.new()
+		actions.add_theme_constant_override("h_separation", 12)
+		_body.add_child(actions)
+		_button("Import mod package…", actions, _import).disabled = _download.busy
+		if not OS.has_feature("web") and not Portability.constrained():
+			_button("Open mods folder", actions, func():
+				DirAccess.make_dir_recursive_absolute(ModStore.ROOT)
+				OS.shell_open(ProjectSettings.globalize_path(ModStore.ROOT)))
+	for problem in ModStore.errors: _label(problem, _body)
 
 func _start_download(id: String) -> void:
 	var error := _download.start(id)
@@ -244,14 +297,14 @@ func _start_download(id: String) -> void:
 	_show_page("downloads")
 
 func _download_changed() -> void:
-	if not _download.busy or _page != "downloads": return
+	if not _download.busy or _page != "mods": return
 	if is_instance_valid(_download_status): _download_status.text = RemakeText.t(_download.status)
 	if is_instance_valid(_download_progress): _download_progress.value = _download.fraction * 100.0
 
 func _download_completed(_error: String) -> void:
 	if visible:
 		_show_page(_page)
-		_status.text = RemakeText.t(_download.status)
+		_status.text = RemakeText.t(_download.status if _error != "" else "Installed. Turn the mod on, then apply and restart.")
 
 func _create(sandbox: bool) -> void:
 	var error := ModStore.create_profile(_profile_name.text, sandbox)
@@ -313,7 +366,7 @@ func _rules_page(sandbox: bool) -> void:
 func _options_page() -> void:
 	var definitions := ModStore.option_definitions()
 	if definitions.is_empty():
-		_label("No enabled mods provide configurable options. Use Profiles and mods to enable an installed package.", _body)
+		_label("No enabled mods provide configurable options.", _body)
 		return
 	for o in definitions:
 		var section := card(_body)
@@ -404,7 +457,7 @@ func _copy_page() -> void:
 	for file in files:
 		if file.ends_with(".sav") and not file.ends_with(".info.sav"): choices.add_item(file.trim_suffix(".sav"))
 	if choices.item_count == 0: choices.free(); return
-	_label("Copy a Current defaults save into this profile. The original save is kept.", _body)
+	_label("Copy a save from the original profile. The original is kept.", _body)
 	_body.add_child(choices)
 	_button("Copy selected save", _body, func(): _status.text = RemakeText.t(ModStore.copy_default_save(choices.get_item_text(choices.selected))))
 
@@ -432,8 +485,8 @@ func _import() -> void:
 	_modal.popup_centered_ratio(0.85)
 
 func _imported(error: String) -> void:
-	_show_page("profiles")
-	_status.text = RemakeText.t(error) if error != "" else RemakeText.t("Mod installed. Enable it in a named profile when ready.")
+	_show_page("mods")
+	_status.text = RemakeText.t(error) if error != "" else RemakeText.t("Installed. Turn the mod on, then apply and restart.")
 
 func _input(event: InputEvent) -> void:
 	if not visible or is_instance_valid(_modal): return
@@ -452,7 +505,9 @@ func pad_press(action: String, phase: String) -> bool:
 	if phase not in ["down", "repeat"]: return true
 	var focus := get_viewport().gui_get_focus_owner()
 	if action in ["cancel", "menu"]: close(); return true
-	if action == "pause": _accept(); return true
+	if action == "pause":
+		if _apply.visible and not _apply.disabled: _apply_current()
+		return true
 	if action in ["up", "down"]:
 		var index := _controls.find(focus)
 		if not _controls.is_empty(): _controls[posmod(index + (-1 if action == "up" else 1), _controls.size())].grab_focus()

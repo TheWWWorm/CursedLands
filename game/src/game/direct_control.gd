@@ -701,9 +701,9 @@ func apply_camera(dt := 0.0) -> void:
 
 func _update_view_model(model: EIUnitModel) -> void:
 	if _view_model == model: return
-	if is_instance_valid(_view_model): _view_model.set_head_hidden(false)
+	if is_instance_valid(_view_model): _view_model.set_first_person_view(false)
 	_view_model = model
-	if is_instance_valid(_view_model): _view_model.set_head_hidden(true)
+	if is_instance_valid(_view_model): _view_model.set_first_person_view(true)
 
 
 func _notification(what: int) -> void:

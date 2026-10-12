@@ -223,7 +223,7 @@ func _draw() -> void:
 
 func _region(dst: Rect2, uv: Rect2, mod: Color, plain: Color) -> void:
 	if _atlas:
-		draw_texture_rect_region(_atlas, dst, uv, mod)
+		draw_texture_rect_region(_atlas, dst, Interface800.atlas_region(_atlas, uv), mod)
 	else:
 		draw_rect(dst, Color(plain, mod.a))
 

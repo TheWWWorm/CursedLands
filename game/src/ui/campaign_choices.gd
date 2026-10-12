@@ -38,9 +38,32 @@ class StonePlate extends StyleBox:
 	@export_storage var face: StyleBoxTexture
 	@export_storage var rim: StyleBoxTexture
 	func _draw(canvas_item: RID, rect: Rect2) -> void:
-		face.draw(canvas_item, rect.grow_individual(-rim.texture_margin_left, -rim.texture_margin_top,
-			-rim.texture_margin_right, -rim.texture_margin_bottom))
-		rim.draw(canvas_item, rect)
+		# Source margins are texels; destination margins are UI units. An HD
+		# atlas must not turn a 7-unit border into a 28-unit border and consume
+		# the whole button. Draw the full-resolution sources at logical size.
+		var k := rim.texture.get_size() / 256.0
+		var l := rim.texture_margin_left / k.x
+		var r := rim.texture_margin_right / k.x
+		var t := rim.texture_margin_top / k.y
+		var b := rim.texture_margin_bottom / k.y
+		var inner := rect.grow_individual(-l, -t, -r, -b)
+		var tile := face.region_rect.size * 256.0 / face.texture.get_size()
+		for y in maxi(0, ceili(inner.size.y / tile.y)):
+			for x in maxi(0, ceili(inner.size.x / tile.x)):
+				var offset := Vector2(x, y) * tile
+				var size := tile.min(inner.size - offset)
+				face.texture.draw_rect_region(canvas_item, Rect2(inner.position + offset, size),
+					Rect2(face.region_rect.position, face.region_rect.size * size / tile), face.modulate_color)
+		var dx := [rect.position.x, inner.position.x, inner.end.x, rect.end.x]
+		var dy := [rect.position.y, inner.position.y, inner.end.y, rect.end.y]
+		var uv := rim.region_rect
+		var sx := [uv.position.x, uv.position.x + rim.texture_margin_left, uv.end.x - rim.texture_margin_right, uv.end.x]
+		var sy := [uv.position.y, uv.position.y + rim.texture_margin_top, uv.end.y - rim.texture_margin_bottom, uv.end.y]
+		for y in 3:
+			for x in 3:
+				if x == 1 and y == 1: continue
+				rim.texture.draw_rect_region(canvas_item, Rect2(dx[x], dy[y], dx[x+1]-dx[x], dy[y+1]-dy[y]),
+					Rect2(sx[x], sy[y], sx[x+1]-sx[x], sy[y+1]-sy[y]), rim.modulate_color)
 
 static func style_button(button: Button) -> void:
 	button.add_theme_font_override("font", Interface800.font())

@@ -419,14 +419,14 @@ func _draw() -> void:
 	# Buttons.
 	if _ui:
 		if mode != "travel":
-			draw_texture_rect_region(_ui, _r(BTN_CLOSE[0]), BTN_CLOSE[1])
+			draw_texture_rect_region(_ui, _r(BTN_CLOSE[0]), Interface800.atlas_region(_ui, BTN_CLOSE[1]))
 			if zones.size() > 1:
-				draw_texture_rect_region(_ui, _r(BTN_PREV[0]), BTN_PREV[1])
-				draw_texture_rect_region(_ui, _r(BTN_NEXT[0]), BTN_NEXT[1])
+				draw_texture_rect_region(_ui, _r(BTN_PREV[0]), Interface800.atlas_region(_ui, BTN_PREV[1]))
+				draw_texture_rect_region(_ui, _r(BTN_NEXT[0]), Interface800.atlas_region(_ui, BTN_NEXT[1]))
 		else:
 			if leader and can_travel():
-				draw_texture_rect_region(_ui, _r(BTN_OK[0]), BTN_OK[1])
-			draw_texture_rect_region(_ui, _r(BTN_BACK[0]), BTN_BACK[1])
+				draw_texture_rect_region(_ui, _r(BTN_OK[0]), Interface800.atlas_region(_ui, BTN_OK[1]))
+			draw_texture_rect_region(_ui, _r(BTN_BACK[0]), Interface800.atlas_region(_ui, BTN_BACK[1]))
 	# Quest rows.
 	for row in ROWS:
 		var i := top + row
@@ -477,7 +477,7 @@ func _triangle(at: Vector2, dir: Vector2, scale: float, u: float, col: Color) ->
 		return
 	var side := dir.orthogonal()
 	var pts := PackedVector2Array([_p(at), _p(at + (dir * 20.0 - side * 10.0) * scale), _p(at + (dir * 20.0 + side * 10.0) * scale)])
-	var s := _ui.get_size()
+	var s := Vector2(256, 256)
 	var uvs := PackedVector2Array([Vector2(240 + u, 226) / s, Vector2(227 + u, 254) / s, Vector2(253 + u, 254) / s])
 	draw_primitive(pts, PackedColorArray([col, col, col]), uvs, _ui)
 
@@ -496,7 +496,7 @@ func _panel(bg: Rect2, frame: Rect2) -> void:
 		var pts := PackedVector2Array()
 		for p: Vector2 in [seg[0] - d, seg[1] - d, seg[1] + d, seg[0] + d]:
 			pts.append(_p(p))
-		var s := _ui.get_size()
+		var s := Vector2(256, 256)
 		var uv := FRAME_UV
 		draw_primitive(pts, PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE]),
 			PackedVector2Array([uv.position / s, Vector2(uv.end.x, uv.position.y) / s, uv.end / s, Vector2(uv.position.x, uv.end.y) / s]), _ui)

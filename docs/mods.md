@@ -2,16 +2,16 @@
 
 Profiles and game rules were introduced in **1.0.4 Experimental 5**. The saved-session mod API remains 1; all co-op peers must use the same game build. Stable 1.0.3 does not include this feature.
 
-Open **Options → Remake → Game setup → Mods and rules** from the main menu or in-game Esc menu. The multiplayer screen also opens **Game setup**. **New Game** opens a fresh setup with standard difficulty and rules; use its **Mods and rules** button for optional changes before starting. Cancelling discards that new-game draft.
+Open **Mods and rules** directly from the main menu. During play it is also available through **Options → Remake → Game setup**. The multiplayer screen also opens **Game setup**. **New Game** opens a fresh setup with standard difficulty and rules; use its **Mods and rules** button for optional changes before starting. Cancelling discards that new-game draft.
 
 ## Playing with a profile
 
-1. Open **Profiles and mods** and create a named profile. Choose **Create sandbox profile** only if you want the sandbox commands.
-2. Import a `.eimod` or `.zip` package. Importing installs it without enabling it.
-3. Select the installed mods, then choose **Activate selected mods and restart**. To switch back, select **Current defaults** and use **Use selected profile and restart**.
-4. Configure **Game rules** and **Mod options**, then select **Apply**. **Cancel / Back** discards pending edits. In a running game, edits affect that run; from the main menu, they set the next run's defaults.
+1. On **Mods**, download a listed mod or import a `.eimod`/`.zip` package. Installation does not enable it.
+2. Turn its switch **On**, then choose **Apply & restart**. Starting from **Original saves** creates a separate **Modded game** profile in the same transaction. Existing saves are retained.
+3. Use **Profiles** to create additional named profiles, copy an original save, or switch back to **Original saves** with **Switch & restart**. Choose **Create sandbox profile** only for sandbox commands.
+4. Configure **Game rules** and any available **Mod options**, then select **Apply changes**. **Back** discards pending edits. In a running game, edits affect that run; from the main menu, they set the next run's defaults.
 
-Named profiles have separate campaign saves and original-multiplayer character folders. Current defaults keeps the existing save locations and reads legacy saves. The manager can explicitly copy an ordinary save into a named profile; its source is retained. A sandbox save or character cannot be loaded or imported into an ordinary profile through the game's save, backup or network paths.
+Named profiles have separate campaign saves and original-multiplayer character folders. Original saves keeps the existing save locations and reads legacy saves. The manager can explicitly copy an ordinary save into a named profile; its source is retained. A sandbox save or character cannot be loaded or imported into an ordinary profile through the game's save, backup or network paths.
 
 Rules say when they can change: **New game**, **At camp**, or **Live**. Guests can inspect shared rules; the host controls them. Running changes are stored in the save, so changing next-run defaults does not change an existing campaign. Package activation and profile switching require the main menu and a restart.
 
@@ -21,17 +21,17 @@ Mouse, keyboard focus and controller navigation use the same controls. D-pad up/
 
 ## HD Lands texture download (next release)
 
-From the main menu, open **Mods and rules → Downloads → HD Lands textures →
+From the main menu, open **Mods and rules → Mods → HD Lands textures →
 Download & install**. The Windows and Linux apps fetch the pinned HD Lands
 1.4.0 archive from its original publisher, verify its size and SHA-256, then
 install the texture package. Progress and cancellation remain available.
-Downloading does not enable the package: choose a named profile, select the
-installed pack, and use **Activate selected mods and restart**.
+Downloading does not enable the package: turn its switch **On**, then choose
+**Apply & restart**. A separate profile is created automatically when needed.
 
 This entry supports the base campaign, not Lost in Astral. It installs 302
 textures and the original readme/changelog; the malformed `astralold.mmp`,
 launcher settings, branding and optional artwork are omitted. Original game
-files and saves are retained. Selecting **Current defaults** and restarting
+files and saves are retained. Selecting **Original saves** and restarting
 restores the original textures. Texture choices do not need to match between
 co-op peers.
 
@@ -43,7 +43,9 @@ does not provide general legacy-mod or Jamais Vu support.
 
 The larger textures retain the map's logical tile layout, including detail
 gutters and mixed-resolution atlas layers. Authored HD atlases are not doubled
-again by the built-in HD texture option.
+again by the built-in HD texture option. Interface sprites use the original
+logical atlas coordinates at the replacement texture’s resolution; borders,
+bars, tutorial buttons and camp controls retain their layout.
 
 Package API 2 is accepted only for texture packs in this release: `textures.res`
 MMP overrides and optional `.txt`, `.md` or `.rst` documentation in
@@ -52,7 +54,7 @@ MMP overrides and optional `.txt`, `.md` or `.rst` documentation in
 gameplay options/patches and legacy scripts/maps are rejected for API 2.
 API 1 packages retain their existing capabilities and limits; the saved-session
 mod API remains 1. The existing command-line packaging/conversion tools still
-target API 1; the Downloads page creates its own texture package.
+target API 1; the in-game downloader creates its own texture package.
 
 ## Co-op compatibility
 

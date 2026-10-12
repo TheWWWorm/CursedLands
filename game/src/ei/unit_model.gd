@@ -130,12 +130,16 @@ varying float ei_k;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D surface_tex : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform vec3 unit_emission = vec3(0.0);
+// Only the controlled figure clips around the first-person eye. World
+// geometry keeps the short camera near plane; shadow geometry stays whole.
+uniform float ei_first_person_radius = 0.0;
 """ + SHARP_FETCH + WOUND_FETCH + """
 void vertex() {
 	ei_e = max(unit_emission, ei_material_emissive);
 	ei_k = 0.0;
 }
 void fragment() {
+	if (ei_first_person_radius > 0.0 && !IN_SHADOW_PASS && length(VERTEX) < ei_first_person_radius) { discard; }
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
 	vec4 t = ei_unit_tex(albedo_tex, UV);
 	if (wound_enabled) { t = ei_unit_wound(t, ei_unit_tex(wound_tex, UV)); }
@@ -963,7 +967,11 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 			var part_mat: Material = wmat if weapon_parts.has(p) else (hmat if helm_parts.has(p) else mat)
 			if not ui_preview:
 				part_mat = FigureMaterial.part_material(part_mat, fig.get("material", 0), lighting_parts)
-			if weld and morph.is_empty() and not weapon_parts.has(p) and not helm_parts.has(p):
+			# Head and hair must keep one rigid attachment. Blending the face
+			# into the chest distorts it and gives the separate hair a different
+			# motion. Retain portrait-head support when smoothing the limbs.
+			var head_part := _head != null and (n == _head or _head.is_ancestor_of(n))
+			if weld and not head_part and morph.is_empty() and not weapon_parts.has(p) and not helm_parts.has(p):
 				welded[p] = [mesh, part_mat]
 				n.set_meta("weld_mesh", welded[p])   # SeveredLimb: the part's own mesh
 				continue
@@ -993,8 +1001,8 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		hn.add_child(hm)
 
 	# Remake option gfx_detailed_heads: the HUD face model on the body
-	# (DetailedHead; not with a helmet or the welded body).
-	if not weld and helm_layer == "" and nodes.has("hd") and mesh_for.get("hd", "") == "hd":
+	# (DetailedHead; not with a helmet).
+	if helm_layer == "" and nodes.has("hd") and mesh_for.get("hd", "") == "hd":
 		var face := DetailedHead.face_names(proto, race, complexion,
 			int(unit.get("hair", proto.get("hair", 0))))
 		var head_mi: MeshInstance3D = null
@@ -1254,6 +1262,23 @@ func set_head_hidden(hidden: bool) -> void:
 		if hidden: _head_visible = _head.visible
 		_head.visible = false if hidden else _head_visible
 	if is_instance_valid(_welded_head): _welded_head.visible = not hidden and _head_visible
+
+
+## The stabilized eye no longer follows the animated neck. Clip only nearby
+## pixels of this model so a walking/casting torso cannot fill the view.
+## Materials here belong to this model; shared portrait-head materials are
+## below the hidden head and deliberately excluded.
+func set_first_person_view(on: bool) -> void:
+	set_head_hidden(on)
+	_set_view_clip(self, 0.4 if on else 0.0)
+
+func _set_view_clip(node: Node, radius: float) -> void:
+	if node == _head: return
+	if node is MeshInstance3D:
+		for i in node.mesh.get_surface_count():
+			var material := node.get_active_material(i) as LitMaterial
+			if material: material.set_shader_parameter("ei_first_person_radius", radius)
+	for child in node.get_children(): _set_view_clip(child, radius)
 
 
 ## A stable eye anchor from the authored resting pose. Reading its tracks

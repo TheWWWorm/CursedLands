@@ -503,7 +503,7 @@ func _strip(from: Vector2, to: Vector2, width: float, right: bool) -> void:
 	var pts := PackedVector2Array()
 	for p in [from - d, to - d, to + d, from + d]:
 		pts.append(p * _k() + ref)
-	var s := _ui.get_size()
+	var s := Vector2(256, 256)
 	var uv := FRAME_UV
 	var uvs := PackedVector2Array([uv.position / s, Vector2(uv.end.x, uv.position.y) / s, uv.end / s,
 		Vector2(uv.position.x, uv.end.y) / s])
@@ -534,7 +534,7 @@ func _draw_hud() -> void:
 	# Buttons.
 	if _ui:
 		for b: Array in [BTN_LEFT, BTN_RIGHT] + ([] if _nocamp else [BTN_CAMP]):
-			_hud.draw_texture_rect_region(_ui, _r(b[0]), b[1])
+			_hud.draw_texture_rect_region(_ui, _r(b[0]), Interface800.atlas_region(_ui, b[1]))
 	# Hovered place (top-right).
 	if _hover < 0:
 		return

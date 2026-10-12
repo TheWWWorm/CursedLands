@@ -21,7 +21,7 @@ func _ready()->void:
 		model.refresh_detailed_head()
 		check(not model._head.is_visible_in_tree() and model._head.transform==pose,"hide head without deforming animation bones, weld "+str(weld))
 		if weld:
-			check(model._welded_head!=null and not model._welded_head.visible and model.get_node("Skeleton/Body").visible,"welded body stays visible with head hidden")
+			check(model._welded_head==null and not model._head.visible and model.get_node("Skeleton/Body").visible,"welded body stays visible with head hidden")
 		model.set_part_visible("hd",true)
 		check(not model._head.visible,"equipment/severed-part refresh preserves first-person hiding")
 		model.set_head_hidden(false)

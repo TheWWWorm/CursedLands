@@ -244,7 +244,7 @@ func _get_tooltip(at: Vector2) -> String:
 
 func _region(dst: Rect2, uv: Rect2, mod := Color.WHITE) -> void:
 	if _atlas:
-		draw_texture_rect_region(_atlas, _r(dst), uv, mod)
+		draw_texture_rect_region(_atlas, _r(dst), Interface800.atlas_region(_atlas, uv), mod)
 	else:
 		draw_rect(_r(dst), mod * Color(0.6, 0.45, 0.25))
 
@@ -299,7 +299,7 @@ func _strip(from: Vector2, to: Vector2, uv: Rect2, mod: Color) -> void:
 	if _atlas == null:
 		draw_colored_polygon(pts, mod * Color(0.6, 0.45, 0.25))
 		return
-	var s := _atlas.get_size()
+	var s := Vector2(256, 256)
 	var uvs := PackedVector2Array([uv.position / s, Vector2(uv.end.x, uv.position.y) / s, uv.end / s,
 		Vector2(uv.position.x, uv.end.y) / s])
 	draw_primitive(pts, PackedColorArray([mod, mod, mod, mod]), uvs, _atlas)

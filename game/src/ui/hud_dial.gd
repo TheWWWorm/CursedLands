@@ -194,20 +194,21 @@ static func gait_icon(g: int) -> Texture2D:
 	if src and g >= 0 and g < 4:
 		if src.is_compressed():
 			src.decompress()
-		const S := 28
+		var scale := float(src.get_width()) / 256.0
+		var S := roundi(28 * scale)
 		var a0 := g * 22.5
 		var am := deg_to_rad(a0 + 11.25)
 		var c := Vector2(cos(am), sin(am)) * 58.0   # dial offset, y up
 		var img := Image.create(S, S, false, Image.FORMAT_RGBA8)
 		for y in S:
 			for x in S:
-				var d := Vector2(c.x - S * 0.5 + x + 0.5, c.y + S * 0.5 - y - 0.5)
+				var d := Vector2(c.x - 14.0 + (x + 0.5) / scale, c.y + 14.0 - (y + 0.5) / scale)
 				var r := d.length()
 				var ang := rad_to_deg(atan2(d.y, d.x))
 				if r < 36.0 or r > 76.0 or ang < a0 - 1.0 or ang > a0 + 23.5:
 					continue
 				# Image row = 256 - v, v = 254 - d.y (see _uv).
-				var px := Vector2i(int(2.0 + d.x), int(2.0 + d.y))
+				var px := Vector2i(int((2.0 + d.x) * scale), int((2.0 + d.y) * scale))
 				if px.x >= 0 and px.y >= 0 and px.x < src.get_width() and px.y < src.get_height():
 					img.set_pixel(x, y, src.get_pixelv(px))
 		tex = ImageTexture.create_from_image(img)
