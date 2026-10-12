@@ -79,10 +79,15 @@ func _ready() -> void:
 	panel.open(true, item_shop); camp = panel._camp
 	check(camp._tex.campinfo.get_width() > 256 and camp._tex.campslots.get_width() > 256, "camp buttons and equipment slots retain full HD sheets")
 	GameData._window_gen += 1
-	get_tree().root.mode = Window.MODE_WINDOWED
+	# A tiling desktop can retain its own window size. Exercise that actual
+	# surface separately; the Xvfb run verifies both fixed target sizes.
+	var native_window := OS.get_cmdline_user_args().has("--native-window")
+	if not native_window: get_tree().root.mode = Window.MODE_WINDOWED
 	for i in 20: await get_tree().process_frame
-	for shape: Vector2i in [Vector2i(1280,960), Vector2i(2560,1440)]:
-		get_tree().root.size = shape
+	var shapes: Array[Vector2i] = [Vector2i(1280,960), Vector2i(2560,1440)]
+	if native_window: shapes.assign([Vector2i(get_viewport().get_visible_rect().size)])
+	for shape: Vector2i in shapes:
+		if not native_window: get_tree().root.size = shape
 		for i in 20: await get_tree().process_frame
 		check(get_viewport().get_visible_rect().size == Vector2(shape), "requested viewport is actually rendered: " + str(shape))
 		for screen: String in CampView.MODES:

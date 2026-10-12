@@ -476,7 +476,7 @@
     "game/src/ui/unit_panel.gd": "88b7a7fa85ea74e9d9017eec9ffe5811458eedff6ab077cf9c8c1e6cdd58dfd2",
     "game/src/ui/zone_objectives.gd": "97e2b0b0b961b22fc662b3723f00322da40b79819a7aaf7818e7bda2cb438b9b",
     "tools/tests/first_person_models.gd": "394bf1d2edc54db6c8570182bd00d35c6d3861483deec734b134650a7ae8c537",
-    "tools/tests/hd_camp_ui.gd": "09dcf2b772a7c9f0e2829bab15f01c82b1efa2915972cf425a81da52d627f2a2",
+    "tools/tests/hd_camp_ui.gd": "6178a29b8ef1a98d6e18b5af2073394901a3f50b12a7d82fb0bf9457d84629dd",
     "tools/tests/hd_interface_views.gd": "d8bde89498f1e3042991ef1973b44a580cf09d19f165cc8fb734780fedd048c9",
     "tools/tests/head_attachment.gd": "605a8c8e49b71a4afecc99aa6f37116732ded57d41bf4caa1836a253e473436a",
     "tools/tests/mod_ui_access.gd": "3412432b88ac6c45bbf88ab541b96567b32f90e45e01477ed755bba2fd5042d6",
@@ -502,6 +502,10 @@
     [
       2560,
       1440
+    ],
+    [
+      4988,
+      2742
     ]
   ],
   "hd_package": "community.hd-lands-textures@1.4.0 (302 original publisher textures; unchanged installed package)",
@@ -518,9 +522,581 @@
     "HD Lands catalogue entry targets the base campaign, not Lost in Astral.",
     "This pass does not change transport or repeat the previous WAN/co-op benchmarks."
   ],
-  "package_validation": "pending",
+  "package_validation": "passed on Linux; Windows export and package structure verified, Windows runtime not tested",
   "investigation_notes": [
-    "An initial GPU camp fixture was resized by the desktop window manager; its layout-size assertions failed. The corrected fixture waits for mode changes and confirms each actual viewport size. All 98 checks pass at the stated sizes.",
-    "The stock Godot editor reported compute push-constant validation diagnostics during the mod-menu GPU run (43 functional checks passed); production-template verification is pending. The OpenGL run passes without errors."
+    "The desktop window manager retained a 4988x2742 GPU surface instead of the two requested window sizes. The original GPU run therefore failed viewport-size assertions. The explicit --native-window fixture passes 52 checks at the actual desktop size, and the OpenGL/Xvfb fixture passes 98 checks at confirmed 1280x960 and 2560x1440 sizes. Both use the shipped PCK.",
+    "The stock editor reported compute push-constant diagnostics during a mod-menu GPU run. The shipped patched runtime passes the same 43 checks with no errors. A further 127-check Vulkan texture comparison finds byte-for-byte identical output and mipmaps against the established upsampler, including one-pixel and non-square edges, real game textures, teardown and reuse.",
+    "Xvfb runs report the unavailable X11 input method warning; functional/rendered checks pass without script or renderer errors."
+  ],
+  "source_commit": "287561d8309ac94fd5d6a1d0699c97606c19b398",
+  "game_tree": "516ca040db499aefe88d87c018ea07148514b37d",
+  "package_test_checks": 464,
+  "package_test_failures": 0,
+  "package_tests": [
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/mod_menus",
+      "label": "package-menus-gpu",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.5-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/mod_menus.gd",
+        "--mod-tests",
+        "--package=/home/llm2x/Documents/EI/local/scratchpad/hd-textures-release-20261012/quick-recovery.eimod"
+      ],
+      "exit_code": 0,
+      "seconds": 19.517,
+      "checks": 43,
+      "failures": 0,
+      "details": {
+        "checks": 43,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/package-menus-gpu.log",
+      "log_sha256": "5936e4d5223ac43f2024a7d2ac21a4e4d60e479375033925f002c7a2773b7b9a"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/startup_animation",
+      "label": "package-startup-base",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.5-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/startup_animation.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 20.767,
+      "checks": 6,
+      "failures": 0,
+      "details": {
+        "checks": 6,
+        "failures": 0,
+        "stages": {
+          "0": 4124139025,
+          "1": 1974911496,
+          "2": 2577475699,
+          "3": 4109896094,
+          "4": 745141086,
+          "5": 1518957293,
+          "6": 1901077337,
+          "7": 2368703210,
+          "8": 3955046723,
+          "9": 1187287849,
+          "10": 2289014953,
+          "11": 1684052707
+        }
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/package-startup-base.log",
+      "log_sha256": "7a7c0b3441e8f02573e0558b30afea03eca99b82b2235aa9d6e4b9ee3ed72f07"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/mod_ui_access",
+      "label": "package-ui",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.5-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/mod_ui_access.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 10.011,
+      "checks": 61,
+      "failures": 0,
+      "details": {
+        "checks": 61,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/package-ui.log",
+      "log_sha256": "1b8e52a9de0948fa060d77fc95d9fe3d437aa5f34889505ebe8493bd27570ae0"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/head_attachment",
+      "label": "package-heads",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.5-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/head_attachment.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 3.503,
+      "checks": 36,
+      "failures": 0,
+      "details": {
+        "checks": 36,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/package-heads.log",
+      "log_sha256": "e9fb3c5c6f213a0ffb270244db3de200299b58519708ca65bafa27819edb716b"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/hd_resident_texture",
+      "label": "package-resident",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.5-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/hd_resident_texture.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 8.256,
+      "checks": 127,
+      "failures": 0,
+      "details": {
+        "checks": 127,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "changed_bytes": 0,
+            "name": "(1, 1)",
+            "output_bytes": 20,
+            "peak_delta": 0,
+            "source_size": "(1, 1)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(1, 1)",
+            "output_bytes": 20,
+            "peak_delta": 0,
+            "source_size": "(1, 1)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(1, 7)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(1, 7)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(1, 7)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(1, 7)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(7, 1)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(7, 1)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(7, 1)",
+            "output_bytes": 156,
+            "peak_delta": 0,
+            "source_size": "(7, 1)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(3, 5)",
+            "output_bytes": 312,
+            "peak_delta": 0,
+            "source_size": "(3, 5)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(3, 5)",
+            "output_bytes": 312,
+            "peak_delta": 0,
+            "source_size": "(3, 5)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(32, 64)",
+            "output_bytes": 43692,
+            "peak_delta": 0,
+            "source_size": "(32, 64)",
+            "wrap": false
+          },
+          {
+            "changed_bytes": 0,
+            "name": "(32, 64)",
+            "output_bytes": 43692,
+            "peak_delta": 0,
+            "source_size": "(32, 64)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "govenorhouse00",
+            "output_bytes": 1398100,
+            "peak_delta": 0,
+            "source_size": "(256, 256)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "tree02",
+            "output_bytes": 5592404,
+            "peak_delta": 0,
+            "source_size": "(512, 512)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "rikarrowsmoke",
+            "output_bytes": 1398100,
+            "peak_delta": 0,
+            "source_size": "(256, 256)",
+            "wrap": true
+          },
+          {
+            "changed_bytes": 0,
+            "name": "after restart",
+            "output_bytes": 340,
+            "peak_delta": 0,
+            "source_size": "(4, 4)",
+            "wrap": true
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/package-resident.log",
+      "log_sha256": "05a9e8bd1b5b48b3cbd15ffb96dd1d9176c8c9b41728e05c0f70a343a389332a"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/hd_camp_ui",
+      "label": "package-camp-gl",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.5-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/hd_camp_ui.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 99.373,
+      "checks": 98,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/package-camp-gl.log",
+      "log_sha256": "e9785ab178a474350e13243860a8f9c886b3bc6323b998bda9d71e8169fa13d4"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/hd_camp_ui",
+      "label": "package-camp-native",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.5-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/hd_camp_ui.gd",
+        "--mod-tests",
+        "--native-window"
+      ],
+      "exit_code": 0,
+      "seconds": 50.535,
+      "checks": 52,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/package-camp-native.log",
+      "log_sha256": "56f9080818227b8f64d0b49b0a4d947101fd5e9e129cfaf76eed8146db6a15a5"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/hd_interface_views",
+      "label": "package-hd-world",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.5-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/hd_interface_views.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 60.29,
+      "checks": 35,
+      "failures": [],
+      "details": {
+        "checks": 35,
+        "failures": []
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/package-hd-world.log",
+      "log_sha256": "4ff51e4b6f30aaffe34d506f2cb1b2c40f1aa40d044fc2f49b8d5dd06671e1bf"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/startup_animation",
+      "label": "package-startup-lia",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.5-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/startup_animation.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 17.515,
+      "checks": 6,
+      "failures": 0,
+      "details": {
+        "checks": 6,
+        "failures": 0,
+        "stages": {
+          "0": 3716192203,
+          "1": 2499183545,
+          "2": 2466640448,
+          "3": 3739780554,
+          "4": 193365125,
+          "5": 3164046173,
+          "6": 1871086421,
+          "7": 1380303451,
+          "8": 2850099129,
+          "9": 2729417160,
+          "10": 4091671173,
+          "11": 3131566825
+        }
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/package-startup-lia.log",
+      "log_sha256": "7b1ca342f9a116ef8855e058e3d891d279c02996d39aea30bfd9db7373226d45"
+    }
+  ],
+  "package_integrity": {
+    "game_source_unchanged_since_export": true,
+    "linux_windows_script_bytecode_identical": true,
+    "compiled_scripts": 283,
+    "resources": 720,
+    "tools_and_test_fixtures_in_production_pack": false,
+    "original_game_data_or_saves_in_package": false,
+    "runtime_fixture_loading": "External test scripts load against the actual production executable and sibling PCK; no test overlay PCK.",
+    "platforms": {
+      "linux-x86_64": {
+        "version": "1.0.4-feedback.5",
+        "source_commit": "287561d8309ac94fd5d6a1d0699c97606c19b398",
+        "game_tree": "516ca040db499aefe88d87c018ea07148514b37d",
+        "protocol": 21,
+        "platform": "linux-x86_64",
+        "target_os_runtime_tested": true,
+        "engine_patch_count": 12,
+        "compiled_scripts": 283,
+        "resource_count": 720,
+        "files": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "b6a54d6feff0eb8bcb06d7677d0297902d449cec09b2e717b9aff89ece5764f4",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+          "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+        }
+      },
+      "windows-x86_64": {
+        "version": "1.0.4-feedback.5",
+        "source_commit": "287561d8309ac94fd5d6a1d0699c97606c19b398",
+        "game_tree": "516ca040db499aefe88d87c018ea07148514b37d",
+        "protocol": 21,
+        "platform": "windows-x86_64",
+        "target_os_runtime_tested": false,
+        "engine_patch_count": 12,
+        "compiled_scripts": 283,
+        "resource_count": 720,
+        "files": {
+          "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+          "CursedLands.pck": "b6a54d6feff0eb8bcb06d7677d0297902d449cec09b2e717b9aff89ece5764f4",
+          "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+          "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+        }
+      }
+    }
+  },
+  "renderers": [
+    "Shipped patched Godot 4.7 Linux runtime: Vulkan Forward+ on NVIDIA GeForce RTX 3090",
+    "Shipped patched Godot 4.7 Linux runtime: OpenGL Compatibility on llvmpipe through Xvfb"
+  ],
+  "packaged_screenshots": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/profiles/package-camp-gl/data/godot/app_userdata/Cursed Lands/hd-weapons-1280.png",
+      "sha256": "3866d6faa48adaabe30a57c1a142a527606178befb5ccfe44180e65289b87830",
+      "size": [
+        1280,
+        960
+      ]
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/profiles/package-camp-gl/data/godot/app_userdata/Cursed Lands/hd-spells-1280.png",
+      "sha256": "28c4d911deb04dea5dbe5d523cd3c69a79f88ba9f115cab4bc867637466f118b",
+      "size": [
+        1280,
+        960
+      ]
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/profiles/package-camp-gl/data/godot/app_userdata/Cursed Lands/hd-itemtrade-2560.png",
+      "sha256": "88f26b50ea986fddfe73b495fc02b174acb4ec11f30a77fff4e90687b22658c8",
+      "size": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/profiles/package-camp-gl/data/godot/app_userdata/Cursed Lands/hd-spelltrade-2560.png",
+      "sha256": "bd568659511299030c4554015fa2f03c26ad91e9b6ad756b935fc61b124a5c9b",
+      "size": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/profiles/package-camp-gl/data/godot/app_userdata/Cursed Lands/hd-itemconstr-2560.png",
+      "sha256": "2c4bf153a0c635bfd28f0435aa0901ef887f3f79bbea850eebf08acf041ed24a",
+      "size": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/profiles/package-camp-gl/data/godot/app_userdata/Cursed Lands/hd-spellconstr-2560.png",
+      "sha256": "bbafee60daaf4fce80d0394b988d0f124aa40c0285ea00728acc17b876d41f1f",
+      "size": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/profiles/package-camp-gl/data/godot/app_userdata/Cursed Lands/hd-repair-1280.png",
+      "sha256": "1bc98e81e771cb5ea63b46ff1e2ce7115baa492e5d35a28779ca3cd94fd50b17",
+      "size": [
+        1280,
+        960
+      ]
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/profiles/package-camp-native/data/godot/app_userdata/Cursed Lands/hd-mods-mounted.png",
+      "sha256": "a65022d632229e410bd3c0d66fad477e73e041764fef8e6de73e109d6f5665cc",
+      "size": [
+        4988,
+        2742
+      ]
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/profiles/package-hd-world/data/godot/app_userdata/Cursed Lands/hd-tutorial.png",
+      "sha256": "0d83849abd247caa37990fa3bf3b48cc343e333f2dd80e7b000eb3fd8e56e049",
+      "size": [
+        5120,
+        2880
+      ]
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/profiles/package-hd-world/data/godot/app_userdata/Cursed Lands/first-person-walk-down.png",
+      "sha256": "06d8692b23164c8c146d42b51a2e8e1dd4041d908862b73e5ad356b3dc7c6319",
+      "size": [
+        5120,
+        2880
+      ]
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/profiles/package-hd-world/data/godot/app_userdata/Cursed Lands/first-person-attack-level.png",
+      "sha256": "94d3c9f0bcb2241b7cfc139903ce05e0e3f449e8914acd6997ad2b178ace5d90",
+      "size": [
+        5120,
+        2880
+      ]
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-feedback-ui-20261012/profiles/package-hd-world/data/godot/app_userdata/Cursed Lands/third-person-walk.png",
+      "sha256": "e23fa6de4cde7cfb5cbad1fe294713702734246cd3e40cbb01c6d61766f656d3",
+      "size": [
+        5120,
+        2880
+      ]
+    }
   ]
 }
