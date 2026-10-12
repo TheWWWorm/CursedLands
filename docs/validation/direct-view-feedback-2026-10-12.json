@@ -804,6 +804,125 @@
       "errors": [],
       "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/running-down.log",
       "log_sha256": "d9902699d32f8d353985116937cfefa9754fdc936fe3cd397c30d675186ebd14"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_running_down",
+      "label": "package-running-down",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.8-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/first_person_running_down.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 51.035,
+      "checks": 28,
+      "failures": [],
+      "details": {
+        "checks": 28,
+        "failures": [],
+        "measurements": [
+          {
+            "case": "armor=false fov=75",
+            "distance": 26.0911217480898,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 357,
+            "seconds": 6
+          },
+          {
+            "case": "armor=false fov=50",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=false fov=110",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=75",
+            "distance": 26.0911217480898,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=50",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          },
+          {
+            "case": "armor=true fov=110",
+            "distance": 26.0980074852705,
+            "duplicate_frames": 0,
+            "frames": 360,
+            "pose_samples": 16,
+            "rim_vertices_visible": 0,
+            "run_frames": 360,
+            "seconds": 6
+          }
+        ]
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/package-running-down.log",
+      "log_sha256": "9f15d1dc8ba93119e8e32960c703ec168010b1b1200dfcf91d49ec8cb14311b7"
+    },
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_settings",
+      "label": "package-controls",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.8-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/direct_settings.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 7.255,
+      "checks": 44,
+      "failures": 0,
+      "details": {},
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/package-controls.log",
+      "log_sha256": "1d56e14b82e7c8bbbaa5a715e6993c7209690bb267fc6b038738e190dbdfc339"
     }
   ],
   "issues": [
@@ -883,7 +1002,8 @@
     "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/running-down/data/godot/app_userdata/Cursed Lands/running-down-armortrue-fov5-frame230.png",
     "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/running-down/data/godot/app_userdata/Cursed Lands/running-down-armortrue-fov12-frame100.png",
     "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/ingos-hd/data/godot/app_userdata/Cursed Lands/shadow-complete-true.png",
-    "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/ingos-hd/data/godot/app_userdata/Cursed Lands/ingos-hud-guide2.png"
+    "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/ingos-hd/data/godot/app_userdata/Cursed Lands/ingos-hud-guide2.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/package-running-down/data/godot/app_userdata/Cursed Lands/running-down-armortrue-fov5-frame100.png"
   ],
   "limits": [
     "Scripted tests inject controls and sample deterministic authority ticks; they are not a full chapter playthrough.",
@@ -1177,5 +1297,98 @@
     "game/src/game/fx/water_current_shader.gd": "2f8bf1a57a3e3953ae3e504fdce635c100cdd34a63b74a192826ba4ad1c56442",
     "game/src/game/fx/contact_shadows.gd": "9e7eed47d131fffcbacb961e35e610e2920ac57e230c6a51f05eca362267ac76",
     "game/src/game/fx/ambient_ground.gd": "443d0e07738ef50f59c773a2b8125e9cb41bab25f894d11540c339823d5521fd"
+  },
+  "source_commit": "b25c5ac51d588638867a948c8ce706f6393b32ad",
+  "game_tree": "72aa8381e80db43dd586fff9cb6dbb4eaf386ed7",
+  "package_validation": {
+    "version": "1.0.4-feedback.8",
+    "source_files_unchanged_during_export": true,
+    "compile_and_export": [
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/package-stage",
+          "--editor",
+          "--import",
+          "--quit"
+        ],
+        "exit": 0,
+        "seconds": 9.135,
+        "errors": []
+      },
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/package-stage",
+          "--export-pack",
+          "Linux",
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.8-linux-x86_64/CursedLands.pck"
+        ],
+        "exit": 0,
+        "seconds": 5.874,
+        "errors": []
+      },
+      {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/package-stage",
+          "--export-pack",
+          "Windows",
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.8-windows-x86_64/CursedLands.pck"
+        ],
+        "exit": 0,
+        "seconds": 5.674,
+        "errors": []
+      }
+    ],
+    "platforms": {
+      "linux-x86_64": {
+        "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.8-linux-x86_64",
+        "info": {
+          "version": "1.0.4-feedback.8",
+          "source_commit": "b25c5ac51d588638867a948c8ce706f6393b32ad",
+          "game_tree": "72aa8381e80db43dd586fff9cb6dbb4eaf386ed7",
+          "protocol": 21,
+          "platform": "linux-x86_64",
+          "target_os_runtime_tested": true,
+          "engine_patch_count": 12,
+          "compiled_scripts": 284,
+          "resource_count": 722,
+          "files": {
+            "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+            "CursedLands.pck": "7e4870ac5e41fe765070b6244878804457c94d734f3e9803345867e51c647c5f",
+            "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+            "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+          }
+        }
+      },
+      "windows-x86_64": {
+        "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.4-feedback.8-windows-x86_64",
+        "info": {
+          "version": "1.0.4-feedback.8",
+          "source_commit": "b25c5ac51d588638867a948c8ce706f6393b32ad",
+          "game_tree": "72aa8381e80db43dd586fff9cb6dbb4eaf386ed7",
+          "protocol": 21,
+          "platform": "windows-x86_64",
+          "target_os_runtime_tested": false,
+          "engine_patch_count": 12,
+          "compiled_scripts": 284,
+          "resource_count": 722,
+          "files": {
+            "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+            "CursedLands.pck": "7e4870ac5e41fe765070b6244878804457c94d734f3e9803345867e51c647c5f",
+            "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+            "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+          }
+        }
+      }
+    },
+    "published": false
   }
 }
