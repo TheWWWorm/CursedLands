@@ -84,7 +84,7 @@ func _setup_ui() -> void:
 	var lbl := Label.new()
 	lbl.text = "Map:"
 	row.add_child(lbl)
-	_picker = OptionButton.new()
+	_picker = ScrollOptionButton.new()
 	_picker.item_selected.connect(func(i: int): _load(_picker.get_item_text(i)))
 	row.add_child(_picker)
 	_objects_toggle = CheckBox.new()

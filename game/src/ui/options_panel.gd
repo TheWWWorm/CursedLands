@@ -198,7 +198,7 @@ func _ready() -> void:
 	add_child(_board)
 	_tutorial = TutorialPanel.new()
 	add_child(_tutorial)
-	_preset_picker = OptionButton.new()
+	_preset_picker = ScrollOptionButton.new()
 	_preset_picker.fit_to_longest_item = false
 	CampaignChoices.style_button(_preset_picker)
 	add_child(_preset_picker)

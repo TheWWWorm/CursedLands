@@ -181,7 +181,7 @@ func _profiles_page() -> void:
 		return
 	make_label("Profiles have separate saves and enabled mods. Switching profiles restarts the game.", _body, true)
 	var selection := _row(_body)
-	_chooser = OptionButton.new()
+	_chooser = ScrollOptionButton.new()
 	_chooser.custom_minimum_size = Vector2(180, 44)
 	_chooser.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_chooser.fit_to_longest_item = false
@@ -342,7 +342,7 @@ func _rules_page(sandbox: bool) -> void:
 			var note := _label(help, text)
 			note.add_theme_color_override("font_color", MUTED)
 			note.add_theme_font_size_override("font_size", 16)
-			var choice := OptionButton.new()
+			var choice := ScrollOptionButton.new()
 			choice.custom_minimum_size = Vector2(220, 46)
 			choice.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			choice.size_flags_horizontal = Control.SIZE_FILL
@@ -452,7 +452,8 @@ func _sandbox(action: String) -> void:
 func _copy_page() -> void:
 	var base := CampaignProfile.save_directory(GameData.campaign_id)
 	var files := DirAccess.get_files_at(base) if DirAccess.dir_exists_absolute(base) else PackedStringArray()
-	var choices := OptionButton.new()
+	var choices := ScrollOptionButton.new()
+	choices.fit_to_longest_item = false
 	choices.custom_minimum_size.y = 44
 	for file in files:
 		if file.ends_with(".sav") and not file.ends_with(".info.sav"): choices.add_item(file.trim_suffix(".sav"))

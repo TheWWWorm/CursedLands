@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-12",
+  "version": "1.0.4-feedback.10",
+  "scope": [
+    "Bound long save/profile/rule/graphics/hero/map dropdowns to the visible display with a scrollable list.",
+    "Retain logical font sizing at high UI scales and reveal the selected entry on the first opening.",
+    "Reopen with fresh bounds after window resizing; keep short menus compact."
+  ],
+  "source_checks": [
+    {
+      "test": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/long_dropdowns",
+      "label": "dropdown-long-final",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/runtime",
+        "--rendering-method",
+        "forward_plus",
+        "--render-thread",
+        "safe",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.4-experimental-5-20261011/repo/tools/tests/long_dropdowns.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 14.76,
+      "checks": 91,
+      "failures": 0,
+      "details": {
+        "cases": [
+          {
+            "content_scale": 1.0,
+            "entries": 64,
+            "label": "1280x720-saves",
+            "position": "(204, 352)",
+            "scroll_end": 1767.0,
+            "scroll_max": 1772.0,
+            "size": "(864, 360)"
+          },
+          {
+            "content_scale": 1.83333337306976,
+            "entries": 64,
+            "label": "2560x1440-saves",
+            "position": "(480, 772)",
+            "scroll_end": 1767.0,
+            "scroll_max": 1772.0,
+            "size": "(1584, 660)"
+          },
+          {
+            "content_scale": 2.77083325386047,
+            "entries": 64,
+            "label": "3840x2160-saves",
+            "position": "(711, 1155)",
+            "scroll_end": 1768.0,
+            "scroll_max": 1773.0,
+            "size": "(2394, 997)"
+          },
+          {
+            "content_scale": 1.0,
+            "entries": 64,
+            "label": "540x960-saves",
+            "position": "(40, 592)",
+            "scroll_end": 1767.0,
+            "scroll_max": 1772.0,
+            "size": "(452, 360)"
+          },
+          {
+            "content_scale": 1.0,
+            "entries": 64,
+            "label": "800x600-saves",
+            "position": "(40, 232)",
+            "scroll_end": 1767.0,
+            "scroll_max": 1772.0,
+            "size": "(712, 360)"
+          },
+          {
+            "content_scale": 1.0,
+            "entries": 42,
+            "label": "1280x720-profiles",
+            "position": "(204, 290)",
+            "scroll_end": 1041.0,
+            "scroll_max": 1046.0,
+            "size": "(577, 360)"
+          }
+        ],
+        "checks": 91,
+        "failures": 0
+      },
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/dropdown-long-final.log",
+      "log_sha256": "cd954f9a5a685676e7808a1ff7b7b05da4fccf8d6dbd527f18102d5f6127dd41"
+    }
+  ],
+  "rendering": "Linux NVIDIA RTX 3090, Godot 4.7 Forward+, synthetic input routed through the parent viewport to the embedded popup.",
+  "visual_checks": [
+    "540x960 narrow viewport",
+    "3840x2160 scaled viewport"
+  ],
+  "limitations": [
+    "Windows package is cross-built; Windows runtime validation is not performed.",
+    "No physical touchscreen validation is performed."
+  ],
+  "previous_gameplay_validation": "direct-figure-shape-2026-10-12.json",
+  "compiled_package_checks": [],
+  "screenshots": {
+    "540x960": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/dropdown-long-final/data/godot/app_userdata/Cursed Lands/dropdown-540x960-saves.png",
+      "sha256": "47c599bcf83c798fa8e17cfe9935f0c5e7b54ab3ff4bfc0779530fb454cb588a"
+    },
+    "3840x2160": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ingos-direct-feedback-20261012/profiles/dropdown-long-final/data/godot/app_userdata/Cursed Lands/dropdown-3840x2160-saves.png",
+      "sha256": "c282264bf573d7f9ef7c206008890ad1182b9db6d332fde0401ddd6bd1cbc395"
+    }
+  }
+}
