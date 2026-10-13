@@ -3302,6 +3302,7 @@ func _sold_to(rec: Dictionary, item: String) -> void:
 		table = String(r.table)
 		key = String(r.base)
 	if table in ["weapons", "armors", "quick_items", "spell_prototypes", "spell_modifiers"] and key != "":
+		if not Shops.learns_prototype(table, GameData.db.find(table, key)): return
 		var l: Array = rec.sold.get_or_add(table, [])
 		if not key in l:
 			l.append(key)
@@ -3445,7 +3446,15 @@ func spell_constr_offered(sid: int) -> bool:
 ## a ready container, including old saves and zero-rune spells.
 func _spell_constr(cmd: Dictionary, player: int) -> void:
 	var res := _spell_constr_apply(cmd, player)
-	broadcast({"t": "constr_result", "to": player, "req": int(cmd.get("req", 0)), "ok": not res.is_empty(),
+	# A guest's private purse is installed only during apply_command. Publish
+	# after that scope unwinds so the result cannot outrun its final inventory,
+	# including when the shared simulation is paused.
+	_finish_spell_constr.call_deferred(player, int(cmd.get("req", 0)), res)
+
+
+func _finish_spell_constr(player: int, req: int, res: Dictionary) -> void:
+	sync_state()
+	broadcast({"t": "constr_result", "to": player, "req": req, "ok": not res.is_empty(),
 		"op": String(res.get("op", "")), "items": res.get("items", []), "where": String(res.get("where", ""))})
 
 
@@ -3535,7 +3544,6 @@ func _spell_constr_apply(cmd: Dictionary, player: int) -> Dictionary:
 	else:
 		out.items.append("spell:" + built)
 		state.items.append("spell:" + built)
-	sync_state()
 	return out
 
 

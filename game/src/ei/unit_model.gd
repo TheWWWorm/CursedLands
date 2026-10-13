@@ -823,7 +823,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		var t1: int = a.get("texture1", -1)
 		if t1 < 0 or not ARMOR_PREFIX.has(a.type):
 			continue
-		var layer := "%s_%02d.%s.%d" % [ARMOR_PREFIX[a.type], t1, am[1].get("code", ""), a.get("texture2", 0)]
+		var layer := Items.equipment_layer("armors", a, am[1], mask)
 		if a.type == "helm":
 			# The 128 px helm atlas is separate from the 256 px body atlas
 			# . Stretching it over the body paints the arms / face.
@@ -869,7 +869,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		var mat: Dictionary = item.mat
 		weapon_surface = SurfaceResponse.equipment(mat)
 		if WEAPON_PREFIX.has(wd.type):
-			weapon_layer = ("%s_%02d.%s.%d" % [WEAPON_PREFIX[wd.type], t1, mat.get("code", ""), wd.get("texture2", 0)])
+			weapon_layer = Items.equipment_layer("weapons", wd, mat, mask)
 		if WEAPON_MESH.has(wd.type):
 			for idx in [t1, t1 - 1]:   # "%02d" of the weapon record (texture1)
 				var v: String = WEAPON_MESH[wd.type] % idx

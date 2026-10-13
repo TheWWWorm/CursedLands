@@ -1309,6 +1309,7 @@ func constr_result(e: Dictionary) -> void:
 	s_wait = false
 	var items: Array = e.get("items", [])
 	if bool(e.get("ok", false)) and not items.is_empty():
+		_ui_sound("buttons\\camp\\buy.wav")
 		s_runes.clear()
 		s_rune_from.clear()
 		s_spell = Items.spell_code(String(items[0]))

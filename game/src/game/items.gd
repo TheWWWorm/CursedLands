@@ -103,8 +103,7 @@ static func look(id: String) -> Dictionary:
 		var m := ("initwe%s%dweapon" if i.table == "weapons" else "initar%s%darmor") % [codes[t], n]
 		if not GameData.has_figure(m + ".fig"):
 			return {}
-		return {"model": m, "layer": "%s_%02d.%s.%d" % [codes[t], n, String(i.mat.get("code", "")),
-			int(i.row.get("texture2", 0))]}
+		return {"model": m, "layer": equipment_layer(i.table, i.row, i.mat)}
 	var fmt: String = {"quick_items": "initqi%ditem", "quest_items": "initqu%ditem"}.get(i.table, "")
 	var model := fmt % n if fmt else ""
 	var prefix: String = {"quest_items": "quitem", "loot_items": "litem"}.get(i.table, "qitem")
@@ -114,6 +113,38 @@ static func look(id: String) -> Dictionary:
 			and GameData.textures.has(tex + "." + code + ".mmp"):
 		tex += "." + code
 	return {"model": model, "texture": tex} if model and GameData.has_figure(model + ".fig") else {}
+
+
+## Unique equipment has only its authored skins. Older shop stock can contain
+## other materials: retain those items' stats, wear and magic, but use a real
+## skin for the same prototype in both inventory and equipped models.
+static func equipment_layer(table: String, row: Dictionary, mat: Dictionary, mask := "unhuma") -> String:
+	var codes: Array = ["sw", "ax", "dg", "sp", "hm", "bw", "cb"] if table == "weapons" \
+		else ["hl", "pl", "lg", "sh", "pt", "bt", "gl"]
+	var type := int(row.get("type_id", -1))
+	if type < 0 or type >= codes.size(): return ""
+	var format := "%s_%02d.%%s.%d" % [codes[type], int(row.get("texture1", 0)), int(row.get("texture2", 0))]
+	var layer := format % String(mat.get("code", ""))
+	if GameData.redress == null or GameData.redress.has(mask + layer + ".mmp") \
+			or bool(row.get("deconstructable", false)):
+		return layer
+	for candidate: Dictionary in GameData.db.table("materials"):
+		if String(candidate.get("type", "")).to_lower() != String(row.get("material_type", "")).to_lower(): continue
+		var authored := format % String(candidate.get("code", ""))
+		if GameData.redress.has(mask + authored + ".mmp"): return authored
+	return layer
+
+
+## Material variants of a fixed story item share its authored localized name.
+## This also repairs display of variants retained in existing saves.
+static func _special_text(i: Dictionary) -> String:
+	if i.table not in ["weapons", "armors"] or bool(i.row.get("deconstructable", false)): return ""
+	var prefix := "weapon" if i.table == "weapons" else "armor"
+	for mat: Dictionary in GameData.db.table("materials"):
+		if String(mat.get("type", "")).to_lower() != String(i.row.get("material_type", "")).to_lower(): continue
+		var text := GameData.text("%s %s %s" % [prefix, String(i.base).replace(" ", "_"), String(mat.name).to_lower().replace(" ", "_")])
+		if text: return text
+	return ""
 
 
 ## The spell an item is enchanted with ("" if none).
@@ -384,7 +415,13 @@ static func title(id: String) -> String:
 		var t := GameData.text(key)
 		if t:
 			return t.get_slice("\n", 0).strip_edges()
-	var name := String(i.base).capitalize()
+	var special := _special_text(i)
+	var name := special.get_slice("\n", 0).strip_edges() if special else String(i.base).capitalize()
+	# Some fixed NPC equipment has no item-name entry at all. Its localized
+	# item type is still preferable to exposing an internal prototype name.
+	if special.is_empty() and i.table in ["weapons", "armors"] and not bool(i.row.get("deconstructable", false)):
+		var type := type_text(id)
+		if type: name = type
 	if i.material:
 		var m := GameData.text("matshort " + key_mat).get_slice("\n", 0).strip_edges()
 		name += " (%s)" % (m if m else String(i.material).capitalize())
@@ -422,6 +459,11 @@ static func flavor(id: String) -> String:
 			var lines := Array(t.split("\n")).map(func(x): return String(x).strip_edges())
 			lines.pop_front()
 			return " ".join(lines.filter(func(x): return x != "")).strip_edges()
+	var special := _special_text(i)
+	if special:
+		var lines := Array(special.split("\n")).map(func(x): return String(x).strip_edges())
+		lines.pop_front()
+		return " ".join(lines.filter(func(x): return x != "")).strip_edges()
 	return ""
 
 

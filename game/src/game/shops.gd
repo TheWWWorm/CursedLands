@@ -101,6 +101,13 @@ static func _lc(v) -> String:
 	return String(v).to_lower()
 
 
+## Fixed story equipment can be bought back as the exact sold item, but its
+## prototype is not a recipe for random stock or blueprints. Old saves retain
+## their sale history; ignore these entries when generating future stock.
+static func learns_prototype(table: String, row: Dictionary) -> bool:
+	return table not in ["weapons", "armors"] or bool(row.get("deconstructable", false))
+
+
 ## the record's prototype lists (+ what was sold here).
 static func lists(id: int, sold: Dictionary) -> Dictionary:
 	var out := {"_idx": id - 1}
@@ -116,7 +123,7 @@ static func lists(id: int, sold: Dictionary) -> Dictionary:
 			if seen.has(n):
 				continue
 			for row in GameData.db.table(t):
-				if _lc(row.get(key, "")) == n:
+				if _lc(row.get(key, "")) == n and learns_prototype(t, row):
 					rows.append(row)
 					seen[n] = true
 					break

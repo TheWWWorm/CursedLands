@@ -13,6 +13,8 @@
 - Restore mouse-wheel scrolling in inventory and shop item rows.
 - Reset filters and scrolling when switching shop activities; show relevant spell, construction and repair categories by default.
 - Exclude quest items from shop stock and reject attempts to purchase them.
+- Publish spell-constructor inventory changes before confirmation, including paused co-op, so assembled spells and returned runes appear immediately.
+- Keep sold unique equipment available for exact buyback without generating unsupported variants or blueprints; restore authored skins and localized descriptions for existing variants without changing their stats or enchantments.
 
 See [release notes](docs/releases/1.0.7.md) for compatibility and platform limits.
 
