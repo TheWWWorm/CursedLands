@@ -1,0 +1,462 @@
+{
+  "release": "1.0.5",
+  "date": "2026-10-13",
+  "status": "qualified for stable publication",
+  "versioning": "Semantic Versioning 2.0.0; compatible fixes following stable 1.0.4.",
+  "base_commit": "24afdad352a8fd591adf61919cd88f6ec85ac618",
+  "game_source_commit": "3e7777698bee85193ff1fce6d6cbec1a773e1528",
+  "game_tree": "31c8ddfb14b9c7bac2b85b01b23161cb86270c15",
+  "scope": "HD Lands 1.5.0 catalogue and Gipat/Yandex fallback, responsive cancellation, and camp rune border/quantity spacing. Existing stable background verification and platform gates retained.",
+  "linux_release_checks": [
+    {
+      "suite": "mod_downloads",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.5-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/mod_downloads.gd",
+        "--mod-tests",
+        "--fixture=/home/llm2x/Documents/EI/local/scratchpad/mod-downloads-20261012/fixtures"
+      ],
+      "exit_code": 0,
+      "seconds": 2.117,
+      "errors": [],
+      "result": {
+        "checks": 74,
+        "failures": 0
+      },
+      "name": "deterministic",
+      "checks": 74,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/release-deterministic.log",
+      "log_sha256": "0a808dcb78493034ec6862c3c81c2f6bf40426147fff17e96920b24465bcd375"
+    },
+    {
+      "suite": "mod_downloads_live",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.5-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/mod_downloads_live.gd",
+        "--mod-tests",
+        "--download-real"
+      ],
+      "exit_code": 0,
+      "seconds": 36.524,
+      "errors": [],
+      "result": {
+        "backup": false,
+        "checks": 807,
+        "failures": 0,
+        "frames": 4379,
+        "max_installer_frame_ms": 54.847,
+        "seconds": 33.31
+      },
+      "name": "primary",
+      "checks": 807,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/release-primary.log",
+      "log_sha256": "e5958bc1665fcaa88d38a9b1c088b21aa75baecc30cccb7bacf9768005472ca3"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.5-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/mod_downloads_stall.gd",
+        "--mod-tests",
+        "--stall-port=58595",
+        "--stall-cert=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/tls/cert.pem"
+      ],
+      "exit_code": 0,
+      "seconds": 2.532,
+      "errors": [],
+      "result": {
+        "checks": 12,
+        "failures": 0
+      },
+      "name": "stall",
+      "checks": 12,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/release-stall.log",
+      "log_sha256": "6159666fed7bd7948b359dfd99c85ca1319ed7469299233dcb497a75ae2bc3fb"
+    },
+    {
+      "suite": "mod_downloads_cancel",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.5-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/mod_downloads_cancel.gd",
+        "--mod-tests",
+        "--archive=/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/downloads/hdlands-1-5-0.7z"
+      ],
+      "exit_code": 0,
+      "seconds": 3.77,
+      "errors": [],
+      "result": {
+        "checks": 14,
+        "failures": 0
+      },
+      "name": "cancel",
+      "checks": 14,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/release-cancel.log",
+      "log_sha256": "85bf3de95eb7528059122712c778408f9a9c82677f913cb25c873f8061d4053e"
+    },
+    {
+      "suite": "mod_downloads_ui",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.5-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/mod_downloads_ui.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 3.72,
+      "errors": [],
+      "result": {
+        "checks": 43,
+        "failures": 0
+      },
+      "name": "ui",
+      "checks": 43,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/release-ui.log",
+      "log_sha256": "444ba660ed0b06454a0fa402f0851cbc03dfc4c5cd8d918b53532aca1b9174c1"
+    },
+    {
+      "suite": "camp_inventory_ui",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.5-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/camp_inventory_ui.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 93.964,
+      "errors": [],
+      "result": {
+        "checks": 88,
+        "failures": 0
+      },
+      "name": "camp",
+      "checks": 88,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/release-camp.log",
+      "log_sha256": "3cabed4e507e003b3fdb9d81596593635d401e53555f777daa4fb999cd5d25a6"
+    },
+    {
+      "suite": "mod_downloads_world",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.5-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/mod_downloads_world.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 111.439,
+      "errors": [],
+      "result": {
+        "checks": 16,
+        "failures": 0
+      },
+      "name": "world",
+      "checks": 16,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/release-world.log",
+      "log_sha256": "bbdb0c6b6d377e7da82e25737784a4106191871dd242882173bae29905c138bf"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.5-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/hd_lands_upgrade.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 6.725376265938394,
+      "errors": [],
+      "result": {
+        "checks": 15,
+        "failures": 0,
+        "restart": false
+      },
+      "name": "upgrade",
+      "checks": 15,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/release-upgrade.log",
+      "log_sha256": "bded1279e963678b470e217257f653550367c87a0322fadf8f4d69907faf5754"
+    },
+    {
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.5-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/hd_lands_upgrade.gd",
+        "--mod-tests",
+        "--upgrade-readback"
+      ],
+      "exit_code": 0,
+      "seconds": 6.325977951986715,
+      "errors": [],
+      "result": {
+        "checks": 7,
+        "failures": 0,
+        "restart": true
+      },
+      "name": "upgrade-restart",
+      "checks": 7,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/release-upgrade-restart.log",
+      "log_sha256": "3057666aedb154a89a5538031672e55a754d82563072940f0f51a858f45b99b2"
+    }
+  ],
+  "linux_passed_checks": 1076,
+  "texture_readback": {
+    "textures": 390,
+    "bytes": 806182008,
+    "all_payloads_match_independent_original_archive_recipe": true,
+    "manifest_sha256": "56b454970f5e63ed122fc36f0cbc729015070d44834d640f09361a4f3d41479d"
+  },
+  "linux_visual_run": {
+    "command": [
+      "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.5-linux-x86_64/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--rendering-method",
+      "gl_compatibility",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/visual_review.gd",
+      "--mod-tests"
+    ],
+    "exit_code": 0,
+    "seconds": 47.45862524502445,
+    "errors": [],
+    "completed": true,
+    "result": {
+      "mods": {
+        "api": 1,
+        "campaign": "cursed_lands",
+        "name": "HD Lands 1.5 visual review 4060105",
+        "packages": [
+          {
+            "digest": "58fa1e802c4f14f8fc29cb383f25f71eb625fdc83a59307079e3a292099f9120",
+            "gameplay": false,
+            "id": "community.hd-lands-textures",
+            "version": "1.5.0"
+          }
+        ],
+        "profile": "p83e30abfc4e2af1e93bf4f67",
+        "revision": 0,
+        "rules": {
+          "armor_formula": 0,
+          "auto_exit": 0,
+          "coop_clock": 1,
+          "coop_full_xp": 1,
+          "coop_scale": 2,
+          "coop_share_loot": 1,
+          "difficulty": 0,
+          "distant_ai": 0,
+          "free_run": 0,
+          "mechanism_motion": 0,
+          "merc_travel": 0,
+          "revive": 1,
+          "sandbox_invulnerable": 0,
+          "sandbox_mana": 0,
+          "sp_full_xp": 0,
+          "stamina_regen": 0,
+          "start_zones": 1,
+          "unit_fog": 1
+        },
+        "sandbox": false,
+        "values": {}
+      },
+      "version": "1.0.5"
+    }
+  },
+  "visual_review": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/visual/spell-shop-1280.png",
+      "sha256": "bd945c407b56143d808b0d1ba90585c392c12d320d9b0605ed96e1ad73112e5e",
+      "observation": "HD Lands 1.5.0: eight rune icons remain inside the upper-left spell border, clear of quantity 20 and price 6600."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/visual/spell-constructor-1024.png",
+      "sha256": "c68a2d5052c1273f24d34dce0f60df82faf9ff033401c0e91a0b67c5bb6b76c4",
+      "observation": "HD Lands 1.5.0: upper and lower rune overlays retain border padding at 1024x768."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/visual/field-hud-1280.png",
+      "sha256": "b32949211ecf3431295dace034fbe7e65f17e509cae8874d0fe503dfba0bf658",
+      "observation": "HD Lands 1.5.0 active in gz1g; terrain, character, minimap, bars and spell HUD rendered."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/profiles/primary/data/godot/app_userdata/Cursed Lands/downloaded-hd-lands-village.png",
+      "sha256": "b85660c9091eb451071ad6a89a680269be375a8739ac5699bf7f644641524bc4",
+      "observation": "Downloaded texture pack renders the bz1g village at its authored HD resolution."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/android-camp/spell-constructor-runes.png",
+      "sha256": "206569fec29b7546e19ff468048da93d349f357e05bb19fb6410e3f817f6c7a8",
+      "observation": "Retroid: original-texture spell constructor keeps rune icons inside the border and away from quantities."
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/profiles/ui/data/godot/app_userdata/Cursed Lands/downloads-ru-1280.png",
+      "sha256": "ea888d98c5ed66963ea548739e3a991bda6282865610f40cf08472f840baf272",
+      "observation": "Russian catalog displays HD Lands 1.5.0, download and source actions within the panel."
+    }
+  ],
+  "upgrade": {
+    "versions": [
+      "1.4.0",
+      "1.5.0"
+    ],
+    "checks": 22,
+    "real_package_manifests": true,
+    "uses_existing_profile": true,
+    "menu_switches_and_apply_path": true,
+    "old_save_bytes_unchanged": true,
+    "progress_loads_after_process_restart": true,
+    "old_package_retained": true
+  },
+  "android_checks": [
+    {
+      "suite": "camp_inventory_ui",
+      "checks": 88,
+      "failures": 0,
+      "renderer": "gl_compatibility",
+      "engine_log_sha256": "cd2902879fcb24b327a865edceb5ee31806db4bdf83059f964b838bed60caada",
+      "fixture_sha256": {
+        "dispatch.gd": "40b9f001783da1af716127696cec64cac3a22f3644b2882088cd7e4c5a378408",
+        "request.json": "c6ce8b49e681dd620e6a63b9c00f8a6ca4475278400cf91cf469d2b2ad5017f0",
+        "tests/camp_inventory_ui.gd": "07a5b70baebe7b9a964dee50348358851b1658db55486510cd5bd2b29682ce37"
+      }
+    }
+  ],
+  "android_passed_checks": 88,
+  "android_qualification": {
+    "device": "Retroid Pocket 5",
+    "mode": "Separate private QA package; 284 production scripts and all native libraries identical to the public APK, with a private test entry only in main.gdc. Original textures; HD download remains disabled on Android.",
+    "private_audit": {
+      "same_production_scripts_except": [
+        "assets/src/main.gdc"
+      ],
+      "matching_scripts": 284,
+      "matching_native_libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "private_apk_sha256": "298d012b833152ee06024445d0f9d636b34b62f607dea5413424189ac2016a33"
+    },
+    "restoration": {
+      "original_private_apk_restored": true,
+      "normal_package_version_unchanged": true,
+      "private_profiles_settings_saves_restored": true,
+      "restored_private_apk_sha256": "961975fc5c277c4e23b2da42d21429eda0439070734609f0101e0a6f3e991aea",
+      "normal_package_version": [
+        "versionCode=18 minSdk=24 targetSdk=36",
+        "versionName=1.0.3"
+      ]
+    }
+  },
+  "build": {
+    "compiled_scripts": 285,
+    "production_scripts_identical_across_four_platforms": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "linux_windows_engine_patches": 12,
+    "android_version_code": 28,
+    "android_signed_with_existing_certificate": true,
+    "android_debuggable": false,
+    "macos_stock_engine": true,
+    "windows_macos_runtime_tested": false
+  },
+  "component_hashes": {
+    "linux-x86_64": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "01004d396849fea64e2a461cf10a8b522f60928cd8427f69965a78c479a7ab7e",
+      "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+      "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+    },
+    "windows-x86_64": {
+      "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+      "CursedLands.pck": "01004d396849fea64e2a461cf10a8b522f60928cd8427f69965a78c479a7ab7e",
+      "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+      "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+    },
+    "macos-universal": {
+      "CursedLands.zip": "8ae63d2d2e6ad6611715d0dc0ae1d1a60603c42df2552d9b2e49fc6b57dd2492"
+    }
+  },
+  "android_apk_sha256": "f927a4feb856118fff83aff835927ca733a88162edf59ee6d24fd3b92515d204",
+  "mod_tools": {
+    "standalone_tests": 19,
+    "example_byte_identical": true,
+    "exact_source_readback": true
+  },
+  "limits": [
+    "Windows and macOS were cross-built and package-audited, not runtime-tested on their target OS. macOS is unsigned and not notarized.",
+    "Gipat full download, checksum, extraction, texture decode/mount and independent payload readback passed. Backup routing and verification passed deterministic tests; a complete live Yandex transfer was not verified because the final storage host stalled in earlier bounded attempts.",
+    "The HD Lands catalogue download remains limited to Windows/Linux and the base campaign.",
+    "Linux rendered checks used OpenGL compatibility on llvmpipe. Android camp input was synthetic; this does not cover physical touch use or resolve the earlier Realme compatibility limit.",
+    "No complete campaign playthrough or Internet/ZeroTier end-to-end test was performed for this patch.",
+    "The hosted browser export was not rebuilt for this desktop/mobile release."
+  ]
+}

@@ -48,6 +48,11 @@ and restarting restores the original textures. Texture choices do not need to
 match between co-op peers. This texture package cannot be enabled alongside the
 full converter package `legacy.hd-lands`.
 
+To update an existing HD Lands 1.4.0 profile, keep that profile selected, download
+and install 1.5.0, switch **1.4.0 Off** and **1.5.0 On**, then choose
+**Apply & restart**. Continue the same save afterward. The update is manual;
+1.4.0 remains installed so you can switch back using the same controls.
+
 The archive is 272.7 MiB and installation requires 2 GiB free storage. Its
 solid 7z decoder temporarily uses approximately 0.8 GiB additional memory.
 This download is disabled on Android pending device qualification; the browser
