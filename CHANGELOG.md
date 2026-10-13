@@ -13,7 +13,7 @@
 - Group identical items into co-op trade stacks, using eight distinct-item slots
   and preserving quantities and item variants.
 - Reduce the Alt body-part selector to half its previous width and height, with
-  matching mouse-selection geometry.
+  pie-shaped sections, full-section highlighting and matching mouse-selection geometry.
 
 See [release notes](docs/releases/1.0.6.md) for compatibility and platform limits.
 

@@ -28,6 +28,7 @@ var hints: Array = []
 var _views: Array[ItemView] = []
 var _t := 0.0
 var _content_scale := 1.0
+var _pie_sections := false
 
 
 func _ready() -> void:
@@ -42,9 +43,10 @@ func _ready() -> void:
 		_views.append(v)
 
 
-func open(new_entries: Array, preselect := -1, content_scale := 1.0) -> void:
+func open(new_entries: Array, preselect := -1, content_scale := 1.0, pie_sections := false) -> void:
 	entries = new_entries
 	_content_scale = content_scale
+	_pie_sections = pie_sections
 	selected = preselect if preselect >= 0 and preselect < entries.size() else -1
 	_t = 0.0
 	visible = true
@@ -145,6 +147,30 @@ func _place_items() -> void:
 			v.modulate = Color.WHITE if (entries[i] as Dictionary).get("enabled", true) else Color(0.45, 0.45, 0.45)
 
 
+## Boundaries follow the same nearest-angle sectors used by flick().
+func _draw_sectors(c: Vector2, inner: float, outer: float, k: float) -> void:
+	for i in entries.size():
+		var angle := angle_of(i)
+		var before := 360.0
+		var after := 360.0
+		for j in entries.size():
+			if i == j: continue
+			before = minf(before, fposmod(angle - angle_of(j), 360.0))
+			after = minf(after, fposmod(angle_of(j) - angle, 360.0))
+		var start := deg_to_rad(angle - before * 0.5)
+		var end := deg_to_rad(angle + after * 0.5)
+		var points := PackedVector2Array()
+		for step in 17:
+			var a := lerpf(start, end, step / 16.0)
+			points.append(c + Vector2(sin(a), -cos(a)) * outer)
+		for step in 17:
+			var a := lerpf(end, start, step / 16.0)
+			points.append(c + Vector2(sin(a), -cos(a)) * inner)
+		draw_colored_polygon(points, Interface800.BAR if i == selected else CELL)
+		points.append(points[0])
+		draw_polyline(points, BRONZE_HI if i == selected else BRONZE, 1.5 * k, true)
+
+
 func _draw() -> void:
 	if entries.is_empty():
 		return
@@ -156,6 +182,8 @@ func _draw() -> void:
 	var font := Interface800.font()
 	# The backing disc and its bronze ring.
 	draw_circle(c, r + cell * 1.35, Interface800.PANEL)
+	if _pie_sections:
+		_draw_sectors(c, r * 0.52, r + cell * 1.3, k)
 	draw_arc(c, r + cell * 1.35, 0.0, TAU, 96, BRONZE_DARK, 4.0 * k, true)
 	draw_arc(c, r + cell * 1.3, 0.0, TAU, 96, BRONZE, 1.5 * k, true)
 	draw_arc(c, r * 0.52, 0.0, TAU, 64, BRONZE, 1.5 * k, true)
@@ -172,9 +200,10 @@ func _draw() -> void:
 		var sel := i == selected
 		var on: bool = e.get("on", false)
 		var enabled: bool = e.get("enabled", true)
-		draw_circle(p, cell + 3.0 * k, Color(0, 0, 0, 0.55))
-		draw_circle(p, cell, Interface800.BAR if sel else CELL)
-		draw_arc(p, cell, 0.0, TAU, 48, BRONZE_HI if sel or on else BRONZE, (3.0 if sel else 2.0) * k, true)
+		if not _pie_sections:
+			draw_circle(p, cell + 3.0 * k, Color(0, 0, 0, 0.55))
+			draw_circle(p, cell, Interface800.BAR if sel else CELL)
+			draw_arc(p, cell, 0.0, TAU, 48, BRONZE_HI if sel or on else BRONZE, (3.0 if sel else 2.0) * k, true)
 		var mod := Color.WHITE if enabled else Color(0.4, 0.4, 0.4)
 		var tex: Texture2D = e.get("icon")
 		var strip: Array = e.get("strip", [])
@@ -187,7 +216,7 @@ func _draw() -> void:
 			draw_texture_rect(tex, Rect2(centre - Vector2(s, s) * 0.5, Vector2(s, s)), false, mod)
 			if not caption.is_empty():
 				draw_string(font, p + Vector2(-cell, cell * 0.68), caption, HORIZONTAL_ALIGNMENT_CENTER,
-					cell * 2.0, int(12.0 * k), Interface800.TEXT)
+					cell * 2.0, maxi(10, int(12.0 * k)) if _pie_sections else int(12.0 * k), Interface800.TEXT)
 		elif String(e.get("item", "")) == "":
 			var short := String(e.get("short", e.get("label", "")))
 			var fs := int(13.0 * k)
