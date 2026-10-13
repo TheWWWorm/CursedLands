@@ -1,6 +1,6 @@
 extends Node
 ## Cancel real solid-archive extraction and destroy its owner while a worker is
-## active. Supply --archive=<original HD Lands 1.4.0 7z> and private XDG dirs.
+## active. Supply --archive=<reviewed HD Lands 7z> and private XDG dirs.
 var checks := 0
 var failures := 0
 
@@ -43,7 +43,7 @@ func _ready() -> void:
 			owner.free()
 		check(Time.get_ticks_msec() - began < 10000, "cancellation/destruction joins promptly")
 		check(not DirAccess.dir_exists_absolute(pending), "cancelled extraction is removed")
-		check(not ModStore.catalog.has("community.hd-lands-textures@1.4.0"), "cancelled worker never publishes")
+		check(not ModStore.catalog.has(ModCatalog.key(ModCatalog.entry("community.hd-lands-textures"))), "cancelled worker never publishes")
 	check(ModStore.profile() == profile and ModStore.data_revision == revision, "cancellation preserves the active game configuration")
 	print("MOD_DOWNLOADS_CANCEL ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

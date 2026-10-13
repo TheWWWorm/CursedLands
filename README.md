@@ -8,7 +8,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.0.4**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.4), available for Linux, Windows, Android and macOS. It includes first- and third-person controls, mod profiles, co-op improvements, dialogue highlights, localized item text, save dropdowns and automatic save copying into new mod profiles. See the [release notes](docs/releases/1.0.4.md) for changes, compatibility and platform limits.
+The current stable release is [**1.0.5**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.5), available for Linux, Windows, Android and macOS. It updates the optional HD Lands textures to 1.5.0, prefers Gipat with Yandex Disk as backup, and keeps shop rune icons inside their borders and clear of quantities. See the [release notes](docs/releases/1.0.5.md) and [versioning policy](docs/versioning.md).
 
 ## Screenshots
 
@@ -70,7 +70,7 @@ Training purchases apply immediately. The default interface hides the unused Acc
 
 ## Mods and game rules (experimental)
 
-1.0.4 Experimental includes **Game setup → Mods and rules**, accessible from New Game, multiplayer and **Options → Remake**. Named profiles keep their own saves and network characters; data mods can provide configurable revival, texture/sound replacements and selected balance patches. Shared rules follow the host, and sandbox profiles keep cheat-enabled progress separate. See the [player and mod-author guide](docs/mods.md), [Quick recovery example](examples/mods/quick-recovery/mod.json) and [legacy mod converter](docs/legacy-mod-converter.md). These additions require the experimental build; stable 1.0.3 does not include them.
+The game includes **Game setup → Mods and rules**, accessible from New Game, multiplayer and **Options → Remake**. Named profiles keep their own saves and network characters; data mods can provide configurable revival, texture/sound replacements and selected balance patches. Shared rules follow the host, and sandbox profiles keep cheat-enabled progress separate. See the [player and mod-author guide](docs/mods.md), [Quick recovery example](examples/mods/quick-recovery/mod.json) and [legacy mod converter](docs/legacy-mod-converter.md).
 
 ## Co-op
 

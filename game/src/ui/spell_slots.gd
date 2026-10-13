@@ -79,15 +79,23 @@ static func rune_icons(spell: String) -> Array[Texture2D]:
 
 
 ## Original transparent inscriptions sit over the top of the spell picture.
-## Two rows retain all eight installed runes without covering price/count text.
-static func draw_runes(canvas: CanvasItem, spell: String, rect: Rect2, tint := Color.WHITE, columns := 4) -> void:
+## Camp cells can limit an upper-left strip to reserve space for a stack count;
+## HUD slots keep their centred inscriptions.
+static func draw_runes(canvas: CanvasItem, spell: String, rect: Rect2, tint := Color.WHITE, columns := 4,
+		top_left_width := -1.0) -> void:
 	var runes := rune_icons(spell)
 	if runes.is_empty():
 		return
 	columns = maxi(1, columns)
 	var side := rect.size.x / float(maxi(6, columns))
 	var cols := mini(columns, runes.size())
+	var inset := rect.size * 0.10
+	if top_left_width >= 0.0:
+		side = minf(side, maxf(0.0, top_left_width - inset.x) / cols)
 	var origin := Vector2(rect.get_center().x - cols * side * 0.5, rect.position.y + rect.size.y * 0.04)
+	if top_left_width >= 0.0:
+		# Leave the spell picture's bevel visible on both top and left edges.
+		origin = rect.position + inset
 	for i in runes.size():
 		var cell := Rect2(origin + Vector2(i % columns, i / columns) * side, Vector2.ONE * side)
 		if runes[i]:

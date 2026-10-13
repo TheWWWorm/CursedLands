@@ -18,10 +18,14 @@ var _mutex := Mutex.new()
 var _worker_status := ""
 var _worker_fraction := 0.0
 var _redirects := 0
+var _source: Dictionary = {}
+var _fallback_used := false
+var _resolving := false
 var _last_bytes := -1
 var _last_progress := 0
 var _exiting := false
 const IDLE_TIMEOUT := 60000
+const MAX_LINK_RESPONSE := 16384
 
 func start(id: String) -> String:
 	if busy: return "A mod download is already running."
@@ -46,28 +50,59 @@ func _begin(selected: Dictionary) -> String:
 		_work = ""
 		return "Not enough free space for this download."
 	_cancelled = false
-	_redirects = 0
+	_fallback_used = false
 	busy = true
-	status = "Downloading…"
-	fraction = 0.0
-	_http = HTTPRequest.new()
-	_http.use_threads = true
-	_http.accept_gzip = false
-	_http.max_redirects = 0 # Validate every redirected host and require HTTPS.
-	_http.body_size_limit = int(item.bytes)
-	_http.download_chunk_size = 262144
-	_http.timeout = 1800.0
-	_http.download_file = _work.path_join("source.download")
-	add_child(_http)
-	_http.request_completed.connect(_downloaded)
-	_request(item.url)
+	_start_source(item)
 	changed.emit()
 	return ""
+
+func _start_source(source: Dictionary) -> void:
+	_source = source
+	_redirects = 0
+	_resolving = source.get("resolver", "") == "yandex-disk"
+	status = "Connecting to backup…" if _resolving else "Downloading…"
+	fraction = 0.0
+	_http = HTTPRequest.new()
+	# Nonblocking HTTP polling keeps cancellation/timeouts responsive even when
+	# a mirror connects but never sends its response headers. Asset work is threaded.
+	_http.use_threads = false
+	_http.accept_gzip = false
+	_http.max_redirects = 0 # Validate every redirected host and require HTTPS.
+	_http.body_size_limit = MAX_LINK_RESPONSE if _resolving else int(item.bytes)
+	_http.download_chunk_size = 262144
+	_http.timeout = 30.0 if _resolving else 1800.0
+	_http.download_file = "" if _resolving else _work.path_join("source.download")
+	add_child(_http)
+	_http.request_completed.connect(_downloaded)
+	_request(source.url)
+
+func _download_failed(error: String) -> void:
+	# Try the reviewed backup once. It must still match the same size and hash.
+	var fallback: Dictionary = item.get("fallback", {})
+	if _stopped() or _fallback_used or fallback.is_empty():
+		_finish(error)
+		return
+	if not ModCatalog.allowed_url(fallback.url, fallback.hosts):
+		_finish("The download source is not allowed.")
+		return
+	_release_http()
+	DirAccess.remove_absolute(_work.path_join("source.download"))
+	_fallback_used = true
+	_start_source(fallback)
+	changed.emit()
+
+func _release_http() -> void:
+	if _http == null: return
+	# A deferred completion from a retired request must not finish its backup.
+	if _http.request_completed.is_connected(_downloaded): _http.request_completed.disconnect(_downloaded)
+	_http.cancel_request()
+	_http.queue_free()
+	_http = null
 
 func _request(url: String) -> void:
 	_last_bytes = -1
 	_last_progress = Time.get_ticks_msec()
-	if _http.request(url) != OK: _finish("Could not start the download. Please try again.")
+	if _http.request(url) != OK: _download_failed("Could not start the download. Please try again.")
 
 func cancel() -> void:
 	if not busy: return
@@ -98,13 +133,13 @@ func _process(_delta: float) -> void:
 	if not busy: return
 	if _http != null:
 		var count := _http.get_downloaded_bytes()
-		fraction = clampf(float(count) / float(item.bytes), 0.0, 1.0)
+		fraction = 0.0 if _resolving else clampf(float(count) / float(item.bytes), 0.0, 1.0)
 		if count != _last_bytes:
 			_last_bytes = count
 			_last_progress = Time.get_ticks_msec()
 		elif Time.get_ticks_msec() - _last_progress > IDLE_TIMEOUT:
 			_http.cancel_request()
-			_finish("The download stalled. Please try again.")
+			_download_failed("The download stalled. Please try again.")
 			return
 	elif _thread != null:
 		if not _thread.is_alive():
@@ -112,6 +147,9 @@ func _process(_delta: float) -> void:
 			_thread = null
 			var error: String = result.get("error", "")
 			if _stopped(): error = "Download cancelled."
+			elif result.get("retry_download", false):
+				_download_failed(error)
+				return
 			if error.is_empty(): error = _publish(result.manifest, result.inspected)
 			_finish(error)
 			return
@@ -122,23 +160,42 @@ func _process(_delta: float) -> void:
 		_mutex.unlock()
 	changed.emit()
 
-func _downloaded(result: int, code: int, headers: PackedStringArray, _body: PackedByteArray) -> void:
+func _downloaded(result: int, code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	if not busy: return
 	if code in [301, 302, 303, 307, 308]:
 		var target := ""
 		for header in headers:
 			if header.to_lower().begins_with("location:"): target = header.substr(9).strip_edges()
-		if _redirects >= 3 or not ModCatalog.allowed_url(target, item.hosts):
-			_finish("The download redirected to an unapproved source.")
+		if _redirects >= 3 or not ModCatalog.allowed_url(target, _source.hosts):
+			_download_failed("The download redirected to an unapproved source.")
 			return
 		_redirects += 1
 		_request(target)
 		return
 	if result != HTTPRequest.RESULT_SUCCESS or code != 200:
-		_finish("Download failed. Please try again or visit the source page.")
+		_download_failed("Download failed. Please try again or visit the source page.")
 		return
-	_http.queue_free()
-	_http = null
+	if _resolving:
+		# Yandex returns an expiring link, so resolve it afresh for every attempt.
+		# Only the HTTPS target is consumed; the catalog remains the install recipe.
+		var json := JSON.new()
+		var parsed := body.size() <= MAX_LINK_RESPONSE and json.parse(body.get_string_from_utf8()) == OK
+		var link: Variant = json.data if parsed else null
+		if not link is Dictionary or not link.get("href") is String or link.get("method") != "GET" or link.get("templated", true) != false:
+			_download_failed("The backup did not provide a download link.")
+			return
+		if not ModCatalog.allowed_url(link.href, _source.hosts):
+			_download_failed("The download redirected to an unapproved source.")
+			return
+		_resolving = false
+		_redirects = 0
+		_http.body_size_limit = int(item.bytes)
+		_http.timeout = 1800.0
+		_http.download_file = _work.path_join("source.download")
+		status = "Downloading from backup…"
+		_request(link.href)
+		return
+	_release_http()
 	status = "Verifying download…"
 	fraction = 0.0
 	_worker_status = status
@@ -174,7 +231,7 @@ func _prepare() -> Dictionary:
 func _stage() -> Dictionary:
 	var path := _work.path_join("source.download")
 	var error := _verify(path)
-	if not error.is_empty(): return {"error": error}
+	if not error.is_empty(): return {"error": error, "retry_download": true}
 	var stage := _work.path_join("package")
 	if item.format == "eimod":
 		_progress("Installing…", 0.0)
@@ -208,10 +265,11 @@ func _resources(source: String, stage: String) -> Dictionary:
 		var archive := EIResArchive.new()
 		archive._file = FileAccess.open(source.path_join(definition.source), FileAccess.READ)
 		if archive._file == null or not archive._parse(): return {"error": "Could not read the downloaded resources."}
-		var names := archive.entries.keys()
+		var names: Array = definition.get("entries", archive.entries.keys()).duplicate()
 		names.sort()
 		for name: String in names:
 			if _stopped(): return {"error": "Download cancelled."}
+			if not archive.entries.has(name): return {"error": "Missing entry in the resource download."}
 			var target: String = definition.archive + "/" + name
 			if target in item.get("exclude", []): continue
 			if not ModSchema.safe_path(name) or not ModSchema.resource_entry(definition.archive, name): return {"error": "Unsupported entry in the resource download."}
@@ -246,9 +304,7 @@ func _publish(manifest: Dictionary, inspected: Dictionary = {}) -> String:
 	return ModStore.publish_package(_work.path_join("package"), manifest, inspected)
 
 func _finish(error: String) -> void:
-	if _http != null:
-		_http.queue_free()
-		_http = null
+	_release_http()
 	ModStore._remove_tree(_work)
 	_work = ""
 	busy = false

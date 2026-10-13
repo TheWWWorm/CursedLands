@@ -4,21 +4,68 @@ extends RefCounted
 ## Add a tested recipe and its original publisher URL here; never infer support
 ## from an archive extension or accept a remote catalog as executable policy.
 const ENTRIES := [{
-	"id": "community.hd-lands-textures", "version": "1.4.0",
+	"id": "community.hd-lands-textures", "version": "1.5.0",
 	"title": "HD Lands textures", "author": "Atom",
-	"description": "Sharper terrain, buildings and character textures from HD Lands 1.4.0.",
-	"notes": "Texture-only installation. Original readme and credits are included. One damaged source texture is omitted.",
-	"source": "https://hd-lands.gipat.ru/",
-	"url": "https://hd-lands.gipat.ru/wp-content/uploads/2021/10/hd-lands-v-1.4.0.7z",
-	"hosts": ["hd-lands.gipat.ru"], "bytes": 244608954,
-	"sha256": "f08f8c11058dbbe3cb12a1ca75b6263a5eec12fae0e62ffd1f47be359bc4ed1c",
+	"description": "Sharper terrain, buildings and character textures from HD Lands 1.5.0.",
+	"notes": "Texture-only installation. Original readme and development notes are included.",
+	"source": "https://allods.gipat.ru/index.php?p=eimodshdlands",
+	"url": "https://allods.gipat.ru/files/ei/mods/hdlands/hdlands-1-5-0.7z",
+	"hosts": ["allods.gipat.ru"], "bytes": 285931035,
+	"fallback": {
+		"url": "https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=https%3A%2F%2Fdisk.yandex.ru%2Fd%2Fc8hPzBwUtYr50w&path=%2FHD_Lands_1.5.7z",
+		"resolver": "yandex-disk",
+		"hosts": ["cloud-api.yandex.net", "downloader.disk.yandex.ru", "*.storage.yandex.net"]},
+	"sha256": "574f9a2dd91e530054c07cc27c868d5db8e04f047254b89669460c621b43a955",
 	"campaigns": ["cursed_lands"], "format": "resource-7z",
-	"folder": "HD Lands v 1.4.0",
+	"folder": "HD_Lands_1.5",
+	# Texture providers follow config.ini order; the HD Pack contributes only
+	# entries not supplied by the preceding HD Lands archives. No models load.
 	"resources": [
-		{"source": "textures.res", "archive": "textures.res"},
-		{"source": "objtextures.res", "archive": "textures.res"}],
-	"exclude": ["textures.res/astralold.mmp"],
-	"attachments": ["readme.txt", "changelog.txt"],
+		{"source": "HDRes/share.res", "archive": "textures.res", "entries": ["gipatmap.mmp", "gipatmapg.mmp", "suslangermap.mmp", "suslangermapg.mmp"]},
+		{"source": "HDTexRes/t_nature.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_objects.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_units.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_world.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_interface.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zoneMain.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_basegipat.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz2g.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz3g.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz4g.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz5g.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz6g.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz7g.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz8k.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz9k.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz10k.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz11k.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz13h.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz14h.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz15h.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz16h.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_bz18h.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone1.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone2.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone3.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone4.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone5.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone6.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone7.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone8.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone9.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone10.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone11.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone12.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone13.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone14.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone15.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone16.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone17.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone18.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone19.res", "archive": "textures.res"},
+		{"source": "HDTexRes/t_zone20.res", "archive": "textures.res"},
+		{"source": "HDRes/hdpack.res", "archive": "textures.res", "entries": ["beholder03.mmp", "bloodprints.mmp", "campfire00.mmp", "curse01.mmp", "fakedocument00.mmp", "hadoganshipyard00.mmp", "moneysack00.mmp", "rainsnow.mmp", "tree04.mmp"]}],
+	"attachments": ["readme.txt", "changelog.txt", "dev.txt", "zones_completion_stage.md"],
 	"conflicts": ["legacy.hd-lands"],
 	"space_bytes": 2147483648
 }]
@@ -42,5 +89,10 @@ static func unavailable(item: Dictionary) -> String:
 
 static func allowed_url(url: String, hosts: Array) -> bool:
 	if not url.begins_with("https://") or url.contains("#") or url.contains("\\"): return false
-	var host := url.trim_prefix("https://").get_slice("/", 0).to_lower()
-	return host in hosts and not host.contains("@") and not host.contains(":")
+	var host := url.trim_prefix("https://").get_slice("/", 0).get_slice("?", 0).to_lower()
+	if host.contains("@") or host.contains(":") or host.contains("%"): return false
+	for approved: String in hosts:
+		if host == approved: return true
+		# Yandex Disk redirects to rotating nodes beneath this reviewed domain.
+		if approved.begins_with("*.") and host.ends_with(approved.substr(1)) and host.length() > approved.length() - 1: return true
+	return false

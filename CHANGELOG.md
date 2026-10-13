@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.5 — stable release, 13 October 2026
+
+- Update the optional HD Lands texture package to 1.5.0 with 390 textures.
+- Prefer Gipat for the download and use Yandex Disk as a verified-source backup.
+  Keep cancellation responsive when a server stops responding.
+- Keep shop and spell-constructor rune icons inside the upper-left border,
+  leaving space for quantities and prices.
+- Adopt [Semantic Versioning](docs/versioning.md) for new releases.
+
+See [release notes](docs/releases/1.0.5.md) for compatibility and platform limits.
+
 ## 1.0.4 — stable release, 13 October 2026
 
 - Highlight characters with available conversations using the same material effect as character selection.

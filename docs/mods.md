@@ -19,23 +19,36 @@ In a sandbox profile, **Sandbox** offers invulnerable party, unlimited party man
 
 Mouse, keyboard focus and controller navigation use the same controls. D-pad up/down moves focus, left/right changes a choice or number, A activates, Y applies, and B goes back. Controls are at least 44 pixels high and pages scroll on narrow screens. Desktop/Android use the native package picker; the browser uses a local file chooser.
 
-## HD Lands texture download (next release)
+## HD Lands texture download
 
 From the main menu, open **Mods and rules → Mods → HD Lands textures →
 Download & install**. The Windows and Linux apps fetch the pinned HD Lands
-1.4.0 archive from its original publisher, verify its size and SHA-256, then
+1.5.0 archive from its original publisher, verify its size and SHA-256, then
 install the texture package. Progress and cancellation remain available.
 Downloading does not enable the package: turn its switch **On**, then choose
 **Apply & restart**. A separate profile is created automatically when needed.
 
-This entry supports the base campaign, not Lost in Astral. It installs 302
-textures and the original readme/changelog; the malformed `astralold.mmp`,
-launcher settings, branding and optional artwork are omitted. Original game
-files and saves are retained. Selecting **Original saves** and restarting
-restores the original textures. Texture choices do not need to match between
-co-op peers.
+The preferred source is [Gipat's 1.5.0 archive](https://allods.gipat.ru/files/ei/mods/hdlands/hdlands-1-5-0.7z),
+described on [the HD Lands page](https://allods.gipat.ru/index.php?p=eimodshdlands).
+If the transfer fails, stalls, or fails size/checksum verification, installation
+tries [the author's Yandex Disk](https://disk.yandex.ru/d/c8hPzBwUtYr50w) once,
+resolving a fresh link to `HD_Lands_1.5.7z`. Both sources must match the same
+pinned archive before extraction. Cancelling does not start the backup.
 
-The archive is 233.2 MiB and installation requires 2 GiB free storage. Its
+This entry supports the base campaign, not Lost in Astral. It imports 390
+textures from the reorganized 1.5.0 resources, along with the original readme,
+changelog, development notes and map completion notes. HD Lands textures take
+precedence over the included HD Pack where they overlap, following the original
+configuration. Launcher settings, models, branding and ending text are omitted.
+
+The immutable package ID `community.hd-lands-textures@1.5.0` preserves installed
+1.4.0 packages and their profiles/saves; enable the new version in a named profile
+to use it. Original game files and saves are retained. Selecting **Original saves**
+and restarting restores the original textures. Texture choices do not need to
+match between co-op peers. This texture package cannot be enabled alongside the
+full converter package `legacy.hd-lands`.
+
+The archive is 272.7 MiB and installation requires 2 GiB free storage. Its
 solid 7z decoder temporarily uses approximately 0.8 GiB additional memory.
 This download is disabled on Android pending device qualification; the browser
 and macOS builds do not include the archive installer. This catalogue entry
@@ -55,6 +68,10 @@ gameplay options/patches and legacy scripts/maps are rejected for API 2.
 API 1 packages retain their existing capabilities and limits; the saved-session
 mod API remains 1. The existing command-line packaging/conversion tools still
 target API 1; the in-game downloader creates its own texture package.
+
+Implementation validation is recorded separately in
+[the HD Lands 1.5.0 update report](validation/hd-lands-1.5.0-2026-10-13.json)
+and [the 1.0.5 release checks](validation/stable-1.0.5-2026-10-13.json).
 
 ## Co-op compatibility
 

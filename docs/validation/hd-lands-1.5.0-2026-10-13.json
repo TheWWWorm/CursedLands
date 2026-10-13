@@ -1,0 +1,499 @@
+{
+  "date": "2026-10-13",
+  "scope": "HD Lands 1.5.0 curated texture installation with Gipat preferred and Yandex Disk fallback.",
+  "checkout": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-animation-20261006/release-repo",
+    "head": "dfe6dda4356cdb3af7ec749200437e2bb367ed78",
+    "state": "Uncommitted source changes; existing unrelated work retained."
+  },
+  "download": {
+    "source_page": "https://allods.gipat.ru/index.php?p=eimodshdlands",
+    "preferred": "https://allods.gipat.ru/files/ei/mods/hdlands/hdlands-1-5-0.7z",
+    "backup_public_folder": "https://disk.yandex.ru/d/c8hPzBwUtYr50w",
+    "backup_file": "/HD_Lands_1.5.7z",
+    "bytes": 285931035,
+    "sha256": "574f9a2dd91e530054c07cc27c868d5db8e04f047254b89669460c621b43a955",
+    "backup_metadata_matches_preferred": true
+  },
+  "installation": {
+    "id": "community.hd-lands-textures",
+    "version": "1.5.0",
+    "source_archives": 44,
+    "textures": 390,
+    "texture_bytes": 806182008,
+    "texture_checks": "All decoded successfully through EIMmp. Independently compared every installed payload with first-declared texture providers from the original config.ini using Python Archive reader and SHA-256.",
+    "expected_textures": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/expected-textures.json",
+    "expected_textures_sha256": "eeac99f1985b281555522bb2b03441db41ad2b5f8ec8cf1291a2e66271f9fffa",
+    "documentation_verified": [
+      "readme.txt",
+      "changelog.txt",
+      "dev.txt",
+      "zones_completion_stage.md"
+    ],
+    "manifest_sha256": "56b454970f5e63ed122fc36f0cbc729015070d44834d640f09361a4f3d41479d",
+    "identity_policy": "New immutable 1.5.0 package; no automatic profile activation or replacement of 1.4.0."
+  },
+  "summary": {
+    "passed_suites": 6,
+    "passed_checks": 966,
+    "successful_primary_live_download": true,
+    "live_backup_download_verified": false,
+    "platform": "Linux x86_64, Godot 4.7; rendered checks use OpenGL compatibility through llvmpipe"
+  },
+  "tests": [
+    {
+      "suite": "mod_downloads",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/runtime",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_downloads.gd",
+        "--mod-tests",
+        "--fixture=/home/llm2x/Documents/EI/local/scratchpad/mod-downloads-20261012/fixtures"
+      ],
+      "exit_code": 0,
+      "seconds": 3.971,
+      "errors": [],
+      "result": {
+        "checks": 74,
+        "failures": 0
+      },
+      "name": "deterministic",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/deterministic.log",
+      "log_sha256": "1481394eda8085a160f87a7bce08dd60a515d6b0c84b4fb81cd6b5f8cdb1b9a7"
+    },
+    {
+      "suite": "mod_downloads_live",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/runtime",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_downloads_live.gd",
+        "--mod-tests",
+        "--download-real"
+      ],
+      "exit_code": 0,
+      "seconds": 42.236,
+      "errors": [],
+      "result": {
+        "backup": false,
+        "checks": 807,
+        "failures": 0,
+        "frames": 4571,
+        "seconds": 37.163
+      },
+      "name": "primary",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/primary.log",
+      "log_sha256": "c19a14a0faecd4759a7a34b31e8aee7847c987118c1ac774eab30fcc27b37c49"
+    },
+    {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/runtime",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_downloads_stall.gd",
+        "--mod-tests",
+        "--stall-port=43613",
+        "--stall-cert=/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/tls/cert.pem"
+      ],
+      "exit_code": 0,
+      "seconds": 4.546,
+      "errors": [],
+      "result": {
+        "checks": 12,
+        "failures": 0
+      },
+      "name": "stall",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/stall.log",
+      "log_sha256": "fab9626a387bc01a12dc586ac1e7ee40926bfdd8df3ee447e6dc3a30bb1fc1ec"
+    },
+    {
+      "suite": "mod_downloads_cancel",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/runtime",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_downloads_cancel.gd",
+        "--mod-tests",
+        "--archive=/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/downloads/hdlands-1-5-0.7z"
+      ],
+      "exit_code": 0,
+      "seconds": 7.106,
+      "errors": [],
+      "result": {
+        "checks": 14,
+        "failures": 0
+      },
+      "name": "cancel",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/cancel.log",
+      "log_sha256": "5bee60c87eb7b6eb34ccc4febe4b8f15fa0c8fd9d9e0691b0f27ad8ec7c9dd4d"
+    },
+    {
+      "suite": "mod_downloads_world",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_downloads_world.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 113.942,
+      "errors": [],
+      "result": {
+        "checks": 16,
+        "failures": 0
+      },
+      "name": "world",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/world.log",
+      "log_sha256": "a68c726b02bb63c040b0221e705a5cef4e6058347b0f5374265f765917729036"
+    },
+    {
+      "suite": "mod_downloads_ui",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/runtime",
+        "--rendering-method",
+        "gl_compatibility",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://mod_downloads_ui.gd",
+        "--mod-tests"
+      ],
+      "exit_code": 0,
+      "seconds": 6.378,
+      "errors": [],
+      "result": {
+        "checks": 43,
+        "failures": 0
+      },
+      "name": "ui",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/ui.log",
+      "log_sha256": "73b3697c8ac79254bf93114423a4030c7563e3cc79eaedcefd531ce205612afd"
+    }
+  ],
+  "backup_live_attempt": {
+    "result": "Yandex API resolved a signed HTTPS URL and redirected to s384klg.storage.yandex.net. The storage server sent no archive data. Both the cancellation probe and full transfer hit the idle timeout.",
+    "checks": {
+      "backup": true,
+      "checks": 13,
+      "failures": 5,
+      "frames": 8833,
+      "seconds": 60.948
+    },
+    "seconds": 126.413,
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/backup.log",
+    "log_sha256": "952b5c147693a1df7a54a0a6bdde150b443ecd4ca4f649ae51ebc41734ce1c03",
+    "errors": [
+      "FAIL real archive transfer starts before cancellation: The download stalled. Please try again.",
+      "FAIL cancel a real HTTPS transfer",
+      "FAIL download and install complete: The download stalled. Please try again.",
+      "FAIL installed catalog entry exists",
+      "FAIL reinstall cannot replace immutable version"
+    ],
+    "limitation": "Backup installation could not be verified end to end because the remote storage server stalled. Controlled tests passed for primary failure, resolver parsing, redirect validation, checksum/size rejection, fallback-once behavior, retired callbacks and cancellation."
+  },
+  "stall_fix": {
+    "observation": "Threaded HTTPRequest cancellation blocked while waiting for a response from the live backup server.",
+    "change": "Use nonblocking HTTP polling while retaining worker-based verification/extraction. Disconnect retired request signals before switching sources.",
+    "regression": "A local TLS server that accepts the request but sends no headers: cancel, idle timeout and owner destruction all clean up in under one second.",
+    "runner": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/run_stall.py"
+  },
+  "source_sha256": {
+    "game/src/game/mod_catalog.gd": "bcfc127ac794f0aaf4a597483b2fbfbe6cb51164b5ce78197d630b31a4ff8b9f",
+    "game/src/game/mod_download.gd": "a24f70cd98e351b4e7c309174ba08555e1fd6d0312536a1a7f9ab1b6d4982ec9",
+    "game/src/ei/remake_text.gd": "81aed37e212bdac540a322c2706e341fea58b4a8e5fd2d47b1c7d672801c3c2c",
+    "game/src/native/archive/README.md": "2a845fe2d21ca3384a2850af6edb5a84a0ad3676641c568b48b1ad0f3eb189b2",
+    "docs/mods.md": "a14d9210e9ab44d3c5a8e12cff3ab606d4ec09f2a2b3fca47b3e0ed41601b06b",
+    "tools/tests/mod_downloads.gd": "e3158d007c0fd04f8ca9e65528dfd4eaa22e7e2aae7d2e23b8bcfc19187d0a61",
+    "tools/tests/mod_downloads_live.gd": "7ae033a45086735f1f45bda0285e11cb028932dbbfe904128adf1e3e7f873df2",
+    "tools/tests/mod_downloads_cancel.gd": "212ee0a65c06ef713e36cac409af7b38d5b988ecbf2860c4c43d10ca13c539a9",
+    "tools/tests/mod_downloads_world.gd": "43f475cd6c1e10635523e596bbb0e84cac34b502a3a1a156afab0a5258c6be88",
+    "tools/tests/mod_downloads_stall.gd": "c5b86d1d7fd3edae0dd07197c98baad454164278cc27065ecaf76f3413765d58",
+    "game/src/ui/camp_view.gd": "64cf3d6296360dc64dd71ac63eb5ab87a67db4f887e25791ae4f5efdd4505ec1",
+    "game/src/ui/spell_slots.gd": "3deae8a8b77641a3cd1732faaf340f297b11811895c267fc5f93de4f8d76b2f6"
+  },
+  "runtime_snapshot": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/runtime",
+    "before": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/before/game",
+    "production_scripts_matched": 319,
+    "changed_scripts": [
+      "game/src/ei/remake_text.gd",
+      "game/src/game/mod_catalog.gd",
+      "game/src/game/mod_download.gd",
+      "game/src/ui/camp_view.gd",
+      "game/src/ui/spell_slots.gd"
+    ]
+  },
+  "screenshots": {
+    "village": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/primary/data/godot/app_userdata/Cursed Lands/downloaded-hd-lands-village.png",
+      "sha256": "72492863ef56c296cad33c60e57f0396f003fb9db2fccd25dcb743bf50a3d5d9"
+    },
+    "catalog_en": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/ui-final/data/godot/app_userdata/Cursed Lands/downloads-en-1280.png",
+      "sha256": "debe2da2cbeffcb6d317ff45587692a8df7db5a1962273ea78fc8d2ea8ad3ba5"
+    },
+    "catalog_ru_phone": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/ui-final/data/godot/app_userdata/Cursed Lands/downloads-ru-540.png",
+      "sha256": "8857deda10dee20f641e8a85c219ec7ca7c0b0a727e2baf4ca6b9082d3a822bb"
+    },
+    "catalog_de_phone": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/ui-final/data/godot/app_userdata/Cursed Lands/downloads-de-540.png",
+      "sha256": "dd14a6e729f7865ac4c84e7e69599f4673febae1e5a3b5a84660acc5f7e129d5"
+    }
+  },
+  "validation_notes": [
+    "The rendered village test used the byte-identical 1.5.0 recipe before subsequent network cleanup and host-validation refinements. Rendering code did not change.",
+    "Windows and Android execution was not tested in this update; their native archive libraries were unchanged.",
+    "Earlier logs retain the initial malformed-JSON diagnostic, reused test-profile failure, and terminated threaded backup attempts. Final local regression suites have no errors.",
+    "Additional in-game visual review found and corrected stacked-spell rune layout in CampView/SpellSlots; its visual evidence and transactions are recorded separately from the six download regression suites."
+  ],
+  "visual_ui_review": {
+    "date": "2026-10-13",
+    "method": "Actual Godot game rendered on X11 through OpenGL llvmpipe with community.hd-lands-textures@1.5.0 active. Screenshots inspected at full viewport size; final rune spacing also inspected in enlarged pixel crops. Keyboard and mouse events passed through the live game input path.",
+    "setup": "Disposable profile and QA-only scene harness seed a hero, items and shop stock; story VM cleared for stable inspection. Camp and field use the real game world and production UI. No user saves changed.",
+    "package_digest": "58fa1e802c4f14f8fc29cb383f25f71eb625fdc83a59307079e3a292099f9120",
+    "viewports": [
+      [
+        1280,
+        720
+      ],
+      [
+        1024,
+        768
+      ]
+    ],
+    "scenes": [
+      "gz1g field with HUD",
+      "bz1g village",
+      "inventory and item descriptions",
+      "character skills",
+      "item and spell shops",
+      "item and spell constructors",
+      "repair",
+      "journal empty state"
+    ],
+    "finding_and_fix": "Eight rune inscriptions on stacked spells overlapped the shop quantity. Final layout keeps both rows at the upper left, inset by 10% of the spell picture inside its bevel, and reserves the measured stack-label width plus a gap at the upper right. HUD rune placement is unchanged. Final frame, quantity, rune and price separation was visually verified.",
+    "transactions": [
+      {
+        "kind": "item purchase",
+        "shop_id": 1,
+        "item": "tiny potion 1",
+        "quantity": 1,
+        "money_before": 100000,
+        "money_after": 99900,
+        "bag_before": 2,
+        "bag_after": 3
+      },
+      {
+        "kind": "spell purchase",
+        "shop_id": 3,
+        "item": "spell:fireball{e1;e1;r1;r1;a1;a1;m1;m1}",
+        "quantity": 2,
+        "money_before": 100000,
+        "money_after": 86800,
+        "bag_before": 1,
+        "bag_after": 3
+      },
+      {
+        "kind": "cancel staged spell offer",
+        "quantity": 2,
+        "money_unchanged": true
+      }
+    ],
+    "fixture_note": "Early screenshots used shop 1 with UI groups forced on to inspect every panel. Its spell purchase was refused by the items-only merchant rules. Final spell transaction used shop 3, which supports both item and spell trades.",
+    "scope_limits": [
+      "Representative English screens on Linux, not a complete campaign or every localization/device.",
+      "Construction and repair screens visually inspected; no completed construction or repair transaction claimed.",
+      "Screenshots 17-27 retain rejected intermediate rune placements and are not final verification evidence."
+    ],
+    "harness": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/runtime/visual_review.gd",
+    "input_log": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/interactions.jsonl",
+    "runtime_script_errors": {
+      "game.log": [],
+      "game-after-fix.log": [],
+      "game-final.log": [],
+      "game-inset.log": []
+    },
+    "screenshots": {
+      "world_hud_final": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/34-final-field-hud.png",
+        "size": [
+          1280,
+          720
+        ],
+        "sha256": "577b9b8e54a863de0652376d4773e217d7ff73e8fba4b72b6b1135bca5b4e617"
+      },
+      "village": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/07-village.png",
+        "size": [
+          1280,
+          720
+        ],
+        "sha256": "4fbb572062aa05473ba985a614a500be2b99713b8571ae8760f440d58392824d"
+      },
+      "inventory": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/02-inventory-equipment.png",
+        "size": [
+          1280,
+          720
+        ],
+        "sha256": "57956a3a49fc0b50cde7a5a2a7c26728481c094c07d0168caecbd81d8ebf2642"
+      },
+      "inventory_item_description": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/03-inventory-material-description.png",
+        "size": [
+          1280,
+          720
+        ],
+        "sha256": "755870ec4b2a3966b18777a7f69c9272e31cbbfab3100b88702140cecdf51ca4"
+      },
+      "character_skills": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/05-character-skills.png",
+        "size": [
+          1280,
+          720
+        ],
+        "sha256": "4c493cc8ddd1108f5b42ad55801e4d303cb897a3b8008cdb2c2886be139bcaad"
+      },
+      "item_shop": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/08-item-shop.png",
+        "size": [
+          1280,
+          720
+        ],
+        "sha256": "ca0b8fa0f1afa8a50880bff169c84b0e0c26024717ac1f85527861c77ed62c0f"
+      },
+      "item_purchase": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/10-item-purchase-complete.png",
+        "size": [
+          1280,
+          720
+        ],
+        "sha256": "e491d42b3fbe247f6bbe1444b7804b97693ba168cdd5e806bafe57daf2316b7e"
+      },
+      "item_constructor": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/14-item-constructor.png",
+        "size": [
+          1280,
+          720
+        ],
+        "sha256": "2d7f751533f378a72125a22daef2c730053facff71613a23b387380e3ae32d7b"
+      },
+      "repair": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/15-repair.png",
+        "size": [
+          1280,
+          720
+        ],
+        "sha256": "18954ec55910dfcb90420f89c6c47ce14df3592669c198a635da4859324e7a0c"
+      },
+      "inventory_1024": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/21-camp-equipment-1024.png",
+        "size": [
+          1024,
+          768
+        ],
+        "sha256": "d99dbd4cecbf5d046f5faca1541dca783854d93667a3cf43dae11c11825f1007"
+      },
+      "journal_empty_state": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/22-journal-1024.png",
+        "size": [
+          1024,
+          768
+        ],
+        "sha256": "14a357ee0875c5fde17b2ba762e7dfa8fc7705b9768c8bac5db072960bc649fb"
+      },
+      "spell_shop_final": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/29-spell-shop-inset.png",
+        "size": [
+          1280,
+          720
+        ],
+        "sha256": "c434a73e8b418e3c940967001802c615225f7b982d037bc5957379a0ab606731"
+      },
+      "spell_offer_final": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/30-spell-offer-inset.png",
+        "size": [
+          1280,
+          720
+        ],
+        "sha256": "7cf27a59a13ac8646fd59c0260389d11ef1c658f609ad4cf584ded39c6676a9d"
+      },
+      "spell_purchase_final": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/31-spell-purchase-inset.png",
+        "size": [
+          1280,
+          720
+        ],
+        "sha256": "8d2654b7f41fe549e166f50004365ac387e4f75821fccc5756473ac65d58dcfc"
+      },
+      "spell_constructor_final_1024": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/33-spell-constructor-inset-1024.png",
+        "size": [
+          1024,
+          768
+        ],
+        "sha256": "a60c3c259793d4683134b7203d11dd600f303f7a73e0a809f9307741b67aa305"
+      },
+      "spell_frame_crop_final_1280": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/29-spell-shop-inset-crop.png",
+        "size": [
+          666,
+          660
+        ],
+        "sha256": "63ed15190114985a1080b3cb4776bfb423b5ba545c4082917b3688e74e7aa9f8"
+      },
+      "spell_frame_crop_final_1024": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/hd-lands-1.5-20261013/visual/rune-border-final-1024-crop.png",
+        "size": [
+          720,
+          690
+        ],
+        "sha256": "b2e486f7c43584c4cb32e1733c23ee0aa9d5d08b066113fee346fbc9c5b00d7d"
+      }
+    }
+  }
+}

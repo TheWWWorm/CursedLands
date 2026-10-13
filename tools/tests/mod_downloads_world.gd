@@ -9,7 +9,7 @@ func check(ok: bool, label: String) -> void:
 
 func _ready() -> void:
 	if not OS.get_cmdline_user_args().has("--mod-tests"): get_tree().quit(2); return
-	var key := "community.hd-lands-textures@1.4.0"
+	var key := ModCatalog.key(ModCatalog.entry("community.hd-lands-textures"))
 	check(ModStore.catalog.has(key), "real downloaded texture package is installed")
 	if failures: get_tree().quit(1); return
 	GameData.options.merge({"auto_graphics":0,"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,"net_directory":0,"gfx_hd_textures":0,"confine_mouse":0,"volume_sfx":0,"volume_stream":0,"volume_voice":0}, true)

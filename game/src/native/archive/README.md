@@ -23,7 +23,7 @@ Cancellation is checked while reading compressed input and writing output.
 Only cancellation and progress may be called across threads; each extractor
 instance performs one extraction. The caller removes staging on every failure.
 
-Solid 7z blocks stay in memory until extraction finishes. HD Lands 1.4.0 can
+Solid 7z blocks stay in memory until extraction finishes. HD Lands 1.5.0 can
 therefore use approximately 0.8 GiB of additional memory while installing.
 Extraction runs before the resource conversion so those allocations do not
 overlap. This is not a streaming decoder for arbitrary multi-gigabyte archives.

@@ -2196,8 +2196,19 @@ func _draw() -> void:
 			var rect := _r(_slot_rect(k).grow(-10.0))
 			draw_texture_rect(picture, rect, false)
 			if Items.is_spell_container(id):
-				# Transparent inscriptions above the artwork leave the price clear.
-				SpellSlots.draw_runes(self, Items.spell_code(id), rect)
+				# Keep inscriptions at the upper left, with the quantity in
+				# its own upper-right corner and the price below the artwork.
+				var where := String(_content[k][1])
+				var count := 1
+				match where:
+					"bag": count = bag_count(id)
+					"shop": count = shop_left(id)
+					"buy": count = buy_pile.count(id)
+					"sell": count = sell_pile.count(id)
+				var rune_width := rect.size.x
+				if count != 1:
+					rune_width -= Interface800.font().get_string_size(str(count), HORIZONTAL_ALIGNMENT_LEFT, -1, _fpx(1)).x + 8.0 * s
+				SpellSlots.draw_runes(self, Items.spell_code(id), rect, Color.WHITE, 4, maxf(0.0, rune_width))
 	# Selection.
 	for k in _content:
 		if _key_shown(k) and _content[k][0] != "" and _content[k][0] == selected_id and _content[k][1] == selected_where:
