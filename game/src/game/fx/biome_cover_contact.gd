@@ -33,7 +33,7 @@ const ATTACH := """
 	vec3 b = query_vertex(cell+(upper ? ivec2(0,1) : ivec2(1,0)));
 	vec3 c = query_vertex(cell+(upper ? ivec2(1) : ivec2(0)));
 	vec3 weights = vec3(1.0-CUSTOM0.z-CUSTOM0.w,CUSTOM0.zw);
-	VERTEX.y = query_elevation(a,b,c,weights,cell)+0.002;
+	VERTEX.y = query_elevation(a,b,c,weights,cell,upper)+0.002;
 """
 static var _shaders := {}
 

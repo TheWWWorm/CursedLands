@@ -179,6 +179,7 @@ var direct_recovery := 0.0
 var _direct_pose: DirectPose
 var _direct_previous := Vector2.INF
 var _direct_terrain := {}
+var direct_view := {}
 var direct_heading := NAN
 var direct_look_until := 0
 var orders: Array[Dictionary] = []:
@@ -1588,7 +1589,11 @@ func _tick(dt: float) -> void:
 		# Native549160 completes when the integer end counter is reached.
 		if _pending_hit.t <= 0.000000001:
 			if _pending_hit.has("direction"):
-				_resolve_direct_hit(_pending_hit.direction)
+				var d: Vector3 = _pending_hit.direction
+				if stats.get("ranged",false) and _pending_hit.has("view_offset"):
+					var view: Dictionary = direct_view if direct_controlled and Time.get_ticks_msec() <= direct_look_until else DirectCombat.view_input(_pending_hit)
+					if not view.is_empty(): d = DirectCombat.view_direction(self, view)
+				_resolve_direct_hit(d)
 			else:
 				var hit_target = _pending_hit.get("target")
 				if is_instance_valid(hit_target) and hit_target is GameUnit:
@@ -2740,6 +2745,7 @@ func _do_direct_attack(dt: float) -> void:
 	strike_aim = int(order.get("aim", -1))
 	strike_miss = false
 	_pending_hit = {"t":_hit_ticks()*TICK,"direction":d}
+	_pending_hit.merge(DirectCombat.view_input(order))
 	order = {}
 	GameSound.unit(self,"attack")
 

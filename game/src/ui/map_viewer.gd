@@ -82,26 +82,26 @@ func _setup_ui() -> void:
 	var row := HBoxContainer.new()
 	box.add_child(row)
 	var lbl := Label.new()
-	lbl.text = "Map:"
+	lbl.text = RemakeText.t("Map:")
 	row.add_child(lbl)
 	_picker = ScrollOptionButton.new()
 	_picker.item_selected.connect(func(i: int): _load(_picker.get_item_text(i)))
 	row.add_child(_picker)
 	_objects_toggle = CheckBox.new()
-	_objects_toggle.text = "Objects"
+	_objects_toggle.text = RemakeText.t("Objects")
 	_objects_toggle.button_pressed = true
 	_objects_toggle.toggled.connect(func(on: bool):
 		if _map and _map.has_node("Objects"):
 			_map.get_node("Objects").visible = on)
 	row.add_child(_objects_toggle)
 	var script_btn := Button.new()
-	script_btn.text = "Level script"
+	script_btn.text = RemakeText.t("Level script")
 	script_btn.pressed.connect(func(): _script_view.visible = not _script_view.visible)
 	row.add_child(script_btn)
 	_stats = Label.new()
 	box.add_child(_stats)
 	var help := Label.new()
-	help.text = "WASD pan · Q/E or right-drag rotate · wheel zoom · Shift fast"
+	help.text = RemakeText.t("WASD pan · Q/E or right-drag rotate · wheel zoom · Shift fast")
 	help.modulate = Color(1, 1, 1, 0.6)
 	box.add_child(help)
 
@@ -119,7 +119,7 @@ func _setup_ui() -> void:
 
 
 func _load(map_name: String) -> void:
-	_stats.text = "Loading %s..." % map_name
+	_stats.text = RemakeText.t("Loading %s...") % map_name
 	await get_tree().process_frame
 	await get_tree().process_frame
 	if _map:
@@ -127,7 +127,7 @@ func _load(map_name: String) -> void:
 		_map = null
 	var m := EIMapScene.load_map(map_name)
 	if m == null:
-		_stats.text = "Failed to load %s" % map_name
+		_stats.text = RemakeText.t("Failed to load %s") % map_name
 		return
 	_map = m
 	add_child(m)

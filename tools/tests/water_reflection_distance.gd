@@ -61,6 +61,6 @@ func _ready() -> void:
 	check(visible_difference,"eye-level Ingos lake recovers distant bank geometry beyond the former 64m cutoff")
 	camera.far=260;reflector._process(.2)
 	check(is_equal_approx(reflector.camera.far,260),"extended draw distance also reaches the mirror")
-	check(reflector.viewport.size==Vector2i(640,360),"larger geometry range keeps the half-resolution reflection budget")
+	check(reflector.viewport.size==Vector2i(1280,720),"larger geometry range keeps the bounded reflection budget")
 	print("WATER_REFLECTION_DISTANCE ",JSON.stringify({"checks":checks,"failures":failures,"rows":rows}))
 	g.queue_free();s.queue_free();await frames(10);TexUpscale.shutdown();get_tree().quit(0 if failures.is_empty() else 1)

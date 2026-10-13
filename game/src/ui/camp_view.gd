@@ -147,7 +147,8 @@ const REFUND_RECT := Rect2(20, 355, 160, 28)
 ##   (_move); a refused press plays messbox\cancel.wav;
 ## Rows start on filter 5: "all" for the bag, "ready-made" for traders.
 ## The remake's constructors select a combined relevant-items filter on entry;
-## other modes keep the separate item/spell rows and their selected filters.
+## Each activity starts with its own relevant filter; manual filters remain
+## available until the player switches activity.
 
 signal picked(id: String, where: String)
 ## Yes pressed in a trade screen: items to buy from the trader, items to sell.
@@ -478,24 +479,17 @@ func set_mode(m: String) -> void:
 		repair_pile.clear()
 		_clear_constr()
 		_rows_returned(rows)
-		if shop_row():
-			var old_row: Dictionary = _shop_rows["spells" if spell_shop() else "items"]
-			old_row.filter = shop_filter
-			old_row.scroll = shop_scroll
-			old_row.scrolls[shop_filter] = shop_scroll
 		_turn_dir = 0
 	mode = m
-	if changed and shop_row():
-		var row: Dictionary = _shop_rows["spells" if spell_shop() else "items"]
-		shop_filter = int(row.filter)
-		shop_scroll = int(row.scroll)
-	if changed and mode in ["spellconstr", "itemconstr"]:
-		# Start with every usable category, including ready items to dismantle
-		# and spells to enchant with. The other filters remain available.
-		_set_bag_filter(0)
-		_set_shop_filter(5)
-		scroll = 0
-		shop_scroll = 0
+	if changed:
+		# Filter indices have different meanings on different pages. Never
+		# carry a construction/quest filter or its scroll offset into another
+		# activity, or restore it when returning to that activity.
+		reset_filters()
+		if mode in ["spellconstr", "itemconstr", "spelltrade", "spells"]:
+			filter = 0
+		elif mode == "repair":
+			filter = 2
 	_doll.visible = mode == "weapons"
 	for k in _views:
 		_views[k].visible = _key_shown(k)
@@ -772,6 +766,8 @@ func _passes(it: String, quest: bool, f: String) -> bool:
 			if mode == "spellconstr":
 				return Items.is_spell_piece(it)
 			return k in ["blueprint", "material"] or Items.can_deconstruct(it) or Items.is_spell_container(it)
+		"spell_goods": return Items.is_spell_piece(it)
+		"repairable": return not quest and k in ["weapon", "armor", "quick"] and Items.wear(it) > 0.0
 		"make": return k == "blueprint" or k == "material"
 		"runes": return k == "rune"
 		"ready": return k in ["weapon", "armor", "quick"] or it.begins_with("spell:")
@@ -1611,6 +1607,21 @@ func _input(e: InputEvent) -> void:
 
 
 func _gui_input(e: InputEvent) -> void:
+	if e is InputEventMouseButton and e.pressed and e.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT]:
+		if tutorial_visible(): return
+		var point: Vector2 = (e.position - _o()) / _s()
+		var delta := -1 if e.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT] else 1
+		if Rect2(0, 500, 800, 100).has_point(point):
+			_stop_transfer_hold()
+			scroll = clampi(scroll + delta, 0, maxi(0, bag_items().size() - BAG_CELLS))
+		elif shop_row() and Rect2(0, 0, 800, 100).has_point(point):
+			_stop_transfer_hold()
+			shop_scroll = clampi(shop_scroll + delta, 0, maxi(0, shop_items().size() - BAG_CELLS))
+		else: return
+		_sig = ""
+		queue_redraw()
+		accept_event()
+		return
 	if e is InputEventMouseMotion:
 		_update_hover((e.position - _o()) / _s())
 		return
@@ -2092,6 +2103,12 @@ func _filter_set(y0: float) -> Array:
 	if mode in ["itemconstr", "spellconstr"]:
 		fset = fset.duplicate(true)
 		fset[2][0 if y0 > 0 else 5] = "constructor"
+	elif y0 > 0 and mode in ["spells", "spelltrade", "repair"]:
+		fset = fset.duplicate(true)
+		if mode == "repair": fset[2][2] = "repairable"
+		else:
+			fset[2][0] = "spell_goods"
+			fset[2][2] = "ready_spell"
 	return fset
 
 
@@ -2104,7 +2121,11 @@ func _get_tooltip(pos: Vector2) -> String:
 	for y0 in ([500.0, 0.0] if shop_row() else [500.0]):
 		var hit := _row_hit(p, y0)
 		if hit >= 0 and hit < 10:
-			if _filter_set(y0)[2][hit] == "constructor":
+			var kind: String = _filter_set(y0)[2][hit]
+			if kind == "spell_goods": return RemakeText.t("Spells, keystones and runes")
+			if kind == "repairable": return RemakeText.t("Damaged equipment")
+			if kind == "ready_spell": return RemakeText.t("Ready spells")
+			if kind == "constructor":
 				return _str(MODE_TITLES[mode])
 			return GameData.text("tip %d" % (int(_filter_set(y0)[1]) + hit)).strip_edges()
 		if hit >= 10:

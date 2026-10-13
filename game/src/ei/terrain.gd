@@ -45,11 +45,26 @@ varying vec2 soft_profile;
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	soft_profile = vec2(0.0);
 	if (soft_ground) {
-		soft_profile = soft_surface(vec2(wpos.x, -wpos.z), wpos.y);
+		int id = int(UV2.y + 0.5);
+		int width = textureSize(terrain_tiles, 0).x;
+		ivec2 tile = ivec2(id % width, id / width);
+		int code = int(texelFetch(terrain_tiles, tile, 0).r + 0.5);
+		int packed_tile = code & 63;
+		int row = int(tiles_per_axis);
+		float border = 8.0 * source_texel * tiles_per_axis;
+		vec2 origin = vec2(float(packed_tile % row), float(row - 1 - packed_tile / row));
+		vec2 local = (UV * tiles_per_axis - origin - border) / (1.0 - 2.0 * border);
+		local = vec2(local.x, 1.0 - local.y) - 0.5;
+		int rotation = (4 - ((code >> 14) & 3)) % 4;
+		if (rotation == 1) { local = vec2(-local.y, local.x); }
+		else if (rotation == 2) { local = -local; }
+		else if (rotation == 3) { local = vec2(local.y, -local.x); }
+		vec2 grid = (vec2(tile) + clamp(local + 0.5, vec2(0.0), vec2(1.0))) * 2.0;
+		soft_profile = soft_profile_grid(grid);
 		VERTEX.y += soft_profile.x;
 		if (soft_tracks) {
 			vec2 track = soft_sample(soft_uv(vec2(wpos.x, -wpos.z)));
-			VERTEX.y += soft_height(track) * soft_profile.y;
+			VERTEX.y += soft_height(track) * soft_profile.y * soft_track_mask(grid);
 		}
 		wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	}
@@ -745,6 +760,7 @@ const LAVA := 13
 const DECAL_LAYER := 1 << 18
 
 var _atlases: TextureLayered
+var _soft_vertices: ImageTexture
 var _detail_atlases: TextureLayered
 var _atlas_hd := false
 ## Pixel resolution may exceed the map header's logical atlas/tile sizes.
@@ -1244,6 +1260,9 @@ func apply_gfx() -> void:
 	_land_mat.set_shader_parameter("terrain_tiles", _tile_tex)
 	_land_mat.set_shader_parameter("rain_cover", _rain_cover)
 	_land_mat.set_shader_parameter("soft_ground", Gfx.on("gfx_soft_ground"))
+	if Gfx.on("gfx_soft_ground") and _soft_vertices == null:
+		_soft_vertices = ImageTexture.create_from_image(GroundSurfaceData._vertex_image(self, false))
+	_land_mat.set_shader_parameter("soft_vertices", _soft_vertices)
 	# The original water's terms (also the base of the remake water).
 	var me := PackedVector3Array()
 	var ma := PackedFloat32Array()

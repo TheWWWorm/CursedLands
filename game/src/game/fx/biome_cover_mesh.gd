@@ -55,7 +55,7 @@ const ATTACH := """
 		// Lift/compact the whole plant after wind/pressure/fade. Its root
 		// follows the actual coarse or installed dense triangle, not a
 		// continuous field that the visible mesh has not yet adopted.
-		VERTEX.y += query_elevation(a,b,c,weights,cell)-(UV.x-0.008);
+		VERTEX.y += query_elevation(a,b,c,weights,cell,upper)-(UV.x-0.008);
 	}
 """
 const SHADER := """

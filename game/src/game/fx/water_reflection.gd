@@ -13,7 +13,7 @@ const OMIT_SCREEN_EFFECT := """
 #endif
 """
 const REACH := 64.0
-const MAX_SIZE := 1024.0
+const MAX_SIZE := 2048.0
 const CLIP := """
 #if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
  if ((CAMERA_VISIBLE_LAYERS & 1048576u) != 0u &&
@@ -50,7 +50,7 @@ static func reflected_transform(source: Transform3D, height: float) -> Transform
 
 
 static func target_size(size: Vector2) -> Vector2i:
-	var scale := minf(0.5, MAX_SIZE / maxf(size.x, size.y))
+	var scale := minf(1.0, MAX_SIZE / maxf(size.x, size.y))
 	return Vector2i(maxi(2, roundi(size.x * scale)), maxi(2, roundi(size.y * scale)))
 
 

@@ -2361,6 +2361,7 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 					u.direct_controlled = u.uid == leader_id and not u.dead
 					if not u.direct_controlled:
 						u.direct_heading = NAN
+						u.direct_view = {}
 						u.stop_steering()
 						u.cancel_direct_attack()
 		"direct_look":
@@ -2370,6 +2371,8 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				if u.direct_controlled:
 					u.direct_heading = wrapf(float(angle), -PI, PI)
 					u.direct_look_until = Time.get_ticks_msec() + 500
+					var view := DirectCombat.view_input(cmd)
+					if not view.is_empty(): u.direct_view = view
 		"direct_move":
 			var direction: Variant = cmd.get("direction")
 			if not direction is Vector2 or not direction.is_finite() or not is_finite(direction.length_squared()): return
@@ -2399,7 +2402,13 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			for u in mine:
 				# One replaceable request survives recovery. The unit tick still
 				# owns cooldown/animation timing and the committed impact.
-				u.command({"type":"direct_attack","direction":direction.normalized(),"aim":clampi(int(cmd.get("aim",-1)),-1,5)})
+				var view := DirectCombat.view_input(cmd)
+				if not view.is_empty():
+					u.direct_view = view
+					u.direct_look_until = Time.get_ticks_msec() + 500
+				var request := {"type":"direct_attack","direction":direction.normalized(),"aim":clampi(int(cmd.get("aim",-1)),-1,5)}
+				request.merge(view)
+				u.command(request)
 		"attack":
 			if target:
 				for u in mine:
@@ -3193,12 +3202,13 @@ func shop_stock(cmd := {}) -> Array:
 	var out := []
 	var goods: Dictionary = shop_record(id).get("goods", {})
 	for it: String in goods:
-		if int(goods[it]) > 0:
+		if int(goods[it]) > 0 and Items.kind(it) != "quest" and not state.quest_items.has(it):
 			out.append(it)
 	return out
 
 
 func shop_count(item: String, cmd := {}) -> int:
+	if Items.kind(item) == "quest" or state.quest_items.has(item): return 0
 	var id := shop_id(cmd)
 	return int(shop_record(id).get("goods", {}).get(item, 0)) if id else 0
 
@@ -3237,7 +3247,7 @@ func _trade_apply(cmd: Dictionary) -> bool:
 			var item := String(value).to_lower()
 			var spellish := Items.is_spell_piece(item)
 			if not (Shops.sells_spells(sid) if spellish else Shops.sells_items(sid)): return false
-			if Items.kind(item) in ["", "quest"]: return false
+			if Items.kind(item) in ["", "quest"] or state.quest_items.has(item): return false
 	for value: String in sell:
 		var item := value.to_lower()
 		var i := bag.find(item)

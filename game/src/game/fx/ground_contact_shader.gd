@@ -137,12 +137,12 @@ void contact_ground_light(vec2 grid, float height, vec4 camera, vec4 projection,
 			// installed vertex, then interpolated. A fragment re-evaluation
 			// has different shore/boundary weights and visible track seams.
 			vec2 p=vec2(points[i].x,-points[i].z);
-			vec2 profile=soft_surface(p,points[i].y);
+			vec2 profile=soft_profile_grid(coordinates[i].xy * 2.0);
 			compression+=profile.y*weights[i];
 			points[i].y+=profile.x;
 			if (state.x>0.5 && !query_no_tracks) {
 				vec2 uv=((p-vec2(cell/32)*32.0)*(511.0/32.0)+0.5)/512.0;
-				points[i].y+=soft_height(contact_track(uv,state.x-1.0))*profile.y;
+				points[i].y+=soft_height(contact_track(uv,state.x-1.0))*profile.y*soft_track_mask(coordinates[i].xy * 2.0);
 			}
 		}
 	}

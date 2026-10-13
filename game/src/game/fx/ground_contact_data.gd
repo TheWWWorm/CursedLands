@@ -65,6 +65,11 @@ static func source(original: String) -> String:
 	if not Portability.compatibility() or not original.contains("#define EI_GROUND_CONTACT"):
 		return original
 	var code := original
+	# These fields are already present in the contact query. Reuse its
+	# packed geometry and installed-tile table instead of two more samplers.
+	code = code.replace("uniform sampler2D soft_vertices : filter_nearest, repeat_disable;", "")
+	code = code.replace("uniform sampler2D query_tiles : filter_nearest, repeat_disable;", "")
+	code = code.replace("soft_vertices", "query_vertices").replace("soft_tiles", "query_tiles")
 	var helpers := """
 uniform sampler2DArray contact_data : filter_nearest, repeat_disable;
 vec4 contact_data_fetch(ivec2 p,ivec2 extent,int first_layer,int lod) {

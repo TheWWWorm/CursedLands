@@ -38,6 +38,7 @@ var _generation := 0
 func shared_field() -> SoftGroundField:
 	if field == null:
 		field = SoftGroundField.new(terrain.sectors_x * 16, terrain.sectors_y * 16)
+	terrain._land_mat.set_shader_parameter("soft_tiles", field.tiles)
 	return field
 
 

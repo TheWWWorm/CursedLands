@@ -142,8 +142,24 @@ static func plain(id: String) -> String:
 ## [RPG] "Item Durability Critical" (0.3) of the maximum the owner is warned, at
 ## 0 the item is unusable (tutorial it012: it moves to the inventory).
 
+static func canonical_equipment(id: String) -> String:
+	var raw := id.get_slice("@", 0).strip_edges().to_lower()
+	var bracket := raw.find("[")
+	if bracket < 0 or not raw.ends_with("]") or "|" in raw: return id
+	var parsed := from_spec(raw)
+	var fixed := String(parsed[0])
+	if not "|" in fixed: return id
+	var base := fixed.get_slice("|", 0)
+	var dot := base.rfind(".")
+	if dot < 0 or GameData.db == null: return id
+	if GameData.db.find("materials", base.substr(dot + 1)).is_empty(): return id
+	if GameData.db.find("armors", base.left(dot)).is_empty() and GameData.db.find("weapons", base.left(dot)).is_empty(): return id
+	if Spells.parse(fixed.get_slice("|", 1)).proto.is_empty(): return id
+	return fixed + ("@" + id.get_slice("@", 1) if "@" in id else "")
+
+
 static func unworn(id: String) -> String:
-	return id.get_slice("@", 0)
+	return canonical_equipment(id).get_slice("@", 0)
 
 
 static func wear(id: String) -> float:
@@ -342,6 +358,7 @@ static func slot(id: String) -> String:
 
 
 static func title(id: String) -> String:
+	id = canonical_equipment(id)
 	if "@" in id:
 		return title(unworn(id))
 	if "|" in id:

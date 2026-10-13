@@ -35,6 +35,8 @@ const SOFT_UNIFORMS := """// Optional loose surface and dense tracks. R compacts
 // collision heights and the original undeformed sector meshes stay intact.
 uniform bool soft_ground = false;
 uniform bool soft_tracks = false;
+uniform sampler2D soft_vertices : filter_nearest, repeat_disable;
+uniform sampler2D soft_tiles : filter_nearest, repeat_disable;
 uniform sampler2DArray soft_track_texture : filter_linear, repeat_disable;
 uniform float soft_track_layer = 0.0;
 uniform vec2 soft_track_origin;
@@ -68,6 +70,40 @@ vec2 soft_surface(vec2 p, float height) {
 	vec4 cell = textureLod(terrain_cells, p / vec2(textureSize(terrain_cells, 0)), 0.0);
 	float water_y = cell.r + level[clamp(int(cell.a + 0.5), 0, 63)];
 	return profile * mask * smoothstep(0.025, 0.10, height - water_y);
+}
+// Subdividing a triangle must preserve its original displaced edge. Sampling
+// a nonlinear snow profile at newly inserted points otherwise opens cracks
+// against a neighbouring coarse triangle, including at shifted MPR vertices.
+vec2 soft_vertex_profile(ivec2 grid) {
+	vec3 data = texelFetch(soft_vertices, grid, 0).rgb;
+	return soft_surface(vec2(grid) + data.xz, data.y);
+}
+vec2 soft_profile_grid(vec2 grid) {
+	ivec2 cell = clamp(ivec2(floor(grid)), ivec2(0), textureSize(soft_vertices, 0) - 2);
+	vec2 local = clamp(grid - vec2(cell), vec2(0.0), vec2(1.0));
+	if (local.x + local.y <= 1.0) {
+		return soft_vertex_profile(cell) * (1.0 - local.x - local.y)
+			+ soft_vertex_profile(cell + ivec2(1,0)) * local.x
+			+ soft_vertex_profile(cell + ivec2(0,1)) * local.y;
+	}
+	return soft_vertex_profile(cell + ivec2(1)) * (local.x + local.y - 1.0)
+		+ soft_vertex_profile(cell + ivec2(1,0)) * (1.0 - local.y)
+		+ soft_vertex_profile(cell + ivec2(0,1)) * (1.0 - local.x);
+}
+float soft_dense(ivec2 tile) {
+	if (any(lessThan(tile, ivec2(0))) || any(greaterThanEqual(tile, textureSize(soft_tiles, 0)))) { return 0.0; }
+	return texelFetch(soft_tiles, tile, 0).g;
+}
+float soft_track_mask(vec2 grid) {
+	ivec2 tile = ivec2(floor(grid * 0.5));
+	if (soft_dense(tile) < 0.5) { return 0.0; }
+	vec2 local = grid - vec2(tile) * 2.0;
+	float mask = 1.0;
+	if (soft_dense(tile + ivec2(-1,0)) < 0.5) { mask *= smoothstep(0.0, 0.25, local.x); }
+	if (soft_dense(tile + ivec2(1,0)) < 0.5) { mask *= smoothstep(0.0, 0.25, 2.0 - local.x); }
+	if (soft_dense(tile + ivec2(0,-1)) < 0.5) { mask *= smoothstep(0.0, 0.25, local.y); }
+	if (soft_dense(tile + ivec2(0,1)) < 0.5) { mask *= smoothstep(0.0, 0.25, 2.0 - local.y); }
+	return mask;
 }
 vec2 soft_uv(vec2 p) {
 	// Both sector textures contain their common boundary sample exactly.
@@ -119,6 +155,16 @@ vec3 tile_sample(float packed, vec2 p, vec2 dx, vec2 dy) {
 	vec2 uv = (tile_origin + (local + atlas_padding) / span) / tiles_per_axis;
 	vec2 gx = tile_turn(dx, rotation) * interior / (tiles_per_axis * span);
 	vec2 gy = tile_turn(dy, rotation) * interior / (tiles_per_axis * span);
+	// Coarser atlas mips combine unrelated tiles. Keep the complete filter
+	// footprint inside this tile's border/gutter, even at grazing mirror
+	// angles. Scale both gradients together to retain anisotropy.
+	// BEGIN_ATLAS_FOOTPRINT
+	vec2 margin = (min(local, 1.0 - local) + atlas_padding) / (tiles_per_axis * span);
+	float gutter = (atlas_padding > 0.0 ? atlas_padding : border) / (tiles_per_axis * span);
+	float safe_span = max(min(gutter, min(margin.x, margin.y)), 0.5 / float(textureSize(atlases, 0).x));
+	float shrink = min(1.0, safe_span / max(max(length(gx), length(gy)), 1e-8));
+	gx *= shrink; gy *= shrink;
+	// END_ATLAS_FOOTPRINT
 	return textureGrad(atlases, vec3(uv, float((code >> 6) & 255)), gx * vec2(1.0, -1.0), gy * vec2(1.0, -1.0)).rgb;
 }
 #ifdef EI_BAKED_TERRAIN
@@ -210,16 +256,16 @@ bool query_weights(vec2 p, vec3 a, vec3 b, vec3 c, out vec3 w) {
 	w = vec3(1.0 - u - v, u, v);
 	return min(min(w.x, w.y), w.z) >= -1e-5;
 }
-float query_displace(vec3 p, vec2 origin, float layer) {
+float query_displace(vec3 p, vec2 origin, float layer, vec2 grid) {
 	if (!soft_ground || query_undeformed) { return p.y; }
-	vec2 profile = soft_surface(vec2(p.x, -p.z), p.y);
+	vec2 profile = soft_profile_grid(grid);
 	float h = p.y + profile.x;
 	if (layer >= 0.0 && !query_no_tracks) {
 		vec2 uv = ((vec2(p.x, -p.z) - origin) * (511.0 / 32.0) + 0.5) / 512.0;
 		vec4 track = textureLod(query_tracks, vec3(uv, layer), 0.0);
 		float age = max(textureLod(query_clock, vec2(0.5), 0.0).r - track.b / max(track.a, 1e-5), 0.0);
 		vec2 value = track.rg * clamp((240.0 - age) / 60.0, 0.0, 1.0);
-		h += soft_height(value) * profile.y;
+		h += soft_height(value) * profile.y * soft_track_mask(grid);
 	}
 	return h;
 }
@@ -241,20 +287,24 @@ mat3 query_subdivision(vec3 w, out vec3 blend) {
 	u /= 16.0; v /= 16.0; z /= 16.0;
 	return mat3(vec3(1.0-u.x-u.y,u), vec3(1.0-v.x-v.y,v), vec3(1.0-z.x-z.y,z));
 }
-float query_elevation(vec3 a, vec3 b, vec3 c, vec3 w, ivec2 cell) {
+float query_elevation(vec3 a, vec3 b, vec3 c, vec3 w, ivec2 cell, bool upper) {
 	vec2 state = texelFetch(query_tiles, clamp(cell / 2, ivec2(0), textureSize(query_tiles, 0) - 1), 0).rg;
 	vec2 origin = vec2(cell / 32) * 32.0;
 	float layer = state.x - 1.0;
 	mat3 points = mat3(a,b,c);
+	mat3 coordinates = mat3(vec3(vec2(cell) + (upper ? vec2(1,0) : vec2(0,1)), 0.0),
+		vec3(vec2(cell) + (upper ? vec2(0,1) : vec2(1,0)), 0.0),
+		vec3(vec2(cell) + (upper ? vec2(1) : vec2(0)), 0.0));
 	vec3 blend = w;
 	if (soft_ground && state.y > 0.5 && !query_undeformed) {
 		// Reconstruct the installed 16-way subdivision in the ORIGINAL
 		// triangle's barycentric coordinates, not a regular world xy grid.
-		points *= query_subdivision(w, blend);
+		mat3 subdivision = query_subdivision(w, blend);
+		points *= subdivision; coordinates *= subdivision;
 	}
 	float height = 0.0;
 	for (int i = 0; i < query_vertex_count; i++) {
-		height += blend[i] * query_displace(points[i], origin, layer);
+		height += blend[i] * query_displace(points[i], origin, layer, coordinates[i].xy);
 	}
 	return height;
 }
@@ -285,7 +335,7 @@ bool query_surface(vec2 p, out float height, out vec2 grid, out ivec2 tile, out 
 			vec3 c = side == 0 ? va : vd;
 			vec3 w;
 			if (!query_weights(p, a, b, c, w)) { continue; }
-			float h = query_elevation(a,b,c,w,cell);
+			float h = query_elevation(a,b,c,w,cell,side == 1);
 			if (h <= height) { continue; }
 			height = h; found = true; tile = cell / 2;
 			vec2 ga = vec2(cell) + (side == 0 ? vec2(0,1) : vec2(1,0));

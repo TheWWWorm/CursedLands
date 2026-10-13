@@ -761,6 +761,12 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	if template == "unmoli" and parts.has("rh3.trident") \
 			and (body_parts.is_empty() or "rh3.trident" in body_parts):
 		mesh_for["rh3.trident"] = "rh3.trident"
+	# Lesoviki have no inventory weapon: their blowpipe and dart box are
+	# authored figure parts, mounted and animated with the hand and torso.
+	if template == "unmodr":
+		for natural: String in ["rh3.tube00", "bd.box00"]:
+			if parts.has(natural) and (body_parts.is_empty() or natural in body_parts):
+				mesh_for[natural] = natural
 	var layers: Array[String] = []
 	var surfaces: Array[Vector3] = []
 	#  formats the prototype's skin index directly. The race's

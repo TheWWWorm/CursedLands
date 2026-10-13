@@ -65,7 +65,7 @@ func _run() -> void:
 			rows.append({"pose":i,"mode":mode,"kind":pose.kind,"object":pose.object,"position":str(pose.position),"target":str(pose.target),"height":pose.height,"plane":reflector.plane,"active":material.get_shader_parameter("planar_enabled"),"path":path})
 		if i==0:
 			check(material.get_shader_parameter("planar_enabled")==true,"visible tree-bank water enables the geometry reflection")
-			check(reflector.viewport.size==Vector2i(640,360),"reflection viewport stays at half resolution")
+			check(reflector.viewport.size==Vector2i(1280,720),"reflection viewport stays at display resolution within the 2048-pixel cap")
 	# Continuous orbit, including geometry leaving the main camera frame.
 	var target:Vector3=poses[0].target
 	for i in 31:

@@ -9,6 +9,26 @@ static func origin(u: GameUnit) -> Vector3:
 	return Vector3(u.pos.x, u.world.ground_at(u.pos.x, u.pos.y) + maxf(0.3, u.figure_half_z * 1.4), -u.pos.y)
 
 
+## The authority reprojects the latest camera ray from the shooter's current
+## pose at release. The client supplies only bounded relative view input.
+static func view_input(value: Dictionary) -> Dictionary:
+	var offset: Variant = value.get("view_offset")
+	var look: Variant = value.get("view_direction")
+	if not offset is Vector3 or not offset.is_finite() or offset.length_squared() > 144.0: return {}
+	if not look is Vector3 or not look.is_finite() or not is_finite(look.length_squared()) or look.length_squared() < 0.5: return {}
+	return {"view_offset":offset, "view_direction":look.normalized()}
+
+
+static func view_direction(u: GameUnit, view: Dictionary) -> Vector3:
+	var muzzle := origin(u)
+	var eye: Vector3 = muzzle + view.view_offset
+	var end: Vector3 = eye + view.view_direction * 60.0
+	var wall := scene_fraction(u.world, eye, end)
+	var hit := ray_body(u.world, u, eye, end, wall)
+	var delta := eye.lerp(end, float(hit.fraction)) - muzzle
+	return delta.normalized() if delta.length_squared() > 0.000001 else view.view_direction
+
+
 static func point_clear(w: GameWorld, p: Vector3, margin := 0.0) -> bool:
 	var xy := Vector2(p.x, -p.z)
 	if p.y <= w.ground_at(xy.x, xy.y) + margin: return false
@@ -27,15 +47,28 @@ static func point_clear(w: GameWorld, p: Vector3, margin := 0.0) -> bool:
 ## A short sweep in the original navigation geometry. Includes the endpoint,
 ## unlike a sight ray rounded to half-metre steps. Moving floors/doors update
 ## these same spans, so there is no second scenery cache to go stale.
+static func scene_clear(w: GameWorld, p: Vector3, margin: float) -> bool:
+	if not point_clear(w, p, margin): return false
+	if margin > 0.0:
+		for offset: Vector3 in [Vector3(margin,0,0), Vector3(-margin,0,0), Vector3(0,0,margin), Vector3(0,0,-margin)]:
+			if not point_clear(w, p + offset, margin): return false
+	return true
+
+
 static func scene_fraction(w: GameWorld, a: Vector3, b: Vector3, margin := 0.0) -> float:
 	var n := maxi(1, ceili(a.distance_to(b) / 0.2))
 	for i in range(1, n + 1):
-		var f := float(i) / n
-		var p := a.lerp(b, f)
-		if not point_clear(w, p, margin): return float(i - 1) / n
-		if margin > 0.0:
-			for offset: Vector3 in [Vector3(margin,0,0), Vector3(-margin,0,0), Vector3(0,0,margin), Vector3(0,0,-margin)]:
-				if not point_clear(w, p + offset, margin): return float(i - 1) / n
+		var hi := float(i) / n
+		if scene_clear(w, a.lerp(b, hi), margin): continue
+		# Keep the broad sweep, then refine its first blocked interval. Using
+		# its last 20-cm step directly made a rotating shoulder camera jump
+		# between discrete distances next to hills and walls.
+		var lo := float(i - 1) / n
+		for step in 7:
+			var mid := (lo + hi) * 0.5
+			if scene_clear(w, a.lerp(b, mid), margin): lo = mid
+			else: hi = mid
+		return lo
 	return 1.0
 
 

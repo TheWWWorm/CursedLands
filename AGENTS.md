@@ -26,3 +26,13 @@ When publishing a release, rebuild and commit the hosted browser export in
 browser start and an update from the previous service-worker cache, then confirm
 the Cloudflare deployment serves the committed assets. Desktop and mobile
 release uploads alone do not update the hosted browser build.
+
+# Localization
+
+Every player-visible string must be translated into all supported languages
+(English, Russian and German), including labels, options, help, errors, status
+messages and generated item descriptions. Use the original localized text
+archives where available and `RemakeText.t` for remake text. Add both Russian
+and German entries with each new or changed English key, including keys chosen
+dynamically. Do not expose internal item IDs or raw specifications as names.
+Verify translation coverage and readable layout in all three languages.

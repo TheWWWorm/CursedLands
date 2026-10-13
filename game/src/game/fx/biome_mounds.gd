@@ -18,7 +18,7 @@ void vertex() {
 	vec3 b = query_vertex(cell+(upper ? ivec2(0,1) : ivec2(1,0)));
 	vec3 c = query_vertex(cell+(upper ? ivec2(1) : ivec2(0)));
 	vec3 weights = vec3(1.0-CUSTOM0.z-CUSTOM0.w,CUSTOM0.zw);
-	float height = query_elevation(a,b,c,weights,cell);
+	float height = query_elevation(a,b,c,weights,cell,upper);
 	float cut = 0.0;
 	vec2 state = texelFetch(query_tiles,cell/2,0).rg;
 	if (soft_ground && state.y > 0.5 && state.x > 0.0) {

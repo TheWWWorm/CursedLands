@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.0.7 — stable release, 13 October 2026
+
+- Render dropdown text at its actual display scale, including high-resolution screens.
+- Complete Russian and German remake labels and require translations for all player-visible strings, with a translation coverage check.
+- Aim moving first- and third-person bow shots from the current launch position toward the latest received camera ray at release.
+- Keep the first-person eye position continuous during turns and refine third-person camera collision distances.
+- Keep detailed snow tile edges joined to adjacent terrain and fade footprints at coarse tile boundaries.
+- Constrain distant terrain atlas sampling to each tile's padded border and increase Mirror reflection resolution, capped at 2048 pixels on the longest side.
+- Restore Brissen's enchanted armor, inventory models and localized descriptions while preserving saved wear, charge and enchantments.
+- Restore lesoviki's authored blowpipes and dart boxes in world models and character previews.
+- Restore mouse-wheel scrolling in inventory and shop item rows.
+- Reset filters and scrolling when switching shop activities; show relevant spell, construction and repair categories by default.
+- Exclude quest items from shop stock and reject attempts to purchase them.
+
+See [release notes](docs/releases/1.0.7.md) for compatibility and platform limits.
+
 ## 1.0.6 — stable release, 13 October 2026
 
 - Preserve safe-area NPC poses between scripted animation repeats and loop

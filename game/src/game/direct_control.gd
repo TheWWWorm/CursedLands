@@ -414,8 +414,10 @@ func step(move: Vector2, dt: float) -> void:
 	_look_refresh -= dt
 	if u and not GameSound.blocked(u) and (_look_id != u.uid or _look_refresh <= 0.0):
 		_look_id = u.uid
-		_look_refresh = 0.1
-		game.session.submit({"t":"direct_look","units":[u.uid],"heading":heading})
+		_look_refresh = 1.0 / 30.0
+		var command := {"t":"direct_look","units":[u.uid],"heading":heading}
+		command.merge(aim_view(u))
+		game.session.submit(command)
 	_repeat = maxf(0.0,_repeat-dt)
 	steer(move,dt)
 	if _fire and _repeat <= 0.0: attack()
@@ -483,6 +485,13 @@ func pad_action(action: String, phase: String) -> bool:
 	return false
 
 
+func aim_view(u: GameUnit) -> Dictionary:
+	var camera := game.rig.camera
+	var drawn_muzzle := u.global_position + Vector3.UP * maxf(0.3, u.figure_half_z * 1.4)
+	return {"view_offset":camera.global_position - drawn_muzzle,
+		"view_direction":-camera.global_basis.z}
+
+
 func aim_point() -> Vector3:
 	var cam := game.rig.camera
 	var start := cam.global_position
@@ -512,7 +521,9 @@ func attack() -> void:
 		_fire = false
 		return
 	var d := (aim_point()-DirectCombat.origin(u)).normalized()
-	game.issue({"t":"direct_attack","units":[u.uid],"direction":d,"aim":game.held_aim()})
+	var command := {"t":"direct_attack","units":[u.uid],"direction":d,"aim":game.held_aim()}
+	command.merge(aim_view(u))
+	game.issue(command)
 
 
 ## Keyboard E has an explicit self action while a friendly spell/item is
@@ -731,7 +742,11 @@ func apply_camera(dt := 0.0) -> void:
 		elif dt > 0.0:
 			var eased := _eye_offset.lerp(anchor, 1.0-exp(-minf(dt,0.1)*18.0))
 			_eye_offset = _eye_offset.move_toward(eased, minf(dt,0.1)*2.5)
-		eye = u.model.to_global(_eye_offset) if u.model else u.global_position + _eye_offset
+		# The authority turns the body on simulation ticks. The local eye must
+		# turn with this frame's mouse aim; inheriting the body's stepped yaw
+		# moves the off-centre eye in small jumps during fast camera turns.
+		var local_eye: Vector3 = u.model.transform * _eye_offset if u.model else _eye_offset
+		eye = u.global_position + Basis(Vector3.UP, heading + GameUnit.MODEL_YAW_OFFSET) * local_eye
 		# Eyes sit ahead of the collar: looking down sees the chest, while
 		# walking neck/shoulder motion stays behind the near part of the view.
 		eye += Vector3(cos(heading),0,-sin(heading)) * 0.28

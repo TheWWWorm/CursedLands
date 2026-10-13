@@ -165,11 +165,13 @@ func bind(material: ShaderMaterial, triangle_only := false) -> void:
 			material.set_shader_parameter("query_normals", normals)
 			material.set_shader_parameter("query_light_inputs", light_inputs)
 	material.set_shader_parameter("query_vertices", vertices)
+	material.set_shader_parameter("soft_vertices", vertices)
 	material.set_shader_parameter("query_vertex_count", 3)
 	var field := _empty
 	if is_instance_valid(terrain.details) and is_instance_valid(terrain.details.soft_ground):
 		field = terrain.details.soft_ground.shared_field()
 	material.set_shader_parameter("query_tiles", field.tiles)
+	material.set_shader_parameter("soft_tiles", field.tiles)
 	material.set_shader_parameter("query_tracks", field.texture)
 	material.set_shader_parameter("query_clock", field.clock)
 	if not triangle_only:

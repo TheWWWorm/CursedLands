@@ -46,6 +46,58 @@ func snapshot(name: String) -> void:
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://" + name + ".png")
 
+func wheel_at(point: Vector2, down: bool) -> void:
+	TouchInput.motion(point, Vector2.ZERO)
+	var event := InputEventMouseButton.new()
+	event.position = point; event.global_position = point; event.pressed = true
+	event.button_index = MOUSE_BUTTON_WHEEL_DOWN if down else MOUSE_BUTTON_WHEEL_UP
+	get_viewport().push_input(event)
+	camp._process(0.0)
+
+func paging_and_filters() -> void:
+	var st := session.state
+	var saved_items := st.items.duplicate(); var saved_goods: Dictionary = st.shops[1].goods.duplicate()
+	var quest := String(GameData.db.table("quest_items")[0].name).to_lower()
+	check(Items.kind(quest) == "quest", "original quest item fixture")
+	st.items.clear(); st.shops[1].goods.clear()
+	for i in 18:
+		var id := Items.with_wear("stone axe.rock", i + 1.0)
+		st.items.append(id); st.shops[1].goods[id] = 1
+	st.quest_items[quest] = 1; st.shops[1].goods[quest] = 3
+	check(not session.shop_stock({"shop":1}).has(quest) and session.shop_count(quest,{"shop":1}) == 0, "quest prototypes cannot appear in shop stock")
+	st.quest_items["tiny potion 1"] = 1; st.shops[1].goods["tiny potion 1"] = 4
+	check(not session.shop_stock({"shop":1}).has("tiny potion 1"), "script-designated quest items also stay out of stock")
+	check(not session._trade_apply({"shop":1,"buy":["tiny potion 1"]}), "authority refuses buying a script-designated quest item")
+	camp.set_mode("itemtrade"); camp._set_bag_filter(5); camp._process(0)
+	await frame()
+	var bag_point := camp._r(Rect2(0,500,800,100)).get_center()
+	var shop_point := camp._r(Rect2(0,0,800,100)).get_center()
+	wheel_at(bag_point,true)
+	check(camp.scroll == 1 and camp.shop_scroll == 0, "wheel over bag advances only the bag")
+	wheel_at(shop_point,true)
+	check(camp.scroll == 1 and camp.shop_scroll == 1, "wheel over stock advances only stock")
+	for i in 40: wheel_at(bag_point,true); wheel_at(shop_point,true)
+	check(camp.scroll == camp.bag_items().size()-CampView.BAG_CELLS and camp.shop_scroll == 11, "wheel clamps at last visible page")
+	for i in 40: wheel_at(bag_point,false); wheel_at(shop_point,false)
+	check(camp.scroll == 0 and camp.shop_scroll == 0, "reverse wheel returns to first items")
+	check(camp.buy_pile.is_empty() and camp.sell_pile.is_empty(), "wheel never stages a trade")
+	for activity in ["weapons","itemtrade","itemconstr","spelltrade","spellconstr","spells","repair"]:
+		camp.set_mode("itemtrade" if activity == "weapons" else "weapons")
+		camp._set_bag_filter(4); camp._set_shop_filter(4); camp.scroll=9; camp.shop_scroll=9
+		camp.set_mode(activity)
+		var expected := 0 if activity in ["itemconstr","spellconstr","spelltrade","spells"] else (2 if activity == "repair" else 5)
+		check(camp.filter == expected and camp.shop_filter == 5 and camp.scroll == 0 and camp.shop_scroll == 0, "fresh relevant filters and first page: " + activity)
+	st.items = [Items.with_wear("stone axe.rock",1),"stone axe.rock","tiny potion 1","spell:fireball","rune:e1","keystone:fireball"]
+	camp.set_mode("weapons"); camp.set_mode("repair")
+	check(camp.bag_items() == [st.items[0]], "repair starts with damaged equipment only")
+	camp.set_mode("spelltrade")
+	check(camp.bag_items() == ["spell:fireball","rune:e1","keystone:fireball"], "spell trading starts with spells and their ingredients")
+	camp.set_mode("weapons")
+	check(camp.bag_items().has(quest), "quest items remain accessible in player inventory")
+	st.quest_items.erase(quest); st.quest_items.erase("tiny potion 1")
+	st.items = saved_items; st.shops[1].goods = saved_goods
+	camp.set_mode("itemtrade"); camp._process(0)
+
 func _ready() -> void:
 	GameData.options.merge({"autosave": 0, "show_tutorial": 0, "net_upnp": 0, "net_lan": 0,
 		"net_directory": 0, "auto_graphics": 0}, true)
@@ -97,6 +149,7 @@ func _ready() -> void:
 	st.shops[1] = {"restock": false, "goods": goods, "sold": {}}
 	var panel: InventoryPanel = game.hud._inventory
 	panel.open(true, 1); camp = panel._camp
+	await paging_and_filters()
 	check(camp.item_info_text("spell:" + spell).contains(Spells.mod_short_title("e1")), "inventory text includes installed rune inscriptions")
 	camp.set_process(false) # Deterministic hold timing, while input dispatch stays live.
 	camp._set_bag_filter(4)

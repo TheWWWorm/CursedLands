@@ -25,9 +25,9 @@ func _ready() -> void:
 			a = source.affine_inverse()*mirrored_object
 			b = reflected.affine_inverse()*object
 			check(b.is_equal_approx(Vector3(-a.x,a.y,a.z)),"geometry reflection matches a virtual mirrored object")
-	check(Reflection.target_size(Vector2(1280,720))==Vector2i(640,360),"ordinary views use half resolution")
-	check(Reflection.target_size(Vector2(5120,2880))==Vector2i(1024,576),"large displays obey the reflection pixel budget")
-	check(Reflection.target_size(Vector2(720,1280))==Vector2i(360,640),"portrait views keep their aspect ratio")
+	check(Reflection.target_size(Vector2(1280,720))==Vector2i(1280,720),"ordinary views use display resolution within the 2048-pixel cap")
+	check(Reflection.target_size(Vector2(5120,2880))==Vector2i(2048,1152),"large displays obey the reflection pixel budget")
+	check(Reflection.target_size(Vector2(720,1280))==Vector2i(720,1280),"portrait views keep their aspect ratio")
 	check((0xFFFFF & Reflection.CAMERA_MARKER)==0,"ordinary cameras cannot trigger reflected-view clipping")
 	check((Reflection.WATER_LAYER & Reflection.CAMERA_MARKER)==0,"water geometry and reflected camera marker are distinct")
 	TexUpscale.shutdown()

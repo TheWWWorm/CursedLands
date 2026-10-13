@@ -51,6 +51,20 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Spells, keystones and runes": ["Заклинания, основы и руны", "Zauber, Grundsteine und Runen"],
+	"Damaged equipment": ["Повреждённое снаряжение", "Beschädigte Ausrüstung"],
+	"Ready spells": ["Готовые заклинания", "Fertige Zauber"],
+	"Loading…": ["Загрузка…", "Wird geladen…"],
+	"Choose a new game or a save before hosting. Its saved mod rules apply to the whole lobby.": ["Перед созданием игры выберите новую игру или сохранение. Сохранённые правила модификаций действуют для всех участников.", "Wähle vor dem Hosten ein neues Spiel oder einen Spielstand. Die gespeicherten Mod-Regeln gelten für die gesamte Lobby."],
+	"Interact": ["Взаимодействовать", "Interagieren"],
+	"Could not save the game.": ["Не удалось сохранить игру.", "Das Spiel konnte nicht gespeichert werden."],
+	"Map:": ["Карта:", "Karte:"],
+	"Objects": ["Объекты", "Objekte"],
+	"Level script": ["Сценарий уровня", "Levelskript"],
+	"WASD pan · Q/E or right-drag rotate · wheel zoom · Shift fast": ["WASD — перемещение · Q/E или правая кнопка мыши — поворот · колесо — масштаб · Shift — быстрее", "WASD: Verschieben · Q/E oder Ziehen mit rechter Maustaste: Drehen · Mausrad: Zoom · Umschalt: Schneller"],
+	"Loading %s...": ["Загрузка %s…", "%s wird geladen…"],
+	"Failed to load %s": ["Не удалось загрузить %s", "%s konnte nicht geladen werden"],
+
 	"Original saves": ["Основные сохранения", "Ursprüngliche Spielstände"],
 	"Copy a save from the original profile. The original is kept.": ["Скопируйте основное сохранение в этот профиль. Исходное сохранение останется на месте.", "Einen Spielstand aus dem ursprünglichen Profil kopieren. Das Original bleibt erhalten."],
 	"No enabled mods provide configurable options.": ["У включённых модов нет дополнительных настроек.", "Die aktivierten Mods haben keine weiteren Einstellungen."],
