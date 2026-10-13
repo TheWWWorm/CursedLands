@@ -1,3 +1,8 @@
+# Collaboration
+
+Do not use subagents or delegate to other agents unless the user explicitly asks.
+This preference also applies when a skill recommends parallel agent work.
+
 # Release notes and change logs
 
 Describe the concrete changes made in neutral terms. Do not repeat user reports,

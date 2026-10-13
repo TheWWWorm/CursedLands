@@ -1,0 +1,130 @@
+{
+  "date": "2026-10-13",
+  "base_release": "1.0.5",
+  "base_commit": "deb1fb3889eb75241e6880863c1ff3748f552643",
+  "status": "Local source changes; no release artifacts changed.",
+  "changes": [
+    "Retain safe-area NPC poses through scripted animation dispatch gaps, restart explicit repeats, and keep authored cycles until a replacement action.",
+    "Show village conversation attention only for live, visible, available actors with pending non-shop topics; suppress it throughout dialogue and across completion delivery.",
+    "Refresh topic state on dialogue and campaign events, with independent selection, hit-flash and quest lighting retained.",
+    "Deliver co-op training updates through a 50 ms batch, including while simulation is paused; skip rebuilding hidden fallback inventory controls."
+  ],
+  "original_comparison": {
+    "game_exe_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+    "topic_attention": "Village update 0x604130 scans value-1 b.<owner>.<topic> entries and excludes constr* shop entries; actual selectable topics are separate in 0x607320.",
+    "animation": "Original scripts and authored cycle flags retained. A bounded three-tick completed-pose handoff compensates for the remake completing commands directly; script retrigger frame numbers remain unchanged.",
+    "evidence": [
+      "/home/llm2x/Documents/EI/local/scratchpad/npc-dialogue-training-20261013/original-evidence.rea",
+      "/home/llm2x/Documents/EI/inspection/ghidra/out_dialog/604130.c"
+    ],
+    "scope": "Original scripts, assets and native static analysis; no original-runtime equivalence claim."
+  },
+  "regressions": [
+    {
+      "suite": "npc_ambient_loops",
+      "checks": 102,
+      "baseline_failures": 11,
+      "candidate_failures": 0,
+      "evidence": "/home/llm2x/Documents/EI/local/scratchpad/npc-ambient-20261013/summary.json"
+    },
+    {
+      "suite": "lmp_seated_pose",
+      "checks": 25,
+      "failures": 0
+    },
+    {
+      "suite": "dialogue_poses",
+      "checks": 54,
+      "failures": 0,
+      "scope": "Real local ENet dialogue; isolated fixture uses an available port."
+    },
+    {
+      "suite": "dialogue_highlights",
+      "checks": 38,
+      "baseline_failures": 16,
+      "candidate_failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/npc-dialogue-training-20261013/highlight-candidate.log",
+      "log_sha256": "5d32ff7fa2029a71b652a82b1b1dcedb415400f5ab86561c48cdb3d274c59675"
+    },
+    {
+      "suite": "dialogue_feedback",
+      "checks": 16,
+      "failures": 0,
+      "campaign": "Lost in Astral"
+    },
+    {
+      "suite": "quest_carriers",
+      "checks": 12,
+      "failures": 0
+    },
+    {
+      "suite": "training_latency_integrated",
+      "checks": 23,
+      "failures": 0,
+      "feedback_ms": [
+        62.801,
+        70.479
+      ],
+      "paused_feedback_ms": 67.093
+    },
+    {
+      "suite": "training_reset",
+      "checks": 92,
+      "failures": 0,
+      "legal_purchase_orders": 5247
+    },
+    {
+      "suite": "training_coop",
+      "checks": 13,
+      "failures": 0
+    },
+    {
+      "suite": "camp_inventory_ui",
+      "checks": 88,
+      "failures": 0
+    },
+    {
+      "suite": "campaign_state_transport",
+      "checks": 24,
+      "failures": 0
+    },
+    {
+      "suite": "training_latency_120ms_rtt",
+      "checks": 23,
+      "failures": 0,
+      "feedback_ms": 186,
+      "paused_feedback_ms": 191
+    },
+    {
+      "suite": "training_latency_rendered",
+      "checks": 20,
+      "failures": 0,
+      "scope": "Visible rows and state; software rendering at 4-5 FPS is excluded from strict latency comparison."
+    }
+  ],
+  "validation_bundles": [
+    "/home/llm2x/Documents/EI/local/scratchpad/npc-dialogue-training-20261013/validation.json",
+    "/home/llm2x/Documents/EI/local/scratchpad/stat-latency-1.0.5-20261013/validation.json"
+  ],
+  "source_sha256": {
+    "AGENTS.md": "4df6a85295f1d18398b6e82b67f48addc47fdf38d379e96013c0cb820b13e40c",
+    "game/src/game/game.gd": "e08e9d735ab4f5f723b292b492779c5b59542a6f975b168d15cca2ebc1aa3312",
+    "game/src/game/order_marks.gd": "bc6db280804d52f00664efda7a19bed96afc72ed2bd6b885910e7d5618d5c073",
+    "game/src/game/script/briefings.gd": "1223a112a88eaba4e48676147d31a86bc06886440da6e7f5f394e5aa2ef494b5",
+    "game/src/game/session.gd": "1e920d39c471752da3ebaa99458e7974ed62649e75e6ccb584d8335b1a5d5edf",
+    "game/src/game/unit.gd": "3473966bc8a00fc9c8f90d7513d37ca387b21047017737b40ea0c3e0ad542b92",
+    "game/src/ui/inventory_panel.gd": "81dcb611ce301bdb34b876989f64ace4ceb6359c92711fab315b0ea6b15de712",
+    "tools/tests/dialogue_feedback.gd": "28453975e7e7efd71944e01a466dd68fa153f373dcdafda296fefecd677e2ecc",
+    "tools/tests/lmp_seated_pose.gd": "a069a23a2052b18e3aeceb61c7045b6fb49764ca00999fd0c53eda4c14080f86",
+    "tools/tests/training_coop.gd": "1739f840f87e88357d54736c032eb980d6a9f4f00eda2b6c45ec342433ea7857",
+    "tools/tests/dialogue_highlights.gd": "168938b51ea0b26c6423f0f649f85272e3c148e0cfd3e940f19550058df3d6a3",
+    "tools/tests/npc_ambient_loops.gd": "f8a043e17f4e7147d674ca206e3dc69945f08d6892153d7be9b6d1d8ab1ca141",
+    "tools/tests/training_latency.gd": "1fedea544afbeca9719504915c55b1e455780f13bf363a905465ef90770f3873"
+  },
+  "limits": [
+    "Linux Godot 4.7 with isolated profiles and original base-game/expansion assets.",
+    "NPC and highlight checks exercise animation state, material membership and network events; no rendered NPC comparison.",
+    "Fixed 120 ms simulated round-trip delay is not a WAN latency guarantee.",
+    "No Windows, macOS, Android or browser qualification in this change."
+  ]
+}

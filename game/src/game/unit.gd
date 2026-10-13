@@ -260,6 +260,7 @@ var _anim_lock := 0.0:
 			_anim_lock = value
 			if _sim_state: _sim_state.update(&"_anim_lock", value)
 var _story_clip := ""     # a script clip whose completion the saved VM may await
+var _story_pose_ticks := 0 # presentation only; does not extend command completion
 ## Native village talk checks the creature's current command
 ## (Stop 0 or Rest 11) and posted command (empty 9),.
 ## This is independent of the AI motivation, held Follow and stance clips.
@@ -1610,8 +1611,10 @@ func _tick(dt: float) -> void:
 	if direct_controlled and not blocked and is_finite(direct_heading) \
 		and Time.get_ticks_msec() <= direct_look_until and order.is_empty() and orders.is_empty():
 		_turn_to(direct_heading, dt)
-	if action != "anim:" + _story_clip or not _ambient_story_pose():
+	if action != "anim:" + _story_clip or not _hold_story_pose():
 		_story_clip = ""
+	elif _story_pose_ticks > 0:
+		_story_pose_ticks -= 1
 	if _talk_command == 10 and order.is_empty():
 		_talk_command = 11 if resting else 0
 	if resting and not (order.is_empty() and orders.is_empty()):
@@ -1623,9 +1626,9 @@ func _tick(dt: float) -> void:
 			if world.time >= ai_next:
 				world.ai.think(self)
 			if orders.is_empty():
-				# Authored village actors repeat their ambient special after
-				# a Sleep. Keep its final pose across that gap. The command
-				# is idle; AI and queued orders still run and can replace it.
+				# A script may reissue its ambient clip after Sleep. Retain
+				# the pose across that dispatch gap without keeping the
+				# command busy; AI and queued orders can still replace it.
 				if _story_clip.is_empty():
 					_set_action("idle")
 				return
@@ -1670,7 +1673,8 @@ func _tick(dt: float) -> void:
 		"anim":
 			_story_clip = String(order.name) if order.get("story", false) else ""
 			_anim_lock = model.act(order.name, int(order.get("variant", 1)), 0.1) if not model.has_anim(order.name) \
-				else _play_clip(order.name, _ambient_story_pose())
+				else _play_clip(order.name, true)
+			_story_pose_ticks = 3
 			action = "anim:" + String(order.name)
 			order = {}
 		"rotate":
@@ -1844,6 +1848,21 @@ func _ambient_story_pose() -> bool:
 	if model.template != "unhuma": return false
 	return _story_clip in ["uspecial13", "uspecial15"] or (_story_clip == "uspecial10" \
 		and world.zone.get("id", "") == "bz8k" and info.get("name", "") in ["AGuard1", "AGuard2"])
+
+
+## Original one-shots finish their animation queue before the controller
+## changes mode 3 -> 6 -> Stop (5499f0/552300/54b390). The remake completes
+## the command directly; an authored Sleep/retrigger pair can arrive three
+## ticks later. Keep the completed pose for those dispatch passes, while
+## leaving is_idle(), AI, dialogue readiness and replacement orders live.
+## An actual authored cycle (555700's cycle-bit branch), or an existing
+## persistent village pose, stays until a new action. Other one-shots expire.
+func _hold_story_pose() -> bool:
+	if _story_clip.is_empty() or controller >= 0 or world == null or world.zone.get("type", "") != "brief" \
+			or model == null or model.player == null or model._current != _story_clip:
+		return false
+	return _story_pose_ticks > 0 or _ambient_story_pose() \
+		or model.player.get_animation("ei/" + _story_clip).loop_mode != Animation.LOOP_NONE
 
 
 func _play_clip(clip: String, restart := false) -> float:
@@ -3941,6 +3960,10 @@ func anim_flush(defer_pose := false) -> void:
 
 func _set_action(a: String) -> void:
 	var _profile := world.profile_scope("unit_set_action", uid) if world and world.profile_simulation else null
+	# A calm AI also refreshes idle directly. It must not cancel a village
+	# script's held presentation; processing any real order clears it first.
+	if a == "idle" and action == "anim:" + _story_clip and _hold_story_pose():
+		return
 	# A unit that stays idle asks for the same pose every frame: when nothing
 	# it depends on changed (stance, combat flag, part health, the figure and
 	# its playing clip), the call would change nothing and is skipped. The

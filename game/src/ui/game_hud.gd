@@ -700,6 +700,9 @@ func on_event(e: Dictionary) -> void:
 		"trade_result":
 			if int(e.get("to", -1)) == game.session.my_index:
 				_inventory._camp.trade_result(e)
+		"repair_result":
+			if int(e.get("to", -1)) == game.session.my_index:
+				_inventory._camp.repair_result(e)
 		"constr_result":   # Session._spell_constr's answer to this player's camp screen
 			if int(e.get("to", -1)) == game.session.my_index:
 				_inventory._camp.constr_result(e)

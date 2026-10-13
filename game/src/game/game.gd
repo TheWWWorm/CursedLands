@@ -1351,6 +1351,8 @@ func on_event(e: Dictionary) -> void:
 			SmileFaces.show(self, e)
 	if hud:
 		hud.on_event(e)
+	if marks:
+		marks.on_event(e)
 
 
 ## Order acknowledgements (acks.db), spoken by the first unit given the order.

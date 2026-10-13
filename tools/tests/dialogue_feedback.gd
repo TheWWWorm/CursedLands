@@ -51,6 +51,9 @@ func _ready() -> void:
 	var marks := OrderMarks.new(); marks.game = game; game.add_child(marks); marks.set_process(false)
 	game.selected.clear(); GameData.options.select_type = 1
 	marks._refresh_talk_units(); marks._update_lit()
+	check(not smith in marks._lit, "topic list suppresses the conversation highlight")
+	game.hud._dialog.visible = false
+	marks._refresh_talk_units(); marks._update_lit()
 	check(smith in marks._lit, "NPC with available topics lights without selection")
 	for e: Array in b.available_for(smith): session.state.set_var(0,"b.%s.%s" % e,2)
 	marks._refresh_talk_units(); marks._update_lit()

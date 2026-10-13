@@ -872,9 +872,10 @@ func _input(e: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 	elif _keyboard_aim:
 		if e is InputEventMouseMotion:
-			var centre: Vector2 = wheel._geom()[0]
+			var geometry := wheel._geom()
+			var centre: Vector2 = geometry[0]
 			var offset: Vector2 = wheel.get_global_transform_with_canvas().affine_inverse() * e.position - centre
-			if offset.length() < minf(wheel.size.x, wheel.size.y) * 0.04: wheel.selected = -1
+			if offset.length() < float(geometry[1]) * 0.16: wheel.selected = -1
 			else: wheel.flick(offset.normalized())
 		elif e is InputEventMouseButton and e.pressed:
 			if e.button_index == MOUSE_BUTTON_LEFT: finish_keyboard_aim()
@@ -900,7 +901,7 @@ func open_keyboard_aim() -> void:
 	wheel.title = RemakeText.t("Aimed strike")
 	wheel.pages = PackedStringArray()
 	wheel.hints = []
-	wheel.open(aim_entries())
+	wheel.open(aim_entries(), -1, 0.5)
 	get_viewport().warp_mouse(wheel.get_global_transform_with_canvas() * wheel._geom()[0])
 	_hold_pause(true)
 

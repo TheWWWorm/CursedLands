@@ -98,7 +98,7 @@ func _ready() -> void:
 		"worn" if where in ["worn", "belt"] else where))
 	_camp.deal.connect(_on_deal)
 	_camp.construct.connect(_issue)
-	_camp.repair.connect(func(items): for it in items: _issue({"t": "repair", "item": it}))
+	_camp.repair.connect(func(items): _issue({"t":"repair", "items":items, "req":_camp._repair_req}))
 	_camp.mode_changed.connect(func(m): shop_mode = not m in ["weapons", "spells"]; _info.text = ""; _clear_buttons())
 	add_child(_camp)
 	_camp.exit_pressed.connect(func(): visible = false)   # Exit (tip 20107)
@@ -135,7 +135,7 @@ func open_swap() -> void:
 ## `constr`: the trader picked from the topic list ("constr<N>", Shops); 0 opens
 ## the dressing screen alone (the global map's camp button, constr.current 0).
 func open(shop: bool, constr := 0) -> void:
-	if _camp.trade_wait:
+	if _camp.trade_wait or _camp.repair_wait:
 		visible = true
 		return
 	if visible and _camp.mode == "swap" and hud.game.session.swap.partner() >= 0:
@@ -250,12 +250,18 @@ func refresh() -> void:
 	if not visible:
 		return
 	var st := hud.game.session.state
-	_money.text = RemakeText.t("Gold: %d   ") % st.money
-	for c in _hero_box.get_children():
-		c.queue_free()
 	var u := _hero()
 	_camp.refresh(u)
 	_doll.visible = u != null and not _camp.visible
+	if not _root.visible:
+		# The camp owns its rows and model. Rebuilding the hidden item lists
+		# and second paperdoll on every point purchase scales with bag size.
+		_info.text = ""
+		_clear_buttons()
+		return
+	_money.text = RemakeText.t("Gold: %d   ") % st.money
+	for c in _hero_box.get_children():
+		c.queue_free()
 	if u:
 		_doll.show_unit(u)
 	if u and u.has_meta("hero"):

@@ -413,9 +413,11 @@ func complete(player: int, var_name: String, force := false) -> void:
 	_pending_dialog = {}
 	active = ""
 	active_player = -1
-	vm.session.broadcast({"t": "dialog_close", "id": close_id})
 	var key := _named_key(_named_id, player) if not _named_id.is_empty() else var_name
 	_named_id = ""
+	# Peers can close the panel before the next campaign snapshot. Include
+	# the completed topic so its attention cue cannot briefly reappear.
+	vm.session.broadcast({"t": "dialog_close", "id": close_id, "completed": key, "player": player})
 	if key.is_empty():
 		return
 	vm.merc_briefing_done(key, player)   #  runs first
@@ -431,6 +433,9 @@ func complete(player: int, var_name: String, force := false) -> void:
 	else:
 		vm.session.coop.with_purse(player, _rewards.bind(id, player), true)
 	vm.fire_event("#OnBriefingComplete", [float(player), key])
+	# Leave the temporary co-op purse scope before sending the resulting
+	# topics/rewards. This also covers briefings without a database reward row.
+	vm.session.sync_state.call_deferred()
 
 
 func _rewards(id: String, player := 0) -> void:

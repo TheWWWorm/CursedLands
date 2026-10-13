@@ -60,6 +60,7 @@ var _state_serial := 0
 var _state_waiting := {} # newest reliable campaign document awaiting its peer
 var _state_pending := {} # recompute current state after acknowledgement
 var _state_dirty := false
+var _training_sync_pending := false
 var _input_out := NetInput.new()
 var _input_in := {} # peer -> ordered command stream, shared by both transports
 var _input_retry_at := 0
@@ -208,6 +209,10 @@ func _movie_ack(pid: int, serial: int) -> void:
 
 func _process(_dt: float) -> void:
 	_send_input_due()
+	# Point purchases remain available at a shared pause. Deliver their
+	# replies on wall time while the simulation's physics loop is stopped.
+	if _training_sync_pending and is_host and not loading_game and not coop.purse_active():
+		_sync_state_due()
 	if not is_host or not movie_active(): return
 	for pid in _movie_wait.keys():
 		if int(pid) != 1 and (not online or not players.has(pid) or not CoopProgress.peer_alive(multiplayer, int(pid))):
@@ -2450,19 +2455,19 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				var skill := String(cmd.get("stat", ""))
 				if Skills.raise(h, skill):
 					Combat.hero_stats(u, h)
-					sync_state()
+					_sync_training()
 		"perk":
 			var u := _hero_unit(int(cmd.get("unit", -1)), player)
 			if u and camp_available() and Perks.learn(u.get_meta("hero"), String(cmd.get("perk", ""))):
 				Combat.hero_stats(u, u.get_meta("hero"))
-				sync_state()
+				_sync_training()
 		"refund_training":
 			var u := _hero_unit(int(cmd.get("unit", -1)), player)
 			if u and not u.dead and camp_available():
 				var h: Dictionary = u.get_meta("hero")
 				if TrainingRefund.refund(h):
 					Combat.hero_stats(u, h)
-					sync_state()
+					_sync_training()
 		"equip", "unequip", "use", "give_quick", "take_quick", "select_weapon", "learn", "unlearn":
 			_item_command(cmd, player)
 		"buy", "sell":
@@ -3052,15 +3057,15 @@ static func spend_charge(list: Array, i: int, cost: float, strict := false) -> b
 	return true
 
 
-func _refresh_hero(u: GameUnit) -> void:
-	_refresh_character(u, u.get_meta("hero"))
+func _refresh_hero(u: GameUnit, sync := true) -> void:
+	_refresh_character(u, u.get_meta("hero"), sync)
 
 
-func _refresh_character(u: GameUnit, h: Dictionary) -> void:
+func _refresh_character(u: GameUnit, h: Dictionary, sync := true) -> void:
 	Combat.hero_stats(u, h)
 	u.set_equipment(PackedStringArray(h.armors), PackedStringArray(h.weapons))
 	broadcast({"t": "equip", "uid": u.uid, "armors": h.armors, "weapons": h.weapons, "stats": u.stats})
-	sync_state()
+	if sync: sync_state()
 
 
 func shop_available() -> bool:
@@ -3537,28 +3542,55 @@ static func _count_unworn(list: Array, id: String) -> int:
 ## Host: repair in a settlement (the original shop mode 8): the
 ## worn part of the price, back to full durability (tutorial it012).
 func _repair(cmd: Dictionary, player: int) -> void:
+	var ok := _repair_apply(cmd, player)
+	# Publish after a guest's temporary purse is restored. One confirmation
+	# repairs the whole selection, then sends one state and one result.
+	_finish_repair.call_deferred(player, int(cmd.get("req", 0)), ok)
+
+
+func _finish_repair(player: int, req: int, ok: bool) -> void:
+	sync_state()
+	broadcast({"t":"repair_result", "to":player, "req":req, "ok":ok})
+
+
+func _repair_apply(cmd: Dictionary, player: int) -> bool:
 	var sid := shop_id(cmd)
 	if sid == 0 or not Shops.sells_items(sid):
-		return
-	var item := String(cmd.get("item", ""))
-	var lists: Array = [state.items]
+		return false
+	var items: Variant = cmd.get("items", [cmd.get("item", "")])
+	if not items is Array or items.is_empty() or items.size() > MAX_TRADE_ITEMS:
+		return false
 	var u := _hero_unit(int(cmd.get("unit", -1)), player)
+	if cmd.has("unit") and u == null: return false
+	var bag := state.items.duplicate()
+	var lists: Array = [bag]
+	var h: Dictionary = u.get_meta("hero") if u else {}
 	if u:
-		lists = [u.get_meta("hero").weapons, u.get_meta("hero").armors, state.items]
-	for l: Array in lists:
-		var i := l.find(item)
-		if i < 0:
-			continue
-		var p := Items.repair_price(item)
-		if p > state.money:
-			return
-		state.money -= p
-		l[i] = Items.with_wear(item, 0.0)   # only, the charge stays
-		if u and l != state.items:
-			_refresh_hero(u)
-		else:
-			sync_state()
-		return
+		lists = [h.weapons.duplicate(), h.armors.duplicate()]
+		# Retain the old single-item command's fallback; a repair-all batch
+		# names equipment only, so stale worn slots cannot consume bag copies.
+		if not cmd.has("items"): lists.append(bag)
+	var cost := 0
+	for item in items:
+		if not item is String or Items.wear(item) <= 0.0 or Items.kind(item) not in ["weapon", "armor"]:
+			return false
+		var found := false
+		for list: Array in lists:
+			var i := list.find(item)
+			if i < 0: continue
+			list[i] = Items.with_wear(item, 0.0)   # retain enchantment and charge
+			found = true
+			break
+		if not found: return false
+		cost += Items.deal_price(item, Items.Deal.REPAIR, Shops.coef(sid))
+	if cost > state.money: return false
+	state.money -= cost
+	state.items.assign(bag)
+	if u:
+		h.weapons = lists[0]
+		h.armors = lists[1]
+		_refresh_hero(u, false)
+	return true
 
 
 ## Host: Use/Steal on a living unit, the original (sub-code 1).
@@ -4382,12 +4414,24 @@ func mark_dirty() -> void:
 	_state_dirty = true
 
 
+## A guest's points change inside its temporary purse scope. Keep the
+## restored campaign/personal bag snapshot, but do not make the click wait
+## for the ordinary half-second batch. Held skill clicks share this short
+## batch instead of sending a full campaign snapshot for every frame.
+func _sync_training() -> void:
+	if coop.purse_active():
+		_training_sync_pending = true
+		_state_sync_at_ms = mini(_state_sync_at_ms, Time.get_ticks_msec() + 50)
+	sync_state()
+
+
 func _sync_state_due() -> void:
 	# Full campaign state has the same wall-time budget at either game speed.
 	# Several catch-up physics callbacks must not queue duplicate documents.
 	var now := Time.get_ticks_msec()
 	if online and ((_state_dirty and now >= _state_sync_at_ms) or now >= _state_sync_at_ms + 5000):
 		_state_dirty = false
+		_training_sync_pending = false
 		_state_sync_at_ms = now + 500
 		_sync_state_to(0, true)
 
@@ -4928,6 +4972,7 @@ func _may_load() -> bool:
 
 
 func _begin_host_load(id: String, cancel_movie := true, saved_mods: Dictionary = {}) -> void:
+	_training_sync_pending = false
 	_state_waiting.clear()
 	_state_pending.clear()
 	if cancel_movie:

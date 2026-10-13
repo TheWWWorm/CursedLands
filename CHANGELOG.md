@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.0.6 — stable release, 13 October 2026
+
+- Preserve safe-area NPC poses between scripted animation repeats and loop
+  animations marked as continuous.
+- Show conversation attention highlights only outside dialogue when a character
+  has a relevant, available topic. Clear completed topics with the final dialogue state.
+- Return co-op stat-allocation feedback promptly, including while paused, and avoid
+  rebuilding hidden inventory previews.
+- Repair selected items and equipped items as complete batches, with one result
+  and inventory update per confirmation.
+- Group identical items into co-op trade stacks, using eight distinct-item slots
+  and preserving quantities and item variants.
+- Reduce the Alt body-part selector to half its previous width and height, with
+  matching mouse-selection geometry.
+
+See [release notes](docs/releases/1.0.6.md) for compatibility and platform limits.
+
 ## 1.0.5 — stable release, 13 October 2026
 
 - Update the optional HD Lands texture package to 1.5.0 with 390 textures.

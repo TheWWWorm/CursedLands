@@ -31,8 +31,11 @@ const SEL_TRIS := [0, 4, 3, 0, 1, 4, 1, 5, 4, 1, 2, 5, 2, 3, 5, 2, 0, 3]
 const SEL_SIZE := 0.5   # CornerSize, settings
 var _lit := {}   # GameUnit -> model it lightened (select_type 0)
 var _talk_units: Array[GameUnit] = []
+var _talk_keys := {}   # cached pending keys; values are rechecked before drawing
 var _talk_world: GameWorld
 var _talk_scan := 0.0
+var _talk_dialog := ""   # remains set while a local close awaits the host
+var _talk_completed := {}   # close notice can arrive before the campaign snapshot
 var _bright := {}   # unit material -> its lightened copy
 var _flash := {}    # GameUnit -> seconds of white flash left (figure ticks)
 ## The emissive (1) pushes (RGB 1.0).
@@ -185,9 +188,10 @@ func _update_lit() -> void:
 	if game and game.quest_lights:
 		for u: GameUnit in game.quest_lights.white_units():
 			want[u] = u.model
-	for u: GameUnit in _talk_units:
-		if is_instance_valid(u) and not u.dead and u.world == game.world and u.model and u.visible:
-			want[u] = u.model
+	if _talk_allowed():
+		for u: GameUnit in _talk_units:
+			if _talk_carrier(u) and _has_talk(u):
+				want[u] = u.model
 	for u in _lit.keys():
 		if not want.has(u) or want[u] != _lit[u]:
 			if is_instance_valid(_lit[u]):
@@ -262,9 +266,63 @@ func _bright_of(base: Material) -> Material:
 	return b
 
 
+## The native village update scans value-1 b.* topics, excluding constr*
+## shop entries. Dialogue presentation suppresses this attention cue, including
+## staging, the topic list and the interval before a remote close is confirmed.
+func _talk_allowed() -> bool:
+	if game == null or game.world == null or game.session == null or not game.session.shop_available():
+		return false
+	return _talk_dialog.is_empty() and not game.session.loading_game \
+		and not (game.hud and game.hud._dialog and game.hud._dialog.visible)
+
+
+func _talk_carrier(u: GameUnit) -> bool:
+	return is_instance_valid(u) and not u.is_queued_for_deletion() and u.world == game.world \
+		and game.world.units.get(u.uid) == u and not u.dead and not u.hidden \
+		and u.is_visible_in_tree() and u.model != null and u.village_talk_ready()
+
+
+func _has_talk(u: GameUnit) -> bool:
+	for key: String in _talk_keys.get(u, []):
+		if not _talk_completed.has(key) and game.session.state.get_pvar(game.session.my_index, key) == 1.0:
+			return true
+	return false
+
+
+func on_event(e: Dictionary) -> void:
+	if _talk_world != game.world:
+		_talk_world = game.world
+		_talk_dialog = ""
+		_talk_completed.clear()
+	match String(e.get("t", "")):
+		"dialog":
+			_talk_dialog = String(e.get("id", ""))
+		"dialog_close":
+			if _talk_dialog == String(e.get("id", "")):
+				_talk_dialog = ""
+			var key := String(e.get("completed", e.get("id", "")))
+			var player := int(e.get("player", game.session.my_index))
+			if not key.is_empty() and (not CampaignState.is_player_var(key) or player == game.session.my_index):
+				_talk_completed[key] = true
+		"inventory":
+			# A reliable campaign refresh is authoritative, including scripts
+			# which offer the same topic again after completing it.
+			_talk_completed.clear()
+		"load_begin":
+			_talk_dialog = ""
+			_talk_completed.clear()
+		"topics", "merc_control", "spawn", "remove", "party":
+			pass
+		_:
+			return
+	_refresh_talk_units()
+	_update_lit()
+
+
 func _refresh_talk_units() -> void:
 	_talk_units.clear()
-	if game == null or game.world == null or game.session == null: return
+	_talk_keys.clear()
+	if not _talk_allowed(): return
 	# Index pending owners once; most units have no conversation variables.
 	var owners := {}
 	var ids := {}
@@ -274,20 +332,27 @@ func _refresh_talk_units() -> void:
 	for key: String in keys:
 		if game.session.state.get_pvar(game.session.my_index, key) != 1.0: continue
 		var parts := key.split(".")
-		if parts.size() != 3: continue
+		if parts.size() != 3 or parts[2].to_lower().begins_with("constr") or _talk_completed.has(key): continue
 		owners[parts[1]] = true
 		ids[ScriptVM.name_id(parts[1])] = true
 	for u: GameUnit in game.world.unit_rows():
 		if not owners.has(String(u.info.get("name", "")).to_lower()) and not ids.has(u.uid): continue
-		if u.dead or not u.visible or u.model == null: continue
-		if game.session.shop_available() and not u.village_talk_ready(): continue
-		if not Briefings.pending_for(game.session.state, u, game.session.my_index).is_empty():
+		if not _talk_carrier(u): continue
+		var pending: Array[String] = []
+		for entry: Array in Briefings.pending_for(game.session.state, u, game.session.my_index):
+			if not String(entry[1]).to_lower().begins_with("constr"):
+				pending.append("b.%s.%s" % entry)
+		_talk_keys[u] = pending
+		if _has_talk(u):
 			_talk_units.append(u)
 
 
 func _process(dt: float) -> void:
 	_talk_scan -= dt
 	if game and (_talk_world != game.world or _talk_scan <= 0.0):
+		if _talk_world != game.world:
+			_talk_dialog = ""
+			_talk_completed.clear()
 		_talk_world = game.world
 		_talk_scan = 0.25
 		_refresh_talk_units()

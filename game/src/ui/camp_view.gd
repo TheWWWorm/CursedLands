@@ -247,6 +247,8 @@ var sell_pile: Array = []
 var trade_wait := false
 var _trade_req := 0
 var repair_pile: Array = []
+var repair_wait := false
+var _repair_req := 0
 var c_bp := ""       # item constructor: blueprint, material name, ready item, spell
 var c_mat := ""
 var c_ready := ""
@@ -465,7 +467,7 @@ func reset_filters() -> void:
 
 
 func set_mode(m: String) -> void:
-	if trade_wait: return
+	if trade_wait or repair_wait: return
 	_touch_spell_info = false
 	var changed := m != mode
 	if changed:
@@ -1028,20 +1030,22 @@ func bag_count(it: String) -> int:
 		return 0 if it == c_spell else 1
 	var st := hud.game.session.state
 	if mode == "swap":   # offered copies are already in PlayerSwap's native escrow
-		return st.items.count(it)
+		# Account for local edits until the host echoes its escrow. Otherwise
+		# fast clicks can offer the same last bag copy more than once.
+		return maxi(0, st.items.count(it) + _swap().mine().get("items", []).count(it) - sell_pile.count(it))
 	if it.begins_with("spell:"):
 		# The bag's copies, plus a hero's known spell in the spell constructor
 		# (listed in the bag row there), less what lies in the pile.
 		var ns := st.items.count(it) - sell_pile.count(it)
 		if mode == "spellconstr":
 			ns += (1 if it.substr(6) in hero_spells() else 0) - _s_used(it, "bag") - _s_used(it, "known")
-		return maxi(0, ns) if trade_wait else ns
+		return maxi(0, ns) if trade_wait or repair_wait else ns
 	var n := st.items.count(it) + (1 if st.quest_items.has(it) else 0)
 	var used := 1 if it == c_ready or it == c_bp else 0
 	if c_mat != "" and it == Items.material_unit(c_mat) and c_bp != "":
 		used = mini(Items.components(c_bp), n)
 	var left := n - sell_pile.count(it) - repair_pile.count(it) - used - _s_used(it, "bag")
-	return maxi(0,left) if trade_wait else left
+	return maxi(0,left) if trade_wait or repair_wait else left
 
 
 func count_in_bag(it: String) -> int:
@@ -1052,6 +1056,10 @@ func _price(it: String, buying: bool) -> int:
 	var spellish := Items.is_spell_piece(it)
 	var mode_id := (Items.Deal.SPELL_BUY if spellish else Items.Deal.BUY) if buying else (Items.Deal.SPELL_SELL if spellish else Items.Deal.SELL)
 	return Items.deal_price(it,mode_id,Shops.coef(shop_id))
+
+
+func _repair_price(it: String) -> int:
+	return Items.deal_price(it, Items.Deal.REPAIR, Shops.coef(shop_id))
 
 
 ##  deal: [label string key or "", total cost (negative =
@@ -1066,8 +1074,9 @@ func deal_info() -> Array:
 		"weapons":
 			if item_group() and not _noconstr():
 				for it in _worn_items():
-					total += Items.repair_price(it) if Items.wear(it) > 0.0 else 0
-				can = total > 0
+					if Items.wear(it) > 0.0:
+						total += _repair_price(it)
+						can = true
 				if can:
 					label = "camp_repair_all"
 		"spells":
@@ -1087,7 +1096,7 @@ func deal_info() -> Array:
 				can = true
 				cancel = true
 				for it in repair_pile:
-					total += Items.repair_price(it)
+					total += _repair_price(it)
 		"itemconstr":
 			cancel = c_ready != "" or c_bp != "" or c_mat != "" or c_spell != ""
 			if c_ready != "":
@@ -1104,7 +1113,7 @@ func deal_info() -> Array:
 			label = sd[0]
 			total = sd[1]
 			can = sd[2] and not s_wait
-	if trade_wait:
+	if trade_wait or repair_wait:
 		can = false
 		cancel = false
 	if mode != "spells" and total > money:
@@ -1185,9 +1194,12 @@ func _on_yes() -> void:
 		return
 	if mode == "weapons":
 		#  mode 0: "camp_repair_all", the worn weapons and armour.
-		for it in _worn_items():
-			if Items.wear(it) > 0.0:
-				construct.emit({"t": "repair", "unit": _unit.uid, "item": it})
+		var items := _worn_items().filter(func(it): return Items.wear(it) > 0.0)
+		_repair_req += 1
+		repair_wait = true
+		_sig = ""
+		construct.emit({"t":"repair", "unit":_unit.uid, "items":items, "req":_repair_req})
+		_update_total()
 		return
 	if mode == "spellconstr":
 		# One host transaction (Session._spell_constr); the pile stays until
@@ -1227,8 +1239,9 @@ func _on_yes() -> void:
 		if not repair_pile.is_empty():
 			for it: String in repair_pile:
 				_expect_received("bag", Items.with_wear(it, 0.0))
+			_repair_req += 1
+			repair_wait = true
 			repair.emit(repair_pile.duplicate())
-		repair_pile.clear()
 		_sig = ""
 		_update_total()
 		return
@@ -1252,6 +1265,8 @@ func reset_transactions() -> void:
 	_stop_transfer_hold()
 	trade_wait = false
 	_trade_req += 1
+	repair_wait = false
+	_repair_req += 1
 	_s_req += 1
 	buy_pile.clear()
 	sell_pile.clear()
@@ -1270,6 +1285,18 @@ func trade_result(e: Dictionary) -> void:
 		_ui_sound("buttons\\camp\\buy.wav")
 		buy_pile.clear()
 		sell_pile.clear()
+	else:
+		_row_arrivals.clear()
+	_sig = ""
+	_update_total()
+
+
+func repair_result(e: Dictionary) -> void:
+	if not repair_wait or int(e.get("req", -1)) != _repair_req: return
+	repair_wait = false
+	if bool(e.get("ok", false)):
+		_ui_sound("buttons\\camp\\buy.wav")
+		repair_pile.clear()
 	else:
 		_row_arrivals.clear()
 	_sig = ""
@@ -1301,7 +1328,7 @@ func constr_result(e: Dictionary) -> void:
 
 func _on_cancel() -> void:
 	_stop_transfer_hold()
-	if trade_wait: return
+	if trade_wait or repair_wait: return
 	var rows := _row_counts()
 	var returns: Array[Array] = []
 	if mode in ["itemtrade", "spelltrade"]:
@@ -1371,7 +1398,7 @@ func _process(_dt: float) -> void:
 	var shop := shop_items() if shop_row() else []
 	shop_scroll = clampi(shop_scroll, 0, maxi(0, shop.size() - BAG_CELLS))
 	var sig := "%s|%s|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%d|%d" % [u.uid if u else -1, h.get("weapons", []), h.get("armors", []),
-		[h.get("quick", []), h.get("spells", []), h.get("perks", []), h.get("exp", 0), h.get("skills", {})], bag, filter, scroll, size, mode, shop, buy_pile + ["/"] + sell_pile + ["/"] + repair_pile + [c_bp, c_mat, c_ready, c_spell, s_spell, s_kind, s_from, s_wait, trade_wait] + s_runes + s_rune_from + hero_spells(), shop_filter, shop_scroll,
+		[h.get("quick", []), h.get("spells", []), h.get("perks", []), h.get("exp", 0), h.get("skills", {})], bag, filter, scroll, size, mode, shop, buy_pile + ["/"] + sell_pile + ["/"] + repair_pile + [c_bp, c_mat, c_ready, c_spell, s_spell, s_kind, s_from, s_wait, trade_wait, repair_wait] + s_runes + s_rune_from + hero_spells(), shop_filter, shop_scroll,
 		hud.game.session.state.money] + str(hash(hud.game.session.state.shops.get(shop_id, {}))) + _swap_view()
 	if sig == _sig:
 		return
@@ -1384,8 +1411,8 @@ func _process(_dt: float) -> void:
 			var j := shop_scroll + i
 			_content["shop%d" % i] = [shop[j] if j < shop.size() else "", "shop"]
 	if trading() or mode == "swap":
-		var buys := _unique(buy_pile) if trading() else buy_pile
-		var sells := _unique(sell_pile) if trading() else sell_pile
+		var buys := _unique(buy_pile)
+		var sells := _unique(sell_pile)
 		for i in PILE_CELLS:
 			_content["buy%d" % i] = [buys[i] if i < buys.size() else "", "buy"]
 			_content["sell%d" % i] = [sells[i] if i < sells.size() else "", "sell"]
@@ -1506,7 +1533,7 @@ func _press_side(b: String) -> void:
 			"exit": wav = "buttons\\globalmap\\transit.wav"
 			"accept": wav = "buttons\\camp\\buy.wav"
 			"cancel": wav = "buttons\\messbox\\cancel.wav"
-		if (b in ["exit", "accept", "cancel"] or b != mode) and not (b == "accept" and mode in ["itemtrade", "spelltrade"]):
+		if (b in ["exit", "accept", "cancel"] or b != mode) and not (b == "accept" and mode in ["itemtrade", "spelltrade", "repair", "weapons"]):
 			GameSound.instance.ui(wav)
 	match b:
 		"exit": exit_pressed.emit()
@@ -1704,6 +1731,7 @@ func _gui_input(e: InputEvent) -> void:
 ## check again (Session._item_command). Remake: away from a village and the
 ## map's camp (Session.camp_available) the press is refused the same way.
 func _press(id: String, where: String) -> void:
+	if repair_wait: return
 	if _unit == null or not _unit.has_meta("hero"):
 		return
 	var h: Dictionary = _unit.get_meta("hero")
@@ -1873,7 +1901,8 @@ func _row_sound(hit: int) -> void:
 
 
 func _pile_accepts(pile: Array, id: String) -> bool:
-	return buy_pile.size()+sell_pile.size() < Session.MAX_TRADE_ITEMS \
+	var count := pile.size() if mode == "swap" else buy_pile.size()+sell_pile.size()
+	return count < Session.MAX_TRADE_ITEMS \
 		and (pile.has(id) or _unique(pile).size() < PILE_CELLS)
 
 
@@ -1927,7 +1956,7 @@ func _move(id: String, where: String) -> void:
 
 
 func _move_now(id: String, where: String) -> void:
-	if trade_wait: return
+	if trade_wait or repair_wait: return
 	if mode == "swap":
 		_swap_move(id, where)
 		return
@@ -2088,7 +2117,7 @@ func _get_tooltip(pos: Vector2) -> String:
 			match _content[k][1]:
 				"shop", "buy": t += "\n%d" % _price(it, true)
 				"sell": t += "\n%d" % _price(it, false)
-				"rep": t += "\n%d" % Items.repair_price(it)
+				"rep": t += "\n%d" % _repair_price(it)
 			return t
 	return ""
 
@@ -2260,7 +2289,7 @@ func _draw_row_texts() -> void:
 	var piles := []
 	if mode == "repair":
 		piles = ["rep"]
-	elif trading():
+	elif trading() or mode == "swap":
 		piles = ["buy", "sell"]
 	for pile: String in piles:
 		for i in (REPAIR_CELLS if pile == "rep" else PILE_CELLS):
@@ -2271,7 +2300,8 @@ func _draw_row_texts() -> void:
 			var count := 1 if pile == "rep" else (buy_pile.count(it) if pile == "buy" else sell_pile.count(it))
 			if count > 1:
 				_t(Rect2(r.position.x+15,r.position.y+15,70,20), str(count), 1, Interface800.TEXT, HORIZONTAL_ALIGNMENT_RIGHT)
-			var price := Items.repair_price(it) if pile == "rep" else _price(it, pile == "buy")
+			if mode == "swap": continue   # quantities, without a shop sale price
+			var price := _repair_price(it) if pile == "rep" else _price(it, pile == "buy")
 			_t(Rect2(r.position.x + 15, r.position.y + 65, 70, 20), str(price), 1, Interface800.TEXT,
 				HORIZONTAL_ALIGNMENT_CENTER)
 
@@ -2375,11 +2405,11 @@ func _swap_side(b: String) -> void:
 
 ## a bag item into the offer pile (put_on.wav), an item of the
 ## own pile back to the bag (put_off.wav); the partner's pile takes no press.
-## The remake's pile holds what its 8 cells show (cancel.wav when full).
+## The eight cells hold distinct exact-item stacks, as in the store.
 func _swap_move(id: String, where: String) -> void:
 	match where:
 		"bag":
-			if sell_pile.size() >= PILE_CELLS or bag_count(id) <= 0:
+			if not _pile_accepts(sell_pile, id) or bag_count(id) <= 0:
 				_ui_sound("buttons\\messbox\\cancel.wav")
 				return
 			_ui_sound("buttons\\camp\\put_on.wav")

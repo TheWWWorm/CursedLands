@@ -1,0 +1,310 @@
+{
+  "date": "2026-10-13",
+  "base_release": "1.0.5",
+  "base_commit": "deb1fb3889eb75241e6880863c1ff3748f552643",
+  "baseline": "Current release source with the preceding local NPC, dialogue and training fixes, before repair/swap changes.",
+  "status": "Local source only; no commit, build export or publication.",
+  "network_protocol": 22,
+  "network_compatibility": "Matching updated builds required. Protocol 21 hosts do not understand repair batches and older player-swap grids cannot show every offered copy.",
+  "changes": [
+    "Repair confirmation sends one batch for either bag selections or all worn equipment. The authority validates all exact copies and the total price before mutating anything.",
+    "One final campaign refresh and repair result are sent after restoring the guest purse, including while the shared simulation clock is paused. Pending repairs prevent duplicate confirmation; refused selections remain editable.",
+    "Repair prices use the selected shop coefficients. Durability is restored without changing charge, and equipped batches rebuild equipment once.",
+    "Both player-swap grids group identical item strings into counted stacks. Eight distinct stacks fit each offer; wear and charge variants remain separate.",
+    "Pending local offer edits subtract every copy from the visible bag. The host validates complete offers instead of truncating them to eight individual objects."
+  ],
+  "tests": [
+    {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/baseline",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tests/camp_transactions.gd",
+        "--ei-inline-host"
+      ],
+      "exit_code": 1,
+      "seconds": 26.0,
+      "summary": [
+        "REPAIR_BATCH_FEEDBACK_MS 806",
+        "CAMP_TRANSACTIONS 47 checks 25 failures"
+      ],
+      "errors": [
+        "FAIL one confirmation submits one repair batch; double submit is ignored",
+        "FAIL pending repair retains and locks its selection",
+        "FAIL repair reply arrives while simulation is paused",
+        "FAIL one result follows the final inventory",
+        "FAIL successful repair clears the selection and confirms once",
+        "FAIL late duplicate packet cannot repair or charge twice",
+        "FAIL repair-all submits equipment as one batch",
+        "FAIL equipment batch is acknowledged promptly",
+        "FAIL equipment refresh and state publish happen once",
+        "FAIL stale repair receives a refusal",
+        "FAIL missing copy causes no partial repair or charge",
+        "FAIL rejected repair remains editable",
+        "FAIL rapid clicks stage twelve copies and subtract pending copies",
+        "FAIL authority retains every copy beyond eight",
+        "FAIL eight distinct stacks fit the offer",
+        "FAIL full grid accepts an existing stack but rejects a ninth variant",
+        "FAIL stack increment reaches authority",
+        "FAIL own grid gives duplicate copies one cell",
+        "FAIL partner grid uses matching stack cells",
+        "FAIL partner stack quantity is complete",
+        "FAIL malformed offer cannot replace an agreed item set",
+        "FAIL oversized payload leaves the whole offer unchanged",
+        "FAIL both final stacked offers are visible",
+        "FAIL host receives all twelve offered copies",
+        "FAIL guest receives all three copies and retains its remainder"
+      ],
+      "label": "final-baseline",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/final-baseline.log",
+      "log_sha256": "8c7eda1d7aabab0125cbe8f7e2d9f609b9aeded1400e470f60dd6d828d56303c",
+      "expected_failure": true
+    },
+    {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/candidate",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tests/camp_transactions.gd",
+        "--ei-inline-host"
+      ],
+      "exit_code": 0,
+      "seconds": 11.433,
+      "summary": [
+        "REPAIR_BATCH_FEEDBACK_MS 14",
+        "CAMP_TRANSACTIONS 53 checks 0 failures"
+      ],
+      "errors": [],
+      "label": "final-candidate",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/final-candidate.log",
+      "log_sha256": "2dfc3664181a8747fe8aa40a7e66cdd02dfcace4f69fe5232179266009dc8f65"
+    },
+    {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/candidate",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tests/camp_transactions.gd",
+        "--ei-inline-host"
+      ],
+      "exit_code": 0,
+      "seconds": 39.785,
+      "summary": [
+        "REPAIR_BATCH_FEEDBACK_MS 389",
+        "CAMP_TRANSACTIONS 53 checks 0 failures"
+      ],
+      "errors": [],
+      "label": "rendered-final",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/rendered-final.log",
+      "log_sha256": "6df72a073dd766f912713f63d668ede2c28ffb5d62e27fa2c51befb92e204f78"
+    },
+    {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/candidate",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tests/camp_transactions.gd",
+        "--ei-inline-host",
+        "--netsim=120,0,0"
+      ],
+      "exit_code": 0,
+      "seconds": 12.486,
+      "summary": [
+        "REPAIR_BATCH_FEEDBACK_MS 131",
+        "CAMP_TRANSACTIONS 53 checks 0 failures"
+      ],
+      "errors": [],
+      "label": "delayed-network",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/delayed-network.log",
+      "log_sha256": "5ae03daf8f3f308a421313459733c7cdb80207d104c2e12a7275d096387aaced"
+    },
+    {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/candidate",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tests/coop_trade.gd",
+        "--ei-inline-host"
+      ],
+      "exit_code": 0,
+      "seconds": 12.285,
+      "summary": [
+        "COOP_TRADE 38 checks 0 failures"
+      ],
+      "errors": [],
+      "label": "regression-store",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/regression-store.log",
+      "log_sha256": "e8165211fce55c017d23a57dd61fd5f611ae4b595b437e089fdb4c3297395193"
+    },
+    {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/candidate",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tests/camp_inventory_ui.gd",
+        "--ei-inline-host"
+      ],
+      "exit_code": 0,
+      "seconds": 10.882,
+      "summary": [
+        "CAMP_INVENTORY_UI cursed_lands 88 checks 0 failures"
+      ],
+      "errors": [],
+      "label": "regression-camp",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/regression-camp.log",
+      "log_sha256": "9526f3af1857180392a7b714d9c763c1fd17ab4dac32953311d03275028d89dd"
+    },
+    {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/candidate",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tests/training_latency.gd",
+        "--ei-inline-host"
+      ],
+      "exit_code": 0,
+      "seconds": 8.829,
+      "summary": [],
+      "errors": [],
+      "label": "regression-training",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/regression-training.log",
+      "log_sha256": "42463b1dfd93d051aaa8df1be4dec3684c5b1fdee585bf63b80385514c161874",
+      "measurements": {
+        "checks": 23,
+        "cold_perk_menu_us": 5798,
+        "failures": 0,
+        "fps": 32.0,
+        "guest_perk": {
+          "authority_us": 8019,
+          "feedback_us": 68177
+        },
+        "guest_refund": {
+          "authority_us": 9067,
+          "feedback_us": 69204
+        },
+        "guest_skill": [
+          {
+            "authority_us": 7373,
+            "feedback_us": 64372
+          },
+          {
+            "authority_us": 8312,
+            "feedback_us": 68169
+          },
+          {
+            "authority_us": 8184,
+            "feedback_us": 62656
+          }
+        ],
+        "host_skill_us": 1422,
+        "inventory_refresh_us": {
+          "20": 45.95,
+          "200": 45.3,
+          "500": 40.95
+        },
+        "paused_feedback_us": 66766,
+        "rendered": false,
+        "repeat_perk_menu_us": 108.74
+      }
+    }
+  ],
+  "render_capture": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/repair-swap-20261013/rendered-final-profile/data/godot/app_userdata/Cursed Lands/player-swap-stacks.png",
+    "sha256": "4b0ec2b169b2e861ae8143d654fc9ac7793b852fc72c86bde66e8cb135408ea7",
+    "visually_checked": true,
+    "difference_from_inspected_capture_bbox": [
+      281,
+      421,
+      283,
+      438
+    ],
+    "note": "The final image matches the inspected eight-stack grid except for the blinking money-field caret."
+  },
+  "source_sha256": {
+    "game/src/game/session.gd": "bbc64df4afbfc7835bebd7fd53f6ea17913c0ee5191b7071cf021ea79ef9af78",
+    "game/src/game/player_swap.gd": "2263bcb6b0a775ad576479a9d7cc97a2dda503d8458ca825e4e7b081be4f27e4",
+    "game/src/game/net_status.gd": "fc0208c86226b8a939e5bc27c3415e5e14d3372160055f80ddec2e9149844e69",
+    "game/src/ui/camp_view.gd": "5cf051dde130720d28d5bed5b6063dcedbac72868870f1587e73ecc57969c149",
+    "game/src/ui/inventory_panel.gd": "4af1efd97a840493e5affa86cac76b18defe787eef971d154cbb55620b9c6481",
+    "game/src/ui/game_hud.gd": "57d95d06f1e0f07e96d8586166ec4788bf6615b53f007d7b2466d2da66ab6fa2",
+    "tools/tests/camp_transactions.gd": "b6de35a6a514d0e344fa4c8f6e5dbdcf410c0bee74bf0e8838bfba7fba8a8712"
+  },
+  "fixture_notes": [
+    "Six direct atomic-repair validation checks only run when the new handler exists: baseline 47 checks/25 failures; candidate 53 checks/0 failures.",
+    "The rendered fixture initially used a charged-item identity created before loading. Normal recharge ticks changed it during loading. The fixture now establishes its exact charged copies after freezing the world; all original assertions remain.",
+    "Initial campaign delivery is drained before counting transaction replies. Tests use real UI signals, ENet transport, private co-op purses and original Gipath camp assets."
+  ],
+  "limits": [
+    "Linux Godot 4.7 headless and software OpenGL; no Windows, macOS, Android or browser qualification.",
+    "The map simulation is frozen to isolate inventory transactions, while network delivery remains active.",
+    "The 120 ms delay is injected into the Session repair path; player-swap messages in that run use local ENet.",
+    "Headless local repair acknowledgement was 14 ms in the recorded run. Rendered timings include software-rendering frame delays and are not a hardware latency guarantee."
+  ]
+}

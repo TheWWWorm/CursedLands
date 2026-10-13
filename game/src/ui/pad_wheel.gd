@@ -27,6 +27,7 @@ var selected := -1
 var hints: Array = []
 var _views: Array[ItemView] = []
 var _t := 0.0
+var _content_scale := 1.0
 
 
 func _ready() -> void:
@@ -41,8 +42,9 @@ func _ready() -> void:
 		_views.append(v)
 
 
-func open(new_entries: Array, preselect := -1) -> void:
+func open(new_entries: Array, preselect := -1, content_scale := 1.0) -> void:
 	entries = new_entries
+	_content_scale = content_scale
 	selected = preselect if preselect >= 0 and preselect < entries.size() else -1
 	_t = 0.0
 	visible = true
@@ -111,7 +113,7 @@ func _process(dt: float) -> void:
 
 func _geom() -> Array:
 	var vs := size
-	var r := minf(vs.x, vs.y) * 0.25
+	var r := minf(vs.x, vs.y) * 0.25 * _content_scale
 	var c := vs * 0.5 + Vector2(0, -vs.y * 0.06)
 	var cell := r * (0.34 if entries.size() <= 8 else 0.29)
 	return [c, r, cell]
@@ -150,7 +152,7 @@ func _draw() -> void:
 	var c: Vector2 = g[0]
 	var r: float = g[1]
 	var cell: float = g[2]
-	var k := size.y / 600.0
+	var k := size.y / 600.0 * _content_scale
 	var font := Interface800.font()
 	# The backing disc and its bronze ring.
 	draw_circle(c, r + cell * 1.35, Interface800.PANEL)

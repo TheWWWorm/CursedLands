@@ -20,7 +20,8 @@ func _ready() -> void:
 	require(host.host(29912,2)==OK)
 	GameData.player_name="Training Guest";require(client.join("127.0.0.1",29912)==OK)
 	require(await until(func():return host.players.size()==2))
-	host.set_physics_process(false);client.set_physics_process(false)
+	# Campaign replies are batched by Session; freeze only the map below so
+	# the authority can deliver the restored guest purse and training state.
 	host.state=CampaignState.new();host.state.ensure_hero(0,"Human Hero");host.state.ensure_hero(1,"Human Hero","Training Guest")
 	var h: Dictionary=host.state.heroes[1][0]
 	h.exp=10000.0;h.exp_total=200271.0;h.skills={"melee":25,"science":10};h.perks=["sword1","bs1"];h.erase(Refund.KEY)

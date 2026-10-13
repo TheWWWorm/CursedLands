@@ -43,7 +43,7 @@ signal changed
 ## A line for this player (textslmp key, the other player's name).
 signal note(text: String)
 
-## each pile has 8 cells.
+## Each pile has eight distinct exact-item stacks, matching store slots.
 const PILE := 8
 ## (…, 9, …): the money field takes 9 characters.
 const MONEY_DIGITS := 9
@@ -208,12 +208,20 @@ func _set_offer(player: int, cmd: Dictionary) -> void:
 	var o: Dictionary = offers.get(player, {})
 	if o.is_empty() or not bool(o.paired):
 		return
-	var items: Array = []
 	var raw = cmd.get("items", [])
-	if raw is Array:
-		for it in raw:
-			if it is String and items.size() < PILE:
-				items.append(it)
+	if not raw is Array or raw.size() > Session.MAX_TRADE_ITEMS:
+		_publish()
+		return
+	var stacks := {}
+	for it in raw:
+		if not it is String:
+			_publish()
+			return
+		stacks[it] = true
+		if stacks.size() > PILE:
+			_publish()   # reject the whole edit; never silently truncate an offer
+			return
+	var items: Array = raw.duplicate()
 	var mv = cmd.get("money", 0)
 	var money := clampi(int(mv) if mv is int or mv is float else 0, 0, MONEY_MAX)
 	var bag := _bag(player)

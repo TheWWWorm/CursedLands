@@ -72,7 +72,7 @@ func _ready() -> void:
 		check(row.restart_failures==0,"each new seated event restarts its one-shot "+str(id))
 		check(u.pos==row.initial_position,"authored seat placement unchanged "+str(id))
 		row.erase("initial_position")
-	check(other_idle>0,"unrelated PoorMan uspecial20 retains ordinary one-shot idle completion")
+	check(other_idle==0,"authored PoorMan uspecial20 repeats without an inserted standing pose")
 	# Stop further script injection only after the unchanged authored run.
 	# Existing commands finish normally; ordinary orders must release each hold.
 	world.vm.instances.clear()
@@ -82,7 +82,7 @@ func _ready() -> void:
 		var u: GameUnit=world.units[id]
 		check(u.action=="idle" and u.is_idle() and u._story_clip.is_empty(),"ordinary wait replaces seated pose "+str(id))
 	var report:={"checks":checks,"failures":failures,"zone":world.zone,"frames":600,"tick":GameUnit.TICK,
-		"seats":rows,"other_one_shot_idle_frames":other_idle,
+		"seats":rows,"other_ambient_idle_frames":other_idle,
 		"scope":"Authored authority/script and animation timeline regression, headless. Final interruption controls stop script injection after the unchanged33-second sequence. Not rendered or network acceptance."}
 	FileAccess.open("user://lmp-seated-pose.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t")+"\n")
 	var peer:=session.multiplayer.multiplayer_peer
