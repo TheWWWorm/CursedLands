@@ -73,28 +73,105 @@ func _ready() -> void:
 		for entry:Array in [["short bow.steel",12.0],["long bow.steel",16.0],["long crossbow.steel",20.0]]:
 			h.weapons=[entry[0]];Combat.hero_stats(hero,h)
 			check(hero.stats.ranged and hero.stats.reach==entry[1],"party archers use the same authored weapon range: "+entry[0])
+		_combat_cases(archer,start,axis)
 	g.queue_free();s.queue_free();await frames(8);TexUpscale.shutdown()
 	print("ARCHER_RANGE ",JSON.stringify({"checks":checks,"failures":failures,"rows":rows}))
 	get_tree().quit(0 if failures.is_empty() else 1)
 
 func _database_cases() -> void:
 	mode="original databases"
-	var archers:=0;var natural:=0
+	var equipped_count:=0;var natural:=0;var spell_count:=0
+	var ai:=UnitAI.new(null)
 	for proto:Dictionary in GameData.db.table("monster_prototypes"):
 		var weapons:=CampaignState.proto_weapons(proto)
 		var item:=Items.info(weapons[0]) if not weapons.is_empty() else {}
-		var equipped:bool=int(proto.get("weapon_type_id",-1))==8 and not item.is_empty() and item.table=="weapons" and int(item.row.get("type_id",-1)) in [5,6]
-		var innate:=int(proto.get("weapon_type_id",-1)) in [5,6]
-		if not equipped and not innate:continue
+		var equipped:bool=int(proto.get("weapon_type_id",-1))==8 and not item.is_empty() and item.table=="weapons"
 		var u:=GameUnit.new();u.proto=proto;u.race=GameData.db.find("race_models",proto.base_race);u.info={"weapons":weapons};u._init_stats()
 		if equipped:
-			archers+=1
-			check(u.stats.ranged and u.stats.reach==float(item.row.range),"bow/crossbow prototype uses its item range: "+String(proto.name))
-		else:
+			equipped_count+=1
+			var ranged:=int(item.row.get("type_id",-1)) in [5,6]
+			check(u.stats.range==float(item.row.range) and u.stats.ranged==ranged and (not ranged or u.stats.reach==float(item.row.range)),"equipped prototype uses its item range: "+String(proto.name))
+		elif int(proto.get("weapon_type_id",-1))!=8:
 			natural+=1
-			check(u.stats.ranged and u.stats.reach==float(proto.attack_range),"natural ranged creature keeps its authored range: "+String(proto.name))
+			check(u.stats.range==float(proto.attack_range) and u.stats.ranged==(float(proto.attack_range)>3.0),"natural attack keeps its authored range: "+String(proto.name))
+		var only16:=int(proto.get("weapon_type_id",-1))==16
+		var spells:=ai._spell_options(u,only16)
+		for opt:Dictionary in spells[0]+spells[1]:
+			spell_count+=1
+			var expected:=float(proto.attack_range) if only16 else float(Spells.parse(opt.slot).range)
+			check(opt.range==expected,"spell option uses authored range: "+String(proto.name)+" / "+String(opt.slot))
 		u.free()
-	check(archers>=25 and natural>=30,"database coverage includes Ingos, Suslanger and innate ranged creatures")
+	check(equipped_count>=100 and natural>=30 and spell_count>=20,"database coverage includes melee, bows, crossbows, natural attacks and spell options")
+	rows.append({"equipped_prototypes":equipped_count,"natural_prototypes":natural,"spell_options":spell_count})
+
+func _combat_cases(u:GameUnit,start:Vector2,axis:Vector2) -> void:
+	var melee_types:={}
+	var h:Dictionary=hero.get_meta("hero")
+	for weapon:Dictionary in GameData.db.table("weapons"):
+		var id:=String(weapon.name).to_lower()+".steel"
+		if Items.info(id).is_empty():continue
+		var ranged:=int(weapon.type_id) in [5,6]
+		mode="all weapon records / "+id
+		u.set_equipment(PackedStringArray(),PackedStringArray([id]))
+		h.weapons=[id];Combat.hero_stats(hero,h)
+		check(u.stats.range==float(weapon.range) and hero.stats.range==float(weapon.range) and u.stats.ranged==ranged and hero.stats.ranged==ranged,"NPC and party share the authored weapon range")
+		if ranged or melee_types.has(weapon.type_id):continue
+		melee_types[weapon.type_id]=true
+		var reach:=u.melee_reach(hero)
+		_place(u,start,axis,reach-.05)
+		var hit:=_begin_melee(u,120)
+		check(hit and u.pos.distance_to(start)<.001,"in-range melee begins without advancing")
+		_place(u,start,axis,reach+3.0)
+		hit=_begin_melee(u,350)
+		check(hit and u.pos.distance_to(start)>2.0 and u.pos.distance_to(hero.pos)<=reach+.01,"out-of-range melee approaches its body-and-weapon reach")
+	check(melee_types.size()>=5,"all authored melee weapon categories exercise actual attack orders")
+	# Original AI caster prototypes: ordinary spells use their parsed range;
+	# natural spell attacks (weapon type 16) use the creature's authored range.
+	for only16:bool in [false,true]:
+		var chosen:={};var option:={}
+		for proto:Dictionary in GameData.db.table("monster_prototypes"):
+			if (int(proto.get("weapon_type_id",-1))==16)!=only16:continue
+			var probe:=GameUnit.new();probe.proto=proto
+			var opts:=s.world.ai._spell_options(probe,only16);probe.free()
+			for opt:Dictionary in opts[0]:
+				if opt.type<=3 and float(opt.range)>2 and float(opt.range)<=20:
+					chosen=proto;option=opt;break
+			if not chosen.is_empty():break
+		check(not chosen.is_empty(),"original caster available, natural="+str(only16))
+		if chosen.is_empty():continue
+		var caster:=s.world.spawn_unit({"prototype":chosen.name,"need_import":0,"player":1,"position":Vector3(start.x,start.y,0)})
+		caster.set_process(false);caster.set_physics_process(false)
+		mode="spell range / "+String(chosen.name)+" / "+String(option.slot)
+		for outside:bool in [false,true]:
+			_place(caster,start,axis,float(option.range)+(3.0 if outside else -.1))
+			caster.mana=100000
+			caster.order={"type":"cast","spell":option.slot,"target":hero,"range":option.range,"ai":true}
+			for tick in 400:
+				caster._do_cast(GameUnit.TICK)
+				if caster.action.begins_with("cast") or caster.order.is_empty():break
+			check(caster.action.begins_with("cast") and caster.pos.distance_to(hero.pos)<=float(option.range)+.01,"spell begins within its authored range, outside="+str(outside))
+			check(caster.pos.distance_to(start)>2 if outside else caster.pos.distance_to(start)<.001,"spell approaches only when out of range")
+		rows.append({"caster":chosen.name,"spell":option.slot,"range":option.range,"natural_spell_attack":only16})
+		s.world.remove_unit(caster)
+	for spell:String in ["arrow{}","litnwall{e2;e1;d1;m1;m1;m1;m1;m1}"]:
+		var reach:=float(Spells.parse(spell).range)
+		mode="party spell / "+spell
+		for outside:bool in [false,true]:
+			hero.pos=start;hero.facing=axis.angle();hero.action="idle";hero.path=PackedVector2Array();hero.mana=100000
+			u.pos=start+axis*(reach+(3.0 if outside else -.1))
+			for unit:GameUnit in [hero,u]:s.world.nav.track_unit(unit);unit._sync_transform(0)
+			hero.order={"type":"cast","spell":spell,"target":u}
+			for tick in 400:
+				hero._do_cast(GameUnit.TICK)
+				if hero.action.begins_with("cast") or hero.order.is_empty():break
+			check(hero.action.begins_with("cast") and hero.pos.distance_to(u.pos)<=reach+.01,"party target/point spell begins within parsed range, outside="+str(outside))
+			check(hero.pos.distance_to(start)>2 if outside else hero.pos.distance_to(start)<.001,"party spell approaches only when out of range")
+
+func _begin_melee(u:GameUnit,limit:int) -> bool:
+	for tick in limit:
+		s.world.time+=GameUnit.TICK;u._tick(GameUnit.TICK)
+		if not u._pending_hit.is_empty():return true
+	return false
 
 func _place(archer:GameUnit,start:Vector2,axis:Vector2,distance:float) -> void:
 	archer.pos=start;archer.facing=axis.angle();hero.pos=start+axis*distance;hero._moving=false

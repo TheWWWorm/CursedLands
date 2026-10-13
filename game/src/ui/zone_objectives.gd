@@ -120,6 +120,7 @@ var _pic_rect := Rect2()
 var _pic_uv := Rect2()
 var _areas := PackedVector2Array()
 var _desc: RichTextLabel
+var _zone_desc: RichTextLabel
 var _title := ""
 var _text := ""
 var _t := 0.0
@@ -129,6 +130,7 @@ var _tutorial: TutorialPanel
 ## nothing scrolls): the quest list in rows, the description in screen px.
 var _list_bar := DialogPanel.Bar.new(Rect2(60, 30, 324, 120), 1.0)
 var _desc_bar := DialogPanel.Bar.new(Rect2(60, 190, 324, 320), 20.0)
+var _zone_bar := DialogPanel.Bar.new(Rect2(420, 405, 320, 110), 20.0)
 
 
 func _ready() -> void:
@@ -147,20 +149,9 @@ func setup(s: Session, id: String, opts: Array, is_leader := true, how := "trave
 	tooltip_text = " "
 	_ui = _flipped("saveload")
 	_cross = _flipped("cross")
-	_desc = RichTextLabel.new()
+	_desc = _scroll_text()
 	_desc.bbcode_enabled = true
-	_desc.scroll_active = true
-	_desc.mouse_filter = Control.MOUSE_FILTER_PASS
-	_desc.add_theme_font_override("normal_font", Interface800.font())
-	_desc.add_theme_color_override("default_color", TEXT)
-	_desc.add_theme_constant_override("shadow_offset_x", 1)
-	_desc.add_theme_constant_override("shadow_offset_y", 1)
-	_desc.add_theme_color_override("font_shadow_color", Interface800.SHADOW)
-	add_child(_desc)
-	_desc.gui_input.connect(_desc_wheel)
-	var vsb := _desc.get_v_scroll_bar()
-	vsb.modulate = Color(1, 1, 1, 0)   # drawn as the original's bar instead
-	vsb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_zone_desc = _scroll_text()
 	# Tutorial (slot 41): "quest_global_map" when
 	# opened from the global map (travel set), else "quest_mission"
 	# the build ends (0) (first visit).
@@ -176,6 +167,25 @@ func setup(s: Session, id: String, opts: Array, is_leader := true, how := "trave
 				zone_i = i
 		id = zones[zone_i] if not zones.is_empty() else id
 	_fill(id, opts)
+	_layout()
+
+
+func _scroll_text() -> RichTextLabel:
+	var label := RichTextLabel.new()
+	label.scroll_active = true
+	# Route wheel and drag input through this screen, including the area over
+	# the invisible native scrollbar. Only the original painted bars handle it.
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.add_theme_font_override("normal_font", Interface800.font())
+	label.add_theme_color_override("default_color", TEXT)
+	label.add_theme_constant_override("shadow_offset_x", 1)
+	label.add_theme_constant_override("shadow_offset_y", 1)
+	label.add_theme_color_override("font_shadow_color", Interface800.SHADOW)
+	add_child(label)
+	var vsb := label.get_v_scroll_bar()
+	vsb.modulate = Color(1, 1, 1, 0)   # drawn as the original's bar instead
+	vsb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return label
 
 
 ## The browse mode's zones: every zone with a quest var "q.<zone>.<q>" = 1
@@ -253,6 +263,13 @@ func _fill(id: String, opts: Array) -> void:
 	var zt := GameData.text("zone " + id).split("\n")
 	_title = zt[0].strip_edges() if zt.size() else id
 	_text = _paragraph(zt, 1)
+	_zone_desc.clear()
+	_zone_desc.push_paragraph(HORIZONTAL_ALIGNMENT_CENTER)
+	_zone_desc.add_text(_text)
+	_zone_desc.pop()
+	_zone_desc.scroll_to_line(0)
+	_zone_bar.held = 0
+	_zone_bar.set_pos(0)
 	# First row: the last one named like the last given quest (village) or
 	# the last row shown, else row 0.
 	var want := s.state.last_quest if mode == "village" else last_row
@@ -385,10 +402,15 @@ func _p(p: Vector2) -> Vector2:
 
 
 func _layout() -> void:
-	var r := _r(Rect2(60, 190, 324, 320))
-	_desc.position = r.position
-	_desc.size = r.size
-	_desc.add_theme_font_size_override("normal_font_size", _font_px())
+	for pair: Array in [[_desc, _desc_bar], [_zone_desc, _zone_bar]]:
+		var label: RichTextLabel = pair[0]
+		if not is_instance_valid(label):
+			continue
+		var r := _r(pair[1].rect)
+		r.size.x -= _p(Vector2(10, 0)).x
+		label.position = r.position
+		label.size = r.size
+		label.add_theme_font_size_override("normal_font_size", _font_px())
 
 
 func _process(dt: float) -> void:
@@ -400,15 +422,17 @@ func _process(dt: float) -> void:
 		top = int(_list_bar.pos)
 	else:
 		_list_bar.set_pos(top)
-	var sb := _desc.get_v_scroll_bar()
-	_desc_bar.unit = 1.0 / _k()
-	_desc_bar.max_pos = maxf(0.0, sb.max_value - sb.page)
-	if _desc_bar.held >= 2:
-		_desc_bar.hold(dt)
-	if _desc_bar.held:
-		sb.value = _desc_bar.pos
-	else:
-		_desc_bar.set_pos(sb.value)
+	for pair: Array in [[_desc, _desc_bar], [_zone_desc, _zone_bar]]:
+		var sb: VScrollBar = pair[0].get_v_scroll_bar()
+		var bar: DialogPanel.Bar = pair[1]
+		bar.unit = 1.0 / _k()
+		bar.max_pos = maxf(0.0, sb.max_value - sb.page)
+		if bar.held >= 2:
+			bar.hold(dt)
+		if bar.held:
+			sb.value = bar.pos
+		else:
+			bar.set_pos(sb.value)
 	queue_redraw()
 
 
@@ -444,6 +468,7 @@ func _draw() -> void:
 		_label(Rect2(86, y + 3, 284, 21), title if title else quests[i], TEXT)
 	DialogPanel.paint_bar(self, _list_bar, _r)
 	DialogPanel.paint_bar(self, _desc_bar, _r)
+	DialogPanel.paint_bar(self, _zone_bar, _r)
 	# Zone picture, quest area, entrances.
 	if _pic:
 		var s := _pic.get_size() / 256.0
@@ -462,13 +487,6 @@ func _draw() -> void:
 		_triangle(e.at, e.dir, 1.2 if on else 1.0, u, col)
 	# Zone text.
 	_label(Rect2(410, 385, 340, 20), _title, TITLE, HORIZONTAL_ALIGNMENT_CENTER)
-	var font := Interface800.font()
-	var fs := _font_px()
-	var r := _r(Rect2(420, 405, 320, 115))
-	var lines := font.get_multiline_string_size(_text, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, fs).y
-	var y0 := r.position.y + maxf(0.0, (r.size.y - lines) * 0.5) + font.get_ascent(fs)
-	draw_multiline_string(font, Vector2(r.position.x + 1, y0 + 1), _text, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, fs, -1, Interface800.SHADOW)
-	draw_multiline_string(font, Vector2(r.position.x, y0), _text, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, fs, -1, TEXT)
 
 
 ## Entrance marker: apex at `at`, base 20 px along `dir`, 20 px wide.
@@ -560,11 +578,11 @@ func _get_tooltip(at: Vector2) -> String:
 
 func _gui_input(e: InputEvent) -> void:
 	var p800: Vector2 = e.position / _kv() if e is InputEventMouse else Vector2.ZERO
-	for b: DialogPanel.Bar in [_list_bar, _desc_bar]:
+	for b: DialogPanel.Bar in [_list_bar, _desc_bar, _zone_bar]:
 		if e is InputEventMouseMotion and b.held == 1:
 			b.drag(p800)
-			if b == _desc_bar:
-				_desc.get_v_scroll_bar().value = b.pos
+			if b != _list_bar:
+				(_desc if b == _desc_bar else _zone_desc).get_v_scroll_bar().value = b.pos
 			else:
 				top = int(b.pos)
 			accept_event()
@@ -574,12 +592,16 @@ func _gui_input(e: InputEvent) -> void:
 	if e is InputEventMouseButton and e.pressed:
 		match e.button_index:
 			MOUSE_BUTTON_LEFT:
-				for b: DialogPanel.Bar in [_list_bar, _desc_bar]:
+				for b: DialogPanel.Bar in [_list_bar, _desc_bar, _zone_bar]:
 					if b.max_pos > 0.0 and b.press(p800):
 						accept_event()
 						return
 				press(_hit(e.position))
 			MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN:
+				for pair: Array in [[_desc, _desc_bar], [_zone_desc, _zone_bar]]:
+					if _r(pair[1].rect).has_point(e.position):
+						_text_wheel(e, pair[0])
+						return
 				if _r(Rect2(60, 30, 314, 120)).has_point(e.position):   #  rect
 					var d := -1 if e.button_index == MOUSE_BUTTON_WHEEL_UP else 1
 					top = clampi(top + d, 0, maxi(0, quests.size() - ROWS))
@@ -588,11 +610,11 @@ func _gui_input(e: InputEvent) -> void:
 
 
 ## The description's wheel: 20 units a notch (speed 20.0).
-func _desc_wheel(e: InputEvent) -> void:
+func _text_wheel(e: InputEvent, label: RichTextLabel) -> void:
 	if e is InputEventMouseButton and e.pressed and e.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
-		var sb := _desc.get_v_scroll_bar()
+		var sb := label.get_v_scroll_bar()
 		sb.value += (-20.0 if e.button_index == MOUSE_BUTTON_WHEEL_UP else 20.0) * _k()
-		_desc.accept_event()
+		accept_event()
 
 
 func press(h: Array) -> void:
