@@ -651,7 +651,7 @@ static func hero_stats(u: GameUnit, h: Dictionary) -> void:
 		u.stats.range = float(w.row.get("range", 0.0))
 		u.stats.ranged = wtype in ["bow", "crossbow"]
 		if u.stats.ranged:
-			u.stats.reach = 14.0
+			u.stats.reach = maxf(1.0, u.stats.range)
 	var skill := Skills.level(h, "archery" if u.stats.ranged else "melee")
 	u.stats.to_hit = maxf(1.0, skill + (d - 25.0) + w_att)
 	u.stats.parry = 0.0 if u.stats.ranged else maxf(1.0, Skills.level(h, "melee") + (d - 25.0) + w_def)

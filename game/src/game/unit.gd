@@ -749,6 +749,29 @@ func _init_stats() -> void:
 		# Archers and casters of the monster tables shoot from their attack range.
 		"ranged": float(proto.get("attack_range", 0.0)) > 3.0,
 	}
+	_refresh_weapon_range()
+
+
+## Item-equipped NPCs use the held weapon, not the generic monster range.
+## Several human archer prototypes have range 8 (or even 0) despite carrying
+## a 12/16m bow. Natural attacks, including lesovik blowpipes, keep their range.
+func _refresh_weapon_range() -> void:
+	if has_meta("hero") or has_meta("npc_character"):
+		return   # Combat.hero_stats already derives these fields from the character.
+	if int(proto.get("weapon_type_id", -1)) != 8:
+		return   # Natural weapon type: carried loot does not replace its attack.
+	stats.range = 0.0
+	stats.ranged = false
+	stats.reach = maxf(1.3, float(race.get("attack_distance", 0.4)) + 0.9)
+	var weapons := Array(info.get("weapons", CampaignState.proto_weapons(proto)))
+	if weapons.is_empty():
+		return
+	var weapon := Items.info(String(weapons[0]))
+	if weapon.is_empty() or weapon.table != "weapons":
+		return
+	stats.range = float(weapon.row.get("range", 0.0))
+	stats.ranged = String(weapon.row.get("type", "")).to_lower() in ["bow", "crossbow"]
+	stats.reach = maxf(1.0, stats.range) if stats.ranged else maxf(1.3, stats.range + 1.3)
 
 
 # ------------------------------------------------------------------ body parts
@@ -3529,6 +3552,7 @@ func rise(total := 1.0) -> void:
 func set_equipment(armors: PackedStringArray, weapons: PackedStringArray) -> void:
 	info.armors = armors
 	info.weapons = weapons
+	_refresh_weapon_range()
 	var m := EIUnitModel.create(figure_info())
 	if m == null:
 		return
