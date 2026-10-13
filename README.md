@@ -8,7 +8,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.0.5**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.5), available for Linux, Windows, Android and macOS. It updates the optional HD Lands textures to 1.5.0, prefers Gipat with Yandex Disk as backup, and keeps shop rune icons inside their borders and clear of quantities. See the [release notes](docs/releases/1.0.5.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.0.5**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.5), available for Linux, Windows, Android, macOS and in the [browser](https://cursedlands.wwworm.com/). It updates the optional HD Lands textures to 1.5.0, prefers Gipat with Yandex Disk as backup, and keeps shop rune icons inside their borders and clear of quantities. See the [release notes](docs/releases/1.0.5.md) and [versioning policy](docs/versioning.md).
 
 ## Screenshots
 
@@ -29,6 +29,10 @@ Captured in the engine at 3840×2160 with content read from the GOG version.
 - a game data pack (`.eipack`), if you made one.
 
 Your files are never uploaded: the game reads them on your own device and keeps its copy in your browser's local storage, so the next start is quick and works offline.
+
+Browser updates download when you visit online and take effect after all game
+tabs and installed game windows are closed and reopened. Your imported game
+files and saves stay in local storage; you do not need to import them again.
 
 A data pack is optional. It helps on a phone that has neither the installer nor the game folder: make the pack on your computer and copy it to the phone. You need Python 3 and the [`tools/prepare_game_data.py`](tools/prepare_game_data.py) script from this repository:
 
