@@ -1,0 +1,1363 @@
+{
+  "version": "1.0.7",
+  "date": "2026-10-14",
+  "game_source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+  "game_tree": "0a9fb949e14a49d13e90be91d4d8f21b6458ee57",
+  "network_protocol": 23,
+  "scope": "Dropdown clarity and EN/RU/DE localization; moving direct-view aiming and camera motion; terrain seams and reflection sampling; equipment models, trade filters and wheel navigation; spell-constructor synchronization; shared weapon ranges, Lovkach visibility recovery and scrollable location descriptions.",
+  "linux_release_checks": [
+    {
+      "suite": "archer_range",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/archer_range.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 15.657,
+      "results": [
+        "ARCHER_RANGE {\"checks\":558,\"failures\":[],\"rows\":[{\"equipped_prototypes\":147,\"natural_prototypes\":106,\"spell_options\":200},{\"advance\":0.0,\"distance\":15.0,\"moving\":false,\"prototype\":\"Human Kania Police A10\",\"shot\":true,\"ticks\":42},{\"advance\":0.0,\"distance\":15.0,\"moving\":true,\"prototype\":\"Human Kania Police A10\",\"shot\":true,\"ticks\":50},{\"advance\":0.0,\"distance\":15.0,\"moving\":false,\"prototype\":\"Human Kania Ranger F9\",\"shot\":true,\"ticks\":42},{\"advance\":0.0,\"distance\":15.0,\"moving\":true,\"prototype\":\"Human Kania Ranger F9\",\"shot\":true,\"ticks\":46},{\"advance\":0.0,\"distance\":11.0,\"moving\":false,\"prototype\":\"Human Kania Gang A9\",\"shot\":true,\"ticks\":50},{\"advance\":0.0,\"distance\":11.0,\"moving\":true,\"prototype\":\"Human Kania Gang A9\",\"shot\":true,\"ticks\":42},{\"advance\":0.0,\"distance\":11.0,\"moving\":false,\"prototype\":\"Human Mercenary Kania Archer\",\"shot\":true,\"ticks\":42},{\"advance\":0.0,\"distance\":11.0,\"moving\":true,\"prototype\":\"Human Mercenary Kania Archer\",\"shot\":true,\"ticks\":50},{\"caster\":\"Human Mercenary Thief\",\"natural_spell_attack\":false,\"range\":15.0,\"spell\":\"arrow{e1}\"},{\"caster\":\"AncientCurseM25\",\"natural_spell_attack\":true,\"range\":10.0,\"spell\":\"curse_magic\"}]}"
+      ],
+      "errors": [],
+      "game_source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+      "checks": 558,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/shipping-archer_range.log",
+      "log_sha256": "c8a8ad1b10c6f18b3498091bc85b3c5217ce3e74a5a05a1b1a79b7996397656c"
+    },
+    {
+      "suite": "camp_inventory_ui",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/camp_inventory_ui.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 9.03,
+      "results": [
+        "CAMP_INVENTORY_UI cursed_lands 107 checks 0 failures"
+      ],
+      "errors": [],
+      "game_source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+      "checks": 107,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/shipping-camp_inventory_ui.log",
+      "log_sha256": "777d324661cf58ce383e1d6ac5581e49b1979c0258b9bfbd1a68be9365fe483b"
+    },
+    {
+      "suite": "direct_release_aim",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/direct_release_aim.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 6.574,
+      "results": [
+        "DIRECT_RELEASE_AIM 57 checks 0 failures"
+      ],
+      "errors": [],
+      "game_source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+      "checks": 57,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/shipping-direct_release_aim.log",
+      "log_sha256": "d9c8c800d924487164d9fd90c03ae300165e5cfcf05376c4a23d87520ee2c6ab"
+    },
+    {
+      "suite": "ingos_lovkach",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/ingos_lovkach.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 3.421,
+      "results": [
+        "INGOS_LOVKACH {\"checks\":18,\"failures\":[]}"
+      ],
+      "errors": [],
+      "game_source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+      "checks": 18,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/shipping-ingos_lovkach.log",
+      "log_sha256": "a18f4bfed627cd4cba78a69e1615ff7e5f6f33f887216050dd8b11adf55900c7"
+    },
+    {
+      "suite": "special_equipment",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/special_equipment.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 2.317,
+      "results": [
+        "SPECIAL_EQUIPMENT 452 checks 0 failures"
+      ],
+      "errors": [],
+      "game_source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+      "checks": 452,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/shipping-special_equipment.log",
+      "log_sha256": "3cd303dfa9d2a208da4e4c5fe6a184162eda337baa38262ef1d1a1f48fb7811c"
+    },
+    {
+      "suite": "spell_constructor_transactions",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/spell_constructor_transactions.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 9.58,
+      "results": [
+        "SPELL_CONSTRUCTOR_TRANSACTIONS 52 checks 0 failures"
+      ],
+      "errors": [],
+      "game_source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+      "checks": 52,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/shipping-spell_constructor_transactions.log",
+      "log_sha256": "02950fd837a17ca4a7486ce8d4f3ce1c5d442829c2f905c28e85643f0b0ea308"
+    },
+    {
+      "suite": "zone_description_scroll",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/zone_description_scroll.gd",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app"
+      ],
+      "exit": 0,
+      "seconds": 5.428,
+      "results": [
+        "ZONE_DESCRIPTION_SCROLL {\"checks\":33,\"failures\":[]}"
+      ],
+      "errors": [],
+      "game_source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+      "checks": 33,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/shipping-zone-description-de.log",
+      "log_sha256": "6b44166e0cd9cd339ea8ae923b316aadbb4b9c1a535e1f179c4a09155bfbfeb4"
+    },
+    {
+      "suite": "zone_description_scroll",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/zone_description_scroll.gd",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app"
+      ],
+      "exit": 0,
+      "seconds": 5.223,
+      "results": [
+        "ZONE_DESCRIPTION_SCROLL {\"checks\":26,\"failures\":[]}"
+      ],
+      "errors": [],
+      "game_source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+      "checks": 26,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/shipping-zone-description-en.log",
+      "log_sha256": "6547dd3d394d011729d3cbb25000a535c6ac6214dee4d262df4fd634910c021e"
+    },
+    {
+      "suite": "zone_description_scroll",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/zone_description_scroll.gd",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/legacy-compat-generic-20261011/base-ru"
+      ],
+      "exit": 0,
+      "seconds": 5.432,
+      "results": [
+        "ZONE_DESCRIPTION_SCROLL {\"checks\":33,\"failures\":[]}"
+      ],
+      "errors": [],
+      "game_source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+      "checks": 33,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/shipping-zone-description-ru.log",
+      "log_sha256": "0d3eb38a120b6018e68cf7fbbcac0ba949e59ae41500b44dcef349a4f638c49a"
+    }
+  ],
+  "linux_passed_checks": 1336,
+  "linux_failures": 0,
+  "previous_candidate_checks": {
+    "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+    "game_tree": "79d816d48cabd0a3279a21f2c6df6258feb2cf33",
+    "checks": [
+      {
+        "suite": "archer_range",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/archer_range.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 14.588,
+        "results": [
+          "ARCHER_RANGE {\"checks\":107,\"failures\":[],\"rows\":[{\"advance\":0.0,\"distance\":15.0,\"moving\":false,\"prototype\":\"Human Kania Police A10\",\"shot\":true,\"ticks\":42},{\"advance\":0.0,\"distance\":15.0,\"moving\":true,\"prototype\":\"Human Kania Police A10\",\"shot\":true,\"ticks\":50},{\"advance\":0.0,\"distance\":15.0,\"moving\":false,\"prototype\":\"Human Kania Ranger F9\",\"shot\":true,\"ticks\":50},{\"advance\":0.0,\"distance\":15.0,\"moving\":true,\"prototype\":\"Human Kania Ranger F9\",\"shot\":true,\"ticks\":42},{\"advance\":0.0,\"distance\":11.0,\"moving\":false,\"prototype\":\"Human Kania Gang A9\",\"shot\":true,\"ticks\":50},{\"advance\":0.0,\"distance\":11.0,\"moving\":true,\"prototype\":\"Human Kania Gang A9\",\"shot\":true,\"ticks\":46},{\"advance\":0.0,\"distance\":11.0,\"moving\":false,\"prototype\":\"Human Mercenary Kania Archer\",\"shot\":true,\"ticks\":50},{\"advance\":0.0,\"distance\":11.0,\"moving\":true,\"prototype\":\"Human Mercenary Kania Archer\",\"shot\":true,\"ticks\":50}]}"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 107,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-archer_range.log",
+        "log_sha256": "ae78a5ca5100282f225faa15f3bb8d055cf6823bf6dcd898c8a5d924192a89b2"
+      },
+      {
+        "suite": "camp_inventory_ui",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/camp_inventory_ui.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 9.331,
+        "results": [
+          "CAMP_INVENTORY_UI cursed_lands 107 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 107,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-camp_inventory_ui.log",
+        "log_sha256": "124d62e0017a3dd63b2dd1243e3161602d6d33ff3485ff0262b7a6d6054c81d0"
+      },
+      {
+        "suite": "camp_transactions",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/camp_transactions.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 10.339,
+        "results": [
+          "REPAIR_BATCH_FEEDBACK_MS 14",
+          "CAMP_TRANSACTIONS 53 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 53,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-camp_transactions.log",
+        "log_sha256": "b66e661321d7c6906c37a36550215ffd613c77261bb0e1fd3dae28a140a0f255"
+      },
+      {
+        "suite": "direct_camera_smooth",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/direct_camera_smooth.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 7.082,
+        "results": [
+          "DIRECT_CAMERA_SMOOTH 6 checks 0 failures; old_eye_jump=0.07488316297531 new_eye_jump=0.0 collision_error=0.00155130748934"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 6,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-direct_camera_smooth.log",
+        "log_sha256": "10bb9f28de43be2e6cccd0327566c5f232baed13e4f0239c844a470bf8e52c11"
+      },
+      {
+        "suite": "direct_combat",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/direct_combat.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 2.118,
+        "results": [
+          "DIRECT_COMBAT 30 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 30,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-direct_combat.log",
+        "log_sha256": "74e9bff2118d145a6611846e5600132eba6b7c1ac7b896ae509ad8585ba11a4d"
+      },
+      {
+        "suite": "direct_release_aim",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/direct_release_aim.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 6.876,
+        "results": [
+          "DIRECT_RELEASE_AIM 57 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 57,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-direct_release_aim.log",
+        "log_sha256": "3e226c87245c1ac25ba8cbc9af870d5bbf11ec776f1939e3fd2297e2d988c53c"
+      },
+      {
+        "suite": "ingos_lovkach",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/ingos_lovkach.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 3.32,
+        "results": [
+          "INGOS_LOVKACH {\"checks\":18,\"failures\":[]}"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 18,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-ingos_lovkach.log",
+        "log_sha256": "47c91edc9a47f5e5855cb000f2329b875ed255b95119927980dde1e3afd98b79"
+      },
+      {
+        "suite": "lesovik_weapon",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/lesovik_weapon.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 2.268,
+        "results": [
+          "LESOVIK_WEAPON 128 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 128,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-lesovik_weapon.log",
+        "log_sha256": "df1c2e8248a5a35e85f2db87db9da96f62c8c9df481b8923dcf9f17f589bec00"
+      },
+      {
+        "suite": "market_prices",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/market_prices.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 8.378,
+        "results": [
+          "MARKET_PRICES 28 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 28,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-market_prices.log",
+        "log_sha256": "9cc5d0e3c4427c7c221ff716b08cf13a2803b2fffcbeba7d51c539a995070d4e"
+      },
+      {
+        "suite": "player_feedback",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/player_feedback.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 2.117,
+        "results": [
+          "PLAYER_FEEDBACK 43 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 43,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-player_feedback.log",
+        "log_sha256": "eb07f02ee912837eb9ffa2bb7e7cd4ac8feea07dd07854dabcf2d43770694617"
+      },
+      {
+        "suite": "reported_ui_visuals",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--rendering-method",
+          "gl_compatibility",
+          "--resolution",
+          "1280x720",
+          "--windowed",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/reported_ui_visuals.gd",
+          "--ei-inline-host",
+          "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app"
+        ],
+        "exit": 0,
+        "seconds": 6.628,
+        "results": [
+          "REPORTED_UI_VISUALS 8 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 8,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-reported_ui_visuals-de.log",
+        "log_sha256": "59bfcc7be9e7cc4458cfcb181174fa6d7c47abdb073d6343921b9cedcd1a0912"
+      },
+      {
+        "suite": "reported_ui_visuals",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--rendering-method",
+          "gl_compatibility",
+          "--resolution",
+          "1280x720",
+          "--windowed",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/reported_ui_visuals.gd",
+          "--ei-inline-host",
+          "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/legacy-compat-generic-20261011/base-ru"
+        ],
+        "exit": 0,
+        "seconds": 6.831,
+        "results": [
+          "REPORTED_UI_VISUALS 8 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 8,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-reported_ui_visuals-ru.log",
+        "log_sha256": "d6913d066a9eb832fb69e07e9bf37f7ea71aea2f4a14aff40e5520b2ac101a3e"
+      },
+      {
+        "suite": "special_equipment",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/special_equipment.gd",
+          "--ei-inline-host",
+          "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app"
+        ],
+        "exit": 0,
+        "seconds": 2.318,
+        "results": [
+          "SPECIAL_EQUIPMENT 452 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 452,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-special_equipment-de.log",
+        "log_sha256": "51c91df29d918253dfdaaf62fec8154e8a77d8cdecb9e73fe88115ea04b40cf4"
+      },
+      {
+        "suite": "special_equipment",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/special_equipment.gd",
+          "--ei-inline-host",
+          "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/legacy-compat-generic-20261011/base-ru"
+        ],
+        "exit": 0,
+        "seconds": 2.318,
+        "results": [
+          "SPECIAL_EQUIPMENT 452 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 452,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-special_equipment-ru.log",
+        "log_sha256": "20630eabf68d49d3b304b943c49bb1c067f65f06892310d7afe77d7aed7ae350"
+      },
+      {
+        "suite": "special_equipment",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/special_equipment.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 2.268,
+        "results": [
+          "SPECIAL_EQUIPMENT 452 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 452,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-special_equipment.log",
+        "log_sha256": "1b293620b150d3674b199370326dbcdb799a955e3199d9d48e4e846990b0d7fa"
+      },
+      {
+        "suite": "special_equipment_visuals",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--rendering-method",
+          "gl_compatibility",
+          "--resolution",
+          "1280x720",
+          "--windowed",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/special_equipment_visuals.gd",
+          "--ei-inline-host",
+          "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app"
+        ],
+        "exit": 0,
+        "seconds": 4.773,
+        "results": [
+          "SPECIAL_EQUIPMENT_VISUALS 9 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 9,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-special_equipment_visuals-de.log",
+        "log_sha256": "1bec5cdf99e4564e7b45c87850a60459264a673206bd0efeaffe03cc807e58f2"
+      },
+      {
+        "suite": "special_equipment_visuals",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--rendering-method",
+          "gl_compatibility",
+          "--resolution",
+          "1280x720",
+          "--windowed",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/special_equipment_visuals.gd",
+          "--ei-inline-host",
+          "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/legacy-compat-generic-20261011/base-ru"
+        ],
+        "exit": 0,
+        "seconds": 4.722,
+        "results": [
+          "SPECIAL_EQUIPMENT_VISUALS 9 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 9,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-special_equipment_visuals-ru.log",
+        "log_sha256": "2c2d14e7ffc7d46dfc4bdb1cf2c7d5ab1d7ea842e48458570fc551fe6fb1e37c"
+      },
+      {
+        "suite": "spell_constructor_transactions",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/spell_constructor_transactions.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 9.58,
+        "results": [
+          "SPELL_CONSTRUCTOR_TRANSACTIONS 52 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 52,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-spell_constructor_transactions.log",
+        "log_sha256": "7e030c7bc5c0349eb9ca6b6bebea0495b44b7aaef9623c04f25b71caad63b869"
+      },
+      {
+        "suite": "visual_repairs_rules",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/visual_repairs_rules.gd",
+          "--ei-inline-host",
+          "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app"
+        ],
+        "exit": 0,
+        "seconds": 2.118,
+        "results": [
+          "VISUAL_REPAIRS_RULES {\"checks\":401,\"failures\":[]}"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 401,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-visual_repairs_rules-de.log",
+        "log_sha256": "40b15914b4703cc4c1f590084e6735ead926cb7fff3aaf208325c0b3b5e77778"
+      },
+      {
+        "suite": "visual_repairs_rules",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/visual_repairs_rules.gd",
+          "--ei-inline-host",
+          "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/legacy-compat-generic-20261011/base-ru"
+        ],
+        "exit": 0,
+        "seconds": 2.118,
+        "results": [
+          "VISUAL_REPAIRS_RULES {\"checks\":401,\"failures\":[]}"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 401,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-visual_repairs_rules-ru.log",
+        "log_sha256": "ee12815b521f0182157e0d1c57450acd95fd0484f8e0dba7762af6b54ea355ca"
+      },
+      {
+        "suite": "visual_repairs_rules",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/visual_repairs_rules.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 2.017,
+        "results": [
+          "VISUAL_REPAIRS_RULES {\"checks\":401,\"failures\":[]}"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 401,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-visual_repairs_rules.log",
+        "log_sha256": "5f337ab0b6467024de7d2fdb516ea18108ab304e049a412a7a3829574bc8f1f2"
+      },
+      {
+        "suite": "water_reflection_geometry",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--headless",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/water_reflection_geometry.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 2.018,
+        "results": [
+          "WATER_REFLECTION_GEOMETRY checks=32 failures=0"
+        ],
+        "errors": [],
+        "game_source_commit": "a5b8e616e326403609cb419d2eed23de59f19642",
+        "checks": 32,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-description-scroll/release-water_reflection_geometry.log",
+        "log_sha256": "1781b223ca0b8e3ade3e65630f2c260695ece8a659cc359e8216b7bfb673a7ef"
+      }
+    ],
+    "passed_checks": 3254,
+    "production_source_changes_since_checks": [
+      "src/ui/zone_objectives.gd"
+    ],
+    "note": "These are earlier candidate receipts, not reruns against the final package. All production source except the objectives screen is byte-identical; final-package checks cover that screen and the extended combat paths."
+  },
+  "gpu_component_checks": {
+    "game_source_commit": "2b0effb6289ae875bd48d9df7a9af9203d4f0a76",
+    "checks": [
+      {
+        "suite": "terrain_seams_sampling",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--rendering-method",
+          "forward_plus",
+          "--resolution",
+          "1280x720",
+          "--windowed",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/terrain_seams_sampling.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 10.683,
+        "results": [
+          "TERRAIN_SEAMS_SAMPLING 13 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "2b0effb6289ae875bd48d9df7a9af9203d4f0a76",
+        "checks": 13,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-archer-fix/final-terrain-forward.log",
+        "log_sha256": "d8bfc49dd1f7773b627a6390e900d2a578dfc99a8cf3277f92dbd8b797631470"
+      },
+      {
+        "suite": "terrain_seams_sampling",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--rendering-method",
+          "gl_compatibility",
+          "--resolution",
+          "1280x720",
+          "--windowed",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/terrain_seams_sampling.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 6.677,
+        "results": [
+          "TERRAIN_SEAMS_SAMPLING 12 checks 0 failures"
+        ],
+        "errors": [],
+        "game_source_commit": "2b0effb6289ae875bd48d9df7a9af9203d4f0a76",
+        "checks": 12,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-archer-fix/final-terrain-gl.log",
+        "log_sha256": "ecb7e1b3eb49b068872aa4cca1ab3a4af0cda66bb22ac4442bfe79e008cad005"
+      },
+      {
+        "suite": "ground_contact",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--rendering-method",
+          "gl_compatibility",
+          "--resolution",
+          "1280x720",
+          "--windowed",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/ground_contact.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 4.872,
+        "results": [
+          "GROUND_CONTACT checks=47 failures=0"
+        ],
+        "errors": [],
+        "game_source_commit": "2b0effb6289ae875bd48d9df7a9af9203d4f0a76",
+        "checks": 47,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-archer-fix/final-ground-contact.log",
+        "log_sha256": "6ed3763898e48ed0df552a98754a93d8f2cff5a5e9e8514899958e7f62837541"
+      },
+      {
+        "suite": "first_person_running_down",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--rendering-method",
+          "forward_plus",
+          "--resolution",
+          "1280x720",
+          "--windowed",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/first_person_running_down.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 131.149,
+        "results": [
+          "FIRST_PERSON_RUNNING_DOWN {\"checks\":28,\"failures\":[],\"measurements\":[{\"case\":\"armor=false fov=75\",\"distance\":26.0911217480898,\"duplicate_frames\":0,\"frames\":360,\"pose_samples\":16,\"rim_vertices_visible\":0,\"run_frames\":357,\"seconds\":6},{\"case\":\"armor=false fov=50\",\"distance\":26.0980074852705,\"duplicate_frames\":0,\"frames\":360,\"pose_samples\":16,\"rim_vertices_visible\":0,\"run_frames\":360,\"seconds\":6},{\"case\":\"armor=false fov=110\",\"distance\":26.0980074852705,\"duplicate_frames\":0,\"frames\":360,\"pose_samples\":16,\"rim_vertices_visible\":0,\"run_frames\":360,\"seconds\":6},{\"case\":\"armor=true fov=75\",\"distance\":26.0911217480898,\"duplicate_frames\":0,\"frames\":360,\"pose_samples\":16,\"rim_vertices_visible\":0,\"run_frames\":360,\"seconds\":6},{\"case\":\"armor=true fov=50\",\"distance\":26.0980074852705,\"duplicate_frames\":0,\"frames\":360,\"pose_samples\":16,\"rim_vertices_visible\":0,\"run_frames\":360,\"seconds\":6},{\"case\":\"armor=true fov=110\",\"distance\":26.0980074852705,\"duplicate_frames\":0,\"frames\":360,\"pose_samples\":16,\"rim_vertices_visible\":0,\"run_frames\":360,\"seconds\":6}]}"
+        ],
+        "errors": [],
+        "game_source_commit": "2b0effb6289ae875bd48d9df7a9af9203d4f0a76",
+        "checks": 28,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-archer-fix/final-first-person.log",
+        "log_sha256": "786f77935e3e8e8238e4a80217b9050804ecb93d9fa6582ecc14a7129ea2d8c2"
+      },
+      {
+        "suite": "water_reflection_distance",
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.7-linux-x86_64/CursedLands.x86_64",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--rendering-method",
+          "forward_plus",
+          "--resolution",
+          "1280x720",
+          "--windowed",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/repo/tools/tests/water_reflection_distance.gd",
+          "--ei-inline-host"
+        ],
+        "exit": 0,
+        "seconds": 36.284,
+        "results": [
+          "WATER_REFLECTION_DISTANCE {\"checks\":16,\"failures\":[],\"rows\":[{\"camera\":\"(122.5, 8.912667, -88.5)\",\"pitch\":0.0,\"plane\":6.31217096598961,\"restored_pixels\":32063,\"yaw\":0.0},{\"camera\":\"(122.5, 8.912667, -88.5)\",\"pitch\":-0.4,\"plane\":6.31217720169781,\"restored_pixels\":37685,\"yaw\":0.0},{\"camera\":\"(122.5, 8.912667, -88.5)\",\"pitch\":-0.7,\"plane\":6.31217786124944,\"restored_pixels\":41741,\"yaw\":0.0},{\"camera\":\"(122.5, 8.912667, -88.5)\",\"pitch\":0.0,\"plane\":6.31217112217995,\"restored_pixels\":30625,\"yaw\":0.2},{\"camera\":\"(122.5, 8.912667, -88.5)\",\"pitch\":-0.4,\"plane\":6.31217628488736,\"restored_pixels\":34266,\"yaw\":0.2},{\"camera\":\"(122.5, 8.912667, -88.5)\",\"pitch\":-0.7,\"plane\":6.31217607478898,\"restored_pixels\":51977,\"yaw\":0.2}]}"
+        ],
+        "errors": [],
+        "game_source_commit": "2b0effb6289ae875bd48d9df7a9af9203d4f0a76",
+        "checks": 16,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.7-20261013/before-archer-fix/final-water-distance.log",
+        "log_sha256": "39078ac053cdd15facc4ed26623176d9caebbcb9d4e7945b2202ab1e66d09e5c"
+      }
+    ],
+    "passed_checks": 116,
+    "unchanged_component_sha256": {
+      "src/ei/unit_model.gd": "0fcba06a9f490eb1704f0ca3fea5874fee857f5f62d8a522696da8b0a1765167",
+      "src/ei/terrain.gd": "453f1caa689102f648753697fee07502f4129ffa17bfe381be23ecba79501f3a",
+      "src/ei/terrain_sector.gd.uid": "93f8cbfd8ed5756d9bb9d8cf8b6f5fa79c2f51dd6af5028411aa693e206ee3ea",
+      "src/ei/terrain.gd.uid": "313fd71a7be57ef585584badec8f0963f69472ddbcae8ff18e3f55542046b919",
+      "src/ei/terrain_sector.gd": "51e23c785f6a21a86d12f2cae10dbbe220d8b80c1c51138266bf9e1b3fa9be46",
+      "src/ei/unit_model.gd.uid": "f4b1a45c70d476f550e00fad1a3d2e3868b97f747100f38b024e466e668c751a",
+      "src/game/direct_combat.gd.uid": "b7e2d7e6994bce21663a5af275d01a45fad6c6c4b4523bf21e1ec7a4654b1673",
+      "src/game/direct_combat.gd": "28f3eb8129722080453ab3f12928db7b2ab1689c2df7921febeb614182b1e197",
+      "src/game/direct_pose.gd": "c4e84a00a8aafd65fe4911835806761b0529892c1c9cde380960182717f77b43",
+      "src/game/direct_control.gd.uid": "513dd2515b9e3552b0c015ca4bbbd34013a5c730a34d309eaf09b23d307da2e8",
+      "src/game/direct_pose.gd.uid": "96026d59c264cd03bd4bd8ceeda7104d43661a453172a5e30b95312d10e0bba5",
+      "src/game/direct_control.gd": "d472a4004a2e0ae9392db7748bc6a19e32eaf0564a3b1ef3ba083254646b4203",
+      "src/game/fx/biome_cover_contact.gd.uid": "4d800770384b45beca18e000bd34310c03f84051c294eafc811efad150053310",
+      "src/game/fx/ground_surface_shader.gd.uid": "54eb10a06c14a243117e22c809f1dcdfac826806504c0aaa758b0d5438a51f7b",
+      "src/game/fx/ground_marks.gd": "021b990bf52082d1938e8fc5552814e87715eb3ee30415b1afdc6fb31e096f14",
+      "src/game/fx/ground_contact.gd.uid": "02e7a5c753aef9d32c91201e73b01aa51dc2ad7558266ed7ebca597d5e7d04a5",
+      "src/game/fx/waterfall_shader.gd": "d26f34c0fc2467e5a328737b4d8873d07ca81394d950df2fda3658f5703155f1",
+      "src/game/fx/water_texture_data.gd": "5dc6b740c394cb5735a09ee3a1c18225a33bdd52da6f784ce8d4fb578d7562eb",
+      "src/game/fx/soft_ground_deform.gd.uid": "22b189fcb77a4cf5d2eed90dd41876dcc4f2389bd2dad8a58ae3907816f6774d",
+      "src/game/fx/water_interaction.gd.uid": "16635850feb69ed078610aad05f13d450cb8fb24b8b70a880d4be6c6af2935f7",
+      "src/game/fx/water_interaction_shader.gd.uid": "3023cd7d53d405382d2c453f8584d0cbe9a7ea63569db62e74d565298c2e8cb4",
+      "src/game/fx/water_interaction.gd": "c691ff44ef64ce326050852bdc2852ac5c3b7f538149d98a383d734ebafdcb18",
+      "src/game/fx/waterfalls.gd": "17d24e4d6bc32f5689cef65381e53786a79b23273bf765c8542200aa6f28091b",
+      "src/game/fx/biome_cover_tiles.gd.uid": "0738828be4ea81186030c6655bade81e1cbccdf2ce174fedf5860f0a4dc6f7a8",
+      "src/game/fx/biome_cover_mesh.gd": "a204aba859a899d5778438588fa4593662dd28851f8c328fa64eb48e84d908ed",
+      "src/game/fx/ground_surface_data.gd.uid": "e2606ed179225418c04f35b685fb0abc3819d41ca5f912898205fe9c92ad93bd",
+      "src/game/fx/water_surface.gd.uid": "a16f811b40c2212d12f795c4da18e97572059c5b4e5f6c7302f227b465fcb8c6",
+      "src/game/fx/water_wave_shader.gd.uid": "59f2532e33ec91b3d0fd4cba9b3fa6cee5c69d92d68ae1400a736998591aee29",
+      "src/game/fx/biome_cover.gd.uid": "a4b50667a8477e7060515f85614cf6bc6d6509340448f82337ad6992d4669605",
+      "src/game/fx/biome_sand_tiles.gd": "6d4b1c9378c1cf146404db4286a48ad7286ae5d30962979529224f1911a30b8a",
+      "src/game/fx/biome_cover_mesh.gd.uid": "9404d75787ac6e45091f6de7b79a599584188d583ef7f2df14664446be1aca4c",
+      "src/game/fx/waterfall_shader.gd.uid": "dbb4e804c71ed592132227a2f3d3dbf5da47754cfac785b84c60831c25c6a281",
+      "src/game/fx/biome_sand_tiles.gd.uid": "eb99fef07153fbb5a611c843686c755be02aaf46c7125e46a44b7a663070b61b",
+      "src/game/fx/biome_cover_tiles.gd": "bc3f3f77f83e8a75b5d59f8acffff13d9c13642ccbeaf956844d2e6bc96f3d68",
+      "src/game/fx/ground_contact_shader.gd": "7b87b8e8d09646562f1d5e2ed74cc92eeb22082f1e797756e5bae453ab13fc44",
+      "src/game/fx/biome_cover_regions.gd.uid": "a410d811b3d631bfd430f2f8bcf949d42b30240ebede54483b00c00378c50a47",
+      "src/game/fx/water_wave_shader.gd": "1ad74048746e5b2a39f7e8bc0d38f1fa97ebeeb8059f216f54a36e97715757c2",
+      "src/game/fx/water_caustics.gd": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+      "src/game/fx/biome_mounds.gd": "293f02cf70dc39642ce2f2a355afa5f01192f0d9274be02d3688137481d8574c",
+      "src/game/fx/ground_contact.gd": "3b920dac4ddc7ea9632c5a57e0cf8de5f7e6c5b67cfd64e05868e3e42bd8fa28",
+      "src/game/fx/water_wave_field.gd.uid": "88dd1b880be897de987c0583ac021d716c1700909e61a8573d2d413bc9d4de3a",
+      "src/game/fx/soft_ground_deform.gd": "48ee6cb166b2805d9d74135407e7c7a4e977be29a529547256ce5edc4e25614d",
+      "src/game/fx/ground_contact_data.gd": "8fb737389b4c72b79c340fe3ff2e3cd0d3793875d179ce4f2bacd9b884cd8bd6",
+      "src/game/fx/waterfall_field.gd.uid": "358828d31d75bf8cc1585bb345d0829e907effd8a1dd26aab626f08535e3cc0e",
+      "src/game/fx/biome_cover_region_mesh.gd": "3c8f21b5718b4b4627cff95fa84af33a9a77234bc09f56e1f41c049e1084d6d2",
+      "src/game/fx/biome_mounds.gd.uid": "724944c516c1afbf98934e276003654aa3560ac1b60ff08f4f4bf2cca9330d64",
+      "src/game/fx/water_wave_field.gd": "eb218f7fcc211455b63d9db2bdd4e242132afd0b4e9bef0ab633355a180c6c12",
+      "src/game/fx/water_reflection.gd.uid": "09995fc002fd92814f72bc4de2cf677e9af09c9b5c627c7281be1235b0df436d",
+      "src/game/fx/water_caustics.gd.uid": "20ee13973ea5637e1e1da3db8889c353ab53b04c2a790cc25e164e141997de42",
+      "src/game/fx/water_current_shader.gd.uid": "12079446c3bde6e5c676b2686d17b39a6a2315fb37e712ae12eefca106d1052d",
+      "src/game/fx/soft_ground_field.gd.uid": "9cdb5124a330adeb2db833125e5a3b6d38ee15df5763a58d119f0b58881a5f92",
+      "src/game/fx/water_reflection.gd": "47b3e0d9ec98f4578fda83322e7adab0491e7c7c9f577a1c6f87f755dcf1f725",
+      "src/game/fx/ground_dense_colors.gd.uid": "09484ba4c54630297c5e2c333054ed998187fcaaf5f3ecd60a815a9a1b06a2b8",
+      "src/game/fx/biome_cover_regions.gd": "36dc82c8f345153089ab2bdd36cb97bd02df0e823826078198c1825d52f36d3c",
+      "src/game/fx/ground_contact_shader.gd.uid": "20d674d3711e818880fc4ff3b6266ab36b8bf7c0cc76ff8b53403866d3fdcae2",
+      "src/game/fx/soft_ground_field.gd": "ff04e60936782bb80976279a7af28bfd5bb8d15d6795476fd751c0d1dc3c05fa",
+      "src/game/fx/ground_contact_data.gd.uid": "e63dec58acf964c05327774379950e3df099f219b24a764806134633f5e410a7",
+      "src/game/fx/biome_cover_region_mesh.gd.uid": "c462ae3d599d317513d904e369612777bd573e06c35fade0e36bdea5d8d19ca1",
+      "src/game/fx/water_current.gd": "57e533c289a9bb194cb7363239017b6f73af015ff49e524a0a999ed52bc5dc92",
+      "src/game/fx/biome_cover_water.gd.uid": "43c2368a1c85f901b72f1d9a58be740facb7659a6ad09682ff326d2a44ab4db1",
+      "src/game/fx/waterfalls.gd.uid": "846ceae146170ee75c4c67647dd300c2672d4c26f1eeacc3899fbadea9afd48c",
+      "src/game/fx/ground_surface_shader.gd": "7d2f81bfb22b8ba267e64bfe5e2e617e3c0bb343ccf873e26a8569ebac99f1af",
+      "src/game/fx/water_texture_data.gd.uid": "d019df9dafedf9e8c7f7ddfc745b9de315aaa3c03f3b0e07c5cd5d336202ec91",
+      "src/game/fx/biome_cover.gd": "ea3cabcb47f52dadf69c37cf4bbadb0e9d758bf5fcb69939f532d8164878f9ae",
+      "src/game/fx/water_interaction_shader.gd": "b65a4420bc155a5539080c0706b8ce1f4b9f2c674156a4883a5fdac05617d653",
+      "src/game/fx/biome_cover_contact.gd": "16120ffa17d47fc4caef2d931a0bd729773d4fb32a7570fdd6bfe28a3f321954",
+      "src/game/fx/waterfall_field.gd": "eb901e23553277da65c01d6bb936477135fb9a910fb8f2c52eda23fd3bdf8aae",
+      "src/game/fx/ground_surface_data.gd": "0d39ce2a7b88935fa7fbd8465a4a03ccb4046040ba707c0350ac3a32a45272c3",
+      "src/game/fx/water_surface.gd": "a3dbb093560ce3185d00a38ce5fb0589395665dab947a549be6ac0003ba0370d",
+      "src/game/fx/biome_cover_water.gd": "af5851a50b7e72205993d10b7246e10d997cf3e7a7cf768cc0a234b2ce2384ab",
+      "src/game/fx/ground_dense_colors.gd": "4d5ce25dbcbd70ba58950d1cac1fa6e356e082589fa5a1f20f6c0c29891f84c3",
+      "src/game/fx/water_current_shader.gd": "2f8bf1a57a3e3953ae3e504fdce635c100cdd34a63b74a192826ba4ad1c56442",
+      "src/game/fx/water_current.gd.uid": "e7014c02c98b79c84b4822a37dc3afd96b0126c831d07858a0a1a7a5ab65a807",
+      "src/game/fx/ground_marks.gd.uid": "772849670ddf3616b88bbd73601959d427e3a5ca68cb8b6c86c355b9eed4a546"
+    },
+    "note": "Forward+ and GL component evidence from the earlier equipment/spell candidate. Referenced terrain, water, camera and model sources remain byte-identical. Later changes are confined to item-range setup, story visibility recovery and the objectives UI."
+  },
+  "findings": {
+    "combat_range": {
+      "final_checks": 558,
+      "equipped_prototypes": 147,
+      "natural_attack_prototypes": 106,
+      "spell_options": 200,
+      "runtime_cases": "Short and long bows; moving and stationary targets; targets beyond range; repeated shooting; every melee category; all weapon database ranges for NPC and party stats; weapon swaps, empty slots, late-join records and legacy saves; ordinary and natural AI spell ranges; party target and point spells with and without rune modifiers.",
+      "natural_ranges_preserved": true,
+      "scope_limit": "Prepared noticed targets and issued attack/cast orders, not a complete campaign playthrough or broad AI-perception evaluation.",
+      "original_ingos_terrain": "gz11k"
+    },
+    "location_description": {
+      "zone": "gz12k (Abandoned Mines)",
+      "languages": [
+        "en",
+        "ru",
+        "de"
+      ],
+      "window_sizes": [
+        [
+          1280,
+          720
+        ],
+        [
+          1280,
+          1024
+        ],
+        [
+          3840,
+          2160
+        ]
+      ],
+      "coverage": "Complete native text; clipping within frame; actual GUI wheel dispatch; drag to end; held original arrows; independent quest scrolling; zone-change reset; no bar when text fits.",
+      "checks": 92
+    },
+    "lovkach": {
+      "zone": "bz8k",
+      "unit": "mthief",
+      "nid": 1000304365,
+      "prototype": "Human Kania NPC Lovkach A10",
+      "condition": "q.gz13k.q44k == 2",
+      "baseline_failures": 2,
+      "final_checks": 18,
+      "recovery": "Schedules the validated original VCheck gate on revisits and legacy hidden saves. Does not grant rewards, mutate quest flags, duplicate pending scripts, resurrect dead actors, recreate removed actors or apply to modified script bodies.",
+      "scope_limit": "Original scripts and prepared persisted state, not an inspection of the player save."
+    },
+    "snow": {
+      "original_zone": "gz11k",
+      "hd_lands_enabled": false,
+      "old_cracked_edges_at_least_0_1m": 14019,
+      "new_shared_edge_gap_upper_bound_m": 3.92156863e-06,
+      "controlled_gpu_sampler_cases": 9,
+      "forward_plus_negative_control_reproduced": true,
+      "gl_negative_control_reproduced": false,
+      "note": "The GL driver already clamped the old high-gradient sampling. The new sampler and shared-edge checks pass in both renderers."
+    },
+    "reflections": {
+      "mirror_long_side_cap_px": 2048,
+      "exact_reported_castle_view_recreated": false,
+      "note": "Controlled terrain atlas sampling reproduces bright color bleed; original Ingos water is checked from six viewpoints. The higher Mirror resolution has a GPU cost.",
+      "original_ingos_angles_checked": 6
+    },
+    "camera": {
+      "old_stationary_turn_eye_jump_m": 0.07488316297531,
+      "new_stationary_turn_eye_jump_m": 0.0,
+      "shoulder_collision_error_m": 0.00155130748934,
+      "rendered_running_cases": 6,
+      "frames_per_case": 360,
+      "fovs": [
+        50,
+        75,
+        110
+      ],
+      "duplicate_frames": 0,
+      "armor_variants": 2
+    },
+    "spells": {
+      "constructor_transaction_checks": 52,
+      "recipe": "litnwall{e2;e1;d1;m1;m1;m1;m1;m1}",
+      "complexity": 72,
+      "stamina": 35,
+      "coverage": "Shop-only, bag-only and mixed runes; state before success acknowledgement; completed spell shown in bag; disassembly; stale and duplicate requests; two real local ENet peers, private purses and paused co-op."
+    },
+    "equipment": {
+      "special_items_per_locale_checks": 452,
+      "languages": [
+        "en",
+        "ru",
+        "de"
+      ],
+      "scope": "Brissen native enchanted armor; unique sale and exact buyback; old generated variants; authored texture layers and localized titles; material, wear, charge and enchantment preservation; all 19 lesovik clan variants."
+    },
+    "localization": {
+      "translation_entries": 1126,
+      "errors": 0,
+      "rule": "AGENTS.md requires every visible string in EN, RU and DE, including dynamic keys and generated descriptions."
+    }
+  },
+  "build": {
+    "production_scripts_identical_across_five_platforms": true,
+    "compiled_scripts": 285,
+    "source_archive_exact": true,
+    "game_tree": "0a9fb949e14a49d13e90be91d4d8f21b6458ee57",
+    "desktop": {
+      "linux-x86_64": {
+        "version": "1.0.7",
+        "source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+        "game_tree": "0a9fb949e14a49d13e90be91d4d8f21b6458ee57",
+        "protocol": 23,
+        "platform": "linux-x86_64",
+        "target_os_runtime_tested": true,
+        "engine_patch_count": 12,
+        "compiled_scripts": 285,
+        "resource_count": 724,
+        "files": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "d74cf61949fc2f4317516babf47fe9a453169d6a8063863a603e2178c2b7b663",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+          "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+        }
+      },
+      "windows-x86_64": {
+        "version": "1.0.7",
+        "source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+        "game_tree": "0a9fb949e14a49d13e90be91d4d8f21b6458ee57",
+        "protocol": 23,
+        "platform": "windows-x86_64",
+        "target_os_runtime_tested": false,
+        "engine_patch_count": 12,
+        "compiled_scripts": 285,
+        "resource_count": 724,
+        "files": {
+          "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+          "CursedLands.pck": "d74cf61949fc2f4317516babf47fe9a453169d6a8063863a603e2178c2b7b663",
+          "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+          "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+        }
+      },
+      "macos-universal": {
+        "version": "1.0.7",
+        "source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+        "game_tree": "0a9fb949e14a49d13e90be91d4d8f21b6458ee57",
+        "protocol": 23,
+        "platform": "macos-universal",
+        "stock_engine": true,
+        "unsigned": true,
+        "target_os_runtime_tested": false,
+        "files": {
+          "CursedLands.zip": "fdb8e1c57da02f8745b19c715a6f79e132932550b0e807d344b1e7d6eb7bb458"
+        }
+      }
+    },
+    "android": {
+      "version_code": 30,
+      "apk_sha256": "6b2fdb7c32a09ab1ca1548228a0c2d31f9e9a62027e037fd66923b70f28d05d5",
+      "bytes": 31154777,
+      "application_id": "org.cursedlands.engine",
+      "matching_public_certificate": true,
+      "debuggable": false,
+      "resource_md5_valid": true
+    },
+    "web": {
+      "version": "1.0.7",
+      "source_tag": "v1.0.7",
+      "source_commit": "ececc8df94d0e081582d5674d04407e6356de797",
+      "game_tree": "0a9fb949e14a49d13e90be91d4d8f21b6458ee57",
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 285,
+      "production_scripts_byte_identical_to_release_linux": true,
+      "resource_count": 721,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "c1531349624b72598f4ef9387d27f6dc27364f31de43c64f1ad3f232be9124c7",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
+      "protocol": 23
+    },
+    "no_original_game_data_saves_or_private_probes": true
+  },
+  "browser_validation_record": "web-1.0.7-2026-10-14.json",
+  "limits": [
+    "Linux x86-64 and Chromium were run locally. Windows, macOS and Android were exported and structurally audited; those operating systems/devices were not runtime-tested in this release pass.",
+    "macOS is an unsigned universal app using the stock engine and script fallbacks; Linux, Windows and Android retain the existing patched engine templates.",
+    "The exact castle-in-lake screenshot view was not reproduced. Terrain cracks were reproduced on original Ingos assets without HD Lands, so that defect is not specific to HD Lands.",
+    "Prepared combat/quest state and local co-op tests do not constitute a full campaign playthrough or wide-area multiplayer test.",
+    "Tests use owned original data and isolated XDG/browser profiles. Original data, normal saves, private keys and third-party mod assets are not bundled."
+  ]
+}

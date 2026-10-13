@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.7 — stable release, 13 October 2026
+## 1.0.7 — stable release, 14 October 2026
 
 - Render dropdown text at its actual display scale, including high-resolution screens.
 - Complete Russian and German remake labels and require translations for all player-visible strings, with a translation coverage check.
