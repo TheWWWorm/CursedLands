@@ -1,0 +1,73 @@
+{
+  "version": "1.0.6",
+  "date": "2026-10-13",
+  "build": {
+    "version": "1.0.6",
+    "source_tag": "v1.0.6",
+    "source_commit": "e7371d6b33c445526f6343cc0d601ce8a6b189e2",
+    "game_tree": "1f17440568be70c80429937a9a4fee6535a49300",
+    "platform": "web",
+    "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+    "threads": false,
+    "extensions": false,
+    "compiled_scripts": 285,
+    "resource_count": 721,
+    "all_pck_resource_md5_valid": true,
+    "original_game_data_bundled": false,
+    "pck_sha256": "95cca54814f6ee57e1cb32a4c7eedf444c2dc0cff280595e695991c8f3eb672a",
+    "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
+    "protocol": 22,
+    "production_scripts_byte_identical_to_linux_release": true
+  },
+  "cache_upgrade": {
+    "passed": true,
+    "old_cache": "cursed-engine-2-1b81db11deb378bdcfa3",
+    "new_cache": "cursed-engine-2-4704dde9af73af864c70",
+    "cached_files": 16,
+    "pck_sha256": "95cca54814f6ee57e1cb32a4c7eedf444c2dc0cff280595e695991c8f3eb672a",
+    "update_waited_for_old_tab_to_close": true,
+    "unchanged_wasm_reused_without_download": true,
+    "imported_files": 253,
+    "imported_pack": {
+      "size": 819085304,
+      "start": "38e915e68e3090f4ec8d06325fbcb8f7226fee000294f6502d838f2b1dc7db46",
+      "end": "8e6e05155c72a71c269503b3fb6a62195ce23aa4cb66fa3805ee78050e6f2da1"
+    },
+    "userfs_entries": 39,
+    "userfs_bytes": 16789800,
+    "userfs_all_entries_byte_identical_after_activation": true,
+    "game_data_manifest_and_pack_samples_preserved": true,
+    "changed_network_paths": [
+      "/service-worker.js",
+      "/",
+      "/index.pck"
+    ]
+  },
+  "fresh_browser": {
+    "browser": "151.0.7922.34",
+    "fresh_start": {
+      "isolated": true,
+      "runtimeError": "",
+      "cache": [
+        "cursed-engine-2-4704dde9af73af864c70"
+      ],
+      "imported": null,
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "pck_sha256": "95cca54814f6ee57e1cb32a4c7eedf444c2dc0cff280595e695991c8f3eb672a"
+    },
+    "errors": []
+  },
+  "hosting": {
+    "worker_implementation": "worker.js executed locally against split static assets",
+    "parts_manifest_unchanged": true,
+    "all_static_files_within_25_mib_limit": true
+  },
+  "limits": [
+    "Linux Chromium with software WebGL. Safari, iOS and Android browsers were not runtime-tested for this patch.",
+    "Fresh setup and an upgrade of the prior imported campaign profile were exercised; no complete browser campaign playthrough.",
+    "Production Cloudflare deployment is checked against these committed assets after the release push."
+  ]
+}

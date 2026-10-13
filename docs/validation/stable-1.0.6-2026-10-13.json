@@ -1,0 +1,388 @@
+{
+  "version": "1.0.6",
+  "date": "2026-10-13",
+  "game_source_commit": "e7371d6b33c445526f6343cc0d601ce8a6b189e2",
+  "game_tree": "1f17440568be70c80429937a9a4fee6535a49300",
+  "network_protocol": 22,
+  "scope": "NPC ambient script repeats, conversation attention eligibility and completion, co-op stat feedback, atomic repair batches, player-swap item stacks, and compact Alt body-part selector.",
+  "linux_release_checks": [
+    {
+      "suite": "camp_transactions",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.6-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/repo/tools/tests/camp_transactions.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 9.533,
+      "results": [
+        "REPAIR_BATCH_FEEDBACK_MS 14",
+        "CAMP_TRANSACTIONS 53 checks 0 failures"
+      ],
+      "errors": [],
+      "checks": 53,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/release-camp_transactions.log",
+      "log_sha256": "12d1f1a4b3f1588f6d962b83442307ddd3d429567ebcd133192ad4b749bf8ee0"
+    },
+    {
+      "suite": "coop_trade",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.6-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/repo/tools/tests/coop_trade.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 10.088,
+      "results": [
+        "COOP_TRADE 38 checks 0 failures"
+      ],
+      "errors": [],
+      "checks": 38,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/release-coop_trade.log",
+      "log_sha256": "62668b6eb3bb9b8ec14c7a9feafc05f517e551daafd40889ad5b9fe9dbed1916"
+    },
+    {
+      "suite": "dialogue_highlights",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.6-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/repo/tools/tests/dialogue_highlights.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 9.985,
+      "results": [
+        "DIALOGUE_HIGHLIGHTS 38 checks 0 failures",
+        "STORY_COOP_TRAPS_NET 38 checks 0 failures"
+      ],
+      "errors": [],
+      "checks": 38,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/release-dialogue_highlights.log",
+      "log_sha256": "d2de266d301d8ad90d9fa3ebb626ba0b8c8be3f3106317f77c60b2ec42606147"
+    },
+    {
+      "suite": "direct_aim_selection",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.6-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/repo/tools/tests/direct_aim_selection.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 28.669,
+      "results": [
+        "ALT_DIRECT_CHECKS 17 checks 0 failures"
+      ],
+      "errors": [],
+      "checks": 17,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/release-direct_aim_selection.log",
+      "log_sha256": "07235206d03f73e6a3f1f131a9fc6adc6bfc8ac184a9df3a2a526492836b83e6"
+    },
+    {
+      "suite": "followup_controls",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.6-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/repo/tools/tests/followup_controls.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 61.138,
+      "results": [
+        "FOLLOWUP_CONTROLS 29 checks 0 failures"
+      ],
+      "errors": [],
+      "checks": 29,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/release-followup_controls.log",
+      "log_sha256": "b5cdc858d4fe32ca4c8e6d89d4a94c6e42c762be69f31cdc2512addd8bf89c8a"
+    },
+    {
+      "suite": "lmp_seated_pose",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.6-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/repo/tools/tests/lmp_seated_pose.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 10.332,
+      "results": [
+        "LMP_SEATED_POSE 25 checks 0 failures"
+      ],
+      "errors": [],
+      "checks": 25,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/release-lmp_seated_pose.log",
+      "log_sha256": "53c12a4e67e4949127cd0179a2ebbd349ea5a55bab191b2d63ff2dba101cc2a0"
+    },
+    {
+      "suite": "npc_ambient_loops",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.6-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/repo/tools/tests/npc_ambient_loops.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 11.033,
+      "results": [
+        "NPC_AMBIENT_LOOPS 102 checks 0 failures"
+      ],
+      "errors": [],
+      "checks": 102,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/release-npc.log",
+      "log_sha256": "ea6f6472d0194de6704ea70cdbb8960de2f75260320f58814c2fb84ab21c9499"
+    },
+    {
+      "suite": "training_latency",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.6-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/repo/tools/tests/training_latency.gd",
+        "--ei-inline-host",
+        "--netsim=120,0,0"
+      ],
+      "exit": 0,
+      "seconds": 7.877,
+      "results": [
+        "TRAINING_LATENCY {\"checks\":23,\"cold_perk_menu_us\":6163,\"failures\":0,\"fps\":132.0,\"guest_perk\":{\"authority_us\":68303,\"feedback_us\":186538},\"guest_refund\":{\"authority_us\":67783,\"feedback_us\":185930},\"guest_skill\":[{\"authority_us\":69442,\"feedback_us\":187489},{\"authority_us\":68212,\"feedback_us\":186273},{\"authority_us\":68239,\"feedback_us\":186618}],\"host_skill_us\":1071,\"inventory_refresh_us\":{\"20\":46.35,\"200\":43.4,\"500\":34.5},\"paused_feedback_us\":191848,\"rendered\":false,\"repeat_perk_menu_us\":119.24}"
+      ],
+      "errors": [],
+      "checks": 23,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/release-training-delay.log",
+      "log_sha256": "a8a81bcf789aab842f6aafd36059f9cce94b802d5c09dfda5718a84ef0520530"
+    },
+    {
+      "suite": "training_latency",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.6-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/repo/tools/tests/training_latency.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 7.282,
+      "results": [
+        "TRAINING_LATENCY {\"checks\":23,\"cold_perk_menu_us\":6351,\"failures\":0,\"fps\":1.0,\"guest_perk\":{\"authority_us\":7768,\"feedback_us\":68866},\"guest_refund\":{\"authority_us\":9098,\"feedback_us\":69254},\"guest_skill\":[{\"authority_us\":7419,\"feedback_us\":64056},{\"authority_us\":7996,\"feedback_us\":68438},{\"authority_us\":7999,\"feedback_us\":68852}],\"host_skill_us\":1003,\"inventory_refresh_us\":{\"20\":45.05,\"200\":45.35,\"500\":43.6},\"paused_feedback_us\":67621,\"rendered\":false,\"repeat_perk_menu_us\":91.56}"
+      ],
+      "errors": [],
+      "checks": 23,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/release-training.log",
+      "log_sha256": "86d57a84487053ad0966dcd395346dc11d735fd7ba4b098e1f579b1098dd2fe8"
+    },
+    {
+      "suite": "training_reset",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.6-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/repo/tools/tests/training_reset.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 7.126,
+      "results": [
+        "TRAINING_RESET 92 checks 0 failures; 5247 legal orders"
+      ],
+      "errors": [],
+      "checks": 92,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/release-training_reset.log",
+      "log_sha256": "c48804242d852aa19a07effa0f6fee37070e2fd0d1c385e95ae998d151e6bcb2"
+    },
+    {
+      "suite": "camp_transactions",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.6-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/repo/tools/tests/camp_transactions.gd",
+        "--ei-inline-host",
+        "--netsim=120,0,0"
+      ],
+      "exit": 0,
+      "seconds": 10.533,
+      "results": [
+        "REPAIR_BATCH_FEEDBACK_MS 131",
+        "CAMP_TRANSACTIONS 53 checks 0 failures"
+      ],
+      "errors": [],
+      "checks": 53,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/release-transactions-delay.log",
+      "log_sha256": "0805abbe486bded3ab4795626e91dba22becd53ec7f729661c065869574bfed1"
+    }
+  ],
+  "linux_passed_checks": 493,
+  "prior_source_evidence": [
+    "npc-dialogue-training-2026-10-13.json",
+    "repair-swap-2026-10-13.json"
+  ],
+  "alt_menu": {
+    "scale": 0.5,
+    "rendered_resolution": [
+      1280,
+      720
+    ],
+    "backing_disc_diameter_before_px": 525.24,
+    "backing_disc_diameter_after_px": 262.62,
+    "mouse_dead_zone_scales_with_menu": true,
+    "rendered_controls_checks": 46,
+    "screenshot": "/home/llm2x/Documents/EI/local/scratchpad/release-1.0.6-20261013/profiles/release-followup_controls/data/godot/app_userdata/Cursed Lands/alt-body-parts.png",
+    "screenshot_sha256": "5db2d666a6ed0218a7614989d3a67b1e70851e979becccbfb267c5e1be706a68",
+    "visual_review": "Six labelled body-part icons fit the compact centered wheel. Selection, release-to-confirm and Escape cancellation pass in top-down, third- and first-person views."
+  },
+  "build": {
+    "compiled_scripts": 285,
+    "production_scripts_identical_across_five_platforms": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "linux_windows_engine_patches": 12,
+    "android_version_code": 29,
+    "android_signed_with_existing_certificate": true,
+    "android_debuggable": false,
+    "macos_stock_engine": true,
+    "windows_macos_android_runtime_tested_for_this_patch": false
+  },
+  "component_hashes": {
+    "linux-x86_64": {
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "CursedLands.pck": "218a1d38e45e8f5d5e6033da6292dc7c21057cea45fed35f4742b907db07b93a",
+      "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+      "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+    },
+    "windows-x86_64": {
+      "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+      "CursedLands.pck": "218a1d38e45e8f5d5e6033da6292dc7c21057cea45fed35f4742b907db07b93a",
+      "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+      "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+    },
+    "macos-universal": {
+      "CursedLands.zip": "aad61f27c19d57675d7c5a3c6386369b6a26ea3f1859dd6b25c63161a4d5346d"
+    }
+  },
+  "android_apk_sha256": "4771c54c312b9eabe45e4fb2929ea069763b6bc9292abdeeb4aa503b7308c012",
+  "android_native_libraries": {
+    "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+    "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+    "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+    "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+  },
+  "browser_validation": "web-1.0.6-2026-10-13.json",
+  "mod_tools": {
+    "standalone_tests": 19,
+    "example_byte_identical": true,
+    "exact_source_readback": true
+  },
+  "limits": [
+    "Windows and macOS were cross-built and package-audited, not runtime-tested on their target operating systems. macOS is unsigned and not notarized.",
+    "Android was signed and package-audited with the established application ID, certificate and owned engine template; this patch was not tested on a physical Android device.",
+    "Linux rendered checks used OpenGL compatibility on llvmpipe with synthetic keyboard and mouse input.",
+    "Co-op regression checks use local ENet with normal delivery and simulated 120 ms RTT; no Internet or ZeroTier end-to-end test was performed.",
+    "Original comparison uses authored scripts/assets and native static analysis; no original-runtime equivalence claim or complete campaign playthrough.",
+    "All co-op peers must use protocol 22; older releases cannot join."
+  ]
+}
