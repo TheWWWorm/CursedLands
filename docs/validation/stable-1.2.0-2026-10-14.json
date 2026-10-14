@@ -230,7 +230,10 @@
     "No Redmagic 11 Pro or usable native crash stack was available. The changes provide conservative startup, optional checks and recovery; they do not establish the cause or resolution of the reported native crash.",
     "Android execution used a separate private QA package. Native libraries and 287 compiled production scripts are byte-identical to the release; main.gdc differs by a conditional test bootstrap. The public APK contains no test bootstrap.",
     "Windows and macOS packages passed structure and compiled-resource audits but were not run on their target operating systems. macOS is unsigned and not notarized.",
-    "The desktop consent fixture still reports the previously recorded two ObjectDB instances leaked at process shutdown; no script or renderer errors were captured.",
     "Hosted deployment hashes and the live browser are checked after pushing; results are retained with the publication record."
-  ]
+  ],
+  "linux_runtime_warnings": [
+    "Screen-space AA is only available when using the Forward+ or Mobile renderer."
+  ],
+  "linux_runtime_warning_context": "The consent fixture begins in Compatibility mode; this nonfatal warning appears during initial settings application. No script errors, renderer errors or ObjectDB leak warning appeared in this release run."
 }
