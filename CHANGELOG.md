@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0 — stable release, 14 October 2026
+
+- Ask before running graphics checks on handheld devices, with a choice to skip and an explanation of recovery in case of a crash. Interrupted checks restore Original graphics and disable automatic retries. ([#3](https://github.com/TheWWWorm/CursedLands/issues/3))
+- Start the first handheld menu with Original graphics and a 30 FPS limit, and wait for startup screens to close before offering automatic graphics detection.
+- Add **Use basic graphics** and **Test startup graphics** to the startup recovery screen. The optional test records separate rendering stages in the crash report.
+- Stop rendering hidden interface previews and resizing their inactive viewports.
+
+See [release notes](docs/releases/1.2.0.md) for compatibility and platform limits.
+
 ## 1.1.1 — stable release, 14 October 2026
 
 - Offer the previous session's crash report before intro movies and 3D menu loading, keeping report export accessible during repeated menu-load failures. Add startup and menu-construction checkpoints to diagnostic logs. ([#3](https://github.com/TheWWWorm/CursedLands/issues/3))

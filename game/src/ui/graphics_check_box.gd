@@ -1,7 +1,7 @@
 class_name GraphicsCheckBox
 extends MessageBox
 ## Explicit choice before a test that can exercise unsupported driver paths.
-const WARNING := "Run a graphics check now? It may crash on some devices. If that happens, reopen the game: it will use Original graphics."
+const WARNING := "Run a graphics check now? In case of a crash, reopen the game: it will use Original graphics."
 
 func _init() -> void:
 	title = RemakeText.t("Graphics check")
