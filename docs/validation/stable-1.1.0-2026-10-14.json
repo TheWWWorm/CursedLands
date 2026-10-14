@@ -1,0 +1,248 @@
+{
+  "version": "1.1.0",
+  "date": "2026-10-14",
+  "game_source_commit": "0a8bd4402218d3a761776e3afc6adc50c19af40c",
+  "game_tree": "d6c59e6bca7ba73f9cad0a3113c110b1fe64182f",
+  "network_protocol": 23,
+  "scope": "Earlier-island excursions with saved return positions; direct-view accuracy and revival; authored actor visibility, dialogue staging and camera cast; snow footprint junctions; co-op admission, quest continuity and checkpoint positions.",
+  "linux_release_checks": [
+    {
+      "suite": "coop_checkpoint_recovery",
+      "renderer": "headless",
+      "checks": 26,
+      "failures": 0,
+      "exit": 0,
+      "errors": [],
+      "seconds": 13.888,
+      "log_sha256": "c2191106ba6a149dde1586a9c26121c814aa30f7dffef82a23d9f5554506db1c"
+    },
+    {
+      "suite": "coop_fresh_start_guards",
+      "renderer": "headless",
+      "checks": 76,
+      "failures": 0,
+      "exit": 0,
+      "errors": [],
+      "seconds": 2.168,
+      "log_sha256": "826ef0a08b685e892355e73832b0e4b1b7d477ef2b791a2c2f41f485ac29960f"
+    },
+    {
+      "suite": "coop_progress_cleanup",
+      "renderer": "headless",
+      "checks": 11,
+      "failures": 0,
+      "exit": 0,
+      "errors": [],
+      "seconds": 2.218,
+      "log_sha256": "15b0f5e6b067bf2a1958c6468252dec8b9675f4baceaabe64076a3905e2bd0af"
+    },
+    {
+      "suite": "dialogue_speakers",
+      "renderer": "gl_compatibility",
+      "checks": 298,
+      "failures": 0,
+      "exit": 0,
+      "errors": [],
+      "seconds": 51.356,
+      "log_sha256": "01e6f7098b572ba00df55d4c629927717a08ef55f0c23b6ec475dc1d82efa12e"
+    },
+    {
+      "suite": "direct_accuracy",
+      "renderer": "headless",
+      "checks": 11,
+      "failures": 0,
+      "exit": 0,
+      "errors": [],
+      "seconds": 2.117,
+      "log_sha256": "a9edf9793227f7885b51d0e21ad50d2496c2f3140c92c2b4f9dddf188d9c5ffa"
+    },
+    {
+      "suite": "island_return",
+      "renderer": "headless",
+      "checks": 39,
+      "failures": 0,
+      "exit": 0,
+      "errors": [],
+      "seconds": 45.83,
+      "log_sha256": "f4b224836bfb42fa857d0c841a698648157ecd96b9cbfdd3a5ff26e3bc92bc50"
+    },
+    {
+      "suite": "revive_camera",
+      "renderer": "headless",
+      "checks": 21,
+      "failures": 0,
+      "exit": 0,
+      "errors": [],
+      "seconds": 8.078,
+      "log_sha256": "38887e1cc21bbf2a0156fdfff73e042854ed09661c3bc64617245696ae0d02aa"
+    },
+    {
+      "suite": "scene_visibility",
+      "renderer": "headless",
+      "checks": 51,
+      "failures": 0,
+      "exit": 0,
+      "errors": [],
+      "seconds": 4.522,
+      "log_sha256": "f5e6835c3f712e8331333fd3f022d15611250642bc148b4e629b5aceeba49090"
+    },
+    {
+      "suite": "scene_visibility_guards",
+      "renderer": "headless",
+      "checks": 14,
+      "failures": 0,
+      "exit": 0,
+      "errors": [],
+      "seconds": 2.118,
+      "log_sha256": "f12dc082609d2d1af9a19a683fb5866bbeee53a0876fc5cca80d2562d6620f9a"
+    },
+    {
+      "suite": "soft_ground_seams",
+      "renderer": "gl_compatibility",
+      "checks": 294,
+      "failures": 0,
+      "exit": 0,
+      "errors": [],
+      "seconds": 66.495,
+      "log_sha256": "08d94c4d5abcc64c3bf66e1b2cce7d78f65ff44219f92843baec5460bd19f53f"
+    }
+  ],
+  "linux_passed_checks": 841,
+  "linux_failures": 0,
+  "component_validation": [
+    {
+      "record": "actors-controls-island-travel-2026-10-14.json",
+      "sha256": "0e182f191966a3365c8c890b738e3c59af87e390adc1e3b2ee6fbc7a96f87996",
+      "successful_runs": 20,
+      "note": "Focused development evidence predating the release version metadata. The final package is separately exercised below; historical source fingerprints remain in the component record."
+    },
+    {
+      "record": "coop-progress-dialogue-camera-2026-10-14.json",
+      "sha256": "79bebd904780f531ff7795ebd796be9dfc7b777be6e5ad85114c65ea276dd05a",
+      "successful_runs": 20,
+      "note": "Focused development evidence predating the release version metadata. The final package is separately exercised below; historical source fingerprints remain in the component record."
+    },
+    {
+      "record": "snow-footprint-seams-2026-10-14.json",
+      "sha256": "360d74812b6393fce4310fbb7029871b33b2868dd2db59b09b5ef38b074f8f30",
+      "successful_runs": 8,
+      "note": "Focused development evidence predating the release version metadata. The final package is separately exercised below; historical source fingerprints remain in the component record."
+    }
+  ],
+  "coverage": {
+    "actors": "All 6,277 reachable authored actor records and 21 AddMob sites audited. Visibility restoration guards cover pending scripts, dead, removed and recruited actors.",
+    "accuracy": "Deterministic success/failure in first and third person, 2,000 equal Attack/Defence rolls and ordinary backstab behavior.",
+    "island_return": "Real ENet excursions, save/load, exact saved party positions and facing, current progress and sequence guards.",
+    "co_op": "Quest completion cleanup/reset, strict fresh-origin metadata, real saved-checkpoint joins, continued personal save updates and late-join pose restoration.",
+    "dialogue": "88 authored camera shots across three scenes, two initiators and two viewpoints, with original reaction shots retained.",
+    "snow": "Dense/coarse diagonal junctions and shifted sector edges, plus nine original Ingos positions with HD Lands. Development checks also cover Forward+.",
+    "localization": {
+      "translation_entries": 1129,
+      "errors": 0,
+      "languages": [
+        "en",
+        "ru",
+        "de"
+      ],
+      "island_ui_layout_checked": true
+    }
+  },
+  "build": {
+    "production_scripts_identical_across_five_platforms": true,
+    "compiled_scripts": 286,
+    "source_archive_exact": true,
+    "game_tree": "d6c59e6bca7ba73f9cad0a3113c110b1fe64182f",
+    "desktop": {
+      "linux-x86_64": {
+        "version": "1.1.0",
+        "source_commit": "0a8bd4402218d3a761776e3afc6adc50c19af40c",
+        "game_tree": "d6c59e6bca7ba73f9cad0a3113c110b1fe64182f",
+        "protocol": 23,
+        "platform": "linux-x86_64",
+        "target_os_runtime_tested": false,
+        "engine_patch_count": 12,
+        "compiled_scripts": 286,
+        "resource_count": 726,
+        "files": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "10b5e4b81b7c379eee7118c9bfc789748d08153a3fe5df4e47652522c77229d4",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+          "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+        }
+      },
+      "windows-x86_64": {
+        "version": "1.1.0",
+        "source_commit": "0a8bd4402218d3a761776e3afc6adc50c19af40c",
+        "game_tree": "d6c59e6bca7ba73f9cad0a3113c110b1fe64182f",
+        "protocol": 23,
+        "platform": "windows-x86_64",
+        "target_os_runtime_tested": false,
+        "engine_patch_count": 12,
+        "compiled_scripts": 286,
+        "resource_count": 726,
+        "files": {
+          "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+          "CursedLands.pck": "10b5e4b81b7c379eee7118c9bfc789748d08153a3fe5df4e47652522c77229d4",
+          "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+          "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+        }
+      },
+      "macos-universal": {
+        "version": "1.1.0",
+        "source_commit": "0a8bd4402218d3a761776e3afc6adc50c19af40c",
+        "game_tree": "d6c59e6bca7ba73f9cad0a3113c110b1fe64182f",
+        "protocol": 23,
+        "platform": "macos-universal",
+        "stock_engine": true,
+        "unsigned": true,
+        "target_os_runtime_tested": false,
+        "files": {
+          "CursedLands.zip": "ea70366fe08f02f5ce1a1cc6343480ae0621194f887876bcb2d82028d2bf65d5"
+        }
+      }
+    },
+    "android": {
+      "version_code": 31,
+      "apk_sha256": "586b0ca2e8337a2fcaa3ca129eb019cdad0740c7977328518d9928985ac65153",
+      "bytes": 31159056,
+      "application_id": "org.cursedlands.engine",
+      "matching_public_certificate": true,
+      "debuggable": false,
+      "resource_md5_valid": true
+    },
+    "web": {
+      "version": "1.1.0",
+      "source_tag": "v1.1.0",
+      "source_commit": "0a8bd4402218d3a761776e3afc6adc50c19af40c",
+      "game_tree": "d6c59e6bca7ba73f9cad0a3113c110b1fe64182f",
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 286,
+      "production_scripts_byte_identical_to_release_linux": true,
+      "resource_count": 723,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "113658c063cbb4a31cd6f16704ce83faabbb3035219cc19274123b0cff0f6b9a",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    },
+    "no_original_game_data_saves_or_private_probes": true
+  },
+  "initial_rendered_attempt": {
+    "suite": "dialogue_speakers",
+    "checks": 3,
+    "failures": 1,
+    "result": "Timed out waiting for the local ENet guest scene while browser/build validation also ran. The unchanged packaged binary was rerun separately; the successful result appears in linux_release_checks. The first timeout cause was not established.",
+    "log_sha256": "6b03b8c7c54d1fa97bc1a3503cdb4a31cfac576a0dbb38b1b9fe242e8b0698dc"
+  },
+  "browser_validation_record": "web-1.1.0-2026-10-14.json",
+  "limits": [
+    "Linux x86-64 and Chromium were run locally. Windows, macOS and Android were exported and structurally audited; those operating systems/devices were not runtime-tested in this release pass.",
+    "macOS is an unsigned universal app with the stock engine and script fallbacks; Linux, Windows and Android retain verified existing patched engine templates.",
+    "The precise snow screenshot locations were not identified. Selected original Ingos terrain and synthetic junction cases were checked, not every map position. Isolated one-pixel raster T-junctions also occur in the undeformed control and are recorded separately from connected deformation gaps.",
+    "Prepared quest state and local co-op checks are not a full campaign playthrough or an Internet multiplayer test. Authored actor data was audited without playing every spawn condition.",
+    "Already-diverged campaign saves are not silently rebased. Separate recovery copies remain private and are not release assets.",
+    "Tests use owned original data and isolated profiles. Original data, personal saves, private keys and third-party mod assets are excluded from the packages."
+  ]
+}

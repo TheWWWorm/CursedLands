@@ -1,0 +1,77 @@
+{
+  "version": "1.1.0",
+  "date": "2026-10-14",
+  "game_source_commit": "0a8bd4402218d3a761776e3afc6adc50c19af40c",
+  "game_tree": "d6c59e6bca7ba73f9cad0a3113c110b1fe64182f",
+  "build": {
+    "version": "1.1.0",
+    "source_tag": "v1.1.0",
+    "source_commit": "0a8bd4402218d3a761776e3afc6adc50c19af40c",
+    "game_tree": "d6c59e6bca7ba73f9cad0a3113c110b1fe64182f",
+    "platform": "web",
+    "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+    "threads": false,
+    "extensions": false,
+    "compiled_scripts": 286,
+    "production_scripts_byte_identical_to_release_linux": true,
+    "resource_count": 723,
+    "all_pck_resource_md5_valid": true,
+    "original_game_data_bundled": false,
+    "pck_sha256": "113658c063cbb4a31cd6f16704ce83faabbb3035219cc19274123b0cff0f6b9a",
+    "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+  },
+  "cache_upgrade_from": "v1.0.7",
+  "cache_upgrade": {
+    "passed": true,
+    "old_cache": "cursed-engine-2-07d6d67c5f617f133503",
+    "new_cache": "cursed-engine-2-bcd738991c64f817fc00",
+    "cached_files": 16,
+    "pck_sha256": "113658c063cbb4a31cd6f16704ce83faabbb3035219cc19274123b0cff0f6b9a",
+    "update_waited_for_old_tab_to_close": true,
+    "unchanged_wasm_reused_without_download": true,
+    "imported_files": 253,
+    "imported_pack": {
+      "size": 819085304,
+      "start": "38e915e68e3090f4ec8d06325fbcb8f7226fee000294f6502d838f2b1dc7db46",
+      "end": "8e6e05155c72a71c269503b3fb6a62195ce23aa4cb66fa3805ee78050e6f2da1"
+    },
+    "userfs_entries": 39,
+    "userfs_bytes": 16789800,
+    "userfs_all_entries_byte_identical_after_activation": true,
+    "game_data_manifest_and_pack_samples_preserved": true,
+    "changed_network_paths": [
+      "/service-worker.js",
+      "/",
+      "/index.pck"
+    ]
+  },
+  "fresh_browser": {
+    "browser": "151.0.7922.34",
+    "fresh_start": {
+      "isolated": true,
+      "runtimeError": "",
+      "cache": [
+        "cursed-engine-2-bcd738991c64f817fc00"
+      ],
+      "imported": null,
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "pck_sha256": "113658c063cbb4a31cd6f16704ce83faabbb3035219cc19274123b0cff0f6b9a"
+    },
+    "errors": []
+  },
+  "screenshots": {
+    "fresh-setup.png": {
+      "sha256": "969a6687fbb21187594877bed71a7448fce28f1a31c5c6d3ca849e8666fc557b"
+    },
+    "new-game-start.png": {
+      "sha256": "419951f93921b587b4f8dffc166c50e9f4cf7b57683780d4ed868f91fb6e43ea"
+    },
+    "upgraded-menu.png": {
+      "sha256": "159e1d075b4230d24fc23b88dc4af73b261977e857b9514cd5237cb67d7ed42a"
+    }
+  },
+  "deployment": "Hosted files are committed with this record. Live verification runs after push and its receipts remain in the release workspace."
+}
