@@ -1192,6 +1192,8 @@ const TEXTS := {
 	"The game closed unexpectedly last time.": ["В прошлый раз игра неожиданно закрылась.", "Das Spiel wurde beim letzten Mal unerwartet beendet."],
 	"A report with the log of that session helps to find the cause. Save it or copy it, to send it with a bug report.": ["Отчёт с журналом того сеанса поможет найти причину. Сохраните или скопируйте его, чтобы отправить вместе с сообщением об ошибке.", "Ein Bericht mit dem Protokoll dieser Sitzung hilft, die Ursache zu finden. Speichere oder kopiere ihn, um ihn mit einem Fehlerbericht zu senden."],
 	"Save report": ["Сохранить отчёт", "Bericht speichern"],
+	"Android process exit": ["Завершение процесса Android", "Prozessende unter Android"],
+	"Native crash trace": ["Стек сбоя нативного кода", "Absturzprotokoll des nativen Codes"],
 	"Saves the report as a text file in a folder you can open: Download on Android, Downloads on a computer. The box shows where.": ["Сохраняет отчёт текстовым файлом в доступную вам папку: Download на Android, «Загрузки» на компьютере. Путь будет показан в окне.", "Speichert den Bericht als Textdatei in einem Ordner, den du öffnen kannst: Download unter Android, Downloads auf dem Computer. Das Fenster zeigt, wo."],
 	"Copy to clipboard": ["Скопировать в буфер обмена", "In die Zwischenablage kopieren"],
 	"Copies the system information and the log's last lines, to paste into a message or a bug report.": ["Копирует сведения о системе и последние строки журнала, чтобы вставить их в сообщение или отчёт об ошибке.", "Kopiert die Systeminformationen und die letzten Zeilen des Protokolls, um sie in eine Nachricht oder einen Fehlerbericht einzufügen."],

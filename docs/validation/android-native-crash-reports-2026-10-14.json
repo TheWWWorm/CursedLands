@@ -1,0 +1,233 @@
+{
+  "date": "2026-10-14",
+  "status": "native_report_collection_locally_validated_redmagic_crash_unresolved",
+  "issue": "https://github.com/TheWWWorm/CursedLands/issues/3",
+  "base_version": "1.3.1",
+  "base_commit": "07b87a1565eecc23188a2c5e35d89584137fe6b8",
+  "branch": "fix/android-native-crash-reports",
+  "release_published": false,
+  "source_files": {
+    "game/src/platform/crash_report.gd": "362cfba979d30beab125dd17ec0a9f9d8cb2e8293e39817bf469930f29cf3cec",
+    "game/src/ei/remake_text.gd": "8c9b90cec2221fcafa2e1b13ae72dfa160cd9c468c512b8b71eb5949405af22c",
+    "platform/android/simulation/EISimulation.java": "df2148298bb5b51c43cd24c2a8a3387bdd7a06c5482bfee6f7a491c1b8683e8a",
+    "platform/android/simulation/AndroidExitReport.java": "466f2236cc950a79b8b409d383bad99d93d0aea282c540627979c459b8587143",
+    "platform/android/simulation/NativeTombstone.java": "4cdb78b00c6434e2905ed946d1d7fd235a90732105793516628ec4b0641a3779",
+    "platform/android/simulation/install_into_engine.py": "cd68cbc71d59f02d10d3e75eb6bc6041c8170e85f802351aa20cbb34f28e811c",
+    "platform/android/simulation/README.md": "1c308c7ef9982cf57fc2e7aacef0a7343c9fe677b84564a455d70dee2ea22c1a",
+    "platform/android/simulation/tests/NativeTombstoneTest.java": "7ad3b05bcec922a4b7a86e01a06ce5ff15b33f3e7cd8d62fc0b570feb67a1d94",
+    "platform/android/simulation/tests/run.py": "52128b5b8952499fae7d7f7c15c41ab25a23f25f3c342f1180b9edf350b36458",
+    "tools/tests/android_native_crash_report.gd": "c8b1e808ca6424b4f46cd204b4bbabf4a71b2ab749934c94b711db132598fdda",
+    "tools/tests/startup_crash_report.gd": "0bc32fe89d6cdbd09cdcf1c0bd31dbc3e426e1855eee26304ff3b8e469661886",
+    "tools/tests/graphics_startup_bootstrap.gd": "4386588aef54d1827581882eb697b7d57bebcd212127cbf73a15273f202e3b2a"
+  },
+  "observations": {
+    "latest_report": "https://github.com/TheWWWorm/CursedLands/issues/3#issuecomment-6176938491",
+    "reported_version": "1.3.0",
+    "device": "Redmagic 11 Pro / NX809J / Adreno 840 / Android API 36",
+    "driver": "OpenGL ES 3.2 V@0842.44 (GIT@718a07726a, Ic95db9d944, 1780021672)",
+    "last_trace": "graphics detection: first",
+    "menu_ready_logged": false,
+    "graphics_check_accepted_or_tier_applied_logged": false,
+    "interpretation": "The first-detection trace queues the coroutine, which waits for loading and then consent. It does not establish that a benchmark ran. The log records temporary Original graphics before menu construction. The options snapshot was stale because automatic startup changes did not refresh it.",
+    "earlier_staged_report": "https://github.com/TheWWWorm/CursedLands/issues/3#issuecomment-6169364461",
+    "earlier_staged_report_result": "With Original graphics, loading/sky/terrain/water finished; the objects stage began without finishing. This narrows the location but contains no native fault stack.",
+    "memory_mb_minus_one": "An unavailable OS memory query in the report, not a graphics allocation or tier-selection input.",
+    "v1_3_1_android_renderer": "The published native libraries are identical to 1.3.0. The 1.3.1 water-camera/fog changes affect Forward+, not this GLES path."
+  },
+  "local_rendering_investigation": {
+    "device": "Retroid Pocket 5 / Adreno 650 / Android 13 API 33",
+    "redmagic_reproduced": false,
+    "baseline_checks": 536,
+    "baseline_failures": 0,
+    "private_native_audit_checks": 536,
+    "private_native_audit_failures": 0,
+    "validated_bound_programs": 98,
+    "all_programs_valid": true,
+    "undersized_uniform_blocks": 0,
+    "gl_errors_after_validation": 0,
+    "screenshot_comparison": {
+      "count": 65,
+      "all_byte_identical": true
+    },
+    "rejected_lead": "Verbose Adreno 650 diagnostics emitted shader-deletion warnings. The private audit isolated these to glDeleteShader(0), which is permitted and returned GL_NO_ERROR. Nonzero shader handles were valid. This is not established as a crash cause; no deletion workaround is shipped.",
+    "instrumentation_for_release": false,
+    "native_audit_sources_restored": {
+      "restored_native_sources": {
+        "drivers/gles3/shader_gles3.cpp": "03244c2f2f4477a070055ddd080796a9958135b24d951a63dbdcd45547fe9966",
+        "drivers/gles3/rasterizer_scene_gles3.cpp": "991cc1664055810899c7002c9e2a92967ba8f3c5dbc3d69318167e200f19240e"
+      },
+      "audit_saved_in": "instrument_engine.py",
+      "published_template_native_libraries_unchanged": true
+    },
+    "local_evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014"
+  },
+  "implemented_changes": [
+    "Match ApplicationExitInfo by main-process name, PID and registered per-session token on the next unexpected-startup report.",
+    "Decode bounded Android 12+ native tombstones into signal, cause and crashing-thread stack with library build IDs; retain exit metadata when the trace is unavailable.",
+    "Refresh effective graphics options on each marker write, including temporary startup Original settings.",
+    "Translate both new report headings into Russian and German."
+  ],
+  "safety_and_scope": {
+    "native_renderer_or_shader_changes": false,
+    "crash_signal_handlers_installed": false,
+    "crash_trigger_in_plugin": false,
+    "automatic_uploads": false,
+    "input_cap_bytes": 4194304,
+    "max_backtrace_frames": 64,
+    "excluded_from_report": [
+      "memory dumps",
+      "registers",
+      "other threads",
+      "open file listings",
+      "logcat"
+    ],
+    "missing_api_or_trace": "Ordinary report remains available; OS exit metadata is retained if a matching record exists.",
+    "release_integration": "Reinstall all Java plugin sources with install_into_engine.py and rebuild the Java Android export template. Replacing only libgodot_android.so in a cached template is insufficient."
+  },
+  "validation": {
+    "parser": {
+      "command": "python3 platform/android/simulation/tests/run.py",
+      "checks": 2241,
+      "failures": 0,
+      "coverage": [
+        "native signal and library frames",
+        "proto3 omitted zero values",
+        "field/map ordering",
+        "unknown field skipping",
+        "mismatched PID and thread",
+        "truncated and oversized inputs",
+        "64-frame output cap",
+        "2000 deterministic random malformed inputs"
+      ]
+    },
+    "android_build": {
+      "package": "org.cursedlands.objectaudit",
+      "source_commit": "07b87a1565eecc23188a2c5e35d89584137fe6b8",
+      "uncommitted_changes": true,
+      "version": "1.3.1-qa",
+      "version_code": 34,
+      "native_libraries_byte_identical_to_release": true,
+      "libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "apk_sha256": "1d24b2861aed20e0dca33922012219c1495c4f24d39b31d6a2be966a38569edf",
+      "private_changes": [
+        "main.gd validation.json bootstrap, inactive when absent",
+        "Android package ID, display name, QA version, debug signing and build flag"
+      ],
+      "original_game_data_bundled": false
+    },
+    "java_build": {
+      "engine_base": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "release_template": "/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014/engine/bin/android_release.apk",
+      "release_template_sha256": "2af5eb84aaa230955d627b2fee4e63e951fb9414e5234c8766d600713ad472e8",
+      "private_template": "/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014/android-exit-debug.apk",
+      "private_manifest_from": "/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/android_debug_14.apk",
+      "production_native_libraries_unchanged": true,
+      "sources": {
+        "AndroidExitReport.java": "466f2236cc950a79b8b409d383bad99d93d0aea282c540627979c459b8587143",
+        "EISimulation.java": "df2148298bb5b51c43cd24c2a8a3387bdd7a06c5482bfee6f7a491c1b8683e8a",
+        "NativeTombstone.java": "4cdb78b00c6434e2905ed946d1d7fd235a90732105793516628ec4b0641a3779"
+      },
+      "gradle": "generateGodotTemplates --offline; all native SCons tasks excluded"
+    },
+    "android_suites": [
+      {
+        "fixture": "tools/tests/android_native_crash_report.gd",
+        "checks": 19,
+        "failures": 0,
+        "errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014/android-native-crash-report/result.json",
+        "result_sha256": "ee46f99756cc419209543bfd02e3d420acb35c86161092c3081cf26fb2ea93db",
+        "reason": 5.0,
+        "signal": 6.0,
+        "native_trace_status": "available",
+        "native_frames": 31,
+        "repeat_read_usec": 3853,
+        "process_exited": true
+      },
+      {
+        "fixture": "tools/tests/startup_crash_report.gd",
+        "checks": 99,
+        "failures": 0,
+        "errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014/android-crash-ui/result.json",
+        "result_sha256": "cf841322bbc2c6989a64a841f4a9ae16e3669b04c39ab28fbe2d2568c50340f8"
+      },
+      {
+        "fixture": "tools/tests/android_simulation_lifecycle.gd",
+        "checks": 22,
+        "failures": 0,
+        "errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014/android-simulation-regression/result.json",
+        "result_sha256": "c62c0ff828fec7cd15be65dc4fae0a647e750e85a1bd1c41e9995f3b61d34f78"
+      },
+      {
+        "fixture": "tools/tests/graphics_startup_bootstrap.gd",
+        "checks": 18,
+        "failures": 0,
+        "errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014/android-bootstrap-final/result.json",
+        "result_sha256": "63b28d11b374607c0f38eeba3dd42658429e18109a6961236fb0b432f3b64a85"
+      }
+    ],
+    "android_checks_total": 158,
+    "desktop_report": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014/linux/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014/repo/tools/tests/startup_crash_report.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 25.42,
+      "errors": [],
+      "results": [
+        "STARTUP_CRASH_REPORT {\"checks\":106,\"failures\":0,\"platform\":\"Linux\",\"renderer\":\"gl_compatibility\"}"
+      ]
+    },
+    "desktop_checks": 106,
+    "locales": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "layout": "Rendered, measured and visually inspected in all three languages on desktop and Android.",
+    "native_test": "A controller sent SIGABRT to the isolated QA package as its own UID. After death and restart, the real OS record appeared in the startup dialog and saved report. Wrong session and PID lookups returned empty results.",
+    "cleanup": {
+      "package_removed": "org.cursedlands.objectaudit",
+      "uninstall": "Success",
+      "qa_process_absent": true,
+      "qa_package_absent": true,
+      "only_package_mutated": "org.cursedlands.objectaudit",
+      "normal_game_package_modified": false,
+      "published_release_modified": false
+    }
+  },
+  "limitations": [
+    "No Redmagic device was available; neither reproduction nor a fix for issue #3 is claimed.",
+    "Native history/tombstones depend on OS retention and OEM availability. Older sessions without a registered token cannot be attributed safely.",
+    "On-device validation used Android 13. API guards for older versions are compiled but were not exercised on an older physical device.",
+    "The measured 3853 microseconds is one repeat read on the local device, not a gameplay performance benchmark.",
+    "The ordinary report still filters background/focus-out exits as before."
+  ],
+  "references": [
+    "https://developer.android.com/reference/android/app/ApplicationExitInfo#getTraceInputStream()",
+    "https://developer.android.com/reference/android/app/ActivityManager#setProcessStateSummary(byte[])",
+    "https://android.googlesource.com/platform/system/core/+/refs/heads/main/debuggerd/proto/tombstone.proto",
+    "https://raw.githubusercontent.com/KhronosGroup/OpenGL-Refpages/main/es3.0/glDeleteShader.xml"
+  ]
+}

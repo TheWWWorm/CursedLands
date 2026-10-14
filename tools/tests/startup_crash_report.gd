@@ -42,6 +42,17 @@ func _ready() -> void:
 
 func _run() -> void:
 	var cr := CrashReport.instance
+	# Automatic graphics fallback changes options without an `option ...` trace.
+	var original_options := GameData.options.duplicate()
+	GameData.options.gfx_clouds = 1
+	cr._write()
+	GameData.options.gfx_clouds = 0
+	GameData.trace("startup: diagnostic settings fixture")
+	var marker := ConfigFile.new()
+	check(marker.load(cr._marker) == OK, "live marker can be read")
+	check(marker.get_value("session", "options", "").contains("clouds=0"), "startup marker records effective graphics settings")
+	GameData.options = original_options
+	GameData.trace("startup: settings fixture restored")
 	cr.previous = {}
 	RendererChoice.notice = ""
 	await run_notices()
@@ -49,7 +60,8 @@ func _run() -> void:
 	var logfile := "user://startup-previous.log"
 	FileAccess.open(logfile, FileAccess.WRITE).store_string("SIMULATED PREVIOUS SESSION\nstartup: building main menu\n")
 	var previous := {"session": "startup-recovery-fixture", "version": "1.1.0", "state": "foreground",
-		"focus": "in", "last": "startup: building main menu", "log": logfile}
+		"focus": "in", "last": "startup: building main menu", "log": logfile,
+		"android_exit": {"reason": 5, "status": 11, "native_trace": "signal: 11 SIGSEGV\n#0 pc 1234 libdriver.so (BuildId: fixture)\n"}}
 	if DisplayServer.get_name() == "headless":
 		cr.previous = previous
 		await run_notices()
@@ -90,11 +102,16 @@ func _run() -> void:
 		if files.size() == 1:
 			var text := FileAccess.get_file_as_string(CrashReport.save_dir_override.path_join(files[0]))
 			check(text.contains("SIMULATED PREVIOUS SESSION") and text.contains("startup-recovery-fixture"), lang + " saved report retains the previous session")
+			check(text.contains("signal: 11 SIGSEGV\n#0 pc 1234 libdriver.so (BuildId: fixture)"), lang + " saved report retains the readable native backtrace")
+			for heading: String in ["Android process exit", "Native crash trace"]:
+				check(text.contains("== " + RemakeText.t(heading) + " =="), lang + " native report heading included")
+				check(lang == "en" or RemakeText.t(heading) != heading, lang + " native report heading translated")
 		check_layout(box, lang + " saved")
 		get_viewport().get_texture().get_image().save_png("user://startup-report-" + lang + "-saved.png")
 		if not OS.has_feature("android"):
 			box.act(1)
 			check(DisplayServer.clipboard_get().contains("SIMULATED PREVIOUS SESSION"), lang + " previous log can be copied")
+			check(DisplayServer.clipboard_get().contains("libdriver.so (BuildId: fixture)"), lang + " native backtrace can be copied")
 		if lang == "ru":
 			var escape := InputEventKey.new()
 			escape.keycode = KEY_ESCAPE

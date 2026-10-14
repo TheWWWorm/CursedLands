@@ -55,12 +55,29 @@ func _ready() -> void:
 	var sid := "%08x%04x" % [randi(), Time.get_ticks_usec() & 0xffff]
 	info = {"session": sid, "pid": OS.get_process_id(), "started": Time.get_datetime_string_from_system(false, true),
 		"state": "foreground", "focus": "in", "zone": "(menu)", "last": ""}
+	var android := _android_diagnostics()
+	if android:
+		info.android_exit_registered = bool(android.register_crash_session(sid))
 	_collect()
 	GameData.trace("session %s: %s, %s, %s, %s" % [sid, info.version, info.os, info.gpu, info.renderer])
 	previous = scan(OS.get_process_id())
+	if android and bool(previous.get("android_exit_registered", false)):
+		var exit_info: Variant = JSON.parse_string(android.previous_exit_report(int(previous.get("pid", -1)), String(previous.get("session", ""))))
+		if exit_info is Dictionary and not exit_info.is_empty():
+			previous.android_exit = exit_info
 	DirAccess.make_dir_recursive_absolute(DIR)
 	_marker = DIR.path_join("%s%d.cfg" % [MARK_PREFIX, OS.get_process_id()])
 	_write()
+
+
+## Older custom templates have the simulation plugin without diagnostics.
+static func _android_diagnostics() -> Object:
+	if OS.has_feature("android") and Engine.has_singleton("EISimulation"):
+		var plugin := Engine.get_singleton("EISimulation")
+		# Android plugin methods live in the JNI registry, not Object.has_method.
+		if plugin.has_method("has_java_method") and plugin.has_java_method("register_crash_session") and plugin.has_java_method("previous_exit_report"):
+			return plugin
+	return null
 
 
 ## Version, system, GPU, renderer, graphics tier and options.
@@ -200,8 +217,6 @@ static func note(what: String) -> void:
 		i.zone = "(menu)"
 	elif what.begins_with("graphics detection: tier") or what.begins_with("graphics watchdog"):
 		instance._collect()
-	elif what.begins_with("option "):
-		i.options = options_summary()
 	instance._write()
 
 
@@ -210,6 +225,9 @@ func _write() -> void:
 		return
 	info.updated = Time.get_datetime_string_from_system(false, true)
 	info.uptime_s = Time.get_ticks_msec() / 1000
+	# Startup applies temporary Original graphics without changing saved options.
+	# Every trace must describe the settings actually active at that point.
+	info.options = options_summary()
 	var cfg := ConfigFile.new()
 	for k: String in info:
 		cfg.set_value("session", k, info[k])
@@ -284,6 +302,13 @@ func report_text(prev: Dictionary, lines: int) -> String:
 	var s := "Cursed Lands report, %s\n\n" % Time.get_datetime_string_from_system(false, true)
 	if not prev.is_empty():
 		s += _info_text("Previous session (ended unexpectedly)", prev)
+		var exit_info: Dictionary = prev.get("android_exit", {}).duplicate()
+		if not exit_info.is_empty():
+			var native_trace := String(exit_info.get("native_trace", ""))
+			exit_info.erase("native_trace")
+			s += "\n== %s ==\n%s\n" % [RemakeText.t("Android process exit"), JSON.stringify(exit_info, "  ")]
+			if not native_trace.is_empty():
+				s += "\n== %s ==\n%s\n" % [RemakeText.t("Native crash trace"), native_trace]
 		s += "\n== Log of the previous session: %s ==\n%s\n" % [String(prev.get("log", "")).get_file(), tail(String(prev.get("log", "")), lines)]
 	s += "\n" + _info_text("This session", info)
 	if prev.is_empty():

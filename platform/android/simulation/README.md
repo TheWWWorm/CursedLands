@@ -19,6 +19,36 @@ the service is not exported. The foreground app pauses and resumes the service,
 and each connection has its own generation so late callbacks cannot affect a
 replacement. A fresh process is required for each new native engine instance.
 
+The plugin also exposes Android's process-exit history to the existing crash
+report. On Android 11+, the frontend registers a session token with
+`ActivityManager.setProcessStateSummary`. After an unexpected exit, the next
+frontend matches the OS record by package process name, PID and that token.
+Simulation exits and older records with a reused PID cannot be attributed to
+the frontend session. Android 12+ can additionally provide a native tombstone:
+the report includes its signal, abort/cause text and up to 64 frames from the
+crashing thread, with library names, relative addresses and build IDs.
+
+Collection happens only after an unexpected frontend exit. It does not install
+signal handlers or change rendering. The reader caps input at 4 MiB and excludes
+memory dumps, other threads, registers, open files and logcat from its output.
+If the OS no longer has the trace, or it cannot be decoded within those bounds,
+the exit metadata and ordinary game log remain available. Older Android versions
+and templates without the new plugin methods retain the ordinary report.
+The player saves or copies the report through the existing dialog; nothing is
+uploaded automatically.
+Shipping these methods requires reinstalling the plugin sources into the engine
+and rebuilding the Java export template; replacing only `libgodot_android.so`
+in an older template does not include them.
+
+`python3 platform/android/simulation/tests/run.py` exercises the protobuf reader
+on a JDK, including malformed, truncated and oversized input. The two-launch
+`tools/tests/android_native_crash_report.gd` fixture requires an isolated,
+debuggable QA package and an external controller: wait for
+`user://native-crash-ready.json`, send SIGABRT as the package's UID to that exact
+PID, wait for death, and relaunch. It checks the real OS record, session matching,
+symbolication fields and saving through the startup dialog. Never run this
+fixture against a player's installed package. The plugin contains no crash trigger.
+
 To build a template, use the Godot commit in `engine_patches/godot-4.7/README.md`:
 
 1. Apply all twelve common engine patches in the order documented in the engine

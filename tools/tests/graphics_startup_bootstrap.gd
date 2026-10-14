@@ -85,6 +85,9 @@ func _run() -> void:
 	check(Engine.max_fps == 30, "first menu applies the frame cap to the engine")
 	check(get_tree().root.msaa_3d == Viewport.MSAA_DISABLED and get_tree().root.screen_space_aa == Viewport.SCREEN_SPACE_AA_DISABLED and not get_tree().root.use_taa, "first menu applies basic antialiasing to the viewport")
 	check(FileAccess.get_file_as_bytes(GameData.CONFIG_PATH) == stored, "temporary menu graphics do not overwrite preferences")
+	var marker := ConfigFile.new()
+	check(marker.load(CrashReport.instance._marker) == OK, "first menu crash marker exists")
+	check(marker.get_value("session", "options", "") == CrashReport.options_summary(), "first menu report records temporary Original graphics")
 	while not loaded:
 		await RenderingServer.frame_post_draw
 	check(menu._scene != null, "basic first menu builds the real island")

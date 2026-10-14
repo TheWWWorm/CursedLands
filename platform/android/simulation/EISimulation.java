@@ -149,6 +149,12 @@ public final class EISimulation extends GodotPlugin {
         try { Os.kill(pid, 0); return true; }
         catch (ErrnoException ex) { return ex.errno == OsConstants.EPERM; }
     }
+    @UsedByGodot public boolean register_crash_session(String session) {
+        return AndroidExitReport.register(context, session);
+    }
+    @UsedByGodot public String previous_exit_report(int pid, String session) {
+        return AndroidExitReport.read(context, pid, session);
+    }
     @Override public void onMainPause() { set_active(false); }
     @Override public void onMainResume() { set_active(true); }
     @Override public void onMainDestroy() { Binding b = active; if (b != null) main.post(b::stop); }

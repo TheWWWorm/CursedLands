@@ -10,10 +10,11 @@ parser.add_argument('engine', type=Path, help='Godot 4.7 source checkout')
 args = parser.parse_args()
 root = args.engine.resolve() / 'platform/android/java/lib/src/main'
 assert (root / 'java/org/godotengine/godot/GodotHeadlessRenderView.java').is_file(), 'Apply android-headless-service.patch first'
-source = Path(__file__).resolve().parent / 'EISimulation.java'
-target = root / 'java/org/cursedlands/simulation/EISimulation.java'
-target.parent.mkdir(parents=True, exist_ok=True)
-shutil.copyfile(source, target)
+source = Path(__file__).resolve().parent
+target = root / 'java/org/cursedlands/simulation'
+target.mkdir(parents=True, exist_ok=True)
+for name in ['EISimulation.java', 'AndroidExitReport.java', 'NativeTombstone.java']:
+    shutil.copyfile(source / name, target / name)
 
 manifest = root / 'AndroidManifest.xml'
 text = manifest.read_text()
