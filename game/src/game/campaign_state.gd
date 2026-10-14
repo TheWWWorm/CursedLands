@@ -21,6 +21,8 @@ var heroes := {}
 ## zone id -> {dead: [nid], removed: [nid], looted: [nid], hidden: [nid], levers: {nid: state}, units: {nid: [x, y, hp]}}
 var zones := {}
 var visited := {}
+## Optional island excursions: departure area and stable party coordinates.
+var island_returns := {}
 var quests := {}          # quest id -> {state, objectives}
 var money := 0
 var items: Array = []     # shared party inventory (item ids "name.material")
@@ -853,8 +855,8 @@ static func is_pet(u: GameUnit) -> bool:
 
 ## After a load (Session.load_game), once the party units are deployed with
 ## their stats and equipment rebuilt (apply_hero / _spawn_merc / _spawn_pet).
-func restore_party_positions(world: GameWorld) -> void:
-	for u: GameUnit in world.units.values():
+func restore_party_positions(world: GameWorld, units: Array = []) -> void:
+	for u: GameUnit in (world.units.values() if units.is_empty() else units):
 		if u.has_meta("pet") and u.get_meta("pet").has("pos"):
 			u.pos = u.get_meta("pet").pos
 			u.facing = float(u.get_meta("pet").get("facing", u.facing))
@@ -1343,7 +1345,7 @@ func restore_zone(id: String, world: GameWorld) -> void:
 
 func to_dict() -> Dictionary:
 	var tables := gs_metadata()
-	return {"version": 2, "campaign_id": campaign_id, "mod_config": mod_config, "vars": vars, "gs_tables": tables, "gs_reconstructed": gs_reconstructed, "heroes": heroes, "zones": zones, "visited": visited,
+	return {"version": 2, "campaign_id": campaign_id, "mod_config": mod_config, "vars": vars, "gs_tables": tables, "gs_reconstructed": gs_reconstructed, "heroes": heroes, "zones": zones, "visited": visited, "island_returns": island_returns,
 		"quests": quests, "money": money, "items": items, "quest_items": quest_items,
 		"parties": parties, "current_party": current_party, "party_bags": party_bags, "experience": experience, "mercs": mercs, "dismissed_mercs": dismissed_mercs, "pets": pets, "side_quests": side_quests, "shops": shops, "current_zone": current_zone,
 		"world_time": world_time, "day": day, "coop": coop, "camera": camera}

@@ -284,9 +284,9 @@ static func lift_recall(vm: ScriptVM, nid: int) -> void:
 ## Earlier saves kept VM waits but lost the corresponding walking orders.
 ## Recover inspected active trap families and the two proven escape waits.
 static func recover(vm: ScriptVM) -> void:
-	# Only definitions installed by apply() can be recovered, in either campaign.
+	# Trap recovery uses only definitions installed by apply(), in either campaign.
 	preload("res://src/game/script/story_coop_traps.gd").recover(vm)
-	_recover_ingos_lovkach(vm)
+	preload("res://src/game/script/scene_visibility.gd").refresh(vm)
 	if vm.session.state.campaign_id != CampaignProfile.ASTRAL: return
 	var zone := String(vm.world.zone.get("id", ""))
 	if zone == "gz1h":
@@ -311,38 +311,6 @@ static func recover(vm: ScriptVM) -> void:
 			u.command({"type":"move", "to":at, "run":false, "story_move":true})
 			u.set_meta("ai_state",1)
 			return
-
-
-## Ingos checks mthief once during WorldScript, then discards that thread.
-## Restoring a previous visit keeps him hidden even after q44k completed on
-## another map. Replay only the unchanged, reward-free visibility family;
-## this also repairs older saves without restarting the village's scripts.
-static func _recover_ingos_lovkach(vm: ScriptVM) -> void:
-	if vm.session.state.campaign_id != CampaignProfile.ORIGINAL \
-			or String(vm.world.zone.get("id", "")) != "bz8k" \
-			or vm.session.state.get_var(0,"q.gz13k.q44k") != 2.0: return
-	var u: GameUnit = vm.world.units.get(1000304365)
-	if u == null or u.dead or not u.hidden or String(u.info.get("name", "")).to_lower() != "mthief" \
-			or String(u.proto.get("name", "")) != "Human Kania NPC Lovkach A10": return
-	var root := "VCheck#0#101"
-	var show := "VTriger#0#102"
-	var hide := "VTriger#0#104"
-	if vm.instances.any(func(i):return i.sname in [root,show,hide] or (i.sname == "WorldScript" and i.src == "")): return
-	var kill := [P.S_CALL,"KillScript",[]]
-	var subject := [P.N_VAR,"this"]
-	var actor := [P.N_CALL,"GetObjectByName",[[P.N_STR,"mthief"]]]
-	var condition := [P.N_CALL,"IsEqual",[[P.N_CALL,"GSGetVar",[[P.N_NUM,0.0],[P.N_STR,"q.gz13k.q44k"]]],[P.N_NUM,2.0]]]
-	var expected := {
-		root:[{"conds":[condition],"body":[kill,[P.S_CALL,show,[subject]]]},
-			{"conds":[],"body":[kill,[P.S_CALL,hide,[subject]]]}],
-		show:[{"conds":[],"body":[kill,[P.S_CALL,"HideObject",[actor,[P.N_NUM,0.0]]]]}],
-		hide:[{"conds":[],"body":[kill,[P.S_CALL,"HideObject",[actor,[P.N_NUM,1.0]]]]}],
-	}
-	if vm.ast.world.count([P.S_CALL,root,[[P.N_VAR,"NULL"]]]) != 1: return
-	for name: String in expected:
-		var actual: Dictionary = vm.ast.scripts.get(name,{})
-		if actual.get("params",[]) != ["this"] or actual.get("blocks",[]) != expected[name]: return
-	vm.spawn(root,[null])
 
 
 ## Old builds could reload zone1evil.mob after Terror's removal, then save

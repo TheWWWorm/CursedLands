@@ -1,0 +1,2896 @@
+{
+  "date": "2026-10-14",
+  "status": "unreleased source changes; published releases and installed player profiles unchanged",
+  "base_commit": "da514eccc66eecf55603d338aadde6cc7394737e",
+  "source_sha256": {
+    "game/src/ei/terrain.gd": "cb626428ec83b179e10e93e9bdd64199fa5fa99176ca95654ae109ee8dc49f6a",
+    "game/src/game/fx/ground_surface_shader.gd": "27383318278b82a5bc0ef3c64ab456cf9d356754d4691330f17ab1324bb0f9a6",
+    "game/src/game/fx/ground_contact_shader.gd": "4772807a2da99484b1ea6dc38259763a3ded9df06c09b1d784554326ecd0c339",
+    "game/src/game/fx/ground_contact_data.gd": "ab8491cecafec02ddb1b1a5d18aea023b0634f321ba6defda3bca0f9aa869dc9",
+    "game/src/game/fx/biome_mounds.gd": "0b9b7bcc31800b564273d8e41299ae287b32463bc09cb6e390faa27d594de1ed",
+    "tools/tests/soft_ground_seams.gd": "a8a4692d6433e99eaf32814523f5d992fd71ddb98c5bf296a14c864242d7b65b"
+  },
+  "findings": {
+    "diagonal_junction": "The old compaction mask checked four side neighbours but not a diagonally touching coarse tile. The common corner could sink while the unsplit neighbouring edges remained straight, leaving triangular openings. All eight neighbours now constrain displacement.",
+    "shifted_sector_edge": "A valid authored XY offset can move a shared vertex outside its nominal sector. Sampling sector-local footprint layers then clamps different points on either mesh. Terrain and surface consumers now resolve the installed field layer from the actual world coordinate.",
+    "consumers": "Ground-contact height, lighting, track normals and biome mound compression use the same world-space lookup as terrain."
+  },
+  "reproduction": {
+    "baseline": {
+      "name": "soft_ground_seams",
+      "renderer": "gl_compatibility",
+      "exit": 1,
+      "seconds": 63.83,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/soft_ground_seams.gd",
+        "--seam-hd",
+        "--mod-tests"
+      ],
+      "errors": [
+        "FAIL closed junction shift=(0.0, 0.0) point=(16, 16) pattern=14 pixels=437",
+        "FAIL closed junction shift=(0.0, 0.0) point=(32, 32) pattern=14 pixels=136",
+        "FAIL closed junction shift=(0.375, 0.25) point=(16, 16) pattern=14 pixels=2622",
+        "FAIL closed junction shift=(0.375, 0.25) point=(32, 32) pattern=3 pixels=483",
+        "FAIL closed junction shift=(0.375, 0.25) point=(32, 32) pattern=5 pixels=43",
+        "FAIL closed junction shift=(0.375, 0.25) point=(32, 32) pattern=7 pixels=517",
+        "FAIL closed junction shift=(0.375, 0.25) point=(32, 32) pattern=10 pixels=10",
+        "FAIL closed junction shift=(0.375, 0.25) point=(32, 32) pattern=11 pixels=625",
+        "FAIL closed junction shift=(0.375, 0.25) point=(32, 32) pattern=12 pixels=227",
+        "FAIL closed junction shift=(0.375, 0.25) point=(32, 32) pattern=13 pixels=288",
+        "FAIL closed junction shift=(0.375, 0.25) point=(32, 32) pattern=14 pixels=410",
+        "FAIL closed junction shift=(0.375, 0.25) point=(32, 32) pattern=15 pixels=1133",
+        "FAIL closed junction shift=(-0.375, -0.25) point=(32, 32) pattern=10 pixels=901",
+        "FAIL closed junction shift=(-0.375, -0.25) point=(32, 32) pattern=11 pixels=901",
+        "FAIL closed junction shift=(-0.375, -0.25) point=(32, 32) pattern=12 pixels=143",
+        "FAIL closed junction shift=(-0.375, -0.25) point=(32, 32) pattern=13 pixels=143",
+        "FAIL closed junction shift=(-0.375, -0.25) point=(32, 32) pattern=14 pixels=1102",
+        "FAIL closed junction shift=(-0.375, -0.25) point=(32, 32) pattern=15 pixels=1102",
+        "FAIL retired authored tile stays joined: zone11 (274, 192) pixels=1846",
+        "FAIL retired authored tile stays joined: zone11 (184, 192) pixels=538",
+        "FAIL retired authored tile stays joined: zone11 (40, 192) pixels=1926",
+        "FAIL retired authored tile stays joined: zone12 (300, 448) pixels=705",
+        "FAIL retired authored tile stays joined: zone12 (16, 448) pixels=1232",
+        "FAIL retired authored tile stays joined: zone12 (90, 32) pixels=1958",
+        "FAIL retired authored tile stays joined: zone13 (352, 288) pixels=703",
+        "FAIL retired authored tile stays joined: zone13 (436, 96) pixels=1191",
+        "FAIL retired authored tile stays joined: zone13 (128, 62) pixels=2147"
+      ],
+      "summary": [
+        "SOFT_GROUND_SEAMS 294 checks 27 failures"
+      ]
+    },
+    "authored_scope": "Three original Ingos maps, nine dry snow points, native footfall dispatch and a controlled native tile-retirement step retaining the neighbouring field. Diagnostic changes affect fragment colour only, not vertex geometry. Synthetic fixtures additionally cover 16 occupancy patterns, interior/four-sector junctions, three XY offsets and four views.",
+    "hd_package": "community.hd-lands-textures@1.5.0, real installed archives, mounted only in disposable test profiles",
+    "isolated_pixels": "Unaliased T-junction rasterization produces isolated background pixels even with deformation disabled. The test records these separately and rejects any connected opening (two or more four-connected background pixels); no MSAA is used.",
+    "flat_raster_control": {
+      "name": "soft_ground_raster_probe",
+      "renderer": "gl_compatibility",
+      "exit": 1,
+      "seconds": 5.72,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/soft_ground_raster_probe.gd",
+        "--seam-shift"
+      ],
+      "errors": [
+        "FAIL no opening at (16, 16) pattern=1",
+        "FAIL no opening at (16, 16) pattern=3",
+        "FAIL no opening at (16, 16) pattern=9",
+        "FAIL no opening at (16, 16) pattern=11",
+        "FAIL no opening at (32, 32) pattern=1",
+        "FAIL no opening at (32, 32) pattern=2",
+        "FAIL no opening at (32, 32) pattern=3",
+        "FAIL no opening at (32, 32) pattern=6",
+        "FAIL no opening at (32, 32) pattern=7",
+        "FAIL no opening at (32, 32) pattern=9",
+        "FAIL no opening at (32, 32) pattern=10",
+        "FAIL no opening at (32, 32) pattern=11",
+        "FAIL no opening at (32, 32) pattern=14",
+        "FAIL no opening at (32, 32) pattern=15"
+      ],
+      "summary": [
+        "PROBE seam (16, 16) pattern=0 holes=0",
+        "PROBE seam (16, 16) pattern=1 holes=1",
+        "PROBE seam (16, 16) pattern=2 holes=0",
+        "PROBE seam (16, 16) pattern=3 holes=1",
+        "PROBE seam (16, 16) pattern=4 holes=0",
+        "PROBE seam (16, 16) pattern=5 holes=0",
+        "PROBE seam (16, 16) pattern=6 holes=0",
+        "PROBE seam (16, 16) pattern=7 holes=0",
+        "PROBE seam (16, 16) pattern=8 holes=0",
+        "PROBE seam (16, 16) pattern=9 holes=1",
+        "PROBE seam (16, 16) pattern=10 holes=0",
+        "PROBE seam (16, 16) pattern=11 holes=1",
+        "PROBE seam (16, 16) pattern=12 holes=0",
+        "PROBE seam (16, 16) pattern=13 holes=0",
+        "PROBE seam (16, 16) pattern=14 holes=0",
+        "PROBE seam (16, 16) pattern=15 holes=0",
+        "PROBE seam (32, 32) pattern=0 holes=0",
+        "PROBE seam (32, 32) pattern=1 holes=1",
+        "PROBE seam (32, 32) pattern=2 holes=1",
+        "PROBE seam (32, 32) pattern=3 holes=2",
+        "PROBE seam (32, 32) pattern=4 holes=0",
+        "PROBE seam (32, 32) pattern=5 holes=0",
+        "PROBE seam (32, 32) pattern=6 holes=1",
+        "PROBE seam (32, 32) pattern=7 holes=1",
+        "PROBE seam (32, 32) pattern=8 holes=0",
+        "PROBE seam (32, 32) pattern=9 holes=1",
+        "PROBE seam (32, 32) pattern=10 holes=1",
+        "PROBE seam (32, 32) pattern=11 holes=2",
+        "PROBE seam (32, 32) pattern=12 holes=0",
+        "PROBE seam (32, 32) pattern=13 holes=0",
+        "PROBE seam (32, 32) pattern=14 holes=1",
+        "PROBE seam (32, 32) pattern=15 holes=1",
+        "SOFT_GROUND_SEAMS_PROBE 32 checks 14 failures"
+      ]
+    },
+    "reports": {
+      "-hd-before": {
+        "checks": 294,
+        "failures": 27,
+        "hd": true,
+        "isolated_raster_pixels": 253,
+        "msaa": 0,
+        "rows": [
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 437,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 136,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 2622,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 483,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 43,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 517,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 10,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 625,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 227,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 288,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 410,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 1133,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 901,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 901,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 143,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 143,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 1102,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 1102,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone11",
+            "point": "(274, 192)",
+            "xy": "(274.0, 192.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 1846,
+            "kind": "authored-retirement",
+            "map": "zone11",
+            "point": "(274, 192)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone11",
+            "point": "(184, 192)",
+            "xy": "(184.0, 192.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 538,
+            "kind": "authored-retirement",
+            "map": "zone11",
+            "point": "(184, 192)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone11",
+            "point": "(40, 192)",
+            "xy": "(40.0, 192.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 1926,
+            "kind": "authored-retirement",
+            "map": "zone11",
+            "point": "(40, 192)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone12",
+            "point": "(300, 448)",
+            "xy": "(300.0, 448.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 705,
+            "kind": "authored-retirement",
+            "map": "zone12",
+            "point": "(300, 448)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone12",
+            "point": "(16, 448)",
+            "xy": "(16.0, 448.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 1232,
+            "kind": "authored-retirement",
+            "map": "zone12",
+            "point": "(16, 448)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone12",
+            "point": "(90, 32)",
+            "xy": "(90.0, 32.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 1958,
+            "kind": "authored-retirement",
+            "map": "zone12",
+            "point": "(90, 32)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone13",
+            "point": "(352, 288)",
+            "xy": "(352.0, 288.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 703,
+            "kind": "authored-retirement",
+            "map": "zone13",
+            "point": "(352, 288)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone13",
+            "point": "(436, 96)",
+            "xy": "(436.0, 96.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 1191,
+            "kind": "authored-retirement",
+            "map": "zone13",
+            "point": "(436, 96)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone13",
+            "point": "(128, 62)",
+            "xy": "(128.0, 62.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 2147,
+            "kind": "authored-retirement",
+            "map": "zone13",
+            "point": "(128, 62)"
+          }
+        ]
+      },
+      "-hd": {
+        "checks": 294,
+        "failures": 0,
+        "hd": true,
+        "isolated_raster_pixels": 64,
+        "msaa": 0,
+        "rows": [
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone11",
+            "point": "(274, 192)",
+            "xy": "(274.0, 192.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone11",
+            "point": "(274, 192)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone11",
+            "point": "(184, 192)",
+            "xy": "(184.0, 192.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone11",
+            "point": "(184, 192)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone11",
+            "point": "(40, 192)",
+            "xy": "(40.0, 192.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone11",
+            "point": "(40, 192)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone12",
+            "point": "(300, 448)",
+            "xy": "(300.0, 448.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone12",
+            "point": "(300, 448)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone12",
+            "point": "(16, 448)",
+            "xy": "(16.0, 448.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone12",
+            "point": "(16, 448)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone12",
+            "point": "(90, 32)",
+            "xy": "(90.0, 32.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone12",
+            "point": "(90, 32)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone13",
+            "point": "(352, 288)",
+            "xy": "(352.0, 288.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone13",
+            "point": "(352, 288)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone13",
+            "point": "(436, 96)",
+            "xy": "(436.0, 96.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone13",
+            "point": "(436, 96)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone13",
+            "point": "(128, 62)",
+            "xy": "(128.0, 62.0)"
+          },
+          {
+            "hd": true,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone13",
+            "point": "(128, 62)"
+          }
+        ]
+      },
+      "-snow-final": {
+        "checks": 288,
+        "failures": 0,
+        "hd": false,
+        "isolated_raster_pixels": 64,
+        "msaa": 0,
+        "rows": [
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(16, 16)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(32, 32)",
+            "shift": "(0.0, 0.0)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(16, 16)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(32, 32)",
+            "shift": "(0.375, 0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(16, 16)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 0,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 1,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 2,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 3,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 4,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 5,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 6,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 7,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 8,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 9,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 10,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 11,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 12,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 13,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 14,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hole_pixels": 0,
+            "kind": "junction",
+            "pattern": 15,
+            "point": "(32, 32)",
+            "shift": "(-0.375, -0.25)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone11",
+            "point": "(274, 192)",
+            "xy": "(274.0, 192.0)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone11",
+            "point": "(274, 192)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone11",
+            "point": "(184, 192)",
+            "xy": "(184.0, 192.0)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone11",
+            "point": "(184, 192)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone11",
+            "point": "(40, 192)",
+            "xy": "(40.0, 192.0)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone11",
+            "point": "(40, 192)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone12",
+            "point": "(300, 448)",
+            "xy": "(300.0, 448.0)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone12",
+            "point": "(300, 448)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone12",
+            "point": "(16, 448)",
+            "xy": "(16.0, 448.0)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone12",
+            "point": "(16, 448)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone12",
+            "point": "(90, 32)",
+            "xy": "(90.0, 32.0)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone12",
+            "point": "(90, 32)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone13",
+            "point": "(352, 288)",
+            "xy": "(352.0, 288.0)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone13",
+            "point": "(352, 288)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone13",
+            "point": "(436, 96)",
+            "xy": "(436.0, 96.0)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone13",
+            "point": "(436, 96)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored",
+            "map": "zone13",
+            "point": "(128, 62)",
+            "xy": "(128.0, 62.0)"
+          },
+          {
+            "hd": false,
+            "hole_pixels": 0,
+            "kind": "authored-retirement",
+            "map": "zone13",
+            "point": "(128, 62)"
+          }
+        ]
+      }
+    }
+  },
+  "checks": [
+    {
+      "name": "soft_ground_seams",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 64.33,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/soft_ground_seams.gd",
+        "--seam-hd",
+        "--mod-tests"
+      ],
+      "errors": [],
+      "summary": [
+        "SOFT_GROUND_SEAMS 294 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/soft_ground_seams-hd-gl_compatibility.log",
+      "log_sha256": "449cc4ff675752386d82bef15829ce99597ae24744ef494058e7d5c8d55687c7"
+    },
+    {
+      "name": "soft_ground_seams",
+      "renderer": "forward_plus",
+      "exit": 0,
+      "seconds": 149.86,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/soft_ground_seams.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "SOFT_GROUND_SEAMS 288 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/soft_ground_seams-snow-final-forward_plus.log",
+      "log_sha256": "2b76a05fd4f2579bcd5ee4480e4b13631cb28776b121503b6c51b3af244d0997"
+    },
+    {
+      "name": "terrain_seams_sampling",
+      "renderer": "forward_plus",
+      "exit": 0,
+      "seconds": 10.23,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/terrain_seams_sampling.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "PROBE shader uniforms 11",
+        "TERRAIN_SEAMS_SAMPLING 13 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/terrain_seams_sampling-snow-final-forward_plus.log",
+      "log_sha256": "ef07e9e9c0ca384ce19b79d769efd213d60f648a2d297ecc03e8c0083189283e"
+    },
+    {
+      "name": "ground_contact",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 4.67,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/ground_contact.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "GROUND_CONTACT checks=47 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/ground_contact-snow-final-gl_compatibility.log",
+      "log_sha256": "d784245c14fd269057092a71f28d3d609bcc15f81d750db7ed7f3ed90ef5ef8f"
+    },
+    {
+      "name": "ground_contact_tracks_scene",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 94.49,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/ground_contact_tracks_scene.gd",
+        "--contact-scene-map=zone11",
+        "--contact-scene-object=Barrack00-6",
+        "--contact-scene-nid=1651"
+      ],
+      "errors": [],
+      "summary": [
+        "GROUND_CONTACT_RELIEF_SCENE checks=112 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/ground_contact_tracks_scene-snow-final-gl_compatibility.log",
+      "log_sha256": "d7104264c6837ba0414298df2d2066afdd3bb21e17fcbf3c8d160638a8fa5015"
+    },
+    {
+      "name": "ground_contact_tracks_scene",
+      "renderer": "forward_plus",
+      "exit": 0,
+      "seconds": 45.6,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/ground_contact_tracks_scene.gd",
+        "--contact-scene-map=zone11",
+        "--contact-scene-object=Barrack00-6",
+        "--contact-scene-nid=1651"
+      ],
+      "errors": [],
+      "summary": [
+        "GROUND_CONTACT_RELIEF_SCENE checks=112 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/ground_contact_tracks_scene-snow-final-forward_plus.log",
+      "log_sha256": "6284da4625106fbd45db8608087be5e617ac057693cf42e037efbe4245150e8d"
+    },
+    {
+      "name": "soft_ground_field",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 2.62,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/soft_ground_field.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "SOFT_GROUND_FIELD checks=152 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/soft_ground_field-snow-final-gl_compatibility.log",
+      "log_sha256": "a526f15f4c1c3c9aeaf6757c3610f14ac42ab4fbbcfdbe627f059e27bdeb6e50"
+    },
+    {
+      "name": "biome_mounds",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 74.68,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/biome_mounds.gd",
+        "--mound-oracle=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/biome_cover_surface.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "BIOME_MOUNDS checks=50 failures=0"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/biome_mounds-snow-final-gl_compatibility.log",
+      "log_sha256": "f4520ea116891b1c5471757f93119ff89e5d3f46ba65d653ce1eca8d19a0cdd7"
+    }
+  ],
+  "captures": [
+    {
+      "build": "baseline",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/profiles/soft_ground_seams-hd-before/data/godot/app_userdata/Cursed Lands/ingos-lit-zone11-(274, 192).png",
+      "sha256": "407fb584ba4792619652de46b7c73e92930543ad820fe82f093f025496560ab2"
+    },
+    {
+      "build": "baseline",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/profiles/soft_ground_seams-hd-before/data/godot/app_userdata/Cursed Lands/ingos-lit-zone12-(300, 448).png",
+      "sha256": "ab6121ffe6797cd39bdf9e36d1c908ecfbdd1a1e4aebf4f2f0b85b473338e652"
+    },
+    {
+      "build": "baseline",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/profiles/soft_ground_seams-hd-before/data/godot/app_userdata/Cursed Lands/ingos-lit-zone13-(352, 288).png",
+      "sha256": "c49a4f514d436e1b9c4dfcf17ce3725d760f8c44464a9fb2897f6f7feefb5bd9"
+    },
+    {
+      "build": "candidate",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/profiles/soft_ground_seams-hd/data/godot/app_userdata/Cursed Lands/ingos-lit-zone11-(274, 192).png",
+      "sha256": "c57d39048cdacc43685d947fcbc30d68914a2400e300d65202dadde33eb432b4"
+    },
+    {
+      "build": "candidate",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/profiles/soft_ground_seams-hd/data/godot/app_userdata/Cursed Lands/ingos-lit-zone12-(300, 448).png",
+      "sha256": "f2c011016556356e23c3b88d6bce727388cd37f4419376fc101c2d5c7b65803a"
+    },
+    {
+      "build": "candidate",
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/profiles/soft_ground_seams-hd/data/godot/app_userdata/Cursed Lands/ingos-lit-zone13-(352, 288).png",
+      "sha256": "3a1940de71d299284a4ce4eedd272a921cb64bef1b62dceaebe3b6041c5a1886"
+    }
+  ],
+  "limitations": [
+    "The exact locations and camera positions in the supplied screenshots were not identified.",
+    "Selected original Ingos locations and bounded synthetic edge cases were tested, not an exhaustive playthrough.",
+    "Linux Compatibility (Mesa llvmpipe) and Forward+ (NVIDIA RTX 3090) were tested. New Windows, macOS, Android and browser packages have not been built or published."
+  ]
+}

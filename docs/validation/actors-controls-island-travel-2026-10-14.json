@@ -1,0 +1,823 @@
+{
+  "date": "2026-10-14",
+  "status": "unreleased working source; no published files or tags modified",
+  "base_commit": "da514eccc66eecf55603d338aadde6cc7394737e",
+  "semver_change_kind": "MINOR: new backward-compatible island excursion feature, plus fixes",
+  "source_sha256": {
+    "game/src/ei/remake_text.gd": "6682e59cb4dc17c67e4860c8fcde477b6861aeaba38429bbe5d60b8dcd217c54",
+    "game/src/game/ai.gd": "5e6efa87b958b5edd37e1e5d07f0f2fe174240311d0646fd6533a21a97386aa9",
+    "game/src/game/campaign_state.gd": "d9f9124a70731ba97bbb4c787a90fc3ba2ceca01ff2f41ecbb20cef78a1e8647",
+    "game/src/game/direct_combat.gd": "5e60069314b8be8e0e81cca93df921e0a2a3222799ad5513a8cf6621ddb1c4bd",
+    "game/src/game/direct_control.gd": "9b67181de30e7c9427d35e201d3f55c913629dd9b0576aac638def1e1291b3b8",
+    "game/src/game/script/briefings.gd": "b425f0f64eb30dc9f563057b1dc1f6d62e8c003df2a89508f1944d71922e0544",
+    "game/src/game/script/scene_visibility.gd": "b48be9bf5c27839e5bb6b75a25ddd9e6467f71a7c033224c2bcf4a77e636ab99",
+    "game/src/game/script/scene_visibility.gd.uid": "ee1b81378466a1ea00e1184261f12aa6927239beeacb54de7eac2e3dbc160982",
+    "game/src/game/script/story_compat.gd": "b25dd016785eeaf087cb0a12c7edf8d1a99f297cda12b61262623abd13ca6b39",
+    "game/src/game/session.gd": "185cac2ac21201199489af96505dbd3dee0d92485a4bfea01b88b76c02dafc24",
+    "game/src/game/unit.gd": "9618cd495ecb0e3e2745b3f9f54b8d575937390f8b194e9779b466c922f713d8",
+    "game/src/game/world.gd": "d1754a1e9dc968c86088ef931602e1365c9e07b4af5e24475cba3e6199470418",
+    "game/src/ui/travel_map.gd": "e4f366d092b1ecc9a2b25a6b31c625fde2403f2452d7e9fdea4edcb49d51deae",
+    "tools/tests/dialogue_approach.gd": "bd0af7d6c58fb04f6a6d4558f4f1549e2fb9a0d46836048070f0a46dc34cd7ea",
+    "tools/tests/dialogue_highlights.gd": "d9013c0e2df7adfd9489f1400cbd6068d37e48159da9507efc52bf9663713a2e",
+    "tools/tests/direct_accuracy.gd": "57c92c52e2c3b4af9325f138242dd105ec47e8a9db1a089d8953c00abc0ce7bf",
+    "tools/tests/direct_combat.gd": "b79ed2b51e03ddf6c8c49d24beabf64fcb5ada4bd684219b1acc22064cd6f001",
+    "tools/tests/ingos_dialogue.gd": "e2eb520b78db3fca55e7933572ee2ad63becaf98da3d042357a6120f7860eadd",
+    "tools/tests/ingos_lovkach.gd": "8c98743fd3f86e3debca0af72870f5644e36a53f4b14bc796f1ff0dcf78604b0",
+    "tools/tests/island_return.gd": "4c9a5595d8c4a65b33cca4fcad887d6a2152007caf8ccfefca4d16e36ff38992",
+    "tools/tests/island_return_ui.gd": "4d9acf8861d989fc841ddda25bca99a894ed59e291a0e028092a9f592c9a2785",
+    "tools/tests/revive_camera.gd": "40f15c2513b1e5843dd98682fc5748b37b18e1830d66f757376312eabf518c6d",
+    "tools/tests/scene_actor_audit.gd": "6fdf801e57586a26ad687b9488f12562bbf1edb0954594668f7b385de6739d3f",
+    "tools/tests/scene_visibility.gd": "9a85f43b1436813503e747cf3741c4784d96cf107cb534b27ecfdd745860ce04",
+    "tools/tests/scene_visibility_guards.gd": "036736f2795c5a50fd2e1d8d3416ee4de48bf270c1b8549af39521ffc6e34a72"
+  },
+  "findings": {
+    "visibility": "The original exhaustive startup HideObject trees can finish while actors are hidden. Saved VMs retain the hidden actor but no consumer remains after quest flags change on another map. Recovery derives and evaluates only terminating, acyclic, read-only conditional trees with visibility leaves. It refuses pending families, rewards, AddMob, removals, loops and waits, and does not recreate or reveal dead/recruited actors.",
+    "direct_combat": "Contact previously forced hit=true for melee and free-aim projectiles. Contact now invokes ordinary Attack/Defence with aim penalties and original melee backstab conditions; arrows retain their launch damage and cannot acquire a melee backstab after a weapon change.",
+    "revival": "Death-time portrait inspection persisted after living ownership returned. Spectating now ends when a living selected owned actor becomes available, including reliable revival events arriving before the living snapshot. First person resumes after the original stand-up clip.",
+    "dialogue": "Clicked topics skipped the native 6064a0 walking stage. They now retain authored placement, then face actual positions. Dialogue and return walkers are protected from calm AI and direct-look heading; failed routes settle without the 30-second placement fallback.",
+    "island_travel": "Previously visited original-campaign islands are selectable from the travel map. An excursion saves its actual departure zone and stable hero/mercenary/pet positions and facing. Return uses the normal zone VM/object save without rolling back current stats, inventory or quest flags. Bookmarks persist across saves and are consumed on arrival. The first visit back to an island without an excursion bookmark uses its previously visited main settlement. Temporary parties, captivity, blocked story actors, active dialogue, no-camp flags and in-progress cross-island transfers cannot use this route; authority rechecks at selection."
+  },
+  "original_evidence": {
+    "target": "inspection/extracted/app/game.exe",
+    "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+    "provider": "REA / Ghidra 12.1.4",
+    "bundle": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/original-dialogue.rea",
+    "functions": {
+      "006064a0": "dialogue cast triangle and return positions",
+      "00608990": "walking versus instant stage and block flag",
+      "006081d0": "dialogue start",
+      "00607a20": "speaking and listening specials",
+      "00607e80": "camera presets"
+    },
+    "base_scripts": {
+      "basecam.mob": "VCheck#0#552 -> NSheriff and Merc2",
+      "bz3g.mob": "VCheck#0#17 -> skelet",
+      "bz8k.mob": "VCheck#0#23 -> Vor; VCheck#0#101 -> mthief"
+    }
+  },
+  "authored_actor_audit": {
+    "add_mob_sites": 21,
+    "failures": [],
+    "figure_templates": 46,
+    "mob_files": 85,
+    "unit_records": 6277,
+    "unshipped_maps": [
+      "gz21g"
+    ],
+    "visibility": [
+      {
+        "family": [
+          "VTriger#0#553",
+          "VTriger#0#573",
+          "VCheck#0#552"
+        ],
+        "file": "basecam.mob",
+        "root": "VCheck#0#552"
+      },
+      {
+        "family": [
+          "VTriger#0#18",
+          "VTriger#0#19",
+          "VCheck#0#17"
+        ],
+        "file": "bz3g.mob",
+        "root": "VCheck#0#17"
+      },
+      {
+        "family": [
+          "VTriger#0#24",
+          "VTriger#0#106",
+          "VCheck#0#23"
+        ],
+        "file": "bz8k.mob",
+        "root": "VCheck#0#23"
+      },
+      {
+        "family": [
+          "VTriger#0#102",
+          "VTriger#0#104",
+          "VCheck#0#101"
+        ],
+        "file": "bz8k.mob",
+        "root": "VCheck#0#101"
+      }
+    ]
+  },
+  "baseline_regressions": [
+    {
+      "name": "scene_visibility",
+      "renderer": "headless",
+      "exit": 1,
+      "seconds": 4.42,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/scene_visibility.gd"
+      ],
+      "errors": [
+        "FAIL Vor appears on revisit when original condition changes",
+        "FAIL Vor older explicit save repairs the stale hidden state",
+        "FAIL Vor unfinished condition still hides actor",
+        "FAIL Fleyn stays hidden after the authored departure flag",
+        "FAIL mthief recruited actor remains controlled by party lifecycle",
+        "FAIL mthief unfinished condition still hides actor",
+        "FAIL NSheriff appears on revisit when original condition changes",
+        "FAIL NSheriff older explicit save repairs the stale hidden state",
+        "FAIL NSheriff unfinished condition still hides actor",
+        "FAIL Merc2 appears on revisit when original condition changes",
+        "FAIL Merc2 older explicit save repairs the stale hidden state",
+        "FAIL Merc2 unfinished condition still hides actor",
+        "FAIL skelet appears on revisit when original condition changes",
+        "FAIL skelet older explicit save repairs the stale hidden state",
+        "FAIL skelet unfinished condition still hides actor"
+      ],
+      "summary": [
+        "SCENE_VISIBILITY 51 checks 15 failures"
+      ]
+    },
+    {
+      "name": "direct_accuracy",
+      "renderer": "headless",
+      "exit": 1,
+      "seconds": 2.02,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/direct_accuracy.gd"
+      ],
+      "errors": [
+        "FAIL melee obeys a guaranteed failed accuracy roll in view 2",
+        "FAIL arrow contact retains damage but rolls accuracy in view 2",
+        "FAIL melee obeys a guaranteed failed accuracy roll in view 3",
+        "FAIL arrow contact retains damage but rolls accuracy in view 3",
+        "FAIL equal attack/defence yields both hits and misses across 2000 contacts",
+        "FAIL alerted target restores accuracy check"
+      ],
+      "summary": [
+        "DIRECT_ACCURACY 11 checks 6 failures"
+      ]
+    },
+    {
+      "name": "revive_camera",
+      "renderer": "headless",
+      "exit": 1,
+      "seconds": 7.08,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/revive_camera.gd"
+      ],
+      "errors": [
+        "FAIL revival restores own direct camera in view 2",
+        "FAIL revival restores own direct camera in view 3",
+        "FAIL revival restores perspective near plane",
+        "FAIL revival restores correct first-person model visibility"
+      ],
+      "summary": [
+        "REVIVE_CAMERA 21 checks 4 failures"
+      ]
+    },
+    {
+      "name": "ingos_dialogue",
+      "renderer": "headless",
+      "exit": 1,
+      "seconds": 9.93,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/ingos_dialogue.gd"
+      ],
+      "errors": [
+        "FAIL Ingos dialogue: Karansul receives walking destination",
+        "FAIL Ingos dialogue: third actor receives triangle staging destination",
+        "FAIL Ingos dialogue: Karansul physically walks for the conversation",
+        "FAIL Ingos dialogue: Fleyn physically takes his speaking position",
+        "FAIL Ingos dialogue: hero faces Karansul",
+        "FAIL Ingos dialogue: closing schedules third actor's original return walk",
+        "FAIL Ingos dialogue: failed staging route falls back to actual positions promptly"
+      ],
+      "summary": [
+        "INGOS_DIALOGUE 16 checks 7 failures"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "scene_actor_audit",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 4.87,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/scene_actor_audit.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "SCENE_ACTOR_AUDIT {\"add_mob_sites\":21,\"failures\":[],\"figure_templates\":46,\"mob_files\":85,\"unit_records\":6277,\"unshipped_maps\":[\"gz21g\"],\"visibility\":[{\"family\":[\"VTriger#0#553\",\"VTriger#0#573\",\"VCheck#0#552\"],\"file\":\"basecam.mob\",\"root\":\"VCheck#0#552\"},{\"family\":[\"VTriger#0#18\",\"VTriger#0#19\",\"VCheck#0#17\"],\"file\":\"bz3g.mob\",\"root\":\"VCheck#0#17\"},{\"family\":[\"VTriger#0#24\",\"VTriger#0#106\",\"VCheck#0#23\"],\"file\":\"bz8k.mob\",\"root\":\"VCheck#0#23\"},{\"family\":[\"VTriger#0#102\",\"VTriger#0#104\",\"VCheck#0#101\"],\"file\":\"bz8k.mob\",\"root\":\"VCheck#0#101\"}]}"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/scene_actor_audit-headless.log",
+      "log_sha256": "849c1215c37b18780052c870817840f546ee661870ddef9c2a28b66b0d666a2e"
+    },
+    {
+      "name": "scene_visibility",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 4.52,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/scene_visibility.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "SCENE_VISIBILITY 51 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/scene_visibility-headless.log",
+      "log_sha256": "59c16016a80e5ee4a207506f55a23a26f07d13aa676199403ddab0415a88d4ce"
+    },
+    {
+      "name": "scene_visibility_guards",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 1.97,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/scene_visibility_guards.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "SCENE_VISIBILITY_GUARDS 14 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/scene_visibility_guards-headless.log",
+      "log_sha256": "6dcfaf41b5d369be448f32b9d27d804c2bbc9325bd308518fe9f1110a4085f84"
+    },
+    {
+      "name": "ingos_lovkach",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 3.17,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/ingos_lovkach.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "INGOS_LOVKACH {\"checks\":15,\"failures\":[]}"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/ingos_lovkach-headless.log",
+      "log_sha256": "0d9bdfb9c62708da7b0b79c30f2638d86ee19791c85333ff77a87ce14c583843"
+    },
+    {
+      "name": "direct_accuracy",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 2.02,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/direct_accuracy.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "DIRECT_ACCURACY 11 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/direct_accuracy-headless.log",
+      "log_sha256": "ee92bb5759d3912d83b53b6101890beb25ffd5ed2ce444bfbbedf805fb984577"
+    },
+    {
+      "name": "direct_combat",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 2.02,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/direct_combat.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "DIRECT_COMBAT 30 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/direct_combat-headless.log",
+      "log_sha256": "53cc2dd47982583b1d71566f7ff93c72e60c6fabddc672a265c1a31f8dafb281"
+    },
+    {
+      "name": "revive_camera",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 7.33,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/revive_camera.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "REVIVE_CAMERA 21 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/revive_camera-headless.log",
+      "log_sha256": "245624cccc3344cb5e9f79ee529d1ab6ad6bec7e05eeb287cb2632566cbc4b50"
+    },
+    {
+      "name": "ingos_dialogue",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 9.38,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/ingos_dialogue.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "INGOS_DIALOGUE 16 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/ingos_dialogue-headless.log",
+      "log_sha256": "cf7de45d84212ba8854ad0b10216b243d214dabc826c16da1d7448219ea3ef5a"
+    },
+    {
+      "name": "ingos_dialogue",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 28.57,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/ingos_dialogue.gd",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/legacy-compat-generic-20261011/base-ru"
+      ],
+      "errors": [],
+      "summary": [
+        "INGOS_DIALOGUE 17 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/ingos_dialogue-ru-gl_compatibility.log",
+      "log_sha256": "05e23a9a49cd2787d710d7c07d0e83c1ed93ff7ba1e74c60256d4b5b213235c1"
+    },
+    {
+      "name": "dialogue_approach",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 1.97,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/dialogue_approach.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "DIALOG_STAGING_CHECKS 18 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/dialogue_approach-headless.log",
+      "log_sha256": "076c4d47431f0df587bd225d7b6e19c2808e4ce3c4c30a5625ecde84f634f876"
+    },
+    {
+      "name": "dialogue_highlights",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 9.78,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/dialogue_highlights.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "DIALOGUE_HIGHLIGHTS 38 checks 0 failures",
+        "STORY_COOP_TRAPS_NET 38 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/dialogue_highlights-headless.log",
+      "log_sha256": "1d49bd9613c5021b37ba42268b06f38ecdd39c381ffce4f8cedd0ef325cebe41"
+    },
+    {
+      "name": "dialogue_poses",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 6.22,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/dialogue_poses.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "DIALOGUE_POSES 54 checks 0 failures",
+        "STORY_COOP_TRAPS_NET 54 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/dialogue_poses-headless.log",
+      "log_sha256": "cd15e8290f8570fea6c819b1a670ebdf985eb5eaaede64f5639568fbfc5ccc77"
+    },
+    {
+      "name": "gipat_captive_dialogue",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 11.59,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/gipat_captive_dialogue.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "NALO_RELOAD 27 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/gipat_captive_dialogue-headless.log",
+      "log_sha256": "f57e89601442eed50b8dc67c9eef28014cd4f719607eff483c8328a840eda361"
+    },
+    {
+      "name": "direct_release_aim",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 6.78,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/direct_release_aim.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "DIRECT_RELEASE_AIM 57 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/direct_release_aim-headless.log",
+      "log_sha256": "06673ff907a21828b6f042a3d21d4695077262bace6f71725e078b285d8775a5"
+    },
+    {
+      "name": "island_return",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 46.29,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/island_return.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "PASS authority rechecks sequence restrictions after the map opens",
+        "ISLAND_RETURN 39 checks 0 failures",
+        "STORY_COOP_TRAPS_NET 39 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/island_return-headless.log",
+      "log_sha256": "6e8051f61b46e4ba2afd93570238236f17375d3b56731e806e086d7b61a97360"
+    },
+    {
+      "name": "island_return_ui",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 3.22,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/island_return_ui.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "ISLAND_RETURN_UI 25 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/island_return_ui-gl_compatibility.log",
+      "log_sha256": "ca2b47092f2439c1e53bcd2ab2364898e501cdce74b8d09ca19abafcce221d41"
+    },
+    {
+      "name": "island_return_ui",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 3.12,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/island_return_ui.gd",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/legacy-compat-generic-20261011/base-ru"
+      ],
+      "errors": [],
+      "summary": [
+        "ISLAND_RETURN_UI 25 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/island_return_ui-ru-gl_compatibility.log",
+      "log_sha256": "04b05354bc943a503f7b691f20c83574deb61df47159513c4cebcfd20763aa5f"
+    },
+    {
+      "name": "island_return_ui",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 3.17,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/island_return_ui.gd",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app"
+      ],
+      "errors": [],
+      "summary": [
+        "ISLAND_RETURN_UI 25 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/island_return_ui-de-gl_compatibility.log",
+      "log_sha256": "eac0e05d1f3d4aac9007727744917df808fcfd58eb95cc0e4cb349d5e09f53b8"
+    },
+    {
+      "name": "travel_reveal",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 2.17,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/travel_reveal.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "TRAVEL_REVEAL 9 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/travel_reveal-headless.log",
+      "log_sha256": "e952939c711acbc80e00e6d9f2543ab5bfdd229f316b1025d57a26628e5b85f3"
+    },
+    {
+      "name": "travel_reveal",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 2.77,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/bin/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.0.5-20261013/repo/tools/tests/travel_reveal.gd",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+      ],
+      "errors": [],
+      "summary": [
+        "TRAVEL_REVEAL 9 checks 0 failures"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/travel_reveal-lia-headless.log",
+      "log_sha256": "b4f04c96271dad67ec2ced3fbb0add34abd7650b30d3250c5edb86c471fd1a38"
+    }
+  ],
+  "translation_coverage": {
+    "entries": 1129,
+    "errors": 0,
+    "command": "python3 tools/check_translations.py"
+  },
+  "visual_checks": {
+    "locales": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "canvas_sizes": [
+      [
+        800,
+        600
+      ],
+      [
+        1280,
+        720
+      ]
+    ],
+    "renderer": "gl_compatibility, Mesa llvmpipe",
+    "images": [
+      "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/profiles/ingos_dialogue-ru/data/godot/app_userdata/Cursed Lands/fleyn-dialogue.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/profiles/island_return_ui/data/godot/app_userdata/Cursed Lands/island-return-en-1280.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/profiles/island_return_ui/data/godot/app_userdata/Cursed Lands/island-return-en-800.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/profiles/island_return_ui-de/data/godot/app_userdata/Cursed Lands/island-return-de-1280.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/profiles/island_return_ui-de/data/godot/app_userdata/Cursed Lands/island-return-de-800.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/profiles/island_return_ui-ru/data/godot/app_userdata/Cursed Lands/island-return-ru-1280.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/actors-combat-revive-20261014/profiles/island_return_ui-ru/data/godot/app_userdata/Cursed Lands/island-return-ru-800.png"
+    ]
+  },
+  "limits": [
+    "Prepared campaign boundaries and deterministic/ENet regression scenarios, not a full campaign playthrough.",
+    "Figure audit validates templates for all reachable authored map, side-quest and AddMob records; does not play through every spawn condition. The unshipped gz21g/zonemichel development map is recorded separately.",
+    "Linux custom 4.7 engine with original base/Lost in Astral data; browser, Windows and Android packages were not built or published."
+  ]
+}

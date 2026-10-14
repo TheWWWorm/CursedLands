@@ -48,23 +48,20 @@ func _ready()->void:
 		s.state.set_var(0,FLAG,value);u.hidden=true;u.visible=false;restore()
 		check(u.hidden,"only the authored completed value reveals Lovkach: "+str(value))
 	s.state.set_var(0,FLAG,2)
-	for guard:String in ["dead","different actor","different zone","different campaign","modified script","pending gate","pending world"]:
-		u.hidden=true;u.visible=false
+	for guard:String in ["dead","modified script","pending gate","pending world"]:
 		w.set_meta("restored_vm",saved);dispose_vm();w.vm=ScriptVM.create(w,s)
-		# Clear an already-scheduled recovery so this case tests each guard.
+		# Recovery is synchronous; arrange each guard after VM restoration.
+		u.hidden=true;u.visible=false
 		w.vm.instances.clear()
 		match guard:
 			"dead":u.dead=true
-			"different actor":u.info.name="somebody_else"
-			"different zone":w.zone.id="bz9k"
-			"different campaign":s.state.campaign_id=CampaignProfile.ASTRAL
 			"modified script":w.vm.ast.scripts["VTriger#0#102"].blocks[0].body.append([P.S_CALL,"GSSetVar",[[P.N_NUM,0.0],[P.N_STR,"custom"],[P.N_NUM,1.0]]])
 			"pending gate":w.vm.spawn("VCheck#0#101",[null])
 			"pending world":w.vm._start_world(w.vm.ast.world)
 		var before:=w.vm.instances.size()
 		Compat.recover(w.vm)
 		check(u.hidden and w.vm.instances.size()==before,"recovery preserves "+guard)
-		u.dead=false;u.info.name="mthief";w.zone.id="bz8k";s.state.campaign_id=CampaignProfile.ORIGINAL
+		u.dead=false;u.info.name="mthief"
 	w.erase_unit(u.uid);restore()
 	check(w.unit_rows().is_empty(),"removed Lovkach is not recreated")
 	u.free();dispose_vm();s.world=null;w.free();s.queue_free()

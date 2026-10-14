@@ -963,8 +963,12 @@ func _tick_dialog_movers(dt: float) -> void:
 			dialog_place(u, m.to, float(m.angle))
 			dialog_movers.erase(u)
 		elif int(m.get("state", 1)) == 1:
-			if u.pos.distance_squared_to(m.to) < 0.01:
+			# The pathfinder may finish at a wall instead of the exact mark.
+			# Keep that legal position and finish turning without waiting for
+			# the native 30-second emergency placement deadline.
+			if u.pos.distance_squared_to(m.to) < 0.01 or (u.is_idle() and float(m.elapsed) > TICK * 2.0):
 				m.state = 2
+				m.to = u.pos
 				u.command({"type": "rotate", "angle": m.angle, "turn_speed": 1.0 / GameUnit.TICK})
 		elif Vector2.from_angle(u.facing).distance_squared_to(Vector2.from_angle(float(m.angle))) < 0.01:
 			dialog_movers.erase(u)

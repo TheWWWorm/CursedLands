@@ -94,10 +94,10 @@ vec4 contact_data_fetch(ivec2 p,ivec2 extent,int first_layer,int lod) {
 	var lookup := RegEx.create_from_string("textureLod\\(\\s*terrain_cells\\s*,\\s*")
 	code = lookup.sub(code, "contact_terrain_cells_textureLod(", true)
 	helpers += "vec4 contact_terrain_cells_textureLod(vec2 uv,float lod) { return textureLod(contact_data,vec3(uv,float(contact_terrain_cells_layer)),lod); }\n"
-	# Contact uses query_tracks; the terrain's sector-only sampler is unused.
+	# Contact uses query_tracks; the terrain's track sampler is unused here.
 	# GLES still assigns a unit to its declaration. Leave that unit available
 	# for the native shadow texture, including rain and cloud-shadow variants.
-	var begin := code.find("vec2 soft_sample(vec2 uv) {")
+	var begin := code.find("vec2 soft_sample(")
 	var end := code.find("\n}", begin)
 	assert(begin >= 0 and end > begin)
 	code = code.erase(begin, end + 2 - begin)

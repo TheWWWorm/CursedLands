@@ -23,9 +23,8 @@ void vertex() {
 	vec2 state = texelFetch(query_tiles,cell/2,0).rg;
 	if (soft_ground && state.y > 0.5 && state.x > 0.0) {
 		vec2 p = vec2(point.x,-point.z);
-		vec2 origin = vec2(cell/32)*32.0;
-		vec2 uv = ((p-origin)*(511.0/32.0)+0.5)/512.0;
-		vec4 track = textureLod(query_tracks,vec3(uv,state.x-1.0),0.0);
+		vec3 uv = soft_track_coord(p);
+		vec4 track = uv.z >= 0.0 ? textureLod(query_tracks,uv,0.0) : vec4(0.0);
 		float age = max(textureLod(query_clock,vec2(0.5),0.0).r-track.b/max(track.a,1e-5),0.0);
 		// Shared normalized compaction, gated on the installed dense mesh.
 		cut = clamp(track.r*clamp((240.0-age)/60.0,0.0,1.0)/0.15,0.0,1.0);

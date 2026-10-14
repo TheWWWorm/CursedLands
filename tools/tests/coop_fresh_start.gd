@@ -39,11 +39,8 @@ func join_lobby() -> bool:
 	var panel: NetworkPanel=menu._net
 	panel.open(); panel.show_page(NetworkPanel.JOIN_COOP)
 	type_field(panel,"name","Fresh"); type_field(panel,"addr","127.0.0.1:%d"%PORT)
-	focus_row(panel,"bring")
-	for i in panel._bring_choices().size()+1:
-		if CoopProgress.bring_slot==CoopProgress.NEW: break
-		key(panel,KEY_RIGHT)
-	check(CoopProgress.bring_slot==CoopProgress.NEW,"ordinary keyboard menu selects New campaign hero")
+	select_brought(panel,CoopProgress.NEW)
+	check(CoopProgress.bring_slot==CoopProgress.NEW,"ordinary save dropdown selects New campaign hero")
 	focus_row(panel,"addr"); key(panel,KEY_ENTER)
 	check(await until(func():return host.coop.joiners.has("fresh")),"real bring/hello reaches the lobby before Start")
 	guest=menu._session

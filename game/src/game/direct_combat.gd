@@ -136,12 +136,17 @@ static func melee_target(u: GameUnit, direction: Vector3) -> GameUnit:
 
 
 static func contact(u: GameUnit, t: GameUnit, carried := {}) -> void:
-	# A geometric hit connects in this mode. Damage, armour, wounds, equipment
-	# wear and backstab still use Combat; no client supplies damage or a victim.
-	var backstab: bool = u.has_meta("hero") and not u.stats.get("ranged",false) and not t.alert \
-		and Vector2.from_angle(t.facing).dot((t.pos-u.pos).normalized()) > 0.5
+	# Geometry chooses the contacted body; the same Attack/Defence roll as
+	# ordinary combat decides whether the blow connects. A free-aim missile
+	# has no victim until contact and retains its launch damage/aim record.
 	var record: Dictionary = carried.duplicate()
-	record.merge({"hit":true,"backstab":backstab},true)
+	if record.is_empty():
+		record = u.world.combat.strike_roll(u, t)
+	else:
+		# A missile can never become a backstab if its shooter changes weapon
+		# while it is in flight.
+		record.merge({"hit":u.world.combat.attack_hits(u, t, Combat.aim_penalty(int(record.get("aim", -1)))),
+			"backstab":false}, true)
 	u.world.on_attack(u,t)
 	u.world.combat.melee(u,t,record)
 	u.world.combat.weapon_spell(u,t)

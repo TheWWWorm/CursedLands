@@ -1,8 +1,8 @@
 class_name DialogCamera
 extends RefCounted
 ## Conversation camera shots, the original (presets) and
-## (placement). Actors: a = the partner, b = the second actor (the hero),
-## c = the third (Briefings.cast). A unit shot looks at the unit's point
+## (placement). Actor a is the protagonist; b/c are the other #show actors
+## (Briefings.cast). A unit shot looks at the unit's point
 ## "dialog cam distance" ahead of it at its "dialog cam height" (prototype
 ## columns) from `dist` metres in front of it, turned by `angle`, `h` metres
 ## higher. A two-shot looks at the middle between a and b from the side at a

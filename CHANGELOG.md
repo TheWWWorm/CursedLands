@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.1.0 — stable release, 14 October 2026
+
+- Keep the protagonist and supporting actors in their original dialogue camera slots, including topics offered by a third participant and co-op conversations started by a guest.
+- Recognize fresh co-op characters with compatible mod-profile metadata and preserve shared campaign continuity through objective updates and resets after a quest completes, so eligible location and day updates continue together.
+- Restore a returning guest's saved position after the host reloads their shared checkpoint, without moving players already present.
+- Keep footprint deformation joined at diagonal tile junctions and shifted sector edges, using the same world-space track samples for terrain, scenery contact and snow piles.
+- Add travel-map buttons for previously visited islands. Island excursions preserve the departure area, party positions and facing across saves, while retaining current character and quest progress. Captive and temporary-party sequences keep their travel restrictions.
+- Restore first-person and third-person control after a revived co-op player finishes inspecting another character.
+- Apply the ordinary Attack/Defence roll to direct-view melee and projectile contacts, retaining authored backstab rules.
+- Reconcile completed, state-dependent visibility decisions on zone restoration, including Fleyn, Lovkach, the Gipat sheriff and mercenary, and the Dragon's skeleton.
+- Restore authored dialogue walking, participant facing and return movement for clicked topics, with prompt fallback when a staging route cannot reach its mark.
+
+See [release notes](docs/releases/1.1.0.md) for compatibility and platform limits.
+
 ## 1.0.7 — stable release, 14 October 2026
 
 - Render dropdown text at its actual display scale, including high-resolution screens.

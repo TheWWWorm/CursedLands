@@ -21,7 +21,10 @@ func check(ok: bool, label: String) -> void:
 
 func actor(w: GameWorld, id: int, at: Vector2) -> GameUnit:
 	var u := GameUnit.new();u.uid=id;u.world=w;u.pos=at;u._radius_base=0.3
-	u.controller=0 if id==1 else -1;u.figure_half_z=0.9;u.stats={"range":0.0,"reach":20.0}
+	u.controller=0 if id==1 else -1;u.figure_half_z=0.9
+	# Guaranteed accuracy isolates these geometry checks; direct_accuracy.gd
+	# separately exercises misses, defence and the normal probability roll.
+	u.stats={"range":0.0,"reach":20.0,"to_hit":200.0,"parry":0.0}
 	w.add_child(u);w.set_unit(id,u)
 	return u
 

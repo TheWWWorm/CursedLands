@@ -1637,7 +1637,8 @@ func _tick(dt: float) -> void:
 		else: _set_action("idle")
 		return
 	if direct_controlled and not blocked and is_finite(direct_heading) \
-		and Time.get_ticks_msec() <= direct_look_until and order.is_empty() and orders.is_empty():
+		and Time.get_ticks_msec() <= direct_look_until and order.is_empty() and orders.is_empty() \
+		and not world.dialog_actors.has(uid) and not world.dialog_movers.has(self):
 		_turn_to(direct_heading, dt)
 	if action != "anim:" + _story_clip or not _hold_story_pose():
 		_story_clip = ""

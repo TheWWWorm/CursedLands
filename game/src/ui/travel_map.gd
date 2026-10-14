@@ -413,9 +413,24 @@ func _build_extra() -> void:
 	th.default_font = Interface800.font()
 	_extra.theme = th
 	th.default_font_size = 16
+	th.set_color("font_color", "Button", TEXT)
+	th.set_color("font_color", "Label", TEXT)
+	var frame := StyleBoxFlat.new()
+	frame.bg_color = Color(0.06, 0.05, 0.09, 0.9)
+	frame.border_color = Color(0.43, 0.36, 0.2)
+	frame.set_border_width_all(1)
+	frame.content_margin_left = 12
+	frame.content_margin_right = 12
+	frame.content_margin_top = 4
+	frame.content_margin_bottom = 4
+	th.set_stylebox("normal", "Button", frame)
+	var hover := frame.duplicate() as StyleBoxFlat
+	hover.border_color = TEXT
+	th.set_stylebox("hover", "Button", hover)
 	# Cross-island routes need buttons. On this island, entering the edge
 	# reveals its adjacent game regions in Session, as in the original.
 	for o: Dictionary in options:
+		if o.has("return_allod"): continue
 		var id := String(o.zone)
 		if String(session.campaign.zone(id).get("allod", "")).to_lower() == allod:
 			continue
@@ -424,6 +439,26 @@ func _build_extra() -> void:
 		b.disabled = not leader
 		b.pressed.connect(func(): picked.emit(o))
 		_extra.add_child(b)
+	var returns := options.filter(func(o): return o.has("return_allod"))
+	if not returns.is_empty():
+		var label := Label.new()
+		label.text = RemakeText.t("Other islands")
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.add_theme_constant_override("outline_size", 4)
+		label.add_theme_color_override("font_outline_color", Color.BLACK)
+		_extra.add_child(label)
+		var row := HBoxContainer.new()
+		row.alignment = BoxContainer.ALIGNMENT_CENTER
+		row.add_theme_constant_override("separation", 8)
+		_extra.add_child(row)
+		for o: Dictionary in returns:
+			var b := Button.new()
+			var title := GameData.text("allod " + String(o.return_allod)).get_slice("\n", 0).strip_edges()
+			b.text = RemakeText.t("Return to %s") % title
+			b.tooltip_text = RemakeText.t("Travel to %s. Your progress is kept.") % String(o.title)
+			b.disabled = not leader
+			b.pressed.connect(func(): picked.emit(o))
+			row.add_child(b)
 	if leader:
 		var stay := Button.new()
 		stay.text = RemakeText.t("Stay here")
@@ -689,6 +724,10 @@ func pad_targets() -> Array:
 		var c := _screen_rect(n).get_center()
 		if _piece_at(c) == i and _button_at(c) < 0:
 			out.append({"rect": xf * Rect2(c - Vector2(12, 12), Vector2(24, 24)), "id": "piece%d" % i})
+	if _extra:
+		for button: Button in _extra.find_children("*", "Button", true, false):
+			if button.is_visible_in_tree() and not button.disabled:
+				out.append({"rect":button.get_global_rect(), "id":"extra"+str(button.get_instance_id())})
 	return out
 
 

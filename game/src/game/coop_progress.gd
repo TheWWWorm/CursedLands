@@ -40,8 +40,8 @@ const GuestRoles := preload("res://src/game/coop_guest_roles.gd")
 ##   equipment, belt, spells) and the joiner's own purse and bag: brought from
 ##   its save, used and filled by its own trades, loot and rewards in the
 ##   host's world (with_purse), kept apart from the host's.
-## Mercenary hiring vars, the campaign clock and engine vars are not credited
-## (the hirer owns the mercenary).
+## Mercenary hiring vars and engine vars are not credited (the hirer owns
+## the mercenary). The campaign clock follows a complete shared checkpoint.
 ##
 ## Progress packages: the host sends each joiner a cumulative package at every
 ## zone change, host save, after quest steps and every 15 s while something
@@ -487,6 +487,8 @@ static func _pristine_new_origin(data: Dictionary) -> bool:
 	if data.get("new_origin") != true or not data.get("hero") is Dictionary \
 			or not data.hero.get("name") is String:
 		return false
+	if ModStore.configuration_error(data.get("mod_config")) != "":
+		return false
 	var context := PartyProgress.read(data.get("party_context"))
 	if context == null or context.heroes[0].size() != 1 or not context.heroes[0][0].get("name") is String:
 		return false
@@ -495,6 +497,9 @@ static func _pristine_new_origin(data: Dictionary) -> bool:
 		"side_quests": {}, "quest_items": {}, "zone": "gz1g", "seq": {}, "money": 0, "items": [],
 		"party_context": PartyProgress.capture(fresh), "new_origin": true}
 	var source := data.duplicate(true)
+	# The receiver separately checks content compatibility. A valid profile
+	# describes the new game's rules, not earned character/story progress.
+	source.erase("mod_config")
 	source.hero.name = expected.hero.name
 	source.party_context.roster[0].name = expected.party_context.roster[0].name
 	return source == expected
@@ -1136,6 +1141,15 @@ func _credit_var(e: Dictionary, key: String, old: float, new: float) -> void:
 		return
 	var j := float(e.vars.get(key, 0.0))
 	if is_equal_approx(j, new):
+		return
+	# A complete shared checkpoint follows the exact authored transition,
+	# including objective cleanup after its parent quest was marked done.
+	# Applying the imported/ahead-player guard there broke continuity at
+	# Gipat's portal (q36ag is completed before objectives 11 and 12 change).
+	if e.in_sync and e.clean and e.present and is_equal_approx(j, old):
+		_credit(e, key, new)
+		if key.begins_with("q.") and key.get_slice_count(".") == 3 and new >= 2.0:
+			_send_t = minf(_send_t, 1.0)
 		return
 	if key.begins_with("q.") and key.get_slice_count(".") >= 3:
 		var qz := key.get_slice(".", 1)

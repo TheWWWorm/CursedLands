@@ -121,6 +121,9 @@ var _load_serial := 0
 ## Pool events need the host's epoch even for a join after a finished load.
 ## This wire fence is separate from the client's local load transaction.
 var _pool_epoch := -1
+## Guests absent during this save load can reclaim their saved body/position
+## after a matching checkpoint handshake. A subsequent zone transfer expires it.
+var _loaded_absent_players: Array = []
 var _load_waiting := {}
 var _remote_loading := false
 var _lmp_loading_generation := 0
@@ -852,19 +855,19 @@ func enter_zone(id: String, entrance: int, autosave := true) -> void:
 
 ## The old world is frozen before this coroutine yields. In particular, a
 ## dialogue completion must unwind its guest-purse scope before rebuilding.
-func _complete_zone_travel(id: String, entrance: int, serial: int, autosave := true) -> void:
+func _complete_zone_travel(id: String, entrance: int, serial: int, autosave := true, island_resume: Dictionary = {}) -> void:
 	await _wait_load_clients()
 	if not loading_game or serial != _load_serial:
 		return
 	if LoadingScreen.deferred():
 		await LoadingScreen.hold(get_tree(), campaign.zone(id), LoadingScreen.SAVED_ZONE if state.zones.has(id) else LoadingScreen.NEW_ZONE)
-	_enter_zone(id, entrance, autosave)
+	_enter_zone(id, entrance, autosave, island_resume)
 	_finish_host_load()
 
 
 ## Host: enter_zone without waiting for the loading screen (callers that need
 ## the zone at once; on web / mobile they hold it first themselves).
-func _enter_zone(id: String, entrance: int, autosave := true) -> void:
+func _enter_zone(id: String, entrance: int, autosave := true, island_resume: Dictionary = {}) -> void:
 	if lmp_travel:
 		lmp_travel.request(0, id, entrance)
 		return
@@ -872,6 +875,8 @@ func _enter_zone(id: String, entrance: int, autosave := true) -> void:
 	if z.is_empty() or not z.has("mpr") or not zone_exists(id):
 		message.emit(RemakeText.t("Unknown zone ") + id)
 		return
+	_loaded_absent_players.clear()
+	state.island_returns.erase(String(z.get("allod", "")).to_lower())
 	swap.cancel_all()
 	if world and zone_id and (not lmp.is_empty() or multiplayer_game):
 		# a player whose hero is dead (or gone) when it is sent to
@@ -921,7 +926,10 @@ func _enter_zone(id: String, entrance: int, autosave := true) -> void:
 	world.vm = ScriptVM.create(world, self)
 	LoadingScreen.step(9)
 	_start_zone_revisit(id)
-	_start_pose(z, entrance)
+	if island_resume.is_empty():
+		_start_pose(z, entrance)
+	else:
+		_restore_island_position(island_resume)
 	_replay_local()
 	if not lmp.is_empty() and lmp_travel == null:
 		lmp_travel = LmpTravel.new(self)
@@ -1927,6 +1935,9 @@ func leave_zone(target: String, entrance: int, player := -1, source_zone := "", 
 		# piece leads to the village, TravelMap); the remake option offers it.
 		var shown := start_zones_shown()
 		travel_options = travel_options.filter(func(o): return not START_ZONES.has(String(o.zone)) or shown.has(String(o.zone)))
+		for o: Dictionary in island_return_options(target):
+			if not travel_options.any(func(existing): return existing.zone == o.zone):
+				travel_options.append(o)
 	if travel_options.is_empty():
 		push_warning("leave_zone: no route from " + target)
 		return
@@ -1956,6 +1967,72 @@ func _travel_zone_states(edge: String) -> Dictionary:
 		if campaign.zone(id).get("type", "") == "game":
 			out[id] = state.get_var(0, "z." + id)
 	return out
+
+
+## Revisit the departure point of an island excursion, or its previously
+## visited main settlement before the first excursion. Use the ordinary zone
+## save; unvisited islands and temporary story parties cannot use this route.
+func island_return_options(edge: String) -> Array:
+	var out := []
+	if state.campaign_id != CampaignProfile.ORIGINAL or not lmp.is_empty() \
+			or not state.current_party.is_empty() or state.get_var(0, "i.nocamp") == 1.0 or movie_active():
+		return out
+	if world and (world.zone.get("cage", false) or not world.dialog_actors.is_empty() \
+			or party_heroes().any(func(u): return u.blocked)):
+		return out
+	var from := campaign.zone(edge)
+	var current := String(from.get("allod", "")).to_lower()
+	if from.get("type", "") != "edge" or current not in ["gipat", "ingos", "suslanger"]:
+		return out
+	if world and String(world.zone.get("allod", "")).to_lower() != current:
+		return out   # an authored transfer to a new allod is still in progress
+	for hub: String in ["bz1g", "bz8k", "bz14h"]:
+		var allod := String(campaign.zone(hub).get("allod", "")).to_lower()
+		if allod == current: continue
+		var resume: Dictionary = state.island_returns.get(allod, {})
+		var id := String(resume.get("zone", hub))
+		var z := campaign.zone(id)
+		if String(z.get("allod", "")).to_lower() != allod or z.get("cage", false) \
+				or not state.visited.has(id) or not zone_exists(id) \
+				or Dictionary(state.zones.get(id, {}).get("vm", {})).is_empty(): continue
+		var exits: Dictionary = z.get("exits", {})
+		if exits.is_empty(): continue
+		out.append({"zone":id, "entrance":int(resume.get("entrance", exits.keys()[0])), "title":zone_title(id),
+			"hours":0.0, "return_allod":allod})
+	return out
+
+
+## Only voluntary island visits make a return point. The VM/NPC/object state
+## stays in the ordinary zone save; this keeps coordinates, never old stats,
+## inventories or quest flags that would undo progress earned during the trip.
+func _remember_island_position() -> void:
+	if world == null: return
+	var poses := []
+	for u: GameUnit in world.unit_rows():
+		if not u.has_meta("hero") and not CampaignState.is_pet(u): continue
+		poses.append({"actor":preload("res://src/game/actor_refs.gd").of(u), "pos":u.pos, "facing":u.facing})
+	state.island_returns[String(world.zone.get("allod", "")).to_lower()] = {
+		"zone":zone_id, "entrance":_lmp_entrance, "poses":poses}
+
+
+func _restore_island_position(resume: Dictionary) -> void:
+	var restored := {}
+	var anchor: GameUnit
+	for pose: Dictionary in resume.get("poses", []):
+		var u := preload("res://src/game/actor_refs.gd").resolve(world, pose.get("actor", []))
+		if u == null or not pose.get("pos") is Vector2 or not pose.pos.is_finite(): continue
+		u.pos = pose.pos
+		u.facing = float(pose.get("facing", u.facing))
+		world.nav.rebucket(u); u._sync_transform(0)
+		restored[u] = true
+		if anchor == null and u.has_meta("hero"): anchor = u
+	# A companion hired during the excursion joins the returning party at
+	# its saved location instead of appearing alone at the zone entrance.
+	if anchor:
+		for u: GameUnit in world.unit_rows():
+			if restored.has(u) or (not u.has_meta("hero") and not CampaignState.is_pet(u)): continue
+			u.pos = world.nav.nearest_walkable_for(u, anchor.pos, 6.0, u.move_class())
+			world.nav.rebucket(u); u._sync_transform(0)
 
 
 ## Remake option "start_zones" (Starting areas on the travel map). The
@@ -2094,11 +2171,17 @@ func _travel(zone: String, entrance: int) -> void:
 		if o.zone == zone and int(o.entrance) == entrance:
 			if not zone_exists(zone) or not campaign.zone(zone).has("mpr"):
 				return
+			var resume: Dictionary = {}
+			if o.has("return_allod"):
+				# Recheck the authority's current story gates at selection time.
+				if not island_return_options(String(_travel_ev.get("from", ""))).any(func(v): return v.zone == zone and v.entrance == entrance): return
+				resume = Dictionary(state.island_returns.get(String(o.return_allod), {})).duplicate(true)
+				_remember_island_position()
 			_begin_host_load(zone, false)
 			travel_options = []
 			broadcast({"t": "travel_close", "go": zone})   # the zone stays frozen (Game.on_event)
 			state.advance_hours(float(o.get("hours", 0.0)))
-			call_deferred("_complete_zone_travel", zone, entrance, _load_serial)
+			call_deferred("_complete_zone_travel", zone, entrance, _load_serial, true, resume)
 			return
 
 
@@ -4726,7 +4809,12 @@ func _spawn_late_joiner(idx: int, pid: int) -> void:
 	# A hero not deployed when the save was loaded (its player was away)
 	# takes up the follow order the save kept for it.
 	if not fresh.is_empty():
+		var entry := coop.purse_entry(idx)
+		if idx in _loaded_absent_players and entry.get("in_sync", false) and entry.get("clean", false) and entry.get("present", false):
+			state.restore_party_positions(world, fresh)
+			for u: GameUnit in fresh: u.resync_drawn()
 		state.apply_follow(world, "follow_live", fresh)
+	_loaded_absent_players.erase(idx)
 	if repaired and reclaimed:
 		for u: GameUnit in world.units.values():
 			if u.controller == idx and u.has_meta("hero") and not u.get_meta("hero").has("merc"):
@@ -5169,6 +5257,7 @@ func _load_state(slot: String, s: CampaignState) -> bool:
 	_enter_zone(s.current_zone, 1, false)
 	_restoring = false
 	state.restore_party_positions(world)
+	_loaded_absent_players = state.heroes.keys().filter(func(idx): return int(idx) > 0 and not players_include(int(idx)))
 	state.apply_follow(world, "follow_live")
 	# Every unit drawn where it now stands: the zone state and the party's
 	# saved spots moved them after they were made (at their map / deploy

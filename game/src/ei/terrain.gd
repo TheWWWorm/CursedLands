@@ -63,7 +63,7 @@ varying vec2 soft_profile;
 		soft_profile = soft_profile_grid(grid);
 		VERTEX.y += soft_profile.x;
 		if (soft_tracks) {
-			vec2 track = soft_sample(soft_uv(vec2(wpos.x, -wpos.z)));
+			vec2 track = soft_sample(vec2(wpos.x, -wpos.z));
 			VERTEX.y += soft_height(track) * soft_profile.y * soft_track_mask(grid);
 		}
 		wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
@@ -175,8 +175,8 @@ void fragment() {
 		NORMAL = normalize((VIEW_MATRIX * vec4(normalize(mix(wn,vec3(0.0,1.0,0.0),puddle)),0.0)).xyz);
 	}
 	if (soft_tracks && soft_profile.y > 0.0) {
-		vec2 uv = soft_uv(vec2(wpos.x, -wpos.z));
-		vec2 step_uv = vec2(1.0 / 512.0, 0.0);
+		vec2 uv = vec2(wpos.x, -wpos.z);
+		vec2 step_uv = vec2(32.0 / 511.0, 0.0);
 		vec2 a = soft_sample(uv - step_uv);
 		vec2 b = soft_sample(uv + step_uv);
 		vec2 d = soft_sample(uv - step_uv.yx);

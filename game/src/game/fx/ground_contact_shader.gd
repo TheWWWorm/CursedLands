@@ -98,8 +98,10 @@ mat3 contact_relief_frame(mat3 points,mat3 coordinates,vec3 raw_normal,vec3 base
 }
 float contact_ground_height(vec3 colour) { return sqrt(max(dot(colour,vec3(0.2126,0.7152,0.0722)),0.0)); }
 // Same coverage-normalized age and fade as the terrain sector sampler.
-vec2 contact_track(vec2 uv,float layer) {
-	vec4 track=textureLod(query_tracks,vec3(uv,layer),0.0);
+vec2 contact_track(vec2 p) {
+	vec3 uv=soft_track_coord(p);
+	if (uv.z<0.0) { return vec2(0.0); }
+	vec4 track=textureLod(query_tracks,uv,0.0);
 	float age=max(textureLod(query_clock,vec2(0.5),0.0).r-track.b/max(track.a,1e-5),0.0);
 	return track.rg*clamp((240.0-age)/60.0,0.0,1.0);
 }
@@ -141,8 +143,7 @@ void contact_ground_light(vec2 grid, float height, vec4 camera, vec4 projection,
 			compression+=profile.y*weights[i];
 			points[i].y+=profile.x;
 			if (state.x>0.5 && !query_no_tracks) {
-				vec2 uv=((p-vec2(cell/32)*32.0)*(511.0/32.0)+0.5)/512.0;
-				points[i].y+=soft_height(contact_track(uv,state.x-1.0))*profile.y*soft_track_mask(coordinates[i].xy * 2.0);
+				points[i].y+=soft_height(contact_track(p))*profile.y*soft_track_mask(coordinates[i].xy * 2.0);
 			}
 		}
 	}
@@ -297,12 +298,10 @@ ContactResult contact_prepare(vec3 world,vec3 wn,float band,float distance_to_ey
 	}
 	vec2 state=texelFetch(query_tiles,clamp(tile,ivec2(0),textureSize(query_tiles,0)-1),0).rg;
 	if (soft_ground && state.x>0.5 && compression>0.0) {
-		vec2 uv=((folded-vec2(tile/16)*32.0)*(511.0/32.0)+0.5)/512.0;
-		vec2 step_uv=vec2(1.0/512.0,0.0);
-		float layer=state.x-1.0;
-		vec2 a=contact_track(uv-step_uv,layer); vec2 b=contact_track(uv+step_uv,layer);
-		vec2 d=contact_track(uv-step_uv.yx,layer); vec2 e=contact_track(uv+step_uv.yx,layer);
-		vec2 track=contact_track(uv,layer);
+		vec2 step_uv=vec2(32.0/511.0,0.0);
+		vec2 a=contact_track(folded-step_uv); vec2 b=contact_track(folded+step_uv);
+		vec2 d=contact_track(folded-step_uv.yx); vec2 e=contact_track(folded+step_uv.yx);
+		vec2 track=contact_track(folded);
 		vec2 slope=vec2(soft_height(b)-soft_height(a),soft_height(e)-soft_height(d))*compression*(511.0/64.0);
 		vec3 track_normal=normalize(result.normal+vec3(-slope.x,0.0,slope.y));
 		if (ei_surface_fx.x<0.5 && dot(ei_sun_dir,ei_sun_dir)>0.5) {

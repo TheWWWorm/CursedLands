@@ -51,6 +51,9 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Other islands": ["Другие аллоды", "Andere Allods"],
+	"Return to %s": ["Вернуться: %s", "Zurück nach %s"],
+	"Travel to %s. Your progress is kept.": ["Отправиться: %s. Ваш прогресс сохранится.", "Reise nach %s. Dein Fortschritt bleibt erhalten."],
 	"Spells, keystones and runes": ["Заклинания, основы и руны", "Zauber, Grundsteine und Runen"],
 	"Damaged equipment": ["Повреждённое снаряжение", "Beschädigte Ausrüstung"],
 	"Ready spells": ["Готовые заклинания", "Fertige Zauber"],

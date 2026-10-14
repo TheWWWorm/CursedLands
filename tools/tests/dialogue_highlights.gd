@@ -104,7 +104,9 @@ func _ready() -> void:
 	check(await until(func():return client.game.hud._dialog.visible),"staging reaches guest")
 	for s:Session in [host,client]:
 		check(not lit(s,false),"peer %d removes highlight during staging"%s.my_index)
-	host.world.dialog_movers.clear(); host.world.vm.briefings.staging_tick()
+	# Finish walking and final facing independently of this cue-only fixture.
+	for i in 2:
+		host.world.dialog_movers.clear(); host.world.vm.briefings.staging_tick()
 	check(await until(func():return client.game.hud._dialog._mode != DialogPanel.STAGING),"phrases reach guest")
 	for s:Session in [host,client]:
 		# Finished staging leaves a talk-ready actor. The dialog itself must

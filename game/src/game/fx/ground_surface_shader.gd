@@ -103,18 +103,33 @@ float soft_track_mask(vec2 grid) {
 	if (soft_dense(tile + ivec2(1,0)) < 0.5) { mask *= smoothstep(0.0, 0.25, 2.0 - local.x); }
 	if (soft_dense(tile + ivec2(0,-1)) < 0.5) { mask *= smoothstep(0.0, 0.25, local.y); }
 	if (soft_dense(tile + ivec2(0,1)) < 0.5) { mask *= smoothstep(0.0, 0.25, 2.0 - local.y); }
+	// A coarse tile can touch only the corner of this dense tile. Its
+	// shared vertex must stay still too, or its unsplit edge pulls away
+	// from the two adjacent dense edges between that corner and midpoint.
+	if (soft_dense(tile + ivec2(-1,-1)) < 0.5) { mask *= smoothstep(0.0, 0.25, length(local)); }
+	if (soft_dense(tile + ivec2(1,-1)) < 0.5) { mask *= smoothstep(0.0, 0.25, length(vec2(2.0-local.x,local.y))); }
+	if (soft_dense(tile + ivec2(-1,1)) < 0.5) { mask *= smoothstep(0.0, 0.25, length(vec2(local.x,2.0-local.y))); }
+	if (soft_dense(tile + ivec2(1,1)) < 0.5) { mask *= smoothstep(0.0, 0.25, length(2.0-local)); }
 	return mask;
 }
-vec2 soft_uv(vec2 p) {
-	// Both sector textures contain their common boundary sample exactly.
-	return ((p - soft_track_origin) * (511.0 / 32.0) + 0.5) / 512.0;
+vec3 soft_track_coord(vec2 p) {
+	// MPR vertices can cross the nominal sector edge. Both meshes must
+	// sample the field at the actual world point, not clamp different
+	// sector-local textures at their borders. R names the installed layer.
+	ivec2 tile = ivec2(floor(p * 0.5));
+	if (any(lessThan(tile, ivec2(0))) || any(greaterThanEqual(tile, textureSize(soft_tiles, 0)))) { return vec3(0.0,0.0,-1.0); }
+	float layer = texelFetch(soft_tiles, tile, 0).r - 1.0;
+	vec2 origin = floor(p / 32.0) * 32.0;
+	return vec3(((p - origin) * (511.0 / 32.0) + 0.5) / 512.0, layer);
 }
 float soft_height(vec2 track) {
 	// A new crossing compacts the bank of an older trail too.
 	return track.g * (1.0 - smoothstep(0.05, 0.30, track.r)) - track.r;
 }
-vec2 soft_sample(vec2 uv) {
-	vec4 track = textureLod(soft_track_texture, vec3(uv, soft_track_layer), 0.0);
+vec2 soft_sample(vec2 p) {
+	vec3 uv = soft_track_coord(p);
+	if (uv.z < 0.0) { return vec2(0.0); }
+	vec4 track = textureLod(soft_track_texture, uv, 0.0);
 	// Coverage-normalized timestamps keep new track edges from inheriting
 	// the zero timestamp of untouched texels late in a long map session.
 	float age = max(soft_track_time - track.b / max(track.a, 1e-5), 0.0);
@@ -256,13 +271,14 @@ bool query_weights(vec2 p, vec3 a, vec3 b, vec3 c, out vec3 w) {
 	w = vec3(1.0 - u - v, u, v);
 	return min(min(w.x, w.y), w.z) >= -1e-5;
 }
-float query_displace(vec3 p, vec2 origin, float layer, vec2 grid) {
+float query_displace(vec3 p, float layer, vec2 grid) {
 	if (!soft_ground || query_undeformed) { return p.y; }
 	vec2 profile = soft_profile_grid(grid);
 	float h = p.y + profile.x;
 	if (layer >= 0.0 && !query_no_tracks) {
-		vec2 uv = ((vec2(p.x, -p.z) - origin) * (511.0 / 32.0) + 0.5) / 512.0;
-		vec4 track = textureLod(query_tracks, vec3(uv, layer), 0.0);
+		vec3 uv = soft_track_coord(vec2(p.x, -p.z));
+		if (uv.z < 0.0) { return h; }
+		vec4 track = textureLod(query_tracks, uv, 0.0);
 		float age = max(textureLod(query_clock, vec2(0.5), 0.0).r - track.b / max(track.a, 1e-5), 0.0);
 		vec2 value = track.rg * clamp((240.0 - age) / 60.0, 0.0, 1.0);
 		h += soft_height(value) * profile.y * soft_track_mask(grid);
@@ -289,7 +305,6 @@ mat3 query_subdivision(vec3 w, out vec3 blend) {
 }
 float query_elevation(vec3 a, vec3 b, vec3 c, vec3 w, ivec2 cell, bool upper) {
 	vec2 state = texelFetch(query_tiles, clamp(cell / 2, ivec2(0), textureSize(query_tiles, 0) - 1), 0).rg;
-	vec2 origin = vec2(cell / 32) * 32.0;
 	float layer = state.x - 1.0;
 	mat3 points = mat3(a,b,c);
 	mat3 coordinates = mat3(vec3(vec2(cell) + (upper ? vec2(1,0) : vec2(0,1)), 0.0),
@@ -304,7 +319,7 @@ float query_elevation(vec3 a, vec3 b, vec3 c, vec3 w, ivec2 cell, bool upper) {
 	}
 	float height = 0.0;
 	for (int i = 0; i < query_vertex_count; i++) {
-		height += blend[i] * query_displace(points[i], origin, layer, coordinates[i].xy);
+		height += blend[i] * query_displace(points[i], layer, coordinates[i].xy);
 	}
 	return height;
 }

@@ -17,12 +17,13 @@ func check(ok: bool,label: String) -> void:
 
 func payload() -> Dictionary:
 	var st:=CoopProgress.fresh_state()
-	return {"campaign_id":st.campaign_id,"hero":CoopProgress.main_hero(st),"vars":{},"visited":["gz1g"],
+	return {"campaign_id":st.campaign_id,"mod_config":st.mod_config,"hero":CoopProgress.main_hero(st),"vars":{},"visited":["gz1g"],
 		"side_quests":{},"quest_items":{},"zone":"gz1g","seq":{},"money":0,"items":[],
 		"party_context":CoopProgress.PartyProgress.capture(st),"new_origin":true}
 
 func reset_host() -> void:
 	s.state=CoopProgress.fresh_state(); s.zone_id="gz1g"
+	s.mod_config=s.state.mod_config.duplicate(true)
 	s.coop._loading=false; s.coop.joiners={}; s.coop._pending={}
 	if GameData.campaign_id==CampaignProfile.ORIGINAL:
 		for key: String in CoopProgress.OPENING_VARS:s.state.set_var(0,key,1.0)
@@ -34,6 +35,8 @@ func rejected_source(kind: String) -> void:
 		"saved origin":data.new_origin=false
 		"missing opt-in":data.erase("new_origin")
 		"numeric opt-in":data.new_origin=1
+		"missing mod config":data.erase("mod_config")
+		"invalid mod config":data.mod_config.api=-1
 		"wrong campaign":data.campaign_id="wrong"
 		"earned hero":data.hero.str+=1; data.party_context.roster[0].str+=1
 		"private earned hero":data.party_context.roster[0].exp=1.0
@@ -114,7 +117,7 @@ func _ready() -> void:
 	s.coop._rpc_bring(payload()); s.coop.on_hello(0,1,"Guest")
 	check(s.state.heroes[1][0].str==41.0 and e.purse=={"money":222,"items":["rune:e1"]},"NEW cannot replace an existing reserved personal hero or purse")
 	check(not e.clean and not e.present,"NEW without acknowledgement cannot admit an existing tally")
-	for kind: String in ["saved origin","missing opt-in","numeric opt-in","wrong campaign","earned hero","private earned hero","spent health","purse","inventory","private inventory","known quest","unknown flag","visited map","current zone","acknowledged save","side quest","quest item","private party","private bag","private hire","private pet","extra state"]:
+	for kind: String in ["saved origin","missing opt-in","numeric opt-in","missing mod config","invalid mod config","wrong campaign","earned hero","private earned hero","spent health","purse","inventory","private inventory","known quest","unknown flag","visited map","current zone","acknowledged save","side quest","quest item","private party","private bag","private hire","private pet","extra state"]:
 		rejected_source(kind)
 	for kind: String in ["different live zone","different saved zone","named chapter","alternate body","alternate identity","other visited zone","other saved zone","waiting party","waiting bag","hired companion","pet","quest journal","advanced quest","completed quest","quest item","side quest","unknown flag","later startup value","loading"]:
 		rejected_host(kind)

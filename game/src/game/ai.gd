@@ -111,6 +111,7 @@ func _read_mots(u: GameUnit, lg: Dictionary = EMPTY_DESCRIPTOR) -> Dictionary:
 ## logic tick while the unit is idle, and while it is busy rechoose() (AI
 ## attack / cast orders) or calm_tick() (other orders of a calm motivation).
 func think(u: GameUnit) -> void:
+	if world.dialog_actors.has(u.uid) or world.dialog_movers.has(u): return
 	var _profile := world.profile_scope("aithink", u.uid) if world.profile_simulation else null
 	var now := world.time
 	if now < u.ai_next:
@@ -392,6 +393,7 @@ func _fear_tick(u: GameUnit, flag := 0) -> void:
 ## the calm motivation is current, also while the unit walks. Returns true
 ## when it issued a cast.
 func calm_tick(u: GameUnit, idle := false) -> bool:
+	if world.dialog_actors.has(u.uid) or world.dialog_movers.has(u): return false
 	var _profile := world.profile_scope("aicalm_tick", u.uid) if world.profile_simulation else null
 	if u.controller >= 0 or u.dead or not u.mode in CALM_MODES:
 		return false

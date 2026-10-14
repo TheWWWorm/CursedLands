@@ -268,8 +268,19 @@ func staging_tick() -> void:
 	for m: Dictionary in vm.world.dialog_movers.values():
 		if int(m.get("state", 1)) > 0 and bool(m.get("wait", not m.get("restore", false))):
 			return
+	if not _pending_dialog.get("faced", false):
+		# A blocked/partial route can end short of its planned mark. Turn
+		# toward the actual participants and frame their actual positions.
+		var c: Dictionary = _pending_dialog.cast
+		var a: GameUnit = vm.world.units.get(int(c.get("a", -1)))
+		var b: GameUnit = vm.world.units.get(int(c.get("b", -1)))
+		_pending_dialog.faced = true
+		if a and b:
+			_face_in_place(c, a, b)
+			return
 	var event := _pending_dialog
 	_pending_dialog = {}
+	event.erase("faced")
 	vm.session.broadcast(event)
 
 
@@ -285,22 +296,15 @@ func _named_key(id: String, player: int) -> String:
 	return ""
 
 
-## Clicked conversations face the actors where the player approached the NPC.
-## Other briefings retain authored staging: the partner
-## moves in front of the hero, or the hero in front of the partner in #cage
+## Conversations retain authored staging (game.exe 6064a0): the protagonist
+## moves in front of the partner, or the partner in front of the hero in #cage
 ## zones; the third actor takes the triangle's corner. The cast retains these
 ## positions and heights for the conversation camera.
-func _face(c: Dictionary, instant := false, approached := false) -> void:
+func _face(c: Dictionary, instant := false, _approached := false) -> void:
 	_return_actors.clear()
 	var a: GameUnit = vm.world.units.get(int(c.get("a", -1)))
 	var b: GameUnit = vm.world.units.get(int(c.get("b", -1)))
 	if a == null or b == null:
-		return
-	if approached:
-		# Clicked conversations begin where the player approached the NPC.
-		# Walking the NPC to a camera mark can fail on a wall or body and
-		# used to hold the entire dialogue behind a 30-second deadline.
-		_face_in_place(c, a, b)
 		return
 	var d := float(b.proto.get("dialog_cam_distance", 0.0)) + 2.5
 	var a_at := a.pos
@@ -387,7 +391,7 @@ func _stage(u: GameUnit, point: Vector2, angle: float, instant: bool, waiting :=
 		vm.world.dialog_place(u, point, angle)
 	elif not u.blocked:   #  refuses a walk under flag.
 		vm.world.dialog_movers[u] = {"to": point, "angle": angle, "state": 1, "elapsed": 0.0, "wait": waiting}
-		u.command({"type": "move", "to": point, "run": false})
+		u.command({"type": "move", "to": point, "run": false, "story_move":true})
 		u.set_meta("ai_state", 1)   # 608990 / LiA539810 call the ordinary AI move setter
 
 
@@ -558,10 +562,11 @@ static func parse(text: String) -> Dictionary:
 	return out
 
 
-## The units playing a conversation's actors (the original): "a" the
-## partner the player talked to, "b" the first other #show actor (usually the
-## hero), "c" the next one; `names` maps actor names to unit ids ("hero" is
-## the talking player's hero).
+## Native6064a0 retains the protagonist in slot a, then scans #show for the
+## first other actor (b) and the last distinct third actor (c). The clicked
+## topic owner does not replace the protagonist. Tr49_1 therefore casts
+## Hero, Vor, Shopper, even though the player clicked Shopper.
+## `names` resolves "hero" to the initiating player's body in co-op.
 func cast(actors: Array, partner: GameUnit, player: int) -> Dictionary:
 	var names := {}
 	for n: String in actors:
@@ -569,11 +574,17 @@ func cast(actors: Array, partner: GameUnit, player: int) -> Dictionary:
 		if u:
 			names[n] = u.uid
 	var order: Array = []
-	if partner:
-		order.append(partner.uid)
+	var hero := _actor_unit("hero", player)
+	if hero:
+		order.append(hero.uid)
 	for n: String in actors:
 		if names.has(n) and not int(names[n]) in order:
-			order.append(int(names[n]))
+			if order.size() < 3:
+				order.append(int(names[n]))
+			else:
+				order[2] = int(names[n])
+	if order.is_empty() and partner:
+		order.append(partner.uid)
 	var out := {"names": names}
 	for i in mini(order.size(), 3):
 		out[["a", "b", "c"][i]] = order[i]

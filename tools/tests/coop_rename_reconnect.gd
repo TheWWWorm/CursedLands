@@ -1,5 +1,5 @@
 extends Node
-## Actual menu keyboard editing -> MainMenu join -> ENet hello/bring ->
+## Actual menu keyboard editing and save dropdown -> MainMenu join -> ENet hello/bring ->
 ## original Game inventory preview, normal leave, reconnect and host reload.
 ## Only the entrypoint argv/bootstrap and process-wide asset teardown are
 ## suppressed on the two nested frontends sharing this disposable process.
@@ -76,6 +76,14 @@ func type_field(panel: NetworkPanel,id: String,text: String) -> void:
 	for i in 280: key(panel,KEY_BACKSPACE)
 	for c in text: key(panel,KEY_NONE,c.unicode_at(0))
 
+func select_brought(panel: NetworkPanel,slot: String) -> void:
+	var choice := panel._save_choice
+	for i in choice.item_count:
+		if choice.get_item_metadata(i)==slot:
+			choice.select(i)
+			choice.item_selected.emit(i)
+			return
+
 func join_from_menu(name_: String,slot: String) -> bool:
 	var menu=menu_of(guest_app)
 	if menu==null: return false
@@ -84,12 +92,8 @@ func join_from_menu(name_: String,slot: String) -> bool:
 	if panel==null: return false
 	panel.open(); panel.show_page(NetworkPanel.JOIN_COOP)
 	type_field(panel,"name",name_); type_field(panel,"addr","127.0.0.1:%d"%PORT)
-	focus_row(panel,"bring")
-	var limit:=panel._bring_choices().size()+1
-	for i in limit:
-		if CoopProgress.bring_slot==slot: break
-		key(panel,KEY_RIGHT)
-	check(panel.player_name==name_ and CoopProgress.bring_slot==slot,"keyboard menu selects "+name_+" and the requested brought character")
+	select_brought(panel,slot)
+	check(panel.player_name==name_ and CoopProgress.bring_slot==slot,"menu selects "+name_+" and the requested brought character")
 	if rendered: await capture(guest_app,"menu-"+name_.to_lower())
 	focus_row(panel,"addr"); key(panel,KEY_ENTER)
 	check(await until(func():return guest_app.session!=null and guest_app.game!=null and not guest_app.session.loading_game \
@@ -135,13 +139,12 @@ func presented(app: Frontend,name_: String,label: String) -> void:
 	app.game._unhandled_input(e)
 	var panel: InventoryPanel=app.game.hud._inventory
 	check(panel.visible and panel._camp.visible and panel._camp._unit==u and panel._camp._unit.display_name==name_,label+" normal inventory key opens the current character preview")
-	# refresh() queues the previous fallback labels for deletion.
+	# The camp owns the visible preview; hidden fallback labels are no
+	# longer rebuilt while this original screen is open.
 	await get_tree().process_frame
 	await get_tree().process_frame
-	var text:=""
-	for c in panel._hero_box.get_children():
-		if c is Label: text+=(c as Label).text
-	check(text.begins_with(name_+"\n"),label+" character-preview backing label starts with current name")
+	var text:=panel._camp._unit.display_name
+	check(panel._camp._doll._unit==u and panel._camp._doll._model!=null,label+" character preview renders the current hero")
 	if rendered: await capture(app,label+"-preview")
 	rows.append({"phase":label,"player":name_,"slot":idx,"unit":u.uid,"deployment":u.info.get("name"),"display_name":u.display_name,"hero_name":u.get_meta("hero").get("name"),"hero":identity(u.get_meta("hero")),"preview_label":text})
 	key(panel,KEY_ESCAPE)

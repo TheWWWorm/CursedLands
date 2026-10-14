@@ -21,17 +21,23 @@ func _ready() -> void:
 		units.append(u); w.set_unit(u.uid, u)
 	var c := {"a":1,"b":2,"c":3}
 	b._face(c,false,true)
-	check(b._return_actors.is_empty(), "clicked conversation has no return walk")
+	check(b._return_actors.size() == 1, "clicked conversation remembers the third actor's return")
+	for i in [0,2]:
+		var u := units[i]
+		check(u.orders.size() == 1 and u.orders[0].type == "move" and u.orders[0].story_move, "clicked actor walks to the original mark")
+		check(w.dialog_movers[u].state == 1 and w.dialog_movers[u].to != u.pos, "clicked actor uses walking stage")
+	check(units[1].orders.is_empty(), "ordinary conversation retains the partner's position")
+	# Reconcile a partial/blocked route using actual final positions and heights.
+	b._face_in_place(c,units[0],units[1])
 	for i in 3:
 		var u := units[i]; var key: String = ["a","b","c"][i]
-		check(c.at[key] == [u.pos.x,u.pos.y] and c.at_z[key] == u.position.y, "camera preserves actual actor position and height")
-		check(u.orders.size() == 1 and u.orders[0].type == "rotate", "clicked actor only turns")
-		check(w.dialog_movers[u].state == 2 and w.dialog_movers[u].to == u.pos, "clicked actor skips route staging")
+		check(c.at[key] == [u.pos.x,u.pos.y] and c.at_z[key] == u.position.y, "camera uses actual actor position and height")
+		check(u.orders.size() == 1 and u.orders[0].type == "rotate", "all participants face after walking")
 	for u in units: u.orders.clear()
 	w.dialog_movers.clear()
 	units[1].blocked = true
 	b._face(c,false,true)
-	check(units[1].orders.is_empty() and not w.dialog_movers.has(units[1]), "blocked story hero remains blocked")
+	check(units[1].orders.is_empty() and not w.dialog_movers.has(units[1]), "blocked story actor remains blocked")
 	units[1].blocked = false
 	for u in units: u.orders.clear()
 	w.dialog_movers.clear()

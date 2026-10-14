@@ -8,7 +8,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.0.7**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.0.7), available for Linux, Windows, Android, macOS and in the [browser](https://cursedlands.wwworm.com/). It fixes moving bow aim, camera jitter, snow seams, terrain and reflection sampling, equipment models, dropdown clarity and shop navigation. See the [release notes](docs/releases/1.0.7.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.1.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.1.0), available for Linux, Windows, Android, macOS and in the [browser](https://cursedlands.wwworm.com/). It adds return trips to earlier islands and fixes co-op campaign continuity, direct-view accuracy and revival, dialogue actors and cameras, and snow seams. See the [release notes](docs/releases/1.1.0.md) and [versioning policy](docs/versioning.md).
 
 ## Screenshots
 
@@ -71,6 +71,8 @@ The setup screen and main menu let you choose **Main game — Evil Islands** or 
 In a camp's skills screen, **Refund all points** returns the experience spent on training for redistribution. Starting skills and attributes, free quest rewards and total earned experience are kept. Older characters are supported when their paid training can be reconstructed safely.
 
 Training purchases apply immediately. The default interface hides the unused Accept/Cancel controls on the skills screen and explains this; trade controls still reflect the current transaction.
+
+The travel map offers buttons for previously visited islands. You can revisit an earlier island and return to the area and party positions you left, keeping current quest and character progress. Captive and other restricted story sequences retain their travel limits.
 
 ## Mods and game rules (experimental)
 

@@ -1,0 +1,529 @@
+{
+  "date": "2026-10-14",
+  "status": "local validation; not published",
+  "base_commit": "da514eccc66eecf55603d338aadde6cc7394737e",
+  "source_sha256": {
+    "game/src/game/coop_progress.gd": "671e7b8e53c5e88da8cca4523be276529eaa32d68ae01b38176de1bef2f69214",
+    "game/src/game/session.gd": "f4a91d88a17473845f8f5805a8c2a5379bba59b44d5dc316eccde8ffe7918108",
+    "game/src/game/campaign_state.gd": "0b4af90c8e0d1b33d1c3076ce8ed0e4891595cb7464755bd1b389bd2dc5d0d3d",
+    "game/src/game/script/briefings.gd": "128515ba7e58d653868826282104d5ca9f73cade14467f5f7253980e8357599e",
+    "game/src/game/dialog_camera.gd": "fb8ae99ab8abb65925457c4098419699f8bb4b648d4629e7302d20d735e7aa37",
+    "tools/tests/dialogue_speakers.gd": "472e2c72aa60a5fd43b75c0de83f6aa635b9f87d48d8479cc0f08df817ae634f",
+    "tools/tests/ingos_dialogue.gd": "312a37148838f03a0dd45a5545cfafe6433a7690789628c1c3716a03b0b34182",
+    "tools/tests/coop_checkpoint_recovery.gd": "605b92c8b8b5023635873bdeba4a8fcbd8d3924003521ff42eb7c52a3336eb26",
+    "tools/tests/coop_progress_cleanup.gd": "fff977f63d2a9f84ab4f13c853e815c6f78c4d829a83d77f8f20f3b05954063b",
+    "tools/tests/coop_fresh_start_guards.gd": "b8d10cd62ec362cbd95e83ff52189280453a08b543fd651a6f9714ec4aff56e1",
+    "tools/tests/coop_fresh_start.gd": "dc1e549572cd5ddc4d5ba62651be8dbc1f6373a3fc5c13591640d46ee07c4f20",
+    "tools/tests/coop_rename_reconnect.gd": "3ed05370cc564fd3661f3abe287df3509925591c7b4c8e3df1028ef1af60952b"
+  },
+  "findings": [
+    {
+      "area": "dialogue camera and staging",
+      "cause": "The clicked topic owner occupied camera slot a instead of the protagonist. Original game.exe retains the protagonist in slot a, the first other #show actor in b and the last distinct other in c.",
+      "change": "Resolve native actor slots independently of the clicked topic owner and #show Hero order; use the initiating protagonist in co-op. Existing authored camera directives remain intact.",
+      "authored_examples": [
+        "Tr49_1 (Hero, Vor, Shopper despite clicking Shopper)",
+        "G42",
+        "T42",
+        "Dr22 (#show SKD precedes Hero)"
+      ]
+    },
+    {
+      "area": "shared campaign continuity",
+      "cause": "The imported/ahead-player quest guard rejected aligned objective updates after their parent quest had reached completed state. That cleared checkpoint eligibility and stopped location/day return while personal progression still returned.",
+      "original_script": "maps/zone10.mob completes q.gz10g.q36ag before later GSSetVarMax writes to objectives .11 and .12.",
+      "change": "For a present, clean, in-sync guest whose old value matches exactly, credit the authored transition, including cleanup/reset. Keep the divergent/absent guest guards."
+    },
+    {
+      "area": "fresh co-op admission",
+      "cause": "client_hello includes mod_config, but the pristine-origin exact dictionary comparison did not include or remove this validated metadata, so current New hero packets could not receive the authored opening baseline.",
+      "change": "Require valid mod metadata, then remove that metadata from the strict new-character comparison. The RPC receiver continues to require the host content/progression signature."
+    },
+    {
+      "area": "late join after loading",
+      "cause": "A guest absent during host save load had its saved position replaced by a spawn near the leader.",
+      "change": "Remember absent saved players until the next travel. Restore only their freshly deployed units after a matching checkpoint handshake, without restoring already-present players again."
+    }
+  ],
+  "native_evidence": {
+    "artifact": "original game.exe",
+    "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+    "method": "Static REA analysis plus authored briefing data; original executable was not driven interactively.",
+    "bundles": {
+      "original-dialogue.rea": "296c266e0fc4a84e42dd2c21e824e3943413467d8b60da8655eb406fffe3d21a",
+      "original-camera-cast.rea": "1dda954291cf735e8f3e9cf6544b4747182972a53025b9da7dfc1543a1122840"
+    },
+    "functions": {
+      "0x602c90": "assigns the protagonist camera reference from the primary party record",
+      "0x603010": "clears that reference when its party unit is removed",
+      "0x6064a0": "retains the protagonist and fills other actor slots from #show",
+      "0x607e80": "camera presets",
+      "0x604c50": "phrase camera selection"
+    },
+    "briefing_count": 285,
+    "evidence_ids": [
+      "ev_abe5c8a0e02652cd5e884d98f52acf3379587085c8868f658b03193a05967581",
+      "ev_1b9f7fbf4a009a1009db24afcb3ac0aff9818057a334cf517520a3275fe318f2",
+      "ev_37f2242f851636f63687f3ca6db41103832b995331b6d652c7b0014c5fcb3c02",
+      "ev_e3917c1bcc24f1af9446e40512482b146e86fc3abdd2b17039b44191ad13e831"
+    ]
+  },
+  "baseline_regressions": [
+    {
+      "name": "dialogue_speakers",
+      "renderer": "headless",
+      "exit": 1,
+      "seconds": 11.63,
+      "errors": [
+        "FAIL initiating protagonist owns camera slot a on peer 0",
+        "FAIL Tr49_1/0 frames shopper on peer 0",
+        "FAIL Tr49_1/1 frames vor on peer 0",
+        "FAIL Tr49_1/2 speaking actor stays visible on peer 0",
+        "FAIL Tr49_1/2 frames hero on peer 0",
+        "FAIL Tr49_1/3 frames vor on peer 0",
+        "FAIL Tr49_1/4 frames hero on peer 0",
+        "FAIL Tr49_1/5 frames vor on peer 0",
+        "FAIL Tr49_1/6 frames hero on peer 0",
+        "FAIL Tr49_1/7 frames vor on peer 0",
+        "FAIL Tr49_1/8 frames vor on peer 0",
+        "FAIL Tr49_1/9 frames hero on peer 0",
+        "FAIL Tr49_1/10 speaking actor stays visible on peer 0",
+        "FAIL Tr49_1/10 frames hero on peer 0",
+        "FAIL initiating protagonist owns camera slot a on peer 1",
+        "FAIL Tr49_1/0 frames shopper on peer 1",
+        "FAIL Tr49_1/1 frames vor on peer 1",
+        "FAIL Tr49_1/2 speaking actor stays visible on peer 1",
+        "FAIL Tr49_1/2 frames hero on peer 1",
+        "FAIL Tr49_1/3 frames vor on peer 1",
+        "FAIL Tr49_1/4 frames hero on peer 1",
+        "FAIL Tr49_1/5 frames vor on peer 1",
+        "FAIL Tr49_1/6 frames hero on peer 1",
+        "FAIL Tr49_1/7 frames vor on peer 1",
+        "FAIL Tr49_1/8 frames vor on peer 1",
+        "FAIL Tr49_1/9 frames hero on peer 1",
+        "FAIL Tr49_1/10 speaking actor stays visible on peer 1",
+        "FAIL Tr49_1/10 frames hero on peer 1",
+        "FAIL initiating protagonist owns camera slot a on peer 0",
+        "FAIL G42/0 frames hero on peer 0",
+        "FAIL G42/1 speaking actor stays visible on peer 0",
+        "FAIL G42/1 frames huber on peer 0",
+        "FAIL G42/2 frames huber on peer 0",
+        "FAIL G42/3 speaking actor stays visible on peer 0",
+        "FAIL G42/3 frames huber on peer 0",
+        "FAIL initiating protagonist owns camera slot a on peer 1",
+        "FAIL G42/0 frames hero on peer 1",
+        "FAIL G42/1 speaking actor stays visible on peer 1",
+        "FAIL G42/1 frames huber on peer 1",
+        "FAIL G42/2 frames huber on peer 1",
+        "FAIL G42/3 speaking actor stays visible on peer 1",
+        "FAIL G42/3 frames huber on peer 1",
+        "FAIL initiating protagonist owns camera slot a on peer 0",
+        "FAIL T42/0 frames trapper on peer 0",
+        "FAIL T42/1 speaking actor stays visible on peer 0",
+        "FAIL T42/1 frames hero on peer 0",
+        "FAIL T42/2 frames trapper on peer 0",
+        "FAIL T42/3 speaking actor stays visible on peer 0",
+        "FAIL T42/3 frames trapper on peer 0",
+        "FAIL T42/4 speaking actor stays visible on peer 0",
+        "FAIL T42/4 frames hero on peer 0",
+        "FAIL T42/5 speaking actor stays visible on peer 0",
+        "FAIL T42/5 frames trapper on peer 0",
+        "FAIL T42/6 speaking actor stays visible on peer 0",
+        "FAIL T42/6 frames hero on peer 0",
+        "FAIL initiating protagonist owns camera slot a on peer 1",
+        "FAIL T42/0 frames trapper on peer 1",
+        "FAIL T42/1 speaking actor stays visible on peer 1",
+        "FAIL T42/1 frames hero on peer 1",
+        "FAIL T42/2 frames trapper on peer 1",
+        "FAIL T42/3 speaking actor stays visible on peer 1",
+        "FAIL T42/3 frames trapper on peer 1",
+        "FAIL T42/4 speaking actor stays visible on peer 1",
+        "FAIL T42/4 frames hero on peer 1",
+        "FAIL T42/5 speaking actor stays visible on peer 1",
+        "FAIL T42/5 frames trapper on peer 1",
+        "FAIL T42/6 speaking actor stays visible on peer 1",
+        "FAIL T42/6 frames hero on peer 1",
+        "FAIL initiating protagonist owns camera slot a on peer 0",
+        "FAIL Tr49_1/0 frames shopper on peer 0",
+        "FAIL Tr49_1/1 frames vor on peer 0",
+        "FAIL Tr49_1/2 speaking actor stays visible on peer 0",
+        "FAIL Tr49_1/2 frames hero on peer 0",
+        "FAIL Tr49_1/3 frames vor on peer 0",
+        "FAIL Tr49_1/4 frames hero on peer 0",
+        "FAIL Tr49_1/5 frames vor on peer 0",
+        "FAIL Tr49_1/6 frames hero on peer 0",
+        "FAIL Tr49_1/7 frames vor on peer 0",
+        "FAIL Tr49_1/8 frames vor on peer 0",
+        "FAIL Tr49_1/9 frames hero on peer 0",
+        "FAIL Tr49_1/10 speaking actor stays visible on peer 0",
+        "FAIL Tr49_1/10 frames hero on peer 0",
+        "FAIL initiating protagonist owns camera slot a on peer 1",
+        "FAIL Tr49_1/0 frames shopper on peer 1",
+        "FAIL Tr49_1/1 frames vor on peer 1",
+        "FAIL Tr49_1/2 speaking actor stays visible on peer 1",
+        "FAIL Tr49_1/2 frames hero on peer 1",
+        "FAIL Tr49_1/3 frames vor on peer 1",
+        "FAIL Tr49_1/4 frames hero on peer 1",
+        "FAIL Tr49_1/5 frames vor on peer 1",
+        "FAIL Tr49_1/6 frames hero on peer 1",
+        "FAIL Tr49_1/7 frames vor on peer 1",
+        "FAIL Tr49_1/8 frames vor on peer 1",
+        "FAIL Tr49_1/9 frames hero on peer 1",
+        "FAIL Tr49_1/10 speaking actor stays visible on peer 1",
+        "FAIL Tr49_1/10 frames hero on peer 1",
+        "FAIL initiating protagonist owns camera slot a on peer 0",
+        "FAIL G42/0 frames hero on peer 0",
+        "FAIL G42/1 speaking actor stays visible on peer 0",
+        "FAIL G42/1 frames huber on peer 0",
+        "FAIL G42/2 frames huber on peer 0",
+        "FAIL G42/3 speaking actor stays visible on peer 0",
+        "FAIL G42/3 frames huber on peer 0",
+        "FAIL initiating protagonist owns camera slot a on peer 1",
+        "FAIL G42/0 frames hero on peer 1",
+        "FAIL G42/1 speaking actor stays visible on peer 1",
+        "FAIL G42/1 frames huber on peer 1",
+        "FAIL G42/2 frames huber on peer 1",
+        "FAIL G42/3 speaking actor stays visible on peer 1",
+        "FAIL G42/3 frames huber on peer 1",
+        "FAIL initiating protagonist owns camera slot a on peer 0",
+        "FAIL T42/0 frames trapper on peer 0",
+        "FAIL T42/1 speaking actor stays visible on peer 0",
+        "FAIL T42/1 frames hero on peer 0",
+        "FAIL T42/2 frames trapper on peer 0",
+        "FAIL T42/3 speaking actor stays visible on peer 0",
+        "FAIL T42/3 frames trapper on peer 0",
+        "FAIL T42/4 speaking actor stays visible on peer 0",
+        "FAIL T42/4 frames hero on peer 0",
+        "FAIL T42/5 speaking actor stays visible on peer 0",
+        "FAIL T42/5 frames trapper on peer 0",
+        "FAIL T42/6 speaking actor stays visible on peer 0",
+        "FAIL T42/6 frames hero on peer 0",
+        "FAIL initiating protagonist owns camera slot a on peer 1",
+        "FAIL T42/0 frames trapper on peer 1",
+        "FAIL T42/1 speaking actor stays visible on peer 1",
+        "FAIL T42/1 frames hero on peer 1",
+        "FAIL T42/2 frames trapper on peer 1",
+        "FAIL T42/3 speaking actor stays visible on peer 1",
+        "FAIL T42/3 frames trapper on peer 1",
+        "FAIL T42/4 speaking actor stays visible on peer 1",
+        "FAIL T42/4 frames hero on peer 1",
+        "FAIL T42/5 speaking actor stays visible on peer 1",
+        "FAIL T42/5 frames trapper on peer 1",
+        "FAIL T42/6 speaking actor stays visible on peer 1",
+        "FAIL T42/6 frames hero on peer 1"
+      ],
+      "summary": [
+        "DIALOGUE_SPEAKERS shots=88 checks=298 failures=136",
+        "STORY_COOP_TRAPS_NET 298 checks 136 failures"
+      ],
+      "result_file": "dialogue_speakers-before-camera-sync-headless.json",
+      "log_sha256": "b49d3528d0985ecb47287cd874ce7302c47aa932f1c53f5ba3790c40a0a23913"
+    },
+    {
+      "name": "coop_progress_cleanup",
+      "renderer": "headless",
+      "exit": 1,
+      "seconds": 2.07,
+      "errors": [
+        "FAIL shared completed quest retains continuity through all original objective writes",
+        "FAIL completed quest objectives still reach the shared save",
+        "FAIL aligned reset does not strand the guest",
+        "FAIL island departure follows the same shared story",
+        "FAIL returned location and campaign day advance together"
+      ],
+      "summary": [
+        "COOP_PROGRESS_CLEANUP checks=11 failures=5"
+      ],
+      "result_file": "coop_progress_cleanup-before-camera-sync-headless.json",
+      "log_sha256": "5817db05fa48dd0da9ce8dcb4a0de6895d904ab5ed725039141f2065542ee903"
+    },
+    {
+      "name": "coop_fresh_start_guards",
+      "renderer": "headless",
+      "exit": 1,
+      "seconds": 2.02,
+      "errors": [
+        "FAIL actual campaign fresh origin validates",
+        "FAIL only display names may differ by locale",
+        "FAIL server receipt validates the explicit menu NEW source",
+        "FAIL validated pristine origin admits an untouched authored opening",
+        "FAIL all six original startup flags receive explicit old-value credit",
+        "FAIL subsequent exact old-value change remains credited",
+        "FAIL missing mod config cannot validate as a pristine NEW origin"
+      ],
+      "summary": [
+        "COOP_FRESH_START_GUARDS 76 checks 7 failures"
+      ],
+      "result_file": "coop_fresh_start_guards-before-profile-fix-headless.json",
+      "log_sha256": "28e6ebb1764f5d3222ac2910d2c5425677abeede61c8fdf4894602d25d5a6154"
+    }
+  ],
+  "checks": [
+    {
+      "name": "dialogue_speakers",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 47.95,
+      "errors": [],
+      "summary": [
+        "DIALOGUE_SPEAKERS shots=88 checks=298 failures=0",
+        "STORY_COOP_TRAPS_NET 298 checks 0 failures"
+      ],
+      "result_file": "dialogue_speakers-gl_compatibility.json",
+      "log_sha256": "aafb74b7150ec5910c2fae7b9ad9e613e22039122d7223154142b1d06bea79b6"
+    },
+    {
+      "name": "dialogue_approach",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 2.07,
+      "errors": [],
+      "summary": [
+        "DIALOG_STAGING_CHECKS 18 checks 0 failures"
+      ],
+      "result_file": "dialogue_approach-camera-sync-final-headless.json",
+      "log_sha256": "39601bd4018f911441300ecbf727827353639c1120ca9f8c50e412271e217bfc"
+    },
+    {
+      "name": "dialogue_highlights",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 9.68,
+      "errors": [],
+      "summary": [
+        "DIALOGUE_HIGHLIGHTS 38 checks 0 failures",
+        "STORY_COOP_TRAPS_NET 38 checks 0 failures"
+      ],
+      "result_file": "dialogue_highlights-camera-sync-final-headless.json",
+      "log_sha256": "80774d194a9c9818a065a3d60135454c3a4bbf8c927779b12c6ae4c8ba236a1f"
+    },
+    {
+      "name": "dialogue_poses",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 6.12,
+      "errors": [],
+      "summary": [
+        "DIALOGUE_POSES 54 checks 0 failures",
+        "STORY_COOP_TRAPS_NET 54 checks 0 failures"
+      ],
+      "result_file": "dialogue_poses-camera-sync-final-headless.json",
+      "log_sha256": "d48f614db8b0887f6a30af4a7f4598421cd4f3fcbd7e9376fec4a33308fc30ba"
+    },
+    {
+      "name": "coop_progress_travel",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 1.97,
+      "errors": [],
+      "summary": [
+        "COOP_PROGRESS_TRAVEL 15 checks 0 failures"
+      ],
+      "result_file": "coop_progress_travel-camera-sync-final-headless.json",
+      "log_sha256": "bcb9322cbe9cef49a3221ee6c1ab33ad4cafd98ecc7022308ce5ba50e5dea6a8"
+    },
+    {
+      "name": "coop_progress_context",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 2.17,
+      "errors": [],
+      "summary": [
+        "COOP_PROGRESS_CONTEXT 72 checks 0 failures"
+      ],
+      "result_file": "coop_progress_context-camera-sync-final-headless.json",
+      "log_sha256": "f464ee0ae36ba176263f8296dff0931df32bbcd0e1cb05f9ed3c5c50fd45234f"
+    },
+    {
+      "name": "coop_solo_return_guards",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 2.07,
+      "errors": [],
+      "summary": [
+        "COOP_SOLO_RETURN_GUARDS 18 checks 0 failures"
+      ],
+      "result_file": "coop_solo_return_guards-camera-sync-final-headless.json",
+      "log_sha256": "b49bc40dbb6235ae4933beccd8780d7ea52e53470b7a12fbc00a3a05b9d9626e"
+    },
+    {
+      "name": "coop_fresh_start_guards",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 2.02,
+      "errors": [],
+      "summary": [
+        "COOP_FRESH_START_GUARDS 76 checks 0 failures"
+      ],
+      "result_file": "coop_fresh_start_guards-camera-sync-final-headless.json",
+      "log_sha256": "3dd13df1844386f1c1362c50f09bbcfffd01bbab4970ca82b63cd510132b9232"
+    },
+    {
+      "name": "coop_rename_reconnect",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 27.36,
+      "errors": [],
+      "summary": [
+        "COOP_RENAME_RECONNECT 145 checks 0 failures"
+      ],
+      "result_file": "coop_rename_reconnect-camera-sync-final-headless.json",
+      "log_sha256": "beeb86a22e58ac87a73aadc5929250bfa9819518b2c45cffb2a5efa2c780dbb7"
+    },
+    {
+      "name": "recovered_imports",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 2.17,
+      "errors": [],
+      "summary": [
+        "RECOVERED_IMPORTS checks=12 failures=0"
+      ],
+      "result_file": "recovered_imports-camera-sync-final-headless.json",
+      "log_sha256": "e8391962a1011057b5a9be2dff5028fba43250113d5dd98f9f8ba84d3e9c5115"
+    },
+    {
+      "name": "gipat_captive_dialogue",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 10.18,
+      "errors": [],
+      "summary": [
+        "NALO_RELOAD 27 checks 0 failures"
+      ],
+      "result_file": "gipat_captive_dialogue-camera-sync-final-headless.json",
+      "log_sha256": "0406c31eb15c5ee147608fc193d8c34c1b811a441c1bcf2f5a31b6c2171f8746"
+    },
+    {
+      "name": "save_actor_refs",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 2.02,
+      "errors": [],
+      "summary": [
+        "SAVE_ACTOR_REFS 14 checks 0 failures"
+      ],
+      "result_file": "save_actor_refs-camera-sync-final-headless.json",
+      "log_sha256": "a9cc7c143f12c58ff5705c918ee87b6900719bd45387b2965792ce3736ba6e14"
+    },
+    {
+      "name": "island_return",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 44.89,
+      "errors": [],
+      "summary": [
+        "PASS authority rechecks sequence restrictions after the map opens",
+        "ISLAND_RETURN 39 checks 0 failures",
+        "STORY_COOP_TRAPS_NET 39 checks 0 failures"
+      ],
+      "result_file": "island_return-camera-sync-final-headless.json",
+      "log_sha256": "6e5c12ad3e64f8c70594cd424438b25b4d1234d51f67d8a71643282054ed9f9b"
+    },
+    {
+      "name": "ingos_dialogue",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 28.56,
+      "errors": [],
+      "summary": [
+        "INGOS_DIALOGUE 18 checks 0 failures"
+      ],
+      "result_file": "ingos_dialogue-camera-sync-final-gl_compatibility.json",
+      "log_sha256": "6721f085d6661dc1cbd811dc97fc0f5843144bfcaa91206d39278cb65f2e0266"
+    },
+    {
+      "name": "coop_checkpoint_recovery",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 70.02,
+      "errors": [],
+      "summary": [
+        "COOP_CHECKPOINT_RECOVERY checks=26 failures=0",
+        "STORY_COOP_TRAPS_NET 26 checks 0 failures"
+      ],
+      "result_file": "coop_checkpoint_recovery-camera-sync-final-gl_compatibility.json",
+      "log_sha256": "79f099f05c62e65cc6618aa4434d070ae9dd18307617e89d9b990f5d145da13b"
+    },
+    {
+      "name": "coop_checkpoint_recovery",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 12.84,
+      "errors": [],
+      "summary": [
+        "COOP_CHECKPOINT_RECOVERY checks=26 failures=0",
+        "STORY_COOP_TRAPS_NET 26 checks 0 failures"
+      ],
+      "result_file": "coop_checkpoint_recovery-camera-sync-final-current-headless.json",
+      "log_sha256": "eb8fc66cb12d6c44418b2619bb0dbd8983f514009fe79505d4817e37a0e38495"
+    },
+    {
+      "name": "coop_progress_cleanup",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 2.12,
+      "errors": [],
+      "summary": [
+        "COOP_PROGRESS_CLEANUP checks=11 failures=0"
+      ],
+      "result_file": "coop_progress_cleanup-camera-sync-final-current-headless.json",
+      "log_sha256": "8e761ac1dde00124767952d95cc35cb038de0ccf00a2f1feb17da8a03a8967c4"
+    },
+    {
+      "name": "coop_fresh_start",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 16.84,
+      "errors": [],
+      "summary": [
+        "COOP_FRESH_START 15 checks 0 failures",
+        "COOP_RENAME_RECONNECT 15 checks 0 failures"
+      ],
+      "result_file": "coop_fresh_start-camera-sync-final-headless.json",
+      "log_sha256": "8495a5ed8eb95da0f2d8c1bbe6c882d918a2db5570f64f13a72afbbf799967ab"
+    },
+    {
+      "name": "coop_fresh_start",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 16.34,
+      "errors": [],
+      "summary": [
+        "COOP_FRESH_START 15 checks 0 failures",
+        "COOP_RENAME_RECONNECT 15 checks 0 failures"
+      ],
+      "result_file": "coop_fresh_start-camera-sync-final-early-headless.json",
+      "log_sha256": "132a2b8785689e33f4b387567e11a8608c430584dcfbc4879188947481f2326c"
+    },
+    {
+      "name": "coop_fresh_start",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 13.34,
+      "errors": [],
+      "summary": [
+        "COOP_FRESH_START 15 checks 0 failures",
+        "COOP_RENAME_RECONNECT 15 checks 0 failures"
+      ],
+      "result_file": "coop_fresh_start-camera-sync-final-lia-headless.json",
+      "log_sha256": "2479b80f14335183ec4abfd1ee3a3bd0a319932d5bc30d753f4ca6a05a76eb27"
+    }
+  ],
+  "translation_coverage": {
+    "entries": 1129,
+    "errors": 0,
+    "notes": "No new game UI strings in these follow-up fixes. Recovery instructions supplied in English, Russian and German."
+  },
+  "related_reports": [
+    "actors-controls-island-travel-2026-10-14.json",
+    "snow-footprint-seams-2026-10-14.json"
+  ],
+  "limits": [
+    "Recovery copies reflect only the attached saves, not later play.",
+    "User-provided save files and private recovery generator are not included in the public source tree.",
+    "Existing unmatched saves are not silently rebased onto a host campaign.",
+    "Windows, Android and browser executions were not rerun for these follow-up fixes.",
+    "Unreleased local changes; tests use the custom Linux engine with the modified source pack."
+  ]
+}

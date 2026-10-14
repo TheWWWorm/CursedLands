@@ -30,6 +30,7 @@ var _shoulder_unit: GameUnit
 var _shoulder_fraction := 1.0
 var _could_control := false
 var _portrait_target: GameUnit
+var _portrait_spectating := false
 var _load_resume := false
 var _look_id := -1
 var _look_refresh := 0.0
@@ -184,6 +185,7 @@ func _process(delta: float) -> void:
 	var u := leader() if on else null
 	if on != _was_active:
 		_portrait_target = null
+		_portrait_spectating = false
 		_was_active = on
 		pointer = false
 		_fire = false
@@ -205,6 +207,7 @@ func _process(delta: float) -> void:
 	if on and (_world != game.world or _hero != u):
 		if _world != game.world:
 			_portrait_target = null
+			_portrait_spectating = false
 			pointer = false
 			_load_resume = true
 			_move_id = -1
@@ -217,6 +220,16 @@ func _process(delta: float) -> void:
 		_neutral = true
 		_fire = false
 		if u: heading = u.facing
+	# Watching a co-op portrait while all owned actors are dead is temporary.
+	# Selection can return a frame after the reliable revival event, once the
+	# living snapshot arrives. Resume only then; ordinary portrait inspection
+	# and deliberate pointer mode while alive stay under the player's control.
+	if on and u and _portrait_spectating:
+		_portrait_spectating = false
+		_portrait_target = null
+		pointer = false
+		_neutral = true
+		_fire = false
 	if transitioning():
 		# Re-register control only after the destination's authority accepts
 		# input. A rejected one-shot registration otherwise leaves WASD inert.
@@ -337,6 +350,7 @@ func handle_input(e: InputEvent) -> bool:
 	if key == "direct_pointer" and e.pressed and not e.echo and can_switch():
 		pointer = not pointer
 		_portrait_target = null
+		_portrait_spectating = false
 		return true
 	if not usable() or pointer: return false
 	if e is InputEventMouseMotion:
@@ -702,6 +716,7 @@ func focus_portrait(u: GameUnit) -> void:
 	stop_move()
 	pointer = true
 	_portrait_target = u
+	_portrait_spectating = leader() == null
 	_update_view_model(null)
 	apply_camera()
 
