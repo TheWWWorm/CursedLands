@@ -8,7 +8,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.2.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.2.0), available for Linux, Windows, Android, macOS and in the [browser](https://cursedlands.wwworm.com/). It adds optional handheld graphics checks, Original graphics recovery after an interrupted check, and a staged startup graphics test. See the [release notes](docs/releases/1.2.0.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.3.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.3.0), available for Linux, Windows, Android, macOS and in the [browser](https://cursedlands.wwworm.com/). It adds moving spell casts in first- and third-person controls, refines enhanced liquids, reduces terrain and Android shader setup work, and corrects co-op reward handling. See the [release notes](docs/releases/1.3.0.md) and [versioning policy](docs/versioning.md).
 
 ## Screenshots
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.3.0 — stable release, 14 October 2026
+
+- Allow movement while casting spells in first- and third-person controls, with the same movement reduction used during attacks. Preserve casting timing, costs and effects, and keep the walking animation continuous when a cast ends.
+- Remove the repeating painted line pattern from enhanced liquids. Keep each surface's authored colour palette, with animated water ripples, mottled swamp cover and glowing lava.
+- Reuse retained terrain arrays when starting snow and sand deformation, and compute camera frustum planes once per water-reflection scan.
+- Show campaign resource and money pickup notices only to players receiving the grant. Add scripted quest items once when corpse loot and pockets share the same inventory array.
+- Compile Android GLES scene shaders on demand and omit disabled figure effects from their generated shader source. ([#3](https://github.com/TheWWWorm/CursedLands/issues/3))
+
+See [release notes](docs/releases/1.3.0.md) for compatibility and platform limits.
+
 ## 1.2.0 — stable release, 14 October 2026
 
 - Ask before running graphics checks on handheld devices, with a choice to skip and an explanation of recovery in case of a crash. Interrupted checks restore Original graphics and disable automatic retries. ([#3](https://github.com/TheWWWorm/CursedLands/issues/3))
