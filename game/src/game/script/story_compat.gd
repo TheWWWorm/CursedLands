@@ -287,6 +287,7 @@ static func recover(vm: ScriptVM) -> void:
 	# Trap recovery uses only definitions installed by apply(), in either campaign.
 	preload("res://src/game/script/story_coop_traps.gd").recover(vm)
 	preload("res://src/game/script/scene_visibility.gd").refresh(vm)
+	_recover_elder_departure(vm)
 	if vm.session.state.campaign_id != CampaignProfile.ASTRAL: return
 	var zone := String(vm.world.zone.get("id", ""))
 	if zone == "gz1h":
@@ -311,6 +312,50 @@ static func recover(vm: ScriptVM) -> void:
 			u.command({"type":"move", "to":at, "run":false, "story_move":true})
 			u.set_meta("ai_state",1)
 			return
+
+
+## The original village runs this departure check on every deployment.
+## Restoring a persistent VM must also reconcile its completed one-shot
+## check after the elder's last briefing. Replay only the inspected family;
+## its native body removes the guards and advances Revar's topics as well.
+static func _recover_elder_departure(vm: ScriptVM) -> void:
+	if vm.session.state.campaign_id != CampaignProfile.ORIGINAL or vm.world.zone.get("id", "") != "bz1g": return
+	if vm.session.state.get_var(0, "ElderEscape") != 1.0 or vm.session.state.get_var(0, "ElderRemoved") == 1.0: return
+	var family := ["WorldScript", "VCheck#0#575", "VTriger#0#576", "VTriger#0#577"]
+	if vm.instances.any(func(i): return i.sname in family and (not i.killed or not i.frames.is_empty())): return
+	var expected := P.parse("""
+DeclareScript VCheck#0#575 (this : object)
+DeclareScript VTriger#0#576 (this : object)
+DeclareScript VTriger#0#577 (this : object)
+Script VCheck#0#575 (
+ if (Not(IsEqual(GSGetVar(0, "ElderRemoved"), 1)) IsEqual(GSGetVar(0, "ElderEscape"), 1))
+ then (KillScript() VTriger#0#576(this))
+ if () then (KillScript() VTriger#0#577(this))
+)
+Script VTriger#0#576 (
+ if () then (
+  KillScript()
+  RemoveUnitFromServer(GetObjectByName("Elder"))
+  RemoveUnitFromServer(SG1) RemoveUnitFromServer(SG2)
+  GSSetVar(0, "ElderRemoved", 1)
+  GSSetVarMax(0, "b.NSheriff.nv26", 2)
+  GSSetVarMax(0, "b.NSheriff.nv27_1", 1)
+ )
+)
+Script VTriger#0#577 (if () then (KillScript() Sleep(1)))
+""")
+	for name: String in expected.scripts:
+		if vm.ast.scripts.get(name, {}) != expected.scripts[name]: return
+	# Resolve the same guard globals as the authored startup, even in saves
+	# made before those assignments; never repurpose a mod's guard bindings.
+	var guards := {"SG1":341484, "SG2":85297}
+	for name: String in guards:
+		var id := str(guards[name])
+		var assignment := [P.S_SET, name, [P.N_CALL, "GetObjectByID", [[P.N_STR, id]]]]
+		if not vm.ast.world.has(assignment): return
+	for name: String in guards:
+		vm.globals[name] = vm.world.units.get(guards[name])
+	vm.spawn("VCheck#0#575", [null])
 
 
 ## Old builds could reload zone1evil.mob after Terror's removal, then save

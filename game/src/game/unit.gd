@@ -167,6 +167,11 @@ var hidden := false:
 			if _sim_state: _sim_state.update(&"hidden", value)
 			notice_revision += 1
 var fogged := false   # out of this player's sight (UnitFog, client-side only)
+## Local conversation-camera occlusion must survive authoritative snapshots.
+var dialog_occluded := false:
+	set(value):
+		dialog_occluded = value
+		visible = not hidden and not fogged and not dialog_occluded
 
 # --- orders
 ## Transient input ownership; never written into the character/save.
@@ -3094,10 +3099,15 @@ func _do_cast(dt: float) -> void:
 	# checking the cannot-cast bit. Wands and known spells still refuse it.
 	var potion := order.has("item") and int(Items.info(String(order.item)).get("row", {}).get("item_id", -1)) == 8
 	var refused := cannot_cast() and not potion
-	if (t != null and (not is_instance_valid(t) or t.dead)) or refused:
+	# A freed Object compares equal to null, but still has TYPE_OBJECT.
+	# Preserve that distinction from an intentionally targetless point spell.
+	var lost_target: bool = (t == null and typeof(order.get("target")) == TYPE_OBJECT) \
+		or (t != null and (t.dead or t.world != world or world.units.get(t.uid) != t))
+	if lost_target or refused:
 		if refused and world.session:
 			world.session.failed(self, 9)   # "Can't cast spells"
 		order = order.get("then", {}) if refused else {}
+		path = PackedVector2Array()
 		return
 	var at: Vector2 = t.pos if t else order.point
 	var sp := Spells.parse(order.spell)
@@ -4431,7 +4441,7 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 	elif not (flags & 1) and dead:
 		revive()
 	hidden = bool(flags & 2)
-	visible = not hidden and not fogged
+	visible = not hidden and not fogged and not dialog_occluded
 	_show_severed((flags >> 2) & 63, not quiet)
 	if s.size() > 8:
 		mana = s[7]

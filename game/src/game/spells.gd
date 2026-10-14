@@ -565,6 +565,7 @@ class WorldTimers extends Node:
 static func cast_after(world: GameWorld, caster: GameUnit, spell: String, target: GameUnit, at: Vector2, secs: float) -> void:
 	var caster_ref := _ref(caster)
 	var target_ref := _ref(target)
+	var needs_target := target_ref != null and not bool(parse(spell).point)
 	# Payment belongs to GameUnit._do_cast. Restoration only schedules delivery,
 	# never re-enters that cost/consumption path. The timer is removed before fire.
 	var saved := {"k":"cast", "paid":true, "spell":spell, "caster":_caster_ref(caster),
@@ -574,6 +575,8 @@ static func cast_after(world: GameWorld, caster: GameUnit, spell: String, target
 		if c == null or c.dead or not is_instance_valid(world) or c.world != world:
 			return
 		var t: GameUnit = _deref(target_ref)
+		if needs_target and (t == null or t.dead or t.world != world or world.units.get(t.uid) != t):
+			return
 		cast_unit(world, c, spell, t, at)
 		# Hearing lasts 26 ticks at twice the caster's detectability. A spell
 		# can itself remove the caster, so resolve it again after dispatch.
@@ -703,9 +706,11 @@ static func restore_lasting(world: GameWorld, list: Array, shown := {}) -> void:
 		var rec: Dictionary = r
 		if String(rec.get("k", "")) == "cast":
 			var caster := _caster_of(world, rec.get("caster", []))
+			var target := _caster_of(world, rec.get("target", []))
+			if not rec.get("target", []).is_empty() and target == null and not bool(parse(String(rec.spell)).point): continue
 			if caster and not caster.dead and rec.get("paid", false) and float(rec.get("ticks", -1)) >= 0.0:
 				cast_after(world, caster, String(rec.spell),
-					_caster_of(world, rec.get("target", [])), Vector2(float(rec.at[0]), float(rec.at[1])), float(rec.ticks) * GameUnit.TICK)
+					target, Vector2(float(rec.at[0]), float(rec.at[1])), float(rec.ticks) * GameUnit.TICK)
 			continue
 		if String(rec.get("k", "")) == "danger":
 			if world.ai:

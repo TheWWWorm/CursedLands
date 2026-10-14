@@ -3,20 +3,21 @@ extends Node
 ## Water has its own draw layer so the viewport never samples itself.
 const WATER_LAYER := 1 << 16
 ## Camera masks have 32 bits; bit 20 is outside the default 20 scene layers.
-## No geometry uses this marker. Ordinary cameras and shadow views omit it.
+## No geometry uses this marker. Test it only outside shadow passes: Godot
+## 4.7's shadow RenderSceneDataRD does not initialize camera_visible_layers.
 const CAMERA_MARKER := 1 << 20
 ## Screen-copy effects and projected gameplay markers belong to the main
 ## view. They have no physical reflected surface and can expose their quads.
 const OMIT_SCREEN_EFFECT := """
 #if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
- if ((CAMERA_VISIBLE_LAYERS & 1048576u) != 0u) { discard; }
+ if (!IN_SHADOW_PASS && (CAMERA_VISIBLE_LAYERS & 1048576u) != 0u) { discard; }
 #endif
 """
 const REACH := 64.0
 const MAX_SIZE := 2048.0
 const CLIP := """
 #if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
- if ((CAMERA_VISIBLE_LAYERS & 1048576u) != 0u &&
+ if (!IN_SHADOW_PASS && (CAMERA_VISIBLE_LAYERS & 1048576u) != 0u &&
      (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).y < ei_water_mirror.x - 0.02) { discard; }
 #endif
 """

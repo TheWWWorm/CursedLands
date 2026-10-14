@@ -281,12 +281,12 @@ func _show(quick := false) -> void:
 	# the phrase string's length (5 + name + 2 + 5 + text + 1) · 0.05 s.
 	_timer = (13 + who.length() + text.length()) * 0.05 + (1.0 if _i == 0 else 0.0)
 	_voiced = false
-	if GameSound.instance:
-		GameSound.instance.stop_speech()
+	if hud.game.sound:
+		hud.game.sound.stop_speech()
 		#  stops the speech at each phrase
 		# the skip (param 1) jumps past the mp3 start, the last phrase included.
 		if not quick and not _skipping:
-			_voiced = GameSound.instance.speech(_brief, int(p.get("n", _i + 1)))
+			_voiced = hud.game.sound.speech(_brief, int(p.get("n", _i + 1)))
 
 
 func _next() -> void:
@@ -380,14 +380,14 @@ func _item_name(spec: String) -> String:
 func _finish() -> void:
 	_mode = HIDDEN
 	visible = false
-	if GameSound.instance:
-		GameSound.instance.stop_speech()
+	if hud.game.sound:
+		hud.game.sound.stop_speech()
 	hud.game.issue({"t": "dialog_done", "id": _id})
 
 
 func _click_sound() -> void:
-	if GameSound.instance:
-		GameSound.instance.ui("buttons\\base\\click1.wav")
+	if hud.game.sound:
+		hud.game.sound.ui("buttons\\base\\click1.wav")
 
 
 # ------------------------------------------------------------------ ScrollText
@@ -734,7 +734,7 @@ func _process(dt: float) -> void:
 			_after_scroll()
 	if _mode == PLAYING:
 		if _voiced:
-			if GameSound.instance == null or not GameSound.instance.speaking():
+			if hud.game.sound == null or not hud.game.sound.speaking():
 				_next()
 		else:
 			_timer -= dt
@@ -996,14 +996,14 @@ func _aim_camera(p: Dictionary) -> void:
 	for k: String in (s[2] if s.size() > 2 else []):
 		var u: GameUnit = g.world.units.get(int(_cast.get(k, -1)))
 		if u and u.visible:
-			u.visible = false
+			u.dialog_occluded = true
 			_hidden_units.append(u)
 
 
 func _show_units() -> void:
 	for u in _hidden_units:
 		if is_instance_valid(u):
-			u.visible = true
+			u.dialog_occluded = false
 	_hidden_units.clear()
 
 
@@ -1028,6 +1028,10 @@ func _hide_hud(on: bool) -> void:
 
 
 func _end_view() -> void:
+	# Remote completion and scene transitions hide the panel without _finish.
+	if hud.game.sound:
+		hud.game.sound.stop_speech()
+	_voiced = false
 	_end_actor_poses()
 	_aimed = {}
 	_show_units()

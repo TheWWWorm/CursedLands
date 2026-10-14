@@ -2537,6 +2537,11 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			var spell := String(cmd.get("spell", "")).to_lower()
 			if u and not u.dead and not u.blocked and Spells.known_usable(u, spell):
 				var tu: GameUnit = world.units.get(int(cmd.get("target", -1)))
+				# A target can leave the world between picking and authority.
+				# Missing targets must not turn into a point at the caster's feet
+				# (multitarget selection would then choose the caster).
+				if cmd.has("target") and (tu == null or tu.dead): return
+				if tu == null and (not Spells.parse(spell).point or not cmd.has("x") or not cmd.has("y")): return
 				u.command({"type": "cast", "spell": spell, "target": tu, "path_notice": true, "known_spell": true,
 					"in_place": cmd.t == "direct_cast",
 					"point": Vector2(float(cmd.get("x", u.pos.x)), float(cmd.get("y", u.pos.y)))})

@@ -1079,13 +1079,6 @@ static func on(name: String) -> bool:
 	return GameData.option(name) != 0
 
 
-## Sun shadow casters: everything but the land, on every renderer. The 2000
-## renderer has no terrain self-shadowing by default (the height march
-##   runs only with map flag 0x10, which
-##  clears unless the registry EnableSelfShadowing is set, default
-## 0); only figure shadows darken the ground. Godot's map
-## the coarse land also made hard bands and patches on hills. Bridges also sit
-## on layer 1, so they still cast. Keeps the caller's other exclusions.
 ## GLES3 (Compatibility) renders a shadowed directional light in a separate
 ## additive pass after the base pass that holds the point lights; light_code's
 ## max()ed point lights then write only their excess over the sun.
@@ -1096,7 +1089,10 @@ static func sync_sun_pass(sun: DirectionalLight3D) -> void:
 
 
 static func setup_sun_casters(sun: DirectionalLight3D) -> void:
-	sun.shadow_caster_mask &= ~(EITerrain.SHADOW_RECEIVER_LAYER | EITerrain.DECAL_LAYER)
+	# Land must occlude the sun as well as receive figure shadows. Otherwise
+	# actors cast shadows inside valleys whose enclosing hills cast none.
+	sun.shadow_caster_mask |= EITerrain.SHADOW_RECEIVER_LAYER
+	sun.shadow_caster_mask &= ~EITerrain.DECAL_LAYER
 
 
 ## Remake render quality (Options → remake effects, rows 6..9; defaults = the

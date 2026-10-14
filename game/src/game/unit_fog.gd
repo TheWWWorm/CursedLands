@@ -82,7 +82,7 @@ func _process(dt: float) -> void:
 	var talk := not game.session.multiplayer_game and game.rig != null and game.rig.held
 	for u: GameUnit in w.unit_rows():
 		u.fogged = on and not talk and not _always.has(u.uid) and not sees(eyes, u)
-		var want := not u.hidden and not u.fogged
+		var want := not u.hidden and not u.fogged and not u.dialog_occluded
 		if u.visible != want:
 			# Shown: drawn where it stands now, not where it was last drawn
 			# before it was hidden (GameUnit.resync_drawn, on the visibility

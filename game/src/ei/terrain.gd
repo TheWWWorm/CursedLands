@@ -15,7 +15,7 @@ const VERTS := 33           # vertices per sector side
 const TILES := 16           # texture tiles per sector side (each covers 2x2 quads)
 const NO_LIQUID := 0xFFFF
 ## Dedicated land receiver/caster identity; bit 18 remains the decal layer.
-## Replacing default layer 1 lets the object-only shadow map exclude land.
+## Separate from figure and decal layers so light masks can address land.
 const SHADOW_RECEIVER_LAYER := 1 << 17
 # The original atlas tiles already contain an 8-pixel sampling border.
 #  uses coordinates 8, tile_size / 2

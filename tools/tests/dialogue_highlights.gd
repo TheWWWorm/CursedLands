@@ -113,12 +113,22 @@ func _ready() -> void:
 		# suppress the cue even when a snapshot no longer marks it busy.
 		ready_npc(s)
 		check(not lit(s),"peer %d has no cue during phrases"%s.my_index)
-	# A local finish hides the panel before its reliable command round trip.
-	client.game.hud._dialog.visible=false
-	check(not lit(client),"local UI close cannot relight before host confirmation")
+	# Camera-local occlusion survives real authoritative snapshot delivery.
+	var remote_actor := npc(client)
+	remote_actor.dialog_occluded = true
+	client.game.hud._dialog._hidden_units.append(remote_actor)
+	host._send_snapshot_records([npc(host).snapshot()], host.world.time)
+	await frames(10)
+	check(not remote_actor.visible,"snapshot delivery preserves conversation-camera actor occlusion")
+	# Keep an actual speech stream active at the remote-close boundary.
+	var voiced := client.game.sound.speech(client.game.hud._dialog._brief, 1)
+	check(voiced and client.game.sound.speaking(),"guest has an active original dialogue voice before remote close")
+	check(not lit(client),"active conversation stays unhighlighted before host confirmation")
 	# Observe the exact close-event boundary while campaign delivery is delayed.
 	host.broadcast({"t":"dialog_close","id":topic,"completed":topic,"player":1})
 	check(await until(func():return not host.game.hud._dialog.visible and not client.game.hud._dialog.visible),"close event reaches both panels")
+	check(not client.game.sound.speaking(),"remote dialogue completion stops the last guest voice")
+	check(not remote_actor.dialog_occluded and remote_actor.visible,"dialogue close releases camera-local actor occlusion")
 	await frames(4)
 	check(client.state.get_pvar(1,topic)==1,"close boundary still has old guest topic state")
 	check(not lit(client),"consumed topic stays dark before campaign state arrives")

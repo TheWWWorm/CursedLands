@@ -288,7 +288,7 @@ func _build_scene() -> void:
 				continue
 			if not is_equal_approx(session.state.get_var(0, "z." + to), 2.0):
 				continue
-			if _pieces[pi].state == 2 and not start_zones.has(_pieces[pi].id):
+			if _pieces[pi].state == 2 and not _separate_brief(pi):
 				_pieces[pi].link = _briefs.size()
 			var mats := []
 			var n := _add_figure(String(bz.figure).to_lower(), sys, bz.get("position", Vector3.ZERO), 0.3, mats)
@@ -605,8 +605,8 @@ func _button_at(p: Vector2) -> int:
 			return i
 	for i in _briefs.size():
 		if _screen_rect(_briefs[i].node).has_point(p):
-			if start_zones.has(_pieces[_briefs[i].zone].id) and not _figure_at(_briefs[i].node, p):
-				continue   # beside the village model: the starting area's piece
+			if _separate_brief(_briefs[i].zone) and not _figure_at(_briefs[i].node, p):
+				continue   # beside the settlement model: the outdoor area's piece
 			return i + 3
 	return -1
 
@@ -825,11 +825,11 @@ func _apply_highlight() -> void:
 	if _hover >= 0:
 		if _hover_brief:
 			hb = _hover
-			if _link and not start_zones.has(_pieces[_briefs[_hover].zone].id):
+			if _link and not _separate_brief(_briefs[_hover].zone):
 				hz = _briefs[_hover].zone
 		else:
 			hz = _hover
-			if _link:
+			if _link and not _separate_brief(_hover):
 				hb = _pieces[_hover].link
 	for i in _pieces.size():
 		var pc: Dictionary = _pieces[i]
@@ -870,7 +870,7 @@ func _on_press(p: Vector2) -> void:
 		if i < 0 or _pieces[i].state == 0:
 			return
 		_sound("ok")
-		if not (_link and _pieces[i].link >= 0):
+		if _separate_brief(i) or not (_link and _pieces[i].link >= 0):
 			open_objectives(_pieces[i].id)
 			return
 		# Gipat: a piece linked to its village travels there.
@@ -882,6 +882,13 @@ func _on_press(p: Vector2) -> void:
 	if o.is_empty() or not leader:
 		return
 	picked.emit(o)
+
+
+## The healer's cave and its surrounding troll/trap area are distinct
+## destinations, even after the field is completed. Keep the existing
+## optional starting-area behavior for the village's own map piece.
+func _separate_brief(piece: int) -> bool:
+	return _pieces[piece].id == "gz2g" or start_zones.has(_pieces[piece].id)
 
 
 ## The quickest offered route to `id` (Session travel_options).

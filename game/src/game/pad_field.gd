@@ -891,9 +891,8 @@ func open_keyboard_aim() -> void:
 	var u := game.pick_unit(point, leader())
 	close_wheel()
 	_ring_target = {"unit":u} if u and not u.dead and game.world.is_enemy(leader(), u) else {}
-	_stop_moving()
+	if not direct: _stop_moving()
 	if game.direct:
-		game.direct.stop_move()
 		game.direct._fire = false
 		game.direct._capture(false)
 	_keyboard_aim = true
@@ -903,7 +902,7 @@ func open_keyboard_aim() -> void:
 	wheel.hints = []
 	wheel.open(aim_entries(), -1, 0.5, true)
 	get_viewport().warp_mouse(wheel.get_global_transform_with_canvas() * wheel._geom()[0])
-	_hold_pause(true)
+	_hold_pause(not direct)
 
 
 func finish_keyboard_aim() -> void:

@@ -171,8 +171,7 @@ func _setup_env() -> void:
 		sun_grid_lock = true
 		sun.light_specular = Gfx.SUN_MARK
 	sun.shadow_enabled = true
-	# Out-of-view figures cast nothing, and neither does the land
-	# (Gfx.setup_sun_casters, below).
+	# Out-of-view figures cast nothing. Land and visible figures share the sun.
 	sun.shadow_caster_mask = 0xFFFFFFFF & ~GameUnit.OFFSCREEN_LAYER
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS
 	sun.directional_shadow_max_distance = 220.0
@@ -264,7 +263,11 @@ func reset_speed() -> void:
 
 ## Cursor by what is under the mouse (the original cursor set, GameCursor).
 func _update_cursor() -> void:
-	if direct and direct.active() and not direct.pointer: return
+	if direct and direct.active() and not direct.pointer:
+		# Direct play hides the OS cursor, but menus and the aim wheel reveal
+		# it again. Do not leave a tactical spell/aim cursor cached underneath.
+		cursor.set_kind("cursor_default")
+		return
 	if cursor.camera_drag_active():
 		cursor.set_kind("cursor_camera")
 		return

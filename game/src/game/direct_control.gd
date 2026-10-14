@@ -157,11 +157,11 @@ func leader() -> GameUnit:
 	return null
 
 
-func usable() -> bool:
+func usable(allow_aim_wheel := false) -> bool:
 	if not active() or leader() == null or not game.rig._window_focused or game.rig.held \
 		or transitioning() or game.session.movie_active() or game.hud.blocks_camera(): return false
 	var f := field()
-	if f and (f.cursor_mode or f.wheel.visible): return false
+	if f and (f.cursor_mode or (f.wheel.visible and not (allow_aim_wheel and f._keyboard_aim))): return false
 	var focus := get_viewport().gui_get_focus_owner()
 	return not (focus is LineEdit or focus is TextEdit)
 
@@ -243,7 +243,7 @@ func _process(delta: float) -> void:
 				game.session.submit({"t":"direct_control","leader":control_id})
 			_control_id = control_id
 	if not on: _world = game.world
-	var can := usable() and not pointer
+	var can := usable(true) and not pointer
 	if can and _load_resume:
 		_load_resume = false
 		# Keyboard movement may continue through a loading screen. A held
@@ -253,7 +253,7 @@ func _process(delta: float) -> void:
 		game.session.submit({"t":"direct_cancel","units":[u.uid]})
 	_could_control = can
 	_update_view_model(u.model if on and u and _first_person_view(u) and not is_instance_valid(_portrait_target) and not game.rig.held and not game.session.movie_active() else null)
-	_capture(can and PadInput.active != "pad")
+	_capture(can and PadInput.active != "pad" and not (field() and field()._keyboard_aim))
 	_advance_posture(delta / maxf(Engine.time_scale, 0.001))
 	if not can:
 		_fire = false

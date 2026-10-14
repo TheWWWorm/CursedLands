@@ -1,0 +1,214 @@
+{
+  "schema": 1,
+  "date": "2026-10-15",
+  "base_release": "v1.3.1",
+  "base_commit": "07b87a1565eecc23188a2c5e35d89584137fe6b8",
+  "branch": "fix/gameplay-dialogue-shadows",
+  "publication": "Local fixes and Linux test build; no release, version change, tag or upload.",
+  "changes": {
+    "dialogue": "Keep conversation-camera actor occlusion independent of snapshot/fog visibility; stop the owning session speech on remote close and scene hide.",
+    "input": "Keep first/third-person steering active while the keyboard Alt aim wheel owns the mouse; reset cached tactical cursors before menus reveal them.",
+    "story": "On restored original Gipat village visits, replay the inspected Elder departure family after ElderEscape, including guards and Revar topics; exact script-signature guard preserves mods.",
+    "travel": "Completed gz2g field remains separately clickable from bz2g healer cave; use cave model triangles for its own hit area.",
+    "preview": "Restore native info_scale/altitude framing for large creatures; full wingspan no longer shrinks the body.",
+    "spells": "Reject disappeared explicit targets at authority, during approach and during paid windup/save restoration instead of falling back to the caster location. Freed Object references are distinguished from intentional null point targets by TYPE_OBJECT, because Godot compares freed objects equal to null.",
+    "shadows": "Exclude shadow passes from reflection-camera clipping; include terrain in sun casters while keeping decal and offscreen-unit exclusions."
+  },
+  "shadow_cause": {
+    "source": "Godot 4.7 RenderSceneDataRD.camera_visible_layers is uninitialized in RenderForwardClustered::_render_shadow_append, then copied into the scene UBO.",
+    "effect": "The old reflection clipping shader could read the arbitrary marker bit during a shadow pass and discard geometry below the last reflection water level. This reproduces detached head shadows and missing fence rails; a change in that bit restores them.",
+    "engine_files": {
+      "servers/rendering/renderer_rd/storage_rd/render_scene_data_rd.h": 49,
+      "servers/rendering/renderer_rd/storage_rd/render_scene_data_rd.cpp": 129,
+      "servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp": 2809
+    },
+    "fix": "Gate both reflection-only discard paths with !IN_SHADOW_PASS. No engine or native-library changes.",
+    "deterministic_replay": "Inject the undefined marker only in the shadow pass. Compare actual humanoid, first-person shadow proxies and fence-shaped scenery using production shaders against an independent no-clip reference at two camera positions.",
+    "before": "Old shadow shader failed all six complete-shadow comparisons; head-only and partial-fence silhouettes captured.",
+    "after": "Fixed shader equals reference pixels in all six cases; removing the guard reproduces 116-316 changed pixels at 320x240; clearing the arbitrary marker restores the reference.",
+    "lifecycle": "Original Ingos lake reflection, then bz8k -> bz1g -> bz8k, twelve camera/preview cycles and repeated first-person movement; 23 assertions pass."
+  },
+  "original_executable_reference": {
+    "binary": "inspection/extracted/app/game.exe",
+    "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+    "melee": "0x54ca40, 0x54c070 and 0x54c2f0 use planar reach and obstruction tests without flying-target immunity. Melee may hit a dragon within reach; gameplay unchanged.",
+    "preview": "0x648290 reads info_scale and altitude for unit preview framing. Existing native draw reconstruction documents the clipped 1/info_scale presentation; the remake full-bounds fit was removed.",
+    "evidence": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/original-melee-preview.json",
+    "rea_snapshot": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/original-reference.rea"
+  },
+  "runtime": {
+    "os": "Ubuntu Linux 24.04",
+    "gpu": "NVIDIA RTX 3090",
+    "engine": "Exact released 1.3.1 custom Godot 4.7 executable for rendered runs; stock 4.7 editor for headless source checks.",
+    "artifacts": {
+      "CursedLands.pck": "09a13e7bdbb770c061d8b3b190c5acfac085363d612e95ff90036d6b7e3a23a4",
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+    },
+    "source_pack": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/build-next/CursedLands.pck",
+    "rendered_pack_sha256": "8ea5f0734ae738b40e7f01cb6c8f85202ad76bbe61bdaf5efabdc04e6477a272",
+    "final_pack_delta": "After rendered checks, only the cast lost-target test changed from null comparison to TYPE_OBJECT. Four spell regression suites then passed on the final exported pack (161 assertions). Rendering sources are unchanged."
+  },
+  "validation": {
+    "assertions": 466,
+    "failures": 0,
+    "runs": [
+      {
+        "fixture": "tools/tests/gameplay_report_regressions.gd",
+        "assertions": 35,
+        "renderer": "headless",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/final-cast/gameplay_report_regressions/run.log",
+        "runtime": "final exported pack, released custom engine"
+      },
+      {
+        "fixture": "tools/tests/elder_departure.gd",
+        "assertions": 6,
+        "renderer": "headless",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/regressions/elder_departure/run.log"
+      },
+      {
+        "fixture": "tools/tests/dialogue_highlights.gd",
+        "assertions": 42,
+        "renderer": "headless ENet host + guest",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/regressions/dialogue_highlights/run.log"
+      },
+      {
+        "fixture": "tools/tests/delayed_cast_lifetime.gd",
+        "assertions": 32,
+        "renderer": "headless, Lost in Astral",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/final-cast/delayed_cast_lifetime/run.log",
+        "runtime": "final exported pack, released custom engine"
+      },
+      {
+        "fixture": "tools/tests/repeated_spells.gd",
+        "assertions": 86,
+        "renderer": "headless",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/final-cast/repeated_spells/run.log",
+        "runtime": "final exported pack, released custom engine"
+      },
+      {
+        "fixture": "tools/tests/save_consumed_cast.gd",
+        "assertions": 8,
+        "renderer": "headless",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/final-cast/save_consumed_cast/run.log",
+        "runtime": "final exported pack, released custom engine"
+      },
+      {
+        "fixture": "tools/tests/direct_camera_stability.gd",
+        "assertions": 25,
+        "renderer": "headless",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/regressions/direct_camera_stability/run.log"
+      },
+      {
+        "fixture": "tools/tests/direct_moving_casts.gd",
+        "assertions": 50,
+        "renderer": "headless",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/regressions/direct_moving_casts/run.log"
+      },
+      {
+        "fixture": "tools/tests/reflection_shadow_integrity.gd",
+        "assertions": 44,
+        "renderer": "Forward+ Vulkan",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/rendered-final/reflection-shadow/run.log"
+      },
+      {
+        "fixture": "tools/tests/shadow_lifecycle.gd",
+        "assertions": 23,
+        "renderer": "Forward+ Vulkan, enhanced water and characters",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/rendered-final/shadow-lifecycle-enhanced/run.log"
+      },
+      {
+        "fixture": "tools/tests/water_reflection_regressions.gd",
+        "assertions": 32,
+        "renderer": "Forward+ Vulkan",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/rendered-final/water-reflection-regressions/run.log"
+      },
+      {
+        "fixture": "tools/tests/terrain_sun_shadows.gd",
+        "assertions": 14,
+        "renderer": "Forward+ Vulkan",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/terrain-sun.log"
+      },
+      {
+        "fixture": "tools/tests/terrain_sun_shadows.gd",
+        "assertions": 14,
+        "renderer": "Compatibility OpenGL",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/rendered-final/terrain-sun-compatibility/run.log"
+      },
+      {
+        "fixture": "tools/tests/travel_preview_regressions.gd",
+        "assertions": 55,
+        "renderer": "Forward+ Vulkan, EN/RU/DE",
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/rendered-final/travel-preview/run.log"
+      }
+    ],
+    "translations": {
+      "entries": 1149,
+      "errors": 0,
+      "languages": [
+        "English",
+        "Russian",
+        "German"
+      ],
+      "new_player_strings": 0,
+      "layout": "Original text archives loaded; dragon, troll and hero names fit; native preview scale stable through animation."
+    },
+    "git_diff_check": "passed",
+    "linux_export": "passed"
+  },
+  "limits": [
+    "The user did not identify the spell/rune combination. Arrow, Lightning and Fireball with t1 approach before spending mana; no ordinary distant-target self-cast reproduced. The disappeared-target fallback is fixed, including saved paid casts.",
+    "The undefined shadow-mask state was forced deterministically. Its spontaneous driver/stack trigger was not reproduced reliably in the lifecycle run.",
+    "Rendered acceptance is Linux NVIDIA Vulkan and OpenGL, not Windows/D3D12, macOS or mobile.",
+    "Prepared campaign states and actual original assets were used; this is not a complete campaign playthrough.",
+    "An initial delayed-cast run used the wrong campaign data and timed out; corrected Lost in Astral run passes 32 checks. An initial rendered lifecycle run lacked fixture window focus; after fixing that test setup all 23 checks pass.",
+    "The final lifecycle invocation logged a nonfatal shader-cache-directory initialization error; render checks and captures completed, with no script or shader compilation failures."
+  ],
+  "source_sha256": {
+    "game/src/ei/terrain.gd": "7ce1a8201478a7fac2ac5e7c12832558ecd90849d4a6bccf9431a8b59c4048e4",
+    "game/src/game/direct_control.gd": "9e1ee5977dbdf7ce83a6584782d4b82e71cebfa5bab43f342bede15b328f4092",
+    "game/src/game/fx/water_reflection.gd": "7d696d29253cf6a15108f7e0fac69a33588e314a105be4b9d80bb260139adaf1",
+    "game/src/game/game.gd": "2395899d9ac2f8aacaa4d5eb30c1418de7ea3e35c24d79716d8a3320d235de35",
+    "game/src/game/gfx.gd": "73bb7fb76dba524fb4a6ea5fe91b4cd1bd01a038625de5cfe8272d07a3455505",
+    "game/src/game/pad_field.gd": "3a3c90682204f9af310ab23a91d2643a6523cfdeae609f8c269a5b141ee658bd",
+    "game/src/game/script/story_compat.gd": "ec109e96a06ebf8d1e1435ee1aab4d7967aa67767b00a328921c8be39b77c6c6",
+    "game/src/game/session.gd": "fd2119abff320ab5bd17190fa0231b180cd1be43fa5c21f13e4fa6e0ef36e766",
+    "game/src/game/spells.gd": "05aa419afae955fbf8bcc77dfd05e0073f87eacd75c4453e46b87ea50b4eb7a2",
+    "game/src/game/unit.gd": "d4cc64d27208b146046bbb806f5d7d5084ed59d7cf3fe0b6ac1c548c6f6f08de",
+    "game/src/game/unit_fog.gd": "1a0c84fe8f0e0a6d9029ce0d594c9e44ec37c373f3d4eb3215371359cdcc97b3",
+    "game/src/ui/dialog_panel.gd": "add4e1cd58940783cad26d0bcf56b70d133819293dc1b24d58f4801e179e1e29",
+    "game/src/ui/paperdoll.gd": "4025967262e4940085d18607771505ac7f1267594963c5a01b0398c932cafeb6",
+    "game/src/ui/travel_map.gd": "d8e95d38aa72a2fd3cec9186e66c6701bbc85d55ec402434cb4de186bca0c8e2"
+  },
+  "fixture_sha256": {
+    "tools/tests/delayed_cast_lifetime.gd": "74da1743c48568e9421936df179a47537d456bfae2680a95eb7fe16620d17c1d",
+    "tools/tests/dialogue_highlights.gd": "d8966dd5bc2b7912f97828e8c854575bd0364fc8c480a622aaa91bfd7ab89dca",
+    "tools/tests/direct_camera_stability.gd": "13aae3a76cc540c591854bf56d92e09bf0c8add7ddb95b10fd827c3a537d826c",
+    "tools/tests/direct_moving_casts.gd": "6d1de4e0678f4df6f53ff9c845855bc3ab5e39f6d4c870f3eef2a79cd7b4601e",
+    "tools/tests/elder_departure.gd": "38ef0ac7d8a30c01254aac8ed4c14d5dcf32c14a5a9aa204f78984f93a222b8e",
+    "tools/tests/gameplay_report_regressions.gd": "b56b6fe72a3588a7d8716d4dd60c5f9da7e0868e5df845594aa884f9123f9392",
+    "tools/tests/reflection_shadow_integrity.gd": "2ffdfaeefecb46742bea634ed40ce97673132b5e23a6e680e183a925846f1414",
+    "tools/tests/repeated_spells.gd": "7e4c207d9b7f65133e7e081a8cf33ba7a76610a0bc8c438f8211864ac3ef3970",
+    "tools/tests/save_consumed_cast.gd": "a7a71f839bb4f100d552fe226a998f95ff9932b88e3fb59b3235b9dfc3d93303",
+    "tools/tests/shadow_lifecycle.gd": "f878a04d73c6391f21678b468316532cb661d0925a549ae16467cc84b6974510",
+    "tools/tests/terrain_sun_shadows.gd": "492adeabadc9797e705aaa134665829bcc17839af897210e2b58a65505d4253c",
+    "tools/tests/travel_preview_regressions.gd": "5834405638e7426fee4404d998c74909184e88ec52121e8d4753778ea75d0bdd",
+    "tools/tests/water_reflection_regressions.gd": "735e69d6440cb9d43c288e2f0d44ee3b1d5f134b4dffc5a781ff01518274e827"
+  },
+  "report_started": "2026-10-14"
+}

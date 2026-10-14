@@ -388,41 +388,9 @@ func _exe_frame() -> void:
 		* Basis(Vector3(0, 0, 1), h * 0.4)
 	_pivot.transform = Transform3D((to_godot * rot * ei_local.inverse()).scaled_local(Vector3.ONE / b),
 		to_godot * Vector3(x, y, EXE_DEPTH))
-	# Redressable characters (the original race class 0x32) keep their
-	# authored scale, including hats and weapons entering the label margin.
-	var race := GameData.db.find("race_models", proto.get("base_race", ""))
-	if int(race.get("type_id", 0)) != 0x32:
-		_fit_large_preview()
-
-
-func _fit_large_preview() -> void:
-	# Keep authored framing for ordinary figures, but bound oversized creature
-	# variants to the panel and leave its name and health strip readable.
-	var points := PackedVector3Array()
-	for mi: MeshInstance3D in _model.find_children("*", "MeshInstance3D", true, false):
-		if mi.mesh == null or not _shown_part(mi): continue
-		for p: Vector3 in mi.mesh.get_faces():
-			points.append(mi.global_transform * p)
-	if points.is_empty(): return
-	var bounds := Rect2()
-	var box := AABB(points[0], Vector3.ZERO)
-	for i in points.size():
-		var p := points[i]
-		var screen := Vector2(p.x, -p.y) * (400.0 / (EXE_K * maxf(-p.z, 0.01))) + Vector2(400, 300)
-		bounds = Rect2(screen, Vector2.ZERO) if i == 0 else bounds.expand(screen)
-		box = box.expand(p)
-	# Experimental 2 used the authored scale and foot position. A normal
-	# creature can extend into the bar/name margins without being oversized;
-	# recentering those figures made boars, wolves and rats float and shrink.
-	if bounds.size.x <= exe_rect.size.x and bounds.size.y <= exe_rect.size.y:
-		return
-	var area := Rect2(exe_rect.position + Vector2(8, 24), exe_rect.size - Vector2(16, 54))
-	if area.encloses(bounds): return
-	var fit := minf(1.0, minf(area.size.x / maxf(bounds.size.x, 1.0), area.size.y / maxf(bounds.size.y, 1.0))) * 0.94
-	var centre := box.get_center()
-	var target := (area.get_center() - Vector2(400, 300)) * (EXE_K * -centre.z / 400.0)
-	_pivot.transform = Transform3D(_pivot.basis.scaled_local(Vector3.ONE * fit),
-		centre + (_pivot.position - centre) * fit + Vector3(target.x - centre.x, -target.y - centre.y, 0))
+	# Native 648290/646260 use info_scale and altitude even for large
+	# creatures. The viewport clips wings/tails; fitting their full span
+	# instead makes the dragon's body unreadably small.
 
 
 func _camp_transform() -> void:
