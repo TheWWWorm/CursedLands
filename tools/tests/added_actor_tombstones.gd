@@ -29,7 +29,7 @@ func _ready() -> void:
 	check(host.world.looted.get(QUEEN)==queen and original_dead(queen),"death and loot retain the live VM identity")
 	check(host.state.get_var(0,QUEST+".1")==1,"save boundary precedes next original death predicate poll")
 	check(host.save_game("queen-dead-looted")==OK,"save pending gate with looted added actor")
-	var saved:=CampaignState.read_data(SaveInfo.path("queen-dead-looted"))
+	var saved: Variant=CampaignState.read_data(SaveInfo.path("queen-dead-looted"))
 	check(saved.zones.gz5g.looted.has(QUEEN) and saved.zones.gz5g.removed.has(QUEEN),"writer records removed and looted extra-mob identity")
 	for mode: String in ["current","legacy-carried","legacy-units"]:
 		var data: Dictionary=saved.duplicate(true)

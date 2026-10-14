@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-15",
+  "kind": "local-unpublished-validation",
+  "base": "v1.3.1",
+  "prior_fix_commits": [
+    "b64c89e",
+    "0a455b4"
+  ],
+  "problem": "Quest-triggered removal of an already-looted actor freed a retained tombstone through the generic Node3D removal fallback. CampaignState.store_zone then accessed a freed instance while building co-op progress or a full save.",
+  "changes": [
+    "RemoveUnitFromServer and RemoveObjectFromServer leave retained looted GameUnit objects intact, while still removing living actors and scenery.",
+    "Checkpoint capture skips invalid retained objects before reading pet metadata, keeping looted IDs and the rest of the checkpoint.",
+    "Add native population-replacement and optional private-save worker regressions; make the existing tombstone test explicit about its Variant save data."
+  ],
+  "input": {
+    "campaign": "cursed_lands",
+    "zone": "gz12k",
+    "save": "Latest base-campaign quicksave supplied privately on 2026-10-15",
+    "sha256": "24c7e36c0258f2d471f144898151b447dfe335c6ff9c4cbf5a20d91bdddef184",
+    "private_inputs_committed": false,
+    "original_archive_unchanged": true,
+    "source_save_unchanged_after_test": true,
+    "guest_fixture": "Personal context, purse and acknowledged tally derived from the host save inside an isolated profile; no user save is edited."
+  },
+  "native_transition": {
+    "object_id": 5657,
+    "object_name": "Mine1",
+    "quest_objective": "q.gz12k.q54k.3",
+    "completed_quest": "q.gz12k.q54k",
+    "new_quest": "q.gz14k.q55k",
+    "population_scripts": [
+      "VTriger#0#248",
+      "VTriger#0#249"
+    ],
+    "movement": "Real submitted commands for host and guest, with the original VM running; no teleports or quest flag edits."
+  },
+  "before": {
+    "fixture": "tools/tests/quest_checkpoint_worker.gd",
+    "engine": "Exact released custom Godot 4.7 Linux executable and 1.3.1 pack",
+    "result": "Fails automatically during the quest-progress checkpoint; both frontends stop receiving simulation and movement, while still accepting commands.",
+    "expected_failure_log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/coop-freeze/baseline-final/run.log",
+    "log_sha256": "e0a5ee95362c09402a421788ebf32f10346f8fa73c45386c24d21e152bf76bbc",
+    "confirming_probe_exit_code": 139,
+    "confirming_probe_log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/coop-freeze/release-clean/run.log",
+    "source_editor_diagnostic": "Trying to assign invalid previously freed instance at CampaignState.store_zone (old line 1120).",
+    "manual_save_control": "An unmatched guest avoids the automatic full checkpoint; a later full host save reproduces the same worker failure."
+  },
+  "after": {
+    "checks": 128,
+    "failures": 0,
+    "runs": [
+      {
+        "fixture": "tools/tests/quest_actor_removal.gd",
+        "checks": 24,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/coop-freeze/removal/run.log",
+        "log_sha256": "b688ef1e19f77eb06a9178ceaff28af12efae930561cd68325297cf9b705d552"
+      },
+      {
+        "fixture": "tools/tests/added_actor_tombstones.gd",
+        "checks": 34,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/coop-freeze/added_actor_tombstones/run.log",
+        "log_sha256": "46eac07fa050ec0e1d71dabbecaf4d3a87d7cb7def355fb386bcc1961812a775"
+      },
+      {
+        "fixture": "tools/tests/cave_queen_route.gd",
+        "checks": 38,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/coop-freeze/cave_queen_route/run.log",
+        "log_sha256": "31b86bbf9ad017e119e3af7369b984d92e8f3de65dfae4c04c65f2abf004dfd4"
+      },
+      {
+        "fixture": "tools/tests/quest_checkpoint_worker.gd",
+        "checks": 32,
+        "failures": 0,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/coop-freeze/candidate-final/run.log",
+        "log_sha256": "a3cb20ffaff2c51741c27745992b04d3693e430b3cdd8192e3d347bbeba9eb7b"
+      }
+    ],
+    "coverage": [
+      "Native group removal after looting, retained IsDead/WasLooted identity, save/reload and live actor/scenery removal.",
+      "Defensive full checkpoint capture with an intentionally stale retained entry.",
+      "Added-mob queen death/loot/load identities and original cave quest co-op reconnection.",
+      "Shipping worker plus two ENet clients: mine quest completion, automatic personal progress, continued movement, full save/reload, movement after reload, menu shutdown, immediate same-port hosting and reload."
+    ]
+  },
+  "export": {
+    "linux": {
+      "pck_sha256": "fa0b5a0850febfa5d6609284b56e3dc7919d7c1847c00377c9ac09701c535763",
+      "resources": 730,
+      "scripts": 288,
+      "private_data_bundled": false
+    },
+    "windows": {
+      "pck_sha256": "fa0b5a0850febfa5d6609284b56e3dc7919d7c1847c00377c9ac09701c535763",
+      "resources": 730,
+      "scripts": 288,
+      "private_data_bundled": false
+    },
+    "compiled_scripts_identical": true
+  },
+  "source_sha256": {
+    "game/src/game/script/vm.gd": "09ef4d158f8f5eb937070700c67648c03f1b3617e94c17042ffc5f8252c00169",
+    "game/src/game/campaign_state.gd": "444a16258520987ce6a3ee641d35b5b38c8957a4c2287d1958670e0a0b365ed1",
+    "tools/tests/quest_actor_removal.gd": "a339f744553f9eafd498f8f6652ebf94b92bdae59052b6afd183878b5ac73b0d",
+    "tools/tests/quest_checkpoint_worker.gd": "ddd043783e273f0b2a7f24b505923dd889b28de0b6226a52b1042c6b3ca276b3",
+    "tools/tests/added_actor_tombstones.gd": "a99ac9e8fbdd8f1825692bda6026d2f1b0844d1e2406e24e609e0c52bc925ca4"
+  },
+  "localization": {
+    "new_player_visible_strings": false,
+    "catalog_entries": 1164,
+    "errors": 0
+  },
+  "limits": [
+    "Runtime tests ran on Linux with original base-game assets. The supplied cosmetic texture package was not needed to reproduce the simulation failure.",
+    "Windows game scripts are byte-identical and use the unchanged published executable/native libraries. Native Windows execution and immediate port reuse are not verified. The local Wine runtime failed before Godot initialization, including the published executable version probe.",
+    "The separate mayor-gift quest was not replayed; it shares the corrected removal and checkpoint paths.",
+    "The first candidate test used the wrong zone prefix for the new Find the Princess quest; the fixture was corrected against the native script and the full final run passes."
+  ]
+}

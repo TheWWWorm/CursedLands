@@ -749,7 +749,10 @@ func _call(name: String, a: Array, inst: Instance):
 			if u:
 				world.remove_unit(u)
 				session.broadcast({"t": "remove", "uid": u.uid})
-			elif v[0] is Node3D and is_instance_valid(v[0]):
+			# Looted actors are retained off-tree for WasLooted/IsDead and
+			# save references. They are already off the server: do not let
+			# the generic scenery fallback free their retained tombstones.
+			elif typeof(v[0]) == TYPE_OBJECT and is_instance_valid(v[0]) and v[0] is Node3D and not v[0] is GameUnit:
 				var nid := _obj_id(v[0])
 				session.broadcast({"t": "remove_obj", "nid": nid})
 				world.objects.erase(nid)

@@ -1116,7 +1116,11 @@ func store_zone(id: String, world: GameWorld) -> void:
 	z.looted = world.looted.keys()
 	# A travelling pet's corpse has no authored map record to recreate its
 	# tombstone from. Keep its identity even after looting removes the body.
-	for u: GameUnit in world.looted.values():
+	for retained in world.looted.values():
+		# A stale removal from an older live session must not abort the
+		# entire checkpoint. The looted IDs above still preserve its state.
+		if not is_instance_valid(retained): continue
+		var u: GameUnit = retained
 		if not u.has_meta("pet_id"): continue
 		var rec := u.info.duplicate(true)
 		rec.nid = u.uid
