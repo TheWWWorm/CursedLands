@@ -38,7 +38,9 @@ func _build(model: String, skin: String, labels: String, parts: PackedStringArra
 	_vp.own_world_3d = true
 	_vp.transparent_bg = true
 	_vp.size = Vector2i(800, 600)
-	_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	# Options, load and network screens are constructed while hidden. Their
+	# TextureRect visibility must control rendering of the separate 3D view.
+	_vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 	add_child(_vp)
 	texture = _vp.get_texture()
 	_cam = Camera3D.new()
@@ -85,6 +87,8 @@ static func _unshaded(m: StandardMaterial3D) -> StandardMaterial3D:
 
 
 func _process(_dt: float) -> void:
+	if not is_visible_in_tree():
+		return
 	# Render at the window height (4:3), drawn stretched over the full rect.
 	var h := maxi(60, int(size.y))
 	var want := Vector2i(int(round(h * 4.0 / 3.0)), h)

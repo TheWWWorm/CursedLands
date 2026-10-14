@@ -1,0 +1,623 @@
+{
+  "date": "2026-10-14",
+  "base_version": "1.1.1",
+  "base_commit": "182ee0f3966133b023d85cd22e24951d43481105",
+  "status": "Open device-specific crash diagnosis; corrected shader qualification fixture and preserved report outcomes separately from local checks.",
+  "production_code_changed": false,
+  "release_published": false,
+  "source_files": {
+    "tools/tests/mobile_shader_slots.gd": "fa7ac7012d3ea8bc70e9ab9eeedf2cf93c49df9955e3385f30e7f83811d551c1",
+    "docs/android-stability.md": "b9804e4b0ae4710460efd41e4c8356ffa40e2eafc73585d783d34c0e4d836dda"
+  },
+  "issue_3": {
+    "url": "https://github.com/TheWWWorm/CursedLands/issues/3",
+    "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/3#issuecomment-6164036742",
+    "device": "Redmagic 11 Pro NX809J; Android 16 API 36; Adreno 840",
+    "renderer": "gl_compatibility / opengl3",
+    "sessions": [
+      {
+        "session": "2f39a8679c4a",
+        "version": "1.1.1",
+        "gpu": "Qualcomm Adreno (TM) 840",
+        "renderer": "gl_compatibility / opengl3",
+        "screen": "(1216, 2688) @ 60 Hz, window (1216, 2688)",
+        "last": "graphics detection: first",
+        "file": "CursedLands-report-20261014-091430.txt",
+        "previous_trace_tail": [
+          "[trace 09:01:34 +47307ms] startup: opening loading screen",
+          "[trace 09:01:34 +47444ms] startup: building main menu",
+          "[trace 09:01:34 +47444ms] menu scene: loading island",
+          "[trace 09:01:35 +48433ms] menu scene: setting up signpost and environment",
+          "[trace 09:01:35 +48460ms] menu scene: built",
+          "[trace 09:01:35 +48499ms] startup: main menu built; presenting loading animation",
+          "[trace 09:01:35 +48710ms] graphics detection: first"
+        ],
+        "main_menu_ready": false,
+        "graphics_tier_application_logged": false,
+        "exception_or_native_backtrace_present": false
+      },
+      {
+        "session": "f7e00eff8439",
+        "version": "1.1.1",
+        "gpu": "Qualcomm Adreno (TM) 840",
+        "renderer": "gl_compatibility / opengl3",
+        "screen": "(2688, 1216) @ 60 Hz, window (2688, 1216)",
+        "last": "graphics detection: first",
+        "file": "CursedLands-report-20261014-091646.txt",
+        "previous_trace_tail": [
+          "[trace 09:14:38 +28834ms] startup: opening loading screen",
+          "[trace 09:14:38 +29007ms] startup: building main menu",
+          "[trace 09:14:38 +29008ms] menu scene: loading island",
+          "[trace 09:14:38 +29210ms] menu scene: setting up signpost and environment",
+          "[trace 09:14:38 +29224ms] menu scene: built",
+          "[trace 09:14:38 +29265ms] startup: main menu built; presenting loading animation",
+          "[trace 09:14:38 +29409ms] graphics detection: first"
+        ],
+        "main_menu_ready": false,
+        "graphics_tier_application_logged": false,
+        "exception_or_native_backtrace_present": false
+      }
+    ],
+    "attachments": [
+      {
+        "url": "https://github.com/user-attachments/files/33425049/CursedLands-report-20261014-091430.txt",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/issue-3-20261014/reporter-logs/CursedLands-report-20261014-091430.txt",
+        "sha256": "fe3c0d3de238f2afe9f0e2baf168cf41d74d907ed89a34b7b4c139be6ca4bd7f"
+      },
+      {
+        "url": "https://github.com/user-attachments/files/33425050/CursedLands-report-20261014-091646.txt",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/issue-3-20261014/reporter-logs/CursedLands-report-20261014-091646.txt",
+        "sha256": "991481a529f3258da7b3f98430c007b2bffbd0aa619a380b1efb9396ced59bed"
+      }
+    ],
+    "interpretation": "The final detection trace is emitted before the busy-screen wait and pending record, not proof that a benchmark tier ran or caused the exit. Menu/loading/overlay first draws remain candidates."
+  },
+  "forum": {
+    "pages_reviewed": [
+      "https://4pda.to/forum/index.php?showtopic=1127294",
+      "https://4pda.to/forum/index.php?showtopic=1127294&st=20",
+      "https://4pda.to/forum/index.php?showtopic=1127294&st=40"
+    ],
+    "latest_visible_post": 44,
+    "latest_visible_apk": "1.0.5",
+    "header_version": "1.0.0",
+    "later_reporter_resolution_found": false,
+    "reports": [
+      {
+        "id": "4pda-42",
+        "url": "https://4pda.to/forum/index.php?showtopic=1127294&view=findpost&p=145476939",
+        "date": "2026-10-12",
+        "device": "Realme 14 named in post; profile differs",
+        "versions": "1.0 works; unspecified later builds fail",
+        "symptom": "Crash after menu loading",
+        "status": "open; no reporter confirmation"
+      },
+      {
+        "id": "4pda-38",
+        "url": "https://4pda.to/forum/index.php?showtopic=1127294&view=findpost&p=145457396",
+        "date": "2026-10-11",
+        "device": "Not stated in post",
+        "versions": "1.0.3",
+        "symptom": "Improved FPS but world freezes and saves fail after save/load/dialogue/new game",
+        "status": "related pause/resume mechanism fixed locally; reporter outcome unknown"
+      },
+      {
+        "id": "4pda-36",
+        "url": "https://4pda.to/forum/index.php?showtopic=1127294&view=findpost&p=145446886",
+        "date": "2026-10-10",
+        "device": "Not stated in post",
+        "versions": "1.0.2 versus 1.0.0",
+        "symptom": "Performance regression",
+        "status": "open"
+      },
+      {
+        "id": "4pda-20",
+        "url": "https://4pda.to/forum/index.php?showtopic=1127294&view=findpost&p=145379491",
+        "date": "2026-10-05",
+        "device": "Not stated in post",
+        "versions": "Unspecified",
+        "symptom": "Severe slowdown after goblin-sentry quest transition; smooth while paused",
+        "status": "open"
+      },
+      {
+        "id": "4pda-43",
+        "url": "https://4pda.to/forum/index.php?showtopic=1127294&view=findpost&p=145481861",
+        "date": "2026-10-12",
+        "device": "Not stated in post",
+        "versions": "Unspecified",
+        "symptom": "Heat and faster battery drain including after leaving game",
+        "status": "open; no background restart loop reproduced in current controlled check"
+      },
+      {
+        "id": "4pda-26",
+        "url": "https://4pda.to/forum/index.php?showtopic=1127294&view=findpost&p=145384258",
+        "date": "2026-10-06",
+        "device": "Snapdragon 680 / Adreno 610 named in post",
+        "versions": "Unspecified",
+        "symptom": "Vulkan faster but white terrain/missing textures",
+        "status": "open; shader smoke checks do not establish visual correctness"
+      },
+      {
+        "id": "4pda-22",
+        "url": "https://4pda.to/forum/index.php?showtopic=1127294&view=findpost&p=145380808",
+        "date": "2026-10-05",
+        "device": "Not stated in post",
+        "versions": "Unspecified",
+        "symptom": "Loading picture and music continue without entering game",
+        "status": "open"
+      },
+      {
+        "id": "4pda-18",
+        "url": "https://4pda.to/forum/index.php?showtopic=1127294&view=findpost&p=145377041",
+        "date": "2026-10-05",
+        "device": "Samsung Galaxy S23 Ultra named in post",
+        "versions": "Unspecified",
+        "symptom": "Severe FPS drops in some locations",
+        "status": "open"
+      },
+      {
+        "id": "4pda-35",
+        "url": "https://4pda.to/forum/index.php?showtopic=1127294&view=findpost&p=145444301",
+        "date": "2026-10-10",
+        "device": "Not stated in post",
+        "versions": "Unspecified",
+        "symptom": "Severe slowdown after leaving village",
+        "status": "open"
+      }
+    ],
+    "limits": [
+      "Profile device is not accepted as the tested device without post confirmation.",
+      "Different symptom classes cannot be assumed to have one cause.",
+      "Absence of later posts is not a successful retest."
+    ]
+  },
+  "apk_comparison": {
+    "method": "REA APK member inspection; SHA-256 equality, not device fault attribution.",
+    "artifacts": [
+      {
+        "identity": "apk100-rea",
+        "artifact": {
+          "name": "RP5-original-1.0.0.apk",
+          "digest": {
+            "sha256": "3b7123ebe299c89b0dc1fa1c05360fa1c6c6eb0554bfd259ddeb69a2eee245eb"
+          },
+          "format": "apk",
+          "architecture": null,
+          "local_path": "/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/RP5-original-1.0.0.apk"
+        },
+        "rea_evidence_id": "ev_c89a4026fcf907e7fcd8b13e5787592edcd6bb90db57fa4b821cbeb37d53999f",
+        "members": [
+          {
+            "path": "classes.dex",
+            "sha256": "4a3b10789d65d1e2fecddf47e0bc981bb4f4ca12b4f6506696bb47817056db9e",
+            "bytes": 5711532
+          },
+          {
+            "path": "lib/arm64-v8a/libc++_shared.so",
+            "sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+            "bytes": 1374336
+          },
+          {
+            "path": "lib/arm64-v8a/libgodot_android.so",
+            "sha256": "50ddcf6ea99de0905c2fdf646cfc5ffbb8880d1053e013be653c7acd88746bc1",
+            "bytes": 76217912
+          }
+        ]
+      },
+      {
+        "identity": "apk103first-rea",
+        "artifact": {
+          "name": "CursedLands-1.0.3-android.apk",
+          "digest": {
+            "sha256": "b6c94e7ddda6d6988504c6056dac669fbc2d0f534cb1ae79dfdeb1d96906b6cc"
+          },
+          "format": "apk",
+          "architecture": null,
+          "local_path": "/home/llm2x/Documents/EI/local/scratchpad/codex-backlog-20261004/release-1.0.3/assets/CursedLands-1.0.3-android.apk"
+        },
+        "rea_evidence_id": "ev_55e1daa268c675fd049a1b9c5955aef2e88de233488ac34b269dd4b143ad2406",
+        "members": [
+          {
+            "path": "classes.dex",
+            "sha256": "7927f651c257ca0be239818584d6d632f1f92096dcafc29611f72e89eec79263",
+            "bytes": 5135252
+          },
+          {
+            "path": "lib/arm64-v8a/libc++_shared.so",
+            "sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+            "bytes": 1374336
+          },
+          {
+            "path": "lib/arm64-v8a/libgodot_android.so",
+            "sha256": "1095b1a68b074a582ecd5ee8fdb4976080613850e0f21aa7ed21cd21a2f6d013",
+            "bytes": 71148032
+          }
+        ]
+      },
+      {
+        "identity": "apk103stable-rea",
+        "artifact": {
+          "name": "CursedLands.apk",
+          "digest": {
+            "sha256": "65b4b3bc37c70b6170ae12dadfaa863655cad861e4df72fe65d9063e5fce9826"
+          },
+          "format": "apk",
+          "architecture": null,
+          "local_path": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.0.3-android/CursedLands.apk"
+        },
+        "rea_evidence_id": "ev_29740e047e99ae24a768875e161ef63ef0c5f31cd0c6e8cc63a77d0a26f9bbde",
+        "members": [
+          {
+            "path": "classes.dex",
+            "sha256": "84d26fd60c727d11e4d35cb40ef9ff2a89f8326dcd01390b42e5a9e0b5120c15",
+            "bytes": 5143832
+          },
+          {
+            "path": "lib/arm64-v8a/libc++_shared.so",
+            "sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+            "bytes": 1374336
+          },
+          {
+            "path": "lib/arm64-v8a/libgodot_android.so",
+            "sha256": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+            "bytes": 65407472
+          },
+          {
+            "path": "lib/arm64-v8a/libterrain_search_android.so",
+            "sha256": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58",
+            "bytes": 1360360
+          }
+        ]
+      },
+      {
+        "identity": "apk111-rea",
+        "artifact": {
+          "name": "CursedLands.apk",
+          "digest": {
+            "sha256": "8d620f4e2b6a7d7b84d340b4b5759babf191926cb8df93ec5ba857004fb55683"
+          },
+          "format": "apk",
+          "architecture": null,
+          "local_path": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.1.1-android/CursedLands.apk"
+        },
+        "rea_evidence_id": "ev_4d56bbe36083c4adc64eb44bb5f586eb1ecdf727e9b04198169cb3eac8c938f7",
+        "members": [
+          {
+            "path": "classes.dex",
+            "sha256": "84d26fd60c727d11e4d35cb40ef9ff2a89f8326dcd01390b42e5a9e0b5120c15",
+            "bytes": 5143832
+          },
+          {
+            "path": "lib/arm64-v8a/libc++_shared.so",
+            "sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+            "bytes": 1374336
+          },
+          {
+            "path": "lib/arm64-v8a/libgodot_android.so",
+            "sha256": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+            "bytes": 65407472
+          },
+          {
+            "path": "lib/arm64-v8a/libmod_archive_android.so",
+            "sha256": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+            "bytes": 603088
+          },
+          {
+            "path": "lib/arm64-v8a/libterrain_search_android.so",
+            "sha256": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58",
+            "bytes": 1360360
+          }
+        ]
+      }
+    ],
+    "conclusion": "Stable 1.0.3 and 1.1.1 share the engine, terrain helper and classes.dex. Earlier engine binaries differ. Script/shader changes may still trigger a pre-existing native/driver defect."
+  },
+  "ruled_out_or_bounded_candidates": [
+    {
+      "candidate": "262144 global shader entries versus previous 65536 default",
+      "status": "Does not increase the GLES allocation in this engine",
+      "reason": "Hardware UBO limit is clamped to at most 1048576 bytes; each entry is 16 bytes; both requested entry counts already exceed or meet that maximum.",
+      "source": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-engine/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/drivers/gles3/storage/config.cpp",
+          "sha256": "af7cb41da206a5ae0100979994f89328eac68f9343f546ae887be938f324b4bf"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-engine/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/drivers/gles3/storage/material_storage.cpp",
+          "sha256": "30eaa494b089e793db12950dca62efc757cc304833b8ac46bceffe3c42da41d5"
+        }
+      ]
+    },
+    {
+      "candidate": "Worker restarts after shutdown",
+      "status": "Not reproduced during 15-second live-owner observation on Retroid",
+      "evidence": "shutdown_hold"
+    },
+    {
+      "candidate": "Automatic calibration tier crash",
+      "status": "Not established by reporter traces",
+      "reason": "No applied tier or main-menu-ready marker in either failed session."
+    },
+    {
+      "candidate": "Disabled water-reflection code still increases driver program complexity",
+      "status": "Unproven candidate for an A/B shader experiment; no production change made"
+    }
+  ],
+  "prior_verified_fix": {
+    "mechanism": "Separate Android service frame suspension plus redundant SceneTree pause could leave simulation frozen after resume.",
+    "fix_commit": "045bb0a",
+    "original_validation": "docs/validation/experimental-1.0.4-2026-10-11.json",
+    "baseline_checks": 26,
+    "baseline_failures": 1,
+    "fixed_checks": 26,
+    "fixed_failures": 0,
+    "reporter_confirmed": false
+  },
+  "environment": {
+    "device": "Retroid Pocket 5",
+    "android": "13 / API 33",
+    "gpu": "Adreno 650",
+    "gles_driver": "V@0746.0",
+    "vulkan": "1.1.128",
+    "private_build": {
+      "package": "org.cursedlands.issue3",
+      "source_commit": "f594a75025f127728423448efb222a19033c8446",
+      "version": "1.1.1-qa",
+      "version_code": 32,
+      "native_libraries_byte_identical_to_release": true,
+      "libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "apk_sha256": "2209c929e004cbdfc607bf1f6f6765c1bc8fa40ee47c2fd4d3c03036ab9adf15",
+      "private_changes": [
+        "main.gd validation.json bootstrap, inactive when absent",
+        "Android package ID, display name, debug signing and build flag"
+      ],
+      "original_game_data_bundled": false
+    },
+    "qualification_limit": "QA package and debug build flag; one opt-in main.gd bootstrap differs. Native libraries match the published release. Normal start has no bootstrap file. Not the affected phone."
+  },
+  "runs": {
+    "fresh_normal_start": {
+      "alive": true,
+      "menu_ready": true,
+      "detection_finished": true,
+      "errors": [],
+      "private_bootstrap_active": false,
+      "fresh_settings": true,
+      "auto_graphics": true,
+      "completion_evidence": [
+        "[trace 11:42:09 +63618ms] graphics detection: tier 5 (Original look), fps cap 30, mode stress, costs { 2: 16.4694995880127, 4: 8.94649982452393, 5: 8.65750026702881, 6: 8.45149993896484, 7: 8.46399974822998 }"
+      ],
+      "initial_observation_seconds": 57.74,
+      "calibration_completed_at_engine_uptime_ms": 63618,
+      "capture_note": "Initial controller stopped collecting logcat after a tier measurement; godot.log and settings-final.cfg were retrieved separately after final completion. Initial observation duration is not total startup duration.",
+      "evidence": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/baseline-current/result.json",
+          "sha256": "3c0f526872b0ad02ba833a96124fa4200e90002d39710605841965564a690580"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/baseline-current/godot.log",
+          "sha256": "337c02648a57a256dea6792bd27d65ee0bac70d496f0b03ee4f0e5a390b36528"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/baseline-current/logcat.txt",
+          "sha256": "0470c8661f2e96efceb76fe92cdfd9d3af6f829bfc60d0f49a75e5d2b693be96"
+        }
+      ]
+    },
+    "lifecycle": {
+      "checks": 26,
+      "dialogs": 1,
+      "failures": 0,
+      "errors": [],
+      "seconds": 50.88,
+      "evidence": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/lifecycle-current/result.json",
+          "sha256": "b8944b9f9cdc78cff1dc5a7896291dc8d69b1816cbbfb10df77c5212b5bab7a1"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/lifecycle-current/godot.log",
+          "sha256": "edfe763cc27e26818b7abbe1e6ca1d818ad92ef67b7ee4afc6d90e3850c47692"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/lifecycle-current/logcat.txt",
+          "sha256": "0b59cc97e431109a931aef90c3363be477fd33255f3e0c94c0a5e6c8b58427b5"
+        }
+      ]
+    },
+    "shutdown_hold": {
+      "checks": 26,
+      "dialogs": 1,
+      "failures": 0,
+      "errors": [],
+      "seconds": 57.28,
+      "evidence": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/shutdown-hold/result.json",
+          "sha256": "4315322d39cd0b21c017be25d1bde1884ad427610e5410f34a889662d6fef380"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/shutdown-hold/godot.log",
+          "sha256": "8c306193d986a4235571b9f1f97bd2adefd079d2270c7132ee53a1b0d668cd12"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/shutdown-hold/logcat.txt",
+          "sha256": "4b6fee74b5acb625d2d442d61a3491980f3dea2fc6290e43721a89c68b2fe31e"
+        }
+      ],
+      "owner_held_alive_seconds": 15,
+      "simulation_process_starts_during_hold": [],
+      "observation": "Scheduled service restart was logged on clean worker process death, but no actual restart occurred while the owner remained alive. Does not diagnose the forum battery report."
+    },
+    "android_gles_shader_draws": {
+      "drawn_variants": 14,
+      "gpu": "Adreno (TM) 650",
+      "renderer": "gl_compatibility",
+      "errors": [],
+      "seconds": 4.84,
+      "evidence": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/shaders-gl-final/result.json",
+          "sha256": "372220b11e3ac43efcfe4ab15d96bfe96430c03c90c55f6f8ddd51d4210a494e"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/shaders-gl-final/godot.log",
+          "sha256": "279bac66ebce308fb3f0ce568ff14946d16edfb37c6b0b86f3be7a3fd53d23e2"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/shaders-gl-final/logcat.txt",
+          "sha256": "984173d003624bf7a417a1874f8c5f9f47e438cfbe8889f6c5ca25f7a357f5c8"
+        }
+      ]
+    },
+    "android_mobile_shader_draws": {
+      "drawn_variants": 14,
+      "gpu": "Adreno (TM) 650",
+      "renderer": "mobile",
+      "errors": [],
+      "seconds": 8.45,
+      "evidence": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/shaders-mobile-final/result.json",
+          "sha256": "84b886e7c4290646c1f0e28f6a39aceaf692c08646cbd5e6f3656836840791fa"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/shaders-mobile-final/godot.log",
+          "sha256": "1f968c096e81263402f4e2608aafb6c55d8465289e801c1c4537c44d9b4ea40e"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/shaders-mobile-final/logcat.txt",
+          "sha256": "cac5b0ce938dc3f1dfedcd6e4a7406f74c4768621a6e745f7b6c09666d7d53e7"
+        }
+      ]
+    },
+    "desktop_gles_shader_draws": {
+      "suite": "mobile_shader_slots",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.1.1-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.1.1-20261014/repo/tools/tests/mobile_shader_slots.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 0,
+      "seconds": 29.361,
+      "results": [],
+      "errors": [],
+      "drawn_variants": 14,
+      "evidence": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.1.1-20261014/stability-shader-slots-final.json",
+          "sha256": "ab8a781301540b4df6f650524c75b93429fb44c1f806d1edf2b0166f8c2d133b"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.1.1-20261014/stability-shader-slots-final.log",
+          "sha256": "015dd577b87cb891826e597ed5a2afb548986eac44c967b71ee278f9d9731bc3"
+        }
+      ]
+    },
+    "headless_refused": {
+      "suite": "mobile_shader_slots",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.1.1-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.1.1-20261014/repo/tools/tests/mobile_shader_slots.gd",
+        "--ei-inline-host"
+      ],
+      "exit": 2,
+      "seconds": 2.018,
+      "results": [],
+      "errors": [],
+      "expected_exit": 2,
+      "evidence": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.1.1-20261014/stability-shader-slots-headless.json",
+          "sha256": "0c949b93e583ecceb286a23a65af30fd4cbcb6264c3b4244858305ed04c096c9"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.1.1-20261014/stability-shader-slots-headless.log",
+          "sha256": "86d944a11acebe04d612880b4eaf217972ee4ef744adc84c2b23604f1b7498b0"
+        }
+      ]
+    },
+    "injected_error_control": {
+      "exit": 1,
+      "seconds": 2.96,
+      "injected_error_captured": true,
+      "false_success_marker": false,
+      "source_sha256": "fa7ac7012d3ea8bc70e9ab9eeedf2cf93c49df9955e3385f30e7f83811d551c1",
+      "evidence": [
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/shader-error-control.json",
+          "sha256": "c04d311f27efcb50109ac093c6f1cecd3d8bf3aa025030840b341defa33f604d"
+        },
+        {
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014/shader-error-control.log",
+          "sha256": "df566b98ffff82a97e92414ec8480217dc2d7ce6ee1e16a753552649c9d09bd5"
+        }
+      ]
+    }
+  },
+  "shader_test_correction": {
+    "before": "Uniform reflection was counted as compilation; make_shader reset the manually assigned fog flag.",
+    "after": "Compose verified fog/no-fog variants, draw in a viewport, read GPU image, fail on captured engine/render errors, reject headless.",
+    "scope": "Seven base shader families times two fog states; platform base options, simple quad and default samplers.",
+    "limits": [
+      "No pixel-correctness acceptance.",
+      "No exhaustive optional-feature combinations or pass variants.",
+      "No affected-device reproduction or driver fault location.",
+      "An external timeout still must detect native crashes/hangs.",
+      "Final Android repeats used existing caches; times are not comparable performance measurements."
+    ]
+  },
+  "harness_corrections": [
+    "Normal-start initial sampling stopped at a tier measurement. Final completion was separately verified from the complete engine log and saved settings; timing fields distinguish these observations.",
+    "Final Android shader runner removes stale result files, requires all 14 completion markers/expected renderer and rejects logged errors."
+  ],
+  "cleanup": {
+    "removed_private_package": "org.cursedlands.issue3",
+    "uninstall": "Success",
+    "before": [
+      "package:org.cursedlands.issue3",
+      "package:org.cursedlands.performance",
+      "package:org.cursedlands.engine"
+    ],
+    "after": [
+      "package:org.cursedlands.performance",
+      "package:org.cursedlands.engine"
+    ],
+    "normal_and_existing_qa_packages_preserved": true
+  },
+  "remaining_work": [
+    "Controlled first-menu component split on the affected hardware or a reproducible driver environment.",
+    "Fresh and preserved-profile upgrade comparisons from 1.0.0 and 1.0.3.",
+    "Sustained running/paused gameplay and background power measurements.",
+    "Reporter confirmation remains distinct from local mechanism validation."
+  ],
+  "evidence_directory": "/home/llm2x/Documents/EI/local/scratchpad/android-stability-20261014"
+}

@@ -1,0 +1,535 @@
+{
+  "date": "2026-10-14",
+  "base_version": "1.1.1",
+  "base_commit": "182ee0f3966133b023d85cd22e24951d43481105",
+  "status": "Implemented and locally verified startup containment and staged diagnostics; issue #3 native fault remains open.",
+  "issue": "https://github.com/TheWWWorm/CursedLands/issues/3",
+  "production_code_changed": true,
+  "release_published": false,
+  "source_files_sha256": {
+    "game/src/ei/remake_text.gd": "a0b8feb5758e40208bf06ebaa7d401a71b2fed50aeb6d6b11c596e8716240031",
+    "game/src/game/gfx_detect.gd": "fcef9b3f501b76d6ea829d540cfa1312116c0ee388e20f3a626b94356417aa86",
+    "game/src/main.gd": "3fc8d56f11db90fc867b5b75a8ef2ac371c85eeb9787143d5786bfa5549449e8",
+    "game/src/ui/crash_report_box.gd": "d02f2be4e46166bce38053d6c33e7104b2ff981c92f91fb0ed7f97b943142e27",
+    "game/src/ui/interface_board.gd": "303b84405faefb57d13c3a41fd58b0ea354a5f54e6857cb59094dd7f064bc7db",
+    "game/src/ui/main_menu.gd": "ad70ff67dfa91b8cbf4d6f4537aaa94320353a7a6e8e41cca37345b2ddcf3bf5",
+    "game/src/platform/startup_graphics_probe.gd": "6cf374795794121bc2e0d7e25eb4e909be82c515fba297fc15fc102b9af1ea02",
+    "game/src/platform/startup_graphics_probe.gd.uid": "99c231f18cfe0cb9f88bfb2ff072d130d91b7512f6df8cb5c54725c2bcaff60a",
+    "tools/tests/mobile_shader_slots.gd": "fa7ac7012d3ea8bc70e9ab9eeedf2cf93c49df9955e3385f30e7f83811d551c1",
+    "tools/tests/graphics_startup_bootstrap.gd": "026351a016038f026d6f67b2bb3c47e5919cbd056b6e0035b77232baadb021da",
+    "tools/tests/menu_hidden_viewports.gd": "18bd46c06f14d25047950fc9c0e6631d02c5e7c77e121fd855d5bb8375fc4580",
+    "tools/tests/startup_graphics_recovery.gd": "d2a6a4e1288107d1149b8ea357d6b0e6fd9adc1365a21704c9f58075e7d6aa48",
+    "tools/tests/startup_crash_report.gd": "51d857ab8b1a53026ca9a0e3aa9baf293b25189f77f5c001ae553d8eaeb5674b",
+    "tools/tests/graphics_detection_recovery.gd": "69565160b9d9a30909e21d2d75284ce7248d3a2b4e76cfdeeb5951707347ed00",
+    "tools/tests/android_local_lifecycle.gd": "a07f6b1e2c880e21794ccbedfc2ff6ffe872c5e06a8cd4dcee335f23f3bd6189"
+  },
+  "source_archive": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/validated-sources.tar.gz",
+    "sha256": "5499d553e7e5ec340b828a0b569e15c5a240d553b2b1b28ccb371e7fb7045149",
+    "contents": "Changed production scripts, validation fixtures, build/device harnesses, and exact QA-only injected files; no original game data."
+  },
+  "builds": {
+    "final": {
+      "package": "org.cursedlands.issue3",
+      "source_commit": "182ee0f3966133b023d85cd22e24951d43481105",
+      "uncommitted_changes": true,
+      "version": "1.2.0-alpha.1-qa",
+      "version_code": 33,
+      "native_libraries_byte_identical_to_release": true,
+      "libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "apk_sha256": "dbc240fd6c0ce3dbe8252e7b31f4fdc052320d71d7d21909ed80aa6729001644",
+      "private_changes": [
+        "main.gd validation.json bootstrap, inactive when absent",
+        "Android package ID, display name, QA version, debug signing and build flag"
+      ],
+      "original_game_data_bundled": false,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/android-private/validation.apk",
+      "desktop_pack_sha256": "ffa2aa74419c3e4bad3235bcd5a6ba97d86fb8b42708b28229fe41fe614a2bd9"
+    },
+    "before-live-cap-fix": {
+      "package": "org.cursedlands.issue3",
+      "source_commit": "182ee0f3966133b023d85cd22e24951d43481105",
+      "uncommitted_changes": true,
+      "version": "1.2.0-alpha.1-qa",
+      "version_code": 33,
+      "native_libraries_byte_identical_to_release": true,
+      "libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "apk_sha256": "d3ba30940915d53e28b153186cb113fdc286499ce21c61327a41bd7c46f9d543",
+      "private_changes": [
+        "main.gd validation.json bootstrap, inactive when absent",
+        "Android package ID, display name, QA version, debug signing and build flag"
+      ],
+      "original_game_data_bundled": false,
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/before-live-cap-fix/android-private/validation.apk",
+      "difference_from_final": "prepare_startup called _apply_display instead of _apply_window. Final tests add live Engine.max_fps/viewport AA assertions and rerun desktop/Android first startup, forced interruption/restart, and normal intro startup.",
+      "scope_note": "Recovery/probe, hidden viewports, translations and lifecycle production code are identical. The non-bootstrap fixtures do not enter the fresh-handheld fallback."
+    },
+    "earlier-desktop-candidate": {
+      "base_commit": "182ee0f3966133b023d85cd22e24951d43481105",
+      "desktop_pack_sha256": null,
+      "scope_note": "Earlier candidate before adding prepare_startup; the exact old PCK was overwritten during development. The tested recovery/probe and hidden-viewport code is retained in the final source. These fixtures do not enter the fresh-handheld fallback; final fallback is covered by bootstrap-desktop-final."
+    }
+  },
+  "device": {
+    "model": "Retroid Pocket 5",
+    "android": 13,
+    "api": 33,
+    "gpu": "Qualcomm Adreno (TM) 650",
+    "renderers_tested": [
+      "gl_compatibility",
+      "mobile"
+    ],
+    "qa_package": "org.cursedlands.issue3",
+    "cleanup": {
+      "isolated_package_removed": "org.cursedlands.issue3",
+      "remaining_packages": [
+        "package:org.cursedlands.performance",
+        "package:org.cursedlands.engine"
+      ],
+      "other_cursedlands_packages_retained": true
+    }
+  },
+  "desktop": {
+    "platform": "Linux",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "renderer": "gl_compatibility",
+    "headless_rendering_qualified": false
+  },
+  "validation": [
+    {
+      "label": "bootstrap-desktop-final",
+      "build": "final",
+      "checks": 14,
+      "failures": 0,
+      "errors": [],
+      "seconds": 40.48,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/linux/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/repo/tools/tests/graphics_startup_bootstrap.gd",
+        "--ei-inline-host",
+        "--gfx-detect",
+        "--gfx-handheld",
+        "--hold-loading"
+      ],
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/bootstrap-desktop-final.json"
+    },
+    {
+      "label": "bootstrap-android-final",
+      "build": "final",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/bootstrap-android-final/result.json",
+      "checks": 13,
+      "failures": 0,
+      "renderer": "gl_compatibility",
+      "seconds": 15.11,
+      "errors": []
+    },
+    {
+      "label": "bootstrap-kill-restart-final",
+      "build": "final",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/bootstrap-kill-restart-final/result.json",
+      "checks": 4,
+      "failures": 0,
+      "renderer": "gl_compatibility",
+      "seconds_after_restart": 8.63,
+      "controlled_fault": "SIGKILL of the isolated QA process during its first persisted tier; not a reproduced GPU crash",
+      "errors": []
+    },
+    {
+      "label": "normal-startup-final",
+      "build": "final",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/normal-startup-final/result.json",
+      "seconds": 64.16,
+      "alive": true,
+      "menu_ready": true,
+      "detection_finished": true,
+      "private_bootstrap_active": false,
+      "fresh_settings": true,
+      "auto_graphics": true,
+      "basic_menu_bootstrap": true,
+      "asset_caches": "reused from earlier QA runs",
+      "errors": []
+    },
+    {
+      "label": "startup-recovery-final",
+      "build": "earlier-desktop-candidate",
+      "checks": 386,
+      "failures": 0,
+      "errors": [],
+      "seconds": 26.158,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/linux/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/repo/tools/tests/startup_graphics_recovery.gd",
+        "--ei-inline-host",
+        "--gfx-detect"
+      ],
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/startup-recovery-final.json"
+    },
+    {
+      "label": "recovery-android-verified",
+      "build": "before-live-cap-fix",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-verified/result.json",
+      "checks": 386,
+      "failures": 0,
+      "renderer": "gl_compatibility",
+      "seconds": 8.32,
+      "errors": [],
+      "probe": {
+        "errors": [],
+        "gpu": "Adreno (TM) 650",
+        "ok": true,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "ms": 923.0,
+            "ok": true,
+            "stage": "loading_picture"
+          },
+          {
+            "ms": 608.0,
+            "ok": true,
+            "stage": "menu_build"
+          },
+          {
+            "ms": 57.0,
+            "ok": true,
+            "stage": "sky"
+          },
+          {
+            "ms": 194.0,
+            "ok": true,
+            "stage": "terrain"
+          },
+          {
+            "ms": 78.0,
+            "ok": true,
+            "stage": "water"
+          },
+          {
+            "ms": 109.0,
+            "ok": true,
+            "stage": "objects"
+          },
+          {
+            "ms": 57.0,
+            "ok": true,
+            "stage": "signpost"
+          },
+          {
+            "ms": 147.0,
+            "ok": true,
+            "stage": "whole_scene"
+          },
+          {
+            "ms": 493.0,
+            "ok": true,
+            "stage": "menu_screens"
+          }
+        ]
+      }
+    },
+    {
+      "label": "recovery-android-mobile",
+      "build": "before-live-cap-fix",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-mobile/result.json",
+      "checks": 386,
+      "failures": 0,
+      "renderer": "mobile",
+      "seconds": 17.3,
+      "errors": [],
+      "probe": {
+        "errors": [],
+        "gpu": "Adreno (TM) 650",
+        "ok": true,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "ms": 997.0,
+            "ok": true,
+            "stage": "loading_picture"
+          },
+          {
+            "ms": 2979.0,
+            "ok": true,
+            "stage": "menu_build"
+          },
+          {
+            "ms": 448.0,
+            "ok": true,
+            "stage": "sky"
+          },
+          {
+            "ms": 3672.0,
+            "ok": true,
+            "stage": "terrain"
+          },
+          {
+            "ms": 164.0,
+            "ok": true,
+            "stage": "water"
+          },
+          {
+            "ms": 112.0,
+            "ok": true,
+            "stage": "objects"
+          },
+          {
+            "ms": 88.0,
+            "ok": true,
+            "stage": "signpost"
+          },
+          {
+            "ms": 465.0,
+            "ok": true,
+            "stage": "whole_scene"
+          },
+          {
+            "ms": 1020.0,
+            "ok": true,
+            "stage": "menu_screens"
+          }
+        ]
+      }
+    },
+    {
+      "label": "hidden-viewports-final",
+      "build": "earlier-desktop-candidate",
+      "checks": 9,
+      "failures": 0,
+      "errors": [],
+      "seconds": 24.251,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/linux/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/repo/tools/tests/menu_hidden_viewports.gd",
+        "--ei-inline-host",
+        "--gfx-detect"
+      ],
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/hidden-viewports-final.json"
+    },
+    {
+      "label": "hidden-viewports-android-verified",
+      "build": "before-live-cap-fix",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/hidden-viewports-android-verified/result.json",
+      "checks": 9,
+      "failures": 0,
+      "renderer": "gl_compatibility",
+      "seconds": 16.08,
+      "errors": []
+    },
+    {
+      "label": "lifecycle-candidate",
+      "build": "before-live-cap-fix",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/lifecycle-candidate/result.json",
+      "checks": 26,
+      "failures": 0,
+      "seconds": 50.77,
+      "errors": []
+    },
+    {
+      "label": "startup-notices",
+      "build": "earlier-desktop-candidate",
+      "checks": 86,
+      "failures": 0,
+      "errors": [],
+      "seconds": 25.256,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/linux/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/repo/tools/tests/startup_crash_report.gd",
+        "--ei-inline-host"
+      ],
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/startup-notices.json"
+    },
+    {
+      "label": "detection-recovery-headless",
+      "build": "before-live-cap-fix",
+      "checks": 27,
+      "failures": 0,
+      "errors": [],
+      "seconds": 2.067,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/linux/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/repo/tools/tests/graphics_detection_recovery.gd",
+        "--ei-inline-host"
+      ],
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/detection-recovery-headless.json"
+    }
+  ],
+  "hidden_viewport_comparison": {
+    "baseline_result": "/home/llm2x/Documents/EI/local/scratchpad/release-1.1.1-20261014/hidden-viewports-baseline.json",
+    "baseline": {
+      "checks": 7,
+      "expected_failures": 1,
+      "hidden_draw_calls": 512,
+      "disabled_control": 503
+    },
+    "candidate_android": {
+      "checks": 9,
+      "failures": 0,
+      "hidden_draw_calls": 516,
+      "disabled_control": 516,
+      "always_control": 525
+    },
+    "interpretation": "Nine redundant hidden-board submissions removed, with visible-board positive controls; this defect predates 1.0.0."
+  },
+  "localization": {
+    "checker": "Translations: 1145 entries; 0 errors",
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "layout_inspected": [
+      "desktop 1280x720",
+      "Android 1920x1080"
+    ],
+    "android_screenshots": [
+      "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-verified/startup-recovery-en.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-verified/startup-recovery-ru.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-verified/startup-recovery-de.png"
+    ]
+  },
+  "build_steps": [
+    {
+      "step": "import",
+      "exit": 0,
+      "errors": [],
+      "seconds": 5.57
+    },
+    {
+      "step": "pack",
+      "exit": 0,
+      "errors": [],
+      "seconds": 5.67
+    }
+  ],
+  "fixture_repairs": [
+    "Initial hidden-viewport fixture left X11 mouse confinement active; fixture now disables confinement and uses a window. Rerun had no engine errors.",
+    "Initial recovery fixture incorrectly called all() on PackedStringArray; changed to Array. Rendered reruns passed.",
+    "Device harness initially assumed adb exec-out returned nonzero for a missing result; now tolerates incomplete/non-JSON output while waiting.",
+    "One recovery rerun found an earlier report in its fixed directory; now uses a unique report directory. Reruns passed all 386 checks.",
+    "Final source review found early fallback did not apply live frame cap/quality. Corrected _apply_window call and added live-state assertions; final first-start and interruption checks passed."
+  ],
+  "limitations": [
+    "Redmagic 11 Pro / Adreno 840 / Android 16 has not run this candidate. No native fault location or reproduction is available.",
+    "Controlled process termination proves transaction recovery, not that the GPU crash is fixed.",
+    "Enhanced trials can still crash once; basic shared shaders can also fail on an untested driver.",
+    "Normal-start acceptance used fresh settings with reused asset caches and ordinary input to skip intro movies.",
+    "The staged probe uses current options, frozen geometry groups and short presentations; it does not qualify animation, every graphics combination, image correctness, sustained heat or gameplay performance.",
+    "Broad upgrades from 1.0.0 and the different 1.0.3 artifacts have not been accepted on affected hardware.",
+    "The lifecycle fixture uses Original look with automatic calibration disabled; it is separate from default startup validation.",
+    "Forum report resolution remains unconfirmed. This patch does not close issue #3 or those reports."
+  ],
+  "evidence_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/android-private/build.json": "9fd831cfc48be96510393bef7a17542de4caef158488a10a6fc72c14d1afd1a2",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/android-private/export.log": "ff66f609dbc949a8d04f12263547665631353e349128642d0695a89a0f0553db",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/android-private/import.log": "c44fe2fefbe11d06174db8a7f0ccda43b497e85d821d3143802a6d571593a4cc",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/before-live-cap-fix/android-private/build.json": "c54951fa689dfa22cf821f93ea6ac9a26dc8a7082d237b72dc1c6321f562765c",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/before-live-cap-fix/gfx_detect.gd": "aa019d2228304e59485eb350976335db06dcc436e2ae602212c00a8de2570c44",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/bootstrap-android-final/godot.log": "a7fcae4804382746979059358f5c2b26426a86376d7dfb02bb0396aa090c60ea",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/bootstrap-android-final/result.json": "56949b6dc8dd7e220b935552331d740db49a923cc91e17cb2d6541938585c93f",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/bootstrap-desktop-final.json": "dc027e00d57e4324c37ae800166008dc3c9a795ec46ed5cb3a8e05e67e8edabf",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/bootstrap-desktop-final.log": "29b63d507e1ab44929a0114912a51d8b866726a25675d28e093e74e4fdc60fcd",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/bootstrap-kill-restart-final/interrupted-godot.log": "58926ec317416676b022570edbca35655f33502b1a2a59a657fde0f706267db7",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/bootstrap-kill-restart-final/pending-settings.cfg": "3ad2588d29d540525c5d40f80d3c38750885432c2f5361ee8efac61d9e97bdd1",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/bootstrap-kill-restart-final/restarted-godot.log": "49f994d6c3fa7f9c3f49db838c8cae97c86d85deae683b8d52a1920e958ec56a",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/bootstrap-kill-restart-final/result.json": "08004cac2f1329045cf2d31cf8baf1d422b267512174e07b5725214cac693a29",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/build-desktop.json": "e72ff13ab7abc2ff629e66d3a3ffa3ece954afe4f65b613f8163ddcff013adfb",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/detection-recovery-headless.json": "60b8a58c03b5b73f54e94f01fdfbd3e6d8d503a0f85518202d7652d4fe5b948f",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/detection-recovery-headless.log": "2564cf4767ebbfde5fd5db8092b0fcf859a12a76b5362bdfde7e7d3a20385c6b",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/device-cleanup.json": "859a5dfd59a823612fe8a2f9bac16ab033d9c8c4496567b3fe85c7867f0b67ce",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/hidden-viewports-android-verified/godot.log": "953682d9f5c631d36dae3d25426e3d365222e9526926973ab2360bc3d69d6d6f",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/hidden-viewports-android-verified/result.json": "5d8f7818ef13a839a0f58f0ae57f41e16078a010b1f89f800a32fd1492e6c5cb",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/hidden-viewports-final.json": "1426bdd2fcf43c2aedb1a2d3c1ffb08c20ade8e026aa58e6ee3c30ee40f72ac5",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/hidden-viewports-final.log": "f21a178e95af3effdb277d0a455992d8cd0cbac5072c67ec164846026f9a47f2",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/lifecycle-candidate/godot.log": "716b5695c77b50cf92f6204d5ea3a83aaf02acddcc6c594f5eb6485cef6b04e9",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/lifecycle-candidate/result.json": "42147569debec18e8a4ca647324cc8412cf4c3c57db14019961ac658c448950b",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/normal-startup-final/godot.log": "2fd895561f293a611a748cb3262849c69e043bb0907c5c6c3195130ce6391144",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/normal-startup-final/result.json": "8d01912b28be14b286da15ae76606ce6f769f09695816bbf8ae8cc064ecdca5c",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/normal-startup-final/screen.png": "d119b64fc7048c268ffc2cc6c0ea96013f5ede5bfe5aa457969062d9fa9b44bb",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/normal-startup-final/settings.cfg": "c78259b126b8dffaed99d69e796b26999c5180832cf96ad677e7e6cf3a498f17",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-mobile/godot.log": "64b4b856a31af23e75546d43628e43469077c16492fdd228564e1e6e1109e816",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-mobile/result.json": "6d5330c9596533ba387d50d4283411d8f97784328e6202c295d84563629d2c4e",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-mobile/startup-recovery-de.png": "921941706fd0c34079094ad8a11b86dd17501e75c90099ae71a2cd626eca1b66",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-mobile/startup-recovery-en.png": "c1546afff4ea33f4ce7c4250e388092ae9e44b74685d4d549386178570eeaf1c",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-mobile/startup-recovery-ru.png": "539c9cc2ee97a86650f78dc6c349a50556549fb5e4b3fe6b57e9e1d669422ef0",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-verified/godot.log": "9cfd366d119391a48db4d92391b86bd1c17cdb1684849fd95071e4c44d8cf7fa",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-verified/result.json": "4f8a9c99d5c9c29880704b35b21c56bda7f23f447f1c6de710843b2cee1d17bf",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-verified/startup-recovery-de.png": "8033636d9dfc959557032fd914ddfb580caa6e2d138b6593fe7ab39f529a579d",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-verified/startup-recovery-en.png": "327ec44de9fbabee4fb0da1e3eab790669b01fdfc2b912aaa2433f9e54afff51",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/recovery-android-verified/startup-recovery-ru.png": "0bf9a03a5284163a48af6f65239eb4dabddd134f0f2576f760bc11500f500ac8",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/startup-notices.json": "64c90bdb3ada20ab26057f6f7efb53156df8c339776a6ee4b4215684b7233861",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/startup-notices.log": "551e7e858f4eb8a9a50d637c3af36d629f2e41240855d369a54df2c8d2b829e4",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/startup-recovery-final.json": "ccd57fcc615eb0e4b52d344799ccf35ac35cea363ea25b25ab285e3ad991db51",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-startup-fix-20261014/startup-recovery-final.log": "8266cb4a66c89f80fbdeab22221c32f7b7f802d5902285043be83de262011045"
+  }
+}

@@ -56,6 +56,26 @@ const DEADLINE_S := 12.0
 const STRESS := 2
 const RECOVERY_NOTICE := "The previous graphics test did not finish. Your earlier settings were restored and automatic testing was skipped. You can retry Detect best settings from Options."
 static var recovered_test := false
+static var _startup_values := {}
+
+
+## A fresh handheld has not qualified any enhanced effects yet. Render its
+## first menu with the recovery tier, then try the normal platform defaults
+## inside the existing persisted calibration transaction. Keep this choice
+## temporary until the test starts; opening a menu must not write a result.
+static func prepare_startup() -> void:
+	if device_kind() != "handheld" or DisplayServer.get_name() == "headless":
+		return
+	var args := OS.get_cmdline_user_args()
+	if Array(args).any(func(a): return String(a).begins_with("--tool=")) and not args.has("--gfx-detect"):
+		return
+	if auto_reason(load_record(), GameData.options, base_values(), fingerprint(), GameData.option("auto_graphics") != 0) != "first":
+		return
+	_startup_values = tier_values(ORIGINAL, base_values())
+	_startup_values.merge({"q_aa":0, "fps_limit":1, "graphics_preset":GfxPresets.CUSTOM}, true)
+	GameData.options.merge(_startup_values, true)
+	GameData._apply_window()
+	GameData.trace("graphics detection: first menu uses basic graphics until calibration")
 
 ## The options the ladder sets: every gfx_* switch and the render quality.
 static func keys() -> PackedStringArray:
@@ -489,6 +509,12 @@ static func auto_start() -> void:
 		_offer_recovery((Engine.get_main_loop() as SceneTree).current_scene)
 	var rec := load_record()
 	var reason := auto_reason(rec, GameData.options, base_values(), fingerprint(), GameData.option("auto_graphics") != 0)
+	if not _startup_values.is_empty():
+		# Only consume our untouched temporary choice. A user change or an
+		# explicitly disabled automatic test still takes precedence.
+		if rec.is_empty() and GameData.option("auto_graphics") != 0 and _matches(GameData.options, _startup_values):
+			reason = "first"
+		_startup_values = {}
 	if reason == "manual":
 		save_record({"version": VERSION, "fingerprint": fingerprint(), "tier": -1, "manual": 1})
 		return
@@ -566,8 +592,7 @@ func _ready() -> void:
 
 func _run() -> void:
 	# After the startup screen and movies (StartupScreen, MovieSequence).
-	var t0 := Time.get_ticks_msec()
-	while _busy_screen() and Time.get_ticks_msec() - t0 < 20000:
+	while _busy_screen() and not _cancelled:
 		await get_tree().process_frame
 	await _wait(0.5)
 	_base = base_values()

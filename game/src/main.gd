@@ -116,7 +116,7 @@ func startup_notices() -> void:
 	var cursor := GameCursor.new()
 	ui.add_child(cursor)
 	cursor.set_kind("cursor_default")
-	var report := CrashReportBox.offer(ui)
+	var report := CrashReportBox.offer(ui, true)
 	if report:
 		GameData.trace("startup: waiting for previous crash report")
 		await report.tree_exited
@@ -130,6 +130,7 @@ func startup_notices() -> void:
 
 ## Complete the launch progress animation before enabling the main menu.
 func open_menu() -> Control:
+	GfxDetect.prepare_startup()
 	GameData.trace("startup: opening loading screen")
 	var splash := StartupScreen.open(self)
 	if splash:

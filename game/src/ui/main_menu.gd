@@ -31,6 +31,8 @@ var _mods: ModPanel
 var _mods_button: Button
 var _coop_button: Button
 var _opening_panel := false
+## The startup recovery probe renders this screen without running calibration.
+var detect_graphics := true
 
 
 func _ready() -> void:
@@ -134,7 +136,8 @@ func _ready() -> void:
 		add_child(_options)
 		# Remake: the graphics test on the first start or a new GPU (GfxDetect),
 		# over this island once the startup screen is gone.
-		GfxDetect.auto_start.call_deferred()
+		if detect_graphics:
+			GfxDetect.auto_start.call_deferred()
 		return
 	var c := CenterContainer.new()
 	c.set_anchors_preset(Control.PRESET_FULL_RECT)
