@@ -1,0 +1,516 @@
+{
+  "version": "1.4.0",
+  "date": "2026-10-15",
+  "previous_stable": "1.3.1",
+  "game_source_commit": "fe80ee210dbde69f12496d8bc5556f31494866d7",
+  "game_tree": "96d50e6ded417554760a6bac88259124ac5b7bb4",
+  "network_protocol": 23,
+  "integrated_commits": [
+    "b64c89e",
+    "0a455b4",
+    "d6bfe23",
+    "6468585"
+  ],
+  "android_diagnostics_original_commit": "b9e8e78fbae98b2e58dbe381cbb543133f3ab5e7",
+  "build": {
+    "production_scripts_identical_across_five_platforms": true,
+    "compiled_scripts": 288,
+    "source_snapshot_exact": true,
+    "original_game_data_bundled": false,
+    "private_save_or_test_probes_bundled": false,
+    "platforms": {
+      "linux-x86_64": {
+        "source_commit": "fe80ee210dbde69f12496d8bc5556f31494866d7",
+        "game_tree": "96d50e6ded417554760a6bac88259124ac5b7bb4",
+        "platform": "linux-x86_64",
+        "compiled_scripts": 288,
+        "resource_count": 730,
+        "files": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "4b449c1c833c088d016580d98bf559bf4c1834dd9fe475ed139786b175d37bab",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+          "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+        }
+      },
+      "windows-x86_64": {
+        "source_commit": "fe80ee210dbde69f12496d8bc5556f31494866d7",
+        "game_tree": "96d50e6ded417554760a6bac88259124ac5b7bb4",
+        "platform": "windows-x86_64",
+        "compiled_scripts": 288,
+        "resource_count": 730,
+        "files": {
+          "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+          "CursedLands.pck": "4b449c1c833c088d016580d98bf559bf4c1834dd9fe475ed139786b175d37bab",
+          "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+          "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+        }
+      },
+      "macos-universal": {
+        "source_commit": "fe80ee210dbde69f12496d8bc5556f31494866d7",
+        "game_tree": "96d50e6ded417554760a6bac88259124ac5b7bb4",
+        "platform": "macos-universal",
+        "stock_engine": true,
+        "unsigned": true,
+        "files": {
+          "CursedLands.zip": "49fa582749ca08c5cd6b0e519b79a8c8baede51ac9f3408324aa0c64bcaebdd0"
+        }
+      }
+    }
+  },
+  "linux_passed_checks": 798,
+  "linux_release_checks": [
+    {
+      "fixture": "tools/tests/quest_actor_removal.gd",
+      "renderer": "headless",
+      "exit": 0,
+      "checks": 24,
+      "failures": 0,
+      "errors": [],
+      "seconds": 17.69,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.4.0-20261015/checks/quest_actor_removal/run.log",
+      "log_sha256": "93cd025a88c4056a3e8dc2b92c81fe01f372f51dbfaf5ce2f0a25347c77daeaa"
+    },
+    {
+      "fixture": "tools/tests/gameplay_report_regressions.gd",
+      "renderer": "headless",
+      "exit": 0,
+      "checks": 35,
+      "failures": 0,
+      "errors": [],
+      "seconds": 13.34,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.4.0-20261015/checks/gameplay_report_regressions/run.log",
+      "log_sha256": "72bd7856eddf0093c8b8097a09f8ec38b7a846fbe715b66436fb620cf120b2e1"
+    },
+    {
+      "fixture": "tools/tests/followup_controls.gd",
+      "renderer": "headless",
+      "exit": 0,
+      "checks": 64,
+      "failures": 0,
+      "errors": [],
+      "seconds": 8.63,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.4.0-20261015/checks/followup_controls/run.log",
+      "log_sha256": "6146dc729e7428277178746e2235acfea36ce1a761c0efb7fb0b056efa4d842e"
+    },
+    {
+      "fixture": "tools/tests/special_equipment.gd",
+      "renderer": "headless",
+      "exit": 0,
+      "checks": 493,
+      "failures": 0,
+      "errors": [],
+      "seconds": 2.27,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.4.0-20261015/checks/special_equipment/run.log",
+      "log_sha256": "7ad2dd3652e1e4bdaf60c8169876a86714be67bdaf2132ffda8d7826d830430e"
+    },
+    {
+      "fixture": "tools/tests/quest_checkpoint_worker.gd",
+      "renderer": "headless",
+      "exit": 0,
+      "checks": 32,
+      "failures": 0,
+      "errors": [],
+      "seconds": 93.03,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.4.0-20261015/checks/quest_checkpoint_worker/run.log",
+      "log_sha256": "3520ef159cd4e71860cc02957151e6a16706af440f0d9bd5ae8eebccddf92eff"
+    },
+    {
+      "fixture": "tools/tests/startup_crash_report.gd",
+      "renderer": "rendered",
+      "exit": 0,
+      "checks": 106,
+      "failures": 0,
+      "errors": [],
+      "seconds": 17.44,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.4.0-20261015/checks/startup_crash_report/run.log",
+      "log_sha256": "e7a4b52402d014518a2fec64b0184c008134918f8c7afbc664d51e2313329739"
+    },
+    {
+      "fixture": "tools/tests/reflection_shadow_integrity.gd",
+      "renderer": "rendered",
+      "exit": 0,
+      "checks": 44,
+      "failures": 0,
+      "errors": [],
+      "seconds": 14.54,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.4.0-20261015/checks/reflection_shadow_integrity/run.log",
+      "log_sha256": "198d997289253b8a9155c207a43081c0469c6f192a386808dc8c8d8a34b4b77b"
+    }
+  ],
+  "prior_source_checks": [
+    {
+      "record": "gameplay-shadow-reports-2026-10-14.json",
+      "checks": 466,
+      "failures": 0
+    },
+    {
+      "record": "aim-interaction-shop-2026-10-15.json",
+      "checks": 734,
+      "failures": 0
+    },
+    {
+      "record": "coop-quest-checkpoint-2026-10-15.json",
+      "checks": 128,
+      "failures": 0
+    }
+  ],
+  "coop_checkpoint_replay": {
+    "record": "coop-quest-checkpoint-2026-10-15.json",
+    "fixture": "tools/tests/quest_checkpoint_worker.gd",
+    "final_release_checks": 32,
+    "shipping_engine_and_final_pack": true,
+    "worker_and_two_enet_clients": true,
+    "private_quicksave_used_without_rewriting_quest_flags": true,
+    "mine_entrance_quest_progress": true,
+    "automatic_guest_progress_save": true,
+    "both_clients_move_after_quest": true,
+    "full_save_and_reload": true,
+    "immediate_same_port_rehost": true,
+    "published_1_3_1_control_crashed": true,
+    "windows_native_runtime_executed": false
+  },
+  "translations": {
+    "command": "python3 tools/check_translations.py",
+    "entries": 1166,
+    "errors": 0,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "startup_report_layouts_visually_checked_on_linux_and_android": true,
+    "aim_shop_interaction_layouts": "aim-interaction-shop-2026-10-15.json"
+  },
+  "android": {
+    "version": "1.4.0",
+    "apk_sha256": "8f8d4916bfe9c3662d784a1fa232359a8f7ea7f74157ad8c532451fccaeef72e",
+    "resources": 737,
+    "compiled_scripts": 288,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "expected_production_scripts_exact": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "engine_arguments": [
+      "--xr_mode_regular",
+      "--xr-mode",
+      "off",
+      "--fullscreen",
+      "--background_color",
+      "#000000"
+    ],
+    "sparse_pack": {
+      "format": 4,
+      "resources": 737,
+      "all_resource_sizes_and_md5_match": true,
+      "template_baseline_profiles": {
+        "dexopt/baseline.prof": {
+          "bytes": 1179,
+          "sha256": "24e7cbeabb9db5f8fbcd3c96f034151f299e7adecb3bd11d9991728105b973cf"
+        },
+        "dexopt/baseline.profm": {
+          "bytes": 141,
+          "sha256": "e8c0017a430a5645a35a802d4138b4803d16772686c5f67073220f5fd54d7b9b"
+        }
+      }
+    },
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "debuggable": false,
+    "same_public_certificate": true,
+    "release_template_provenance": {
+      "base_template": "/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014/engine/bin/android_release.apk",
+      "base_sha256": "2af5eb84aaa230955d627b2fee4e63e951fb9414e5234c8766d600713ad472e8",
+      "release_template": "/home/llm2x/Documents/EI/local/scratchpad/release-1.4.0-20261015/android_release_14.apk",
+      "release_template_sha256": "2af5eb84aaa230955d627b2fee4e63e951fb9414e5234c8766d600713ad472e8",
+      "engine_sha256": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+      "libcxx_sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "classes_dex_sha256": "cf2a59352f758605949daabf6b97bbcc6dea9d23e186cc8b6a187a21133f13e2",
+      "patch_count": 14,
+      "new_java_diagnostics_sources": {
+        "AndroidExitReport.java": "466f2236cc950a79b8b409d383bad99d93d0aea282c540627979c459b8587143",
+        "EISimulation.java": "df2148298bb5b51c43cd24c2a8a3387bdd7a06c5482bfee6f7a491c1b8683e8a",
+        "NativeTombstone.java": "4cdb78b00c6434e2905ed946d1d7fd235a90732105793516628ec4b0641a3779"
+      },
+      "java_template_build": "generateGodotTemplates --offline; all native SCons tasks excluded",
+      "java_template_tested_in": "docs/validation/android-native-crash-reports-2026-10-14.json",
+      "production_native_libraries_unchanged": true,
+      "private_instrumentation": false
+    },
+    "normal_installed_app_untouched": true,
+    "version_code": 36,
+    "application_id": "org.cursedlands.engine",
+    "certificate_sha256": "4024877c17f340055c383cacd4e0e9c4282349ad6ef48c3f576eb0a2477582d5",
+    "parser_checks": 2241,
+    "parser_failures": 0,
+    "physical_device": "Retroid Pocket 5 / Adreno 650 / Android 13 API 33",
+    "renderer": "gl_compatibility",
+    "release_integration_checks": 139,
+    "release_integration_suites": [
+      {
+        "fixture": "tools/tests/startup_crash_report.gd",
+        "checks": 99,
+        "failures": 0,
+        "platform": "Android",
+        "renderer": "gl_compatibility",
+        "errors": [],
+        "seconds": 11.56,
+        "result_sha256": "fd0df3a7862e82eb1ad35d28444c1ebd546baba9e090cd5fc24f069f6be48db3"
+      },
+      {
+        "fixture": "tools/tests/graphics_startup_bootstrap.gd",
+        "checks": 18,
+        "failures": 0,
+        "first_trial": {
+          "before": {
+            "auto_graphics": 0,
+            "fps_limit": 1,
+            "gfx_ambient_particles": 0,
+            "gfx_ambient_wildlife": 0,
+            "gfx_biome_cover": 0,
+            "gfx_bloom": 0,
+            "gfx_cloud_reflections": 0,
+            "gfx_cloud_shadows": 0,
+            "gfx_clouds": 0,
+            "gfx_contact_shadows": 0,
+            "gfx_depth_of_field": 0,
+            "gfx_detailed_heads": 0,
+            "gfx_far_view": 0,
+            "gfx_firelight": 0,
+            "gfx_foliage_light": 0,
+            "gfx_grass": 0,
+            "gfx_ground_contact": 0,
+            "gfx_hd_textures": 0,
+            "gfx_heat_haze": 0,
+            "gfx_lava_light": 0,
+            "gfx_lit_particles": 0,
+            "gfx_materials": 0,
+            "gfx_rain_puddles": 0,
+            "gfx_severed_limbs": 0,
+            "gfx_sharp_units": 0,
+            "gfx_sky": 0,
+            "gfx_soft_ground": 0,
+            "gfx_soft_particles": 0,
+            "gfx_ssao": 0,
+            "gfx_terrain": 0,
+            "gfx_terrain_cliffs": 0,
+            "gfx_torch_glow": 0,
+            "gfx_vegetation_interaction": 0,
+            "gfx_volumetric": 0,
+            "gfx_water": 0,
+            "gfx_water_caustics": 0,
+            "gfx_water_current": 0,
+            "gfx_water_interaction": 0,
+            "gfx_water_reflections": 0,
+            "gfx_water_waves": 0,
+            "gfx_waterfalls": 0,
+            "gfx_weather_mist": 0,
+            "gfx_weather_surfaces": 0,
+            "gfx_wind": 0,
+            "graphics_preset": 0,
+            "q_aa": 0,
+            "q_aniso": 1,
+            "q_shadows": 0,
+            "render_scale": 2
+          },
+          "date": "2026-10-15T02:01:55",
+          "fingerprint": "Android|Qualcomm|Adreno (TM) 650|gl_compatibility",
+          "original_recovery": true,
+          "pid": 7043,
+          "stage": "tier 2",
+          "testing": true,
+          "tier": -1,
+          "version": 3
+        },
+        "platform": "Android",
+        "record": {
+          "costs": {
+            "2": 15.2785,
+            "4": 8.4455,
+            "5": 8.4775,
+            "6": 8.5115,
+            "7": 8.594
+          },
+          "date": "2026-10-15T02:02:05",
+          "fingerprint": "Android|Qualcomm|Adreno (TM) 650|gl_compatibility",
+          "fps": 30,
+          "mode": "stress",
+          "start": 2,
+          "tier": 5,
+          "values": {
+            "fps_limit": 1,
+            "gfx_ambient_particles": 0,
+            "gfx_ambient_wildlife": 0,
+            "gfx_biome_cover": 0,
+            "gfx_bloom": 0,
+            "gfx_cloud_reflections": 0,
+            "gfx_cloud_shadows": 0,
+            "gfx_clouds": 0,
+            "gfx_contact_shadows": 0,
+            "gfx_depth_of_field": 0,
+            "gfx_detailed_heads": 0,
+            "gfx_far_view": 0,
+            "gfx_firelight": 0,
+            "gfx_foliage_light": 0,
+            "gfx_grass": 0,
+            "gfx_ground_contact": 0,
+            "gfx_hd_textures": 0,
+            "gfx_heat_haze": 0,
+            "gfx_lava_light": 0,
+            "gfx_lit_particles": 0,
+            "gfx_materials": 0,
+            "gfx_rain_puddles": 0,
+            "gfx_severed_limbs": 0,
+            "gfx_sharp_units": 0,
+            "gfx_sky": 0,
+            "gfx_soft_ground": 0,
+            "gfx_soft_particles": 0,
+            "gfx_ssao": 0,
+            "gfx_terrain": 0,
+            "gfx_terrain_cliffs": 0,
+            "gfx_torch_glow": 0,
+            "gfx_vegetation_interaction": 0,
+            "gfx_volumetric": 0,
+            "gfx_water": 0,
+            "gfx_water_caustics": 0,
+            "gfx_water_current": 0,
+            "gfx_water_interaction": 0,
+            "gfx_water_reflections": 0,
+            "gfx_water_waves": 0,
+            "gfx_waterfalls": 0,
+            "gfx_weather_mist": 0,
+            "gfx_weather_surfaces": 0,
+            "gfx_wind": 0,
+            "q_aa": 0,
+            "q_aniso": 1,
+            "q_shadows": 0,
+            "render_scale": 2
+          },
+          "version": 3,
+          "zone_factor": 6.5
+        },
+        "renderer": "gl_compatibility",
+        "errors": [],
+        "seconds": 16.16,
+        "result_sha256": "8de6e0f39b0160b89b4a03a05b4072b0359cc86ffebf20f35af9a3de39f2de80"
+      },
+      {
+        "fixture": "tools/tests/android_simulation_lifecycle.gd",
+        "checks": 22,
+        "error": "",
+        "failures": 0,
+        "pids": [
+          7354.0,
+          7440.0
+        ],
+        "errors": [],
+        "seconds": 16.6,
+        "result_sha256": "ec98d7e40ef24b592578a72bfb5cfd874183159f88a5d2bc877c2563606a0b24"
+      }
+    ],
+    "private_fixture_package": {
+      "identical_scripts": 287,
+      "total_scripts": 288,
+      "private_bootstrap": "src/main.gdc",
+      "native_libraries_identical": true,
+      "java_dex_identical": true,
+      "dex_sha256": "cf2a59352f758605949daabf6b97bbcc6dea9d23e186cc8b6a187a21133f13e2",
+      "only_differing_entries_in_scripts_libraries_and_dex": [
+        "assets/src/main.gdc"
+      ]
+    },
+    "device_restoration": {
+      "private_package_restored": "/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014/android-private/validation.apk",
+      "normal_package_modified": false,
+      "settings_restored": true,
+      "temporary_game_data_removed": true
+    },
+    "controlled_native_exit_test_record": "android-native-crash-reports-2026-10-14.json",
+    "controlled_native_exit_test_repeated_for_release": false,
+    "test_setup_note": "First device run stopped at data setup because the private test profile had no game data; after temporary data provisioning all three suites passed. The added data was removed afterwards."
+  },
+  "browser": {
+    "version": "1.4.0",
+    "errors": [],
+    "browser": {
+      "protocolVersion": "1.3",
+      "product": "Chrome/151.0.7922.34",
+      "revision": "@782af9cb30a53f54487e5d2e44738645a8ec457c",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.0.0 Safari/537.36",
+      "jsVersion": "15.1.206.8"
+    },
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-abcf571b22f806f306b8",
+      "new_cache": "cursed-engine-2-48d90c0986cd840ef896",
+      "pck_sha256": "801bfdf80cac4cd240743113a3581fbf08751ee248bf67d363587dce94891534",
+      "waited_for_old_tab": true,
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "unchanged_wasm_reused": true,
+      "network_paths": [
+        "service-worker.js",
+        "index.html",
+        "index.pck"
+      ]
+    },
+    "upgraded_start": {
+      "error": "",
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "caches": [
+        "cursed-engine-2-48d90c0986cd840ef896"
+      ]
+    },
+    "fresh_start": {
+      "error": "",
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "caches": [
+        "cursed-engine-2-48d90c0986cd840ef896"
+      ],
+      "errors": []
+    },
+    "build": {
+      "version": "1.4.0",
+      "source_tag": "v1.4.0",
+      "source_commit": "fe80ee210dbde69f12496d8bc5556f31494866d7",
+      "game_tree": "96d50e6ded417554760a6bac88259124ac5b7bb4",
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 288,
+      "production_scripts_byte_identical_to_release_linux": true,
+      "resource_count": 727,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "801bfdf80cac4cd240743113a3581fbf08751ee248bf67d363587dce94891534",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    },
+    "screenshots_visually_checked": [
+      "fresh-setup.png",
+      "upgraded-setup.png"
+    ],
+    "host": "https://cursedlands.wwworm.com/",
+    "deployment_verification": "Live assets and startup are verified after the release commit is pushed; the deployment receipt is kept in the local release workspace."
+  },
+  "limits": [
+    "Windows and macOS packages were exported and audited but not executed on their native operating systems. The co-op replay ran on the shipping Linux engine with the same compiled game scripts.",
+    "Android runtime checks used a separate private fixture APK. Its Java DEX, native libraries, and 287 of 288 compiled game scripts match the production APK byte for byte; the remaining main.gdc adds a test entry point.",
+    "The Redmagic issue #3 rendering crash remains unresolved. Matching Android OS exit records and available native stacks improve diagnosis; no renderer fix is claimed.",
+    "The spontaneous driver-dependent shadow trigger was not reliably reproduced. A controlled reflection-camera shadow-state regression was reproduced before the fix and passes afterwards.",
+    "The exact spell/rune combination from the self-cast report was not provided. Distant multi-target casts approach normally in tested cases; vanished-target fallback is fixed.",
+    "The local web checks cover fresh setup and service-worker upgrade with imported-data and save sentinels, not a complete browser campaign."
+  ],
+  "local_evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/release-1.4.0-20261015"
+}
