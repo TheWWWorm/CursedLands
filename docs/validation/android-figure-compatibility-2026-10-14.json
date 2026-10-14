@@ -1,0 +1,846 @@
+{
+  "date": "2026-10-14",
+  "status": "locally_validated_candidate_not_confirmed_on_affected_device",
+  "issue": "https://github.com/TheWWWorm/CursedLands/issues/3",
+  "source_commit": "900afa4a8d47da14c8e53d1aee6b4e479261c180",
+  "base_commit": "0e23fc321f7cf98e3df35e8ae012250ef3cab95c",
+  "source_sha256": {
+    "game/src/ei/figure.gd": "ddfef4086c9fdf163d5d9638036e005c87b2bca285cb03c9ea70d8dc2487c8d4",
+    "game/src/ei/unit_model.gd": "b58ea480128111e97b3607b977e0adebb9c5c293fa8ef646172eacf81b305573",
+    "game/src/game/gfx.gd": "9856fe5a241863a30c83188d84aea241cee418fbf8f22902b7ca1d8e796fa2f9",
+    "game/src/game/surface_materials.gd": "753285e44437f91aeb35bf2c2b7d6e93b5f4ffcb0a8f1d895d195a1eb2111683",
+    "tools/tests/android_figure_compatibility.gd": "4f97b1679df76c6e5122282f4d49a4039a31f00eab50b8a7603a1ea183333d57"
+  },
+  "private_android_build": {
+    "package": "org.cursedlands.objectprobe",
+    "source_commit": "0e23fc321f7cf98e3df35e8ae012250ef3cab95c",
+    "uncommitted_changes": true,
+    "source_patch_sha256": "a7c05be86b14c38e715bb2e1bccb5e7a8fc75b8ce2ac41a28242fd2dd5ee1db7",
+    "version": "1.2.0-figure-compat-qa",
+    "version_code": 33,
+    "native_libraries_byte_identical_to_release": true,
+    "libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "apk_sha256": "142f8c85b5263a385691ad10042052e9f026c4ea8c40f4516914c0a94f4a4233",
+    "private_changes": [
+      "main.gd validation.json bootstrap, inactive when absent",
+      "Android package ID, display name, QA version, debug signing and build flag"
+    ],
+    "original_game_data_bundled": false
+  },
+  "packaged_script_audit": {
+    "reference": "v1.2.0",
+    "compiled_scripts": 288,
+    "unchanged": 283,
+    "changed": [
+      "assets/src/ei/figure.gdc",
+      "assets/src/ei/unit_model.gdc",
+      "assets/src/game/gfx.gdc",
+      "assets/src/game/surface_materials.gdc",
+      "assets/src/main.gdc"
+    ],
+    "added": [],
+    "removed": []
+  },
+  "local_artifact_directory": "/home/llm2x/Documents/EI/local/scratchpad/android-object-investigation-20261014/compatibility",
+  "change_scope": [
+    "Android GLES preprocessing removes inactive figure material, relief, foliage-light and unit-sharpness code before Godot shader analysis.",
+    "Lighting formulas, authored textures/mipmaps, alpha handling and wounds retained. Cached world, fade and preview identities survive live option transitions.",
+    "Enhanced ground-contact material composition retained. Android Vulkan, desktop and browser do not enable this specialization.",
+    "No production startup-probe expansion, new player steps, settings or visible strings. No release/tag published."
+  ],
+  "rendered_comparison": {
+    "reference": "Same held scene and material instances with specialization disabled. Published 1.2.0 shader source checked separately.",
+    "viewport": [
+      640,
+      480
+    ],
+    "gpu_readbacks_per_device": 59,
+    "image_comparisons_per_device": 28,
+    "linux": {
+      "checks": 525,
+      "failure_labels": [],
+      "failures": 0,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "gpu_readbacks": 59,
+      "renderer": "gl_compatibility",
+      "rows": [
+        {
+          "case": "menu-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-1",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-3",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-2",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-6",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-7",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-5",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-4",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-1",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-3",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-2",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-6",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-7",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-5",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-4",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-1",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-3",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-2",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-6",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-7",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-5",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-4",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "healthy-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "preprocessed-original",
+          "foliage_chars": 8272,
+          "object_chars": 7798,
+          "unit_chars": 8654
+        }
+      ]
+    },
+    "android": {
+      "checks": 525,
+      "failure_labels": [],
+      "failures": 0,
+      "gpu": "Adreno (TM) 650",
+      "gpu_readbacks": 59,
+      "renderer": "gl_compatibility",
+      "rows": [
+        {
+          "case": "menu-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-1",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-3",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-2",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-6",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-7",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-5",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-4",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "menu-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-1",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-3",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-2",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-6",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-7",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-5",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-4",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-0-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-1",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-3",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-2",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-6",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-7",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-5",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-4",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "controls-2-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "healthy-0",
+          "difference": {
+            "changed_channels": 0,
+            "channels_over_one": 0,
+            "max_channel_delta": 0
+          }
+        },
+        {
+          "case": "preprocessed-original",
+          "foliage_chars": 8272,
+          "object_chars": 7798,
+          "unit_chars": 8654
+        }
+      ],
+      "errors": [],
+      "seconds": 26.88
+    },
+    "linux_execution": {
+      "exit": 0,
+      "seconds": 83.06,
+      "errors": [],
+      "arguments": [
+        "--render-thread safe",
+        "--rendering-method gl_compatibility",
+        "--no-local-shadow-fades"
+      ]
+    },
+    "android_device": "Retroid Pocket 5, Android 13 / API 33, Adreno 650, V@0746.0 (09/27/23)",
+    "coverage": [
+      "actual original menu meshes and materials",
+      "all eight materials/foliage/sharpness combinations",
+      "live off/on/off restoration",
+      "world and preview/wisp caches",
+      "wounds retained/removed/restored",
+      "alpha cutouts and MSAA 4x",
+      "fog, material emissive and original diffuse values",
+      "four mapped lights plus overflow/local light",
+      "sun/local shadow passes",
+      "camera-fade source and identity",
+      "preprocessed removal of unused functions and samplers",
+      "quality-only refresh and no recompilation for unchanged settings"
+    ]
+  },
+  "android_shader_options": {
+    "suite": "material_shader_options",
+    "checks": 416,
+    "failures": 0,
+    "errors": [],
+    "seconds": 175.14
+  },
+  "android_shader_draw_count": 126,
+  "android_lifecycle": {
+    "checks": 26,
+    "dialogs": 1,
+    "failures": 0,
+    "rows": [
+      {
+        "label": "new original campaign uses real Android worker",
+        "ok": true
+      },
+      {
+        "label": "new game finishes loading",
+        "ok": true
+      },
+      {
+        "label": "new game simulation advances",
+        "ok": true
+      },
+      {
+        "label": "original opening speech runs",
+        "ok": true
+      },
+      {
+        "label": "original opening dialogue finishes",
+        "ok": true
+      },
+      {
+        "label": "simulation advances after dialogue",
+        "ok": true
+      },
+      {
+        "label": "save from paused menu succeeds 0",
+        "ok": true
+      },
+      {
+        "label": "simulation advances after saving 0",
+        "ok": true
+      },
+      {
+        "label": "saved game loads 0",
+        "ok": true
+      },
+      {
+        "label": "simulation advances after loading 0",
+        "ok": true
+      },
+      {
+        "label": "save from paused menu succeeds 1",
+        "ok": true
+      },
+      {
+        "label": "simulation advances after saving 1",
+        "ok": true
+      },
+      {
+        "label": "saved game loads 1",
+        "ok": true
+      },
+      {
+        "label": "simulation advances after loading 1",
+        "ok": true
+      },
+      {
+        "label": "prepare disposable original captive arrival",
+        "ok": true
+      },
+      {
+        "label": "load original captive arrival through service",
+        "ok": true
+      },
+      {
+        "label": "original captive dialogue opens on local client",
+        "ok": true
+      },
+      {
+        "label": "client finishes original dialogue through authority",
+        "ok": true
+      },
+      {
+        "label": "simulation advances after original captive dialogue",
+        "ok": true
+      },
+      {
+        "label": "Android suspends the separate simulation",
+        "ok": true
+      },
+      {
+        "label": "owner still requests a running clock",
+        "ok": true
+      },
+      {
+        "label": "resumed service restores the owner's running clock",
+        "ok": true
+      },
+      {
+        "label": "service answers save after resume",
+        "ok": true
+      },
+      {
+        "label": "resume preserves intentional menu pause",
+        "ok": true
+      },
+      {
+        "label": "closing resumed menu releases pause",
+        "ok": true
+      },
+      {
+        "label": "worker shuts down",
+        "ok": true
+      }
+    ],
+    "speeches": [
+      {
+        "block": true,
+        "id": "R1",
+        "t": "say",
+        "uid": 1500000001
+      }
+    ],
+    "errors": [],
+    "seconds": 45.53
+  },
+  "desktop_refresh": {
+    "checks": 22,
+    "failures": 0,
+    "renderer": "gl_compatibility",
+    "rows": [
+      {
+        "apply_us": 5136,
+        "case": "sky only",
+        "changes": {
+          "fade": 0,
+          "land": 0,
+          "water": 0
+        }
+      },
+      {
+        "apply_us": 30065,
+        "case": "enable shadows",
+        "changes": {
+          "fade": 1,
+          "land": 1,
+          "water": 1
+        }
+      },
+      {
+        "apply_us": 13751,
+        "case": "add reflections",
+        "changes": {
+          "fade": 0,
+          "land": 0,
+          "water": 1
+        }
+      },
+      {
+        "apply_us": 12698,
+        "case": "remove reflections",
+        "changes": {
+          "fade": 0,
+          "land": 0,
+          "water": 1
+        }
+      },
+      {
+        "apply_us": 27734,
+        "case": "remove shadows",
+        "changes": {
+          "fade": 1,
+          "land": 1,
+          "water": 1
+        }
+      },
+      {
+        "apply_us": 16,
+        "case": "change sky quality",
+        "changes": {
+          "fade": 0,
+          "land": 0,
+          "water": 0
+        }
+      },
+      {
+        "apply_us": 5124,
+        "case": "disable sky",
+        "changes": {
+          "fade": 0,
+          "land": 0,
+          "water": 0
+        }
+      },
+      {
+        "case": "unchanged-live-variants",
+        "count": 18,
+        "median_ms": 0.011,
+        "samples": [
+          0.009,
+          0.009,
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.01,
+          0.011,
+          0.011,
+          0.011,
+          0.011,
+          0.011,
+          0.012,
+          0.012,
+          0.012,
+          0.012,
+          0.012,
+          0.013,
+          0.015,
+          37.737
+        ]
+      }
+    ]
+  },
+  "desktop_published_source_equivalence": {
+    "cases": 96,
+    "mismatches": [],
+    "scope": "Preprocessed shader tokens on shipped desktop GL defaults, compared to immutable 1.2.0 executable."
+  },
+  "excluded_initial_runs": {
+    "description": "Initial new fixture left a temporary anonymous changed-signal observer attached to a statically cached preview shader. Images/assertions passed but both platforms aborted at shutdown; those runs are not qualification.",
+    "unchanged_release_control_exit": -6,
+    "minimal_unchanged_release_retained_listener_exit": -6,
+    "minimal_unchanged_release_disconnected_listener_exit": 0,
+    "correction": "Fixture explicitly disconnects its observer before teardown. Final Linux run exits 0; Android runners include three seconds after the result to capture native shutdown errors.",
+    "scope": "Test-observer lifetime failure; does not identify the issue #3 menu crash."
+  },
+  "observed_warnings": {
+    "android_allocator": {
+      "android-figures-qualified": [
+        "Scudo OOM: The process has exhausted 256M for size class 448."
+      ],
+      "android-lifecycle-qualified": [
+        "Scudo OOM: The process has exhausted 256M for size class 448.",
+        "Scudo OOM: The process has exhausted 256M for size class 448.",
+        "Scudo OOM: The process has exhausted 256M for size class 65552."
+      ],
+      "android-material-options": [
+        "Scudo OOM: The process has exhausted 256M for size class 448."
+      ]
+    },
+    "context": "These nonfatal Scudo size-class region exhaustion messages also occur in the earlier 1.2.0 object-probe/recovery QA runs. They remain unresolved; test assertion success is not a general memory/stability qualification.",
+    "linux": "One existing startup warning that screen-space AA is unavailable on Compatibility, before fixture options apply."
+  },
+  "cleanup": {
+    "removed_qa_package": "org.cursedlands.objectprobe",
+    "remaining_packages": [
+      "package:org.cursedlands.performance",
+      "package:org.cursedlands.engine"
+    ],
+    "normal_game_and_saves_modified": false
+  },
+  "limits": [
+    "No local Redmagic 11 Pro / Adreno 840 reproduction or confirmation.",
+    "No claim that the removed optional shader code caused the reported crash.",
+    "No sustained thermal/performance or universal Android stability qualification.",
+    "Not a rollback to 1.0.0: later original-lighting corrections retained."
+  ]
+}

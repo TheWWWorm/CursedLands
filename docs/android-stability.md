@@ -122,8 +122,58 @@ and use a separate package/profile for comparisons.
 6. Keep `locally verified`, `reporter confirmed`, `not reproduced` and `open`
    separate. A locally fixed mechanism does not close every similar report.
 
-The next useful crash experiment is a controlled startup split: loading movie
-alone, menu island without calibration, then individual terrain/water/object
-materials, followed by calibration. Compare against a known-working APK on the
-same phone. This can locate the failing component without requiring the player
-to collect an ADB log. It should precede claiming another general stability fix.
+## Original figure compatibility candidate, October 14
+
+The subsequent [issue #3 run](https://github.com/TheWWWorm/CursedLands/issues/3#issuecomment-6169364461)
+completed the loading picture, menu construction, sky, terrain and water,
+then exited at the object stage with enhancements and automatic detection off.
+This does not identify the failing mesh or shader. Further per-object probes
+are kept on the investigation branch; this candidate adds no player test steps.
+
+Original settings previously retained disabled relief, per-pixel material
+lighting, leaf transmission and character sharpening in the shader sent to
+Godot. Replacing an option with a constant-false branch does not remove that
+branch from Godot's function/sampler analysis. The candidate uses preprocessing
+to omit those inactive features on **Android OpenGL Compatibility**. It retains
+the current original lighting math, alpha handling, wound overlays and texture
+data. Turning a feature on restores its existing implementation. World, fade,
+Paperdoll and translucent-preview shader identities and bindings survive the
+transition; unchanged settings do not recompile them. Enhanced ground-contact
+materials retain their existing composition.
+
+This is a compatibility candidate, not a demonstrated explanation of the
+Redmagic crash. Figure vertex lighting changed in 1.0.1 and remains in Original
+graphics; sharpening already existed in 1.0.0. The candidate removes inactive
+work without reverting the lighting corrections or inferring a culprit from
+version dates. Android Vulkan, desktop and browser do not enable the new
+specialization. No additional player-visible text or settings are introduced.
+
+Validation is recorded in
+[android-figure-compatibility-2026-10-14.json](validation/android-figure-compatibility-2026-10-14.json).
+The rendered fixture compares the old and compact paths in the same held scene,
+using the actual menu and separate material controls. It covers all eight
+material/foliage/sharpness combinations, alpha cutouts, translucent previews,
+wounds, fog, mapped/overflow/local lights, shadows, MSAA, and live restoration.
+GPU readbacks, material identities and the preprocessed source are checked;
+the fixture is a development tool, not part of startup.
+
+The final RTX 3090/OpenGL and Adreno 650/GLES runs each passed 525 checks and
+59 GPU readbacks; all 28 image pairs matched exactly. Android also passed 416
+material-option checks across 126 shader draws and 26 real-service lifecycle
+checks, including save/load and suspend/resume. All 96 desktop shader-source
+comparisons against the published 1.2.0 executable matched after whitespace
+and comment removal. These results are scoped to the recorded fixtures.
+
+Initial fixture runs passed their image checks but failed during shutdown.
+A minimal test on the unchanged 1.2.0 executable isolated that failure to a
+temporary lambda left connected to a statically cached preview shader. The
+fixture now disconnects its observer before teardown, and qualification requires
+clean process exit in addition to its assertions. This is not evidence for the
+reported menu crash. Existing nonfatal Scudo allocation-region warnings in the
+Android QA runtime are recorded separately; this change does not resolve them.
+
+The affected Adreno 840 is not available locally. Local comparison and lifecycle
+results qualify the candidate on the listed systems, not a universal Android
+stability claim. A single normal-play confirmation on the affected phone remains
+necessary before calling issue #3 fixed; no further diagnostic sequence is
+required by this change.
