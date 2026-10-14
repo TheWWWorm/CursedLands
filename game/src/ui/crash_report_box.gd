@@ -28,6 +28,7 @@ var _sel := 0
 var _status := ""
 var startup_recovery := false
 var _probing := false
+var _confirm: GraphicsCheckBox
 
 func _row_defs() -> Array:
 	return ROWS + RECOVERY_ROWS if startup_recovery else ROWS
@@ -138,27 +139,22 @@ func act(i: int) -> void:
 	if cr == null:
 		return
 	if i == 2:
-		var values := GfxDetect.tier_values(GfxDetect.ORIGINAL, GfxDetect.base_values())
-		values.merge({"auto_graphics":0, "q_aa":0, "fps_limit":1,
-			"render_scale":mini(GameData.option("render_scale"),2), "graphics_preset":GfxPresets.CUSTOM}, true)
-		GameData.set_options(values)
+		GameData.set_options(GfxDetect.original_recovery_values(GameData.options))
 		GameData.trace("startup recovery: basic graphics selected")
 		_answer(true)
 		return
 	if i == 3:
 		_probing = true
 		visible = false
-		var probe := StartupGraphicsProbe.new()
-		probe.finished.connect(func(ok: bool):
-			_probing = false
-			prev = {}
-			title = RemakeText.t("Startup graphics check")
-			message = RemakeText.t("The graphics check finished. Save the report before continuing." if ok else
-				"The graphics check found an error. Save the report before continuing.")
-			_status = ""
-			visible = true
-			queue_redraw())
-		get_parent().add_child(probe)
+		_confirm = GraphicsCheckBox.new()
+		_confirm.answered.connect(func(yes: bool):
+			_confirm = null
+			if yes:
+				_start_probe.call_deferred()
+			else:
+				_probing = false
+				visible = true)
+		get_parent().add_child(_confirm)
 		return
 	if i == 0:
 		var path := cr.save_report(prev)
@@ -172,7 +168,23 @@ func act(i: int) -> void:
 	queue_redraw()
 
 
+func _start_probe() -> void:
+	var probe := StartupGraphicsProbe.new()
+	probe.finished.connect(func(ok: bool):
+		_probing = false
+		prev = {}
+		title = RemakeText.t("Startup graphics check")
+		message = RemakeText.t("The graphics check finished. Save the report before continuing." if ok else
+			"The graphics check found an error. Save the report before continuing.")
+		_status = ""
+		visible = true
+		queue_redraw())
+	get_parent().add_child(probe)
+
+
 func _gui_input(e: InputEvent) -> void:
+	if _probing or not is_visible_in_tree():
+		return
 	if e is InputEventMouseMotion:
 		var i := _row_at(to800(e.position))
 		if i >= 0 and i != _sel:

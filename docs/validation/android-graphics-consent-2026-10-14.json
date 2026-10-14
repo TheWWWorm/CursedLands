@@ -1,0 +1,352 @@
+{
+  "date": "2026-10-14",
+  "base_commit": "19aa237aba09f708c9d5a01875629485728b5dec",
+  "base_stable_version": "1.1.1",
+  "release_published": false,
+  "changes": [
+    "Handheld calibration asks Run check / Skip before writing a pending trial or applying test effects.",
+    "The staged startup probe asks the same question and warning before it is constructed.",
+    "Warning states a check may crash and reopening will use Original graphics; it does not promise automatic process restart.",
+    "First-start decline persists Original graphics and disables automatic checks. Manual decline retains existing graphics/settings bytes.",
+    "Accepted handheld calibration and staged probes persist an Original-graphics fallback, including auto_graphics=0, before rendering trials.",
+    "Completed probes restore the preceding detection record/preferences; interrupted checks recover Original graphics on the next launch.",
+    "English, Russian and German warning, decisions and recovery notice are translated."
+  ],
+  "source_files_sha256": {
+    "game/src/ei/remake_text.gd": "a4955227a155983194c6f9b6fef53e83bfb494fca1368130752dad1b59eb3709",
+    "game/src/game/gfx_detect.gd": "e9d025f45d9cd0a315d1a0d7e917c877f3d67f46d1d64fa5247f44aa20d18d17",
+    "game/src/platform/startup_graphics_probe.gd": "0c75906d7edc2aec96f3f9a5bc1bf4cdc950e348525e09f732228eea4ee70902",
+    "game/src/ui/crash_report_box.gd": "b63fc6afb5ede39797c1440efaba3a5bf9668ecfc08a14ef0a11faf2fcfd7a89",
+    "game/src/ui/graphics_check_box.gd": "fed67d414be951d3b805af9e69094869fa2462e4e58a703085b427a4f8e46b0f",
+    "game/src/ui/graphics_check_box.gd.uid": "f89b56cc59499809343d69b45a6c40d20553ca3ee5ce7819ee390f39fa327cca",
+    "tools/tests/graphics_check_consent.gd": "23fd4ba33ed099edf2f9586d937796aec433f97bf4da3d745a5aa1475bbf7283",
+    "tools/tests/graphics_detection_recovery.gd": "1ef6071755b589185cac289640dea6e48d26ac42d986d225c1252b768afa522b",
+    "tools/tests/graphics_detection_startup.gd": "96ae6f73afae56f3da005e20abc65314c7443dd9dad1e4a678ffab5aca8627cc",
+    "tools/tests/graphics_startup_bootstrap.gd": "811008d77097c9268cb8a43b01c6d2dec50989b173a42457652996e485869260",
+    "tools/tests/startup_graphics_recovery.gd": "edae7fd81a3dea9c1d463aba999d773c30035bd02290d49476eba5e14c407670"
+  },
+  "source_archive": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/validated-sources.tar.gz",
+    "sha256": "38af41f6580dcb5ec3575f90474c110316ca17809aa4fb1ba3ba7dadc5415254"
+  },
+  "android_build": {
+    "package": "org.cursedlands.issue3",
+    "source_commit": "19aa237aba09f708c9d5a01875629485728b5dec",
+    "uncommitted_changes": true,
+    "version": "1.2.0-alpha.1-qa",
+    "version_code": 33,
+    "native_libraries_byte_identical_to_release": true,
+    "libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "apk_sha256": "8143ea2a5b58deff94a3880be04d6f8d8ef1fa31da5eac4fd0915db697f0733d",
+    "private_changes": [
+      "main.gd validation.json bootstrap, inactive when absent",
+      "Android package ID, display name, QA version, debug signing and build flag"
+    ],
+    "original_game_data_bundled": false,
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/android-private/validation.apk"
+  },
+  "desktop_pack_sha256": "a6aeffd9a113b92bed5afc460c857cd4b3568bd99b0e93cef8db7e67007852dc",
+  "device": {
+    "model": "Retroid Pocket 5",
+    "android": 13,
+    "api": 33,
+    "gpu": "Adreno 650",
+    "renderer": "gl_compatibility",
+    "package": "org.cursedlands.issue3"
+  },
+  "desktop": {
+    "platform": "Linux",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "renderer": "gl_compatibility",
+    "handheld_test_flag": "--gfx-handheld"
+  },
+  "checks": [
+    {
+      "label": "consent-desktop",
+      "checks": 77,
+      "failures": 0,
+      "errors": [],
+      "seconds": 31.314,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/linux/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/repo/tools/tests/graphics_check_consent.gd",
+        "--ei-inline-host",
+        "--gfx-detect",
+        "--gfx-handheld"
+      ],
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/consent-desktop.json"
+    },
+    {
+      "label": "probe-desktop",
+      "checks": 392,
+      "failures": 0,
+      "errors": [],
+      "seconds": 26.358,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/linux/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/repo/tools/tests/startup_graphics_recovery.gd",
+        "--ei-inline-host",
+        "--gfx-detect"
+      ],
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-desktop.json"
+    },
+    {
+      "label": "bootstrap-desktop",
+      "checks": 17,
+      "failures": 0,
+      "errors": [],
+      "seconds": 40.873,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/linux/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/repo/tools/tests/graphics_startup_bootstrap.gd",
+        "--ei-inline-host",
+        "--gfx-detect",
+        "--gfx-handheld",
+        "--hold-loading"
+      ],
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/bootstrap-desktop.json"
+    },
+    {
+      "label": "recovery-record",
+      "checks": 74,
+      "failures": 0,
+      "errors": [],
+      "seconds": 2.217,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/linux/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/repo/tools/tests/graphics_detection_recovery.gd",
+        "--ei-inline-host"
+      ],
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/recovery-record.json"
+    },
+    {
+      "label": "consent-android",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/consent-android/result.json",
+      "checks": 77,
+      "failures": 0,
+      "platform": "Android",
+      "renderer": "gl_compatibility",
+      "errors": [],
+      "seconds": 21.5
+    },
+    {
+      "label": "probe-android",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-android/result.json",
+      "checks": 392,
+      "failures": 0,
+      "platform": "Android",
+      "probe": {
+        "errors": [],
+        "gpu": "Adreno (TM) 650",
+        "ok": true,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "ms": 907.0,
+            "ok": true,
+            "stage": "loading_picture"
+          },
+          {
+            "ms": 606.0,
+            "ok": true,
+            "stage": "menu_build"
+          },
+          {
+            "ms": 56.0,
+            "ok": true,
+            "stage": "sky"
+          },
+          {
+            "ms": 2324.0,
+            "ok": true,
+            "stage": "terrain"
+          },
+          {
+            "ms": 1506.0,
+            "ok": true,
+            "stage": "water"
+          },
+          {
+            "ms": 103.0,
+            "ok": true,
+            "stage": "objects"
+          },
+          {
+            "ms": 43.0,
+            "ok": true,
+            "stage": "signpost"
+          },
+          {
+            "ms": 172.0,
+            "ok": true,
+            "stage": "whole_scene"
+          },
+          {
+            "ms": 500.0,
+            "ok": true,
+            "stage": "menu_screens"
+          }
+        ]
+      },
+      "renderer": "gl_compatibility",
+      "errors": [],
+      "seconds": 12.45
+    },
+    {
+      "label": "bootstrap-android",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/bootstrap-android/result.json",
+      "checks": 16,
+      "failures": 0,
+      "platform": "Android",
+      "renderer": "gl_compatibility",
+      "errors": [],
+      "seconds": 16.72
+    },
+    {
+      "label": "calibration-kill-restart-verified",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/calibration-kill-restart-verified/result.json",
+      "checks": 5,
+      "failures": 0,
+      "platform": "Android",
+      "renderer": "gl_compatibility",
+      "errors": [],
+      "controlled_fault": "SIGKILL of the isolated QA process during its first persisted tier; not a reproduced GPU crash",
+      "seconds_after_restart": 8.61
+    },
+    {
+      "label": "probe-kill-restart-verified",
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-kill-restart-verified/result.json",
+      "checks": 5,
+      "failures": 0,
+      "platform": "Android",
+      "renderer": "gl_compatibility",
+      "errors": [],
+      "controlled_fault": "SIGKILL during the confirmed startup probe with enhanced current graphics; not a reproduced GPU crash",
+      "seconds_after_restart": 8.62
+    }
+  ],
+  "legacy_fixture_smoke": {
+    "result": "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/legacy-manual.json",
+    "exit": 0,
+    "scope": "Existing graphics_detection_startup fixture explicitly accepts the new prompt and reaches its completion marker."
+  },
+  "localization": {
+    "checker": "Translations: 1149 entries; 0 errors",
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "layout": "Warning and both labelled buttons visually inspected in all languages on desktop and Android 1920x1080.",
+    "screenshots": [
+      "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/consent-android/graphics-check-en.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/consent-android/graphics-check-ru.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/consent-android/graphics-check-de.png"
+    ]
+  },
+  "cleanup": {
+    "isolated_package_removed": "org.cursedlands.issue3",
+    "remaining_packages": [
+      "package:org.cursedlands.performance",
+      "package:org.cursedlands.engine"
+    ],
+    "other_cursedlands_packages_retained": true
+  },
+  "discarded_run": "The first immediate calibration relaunch raced Android activity teardown. A second harness was started while the first waited and its result was consumed by both; that calibration result is invalid. Final harnesses serialize device access, force-stop the killed activity before relaunch, assert the expected interrupted-stage type, and were rerun separately.",
+  "limits": [
+    "Process-interruption checks use SIGKILL of the isolated QA app, not a reproduced GPU crash.",
+    "Issue #3 on Redmagic / Adreno 840 remains open; these checks verify consent and recovery behavior.",
+    "This follow-up was rendered on GLES. The prior probe rendering was also tested on Vulkan; no new Vulkan acceptance is claimed here.",
+    "The desktop consent fixture reports two ObjectDB instances at shutdown. The same warning was present in the prior bootstrap-desktop-final run; no new script or engine errors were captured."
+  ],
+  "evidence_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/android-private/build.json": "0f812068a7871b37fc52486d7fc064df53b8e70b2a4edc5d157d507ef993b2be",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/android-private/export.log": "b0cadb0aa6c53f15b3a31616adf00968ee2358a3c2347a1fd264d49bfd6165fb",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/android-private/import.log": "67ddd438c65a1ed4b01d34c57dcc4445c2f7f636febb6076eb1a1f22285eb722",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/bootstrap-android/godot.log": "80566def0a7c0b0614af8c1537b8e3b4f740e2eac298431e2a2be1abf0067b0c",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/bootstrap-android/result.json": "9f83dc383921a2ccec488e283c34b63e0d5e5c21d385ae93527ba0f5a2f949f1",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/bootstrap-desktop.json": "fff5cbb22719a9a642f4c2d33738930206275e6eb9ff94b50420b440cdd70c46",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/bootstrap-desktop.log": "251e8ff830fee746a57169e6e0bfb759630a295ef6a2a6f76700b4b0c0f08d71",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/build-desktop.json": "d4f4d87297c944c04882055e9903a8baa9216a0dfad10432c865ec0003bd08c5",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/calibration-kill-restart-verified/interrupted-godot.log": "36f15ef1ecbd3c873fc89ec15e8d6f50b09aaadfa2ef699a3b37b9d857e812dd",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/calibration-kill-restart-verified/pending-settings.cfg": "ad38b1285abdd222ed94d4351d08da0856853d5bb68dad1820674df682a7bfd8",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/calibration-kill-restart-verified/restarted-godot.log": "ca8ec5ca64883dc29f7c32d8429675358414b0fe109455d94df0ae7f590599e8",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/calibration-kill-restart-verified/result.json": "69d2cf74065d9ee344821ffecd90a016bdbb10c7707abe4b25f88490703d2ca4",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/consent-android/godot.log": "e03f4097d1cac9cbaf33957db27a2dd7a98a11ce1c663943a8cbe573e2e100a8",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/consent-android/graphics-check-de.png": "efca3e626f3471e9f88a9541a4bca192bd1ccc499ec689b6e30a49a96228513c",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/consent-android/graphics-check-en.png": "388ace474c95cbb488ef5f45e60559b1dc0f1ebe4c25464fba7af18cca831cf2",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/consent-android/graphics-check-ru.png": "9361b3c5d9943d4d75e3a09e6458b34e8ec656e1f0a730f7fdc13d56d9de92ce",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/consent-android/result.json": "b3f142b043b9c0cafb2c7c071c44c6fbcfba4d77f5fb776e4fea2ea211550b52",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/consent-desktop.json": "30b8a43f7b95ca38f8b65d6c5f29c89f3aea604bab355d16a22aa78520d69c3b",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/consent-desktop.log": "1661f46fa9e4cac884784d6e14188d4faa4a3bb0ce891ee558b20e56998c3958",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/device-cleanup.json": "859a5dfd59a823612fe8a2f9bac16ab033d9c8c4496567b3fe85c7867f0b67ce",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/legacy-manual.json": "801b555b2ff92af75de17f12ebb121122027b495a04687cb3252dee34d304ab2",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/legacy-manual.log": "85f5ea11f7d6717944955678ec2a3af8508d93e7571a486b0ed3b4fe20940c7b",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-android/godot.log": "2938317ec70bd33161f8e061084f157b27134fe5223c507e0cbde10b4d8ec1bd",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-android/result.json": "aad75893d2445f770e1ed049bb0d2783f83ff87dba50a588db98d1d877bc1139",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-android/startup-recovery-de.png": "f75b0f2e09284c57c48ac6c8109519ce1dd3a9d771a95b4ea76433ec2ea0178b",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-android/startup-recovery-en.png": "327ec44de9fbabee4fb0da1e3eab790669b01fdfc2b912aaa2433f9e54afff51",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-android/startup-recovery-ru.png": "dff99273227d74efc2cdeb0b0af6c583fcab88ecacce483dabfa6e31f6da0d84",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-desktop.json": "0cae051926342c0eebba00f582d5c96313cace75e0a03bcf529b9f64c249bc2d",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-desktop.log": "dbe09c4f33f3aaf1d6dea71556359fc20bc98baea1947b14fc6abd497fcf2643",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-kill-restart-verified/interrupted-godot.log": "97d3d549f12ca83f3561d22fea6aa6ec41bba1a17c4d058fa388582cff8fcc1b",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-kill-restart-verified/pending-settings.cfg": "02b98703d27891c0cfa1561ea8e216329c892e038411ce8ecc2d49f7611d84b3",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-kill-restart-verified/restarted-godot.log": "d2ee26d254c25ef2f89d28f42b405cce5e0df9c1af731471148ae0b842da128c",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/probe-kill-restart-verified/result.json": "61979d677dc3d78b2b499d943024ed88c52068fc8fdccbfbee49692fb79f6692",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/recovery-record.json": "4b26aae416f9eed33b07182897d3c52df75740c7719e92c522164008b2b5986f",
+    "/home/llm2x/Documents/EI/local/scratchpad/android-graphics-consent-20261014/recovery-record.log": "b2e29deb0e9affc6ebd2011ebcab2cab6fa7b9dc5a1b27c412c66a9363b1058e"
+  }
+}

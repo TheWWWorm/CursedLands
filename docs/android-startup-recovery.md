@@ -23,10 +23,17 @@ detection records retain their settings. The temporary choice does not write
 preferences or a successful detection result.
 
 Calibration waits for the loading/movie screens to disappear, including when
-loading takes longer than the previous 20-second limit. It then uses the
-existing transaction: save the basic rollback values and pending tier before
-applying enhanced settings. An interrupted trial restores the basic values on
-the next launch and skips automatic retries. Successful calibration still
+loading takes longer than the previous 20-second limit. On handhelds, it asks
+the player to **Run check** or **Skip** before starting any trial. The prompt
+warns that the check can crash and that reopening the game will use Original
+graphics. Skipping the first check saves the basic settings and disables
+automatic checks; declining a manual retry preserves the existing settings.
+
+After acceptance, calibration uses the existing transaction: save the basic
+rollback values and pending tier before applying enhanced settings. An
+interrupted handheld trial restores Original graphics on the next launch and
+disables automatic checks, including a manual trial that started from enhanced
+settings. Successful calibration still
 selects and saves its measured tier. An enhanced trial can still crash once;
 basic rendering itself has not been qualified on the affected Redmagic.
 
@@ -44,7 +51,11 @@ actions, translated into English, Russian and German:
   objects, signpost, the complete scene, and the menu screens. Each stage is
   traced before its work; completed stages require presented frames and GPU
   readback without captured engine errors. The result goes into the existing
-  exportable report. The probe does not start calibration or rewrite settings.
+  exportable report. It asks for confirmation with the same crash/relaunch
+  warning before any stage runs. It does not start calibration or change the
+  current graphics. A temporary pending-test record provides the Original
+  fallback if the process crashes; a completed check restores the previous
+  detection record and preferences.
 
 The probe freezes the isolated scene while testing its geometry groups. It is
 not an animation stress test, a native backtrace, or a qualification of every
@@ -70,9 +81,9 @@ changed in `a916f95` on October 10. Thus comparing only today's 1.0.3 tag would
 conflate different builds. The earlier shared shader changes remain candidates;
 the current evidence does not select one as the cause.
 
-## Validation on 2026-10-14
+## Initial patch validation on 2026-10-14
 
-The exact sources, build hashes, commands and result files are recorded in
+The initial `19aa237` sources, build hashes, commands and result files are recorded in
 [the validation record](validation/android-startup-recovery-2026-10-14.json).
 Android tests used an isolated QA package on a Retroid Pocket 5, Android 13,
 Adreno 650, with byte-identical native libraries to 1.1.1. Original game data
@@ -89,6 +100,13 @@ performance packages were retained.
 | Dialogue, save/load, background/resume and worker shutdown | 26 checks passed on Android GLES. This fixture uses Original look and disables calibration. |
 | Existing interrupted-detection and startup-report fixtures | 27 headless recovery checks and 86 rendered startup-report checks passed. Headless checks do not qualify rendering. |
 | Localization and build | 1,145 translation entries, zero errors; EN/RU/DE report layout inspected on desktop and Android; editor import and desktop/Android exports passed. |
+
+The consent follow-up is recorded separately in
+[android-graphics-consent-2026-10-14.json](validation/android-graphics-consent-2026-10-14.json).
+It covers unanswered, declined and accepted checks, first-start decline
+persistence, manual-decline preservation, translated warning/button layout,
+and interrupted calibration/probe recovery. Reopening is the player's action;
+the app does not promise to relaunch its process automatically.
 
 The Redmagic/Adreno 840 crash, broad upgrade behavior, sustained gameplay
 performance and the unconfirmed forum reports remain open. The next affected

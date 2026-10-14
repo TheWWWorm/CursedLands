@@ -1,8 +1,8 @@
 class_name StartupGraphicsProbe
 extends Node
 ## Explicit recovery action. Each boundary is flushed into the existing crash
-## report before constructing/submitting work. Never change saved settings or
-## run calibration; a native failure leaves the precise pending stage behind.
+## report before constructing/submitting work. Keep current graphics during
+## the check, but persist an Original-graphics fallback before any stage runs.
 signal finished(ok: bool)
 
 const LABELS := ["Loading picture", "Building the menu", "Menu sky", "Menu terrain",
@@ -16,6 +16,9 @@ var _geometry := {}
 var _background := Environment.BG_SKY
 var _stage := ""
 var _started := 0
+var _record_before := {}
+var _pending := {}
+var _testing := false
 
 class Errors extends Logger:
 	var messages: Array[String] = []
@@ -66,13 +69,18 @@ func _ready() -> void:
 	panel.add_child(_label)
 	_run.call_deferred()
 
-func _begin(id: String, index: int) -> void:
+func _begin(id: String, index: int) -> bool:
 	_stage = id
+	_pending.stage = "startup probe " + id
+	if GfxDetect.save_record(_pending) != OK:
+		GameData.trace("startup graphics probe: could not save recovery stage")
+		return false
 	_label.text = RemakeText.t("Startup graphics check") + "\n%d / %d: " % [index + 1, LABELS.size()] + RemakeText.t(LABELS[index])
 	GameData.trace("startup graphics probe: preparing " + id)
 	await RenderingServer.frame_post_draw
 	_started = Time.get_ticks_msec()
 	GameData.trace("startup graphics probe: begin " + id)
+	return true
 
 func _present() -> bool:
 	for i in 3:
@@ -88,7 +96,19 @@ func _present() -> bool:
 	return ok
 
 func _run() -> void:
-	await _begin("loading_picture", 0)
+	_record_before = GfxDetect.load_record()
+	if _record_before.get("testing", false):
+		GameData.trace("startup graphics probe: another graphics test is pending")
+		_finish(false); return
+	_pending = {"version":GfxDetect.VERSION, "fingerprint":GfxDetect.fingerprint(),
+		"tier":-1, "testing":true, "pid":OS.get_process_id(), "original_recovery":true,
+		"before":GfxDetect.original_recovery_values(GameData.options), "stage":"startup probe preparing"}
+	if GfxDetect.save_record(_pending) != OK:
+		GameData.trace("startup graphics probe: could not save recovery settings")
+		_finish(false); return
+	_testing = true
+	if not await _begin("loading_picture", 0):
+		_finish(false); return
 	_splash = StartupScreen.open(self)
 	if _splash:
 		await _splash.presented()
@@ -98,7 +118,8 @@ func _run() -> void:
 		_finish(false); return
 	if not await _present():
 		_finish(false); return
-	await _begin("menu_build", 1)
+	if not await _begin("menu_build", 1):
+		_finish(false); return
 	_scene = MenuScene.create()
 	if _scene == null:
 		GameData.trace("startup graphics probe: menu unavailable")
@@ -130,7 +151,8 @@ func _run() -> void:
 		_finish(false); return
 	var groups := ["sky", "terrain", "water", "objects", "signpost", "whole_scene"]
 	for i in groups.size():
-		await _begin(groups[i], i + 2)
+		if not await _begin(groups[i], i + 2):
+			_finish(false); return
 		for node: GeometryInstance3D in _geometry:
 			var data: Dictionary = _geometry[node]
 			node.visible = data.visible and (groups[i] == "whole_scene" or data.group == groups[i])
@@ -140,7 +162,8 @@ func _run() -> void:
 	_geometry.clear()
 	_scene.free()
 	_scene = null
-	await _begin("menu_screens", 8)
+	if not await _begin("menu_screens", 8):
+		_finish(false); return
 	_menu = preload("res://src/ui/main_menu.gd").new()
 	_menu.detect_graphics = false
 	add_child(_menu)
@@ -153,6 +176,16 @@ func _finish(ok: bool) -> void:
 	_geometry.clear()
 	if is_instance_valid(_scene): _scene.free()
 	if is_instance_valid(_menu): _menu.free()
+	if DisplayServer.get_name() != "headless":
+		await RenderingServer.frame_post_draw
+		await RenderingServer.frame_post_draw
+	if _testing:
+		if GfxDetect.save_record(_record_before) == OK:
+			_testing = false
+		else:
+			ok = false
+			GameData.trace("startup graphics probe: could not clear recovery record")
+	ok = ok and _errors.snapshot().is_empty()
 	var result := {"ok":ok, "rows":rows, "errors":_errors.snapshot(),
 		"renderer":RenderingServer.get_current_rendering_method(), "gpu":RenderingServer.get_video_adapter_name()}
 	var file := FileAccess.open("user://startup-graphics-probe.json", FileAccess.WRITE)
@@ -166,3 +199,6 @@ func _input(_event: InputEvent) -> void:
 
 func _exit_tree() -> void:
 	if _logging: OS.remove_logger(_errors)
+	# A normal quit is not an interrupted driver trial. A process crash skips
+	# this cleanup and leaves the Original fallback for GameData's early load.
+	if _testing: GfxDetect.save_record(_record_before)

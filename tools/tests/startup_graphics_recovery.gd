@@ -21,6 +21,13 @@ func tap(box: CrashReportBox, index: int) -> void:
 	event.position = box.p8((box._rects().rows[index] as Rect2).get_center())
 	box._gui_input(event)
 
+func answer(box: MessageBox, yes: bool) -> void:
+	var event := InputEventMouseButton.new()
+	event.button_index = MOUSE_BUTTON_LEFT
+	event.pressed = true
+	event.position = box.p8((box._rects().ok if yes else box._rects().cancel).get_center())
+	box._gui_input(event)
+
 func _ready() -> void:
 	_run.call_deferred()
 
@@ -44,7 +51,19 @@ func _run() -> void:
 	check(get_parent().find_children("*", "MenuScene", true, false).is_empty(), "actions are available before any 3D menu")
 	check(GameData.options == options_before, "opening recovery leaves settings alone")
 	tap(box, 3)
-	check(box._probing and not box.visible, "touch starts the graphics check")
+	await settle()
+	check(box._confirm != null and box._probing and not box.visible, "touch asks before the graphics check")
+	check(get_parent().find_children("*", "StartupGraphicsProbe", true, false).is_empty(), "probe is not constructed before consent")
+	check(FileAccess.get_file_as_bytes(GameData.CONFIG_PATH) == settings_before, "asking does not change saved settings")
+	answer(box._confirm, false)
+	await settle()
+	check(not box._probing and box.visible, "declining returns to the report")
+	check(GameData.options == options_before and GfxDetect.load_record() == record_before, "declining leaves graphics and records unchanged")
+	tap(box, 3)
+	await settle()
+	answer(box._confirm, true)
+	await settle()
+	check(box._probing and not box.visible, "accepting starts the graphics check")
 	# Hidden recovery controls must not resume startup during a probe.
 	var escape := InputEventKey.new()
 	escape.keycode = KEY_ESCAPE
@@ -54,13 +73,18 @@ func _run() -> void:
 	check(not box.is_queued_for_deletion() and GameData.options == options_before, "recovery ignores actions while probing")
 	var deadline := Time.get_ticks_msec() + 180000
 	var calibration_seen := false
+	var rollback_seen := false
 	while box._probing and Time.get_ticks_msec() < deadline:
 		calibration_seen = calibration_seen or get_tree().root.get_children().any(func(n): return n is GfxDetect)
+		var pending := GfxDetect.load_record()
+		if pending.get("testing", false):
+			rollback_seen = pending.get("original_recovery", false) and pending.before.auto_graphics == 0 and GfxDetect.original_look_on(pending.before)
 		await RenderingServer.frame_post_draw
 	check(not box._probing and box.visible, "probe returns to the report")
 	check(not calibration_seen, "probe never starts automatic calibration, even with auto enabled")
+	check(rollback_seen, "probe saves an Original fallback while checking enhanced graphics")
 	check(GameData.options == options_before, "probe keeps all option values")
-	check(FileAccess.get_file_as_bytes(GameData.CONFIG_PATH) == settings_before, "probe does not rewrite saved preferences")
+	check(FileAccess.get_file_as_bytes(GameData.CONFIG_PATH) == settings_before, "completed probe restores the saved preferences exactly")
 	check(GfxDetect.load_record() == record_before, "probe keeps the calibration record")
 	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string("user://startup-graphics-probe.json"))
 	if parsed is Dictionary: probe_result = parsed

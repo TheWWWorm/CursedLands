@@ -63,8 +63,24 @@ func _ready() -> void:
 	check(GfxDetect.auto_reason(rec, base, base, "device", true) == "", "same device keeps successful result")
 	check(GfxDetect.auto_reason(rec, base, base, "new GPU", true) == "device", "successful result allows later hardware detection")
 	check(RemakeText.TEXTS.has(GfxDetect.RECOVERY_NOTICE), "recovery notice has RU/DE translations")
+	cfg.load(PATH)
+	cfg.set_value("options", "auto_graphics", 1)
+	cfg.set_value("options", "gfx_water", 1)
+	cfg.save(PATH)
+	var original := GfxDetect.original_recovery_values({"render_scale":4})
+	GfxDetect.save_record({"testing":true, "pid":0, "original_recovery":true,
+		"before":original, "stage":"startup probe terrain"}, PATH)
+	cfg.load(PATH)
+	check(GfxDetect.recover_test(cfg, PATH), "opt-in probe interruption recovers")
+	for k: String in GfxDetect.keys():
+		if k.begins_with("gfx_"): check(cfg.get_value("options", k, -1) == 0, "Original fallback disables " + k)
+	check(cfg.get_value("options", "auto_graphics") == 0, "Original recovery disables automatic checks")
+	check(cfg.get_value("options", "render_scale") == 2, "Original recovery uses modest resolution")
+	check(cfg.get_value("options", "renderer") == 2 and cfg.get_value("options", "volume_music") == 23, "Original recovery retains unrelated settings")
+	check(GfxDetect.recovered_original_test and RemakeText.TEXTS.has(GfxDetect.ORIGINAL_RECOVERY_NOTICE), "Original recovery has its own translated notice")
 	DirAccess.remove_absolute(PATH)
 	GfxDetect.recovered_test = false
+	GfxDetect.recovered_original_test = false
 	var report := {"checks": checks, "failures": failures}
 	FileAccess.open("user://graphics-detection-recovery.json", FileAccess.WRITE).store_string(JSON.stringify(report))
 	print("GRAPHICS_DETECTION_RECOVERY ", JSON.stringify(report))

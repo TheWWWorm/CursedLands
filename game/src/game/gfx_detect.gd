@@ -55,7 +55,9 @@ const DEADLINE_S := 12.0
 ## Views drawn per frame in the stress mode.
 const STRESS := 2
 const RECOVERY_NOTICE := "The previous graphics test did not finish. Your earlier settings were restored and automatic testing was skipped. You can retry Detect best settings from Options."
+const ORIGINAL_RECOVERY_NOTICE := "The previous graphics check did not finish. Original graphics are now in use and automatic checks are disabled. You can retry Detect best settings from Options."
 static var recovered_test := false
+static var recovered_original_test := false
 static var _startup_values := {}
 
 
@@ -76,6 +78,16 @@ static func prepare_startup() -> void:
 	GameData.options.merge(_startup_values, true)
 	GameData._apply_window()
 	GameData.trace("graphics detection: first menu uses basic graphics until calibration")
+
+
+## A failed opt-in check must be able to start without enhanced effects, even
+## when the player was testing from an already enhanced manual configuration.
+static func original_recovery_values(current: Dictionary) -> Dictionary:
+	var values := tier_values(ORIGINAL, base_values())
+	values.merge({"auto_graphics":0, "q_aa":0, "fps_limit":1,
+		"render_scale":mini(int(current.get("render_scale", values.render_scale)), 2),
+		"graphics_preset":GfxPresets.CUSTOM}, true)
+	return values
 
 ## The options the ladder sets: every gfx_* switch and the render quality.
 static func keys() -> PackedStringArray:
@@ -385,11 +397,12 @@ static func recover_test(cfg: ConfigFile, path := GameData.CONFIG_PATH) -> bool:
 	if not before is Dictionary or before.is_empty():
 		return false
 	var allowed := keys()
-	allowed.append_array(["fps_limit", "graphics_preset"])
+	allowed.append_array(["fps_limit", "graphics_preset", "auto_graphics"])
 	for k: String in before:
 		if k in allowed and before[k] is int:
 			cfg.set_value("options", k, before[k])
 	var stage := String(cfg.get_value(SECTION, "stage", "preparing"))
+	recovered_original_test = bool(cfg.get_value(SECTION, "original_recovery", false))
 	cfg.erase_section(SECTION)
 	cfg.set_value(SECTION, "version", VERSION)
 	cfg.set_value(SECTION, "fingerprint", fingerprint())
@@ -506,7 +519,8 @@ static func auto_start() -> void:
 	Watchdog.ensure()
 	if recovered_test:
 		recovered_test = false
-		_offer_recovery((Engine.get_main_loop() as SceneTree).current_scene)
+		_offer_recovery((Engine.get_main_loop() as SceneTree).current_scene, recovered_original_test)
+		recovered_original_test = false
 	var rec := load_record()
 	var reason := auto_reason(rec, GameData.options, base_values(), fingerprint(), GameData.option("auto_graphics") != 0)
 	if not _startup_values.is_empty():
@@ -524,16 +538,16 @@ static func auto_start() -> void:
 
 
 ## Queue behind the crash report / renderer notice instead of covering it.
-static func _offer_recovery(parent: Node) -> void:
+static func _offer_recovery(parent: Node, original := false) -> void:
 	if not is_instance_valid(parent) or not parent.is_inside_tree():
 		return
 	for child in parent.find_children("*", "", true, false):
 		if child is MessageBox and child.visible and not child.is_queued_for_deletion():
-			child.tree_exited.connect(func(): _offer_recovery(parent), CONNECT_ONE_SHOT)
+			child.tree_exited.connect(func(): _offer_recovery(parent, original), CONNECT_ONE_SHOT)
 			return
 	var box := MessageBox.new()
 	box.title = RemakeText.t("Graphics")
-	box.message = RemakeText.t(RECOVERY_NOTICE)
+	box.message = RemakeText.t(ORIGINAL_RECOVERY_NOTICE if original else RECOVERY_NOTICE)
 	box.ok_only = true
 	box.esc_closes = true
 	parent.add_child(box)
@@ -595,6 +609,27 @@ func _run() -> void:
 	while _busy_screen() and not _cancelled:
 		await get_tree().process_frame
 	await _wait(0.5)
+	if kind == "handheld":
+		_overlay.visible = false
+		var accepted := false
+		if not _cancelled:
+			_box = GraphicsCheckBox.new()
+			add_child(_box)
+			GameData.trace("graphics detection: waiting for consent")
+			accepted = await _box.answered
+			_box = null
+			await get_tree().process_frame
+		if not accepted or _cancelled:
+			# Keep the basic first menu across launches. A declined manual
+			# check leaves the player's existing settings and record intact.
+			if not manual:
+				GameData.options.auto_graphics = 0
+				GameData.save_settings()
+			GameData.trace("graphics detection: check declined")
+			queue_free()
+			return
+		GameData.trace("graphics detection: check accepted")
+		_overlay.visible = true
 	_base = base_values()
 	_tiers = all_tiers(_base)
 	for k in keys():
@@ -603,7 +638,9 @@ func _run() -> void:
 	_before.graphics_preset = GameData.option("graphics_preset")
 	_record_before = load_record()
 	_pending = {"version": VERSION, "fingerprint": fingerprint(), "tier": -1,
-		"testing": true, "pid": OS.get_process_id(), "before": _before,
+		"testing": true, "pid": OS.get_process_id(),
+		"before": original_recovery_values(_before) if kind == "handheld" else _before,
+		"original_recovery": kind == "handheld",
 		"stage": "preparing", "date": Time.get_datetime_string_from_system()}
 	if save_record(_pending) != OK:
 		_overlay.visible = false

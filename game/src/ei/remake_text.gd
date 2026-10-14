@@ -927,6 +927,10 @@ const TEXTS := {
 	"Map viewer (remake)": ["Просмотр карт (ремейк)", "Kartenbetrachter (Remake)"],
 	# --- Mobile, browser, touch and local save backups ---
 	"Skip": ["Пропустить", "Überspringen"],
+	"Run check": ["Проверить", "Test starten"],
+	"Graphics check": ["Проверка графики", "Grafiktest"],
+	"Run a graphics check now? It may crash on some devices. If that happens, reopen the game: it will use Original graphics.": ["Запустить проверку графики? На некоторых устройствах игра может вылететь. Если это произойдёт, запустите её снова: будет включена графика как в оригинале.", "Grafiktest jetzt starten? Auf manchen Geräten kann das Spiel dabei abstürzen. Starten Sie es dann erneut: Es verwendet die Originalgrafik."],
+	"The previous graphics check did not finish. Original graphics are now in use and automatic checks are disabled. You can retry Detect best settings from Options.": ["Предыдущая проверка графики не завершилась. Включена графика как в оригинале, автоматические проверки отключены. Повторить проверку можно кнопкой «Подобрать лучшие настройки» в настройках.", "Der vorige Grafiktest wurde nicht abgeschlossen. Die Originalgrafik ist jetzt aktiv, automatische Tests sind deaktiviert. Sie können den Test in den Optionen erneut starten."],
 	"Aim at a body part": ["Удар по части тела", "Körperteil anvisieren"],
 	"Head": ["Голова", "Kopf"],
 	"Body": ["Тело", "Rumpf"],

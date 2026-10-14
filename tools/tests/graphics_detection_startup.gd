@@ -7,6 +7,7 @@ extends Node
 var detecting := false
 var elapsed := 0.0
 var main: Node
+var consent_given := false
 func _ready() -> void:
     process_mode=Node.PROCESS_MODE_ALWAYS
     main=get_parent()
@@ -34,6 +35,12 @@ func observe() -> void:
                 n.cancel()
 func _process(dt: float) -> void:
     elapsed+=dt
+    if not consent_given and not OS.get_cmdline_user_args().has("--expect-no-test"):
+        for n in get_tree().root.get_children():
+            if n is GfxDetect and n._box is GraphicsCheckBox:
+                consent_given=true
+                print("PROBE_CONSENT accepted")
+                n._box._answer(true)
     var rec := GfxDetect.load_record()
     var done: bool = detecting and not rec.get("testing",false) and (int(rec.get("tier",-1))>=0 or rec.get("cancelled",0) or rec.get("interrupted",0))
     if (elapsed>5 and OS.get_cmdline_user_args().has("--expect-no-test")) or done:

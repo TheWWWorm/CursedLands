@@ -29,6 +29,7 @@ func observe() -> void:
 		first_trial = record
 		check(basic(record.get("before", {})), "rollback contains basic graphics before a tier applies")
 		check(record.before.fps_limit == 1, "rollback retains the basic 30 FPS cap")
+		check(record.before.auto_graphics == 0 and record.get("original_recovery", false), "crash fallback disables automatic checks")
 		print("BOOTSTRAP_FIRST_TRIAL ", JSON.stringify(record))
 
 func _ready() -> void:
@@ -47,6 +48,7 @@ func _run() -> void:
 		check(recovered.get("interrupted", 0) == 1, "restart detects an interrupted first trial")
 		check(basic(GameData.options), "restart restores basic graphics before menu construction")
 		check(GameData.option("fps_limit") == 1, "restart restores the basic frame cap")
+		check(GameData.option("auto_graphics") == 0, "restart disables automatic checks")
 		await open_menu()
 		await get_tree().create_timer(3.0).timeout
 		check(not get_tree().root.get_children().any(func(n): return n is GfxDetect), "restart does not automatically retry the failing trial")
@@ -90,6 +92,21 @@ func _run() -> void:
 		await get_tree().create_timer(21.0).timeout
 		check(not trial_seen and not GfxDetect.load_record().get("testing", false), "calibration waits for slow loading beyond 20 seconds")
 		hold.queue_free()
+	var prompt: GraphicsCheckBox
+	var prompt_deadline := Time.get_ticks_msec() + 10000
+	while Time.get_ticks_msec() < prompt_deadline:
+		for node in get_tree().root.get_children():
+			if node is GfxDetect and node._box is GraphicsCheckBox: prompt = node._box
+		if prompt: break
+		await RenderingServer.frame_post_draw
+	check(prompt != null, "handheld calibration asks before testing")
+	check(not trial_seen and not GfxDetect.load_record().get("testing", false), "no tier or pending trial before consent")
+	if prompt:
+		var event := InputEventMouseButton.new()
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.pressed = true
+		event.position = prompt.p8((prompt._rects().ok as Rect2).get_center())
+		prompt._gui_input(event)
 	var deadline := Time.get_ticks_msec() + 90000
 	while Time.get_ticks_msec() < deadline:
 		var record := GfxDetect.load_record()
