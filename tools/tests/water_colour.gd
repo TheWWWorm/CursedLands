@@ -64,6 +64,36 @@ func mean(image: Image) -> Vector3:
 			var c := image.get_pixel(x,y); sum+=Vector3(c.r,c.g,c.b)
 	return sum/(image.get_width()*image.get_height())
 
+func metadata_codes(texture: Texture2D) -> PackedInt32Array:
+	# GLES ImageTexture.get_image() reads through RGBA8, clamping float
+	# metadata to 0..1. Encode the shader's sampled integers into three
+	# byte channels before readback so this checks the actual GPU data.
+	var shader := Shader.new()
+	shader.code = """shader_type canvas_item;
+render_mode unshaded;
+uniform sampler2D codes : filter_nearest, repeat_disable;
+void fragment() {
+	ivec2 cell = ivec2(UV * vec2(textureSize(codes, 0)));
+	int code = int(texelFetch(codes, cell, 0).r) + 1;
+	COLOR = vec4(float(code & 255), float((code >> 8) & 255), float((code >> 16) & 255), 255.0) / 255.0;
+}
+"""
+	var view := SubViewport.new()
+	view.size = Vector2i(texture.get_width(), texture.get_height())
+	view.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	add_child(view)
+	var canvas := ColorRect.new(); canvas.size = view.size; view.add_child(canvas)
+	var mat := ShaderMaterial.new(); mat.shader = shader; canvas.material = mat
+	mat.set_shader_parameter("codes", texture)
+	await frames()
+	var image := view.get_texture().get_image(); image.convert(Image.FORMAT_RGBA8)
+	var bytes := image.get_data()
+	var result := PackedInt32Array(); result.resize(view.size.x * view.size.y)
+	for i in result.size():
+		result[i] = (int(bytes[i * 4]) | (int(bytes[i * 4 + 1]) << 8) | (int(bytes[i * 4 + 2]) << 16)) - 1
+	view.free()
+	return result
+
 func _ready() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--before-terrain="):
@@ -108,12 +138,12 @@ func _ready() -> void:
 	for option: Array in GameData.OPTIONS:
 		if String(option[0]).begins_with("gfx_"): GameData.options[option[0]]=0
 	var terrain := EITerrain.load_map("zone1")
-	var packed := terrain._water_tile_tex.get_image()
+	var packed := await metadata_codes(terrain._water_tile_tex)
 	var plain := 0; var bog := 0; var valid := true
 	var per_tex := (terrain.texture_size/terrain.tile_size)*(terrain.texture_size/terrain.tile_size)
 	for i in terrain.water_tile.size():
 		var source := terrain.water_tile[i]
-		var code := roundi(packed.get_pixel(i%packed.get_width(),i/packed.get_width()).r)
+		var code := packed[i]
 		if source<0: valid=valid and code==source; continue
 		valid=valid and (code&65535)==source
 		var index := ((source>>6)&255)*per_tex+(source&63)

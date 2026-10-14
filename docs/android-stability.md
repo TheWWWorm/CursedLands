@@ -6,6 +6,12 @@ The machine-readable record is
 This is investigation and validation evidence, not release notes or a claim that
 the reported crashes have been fixed.
 
+Release **1.3.0** includes the compact Android figure shaders and on-demand GLES
+scene variants investigated below. The
+[combined release record](validation/stable-1.3.0-2026-10-14.json) contains the
+final package checks. The Redmagic 11 Pro crash remains unconfirmed as fixed;
+the historical measurements and limitations below retain their original scope.
+
 ## Reports and confirmation
 
 | Report | Observed symptom | Current status |

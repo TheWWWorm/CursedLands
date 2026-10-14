@@ -1,0 +1,734 @@
+{
+  "version": "1.3.0",
+  "date": "2026-10-14",
+  "scope": "Combined moving-cast, liquid appearance, terrain/reflection setup, co-op reward and Android shader compatibility changes.",
+  "game_source_commit": "c5932e2e99ac3ae2998676ec75e557bd2348d957",
+  "game_tree": "444d06ef23910cc8807eda5029b16d7d09f7b129",
+  "network_protocol": 23,
+  "integration": {
+    "base_release": "v1.2.0",
+    "android_source_commit": "415196e",
+    "other_task_source_base": "0e23fc321f7cf98e3df35e8ae012250ef3cab95c",
+    "other_task_snapshot_sha256": {
+      "game/src/ei/terrain.gd": "ce9daa0ca678edfebbea4dc80472a00efb92e73beca6e7b999ade685fc951174",
+      "game/src/ei/terrain_sector.gd": "92497bb5db3aa397c7c225a7f752699be276eb0d7172cb4f6baeb1fcf950f378",
+      "game/src/game/direct_control.gd": "6f567d60d73fc0d1db6f8926302c4ba6a56f5f1e8520c35adc8bc21e90798c43",
+      "game/src/game/direct_pose.gd": "f7419dcd1200ffc107680c126e18dbbbbb4224cd9ba2d74ba1b3164da57556f4",
+      "game/src/game/fx/soft_ground_deform.gd": "578d7842031f42b733ba1aafe2eed1c3e687959b216f5054c0899dacbb34c607",
+      "game/src/game/fx/water_reflection.gd": "e8e28d74fcfced6587acf996698f68f3e81b8fe12d679aa5a3df433f1a220c9e",
+      "game/src/game/script/vm.gd": "fa6756acaeee78e39ccac1531d9d57c9e36bb472706ea00f44026b7fd08df12c",
+      "game/src/game/session.gd": "26376142401605476ad6f8af1000259efdf4e3f58b26b675f95d3d264ad4bf78",
+      "game/src/game/unit.gd": "b6e52f61af9ba1fe23971d2c4a7b051591c37c20d2bbcc375f769b3a5c2eded9",
+      "tools/tests/direct_coop.gd": "171feb3d1e720957ab365e77efdb20c165d245fd1838467cbf8ac7c1a4ad2ce7",
+      "tools/tests/direct_moving_attacks.gd": "e204b6e90cb21ebbf942fb67511c7445b5de79f6dc17d6c759153724e7e7af75",
+      "tools/tests/terrain_sector.gd": "1044b9cf22cfdc8e7a669149db8a90ed3c660df9da396f15a2ab98589d9ad8d0",
+      "docs/validation/direct-moving-casts-2026-10-14.json": "62b046a071c3d48ac15e408c45c702fc338b37eba610d32240d4cee270ee2a85",
+      "docs/validation/ingos-graphics-followup-2026-10-14.json": "d5b10c87ec543c0c81f455605bea79922640b9371e9a6687204903e0e7f42415",
+      "docs/validation/ingos-performance-loot-2026-10-14.json": "d2ade855f0499a9af4adc069e902879a14fc7ae692f1a4770fa654853ab950ba",
+      "docs/validation/loading-art-2026-10-14.json": "542f2781445619617f1740adb48cc6a9f882383576b35a74d66c70bf680d5a82",
+      "docs/validation/water-colour-2026-10-14.json": "0e9e3f83adfe7427c7faaa8974374335e696ed274e65521a291508c4f6ee5c9e",
+      "tools/tests/coop_loot_grants.gd": "d3ef951023415e13d5c1bd327b669d5ab708df10d9e1a62b4f0844d358d333c1",
+      "tools/tests/coop_loot_network.gd": "64954039eb5d89dc767e3af0f20f9b05404d2036c57a3ddeca3340d3cd6a0a5c",
+      "tools/tests/direct_moving_casts.gd": "6d1de4e0678f4df6f53ff9c845855bc3ab5e39f6d4c870f3eef2a79cd7b4601e",
+      "tools/tests/liquid_surfaces.gd": "684c479f1f7f39b171e7b72afdb8f6b9ab87ed2985a6579bdea895dcd5f6c188",
+      "tools/tests/water_colour.gd": "302d4e1bb073f6a1333fb124553f0919afa96ba46e226e658dcdd967e7e222aa"
+    },
+    "integration_commit": "22a78d1",
+    "new_game_features": "Movement while casting in first- and third-person controls; minor SemVer increment.",
+    "public_game_source_unchanged_during_validation": true
+  },
+  "linux_passed_checks": 18400,
+  "linux_release_checks": [
+    {
+      "suite": "coop_loot_grants",
+      "label": "loot-grants",
+      "checks": 28,
+      "failures": 0,
+      "errors": [],
+      "seconds": 1.967,
+      "renderer": "headless",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.3.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/repo/tools/tests/coop_loot_grants.gd",
+        "--ei-inline-host"
+      ],
+      "fixture_sha256": "d3ef951023415e13d5c1bd327b669d5ab708df10d9e1a62b4f0844d358d333c1",
+      "log_sha256": "52c39d1836e9144e6816727c0fa8692c443562797357ddb531fc8fc4bb21823d",
+      "warnings": []
+    },
+    {
+      "suite": "coop_loot_network",
+      "label": "loot-network",
+      "checks": 41,
+      "failures": 0,
+      "errors": [],
+      "seconds": 14.089,
+      "renderer": "headless",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.3.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/repo/tools/tests/coop_loot_network.gd",
+        "--ei-inline-host"
+      ],
+      "fixture_sha256": "64954039eb5d89dc767e3af0f20f9b05404d2036c57a3ddeca3340d3cd6a0a5c",
+      "log_sha256": "b255ec2fcd59af0b29c577f1882654773f6b1a1c4c549de638f44ab4d557d369",
+      "warnings": [
+        "WARNING: SubViewport is not a child of a SubViewportContainer. get_screen_transform doesn't return the actual screen position."
+      ]
+    },
+    {
+      "suite": "direct_coop",
+      "label": "direct-coop",
+      "checks": 37,
+      "failures": 0,
+      "errors": [],
+      "seconds": 15.989,
+      "renderer": "headless",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.3.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/repo/tools/tests/direct_coop.gd",
+        "--ei-inline-host"
+      ],
+      "fixture_sha256": "171feb3d1e720957ab365e77efdb20c165d245fd1838467cbf8ac7c1a4ad2ce7",
+      "log_sha256": "81d067f49c72191869df69896065622d9f2775f8452365966a49fb048bc98bd2",
+      "warnings": [
+        "WARNING: SubViewport is not a child of a SubViewportContainer. get_screen_transform doesn't return the actual screen position."
+      ]
+    },
+    {
+      "suite": "terrain_sector",
+      "label": "terrain-sector",
+      "checks": 17959,
+      "failures": 0,
+      "errors": [],
+      "seconds": 2.017,
+      "renderer": "headless",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.3.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/repo/tools/tests/terrain_sector.gd",
+        "--ei-inline-host"
+      ],
+      "fixture_sha256": "1044b9cf22cfdc8e7a669149db8a90ed3c660df9da396f15a2ab98589d9ad8d0",
+      "log_sha256": "2d7fa92183f92cb224599b31ce68298b87ed8221ac4a7e4392f18a3d2808baca",
+      "warnings": []
+    },
+    {
+      "suite": "water_reflection_geometry",
+      "label": "reflection-geometry",
+      "checks": 32,
+      "failures": 0,
+      "errors": [],
+      "seconds": 2.017,
+      "renderer": "headless",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.3.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/repo/tools/tests/water_reflection_geometry.gd",
+        "--ei-inline-host"
+      ],
+      "fixture_sha256": "5050ce932304393656691e19a9004cb2fe2e83ab9c664bca3c203b13370e530a",
+      "log_sha256": "e19f3f1c505c7fb1b7803a7f48569f722847d55cb9dd3e6eab58db90f2e87f5f",
+      "warnings": []
+    },
+    {
+      "suite": "graphics_detection_recovery",
+      "label": "graphics-recovery",
+      "checks": 74,
+      "failures": 0,
+      "errors": [],
+      "seconds": 2.018,
+      "renderer": "headless",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.3.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/repo/tools/tests/graphics_detection_recovery.gd",
+        "--ei-inline-host"
+      ],
+      "fixture_sha256": "1ef6071755b589185cac289640dea6e48d26ac42d986d225c1252b768afa522b",
+      "log_sha256": "100cb4d6f2dce3dc28896282db6fa4e79cc5f46f969cee87df7ae125cd8d1b92",
+      "warnings": []
+    },
+    {
+      "suite": "direct_moving_casts",
+      "label": "casts-third",
+      "checks": 50,
+      "failures": 0,
+      "errors": [],
+      "seconds": 42.842,
+      "renderer": "gl_compatibility",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.3.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/repo/tools/tests/direct_moving_casts.gd",
+        "--ei-inline-host",
+        "--observer"
+      ],
+      "fixture_sha256": "6d1de4e0678f4df6f53ff9c845855bc3ab5e39f6d4c870f3eef2a79cd7b4601e",
+      "log_sha256": "a23cf69ee1460d2143af2b8a958f645539e0f9d9bb6b22b6ca4ca6567ca99a62",
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ]
+    },
+    {
+      "suite": "direct_moving_casts",
+      "label": "casts-first-held",
+      "checks": 52,
+      "failures": 0,
+      "errors": [],
+      "seconds": 41.135,
+      "renderer": "gl_compatibility",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.3.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/repo/tools/tests/direct_moving_casts.gd",
+        "--ei-inline-host",
+        "--first-person",
+        "--run",
+        "--held"
+      ],
+      "fixture_sha256": "6d1de4e0678f4df6f53ff9c845855bc3ab5e39f6d4c870f3eef2a79cd7b4601e",
+      "log_sha256": "35afe78a21e99f877ad81e47d300d1ae84fcace4edd55114369aadd888c8f413",
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ]
+    },
+    {
+      "suite": "direct_moving_attacks",
+      "label": "moving-bow",
+      "checks": 14,
+      "failures": 0,
+      "errors": [],
+      "seconds": 39.132,
+      "renderer": "gl_compatibility",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.3.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/repo/tools/tests/direct_moving_attacks.gd",
+        "--ei-inline-host",
+        "--bow",
+        "--run",
+        "--first-person"
+      ],
+      "fixture_sha256": "e204b6e90cb21ebbf942fb67511c7445b5de79f6dc17d6c759153724e7e7af75",
+      "log_sha256": "fdf6f5f453fe183df80fc8052a3b19f87a5d917c2484ab3e77213a25d4fccdcf",
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ]
+    },
+    {
+      "suite": "water_colour",
+      "label": "water-gl-corrected",
+      "checks": 12,
+      "failures": 0,
+      "errors": [],
+      "seconds": 5.623,
+      "renderer": "gl_compatibility",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.3.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/repo/tools/tests/water_colour.gd",
+        "--ei-inline-host",
+        "--before-terrain=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/baseline-terrain.gd"
+      ],
+      "fixture_sha256": "f69709973f2559456463898bb43a2b5c9ef78e255510ced8d718ba5e7a63bd48",
+      "log_sha256": "c4d1fd84a455d556ef23894b0602ca3103289141144158ae060be253f68f51fc",
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer."
+      ]
+    },
+    {
+      "suite": "water_colour",
+      "label": "water-forward-corrected",
+      "checks": 12,
+      "failures": 0,
+      "errors": [],
+      "seconds": 6.774,
+      "renderer": "forward_plus",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.3.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "forward_plus",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/repo/tools/tests/water_colour.gd",
+        "--ei-inline-host",
+        "--before-terrain=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/baseline-terrain.gd"
+      ],
+      "fixture_sha256": "f69709973f2559456463898bb43a2b5c9ef78e255510ced8d718ba5e7a63bd48",
+      "log_sha256": "370353710fbe0631c422ab63f8b1f6c984ef977c6136792bca4dd2632c851128",
+      "warnings": []
+    },
+    {
+      "suite": "water_colour",
+      "label": "water-mobile-corrected",
+      "checks": 12,
+      "failures": 0,
+      "errors": [],
+      "seconds": 5.472,
+      "renderer": "mobile",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.3.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "mobile",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/repo/tools/tests/water_colour.gd",
+        "--ei-inline-host",
+        "--before-terrain=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/baseline-terrain.gd"
+      ],
+      "fixture_sha256": "f69709973f2559456463898bb43a2b5c9ef78e255510ced8d718ba5e7a63bd48",
+      "log_sha256": "0e64afedba7bcfa4c318267b60c2e3106d4ca26afd006e2d0a529d8871b0f5db",
+      "warnings": []
+    },
+    {
+      "suite": "graphics_check_consent",
+      "label": "graphics-consent-corrected",
+      "checks": 77,
+      "failures": 0,
+      "errors": [],
+      "seconds": 30.214,
+      "renderer": "gl_compatibility",
+      "command": [
+        "/home/llm2x/Documents/EI/local/builds/CursedLands-1.3.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x720",
+        "--windowed",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/repo/tools/tests/graphics_check_consent.gd",
+        "--ei-inline-host",
+        "--gfx-detect",
+        "--gfx-handheld"
+      ],
+      "fixture_sha256": "23fd4ba33ed099edf2f9586d937796aec433f97bf4da3d745a5aa1475bbf7283",
+      "log_sha256": "ac284aa4be8dfc3df67e3d316dc9d7554e88675ce0d70e2f9c2c32be7d49de21",
+      "warnings": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.",
+        "WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+      ]
+    }
+  ],
+  "build": {
+    "production_scripts_identical_across_five_platforms": true,
+    "compiled_scripts": 288,
+    "committed_game_source_exact": true,
+    "platforms": {
+      "linux-x86_64": {
+        "resources": 730,
+        "scripts": 288
+      },
+      "windows-x86_64": {
+        "resources": 730,
+        "scripts": 288
+      },
+      "macos-universal": {
+        "resources": 727,
+        "scripts": 288
+      }
+    },
+    "no_original_game_data_saves_or_private_probes": true
+  },
+  "android": {
+    "release": {
+      "version_code": 34,
+      "package": "org.cursedlands.engine",
+      "apk_sha256": "4745489493c5fb90f4b4dd9accc2e038765b4ac487dd40dfd1d7fd10fbb9cead",
+      "bytes": 31171702,
+      "debuggable": false,
+      "matching_public_certificate": true,
+      "native_libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "engine_patch_count": 14
+    },
+    "private_build": {
+      "package": "org.cursedlands.release13",
+      "source_commit": "c5932e2e99ac3ae2998676ec75e557bd2348d957",
+      "uncommitted_changes": false,
+      "version": "1.3.0-qa",
+      "version_code": 34,
+      "native_libraries_byte_identical_to_release": true,
+      "libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "apk_sha256": "fe934cc04b0b4dfac493eb1d388dd50301c38ec6f6c84326a580b3a9bc442aa5",
+      "private_changes": [
+        "main.gd validation.json bootstrap, inactive when absent",
+        "Android package ID, display name, QA version, debug signing and build flag"
+      ],
+      "original_game_data_bundled": false
+    },
+    "private_script_audit": {
+      "identical_scripts": 287,
+      "total_scripts": 288,
+      "private_bootstrap": "src/main.gdc",
+      "native_libraries_identical": true,
+      "only_differing_entries_in_scripts_and_libraries": [
+        "assets/src/main.gdc"
+      ]
+    },
+    "alignment": {
+      "all_aarch64": true,
+      "elf_and_zip_16kb_alignment": true,
+      "no_scene_audit_instrumentation": true,
+      "libraries": [
+        {
+          "library": "lib/arm64-v8a/libc++_shared.so",
+          "load_segment_alignment": [
+            16384,
+            16384,
+            16384
+          ],
+          "sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b"
+        },
+        {
+          "library": "lib/arm64-v8a/libgodot_android.so",
+          "load_segment_alignment": [
+            16384,
+            16384,
+            16384
+          ],
+          "sha256": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e"
+        },
+        {
+          "library": "lib/arm64-v8a/libmod_archive_android.so",
+          "load_segment_alignment": [
+            16384,
+            16384,
+            16384
+          ],
+          "sha256": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1"
+        },
+        {
+          "library": "lib/arm64-v8a/libterrain_search_android.so",
+          "load_segment_alignment": [
+            16384,
+            16384,
+            16384
+          ],
+          "sha256": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+        }
+      ]
+    },
+    "runtime": {
+      "device": {
+        "model": "Retroid Pocket 5",
+        "android": 13,
+        "api": 33,
+        "gpu": "Adreno 650"
+      },
+      "result": {
+        "checks": 651,
+        "failures": 0,
+        "errors": []
+      },
+      "suites": [
+        {
+          "label": "android-scene",
+          "checks": 536,
+          "failures": 0,
+          "errors": [],
+          "process_exited": true,
+          "gpu_readbacks": 65,
+          "result_sha256": "7644cb5d8bb0eb564a760b21852da6b9152d658944673c21229f65b04a76de9a",
+          "log_sha256": "9940391db273eb38c28786907ae3ee2c256d66e5b4874308fd94aedc77b42fe7"
+        },
+        {
+          "label": "android-water-corrected",
+          "checks": 12,
+          "failures": 0,
+          "errors": [],
+          "process_exited": true,
+          "gpu_readbacks": null,
+          "result_sha256": "b7cd9a6b4a1b39b1b9514cf173da0ef551adb77d229101de3b03399c8d402e91",
+          "log_sha256": "f7a838f88ed60022224575a98927dde8e0d099c85712b6c6440f8db11712cc0b"
+        },
+        {
+          "label": "android-lifecycle",
+          "checks": 26,
+          "failures": 0,
+          "errors": [],
+          "process_exited": true,
+          "gpu_readbacks": null,
+          "result_sha256": "6f189ebf1d868ca62c6a299ff9da7c321fa1dd5760accdcc0aa165891cf8104b",
+          "log_sha256": "d2a93da9914c191cb4fd6353ac9f2f0a0319f730950812924b5ae418a446786e"
+        },
+        {
+          "label": "android-consent",
+          "checks": 77,
+          "failures": 0,
+          "errors": [],
+          "process_exited": null,
+          "gpu_readbacks": null,
+          "result_sha256": "6d9e127df9198a4968bb794007be4f6a82aab31b95eef8ee59c0cf725a50d6ea",
+          "log_sha256": "1daa4679ba3fe2edeb7719a91071044f27291c76852e022ee6771bd63e6405d0"
+        }
+      ],
+      "scene_rendering_comparison": {
+        "reference": "/home/llm2x/Documents/EI/local/scratchpad/android-object-investigation-20261014/gles-lazy/render-lazy-release/result.json",
+        "captures": 65,
+        "identical_pixels": true,
+        "different": []
+      }
+    },
+    "cleanup": {
+      "temporary_package_removed": true,
+      "package": "org.cursedlands.release13",
+      "production_application_untouched": true,
+      "remaining_packages": [
+        "package:org.cursedlands.performance",
+        "package:org.cursedlands.engine"
+      ]
+    }
+  },
+  "localization": {
+    "entries": 1149,
+    "coverage_errors": 0,
+    "new_player_visible_strings": 0,
+    "rendered_languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "visual_review": "Android graphics prompt title, warning and both buttons remain readable and unclipped in all three languages. Existing localised text was not changed.",
+    "android_captures": {
+      "graphics-check-en.png": "eb7aaea85a9f9dc0e95b5db470173e25db91f7296b1689f7aef5dd261fb6097a",
+      "graphics-check-ru.png": "02a2503fd93b24d71352f08aa100f295c44c56e5ca809a6a711055ff731a8fe9",
+      "graphics-check-de.png": "12e5be56e4480b09640411ba2e359595f43faa05c68a7f0a4f7ec5b61b070fe9"
+    }
+  },
+  "browser": {
+    "build": {
+      "version": "1.3.0",
+      "source_tag": "v1.3.0",
+      "source_commit": "c5932e2e99ac3ae2998676ec75e557bd2348d957",
+      "game_tree": "444d06ef23910cc8807eda5029b16d7d09f7b129",
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 288,
+      "production_scripts_byte_identical_to_release_linux": true,
+      "resource_count": 727,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "7fb6f3ba566f74111d66ffb0d200e66f85921736c4bccebb7627e6d4b49613b6",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    },
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-25525ad26449f4c08514",
+      "new_cache": "cursed-engine-2-4670619f89a8aa03c2ed",
+      "pck_sha256": "7fb6f3ba566f74111d66ffb0d200e66f85921736c4bccebb7627e6d4b49613b6",
+      "update_waited_for_old_tab_to_close": true,
+      "all_indexeddb_entries_preserved": true,
+      "unchanged_wasm_reused_without_download": true,
+      "changed_network_paths": [
+        "service-worker.js",
+        "index.html",
+        "index.pck"
+      ],
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ]
+    },
+    "fresh_start": {
+      "browser": "151.0.7922.34",
+      "fresh_start": {
+        "isolated": true,
+        "runtimeError": "",
+        "cache": [
+          "cursed-engine-2-4670619f89a8aa03c2ed"
+        ],
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "pck_sha256": "7fb6f3ba566f74111d66ffb0d200e66f85921736c4bccebb7627e6d4b49613b6"
+      },
+      "errors": []
+    },
+    "upgraded_runtime": {
+      "main_menu_ready": true,
+      "errors": [],
+      "version": "1.3.0"
+    },
+    "visual_review": "Fresh setup screen and upgraded main menu rendered correctly at 1280x720.",
+    "captures": {
+      "fresh-setup.png": "6995b68ed019e87ff00d95119aa6a4a93a18400b5d75b31216200f23a69f6421",
+      "upgraded-menu.png": "184fddd0c3878a4ba3e8ce4c15f58c135c996b267e0b1050fe25ebcb085f3dc0"
+    }
+  },
+  "android_crash_status": {
+    "issue": "https://github.com/TheWWWorm/CursedLands/issues/3",
+    "confirmed_fixed": false,
+    "statement": "The changes avoid unused shader compilation and remove inactive figure effects before compilation. No Redmagic 11 Pro test or native fault location establishes whether this avoids the reported crash."
+  },
+  "fixture_corrections": [
+    {
+      "case": "Initial desktop consent invocation",
+      "finding": "The launcher omitted --gfx-detect and --gfx-handheld, so the desktop correctly did not offer handheld consent. The corrected invocation passes all 77 checks.",
+      "excluded_log_sha256": "1214732b35851b7476aeed1590325df88728bf30f0d596c879bd130a91a27223"
+    },
+    {
+      "case": "Android water metadata readback",
+      "finding": "Godot GLES TextureStorage::texture_2d_get reads ImageTexture through RGBA8, clamping float metadata outside 0..1. A diagnostic confirmed integer values including 16383 and 65536 read back as 1. The test now samples the actual texture in a shader and encodes each integer into three byte channels before readback. All 12 checks pass on Android and each desktop renderer; production game code was unchanged.",
+      "original_log_sha256": "898ff4aa77e7499a129ff9bb9ea276e8779cef61ab65a93c89ca77b04bc61645",
+      "diagnostic_log_sha256": "42f4f8ac9be05ce9298f7098941fe64cf75704ad24520c69efb2ad2f9db56284",
+      "corrected_fixture_sha256": "f69709973f2559456463898bb43a2b5c9ef78e255510ced8d718ba5e7a63bd48"
+    }
+  ],
+  "warnings": {
+    "desktop": "The nonfatal screen-space AA warning appears in Compatibility. ENet fixtures also report SubViewport screen-transform warnings. The consent fixture reports two ObjectDB instances at shutdown; the identical fixture and flags reproduce that warning with the published 1.2.0 executable, with all 77 checks passing in both builds.",
+    "consent_baseline_log_sha256": "d13c5a23c9ce9a58d6e7d0931de7680f5543a8729735b4483b81b2169e8032bb"
+  },
+  "prior_evidence": [
+    "direct-moving-casts-2026-10-14.json",
+    "ingos-performance-loot-2026-10-14.json",
+    "ingos-graphics-followup-2026-10-14.json",
+    "water-colour-2026-10-14.json",
+    "android-figure-compatibility-2026-10-14.json",
+    "android-gles-scene-variants-2026-10-14.json",
+    "android-upstream-compatibility-2026-10-14.json"
+  ],
+  "limits": [
+    "No Redmagic 11 Pro was available; its reported crash remains unconfirmed as fixed.",
+    "Windows and macOS packages passed version, structure and compiled-resource audits but were not run on their target operating systems. macOS remains unsigned and not notarized.",
+    "Android execution used a separate QA package with identical native libraries and 287 of 288 compiled production scripts; main.gdc adds a conditional test bootstrap. The public APK has no bootstrap.",
+    "Android lifecycle checks cover the real simulation service, new game, dialogue, paused save/load, service pause/resume and shutdown. They do not cover Android activity recreation or a long background soak.",
+    "Desktop rendering uses Linux/NVIDIA. These tests establish no overall FPS improvement on a mobile RTX 4090, no complete campaign playthrough and no WAN co-op soak.",
+    "Browser acceptance covers fresh setup, an upgrade from the published 1.2.0 cache, preserved IndexedDB data and an upgraded main menu. Live deployment hashes and live-browser startup are checked after push and retained with the publication record."
+  ]
+}

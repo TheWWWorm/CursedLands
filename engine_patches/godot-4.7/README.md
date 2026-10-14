@@ -106,7 +106,7 @@ frame loop for the engine's existing `GodotService`. It does not change the
 graphical rendering thread mode. These patches retain
 Godot's MIT license; complete engine notices accompany every release package.
 
-The Android GLES startup candidate adds
+The Android GLES startup patch adds
 `android-gles-lazy-scene-variants.patch` after those thirteen patches. On Android,
 only `SceneShaderGLES3` skips eager compilation of the four default modes when
 there is no usable cache. The existing synchronous bind path compiles the
@@ -131,7 +131,12 @@ fixture, `tools/tests/android_scene_variants.gd`, also requires
 engines, and require clean native process exit in addition to fixture assertions.
 Device measurements, cache-transition checks, APK hashes and limitations are in
 [`android-gles-scene-variants-2026-10-14.json`](../../docs/validation/android-gles-scene-variants-2026-10-14.json).
-These local engine builds do not replace installed templates or published APKs.
+The 1.3.0 Android package includes this fourteenth patch. Its release engine
+matches the uninstrumented candidate above; installed global templates remain
+unchanged. Combined-source rendering, lifecycle, package and browser checks are
+recorded in
+[`stable-1.3.0-2026-10-14.json`](../../docs/validation/stable-1.3.0-2026-10-14.json).
+The Redmagic 11 Pro crash remains unconfirmed as fixed.
 
 The focused `tests/animation_cache_retention.gd` fixture compares normal and
 retained players through completion, library/key/target changes, tree reentry,
