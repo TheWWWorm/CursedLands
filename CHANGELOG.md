@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.4.0 — stable release, 15 October 2026
+
+- Preserve looted actor references when quests replace a location’s population, preventing co-op progress saving and full saves from crashing the server.
+- Keep dialogue participants hidden consistently during camera transitions and stop skipped dialogue audio on co-op partners.
+- Keep movement active while the Alt body-part menu is open. Place left and right limbs on their respective sides and add a central option to clear the preferred body part.
+- Restore cursor state after menus and zone transfers, and use appropriate names for first-person interactions.
+- Filter quest items from shops and crafting activities, and exclude special items from blueprint generation.
+- Restore the Gipat elder’s authored departure and allow separate travel to the healer’s outdoor area and cave.
+- Restore original large-creature preview framing and reject vanished spell targets instead of falling back to the caster.
+- Restore terrain sun shadows and prevent reflection-camera state from clipping character and scenery shadows.
+- Include matching Android process-exit records and available native crash stacks in the existing startup report, and report the graphics settings active at the failure. ([#3](https://github.com/TheWWWorm/CursedLands/issues/3))
+
+See [release notes](docs/releases/1.4.0.md) for compatibility and platform limits.
+
 ## 1.3.1 — stable release, 14 October 2026
 
 - Keep Mirror water reflections aligned with the main camera during rapid movement.
