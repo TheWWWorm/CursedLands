@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.1 — stable release, 14 October 2026
+
+- Keep Mirror water reflections aligned with the main camera during rapid movement.
+- Correct fog colours in distant Mirror reflections during daylight and at night.
+
+See [release notes](docs/releases/1.3.1.md) for compatibility and platform limits.
+
 ## 1.3.0 — stable release, 14 October 2026
 
 - Allow movement while casting spells in first- and third-person controls, with the same movement reduction used during attacks. Preserve casting timing, costs and effects, and keep the walking animation continuous when a cast ends.

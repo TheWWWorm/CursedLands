@@ -1,0 +1,263 @@
+{
+  "date": "2026-10-14",
+  "change": "Mirror reflection camera synchronisation and reflected fog colours",
+  "status": "Local source changes and private Linux test pack. No published release or artifact changed.",
+  "base_commit": "19cd329efd2ddc6614e3c9861b00e8463125f05e",
+  "source_sha256": {
+    "game/src/game/fx/water_reflection.gd": "0c918a975c2987849e0fcd29f107d6d82e21255176886094bcad7825a0139e5d",
+    "game/src/game/gfx.gd": "c88c2d2c4483c7150247572d179041cf9648968e7fe90ec56ac3ce48f863cfdb",
+    "tools/tests/water_reflection_regressions.gd": "735e69d6440cb9d43c288e2f0d44ee3b1d5f134b4dffc5a781ff01518274e827"
+  },
+  "implementation": {
+    "camera": "Disable physics interpolation on the reflection SubViewport. Its default is ON despite the main viewport being OFF. The reflected camera and planar_view must use the same render-frame transform.",
+    "fog": "Set automatic depth-fog contribution to zero for the existing reflected-camera marker in the Forward+ compensation shader. That camera has an independent environment without automatic depth or volumetric fog; only authored fog is applied.",
+    "scope": "No terrain atlas, draw-distance, texture-quality, localization, release-version or public-package changes."
+  },
+  "runtime": {
+    "engine": "Godot 4.7 stable custom build from the 1.3.0 Linux package",
+    "os": "Ubuntu 24.04.5 LTS",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "driver": "580.178.04",
+    "resolution": [
+      1280,
+      720
+    ],
+    "render_thread": "Default separate rendering thread",
+    "renderer": "Forward+ Vulkan, plus OpenGL Compatibility fallback",
+    "hd_mod": "community.hd-lands-textures@1.5.0",
+    "pack_sha256": "09addeb704c46a68a075aa04f5803ac8b4b3e0c0cec92bab4e66f71196e653c1",
+    "runtime_tree_audit": "All tracked game files match the base commit except the two production files above, which exactly match the working-tree patch."
+  },
+  "method": {
+    "scene": "First Ingos map gz11k, two lake views at 12:00 and 00:00, with and without HD Lands.",
+    "fog": "Compare opaque reflected pixels against the independent original FOG shader path. Disable the new correction as a negative control, and verify the upper main view is unchanged. Empty the main camera volumetric mist to remove temporal noise while retaining the compensated shader path.",
+    "motion": "Freeze world updates, make 24 abrupt pitch transitions, compare the first drawn frame to the same pose held for five more frames. Repeat with viewport interpolation ON as the negative control.",
+    "pixel_metric": "Images sampled at 320x180 with nearest filtering. Changed means max RGB channel difference greater than 0.025. Fog compares pixels opaque in both images; motion compares rows 60 through 179.",
+    "results": "All fixed fog samples exactly match the reference; every colour negative control fails by hundreds or thousands of pixels. All 48 fixed camera transitions match their settled frames exactly; the old interpolation mode produces 21 transient bad frames in each run."
+  },
+  "tests": {
+    "hd_lands": {
+      "checks": 33,
+      "failures": [],
+      "hd": true,
+      "map": "gz11k",
+      "rows": [
+        {
+          "case": "fog-day-0",
+          "control": {
+            "changed": 1482,
+            "mean_error": 0.135258518495952,
+            "samples": 4516
+          },
+          "fixed": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 4516
+          },
+          "main_view": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 22400
+          }
+        },
+        {
+          "case": "fog-day-1",
+          "control": {
+            "changed": 916,
+            "mean_error": 0.0811813317030767,
+            "samples": 5650
+          },
+          "fixed": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 5650
+          },
+          "main_view": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 22400
+          }
+        },
+        {
+          "case": "fog-night-0",
+          "control": {
+            "changed": 3113,
+            "mean_error": 0.230206330653805,
+            "samples": 4516
+          },
+          "fixed": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 4516
+          },
+          "main_view": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 22400
+          }
+        },
+        {
+          "case": "fog-night-1",
+          "control": {
+            "changed": 2443,
+            "mean_error": 0.13465695206694,
+            "samples": 5650
+          },
+          "fixed": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 5650
+          },
+          "main_view": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 22400
+          }
+        },
+        {
+          "bad_frames": 0,
+          "case": "motion",
+          "transitions": 24,
+          "variant": "fixed",
+          "worst_changed_pixels": 0
+        },
+        {
+          "bad_frames": 21,
+          "case": "motion",
+          "transitions": 24,
+          "variant": "control",
+          "worst_changed_pixels": 8556
+        }
+      ]
+    },
+    "original_textures": {
+      "checks": 32,
+      "failures": [],
+      "hd": false,
+      "map": "gz11k",
+      "rows": [
+        {
+          "case": "fog-day-0",
+          "control": {
+            "changed": 1491,
+            "mean_error": 0.136038875706053,
+            "samples": 4560
+          },
+          "fixed": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 4560
+          },
+          "main_view": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 22400
+          }
+        },
+        {
+          "case": "fog-day-1",
+          "control": {
+            "changed": 956,
+            "mean_error": 0.0832712249316948,
+            "samples": 5714
+          },
+          "fixed": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 5714
+          },
+          "main_view": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 22400
+          }
+        },
+        {
+          "case": "fog-night-0",
+          "control": {
+            "changed": 3059,
+            "mean_error": 0.230413662091106,
+            "samples": 4560
+          },
+          "fixed": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 4560
+          },
+          "main_view": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 22400
+          }
+        },
+        {
+          "case": "fog-night-1",
+          "control": {
+            "changed": 2458,
+            "mean_error": 0.136623500309031,
+            "samples": 5714
+          },
+          "fixed": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 5714
+          },
+          "main_view": {
+            "changed": 0,
+            "mean_error": 0.0,
+            "samples": 22400
+          }
+        },
+        {
+          "bad_frames": 0,
+          "case": "motion",
+          "transitions": 24,
+          "variant": "fixed",
+          "worst_changed_pixels": 0
+        },
+        {
+          "bad_frames": 21,
+          "case": "motion",
+          "transitions": 24,
+          "variant": "control",
+          "worst_changed_pixels": 8893
+        }
+      ]
+    },
+    "geometry": {
+      "script": "tools/tests/water_reflection_geometry.gd",
+      "checks": 32,
+      "failures": []
+    },
+    "compatibility": {
+      "script": "tools/tests/water_reflection_fallback.gd",
+      "checks": 4,
+      "failures": []
+    }
+  },
+  "total_checks": 101,
+  "failures": [],
+  "raw_evidence": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/reflection-followup-20261014",
+    "logs": [
+      "final-hd.log",
+      "final-original.log",
+      "final-geometry.log",
+      "final-fallback.log",
+      "export-final.log"
+    ],
+    "hd_captures": "/home/llm2x/Documents/EI/local/scratchpad/reflection-followup-20261014/final-hd/data/godot/app_userdata/Cursed Lands",
+    "original_captures": "/home/llm2x/Documents/EI/local/scratchpad/reflection-followup-20261014/final-original/data/godot/app_userdata/Cursed Lands",
+    "comparison_files": [
+      "fog-day-0-control.png",
+      "fog-day-0-fixed.png",
+      "fog-night-0-control.png",
+      "fog-night-0-fixed.png"
+    ]
+  },
+  "reproduce": "Run an exported build with --rendering-method forward_plus --audio-driver Dummy -- --ei-path=/path/to/original/data --ei-inline-host --tool=/path/to/repo/tools/tests/water_reflection_regressions.gd, adding --hd for the installed HD Lands profile. Use isolated XDG data/config/cache directories. Read user://water-reflection-regressions.json.",
+  "limits": [
+    "Rendered validation covers this Linux NVIDIA system; Windows and other GPUs were not exercised.",
+    "The private test pack is based on the published 1.3.0 source plus these two rendering changes. Concurrent unrelated working-tree edits are not part of this validation."
+  ]
+}

@@ -462,6 +462,12 @@ static func _blend_fog(code: String, _lit: bool) -> String:
 		const float BLEND_FOG_MAX = 8.0;
 		float ei_g = clamp((length(VERTEX) - ei_fog.x) / max(ei_fog.y - ei_fog.x, 1e-3), 0.0, 1.0);
 		ei_g = ei_g * ei_g * (3.0 - 2.0 * ei_g);
+#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
+		// The mirror has no automatic depth/volumetric fog pass. Apply the
+		// authored fog directly there; subtracting the main view's fog makes
+		// distant reflected snow go red/green as the sky colour changes.
+		if ((CAMERA_VISIBLE_LAYERS & 1048576u) != 0u) { ei_g = 0.0; }
+#endif
 		float ei_t = max(1.0 - ei_g, 1e-3);
 		float ei_a = min((1.0 - ei_fogv.a) / ei_t, BLEND_FOG_MAX);
 		vec3 ei_add = clamp((ei_fogv.rgb * ei_fogv.a - ei_lin(ei_fog_col) * ei_g) / ei_t, vec3(-BLEND_FOG_MAX), vec3(BLEND_FOG_MAX));

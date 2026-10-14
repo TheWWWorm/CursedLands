@@ -115,6 +115,10 @@ func _process(dt: float) -> void:
 func _create_view() -> void:
 	viewport = SubViewport.new()
 	viewport.name = "WaterReflectionView"
+	# SubViewports default to interpolation ON even when the main viewport
+	# is OFF. This camera follows the render-frame pose; interpolating it
+	# again makes the rendered bank lag behind planar_view during fast turns.
+	viewport.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	viewport.world_3d = terrain.get_world_3d()
 	viewport.transparent_bg = true
 	viewport.gui_disable_input = true
