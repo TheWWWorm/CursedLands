@@ -1,0 +1,259 @@
+{
+  "version": "1.1.1",
+  "date": "2026-10-14",
+  "issue": "https://github.com/TheWWWorm/CursedLands/issues/3",
+  "scope": "Expose previous-session report export before intro movies and 3D menu loading; add startup checkpoints. No cause or fix for the Redmagic native crash is claimed.",
+  "game_source_commit": "f594a75025f127728423448efb222a19033c8446",
+  "game_tree": "2138b423ca8c8e41b520ffc8aa92afab15fc3272",
+  "network_protocol": 23,
+  "linux_passed_checks": 121,
+  "linux_release_checks": [
+    {
+      "suite": "startup_crash_report",
+      "label": "shipping-startup-report",
+      "checks": 86,
+      "failures": 0,
+      "errors": [],
+      "seconds": 26.362,
+      "renderer": "gl_compatibility",
+      "log_sha256": "43b3ac3aaf77463c16e2c133e3430f9c1d2cc39ec3279075777c7bcf6fe44b1b"
+    },
+    {
+      "suite": "startup_crash_report",
+      "label": "shipping-startup-headless",
+      "checks": 2,
+      "failures": 0,
+      "errors": [],
+      "seconds": 2.017,
+      "renderer": "forward_plus",
+      "log_sha256": "8deb8cbb9ca40d274d22ac5f9fdce7daadbd7c6384e18fe62c826259fe5cc5e3"
+    },
+    {
+      "suite": "startup_animation",
+      "label": "shipping-startup-animation",
+      "checks": 6,
+      "failures": 0,
+      "errors": [],
+      "seconds": 34.072,
+      "renderer": "gl_compatibility",
+      "log_sha256": "8dcb41fd1ed30eca49a7b703e37f4083479526d73f0e18b5714a881fc3dd7fb7"
+    },
+    {
+      "suite": "graphics_detection_recovery",
+      "label": "shipping-graphics-recovery",
+      "checks": 27,
+      "failures": 0,
+      "errors": [],
+      "seconds": 2.27,
+      "renderer": "headless",
+      "log_sha256": "5699e174067fe8cf74682f5c4b792bb2f5b3abd226d9f24eaa54535b123ad050"
+    }
+  ],
+  "build": {
+    "production_scripts_identical_across_five_platforms": true,
+    "compiled_scripts": 286,
+    "committed_game_source_exact": true,
+    "platforms": {
+      "linux-x86_64": {
+        "resources": 726,
+        "scripts": 286
+      },
+      "windows-x86_64": {
+        "resources": 726,
+        "scripts": 286
+      },
+      "macos-universal": {
+        "resources": 723,
+        "scripts": 286
+      }
+    },
+    "no_original_game_data_saves_or_private_probes": true
+  },
+  "android": {
+    "release": {
+      "version_code": 32,
+      "package": "org.cursedlands.engine",
+      "apk_sha256": "8d620f4e2b6a7d7b84d340b4b5759babf191926cb8df93ec5ba857004fb55683",
+      "bytes": 31159056,
+      "debuggable": false,
+      "matching_public_certificate": true,
+      "native_libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "script_audit": true
+    },
+    "private_build": {
+      "package": "org.cursedlands.issue3",
+      "source_commit": "f594a75025f127728423448efb222a19033c8446",
+      "version": "1.1.1-qa",
+      "version_code": 32,
+      "native_libraries_byte_identical_to_release": true,
+      "libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "apk_sha256": "2209c929e004cbdfc607bf1f6f6765c1bc8fa40ee47c2fd4d3c03036ab9adf15",
+      "private_changes": [
+        "main.gd validation.json bootstrap, inactive when absent",
+        "Android package ID, display name, debug signing and build flag"
+      ],
+      "original_game_data_bundled": false
+    },
+    "runtime": {
+      "package": "org.cursedlands.issue3",
+      "device": {
+        "model": "Retroid Pocket 5",
+        "android": "13"
+      },
+      "script_sha256": "51d857ab8b1a53026ca9a0e3aa9baf293b25189f77f5c001ae553d8eaeb5674b",
+      "normal_installed_app_untouched": true,
+      "errors": [],
+      "completion_seen": true,
+      "result": {
+        "checks": 82,
+        "failures": 0,
+        "platform": "Android",
+        "renderer": "gl_compatibility"
+      },
+      "compiled_production_scripts_identical_except_private_bootstrap": {
+        "identical": 285,
+        "bootstrap": "src/main.gdc"
+      },
+      "seconds": 19.241
+    },
+    "production_startup": {
+      "package": "org.cursedlands.issue3",
+      "private_test_bootstrap_active": false,
+      "device": "Retroid Pocket 5 / Android 13 / Adreno 650",
+      "injected_failure": "SIGKILL while the production startup is building its 3D menu; not a reproduced GPU fault",
+      "normal_installed_app_untouched": true,
+      "report_blocks_movies_and_menu": true,
+      "touch_save_succeeded": true,
+      "exported_path": "/storage/emulated/0/Download/CursedLands-report-20261014-105056.txt",
+      "exported_bytes": 3968,
+      "exported_sha256": "97206bf7631f8e8fda47a168be726628ec6e9387f51b97ae7770ae5c00d1c43e",
+      "export_retains_previous_session_and_last_checkpoint": true,
+      "no_movies_or_menu_before_dismissal": true,
+      "touch_copy_succeeded": true,
+      "clipboard_visual_review": "Android clipboard preview shows the report; copied status is visible.",
+      "touch_dismissal_resumes_movies_and_menu": true,
+      "trace_order_verified": true,
+      "passed": true,
+      "captures": {
+        "after-copy.png": "0b22b3e3464f726d84883fa0f00cbd4bbc7b476cf930d0d3f195b23cdf45283e",
+        "menu-after-dismissal.png": "b9210fd73583577e16fda41f8d6981fa8d87ff8d16061061813f69d73f1d938b",
+        "before-save.png": "bdeb21dc39bb0150e8406a936a0583645fdb1d5b890f804f8eb7932dc0c113b4",
+        "after-save.png": "e4fd9c8bfd7c150915190957517a0d8976a08df9acb232cc48db9605a102f8e2"
+      }
+    },
+    "cleanup": {
+      "temporary_package_removed": true,
+      "temporary_download_removed": true,
+      "production_application_untouched": true
+    }
+  },
+  "localization": {
+    "entries": 1129,
+    "coverage_errors": 0,
+    "new_player_strings": 0,
+    "rendered_languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "android_viewport": [
+      1920,
+      1080
+    ],
+    "linux_viewport": [
+      960,
+      540
+    ],
+    "visual_review": "Prompt, saved-report status, actions and dismissal fit in all three languages. Shared Download path wraps within the Android prompt.",
+    "android_captures": {
+      "startup-report-en-saved.png": "6ad2d4b22659240f2cf03eac5402a6261da3b6b8ac4d67538bc79111502f137b",
+      "startup-report-de-saved.png": "c4647c32a8c868ba6f994314d244494fac2fc18fb05a05beb4e3abfbeac489b3",
+      "startup-report-ru.png": "729f843578b7f83c5bf3a17b701492141585d2420c69b741df9289c7e3b408d6",
+      "startup-report-ru-saved.png": "3137ece34cee9512112fac0d0ccbef7662b673a20ab492c8f5a6800da37fffd1",
+      "startup-report-de.png": "3285c8faace131feb15495a7cd89754a629b9d84bba9322bb8b5bd7c8c427782",
+      "startup-report-en.png": "91ca4502c812ad87d477a6488be95e1ffeca81ef81fd132c4bee4e41349f2e6b"
+    }
+  },
+  "browser": {
+    "build": {
+      "version": "1.1.1",
+      "source_tag": "v1.1.1",
+      "source_commit": "f594a75025f127728423448efb222a19033c8446",
+      "game_tree": "2138b423ca8c8e41b520ffc8aa92afab15fc3272",
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 286,
+      "production_scripts_byte_identical_to_release_linux": true,
+      "resource_count": 723,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "4f036ccd745de04bb71bc9ae9cf6bb257493cb58f0deec74fd3c18326cd15913",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    },
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-bcd738991c64f817fc00",
+      "new_cache": "cursed-engine-2-9b9115ba5d10d0996234",
+      "cached_files": 16,
+      "pck_sha256": "4f036ccd745de04bb71bc9ae9cf6bb257493cb58f0deec74fd3c18326cd15913",
+      "update_waited_for_old_tab_to_close": true,
+      "unchanged_wasm_reused_without_download": true,
+      "imported_files": 253,
+      "imported_pack": {
+        "size": 819085304,
+        "start": "38e915e68e3090f4ec8d06325fbcb8f7226fee000294f6502d838f2b1dc7db46",
+        "end": "8e6e05155c72a71c269503b3fb6a62195ce23aa4cb66fa3805ee78050e6f2da1"
+      },
+      "userfs_entries": 39,
+      "userfs_bytes": 16789800,
+      "userfs_all_entries_byte_identical_after_activation": true,
+      "game_data_manifest_and_pack_samples_preserved": true,
+      "changed_network_paths": [
+        "/service-worker.js",
+        "/",
+        "/index.pck"
+      ]
+    },
+    "fresh_start": {
+      "browser": "151.0.7922.34",
+      "fresh_start": {
+        "isolated": true,
+        "runtimeError": "",
+        "cache": [
+          "cursed-engine-2-9b9115ba5d10d0996234"
+        ],
+        "imported": null,
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "pck_sha256": "4f036ccd745de04bb71bc9ae9cf6bb257493cb58f0deec74fd3c18326cd15913"
+      },
+      "errors": []
+    },
+    "upgraded_menu_ready": true,
+    "runtime_errors": [],
+    "captures": {
+      "fresh-setup.png": "969a6687fbb21187594877bed71a7448fce28f1a31c5c6d3ca849e8666fc557b",
+      "upgraded-menu.png": "45aaed41217b3c5507e5b682dcdb1b3c01f869f8789439524b3a1b4e8946e4ca"
+    }
+  },
+  "limits": [
+    "No Redmagic 11 Pro or native crash stack was available. The foreground kill verifies report recovery; it does not reproduce the reported GPU fault.",
+    "Android execution used a separate private package with the same native libraries and 285 identical compiled scripts; main.gdc differs only by a conditional test bootstrap. That bootstrap was absent from the public APK and inactive during the full startup kill/restart/touch test.",
+    "Windows and macOS packages passed structure and compiled-resource audits; they were not run on their target operating systems. macOS is unsigned and not notarized.",
+    "Hosted deployment hashes and the live browser are checked after pushing the final release commit; those results are kept with the publication record."
+  ]
+}
