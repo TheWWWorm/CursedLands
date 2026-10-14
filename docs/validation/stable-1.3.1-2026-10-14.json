@@ -1,0 +1,302 @@
+{
+  "version": "1.3.1",
+  "date": "2026-10-14",
+  "previous_stable": "1.3.0",
+  "game_source_commit": "6bf698067636c3825854daba997b7fbb6a56bfa0",
+  "game_tree": "5fb7c91c9d1959db17b19bbae383b5d29470dff6",
+  "network_protocol": 23,
+  "scope": [
+    "Mirror camera interpolation disabled to keep the reflected view aligned during rapid movement.",
+    "Authored fog applied directly in the reflection camera, without compensation for an absent automatic fog pass."
+  ],
+  "source_validation": "water-reflection-camera-fog-2026-10-14.json",
+  "build": {
+    "production_scripts_identical_across_five_platforms": true,
+    "compiled_scripts": 288,
+    "source_snapshot_exact": true,
+    "original_game_data_bundled": false,
+    "platforms": {
+      "linux-x86_64": {
+        "platform": "linux-x86_64",
+        "source_commit": "6bf698067636c3825854daba997b7fbb6a56bfa0",
+        "game_tree": "5fb7c91c9d1959db17b19bbae383b5d29470dff6",
+        "files": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "864ac0b570247f23afde0e55afffa13dfd02c9d3b9eabc2540bf86e56c6c2a00",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+          "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+        }
+      },
+      "windows-x86_64": {
+        "platform": "windows-x86_64",
+        "source_commit": "6bf698067636c3825854daba997b7fbb6a56bfa0",
+        "game_tree": "5fb7c91c9d1959db17b19bbae383b5d29470dff6",
+        "files": {
+          "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+          "CursedLands.pck": "864ac0b570247f23afde0e55afffa13dfd02c9d3b9eabc2540bf86e56c6c2a00",
+          "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+          "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+        }
+      },
+      "macos-universal": {
+        "platform": "macos-universal",
+        "source_commit": "6bf698067636c3825854daba997b7fbb6a56bfa0",
+        "game_tree": "5fb7c91c9d1959db17b19bbae383b5d29470dff6",
+        "files": {
+          "CursedLands.zip": "e1f8fa595f01eb2335cfb84155ee2a0db7f8d539270f7213916681a2576a5977"
+        }
+      }
+    }
+  },
+  "linux_passed_checks": 33,
+  "linux_release_checks": [
+    {
+      "suite": "water_reflection_regressions",
+      "renderer": "Forward+ Vulkan",
+      "render_thread": "Default separate thread",
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "profile": "Isolated HD Lands 1.5.0",
+      "checks": 33,
+      "failures": [],
+      "errors": [],
+      "result": {
+        "checks": 33,
+        "failures": [],
+        "hd": true,
+        "map": "gz11k",
+        "rows": [
+          {
+            "case": "fog-day-0",
+            "control": {
+              "changed": 1482,
+              "mean_error": 0.135258518495952,
+              "samples": 4516
+            },
+            "fixed": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 4516
+            },
+            "main_view": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 22400
+            }
+          },
+          {
+            "case": "fog-day-1",
+            "control": {
+              "changed": 916,
+              "mean_error": 0.0811813317030767,
+              "samples": 5650
+            },
+            "fixed": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 5650
+            },
+            "main_view": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 22400
+            }
+          },
+          {
+            "case": "fog-night-0",
+            "control": {
+              "changed": 3113,
+              "mean_error": 0.230206330653805,
+              "samples": 4516
+            },
+            "fixed": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 4516
+            },
+            "main_view": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 22400
+            }
+          },
+          {
+            "case": "fog-night-1",
+            "control": {
+              "changed": 2443,
+              "mean_error": 0.13465695206694,
+              "samples": 5650
+            },
+            "fixed": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 5650
+            },
+            "main_view": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 22400
+            }
+          },
+          {
+            "bad_frames": 0,
+            "case": "motion",
+            "transitions": 24,
+            "variant": "fixed",
+            "worst_changed_pixels": 0
+          },
+          {
+            "bad_frames": 17,
+            "case": "motion",
+            "transitions": 24,
+            "variant": "control",
+            "worst_changed_pixels": 8714
+          }
+        ]
+      }
+    }
+  ],
+  "prior_source_checks": {
+    "checks": 101,
+    "failures": 0,
+    "coverage": [
+      "Original textures and HD Lands, daytime and nighttime, two lake views.",
+      "48 rapid camera transitions compared with held poses.",
+      "Reflection geometry and OpenGL Compatibility fallback."
+    ],
+    "record": "water-reflection-camera-fog-2026-10-14.json"
+  },
+  "translations": {
+    "entries": 1149,
+    "errors": 0,
+    "new_player_visible_strings": false
+  },
+  "android": {
+    "version": "1.3.1",
+    "apk_sha256": "e8465ec9321f1c8a10625e2f6f8866cd336f483f658fc8c264169214d14a5427",
+    "resources": 737,
+    "compiled_scripts": 288,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "expected_production_scripts_exact": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "engine_arguments": [
+      "--xr_mode_regular",
+      "--xr-mode",
+      "off",
+      "--fullscreen",
+      "--background_color",
+      "#000000"
+    ],
+    "sparse_pack": {
+      "format": 4,
+      "resources": 737,
+      "all_resource_sizes_and_md5_match": true,
+      "template_baseline_profiles": {
+        "dexopt/baseline.prof": {
+          "bytes": 1177,
+          "sha256": "4442960fb3fefc2020d4675b3fa13bb1017c4718e9144912ff7f2567262216b8"
+        },
+        "dexopt/baseline.profm": {
+          "bytes": 142,
+          "sha256": "df4de3e1028dedbb7787c99a666a9d79cc23407c6640bd5e86877734a2a88d28"
+        }
+      }
+    },
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "debuggable": false,
+    "same_public_certificate": true,
+    "release_template_provenance": {
+      "base_template": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/experimental5-android-engine/platform/android/java/app/build/outputs/apk/standard/release/android_release.apk",
+      "base_sha256": "4a8f9803960ea65a1f7e0ebe585ff489499dd14d618f4dcf96b660ea1adddd7d",
+      "release_template": "/home/llm2x/Documents/EI/local/scratchpad/release-1.3.0-20261014/android_release_14.apk",
+      "release_template_sha256": "8d0e34c6e4bd7a0650275f84db8735a3a3d8ec03f6081f00332de05b0d039a78",
+      "engine_sha256": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+      "libcxx_sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "java_sources_identical": 70,
+      "manifests_semantically_identical": true,
+      "libcxx_note": "The new build copies an unstripped NDK29 library; stripping it reproduces the exact release/private template bytes.",
+      "patch_count": 14,
+      "additional_patch": "android-gles-lazy-scene-variants.patch",
+      "engine_build_record": "/home/llm2x/Documents/EI/local/scratchpad/android-object-investigation-20261014/gles-lazy/lazy-release/build.json"
+    },
+    "normal_installed_app_untouched": true,
+    "version_code": 35,
+    "previous_version_code": 34,
+    "native_libraries_unchanged_from_1_3_0": true,
+    "physical_device_execution": false
+  },
+  "browser": {
+    "build": {
+      "version": "1.3.1",
+      "source_tag": "v1.3.1",
+      "source_commit": "6bf698067636c3825854daba997b7fbb6a56bfa0",
+      "game_tree": "5fb7c91c9d1959db17b19bbae383b5d29470dff6",
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 288,
+      "production_scripts_byte_identical_to_release_linux": true,
+      "resource_count": 727,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "a2806606bed5d82f2e1a7740a2268afe0e548b7f756bc2f8b4ad939aab126b6b",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    },
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-4670619f89a8aa03c2ed",
+      "new_cache": "cursed-engine-2-abcf571b22f806f306b8",
+      "pck_sha256": "a2806606bed5d82f2e1a7740a2268afe0e548b7f756bc2f8b4ad939aab126b6b",
+      "waited_for_old_tab": true,
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "unchanged_wasm_reused": true,
+      "network_paths": [
+        "service-worker.js",
+        "index.html",
+        "index.pck"
+      ]
+    },
+    "fresh_start": {
+      "error": "",
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "caches": [
+        "cursed-engine-2-abcf571b22f806f306b8"
+      ],
+      "errors": []
+    },
+    "upgraded_start": {
+      "error": "",
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "caches": [
+        "cursed-engine-2-abcf571b22f806f306b8"
+      ]
+    },
+    "browser": "Chrome/151.0.7922.34",
+    "visual_review": "Fresh and upgraded setup screens render correctly at 1280x720.",
+    "captures": {
+      "fresh-setup.png": "969a6687fbb21187594877bed71a7448fce28f1a31c5c6d3ca849e8666fc557b",
+      "upgraded-setup.png": "969a6687fbb21187594877bed71a7448fce28f1a31c5c6d3ca849e8666fc557b"
+    }
+  },
+  "limits": [
+    "Linux rendered validation used NVIDIA RTX 3090. Windows and macOS packages were audited but not executed on their target operating systems.",
+    "Android package signature, version increment, native libraries, sparse resources and compiled scripts were verified. No new physical-device run was performed for this desktop Mirror-path patch.",
+    "Browser checks cover fresh setup and an upgrade from the published 1.3.0 service-worker cache. Every IndexedDB record, including test data and save sentinels, is unchanged before engine startup; this is not a campaign playthrough.",
+    "Live deployment hashes and browser startup are verified after push and retained in the local publication record."
+  ]
+}
