@@ -1,0 +1,236 @@
+{
+  "version": "1.2.0",
+  "date": "2026-10-14",
+  "issue": "https://github.com/TheWWWorm/CursedLands/issues/3",
+  "scope": "Optional handheld graphics checks, interrupted-check recovery to Original graphics, staged startup diagnostics and hidden-preview rendering fix. The warning now says In case of a crash. No cause or fix for the Redmagic native crash is established.",
+  "game_source_commit": "8c67ce6f308bb40cb84659f0a5459858c7600148",
+  "game_tree": "b749bd5f8a499c12bef81d09587748a578672faa",
+  "network_protocol": 23,
+  "linux_passed_checks": 151,
+  "linux_release_checks": [
+    {
+      "suite": "graphics_check_consent",
+      "label": "shipping-consent",
+      "checks": 77,
+      "failures": 0,
+      "errors": [],
+      "seconds": 31.717,
+      "renderer": "gl_compatibility",
+      "log_sha256": "c60486807d14f95da487786831326e36c211f156e8e23b7723f375b5674405d4"
+    },
+    {
+      "suite": "graphics_detection_recovery",
+      "label": "shipping-recovery",
+      "checks": 74,
+      "failures": 0,
+      "errors": [],
+      "seconds": 2.218,
+      "renderer": "headless",
+      "log_sha256": "e83d434468b44ad5a4cea7d8535a02e1f4f3aceabb9abb4600eb055a40b6eb3a"
+    }
+  ],
+  "prior_behavior_validation": {
+    "records": [
+      "android-startup-recovery-2026-10-14.json",
+      "android-graphics-consent-2026-10-14.json"
+    ],
+    "unchanged_implementation_and_fixture_sha256": {
+      "game/src/game/gfx_detect.gd": "e9d025f45d9cd0a315d1a0d7e917c877f3d67f46d1d64fa5247f44aa20d18d17",
+      "game/src/main.gd": "3fc8d56f11db90fc867b5b75a8ef2ac371c85eeb9787143d5786bfa5549449e8",
+      "game/src/ui/crash_report_box.gd": "b63fc6afb5ede39797c1440efaba3a5bf9668ecfc08a14ef0a11faf2fcfd7a89",
+      "game/src/ui/interface_board.gd": "303b84405faefb57d13c3a41fd58b0ea354a5f54e6857cb59094dd7f064bc7db",
+      "game/src/ui/main_menu.gd": "ad70ff67dfa91b8cbf4d6f4537aaa94320353a7a6e8e41cca37345b2ddcf3bf5",
+      "game/src/platform/startup_graphics_probe.gd": "0c75906d7edc2aec96f3f9a5bc1bf4cdc950e348525e09f732228eea4ee70902",
+      "game/src/platform/startup_graphics_probe.gd.uid": "99c231f18cfe0cb9f88bfb2ff072d130d91b7512f6df8cb5c54725c2bcaff60a",
+      "tools/tests/mobile_shader_slots.gd": "fa7ac7012d3ea8bc70e9ab9eeedf2cf93c49df9955e3385f30e7f83811d551c1",
+      "tools/tests/graphics_startup_bootstrap.gd": "811008d77097c9268cb8a43b01c6d2dec50989b173a42457652996e485869260",
+      "tools/tests/menu_hidden_viewports.gd": "18bd46c06f14d25047950fc9c0e6631d02c5e7c77e121fd855d5bb8375fc4580",
+      "tools/tests/startup_graphics_recovery.gd": "edae7fd81a3dea9c1d463aba999d773c30035bd02290d49476eba5e14c407670",
+      "tools/tests/startup_crash_report.gd": "51d857ab8b1a53026ca9a0e3aa9baf293b25189f77f5c001ae553d8eaeb5674b",
+      "tools/tests/graphics_detection_recovery.gd": "1ef6071755b589185cac289640dea6e48d26ac42d986d225c1252b768afa522b",
+      "tools/tests/android_local_lifecycle.gd": "a07f6b1e2c880e21794ccbedfc2ff6ffe872c5e06a8cd4dcee335f23f3bd6189",
+      "game/src/ui/graphics_check_box.gd.uid": "f89b56cc59499809343d69b45a6c40d20553ca3ee5ce7819ee390f39fa327cca",
+      "tools/tests/graphics_check_consent.gd": "23fd4ba33ed099edf2f9586d937796aec433f97bf4da3d745a5aa1475bbf7283",
+      "tools/tests/graphics_detection_startup.gd": "96ae6f73afae56f3da005e20abc65314c7443dd9dad1e4a678ffab5aca8627cc"
+    },
+    "release_changes_since_consent_validation": "Only warning wording, translations and version metadata changed in game sources. Consent/layout and recovery-record checks were rerun against release artifacts. Prior records retain their original source hashes and results.",
+    "controlled_interruption_checks": "Both calibration and staged-probe SIGKILL/relaunch checks passed on Retroid Pocket 5 in the consent record; they do not reproduce a native GPU fault."
+  },
+  "build": {
+    "production_scripts_identical_across_five_platforms": true,
+    "compiled_scripts": 288,
+    "committed_game_source_exact": true,
+    "platforms": {
+      "linux-x86_64": {
+        "resources": 730,
+        "scripts": 288
+      },
+      "windows-x86_64": {
+        "resources": 730,
+        "scripts": 288
+      },
+      "macos-universal": {
+        "resources": 727,
+        "scripts": 288
+      }
+    },
+    "no_original_game_data_saves_or_private_probes": true
+  },
+  "android": {
+    "release": {
+      "version_code": 33,
+      "package": "org.cursedlands.engine",
+      "apk_sha256": "ff024f8ba56b5ddb7cb1a9fb3a787561c1f8cc87c4342d76f36139d8a709d3bf",
+      "bytes": 31171702,
+      "debuggable": false,
+      "matching_public_certificate": true,
+      "native_libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "script_audit": true
+    },
+    "private_build": {
+      "package": "org.cursedlands.issue3",
+      "source_commit": "8c67ce6f308bb40cb84659f0a5459858c7600148",
+      "uncommitted_changes": false,
+      "version": "1.2.0-qa",
+      "version_code": 33,
+      "native_libraries_byte_identical_to_release": true,
+      "libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "apk_sha256": "5960e80bf6feff8aea8dfda0ec5ba132447cdf69ccd697b4be474a5aebb394fb",
+      "private_changes": [
+        "main.gd validation.json bootstrap, inactive when absent",
+        "Android package ID, display name, QA version, debug signing and build flag"
+      ],
+      "original_game_data_bundled": false
+    },
+    "private_script_audit": {
+      "identical_scripts": 287,
+      "total_scripts": 288,
+      "private_bootstrap": "src/main.gdc",
+      "native_libraries_identical": true
+    },
+    "runtime": {
+      "device": {
+        "model": "Retroid Pocket 5",
+        "android": 13,
+        "api": 33,
+        "gpu": "Adreno 650"
+      },
+      "result": {
+        "checks": 77,
+        "failures": 0,
+        "platform": "Android",
+        "renderer": "gl_compatibility",
+        "errors": [],
+        "seconds": 21.47
+      }
+    },
+    "cleanup": {
+      "temporary_package_removed": true,
+      "production_application_untouched": true
+    }
+  },
+  "localization": {
+    "entries": 1149,
+    "coverage_errors": 0,
+    "rendered_languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "android_viewport": [
+      1920,
+      1080
+    ],
+    "linux_viewport": [
+      4988,
+      2742
+    ],
+    "visual_review": "Warning, title and both buttons fit without clipping in English, Russian and German on Linux and Android.",
+    "android_captures": {
+      "graphics-check-ru.png": "14d424218a123e2baa0e0eb7bd6e1c087b48a5b5b04ba455785c541586d9e16f",
+      "graphics-check-de.png": "8b9ead06aa6ed77344642ce2e8a303d373cc63269381cf50bd1a56e484878ede",
+      "graphics-check-en.png": "6f476e2b636843f51d7e5f738246b7a5c40d43fcb65ed3853cb8a2b870dad504"
+    }
+  },
+  "browser": {
+    "build": {
+      "version": "1.2.0",
+      "source_tag": "v1.2.0",
+      "source_commit": "8c67ce6f308bb40cb84659f0a5459858c7600148",
+      "game_tree": "b749bd5f8a499c12bef81d09587748a578672faa",
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 288,
+      "production_scripts_byte_identical_to_release_linux": true,
+      "resource_count": 727,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "74718e423c90ef910c2142c182f44e64fffd444c944a6e1c5257ca546b28964c",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    },
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-9b9115ba5d10d0996234",
+      "new_cache": "cursed-engine-2-25525ad26449f4c08514",
+      "pck_sha256": "74718e423c90ef910c2142c182f44e64fffd444c944a6e1c5257ca546b28964c",
+      "update_waited_for_old_tab_to_close": true,
+      "all_indexeddb_entries_preserved": true,
+      "unchanged_wasm_reused_without_download": true,
+      "changed_network_paths": [
+        "service-worker.js",
+        "index.html",
+        "index.pck"
+      ],
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ]
+    },
+    "fresh_start": {
+      "browser": "151.0.7922.34",
+      "fresh_start": {
+        "isolated": true,
+        "runtimeError": "",
+        "cache": [
+          "cursed-engine-2-25525ad26449f4c08514"
+        ],
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "pck_sha256": "74718e423c90ef910c2142c182f44e64fffd444c944a6e1c5257ca546b28964c"
+      },
+      "errors": []
+    },
+    "upgraded_runtime": {
+      "main_menu_ready": true,
+      "errors": [],
+      "version": "1.2.0"
+    },
+    "visual_review": "Fresh setup screen and upgraded main menu rendered correctly at 1280x720.",
+    "captures": {
+      "fresh-setup.png": "6995b68ed019e87ff00d95119aa6a4a93a18400b5d75b31216200f23a69f6421",
+      "upgraded-menu.png": "28b360177f754947a565184f82e6a706b331bbe891ed0551d1a71ea4f3954119"
+    },
+    "harness_correction": "Initial fresh-profile assertion required null for absent IndexedDB metadata, which returns undefined. Corrected the assertion to accept either absent value and reran the fresh-start check successfully; cache-upgrade and main-menu checks had already passed."
+  },
+  "limits": [
+    "No Redmagic 11 Pro or usable native crash stack was available. The changes provide conservative startup, optional checks and recovery; they do not establish the cause or resolution of the reported native crash.",
+    "Android execution used a separate private QA package. Native libraries and 287 compiled production scripts are byte-identical to the release; main.gdc differs by a conditional test bootstrap. The public APK contains no test bootstrap.",
+    "Windows and macOS packages passed structure and compiled-resource audits but were not run on their target operating systems. macOS is unsigned and not notarized.",
+    "The desktop consent fixture still reports the previously recorded two ObjectDB instances leaked at process shutdown; no script or renderer errors were captured.",
+    "Hosted deployment hashes and the live browser are checked after pushing; results are retained with the publication record."
+  ]
+}
