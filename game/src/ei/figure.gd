@@ -30,12 +30,15 @@ static var _foliage_local := {}   # base material -> {part_y: WeakRef}
 ## root rising to the full share at STIFF_TOP m, and do not flutter.
 const FOLIAGE_SHADER := """
 shader_type spatial;
+#define EI_FIGURE_OPTIONS
 #define EI_FOLIAGE_WIND
 render_mode cull_disabled, ambient_light_disabled;
 varying vec3 ei_e;
 varying float ei_k;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+#if !defined(EI_NO_MATERIALS) || !defined(EI_NO_FOLIAGE_LIGHT)
 uniform sampler2D foliage_mask : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
+#endif
 uniform float wind = 1.0;
 global uniform vec4 ei_wind_state;
 global uniform vec4 ei_wind_phases;
@@ -76,14 +79,20 @@ void fragment() {
 	ALPHA_ANTIALIASING_EDGE = 0.3;
 	ALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));
 	ROUGHNESS = 1.0;
+#if !defined(EI_NO_MATERIALS) || !defined(EI_NO_FOLIAGE_LIGHT)
 	vec2 plant = texture(foliage_mask, UV).rg;
+#endif
+#ifndef EI_NO_FOLIAGE_LIGHT
 	ei_leaf = plant.r * ei_surface_fx.y * 0.75;
+#endif
+#ifndef EI_NO_MATERIALS
 	if (ei_surface_fx.x > 0.5) {
 		ei_surface = mix(vec3(0.16, 0.86, 0.0), vec3(0.13, 0.82, 0.0), plant.r);
 		if (plant.g > 0.01) {
 			NORMAL = ei_relief_normal(albedo_tex, UV, VERTEX, NORMAL, plant.g * 0.45);
 		}
 	}
+#endif
 }
 """
 
@@ -97,6 +106,7 @@ const FOLIAGE_STILL_SHADER := "#define EI_FOLIAGE_STILL\n" + FOLIAGE_SHADER
 ## diffuse/emissive, ObjectsLightingCoeff default 1). Alpha-tested.
 const OBJECT_SHADER := """
 shader_type spatial;
+#define EI_FIGURE_OPTIONS
 render_mode cull_disabled, ambient_light_disabled;
 varying vec3 ei_e;
 varying float ei_k;
@@ -119,12 +129,14 @@ void fragment() {
 		ALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));
 	}
 	ROUGHNESS = 1.0;
+#ifndef EI_NO_MATERIALS
 	if (ei_surface_fx.x > 0.5) {
 		ei_surface = surface_profile.xyz;
 		if (surface_profile.w > 0.0) {
 			NORMAL = ei_relief_normal(albedo_tex, UV, VERTEX, NORMAL, surface_profile.w);
 		}
 	}
+#endif
 }
 """
 static var _oshader: Shader

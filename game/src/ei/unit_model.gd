@@ -46,9 +46,14 @@ const FigureMaterial = preload("res://src/ei/figure_material.gd")
 ##    at 24 m and shimmered more (temporal second difference +6 % / +9 % of
 ##    the reference, −0.5 +4 %). The mip chain stays the box-filtered full
 ##    chain: Lanczos-resampled mips gained less than the bias at 24 m.
-## Same image path on Forward+ and Compatibility (no new shader variant: the
-## switch is a uniform branch, see ShaderWarmup).
+## Android Compatibility compiles out this fetch when off. Other backends
+## retain the uniform branch; both paths use the same enabled fetch.
 const SHARP_FETCH := """
+#ifdef EI_NO_UNIT_SHARP
+vec4 ei_unit_tex(sampler2D tex, vec2 uv) {
+	return texture(tex, uv);
+}
+#else
 global uniform vec3 ei_unit_sharp;
 vec4 ei_unit_tex(sampler2D tex, vec2 uv) {
 	vec4 lin = texture(tex, uv, ei_unit_sharp.y);
@@ -90,6 +95,7 @@ vec4 ei_unit_tex(sampler2D tex, vec2 uv) {
 	c = clamp(c, min(min(a, b), min(d, e)), max(max(a, b), max(d, e)));
 	return vec4(mix(lin.rgb, c, k), lin.a);
 }
+#endif
 """
 ## Bias of option gfx_sharp_units (see SHARP_FETCH).
 const SHARP_MIP_BIAS := -0.5
@@ -123,12 +129,15 @@ vec4 ei_unit_wound(vec4 base, vec4 wound) {
 ## after max(ambient, sun, point lights), before the shadow (TLP 1000d910).
 const UNIT_SHADER := """
 shader_type spatial;
+#define EI_FIGURE_OPTIONS
 render_mode cull_back, ambient_light_disabled, alpha_to_coverage;
 #define EI_FIGURE_LIGHT
 varying vec3 ei_e;
 varying float ei_k;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+#ifndef EI_NO_MATERIALS
 uniform sampler2D surface_tex : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
+#endif
 uniform vec3 unit_emission = vec3(0.0);
 """ + SHARP_FETCH + WOUND_FETCH + """
 void vertex() {
@@ -146,9 +155,11 @@ void fragment() {
 	ALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));
 	ROUGHNESS = 1.0;
 	SPECULAR = 0.0;
+#ifndef EI_NO_MATERIALS
 	if (ei_surface_fx.x > 0.5) {
 		ei_surface = texture(surface_tex, UV).rgb;
 	}
+#endif
 }
 """
 static var _unit_shader: Shader
@@ -224,8 +235,18 @@ class PreviewMaterial extends ShaderMaterial:
 		if EIUnitModel._preview_shader == null:
 			Gfx.ensure_globals()
 			EIUnitModel._preview_shader = Shader.new()
-			EIUnitModel._preview_shader.code = EIUnitModel.PREVIEW_SHADER
+			EIUnitModel._preview_shader.code = Gfx.figure_options(EIUnitModel.PREVIEW_SHADER)
 		shader = EIUnitModel._preview_shader
+
+
+## Retain preview material identities and texture bindings when sharpness
+## switches. These shaders do not use world lighting/fog or Gfx.make_shader.
+static func refresh_preview_shaders() -> void:
+	for entry: Array in [[_preview_shader, PREVIEW_SHADER], [_wisp_preview_shader, _soft_alpha(PREVIEW_SHADER)]]:
+		var shader: Shader = entry[0]
+		if shader == null: continue
+		var code := Gfx.figure_options(entry[1])
+		if shader.code != code: shader.code = code
 
 
 ## Optional experiment, disabled by default to preserve the original shapes.
@@ -1140,7 +1161,7 @@ static func _material(ui_preview: bool, soft_alpha := false) -> Material:
 	if ui_preview:
 		if _wisp_preview_shader == null:
 			_wisp_preview_shader = Shader.new()
-			_wisp_preview_shader.code = _soft_alpha(PREVIEW_SHADER)
+			_wisp_preview_shader.code = Gfx.figure_options(_soft_alpha(PREVIEW_SHADER))
 		material.shader = _wisp_preview_shader
 	else:
 		if _wisp_unit_shader == null:

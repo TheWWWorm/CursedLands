@@ -313,7 +313,25 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 		code = _blend_fog(code, lit)
 	if lit and LocalLightShader.enabled():
 		code = _function_tail(code, "fragment", LocalLightShader.CAPTURE)
-	return WaterReflection.clip_source(WaterTextureData.source(GroundContactData.source(code)))
+	return figure_options(WaterReflection.clip_source(WaterTextureData.source(GroundContactData.source(code))))
+
+
+## Original graphics must remove inactive figure features before Godot builds
+## the driver's shader. A uniform/constant-false branch still reaches Godot's
+## function and sampler analysis. Keep lighting, alpha and wounds unchanged;
+## only omit optional code whose setting is off. Ground-contact variants have
+## their own material response and retain the existing composition.
+static func figure_options(code: String) -> String:
+	if not _compact_figures or not _specialize_materials:
+		return code
+	var flags := ""
+	if code.contains("#define EI_FIGURE_OPTIONS") and not code.contains("#define EI_GROUND_CONTACT"):
+		if not on("gfx_materials"): flags += "#define EI_NO_MATERIALS\n"
+		if not code.contains("#define EI_FOLIAGE_WIND") or not on("gfx_foliage_light"):
+			flags += "#define EI_NO_FOLIAGE_LIGHT\n"
+	if code.contains("#ifdef EI_NO_UNIT_SHARP") and not on("gfx_sharp_units"):
+		flags += "#define EI_NO_UNIT_SHARP\n"
+	return code if flags.is_empty() else code.replace("shader_type spatial;", "shader_type spatial;\n" + flags)
 
 
 ## Insert after the stage's complete body, including nested option branches.
@@ -343,6 +361,10 @@ static var _vol_fog := false
 static var _material_mode := -1
 static var _terrain_mode := -1
 static var _cloud_mode := 0
+static var _figure_mode := -1
+## Restrict the compatibility change to Android GLES. Tests can exercise the
+## same source on another GPU without changing the shipped desktop defaults.
+static var _compact_figures := OS.has_feature("android") and Portability.compatibility()
 static var _specialize_materials := not OS.get_cmdline_user_args().has("--ei-dynamic-material-shader")
 static var _foliage_wind := true
 
@@ -378,12 +400,15 @@ static func _set_vol_fog(v: bool) -> void:
 	var terrain_mode := (int(on("gfx_terrain")) | (int(on("gfx_soft_ground")) << 1) \
 		| (int(on("gfx_weather_surfaces")) << 2)) if _specialize_materials else -2
 	var clouds := Clouds.mode() | (int(Clouds.shadows_enabled()) << 2) | (int(Clouds.reflections_enabled()) << 3)
-	if v == _vol_fog and mode == _material_mode and terrain_mode == _terrain_mode and clouds == _cloud_mode:
+	var figures := (1 | (int(on("gfx_sharp_units")) << 1) | (int(on("gfx_foliage_light")) << 2)) \
+		if _compact_figures and _specialize_materials else 0
+	if v == _vol_fog and mode == _material_mode and terrain_mode == _terrain_mode and clouds == _cloud_mode and figures == _figure_mode:
 		return
 	_vol_fog = v
 	_material_mode = mode
 	_terrain_mode = terrain_mode
 	_cloud_mode = clouds
+	_figure_mode = figures
 	var keep: Array = []
 	for r: Array in _made:
 		var sh := (r[0] as WeakRef).get_ref() as Shader
@@ -396,6 +421,7 @@ static func _set_vol_fog(v: bool) -> void:
 				CameraFade.refresh_shader(sh)
 			keep.append(r)
 	_made = keep
+	EIUnitModel.refresh_preview_shaders()
 
 
 ## gfx_volumetric: the original fog without writing FOG. The final colour
@@ -560,8 +586,10 @@ void light() {
 	// Relief normals are a remake option. Original look always interpolates
 	// the packed vertex colours rather than evaluating falloff at each pixel.
 	if (ei_surface_fx.x > 0.5) {
+#ifndef EI_NO_MATERIALS
 		ei_vertex_colours((INV_VIEW_MATRIX * vec4(ei_vpos, 1.0)).xyz,
 			normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz), ei_e, ei_k, d, s);
+#endif
 	}
 #ifdef EI_WATER_WAVES
 	// The normal native tick relights D/S, then the wave step overwrites
@@ -639,6 +667,7 @@ void light() {
 	// Optional material highlights and leaf transmission retain Godot's
 	// individual light/shadow response above the native diffuse draw.
 	if (ei_surface.x > 0.001 && (LIGHT_IS_DIRECTIONAL || SPECULAR_AMOUNT > 0.0)) {
+#ifndef EI_NO_MATERIALS
 		vec3 hv = ei_light_dir + VIEW;
 		vec3 h = hv * inversesqrt(max(dot(hv, hv), 1e-12));
 		float r = clamp(ei_surface.y, 0.2, 1.0);
@@ -646,10 +675,13 @@ void light() {
 		float highlight = pow(max(dot(NORMAL, h), 0.0), power) * max(dot(NORMAL, ei_light_dir), 0.0);
 		vec3 tint = mix(vec3(0.4), clamp(ei_alb * 1.8, vec3(0.06), vec3(0.9)), ei_surface.z);
 		SPECULAR_LIGHT += min(LIGHT_COLOR / PI, vec3(1.5)) * tint * highlight * ATTENUATION * ei_surface.x * 0.22 /*EI_FA*/;
+#endif
 	}
 	if (ei_leaf > 0.001) {
+#ifndef EI_NO_FOLIAGE_LIGHT
 		float transmission = pow(max(dot(-NORMAL, ei_light_dir), 0.0), 1.5);
 		SPECULAR_LIGHT += ei_alb * LIGHT_COLOR / PI * transmission * ATTENUATION * ei_leaf * 0.22 /*EI_FA*/;
+#endif
 	}
 /*EI_LOCAL_END*/
 }
@@ -804,13 +836,16 @@ static func apply_surface_options() -> void:
 
 
 ## Option gfx_sharp_units: the unit texture fetch (EIUnitModel.SHARP_FETCH),
-## world figures and UI previews alike; a uniform, so no shader rebuilds.
+## world figures and UI previews alike. Android GLES also refreshes the
+## disabled-feature specialization, including quality-only option updates.
 static func apply_unit_sharpness() -> void:
 	if not _globals:
 		return   # ensure_globals sets it
 	var on_ := on("gfx_sharp_units")
 	RenderingServer.global_shader_parameter_set(&"ei_unit_sharp",
 		Vector3(1.0 if on_ else 0.0, EIUnitModel.SHARP_MIP_BIAS if on_ else 0.0, 0.0))
+	if _compact_figures:
+		_set_vol_fog(on("gfx_volumetric"))
 
 
 ## Remake (gfx_sky): how much a lightning strike brightens the sky dome now

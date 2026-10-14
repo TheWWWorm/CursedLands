@@ -12,6 +12,7 @@ const DULL := Vector3(0.04, 0.96, 0.0)
 ## tangent stream. Local texture differences add shallow relief only; distance,
 ## minification and a hard slope bound suppress painted shadows and shimmer.
 const RELIEF_SHADER := """
+#ifndef EI_NO_MATERIALS
 vec3 ei_relief_normal(sampler2D tex, vec2 uv, vec3 p, vec3 n, float strength) {
 	vec2 size = vec2(textureSize(tex, 0));
 	vec2 dx = dFdx(uv) * size;
@@ -36,6 +37,7 @@ vec3 ei_relief_normal(sampler2D tex, vec2 uv, vec3 p, vec3 n, float strength) {
 	float scale = inversesqrt(max(max(dot(u, u), dot(v, v)), 1e-12));
 	return normalize(n - (u * slope.x + v * slope.y) * scale * strength * visible_detail);
 }
+#endif
 """
 
 
