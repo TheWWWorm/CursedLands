@@ -1,0 +1,306 @@
+{
+  "date": "2026-10-14",
+  "scope": "Graphics-only continuation. This receipt supersedes the performance portion of the earlier investigation where explicitly noted; earlier results remain available in ingos-performance-loot-2026-10-14.json.",
+  "status": "Local source optimization validated for snow-sector setup. No overall FPS improvement or mobile RTX 4090 acceptance claimed.",
+  "base_commit": "0e23fc321f7cf98e3df35e8ae012250ef3cab95c",
+  "published": false,
+  "source_sha256": {
+    "game/src/ei/terrain_sector.gd": "92497bb5db3aa397c7c225a7f752699be276eb0d7172cb4f6baeb1fcf950f378",
+    "game/src/game/fx/soft_ground_deform.gd": "578d7842031f42b733ba1aafe2eed1c3e687959b216f5054c0899dacbb34c607",
+    "game/src/game/fx/water_reflection.gd": "e8e28d74fcfced6587acf996698f68f3e81b8fe12d679aa5a3df433f1a220c9e",
+    "tools/tests/terrain_sector.gd": "1044b9cf22cfdc8e7a669149db8a90ed3c660df9da396f15a2ab98589d9ad8d0"
+  },
+  "change": {
+    "problem": "Each newly tracked snow/sand sector called ArrayMesh.surface_get_arrays. With the RD renderer this synchronously retrieves vertex, attribute and index buffers from the GPU, even though EITerrainSector already retains its authored arrays.",
+    "implementation": "Expose the retained immutable source through EITerrainSector.deformation_arrays and use it when creating a SoftGroundDeform sector. Keep the existing readback fallback for plain MeshInstance3D inputs.",
+    "behavior": "Native worker ownership, sector and tile limits, texture resolution, visual settings, source-mesh restoration and terrain collision are unchanged. The existing water-plane selector optimization remains in the working tree.",
+    "engine_evidence": [
+      "scene/resources/mesh.cpp:ArrayMesh::surface_get_arrays delegates to RenderingServer::mesh_surface_get_arrays.",
+      "servers/rendering/rendering_server.cpp:mesh_surface_get_arrays calls mesh_get_surface and decodes the returned buffers.",
+      "servers/rendering/renderer_rd/storage_rd/mesh_storage.cpp:mesh_get_surface calls RenderingDevice::buffer_get_data for uploaded mesh buffers."
+    ],
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/terrain-cloud-cost-20261010/engine-worker-exit"
+  },
+  "isolated_sector_setup": {
+    "environment": "Shipping Linux 1.2.0 custom Godot engine; Forward+ Vulkan, separate rendering thread, RTX 3090, 3840x2160 rendered viewport, Very High. Original Ingos gz11k scene frozen after warmup.",
+    "method": "One process alternates baseline and candidate in ABBA ABBA order. Each block starts four sectors (15,10), (14,10), (15,9), (14,9), clearing and restoring between samples. Both paths allocate the same track image and field; elapsed wall time covers complete _sector setup, not just the accessor.",
+    "result": {
+      "baseline": {
+        "samples": 16,
+        "median_us": 14531.0,
+        "mean_us": 18481.8125,
+        "max_us": 27139,
+        "raw_us": [
+          24620,
+          25127,
+          27044,
+          27139,
+          12432,
+          13079,
+          13183,
+          13786,
+          13181,
+          23318,
+          23866,
+          25056,
+          12492,
+          12560,
+          13550,
+          15276
+        ]
+      },
+      "candidate": {
+        "samples": 16,
+        "median_us": 6087.0,
+        "mean_us": 6688,
+        "max_us": 13723,
+        "raw_us": [
+          1542,
+          10800,
+          12091,
+          12775,
+          1200,
+          1534,
+          1545,
+          10549,
+          1166,
+          10809,
+          12121,
+          13723,
+          1382,
+          1618,
+          1625,
+          12528
+        ]
+      }
+    },
+    "median_reduction_percent": 58.11024705801391,
+    "mean_reduction_percent": 63.81307298729495,
+    "raw": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/readback-bench/data/godot/app_userdata/Cursed Lands/readback.json",
+    "fixture": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/readback_bench.gd",
+    "fixture_sha256": "1db2aba36df4ba1f73a81c6aaacdce6b48e31a02dae6801e668adecc89b02f17",
+    "baseline_script": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/soft_ground_baseline.gd",
+    "baseline_script_sha256": "8d3c4d1d1c35aec1152ccc792623ef86a9e2f08fc06a74ccde8a86a921ee44a5",
+    "attribute_comparison": {
+      "scope": "All attributes of one authored sector, comparing retained source with its uploaded/decoded ArrayMesh.",
+      "exact": [
+        "positions",
+        "UV",
+        "UV2",
+        "colors",
+        "indices"
+      ],
+      "max_normal_vector_difference": 0.000104742408439051,
+      "interpretation": "Retained normals avoid a GPU encode/decode round trip; bit-identical decoded normals are not claimed. Source positions and UVs remain exact and the seam regression passes."
+    },
+    "limits": "A bounded setup-cost comparison, not an average-frame or FPS benchmark. Texture allocation/upload still has a cost. The shared desktop may affect absolute timings."
+  },
+  "moving_coop": {
+    "environment": "RTX 3090, Linux Vulkan, Very High, 4K at 100% scale, uncapped and VSync off. Two local ENet players with a separate headless authority; guest rendering disabled.",
+    "scene": "Original Ingos gz11k, 119 actors, both players alive, ten short movement commands each over 30 seconds at 2x. Host camera follows the player facing into the terrain. No combat.",
+    "trials_in_order": [
+      {
+        "name": "coop-walk-control",
+        "candidate": false,
+        "raw": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/coop-walk-control/data/godot/app_userdata/Cursed Lands/coop-bench.json",
+        "result": {
+          "commands_per_player": 10,
+          "fps": 57.4088446338407,
+          "guest_walk_metres": 51.6972262561321,
+          "hero_dead": false,
+          "hero_hp": 181.0,
+          "players": 2,
+          "sim_seconds": 60.0600000000014,
+          "speed": 2,
+          "units": 119,
+          "walk_metres": 51.9163481518626,
+          "wall_ms": {
+            "max": 83.261,
+            "median": 15.954,
+            "p95": 27.841,
+            "p99": 36.855
+          },
+          "wall_seconds": 30.012797
+        }
+      },
+      {
+        "name": "coop-walk-readback",
+        "candidate": true,
+        "raw": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/coop-walk-readback/data/godot/app_userdata/Cursed Lands/coop-bench.json",
+        "result": {
+          "commands_per_player": 10,
+          "fps": 46.0232128288323,
+          "guest_walk_metres": 51.6443130671978,
+          "hero_dead": false,
+          "hero_hp": 181.0,
+          "players": 2,
+          "sim_seconds": 60.0600000000012,
+          "speed": 2,
+          "units": 119,
+          "walk_metres": 51.898990444839,
+          "wall_ms": {
+            "max": 363.711,
+            "median": 17.522,
+            "p95": 38.753,
+            "p99": 56.513
+          },
+          "wall_seconds": 30.006597
+        }
+      },
+      {
+        "name": "coop-walk-readback-repeat",
+        "candidate": true,
+        "raw": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/coop-walk-readback-repeat/data/godot/app_userdata/Cursed Lands/coop-bench.json",
+        "result": {
+          "commands_per_player": 10,
+          "fps": 29.3706000293706,
+          "guest_walk_metres": 51.5912804454565,
+          "hero_dead": false,
+          "hero_hp": 181.0,
+          "players": 2,
+          "sim_seconds": 60.3350000000027,
+          "speed": 2,
+          "units": 119,
+          "walk_metres": 51.8943375423551,
+          "wall_ms": {
+            "max": 134.179,
+            "median": 34.017,
+            "p95": 51.752,
+            "p99": 61.588
+          },
+          "wall_seconds": 30.03003
+        }
+      },
+      {
+        "name": "coop-walk-control-repeat",
+        "candidate": false,
+        "raw": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/coop-walk-control-repeat/data/godot/app_userdata/Cursed Lands/coop-bench.json",
+        "result": {
+          "commands_per_player": 10,
+          "fps": 27.8633434985654,
+          "guest_walk_metres": 51.6223087757826,
+          "hero_dead": false,
+          "hero_hp": 181.0,
+          "players": 2,
+          "sim_seconds": 60.1150000000006,
+          "speed": 2,
+          "units": 119,
+          "walk_metres": 51.8836404383183,
+          "wall_ms": {
+            "max": 399.091,
+            "median": 35.109,
+            "p95": 50.534,
+            "p99": 62.06
+          },
+          "wall_seconds": 30.003578
+        }
+      }
+    ],
+    "interpretation": "Whole-frame results vary widely in both baseline and candidate. All four runs keep up with approximately 60 simulated seconds in 30 wall seconds. These trials do not establish an overall FPS improvement or regression from the source change.",
+    "fixture": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/coop_walk_both.gd",
+    "fixture_sha256": "0dcb4ac90146cc7a77a32b6b35aa245e65b7d45d4d5e2e25367998cd2012d8c4",
+    "save_sha256": "03c9fc37ac7cf25abc479d0fdec3a8c95828f532e631033e70a1c516e7d9e664",
+    "second_gpu_control": {
+      "status": "Unavailable for this desktop surface",
+      "reason": "RTX 3090 Ti cannot create a Vulkan presentation queue for the active X11 display. The attempted run exited before scene initialization.",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/gpu1-baseline/game.log"
+    },
+    "limits": "No mobile RTX 4090, Windows/D3D12, WAN, HD-texture-package or combat performance acceptance. Shared desktop results are unsuitable for a headline FPS gain."
+  },
+  "diagnostics": {
+    "snow_painting": "A private instrumented build recorded multi-millisecond main-thread trail painting bursts (109 calls over 2 ms, maximum 7.502 ms including scene warmup). Painting remains a candidate for further work; no painter rewrite was retained.",
+    "gpu_profile": "High-overhead GPU scope profiling points to opaque terrain shading and the depth/normal pass as large costs. SSAO also causes terrain normal work in the depth pass. These diagnostic scopes are not additive FPS-saving estimates.",
+    "rejected_shader_experiments": "Two alternating frozen-scene shader probes tested fewer repeated terrain metadata lookups and skipping zero-weight soft-surface samples. Gains were small and inconsistent, so neither change was retained.",
+    "excluded_runs": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/coop-walk-profile-invalid.log",
+        "reason": "Temporary instrumentation failed GDScript parsing; unusable as a graphics/performance comparison."
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/coop-walk-profile-fixed.log",
+        "reason": "Instrumented diagnostics; excluded from whole-frame acceptance."
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/gpu-profile.log",
+        "reason": "Timestamp query capacity overflow; repeated with a larger private profiler limit."
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/check-terrain_sector-baseline.log",
+        "reason": "Test launcher used --main-pack, unsupported by the shipping binary; retried with the private pack in its normal location."
+      }
+    ]
+  },
+  "verification": {
+    "tests": [
+      {
+        "name": "terrain_sector",
+        "exit": 0,
+        "seconds": 5.87,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/check-terrain_sector.log",
+        "summary": [
+          "TERRAIN_SECTOR checks=17959 failures=0"
+        ],
+        "errors": []
+      },
+      {
+        "name": "soft_ground_mesh",
+        "exit": 0,
+        "seconds": 2.47,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/check-soft_ground_mesh.log",
+        "summary": [
+          "SOFT_GROUND_MESH checks=3014 failures=0 native_us=23377 script_us=359864"
+        ],
+        "errors": []
+      },
+      {
+        "name": "soft_ground_capacity",
+        "exit": 0,
+        "seconds": 2.27,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/check-soft_ground_capacity.log",
+        "summary": [
+          "DENSE_CAPACITY checks=24 failures=0"
+        ],
+        "errors": []
+      },
+      {
+        "name": "soft_ground_seams",
+        "exit": 0,
+        "seconds": 62.06,
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/check-soft_ground_seams.log",
+        "summary": [
+          "SOFT_GROUND_SEAMS 288 checks 0 failures"
+        ],
+        "errors": []
+      }
+    ],
+    "baseline_regression": {
+      "expected_failure": true,
+      "summary": [
+        "FAIL deformation reuses retained CPU source without a GPU readback",
+        "TERRAIN_SECTOR checks=17959 failures=1"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/check-terrain_sector-before.log"
+    },
+    "seams": {
+      "checks": 288,
+      "failures": 0,
+      "msaa": 0,
+      "hd": false,
+      "scope": "All 16 occupancy patterns at interior/four-sector junctions, three offsets and four angles; real native deformation and retirement on three original Ingos maps with nine authored witnesses.",
+      "raw": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/phase2/check-soft_ground_seams/data/godot/app_userdata/Cursed Lands/snow-seams.json",
+      "isolated_raster_pixels": 64
+    },
+    "translation_entries": 1149,
+    "translation_errors": 0,
+    "new_player_visible_strings": 0,
+    "git_diff_check": "pass"
+  },
+  "artifact_provenance": {
+    "engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+    "native_sha256": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+    "baseline_private_pack_sha256": "1df87df5f694ac55ead1c22864c3bb994ac2158fc1d4d0385522357ca88ba3f1",
+    "candidate_private_pack_sha256": "dc0b85ed24f7e9d03ac27d756674a6bfb15f0ac5189d330101bea9c5a27f9650",
+    "runtime_matches_source": true
+  },
+  "release_note": "Uncommitted and unpublished source changes. Published releases, tags, installed player profiles and quality presets were not modified."
+}

@@ -125,6 +125,29 @@ func _ready() -> void:
 	var copy:GameUnit=client.world.units[guest.uid]
 	check(copy.direct_controlled and copy.direct_motion.distance_to(guest.direct_motion)<0.001 and copy.running,"host replicates moving pose state")
 	check(is_equal_approx(copy.direct_recovery,0.75) and copy.direct_hit_serial==9,"host replicates readiness and confirmed hit sequence")
+	# A spell can be queued before movement, then keep travelling through
+	# the committed cast. The peer receives the same cast and walking pose.
+	guest.order={};guest.orders.clear();guest._pending_hit={};guest._anim_lock=0.4
+	guest.action="attack";guest.stop_steering();guest.mana=guest.max_mana
+	guest.get_meta("hero").spells.append("healing{}")
+	guest.get_meta("hero").skills.astral=100
+	client.submit({"t":"direct_cast","unit":guest.uid,"spell":"healing{}","target":guest.uid});await frames()
+	var direction:=Vector2.RIGHT
+	for candidate: Vector2 in [Vector2.RIGHT,Vector2.LEFT,Vector2.UP,Vector2.DOWN]:
+		if host.world.nav.direct_line(guest,guest.pos+candidate): direction=candidate;break
+	client.submit({"t":"direct_move","units":[guest.uid],"direction":direction});await frames()
+	check(guest.orders.size()==1 and guest.orders[0].type=="cast" and not guest.direct_steering.is_empty(),"network movement preserves a buffered spell")
+	for tick in 30:
+		guest.tick(GameUnit.TICK)
+		if guest.action.begins_with("cast"):break
+	check(guest.action.begins_with("cast"),"network spell starts after the previous recovery")
+	var cast_position:=guest.pos
+	guest.tick(GameUnit.TICK)
+	check(guest.pos.distance_to(cast_position)>0.001 and guest._anim_lock>0,"authority moves the guest during a committed cast")
+	host._send_snapshot_records([guest.snapshot()],host.world.time);await frames()
+	check(copy.action.begins_with("cast") and copy.direct_motion.length()>0 and copy._move_speed>0,"peer receives both casting and movement state")
+	if copy._direct_pose: copy._direct_pose.apply_pose(0.2)
+	check(copy._direct_pose!=null and copy._direct_pose.weight>0,"peer composes walking legs beneath the casting animation")
 	client.submit({"t":"direct_control","leader":-1});await frames()
 	host._send_snapshot_records([guest.snapshot()],host.world.time);await frames()
 	check(not copy.direct_controlled and copy.direct_motion==Vector2.ZERO,"tactical switch clears replicated direct pose")

@@ -86,7 +86,10 @@ func _ready() -> void:
 	get_viewport().scaling_3d_scale=1.0
 	get_tree().paused=false;set_process(true)
 	if fp and DisplayServer.get_name() != "headless":
-		RenderingServer.frame_post_draw.connect(_check_body_alignment)
+		g.direct.apply_camera() # bind the equipped model before observing its final pose
+		# Inspect after the model's pre_draw alignment. With the separate
+		# render thread, post_draw can arrive during the next CPU frame.
+		RenderingServer.frame_pre_draw.connect(_check_body_alignment)
 	if observer:
 		g.rig.set_process(false)
 		RenderingServer.frame_pre_draw.connect(_observer_camera)

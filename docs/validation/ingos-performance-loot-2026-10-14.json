@@ -1,0 +1,233 @@
+{
+  "date": "2026-10-14",
+  "status": "Investigated with two local fixes; laptop performance root cause and actual inventory duplication remain unconfirmed.",
+  "base_commit": "0e23fc321f7cf98e3df35e8ae012250ef3cab95c",
+  "published": false,
+  "source_sha256": {
+    "game/src/game/session.gd": "5f2645edd0bc33993215c9334a5395002356b8ce27e9409293e403bbe8f3f4af",
+    "game/src/game/fx/water_reflection.gd": "e8e28d74fcfced6587acf996698f68f3e81b8fe12d679aa5a3df433f1a220c9e",
+    "tools/tests/coop_loot_grants.gd": "d3ef951023415e13d5c1bd327b669d5ab708df10d9e1a62b4f0844d358d333c1"
+  },
+  "changes": [
+    "Route campaign resource and money pickup notices only to players sharing that campaign purse. Private-purse guests retain the shared-loot notification and shared quest-item notices.",
+    "Compute camera frustum planes once per water reflection selection scan, preserving point rejection and plane selection."
+  ],
+  "inventory": {
+    "finding": "Published 1.0.7 sends private guests both loot_copy and a global got event for one scripted resource/money grant; it also shows a pickup to private guests when sharing is off and they received nothing.",
+    "actual_duplicate_inventory_reproduced": false,
+    "baseline": {
+      "test": "loot-v1.0.7",
+      "exit": 1,
+      "errors": [
+        "FAIL private guest sees one resource grant at 1.0x",
+        "FAIL private guest sees one resource grant at 2.0x",
+        "FAIL private guest sees one money grant",
+        "FAIL mixed reward reports only the shared quest item in the guest pickup line",
+        "FAIL sharing disabled never tells a private guest they received campaign resources"
+      ],
+      "summary": [
+        "COOP_LOOT_GRANTS 28 checks 5 failures"
+      ]
+    },
+    "candidate": {
+      "test": "loot-final",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "COOP_LOOT_GRANTS 28 checks 0 failures"
+      ]
+    },
+    "scope": "Deterministic grant/routing tests with real Session and CoopProgress logic and suppressed transport. Includes real material stacks, money, mixed quest rewards, private/shared purses, both Engine time scales, repeated corpse completion, save/load, single-player and native multiplayer notification paths.",
+    "additional": {
+      "test": "rune",
+      "exit": 0,
+      "seconds": 8.83,
+      "errors": [],
+      "summary": [
+        "RUNE_LOOT 15 checks 0 failures"
+      ]
+    },
+    "limits": "Not an exhaustive campaign playthrough or WAN pickup test. The notification finding does not establish the cause of every suspected duplicate."
+  },
+  "reflection": {
+    "result": "27 of 27 selected water planes exactly equal the published implementation.",
+    "measurements": {
+      "zone11": {
+        "poses": 9,
+        "baseline_median_us": 633.033333333333,
+        "candidate_median_us": 480.666666666667,
+        "median_reduction_percent": 24.794798623164727
+      },
+      "zone12": {
+        "poses": 9,
+        "baseline_median_us": 1116.33333333333,
+        "candidate_median_us": 752.833333333333,
+        "median_reduction_percent": 28.565326173186023
+      },
+      "zone3obr": {
+        "poses": 9,
+        "baseline_median_us": 1054.73333333333,
+        "candidate_median_us": 726.433333333333,
+        "median_reduction_percent": 41.88656211850871
+      }
+    },
+    "reference": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/reflection_baseline.gd",
+    "reference_sha256": "47b3e0d9ec98f4578fda83322e7adab0491e7c7c9f577a1c6f87f755dcf1f725",
+    "fixture": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/reflection_bench.gd",
+    "fixture_sha256": "b620409fb2e93ec2e4d1e0f2fde876e00b2c5133760a996a9e068cf5e2591e62",
+    "raw": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/tests/reflection-retry/data/godot/app_userdata/Cursed Lands/reflection-bench.json",
+    "geometry_tests": {
+      "test": "geometry",
+      "exit": 0,
+      "seconds": 2.12,
+      "errors": [],
+      "summary": [
+        "WATER_REFLECTION_GEOMETRY checks=32 failures=0"
+      ]
+    },
+    "limits": "CPU cost of the water surface selector, not whole-frame FPS. Six alternating baseline/candidate measurements per pose, 30 calls per measurement. The initial fixture parse-error run is retained in reflection-candidate.log and excluded."
+  },
+  "performance": {
+    "baseline": "Published Linux 1.2.0, shipping rendering thread configuration, Forward+ / Vulkan, RTX 3090, 3840x2160 viewport, Very high, 100% render scale, uncapped.",
+    "scene": "Original Ingos gz11k, 119 actors, two local ENet players, separate headless simulation worker. A disposable copy of the earlier recovered host save was moved to entrance 1. Stationary camera, living hero, no combat.",
+    "rows": [
+      {
+        "fps": 63.345833577826,
+        "gpu_ms": {
+          "max": 15.8839998245239,
+          "median": 12.6490001678467,
+          "p95": 14.6859998703003,
+          "p99": 15.1990003585815
+        },
+        "hero_dead": false,
+        "hero_hp": 181.0,
+        "players": 2,
+        "render_cpu_ms": {
+          "max": 54.1949996948242,
+          "median": 0.603999972343445,
+          "p95": 0.84799998998642,
+          "p99": 3.06699991226196
+        },
+        "sim_seconds": 11.9899999999999,
+        "speed": 1,
+        "units": 119,
+        "wall_ms": {
+          "max": 378.393,
+          "median": 14.627,
+          "p95": 23.165,
+          "p99": 25.937
+        },
+        "wall_seconds": 11.997632
+      },
+      {
+        "fps": 67.6844394723981,
+        "gpu_ms": {
+          "max": 16.9409999847412,
+          "median": 13.3859996795654,
+          "p95": 15.1929998397827,
+          "p99": 15.8269996643066
+        },
+        "hero_dead": false,
+        "hero_hp": 181.0,
+        "players": 2,
+        "render_cpu_ms": {
+          "max": 2.12700009346008,
+          "median": 0.634999990463257,
+          "p95": 0.809000015258789,
+          "p99": 0.921999990940094
+        },
+        "sim_seconds": 24.0349999999999,
+        "speed": 2,
+        "units": 119,
+        "wall_ms": {
+          "max": 28.192,
+          "median": 14.467,
+          "p95": 21.894,
+          "p99": 25.299
+        },
+        "wall_seconds": 11.996849
+      },
+      {
+        "fps": 67.1761608974068,
+        "gpu_ms": {
+          "max": 16.7409992218018,
+          "median": 13.6129999160767,
+          "p95": 15.4130001068115,
+          "p99": 16.0149993896484
+        },
+        "hero_dead": false,
+        "hero_hp": 181.0,
+        "players": 2,
+        "render_cpu_ms": {
+          "max": 0.954999983310699,
+          "median": 0.642000019550323,
+          "p95": 0.795000016689301,
+          "p99": 0.902999997138977
+        },
+        "sim_seconds": 24.0900000000021,
+        "speed": 2,
+        "units": 119,
+        "wall_ms": {
+          "max": 28.29,
+          "median": 14.482,
+          "p95": 22.027,
+          "p99": 24.144
+        },
+        "wall_seconds": 11.998304
+      },
+      {
+        "fps": 67.5413634566703,
+        "gpu_ms": {
+          "max": 16.6319999694824,
+          "median": 13.7810001373291,
+          "p95": 15.5290002822876,
+          "p99": 16.0410003662109
+        },
+        "hero_dead": false,
+        "hero_hp": 181.0,
+        "players": 2,
+        "render_cpu_ms": {
+          "max": 1.25499999523163,
+          "median": 0.638999998569489,
+          "p95": 0.816999971866608,
+          "p99": 0.925999999046326
+        },
+        "sim_seconds": 11.9900000000015,
+        "speed": 1,
+        "units": 119,
+        "wall_ms": {
+          "max": 25.689,
+          "median": 14.816,
+          "p95": 20.339,
+          "p99": 22.443
+        },
+        "wall_seconds": 11.992651
+      }
+    ],
+    "raw": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/coop-production/data/godot/app_userdata/Cursed Lands/coop-bench.json",
+    "screenshot": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/coop-production/data/godot/app_userdata/Cursed Lands/coop-4k.png",
+    "fixture": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/coop_bench.gd",
+    "fixture_sha256": "a220936f1c884c0a2bbce298e167386cb56e664cf175d5f160d174cd365991b6",
+    "interpretation": "The two 2x intervals averaged 67.68 and 67.18 FPS; p95 frame intervals were 21.89 and 22.03 ms (roughly a 45 FPS frame interval). Simulation advanced 24.03 and 24.09 seconds in 12 wall seconds, so this scene kept up with 2x. The later 1x control averaged 67.54 FPS. The initial 1x interval includes a 378 ms outlier and is retained.",
+    "ablation": "Separate exploratory 4K scene probes measured about 2.5 ms of GPU time for SSAO. Clouds, snow deformation, water reflections and AA were also toggled, but these evolving-scene probes are diagnostic, not controlled improvement claims.",
+    "ablation_raw": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014/outdoor/data/godot/app_userdata/Cursed Lands/probe.json",
+    "limits": "This is not the reported mobile RTX 4090 or Windows/D3D12. The second peer ran locally with its rendering disabled, not over WAN. Shared desktop, bounded stationary entrance view; no claim for all Ingos maps, camera angles or combat. No before/after whole-frame FPS gain is claimed for the selector optimization."
+  },
+  "verification": {
+    "regression_checks": 75,
+    "regression_failures": 0,
+    "reflection_plane_comparisons": 27,
+    "reflection_plane_failures": 0,
+    "translation_entries": 1149,
+    "translation_errors": 0,
+    "new_player_visible_strings": 0,
+    "git_diff_check": "pass"
+  },
+  "artifact_provenance": {
+    "candidate_engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+    "candidate_pack_sha256": "6b4332410cd90211f88e2f6f652a6ee576f61e1ec3056661cefbef32efa89231",
+    "candidate_native_sha256": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+  },
+  "evidence_directory": "/home/llm2x/Documents/EI/local/scratchpad/ingos-performance-loot-20261014",
+  "release_note": "Source changes remain uncommitted and unpublished. Published tags and artifacts were not modified. Any later compatible release must use the next patch version based on the stable release current at publication."
+}

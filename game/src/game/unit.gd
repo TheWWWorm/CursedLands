@@ -1133,11 +1133,16 @@ func looting(corpse: GameUnit) -> bool:
 	return orders.any(func(o): return o.get("sub", "") == "loot" and o.get("loot_target", -1) == corpse.uid)
 
 
+## Direct combat shares held movement. Tactical casts still own their route.
+static func is_direct_combat_order(o: Dictionary) -> bool:
+	return o.get("type", "") == "direct_attack" or (o.get("type", "") == "cast" and o.get("in_place", false))
+
+
 func command(o: Dictionary, queue := false) -> void:
 	if dead:
 		return
 	if not queue:
-		if o.get("type", "") not in ["direct_attack", "direct_move"]: stop_steering()
+		if o.get("type", "") != "direct_move" and not is_direct_combat_order(o): stop_steering()
 		# A replacement order cancels the pending arrival interaction.
 		# Callers attach the new interaction after posting its approach.
 		remove_meta("interact")
@@ -1955,25 +1960,30 @@ func _step_direct_steering(dt: float) -> void:
 	if not direct_controlled or blocked or Time.get_ticks_msec() > int(direct_steering.until):
 		stop_steering()
 		return
-	# Posture transitions, spellcasting and scripted poses retain their locks.
-	if action.begins_with("anim:") or (_anim_lock > 0.0 and action != "attack"):
+	# Combat keeps its authored upper-body clip while the legs steer.
+	# Posture transitions and scripted poses retain their movement locks.
+	var combat := action == "attack" or action.begins_with("cast")
+	if action.begins_with("anim:") or (_anim_lock > 0.0 and not combat):
 		return
 	resting = false
 	var saved := order
 	var from := pos
+	var turning := is_direct_combat_order(saved) or (not orders.is_empty() and is_direct_combat_order(orders[0]))
 	order = direct_steering.duplicate()
-	if action == "attack" and _anim_lock > 0.0:
+	if combat and _anim_lock > 0.0:
 		order.direction *= 0.65
-	_do_direct_move(dt, true)
+	# A queued cast/strike must finish turning to its target; movement must
+	# not turn it back to the camera heading on each intervening tick.
+	_do_direct_move(dt, true, not turning)
 	order = saved
 	direct_motion = pos - from
 	_talk_command = 1 if _moving else 0
 	_talk_posted = 9
-	if _moving and running and action == "attack" and has_meta("hero") and not _sandbox_mana() and not free_running():
+	if _moving and running and combat and has_meta("hero") and not _sandbox_mana() and not free_running():
 		mana = maxf(0.0, mana - max_mana / 150.0 * dt / TICK)
 
 
-func _do_direct_move(dt: float, layered := false) -> void:
+func _do_direct_move(dt: float, layered := false, turn_to_input := true) -> void:
 	if not direct_controlled or blocked or Time.get_ticks_msec() > int(order.until):
 		stop_steering()
 		_set_action("idle")
@@ -2007,7 +2017,7 @@ func _do_direct_move(dt: float, layered := false) -> void:
 		break
 	path = PackedVector2Array()
 	_goal = Vector2.INF
-	if not layered or _anim_lock <= 0.0:
+	if turn_to_input and (not layered or _anim_lock <= 0.0):
 		_turn_to(direct_heading if is_finite(direct_heading) and Time.get_ticks_msec() <= direct_look_until else v.angle(),dt)
 	_moving = pos.distance_squared_to(from) > 0.00000001
 	_move_speed = pos.distance_to(from) / dt if dt > 0.0 else 0.0
@@ -3114,7 +3124,15 @@ func _do_cast(dt: float) -> void:
 		_step_along_path(dt)
 		return
 	path = PackedVector2Array()
-	if not _turn_to((at - pos).angle(), dt):
+	# As with direct attacks, finish standing up before mixing a walking
+	# lower body with the cast. Tactical casting keeps its native posture.
+	if direct_controlled and order.get("in_place", false):
+		if stance != STANCE_NONE:
+			change_posture(STANCE_NONE)
+			return
+		if _update_pose(): return
+	# Self-casting has no target direction; retain the player's facing.
+	if not (direct_controlled and t == self) and not _turn_to((at - pos).angle(), dt):
 		return
 	if order.has("item"):
 		# A belt item's spell costs no stamina; the item is used up instead.
@@ -4006,9 +4024,13 @@ func _set_action(a: String) -> void:
 				and _idle_key[4] == model.pose_state and _idle_key[5] == model.pose_mod:
 			return
 	_pose_dirty = false
+	# The direct-control legs are already walking beneath a cast. Replaying
+	# the movement-start clip resets their pose at the end of the spell.
+	var resume_motion := direct_controlled and _moving and action.begins_with("cast") and a in ["walk","run"]
 	action = a
-	if model and not _update_pose():
-		model.act_with_start(a)
+	if model and not _update_pose(not resume_motion):
+		if resume_motion: model.act(a)
+		else: model.act_with_start(a)
 	_idle_key = [stance, alert, model.get_instance_id(), model.player.current_animation, model.pose_state, model.pose_mod] \
 		if a == action and a in _STEADY and model and model.player else []
 
@@ -4025,7 +4047,7 @@ var _pose_snap := true
 ## (: leg level DamageLevel2Value -> modifier 2, DamageLevel1Value -> 1).
 ## Returns true while a stance change clip plays (: standing
 ## still, the unit first plays the "cross" clip between the two stances).
-func _update_pose() -> bool:
+func _update_pose(movement_start := true) -> bool:
 	if model == null or model.adb.is_empty():
 		return false
 	var st := EIUnitModel.ST_ATTACK
@@ -4087,7 +4109,8 @@ func _update_pose() -> bool:
 				if world and world.authority:
 					_anim_lock = maxf(_anim_lock, l)
 				return true
-	model.act_with_start(action)
+	if movement_start: model.act_with_start(action)
+	else: model.act(action)
 	return false
 
 

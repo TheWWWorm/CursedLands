@@ -998,9 +998,15 @@ func _call(name: String, a: Array, inst: Instance):
 				# The unit carries it: it is found when the unit is looted / robbed.
 				var qi := _quest_item_name(v[1])
 				u.info["quest_items"] = Array(u.info.get("quest_items", [])) + [qi]
+				var updated: Array[Array] = []
 				for m in ["loot", "pockets"]:
 					if u.has_meta(m):
-						u.get_meta(m).append(qi)
+						var bag: Array = u.get_meta(m)
+						# Death retains rolled pockets as corpse loot. Those two
+						# views can share one Array; a grant still adds one copy.
+						if updated.any(func(other: Array): return is_same(other, bag)): continue
+						updated.append(bag)
+						bag.append(qi)
 		"EraseQuestItem":
 			var qi := _quest_item_name(v[1])
 			session.erase_quest_item(int(_num(v[0])), qi)

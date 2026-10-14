@@ -306,7 +306,8 @@ func _sector(key: Vector2i) -> Dictionary:
 	shadow.extra_cull_margin = DEPTH
 	node.add_child(shadow)
 	_generation += 1
-	var rec := {"node": weakref(node), "source": node.mesh, "arrays": node.mesh.surface_get_arrays(0),
+	var arrays: Array = sector.deformation_arrays() if sector is EITerrainSector else node.mesh.surface_get_arrays(0)
+	var rec := {"node": weakref(node), "source": node.mesh, "arrays": arrays,
 		"tiles": {}, "touched": {}, "steps": [], "pending": [], "last": _age, "image": image,
 		"shadow": weakref(shadow), "margin": node.extra_cull_margin,
 		"generation": _generation, "revision": 0, "building": false, "build_pending": false,

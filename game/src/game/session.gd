@@ -2468,11 +2468,11 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 					var steering := {"type":"direct_move","direction":direction.limit_length(),
 						"run":bool(cmd.get("run",false)),"until":Time.get_ticks_msec()+500,
 						"village_limit":village_move_limit()}
-					# Updating the held direction does not cancel a committed
-					# swing, nor repeatedly restart an animation or route.
+					# Starting or refreshing movement preserves direct combat,
+					# including a spell waiting for its turn or previous clip.
 					if u.direct_steering.is_empty():
-						if u.order.get("type", "") != "direct_attack": u.order = {}
-						u.orders = u.orders.filter(func(o): return o.get("type", "") == "direct_attack")
+						if not GameUnit.is_direct_combat_order(u.order): u.order = {}
+						u.orders = u.orders.filter(func(o): return GameUnit.is_direct_combat_order(o))
 						u.path = PackedVector2Array()
 						u.remove_meta("interact")
 						u.remove_meta("walk_exit")
@@ -3828,6 +3828,20 @@ static func loot_player(u: GameUnit) -> int:
 ## client message 6): the receiving player's message window lists them, as
 ## "You picked up:" lines or, with `broken`, "Broken:" (game_hud._got_items).
 func notify_got(player: int, items: Array, money := 0, broken := false) -> void:
+	if player < 0 and multiplayer_game and lmp.is_empty():
+		# Scripted campaign grants enter the campaign bag. Private-bag guests
+		# already hear about their copy through loot_copy; a second generic
+		# pickup line incorrectly reports the same reward again. Quest items
+		# belong to the shared story list, so every player still hears those.
+		var quest_items := items.filter(func(it): return Items.kind(String(it)) == "quest")
+		for p: Dictionary in players.values():
+			var idx := int(p.index)
+			var private_bag := not coop.purse_entry(idx).is_empty()
+			var received := quest_items if private_bag else items
+			var received_money := 0 if private_bag else money
+			if not received.is_empty() or received_money > 0:
+				broadcast({"t": "got", "to": idx, "items": received, "money": received_money, "broken": broken})
+		return
 	if not items.is_empty() or money > 0:
 		broadcast({"t": "got", "to": player, "items": items, "money": money, "broken": broken})
 

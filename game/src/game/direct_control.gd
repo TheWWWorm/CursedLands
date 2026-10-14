@@ -521,7 +521,7 @@ func attack() -> void:
 	var u := leader()
 	_repeat = 0.2
 	if game.pending_spell != "":
-		field()._stop_moving()
+		if not game.has_spell_target(): field()._stop_moving()
 		var p := get_viewport().get_visible_rect().size*0.5
 		var target := game.pick_unit(p,leader())
 		if PadInput.active == "pad" and field().target_unit() != null:
@@ -552,7 +552,6 @@ func _self_target() -> Dictionary:
 
 func cast_self() -> void:
 	if not usable() or pointer or _neutral or get_tree().paused or _self_target().is_empty(): return
-	field()._stop_moving()
 	if not game.cast_portrait(leader()): return
 	field().target = {}
 	field().reticle = null

@@ -315,6 +315,8 @@ void fragment() {
 ## material alpha over the land (whose underwater vertices the land shader
 ## already darkens by depth), vertex waves and vertex specular. On top, drawn
 ## so that the original colour stays the base:
+## - liquids use the tile-average colour, with animated ripples on clear
+##   water, mottled duckweed on swamps and glowing molten patches on lava;
 ## - where two liquid textures meet (bog and river tiles), the 2 × 2 m tile
 ##   textures are cross-faded along a noise-wobbled line instead of the
 ##   original's hard stair-stepped tile edge;
@@ -378,7 +380,8 @@ uniform mat4 planar_view;
 uniform bool reflections = true;
 uniform float mirror = 1.0; // Mirror style; Natural uses 0
 uniform bool blend_tiles = true;
-// Liquid tile code per 2 x 2 m tile of the map (-1: none), as land_tile.
+// Liquid tile code per 2 x 2 m tile (-1: none). Bit 16 selects the tile's
+// average colour; the low 16 bits retain the authored atlas/rotation.
 uniform sampler2D water_tiles : filter_nearest, repeat_disable;
 uniform float tiles_per_axis = 8.0;
 uniform float source_texel = 0.001953125;
@@ -474,6 +477,14 @@ vec3 tile_sample(int code, vec2 p, vec2 dx, vec2 dy) {
 	vec2 local = vec2(border) + (vec2(0.5) + tile_turn(clamp(p, vec2(0.0), vec2(1.0)) - 0.5, rotation)) * interior;
 	local = clamp(vec2(local.x, 1.0 - local.y), vec2(0.0), vec2(1.0));
 	vec2 origin = vec2(float(tile % per_row), float(per_row - 1 - tile / per_row));
+	if ((code & 65536) != 0) {
+		// At this mip each authored tile is one texel. Its centre cannot
+		// sample a neighbouring tile; HD/upscaled atlases choose their own
+		// level from the actual texture size. World-space detail supplies
+		// ripples, duckweed and molten patches without the painted tile grid.
+		float lod = log2(float(textureSize(atlases, 0).x) / tiles_per_axis);
+		return textureLod(atlases, vec3((origin + vec2(0.5)) / tiles_per_axis, float((code >> 6) & 255)), lod).rgb;
+	}
 	vec2 uv = (origin + local) / tiles_per_axis;
 	vec2 gx = tile_turn(dx, rotation) * interior / tiles_per_axis;
 	vec2 gy = tile_turn(dy, rotation) * interior / tiles_per_axis;
@@ -487,11 +498,11 @@ int tile_code(ivec2 c, int fallback) {
 // over a wobbly line (the original changes texture at the tile edge).
 // dx / dy: the tile grid's screen derivatives, taken in uniform control flow.
 vec3 water_texture(vec3 own, vec2 dx, vec2 dy) {
-	if (!blend_tiles) { return own; }
 	vec2 g = tgrid;
 	ivec2 home = ivec2(floor(g));
 	int code = tile_code(home, -1);
 	if (code < 0) { return own; }
+	if (!blend_tiles) { return (code & 65536) != 0 ? tile_sample(code, fract(g), dx, dy) : own; }
 	vec2 wob = vec2(textureLod(foam_tex, g * 0.23, 0.0).r, textureLod(foam_tex, g * 0.23 + vec2(0.37, 0.61), 0.0).r) - 0.5;
 	vec2 gs = g + wob * 0.9;
 	ivec2 c = ivec2(floor(gs));
@@ -633,13 +644,26 @@ void fragment() {
 	if (is_lava > 0.5) {
 		float n1 = texture(foam_tex, q * 0.045 + water_time * vec2(0.006, 0.004)).r;
 		float n2 = texture(foam_tex, q * 0.11 - water_time * vec2(0.004, 0.009)).r;
-		float heat = smoothstep(0.35, 0.85, n1 * 0.6 + n2 * 0.6 - 0.1);
-		ALBEDO = t * 0.35;
-		EMISSION = t * (0.6 + 2.2 * heat) * vec3(1.0, 0.75, 0.55) + vec3(1.0, 0.35, 0.05) * heat * heat * 0.8;
+		float grain = texture(foam_tex, q * 0.48 + vec2(n1, n2) * 0.08).r;
+		float heat = smoothstep(0.32, 0.68, n1 * 0.4 + n2 * 0.4 + grain * 0.2);
+		ALBEDO = t * mix(0.08, 0.25, heat);
+		EMISSION = t * mix(0.08, 3.8, heat * heat) * vec3(1.0, 0.75, 0.55)
+			+ vec3(1.0, 0.35, 0.05) * pow(heat, 4.0) * 1.8;
+		ei_wave_scale = 0.0;
 		ALPHA = 1.0;
 	} else {
 		vec2 cells_uv = vec2(wpos.x, -wpos.z) / vec2(textureSize(terrain_cells, 0));
 		bool swamp = int(texture(terrain_cells, cells_uv).b + 0.5) == 14;
+		float duckweed = 0.0;
+		if (swamp) {
+			// Keep the authored green/brown palette, with organic floating
+			// cover instead of the atlas's repeating scratches. Reuse foam
+			// noise so no additional sampler or surface pass is needed.
+			float patches = texture(foam_tex, q * 0.12 + water_time * vec2(0.001, -0.001)).r;
+			float flecks = texture(foam_tex, q * 1.4).r;
+			duckweed = smoothstep(0.35, 0.65, patches * 0.6 + flecks * 0.4);
+			t *= mix(0.6, 1.6, duckweed);
+		}
 		// Ripples: two normal maps drifting across each other (world space).
 		vec3 na = texture(wave_a, q * 0.055 + water_time * vec2(0.010, 0.006)).rgb * 2.0 - 1.0;
 		vec3 nb = texture(wave_b, q * 0.13 + water_time * vec2(-0.008, 0.012)).rgb * 2.0 - 1.0;
@@ -662,7 +686,8 @@ void fragment() {
 		float thick = max(length(scene_pos(SCREEN_UV, INV_PROJECTION_MATRIX)) - length(VERTEX), 0.0);
 		float vdepth = thick * abs((INV_VIEW_MATRIX * vec4(vdir, 0.0)).y);
 		float shore = smoothstep(0.0, 0.25, vdepth);
-		float a = clamp(alpha, 0.0, 1.0) * shore;   // vertex alpha only, as the original
+		float a = clamp(alpha, 0.0, 1.0) * shore;
+		if (swamp) { a = max(a, mix(0.93, 0.995, duckweed) * shore); }
 		float foam = 0.0;
 		if (surf_amount > 0.0 && !swamp) {
 			float band = 1.0 - smoothstep(0.0, 0.45, vdepth);
@@ -693,6 +718,9 @@ void fragment() {
 			w = reflected.a;
 		}
 		w *= (1.0 - foam) * shore;
+		// A duckweed mat is mostly diffuse. Even without the Fresnel floor,
+		// a grazing sky reflection used to turn it into clear blue water.
+		if (swamp) { w = min(w * mix(0.04, 0.01, duckweed), 0.015); }
 		// Sun glint, peak 20/255 of the sun colour like the original vertex
 		// specular, so it never reaches the bloom threshold.
 		// The original adds it to the sRGB colour; × 0.4 is that step on the dark
@@ -708,7 +736,9 @@ void fragment() {
 		float A = 1.0 - (1.0 - a) * (1.0 - w);
 		float k = (1.0 - w) * a / max(A, 1e-3);
 		ALBEDO = t * k;
-		ei_wave_scale = k;
+		// Duckweed has a diffuse surface, without the native additive wave
+		// highlights used on open water.
+		ei_wave_scale = swamp ? 0.0 : k;
 		EMISSION = (w * R + G) / max(A, 1e-3);
 		ALPHA = A;
 	}
@@ -753,6 +783,7 @@ var land_xy := PackedVector2Array()
 var land_n := PackedVector3Array()
 var water_tile := PackedInt32Array()
 const LAVA := 13
+const WATER_TILE_COLOUR := 1 << 16
 ## Render layer of the surfaces ground marks are projected onto (terrain and
 ## walkable object surfaces; GroundMarks' and ContactShadows' decals cull
 ## everything else). Layer 19 (bit 18): bit 19 is GameUnit.OFFSCREEN_LAYER,
@@ -1114,7 +1145,12 @@ func _build_surface_data() -> void:
 	var wtiles := PackedFloat32Array()
 	wtiles.resize(water_tile.size())
 	for i in water_tile.size():
-		wtiles[i] = water_tile[i]
+		var code := water_tile[i]
+		if code >= 0:
+			# Enhanced liquids keep their authored palette without the painted
+			# line pattern. The original-look shader ignores this table.
+			code |= WATER_TILE_COLOUR
+		wtiles[i] = code
 	_water_tile_tex = ImageTexture.create_from_image(Image.create_from_data(sectors_x * TILES,
 		sectors_y * TILES, false, Image.FORMAT_RF, wtiles.to_byte_array()))
 	_height_tex = ImageTexture.create_from_image(Image.create_from_data(

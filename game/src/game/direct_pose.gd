@@ -90,13 +90,16 @@ func _compose_pose(dt: float) -> void:
 		phase = 0.0; weight = 0.0; leg_yaw = 0.0
 		reverse = false; playback_direction = 1.0; _lower_code = -1; lower_clip = ""
 		_base_keys.clear(); _base_positions.clear()
-	var eligible := model.has_node("hp/bd") and unit.direct_controlled and not unit.dead and unit.stance == GameUnit.STANCE_NONE and unit.action in ["idle","walk","run","attack"]
+	var eligible := model.has_node("hp/bd") and unit.direct_controlled and not unit.dead and unit.stance == GameUnit.STANCE_NONE and (unit.action in ["idle","walk","run","attack"] or unit.action.begins_with("cast"))
 	if not eligible:
 		weight = 0.0
 		return
 	var moving := eligible and unit._move_speed > 0.001 and unit.direct_motion != Vector2.ZERO
 	weight = move_toward(weight,1.0 if moving else 0.0,dt*6.0)
-	if weight <= 0.0 or model.player.current_animation.is_empty(): return
+	# A one-shot clears current_animation when its last frame is reached,
+	# before the authority's recovery tick selects the next action. Keep
+	# composing that final pose or the body briefly snaps to planted feet.
+	if weight <= 0.0 or model._current.is_empty(): return
 	# Keep one gait across swings. Re-picking a weighted animation every
 	# frame or toggling combat readiness changes stride beneath planted feet.
 	var gait := "run" if unit.running else "walk"

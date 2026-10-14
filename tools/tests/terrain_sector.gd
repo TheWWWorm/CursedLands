@@ -82,6 +82,8 @@ func _ready()->void:
 	soft._add_mark({"p":Vector2(8,8),"extent":Vector2(.12,.2),"angle":.3,"time":0.0})
 	soft._process(0);soft._finish_mesh_jobs(true)
 	check(not soft.sectors.is_empty() and surface.mesh!=before,"real deformation installed through logical sector")
+	check(is_same(soft.sectors[Vector2i.ZERO].arrays, source),"deformation reuses retained CPU source without a GPU readback")
+	check(source == original,"deformation worker leaves authored source unchanged")
 	var dense_material := surface.mesh.surface_get_material(0)
 	var replacement := StandardMaterial3D.new()
 	sector.set_base_material(replacement)

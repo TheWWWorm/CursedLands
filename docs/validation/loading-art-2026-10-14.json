@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-14",
+  "status": "Resolved by the user after reinstalling. No production loading code change was needed.",
+  "base_commit": "0e23fc321f7cf98e3df35e8ae012250ef3cab95c",
+  "release_tested": "1.2.0",
+  "published": false,
+  "reported_configuration": {
+    "mode": "Single-player loading after importing a save",
+    "data": "English original game data with HD pack",
+    "affected": "Windows AMD machine",
+    "comparison": "User confirms the NVIDIA laptop uses the same release, English HD pack and imported save, and loading artwork works there.",
+    "appearance": "User confirms only a centered Loading\u2026 label on black."
+  },
+  "findings": [
+    {
+      "source": "game/src/ui/loading_screen.gd:begin",
+      "detail": "The centered fallback label is created only when GameFiles.exists fails or EIBink.open fails. This decision happens before shader rendering, so a GPU-only image rendering failure cannot itself select this label."
+    },
+    {
+      "source": "game/src/ui/loading_screen.gd:movie_for",
+      "detail": "Loading artwork is read from the selected original data root's movies/progres*.bik files. Ingos uses progres3.bik."
+    },
+    {
+      "source": "game/src/ui/save_transfer.gd:restore",
+      "detail": "Save restore writes new save slots only; permitted backup names cannot target installation paths. The tested restore preserves the active game-data root and mod configuration."
+    },
+    {
+      "source": "game/src/game/mod_catalog.gd",
+      "detail": "HD Lands 1.5.0 supplies texture archive replacements; loading movies are still read from the original data root."
+    },
+    {
+      "source": "game/src/ei/game_data.gd:validate",
+      "detail": "Core-data validation permits installations without progress movies, so successful game startup does not establish that loading art is present."
+    }
+  ],
+  "runtime": {
+    "executable": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.2.0-linux-x86_64/CursedLands.x86_64",
+    "engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+    "pack_sha256": "46443cc9fe919fdb68973a873752ff7d3fefcafd2e01a87bf64fa66a89847d41",
+    "platform": "Linux, NVIDIA RTX 3090, Forward+ Vulkan, separate rendering thread, 3840x2160",
+    "original_data": "/home/llm2x/Documents/EI/inspection/extracted/app",
+    "mod": "community.hd-lands-textures@1.5.0",
+    "isolation": "Disposable XDG profiles; published build and installed HD package used read-only. Tests call the release's SaveTransfer, main-menu and separate single-player simulation-service code."
+  },
+  "checks": [
+    {
+      "name": "Original progress movie and presentation stages",
+      "checks": 5,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/loading-art-20261014/loading-progress-baseline.log"
+    },
+    {
+      "name": "Real single-player menu load with HD Lands",
+      "checks": 15,
+      "failures": 0,
+      "zone": "gz11k",
+      "artwork_frames": 2848,
+      "fallback_frames": 0,
+      "uncovered_frames": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/loading-art-20261014/single-hd-valid.log"
+    },
+    {
+      "name": "Real save export/import followed by menu load with HD Lands",
+      "checks": 24,
+      "failures": 0,
+      "zone": "gz11k",
+      "artwork_frames": 2796,
+      "fallback_frames": 0,
+      "uncovered_frames": 0,
+      "root_unchanged": true,
+      "mod_configuration_unchanged": true,
+      "all_five_movies_open_after_import": true,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/loading-art-20261014/single-import-hd.log",
+      "fixture": "/home/llm2x/Documents/EI/local/scratchpad/loading-art-20261014/menu_loading_artwork_import_hd.gd"
+    }
+  ],
+  "earlier_runs": [
+    {
+      "name": "Single-player without HD",
+      "artwork_frames": 1256,
+      "fallback_frames": 0,
+      "uncovered_frames": 0,
+      "detail": "The artwork check passed. One unrelated cleanup assertion used three process frames; current loader waits up to eight presented frames. Later valid tests allow twelve frames."
+    },
+    {
+      "name": "First HD fixture",
+      "excluded": true,
+      "detail": "The generated save omitted mod_config, so the existing legacy-save/profile compatibility gate rejected it before loading. Replaced with a fixture containing ModStore.snapshot(); not evidence of the reported loading failure."
+    }
+  ],
+  "limitations": [
+    "Windows AMD hardware and the affected installation files are unavailable; no Windows or AMD acceptance claimed.",
+    "Save import was exercised through the actual backup/restore methods; the Windows native file picker was not executed.",
+    "No release, tag, player profile, quality preset or original movie file was modified."
+  ],
+  "resolution": {
+    "source": "User confirmation on 2026-10-14",
+    "detail": "Reinstalling fixed the loading artwork. The user suspects their installation files; the precise damaged or missing file was not identified."
+  }
+}

@@ -71,6 +71,12 @@ func deformation_surface() -> MeshInstance3D:
 	return _parts[0]
 
 
+## Immutable authored input for the deformation worker. Reading the uploaded
+## ArrayMesh back through surface_get_arrays stalls the rendering device.
+func deformation_arrays() -> Array:
+	return _arrays
+
+
 func _rebuild(subdivided: bool) -> void:
 	for piece in _parts:
 		piece.free()

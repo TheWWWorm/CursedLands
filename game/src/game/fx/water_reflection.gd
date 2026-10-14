@@ -149,6 +149,9 @@ func _exit_tree() -> void:
 
 func _select_plane(source: Camera3D) -> float:
 	var position := source.global_position
+	# Camera3D.is_position_in_frustum rebuilds all six projection planes on
+	# every call. A water scan can test thousands of cells with one camera.
+	var frustum := source.get_frustum()
 	var width := terrain.sectors_x * EITerrain.SECTOR
 	var height := terrain.sectors_y * EITerrain.SECTOR
 	var groups := {}
@@ -161,7 +164,13 @@ func _select_plane(source: Camera3D) -> float:
 			if not is_finite(water_height) or terrain.liquid_ground[i] in [EITerrain.LAVA, 255]: continue
 			var point := Vector3(x + 0.5, water_height, -y - 0.5)
 			var distance := point.distance_squared_to(position)
-			if distance > REACH * REACH or not source.is_position_in_frustum(point): continue
+			if distance > REACH * REACH: continue
+			var visible := true
+			for boundary: Plane in frustum:
+				if boundary.is_point_over(point):
+					visible = false
+					break
+			if not visible: continue
 			if water_height < terrain.height_at(point.x, -point.z) + 0.08: continue
 			var weight := 1.0 / maxf(4.0, distance)
 			var key := roundi(water_height * 4.0)

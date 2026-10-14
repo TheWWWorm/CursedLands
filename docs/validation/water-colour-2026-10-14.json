@@ -1,0 +1,415 @@
+{
+  "date": "2026-10-14",
+  "status": "Local uncommitted visual change; no published release modified.",
+  "base_commit": "0e23fc321f7cf98e3df35e8ae012250ef3cab95c",
+  "published": false,
+  "change": "Enhanced liquids use the authored tile palettes without painted line detail. Clear water retains its animated ripples; swamps use opaque, mottled duckweed with restrained reflection; lava uses animated hot patches and darker crust.",
+  "implementation": {
+    "source": "game/src/ei/terrain.gd",
+    "metadata": "Bit 16 in the existing float tile table selects an authored tile average; all original 16-bit tile/atlas/rotation codes and absent-tile sentinels remain intact.",
+    "sampling": "The mip level is selected from actual atlas dimensions so original 512px and HD 2048px atlases each contribute one texel per authored tile, sampled at its centre.",
+    "material_detail": "Reuse the existing foam noise for world-space swamp coverage and molten patches. Swamp opacity is 0.93\u20130.995 away from the soft shoreline; the reflection contribution is capped at 0.015 and native additive wave highlights are excluded.",
+    "resources": "No additional texture, sampler, mesh or draw pass; swamp adds two noise reads, lava one. No FPS improvement claim.",
+    "unchanged": [
+      "Original-look water shader",
+      "land shader",
+      "clear-water foam, transparency, scene reflection and wave logic",
+      "caustics option",
+      "collision/navigation and liquid surface geometry"
+    ],
+    "new_player_visible_strings": 0
+  },
+  "diagnosis": {
+    "painted_lines": "Long repeating lines were present in the authored liquid atlases, especially apparent with HD replacement atlases.",
+    "preview_blue_wash": "The earlier zone1/zone7 surface captures were near map edges. EITerrain.load_map reset the border-fog setting after the fixture initially disabled it; that fog caused the large cyan wash. The corrected comparison disables border fog after each load, equally for before and after. Production border fog is unchanged.",
+    "earlier_preservation_check": "The initial 16 original/HD captures proved swamp/lava unchanged by the clear-water-only edit. That was a preservation check, not visual acceptance; it is superseded by the deliberate material changes and the final captures below."
+  },
+  "environment": {
+    "os": "Linux",
+    "gpu": "NVIDIA RTX 3090",
+    "engine": "Shipping 1.2.0 custom Godot 4.7 with private source pack",
+    "profiles": "Disposable XDG profiles, immutable HD Lands 1.5.0 package linked read-only",
+    "terrain_source_matches_runtime": true
+  },
+  "checks": [
+    {
+      "case": "surfaces-final-hd",
+      "tool": "liquid_surfaces.gd",
+      "renderer": "forward_plus",
+      "exit": 0,
+      "seconds": 27.81,
+      "errors": [],
+      "summary": [
+        "LIQUID_SURFACES 8 cases 0 failures"
+      ]
+    },
+    {
+      "case": "surfaces-final-original",
+      "tool": "liquid_surfaces.gd",
+      "renderer": "forward_plus",
+      "exit": 0,
+      "seconds": 20.95,
+      "errors": [],
+      "summary": [
+        "LIQUID_SURFACES 8 cases 0 failures"
+      ]
+    },
+    {
+      "case": "colour-final-forward",
+      "tool": "water_colour.gd",
+      "renderer": "forward_plus",
+      "exit": 0,
+      "seconds": 8.03,
+      "errors": [],
+      "summary": [
+        "WATER_COLOUR 12 checks 0 failures"
+      ]
+    },
+    {
+      "case": "colour-final-mobile",
+      "tool": "water_colour.gd",
+      "renderer": "mobile",
+      "exit": 0,
+      "seconds": 6.22,
+      "errors": [],
+      "summary": [
+        "WATER_COLOUR 12 checks 0 failures"
+      ]
+    },
+    {
+      "case": "colour-final-compat",
+      "tool": "water_colour.gd",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 5.92,
+      "errors": [],
+      "summary": [
+        "WATER_COLOUR 12 checks 0 failures"
+      ]
+    },
+    {
+      "case": "samplers-final-compat",
+      "tool": "water_sampler_budget.gd",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 86.81,
+      "errors": [],
+      "summary": [
+        "WATER_SAMPLER_BUDGET checks=216 failures=0"
+      ]
+    }
+  ],
+  "authored_surfaces": {
+    "cases": 16,
+    "failures": 0,
+    "rows": [
+      {
+        "animated": true,
+        "atlas_size": 2048,
+        "ground": 3.99409592151642,
+        "identical": false,
+        "liquid_type": 14,
+        "map": "zone1",
+        "ok": true,
+        "point": [
+          159.5,
+          12.5
+        ],
+        "scene": "swamp-zone1",
+        "stable_repeat": true,
+        "water": 5.71068477630615,
+        "profile": "surfaces-final-hd"
+      },
+      {
+        "animated": true,
+        "atlas_size": 2048,
+        "ground": 0.414641581475735,
+        "identical": false,
+        "liquid_type": 14,
+        "map": "zone2",
+        "ok": true,
+        "point": [
+          87.5,
+          83.5
+        ],
+        "scene": "swamp-zone2",
+        "stable_repeat": true,
+        "water": 1.11658823490143,
+        "profile": "surfaces-final-hd"
+      },
+      {
+        "animated": true,
+        "atlas_size": 2048,
+        "ground": 5.88208389282227,
+        "identical": false,
+        "liquid_type": 14,
+        "map": "zone7",
+        "ok": true,
+        "point": [
+          26.5,
+          260.5
+        ],
+        "scene": "swamp-zone7",
+        "stable_repeat": true,
+        "water": 6.74499416351318,
+        "profile": "surfaces-final-hd"
+      },
+      {
+        "animated": true,
+        "atlas_size": 2048,
+        "ground": 6.07756948471069,
+        "identical": false,
+        "liquid_type": 14,
+        "map": "zone9",
+        "ok": true,
+        "point": [
+          74.5,
+          218.5
+        ],
+        "scene": "swamp-zone9",
+        "stable_repeat": true,
+        "water": 7.04535913467407,
+        "profile": "surfaces-final-hd"
+      },
+      {
+        "animated": true,
+        "atlas_size": 2048,
+        "ground": 0.0,
+        "identical": false,
+        "liquid_type": 13,
+        "map": "zone10",
+        "ok": true,
+        "point": [
+          72.5,
+          75.5
+        ],
+        "scene": "lava-zone10",
+        "stable_repeat": true,
+        "water": 0.427401155233383,
+        "profile": "surfaces-final-hd"
+      },
+      {
+        "animated": true,
+        "atlas_size": 2048,
+        "ground": 5.17532444000244,
+        "identical": false,
+        "liquid_type": 13,
+        "map": "zone16",
+        "ok": true,
+        "point": [
+          162.5,
+          14.5
+        ],
+        "scene": "lava-zone16",
+        "stable_repeat": true,
+        "water": 7.35965061187744,
+        "profile": "surfaces-final-hd"
+      },
+      {
+        "animated": true,
+        "atlas_size": 2048,
+        "ground": 10.170241355896,
+        "identical": false,
+        "liquid_type": 6,
+        "map": "zone8",
+        "ok": true,
+        "point": [
+          160.0,
+          142.0
+        ],
+        "scene": "river-zone8",
+        "stable_repeat": true,
+        "water": 14.0244665145874,
+        "profile": "surfaces-final-hd"
+      },
+      {
+        "animated": true,
+        "atlas_size": 2048,
+        "ground": 1.97821617141379,
+        "identical": false,
+        "liquid_type": 6,
+        "map": "zone1",
+        "ok": true,
+        "point": [
+          89.4000015258789,
+          24.1399993896484
+        ],
+        "scene": "coast-zone1",
+        "stable_repeat": true,
+        "water": 2.51802062988281,
+        "profile": "surfaces-final-hd"
+      },
+      {
+        "animated": true,
+        "atlas_size": 512,
+        "ground": 3.99409592151642,
+        "identical": false,
+        "liquid_type": 14,
+        "map": "zone1",
+        "ok": true,
+        "point": [
+          159.5,
+          12.5
+        ],
+        "scene": "swamp-zone1",
+        "stable_repeat": true,
+        "water": 5.71068477630615,
+        "profile": "surfaces-final-original"
+      },
+      {
+        "animated": true,
+        "atlas_size": 512,
+        "ground": 0.414641581475735,
+        "identical": false,
+        "liquid_type": 14,
+        "map": "zone2",
+        "ok": true,
+        "point": [
+          87.5,
+          83.5
+        ],
+        "scene": "swamp-zone2",
+        "stable_repeat": true,
+        "water": 1.11658823490143,
+        "profile": "surfaces-final-original"
+      },
+      {
+        "animated": true,
+        "atlas_size": 512,
+        "ground": 5.88208389282227,
+        "identical": false,
+        "liquid_type": 14,
+        "map": "zone7",
+        "ok": true,
+        "point": [
+          26.5,
+          260.5
+        ],
+        "scene": "swamp-zone7",
+        "stable_repeat": true,
+        "water": 6.74499416351318,
+        "profile": "surfaces-final-original"
+      },
+      {
+        "animated": true,
+        "atlas_size": 512,
+        "ground": 6.07756948471069,
+        "identical": false,
+        "liquid_type": 14,
+        "map": "zone9",
+        "ok": true,
+        "point": [
+          74.5,
+          218.5
+        ],
+        "scene": "swamp-zone9",
+        "stable_repeat": true,
+        "water": 7.04535913467407,
+        "profile": "surfaces-final-original"
+      },
+      {
+        "animated": true,
+        "atlas_size": 512,
+        "ground": 0.0,
+        "identical": false,
+        "liquid_type": 13,
+        "map": "zone10",
+        "ok": true,
+        "point": [
+          72.5,
+          75.5
+        ],
+        "scene": "lava-zone10",
+        "stable_repeat": true,
+        "water": 0.427401155233383,
+        "profile": "surfaces-final-original"
+      },
+      {
+        "animated": true,
+        "atlas_size": 512,
+        "ground": 5.17532444000244,
+        "identical": false,
+        "liquid_type": 13,
+        "map": "zone16",
+        "ok": true,
+        "point": [
+          162.5,
+          14.5
+        ],
+        "scene": "lava-zone16",
+        "stable_repeat": true,
+        "water": 7.35965061187744,
+        "profile": "surfaces-final-original"
+      },
+      {
+        "animated": true,
+        "atlas_size": 512,
+        "ground": 10.170241355896,
+        "identical": false,
+        "liquid_type": 6,
+        "map": "zone8",
+        "ok": true,
+        "point": [
+          160.0,
+          142.0
+        ],
+        "scene": "river-zone8",
+        "stable_repeat": true,
+        "water": 14.0244665145874,
+        "profile": "surfaces-final-original"
+      },
+      {
+        "animated": true,
+        "atlas_size": 512,
+        "ground": 1.97821617141379,
+        "identical": false,
+        "liquid_type": 6,
+        "map": "zone1",
+        "ok": true,
+        "point": [
+          89.4000015258789,
+          24.1399993896484
+        ],
+        "scene": "coast-zone1",
+        "stable_repeat": true,
+        "water": 2.51802062988281,
+        "profile": "surfaces-final-original"
+      }
+    ]
+  },
+  "original_shader_byte_comparisons": {
+    "TERRAIN_SHADER": true,
+    "WATER_SHADER": true
+  },
+  "captures": {
+    "fixture": "tools/tests/liquid_surfaces.gd",
+    "camera": "Same 1280x960 camera, light, frozen game clock and caustics setting within each comparison. Edge fog disabled equally to show the liquid surface.",
+    "repeat_control": "All 16 candidate captures are pixel-identical when repeated with a frozen clock. Advancing the terrain clock changes each surface.",
+    "hd_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-look-20261014/surfaces-final-hd/data/godot/app_userdata/Cursed Lands",
+    "original_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-look-20261014/surfaces-final-original/data/godot/app_userdata/Cursed Lands",
+    "preview": "/home/llm2x/.codex/visualizations/2026/10/14/01a13a3f-745b-71f3-8593-2ae043eb915c/liquid-surface-comparison.html",
+    "preview_encoding": "640x480, WebP quality 92; original PNG captures retained separately.",
+    "preview_checks": {
+      "interactions": "pass",
+      "layout": {
+        "width": 288,
+        "scroll": 288,
+        "body": 288,
+        "bodyScroll": 288
+      },
+      "errors": []
+    },
+    "preview_source_matches_final_captures": true
+  },
+  "limitations": [
+    "Intentional visual change; original and revised images are not expected to be identical.",
+    "No Windows/AMD or mobile GPU hardware run; Mobile and Compatibility renderers were tested on desktop NVIDIA.",
+    "Terrain-only fixed-camera captures, not a full gameplay playthrough."
+  ],
+  "source_sha256": {
+    "game/src/ei/terrain.gd": "ce9daa0ca678edfebbea4dc80472a00efb92e73beca6e7b999ade685fc951174",
+    "tools/tests/water_colour.gd": "302d4e1bb073f6a1333fb124553f0919afa96ba46e226e658dcdd967e7e222aa",
+    "tools/tests/liquid_surfaces.gd": "684c479f1f7f39b171e7b72afdb8f6b9ab87ed2985a6579bdea895dcd5f6c188"
+  },
+  "private_water_pack_sha256": "79d62dd37b0d72766446add090fa10888d11811613f6644971d5ab31bfc252b2"
+}

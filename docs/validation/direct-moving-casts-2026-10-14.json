@@ -1,0 +1,557 @@
+{
+  "date": "2026-10-14",
+  "status": "Local uncommitted changes; no release modified.",
+  "base_commit": "0e23fc321f7cf98e3df35e8ae012250ef3cab95c",
+  "published": false,
+  "changes": [
+    "Direct in-place spell commands retain independent steering in first- and third-person controls, including buffered casts and stopping/restarting movement.",
+    "Native cast timing, stamina cost, target, effect delivery and recovery remain authoritative. Casting uses the same 65% movement factor as committed attacks.",
+    "Walking/running legs compose beneath the authored casting upper body, including held cast variants.",
+    "Keep the composed pose through the interval between a completed animation and the next authority tick; resume the movement cycle without replaying a movement-start clip.",
+    "Direct self-casts retain facing; direct crouched/prone casts finish standing first."
+  ],
+  "environment": {
+    "os": "Linux",
+    "gpu": "NVIDIA RTX 3090",
+    "engine": "Shipping 1.2.0 custom Godot 4.7 executable with private exported source pack",
+    "game_data": "Original English campaign; delayed_cast_lifetime uses its existing Lost in Astral fixture data",
+    "profile": "Separate disposable XDG paths"
+  },
+  "live_casts": {
+    "third-final": {
+      "aligned_frames": 0,
+      "camera_motion": 0.0,
+      "cast_starts": [
+        {
+          "action": "cast",
+          "clip": "ucast03",
+          "remaining": 2.64,
+          "time": 3.465
+        },
+        {
+          "action": "cast",
+          "clip": "ucast03",
+          "remaining": 2.64,
+          "time": 7.42499999999999
+        },
+        {
+          "action": "cast",
+          "clip": "ucast03",
+          "remaining": 2.64,
+          "time": 11.44
+        }
+      ],
+      "checks": 51,
+      "collar_error": 0.0,
+      "direction_frames": [
+        48,
+        35,
+        29,
+        32
+      ],
+      "distance": 7.56531787663698,
+      "failures": [],
+      "finished_clip_frames": 3,
+      "first_person": false,
+      "held": false,
+      "held_moving_frames": 0,
+      "joint_angle_error": 0.0,
+      "joint_position_error": 0.0,
+      "leg_changes": 947,
+      "logic": [
+        {
+          "effect_ticks": 15,
+          "speed_error": 1.71408717090094e-05,
+          "travel": 0.779685974121094
+        }
+      ],
+      "maximum_cast_body_speed": 1.55489878318699,
+      "maximum_cast_body_step": 0.0433940440416336,
+      "maximum_recovery_step": 0.00666931411251426,
+      "moving_frames": 144,
+      "moving_seconds": 1.1896346060606,
+      "observer": true,
+      "run": false,
+      "torso_error": 0.000690533954184502,
+      "evidence_directory": "/home/llm2x/Documents/EI/local/scratchpad/moving-casts-20261014/third-final/data/godot/app_userdata/Cursed Lands"
+    },
+    "first-final": {
+      "aligned_frames": 2138,
+      "camera_motion": 7.62939453125e-06,
+      "cast_starts": [
+        {
+          "action": "cast",
+          "clip": "ucast04",
+          "remaining": 2.64,
+          "time": 3.355
+        },
+        {
+          "action": "cast",
+          "clip": "ucast03",
+          "remaining": 2.64,
+          "time": 7.31499999999999
+        },
+        {
+          "action": "cast",
+          "clip": "ucast04",
+          "remaining": 2.64,
+          "time": 11.33
+        }
+      ],
+      "checks": 51,
+      "collar_error": 8.79168510437012e-06,
+      "collar_failures": [],
+      "direction_frames": [
+        48,
+        35,
+        29,
+        32
+      ],
+      "distance": 7.56531787663698,
+      "failures": [],
+      "finished_clip_frames": 1,
+      "first_person": true,
+      "held": false,
+      "held_moving_frames": 0,
+      "joint_angle_error": 0.0,
+      "joint_position_error": 0.0,
+      "leg_changes": 938,
+      "logic": [
+        {
+          "effect_ticks": 13,
+          "speed_error": 1.71408717090094e-05,
+          "travel": 0.675727844238281
+        }
+      ],
+      "maximum_cast_body_speed": 1.54961689668217,
+      "maximum_cast_body_step": 0.0394660495221615,
+      "maximum_recovery_step": 0.00703764101490378,
+      "moving_frames": 144,
+      "moving_seconds": 1.18205451515151,
+      "observer": false,
+      "run": false,
+      "torso_error": 0.000690533954184502,
+      "evidence_directory": "/home/llm2x/Documents/EI/local/scratchpad/moving-casts-20261014/first-final/data/godot/app_userdata/Cursed Lands"
+    },
+    "third-run-held": {
+      "aligned_frames": 0,
+      "camera_motion": 0.0,
+      "cast_starts": [
+        {
+          "action": "cast:8",
+          "clip": "ucast04",
+          "remaining": 3.08,
+          "time": 3.465
+        },
+        {
+          "action": "cast:8",
+          "clip": "ucast03",
+          "remaining": 3.08,
+          "time": 7.42499999999999
+        },
+        {
+          "action": "cast:8",
+          "clip": "ucast04",
+          "remaining": 3.08,
+          "time": 11.44
+        }
+      ],
+      "checks": 53,
+      "collar_error": 0.0,
+      "collar_failures": [],
+      "direction_frames": [
+        52,
+        4,
+        37,
+        40
+      ],
+      "distance": 20.6050098376581,
+      "failures": [],
+      "finished_clip_frames": 1,
+      "first_person": false,
+      "held": true,
+      "held_moving_frames": 133,
+      "joint_angle_error": 0.0,
+      "joint_position_error": 0.0,
+      "leg_changes": 877,
+      "logic": [
+        {
+          "effect_ticks": 15,
+          "speed_error": 1.71408717090094e-05,
+          "travel": 0.779685974121094
+        }
+      ],
+      "maximum_cast_body_speed": 2.75072722378176,
+      "maximum_cast_body_step": 0.0464361272752285,
+      "maximum_recovery_step": 0.0206166617572308,
+      "moving_frames": 133,
+      "moving_seconds": 1.10909090909091,
+      "observer": false,
+      "run": true,
+      "torso_error": 0.000690533954184502,
+      "evidence_directory": "/home/llm2x/Documents/EI/local/scratchpad/moving-casts-20261014/third-run-held/data/godot/app_userdata/Cursed Lands"
+    },
+    "first-run-held": {
+      "aligned_frames": 2136,
+      "camera_motion": 7.62939453125e-06,
+      "cast_starts": [
+        {
+          "action": "cast:8",
+          "clip": "ucast03",
+          "remaining": 3.08,
+          "time": 3.465
+        },
+        {
+          "action": "cast:8",
+          "clip": "ucast03",
+          "remaining": 3.08,
+          "time": 7.42499999999999
+        },
+        {
+          "action": "cast:8",
+          "clip": "ucast03",
+          "remaining": 3.08,
+          "time": 11.44
+        }
+      ],
+      "checks": 54,
+      "collar_error": 8.58306884765625e-06,
+      "collar_failures": [],
+      "direction_frames": [
+        52,
+        4,
+        37,
+        40
+      ],
+      "distance": 20.6050098376581,
+      "failures": [],
+      "finished_clip_frames": 0,
+      "first_person": true,
+      "held": true,
+      "held_moving_frames": 133,
+      "joint_angle_error": 0.0,
+      "joint_position_error": 0.0,
+      "leg_changes": 876,
+      "logic": [
+        {
+          "effect_ticks": 15,
+          "speed_error": 1.71408717090094e-05,
+          "travel": 0.779685974121094
+        }
+      ],
+      "maximum_cast_body_speed": 2.83901169572631,
+      "maximum_cast_body_step": 0.0273404568433762,
+      "maximum_recovery_step": 0.0118862334638834,
+      "moving_frames": 133,
+      "moving_seconds": 1.117727,
+      "observer": false,
+      "run": true,
+      "torso_error": 0.000690533954184502,
+      "evidence_directory": "/home/llm2x/Documents/EI/local/scratchpad/moving-casts-20261014/first-run-held/data/godot/app_userdata/Cursed Lands"
+    },
+    "body-third": {
+      "aligned_frames": 0,
+      "camera_motion": 0.0,
+      "cast_starts": [
+        {
+          "action": "cast",
+          "clip": "ucast03",
+          "remaining": 2.64,
+          "time": 3.465
+        },
+        {
+          "action": "cast",
+          "clip": "ucast03",
+          "remaining": 2.64,
+          "time": 7.42499999999999
+        },
+        {
+          "action": "cast",
+          "clip": "ucast04",
+          "remaining": 2.64,
+          "time": 11.44
+        }
+      ],
+      "checks": 50,
+      "collar_error": 0.0,
+      "collar_failures": [],
+      "direction_frames": [
+        48,
+        35,
+        29,
+        32
+      ],
+      "distance": 7.56531787663698,
+      "failures": [],
+      "finished_clip_frames": 2,
+      "first_person": false,
+      "held": false,
+      "held_moving_frames": 0,
+      "joint_angle_error": 0.0,
+      "joint_position_error": 0.0,
+      "leg_changes": 948,
+      "logic": [
+        {
+          "effect_ticks": 15,
+          "speed_error": 1.71408717090094e-05,
+          "travel": 0.779685974121094
+        }
+      ],
+      "maximum_cast_body_speed": 1.6101086032359,
+      "maximum_cast_body_step": 0.0282330047339201,
+      "maximum_recovery_step": 0.016101086512208,
+      "moving_frames": 144,
+      "moving_seconds": 1.20005415151515,
+      "observer": true,
+      "run": false,
+      "torso_error": 0.000690533954184502,
+      "evidence_directory": "/home/llm2x/Documents/EI/local/scratchpad/moving-casts-20261014/body-third/data/godot/app_userdata/Cursed Lands"
+    },
+    "body-first": {
+      "aligned_frames": 2135,
+      "camera_motion": 7.62939453125e-06,
+      "cast_starts": [
+        {
+          "action": "cast",
+          "clip": "ucast04",
+          "remaining": 2.64,
+          "time": 3.355
+        },
+        {
+          "action": "cast",
+          "clip": "ucast03",
+          "remaining": 2.64,
+          "time": 7.31499999999999
+        },
+        {
+          "action": "cast",
+          "clip": "ucast04",
+          "remaining": 2.64,
+          "time": 11.33
+        }
+      ],
+      "checks": 50,
+      "collar_error": 9.07480716705322e-06,
+      "collar_failures": [],
+      "direction_frames": [
+        48,
+        35,
+        29,
+        32
+      ],
+      "distance": 7.56531787663698,
+      "failures": [],
+      "finished_clip_frames": 4,
+      "first_person": true,
+      "held": false,
+      "held_moving_frames": 0,
+      "joint_angle_error": 0.0,
+      "joint_position_error": 0.0,
+      "leg_changes": 949,
+      "logic": [
+        {
+          "effect_ticks": 13,
+          "speed_error": 1.71408717090094e-05,
+          "travel": 0.675727844238281
+        }
+      ],
+      "maximum_cast_body_speed": 1.60942981648984,
+      "maximum_cast_body_step": 0.0288925059139729,
+      "maximum_recovery_step": 0.0128754368051887,
+      "moving_frames": 144,
+      "moving_seconds": 1.20510375757576,
+      "observer": false,
+      "run": false,
+      "torso_error": 0.000690533954184502,
+      "evidence_directory": "/home/llm2x/Documents/EI/local/scratchpad/moving-casts-20261014/body-first/data/godot/app_userdata/Cursed Lands"
+    }
+  },
+  "regressions": [
+    {
+      "case": "third-final",
+      "tool": "direct_moving_casts.gd",
+      "exit": 0,
+      "seconds": 41.63,
+      "errors": [],
+      "summary": [
+        {
+          "checks": 51,
+          "failures": [],
+          "first_person": false,
+          "run": false,
+          "distance": 7.56531787663698,
+          "leg_changes": 947,
+          "collar_error": 0.0
+        }
+      ]
+    },
+    {
+      "case": "first-final",
+      "tool": "direct_moving_casts.gd",
+      "exit": 0,
+      "seconds": 43.04,
+      "errors": [],
+      "summary": [
+        {
+          "checks": 51,
+          "failures": [],
+          "first_person": true,
+          "run": false,
+          "distance": 7.56531787663698,
+          "leg_changes": 938,
+          "collar_error": 8.79168510437012e-06
+        }
+      ]
+    },
+    {
+      "case": "third-run-held",
+      "tool": "direct_moving_casts.gd",
+      "exit": 0,
+      "seconds": 35.68,
+      "errors": [],
+      "summary": [
+        {
+          "checks": 53,
+          "failures": [],
+          "first_person": false,
+          "run": true,
+          "distance": 20.6050098376581,
+          "leg_changes": 877,
+          "collar_error": 0.0
+        }
+      ]
+    },
+    {
+      "case": "first-run-held",
+      "tool": "direct_moving_casts.gd",
+      "exit": 0,
+      "seconds": 26.81,
+      "errors": [],
+      "summary": [
+        {
+          "checks": 54,
+          "failures": [],
+          "first_person": true,
+          "run": true,
+          "distance": 20.6050098376581,
+          "leg_changes": 876,
+          "collar_error": 8.58306884765625e-06
+        }
+      ]
+    },
+    {
+      "case": "attack-sword",
+      "tool": "direct_moving_attacks.gd",
+      "exit": 0,
+      "seconds": 33.82,
+      "errors": [],
+      "summary": [
+        {
+          "checks": 15,
+          "failures": [],
+          "first_person": false,
+          "run": false,
+          "distance": 6.24413299560547,
+          "leg_changes": 799,
+          "collar_error": 0.0
+        }
+      ]
+    },
+    {
+      "case": "attack-bow-first",
+      "tool": "direct_moving_attacks.gd",
+      "exit": 0,
+      "seconds": 35.27,
+      "errors": [],
+      "summary": [
+        {
+          "checks": 14,
+          "failures": [],
+          "first_person": true,
+          "run": false,
+          "distance": 8.2408447265625,
+          "leg_changes": 1037,
+          "collar_error": 3.71572816959542e-08
+        }
+      ]
+    },
+    {
+      "case": "movement",
+      "tool": "direct_movement.gd",
+      "exit": 0,
+      "seconds": 6.57,
+      "errors": [],
+      "summary": [
+        "DIRECT_MOVEMENT 33 checks 0 failures"
+      ]
+    },
+    {
+      "case": "repeated",
+      "tool": "repeated_spells.gd",
+      "exit": 0,
+      "seconds": 3.02,
+      "errors": [],
+      "summary": [
+        "REPEATED_SPELLS 86 checks 0 failures"
+      ]
+    },
+    {
+      "case": "cast-lifetime",
+      "tool": "delayed_cast_lifetime.gd",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "DELAYED_CAST_LIFETIME checks=32 failures=0"
+      ],
+      "initial_dataset": "Original campaign: fixture actor missing; same 7 failures reproduced without casting changes.",
+      "dataset": "Lost in Astral, the dataset used by this existing regression fixture.",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/moving-casts-20261014/lifetime-lia.log"
+    },
+    {
+      "case": "cast-save",
+      "tool": "save_consumed_cast.gd",
+      "exit": 0,
+      "seconds": 7.52,
+      "errors": [],
+      "summary": [
+        "AUDIT_DEEP cast 8 checks"
+      ]
+    }
+  ],
+  "new_player_visible_strings": 0,
+  "render_sampling": {
+    "body_alignment": "Sample after the model pre-draw callback. With the shipping separate render thread, post_draw can arrive during the next CPU frame and incorrectly inspect an intermediate pose.",
+    "body_motion": "Compare displacement per elapsed simulation second so PNG capture stalls do not turn ordinary walking hip sway into a false reset.",
+    "completed_clip_frames": 11,
+    "capture_clarity": "body-third and body-first hide placed scenery and the dummy target, and clear effects from the earlier independent authority cases; they use the original character, terrain and casting effects."
+  },
+  "visual_checks": {
+    "third_person": "Inspected cast gesture, moving legs, weapon attachment and recovery in actual captured frames.",
+    "first_person": "Inspected the raised casting hand/weapon and recovery while looking down; body alignment is additionally measured at draw submission.",
+    "video": "/home/llm2x/Documents/EI/local/scratchpad/moving-casts-20261014/body-third/moving-cast.webm",
+    "frames_third": "/home/llm2x/Documents/EI/local/scratchpad/moving-casts-20261014/body-third/frames",
+    "frames_first": "/home/llm2x/Documents/EI/local/scratchpad/moving-casts-20261014/body-first/frames",
+    "video_bytes": 431291
+  },
+  "limitations": [
+    "No physical keyboard/controller playthrough, Internet co-op soak or Windows/AMD hardware run.",
+    "Original rigid character parts are used; joint/skeleton metrics are zero when no welded skeleton exists and do not constitute a separate weighted-skin test.",
+    "Animation appearance is intentionally changed for moving casts; native upper-body clips remain unchanged."
+  ],
+  "source_sha256": {
+    "game/src/game/direct_control.gd": "6f567d60d73fc0d1db6f8926302c4ba6a56f5f1e8520c35adc8bc21e90798c43",
+    "game/src/game/direct_pose.gd": "f7419dcd1200ffc107680c126e18dbbbbb4224cd9ba2d74ba1b3164da57556f4",
+    "game/src/game/unit.gd": "b6e52f61af9ba1fe23971d2c4a7b051591c37c20d2bbcc375f769b3a5c2eded9",
+    "game/src/game/session.gd": "26376142401605476ad6f8af1000259efdf4e3f58b26b675f95d3d264ad4bf78",
+    "tools/tests/direct_coop.gd": "171feb3d1e720957ab365e77efdb20c165d245fd1838467cbf8ac7c1a4ad2ce7",
+    "tools/tests/direct_moving_attacks.gd": "e204b6e90cb21ebbf942fb67511c7445b5de79f6dc17d6c759153724e7e7af75",
+    "tools/tests/direct_moving_casts.gd": "6d1de4e0678f4df6f53ff9c845855bc3ab5e39f6d4c870f3eef2a79cd7b4601e"
+  },
+  "combined_private_pack_sha256": "e7f789531dbc863474cc89a4481eba81efa5a14b5fafb25eb0d036e09223adf4",
+  "combined_pack_coop": {
+    "checks": 37,
+    "failures": 0,
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/moving-casts-20261014/combined-coop.log",
+    "scope": "Real localhost ENet host/guest commands and snapshots; buffered cast, movement during cast and peer pose blending."
+  }
+}
