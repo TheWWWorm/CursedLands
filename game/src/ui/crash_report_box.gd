@@ -2,7 +2,7 @@ class_name CrashReportBox
 extends MessageBox
 ## Remake: the message box (MessageBox's layout: panel, saveload frame, title
 ## and message centred, ✓ under it) that offers a report (CrashReport):
-## - at the main menu after a session that ended unexpectedly ("The game
+## - before movies and the main menu after a session that ended unexpectedly ("The game
 ##   closed unexpectedly last time.", `offer`);
 ## - from Options › Remake › "Export log…" at any time.
 ## Two rows in the panel, highlighted with the selection bar: "Save report"

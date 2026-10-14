@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1 — stable release, 14 October 2026
+
+- Offer the previous session's crash report before intro movies and 3D menu loading, keeping report export accessible during repeated menu-load failures. Add startup and menu-construction checkpoints to diagnostic logs. ([#3](https://github.com/TheWWWorm/CursedLands/issues/3))
+
+See [release notes](docs/releases/1.1.1.md) for compatibility and platform limits.
+
 ## 1.1.0 — stable release, 14 October 2026
 
 - Keep the protagonist and supporting actors in their original dialogue camera slots, including topics offered by a third participant and co-op conversations started by a guest.

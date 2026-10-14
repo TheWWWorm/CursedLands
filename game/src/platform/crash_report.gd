@@ -9,8 +9,8 @@ extends Node
 ## session info (version, system, GPU, renderer, graphics tier and options, the
 ## current zone, the last trace line, foreground / background). A clean quit
 ## removes it (_exit_tree, the window's close request); a marker left at the
-## next start means that session ended unexpectedly, and the main menu shows a
-## box (CrashReportBox) to save or copy a report. Android / iOS: a session
+## next start means that session ended unexpectedly, and startup shows a box
+## (CrashReportBox) before movies or the 3D menu to save or copy a report. Android / iOS: a session
 ## killed while paused (in the background) is the system's doing, not a crash,
 ## and is only noted in the log; so is one that had lost the focus (the
 ## recent-apps screen: a swipe there can close the app before Android pauses

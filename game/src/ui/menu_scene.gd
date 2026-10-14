@@ -182,8 +182,10 @@ func set_hour(h: float) -> void:
 
 
 static func create() -> MenuScene:
+	GameData.trace("menu scene: loading island")
 	var map := EIMapScene.load_map("zonemainmenunew")
 	if map == null:
+		GameData.trace("menu scene: island unavailable")
 		return null
 	var s := MenuScene.new()
 	s.add_child(map)
@@ -199,8 +201,10 @@ static func create() -> MenuScene:
 			(n as EIUnitModel).act("idle")
 	if s._column == null:
 		return null
+	GameData.trace("menu scene: setting up signpost and environment")
 	s._setup_column()
 	s._setup_view(map)
+	GameData.trace("menu scene: built")
 	return s
 
 

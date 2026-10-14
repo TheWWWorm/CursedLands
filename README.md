@@ -8,7 +8,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.1.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.1.0), available for Linux, Windows, Android, macOS and in the [browser](https://cursedlands.wwworm.com/). It adds return trips to earlier islands and fixes co-op campaign continuity, direct-view accuracy and revival, dialogue actors and cameras, and snow seams. See the [release notes](docs/releases/1.1.0.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.1.1**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.1.1), available for Linux, Windows, Android, macOS and in the [browser](https://cursedlands.wwworm.com/). It makes the previous crash report available before intro movies and 3D menu loading, and adds startup checkpoints to diagnostic logs. See the [release notes](docs/releases/1.1.1.md) and [versioning policy](docs/versioning.md).
 
 ## Screenshots
 

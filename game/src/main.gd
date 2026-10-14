@@ -80,14 +80,15 @@ func _start() -> void:
 	# the original plays config/movie.ini [Start] (fishtank, Nival)
 	# before the main menu; skipped when the command line starts a game.
 	var direct: bool = args.has("--play") or args.has("--host") or Array(args).any(func(a): return String(a).begins_with("--join="))
+	if not direct:
+		await startup_notices()
 	if not direct and not args.has("--no-movies"):
+		GameData.trace("startup: intro movies")
 		MoviePlayer.preconvert(Array(MoviePlayer.ini_movies("Start")))
 		var seq := MovieSequence.start(self, MoviePlayer.ini_movies("Start"))
 		await seq.done
+		GameData.trace("startup: intro movies finished")
 	var menu: Control = await open_menu()
-	if not direct:
-		var crash_box := CrashReportBox.offer(menu)   # the previous session ended unexpectedly
-		RendererChoice.offer(menu, crash_box)   # a Vulkan renderer that did not start / crashed
 	for a in args:
 		if a == "--play":
 			menu.call_deferred("_single")
@@ -98,16 +99,49 @@ func _start() -> void:
 			menu.call_deferred("_join")
 
 
+## Keep the previous crash report reachable even if loading the 3D menu
+## crashes again. Use only the existing 2D UI, before movies or the splash;
+## closing each notice explicitly continues startup. GameData is open here,
+## so both the original UI art and the edition's translations are available.
+func startup_notices() -> void:
+	if DisplayServer.get_name() == "headless":
+		return
+	var cr := CrashReport.instance
+	if (cr == null or cr.previous.is_empty()) and RendererChoice.notice.is_empty():
+		return
+	var ui := Control.new()
+	ui.name = "StartupNotices"
+	ui.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(ui)
+	var cursor := GameCursor.new()
+	ui.add_child(cursor)
+	cursor.set_kind("cursor_default")
+	var report := CrashReportBox.offer(ui)
+	if report:
+		GameData.trace("startup: waiting for previous crash report")
+		await report.tree_exited
+	var renderer := RendererChoice.offer(ui)
+	if renderer:
+		GameData.trace("startup: waiting for renderer recovery notice")
+		await renderer.tree_exited
+	ui.queue_free()
+	GameData.trace("startup: recovery notices closed")
+
+
 ## Complete the launch progress animation before enabling the main menu.
 func open_menu() -> Control:
+	GameData.trace("startup: opening loading screen")
 	var splash := StartupScreen.open(self)
 	if splash:
 		await splash.presented()
+	GameData.trace("startup: building main menu")
 	var menu := preload("res://src/ui/main_menu.gd").new()
 	menu.start_game.connect(start_game)
 	add_child(menu)
+	GameData.trace("startup: main menu built; presenting loading animation")
 	if splash:
 		await splash.finish()
+	GameData.trace("startup: main menu ready")
 	return menu
 
 

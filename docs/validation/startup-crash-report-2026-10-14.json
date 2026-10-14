@@ -1,0 +1,238 @@
+{
+  "date": "2026-10-14",
+  "issue": "https://github.com/TheWWWorm/CursedLands/issues/3",
+  "base_commit": "3d33e554336164121ceb572fbbf0afd710cbf0f1",
+  "status": "Startup report accessibility corrected and tested on Linux. The Redmagic 11 Pro crash is not reproduced or diagnosed.",
+  "confirmed_gap": "The released startup created and rendered the 3D menu before offering the previous crash report. A repeated menu-load crash prevents exporting its report.",
+  "change": "Wait for existing localized crash and renderer notices before movies and menu loading. Add flushed lifecycle checkpoints around loading-screen and menu construction.",
+  "source_sha256": {
+    "game/src/main.gd": "fe2739670127a7c8f795d71974157d10da2b67e77ffbd0bd4ab2a1d28c2462a7",
+    "game/src/ui/menu_scene.gd": "11dd670e2b0df010a4a0ce9a354697e11bb25fd4cd65f41ffa3d5dc08987c491",
+    "game/src/platform/crash_report.gd": "9c075cfb5ab8d592f39c1249dff63fd2a08826a464ad93ed93422b03a71f30fc",
+    "game/src/ui/crash_report_box.gd": "5d926790f94bf0badc148c2ff843b6c4f6960a80bf6c613a8a9cbf5741e9bf3e",
+    "tools/tests/startup_crash_report.gd": "51d857ab8b1a53026ca9a0e3aa9baf293b25189f77f5c001ae553d8eaeb5674b"
+  },
+  "validation": {
+    "packaged-final": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/issue-3-20261014/runtime/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "960x540",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issue-3-20261014/repo/tools/tests/startup_crash_report.gd"
+      ],
+      "exit": 0,
+      "seconds": 28.615,
+      "errors": [],
+      "result": [
+        "STARTUP_CRASH_REPORT {\"checks\":85,\"failures\":0,\"platform\":\"Linux\",\"renderer\":\"gl_compatibility\"}"
+      ]
+    },
+    "headless-final": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/issue-3-20261014/runtime/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issue-3-20261014/repo/tools/tests/startup_crash_report.gd"
+      ],
+      "exit": 0,
+      "seconds": 2.017,
+      "errors": [],
+      "result": [
+        "STARTUP_CRASH_REPORT {\"checks\":2,\"failures\":0,\"platform\":\"Linux\",\"renderer\":\"forward_plus\"}"
+      ]
+    },
+    "compact-window-final": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/issue-3-20261014/runtime/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "60",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "960x540",
+        "--position",
+        "-10000,-10000",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issue-3-20261014/repo/tools/tests/startup_crash_report.gd"
+      ],
+      "exit": 0,
+      "seconds": 25.656,
+      "errors": [],
+      "result": [
+        "STARTUP_CRASH_REPORT {\"checks\":86,\"failures\":0,\"platform\":\"Linux\",\"renderer\":\"gl_compatibility\"}"
+      ]
+    }
+  },
+  "localization": {
+    "catalog_entries": 1129,
+    "errors": 0,
+    "new_player_strings": 0,
+    "rendered_languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "viewport": [
+      960,
+      540
+    ],
+    "visual_review": "Report prompt and saved-report status fit in all three languages.",
+    "captures": {
+      "startup-report-en-saved.png": {
+        "sha256": "b10b709846faf8352f87c34f591a02899b2a3355829fa16b449f6a16e63fbe2f",
+        "size": [
+          960,
+          540
+        ]
+      },
+      "startup-report-de-saved.png": {
+        "sha256": "fc61d17f84df85352e806208c9ed14cb2616c6541b111d6e0289ed53422573eb",
+        "size": [
+          960,
+          540
+        ]
+      },
+      "startup-report-ru.png": {
+        "sha256": "51906c227ce585dfc9cfc610e3b5ddde2cc2159bf7b17a918c5ea242ee1667ad",
+        "size": [
+          960,
+          540
+        ]
+      },
+      "startup-report-ru-saved.png": {
+        "sha256": "d247a72eb1dc1b3ad82bd6e8f74b35c3c07867f8366374b8351df858e8d4e79e",
+        "size": [
+          960,
+          540
+        ]
+      },
+      "startup-report-de.png": {
+        "sha256": "63b93baa255e73596098631f019a2a87b039837b5a428eb1970fb158cf13c264",
+        "size": [
+          960,
+          540
+        ]
+      },
+      "startup-report-en.png": {
+        "sha256": "ffef676f84468a0e323efe3d3300e11294202b9417e7b05a95b26155affcf0f4",
+        "size": [
+          960,
+          540
+        ]
+      }
+    }
+  },
+  "release_1_1_0_elf_alignment": [
+    {
+      "library": "lib/arm64-v8a/libc++_shared.so",
+      "load_segments": [
+        {
+          "alignment": 16384,
+          "congruent_16k": true
+        },
+        {
+          "alignment": 16384,
+          "congruent_16k": true
+        },
+        {
+          "alignment": 16384,
+          "congruent_16k": true
+        }
+      ],
+      "16k_aligned": true
+    },
+    {
+      "library": "lib/arm64-v8a/libgodot_android.so",
+      "load_segments": [
+        {
+          "alignment": 16384,
+          "congruent_16k": true
+        },
+        {
+          "alignment": 16384,
+          "congruent_16k": true
+        },
+        {
+          "alignment": 16384,
+          "congruent_16k": true
+        }
+      ],
+      "16k_aligned": true
+    },
+    {
+      "library": "lib/arm64-v8a/libmod_archive_android.so",
+      "load_segments": [
+        {
+          "alignment": 16384,
+          "congruent_16k": true
+        },
+        {
+          "alignment": 16384,
+          "congruent_16k": true
+        },
+        {
+          "alignment": 16384,
+          "congruent_16k": true
+        }
+      ],
+      "16k_aligned": true
+    },
+    {
+      "library": "lib/arm64-v8a/libterrain_search_android.so",
+      "load_segments": [
+        {
+          "alignment": 16384,
+          "congruent_16k": true
+        },
+        {
+          "alignment": 16384,
+          "congruent_16k": true
+        },
+        {
+          "alignment": 16384,
+          "congruent_16k": true
+        }
+      ],
+      "16k_aligned": true
+    }
+  ],
+  "android_log": {
+    "internal_path": "/data/user/0/org.cursedlands.engine/files/logs/godot.log",
+    "source": "GodotIO.getDataDir returns Context.getFilesDir; CrashReport.LOG_FILE is user://logs/godot.log.",
+    "release_run_as": "Verified denied: package is not debuggable.",
+    "export_destination": "Shared Download folder, with external app Documents and user://reports fallbacks."
+  },
+  "limits": [
+    "No Redmagic 11 Pro or native crash stack is available.",
+    "Linux checks use the release engine and current compiled scripts; they are not Android acceptance.",
+    "16 KiB ELF load-segment alignment passes for all four release libraries; this is not a general 16 KiB runtime certification.",
+    "No release was published and no GitHub comment was posted."
+  ],
+  "test_fixture_notes": "Initial compact-window fixture used DisplayServer calls and was reset by delayed window placement; using GameData._place_window fixed the fixture. Final compact run: 86 checks, 0 failures. Earlier successful full-size run: 85 checks, 0 failures."
+}
