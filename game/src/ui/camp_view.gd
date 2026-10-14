@@ -697,7 +697,8 @@ func _layout() -> void:
 
 
 ## The hero's bag through the bag filter; items in the sell pile are left out
-## (one per pile entry). Quest items are listed too.
+## (one per pile entry). Quest items stay in inventory; trading and crafting
+## show only items those services can accept.
 func bag_items() -> Array:
 	var st := hud.game.session.state
 	var out := []
@@ -706,6 +707,8 @@ func bag_items() -> Array:
 			if bag_count("spell:" + sp) > 0 and _passes("spell:" + sp, false, _filter_set(500)[2][filter]):
 				out.append("spell:" + sp)
 	for it: String in _unique(st.items + ([] if mode == "swap" else st.quest_items.keys())):
+		if mode in ["itemtrade", "spelltrade", "itemconstr", "spellconstr", "repair"] \
+			and not hud.game.session.tradeable_item(it): continue
 		if not it in out and bag_count(it) > 0 and _passes(it, it in st.quest_items, _filter_set(500)[2][filter]):
 			out.append(it)
 	return out

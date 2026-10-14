@@ -607,6 +607,8 @@ func interaction_hint() -> Dictionary:
 		title = WorldLabels.unit_name(target)
 	elif action.has("lever"):
 		title = WorldLabels.lever_title(game.world,int(action.lever))
+		if WorldLabels.lever_kind(game.world,int(action.lever)) in ["Skeleton", "Remains"]:
+			verb = "Loot"
 	else:
 		verb = "Exit"
 	return {"text":key_label("interact")+": " + RemakeText.t(verb) + (" — " + title if not title.is_empty() else ""),"verb":RemakeText.t(verb),"enabled":true}

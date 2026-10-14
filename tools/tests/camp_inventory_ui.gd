@@ -66,9 +66,12 @@ func paging_and_filters() -> void:
 	st.quest_items[quest] = 1; st.shops[1].goods[quest] = 3
 	check(not session.shop_stock({"shop":1}).has(quest) and session.shop_count(quest,{"shop":1}) == 0, "quest prototypes cannot appear in shop stock")
 	st.quest_items["tiny potion 1"] = 1; st.shops[1].goods["tiny potion 1"] = 4
+	st.items.append(quest); st.items.append("tiny potion 1")
 	check(not session.shop_stock({"shop":1}).has("tiny potion 1"), "script-designated quest items also stay out of stock")
 	check(not session._trade_apply({"shop":1,"buy":["tiny potion 1"]}), "authority refuses buying a script-designated quest item")
 	camp.set_mode("itemtrade"); camp._set_bag_filter(5); camp._process(0)
+	check(not camp.bag_items().has(quest) and not camp.bag_items().has("tiny potion 1"), "native and script-designated quest items stay out of the selling row, including personal-bag copies")
+	check(not session._trade_apply({"shop":1,"sell":[quest]}) and not session._trade_apply({"shop":1,"sell":["tiny potion 1"]}), "quest items cannot be sold by a stale client command")
 	await frame()
 	var bag_point := camp._r(Rect2(0,500,800,100)).get_center()
 	var shop_point := camp._r(Rect2(0,0,800,100)).get_center()

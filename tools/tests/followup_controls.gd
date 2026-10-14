@@ -12,6 +12,17 @@ func press(code: Key, down: bool) -> void:
 	Input.parse_input_event(event)
 	await frames(1)
 
+func wheel_pointer(point: Vector2) -> void:
+	get_viewport().warp_mouse(point);await frames(4)
+	var event:=InputEventMouseMotion.new();event.position=point
+	Input.parse_input_event(event);await frames(2)
+
+func wheel_click(button: MouseButton) -> void:
+	var event:=InputEventMouseButton.new();event.button_index=button;event.pressed=true
+	Input.parse_input_event(event);await frames(1)
+	event=InputEventMouseButton.new();event.button_index=button
+	Input.parse_input_event(event);await frames(1)
+
 func _ready() -> void:
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,"net_directory":0,"auto_graphics":0,"control_mode":2,"pad_enabled":0,"pad_wheel_pause":0,"blood":0},true)
 	PadInput.active="kbm"; s=Session.new();add_child(s);g=Game.new();g.session=s;s.game=g;add_child(g)
@@ -24,23 +35,43 @@ func _ready() -> void:
 	for locale in ["ru","de"]:
 		RemakeText.lang=locale
 		check(RemakeText.t("Alt: aimed strike") != "Alt: aimed strike" and PadField.aim_entries().all(func(e):return e.caption != TouchActions.PARTS[e.id[1]]),"Alt controls and all body parts translated for "+locale)
+		check(RemakeText.t("Default") != "Default" and RemakeText.t("No preferred body part") != "No preferred body part","aim reset and explanation translated for "+locale)
 	RemakeText.lang=lang
 	for camera_mode in [1,2,3]:
 		GameData.options.control_mode=camera_mode; reset();sky()
 		await press(KEY_ALT,true)
 		check(field.wheel.visible and field.wheel.entries.size()==6,"Alt opens six body parts without a gamepad in mode "+str(camera_mode))
 		await frames(4) # consume the OS mouse warp generated when opening
+		var centre:Vector2=field.wheel._geom()[0]
+		check([2,4].all(func(i):return field.wheel._cell_center(i).x<centre.x) and [3,5].all(func(i):return field.wheel._cell_center(i).x>centre.x),"left limbs appear on the left and right limbs on the right")
 		var point: Vector2 = field.wheel.get_global_transform_with_canvas() * field.wheel._cell_center(4)
-		get_viewport().warp_mouse(point);await frames(4)
-		var event:=InputEventMouseMotion.new();event.position=point
-		Input.parse_input_event(event);await frames(2)
+		await wheel_pointer(point)
 		if DisplayServer.get_name() != "headless" and camera_mode == 2:
 			await RenderingServer.frame_post_draw
 			get_viewport().get_texture().get_image().save_png("user://alt-body-parts.png")
 		await press(KEY_ALT,false)
 		check(not field.wheel.visible and g.held_aim()==4,"releasing Alt arms the chosen leg in mode "+str(camera_mode))
 		await press(KEY_ALT,true); await press(KEY_ESCAPE,true); await press(KEY_ESCAPE,false); await press(KEY_ALT,false)
-		check(not field.wheel.visible,"Escape cancels the Alt menu in mode "+str(camera_mode))
+		check(not field.wheel.visible and g.held_aim()==4,"Escape closes the wheel without clearing the previous part in mode "+str(camera_mode))
+		await press(KEY_ALT,true);await wheel_click(MOUSE_BUTTON_RIGHT);await press(KEY_ALT,false)
+		check(not field.wheel.visible and g.held_aim()==4,"right click closes the wheel without clearing the previous part")
+		for confirm:String in ["release","click"]:
+			g.touch_aim=4;await press(KEY_ALT,true);await frames(4)
+			await wheel_pointer(field.wheel.get_global_transform_with_canvas()*field.wheel._cell_center(2))
+			check(int(field.wheel.current().id[1])==2,"hovering the left arm selects it")
+			var geometry:=field.wheel._geom()
+			# Near the visible centre's rim, well outside the old tiny dead zone.
+			await wheel_pointer(field.wheel.get_global_transform_with_canvas()*(geometry[0]+Vector2.RIGHT*float(geometry[1])*.45))
+			check(field.wheel.current().get("id",[])==["aim",-1],"returning anywhere inside the central circle selects Default")
+			field._ring_target={"unit":hero};hero.orders.clear()
+			if confirm=="click":await wheel_click(MOUSE_BUTTON_LEFT)
+			await press(KEY_ALT,false)
+			check(not field.wheel.visible and g.held_aim()==-1 and field.last_aim==-1,"central "+confirm+" clears the preferred part in mode "+str(camera_mode))
+			check(hero.orders.is_empty(),"clearing the preference never issues an attack")
+			if camera_mode in [2,3]:
+				g.direct._neutral=false;g.direct.attack()
+				check(hero.orders.size()==1 and hero.orders[0].get("aim",-2)==-1,"the next direct attack uses normal body-part selection")
+				reset()
 		g.cancel_touch_target()
 	GameData.options.control_mode=2;reset();sky()
 	g.touch_aim=3;g.direct.attack()

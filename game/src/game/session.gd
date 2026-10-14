@@ -3283,6 +3283,14 @@ func restock_shops() -> void:
 		shop_record(id).restock = true
 
 
+## Shared by stock, the selling row and authoritative trade commands.
+## Invalid recipes already saved by older builds remain unusable too.
+func tradeable_item(item: String) -> bool:
+	var kind := Items.kind(item)
+	return kind not in ["", "quest"] and not state.quest_items.has(item) \
+		and (kind != "blueprint" or Items.valid_blueprint(item))
+
+
 func shop_stock(cmd := {}) -> Array:
 	var id := shop_id(cmd)
 	if id == 0:
@@ -3290,13 +3298,13 @@ func shop_stock(cmd := {}) -> Array:
 	var out := []
 	var goods: Dictionary = shop_record(id).get("goods", {})
 	for it: String in goods:
-		if int(goods[it]) > 0 and Items.kind(it) != "quest" and not state.quest_items.has(it):
+		if int(goods[it]) > 0 and tradeable_item(it):
 			out.append(it)
 	return out
 
 
 func shop_count(item: String, cmd := {}) -> int:
-	if Items.kind(item) == "quest" or state.quest_items.has(item): return 0
+	if not tradeable_item(item): return 0
 	var id := shop_id(cmd)
 	return int(shop_record(id).get("goods", {}).get(item, 0)) if id else 0
 
@@ -3335,7 +3343,7 @@ func _trade_apply(cmd: Dictionary) -> bool:
 			var item := String(value).to_lower()
 			var spellish := Items.is_spell_piece(item)
 			if not (Shops.sells_spells(sid) if spellish else Shops.sells_items(sid)): return false
-			if Items.kind(item) in ["", "quest"] or state.quest_items.has(item): return false
+			if not tradeable_item(item): return false
 	for value: String in sell:
 		var item := value.to_lower()
 		var i := bag.find(item)
@@ -3405,7 +3413,8 @@ func _construct(cmd: Dictionary, player: int = 0) -> void:
 		return
 	var bp := String(cmd.get("bp", "")).to_lower()
 	var mat := String(cmd.get("mat", "")).to_lower()
-	if not bp.begins_with("bp:") or not Items.materials_for(bp).any(func(m): return String(m.name).to_lower() == mat):
+	if not Items.valid_blueprint(bp) or not tradeable_item(bp) \
+		or not Items.materials_for(bp).any(func(m): return String(m.name).to_lower() == mat):
 		return
 	var need := {bp: 1, Items.material_unit(mat): Items.components(bp)}
 	var spell := String(cmd.get("spell", "")).to_lower()

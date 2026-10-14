@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "date": "2026-10-15",
+  "branch": "fix/gameplay-dialogue-shadows",
+  "source_parent": "b64c89e",
+  "base_release": "v1.3.1",
+  "publication": "Local follow-up fixes and a Linux test build; no release, version change, tag or upload.",
+  "previous_validation": "docs/validation/gameplay-shadow-reports-2026-10-14.json",
+  "changes": {
+    "aim_wheel": "Left limbs on the left and right limbs on the right. The entire central circle selects Default; Alt release or left click clears the preferred body part without issuing an attack. Escape/right click retain the prior preference.",
+    "interaction_labels": "Use known native figure identities rather than the lever door flag. Skeletons and remains use the Loot verb; generic unknown objects do not expose internal identifiers.",
+    "quest_filter": "Apply the same quest-item restriction to shop stock, the player selling row, crafting and authoritative trade commands; ordinary inventory still contains quest items.",
+    "blueprints": "Only authored craftable weapon, armor and quick-item prototypes can produce blueprints. Special wands no longer teach recipes through sale history. Invalid saved stock is hidden and cannot be traded or constructed. Exact sold ready items remain available for buyback."
+  },
+  "native_evidence": {
+    "skeletons": "Original zone12.mob objects 6095 and 6099 use stst19 and have lever_door=1; they were incorrectly labeled Door. Loaded gz12k verifies the real first-person action and localized Skeleton label.",
+    "special_wands": "Original quick_items rows wand 5 (Dragon Horn) and wand 6 (Goblin Doll) both have deconstructable=false and shops=0; legacy quick-item sale history bypassed the fixed-item restriction.",
+    "probe": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/interaction-shop-probe.json"
+  },
+  "runtime": {
+    "engine": "Exact released custom Godot 4.7 Linux engine",
+    "gpu": "NVIDIA RTX 3090",
+    "rendered_backend": "Forward+ Vulkan",
+    "artifacts": {
+      "CursedLands.pck": "d12699035593d6e7461c98cc60a7539d570ecdb9a87f76022b7909b724518eac",
+      "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+    }
+  },
+  "validation": {
+    "assertions": 734,
+    "failures": 0,
+    "runs": [
+      {
+        "fixture": "tools/tests/followup_controls.gd",
+        "assertions": 64,
+        "failures": 0,
+        "renderer": "headless",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/interaction-shop/final-followup_controls/run.log"
+      },
+      {
+        "fixture": "tools/tests/direct_aim_selection.gd",
+        "assertions": 17,
+        "failures": 0,
+        "renderer": "headless",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/interaction-shop/final-direct_aim_selection/run.log"
+      },
+      {
+        "fixture": "tools/tests/special_equipment.gd",
+        "assertions": 493,
+        "failures": 0,
+        "renderer": "headless",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/interaction-shop/final-special_equipment/run.log"
+      },
+      {
+        "fixture": "tools/tests/coop_trade.gd",
+        "assertions": 38,
+        "failures": 0,
+        "renderer": "headless, local ENet host and guest",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/interaction-shop/final-coop_trade/run.log"
+      },
+      {
+        "fixture": "tools/tests/camp_inventory_ui.gd",
+        "assertions": 109,
+        "failures": 0,
+        "renderer": "Forward+ Vulkan",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/interaction-shop/final-camp_inventory_ui/run.log"
+      },
+      {
+        "fixture": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/interaction-shop-ui.gd",
+        "assertions": 13,
+        "failures": 0,
+        "renderer": "Forward+ Vulkan, original gz12k, EN/RU/DE",
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/interaction-shop/names-rendered/render-verified.log"
+      }
+    ],
+    "translations": {
+      "catalog_entries": 1164,
+      "errors": 0,
+      "dynamic_object_keys": "Every OBJECT_TITLES value verified in EN/RU/DE; new fallback and center keys included in catalog check."
+    },
+    "visuals": {
+      "wheel": "Production PadWheel rendered at 1280x720 and 1920x1080, center and left-arm selection, EN/RU/DE. All captures saved; localized center, limb captions and hint layout visually reviewed.",
+      "wheel_captures": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/alt-wheel/layout/data/godot/app_userdata/Cursed Lands/alt-wheel-en-720p-center.png",
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/alt-wheel/layout/data/godot/app_userdata/Cursed Lands/alt-wheel-en-720p-left-arm.png",
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/alt-wheel/layout/data/godot/app_userdata/Cursed Lands/alt-wheel-ru-720p-center.png",
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/alt-wheel/layout/data/godot/app_userdata/Cursed Lands/alt-wheel-ru-720p-left-arm.png",
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/alt-wheel/layout/data/godot/app_userdata/Cursed Lands/alt-wheel-de-720p-center.png",
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/alt-wheel/layout/data/godot/app_userdata/Cursed Lands/alt-wheel-de-720p-left-arm.png",
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/alt-wheel/layout/data/godot/app_userdata/Cursed Lands/alt-wheel-en-1080p-center.png",
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/alt-wheel/layout/data/godot/app_userdata/Cursed Lands/alt-wheel-en-1080p-left-arm.png",
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/alt-wheel/layout/data/godot/app_userdata/Cursed Lands/alt-wheel-ru-1080p-center.png",
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/alt-wheel/layout/data/godot/app_userdata/Cursed Lands/alt-wheel-ru-1080p-left-arm.png",
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/alt-wheel/layout/data/godot/app_userdata/Cursed Lands/alt-wheel-de-1080p-center.png",
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/alt-wheel/layout/data/godot/app_userdata/Cursed Lands/alt-wheel-de-1080p-left-arm.png"
+      ],
+      "interaction_captures": [
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/interaction-shop/names-rendered/data/godot/app_userdata/Cursed Lands/skeleton-en.png",
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/interaction-shop/names-rendered/data/godot/app_userdata/Cursed Lands/skeleton-ru.png",
+        "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/checks/interaction-shop/names-rendered/data/godot/app_userdata/Cursed Lands/skeleton-de.png"
+      ]
+    },
+    "fixture_adjustments": "The existing direct-aim impact fixture now fixes Attack high enough to isolate body-part selection from the Attack/Defence chance roll. The first preliminary run missed its hit; no gameplay combat-roll change was made. The rendered label fixture explicitly redraws the stopped-control overlay after changing language.",
+    "scope": "Prepared native campaign scenes, injected input, authority commands and local ENet; not a full campaign route or Windows/macOS/mobile acceptance."
+  }
+}

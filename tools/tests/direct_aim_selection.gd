@@ -29,6 +29,8 @@ func _ready() -> void:
 	g.rig._window_focused=true;get_tree().paused=false
 	for camera_mode: int in [2,3]:
 		GameData.options.control_mode=camera_mode;reset();g.cancel_touch_target()
+		# Verify the selected impact part independently of the Attack/Defence roll.
+		hero.stats.to_hit=1000
 		hero.stats.dmg_min=20.0;hero.stats.dmg_max=20.0;enemy.max_hp=5000.0;enemy.restore_parts()
 		enemy.stats.armor=PackedFloat32Array([0,0,0,0,0,0,0])
 		var before:=enemy.parts.map(func(part: UnitBodyPart):return part.cur)

@@ -105,7 +105,7 @@ static func _lc(v) -> String:
 ## prototype is not a recipe for random stock or blueprints. Old saves retain
 ## their sale history; ignore these entries when generating future stock.
 static func learns_prototype(table: String, row: Dictionary) -> bool:
-	return table not in ["weapons", "armors"] or bool(row.get("deconstructable", false))
+	return table not in ["weapons", "armors", "quick_items"] or Items.has_blueprint(table, row)
 
 
 ## the record's prototype lists (+ what was sold here).
@@ -176,10 +176,10 @@ static func _gen_items(goods: Dictionary, l: Dictionary, runes: Dictionary, rng:
 	_gen_ready(goods, l.armors, pool, _templates("armor_spell_templates", l), runes, rng, true)
 	_gen_ready(goods, l.quick_items, pool, [], runes, rng, false)
 	# Blueprints ("instruction weapon / armor / quick item"), rand(1..3) of every
-	# prototype (no scrolls).
+	# craftable prototype (no scrolls or fixed story items).
 	for t in ["weapons", "armors", "quick_items"]:
 		for row: Dictionary in l[t]:
-			if t == "quick_items" and _lc(row.get("type", "")) == "scroll":
+			if not Items.has_blueprint(t, row):
 				continue
 			_add(goods, "bp:" + _lc(row.name), _rand(rng, 1, 3))
 	# Materials: rand(20..50) of the record's materials, each

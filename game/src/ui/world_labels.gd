@@ -72,20 +72,42 @@ static func unit_name(u: GameUnit) -> String:
 	return t if t != "" else u.display_name
 
 
-## What a lever-type map object is, by its door flag and figure name.
-static func lever_title(w: GameWorld, nid: int) -> String:
-	var lv: Dictionary = w.levers.get(nid, {})
+## The native door flag controls interaction, not appearance: even the
+## Ingos skeletons and a document have it. Use the authored figure instead.
+const OBJECT_TITLES := {
+	"stst19": "Skeleton", "stst106": "Remains", "stst107": "Remains", "stst110": "Remains",
+	"stst43": "Chest", "stst81": "Chest", "stst84": "Chest", "stst92": "Chest",
+	"stbr10": "Lever", "stsi3": "Lever", "stst58": "Lever", "stst66": "Lever", "stst95": "Lever",
+	"stga1": "Gate", "stga2": "Gate", "stga4": "Gate", "stga5": "Gate", "stga6": "Gate",
+	"stga8": "Door", "stst57": "Door", "stst38": "Gate", "stbuho64": "Gate",
+	"stwa7": "Gate", "stwa9": "Gate", "stbr14": "Gate", "stbr15": "Gate",
+	"stbuho15": "Cage", "stbuho48": "Cage", "stbuho57": "Cage", "stst32": "Cage", "stst33": "Cage",
+	"stbr9": "Bridge", "stbr17": "Bridge", "stbuho12": "Mill",
+	"stst105": "Control panel", "stst115": "Control panel", "stst62": "Control panel",
+	"stsi4": "Letter", "stst150": "Document", "stst153": "Document",
+	"stst27": "Crypt", "stst47": "Grave", "stst28": "Fountain", "stst34": "Altar",
+}
+
+
+static func lever_kind(w: GameWorld, nid: int) -> String:
 	var obj = w.objects.get(nid)
 	var fig := ""
 	if obj is Node and (obj as Node).has_meta("ei"):
 		fig = String(((obj as Node).get_meta("ei") as Dictionary).get("template", "")).to_lower()
+	if OBJECT_TITLES.has(fig): return OBJECT_TITLES[fig]
 	if "chest" in fig or "box" in fig:
-		return RemakeText.t("Chest")
-	if int(lv.get("door", 0)) != 0 or "door" in fig:
-		return RemakeText.t("Door")
+		return "Chest"
+	if "door" in fig:
+		return "Door"
 	if "gate" in fig:
-		return RemakeText.t("Gate")
-	return RemakeText.t("Lever")
+		return "Gate"
+	if "lever" in fig:
+		return "Lever"
+	return "Object"
+
+
+static func lever_title(w: GameWorld, nid: int) -> String:
+	return RemakeText.t(lever_kind(w, nid))
 
 
 ## [world point, text, colour, cursor kind ("" none)] of every label now.

@@ -13,6 +13,7 @@ extends Control
 ## as the active weapon)}.
 
 const FRAME_SEC := 0.125
+const INNER_RADIUS_RATIO := 0.52
 const BRONZE := Color8(176, 124, 50)
 const BRONZE_HI := Color8(238, 204, 128)
 const BRONZE_DARK := Color8(58, 38, 12)
@@ -29,6 +30,7 @@ var _views: Array[ItemView] = []
 var _t := 0.0
 var _content_scale := 1.0
 var _pie_sections := false
+var _center_entry := {}
 
 
 func _ready() -> void:
@@ -43,10 +45,13 @@ func _ready() -> void:
 		_views.append(v)
 
 
-func open(new_entries: Array, preselect := -1, content_scale := 1.0, pie_sections := false) -> void:
+## An optional centre action is selected when the mouse returns inside the
+## inner ring. Other wheels keep -1 as no selection.
+func open(new_entries: Array, preselect := -1, content_scale := 1.0, pie_sections := false, center_entry: Dictionary = {}) -> void:
 	entries = new_entries
 	_content_scale = content_scale
 	_pie_sections = pie_sections
+	_center_entry = center_entry
 	selected = preselect if preselect >= 0 and preselect < entries.size() else -1
 	_t = 0.0
 	visible = true
@@ -62,7 +67,20 @@ func close() -> void:
 
 
 func current() -> Dictionary:
-	return entries[selected] if selected >= 0 and selected < entries.size() else {}
+	return entries[selected] if selected >= 0 and selected < entries.size() else _center_entry
+
+
+## Mouse position in this control's coordinates. The whole visible centre
+## selects its optional action; an ordinary wheel keeps its small dead zone.
+func hover(point: Vector2) -> void:
+	var g := _geom()
+	var offset := point - (g[0] as Vector2)
+	var inner := INNER_RADIUS_RATIO if not _center_entry.is_empty() else 0.16
+	if offset.length() <= float(g[1]) * inner:
+		selected = -1
+		queue_redraw()
+	else:
+		flick(offset.normalized())
 
 
 ## The sector's direction, degrees clockwise from up.
@@ -172,7 +190,7 @@ func _draw_sectors(c: Vector2, inner: float, outer: float, k: float) -> void:
 
 
 func _draw() -> void:
-	if entries.is_empty():
+	if entries.is_empty() or size.x <= 0.0 or size.y <= 0.0:
 		return
 	var g := _geom()
 	var c: Vector2 = g[0]
@@ -183,15 +201,18 @@ func _draw() -> void:
 	# The backing disc and its bronze ring.
 	draw_circle(c, r + cell * 1.35, Interface800.PANEL)
 	if _pie_sections:
-		_draw_sectors(c, r * 0.52, r + cell * 1.3, k)
+		_draw_sectors(c, r * INNER_RADIUS_RATIO, r + cell * 1.3, k)
+	if not _center_entry.is_empty():
+		draw_circle(c, r * INNER_RADIUS_RATIO, Interface800.BAR if selected < 0 else CELL)
 	draw_arc(c, r + cell * 1.35, 0.0, TAU, 96, BRONZE_DARK, 4.0 * k, true)
 	draw_arc(c, r + cell * 1.3, 0.0, TAU, 96, BRONZE, 1.5 * k, true)
-	draw_arc(c, r * 0.52, 0.0, TAU, 64, BRONZE, 1.5 * k, true)
+	draw_arc(c, r * INNER_RADIUS_RATIO, 0.0, TAU, 64,
+		BRONZE_HI if selected < 0 and not _center_entry.is_empty() else BRONZE, 1.5 * k, true)
 	# The selection's pointer from the centre.
 	if selected >= 0:
 		var a := deg_to_rad(angle_of(selected))
 		var dir := Vector2(sin(a), -cos(a))
-		var tip := c + dir * (r * 0.52 + 6.0 * k)
+		var tip := c + dir * (r * INNER_RADIUS_RATIO + 6.0 * k)
 		var side := dir.orthogonal() * 7.0 * k
 		draw_colored_polygon(PackedVector2Array([tip + dir * 9.0 * k, tip + side, tip - side]), BRONZE_HI)
 	for i in entries.size():
@@ -226,9 +247,9 @@ func _draw() -> void:
 			draw_string(font, p + Vector2(-cell, fs * 0.35), short, HORIZONTAL_ALIGNMENT_CENTER, cell * 2.0, fs,
 				Interface800.TEXT if enabled else Interface800.GREY)
 	# Title and page names over the wheel, the picked entry's label in the
-	# centre and its tip under the wheel.
+	# centre (or its persistent action) and the picked entry's tip below.
 	var top := c.y - r - cell * 1.35 - 10.0 * k
-	var fs_t := int(18.0 * k)
+	var fs_t := maxi(1, int(18.0 * k))
 	if title != "":
 		draw_string(font, Vector2(c.x - 300.0 * k, top - (22.0 * k if pages.size() > 1 else 0.0)), title,
 			HORIZONTAL_ALIGNMENT_CENTER, 600.0 * k, fs_t, Interface800.TEXT)
@@ -240,25 +261,29 @@ func _draw() -> void:
 			int(14.0 * k), Interface800.TEXT)
 	var cur := current()
 	if not cur.is_empty():
-		var label := String(cur.get("label", ""))
-		var lines := _wrap(label, font, int(15.0 * k), r * 0.95)
-		var y := c.y - (lines.size() - 1) * 8.0 * k + 5.0 * k
+		var label := String((_center_entry if not _center_entry.is_empty() else cur).get("label", ""))
+		var fs := maxi(10, int(15.0 * k)) if not _center_entry.is_empty() else int(15.0 * k)
+		var line_height := fs * 1.15
+		var lines := _wrap(label, font, fs, r * 0.95)
+		var y := c.y - (lines.size() - 1) * line_height * 0.5 + fs / 3.0
 		for ln in lines:
-			draw_string(font, Vector2(c.x - r * 0.5, y), ln, HORIZONTAL_ALIGNMENT_CENTER, r, int(15.0 * k),
+			draw_string(font, Vector2(c.x - r * 0.5, y), ln, HORIZONTAL_ALIGNMENT_CENTER, r, fs,
 				Interface800.TEXT if cur.get("enabled", true) else Interface800.GREY)
-			y += 17.0 * k
+			y += line_height
 		var tip := String(cur.get("tip", ""))
 		if tip != "":
+			var fs_tip := maxi(10, int(13.0 * k)) if not _center_entry.is_empty() else int(13.0 * k)
+			var tip_height := maxf(fs_tip * 1.15, 15.0 * k)
 			var ty := c.y + r + cell * 1.35 + 58.0 * k
-			var tl := _wrap(tip, font, int(13.0 * k), 520.0 * k).slice(0, 4)
+			var tl := _wrap(tip, font, fs_tip, 520.0 * k).slice(0, 4)
 			var tw := 0.0
 			for ln in tl:
-				tw = maxf(tw, font.get_string_size(ln, HORIZONTAL_ALIGNMENT_LEFT, -1, int(13.0 * k)).x)
-			draw_rect(Rect2(c.x - tw * 0.5 - 10.0 * k, ty - 15.0 * k, tw + 20.0 * k, (tl.size() * 15.0 + 8.0) * k), Interface800.PANEL)
+				tw = maxf(tw, font.get_string_size(ln, HORIZONTAL_ALIGNMENT_LEFT, -1, fs_tip).x)
+			draw_rect(Rect2(c.x - tw * 0.5 - 10.0 * k, ty - tip_height, tw + 20.0 * k, tl.size() * tip_height + 8.0 * k), Interface800.PANEL)
 			for ln in tl:
 				draw_string(font, Vector2(c.x - 260.0 * k, ty), ln, HORIZONTAL_ALIGNMENT_CENTER, 520.0 * k,
-					int(13.0 * k), Interface800.TEXT)
-				ty += 15.0 * k
+					fs_tip, Interface800.TEXT)
+				ty += tip_height
 	# The button hints right under the wheel (clear of the party faces).
 	PadPrompts.draw_hints(self, hints, Vector2(c.x, c.y + r + cell * 1.35 + 34.0 * k), k)
 

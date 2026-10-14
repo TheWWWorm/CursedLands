@@ -624,6 +624,19 @@ static func blueprint_row(bp: String) -> Dictionary:
 	return {"table": i.table, "row": i.row}
 
 
+## Only the authored craftable prototypes have recipes. Fixed story items
+## (including special wands) must not become blueprints after a sale.
+static func has_blueprint(table: String, row: Dictionary) -> bool:
+	return table in ["weapons", "armors", "quick_items"] and bool(row.get("deconstructable", false)) \
+		and String(row.get("material_type", "none")).to_lower() not in ["", "none"]
+
+
+static func valid_blueprint(bp: String) -> bool:
+	if not bp.begins_with("bp:"): return false
+	var r := blueprint_row(bp)
+	return has_blueprint(r.table, r.row)
+
+
 static func material_unit(mat: String) -> String:
 	return "material." + mat
 

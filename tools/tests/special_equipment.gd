@@ -13,7 +13,7 @@ func _ready()->void:
 	var s:=Session.new();add_child(s);s.set_physics_process(false)
 	s.state=CampaignState.new();s.world=GameWorld.new();add_child(s.world)
 	s.world.set_physics_process(false);s.world.set_process(false);s.world.zone={"type":"brief"}
-	var old_sold:={"weapons":[],"armors":[]}
+	var old_sold:={"weapons":[],"armors":[],"quick_items":[]}
 	for base:String in SPECIALS:
 		var original:=base+"."+String(SPECIALS[base])
 		var info:=Items.info(original)
@@ -34,16 +34,35 @@ func _ready()->void:
 			check(s._trade_apply({"shop":3,"sell":[saved]}),id+" sells")
 			check(s.shop_count(repaired,{"shop":3})==1 and s.state.shops[3].sold.is_empty(),id+" sale keeps exact buyback without teaching random copies")
 			check(s._trade_apply({"shop":3,"buy":[repaired]}) and s.state.items==[repaired],id+" buys back with magic and charge intact")
+	# Special quick items obey the same fixed-item rule as story equipment.
+	for base:String in ["wand 5","wand 6"]:
+		old_sold.quick_items.append(base)
+		var bp:="bp:"+base
+		var mat:=String(Items.materials_for(bp)[0].name).to_lower()
+		var item:=base+"."+mat+"|weak{t2;fe}@7"
+		check(not Items.valid_blueprint(bp) and not Items.can_deconstruct(item),base+" has no authored recipe")
+		s.state.items=[item];s.state.money=100000000;s.state.shops[3]={"restock":false,"goods":{},"sold":{}}
+		check(s._trade_apply({"shop":3,"sell":[item]}) and s.state.shops[3].sold.is_empty(),base+" sale does not teach a recipe")
+		check(s._trade_apply({"shop":3,"buy":[Items.with_wear(item,0)]}),base+" exact sold item remains buyable")
+		s.state.shops[3].goods[bp]=3;s.state.items=[bp,"material."+mat]
+		check(not s.shop_stock({"shop":3}).has(bp) and s.shop_count(bp,{"shop":3})==0,"old saved stock hides "+bp)
+		var before:=s.state.items.duplicate();var money:=s.state.money
+		check(not s._trade_apply({"shop":3,"buy":[bp]}) and not s._trade_apply({"shop":3,"sell":[bp]}),"stale commands cannot trade "+bp)
+		s._construct({"shop":3,"bp":bp,"mat":mat})
+		check(s.state.items==before and s.state.money==money,"an old owned recipe cannot construct a special item or consume ingredients")
 	# Existing learned prototypes must not generate more invalid variants.
 	for shop in [1,3,4,5]:
 		var lists:=Shops.lists(shop,old_sold)
 		for base:String in SPECIALS:
 			var table:String=Items.info(base+"."+String(SPECIALS[base])).table
 			check(not lists[table].any(func(row):return String(row.name).to_lower()==base),"legacy sold history does not generate "+base)
+		check(not lists.quick_items.any(func(row):return String(row.name).to_lower() in ["wand 5","wand 6"]),"legacy special-wand sale history cannot teach blueprints")
 		for seed_value in 6:
 			var rng:=RandomNumberGenerator.new();rng.seed=seed_value
 			var goods:=Shops.generate(shop,old_sold,{"*":100},rng)
 			check(not goods.keys().any(func(id):return "unique" in String(id)),"restock excludes fixed equipment and its blueprints")
+			check(not goods.has("bp:wand 5") and not goods.has("bp:wand 6"),"restock excludes Dragon Horn and Goblin Doll recipes")
+	check(Shops.generate(1,{}, {},RandomNumberGenerator.new()).has("bp:wand 1"),"ordinary wand blueprints remain available")
 	var ordinary:="stone axe.rock"
 	s.state.items=[ordinary];s.state.money=100000;s.state.shops[1]=Shops.blank()
 	check(s._trade_apply({"shop":1,"sell":[ordinary]}) and s.state.shops[1].sold.get("weapons",[]).has("stone axe"),"ordinary craftable equipment still teaches its prototype")

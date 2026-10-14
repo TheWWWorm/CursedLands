@@ -15,10 +15,9 @@ const MOVE_AHEAD := 3.0
 const REISSUE_SEC := 0.2
 const REISSUE_ANGLE := deg_to_rad(20.0)
 const RETICLE_SPEED := 9.0
-## The ring's aimed strikes laid out like the numpad and the original cursors
-## (the target faces the viewer: its right arm is on the screen's left):
+## Left limbs on the screen's left, right limbs on its right.
 ## AIM_ORDER index → degrees clockwise from up.
-const AIM_ANGLES := {0: 0.0, 2: 60.0, 4: 120.0, 1: 180.0, 5: 240.0, 3: 300.0}
+const AIM_ANGLES := {0: 0.0, 3: 60.0, 5: 120.0, 1: 180.0, 4: 240.0, 2: 300.0}
 const AIM_ACTIONS := ["cs_head", "cs_body", "cs_lhand", "cs_rhand", "cs_lleg", "cs_rleg"]
 
 var game: Game
@@ -872,11 +871,7 @@ func _input(e: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 	elif _keyboard_aim:
 		if e is InputEventMouseMotion:
-			var geometry := wheel._geom()
-			var centre: Vector2 = geometry[0]
-			var offset: Vector2 = wheel.get_global_transform_with_canvas().affine_inverse() * e.position - centre
-			if offset.length() < float(geometry[1]) * 0.16: wheel.selected = -1
-			else: wheel.flick(offset.normalized())
+			wheel.hover(wheel.get_global_transform_with_canvas().affine_inverse() * e.position)
 		elif e is InputEventMouseButton and e.pressed:
 			if e.button_index == MOUSE_BUTTON_LEFT: finish_keyboard_aim()
 			elif e.button_index == MOUSE_BUTTON_RIGHT: close_wheel()
@@ -900,7 +895,8 @@ func open_keyboard_aim() -> void:
 	wheel.title = RemakeText.t("Aimed strike")
 	wheel.pages = PackedStringArray()
 	wheel.hints = []
-	wheel.open(aim_entries(), -1, 0.5, true)
+	wheel.open(aim_entries(), -1, 0.5, true, {
+		"id": ["aim", -1], "label": RemakeText.t("Default"), "tip": RemakeText.t("No preferred body part")})
 	get_viewport().warp_mouse(wheel.get_global_transform_with_canvas() * wheel._geom()[0])
 	_hold_pause(not direct)
 
@@ -912,6 +908,8 @@ func finish_keyboard_aim() -> void:
 	last_aim = int(entry.id[1])
 	game.cancel_touch_target()
 	game.touch_aim = last_aim
+	# The centre clears the preference without ordering an attack.
+	if last_aim < 0: return
 	# Direct controls keep aiming with the camera. A classic target order
 	# would consume the selection before the next directional strike.
 	if game.direct and game.direct.active() and not game.direct.pointer: return
