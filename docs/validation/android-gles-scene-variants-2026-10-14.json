@@ -1,0 +1,1391 @@
+{
+  "date": "2026-10-14",
+  "status": "locally_validated_startup_improvement_redmagic_crash_unconfirmed",
+  "release_published": false,
+  "installed_templates_replaced": false,
+  "branch": "fix/android-original-compatibility",
+  "source": {
+    "game_pack": {
+      "package": "org.cursedlands.objectprobe",
+      "source_commit": "0e23fc321f7cf98e3df35e8ae012250ef3cab95c",
+      "uncommitted_changes": true,
+      "source_patch_sha256": "a7c05be86b14c38e715bb2e1bccb5e7a8fc75b8ce2ac41a28242fd2dd5ee1db7",
+      "version": "1.2.0-figure-compat-qa",
+      "version_code": 33,
+      "native_libraries_byte_identical_to_release": true,
+      "libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d102addc1339721ca84a3a66af082d33c128d9ebbd2d57bea0a27917a6dbd71e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "apk_sha256": "142f8c85b5263a385691ad10042052e9f026c4ea8c40f4516914c0a94f4a4233",
+      "private_changes": [
+        "main.gd validation.json bootstrap, inactive when absent",
+        "Android package ID, display name, QA version, debug signing and build flag"
+      ],
+      "original_game_data_bundled": false
+    },
+    "engine_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "production_patch": {
+      "path": "engine_patches/godot-4.7/android-gles-lazy-scene-variants.patch",
+      "sha256": "91b3028b687feb6562a395a0de622d706dff0428a38234b188c0c8701072dfea"
+    },
+    "profiling_patch_not_for_release": {
+      "path": "engine_patches/godot-4.7/tests/android-scene-variant-audit.patch",
+      "sha256": "abb453cf6274f420ec9bbac2f15a414691e11dbfd06040a0ef5bda0520626cff"
+    },
+    "fixtures": {
+      "tools/tests/android_scene_variants.gd": "5ff5bdd333b9c9c70ea0af5a469304894a58286ff440f13960ea2316b592ded8",
+      "tools/tests/android_scene_startup.gd": "21547a12c44db1420bec390d673e3795e2556d47ebf586f420a10e0da5c6464a",
+      "tools/tests/android_figure_compatibility.gd": "4f97b1679df76c6e5122282f4d49a4039a31f00eab50b8a7603a1ea183333d57",
+      "tools/tests/android_local_lifecycle.gd": "a07f6b1e2c880e21794ccbedfc2ff6ffe872c5e06a8cd4dcee335f23f3bd6189"
+    },
+    "local_artifact_root": "/home/llm2x/Documents/EI/local/scratchpad/android-object-investigation-20261014/gles-lazy",
+    "runner_sha256": "574514303f319a9681f659f58f14d9cd4e6c437e278708b74ce0f50447249aed",
+    "build_driver_sha256": "32785651ca6f90233352845932d75b8a62e1eea0c4789c806a51c0d85275ed74"
+  },
+  "scope": {
+    "changed": "Android SceneShaderGLES3 initialization after a cache miss: size the four mode maps and let the existing synchronous bind path compile requested programs.",
+    "retained": [
+      "All thirteen previous engine patches",
+      "Shader program source and rendering math",
+      "Light limits and graphics options",
+      "Binary shader cache format and existing cached programs",
+      "All non-Android paths, Vulkan and other GLES shader families"
+    ],
+    "dependency": "Pinned engine has no active asynchronous compilation fallback; its hard-disabled fallback would require review if enabled upstream.",
+    "not_claimed": [
+      "Root cause or resolution of issue #3",
+      "Unsupported Redmagic CPU/GPU instruction or feature",
+      "Higher gameplay FPS",
+      "Lower measured RAM usage",
+      "Crash-free behavior on untested devices"
+    ]
+  },
+  "device": {
+    "model": "Retroid Pocket 5",
+    "android": "13 / API 33",
+    "gpu": "Adreno 650",
+    "driver": "OpenGL ES 3.2 V@0746.0 (GIT@c095b0f6a5, I88dcacb6b9, 1695822396) (Date:09/27/23)",
+    "renderer": "gl_compatibility / opengl3",
+    "package": "org.cursedlands.objectprobe",
+    "benchmark_battery_temperature_celsius_range": [
+      28.2,
+      28.5
+    ],
+    "thermal_observation": "Android reported status 0; thermal HAL reported unavailable. Battery temperature is not GPU temperature.",
+    "affected_adreno_840_available": false
+  },
+  "builds": {
+    "eager-audit": {
+      "kind": "eager-audit",
+      "exit": 0,
+      "seconds": 9.83,
+      "base_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "inherited_patches": {
+        "render-thread-shutdown": "0d7dc8b88c8708df9948002477f7bf14d9cf6e718251b0dc798606c5572b712e",
+        "queued-image-snapshot": "e747f95b3d324582130e1e0ba24a3f17e2a3a2da350474fca61e4970243a4fe3",
+        "unobserved-pose": "fdef4bafc6d2c9a94ef628fd692b7845fd9ed0e1ffd168b21a6a0c8e1ea45978",
+        "preserve-character-track-caches": "5b938580ef002448d35f0c1535dcde2021032f6eb1385be56815f157aa99a3b8",
+        "prepare-character-track-caches": "693f6eac8fee284b4493a8eb49c7bf9a2426d4e0c8a9f2ef3f96d4147c0ce1bb",
+        "cache-unobserved-track-eligibility": "788b24561c8f377f1f4f8aea4a33b05d9b21f31b6bc1772699156131a80173b8",
+        "mobile-shader-recompile-lock": "02bc97dd57f9b3388d71837b30b036e814ae5bf6e6fca3b3cf3948d260c746b6",
+        "forward-shader-recompile-lifetime": "6620cefedded50733fa65e71164dc8918c8a0ac02387d54252aedf6f185b701e",
+        "far-dof-sharp-guard": "c6070bfbfbf5e36014d37d2b58a74ae8ff156202aa063134cebd0b21610e7286",
+        "sky-subpass-alpha": "a2ba63fac3d1ec8804f96bf3cdeb45b7f2c1597e1ac410f1739df812d82f3a67",
+        "worker-thread-language-shutdown": "dc402e5bdc3b595d3dc50886a144da55d6a7d199dc2efaf348df394bd4b5321e",
+        "far-dof-reference": "9c906ae637c9df620f1976d7b6c3bfe6aed4e236c91fcf27b40afeb8bacf3954",
+        "android-headless-service": "91871d272668a087edfa1e9978df7d6974acacd10c4c78a458ab83483e672e0b"
+      },
+      "command": [
+        "python3",
+        "-m",
+        "SCons",
+        "target=template_release",
+        "debug_symbols=yes",
+        "lto=none",
+        "production=yes",
+        "optimize=speed",
+        "module_mono_enabled=no",
+        "module_openxr_enabled=no",
+        "module_jolt_physics_enabled=no",
+        "module_fbx_enabled=no",
+        "module_gltf_enabled=no",
+        "module_lightmapper_rd_enabled=no",
+        "module_csg_enabled=no",
+        "module_theora_enabled=no",
+        "module_webrtc_enabled=no",
+        "module_webxr_enabled=no",
+        "-j8",
+        "platform=android",
+        "arch=arm64",
+        "swappy=yes"
+      ],
+      "changed_engine_files": [
+        "drivers/gles3/shader_gles3.cpp"
+      ],
+      "source_sha256": "7c7bb8869fe00090ca3dd94511a79c13e590e21c1c7bcf807fe4496df1be4bfb",
+      "library_sha256": "de337d7b58655b0fcf33671791bc371fbbe64cefc5b0c1a3fb8b622ac77addee",
+      "apk_sha256": "e06cdbfd15445709164a4809442c942fb62eaf4ffb73f1605d519e91503f1558",
+      "base_apk_sha256": "142f8c85b5263a385691ad10042052e9f026c4ea8c40f4516914c0a94f4a4233"
+    },
+    "lazy-audit": {
+      "kind": "lazy-audit",
+      "exit": 0,
+      "seconds": 8.878,
+      "base_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "inherited_patches": {
+        "render-thread-shutdown": "0d7dc8b88c8708df9948002477f7bf14d9cf6e718251b0dc798606c5572b712e",
+        "queued-image-snapshot": "e747f95b3d324582130e1e0ba24a3f17e2a3a2da350474fca61e4970243a4fe3",
+        "unobserved-pose": "fdef4bafc6d2c9a94ef628fd692b7845fd9ed0e1ffd168b21a6a0c8e1ea45978",
+        "preserve-character-track-caches": "5b938580ef002448d35f0c1535dcde2021032f6eb1385be56815f157aa99a3b8",
+        "prepare-character-track-caches": "693f6eac8fee284b4493a8eb49c7bf9a2426d4e0c8a9f2ef3f96d4147c0ce1bb",
+        "cache-unobserved-track-eligibility": "788b24561c8f377f1f4f8aea4a33b05d9b21f31b6bc1772699156131a80173b8",
+        "mobile-shader-recompile-lock": "02bc97dd57f9b3388d71837b30b036e814ae5bf6e6fca3b3cf3948d260c746b6",
+        "forward-shader-recompile-lifetime": "6620cefedded50733fa65e71164dc8918c8a0ac02387d54252aedf6f185b701e",
+        "far-dof-sharp-guard": "c6070bfbfbf5e36014d37d2b58a74ae8ff156202aa063134cebd0b21610e7286",
+        "sky-subpass-alpha": "a2ba63fac3d1ec8804f96bf3cdeb45b7f2c1597e1ac410f1739df812d82f3a67",
+        "worker-thread-language-shutdown": "dc402e5bdc3b595d3dc50886a144da55d6a7d199dc2efaf348df394bd4b5321e",
+        "far-dof-reference": "9c906ae637c9df620f1976d7b6c3bfe6aed4e236c91fcf27b40afeb8bacf3954",
+        "android-headless-service": "91871d272668a087edfa1e9978df7d6974acacd10c4c78a458ab83483e672e0b"
+      },
+      "command": [
+        "python3",
+        "-m",
+        "SCons",
+        "target=template_release",
+        "debug_symbols=yes",
+        "lto=none",
+        "production=yes",
+        "optimize=speed",
+        "module_mono_enabled=no",
+        "module_openxr_enabled=no",
+        "module_jolt_physics_enabled=no",
+        "module_fbx_enabled=no",
+        "module_gltf_enabled=no",
+        "module_lightmapper_rd_enabled=no",
+        "module_csg_enabled=no",
+        "module_theora_enabled=no",
+        "module_webrtc_enabled=no",
+        "module_webxr_enabled=no",
+        "-j8",
+        "platform=android",
+        "arch=arm64",
+        "swappy=yes"
+      ],
+      "changed_engine_files": [
+        "drivers/gles3/shader_gles3.cpp"
+      ],
+      "source_sha256": "fc88a0efb020b8e8ca679781d0e35f97a526296276b951ca39186bdf631659b6",
+      "library_sha256": "35fa893c059830a15b47902ed1719ce8cb02e1665b1f50f467e2e6577b1e642e",
+      "apk_sha256": "d67290f8ef5e052b9f1998046e81d5b4c52a61edfc49b146ce71209d20e6de0b",
+      "base_apk_sha256": "142f8c85b5263a385691ad10042052e9f026c4ea8c40f4516914c0a94f4a4233"
+    },
+    "lazy-release": {
+      "kind": "lazy-release",
+      "exit": 0,
+      "seconds": 8.778,
+      "base_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "inherited_patches": {
+        "render-thread-shutdown": "0d7dc8b88c8708df9948002477f7bf14d9cf6e718251b0dc798606c5572b712e",
+        "queued-image-snapshot": "e747f95b3d324582130e1e0ba24a3f17e2a3a2da350474fca61e4970243a4fe3",
+        "unobserved-pose": "fdef4bafc6d2c9a94ef628fd692b7845fd9ed0e1ffd168b21a6a0c8e1ea45978",
+        "preserve-character-track-caches": "5b938580ef002448d35f0c1535dcde2021032f6eb1385be56815f157aa99a3b8",
+        "prepare-character-track-caches": "693f6eac8fee284b4493a8eb49c7bf9a2426d4e0c8a9f2ef3f96d4147c0ce1bb",
+        "cache-unobserved-track-eligibility": "788b24561c8f377f1f4f8aea4a33b05d9b21f31b6bc1772699156131a80173b8",
+        "mobile-shader-recompile-lock": "02bc97dd57f9b3388d71837b30b036e814ae5bf6e6fca3b3cf3948d260c746b6",
+        "forward-shader-recompile-lifetime": "6620cefedded50733fa65e71164dc8918c8a0ac02387d54252aedf6f185b701e",
+        "far-dof-sharp-guard": "c6070bfbfbf5e36014d37d2b58a74ae8ff156202aa063134cebd0b21610e7286",
+        "sky-subpass-alpha": "a2ba63fac3d1ec8804f96bf3cdeb45b7f2c1597e1ac410f1739df812d82f3a67",
+        "worker-thread-language-shutdown": "dc402e5bdc3b595d3dc50886a144da55d6a7d199dc2efaf348df394bd4b5321e",
+        "far-dof-reference": "9c906ae637c9df620f1976d7b6c3bfe6aed4e236c91fcf27b40afeb8bacf3954",
+        "android-headless-service": "91871d272668a087edfa1e9978df7d6974acacd10c4c78a458ab83483e672e0b"
+      },
+      "command": [
+        "python3",
+        "-m",
+        "SCons",
+        "target=template_release",
+        "debug_symbols=yes",
+        "lto=none",
+        "production=yes",
+        "optimize=speed",
+        "module_mono_enabled=no",
+        "module_openxr_enabled=no",
+        "module_jolt_physics_enabled=no",
+        "module_fbx_enabled=no",
+        "module_gltf_enabled=no",
+        "module_lightmapper_rd_enabled=no",
+        "module_csg_enabled=no",
+        "module_theora_enabled=no",
+        "module_webrtc_enabled=no",
+        "module_webxr_enabled=no",
+        "-j8",
+        "platform=android",
+        "arch=arm64",
+        "swappy=yes"
+      ],
+      "changed_engine_files": [
+        "drivers/gles3/shader_gles3.cpp"
+      ],
+      "source_sha256": "03244c2f2f4477a070055ddd080796a9958135b24d951a63dbdcd45547fe9966",
+      "library_sha256": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+      "apk_sha256": "e33481d3c31d7e6ba6348c63d8badca8fe9c422c478060b01c5bb1d65ed920df",
+      "base_apk_sha256": "142f8c85b5263a385691ad10042052e9f026c4ea8c40f4516914c0a94f4a4233"
+    }
+  },
+  "artifact_audit": {
+    "inherited_source_checks": [
+      {
+        "patch": "render-thread-shutdown",
+        "source": "servers/rendering/rendering_server_default.cpp",
+        "sha256": "6464c44575a0c0d3a51b1e76c895b93bfe89181ebe0bf29d36122832ded35dd8"
+      },
+      {
+        "patch": "queued-image-snapshot",
+        "source": "servers/rendering/rendering_server_default.h",
+        "sha256": "4c5332cb15a83f38cc9ae89957ea659dc67f0478bf377b133dac68831ee87b78"
+      },
+      {
+        "patch": "unobserved-pose",
+        "source": "scene/animation/animation_player.h",
+        "sha256": "885cefb1a2f46d52ee76b3adf04fa8108bca7b622fe992c70e4775222da76147"
+      },
+      {
+        "patch": "unobserved-pose",
+        "source": "scene/animation/animation_player.cpp",
+        "sha256": "7fd1fe3155041e8a9d8bc26d78c602ab7490a317b1f1650c7c6b3d86643e9993"
+      },
+      {
+        "patch": "preserve-character-track-caches",
+        "source": "scene/animation/animation_player.h",
+        "sha256": "885cefb1a2f46d52ee76b3adf04fa8108bca7b622fe992c70e4775222da76147"
+      },
+      {
+        "patch": "preserve-character-track-caches",
+        "source": "scene/animation/animation_player.cpp",
+        "sha256": "7fd1fe3155041e8a9d8bc26d78c602ab7490a317b1f1650c7c6b3d86643e9993"
+      },
+      {
+        "patch": "prepare-character-track-caches",
+        "source": "scene/animation/animation_player.h",
+        "sha256": "885cefb1a2f46d52ee76b3adf04fa8108bca7b622fe992c70e4775222da76147"
+      },
+      {
+        "patch": "prepare-character-track-caches",
+        "source": "scene/animation/animation_player.cpp",
+        "sha256": "7fd1fe3155041e8a9d8bc26d78c602ab7490a317b1f1650c7c6b3d86643e9993"
+      },
+      {
+        "patch": "cache-unobserved-track-eligibility",
+        "source": "scene/animation/animation_player.cpp",
+        "sha256": "7fd1fe3155041e8a9d8bc26d78c602ab7490a317b1f1650c7c6b3d86643e9993"
+      },
+      {
+        "patch": "cache-unobserved-track-eligibility",
+        "source": "scene/animation/animation_mixer.cpp",
+        "sha256": "bd3555527ebf7384c149797fdabf32d8a48659d8f6a6815a663084fb3bfe0536"
+      },
+      {
+        "patch": "cache-unobserved-track-eligibility",
+        "source": "scene/animation/animation_mixer.h",
+        "sha256": "ffdcb29f9a10f43d86dd3c630605a15318e22d51b33d2d9ef5abd6a07cbee66b"
+      },
+      {
+        "patch": "mobile-shader-recompile-lock",
+        "source": "servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.cpp",
+        "sha256": "5794a2ce0877fc519b757fd65dda4d2781c89cb62faa21f5170f5304e31a00fe"
+      },
+      {
+        "patch": "forward-shader-recompile-lifetime",
+        "source": "servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp",
+        "sha256": "f4024ff284a33774563d45d2f38441a92fe9352262620832bcf65e1876c6ba9b"
+      },
+      {
+        "patch": "far-dof-sharp-guard",
+        "source": "core/os/os.cpp",
+        "sha256": "26187ef96f3a3c0e008e71192758811b7c6840219ef6740d99d26fbc74452354"
+      },
+      {
+        "patch": "far-dof-sharp-guard",
+        "source": "servers/rendering/renderer_rd/effects/bokeh_dof.cpp",
+        "sha256": "5c87417ca784c6f95cf88515718f3578f7c8e1ed43e7e3a0dbb66e94c882d328"
+      },
+      {
+        "patch": "far-dof-sharp-guard",
+        "source": "servers/rendering/renderer_rd/shaders/effects/bokeh_dof.glsl",
+        "sha256": "45a897218b3e9e7addc393511762be96af236ad693d58b4d9cb782485daee644"
+      },
+      {
+        "patch": "far-dof-sharp-guard",
+        "source": "servers/rendering/renderer_rd/shaders/effects/bokeh_dof_raster.glsl",
+        "sha256": "878bede308e088c0270544c02c9e2563cb917304e372d33a9cee5088cb4a2536"
+      },
+      {
+        "patch": "sky-subpass-alpha",
+        "source": "core/os/os.cpp",
+        "sha256": "26187ef96f3a3c0e008e71192758811b7c6840219ef6740d99d26fbc74452354"
+      },
+      {
+        "patch": "sky-subpass-alpha",
+        "source": "servers/rendering/renderer_rd/environment/sky.cpp",
+        "sha256": "cabc000c0869650c050afc7b7e2c6f74f2a3c7f0f0f9b80969c6044fc7887890"
+      },
+      {
+        "patch": "sky-subpass-alpha",
+        "source": "servers/rendering/renderer_rd/environment/sky.h",
+        "sha256": "97279c5608d282cc14e79af7a2ebd7dfd173f024d27a4f6cf865f8bc8c6832e4"
+      },
+      {
+        "patch": "sky-subpass-alpha",
+        "source": "servers/rendering/renderer_rd/shaders/environment/sky.glsl",
+        "sha256": "01903e5f1aebcf2610e602368b4ff78522ed0a9f49ba0331504b39805054e9a8"
+      },
+      {
+        "patch": "worker-thread-language-shutdown",
+        "source": "core/object/worker_thread_pool.cpp",
+        "sha256": "2d8d05ef55272e50118203ab5f37a368d55ebf3685ab66a65c54ade9d4170561"
+      },
+      {
+        "patch": "far-dof-reference",
+        "source": "core/os/os.cpp",
+        "sha256": "26187ef96f3a3c0e008e71192758811b7c6840219ef6740d99d26fbc74452354"
+      },
+      {
+        "patch": "far-dof-reference",
+        "source": "servers/rendering/storage/camera_attributes_storage.h",
+        "sha256": "c9d873c692a86646dc401c0ff3b4144f7ce4fa7e87e6dc63dadd7f875c2452f3"
+      },
+      {
+        "patch": "far-dof-reference",
+        "source": "servers/rendering/storage/camera_attributes_storage.cpp",
+        "sha256": "1e75932acd26ac425b398fd64e1a836da1f85f2ab764b77d5a429bc415dfc0c5"
+      },
+      {
+        "patch": "far-dof-reference",
+        "source": "servers/rendering/rendering_server.h",
+        "sha256": "48af4abd50357b9a2b0012566f1354b9e56a66327adcefb7798b226eb3998a58"
+      },
+      {
+        "patch": "far-dof-reference",
+        "source": "servers/rendering/rendering_server.cpp",
+        "sha256": "4f668673a2096da2f7949326d7e37fc49f63b91bd74ef32a4d11a35cc3ee5ce7"
+      },
+      {
+        "patch": "far-dof-reference",
+        "source": "servers/rendering/rendering_server_default.h",
+        "sha256": "4c5332cb15a83f38cc9ae89957ea659dc67f0478bf377b133dac68831ee87b78"
+      },
+      {
+        "patch": "far-dof-reference",
+        "source": "servers/rendering/renderer_rd/renderer_scene_render_rd.h",
+        "sha256": "560283b1c2bbb6e119cf84ab35aef09353c2f4acfd70f5f3d698df06475dff8e"
+      },
+      {
+        "patch": "far-dof-reference",
+        "source": "servers/rendering/renderer_rd/renderer_scene_render_rd.cpp",
+        "sha256": "3b89d9cc6c19933a4c74afc13e5d795989723f32336f446e06773d140ab8cd24"
+      },
+      {
+        "patch": "far-dof-reference",
+        "source": "servers/rendering/renderer_rd/effects/far_dof.h",
+        "sha256": "fa68c3ec153809143be2fdafafa33ec27dbe421fae78c12e0e2c9e0f008068bd"
+      },
+      {
+        "patch": "far-dof-reference",
+        "source": "servers/rendering/renderer_rd/effects/far_dof.cpp",
+        "sha256": "a0beeb52b3d4eb6911f15aeac1e3fbbe055b5f885b1d18dcd0ebeb62b38f2328"
+      },
+      {
+        "patch": "far-dof-reference",
+        "source": "servers/rendering/renderer_rd/shaders/effects/far_dof.glsl",
+        "sha256": "9dda02ad4575e750c1cc10cc002906b0764c16af1f85b2ec2e0cd97cc4d2247e"
+      },
+      {
+        "patch": "android-headless-service",
+        "source": "platform/android/java_godot_lib_jni.cpp",
+        "sha256": "9f7c83cf2620fc1c6d29e8628d2745b71dd84bfdf29e0d7e4b4c07796ee410b1"
+      },
+      {
+        "patch": "android-headless-service",
+        "source": "platform/android/java/lib/src/main/java/org/godotengine/godot/Godot.kt",
+        "sha256": "9626d93323b9b7f3b0af360ff78dd8e309f4f21154bb489d036205b3b546f0b9"
+      },
+      {
+        "patch": "android-headless-service",
+        "source": "platform/android/java/lib/src/main/java/org/godotengine/godot/GodotHeadlessRenderView.java",
+        "sha256": "e94680b651a4d7e519a951dc96e68801210c85d0cb2083d42f02f0697a9d949b"
+      }
+    ],
+    "apks": {
+      "eager-audit": {
+        "entry_count": 828,
+        "changed_entries": [
+          "lib/arm64-v8a/libgodot_android.so"
+        ],
+        "zipalign_16kb_exit": 0
+      },
+      "lazy-audit": {
+        "entry_count": 828,
+        "changed_entries": [
+          "lib/arm64-v8a/libgodot_android.so"
+        ],
+        "zipalign_16kb_exit": 0
+      },
+      "lazy-release": {
+        "entry_count": 828,
+        "changed_entries": [
+          "lib/arm64-v8a/libgodot_android.so"
+        ],
+        "zipalign_16kb_exit": 0
+      }
+    },
+    "patch_dry_run_exit": 0
+  },
+  "final_elf": {
+    "machine": 183,
+    "load_segments": [
+      {
+        "offset": 0,
+        "vaddr": 0,
+        "alignment": 16384
+      },
+      {
+        "offset": 63982688,
+        "vaddr": 63999072,
+        "alignment": 16384
+      },
+      {
+        "offset": 65361120,
+        "vaddr": 65393888,
+        "alignment": 16384
+      }
+    ]
+  },
+  "performance": {
+    "protocol": {
+      "order": [
+        "eager-1",
+        "lazy-1",
+        "lazy-2",
+        "eager-2",
+        "eager-3",
+        "lazy-3"
+      ],
+      "scene": "Actual 194-mesh menu, held 640x480 viewport, fixed noon and random seed, Original options, max_fps=60, four frames then GPU readback.",
+      "figure_specialization": "Gfx._compact_figures=false on both engines to isolate the engine change in an identical frozen pack.",
+      "cold_definition": "Only the private QA Godot shader cache was removed. CPU asset caches remained warm; driver-managed caches were not controlled.",
+      "warm_definition": "Immediate new-process launch reusing the preceding same-menu shader cache.",
+      "instrumentation": "Same compile/cache timers on both audit engines. Native timings include GL compile/link and uniform discovery, exclude the following audit log write. Menu wall time includes those log writes.",
+      "uninstrumented_control": "One additional cold pair with original and candidate native libraries, with no profiling logs, confirms the direction and approximate size of the wall-time difference.",
+      "timing_boundary": "Menu setup through GPU readback excludes earlier engine startup and intro movies; it is not total app launch latency or gameplay FPS.",
+      "warm_cache_policy": "Old cached default programs are retained; existing installations gain the cold benefit when a new shader version or empty cache requires compilation."
+    },
+    "medians": {
+      "eager": {
+        "scene_programs_compiled_cold": 46,
+        "scene_compile_ms": 6806.24,
+        "menu_first_readback_ms_cold": 6762.57,
+        "menu_first_readback_ms_warm": 480.714,
+        "scene_cache_allocated_kib": 1051
+      },
+      "lazy": {
+        "scene_programs_compiled_cold": 19,
+        "scene_compile_ms": 1800.252,
+        "menu_first_readback_ms_cold": 2006.399,
+        "menu_first_readback_ms_warm": 397.0,
+        "scene_cache_allocated_kib": 327
+      }
+    },
+    "cold_menu_readback_reduction_percent": 70.33,
+    "cold_scene_compilation_reduction_percent": 73.55,
+    "runs": [
+      {
+        "build_ms": 317.855,
+        "first_readback_ms": 6762.57,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-eager-cold-1",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 46,
+          "compile_ms": 6806.24,
+          "cache_programs": 5,
+          "cache_load_ms": 13.596
+        },
+        "native_menu": {
+          "compile_count": 42,
+          "compile_ms": 6296.588,
+          "cache_programs": 5,
+          "cache_load_ms": 13.596
+        },
+        "result_sha256": "f67446830ed762b676b9ce99914bd88f6d95ff64bf7dd0389b0802f8294a637d",
+        "log_sha256": "a18f0f292e8dd1863200a501f58ef6ae181ce141b23457d808cccb0ef1b1ef35"
+      },
+      {
+        "build_ms": 318.914,
+        "first_readback_ms": 6675.238,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-eager-cold-2",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 46,
+          "compile_ms": 6708.245,
+          "cache_programs": 5,
+          "cache_load_ms": 13.581
+        },
+        "native_menu": {
+          "compile_count": 42,
+          "compile_ms": 6202.293,
+          "cache_programs": 5,
+          "cache_load_ms": 13.581
+        },
+        "result_sha256": "8855f1d92990e83fad71b7b024b90d7f2501c13e85f61fd06161cb58a5b3d593",
+        "log_sha256": "55f79dd070458e859279e0a27f558f3edf60116f449763e234085ba42088a5ed"
+      },
+      {
+        "build_ms": 308.454,
+        "first_readback_ms": 6817.328,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-eager-cold-3",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 46,
+          "compile_ms": 6861.605,
+          "cache_programs": 5,
+          "cache_load_ms": 13.503
+        },
+        "native_menu": {
+          "compile_count": 42,
+          "compile_ms": 6354.39,
+          "cache_programs": 5,
+          "cache_load_ms": 13.503
+        },
+        "result_sha256": "037baad722b8cbab2947b46fecb168f2d14932cd8b3ef1274a910d14ebbb02cf",
+        "log_sha256": "8a4f98cb8b2115b5c00869dd804de6f6b195386241c7d2144302f92bcfde40c0"
+      },
+      {
+        "build_ms": 309.795,
+        "first_readback_ms": 477.473,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-eager-warm-1",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 51,
+          "cache_load_ms": 131.8
+        },
+        "native_menu": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 47,
+          "cache_load_ms": 121.028
+        },
+        "result_sha256": "5bbd8c383e11eae6390ab755e5038e99fdada92f6ea3cd7d228558635b6aaf88",
+        "log_sha256": "f432e9808abf81c3cc4f7ea387c712a86a62598f1d1b9f4770c8480eedcdca59"
+      },
+      {
+        "build_ms": 312.41,
+        "first_readback_ms": 480.714,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-eager-warm-2",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 51,
+          "cache_load_ms": 132.274
+        },
+        "native_menu": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 47,
+          "cache_load_ms": 122.429
+        },
+        "result_sha256": "1e080ba7f8c774505d14bc43cdcabd20488ce5dd9511f720a8f703e9e9f8952e",
+        "log_sha256": "a0b8008a91cdd1e425f0ae7be7227303d1a74e9c63b90f3d46d231b2db3a6be0"
+      },
+      {
+        "build_ms": 315.577,
+        "first_readback_ms": 485.219,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-eager-warm-3",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 51,
+          "cache_load_ms": 132.751
+        },
+        "native_menu": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 47,
+          "cache_load_ms": 122.683
+        },
+        "result_sha256": "e2c42e7eb3e6ebf0d9175e57be38012832dd0cc9ebfc65d0a4f55ea9f781db89",
+        "log_sha256": "37bcf74a0d272e824e5f7d987174de86351c4c11204f7e2d2629fcab17e46a92"
+      },
+      {
+        "build_ms": 315.547,
+        "first_readback_ms": 2006.056,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-lazy-cold-1",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 19,
+          "compile_ms": 1800.242,
+          "cache_programs": 1,
+          "cache_load_ms": 0.854
+        },
+        "native_menu": {
+          "compile_count": 18,
+          "compile_ms": 1561.677,
+          "cache_programs": 1,
+          "cache_load_ms": 0.854
+        },
+        "result_sha256": "b7a3809bd9c2a598cc0ad9030f1c06fb382648a4410154c61c200a4780273edf",
+        "log_sha256": "45a9e943f2fbc2f9ef87635883738d91376ecd0bde8e944df802f68952b1f5fd"
+      },
+      {
+        "build_ms": 314.987,
+        "first_readback_ms": 2006.399,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-lazy-cold-2",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 19,
+          "compile_ms": 1800.252,
+          "cache_programs": 1,
+          "cache_load_ms": 0.911
+        },
+        "native_menu": {
+          "compile_count": 18,
+          "compile_ms": 1559.038,
+          "cache_programs": 1,
+          "cache_load_ms": 0.911
+        },
+        "result_sha256": "5145596e61f6494c062496264b944dfe8f1cf6787e475fec447dff9da9885e07",
+        "log_sha256": "3b709d2e2382f82442e07b37443f8588dedef185294a3e093dea39c8fd2f8e45"
+      },
+      {
+        "build_ms": 317.805,
+        "first_readback_ms": 2033.339,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-lazy-cold-3",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 19,
+          "compile_ms": 1821.249,
+          "cache_programs": 1,
+          "cache_load_ms": 0.884
+        },
+        "native_menu": {
+          "compile_count": 18,
+          "compile_ms": 1583.209,
+          "cache_programs": 1,
+          "cache_load_ms": 0.884
+        },
+        "result_sha256": "7264797f1167c48ce2f2bfcf07b1bdca9462732c3b06c8ac75617a9c237e0457",
+        "log_sha256": "1fba8abdd8f9861482ee4dcd9246d995a424c54d47197f017cc89aa27536faa6"
+      },
+      {
+        "build_ms": 314.271,
+        "first_readback_ms": 396.975,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-lazy-warm-1",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 20,
+          "cache_load_ms": 39.963
+        },
+        "native_menu": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 19,
+          "cache_load_ms": 34.836
+        },
+        "result_sha256": "47a937e0f9645e82048c1ceb0681b7d433e18a60b62b36698389459726c21f38",
+        "log_sha256": "9f3c7dcc9e1b68d6274505a7a60af8d90978e9dfae3241e645c29e0e3df9b0a4"
+      },
+      {
+        "build_ms": 314.365,
+        "first_readback_ms": 397.0,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-lazy-warm-2",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 20,
+          "cache_load_ms": 39.559
+        },
+        "native_menu": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 19,
+          "cache_load_ms": 34.834
+        },
+        "result_sha256": "cb778ebcbe418361903636a749639b9793334003e21d6ac28987c67b6ff3406d",
+        "log_sha256": "d5f0f3595f2574b173a30cacaa7f714e289d3eae459407bdbc49966dbba61109"
+      },
+      {
+        "build_ms": 314.965,
+        "first_readback_ms": 399.67,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-lazy-warm-3",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 20,
+          "cache_load_ms": 39.766
+        },
+        "native_menu": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 19,
+          "cache_load_ms": 35.114
+        },
+        "result_sha256": "5b00e0a627c70f63b221a928422174072f930f4286023b17435111a51855e507",
+        "log_sha256": "465d100ed063150eedcb0fbd879828057cff43e7ebe6be7106714699c75daf8b"
+      }
+    ],
+    "uninstrumented_runs": [
+      {
+        "build_ms": 317.152,
+        "first_readback_ms": 6718.377,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "menu-eager-release-cold",
+        "native_audit_available": false,
+        "native_all": null,
+        "native_menu": null,
+        "result_sha256": "5ebc623c453cec8db6717971bdc0b262ddcc9dcd1b7c91124515a2915750b425",
+        "log_sha256": "dec7e61d9f1194ae6bfecee6a654cdc2955a9e5c7ac87b9dedb814e2becb0989"
+      },
+      {
+        "build_ms": 316.71,
+        "first_readback_ms": 2003.515,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "menu-lazy-release-cold",
+        "native_audit_available": false,
+        "native_all": null,
+        "native_menu": null,
+        "result_sha256": "93bbf7f035e1ae37b5b242c3773c7c82bc0babe2db22c92228ce01331e8f60cb",
+        "log_sha256": "c3c5cab5f7c26303d14b3b20329852acba886caf7271a5827f092ea5c70dde36"
+      },
+      {
+        "build_ms": 315.672,
+        "first_readback_ms": 460.261,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "menu-lazy-release-warm",
+        "native_audit_available": false,
+        "native_all": null,
+        "native_menu": null,
+        "result_sha256": "3ba98dd2841d5d81d88df5c872856d7580ddf70f6ca0bc9b1e4ec34906fcfa58",
+        "log_sha256": "17c9448dd9b9312fd1d995faddcf17bcafbe339c7bb0c34d47d6dd0395bf7dfa"
+      }
+    ]
+  },
+  "cache_validation": {
+    "upgrade_and_downgrade": [
+      {
+        "build_ms": 305.241,
+        "first_readback_ms": 484.539,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-upgrade-eager-to-lazy",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 51,
+          "cache_load_ms": 133.979
+        },
+        "native_menu": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 47,
+          "cache_load_ms": 122.927
+        },
+        "result_sha256": "da9b2718218def11d6adf7409eda3b3d532760a5685b753b566b471bd0f89366",
+        "log_sha256": "b50bd9eae2c6054700ec163cb1ac40efe8feaa988d087cc57c41f67495c92a7b"
+      },
+      {
+        "build_ms": 316.524,
+        "first_readback_ms": 397.96,
+        "pixels_sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e",
+        "process_exited": true,
+        "errors": [],
+        "label": "qualified-downgrade-lazy-to-eager",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 20,
+          "cache_load_ms": 39.956
+        },
+        "native_menu": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 19,
+          "cache_load_ms": 34.46
+        },
+        "result_sha256": "726512c78e3a3e10638cf3a8101ace1923f149aeb2c66cf399cc2f54a37dfe4c",
+        "log_sha256": "4e3adf251b25875cf9174b3830982a3ee72242c932689a2c1c3d6a0bb9c45e86"
+      }
+    ],
+    "partial_seed_cache_layout": [
+      {
+        "file": "fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+        "mode_keys": [
+          [
+            10486304
+          ],
+          [],
+          [],
+          []
+        ],
+        "bytes": 43016
+      },
+      {
+        "file": "1536a88746d7dc126ad985bcb5ed6296aeea1bb8.cache",
+        "mode_keys": [
+          [
+            10485885
+          ],
+          [],
+          [],
+          []
+        ],
+        "bytes": 9854
+      }
+    ],
+    "partial_cache_result": "A separate colour-only seed process saved empty maps for modes 1, 2 and 3. Next-process logs show a one-program cache load, then on-demand instanced colour (1), instanced depth (3) and ordinary depth (2), with all captures identical to baseline.",
+    "warm_render_suite_scene_compilations": 0
+  },
+  "rendering": {
+    "runs": [
+      {
+        "label": "render-eager-cold",
+        "checks": 536,
+        "failures": 0,
+        "gpu_readbacks": 65,
+        "captures_exactly_match_baseline": true,
+        "errors": [],
+        "process_exited": true,
+        "result_sha256": "c6f075961c31eeb91d0f43bbd155d998bfb27f2f21c0883a1ae2779141b6e34a",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 306,
+          "compile_ms": 45158.376,
+          "cache_programs": 2189,
+          "cache_load_ms": 5528.477
+        }
+      },
+      {
+        "label": "render-lazy-partial-cache",
+        "checks": 536,
+        "failures": 0,
+        "gpu_readbacks": 65,
+        "captures_exactly_match_baseline": true,
+        "errors": [],
+        "process_exited": true,
+        "result_sha256": "b367c700e96e6e7cb10ed673fd23d37687f1fa236bee5e93e8f518f8ee0d2b17",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 169,
+          "compile_ms": 18402.258,
+          "cache_programs": 1055,
+          "cache_load_ms": 2122.477
+        }
+      },
+      {
+        "label": "render-lazy-warm",
+        "checks": 536,
+        "failures": 0,
+        "gpu_readbacks": 65,
+        "captures_exactly_match_baseline": true,
+        "errors": [],
+        "process_exited": true,
+        "result_sha256": "19a121ee7e239540d9663abea06f1064ecc2aeccb949861026a7b3e53ec0d3e9",
+        "native_audit_available": true,
+        "native_all": {
+          "compile_count": 0,
+          "compile_ms": 0.0,
+          "cache_programs": 1789,
+          "cache_load_ms": 3960.85
+        }
+      },
+      {
+        "label": "render-lazy-release",
+        "checks": 536,
+        "failures": 0,
+        "gpu_readbacks": 65,
+        "captures_exactly_match_baseline": true,
+        "errors": [],
+        "process_exited": true,
+        "result_sha256": "2425f229816bb41d46f56391b3ed083378feff0bc98d11df9616720a808153d6",
+        "native_audit_available": false,
+        "native_all": null
+      }
+    ],
+    "exact_baseline_captures": [
+      {
+        "file": "engine-01.png",
+        "sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e"
+      },
+      {
+        "file": "engine-02.png",
+        "sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e"
+      },
+      {
+        "file": "engine-03.png",
+        "sha256": "8d078cdf50060975c6b17d3fd6a27ac50dfc1c138001a63f566e05355b913cfb"
+      },
+      {
+        "file": "engine-04.png",
+        "sha256": "8d078cdf50060975c6b17d3fd6a27ac50dfc1c138001a63f566e05355b913cfb"
+      },
+      {
+        "file": "engine-05.png",
+        "sha256": "8d078cdf50060975c6b17d3fd6a27ac50dfc1c138001a63f566e05355b913cfb"
+      },
+      {
+        "file": "engine-06.png",
+        "sha256": "8d078cdf50060975c6b17d3fd6a27ac50dfc1c138001a63f566e05355b913cfb"
+      },
+      {
+        "file": "engine-07.png",
+        "sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e"
+      },
+      {
+        "file": "engine-08.png",
+        "sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e"
+      },
+      {
+        "file": "engine-09.png",
+        "sha256": "7749f6ae6eb4a4b468bb52e10830ab19048002dc9c5264871261b0cc14462ecd"
+      },
+      {
+        "file": "engine-10.png",
+        "sha256": "7749f6ae6eb4a4b468bb52e10830ab19048002dc9c5264871261b0cc14462ecd"
+      },
+      {
+        "file": "engine-11.png",
+        "sha256": "0162a712a1a4cff6ecbfb0c2d1c2741ca35a415c473816e622e89bbfd8532bce"
+      },
+      {
+        "file": "engine-12.png",
+        "sha256": "0162a712a1a4cff6ecbfb0c2d1c2741ca35a415c473816e622e89bbfd8532bce"
+      },
+      {
+        "file": "engine-13.png",
+        "sha256": "0162a712a1a4cff6ecbfb0c2d1c2741ca35a415c473816e622e89bbfd8532bce"
+      },
+      {
+        "file": "engine-14.png",
+        "sha256": "0162a712a1a4cff6ecbfb0c2d1c2741ca35a415c473816e622e89bbfd8532bce"
+      },
+      {
+        "file": "engine-15.png",
+        "sha256": "7749f6ae6eb4a4b468bb52e10830ab19048002dc9c5264871261b0cc14462ecd"
+      },
+      {
+        "file": "engine-16.png",
+        "sha256": "7749f6ae6eb4a4b468bb52e10830ab19048002dc9c5264871261b0cc14462ecd"
+      },
+      {
+        "file": "engine-17.png",
+        "sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e"
+      },
+      {
+        "file": "engine-18.png",
+        "sha256": "b5dc99cd98aee17c38bd297ddb9e3271e032a19dea23f92b05460c674d59334e"
+      },
+      {
+        "file": "engine-19.png",
+        "sha256": "3ad789290f9b1c1b26e26b693b3130198757a839f41ec141c4af95ef390efd80"
+      },
+      {
+        "file": "engine-20.png",
+        "sha256": "0d035f1dd7eb2c1509c27f53930977ec3266f6bd8e4cca9f50d0d04684fb1d96"
+      },
+      {
+        "file": "engine-21.png",
+        "sha256": "0d035f1dd7eb2c1509c27f53930977ec3266f6bd8e4cca9f50d0d04684fb1d96"
+      },
+      {
+        "file": "engine-22.png",
+        "sha256": "642843c0ad87046e885bba2056dfb2a547f425df88eaf2d5084503e674065ff3"
+      },
+      {
+        "file": "engine-23.png",
+        "sha256": "642843c0ad87046e885bba2056dfb2a547f425df88eaf2d5084503e674065ff3"
+      },
+      {
+        "file": "engine-24.png",
+        "sha256": "642843c0ad87046e885bba2056dfb2a547f425df88eaf2d5084503e674065ff3"
+      },
+      {
+        "file": "engine-25.png",
+        "sha256": "642843c0ad87046e885bba2056dfb2a547f425df88eaf2d5084503e674065ff3"
+      },
+      {
+        "file": "engine-26.png",
+        "sha256": "0d035f1dd7eb2c1509c27f53930977ec3266f6bd8e4cca9f50d0d04684fb1d96"
+      },
+      {
+        "file": "engine-27.png",
+        "sha256": "0d035f1dd7eb2c1509c27f53930977ec3266f6bd8e4cca9f50d0d04684fb1d96"
+      },
+      {
+        "file": "engine-28.png",
+        "sha256": "bc3fcbf1cbcd38869f59985011cdfb0fa30fcf3604dda06089f9f8663376275e"
+      },
+      {
+        "file": "engine-29.png",
+        "sha256": "bc3fcbf1cbcd38869f59985011cdfb0fa30fcf3604dda06089f9f8663376275e"
+      },
+      {
+        "file": "engine-30.png",
+        "sha256": "af63fe6fbff1ae171387c7c81275fac708dade6c73688e3587ed677b3bfb5822"
+      },
+      {
+        "file": "engine-31.png",
+        "sha256": "af63fe6fbff1ae171387c7c81275fac708dade6c73688e3587ed677b3bfb5822"
+      },
+      {
+        "file": "engine-32.png",
+        "sha256": "af63fe6fbff1ae171387c7c81275fac708dade6c73688e3587ed677b3bfb5822"
+      },
+      {
+        "file": "engine-33.png",
+        "sha256": "af63fe6fbff1ae171387c7c81275fac708dade6c73688e3587ed677b3bfb5822"
+      },
+      {
+        "file": "engine-34.png",
+        "sha256": "bc3fcbf1cbcd38869f59985011cdfb0fa30fcf3604dda06089f9f8663376275e"
+      },
+      {
+        "file": "engine-35.png",
+        "sha256": "bc3fcbf1cbcd38869f59985011cdfb0fa30fcf3604dda06089f9f8663376275e"
+      },
+      {
+        "file": "engine-36.png",
+        "sha256": "0d035f1dd7eb2c1509c27f53930977ec3266f6bd8e4cca9f50d0d04684fb1d96"
+      },
+      {
+        "file": "engine-37.png",
+        "sha256": "0d035f1dd7eb2c1509c27f53930977ec3266f6bd8e4cca9f50d0d04684fb1d96"
+      },
+      {
+        "file": "engine-38.png",
+        "sha256": "489c6abdecf3b529de0c784c4388a1bfa6b93df3dba4a041b4db0db0b2445471"
+      },
+      {
+        "file": "engine-39.png",
+        "sha256": "489c6abdecf3b529de0c784c4388a1bfa6b93df3dba4a041b4db0db0b2445471"
+      },
+      {
+        "file": "engine-40.png",
+        "sha256": "486091b559da715d5f0f7a8f7d764296e5a96d576a49afc4a65d82c62983ddbd"
+      },
+      {
+        "file": "engine-41.png",
+        "sha256": "486091b559da715d5f0f7a8f7d764296e5a96d576a49afc4a65d82c62983ddbd"
+      },
+      {
+        "file": "engine-42.png",
+        "sha256": "486091b559da715d5f0f7a8f7d764296e5a96d576a49afc4a65d82c62983ddbd"
+      },
+      {
+        "file": "engine-43.png",
+        "sha256": "486091b559da715d5f0f7a8f7d764296e5a96d576a49afc4a65d82c62983ddbd"
+      },
+      {
+        "file": "engine-44.png",
+        "sha256": "489c6abdecf3b529de0c784c4388a1bfa6b93df3dba4a041b4db0db0b2445471"
+      },
+      {
+        "file": "engine-45.png",
+        "sha256": "489c6abdecf3b529de0c784c4388a1bfa6b93df3dba4a041b4db0db0b2445471"
+      },
+      {
+        "file": "engine-46.png",
+        "sha256": "4baf46f05f2667b56fa266dbe2a132160c0773dba6c9d2e93b96eb77d5d981da"
+      },
+      {
+        "file": "engine-47.png",
+        "sha256": "4baf46f05f2667b56fa266dbe2a132160c0773dba6c9d2e93b96eb77d5d981da"
+      },
+      {
+        "file": "engine-48.png",
+        "sha256": "fdfdc80f4c8c36ef3d2767c3c4cf31778ef2e418844c10f7f49870e1ff7635a9"
+      },
+      {
+        "file": "engine-49.png",
+        "sha256": "fdfdc80f4c8c36ef3d2767c3c4cf31778ef2e418844c10f7f49870e1ff7635a9"
+      },
+      {
+        "file": "engine-50.png",
+        "sha256": "fdfdc80f4c8c36ef3d2767c3c4cf31778ef2e418844c10f7f49870e1ff7635a9"
+      },
+      {
+        "file": "engine-51.png",
+        "sha256": "fdfdc80f4c8c36ef3d2767c3c4cf31778ef2e418844c10f7f49870e1ff7635a9"
+      },
+      {
+        "file": "engine-52.png",
+        "sha256": "4baf46f05f2667b56fa266dbe2a132160c0773dba6c9d2e93b96eb77d5d981da"
+      },
+      {
+        "file": "engine-53.png",
+        "sha256": "4baf46f05f2667b56fa266dbe2a132160c0773dba6c9d2e93b96eb77d5d981da"
+      },
+      {
+        "file": "engine-54.png",
+        "sha256": "489c6abdecf3b529de0c784c4388a1bfa6b93df3dba4a041b4db0db0b2445471"
+      },
+      {
+        "file": "engine-55.png",
+        "sha256": "489c6abdecf3b529de0c784c4388a1bfa6b93df3dba4a041b4db0db0b2445471"
+      },
+      {
+        "file": "engine-56.png",
+        "sha256": "489c6abdecf3b529de0c784c4388a1bfa6b93df3dba4a041b4db0db0b2445471"
+      },
+      {
+        "file": "engine-57.png",
+        "sha256": "16af11afc616cdb33655b2ee520e930c58301f87d1c676298b9d71d4fa0bd8ca"
+      },
+      {
+        "file": "engine-58.png",
+        "sha256": "16af11afc616cdb33655b2ee520e930c58301f87d1c676298b9d71d4fa0bd8ca"
+      },
+      {
+        "file": "engine-59.png",
+        "sha256": "489c6abdecf3b529de0c784c4388a1bfa6b93df3dba4a041b4db0db0b2445471"
+      },
+      {
+        "file": "engine-60.png",
+        "sha256": "dc74d82d2720a224f67dcfe5a6a45e112060711a58a2c1bdcbb649af8829cd1d"
+      },
+      {
+        "file": "engine-61.png",
+        "sha256": "ce9a9e2c98e1143c08da423f019a5f42a189b738b74db4a001ab0fdda61ec131"
+      },
+      {
+        "file": "engine-62.png",
+        "sha256": "264dfbebd4babe115b2e4be1af47678bf142334aca7f439c0ee5918de251f8b9"
+      },
+      {
+        "file": "engine-63.png",
+        "sha256": "1de3590121fd309b0bfa253f9668677b1aaadc38b87bc4a1583e455a8783be6f"
+      },
+      {
+        "file": "engine-64.png",
+        "sha256": "f3d210fe16643384b450d950df8d941281e76de83fb71d274a5623cb47ecb4ba"
+      },
+      {
+        "file": "engine-65.png",
+        "sha256": "1de3590121fd309b0bfa253f9668677b1aaadc38b87bc4a1583e455a8783be6f"
+      }
+    ],
+    "coverage": [
+      "Real menu terrain, sky, water, objects and signpost",
+      "All eight material/foliage/sharpness combinations",
+      "World and preview materials, alpha cutouts, transparency and wounds",
+      "Mapped, overflow, omni and spot lighting, directional and local shadows",
+      "No MSAA and 4x MSAA",
+      "Ordinary and instanced colour/depth programs",
+      "Live shader code changes and exact restoration",
+      "Material identities, cached fade shaders and unchanged-option behavior"
+    ],
+    "final_engine_has_audit_log_strings": false
+  },
+  "campaign_lifecycle": {
+    "checks": 26,
+    "failures": 0,
+    "errors": [],
+    "process_exited": true,
+    "rows": [
+      {
+        "label": "new original campaign uses real Android worker",
+        "ok": true
+      },
+      {
+        "label": "new game finishes loading",
+        "ok": true
+      },
+      {
+        "label": "new game simulation advances",
+        "ok": true
+      },
+      {
+        "label": "original opening speech runs",
+        "ok": true
+      },
+      {
+        "label": "original opening dialogue finishes",
+        "ok": true
+      },
+      {
+        "label": "simulation advances after dialogue",
+        "ok": true
+      },
+      {
+        "label": "save from paused menu succeeds 0",
+        "ok": true
+      },
+      {
+        "label": "simulation advances after saving 0",
+        "ok": true
+      },
+      {
+        "label": "saved game loads 0",
+        "ok": true
+      },
+      {
+        "label": "simulation advances after loading 0",
+        "ok": true
+      },
+      {
+        "label": "save from paused menu succeeds 1",
+        "ok": true
+      },
+      {
+        "label": "simulation advances after saving 1",
+        "ok": true
+      },
+      {
+        "label": "saved game loads 1",
+        "ok": true
+      },
+      {
+        "label": "simulation advances after loading 1",
+        "ok": true
+      },
+      {
+        "label": "prepare disposable original captive arrival",
+        "ok": true
+      },
+      {
+        "label": "load original captive arrival through service",
+        "ok": true
+      },
+      {
+        "label": "original captive dialogue opens on local client",
+        "ok": true
+      },
+      {
+        "label": "client finishes original dialogue through authority",
+        "ok": true
+      },
+      {
+        "label": "simulation advances after original captive dialogue",
+        "ok": true
+      },
+      {
+        "label": "Android suspends the separate simulation",
+        "ok": true
+      },
+      {
+        "label": "owner still requests a running clock",
+        "ok": true
+      },
+      {
+        "label": "resumed service restores the owner's running clock",
+        "ok": true
+      },
+      {
+        "label": "service answers save after resume",
+        "ok": true
+      },
+      {
+        "label": "resume preserves intentional menu pause",
+        "ok": true
+      },
+      {
+        "label": "closing resumed menu releases pause",
+        "ok": true
+      },
+      {
+        "label": "worker shuts down",
+        "ok": true
+      }
+    ],
+    "scope": "Real simulation service: new campaign, authored dialogue, paused save/load, service suspension/resumption and intentional-pause preservation, worker shutdown. Suspension is driven through the service API; this run is not an Android Home/activity recreation test."
+  },
+  "normal_startup": {
+    "bootstrap_active": false,
+    "shader_cache_cleared": true,
+    "default_settings": true,
+    "movies_finished": true,
+    "menu_ready": true,
+    "consent_presented": true,
+    "seconds_to_consent_observation": 42.45,
+    "skip_persisted": true,
+    "decline_logged": true,
+    "exit_via_menu": true,
+    "clean_exit_logged": true,
+    "post_exit_observation_seconds": 15,
+    "post_exit_processes": [],
+    "errors": []
+  },
+  "known_warnings": [
+    "Both baseline and candidate QA runs emit the existing nonfatal Scudo allocation-region warning; this patch does not claim to fix it."
+  ],
+  "cleanup": {
+    "qa_uninstalled": true,
+    "remaining_cursedlands_packages": [
+      "package:org.cursedlands.performance",
+      "package:org.cursedlands.engine"
+    ],
+    "qa_processes": [],
+    "normal_game_profile_modified": false,
+    "performance_profile_modified": false,
+    "note": "Original data archives were read from the existing performance package and copied into the isolated QA package. All settings, caches, saves and captures were written only to the QA package."
+  },
+  "limitations": [
+    "One available Android GPU/driver; Redmagic Adreno 840 remains untested.",
+    "No native fault stack connects the original crash to shader compilation.",
+    "First use of a missing specialization still compiles synchronously, as before.",
+    "No sustained gameplay, memory or thermal benchmark was performed.",
+    "Private debuggable QA container and debug signature are not distributable release artifacts."
+  ]
+}

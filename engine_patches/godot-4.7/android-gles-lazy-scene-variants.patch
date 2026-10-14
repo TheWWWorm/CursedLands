@@ -1,0 +1,18 @@
+--- a/drivers/gles3/shader_gles3.cpp
++++ b/drivers/gles3/shader_gles3.cpp
+@@ -706,6 +706,15 @@
+ 	if (use_cache && _load_from_cache(p_version)) {
+ 		return;
+ 	}
++#ifdef ANDROID_ENABLED
++	if (name == "SceneShaderGLES3") {
++		// _version_bind_shader compiles a missing mode/specialization on demand.
++		// Avoid preparing unused all-light and instanced/depth programs first.
++		// Cache files already support an empty specialization map for a mode.
++		p_version->variants.resize(variant_count);
++		return;
++	}
++#endif
+ 	p_version->variants.reserve(variant_count);
+ 	for (int i = 0; i < variant_count; i++) {
+ 		p_version->variants.push_back(AHashMap<uint64_t, Version::Specialization>());

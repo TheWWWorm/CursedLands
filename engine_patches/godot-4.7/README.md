@@ -106,6 +106,33 @@ frame loop for the engine's existing `GodotService`. It does not change the
 graphical rendering thread mode. These patches retain
 Godot's MIT license; complete engine notices accompany every release package.
 
+The Android GLES startup candidate adds
+`android-gles-lazy-scene-variants.patch` after those thirteen patches. On Android,
+only `SceneShaderGLES3` skips eager compilation of the four default modes when
+there is no usable cache. The existing synchronous bind path compiles the
+requested mode and specialization, then saves it through the existing cache
+format. Empty mode maps are valid; later colour, shadow and instanced draws
+populate them normally. Existing cached programs are retained, including any
+extra default programs from an earlier engine. No shader source, light limit,
+rendering equation or graphics setting changes. Other shader families and
+non-Android builds keep their existing initialization.
+
+This relies on the pinned engine's synchronous specialization path. Its unused
+asynchronous fallback is hard-disabled; revisit the patch if an upstream update
+enables that fallback and starts requiring default programs. Apply only the
+production patch to release templates. The separate
+`tests/android-scene-variant-audit.patch` adds development-only compilation and
+cache timings for a matched baseline/candidate comparison and must be excluded
+from release engines.
+
+The startup fixture is `tools/tests/android_scene_startup.gd`. The rendering
+fixture, `tools/tests/android_scene_variants.gd`, also requires
+`android_figure_compatibility.gd` beside it. Compare every saved capture between
+engines, and require clean native process exit in addition to fixture assertions.
+Device measurements, cache-transition checks, APK hashes and limitations are in
+[`android-gles-scene-variants-2026-10-14.json`](../../docs/validation/android-gles-scene-variants-2026-10-14.json).
+These local engine builds do not replace installed templates or published APKs.
+
 The focused `tests/animation_cache_retention.gd` fixture compares normal and
 retained players through completion, library/key/target changes, tree reentry,
 queued clips and reverse playback. Run a patched game build on an isolated

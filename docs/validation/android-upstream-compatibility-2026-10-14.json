@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-14",
+  "status": "research_complete_no_confirmed_hardware_incompatibility_or_crash_cause",
+  "production_code_changed": false,
+  "release_published": false,
+  "affected_device": {
+    "model": "Redmagic 11 Pro / NX809J",
+    "gpu": "Adreno 840",
+    "driver": "OpenGL ES 3.2 V@0842.44 (GIT@718a07726a, Ic95db9d944, 1780021672) (Date:05/29/26)",
+    "renderer": "gl_compatibility / opengl3",
+    "source": "https://github.com/TheWWWorm/CursedLands/issues/3#issuecomment-6169364461"
+  },
+  "hardware_api_check": {
+    "vendor_source": "https://www.qualcomm.com/smartphones/products/8-series/snapdragon-8-elite-gen-5",
+    "vendor_api_support": ["OpenGL ES 3.2", "Vulkan 1.3"],
+    "godot_source": "https://github.com/godotengine/godot-docs/blob/master/engine_details/architecture/internal_rendering_architecture.rst",
+    "godot_compatibility_api": "OpenGL ES 3.0 on Android",
+    "conclusion": "No API-version mismatch. API support does not establish correct behavior of every shader or driver operation."
+  },
+  "published_apk_packaging_check": {
+    "path": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.2.0-android/CursedLands.apk",
+    "sha256": "ff024f8ba56b5ddb7cb1a9fb3a787561c1f8cc87c4342d76f36139d8a709d3bf",
+    "android_guidance": "https://developer.android.com/guide/practices/page-sizes",
+    "zipalign_command": "zipalign -c -P 16 4 CursedLands.apk",
+    "zipalign_exit_code": 0,
+    "libraries": [
+      {"name": "libc++_shared.so", "elf_machine": 183, "load_segment_alignments": [16384, 16384, 16384], "load_offsets_congruent_at_16kb": true},
+      {"name": "libgodot_android.so", "elf_machine": 183, "load_segment_alignments": [16384, 16384, 16384], "load_offsets_congruent_at_16kb": true},
+      {"name": "libmod_archive_android.so", "elf_machine": 183, "load_segment_alignments": [16384, 16384, 16384], "load_offsets_congruent_at_16kb": true},
+      {"name": "libterrain_search_android.so", "elf_machine": 183, "load_segment_alignments": [16384, 16384, 16384], "load_offsets_congruent_at_16kb": true}
+    ],
+    "scope": "All native libraries are AArch64 and satisfy the examined 16 KB ELF/ZIP alignment requirements. Device page size is unknown; this is not a full runtime page-size or instruction-set audit."
+  },
+  "engine_source_root": "/home/llm2x/Documents/EI/local/scratchpad/device-settings-20261010/android-engine/godot-5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "texture_path_correction": {
+    "engine_source": "drivers/gles3/storage/config.cpp:105-109; drivers/gles3/storage/utilities.cpp:417-418",
+    "game_source": "game/src/ei/game_data.gd:673; game/src/ei/mmp_texture.gd:45-122",
+    "upstream_source": "https://github.com/godotengine/godot/blob/4.7-stable/drivers/gles3/storage/config.cpp",
+    "finding": "Android GLES explicitly sets s3tc_supported=false. GameData passes that capability to decode_texture, which preserves authored mip pixels in RGBA when compressed uploads are unavailable. The desktop census containing BC1 textures must not be extrapolated to Android GLES.",
+    "conclusion": "Unsupported BC1/S3TC GPU decoding is not an active path in the examined Android OpenGL configuration. Authored mip handling remains a real post-1.0.0 change."
+  },
+  "upstream_findings": [
+    {
+      "url": "https://github.com/godotengine/godot/issues/86731#issuecomment-6097946499",
+      "reported": "2026-10-10",
+      "topic": "GLES 3D shader initialization compiles unused default variants",
+      "external_evidence": "A contributor reports long cold-start shader compilation stalls on Pixel 5 / Adreno 620 with Godot 4.7.2. This is a performance report, not a Redmagic crash reproduction.",
+      "local_match": "ShaderGLES3::_initialize_version at drivers/gles3/shader_gles3.cpp:703 compiles all modes using specialization_default_mask. drivers/gles3/shaders/scene.glsl defines four modes and defaults that enable each light type. _version_bind_shader then synchronously compiles the requested specialization if absent.",
+      "interpretation": "A concrete startup/compiler-work lead that can be profiled locally. Even disabled game effects do not eliminate this engine-level compilation. No evidence yet that the extra compilation causes the reported process exit."
+    },
+    {
+      "url": "https://github.com/godotengine/godot/pull/124336",
+      "merged": "2026-10-13",
+      "topic": "Compatibility global and instance shader parameters moved from a limited UBO to a texture",
+      "local_match": "The shipped engine still uses the older UBO implementation. Its allocation is clamped to the hardware limit; the project's larger setting does not override that limit.",
+      "limitation": "Our Compatibility shaders replace instance uniforms with ordinary material uniforms in Gfx.make_shader and CameraFade. The cited per-instance node-capacity failures are therefore not a demonstrated match for this menu. Do not backport solely on this report."
+    },
+    {
+      "url": "https://github.com/godotengine/godot/pull/119639",
+      "topic": "Adreno compiler crashes on large ubershaders",
+      "local_match": "The compiler-version workaround already exists in our engine's drivers/vulkan/rendering_device_driver_vulkan.cpp.",
+      "limitation": "This fix addresses Vulkan compiler EV031.32.02.xx. The reported Cursed Lands session uses OpenGL, and its GLES compiler build is not supplied. Godot's vertex_lighting render mode is also different from our custom vertex-lighting calculations."
+    },
+    {
+      "url": "https://github.com/doitsujin/dxvk/issues/5899",
+      "topic": "Adreno 840 / Qualcomm 842.xx tiler freezes reported in DXVK",
+      "limitation": "Same GPU and nominal driver family, but a Vulkan/DXVK workload. Not proof of an equivalent OpenGL fault, and no transferable fix verified."
+    },
+    {
+      "url": "https://github.com/godotengine/godot/issues/122724",
+      "topic": "Null GLES buffer mapping followed by memcpy",
+      "local_match": "Unchecked glMapBufferRange results are present in the examined canvas renderer source.",
+      "limitation": "The external report concerns Adreno 610 and 2D canvas rendering, with no deterministic reproducer. Our issue has no native stack establishing this failure; object-stage exit alone does not identify it."
+    }
+  ],
+  "conclusion": "No confirmed unsupported CPU/GPU feature found. The strongest directly matching upstream code lead is unnecessary default GLES scene-shader compilation. Driver/engine interaction remains possible, not established. No blanket renderer switch, driver blacklist, upstream backport, or new player diagnostic build was made."
+}

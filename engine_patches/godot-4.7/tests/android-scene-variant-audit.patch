@@ -1,0 +1,48 @@
+--- a/drivers/gles3/shader_gles3.cpp
++++ b/drivers/gles3/shader_gles3.cpp
+@@ -33,6 +33,7 @@
+ #ifdef GLES3_ENABLED
+ 
+ #include "core/io/dir_access.h"
++#include "core/os/os.h"
+ #include "core/string/string_builder.h"
+ #include "drivers/gles3/rasterizer_util_gles3.h"
+ #include "drivers/gles3/storage/config.h"
+@@ -305,6 +306,7 @@
+ }
+ 
+ void ShaderGLES3::_compile_specialization(Version::Specialization &spec, uint32_t p_variant, Version *p_version, uint64_t p_specialization) {
++	const uint64_t ei_audit_started = OS::get_singleton()->get_ticks_usec();
+ 	spec.id = glCreateProgram();
+ 	spec.ok = false;
+ 	GLint status;
+@@ -467,6 +469,9 @@
+ 	_get_uniform_locations(spec, p_version);
+ 
+ 	spec.ok = true;
++	if (name == "SceneShaderGLES3") {
++		print_line(vformat("EI_GLES_COMPILE variant=%d specialization=%d usec=%d", p_variant, p_specialization, OS::get_singleton()->get_ticks_usec() - ei_audit_started));
++	}
+ }
+ 
+ RenderingServerTypes::ShaderNativeSourceCode ShaderGLES3::version_get_native_source_code(RID p_version) {
+@@ -545,6 +550,7 @@
+ #endif
+ 
+ bool ShaderGLES3::_load_from_cache(Version *p_version) {
++	const uint64_t ei_audit_started = OS::get_singleton()->get_ticks_usec();
+ #ifdef WEB_ENABLED // not supported in webgl
+ 	return false;
+ #else
+@@ -625,6 +631,11 @@
+ 		variants.push_back(std::move(variant));
+ 	}
+ 	p_version->variants = variants;
++	if (name == "SceneShaderGLES3") {
++		int programs = 0;
++		for (const auto &variant : variants) { programs += variant.size(); }
++		print_line(vformat("EI_GLES_CACHE programs=%d usec=%d", programs, OS::get_singleton()->get_ticks_usec() - ei_audit_started));
++	}
+ 
+ 	return true;
+ #endif // WEB_ENABLED

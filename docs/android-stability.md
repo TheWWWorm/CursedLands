@@ -177,3 +177,100 @@ results qualify the candidate on the listed systems, not a universal Android
 stability claim. A single normal-play confirmation on the affected phone remains
 necessary before calling issue #3 fixed; no further diagnostic sequence is
 required by this change.
+
+## Upstream and hardware compatibility review, October 14
+
+The [upstream compatibility review](validation/android-upstream-compatibility-2026-10-14.json)
+compares vendor API support, Android packaging requirements, Godot reports and
+the source of the shipped engine. No unsupported CPU/GPU feature or matching
+native crash was established. Qualcomm advertises GLES 3.2 support, while
+Godot Compatibility targets GLES 3.0. The published 1.2.0 APK has four AArch64
+libraries with 16 KB ELF alignment and passes the APK's 16 KB alignment check.
+This does not establish the phone's page size or full runtime compatibility.
+
+One earlier candidate needs narrowing: **Android GLES does not upload our
+world textures as BC1/S3TC**. The engine explicitly disables that capability
+on Android, and GameData uses the RGBA fallback while preserving authored mip
+pixels. BC1 entries in the desktop object census do not describe Android GLES.
+The authored mip change remains, but unsupported BC1 hardware decoding is not
+the active path in this configuration.
+
+An [October 10 upstream report](https://github.com/godotengine/godot/issues/86731#issuecomment-6097946499)
+describes long cold-compilation stalls on Adreno in Godot's GLES 3D shader
+initialization. Our engine contains the same mechanism: the first uncached use
+compiles four default modes, with all light types enabled, before compiling the
+requested specialization if it differs. This is an engine-level source of
+unnecessary compiler work that the figure candidate does not remove. It is a
+local profiling lead, not evidence that compilation caused the Redmagic exit.
+
+The recent [global-parameter storage change](https://github.com/godotengine/godot/pull/124336)
+addresses Compatibility buffer limits, especially for instance uniforms. Our
+Compatibility path already converts instance uniforms to material uniforms,
+so the linked node-limit failures do not establish a match. The
+[Adreno ubershader workaround](https://github.com/godotengine/godot/pull/119639)
+is already in our Vulkan engine code and does not cover this OpenGL session.
+A [DXVK Adreno 840/842.xx report](https://github.com/doitsujin/dxvk/issues/5899)
+also uses Vulkan; matching hardware names alone cannot transfer its diagnosis.
+No renderer switch, driver blacklist or engine backport was applied on the basis
+of these reports.
+
+## Android GLES scene compilation, October 14
+
+The local engine experiment confirms substantial unnecessary compilation work
+on the available Adreno 650. The retained patch skips eager default programs
+for Android's `SceneShaderGLES3` and uses the engine's existing synchronous
+compilation path for each requested mode and specialization. It leaves shader
+math and the binary cache format unchanged. Cached older programs remain valid;
+new caches can omit unused modes and fill them when a draw needs them.
+
+Three alternating baseline/candidate pairs used identical game packs, a held
+640×480 Original menu, fixed noon lighting and warmed CPU asset caches. Each
+cold run started with an empty **Godot** shader cache; any driver-managed cache
+was outside the test's control. The benchmark explicitly disabled the separate
+compact-figure candidate on both engines to isolate this engine change.
+
+| Measurement | Existing engine | Candidate |
+| --- | ---: | ---: |
+| Scene programs compiled during a cold launch | 46 | 19 |
+| Median total scene compilation time | 6.806 s | 1.800 s |
+| Median menu setup through first GPU readback | 6.763 s | 2.006 s |
+| Median same-menu readback on a warm launch | 0.481 s | 0.397 s |
+
+The menu readback interval excludes earlier engine startup and intro movies;
+it includes four rendered frames. These are startup measurements, not gameplay
+FPS or sustained thermal measurements. The requested rendering programs retain
+the same source, so no reduction in visual quality is intended. First use of
+an uncached specialization can still pause synchronously, as before.
+An additional cold pair without either engine's profiling logs measured
+6.718 s versus 2.004 s, with identical pixels.
+
+The baseline, instrumented candidate and final engine without profiling logs
+each passed 536 rendering assertions. All 65 captures matched exactly across
+engines, including live feature changes, wounds, alpha, shadows and instancing.
+Both cache upgrade directions rendered the same menu without recompiling.
+A separate process first saved colour-only caches with three empty mode maps;
+the next run loaded those caches and correctly compiled instanced colour and
+both shadow modes on demand. The fully warmed rendering suite compiled no
+scene programs. The final engine also passed 26 real-service campaign checks
+covering dialogue, save/load, suspend/resume and worker shutdown, with clean
+native process exit.
+
+A normal launch with the QA bootstrap inactive, default settings and an empty
+Godot shader cache completed both movies and reached the menu and graphics-check
+consent. Skip persisted, and Exit terminated the app cleanly; no QA process
+returned during the following 15 seconds. The private QA package was removed
+after testing, leaving the normal game and existing performance profile intact.
+
+All thirteen existing engine patches were retained; the three comparison APKs
+have identical entries except the Godot library and signatures. The production
+patch is restricted to Android GLES scene initialization; desktop, Vulkan and
+other GLES shader families retain their previous path. Existing nonfatal Scudo
+warnings appeared with both engines. The affected Adreno 840 is unavailable,
+and no crash was reproduced here: these results establish a startup improvement,
+not the cause or resolution of issue #3. Installed templates and published
+artifacts were not replaced.
+
+The [measurement record](validation/android-gles-scene-variants-2026-10-14.json)
+contains build provenance, individual timings, image hashes, cache checks and
+the final normal-start result. The patch and development-only profiling patch
+are documented in [the engine recipe](../engine_patches/godot-4.7/README.md).
