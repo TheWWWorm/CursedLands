@@ -1,8 +1,14 @@
 # Changelog
 
-## Unreleased
+## 1.5.1-preview.2 — movement and traversal preview, 15 October 2026
 
 - Smooth the local player's movement with continuous path samples and a single update stream, retaining ordinary co-op updates for remote players. ([#4](https://github.com/TheWWWorm/CursedLands/issues/4))
+- Reuse far-grass bounds and precompute sorting priorities during camera movement.
+- Copy terrain shader values without enumerating renderer properties when creating snow-track sectors.
+- Prepare footprint textures and map-specific foot shapes during loading.
+- Refresh both actor roots and model transforms when figures reappear after moving out of sight.
+
+See [preview notes](docs/releases/1.5.1-preview.2.md) for compatibility and platform limits.
 
 ## 1.5.1-preview.1 — performance preview, 15 October 2026
 

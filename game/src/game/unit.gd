@@ -4138,10 +4138,9 @@ static func _posture_of(st: int) -> int:
 ## unit node's moves on to the figure's mesh nodes (interpolation off under
 ## the unit's on): their drawn transforms stayed where the unit was last
 ## shown, also after reset_physics_interpolation(), until the unit moved again.
-## A boar that wandered in the fog was drawn at its old spot, an attack path
-## led to where it really was, and it jumped there when it set off (user
-## report, Retroid Pocket 5). Touching the figure's transform marks the whole
-## subtree changed, so every mesh is drawn at the unit's current placement.
+## Refresh the root as well as the figure: a child-only FTI traversal can
+## otherwise inherit its parent's cached interpolated transform from before
+## the hidden movement. This also applies to stationary, awake replicas.
 ## (A signal, not _notification: that would be a script call per unit for
 ## every process / physics notification, in big fights too.)
 func _on_visibility_changed() -> void:
@@ -4156,6 +4155,9 @@ func resync_drawn() -> void:
 	if world and world.authority:   # (a co-op client's NetSmooth glide is left alone)
 		_xf_pos = Vector2(INF, INF)   # _sync_transform's cache: place it again
 		_sync_transform()
+	# Even an unchanged local transform must enter the renderer's dirty list:
+	# hidden branches may have missed the earlier transform propagation.
+	transform = transform
 	if model:
 		model.flush_pending_pose()
 		model.transform = model.transform   # re-places every part / mesh below

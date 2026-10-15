@@ -117,6 +117,25 @@ func _ready() -> void:
 		_tables[k[0]] = rows
 	GameData.options_changed.connect(_apply_options)
 	_scan_units()
+	prepare_footprints()
+
+
+## Decode the shared atlas and crop this map's foot shapes under the loading
+## cover. The first walking frame must not decode an original/HD texture.
+func prepare_footprints() -> void:
+	if GameData.option("footprints") == 0 or world == null or world.terrain == null \
+			or DisplayServer.get_name() == "headless":
+		return
+	if not _images.has("footprints"):
+		_images["footprints"] = GameData.load_image("footprints")
+	var types := {}
+	for u: GameUnit in world.units.values():
+		var fp := int(u.race.get("footprint_type", -1))
+		if fp >= 0: types[fp] = true
+	for fp: int in types:
+		for side in 2:
+			_cell("footprints", Rect2(float(side)*0.0625+float(fp&7)*0.125,
+				float(fp>>3)*0.125,0.0625,0.125),0)
 
 
 func _exit_tree() -> void:
@@ -138,6 +157,7 @@ func _row(kind: String, ground: int) -> Array:
 
 
 func _apply_options() -> void:
+	prepare_footprints()
 	for m in blood_marks:
 		m.decal.visible = GameData.option("marks") != 0
 	for m in foot_marks:

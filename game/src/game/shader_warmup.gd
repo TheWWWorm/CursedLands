@@ -64,6 +64,7 @@ static func run(game: Game) -> void:
 		return
 	var ambient := game.get_node_or_null("AmbientLife")
 	if ambient: ambient.prepare_world()
+	if game.world.ground_marks: game.world.ground_marks.prepare_footprints()
 	var previews := game.hud.prepare_previews() if game.hud else []
 	var forced := LoadingScreen._current != null and not (OS.has_feature("web") or LoadingScreen.force_deferred)
 	if not previews.is_empty():

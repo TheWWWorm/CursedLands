@@ -33,6 +33,9 @@ var _walkers := {} # rendered foot identity -> most recent grounded contact
 var _native_mesh := ClassDB.class_exists("SoftGroundMeshJob") and not OS.get_cmdline_user_args().has("--ei-script-soft-ground")
 var _mesh_jobs: Array[Dictionary] = []
 var _generation := 0
+var _material_shader: Shader
+var _material_code := ""
+var _material_parameters: Array[StringName] = []
 
 
 func shared_field() -> SoftGroundField:
@@ -75,9 +78,13 @@ func _restore(key: Vector2i) -> void:
 
 
 func refresh_materials() -> void:
+	# Enumerating ShaderMaterial properties during duplicate() synchronizes
+	# with the rendering thread. Discover the uniform names during map/options
+	# setup, then copy the current CPU-cached values when a foot enters a sector.
+	_prepare_material()
 	for key: Vector2i in sectors:
 		var rec: Dictionary = sectors[key]
-		rec.material = terrain._land_mat.duplicate() as ShaderMaterial
+		rec.material = _copy_material()
 		rec.material.set_shader_parameter("soft_tracks", true)
 		rec.material.set_shader_parameter("soft_track_origin", Vector2(key * SECTOR))
 		rec.material.set_shader_parameter("soft_track_texture", rec.texture)
@@ -91,6 +98,33 @@ func refresh_materials() -> void:
 		var shadow := (rec.shadow as WeakRef).get_ref() as MeshInstance3D
 		if shadow and shadow.mesh:
 			shadow.mesh.surface_set_material(0, rec.material)
+
+
+func _prepare_material() -> void:
+	var source := terrain._land_mat
+	var code := source.shader.code if source.shader else ""
+	if _material_shader == source.shader and _material_code == code:
+		return
+	_material_shader = source.shader
+	_material_code = code
+	_material_parameters.clear()
+	if _material_shader:
+		for parameter: Dictionary in _material_shader.get_shader_uniform_list():
+			_material_parameters.append(StringName(parameter.name))
+
+
+func _copy_material() -> ShaderMaterial:
+	_prepare_material()
+	var source := terrain._land_mat
+	var material := ShaderMaterial.new()
+	material.shader = source.shader
+	material.render_priority = source.render_priority
+	material.next_pass = source.next_pass
+	for parameter: StringName in _material_parameters:
+		var value = source.get_shader_parameter(parameter)
+		if value != null:
+			material.set_shader_parameter(parameter, value)
+	return material
 
 
 func refresh_rain_cover() -> void:
@@ -312,7 +346,7 @@ func _sector(key: Vector2i) -> Dictionary:
 		"shadow": weakref(shadow), "margin": node.extra_cull_margin,
 		"generation": _generation, "revision": 0, "building": false, "build_pending": false,
 		"texture": field.texture, "layer": layer, "key": key,
-		"material": terrain._land_mat.duplicate(), "dirty": false}
+		"material": _copy_material(), "dirty": false}
 	node.extra_cull_margin = maxf(node.extra_cull_margin, DEPTH)
 	rec.material.set_shader_parameter("soft_tracks", true)
 	rec.material.set_shader_parameter("soft_track_origin", Vector2(key * SECTOR))

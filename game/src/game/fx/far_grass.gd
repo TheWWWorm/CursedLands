@@ -149,9 +149,14 @@ func _select(camera: Camera3D) -> void:
 			if contains_tile(key,wanted) or contains_tile(wanted,key): needed=true; break
 		if not needed: _retire(key)
 	# Coarsening can free the slots needed by a refinement elsewhere.
+	# Sorting called the resident scan and rebuilt each transformed box for
+	# every comparison. Compute each key's priority once per camera plan.
+	var priority := {}
+	for key: Vector3i in _wanted:
+		priority[key] = [_has_descendant(key), _planner.box(key).get_center().distance_squared_to(_planner.eye)]
 	_wanted.sort_custom(func(a: Vector3i,b: Vector3i)->bool:
-		var ac := _has_descendant(a); var bc := _has_descendant(b)
-		return ac if ac!=bc else _planner.box(a).get_center().distance_squared_to(_planner.eye)<_planner.box(b).get_center().distance_squared_to(_planner.eye))
+		var ac: bool = priority[a][0]; var bc: bool = priority[b][0]
+		return ac if ac!=bc else priority[a][1]<priority[b][1])
 
 func _has_descendant(key: Vector3i) -> bool:
 	for resident: Vector3i in _chunks:
@@ -409,15 +414,19 @@ class Planner extends RefCounted:
 	var forward := Vector3.FORWARD
 	var root_level := 0
 	var diagnostic := {}
+	var _bounds := {}
 
 	func box(key: Vector3i) -> AABB:
+		if _bounds.has(key): return _bounds[key]
 		var side := TILE*float(1<<key.z)
 		var origin := Vector2(key.x,key.y)*side
 		var span := (Vector2(size)-origin).clamp(Vector2.ZERO,Vector2.ONE*side)
 		# A root just outside the frustum may still send a leaf into view.
 		# Grow in local XZ before transforming the full swept envelope.
-		return transform*AABB(Vector3(origin.x-FOOTPRINT,heights.x-0.03,-origin.y-span.y-FOOTPRINT),
+		var bounds := transform*AABB(Vector3(origin.x-FOOTPRINT,heights.x-0.03,-origin.y-span.y-FOOTPRINT),
 			Vector3(span.x+2.0*FOOTPRINT,heights.y-heights.x+0.95,span.y+2.0*FOOTPRINT))
+		_bounds[key] = bounds
+		return bounds
 
 	func visible(bounds: AABB) -> bool:
 		var centre := bounds.get_center(); var half := bounds.size*0.5
@@ -440,6 +449,8 @@ class Planner extends RefCounted:
 	## Every intersecting ground bound has a leaf. If a view needs too many,
 	## coarsen the representation; never silently truncate visible corners.
 	func select(camera: Camera3D, snapshot: Field, terrain_transform := Transform3D.IDENTITY) -> Array[Vector3i]:
+		if size != snapshot.size or heights != Vector2(snapshot.low,snapshot.high) or transform != terrain_transform:
+			_bounds.clear()
 		size = snapshot.size; heights = Vector2(snapshot.low,snapshot.high); transform = terrain_transform
 		var camera_transform := camera.get_camera_transform()
 		planes = camera.get_frustum(); eye = camera_transform.origin; forward = -camera_transform.basis.z
@@ -451,7 +462,9 @@ class Planner extends RefCounted:
 			result.clear(); _collect(Vector3i(0,0,root_level),bias,result)
 			if result.size()<=limit or bias>=root_level: break
 			bias += 1
-		result.sort_custom(func(a: Vector3i,b: Vector3i)->bool: return box(a).get_center().distance_squared_to(eye)<box(b).get_center().distance_squared_to(eye))
+		var distances := {}
+		for key: Vector3i in result: distances[key] = box(key).get_center().distance_squared_to(eye)
+		result.sort_custom(func(a: Vector3i,b: Vector3i)->bool: return distances[a]<distances[b])
 		diagnostic = {"tiles":result.size(),"coarsen_bias":bias,"coarsened":bias>0,"limit":limit,
 			"candidate_limit":result.size()*CELLS*CELLS,"packed_byte_limit":result.size()*CELLS*CELLS*80,
 			"triangle_limit":result.size()*CELLS*CELLS*TRIANGLES,"far_plane":camera.far}
