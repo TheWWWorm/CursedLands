@@ -80,6 +80,14 @@ The travel map offers buttons for previously visited islands. You can revisit an
 
 The game includes **Game setup → Mods and rules**, accessible from New Game, multiplayer and **Options → Remake**. Named profiles keep their own saves and network characters; data mods can provide configurable revival, texture/sound replacements and selected balance patches. Shared rules follow the host, and sandbox profiles keep cheat-enabled progress separate. See the [player and mod-author guide](docs/mods.md), [Quick recovery example](examples/mods/quick-recovery/mod.json) and [legacy mod converter](docs/legacy-mod-converter.md).
 
+**Game wiki**, available from the main menu and the Esc menu, is an offline
+encyclopedia generated from your installed game data. Search items, material
+variants, blueprints, spells, runes and creatures. Each item has one page with
+buttons to switch its material versions and 3D model. Inspect creatures and
+try spell rune combinations. Linked mechanics pages explain combat, armor,
+magic, crafting and attributes. It follows the game's English, Russian or
+German texts. See [the encyclopedia guide](docs/wiki.md).
+
 ## Co-op
 
 In **Multiplayer**, one player chooses **Host co-op campaign** (a new game or one of their saves); the others choose **Join co-op campaign** and pick the game from the list of games on the local network, or enter the host's address (add `:port` for a game hosted on another port). The host's machine runs the world, and every player controls their own hero and the mercenaries they hire.

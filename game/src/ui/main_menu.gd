@@ -29,6 +29,8 @@ var _campaign_bar: VBoxContainer
 var _campaign_error: Label
 var _mods: ModPanel
 var _mods_button: Button
+var _wiki: WikiPanel
+var _wiki_button: Button
 var _coop_button: Button
 var _opening_panel := false
 ## The startup recovery probe renders this screen without running calibration.
@@ -66,6 +68,8 @@ func _ready() -> void:
 		music.play()
 	_mods = ModPanel.new()
 	add_child(_mods)
+	_wiki = WikiPanel.new()
+	add_child(_wiki)
 	_options = OptionsPanel.new()
 	_options.game_files = true   # remake: "Game files…" (Remake row 11)
 	_options.game_files_requested.connect(_game_files)
@@ -93,6 +97,15 @@ func _ready() -> void:
 	CampaignChoices.style_button(_mods_button)
 	_mods_button.pressed.connect(func(): _on_board("mods"))
 	_campaign_bar.add_child(_mods_button)
+	_wiki_button = Button.new()
+	_wiki_button.text = RemakeText.t("Game wiki")
+	_wiki_button.tooltip_text = RemakeText.t("Browse items, spells, creatures and game mechanics.")
+	_wiki_button.custom_minimum_size = Vector2(220, 40)
+	_wiki_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	CampaignChoices.style_button(_wiki_button)
+	_wiki_button.pressed.connect(func():
+		if pad_menu_free(): _wiki.open())
+	_campaign_bar.add_child(_wiki_button)
 	_campaign_error = Label.new()
 	_campaign_error.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_campaign_error.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -255,6 +268,7 @@ func campaign_pad_targets() -> Array:
 		for id: String in _campaigns.buttons:
 			targets.append({"rect": _campaigns.buttons[id].get_global_rect(), "id": "campaign_" + id})
 		targets.append({"rect": _mods_button.get_global_rect(), "id": "campaign_mods"})
+		targets.append({"rect": _wiki_button.get_global_rect(), "id": "campaign_wiki"})
 		if _coop_button:
 			targets.append({"rect": _coop_button.get_global_rect(), "id": "campaign_coop"})
 	return targets
@@ -306,7 +320,7 @@ func _on_board(action: String) -> void:
 
 ## No screen over the signpost (its boards take clicks and the gamepad).
 func pad_menu_free() -> bool:
-	return not (_opening_panel or _mods.visible or _panel.visible or _options.visible or has_node("Credits") or _difficulty.visible or (_load != null and _load.visible) \
+	return not (_opening_panel or _wiki.visible or _mods.visible or _panel.visible or _options.visible or has_node("Credits") or _difficulty.visible or (_load != null and _load.visible) \
 			or (_chars and _chars.visible))
 
 

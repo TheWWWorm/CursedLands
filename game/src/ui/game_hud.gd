@@ -38,6 +38,9 @@ var _dialog: DialogPanel
 var _travel: Control
 var _inventory: InventoryPanel
 var _journal: JournalPanel
+var _wiki: WikiPanel
+var _wiki_button: Button
+var _wiki_button_scale := -1.0
 var _side_quests: SideQuestPanel
 var _tutorial: TutorialPanel
 var _movie: MoviePlayer
@@ -159,13 +162,29 @@ func _ready() -> void:
 	_menu.visible = false
 	_menu.pressed.connect(_on_signpost)
 	_add_ui(_menu)
+	_wiki_button = Button.new()
+	_wiki_button.text = RemakeText.t("Game wiki")
+	_wiki_button.tooltip_text = RemakeText.t("Browse items, spells, creatures and game mechanics.")
+	_wiki_button.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	_wiki_button.offset_left = -240
+	_wiki_button.offset_right = -24
+	_wiki_button.offset_top = 24
+	_wiki_button.offset_bottom = 66
+	_wiki_button.hide()
+	_wiki_button.pressed.connect(open_wiki)
+	_add_ui(_wiki_button)
+	_wiki = WikiPanel.new()
+	_wiki.closed.connect(_close_menu)
+	_add_ui(_wiki)
 	# Remake: the co-op host's "Players" button beside the signpost and its
 	# player list with Kick / Ban (PlayersPanel).
 	_players_btn = PlayersPanel.EscButton.new()
 	_players_btn.pressed.connect(open_players)
 	_add_ui(_players_btn)
 	_menu.pad_extra = func() -> Array:
-		return [{"rect": _players_btn.pad_rect(PlayersPanel.EscButton.R), "id": "players"}] if _players_btn.visible else []
+		var targets := [{"rect": _players_btn.pad_rect(PlayersPanel.EscButton.R), "id": "players"}] if _players_btn.visible else []
+		if _wiki_button.visible: targets.append({"rect": _wiki_button.get_global_rect(), "id": "wiki"})
+		return targets
 	# Remake: the gamepad's prompts under the signpost (A / B, Y quick save,
 	# X held quick load), shown while the controller drives.
 	_esc_hints = Control.new()
@@ -504,6 +523,16 @@ func _process(_dt: float) -> void:
 	var host_online: bool = game != null and game.session != null and game.session.multiplayer_game and game.session.can_manage_game()
 	if _players_btn.visible != (_menu.visible and host_online):
 		_players_btn.visible = _menu.visible and host_online
+	_wiki_button.visible = _menu.visible
+	if _menu.visible:
+		var scale := clampf(ui_size().y / 900.0, 0.85, 3.0)
+		if not is_equal_approx(scale, _wiki_button_scale):
+			_wiki_button_scale = scale
+			_wiki_button.offset_left = -240 * scale
+			_wiki_button.offset_right = -24 * scale
+			_wiki_button.offset_top = 24 * scale
+			_wiki_button.offset_bottom = 66 * scale
+			_wiki_button.add_theme_font_size_override("font_size", roundi(20 * scale))
 	var hints: bool = _menu.visible and PadInput.active == "pad"
 	if _esc_hints.visible != hints:
 		_esc_hints.visible = hints
@@ -604,7 +633,7 @@ func _quest_note(key: String, value: float) -> void:
 func _quest_field_top() -> bool:
 	if not _field_on or _esc_open or game.session.loading_game or quests_screen != null:
 		return false
-	for panel in [_menu, _dialog, _inventory, _journal, _side_quests, _travel,
+	for panel in [_menu, _dialog, _inventory, _journal, _wiki, _side_quests, _travel,
 			_options, _save_load, _movie, _tutorial, _game_over_box, _quit_box,
 			_players_panel, _death_notice]:
 		if is_instance_valid(panel) and panel.visible:
@@ -823,7 +852,7 @@ func _close_for_host_load(preserve_movie := false) -> void:
 		_save_load.loading = false
 		_save_load._close()
 	_close_menu()
-	for p in [_dialog, _inventory, _journal, _side_quests, _tutorial, _movie, _options]:
+	for p in [_dialog, _inventory, _journal, _wiki, _side_quests, _tutorial, _movie, _options]:
 		if p == _movie and preserve_movie:
 			continue
 		if is_instance_valid(p):
@@ -997,6 +1026,14 @@ func toggle_journal() -> void:
 		_journal.open()
 
 
+func open_wiki() -> void:
+	if not _esc_open: _open_menu()
+	_menu.hide()
+	_wiki_button.hide()
+	var rules: Dictionary = game.session.mod_config.get("rules", {})
+	_wiki.open(rules)
+
+
 func _first_selected() -> GameUnit:
 	for u: GameUnit in game.selected if game else []:
 		if is_instance_valid(u):
@@ -1106,6 +1143,8 @@ func _close_menu() -> void:
 		return
 	_esc_open = false
 	_menu.visible = false
+	_wiki_button.hide()
+	_wiki.dismiss()
 	_esc_bg.visible = false
 	_esc_bg.texture = null
 	_esc_frame = null
@@ -1224,7 +1263,7 @@ func _panel_open() -> bool:
 		return true
 	if quests_screen != null:
 		return true
-	for panel in [_inventory, _journal, _side_quests, _tutorial, _movie, _options, _save_load,
+	for panel in [_inventory, _journal, _wiki, _side_quests, _tutorial, _movie, _options, _save_load,
 			_game_over_box, _quit_box, _players_panel, _item_info_box]:
 		if is_instance_valid(panel) and panel.visible:
 			return true

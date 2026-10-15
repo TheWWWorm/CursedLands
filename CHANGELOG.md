@@ -1,10 +1,18 @@
 # Changelog
 
+## Unreleased
+
+- Add an in-game encyclopedia with searchable HTML pages for items, material variants, blueprints, spells, runes and creatures, generated from the installed game databases.
+- Keep each item on one page, with buttons to switch its material versions and blueprint view while updating the statistics and model.
+- Show rotatable, zoomable item and creature models, and let readers calculate spell variants with compatible runes.
+- Explain combat, armor, magic, crafting and character formulas with values and examples from the loaded game data. Provide the interface and explanations in English, Russian and German.
+
 ## 1.5.1-preview.4 — puddle visibility preview, 15 October 2026
 
 - Give small rain puddles a muted sky sheen that remains visible from the isometric camera, retaining their sparse coverage, soft margins and drying behaviour.
 
 See [preview notes](docs/releases/1.5.1-preview.4.md) for compatibility and platform limits.
+
 
 ## 1.5.1-preview.3 — cloud rendering preview, 15 October 2026
 

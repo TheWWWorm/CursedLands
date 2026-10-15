@@ -42,7 +42,24 @@ for table in ('REMAKE_OPTIONS', 'DISPLAY_CHOICES'):
                 continue  # numeric quantities and unchanged graphics acronyms
             if key not in entries:
                 errors.append(f'{table}[{name}]: missing RU/DE key: {key}')
-print(f'Translations: {len(entries)} entries; {len(errors)} errors')
+# The wiki translates categories, damage types, mechanics titles and stat
+# labels dynamically. Check their source tables as well as literal calls.
+wiki_source = (ROOT / 'game/wiki_catalog.gd').read_text()
+wiki_keys = set()
+for table in ('CATEGORIES', 'DAMAGE_TYPES'):
+    block = re.search(r'const ' + table + r' := (\[[^\n]+\])', wiki_source)[1]
+    wiki_keys.update(json.loads(block))
+block = wiki_source.split('const MECHANICS := {', 1)[1].split('\n}', 1)[0]
+wiki_keys.update(json.loads(m[1]) for m in re.finditer(r':\s*(' + STRING + r')', block))
+for match in re.finditer(r'for field: Array in (\[\[.*?\]\]):', wiki_source):
+    wiki_keys.update(row[1] for row in json.loads(match[1]))
+for key in ('At least 20% of each incoming damage type passes through armor.',
+            'Armor can absorb damage completely.'):
+    wiki_keys.add(key)
+for key in sorted(wiki_keys):
+    if key not in entries:
+        errors.append(f'Wiki dynamic label missing RU/DE key: {key}')
+print(f'Translations: {len(entries)} entries; {len(wiki_keys)} dynamic wiki keys; {len(errors)} errors')
 for error in errors:
     print(error)
 sys.exit(bool(errors))

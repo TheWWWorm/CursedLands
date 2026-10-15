@@ -1,0 +1,233 @@
+{
+  "date": "2026-10-15",
+  "feature": "Generated in-game encyclopedia with one page per item family and material/version buttons",
+  "base_revision": "9f85fc63caab7916cae4730438f2acd60841944b",
+  "branch": "feature/in-game-wiki",
+  "source_sha256": {
+    "game/src/game/wiki_catalog.gd": "1d6a6ecf21d7a0e2c33f18e1a780942946e8d4c82849705ed786d948e445d320",
+    "game/src/ui/wiki_html.gd": "e1f2168dbc3756594cfee576672491ebe0989c3054d9fa8f9866c643e0994531",
+    "game/src/ui/wiki_panel.gd": "7378f5495e7ce42287becc6eebe37950353a0321cc04631fc9145efbffabeceb",
+    "game/src/ui/wiki_preview.gd": "9434de243df941a3d984647caa6792a9ca98a644a1dd1669705e273e305a9675",
+    "game/src/ui/game_hud.gd": "f90753b84d3763d1bdde663995f3b84bc72ed275795132c4fb638fe5afecd590",
+    "game/src/ui/main_menu.gd": "32ef5f9c8e3986409834f4cb5db416d537a53daec6bf1494ec9d4ce4f123407d",
+    "game/src/ei/remake_text.gd": "affa2452b6624d9ed1d7e21fefc449593a6e876308bd52566cb333c41341e5aa",
+    "tools/tests/wiki.gd": "5885e5675508fdd7b6604b801363255bec7a5aab268da3a1e500a07f81bd0ff7",
+    "tools/check_translations.py": "7d319e7924d31d217428abae2ee1e785e72185d086c8ac9a43e7a4adaa2cec07"
+  },
+  "engine": "Godot 4.7 stable official Linux x86_64",
+  "outcome": "pass",
+  "full_runs": [
+    {
+      "campaign": "cursed_lands",
+      "checks": 8245,
+      "counts": {
+        "Creatures": 389,
+        "Game mechanics": 6,
+        "Items": 424,
+        "Materials": 33,
+        "Runes": 38,
+        "Spells": 111
+      },
+      "failures": [],
+      "language": "en",
+      "rendered": true,
+      "seconds": 24.748,
+      "name": "en",
+      "renderer": "gl_compatibility",
+      "exit_code": 0,
+      "errors": [],
+      "wall_seconds": 29.81,
+      "main_menu_tested": true,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/checks/verified-en/run.log"
+    },
+    {
+      "campaign": "cursed_lands",
+      "checks": 8230,
+      "counts": {
+        "Creatures": 389,
+        "Game mechanics": 6,
+        "Items": 424,
+        "Materials": 33,
+        "Runes": 38,
+        "Spells": 111
+      },
+      "failures": [],
+      "language": "ru",
+      "rendered": true,
+      "seconds": 25.16,
+      "name": "ru",
+      "renderer": "gl_compatibility",
+      "exit_code": 0,
+      "errors": [],
+      "wall_seconds": 30.51,
+      "main_menu_tested": true,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/checks/verified-ru/run.log"
+    },
+    {
+      "campaign": "cursed_lands",
+      "checks": 8269,
+      "counts": {
+        "Creatures": 389,
+        "Game mechanics": 6,
+        "Items": 424,
+        "Materials": 33,
+        "Runes": 38,
+        "Spells": 111
+      },
+      "failures": [],
+      "language": "de",
+      "rendered": true,
+      "seconds": 23.955,
+      "name": "de",
+      "renderer": "gl_compatibility",
+      "exit_code": 0,
+      "errors": [],
+      "wall_seconds": 29.36,
+      "main_menu_tested": true,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/checks/verified-de/run.log"
+    },
+    {
+      "campaign": "cursed_lands",
+      "checks": 8242,
+      "counts": {
+        "Creatures": 389,
+        "Game mechanics": 6,
+        "Items": 424,
+        "Materials": 33,
+        "Runes": 38,
+        "Spells": 111
+      },
+      "failures": [],
+      "language": "en",
+      "rendered": true,
+      "seconds": 4.535,
+      "name": "en-vulkan",
+      "renderer": "forward_plus",
+      "exit_code": 0,
+      "errors": [],
+      "wall_seconds": 11.83,
+      "main_menu_tested": false,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/checks/verified-en-vulkan/run.log"
+    },
+    {
+      "campaign": "lost_in_astral",
+      "checks": 36836,
+      "counts": {
+        "Creatures": 716,
+        "Game mechanics": 6,
+        "Items": 483,
+        "Materials": 40,
+        "Runes": 40,
+        "Spells": 93
+      },
+      "failures": [],
+      "language": "ru",
+      "rendered": false,
+      "seconds": 11.621,
+      "name": "lia",
+      "renderer": "headless",
+      "exit_code": 0,
+      "errors": [],
+      "wall_seconds": 15.59,
+      "main_menu_tested": true,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/checks/verified-lia/run.log"
+    }
+  ],
+  "final_localization_runs": [
+    {
+      "campaign": "cursed_lands",
+      "checks": 8242,
+      "counts": {
+        "Creatures": 389,
+        "Game mechanics": 6,
+        "Items": 424,
+        "Materials": 33,
+        "Runes": 38,
+        "Spells": 111
+      },
+      "failures": [],
+      "language": "en",
+      "rendered": false,
+      "seconds": 2.077,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/labels-en.log"
+    },
+    {
+      "campaign": "cursed_lands",
+      "checks": 8227,
+      "counts": {
+        "Creatures": 389,
+        "Game mechanics": 6,
+        "Items": 424,
+        "Materials": 33,
+        "Runes": 38,
+        "Spells": 111
+      },
+      "failures": [],
+      "language": "ru",
+      "rendered": false,
+      "seconds": 2.328,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/labels-ru.log"
+    },
+    {
+      "campaign": "cursed_lands",
+      "checks": 8266,
+      "counts": {
+        "Creatures": 389,
+        "Game mechanics": 6,
+        "Items": 424,
+        "Materials": 33,
+        "Runes": 38,
+        "Spells": 111
+      },
+      "failures": [],
+      "language": "de",
+      "rendered": false,
+      "seconds": 2.123,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/labels-de.log"
+    }
+  ],
+  "translation_check": {
+    "entries": 1338,
+    "dynamic_wiki_keys": 46,
+    "errors": 0
+  },
+  "item_version_checks": [
+    "one search entry per item family",
+    "material button keeps current page and history",
+    "selected version uses gameplay damage calculations",
+    "selected version changes live model",
+    "blueprint is a view on the same page"
+  ],
+  "coverage": [
+    "every generated HTML article and local link",
+    "runtime database modifications and new mod records",
+    "all item model categories, materials and blueprints",
+    "animated creature model, rotation and full framing",
+    "spell rune builder, reset, history and filters",
+    "main-menu entry and real HUD pause/host-load lifecycle",
+    "co-op local input blocking without pausing the world",
+    "real Escape dispatch while the search field has focus",
+    "1280x720, 800x600 and 480x800 layouts"
+  ],
+  "visual_review": {
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "reviewed": [
+      "item versions and material buttons",
+      "creature model",
+      "spell model and builder",
+      "portrait model and article layout"
+    ],
+    "evidence_directory": "/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/checks"
+  },
+  "limits": [
+    "Desktop Linux render checks use OpenGL Compatibility; encyclopedia widgets and HUD lifecycle also pass Forward+ Vulkan. The Vulkan run skips the separate 3D main-menu island; its integration is covered by all three OpenGL runs. An earlier full-island Vulkan attempt emitted terrain compute push-constant errors and is retained in render-en-vulkan-verified.log.",
+    "Physical Android, browser, Windows and macOS execution were not performed. The implementation uses existing portable Godot widgets, XMLParser and the game model preview paths.",
+    "Creature values describe database prototypes, not map instances after script, difficulty, co-op or buff overrides.",
+    "No release package, public artifact, tag, hosted export or version metadata was changed."
+  ],
+  "evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015"
+}
