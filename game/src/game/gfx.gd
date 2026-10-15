@@ -103,8 +103,13 @@ float ei_puddle_mask(float wet, float up, float grass, float noise) {
 		* smoothstep(mix(0.91,0.76,wet),mix(0.99,0.90,wet),noise);
 }
 vec3 ei_puddle_colour(vec3 ground_colour, float up_view) {
-	float fresnel = 0.02 + 0.98 * pow(1.0-clamp(abs(up_view),0.0,1.0),5.0);
-	return mix(ground_colour*0.94,ei_sky,fresnel);
+	// Terrain uses native diffuse lighting rather than environment radiance.
+	// Keep its small pools readable overhead with a muted sky sheen, while
+	// retaining the stronger grazing response and the soil beneath the water.
+	float grazing = pow(1.0-clamp(abs(up_view),0.0,1.0),5.0);
+	float sky_light = dot(ei_sky,vec3(0.2126,0.7152,0.0722));
+	vec3 sheen = mix(vec3(sky_light),ei_sky,0.15);
+	return mix(ground_colour*0.72,sheen,0.22+0.78*grazing);
 }
 uniform vec4 ei_material_diffuse = vec4(1.0);
 uniform vec3 ei_material_emissive = vec3(0.0);

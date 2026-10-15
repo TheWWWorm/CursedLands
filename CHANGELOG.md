@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.1-preview.4 — puddle visibility preview, 15 October 2026
+
+- Give small rain puddles a muted sky sheen that remains visible from the isometric camera, retaining their sparse coverage, soft margins and drying behaviour.
+
+See [preview notes](docs/releases/1.5.1-preview.4.md) for compatibility and platform limits.
+
 ## 1.5.1-preview.3 — cloud rendering preview, 15 October 2026
 
 - Keep water's normal-incidence reflection visible from steep camera angles while retaining the swamp colour treatment.

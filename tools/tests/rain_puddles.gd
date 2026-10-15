@@ -5,11 +5,11 @@ var view: SubViewport
 var terrain: EITerrain
 var rows := []
 func difference(a: PackedByteArray, b: PackedByteArray) -> Dictionary:
-	var changed := 0; var peak := 0
+	var changed := 0; var readable := 0; var peak := 0
 	for i in range(0,a.size(),4):
 		var d := maxi(absi(a[i]-b[i]),maxi(absi(a[i+1]-b[i+1]),absi(a[i+2]-b[i+2])))
-		changed += int(d>2); peak=maxi(peak,d)
-	return {"pixels_over_2":changed,"peak":peak}
+		changed += int(d>2); readable += int(d>12); peak=maxi(peak,d)
+	return {"pixels_over_2":changed,"pixels_over_12":readable,"peak":peak}
 func site() -> Vector2:
 	var best := Vector2(24,430); var score := -INF
 	var size := terrain.size_ei()
@@ -75,6 +75,7 @@ func _ready() -> void:
 	var dry_on:=await capture("dry-on",0.0,true)
 	var visible := difference(on,off)
 	check(int(visible.pixels_over_2)>100,"puddles visibly affect exposed terrain")
+	check(int(visible.pixels_over_12)>1000,"pooled water has readable contrast from the normal isometric camera")
 	check(int(visible.pixels_over_2)<view.size.x*view.size.y/10,"standing water stays sparse in the isometric view at full wetness")
 	check(after_rain==on,"puddles remain when rain stops and accumulated wetness remains")
 	check(drying!=off and drying!=after_rain,"puddles recede gradually as the ground dries")
