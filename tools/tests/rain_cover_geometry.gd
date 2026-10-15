@@ -13,7 +13,8 @@ func _ready() -> void:
 	for option in GameData.OPTIONS:
 		if String(option[0]).begins_with("gfx_"):GameData.options[option[0]]=0
 	var campaign:=CampaignMap.load_from(GameData.texts)
-	for zone in ["bz2h","gz2h"]:
+	var zones := ["gz1g","gz11k"] if GameData.campaign_id==CampaignProfile.ORIGINAL else ["bz2h","gz2h"]
+	for zone in zones:
 		var map:Dictionary=campaign.zone(zone)
 		var scene:=EIMapScene.load_map(map.mpr,map.mob,false)
 		check(scene!=null,"authored map loads: "+zone)
@@ -28,6 +29,7 @@ func _ready() -> void:
 			var gpu:=mesh.surface_get_arrays(0)
 			check(retained[0]==gpu[Mesh.ARRAY_VERTEX],zone+": retained positions equal rendered positions")
 			check(retained[1]==gpu[Mesh.ARRAY_INDEX],zone+": retained indices equal rendered indices")
+			check(EIFigure.mesh_faces(mesh)==mesh.get_faces(),zone+": camera occlusion faces equal the engine triangle cache")
 			saved[mesh]=retained
 			bytes+=retained[0].size()*12+retained[1].size()*4
 		check(saved.size()>10,zone+": scenery uses shared CPU geometry")
@@ -49,6 +51,7 @@ func _ready() -> void:
 	var arrays:=box.surface_get_arrays(0)
 	var fallback:=EIFigure.surface_geometry(box,0)
 	check(fallback[0]==arrays[Mesh.ARRAY_VERTEX] and fallback[1]==arrays[Mesh.ARRAY_INDEX],"procedural meshes retain fallback geometry")
+	check(EIFigure.mesh_faces(box)==box.get_faces(),"procedural camera occlusion retains engine fallback")
 	FileAccess.open("user://rain-cover-geometry.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures,"maps":rows},"  "))
 	print("RAIN_COVER_GEOMETRY ",checks," checks ",failures," failures")
 	get_tree().quit(1 if failures else 0)

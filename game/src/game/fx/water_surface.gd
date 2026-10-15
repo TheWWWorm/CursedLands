@@ -51,7 +51,7 @@ func _sector(key: Vector2i) -> Dictionary:
 	var node := terrain.get_node_or_null("Water_%d_%d" % [key.x,key.y]) as MeshInstance3D
 	if node == null or node.mesh == null or node.mesh.get_surface_count() != 1:
 		return {}
-	var arrays := node.mesh.surface_get_arrays(0)
+	var arrays := EIWaterMesh.query_arrays(node)
 	var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
 	var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
 	var uv2: PackedVector2Array = arrays[Mesh.ARRAY_TEX_UV2]

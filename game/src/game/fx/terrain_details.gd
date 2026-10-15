@@ -706,6 +706,13 @@ func _install_chunk(key: Vector2i, data: Dictionary) -> void:
 	multi.mesh = _chunk_mesh(key)
 	multi.instance_count = transforms.size()
 	if data.has("buffer"):
+		# Grass switches mesh LOD while panning. Godot 4.7 reads an uploaded
+		# buffer back from the GPU to rebuild bounds on each mesh change if
+		# it has no CPU cache. Create that cache BEFORE the first upload;
+		# the complete buffer below replaces this seed and keeps it current.
+		# Scalar fallback uploads already create the same cache naturally.
+		if not transforms.is_empty():
+			multi.set_instance_transform(0, transforms[0])
 		multi.buffer = data.buffer
 	else:
 		for i in transforms.size():

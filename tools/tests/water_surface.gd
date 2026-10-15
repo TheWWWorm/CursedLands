@@ -59,8 +59,8 @@ func synthetic() -> void:
 		Vector3(1,4,-1),Vector3(3,4,-1),Vector3(1,4,-3)])
 	arrays[Mesh.ARRAY_TEX_UV2] = PackedVector2Array([Vector2.ZERO,Vector2.ZERO,Vector2.ZERO,Vector2.ZERO,Vector2.ZERO,Vector2.ZERO])
 	arrays[Mesh.ARRAY_INDEX] = PackedInt32Array([0,1,2,3,4,5])
-	var mesh := ArrayMesh.new(); mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
-	var node := MeshInstance3D.new(); node.name = "Water_0_0"; node.mesh = mesh; t.add_child(node)
+	var node := EIWaterMesh.new(); node.name = "Water_0_0"; node.configure(arrays,null); t.add_child(node)
+	var mesh := node.mesh as ArrayMesh
 	var surface := Surface.new(t); surface.begin_frame()
 	check(is_equal_approx(surface.sample(Vector2(1.5,-1.5)).height,4.0),"highest overlapping triangle owns the surface")
 	check(surface.sample(Vector2(4,-4)).is_empty(),"water triangle hole stays empty")
@@ -83,6 +83,16 @@ func rendered() -> void:
 	var t := EITerrain.load_map("zone1")
 	check(t != null,"authored zone1 terrain exists")
 	if t == null: return
+	var retained_bytes := 0
+	for child in t.get_children():
+		if not child is MeshInstance3D or not String(child.name).begins_with("Water_"): continue
+		check(child is EIWaterMesh,"authored liquid retains its query geometry")
+		var retained := EIWaterMesh.query_arrays(child)
+		var uploaded: Array = child.mesh.surface_get_arrays(0)
+		for channel in [Mesh.ARRAY_VERTEX,Mesh.ARRAY_TEX_UV2,Mesh.ARRAY_INDEX]:
+			check(retained[channel]==uploaded[channel],"retained channel equals actual uploaded geometry")
+			retained_bytes += retained[channel].to_byte_array().size()
+	rows.append({"mode":"retained-geometry","bytes":retained_bytes})
 	t.set_process(false)
 	var centre := focus(t); check(centre.is_finite(),"exposed non-swamp water found")
 	var f := fixture(t,centre)

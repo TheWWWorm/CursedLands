@@ -1959,11 +1959,8 @@ func _make_mesh(verts: Array, tex: PackedInt32Array, tile_mats: PackedInt32Array
 	var arrays := _mesh_arrays(verts, tex, tile_mats, tile_origin, vert_mats)
 	if arrays.is_empty():
 		return null
-	var mesh := ArrayMesh.new()
-	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-	mesh.surface_set_material(0, mat)
-	var mi := MeshInstance3D.new()
-	mi.mesh = mesh
+	var mi := EIWaterMesh.new()
+	mi.configure(arrays, mat)
 	return mi
 
 

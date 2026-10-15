@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.5.1-preview.1 — local performance preview, 15 October 2026
+
+- Retain grass instance data on the CPU before bulk upload, avoiding GPU readbacks when camera movement changes grass detail.
+- Reuse authored water geometry for mist, ambient life and water-contact queries as the camera enters new sectors.
+- Reuse retained scenery triangles for camera occlusion tests before fading objects in front of the party.
+- Reuse regional particle habitat results for overlapping camera cells, with bounded storage and invalidation when scenery or water levels change.
+- Prepare regional wildlife shaders during map loading, including tinted snow mice and frogs that first appear away from the starting view.
+
+See [preview notes](docs/releases/1.5.1-preview.1.md) for compatibility and platform limits.
+
 ## 1.5.0 — stable release, 15 October 2026
 
 - Retain scenery geometry on the CPU for rain-shelter maps and footprint setup, avoiding renderer readbacks during gameplay.

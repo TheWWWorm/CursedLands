@@ -78,6 +78,8 @@ void fragment() {
 var material: ShaderMaterial
 var records: Array[Dictionary] = []
 var _cell := Vector2i(0x7fffffff,0x7fffffff)
+var _field: Habitats
+var _cells := {} # At most the current 7x7 square of immutable source records.
 
 
 ## Keep the program across camera/zone resets, and expose the same material
@@ -112,24 +114,23 @@ func _init() -> void:
 
 func rebuild(field: Habitats, centre: Vector2, force := false) -> void:
 	var cell := Vector2i((centre/SPACING).floor())
+	force = force or field != _field
+	_field = field
 	if cell==_cell and not force: return
+	if force: _cells.clear()
 	_cell = cell; records.clear()
+	for key: Vector2i in _cells.keys():
+		if absi(key.x-cell.x)>3 or absi(key.y-cell.y)>3: _cells.erase(key)
 	for y in range(cell.y-3,cell.y+4):
 		for x in range(cell.x-3,cell.x+4):
 			var key := Vector2i(x,y)
-			for lane in 4:
-				var p := Vector2(key)*SPACING+Vector2(field.random(key,100+lane*5),field.random(key,101+lane*5))*SPACING
+			if not _cells.has(key): _cells[key] = _cell_records(field,key)
+			for row: Dictionary in _cells[key]:
+				var point: Vector3 = row.point
+				var p := Vector2(point.x,-point.z)
 				# The outermost corners have already faded completely.
 				if p.distance_to((Vector2(cell)+Vector2.ONE*0.5)*SPACING)>RANGE: continue
-				var hit := field.habitat(p)
-				var kinds := Habitats.particles(field.region,field.biome,hit,0.0)
-				for kind in Habitats.particles(field.region,field.biome,hit,1.0):
-					if not kind in kinds: kinds.append(kind)
-				if kinds.is_empty(): continue
-				var seed := field.random(key,102+lane*5)
-				var kind := int(kinds[mini(int(seed*kinds.size()),kinds.size()-1)])
-				var size := particle_size(kind)
-				records.append({"key":Vector3i(x,y,lane),"point":Vector3(p.x,float(hit.height),-p.y),"kind":kind,"seed":seed,"size":size})
+				records.append(row)
 				if records.size()>=MAX_PARTICLES: break
 			if records.size()>=MAX_PARTICLES: break
 		if records.size()>=MAX_PARTICLES: break
@@ -142,6 +143,24 @@ func rebuild(field: Habitats, centre: Vector2, force := false) -> void:
 		multimesh.set_instance_custom_data(i,Color(row.seed,row.kind,row.size,0))
 	multimesh.custom_aabb = bounds
 	multimesh.visible_instance_count = records.size()
+
+
+## A pan keeps most of the same cells. Habitat/triangle queries depend on the
+## authored field, not the camera or clock; refresh() supplies force when
+## scenery, ground or water levels change. Retain seeds and row-major order.
+func _cell_records(field: Habitats, key: Vector2i) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for lane in 4:
+		var p := Vector2(key)*SPACING+Vector2(field.random(key,100+lane*5),field.random(key,101+lane*5))*SPACING
+		var hit := field.habitat(p)
+		var kinds := Habitats.particles(field.region,field.biome,hit,0.0)
+		for kind in Habitats.particles(field.region,field.biome,hit,1.0):
+			if not kind in kinds: kinds.append(kind)
+		if kinds.is_empty(): continue
+		var seed := field.random(key,102+lane*5)
+		var kind := int(kinds[mini(int(seed*kinds.size()),kinds.size()-1)])
+		out.append({"key":Vector3i(key.x,key.y,lane),"point":Vector3(p.x,float(hit.height),-p.y),"kind":kind,"seed":seed,"size":particle_size(kind)})
+	return out
 
 
 func update(seconds: float, centre: Vector3, environment: Vector4, wind: Vector4, threats: PackedVector4Array) -> void:

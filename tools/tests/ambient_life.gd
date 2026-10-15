@@ -273,6 +273,16 @@ func lifetime(id: String, rendered: bool) -> void:
 	if not chosen: life.free(); return
 	var registry:=world.units.duplicate(); var water:=world.terrain.water.duplicate(); var positions:=world.terrain.heights.duplicate()
 	life.step(world,centre,10.0,render_hour)
+	var population := [life.root.get_child_count(),life.residents.duplicate(),life.flock.duplicate(),life.clock]
+	var variants := life.warmup_variants()
+	check([life.root.get_child_count(),life.residents,life.flock,life.clock]==population,"loading preparation leaves population and clock unchanged")
+	if life.wildlife and field.region in ["outdoor","snow","cave","dead_city"]:
+		check(not variants.is_empty(),"loading preparation includes possible regional models")
+		for variant: Array in variants:
+			check(variant[0] is ShaderMaterial and variant[1] is Mesh and variant[1].get_surface_count()>0,"warm-up retains real material and vertex format after temporary model cleanup")
+	var enabled := life.wildlife; life.wildlife=false
+	check(life.warmup_variants().is_empty(),"disabled wildlife creates no loading variants")
+	life.wildlife=enabled
 	check(life.residents.size()<=Life.MAX_GROUND and life.flock.size()<=Life.MAX_BIRDS,"bounded local animal population")
 	if field.region!="desert" and render_hour==12.0 and requested_kind<0:
 		check(life.residents.size()+life.flock.size()>0,"real habitat admits visible decorative models")

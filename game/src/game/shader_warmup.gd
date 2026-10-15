@@ -101,6 +101,9 @@ static func run(game: Game) -> void:
 		_add(items, seen, regional, env, REGIONAL)
 	for variant: Array in _zone_materials(game.world):
 		_add(items, seen, variant[0], env, variant[1], variant[2])
+	if ambient:
+		for variant: Array in ambient.warmup_variants():
+			_add(items, seen, variant[0], env, MESH, _zero_format(variant[1]))
 	for m: Material in _effect_materials(game):
 		_add(items, seen, m, env, MESH)
 	if game.world.terrain and game.world.terrain.details and game.world.terrain.details._material:

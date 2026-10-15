@@ -190,3 +190,73 @@ entrance-1 save has the same basename and population but a different route. Heal
 population and combat rules remain unchanged. Repeat areas in reversed order,
 report ten-second FPS ranges and p95/p99 frames, and keep the measured game
 sources unchanged between areas.
+
+## Top-down camera movement at 4K
+
+`map_pan.gd` version 2 measures presentation pacing on a wall-clock camera
+route. It loads an original campaign zone, applies a named preset, renders at
+3840×2160 with 100% scale, and performs stationary, first-pan and repeat-pan
+windows. The camera and its rig both move, so local mist, wildlife, regional
+particles, sound and the minimap follow the view. Version 1 moved only the
+camera and omitted those movement costs; do not combine their results.
+
+Run a frozen **release export**, not the editor, with separate application
+data/config/cache directories for each run. Pass the external fixture through
+the game's normal tool entry point:
+
+```sh
+XDG_DATA_HOME=/absolute/run/data \
+XDG_CONFIG_HOME=/absolute/run/config \
+XDG_CACHE_HOME=/absolute/run/cache \
+  /absolute/export/CursedLands.x86_64 --rendering-method forward_plus \
+  --rendering-driver vulkan --windowed --resolution 1280x720 \
+  --audio-driver Dummy -- --ei-path=/absolute/original/game \
+  --tool=/absolute/checkout/tools/benchmarks/map_pan.gd \
+  --pan-config=/absolute/run/config.json
+```
+
+The presentation window may be smaller; the fixture explicitly sets its
+internal viewport to the configured dimensions. Verify `viewport`,
+`render_scale`, `adapter` and the complete effective `options` in the output.
+For a 10-second window per phase and an 18-second warm-up:
+
+```json
+{"zone":"gz1g","preset":7,"width":3840,"height":2160,"seconds":10,"warmup":18}
+```
+
+Preset 7 is Very High. Optional `options` overrides are diagnostic ablations;
+record them and do not report a quality reduction as an optimization. Earlier
+experimental presets may contain different settings under the same name.
+Optional `speed` is metres/second (36 by default), `phases` selects windows,
+`hide_hud` removes the HUD and `terrain_shadows: false` removes the land caster
+for diagnosis. Keep these identical in a performance comparison.
+
+`user://map-pan.json` records frame intervals, percentiles, long frames over
+25 ms and newly compiled draw/mesh pipelines, with a PNG after each phase.
+GPU and render-thread timing getters and image readbacks run **outside** the
+measured windows; `last_gpu_ms` is a boundary sample, not a phase average.
+`process_ms` / `physics_ms` are Godot's periodically sampled engine monitors,
+not per-frame callback timings. Do not interpret their distributions as mean
+CPU execution cost. Profile separately; counters and instrumentation can change
+scheduling. Freeze pack, executable, native library, fixture and config hashes
+and do not build or run another GPU workload during the timed windows.
+
+World/session physics are held to preserve the authored population. Production
+rendering, UI and effect callbacks continue, but the camera pose is set directly;
+this is a render/pacing diagnostic, not a whole-game simulation or input-latency
+benchmark. It excludes the camera controller's input, smoothing and camera-fade
+update. First-use compilation and streaming still occur. Follow this with live
+simulation and actual platform testing before generalizing to gameplay or a
+different GPU/driver.
+
+`map_pan_live.gd` is the corresponding live check. Use the same command and
+configuration with that filename. It keeps world/session physics active and
+presses the currently bound left/right camera keys, changing direction every
+four seconds. The production camera handles smoothing, ground clearance and
+scenery fading. The result also records simulated seconds, camera travel and
+the count of scenery meshes tested for fading. The initial zoom is 42 m.
+Synthetic keys do not measure physical input latency, and this ordinary
+single-player scene does not represent busy co-op combat. Check that camera
+travel is nonzero and simulation advances at approximately one second per
+wall-clock second before using its frame statistics. Compare live runs with
+live runs; their camera route differs from `map_pan.gd`.

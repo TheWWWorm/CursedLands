@@ -97,6 +97,24 @@ static func night_at(hour: float) -> float:
 	return 1.0-day
 
 
+## The first nearby habitat may not admit every regional animal. Prepare
+## their actual materials and vertex formats under the loading screen too;
+## tinted frogs/snow mice otherwise compile a new shader during a pan.
+func warmup_variants() -> Array:
+	var out := []
+	if not wildlife or field == null: return out
+	var kinds: Array = {"outdoor":["frog","bird"],"snow":["snowmouse"],
+		"cave":["rat","spider"],"dead_city":["spider"]}.get(field.region,[])
+	for kind: String in kinds:
+		var model := Model.new()
+		if model.build(kind):
+			for part: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
+				if part.visible and part.mesh and part.material_override:
+					out.append([part.material_override,part.mesh])
+		model.free()
+	return out
+
+
 static func shown(unit: GameUnit) -> bool:
 	return is_instance_valid(unit) and unit.is_inside_tree() and unit.is_visible_in_tree() \
 		and not unit.hidden and not unit.fogged and not unit.dead and is_instance_valid(unit.model) and unit.model.is_visible_in_tree()

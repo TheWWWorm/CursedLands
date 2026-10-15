@@ -143,7 +143,7 @@ func _hides(i: int, eye: Vector3, t: Vector3) -> bool:
 			continue
 		var f: PackedVector3Array = _faces.get(g3, PackedVector3Array())
 		if f.is_empty():
-			f = g3.global_transform * g3.mesh.get_faces()
+			f = g3.global_transform * EIFigure.mesh_faces(g3.mesh)
 			_faces[g3] = f
 		for k in range(0, f.size() - 2, 3):
 			if Geometry3D.segment_intersects_triangle(eye, t, f[k], f[k + 1], f[k + 2]) != null:

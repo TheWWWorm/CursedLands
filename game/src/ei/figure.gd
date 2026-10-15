@@ -369,6 +369,24 @@ static func surface_geometry(mesh: Mesh, surface: int) -> Array:
 	return [arrays[Mesh.ARRAY_VERTEX], arrays[Mesh.ARRAY_INDEX]]
 
 
+## Camera occlusion needs triangle faces, but Mesh.get_faces() reads back the
+## uploaded buffers the first time it builds its triangle cache. Authored
+## figures already retain the same immutable positions and triangle indices.
+static func mesh_faces(mesh: Mesh) -> PackedVector3Array:
+	if mesh.get_surface_count() != 1 or not mesh.has_meta(GEOMETRY_META) \
+		or mesh.surface_get_primitive_type(0) != Mesh.PRIMITIVE_TRIANGLES:
+		return mesh.get_faces()
+	var geometry := surface_geometry(mesh, 0)
+	var vertices: PackedVector3Array = geometry[0]
+	var indices: PackedInt32Array = geometry[1]
+	var faces := PackedVector3Array()
+	faces.resize(vertices.size() if indices.is_empty() else indices.size())
+	# Match TriangleMesh.create's vertex welding grid, including its rounding.
+	for i in faces.size():
+		faces[i] = vertices[i if indices.is_empty() else indices[i]].snappedf(0.0001)
+	return faces
+
+
 static func build_mesh(f: Dictionary, c: Vector3) -> ArrayMesh:
 	if not f.has("id"):
 		_fig_ids += 1
