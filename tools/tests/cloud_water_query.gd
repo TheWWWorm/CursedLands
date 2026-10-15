@@ -18,6 +18,7 @@ func _ready() -> void:
 	var terrain := EITerrain.new()
 	var camera := Camera3D.new()
 	var other := Camera3D.new()
+	add_child(camera);add_child(other)
 	var scenery := Probe.new();scenery.terrain=terrain
 	var clouds := Probe.new();clouds.terrain=terrain
 	check(scenery.visible_plane(camera)==3.0,"initial water plane")
@@ -34,6 +35,14 @@ func _ready() -> void:
 	check(scenery.visible_plane(other)==6.0 and scenery.scans==2,"camera switch scans immediately")
 	var second := EITerrain.new();clouds.terrain=second
 	check(clouds.visible_plane(other)==5.0 and clouds.scans==3,"another map has independent scan state")
+	clouds.height=-INF;other.rotate_x(.2)
+	check(clouds.visible_plane(other)==-INF and clouds.scans==4,"large turn refreshes before the poll deadline")
+	clouds.height=7.0;other.rotate_x(-.2)
+	check(clouds.visible_plane(other)==7.0 and clouds.scans==5,"return to visible water has no delayed reflection gap")
+	other.position.x+=.1;clouds.visible_plane(other)
+	check(clouds.scans==5,"small camera movement retains the bounded poll")
+	other.position.x+=5;clouds.height=8.0
+	check(clouds.visible_plane(other)==8.0 and clouds.scans==6,"camera jump refreshes the shared plane immediately")
 	scenery.free();clouds.free();camera.free();other.free();terrain.free();second.free()
 	print("CLOUD_WATER_QUERY checks=",checks," failures=",failures)
 	get_tree().quit(int(failures>0))

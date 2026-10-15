@@ -63,9 +63,15 @@ func visible_plane(source: Camera3D) -> float:
 	# bounded scan, including during paused camera movement and water edits.
 	var now := Time.get_ticks_msec()
 	var query := terrain._reflection_plane_query
-	if query.get("source",0) != source.get_instance_id() or now >= int(query.get("until",0)):
+	var pose := source.get_camera_transform()
+	var previous: Transform3D = query.get("pose",pose)
+	# A fast turn or camera jump can expose water that was outside the last
+	# frustum. Do not leave that view without reflections until the next poll.
+	var moved := pose.origin.distance_squared_to(previous.origin) > 16.0 \
+		or pose.basis.z.dot(previous.basis.z) < cos(deg_to_rad(5.0))
+	if query.get("source",0) != source.get_instance_id() or moved or now >= int(query.get("until",0)):
 		plane = float(query.get("plane",plane))
-		query = {"source":source.get_instance_id(),"until":now+125,"plane":_select_plane(source)}
+		query = {"source":source.get_instance_id(),"pose":pose,"until":now+125,"plane":_select_plane(source)}
 		terrain._reflection_plane_query = query
 	return float(query.plane)
 
