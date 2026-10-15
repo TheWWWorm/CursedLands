@@ -1,7 +1,7 @@
 {
   "date": "2026-10-15",
   "issue": "https://github.com/TheWWWorm/CursedLands/issues/4",
-  "status": "Local fix; not released or pushed.",
+  "status": "Validated fix incorporated into 1.5.1-preview.2.",
   "base_commit": "f186cdce85c6456c0f717ee0226339165559f313",
   "baseline_release": "1.5.0",
   "changes": [
@@ -117,7 +117,7 @@
   "limitations": [
     "Running measurements are headless transform/playback instrumentation, not rendered frame-time performance measurements.",
     "Snapshot interpolation still has timing variation; this change removes the measured stationary frames and halves the commanded-speed standard deviation in the measured segment.",
-    "Windows and Android were not tested; no published release or hosted build was modified."
+    "This original validation did not test Windows or Android. Preview publication is recorded separately in the linked release validation."
   ],
   "sha256": {
     "/home/llm2x/Documents/EI/local/scratchpad/issue-4-running-20261015/builds/candidate1/CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
@@ -127,5 +127,7 @@
   "production_sources": [
     "game/src/game/local_host.gd",
     "game/src/game/session.gd"
-  ]
+  ],
+  "integrated_in_version": "1.5.1-preview.2",
+  "release_validation": "preview-1.5.1-preview.2-2026-10-15.json"
 }

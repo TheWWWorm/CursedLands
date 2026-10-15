@@ -27,7 +27,9 @@ func _run()->void:
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true)
 	DirAccess.make_dir_recursive_absolute(SaveInfo.directory())
-	FileAccess.open(SaveInfo.path("traversal"),FileAccess.WRITE).store_buffer(FileAccess.get_file_as_bytes(cfg.save))
+	var input := FileAccess.open(SaveInfo.path("traversal"),FileAccess.WRITE)
+	input.store_buffer(FileAccess.get_file_as_bytes(cfg.save))
+	input.close()
 	s=Session.new();get_parent().add_child(s);g=Game.new();g.session=s;s.game=g;get_parent().add_child(g)
 	if not await s.load_game_shown("traversal"):printerr("LOAD FAILED");get_tree().quit(1);return
 	get_window().content_scale_mode=Window.CONTENT_SCALE_MODE_VIEWPORT

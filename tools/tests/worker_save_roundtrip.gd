@@ -18,7 +18,9 @@ func run()->void:
  if not FileAccess.file_exists(cfg.save) or not FileAccess.file_exists(cfg.save+".expected.json"):
   printerr("FAIL missing input/expected state");get_tree().quit(1);return
  DirAccess.make_dir_recursive_absolute(SaveInfo.directory())
- FileAccess.open(SaveInfo.path("roundtrip"),FileAccess.WRITE).store_buffer(FileAccess.get_file_as_bytes(cfg.save))
+ var input := FileAccess.open(SaveInfo.path("roundtrip"),FileAccess.WRITE)
+ input.store_buffer(FileAccess.get_file_as_bytes(cfg.save))
+ input.close()
  s=Session.new();get_parent().add_child(s);g=Game.new();g.session=s;s.game=g;get_parent().add_child(g)
  check(await s.local_host.start(0,Session.MAX_PLAYERS,true)==OK,"local worker started")
  if failures:await s.local_host.stop();get_tree().quit(1);return
