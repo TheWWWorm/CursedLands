@@ -93,6 +93,7 @@ func run() -> void:
 	var camera:=g.rig.camera
 	var at:=Vector2(87.5,83.5) if interior else Vector2(159.5,12.5)
 	var focus:=Vector3(at.x,t.water_at(at.x,at.y),-at.y)
+	camera.global_position=focus+Vector3(4,5,8);camera.look_at(focus)
 	RenderingServer.global_shader_parameter_set(&"ei_border",Vector4.ZERO)
 	RenderingServer.viewport_set_measure_render_time(get_viewport().get_viewport_rid(),true)
 	for angle: String in ([] if "--lifecycle-only" in OS.get_cmdline_user_args() else ["overhead","low"]):

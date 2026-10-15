@@ -2,71 +2,77 @@
   "version": "1.5.0",
   "date": "2026-10-15",
   "previous_stable": "1.4.0",
-  "game_source_commit": "b2d95d0bfd7fdd1b81ad58fa935bbe2a04ea5e12",
-  "game_tree": "a963846f9fbd09c2c91fd36c4b67d86335330bfc",
+  "game_source_commit": "0ea74fe5d0fa91ce44bf04489b3424050ef582c4",
+  "game_tree": "b88e1ef88fa4c51e3d4f5b6878aba20680f6b007",
   "network_protocol": 23,
   "integrated_commits": [
     "3e5134b3ad352d1d461f993ecde9eb30e44280c6",
     "98f5ea90deef9773f89540ba954e00f4a81dab02",
-    "b2d95d0bfd7fdd1b81ad58fa935bbe2a04ea5e12"
+    "b2d95d0bfd7fdd1b81ad58fa935bbe2a04ea5e12",
+    "93ff6df2e156052eeb7e8fa80b23ceb43abf0c86",
+    "e82ff094a328f4fe6a0b0d74b52bf3aa37d4a046",
+    "31643ad88f9f3c28516d829934151df17268d1ce",
+    "872332447e7a8183453bc59c458bef9e89c659aa",
+    "d3911b0166e47ba0ebbae7aed585c5d6d4ae2141",
+    "0ea74fe5d0fa91ce44bf04489b3424050ef582c4"
   ],
   "build": {
     "production_scripts_identical_across_five_platforms": true,
-    "compiled_scripts": 288,
+    "compiled_scripts": 289,
     "source_snapshot_exact": true,
     "original_game_data_bundled": false,
     "private_save_or_test_probes_bundled": false,
     "platforms": {
       "linux-x86_64": {
         "version": "1.5.0",
-        "source_commit": "b2d95d0bfd7fdd1b81ad58fa935bbe2a04ea5e12",
-        "game_tree": "a963846f9fbd09c2c91fd36c4b67d86335330bfc",
+        "source_commit": "0ea74fe5d0fa91ce44bf04489b3424050ef582c4",
+        "game_tree": "b88e1ef88fa4c51e3d4f5b6878aba20680f6b007",
         "protocol": 23,
         "platform": "linux-x86_64",
-        "target_os_runtime_tested": true,
+        "target_os_runtime_tested": false,
         "engine_patch_count": 12,
-        "compiled_scripts": 288,
-        "resource_count": 730,
+        "compiled_scripts": 289,
+        "resource_count": 732,
         "files": {
           "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
-          "CursedLands.pck": "7665b2423211e3a8654600623c7531e3e76639776512d27879881c5632d242b4",
+          "CursedLands.pck": "54c9200d9b2af6908fbe6089d096c7d76825ff44b287b84757a691c50f993cfe",
           "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
           "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
         }
       },
       "windows-x86_64": {
         "version": "1.5.0",
-        "source_commit": "b2d95d0bfd7fdd1b81ad58fa935bbe2a04ea5e12",
-        "game_tree": "a963846f9fbd09c2c91fd36c4b67d86335330bfc",
+        "source_commit": "0ea74fe5d0fa91ce44bf04489b3424050ef582c4",
+        "game_tree": "b88e1ef88fa4c51e3d4f5b6878aba20680f6b007",
         "protocol": 23,
         "platform": "windows-x86_64",
         "target_os_runtime_tested": false,
         "engine_patch_count": 12,
-        "compiled_scripts": 288,
-        "resource_count": 730,
+        "compiled_scripts": 289,
+        "resource_count": 732,
         "files": {
           "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
-          "CursedLands.pck": "7665b2423211e3a8654600623c7531e3e76639776512d27879881c5632d242b4",
+          "CursedLands.pck": "54c9200d9b2af6908fbe6089d096c7d76825ff44b287b84757a691c50f993cfe",
           "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
           "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
         }
       },
       "macos-universal": {
         "version": "1.5.0",
-        "source_commit": "b2d95d0bfd7fdd1b81ad58fa935bbe2a04ea5e12",
-        "game_tree": "a963846f9fbd09c2c91fd36c4b67d86335330bfc",
+        "source_commit": "0ea74fe5d0fa91ce44bf04489b3424050ef582c4",
+        "game_tree": "b88e1ef88fa4c51e3d4f5b6878aba20680f6b007",
         "protocol": 23,
         "platform": "macos-universal",
         "stock_engine": true,
         "unsigned": true,
         "target_os_runtime_tested": false,
         "files": {
-          "CursedLands.zip": "85c96259800a6e78e3513f363ae7bf47f5812b847805535c5cbeaa5145fb30c8"
+          "CursedLands.zip": "68af34adfcf7ac8b8cf6c99b58ea220d23fa3663b07dc34c38269c0792d7822b"
         }
       }
     }
   },
-  "linux_passed_checks": 10841,
+  "linux_passed_checks": 11156,
   "linux_release_checks": [
     {
       "fixture": "tools/tests/nav_relocation_bounds.gd",
@@ -87,7 +93,7 @@
       "checks": 3892,
       "failures": 0,
       "errors": [],
-      "seconds": 4.82,
+      "seconds": 4.67,
       "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/checks/nav_relocation_script/run.log"
     },
     {
@@ -98,7 +104,7 @@
       "checks": 265,
       "failures": 0,
       "errors": [],
-      "seconds": 18.45,
+      "seconds": 19.3,
       "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/checks/lia_navigation_paths/run.log"
     },
     {
@@ -109,7 +115,7 @@
       "checks": 86,
       "failures": 0,
       "errors": [],
-      "seconds": 12.79,
+      "seconds": 13.09,
       "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/checks/lia_archers/run.log"
     },
     {
@@ -120,7 +126,7 @@
       "checks": 25,
       "failures": 0,
       "errors": [],
-      "seconds": 12.44,
+      "seconds": 12.93,
       "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/checks/locked_hover/run.log"
     },
     {
@@ -131,7 +137,7 @@
       "checks": 268,
       "failures": 0,
       "errors": [],
-      "seconds": 3.27,
+      "seconds": 3.22,
       "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/checks/severed_limb_physics/run.log"
     },
     {
@@ -142,17 +148,44 @@
       "checks": 2399,
       "failures": 0,
       "errors": [],
-      "seconds": 10.58,
+      "seconds": 11.54,
       "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/checks/rain_cover_geometry/run.log"
     },
     {
       "fixture": "tools/tests/terrain_hd_identity.gd",
       "renderer": "headless",
       "exit": 0,
+      "errors": [],
       "checks": 14,
       "failures": 0,
+      "log_sha256": "746a93d9095c3da44357c7e2d3d9e7feb37b5ac8741f45c65ceaf71b56a22b65"
+    },
+    {
+      "fixture": "tools/tests/lia_slave_lists_return.gd",
+      "renderer": "headless",
+      "exit": 0,
       "errors": [],
-      "log_sha256": "bdd0c92efd18ae90682f3c063a4fa100f930df1a743ce71b39354fc5478018c7"
+      "checks": 12,
+      "failures": 0,
+      "log_sha256": "f4bca5d2aef76cf9d800786a7301cfd1cbc47080212420b88422af62474676d3"
+    },
+    {
+      "fixture": "tools/tests/startup_renderer_recovery.gd",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "errors": [],
+      "checks": 197,
+      "failures": 0,
+      "log_sha256": "2a65f03eb0ae86ba81e14e8c75f87853717fbb30bc53d858f5208ec53cd4064f"
+    },
+    {
+      "fixture": "tools/tests/startup_crash_report.gd",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "errors": [],
+      "checks": 106,
+      "failures": 0,
+      "log_sha256": "a5ce6f2be255b4d12e6cfff114dad200bfb789c10ffee02dced266dae4aa17ac"
     }
   ],
   "visual_and_texture_pack_checks": {
@@ -162,7 +195,7 @@
       "exit": 0,
       "errors": [],
       "result": {
-        "checks": 2062,
+        "checks": 2170,
         "failures": 0,
         "languages": [
           "ru",
@@ -174,9 +207,9 @@
           "original_optional"
         ]
       },
-      "result_sha256": "d97d1210ef33558fe9089bec27c8701a691ce1cc40ce60a8cd55a345ae3f629a",
-      "log_sha256": "830e24d636fb55918ac6f0ffa3a23714f656efe62e0827d9ebc2d1d2e106b1c5",
-      "fixture_sha256": "2cf1fc0b8bb5aba97724e79246fd077f4f68875ff917360a268bab5e27218bc5"
+      "result_sha256": "5568f0cebdaad765ac006a4fa49e62ce4ee835988a97bb50cc5c93f5ae03022a",
+      "log_sha256": "1a530a9c6f15a3eaeb0cc1b63887de83c74cc0754ed86a2b836696bbfd58514f",
+      "fixture_sha256": "0fbd035264c8fb5adcbcfb520da506d60bd42429c490f6e828c247122d2fe2bc"
     },
     "health_gradient": {
       "fixture": "tools/tests/health_bar_gradient.gd",
@@ -257,7 +290,7 @@
         ]
       },
       "result_sha256": "80ef8ec3e2e6d0f1693e59464b86131cab3a539ba8e1a5f4fddc31aed6fdbd2a",
-      "log_sha256": "bdd0c92efd18ae90682f3c063a4fa100f930df1a743ce71b39354fc5478018c7",
+      "log_sha256": "746a93d9095c3da44357c7e2d3d9e7feb37b5ac8741f45c65ceaf71b56a22b65",
       "fixture_sha256": "76f546add88895f48ea44bdb622765cc6f49799c054de91f2023d4d978535e2b"
     },
     "hd_cliffs": {
@@ -358,18 +391,473 @@
       "fixture_sha256": "98d0d43606b00f86f618a87f54ba402cce28751019aace14c13a9d9ec9cbe2a1"
     },
     "source_equivalence": {
-      "compiled_candidate_scripts_differing_from_release": [
-        "src/ei/game_data.gdc"
-      ],
-      "detail": "All UI, terrain-effect and shader implementation files used by these rendered checks match the release. The final game_data change lowercases the original-image key and uses an explicit original-archive fallback. The final shipping package reran the HD identity checks after that refinement.",
+      "compiled_candidate_scripts_differing_from_release": [],
+      "detail": "Final cloud, swamp and water checks used 289 compiled scripts byte-identical to the release. Earlier UI and HD checks retain the focused implementation files listed below; localization and the unrelated new option keys in game_data have their own coverage.",
       "test_sources": {
+        "tools/tests/direct_moving_casts.gd": "6d1de4e0678f4df6f53ff9c845855bc3ab5e39f6d4c870f3eef2a79cd7b4601e",
+        "tools/tests/save_frozen_clock.gd": "8aa4f285be3f092030de1d14e388f21376efa4c43d6bc3c0a4099ef29332d140",
+        "tools/tests/mmp_upload.gd": "259df5295b3c16cef3ac55b3e8b3b8e99d1d23f74b7950daa75fbecb1c1d6a4e",
+        "tools/tests/client_placement.gd": "61e53766789131d62de20548fd1c1ac361baf6dff4b121b9e456f6c90f0df7c9",
+        "tools/tests/terrain_cliffs.gd": "d8dcc5c50c90b5f1228060164cb912d1af66b3831ba7b6197d3adcb88bc0a00f",
+        "tools/tests/android_figure_compatibility.gd": "4f97b1679df76c6e5122282f4d49a4039a31f00eab50b8a7603a1ea183333d57",
+        "tools/tests/direct_controls.gd": "380da88d93b30d6ddbaecdf8d2f44cfd68eca2ca4888c3cff1470f075f2d651f",
+        "tools/tests/weather_mist.gd": "c24ac4aafce27c3528162d3e84cd09bc44aae40df9ae04bd92c4acbcabb80ce6",
+        "tools/tests/market_prices.gd": "9fd87dd07d21e75be00425435c1560981d037d1306e634b540dbec0c1c9c0218",
+        "tools/tests/single_player_rules.gd": "232d96be858474ba4ab3eaba7e3bbc9b32f19746518c4194cdfd70b3f7a20d4d",
+        "tools/tests/loading_cover.gd": "649519771317668701d6eb3d284f2029059064eff13cae715f0502e362db73d8",
+        "tools/tests/camp_transactions.gd": "b6de35a6a514d0e344fa4c8f6e5dbdcf410c0bee74bf0e8838bfba7fba8a8712",
+        "tools/tests/menu_material_refresh.gd": "12941dedea52784a96e9c0abbf3e58d1f68e59825489029e335d8fc547e0e3b3",
+        "tools/tests/android_local_lifecycle.gd": "a07f6b1e2c880e21794ccbedfc2ff6ffe872c5e06a8cd4dcee335f23f3bd6189",
         "tools/tests/health_bar_gradient.gd": "abe788ca8c486ee54f2fe50a93ae624b61bf12cb8635ed9f263685a75d3d92af",
-        "tools/tests/spell_rune_layout.gd": "2cf1fc0b8bb5aba97724e79246fd077f4f68875ff917360a268bab5e27218bc5",
+        "tools/tests/particle_draw.gd": "b0f7a75f330583dd5168ddb4d2e82cf148eb1aa90ad2098ce2329370eb28ca09",
+        "tools/tests/coop_trade.gd": "1836198817853f59a7ca1ffb63b01f4fbc0b6e7767e84db926bb9ee23e82fe01",
+        "tools/tests/water_wave_domain.gd": "047790bca45c02745d074bf58114637e73c362fb9acb3dce85742635a842f017",
+        "tools/tests/rain_cover_geometry.gd": "d808ea8de549ea19262e2917dd18dc41ce6082fb3a04ae18b08c8895bfaf82a5",
+        "tools/tests/enchanted_equipment_net.gd": "79d76d26446e7e3cd5e655d872c14c2cf81499acfec85dc98e25d61c22d18965",
+        "tools/tests/worker_display_settings.gd": "cf707457d6897b87d6715112835da02decffe14115583d4297e76657d112cab7",
+        "tools/tests/zone7_entry_fx.gd": "850e3a89affd70ec3b0d2e1a1d7039ccbb72e798b7107fb2a968bffaf76cf055",
+        "tools/tests/terrain_pair_sectors.gd": "210cfcfc387fa753d1ac500824f4b9dfe639aeda5b936f0b3c33709e517d2a12",
+        "tools/tests/direct_camera_stability.gd": "13aae3a76cc540c591854bf56d92e09bf0c8add7ddb95b10fd827c3a537d826c",
+        "tools/tests/coop_zone_transfer.gd": "ee95d7ede638b32fe728b204d1506dff7f08fc60fc16ff067418dc9aa85aac36",
+        "tools/tests/audio_native.gd": "1e5324c017f77dc3e7ad743e44c6facb36fec3c308c8d63f6a53c11c863ee015",
+        "tools/tests/first_import_dialog.gd": "94e0bf4eec0e588ce717d2e9145ac92a1614324e4e975a711bfbd8882c825795",
+        "tools/tests/water_reflection_tree_angles.gd": "d501c5358756957e580066bb06c4600d105a5a53e6df7a8543665eddf1ac7fa7",
+        "tools/tests/water_feedback.gd": "a183100ee2bcc0e13e3e2b3304b78544dd58320e343a542a0fc6882ef421371b",
+        "tools/tests/spell_constructor_transactions.gd": "6760a902807f0ed824a282c463c34b0a06aef68bd561915eb54fd6434c7195da",
+        "tools/tests/coop_rename_reconnect.gd": "3ed05370cc564fd3661f3abe287df3509925591c7b4c8e3df1028ef1af60952b",
+        "tools/tests/startup_crash_report.gd": "0bc32fe89d6cdbd09cdcf1c0bd31dbc3e426e1855eee26304ff3b8e469661886",
+        "tools/tests/locked_hover.gd": "cefb844b52a3a346cadd71b14a33bd909d376f7bba6b998e29548d3fef6d2b6d",
+        "tools/tests/dialog_camera_obstacles.gd": "316a64b51899a776cfc2fd11412a8d12bbf5d6a9cfd0569b4886110d5bb6be25",
+        "tools/tests/quest_actor_removal.gd": "a339f744553f9eafd498f8f6652ebf94b92bdae59052b6afd183878b5ac73b0d",
+        "tools/tests/catacomb_group_lever.gd": "572876e993e6e2d8cd36d2485c2e50eb5d09a6b40d0fcee6a333ed5018de3070",
+        "tools/tests/coop_checkpoint_recovery.gd": "605b92c8b8b5023635873bdeba4a8fcbd8d3924003521ff42eb7c52a3336eb26",
+        "tools/tests/ambient_life.gd": "8570d7516cfe918ae886a86d7c2bf6d2469f10a6627b13bddd4f7ecae404616b",
+        "tools/tests/rain_puddles.gd": "8c4256eff9ff0fb3b60581142a0a98e287ac55af2d820761f7b207f7fc1464c8",
+        "tools/tests/lmp_host_view.gd": "bca36d03f3dd1a4238a1b52a392ac8e68d9dcfe5a71dcb87549029774f652f2a",
+        "tools/tests/legacy_mod_assets.gd": "d8774f9043fba15c8efd42090b21d1d6d03c10776270dd3b6dbcb911d128585e",
+        "tools/tests/mmp_native.gd": "bfd9606c39139975721574024b9283af9dc2738aa7d6ccd1d12574d1de602bcb",
+        "tools/tests/lia_player_save.gd": "911bc2cb3a71325e5a8e27683d824a4096c621a2041a35c1e4f663f4a3fb7090",
+        "tools/tests/local_host_worker.gd": "4b6b5ea36ce4759f7b7fd6f919c30dbe36667f4488d4aaae6f6a5a369e0f4071",
+        "tools/tests/far_grass_authored.gd": "8a7c15c202f1ed212261163b503147e62a43f87f060e4babb340124fe715505a",
+        "tools/tests/ingos_dialogue.gd": "312a37148838f03a0dd45a5545cfafe6433a7690789628c1c3716a03b0b34182",
+        "tools/tests/first_person_running_down.gd": "a41b265acbf4eb59f1801eb119ca0ba98a596419605924a3a82632c9ddc5abcf",
+        "tools/tests/zone_description_scroll.gd": "48bad202fea0a7aeaa235e7bf42ab9898acbe06310e8d4a97c2c419fa20ee75b",
+        "tools/tests/graphics_check_consent.gd": "23fd4ba33ed099edf2f9586d937796aec433f97bf4da3d745a5aa1475bbf7283",
+        "tools/tests/water_reflection_motion.gd": "761afd51fec1ef5dea33f2370d24f55bb49efad4a6920d969d1b51bff9f1198c",
+        "tools/tests/legacy_mod_import.gd": "7cfbc1ea60b4d490ec957ae8d837f9bf15218db39c8d4b2e4b023a9e6c438594",
+        "tools/tests/water_reflection_geometry.gd": "5050ce932304393656691e19a9004cb2fe2e83ab9c664bca3c203b13370e530a",
+        "tools/tests/island_return.gd": "4c9a5595d8c4a65b33cca4fcad887d6a2152007caf8ccfefca4d16e36ff38992",
+        "tools/tests/coop_solo_return_guards.gd": "7e959345bae4ef5e32dd84222809d33b0a23df388f97748dedf290548968c1f2",
+        "tools/tests/prison_alarm_late_join.gd": "a723d2ccda49acac5c3ffb196bcc97b9f9ab8ae3b52cd2a6fa2406cb72fcf19e",
+        "tools/tests/pollen_motion.gd": "4d5ff31469b7eae5e353491e6ed6c143658864b580e227583b6ca763a2cc5d5e",
+        "tools/tests/terrain_seams_sampling.gd": "9ef503f7808a548373919b3d34c28b16da4d2f26e594d63855e9e461c4bc6cc4",
+        "tools/tests/story_coop_captivity.gd": "7b7e91f3a632acec634763c177b0e4519d00874265dcbd6d14ca0bdac1223fee",
+        "tools/tests/dialog_camera_camp.gd": "36cb8b398efdf4ff0e2bdb0442eedd2cffc78051d3ec71f9d0e4a83a9bebba02",
+        "tools/tests/camera_depth_of_field_probe.gd": "2ab8b9fcc50b975fd66b9e3a19d16436604cf7430a85197268bbb2dee97ece11",
+        "tools/tests/single_player_process.gd": "c3f83d5328f0324839b88dd371af51ebd0bedcb3ee62876c7c37fecb931190f1",
+        "tools/tests/water_interaction.gd": "dfb6344df29bfc7f079792616b039064ef84265bbab576562ab0724fac7b0b72",
+        "tools/tests/mod_load_join.gd": "e881e89e0788b32cffe17131c583f6934e1e7569ce0df9312e24deb98b2a1a7e",
+        "tools/tests/terror_active_save.gd": "99729b1cca723dbd420cdbbfa4ef1c1a04513582e22d2784c4644b524b403eb9",
+        "tools/tests/startup_renderer_recovery.gd": "0581809c296810893ac85900210c3841175b15bd96a1c94ef151a560a22d6cde",
+        "tools/tests/mmp_texture.gd": "358769b5ad83f39421e8bf016a2ec3881199ce7c0708d7acd072f229996adc98",
+        "tools/tests/coop_guest_roles_net.gd": "8bccf75bbc623b6c341eea3f57e933a6c4fcb94e3f2e57d4c98c5e9f1e82c9c4",
+        "tools/tests/biome_cover_underwater.gd": "6873e4806d79529a38f7b7ff3c548904ee19a4c9a5501fcbbc51f1ad742bcf13",
+        "tools/tests/minimap_redraw.gd": "9d31ddc91bd953cf39f9dd54056a25d5ce969c95c9d3ff546b75992a6236d1e7",
+        "tools/tests/android_scene_startup.gd": "21547a12c44db1420bec390d673e3795e2556d47ebf586f420a10e0da5c6464a",
+        "tools/tests/terrain_mod_atlas.gd": "9d5af0281997faf805fcbd026d7f7b07fe68ba7964d96dfd3e839ad1c084f642",
+        "tools/tests/waterfalls.gd": "78609af637f7fb9d8b4b9245a440fe911cc1b696b6495cf7f32d294a86b9e4f5",
+        "tools/tests/prison_damage_state.gd": "9ec11bd2d56e24673172c60dbc1322caee8c8c27d4609627ddc1def3bd49f0c2",
+        "tools/tests/feedback_rules.gd": "7933db3e6203ba3002ed000264cd1fcef9e9cd1c00de14fda3d3f01813cd8542",
+        "tools/tests/camera_depth_of_field_legacy.gd": "60794ad1a6b9fa45eb823823f2ab34066f47b7bafd68a67cec29c081961ff760",
+        "tools/tests/network_save_choices.gd": "1db472fde8411f7c6ce87c6e0ef7909f85056415c0c47e0f7f9bd48a7486ee1f",
+        "tools/tests/cloud_radiance.gd": "56b9597bb36b586c84bce7ef66edc875530bf39a0ae3d78d3ab804f5c4b54224",
+        "tools/tests/authored_village_talk.gd": "27dd441e81a0ea11c6abf55991f648e3e63a60d787403708f72f43fac13466d8",
+        "tools/tests/camera_depth_of_field_scene.gd": "0d8b7af4acb3344d36be717d07ac2e9a4bd19a3ef92d9449aa219f59d8658c19",
+        "tools/tests/mobile_shader_slots.gd": "fa7ac7012d3ea8bc70e9ab9eeedf2cf93c49df9955e3385f30e7f83811d551c1",
+        "tools/tests/mod_downloads_world.gd": "43f475cd6c1e10635523e596bbb0e84cac34b502a3a1a156afab0a5258c6be88",
+        "tools/tests/cloud_shadow_field_projection.gd": "6610c6727071aa2b550426666d1786520431c5464b8724c740ab66870aa5eb4f",
+        "tools/tests/network_render_clock.gd": "bfca6f3b7c4af29a3fcddbf688c66c205e5fa1b1dff5116768f9c007ec563c86",
+        "tools/tests/renderer_followup_integration.gd": "a7813cd06c54d29bfc7852b2bb5ee4e668dfd620d87e7bd4d02b9535ffd479a7",
+        "tools/tests/sky_dome_boundaries.gd": "1004fd51638e9b8b44513974a933656df35944b428309a1066743c15183d8f58",
+        "tools/tests/graphics_options.gd": "97e97c70848a6dd91a1d8f9d32de16ff5bb554033b533efa69f7eda654cca7b5",
+        "tools/tests/travel_reveal.gd": "86c8e019f2cc10a2eea39fcfde8c05cf3bfe6459687441c827bdcb578e183524",
+        "tools/tests/clouds.gd": "73ef89ca921a5c582ba42ee4f4b278b98d8e8e788acb4863ca691e4d5636f123",
+        "tools/tests/lia_haburu_audit.gd": "062ec6f25458f309f5a444d2d8d80db8d64c25a4783c820e5dccd37afb1615c0",
+        "tools/tests/direct_combat.gd": "b79ed2b51e03ddf6c8c49d24beabf64fcb5ada4bd684219b1acc22064cd6f001",
+        "tools/tests/cave_queen_user_save.gd": "103344e0db241f64bac4a16a2fcfaf1886b46734a4d2fc4ea511e0416202a6c7",
+        "tools/tests/wound_gpu_workload.gd": "8c3e7a271af25079ae94a8f7d4f60f376fd93a4563d88dc1d9e8faa4b849af58",
+        "tools/tests/android_native_crash_report.gd": "c8b1e808ca6424b4f46cd204b4bbabf4a71b2ab749934c94b711db132598fdda",
+        "tools/tests/reported_ui_visuals.gd": "0dbf640aee451ea571ae7b773721f39c29ba0e49980833265d72d23ab7213f2c",
+        "tools/tests/enchanted_equipment.gd": "06c0f7f7f4e68f8df11e87e9a4c92fe6124669b4ea5fedb344cfbe2ec49e3c92",
+        "tools/tests/catacomb_capacity.gd": "593af151883bd9c342886a0da7a4305fb6ed3a6bd634d3082d80d3f5c262b823",
+        "tools/tests/coop_solo_return.gd": "8e89d3beb344183fb967323119ae2ff3bc9c26d1864931e21314e77b56257788",
+        "tools/tests/catacomb_capacity_net.gd": "3a04e560221c3d8a83b66a0164d7724e16709df468ddac7eeca46b0c991ea31d",
+        "tools/tests/direct_interactions.gd": "172d6cc0140e1a325d75e859813cb1ee36cabb675e9631b162d87b4e982a92a9",
+        "tools/tests/worker_clock.gd": "071e3326ab7dc099505555bd3a9a0114da6679bb994799d08bfc6588214f6904",
+        "tools/tests/mod_downloads_live.gd": "66bfcab4e88e395b47b3ac3e32eb1b7e18ee8681eaa920ef3943b6f645d61b1f",
+        "tools/tests/local_host_lmp.gd": "4cd01c91f390b82f872f64fe3cc8ba01f3eee153dabf08a37c2696606bc208e2",
+        "tools/tests/water_reflection_angles.gd": "a81a2a768faf0058adfff32cb0955edea5f47c717ac169812e384a8f336ec8dc",
+        "tools/tests/enet_frame_spikes.gd": "e8bbc2f058c0bb062a1f18f983c925f1a1a5fc216b17a78b6f6e5bc9b678af0b",
+        "tools/tests/direct_movement.gd": "c042f08f063ef775323d2bc2ba520e77dca19c5e44fced8ef2189d21b31de23c",
+        "tools/tests/coop_save_effects.gd": "aeee7f5ad9e6f32777138c11766fd02b4d51aff6d0fba32806e615f452a56731",
+        "tools/tests/progress_transport.gd": "3c8b1c7f3ee9f4b128e5848a51e4bfc3995aa38d12b9d91c32b38feb352c5de5",
+        "tools/tests/prison_discovery_late_join.gd": "db4009b8442a1785c510bcaee778ce94efefbc1a31fa3398ba3b0767f589653e",
+        "tools/tests/cloud_shadow_field.gd": "4991ba675a2b180bccfe367f73c179138272ea0a3cbce90af2d583f96a843ce5",
+        "tools/tests/worker_cadence_response.gd": "38fdbc363b15a074785144d0450831e33a9f3edb7d3553276253f78a62ef1704",
+        "tools/tests/shaina_disguise_entry.gd": "bec13add3133d15babde3bbdaa130cc5fe866870f729dba517f7c0aee9627021",
+        "tools/tests/mod_downloads.gd": "e3158d007c0fd04f8ca9e65528dfd4eaa22e7e2aae7d2e23b8bcfc19187d0a61",
+        "tools/tests/spell_rune_layout.gd": "0fbd035264c8fb5adcbcfb520da506d60bd42429c490f6e828c247122d2fe2bc",
+        "tools/tests/mod_downloads_ui.gd": "b43a877d2b8548b0f9d9b49d9abec413713c40de06d3e9ba4efad7e01fb52a85",
+        "tools/tests/ground_contact_tracks_scene.gd": "c4b85b4ccbb95e884e25734a01a1182ecb8010187c664b28f8d1f92253cc0245",
+        "tools/tests/slave_escape_play_net.gd": "e71b1476e053cf96bd334ec9c24da1427f2360f08164bc6efee2d83f1d05ab6e",
+        "tools/tests/unit_visibility.gd": "fefc5c56c3f337b3cda1f013c8c83f71028d9788df5ba5672d766828a4c9692f",
+        "tools/tests/jun_transformation_net.gd": "17f6f019ae77fcdc1db8e025a34cfa737051fe4e1ee0c8f51e809bdc1debb2ad",
+        "tools/tests/local_shadow_selection.gd": "0505d42507121c85488aa8300b65d0d35cef3d2bcac69a687cb1d8e1ddb50a24",
+        "tools/tests/water_caustics.gd": "fa80564ec99ac0914edd08ea3d9ff71b522a6b3733a61e1015344a0c64c1a6fd",
+        "tools/tests/biome_mounds.gd": "09aa1a243148894f54280737a581c60787bf80fd69b1e9e4d799dd97d1291b8a",
+        "tools/tests/repeated_spells_input.gd": "e4c6af0078f94fbcba5cf5514167b6595882945d710a18ed74b156d601f3f29c",
+        "tools/tests/mod_downloads_stall.gd": "c5b86d1d7fd3edae0dd07197c98baad454164278cc27065ecaf76f3413765d58",
+        "tools/tests/health_bar_visibility.gd": "9c98f3ab68c44b2f2226de10e3f9aa46b0ae7cc6470571117398d6c6c709d09a",
+        "tools/tests/direct_attack_stance.gd": "ebeb5bbd892487977b925f7a00b53dff7a361a3a6e383d8572da52679ebaaf36",
+        "tools/tests/training_latency.gd": "1fedea544afbeca9719504915c55b1e455780f13bf363a905465ef90770f3873",
+        "tools/tests/coop_progress_context.gd": "0971d4be7a9bb2521c2025903010d8bc159cea780b7b207431d2805e4171c9b1",
+        "tools/tests/motion_build.gd": "329a79911e00abaa1a7802862c5aeea58c578bac0b553d380d020638fbfd5fe0",
+        "tools/tests/nav_topology.gd": "abdb4beb861c039ef89046fb1aea129695f50be0c5bc9333852b802d59cdd850",
+        "tools/tests/dialogue_highlights.gd": "d8966dd5bc2b7912f97828e8c854575bd0364fc8c480a622aaa91bfd7ab89dca",
+        "tools/tests/audio_bus_routes.gd": "c24f18e611ccb8b39f58c253790058c44eabb80c26a5057f7d58052f97c152ac",
+        "tools/tests/mod_worker.gd": "6f716329abd7bcdff8bba1d3b6ef37af221128b55054d8db2c45a41a51397e31",
+        "tools/tests/river_reaches.gd": "ed9aa0a772ce14f85e7405f878ae87196517ac54eef53611b94c464fbebd242b",
+        "tools/tests/wound_gpu_contract.gd": "399660539d3f7ca575a8ea97d393e380055e638100dd73b25851c808ef4f8692",
+        "tools/tests/direct_view_regressions.gd": "88bdf4c0d1d5871552b88cb002d00db0331d12e1d90cbaaf1a12c5c67402f00c",
+        "tools/tests/coop_progress_chapters.gd": "f5eadc517e0992c5bdc34ea26d216ca0b859d5693fe4dd2622b86eb17db1c0c2",
+        "tools/tests/cave_queen_route.gd": "7f5a0e774350fc3720cb36d865a53cb4fb0b9f995ca4c04d97b4866205f36be7",
+        "tools/tests/water_reflection_regressions.gd": "735e69d6440cb9d43c288e2f0d44ee3b1d5f134b4dffc5a781ff01518274e827",
+        "tools/tests/hd_interface_views.gd": "5c295fde1d306e11abd939b7672a352b01ee3982823e7c7bd450a5c22c5991bb",
+        "tools/tests/head_attachment.gd": "605a8c8e49b71a4afecc99aa6f37116732ded57d41bf4caa1836a253e473436a",
+        "tools/tests/direct_coop.gd": "171feb3d1e720957ab365e77efdb20c165d245fd1838467cbf8ac7c1a4ad2ce7",
+        "tools/tests/liquid_surfaces.gd": "6a2d2696229ed67c7136ea4f42d2512d151d1095cb074276390c43e945060099",
+        "tools/tests/save_actor_refs.gd": "bb06822f806eb9c971a2f249a2bfcd2900fdd0ffa0077fc9b0b8f9c2cbdd439b",
+        "tools/tests/healing_presentation.gd": "50802c880358260db11176675b8b2712950e48bbfe0760565b857f73d6812315",
+        "tools/tests/presentation_roster.gd": "3929b76f148fe57028ecd2dd74e7cf79b3e879a49dcb6cf1e2312c39c7530dc7",
+        "tools/tests/hd_lands_upgrade.gd": "df03fc0a95bef3f6016ae221f1868dda195a67e9277e09fe73a055b895dd7009",
+        "tools/tests/fire_particles.gd": "9b39d25d2b6e65193e93015f5eaa382b91740478a20224061c01c54d508c9a1c",
+        "tools/tests/coop_loot_network.gd": "64954039eb5d89dc767e3af0f20f9b05404d2036c57a3ddeca3340d3cd6a0a5c",
+        "tools/tests/profile_save_seed.gd": "2081030482974543660a64f38d5b1824046551726099830e17ec287673ded264",
+        "tools/tests/graphics_shader_refresh.gd": "c9ab4b9c147745afcb62fdeb2de9c864ede64877af563a27c4a8ce2a0b8aaaab",
+        "tools/tests/tornado_particles.gd": "81b008c258b6deef7861819713c829ec92ad4d4deb1a4780c7696f61ad315232",
+        "tools/tests/ground_contact.gd": "59468e5746459735ac0c4ffaed73463d296f475ed1e870d52faacc80bbb8c41c",
+        "tools/tests/npc_ambient_loops.gd": "f8a043e17f4e7147d674ca206e3dc69945f08d6892153d7be9b6d1d8ab1ca141",
+        "tools/tests/wound_cache.gd": "02c5b6711cf24cd6c2346b294e6579ac795eabf9fe1fe5da8f8c8ea2868caa0a",
+        "tools/tests/lia_trap_registration.gd": "2007e265fbbbc36a42ae7e01038ba474cb6ff1481cc859fda3c7902cbd38630d",
+        "tools/tests/snapshot_codec.gd": "e51ded828d076b7dba74f38ce2d1540ca8dd29d7fd00e3977db1d8ef19be0034",
+        "tools/tests/camp_grants.gd": "045aa3079ae2a8c16f5d06720f1a09fce76118ce3610b58aa3f6ae0e61f436db",
+        "tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317",
+        "tools/tests/coop_progress_preview.gd": "7f2f2ed4d60e1f2abeb89895f0447d7f725a942a2f225940ac08a6acfeb1b8e2",
+        "tools/tests/feedback_visuals.gd": "f7b702caa145cf0cab11da6658f499a6683762745970abd76c1ba14bb3409949",
+        "tools/tests/weather_wind.gd": "2e38e9fbbeece267531364f6578b8fe04fdfb51c506d884aef024621ec62f980",
+        "tools/tests/perception_batch.gd": "9c7c592db605f8b2022b56ffe9f88815111fabe7ba96dfca64c67c80c4fb595a",
+        "tools/tests/coop_solo_return_older_host.gd": "7f3b36cc3e77304ab851e3417f90f06c9244a6d478d871527f4e670105dbe7c2",
+        "tools/tests/ai_activity_health.gd": "b7665709f436e1969d5e9a0f00b79c5764e1ebff350c9631354c78699e5cf054",
+        "tools/tests/lever_transition_save.gd": "eac7c529e61d2141ef9d66c6826eba6b1ee6f1744557ba349e4250061ee3b88a",
+        "tools/tests/save_depth.gd": "a321c97805ec9b4b2a9c5780d450c175119e9779f0b55ce8009b94f3668f1f74",
+        "tools/tests/vegetation_submission.gd": "f7888be5a6ab1fcd864bf4023b489a40f4bbc93c4a9e07372f5fc90cf95ede99",
+        "tools/tests/dialogue_speakers.gd": "472e2c72aa60a5fd43b75c0de83f6aa635b9f87d48d8479cc0f08df817ae634f",
+        "tools/tests/terrain_junctions_render.gd": "e787242d3a5a78cff80dab13b49c77355fba9665772beb0916f0a202c0097920",
+        "tools/tests/camera_depth_of_field_render.gd": "90409bda13e0f551b3c7c293deafbf1965b0072da5ccffecfdcf0f9a4b8e622c",
         "tools/tests/terrain_transitions_render.gd": "98d0d43606b00f86f618a87f54ba402cce28751019aace14c13a9d9ec9cbe2a1",
+        "tools/tests/recruited_equipment_net.gd": "4df0bb59800e0965a083f9b847c97dc734354de22e201430b2fcd56b52811666",
+        "tools/tests/graphics_detection_startup.gd": "96ae6f73afae56f3da005e20abc65314c7443dd9dad1e4a678ffab5aca8627cc",
+        "tools/tests/campaign_roster.gd": "49cce7a4e6aea418f2dd348ce22082fe719e34ca37174c186805b1aa3da4010d",
+        "tools/tests/tunnel_guard.gd": "50b3be5b1333901a7611c151d999d4119502d4ea7605ed19ce2fb6636ca1ec38",
+        "tools/tests/special_equipment_visuals.gd": "057bea92ff42eefda5130ebe9f20788d43815023b4639dbe145be5983f52da53",
+        "tools/tests/added_actor_lifetime.gd": "2d391985f8a3fb4deb1b831e7c1bff791af8b150192762a502471940ab5cf24f",
+        "tools/tests/foliage_materials.gd": "42e94b4ebdb369ddc40d977faa5a3fb046912c5d1cde2dc36f47d96849ce4517",
+        "tools/tests/coop_vm_solo.gd": "86358c0299ab6b3b02b805e6ecb7f4a0679b36f17dbc857f49a38557db838374",
+        "tools/tests/snapshot_recovery.gd": "276dc4d7f952e9d1cc29f86dc919d5d393f75f83890bea0cb682100e5e5442f1",
+        "tools/tests/archer_range.gd": "bd81d64b225c7ae55b7c8c3cd90f84778bd047883eec817d5fcc9a2383c9ed33",
+        "tools/tests/dynamic_navigation.gd": "9808e3f0f70f0cfe65527f8a71c70b397f2848fe64ff10fb08ae4ac17386934f",
+        "tools/tests/lia_archers.gd": "7156072533cad14283e878b1a77570c1250b1646b64caa66f0f105db7c847b0c",
+        "tools/tests/script_hero_references.gd": "4ed8f447a3a483cd10b2e302f5e6c1a0968ec741a63ebc4d655d0fa2a2e17959",
+        "tools/tests/unit_visibility_render.gd": "5a3a77fc4a154949663db6843c3d8c5e63684cd8b5efd8fbf2c7737ddb0dcb53",
+        "tools/tests/ingos_lovkach.gd": "8c98743fd3f86e3debca0af72870f5644e36a53f4b14bc796f1ff0dcf78604b0",
+        "tools/tests/hd_resident_texture.gd": "4423b7b5f59dc43d85a18f5edf56842a893d9862c30bb435653e7c80e552ac83",
+        "tools/tests/coop_solo_return_roles.gd": "29088a92d2b38a130df2664ae4ce726efaeabef90d0a5b3194e88fcf3b82b17a",
+        "tools/tests/graphics_presets.gd": "e5abe9fa13fe3ea1ddba7959b7d65516f9cf521e32269a66f703ac9fbd477cdd",
+        "tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+        "tools/tests/water_wave_domain_reference.gd": "ae197e690ec84cdd54e41767a93c82eb6879b82f0740baa427494600819782fc",
+        "tools/tests/terrain_compressed.gd": "5ab50ec3bf09503fc486b3d6d58b8e48de160679f8ca311a459ce322543d2f02",
+        "tools/tests/quest_carriers.gd": "1349c14e18d5842441949ed9bf251d56478e0a0644334c356e624f2054837ba1",
+        "tools/tests/story_coop_predicates_net.gd": "bf45945bd093bfb7225b00cfa6365407d3587871609ee67f62ca5ec18a1fba7c",
+        "tools/tests/coop_fresh_start.gd": "dc1e549572cd5ddc4d5ba62651be8dbc1f6373a3fc5c13591640d46ee07c4f20",
+        "tools/tests/biome_cover_families.gd": "6100636b519b14e6a5422b5f483c23e9c26cb5fc98f7900d8f57d035c29b1894",
+        "tools/tests/delayed_cast_lifetime.gd": "74da1743c48568e9421936df179a47537d456bfae2680a95eb7fe16620d17c1d",
+        "tools/tests/visual_repairs_rules.gd": "903cf6bf4df8c0cd606d5dd81f1e51510604b98cc123ff6d94c745e32151318f",
+        "tools/tests/terrain_junctions_shader.gd": "294d3f25ae40af12135a4e7b2ad584754d01a08bdcaa4844fcb1e4e997d5c894",
+        "tools/tests/ai_live_eligibility.gd": "7883f56aa7b9199c08d84af3fe4880b44fe42030eeffb13408872ab82804cace",
         "tools/tests/ingos_animal_persistence.gd": "bf6af383c6422b43c6d4e54eebda2d831af13f73782848fba397b788341d011b",
+        "tools/tests/story_coop_effects.gd": "e3cba989cfd289d77ce8786f7ee0bae3ebd555d584c4ecf88148c82fd68b946d",
         "tools/tests/rick_staff.gd": "99ed10ecbc2d79a718034868f210ce4cf3eca9d0ed5a1875d8de1bcc46fb8b37",
+        "tools/tests/water_surface_cache.gd": "e62ee549a48d484a0d6a185fa0e4d5dc273bd4394716bbcb8f0cddd7daca6ac8",
+        "tools/tests/shelter_exit.gd": "7d1a620ff44fa7d630aa5e2acd0bb49ba0e0efe6c6a3210c74b821415b8d74b2",
+        "tools/tests/local_light_passes.gd": "2a2529c4a5d8e7a114f7ed87106e0e9a1766e14c9c79e178c357b3a6b3adaf45",
+        "tools/tests/water_wave_field.gd": "e6fdbe12a7c8534706b1b917d8c27f7bb29b39821e534e97969cd2a605fc808b",
+        "tools/tests/direct_passages.gd": "eac447e685585aef6d7afdde21a012a1ff9de807fd7d86900e904f018a0712fc",
+        "tools/tests/prison_discovery_state.gd": "d225418eafb281cf6427addad1def300e9e2dc47e444a39730adae686e26d8c3",
+        "tools/tests/dialogue_poses.gd": "641ed44374708ce406f9954292045c0b3ddc77e04347246b667c7a3ee6782d40",
+        "tools/tests/worker_coop_delivery.gd": "4f7a26d10f28d36117784b526f6c4ffe20ad6c69d5719ad6fc4157de89b5863a",
+        "tools/tests/travel_preview_regressions.gd": "5834405638e7426fee4404d998c74909184e88ec52121e8d4753778ea75d0bdd",
+        "tools/tests/special_equipment.gd": "458a2e6d021d78ab51fce1fbd9283aa3dccf995d75391b3134d32e6278617adc",
+        "tools/tests/local_host_liveness.gd": "50d22a6a1a671f66eddf5d5e1f89a6bbdd86340a55ffd99f388d83df69797947",
+        "tools/tests/body_records.gd": "df0e746fc667316ba571710b046a69b2a30876906453d3a78f88ffe6eb8cb6e6",
+        "tools/tests/far_grass_lod.gd": "be8d5660f5e8baa05bb5500cdb76ae51c157bdcc13b6e5ea5401c078a1de454a",
+        "tools/tests/direct_camera_smooth.gd": "3069ee0fafaac405a0c971bcc009e8cd5204f8d1cc05e96b68cb4f573bc27423",
+        "tools/tests/android_early_startup.gd": "3c38ac7e63f1b52366ba7722275dd246825270072f24cab079b7f72deadc28c0",
+        "tools/tests/waterfall_render.gd": "7343d7172b8972789646e88e5903478a016cdaa303027f7337a234064ec338b9",
+        "tools/tests/graphics_startup_bootstrap.gd": "4386588aef54d1827581882eb697b7d57bebcd212127cbf73a15273f202e3b2a",
+        "tools/tests/control_mode_options.gd": "b7059a2d3348bfd9cfc9234bfb462266b4ccf4394988084928933694822b9539",
+        "tools/tests/biome_cover_families_render.gd": "76ed5ca7c88322234daddfd0fcf2701a25b2b337ecc1e3d9154c14231438c9d5",
+        "tools/tests/mod_menus.gd": "88711812eed19d5837aa3abefa134d746469d048a85044efef9cd5c17b390f45",
+        "tools/tests/graphics_detection_recovery.gd": "1ef6071755b589185cac289640dea6e48d26ac42d986d225c1252b768afa522b",
+        "tools/tests/coop_vm_solo_trap.gd": "15447be3a05e42954c9aeff9dab609c31c2edec83be296c46cd08437751583f8",
+        "tools/tests/camera_depth_of_field_native.gd": "eba4a3c38a5f80ad3b50578d173bdc71c16e5b527411662a8eaddb4137f5f2dc",
+        "tools/tests/cloud_volume.gd": "263ff14e1e39c56778f1af864a93bc1c7ae21633610354dfd1e0e128ae0aa2ce",
+        "tools/tests/coop_progress_travel.gd": "2f75b009a3fa2f695ad094ff575e14e8fa1b0d01f17526ae7f505952d961bd78",
+        "tools/tests/waterfall_startup.gd": "019792624d5ad810c87a3bd44d734168d95ed2a787eb4ab65d87c36ea0eccd43",
+        "tools/tests/command_retry.gd": "0df1509badea8a09384192b79a544ae9e51a765bf17053f3190f5dccb31f9238",
+        "tools/tests/spell_particles.gd": "cd2fc9793145d149d130517617af8196beac6ebe96b4af8ea715a478805e2b34",
+        "tools/tests/cloud_reflection_skip.gd": "24f9ae10f3e1b294600caa5dc0163b5e124959d4c0d418bc66dd93262f43c3d2",
+        "tools/tests/soft_ground_mesh.gd": "6b08323c9d683f969dae671c0abc73a80787ec59d2afab7a2738c15b1ff18922",
+        "tools/tests/menu_loading_screen.gd": "471c3d63d6fc9d274ea8700badc85a290001a3c930c5498f082e5e46a2921832",
+        "tools/tests/shelter_departure.gd": "77475f346eb1c674c561e1cc196e4886b50d77726a1e86ab907d77c03f704ceb",
+        "tools/tests/coop_party_switch.gd": "33633a147d9e36455e38c07903ea493f83edae52a339fd93a917013fe032f3eb",
+        "tools/tests/coop_solo_return_dependents.gd": "a39987a5cc5aa8fbb9112204a3368d677c24de6e34dc65b075af7df5f11e743f",
+        "tools/tests/grass_camera_stability.gd": "ff5fff98d8e156749abf4b065c0d3b33f97f5c561a3d5f73b450f857a868e427",
+        "tools/tests/mod_downloads_cancel.gd": "212ee0a65c06ef713e36cac409af7b38d5b988ecbf2860c4c43d10ca13c539a9",
+        "tools/tests/water_detail_clock.gd": "06b71ee88f69c06764dd3723f9fe90bb8ef26ec08d889e87d16e10ca51bd9a86",
+        "tools/tests/grass_chunks.gd": "f6b59ea17ac378c39245c58ccef2ad1c0606c8db6c1e677dbc383baa99a64f3b",
+        "tools/tests/direct_moving_attacks.gd": "e204b6e90cb21ebbf942fb67511c7445b5de79f6dc17d6c759153724e7e7af75",
+        "tools/tests/renderer_texture_integration.gd": "871d46eadc1d2ec4d16449cb8c832e5f3f846c78bf0617491753022f1930f918",
+        "tools/tests/mod_ui_access.gd": "3412432b88ac6c45bbf88ab541b96567b32f90e45e01477ed755bba2fd5042d6",
+        "tools/tests/sun_aiming.gd": "89949faa4db7dde4dd283aa7d9170fe343bea094ed0064a4d339bcae5f789976",
+        "tools/tests/biome_cover_regions.gd": "38573f20cd1fef57ae4e0fc6b80de45721219d38af7e479e35ed959b1445cc4f",
+        "tools/tests/touch_unit_picking.gd": "727e2a683218fbd89feb464ee147e3215260e6b1aa23518105c5552e0b33e014",
+        "tools/tests/cloud_ray_bounds.gd": "3976455db7e12cb61657d398fb65c884edbac973943683b7868b1f808f6e8fbb",
+        "tools/tests/prison_progression_state.gd": "5e23f9f4aa7ea2f1d9311994b26fefc61638bc6d1128b2c50ffa46b673e44f30",
+        "tools/tests/mod_texture_coop.gd": "c0174eb98d733c4fbbe5ee820975670c5d4ae76bccd9df5a24dfe170408ad3b9",
+        "tools/tests/sustained_coop_delivery.gd": "8f0a4d2b90d9587359f883dd932cb1d82296d80572a3ab2f0b5b00f35ef7c7c3",
+        "tools/tests/renderer_world_lifecycle.gd": "16d5d7f7f4b1c316f2f6bff5153ac66254166437555017a33b0d79e0b7f0af06",
+        "tools/tests/nalo_rescue_return.gd": "7adc92ea196a89a8eb7cbdd0dd154f87b3cbe8dae5d3a189b8b62854a741377e",
+        "tools/tests/unit_presentation.gd": "ee8210f4d5f855b8e85b46a9602d6d079f2d14ce1f3e5ad535b76d1fd7f6dfa3",
+        "tools/tests/scenery_batch_lights.gd": "1ee14c9613bd762abf4c267e5225dd7b3763c5567c1f02c3018a94dd5a7d5e71",
+        "tools/tests/single_player_android_background.gd": "212b064a5dac53db8dd1a11d1bb604ca9072ae012e1b024c1e5ad31158f328a4",
+        "tools/tests/path_preview.gd": "5d4b5395ea13daf14005c6b44e4ebd9c4ff4890710bba644592c2c4007ef6f3b",
+        "tools/tests/campaign_state_transport.gd": "cb8a963afc4638c8ce8510a4470c727b13e556b2173ea374dad495d78f692dc2",
+        "tools/tests/water_surface_cache_reference.gd": "45f6c59c2dfe2e3d676e390068b2623c2e4b45167eb845d00668d859c3741fbf",
+        "tools/tests/coop_movie.gd": "0cf8ca9655095a0c2bd347289a5c5169671696fb83e2f3f370591f6b58a37340",
         "tools/tests/terrain_hd_identity.gd": "76f546add88895f48ea44bdb622765cc6f49799c054de91f2023d4d978535e2b",
-        "tools/tests/terrain_cliff_render.gd": "a6ba8aa851633bd8d307a1a41ec1029af206e0f8a1b78a450f9018c52df001d9"
+        "tools/tests/severed_limb_physics.gd": "ea6d48f8763958d0eb75fcb48f47d9a911a31825db37fd99b90b02df2c8bc2d2",
+        "tools/tests/gipat_infusions.gd": "2c1d2c96bf9625224fe226cd2a9d47ff5f5151da5e7b54a153ded05462c8ac89",
+        "tools/tests/third_person_kbm.gd": "f0a3ecad31be04c6eb5ace5238837ca3010fa7e1449bdd1d27adbdb4cbadcc27",
+        "tools/tests/ingos_direct_feedback.gd": "686984ed6acaf8e6e057de5bafc929312d7a6497f010b813464289e99c8f1ea9",
+        "tools/tests/coop_campaign_classes.gd": "7d34455fb953e2814eade7a8d61515afec8d00cf1d2c22682a193cf5550f44c5",
+        "tools/tests/mod_load_rejection.gd": "700a9b75a9141e1a2ac7d3dac129274b7791a58794d44b3d250ac1cdac840e69",
+        "tools/tests/coop_solo_return_transport.gd": "0d5c171ef5a81aa2667608c05e117db41d49fa60bcc972833544db31a1fc3244",
+        "tools/tests/water_wave_render.gd": "d7973cb18160092527529f72ba4f522f2def839273f7cbb064648d631648b359",
+        "tools/tests/mod_texture_packages.gd": "64e62938418bbcac2b334654cb3dba18c8e1484b53bcc3b3d12ecd72ad9c9e7f",
+        "tools/tests/direct_figure_shape.gd": "bda1ff4df0c20bc31921d40fa96a70ce6a30b6c750c7902949e6cb9eab538ec9",
+        "tools/tests/lia_slave_lists_return.gd": "6411fa353a48433925a99a435502474b212e1140e2f00d112dd6e6791b0180b0",
+        "tools/tests/soft_ground_field.gd": "465d9f6e4858f0d06165d314a9d659cb32dc11976bf42d976e06d35f3334dda6",
+        "tools/tests/spell_requirements_coop.gd": "09bd2e9dcafa83ec8e81998dc18c45a1478e5fb0b474f7bc6ee848fe43282450",
+        "tools/tests/mod_network.gd": "9a3b619c4707805641617fa0ee2774e56f51ffef4f231f4f4052b3235939050f",
+        "tools/tests/terrain_sector.gd": "1044b9cf22cfdc8e7a669149db8a90ed3c660df9da396f15a2ab98589d9ad8d0",
+        "tools/tests/ai_activity_senses.gd": "dde7959314266d329c6facac037e443574c25bc49dd500e1005e8b2b03e94026",
+        "tools/tests/local_shadow_importance.gd": "a1c56432ca9371503d5013919dc20e161a54aac16a02a43c665073ed9d8c75d9",
+        "tools/tests/terrain_transitions.gd": "4d53840418f7c16adb49f5e787eb614d594d4dff1e8632c49a24cdc582c4e348",
+        "tools/tests/added_actor_tombstones.gd": "a99ac9e8fbdd8f1825692bda6026d2f1b0844d1e2406e24e609e0c52bc925ca4",
+        "tools/tests/direct_release_aim.gd": "2de072bf04c67d43f1f607b81726c4bc7c0fd131442ab6673b23668ee0ed4d28",
+        "tools/tests/scene_actor_audit.gd": "6fdf801e57586a26ad687b9488f12562bbf1edb0954594668f7b385de6739d3f",
+        "tools/tests/cloud_contact_light.gd": "38c8a0362130a6c42aaf45af84378a04b1a35722a48d495be048a4b542cffa15",
+        "tools/tests/mod_profiles.gd": "ece2a7b731bb5a38c9108bd4f451162f00afa7bf0b343519a0e542244631c967",
+        "tools/tests/story_coop_predicates.gd": "29668267f1e9cc53d6b9856016e5cb4f9f7151addd0e9ef76ad2f70dfc151562",
+        "tools/tests/water_light_stability.gd": "69d935e6d71eef1a6c94ea5934f7207628f54a2624cd06dd4a133ce04a849418",
+        "tools/tests/direct_feedback.gd": "6586e1f1708caae7661344d7fd8f1ca275f09ad8e2e8c3aa2e80ef7a5718a382",
+        "tools/tests/training_coop.gd": "1739f840f87e88357d54736c032eb980d6a9f4f00eda2b6c45ec342433ea7857",
+        "tools/tests/coop_solo_return_resume.gd": "b557f45d438af027b94c4b83f05f0b81d44d37b03d1b4549cbb7fd1b791e58dd",
+        "tools/tests/far_grass.gd": "01f525e1c6339306ac25110fd86a6d76a98ea95b03b92a935721d5813c3228eb",
+        "tools/tests/motion_records.gd": "c1b02711b23704839df9fad9dc1a787041416dabdd69620a5aa0f58b59f0026b",
+        "tools/tests/gameplay_report_regressions.gd": "b56b6fe72a3588a7d8716d4dd60c5f9da7e0868e5df845594aa884f9123f9392",
+        "tools/tests/menu_hidden_viewports.gd": "18bd46c06f14d25047950fc9c0e6631d02c5e7c77e121fd855d5bb8375fc4580",
+        "tools/tests/biome_cover_shores.gd": "9b8a4a621f20522f9d0642da4cfd18da7a5d7e0bcc0136bd02cb834dd14f1860",
+        "tools/tests/shadow_lifecycle.gd": "f878a04d73c6391f21678b468316532cb661d0925a549ae16467cc84b6974510",
+        "tools/tests/ingos_guards.gd": "465cad272425ca67b135fa7b431d471f846ca1981a21fba74894021d4ce70f9c",
+        "tools/tests/material_shader_options.gd": "8116d2bc50d86ef41f8726ad9ca4825d21f393c231696fcc38a027a520a3a70c",
+        "tools/tests/android_simulation_lifecycle.gd": "1d22694bb31095cccd3cde858ee448dce11732106f88686bd4a348ef987438a8",
+        "tools/tests/gipat_captive_dialogue.gd": "a21c958dea91f24c3360c917641f8be8fcee00286e012dd226c2ab9f34380aa1",
+        "tools/tests/catacomb_mechanisms.gd": "d7b1b2887877e371ff7477f4d61b1d20ff269877a0c15980ccdfbb2723efd43c",
+        "tools/tests/water_surface_phase.gd": "ff828c7ac48e6694076d171e48891c5e4e2dd5585865cd495dc7e3030f5fd749",
+        "tools/tests/terrain_cliff_render.gd": "a6ba8aa851633bd8d307a1a41ec1029af206e0f8a1b78a450f9018c52df001d9",
+        "tools/tests/lia_navigation_paths.gd": "32390c7852becfb68b68f0cbff91d6f8a29183eebf1f6ddc474c90a80dd047ae",
+        "tools/tests/grass_authored.gd": "c19dbc95d9dfcbf3734bdecba4bd3de37e71f8f2b966909f85185f7e23360b28",
+        "tools/tests/quest_rewards.gd": "e9590f400aa58d6d4f6fa1c6857ef1833772e048bd50a091d3d7c2731e06d06b",
+        "tools/tests/ingos_interactions.gd": "9723f3a944f4321a262f43674246f043bb46eacf16585505055a3eb5d157d855",
+        "tools/tests/startup_animation.gd": "5c53edc956ca8c6182d149c631c8f13af7a59795134beddd18bf5c24e0b22a63",
+        "tools/tests/revive_camera.gd": "40f15c2513b1e5843dd98682fc5748b37b18e1830d66f757376312eabf518c6d",
+        "tools/tests/camp_inventory_ui.gd": "f1afe1cc612527ba36a38c69820a71ce7c41cbb4efde0fe00b30ea79607707f3",
+        "tools/tests/water_sampler_budget.gd": "7e2fc4b8ee7a12fd69218ed3355e3a6664fdeae51f54e4f45430f743aedfd2f9",
+        "tools/tests/lmp_seated_pose.gd": "a069a23a2052b18e3aeceb61c7045b6fb49764ca00999fd0c53eda4c14080f86",
+        "tools/tests/quest_checkpoint_worker.gd": "ddd043783e273f0b2a7f24b505923dd889b28de0b6226a52b1042c6b3ca276b3",
+        "tools/tests/story_coop_traps.gd": "a119e860c91c23faba2449aac220607706fbe18ce272e053d48db90a21938094",
+        "tools/tests/water_current.gd": "e06b5be8d4ab6084eea785f2c0114902b53ec3a28d7262c7513cca8cae317e98",
+        "tools/tests/prison_alarm_state.gd": "acebb8f79fe12bd2da69d79129f16fe710b8edef6aef5fa02bd9748c41bda96b",
+        "tools/tests/foliage_shadow_cache.gd": "1e01488c2ccb69e85841b6acfef66f564cc6f8f3ba5ff1d65ff55d3699864c41",
+        "tools/tests/save_consumed_cast.gd": "a7a71f839bb4f100d552fe226a998f95ff9932b88e3fb59b3235b9dfc3d93303",
+        "tools/tests/gamepad_coop_targets.gd": "5668bf87d7363bac104034bfed854ba279282394462ad52f607f6c1aba4340bb",
+        "tools/tests/third_person_kbm_scene.gd": "51dcab959ccf3fd772034c83725102c76293bbcd3c346fc4f78971639c114db6",
+        "tools/tests/pet_waiting.gd": "851888d089ac1404ad63adca56294769c44d876ff1fcd4eea96db3372fc65e27",
+        "tools/tests/story_coop_effects_net.gd": "52696e02a31d652dd81f34bad7001f3aa2ca9a3faf548eea086bf7071c673470",
+        "tools/tests/direct_view_presentation.gd": "c996e96a532738265aa8cc3710965fb8afcf38de259c9b82858be72e24fb5058",
+        "tools/tests/soft_ground_seams.gd": "a8a4692d6433e99eaf32814523f5d992fd71ddb98c5bf296a14c864242d7b65b",
+        "tools/tests/fallen_party_xp.gd": "97d2fe09ce7278c9104ec90fd14de5a337fdef52aeee5fc9c74fbcf182c56a83",
+        "tools/tests/cloud_controls.gd": "bbc92c51c4aa683df681021a59a3d550e01bd8120b6818a53d2e98ea80c9f39d",
+        "tools/tests/unit_simulation_state.gd": "aaaf0427700a1a469036762e66ffec6a5d1029f26bac0957b22575e0da270298",
+        "tools/tests/wan_standalone_guest.gd": "bf7f7c00480c9898768c6c314b3d4d644d0f90dd1d71c3b34467667b8b38bfda",
+        "tools/tests/story_coop_dragon_net.gd": "6d4a1551d5cd6199d9ef0ad5f36bd83b19126de3b4c2875202896b9a3decd434",
+        "tools/tests/prison_late_join_net.gd": "269065404d26b13253e4303713572525b017eea6c93ad2311f1f05f434d4798c",
+        "tools/tests/android_scene_variants.gd": "5ff5bdd333b9c9c70ea0af5a469304894a58286ff440f13960ea2316b592ded8",
+        "tools/tests/nav_relocation_bounds.gd": "6c353fe3f6bbf985be67a8ca8e2416ed679ddc9e11f09db6fea3c7f49c0c52e2",
+        "tools/tests/story_coop_dragon.gd": "0fdfcf207e9c21faa1d288c83e41533298a8a504f755e6b051d74dfd190fbc7f",
+        "tools/tests/lesovik_weapon.gd": "5bf16c9d1b376c3b6164aeba006ef381fa0f02e19a3d75d3ead3a07d3a188368",
+        "tools/tests/local_shadow_fades.gd": "0e0b60a702206dd73ca092872895e884c445af85926fe2bfe16de999d7c1ae5d",
+        "tools/tests/healing_light_oracle.gd": "5ea81b1063f1a32faeb0a1dcbe8b7850dc25bf5087c6bcb8e531bd39db6fa012",
+        "tools/tests/preview_framing.gd": "4e56812c51f940bf7e06fdf423294c69d36341ee4a985621dc9f368ae32aec60",
+        "tools/tests/creature_damage.gd": "27462c032531a592d2e885615f10a1dd7345491b93a2b2fb10672344a4b5c8f9",
+        "tools/tests/coop_loot_grants.gd": "d3ef951023415e13d5c1bd327b669d5ab708df10d9e1a62b4f0844d358d333c1",
+        "tools/tests/coop_fresh_start_guards.gd": "b8d10cd62ec362cbd95e83ff52189280453a08b543fd651a6f9714ec4aff56e1",
+        "tools/tests/water_reflection_distance.gd": "fae4ea4da336259e7f4ce8a624e4a5fe1eea75061a8b1766095dedc9b580d4f4",
+        "tools/tests/water_surface_phase_reference.gd": "3de3599074bd1a7fa985cec3025ba14b89c7d6fe7ab47205dc0ec0f52527fea0",
+        "tools/tests/save_state_fields.gd": "06e7ce9d4c6e370956e72bfafde059ad661a46dde7584cf9b842e8ee5c2eeffa",
+        "tools/tests/water_current_render.gd": "4e62bfe20a9f775a62d1514f0f004066f33190de063b2735157698a63aa98cbf",
+        "tools/tests/loading_progress.gd": "56701669fc522b39a6ab8064f2013d380fd57c923775aadd062a53e83d2744be",
+        "tools/tests/wound_source.gd": "1eef4cb6fa5e4e0eb00bc8ce2ec07c69e54c761d92de9e31392ea0b40348b354",
+        "tools/tests/coop_progress_context_network.gd": "f455fd3f5870e54b31377e6f6852db2eaca75ef0392fe15752ec4af2932eacf4",
+        "tools/tests/first_person_alignment.gd": "be4fa7037ce57067e5c38a5a9268d80d1471cab4ea3ab021a907cbd0b9b42a7f",
+        "tools/tests/hd_camp_ui.gd": "6178a29b8ef1a98d6e18b5af2073394901a3f50b12a7d82fb0bf9457d84629dd",
+        "tools/tests/swamp_water_scene.gd": "9448e30a0e36471f9f2ae44c9330cdb1bfec6bb37c17309e4a099f33b6eb38a7",
+        "tools/tests/water_colour.gd": "f69709973f2559456463898bb43a2b5c9ef78e255510ced8d718ba5e7a63bd48",
+        "tools/tests/coop_progress_cleanup.gd": "fff977f63d2a9f84ab4f13c853e815c6f78c4d829a83d77f8f20f3b05954063b",
+        "tools/tests/vegetation_interaction.gd": "8df89b9696186c6c07358439b606c7ecf85358184c865daf63af43f9003f8199",
+        "tools/tests/first_person_torso.gd": "34a04ba4eb2dc8931c164d7ee166bcd2edbc344f4f9f8dcab77f36fa8c690868",
+        "tools/tests/water_reflection_combat.gd": "6bd2c9d1ee1c114504ad5774484b56abd9002d6e14ea99ebd76c6dc4233e7b8c",
+        "tools/tests/ground_contact_shoreline_scene.gd": "5807f4f07ec1c6c7f5bb73de29eaa9f5a6a067a52f7a9acfca2345a2a420b102",
+        "tools/tests/direct_quest_bindings.gd": "b0092a97217f7df57150ad0b258dfef6f3055fb9dc955650f02469f2780d1901",
+        "tools/tests/soft_ground_capacity.gd": "f5bf9561c1838acb8b01862398a81665a2acf0bc0f87cc6d843ffbb537d8b086",
+        "tools/tests/reflection_shadow_integrity.gd": "2ffdfaeefecb46742bea634ed40ce97673132b5e23a6e680e183a925846f1414",
+        "tools/tests/biome_cover.gd": "d1502cfc82f819862013644aeb314aae6ab3f414aa96503fe62c82dd8f4017d8",
+        "tools/tests/ground_contact_metadata.gd": "6f122b8ee5c83c130d68c83e5a9fecb5707eaa5efcb476aadbe9f47c61037f39",
+        "tools/tests/snapshot_delivery.gd": "9eb481be8f0fe6cc17a76268e3f168232a622dc696e022bc41812bd591bf7280",
+        "tools/tests/hd_resident_array.gd": "4c00927a9464a86af7a51f115d0dbceb514bcac347e349e59fcc478622a6c512",
+        "tools/tests/startup_graphics_recovery.gd": "aec41e116750590ec6411f2a5ccb3d3f41d5fcd95eade74f55a44a3ad62d65bb",
+        "tools/tests/scene_visibility.gd": "9a85f43b1436813503e747cf3741c4784d96cf107cb534b27ecfdd745860ce04",
+        "tools/tests/shop_spells.gd": "146d12e0153a41decef527d9bef07f7ce0350e002524830cc7c8153c99e4e927",
+        "tools/tests/net_smooth_native.gd": "472dedc7df7e6edcc03186a8c62180cff7440df8b43393b44e8fbd4620d3af3c",
+        "tools/tests/biome_cover_surface.gd": "3c670fa08cc8bcab7e84dc92600ae084dc9f163e5fb0896b8018fa2e61546fd2",
+        "tools/tests/rune_loot.gd": "f723d3dd6f62d506d6e80f04e3d4189b199145dd7daa4b65f9e1bf10d401493c",
+        "tools/tests/terror_revisit_net.gd": "17e1feae8944d91516a7c0cf07a5e0592d19ff978bb44d7c2daa5da7bf5efe79",
+        "tools/tests/terrain_junctions.gd": "ce5a010b27345e10a5e36ce3e30f6a8026963d7a3724a3cf28064bbfe1638f89",
+        "tools/tests/biome_cover_contact.gd": "71043c0d35d478fc34d6e7c7f2e5de9eae56f22b84a8746c145942f9f5217372",
+        "tools/tests/slave_camp_escape.gd": "fc934ceea6318014c21e46a938f19cc8f99fc28bc5a7b3a4abfcc7f299acbd28",
+        "tools/tests/direct_aim_selection.gd": "9c548942e0f3c17aa822d690d5de64008d74c06a24ca09e6bf833967fa39c5d6",
+        "tools/tests/terrain_sun_shadows.gd": "492adeabadc9797e705aaa134665829bcc17839af897210e2b58a65505d4253c",
+        "tools/tests/far_grass_stream.gd": "717a2b58469f17f33fbc56bca9e5cd99f1574b171f12579cd21591c1dd565286",
+        "tools/tests/training_reset.gd": "e4f96266075715e6c5cb3d1a75ee05fd1d1fc5a85c0f6f0df71bdc7282f9c13f",
+        "tools/tests/followup_controls.gd": "fbf053d58d176ca9fc29d178e99bf32b4d952d6909d2d680e92c417e909e1d0c",
+        "tools/tests/direct_settings.gd": "49bfd5bceb1cf7392efdb3d58db734bc29d87098c3c56cce05187211de62fb37",
+        "tools/tests/local_host_campaign.gd": "5cc3aa74b279f9bc0f00318ad3131d85c6fbfa4d409bd638f29e2bf12b7c488e",
+        "tools/tests/mod_effects.gd": "7888752d6169b85a6ab0c36310d61cad06acc7f7ddad5e3142333089be2ba610",
+        "tools/tests/unit_neighbour_batch.gd": "08fd8036fb04ea2c05e3fcfde4951f8374505d0e8bb1b970320561f292ad4b3d",
+        "tools/tests/menu_lmp_flow.gd": "c01452e95c4db9104b388783b223f11802118e570edab51c1cf8df0a3ee60285",
+        "tools/tests/cloud_reflection_scene.gd": "7ec8288859204b0dfb24e3ef5b800d949bb677f32ae64abb47c1e852f225e64c",
+        "tools/tests/terrain_color.gd": "4f411abe1097d4426c709413f21e4386504531e2cdd8293182d0aa84e22c4d10",
+        "tools/tests/direct_accuracy.gd": "57c92c52e2c3b4af9325f138242dd105ec47e8a9db1a089d8953c00abc0ce7bf",
+        "tools/tests/island_return_ui.gd": "4d9acf8861d989fc841ddda25bca99a894ed59e291a0e028092a9f592c9a2785",
+        "tools/tests/registry_queries.gd": "ebbb5a88bad0935961a02597fa3b6df20f4e486e8165bbe48736097e45424dbf",
+        "tools/tests/first_person_models.gd": "394bf1d2edc54db6c8570182bd00d35c6d3861483deec734b134650a7ae8c537",
+        "tools/tests/quest_inventory_lifecycle.gd": "dc1e85d374fb21af93d7697bc132df06342f39deb1e8d2750f2077dc8a0648df",
+        "tools/tests/nalo_rescue_entry.gd": "bcdab43857c799876f251790b70225b514ab703d24c6707159d857eac694c038",
+        "tools/tests/prison_damage_late_join.gd": "57835b110076dc3fa2eb1fbc17161988910156e1ec35cfd803dd94d7b659bf5c",
+        "tools/tests/water_surface.gd": "ba95a7208eef00315223d5c7ba412cd0cae39c8688b99f48d8185d9a4761816d",
+        "tools/tests/waterfall_levels.gd": "5a8fe2cc1511b394cbaf4b631dc86467a4d177a33c87d4b1c42c3dc5ecb4da3a",
+        "tools/tests/coop_vm_projection.gd": "91ebe397d05ca17de9663fa1b4b4c5b8f34a516ba1345f2f0fcc469485bbcffc",
+        "tools/tests/script_dead_predicates.gd": "981e6cd80c2078af9959acf87b736b558a5663b323faf65eca12c1b51fe1ee58",
+        "tools/tests/elder_departure.gd": "38ef0ac7d8a30c01254aac8ed4c14d5dcf32c14a5a9aa204f78984f93a222b8e",
+        "tools/tests/player_feedback.gd": "0c4cf9ba4da608c078134a825f857e833073b7aec39abd5edc0dabba43f8004c",
+        "tools/tests/nav_preparation.gd": "4a6be6e79ae75b46f09a26a20713f98aa3c8d3268fa6b7fd2790aa01918ff60b",
+        "tools/tests/grass_stream_envelope.gd": "d74c725775f5e1659b6ec29f4dfda441d10d5314830317a324e6c4938a5812e8",
+        "tools/tests/ground_contact_relief_scene.gd": "538296456d76129d751bf8b4a77a08867a3515e38ab821d09c0cba83df7e11b2",
+        "tools/tests/simulation_profile_scopes.gd": "722a8fbc8851e9b7cb841c02cc3d68a9b33d9c7a5639298c91a7e271d82d6dca",
+        "tools/tests/wound_retention.gd": "3c714c8d52dbf92ff7c0fbf71e29d5c9e8af213adde39136fb891f55e08bfc65",
+        "tools/tests/party_dependents.gd": "252bd09337d3a546d9b0ecfe5e5ac81bc2bc4919979635c8dca0b5da45782032",
+        "tools/tests/combat_inputs.gd": "9a45754a3bbec7eac23449cfe3196630f41bbbcc4b8a0a99e0934949f1c6c4d5",
+        "tools/tests/zone7_arrival.gd": "0c2e1d5ff96c92883165a72cf44c0759aa0f75238ec8ac5c0fe8759bb4e25530",
+        "tools/tests/coop_guest_roles.gd": "be08f73018774c4c6c286f5b4cd6d211503fc2f282fab9c73666d241920c801e",
+        "tools/tests/lizard_trident.gd": "5913eead5133d239e1ab8352b382ba07bde5f0f2926037d74c1d3eb99b85e4ea",
+        "tools/tests/scene_visibility_guards.gd": "036736f2795c5a50fd2e1d8d3416ee4de48bf270c1b8549af39521ffc6e34a72",
+        "tools/tests/scenery_batches.gd": "1deb225250c9387ea8029a382a184d4734c01811c77774275be63c4d89947f78",
+        "tools/tests/net_sim_lifecycle.gd": "7e61c16a8a0602372de3be380c628c7398a544d01ee61fb3a720356ca76554a6",
+        "tools/tests/dialogue_approach.gd": "ee018a09492707d1d585719b6c6bc8e14d59ea55d8892fbdc6b85f55138f060e",
+        "tools/tests/water_reflection_fallback.gd": "1757827c9060708f938d2218814dc6f8c038a42e4d636a305bda8a61530301c8",
+        "tools/tests/ground_dense_colors.gd": "636a1a0cdcfee6f8ae6c7d07fd5a053b671926d79b028b689ca08d00cf481991",
+        "tools/tests/stamina_regen.gd": "4ca06277761746839e916faf4784086ed60575ca1779dfb13d1697062b1cb6d0",
+        "tools/tests/prison_late_join.gd": "06c53d50b72774c54a8452c23537a389505556e6c74c9ab3251ded7c6154ce3e",
+        "tools/tests/dialogue_feedback.gd": "28453975e7e7efd71944e01a466dd68fa153f373dcdafda296fefecd677e2ecc",
+        "tools/tests/terrain_compressed_upload.gd": "e41c59621ac769d9637783fa6ba022fd4e06823ce873487edb6c28b94f004e68",
+        "tools/tests/wound_gpu.gd": "73bcc325082c137e09de69546acb57becb1c0cd9098d0c2e0417e7ea7e99fe12",
+        "tools/tests/nav_turn_native.gd": "fa8d6c8329f94e9073defa00d459648b5c3b5d974d6b0d5b13d732161f908339",
+        "tools/tests/multiplayer_cache_teardown.gd": "d7227e8457c7d5a8313cad25c96aade8a6f436ff4ff40b5efeefe7c798bc8c0c",
+        "tools/tests/camera_depth_of_field.gd": "98c5133b0be39480c819278f42da369a86b96a5f769208706bfc18580497024b",
+        "tools/tests/android_service_counter.gd": "b05ab2868e45479b5d17d39ab3d6e08fcf04c47edc90775332bca78bc45e843a",
+        "tools/tests/hidden_presentation.gd": "71ede6a4474ef6a7cd0308f326efdb7b0bdd1945a6f9a8cd49ff10fc129a0d41",
+        "tools/tests/prison_progression_late_join.gd": "dff604a78e3b6df45246a0d94b19106e489ce0ddac059bdd09bd79776164f714",
+        "tools/tests/shelter_kel.gd": "6319e3f094ebbe0b1456a48d82a5b7599975f5c9a5d7ef6950cbe08b94ee0565",
+        "tools/tests/jun_transformation_route.gd": "faa9745eabd1b68961a7dc2d5004328e6881306384f092e54897a0769a0f537b",
+        "tools/tests/wan_coop_stress.gd": "034ffefee12a30f89b633a2e58bd0830b40c8f3b17fc93bcbc728781331e3198",
+        "tools/tests/harpy_route_audit.gd": "2e36e28fb08cb57d5867128c1b1933093ffd3804e606f65306289117c118156a",
+        "tools/tests/long_dropdowns.gd": "271ce0520544f0c0ef57b34162ed256dec4b30a724a99b39461cdb89418ecda9",
+        "tools/tests/android_slow_owner.gd": "8ae6161055785c348bd49aa15218f57a10d626fe12596a65c4ff7daaa3d7bd31",
+        "tools/tests/hud_retained_controls.gd": "7873149b86231b3aa01bdf69ff012c38b8b56357f17f753f8305dbc082a098c9",
+        "tools/tests/water_surface_native.gd": "5a39428db20ead84b47494ccc2d68af60f48072c46e3dd7ce5460a8ac48e0ba5",
+        "tools/tests/repeated_spells.gd": "7e4c207d9b7f65133e7e081a8cf33ba7a76610a0bc8c438f8211864ac3ef3970"
+      },
+      "historical_implementation_equivalence": {
+        "rune_and_price_layout": {
+          "base_commit": "e82ff09",
+          "exact_source_files": [
+            "game/src/ui/spell_slots.gd",
+            "game/src/ui/camp_view.gd"
+          ],
+          "changed_files": []
+        },
+        "health_and_portraits": {
+          "base_commit": "b2d95d0",
+          "exact_source_files": [
+            "game/src/ui/enemy_bars.gd",
+            "game/src/ui/paperdoll.gd"
+          ],
+          "changed_files": []
+        },
+        "hd_terrain_identity": {
+          "base_commit": "b2d95d0",
+          "exact_source_files": [
+            "game/src/ei/game_data.gd",
+            "game/src/game/fx/terrain_cliff.gd",
+            "game/src/game/fx/terrain_cliff_tiles.gd",
+            "game/src/game/fx/terrain_cliff_shader.gd",
+            "game/src/game/fx/terrain_transition.gd",
+            "game/src/game/fx/terrain_transition_tiles.gd",
+            "game/src/game/fx/terrain_transition_shader.gd"
+          ],
+          "changed_files": []
+        }
       }
     },
     "portrait_lighting": {
@@ -387,43 +875,3242 @@
       }
     },
     "swamp_review": {
-      "scope": "Rendered the same installed HD Lands textures on original zone1 and zone2 swamp surfaces (liquid ground type 14) with controlled day/night lighting. No swamp shader or texture change.",
+      "surfaces": {
+        "fixture": "tools/tests/liquid_surfaces.gd",
+        "scope": "Final compiled scripts; HD Lands 1.5.0 mounted. Four authored swamps change and ignore a substituted liquid atlas; four ordinary-water/lava controls remain byte-identical. Held and animated frames checked.",
+        "exit": 0,
+        "errors": [],
+        "result": {
+          "failures": 0,
+          "rows": [
+            {
+              "animated": true,
+              "atlas_independent": true,
+              "atlas_size": 2048,
+              "expected_change": true,
+              "ground": 3.99409592151642,
+              "identical": false,
+              "liquid_type": 14,
+              "map": "zone1",
+              "ok": true,
+              "point": [
+                159.5,
+                12.5
+              ],
+              "scene": "swamp-zone1",
+              "stable_repeat": true,
+              "water": 5.71068477630615
+            },
+            {
+              "animated": true,
+              "atlas_independent": true,
+              "atlas_size": 2048,
+              "expected_change": true,
+              "ground": 0.414641581475735,
+              "identical": false,
+              "liquid_type": 14,
+              "map": "zone2",
+              "ok": true,
+              "point": [
+                87.5,
+                83.5
+              ],
+              "scene": "swamp-zone2",
+              "stable_repeat": true,
+              "water": 1.11658823490143
+            },
+            {
+              "animated": true,
+              "atlas_independent": true,
+              "atlas_size": 2048,
+              "expected_change": true,
+              "ground": 5.88208389282227,
+              "identical": false,
+              "liquid_type": 14,
+              "map": "zone7",
+              "ok": true,
+              "point": [
+                26.5,
+                260.5
+              ],
+              "scene": "swamp-zone7",
+              "stable_repeat": true,
+              "water": 6.74499416351318
+            },
+            {
+              "animated": true,
+              "atlas_independent": true,
+              "atlas_size": 2048,
+              "expected_change": true,
+              "ground": 6.07756948471069,
+              "identical": false,
+              "liquid_type": 14,
+              "map": "zone9",
+              "ok": true,
+              "point": [
+                74.5,
+                218.5
+              ],
+              "scene": "swamp-zone9",
+              "stable_repeat": true,
+              "water": 7.04535913467407
+            },
+            {
+              "animated": true,
+              "atlas_independent": true,
+              "atlas_size": 2048,
+              "expected_change": false,
+              "ground": 0.0,
+              "identical": true,
+              "liquid_type": 13,
+              "map": "zone10",
+              "ok": true,
+              "point": [
+                72.5,
+                75.5
+              ],
+              "scene": "lava-zone10",
+              "stable_repeat": true,
+              "water": 0.427401155233383
+            },
+            {
+              "animated": true,
+              "atlas_independent": true,
+              "atlas_size": 2048,
+              "expected_change": false,
+              "ground": 5.17532444000244,
+              "identical": true,
+              "liquid_type": 13,
+              "map": "zone16",
+              "ok": true,
+              "point": [
+                162.5,
+                14.5
+              ],
+              "scene": "lava-zone16",
+              "stable_repeat": true,
+              "water": 7.35965061187744
+            },
+            {
+              "animated": true,
+              "atlas_independent": true,
+              "atlas_size": 2048,
+              "expected_change": false,
+              "ground": 10.170241355896,
+              "identical": true,
+              "liquid_type": 6,
+              "map": "zone8",
+              "ok": true,
+              "point": [
+                160.0,
+                142.0
+              ],
+              "scene": "river-zone8",
+              "stable_repeat": true,
+              "water": 14.0244665145874
+            },
+            {
+              "animated": true,
+              "atlas_independent": true,
+              "atlas_size": 2048,
+              "expected_change": false,
+              "ground": 1.97821617141379,
+              "identical": true,
+              "liquid_type": 6,
+              "map": "zone1",
+              "ok": true,
+              "point": [
+                89.4000015258789,
+                24.1399993896484
+              ],
+              "scene": "coast-zone1",
+              "stable_repeat": true,
+              "water": 2.51802062988281
+            }
+          ]
+        },
+        "result_sha256": "0c7af8cfcecdc54d7c9de477acd701e8899a6ebc961a6d1180be87be681a9cfb",
+        "log_sha256": "e3a138d9ef52d7a23b97cbf99d8c9ff737c6d0d05844a8ac271d0e675b7d279e",
+        "fixture_sha256": "6a2d2696229ed67c7136ea4f42d2512d151d1095cb074276390c43e945060099"
+      },
+      "world": {
+        "fixture": "tools/tests/swamp_water_scene.gd",
+        "scope": "Two complete original zones, noon/night, overhead/low camera, HD Lands mounted; mirror enabled. Map-edge fog suppressed for material inspection.",
+        "exit": 0,
+        "errors": [],
+        "result": {
+          "failures": 0,
+          "rows": [
+            {
+              "angle": "overhead",
+              "atlas_size": 2048,
+              "changed": true,
+              "hour": 12,
+              "mirror_active": true,
+              "objects": 730,
+              "scene": "swamp-gz1g-12-overhead"
+            },
+            {
+              "angle": "low",
+              "atlas_size": 2048,
+              "changed": true,
+              "hour": 12,
+              "mirror_active": true,
+              "objects": 730,
+              "scene": "swamp-gz1g-12-low"
+            },
+            {
+              "angle": "overhead",
+              "atlas_size": 2048,
+              "changed": true,
+              "hour": 0,
+              "mirror_active": true,
+              "objects": 730,
+              "scene": "swamp-gz1g-0-overhead"
+            },
+            {
+              "angle": "low",
+              "atlas_size": 2048,
+              "changed": true,
+              "hour": 0,
+              "mirror_active": true,
+              "objects": 730,
+              "scene": "swamp-gz1g-0-low"
+            },
+            {
+              "angle": "overhead",
+              "atlas_size": 2048,
+              "changed": true,
+              "hour": 12,
+              "mirror_active": true,
+              "objects": 718,
+              "scene": "swamp-gz2g-12-overhead"
+            },
+            {
+              "angle": "low",
+              "atlas_size": 2048,
+              "changed": true,
+              "hour": 12,
+              "mirror_active": true,
+              "objects": 718,
+              "scene": "swamp-gz2g-12-low"
+            },
+            {
+              "angle": "overhead",
+              "atlas_size": 2048,
+              "changed": true,
+              "hour": 0,
+              "mirror_active": true,
+              "objects": 718,
+              "scene": "swamp-gz2g-0-overhead"
+            },
+            {
+              "angle": "low",
+              "atlas_size": 2048,
+              "changed": true,
+              "hour": 0,
+              "mirror_active": true,
+              "objects": 718,
+              "scene": "swamp-gz2g-0-low"
+            }
+          ]
+        },
+        "result_sha256": "9ae5c7735c7dd2dde1578235dd4f7ed7dbbcb3111cc17abe0cb7a09441c4dff3",
+        "log_sha256": "ba01653d6574ef34c0116851fb0799c46989cdc74a1a5a0e26a8eed36cd83d3a",
+        "fixture_sha256": "9448e30a0e36471f9f2ae44c9330cdb1bfec6bb37c17309e4a099f33b6eb38a7"
+      },
+      "gles": {
+        "fixture": "tools/tests/water_sampler_budget.gd",
+        "scope": "Real Compatibility renderer: composed sampler limits, ordinary-water/lava controls, empty and active interaction history.",
+        "exit": 0,
+        "errors": [],
+        "result": {
+          "checks": 216,
+          "failures": 0,
+          "legacy": false,
+          "measured": false,
+          "renderer": "gl_compatibility",
+          "rows": [
+            {
+              "clouds": 0,
+              "cost": {},
+              "map": "zone1",
+              "mode": 0,
+              "samplers": 6
+            },
+            {
+              "clouds": 0,
+              "cost": {},
+              "map": "zone1",
+              "mode": 1,
+              "samplers": 6
+            },
+            {
+              "clouds": 0,
+              "cost": {},
+              "map": "zone1",
+              "mode": 2,
+              "samplers": 7
+            },
+            {
+              "clouds": 0,
+              "cost": {},
+              "map": "zone1",
+              "mode": 3,
+              "samplers": 7
+            },
+            {
+              "clouds": 0,
+              "cost": {},
+              "map": "zone1",
+              "mode": 4,
+              "samplers": 7
+            },
+            {
+              "clouds": 0,
+              "cost": {},
+              "map": "zone1",
+              "mode": 5,
+              "samplers": 8
+            },
+            {
+              "clouds": 1,
+              "cost": {},
+              "map": "zone1",
+              "mode": 0,
+              "samplers": 7
+            },
+            {
+              "clouds": 1,
+              "cost": {},
+              "map": "zone1",
+              "mode": 1,
+              "samplers": 7
+            },
+            {
+              "clouds": 1,
+              "cost": {},
+              "map": "zone1",
+              "mode": 2,
+              "samplers": 8
+            },
+            {
+              "clouds": 1,
+              "cost": {},
+              "map": "zone1",
+              "mode": 3,
+              "samplers": 8
+            },
+            {
+              "clouds": 1,
+              "cost": {},
+              "map": "zone1",
+              "mode": 4,
+              "samplers": 8
+            },
+            {
+              "clouds": 1,
+              "cost": {},
+              "map": "zone1",
+              "mode": 5,
+              "samplers": 9
+            },
+            {
+              "clouds": 2,
+              "cost": {},
+              "map": "zone1",
+              "mode": 0,
+              "samplers": 7
+            },
+            {
+              "clouds": 2,
+              "cost": {},
+              "map": "zone1",
+              "mode": 1,
+              "samplers": 7
+            },
+            {
+              "clouds": 2,
+              "cost": {},
+              "map": "zone1",
+              "mode": 2,
+              "samplers": 8
+            },
+            {
+              "clouds": 2,
+              "cost": {},
+              "map": "zone1",
+              "mode": 3,
+              "samplers": 8
+            },
+            {
+              "clouds": 2,
+              "cost": {},
+              "map": "zone1",
+              "mode": 4,
+              "samplers": 8
+            },
+            {
+              "clouds": 2,
+              "cost": {},
+              "map": "zone1",
+              "mode": 5,
+              "samplers": 9
+            },
+            {
+              "clouds": 3,
+              "cost": {},
+              "map": "zone1",
+              "mode": 0,
+              "samplers": 7
+            },
+            {
+              "clouds": 3,
+              "cost": {},
+              "map": "zone1",
+              "mode": 1,
+              "samplers": 7
+            },
+            {
+              "clouds": 3,
+              "cost": {},
+              "map": "zone1",
+              "mode": 2,
+              "samplers": 8
+            },
+            {
+              "clouds": 3,
+              "cost": {},
+              "map": "zone1",
+              "mode": 3,
+              "samplers": 8
+            },
+            {
+              "clouds": 3,
+              "cost": {},
+              "map": "zone1",
+              "mode": 4,
+              "samplers": 8
+            },
+            {
+              "clouds": 3,
+              "cost": {},
+              "map": "zone1",
+              "mode": 5,
+              "samplers": 9
+            },
+            {
+              "clouds": 0,
+              "cost": {},
+              "map": "zone8",
+              "mode": 0,
+              "samplers": 6
+            },
+            {
+              "clouds": 0,
+              "cost": {},
+              "map": "zone8",
+              "mode": 1,
+              "samplers": 6
+            },
+            {
+              "clouds": 0,
+              "cost": {},
+              "map": "zone8",
+              "mode": 2,
+              "samplers": 7
+            },
+            {
+              "clouds": 0,
+              "cost": {},
+              "map": "zone8",
+              "mode": 3,
+              "samplers": 7
+            },
+            {
+              "clouds": 0,
+              "cost": {},
+              "map": "zone8",
+              "mode": 4,
+              "samplers": 7
+            },
+            {
+              "clouds": 0,
+              "cost": {},
+              "map": "zone8",
+              "mode": 5,
+              "samplers": 8
+            },
+            {
+              "clouds": 1,
+              "cost": {},
+              "map": "zone8",
+              "mode": 0,
+              "samplers": 7
+            },
+            {
+              "clouds": 1,
+              "cost": {},
+              "map": "zone8",
+              "mode": 1,
+              "samplers": 7
+            },
+            {
+              "clouds": 1,
+              "cost": {},
+              "map": "zone8",
+              "mode": 2,
+              "samplers": 8
+            },
+            {
+              "clouds": 1,
+              "cost": {},
+              "map": "zone8",
+              "mode": 3,
+              "samplers": 8
+            },
+            {
+              "clouds": 1,
+              "cost": {},
+              "map": "zone8",
+              "mode": 4,
+              "samplers": 8
+            },
+            {
+              "clouds": 1,
+              "cost": {},
+              "map": "zone8",
+              "mode": 5,
+              "samplers": 9
+            },
+            {
+              "clouds": 2,
+              "cost": {},
+              "map": "zone8",
+              "mode": 0,
+              "samplers": 7
+            },
+            {
+              "clouds": 2,
+              "cost": {},
+              "map": "zone8",
+              "mode": 1,
+              "samplers": 7
+            },
+            {
+              "clouds": 2,
+              "cost": {},
+              "map": "zone8",
+              "mode": 2,
+              "samplers": 8
+            },
+            {
+              "clouds": 2,
+              "cost": {},
+              "map": "zone8",
+              "mode": 3,
+              "samplers": 8
+            },
+            {
+              "clouds": 2,
+              "cost": {},
+              "map": "zone8",
+              "mode": 4,
+              "samplers": 8
+            },
+            {
+              "clouds": 2,
+              "cost": {},
+              "map": "zone8",
+              "mode": 5,
+              "samplers": 9
+            },
+            {
+              "clouds": 3,
+              "cost": {},
+              "map": "zone8",
+              "mode": 0,
+              "samplers": 7
+            },
+            {
+              "clouds": 3,
+              "cost": {},
+              "map": "zone8",
+              "mode": 1,
+              "samplers": 7
+            },
+            {
+              "clouds": 3,
+              "cost": {},
+              "map": "zone8",
+              "mode": 2,
+              "samplers": 8
+            },
+            {
+              "clouds": 3,
+              "cost": {},
+              "map": "zone8",
+              "mode": 3,
+              "samplers": 8
+            },
+            {
+              "clouds": 3,
+              "cost": {},
+              "map": "zone8",
+              "mode": 4,
+              "samplers": 8
+            },
+            {
+              "clouds": 3,
+              "cost": {},
+              "map": "zone8",
+              "mode": 5,
+              "samplers": 9
+            }
+          ]
+        },
+        "result_sha256": "0870426cc27186b9a19cd47059720b110c787d159c8f4a5c130dafb5c07f8a17",
+        "log_sha256": "c8d218b7e4f0f388bf376e2c2da876420a6b0e6d7584b2a33ddfbcfc99a0b816",
+        "fixture_sha256": "7e2fc4b8ee7a12fd69218ed3355e3a6664fdeae51f54e4f45430f743aedfd2f9"
+      },
+      "appearance": "Murky olive/green body, broad suspended-sediment variation, moving normals and softened blue sky. The swamp shader never samples the authored swamp atlas; the existing shared procedural noise supplies variation.",
+      "comparison_limit": "Other-renderer screenshots use different texture assets, lighting and cameras; no performance or visual-parity claim is made from them."
+    }
+  },
+  "cloud_rendering": {
+    "reflection_composition": {
+      "fixture": "tools/tests/cloud_reflection_skip.gd",
+      "scope": "Three cloud qualities, three reflection settings, four wave/rain/zero-weight states. Exact unchanged-backend and held/restored images; qualified branch reordering differs by at most 1/32768 linear intensity.",
+      "exit": 0,
+      "errors": [],
       "result": {
+        "checks": 219,
         "failures": 0,
+        "renderer": "forward_plus",
         "rows": [
           {
-            "atlas_size": 2048,
-            "hour_fixture": 12,
-            "liquid_type": 14,
-            "rendered": true,
-            "scene": "swamp-zone1"
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": false,
+            "pipelines_end": "(11, 11)",
+            "pipelines_start": "(11, 11)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 0
           },
           {
-            "atlas_size": 2048,
-            "hour_fixture": 0,
-            "liquid_type": 14,
-            "rendered": true,
-            "scene": "swamp-zone1"
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": false,
+            "pipelines_end": "(11, 11)",
+            "pipelines_start": "(11, 11)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 1
           },
           {
-            "atlas_size": 2048,
-            "hour_fixture": 12,
-            "liquid_type": 14,
-            "rendered": true,
-            "scene": "swamp-zone2"
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": false,
+            "pipelines_end": "(11, 11)",
+            "pipelines_start": "(11, 11)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 2
           },
           {
-            "atlas_size": 2048,
-            "hour_fixture": 0,
-            "liquid_type": 14,
-            "rendered": true,
-            "scene": "swamp-zone2"
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": false,
+            "pipelines_end": "(13, 13)",
+            "pipelines_start": "(11, 11)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 0,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": false,
+            "pipelines_end": "(15, 15)",
+            "pipelines_start": "(15, 15)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": false,
+            "pipelines_end": "(15, 15)",
+            "pipelines_start": "(15, 15)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": false,
+            "pipelines_end": "(15, 15)",
+            "pipelines_start": "(15, 15)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": false,
+            "pipelines_end": "(17, 17)",
+            "pipelines_start": "(15, 15)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 1,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": false,
+            "pipelines_end": "(19, 19)",
+            "pipelines_start": "(19, 19)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": false,
+            "pipelines_end": "(19, 19)",
+            "pipelines_start": "(19, 19)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": false,
+            "pipelines_end": "(19, 19)",
+            "pipelines_start": "(19, 19)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": false,
+            "pipelines_end": "(21, 21)",
+            "pipelines_start": "(19, 19)",
+            "quality": 1,
+            "restored": true,
+            "ssr": 2,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(23, 23)",
+            "pipelines_start": "(23, 23)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(23, 23)",
+            "pipelines_start": "(23, 23)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(23, 23)",
+            "pipelines_start": "(23, 23)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(25, 25)",
+            "pipelines_start": "(23, 23)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 0,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 5,
+            "exact": false,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 3.0517578125e-05,
+            "optimized": true,
+            "pipelines_end": "(27, 27)",
+            "pipelines_start": "(27, 27)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 9,
+            "exact": false,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 3.0517578125e-05,
+            "optimized": true,
+            "pipelines_end": "(27, 27)",
+            "pipelines_start": "(27, 27)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 11,
+            "exact": false,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 3.0517578125e-05,
+            "optimized": true,
+            "pipelines_end": "(27, 27)",
+            "pipelines_start": "(27, 27)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(29, 29)",
+            "pipelines_start": "(27, 27)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 1,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(31, 31)",
+            "pipelines_start": "(31, 31)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(31, 31)",
+            "pipelines_start": "(31, 31)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(31, 31)",
+            "pipelines_start": "(31, 31)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(33, 33)",
+            "pipelines_start": "(31, 31)",
+            "quality": 2,
+            "restored": true,
+            "ssr": 2,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(35, 35)",
+            "pipelines_start": "(35, 35)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(35, 35)",
+            "pipelines_start": "(35, 35)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(35, 35)",
+            "pipelines_start": "(35, 35)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(37, 37)",
+            "pipelines_start": "(35, 35)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 0,
+            "state": 3,
+            "zero_weight_pixels": 230400
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 4,
+            "exact": false,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 1.52587890625e-05,
+            "optimized": true,
+            "pipelines_end": "(41, 41)",
+            "pipelines_start": "(41, 41)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 15,
+            "exact": false,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 3.0517578125e-05,
+            "optimized": true,
+            "pipelines_end": "(41, 41)",
+            "pipelines_start": "(41, 41)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 1,
+            "exact": false,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 1.52587890625e-05,
+            "optimized": true,
+            "pipelines_end": "(41, 41)",
+            "pipelines_start": "(41, 41)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(43, 43)",
+            "pipelines_start": "(41, 41)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 1,
+            "state": 3
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(45, 45)",
+            "pipelines_start": "(45, 45)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 0
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(45, 45)",
+            "pipelines_start": "(45, 45)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 1
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(45, 45)",
+            "pipelines_start": "(45, 45)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 2
+          },
+          {
+            "bytes": 1382400,
+            "changed_pixels": 0,
+            "exact": true,
+            "format": 14,
+            "held": true,
+            "max_linear_error": 0.0,
+            "optimized": true,
+            "pipelines_end": "(47, 47)",
+            "pipelines_start": "(45, 45)",
+            "quality": 3,
+            "restored": true,
+            "ssr": 2,
+            "state": 3
           }
         ]
       },
-      "comparison_limit": "Screenshots made with different texture packs, lighting, cameras and hardware do not provide a controlled renderer performance comparison.",
-      "character_ground_light": "Existing Camera > Character light option provides Auto/Off/On; independent from Paperdoll lighting."
+      "result_sha256": "c70294bcf8b8c1b6df69a8cc5d9d06efd377b8bc38cba489f2222c992dd9c95d",
+      "log_sha256": "0d7e182be1200f41de98cd4d837197e7d5a9b718fa25ef689d465a7fd613d9ac",
+      "fixture_sha256": "24f9ae10f3e1b294600caa5dc0163b5e124959d4c0d418bc66dd93262f43c3d2"
+    },
+    "reflection_lifecycle": {
+      "fixture": "tools/tests/cloud_reflection_scene.gd",
+      "scope": "Actual world: held sky reuse, flash, camera rotation, hidden/inactive world, no-water view, return and option teardown. Held shadow aiming also publishes actual sun direction.",
+      "exit": 0,
+      "errors": [],
+      "result": {
+        "failures": 0,
+        "rows": []
+      },
+      "result_sha256": "2b4055dfc970b5f220b22be5cabeb06923e56c7d313586f75258fc76297c4378",
+      "log_sha256": "b67dfa3b57b5067962af56389ef8acd1b86ce693dd2010f5e0144b7a948d9652",
+      "fixture_sha256": "7ec8288859204b0dfb24e3ef5b800d949bb677f32ae64abb47c1e852f225e64c"
+    },
+    "shadow_lifecycle": {
+      "fixture": "tools/tests/cloud_shadow_field.gd",
+      "scope": "Same-frame sun changes, held weather, night, ownership transfer, rapid toggles and released GPU textures.",
+      "exit": 0,
+      "errors": [],
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 64,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "supported": true
+      },
+      "result_sha256": "5709e65b570a5164cd7af89c39c81cc39ba56801b0aeb324efc404ea9a14ec8a",
+      "log_sha256": "d6e8f4d7714ca95ea3662764ed3764731fc302da08903214294f7f8e33211bb1",
+      "fixture_sha256": "4991ba675a2b180bccfe367f73c179138272ea0a3cbce90af2d583f96a843ce5"
+    },
+    "shadow_projection": {
+      "fixture": "tools/tests/cloud_shadow_field_projection.gd",
+      "scope": "83 rendered checks across regions, storms, sun angles, altitudes and abrupt changes; direct-integrator fallback retained outside the field, above the cloud base and at low sun.",
+      "exit": 0,
+      "errors": [],
+      "result": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "checks": 83,
+        "failures": 0,
+        "grid": 192,
+        "integrated": true,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "gipat",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "gipat",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "gipat",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "gipat",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "gipat",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "gipat",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "gipat",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "gipat",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "gipat",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "gipat",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.000681877136230469,
+            "mean_absolute_error": 0.000180827502043826,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7275390625
+            ],
+            "scenario": "ingos",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.000830650329589844,
+            "mean_absolute_error": 0.000168524187411055,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7490234375
+            ],
+            "scenario": "ingos",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.000681877136230469,
+            "mean_absolute_error": 0.000180827502043826,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7275390625
+            ],
+            "scenario": "ingos",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.000830650329589844,
+            "mean_absolute_error": 0.000168524177722296,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7490234375
+            ],
+            "scenario": "ingos",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.000681877136230469,
+            "mean_absolute_error": 0.000180827477821927,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7275390625
+            ],
+            "scenario": "ingos",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.000830650329589844,
+            "mean_absolute_error": 0.000168524263710039,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7490234375
+            ],
+            "scenario": "ingos",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.000681877136230469,
+            "mean_absolute_error": 0.000180827550487625,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7275390625
+            ],
+            "scenario": "ingos",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.000830650329589844,
+            "mean_absolute_error": 0.000168525137515064,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7490234375
+            ],
+            "scenario": "ingos",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.72705078125
+            ],
+            "scenario": "ingos",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.74853515625
+            ],
+            "scenario": "ingos",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "suslanger",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "suslanger",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "suslanger",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "suslanger",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "suslanger",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "suslanger",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "suslanger",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "suslanger",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "suslanger",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "suslanger",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.000273466110229492,
+            "mean_absolute_error": 0.000187590344797935,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "scenario": "storm",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.000699043273925781,
+            "mean_absolute_error": 0.000167799066094079,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.72021484375,
+              0.74169921875
+            ],
+            "scenario": "storm",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.000273466110229492,
+            "mean_absolute_error": 0.000187590344797935,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "scenario": "storm",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.000699043273925781,
+            "mean_absolute_error": 0.000167799063066341,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.72021484375,
+              0.74169921875
+            ],
+            "scenario": "storm",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.000273466110229492,
+            "mean_absolute_error": 0.000187590344797935,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "scenario": "storm",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.000699043273925781,
+            "mean_absolute_error": 0.000167799071544006,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.72021484375,
+              0.74169921875
+            ],
+            "scenario": "storm",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.000273466110229492,
+            "mean_absolute_error": 0.000187590344797935,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "scenario": "storm",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.000699043273925781,
+            "mean_absolute_error": 0.000167798192894601,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.72021484375,
+              0.74169921875
+            ],
+            "scenario": "storm",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "scenario": "storm",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.72021484375,
+              0.74072265625
+            ],
+            "scenario": "storm",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.74658203125
+            ],
+            "scenario": "low-sun",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "scenario": "low-sun",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.74072265625
+            ],
+            "scenario": "low-sun",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "scenario": "low-sun",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7275390625
+            ],
+            "scenario": "low-sun",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "scenario": "low-sun",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.72021484375
+            ],
+            "scenario": "low-sun",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "scenario": "low-sun",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7646484375
+            ],
+            "scenario": "low-sun",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "scenario": "low-sun",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.72265625
+            ],
+            "scenario": "scaled-sun",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.72412109375
+            ],
+            "scenario": "scaled-sun",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.72314453125
+            ],
+            "scenario": "scaled-sun",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7236328125
+            ],
+            "scenario": "scaled-sun",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.724609375
+            ],
+            "scenario": "scaled-sun",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.72314453125
+            ],
+            "scenario": "scaled-sun",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.72412109375
+            ],
+            "scenario": "scaled-sun",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.72265625
+            ],
+            "scenario": "scaled-sun",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.8251953125
+            ],
+            "scenario": "scaled-sun",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "scenario": "scaled-sun",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "night",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": -40.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "night",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "night",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 0.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "night",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "night",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 120.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "night",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "night",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 1500.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "night",
+            "seconds": 437.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "night",
+            "seconds": 0.0
+          },
+          {
+            "case": "projection",
+            "format": 14,
+            "height": 2600.0,
+            "max_absolute_error": 0.0,
+            "mean_absolute_error": 0.0,
+            "pixels": 98431,
+            "pixels_over_1_in_1024": 0,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "scenario": "night",
+            "seconds": 437.0
+          },
+          {
+            "case": "single-frame-jump",
+            "clouds_enabled": 1.0,
+            "field_published": true,
+            "max_absolute_error": 0.0,
+            "pixels": 98431,
+            "reference_range": [
+              0.96630859375,
+              1.0
+            ],
+            "step": 0
+          },
+          {
+            "case": "single-frame-jump",
+            "clouds_enabled": 1.0,
+            "field_published": true,
+            "max_absolute_error": 0.000273466110229492,
+            "pixels": 98431,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "step": 1
+          },
+          {
+            "case": "single-frame-jump",
+            "clouds_enabled": 1.0,
+            "field_published": true,
+            "max_absolute_error": 0.0,
+            "pixels": 98431,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "step": 2
+          },
+          {
+            "case": "single-frame-jump",
+            "clouds_enabled": 1.0,
+            "field_published": true,
+            "max_absolute_error": 0.000273466110229492,
+            "pixels": 98431,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "step": 3
+          },
+          {
+            "case": "single-frame-jump",
+            "clouds_enabled": 0.0,
+            "field_published": false,
+            "max_absolute_error": 0.0,
+            "pixels": 98431,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "step": 4
+          },
+          {
+            "case": "single-frame-jump",
+            "clouds_enabled": 1.0,
+            "field_published": false,
+            "max_absolute_error": 0.0,
+            "pixels": 98431,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "step": 5
+          },
+          {
+            "case": "single-frame-jump",
+            "clouds_enabled": 1.0,
+            "field_published": true,
+            "max_absolute_error": 0.0,
+            "pixels": 98431,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "step": 6
+          },
+          {
+            "case": "single-frame-jump",
+            "clouds_enabled": 1.0,
+            "field_published": true,
+            "max_absolute_error": 0.000286102294921875,
+            "pixels": 98431,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "step": 7
+          },
+          {
+            "case": "single-frame-jump",
+            "clouds_enabled": 0.0,
+            "field_published": false,
+            "max_absolute_error": 0.0,
+            "pixels": 98431,
+            "reference_range": [
+              1.0,
+              1.0
+            ],
+            "step": 8
+          },
+          {
+            "case": "single-frame-jump",
+            "clouds_enabled": 1.0,
+            "field_published": false,
+            "max_absolute_error": 0.0,
+            "pixels": 98431,
+            "reference_range": [
+              0.72802734375,
+              0.72802734375
+            ],
+            "step": 9
+          },
+          {
+            "case": "single-frame-jump",
+            "clouds_enabled": 1.0,
+            "field_published": true,
+            "max_absolute_error": 0.0052642822265625,
+            "pixels": 98431,
+            "reference_range": [
+              0.73193359375,
+              1.0
+            ],
+            "step": 10
+          },
+          {
+            "case": "single-frame-jump",
+            "clouds_enabled": 1.0,
+            "field_published": true,
+            "max_absolute_error": 0.000273466110229492,
+            "pixels": 98431,
+            "reference_range": [
+              0.7197265625,
+              0.7197265625
+            ],
+            "step": 11
+          }
+        ],
+        "span": 1024.0
+      },
+      "result_sha256": "a4a8fcded95317fde06f079933d801bac6c1b4e35230b02c8f614aa53e9f03b4",
+      "log_sha256": "0a1309472914fb951d933461009c760f169e7d8271d6edf23aa34c995ed9cd7e",
+      "fixture_sha256": "6610c6727071aa2b550426666d1786520431c5464b8724c740ab66870aa5eb4f"
+    },
+    "shadow_work": {
+      "old_size": 512,
+      "new_size": 192,
+      "column_work_ratio": 0.140625,
+      "max_attenuation_error_bound": 0.0058823529411764705,
+      "volume_density_and_integrator_unchanged": true
+    },
+    "timings": {
+      "baseline": {
+        "fixture": "tools/tests/cloud_reflection_scene.gd",
+        "scope": "RTX 3090, Linux Vulkan Forward+, 1920x1080, complete gz1g, High, animated clouds; 240 process-frame samples after five seconds and 90 warm-up frames. Renderer getters queried only after pacing samples.",
+        "exit": 0,
+        "errors": [],
+        "result": {
+          "failures": 0,
+          "rows": [
+            {
+              "angle": "overhead",
+              "cloud_reflections": 0,
+              "cloud_shadows": 0,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 6.294,
+                "median": 3.844,
+                "p95": 4.919
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 3.92199993133545,
+                "median": 3.92199993133545,
+                "p95": 3.92199993133545
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 0.0,
+              "pixels_over_2": 0,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 0.34400001168251,
+                "median": 0.34400001168251,
+                "p95": 0.34400001168251
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {},
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.112,
+                "median": 0.071,
+                "p95": 0.089
+              }
+            },
+            {
+              "angle": "overhead",
+              "cloud_reflections": 1,
+              "cloud_shadows": 0,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 9.764,
+                "median": 7.301,
+                "p95": 8.905
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 7.66400003433228,
+                "median": 7.66400003433228,
+                "p95": 7.66400003433228
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 103.00000526011,
+              "pixels_over_2": 332054,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 0.381999999284744,
+                "median": 0.381999999284744,
+                "p95": 0.381999999284744
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {},
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.121,
+                "median": 0.075,
+                "p95": 0.104
+              }
+            },
+            {
+              "angle": "overhead",
+              "cloud_reflections": 0,
+              "cloud_shadows": 1,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 27.115,
+                "median": 13.228,
+                "p95": 20.84
+              },
+              "frames_drawn": 239,
+              "gpu_ms": {
+                "max": 3.76399993896484,
+                "median": 3.76399993896484,
+                "p95": 3.76399993896484
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 103.00000526011,
+              "pixels_over_2": 45165,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 4.85300016403198,
+                "median": 4.85300016403198,
+                "p95": 4.85300016403198
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {
+                "max": 0.0450000017881393,
+                "median": 0.0450000017881393,
+                "p95": 0.0450000017881393
+              },
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.343,
+                "median": 0.15,
+                "p95": 0.273
+              }
+            },
+            {
+              "angle": "overhead",
+              "cloud_reflections": 1,
+              "cloud_shadows": 1,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 32.541,
+                "median": 20.211,
+                "p95": 25.849
+              },
+              "frames_drawn": 239,
+              "gpu_ms": {
+                "max": 6.89099979400635,
+                "median": 6.89099979400635,
+                "p95": 6.89099979400635
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 102.000005319715,
+              "pixels_over_2": 388258,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 3.99799990653992,
+                "median": 3.99799990653992,
+                "p95": 3.99799990653992
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {
+                "max": 0.0430000014603138,
+                "median": 0.0430000014603138,
+                "p95": 0.0430000014603138
+              },
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.399,
+                "median": 0.168,
+                "p95": 0.266
+              }
+            },
+            {
+              "angle": "overhead",
+              "cloud_reflections": 0,
+              "cloud_shadows": 0,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 23.86,
+                "median": 5.716,
+                "p95": 22.034
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 6.00299978256226,
+                "median": 6.00299978256226,
+                "p95": 6.00299978256226
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 103.00000526011,
+              "pixels_over_2": 34444,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 0.349000006914139,
+                "median": 0.349000006914139,
+                "p95": 0.349000006914139
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {},
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.331,
+                "median": 0.094,
+                "p95": 0.178
+              }
+            },
+            {
+              "angle": "low",
+              "cloud_reflections": 0,
+              "cloud_shadows": 0,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 24.164,
+                "median": 6.772,
+                "p95": 22.893
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 5.83199977874756,
+                "median": 5.83199977874756,
+                "p95": 5.83199977874756
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 0.0,
+              "pixels_over_2": 0,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 1.30599999427795,
+                "median": 1.30599999427795,
+                "p95": 1.30599999427795
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {},
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.212,
+                "median": 0.098,
+                "p95": 0.164
+              }
+            },
+            {
+              "angle": "low",
+              "cloud_reflections": 1,
+              "cloud_shadows": 0,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 32.688,
+                "median": 10.335,
+                "p95": 30.22
+              },
+              "frames_drawn": 239,
+              "gpu_ms": {
+                "max": 9.8430004119873,
+                "median": 9.8430004119873,
+                "p95": 9.8430004119873
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 160.000003762543,
+              "pixels_over_2": 391547,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 1.10500001907349,
+                "median": 1.10500001907349,
+                "p95": 1.10500001907349
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {},
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.213,
+                "median": 0.095,
+                "p95": 0.152
+              }
+            },
+            {
+              "angle": "low",
+              "cloud_reflections": 0,
+              "cloud_shadows": 1,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 24.099,
+                "median": 12.637,
+                "p95": 21.438
+              },
+              "frames_drawn": 239,
+              "gpu_ms": {
+                "max": 5.25400018692017,
+                "median": 5.25400018692017,
+                "p95": 5.25400018692017
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 170.000004116446,
+              "pixels_over_2": 253265,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 4.6100001335144,
+                "median": 4.6100001335144,
+                "p95": 4.6100001335144
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {
+                "max": 0.0469999983906746,
+                "median": 0.0469999983906746,
+                "p95": 0.0469999983906746
+              },
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.316,
+                "median": 0.122,
+                "p95": 0.182
+              }
+            },
+            {
+              "angle": "low",
+              "cloud_reflections": 1,
+              "cloud_shadows": 1,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 28.68,
+                "median": 13.489,
+                "p95": 26.555
+              },
+              "frames_drawn": 239,
+              "gpu_ms": {
+                "max": 5.90399980545044,
+                "median": 5.90399980545044,
+                "p95": 5.90399980545044
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 195.000003576279,
+              "pixels_over_2": 386908,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 4.43699979782104,
+                "median": 4.43699979782104,
+                "p95": 4.43699979782104
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {
+                "max": 0.0419999994337559,
+                "median": 0.0419999994337559,
+                "p95": 0.0419999994337559
+              },
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 2.61,
+                "median": 0.144,
+                "p95": 0.212
+              }
+            },
+            {
+              "angle": "low",
+              "cloud_reflections": 0,
+              "cloud_shadows": 0,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 29.314,
+                "median": 6.68,
+                "p95": 23.686
+              },
+              "frames_drawn": 239,
+              "gpu_ms": {
+                "max": 6.46199989318848,
+                "median": 6.46199989318848,
+                "p95": 6.46199989318848
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 156.00000590086,
+              "pixels_over_2": 252839,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 1.06900000572205,
+                "median": 1.06900000572205,
+                "p95": 1.06900000572205
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {},
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.355,
+                "median": 0.099,
+                "p95": 0.169
+              }
+            }
+          ]
+        },
+        "result_sha256": "ee00e55a6517d721318625139b6a1687f889563c2b3ab94651da644a72567bf5",
+        "log_sha256": "0be975143f6ec1a0156404e717876e371cfd34eee0227b9b12ed2d967464f232",
+        "fixture_sha256": "7ec8288859204b0dfb24e3ef5b800d949bb677f32ae64abb47c1e852f225e64c"
+      },
+      "candidate": {
+        "fixture": "tools/tests/cloud_reflection_scene.gd",
+        "scope": "RTX 3090, Linux Vulkan Forward+, 1920x1080, complete gz1g, High, animated clouds; 240 process-frame samples after five seconds and 90 warm-up frames. Renderer getters queried only after pacing samples.",
+        "exit": 0,
+        "errors": [],
+        "result": {
+          "failures": 0,
+          "rows": [
+            {
+              "angle": "overhead",
+              "cloud_reflections": 0,
+              "cloud_shadows": 0,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 6.366,
+                "median": 3.964,
+                "p95": 5.275
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 3.95600008964539,
+                "median": 3.95600008964539,
+                "p95": 3.95600008964539
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 0.0,
+              "pixels_over_2": 0,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 0.347000002861023,
+                "median": 0.347000002861023,
+                "p95": 0.347000002861023
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {},
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.127,
+                "median": 0.075,
+                "p95": 0.092
+              }
+            },
+            {
+              "angle": "overhead",
+              "cloud_reflections": 1,
+              "cloud_shadows": 0,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 7.758,
+                "median": 5.257,
+                "p95": 6.502
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 4.21600008010864,
+                "median": 4.21600008010864,
+                "p95": 4.21600008010864
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 103.00000526011,
+              "pixels_over_2": 928657,
+              "reflection_gpu_ms": {
+                "max": 1.21000003814697,
+                "median": 1.21000003814697,
+                "p95": 1.21000003814697
+              },
+              "render_cpu_ms": {
+                "max": 0.294999986886978,
+                "median": 0.294999986886978,
+                "p95": 0.294999986886978
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {},
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.119,
+                "median": 0.075,
+                "p95": 0.097
+              }
+            },
+            {
+              "angle": "overhead",
+              "cloud_reflections": 0,
+              "cloud_shadows": 1,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 10.189,
+                "median": 5.436,
+                "p95": 7.83
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 3.17400002479553,
+                "median": 3.17400002479553,
+                "p95": 3.17400002479553
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 103.00000526011,
+              "pixels_over_2": 63541,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 3.81599998474121,
+                "median": 3.81599998474121,
+                "p95": 3.81599998474121
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {
+                "max": 0.0179999992251396,
+                "median": 0.0179999992251396,
+                "p95": 0.0179999992251396
+              },
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.233,
+                "median": 0.09,
+                "p95": 0.146
+              }
+            },
+            {
+              "angle": "overhead",
+              "cloud_reflections": 1,
+              "cloud_shadows": 1,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 8.247,
+                "median": 5.461,
+                "p95": 6.783
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 4.33099985122681,
+                "median": 4.33099985122681,
+                "p95": 4.33099985122681
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 102.000005319715,
+              "pixels_over_2": 997498,
+              "reflection_gpu_ms": {
+                "max": 0.899999976158142,
+                "median": 0.899999976158142,
+                "p95": 0.899999976158142
+              },
+              "render_cpu_ms": {
+                "max": 0.28099998831749,
+                "median": 0.28099998831749,
+                "p95": 0.28099998831749
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {
+                "max": 0.017000000923872,
+                "median": 0.017000000923872,
+                "p95": 0.017000000923872
+              },
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.144,
+                "median": 0.083,
+                "p95": 0.1
+              }
+            },
+            {
+              "angle": "overhead",
+              "cloud_reflections": 0,
+              "cloud_shadows": 0,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 6.526,
+                "median": 4.143,
+                "p95": 5.123
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 3.3050000667572,
+                "median": 3.3050000667572,
+                "p95": 3.3050000667572
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 103.00000526011,
+              "pixels_over_2": 179363,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 0.360000014305115,
+                "median": 0.360000014305115,
+                "p95": 0.360000014305115
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {},
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.131,
+                "median": 0.08,
+                "p95": 0.102
+              }
+            },
+            {
+              "angle": "low",
+              "cloud_reflections": 0,
+              "cloud_shadows": 0,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 7.349,
+                "median": 4.961,
+                "p95": 6.106
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 4.62200021743774,
+                "median": 4.62200021743774,
+                "p95": 4.62200021743774
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 0.0,
+              "pixels_over_2": 0,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 1.04100000858307,
+                "median": 1.04100000858307,
+                "p95": 1.04100000858307
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {},
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.116,
+                "median": 0.075,
+                "p95": 0.092
+              }
+            },
+            {
+              "angle": "low",
+              "cloud_reflections": 1,
+              "cloud_shadows": 0,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 9.093,
+                "median": 6.012,
+                "p95": 7.482
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 4.59700012207031,
+                "median": 4.59700012207031,
+                "p95": 4.59700012207031
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 160.000003762543,
+              "pixels_over_2": 1389396,
+              "reflection_gpu_ms": {
+                "max": 1.25199997425079,
+                "median": 1.25199997425079,
+                "p95": 1.25199997425079
+              },
+              "render_cpu_ms": {
+                "max": 0.852999985218048,
+                "median": 0.852999985218048,
+                "p95": 0.852999985218048
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {},
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.127,
+                "median": 0.075,
+                "p95": 0.092
+              }
+            },
+            {
+              "angle": "low",
+              "cloud_reflections": 0,
+              "cloud_shadows": 1,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 9.238,
+                "median": 5.841,
+                "p95": 7.345
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 4.03999996185303,
+                "median": 4.03999996185303,
+                "p95": 4.03999996185303
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 170.000004116446,
+              "pixels_over_2": 124348,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 3.98799991607666,
+                "median": 3.98799991607666,
+                "p95": 3.98799991607666
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {
+                "max": 0.0179999992251396,
+                "median": 0.0179999992251396,
+                "p95": 0.0179999992251396
+              },
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.134,
+                "median": 0.082,
+                "p95": 0.118
+              }
+            },
+            {
+              "angle": "low",
+              "cloud_reflections": 1,
+              "cloud_shadows": 1,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 10.182,
+                "median": 7.095,
+                "p95": 8.458
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 4.21799993515015,
+                "median": 4.21799993515015,
+                "p95": 4.21799993515015
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 156.00000590086,
+              "pixels_over_2": 1389304,
+              "reflection_gpu_ms": {
+                "max": 0.925000011920929,
+                "median": 0.925000011920929,
+                "p95": 0.925000011920929
+              },
+              "render_cpu_ms": {
+                "max": 0.717999994754791,
+                "median": 0.717999994754791,
+                "p95": 0.717999994754791
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {
+                "max": 0.0179999992251396,
+                "median": 0.0179999992251396,
+                "p95": 0.0179999992251396
+              },
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.183,
+                "median": 0.096,
+                "p95": 0.14
+              }
+            },
+            {
+              "angle": "low",
+              "cloud_reflections": 0,
+              "cloud_shadows": 0,
+              "cloud_state": "(0.49, 0.28, 160.0, 1.0)",
+              "frame_ms": {
+                "max": 7.31,
+                "median": 4.766,
+                "p95": 5.923
+              },
+              "frames_drawn": 240,
+              "gpu_ms": {
+                "max": 4.40899991989136,
+                "median": 4.40899991989136,
+                "p95": 4.40899991989136
+              },
+              "gpu_timing_scope": "last completed frame, queried outside pacing sample",
+              "live_clouds": true,
+              "new_pipelines": 0,
+              "peak_bytes": 156.00000590086,
+              "pixels_over_2": 143292,
+              "reflection_gpu_ms": {},
+              "render_cpu_ms": {
+                "max": 0.953999996185303,
+                "median": 0.953999996185303,
+                "p95": 0.953999996185303
+              },
+              "renderer": "forward_plus",
+              "shadow_gpu_ms": {},
+              "size": "(1920, 1080)",
+              "update_ms": {
+                "max": 0.125,
+                "median": 0.076,
+                "p95": 0.097
+              }
+            }
+          ]
+        },
+        "result_sha256": "2fa0b71b857e41c2a2e903746a1eb297042b45334226c6d07302cd134a761668",
+        "log_sha256": "1c612d733b5420d4272836818cf894194bdf3952505342258e1a1f204a012260",
+        "fixture_sha256": "7ec8288859204b0dfb24e3ef5b800d949bb677f32ae64abb47c1e852f225e64c"
+      },
+      "baseline_source": "d3911b0166e47ba0ebbae7aed585c5d6d4ae2141",
+      "limits": [
+        "Game simulation and camera were held; clouds advanced manually by 1/60 second per frame. This is a rendering workload, not whole-game performance on the reported laptop.",
+        "The candidate includes the swamp material change; it is not an isolated single-option microbenchmark.",
+        "The baseline off-controls drifted from 3.844 to 5.716 ms overhead and were about 6.7 ms low; candidate off-controls were about 4.0 and 4.9 ms. Do not infer an overall FPS ratio or an isolated shadow speedup from these runs.",
+        "GPU values are one last-completed-frame diagnostic sample for each viewport, not distributions. Older probes synchronizing render-server getters inside the pacing loop are excluded."
+      ],
+      "reflection_overhead_comparison": {
+        "baseline_off_ms": 3.844,
+        "baseline_on_ms": 7.301,
+        "candidate_off_ms": 3.964,
+        "candidate_on_ms": 5.257,
+        "scope": "First two overhead settings; local observation only."
+      }
     }
+  },
+  "linked_chat_integration": {
+    "commits": [
+      "31643ad",
+      "8723324"
+    ],
+    "records": [
+      "issues-3-4-2026-10-15.json",
+      "android-early-startup-recovery-2026-10-15.json"
+    ],
+    "production_android_template_sha256": "39618fbc955046168013eaf2ab96577f776a240d5f5c075e3ff55fa7f06f6012",
+    "prior_device_checks": 247,
+    "prior_desktop_recovery_checks": 302,
+    "limits": "On-device tests used an isolated Android 13 QA container; the final production template has matching qualified Java code and unchanged native engine libraries. No Redmagic/Adreno 840 driver-fault reproduction or fix is claimed."
   },
   "animal_persistence_investigation": {
     "lost_in_astral": {
@@ -505,7 +4192,7 @@
     "binary_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
     "scope": "Original base-game executable; no claim about the separate LiA executable.",
     "findings": "Eight rune positions around the slot, independent of artwork scale. Counts right-aligned in x+15..85,y+15..35; prices centred in x+15..85,y+65..85. Labels draw after icons and runes.",
-    "release_adjustment": "Compact clusters remain default. Optional original ring retains full-size artwork and raises completed-spell prices to y+49..69 above the lower rune glyphs.",
+    "release_adjustment": "Compact clusters remain default. Optional original ring retains full-size artwork and raises completed-spell prices to y+49..69 only when rune positions 3, 4 or 5 are occupied; otherwise keeps y+65..85.",
     "evidence_bundle_sha256": "1cb1b83d8fe6cc796869713ac7502f45f58ee0fe5f4d93d3d9fa3c12035852bc"
   },
   "performance_and_network": {
@@ -565,7 +4252,7 @@
   },
   "translations": {
     "command": "python3 tools/check_translations.py",
-    "entries": 1170,
+    "entries": 1174,
     "errors": 0,
     "languages": [
       "English",
@@ -577,9 +4264,9 @@
   },
   "android": {
     "version": "1.5.0",
-    "apk_sha256": "f89e5343f4665c57a16d8fa50f8aaf682ac39d361b24ab73c53a7fb775c789e9",
-    "resources": 737,
-    "compiled_scripts": 288,
+    "apk_sha256": "80113fea775f7ae9a6ad1f24aaada8ad7c6846a2f549443e68f674d72dcf2d11",
+    "resources": 739,
+    "compiled_scripts": 289,
     "all_compiled_scripts_byte_identical_to_desktop": true,
     "expected_production_scripts_exact": true,
     "no_original_game_data_saves_or_private_probes": true,
@@ -593,16 +4280,16 @@
     ],
     "sparse_pack": {
       "format": 4,
-      "resources": 737,
+      "resources": 739,
       "all_resource_sizes_and_md5_match": true,
       "template_baseline_profiles": {
         "dexopt/baseline.prof": {
-          "bytes": 1179,
-          "sha256": "24e7cbeabb9db5f8fbcd3c96f034151f299e7adecb3bd11d9991728105b973cf"
+          "bytes": 1168,
+          "sha256": "ff22862d63ff4e294c23e6922f836161f82916c2cc3589f823a5d6741c493b40"
         },
         "dexopt/baseline.profm": {
-          "bytes": 141,
-          "sha256": "e8c0017a430a5645a35a802d4138b4803d16772686c5f67073220f5fd54d7b9b"
+          "bytes": 142,
+          "sha256": "d2fc2edf2542f31827bca1f48857e1c49fe5d58ee4cc7958cb41c1e68c3e8753"
         }
       }
     },
@@ -617,21 +4304,25 @@
     "release_template_provenance": {
       "base_template": "/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014/engine/bin/android_release.apk",
       "base_sha256": "2af5eb84aaa230955d627b2fee4e63e951fb9414e5234c8766d600713ad472e8",
-      "release_template": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/android_release_14.apk",
-      "release_template_sha256": "2af5eb84aaa230955d627b2fee4e63e951fb9414e5234c8766d600713ad472e8",
+      "release_template": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/android_release_startup.apk",
+      "release_template_sha256": "39618fbc955046168013eaf2ab96577f776a240d5f5c075e3ff55fa7f06f6012",
       "engine_sha256": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
       "libcxx_sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
-      "classes_dex_sha256": "cf2a59352f758605949daabf6b97bbcc6dea9d23e186cc8b6a187a21133f13e2",
+      "classes_dex_sha256": "386484cf1c35c955d0a1996d5628ae51e56626cb03cd4ec46d692313330a6601",
       "patch_count": 14,
       "new_java_diagnostics_sources": {
         "AndroidExitReport.java": "466f2236cc950a79b8b409d383bad99d93d0aea282c540627979c459b8587143",
-        "EISimulation.java": "df2148298bb5b51c43cd24c2a8a3387bdd7a06c5482bfee6f7a491c1b8683e8a",
-        "NativeTombstone.java": "4cdb78b00c6434e2905ed946d1d7fd235a90732105793516628ec4b0641a3779"
+        "EISimulation.java": "56cdcaedd3d7027e7672231035005cd0b6b5c95e38ca2636fd07b7cebc721c0f",
+        "EarlyStartup.java": "9759125edf22ee9260cad2f87b5220e08400a899499a4471e08a69844b7a0602",
+        "NativeTombstone.java": "4cdb78b00c6434e2905ed946d1d7fd235a90732105793516628ec4b0641a3779",
+        "StartupApplication.java": "450bddb5ad3514c240e697a17e44009dc1a1a15121c9668d62ce2ec8ac6292a4"
       },
       "java_template_build": "generateGodotTemplates --offline; all native SCons tasks excluded",
-      "java_template_tested_in": "docs/validation/android-native-crash-reports-2026-10-14.json",
+      "java_template_tested_in": "docs/validation/android-early-startup-recovery-2026-10-15.json",
       "production_native_libraries_unchanged": true,
-      "private_instrumentation": false
+      "private_instrumentation": false,
+      "java_source_commit": "70fd01919514aa68781c0585c7a3b9005e4a4487",
+      "early_startup_journal": true
     },
     "normal_installed_app_untouched": true,
     "version_code": 37,
@@ -651,8 +4342,8 @@
     "cache_upgrade": {
       "passed": true,
       "old_cache": "cursed-engine-2-48d90c0986cd840ef896",
-      "new_cache": "cursed-engine-2-1f6670b2d492c861cfee",
-      "pck_sha256": "21464190945563f29d973e388e8267ba053d6e8c1e181e0d332ee4c0127d25a3",
+      "new_cache": "cursed-engine-2-feaf37e5dbce7ccb84cb",
+      "pck_sha256": "ef1f3c117c6686720ce99f9e8fcb2cdda2bf926ea71a8239443b95de3904496a",
       "waited_for_old_tab": true,
       "indexeddb_preserved": true,
       "database_names": [
@@ -673,7 +4364,7 @@
         "height": 720
       },
       "caches": [
-        "cursed-engine-2-1f6670b2d492c861cfee"
+        "cursed-engine-2-feaf37e5dbce7ccb84cb"
       ],
       "visible_frame": true
     },
@@ -684,7 +4375,7 @@
         "height": 720
       },
       "caches": [
-        "cursed-engine-2-1f6670b2d492c861cfee"
+        "cursed-engine-2-feaf37e5dbce7ccb84cb"
       ],
       "visible_frame": true,
       "errors": []
@@ -692,18 +4383,18 @@
     "build": {
       "version": "1.5.0",
       "source_tag": "v1.5.0",
-      "source_commit": "b2d95d0bfd7fdd1b81ad58fa935bbe2a04ea5e12",
-      "game_tree": "a963846f9fbd09c2c91fd36c4b67d86335330bfc",
+      "source_commit": "0ea74fe5d0fa91ce44bf04489b3424050ef582c4",
+      "game_tree": "b88e1ef88fa4c51e3d4f5b6878aba20680f6b007",
       "platform": "web",
       "engine": "Godot 4.7.stable.official.5b4e0cb0f",
       "threads": false,
       "extensions": false,
-      "compiled_scripts": 288,
+      "compiled_scripts": 289,
       "production_scripts_byte_identical_to_release_linux": true,
-      "resource_count": 727,
+      "resource_count": 729,
       "all_pck_resource_md5_valid": true,
       "original_game_data_bundled": false,
-      "pck_sha256": "21464190945563f29d973e388e8267ba053d6e8c1e181e0d332ee4c0127d25a3",
+      "pck_sha256": "ef1f3c117c6686720ce99f9e8fcb2cdda2bf926ea71a8239443b95de3904496a",
       "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
     },
     "screenshots_visually_checked": [
@@ -715,11 +4406,11 @@
   },
   "limits": [
     "Windows and macOS packages were exported and audited but not executed on their native operating systems. macOS uses the unsigned stock engine.",
-    "The Android release APK was exported, signature-checked and audited; no new on-device 1.5.0 gameplay run was performed. Its native and Java engine components retain the separately validated 1.4.0 template.",
-    "Rendered checks used Linux Vulkan Forward+. Cross-platform compiled-script identity does not substitute for testing every GPU or renderer.",
+    "The Android release APK was exported, signature-checked and audited; no new on-device 1.5.0 gameplay run was performed. Native engine libraries retain the validated 1.4.0 template; the Java startup recovery additions use the separately qualified production template linked above.",
+    "Rendered checks used Linux Vulkan Forward+ plus targeted GLES Compatibility fixtures. Cross-platform compiled-script identity does not substitute for testing every GPU or renderer.",
     "Earlier Suslanger FPS measurements include changes introduced in 1.4.0; the isolated 1.3.1 patch comparison is recorded separately. No performance claim is made about the final HD texture-pack correction or another renderer.",
     "Persistent mansion dips, multiplayer teleporting and animal resurrection were not reproduced under the tested conditions. Simulated delay, jitter and packet loss used real ENet peers, not an actual ZeroTier overlay.",
-    "The original ring preserves native upper-right rune/count positions; the default compact layout reserves count space. Both keep prices clear; the ring moves prices above the bottom row.",
+    "The original ring preserves native upper-right rune/count positions; the default compact layout reserves count space. Both keep prices clear; the ring moves prices only when its bottom row contains runes.",
     "Web checks cover fresh setup and service-worker upgrade with imported-data/save sentinels, not a complete browser campaign."
   ],
   "local_evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015"
