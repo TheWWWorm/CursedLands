@@ -1,4 +1,4 @@
-# In-game encyclopedia
+# Encyclopedia
 
 Open **Game wiki** from the main menu or the **Esc** menu. Choose a category,
 search the localized page names, and click an entry. Each item has one page;
@@ -21,7 +21,41 @@ rules. Add a rune to see the calculated power, cost, complexity, range, area,
 radius, duration and targets; **Reset spell** returns to the base prototype.
 These calculations do not edit the character, inventory, save or network state.
 
-## Data sources
+## Public website
+
+The [public wiki](https://cursedlands.wwworm.com/wiki/) is a standalone website.
+It needs no game files, game download, account or local storage. Search and
+category filters cover 1,001 reference pages in each of English, Russian and
+German. Material and blueprint choices provide 2,018 precomputed article views.
+Links retain the language, page and selected version and work with browser
+Back/Forward. Illustrations are rendered from the original models; the in-game
+wiki retains live model rotation and custom rune construction.
+
+The public dataset is generated from GOG Evil Islands databases and localized
+text archives, using this release's gameplay calculations and original armor
+rule. It is a fixed reference for that edition. The in-game wiki additionally
+uses the currently loaded campaign and active data mods. No original archives,
+maps, saves, video, audio or executable game files are part of the public wiki.
+
+To rebuild, invoke `tools/export_wiki.gd` through the game tool runner once for
+each installed language, with `--wiki-output=/private/wiki-data`. For an English
+run add `--wiki-image-plan=/private/wiki-images.json`. Run
+`tools/export_wiki_images.gd` with rendering enabled, the same image-plan argument,
+and `--wiki-images=/private/wiki-images` to render illustrations. Use isolated
+XDG directories, as for the tests below. Then package the checked reference data:
+
+```sh
+python3 tools/prepare_public_wiki.py --data /private/wiki-data \
+  --images /private/wiki-images --output public/wiki
+```
+
+`web/wiki/` owns the website source and EN/RU/DE interface catalogue. The packager
+checks every article, cross-reference, material version and translation key.
+Keep `public/wiki` when rebuilding the browser export, and include it in the
+standalone web archive. `worker.js` serves `/wiki` independently of the engine
+and applies a restrictive content security policy to the wiki.
+
+## In-game data sources
 
 The catalogue is rebuilt when opened from the currently loaded `GameData.db`.
 Opening a different campaign, language, multiplayer database or data-mod profile
@@ -86,5 +120,4 @@ the actual installed edition, checks every generated HTML article and link,
 tests live data changes and new data-mod records, exercises the real widgets,
 and writes `user://wiki-results.json` plus rendered screenshots.
 
-No release version is changed by this source feature. A release containing it
-requires a minor version under [the versioning policy](versioning.md).
+The encyclopedia is introduced in 1.6.0 under the [versioning policy](versioning.md).

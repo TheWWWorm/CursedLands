@@ -33,13 +33,22 @@ export default {
       url.protocol = 'https:';
       return Response.redirect(url.href, 308);
     }
+    if (url.pathname === '/wiki') {
+      url.pathname = '/wiki/';
+      return Response.redirect(url.href, 308);
+    }
     const entry = parts[url.pathname];
     if (!entry) {
       const response = await env.ASSETS.fetch(request);
+      const headers = isolate(new Headers(response.headers));
+      if (url.pathname.startsWith('/wiki/')) {
+        headers.set('Cache-Control', 'no-cache');
+        headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
+      }
       return new Response(response.body, {
         status: response.status,
         statusText: response.statusText,
-        headers: isolate(new Headers(response.headers)),
+        headers,
       });
     }
     const headers = isolate(new Headers());

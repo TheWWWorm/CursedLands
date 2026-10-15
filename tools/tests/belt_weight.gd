@@ -57,6 +57,15 @@ func exercise(s: Session, player: int, wand: String, spent: String) -> void:
 	check(authority.hp==hp and authority.mana==mana and authority.model==model and authority.stats.to_hit==173.25,label+" transfer preserves pools model and effective modifiers")
 	var records:=host._hero_stat_records()
 	check(is_equal_approx(float(records[authority.uid].load),base),label+" next authoritative snapshot contains current weight")
+	# A loaded character can already have a wand counted in its cached load.
+	# Removing that item must reduce the total even without an equip first.
+	h.quick=[wand]
+	Combat.hero_stats(authority,h)
+	host.sync_state()
+	check(await soon(func():return u.get_meta("hero").quick==[wand]),label+" pre-equipped wand reaches UI")
+	camp._press(wand,"belt")
+	check(await soon(func():return u.get_meta("hero").quick.is_empty()),label+" pre-equipped wand removed")
+	load_check(u,camp,base,label+" pre-equipped removal")
 	get_tree().paused=false
 	panel.hide()
 

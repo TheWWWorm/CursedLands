@@ -8,9 +8,9 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.5.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.5.0), available for Linux, Windows, Android and macOS. It adds lock-skill hover tooltips, improves detached-limb physics, and fixes archer retreat, unnamed interaction labels, spell-rune layout, the Great Mage’s staff and navigation-related frame spikes. See the [release notes](docs/releases/1.5.0.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.6.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.6.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It adds the encyclopedia and public wiki, improves cloud and reflection costs, reduces movement and traversal stalls, varies rain puddles, and fixes belt-item weight updates. See the [release notes](docs/releases/1.6.0.md) and [versioning policy](docs/versioning.md).
 
-**Preview:** [1.6.0-preview.1](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.6.0-preview.1) adds a searchable in-game wiki with live models and item versions, varies small rain puddles while keeping them visible from the isometric camera, and fixes belt-item weight updates. It includes the earlier cloud, reflection, movement and traversal changes, is available for Windows and Linux, and runs in the [hosted browser](https://cursedlands.wwworm.com/). See the [preview notes](docs/releases/1.6.0-preview.1.md) for compatibility and platform limits.
+Browse the [**public wiki**](https://cursedlands.wwworm.com/wiki/) without game files or an account. It contains GOG edition items, materials, spells, runes, creatures and mechanics in English, Russian and German.
 
 ## Screenshots
 

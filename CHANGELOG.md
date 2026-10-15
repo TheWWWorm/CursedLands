@@ -1,7 +1,8 @@
 # Changelog
 
-## 1.6.0-preview.1 — encyclopedia and puddle preview, 15 October 2026
+## 1.6.0 — encyclopedia and rendering updates, 15 October 2026
 
+- Publish a standalone [public wiki](https://cursedlands.wwworm.com/wiki/) with GOG edition data, searchable articles, material variants and illustrations in English, Russian and German. No imported game files or account are needed.
 - Add an in-game encyclopedia with searchable HTML pages for items, material variants, blueprints, spells, runes and creatures, generated from the installed game databases.
 - Keep each item on one page, with buttons to switch its material versions and blueprint view while updating the statistics and model.
 - Show rotatable, zoomable item and creature models, and let readers calculate spell variants with compatible runes.
@@ -10,7 +11,9 @@
 - Vary rain puddle size and spacing with a broader depression field, retaining sparse coverage and receding edges. Keep their muted sheen visible from isometric views in Forward+ and Compatibility.
 - Refresh carried weight when adding, removing or consuming belt items, including wands. Deliver guest belt changes and their weight together while paused.
 
-See [preview notes](docs/releases/1.6.0-preview.1.md) for compatibility and platform limits.
+This stable release also includes the cloud, reflection, movement, traversal and persistence fixes from the 1.5.1 previews below.
+
+See [release notes](docs/releases/1.6.0.md) for compatibility and platform limits.
 
 
 ## 1.5.1-preview.3 — cloud rendering preview, 15 October 2026
