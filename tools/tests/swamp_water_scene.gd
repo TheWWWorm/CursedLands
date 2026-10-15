@@ -37,7 +37,7 @@ func run() -> void:
 		Engine.time_scale = 1.0
 		await s.enter_zone(site[0],1,false)
 		s.set_physics_process(false); g.set_process(false); g.world.set_process(false); g.world.set_physics_process(false)
-		g.world.vm.briefings._check = INF; g.hud.hide(); g.rig.set_process(false)
+		g.world.vm.briefings._check = INF; g.hud.process_mode=Node.PROCESS_MODE_DISABLED;g.hud.hide(); g.rig.set_process(false)
 		var t := g.world.terrain; t.set_process(false)
 		var at: Vector2 = site[1]
 		var focus := Vector3(at.x,t.water_at(at.x,at.y),-at.y)
@@ -52,6 +52,7 @@ func run() -> void:
 				camera.look_at(focus); camera.current = true
 				g._update_daylight(false)
 				var label: String = "swamp-"+site[0]+"-"+str(hour)+"-"+angle
+				RenderingServer.global_shader_parameter_set(&"ei_border",Vector4.ZERO)
 				t._water_mat.shader = Gfx.make_shader(prior,true,true)
 				var before := await capture(label+"-before")
 				t.apply_gfx()

@@ -16,6 +16,8 @@ static var _cloud_frame := {"state":Vector4.ZERO,"phases":Vector4.ZERO,"twinkle"
 static var _cloud_volume_noise: Clouds.VolumeNoise
 static var _cloud_volume_tried := false
 static var _cloud_shadow_field: Clouds.ShadowField
+static var _cloud_sun_direction := Vector3.ZERO
+static var _sky_flash := 0.0
 
 
 ## ---------------------------------------------------------------- original lighting
@@ -280,6 +282,7 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 		# Forward+ volume rays may be completely replaced by opaque SSR.
 		# Keep the existing sheet and Mobile programs until separately qualified.
 		code = preload("res://src/game/fx/cloud_reflection_shader.gd").inject(code,
+			Clouds.mode()>1 and RenderingServer.get_current_rendering_method()=="forward_plus",
 			Clouds.mode()>1 and RenderingServer.get_current_rendering_method()=="forward_plus")
 	if cloud_shadows and code.contains("#define EI_WATER_FX"):
 		code = code.replace("G = ei_lin(min(ei_sun, vec3(1.0))) *", "G = ei_lin(min(ei_sun, vec3(1.0))) * ei_cloud_sun(wpos) *")
@@ -796,11 +799,18 @@ static func set_cloud_frame(owner: int, frame: Dictionary) -> void:
 				if receiver and receiver.is_inside_tree():
 					if not _cloud_shadow_field: _cloud_shadow_field=Clouds.ShadowField.new()
 					var extent: Vector2=receiver.size_ei() if receiver is EITerrain else _border_size
-					_cloud_shadow_field.update(receiver,extent,frame.state.y>0.0)
+					_cloud_shadow_field.update(receiver,extent,frame.state.y>0.0,frame)
 			else:
 				_release_cloud_shadows()
 	else:
 		_release_cloud_volume()
+
+
+static func set_sun_direction(direction: Vector3) -> void:
+	RenderingServer.global_shader_parameter_set(&"ei_sun_dir",direction)
+	if direction != _cloud_sun_direction:
+		_cloud_sun_direction=direction
+		if _cloud_shadow_field: _cloud_shadow_field.request_refresh()
 
 
 static func _release_cloud_shadows() -> void:
@@ -858,7 +868,8 @@ static func apply_unit_sharpness() -> void:
 ## (ParticleFx._update_flashes; 0 = none).
 static func set_lightning_flash(v: float) -> void:
 	ensure_globals()
-	RenderingServer.global_shader_parameter_set(&"ei_flash", Vector3(clampf(v, 0.0, 1.0), 0.0, 0.0))
+	_sky_flash = clampf(v, 0.0, 1.0)
+	RenderingServer.global_shader_parameter_set(&"ei_flash", Vector3(_sky_flash, 0.0, 0.0))
 
 
 static func set_surface_weather(wetness: float, rain: float) -> void:
@@ -1025,7 +1036,7 @@ static func update_original(env: Environment, sun_light: DirectionalLight3D, lig
 		sun_light.light_color = sun
 		sun_light.light_energy = 1.0
 		var to_sun := sun_light.global_transform.basis.z.normalized() if sun_light.is_inside_tree() else sun_light.basis.z.normalized()
-		RenderingServer.global_shader_parameter_set(&"ei_sun_dir", to_sun)
+		set_sun_direction(to_sun)
 		sync_sun_pass(sun_light)
 	env.ambient_light_color = amb
 	env.ambient_light_energy = 1.0

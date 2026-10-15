@@ -521,7 +521,7 @@ func _update_daylight(advance := true) -> void:
 	# sun term read ei_sun_dir, not the held light's direction (_aim_sun).
 	if sun_aim_mode != 1:
 		sun_light_dir = -gd
-		RenderingServer.global_shader_parameter_set(&"ei_sun_dir", sun_light_dir)
+		Gfx.set_sun_direction(sun_light_dir)
 	var sky := _env.fog_light_color
 	_sky_mat.sky_top_color = sky
 	_sky_mat.sky_horizon_color = sky

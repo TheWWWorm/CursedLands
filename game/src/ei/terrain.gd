@@ -5,6 +5,8 @@ extends Node3D
 
 const WaterReflection = preload("res://src/game/fx/water_reflection.gd")
 var _reflection: WaterReflection
+const CloudReflectionView = preload("res://src/game/fx/cloud_reflection_view.gd")
+var _cloud_reflection: CloudReflectionView
 
 const WaveState := preload("res://src/ei/water_waves.gd")
 
@@ -522,6 +524,14 @@ vec3 water_texture(vec3 own, vec2 dx, vec2 dy) {
 	vec3 e = tile_sample(cxy, g - vec2(c + st), dx, dy);
 	return mix(mix(a, b, w.x), mix(d, e, w.x), w.y);
 }
+vec3 water_sky_colour(vec3 colour, bool swamp) {
+	if (!swamp) { return colour; }
+	// Keep neutral cloud highlights, but soften saturated blue sky against
+	// the green body of the bog. Scene reflections retain their own colour.
+	float luminance = dot(colour, vec3(0.2126, 0.7152, 0.0722));
+	float blue = clamp((colour.b - colour.r) / max(luminance, 0.001), 0.0, 1.0);
+	return mix(colour, luminance * vec3(0.72, 0.86, 0.52), blue * 0.92);
+}
 // Blend reflected radiance and its strength together. Interpolating colour
 // and strength separately boosts bright sky at partially covered silhouette
 // pixels, drawing a light outline around a dark reflected object.
@@ -663,7 +673,14 @@ void fragment() {
 		vec3 na = texture(wave_a, q * 0.055 + water_time * vec2(0.010, 0.006)).rgb * 2.0 - 1.0;
 		vec3 nb = texture(wave_b, q * 0.13 + water_time * vec2(-0.008, 0.012)).rgb * 2.0 - 1.0;
 		vec2 slope = (na.xy * 0.6 + nb.xy * 0.4) * (swamp ? 0.18 : ripple_amount) * 0.35;
-		if (swamp) { slope *= 1.5; }
+		float sediment = 0.5;
+		if (swamp) {
+			// Broad, slow suspended-silt variation, not a painted surface cover.
+			float broad = texture(foam_tex, q * 0.023 + water_time * vec2(0.0006, -0.0004)).r;
+			float eddy = texture(foam_tex, q * 0.071 - water_time * vec2(0.001, 0.0007)).r;
+			sediment = smoothstep(0.22, 0.78, broad * 0.7 + eddy * 0.3);
+			slope *= mix(1.05, 1.9, sediment);
+		}
 		// Raindrops on open water; subpixel rings fade out with distance.
 		vec2 rain_slope = vec2(0.0);
 		float rain = ei_surface_fx.z * ei_weather.y;
@@ -688,8 +705,10 @@ void fragment() {
 			// A water material, independent of the swamp atlas or texture pack.
 			// Suspended sediment absorbs the bed quickly; shallow edges retain
 			// some visibility while deeper water becomes a subdued olive green.
-			float depth_tint = 1.0 - exp(-vdepth * 0.75);
-			t = mix(ei_lin(vec3(0.28, 0.38, 0.18)), ei_lin(vec3(0.12, 0.23, 0.11)), depth_tint);
+			float depth_tint = 1.0 - exp(-vdepth * mix(0.6, 0.9, sediment));
+			vec3 shallow = mix(vec3(0.28, 0.36, 0.16), vec3(0.23, 0.39, 0.20), sediment);
+			vec3 deep = mix(vec3(0.10, 0.21, 0.10), vec3(0.15, 0.27, 0.13), sediment);
+			t = mix(ei_lin(shallow), ei_lin(deep), depth_tint);
 			a = (0.72 + 0.25 * (1.0 - exp(-vdepth * 1.8))) * shore;
 		}
 		float foam = 0.0;
@@ -711,7 +730,8 @@ void fragment() {
 		float fres = pow(1.0 - clamp(dot(rn, VIEW), 0.0, 1.0), 5.0);
 		vec3 R = ei_lin(ei_sky);
 		float w = fres + min(length(rain_slope) * 0.6, 0.18);
-		if (swamp) { w = max(w, 0.025); }
+		if (swamp) { w = max(w, mix(0.03, 0.055, sediment)); }
+		R = water_sky_colour(R, swamp);
 		if (reflections) {
 			// Mirror: a calmer surface for scene sampling, so reflected
 			// trees and cliffs stay recognisable.
@@ -1221,6 +1241,14 @@ func apply_gfx() -> void:
 	elif is_instance_valid(_reflection):
 		_reflection.free()
 		_reflection = null
+	if CloudReflectionView.supported() and Clouds.mode() > 1 and Clouds.reflections_enabled():
+		if not is_instance_valid(_cloud_reflection):
+			_cloud_reflection = CloudReflectionView.new()
+			_cloud_reflection.terrain = self
+			add_child(_cloud_reflection)
+	elif is_instance_valid(_cloud_reflection):
+		_cloud_reflection.free()
+		_cloud_reflection = null
 	var fx := GameData.option("gfx_water") != 0
 	if fx and Gfx.on("gfx_water_caustics"):
 		if _caustics == null: _caustics = WaterCaustics.new(self)

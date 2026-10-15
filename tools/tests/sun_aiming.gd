@@ -49,6 +49,7 @@ func _ready() -> void:
 	var before := -menu._sun.basis.z
 	menu.set_hour(12.01)
 	var clock_direction := EISpace.vec(EISky.light_dir_ei(12.01)).normalized()
+	check(Gfx._cloud_sun_direction.is_equal_approx(-clock_direction), "cloud caches follow the menu clock even with held shadow aiming")
 	check((-menu._sun.basis.z).is_equal_approx(before if fallback else clock_direction),
 			"menu follows the same desktop/fallback direction policy")
 	menu.set_hour(14.0)

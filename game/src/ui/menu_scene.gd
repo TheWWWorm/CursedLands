@@ -177,7 +177,7 @@ func set_hour(h: float) -> void:
 		_held_sun = gd
 	_sun.basis = Game.sun_basis(_held_sun)
 	Gfx.update_original(_env, _sun, _lights, h, false)
-	RenderingServer.global_shader_parameter_set(&"ei_sun_dir", -gd)
+	Gfx.set_sun_direction(-gd)
 	EISky.update(_sky, _lights, h, false, Gfx.on("gfx_sky"), _env)
 
 

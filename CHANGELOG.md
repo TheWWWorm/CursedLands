@@ -14,7 +14,9 @@
 - Restore the Great Mage’s staff from his original animated figure.
 - Identify natural terrain transitions and cliff surfaces from the original atlases while rendering installed texture-pack artwork.
 - Soften portrait and inventory figure lighting with a weaker directional light and more ambient fill.
-- Render enhanced swamps as murky green water with depth-dependent colour, gentle ripples, reflections and soft shores, independent of swamp textures.
+- Render enhanced swamps as murky green water with depth-dependent colour, slow sediment variation, gentle ripples, reflections and soft shores, independent of swamp textures. Reduce the blue sky cast while retaining neutral cloud highlights.
+- Reuse a bounded sky view for Forward+ cloud reflections and skip cloud samples hidden by scenery reflections.
+- Reduce the Forward+ cloud-shadow field cost and reuse completed fields while weather and sunlight are unchanged.
 - Stop the completed Portal escape's companion-death check from killing Kir after Kel stays at the shelter. Preserve the check during the escape and support existing pre-departure saves. ([#4](https://github.com/TheWWWorm/CursedLands/issues/4))
 - Make the existing Mobile (Vulkan) renderer choice available from Android's startup recovery dialog before loading the main menu. ([#3](https://github.com/TheWWWorm/CursedLands/issues/3))
 - Track Android engine launches before renderer initialization, recover interrupted Vulkan starts to Compatibility, and retain their diagnostics until a report is saved. ([#3](https://github.com/TheWWWorm/CursedLands/issues/3))

@@ -4,7 +4,10 @@ extends RefCounted
 ## the same field. Keep the original integrator outside its bounded domain.
 ## This does not change sky density, ray steps or reflected cloud shapes.
 const Volume = preload("res://src/game/fx/cloud_volume.gd")
-const SIZE := 512
+## Cloud attenuation varies over metres, not screen pixels. The 192-column
+## field bounds tested attenuation error below 1.5/255 and integrates about
+## seven times fewer columns than the former 512-square field.
+const SIZE := 192
 const SPAN := 1024.0
 const LOOKUP := """
 global uniform sampler2D ei_cv_shadow_field : filter_linear, repeat_disable;
@@ -39,9 +42,11 @@ void fragment(){
 var view: SubViewport
 var _parent: WeakRef
 var _published := false
+var _enabled := false
+var _key: Array = []
 
 
-func update(owner: Node, map_size: Vector2, enabled: bool) -> void:
+func update(owner: Node, map_size: Vector2, enabled: bool, frame: Dictionary) -> void:
 	if not owner or not owner.is_inside_tree(): return
 	var parent := owner.get_viewport()
 	if view and (not is_instance_valid(view) or _parent.get_ref()!=parent):
@@ -65,7 +70,22 @@ func update(owner: Node, map_size: Vector2, enabled: bool) -> void:
 	RenderingServer.global_shader_parameter_set(&"ei_cv_shadow_domain",Vector4(origin.x,origin.y,SPAN,float(SIZE) if enabled else 0.0))
 	# A child viewport renders before its receiving viewport. Both programs
 	# read the same final global sun/weather values, including clock holds.
-	view.render_target_update_mode=SubViewport.UPDATE_ALWAYS if enabled else SubViewport.UPDATE_DISABLED
+	# Twinkle and sheet phases do not affect this volume integral. A held
+	# cloud field can reuse its image, but weather, wind, sun and map changes
+	# update immediately; there is no timer or delayed shadow history.
+	var key: Array = [origin,frame.state,frame.volume]
+	var changed := not _enabled or key != _key
+	_enabled = enabled
+	if not enabled:
+		view.render_target_update_mode=SubViewport.UPDATE_DISABLED
+	elif changed:
+		_key=key.duplicate(true)
+		request_refresh()
+
+
+func request_refresh() -> void:
+	if _enabled and is_instance_valid(view):
+		view.render_target_update_mode=SubViewport.UPDATE_ONCE
 
 
 func release() -> void:
@@ -74,4 +94,4 @@ func release() -> void:
 	if is_instance_valid(view):
 		# Deferred attachment may still be queued during a rapid option toggle.
 		view.queue_free()
-	view=null;_parent=null;_published=false
+	view=null;_parent=null;_published=false;_enabled=false;_key=[]

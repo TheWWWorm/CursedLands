@@ -1,17 +1,19 @@
 extends "clouds.gd"
-## Exact rendered comparisons for cloud reflection work that cannot contribute.
+## Rendered comparisons for cloud reflection work that cannot contribute.
 ## The reference restores the original placement of the cloud/SSR composition.
+## Moving the volume call across the SSR branch can change half-float rounding;
+## allow at most 1/32768 linear intensity, while held/restored images stay exact.
+const MAX_LINEAR_ERROR := 1.0/32768.0
 func helper() -> GDScript:
 	return load("res://src/game/fx/cloud_reflection_shader.gd")
 
 func reference(code: String) -> String:
 	var patch := helper()
-	if not code.contains("vec4 r = vec4(0.0);"): return code
-	code=code.replace(patch.START+"\n\t\tvec4 r = vec4(0.0);","vec3 R = "+patch.SKY+";")
-	code=code.replace("r = water_ssr(",patch.TRACE)
-	code=code.replace("\t\t\t\n\t\t\tw = mix(w,", "\t\t\t"+patch.MIX+"\n\t\t\tw = mix(w,")
-	var delayed: String=patch.WEIGHT+"\n\t\tif (w != 0.0 && (!reflections || r.a != 1.0)) { R = "+patch.SKY+"; }\n\t\tif (reflections) { "+patch.MIX+" }"
-	return code.replace(delayed,patch.WEIGHT)
+	code=code.replace(patch.CACHE+"\n","")
+	for sample_: String in [patch.SKY,patch.CACHED_SKY]:
+		code=code.replace(patch.BEFORE_MIX.replace("CLOUD_SAMPLE",sample_),"")
+		code=code.replace(patch.BEFORE_WEIGHT.replace("CLOUD_SAMPLE",sample_),"")
+	return code.replace(patch.START,"vec3 R = "+patch.SKY+";")
 
 func pipeline_counts() -> Vector2i:
 	return Vector2i(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_PIPELINE_COMPILATIONS_DRAW),
@@ -23,7 +25,8 @@ func source_contracts() -> void:
 	check(patch.inject(raw,false)==legacy,"unchanged sheet and unqualified backend injection")
 	var optimized: String=patch.inject(raw,true)
 	check(optimized!=legacy and reference(optimized)==legacy,"reference reconstructs exact original composition")
-	check(optimized.count("ei_cloud_sky(ei_sky,wpos,")==1,"one cloud call without duplicate ray march")
+	check(optimized.count("ei_cloud_sky(ei_sky,wpos,")==2,"mutually exclusive cloud calls for scenery reflections on/off")
+	check(reference(patch.inject(raw,true,true))==legacy,"cached reflection reference restores the same composition")
 	check(optimized.count("r = water_ssr(")==1,"one original SSR trace")
 	for marker: String in [patch.START,patch.TRACE,patch.MIX,patch.WEIGHT]:
 		var unsupported := raw.replace(marker,marker+marker)
@@ -109,7 +112,16 @@ func rendered_matrix() -> void:
 				await frames(8);var held:=view.get_texture().get_image()
 				material.shader=before;await frames(90);var restored:=view.get_texture().get_image()
 				var label:="q%d-ssr%d-state%d"%[quality,mode,state]
-				check(a.get_data()==b.get_data(),"exact rendered bytes "+label)
+				var error:=0.0;var changed:=0
+				if a.get_data()!=b.get_data():
+					b.save_png("user://cloud-reflection-"+label+"-candidate.png")
+					for y in a.get_height():
+						for x in a.get_width():
+							var ac:=a.get_pixel(x,y);var bc:=b.get_pixel(x,y)
+							var delta:=maxf(absf(ac.r-bc.r),maxf(absf(ac.g-bc.g),absf(ac.b-bc.b)))
+							error=maxf(error,delta);changed+=int(delta>0.0)
+					print("REFLECTION_DELTA ",label," peak=",error," pixels=",changed)
+				check(error<=MAX_LINEAR_ERROR and (skip or a.get_data()==b.get_data()),"equivalent rendered light "+label)
 				check(b.get_data()==held.get_data(),"held candidate "+label)
 				check(a.get_data()==restored.get_data(),"restored reference "+label)
 				check(terrain._waves.time_ticks()==held_clock,"held water clock "+label)
@@ -118,7 +130,7 @@ func rendered_matrix() -> void:
 					var empty:=frame.duplicate(true);empty.state.w=0.0;Gfx.set_cloud_frame(terrain.get_instance_id(),empty)
 					await frames(90);visible_clouds=a.get_data()!=view.get_texture().get_image().get_data()
 					Gfx.set_cloud_frame(terrain.get_instance_id(),frame)
-				rows.append({"quality":quality,"ssr":mode,"state":state,"format":a.get_format(),"bytes":a.get_data().size(),"exact":a.get_data()==b.get_data(),"held":b.get_data()==held.get_data(),"restored":a.get_data()==restored.get_data(),"optimized":skip,"pipelines_start":str(pipelines),"pipelines_end":str(pipeline_counts())})
+				rows.append({"quality":quality,"ssr":mode,"state":state,"format":a.get_format(),"bytes":a.get_data().size(),"exact":a.get_data()==b.get_data(),"max_linear_error":error,"changed_pixels":changed,"held":b.get_data()==held.get_data(),"restored":a.get_data()==restored.get_data(),"optimized":skip,"pipelines_start":str(pipelines),"pipelines_end":str(pipeline_counts())})
 				if quality==3 and mode==0 and state==3:
 					var mask:=Shader.new();mask.code=patch.inject(raw,true).replace("ambient_light_disabled","unshaded,fog_disabled").replace("ALPHA = A;","ALBEDO=vec3(w==0.0?1.0:0.0,0.0,1.0);EMISSION=vec3(0);ALPHA=1.0;FOG=vec4(0);")
 					material.shader=mask;await frames(90);var im:=view.get_texture().get_image();var zeros:=0

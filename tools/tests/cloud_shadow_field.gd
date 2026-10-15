@@ -17,7 +17,7 @@ func _ready() -> void:
 	if DisplayServer.get_name()!="headless":
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true)
-	RenderingServer.global_shader_parameter_set(&"ei_sun_dir",SUN)
+	Gfx.set_sun_direction(SUN)
 	var clouds:=Clouds.new()
 	var frame: Dictionary=clouds.sample(0,"field-lifecycle","Ingos",Vector4(.8,.6,.8,1),.52,0,12,false).duplicate(true)
 	var views: Array[SubViewport]=[];var owners: Array[Node3D]=[]
@@ -39,13 +39,19 @@ func _ready() -> void:
 		var active:=Gfx._cloud_shadow_field
 		check(active!=null,"active world creates a shared shadow field")
 		check(active.view.get_parent()==views[0],"producer is a child of the receiving viewport")
-		check(active.view.size==Vector2i(512,512) and active.view.use_hdr_2d,"bounded HDR grid")
-		check(active.view.render_target_update_mode==SubViewport.UPDATE_ALWAYS,"daylight updates every rendered frame")
+		check(active.view.size==Vector2i(Field.SIZE,Field.SIZE) and active.view.use_hdr_2d,"bounded HDR grid")
+		check(active.view.render_target_update_mode==SubViewport.UPDATE_ONCE,"daylight requests a single completed field")
 		check(Clouds.shadow_source().contains("cv_shadow_field"),"Forward+ consumers use the shared field")
 		var first:=active.view.get_texture().get_image()
 		check(first.get_format() in [Image.FORMAT_RGBH,Image.FORMAT_RGBAH],"16-bit storage is active")
 		for i in 8:Gfx.set_cloud_frame(owners[0].get_instance_id(),frame);await frames(1)
 		check(active.view.get_texture().get_image().get_data()==first.get_data(),"held cloud state keeps exact field pixels")
+		Gfx.set_sun_direction(Vector3(-.6,.75,.3).normalized())
+		check(active.view.render_target_update_mode==SubViewport.UPDATE_ONCE,"sun-only change requests an immediate update")
+		await frames(3)
+		check(active.view.render_target_update_mode==SubViewport.UPDATE_ONCE,"sun-only update does not enable continuous redraws")
+		Gfx.set_sun_direction(SUN);await frames(3)
+		check(active.view.get_texture().get_image().get_data()==first.get_data(),"restored sun restores exact field pixels")
 		var current_view:=active.view
 		var old_rid:=RenderingServer.texture_get_rd_texture(current_view.get_texture().get_rid())
 		check(texture_live(old_rid),"producer has a live GPU texture")
@@ -55,7 +61,7 @@ func _ready() -> void:
 		Gfx.set_cloud_frame(owners[0].get_instance_id(),night);await frames(3)
 		check(active.view==current_view and active.view.render_target_update_mode==SubViewport.UPDATE_DISABLED,"night suspends field work without reallocating")
 		Gfx.set_cloud_frame(owners[0].get_instance_id(),frame);await frames(3)
-		check(active.view==current_view and active.view.render_target_update_mode==SubViewport.UPDATE_ALWAYS,"daylight resumes the same field")
+		check(active.view==current_view and active.view.render_target_update_mode==SubViewport.UPDATE_ONCE,"daylight renders once and reuses the same field")
 		var old:=weakref(current_view);current_view=null
 		Gfx.set_cloud_frame(owners[1].get_instance_id(),frame);await frames(4)
 		Gfx.set_cloud_frame(owners[1].get_instance_id(),frame);await frames(4)
