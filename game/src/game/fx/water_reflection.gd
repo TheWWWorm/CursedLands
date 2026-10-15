@@ -14,6 +14,7 @@ const OMIT_SCREEN_EFFECT := """
 #endif
 """
 const REACH := 64.0
+const CELL_BUCKET := 16
 const MAX_SIZE := 2048.0
 const CLIP := """
 #if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
@@ -26,8 +27,6 @@ var terrain: EITerrain
 var viewport: SubViewport
 var camera: Camera3D
 var plane := -INF
-var _poll := 0.0
-var _source: Camera3D
 
 
 static func supported() -> bool:
@@ -56,7 +55,19 @@ static func target_size(size: Vector2) -> Vector2i:
 
 
 func request_refresh() -> void:
-	_poll = 0.0
+	if is_instance_valid(terrain): terrain._reflection_plane_query.clear()
+
+
+func visible_plane(source: Camera3D) -> float:
+	# Mirror scenery and cloud colour use the same visible water. Share the
+	# bounded scan, including during paused camera movement and water edits.
+	var now := Time.get_ticks_msec()
+	var query := terrain._reflection_plane_query
+	if query.get("source",0) != source.get_instance_id() or now >= int(query.get("until",0)):
+		plane = float(query.get("plane",plane))
+		query = {"source":source.get_instance_id(),"until":now+125,"plane":_select_plane(source)}
+		terrain._reflection_plane_query = query
+	return float(query.plane)
 
 
 func _ready() -> void:
@@ -73,7 +84,7 @@ func _active() -> bool:
 		and Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") == 2
 
 
-func _process(dt: float) -> void:
+func _process(_dt: float) -> void:
 	if not _active():
 		_disable()
 		return
@@ -81,11 +92,7 @@ func _process(dt: float) -> void:
 	if source == null:
 		_disable()
 		return
-	_poll -= dt
-	if source != _source or _poll <= 0.0:
-		plane = _select_plane(source)
-		_source = source
-		_poll = 0.125
+	plane = visible_plane(source)
 	if not is_finite(plane) or source.global_position.y < plane + 0.15:
 		_disable()
 		return
@@ -152,6 +159,22 @@ func _exit_tree() -> void:
 		terrain._water_mat.set_shader_parameter("planar_texture", null)
 
 
+static func prepare_water_cells(map: EITerrain) -> void:
+	# The liquid mask is immutable after map loading. Water-level changes
+	# keep the same cells; read their live heights when testing the camera.
+	var width := map.sectors_x * EITerrain.SECTOR
+	var height := map.sectors_y * EITerrain.SECTOR
+	map._reflection_water_cells.clear()
+	for y in range(0,height,2):
+		for x in range(0,width,2):
+			var i := y*width+x
+			if not is_finite(map.water[i]) or map.liquid_ground[i] in [EITerrain.LAVA,255]: continue
+			var key := Vector2i(x/CELL_BUCKET,y/CELL_BUCKET)
+			if not map._reflection_water_cells.has(key): map._reflection_water_cells[key]=PackedVector2Array()
+			map._reflection_water_cells[key].append(Vector2(x,y))
+	map._reflection_cells_ready=true
+
+
 func _select_plane(source: Camera3D) -> float:
 	var position := source.global_position
 	# Camera3D.is_position_in_frustum rebuilds all six projection planes on
@@ -160,13 +183,21 @@ func _select_plane(source: Camera3D) -> float:
 	var width := terrain.sectors_x * EITerrain.SECTOR
 	var height := terrain.sectors_y * EITerrain.SECTOR
 	var groups := {}
+	if not terrain._reflection_cells_ready: prepare_water_cells(terrain)
+	var lo := Vector2i(maxi(0,int(position.x-REACH)) & ~1,maxi(0,int(-position.z-REACH)) & ~1)
+	var hi := Vector2i(mini(width,int(position.x+REACH)),mini(height,int(-position.z+REACH)))
+	var cells := PackedVector2Array()
+	for by in range(lo.y/CELL_BUCKET,(hi.y-1)/CELL_BUCKET+1):
+		for bx in range(lo.x/CELL_BUCKET,(hi.x-1)/CELL_BUCKET+1):
+			cells.append_array(terrain._reflection_water_cells.get(Vector2i(bx,by),PackedVector2Array()))
 	# Probe original liquid cells, not walkable bridge heights. Bucket nearby
 	# surface levels so tiny authored river slopes share a stable plane.
-	for y in range(maxi(0, int(-position.z - REACH)) & ~1, mini(height, int(-position.z + REACH)), 2):
-		for x in range(maxi(0, int(position.x - REACH)) & ~1, mini(width, int(position.x + REACH)), 2):
+	for cell: Vector2 in cells:
+		var x := int(cell.x);var y := int(cell.y)
+		if x>=lo.x and x<hi.x and y>=lo.y and y<hi.y:
 			var i := y * width + x
 			var water_height := terrain.water[i]
-			if not is_finite(water_height) or terrain.liquid_ground[i] in [EITerrain.LAVA, 255]: continue
+			if not is_finite(water_height): continue
 			var point := Vector3(x + 0.5, water_height, -y - 0.5)
 			var distance := point.distance_squared_to(position)
 			if distance > REACH * REACH: continue

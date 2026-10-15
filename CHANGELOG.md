@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.5.1-preview.3 — cloud rendering preview, 15 October 2026
+
+- Keep water's normal-incidence reflection visible from steep camera angles while retaining the swamp colour treatment.
+- Bind immutable cloud noise textures when they are created instead of scheduling material texture updates every frame.
+- Give the cloud reflection view an independent sky and minimize its unused radiance-cubemap work without changing visible cloud samples or resolution.
+- Share visible-water queries between scenery and cloud reflections, index water cells, and refresh the query during paused camera movement and water-level edits.
+
+See [preview notes](docs/releases/1.5.1-preview.3.md) for compatibility and platform limits.
+
 ## 1.5.1-preview.2 — movement and traversal preview, 15 October 2026
 
 - Smooth the local player's movement with continuous path samples and a single update stream, retaining ordinary co-op updates for remote players. ([#4](https://github.com/TheWWWorm/CursedLands/issues/4))

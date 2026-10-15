@@ -7,6 +7,9 @@ const WaterReflection = preload("res://src/game/fx/water_reflection.gd")
 var _reflection: WaterReflection
 const CloudReflectionView = preload("res://src/game/fx/cloud_reflection_view.gd")
 var _cloud_reflection: CloudReflectionView
+var _reflection_plane_query := {}
+var _reflection_water_cells := {}
+var _reflection_cells_ready := false
 
 const WaveState := preload("res://src/ei/water_waves.gd")
 
@@ -721,13 +724,12 @@ void fragment() {
 			t = mix(t, vec3(0.85), foam * 0.7);
 			a = mix(a, 0.9, foam * 0.7);
 		}
-		// Reflection weight: Schlick's Fresnel term without its 2 % floor,
-		// so the game's steep view keeps the original colour (2 % of the
-		// bright [sky] colour turned the dark bog cyan) and the reflection
-		// grows only toward grazing views; rain rings catch more of the sky.
+		// Water reflects about 2 % at normal incidence. Keep that response in
+		// the steep game view too; the swamp's sky tint handles its body colour.
+		// Rain rings catch more of the sky.
 		// Mirror strengthens the scene reflection, capped so the water's
 		// own colour always stays.
-		float fres = pow(1.0 - clamp(dot(rn, VIEW), 0.0, 1.0), 5.0);
+		float fres = 0.02 + 0.98 * pow(1.0 - clamp(dot(rn, VIEW), 0.0, 1.0), 5.0);
 		vec3 R = ei_lin(ei_sky);
 		float w = fres + min(length(rain_slope) * 0.6, 0.18);
 		if (swamp) { w = max(w, mix(0.03, 0.055, sediment)); }
@@ -1233,6 +1235,9 @@ func apply_gfx() -> void:
 	_update_cloud_parameters()
 	if _water_mat == null:
 		return
+	if WaterReflection.supported() and Gfx.on("gfx_water") and not _reflection_cells_ready \
+			and (GameData.option("gfx_water_reflections")==2 or Clouds.reflections_enabled()):
+		WaterReflection.prepare_water_cells(self)
 	if WaterReflection.supported() and Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") == 2:
 		if not is_instance_valid(_reflection):
 			_reflection = WaterReflection.new()
@@ -1619,6 +1624,7 @@ func set_water_offset(mat: int, offset: float) -> Rect2i:
 			hi = hi.max(c)
 	if hi.x < 0:
 		return Rect2i()
+	_reflection_plane_query.clear()
 	if is_instance_valid(_reflection): _reflection.request_refresh()
 	if is_instance_valid(details):
 		details.water_changed()

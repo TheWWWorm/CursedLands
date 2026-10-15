@@ -8,10 +8,11 @@ var terrain: EITerrain
 var viewport: SubViewport
 var camera: Camera3D
 var _scanner: Reflection
-var _source: Camera3D
-var _poll := 0
 var _plane := -INF
 var _key: Array = []
+var _sky_source: Sky
+var _sky_material: Material
+var _sky_parameters := {}
 
 static func supported() -> bool:
 	return DisplayServer.get_name() != "headless" and RenderingServer.get_current_rendering_method() == "forward_plus"
@@ -31,17 +32,14 @@ func _process(_dt: float) -> void:
 	if environment == null: environment = source.get_world_3d().environment
 	if environment == null or environment.background_mode != Environment.BG_SKY or environment.sky == null:
 		_disable(); return
-	var now := Time.get_ticks_msec()
-	if source != _source or now >= _poll:
-		_plane = _scanner._select_plane(source)
-		_source = source; _poll = now + 125
+	_plane = _scanner.visible_plane(source)
 	if not is_finite(_plane) or source.global_position.y < _plane + 0.15:
 		_disable(); return
 	if viewport == null: _create_view()
 	var size := source.get_viewport().get_visible_rect().size
 	var scale := minf(0.25, MAX_SIZE / maxf(size.x,size.y))
 	viewport.size = Vector2i(maxi(2,roundi(size.x*scale)),maxi(2,roundi(size.y*scale)))
-	camera.environment.sky = environment.sky
+	_sync_sky(environment.sky)
 	camera.keep_aspect = source.keep_aspect
 	camera.fov = minf(150.0,source.fov+16.0)
 	camera.near = 0.1; camera.far = 4000.0
@@ -54,11 +52,44 @@ func _process(_dt: float) -> void:
 	var key: Array = [camera.global_transform,camera.get_camera_projection(),viewport.size,environment.sky,Clouds.mode(),
 		Gfx._cloud_frame,Gfx._cloud_sun_direction,Gfx._sky_flash,Gfx._border_size,Gfx._border_menu]
 	if sky_material:
-		for parameter: StringName in [&"ambient",&"sun_col",&"sky_col",&"light_dir",&"night",&"fancy",&"spin"]:
+		key.append(sky_material)
+		key.append(sky_material.shader)
+		for parameter: StringName in [&"tex",&"ambient",&"sun_col",&"sky_col",&"light_dir",&"night",&"fancy",&"spin"]:
 			key.append(sky_material.get_shader_parameter(parameter))
 	if key != _key:
 		_key = key.duplicate(true)
 		viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+
+func _sync_sky(source: Sky) -> void:
+	# A Sky owns its radiance history, including the last camera position.
+	# Sharing it with the reflected camera invalidates the main view's history
+	# twice per frame. This view needs only background colour, never radiance.
+	if source != _sky_source or source.sky_material != _sky_material:
+		_sky_source = source
+		_sky_material = source.sky_material
+		_sky_parameters.clear()
+		var sky := Sky.new()
+		# Godot still allocates/filters a cubemap for background-only skies.
+		# Its contents are unused here; keep that bookkeeping at minimum size.
+		sky.radiance_size = Sky.RADIANCE_SIZE_32
+		sky.process_mode = Sky.PROCESS_MODE_INCREMENTAL
+		sky.sky_material = source.sky_material.duplicate() if source.sky_material else null
+		camera.environment.sky = sky
+	var original := source.sky_material as ShaderMaterial
+	var material := camera.environment.sky.sky_material as ShaderMaterial
+	if original and material:
+		if material.shader != original.shader:
+			material.shader = original.shader
+			_sky_parameters.clear()
+		for parameter: StringName in [&"tex",&"ambient",&"sun_col",&"sky_col",&"light_dir",&"night",&"fancy",&"spin"]:
+			var value: Variant = original.get_shader_parameter(parameter)
+			if not _sky_parameters.has(parameter) or _sky_parameters[parameter] != value:
+				material.set_shader_parameter(parameter,value)
+				_sky_parameters[parameter] = value
+		if not _sky_parameters.has(&"sky_radiance"):
+			material.set_shader_parameter(&"sky_radiance", false)
+			material.set_shader_parameter(&"cloud_radiance", false)
+			_sky_parameters[&"sky_radiance"] = false
 
 func _create_view() -> void:
 	viewport = SubViewport.new(); viewport.name = "CloudReflectionView"

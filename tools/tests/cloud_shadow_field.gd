@@ -42,10 +42,14 @@ func _ready() -> void:
 		check(active.view.size==Vector2i(Field.SIZE,Field.SIZE) and active.view.use_hdr_2d,"bounded HDR grid")
 		check(active.view.render_target_update_mode==SubViewport.UPDATE_ONCE,"daylight requests a single completed field")
 		check(Clouds.shadow_source().contains("cv_shadow_field"),"Forward+ consumers use the shared field")
+		var sheet_texture:=Gfx._cloud_sheet_noise
+		var shape_texture:=Gfx._cloud_volume_noise.shape
+		var detail_texture:=Gfx._cloud_volume_noise.detail
 		var first:=active.view.get_texture().get_image()
 		check(first.get_format() in [Image.FORMAT_RGBH,Image.FORMAT_RGBAH],"16-bit storage is active")
 		for i in 8:Gfx.set_cloud_frame(owners[0].get_instance_id(),frame);await frames(1)
 		check(active.view.get_texture().get_image().get_data()==first.get_data(),"held cloud state keeps exact field pixels")
+		check(Gfx._cloud_sheet_noise==sheet_texture and Gfx._cloud_volume_noise.shape==shape_texture and Gfx._cloud_volume_noise.detail==detail_texture,"held updates retain the immutable noise resources")
 		Gfx.set_sun_direction(Vector3(-.6,.75,.3).normalized())
 		check(active.view.render_target_update_mode==SubViewport.UPDATE_ONCE,"sun-only change requests an immediate update")
 		await frames(3)
@@ -73,6 +77,7 @@ func _ready() -> void:
 		var final_rid:=RenderingServer.texture_get_rd_texture(active.view.get_texture().get_rid())
 		GameData.options.gfx_clouds=0;Gfx.apply_surface_options();await frames(4)
 		check(Gfx._cloud_shadow_field==null and gone.get_ref()==null,"disabling clouds releases the field")
+		check(Gfx._cloud_sheet_noise==null and Gfx._cloud_volume_noise==null,"disabling clouds invalidates sampler bindings for a fresh enable")
 		check(not texture_live(final_rid),"disabling clouds releases the GPU texture")
 		check(views[0].get_child_count()==1 and views[1].get_child_count()==1,"no viewport children accumulate after toggles")
 	# Exercise attach followed immediately by release, before deferred parenting.

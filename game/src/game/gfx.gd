@@ -14,6 +14,7 @@ const WaterTextureData = preload("res://src/game/fx/water_texture_data.gd")
 static var _cloud_owner := 0
 static var _cloud_frame := {"state":Vector4.ZERO,"phases":Vector4.ZERO,"twinkle":Vector2.ZERO}
 static var _cloud_volume_noise: Clouds.VolumeNoise
+static var _cloud_sheet_noise: Texture2D
 static var _cloud_volume_tried := false
 static var _cloud_shadow_field: Clouds.ShadowField
 static var _cloud_sun_direction := Vector3.ZERO
@@ -782,14 +783,21 @@ static func set_cloud_frame(owner: int, frame: Dictionary) -> void:
 	RenderingServer.global_shader_parameter_set(&"ei_cloud_state",frame.state)
 	RenderingServer.global_shader_parameter_set(&"ei_cloud_phases",frame.phases)
 	RenderingServer.global_shader_parameter_set(&"ei_cloud_twinkle",frame.twinkle)
-	RenderingServer.global_shader_parameter_set(&"ei_cloud_noise",noise("clouds",256,0.018,3))
+	var cloud_noise := noise("clouds",256,0.018,3)
+	if cloud_noise != _cloud_sheet_noise:
+		_cloud_sheet_noise = cloud_noise
+		RenderingServer.global_shader_parameter_set(&"ei_cloud_noise",cloud_noise)
 	if Clouds.mode()>1 and frame.has("volume") and frame.state.w>.5:
 		if not _cloud_volume_tried:
 			_cloud_volume_tried=true;_cloud_volume_noise=Clouds.VolumeNoise.new()
 			if not _cloud_volume_noise.prepare(): _cloud_volume_noise=null
+			if _cloud_volume_noise:
+				# Setting a global sampler queues every material using it for a
+				# texture/descriptor rebuild, even when its RID is unchanged.
+				# These noise fields are immutable for the volume's lifetime.
+				RenderingServer.global_shader_parameter_set(&"ei_cv_shape",_cloud_volume_noise.shape)
+				RenderingServer.global_shader_parameter_set(&"ei_cv_detail",_cloud_volume_noise.detail)
 		if _cloud_volume_noise:
-			RenderingServer.global_shader_parameter_set(&"ei_cv_shape",_cloud_volume_noise.shape)
-			RenderingServer.global_shader_parameter_set(&"ei_cv_detail",_cloud_volume_noise.detail)
 			RenderingServer.global_shader_parameter_set(&"ei_cv_weather",frame.volume.weather)
 			RenderingServer.global_shader_parameter_set(&"ei_cv_storm",frame.volume.storm)
 			for layer in 6:
@@ -832,6 +840,7 @@ static func _release_cloud_volume() -> void:
 static func clear_clouds(owner := 0) -> void:
 	if owner!=0 and owner!=_cloud_owner: return
 	_cloud_owner=0; _cloud_frame={"state":Vector4.ZERO,"phases":Vector4.ZERO,"twinkle":Vector2.ZERO}
+	_cloud_sheet_noise=null
 	if _globals:
 		RenderingServer.global_shader_parameter_set(&"ei_cloud_state",Vector4.ZERO)
 	_release_cloud_volume()

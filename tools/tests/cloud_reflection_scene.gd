@@ -31,6 +31,10 @@ func cache_lifecycle(t: EITerrain, camera: Camera3D, game: Game) -> void:
 	var cache: Node=t.get("_cloud_reflection")
 	check(cache!=null and cache.viewport!=null,"cached reflection allocated")
 	if cache==null or cache.viewport==null:return
+	check(cache.camera.environment.sky!=game._env.sky,"reflection owns a separate sky history")
+	check(cache.camera.environment.sky.radiance_size==Sky.RADIANCE_SIZE_32,"unused reflection radiance stays at minimum size")
+	var reflected_sky:ShaderMaterial=cache.camera.environment.sky.sky_material
+	check(not reflected_sky.get_shader_parameter("sky_radiance") and not reflected_sky.get_shader_parameter("cloud_radiance"),"reflection sky excludes unused radiance")
 	var aim_mode:=game.sun_aim_mode
 	game.sun_aim_mode=0;game._update_daylight(false)
 	check(Gfx._cloud_sun_direction.is_equal_approx(game.sun_light_dir),"held game shadow aiming publishes the actual clock direction to cloud caches")

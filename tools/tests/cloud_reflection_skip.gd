@@ -43,8 +43,8 @@ func rendered_matrix() -> void:
 	var p:=centre(terrain);check(p.is_finite(),"real river focus")
 	camera.position=p+Vector3(0,2,3);camera.look_at(p+Vector3(0,1,-20))
 	var normal_camera:=camera.transform
-	# A small flat water patch supplies an exact normal for the zero-weight
-	# edge case; the remaining cases use the authored river unchanged.
+	# A small flat water patch supplies an exact normal for the
+	# normal-incidence case; the remaining cases use the authored river unchanged.
 	var width:=terrain.sectors_x*32
 	var water_material:int=terrain.water_mat[int(-p.z)*width+int(p.x)]
 	var flat:=MeshInstance3D.new();var mesh:=ArrayMesh.new();var arrays:=[];arrays.resize(Mesh.ARRAY_MAX)
@@ -132,13 +132,13 @@ func rendered_matrix() -> void:
 					Gfx.set_cloud_frame(terrain.get_instance_id(),frame)
 				rows.append({"quality":quality,"ssr":mode,"state":state,"format":a.get_format(),"bytes":a.get_data().size(),"exact":a.get_data()==b.get_data(),"max_linear_error":error,"changed_pixels":changed,"held":b.get_data()==held.get_data(),"restored":a.get_data()==restored.get_data(),"optimized":skip,"pipelines_start":str(pipelines),"pipelines_end":str(pipeline_counts())})
 				if quality==3 and mode==0 and state==3:
-					var mask:=Shader.new();mask.code=patch.inject(raw,true).replace("ambient_light_disabled","unshaded,fog_disabled").replace("ALPHA = A;","ALBEDO=vec3(w==0.0?1.0:0.0,0.0,1.0);EMISSION=vec3(0);ALPHA=1.0;FOG=vec4(0);")
+					var mask:=Shader.new();mask.code=patch.inject(raw,true).replace("ambient_light_disabled","unshaded,fog_disabled").replace("ALPHA = A;","ALBEDO=vec3(w>=0.0199?1.0:0.0,0.0,1.0);EMISSION=vec3(0);ALPHA=1.0;FOG=vec4(0);")
 					material.shader=mask;await frames(90);var im:=view.get_texture().get_image();var zeros:=0
 					for y in im.get_height():
 						for x in im.get_width():
 							var c:=im.get_pixel(x,y);zeros+=int(c.r>.99 and c.g<.01 and c.b>.99)
-					check(zeros>250,"flat top-down case positively exercises exactly zero reflection weight")
-					rows.back().zero_weight_pixels=zeros;im.save_png("user://zero-weight-mask.png");material.shader=before
+					check(zeros>250,"flat top-down water retains its two-percent reflection")
+					rows.back().normal_incidence_pixels=zeros;im.save_png("user://normal-incidence-mask.png");material.shader=before
 				check(a.save_png("user://cloud-reflection-"+label+".png")==OK,"save comparison reference "+label)
 	check(visible_clouds,"clouds positively affect an unoccluded water reflection")
 	Gfx.clear_clouds();view.free();await frames(8)
