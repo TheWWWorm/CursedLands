@@ -7,7 +7,7 @@ from pathlib import Path
 import re
 import shutil
 import xml.etree.ElementTree as ET
-from urllib.parse import unquote, parse_qs
+from urllib.parse import unquote, parse_qs, urlencode
 
 
 def prepare(data, images, output):
@@ -32,12 +32,14 @@ def prepare(data, images, output):
             page = json.loads((data / lang / 'pages' / entry['file']).read_text())
             assert page['key'] == key and page['versions']
             pages[key] = page
-        count = links = 0
+        count = links = normalized = 0
         for key, page in pages.items():
             for version in page['versions']:
                 assert version['title']
                 html = ET.fromstring(version['html'])
                 assert html.tag == 'article' and html.find('h1') is not None
+                assert not re.search(r'\b\w+_\w*Prototyp\w*', ' '.join(html.itertext()), re.I), (lang, key)
+                assert not re.search(r'\b\w+_\w*Prototyp\w*', version['title'], re.I), (lang, key)
                 for element in html.iter():
                     assert element.tag in {'article', 'h1', 'h2', 'p', 'br', 'table', 'tr', 'th', 'td', 'a'}
                     assert set(element.attrib) <= {'data-columns', 'href'}
@@ -52,8 +54,22 @@ def prepare(data, images, output):
                         assert destination in entries, (lang, key, link)
                         variant = parse_qs(query).get('version', [''])[0]
                         if variant:
-                            assert variant in {v['id'] for v in pages[destination]['versions']}, (key, link)
+                            choices = {v['id'] for v in pages[destination]['versions']}
+                            if entries[destination]['kind'] == 'material':
+                                # A material already identifies its only page.
+                                element.set('href', 'wiki://' + destination)
+                                normalized += 1
+                            elif variant not in choices:
+                                # Creature equipment specifications can carry
+                                # an enchantment or authored separator spaces.
+                                # Link to the available base material article;
+                                # this site does not simulate temporary effects.
+                                base = '.'.join(p.strip() for p in variant.split('|')[0].split('.'))
+                                assert base in choices, (key, link)
+                                element.set('href', 'wiki://' + destination + '?' + urlencode({'version': base}))
+                                normalized += 1
                     links += 1
+                version['html'] = ET.tostring(html, encoding='unicode')
                 image = version['image']
                 assert not image or re.fullmatch('[a-f0-9]{24}', image)
                 if image and (images / (image + '.webp')).is_file():
@@ -65,7 +81,7 @@ def prepare(data, images, output):
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(json.dumps(page, ensure_ascii=False, separators=(',', ':')) + '\n')
         (output / 'data' / lang / 'index.json').write_text(json.dumps(index, ensure_ascii=False, separators=(',', ':')) + '\n')
-        report['languages'][lang] = {'pages': len(entries), 'versions': count, 'resolved_links': links}
+        report['languages'][lang] = {'pages': len(entries), 'versions': count, 'resolved_links': links, 'normalized_equipment_links': normalized}
     (output / 'images').mkdir(exist_ok=True)
     for image in sorted(used_images):
         shutil.copy2(images / (image + '.webp'), output / 'images' / (image + '.webp'))

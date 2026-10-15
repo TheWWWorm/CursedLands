@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#182822">
+  <meta name="description" content="Browse the Cursed Lands encyclopedia: Evil Islands items, materials, spells, runes, creatures and game mechanics, using GOG edition data. No game files required.">
+  <title>Cursed Lands · Wiki</title>
+  <link rel="icon" href="/index.icon.png">
+  <link rel="stylesheet" href="/wiki/wiki.css">
+  <script type="module" src="/wiki/wiki.js"></script>
+</head>
+<body>
+  <a class="skip" href="#article" data-text="skip">Skip to article</a>
+  <header>
+    <a class="brand" href="/wiki/" aria-label="Cursed Lands wiki"><span class="crest" aria-hidden="true">CL</span><span>Cursed Lands<small data-text="encyclopedia">Encyclopedia</small></span></a>
+    <nav aria-label="Language and game">
+      <label class="sr-only" for="language" data-text="language">Language</label>
+      <select id="language"><option value="en">English</option><option value="ru">Русский</option><option value="de">Deutsch</option></select>
+      <a href="/" class="play" data-text="play">Play the game ↗</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside>
+      <a id="contents" href="/wiki/" data-text="contents">Contents</a>
+      <label for="search" data-text="search">Search the encyclopedia</label>
+      <input id="search" type="search" autocomplete="off" spellcheck="false">
+      <label for="category" data-text="category">Category</label>
+      <select id="category"></select>
+      <p id="status" role="status" aria-live="polite"></p>
+      <nav id="results" aria-label="Search results"></nav>
+      <div class="pagination"><button id="previous" type="button" data-text="previous">Previous</button><span id="page-number"></span><button id="next" type="button" data-text="next">Next</button></div>
+    </aside>
+    <main>
+      <p class="eyebrow" data-text="edition">EVIL ISLANDS · GOG EDITION</p>
+      <div class="source"><span data-text="public">A public reference. No game files or account needed.</span><span id="version">1.6.0</span></div>
+      <p id="notice" role="status" data-text="loading">Loading the encyclopedia…</p>
+      <div id="versions" hidden><label for="variant" data-text="variant">Material / version</label><select id="variant"></select></div>
+      <div id="content"><article id="article" tabindex="-1"></article></div>
+      <p id="spell-note" hidden data-text="spellNote">Explore custom rune combinations with the spell builder in the in-game wiki.</p>
+      <footer><p data-text="source">Names and descriptions come from the GOG editions. Statistics and examples use the Cursed Lands 1.6.0 calculations with the original armor rule. Map scripts, difficulty, equipment and effects can change values during play.</p><a href="https://github.com/TheWWWorm/CursedLands" data-text="project">Project &amp; source code ↗</a></footer>
+    </main>
+  </div>
+  <noscript><p class="notice">Enable JavaScript to search and read the wiki. / Включите JavaScript для чтения вики. / Aktivieren Sie JavaScript, um das Wiki zu lesen.</p></noscript>
+</body>
+</html>

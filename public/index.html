@@ -21,6 +21,7 @@ button{font:inherit;color:inherit;background:#372e20;border:1px solid #8a734c;pa
 button:disabled{opacity:.6}#bar{height:6px;background:#372e20;border-radius:3px;overflow:hidden}#bar>div{height:100%;width:0;background:#c9a95c;transition:width .2s}#bar[hidden]{display:none}
 #notice{max-width:38em;white-space:pre-wrap}#safe-probe{position:fixed;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 #runtime-error{position:fixed;bottom:env(safe-area-inset-bottom);left:10%;right:10%;background:#421e18;color:white;z-index:5}#runtime-error:empty{display:none}
+#public-wiki{color:#e4d7a7;text-underline-offset:4px;font-size:14px}
 #rotate{display:none;position:fixed;inset:0;background:#17130eeb;z-index:6;align-content:center;text-align:center;padding:32px}
 #start,#rotate{padding-left:max(24px,env(safe-area-inset-left),env(safe-area-inset-right));padding-right:max(24px,env(safe-area-inset-left),env(safe-area-inset-right));padding-top:max(24px,env(safe-area-inset-top));padding-bottom:max(24px,env(safe-area-inset-bottom))}
 @media(orientation:portrait) and (pointer:coarse){#rotate{display:block}}
@@ -28,10 +29,13 @@ button:disabled{opacity:.6}#bar{height:6px;background:#372e20;border-radius:3px;
 <canvas id="canvas" tabindex="0">This game requires WebGL 2.</canvas>
 <div id="safe-probe"></div><div id="runtime-error" role="alert"></div>
 <div id="rotate">Turn your device sideways to play.<p><button onclick="this.parentElement.parentElement.style.display='none'">Continue upright</button></p></div>
-<div id="start"><h1>Cursed Lands</h1><div id="notice">Preparing…</div><div id="bar" hidden><div></div></div><button id="play">Play</button><button onclick="CursedFiles.fullscreen()">Fullscreen / Home Screen</button></div>
+<div id="start"><h1>Cursed Lands</h1><div id="notice">Preparing…</div><div id="bar" hidden><div></div></div><button id="play">Play</button><button onclick="CursedFiles.fullscreen()">Fullscreen / Home Screen</button><a id="public-wiki" href="/wiki/">Public wiki · no game files required</a></div>
 <script src="storage.js"></script><script src="files.js"></script><script src="index.js"></script>
 <script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":6476840,"index.wasm":39509339},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":6539036,"index.wasm":39509339},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const wikiLanguage = ['en', 'ru', 'de'].includes(navigator.language.slice(0, 2)) ? navigator.language.slice(0, 2) : 'en';
+document.getElementById('public-wiki').textContent = {en: 'Public wiki · no game files required', ru: 'Открытая вики · файлы игры не нужны', de: 'Öffentliches Wiki · keine Spieldateien nötig'}[wikiLanguage];
+document.getElementById('public-wiki').href = '/wiki/?lang=' + wikiLanguage;
 const notice = document.getElementById('notice'), play = document.getElementById('play'), bar = document.getElementById('bar');
 const WELCOME = 'Use your own Evil Islands data. Your files stay on this device.\nOn iPhone or iPad: Share → Add to Home Screen → Open as Web App.';
 // Play is accepted at any time: pressed early, it waits (with progress) until

@@ -1,0 +1,1123 @@
+{
+  "version": "1.6.0-preview.1",
+  "base_stable": "1.5.0",
+  "source_commit": "c81c73055f77d8511a96410c377786a43a7e5c8e",
+  "game_tree": "c296c66ebd2f3522f8eba6c38dea24b65d44ae58",
+  "production_sha256": {
+    "game/project.godot": "20316b9f90316ce676be718ffe23b8f97848dec78cd00fdc8d74c21d0bb651a7",
+    "game/src/game/gfx.gd": "741978d87a7605cbec3e0ce72187484767f79d2691084bf14a9b2a12032d4f41",
+    "game/src/ei/terrain.gd": "cb4e91f0f472da1b0003a166103396d9fff6864d084aedf57ed82fb7c9ceff33",
+    "game/src/game/fx/ground_contact_shader.gd": "2e18ffc4be5ef2a4e710bed0646be713cd616dd20adcb85736dc02eb0daf90c8",
+    "game/src/game/combat.gd": "d3222a311363dcc4b18a5b051b98024d097ffed2ddea379a9c56656f1ba17034",
+    "game/src/game/session.gd": "7f4b3e1b782a07108ec1b011345a6a4303bbaf7785e40b6b5d14a1032489d4a9",
+    "game/src/ui/mp_char_panel.gd": "97001fcfab521c8f0a86e2f2474c347e756adb862e82b1ce34d83651fb7a52b4",
+    "game/src/game/wiki_catalog.gd": "1d6a6ecf21d7a0e2c33f18e1a780942946e8d4c82849705ed786d948e445d320",
+    "game/src/ui/wiki_panel.gd": "7378f5495e7ce42287becc6eebe37950353a0321cc04631fc9145efbffabeceb",
+    "game/src/ui/wiki_html.gd": "e1f2168dbc3756594cfee576672491ebe0989c3054d9fa8f9866c643e0994531",
+    "game/src/ui/wiki_preview.gd": "9434de243df941a3d984647caa6792a9ca98a644a1dd1669705e273e305a9675",
+    "game/src/ui/main_menu.gd": "32ef5f9c8e3986409834f4cb5db416d537a53daec6bf1494ec9d4ce4f123407d",
+    "game/src/ui/game_hud.gd": "f90753b84d3763d1bdde663995f3b84bc72ed275795132c4fb638fe5afecd590",
+    "game/src/ei/remake_text.gd": "affa2452b6624d9ed1d7e21fefc449593a6e876308bd52566cb333c41341e5aa",
+    "game/src/game/fx/cloud_reflection_view.gd": "27d9198ae2e4f2afb1a571949041a5d95c49d002a0da10b4586f231539d39d7a",
+    "game/src/game/fx/particle_system.gd": "783a69c33b5a1b9a0eabfb74f6608aed407abbd5a609fe3c2f3e9dae6bc02cbe",
+    "game/src/game/fx/water_reflection.gd": "7d696d29253cf6a15108f7e0fac69a33588e314a105be4b9d80bb260139adaf1"
+  },
+  "tested_build": {
+    "name": "wiki-puddles-belt-sync",
+    "pack_sha256": "4c3f4b3e66d75e1c1383f7c2836c65e423528820dd4515b1be731ea7c2ddcd2a",
+    "engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+    "native_sha256": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+  },
+  "integration": {
+    "wiki_source_commit": "bd2f2f3197805f810b52abb16d2b7aeaee85835d",
+    "preview3_commit": "f80c23e2caaf48413fe6a9a518601685ef2524d8",
+    "cloud_reflection_and_particle_sources_unchanged": [
+      "game/src/game/fx/cloud_reflection_view.gd",
+      "game/src/game/fx/particle_system.gd",
+      "game/src/game/fx/water_reflection.gd"
+    ]
+  },
+  "hardware": "Linux Ubuntu 24.04; NVIDIA RTX 3090 Ti; Forward+ Vulkan and OpenGL Compatibility",
+  "tests": {
+    "wiki_release_vulkan": {
+      "passed": true,
+      "checks": 8245,
+      "failures": 0,
+      "result": {
+        "campaign": "cursed_lands",
+        "checks": 8245,
+        "counts": {
+          "Creatures": 389,
+          "Game mechanics": 6,
+          "Items": 424,
+          "Materials": 33,
+          "Runes": 38,
+          "Spells": 111
+        },
+        "failures": [],
+        "language": "en",
+        "rendered": true,
+        "seconds": 15.387
+      },
+      "fixture_sha256": "5885e5675508fdd7b6604b801363255bec7a5aab268da3a1e500a07f81bd0ff7",
+      "log_sha256": "4ed03fec0d20ac1e091759e48191f79ae0c909b4a61bc1524344e6aa0c00b402",
+      "seconds": 22.043,
+      "build": "wiki-puddles-belt-sync",
+      "pack_sha256": "4c3f4b3e66d75e1c1383f7c2836c65e423528820dd4515b1be731ea7c2ddcd2a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles-belt-sync/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/wiki.gd",
+        "--no-local-worker"
+      ],
+      "errors": []
+    },
+    "wiki_en_gl": {
+      "passed": true,
+      "checks": 8245,
+      "failures": 0,
+      "result": {
+        "campaign": "cursed_lands",
+        "checks": 8245,
+        "counts": {
+          "Creatures": 389,
+          "Game mechanics": 6,
+          "Items": 424,
+          "Materials": 33,
+          "Runes": 38,
+          "Spells": 111
+        },
+        "failures": [],
+        "language": "en",
+        "rendered": true,
+        "seconds": 24.358
+      },
+      "fixture_sha256": "5885e5675508fdd7b6604b801363255bec7a5aab268da3a1e500a07f81bd0ff7",
+      "log_sha256": "513a59c48621b0cc87e0672c91166ac9f72d8598af26d00b96789ce580daeda5",
+      "seconds": 28.048,
+      "build": "wiki-puddles",
+      "pack_sha256": "1e0f00148c3ef1f457c47059e7d71a0a9ed1e1a1eb9fddef120f2f77d7272c94",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles/CursedLands.x86_64",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "0",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/wiki.gd",
+        "--no-local-worker"
+      ],
+      "errors": [],
+      "scope": "Earlier combined pack; all encyclopedia, menu and localization source files match this release exactly. Final release pack also passed full Vulkan wiki checks."
+    },
+    "wiki_ru_gl": {
+      "passed": true,
+      "checks": 8230,
+      "failures": 0,
+      "result": {
+        "campaign": "cursed_lands",
+        "checks": 8230,
+        "counts": {
+          "Creatures": 389,
+          "Game mechanics": 6,
+          "Items": 424,
+          "Materials": 33,
+          "Runes": 38,
+          "Spells": 111
+        },
+        "failures": [],
+        "language": "ru",
+        "rendered": true,
+        "seconds": 23.769
+      },
+      "fixture_sha256": "5885e5675508fdd7b6604b801363255bec7a5aab268da3a1e500a07f81bd0ff7",
+      "log_sha256": "8489945fb3b7bd8378b1cbf87b2ca5d7b58dc5fcf7e5838a1fa9a5fb4f51ad4e",
+      "seconds": 28.057,
+      "build": "wiki-puddles",
+      "pack_sha256": "1e0f00148c3ef1f457c47059e7d71a0a9ed1e1a1eb9fddef120f2f77d7272c94",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles/CursedLands.x86_64",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "0",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/data/ru",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/wiki.gd",
+        "--no-local-worker"
+      ],
+      "errors": [],
+      "scope": "Earlier combined pack; all encyclopedia, menu and localization source files match this release exactly. Final release pack also passed full Vulkan wiki checks."
+    },
+    "wiki_de_gl": {
+      "passed": true,
+      "checks": 8269,
+      "failures": 0,
+      "result": {
+        "campaign": "cursed_lands",
+        "checks": 8269,
+        "counts": {
+          "Creatures": 389,
+          "Game mechanics": 6,
+          "Items": 424,
+          "Materials": 33,
+          "Runes": 38,
+          "Spells": 111
+        },
+        "failures": [],
+        "language": "de",
+        "rendered": true,
+        "seconds": 23.93
+      },
+      "fixture_sha256": "5885e5675508fdd7b6604b801363255bec7a5aab268da3a1e500a07f81bd0ff7",
+      "log_sha256": "1765a3f1c36808f73585df19fd5b0f842519721d61c5863acfbecc190cc526d9",
+      "seconds": 28.045,
+      "build": "wiki-puddles",
+      "pack_sha256": "1e0f00148c3ef1f457c47059e7d71a0a9ed1e1a1eb9fddef120f2f77d7272c94",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles/CursedLands.x86_64",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "0",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/wiki.gd",
+        "--no-local-worker"
+      ],
+      "errors": [],
+      "scope": "Earlier combined pack; all encyclopedia, menu and localization source files match this release exactly. Final release pack also passed full Vulkan wiki checks."
+    },
+    "wiki_expansion": {
+      "passed": true,
+      "checks": 36836,
+      "failures": 0,
+      "result": {
+        "campaign": "lost_in_astral",
+        "checks": 36836,
+        "counts": {
+          "Creatures": 716,
+          "Game mechanics": 6,
+          "Items": 483,
+          "Materials": 40,
+          "Runes": 40,
+          "Spells": 93
+        },
+        "failures": [],
+        "language": "ru",
+        "rendered": false,
+        "seconds": 9.572
+      },
+      "fixture_sha256": "5885e5675508fdd7b6604b801363255bec7a5aab268da3a1e500a07f81bd0ff7",
+      "log_sha256": "c551309fd562e996abf1c200856ed1f7c746e47ed2d45de74deea0a44bff1542",
+      "seconds": 11.783,
+      "build": "wiki-puddles",
+      "pack_sha256": "1e0f00148c3ef1f457c47059e7d71a0a9ed1e1a1eb9fddef120f2f77d7272c94",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/wiki.gd",
+        "--no-local-worker"
+      ],
+      "errors": [],
+      "scope": "Earlier combined pack; all encyclopedia, menu and localization source files match this release exactly. Final release pack also passed full Vulkan wiki checks."
+    },
+    "puddles_hd": {
+      "passed": true,
+      "checks": 12,
+      "failures": 0,
+      "result": {
+        "after_rain_equal": true,
+        "checks": 12,
+        "detail": 1,
+        "drying": {
+          "peak": 29,
+          "pixels_over_12": 3795,
+          "pixels_over_2": 317905
+        },
+        "failures": 0,
+        "low_visible": {
+          "peak": 90,
+          "pixels_over_12": 3894,
+          "pixels_over_2": 5924
+        },
+        "map": "zone1",
+        "site": "(72.0, 56.0)",
+        "visible": {
+          "peak": 53,
+          "pixels_over_12": 5516,
+          "pixels_over_2": 9543
+        }
+      },
+      "fixture_sha256": "a7bb661543468863647bbd701ec34b0365ae7f2e8c95850b64b1996a4833e101",
+      "log_sha256": "ec8e5a1e15f779b5784b31c62f1ed627e09a7dbdd80dd44837da63325de72e76",
+      "seconds": 16.05,
+      "build": "wiki-puddles-belt-sync",
+      "pack_sha256": "4c3f4b3e66d75e1c1383f7c2836c65e423528820dd4515b1be731ea7c2ddcd2a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles-belt-sync/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/rain_puddles.gd",
+        "--map=zone1",
+        "--terrain-detail=1"
+      ],
+      "errors": []
+    },
+    "puddles_original": {
+      "passed": true,
+      "checks": 12,
+      "failures": 0,
+      "result": {
+        "after_rain_equal": true,
+        "checks": 12,
+        "detail": 0,
+        "drying": {
+          "peak": 38,
+          "pixels_over_12": 3925,
+          "pixels_over_2": 324955
+        },
+        "failures": 0,
+        "low_visible": {
+          "peak": 78,
+          "pixels_over_12": 4162,
+          "pixels_over_2": 7182
+        },
+        "map": "zone1",
+        "site": "(72.0, 56.0)",
+        "visible": {
+          "peak": 58,
+          "pixels_over_12": 5745,
+          "pixels_over_2": 9816
+        }
+      },
+      "fixture_sha256": "a7bb661543468863647bbd701ec34b0365ae7f2e8c95850b64b1996a4833e101",
+      "log_sha256": "1825de29978ae289276fc0da4a40c488ebf36805a0edc98fd0ef70c1429d3ff1",
+      "seconds": 11.041,
+      "build": "wiki-puddles-belt-sync",
+      "pack_sha256": "4c3f4b3e66d75e1c1383f7c2836c65e423528820dd4515b1be731ea7c2ddcd2a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles-belt-sync/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/rain_puddles.gd",
+        "--map=zone1",
+        "--terrain-detail=0"
+      ],
+      "errors": []
+    },
+    "puddles_detailed": {
+      "passed": true,
+      "checks": 12,
+      "failures": 0,
+      "result": {
+        "after_rain_equal": true,
+        "checks": 12,
+        "detail": 1,
+        "drying": {
+          "peak": 37,
+          "pixels_over_12": 3673,
+          "pixels_over_2": 319351
+        },
+        "failures": 0,
+        "low_visible": {
+          "peak": 106,
+          "pixels_over_12": 3898,
+          "pixels_over_2": 6068
+        },
+        "map": "zone1",
+        "site": "(72.0, 56.0)",
+        "visible": {
+          "peak": 58,
+          "pixels_over_12": 5308,
+          "pixels_over_2": 9287
+        }
+      },
+      "fixture_sha256": "a7bb661543468863647bbd701ec34b0365ae7f2e8c95850b64b1996a4833e101",
+      "log_sha256": "0a0160641a776b666faf35124346d07c82a8ec6a5ab9ad1e512b71c4a337027c",
+      "seconds": 12.037,
+      "build": "wiki-puddles-belt-sync",
+      "pack_sha256": "4c3f4b3e66d75e1c1383f7c2836c65e423528820dd4515b1be731ea7c2ddcd2a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles-belt-sync/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/rain_puddles.gd",
+        "--map=zone1",
+        "--terrain-detail=1"
+      ],
+      "errors": []
+    },
+    "puddles_gl": {
+      "passed": true,
+      "checks": 12,
+      "failures": 0,
+      "result": {
+        "after_rain_equal": true,
+        "checks": 12,
+        "detail": 0,
+        "drying": {
+          "peak": 36,
+          "pixels_over_12": 4273,
+          "pixels_over_2": 353546
+        },
+        "failures": 0,
+        "low_visible": {
+          "peak": 83,
+          "pixels_over_12": 3892,
+          "pixels_over_2": 6902
+        },
+        "map": "zone1",
+        "site": "(72.0, 56.0)",
+        "visible": {
+          "peak": 63,
+          "pixels_over_12": 5626,
+          "pixels_over_2": 9566
+        }
+      },
+      "fixture_sha256": "a7bb661543468863647bbd701ec34b0365ae7f2e8c95850b64b1996a4833e101",
+      "log_sha256": "68961b8b7efa99a51df0aae0cf0832df6b47b78639cbb2ca272ef23b52f33b2e",
+      "seconds": 11.045,
+      "build": "wiki-puddles-belt-sync",
+      "pack_sha256": "4c3f4b3e66d75e1c1383f7c2836c65e423528820dd4515b1be731ea7c2ddcd2a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles-belt-sync/CursedLands.x86_64",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "0",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/rain_puddles.gd",
+        "--map=zone1",
+        "--terrain-detail=0"
+      ],
+      "errors": []
+    },
+    "ground_contact": {
+      "passed": true,
+      "checks": 45,
+      "failures": 0,
+      "result": {
+        "checks": 45,
+        "failures": 0,
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "case": "basic",
+            "lower": {
+              "changed": 5083,
+              "mean": 0.239871358847315,
+              "peak": 0.419607847929001
+            },
+            "upper": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0.0
+            }
+          }
+        ]
+      },
+      "fixture_sha256": "59468e5746459735ac0c4ffaed73463d296f475ed1e870d52faacc80bbb8c41c",
+      "log_sha256": "ab0c9687093b0c694bb263856dd8eeaa3c4dbeaabaff4169fd9364ba214e4bfc",
+      "seconds": 11.064,
+      "build": "wiki-puddles-belt-sync",
+      "pack_sha256": "4c3f4b3e66d75e1c1383f7c2836c65e423528820dd4515b1be731ea7c2ddcd2a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles-belt-sync/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/ground_contact.gd"
+      ],
+      "errors": []
+    },
+    "ground_contact_gl": {
+      "passed": true,
+      "checks": 47,
+      "failures": 0,
+      "result": {
+        "checks": 47,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "case": "basic",
+            "lower": {
+              "changed": 5112,
+              "mean": 0.245912960765171,
+              "peak": 0.439215688034892
+            },
+            "upper": {
+              "changed": 0,
+              "mean": 0.0,
+              "peak": 0.0
+            }
+          }
+        ]
+      },
+      "fixture_sha256": "59468e5746459735ac0c4ffaed73463d296f475ed1e870d52faacc80bbb8c41c",
+      "log_sha256": "b17ca9e1fb8434805e7232bd05b5648f7ef62d01c8b9826a54aee0950cf4a7d1",
+      "seconds": 22.038,
+      "build": "wiki-puddles-belt-sync",
+      "pack_sha256": "4c3f4b3e66d75e1c1383f7c2836c65e423528820dd4515b1be731ea7c2ddcd2a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles-belt-sync/CursedLands.x86_64",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "0",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/ground_contact.gd"
+      ],
+      "errors": []
+    },
+    "water_reflection": {
+      "passed": true,
+      "checks": 34,
+      "failures": 0,
+      "result": {
+        "checks": 34,
+        "failures": [],
+        "hd": false,
+        "map": "gz11k",
+        "rows": [
+          {
+            "case": "fog-day-0",
+            "control": {
+              "changed": 1495,
+              "mean_error": 0.136196254393527,
+              "samples": 4560
+            },
+            "fixed": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 4560
+            },
+            "main_view": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 22400
+            }
+          },
+          {
+            "case": "fog-day-1",
+            "control": {
+              "changed": 956,
+              "mean_error": 0.07909846698701,
+              "samples": 5714
+            },
+            "fixed": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 5714
+            },
+            "main_view": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 22400
+            }
+          },
+          {
+            "case": "fog-night-0",
+            "control": {
+              "changed": 3089,
+              "mean_error": 0.227659964275224,
+              "samples": 4560
+            },
+            "fixed": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 4560
+            },
+            "main_view": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 22400
+            }
+          },
+          {
+            "case": "fog-night-1",
+            "control": {
+              "changed": 2457,
+              "mean_error": 0.133710805925687,
+              "samples": 5714
+            },
+            "fixed": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 5714
+            },
+            "main_view": {
+              "changed": 0,
+              "mean_error": 0.0,
+              "samples": 22400
+            }
+          },
+          {
+            "bad_frames": 0,
+            "case": "motion",
+            "first_submissions": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "transitions": 24,
+            "variant": "fixed",
+            "worst_changed_pixels": 0
+          },
+          {
+            "bad_frames": 23,
+            "case": "motion",
+            "first_submissions": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "transitions": 24,
+            "variant": "control",
+            "worst_changed_pixels": 10394
+          }
+        ]
+      },
+      "fixture_sha256": "bdf953916b26afb96afef584e24b92123f23e1a2b8a22df6acee6d2b2b4c9df7",
+      "log_sha256": "a506adfd0ef9a3dcc5cd4d4fde2113d7e75f7435b73591f387d40b486f7eef5c",
+      "seconds": 57.05,
+      "build": "wiki-puddles-belt-sync",
+      "pack_sha256": "4c3f4b3e66d75e1c1383f7c2836c65e423528820dd4515b1be731ea7c2ddcd2a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles-belt-sync/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "800x600",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/water_reflection_regressions.gd"
+      ],
+      "errors": []
+    },
+    "belt_original": {
+      "passed": true,
+      "checks": 72,
+      "failures": 0,
+      "result": {
+        "campaign": "cursed_lands",
+        "checks": 72,
+        "failures": 0,
+        "measurements": [
+          {
+            "actual": 60.0,
+            "case": "host before",
+            "display": "60/276",
+            "expected": 60.0
+          },
+          {
+            "actual": 68.0,
+            "case": "host one wand",
+            "display": "68/276",
+            "expected": 68.0
+          },
+          {
+            "actual": 76.0,
+            "case": "host two wands",
+            "display": "76/276",
+            "expected": 76.0
+          },
+          {
+            "actual": 68.0,
+            "case": "host after removal",
+            "display": "68/276",
+            "expected": 68.0
+          },
+          {
+            "actual": 60.0,
+            "case": "host empty belt",
+            "display": "60/276",
+            "expected": 60.0
+          },
+          {
+            "actual": 60.0,
+            "case": "host pre-equipped removal",
+            "display": "60/276",
+            "expected": 60.0
+          },
+          {
+            "actual": 60.0,
+            "case": "guest before",
+            "display": "60/276",
+            "expected": 60.0
+          },
+          {
+            "actual": 68.0,
+            "case": "guest one wand",
+            "display": "68/276",
+            "expected": 68.0
+          },
+          {
+            "actual": 76.0,
+            "case": "guest two wands",
+            "display": "76/276",
+            "expected": 76.0
+          },
+          {
+            "actual": 68.0,
+            "case": "guest after removal",
+            "display": "68/276",
+            "expected": 68.0
+          },
+          {
+            "actual": 60.0,
+            "case": "guest empty belt",
+            "display": "60/276",
+            "expected": 60.0
+          },
+          {
+            "actual": 60.0,
+            "case": "guest pre-equipped removal",
+            "display": "60/276",
+            "expected": 60.0
+          },
+          {
+            "actual": 60.0,
+            "case": "host before",
+            "display": "60/276",
+            "expected": 60.0
+          },
+          {
+            "actual": 68.0,
+            "case": "host one wand",
+            "display": "68/276",
+            "expected": 68.0
+          },
+          {
+            "actual": 76.0,
+            "case": "host two wands",
+            "display": "76/276",
+            "expected": 76.0
+          },
+          {
+            "actual": 68.0,
+            "case": "host after removal",
+            "display": "68/276",
+            "expected": 68.0
+          },
+          {
+            "actual": 60.0,
+            "case": "host empty belt",
+            "display": "60/276",
+            "expected": 60.0
+          },
+          {
+            "actual": 60.0,
+            "case": "host pre-equipped removal",
+            "display": "60/276",
+            "expected": 60.0
+          }
+        ]
+      },
+      "fixture_sha256": "93ea3606299461b8961b491c84c84a82292a5a9d58ec8e6b29cf4b8fcb723326",
+      "log_sha256": "f1c60ab4a1c2aaa3b775535d8f8193410d9dff8f4507f1f6741337d1e43d7d89",
+      "seconds": 9.931,
+      "build": "wiki-puddles-belt-sync",
+      "pack_sha256": "4c3f4b3e66d75e1c1383f7c2836c65e423528820dd4515b1be731ea7c2ddcd2a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles-belt-sync/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/belt_weight.gd",
+        "--no-local-worker"
+      ],
+      "errors": []
+    },
+    "belt_expansion": {
+      "passed": true,
+      "checks": 72,
+      "failures": 0,
+      "result": {
+        "campaign": "lost_in_astral",
+        "checks": 72,
+        "failures": 0,
+        "measurements": [
+          {
+            "actual": 35.0,
+            "case": "host before",
+            "display": "35/300",
+            "expected": 35.0
+          },
+          {
+            "actual": 43.0,
+            "case": "host one wand",
+            "display": "43/300",
+            "expected": 43.0
+          },
+          {
+            "actual": 51.0,
+            "case": "host two wands",
+            "display": "51/300",
+            "expected": 51.0
+          },
+          {
+            "actual": 43.0,
+            "case": "host after removal",
+            "display": "43/300",
+            "expected": 43.0
+          },
+          {
+            "actual": 35.0,
+            "case": "host empty belt",
+            "display": "35/300",
+            "expected": 35.0
+          },
+          {
+            "actual": 35.0,
+            "case": "host pre-equipped removal",
+            "display": "35/300",
+            "expected": 35.0
+          },
+          {
+            "actual": 35.0,
+            "case": "guest before",
+            "display": "35/300",
+            "expected": 35.0
+          },
+          {
+            "actual": 43.0,
+            "case": "guest one wand",
+            "display": "43/300",
+            "expected": 43.0
+          },
+          {
+            "actual": 51.0,
+            "case": "guest two wands",
+            "display": "51/300",
+            "expected": 51.0
+          },
+          {
+            "actual": 43.0,
+            "case": "guest after removal",
+            "display": "43/300",
+            "expected": 43.0
+          },
+          {
+            "actual": 35.0,
+            "case": "guest empty belt",
+            "display": "35/300",
+            "expected": 35.0
+          },
+          {
+            "actual": 35.0,
+            "case": "guest pre-equipped removal",
+            "display": "35/300",
+            "expected": 35.0
+          },
+          {
+            "actual": 35.0,
+            "case": "host before",
+            "display": "35/300",
+            "expected": 35.0
+          },
+          {
+            "actual": 43.0,
+            "case": "host one wand",
+            "display": "43/300",
+            "expected": 43.0
+          },
+          {
+            "actual": 51.0,
+            "case": "host two wands",
+            "display": "51/300",
+            "expected": 51.0
+          },
+          {
+            "actual": 43.0,
+            "case": "host after removal",
+            "display": "43/300",
+            "expected": 43.0
+          },
+          {
+            "actual": 35.0,
+            "case": "host empty belt",
+            "display": "35/300",
+            "expected": 35.0
+          },
+          {
+            "actual": 35.0,
+            "case": "host pre-equipped removal",
+            "display": "35/300",
+            "expected": 35.0
+          }
+        ]
+      },
+      "fixture_sha256": "93ea3606299461b8961b491c84c84a82292a5a9d58ec8e6b29cf4b8fcb723326",
+      "log_sha256": "7b0b4e4798ec307ba0e050d4465a8a843e4fa0063d8945085099d88fce44b9b2",
+      "seconds": 14.94,
+      "build": "wiki-puddles-belt-sync",
+      "pack_sha256": "4c3f4b3e66d75e1c1383f7c2836c65e423528820dd4515b1be731ea7c2ddcd2a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles-belt-sync/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/belt_weight.gd",
+        "--no-local-worker"
+      ],
+      "errors": []
+    },
+    "training_latency": {
+      "passed": true,
+      "checks": 23,
+      "failures": 0,
+      "result": {
+        "checks": 23,
+        "cold_perk_menu_us": 5703,
+        "failures": 0,
+        "fps": 10.0,
+        "guest_perk": {
+          "authority_us": 8534,
+          "feedback_us": 68803
+        },
+        "guest_refund": {
+          "authority_us": 8876,
+          "feedback_us": 62860
+        },
+        "guest_skill": [
+          {
+            "authority_us": 7343,
+            "feedback_us": 70197
+          },
+          {
+            "authority_us": 9801,
+            "feedback_us": 69211
+          },
+          {
+            "authority_us": 8249,
+            "feedback_us": 68835
+          }
+        ],
+        "host_skill_us": 906,
+        "inventory_refresh_us": {
+          "20": 39.15,
+          "200": 39.0,
+          "500": 34.55
+        },
+        "paused_feedback_us": 65076,
+        "rendered": false,
+        "repeat_perk_menu_us": 88.1
+      },
+      "fixture_sha256": "1fedea544afbeca9719504915c55b1e455780f13bf363a905465ef90770f3873",
+      "log_sha256": "03661d41273c711d868a5bf714a105173ee81e86dde2beca4d8cc668eb2fbb88",
+      "seconds": 6.926,
+      "build": "wiki-puddles-belt-sync",
+      "pack_sha256": "4c3f4b3e66d75e1c1383f7c2836c65e423528820dd4515b1be731ea7c2ddcd2a",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/builds/wiki-puddles-belt-sync/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/repo/tools/tests/training_latency.gd",
+        "--no-local-worker"
+      ],
+      "errors": []
+    },
+    "translations": {
+      "passed": true,
+      "entries": 1338,
+      "dynamic_wiki_keys": 46,
+      "errors": 0,
+      "output": "Translations: 1338 entries; 46 dynamic wiki keys; 0 errors"
+    }
+  },
+  "negative_control": {
+    "build": "wiki-puddles",
+    "checks": 60,
+    "failures": 23,
+    "fixture_sha256": "0f3cd46e46b0c266682c3621b39b4eed42f7204dfaa09f805de4509d88c99157",
+    "log_sha256": "396622fed29cd16b996505110230bc2c34dbe21b616b1add6f7dd8a98f0a50d0",
+    "scope": "Pre-fix build keeps load at 60 while one/two equipped wands should show 68/76 and fails paused guest delivery. The final regression fixture additionally checks removing a pre-equipped wand."
+  },
+  "puddle_cost": {
+    "rows": [
+      {
+        "gpu_mean_ms": 2.75444165070852,
+        "gpu_median_ms": 2.75,
+        "gpu_p95_ms": 2.78399991989136,
+        "mask": "irregular_mask",
+        "samples": 120
+      },
+      {
+        "gpu_mean_ms": 2.71939999262492,
+        "gpu_median_ms": 2.70799994468689,
+        "gpu_p95_ms": 2.75099992752075,
+        "mask": "previous_mask",
+        "samples": 120
+      },
+      {
+        "gpu_mean_ms": 2.72910833756129,
+        "gpu_median_ms": 2.73000001907349,
+        "gpu_p95_ms": 2.76300001144409,
+        "mask": "previous_mask",
+        "samples": 120
+      },
+      {
+        "gpu_mean_ms": 2.78267499407132,
+        "gpu_median_ms": 2.78099989891052,
+        "gpu_p95_ms": 2.81699991226196,
+        "mask": "irregular_mask",
+        "samples": 120
+      }
+    ],
+    "scope": "Static original terrain, HD texture pack, flat wet site; mask-only ablation. Not total-game FPS.",
+    "size": "(3840, 2160)",
+    "fixture_sha256": "22084d0d0190e67a1b741ab6431c9af626505c4ddb463790ee587c39ae68def2",
+    "log_sha256": "48410e57158f2019e328a8ea5a83ce5c10754b6cbd776f9f93d16fd9b0d3b3fe"
+  },
+  "visual_review": {
+    "puddles": [
+      "release-puddles-hd: overhead and shallow view",
+      "final-puddles-gl: overhead"
+    ],
+    "wiki": [
+      "release-wiki-vulkan: English item page",
+      "next-wiki-ru: Russian item page",
+      "next-wiki-de: German item page"
+    ],
+    "scope": "Actual rendered captures; the mask changes size and spacing. No painted or generated screenshot is used."
+  },
+  "limits": [
+    "Rendering and runtime checks ran on Linux; no Windows/D3D12 or RTX 4090 laptop runtime measurement.",
+    "The puddle timing is a 4K static terrain mask comparison, not a full gameplay frame-rate measurement. Cloud/traversal measurements remain in the immutable preview.3 record; no new general FPS claim is made.",
+    "Browser release checks cover setup and service-worker upgrade; a complete browser campaign was not run.",
+    "The encyclopedia describes database prototypes; scripts, difficulty, co-op scaling and buffs can change individual creatures."
+  ]
+}

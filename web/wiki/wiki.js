@@ -49,7 +49,7 @@ function search() {
   const words = $('#search').value.trim().toLocaleLowerCase(lang).split(/\s+/).filter(Boolean);
   const category = $('#category').value;
   const found = catalog.entries.filter(row => {
-    const text = (row.title + ' ' + catalog.categories[row.category]).toLocaleLowerCase(lang);
+    const text = (row.title + ' ' + (row.search || '') + ' ' + catalog.categories[row.category]).toLocaleLowerCase(lang);
     return (category === 'All pages' || row.category === category) && words.every(word => text.includes(word));
   });
   const count = Math.max(1, Math.ceil(found.length / PAGE_SIZE));

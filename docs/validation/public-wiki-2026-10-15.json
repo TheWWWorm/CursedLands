@@ -1,0 +1,121 @@
+{
+  "version": "1.6.0",
+  "source": "GOG Evil Islands, localized EN/RU/DE archives",
+  "source_archive_sha256": {
+    "en": {
+      "database.res": "50e5899fd7d467e11ea152122148f6911319cf339bf7717f1e205d38c63b13b0",
+      "texts.res": "7480721148bf443901bad59ea184606d7a09c97d565040560778ea4663cd5c41",
+      "textslmp.res": "f319bed351c528a1ec77bbfb6266e76c30d456df260dd62578bf03e4cb774c6d",
+      "figures.res": "200d8b7968813bf154b4e5b6d84fd3ce362f7aae5c743ae2b5e0cc4023045c15",
+      "textures.res": "79548fbd94e797fe9edc3e990eb0231a350571b2cef575b009fa972f0002268c",
+      "redress.res": "4a674a71784d7d6c21ed1099ac16a6a80dc881630c6e1395861d7310955784ac"
+    },
+    "ru": {
+      "database.res": "2c1d19ddcd023b5e28c06531cec45400541ff3ce9961d33a63efc1863b210d3a",
+      "texts.res": "96d8e49a3472f93d92ec8b4ad4286fa7662d78fc4577fe2335832542014b3a5a",
+      "textslmp.res": "131ef49858bcaf8259ddfb64293462354630791d84438381bb1219b3a1c6461e",
+      "figures.res": "200d8b7968813bf154b4e5b6d84fd3ce362f7aae5c743ae2b5e0cc4023045c15",
+      "textures.res": "79548fbd94e797fe9edc3e990eb0231a350571b2cef575b009fa972f0002268c",
+      "redress.res": "4a674a71784d7d6c21ed1099ac16a6a80dc881630c6e1395861d7310955784ac"
+    },
+    "de": {
+      "database.res": "50e5899fd7d467e11ea152122148f6911319cf339bf7717f1e205d38c63b13b0",
+      "texts.res": "8b5560283fcdf2b63c706e370ca5f2bef99f333d4908be3497f1da7cc9ef2e6b",
+      "textslmp.res": "6e98ab05c3e165caef1afa83b8c169cd467ecdcf4207381e736a68305e5b2faf",
+      "figures.res": "200d8b7968813bf154b4e5b6d84fd3ce362f7aae5c743ae2b5e0cc4023045c15",
+      "textures.res": "79548fbd94e797fe9edc3e990eb0231a350571b2cef575b009fa972f0002268c",
+      "redress.res": "4a674a71784d7d6c21ed1099ac16a6a80dc881630c6e1395861d7310955784ac"
+    }
+  },
+  "catalogue": {
+    "version": "1.6.0",
+    "languages": {
+      "en": {
+        "pages": 1071,
+        "versions": 2088,
+        "resolved_links": 8111,
+        "normalized_equipment_links": 116
+      },
+      "ru": {
+        "pages": 1071,
+        "versions": 2088,
+        "resolved_links": 8096,
+        "normalized_equipment_links": 116
+      },
+      "de": {
+        "pages": 1071,
+        "versions": 2088,
+        "resolved_links": 8135,
+        "normalized_equipment_links": 116
+      }
+    },
+    "translation_keys": 26,
+    "requires_game_files": false,
+    "requires_game_engine": false,
+    "requires_account": false,
+    "illustrations": 1992,
+    "bytes": 50543172
+  },
+  "browser": {
+    "version": "1.6.0",
+    "live": false,
+    "checks": [
+      "bare /wiki redirects with language preserved",
+      "wiki security policy served",
+      "fresh wiki works without game data, caches, storage or service worker",
+      "no game engine or importer requested",
+      "all material and blueprint versions available",
+      "material selection changes actual statistics",
+      "selected version has shareable URL",
+      "browser Back restores original version",
+      "en language updates page and interface",
+      "en desktop has no horizontal overflow",
+      "ru language updates page and interface",
+      "ru desktop has no horizontal overflow",
+      "de language updates page and interface",
+      "de desktop has no horizontal overflow",
+      "category list is paginated",
+      "next result page works",
+      "empty search results",
+      "mobile has no horizontal overflow",
+      "unknown deep link displays localized missing-page state"
+    ],
+    "languages": {
+      "en": {
+        "title": "Ancient helmet",
+        "label": "Search the encyclopedia"
+      },
+      "ru": {
+        "title": "\u0414\u0440\u0435\u0432\u043d\u0438\u0439 \u0448\u043b\u0435\u043c",
+        "label": "\u041f\u043e\u0438\u0441\u043a \u043f\u043e \u044d\u043d\u0446\u0438\u043a\u043b\u043e\u043f\u0435\u0434\u0438\u0438"
+      },
+      "de": {
+        "title": "Antiker Helm",
+        "label": "Enzyklop\u00e4die durchsuchen"
+      }
+    },
+    "errors": [],
+    "no_console_errors": true,
+    "network_requests": 31,
+    "no_engine_requests": true
+  },
+  "generator_sha256": {
+    "tools/export_wiki.gd": "7b0292ddb6914acac790ddf7702154dd0236d15c766f27db5b41367d6716be26",
+    "tools/export_wiki_images.gd": "c7433cec5020ab46afa62fbeaa426a672a76c92c01b0a917691d75d79d459af5",
+    "tools/prepare_public_wiki.py": "928f18f2afa0a243a8e07965f9cf591084314be26b2539d081cbad48aced8779",
+    "web/wiki/index.html": "73657ecc3b967126334fa4cee5851076b4dbc0056f9200d69f1dd2124e66e0d7",
+    "web/wiki/wiki.js": "26e8c9283ee1c060e6c6473a57c43101ceae5e670811c545f649198f62a99a95",
+    "web/wiki/wiki.css": "30056d4dbac991211479a983735367de23badd500661d8668ff857b695b60921",
+    "web/wiki/i18n.json": "969744b7c7ffc00dffc7980eb1a2bbbfad2ef9e309c2be101f8308e607e9ab16"
+  },
+  "visual_review": [
+    "English and Russian desktop article, German mobile article; readable text and image framing",
+    "Rendered 1,992 original-model illustrations. 90 database records without a usable visible model retain their statistics without a broken image."
+  ],
+  "scope": [
+    "1071 pages, 2088 precomputed views per language, including authored creature spell variants.",
+    "Standalone static reference; no engine, archive import, account or persistent browser storage.",
+    "Custom rune construction and live 3D rotation are available in the in-game wiki.",
+    "Original archive files, maps, saves, audio and video are excluded."
+  ]
+}
