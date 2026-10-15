@@ -1,5 +1,7 @@
 # Cursed Lands
 
+**[Play](https://cursedlands.wwworm.com/) · [Download](https://github.com/TheWWWorm/CursedLands/releases/latest) · [Wiki](https://cursedlands.wwworm.com/wiki/)**
+
 Play **Evil Islands: Curse of the Lost Soul** («Проклятые земли», Nival, 2000) and **Lost in Astral** («Затерянные в Астрале») on a modern engine on Windows, Linux, macOS and Android or in your browser, with **online co-op** support for the campaigns.
 
 This is a separate game engine, built in Godot, in the spirit of OpenMW and fheroes2: it reads the Evil Islands files you already own (maps, models, textures, animations, sounds, music, texts, scripts and game tables) and plays them with natively written rendering, combat, AI, scripting and interface systems that follow the original game's rules.
@@ -10,7 +12,7 @@ Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the
 
 The current stable release is [**1.6.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.6.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It adds the encyclopedia and public wiki, improves cloud and reflection costs, reduces movement and traversal stalls, varies rain puddles, and fixes belt-item weight updates. See the [release notes](docs/releases/1.6.0.md) and [versioning policy](docs/versioning.md).
 
-Browse the [**public wiki**](https://cursedlands.wwworm.com/wiki/) without game files or an account. It contains GOG edition items, materials, spells, runes, creatures and mechanics in English, Russian and German.
+Browse the [**public wiki**](https://cursedlands.wwworm.com/wiki/) without game files or an account. Separate tabs cover the GOG base game and Lost in Astral: items, materials, spells, runes, creatures and mechanics in English, Russian and German.
 
 ## Screenshots
 

@@ -10,33 +10,32 @@ import xml.etree.ElementTree as ET
 from urllib.parse import unquote, parse_qs, urlencode
 
 
-def prepare(data, images, output):
-    source = Path(__file__).resolve().parents[1] / 'web/wiki'
-    labels = json.loads((source / 'i18n.json').read_text())
-    assert set(labels) == {'en', 'ru', 'de'}
-    assert all(set(v) == set(labels['en']) and all(v.values()) for v in labels.values())
-    output.mkdir(parents=True, exist_ok=True)
-    for file in source.iterdir():
-        shutil.copy2(file, output / file.name)
-    report = {'version': '1.6.0', 'languages': {}, 'translation_keys': len(labels['en']),
-              'requires_game_files': False, 'requires_game_engine': False, 'requires_account': False}
-    used_images = set()
+def read(path):
+    # Original archives can contain non-printing control characters.
+    return json.loads(path.read_text(), strict=False)
+
+
+def prepare_campaign(data, images, target_data, campaign, labels, used_images):
+    expected_source = "GOG" if campaign == "cursed_lands" else "Lost in Astral"
+    languages = {}
     for lang in labels:
-        index = json.loads((data / lang / 'index.json').read_text())
-        assert index['language'] == lang and index['source'] == 'GOG'
+        index = read(data / lang / 'index.json')
+        assert index['language'] == lang and index['source'] == expected_source and index['campaign'] == campaign
         entries = {entry['key']: entry for entry in index['entries']}
         assert len(entries) == len(index['entries']) and len(entries) > 900
         pages = {}
         for key, entry in entries.items():
             assert re.fullmatch(r'[a-f0-9]{20}\.json', entry['file'])
-            page = json.loads((data / lang / 'pages' / entry['file']).read_text())
+            page = read(data / lang / 'pages' / entry['file'])
             assert page['key'] == key and page['versions']
             pages[key] = page
         count = links = normalized = 0
         for key, page in pages.items():
             for version in page['versions']:
                 assert version['title']
-                html = ET.fromstring(version['html'])
+                if lang != 'ru':
+                    assert not re.search('[А-Яа-яЁё]', version['title'] + version['html']), (campaign, lang, key, 'untranslated Russian text')
+                html = ET.fromstring(re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f]', '', version['html']))
                 assert html.tag == 'article' and html.find('h1') is not None
                 assert not re.search(r'\b\w+_\w*Prototyp\w*', ' '.join(html.itertext()), re.I), (lang, key)
                 assert not re.search(r'\b\w+_\w*Prototyp\w*', version['title'], re.I), (lang, key)
@@ -70,29 +69,59 @@ def prepare(data, images, output):
                                     # variants of a fixed, non-craftable item.
                                     base = pages[destination]['versions'][0]['id']
                                     element.text = pages[destination]['versions'][0]['title']
-                                assert base in choices, (key, link)
-                                element.set('href', 'wiki://' + destination + '?' + urlencode({'version': base}))
+                                if base in choices:
+                                    element.set('href', 'wiki://' + destination + '?' + urlencode({'version': base}))
+                                else:
+                                    # Some expansion prototypes retain obsolete
+                                    # equipment combinations (e.g. bronze on a
+                                    # now-leather shirt). Do not invent a
+                                    # craftable material option for that record.
+                                    element.set('href', 'wiki://' + destination)
+                                    element.text = entries[destination]['title']
                                 normalized += 1
                     links += 1
                 version['html'] = ET.tostring(html, encoding='unicode')
                 image = version['image']
                 assert not image or re.fullmatch('[a-f0-9]{24}', image)
                 if image and (images / (image + '.webp')).is_file():
-                    used_images.add(image)
+                    used_images[image] = images / (image + '.webp')
                 else:
                     version['image'] = ''
                 count += 1
-            target = output / 'data' / lang / 'pages' / entries[key]['file']
+            target = target_data / lang / 'pages' / entries[key]['file']
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(json.dumps(page, ensure_ascii=False, separators=(',', ':')) + '\n')
-        (output / 'data' / lang / 'index.json').write_text(json.dumps(index, ensure_ascii=False, separators=(',', ':')) + '\n')
+        (target_data / lang / 'index.json').write_text(json.dumps(index, ensure_ascii=False, separators=(',', ':')) + '\n')
         listed = [entry for entry in entries.values() if entry.get('listed', True)]
-        report['languages'][lang] = {'pages': len(entries), 'listed_pages': len(listed),
+        spell_titles = [entry['title'] for entry in listed if entry['kind'] == 'spell']
+        assert len(spell_titles) == len(set(spell_titles)), (campaign, lang, 'duplicate base spells')
+        assert not set(spell_titles) & {'Spell', 'Заклинание', 'Zauber'}
+        assert not any('{' in unquote(entry['key']) for entry in listed if entry['kind'] == 'spell')
+        languages[lang] = {'pages': len(entries), 'listed_pages': len(listed),
                                     'listed_spells': sum(entry['kind'] == 'spell' for entry in listed),
                                     'versions': count, 'resolved_links': links, 'normalized_equipment_links': normalized}
+    return languages
+
+
+def prepare(data, images, output, astral_data, astral_images):
+    source = Path(__file__).resolve().parents[1] / 'web/wiki'
+    labels = json.loads((source / 'i18n.json').read_text())
+    assert set(labels) == {'en', 'ru', 'de'}
+    assert all(set(v) == set(labels['en']) and all(v.values()) for v in labels.values())
+    output.mkdir(parents=True, exist_ok=True)
+    for file in source.iterdir():
+        shutil.copy2(file, output / file.name)
+    report = {'version': '1.6.0', 'languages': {}, 'translation_keys': len(labels['en']),
+              'requires_game_files': False, 'requires_game_engine': False, 'requires_account': False}
+    used_images = {}
+    report['campaigns'] = {}
+    for campaign, directory, artwork in [('cursed_lands', data, images), ('lost_in_astral', astral_data, astral_images)]:
+        target_data = output / 'data' if campaign == 'cursed_lands' else output / 'data' / campaign
+        report['campaigns'][campaign] = {'languages': prepare_campaign(directory, artwork, target_data, campaign, labels, used_images)}
+    report['languages'] = report['campaigns']['cursed_lands']['languages']
     (output / 'images').mkdir(exist_ok=True)
-    for image in sorted(used_images):
-        shutil.copy2(images / (image + '.webp'), output / 'images' / (image + '.webp'))
+    for image, path in sorted(used_images.items()):
+        shutil.copy2(path, output / 'images' / (image + '.webp'))
     report['illustrations'] = len(used_images)
     report['files'] = {str(p.relative_to(output)): {'bytes': p.stat().st_size, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()}
                        for p in sorted(output.rglob('*')) if p.is_file() and p.name != 'BUILD-INFO.json'}
@@ -107,5 +136,7 @@ if __name__ == '__main__':
     parser.add_argument('--data', type=Path, required=True)
     parser.add_argument('--images', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--astral-data', type=Path, required=True)
+    parser.add_argument('--astral-images', type=Path, required=True)
     args = parser.parse_args()
-    prepare(args.data, args.images, args.output)
+    prepare(args.data, args.images, args.output, args.astral_data, args.astral_images)

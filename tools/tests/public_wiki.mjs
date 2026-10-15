@@ -65,8 +65,9 @@ async function select(selector, value) {
 async function search(value) {
   await evaluate(`(()=>{const e=document.querySelector('#search');e.value=${JSON.stringify(value)};e.dispatchEvent(new Event('input',{bubbles:true}));})()`);
 }
-async function openArticle(key, lang = 'en', version = '') {
+async function openArticle(key, lang = 'en', version = '', campaign = 'cursed_lands') {
   const params = new URLSearchParams({lang,page:key});
+  if (campaign !== 'cursed_lands') params.set('campaign', campaign);
   if (version) params.set('version', version);
   await command('Page.navigate', {url:origin + '/wiki/?' + params}); await ready();
 }
@@ -175,6 +176,65 @@ try {
     await openArticle(row.key);
     await screenshot(name.startsWith('Old') ? 'wiki-harpy' : 'wiki-banshee');
   }
+  // The expansion reuses base-game record IDs. Exercise the visible campaign
+  // switch, deep links, language changes and history with genuinely different
+  // source articles, rather than only checking the tabs' appearance.
+  const names = JSON.parse(await fs.readFile(path.join(repo, 'tools/wiki_spell_names.json'), 'utf8'));
+  const astral = JSON.parse(await fs.readFile(path.join(root, 'wiki/data/lost_in_astral/en/index.json'), 'utf8'));
+  const changedItem = astral.entries.find(row => row.subcategory === 'quest' && row.listed &&
+    index.entries.some(base => base.key === row.key && base.listed && base.title !== row.title));
+  assert(changedItem, 'an authored quest item differs between the two campaigns');
+  const baseItem = index.entries.find(row => row.key === changedItem.key);
+  await openArticle(baseItem.key);
+  check(await evaluate('document.querySelector("#article h1").textContent') === baseItem.title, 'base campaign uses original quest-item name');
+  await evaluate('document.querySelector("[data-campaign=lost_in_astral]").click()'); await ready();
+  check(await evaluate('new URLSearchParams(location.search).get("campaign")') === 'lost_in_astral', 'campaign tab opens shareable expansion URL');
+  check(await evaluate('document.querySelectorAll("#results a").length') === astral.entries.filter(v => v.listed !== false).length, 'expansion has its own complete continuous contents list');
+  await evaluate('history.back()'); await until(() => evaluate('!new URLSearchParams(location.search).has("campaign")'), 'base campaign history'); await ready();
+  check(await evaluate('document.querySelector("#article h1").textContent') === baseItem.title, 'browser Back restores base campaign and article');
+  await openArticle(changedItem.key, 'en', '', 'lost_in_astral');
+  check(await evaluate('document.querySelector("#article h1").textContent') === changedItem.title, 'same quest-item ID uses expansion name in expansion tab');
+  const astralSight = {en:"Dead man's sight",ru:'Зрение мертвеца',de:'Totensicht'};
+  for (const lang of ['en', 'ru', 'de']) {
+    const localized = JSON.parse(await fs.readFile(path.join(root, 'wiki/data/lost_in_astral', lang, 'index.json'), 'utf8'));
+    await openArticle('spell/detect_life', lang);
+    check(await evaluate('document.querySelector("#article h1").textContent') === names.detect_life[lang], lang + ' missing base spell has a localized deep-link name');
+    await select('#category', 'Spells');
+    check(await evaluate('Array.from(document.querySelectorAll("#results a")).every(a=>new URL(a.href).searchParams.get("page") !== "spell/detect_life")'), lang + ' unnamed dormant base prototype does not clutter spell list');
+    await openArticle('spell/detect_life', lang, '', 'lost_in_astral');
+    check(await evaluate('document.querySelector("#article h1").textContent') === astralSight[lang], lang + ' expansion spell uses its authored name');
+    check(await evaluate('document.querySelectorAll("#campaigns a").length === 2 && document.querySelector("#campaigns [aria-current=page]").dataset.campaign === "lost_in_astral"'), lang + ' exactly two campaign tabs with correct active state');
+    await select('#category', 'Spells');
+    check(await evaluate('document.querySelectorAll("#results a").length') === 35, lang + ' expansion lists 35 named base spells');
+    check(await evaluate('Array.from(document.querySelectorAll("#results a")).every(a=>!decodeURIComponent(new URL(a.href).searchParams.get("page")).includes("{") && !["Spell","Заклинание","Zauber"].includes(a.textContent))'), lang + ' expansion spell list has no rune variants or generic names');
+    check(await evaluate('Array.from(document.querySelectorAll("#article a")).every(a=>new URL(a.href).searchParams.get("campaign") === "lost_in_astral")'), lang + ' article links retain the expansion');
+    await screenshot('wiki-astral-spell-' + lang);
+    await evaluate('document.querySelector("#article a").click()'); await ready();
+    check(await evaluate('new URLSearchParams(location.search).get("campaign")') === 'lost_in_astral', lang + ' linked mechanics stay in expansion');
+    await evaluate('history.back()'); await until(() => evaluate('new URLSearchParams(location.search).get("page") === "spell/detect_life"'), 'expansion spell history'); await ready();
+    await select('#language', lang === 'en' ? 'de' : 'en'); await ready();
+    check(await evaluate('new URLSearchParams(location.search).get("campaign") === "lost_in_astral" && new URLSearchParams(location.search).get("page") === "spell/detect_life"'), lang + ' language change preserves campaign and article');
+    await select('#language', lang); await ready();
+    await select('#category', 'Items');
+    const types = [...new Set(localized.entries.filter(v => v.kind === 'item' && v.listed !== false).map(v => v.subcategory))];
+    for (const type of types) {
+      await select('#item-category', type);
+      check(await evaluate('document.querySelectorAll("#results a").length') === localized.entries.filter(v => v.listed && v.subcategory === type).length, lang + ' expansion item filter ' + type);
+    }
+    await command('Emulation.setDeviceMetricsOverride', {width:390,height:844,deviceScaleFactor:1,mobile:true});
+    check(await evaluate('document.documentElement.scrollWidth <= innerWidth'), lang + ' mobile campaign tabs and article fit viewport');
+    await evaluate('document.querySelector("main").scrollIntoView()');
+    await screenshot('wiki-astral-mobile-' + lang);
+    await command('Emulation.setDeviceMetricsOverride', {width:1280,height:800,deviceScaleFactor:1,mobile:false});
+    await evaluate('scrollTo(0,0)');
+  }
+  const dragon = astral.entries.find(v => v.kind === 'creature' && /^Black dragon(?:$| \(variant \d+\))/.test(v.title));
+  assert(dragon);
+  await openArticle(dragon.key, 'en', '', 'lost_in_astral');
+  check(await evaluate('!!document.querySelector("#article img")'), 'expansion creature has its own illustration');
+  await screenshot('wiki-astral-dragon');
+  await evaluate('document.querySelector("[data-campaign=cursed_lands]").click()'); await ready();
+  check(await evaluate('!new URLSearchParams(location.search).has("campaign") && document.querySelector("#campaigns [aria-current=page]").dataset.campaign === "cursed_lands"'), 'base tab restores legacy base-game URL');
   const modifiedSpell = index.entries.find(v => v.kind === 'spell' && v.listed === false);
   await openArticle(modifiedSpell.key);
   check(await evaluate('document.querySelector("#article h1").textContent') === modifiedSpell.title, 'referenced rune-equipped spell remains accessible by deep link');

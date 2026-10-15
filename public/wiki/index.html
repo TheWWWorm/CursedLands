@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#182822">
-  <meta name="description" content="Browse the Cursed Lands encyclopedia: Evil Islands items, materials, spells, runes, creatures and game mechanics, using GOG edition data. No game files required.">
+  <meta name="description" content="Browse the Cursed Lands encyclopedia: Evil Islands and Lost in Astral items, spells, creatures and game mechanics. No game files required.">
   <title>Cursed Lands · Wiki</title>
   <link rel="icon" href="/index.icon.png">
   <link rel="stylesheet" href="/wiki/wiki.css">
@@ -36,6 +36,11 @@
       <nav id="results" aria-label="Search results"></nav>
     </aside>
     <main>
+      <nav id="campaigns" aria-label="Campaign" aria-describedby="campaign-help">
+        <a data-campaign="cursed_lands" data-text="baseGame" href="/wiki/?lang=en&amp;page=home">Base game</a>
+        <a data-campaign="lost_in_astral" data-text="lostInAstral" href="/wiki/?lang=en&amp;page=home&amp;campaign=lost_in_astral">Lost in Astral</a>
+      </nav>
+      <p id="campaign-help" data-text="campaignHelp">Choose the campaign to browse its items, spells and creatures.</p>
       <p class="eyebrow" data-text="edition">EVIL ISLANDS · GOG EDITION</p>
       <div class="source"><span data-text="public">A public reference. No game files or account needed.</span><span id="version">1.6.0</span></div>
       <p id="notice" role="status" data-text="loading">Loading the encyclopedia…</p>

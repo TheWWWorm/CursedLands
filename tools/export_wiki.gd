@@ -10,13 +10,40 @@ var fixed := {}
 func _ready() -> void:
 	var output := ""
 	var plan_path := ""
+	var text_path := ""
+	var language := ""
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--wiki-output="): output = arg.trim_prefix("--wiki-output=")
 		if arg.begins_with("--wiki-image-plan="): plan_path = arg.trim_prefix("--wiki-image-plan=")
+		if arg.begins_with("--wiki-texts="): text_path = arg.trim_prefix("--wiki-texts=")
+		if arg.begins_with("--wiki-language="): language = arg.trim_prefix("--wiki-language=")
 	if output.is_empty():
 		printerr("Missing --wiki-output")
 		get_tree().quit(1)
 		return
+	if text_path:
+		var localized: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(text_path))
+		GameData._text_cache.merge(localized, true)
+	if language:
+		assert(language in ["en", "ru", "de"])
+		RemakeText.lang = language
+	# LiA adds alternate material records without separate text entries.
+	# Use the named parent material and a localized variant label.
+	for code: String in ["troll_green2", "troll_blue2", "tiger_hide2"]:
+		if GameData.text("material " + code).strip_edges().is_empty():
+			var original := GameData.text("material " + code.trim_suffix("2"))
+			if original:
+				var lines := original.split("\n", true, 1)
+				GameData._text_cache["material " + code] = RemakeText.t("%s (variant %d)") % [lines[0], 2] + ("\n" + lines[1] if lines.size() > 1 else "")
+	var unnamed_spells := {}
+	var names_path: String = get_script().resource_path.get_base_dir().path_join("wiki_spell_names.json")
+	var spell_names: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(names_path))
+	for row: Dictionary in GameData.db.table("spell_prototypes"):
+		var code := String(row.code).to_lower()
+		if GameData.text("spell " + code).strip_edges().is_empty():
+			unnamed_spells[code] = true
+			assert(spell_names.has(code), "Missing spell translation: " + code)
+			GameData._text_cache["spell " + code] = spell_names[code][RemakeText.lang]
 	var catalog := WikiCatalog.new()
 	catalog.rules = {"armor_formula": 0}
 	catalog.rebuild()
@@ -88,11 +115,11 @@ func _ready() -> void:
 	# contents and browsing counts cover only finished items and base spells.
 	for key: String in all_keys:
 		var entry: Dictionary = catalog.entries[key]
-		if entry.kind == "spell" and not Spells.mods_of(entry.value).is_empty(): unlisted[key] = true
+		if entry.kind == "spell" and ("{" in String(entry.value) or unnamed_spells.has(String(entry.value).get_slice("{", 0))): unlisted[key] = true
 	catalog.ordered = catalog.ordered.filter(func(key: String): return not unlisted.has(key))
 	var directory := output.path_join(RemakeText.lang)
 	DirAccess.make_dir_recursive_absolute(directory.path_join("pages"))
-	var index := {"language": RemakeText.lang, "version": "1.6.0", "source": "GOG", "entries": [], "categories": {}}
+	var index := {"language": RemakeText.lang, "version": "1.6.0", "campaign": GameData.campaign_id, "source": "Lost in Astral" if GameData.campaign_id == CampaignProfile.ASTRAL else "GOG", "entries": [], "categories": {}}
 	var images := {}
 	var variants := 0
 	for category: String in WikiCatalog.CATEGORIES:
@@ -130,6 +157,7 @@ func _ready() -> void:
 			if not preview.is_empty():
 				var identity := String(preview.kind) + ":" + String(preview.value)
 				if preview.has("layer"): identity += ":" + preview.mask + ":" + preview.layer
+				if GameData.campaign_id == CampaignProfile.ASTRAL: identity = GameData.campaign_id + ":" + identity
 				image = identity.sha256_text().substr(0, 24)
 				images[image] = preview
 			pages.append({"id": choice, "title": title, "html": html, "image": image, "representative_image": preview.get("representative", false)})

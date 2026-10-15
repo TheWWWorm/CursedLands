@@ -1,0 +1,13 @@
+{
+  "detect_life": {"en": "Detect Life", "ru": "Обнаружение жизни", "de": "Leben entdecken"},
+  "lichdom": {"en": "Lichdom", "ru": "Состояние лича", "de": "Lichgestalt"},
+  "stench": {"en": "Stench", "ru": "Зловоние", "de": "Gestank"},
+  "possession": {"en": "Possession", "ru": "Одержимость", "de": "Besessenheit"},
+  "shapechange": {"en": "Shapechange", "ru": "Смена облика", "de": "Gestaltwandel"},
+  "link": {"en": "Link", "ru": "Связь", "de": "Verbindung"},
+  "comprehend": {"en": "Comprehension", "ru": "Понимание", "de": "Verständnis"},
+  "charm": {"en": "Charm", "ru": "Очарование", "de": "Bezauberung"},
+  "campfire": {"en": "Campfire", "ru": "Костёр", "de": "Lagerfeuer"},
+  "rick_magic": {"en": "Destruction", "ru": "Разрушение", "de": "Zerstörung"},
+  "curse_magic": {"en": "Astral Rift", "ru": "Астральный разрыв", "de": "Astralriss"}
+}

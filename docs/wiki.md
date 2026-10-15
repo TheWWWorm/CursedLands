@@ -27,38 +27,73 @@ The [public wiki](https://cursedlands.wwworm.com/wiki/) is a standalone website.
 It needs no game files, game download, account or local storage. Search results
 use one continuous scrolling list. Items can be filtered by armour slot, weapon
 type, quest items, wands, potions, or trophies and valuables. The spell list shows
-42 base spells; rune-equipped combinations remain available through article
-links without duplicating the browsing list. Unnamed database templates are
-also excluded from that list.
+31 named base-game spells or 35 named Lost in Astral spells. Rune-equipped
+combinations and empty-rune duplicates remain available through article links
+without duplicating the browsing list. Unnamed database templates are also
+excluded from that list; retained spell links have translated descriptive names.
 
-The reference retains 1,071 article addresses in each of English, Russian and
-German, with 1,851 precomputed article views. Only craftable items offer material
+Two campaign tabs select separate catalogs. The base game retains 1,071 article
+addresses and 1,851 precomputed views per language; Lost in Astral has 1,529
+addresses and 2,489 views per language. Both cover English, Russian and German. Only craftable items offer material
 and blueprint choices. Fixed story items use their authored name and material;
 NPC costumes without an item name use the localized wearer and garment names.
-Links retain the language, page and selected version and work with browser
+Links retain the campaign, language, page and selected version and work with browser
 Back/Forward, including the position in the result list. Illustrations use the
 original models and available male/female costume textures. Static thumbnails
 are framed around the visible pose with space around its extremities. The
 in-game wiki retains live model rotation and custom rune construction.
 
-The public dataset is generated from GOG Evil Islands databases and localized
-text archives, using this release's gameplay calculations and original armor
-rule. Creature equipment links lead to the base material article; enchantments and
-temporary effects can change its use in play. It is a fixed reference for that edition. The in-game wiki additionally
-uses the currently loaded campaign and active data mods. No original archives,
-maps, saves, video, audio or executable game files are part of the public wiki.
+The base dataset uses the GOG Evil Islands databases and localized text archives.
+The expansion tab uses the original installed Lost in Astral database and Russian
+text. Shared English/German text is reused from GOG only when its Russian source
+agrees; expansion additions use the reviewed translations in
+`tools/wiki_lia_translations.json`. Matching an internal ID alone is unsafe:
+the expansion reuses some IDs for different content. Original Russian text is
+retained. The footer identifies the source and translation treatment for each
+campaign. All statistics use the 1.6.0 calculations and original armor rule.
+
+Creature equipment links lead to available base material articles. Obsolete
+prototype combinations that the expansion's item builder no longer supports
+link to the item family without suggesting a craftable version. Enchantments
+and temporary effects can change equipment in play. The in-game wiki additionally
+uses active data mods. No original archives, maps, saves, video, audio or
+executable game files are part of the public wiki.
 
 To rebuild, invoke `tools/export_wiki.gd` through the game tool runner once for
-each installed language, with `--wiki-output=/private/wiki-data`. For an English
-run add `--wiki-image-plan=/private/wiki-images.json`. Run
+each installed GOG language, with `--wiki-output=/private/wiki-base`. For one
+run add `--wiki-image-plan=/private/wiki-base-images.json`. Run
 `tools/export_wiki_images.gd` with rendering enabled, the same image-plan argument,
-and `--wiki-images=/private/wiki-images` to render illustrations. Use isolated
-XDG directories, as for the tests below. Then package the checked reference data:
+and `--wiki-images=/private/wiki-base-images` to render illustrations. Use isolated
+XDG directories, as for the tests below.
+
+For LiA translations, run `tools/export_wiki_texts.gd` on each GOG language and
+the original Russian expansion, passing `--wiki-text-audit=/private/<edition>.json`.
+These audits contain original source text and are private build inputs; do not
+commit them. Build the localized expansion overlays:
 
 ```sh
-python3 tools/prepare_public_wiki.py --data /private/wiki-data \
-  --images /private/wiki-images --output public/wiki
+python3 tools/prepare_wiki_localization.py \
+  --base-en /private/base-en.json --base-ru /private/base-ru.json \
+  --base-de /private/base-de.json --astral-ru /private/astral-ru.json \
+  --output /private/astral-texts
 ```
+
+With the expansion installed, export Russian normally to
+`--wiki-output=/private/wiki-astral`. Export English and German from that same
+installation using `--wiki-language=en|de` and
+`--wiki-texts=/private/astral-texts/en|de.json`. This changes only the tool
+process's text cache, never the installation. Generate its image plan and images
+with the expansion loaded; image IDs are campaign-specific. Package both catalogs:
+
+```sh
+python3 tools/prepare_public_wiki.py --data /private/wiki-base \
+  --images /private/wiki-base-images --astral-data /private/wiki-astral \
+  --astral-images /private/wiki-astral-images --output /private/wiki-site
+```
+
+Use an empty staging directory for packaging, then copy the verified result to
+`public/wiki`. The translation preparer fails if any required text lacks an
+English or German translation, and does not substitute Russian text silently.
 
 `web/wiki/` owns the website source and EN/RU/DE interface catalogue. The packager
 checks every article, cross-reference, material version and translation key.

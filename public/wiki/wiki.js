@@ -1,5 +1,6 @@
 const $ = selector => document.querySelector(selector);
 const SUPPORTED = ['en', 'ru', 'de'];
+const CAMPAIGNS = ['cursed_lands', 'lost_in_astral'];
 const ITEM_TYPES = {
   weapon_sword: ['weapons', 'swords'], weapon_axe: ['weapons', 'axes'], weapon_dagger: ['weapons', 'daggers'],
   weapon_spear: ['weapons', 'spears'], weapon_hammer: ['weapons', 'hammers'], weapon_bow: ['weapons', 'bows'], weapon_crossbow: ['weapons', 'crossbows'],
@@ -8,17 +9,20 @@ const ITEM_TYPES = {
   quest: ['otherItems', 'questItems'], wand: ['otherItems', 'wands'], potion: ['otherItems', 'potions'], loot: ['otherItems', 'loot'], other: ['otherItems', 'otherItems']
 };
 const ALLOWED = new Set(['ARTICLE', 'H1', 'H2', 'H3', 'P', 'BR', 'TABLE', 'TBODY', 'TR', 'TH', 'TD', 'A', 'STRONG', 'EM']);
-let lang = 'en', strings, catalog, entry, page, generation = 0;
+let lang = 'en', campaign = 'cursed_lands', strings, catalog, entry, page, generation = 0;
 const indexes = new Map(), pages = new Map();
 
 function route() {
   const params = new URLSearchParams(location.search);
   const requested = params.get('lang') || navigator.language.slice(0, 2);
-  return {lang: SUPPORTED.includes(requested) ? requested : 'en', key: params.get('page') || 'home', variant: params.get('version') || ''};
+  return {lang: SUPPORTED.includes(requested) ? requested : 'en',
+    campaign: CAMPAIGNS.includes(params.get('campaign')) ? params.get('campaign') : 'cursed_lands',
+    key: params.get('page') || 'home', variant: params.get('version') || ''};
 }
 
-function href(key, variant = '', language = lang) {
+function href(key, variant = '', language = lang, game = campaign) {
   const params = new URLSearchParams({lang: language, page: key});
+  if (game !== 'cursed_lands') params.set('campaign', game);
   if (variant) params.set('version', variant);
   return '/wiki/?' + params;
 }
@@ -48,6 +52,14 @@ function translate() {
   $('header nav').ariaLabel = strings.navigation;
   $('.brand').ariaLabel = 'Cursed Lands · ' + strings.encyclopedia;
   $('.brand').href = $('#contents').href = href('home');
+  $('#campaigns').ariaLabel = strings.campaign;
+  for (const tab of document.querySelectorAll('[data-campaign]')) {
+    tab.href = href('home', '', lang, tab.dataset.campaign);
+    if (tab.dataset.campaign === campaign) tab.setAttribute('aria-current', 'page');
+    else tab.removeAttribute('aria-current');
+  }
+  $('.eyebrow').textContent = campaign === 'lost_in_astral' ? strings.astralEdition : strings.edition;
+  $('footer p').textContent = campaign === 'lost_in_astral' ? strings.astralSource : strings.source;
 }
 
 function search(resetScroll = false) {
@@ -141,14 +153,15 @@ function showVersion(id) {
 
 async function load() {
   const token = ++generation, target = route();
-  lang = target.lang; strings = translations[lang];
+  lang = target.lang; campaign = target.campaign; strings = translations[lang];
   translate();
   $('#notice').textContent = strings.loading;
   $('#versions').hidden = true;
   $('#spell-note').hidden = true;
   $('#content').replaceChildren();
   try {
-    const index = await json('/wiki/data/' + lang + '/index.json', indexes);
+    const directory = '/wiki/data/' + (campaign === 'lost_in_astral' ? campaign + '/' : '') + lang;
+    const index = await json(directory + '/index.json', indexes);
     if (token !== generation) return;
     const changed = catalog !== index;
     catalog = index;
@@ -164,7 +177,7 @@ async function load() {
       $('#notice').textContent = strings.unavailable;
       return;
     }
-    const loaded = await json('/wiki/data/' + lang + '/pages/' + entry.file, pages);
+    const loaded = await json(directory + '/pages/' + entry.file, pages);
     if (token !== generation) return;
     page = loaded;
     $('#variant').replaceChildren(...page.versions.map(row => new Option(row.title, row.id)));
