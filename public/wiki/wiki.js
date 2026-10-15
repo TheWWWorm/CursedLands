@@ -1,8 +1,14 @@
 const $ = selector => document.querySelector(selector);
-const PAGE_SIZE = 40;
 const SUPPORTED = ['en', 'ru', 'de'];
+const ITEM_TYPES = {
+  weapon_sword: ['weapons', 'swords'], weapon_axe: ['weapons', 'axes'], weapon_dagger: ['weapons', 'daggers'],
+  weapon_spear: ['weapons', 'spears'], weapon_hammer: ['weapons', 'hammers'], weapon_bow: ['weapons', 'bows'], weapon_crossbow: ['weapons', 'crossbows'],
+  armor_helm: ['armour', 'helmets'], armor_plate: ['armour', 'chestArmour'], armor_leggings: ['armour', 'leggings'],
+  armor_shirt: ['armour', 'shirts'], armor_pants: ['armour', 'trousers'], armor_gloves: ['armour', 'gloves'], armor_boots: ['armour', 'boots'],
+  quest: ['otherItems', 'questItems'], wand: ['otherItems', 'wands'], potion: ['otherItems', 'potions'], loot: ['otherItems', 'loot'], other: ['otherItems', 'otherItems']
+};
 const ALLOWED = new Set(['ARTICLE', 'H1', 'H2', 'H3', 'P', 'BR', 'TABLE', 'TBODY', 'TR', 'TH', 'TD', 'A', 'STRONG', 'EM']);
-let lang = 'en', strings, catalog, entry, page, resultsPage = 0, generation = 0;
+let lang = 'en', strings, catalog, entry, page, generation = 0;
 const indexes = new Map(), pages = new Map();
 
 function route() {
@@ -44,27 +50,46 @@ function translate() {
   $('.brand').href = $('#contents').href = href('home');
 }
 
-function search() {
+function search(resetScroll = false) {
   if (!catalog) return;
   const words = $('#search').value.trim().toLocaleLowerCase(lang).split(/\s+/).filter(Boolean);
   const category = $('#category').value;
+  const itemType = $('#item-category').value;
+  $('#item-filters').hidden = category !== 'Items';
   const found = catalog.entries.filter(row => {
-    const text = (row.title + ' ' + (row.search || '') + ' ' + catalog.categories[row.category]).toLocaleLowerCase(lang);
-    return (category === 'All pages' || row.category === category) && words.every(word => text.includes(word));
+    // Keep linked rune combinations available as articles without listing
+    // every equipped variant alongside the base spell. The key check also
+    // supports older indexes during a rolling website deployment.
+    if (row.listed === false || (row.kind === 'spell' && decodeURIComponent(row.key).includes('{'))) return false;
+    const typeLabel = row.subcategory ? strings[ITEM_TYPES[row.subcategory]?.[1] || 'otherItems'] : '';
+    const text = (row.title + ' ' + (row.search || '') + ' ' + catalog.categories[row.category] + ' ' + typeLabel).toLocaleLowerCase(lang);
+    return (category === 'All pages' || row.category === category) &&
+      (category !== 'Items' || !itemType || row.subcategory === itemType) && words.every(word => text.includes(word));
   });
-  const count = Math.max(1, Math.ceil(found.length / PAGE_SIZE));
-  resultsPage = Math.min(resultsPage, count - 1);
   $('#status').textContent = found.length ? strings.matches.replace('{count}', found.length.toLocaleString(lang)) : strings.empty;
-  $('#results').replaceChildren(...found.slice(resultsPage * PAGE_SIZE, (resultsPage + 1) * PAGE_SIZE).map(row => {
+  const scroll = resetScroll ? 0 : $('#results').scrollTop;
+  $('#results').replaceChildren(...found.map(row => {
     const a = document.createElement('a');
     a.href = href(row.key);
     a.textContent = row.title;
     if (entry?.key === row.key) a.setAttribute('aria-current', 'page');
     return a;
   }));
-  $('#page-number').textContent = `${resultsPage + 1} / ${count}`;
-  $('#previous').disabled = resultsPage === 0;
-  $('#next').disabled = resultsPage + 1 >= count;
+  $('#results').scrollTop = scroll;
+}
+
+function itemCategories() {
+  const available = new Set(catalog.entries.filter(row => row.listed !== false).map(row => row.subcategory));
+  const groups = new Map();
+  $('#item-category').replaceChildren(new Option(strings.allItems, ''));
+  for (const [id, [group, label]] of Object.entries(ITEM_TYPES)) {
+    if (!available.has(id)) continue;
+    if (!groups.has(group)) {
+      const el = document.createElement('optgroup'); el.label = strings[group];
+      groups.set(group, el); $('#item-category').append(el);
+    }
+    groups.get(group).append(new Option(strings[label], id));
+  }
 }
 
 // Articles are generated from escaped source text, but only the wiki's small
@@ -96,6 +121,7 @@ function article(html) {
 
 function showVersion(id) {
   const version = page.versions.find(row => row.id === id) || page.versions[0];
+  if (id && id !== version.id) history.replaceState(null, '', href(entry.key, version.id));
   $('#variant').value = version.id;
   const content = article(version.html);
   content.id = 'article'; content.tabIndex = -1;
@@ -104,13 +130,13 @@ function showVersion(id) {
     img.src = '/wiki/images/' + version.image + '.webp';
     img.alt = version.title; img.width = 280; img.height = 280;
     img.decoding = 'async';
-    caption.textContent = strings.image;
+    caption.textContent = version.representative_image ? strings.imageRepresentative : strings.image;
     figure.append(img, caption);
     content.querySelector('h1').after(figure);
   }
   $('#content').replaceChildren(content);
   $('#spell-note').hidden = entry.kind !== 'spell';
-  document.title = entry.title + ' · Cursed Lands';
+  document.title = version.title + ' · Cursed Lands';
 }
 
 async function load() {
@@ -128,11 +154,12 @@ async function load() {
     catalog = index;
     if (changed) {
       $('#category').replaceChildren(...Object.entries(catalog.categories).map(([id, name]) => new Option(name, id)));
-      $('#search').value = ''; resultsPage = 0;
+      itemCategories();
+      $('#search').value = '';
     }
     $('#version').textContent = catalog.version;
     entry = catalog.entries.find(row => row.key === target.key);
-    search();
+    search(changed);
     if (!entry) {
       $('#notice').textContent = strings.unavailable;
       return;
@@ -167,17 +194,16 @@ if (translations) {
     if (a.dataset.category) {
       event.preventDefault();
       $('#category').value = a.dataset.category;
-      $('#search').value = ''; resultsPage = 0; search(); $('#search').focus();
+      $('#search').value = ''; search(true); $('#search').focus();
     } else if (new URL(a.href).pathname === '/wiki/') {
       event.preventDefault(); history.pushState(null, '', a.href); load();
     }
   });
-  $('#search').addEventListener('input', () => {resultsPage = 0; search();});
-  $('#category').addEventListener('change', () => {resultsPage = 0; search();});
+  $('#search').addEventListener('input', () => search(true));
+  $('#category').addEventListener('change', () => search(true));
+  $('#item-category').addEventListener('change', () => search(true));
   $('#language').addEventListener('change', () => navigate(route().key, route().variant, $('#language').value));
   $('#variant').addEventListener('change', () => navigate(entry.key, $('#variant').value));
-  $('#previous').onclick = () => {resultsPage--; search(); $('#results').scrollTop = 0;};
-  $('#next').onclick = () => {resultsPage++; search(); $('#results').scrollTop = 0;};
   window.addEventListener('popstate', load);
   load();
 }

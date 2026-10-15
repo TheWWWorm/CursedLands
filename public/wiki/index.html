@@ -27,9 +27,13 @@
       <input id="search" type="search" autocomplete="off" spellcheck="false">
       <label for="category" data-text="category">Category</label>
       <select id="category"></select>
+      <div id="item-filters" hidden>
+        <label for="item-category" data-text="itemCategory">Item type</label>
+        <select id="item-category" aria-describedby="item-category-help"></select>
+        <p id="item-category-help" data-text="itemCategoryHelp">Filter by armour slot, weapon type or item purpose.</p>
+      </div>
       <p id="status" role="status" aria-live="polite"></p>
       <nav id="results" aria-label="Search results"></nav>
-      <div class="pagination"><button id="previous" type="button" data-text="previous">Previous</button><span id="page-number"></span><button id="next" type="button" data-text="next">Next</button></div>
     </aside>
     <main>
       <p class="eyebrow" data-text="edition">EVIL ISLANDS · GOG EDITION</p>

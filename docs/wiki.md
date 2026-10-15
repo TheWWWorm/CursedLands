@@ -24,12 +24,22 @@ These calculations do not edit the character, inventory, save or network state.
 ## Public website
 
 The [public wiki](https://cursedlands.wwworm.com/wiki/) is a standalone website.
-It needs no game files, game download, account or local storage. Search and
-category filters cover 1,071 reference pages in each of English, Russian and
-German. Material and blueprint choices provide 2,088 precomputed article views.
+It needs no game files, game download, account or local storage. Search results
+use one continuous scrolling list. Items can be filtered by armour slot, weapon
+type, quest items, wands, potions, or trophies and valuables. The spell list shows
+42 base spells; rune-equipped combinations remain available through article
+links without duplicating the browsing list. Unnamed database templates are
+also excluded from that list.
+
+The reference retains 1,071 article addresses in each of English, Russian and
+German, with 1,851 precomputed article views. Only craftable items offer material
+and blueprint choices. Fixed story items use their authored name and material;
+NPC costumes without an item name use the localized wearer and garment names.
 Links retain the language, page and selected version and work with browser
-Back/Forward. Illustrations are rendered from the original models; the in-game
-wiki retains live model rotation and custom rune construction.
+Back/Forward, including the position in the result list. Illustrations use the
+original models and available male/female costume textures. Static thumbnails
+are framed around the visible pose with space around its extremities. The
+in-game wiki retains live model rotation and custom rune construction.
 
 The public dataset is generated from GOG Evil Islands databases and localized
 text archives, using this release's gameplay calculations and original armor

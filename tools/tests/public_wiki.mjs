@@ -62,6 +62,18 @@ async function ready() {
 async function select(selector, value) {
   await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.value=${JSON.stringify(value)};e.dispatchEvent(new Event('change',{bubbles:true}));})()`);
 }
+async function search(value) {
+  await evaluate(`(()=>{const e=document.querySelector('#search');e.value=${JSON.stringify(value)};e.dispatchEvent(new Event('input',{bubbles:true}));})()`);
+}
+async function openArticle(key, lang = 'en', version = '') {
+  const params = new URLSearchParams({lang,page:key});
+  if (version) params.set('version', version);
+  await command('Page.navigate', {url:origin + '/wiki/?' + params}); await ready();
+}
+async function screenshot(name) {
+  const shot = await command('Page.captureScreenshot', {format:'png'});
+  await fs.writeFile(path.join(output, name + '.png'), Buffer.from(shot.data, 'base64'));
+}
 const report = {version:'1.6.0', live:!!args.url, checks:[], languages:{}, errors};
 function check(value, label) {assert(value, label); report.checks.push(label);}
 try {
@@ -90,6 +102,8 @@ try {
   check(true, 'fresh wiki works without game data, caches, storage or service worker');
   check(!requests.some(url => /\.(wasm|pck)(\?|$)|\/(index|storage|files|data-worker)\.js(\?|$)/.test(url)), 'no game engine or importer requested');
   const index = JSON.parse(await fs.readFile(path.join(root, 'wiki/data/en/index.json'), 'utf8'));
+  check(await evaluate('document.querySelectorAll("#results a").length') === index.entries.filter(v => v.listed !== false).length, 'all matching entries appear in one continuous list');
+  check(await evaluate('!document.querySelector(".pagination,#previous,#next,#page-number")'), 'no pagination controls');
   let item;
   for (const row of index.entries.filter(v => v.kind === 'item')) {
     const page = JSON.parse(await fs.readFile(path.join(root, 'wiki/data/en/pages', row.file), 'utf8'));
@@ -113,13 +127,66 @@ try {
     await fs.writeFile(path.join(output, 'wiki-' + lang + '.png'), Buffer.from(shot.data, 'base64'));
     report.languages[lang] = await evaluate('({title:document.querySelector("#article h1").textContent, label:document.querySelector("label[for=search]").textContent})');
     check(await evaluate('document.documentElement.scrollWidth <= innerWidth'), lang + ' desktop has no horizontal overflow');
+    const localized = JSON.parse(await fs.readFile(path.join(root, 'wiki/data', lang, 'index.json'), 'utf8'));
+    await select('#category', 'Items');
+    const types = [...new Set(localized.entries.filter(v => v.kind === 'item' && v.listed !== false).map(v => v.subcategory))];
+    check(await evaluate('document.querySelectorAll("#item-category option").length') === types.length + 1, lang + ' every item subcategory is available');
+    for (const type of types) {
+      await select('#item-category', type);
+      const expected = localized.entries.filter(v => v.kind === 'item' && v.listed !== false && v.subcategory === type).length;
+      check(await evaluate('document.querySelectorAll("#results a").length') === expected, lang + ' item filter ' + type);
+    }
+    check(await evaluate('Array.from(document.querySelectorAll("#item-category option,#item-category optgroup")).every(e=>(e.label||e.textContent).trim() && !/undefined/.test(e.label||e.textContent))'), lang + ' dynamic subcategory labels are translated');
+    await select('#item-category', 'armor_plate');
+    await screenshot('wiki-filters-' + lang);
+    await select('#category', 'Spells');
+    check(await evaluate('document.querySelector("#item-filters").hidden'), lang + ' item filters stay within Items');
+    const spells = localized.entries.filter(v => v.kind === 'spell' && v.listed !== false);
+    check(await evaluate('document.querySelectorAll("#results a").length') === spells.length, lang + ' all base spells are listed');
+    check(await evaluate('Array.from(document.querySelectorAll("#results a")).every(a=>!decodeURIComponent(new URL(a.href).searchParams.get("page")).includes("{"))'), lang + ' rune-equipped spells are absent from list');
+    const acid = spells.find(v => v.key === 'spell/acid_ray');
+    assert(acid);
+    await select('#category', 'All pages'); await search(acid.title);
+    const results = await evaluate('Array.from(document.querySelectorAll("#results a")).map(a=>new URL(a.href).searchParams.get("page"))');
+    check(results.filter(key => key.startsWith('spell/')).length === 1 && results.includes(acid.key), lang + ' searching all categories returns one base Acid blast');
+    await search('');
+    const doll = localized.entries.find(v => v.key === 'item/wand%206');
+    const horn = localized.entries.find(v => v.key === 'item/wand%205');
+    for (const fixed of [doll, horn]) {
+      await openArticle(fixed.key, lang);
+      check(await evaluate('document.querySelector("#article h1").textContent') === fixed.title, lang + ' fixed item uses its authored name: ' + fixed.title);
+      check(await evaluate('document.querySelector("#versions").hidden && document.querySelectorAll("#variant option").length === 1'), lang + ' fixed item has no material or blueprint choices: ' + fixed.title);
+    }
   }
+  await openArticle('item/wand%206', 'en', 'wand 6.granite');
+  check(await evaluate('new URLSearchParams(location.search).get("version")') === 'wand 6.rock', 'old synthetic material deep link resolves to authored Goblin doll');
+  await screenshot('wiki-goblin-doll');
+  for (const key of ['item/gipat%20special%20high%20plate', 'item/gipat%20special%20brigand%20plate']) {
+    await openArticle(key);
+    const row = index.entries.find(v => v.key === key);
+    check(await evaluate('document.querySelector("#article h1").textContent') === row.title, 'NPC armour has a distinct garment and wearer name: ' + row.title);
+    check(await evaluate('!!document.querySelector("#article img") && document.querySelector("#versions").hidden'), 'NPC armour has an illustration and its fixed material');
+    await select('#category', 'Items'); await select('#item-category', 'armor_plate');
+    await screenshot(key.includes('brigand') ? 'wiki-estera-armour' : 'wiki-erfar-armour');
+  }
+  for (const name of ['Old stony harpy', 'Strong black banshee (variant 2)']) {
+    const row = index.entries.find(v => v.title === name);
+    assert(row, name);
+    await openArticle(row.key);
+    await screenshot(name.startsWith('Old') ? 'wiki-harpy' : 'wiki-banshee');
+  }
+  const modifiedSpell = index.entries.find(v => v.kind === 'spell' && v.listed === false);
+  await openArticle(modifiedSpell.key);
+  check(await evaluate('document.querySelector("#article h1").textContent') === modifiedSpell.title, 'referenced rune-equipped spell remains accessible by deep link');
   await select('#category', 'Creatures');
-  check(await evaluate('document.querySelectorAll("#results a").length') === 40, 'category list is paginated');
-  await evaluate('document.querySelector("#next").click()');
-  check(await evaluate('document.querySelector("#page-number").textContent.startsWith("2")'), 'next result page works');
-  await evaluate('(()=>{const e=document.querySelector("#search");e.value="___missing___";e.dispatchEvent(new Event("input"));})()');
+  check(await evaluate('document.querySelectorAll("#results a").length') === index.entries.filter(v => v.kind === 'creature').length, 'all creatures available without paging');
+  const bottom = await evaluate('(()=>{const e=document.querySelector("#results");e.scrollTop=e.scrollHeight;return e.scrollTop;})()');
+  check(bottom > 0, 'continuous result list scrolls to its final entries');
+  await evaluate('document.querySelector("#results a:last-child").click()'); await ready();
+  check(Math.abs(await evaluate('document.querySelector("#results").scrollTop') - bottom) < 2, 'opening last entry retains result-list scroll position');
+  await search('___missing___');
   check(await evaluate('document.querySelectorAll("#results a").length') === 0, 'empty search results');
+  await search(''); await select('#category', 'Items'); await select('#item-category', 'quest');
   await command('Emulation.setDeviceMetricsOverride', {width:390,height:844,deviceScaleFactor:1,mobile:true});
   await sleep(200);
   check(await evaluate('document.documentElement.scrollWidth <= innerWidth'), 'mobile has no horizontal overflow');

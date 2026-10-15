@@ -65,6 +65,11 @@ def prepare(data, images, output):
                                 # Link to the available base material article;
                                 # this site does not simulate temporary effects.
                                 base = '.'.join(p.strip() for p in variant.split('|')[0].split('.'))
+                                if entries[destination].get('fixed'):
+                                    # Legacy links may carry synthetic material
+                                    # variants of a fixed, non-craftable item.
+                                    base = pages[destination]['versions'][0]['id']
+                                    element.text = pages[destination]['versions'][0]['title']
                                 assert base in choices, (key, link)
                                 element.set('href', 'wiki://' + destination + '?' + urlencode({'version': base}))
                                 normalized += 1
@@ -81,7 +86,10 @@ def prepare(data, images, output):
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(json.dumps(page, ensure_ascii=False, separators=(',', ':')) + '\n')
         (output / 'data' / lang / 'index.json').write_text(json.dumps(index, ensure_ascii=False, separators=(',', ':')) + '\n')
-        report['languages'][lang] = {'pages': len(entries), 'versions': count, 'resolved_links': links, 'normalized_equipment_links': normalized}
+        listed = [entry for entry in entries.values() if entry.get('listed', True)]
+        report['languages'][lang] = {'pages': len(entries), 'listed_pages': len(listed),
+                                    'listed_spells': sum(entry['kind'] == 'spell' for entry in listed),
+                                    'versions': count, 'resolved_links': links, 'normalized_equipment_links': normalized}
     (output / 'images').mkdir(exist_ok=True)
     for image in sorted(used_images):
         shutil.copy2(images / (image + '.webp'), output / 'images' / (image + '.webp'))

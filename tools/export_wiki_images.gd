@@ -25,6 +25,7 @@ func _ready() -> void:
 	var plan: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(plan_path))
 	var written := 0
 	var missing := []
+	var framing := {}
 	for key: String in plan:
 		var destination := output.path_join(key + ".webp")
 		if FileAccess.file_exists(destination):
@@ -33,6 +34,20 @@ func _ready() -> void:
 		if not preview.show_model(plan[key]):
 			missing.append(key)
 			continue
+		var descriptor: Dictionary = plan[key]
+		if descriptor.has("layer"):
+			var texture := EIUnitModel._compose(descriptor.mask, [descriptor.layer] as Array[String])
+			if texture == null:
+				printerr("Missing authored wiki skin: ", descriptor)
+				get_tree().quit(1)
+				return
+			for mesh: MeshInstance3D in preview.item._model.find_children("*", "MeshInstance3D", true, false):
+				var material := mesh.get_active_material(0).duplicate() as StandardMaterial3D
+				material.albedo_texture = texture
+				var scale := 256.0 / float(texture.get_width())
+				material.uv1_scale = Vector3(scale, scale, 1)
+				material.uv1_offset = Vector3(0, 1.0 - scale, 0)
+				mesh.material_override = material
 		# Framing, paperdoll pose, transparent target allocation and its first
 		# submitted draw must all finish before the readback.
 		for i in 7: await get_tree().process_frame
@@ -42,7 +57,37 @@ func _ready() -> void:
 		if img.is_empty() or img.is_invisible():
 			missing.append(key)
 		else:
+			# A still illustration needs only the visible pose, not the full
+			# rotation envelope used by the interactive inventory model.
+			var camera: Camera3D
+			var model: Node3D
+			if preview.creature != null:
+				preview.creature.set_process(false)
+				camera = preview.creature._cam
+				model = preview.creature._model
+			else:
+				camera = preview.item._fit_camera
+				model = preview.item._model
+			model.set_process(false)
+			for attempt in 4:
+				var bounds := img.get_used_rect()
+				var dimensions := Vector2(img.get_size())
+				var coverage := maxf(bounds.size.x / dimensions.x, bounds.size.y / dimensions.y)
+				var offset := Vector2(bounds.get_center()) - dimensions * 0.5
+				if absf(coverage - 0.86) < 0.025 and offset.length() < 2.0: break
+				var depth := maxf(camera.global_position.distance_to(model.global_position), 0.1)
+				camera.global_position += camera.project_position(Vector2(bounds.get_center()), depth) - camera.project_position(dimensions * 0.5, depth)
+				if camera.projection == Camera3D.PROJECTION_ORTHOGONAL:
+					camera.size *= coverage / 0.86
+				else:
+					camera.fov = rad_to_deg(2.0 * atan(tan(deg_to_rad(camera.fov) * 0.5) * coverage / 0.86))
+				camera.force_update_transform()
+				for frame in 2: await get_tree().process_frame
+				await RenderingServer.frame_post_draw
+				img = viewport.get_texture().get_image()
 			img.resize(280, 280, Image.INTERPOLATE_LANCZOS)
+			var bounds := img.get_used_rect()
+			framing[key] = [bounds.position.x, bounds.position.y, bounds.size.x, bounds.size.y]
 			var error := img.save_webp(destination, false, 0.85)
 			if error != OK:
 				printerr("Cannot write illustration: ", destination, " (", error, ")")
@@ -52,7 +97,7 @@ func _ready() -> void:
 		if (written + missing.size()) % 100 == 0:
 			print("WIKI_IMAGES ", written, "/", plan.size(), " missing=", missing.size())
 	preview.clear()
-	var result := {"requested": plan.size(), "written": written, "unavailable": missing}
+	var result := {"requested": plan.size(), "written": written, "unavailable": missing, "framing": framing}
 	var file := FileAccess.open(output.path_join("manifest.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify(result))
 	file.close()
