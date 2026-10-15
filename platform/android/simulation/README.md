@@ -40,6 +40,34 @@ Shipping these methods requires reinstalling the plugin sources into the engine
 and rebuilding the Java export template; replacing only `libgodot_android.so`
 in an older template does not include them.
 
+The Android manifest also installs `StartupApplication`. It registers a session
+and atomically saves `files/crash/android-startup.json` before the Activity or
+native engine starts. The plugin marks the attempt before `GodotLib.initialize`,
+then records native setup/main-loop stages. The journal is handed off only after
+the game's regular crash marker for the same session has been written. The
+simulation and restart-helper processes are excluded. A process created solely
+to serve a file, without attempting the engine, does not trigger recovery.
+
+An unfinished engine launch is retained on the next start. If it requested
+Mobile or Forward+, Java writes a Compatibility override before the engine can
+read its renderer settings. This covers both a new renderer trial and a
+previously confirmed Vulkan choice. Saves and other settings are preserved.
+The recovery report includes the attempted renderer, last Java stage, matching
+Android exit information and native trace when available. An early engine log
+is copied only if it changed during the failed attempt, with a 64 KiB limit.
+Up to four failures are retained across subsequent clean launches until a
+successful report-file export acknowledges them. Closing the dialog, copying
+the report, or failing to save it does not erase the retained diagnostics.
+
+`tools/tests/android_early_startup.gd` verifies this handoff, renderer recovery,
+report retention/export and UI in an isolated debuggable QA package. The private
+controller pauses Java immediately before `GodotLib.initialize`, verifies that
+the native library has not loaded, sends SIGABRT, then relaunches. It checks the
+fallback file and unchanged settings before allowing native initialization.
+The pause hook belongs only in the private QA template; production sources and
+templates contain no pause file, crash trigger or test bootstrap. Also verify
+successful Mobile starts/restarts and the existing simulation lifecycle suite.
+
 `python3 platform/android/simulation/tests/run.py` exercises the protobuf reader
 on a JDK, including malformed, truncated and oversized input. The two-launch
 `tools/tests/android_native_crash_report.gd` fixture requires an isolated,

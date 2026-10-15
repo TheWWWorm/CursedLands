@@ -42,6 +42,9 @@ static var handheld := Portability.handheld()
 ## "log" = its log file. CrashReportBox offers it once.
 var previous := {}
 var info := {}
+## Android launches that failed before this node could write its marker.
+## Retained by Java across clean launches until a report is saved.
+var startup_failures: Array = []
 var _marker := ""
 var _done := false
 
@@ -52,22 +55,31 @@ func _ready() -> void:
 	name = "CrashReport"
 	if not enabled:
 		return
-	var sid := "%08x%04x" % [randi(), Time.get_ticks_usec() & 0xffff]
+	var boot := android_startup()
+	var early: Dictionary = boot.current if boot.get("current") is Dictionary else {}
+	startup_failures = boot.get("failures", [])
+	var sid := String(early.get("session", "%08x%04x" % [randi(), Time.get_ticks_usec() & 0xffff]))
 	info = {"session": sid, "pid": OS.get_process_id(), "started": Time.get_datetime_string_from_system(false, true),
 		"state": "foreground", "focus": "in", "zone": "(menu)", "last": ""}
 	var android := _android_diagnostics()
 	if android:
-		info.android_exit_registered = bool(android.register_crash_session(sid))
+		# Keep the token registered before native initialization. Avoid another
+		# OS registration (which can be rate-limited) during the handoff.
+		info.android_exit_registered = bool(early.get("android_exit_registered", false)) or bool(android.register_crash_session(sid))
 	_collect()
 	GameData.trace("session %s: %s, %s, %s, %s" % [sid, info.version, info.os, info.gpu, info.renderer])
 	previous = scan(OS.get_process_id())
-	if android and bool(previous.get("android_exit_registered", false)):
+	if previous.is_empty() and not startup_failures.is_empty():
+		previous = startup_failures[-1].duplicate(true)
+	if android and bool(previous.get("android_exit_registered", false)) and previous.get("android_exit", {}).get("native_trace_status", "") != "available":
 		var exit_info: Variant = JSON.parse_string(android.previous_exit_report(int(previous.get("pid", -1)), String(previous.get("session", ""))))
 		if exit_info is Dictionary and not exit_info.is_empty():
 			previous.android_exit = exit_info
 	DirAccess.make_dir_recursive_absolute(DIR)
 	_marker = DIR.path_join("%s%d.cfg" % [MARK_PREFIX, OS.get_process_id()])
-	_write()
+	if _write() == OK and not early.is_empty():
+		# Keep the early journal until the same session has a durable regular marker.
+		android.complete_startup_tracking(sid)
 
 
 ## Older custom templates have the simulation plugin without diagnostics.
@@ -107,6 +119,15 @@ func _collect() -> void:
 			if rec.has(k):
 				info.graphics_tier += ", " + k
 	info.options = options_summary()
+
+
+static func android_startup() -> Dictionary:
+	var android := _android_diagnostics()
+	if android and android.has_java_method("startup_diagnostics") and android.has_java_method("complete_startup_tracking"):
+		var result: Variant = JSON.parse_string(android.startup_diagnostics())
+		if result is Dictionary:
+			return result
+	return {}
 
 
 static func options_summary() -> String:
@@ -220,9 +241,9 @@ static func note(what: String) -> void:
 	instance._write()
 
 
-func _write() -> void:
+func _write() -> Error:
 	if _marker.is_empty() or _done:
-		return
+		return ERR_UNCONFIGURED
 	info.updated = Time.get_datetime_string_from_system(false, true)
 	info.uptime_s = Time.get_ticks_msec() / 1000
 	# Startup applies temporary Original graphics without changing saved options.
@@ -231,7 +252,7 @@ func _write() -> void:
 	var cfg := ConfigFile.new()
 	for k: String in info:
 		cfg.set_value("session", k, info[k])
-	cfg.save(_marker)
+	return cfg.save(_marker)
 
 
 func _notification(what: int) -> void:
@@ -289,10 +310,30 @@ func simulate_kill(paused: bool, focus_out := false) -> void:
 static func _info_text(title: String, d: Dictionary) -> String:
 	var s := "== %s ==\n" % title
 	for k in ["session", "version", "engine", "os", "device", "cpu", "memory_mb", "gpu", "gpu_api", "renderer",
-			"screen", "locale", "graphics_tier", "options", "started", "updated", "uptime_s", "zone", "last", "state", "focus"]:
+			"screen", "locale", "graphics_tier", "options", "started", "updated", "uptime_s", "zone", "last", "state", "focus",
+			"requested_renderer", "startup_stage", "recovered_renderer", "startup_log_truncated"]:
 		if d.has(k):
 			s += "%s: %s\n" % [k, d[k]]
 	return s
+
+
+static func _exit_text(d: Dictionary) -> String:
+	var exit_info: Dictionary = d.get("android_exit", {}).duplicate()
+	if exit_info.is_empty():
+		return ""
+	var native_trace := String(exit_info.get("native_trace", ""))
+	exit_info.erase("native_trace")
+	var s := "\n== %s ==\n%s\n" % [RemakeText.t("Android process exit"), JSON.stringify(exit_info, "  ")]
+	if not native_trace.is_empty():
+		s += "\n== %s ==\n%s\n" % [RemakeText.t("Native crash trace"), native_trace]
+	return s
+
+
+func _acknowledge_startup_reports() -> void:
+	var android := _android_diagnostics()
+	if android and android.has_java_method("acknowledge_startup_report"):
+		for failure: Dictionary in startup_failures:
+			android.acknowledge_startup_report(String(failure.get("session", "")))
 
 
 ## The report: the previous session that ended unexpectedly (`prev`, may be
@@ -302,14 +343,14 @@ func report_text(prev: Dictionary, lines: int) -> String:
 	var s := "Cursed Lands report, %s\n\n" % Time.get_datetime_string_from_system(false, true)
 	if not prev.is_empty():
 		s += _info_text("Previous session (ended unexpectedly)", prev)
-		var exit_info: Dictionary = prev.get("android_exit", {}).duplicate()
-		if not exit_info.is_empty():
-			var native_trace := String(exit_info.get("native_trace", ""))
-			exit_info.erase("native_trace")
-			s += "\n== %s ==\n%s\n" % [RemakeText.t("Android process exit"), JSON.stringify(exit_info, "  ")]
-			if not native_trace.is_empty():
-				s += "\n== %s ==\n%s\n" % [RemakeText.t("Native crash trace"), native_trace]
-		s += "\n== Log of the previous session: %s ==\n%s\n" % [String(prev.get("log", "")).get_file(), tail(String(prev.get("log", "")), lines)]
+		s += _exit_text(prev)
+		s += "\n== Log of the previous session: %s ==\n%s\n" % [String(prev.get("log", "")).get_file(), String(prev.startup_log) if prev.has("startup_log") else tail(String(prev.get("log", "")), lines)]
+	for failure: Dictionary in startup_failures:
+		if failure.get("session", "") == prev.get("session", ""):
+			continue
+		s += "\n" + _info_text(RemakeText.t("Android startup recovery"), failure) + _exit_text(failure)
+		if failure.has("startup_log"):
+			s += "\n" + String(failure.startup_log) + "\n"
 	s += "\n" + _info_text("This session", info)
 	if prev.is_empty():
 		var older := older_logs()
@@ -356,9 +397,12 @@ func save_report(prev: Dictionary) -> String:
 			GameData.trace("report: %s not writable (%s)" % [d, error_string(FileAccess.get_open_error())])
 			continue
 		fa.store_string(text)
+		fa.flush()
+		var written := fa.get_error() == OK and fa.get_length() == text.to_utf8_buffer().size()
 		fa.close()
-		if FileAccess.file_exists(path):
+		if written and FileAccess.file_exists(path):
 			GameData.trace("report saved: " + path)
+			_acknowledge_startup_reports()
 			return path
 	return ""
 

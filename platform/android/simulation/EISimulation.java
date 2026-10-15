@@ -114,8 +114,17 @@ public final class EISimulation extends GodotPlugin {
             if (bound) { bound = false; context.unbindService(this); }
         }
     }
-    public EISimulation(Godot godot) { super(godot); context = godot.getContext(); }
+    public EISimulation(Godot godot) { super(godot); context = godot.getContext(); EarlyStartup.stage("android_plugin_created"); }
     @Override public String getPluginName() { return "EISimulation"; }
+    @Override public java.util.List<String> getCommandLineParams(java.util.List<String> args) {
+        EarlyStartup.stage("native_engine_initializing");
+        return args;
+    }
+    @Override public void onGodotSetupCompleted() { EarlyStartup.stage("native_engine_setup_completed"); }
+    @Override public void onGodotMainLoopStarted() { EarlyStartup.stage("native_main_loop_started"); }
+    @UsedByGodot public String startup_diagnostics() { return EarlyStartup.diagnostics(); }
+    @UsedByGodot public boolean complete_startup_tracking(String session) { return EarlyStartup.complete(session); }
+    @UsedByGodot public void acknowledge_startup_report(String session) { EarlyStartup.acknowledge(session); }
     @UsedByGodot public synchronized int start(String[] args) {
         if (active != null || args == null || !java.util.Arrays.asList(args).contains("--headless")) return -1;
         Binding binding = new Binding(++generation, args.clone());

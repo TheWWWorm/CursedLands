@@ -21,9 +21,9 @@ extends Node
 ## written again. A start that finds a trial still "running" (that run ended
 ## unexpectedly) or Godot on another renderer than the pending one (Vulkan
 ## could not start) puts the option back on Compatibility; the main menu
-## tells the player (`offer`). A crash inside the Vulkan driver's own start
-## (before any script) cannot be caught here: clearing the app's data
-## resets the choice.
+## tells the player (`offer`). The Android StartupApplication separately tracks
+## failures before scripts and resets the override before the engine starts.
+## Older templates without that hook retain only the script-level trial.
 
 const OVERRIDE := "user://renderer.cfg"
 const TRIAL := "user://renderer_trial.cfg"
@@ -84,7 +84,13 @@ static func startup() -> RendererChoice:
 	var node: RendererChoice = null
 	var t := _load(TRIAL, "trial")
 	var running := RenderingServer.get_current_rendering_method()
-	if available() and not t.is_empty():
+	var boot := CrashReport.android_startup()
+	var early: Dictionary = boot.current if boot.get("current") is Dictionary else {}
+	if available() and not String(early.get("recovered_renderer", "")).is_empty():
+		_reset()
+		notice = FAILED
+		GameData.trace("renderer recovered before engine startup: %s" % early.recovered_renderer)
+	elif available() and not t.is_empty():
 		var method := String(t.get("method", ""))
 		var i := maxi(0, METHODS.find(method))
 		if String(t.get("state", "")) == "running":

@@ -1,0 +1,379 @@
+{
+  "date": "2026-10-15",
+  "issue": "https://github.com/TheWWWorm/CursedLands/issues/3",
+  "base_commit": "ecfab9160ddebe7d843a5a4373f65b986e0bb289",
+  "branch": "fix/issues-3-4",
+  "status": "Early Android launch capture, pre-engine Compatibility fallback and retained native-report export validated on Retroid Pocket 5. The Redmagic-specific driver fault remains unverified.",
+  "implementation": [
+    "Application.onCreate registers a main-process session and atomically persists its journal before Activity/native engine initialization.",
+    "The plugin arms the attempt before GodotLib.initialize and updates setup/main-loop stages. A helper-only process that never attempts the engine is excluded from failed-launch recovery.",
+    "An interrupted Mobile or Forward+ launch resets renderer.cfg to Compatibility before the next engine initialization. Both a pending trial and a previously confirmed choice are covered; saves and other settings are unchanged.",
+    "The regular crash reporter reuses the early session token and completes the Java handoff only after its matching marker is written.",
+    "Up to four failures retain requested renderer, phase, version/device and matching Android exit/native trace. Changed early engine-log tails are bounded to 64 KiB. Cached native traces remain usable when OS history expires.",
+    "Failed export, clipboard copy and clean restart retain diagnostics. Successful file export verifies the write and acknowledges only included failures."
+  ],
+  "source_files": {
+    "CHANGELOG.md": "4b4d18f9b38f8655757cb96be66471d067bda2c74c983f8a654338a6039ddee9",
+    "game/src/ei/remake_text.gd": "c04b77485a8409cd574b443e24d5855b59d5e89dbc0992b1bf700d6545d36401",
+    "game/src/platform/crash_report.gd": "5f7e85b4ed8ab22d20e5a06b78eabfebca8785f7799e5cd3afa05c84bde69f9c",
+    "game/src/platform/renderer_choice.gd": "cc81c424051523fc7ef585713db9715971b74e0af1ffdbb387ae4bbd349ae267",
+    "platform/android/simulation/EISimulation.java": "56cdcaedd3d7027e7672231035005cd0b6b5c95e38ca2636fd07b7cebc721c0f",
+    "platform/android/simulation/EarlyStartup.java": "9759125edf22ee9260cad2f87b5220e08400a899499a4471e08a69844b7a0602",
+    "platform/android/simulation/StartupApplication.java": "450bddb5ad3514c240e697a17e44009dc1a1a15121c9668d62ce2ec8ac6292a4",
+    "platform/android/simulation/install_into_engine.py": "5d4b85fef3c51908d00c19821ff5c51fb5c7bfa9730086393a0d1c31880d9ae3",
+    "platform/android/simulation/README.md": "6ca0c1d88cbd3e426c2a24771a14d2fad779a43f5cb7d6df1d391d7e3c81e30d",
+    "platform/android/simulation/tests/startup_install_test.py": "a250d751b58b31c22a953f42e9f34d41ec5e5ee2fcee031889026c8a04e778c3",
+    "tools/tests/android_early_startup.gd": "3c38ac7e63f1b52366ba7722275dd246825270072f24cab079b7f72deadc28c0"
+  },
+  "android": {
+    "device": "Retroid Pocket 5 / Adreno 650 / Android 13 API 33",
+    "package": "org.cursedlands.startupqa",
+    "checks": [
+      {
+        "label": "pending-vulkan-crash",
+        "checks": 24,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "script_errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/pending-vulkan-crash/result.json",
+        "log_sha256": "52c09bf7f98be0cad7c98d8606fa9f00435b49b27d598121919cf1a1702ab9ce"
+      },
+      {
+        "label": "unsaved-report-survives-clean-restart",
+        "checks": 16,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "script_errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/unsaved-report-survives-clean-restart/result.json",
+        "log_sha256": "201dea618ad453d7124db1df7f5411a19f374ebc56677e7c507cc0f95a5b0cc8"
+      },
+      {
+        "label": "save-acknowledges-report",
+        "checks": 23,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "script_errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/save-acknowledges-report/result.json",
+        "log_sha256": "85ab9b44ddb4e7b3e7474a4a2bd1ea6f1bb09e1519f6d092137c8f137ff173df"
+      },
+      {
+        "label": "clean-restart-no-false-crash",
+        "checks": 8,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "script_errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/clean-restart-no-false-crash/result.json",
+        "log_sha256": "655d0237233e6497fb27392a0c9a4bc07a4ecb62a219c288e6fb26de772a106a"
+      },
+      {
+        "label": "successful-vulkan-trial",
+        "checks": 9,
+        "failures": 0,
+        "renderer": "mobile",
+        "script_errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/successful-vulkan-trial/result.json",
+        "log_sha256": "0b955e7d4006e2351d49f898c743bd99779f63c5785a336fc48f675f298d6d80"
+      },
+      {
+        "label": "successful-vulkan-restart",
+        "checks": 8,
+        "failures": 0,
+        "renderer": "mobile",
+        "script_errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/successful-vulkan-restart/result.json",
+        "log_sha256": "fd016c0ed4d84ed5874cb5f4e1e9c5eadf685d0907d84b06d3d4515870d42479"
+      },
+      {
+        "label": "confirmed-vulkan-crash",
+        "checks": 24,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "script_errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/confirmed-vulkan-crash/result.json",
+        "log_sha256": "200a99b24723fe712fb8eaff3ef226088f7c9fe59b0f322de32eefd1b112cf73"
+      },
+      {
+        "label": "confirmed-vulkan-report-export",
+        "checks": 23,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "script_errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/confirmed-vulkan-report-export/result.json",
+        "log_sha256": "22d0412c8249c1a542d1d21d2877802036a07cf9337f6196677c48030f789f61"
+      },
+      {
+        "label": "helper-only-process-keeps-vulkan",
+        "checks": 8,
+        "failures": 0,
+        "renderer": "mobile",
+        "script_errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-boundaries/helper-only-process-keeps-vulkan/result.json",
+        "log_sha256": "e23450d6b5eb7ab9139c15ae75c097238d8b9771ce85de232e3fc7976afb82e9"
+      },
+      {
+        "label": "malformed-journal-still-starts",
+        "checks": 8,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "script_errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-boundaries/malformed-journal-still-starts/result.json",
+        "log_sha256": "617170c90c80acb4ee12982e127cbb06ba6332e0f4df69944aa9071d00acb52c"
+      },
+      {
+        "label": "bounded-history-and-no-os-trace",
+        "checks": 8,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "script_errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-boundaries/bounded-history-and-no-os-trace/result.json",
+        "log_sha256": "8d1537e172758fd28fc8df903c16303473fafcb006d9d23befb1980c087961f4"
+      },
+      {
+        "label": "simulation-process-exclusion",
+        "checks": 22,
+        "failures": 0,
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-boundaries/simulation.json",
+        "log_sha256": "0804255e43e591a81251c2af64b55d73d99e521e44c9331562ced2e70a7ee503"
+      },
+      {
+        "label": "final-pre-engine-crash",
+        "checks": 24,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "script_errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-final-device/final-pre-engine-crash/result.json",
+        "log_sha256": "9512156ab99880022fedced90b18b79ec1b2bb927c1e9be6beac9a32ae28cf64"
+      },
+      {
+        "label": "final-early-report-export",
+        "checks": 23,
+        "failures": 0,
+        "renderer": "gl_compatibility",
+        "script_errors": [],
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-final-device/final-early-report-export/result.json",
+        "log_sha256": "31184a71b0e0f9819b741ccb4b716ebdb45e7dcd51dbee1eeefa2fee93ed44e3"
+      },
+      {
+        "label": "native-vulkan-crash-after-handoff",
+        "checks": 19,
+        "failures": 0,
+        "result": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-final-device/regular-native-after-handoff.json",
+        "log_sha256": "f9f7afe74112492a8afc30713a0275dfc9141abf848ee5dfd339cb65bbfc02ef",
+        "renderer_before_crash": "mobile / vulkan"
+      }
+    ],
+    "total_checks": 247,
+    "failures": 0,
+    "controlled_crashes": [
+      {
+        "case": "pending-vulkan-crash",
+        "trace": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/pending-vulkan-crash/native-trace.txt",
+        "sha256": "2dc090c649a48f34bd04ea00205e20e3317440528892a804c7a2ff3d4791e388",
+        "before_engine_recovery": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/pending-vulkan-crash-before-engine-recovery.json",
+        "failed_session": "063264a8a45b",
+        "reason": 5,
+        "signal": 6,
+        "native_library_loaded_at_abort": false,
+        "settings_unchanged_before_engine": true
+      },
+      {
+        "case": "confirmed-vulkan-crash",
+        "trace": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/confirmed-vulkan-crash/native-trace.txt",
+        "sha256": "aeee2f62dc5aac03a861fb80b6c647fdcbca4339e1246e827bfd02d8446e8a54",
+        "before_engine_recovery": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/confirmed-vulkan-crash-before-engine-recovery.json",
+        "failed_session": "59655531d8e6",
+        "reason": 5,
+        "signal": 6,
+        "native_library_loaded_at_abort": false,
+        "settings_unchanged_before_engine": true
+      }
+    ],
+    "locales": [
+      {
+        "language": "en",
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/pending-vulkan-crash/early-recovery-en.png",
+        "sha256": "5b6b8a14bcc532667d63d2f39a1da29f216f9020dcd10a48b02a0ae085523e69",
+        "visually_inspected": true
+      },
+      {
+        "language": "ru",
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/pending-vulkan-crash/early-recovery-ru.png",
+        "sha256": "684b1ef2cca73a5ee2a5fb9048e7c4c65ca04427ade69da4390a9c3908a85d9d",
+        "visually_inspected": true
+      },
+      {
+        "language": "de",
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/pending-vulkan-crash/early-recovery-de.png",
+        "sha256": "cd864bff15fae0a59110a191d4b7c44d89f43a90bc40512b7561a4e634712f84",
+        "visually_inspected": true
+      }
+    ],
+    "normal_game_package_modified": false,
+    "qa_package_removed": true,
+    "cleanup": [
+      "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-device/cleanup.json",
+      "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-boundaries/cleanup.json",
+      "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-final-device/cleanup.json"
+    ],
+    "controller_commands": [
+      "python3 early_device_check.py",
+      "python3 early_boundary_check.py",
+      "python3 early_final_device.py"
+    ],
+    "scope": "Only the isolated QA package was installed, written, interrupted and removed. Its Java-only pause immediately before native initialization and external SIGABRT are not in production sources or templates. /proc/PID/maps confirmed no libgodot_android.so was loaded when interrupted.",
+    "initial_private_apk_sha256": "85ab9efab806974406988db1a1dc887846d40cbe98de126e5f7fb753be8bb12e",
+    "final_private_apk_sha256": "35e3e2ed6120d415947f3e8b7a7085915723f04d1dfdff829338320f05336717",
+    "final_adjustment": "Reuse the successful early OS session registration during handoff instead of registering it a second time. The final APK reruns the pre-engine crash/export and verifies a native Vulkan crash after handoff."
+  },
+  "desktop": {
+    "checks": [
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/candidate-bin/CursedLands.x86_64",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/repo/tools/tests/startup_renderer_recovery.gd",
+          "--renderer-option"
+        ],
+        "exit": 0,
+        "seconds": 6.83,
+        "errors": [],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/early_final_renderer_recovery/run.log",
+        "checks": 196,
+        "failures": 0,
+        "log_sha256": "9f346fceb8ca536286eee11bf6f85f6d572482075753762488c6f8eabe8f9bba"
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/candidate-bin/CursedLands.x86_64",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/repo/tools/tests/startup_crash_report.gd"
+        ],
+        "exit": 0,
+        "seconds": 25.65,
+        "errors": [],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/early_final_crash_report/run.log",
+        "checks": 106,
+        "failures": 0,
+        "log_sha256": "917c4a1c4e5219c6e542e093c15e7d80b3a692538624348884cf0397ead9b5da"
+      }
+    ],
+    "total_checks": 302,
+    "failures": 0,
+    "renderer": "gl_compatibility / NVIDIA GeForce RTX 3090",
+    "candidate_pack_sha256": "9f14404a858429869b3ae8f143be5d60497a9255eb3b26b3f1b9e91be1380046"
+  },
+  "host_checks": [
+    {
+      "command": "python3 platform/android/simulation/tests/run.py",
+      "checks": 2241,
+      "failures": 0
+    },
+    {
+      "command": "python3 platform/android/simulation/tests/startup_install_test.py",
+      "checks": 10,
+      "failures": 0
+    },
+    {
+      "command": "python3 tools/check_translations.py",
+      "entries": 1170,
+      "errors": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    }
+  ],
+  "build": {
+    "version": "1.4.1-startup.1",
+    "version_code": 37,
+    "package": "org.cursedlands.engine",
+    "base_commit": "ecfab9160ddebe7d843a5a4373f65b986e0bb289",
+    "uncommitted_source": true,
+    "apk": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/early-release/CursedLands-1.4.1-startup.1-android.apk",
+    "sha256": "5cb03ff72fd7efe88e475c7d079cd6c1fea596e3d94c8758254421a156e6de8c",
+    "bytes": 31192182,
+    "steps": [
+      {
+        "step": "import",
+        "exit": 0,
+        "seconds": 5.67,
+        "errors": []
+      },
+      {
+        "step": "export",
+        "exit": 0,
+        "seconds": 9.28,
+        "errors": []
+      }
+    ],
+    "debuggable": false,
+    "public_signing_certificate_matches": true,
+    "native_libraries_unchanged": true,
+    "libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "production_scripts_compared_to_qa": 288,
+    "qa_only_script_differences": [
+      "assets/src/main.gdc"
+    ],
+    "no_private_crash_hold": true,
+    "no_private_bootstrap_or_original_game_data": true,
+    "published": false
+  },
+  "production_template_hashes": {
+    "debug_template_sha256": "6c3fc8dc55ba364defc44d1d0e3864536b9833bcf7ab782cc22036336ebe325c",
+    "release_template_sha256": "39618fbc955046168013eaf2ab96577f776a240d5f5c075e3ff55fa7f06f6012"
+  },
+  "packaging_audit": {
+    "early_application_manifest_entry": true,
+    "all_three_plugin_methods_in_release_dex": true,
+    "test_pause_or_crash_trigger_in_release_dex": false,
+    "private_main_bootstrap_in_release": false,
+    "debuggable": false,
+    "production_compiled_scripts_compared_to_qa": 288,
+    "only_qa_script_difference": "assets/src/main.gdc (private test launcher)",
+    "original_game_data_or_saves_bundled": false,
+    "native_libraries_match_1_4_0": true,
+    "public_signing_certificate_matches": true
+  },
+  "limits": [
+    "No Redmagic 11 Pro/Adreno 840 test was available. This verifies diagnostics and recovery, not a fix for the Qualcomm driver fault.",
+    "Native tombstones remain conditional on Android availability/retention; the persistent launch phase and renderer survive without a trace.",
+    "Device testing used Android 13; older-API process detection was compiled but not exercised on a physical older device.",
+    "The clean release APK was built/audited but not installed over the normal game. On-device qualification used the isolated QA container."
+  ],
+  "publication": {
+    "released": false,
+    "latest_stable": "v1.4.0",
+    "candidate_version": "1.4.1-startup.1",
+    "published_tags_or_artifacts_modified": false
+  },
+  "evidence_directory": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015"
+}
