@@ -452,7 +452,7 @@ func _drain_units() -> void:
 func _step_frames(u: GameUnit, st: StepState) -> void:
 	var pl := u.model.player
 	var anim: StringName = pl.current_animation
-	var raw := pl.current_animation_position
+	var raw := pl.current_animation_position if anim != &"" else 0.0
 	var reverse := false
 	# During a strafing strike the player's upper clip is an attack, while
 	# the feet follow DirectPose's independent walk cycle, including reverse.
@@ -686,7 +686,7 @@ func _sole_vertices(mesh: Mesh) -> PackedVector3Array:
 	if not _sole_meshes.has(key):
 		var vertices := PackedVector3Array()
 		for surface in mesh.get_surface_count():
-			vertices.append_array(mesh.surface_get_arrays(surface)[Mesh.ARRAY_VERTEX])
+			vertices.append_array(EIFigure.surface_geometry(mesh, surface)[0])
 		_sole_meshes[key] = {"ref": weakref(mesh), "vertices": vertices}
 	return _sole_meshes[key].vertices
 

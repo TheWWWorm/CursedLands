@@ -2034,6 +2034,7 @@ func prepare_static_navigation(rows: Array) -> void:
 			if not starts.has(cls): starts[cls] = {}
 			starts[cls][cell(u.pos)] = true
 	var jobs: Array[Callable] = []
+	var prepared_graphs := []
 	for cls: int in starts:
 		var graph = native_graph(layer(cls))
 		if not graph._native_topology or not graph._terrain_kernel.has_method("prepare_topology"):
@@ -2044,6 +2045,7 @@ func prepare_static_navigation(rows: Array) -> void:
 		var method := "prepare_routes" if graph._terrain_kernel.has_method("prepare_routes") \
 			and not OS.get_cmdline_user_args().has("--ei-lazy-route-weights") else "prepare_topology"
 		jobs.append(Callable(graph._terrain_kernel, method).bind(points))
+		prepared_graphs.append(graph)
 	if jobs.is_empty(): return
 	var started := Time.get_ticks_msec()
 	var tasks := PackedInt64Array()
@@ -2057,6 +2059,7 @@ func prepare_static_navigation(rows: Array) -> void:
 	# Do not poll network callbacks here: they could replace a door/graph while
 	# a worker owns it. The loading caller keeps the world paused until joined.
 	for task: int in tasks: WorkerThreadPool.wait_for_task_completion(task)
+	for graph in prepared_graphs: graph.components_prepared = true
 	GameData.trace("navigation prepared %d classes in %d ms" % [jobs.size(), Time.get_ticks_msec() - started])
 
 ## native relocation, direct bidirectional windows, then the

@@ -69,7 +69,10 @@ func _near(eyes: Array, at: Vector2, fog: bool) -> bool:
 
 static func unit_name(u: GameUnit) -> String:
 	var t := VillageName.title_of(u)
-	return t if t != "" else u.display_name
+	if t != "": return t
+	if u.dead and u.display_name == RemakeText.t("Creature"):
+		return RemakeText.t("Remains")
+	return u.display_name
 
 
 ## The native door flag controls interaction, not appearance: even the

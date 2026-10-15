@@ -1229,14 +1229,7 @@ func _interact_reach(u: GameUnit, t, kind := "") -> float:
 ## A lever / switch used by `u` (sub-code 0): its science
 ## check against the unit's Use/Steal value and the party's quest items.
 func _lever_science_ok(u: GameUnit, nid: int) -> bool:
-	var use := Session.steal_value(u)
-	var bag := session.state.items if session.lmp.is_empty() else session.coop.owner_bag(u.controller)
-	var quest := bag.filter(func(x): return Items.kind(String(x)) == "quest")
-	# Quest items given by conversations / scripts / loot live in
-	# state.quest_items (HaveItem); they open levers too.
-	if session.lmp.is_empty():
-		quest.append_array(session.state.quest_items.keys())
-	return world.lever_sys.science_ok(nid, use, quest)
+	return session.lever_science_ok(u, nid)
 
 
 func _use_lever(u: GameUnit, nid: int) -> void:

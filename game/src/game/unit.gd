@@ -472,7 +472,9 @@ func setup(w: GameWorld, record: Dictionary) -> bool:
 	faction = int(record.get("player", 1))
 	display_name = unit_title(String(proto.get("name", "")))
 	if display_name.is_empty():
-		display_name = String(record.get("name", proto.get("name", "unit")))
+		display_name = unit_title(String(record.get("name", "")))
+	if display_name.is_empty():
+		display_name = RemakeText.t("Creature")
 	var p: Vector3 = record.get("position", Vector3.ZERO)
 	pos = Vector2(p.x, p.y)
 	var q: Quaternion = record.get("rotation", Quaternion.IDENTITY)

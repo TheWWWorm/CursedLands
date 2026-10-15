@@ -250,6 +250,7 @@ static func build_morph_mesh(f: Dictionary, c: Vector3) -> ArrayMesh:
 	mesh.blend_shape_mode = Mesh.BLEND_SHAPE_MODE_NORMALIZED
 	mesh.add_blend_shape("t")
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, [target])
+	mesh.set_meta(GEOMETRY_META, [arrays[Mesh.ARRAY_VERTEX], arrays[Mesh.ARRAY_INDEX]])
 	return mesh
 
 
@@ -355,6 +356,18 @@ static func bone_pos(b: PackedFloat32Array, c: Vector3) -> Vector3:
 static var _meshes := {}
 static var _fig_ids := 0
 
+## Immutable CPU positions/indices shared with the render mesh. Rain-cover
+## construction must not read GPU buffers back during ordinary frame updates.
+const GEOMETRY_META := &"ei_cpu_geometry"
+
+
+static func surface_geometry(mesh: Mesh, surface: int) -> Array:
+	if surface == 0 and mesh.has_meta(GEOMETRY_META):
+		return mesh.get_meta(GEOMETRY_META)
+	# Procedural/third-party meshes may not have been built by this loader.
+	var arrays := mesh.surface_get_arrays(surface)
+	return [arrays[Mesh.ARRAY_VERTEX], arrays[Mesh.ARRAY_INDEX]]
+
 
 static func build_mesh(f: Dictionary, c: Vector3) -> ArrayMesh:
 	if not f.has("id"):
@@ -406,6 +419,7 @@ static func build_anim_morph_mesh(f: Dictionary, c: Vector3, names: PackedString
 		shapes.append(shape)
 		mesh.add_blend_shape(names[k])
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, shapes)
+	mesh.set_meta(GEOMETRY_META, [pos, arrays[Mesh.ARRAY_INDEX]])
 	_meshes[key] = mesh
 	return mesh
 
@@ -448,6 +462,7 @@ static func _build_mesh(f: Dictionary, c: Vector3) -> ArrayMesh:
 	var mesh := ArrayMesh.new()
 	if not pos.is_empty() and not idx.is_empty():
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		mesh.set_meta(GEOMETRY_META, [pos, idx])
 	return mesh
 
 

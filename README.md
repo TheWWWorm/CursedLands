@@ -8,7 +8,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.4.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.4.0), available for Linux, Windows, Android, macOS and in the [browser](https://cursedlands.wwworm.com/). It adds an aim-reset option and Android crash diagnostics, with fixes for co-op quest saves, dialogue, shadows, interaction names, shops and travel. See the [release notes](docs/releases/1.4.0.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.5.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.5.0), available for Linux, Windows, Android, macOS and in the [browser](https://cursedlands.wwworm.com/). It adds lock-skill hover tooltips, improves detached-limb physics, and fixes archer retreat, unnamed interaction labels and navigation-related frame spikes. See the [release notes](docs/releases/1.5.0.md) and [versioning policy](docs/versioning.md).
 
 ## Screenshots
 

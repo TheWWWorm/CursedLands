@@ -1,0 +1,1964 @@
+{
+  "date": "2026-10-15",
+  "status": "Local preview validated; not published",
+  "source": {
+    "repository": "/home/llm2x/Documents/EI/local/scratchpad/gameplay-dialogue-shadows-20261014/repo",
+    "base_stable": "1.4.0",
+    "base_commit": "41a9b25",
+    "branch": "fix/lia-frame-time-limb-physics",
+    "files": {
+      "game/src/ei/detailed_head.gd": "a3b0f4b3f0f140785f373d0963148a0b95e870763513c48efdec026a824c8874",
+      "game/src/ei/figure.gd": "84fcc1daeaea6bd5dd856257bb6abeeb982c724d2af91ec56f81a4a8377c7eb6",
+      "game/src/ei/game_data.gd": "7b7fd94ff6172a7dbe54e02cd4a19c4c463e2488563d8ade117d6187f73d97d4",
+      "game/src/ei/remake_text.gd": "2e1a28d7f0d640caa9d96ed23c1ceada8bdfb1171ede80480724f6f1ca0ff4ab",
+      "game/src/game/ai.gd": "dcdfa763665c9d6d4ee6f88ed33b26314f020febd4b97c010235d8067f88aaeb",
+      "game/src/game/fx/ground_marks.gd": "d2f7d202f2ac29342ccff7fbfa502a195990b5fc9d3864bd64c8bf56837e8f32",
+      "game/src/game/fx/severed_limb.gd": "caa4f3a33df14ec23a5fd26484b8e77becb70cb19dd74aab95f2680b6ce4a82c",
+      "game/src/game/fx/surface_weather.gd": "8cc8041f89ee018aa39cbc6144f0443a0f928a6b49eb0061afaf55da35187e4e",
+      "game/src/game/game.gd": "52f842ef6612a1129d1cbf35ff1ebe54912b25761481021cb1fd76e016eb61be",
+      "game/src/game/nav_blocks.gd": "132616866f3bfead28b7514e6c70e2375fd5d76b729a89ffa56c7ea6168991fa",
+      "game/src/game/nav_grid.gd": "bc303bc2060865e13090fc552264ba0b5671e84a6be48505fe70528f4a49c1ef",
+      "game/src/game/script/vm.gd": "4c4651fa3a8004695d183dacd2fc95857cc69050314375a15e4fef65f0d885c4",
+      "game/src/game/session.gd": "47f6c31a7120f1048b6e568c03ef75b56668291989f6fd85bb851f3761e9145a",
+      "game/src/game/unit.gd": "98847473c6359a9658c04898103335b4b6af73de31461ee443e5fec1600dc49e",
+      "game/src/ui/world_labels.gd": "4691d9b4b77d4ffe4ba8136f333c77cdebfaeda35cf6e624e31d591d1e567a95"
+    }
+  },
+  "preview": {
+    "version": "1.5.0-preview.1",
+    "protocol": 23,
+    "published": false,
+    "build_record": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-build.json",
+      "sha256": "f39041c80668fefabe395197291d77307407fa7fa8971811dc967b82b8021b6d"
+    },
+    "versioning": "New compatible hover feature makes the next release minor. The exporter overrides staged project/platform version metadata; tracked source remains at its 1.4.0 base version until release preparation. Shipping patched 1.4.0 runtimes and native libraries are unchanged.",
+    "packages": {
+      "linux-x86_64": {
+        "directory": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.5.0-preview.1-linux-x86_64",
+        "pack": {
+          "path": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.5.0-preview.1-linux-x86_64/CursedLands.pck",
+          "sha256": "c4ee44684d228d950cb7d0a4b4ff191af4173dab6d17c17a83a49f8c32db0618"
+        },
+        "native_runtime_tested": true,
+        "archive": {
+          "platform": "linux-x86_64",
+          "path": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.5.0-preview.1-linux-x86_64.zip",
+          "sha256": "44caf1c73753d49f980d3f8ecccc1f8b1ed01b342c52864055413fcec4dd8458",
+          "bytes": 37117598
+        }
+      },
+      "windows-x86_64": {
+        "directory": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.5.0-preview.1-windows-x86_64",
+        "pack": {
+          "path": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.5.0-preview.1-windows-x86_64/CursedLands.pck",
+          "sha256": "c4ee44684d228d950cb7d0a4b4ff191af4173dab6d17c17a83a49f8c32db0618"
+        },
+        "native_runtime_tested": false,
+        "archive": {
+          "platform": "windows-x86_64",
+          "path": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.5.0-preview.1-windows-x86_64.zip",
+          "sha256": "960d877ac1f38efdcad69bdd625f728ed10b19b9f2aa50dd66ba034ccbc94fb6",
+          "bytes": 38283019
+        }
+      }
+    }
+  },
+  "changes": [
+    "Retained immutable CPU figure positions/indices remove gameplay GPU readbacks from rain shelter and footprint setup.",
+    "Exact small-component bounds skip unrelated relocation candidates without changing ray order, rounding or endpoints.",
+    "Neighbourhood component rejection avoids repeated endpoint floods. Prepared route checks use reachable endpoint seeds only, preventing an unrelated component flood beside a valid route.",
+    "Severed parts use bounded actual-mesh support points, gravity, outward impulse, repeated contact response, friction, gradual slope alignment and low-energy settling.",
+    "A fear/retreat order replaces an existing patrol or investigation immediately; an existing retreat is retained.",
+    "World hover uses the spell tooltip renderer and shares the authoritative effective Use/Steal, nearest-even rounding and quest-key check. Missing creature/corpse titles have localized fallbacks."
+  ],
+  "performance": {
+    "hardware": "Ubuntu 24.04.5, NVIDIA RTX 3090, patched Godot 4.7 shipping runtime, Vulkan Forward+, isolated user profiles",
+    "suslanger": {
+      "zone": "gz2h",
+      "method": "Very High, actual 2560x1440 render viewport, 60 simulated seconds warm-up plus completed rain cover, then 10 seconds stationary and 10 seconds camera orbit. One game instance; no concurrent build or benchmark. Full simulation remains enabled.",
+      "baseline_131": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/settled-1440-baseline/data/godot/app_userdata/Cursed Lands/lia-profile.json",
+        "sha256": "46a5ce125f5e0ae656aafcc820544b3ede86a2322d8d5510a6d0764e65acc141",
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "rows": [
+          {
+            "fps": 38.7026359081862,
+            "gpu_ms": {
+              "max": 9.36100006103516,
+              "median": 7.28900003433228,
+              "p95": 8.12199974060059,
+              "p99": 9.05099964141846
+            },
+            "hero_dead": false,
+            "mode": "stationary",
+            "sim_seconds": 10.0100000000007,
+            "sim_start": 60.0049999999997,
+            "units": 322,
+            "viewport": "(2560.0, 1440.0)",
+            "wall_ms": {
+              "max": 99.046,
+              "median": 24.04,
+              "p95": 51.028,
+              "p99": 87.561
+            },
+            "warm_sim_goal": 60.0,
+            "weather_cover_ready": true,
+            "zone": "gz2h"
+          },
+          {
+            "fps": 33.5418702070957,
+            "gpu_ms": {
+              "max": 9.50300025939941,
+              "median": 6.79500007629395,
+              "p95": 8.18400001525879,
+              "p99": 9.07499980926514
+            },
+            "hero_dead": false,
+            "mode": "orbit",
+            "sim_seconds": 10.0100000000012,
+            "sim_start": 70.0150000000004,
+            "units": 322,
+            "viewport": "(2560.0, 1440.0)",
+            "wall_ms": {
+              "max": 98.554,
+              "median": 26.942,
+              "p95": 69.92,
+              "p99": 87.664
+            },
+            "warm_sim_goal": 60.0,
+            "weather_cover_ready": true,
+            "zone": "gz2h"
+          }
+        ]
+      },
+      "isolated_geometry_and_small_bounds_patch_on_131": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/settled-1440-performance-full/data/godot/app_userdata/Cursed Lands/lia-profile.json",
+        "sha256": "a0566829c247a6a8b4f862b6667cd1524ceccbc6602e1884c9ce5c7b379726b7",
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "rows": [
+          {
+            "fps": 42.8882957840805,
+            "gpu_ms": {
+              "max": 10.0509996414185,
+              "median": 7.35699987411499,
+              "p95": 8.52799987792969,
+              "p99": 9.14999961853027
+            },
+            "hero_dead": false,
+            "mode": "stationary",
+            "sim_seconds": 10.0100000000007,
+            "sim_start": 60.0049999999997,
+            "units": 322,
+            "viewport": "(2560.0, 1440.0)",
+            "wall_ms": {
+              "max": 43.209,
+              "median": 24.22,
+              "p95": 31.703,
+              "p99": 36.316
+            },
+            "warm_sim_goal": 60.0,
+            "weather_cover_ready": true,
+            "zone": "gz2h"
+          },
+          {
+            "fps": 38.1625854012726,
+            "gpu_ms": {
+              "max": 9.875,
+              "median": 7.34999990463257,
+              "p95": 8.50899982452393,
+              "p99": 9.51200008392334
+            },
+            "hero_dead": false,
+            "mode": "orbit",
+            "sim_seconds": 10.0100000000012,
+            "sim_start": 70.0150000000004,
+            "units": 322,
+            "viewport": "(2560.0, 1440.0)",
+            "wall_ms": {
+              "max": 50.093,
+              "median": 26.615,
+              "p95": 38.061,
+              "p99": 43.882
+            },
+            "warm_sim_goal": 60.0,
+            "weather_cover_ready": true,
+            "zone": "gz2h"
+          }
+        ]
+      },
+      "final_preview": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-frame-time/data/godot/app_userdata/Cursed Lands/lia-profile.json",
+        "sha256": "9865fff521163b6f2efce13a1bae20090ca391559f9f22a6ae8683d6784215e5",
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "rows": [
+          {
+            "fps": 96.1133250035118,
+            "gpu_ms": {
+              "max": 8.09700012207031,
+              "median": 5.51200008392334,
+              "p95": 6.73600006103516,
+              "p99": 7.34200000762939
+            },
+            "hero_dead": false,
+            "mode": "stationary",
+            "sim_seconds": 10.0100000000007,
+            "sim_start": 60.0049999999997,
+            "units": 322,
+            "viewport": "(2560.0, 1440.0)",
+            "wall_ms": {
+              "max": 29.091,
+              "median": 8.023,
+              "p95": 22.542,
+              "p99": 25.313
+            },
+            "warm_sim_goal": 60.0,
+            "weather_cover_ready": true,
+            "zone": "gz2h"
+          },
+          {
+            "fps": 85.3986488835051,
+            "gpu_ms": {
+              "max": 8.62800025939941,
+              "median": 5.67000007629395,
+              "p95": 6.96700000762939,
+              "p99": 7.6399998664856
+            },
+            "hero_dead": false,
+            "mode": "orbit",
+            "sim_seconds": 10.0100000000012,
+            "sim_start": 70.0150000000004,
+            "units": 322,
+            "viewport": "(2560.0, 1440.0)",
+            "wall_ms": {
+              "max": 29.19,
+              "median": 9.186,
+              "p95": 24.087,
+              "p99": 27.18
+            },
+            "warm_sim_goal": 60.0,
+            "weather_cover_ready": true,
+            "zone": "gz2h"
+          }
+        ]
+      }
+    },
+    "mansion": {
+      "zone": "bz2h",
+      "result": "Persistent post-warm-up spikes were not reproduced locally. CPU geometry reuse fixes confirmed synchronous readbacks while the rain-cover map is built, but that alone does not explain persistent drops after several minutes.",
+      "warm_run": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/warm-bench-bz2h-0-baseline/data/godot/app_userdata/Cursed Lands/lia-profile.json",
+        "sha256": "534eec479959107a723c63e22041d2daa41ab6bf15265d2378a4b77e6dad86c7"
+      }
+    },
+    "ingos": {
+      "method": "All seven LiA Ingos zones; seeded simulation, 200 warm-up ticks plus 600 measured ticks (44 simulated seconds total). Headless simulation timings, not rendered FPS.",
+      "baseline_131": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/ingos-logic-baseline/data/godot/app_userdata/Cursed Lands/ingos-logic.json",
+        "sha256": "8df380fc76349ff65ee337f7e2ca2da7b3c1fbd0a8726594085506224b123a3b",
+        "rows": [
+          {
+            "zone": "bz21k",
+            "units": 52,
+            "tick_ms": {
+              "max": 8.469,
+              "median": 2.228,
+              "p95": 3.004,
+              "p99": 5.147
+            },
+            "sim_seconds": 43.9999999999998
+          },
+          {
+            "zone": "gz21k",
+            "units": 205,
+            "tick_ms": {
+              "max": 32.545,
+              "median": 10.814,
+              "p95": 13.802,
+              "p99": 16.431
+            },
+            "sim_seconds": 43.9999999999998
+          },
+          {
+            "zone": "gz22k",
+            "units": 178,
+            "tick_ms": {
+              "max": 52.599,
+              "median": 7.918,
+              "p95": 10.499,
+              "p99": 14.031
+            },
+            "sim_seconds": 43.9999999999998
+          },
+          {
+            "zone": "gz23k",
+            "units": 192,
+            "tick_ms": {
+              "max": 41.547,
+              "median": 9.237,
+              "p95": 11.856,
+              "p99": 38.992
+            },
+            "sim_seconds": 43.9999999999998
+          },
+          {
+            "zone": "gz24k",
+            "units": 63,
+            "tick_ms": {
+              "max": 6.304,
+              "median": 3.309,
+              "p95": 4.696,
+              "p99": 5.485
+            },
+            "sim_seconds": 43.9999999999998
+          },
+          {
+            "zone": "gz25k",
+            "units": 60,
+            "tick_ms": {
+              "max": 10.834,
+              "median": 2.97,
+              "p95": 4.361,
+              "p99": 5.411
+            },
+            "sim_seconds": 43.9999999999998
+          },
+          {
+            "zone": "gz26k",
+            "units": 26,
+            "tick_ms": {
+              "max": 3.919,
+              "median": 1.212,
+              "p95": 1.78,
+              "p99": 2.671
+            },
+            "sim_seconds": 43.9999999999998
+          }
+        ]
+      },
+      "final_source": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/ingos-final-route-endpoint/data/godot/app_userdata/Cursed Lands/ingos-logic.json",
+        "sha256": "fa09e1ca3b75be815124d368926790b6ddcd15d2701b87a07fd3721944e8b598",
+        "rows": [
+          {
+            "zone": "bz21k",
+            "units": 52,
+            "tick_ms": {
+              "max": 4.811,
+              "median": 2.174,
+              "p95": 2.811,
+              "p99": 3.378
+            },
+            "sim_seconds": 43.9999999999998
+          },
+          {
+            "zone": "gz21k",
+            "units": 205,
+            "tick_ms": {
+              "max": 22.48,
+              "median": 10.405,
+              "p95": 13.663,
+              "p99": 15.533
+            },
+            "sim_seconds": 43.9999999999998
+          },
+          {
+            "zone": "gz22k",
+            "units": 178,
+            "tick_ms": {
+              "max": 32.394,
+              "median": 7.959,
+              "p95": 10.534,
+              "p99": 13.898
+            },
+            "sim_seconds": 43.9999999999998
+          },
+          {
+            "zone": "gz23k",
+            "units": 192,
+            "tick_ms": {
+              "max": 16.046,
+              "median": 9.4,
+              "p95": 11.976,
+              "p99": 13.411
+            },
+            "sim_seconds": 43.9999999999998
+          },
+          {
+            "zone": "gz24k",
+            "units": 63,
+            "tick_ms": {
+              "max": 6.143,
+              "median": 3.23,
+              "p95": 4.63,
+              "p99": 5.228
+            },
+            "sim_seconds": 43.9999999999998
+          },
+          {
+            "zone": "gz25k",
+            "units": 60,
+            "tick_ms": {
+              "max": 7.668,
+              "median": 2.882,
+              "p95": 4.46,
+              "p99": 5.701
+            },
+            "sim_seconds": 43.9999999999998
+          },
+          {
+            "zone": "gz26k",
+            "units": 26,
+            "tick_ms": {
+              "max": 3.884,
+              "median": 1.183,
+              "p95": 1.779,
+              "p99": 2.759
+            },
+            "sim_seconds": 43.9999999999998
+          }
+        ]
+      },
+      "town_regression": "An intermediate prepared-route implementation caused a 50 ms unrelated component flood for Cow 44394502. Fixed by inspecting only reachable goal seeds; final town maximum 4.811 ms. Regression now asserts the unrelated room remains unlabelled."
+    },
+    "scope": "Local single-run comparisons. Final source includes 1.4.0 changes and the new archer behavior; the 1.3.1 performance-only comparison isolates geometry reuse and small-component relocation. No Windows or user-hardware FPS claim."
+  },
+  "tests": {
+    "nav-bounds-route-endpoint": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/nav-bounds-route-endpoint/result.json",
+      "sha256": "329eca25eeeeefa34883ec580bccfc080eeabe5f22c737c18bae52a61632e2bd",
+      "exit": 0,
+      "seconds": 2.5016509940032847,
+      "errors": [],
+      "summary": [
+        "NAV_RELOCATION_BOUNDS 3892 checks 0 failures; fast_us=78090 full_us=172007"
+      ],
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/nav-bounds-route-endpoint/run.log",
+        "sha256": "cedf59ae624dbe68805055b15bdce224db7171db43e3c1dad689322444cc2788"
+      }
+    },
+    "preview15-nav-script": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-nav-script/result.json",
+      "sha256": "a5279710e91290ad634d466fb889936845e06bc32c057b4c415c8cd868d0484f",
+      "exit": 0,
+      "seconds": 4.002405812003417,
+      "errors": [],
+      "summary": [
+        "NAV_RELOCATION_BOUNDS 3892 checks 0 failures; fast_us=304992 full_us=188821"
+      ],
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-nav-script/run.log",
+        "sha256": "85af3d19770d3ee8d5d843975b0497f0012385a9a384a3af13dcf12b8b5473c1"
+      }
+    },
+    "preview15-nav-paths": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-nav-paths/result.json",
+      "sha256": "15fdb8c311dbb56ad2c4b39ae5404cc75e98d728b55547b6b3335feb448613c8",
+      "exit": 0,
+      "seconds": 18.508645248002722,
+      "errors": [],
+      "summary": [
+        "LIA_NAVIGATION_PATHS 265 checks 0 failures"
+      ],
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-nav-paths/run.log",
+        "sha256": "07c5a769ee5cf362bf76ed9da47449f20a824dcdfada21f5ce84d8eff57cc2a8"
+      }
+    },
+    "preview15-archers": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-archers/result.json",
+      "sha256": "ae8f8f3ce5ee7ef33e3395b64783d6c194cc5ebe288941efa4b62b3e4987e293",
+      "exit": 0,
+      "seconds": 12.506779688999814,
+      "errors": [],
+      "summary": [
+        {
+          "test": "LIA_ARCHERS",
+          "checks": 86,
+          "failures": []
+        }
+      ],
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-archers/run.log",
+        "sha256": "96ef1ab07135bada28c94854e1b3ea508e7ea19aa6050e6d2fad21b6dea3a174"
+      }
+    },
+    "preview15-lock-tooltip": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-lock-tooltip/result.json",
+      "sha256": "85365fd66b7d66a796efefceb07b7d3bff2c74f09a5240f2aae9535709408842",
+      "exit": 0,
+      "seconds": 13.006383694999386,
+      "errors": [],
+      "summary": [
+        "LOCKED_HOVER 25 checks 0 failures"
+      ],
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-lock-tooltip/run.log",
+        "sha256": "d140bbeaed9668ff36910f23c30f6f24b2f919249a877debb1ce078d8e7a840d"
+      }
+    },
+    "preview15-limbs": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-limbs/result.json",
+      "sha256": "d53e7095a05afe8e1db93e6fb8f7aba8b6d69d260a4186ccfb357c519d4885be",
+      "exit": 0,
+      "seconds": 3.502180554001825,
+      "errors": [],
+      "summary": [
+        "SEVERED_LIMB_PHYSICS 268 checks 0 failures"
+      ],
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-limbs/run.log",
+        "sha256": "0f14af71c0952aa5398e9d7175aff2863c5019c25d2182c7bf76ba80394e93a0"
+      }
+    },
+    "preview15-original-archers": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-original-archers/result.json",
+      "sha256": "3d6b8c75c8d514bf4f27b22db06dc5e7a411f1ce7b7bd7e9faeca7c69dc6eb9e",
+      "exit": 0,
+      "seconds": 14.514536324000801,
+      "errors": [],
+      "summary": [
+        {
+          "test": "ARCHER_RANGE",
+          "checks": 558,
+          "failures": []
+        }
+      ],
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-original-archers/run.log",
+        "sha256": "c3c86e8df936a0919e15dc26bd3145d9cc57c52201a38b80923baf0bea0caee3"
+      }
+    },
+    "preview15-original-interactions": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-original-interactions/result.json",
+      "sha256": "544fb5bd2d43fd0046e1cd62fbcf854780c5d7e55ff38d0a8018f73662f54676",
+      "exit": 0,
+      "seconds": 49.02236074800021,
+      "errors": [],
+      "summary": [
+        "INGOS_INTERACTIONS 63 checks 0 failures"
+      ],
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview15-original-interactions/run.log",
+        "sha256": "0533d0568d070efa77038ee4672d37f5616e190035fb13291cdf792242c734ca"
+      }
+    },
+    "check-rain_cover_geometry": {
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/check-rain_cover_geometry/run.log",
+        "sha256": "8f6de0dea810e4a715025232257541ec1c643927027f8cd9af120c77506a9ba3"
+      },
+      "summary": [
+        "RAIN_COVER_GEOMETRY 2399 checks 0 failures"
+      ]
+    }
+  },
+  "visual": {
+    "scope": "Rendered Linux Vulkan at 1600x900; actual localized text archives plus RemakeText. Tooltips use the shared spell style, fit the viewport and disappear when effective skill qualifies. Limb ground contact was inspected after settling.",
+    "artifacts": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/hover-visual-final/data/godot/app_userdata/Cursed Lands/locked-en.png",
+        "sha256": "28926b20bd7fc7e2664cb7c228939987454c2178ca1496be2b684fc35dbfdd17"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/hover-visual-final/data/godot/app_userdata/Cursed Lands/locked-ru.png",
+        "sha256": "a6ec0c60506e21e05b36b5b6e724140db92661b9b0665f1f49c8b2de39fb9251"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/hover-visual-final/data/godot/app_userdata/Cursed Lands/locked-de.png",
+        "sha256": "99c07346948c38779b779445ac86814d123498b186657bedbfc6c4555497c823"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview-limbs-visual/data/godot/app_userdata/Cursed Lands/limbs-3.00.png",
+        "sha256": "5a592fc77540992fd287333db4674679502727eca371372c4c2b8ad9651cd896"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview-limbs-visual/data/godot/app_userdata/Cursed Lands/limbs-5.00.png",
+        "sha256": "4fe87d6a36ca096423dd0a45503e7aa8bf9aa9989f9026380722e44a83425043"
+      }
+    ]
+  },
+  "localization": {
+    "entries": 1168,
+    "errors": 0,
+    "check": "python3 tools/check_translations.py",
+    "languages": [
+      "English",
+      "Russian",
+      "German"
+    ]
+  },
+  "network": {
+    "zone": "gz2h",
+    "method": "Real ENet external guest and rendered host frontend with a separate authoritative LocalHost worker. Ready-synchronized 12-second short, long and mixed command bursts (~18–20 commands/s), then a 12-second settle phase. Reachable map destinations at about 3 m and 20 m. Separate isolated profiles.",
+    "jump_definition": "Drawn displacement > max(1.5 m, 15 m/s * frame duration). Smaller visible corrections are reported as step/error distributions, not asserted absent.",
+    "simulation": "Built-in latency/jitter/loss injection at both peers; not an actual ZeroTier overlay. Harsh case also injects a 180 ms guest frame stall every 4 seconds.",
+    "baseline_131": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement-baseline-120-60-2-ready/movement.json",
+      "sha256": "a109a57eb414de86f61a5a51ef0a3f73cc9b2b3d908e74051f18fb6f91c19456",
+      "result": {
+        "commands": 658,
+        "long_destinations": 4,
+        "network": [
+          120.0,
+          60.0,
+          2.0
+        ],
+        "origin": "(57.0, 305.5)",
+        "phases": [
+          {
+            "commands": 220,
+            "distance_to_last_target": 1.17156577110291,
+            "draw_error_m": {
+              "max": 0.772755920886993,
+              "median": 0.0220641791820526,
+              "p95": 0.404703497886658,
+              "p99": 0.534121811389923
+            },
+            "draw_step_m": {
+              "max": 0.0753789618611336,
+              "median": 0.0105600636452436,
+              "p95": 0.0646452829241753,
+              "p99": 0.073328360915184
+            },
+            "frame_ms": {
+              "max": 20.337,
+              "median": 6.901,
+              "p95": 9.216,
+              "p99": 12.632
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "short_burst",
+            "received_snapshots": 173,
+            "snapshot_gap_ms": {
+              "max": 164,
+              "median": 68,
+              "p95": 125,
+              "p99": 160
+            },
+            "snapshot_step_m": {
+              "max": 0.771343469619751,
+              "median": 0.247052937746048,
+              "p95": 0.525009274482727,
+              "p99": 0.663096725940704
+            }
+          },
+          {
+            "commands": 218,
+            "distance_to_last_target": 13.6715469360352,
+            "draw_error_m": {
+              "max": 0.862749636173248,
+              "median": 0.0634984895586967,
+              "p95": 0.23228232562542,
+              "p99": 0.356989353895187
+            },
+            "draw_step_m": {
+              "max": 0.0946287661790848,
+              "median": 0.013648864813149,
+              "p95": 0.0319617427885532,
+              "p99": 0.0563849695026875
+            },
+            "frame_ms": {
+              "max": 30.088,
+              "median": 6.899,
+              "p95": 9.725,
+              "p99": 14.572
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "long_burst",
+            "received_snapshots": 169,
+            "snapshot_gap_ms": {
+              "max": 200,
+              "median": 69,
+              "p95": 132,
+              "p99": 186
+            },
+            "snapshot_step_m": {
+              "max": 0.528716385364532,
+              "median": 0.11899645626545,
+              "p95": 0.328496813774109,
+              "p99": 0.511823117733002
+            }
+          },
+          {
+            "commands": 219,
+            "distance_to_last_target": 4.19428205490112,
+            "draw_error_m": {
+              "max": 0.346931308507919,
+              "median": 0.0560026243329048,
+              "p95": 0.198933064937592,
+              "p99": 0.266634851694107
+            },
+            "draw_step_m": {
+              "max": 0.043058879673481,
+              "median": 0.0126135563477874,
+              "p95": 0.0296265035867691,
+              "p99": 0.036309290677309
+            },
+            "frame_ms": {
+              "max": 33.936,
+              "median": 6.899,
+              "p95": 9.875,
+              "p99": 14.312
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "mixed_burst",
+            "received_snapshots": 171,
+            "snapshot_gap_ms": {
+              "max": 235,
+              "median": 66,
+              "p95": 139,
+              "p99": 204
+            },
+            "snapshot_step_m": {
+              "max": 0.346931308507919,
+              "median": 0.113751716911793,
+              "p95": 0.234375,
+              "p99": 0.341255158185959
+            }
+          },
+          {
+            "commands": 1,
+            "distance_to_last_target": 0.0,
+            "draw_error_m": {
+              "max": 0.34375,
+              "median": 0.0,
+              "p95": 0.144547507166862,
+              "p99": 0.234375
+            },
+            "draw_step_m": {
+              "max": 0.0369553416967392,
+              "median": 0.0,
+              "p95": 0.0255126953125,
+              "p99": 0.0322265625
+            },
+            "frame_ms": {
+              "max": 11.411,
+              "median": 6.902,
+              "p95": 8.297,
+              "p99": 9.192
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "settle",
+            "received_snapshots": 181,
+            "snapshot_gap_ms": {
+              "max": 188,
+              "median": 68,
+              "p95": 105,
+              "p99": 179
+            },
+            "snapshot_step_m": {
+              "max": 0.34375,
+              "median": 0.0,
+              "p95": 0.234375,
+              "p99": 0.252429604530334
+            }
+          }
+        ],
+        "players": 2,
+        "short_destinations": 16,
+        "units": 323,
+        "zone": "gz2h"
+      }
+    },
+    "candidate_moderate": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement-candidate-120-60-2-ready/movement.json",
+      "sha256": "c5dd8135bc7fff2e5ea5d7dfd300cff9521193dabb721f32834e835ca2f587b1",
+      "result": {
+        "commands": 660,
+        "long_destinations": 4,
+        "network": [
+          120.0,
+          60.0,
+          2.0
+        ],
+        "origin": "(57.0, 305.5)",
+        "phases": [
+          {
+            "commands": 220,
+            "distance_to_last_target": 1.99930894374847,
+            "draw_error_m": {
+              "max": 0.581493556499481,
+              "median": 0.0341997034847736,
+              "p95": 0.320969581604004,
+              "p99": 0.469010353088379
+            },
+            "draw_step_m": {
+              "max": 0.0830708295106888,
+              "median": 0.0123663330450654,
+              "p95": 0.05767822265625,
+              "p99": 0.0710886642336845
+            },
+            "frame_ms": {
+              "max": 18.942,
+              "median": 6.9,
+              "p95": 8.862,
+              "p99": 11.979
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "short_burst",
+            "received_snapshots": 211,
+            "snapshot_gap_ms": {
+              "max": 105,
+              "median": 61,
+              "p95": 103,
+              "p99": 105
+            },
+            "snapshot_step_m": {
+              "max": 0.581493556499481,
+              "median": 0.128847047686577,
+              "p95": 0.511823117733002,
+              "p99": 0.53125
+            }
+          },
+          {
+            "commands": 219,
+            "distance_to_last_target": 14.0264511108398,
+            "draw_error_m": {
+              "max": 0.287072032690048,
+              "median": 0.0648379623889923,
+              "p95": 0.190352216362953,
+              "p99": 0.234375
+            },
+            "draw_step_m": {
+              "max": 0.0579109191894531,
+              "median": 0.0137748718261719,
+              "p95": 0.0323257446289062,
+              "p99": 0.0387846156954765
+            },
+            "frame_ms": {
+              "max": 25.293,
+              "median": 6.902,
+              "p95": 9.608,
+              "p99": 12.935
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "long_burst",
+            "received_snapshots": 199,
+            "snapshot_gap_ms": {
+              "max": 140,
+              "median": 62,
+              "p95": 104,
+              "p99": 105
+            },
+            "snapshot_step_m": {
+              "max": 0.239016532897949,
+              "median": 0.113751716911793,
+              "p95": 0.234895259141922,
+              "p99": 0.239016532897949
+            }
+          },
+          {
+            "commands": 220,
+            "distance_to_last_target": 16.2342281341553,
+            "draw_error_m": {
+              "max": 0.247052937746048,
+              "median": 0.0552568398416042,
+              "p95": 0.158257350325584,
+              "p99": 0.205340147018433
+            },
+            "draw_step_m": {
+              "max": 0.0364057905972004,
+              "median": 0.0133016826584935,
+              "p95": 0.02545166015625,
+              "p99": 0.0328281112015247
+            },
+            "frame_ms": {
+              "max": 23.925,
+              "median": 6.901,
+              "p95": 9.496,
+              "p99": 12.755
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "mixed_burst",
+            "received_snapshots": 211,
+            "snapshot_gap_ms": {
+              "max": 131,
+              "median": 61,
+              "p95": 103,
+              "p99": 105
+            },
+            "snapshot_step_m": {
+              "max": 0.247052937746048,
+              "median": 0.110485434532166,
+              "p95": 0.219307318329811,
+              "p99": 0.237992912530899
+            }
+          },
+          {
+            "commands": 1,
+            "distance_to_last_target": 0.0,
+            "draw_error_m": {
+              "max": 0.253875732421875,
+              "median": 0.0,
+              "p95": 0.1065673828125,
+              "p99": 0.1893310546875
+            },
+            "draw_step_m": {
+              "max": 0.0345323905348778,
+              "median": 0.0,
+              "p95": 0.021471681073308,
+              "p99": 0.032318115234375
+            },
+            "frame_ms": {
+              "max": 12.568,
+              "median": 6.901,
+              "p95": 8.471,
+              "p99": 9.276
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "settle",
+            "received_snapshots": 204,
+            "snapshot_gap_ms": {
+              "max": 166,
+              "median": 62,
+              "p95": 103,
+              "p99": 104
+            },
+            "snapshot_step_m": {
+              "max": 0.234375,
+              "median": 0.0,
+              "p95": 0.125972777605057,
+              "p99": 0.234375
+            }
+          }
+        ],
+        "players": 2,
+        "short_destinations": 16,
+        "units": 323,
+        "zone": "gz2h"
+      }
+    },
+    "candidate_harsh": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement-candidate-300-180-5-ready/movement.json",
+      "sha256": "3f1cfc4f4869cdcb2593112d998dad052eacee30d9747caea6557cc7d7f044b2",
+      "result": {
+        "commands": 639,
+        "long_destinations": 4,
+        "network": [
+          300.0,
+          180.0,
+          5.0
+        ],
+        "origin": "(57.0, 305.5)",
+        "phases": [
+          {
+            "commands": 213,
+            "distance_to_last_target": 1.17340040206909,
+            "draw_error_m": {
+              "max": 1.03573834896088,
+              "median": 0.0,
+              "p95": 0.499141186475754,
+              "p99": 0.73127406835556
+            },
+            "draw_step_m": {
+              "max": 0.773082315921783,
+              "median": 0.0,
+              "p95": 0.0699088498950005,
+              "p99": 0.0967001542448997
+            },
+            "frame_ms": {
+              "max": 188.824,
+              "median": 6.9,
+              "p95": 8.332,
+              "p99": 11.806
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "short_burst",
+            "received_snapshots": 133,
+            "snapshot_gap_ms": {
+              "max": 264,
+              "median": 94,
+              "p95": 174,
+              "p99": 234
+            },
+            "snapshot_step_m": {
+              "max": 1.03573834896088,
+              "median": 0.25,
+              "p95": 0.703298568725586,
+              "p99": 0.788869082927704
+            }
+          },
+          {
+            "commands": 213,
+            "distance_to_last_target": 9.17742347717285,
+            "draw_error_m": {
+              "max": 1.05627775192261,
+              "median": 0.0598985739052296,
+              "p95": 0.368985861539841,
+              "p99": 0.570258975028992
+            },
+            "draw_step_m": {
+              "max": 0.570258975028992,
+              "median": 0.0121339345350862,
+              "p95": 0.0576153770089149,
+              "p99": 0.0735481008887291
+            },
+            "frame_ms": {
+              "max": 189.463,
+              "median": 6.903,
+              "p95": 8.514,
+              "p99": 12.471
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "long_burst",
+            "received_snapshots": 132,
+            "snapshot_gap_ms": {
+              "max": 334,
+              "median": 90,
+              "p95": 199,
+              "p99": 262
+            },
+            "snapshot_step_m": {
+              "max": 1.05627775192261,
+              "median": 0.223715960979462,
+              "p95": 0.519399046897888,
+              "p99": 0.775919318199158
+            }
+          },
+          {
+            "commands": 212,
+            "distance_to_last_target": 15.7361125946045,
+            "draw_error_m": {
+              "max": 0.586558938026428,
+              "median": 0.0548111349344254,
+              "p95": 0.240868732333183,
+              "p99": 0.345167517662048
+            },
+            "draw_step_m": {
+              "max": 0.407472312450409,
+              "median": 0.0109511762857437,
+              "p95": 0.0355482883751392,
+              "p99": 0.052414808422327
+            },
+            "frame_ms": {
+              "max": 190.785,
+              "median": 6.899,
+              "p95": 8.528,
+              "p99": 14.24
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "mixed_burst",
+            "received_snapshots": 135,
+            "snapshot_gap_ms": {
+              "max": 260,
+              "median": 70,
+              "p95": 199,
+              "p99": 214
+            },
+            "snapshot_step_m": {
+              "max": 0.585677027702332,
+              "median": 0.125972777605057,
+              "p95": 0.359714508056641,
+              "p99": 0.420425742864609
+            }
+          },
+          {
+            "commands": 1,
+            "distance_to_last_target": 0.0,
+            "draw_error_m": {
+              "max": 0.453125,
+              "median": 0.0,
+              "p95": 0.186142280697823,
+              "p99": 0.297027587890625
+            },
+            "draw_step_m": {
+              "max": 0.0406560227274895,
+              "median": 0.0,
+              "p95": 0.0251590181142092,
+              "p99": 0.0354080051183701
+            },
+            "frame_ms": {
+              "max": 186.645,
+              "median": 6.9,
+              "p95": 8.064,
+              "p99": 8.699
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "settle",
+            "received_snapshots": 138,
+            "snapshot_gap_ms": {
+              "max": 254,
+              "median": 69,
+              "p95": 185,
+              "p99": 201
+            },
+            "snapshot_step_m": {
+              "max": 0.453125,
+              "median": 0.0,
+              "p95": 0.236449152231216,
+              "p99": 0.34375
+            }
+          }
+        ],
+        "players": 2,
+        "short_destinations": 16,
+        "units": 323,
+        "zone": "gz2h"
+      },
+      "host_drawn_movement": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement-candidate-300-180-5-ready/host-motion.json",
+        "sha256": "22ffe1e481244721f35ebb2546ae0e3ab9ca0c2c88f399c76035d7eb84248eda",
+        "result": {
+          "1500000001": {
+            "frames": 7138,
+            "jumps": 0,
+            "max_step": 0.0
+          },
+          "1500000002": {
+            "frames": 7138,
+            "jumps": 0,
+            "max_step": 0.126068815588951
+          }
+        }
+      }
+    },
+    "final_preview": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement-preview15-120-60-2-ready/movement.json",
+      "sha256": "56fa0d28e4c0d74fedf71f962c86a4101b29a299eef8f62a12b1a88866e47590",
+      "result": {
+        "commands": 658,
+        "long_destinations": 4,
+        "network": [
+          120.0,
+          60.0,
+          2.0
+        ],
+        "origin": "(57.0, 305.5)",
+        "phases": [
+          {
+            "commands": 219,
+            "distance_to_last_target": 1.17156577110291,
+            "draw_error_m": {
+              "max": 0.656398057937622,
+              "median": 0.027000330388546,
+              "p95": 0.370535463094711,
+              "p99": 0.513965129852295
+            },
+            "draw_step_m": {
+              "max": 0.0911787897348404,
+              "median": 0.00953292846679688,
+              "p95": 0.066162109375,
+              "p99": 0.0746684819459915
+            },
+            "frame_ms": {
+              "max": 22.616,
+              "median": 6.903,
+              "p95": 8.979,
+              "p99": 11.522
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "short_burst",
+            "received_snapshots": 197,
+            "snapshot_gap_ms": {
+              "max": 145,
+              "median": 63,
+              "p95": 103,
+              "p99": 139
+            },
+            "snapshot_step_m": {
+              "max": 0.53764533996582,
+              "median": 0.139754250645638,
+              "p95": 0.520103633403778,
+              "p99": 0.533313989639282
+            }
+          },
+          {
+            "commands": 219,
+            "distance_to_last_target": 13.3373317718506,
+            "draw_error_m": {
+              "max": 0.484375,
+              "median": 0.0624846927821636,
+              "p95": 0.203698232769966,
+              "p99": 0.26005545258522
+            },
+            "draw_step_m": {
+              "max": 0.0642356872558594,
+              "median": 0.0136836292222142,
+              "p95": 0.032562255859375,
+              "p99": 0.0494510568678379
+            },
+            "frame_ms": {
+              "max": 29.193,
+              "median": 6.901,
+              "p95": 9.352,
+              "p99": 12.031
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "long_burst",
+            "received_snapshots": 203,
+            "snapshot_gap_ms": {
+              "max": 131,
+              "median": 62,
+              "p95": 100,
+              "p99": 104
+            },
+            "snapshot_step_m": {
+              "max": 0.484375,
+              "median": 0.113751716911793,
+              "p95": 0.242565229535103,
+              "p99": 0.266084164381027
+            }
+          },
+          {
+            "commands": 219,
+            "distance_to_last_target": 2.57124590873718,
+            "draw_error_m": {
+              "max": 0.268400281667709,
+              "median": 0.051130436360836,
+              "p95": 0.170115441083908,
+              "p99": 0.22495149075985
+            },
+            "draw_step_m": {
+              "max": 0.0420854315161705,
+              "median": 0.0128021240234375,
+              "p95": 0.0299333781003952,
+              "p99": 0.0329668186604977
+            },
+            "frame_ms": {
+              "max": 27.023,
+              "median": 6.899,
+              "p95": 9.839,
+              "p99": 12.987
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "mixed_burst",
+            "received_snapshots": 201,
+            "snapshot_gap_ms": {
+              "max": 140,
+              "median": 63,
+              "p95": 103,
+              "p99": 106
+            },
+            "snapshot_step_m": {
+              "max": 0.2430679500103,
+              "median": 0.110485434532166,
+              "p95": 0.234375,
+              "p99": 0.242565229535103
+            }
+          },
+          {
+            "commands": 1,
+            "distance_to_last_target": 0.0,
+            "draw_error_m": {
+              "max": 0.343417167663574,
+              "median": 0.0,
+              "p95": 0.112673476338387,
+              "p99": 0.214926153421402
+            },
+            "draw_step_m": {
+              "max": 0.04386081174016,
+              "median": 0.0,
+              "p95": 0.0218716785311699,
+              "p99": 0.0351634584367275
+            },
+            "frame_ms": {
+              "max": 11.163,
+              "median": 6.901,
+              "p95": 8.255,
+              "p99": 8.823
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "settle",
+            "received_snapshots": 207,
+            "snapshot_gap_ms": {
+              "max": 167,
+              "median": 62,
+              "p95": 103,
+              "p99": 132
+            },
+            "snapshot_step_m": {
+              "max": 0.332192063331604,
+              "median": 0.0,
+              "p95": 0.125972777605057,
+              "p99": 0.234375
+            }
+          }
+        ],
+        "players": 2,
+        "short_destinations": 16,
+        "units": 323,
+        "zone": "gz2h"
+      },
+      "host_drawn_movement": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement-preview15-120-60-2-ready/host-motion.json",
+        "sha256": "046d723e54ac7fa486109b37fdac59f9dc5681fc65422cae7e84e28e1d400b9b",
+        "result": {
+          "1500000001": {
+            "frames": 6869,
+            "jumps": 0,
+            "max_step": 0.0
+          },
+          "1500000002": {
+            "frames": 6869,
+            "jumps": 0,
+            "max_step": 0.444969177246094
+          }
+        }
+      }
+    },
+    "conclusion": "Reported teleporting was not reproduced in the baseline or candidates. No networking algorithm/protocol change is claimed. CPU stall fixes address a plausible contributing delay, not a proven network root cause.",
+    "harness_files": [
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement_host.gd",
+        "sha256": "333998afb26e3cec446db2f3142a6bf2ff5e3c463ef5ee8dffb53deca52ad3de"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement_guest.gd",
+        "sha256": "8db4bcadb39f157b4196932337ccebb27fe0738b5596798af1aa5c0f51f074cf"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/run_movement.py",
+        "sha256": "cac64f261235c4d2caec47c7e89ebcb5230bf0d28c6f722492f29aec4b0380b3"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement_observed_host.gd",
+        "sha256": "d6c2658aa7cabb5f61752fee3b57ccce0bcfaf8805e96f670ccd369a66337ec5"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/run_movement_observed.py",
+        "sha256": "e580c3af61a79e9d138f6d209ff923d122be58dabba232d12e3e306ad5d5e7a9"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement_rendered_host.gd",
+        "sha256": "b0bdee4d5e15dba894aeb2669b0bdb7d6d750080c55d6fe83ae606370282315c"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/run_movement_rendered.py",
+        "sha256": "632416a158bccfaa6e6ee3263778c4ae35a8d1e33aa62956f8e05fed5558675d"
+      }
+    ],
+    "observed_repeat": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement-preview15-observed-120-60-2-ready/movement.json",
+      "sha256": "ba515eb8cf5b6d1fab6b9e08459617cfa189d3a7eef9b5d1040a4db9d78192fa",
+      "result": {
+        "commands": 657,
+        "long_destinations": 4,
+        "network": [
+          120.0,
+          60.0,
+          2.0
+        ],
+        "origin": "(57.0, 305.5)",
+        "phases": [
+          {
+            "commands": 219,
+            "distance_to_last_target": 2.87074995040894,
+            "draw_error_m": {
+              "max": 0.636752009391785,
+              "median": 0.0382105000317097,
+              "p95": 0.348857879638672,
+              "p99": 0.515388190746307
+            },
+            "draw_step_m": {
+              "max": 0.0884466469287872,
+              "median": 0.0124241737648845,
+              "p95": 0.0610296949744225,
+              "p99": 0.0731740668416023
+            },
+            "frame_ms": {
+              "max": 24.007,
+              "median": 6.898,
+              "p95": 8.995,
+              "p99": 12.204
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "short_burst",
+            "received_snapshots": 209,
+            "snapshot_gap_ms": {
+              "max": 138,
+              "median": 62,
+              "p95": 103,
+              "p99": 129
+            },
+            "snapshot_step_m": {
+              "max": 0.53764533996582,
+              "median": 0.122035153210163,
+              "p95": 0.515861690044403,
+              "p99": 0.53125
+            }
+          },
+          {
+            "commands": 219,
+            "distance_to_last_target": 14.8016729354858,
+            "draw_error_m": {
+              "max": 0.384988695383072,
+              "median": 0.0607380457222462,
+              "p95": 0.203844830393791,
+              "p99": 0.242565229535103
+            },
+            "draw_step_m": {
+              "max": 0.0579109191894531,
+              "median": 0.0137138366699219,
+              "p95": 0.0323962531983852,
+              "p99": 0.0380797982215881
+            },
+            "frame_ms": {
+              "max": 24.326,
+              "median": 6.894,
+              "p95": 9.693,
+              "p99": 12.775
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "long_burst",
+            "received_snapshots": 191,
+            "snapshot_gap_ms": {
+              "max": 132,
+              "median": 66,
+              "p95": 104,
+              "p99": 132
+            },
+            "snapshot_step_m": {
+              "max": 0.365771859884262,
+              "median": 0.113751716911793,
+              "p95": 0.236449152231216,
+              "p99": 0.36073112487793
+            }
+          },
+          {
+            "commands": 218,
+            "distance_to_last_target": 16.6893272399902,
+            "draw_error_m": {
+              "max": 0.25,
+              "median": 0.0543212890625,
+              "p95": 0.167960688471794,
+              "p99": 0.230700358748436
+            },
+            "draw_step_m": {
+              "max": 0.0336737670004368,
+              "median": 0.0132176345214248,
+              "p95": 0.0285688880831003,
+              "p99": 0.0330485105514526
+            },
+            "frame_ms": {
+              "max": 28.463,
+              "median": 6.895,
+              "p95": 9.687,
+              "p99": 12.847
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "mixed_burst",
+            "received_snapshots": 202,
+            "snapshot_gap_ms": {
+              "max": 173,
+              "median": 64,
+              "p95": 103,
+              "p99": 110
+            },
+            "snapshot_step_m": {
+              "max": 0.25,
+              "median": 0.112673476338387,
+              "p95": 0.234375,
+              "p99": 0.244070306420326
+            }
+          },
+          {
+            "commands": 1,
+            "distance_to_last_target": 0.0,
+            "draw_error_m": {
+              "max": 0.242565229535103,
+              "median": 0.0,
+              "p95": 0.111429333686829,
+              "p99": 0.192995458841324
+            },
+            "draw_step_m": {
+              "max": 0.032837126404047,
+              "median": 0.0,
+              "p95": 0.0240219682455063,
+              "p99": 0.030426025390625
+            },
+            "frame_ms": {
+              "max": 9.659,
+              "median": 6.898,
+              "p95": 8.26,
+              "p99": 8.95
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "settle",
+            "received_snapshots": 199,
+            "snapshot_gap_ms": {
+              "max": 137,
+              "median": 63,
+              "p95": 104,
+              "p99": 131
+            },
+            "snapshot_step_m": {
+              "max": 0.242565229535103,
+              "median": 0.0,
+              "p95": 0.21875,
+              "p99": 0.239016532897949
+            }
+          }
+        ],
+        "players": 2,
+        "short_destinations": 16,
+        "units": 323,
+        "zone": "gz2h"
+      },
+      "host_drawn_movement": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement-preview15-observed-120-60-2-ready/host-motion.json",
+        "sha256": "1d488ca43dbff1dcf37e0e1ad76ca7a024c060e6051e1c6d2fa1417bcbd312ef",
+        "result": {
+          "1500000001": {
+            "frames": 6949,
+            "jumps": 0,
+            "large_steps": [],
+            "max_step": 0.0,
+            "max_step_frame": {}
+          },
+          "1500000002": {
+            "frames": 6949,
+            "jumps": 0,
+            "large_steps": [
+              {
+                "engine_dt": 0.0166666666666667,
+                "snapshot_age_ms": 73,
+                "speed": 7.044829487402,
+                "step": 0.267765045166016,
+                "target_error": 0.0,
+                "wall_dt": 0.01
+              }
+            ],
+            "max_step": 0.267765045166016,
+            "max_step_frame": {
+              "engine_dt": 0.0166666666666667,
+              "snapshot_age_ms": 73,
+              "speed": 7.044829487402,
+              "step": 0.267765045166016,
+              "target_error": 0.0,
+              "wall_dt": 0.01
+            }
+          }
+        }
+      }
+    },
+    "rendered_repeat": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement-preview15-rendered-120-60-2-ready/movement.json",
+      "sha256": "8948bfe3e07c67facf6785af0b7a3ed1449e220009cef4fd5f7771ef0afe3a92",
+      "result": {
+        "commands": 658,
+        "long_destinations": 4,
+        "network": [
+          120.0,
+          60.0,
+          2.0
+        ],
+        "origin": "(57.0, 305.5)",
+        "phases": [
+          {
+            "commands": 219,
+            "distance_to_last_target": 1.17156577110291,
+            "draw_error_m": {
+              "max": 0.659101128578186,
+              "median": 0.0329529643058777,
+              "p95": 0.360351115465164,
+              "p99": 0.520103633403778
+            },
+            "draw_step_m": {
+              "max": 0.102457880973816,
+              "median": 0.0115282377228141,
+              "p95": 0.0658789873123169,
+              "p99": 0.0800217241048813
+            },
+            "frame_ms": {
+              "max": 16.976,
+              "median": 6.903,
+              "p95": 8.703,
+              "p99": 10.595
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "short_burst",
+            "received_snapshots": 194,
+            "snapshot_gap_ms": {
+              "max": 172,
+              "median": 63,
+              "p95": 103,
+              "p99": 138
+            },
+            "snapshot_step_m": {
+              "max": 0.650270402431488,
+              "median": 0.176776692271233,
+              "p95": 0.52407842874527,
+              "p99": 0.581493556499481
+            }
+          },
+          {
+            "commands": 219,
+            "distance_to_last_target": 13.9794149398804,
+            "draw_error_m": {
+              "max": 0.539458632469177,
+              "median": 0.0664520263671875,
+              "p95": 0.219307318329811,
+              "p99": 0.373910993337631
+            },
+            "draw_step_m": {
+              "max": 0.0721396505832672,
+              "median": 0.013763427734375,
+              "p95": 0.0378060713410378,
+              "p99": 0.0679898634552956
+            },
+            "frame_ms": {
+              "max": 25.063,
+              "median": 6.903,
+              "p95": 9.489,
+              "p99": 13.329
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "long_burst",
+            "received_snapshots": 206,
+            "snapshot_gap_ms": {
+              "max": 134,
+              "median": 61,
+              "p95": 103,
+              "p99": 106
+            },
+            "snapshot_step_m": {
+              "max": 0.539458632469177,
+              "median": 0.113751716911793,
+              "p95": 0.266084164381027,
+              "p99": 0.519399046897888
+            }
+          },
+          {
+            "commands": 219,
+            "distance_to_last_target": 3.27548694610596,
+            "draw_error_m": {
+              "max": 0.277361392974854,
+              "median": 0.054966863244772,
+              "p95": 0.164013639092445,
+              "p99": 0.223186403512955
+            },
+            "draw_step_m": {
+              "max": 0.051520012319088,
+              "median": 0.0132967364042997,
+              "p95": 0.0294632259756327,
+              "p99": 0.0362231992185116
+            },
+            "frame_ms": {
+              "max": 24.685,
+              "median": 6.902,
+              "p95": 9.653,
+              "p99": 13.564
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "mixed_burst",
+            "received_snapshots": 213,
+            "snapshot_gap_ms": {
+              "max": 139,
+              "median": 58,
+              "p95": 103,
+              "p99": 133
+            },
+            "snapshot_step_m": {
+              "max": 0.2430679500103,
+              "median": 0.110485434532166,
+              "p95": 0.234895259141922,
+              "p99": 0.239016532897949
+            }
+          },
+          {
+            "commands": 1,
+            "distance_to_last_target": 0.0,
+            "draw_error_m": {
+              "max": 0.268755674362183,
+              "median": 0.0,
+              "p95": 0.106722980737686,
+              "p99": 0.194644302129745
+            },
+            "draw_step_m": {
+              "max": 0.0370795764029026,
+              "median": 0.0,
+              "p95": 0.0217521209269762,
+              "p99": 0.0328356251120567
+            },
+            "frame_ms": {
+              "max": 10.492,
+              "median": 6.904,
+              "p95": 8.299,
+              "p99": 8.909
+            },
+            "hero_dead": false,
+            "jumps": 0,
+            "phase": "settle",
+            "received_snapshots": 206,
+            "snapshot_gap_ms": {
+              "max": 104,
+              "median": 62,
+              "p95": 103,
+              "p99": 104
+            },
+            "snapshot_step_m": {
+              "max": 0.244569942355156,
+              "median": 0.0,
+              "p95": 0.125972777605057,
+              "p99": 0.237992912530899
+            }
+          }
+        ],
+        "players": 2,
+        "short_destinations": 16,
+        "units": 323,
+        "zone": "gz2h"
+      },
+      "host_drawn_movement": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/movement-preview15-rendered-120-60-2-ready/host-motion.json",
+        "sha256": "0955dde3e4ebd8f6d9638af49203cede2eed26f25a416320b37ba2fcb564b743",
+        "result": {
+          "1500000001": {
+            "frames": 4000,
+            "jumps": 0,
+            "large_steps": [],
+            "max_step": 0.0,
+            "max_step_frame": {}
+          },
+          "1500000002": {
+            "frames": 4000,
+            "jumps": 0,
+            "large_steps": [
+              {
+                "engine_dt": 0.0577867142857143,
+                "smoothing_dt": 0.0577867142857143,
+                "snapshot_age_ms": 8,
+                "speed": 9.37794152253206,
+                "step": 0.541919708251953,
+                "target_error": 0.00292587280273438,
+                "time_scale": 1.0,
+                "wall_dt": 0.009
+              },
+              {
+                "engine_dt": 0.00694444444444444,
+                "smoothing_dt": 0.00694444444444444,
+                "snapshot_age_ms": 13,
+                "speed": 11.4051055908203,
+                "step": 0.154903411865234,
+                "target_error": 0.415351867675781,
+                "time_scale": 1.0,
+                "wall_dt": 0.013
+              },
+              {
+                "engine_dt": 0.00694444444444444,
+                "smoothing_dt": 0.00694444444444444,
+                "snapshot_age_ms": 29,
+                "speed": 11.4051055908203,
+                "step": 0.158401489257812,
+                "target_error": 0.256950378417969,
+                "time_scale": 1.0,
+                "wall_dt": 0.016
+              },
+              {
+                "engine_dt": 0.00757575757575758,
+                "smoothing_dt": 0.00757575757575758,
+                "snapshot_age_ms": 21,
+                "speed": 11.5851938724518,
+                "step": 0.175512507557869,
+                "target_error": 0.315990924835205,
+                "time_scale": 1.0,
+                "wall_dt": 0.014
+              },
+              {
+                "engine_dt": 0.00757575757575758,
+                "smoothing_dt": 0.00757575757575758,
+                "snapshot_age_ms": 37,
+                "speed": 11.5851938724518,
+                "step": 0.175510466098785,
+                "target_error": 0.140480473637581,
+                "time_scale": 1.0,
+                "wall_dt": 0.016
+              },
+              {
+                "engine_dt": 0.00740740740740741,
+                "smoothing_dt": 0.00740740740740741,
+                "snapshot_age_ms": 22,
+                "speed": 10.4020726680756,
+                "step": 0.154091760516167,
+                "target_error": 0.288964420557022,
+                "time_scale": 1.0,
+                "wall_dt": 0.015
+              },
+              {
+                "engine_dt": 0.00652305723905728,
+                "smoothing_dt": 0.00652305723905728,
+                "snapshot_age_ms": 36,
+                "speed": 10.4020726680756,
+                "step": 0.154108271002769,
+                "target_error": 0.134856134653091,
+                "time_scale": 1.0,
+                "wall_dt": 0.014
+              },
+              {
+                "engine_dt": 0.00694444444444444,
+                "smoothing_dt": 0.00694444444444444,
+                "snapshot_age_ms": 20,
+                "speed": 12.4782121181488,
+                "step": 0.173308789730072,
+                "target_error": 0.363947451114655,
+                "time_scale": 1.0,
+                "wall_dt": 0.014
+              },
+              {
+                "engine_dt": 0.00694444444444444,
+                "smoothing_dt": 0.00694444444444444,
+                "snapshot_age_ms": 32,
+                "speed": 12.4782121181488,
+                "step": 0.173308789730072,
+                "target_error": 0.190638661384583,
+                "time_scale": 1.0,
+                "wall_dt": 0.012
+              },
+              {
+                "engine_dt": 0.00714285714285714,
+                "smoothing_dt": 0.00714285714285714,
+                "snapshot_age_ms": 12,
+                "speed": 10.5743277072906,
+                "step": 0.156454920768738,
+                "target_error": 0.372261464595795,
+                "time_scale": 1.0,
+                "wall_dt": 0.011
+              },
+              {
+                "engine_dt": 0.00714285714285714,
+                "smoothing_dt": 0.00714285714285714,
+                "snapshot_age_ms": 28,
+                "speed": 10.5743277072906,
+                "step": 0.151074767112732,
+                "target_error": 0.221186697483063,
+                "time_scale": 1.0,
+                "wall_dt": 0.016
+              },
+              {
+                "engine_dt": 0.00714285714285714,
+                "smoothing_dt": 0.00714285714285714,
+                "snapshot_age_ms": 40,
+                "speed": 10.5743277072906,
+                "step": 0.151057630777359,
+                "target_error": 0.0701290592551231,
+                "time_scale": 1.0,
+                "wall_dt": 0.012
+              },
+              {
+                "engine_dt": 0.00740740740740741,
+                "smoothing_dt": 0.00740740740740741,
+                "snapshot_age_ms": 14,
+                "speed": 10.6662797927856,
+                "step": 0.158020913600922,
+                "target_error": 0.375293076038361,
+                "time_scale": 1.0,
+                "wall_dt": 0.014
+              },
+              {
+                "engine_dt": 0.00740740740740741,
+                "smoothing_dt": 0.00740740740740741,
+                "snapshot_age_ms": 28,
+                "speed": 10.6662797927856,
+                "step": 0.158020913600922,
+                "target_error": 0.217272162437439,
+                "time_scale": 1.0,
+                "wall_dt": 0.014
+              },
+              {
+                "engine_dt": 0.00740740740740741,
+                "smoothing_dt": 0.00740740740740741,
+                "snapshot_age_ms": 41,
+                "speed": 10.6662797927856,
+                "step": 0.158020913600922,
+                "target_error": 0.0592512525618076,
+                "time_scale": 1.0,
+                "wall_dt": 0.013
+              }
+            ],
+            "max_step": 0.541919708251953,
+            "max_step_frame": {
+              "engine_dt": 0.0577867142857143,
+              "smoothing_dt": 0.0577867142857143,
+              "snapshot_age_ms": 8,
+              "speed": 9.37794152253206,
+              "step": 0.541919708251953,
+              "target_error": 0.00292587280273438,
+              "time_scale": 1.0,
+              "wall_dt": 0.009
+            }
+          }
+        }
+      }
+    },
+    "small_step_analysis": {
+      "largest_rendered_sample_m": 0.541919708251953,
+      "engine_frame_ms": 57.786714285714304,
+      "smoothing_speed_m_s": 9.37794152253206,
+      "calculated_distance_m": 0.5419204273506968,
+      "finding": "Largest sampled displacement matches continuous smoothing during the long engine frame; no separate discontinuous position jump was identified. Post-render sampling can span multiple frames; wall sampling intervals are retained alongside the actual engine delta."
+    }
+  },
+  "limits": [
+    "Windows package export and resource audit passed; native Windows gameplay was not run.",
+    "Persistent mansion dips and the reported multiplayer teleport were not reproduced under the tested conditions.",
+    "Local test runs used isolated profiles and generated fixtures. User saves were not modified.",
+    "No tag, release, hosted browser export or remote repository was published."
+  ],
+  "prior_component_checks": {
+    "preview-rain-vulkan": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview-rain-vulkan/result.json",
+      "sha256": "3ee94798e7b826f76d911bab405b0b30edd880e208372257439287dac890b8cb",
+      "exit": 0,
+      "seconds": 11.005422246998933,
+      "errors": [],
+      "summary": [
+        "RAIN_COVER_GEOMETRY 2399 checks 0 failures"
+      ],
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview-rain-vulkan/run.log",
+        "sha256": "234e15c8b77f97b3388264f9fbe03395d7b76edf7446983b5f0e0e40b935e947"
+      }
+    },
+    "preview-limbs-original": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview-limbs-original/result.json",
+      "sha256": "7ddc861a134d023f6a073555ecb23760658137160fbeb0cef7eeba7544ab41f5",
+      "exit": 0,
+      "seconds": 3.5021834860017407,
+      "errors": [],
+      "summary": [
+        "SEVERED_LIMB_PHYSICS 268 checks 0 failures"
+      ],
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015/preview-limbs-original/run.log",
+        "sha256": "8e6e2d8b6777c1b8e2b230a251240eb827daed27f08b5737dd75a0b67898c530"
+      }
+    },
+    "scope": "Earlier unpublished preview; the geometry, weather, footprint and severed-limb implementation files are byte-identical to the final preview."
+  },
+  "test_sources": {
+    "tools/tests/severed_limb_physics.gd": "ea6d48f8763958d0eb75fcb48f47d9a911a31825db37fd99b90b02df2c8bc2d2",
+    "tools/tests/rain_cover_geometry.gd": "d808ea8de549ea19262e2917dd18dc41ce6082fb3a04ae18b08c8895bfaf82a5",
+    "tools/tests/nav_relocation_bounds.gd": "6c353fe3f6bbf985be67a8ca8e2416ed679ddc9e11f09db6fea3c7f49c0c52e2",
+    "tools/tests/lia_navigation_paths.gd": "32390c7852becfb68b68f0cbff91d6f8a29183eebf1f6ddc474c90a80dd047ae",
+    "tools/tests/lia_archers.gd": "7156072533cad14283e878b1a77570c1250b1646b64caa66f0f105db7c847b0c",
+    "tools/tests/locked_hover.gd": "cefb844b52a3a346cadd71b14a33bd909d376f7bba6b998e29548d3fef6d2b6d",
+    "tools/tests/fixtures/lia-navigation-paths.json": "e0d4dc1235539554b1aaa229f33b55e34f03bf73f9ee6c663d8048268f553e7e",
+    "tools/benchmarks/lia_frame_time.gd": "a1922f25c08eea0e8c61d435f4f8f135b8afa1700dcae47e27c4aa26b2e48e31",
+    "tools/benchmarks/lia_ingos_simulation.gd": "339c9614d1f650977c00f2f91964aab6ab23f1d416f11879716c7beb6bd64090"
+  }
+}

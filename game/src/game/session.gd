@@ -3760,6 +3760,38 @@ func steal(u: GameUnit, t: GameUnit) -> void:
 	sync_state()
 
 
+func lever_science_ok(u: GameUnit, nid: int) -> bool:
+	if world == null or world.lever_sys == null or not is_instance_valid(u):
+		return false
+	var bag := state.items if lmp.is_empty() else coop.owner_bag(u.controller)
+	var quest := bag.filter(func(x): return Items.kind(String(x)) == "quest")
+	if lmp.is_empty():
+		quest.append_array(state.quest_items.keys())
+	return world.lever_sys.science_ok(nid, steal_value(u), quest)
+
+
+## Use the same effective skill, nearest-even rounding and quest keys as the
+## authoritative interaction. Frontends have no script VM, but have this state.
+func lever_requirement(nid: int, actors: Array[GameUnit]) -> String:
+	if world == null or world.lever_sys == null or not world.lever_sys.usable(nid) or actors.is_empty():
+		return ""
+	var lever: Dictionary = world.levers[nid]
+	var science: Array = lever.get("science", LeverSystem.DEFAULT_SCIENCE)
+	if science.size() < 3 or (int(science[0]) & 1) == 0 or int(science[2]) <= 0 \
+		or int(lever.get("state", 0)) >= int(lever.get("states", 2)) - 1:
+		return ""
+	var eligible := false
+	for actor in actors:
+		if not is_instance_valid(actor) or actor.dead or actor.controller != my_index:
+			continue
+		eligible = true
+		if lever_science_ok(actor, nid):
+			return ""
+	if not eligible:
+		return ""
+	return RemakeText.t("Requires %d %s to open.") % [int(science[2]), Skills.title("science")]
+
+
 ## The Use/Steal value (index 0, used by both Use and Steal):
 ## a character (unit id in [1e9, 2e9)) Dex − 25 + its Use/Steal skill (+ the
 ## best belt item modifier, all 0 in items.idb); any other unit its stats

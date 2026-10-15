@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.5.0 — stable release, 15 October 2026
+
+- Retain scenery geometry on the CPU for rain-shelter maps and footprint setup, avoiding renderer readbacks during gameplay.
+- Give detached limbs mesh-based ground contacts, outward launch, repeated bounces, friction and gradual settling on slopes.
+- Bound destination relocation for small disconnected navigation regions and reuse prepared connectivity to reject unreachable routes and unrelated endpoint searches, preserving endpoint order.
+- Skip footprint animation-position queries until an animation is active.
+- Show the required Use/Steal value when hovering a locked object that the selected character cannot open, accounting for effective skill and quest keys.
+- Use localized fallback names for unnamed creatures and remains instead of map identifiers.
+- Let archers replace a patrol or investigation with a retreat immediately after noticing a nearby threat.
+
+See [release notes](docs/releases/1.5.0.md) for compatibility and platform limits.
+
 ## 1.4.0 — stable release, 15 October 2026
 
 - Preserve looted actor references when quests replace a location’s population, preventing co-op progress saving and full saves from crashing the server.

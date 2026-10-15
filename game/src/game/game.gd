@@ -80,6 +80,7 @@ func _ready() -> void:
 		set_process(false)
 		set_process_unhandled_input(false)
 		return
+	add_to_group("world_tooltip")
 	_setup_env()
 	rig = CameraRig.new()
 	add_child(rig)
@@ -1483,9 +1484,38 @@ func _pick_ground_forward(from: Vector3, dir: Vector3) -> Variant:
 	return null
 
 
+## World tips share the spell tooltip renderer without an input-blocking
+## fullscreen Control. The target identity restarts its hover delay.
+func world_tooltip() -> Dictionary:
+	if world == null or session == null or hud == null or hud.blocks_input() or session.shop_available() \
+		or _dragging or cursor.camera_drag_active() or rig.edge != Vector2i.ZERO \
+		or Input.get_mouse_button_mask() != 0 or (pending_spell != "" and pending_spell != SCIENCE):
+		return {}
+	var p := get_viewport().get_mouse_position()
+	var actors: Array[GameUnit] = selected
+	var exclude: GameUnit
+	if direct and direct.active() and not direct.pointer:
+		p = get_viewport().get_visible_rect().size * 0.5
+		var leader := direct.leader()
+		actors = [leader] if leader else []
+		exclude = leader
+	if actors.is_empty() or pick_unit(p, exclude) != null:
+		return {}
+	var nid := pick_lever(p)
+	var tip := session.lever_requirement(nid, actors)
+	return {} if tip.is_empty() else {"key": [world.get_instance_id(), nid], "text": WorldLabels.lever_title(world, nid) + "\n" + tip, "position": p}
+
+
 ## Usable lever (switch, chest) under the cursor, or -1.
+var _lever_pick_key := []
+var _lever_pick_hit := -1
+
 func pick_lever(p: Vector2) -> int:
 	var cam := rig.camera
+	var key := [Engine.get_process_frames(), world.get_instance_id(), p, cam.global_transform]
+	if key == _lever_pick_key:
+		return _lever_pick_hit
+	_lever_pick_key = key
 	var view := GameUnit.MeshScreenRect.camera_context(cam)
 	var to_view := cam.get_camera_transform().affine_inverse()
 	var best := -1
@@ -1517,7 +1547,8 @@ func pick_lever(p: Vector2) -> int:
 		if d < bd:
 			bd = d
 			nearby = nid
-	return best if best >= 0 else nearby
+	_lever_pick_hit = best if best >= 0 else nearby
+	return _lever_pick_hit
 
 
 ## The unit under the cursor, as the original (mouse move

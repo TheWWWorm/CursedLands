@@ -156,9 +156,9 @@ static func rasterize_cover(node: Node3D, terrain: EITerrain, heights: PackedFlo
 			continue
 		var xf := NavGrid._local_xf(mi, node)
 		for si in mi.mesh.get_surface_count():
-			var arr := mi.mesh.surface_get_arrays(si)
-			var vertices: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
-			var indices: PackedInt32Array = arr[Mesh.ARRAY_INDEX]
+			var geometry := EIFigure.surface_geometry(mi.mesh, si)
+			var vertices: PackedVector3Array = geometry[0]
+			var indices: PackedInt32Array = geometry[1]
 			var count := indices.size() if not indices.is_empty() else vertices.size()
 			for ti in range(0, count - 2, 3):
 				var a: Vector3 = xf * vertices[indices[ti] if not indices.is_empty() else ti]

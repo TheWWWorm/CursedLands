@@ -114,6 +114,8 @@ static func _mesh(fig: String) -> ArrayMesh:
 			uv[i] = Vector2(uv[i].x * 2.0, uv[i].y * 2.0 - 1.0)
 		arrays[Mesh.ARRAY_TEX_UV] = uv
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		if s == 0:
+			mesh.set_meta(EIFigure.GEOMETRY_META, [arrays[Mesh.ARRAY_VERTEX], arrays[Mesh.ARRAY_INDEX]])
 	_meshes[fig] = mesh
 	return mesh
 

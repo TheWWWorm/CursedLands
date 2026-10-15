@@ -66,10 +66,12 @@ var _tile_labels := {}
 var _seed_costs := {}
 var _seed_topology := {}
 var _cell_components := {}
+var _neighbour_components := {}
 var _single_source := {}
 var _undirected := true
 var _terrain_kernel: RefCounted
 var _native_topology := false
+var components_prepared := false
 var profile := false
 var profile_us := {}
 var profile_counts := {}
@@ -531,10 +533,56 @@ func component_of(p: Vector2i) -> int:
 	_cell_components[p] = chosen
 	return chosen
 
-func _in_component(p: Vector2i,wanted: int) -> bool:
+func _in_component(p: Vector2i,wanted: int,reject_neighbours := true) -> bool:
+	# Endpoint seeds can only reach representatives in this 3x3 block area.
+	# Reject other components before constructing a 25x25 cell flood for
+	# every relocation candidate. The graph is replaced on each map revision.
+	if reject_neighbours:
+		var block := Vector2i(clampi(p.x/BLOCK,0,size.x-1),clampi(p.y/BLOCK,0,size.y-1))
+		if not _neighbour_components.has(block):
+			var labels := {}
+			for y in range(block.y-1,block.y+2):
+				for x in range(block.x-1,block.x+2):
+					var b := Vector2i(x,y)
+					if _inside(b): labels[component(b)] = true
+			_neighbour_components[block] = labels
+		if not _neighbour_components[block].has(wanted): return false
 	for entry: Array in _topology_seeds(p,true):
 		if component(entry[0]) == wanted: return true
 	return false
+
+var _relocation_bounds := {}
+
+## A small disconnected component cannot accept endpoints across the map.
+## Prove its complete extent with the same reciprocal block edges used by
+## component(); larger components retain the ordinary relocation search.
+func _small_component_bounds(p: Vector2i,wanted: int) -> Rect2i:
+	if _relocation_bounds.has(wanted): return _relocation_bounds[wanted]
+	var pending: Array[Vector2i] = []
+	for entry: Array in _topology_seeds(p,false):
+		if component(entry[0]) == wanted:
+			pending.append(entry[0])
+			break
+	if pending.is_empty(): return Rect2i()
+	var visited := {pending[0]:true}
+	var lo := pending[0]
+	var hi := lo
+	var at := 0
+	while at < pending.size():
+		var b := pending[at];at += 1
+		for k in range(1,9):
+			var q: Vector2i = b+DIRECTIONS[k]
+			if not visited.has(q) and _edge_open(b,k):
+				visited[q] = true;pending.append(q)
+				if pending.size() > 64:
+					_relocation_bounds[wanted] = Rect2i()
+					return Rect2i()
+				lo = lo.min(q);hi = hi.max(q)
+	# Endpoint seeds inspect a 3x3 block neighbourhood. Include that entire
+	# fringe: a cell outside it cannot have a seed in the wanted component.
+	var bounds := Rect2i((lo-Vector2i.ONE)*BLOCK,(hi-lo+Vector2i(3,3))*BLOCK)
+	_relocation_bounds[wanted] = bounds
+	return bounds
 
 func _topology_seeds(p: Vector2i,reverse: bool) -> Array:
 	if _native_topology and _terrain_kernel: return _terrain_kernel.topology_seeds(p,reverse)
@@ -598,6 +646,13 @@ func source_seeds_connected(p: Vector2i) -> bool:
 
 func connected_route(start: Vector2i,goal: Vector2i) -> Array[Vector2i]:
 	if not source_seeds_connected(start): return []
+	# Loading has already labelled the actors' static components. Use that
+	# proof to avoid exhausting the weighted graph for a disconnected goal.
+	# Lazy/script graphs retain the positive local proof above, so a normal
+	# short path never pays for a new map-wide component flood here.
+	# A single route endpoint should inspect only its reachable seeds. Labelling
+	# every neighbouring block can flood an unrelated, unprepared component.
+	if components_prepared and not _in_component(goal,component_of(start),false): return []
 	return route(start,goal)
 
 func _open(p: Vector2i,stamp: Dictionary) -> bool:
@@ -633,11 +688,22 @@ func relocate(start: Vector2,goal: Vector2,connected := false,min_radius := 0.0)
 		x = _f(x*scale);y = _f(y*scale);dx = _f(dx*scale);dy = _f(dy*scale)
 	var rays := [Vector2(dx,dy),Vector2(x,y),Vector2(y,-x),Vector2(dy,-dx),
 		Vector2(-dy,dx),Vector2(-y,x),Vector2(-x,-y),Vector2(-dx,-dy)]
+	var bounds := _small_component_bounds(origin,wanted) if connected else Rect2i()
+	if bounds.has_area():
+		var nearest := target.clamp(bounds.position,bounds.end-Vector2i.ONE)
+		var distance := (target-nearest).abs()
+		var longest := 0.0
+		for ray: Vector2 in rays: longest = maxf(longest,maxf(absf(ray.x),absf(ray.y)))
+		if longest > 0.0:
+			# A ray moves at most longest cells per radius. The extra cell and
+			# radius preserve round-to-even boundaries and float intermediates.
+			first = maxi(first,floori((maxi(distance.x,distance.y)-1)/longest)-1)
 	var checked := {}
 	for r in range(first,radius+1):
 		for k in (1 if r == 0 else 8):
 			var ray: Vector2 = rays[k]
 			var p := target-Vector2i(nav.round_even(r*ray.x),nav.round_even(r*ray.y))
+			if bounds.has_area() and not bounds.has_point(p): continue
 			if not _open(p,stamp): continue
 			if connected:
 				if not checked.has(p): checked[p] = _in_component(p,wanted)

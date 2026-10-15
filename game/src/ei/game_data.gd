@@ -928,6 +928,7 @@ class TipLayer extends CanvasLayer:
 	var _panel := Control.new()
 	var _lines := PackedStringArray()
 	var _title_lines := 1
+	var _world_key: Variant = null
 
 	func _ready() -> void:
 		layer = 127
@@ -952,20 +953,32 @@ class TipLayer extends CanvasLayer:
 		return f.get_string_size(s if s != "" else "w", HORIZONTAL_ALIGNMENT_LEFT, -1, fs).y
 
 	func _process(_dt: float) -> void:
+		if delay <= 0.0:
+			_hide()
+			return
 		var vp := get_viewport()
 		var mp := vp.get_mouse_position()
 		var c := vp.gui_get_hovered_control()
+		var context := {}
+		if c == null:
+			var field := get_tree().get_first_node_in_group("world_tooltip")
+			if field and field.is_visible_in_tree():
+				context = field.world_tooltip()
+		var key: Variant = context.get("key")
+		if not context.is_empty():
+			mp = context.position
 		var now := Time.get_ticks_msec()
-		if c != _ctrl or (mp != _mouse and not _panel.visible):
+		if c != _ctrl or key != _world_key or (mp != _mouse and not _panel.visible):
 			_ctrl = c
+			_world_key = key
 			_since = now
 			_hide()
 		_mouse = mp
-		if c == null or delay <= 0.0 or not c.is_visible_in_tree() \
+		if (c == null and context.is_empty()) or (c != null and not c.is_visible_in_tree()) \
 				or (not _panel.visible and now - _since < delay * 1000.0):
 			_hide()
 			return
-		var t := c.get_tooltip(c.get_global_transform_with_canvas().affine_inverse() * mp)
+		var t: String = c.get_tooltip(c.get_global_transform_with_canvas().affine_inverse() * mp) if c else context.get("text", "")
 		if t.strip_edges() == "":
 			_hide()
 			return

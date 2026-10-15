@@ -356,8 +356,11 @@ func _fear_tick(u: GameUnit, flag := 0) -> void:
 		pt = sp.pos
 		if flag == 0 or _susp_level(sp) < 501.0:
 			u.remove_meta("suspect")
-	var walking: bool = u.order.get("type", "") == "move"
-	if pt != Vector2.INF and u.pos.distance_to(pt) < float(s.r) and not walking:
+	# A patrol/investigation may still be walking towards the newly noticed
+	# threat. Only an existing retreat belongs to this motivation; replace
+	# the old approach immediately instead of finishing it at melee distance.
+	var fleeing: bool = u.order.get("type", "") == "move" and u.order.get("fear", false)
+	if pt != Vector2.INF and u.pos.distance_to(pt) < float(s.r) and not fleeing:
 		var dest: Vector2
 		if s.has("spot"):
 			dest = s.spot
