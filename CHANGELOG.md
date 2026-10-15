@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.5.1-preview.1 — local performance preview, 15 October 2026
+## 1.5.1-preview.1 — performance preview, 15 October 2026
 
 - Retain grass instance data on the CPU before bulk upload, avoiding GPU readbacks when camera movement changes grass detail.
 - Reuse authored water geometry for mist, ambient life and water-contact queries as the camera enters new sectors.

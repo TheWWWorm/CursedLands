@@ -1,0 +1,25 @@
+{
+  "version": "1.5.1-preview.1",
+  "game_tree": "466a95f045a0cc7e732ab8ef6a36e3f16dcf44fe",
+  "assets": [
+    {
+      "name": "CursedLands-1.5.1-preview.1-linux-x86_64.zip",
+      "bytes": 37226998,
+      "sha256": "d9c348f4041b4e210f744e1acb079dd0e036abe749a446a52c4cae7f5bc24428",
+      "all_members_verified": true
+    },
+    {
+      "name": "CursedLands-1.5.1-preview.1-windows-x86_64.zip",
+      "bytes": 38392400,
+      "sha256": "de06776f4065737e3fd34ba3c9f6c28f036b7f43744556c9d793381a192f976f",
+      "all_members_verified": true
+    },
+    {
+      "name": "CursedLands-1.5.1-preview.1-web.zip",
+      "bytes": 16695562,
+      "sha256": "96cf603dc18497d75c523c99b3dd7068c2d2e7c6eb8de46e778a37e75c38ec69",
+      "all_members_verified": true
+    }
+  ],
+  "checksum_file_sha256": "2eb8ae16247787d13feb5bc2c394c223bcca17e371cb82329778aac823eede05"
+}

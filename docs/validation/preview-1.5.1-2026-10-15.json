@@ -1,0 +1,173 @@
+{
+  "version": "1.5.1-preview.1",
+  "tag": "v1.5.1-preview.1",
+  "release_type": "prerelease",
+  "base_stable": "1.5.0",
+  "game_source_commit": "55b1313255636264df6eba74059573c568966758",
+  "game_tree": "466a95f045a0cc7e732ab8ef6a36e3f16dcf44fe",
+  "protocol": 23,
+  "same_version_coop_required": true,
+  "performance_record": "map-pan-2026-10-15.json",
+  "passed_regression_checks": 7918,
+  "translations": {
+    "entries": 1174,
+    "errors": 0,
+    "command": "python3 tools/check_translations.py",
+    "player_visible_changes": false
+  },
+  "desktop": {
+    "linux-x86_64": {
+      "version": "1.5.1-preview.1",
+      "source_commit": "55b1313255636264df6eba74059573c568966758",
+      "game_tree": "466a95f045a0cc7e732ab8ef6a36e3f16dcf44fe",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 12,
+      "target_os_runtime_tested": true,
+      "runtime_validation": "Exact Linux pack, engine and native files used by live-final-exact and ingos-warm-final.",
+      "compiled_scripts": 290,
+      "resource_count": 734,
+      "production_scripts_identical_across_windows_and_linux": true,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.pck": "544ea807e97ddbdc87c4b82b57f6fd0cd5d3498a53a140d805afc93f61e5e324"
+      }
+    },
+    "windows-x86_64": {
+      "version": "1.5.1-preview.1",
+      "source_commit": "55b1313255636264df6eba74059573c568966758",
+      "game_tree": "466a95f045a0cc7e732ab8ef6a36e3f16dcf44fe",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 12,
+      "target_os_runtime_tested": false,
+      "runtime_validation": "Package audited; no Windows runtime test available.",
+      "compiled_scripts": 290,
+      "resource_count": 734,
+      "production_scripts_identical_across_windows_and_linux": true,
+      "files": {
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "CursedLands.pck": "544ea807e97ddbdc87c4b82b57f6fd0cd5d3498a53a140d805afc93f61e5e324"
+      }
+    }
+  },
+  "browser": {
+    "version": "1.5.1-preview.1",
+    "errors": [],
+    "browser": {
+      "protocolVersion": "1.3",
+      "product": "Chrome/151.0.7922.34",
+      "revision": "@782af9cb30a53f54487e5d2e44738645a8ec457c",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.0.0 Safari/537.36",
+      "jsVersion": "15.1.206.8"
+    },
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-feaf37e5dbce7ccb84cb",
+      "new_cache": "cursed-engine-2-ddb4b18bc762ebb7a31b",
+      "pck_sha256": "bb156d9dd91994792af625a66674710f6c109ea8f1a5fd274cd70e52b7e0b9c2",
+      "waited_for_old_tab": true,
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "unchanged_wasm_reused": true,
+      "network_paths": [
+        "service-worker.js",
+        "index.html",
+        "index.pck"
+      ]
+    },
+    "upgraded_start": {
+      "error": "",
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "caches": [
+        "cursed-engine-2-ddb4b18bc762ebb7a31b"
+      ],
+      "visible_frame": true
+    },
+    "fresh_start": {
+      "error": "",
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "caches": [
+        "cursed-engine-2-ddb4b18bc762ebb7a31b"
+      ],
+      "visible_frame": true
+    },
+    "build": {
+      "version": "1.5.1-preview.1",
+      "source_tag": "v1.5.1-preview.1",
+      "source_commit": "c60b5ddcb546d68e595bf7f3dda3597225861acf",
+      "game_tree": "466a95f045a0cc7e732ab8ef6a36e3f16dcf44fe",
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 290,
+      "production_scripts_byte_identical_to_release_linux": true,
+      "resource_count": 731,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "bb156d9dd91994792af625a66674710f6c109ea8f1a5fd274cd70e52b7e0b9c2",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    },
+    "screenshots_visually_checked": [
+      "fresh-setup.png",
+      "upgraded-setup.png"
+    ]
+  },
+  "hosted_files": {
+    "BUILD-INFO.json": "d60853cc2faed143ad38f77b5633b25fa9301d249e952190aca7dd0be0359749",
+    "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+    "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+    "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+    "THIRD_PARTY_NOTICES.md": "9bf95a6be1eea5b3d3e6b45e17d229c400cc2914ae11d37f8082604d77e806ac",
+    "_headers": "385af9098c5d9752a0ff141b34048e2611ad70beba02c7ed03b1b1dc29a67841",
+    "data-worker.js": "23acf2e304952606e7e2a0bf850dc8e02b56dcae2913cc79e461c78afbd49d77",
+    "files.js": "5b23e470c5dedc93d0c80ea0696eff36bad3afbb88eb4bc85ced567f472c5b2a",
+    "icon-192.png": "ce18b6621f58d2b24ef49ec182bf4f021f5992b2e46e666918764c47d92a1a0a",
+    "icon-512.png": "33d17b00001bf55448c56919e7f9a9d56be7089231be189704d72a13d00363d4",
+    "index.apple-touch-icon.png": "a8079e5f32d35cabbc12bb9f66f4b7c49a73b84d7fc1e8e4dde15914f9bc50eb",
+    "index.audio.position.worklet.js": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+    "index.audio.worklet.js": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+    "index.html": "227c34a3939f1c4f94ea6081624a573791ceb398b48ff2aa487c559947e96f8e",
+    "index.icon.png": "490c9afe17f218360ceb84d41dd95d0409dfe0349c00a97c40cf3d8e04cf0b45",
+    "index.js": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
+    "index.pck": "bb156d9dd91994792af625a66674710f6c109ea8f1a5fd274cd70e52b7e0b9c2",
+    "index.png": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
+    "index.wasm.part0": "e225998ec9fbd2fb1aa80798d571dc381fdd9bfdb3478250832404d941db0426",
+    "index.wasm.part1": "79cae914fb3feb5b3ef307b0906fd111d1ee2ca48ff730ba21cca432c271467b",
+    "installer-worker.js": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
+    "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+    "manifest.webmanifest": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
+    "service-worker.js": "32406fd92a70eee928bfb22df2a9d21be4b3392f2fe6b5ab296f35c069916942",
+    "storage.js": "9265725b43b6b4e897693fd3be62b175c3e0b07493b51ba7d18a6d1578bee581"
+  },
+  "parts_manifest": {
+    "/index.wasm": {
+      "count": 2,
+      "size": 39509339
+    }
+  },
+  "limits": [
+    "Measurements are Linux/RTX 3090 Ti, not Windows/D3D12 or the requested laptop GPU.",
+    "Short camera sweeps on two maps are not a whole-campaign or co-op combat benchmark.",
+    "First-use pipeline/streaming spikes are reduced, not universally eliminated: the final live Gipat first traversal still had a 55.16 ms frame, and the final Ingos sweep had occasional approximately 31 ms frames.",
+    "Ingos steady repeated-traversal FPS was essentially unchanged; the material improvement there is removal of the multi-second first encounter hitch.",
+    "An early grass-only candidate run (rig-cache-b) had unexplained worse pacing; subsequent repetitions did not reproduce it. Retained as diagnostic evidence, not silently discarded.",
+    "Browser checks cover setup and the service-worker update with data/save sentinels; no complete browser campaign is claimed.",
+    "This preview supplies Windows, Linux and browser packages; Android and macOS remain on stable 1.5.0."
+  ],
+  "deployment_verification": "Live asset hashes, isolation headers and fresh browser startup are checked after the release commit is pushed. Publication receipts are kept in the local release workspace."
+}

@@ -8,7 +8,9 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.5.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.5.0), available for Linux, Windows, Android, macOS and in the [browser](https://cursedlands.wwworm.com/). It adds lock-skill hover tooltips, improves detached-limb physics, and fixes archer retreat, unnamed interaction labels, spell-rune layout, the Great Mage’s staff and navigation-related frame spikes. See the [release notes](docs/releases/1.5.0.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.5.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.5.0), available for Linux, Windows, Android and macOS. It adds lock-skill hover tooltips, improves detached-limb physics, and fixes archer retreat, unnamed interaction labels, spell-rune layout, the Great Mage’s staff and navigation-related frame spikes. See the [release notes](docs/releases/1.5.0.md) and [versioning policy](docs/versioning.md).
+
+The [**1.5.1-preview.1 performance preview**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.5.1-preview.1) reduces camera-movement stalls from grass detail changes, water/scenery queries and first-use wildlife shaders. It is available for Windows and Linux and runs in the [hosted browser](https://cursedlands.wwworm.com/). Graphics quality settings are unchanged. See the [preview notes](docs/releases/1.5.1-preview.1.md) for compatibility and platform limits.
 
 ## Screenshots
 
