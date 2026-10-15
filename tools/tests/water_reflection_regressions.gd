@@ -190,7 +190,10 @@ func _motion_checks(session: Session, game: Game, terrain: EITerrain, camera: Ca
 			var drawn := Engine.get_frames_drawn()
 			camera.look_at(camera.global_position + Vector3(cos(pitch), sin(pitch), 0))
 			await RenderingServer.frame_pre_draw
-			await RenderingServer.frame_post_draw
+			# Read at the next process start, before a second submission.
+			# The image readback fences the queued draw. Post-draw alone can
+			# arrive one frame late on the separate rendering thread.
+			await get_tree().process_frame
 			first_submissions.append(Engine.get_frames_drawn()-drawn)
 			var first := get_viewport().get_texture().get_image()
 			await frames(5)
