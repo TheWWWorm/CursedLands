@@ -1399,7 +1399,7 @@ func _process(_dt: float) -> void:
 	shop_scroll = clampi(shop_scroll, 0, maxi(0, shop.size() - BAG_CELLS))
 	var sig := "%s|%s|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%d|%d" % [u.uid if u else -1, h.get("weapons", []), h.get("armors", []),
 		[h.get("quick", []), h.get("spells", []), h.get("perks", []), h.get("exp", 0), h.get("skills", {})], bag, filter, scroll, size, mode, shop, buy_pile + ["/"] + sell_pile + ["/"] + repair_pile + [c_bp, c_mat, c_ready, c_spell, s_spell, s_kind, s_from, s_wait, trade_wait, repair_wait] + s_runes + s_rune_from + hero_spells(), shop_filter, shop_scroll,
-		hud.game.session.state.money] + str(hash(hud.game.session.state.shops.get(shop_id, {}))) + _swap_view()
+		hud.game.session.state.money] + str(hash(hud.game.session.state.shops.get(shop_id, {}))) + _swap_view() + str(GameData.option("original_rune_layout"))
 	if sig == _sig:
 		return
 	_sig = sig
@@ -2248,18 +2248,9 @@ func _draw() -> void:
 		var picture := SpellSlots.icon(texture) if not texture.is_empty() else null
 		if picture:
 			var rect := _r(_slot_rect(k).grow(-10.0))
-			if Items.is_spell_container(id):
-				var where := String(_content[k][1])
-				var count := 1
-				match where:
-					"bag": count = bag_count(id)
-					"shop": count = shop_left(id)
-					"buy": count = buy_pile.count(id)
-					"sell": count = sell_pile.count(id)
-				rect = _spell_picture_rect(k, count)
 			draw_texture_rect(picture, rect, false)
 			if Items.is_spell_container(id):
-				SpellSlots.draw_runes(self, Items.spell_code(id), rect)
+				SpellSlots.draw_runes(self, Items.spell_code(id), rect, Color.WHITE, _spell_rune_rects(k))
 
 	# Selection.
 	for k in _content:
@@ -2268,21 +2259,25 @@ func _draw() -> void:
 	_overlay.queue_redraw()
 
 
-## Row and pile prices occupy y+65..85; counts occupy the upper right.
-## Fit the whole spell card (including its edge runes) outside both regions.
-## Equipment and constructor slots have neither price nor quantity overlays.
-func _spell_picture_rect(key: String, count: int) -> Rect2:
+## The original camp renderer (005eca10) positions inscriptions from the full
+## slot, independently of its card artwork. Text is drawn afterward by _overlay.
+func _spell_rune_rects(key: String) -> Array[Rect2]:
 	var slot := _slot_rect(key)
-	if not key.begins_with("bag") and not key.begins_with("shop") \
-			and not key.begins_with("buy") and not key.begins_with("sell"):
-		return _r(slot.grow(-10.0))
-	var scale := _s()
-	var side := 54.0
-	if count != 1 and scale > 0.0:
-		var width := Interface800.font().get_string_size(str(count), HORIZONTAL_ALIGNMENT_LEFT, -1, _fpx(1)).x / scale
-		side = minf(side, maxf(0.0, 85.0 - width - 6.0 - 10.0))
-	var x := (100.0 - side) * 0.5 if count == 1 else 10.0
-	return _r(Rect2(slot.position + Vector2(x, 8.0), Vector2.ONE * side))
+	if GameData.option("original_rune_layout") != 0:
+		return SpellSlots.camp_rune_rects(_r(slot))
+	var row: Array = _content.get(key, ["", ""])
+	var id := String(row[0])
+	var count := 1
+	match String(row[1]):
+		"bag": count = bag_count(id)
+		"shop": count = shop_left(id)
+		"buy": count = buy_pile.count(id)
+		"sell": count = sell_pile.count(id)
+	var rect := _r(slot.grow(-10.0))
+	var width := rect.size.x
+	if count != 1:
+		width -= Interface800.font().get_string_size(str(count), HORIZONTAL_ALIGNMENT_LEFT, -1, _fpx(1)).x + 8.0 * _s()
+	return SpellSlots.rune_rects(rect, Spells.mods_of(Items.spell_code(id)).size(), maxf(0.0, width))
 
 
 func _draw_overlay() -> void:
@@ -2294,6 +2289,12 @@ func _draw_overlay() -> void:
 	if ids[1] != "":
 		_draw_item_info(600, ids[1])
 	_canvas = self
+
+
+## In the optional ring layout, lift only completed spells' prices above
+## the bottom rune row. Other item labels retain the original text strips.
+static func _price_offset(item: String) -> float:
+	return 49.0 if GameData.option("original_rune_layout") != 0 and Items.is_spell_container(item) else 65.0
 
 
 func _draw_row_texts() -> void:
@@ -2324,7 +2325,7 @@ func _draw_row_texts() -> void:
 			elif trading() and _row_accepts(it, false):
 				price = _price(it, false)
 			if price >= 0:
-				_t(Rect2(x + 15, y0 + 65, 70, 20), str(price), 1, Interface800.TEXT, HORIZONTAL_ALIGNMENT_CENTER)
+				_t(Rect2(x + 15, y0 + _price_offset(it), 70, 20), str(price), 1, Interface800.TEXT, HORIZONTAL_ALIGNMENT_CENTER)
 	# The piles' prices the same way (x+15..85, y+65..85).
 	var piles := []
 	if mode == "repair":
@@ -2342,7 +2343,7 @@ func _draw_row_texts() -> void:
 				_t(Rect2(r.position.x+15,r.position.y+15,70,20), str(count), 1, Interface800.TEXT, HORIZONTAL_ALIGNMENT_RIGHT)
 			if mode == "swap": continue   # quantities, without a shop sale price
 			var price := _repair_price(it) if pile == "rep" else _price(it, pile == "buy")
-			_t(Rect2(r.position.x + 15, r.position.y + 65, 70, 20), str(price), 1, Interface800.TEXT,
+			_t(Rect2(r.position.x + 15, r.position.y + _price_offset(it), 70, 20), str(price), 1, Interface800.TEXT,
 				HORIZONTAL_ALIGNMENT_CENTER)
 
 

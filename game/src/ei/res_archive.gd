@@ -51,6 +51,12 @@ func has(name: String) -> bool:
 func read(name: String) -> PackedByteArray:
 	var replacement := ModStore.override_path(_archive_name, name)
 	if not replacement.is_empty(): return FileAccess.get_file_as_bytes(replacement)
+	return read_original(name)
+
+
+## Archive bytes without a texture-package replacement. Identity checks use
+## the authored atlas; ordinary reads and rendering keep the mounted artwork.
+func read_original(name: String) -> PackedByteArray:
 	var e: Variant = entries.get(name.to_lower())
 	if e == null:
 		return PackedByteArray()

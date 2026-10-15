@@ -34,7 +34,9 @@ const FADE_S := 0.25
 const LIFT := 10.0          # 800×600 units above the head's top
 const SCALE := 0.7          # 800×600 units → screen, × the window's scale
 const FRAME_UV := Rect2(59, 119, 60, 5)
-const FILL_UV := Rect2(64, 154, 50, 5)
+## Sample the entire general-health strip, scaled into the 50-unit frame.
+## HD texture packs can use a gradient across all 100 source units.
+const FILL_UV := Rect2(64, 154, 100, 5)
 
 var game: Game
 ## The units drawn last frame (uid -> alpha), for tests.
@@ -215,7 +217,7 @@ func _draw() -> void:
 		var f := health_fraction(u)
 		var mod := Color(1, 1, 1, a)
 		_region(r, FRAME_UV, mod, Color(0.05, 0.05, 0.05))
-		var fill := Rect2(r.position + Vector2(5.0, 0.0) * k, Vector2(FILL_UV.size.x * f, FILL_UV.size.y) * k)
+		var fill := Rect2(r.position + Vector2(5.0, 0.0) * k, Vector2((FRAME_UV.size.x - 10.0) * f, FILL_UV.size.y) * k)
 		if f > 0.0:
 			_region(fill, Rect2(FILL_UV.position, Vector2(FILL_UV.size.x * f, FILL_UV.size.y)), mod, Color(0.25, 0.8, 0.2))
 		drawn[uid] = a

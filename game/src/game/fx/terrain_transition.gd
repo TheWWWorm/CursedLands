@@ -66,7 +66,7 @@ func _build(terrain: EITerrain, verified: Dictionary) -> void:
 	var rules := verified.duplicate()
 	if rules.is_empty():
 		for atlas in clampi(int(terrain.get_meta("textures_count", 0)), 0, 256):
-			var corners := Tiles.corners(GameData.load_image("%s%03d" % [terrain.resource_prefix, atlas]))
+			var corners := Tiles.corners(GameData.load_original_image("%s%03d" % [terrain.resource_prefix, atlas]))
 			if not corners.is_empty(): rules[atlas] = corners
 	var corners := PackedByteArray(); corners.resize(count * 4)
 	var shared := PackedByteArray(); shared.resize((tile_size.x + 1) * (tile_size.y + 1))

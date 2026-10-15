@@ -206,17 +206,17 @@ func _ensure_view() -> void:
 	_wait_for_draw()
 	_cam = Camera3D.new()
 	_vp.add_child(_cam)
-	# Lit like the game world (the original draws the preview figure with the
-	# scene's sun): a key light from the upper front-left.
+	# The textures already contain painted shading. A softer key and neutral
+	# ambient fill retain shape without exaggerating the low-poly facets.
 	var light := DirectionalLight3D.new()
 	light.rotation_degrees = Vector3(-30, -35, 0)
-	light.light_energy = 1.25
+	light.light_energy = 0.65
 	_vp.add_child(light)
 	var env := WorldEnvironment.new()
 	env.environment = Environment.new()
 	env.environment.background_mode = Environment.BG_CLEAR_COLOR
 	env.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.environment.ambient_light_color = Color(0.42, 0.42, 0.45)
+	env.environment.ambient_light_color = Color(0.7, 0.7, 0.7)
 	_vp.add_child(env)
 
 

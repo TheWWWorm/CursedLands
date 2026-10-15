@@ -168,6 +168,7 @@ const OPTIONS := [
 	# Keep the pointer inside the game window (Input.MOUSE_MODE_CONFINED).
 	["confine_mouse", 1, 2, 17, 4, 1],
 	["item_icon_fit", 1, 2, 17, 5, 1], ["ui_active_buttons", 1, 2, 17, 6, 1],
+	["original_rune_layout", 1, 2, 17, 7, 0],
 	# Gameplay (group 18).
 	# The network game's unit visibility in single player too (UnitFog);
 	# default on (user request).
@@ -382,6 +383,7 @@ const REMAKE_OPTIONS := {
 	"confine_mouse": ["Keep mouse in window", "The pointer cannot leave the game window (e.g. onto a second monitor) while the game has focus; it is free again when you switch away."],
 	"sp_death_notice": ["Game-over notice at the hero's death", "Single player: when your main hero dies, the game-over sound plays at once and a small notice appears at the top of the screen, with Load, Main menu and Hide. The game is not paused and your companions fight on; leaving the area still ends the game. Off: as the original, nothing appears until the party tries to leave the area."],
 	"revive": ["Companions can revive the hero", "Select a living hero or companion and click a fallen party member (your hero, another player's hero or a hired companion): they walk to the body and tend it for 5 seconds, and it gets up with 1 health. Another order stops it; there is no other limit, but it is slow in a fight. Party bodies stay where they fell. Co-op: fallen heroes wait for help instead of rising after 5 seconds; changing the area still brings them back. Off: as the original, the dead stay dead."],
+	"original_rune_layout": ["Original rune layout", "Arrange spell runes around the icon as in the original game. Off: group them at the top. Applies in shops, inventory and the spell bar."],
 	"enemy_hp_bars": ["Enemy health bars", "A small health bar over nearby visible enemies who are hurt or fighting your party. Enemies in combat keep their bar at full health. Auto: while you play with a controller or by touch. Always: with every input. Off: as the original, health only in the unit panel. Third-person views show hurt characters and enemies in combat."],
 	"smile_faces": ["Smiling portraits", "The party's portraits smile for a few seconds after a won fight (every living member), when a hero takes loot from a body or chest, and when a quest is finished or rewarded (the whole party). Co-op: also the hero who gets a copy of shared loot. A hit still shows pain at once. Off: as the original, a portrait smiles only after its character's kill."],
 	"coop_player_names": ["Player names above heroes", "Co-op: each player's name, in their colour, above their hero's head, so the heroes are easy to tell apart. Hidden while the hero cannot be seen. Single player is not affected. Off: as the original, no names."],
@@ -421,7 +423,7 @@ const REMAKE_OPTIONS := {
 const OPTIONS_APPLIED := ["direct_hints", "direct_fov_first", "direct_fov_third", "direct_mouse_first", "direct_mouse_third", "direct_invert_x", "direct_invert_y", "direct_pad_x", "direct_pad_y", "direct_pad_deadzone", "direct_pad_curve", "direct_pad_invert_x", "direct_pad_invert_y",
 	"volume_sfx", "volume_stream", "volume_voice", "power_kbd",
 	"graphics_preset",
-	"item_icon_fit", "ui_active_buttons", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion",
+	"item_icon_fit", "ui_active_buttons", "original_rune_layout", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion",
 	"power_mouse", "scroll_border", "rubber_select", "marks", "footprints", "select_type", "show_path", "brightness", "contrast", "gamma",
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
 	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "difficulty",
@@ -671,6 +673,16 @@ func load_image(name: String, authored_mips := false) -> Image:
 	else:
 		data = textures.read(name + ".mmp")
 	return EIMmp.decode_texture(data, RenderingServer.has_os_feature("s3tc")) if authored_mips else EIMmp.decode(data)
+
+
+## Authored image for terrain-family and rock identity checks. A texture pack
+## can replace the displayed pixels without changing the map's tile meanings.
+func load_original_image(name: String) -> Image:
+	var key := name.to_lower() + ".mmp"
+	var archive := textures
+	if not archive.entries.has(key) and menus and menus.entries.has(key):
+		archive = menus
+	return EIMmp.decode(archive.read_original(key))
 
 
 ## A model file (.mod/.fig/.bon/.anm) from figures.res, or menus.res for the menu signposts.

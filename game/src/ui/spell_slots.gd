@@ -85,7 +85,7 @@ const RUNE_CENTRES := [Vector2(0.5, 0.16), Vector2(0.84, 0.16),
 	Vector2(0.16, 0.84), Vector2(0.16, 0.5), Vector2(0.16, 0.16)]
 
 
-static func rune_rects(rect: Rect2) -> Array[Rect2]:
+static func ring_rune_rects(rect: Rect2) -> Array[Rect2]:
 	var out: Array[Rect2] = []
 	var side := minf(rect.size.x, rect.size.y) / 6.0
 	for centre: Vector2 in RUNE_CENTRES:
@@ -93,9 +93,46 @@ static func rune_rects(rect: Rect2) -> Array[Rect2]:
 	return out
 
 
-static func draw_runes(canvas: CanvasItem, spell: String, rect: Rect2, tint := Color.WHITE) -> void:
+## The compact layout remains the default. Shop callers reserve room for a
+## stack count; world spell slots keep their centred, four-column cluster.
+static func rune_rects(rect: Rect2, count := Spells.MAX_MODS, top_left_width := -1.0) -> Array[Rect2]:
+	if GameData.option("original_rune_layout") != 0:
+		return ring_rune_rects(rect)
+	var out: Array[Rect2] = []
+	count = clampi(count, 0, Spells.MAX_MODS)
+	if count == 0:
+		return out
+	var cols := mini(4, count)
+	var side := rect.size.x / 6.0
+	var inset := rect.size * 0.10
+	var origin := Vector2(rect.get_center().x - cols * side * 0.5, rect.position.y + rect.size.y * 0.04)
+	if top_left_width >= 0.0:
+		side = minf(side, maxf(0.0, top_left_width - inset.x) / cols)
+		origin = rect.position + inset
+	for i in count:
+		out.append(Rect2(origin + Vector2(i % 4, i / 4) * side, Vector2.ONE * side))
+	return out
+
+
+## Original camp item renderer 005eca10: the model scale is slot_width *
+## 0.48157462 * 0.0009375, the rune offset is scale * 550, and its 35/100
+## quad is projected at depth * 0.9. This gives a 24.8312 px radius and
+## 14.5833 px glyph in a 100 px slot. Do not scale these from the artwork.
+static func camp_rune_rects(slot: Rect2) -> Array[Rect2]:
+	var out: Array[Rect2] = []
+	var radius := slot.size.x * (0.48157462 * 0.0009375 * 550.0)
+	var side := slot.size.x * (0.35 * 0.0009375 / (0.9 * 0.0025))
+	for direction: Vector2 in [Vector2(0, -1), Vector2(1, -1), Vector2(1, 0),
+			Vector2(1, 1), Vector2(0, 1), Vector2(-1, 1), Vector2(-1, 0), Vector2(-1, -1)]:
+		out.append(Rect2(slot.get_center() + direction * radius - Vector2.ONE * side * 0.5, Vector2.ONE * side))
+	return out
+
+
+static func draw_runes(canvas: CanvasItem, spell: String, rect: Rect2, tint := Color.WHITE,
+		cells: Array[Rect2] = []) -> void:
 	var runes := rune_icons(spell)
-	var cells := rune_rects(rect)
+	if cells.is_empty():
+		cells = rune_rects(rect, runes.size())
 	for i in mini(runes.size(), cells.size()):
 		if runes[i]:
 			canvas.draw_texture_rect(runes[i], cells[i], false, tint)
@@ -165,7 +202,7 @@ func _process(_dt: float) -> void:
 		_usable.append(Spells.known_usable(u, String(spells[i])))
 	# The unit's instance, not its uid: a reload (Session.load_game) builds the
 	# party anew with the same uids, and _unit must not stay the freed one.
-	var sig := "%s:%s:%s:%s:%s:%s" % [u.get_instance_id() if u else 0, ",".join(spells), size, game.pending_spell, _usable, shortcut_label(0)]
+	var sig := "%s:%s:%s:%s:%s:%s:%d" % [u.get_instance_id() if u else 0, ",".join(spells), size, game.pending_spell, _usable, shortcut_label(0), GameData.option("original_rune_layout")]
 	if sig == _sig:
 		return
 	_sig = sig

@@ -36,3 +36,6 @@ archives where available and `RemakeText.t` for remake text. Add both Russian
 and German entries with each new or changed English key, including keys chosen
 dynamically. Do not expose internal item IDs or raw specifications as names.
 Verify translation coverage and readable layout in all three languages.
+
+Every new option must include its label, all choices and its help text in EN/RU/DE
+in the same change. Verify dynamically selected option strings as well.

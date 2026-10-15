@@ -9,8 +9,11 @@
 - Show the required Use/Steal value when hovering a locked object that the selected character cannot open, accounting for effective skill and quest keys.
 - Use localized fallback names for unnamed creatures and remains instead of map identifiers.
 - Let archers replace a patrol or investigation with a retreat immediately after noticing a nearby threat.
-- Place spell runes around icon edges and keep shop prices and stack counts clear.
+- Keep compact spell-rune clusters and full-size artwork by default, with an optional original layout around the icon. Place shop prices above the lower rune row in the original layout. Show runes in shops, inventory and the spell bar.
+- Scale the full health-bar texture into overhead bars, preserving texture-pack gradients at full and partial health.
 - Restore the Great Mage’s staff from his original animated figure.
+- Identify natural terrain transitions and cliff surfaces from the original atlases while rendering installed texture-pack artwork.
+- Soften portrait and inventory figure lighting with a weaker directional light and more ambient fill.
 
 See [release notes](docs/releases/1.5.0.md) for compatibility and platform limits.
 

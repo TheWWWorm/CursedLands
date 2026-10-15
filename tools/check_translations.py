@@ -29,6 +29,19 @@ for path in ROOT.rglob('*.gd'):
         if key and key not in entries:
             line = source[:match.start()].count('\n') + 1
             errors.append(f'{path.relative_to(ROOT)}:{line}: missing RU/DE key: {key}')
+# Options are selected dynamically, so literal RemakeText.t calls alone
+# cannot catch a missing label, help paragraph or translated choice.
+options_source = (ROOT / 'ei/game_data.gd').read_text()
+neutral_choices = {'SMAA', 'MSAA 4×', 'MSAA 4× + SMAA', 'TAA', 'FSR 2'}
+for table in ('REMAKE_OPTIONS', 'DISPLAY_CHOICES'):
+    block = options_source.split('const ' + table + ' := {', 1)[1].split('\n}', 1)[0]
+    for match in re.finditer(r'^\s*(' + STRING + r'):\s*(\[.*?\]),', block, re.M):
+        name = json.loads(match[1])
+        for key in json.loads(match[2]):
+            if table == 'DISPLAY_CHOICES' and (key in neutral_choices or not any(c.isalpha() for c in key)):
+                continue  # numeric quantities and unchanged graphics acronyms
+            if key not in entries:
+                errors.append(f'{table}[{name}]: missing RU/DE key: {key}')
 print(f'Translations: {len(entries)} entries; {len(errors)} errors')
 for error in errors:
     print(error)

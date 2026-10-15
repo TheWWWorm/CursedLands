@@ -43,7 +43,7 @@ func _build(terrain: EITerrain, verified: Dictionary) -> void:
 	var masks := verified.duplicate()
 	if masks.is_empty():
 		for atlas in clampi(int(terrain.get_meta("textures_count", 0)), 0, 256):
-			var mask := Tiles.masks(GameData.load_image("%s%03d" % [terrain.resource_prefix, atlas]))
+			var mask := Tiles.masks(GameData.load_original_image("%s%03d" % [terrain.resource_prefix, atlas]))
 			if not mask.is_empty(): masks[atlas] = mask
 	eligible.resize(terrain.land_tile.size())
 	var needed := PackedByteArray(); needed.resize(count)
