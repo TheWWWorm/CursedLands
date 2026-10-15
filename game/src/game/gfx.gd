@@ -94,12 +94,17 @@ global uniform vec3 ei_surface_fx;
 global uniform vec3 ei_weather;
 global uniform vec3 ei_rain_puddles;
 global uniform vec3 ei_water_mirror;
-// Stable depressions fill gradually with accumulated rain, only on flat,
-// exposed ground. The same mask is used by terrain and contact blending.
+// Only the deepest, small depressions collect standing water. As wetness
+// falls their banks recede rather than fading a broad blue ground overlay.
+// Terrain and contact blending share the mask and angle-dependent colour.
 float ei_puddle_mask(float wet, float up, float grass, float noise) {
 	return ei_rain_puddles.x * smoothstep(0.35,0.95,wet)
 		* smoothstep(0.94,0.995,up) * (1.0-grass)
-		* smoothstep(0.48,0.64,noise);
+		* smoothstep(mix(0.91,0.76,wet),mix(0.99,0.90,wet),noise);
+}
+vec3 ei_puddle_colour(vec3 ground_colour, float up_view) {
+	float fresnel = 0.02 + 0.98 * pow(1.0-clamp(abs(up_view),0.0,1.0),5.0);
+	return mix(ground_colour*0.94,ei_sky,fresnel);
 }
 uniform vec4 ei_material_diffuse = vec4(1.0);
 uniform vec3 ei_material_emissive = vec3(0.0);

@@ -179,10 +179,19 @@ func _motion_checks(session: Session, game: Game, terrain: EITerrain, camera: Ca
 		await frames(8)
 		var bad := 0
 		var worst := 0
+		var first_submissions: Array[int] = []
 		for i in 24:
 			var pitch: float = [-0.7, 0.2, 0.0, -0.15][i % 4]
+			# A separate render thread delivers post-draw through the deferred
+			# queue, sometimes after the next frame's reflection _process.
+			# Change the camera at process start, as the real camera rig does,
+			# so both views receive the pose before that frame is submitted.
+			await get_tree().process_frame
+			var drawn := Engine.get_frames_drawn()
 			camera.look_at(camera.global_position + Vector3(cos(pitch), sin(pitch), 0))
-			await frames(1)
+			await RenderingServer.frame_pre_draw
+			await RenderingServer.frame_post_draw
+			first_submissions.append(Engine.get_frames_drawn()-drawn)
 			var first := get_viewport().get_texture().get_image()
 			await frames(5)
 			var settled := get_viewport().get_texture().get_image()
@@ -194,7 +203,8 @@ func _motion_checks(session: Session, game: Game, terrain: EITerrain, camera: Ca
 					first.save_png("user://motion-%s-%d-first.png" % [variant, i])
 					settled.save_png("user://motion-%s-%d-settled.png" % [variant, i])
 		rows.append({"case": "motion", "variant": variant, "transitions": 24,
-			"bad_frames": bad, "worst_changed_pixels": worst})
+			"bad_frames": bad, "worst_changed_pixels": worst,"first_submissions":first_submissions})
+		check(first_submissions.all(func(n:int)->bool:return n==1),variant+" captures the first submitted camera frame")
 		check(bad == 0 if variant == "fixed" else bad > 0,
 			"rapid pitch has no transient gap" if variant == "fixed" else "motion control detects interpolation lag")
 	reflector.viewport.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF

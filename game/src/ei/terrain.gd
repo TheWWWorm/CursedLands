@@ -171,8 +171,9 @@ void fragment() {
 		float wet = ei_weather.x * exposed * above_water * smoothstep(0.05, 0.65, abs(wn.y));
 		c *= 1.0 - wet * mix(0.23, 0.08, grass);
 		ei_surface = vec3(wet * mix(0.65, 0.15, grass), mix(0.35, 0.65, grass), 0.0);
-		float puddle = ei_puddle_mask(wet, abs(wn.y), grass, texture(macro_tex, wpos.xz * 0.19).r);
-		c = mix(c, c * 0.72 + ei_sky * 0.15, puddle);
+		float puddle = ei_puddle_mask(wet, abs(wn.y), grass, texture(macro_tex, wpos.xz * 0.24).r);
+		float up_view = (INV_VIEW_MATRIX * vec4(VIEW,0.0)).y;
+		c = mix(c, ei_puddle_colour(c,up_view), puddle);
 		ei_surface.xy = mix(ei_surface.xy, vec2(0.95,0.07), puddle);
 		NORMAL = normalize((VIEW_MATRIX * vec4(normalize(mix(wn,vec3(0.0,1.0,0.0),puddle)),0.0)).xyz);
 	}
