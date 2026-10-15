@@ -1,0 +1,726 @@
+{
+  "version": "1.5.0",
+  "date": "2026-10-15",
+  "previous_stable": "1.4.0",
+  "game_source_commit": "b2d95d0bfd7fdd1b81ad58fa935bbe2a04ea5e12",
+  "game_tree": "a963846f9fbd09c2c91fd36c4b67d86335330bfc",
+  "network_protocol": 23,
+  "integrated_commits": [
+    "3e5134b3ad352d1d461f993ecde9eb30e44280c6",
+    "98f5ea90deef9773f89540ba954e00f4a81dab02",
+    "b2d95d0bfd7fdd1b81ad58fa935bbe2a04ea5e12"
+  ],
+  "build": {
+    "production_scripts_identical_across_five_platforms": true,
+    "compiled_scripts": 288,
+    "source_snapshot_exact": true,
+    "original_game_data_bundled": false,
+    "private_save_or_test_probes_bundled": false,
+    "platforms": {
+      "linux-x86_64": {
+        "version": "1.5.0",
+        "source_commit": "b2d95d0bfd7fdd1b81ad58fa935bbe2a04ea5e12",
+        "game_tree": "a963846f9fbd09c2c91fd36c4b67d86335330bfc",
+        "protocol": 23,
+        "platform": "linux-x86_64",
+        "target_os_runtime_tested": true,
+        "engine_patch_count": 12,
+        "compiled_scripts": 288,
+        "resource_count": 730,
+        "files": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "CursedLands.pck": "7665b2423211e3a8654600623c7531e3e76639776512d27879881c5632d242b4",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+          "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+        }
+      },
+      "windows-x86_64": {
+        "version": "1.5.0",
+        "source_commit": "b2d95d0bfd7fdd1b81ad58fa935bbe2a04ea5e12",
+        "game_tree": "a963846f9fbd09c2c91fd36c4b67d86335330bfc",
+        "protocol": 23,
+        "platform": "windows-x86_64",
+        "target_os_runtime_tested": false,
+        "engine_patch_count": 12,
+        "compiled_scripts": 288,
+        "resource_count": 730,
+        "files": {
+          "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+          "CursedLands.pck": "7665b2423211e3a8654600623c7531e3e76639776512d27879881c5632d242b4",
+          "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+          "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+        }
+      },
+      "macos-universal": {
+        "version": "1.5.0",
+        "source_commit": "b2d95d0bfd7fdd1b81ad58fa935bbe2a04ea5e12",
+        "game_tree": "a963846f9fbd09c2c91fd36c4b67d86335330bfc",
+        "protocol": 23,
+        "platform": "macos-universal",
+        "stock_engine": true,
+        "unsigned": true,
+        "target_os_runtime_tested": false,
+        "files": {
+          "CursedLands.zip": "85c96259800a6e78e3513f363ae7bf47f5812b847805535c5cbeaa5145fb30c8"
+        }
+      }
+    }
+  },
+  "linux_passed_checks": 10841,
+  "linux_release_checks": [
+    {
+      "fixture": "tools/tests/nav_relocation_bounds.gd",
+      "script_navigation": false,
+      "renderer": "headless",
+      "exit": 0,
+      "checks": 3892,
+      "failures": 0,
+      "errors": [],
+      "seconds": 2.47,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/checks/nav_relocation_bounds/run.log"
+    },
+    {
+      "fixture": "tools/tests/nav_relocation_bounds.gd",
+      "script_navigation": true,
+      "renderer": "headless",
+      "exit": 0,
+      "checks": 3892,
+      "failures": 0,
+      "errors": [],
+      "seconds": 4.82,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/checks/nav_relocation_script/run.log"
+    },
+    {
+      "fixture": "tools/tests/lia_navigation_paths.gd",
+      "script_navigation": false,
+      "renderer": "headless",
+      "exit": 0,
+      "checks": 265,
+      "failures": 0,
+      "errors": [],
+      "seconds": 18.45,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/checks/lia_navigation_paths/run.log"
+    },
+    {
+      "fixture": "tools/tests/lia_archers.gd",
+      "script_navigation": false,
+      "renderer": "headless",
+      "exit": 0,
+      "checks": 86,
+      "failures": 0,
+      "errors": [],
+      "seconds": 12.79,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/checks/lia_archers/run.log"
+    },
+    {
+      "fixture": "tools/tests/locked_hover.gd",
+      "script_navigation": false,
+      "renderer": "headless",
+      "exit": 0,
+      "checks": 25,
+      "failures": 0,
+      "errors": [],
+      "seconds": 12.44,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/checks/locked_hover/run.log"
+    },
+    {
+      "fixture": "tools/tests/severed_limb_physics.gd",
+      "script_navigation": false,
+      "renderer": "headless",
+      "exit": 0,
+      "checks": 268,
+      "failures": 0,
+      "errors": [],
+      "seconds": 3.27,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/checks/severed_limb_physics/run.log"
+    },
+    {
+      "fixture": "tools/tests/rain_cover_geometry.gd",
+      "script_navigation": false,
+      "renderer": "rendered",
+      "exit": 0,
+      "checks": 2399,
+      "failures": 0,
+      "errors": [],
+      "seconds": 10.58,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/checks/rain_cover_geometry/run.log"
+    },
+    {
+      "fixture": "tools/tests/terrain_hd_identity.gd",
+      "renderer": "headless",
+      "exit": 0,
+      "checks": 14,
+      "failures": 0,
+      "errors": [],
+      "log_sha256": "bdd0c92efd18ae90682f3c063a4fa100f930df1a743ce71b39354fc5478018c7"
+    }
+  ],
+  "visual_and_texture_pack_checks": {
+    "rune_layout": {
+      "fixture": "tools/tests/spell_rune_layout.gd",
+      "scope": "Rendered real shop and world spell bar; both layouts; EN/RU/DE; 800x600 and 1600x900; stack counts through 9999; setting toggled and reopened.",
+      "exit": 0,
+      "errors": [],
+      "result": {
+        "checks": 2062,
+        "failures": 0,
+        "languages": [
+          "ru",
+          "en",
+          "de"
+        ],
+        "layouts": [
+          "compact_default",
+          "original_optional"
+        ]
+      },
+      "result_sha256": "d97d1210ef33558fe9089bec27c8701a691ce1cc40ce60a8cd55a345ae3f629a",
+      "log_sha256": "830e24d636fb55918ac6f0ffa3a23714f656efe62e0827d9ebc2d1d2e106b1c5",
+      "fixture_sha256": "2cf1fc0b8bb5aba97724e79246fd077f4f68875ff917360a268bab5e27218bc5"
+    },
+    "health_gradient": {
+      "fixture": "tools/tests/health_bar_gradient.gd",
+      "scope": "Actual EnemyBars drawing with the installed HD Lands battle atlas; full, 75%, 50%, 25% and empty health. Full pack mounting is covered separately.",
+      "exit": 0,
+      "errors": [],
+      "result": {
+        "checks": 26,
+        "failures": 0,
+        "samples": [
+          {
+            "frame_width": 201.599990844727,
+            "health": 1.0,
+            "screen_width": 168.0,
+            "source_width": 100.0
+          },
+          {
+            "frame_width": 201.599990844727,
+            "health": 0.75,
+            "screen_width": 125.999992370605,
+            "source_width": 75.0
+          },
+          {
+            "frame_width": 201.599990844727,
+            "health": 0.5,
+            "screen_width": 84.0,
+            "source_width": 50.0
+          },
+          {
+            "frame_width": 201.599990844727,
+            "health": 0.25,
+            "screen_width": 42.0,
+            "source_width": 25.0
+          }
+        ]
+      },
+      "result_sha256": "37399b1c5515b53e6343d9dc746741fdf709f45c50505f0b8b78f1043b8f5370",
+      "log_sha256": "3f2fe02c50b9eac805d01dc28b8af70a848b9ca311f4687a0f80d8c48d75cb78",
+      "fixture_sha256": "abe788ca8c486ee54f2fe50a93ae624b61bf12cb8635ed9f263685a75d3d92af"
+    },
+    "hd_terrain_identity": {
+      "fixture": "tools/tests/terrain_hd_identity.gd",
+      "scope": "Final shipping Linux package; original and installed HD Lands atlases.",
+      "exit": 0,
+      "errors": [],
+      "result": {
+        "checks": 14,
+        "failures": 0,
+        "rows": [
+          {
+            "cliffs": 174,
+            "hd": false,
+            "map": "zone1",
+            "texture_width": 512,
+            "transitions": 3869
+          },
+          {
+            "cliffs": 80,
+            "hd": false,
+            "map": "zone2",
+            "texture_width": 512,
+            "transitions": 4129
+          },
+          {
+            "cliffs": 174,
+            "hd": true,
+            "map": "zone1",
+            "texture_width": 2048,
+            "transitions": 3869
+          },
+          {
+            "cliffs": 80,
+            "hd": true,
+            "map": "zone2",
+            "texture_width": 2048,
+            "transitions": 4129
+          }
+        ]
+      },
+      "result_sha256": "80ef8ec3e2e6d0f1693e59464b86131cab3a539ba8e1a5f4fddc31aed6fdbd2a",
+      "log_sha256": "bdd0c92efd18ae90682f3c063a4fa100f930df1a743ce71b39354fc5478018c7",
+      "fixture_sha256": "76f546add88895f48ea44bdb622765cc6f49799c054de91f2023d4d978535e2b"
+    },
+    "hd_cliffs": {
+      "fixture": "tools/tests/terrain_cliff_render.gd",
+      "scope": "HD pack mounted by local wrapper; rendered zone1, zone11 and zone15; on/off, restored, dependency and unclassified controls.",
+      "exit": 0,
+      "errors": [],
+      "result": {
+        "checks": 48,
+        "failures": 0,
+        "rows": [
+          {
+            "cached_sectors": 0,
+            "difference": {
+              "changed_pixels": 39515,
+              "peak_byte_delta": 91,
+              "sum": 506671
+            },
+            "map": "zone1",
+            "positive": true,
+            "renderer": "forward_plus",
+            "site": {
+              "normal": "(-0.094806, 0.274645, 0.95686)",
+              "point": "(43.0, 9.75084, -117.0)",
+              "score": 9.16851242245831,
+              "tile": "(21, 58)"
+            }
+          },
+          {
+            "cached_sectors": 0,
+            "difference": {
+              "changed_pixels": 74834,
+              "peak_byte_delta": 84,
+              "sum": 517734
+            },
+            "map": "zone11",
+            "positive": true,
+            "renderer": "forward_plus",
+            "site": {
+              "normal": "(0.130028, 0.542118, 0.830181)",
+              "point": "(193.0, 1.932032, -275.0)",
+              "score": 7.44567474478244,
+              "tile": "(96, 137)"
+            }
+          },
+          {
+            "cached_sectors": 0,
+            "difference": {
+              "changed_pixels": 95777,
+              "peak_byte_delta": 90,
+              "sum": 1128028
+            },
+            "map": "zone15",
+            "positive": true,
+            "renderer": "forward_plus",
+            "site": {
+              "normal": "(0.074066, 0.566501, -0.820726)",
+              "point": "(211.0, 28.6265, -281.0)",
+              "score": 13.9668390666545,
+              "tile": "(105, 140)"
+            }
+          }
+        ]
+      },
+      "result_sha256": "43ee6950bb4b84975cca0096b92358cafa47683287b78df2199280fc6364f79e",
+      "log_sha256": "a1fa60a517985d2ad66684031fdc13ad8df6045d1ce667a59d7d7dba75ebd63a",
+      "fixture_sha256": "a6ba8aa851633bd8d307a1a41ec1029af206e0f8a1b78a450f9018c52df001d9"
+    },
+    "hd_transitions": {
+      "fixture": "tools/tests/terrain_transitions_render.gd",
+      "scope": "HD pack mounted by local wrapper; zone1 authored-path protection, natural/detailed/original/disabled modes; rendered pixel checks.",
+      "exit": 0,
+      "errors": [],
+      "result": {
+        "checks": 13,
+        "failures": 0,
+        "rows": [
+          {
+            "cached_sectors": 0,
+            "deformed_sectors": 0,
+            "difference": {
+              "changed_pixels": 81647,
+              "peak_byte_delta": 133,
+              "sum": 1104910
+            },
+            "focus": "(53.0, 11.81966, -137.0)",
+            "label": "zone1-path",
+            "map": "zone1",
+            "path_pixels": 19000,
+            "renderer": "forward_plus",
+            "row": "(0.0, 0.0, 0.0, 0.0)",
+            "tile": "(26, 68)"
+          }
+        ]
+      },
+      "result_sha256": "b75da04cf20414c888738d38f19720f06a89a966e46ffeb2b627c403ef90faee",
+      "log_sha256": "a48cee2dc21d7514a3634801a6348338eb8a33ee59d6aa4729c1d70fed33fb6e",
+      "fixture_sha256": "98d0d43606b00f86f618a87f54ba402cce28751019aace14c13a9d9ec9cbe2a1"
+    },
+    "source_equivalence": {
+      "compiled_candidate_scripts_differing_from_release": [
+        "src/ei/game_data.gdc"
+      ],
+      "detail": "All UI, terrain-effect and shader implementation files used by these rendered checks match the release. The final game_data change lowercases the original-image key and uses an explicit original-archive fallback. The final shipping package reran the HD identity checks after that refinement.",
+      "test_sources": {
+        "tools/tests/health_bar_gradient.gd": "abe788ca8c486ee54f2fe50a93ae624b61bf12cb8635ed9f263685a75d3d92af",
+        "tools/tests/spell_rune_layout.gd": "2cf1fc0b8bb5aba97724e79246fd077f4f68875ff917360a268bab5e27218bc5",
+        "tools/tests/terrain_transitions_render.gd": "98d0d43606b00f86f618a87f54ba402cce28751019aace14c13a9d9ec9cbe2a1",
+        "tools/tests/ingos_animal_persistence.gd": "bf6af383c6422b43c6d4e54eebda2d831af13f73782848fba397b788341d011b",
+        "tools/tests/rick_staff.gd": "99ed10ecbc2d79a718034868f210ce4cf3eca9d0ed5a1875d8de1bcc46fb8b37",
+        "tools/tests/terrain_hd_identity.gd": "76f546add88895f48ea44bdb622765cc6f49799c054de91f2023d4d978535e2b",
+        "tools/tests/terrain_cliff_render.gd": "a6ba8aa851633bd8d307a1a41ec1029af206e0f8a1b78a450f9018c52df001d9"
+      }
+    },
+    "portrait_lighting": {
+      "models": [
+        "Human Hero",
+        "BoarTutor",
+        "WolfGreyF0"
+      ],
+      "comparison": "Same original models, texture assets, camera and frozen poses. Old key energy 1.25 / ambient (0.42,0.42,0.45); new key 0.65 / ambient (0.7,0.7,0.7). New lighting applied to the real Paperdoll viewport for the A/B captures.",
+      "changes": "Paperdoll preview lighting only; world lighting and model normals unchanged.",
+      "captures": {
+        "portrait-BoarTutor.png": "bda7a98fc59ae6d0755c6e48b043f1e461fe4a84438db3ae08ff8788cf940722",
+        "portrait-Human_Hero.png": "2098765dd4bc741f242753b186b0d783d92a7c76e4505da3e4d47aaad41f07aa",
+        "portrait-WolfGreyF0.png": "7cc9224d57f134e9f2c03948c80b0e144332e7b614dfac51d16e96951c0cb673"
+      }
+    },
+    "swamp_review": {
+      "scope": "Rendered the same installed HD Lands textures on original zone1 and zone2 swamp surfaces (liquid ground type 14) with controlled day/night lighting. No swamp shader or texture change.",
+      "result": {
+        "failures": 0,
+        "rows": [
+          {
+            "atlas_size": 2048,
+            "hour_fixture": 12,
+            "liquid_type": 14,
+            "rendered": true,
+            "scene": "swamp-zone1"
+          },
+          {
+            "atlas_size": 2048,
+            "hour_fixture": 0,
+            "liquid_type": 14,
+            "rendered": true,
+            "scene": "swamp-zone1"
+          },
+          {
+            "atlas_size": 2048,
+            "hour_fixture": 12,
+            "liquid_type": 14,
+            "rendered": true,
+            "scene": "swamp-zone2"
+          },
+          {
+            "atlas_size": 2048,
+            "hour_fixture": 0,
+            "liquid_type": 14,
+            "rendered": true,
+            "scene": "swamp-zone2"
+          }
+        ]
+      },
+      "comparison_limit": "Screenshots made with different texture packs, lighting, cameras and hardware do not provide a controlled renderer performance comparison.",
+      "character_ground_light": "Existing Camera > Character light option provides Auto/Off/On; independent from Paperdoll lighting."
+    }
+  },
+  "animal_persistence_investigation": {
+    "lost_in_astral": {
+      "fixture": "tools/tests/ingos_animal_persistence.gd",
+      "scope": "Four Ingos maps; kill all eligible animals, loot about half, actual save/load and 200 ticks, then hub return and another 200 ticks.",
+      "exit": 0,
+      "errors": [],
+      "result": {
+        "checks": 837,
+        "failures": 0,
+        "maps": [
+          {
+            "animals": 74,
+            "looted": 37,
+            "zone": "gz21k"
+          },
+          {
+            "animals": 59,
+            "looted": 29,
+            "zone": "gz22k"
+          },
+          {
+            "animals": 66,
+            "looted": 33,
+            "zone": "gz23k"
+          },
+          {
+            "animals": 5,
+            "looted": 2,
+            "zone": "gz25k"
+          }
+        ]
+      },
+      "result_sha256": "356df5566741e433a04b1ce15966894c6060cbc7fcc7064be6a34339f9dcb6f5",
+      "log_sha256": "c1e3ea0466969449095d7f3047642881e1330200b62f308928c3fe2118862166",
+      "fixture_sha256": "bf6af383c6422b43c6d4e54eebda2d831af13f73782848fba397b788341d011b"
+    },
+    "original_campaign": {
+      "fixture": "tools/tests/ingos_animal_persistence.gd",
+      "scope": "Three Ingos maps; same real save/load and hub-return sequence.",
+      "exit": 0,
+      "errors": [],
+      "result": {
+        "checks": 628,
+        "failures": 0,
+        "maps": [
+          {
+            "animals": 44,
+            "looted": 22,
+            "zone": "gz11k"
+          },
+          {
+            "animals": 64,
+            "looted": 32,
+            "zone": "gz12k"
+          },
+          {
+            "animals": 45,
+            "looted": 22,
+            "zone": "gz13k"
+          }
+        ]
+      },
+      "result_sha256": "8e0d61ddc096c10ebcf03902541af3ceeef098e09a4b62d63fa8a20a76545d97",
+      "log_sha256": "92760bc7114993dd1c5c750279c46a558b3eceb44fa619b121f9efdcac385f6c",
+      "fixture_sha256": "bf6af383c6422b43c6d4e54eebda2d831af13f73782848fba397b788341d011b"
+    },
+    "conclusion": "Animal resurrection was not reproduced. No persistence fix is claimed; the exact map and reload sequence remain uncertain."
+  },
+  "great_mage_staff": {
+    "fixture": "tools/tests/rick_staff.gd",
+    "checks": 14,
+    "failures": 0,
+    "scope": "Actual LiA Rickunmori figure after the staff restoration, in an earlier unpublished 1.5.0 package. Staff implementation unchanged in the release. Rendered staff capture inspected.",
+    "result_sha256": "05277f83bed2d90b3fd272044886dad1bb7ea79f95471f4c7be02bd6e047bdd8",
+    "log_sha256": "01fddea83f462637e741062df85eea500e1020b7ffea6fb4adcf1fc25bb98c05"
+  },
+  "original_shop_reference": {
+    "binary_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+    "scope": "Original base-game executable; no claim about the separate LiA executable.",
+    "findings": "Eight rune positions around the slot, independent of artwork scale. Counts right-aligned in x+15..85,y+15..35; prices centred in x+15..85,y+65..85. Labels draw after icons and runes.",
+    "release_adjustment": "Compact clusters remain default. Optional original ring retains full-size artwork and raises completed-spell prices to y+49..69 above the lower rune glyphs.",
+    "evidence_bundle_sha256": "1cb1b83d8fe6cc796869713ac7502f45f58ee0fe5f4d93d3d9fa3c12035852bc"
+  },
+  "performance_and_network": {
+    "record": "lia-frame-time-limb-physics-2026-10-15.json",
+    "record_sha256": "54001f27d0ff039aeaa4d62c2f714edabd1eade57de5be8b47c4a0d2db926dc9",
+    "scope": "Local single-run comparisons. Final source includes 1.4.0 changes and the new archer behavior; the 1.3.1 performance-only comparison isolates geometry reuse and small-component relocation. No Windows or user-hardware FPS claim.",
+    "hardware": "Ubuntu 24.04.5, NVIDIA RTX 3090, patched Godot 4.7 shipping runtime, Vulkan Forward+, isolated user profiles",
+    "suslanger": {
+      "baseline_131": [
+        {
+          "mode": "stationary",
+          "fps": 38.7026359081862,
+          "max_frame_ms": 99.046,
+          "p99_frame_ms": 87.561
+        },
+        {
+          "mode": "orbit",
+          "fps": 33.5418702070957,
+          "max_frame_ms": 98.554,
+          "p99_frame_ms": 87.664
+        }
+      ],
+      "isolated_geometry_and_small_bounds_patch_on_131": [
+        {
+          "mode": "stationary",
+          "fps": 42.8882957840805,
+          "max_frame_ms": 43.209,
+          "p99_frame_ms": 36.316
+        },
+        {
+          "mode": "orbit",
+          "fps": 38.1625854012726,
+          "max_frame_ms": 50.093,
+          "p99_frame_ms": 43.882
+        }
+      ],
+      "final_preview": [
+        {
+          "mode": "stationary",
+          "fps": 96.1133250035118,
+          "max_frame_ms": 29.091,
+          "p99_frame_ms": 25.313
+        },
+        {
+          "mode": "orbit",
+          "fps": 85.3986488835051,
+          "max_frame_ms": 29.19,
+          "p99_frame_ms": 27.18
+        }
+      ]
+    },
+    "mansion": "Persistent post-warm-up spikes were not reproduced locally. CPU geometry reuse fixes confirmed synchronous readbacks while the rain-cover map is built, but that alone does not explain persistent drops after several minutes.",
+    "ingos": "Seven-map headless simulation comparison is recorded separately from rendered FPS in the referenced record.",
+    "network": "Reported teleporting was not reproduced in the baseline or candidates. No networking algorithm/protocol change is claimed. CPU stall fixes address a plausible contributing delay, not a proven network root cause.",
+    "network_method": "Real ENet external guest and rendered host frontend with a separate authoritative LocalHost worker. Ready-synchronized 12-second short, long and mixed command bursts (~18–20 commands/s), then a 12-second settle phase. Reachable map destinations at about 3 m and 20 m. Separate isolated profiles.",
+    "network_simulation": "Built-in latency/jitter/loss injection at both peers; not an actual ZeroTier overlay. Harsh case also injects a 180 ms guest frame stall every 4 seconds."
+  },
+  "translations": {
+    "command": "python3 tools/check_translations.py",
+    "entries": 1170,
+    "errors": 0,
+    "languages": [
+      "English",
+      "Russian",
+      "German"
+    ],
+    "dynamic_options_checked": true,
+    "rune_option_label_and_help_visually_checked": true
+  },
+  "android": {
+    "version": "1.5.0",
+    "apk_sha256": "f89e5343f4665c57a16d8fa50f8aaf682ac39d361b24ab73c53a7fb775c789e9",
+    "resources": 737,
+    "compiled_scripts": 288,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "expected_production_scripts_exact": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "engine_arguments": [
+      "--xr_mode_regular",
+      "--xr-mode",
+      "off",
+      "--fullscreen",
+      "--background_color",
+      "#000000"
+    ],
+    "sparse_pack": {
+      "format": 4,
+      "resources": 737,
+      "all_resource_sizes_and_md5_match": true,
+      "template_baseline_profiles": {
+        "dexopt/baseline.prof": {
+          "bytes": 1179,
+          "sha256": "24e7cbeabb9db5f8fbcd3c96f034151f299e7adecb3bd11d9991728105b973cf"
+        },
+        "dexopt/baseline.profm": {
+          "bytes": 141,
+          "sha256": "e8c0017a430a5645a35a802d4138b4803d16772686c5f67073220f5fd54d7b9b"
+        }
+      }
+    },
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "debuggable": false,
+    "same_public_certificate": true,
+    "release_template_provenance": {
+      "base_template": "/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014/engine/bin/android_release.apk",
+      "base_sha256": "2af5eb84aaa230955d627b2fee4e63e951fb9414e5234c8766d600713ad472e8",
+      "release_template": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/android_release_14.apk",
+      "release_template_sha256": "2af5eb84aaa230955d627b2fee4e63e951fb9414e5234c8766d600713ad472e8",
+      "engine_sha256": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+      "libcxx_sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "classes_dex_sha256": "cf2a59352f758605949daabf6b97bbcc6dea9d23e186cc8b6a187a21133f13e2",
+      "patch_count": 14,
+      "new_java_diagnostics_sources": {
+        "AndroidExitReport.java": "466f2236cc950a79b8b409d383bad99d93d0aea282c540627979c459b8587143",
+        "EISimulation.java": "df2148298bb5b51c43cd24c2a8a3387bdd7a06c5482bfee6f7a491c1b8683e8a",
+        "NativeTombstone.java": "4cdb78b00c6434e2905ed946d1d7fd235a90732105793516628ec4b0641a3779"
+      },
+      "java_template_build": "generateGodotTemplates --offline; all native SCons tasks excluded",
+      "java_template_tested_in": "docs/validation/android-native-crash-reports-2026-10-14.json",
+      "production_native_libraries_unchanged": true,
+      "private_instrumentation": false
+    },
+    "normal_installed_app_untouched": true,
+    "version_code": 37,
+    "application_id": "org.cursedlands.engine",
+    "target_os_runtime_tested": false
+  },
+  "browser": {
+    "version": "1.5.0",
+    "errors": [],
+    "browser": {
+      "protocolVersion": "1.3",
+      "product": "Chrome/151.0.7922.34",
+      "revision": "@782af9cb30a53f54487e5d2e44738645a8ec457c",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.0.0 Safari/537.36",
+      "jsVersion": "15.1.206.8"
+    },
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-48d90c0986cd840ef896",
+      "new_cache": "cursed-engine-2-1f6670b2d492c861cfee",
+      "pck_sha256": "21464190945563f29d973e388e8267ba053d6e8c1e181e0d332ee4c0127d25a3",
+      "waited_for_old_tab": true,
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "unchanged_wasm_reused": true,
+      "network_paths": [
+        "service-worker.js",
+        "index.html",
+        "index.pck"
+      ]
+    },
+    "upgraded_start": {
+      "error": "",
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "caches": [
+        "cursed-engine-2-1f6670b2d492c861cfee"
+      ],
+      "visible_frame": true
+    },
+    "fresh_start": {
+      "error": "",
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "caches": [
+        "cursed-engine-2-1f6670b2d492c861cfee"
+      ],
+      "visible_frame": true,
+      "errors": []
+    },
+    "build": {
+      "version": "1.5.0",
+      "source_tag": "v1.5.0",
+      "source_commit": "b2d95d0bfd7fdd1b81ad58fa935bbe2a04ea5e12",
+      "game_tree": "a963846f9fbd09c2c91fd36c4b67d86335330bfc",
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 288,
+      "production_scripts_byte_identical_to_release_linux": true,
+      "resource_count": 727,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "21464190945563f29d973e388e8267ba053d6e8c1e181e0d332ee4c0127d25a3",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    },
+    "screenshots_visually_checked": [
+      "fresh-setup.png",
+      "upgraded-setup.png"
+    ],
+    "host": "https://cursedlands.wwworm.com/",
+    "deployment_verification": "Live assets and startup are verified after the release commit is pushed; deployment receipts remain in the local release workspace."
+  },
+  "limits": [
+    "Windows and macOS packages were exported and audited but not executed on their native operating systems. macOS uses the unsigned stock engine.",
+    "The Android release APK was exported, signature-checked and audited; no new on-device 1.5.0 gameplay run was performed. Its native and Java engine components retain the separately validated 1.4.0 template.",
+    "Rendered checks used Linux Vulkan Forward+. Cross-platform compiled-script identity does not substitute for testing every GPU or renderer.",
+    "Earlier Suslanger FPS measurements include changes introduced in 1.4.0; the isolated 1.3.1 patch comparison is recorded separately. No performance claim is made about the final HD texture-pack correction or another renderer.",
+    "Persistent mansion dips, multiplayer teleporting and animal resurrection were not reproduced under the tested conditions. Simulated delay, jitter and packet loss used real ENet peers, not an actual ZeroTier overlay.",
+    "The original ring preserves native upper-right rune/count positions; the default compact layout reserves count space. Both keep prices clear; the ring moves prices above the bottom row.",
+    "Web checks cover fresh setup and service-worker upgrade with imported-data/save sentinels, not a complete browser campaign."
+  ],
+  "local_evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/lia-frame-limbs-20261015"
+}
