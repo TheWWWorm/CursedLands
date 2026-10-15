@@ -4068,6 +4068,20 @@ func _send_snapshot_records(snaps: Array, time: float, recipient := 0) -> void:
 
 func _send_snap(snaps: Array, time: float, recipient := 0) -> void:
 	_snapshot_serial += 1
+	if recipient == 0 and local_host.worker and local_host.owner_peer > 1 and not lmp_travel:
+		# The owner already receives continuous party motion from LocalHost.
+		# Mixing that stream with repeated logic-step positions restarts its
+		# glide several times per tick. Other peers keep the full normal stream.
+		var owner_snaps := snaps.filter(func(sn: Array): return ((int(sn[6]) >> 19) & 15) != 1)
+		var packed := NetSnapshot.pack(snaps)
+		var owner_packed := NetSnapshot.pack(owner_snaps) if owner_snaps.size() != snaps.size() else packed
+		for pid: int in multiplayer.get_peers():
+			if pid == local_host.owner_peer:
+				if not owner_snaps.is_empty():
+					_rpc_snap.rpc_id(pid, owner_packed, time, _load_serial, _snapshot_serial)
+			else:
+				_rpc_snap.rpc_id(pid, packed, time, _load_serial, _snapshot_serial)
+		return
 	snaps = NetSnapshot.pack(snaps)
 	if recipient > 0:
 		_rpc_snap.rpc_id(recipient, snaps, time, _load_serial, _snapshot_serial)

@@ -1,0 +1,131 @@
+{
+  "date": "2026-10-15",
+  "issue": "https://github.com/TheWWWorm/CursedLands/issues/4",
+  "status": "Local fix; not released or pushed.",
+  "base_commit": "f186cdce85c6456c0f717ee0226339165559f313",
+  "baseline_release": "1.5.0",
+  "changes": [
+    "Sample owner movement along the existing path spline at the current render fraction; include matching facing and animation speed.",
+    "Deliver the local owner party only through its frame stream, while remote co-op players retain ordinary snapshots and the owner retains ordinary NPC/guest updates.",
+    "Keep navigation, simulation positions, orders, saves, pause rules, wire format and release metadata unchanged."
+  ],
+  "measurement_scope": "Real original Lost in Astral Slave Lists checkpoint, local single-player worker, native presentation and loopback ENet; headless presentation sampled at 120 FPS during a 30-metre straight run. A prepared fixture is used, not a reporter-provided save.",
+  "measurements": [
+    {
+      "case": "stable 1.5.0",
+      "raw": "/home/llm2x/Documents/EI/local/scratchpad/issue-4-running-20261015/live-profile2/data/godot/app_userdata/Cursed Lands/live-run.json",
+      "sha256": "159bc1308fb9e2172c50815f1d91801aa5b0b506c3bbc5b15021b885bab924c8",
+      "window_seconds": [
+        2,
+        5
+      ],
+      "sample_count": 360,
+      "zero_displacement_frames": 15,
+      "same_position_updates": 65,
+      "active_clips": [
+        "crun02"
+      ],
+      "interpolator_commanded_speed_mps": {
+        "min": 0.0,
+        "max": 8.26533198356628,
+        "mean": 4.7691925133762725,
+        "standard_deviation": 2.044233372044518
+      },
+      "simulation_speed_mps": {
+        "min": 4.4375,
+        "max": 4.86328125,
+        "mean": 4.696039496527778
+      }
+    },
+    {
+      "case": "local candidate",
+      "raw": "/home/llm2x/Documents/EI/local/scratchpad/issue-4-running-20261015/candidate1-profile/data/godot/app_userdata/Cursed Lands/live-run.json",
+      "sha256": "5d78dcce346582e666f028035109cb725424c999f1c8edc349a343019c83f168",
+      "window_seconds": [
+        2,
+        5
+      ],
+      "sample_count": 360,
+      "zero_displacement_frames": 0,
+      "same_position_updates": 0,
+      "active_clips": [
+        "crun02"
+      ],
+      "interpolator_commanded_speed_mps": {
+        "min": 2.79850746268657,
+        "max": 6.29486083984375,
+        "mean": 4.723018334266029,
+        "standard_deviation": 1.0318112871414276
+      },
+      "simulation_speed_mps": {
+        "min": 4.4375,
+        "max": 4.86328125,
+        "mean": 4.703515625
+      }
+    }
+  ],
+  "tests": [
+    {
+      "test": "tools/tests/local_owner_motion.gd",
+      "checks": 252,
+      "failures": 0,
+      "exit": 0,
+      "runtime_errors": [],
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/issue-4-running-20261015/checks/motion-fixed/receipt.json"
+    },
+    {
+      "test": "tools/tests/local_owner_delivery.gd",
+      "checks": 10,
+      "failures": 0,
+      "exit": 0,
+      "runtime_errors": [],
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/issue-4-running-20261015/checks/delivery/receipt.json"
+    },
+    {
+      "test": "tools/tests/snapshot_recovery.gd",
+      "checks": 18,
+      "failures": 0,
+      "exit": 0,
+      "runtime_errors": [],
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/issue-4-running-20261015/checks/recovery/receipt.json"
+    },
+    {
+      "test": "tools/tests/snapshot_codec.gd",
+      "checks": 209,
+      "failures": 0,
+      "exit": 0,
+      "runtime_errors": [],
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/issue-4-running-20261015/checks/codec/receipt.json"
+    },
+    {
+      "test": "tools/tests/local_host_worker.gd",
+      "checks": 33,
+      "failures": 0,
+      "exit": 0,
+      "runtime_errors": [],
+      "receipt": "/home/llm2x/Documents/EI/local/scratchpad/issue-4-running-20261015/checks/worker-rendered/receipt.json"
+    }
+  ],
+  "total_checks": 522,
+  "translations": {
+    "command": "python3 tools/check_translations.py",
+    "entries": 1174,
+    "errors": 0,
+    "new_or_changed_player_visible_strings": 0
+  },
+  "rendered_validation": "Linux Forward+ Vulkan 800x600, real worker, paused commands, animation pause, authoritative save/load and thumbnail replacement; 33 checks, no runtime errors.",
+  "limitations": [
+    "Running measurements are headless transform/playback instrumentation, not rendered frame-time performance measurements.",
+    "Snapshot interpolation still has timing variation; this change removes the measured stationary frames and halves the commanded-speed standard deviation in the measured segment.",
+    "Windows and Android were not tested; no published release or hosted build was modified."
+  ],
+  "sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/issue-4-running-20261015/builds/candidate1/CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+    "/home/llm2x/Documents/EI/local/scratchpad/issue-4-running-20261015/builds/candidate1/CursedLands.pck": "89fa0784865b22ccee28f7c772a7fd0c3887d49562d924fc9e23ae239a76cc6b",
+    "/home/llm2x/Documents/EI/local/scratchpad/issue-4-running-20261015/builds/candidate1/libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+  },
+  "production_sources": [
+    "game/src/game/local_host.gd",
+    "game/src/game/session.gd"
+  ]
+}

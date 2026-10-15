@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Smooth the local player's movement with continuous path samples and a single update stream, retaining ordinary co-op updates for remote players. ([#4](https://github.com/TheWWWorm/CursedLands/issues/4))
+
 ## 1.5.1-preview.1 — performance preview, 15 October 2026
 
 - Retain grass instance data on the CPU before bulk upload, avoiding GPU readbacks when camera movement changes grass detail.

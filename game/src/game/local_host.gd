@@ -495,8 +495,10 @@ func _owner_gone() -> bool:
 
 
 ## The local view receives its controlled units after each worker frame,
-## including commands while paused. The ordinary world snapshot RPC carries
-## both streams, with per-actor sequence checks rejecting older arrivals.
+## including commands while paused. Sample the same continuous path used by
+## the inline renderer; integer logic positions otherwise alternate between
+## repeated points and full 55 ms steps. The normal stream omits these units
+## for the owner so it cannot replace a frame sample with an older tick pose.
 ## Periodic resends recover loss.
 func _send_owner_snapshots() -> void:
 	if not worker or owner_peer <= 1 or not session.online or not session.is_host \
@@ -518,13 +520,29 @@ func _send_owner_snapshots() -> void:
 	for u: GameUnit in w.party_units():
 		if u.controller != 0:
 			continue
-		var sn := u.snapshot()
+		var sn := _owner_snapshot(u)
 		current[u.uid] = sn
 		if refresh or _owner_snapshots.get(u.uid) != sn:
 			snaps.append(sn)
 	_owner_snapshots = current
 	if not snaps.is_empty():
 		session._send_snapshot_records(snaps, w.time, owner_peer)
+
+
+## Presentation-only snapshot. Authoritative positions, navigation stamps,
+## orders and saves continue to use the unmodified integer logic state.
+static func _owner_snapshot(u: GameUnit) -> Array:
+	var sn := u.snapshot()
+	var sample := u._draw_motion_sample(u.world.logic_fraction())
+	if not sample.is_empty():
+		var point: Vector2 = sample.p
+		var direction: Vector2 = sample.d
+		sn[1] = snappedf(point.x, 1.0 / 64.0)
+		sn[2] = snappedf(point.y, 1.0 / 64.0)
+		if direction != Vector2.ZERO and not u.direct_controlled:
+			sn[3] = snappedf(direction.angle(), 1.0 / 256.0)
+		sn[13] = snappedf(direction.length() * float(sample.v) * GameUnit.SPEED_SCALE, 1.0 / 256.0)
+	return sn
 
 
 func _send_router() -> void:
