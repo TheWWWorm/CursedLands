@@ -314,10 +314,10 @@ void fragment() {
 ## same per-vertex material, vertex light (texture × the EI light model),
 ## material alpha over the land (whose underwater vertices the land shader
 ## already darkens by depth), vertex waves and vertex specular. On top, drawn
-## so that the original colour stays the base:
-## - liquids use the tile-average colour, with animated ripples on clear
-##   water, mottled duckweed on swamps and glowing molten patches on lava;
-## - where two liquid textures meet (bog and river tiles), the 2 × 2 m tile
+## with these material treatments:
+## - clear water and lava retain their tile-average colour; swamps use
+##   depth-dependent green absorption without sampling the liquid atlas;
+## - where two clear-water or lava textures meet, the 2 × 2 m tile
 ##   textures are cross-faded along a noise-wobbled line instead of the
 ##   original's hard stair-stepped tile edge;
 ## - drifting procedural ripple normals (and rain rings) drive only the
@@ -326,7 +326,7 @@ void fragment() {
 ##   scene reflections (Mirror: a bounded reflected camera on Forward+;
 ##   Natural and other renderers: screen-space tracing), with a capped mix;
 ## - sun glints whose peak is the original's vertex specular cap of 20/255;
-## - a soft shore: the alpha fades over the last 0.25 m of depth;
+## - a soft shore: alpha fades over the last 0.25 m (0.55 m for swamps);
 ## - breaking surf on explicitly identified sea coasts;
 ## - lava (liquid tiles of ground type 13) churns and glows.
 ## The reflection and glints replace / add light as alpha-blended colour:
@@ -481,7 +481,7 @@ vec3 tile_sample(int code, vec2 p, vec2 dx, vec2 dy) {
 		// At this mip each authored tile is one texel. Its centre cannot
 		// sample a neighbouring tile; HD/upscaled atlases choose their own
 		// level from the actual texture size. World-space detail supplies
-		// ripples, duckweed and molten patches without the painted tile grid.
+		// ripples and molten patches without the painted tile grid.
 		float lod = log2(float(textureSize(atlases, 0).x) / tiles_per_axis);
 		return textureLod(atlases, vec3((origin + vec2(0.5)) / tiles_per_axis, float((code >> 6) & 255)), lod).rgb;
 	}
@@ -634,8 +634,15 @@ vec4 water_ssr(vec3 origin, vec3 normal, mat4 proj, mat4 inv_proj, mat4 inv_view
 void fragment() {
 	ei_wave_scale = 1.0;
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
-	vec4 own = EI_ATLAS(UV, UV2.x);
-	vec3 t = water_texture(own.rgb, dFdx(tgrid), dFdy(tgrid));
+	vec2 cells_uv = vec2(wpos.x, -wpos.z) / vec2(textureSize(terrain_cells, 0));
+	bool swamp = is_lava < 0.5 && int(texture(terrain_cells, cells_uv).b + 0.5) == 14;
+	vec2 tile_dx = dFdx(tgrid);
+	vec2 tile_dy = dFdy(tgrid);
+	vec3 t = vec3(0.0);
+	if (!swamp) {
+		vec4 own = EI_ATLAS(UV, UV2.x);
+		t = water_texture(own.rgb, tile_dx, tile_dy);
+	}
 	vec3 gn = normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
 	vec2 q = wpos.xz;
 	// EIWaterWaves.TICK: reuse the terrain-owned clock for surface detail,
@@ -652,22 +659,11 @@ void fragment() {
 		ei_wave_scale = 0.0;
 		ALPHA = 1.0;
 	} else {
-		vec2 cells_uv = vec2(wpos.x, -wpos.z) / vec2(textureSize(terrain_cells, 0));
-		bool swamp = int(texture(terrain_cells, cells_uv).b + 0.5) == 14;
-		float duckweed = 0.0;
-		if (swamp) {
-			// Keep the authored green/brown palette, with organic floating
-			// cover instead of the atlas's repeating scratches. Reuse foam
-			// noise so no additional sampler or surface pass is needed.
-			float patches = texture(foam_tex, q * 0.12 + water_time * vec2(0.001, -0.001)).r;
-			float flecks = texture(foam_tex, q * 1.4).r;
-			duckweed = smoothstep(0.35, 0.65, patches * 0.6 + flecks * 0.4);
-			t *= mix(0.6, 1.6, duckweed);
-		}
 		// Ripples: two normal maps drifting across each other (world space).
 		vec3 na = texture(wave_a, q * 0.055 + water_time * vec2(0.010, 0.006)).rgb * 2.0 - 1.0;
 		vec3 nb = texture(wave_b, q * 0.13 + water_time * vec2(-0.008, 0.012)).rgb * 2.0 - 1.0;
 		vec2 slope = (na.xy * 0.6 + nb.xy * 0.4) * (swamp ? 0.18 : ripple_amount) * 0.35;
+		if (swamp) { slope *= 1.5; }
 		// Raindrops on open water; subpixel rings fade out with distance.
 		vec2 rain_slope = vec2(0.0);
 		float rain = ei_surface_fx.z * ei_weather.y;
@@ -687,7 +683,15 @@ void fragment() {
 		float vdepth = thick * abs((INV_VIEW_MATRIX * vec4(vdir, 0.0)).y);
 		float shore = smoothstep(0.0, 0.25, vdepth);
 		float a = clamp(alpha, 0.0, 1.0) * shore;
-		if (swamp) { a = max(a, mix(0.93, 0.995, duckweed) * shore); }
+		if (swamp) {
+			shore = smoothstep(0.0, 0.55, vdepth);
+			// A water material, independent of the swamp atlas or texture pack.
+			// Suspended sediment absorbs the bed quickly; shallow edges retain
+			// some visibility while deeper water becomes a subdued olive green.
+			float depth_tint = 1.0 - exp(-vdepth * 0.75);
+			t = mix(ei_lin(vec3(0.28, 0.38, 0.18)), ei_lin(vec3(0.12, 0.23, 0.11)), depth_tint);
+			a = (0.72 + 0.25 * (1.0 - exp(-vdepth * 1.8))) * shore;
+		}
 		float foam = 0.0;
 		if (surf_amount > 0.0 && !swamp) {
 			float band = 1.0 - smoothstep(0.0, 0.45, vdepth);
@@ -707,6 +711,7 @@ void fragment() {
 		float fres = pow(1.0 - clamp(dot(rn, VIEW), 0.0, 1.0), 5.0);
 		vec3 R = ei_lin(ei_sky);
 		float w = fres + min(length(rain_slope) * 0.6, 0.18);
+		if (swamp) { w = max(w, 0.025); }
 		if (reflections) {
 			// Mirror: a calmer surface for scene sampling, so reflected
 			// trees and cliffs stay recognisable.
@@ -718,26 +723,25 @@ void fragment() {
 			w = reflected.a;
 		}
 		w *= (1.0 - foam) * shore;
-		// A duckweed mat is mostly diffuse. Even without the Fresnel floor,
-		// a grazing sky reflection used to turn it into clear blue water.
-		if (swamp) { w = min(w * mix(0.04, 0.01, duckweed), 0.015); }
+		// Retain the murky green body colour even at grazing angles.
+		if (swamp) { w = min(w, 0.45); }
 		// Sun glint, peak 20/255 of the sun colour like the original vertex
 		// specular, so it never reaches the bloom threshold.
 		// The original adds it to the sRGB colour; × 0.4 is that step on the dark
 		// water (sRGB ≈ 0.2) in linear light.
 		vec3 L = ei_sun_dir;
 		vec3 G = vec3(0.0);
-		// No glint on the bog: its liquid texture is a duckweed-green mat.
-		if (dot(L, L) > 0.5 && L.y > 0.0 && !swamp) {
+		if (dot(L, L) > 0.5 && L.y > 0.0) {
 			vec3 V = normalize(CAMERA_POSITION_WORLD - wpos);
 			vec3 H = normalize(L + V);
 			G = ei_lin(min(ei_sun, vec3(1.0))) * (0.4 * 20.0 / 255.0) * pow(max(dot(wn, H), 0.0), 900.0) * (1.0 - foam) * shore;
 		}
+		if (swamp) { G *= 0.4; }
 		float A = 1.0 - (1.0 - a) * (1.0 - w);
 		float k = (1.0 - w) * a / max(A, 1e-3);
 		ALBEDO = t * k;
-		// Duckweed has a diffuse surface, without the native additive wave
-		// highlights used on open water.
+		// The calm swamp uses its moving normals and reflections; the
+		// native additive highlights are reserved for open water.
 		ei_wave_scale = swamp ? 0.0 : k;
 		EMISSION = (w * R + G) / max(A, 1e-3);
 		ALPHA = A;

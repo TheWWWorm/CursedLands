@@ -4,6 +4,7 @@ var camera: Camera3D
 var rows := []
 var failures := 0
 var prior := ""
+var swamp_only := "--swamp-only-change" in OS.get_cmdline_user_args()
 ## Real authored surfaces. Use --before-water=<saved shader> for the baseline;
 ## --hd mounts an already installed HD Lands 1.5.0 package in a disposable profile.
 func frames(n := 12) -> void:
@@ -30,14 +31,30 @@ func scene(label: String, name_: String, point: Vector2) -> void:
 	var after:=await capture();after.save_png("user://"+label+"-after.png")
 	var repeat:=await capture()
 	var same:=before.get_data()==after.get_data();var stable:=after.get_data()==repeat.get_data()
+	var atlas_independent := true
+	if swamp_only and label.begins_with("swamp-"):
+		# Change only the liquid atlas binding. Land, geometry, lighting,
+		# depth and normal maps stay fixed: swamp pixels must ignore this.
+		var layers: Array[Image] = []
+		for i in t._atlases.get_layers():
+			var layer := Image.create(16,16,false,Image.FORMAT_RGB8)
+			layer.fill(Color.MAGENTA); layers.append(layer)
+		var altered := Texture2DArray.new(); altered.create_from_images(layers)
+		t._water_mat.set_shader_parameter("atlases",altered)
+		# The focused cell is swamp. Some views (zone9) also include ordinary
+		# water, which must keep using its own atlas, so compare the cell.
+		var centre := Rect2i(view.size / 2 - Vector2i(16,16),Vector2i(32,32))
+		atlas_independent = after.get_region(centre).get_data() == (await capture()).get_region(centre).get_data()
+		t._water_mat.set_shader_parameter("atlases",t._atlases)
 	# Frozen game clocks must yield identical frames; advancing the same
 	# terrain clock must animate both the ripples and the molten patches.
 	t._waves.advance(2.0);t._update_wave_parameters()
 	var animated:=await capture()
 	var changed_in_time:=after.get_data()!=animated.get_data()
-	var ok:=stable and not same and changed_in_time
+	var expected_change := not swamp_only or label.begins_with("swamp-")
+	var ok:=stable and same != expected_change and changed_in_time and atlas_independent
 	if not ok: failures+=1
-	rows.append({"scene":label,"map":name_,"point":[point.x,point.y],"water":level,"ground":t.height_at(point.x,point.y),"liquid_type":int(t.liquid_ground[int(point.y)*t.sectors_x*32+int(point.x)]),"atlas_size":t._atlases.get_width(),"identical":same,"stable_repeat":stable,"animated":changed_in_time,"ok":ok})
+	rows.append({"scene":label,"map":name_,"point":[point.x,point.y],"water":level,"ground":t.height_at(point.x,point.y),"liquid_type":int(t.liquid_ground[int(point.y)*t.sectors_x*32+int(point.x)]),"atlas_size":t._atlases.get_width(),"expected_change":expected_change,"identical":same,"stable_repeat":stable,"animated":changed_in_time,"atlas_independent":atlas_independent,"ok":ok})
 	print("SURFACE ",JSON.stringify(rows[-1]))
 	world.free();await frames(2)
 func _ready() -> void:

@@ -2291,10 +2291,14 @@ func _draw_overlay() -> void:
 	_canvas = self
 
 
-## In the optional ring layout, lift only completed spells' prices above
-## the bottom rune row. Other item labels retain the original text strips.
+## In the optional ring layout, lift a spell's price only when a drawn rune
+## occupies the bottom row (clockwise slots 3..5). Otherwise retain its strip.
 static func _price_offset(item: String) -> float:
-	return 49.0 if GameData.option("original_rune_layout") != 0 and Items.is_spell_container(item) else 65.0
+	if GameData.option("original_rune_layout") != 0 and Items.is_spell_container(item):
+		var runes := SpellSlots.rune_icons(Items.spell_code(item))
+		for i in range(3, mini(6, runes.size())):
+			if runes[i]: return 49.0
+	return 65.0
 
 
 func _draw_row_texts() -> void:

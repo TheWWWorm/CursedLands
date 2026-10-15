@@ -45,7 +45,7 @@ func _run() -> void:
 	await s.enter_zone("gz21k" if GameData.campaign_id == CampaignProfile.ASTRAL else "gz1g", 1, false)
 	s.set_physics_process(false); s.world.set_physics_process(false); s.world.set_process(false)
 	s.world.vm.briefings._check = INF; g.hud._dialog.hide()
-	var spells := ["spell:lightning{e1;e1;m1;m1;m1;m1;m1;m1}", "spell:inv_lit{m1;m1;m1;m1;m1;m1;m1;m1}", "spell:healing{e1;e1;m1;m1;m1}", "spell:strength{d1;d1;d1;m1;m1}"]
+	var spells := ["spell:lightning{e1;e1;m1;m1;m1;m1;m1;m1}", "spell:inv_lit", "spell:healing{e1;e1;m1}", "spell:strength{d1;d1;d1;m1}"]
 	s.state.items = []; s.state.money = 10000000; s.state.shops[3] = {"restock":false,"goods":{},"sold":{}}
 	for i in spells.size():
 		s.state.shops[3].goods[spells[i]] = [1,2,123,9][i]
@@ -74,6 +74,25 @@ func _run() -> void:
 			for style in [0,1]:
 				GameData.options.original_rune_layout = style
 				camp._process(0.0); await frames()
+				# With 0..8 installed runes, only occupied lower glyphs can
+				# displace the price; empty lower positions leave it at y+65.
+				var price_slot := Rect2(0,0,100,100)
+				var ring := SpellSlots.camp_rune_rects(price_slot)
+				for rune_count in range(9):
+					var item := "spell:healing"
+					var codes := PackedStringArray()
+					for i in rune_count: codes.append("m1")
+					if not codes.is_empty(): item += "{" + ";".join(codes) + "}"
+					var glyphs := SpellSlots.rune_icons(Items.spell_code(item))
+					var lower := []
+					for i in glyphs.size():
+						if glyphs[i] and ring[i].position.y > price_slot.get_center().y: lower.append(ring[i])
+					var offset := CampView._price_offset(item)
+					if style == 0 or lower.is_empty():
+						check(is_equal_approx(offset,65.0), "empty bottom row keeps original price: " + str(rune_count))
+					else:
+						var text_bottom := offset + Interface800.font().get_height(camp._fpx(1)) / camp._s() + 1.0
+						check(lower.all(func(cell: Rect2): return text_bottom < cell.position.y), "occupied bottom row clears price: " + str(rune_count))
 				for key: String in ["shop0","bag0","buy0","sell0","sready"]:
 					var previous: Array = camp._content.get(key, ["",""])
 					camp._content[key] = [spells[0], "buy"]
