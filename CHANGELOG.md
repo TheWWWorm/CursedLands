@@ -7,7 +7,8 @@
 - Show rotatable, zoomable item and creature models, and let readers calculate spell variants with compatible runes.
 - Explain combat, armor, magic, crafting and character formulas with values and examples from the loaded game data. Provide the interface and explanations in English, Russian and German.
 
-- Give small rain puddles a muted sky sheen that remains visible from the isometric camera, retaining their sparse coverage, soft margins and drying behaviour.
+- Vary rain puddle size and spacing with a broader depression field, retaining sparse coverage and receding edges. Keep their muted sheen visible from isometric views in Forward+ and Compatibility.
+- Refresh carried weight when adding, removing or consuming belt items, including wands. Deliver guest belt changes and their weight together while paused.
 
 See [preview notes](docs/releases/1.6.0-preview.1.md) for compatibility and platform limits.
 

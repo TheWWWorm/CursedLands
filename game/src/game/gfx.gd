@@ -97,19 +97,18 @@ global uniform vec3 ei_water_mirror;
 // Only the deepest, small depressions collect standing water. As wetness
 // falls their banks recede rather than fading a broad blue ground overlay.
 // Terrain and contact blending share the mask and angle-dependent colour.
-float ei_puddle_mask(float wet, float up, float grass, float noise) {
-	return ei_rain_puddles.x * smoothstep(0.35,0.95,wet)
-		* smoothstep(0.94,0.995,up) * (1.0-grass)
-		* smoothstep(mix(0.91,0.76,wet),mix(0.99,0.90,wet),noise);
-}
-vec3 ei_puddle_colour(vec3 ground_colour, float up_view) {
-	// Terrain uses native diffuse lighting rather than environment radiance.
-	// Keep its small pools readable overhead with a muted sky sheen, while
-	// retaining the stronger grazing response and the soil beneath the water.
-	float grazing = pow(1.0-clamp(abs(up_view),0.0,1.0),5.0);
-	float sky_light = dot(ei_sky,vec3(0.2126,0.7152,0.0722));
-	vec3 sheen = mix(vec3(sky_light),ei_sky,0.15);
-	return mix(ground_colour*0.72,sheen,0.22+0.78*grazing);
+float ei_puddle_mask(float wet, float up, float grass, sampler2D field, vec2 p) {
+	float amount = ei_rain_puddles.x * smoothstep(0.35,0.95,wet)
+		* smoothstep(0.94,0.995,up) * (1.0-grass);
+	if (amount <= 0.0) { return 0.0; }
+	// A broader, rotated field varies both depth and placement. Its gradual
+	// warp breaks the small tile's repeated spacing without stretching pools
+	// into long streaks. Reuse the existing texture and sampler.
+	vec2 broad_uv = vec2(p.x*0.017+p.y*0.011,p.y*0.017-p.x*0.011);
+	float broad = texture(field,broad_uv+vec2(0.31,0.67)).r;
+	vec2 uv = p*0.14 + vec2(broad-0.5,0.73*broad-0.365)*0.50;
+	float depth = texture(field,uv).r + (broad-0.5)*0.32;
+	return amount * smoothstep(mix(0.91,0.76,wet),mix(0.99,0.90,wet),depth);
 }
 uniform vec4 ei_material_diffuse = vec4(1.0);
 uniform vec3 ei_material_emissive = vec3(0.0);
@@ -149,6 +148,19 @@ vec4 ei_fog_of(vec3 v, vec3 w) {
 vec3 ei_srgb(vec3 c) {
 	c = clamp(c, 0.0, 1.0);
 	return mix(c * 12.92, 1.055 * pow(c, vec3(1.0 / 2.4)) - 0.055, step(0.0031308, c));
+}
+vec3 ei_puddle_colour(vec3 ground_colour, float up_view) {
+	// Terrain uses native diffuse lighting rather than environment radiance.
+	// Keep its small pools readable overhead with a muted sky sheen, while
+	// retaining the stronger grazing response and the soil beneath the water.
+	float grazing = pow(1.0-clamp(abs(up_view),0.0,1.0),5.0);
+	float sky_light = dot(ei_sky,vec3(0.2126,0.7152,0.0722));
+	vec3 sheen = mix(vec3(sky_light),ei_sky,0.15);
+	// Compatibility texture samples are sRGB; Forward+ samples are linear.
+	// Blend in the same space so overhead water stays visible in both.
+	vec3 base = OUTPUT_IS_SRGB ? ei_lin(ground_colour) : ground_colour;
+	vec3 result = mix(base*0.72,sheen,0.22+0.78*grazing);
+	return OUTPUT_IS_SRGB ? ei_srgb(result) : result;
 }
 // The linear diffuse factor that makes Godot output tex_srgb × c (c in sRGB units).
 vec3 ei_factor(vec3 albedo, vec3 c) {

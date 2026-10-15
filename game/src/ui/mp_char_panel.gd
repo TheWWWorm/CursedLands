@@ -520,11 +520,7 @@ func _info_rows(h: Dictionary) -> Array:
 	out.append([_perk("mana")[0], "%d" % int(Skills.base_pool(tot, dexterity, "MP") * (1.0 + Perks.best(h, "mana") / 100.0))])
 	out.append([_perk("actions")[0], "%d" % int((dexterity * 0.2 + 10.0) * (1.0 + Perks.best(h, "quickness") / 100.0))])
 	out.append([_perk("experience")[0], "%d" % int(tot)])
-	var weight := 0.0
-	for k in ["weapons", "armors", "quick"]:
-		for it in h.get(k, []):
-			var st := Items.parse_stack(String(it))
-			weight += Items.weight(st[0]) * int(st[1])
+	var weight := Combat.equipment_weight(h)
 	var limit := strength * 12.0 * (1.0 + Perks.best(h, "lift") / 100.0)
 	out.append([_perk("encumbrance")[0], "%d/%d" % [int(weight), int(limit)]])
 	out.append(["", CampView._str("infounit_17") if weight > limit else ""])

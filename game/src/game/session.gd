@@ -60,7 +60,7 @@ var _state_serial := 0
 var _state_waiting := {} # newest reliable campaign document awaiting its peer
 var _state_pending := {} # recompute current state after acknowledgement
 var _state_dirty := false
-var _training_sync_pending := false
+var _menu_sync_pending := false
 var _input_out := NetInput.new()
 var _input_in := {} # peer -> ordered command stream, shared by both transports
 var _input_retry_at := 0
@@ -212,9 +212,9 @@ func _movie_ack(pid: int, serial: int) -> void:
 
 func _process(_dt: float) -> void:
 	_send_input_due()
-	# Point purchases remain available at a shared pause. Deliver their
-	# replies on wall time while the simulation's physics loop is stopped.
-	if _training_sync_pending and is_host and not loading_game and not coop.purse_active():
+	# Camp inventory and training remain available at a shared pause. Deliver
+	# their replies on wall time while the simulation physics loop is stopped.
+	if _menu_sync_pending and is_host and not loading_game and not coop.purse_active():
 		_sync_state_due()
 	if not is_host or not movie_active(): return
 	for pid in _movie_wait.keys():
@@ -2552,19 +2552,19 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				var skill := String(cmd.get("stat", ""))
 				if Skills.raise(h, skill):
 					Combat.hero_stats(u, h)
-					_sync_training()
+					_sync_menu_state()
 		"perk":
 			var u := _hero_unit(int(cmd.get("unit", -1)), player)
 			if u and camp_available() and Perks.learn(u.get_meta("hero"), String(cmd.get("perk", ""))):
 				Combat.hero_stats(u, u.get_meta("hero"))
-				_sync_training()
+				_sync_menu_state()
 		"refund_training":
 			var u := _hero_unit(int(cmd.get("unit", -1)), player)
 			if u and not u.dead and camp_available():
 				var h: Dictionary = u.get_meta("hero")
 				if TrainingRefund.refund(h):
 					Combat.hero_stats(u, h)
-					_sync_training()
+					_sync_menu_state()
 		"equip", "unequip", "use", "give_quick", "take_quick", "select_weapon", "learn", "unlearn":
 			_item_command(cmd, player)
 		"buy", "sell":
@@ -3005,7 +3005,8 @@ func _item_command(cmd: Dictionary, player: int) -> void:
 				item = state.items[bag_i]
 				state.items.remove_at(bag_i)
 				h.get_or_add("quick", []).append(item)
-				sync_state()
+				u.stats.load = Combat.equipment_weight(h)
+				_sync_menu_state()
 		"take_quick":
 			# A belt item back to the bag: the camp screen's take-off of a quick
 			# item (case 0x3006: off the player's
@@ -3017,7 +3018,8 @@ func _item_command(cmd: Dictionary, player: int) -> void:
 			item = q[qi]
 			q.remove_at(qi)
 			state.items.append(item)
-			sync_state()
+			u.stats.load = Combat.equipment_weight(h)
+			_sync_menu_state()
 		"learn":
 			# A spell container from the bag into the hero's spells (the camp's
 			# drop checks: the spell's complexity
@@ -3094,8 +3096,9 @@ func _item_command(cmd: Dictionary, player: int) -> void:
 					return
 			else:
 				q.remove_at(qi)
+				u.stats.load = Combat.equipment_weight(h)
 			Spells.cast_unit(world, u, sp, tgt, tgt.pos)
-			sync_state()
+			_sync_menu_state()
 
 
 ## A targeted belt use starting its cast: takes the item off the belt
@@ -3111,7 +3114,8 @@ func consume_quick(u: GameUnit, item: String) -> bool:
 	if Items.is_wand(q[qi]):
 		return use_charge(q, qi)
 	q.remove_at(qi)
-	sync_state()
+	u.stats.load = Combat.equipment_weight(h)
+	_sync_menu_state()
 	return true
 
 
@@ -4589,13 +4593,13 @@ func mark_dirty() -> void:
 	_state_dirty = true
 
 
-## A guest's points change inside its temporary purse scope. Keep the
-## restored campaign/personal bag snapshot, but do not make the click wait
-## for the ordinary half-second batch. Held skill clicks share this short
-## batch instead of sending a full campaign snapshot for every frame.
-func _sync_training() -> void:
+## A guest's camp changes occur inside its temporary purse scope. Publish
+## the restored campaign/personal bag and effective stats on wall time, even
+## while paused. Held skill clicks share this short batch instead of sending
+## a full campaign snapshot for every frame.
+func _sync_menu_state() -> void:
 	if coop.purse_active():
-		_training_sync_pending = true
+		_menu_sync_pending = true
 		_state_sync_at_ms = mini(_state_sync_at_ms, Time.get_ticks_msec() + 50)
 	sync_state()
 
@@ -4606,7 +4610,7 @@ func _sync_state_due() -> void:
 	var now := Time.get_ticks_msec()
 	if online and ((_state_dirty and now >= _state_sync_at_ms) or now >= _state_sync_at_ms + 5000):
 		_state_dirty = false
-		_training_sync_pending = false
+		_menu_sync_pending = false
 		_state_sync_at_ms = now + 500
 		_sync_state_to(0, true)
 
@@ -5152,7 +5156,7 @@ func _may_load() -> bool:
 
 
 func _begin_host_load(id: String, cancel_movie := true, saved_mods: Dictionary = {}) -> void:
-	_training_sync_pending = false
+	_menu_sync_pending = false
 	_state_waiting.clear()
 	_state_pending.clear()
 	if cancel_movie:

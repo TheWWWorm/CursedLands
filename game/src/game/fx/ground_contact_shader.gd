@@ -291,7 +291,7 @@ ContactResult contact_prepare(vec3 world,vec3 wn,float band,float distance_to_ey
 		float wet=ei_weather.x*(1.0-smoothstep(0.08,0.40,cover-height))*smoothstep(-0.04,0.10,height-water_y)*smoothstep(0.05,0.65,abs(result.normal.y));
 		albedo*=1.0-wet*mix(0.23,0.08,traits.z);
 		result.surface=vec3(wet*mix(0.65,0.15,traits.z),mix(0.35,0.65,traits.z),0.0);
-		float puddle=ei_puddle_mask(wet,abs(result.normal.y),traits.z,texture(macro_tex,result.point.xz*0.24).r);
+		float puddle=ei_puddle_mask(wet,abs(result.normal.y),traits.z,macro_tex,result.point.xz);
 		float up_view=normalize(camera.xyz-result.point*camera.w).y;
 		albedo=mix(albedo,ei_puddle_colour(albedo,up_view),puddle);
 		result.surface.xy=mix(result.surface.xy,vec2(0.95,0.07),puddle);

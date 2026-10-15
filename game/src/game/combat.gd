@@ -670,15 +670,20 @@ static func hero_stats(u: GameUnit, h: Dictionary) -> void:
 	# max load = (1 + lift perk/100) * Str * 12; load = weight of the
 	# equipped weapons, armour and belt items; actions = Dex * 0.2 + 10.
 	u.stats.max_load = s * 12.0
-	var load := 0.0
-	for k in ["weapons", "armors", "quick"]:
-		for it in h.get(k, []):
-			var st := Items.parse_stack(String(it))
-			load += Items.weight(st[0]) * int(st[1])
-	u.stats.load = load
+	u.stats.load = equipment_weight(h)
 	u.stats.actions = d * 0.2 + 10.0
 	Perks.apply(u, h, wtype)
 	u.stats.actions *= 1.0 + float(u.stats.get("quick", 0.0)) / 100.0
+
+
+## Belt transfers change load without changing attributes, live pools or models.
+static func equipment_weight(h: Dictionary) -> float:
+	var weight := 0.0
+	for k in ["weapons", "armors", "quick"]:
+		for it in h.get(k, []):
+			var stack := Items.parse_stack(String(it))
+			weight += Items.weight(stack[0]) * int(stack[1])
+	return weight
 
 
 ## Worn armour per body part. the original slot -> part table: helm
