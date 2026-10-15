@@ -10,7 +10,7 @@ Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the
 
 The current stable release is [**1.5.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.5.0), available for Linux, Windows, Android and macOS. It adds lock-skill hover tooltips, improves detached-limb physics, and fixes archer retreat, unnamed interaction labels, spell-rune layout, the Great Mage’s staff and navigation-related frame spikes. See the [release notes](docs/releases/1.5.0.md) and [versioning policy](docs/versioning.md).
 
-**Performance preview:** [1.5.1-preview.4](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.5.1-preview.4) keeps small rain puddles visible from the isometric camera. It includes preview.3's cloud, reflection, movement and traversal changes, is available for Windows and Linux, and runs in the [hosted browser](https://cursedlands.wwworm.com/). See the [preview notes](docs/releases/1.5.1-preview.4.md) for compatibility and platform limits.
+**Preview:** [1.6.0-preview.1](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.6.0-preview.1) adds a searchable in-game wiki with live models and item versions, and keeps small rain puddles visible from the isometric camera. It includes the earlier cloud, reflection, movement and traversal changes, is available for Windows and Linux, and runs in the [hosted browser](https://cursedlands.wwworm.com/). See the [preview notes](docs/releases/1.6.0-preview.1.md) for compatibility and platform limits.
 
 ## Screenshots
 
