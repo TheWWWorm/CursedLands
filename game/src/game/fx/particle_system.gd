@@ -579,6 +579,7 @@ func _process(dt: float) -> void:
 ## — after the wait, the round's sync point — the camera shakes they asked
 ## for and the removals in list order. MultiMeshes are only touched in _draw.
 const PAR_MIN_PARTS := 400   # fewer particles in all: no worker round trip
+const PAR_MAX_TASKS := 4     # leave workers available for streaming and rendering
 
 
 func _tick(last := true) -> void:
@@ -631,7 +632,11 @@ func _tick(last := true) -> void:
 		job.eye = ei(cam.global_position) if cam else Vector3.ZERO
 		job.fwd = view_dir()
 	if Portability.threads() and job.efs.size() > 1 and parts >= PAR_MIN_PARTS:
-		var gid := WorkerThreadPool.add_group_task(job.run, job.efs.size(), -1, true, "ParticleFx")
+		# -1 posts a task for every pool thread, including empty tasks when
+		# there are fewer emitters. The frame must join all of them. A small
+		# bounded group still distributes every emitter without that fan-out.
+		var tasks := mini(job.efs.size(), PAR_MAX_TASKS)
+		var gid := WorkerThreadPool.add_group_task(job.run, job.efs.size(), tasks, true, "ParticleFx")
 		# The serial emitters meanwhile: they read nodes, the workers do not.
 		for ef in serial:
 			ef.ok = ef.e.update_sim()

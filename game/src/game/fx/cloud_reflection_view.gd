@@ -8,6 +8,8 @@ var terrain: EITerrain
 var viewport: SubViewport
 var camera: Camera3D
 var _scanner: Reflection
+var _source: Camera3D
+var _poll := 0
 var _plane := -INF
 var _key: Array = []
 var _sky_source: Sky
@@ -32,7 +34,10 @@ func _process(_dt: float) -> void:
 	if environment == null: environment = source.get_world_3d().environment
 	if environment == null or environment.background_mode != Environment.BG_SKY or environment.sky == null:
 		_disable(); return
-	_plane = _scanner.visible_plane(source)
+	var now := Time.get_ticks_msec()
+	if source != _source or now >= _poll:
+		_plane = _scanner._select_plane(source)
+		_source = source; _poll = now + 125
 	if not is_finite(_plane) or source.global_position.y < _plane + 0.15:
 		_disable(); return
 	if viewport == null: _create_view()

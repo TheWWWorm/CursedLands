@@ -95,6 +95,7 @@ func run() -> void:
 	var focus:=Vector3(at.x,level,-at.y)
 	RenderingServer.global_shader_parameter_set(&"ei_border",Vector4.ZERO)
 	var base:=GameData.options.duplicate(true)
+	var profiler=load("res://pan_profile.gd") if ResourceLoader.exists("res://pan_profile.gd") else null
 	for angle: String in cfg.angles:
 		camera.global_position=focus+(Vector3(-8,16,-12) if angle=="overhead" else Vector3(4,5,8))
 		camera.look_at(focus)
@@ -122,12 +123,14 @@ func run() -> void:
 			var deadline:=Time.get_ticks_msec()+int(float(cfg.settle)*1000)
 			while Time.get_ticks_msec()<deadline:await frames()
 			live=true
+			if profiler:profiler.clear()
 			var drawn_before:=Engine.get_frames_drawn()
 			var before:=RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_PIPELINE_COMPILATIONS_DRAW)
-			var wall:=[];var start:=Time.get_ticks_usec();var previous:=start
+			var wall:=[];var stalls:=[];var start:=Time.get_ticks_usec();var previous:=start
 			while wall.size()<int(cfg.samples):
 				await frames()
 				var now:=Time.get_ticks_usec();wall.append((now-previous)/1000.0);previous=now
+				if wall.back()>20.0:stalls.append({"frame":Engine.get_process_frames(),"ms":wall.back(),"process_ms":Performance.get_monitor(Performance.TIME_PROCESS)*1000.0})
 			live=false
 			var cache: Node=t.get("_cloud_reflection")
 			var field=Gfx._cloud_shadow_field
@@ -141,6 +144,8 @@ func run() -> void:
 				if cache and cache.viewport:reflection_gpu.append(RenderingServer.viewport_get_measured_render_time_gpu(cache.viewport.get_viewport_rid()))
 			live=false
 			var row:={"gpu_samples":distribution(root_gpu),"shadow_gpu_samples":distribution(shadow_gpu) if not shadow_gpu.is_empty() else {},"reflection_gpu_samples":distribution(reflection_gpu) if not reflection_gpu.is_empty() else {},"angle":angle,"effects":effects,"fps_limit":Engine.max_fps,"drawn":drawn,"gpu_ms":RenderingServer.viewport_get_measured_render_time_gpu(scene_view.get_viewport_rid()),"render_cpu_ms":RenderingServer.viewport_get_measured_render_time_cpu(scene_view.get_viewport_rid()),"frame_ms":distribution(wall),"frames":wall.size(),"pipelines":RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_PIPELINE_COMPILATIONS_DRAW)-before,"cloud_frame":str(Gfx._cloud_frame),"sun":str(Gfx._cloud_sun_direction),"camera":str(camera.global_transform),"size":str(scene_view.size),"cache_ready":bool(t._water_mat.get_shader_parameter("cloud_reflection_ready")) if effects[2] else false,"field_ready":field!=null and field._published,"field_gpu_ms":RenderingServer.viewport_get_measured_render_time_gpu(field.view.get_viewport_rid()) if field else 0.0,"reflection_gpu_ms":RenderingServer.viewport_get_measured_render_time_gpu(cache.viewport.get_viewport_rid()) if cache and cache.viewport else 0.0,"cache_size":str(cache.viewport.size) if cache and cache.viewport else "none"}
+			row.stalls=stalls
+			if profiler:row.profile=profiler.snapshot()
 			rows.append(row);print("CLOUD_COST ",JSON.stringify(row))
 			scene_view.get_texture().get_image().save_png("user://cloud-cost-%02d.png"%rows.size())
 			if cache and cache.viewport: cache.viewport.get_texture().get_image().save_png("user://cloud-cache-%02d.png"%rows.size())

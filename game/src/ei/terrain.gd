@@ -7,9 +7,6 @@ const WaterReflection = preload("res://src/game/fx/water_reflection.gd")
 var _reflection: WaterReflection
 const CloudReflectionView = preload("res://src/game/fx/cloud_reflection_view.gd")
 var _cloud_reflection: CloudReflectionView
-var _reflection_plane_query := {}
-var _reflection_water_cells := {}
-var _reflection_cells_ready := false
 
 const WaveState := preload("res://src/ei/water_waves.gd")
 
@@ -1235,9 +1232,6 @@ func apply_gfx() -> void:
 	_update_cloud_parameters()
 	if _water_mat == null:
 		return
-	if WaterReflection.supported() and Gfx.on("gfx_water") and not _reflection_cells_ready \
-			and (GameData.option("gfx_water_reflections")==2 or Clouds.reflections_enabled()):
-		WaterReflection.prepare_water_cells(self)
 	if WaterReflection.supported() and Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") == 2:
 		if not is_instance_valid(_reflection):
 			_reflection = WaterReflection.new()
@@ -1385,6 +1379,9 @@ func apply_gfx() -> void:
 	if det:
 		_ensure_detail_atlases()
 		_land_mat.set_shader_parameter("detail_nm", Gfx.noise("ground", 512, 0.02, 5, true, 3.0))
+	# Puddle depressions are independent of the terrain-detail option. An
+	# unbound sampler otherwise fills every eligible flat patch uniformly.
+	if det or (Gfx.on("gfx_weather_surfaces") and Gfx.on("gfx_rain_puddles")):
 		_land_mat.set_shader_parameter("macro_tex", Gfx.noise("macro", 256, 0.015, 3))
 	_land_mat.set_shader_parameter("atlases", _detail_atlases if det else _atlases)
 	_land_mat.set_shader_parameter("tiles_per_axis", float(texture_size) / tile_size)
@@ -1624,7 +1621,6 @@ func set_water_offset(mat: int, offset: float) -> Rect2i:
 			hi = hi.max(c)
 	if hi.x < 0:
 		return Rect2i()
-	_reflection_plane_query.clear()
 	if is_instance_valid(_reflection): _reflection.request_refresh()
 	if is_instance_valid(details):
 		details.water_changed()

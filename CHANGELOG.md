@@ -5,7 +5,8 @@
 - Keep water's normal-incidence reflection visible from steep camera angles while retaining the swamp colour treatment.
 - Bind immutable cloud noise textures when they are created instead of scheduling material texture updates every frame.
 - Give the cloud reflection view an independent sky and minimize its unused radiance-cubemap work without changing visible cloud samples or resolution.
-- Share visible-water queries between scenery and cloud reflections, index water cells, and refresh the query during paused camera movement and water-level edits.
+- Bind the rain-puddle depression texture independently of terrain detail, so puddles form separate patches with either terrain setting.
+- Bound particle-update worker groups to the number of emitters and at most four tasks, avoiding full-pool synchronization for small effects.
 
 See [preview notes](docs/releases/1.5.1-preview.3.md) for compatibility and platform limits.
 
