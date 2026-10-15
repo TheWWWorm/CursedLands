@@ -1,0 +1,173 @@
+{
+  "version": "1.5.1-preview.3",
+  "tag": "v1.5.1-preview.3",
+  "release_type": "prerelease",
+  "base_stable": "1.5.0",
+  "game_source_commit": "6efbd08fcfb81847e3f254987fbd8d8f28904c2a",
+  "game_tree": "b35138f97f8bc9e721f0db96fc03e1c1c4567d3f",
+  "protocol": 23,
+  "same_version_coop_required": true,
+  "performance_record": "clouds-2026-10-15.json",
+  "passed_regression_checks": 21943,
+  "translations": {
+    "entries": 1174,
+    "errors": 0,
+    "command": "python3 tools/check_translations.py",
+    "output": "Translations: 1174 entries; 0 errors"
+  },
+  "desktop": {
+    "linux-x86_64": {
+      "version": "1.5.1-preview.3",
+      "source_commit": "6efbd08fcfb81847e3f254987fbd8d8f28904c2a",
+      "game_tree": "b35138f97f8bc9e721f0db96fc03e1c1c4567d3f",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 12,
+      "target_os_runtime_tested": true,
+      "runtime_validation": "Exact Linux pack, engine and native files used by cloud, water, puddle and traversal checks.",
+      "compiled_scripts": 290,
+      "resource_count": 734,
+      "production_scripts_identical_across_windows_and_linux": true,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.pck": "61d60ef85d556be3eb90d4e3247eae60ec65cc0e8249ddfc33be8031d98ec421"
+      }
+    },
+    "windows-x86_64": {
+      "version": "1.5.1-preview.3",
+      "source_commit": "6efbd08fcfb81847e3f254987fbd8d8f28904c2a",
+      "game_tree": "b35138f97f8bc9e721f0db96fc03e1c1c4567d3f",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 12,
+      "target_os_runtime_tested": false,
+      "runtime_validation": "Package audited; no Windows runtime test available.",
+      "compiled_scripts": 290,
+      "resource_count": 734,
+      "production_scripts_identical_across_windows_and_linux": true,
+      "files": {
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "CursedLands.pck": "61d60ef85d556be3eb90d4e3247eae60ec65cc0e8249ddfc33be8031d98ec421"
+      }
+    }
+  },
+  "browser": {
+    "version": "1.5.1-preview.3",
+    "errors": [],
+    "browser": {
+      "protocolVersion": "1.3",
+      "product": "Chrome/151.0.7922.34",
+      "revision": "@782af9cb30a53f54487e5d2e44738645a8ec457c",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.0.0 Safari/537.36",
+      "jsVersion": "15.1.206.8"
+    },
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-494125ae1fb24333bc26",
+      "new_cache": "cursed-engine-2-1dc75e999b53afd9df9d",
+      "pck_sha256": "977c6290afd39f5650e0dda6937d5ed06b21920ccdefa26c2f7ea986418e97d3",
+      "waited_for_old_tab": true,
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "unchanged_wasm_reused": true,
+      "network_paths": [
+        "service-worker.js",
+        "index.html",
+        "index.pck"
+      ]
+    },
+    "upgraded_start": {
+      "error": "",
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "caches": [
+        "cursed-engine-2-1dc75e999b53afd9df9d"
+      ],
+      "visible_frame": true
+    },
+    "fresh_start": {
+      "error": "",
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "caches": [
+        "cursed-engine-2-1dc75e999b53afd9df9d"
+      ],
+      "visible_frame": true
+    },
+    "build": {
+      "version": "1.5.1-preview.3",
+      "source_tag": "v1.5.1-preview.3",
+      "source_commit": "6efbd08fcfb81847e3f254987fbd8d8f28904c2a",
+      "game_tree": "b35138f97f8bc9e721f0db96fc03e1c1c4567d3f",
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 290,
+      "production_scripts_byte_identical_to_release_linux": true,
+      "resource_count": 731,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "977c6290afd39f5650e0dda6937d5ed06b21920ccdefa26c2f7ea986418e97d3",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    },
+    "screenshots_visually_checked": [
+      "fresh-setup.png",
+      "upgraded-setup.png"
+    ]
+  },
+  "hosted_files": {
+    "BUILD-INFO.json": "c15ea39f6e5696ce6dd89bb62a2ff1a4686d1911c2525957ce2a8ade671667f8",
+    "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+    "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+    "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+    "THIRD_PARTY_NOTICES.md": "9bf95a6be1eea5b3d3e6b45e17d229c400cc2914ae11d37f8082604d77e806ac",
+    "_headers": "385af9098c5d9752a0ff141b34048e2611ad70beba02c7ed03b1b1dc29a67841",
+    "data-worker.js": "23acf2e304952606e7e2a0bf850dc8e02b56dcae2913cc79e461c78afbd49d77",
+    "files.js": "5b23e470c5dedc93d0c80ea0696eff36bad3afbb88eb4bc85ced567f472c5b2a",
+    "icon-192.png": "ce18b6621f58d2b24ef49ec182bf4f021f5992b2e46e666918764c47d92a1a0a",
+    "icon-512.png": "33d17b00001bf55448c56919e7f9a9d56be7089231be189704d72a13d00363d4",
+    "index.apple-touch-icon.png": "a8079e5f32d35cabbc12bb9f66f4b7c49a73b84d7fc1e8e4dde15914f9bc50eb",
+    "index.audio.position.worklet.js": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+    "index.audio.worklet.js": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+    "index.html": "c780b980293b54dc1f782642a5b3a89f68bf9e9173064166997e582dd1a96354",
+    "index.icon.png": "490c9afe17f218360ceb84d41dd95d0409dfe0349c00a97c40cf3d8e04cf0b45",
+    "index.js": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
+    "index.pck": "977c6290afd39f5650e0dda6937d5ed06b21920ccdefa26c2f7ea986418e97d3",
+    "index.png": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
+    "index.wasm.part0": "e225998ec9fbd2fb1aa80798d571dc381fdd9bfdb3478250832404d941db0426",
+    "index.wasm.part1": "79cae914fb3feb5b3ef307b0906fd111d1ee2ca48ff730ba21cca432c271467b",
+    "installer-worker.js": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
+    "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+    "manifest.webmanifest": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
+    "service-worker.js": "91e44c0365d088fd2702acf6270efdf8b6f6ed6cbe8a60e7b67683a9bc95bf65",
+    "storage.js": "9265725b43b6b4e897693fd3be62b175c3e0b07493b51ba7d18a6d1578bee581"
+  },
+  "parts_manifest": {
+    "/index.wasm": {
+      "count": 2,
+      "size": 39509339
+    }
+  },
+  "limits": [
+    "No Windows/D3D12 or RTX 4090 laptop measurement is available. Linux Vulkan results do not guarantee the same FPS gain on another driver or GPU.",
+    "The Mines endpoints have no visible reflective water. This sweep isolates shadow-related CPU overhead and traversal rendering; reflected-water cost is measured at the shoreline.",
+    "Rendering and particle scheduling improvements do not establish that every gameplay stutter has been eliminated. No complete end-to-end gameplay FPS claim is made.",
+    "Steep-angle reflections remain subtler than grazing-angle reflections. Puddles use the existing wet-surface shading, not a separate planar scenery mirror.",
+    "No original game content, private save or video is included in published artifacts.",
+    "Browser checks cover setup and the service-worker update with data/save sentinels; no complete browser campaign is claimed.",
+    "This preview supplies Windows, Linux and browser packages; Android and macOS remain on stable 1.5.0."
+  ],
+  "deployment_verification": "Live asset hashes, isolation headers and fresh browser startup are checked after the release commit is pushed. Publication receipts are kept in the local release workspace."
+}

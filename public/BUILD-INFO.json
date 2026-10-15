@@ -1,8 +1,8 @@
 {
-  "version": "1.5.1-preview.2",
-  "source_tag": "v1.5.1-preview.2",
-  "source_commit": "c3475f0faaf43b4157d9a76de851ae3d5a9b2af8",
-  "game_tree": "7cb45117efddc7eb5176475de6963af11e506480",
+  "version": "1.5.1-preview.3",
+  "source_tag": "v1.5.1-preview.3",
+  "source_commit": "6efbd08fcfb81847e3f254987fbd8d8f28904c2a",
+  "game_tree": "b35138f97f8bc9e721f0db96fc03e1c1c4567d3f",
   "platform": "web",
   "engine": "Godot 4.7.stable.official.5b4e0cb0f",
   "threads": false,
@@ -12,6 +12,6 @@
   "resource_count": 731,
   "all_pck_resource_md5_valid": true,
   "original_game_data_bundled": false,
-  "pck_sha256": "0cb4c23f10ef61456ddcf4d6c72f659f19e516846db1089dad8f248afa82c8b3",
+  "pck_sha256": "977c6290afd39f5650e0dda6937d5ed06b21920ccdefa26c2f7ea986418e97d3",
   "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
 }

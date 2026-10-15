@@ -1,0 +1,121 @@
+{
+  "version": "1.5.1-preview.3",
+  "status": "desktop package audit",
+  "source_commit": "6efbd08fcfb81847e3f254987fbd8d8f28904c2a",
+  "game_tree": "b35138f97f8bc9e721f0db96fc03e1c1c4567d3f",
+  "validation_record_sha256": "578d474ad1fd7c1e90fc07b477f2031f90c8b3bec37480a77b907ede315423f3",
+  "production_source_matches_tested_stage": true,
+  "platforms": {
+    "linux-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.5.1-preview.3-linux-x86_64",
+      "archive": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.5.1-preview.3-linux-x86_64.zip",
+      "archive_sha256": "ba62979d62352a13a04c0c67a15ee61ba83a2291dd2e1ba55d8999321b8959d8",
+      "archive_bytes": 37198034,
+      "zip_crc_and_content_verified": true,
+      "info": {
+        "version": "1.5.1-preview.3",
+        "source_commit": "6efbd08fcfb81847e3f254987fbd8d8f28904c2a",
+        "game_tree": "b35138f97f8bc9e721f0db96fc03e1c1c4567d3f",
+        "protocol": 23,
+        "platform": "linux-x86_64",
+        "engine_patch_count": 12,
+        "target_os_runtime_tested": true,
+        "runtime_validation": "Exact Linux pack, engine and native files used by cloud, water, puddle and traversal checks.",
+        "compiled_scripts": 290,
+        "resource_count": 734,
+        "production_scripts_identical_across_windows_and_linux": true,
+        "files": {
+          "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+          "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+          "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+          "CursedLands.pck": "61d60ef85d556be3eb90d4e3247eae60ec65cc0e8249ddfc33be8031d98ec421"
+        }
+      },
+      "export": null,
+      "windows_imports": {},
+      "no_original_data_or_private_fixtures_in_pack": true,
+      "manifest_sha256": "9d9e7a6b16bd6cf01702b126167fae32854e43e060a9b020855ff44c21175d70"
+    },
+    "windows-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.5.1-preview.3-windows-x86_64",
+      "archive": "/home/llm2x/Documents/EI/local/builds/CursedLands-1.5.1-preview.3-windows-x86_64.zip",
+      "archive_sha256": "0425cda64bcb0390363607ebcba417647f378ab5f033762df09f5cd789ffc56b",
+      "archive_bytes": 38363433,
+      "zip_crc_and_content_verified": true,
+      "info": {
+        "version": "1.5.1-preview.3",
+        "source_commit": "6efbd08fcfb81847e3f254987fbd8d8f28904c2a",
+        "game_tree": "b35138f97f8bc9e721f0db96fc03e1c1c4567d3f",
+        "protocol": 23,
+        "platform": "windows-x86_64",
+        "engine_patch_count": 12,
+        "target_os_runtime_tested": false,
+        "runtime_validation": "Package audited; no Windows runtime test available.",
+        "compiled_scripts": 290,
+        "resource_count": 734,
+        "production_scripts_identical_across_windows_and_linux": true,
+        "files": {
+          "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+          "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+          "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+          "CursedLands.pck": "61d60ef85d556be3eb90d4e3247eae60ec65cc0e8249ddfc33be8031d98ec421"
+        }
+      },
+      "export": {
+        "command": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/preview2-coop-20261015/stages/puddles-refined",
+          "--export-pack",
+          "Windows",
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.5.1-preview.3-windows-x86_64/CursedLands.pck"
+        ],
+        "exit": 0,
+        "errors": [],
+        "seconds": 5.775,
+        "log_sha256": "fd50e67092453cb7e053404d3e098642f1afc93f6770be26fd4131e4dbbdb0e6"
+      },
+      "windows_imports": {
+        "CursedLands.exe": [
+          "ADVAPI32.dll",
+          "AVRT.dll",
+          "bcrypt.dll",
+          "CRYPT32.dll",
+          "dwmapi.dll",
+          "DWrite.dll",
+          "GDI32.dll",
+          "HID.DLL",
+          "IMM32.dll",
+          "IPHLPAPI.DLL",
+          "KERNEL32.dll",
+          "api-ms-win-core-processthreads-l1-1-3.dll",
+          "api-ms-win-security-base-l1-2-1.dll",
+          "api-ms-win-security-lsalookup-l2-1-0.dll",
+          "msvcrt.dll",
+          "ntdll.dll",
+          "ole32.dll",
+          "OLEAUT32.dll",
+          "SHCORE.dll",
+          "SHELL32.dll",
+          "SHLWAPI.dll",
+          "USER32.dll",
+          "WINMM.dll",
+          "WS2_32.dll",
+          "WSOCK32.dll"
+        ],
+        "libterrain_search.dll": [
+          "KERNEL32.dll",
+          "msvcrt.dll"
+        ],
+        "libmod_archive.dll": [
+          "KERNEL32.dll",
+          "msvcrt.dll"
+        ]
+      },
+      "no_original_data_or_private_fixtures_in_pack": true,
+      "manifest_sha256": "327e5483d7ba3f60ed16e5b31216f34b1f8fd24fbdc46d55e1267eb9c7d9d2f9"
+    }
+  },
+  "windows_linux_packs_byte_identical": true
+}
