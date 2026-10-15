@@ -33,6 +33,8 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 	preload("res://src/game/script/story_coop_effects.gd").apply(ast, zone)
 	preload("res://src/game/script/story_coop_traps.gd").apply(ast, zone)
 	preload("res://src/game/script/story_coop_predicates.gd").apply(ast, zone)
+	if zone == "gz1h":
+		_shelter_escape_watch(ast)
 	if zone == "bz1h":
 		_escape_party(ast)
 	if zone != "cz1h": return
@@ -53,6 +55,23 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 		for condition: Array in block.conds:
 			if condition == check:
 					condition[2][0][2][1][1] = 300.5
+
+
+## The Portal's escape watcher is saved with the region. After the first
+## Shelter briefing deliberately removes Kel from FPrison, its missing actor
+## is no longer a death during that escape. Preserve the actual death rule
+## before dismissal, and the body/indexes used by old suspended VM saves.
+static func _shelter_escape_watch(ast: ScriptParser) -> void:
+	var actor := [P.N_CALL,"GetObjectByName",[[P.N_STR,"merc2"]]]
+	var expected := {"params":["this"],"blocks":[{
+		"conds":[[P.N_CALL,"Not",[[P.N_CALL,"IsAlive",[actor]]]]],
+		"body":[[P.S_CALL,"KillScript",[]],[P.S_CALL,"KillUnit",
+			[[P.N_CALL,"GetUnitOfPlayer",[[P.N_NUM,0.0],[P.N_NUM,0.0]]]]]]}]}
+	var watch: Dictionary = ast.scripts.get("HellManAlive",{})
+	if watch != expected: return
+	watch.blocks[0].conds.push_front([P.N_CALL,"IsLess",[
+		[P.N_CALL,"GSGetVar",[[P.N_NUM,0.0],[P.N_STR,"b.bz2h.brief_6"]]],
+		[P.N_NUM,2.0]]])
 
 
 ## The original prison arms these shared quest/discovery checks once for

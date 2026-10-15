@@ -20,6 +20,8 @@ const RECOVERY_ROWS := [
 	["Use basic graphics", "Turns off enhanced graphics and automatic detection, then continues startup."],
 	["Test startup graphics", "Checks the loading picture and menu parts separately. If the game closes, reopen it and save the report."],
 ]
+const RENDERER_ROW := ["Try Mobile (Vulkan)", "Switches to a different graphics driver after a restart. This may avoid an OpenGL startup crash."]
+const RENDERER_PROMPT := "Restart with Mobile (Vulkan)? This uses a different graphics driver and may avoid the startup crash. If the game does not reopen automatically, open it again."
 const ROW_H := 30.0
 
 ## The previous session's info (CrashReport.previous); {} = Export log.
@@ -28,10 +30,13 @@ var _sel := 0
 var _status := ""
 var startup_recovery := false
 var _probing := false
-var _confirm: GraphicsCheckBox
+var _confirm: MessageBox
 
 func _row_defs() -> Array:
-	return ROWS + RECOVERY_ROWS if startup_recovery else ROWS
+	var rows := ROWS + RECOVERY_ROWS if startup_recovery else ROWS
+	if startup_recovery and RendererChoice.available() and Portability.compatibility():
+		rows = rows + [RENDERER_ROW]
+	return rows
 
 
 ## The box over `parent` when the previous session ended unexpectedly (once).
@@ -137,6 +142,24 @@ func act(i: int) -> void:
 	sound("messbox\\ok")
 	var cr := CrashReport.instance
 	if cr == null:
+		return
+	if i == 4:
+		_probing = true
+		visible = false
+		_confirm = MessageBox.new()
+		_confirm.title = RemakeText.t("Renderer")
+		_confirm.message = RemakeText.t(RENDERER_PROMPT)
+		_confirm.esc_closes = true
+		_confirm.answered.connect(func(yes: bool):
+			_confirm = null
+			if yes:
+				GameData.set_option("renderer", 2)
+				GameData.trace("startup recovery: Mobile renderer selected")
+				RendererChoice.restart(get_tree())
+			else:
+				_probing = false
+				visible = true)
+		get_parent().add_child(_confirm)
 		return
 	if i == 2:
 		GameData.set_options(GfxDetect.original_recovery_values(GameData.options))

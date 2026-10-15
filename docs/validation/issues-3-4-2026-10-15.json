@@ -1,0 +1,363 @@
+{
+  "date": "2026-10-15",
+  "base_commit": "41a9b2584a788ac0ef12e3648e579d54c4d9c14c",
+  "branch": "fix/issues-3-4",
+  "latest_published_stable": "1.4.0",
+  "publication": {
+    "published": false,
+    "version_changed": false,
+    "note": "Local source candidate and desktop validation pack only; no new Android APK, release, issue comment or remote branch was published."
+  },
+  "status": "Issue 4 reproduced on 1.4.0 and fixed in this candidate. Issue 3 native crash localized to Qualcomm OpenGL shader linking; existing Vulkan selection exposed before the main menu as an unverified device workaround.",
+  "source_files": {
+    "CHANGELOG.md": "655657af56a01f4f7dcd982d5197de1009aa251f3f96484cc1681b5ca5635382",
+    "game/src/ei/remake_text.gd": "c1b7364340f8b413344d384f3dd797bc5848e28f773fbcc43ea4e075805a4042",
+    "game/src/game/script/story_compat.gd": "1e8f2f10df91331141acc75d5e5720da737feab91acd8ac04d2b61013ffbef00",
+    "game/src/ui/crash_report_box.gd": "6af1322b5a7bf130218cbf0dca03b42e79d85993115e39833ecdb4502f49ef49",
+    "tools/tests/startup_graphics_recovery.gd": "aec41e116750590ec6411f2a5ccb3d3f41d5fcd95eade74f55a44a3ad62d65bb",
+    "tools/tests/startup_renderer_recovery.gd": "0581809c296810893ac85900210c3841175b15bd96a1c94ef151a560a22d6cde",
+    "tools/tests/lia_slave_lists_return.gd": "6411fa353a48433925a99a435502474b212e1140e2f00d112dd6e6791b0180b0"
+  },
+  "issue_4": {
+    "url": "https://github.com/TheWWWorm/CursedLands/issues/4",
+    "report_limit": "No reporter save or game version was supplied. The prepared checkpoint reproduces the reported sequence on the published 1.4.0 build; it is not the reporter's exact save.",
+    "cause": "The Portal (gz1h / zone1.mob) restores its suspended HellManAlive watcher on revisit. Its original Not(IsAlive(GetObjectByName(\"merc2\"))) condition also succeeds when Kel is absent after the shelter intentionally removes him from FPrison. Its body kills the main hero.",
+    "authored_dismissal": "Completing b.bz2h.brief_6 in the shelter removes FPrison::merc2, redeploys the party and hides Kel in the shelter. His absence on the subsequent Slave Lists trip is intended.",
+    "reproduction": [
+      "Prepare Kir and Kel in FPrison, enter gz1h and arm the original VCheck#1#9 at its authored post-tunnel trigger.",
+      "Check that the live companion is safe and actual companion death still satisfies the original failure before dismissal.",
+      "Enter bz2h while retaining the saved Portal VM; complete the actual b.bz2h.brief_6 briefing and its original removal handler.",
+      "Prepare q.gz1h.q2h as active, save/reload the shelter checkpoint, return to gz1h through entrance 5 and tick the restored VM.",
+      "Save/reload the returned state and check survival again."
+    ],
+    "fixture_limit": "The regression prepares campaign progress and freezes unrelated simulation. It executes the original escape trigger, original shelter dismissal, actual region snapshots and save/load; it is not an entire campaign playthrough. The available LiA archive is Russian.",
+    "fix": "Add b.bz2h.brief_6 < 2 to the exact original HellManAlive definition only for LiA gz1h. Keep the action body and saved instruction indexes unchanged. Other campaigns, regions and modified watcher definitions remain untouched.",
+    "baseline": {
+      "checks": 21,
+      "failures": 3,
+      "expected_failures": [
+        "Kir survives the restored escape watcher after dismissal",
+        "Slave Lists return keeps a living protagonist",
+        "reloading the return does not reactivate the completed escape failure"
+      ]
+    },
+    "candidate": {
+      "checks": 21,
+      "failures": 0
+    },
+    "existing_save": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/baseline/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/slave_lists_before.sav",
+      "sha256": "89e97f80710458fe7eac314ebcfb32d1bbc50be92cee3f35050f51d9de9d3d40",
+      "created_by": "Unmodified released 1.4.0 executable and pack",
+      "checks": 12,
+      "failures": 0
+    },
+    "limit": "The fix prevents this death when loading a living pre-departure checkpoint; it does not resurrect a hero in a save made after death."
+  },
+  "issue_3": {
+    "url": "https://github.com/TheWWWorm/CursedLands/issues/3",
+    "latest_report": "https://github.com/TheWWWorm/CursedLands/issues/3#issuecomment-6185584205",
+    "reported_device": "Redmagic 11 Pro NX809J, Snapdragon 8 Gen 5 / Adreno 840, Android API 36",
+    "binary_identity": {
+      "release_apk": "/home/llm2x/Documents/EI/local/scratchpad/release-1.4.0-20261015/assets/CursedLands-1.4.0-android.apk",
+      "apk_sha256": "8f8d4916bfe9c3662d784a1fa232359a8f7ea7f74157ad8c532451fccaeef72e",
+      "library_sha256": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+      "inspected_library_matches_release": true,
+      "symbols": "/home/llm2x/Documents/EI/local/scratchpad/android-object-investigation-20261014/gles-lazy/engine/platform/android/java/lib/libs/release/arm64-v8a/libgodot_android.so",
+      "symbols_build_id": "abe78313d4b1eae2039a65d57c7845129f086194",
+      "release_build_id": "abe78313d4b1eae2039a65d57c7845129f086194",
+      "reported_build_id": "abe78313d4b1eae2039a65d57c7845129f086194",
+      "build_ids_match": true
+    },
+    "symbolication": {
+      "method": "Matching ELF build IDs, APK-to-inspected-library byte comparison, llvm-addr2line on the matching unstripped library and llvm-objdump of the released stripped library. REA procedure lookup timed out; it did not supply the symbolication.",
+      "full_output": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/issue-3-symbolicated.txt",
+      "full_output_sha256": "e4592eb6a07ac010f8dc91a688297161793ce4a45dc9c7f0f7641de3481c2d2b",
+      "frame_21": {
+        "pc": "0x1c6e04c",
+        "function": "ShaderGLES3::_compile_specialization",
+        "source": "drivers/gles3/shader_gles3.cpp:427",
+        "source_statement": "glLinkProgram(spec.id);",
+        "released_instruction": "bl 0x3d03780 <glLinkProgram@plt>"
+      },
+      "frame_22": {
+        "pc": "0x1c433b4",
+        "function": "RasterizerSceneGLES3::_render_list_template<(PassMode)0>",
+        "inlined_calls": [
+          "ShaderGLES3::_version_bind_shader",
+          "SceneShaderGLES3::version_bind_shader"
+        ],
+        "source": "drivers/gles3/rasterizer_scene_gles3.cpp:3684"
+      }
+    },
+    "finding": "The native SIGSEGV/SEGV_ACCERR occurs in libllvm-qgl.so, reached through libGLESv2_adreno.so while Godot links a GLES scene program. This identifies the failing operation, but not the precise shader specialization or why the vendor compiler faults.",
+    "earlier_evidence": "The 1.2.0 staged probe reached the objects stage after loading picture, menu setup, sky, terrain and water completed. This suggests an object-scene shader; it does not prove which shader the 1.4.0 crash links.",
+    "ruled_out_inferences": [
+      "memory_mb = -1 is the report's unknown-memory sentinel, not a negative allocation or evidence of out-of-memory failure.",
+      "The final graphics detection: first trace queues detection; actual rendering checks wait for menu readiness and confirmation. The trace alone does not establish that calibration ran."
+    ],
+    "change": "Offer the existing Mobile (Vulkan) renderer in the startup recovery dialog on Android while Compatibility is running, before the 3D menu can load. Ask for restart confirmation, then use the existing renderer choice/restart/trial mechanism.",
+    "qualification": "Real Compatibility rendering on desktop NVIDIA hardware with --renderer-option. Tests check reachability before MenuScene, confirmation/decline, byte-identical settings on decline, single restart request, saved Mobile override/pending trial, unchanged unrelated options, and the existing fallback when a pending Mobile trial starts on GLES.",
+    "limits": [
+      "No Redmagic or Adreno 840 run was available; the workaround is not confirmed to solve the reported crash.",
+      "No native Vulkan initialization or Android process restart was exercised by these desktop tests.",
+      "The existing trial mechanism cannot recover a native Vulkan driver crash before any game script starts."
+    ]
+  },
+  "validation": {
+    "environment": "Published 1.4.0 Linux executable with an exported candidate pack; isolated XDG data/config/cache directories for every suite. Real GLES UI runs use NVIDIA GeForce RTX 3090. Original archives and normal player saves were not changed.",
+    "candidate_pack": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/candidate-bin/CursedLands.pck",
+      "sha256": "5e621cc179bd932020c2c3f1b40cc77f79fd018fc36e3269847599decc13bd8a"
+    },
+    "candidate_engine": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/candidate-bin/CursedLands.x86_64",
+      "sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0"
+    },
+    "import_export": {
+      "success": true,
+      "logs": [
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/import/run.log",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/export.log"
+      ]
+    },
+    "checks": [
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/builds/CursedLands-1.4.0-linux-x86_64/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/repo/tools/tests/lia_slave_lists_return.gd"
+        ],
+        "exit": 1,
+        "seconds": 54.38,
+        "errors": [
+          "FAIL Kir survives the restored escape watcher after dismissal",
+          "FAIL Slave Lists return keeps a living protagonist",
+          "FAIL reloading the return does not reactivate the completed escape failure"
+        ],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/release_baseline/run.log",
+        "checks": 21,
+        "failures": 3,
+        "test": "release_baseline",
+        "log_sha256": "fafaf5dc7959a696fe6f35242f2a1d9bca8fbe978f92a58cd2b416f899d94109",
+        "expected_regression_failure": true
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/candidate-bin/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/repo/tools/tests/lia_slave_lists_return.gd"
+        ],
+        "exit": 0,
+        "seconds": 55.35,
+        "errors": [],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/lia_slave_lists_return/run.log",
+        "checks": 21,
+        "failures": 0,
+        "test": "lia_slave_lists_return",
+        "log_sha256": "d494fafd6f50440c719b8c932dd78688d573d7c626e39f0956801d7f1cbea926",
+        "expected_regression_failure": false
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/candidate-bin/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/repo/tools/tests/lia_slave_lists_return.gd",
+          "--save-fixture=/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/baseline/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/slave_lists_before.sav"
+        ],
+        "exit": 0,
+        "seconds": 38.08,
+        "errors": [],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/lia_release_save/run.log",
+        "checks": 12,
+        "failures": 0,
+        "test": "lia_release_save",
+        "log_sha256": "78c5ffb743746f9465c170291a1f0d07a07dadd0cc8ba5705f6051b14389c93d",
+        "expected_regression_failure": false
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/candidate-bin/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/repo/tools/tests/campaign_roster.gd"
+        ],
+        "exit": 0,
+        "seconds": 2.42,
+        "errors": [],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/campaign_roster/run.log",
+        "checks": 64,
+        "failures": 0,
+        "test": "campaign_roster",
+        "log_sha256": "d4e40fe959391e43c7ac7cc740d7a3617c31e618669a3c4b2de00b404df3b68e",
+        "expected_regression_failure": false
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/candidate-bin/CursedLands.x86_64",
+          "--headless",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/repo/tools/tests/shelter_kel.gd",
+          "--single",
+          "--named-roster"
+        ],
+        "exit": 0,
+        "seconds": 30.06,
+        "errors": [],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/shelter_kel/run.log",
+        "checks": 24,
+        "failures": 0,
+        "test": "shelter_kel",
+        "log_sha256": "5a08d641e941cb950ffd13abf0d76002443ef7026a0f305b862d106c8ef01fcb",
+        "expected_regression_failure": false
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/candidate-bin/CursedLands.x86_64",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/repo/tools/tests/startup_renderer_recovery.gd",
+          "--renderer-option"
+        ],
+        "exit": 0,
+        "seconds": 7.13,
+        "errors": [],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/startup_renderer_recovery/run.log",
+        "checks": 196,
+        "failures": 0,
+        "test": "startup_renderer_recovery",
+        "log_sha256": "8fa1469d66684cfb02974ee4485be9d0d10c6bbd4431400a748defa6f96039a3",
+        "expected_regression_failure": false
+      },
+      {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/candidate-bin/CursedLands.x86_64",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/repo/tools/tests/startup_graphics_recovery.gd",
+          "--renderer-option"
+        ],
+        "exit": 0,
+        "seconds": 28.32,
+        "errors": [],
+        "log": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/startup_graphics_recovery/run.log",
+        "checks": 401,
+        "failures": 0,
+        "test": "startup_graphics_recovery",
+        "log_sha256": "835a839ffc77a8fbf6741961257be562b9f8515f430ec3639ab6d6ec96540648",
+        "expected_regression_failure": false
+      }
+    ],
+    "passing_candidate_checks": 718,
+    "candidate_failures": 0,
+    "localization": {
+      "command": [
+        "python3",
+        "tools/check_translations.py"
+      ],
+      "entries": 1169,
+      "errors": 0,
+      "languages": [
+        "en",
+        "ru",
+        "de"
+      ],
+      "screenshots": [
+        {
+          "language": "en",
+          "view": "recovery",
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/startup_renderer_recovery/data/godot/app_userdata/Cursed Lands/renderer-recovery-en.png",
+          "sha256": "ded20e575d449dd66293aa7b7ca096fdb39bda2928d384e2a2d4548d4b77d083",
+          "visually_inspected": true
+        },
+        {
+          "language": "ru",
+          "view": "recovery",
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/startup_renderer_recovery/data/godot/app_userdata/Cursed Lands/renderer-recovery-ru.png",
+          "sha256": "24e0444ac174e2a960468cce34ca932baa30195ae8b15e6f15a136ec4f16a63a",
+          "visually_inspected": true
+        },
+        {
+          "language": "de",
+          "view": "recovery",
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/startup_renderer_recovery/data/godot/app_userdata/Cursed Lands/renderer-recovery-de.png",
+          "sha256": "ed90a0c2d767c8d0a53bef09264c2e5172264921bf5b1ebc90e4c54dc863986e",
+          "visually_inspected": true
+        },
+        {
+          "language": "en",
+          "view": "confirm",
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/startup_renderer_recovery/data/godot/app_userdata/Cursed Lands/renderer-confirm-en.png",
+          "sha256": "7dd8868d82b35b7100e2a280a8b25d9899ba8d824b4daf648aaea8d79f0c97e7",
+          "visually_inspected": true
+        },
+        {
+          "language": "ru",
+          "view": "confirm",
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/startup_renderer_recovery/data/godot/app_userdata/Cursed Lands/renderer-confirm-ru.png",
+          "sha256": "8c90d91436ff3b30ee9f4e343f936e5951c93330b294a693fc7870a76806db52",
+          "visually_inspected": true
+        },
+        {
+          "language": "de",
+          "view": "confirm",
+          "path": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015/checks/startup_renderer_recovery/data/godot/app_userdata/Cursed Lands/renderer-confirm-de.png",
+          "sha256": "b072cc562c0dc57dfe45b746ddb0aad43ee643c85d9db1798bfc4a5601f38b0a",
+          "visually_inspected": true
+        }
+      ]
+    },
+    "diff_check": "git diff --check passed"
+  },
+  "evidence_directory": "/home/llm2x/Documents/EI/local/scratchpad/issues-3-4-20261015"
+}

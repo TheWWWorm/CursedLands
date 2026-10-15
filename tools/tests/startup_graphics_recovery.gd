@@ -47,7 +47,8 @@ func _run() -> void:
 	var record_before := GfxDetect.load_record()
 	var box := CrashReportBox.open(get_parent(), previous, true)
 	await settle()
-	check(box._row_defs().size() == 4, "startup crash offers recovery actions")
+	var expected_rows := 5 if RendererChoice.available() and Portability.compatibility() else 4
+	check(box._row_defs().size() == expected_rows, "startup crash offers recovery actions")
 	check(get_parent().find_children("*", "MenuScene", true, false).is_empty(), "actions are available before any 3D menu")
 	check(GameData.options == options_before, "opening recovery leaves settings alone")
 	tap(box, 3)
