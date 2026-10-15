@@ -9,6 +9,8 @@
 - Show the required Use/Steal value when hovering a locked object that the selected character cannot open, accounting for effective skill and quest keys.
 - Use localized fallback names for unnamed creatures and remains instead of map identifiers.
 - Let archers replace a patrol or investigation with a retreat immediately after noticing a nearby threat.
+- Place spell runes around icon edges and keep shop prices and stack counts clear.
+- Restore the Great Mage’s staff from his original animated figure.
 
 See [release notes](docs/releases/1.5.0.md) for compatibility and platform limits.
 

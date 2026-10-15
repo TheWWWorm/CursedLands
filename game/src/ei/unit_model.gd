@@ -788,6 +788,11 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		for natural: String in ["rh3.tube00", "bd.box00"]:
 			if parts.has(natural) and (body_parts.is_empty() or natural in body_parts):
 				mesh_for[natural] = natural
+	# Rick's staff belongs to his authored figure, not to an inventory slot.
+	# Keep the LNK hand attachment and its animation like the other natural props.
+	if template == "unmori" and parts.has("rh3.staff00") \
+			and (body_parts.is_empty() or "rh3.staff00" in body_parts):
+		mesh_for["rh3.staff00"] = "rh3.staff00"
 	var layers: Array[String] = []
 	var surfaces: Array[Vector3] = []
 	#  formats the prototype's skin index directly. The race's

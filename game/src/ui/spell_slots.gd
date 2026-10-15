@@ -78,28 +78,27 @@ static func rune_icons(spell: String) -> Array[Texture2D]:
 	return out
 
 
-## Original transparent inscriptions sit over the top of the spell picture.
-## Camp cells can limit an upper-left strip to reserve space for a stack count;
-## HUD slots keep their centred inscriptions.
-static func draw_runes(canvas: CanvasItem, spell: String, rect: Rect2, tint := Color.WHITE, columns := 4,
-		top_left_width := -1.0) -> void:
+## Clockwise around the picture, beginning at the top centre, leaving its
+## centre visible even with all eight inscriptions installed.
+const RUNE_CENTRES := [Vector2(0.5, 0.16), Vector2(0.84, 0.16),
+	Vector2(0.84, 0.5), Vector2(0.84, 0.84), Vector2(0.5, 0.84),
+	Vector2(0.16, 0.84), Vector2(0.16, 0.5), Vector2(0.16, 0.16)]
+
+
+static func rune_rects(rect: Rect2) -> Array[Rect2]:
+	var out: Array[Rect2] = []
+	var side := minf(rect.size.x, rect.size.y) / 6.0
+	for centre: Vector2 in RUNE_CENTRES:
+		out.append(Rect2(rect.position + rect.size * centre - Vector2.ONE * side * 0.5, Vector2.ONE * side))
+	return out
+
+
+static func draw_runes(canvas: CanvasItem, spell: String, rect: Rect2, tint := Color.WHITE) -> void:
 	var runes := rune_icons(spell)
-	if runes.is_empty():
-		return
-	columns = maxi(1, columns)
-	var side := rect.size.x / float(maxi(6, columns))
-	var cols := mini(columns, runes.size())
-	var inset := rect.size * 0.10
-	if top_left_width >= 0.0:
-		side = minf(side, maxf(0.0, top_left_width - inset.x) / cols)
-	var origin := Vector2(rect.get_center().x - cols * side * 0.5, rect.position.y + rect.size.y * 0.04)
-	if top_left_width >= 0.0:
-		# Leave the spell picture's bevel visible on both top and left edges.
-		origin = rect.position + inset
-	for i in runes.size():
-		var cell := Rect2(origin + Vector2(i % columns, i / columns) * side, Vector2.ONE * side)
+	var cells := rune_rects(rect)
+	for i in mini(runes.size(), cells.size()):
 		if runes[i]:
-			canvas.draw_texture_rect(runes[i], cell, false, tint)
+			canvas.draw_texture_rect(runes[i], cells[i], false, tint)
 
 
 ## Additive pass for the picked cell: + (0x40, 0x40, 0x40) where the picture is.

@@ -2248,10 +2248,7 @@ func _draw() -> void:
 		var picture := SpellSlots.icon(texture) if not texture.is_empty() else null
 		if picture:
 			var rect := _r(_slot_rect(k).grow(-10.0))
-			draw_texture_rect(picture, rect, false)
 			if Items.is_spell_container(id):
-				# Keep inscriptions at the upper left, with the quantity in
-				# its own upper-right corner and the price below the artwork.
 				var where := String(_content[k][1])
 				var count := 1
 				match where:
@@ -2259,15 +2256,33 @@ func _draw() -> void:
 					"shop": count = shop_left(id)
 					"buy": count = buy_pile.count(id)
 					"sell": count = sell_pile.count(id)
-				var rune_width := rect.size.x
-				if count != 1:
-					rune_width -= Interface800.font().get_string_size(str(count), HORIZONTAL_ALIGNMENT_LEFT, -1, _fpx(1)).x + 8.0 * s
-				SpellSlots.draw_runes(self, Items.spell_code(id), rect, Color.WHITE, 4, maxf(0.0, rune_width))
+				rect = _spell_picture_rect(k, count)
+			draw_texture_rect(picture, rect, false)
+			if Items.is_spell_container(id):
+				SpellSlots.draw_runes(self, Items.spell_code(id), rect)
+
 	# Selection.
 	for k in _content:
 		if _key_shown(k) and _content[k][0] != "" and _content[k][0] == selected_id and _content[k][1] == selected_where:
 			draw_rect(_r(_slot_rect(k)).grow(-10 * s), Color(0.95, 0.8, 0.35), false, 2.0)
 	_overlay.queue_redraw()
+
+
+## Row and pile prices occupy y+65..85; counts occupy the upper right.
+## Fit the whole spell card (including its edge runes) outside both regions.
+## Equipment and constructor slots have neither price nor quantity overlays.
+func _spell_picture_rect(key: String, count: int) -> Rect2:
+	var slot := _slot_rect(key)
+	if not key.begins_with("bag") and not key.begins_with("shop") \
+			and not key.begins_with("buy") and not key.begins_with("sell"):
+		return _r(slot.grow(-10.0))
+	var scale := _s()
+	var side := 54.0
+	if count != 1 and scale > 0.0:
+		var width := Interface800.font().get_string_size(str(count), HORIZONTAL_ALIGNMENT_LEFT, -1, _fpx(1)).x / scale
+		side = minf(side, maxf(0.0, 85.0 - width - 6.0 - 10.0))
+	var x := (100.0 - side) * 0.5 if count == 1 else 10.0
+	return _r(Rect2(slot.position + Vector2(x, 8.0), Vector2.ONE * side))
 
 
 func _draw_overlay() -> void:
