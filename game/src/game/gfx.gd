@@ -246,6 +246,18 @@ void ei_vertex_colours(vec3 p, vec3 n, vec3 e, float kw, out vec3 d, out vec3 s)
 ## and the map objects too.
 static func compose(code: String, lit := true, wrap := false) -> String:
 	ensure_globals()
+	var light_common := LIGHT_COMMON
+	if _skip_clear_mobile_fog and RenderingServer.get_current_rendering_method() == "mobile":
+		# Most nearby pixels have no distance or border fog. Their fog RGB is
+		# multiplied by zero, so skip the border distance and colour conversion.
+		# The original path still handles every partially/fully fogged pixel.
+		light_common = light_common.replace("\tif (ei_border.z > 0.0) {", """
+	float clear_border = ei_border.z + 1.0;
+	if (f <= 0.0 && (ei_border.z <= 0.0 || (w.x >= clear_border && w.x <= ei_border.x-clear_border
+			&& -w.z >= clear_border && -w.z <= ei_border.y-clear_border))) { return vec4(0.0); }
+	if (ei_border.z > 0.0) {""")
+	var compact_lighting := _compact_mobile_lighting and on("gfx_materials") \
+		and RenderingServer.get_current_rendering_method() == "mobile"
 	if RenderingServer.get_current_rendering_method() == "mobile":
 		code = TerrainSamplingShader.compact(code)
 	if code.contains("#define EI_FOLIAGE_WIND") and (not _foliage_wind or code.contains("#define EI_FOLIAGE_STILL")):
@@ -272,7 +284,14 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 	var cloud_reflections := lit and code.contains("#define EI_WATER_FX") and Clouds.reflections_enabled()
 	var extra := "varying vec4 ei_surface_leaf;\n#define ei_surface ei_surface_leaf.rgb\n#define ei_leaf ei_surface_leaf.a\nvarying vec3 ei_vpos;\n" if lit else ""
 	if lit:
-		extra += VERTEX_LIGHT.replace("WRAP_TERM", _wrap_term(wrap))
+		var vertex_light := VERTEX_LIGHT.replace("WRAP_TERM", _wrap_term(wrap))
+		if compact_lighting:
+			# An internal uniform bound keeps Adreno from expanding four copies
+			# of the per-pixel light calculation. Keep all four lights, their
+			# order, byte packing and the overflow-light matching unchanged.
+			extra += "uniform int ei_point_light_passes = 4;\n"
+			vertex_light = vertex_light.replace("i < 4", "i < ei_point_light_passes")
+		extra += vertex_light
 		if cloud_shadows or cloud_reflections:
 			extra = Clouds.common_source()+(Clouds.shadow_source() if cloud_shadows else "")+extra
 		if cloud_shadows:
@@ -301,7 +320,7 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 				extra = extra.replace("vec3 sun = ei_sun *", "vec3 sun = ei_sun * ei_cloud_sun(p) *")
 		if LocalLightShader.enabled():
 			extra += LocalLightShader.COMMON
-	code = code.substr(0, i + 1) + LIGHT_COMMON + extra + code.substr(i + 1)
+	code = code.substr(0, i + 1) + light_common + extra + code.substr(i + 1)
 	if cloud_shadows:
 		# Contact blending reconstructs terrain lighting independently of the
 		# figure's vertex path; its sampled band must share the ground shadow.
@@ -324,6 +343,8 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 		code = code.replace("void fragment() {", "void fragment() {\n\tei_surface_leaf = vec4(0.0, 1.0, 0.0, 0.0);\n\tei_vpos = VERTEX;")
 	if lit:
 		var lighting := light_code(wrap, code.contains("#define EI_GRASS_LIGHT"), code.contains("#define EI_SOLID_COVER_LIGHT"))
+		if compact_lighting:
+			lighting = lighting.replace("i < 4", "i < ei_point_light_passes")
 		if code.contains("#define EI_GROUND_CONTACT"):
 			lighting = GroundContactShader.lighting(lighting)
 		code += lighting
@@ -400,6 +421,10 @@ static var _figure_mode := -1
 ## same source on another GPU without changing the shipped desktop defaults.
 static var _compact_figures := OS.has_feature("android") and Portability.compatibility()
 static var _specialize_materials := not OS.get_cmdline_user_args().has("--ei-dynamic-material-shader")
+static var _compact_mobile_lighting := OS.has_feature("android") \
+	and not OS.get_cmdline_user_args().has("--ei-expanded-mobile-lighting")
+static var _skip_clear_mobile_fog := OS.has_feature("android") \
+	and not OS.get_cmdline_user_args().has("--ei-full-mobile-fog")
 static var _foliage_wind := true
 
 

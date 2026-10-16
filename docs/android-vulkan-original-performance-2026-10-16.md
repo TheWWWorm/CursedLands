@@ -16,6 +16,9 @@ The earlier [terrain work](android-vulkan-performance-2026-10-16.md) is retained
 Its Medium-preset measurements are separate from the Original-preset results
 below.
 
+The later [shader follow-up](android-vulkan-shader-performance-2026-10-17.md)
+measures additional Medium-preset gains over this optimized build.
+
 ## Device measurements
 
 Retroid Pocket 5, Android 13/API 33, Adreno 650, **Mobile/Vulkan**, 1920×1080,
