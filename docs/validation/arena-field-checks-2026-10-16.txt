@@ -1,0 +1,51 @@
+ui
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+ERROR: Can't create shader cache folder, no shader caching will happen: user://
+   at: RendererCompositorRD (servers/rendering/renderer_rd/renderer_compositor_rd.cpp:345)
+
+[trace 13:46:45 +3007ms] session b1814d60e1b2: 1.6.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+ARENA_PVE_UI 114 checks; failures=[]
+[trace 13:47:09 +26791ms] clean exit
+
+visual_options
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+ERROR: Can't create shader cache folder, no shader caching will happen: user://
+   at: RendererCompositorRD (servers/rendering/renderer_rd/renderer_compositor_rd.cpp:345)
+
+[trace 13:45:32 +3010ms] session e46d669febfd: 1.6.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+FIELD_VISUAL 50 checks; failures=[]
+[trace 13:45:59 +29561ms] clean exit
+
+expedition
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 13:38:13 +3705ms] session 9f88ef19881d: 1.6.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+STARTER 0 winner=0 seconds=7.31499999999999
+STARTER 1 winner=0 seconds=7.64499999999999
+STARTER 2 winner=0 seconds=21.8899999999999
+ARENA_PVE 93 checks; failures=[]
+[trace 13:38:14 +5142ms] clean exit
+
+lifecycle
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 13:45:34 +3774ms] session 76100d329774: 1.6.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 13:45:35 +4052ms] menu scene: loading island
+[trace 13:45:41 +10700ms] menu scene: setting up signpost and environment
+[trace 13:45:41 +10710ms] menu scene: built
+[trace 13:45:43 +12508ms] back to main menu
+[trace 13:45:43 +12519ms] menu scene: loading island
+[trace 13:45:43 +12746ms] menu scene: setting up signpost and environment
+[trace 13:45:43 +12750ms] menu scene: built
+ARENA_PVE_LIFECYCLE 10 checks; failures=[]
+[trace 13:45:43 +12981ms] clean exit
+
+translations
+Translations: 1591 entries; 46 dynamic wiki keys; 58 dynamic arena keys; 0 errors
+

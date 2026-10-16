@@ -62,18 +62,21 @@ static func create(rendered := true) -> EITerrain:
 	if rendered:
 		ground._load_atlases()
 		ground._build(archive)
-		# The campaign's broad border fog would cover most of this compact map.
-		Gfx.set_border(ground.size_ei(), 0.25)
+		ArenaGroundDetails.install(ground)
+		# Fade the distant woodland into the arena's dark backdrop. The native
+		# campaign profile is too broad for this compact, overhead field.
+		Gfx.set_border(ground.size_ei(), 8.0)
 		var paving := MeshInstance3D.new()
 		paving.name = "CourtyardPaving"
 		var mesh := PlaneMesh.new()
 		mesh.size = Vector2(32, 32)
 		paving.mesh = mesh
+		paving.layers = 1 | EITerrain.DECAL_LAYER
 		paving.position = Vector3(32, 0.025, -32)
 		paving.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		var material := ShaderMaterial.new()
 		material.shader = preload("res://src/ui/arena_paving.gdshader")
-		material.set_shader_parameter("paving", preload("res://assets/arena/courtyard.png"))
+		material.set_shader_parameter("paving", preload("res://assets/arena/courtyard-v2.png"))
 		paving.material_override = material
 		ground.add_child(paving)
 	else:

@@ -1,0 +1,89 @@
+{
+  "date": "2026-10-16",
+  "scope": "PvE expedition field presentation; no release or gameplay rebalance",
+  "baseline_commit": "90e1dab6",
+  "source_sha256": {
+    "game/src/game/arena_terrain.gd": "2a78d62d36902adca15dc850fc20e3956042fe1afdee1ec7d08b4432316409e9",
+    "game/src/game/arena_ground_details.gd": "6c127b8308df84e899e30470494df77b06badeff2a72b7f85b135a137443b785",
+    "game/src/game/gfx.gd": "31aa54a6626c6798cda2b0a6c89a9affe44b89a55f27debcea95b82fe64e8736",
+    "game/src/ui/arena_pve_field.gd": "41d35786fbe2ab8120666740d7af1412e7d77f49c2bb6172b646a7487683dea2",
+    "game/src/ui/arena_paving.gdshader": "04027532b1efeb285c23988ff0d49c3ccd02b321f75653c977b3375d36884d32",
+    "game/assets/arena/courtyard-v2.png": "2d6461eaf95a25502e4d952765ad43d8522311d658adafe28ce4e24d98eb33e7",
+    "game/assets/arena/courtyard-v2.png.import": "4f2731f4e928e4f2c6cb5f3fc19292b9c64f4e83d6163f597aeca708f9413bb0"
+  },
+  "screenshots": {
+    "arena-pve-en-prepare.png": "f5a69a812c62347fe401a8efd0c2760fceccfdfb4d474ae5f90a3daeba21e1d0",
+    "arena-pve-en-combat.png": "a88ff2498215a90fe60240b87a412a90b04ff21247696927e4a919bcb4a7cf64",
+    "arena-pve-en-720-expanded.png": "506c9ea12d14b2c2d523a7066e8bd81e28b15a26afc0d0363343f06194adc036",
+    "arena-pve-ru-inspect.png": "b329960be7128c22d3cfe238b16c3086f80ea349e80c62f3af15f69c4b4c266f",
+    "arena-pve-de-expanded.png": "89452978caf453e137f425350a713b9e1d6bf2d39c15de879778c2404511f7a8",
+    "arena-field-late-combat.png": "53fe70281cd19ad45cc7b4e5b5c7fe544cddb95662304585e1d0fe9b26c36f27",
+    "arena-field-wide.png": "6356726fc9f07478538c47e49cb555a8887dda6a0c3db0222571a00446e06914"
+  },
+  "checks": {
+    "rendered_ui": 114,
+    "field_and_options": 50,
+    "expedition_rules_and_native_fights": 93,
+    "menu_lifecycle": 10,
+    "translation_entries": 1591,
+    "dynamic_arena_keys": 58,
+    "translation_errors": 0
+  },
+  "visual_coverage": [
+    "EN 1280x800 preparation and combat",
+    "EN 1280x720 full reserves",
+    "RU and DE 1024x768 selection and expanded shop/reserves",
+    "Wave 18: seven native allies and native enemy roster",
+    "Maximum zoom with dark map-edge fade",
+    "Grass off/on, wind off/on, interaction off/on, optional ground cover on",
+    "Contact shadows off/on and previous scene fog-palette restoration"
+  ],
+  "gameplay_equivalence": {
+    "equal": true,
+    "method": "Before/after hash of serialized terrain arrays, navigation data and eight movement-class layers with the same seed and starter formation. Digests are SHA-256 over the hexadecimal var_to_bytes representation.",
+    "snapshot": {
+      "native_stats": "57327141dda6ed708ddcca36cef00df4cdc39a94776256b3c527cdd18f7ec542",
+      "navigation": {
+        "0": "f9c9d15cfdcf522f72b94b7a5d97790bba4b5ae4bc0dce7d06591eebb8dd36cc",
+        "1": "542a66ab5c569c35bd18c4acd600cb0163f7c6eefb6a3a8ba09590124e0c5666",
+        "2": "542a66ab5c569c35bd18c4acd600cb0163f7c6eefb6a3a8ba09590124e0c5666",
+        "3": "4a1d5e094e67665028c2e26328317a26064fd6ca41b3884691c0b674718d2aa0",
+        "4": "c13a0df4dc4321aae755d1631dcf1c144ffc779132843471bc5cb7c1ffb2173f",
+        "5": "1349e1bab18f133dbdc0f854ea574c35149bc02069ed60b9fe364d5fa9c20ffd",
+        "6": "7cbce25eb198fda9f1bd04a783d156d047261f34056239450e43cdd98c5c5681",
+        "7": "08dc5b412ac2ed4cc645ca8ad4839a16ba2136fdd9e3d94a1ce05d1b9c925c5c",
+        "_cost": "f458a68412583001dfa06b3d2c72b7744a202aba34b7e58aa93a37cbc6562cce",
+        "_depth": "a09794ec343cb7d177dc2fca838f52008717c9cdeba321962d34b3ffa15d3d86",
+        "_dry_raw": "d2c79a7a756b2c7913508114c94ad06cdf5a1e21c329201bada9483abe964bc8",
+        "_dry_weight": "2309d4e6bfb5256afec8f8da6e81b1247b9688d4a0955ae0149479f2130d36bb",
+        "_h": "89f882fc62928c8d4473c36092845ca3bfbe156f7c799cee299cc98db53636fe",
+        "_h0": "89f882fc62928c8d4473c36092845ca3bfbe156f7c799cee299cc98db53636fe",
+        "_hq": "e6eeb48ec9b2b4f0a6d0c17b6020164244c379ccabe418fdc88ed3007797653c",
+        "_liq": "a2f75f282e8969b9054572b87cdfe69a7f92748706dc92b6ddd352a89c38177a",
+        "_special": "4a65790d854da7089df3beb4ce235b0327aa3ea19d1f53ca198a629c5f496f38",
+        "_steep": "d2c79a7a756b2c7913508114c94ad06cdf5a1e21c329201bada9483abe964bc8"
+      },
+      "terrain": {
+        "ground": "2e4f40c3620df1e7cf2304e52c82553763791d4156b29a2b86463c513170f860",
+        "heights": "172ddb085e0e2e8b3b22d58c4fdfe45d09a633aae18d72e97e10f59e6632c0b0",
+        "land_n": "7dee7a5e79d329dfa405ac70046af4b123b0013e10609f62996e9d40e75db3d2",
+        "land_tile": "9935f6603c4857fbd07e45cfd8560e64a9c3ac7f7b3c92f8ac829e553105e31e",
+        "land_xy": "834ed7aa26ee7a19d2f3b31d559ccbbe9606ac952379502de4739c1d7214c181",
+        "surface": "29de73167711fa36d1c87b5594ecfd1c05c9c5369cdc8631765b1e15ccc95eff",
+        "water": "f697a988ecf7b5ff56c6f723ac5637939a0daab6dac46b7584ecbf5542d622bc",
+        "water_base": "f697a988ecf7b5ff56c6f723ac5637939a0daab6dac46b7584ecbf5542d622bc"
+      }
+    }
+  },
+  "fixtures": "The wave-18 army was deliberately assembled to inspect a full field and real native spell/combat effects. It is not evidence of a completed player run or a new balance simulation.",
+  "review": "arena-field-review-2026-10-16.md",
+  "limits": [
+    "Rendered on Linux/NVIDIA using the existing private patched Godot 4.7 runtime, Forward+.",
+    "The runtime emits an existing pre-scene shader-cache-folder diagnostic and an XIM warning; the captured scene checks completed with no script or rendering errors.",
+    "No new Windows, browser, mobile, controller or balance-matrix validation in this cosmetic change."
+  ],
+  "probes": {
+    "snapshot_source_sha256": "7745a1ebd4d639f55809b7f5b30d96da62bc88ec72e452102ece80ec40afe67a",
+    "visual_source_sha256": "3037eebc4a717228c1903e463dd0d77a51c7a084b22adfe444c57cac4e0a0f76"
+  }
+}
