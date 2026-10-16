@@ -1,0 +1,221 @@
+{
+  "scope": "Editorial correction and expansion of the shared native and web lore articles. Local revision; no release or deployment.",
+  "supersedes": "wiki-lore-chronology-2026-10-16.json for current prose, chronology and package counts",
+  "languages": [
+    "en",
+    "ru",
+    "de"
+  ],
+  "coverage": {
+    "cursed_lands": {
+      "languages": {
+        "en": {
+          "articles": {
+            "map": 36,
+            "character": 45,
+            "allod": 3
+          },
+          "images": 84,
+          "links": 4444
+        },
+        "ru": {
+          "articles": {
+            "character": 45,
+            "map": 36,
+            "allod": 3
+          },
+          "images": 84,
+          "links": 4444
+        },
+        "de": {
+          "articles": {
+            "character": 45,
+            "map": 36,
+            "allod": 3
+          },
+          "images": 84,
+          "links": 4444
+        }
+      },
+      "authored_map_histories": 36,
+      "protagonist_sections": 34,
+      "protagonist_english_words": 3555,
+      "short_profiles": [
+        "character/pig"
+      ]
+    },
+    "lost_in_astral": {
+      "languages": {
+        "en": {
+          "articles": {
+            "map": 56,
+            "character": 47,
+            "allod": 4
+          },
+          "images": 107,
+          "links": 7635
+        },
+        "ru": {
+          "articles": {
+            "character": 47,
+            "map": 56,
+            "allod": 4
+          },
+          "images": 107,
+          "links": 7635
+        },
+        "de": {
+          "articles": {
+            "character": 47,
+            "map": 56,
+            "allod": 4
+          },
+          "images": 107,
+          "links": 7644
+        }
+      },
+      "authored_map_histories": 50,
+      "protagonist_sections": 38,
+      "protagonist_english_words": 4193,
+      "short_profiles": [
+        "character/nsheriff"
+      ]
+    },
+    "manifest_files": 13525,
+    "illustrations": 4287,
+    "lore_image_references": 573,
+    "lore_links": 36246
+  },
+  "editorial_review": {
+    "method": "Reviewed original dialogue and quest journals against authored biographies, then inspected active event triggers for sequence and outcomes. Corrected summaries separately from checking source fingerprints and speaker coverage. Main events follow their prerequisites; optional branches are identified as conditional rather than forced into one play order.",
+    "zak_opening": {
+      "sequence": [
+        "Awakening and fleeing villagers",
+        "River and ford to the village",
+        "Erfar and Gort at the village assembly",
+        "Sentry, White Wolf and Babur’s tools",
+        "Redhead, orc cave and Magic Bit",
+        "Estera and Airy"
+      ],
+      "evidence": [
+        "quest q0g",
+        "briefing s1",
+        "briefing s0",
+        "briefing v0",
+        "briefing s1_3",
+        "briefing s3",
+        "briefing m1",
+        "briefing m1_1",
+        "briefing m4",
+        "briefing m5_1",
+        "briefing m6",
+        "briefing z1",
+        "basecam opening trigger"
+      ]
+    },
+    "cursed_lands_corrections": [
+      "The villagers, river crossing, village assembly and early errands precede Estera. Airy can warn Zak at the cave before their formal introduction.",
+      "Expanded the village intrigues, Gort and Babur’s motives, the orc seer and pyramid, optional companion work, the Golden Valley, cyclops quarry and hermit’s treasure.",
+      "Expanded the Ingos investigation with Karansul’s slip about Baldie, accounts from the grinder and foreman, and the slave-debt threat that drove the Blacksmith away.",
+      "Expanded Suslanger’s hierarchy, the investigation of At-Zako, optional Sahilia work and companion departures. Rick’s history distinguishes reported ancient events from Zak’s own actions."
+    ],
+    "lost_in_astral_corrections": [
+      "The Horror burns the slave camp during Kir and Kel’s escape; their route uses a stolen map and the catacombs.",
+      "Expanded the disguise, meteorite theft, Feiruz and Aliya rescue, Last Shelter, Sahilia’s caches and enlistment. Rindeil intends a meteorite trade; it is not described as already completed.",
+      "Karim’s guard fails to neutralize the watch. Kir and Kel retrieve the report. The missing red-skinned youth is distinct from the creature that attacked the scholars.",
+      "Expanded Zara’s blackmail, caravan branches and scholar dispute. The scholar dispute is not attached to the unrelated Wormface Brainripper.",
+      "Expanded Babur’s supposed needle and real interest in lizard hides, captivity and rescue before Bor’s pyramid massacre, plus the damaged Orb, observatory and onward passage.",
+      "Expanded Uyka, the fortune-teller and Khabburu into their full optional clue chains, including the three Rod of Life fragments.",
+      "Expanded the Ingos permit, governor’s gift, river contamination, Geraldine and Brissen investigations, and the Jigran campaign through Dartas, Rad and the offensive.",
+      "Firez’s final encounter includes disabling the barrier and his death completing the campaign. No postwar outcome is invented."
+    ],
+    "rod_of_life": {
+      "finding": "Kel’s revival depends on collecting all three fragments and completing the reunion branch. The first fragment is an optional puzzle reward; leaving Suslanger does not grant it automatically.",
+      "evidence": [
+        "briefing skelet_fq6",
+        "script zone4",
+        "script bz7h",
+        "briefing fq13",
+        "script zone11dun1",
+        "briefing fq19",
+        "script zone24",
+        "briefing fq20",
+        "briefing fq21",
+        "script bz31j"
+      ]
+    },
+    "excluded_unreachable_material": [
+      {
+        "scenes": [
+          "brief_150a",
+          "fq14"
+        ],
+        "reason": "Tka-Rik laboratory proposal has no active entry; its enabling call is commented out and the archive includes unfinished writer notes."
+      },
+      {
+        "scenes": [
+          "brief_39",
+          "brief_42"
+        ],
+        "reason": "Aliya’s sister-revenge sequence is disabled in the map script."
+      },
+      {
+        "scenes": [
+          "brief_19"
+        ],
+        "reason": "Unused earlier male-companion variant; the playable Kel reunion is used instead."
+      },
+      {
+        "scenes": [
+          "hwleader_0",
+          "hwleader_1",
+          "clerk_about",
+          "buka_hvala",
+          "alekron",
+          "amadios",
+          "julia",
+          "o matilde"
+        ],
+        "reason": "Placeholder or developer/metafiction material is not treated as played history."
+      }
+    ],
+    "localization": "The corrections and event histories have English, Russian and German prose. German names and the terms Nacht des Schreckens and Stadt des Todes were checked against the original localized archive.",
+    "bounded_profiles": "Pig and Master Arkhar retain short factual profiles. Six expansion maps have original world descriptions without invented narrative histories.",
+    "limits": "These are authored summaries, not verbatim reproductions of every dialogue choice. Repeated shop menus, refusals and incidental banter are condensed. Automated coverage and matching source hashes demonstrate coverage and consistency, not proof of exhaustive interpretation."
+  },
+  "automated_checks": {
+    "wiki_lore_en": {
+      "campaign": "cursed_lands",
+      "checks": 18711,
+      "failures": []
+    },
+    "wiki_lore_ru": {
+      "campaign": "cursed_lands",
+      "checks": 18711,
+      "failures": []
+    },
+    "wiki_lore_de": {
+      "campaign": "cursed_lands",
+      "checks": 18711,
+      "failures": []
+    },
+    "wiki_lore_astral": {
+      "campaign": "lost_in_astral",
+      "checks": 29760,
+      "failures": []
+    },
+    "compiler_reproducible": true,
+    "compiled_sha256": "320a9c83085c3aeee2c18eac7e6088818102b7fd56fa3f2f6531f0e781b87712",
+    "source_change_behavior": "Changed or missing event scripts hide dependent lore; unaffected sections remain available. Restoring the source restores the section.",
+    "export": "Both campaigns exported in English, Russian and German and packaged for native and web readers.",
+    "package": "Every expected heading renders; all lore image references and internal links resolve. All packaged file hashes match BUILD-INFO.json.",
+    "syntax_and_whitespace": [
+      "Python compilation",
+      "git diff --check"
+    ]
+  },
+  "rendered_checks": {
+    "native": "Both campaigns captured in EN/RU/DE at desktop and narrow portrait sizes. Inspected protagonist text, original models and location illustrations.",
+    "web": "Reviewed translated articles, campaign switching, search, chapter navigation, original illustrations and narrow layouts. Final preview kept locally."
+  }
+}

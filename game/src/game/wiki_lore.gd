@@ -4,12 +4,14 @@ extends RefCounted
 ## Source matching prevents an edited mod scene from silently inheriting lore.
 var records := {}
 var sources := {}
+var _script_cache := {}
 var _catalog_ref: WeakRef
 var catalog: RefCounted:
 	get: return _catalog_ref.get_ref()
 
 func build(owner: RefCounted) -> void:
 	_catalog_ref = weakref(owner)
+	_script_cache.clear()
 	records = WikiLoreData.DATA.campaigns.get(GameData.campaign_id, {})
 	sources = WikiLoreData.DATA.sources.get(GameData.campaign_id, {})
 	for key: String in records:
@@ -33,8 +35,15 @@ func character_name(row: Dictionary) -> String:
 
 func matches(section: Dictionary) -> bool:
 	for key: String in section.sources:
-		if not fingerprint(GameData.text(key)) in sources[key].hashes: return false
+		if not fingerprint(source_text(key)) in sources[key].hashes: return false
 	return true
+
+func source_text(key: String) -> String:
+	if not sources[key].has("script"): return GameData.text(key)
+	var name: String = sources[key].script
+	if not _script_cache.has(name):
+		_script_cache[name] = EIMob.load_bytes(GameData.read_file("maps/" + name + ".mob")).script_text
+	return _script_cache[name]
 
 func prose(text: String) -> String:
 	var out := ""
@@ -66,10 +75,10 @@ func html(key: String) -> String:
 		out += WikiCatalog.heading(RemakeText.t(section.heading))
 		out += WikiCatalog.paragraph(prose(RemakeText.t(section.text)) + " [" + ", ".join(citations) + "]", true)
 	if omitted:
-		out += WikiCatalog.paragraph(RemakeText.t("Some story sections are unavailable because the installed dialogue differs from the sources used for this article."))
+		out += WikiCatalog.paragraph(RemakeText.t("Some story sections are unavailable because the installed sources differ from those used for this article."))
 	if not used.is_empty():
 		out += WikiCatalog.heading(RemakeText.t("Sources"))
-		out += WikiCatalog.paragraph(RemakeText.t("Based on the original dialogue, quest journals and world descriptions. Source numbers identify the evidence listed below."))
+		out += WikiCatalog.paragraph(RemakeText.t("Based on the original dialogue, quest journals, event scripts and world descriptions. Source numbers identify the evidence listed below."))
 		var rows := []
 		for i in used.size(): rows.append([str(i + 1), source_label(used[i])])
 		out += WikiCatalog.table_html(["#", RemakeText.t("Sources")], rows)
@@ -78,7 +87,11 @@ func html(key: String) -> String:
 func source_label(key: String) -> String:
 	var source: Dictionary = sources[key]
 	var names := PackedStringArray()
-	if source.has("actors"):
+	if source.has("script"):
+		for zone: String in source.zones:
+			var target := "map/" + zone
+			if catalog.entries.has(target): names.append(WikiCatalog.link(target, catalog.entries[target].title))
+	elif source.has("actors"):
 		for actor: String in source.actors:
 			for target: String in records:
 				if actor in records[target].get("actors", []) and catalog.entries.has(target):
@@ -87,7 +100,7 @@ func source_label(key: String) -> String:
 	else:
 		var title := WikiWorldText.text(key).get_slice("\n", 0).strip_edges()
 		if title: names.append(WikiCatalog.esc(title))
-	var label := "Dialogue" if source.has("actors") else ("Quest journal" if key.begins_with("quest ") else "World description")
+	var label := "Event script" if source.has("script") else ("Dialogue" if source.has("actors") else ("Quest journal" if key.begins_with("quest ") else "World description"))
 	return WikiCatalog.esc(RemakeText.t(label)) + " · " + ", ".join(names) + " (" + WikiCatalog.esc(key) + ")"
 
 func model(key: String) -> Dictionary:

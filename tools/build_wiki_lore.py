@@ -70,13 +70,23 @@ def compile_data():
     ids=[]
     for src in s['sources']:
      source_key=src.replace(':',' ',1) if ':' in src else 'briefing '+src
-     assert source_key in raw[prefix],(key,source_key)
+     is_script=source_key.startswith('script ')
+     if is_script:
+      script_name=source_key.removeprefix('script ')
+      assert script_name in w['scripts'],(key,source_key)
+     else:
+      assert source_key in raw[prefix],(key,source_key)
      ids.append(source_key)
      if source_key not in sources:
-      source={'hashes':list(dict.fromkeys(digest(e[source_key]) for e in editions if source_key in e))}
+      if is_script:
+       script_editions=[exported['base-'+l]['scripts'] for l in ['en','ru','de']] if campaign=='cursed_lands' else [w['scripts']]
+       source={'hashes':list(dict.fromkeys(digest(e[script_name]) for e in script_editions if script_name in e)),
+               'script':script_name,'zones':[z for z in sorted(valid_zones) if w['zones'][z].get('mob')==script_name]}
+      else:
+       source={'hashes':list(dict.fromkeys(digest(e[source_key]) for e in editions if source_key in e))}
       if source_key.startswith('briefing '):
        phrases=re.findall(r'(?im)^#phrase\s+(\S+)\s+\d+',raw[prefix][source_key]);source['actors']=list(dict.fromkeys(x.lower() for x in phrases))
-      else:source['world']=source_key
+      elif not is_script:source['world']=source_key
       sources[source_key]=source
     s['sources']=ids
     for text in [s['text'],*DATA['texts'][s['text']]]:

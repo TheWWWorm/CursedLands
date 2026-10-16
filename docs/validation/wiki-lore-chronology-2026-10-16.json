@@ -89,9 +89,9 @@
     "kel": {
       "finding": "The Rod of Life offers a conditional resurrection after three parts are collected. The completed reunion is represented, without claiming that every playthrough obtains it.",
       "evidence": [
-        "briefing 345",
-        "quest fq20",
-        "quest fq21",
+        "briefing brief_345",
+        "briefing fq20",
+        "briefing fq21",
         "bz31j three-part check and reunion branch"
       ]
     },
@@ -158,5 +158,6 @@
       "No horizontal page overflow",
       "No browser warnings or errors"
     ]
-  }
+  },
+  "superseded_by": "wiki-lore-editorial-2026-10-16.json"
 }

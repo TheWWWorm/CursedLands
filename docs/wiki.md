@@ -25,8 +25,8 @@ and other characters; creature statistics retain their existing addresses.
 
 Story articles include spoilers, numbered source references and conditional
 wording for optional outcomes. Accusations, rumours and a character's own
-justifications are attributed. The sources are the original dialogue and world
-descriptions, with fingerprints for each supported edition. If an installed mod
+justifications are attributed. The sources are the original dialogue, quest
+journals, event scripts and world descriptions, with fingerprints for each supported edition. If an installed mod
 changes a source, the corresponding prose is withheld with a localized notice.
 The wiki never executes dialogue scripts to discover story events.
 
@@ -87,7 +87,12 @@ villagers, village assembly and early errands before his meeting with Estera.
 Explain parallel investigations and optional companion adventures without
 claiming one mandatory order. A shared event appears only on the involved
 character, location and allod pages. Use `quest:<id>` for journal evidence in
-addition to dialogue IDs and `zone:<id>` for world descriptions. The source list
+addition to dialogue IDs, `script:<mob-name>` for outcomes established by active
+map triggers, and `zone:<id>` for world descriptions. A conversation present in a
+text archive is not necessarily playable: verify its entry trigger before adding
+it to a biography. Exclude disabled proposals and developer jokes from the
+played history. Script evidence is read and fingerprinted without executing it.
+The source list
 labels these separately for readers. Long web articles have expandable contents.
 
 Run `tools/export_wiki_lore_evidence.gd` through the normal `--tool` entry point

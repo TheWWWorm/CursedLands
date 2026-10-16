@@ -61,6 +61,25 @@ func _ready() -> void:
 		check(not catalog.page("character/hero").html.contains(catalog.lore.prose(RemakeText.t(section.text))), "stale biography hidden")
 		check(GameData.text(source).ends_with("changed scene"), "mod dialogue preserved")
 		GameData._text_cache[source] = before
+		# Event outcomes also depend on map scripts, independently of dialogue.
+		for story: Dictionary in catalog.lore.records["character/hero"].sections:
+			var script_source := ""
+			for evidence: String in story.sources:
+				if catalog.lore.sources[evidence].has("script"):
+					script_source = evidence
+					break
+			if script_source.is_empty(): continue
+			var script_name: String = catalog.lore.sources[script_source].script
+			var original_script := catalog.lore.source_text(script_source)
+			catalog.lore._script_cache[script_name] = original_script + "\nchanged outcome"
+			check(not catalog.lore.matches(story), "changed event script rejected")
+			check(not catalog.page("character/hero").html.contains(catalog.lore.prose(RemakeText.t(story.text))), "stale event outcome hidden")
+			check(catalog.lore.matches(section), "unrelated opening retained after script change")
+			catalog.lore._script_cache[script_name] = ""
+			check(not catalog.lore.matches(story), "missing event script rejected")
+			catalog.lore._script_cache[script_name] = original_script
+			check(catalog.lore.matches(story), "restored event script accepted")
+			break
 	check(hash(GameData.db.tables) == database, "database remains unchanged")
 	GameData._text_cache = previous_cache
 	RemakeText.lang = original_language
