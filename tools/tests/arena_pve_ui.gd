@@ -22,6 +22,7 @@ func frames(count := 5) -> void:
 	for i in count: await get_tree().process_frame
 
 func click(at: Vector2) -> void:
+	Input.warp_mouse(at)
 	var motion := InputEventMouseMotion.new()
 	motion.position = at
 	Input.parse_input_event(motion)
@@ -33,6 +34,13 @@ func click(at: Vector2) -> void:
 		event.pressed = pressed
 		Input.parse_input_event(event)
 		await frames(2)
+
+func hover(at: Vector2) -> void:
+	Input.warp_mouse(at)
+	var event := InputEventMouseMotion.new()
+	event.position = at
+	Input.parse_input_event(event)
+	await get_tree().create_timer(0.4).timeout
 
 func shot(label: String) -> void:
 	if not rendered: return
@@ -111,8 +119,7 @@ func _ready() -> void:
 		check(screen.run.army.size() == before + 1 and screen.run.bench_count() == 1, lang + " shop click recruits one creature")
 		check(screen.selected_uid == screen.run.next_uid - 1, lang + " recruit becomes placement selection")
 		await shot(lang + "-inspect")
-		var evolve := screen._inspect_actions.get_child(0) as Button
-		check(evolve != null and evolve.get_global_rect().end.y < screen._bench_panel.get_global_rect().position.y, lang + " reserve action stays visible outside details scroll")
+		check(screen._sell_target.visible and screen._sell_target.get_global_rect().end.y < screen._bench_panel.get_global_rect().position.y, lang + " selected recruit exposes sell destination")
 		var reserve_id := screen.selected_uid
 		await click(body_point(uid))
 		check(screen.run.unit(reserve_id).deployed and not screen.run.unit(uid).deployed, lang + " pointer swaps reserve directly into full army")
@@ -153,6 +160,8 @@ func _ready() -> void:
 			if screen.battle.phase != ArenaMatch.Phase.FIGHT: break
 			screen.battle.simulate_tick()
 		check(screen.run.stage in ["result", "lost"], lang + " result transition")
+		screen.battle.set_process(true)
+		await get_tree().create_timer(1.7).timeout
 		await shot(lang + "-result")
 		# Deliberate state fixtures exercise layouts and reward controls; these
 		# injected outcomes are not counted as combat balance evidence.
@@ -171,7 +180,7 @@ func _ready() -> void:
 		screen.run.arrange()
 		await frames()
 		check(screen.run.pact_active() and screen.battle.team_count(0) == screen.run.deployed_count() + 1, lang + " eligible formation shows native guest on battlefield")
-		await click(screen._army_title.get_global_rect().get_center())
+		await hover(screen._army_title.get_global_rect().get_center())
 		check(screen._showing_company and screen._rail.visible, lang + " army counter opens pact details")
 		var counter := screen._army_title
 		var text_width := counter.get_theme_font("font").get_string_size(counter.text, HORIZONTAL_ALIGNMENT_LEFT, -1, counter.get_theme_font_size("font_size")).x
@@ -230,7 +239,7 @@ func _ready() -> void:
 		check(not screen._rail.visible, lang + " camp does not open creature details behind its choices")
 		await click((reward_buttons()[0] as Button).get_global_rect().get_center())
 		check(screen.run.pact_rank == 2 and screen.run.pact_prototype() == "orcfemalea7", lang + " final pact upgrade works with full reserves")
-		await click(screen._army_title.get_global_rect().get_center())
+		await hover(screen._army_title.get_global_rect().get_center())
 		await shot(lang + "-company-final")
 		screen._clear_selection()
 		screen.run.stage = "won"

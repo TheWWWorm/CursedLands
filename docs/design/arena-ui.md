@@ -44,31 +44,38 @@ same texture coordinates. The arena viewport applies the selected anti-aliasing,
 texture filtering and shadow quality; ambient occlusion also responds to changes.
 The distant woodland fades into black at maximum zoom instead of exposing the
 old cyan map edge. Previous lighting and fog uniforms are restored on exit.
-The shop, reserve shelf and selection-only detail layout remain as documented.
+The shop, reserve shelf and hover details remain as documented.
 
 ## Composition and interaction
 
 - Full-screen battlefield. The shop is an unboxed shelf across the top left.
-  Models, prices, owned-copy progress and higher-tier badges stay visible. Names appear on hover or
-  keyboard focus; tooltips provide full names, role, price and blocked reasons.
+  Models, prices, owned-copy progress and evolution stars stay visible. Names appear on hover or
+  keyboard focus; hover details provide the role, native stats, recipe and blocked reasons.
 - A small top-right badge carries wave and preparation/combat state. The encounter
   name and seed are in its tooltip. Combat adds an elapsed clock.
 - Reserves are live models above faint slot marks along the lower edge. The
   lower-right group holds gold, lives and the single main action. Combat replaces
   Start with pause/speed controls and removes the recruitment shelf.
-- Selection opens one detail panel. It contains native stats and spells,
-  reserve/sell actions and the next automatic evolution. Return to reserves and
-  Sell stay outside the scrolling content. Esc or right-click clears it.
+- Hovering a creature, recruit or reserve opens one side panel after 250 ms.
+  Leaving closes it after a short grace period; moving into the panel keeps it
+  readable. It shows live native HP, attack, defense, damage type, armor,
+  weaknesses/resistances, spells and recipe progress. Selection never pins it.
+- Selecting a creature shows a contextual sell destination above the bottom-right
+  action group, with its refund. Click it to sell, or an empty reserve slot to
+  withdraw a deployed creature. Successful placement, swap, withdrawal or sale
+  clears selection and its placement ghost. Invalid placements retain selection.
 - The deployment boundary appears only while placing a selected creature. Small corners
   mark the selected or hovered model; persistent enemy circles are removed. Health
   bars identify the two sides and show current/maximum HP above the line. Picking
-  uses current posed model bounds, including flying creatures. Hovering reveals
-  native stats and spells without opening the inspector. Native floating damage
+  uses current posed model bounds, including flying creatures. The HP bar, number
+  and stars are also hover targets when bodies overlap. One to three stars above
+  the health label identify evolution rank. Hovering
+  opens the native-stat inspector. Native floating damage
   numbers use the campaign atlas and the existing display option.
-- Clicking the army counter opens company details in that same optional rail:
-  the selected pact, distinct eligible families, the support creature and owned
-  expedition upgrades. Its flag is gold while the pact is active. There is no
-  persistent synergy sidebar. Shop tooltips and creature details identify family
+- Hovering the army counter opens company details in that same optional rail:
+  army experience, the selected pact, distinct eligible families, the support creature
+  and owned expedition upgrades. Clicking the counter opens training. Its flag is gold while the pact is active. There is no
+  persistent synergy sidebar. Creature details identify family
   membership and the Tribal council's evolution requirement.
 - Five camp visits interrupt the run with one deliberate choice. The first shows
   three pact candidates with live native models and concise conditions. Later
@@ -80,20 +87,28 @@ The shop, reserve shelf and selection-only detail layout remain as documented.
 - A selected reserve can replace an ally directly by clicking that creature on
   the field. This works with both budgets full and remains undoable. Camp screens
   disable reserve/field selection, preserving focus on the reward decision.
-- A labelled Menu button opens a native framed panel with Continue, company
-  details, auto-arrange, undo, guide and navigation. It pauses active combat and
+- A labelled Menu button opens a native framed panel with Continue, training, auto-arrange, undo, guide and navigation. It pauses active combat and
   confines keyboard focus; closing it restores the previous pause state. Guide
   content scrolls within a bounded panel, leaving Close visible.
 - Shop improvements have one compact shelf button. The optional dialog explains
   current quality odds, the next price and the included refresh. Higher forms
   remain the original game creatures; the shop never applies numeric buffs.
 - Empty reserve slots become return targets while a deployed creature is selected.
-  The reserve count and inspector action make the same operation discoverable.
-- Victory, defeat, final outcomes and camp choices use centered panels with content
+  The reserve count and a labelled first empty slot make this operation discoverable.
+- Combat results wait 1.6 seconds after the final hit. Combat and rewards are already
+  committed while figure animations finish; this delay never advances damage or
+  world time. Headless simulations settle immediately. Victory, defeat, final
+  outcomes and camp choices use centered panels with content
   driven height. An opaque surface and quiet backdrop separate the result from the
   battlefield. Placement hints and health markers disappear for those decisions.
-- Instructions appear during placement or when an action fails. There is no persistent help
+- Specific errors appear when an action fails. There is no persistent help
   footer, opponent list, progress strip or full-width header/reserve panel.
+
+Preview cameras fit every visible posed mesh, including weapons and flying wings,
+inside the actual slot aspect ratio. Arena previews never zoom beyond that fit;
+other encyclopedia/inventory previews retain their existing controls. Icon and
+reserve-button states use identical padding, so hover/press/focus cannot move
+surrounding controls. Income appears beside the purse, with details on hover.
 
 The primary action uses an ivory serif label and the original thin bronze frame.
 Compact resource values and help text use the game's legible sans serif. Color is
@@ -136,3 +151,22 @@ windows. Visible creature bounds, not ground origins, drive selection.
 The [complete element audit](../validation/arena-ui-audit-2026-10-16.md) supersedes
 the earlier small-window usability review. It records retained and reworked
 controls, screenshot review and remaining limits.
+
+## Copy conventions
+
+Use short action names: Recruit, Train, Sell, Return, Start battle. Reserve is the
+single player-facing term for undeployed creatures. Stars mean evolution rank;
+shop level means the quality of future offers. Show recipe counts once, beside
+the next form. Explain rules in the guide or the relevant purchase dialog. Avoid
+implementation notes such as “original stats” and repeated automatic-merge
+announcements during ordinary play. Keep health, accuracy/defense and damage
+separate, and derive weaknesses from native armor types rather than a guessed
+class counter. EN, RU and DE messages are maintained together.
+
+This pass follows Impeccable's Clarify writing workflow: audit the interaction,
+remove redundant help, preserve the consequences of each action, then verify
+expanded translations in the rendered interface.
+
+The [expansion validation](../validation/arena-expansion-2026-10-16.json) records
+current income/training, hover details, sale destinations, rank markers, preview
+fitting, reserve reflow and result pacing. Earlier records remain historical.

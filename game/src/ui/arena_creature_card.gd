@@ -16,14 +16,14 @@ var quality := 0
 var preview: WikiPreview
 
 
-static func style(fill: Color, border := Color("5a624c")) -> StyleBoxFlat:
+static func style(fill: Color, border := Color("5a624c"), padding := Vector2(10, 8)) -> StyleBoxFlat:
 	var result := StyleBoxFlat.new()
 	result.bg_color = fill
 	result.border_color = border
 	result.set_border_width_all(1)
 	result.set_corner_radius_all(2)
-	result.content_margin_left = 10; result.content_margin_right = 10
-	result.content_margin_top = 8; result.content_margin_bottom = 8
+	result.content_margin_left = padding.x; result.content_margin_right = padding.x
+	result.content_margin_top = padding.y; result.content_margin_bottom = padding.y
 	return result
 
 
@@ -37,11 +37,7 @@ func _ready() -> void:
 	add_theme_stylebox_override("pressed", style(Color(0.2, 0.24, 0.22, 0.7), GOLD))
 	add_theme_stylebox_override("focus", style(Color(0, 0, 0, 0), PAPER))
 	add_theme_stylebox_override("disabled", StyleBoxEmpty.new())
-	if quality > 0:
-		var tier := _label(self, "II" if quality == 1 else "III", 16, GOLD)
-		tier.position = Vector2(8, 6)
-		tier.add_theme_color_override("font_shadow_color", Color.BLACK)
-		tier.add_theme_constant_override("shadow_offset_y", 2)
+	ArenaStars.add_to(self, quality + 1, Vector2(6, 4))
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side in ["left", "right", "top", "bottom"]: margin.add_theme_constant_override("margin_" + side, 4)
@@ -52,13 +48,13 @@ func _ready() -> void:
 	box.add_theme_constant_override("separation", 2)
 	margin.add_child(box)
 	preview = WikiPreview.new()
+	preview.fit_slot = true
 	preview.custom_minimum_size.y = 94
 	preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	box.add_child(preview)
 	if not prototype.is_empty():
 		preview.show_model({"kind": "creature", "value": prototype})
 		preview.turn_by(-0.4)
-		preview.zoom_by(0.7)
 	if disabled: preview.modulate.a = 0.65
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE

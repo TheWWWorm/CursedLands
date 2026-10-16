@@ -188,9 +188,15 @@ func _pick(at: Vector2) -> GameUnit:
 	if match_state == null or not is_instance_valid(match_state.world): return null
 	var exact: Array = []
 	var nearby: Array = []
+	var headers: Array = []
 	var to_view := camera.global_transform.affine_inverse()
 	for unit: GameUnit in match_state.world.unit_rows():
-		if unit.dead or unit.hidden or not unit.visible or not unit.may_cover(camera, at, 10 * ui_scale): continue
+		if unit.dead or unit.hidden or not unit.visible or camera.is_position_behind(unit.global_position): continue
+		if numeric_health:
+			var head := health_anchor(unit)
+			if Rect2(head - Vector2(29, 40) * ui_scale, Vector2(58, 44) * ui_scale).has_point(at):
+				headers.append([at.distance_to(head - Vector2(0, 15) * ui_scale), unit])
+		if not unit.may_cover(camera, at, 10 * ui_scale): continue
 		var rects := unit_rects(unit)
 		if rects.is_empty(): continue
 		var rect := Rect2(rects[0])
@@ -201,6 +207,10 @@ func _pick(at: Vector2) -> GameUnit:
 		for part in rects.slice(1):
 			if Rect2(part).has_point(at): part_hit = true; break
 		(exact if part_hit else nearby).append([distance, depth, unit])
+	# The visible HP marker remains a reliable target when bodies overlap.
+	if not headers.is_empty():
+		headers.sort_custom(func(a,b): return a[0] < b[0])
+		return headers[0][1]
 	var hits := exact if not exact.is_empty() else nearby
 	if hits.is_empty(): return null
 	hits.sort_custom(func(a, b): return a[0] < b[0] if not is_equal_approx(a[0], b[0]) else a[1] < b[1])
@@ -260,6 +270,10 @@ func _ring(point: Vector2, radius: float, color: Color, width := 2.0) -> void:
 	overlay.draw_polyline(line, color, width, true)
 
 
+func health_anchor(unit: GameUnit) -> Vector2:
+	return camera.unproject_position(unit.global_position + Vector3.UP * EnemyBars.head_top(unit)) - Vector2(0, 10 * ui_scale)
+
+
 func _draw_overlay() -> void:
 	if match_state == null or not is_instance_valid(match_state.world): return
 	var font := ThemeDB.fallback_font
@@ -273,9 +287,14 @@ func _draw_overlay() -> void:
 		elif u == hovered or selected:
 			var rects := unit_rects(u)
 			if not rects.is_empty(): _selection_corners(Rect2(rects[0]).grow(5 * k), ArenaCreatureCard.GOLD if selected else color)
-		var p := camera.unproject_position(u.global_position + Vector3.UP * EnemyBars.head_top(u)) - Vector2(0, 10 * k)
+		var p := health_anchor(u)
 		overlay.draw_style_box(_bar_style(), Rect2(p - Vector2(27, 3) * k, Vector2(54, 6) * k))
 		overlay.draw_rect(Rect2(p - Vector2(25, 1) * k, Vector2(50 * clampf(u.hp / maxf(1, u.max_hp), 0, 1), 2) * k), color)
+		if numeric_health:
+			var placement: Dictionary = u.get_meta("arena_placement", {})
+			var rank := int(placement.get("rank", ArenaUnitInfo.rank_of(String(u.info.get("prototype", "")))))
+			if placement.has("pact") and match_state is ArenaPveMatch: rank = match_state.run.pact_rank
+			if rank >= 0: ArenaStars.draw_rank(overlay, p - Vector2(((rank + 1) * 14 - 2) / 2.0, 38) * k, rank + 1, k)
 		if numeric_health or u == hovered:
 			var text := "%d/%d" % [maxi(0, ceili(u.hp)), ceili(u.max_hp)] if numeric_health else u.display_name
 			var pixels := roundi(14 * k)

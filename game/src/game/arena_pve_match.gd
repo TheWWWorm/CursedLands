@@ -6,6 +6,8 @@ var run: ArenaRun
 var rendered := true
 var contributions := {}
 var selected_run_uid := 0
+var settle_remaining := 0.0
+signal presentation_finished
 
 
 func _ready() -> void:
@@ -29,11 +31,12 @@ func _make_ground() -> EITerrain:
 
 
 func prepare() -> void:
+	settle_remaining = 0.0
 	formation.clear()
 	for entry: Dictionary in run.army:
 		if entry.deployed:
 			formation.append({"id": entry.prototype, "team": 0,
-				"point": Vector2(entry.point[0], entry.point[1]), "run_uid": int(entry.uid)})
+				"point": Vector2(entry.point[0], entry.point[1]), "run_uid": int(entry.uid), "rank": int(entry.rank)})
 	var support := run.support_placement()
 	if not support.is_empty(): formation.append(support)
 	formation.append_array(ArenaRules.enemies(run.wave, run.run_seed, run.challenge))
@@ -79,7 +82,23 @@ func _combat_event(kind: String, a: GameUnit, b: GameUnit, amount: float) -> voi
 
 
 func _resolved(side: int) -> void:
+	settle_remaining = 1.6 if rendered else 0.0
+	if rendered:
+		for unit: GameUnit in world.unit_rows():
+			if not unit.dead: unit._set_action("idle")
 	if run: run.resolve(side, world.time, damage)
+
+
+func _process(dt: float) -> void:
+	super._process(dt)
+	if settle_remaining <= 0: return
+	# Combat is frozen by ArenaMatch. Advance only the figure clips so the
+	# final death can finish, without late hits, changed HP, or extra income.
+	for unit: GameUnit in world.unit_rows():
+		unit._anim_acc += dt
+		unit.anim_flush()
+	settle_remaining = maxf(0, settle_remaining - dt)
+	if settle_remaining == 0: presentation_finished.emit()
 
 
 ## Fixed-step native combat for research, including projectiles and world spell

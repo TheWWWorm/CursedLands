@@ -19,35 +19,35 @@ small-window usability review. Ratings of a concept are not runtime acceptance.
 | Starter choices | Keep, scale | Three labelled companies, roles, selected state and three live models; localized descriptions remain readable. |
 | Difficulty and seed | Keep | Secondary controls below starter choices; difficulty unlocks remain explicit and seed remains optional. |
 | Begin / resume / replace-run confirmation | Rework confirmation | Primary action stays visible. Replace-run confirmation uses the same framed modal as the rest of the mode. |
-| Recruitment shelf | Keep, refine | Unboxed native models and prices preserve the battlefield. Full names appear on hover/focus and in bounded help. Locked and recruited states remain distinct. |
+| Recruitment shelf | Keep, refine | Unboxed native models and prices preserve the battlefield. Full names appear on hover/focus and in the hover inspector. Locked and recruited states remain distinct. |
 | Copy progress and evolution | Replace manual control | Show matching-copy progress; combine automatically from wave 1, including chained upgrades. Details explain and preview the next original form. No disabled evolution button or wave gate. |
-| Offer quality | Add restrained feedback | Roman II/III marks identify upgraded offers without another row of text. Original forms and native stats are used. |
-| Refresh / offer lock | Keep | Refresh price and blocked reason are readable; one lock survives an ordinary refresh and a shop improvement. |
+| Offer quality | Add restrained feedback | One to three stars identify evolution rank on offers, reserves and field units. Original forms and native stats are used. |
+| Refresh / offer lock | Keep | Refresh price and blocked reason are readable; one lock survives refresh and shop improvement. Equal state padding keeps icons still. |
 | Shop improvement | Add | One small shelf action opens costs, quality odds and a purchase button. Insufficient gold and maximum level are explicit. An improvement includes an immediate refresh of unlocked offers. |
 | Wave / phase / clock | Keep, scale | Compact corner badge; encounter and seed move to help. Clock appears only in combat. |
-| Menu button and contents | Rework | Labelled button and themed modal replace the tiny icon/native popup. State-aware Continue, Company, Arrange, Undo, Guide and navigation. Combat pause state survives opening/closing. Keyboard focus stays in the modal. |
-| Guide | Rework | Five short topics in a bounded scroll area; fixed Close action. Minimum-size changes recenter/reflow the panel after localized text wraps. |
-| Battlefield picking | Rework | Current posed mesh/part bounds and a small screen-space tolerance replace ground-origin proximity. A bat is selected on its visible body. |
+| Menu button and contents | Rework | Labelled button and themed modal replace the tiny icon/native popup. State-aware Continue, training, Arrange, Undo, Guide and navigation. Combat pause state survives opening/closing. Keyboard focus stays in the modal. |
+| Guide | Rework | Six short topics in a bounded scroll area; fixed Close action. Minimum-size changes recenter/reflow the panel after localized text wraps. |
+| Battlefield picking | Rework | Current posed mesh/part bounds and a small screen-space tolerance replace ground-origin proximity. A bat is selected on its visible body. HP/star markers are also targets when bodies overlap. |
 | Team circles | Remove in expedition | Team identity uses health bars. Small corners appear only on hover or selection. A placement preview still shows where a creature will land. |
 | Health feedback | Rework | Current / maximum HP above the line; bars anchor to the actual model head, including flight height. Scale follows the HUD. |
 | Damage feedback | Restore | Real native hit events drive the campaign number atlas, critical labels and fade; the existing damage-number display option is respected. |
-| World hover information | Add | Name, live HP, armor, damage range, spells and copy progress appear without selecting. Same bounded tooltip system as buttons. |
-| Inspector | Refine | Optional rail with scrolling details; Return to reserves and Sell stay fixed below it. Enemy and pact guests have appropriate read-only actions. |
-| Company / synergy details | Keep | Army counter opens the same optional rail with pact conditions, contributing families, native guest and acquired run upgrades. No permanent extra sidebar. |
+| World hover information | Add | Hover opens native live HP, attack, defense, armor weaknesses/resistances, damage type, spells and recipe progress in the side panel. |
+| Inspector | Refine | Delayed hover rail with scrolling details and a leave grace period. It remains open while hovered; selection does not pin it. |
+| Company / synergy details | Keep | Hovering the army counter opens the rail with experience, pact conditions, native guest and acquired upgrades. Clicking opens training. No permanent extra sidebar. |
 | Army and reserve counters | Refine | Both capacities are labelled. An active pact is explained through the company rail; color is not the only cue. |
-| Reserve shelf and return flow | Rework interaction | Selecting a deployed ally enables empty reserve slots as return targets. The inspector also says Return to reserves. Direct reserve-to-ally swaps and Undo remain available. |
-| Gold / lives | Keep, scale | Compact resource cluster next to the main action; full meanings in bounded help. |
-| Start battle | Keep, refine | One primary action with a restrained 310-unit wrapped tooltip. No oversized tooltip window. |
+| Reserve shelf and return flow | Rework interaction | Selecting a deployed ally enables empty reserve slots as return targets. The first empty slot is labelled Return. Successful placement/withdrawal releases the creature. Direct reserve-to-ally swaps and Undo remain available. |
+| Gold / lives | Keep, scale | Compact resource cluster next to the main action; victory-income forecast with interest and streak breakdown in bounded help. |
+| Start battle | Keep, refine | One primary action. No redundant tooltip. |
 | Pause / speed | Keep | Replace recruitment actions during combat. Space pauses, speed stays explicit, opening the menu preserves prior pause state. |
-| Victory / defeat / final outcome | Rework | Centered, content-sized opaque panel with a clear result, wave, income/lives, summary and one next action. Old placement hints and health markers disappear. |
+| Victory / defeat / final outcome | Rework | Centered, content-sized panel after a 1.6-second animation interval, with result, wave, income breakdown/lives and one next action. |
 | Camp choices | Keep, reflow | Intermittent two/three-choice panels; localized text, native models and actions fit. Bench and field inspection are inactive during the decision. |
-| Error / action feedback | Keep, contextualize | One restrained line during preparation/combat, including automatic evolution confirmation. Hidden during results. |
-| Tooltip infrastructure | Replace | One scaled, wrapped, viewport-clamped control handles buttons and world hover. A 350 ms delay prevents immediate obstruction. |
+| Error / action feedback | Keep, contextualize | One restrained line for actionable errors. No repeated placement or merge announcements; hidden during results. |
+| Tooltip infrastructure | Replace | One scaled, wrapped, viewport-clamped control handles button help. Creature details use the hover rail. A 350 ms delay prevents immediate obstruction. |
 | Courtyard, ruins and shadows | Keep | Existing textured 3D field and corrected orthographic shadows remain. No new decorative panel competes with the field. |
 
 ## Verification and findings
 
-The [validation record](arena-usability-2026-10-16.json) contains source/log hashes,
+The [current expansion record](arena-expansion-2026-10-16.json) covers income, training, hover/sell interactions, preview bounds, stable icons and delayed results. Its rendered cases cover EN/RU at 1280×800, DE at 1024×768 and EN at 3840×2160. The earlier [usability record](arena-usability-2026-10-16.json) contains source/log hashes,
 checks, captures and current balance samples. Functional checks exercise actual
 pointer routing, visible bat bounds, both return paths, shop improvements, native
 hit events, modal focus and pause behavior. Rendered cases include 1024×768 RU/DE,
@@ -83,3 +83,32 @@ upgrade feature does not justify claiming equal build balance. See the current
 validation data rather than the historical progression clear rates.
 
 Reviewed captures: [hover and HP](../screenshots/arena-usability-en-hover.png), [menu](../screenshots/arena-usability-en-menu.png), [shop improvements](../screenshots/arena-usability-en-shop.png), [native damage](../screenshots/arena-usability-en-hit.png), [victory](../screenshots/arena-usability-en-victory.png), [German guide](../screenshots/arena-usability-de-guide.png).
+
+## Economy and interaction follow-up
+
+The completed follow-up makes these interaction and economy decisions explicit:
+
+| Element | Final decision |
+| --- | --- |
+| Selected creature details | Replace persistent selection panel with delayed hover details and a short leave grace period. |
+| Placement | Clear selection/ghost after successful placement or swap; retain it on invalid placement. |
+| Reserve withdrawal | Keep clickable empty slots; remove inspector action duplication. Fit reserve widths to the real localized control space. |
+| Selling | Contextual sell area with refund appears for selected owned creatures; support undo. |
+| Preview figures | Fit posed body, weapons and wings to each actual slot; remove arena zoom overrides. |
+| Rank badges | Replace Roman numerals with consistent 1–3 star geometry on board, reserves and shop. |
+| Stat block | Add native attack/defense and armor-derived weaknesses/resistances; keep live HP and spells. HP markers also act as hover targets in crowded combat. |
+| Army counter | Hover shows company; click opens optional training purchase. |
+| Purse | Add conditional victory-income preview and bounded breakdown tooltip. |
+| Victory/defeat | Keep centered frame, wait 1.6 seconds for figure animations; include income breakdown. |
+| Icons and reserve states | Equal padding for normal, hover, pressed and focus; assert unchanged lock/row rectangles. |
+| Copy | Remove repeated merge announcements, developer-facing provenance and redundant Start tooltip; keep rules in guide. |
+
+The updated design and validation supersede the earlier selection/selling and
+flat-income behavior. Existing lighting, textured court, native damage numbers,
+resolution scaling, modal focus and automatic evolution remain.
+
+Current captures: [selection and sell destination](../screenshots/arena-expansion-en-selection.png),
+[income and victory](../screenshots/arena-expansion-en-victory.png),
+[Russian training](../screenshots/arena-expansion-ru-training.png),
+[German expanded reserves](../screenshots/arena-expansion-de-expanded.png),
+and [4K company selection](../screenshots/arena-expansion-en-4k-landing.png).

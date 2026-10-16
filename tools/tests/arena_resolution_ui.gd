@@ -104,16 +104,15 @@ func _ready() -> void:
 		check(screen.field._pick(point(bat)) == bat, tag + " picks the visible airborne body")
 		await move(point(bat))
 		await get_tree().create_timer(0.5).timeout
-		check(screen._tooltips.visible and screen._tooltips._heading.text == bat.display_name, tag + " native creature hover details")
-		bounded(screen._tooltips, tag + " body tooltip")
+		check(screen._rail.visible and screen._inspected == String(bat.info.prototype), tag + " native creature hover details")
+		bounded(screen._rail, tag + " hover details")
 		if spec[1].x >= 3840: await shot(tag + "-hover")
 		await click(point(bat))
 		check(screen.selected_uid == uid, tag + " body click selects bat")
-		var withdraw := screen._inspect_actions.get_child(0) as Button
-		bounded(withdraw, tag + " withdraw action")
-		check(not withdraw.disabled and withdraw.text == RemakeText.t("Return to reserves"), tag + " explicit reserve action")
-		await click(withdraw.get_global_rect().get_center())
-		check(not screen.run.unit(uid).deployed, tag + " reserve action withdraws ally")
+		check(screen._sell_target.visible, tag + " select exposes sell destination")
+		await click((screen._army_row.get_child(0) as Button).get_global_rect().get_center())
+		check(not screen.run.unit(uid).deployed, tag + " reserve slot withdraws ally")
+
 		screen.run.undo()
 		await frames()
 		await click(point(body(uid)))
@@ -124,8 +123,7 @@ func _ready() -> void:
 		await frames()
 		await move(screen._start.get_global_rect().get_center())
 		await get_tree().create_timer(0.5).timeout
-		check(screen._tooltips.visible and screen._tooltips.size.x <= 311, tag + " start tooltip has a bounded measure")
-		bounded(screen._tooltips, tag + " start tooltip")
+		check(not screen._tooltips.visible, tag + " start action needs no redundant tooltip")
 		await click(screen._menu.get_global_rect().get_center())
 		print("MENU ", tag, " visible=", screen._modal_layer.visible, " rect=", screen._menu.get_global_rect(), " focus=", screen._start.focus_mode)
 		bounded(screen._modal_panel, tag + " menu panel")
@@ -176,9 +174,11 @@ func _ready() -> void:
 		await frames(2)
 		if spec[1].x >= 3840: await shot(tag + "-hit")
 		var enemy: GameUnit = screen.battle.world.unit_rows().filter(func(unit): return unit.faction == 2)[0]
-		screen._select_world(enemy)
-		await frames(2)
-		check(screen._live_health.text.contains("%d/%d" % [maxi(0, ceili(enemy.hp)), ceili(enemy.max_hp)]), tag + " enemy inspector shows current health")
+		var enemy_marker := screen.field.health_anchor(enemy) - Vector2(0, 15) * screen._ui_scale
+		check(screen.field._pick(enemy_marker) == enemy, tag + " health marker picks enemy in a crowded fight")
+		await move(enemy_marker)
+		await get_tree().create_timer(0.4).timeout
+		check(screen._inspected_unit == enemy and screen._live_health.text.contains("%d/%d" % [maxi(0, ceili(enemy.hp)), ceili(enemy.max_hp)]), tag + " enemy inspector shows current health")
 		screen._clear_selection()
 		# The outcome fixture exercises layout; it is not balance evidence.
 		screen.run.resolve(0, 32, [103.0, 21.0])

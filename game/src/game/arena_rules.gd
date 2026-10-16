@@ -3,9 +3,14 @@ extends RefCounted
 ## Content shared by the playable expedition and its balance simulations.
 ## Every fighter resolves to an unmodified original-game prototype.
 
-const VERSION := 3
+const VERSION := 4
 const WAVE_COUNT := 18
-const VICTORY_GOLD := 7
+const BASE_INCOME := 5
+const WIN_INCOME := 1
+const INTEREST_CAP := 3
+const TRAINING_COST := 5
+const TRAINING_XP := 3
+const MAX_TRAINING := 12
 const FAMILIES := [
 	{"name": "Boars", "role": "Melee", "cost": 3, "forms": ["boarredf1", "boarredf3", "boardarkf6"]},
 	{"name": "Tribal fighters", "role": "Melee", "cost": 3, "forms": ["goblinf1", "orcmalef3", "orcmalef5"]},
@@ -54,13 +59,13 @@ const WAVES := [
 ]
 const BOONS := {
 	"merchant": ["Quartermaster", "Shop refreshes cost 1 gold instead of 2."],
-	"reserve": ["Pack train", "Gain 3 extra bench spaces for this expedition."],
-	"purse": ["War chest", "Gain 12 gold to recruit and evolve your army."],
+	"reserve": ["Pack train", "Three more reserve slots."],
+	"purse": ["War chest", "12 gold for your company."],
 	"life": ["Second wind", "Recover one life, up to three."],
 	"scout": ["Well connected", "Every new shop has a sixth recruit offer."],
-	"companion": ["A new ally", "A seer joins your reserves. Deploy it in a normal army slot."],
-	"pact": ["Company pact", "Commit to one pact for this expedition. Meet its deployment condition to call a temporary ally each battle."],
-	"pact_upgrade": ["Strengthen the pact", "Replace your pact ally with its next original form for the rest of this expedition. The deployment condition stays the same."],
+	"companion": ["A new ally", "An orc seer joins your reserves."],
+	"pact": ["Company pact", "Choose a pact for your company. Its families fight together to call an extra ally."],
+	"pact_upgrade": ["Strengthen the pact", "Your pact calls a stronger ally for the rest of this expedition."],
 	"supplies": ["Travel supplies", "Gain 6 gold for your next recruits."],
 }
 

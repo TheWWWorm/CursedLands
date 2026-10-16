@@ -20,6 +20,8 @@ var boons: Array[String] = []
 var pact := ""
 var pact_rank := 0
 var shop_level := 0
+var training := 0
+var battle_savings := 0
 var rewards: Array[Dictionary] = []
 var history: Array[Dictionary] = []
 var last_result := {}
@@ -39,6 +41,7 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 	army.clear(); shop.clear(); boons.clear(); rewards.clear(); history.clear(); _undo.clear()
 	last_result = {}
 	pact = ""; pact_rank = 0; shop_level = 0
+	training = 0; battle_savings = 0
 	last_evolutions.clear()
 	rng.seed = run_seed
 	var families: Array = ArenaRules.STARTERS[starter].families
@@ -51,7 +54,42 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 
 
 func capacity() -> int:
-	return mini(7, 3 + (wave - 1) / 3)
+	return mini(7, 3 + experience() / 3)
+
+
+func experience() -> int:
+	return mini(ArenaRules.MAX_TRAINING, wave - 1 + training)
+
+
+func train() -> String:
+	if stage != "prepare": return RemakeText.t("Recruit between battles.")
+	if experience() >= ArenaRules.MAX_TRAINING: return RemakeText.t("Your army is at full strength.")
+	if gold < ArenaRules.TRAINING_COST: return RemakeText.t("Not enough gold.")
+	_checkpoint()
+	gold -= ArenaRules.TRAINING_COST
+	training += mini(ArenaRules.TRAINING_XP, ArenaRules.MAX_TRAINING - experience())
+	_touch()
+	return ""
+
+
+func win_streak() -> int:
+	var wins := 0
+	for i in range(history.size() - 1, -1, -1):
+		if int(history[i].winner) != 0: break
+		wins += 1
+	return wins
+
+
+## Snapshot savings at battle start. Only a newly cleared wave pays income.
+## Failed retries break the streak and cannot be farmed for gold or experience.
+func income_preview(savings := -1) -> Dictionary:
+	var bank := gold if savings < 0 else savings
+	var streak := win_streak() + 1
+	var bonus := 2 if streak >= 6 else 1 if streak >= 3 else 0
+	var interest := mini(ArenaRules.INTEREST_CAP, maxi(0, bank) / 10)
+	return {"base": ArenaRules.BASE_INCOME, "victory": ArenaRules.WIN_INCOME,
+		"interest": interest, "streak": bonus,
+		"total": ArenaRules.BASE_INCOME + ArenaRules.WIN_INCOME + interest + bonus}
 
 
 func bench_limit() -> int:
@@ -233,7 +271,7 @@ func deploy(uid: int, point: Vector2) -> String:
 	if entry.is_empty(): return RemakeText.t("Choose a creature from your army.")
 	if not is_finite(point.x) or not is_finite(point.y) or not DEPLOY.has_point(point):
 		return RemakeText.t("Deploy inside the blue half of the battlefield.")
-	if not entry.deployed and deployed_count() >= capacity(): return RemakeText.t("Army full. Move a creature to the bench first.")
+	if not entry.deployed and deployed_count() >= capacity(): return RemakeText.t("Army full. Train your company or withdraw a creature.")
 	for other: Dictionary in army:
 		if other.uid == uid or not other.deployed: continue
 		if point.distance_to(Vector2(other.point[0], other.point[1])) < 2.5:
@@ -282,7 +320,9 @@ func sell(uid: int) -> String:
 
 
 func sale_value(entry: Dictionary) -> int:
-	return int(entry.investment) / 3
+	if int(entry.family) < 0: return int(entry.investment) / 3
+	if int(entry.rank) == 0: return int(entry.investment)
+	return mini(offer_cost(entry), int(entry.investment) * 2 / 3)
 
 
 func copies(entry: Dictionary) -> Array[Dictionary]:
@@ -329,6 +369,7 @@ func _merge(entry: Dictionary) -> void:
 func start_battle() -> String:
 	if stage != "prepare": return RemakeText.t("Finish the current encounter first.")
 	if deployed_count() == 0: return RemakeText.t("Deploy at least one creature before starting.")
+	battle_savings = gold
 	stage = "fight"
 	_undo.clear()
 	_touch()
@@ -383,8 +424,10 @@ func resolve(winner: int, seconds: float, damage: Array) -> void:
 	last_result = {"wave": wave, "winner": winner, "seconds": seconds, "damage": damage.duplicate(), "gold": 0}
 	if winner == 0:
 		if wave < ArenaRules.WAVE_COUNT:
-			gold += ArenaRules.VICTORY_GOLD
-			last_result.gold = ArenaRules.VICTORY_GOLD
+			var income := income_preview(battle_savings)
+			gold += int(income.total)
+			last_result.gold = int(income.total)
+			last_result.income = income
 	else:
 		lives -= 1
 	history.append(last_result.duplicate(true))
@@ -454,7 +497,7 @@ func choose_reward(index: int) -> String:
 
 
 func _checkpoint() -> void:
-	_undo.append({"army": army.duplicate(true), "shop": shop.duplicate(true), "gold": gold, "next_uid": next_uid})
+	_undo.append({"army": army.duplicate(true), "shop": shop.duplicate(true), "gold": gold, "next_uid": next_uid, "training": training})
 	if _undo.size() > 30: _undo.pop_front()
 
 
@@ -462,7 +505,7 @@ func undo() -> void:
 	if stage != "prepare" or _undo.is_empty(): return
 	var previous: Dictionary = _undo.pop_back()
 	army.assign(previous.army); shop.assign(previous.shop)
-	gold = previous.gold; next_uid = previous.next_uid
+	gold = previous.gold; next_uid = previous.next_uid; training = previous.training
 	_touch()
 
 
@@ -476,6 +519,7 @@ func snapshot() -> Dictionary:
 		"stage": stage, "army": army.duplicate(true), "shop": shop.duplicate(true),
 		"boons": boons.duplicate(), "rewards": rewards.duplicate(true), "history": history.duplicate(true),
 		"pact": pact, "pact_rank": pact_rank, "shop_level": shop_level,
+		"training": training, "battle_savings": battle_savings,
 		"last_result": last_result.duplicate(true), "next_uid": next_uid}
 
 
@@ -496,6 +540,8 @@ func restore(data: Dictionary) -> bool:
 	var saved_pact = data.get("pact", "") if int(data.version) > 1 else ""
 	var saved_rank = data.get("pact_rank", 0) if int(data.version) > 1 else 0
 	if not _integer(data.get("shop_level", 0), 0, 2): return false
+	if not _integer(data.get("training", 0), 0, ArenaRules.MAX_TRAINING): return false
+	if not _integer(data.get("battle_savings", 0), 0, 100000): return false
 	if not saved_pact is String or (not saved_pact.is_empty() and not ArenaRules.PACTS.has(saved_pact)): return false
 	if not _integer(saved_rank, 0, 2): return false
 	if saved_pact.is_empty() and int(saved_rank) != 0: return false
@@ -526,7 +572,7 @@ func restore(data: Dictionary) -> bool:
 			points.append(point)
 			deployed += 1
 		seen[int(entry.uid)] = true
-	var capacity_at_wave := mini(7, 3 + (int(data.wave) - 1) / 3)
+	var capacity_at_wave := mini(7, 3 + (int(data.wave) - 1 + int(data.get("training", 0))) / 3)
 	if deployed > capacity_at_wave: return false
 	var saved_boons := {}
 	for key in data.boons:
@@ -574,6 +620,7 @@ func restore(data: Dictionary) -> bool:
 	stage = "prepare" if data.stage == "fight" else String(data.stage)
 	army.assign(data.army.duplicate(true)); shop.assign(data.shop.duplicate(true)); boons.assign(data.boons)
 	pact = saved_pact; pact_rank = int(saved_rank); shop_level = int(data.get("shop_level", 0))
+	training = int(data.get("training", 0)); battle_savings = int(data.get("battle_savings", 0))
 	rewards.assign(data.rewards.duplicate(true)); history.assign(data.history.duplicate(true))
 	last_result = data.last_result.duplicate(true)
 	next_uid = int(data.next_uid)
@@ -594,7 +641,13 @@ static func _integer(value: Variant, low: int, high: int) -> bool:
 static func _valid_result(value: Variant) -> bool:
 	if not value is Dictionary: return false
 	if not _integer(value.get("wave"), 1, ArenaRules.WAVE_COUNT) or not _integer(value.get("winner"), -1, 1): return false
-	if not _number(value.get("seconds"), 0, 301) or not _integer(value.get("gold"), 0, 8): return false
+	if not _number(value.get("seconds"), 0, 301) or not _integer(value.get("gold"), 0, 11): return false
+	if value.has("income"):
+		if not value.income is Dictionary: return false
+		for key in ["base", "victory", "interest", "streak", "total"]:
+			if not _integer(value.income.get(key), 0, 11): return false
+		if int(value.income.total) != int(value.gold): return false
+		if int(value.income.base) + int(value.income.victory) + int(value.income.interest) + int(value.income.streak) != int(value.income.total): return false
 	if not value.get("damage") is Array or value.damage.size() != 2: return false
 	return _number(value.damage[0], 0, 10000000) and _number(value.damage[1], 0, 10000000)
 

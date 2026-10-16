@@ -13,9 +13,20 @@ Six recruit families keep duplicates findable; enemy variety includes creatures
 outside that shop. The battlefield is an authored 3D ruined courtyard using native
 terrain, scenery and navigation, with a generated stone paving albedo.
 
-The run starts with three creatures, 6 gold and three lives. Every victory except
-the final one pays 7 gold. Army capacity grows from 3 to 4/5/6/7 at waves
-4/7/10/13. The bench holds six, or nine with Pack train. Five offers appear per
+The run starts with three creatures, 6 gold and three lives. Each nonfinal
+victory pays a 5-gold bounty plus 1 victory gold, 0–3 interest and 0–2 streak gold.
+Savings are recorded when battle starts: each full 10 gold earns 1 interest,
+capped at 30 saved gold. The third consecutive victory earns +1 streak gold;
+the sixth and later earn +2. A defeat resets the streak and pays nothing.
+A wave can pay only once; failed retries grant neither income nor experience.
+The HUD previews the income for a victory, and results show its breakdown.
+
+Army capacity starts at 3. Each cleared wave grants 1 experience; every 3
+experience adds a slot, up to 7. Training costs 5 gold for up to 3 experience,
+so the player can bring one extra creature to the next battle from wave 1.
+Without training the original capacity milestones remain waves 4/7/10/13.
+Training competes with recruitment, saving and shop improvements, and can be
+undone until a refresh or battle. The army counter opens its purchase dialog. The bench holds six, or nine with Pack train. Five offers appear per
 shop, or six with Well connected. Melee recruits cost 3 gold; shooters, bats and
 toads cost 4. Refresh costs
 2, or 1 with Quartermaster. One offer can be locked between shops. Recruitment
@@ -23,15 +34,15 @@ can also be improved for 10 gold, then 18 gold. Each improvement immediately
 refreshes unlocked offers and lasts for the expedition. It is available during
 preparation without a wave gate.
 
-| Shop | Tier I | Tier II | Tier III |
+| Shop | 1 star | 2 stars | 3 stars |
 | --- | --- | --- | --- |
 | 1 | 100% | 0% | 0% |
 | 2 | 70% | 30% | 0% |
 | 3 | 45% | 45% | 10% |
 
-Higher tiers are the same native forms used by evolution. Tier II costs 3 extra
-gold; tier III costs 8 extra. Toads have only two forms, so a tier III roll becomes
-their final form at the tier II price. Improving recruitment trades current army
+Higher ranks are the same native forms used by evolution. Two-star recruits cost
+3 extra gold; three-star recruits cost 8 extra. Toads have only two forms, so a
+three-star roll becomes their final form at the two-star price. Improving recruitment trades current army
 spending for stronger future offers; it does not increase creature stats.
 
 Camps follow waves 3, 6, 9, 12 and 15. The first camp commits the company to one
@@ -51,16 +62,16 @@ overflow companion is disabled with a reason, leaving the other rewards usable.
 Defeat costs one life and no gold is paid. The entire army recovers for a retry of
 the same encounter with a new combat roll. Death at zero lives ends the run.
 Clearing the expedition unlocks Veteran, then Champion: harder difficulties add
-native enemies instead of changing their stats. There is no interest economy,
-paid XP, equipment draft or permanent combat-stat progression. Composition
-synergies now work through pact reinforcements, without passive stat bonuses.
+native enemies instead of changing their stats. There is no equipment draft or permanent combat-stat progression. Composition
+synergies work through pact reinforcements, without passive stat bonuses.
 
 A seed determines shops and encounter mirroring. Separate shop RNG state is saved;
 combat does not consume shop randomness. Save validation checks content, formation,
 economy and nested data before replacing live state. Save writes use a flushed
 intermediate file and rename. An interrupted fight returns to preparation with
-its attempt seed. Versions 1 and 2 migrate to save schema 3, retaining investment,
-gold and RNG; older saves start with shop level 1. Completed recipes combine on
+its attempt seed. Versions 1–3 migrate to save schema 4, retaining investment, gold and RNG.
+Older saves default missing training to zero and preserve their free capacity
+milestones. Missing shop progression defaults to shop level 1. Completed recipes combine on
 loading a preparation state. A legacy run without a pact can choose one at a later
 pact camp. Campaign saves and network sessions are not involved. The schema
 number is independent of the public release version.
@@ -84,15 +95,19 @@ pools are not mixed into a normalized stat table.
 IDs here document implementation; players see localized original names. Evolution
 is automatic as soon as a purchase completes a recipe. Every step is available
 from wave 1, including a chained final evolution. Toads have one useful step.
-Details preview the next native form and its stats; shop offers show owned copies
-and tier II/III badges. There is no manual evolution action or wave lock.
+Hover details show the next form and recipe progress. Shop, reserves and overhead
+markers use one to three stars for evolution rank. Stars do not claim equal power
+across different native species. A separate five-color rarity scale would duplicate
+this progression, so it is not added. There is no manual evolution action or wave lock.
 Native melee/magic roles are retained; the tribal promotion crosses goblin/Orc
 species. Weak intermediate ages are skipped. A deployed copy retains its identity
 and place;
 other required copies are consumed. A purchase and its resulting evolutions are
 one undoable action. Undo is available during preparation until
-a refresh, shop improvement or battle commits the transaction. Sales recover one
-third of invested recruitment cost.
+a refresh, shop improvement or battle commits the transaction. One-star recruits sell for their full purchase price, allowing early composition
+changes. Evolved recruits refund two thirds of investment, capped at the shop
+price of that form. Gifted seer companions retain their one-third refund. Buying,
+merging and selling cannot create resale profit.
 
 ## Company pacts
 
@@ -202,10 +217,9 @@ company details, camp choices and formation changes.
 The [UI design](design/arena-ui.md) documents the selected generated concept and
 its implementation. Recruitment models occupy a thin top shelf; reserves sit
 unboxed at the lower edge; a small round badge and one battle action complete the
-neutral HUD. The shop hides in combat. Creature stats and evolution are shown on
-selection. The army counter opens pact status and owned upgrades in the same
-optional detail rail. Recruitment tooltips identify the relevant family and any
-evolution requirement. Reserves can swap directly with a deployed creature even
+neutral HUD. The shop hides in combat. Creature stats, armor weaknesses and evolution progress appear on hover.
+Health markers remain hover targets when fighting bodies overlap. Hovering the
+army counter shows pact status and owned upgrades; clicking it opens training. Reserves can swap directly with a deployed creature even
 when both army and bench are full; the swap can be undone. Camp choices show live
 native models and localized requirements, with creature stats in their tooltips.
 The original game's bronze frame atlas and native creatures establish
@@ -226,3 +240,17 @@ and recruitment/positioning decisions between automated battles from
 informed the restraint around extra systems and variance. These are design
 references, not evidence that this game's native combat is balanced. The user's
 Auto Chess images guided the battlefield-dominant composition.
+
+
+## Income and training evaluation
+
+The [economy research](design/arena-economy-research.md) explains the chosen
+Underlords/Auto Chess adaptations. The current [validation record](validation/arena-expansion-2026-10-16.json)
+contains 30 full expeditions and 564 native fights, seeds 5000–5005 per cohort.
+Starter-focused spending cleared 6/6; saving toward 10 gold cleared 5/6;
+starter-focused early training cleared 6/6. A rigid melee/Vanguard policy cleared
+1/6, while the same opening with late magic purchases cleared 4/6. The small
+sample supports viable spending/saving choices and composition adaptation, not
+uniform build strength or a prediction of human clear rates. Harder difficulties
+were not resampled for this economy pass. Historical balance results above apply
+to their recorded source versions.

@@ -38,7 +38,7 @@ func _ready() -> void:
 	var id := int(run.army[0].uid)
 	check(run.unit(id).rank == 1, "third purchase evolves automatically")
 	check(run.unit(id).prototype == "boarredf3" and run.unit(id).investment == 9, "native output and invested cost")
-	check(run.army.size() == 3 and run.sale_value(run.unit(id)) == 3, "merge frees two slots without resale profit")
+	check(run.army.size() == 3 and run.sale_value(run.unit(id)) == 6, "merge frees two slots without resale profit")
 	run.undo()
 	check(run.army.size() == 4 and run.unit(id).prototype == "boarredf1", "purchase undo restores pre-merge copies")
 	run.refresh()
