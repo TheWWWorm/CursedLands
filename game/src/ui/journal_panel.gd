@@ -41,6 +41,7 @@ func _ready() -> void:
 	top.add_child(close)
 	_text = RichTextLabel.new()
 	_text.bbcode_enabled = true
+	_text.meta_clicked.connect(func(meta): hud.open_wiki_article(WikiHtml.key_from_url(str(meta))))
 	for f in ["normal_font", "bold_font", "italics_font"]:
 		_text.add_theme_font_override(f, Interface800.font())
 	_text.add_theme_color_override("default_color", Interface800.TEXT)
@@ -81,13 +82,13 @@ func refresh() -> void:
 	if not done.is_empty():
 		out += "\n[color=#888888][b]%s[/b][/color]\n" % RemakeText.t("Completed")
 		for q in done:
-			out += "[color=#888888]%s[/color]\n" % _parse(q).title
+			out += "[url=wiki://quest/%s]%s[/url]\n" % [String(q).uri_encode(),_parse(q).title]
 	_text.text = out if out else RemakeText.t("No quests yet.")
 
 
 func _quest(q: String, objs: Dictionary, _done: bool) -> String:
 	var d := _parse(q)
-	var s := "[b]%s[/b]\n%s\n" % [d.title, d.text]
+	var s := "[b][url=wiki://quest/%s]%s[/url][/b]\n%s\n" % [q.uri_encode(), d.title, d.text]
 	for n in d.subs:
 		if objs.has(n):
 			var sub: Dictionary = d.subs[n]

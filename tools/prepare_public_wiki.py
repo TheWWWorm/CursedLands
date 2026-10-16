@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 import shutil
@@ -31,6 +32,22 @@ def prepare_campaign(data, images, target_data, campaign, labels, used_images):
             pages[key] = page
         count = links = normalized = 0
         for key, page in pages.items():
+            for group in page.get('relations', []):
+                assert group['id'] and group['title'] and group['rows']
+                for row in group['rows']:
+                    assert row['key'] in entries and row['title'], (campaign, lang, key, 'relationship')
+            for version in page['versions']:
+                for pin in version.get('pins', []):
+                    assert pin['key'] in entries and pin['title'] and pin['kind'] in {'exit','quest','inhabitant'}
+                    assert all(isinstance(pin[n], (int,float)) and math.isfinite(pin[n]) and 0 <= pin[n] <= 1 for n in ['x','y'])
+                guide = ET.fromstring('<article>' + version.get('guide','') + '</article>')
+                assert all(el.tag in {'article','h2','p','br'} and not el.attrib for el in guide.iter())
+                if lang != 'ru':
+                    assert not re.search('[А-Яа-яЁё]', version.get('guide','')), (campaign, lang, key, 'untranslated guide')
+                plan = version.get('plan')
+                if plan:
+                    assert all(math.isfinite(plan[n]) and plan[n] >= 0 for n in ['weight','price'])
+                    if plan.get('material'):assert plan['material']['key'] in entries and plan['material']['title']
             for version in page['versions']:
                 assert version['title']
                 if lang != 'ru':
@@ -40,7 +57,7 @@ def prepare_campaign(data, images, target_data, campaign, labels, used_images):
                 assert not re.search(r'\b\w+_\w*Prototyp\w*', ' '.join(html.itertext()), re.I), (lang, key)
                 assert not re.search(r'\b\w+_\w*Prototyp\w*', version['title'], re.I), (lang, key)
                 for element in html.iter():
-                    assert element.tag in {'article', 'h1', 'h2', 'p', 'br', 'table', 'tr', 'th', 'td', 'a'}
+                    assert element.tag in {'article', 'h1', 'h2', 'p', 'br', 'table', 'tr', 'th', 'td', 'a', 'strong'}
                     assert set(element.attrib) <= {'data-columns', 'href'}
                     if element.tag != 'a':
                         continue
@@ -91,8 +108,12 @@ def prepare_campaign(data, images, target_data, campaign, labels, used_images):
             target = target_data / lang / 'pages' / entries[key]['file']
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(json.dumps(page, ensure_ascii=False, separators=(',', ':')) + '\n')
+        for entry in index["entries"]:
+            if entry.get("image") and not (images / (entry["image"] + ".webp")).is_file(): entry.pop("image")
         (target_data / lang / 'index.json').write_text(json.dumps(index, ensure_ascii=False, separators=(',', ':')) + '\n')
         constructors = read(data / lang / 'constructors.json')
+        assert set(constructors['planner']['skills']) == {'melee','archery','science','elemental','sense','astral'}
+        assert all(len(constructors['planner'][n]) == 5 for n in ['hp','mp'])
         assert constructors['max_runes'] == 8 and constructors['spells'] and constructors['runes']
         for rune in constructors['runes'].values():
             assert rune['title'] and rune.get('image')
@@ -117,7 +138,7 @@ def prepare(data, images, output, astral_data, astral_images):
     output.mkdir(parents=True, exist_ok=True)
     for file in source.iterdir():
         shutil.copy2(file, output / file.name)
-    report = {'version': '1.7.0', 'languages': {}, 'translation_keys': len(labels['en']),
+    report = {'version': '1.8.0', 'languages': {}, 'translation_keys': len(labels['en']),
               'requires_game_files': False, 'requires_game_engine': False, 'requires_account': False}
     used_images = {}
     report['campaigns'] = {}

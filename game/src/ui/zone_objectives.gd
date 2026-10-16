@@ -113,6 +113,7 @@ var top := 0
 ## Entrances: {n, at: Vector2 (800×600), dir: Vector2 (apex -> base), ok: bool, hours}
 var entrances: Array = []
 var entrance := -1
+var _wiki_links: HBoxContainer
 var _ui: Texture2D
 var _cross: Texture2D
 var _pic: Texture2D
@@ -134,6 +135,15 @@ var _zone_bar := DialogPanel.Bar.new(Rect2(420, 405, 320, 110), 20.0)
 
 
 func _ready() -> void:
+	_wiki_links=HBoxContainer.new();_wiki_links.add_theme_constant_override("separation",20);add_child(_wiki_links)
+	for is_quest: bool in [false,true]:
+		var button := LinkButton.new();button.add_theme_font_size_override("font_size",12);button.add_theme_color_override("font_color",TEXT);button.text=RemakeText.t("Quest guide") if is_quest else RemakeText.t("Map guide")
+		button.pressed.connect(func():
+			if session.game and session.game.hud:
+				if is_quest and not quests.is_empty():session.game.hud.open_wiki_article("quest/"+String(quests[clampi(sel,0,quests.size()-1)]).uri_encode())
+				elif not is_quest:session.game.hud.open_wiki_article("map/"+zone.uri_encode()))
+		_wiki_links.add_child(button)
+	_layout()
 	var dim := Interface800.dim_layer()   # (screen, 1, 1)
 	add_child(dim)
 	move_child(dim, 0)
@@ -402,6 +412,9 @@ func _p(p: Vector2) -> Vector2:
 
 
 func _layout() -> void:
+	if is_instance_valid(_wiki_links):
+		_wiki_links.position=_p(Vector2(420,363))
+		_wiki_links.scale=Vector2.ONE*maxf(0.6,_p(Vector2(1,1)).x)
 	for pair: Array in [[_desc, _desc_bar], [_zone_desc, _zone_bar]]:
 		var label: RichTextLabel = pair[0]
 		if not is_instance_valid(label):
@@ -414,6 +427,7 @@ func _layout() -> void:
 
 
 func _process(dt: float) -> void:
+	if is_instance_valid(_wiki_links): _wiki_links.get_child(1).disabled=quests.is_empty()
 	_t += dt
 	_list_bar.max_pos = maxf(0.0, quests.size() - ROWS)
 	if _list_bar.held >= 2:

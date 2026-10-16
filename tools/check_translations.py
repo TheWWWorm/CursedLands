@@ -57,6 +57,29 @@ for match in re.finditer(r'for field: Array in (\[\[.*?\]\]):', wiki_source):
 for key in ('At least 20% of each incoming damage type passes through armor.',
             'Armor can absorb damage completely.'):
     wiki_keys.add(key)
+for filename,table in [('game/wiki_knowledge.gd','LABELS'),('ui/wiki_equipment.gd','LABELS')]:
+    source=(ROOT / filename).read_text().split('const '+table+' := {',1)[1].split('}',1)[0]
+    wiki_keys.update(json.loads(m[1]) for m in re.finditer(r':\s*('+STRING+r')',source))
+for filename in ['ui/wiki_planner.gd','ui/wiki_panel.gd','ui/wiki_camp_constructor.gd']:
+    source=(ROOT / filename).read_text()
+    for match in re.finditer(r'for (?:field|pair|family): Array in (\[\[.*?\]\]):',source):
+        wiki_keys.update(row[1] for row in json.loads(match[1]))
+home_source=(ROOT / 'ui/wiki_home.gd').read_text()
+for match in re.finditer(r'for row: Array in (\[\[.*?\]\]):',home_source):
+    for row in json.loads(match[1]):wiki_keys.update(row[1:])
+for match in re.finditer(r'_route\(catalog,_routes,\w+,"[^"]+",('+STRING+r'),('+STRING+r')\)',home_source):
+    wiki_keys.update(json.loads(s) for s in match.groups())
+for match in re.finditer(r'_section\([^,]+,('+STRING+r')\)',(ROOT / 'ui/wiki_planner.gd').read_text()):
+    wiki_keys.add(json.loads(match[1]))
+library_source=(ROOT / 'game/wiki_library.gd').read_text()
+for pattern in (r'"error":\s*('+STRING+r')',r'return\s+('+STRING+r')'):
+    wiki_keys.update(json.loads(m[1]) for m in re.finditer(pattern,library_source) if json.loads(m[1]))
+library_view=(ROOT / 'ui/wiki_library_view.gd').read_text()
+for match in re.finditer(r'for key: String in (\[[^\n]+\]):',library_view):
+    wiki_keys.update(json.loads(match[1]))
+for match in re.finditer(r'_action\([^,]+,('+STRING+r'),',library_view):
+    wiki_keys.add(json.loads(match[1]))
+wiki_keys.update(['Item','Spell','Character build'])
 for key in sorted(wiki_keys):
     if key not in entries:
         errors.append(f'Wiki dynamic label missing RU/DE key: {key}')

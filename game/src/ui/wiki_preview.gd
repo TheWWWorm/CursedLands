@@ -3,6 +3,8 @@ extends Control
 ## Exactly one live model, using the inventory's real texture composition and
 ## creature appearance paths. Never constructs a GameUnit or changes the world.
 
+signal article_requested(key: String)
+var _pins: Array = []
 var item: ItemView
 var creature: Paperdoll
 var map_view: TextureRect
@@ -14,6 +16,29 @@ var _descriptor := {}
 var _creature_fitted := false
 var _item_fit_size := 0.0
 var _item_fit_key := []
+var _pin_popup: PopupPanel
+var _popup_points: Array = []
+
+class MapPin extends Button:
+	var count := 1
+	var tint := Color("3d6558")
+	var exit := false
+	var angle := 0.0
+	func _draw() -> void:
+		var centre := size*.5
+		var radius := 14.0 if count>1 else 6.0
+		if exit:
+			var points := PackedVector2Array()
+			for v: Vector2 in [Vector2(0,-14),Vector2(13,9),Vector2(0,4),Vector2(-13,9),Vector2(0,-14)]:points.append(centre+v.rotated(angle))
+			draw_colored_polygon(points,Color("75b548"));draw_polyline(points,Color("284421"),2,true)
+		else:
+			draw_circle(centre,radius+2,Color("f4ead2"))
+			draw_circle(centre,radius,tint)
+		if has_focus():draw_arc(centre,radius+5,0,TAU,32,Color("d5ae57"),2,true)
+		if count>1:
+			var font := get_theme_font("font")
+			var label := str(count)
+			draw_string(font,centre+Vector2(-font.get_string_size(label,HORIZONTAL_ALIGNMENT_LEFT,-1,12).x*.5,4),label,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
 
 
 func _ready() -> void:
@@ -82,6 +107,8 @@ func show_model(descriptor: Dictionary) -> bool:
 
 func clear() -> void:
 	_drag = false
+	_pins.clear()
+	_pin_popup=null
 	for child in get_children():
 		remove_child(child)
 		child.queue_free()
@@ -106,7 +133,7 @@ func turn_by(radians: float) -> void:
 
 
 func zoom_by(factor: float) -> void:
-	_zoom = clampf(_zoom * factor, 0.55, 1.8)
+	_zoom = clampf(_zoom * factor, 0.2 if map_view else 0.55, 1.0 if map_view else 1.8)
 	_resize_preview()
 
 
@@ -120,7 +147,10 @@ func reset_view() -> void:
 func _resize_preview() -> void:
 	if is_instance_valid(map_view):
 		map_view.size = size / _zoom
+		var bounds := (map_view.size-size)*.5
+		_map_pan=_map_pan.clamp(-bounds,bounds)
 		map_view.position = (size - map_view.size) * .5 + _map_pan
+		_place_pins()
 	if is_instance_valid(item) and is_instance_valid(item._fit_camera):
 		item._fit_slot()
 		_item_fit_size = 0.0
@@ -212,3 +242,79 @@ func _gui_input(event: InputEvent) -> void:
 	elif event is InputEventMagnifyGesture:
 		zoom_by(1.0 / maxf(event.factor, 0.01))
 		accept_event()
+
+
+func set_pins(pins: Array) -> void:
+	_pins=pins
+	_place_pins()
+
+func _place_pins() -> void:
+	if not is_instance_valid(map_view) or map_view.texture==null: return
+	var image_size := map_view.texture.get_size()
+	var factor := minf(map_view.size.x/image_size.x,map_view.size.y/image_size.y)
+	var drawn := image_size*factor
+	var origin := (map_view.size-drawn)*.5
+	for child in map_view.get_children():map_view.remove_child(child);child.queue_free()
+	# Group positions in screen space, so zooming progressively reveals detail.
+	# Exit and quest markers retain their identity; creature groups are quieter.
+	var groups := {}
+	for pin: Dictionary in _pins:
+		var point := origin+Vector2(pin.x,pin.y)*drawn
+		if not Rect2(-map_view.position-Vector2(16,16),size+Vector2(32,32)).has_point(point):continue
+		var cell := 82.0 if pin.kind=="inhabitant" else 42.0
+		var grid := Vector2i(floori(point.x/cell),floori(point.y/cell))
+		var id := String(pin.kind)+str(grid)
+		var group: Dictionary=groups.get_or_add(id,{"point":Vector2.ZERO,"pins":[]})
+		group.point+=point;group.pins.append(pin)
+	for group: Dictionary in groups.values():
+		var button := MapPin.new();button.count=group.pins.size();button.size=Vector2(36,36);button.custom_minimum_size=button.size;button.set_meta("map_pin",true)
+		button.exit=group.pins[0].kind=="exit"
+		var location := Vector2(group.pins[0].x,group.pins[0].y)-Vector2(.5,.5)
+		button.angle=(PI if location.y<0 else 0.0) if absf(location.y)>=absf(location.x) else (-PI*.5 if location.x>0 else PI*.5)
+		button.tint=Color("90602d") if group.pins[0].kind=="quest" else Color("315a83") if group.pins[0].kind=="exit" else Color("3d6558")
+		for state: String in ["normal","hover","pressed","focus"]:button.add_theme_stylebox_override(state,StyleBoxEmpty.new())
+		var names := PackedStringArray()
+		for pin: Dictionary in group.pins:
+			if not names.has(pin.title):names.append(pin.title)
+		button.tooltip_text="\n".join(names)
+		button.pressed.connect(func():_select_pins(group.pins))
+		button.focus_entered.connect(button.queue_redraw);button.focus_exited.connect(button.queue_redraw)
+		map_view.add_child(button);button.position=group.point/group.pins.size()-button.size*.5
+
+	_position_pin_popup()
+
+func _position_pin_popup() -> void:
+	if not is_instance_valid(_pin_popup) or not _pin_popup.visible or _popup_points.is_empty():return
+	var image_size := map_view.texture.get_size()
+	var drawn := image_size*minf(map_view.size.x/image_size.x,map_view.size.y/image_size.y)
+	var point := Vector2.ZERO
+	for pin: Dictionary in _popup_points:point+=Vector2(pin.x,pin.y)
+	point/=float(_popup_points.size())
+	var at := get_global_rect().position+map_view.position+(map_view.size-drawn)*.5+point*drawn
+	var area := get_global_rect()
+	var origin := at+Vector2(24,-_pin_popup.size.y*.5)
+	if origin.x+_pin_popup.size.x>area.end.x-8:origin.x=at.x-24-_pin_popup.size.x
+	origin=origin.clamp(area.position+Vector2(8,8),area.end-Vector2(_pin_popup.size)-Vector2(8,8))
+	_pin_popup.position=Vector2i(origin)
+
+func _select_pins(points: Array) -> void:
+	if is_instance_valid(_pin_popup):_pin_popup.queue_free()
+	_popup_points=points
+	_pin_popup=PopupPanel.new();_pin_popup.theme=theme;add_child(_pin_popup)
+	var style := StyleBoxFlat.new();style.bg_color=Color("f6f1e6");style.set_corner_radius_all(10);style.set_content_margin_all(14);style.shadow_color=Color(0,0,0,.25);style.shadow_size=12;style.shadow_offset=Vector2(0,5);_pin_popup.add_theme_stylebox_override("panel",style)
+	var body := VBoxContainer.new();body.add_theme_constant_override("separation",10);_pin_popup.add_child(body)
+	var close := Button.new();close.text=RemakeText.t("Close");close.pressed.connect(_pin_popup.hide);body.add_child(close)
+	var scroll := ScrollContainer.new();scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;body.add_child(scroll)
+	var list := VBoxContainer.new();list.size_flags_horizontal=Control.SIZE_EXPAND_FILL;list.add_theme_constant_override("separation",8);scroll.add_child(list)
+	var grouped := {}
+	for point: Dictionary in points:
+		var row: Dictionary=grouped.get_or_add(point.key,{"title":point.title,"count":0});row.count+=1
+	for key: String in grouped:
+		var row: Dictionary=grouped[key]
+		var button := Button.new();button.text=row.title+(" ×"+str(row.count) if row.count>1 else "");button.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;button.custom_minimum_size.y=48;button.add_theme_color_override("font_color",Color("2d392b"))
+		button.pressed.connect(func():_pin_popup.hide();article_requested.emit(key));list.add_child(button)
+	var width := minf(320,size.x-44)
+	scroll.custom_minimum_size=Vector2(width,minf(260,grouped.size()*56))
+	_pin_popup.popup(Rect2i(Vector2i.ZERO,Vector2i(width+28,mini(340,grouped.size()*56+78))))
+	_position_pin_popup()
+	close.grab_focus()

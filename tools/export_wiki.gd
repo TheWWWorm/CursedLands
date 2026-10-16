@@ -71,7 +71,7 @@ func _ready() -> void:
 	catalog.ordered = catalog.ordered.filter(func(key: String): return not unlisted.has(key))
 	var directory := output.path_join(RemakeText.lang)
 	DirAccess.make_dir_recursive_absolute(directory.path_join("pages"))
-	var index := {"language": RemakeText.lang, "version": "1.7.0", "campaign": GameData.campaign_id, "source": "Lost in Astral" if GameData.campaign_id == CampaignProfile.ASTRAL else "GOG", "entries": [], "categories": {}}
+	var index := {"schema":2,"language": RemakeText.lang, "version": "1.8.0", "campaign": GameData.campaign_id, "source": "Lost in Astral" if GameData.campaign_id == CampaignProfile.ASTRAL else "GOG", "entries": [], "categories": {}}
 	var images := {}
 	var page_images := {}
 	var variants := 0
@@ -80,7 +80,7 @@ func _ready() -> void:
 	for key: String in all_keys:
 		var entry: Dictionary = catalog.entries[key]
 		var file := key.sha256_text().substr(0, 20) + ".json"
-		var index_entry := {"key": key, "title": entry.title, "category": entry.category, "kind": entry.kind, "file": file, "search": "", "listed": not unlisted.has(key)}
+		var index_entry := {"key": key, "title": entry.title, "category": entry.category, "kind": entry.kind, "file": file, "search": "", "listed": not unlisted.has(key), "subtitle":catalog.knowledge.subtitles.get(key,"")}
 		if entry.kind == "item":
 			index_entry.fixed = fixed.has(entry.value)
 			index_entry.subcategory = item_subcategory(entry.value)
@@ -114,13 +114,21 @@ func _ready() -> void:
 				if GameData.campaign_id == CampaignProfile.ASTRAL: identity = GameData.campaign_id + ":" + identity
 				image = identity.sha256_text().substr(0, 24)
 				images[image] = preview
-			var output_page := {"id":choice,"title":title,"html":html,"image":image,"representative_image":preview.get("representative",false)}
-			if image and not page_images.has(key): page_images[key] = image
+			var output_page := {"id":choice,"title":title,"html":html,"image":image,"representative_image":preview.get("representative",false),"pins":page.pins,"guide":page.guide}
+			if image and not page_images.has(key):
+				page_images[key] = image
+				index_entry.image = image
 			if catalog.craftable(key) and choice and not choice.begins_with("bp:"): output_page.builder = catalog.item_builder_data(choice)
+			if entry.kind=="item" and choice and not choice.begins_with("bp:"):
+				output_page.plan={"weight":Items.weight(choice),"price":Items.price(choice)}
+				var info := Items.info(choice)
+				if not info.mat.is_empty():
+					var material := Items.material_unit(info.material)
+					output_page.plan.material={"key":WikiCatalog.item_key(material),"title":WikiCatalog.item_title(material)}
 			pages.append(output_page)
 			if choice: index_entry.search += " " + title
 			variants += 1
-		write_json(directory.path_join("pages").path_join(file), {"key": key, "versions": pages})
+		write_json(directory.path_join("pages").path_join(file), {"key": key,"relations":catalog.knowledge.groups(key), "versions": pages})
 		if index.entries.size() % 100 == 0: await get_tree().process_frame
 	write_json(directory.path_join("index.json"), index)
 	var constructors := catalog.constructor_data()

@@ -146,13 +146,13 @@ func ui_checks() -> void:
 			if choices.size() > 1:
 				var history_size := panel._history.size()
 				var version := choices[1]
-				for button: Node in panel._versions.get_children():
-					if button.get_meta("version") == version: button.pressed.emit()
+				for i in panel._versions.item_count:
+					if panel._versions.get_item_metadata(i)==version:panel._versions.select(i);panel._versions.item_selected.emit(i)
 				await frames()
-				check(panel.current == family and panel._history.size() == history_size, "version button stays on the same page")
-				check(panel._preview.item.item == version, "version button changes the live model")
+				check(panel.current == family and panel._history.size() == history_size, "version choice stays on the same page")
+				check(panel._preview.item.item == version, "version choice changes the live model")
 				var changed_damage := Items.damage(version)
-				check(("%s–%s" % [WikiCatalog.num(changed_damage.x), WikiCatalog.num(changed_damage.y)]) in panel.html, "version button recalculates weapon statistics")
+				check(("%s–%s" % [WikiCatalog.num(changed_damage.x), WikiCatalog.num(changed_damage.y)]) in panel.html, "version choice recalculates weapon statistics")
 			await capture("item")
 	for category: String in ["Materials", "Items"]:
 		for key: String in catalog.search("", category):
@@ -178,6 +178,9 @@ func ui_checks() -> void:
 	if creature_key:
 		panel.navigate(creature_key)
 		await frames()
+		if panel._preview_toggle.is_visible_in_tree():
+			panel._preview_toggle.pressed.emit()
+			await frames()
 		check(panel._preview.creature != null and panel._preview.creature._model != null, "real animated creature preview")
 		check(panel._preview.item == null, "old item preview released")
 		var q := panel._preview.creature._pivot.quaternion
@@ -242,6 +245,9 @@ func ui_checks() -> void:
 		if samples.has("weapons"):
 			panel.navigate(samples.weapons)
 			await frames()
+			if panel._preview_toggle.is_visible_in_tree():
+				panel._preview_toggle.pressed.emit()
+				await frames()
 			check(panel._preview.get_global_rect().end.x <= size.x + 1 and panel._preview.get_global_rect().end.y <= size.y + 1, "model fits viewport: " + str(size))
 			await capture("model-%dx%d" % [size.x, size.y])
 		panel.navigate("mechanics/armor")

@@ -25,6 +25,7 @@ const MECHANICS := {
 	"armor": "Armor and damage types",
 	"crafting": "Materials and crafting",
 	"attributes": "Attributes and skills",
+	"planning": "Build planner",
 }
 
 var entries := {}
@@ -41,6 +42,8 @@ var _placeholder_names := {}
 var _campaign: CampaignMap
 var _quests := {}
 var _quest_zones := {}
+var knowledge: WikiKnowledge
+var _search_text := {}
 
 
 func rebuild() -> void:
@@ -120,6 +123,14 @@ func rebuild() -> void:
 	ordered.assign(entries.keys())
 	ordered = ordered.filter(func(key: String): return not _unlisted.has(key) and not (entries[key].kind == "spell" and "{" in entries[key].value))
 	ordered.sort_custom(func(a: String, b: String): return String(entries[a].title).naturalnocasecmp_to(entries[b].title) < 0)
+	knowledge = WikiKnowledge.new()
+	knowledge.build(self)
+	_search_text.clear()
+	for key: String in ordered:
+		var entry: Dictionary = entries[key]
+		var words: String = String(entry.title) + " " + knowledge.subtitles.get(key, "")
+		for id: String in _families.get(entry.value, []): words += " " + display_item_title(id)
+		_search_text[key] = words
 
 
 func _index_world() -> void:
@@ -235,13 +246,13 @@ static func authored_name(id: String) -> String:
 	var prefix: String = {"weapons":"weapon", "armors":"armor", "quick_items":"qitem", "quest_items":"questitem", "loot_items":"litem"}.get(info.table, "")
 	for key: String in ["%s %s %s" % [prefix, String(info.base).replace(" ", "_"), String(info.material).replace(" ", "_")], "%s %s" % [prefix, String(info.base).replace(" ", "_")]]:
 		var title := GameData.text(key).get_slice("\n", 0).strip_edges()
-		if title and not "_" in title: return title
+		if title and not "_" in title: return _quest_name(id,title)
 	return ""
 
 
 static func item_subcategory(id: String) -> String:
 	var info := Items.info(id)
-	if info.table == "armors": return "armor_" + Items.slot(id)
+	if info.table == "armors": return "armor_" + Items.slot(id).replace("leggings","leggins")
 	if info.table == "weapons":
 		var types := ["sword", "axe", "dagger", "spear", "hammer", "bow", "crossbow"]
 		var type := int(info.row.get("type_id", -1))
@@ -279,23 +290,17 @@ func _rune_code(spec: String) -> String:
 
 
 func search(query: String, category := "All pages", subcategory := "") -> Array[String]:
-	var words := query.strip_edges().to_lower().split(" ", false)
-	var out: Array[String] = []
+	var ranked := []
 	for key: String in ordered:
 		var entry: Dictionary = entries[key]
 		if category != "All pages" and entry.category != category: continue
-		var subtype := item_subcategory(entry.value) if entry.kind == "item" else ""
-		if subcategory and (entry.kind != "item" or subtype != subcategory): continue
-		var haystack := String(entry.title) + " " + RemakeText.t(entry.category)
-		if subtype: haystack += " " + RemakeText.t(ITEM_TYPES.get(subtype, "Other items"))
-		for id: String in _families.get(entry.value, []): haystack += " " + display_item_title(id)
-		haystack = haystack.to_lower()
-		var matches := true
-		for word: String in words:
-			if not word in haystack:
-				matches = false
-				break
-		if matches: out.append(key)
+		if subcategory and (entry.kind != "item" or item_subcategory(entry.value) != subcategory): continue
+		var rank := WikiSearch.score(query, entry.title, _search_text.get(key, entry.title))
+		if rank >= 0: ranked.append({"key":key,"score":rank})
+	if ranked.any(func(row):return row.score>=100):ranked=ranked.filter(func(row):return row.score>=100)
+	ranked.sort_custom(func(a,b): return a.score>b.score if a.score!=b.score else String(entries[a.key].title).naturalnocasecmp_to(entries[b.key].title)<0)
+	var out: Array[String] = []
+	for row: Dictionary in ranked: out.append(row.key)
 	return out
 
 
@@ -358,7 +363,7 @@ static func item_title(id: String) -> String:
 			if not i.mat.is_empty():
 				var material := item_title(Items.material_unit(i.material))
 				if not material.to_lower() in name.to_lower(): name += " · " + material
-			return name
+			return _quest_name(id,name)
 	var special := Items._special_text(i).get_slice("\n", 0).strip_edges()
 	if special:
 		if not i.mat.is_empty():
@@ -372,6 +377,15 @@ static func item_title(id: String) -> String:
 	if title.is_empty(): title = RemakeText.t("Item")
 	if not i.material.is_empty(): title += " · " + item_title(Items.material_unit(i.material))
 	return title
+
+
+static func _quest_name(id: String, original: String) -> String:
+	# These two EN/DE archive records contain a translator's placeholder.
+	# Their original Russian names are Кукла and Рог; preserve modded names.
+	if original in ["[Must be, but need no translation]","[Must be, but needs no translation]"]:
+		if id=="voodoowand":return RemakeText.t("Doll")
+		if id=="dragonwand":return RemakeText.t("Horn")
+	return original
 
 
 static func spell_title(spell: String) -> String:
@@ -440,13 +454,16 @@ func page(key: String, variant := "") -> Dictionary:
 			if texture: preview = {"kind":"map","value":texture.to_lower(),"dimensions":[dimensions.x,dimensions.y]}
 		"quest": body = _quest_page(entry.value)
 		"mechanics": body = _mechanics(entry.value)
+	body += knowledge.html(key) if knowledge != null else ""
 	var model := ""
 	if not preview.is_empty():
 		model = '<figure><object type="application/x-cursedlands-model" data="wiki://model/%s/%s"/><figcaption>%s</figcaption></figure>' % [preview.kind, String(preview.value).uri_encode(), esc(RemakeText.t("3D preview"))]
 	var title := display_item_title(variant) if entry.kind == "item" else String(entry.title)
 	var html := "<article><h1>%s</h1>%s%s</article>" % [esc(title), model, body]
 	for internal: String in _placeholder_names: html = html.replace(esc(internal), esc(_placeholder_names[internal]))
-	return {"html": html, "preview": preview_descriptor(preview), "variant": variant}
+	return {"html": html, "preview": preview_descriptor(preview), "variant": variant,
+		"subtitle":knowledge.subtitles.get(key,""),"pins":knowledge.pins.get(key,[]),
+		"guide":quest_guide(entry.value) if entry.kind=="quest" else ""}
 
 
 func craftable(key: String) -> bool:
@@ -472,7 +489,7 @@ func item_builder_data(id: String) -> Dictionary:
 	var plain := Items.plain(id)
 	return {"kind":Items.kind(plain),"slots":Items.slots(plain),"energy":Items.energy(plain),
 		"raw_price":Items._price(plain),"price":Items.price(plain),"weight":Items.weight(plain),
-		"components":Items.components("bp:" + String(Items.info(plain).base)),"construction_coefficient":float(Items.coef[Items.Deal.CONSTR])}
+		"components":Items.components("bp:" + String(Items.info(plain).base)),"construction_coefficient":float(Items.COEF[Items.Deal.CONSTR])}
 
 
 func constructor_data() -> Dictionary:
@@ -483,6 +500,7 @@ func constructor_data() -> Dictionary:
 		p.erase("proto")
 		p.erase("name")
 		p.title = spell_title(code)
+		p.school = Skills.SCHOOL.get(p.get("subtype",""), p.get("subtype",""))
 		p.allowed = Array(Spells.parse(code).proto.get("mods",[]))
 		spells[code] = p
 	for key: String in search("", "Runes"):
@@ -490,7 +508,11 @@ func constructor_data() -> Dictionary:
 		var row := Spells.mod_row(code)
 		runes[code] = {"code":code,"title":rune_title(code),"type":row.get("type",9),"value":row.get("value",0),
 			"mana":row.get("mana",0),"complex":row.get("complex",0),"price":row.get("price",0)}
-	return {"max_runes":Spells.MAX_MODS,"spells":spells,"runes":runes}
+	var planner := {"hp":[],"mp":[],"skills":{},"skill_cost":[GameData.ai_value("RPG","Skill Val 1",50),GameData.ai_value("RPG","Skill Val 2",5)]}
+	for skill: String in Skills.LIST: planner.skills[skill]=Skills.title(skill)
+	for i in 5:
+		for field: String in ["hp","mp"]: planner[field].append(GameData.ai_value("RPG","%s Val %d" % [field.to_upper(),i+1],[25.0,30.0,50.0,1.1,1.61][i]))
+	return {"max_runes":Spells.MAX_MODS,"spells":spells,"runes":runes,"planner":planner}
 
 
 func _map_page(id: String) -> String:
@@ -571,6 +593,14 @@ static func _has_layer(mask: String, layer: String) -> bool:
 	return GameData.redress.has(mask + layer + ".mmp") or GameData.textures.has(layer + ".mmp")
 
 
+func quest_guide(id: String) -> String:
+	var out := ""
+	for objective: Dictionary in _quests[id].doc.subs.values():
+		if objective.text:
+			out += heading(objective.title) + paragraph(objective.text)
+	return out
+
+
 func _home() -> String:
 	var out := paragraph(RemakeText.t("Explore the items, spells and creatures in your installed game. Values and variants come from the loaded game data, including active data mods."))
 	var rows := []
@@ -592,6 +622,12 @@ func _item(id: String) -> String:
 	if is_bp:
 		rows.append([esc(RemakeText.t("Components")), num(Items.components(id))])
 	else:
+		if info.table == "weapons":
+			var damage := Items.damage(id)
+			rows.append([esc(RemakeText.t("Damage")), "%s–%s" % [num(damage.x), num(damage.y)]])
+			rows.append([esc(RemakeText.t("Attack rating")), num(info.row.get("attack", 0))])
+			rows.append([esc(RemakeText.t("Defense rating")), num(info.row.get("defence", 0))])
+			rows.append([esc(RemakeText.t("Range")), num(info.row.get("range", 0))])
 		rows.append([esc(RemakeText.t("Weight")), num(Items.weight(id))])
 		rows.append([esc(RemakeText.t("Base value")), num(Items.price(id))])
 		rows.append([esc(RemakeText.t("Durability")), num(Items.max_durability(id))])
@@ -602,12 +638,6 @@ func _item(id: String) -> String:
 		if not info.mat.is_empty():
 			var material := Items.material_unit(info.material)
 			rows.append([esc(RemakeText.t("Material")), link(item_key(material), item_title(material))])
-		if info.table == "weapons":
-			var damage := Items.damage(id)
-			rows.append([esc(RemakeText.t("Damage")), "%s–%s" % [num(damage.x), num(damage.y)]])
-			rows.append([esc(RemakeText.t("Attack rating")), num(info.row.get("attack", 0))])
-			rows.append([esc(RemakeText.t("Defense rating")), num(info.row.get("defence", 0))])
-			rows.append([esc(RemakeText.t("Range")), num(info.row.get("range", 0))])
 		if info.table == "quick_items":
 			rows.append([esc(RemakeText.t("Charge capacity")), num(Items.energy(id))])
 			var spell := Items.potion_spell(id)
@@ -622,7 +652,7 @@ func _item(id: String) -> String:
 	if not _fixed.has(info.base) and Items.has_blueprint(info.table, info.row) and not is_bp:
 		out += paragraph(item_link("bp:" + info.base, RemakeText.t("Blueprint and materials")), true)
 		out += table_html([RemakeText.t("Property"),RemakeText.t("Value")], [[esc(RemakeText.t("Components")),num(Items.components("bp:"+info.base))],
-			[esc(RemakeText.t("Construction cost")),num(Items.construct_price("bp:"+info.base,info.material,Items.spell_of(id)))]])
+			[esc(RemakeText.t("Construction cost")),num(int(Items.price(id)*Items.COEF[Items.Deal.CONSTR]))]])
 	if info.table == "weapons":
 		out += paragraph(link("mechanics/melee", RemakeText.t("Melee and ranged damage")), true)
 	out += paragraph(link("mechanics/armor" if info.table == "armors" else "mechanics/crafting", RemakeText.t("How these values work")), true)
@@ -684,24 +714,59 @@ func _rune(code: String) -> String:
 	return out + table_html([RemakeText.t("Spells")], spells)
 
 
+## Ordinary, non-party prototype values. This deliberately ignores the running
+## session's difficulty so both editions of the comparison remain available.
+func creature_difficulty(value: String) -> Dictionary:
+	var p := GameData.db.find("monster_prototypes", value)
+	var race := GameData.db.find("race_models", String(p.get("base_race", "")))
+	var bow := int(p.get("weapon_type_id", -1)) in [5, 6]
+	var hard := {"attack":int(p.get("to_hit", 0)), "defense":0 if bow else int(p.get("parry", 0)), "armor":float(p.get("absorption", 0))}
+	var easy := {"attack":int(hard.attack * GameData.ai_value("DifficultyLevels", "Attack", 1.0, 1)),
+		"defense":int(hard.defense * GameData.ai_value("DifficultyLevels", "Defence", 1.0, 1)),
+		"armor":hard.armor * GameData.ai_value("DifficultyLevels", "Absorption", 1.0, 1)}
+	var armor := []
+	var factors: Array = Array(race.get("defence", []))
+	for i in 7:
+		var factor := float(factors[i]) if i < factors.size() else 1.0
+		armor.append([easy.armor * factor, hard.armor * factor])
+	return {"easy":easy, "hard":hard, "armor":armor}
+
+
+static func _difficulty_row(label: String, easy, hard) -> Array:
+	var a := num(easy) if not easy is String else String(easy)
+	var b := num(hard) if not hard is String else String(hard)
+	if a != b: a = "<strong>%s</strong>" % a; b = "<strong>%s</strong>" % b
+	return [esc(label), a if a == b else a + " / " + b]
+
+
 func _creature(value: String) -> String:
 	var p := GameData.db.find("monster_prototypes", value)
 	var race := GameData.db.find("race_models", String(p.get("base_race", "")))
+	var difficulty := creature_difficulty(value)
+	var comparison := []
+	for field: Array in [["hp", "Health"], ["mana", "Stamina"]]:
+		comparison.append(_difficulty_row(RemakeText.t(field[1]), p.get(field[0], 0), p.get(field[0], 0)))
+	var damage := "%s–%s" % [num(p.get("damage_min", 0)), num(float(p.get("damage_min", 0)) + float(p.get("damage_max", 0)))]
+	comparison.append(_difficulty_row(RemakeText.t("Damage"), damage, damage))
+	for field: Array in [["attack", "Attack rating"], ["defense", "Defense rating"], ["armor", "Natural armor"]]:
+		comparison.append(_difficulty_row(RemakeText.t(field[1]), difficulty.easy[field[0]], difficulty.hard[field[0]]))
 	var rows := []
-	for field: Array in [["hp", "Health"], ["mana", "Stamina"], ["to_hit", "Attack rating"], ["parry", "Defense rating"], ["absorption", "Natural armor"], ["attack_range", "Range"], ["tuning_actions", "Action speed"], ["tuning_move", "Movement multiplier"], ["experience", "Experience"], ["base_level", "Level"]]:
+	for field: Array in [["attack_range", "Range"], ["tuning_actions", "Action speed"], ["tuning_move", "Movement multiplier"], ["experience", "Experience"], ["base_level", "Level"]]:
 		rows.append([esc(RemakeText.t(field[1])), num(p.get(field[0], 0))])
-	rows.append([esc(RemakeText.t("Damage")), "%s–%s" % [num(p.get("damage_min", 0)), num(float(p.get("damage_min", 0)) + float(p.get("damage_max", 0)))]])
 	var out := paragraph(_description("unit " + value.replace(" ", "_")))
-	out += paragraph(RemakeText.t("These are base prototype values, before map overrides, difficulty and temporary effects."))
-	out += table_html([RemakeText.t("Property"), RemakeText.t("Value")], rows)
+	out += heading(RemakeText.t("Difficulty comparison"))
+	out += paragraph(RemakeText.t("Pairs show Easy / Hard. A single value is the same on both difficulties."))
+	var headers := [RemakeText.t("Property"), RemakeText.t("Value · Easy / Hard")]
+	out += table_html(headers, comparison + rows)
+	out += paragraph(RemakeText.t("Hard is the standard difficulty, called Normal in some editions. Co-op uses Hard before multiplayer scaling."))
 	var attack: Array = Array(race.get("attack", []))
 	if attack.size() >= 7:
 		out += heading(RemakeText.t("Damage types")) + _damage_table(PackedFloat32Array(attack.slice(0, 7)), true)
-	var factors: Array = Array(race.get("defence", []))
-	var armor := PackedFloat32Array()
+	var armor := []
 	for i in 7:
-		armor.append((float(factors[i]) if i < factors.size() else 1.0) * float(p.get("absorption", 0)))
-	out += heading(RemakeText.t("Natural armor by damage type")) + _damage_table(armor)
+		if not is_zero_approx(difficulty.armor[i][1]): armor.append(_difficulty_row(RemakeText.t(DAMAGE_TYPES[i]), difficulty.armor[i][0], difficulty.armor[i][1]))
+	if not armor.is_empty(): out += heading(RemakeText.t("Natural armor by damage type")) + table_html([RemakeText.t("Damage type"), RemakeText.t("Value · Easy / Hard")], armor)
+	out += paragraph(RemakeText.t("Named characters keep their attack and defense on Easy. Party members also keep their natural armor. These are prototype values; map scripts, equipment and temporary effects can change an individual creature."))
 	var equipment := []
 	for spec in p.get("wears", []): _equipment_link(equipment, String(spec))
 	for field in ["weapon", "second_weapon"]: _equipment_link(equipment, String(p.get(field, "")))
@@ -769,7 +834,11 @@ static func rune_fits(spell: String, code: String) -> bool:
 func _mechanics(topic: String) -> String:
 	var out := paragraph(RemakeText.t("The formulas below describe this engine's current rules. Item and spell examples are calculated from your loaded game data."))
 	match topic:
+		"planning":
+			out += paragraph(RemakeText.t("Add equipment and spells from their articles, then compare the load, crafting materials and spell requirements. Share a link to keep the entire plan."))
 		"melee":
+			out += heading(RemakeText.t("Why do my attacks miss?"))
+			out += paragraph(RemakeText.t("Compare your Attack with the target's Defense. Aiming at a head or limb adds a penalty; try the torso when accuracy matters. The weapon, its combat skill, Dexterity and perks contribute to the result."))
 			out += heading(RemakeText.t("Weapon damage"))
 			out += paragraph(RemakeText.t("Minimum damage = prototype minimum × material damage multiplier. Maximum damage = (prototype minimum + prototype damage range) × material damage multiplier. A strike rolls between those bounds, applies damage effects, and has a minimum raw damage of 1."))
 			out += paragraph(RemakeText.t("Each damage type receives its share of the strike. Natural armor and the equipment layers covering the struck body part then absorb that type separately."))
@@ -780,6 +849,10 @@ func _mechanics(topic: String) -> String:
 			out += table_html([RemakeText.t("Property"), RemakeText.t("Value")], [[esc(RemakeText.t("Base backstab multiplier")), num(GameData.ai_value("RPG", "BackstabAdd", 3.0))]])
 			out += paragraph(link("mechanics/armor", RemakeText.t("Armor and damage types")), true)
 		"armor":
+			out += heading(RemakeText.t("Why does this enemy resist my damage?"))
+			out += paragraph(RemakeText.t("Check the damage types on your weapon or spell against the enemy's protection. High protection against fire does not protect against slashing. Equipment only helps where it covers the body, and broken armour provides no protection."))
+			out += heading(RemakeText.t("A worked example"))
+			out += paragraph(RemakeText.t("For a single damage type, 30 incoming damage against 20 protection leaves 10. Against 40 protection, the original armour rule leaves zero; the 20% minimum rule leaves 6. The active rule is listed below."))
 			out += paragraph(RemakeText.t("For each damage type: remaining damage = max(minimum damage, incoming damage − natural armor − covering armor layers). Layers are applied from the outside inward. Different damage types do not absorb one another."))
 			var formula := int(rules.get("armor_formula", GameData.option("armor_formula")))
 			out += paragraph(RemakeText.t("Active armor rule: %s") % RemakeText.t("At least 20% of each incoming damage type passes through armor." if formula == 1 else "Armor can absorb damage completely."))
@@ -787,6 +860,9 @@ func _mechanics(topic: String) -> String:
 			out += table_html([RemakeText.t("Body part"), RemakeText.t("Covering equipment")], [[esc(RemakeText.t("Head")), esc(RemakeText.t("Helmet"))], [esc(RemakeText.t("Torso")), esc(RemakeText.t("Plate and shirt"))], [esc(RemakeText.t("Arms")), esc(RemakeText.t("Plate, shirt and gloves"))], [esc(RemakeText.t("Legs")), esc(RemakeText.t("Leggings, pants and boots"))]])
 			out += paragraph(RemakeText.t("Magic uses the armor for its actual damage type, which can differ from its knowledge school. Protection effects contribute the strongest matching protection. Lasting magic scales both damage and absorption per tick and distributes damage across body parts."))
 		"magic":
+			out += heading(RemakeText.t("Why can't I equip this spell?"))
+			out += paragraph(RemakeText.t("Your knowledge must meet the finished spell's complexity, and your maximum stamina must cover its cost. Adding runes can raise both requirements. Check the completed spell in the build planner before buying more runes."))
+			out += paragraph(link("mechanics/planning",RemakeText.t("Build planner")),true)
 			out += heading(RemakeText.t("Spell damage"))
 			out += paragraph(RemakeText.t("For a damaging spell, raw power starts at its calculated effect. If duration exceeds one tick, the tick factor is 4 / duration; both power and armor absorption are scaled by that factor. Matching natural armor and the strongest matching protection effect are subtracted first, then worn armor acts on each body part's share. The active armor rule sets the minimum damage."))
 			out += paragraph(RemakeText.t("Runes modify the prototype's effect, area, range, duration, targets or stamina cost. Changes of the same kind add relative to the prototype; they do not multiply one another. Each rune also adds its stamina cost, complexity and value."))
@@ -801,11 +877,18 @@ func _mechanics(topic: String) -> String:
 				samples.append([_spell_link(code), num(p.effect), num(p.mana), num(p.radius)])
 			out += table_html([RemakeText.t("Spell"), RemakeText.t("Power"), RemakeText.t("Stamina cost"), RemakeText.t("Radius")], samples)
 		"crafting":
+			out += heading(RemakeText.t("Which material should I choose?"))
+			out += paragraph(RemakeText.t("Choose the material on an item page to compare its finished statistics. For enchantments, check rune slots and charge capacity before cost: an affordable material may not support your spell. Add the finished item to a plan to collect the required materials."))
+			out += heading(RemakeText.t("Why is this enchantment unavailable?"))
+			out += paragraph(RemakeText.t("The spell must fit the item's slots and charge capacity. Weapons and armour also need an item-enchantment rune. The constructor reports incompatible combinations; fixed story items are not crafting recipes."))
 			out += paragraph(RemakeText.t("A recipe accepts materials of its authored material type. Each listed material variant is built with the same item calculations used by the inventory and shops."))
 			out += paragraph(RemakeText.t("Weight = prototype weight × material weight multiplier. Durability = prototype durability × material durability multiplier. Value = prototype value + component count × material value. Charge capacity and rune slots combine prototype and material values."))
-			out += paragraph(RemakeText.t("The blueprint view lists the component count. Material buttons show completed variants on the same item page. Material pages show multipliers and link to compatible items. Shop buy, sell and repair prices can differ from the base value."))
+			out += paragraph(RemakeText.t("The blueprint view lists the component count. The material selector shows completed variants on the same item page. Material pages show multipliers and link to compatible items. Shop buy, sell and repair prices can differ from the base value."))
 			out += paragraph(link("category/Materials", RemakeText.t("Browse materials")), true)
 		"attributes":
+			out += heading(RemakeText.t("Which skill unlocks a spell?"))
+			out += paragraph(RemakeText.t("Spell knowledge uses its magic-school skill, Intelligence minus 25, and the relevant perk bonus. Extra knowledge unlocks more complex spells; rune construction determines spell power. The planner compares your base knowledge and stamina with each planned spell."))
+			out += paragraph(link("mechanics/planning",RemakeText.t("Build planner")),true)
 			out += paragraph(RemakeText.t("Hero Attack combines the weapon rating, the corresponding combat skill and Dexterity − 25, then applies relevant perks. Melee Defense uses the melee skill and defensive weapon rating; bows and crossbows give zero weapon Defense."))
 			out += paragraph(RemakeText.t("Health and stamina pools use earned experience, attributes and the game's configured growth curves. Maximum equipment load starts at Strength × 12. Action speed starts at Dexterity × 0.2 + 10; perks and effects can change these values."))
 			out += heading(RemakeText.t("Calculated examples"))
@@ -825,6 +908,7 @@ static func _description(key: String) -> String:
 static func _damage_table(values: PackedFloat32Array, percent := false) -> String:
 	var rows := []
 	for i in mini(values.size(), DAMAGE_TYPES.size()):
+		if is_zero_approx(values[i]): continue
 		rows.append([esc(RemakeText.t(DAMAGE_TYPES[i])), num(values[i] * (100.0 if percent else 1.0)) + ("%" if percent else "")])
 	return table_html([RemakeText.t("Damage type"), RemakeText.t("Share") if percent else RemakeText.t("Value")], rows)
 
@@ -834,7 +918,7 @@ static func esc(value: String) -> String:
 
 
 static func num(value: Variant) -> String:
-	return String.num(float(value), 3)
+	return String.num(float(value), 3).trim_suffix(".0")
 
 
 static func heading(value: String) -> String:

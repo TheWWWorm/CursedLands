@@ -1,0 +1,55 @@
+// Portable plans are checked against live Godot calculations, not duplicated fixtures.
+// node tools/tests/wiki_rework.mjs <wiki-plan-oracle.json> <packaged-wiki-directory>
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {blank,validate,encode,decode,resolvePlan,assignSlot,autoSlot} from '../../web/wiki/plan.mjs';
+import {score} from '../../web/wiki/search.mjs';
+import {clusterPins,popupPosition,exitAngle} from '../../web/wiki/maps.mjs';
+const read=async p=>JSON.parse(await fs.readFile(p,'utf8'));
+const oracle=await read(process.argv[2]),root=process.argv[3];let checks=0;
+const check=(fn)=>{fn();checks++;};
+check(()=>assert.deepEqual(decode(oracle.encoded),oracle.plan));
+check(()=>assert.deepEqual(decode('https://example.test/wiki/#build='+encode(oracle.plan)),oracle.plan));
+const catalog=await read(path.join(root,'data/en/index.json'));
+const enchanted=await read(path.join(path.dirname(process.argv[2]),'wiki-enchanted-oracle.json'));
+const crafted=await resolvePlan(enchanted.plan,{catalog,data:oracle.constructors,getPage:e=>read(path.join(root,'data/en/pages',e.file))});
+check(()=>assert(crafted.rows[0].valid));check(()=>assert.equal(crafted.value,enchanted.totals.value));
+check(()=>assert(crafted.rows[0].title.includes(oracle.constructors.spells.arrow.title)));
+check(()=>assert.deepEqual(decode(encode(enchanted.plan)).entries[0],enchanted.plan.entries[0]));
+const result=await resolvePlan(oracle.plan,{catalog,data:oracle.constructors,getPage:e=>read(path.join(root,'data/en/pages',e.file))});
+for(const field of ['health','stamina','capacity','training','weight','value','construction'])check(()=>assert(Math.abs(result[field]-oracle.totals[field])<1e-8*Math.max(1,Math.abs(oracle.totals[field])),field));
+check(()=>assert.deepEqual(result.rows.map(r=>[r.valid,r.ready]),oracle.totals.rows.map(r=>[r.valid,r.ready])));
+for(const [key,mat] of Object.entries(oracle.totals.materials))check(()=>assert.equal(result.materials.get(key).count,mat.count));
+for(const bad of ['', 'a'.repeat(24001),'@@@',encode({...blank(),v:2}),btoa('{"v":2}').replaceAll('=','')])check(()=>assert.equal(decode(bad),null));
+for(const patch of [{v:2},{campaign:'other'},{strength:0},{experience:Infinity},{skills:'wrong'},{skills:{melee:101}},{entries:Array(33).fill(oracle.plan.entries[0])},{entries:[{key:'http://evil.test'}]},{entries:[{key:'spell/fire_arrow',runes:['it']}]},{entries:[{key:'item/club',count:-1}]}])check(()=>assert.equal(validate({...oracle.plan,...patch}),null));
+check(()=>assert.equal(encode({...oracle.plan,entries:Array.from({length:32},()=>({key:'item/'+ 'x'.repeat(500),variant:'y'.repeat(512),spell:'z'.repeat(512),runes:[],count:1}))}),''));
+check(()=>assert(score('swrod','Long sword')>=0));
+check(()=>assert(score('schwert','Schwert')>score('schwert','Bronzeschwert')));
+check(()=>assert(score('grun','Grün')>=0));check(()=>assert(score('черная','Чёрная')>=0));
+check(()=>assert(score('fire\t arrow','Fire arrow')===1000));
+check(()=>assert(score('zz','Long sword')<0));
+const map=catalog.entries.find(e=>e.key==='map/gz12k'),page=await read(path.join(root,'data/en/pages',map.file)),points=page.versions[0].pins;
+const overview=clusterPins(points,330,540),zoomed=clusterPins(points,1650,2700);
+check(()=>assert(overview.length<points.length/2,'crowded map aggregates points'));
+check(()=>assert(zoomed.length>overview.length,'zoom reveals locations'));
+check(()=>assert.equal(overview.reduce((n,g)=>n+g.points.length,0),points.length,'clustering retains every position'));
+check(()=>assert(points.some(p=>p.kind==='exit'),'edge routes produce exit locations'));
+const unavailable=await resolvePlan({...oracle.plan,entries:[{key:'item/missing',variant:'',spell:'',runes:[],count:1}]},{catalog,data:oracle.constructors,getPage:()=>assert.fail('no unknown page fetch')});
+check(()=>assert.equal(unavailable.rows[0].valid,false));
+const slots=blank();slots.entries=[{key:'item/sword',variant:'',spell:'',runes:[],count:1},{key:'item/sword',variant:'',spell:'',runes:[],count:1}];
+const slotCatalog={entries:[{key:'item/sword',kind:'item',subcategory:'weapon_sword'}]};
+autoSlot(slots,slots.entries[0],slotCatalog.entries[0]);autoSlot(slots,slots.entries[1],slotCatalog.entries[0]);
+check(()=>assert.deepEqual(slots.entries.map(r=>r.slot),['weapon1','weapon2']));
+check(()=>assert(assignSlot(slots,1,'weapon1',slotCatalog)));
+check(()=>assert.deepEqual(slots.entries.map(r=>r.slot),['','weapon1']));
+check(()=>assert(!assignSlot(slots,1,'helm',slotCatalog)));
+check(()=>assert.equal(decode(encode(slots)).entries[1].slot,'weapon1'));
+check(()=>assert.equal(validate({...slots,entries:slots.entries.map(r=>({...r,slot:'weapon1'}))}),null));
+check(()=>assert.equal(validate({...slots,entries:[{...slots.entries[0],slot:'unknown'}]}),null));
+for(const anchor of [{x:0,y:0},{x:330,y:320},{x:165,y:160}]){
+  const position=popupPosition(anchor,275,200,330,320);
+  check(()=>assert(position.left>=10&&position.left+275<=320&&position.top>=10&&position.top+200<=310));
+}
+check(()=>assert.deepEqual([[.5,0],[1,.5],[.5,1],[0,.5]].map(p=>exitAngle(...p)),[180,270,0,90]));
+console.log(JSON.stringify({checks,overviewMarkers:overview.length,originalPositions:points.length,zoomedMarkers:zoomed.length}));

@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.8.0 — encyclopedia, planning and local creations, 16 October 2026
+
+- Rework the website and in-game encyclopedia with clearer search results, category artwork and readable article layouts in English, Russian and German.
+- Connect items to their acquisition sources and uses, and open related encyclopedia articles from gameplay panels.
+- Add practical mechanics guides, quest guidance and interactive maps with nearby detail popups, optional creature markers and directional exits.
+- Compare Easy and Hard creature statistics alongside the game rules that produce them.
+- Add character planning and camp-style item and spell construction, including materials, enchantments, compatible runes and equipment slots. Preserve complete builds in shareable links.
+- Save named items, spells and characters locally, reopen them from Saved creations, and reuse saved recipes in compatible selectors.
+- Place searchable item and spell selectors beside the camp on wide screens. Keep both panels the same height and their selected-item actions visible while results scroll.
+
+See [release notes](docs/releases/1.8.0.md) for compatibility and platform limits.
+
 ## 1.7.0 — wiki constructors and gameplay fixes, 16 October 2026
 
 - Add maps, quests, campaign tabs and item subcategories to both encyclopedias. Bring reviewed expansion translations, item artwork and continuous browsing into the in-game wiki.

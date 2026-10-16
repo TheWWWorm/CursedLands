@@ -261,6 +261,8 @@ var s_runes: Array = []        # the pile's runes ("rune:<code>")
 var s_rune_from: Array = []    # "bag" / "shop" per rune
 var s_wait := false  # ✓ sent, the host's "constr_result" not in yet
 var _s_req := 0
+var _wiki_button: Button
+var _wiki_item := ""
 var selected_id := ""
 var selected_where := ""
 ## The last sounds of _press (file names), read by tools/camp_test.gd.
@@ -318,6 +320,9 @@ const TUTORIALS := {"weapons": "camp_weapons", "spells": "camp_skills", "spelltr
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	_wiki_button=Button.new();_wiki_button.text=RemakeText.t("Open wiki");_wiki_button.tooltip_text=RemakeText.t("Read about the selected item or spell.")
+	_wiki_button.pressed.connect(func(): if _wiki_item and hud: hud.open_wiki_item(_wiki_item))
+	add_child(_wiki_button)
 	add_to_group("pad_panel")   # remake: gamepad snap targets (pad_targets)
 	for n in ["campslots", "camp1", "camp2", "camp3", "camp4", "inventory01", "inventory02",
 			"trade1", "trade2", "trade3", "trade4", "repair1", "repair2", "repair3", "repair4",
@@ -653,6 +658,9 @@ func _slot_rect(k: String) -> Rect2:
 
 func _layout() -> void:
 	var s := _s()
+	_wiki_button.position=_r(Rect2(608,400,184,26)).position
+	_wiki_button.size=Vector2(184,26)*s
+	_wiki_button.add_theme_font_size_override("font_size",maxi(11,int(13*s)))
 	#  00627c50 clear depth over the whole pile panel, not
 	# separately per cell. Items may extend across cell boundaries.
 	var pile_rect := _r(Rect2(200, 100, 400, 400))
@@ -1365,6 +1373,9 @@ func refresh(u: GameUnit) -> void:
 
 
 func _process(_dt: float) -> void:
+	if visible and hud:
+		if not _wiki_button.get_global_rect().has_point(get_global_mouse_position()): _wiki_item=String(_info_ids()[1])
+		_wiki_button.disabled=_wiki_item.is_empty()
 	_process_transfer_hold(_dt)
 	if _turn_dir != 0:
 		if not is_visible_in_tree() or mode != "weapons" or tutorial_visible() \

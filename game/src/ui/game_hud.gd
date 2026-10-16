@@ -1339,3 +1339,19 @@ func _layout_safe_area() -> void:
 	# its artwork or its 3D previews in either direction.
 	_safe_root.position = safe.position
 	_safe_root.size = safe.size
+
+
+## Context links retain the same pause/input ownership as the menu wiki.
+func open_wiki_article(key: String, variant := "") -> void:
+	open_wiki()
+	_wiki.navigate(key,true,variant)
+
+func open_wiki_item(id: String) -> void:
+	id=id.trim_prefix("belt:")
+	if id.begins_with("spell:"):
+		var magic := id.trim_prefix("spell:")
+		open_wiki()
+		var key: String=_wiki._source.read(func(): return _wiki.catalog.add_variant(magic))
+		if key: _wiki.navigate(key)
+	elif id.begins_with("rune:"): open_wiki_article("rune/"+id.trim_prefix("rune:").uri_encode())
+	else: open_wiki_article(WikiCatalog.item_key(id),id)

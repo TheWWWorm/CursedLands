@@ -21,8 +21,8 @@ static func to_bbcode(html: String, scale := 1.0) -> String:
 				if not parser.is_empty(): skipped = 1
 				continue
 			match tag:
-				"h1": out += "[font_size=%d][b]" % roundi(28 * scale)
-				"h2": out += "[font_size=%d][b]" % roundi(21 * scale)
+				"h1": out += "[font=res://fonts/LiberationSerif-Regular.ttf][font_size=%d]" % roundi(34 * scale)
+				"h2": out += "[font=res://fonts/LiberationSerif-Regular.ttf][font_size=%d]" % roundi(27 * scale)
 				"strong", "b": out += "[b]"
 				"em", "i": out += "[i]"
 				"code": out += "[code]"
@@ -31,8 +31,8 @@ static func to_bbcode(html: String, scale := 1.0) -> String:
 				"table":
 					var columns := clampi(parser.get_named_attribute_value_safe("data-columns").to_int(), 1, 8)
 					out += "[table=%d]" % columns
-				"td": out += "[cell]"
-				"th": out += "[cell][b]"
+				"td": out += "[cell padding=8,6,8,6]"
+				"th": out += "[cell padding=8,6,8,6][b]"
 				"a":
 					var href := parser.get_named_attribute_value_safe("href")
 					var allowed := not key_from_url(href).is_empty()
@@ -43,7 +43,7 @@ static func to_bbcode(html: String, scale := 1.0) -> String:
 				skipped -= 1
 				continue
 			match parser.get_node_name().to_lower():
-				"h1", "h2": out += "[/b][/font_size]\n\n"
+				"h1", "h2": out += "[/font_size][/font]\n\n"
 				"strong", "b": out += "[/b]"
 				"em", "i": out += "[/i]"
 				"code": out += "[/code]"

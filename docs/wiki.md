@@ -2,10 +2,14 @@
 
 Open **Game wiki** from the main menu or the **Esc** menu. Choose a category,
 search the localized page names, and click an entry. Each item has one page;
-its **Material / version** buttons switch the statistics and model on that page.
-Craftable items include a **Blueprint** button alongside the material buttons.
+its **Material / version** selector switches the statistics and model on that page.
+Craftable items include a **Blueprint** choice in that selector.
 Campaign tabs select the base game or an installed Lost in Astral campaign.
-Search matches every word in one continuous result list, with item subcategories.
+Search ranks exact names before prefixes, substrings and category/location matches.
+If there are no direct matches, it tolerates short misspellings and transposed
+letters. Each result separates its title from its category and useful context.
+Item subcategories narrow the list by purpose, weapon type or armor slot.
+Map results distinguish camp and exploration locations, including shared names.
 Links connect maps, quests, materials, item variants, recipes,
 spells, runes, creature equipment and related mechanics. Back/Forward retain
 page history and scroll position; Alt+Left/Right also navigate history.
@@ -13,7 +17,9 @@ page history and scroll position; Alt+Left/Right also navigate history.
 Drag a model to turn it, use the wheel to zoom, or use its rotation, zoom and
 reset buttons. The buttons support touch and the game's controller pointer.
 With a controller, LB/RB navigate page history and LT/RT scroll the article.
-Close or Esc returns to the game. Single player preserves the menu's usual
+On narrow screens, **Browse and search** opens the list separately, while
+**Show illustration** opens the map, model and construction controls. Return to
+the article without losing its selection. Close or Esc returns to the game. Single player preserves the menu's usual
 pause behavior; in co-op the world continues running while local gameplay
 input is blocked.
 
@@ -25,14 +31,98 @@ compatible enchantments, removable enchantments and rune combinations within the
 item's slot and native constructor limits. These calculations do not edit the
 character, inventory, save or network state.
 
-Map pages show a north-up overview with pan, zoom and reset controls, plus links
-to their quests. Quest pages contain the authored description and objectives and
-link back to the relevant maps; they do not disclose the current save's progress.
+Map pages show a north-up overview with pan, zoom and reset controls. Exits and
+quest areas are shown initially; creatures are an optional layer. Nearby points
+of the same kind cluster at the displayed zoom. Select a marker to open its list
+of named locations or articles in an interactive popup beside the marker;
+zooming separates groups. Exits use green directional arrows like the game. No point is discarded
+from the underlying data. Quest pages show authored objectives, rewards and
+available original hints by default, with an optional collapse control. They do
+not disclose the current save's progress or invent missing walkthrough steps.
+
+Journal quest titles, the objective/map panel, inspected creatures and selected
+camp inventory items provide contextual article links. They use the existing
+menu/pause flow and retain the selected item material and spell where available.
+
+## Sources, uses and difficulty
+
+Articles link equipment to its wearers, carried items to creatures, materials to
+compatible crafts, quest items to their requirements or rewards, and creatures
+to authored map placements. Trader links indicate possible stock, not a promise
+of current availability. Carried equipment is not described as a guaranteed drop.
+
+Creature articles label changing values as **Easy / Hard** pairs in the same
+row. Shared health, stamina and damage appear once; natural armor keeps separate
+rows for each damage type. Attack and defense follow combat's integer
+truncation; bows and crossbows have zero defensive weapon rating. Multipliers
+come from the loaded `ai.reg` difficulty arrays, so data mods remain authoritative.
+The comparison describes ordinary non-party prototypes: named characters keep
+attack and defense on Easy, and party members keep natural armor. Hard denotes
+the standard setting, called Normal in some editions. Network play uses that
+setting before additional co-op scaling. These exceptions are explained in the
+article; the wiki does not pretend to simulate a particular live creature.
+
+## Build planning and sharing
+
+Use **Add to plan** on equipment and constructed-spell articles, then open
+**Build planner**. Choose attributes, earned experience, skill levels and item
+quantities. It calculates health, stamina, carrying capacity, total load,
+training cost, base value, crafting fees, material quantities and spell
+requirements. These are reference calculations; the planner does not simulate
+equipment bonuses, perks, temporary effects or a complete combat encounter.
+Slot choices enforce the item category; unequipped entries remain in the planned
+inventory. The native portrait changes with equipped items. The website portrait
+is a static character illustration and does not reflect the chosen equipment.
+Crafting uses the base constructor fee, independent of the currently open trader.
+
+The planner, item builder and spell builder use the original camp artwork and
+slot positions. The workspace scales with the viewport. Select a weapon, belt,
+armor or spell slot to choose equipment. Wide windows put the selector beside
+the camp, keeping attributes and skills visible. The website catalogue scrolls
+separately from the selected item, material and actions; filtering preserves
+that selection. Narrow screens use a bounded drawer. Constructors also offer a
+searchable spell selector beside the camp on wide windows.
+**From this build** reuses an existing entry with its spell and runes intact.
+
+**Craft / enchant** opens the selected item or spell in the workbench. Choose a
+material, an enchantment and compatible runes. **Craft and equip** validates the
+combination, adds it to the plan and equips it in the requested slot. An item
+enchantment needs its applicable item rune; invalid combinations cannot be added.
+Click an installed rune to remove it, or reset the rune combination.
+
+**Copy link** stores the complete plan in `#build=` as versioned UTF-8 JSON
+encoded with base64url. It includes campaign, attributes, experience, six skills,
+item versions, spells, runes, quantities and equipment slots. Slot assignments
+are optional in the version-1 format, so previous links still import. The native planner can import that
+same link. Plans survive article navigation and language changes; campaign plans
+are separate. No account or server storage is needed. Browser reload restores a
+plan from the URL; native drafts are retained while that wiki panel exists.
+Inputs are bounded to 32 entries, 8 runes per spell, 1–99 items per entry and a
+24,000-character encoded payload. Invalid or unsupported data is rejected;
+missing content is identified without mutating inventories or saves.
+
+**Save locally** creates a named snapshot of an item, a rune-modified spell, or a
+complete character. **Saved creations** opens a searchable library with filters
+for the three types. Open a snapshot to continue editing it, or add an item/spell
+to the current plan. Saved recipes also appear in compatible equipment selectors;
+saved spells can be reused as item enchantments. Material, spell, runes, character
+attributes, skills, quantities and slot assignments are retained. Editing a loaded
+snapshot does not overwrite it; Save locally creates another snapshot.
+
+The website uses browser `localStorage` under `cursed-lands.wiki.library.v1`.
+The native game uses `user://wiki-creations.json`, written through a temporary
+file before replacement. Libraries are separate on each device/browser and are
+not synchronized with each other. Both accept up to 100 named creations, retain
+campaign identity, validate the version-1 plan payload, and report storage errors.
+Unreadable libraries are left untouched. Clearing browser site data removes its
+library; use **Copy link** for a portable backup. Local recipes never alter game
+inventory or campaign saves.
 
 ## Public website
 
 The [public wiki](https://cursedlands.wwworm.com/wiki/) is a standalone website.
-It needs no game files, game download, account or local storage. Search results
+It needs no game files, game download or account. Browser storage is used when
+you explicitly save creations; reading and sharing links work without it. Search results
 use one continuous scrolling list. Items can be filtered by armour slot, weapon
 type, quest items, wands, potions, or trophies and valuables. The spell list shows
 31 named base-game spells or 35 named Lost in Astral spells. Rune-equipped
@@ -40,9 +130,9 @@ combinations and empty-rune duplicates remain available through article links
 without duplicating the browsing list. Unnamed database templates are also
 excluded from that list; retained spell links have translated descriptive names.
 
-Two campaign tabs select separate catalogs. The base game has 1,228 article
-addresses and 2,008 precomputed views per language; Lost in Astral has 1,705
-addresses and 2,665 views per language. Both cover English, Russian and German,
+Two campaign tabs select separate catalogs. The base game has 1,229 article
+addresses and 2,009 precomputed views per language; Lost in Astral has 1,706
+addresses and 2,666 views per language. Both cover English, Russian and German,
 including 36 base-game locations and 56 expansion locations. Authored overview
 art is available for 20 base-game maps and 38 expansion maps; other location
 pages retain their quest links and description. Only craftable items offer material
@@ -100,7 +190,10 @@ With the expansion installed, export Russian normally to
 installation using `--wiki-language=en|de` and
 `--wiki-texts=/private/astral-texts/en|de.json`. This changes only the tool
 process's text cache, never the installation. Generate its image plan and images
-with the expansion loaded; image IDs are campaign-specific. Package both catalogs:
+with the expansion loaded; image IDs are campaign-specific. Export the original
+camp panels, slot frames and keystones using `tools/export_wiki_ui.gd` with
+`--wiki-ui-output=/path/to/repo/web/wiki` for each installed campaign. This tool
+uses the same atlas cropping as the native `WikiCampArt`. Package both catalogs:
 
 ```sh
 python3 tools/prepare_public_wiki.py --data /private/wiki-base \
@@ -129,7 +222,7 @@ available in game. No original assets are downloaded.
 
 | Content | Runtime source |
 |---|---|
-| Item families and their material/version buttons | `Items.TABLES`, `Items.materials_for`, `items.idb` |
+| Item families and their material/version selector | `Items.TABLES`, `Items.materials_for`, `items.idb` |
 | Names and descriptions | The installed `texts.res` / `textslmp.res` archives |
 | Damage, armor, weight, durability, charge, slots and base value | The existing `Items` gameplay calculations |
 | Blueprint view within an item page | Authored craftable records and component counts |
@@ -143,6 +236,9 @@ available in game. No original assets are downloaded.
 | Maps and quest links | `CampaignMap`, map overviews, original quest text and script references |
 | Localized world/reference text | Source-checked `WikiWorldText`, `WikiReferenceText`, `WikiQuestText` |
 | Mechanics examples and active rule | `Items`, `Spells`, `Skills`, `Combat.aim_penalty`, `ai.reg`, current session rules |
+| Easy/Hard comparison | `DifficultyLevels` arrays, combat integer/ranged rules, prototype natural armor |
+| Acquisition, uses and map markers | `WikiKnowledge`: database links, read-only `.mob` records, quest/script references |
+| Portable build calculations | `WikiPlan`, `Skills.base_pool`, `Skills.span_cost`, item/spell constructors |
 
 Mechanics explanations are maintained prose checked against the combat code;
 numeric examples and tuning values are calculated at runtime. Creature pages
@@ -171,6 +267,13 @@ The search index loads no models. Only the selected page instantiates a live
 preview, and navigating or closing releases it. Spell exploration does not
 expand the search index with every possible rune permutation.
 
+The relationship index is a typed directed graph with reciprocal links where
+useful. Map points use normalized north-up coordinates and typed layers. Export
+schema 2 carries result subtitles and illustrations, relationship groups, map
+points, quest hints and planning inputs. The packager validates every target,
+coordinate, translation and constructor payload. It reads map object records
+without creating a game world or executing scripts.
+
 ## Verification
 
 Run `python3 tools/check_translations.py` for literal and dynamically selected
@@ -187,5 +290,20 @@ Use private XDG data/config/cache directories to protect player settings. Omit
 the actual installed edition, checks every generated HTML article and link,
 tests live data changes and new data-mod records, exercises the real widgets,
 and writes `user://wiki-results.json` plus rendered screenshots.
+
+`tools/tests/wiki_rework.gd` checks graph targets, bounded map points, search,
+portable plans against gameplay calculations, every creature's difficulty
+comparison against `Combat`, and native planner/map widgets. Run it against each
+localized installation; rendered runs capture home, item, map, quest, planner
+and difficulty pages. It also writes `user://wiki-plan-oracle.json` for the web
+parity check:
+
+```sh
+node tools/tests/wiki_rework.mjs /private/wiki-plan-oracle.json /private/wiki-site
+```
+
+The JavaScript checks cover native/web plan parity, malformed payloads, typo
+matching and marker clustering without losing points. Retain the existing
+`wiki_features.gd`, `wiki_quest_locales.gd` and constructor parity checks too.
 
 The encyclopedia is introduced in 1.6.0 under the [versioning policy](versioning.md).
