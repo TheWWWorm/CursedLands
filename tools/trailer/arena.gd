@@ -1,5 +1,5 @@
 extends "capture.gd"
-## Loaded only against the separately pinned Trials of Gipath preview pack.
+## Loaded only against the separately pinned Trials of the Allods preview pack.
 var screen: Control
 
 func _run() -> void:
@@ -19,21 +19,25 @@ func _run() -> void:
 	add_child(screen)
 	await frames(30)
 	screen._seed_input.text="6519"
-	screen._begin(0)
+	screen._begin()
 	screen.run.auto_save=false
-	screen.run.wave=18
+	screen.run.wave=24
 	screen.run.pact="vanguard"
 	screen.run.pact_rank=2
 	screen.run.army.clear()
 	var rules=load("res://src/game/arena_rules.gd")
-	for family in 6: screen.run._recruit(family,rules.FAMILIES[family].forms.size()-1,27)
+	for family in [6,7,8,9,10,11]: screen.run._recruit(family,rules.FAMILIES[family].forms.size()-1,27)
 	screen.run.arrange()
+	screen.landing=false
 	screen._clear_selection()
+	screen._refresh()
 	await frames(90)
-	screen.field.zoom=21
+	screen.field.zoom=15.5
 	screen.field._update_camera()
 	screen._start.pressed.emit()
-	await frames(45)
+	await frames(90)
+	if screen.run.stage!="fight":
+		printerr("TRAILER_ERROR Trials must show a live fight, got ",screen.run.stage);get_tree().quit(2);return
 	await RenderingServer.frame_post_draw
 	var picture:=get_viewport().get_texture().get_image()
 	picture.save_png(out+"-start.png")
@@ -42,7 +46,7 @@ func _run() -> void:
 	first_frame=Engine.get_frames_drawn()
 	report={"id":spec.id,"start_frame":first_frame,"frames":total,"fps":60,"width":picture.get_width(),"height":picture.get_height(),
 		"campaign":GameData.campaign_id,"language":language,"seed":6519,"renderer":RenderingServer.get_current_rendering_method(),
-		"engine":Engine.get_version_info(),"staged":true,"preview_mode":true,"graphics":_graphics_report()}
+		"engine":Engine.get_version_info(),"staged":true,"preview_mode":true,"arena_map":"snowy ruins","wave":screen.run.wave,"stage":screen.run.stage,"graphics":_graphics_report()}
 	recording=true
 	print("TRAILER_START ",JSON.stringify(report))
 

@@ -56,7 +56,11 @@ def validate(m):
         assert s["title"] in m["text"]
         if s.get("wardrobe"):
             kit = m["wardrobes"][s["wardrobe"]]
-            assert len(kit["armors"]) == 7 and kit["weapons"], "Every wardrobe needs the complete regional kit"
+            if kit.get("native_start"):
+                assert s.get("campaign") == "lost_in_astral" and s.get("zone") == "gz1g"
+                assert kit["armors"] == ["hadagan medium pants.wool"], "Keep Kir’s native opening outfit"
+            else:
+                assert len(kit["armors"]) == 7 and kit["weapons"], "Every wardrobe needs the complete regional kit"
         if s.get("kind") == "combat":
             assert s.get("enemies") and s.get("wardrobe"), "Combat needs an authored cast and regional equipment"
             assert all(isinstance(e.get("nid"), int) and e["nid"] > 0 and not e.get("offset")
@@ -86,7 +90,7 @@ def validate(m):
     modes = {}
     for e in edit:
         shot = source[e["shot"]]
-        if shot.get("kind") != "combat":
+        if not shot.get("enemies"):
             continue
         actors = {(shot.get("campaign", "cursed_lands"), shot["zone"], actor["nid"])
                   for actor in shot["enemies"]}
@@ -271,6 +275,16 @@ class Project:
                 proof=report["coop"]
                 assert proof["players_at_end"]==2 and proof["guest_start"]!=proof["guest_end"],"Guest must move in the real co-op take"
                 assert proof["client_command"]["index"]==1
+            if shot.get("minimum_current"):
+                assert report["water_current"]["speed"] >= shot["minimum_current"], "Choose a location with native flowing water"
+            if shot.get("weather") == "rain":
+                assert report["weather"]["surface_rain"] == 1 and report["weather"]["cover_ready"], "Rain surfaces are not ready"
+            if shot.get("minimum_damage"):
+                assert sum(e["damage"] for e in report["hit_samples"]) >= shot["minimum_damage"], "Combat must deal native damage"
+            if shot.get("minimum_severed"):
+                assert max((e["severed"].bit_count() for e in report["hit_samples"]), default=0) >= shot["minimum_severed"], "Native limb removal was not captured"
+            if shot.get("touch_demo") == "combat":
+                assert report["touch"]["events"] >= 2 and not report["touch"]["inventory_open"], "Show touch combat without opening inventory"
             if shot.get("touch_demo") == "inventory":
                 assert report["touch"]["events"] == 2 and report["touch"]["inventory_open"], "Native touch tap must open inventory"
             if shot.get("minimum_advance_distance"):
@@ -348,6 +362,22 @@ class Project:
                 draw.text((x,y+128),lines[1],font=fit(lines[1],sans,52,w-x-360),fill=gold,stroke_width=1,stroke_fill=(10,10,10,180))
         im.save(path)
 
+    def verify_segment_capture(self, segment, shot, receipt):
+        """Reject edits that trim every successful native attack out of view."""
+        if not shot.get("minimum_damage"):
+            return
+        report = receipt["capture"]
+        start = segment.get("start", 0) + shot.get("pre_roll", 0)
+        end = start + segment["frames"]
+        hits = [e for e in report.get("hit_samples", [])
+                if start <= e["frame"] < end - 8 and e["damage"] > 0]
+        assert hits, f"{segment['id']}: edit must show a native hit and its aftermath"
+        if shot.get("minimum_severed"):
+            before = max((e["severed"] for e in report["hit_samples"] if e["frame"] < start), default=0)
+            assert any(e["severed"] & ~before for e in hits), f"{segment['id']}: limb removal is outside the edit"
+        if shot.get("kind") == "coop":
+            assert report["coop"]["max_players"] == 6 and report["coop"]["players_at_end"] == 2
+
     def compose(self, language):
         folder=self.out / "edits" / (f"v{self.m['revision']}" if self.m.get("revision") else "") / language
         folder.mkdir(parents=True,exist_ok=True)
@@ -362,6 +392,7 @@ class Project:
                 raise RuntimeError(f"Stale shot {shot['id']}; record it again")
             if receipt.get("capture",{}).get("graphics",{}).get("graphics_preset") != 8:
                 raise RuntimeError(f"Re-record {shot['id']} with Ultra graphics")
+            self.verify_segment_capture(segment, shot, receipt)
             take=self.take_path(receipt)
             overlay=folder / f"{segment['id']}.png"
             presentation=dict(shot,frames=segment["frames"],title=segment.get("title",shot["title"]))

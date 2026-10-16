@@ -24,6 +24,12 @@ var movement_samples := []
 var touch_events := 0
 var touch_point := Vector2.ZERO
 var touch_cue: Node2D
+var hit_samples := []
+var last_health := {}
+var camera_initialized := false
+var smooth_heading := 0.0
+var smooth_tilt := 0.0
+var weather_proof := {}
 
 class TouchCue extends Node2D:
 	func _draw() -> void:
@@ -96,9 +102,10 @@ func _run() -> void:
 		game=Game.new();game.name="Game";game.session=session;session.game=game;get_tree().current_scene.add_child(game)
 		# Autoload input routing resolves the normal current-scene owners.
 		get_tree().current_scene.game=game;get_tree().current_scene.session=session
+		session.multiplayer.peer_connected.connect(_offline_peer)
 		if spec.get("kind","")=="coop":
 			GameData.player_name="Ari"
-			if session.host(0,2)!=OK:
+			if session.host(0,Session.MAX_PLAYERS)!=OK:
 				printerr("TRAILER_ERROR could not host co-op");get_tree().quit(2);return
 			FileAccess.open(coordination+"/ready",FileAccess.WRITE).store_string(str(session.host_port))
 			if not await _wait_for(func():return session.players.size()==2):return
@@ -114,7 +121,7 @@ func _run() -> void:
 		session.world.vm.instances.clear()
 		# Action takes must keep the normal command queue running: direct
 		# controls submit through Session, just like real keyboard/gamepad input.
-		if spec.get("kind","") not in ["coop","combat"]:session.set_physics_process(false)
+		if spec.get("kind","") not in ["coop","combat"] and spec.get("camera","") not in ["first","third"]:session.set_physics_process(false)
 		hero=session.party_units(0)[0]
 		if not _dress(hero):return
 		for u: GameUnit in session.world.unit_rows():
@@ -138,7 +145,7 @@ func _run() -> void:
 			focus=Vector3(float(spec.focus[0]),session.world.ground_at(float(spec.focus[0]),float(spec.focus[1]))+float(spec.get("focus_height",0)),-float(spec.focus[1]))
 		if spec.has("focus_world"):focus=_vector(spec.focus_world)
 		if spec.get("anchor","")=="lava": focus=_lava_anchor()
-		if spec.get("kind","world")=="combat": _prepare_combat()
+		if spec.has("enemies"): _prepare_combat()
 		if spec.get("hide_party",false):
 			for actor: GameUnit in session.party_units(0):actor.hide()
 		game.hud.visible=bool(spec.get("hud",false))
@@ -166,28 +173,28 @@ func _run() -> void:
 		if spec.get("input","")=="touch":
 			TouchInput.pinned=true;TouchInput.enabled=true;TouchInput.mode_changed.emit()
 			PadInput.set_process_input(false)
-			if spec.get("touch_demo","")=="inventory":
+			if spec.has("touch_demo"):
 				var layer:=CanvasLayer.new();layer.layer=127;add_child(layer)
 				touch_cue=TouchCue.new();layer.add_child(touch_cue);touch_cue.hide()
 		elif spec.get("input","")=="gamepad":
 			PadInput._set_active("pad")
 			GameData.options.pad_enabled=1
-		await frames(120)
+		await frames(int(spec.get("warmup_frames",120)))
 		if spec.get("kind","")=="coop":
 			if not await _wait_for(func():return FileAccess.file_exists(coordination+"/loaded")):return
 			var other: GameUnit=session.party_units(1)[0]
 			if not _dress(other):return
 			if spec.has("hero"):
-				other.pos=hero.pos+Vector2(1.5,1.0);other._sync_transform(0)
+				other.pos=_point(spec.guest) if spec.has("guest") else hero.pos+Vector2(1.5,1.0);other._sync_transform(0)
 				session.world.nav.track_unit(other)
 				await frames(60)
 			focus=(hero.global_position+other.global_position)*0.5
-			coop_start={"players":session.players.duplicate(true),"guest_start":[other.pos.x,other.pos.y]}
-			FileAccess.open(coordination+"/go",FileAccess.WRITE).store_string("go")
+			coop_start={"players":session.players.duplicate(true),"guest_start":[other.pos.x,other.pos.y],"max_players":session.max_players}
+			FileAccess.open(coordination+"/go",FileAccess.WRITE).store_string(JSON.stringify({"target":enemies[0].uid if not enemies.is_empty() else -1,"walk":spec.get("guest_walk",[])}))
 			var to:=session.world.nav.nearest_walkable(hero.pos+Vector2(7,0))
-			session.apply_command({"t":"move","units":[hero.uid],"x":to.x,"y":to.y,"run":false},0)
+			if not spec.has("enemies"):session.apply_command({"t":"move","units":[hero.uid],"x":to.x,"y":to.y,"run":false},0)
 			if not await _wait_for(func():return FileAccess.file_exists(coordination+"/command")):return
-		if spec.get("input","")=="touch" and game.hud.touch_actions:
+		if spec.get("input","")=="touch" and game.hud.touch_actions and spec.get("touch_demo","")!="combat":
 			if spec.get("touch_panel","menu")=="aim":game.hud.touch_actions._show_aim()
 			else:game.hud.touch_actions._show_menu()
 		if spec.get("input","")=="gamepad" and PadInput.field:
@@ -196,7 +203,10 @@ func _run() -> void:
 		if spec.get("export_music",false):
 			var music:=EIAudio.music(String(spec.get("music_track","main")))
 			if music: FileAccess.open(out+"-music.mp3",FileAccess.WRITE).store_buffer(music.data)
-		if spec.get("kind","world")=="combat":
+		if spec.get("camera","") in ["first","third"]:
+			for f in 90:
+				_camera(0);await frames(1)
+		if spec.has("enemies"):
 			_start_combat()
 			for f in int(spec.get("pre_roll",0)):
 				_camera(0);_action(f)
@@ -205,6 +215,12 @@ func _run() -> void:
 			var p:=Vector2(float(spec.walk[0]),float(spec.walk[1]))
 			session.apply_command({"t":"move","units":[hero.uid],"x":p.x,"y":p.y,"run":false},0)
 		print("TRAILER_SCENE ",JSON.stringify({"hero":[hero.pos.x,hero.pos.y],"focus":[focus.x,focus.y,focus.z],"map":session.world.zone.get("mpr"),"terrain_atlas":session.world.terrain._atlases.get_width(),"enemies":enemies.map(func(u):return u.proto.get("name",""))}))
+	if spec.get("weather","")=="rain":
+		var weather_state:={"shown":game.sound.weather._shown,"target":game.sound.weather._target,"options":_graphics_report()}
+		for child in game.get_children():
+			if child is SurfaceWeather:weather_state.merge({"surface_rain":child.rain,"wetness":child.wetness,"cover_ready":child._cover_ready,"cover_queue":child._cover_queue.size()})
+		weather_proof=weather_state
+		print("TRAILER_WEATHER ",JSON.stringify(weather_state))
 	await frames(12)
 	_camera(0)
 	await RenderingServer.frame_post_draw
@@ -235,7 +251,7 @@ func _run() -> void:
 				await frames(12)
 				await RenderingServer.frame_post_draw
 				get_viewport().get_texture().get_image().save_png(out+"-angle-%d.png"%(angle*45))
-		if game and spec.get("kind","") in ["combat","coop"]:
+		if game and (spec.get("kind","") in ["combat","coop"] or spec.get("camera","") in ["first","third"]):
 			for step in int(spec.frames):
 				_camera(float(step)/maxf(float(spec.frames)-1,1))
 				_action(step+int(spec.get("pre_roll",0)))
@@ -246,6 +262,7 @@ func _run() -> void:
 			await RenderingServer.frame_post_draw
 			get_viewport().get_texture().get_image().save_png(out+"-end.png")
 			print("TRAILER_ACTION ",JSON.stringify(_action_report()))
+			FileAccess.open(out+".json",FileAccess.WRITE).store_string(JSON.stringify({"action":_action_report(),"hit_samples":hit_samples,"movement_samples":movement_samples,"authored_encounter":encounter_start},"\t"))
 		if not coordination.is_empty():FileAccess.open(coordination+"/done",FileAccess.WRITE).store_string("done")
 		get_tree().quit();return
 	total=int(spec.get("frames",240))
@@ -253,9 +270,16 @@ func _run() -> void:
 	report={"id":spec.id,"start_frame":first_frame,"frames":total,"fps":60,"width":picture.get_width(),"height":picture.get_height(),
 		"campaign":GameData.campaign_id,"language":language,"seed":spec.get("seed",6519),"hd_packages":ModStore.profile().packages,
 		"renderer":RenderingServer.get_current_rendering_method(),"engine":Engine.get_version_info(),"staged":true,"graphics":_graphics_report(),"wardrobe":spec.get("wardrobe","offscreen"),"equipment":spec.get("equipment",{}),"authored_encounter":encounter_start}
+	if spec.has("minimum_current"):
+		var current:RefCounted=session.world.terrain._current
+		if current==null:
+			printerr("TRAILER_ERROR water currents are disabled");get_tree().quit(2);return
+		var value:Vector3=current.sample(Vector2(focus.x,focus.z))
+		report["water_current"]={"focus":[focus.x,focus.y,focus.z],"flow":[value.x,value.y],"speed":Vector2(value.x,value.y).length()}
 	if not coop_start.is_empty(): report["coop"]=coop_start
 	if game and game.sound.weather:
 		report["weather"]={"native_type":game.sound.weather.type,"shown":game.sound.weather._shown,"target":game.sound.weather._target}
+		report["weather"].merge(weather_proof)
 	print("TRAILER_START ",JSON.stringify(report))
 	recording=true
 
@@ -294,25 +318,26 @@ func _process(_dt: float) -> void:
 func _camera(t: float) -> void:
 	if not game:return
 	if spec.get("camera","") in ["first","third"]:
-		game.direct.heading=deg_to_rad(float(spec.get("heading",0))+t*float(spec.get("pan",12)))
-		if spec.camera=="third":game.direct.tilt=float(spec.get("tilt",-0.1))
+		var wanted_heading:=deg_to_rad(float(spec.get("heading",0))+t*float(spec.get("pan",0)))
+		var wanted_tilt:=float(spec.get("tilt",-0.1))
 		if spec.get("track_enemy",false) and not enemies.is_empty() and not enemies[0].dead:
-			game.direct.heading=(enemies[0].pos-hero.pos).angle()
-			if spec.camera=="third":
-				# Compensate the normal shoulder camera's lateral offset so
-				# the opponent stays beside Zak, under the ordinary aim ray.
-				game.direct.heading+=asin(clampf(0.55/hero.pos.distance_to(enemies[0].pos),0.0,0.7))
+			wanted_heading=(enemies[0].pos-hero.pos).angle()
+			if spec.camera=="third":wanted_heading+=asin(clampf(0.55/hero.pos.distance_to(enemies[0].pos),0.0,0.7))
 			if spec.camera=="first":
-				game.direct.apply_camera(1.0/60.0)
 				var aim:=enemies[0].global_position+Vector3.UP*maxf(enemies[0].figure_half_z,0.35)
 				var head:=enemies[0].model.find_child("hd",true,false) as Node3D
 				if head:aim=head.global_position
 				var eye:=game.rig.camera.global_position
 				var delta:=aim-eye
-				# Match the game's first-person pitch range, including flying
-				# targets overhead; the earlier limit cut off dragon heads.
-				var desired:=clampf(atan2(delta.y,Vector2(delta.x,delta.z).length()),-1.45,1.35)
-				game.direct.tilt=lerpf(game.direct.tilt,desired,0.15)
+				wanted_tilt=clampf(atan2(delta.y,Vector2(delta.x,delta.z).length()),float(spec.get("minimum_tilt",-1.2)),1.1)
+		if not camera_initialized:
+			smooth_heading=wanted_heading;smooth_tilt=wanted_tilt;camera_initialized=true
+		var ease:=1.0-exp(-float(spec.get("camera_response",5.0))/60.0)
+		smooth_heading=lerp_angle(smooth_heading,wanted_heading,ease)
+		smooth_tilt=lerpf(smooth_tilt,wanted_tilt,ease)
+		game.direct.heading=smooth_heading
+		game.direct.tilt=smooth_tilt
+		if spec.has("camera_distance"):game.direct.zoom=float(spec.camera_distance)
 		game.direct.apply_camera(1.0/60.0)
 		return
 	var ease:=t*t*(3.0-2.0*t)
@@ -343,11 +368,12 @@ func _prepare_combat() -> void:
 		# relocate enemies to an unrelated landmark for the trailer.
 		u.pos=Vector2(p.x,p.y);u._sync_transform(0);world.nav.track_unit(u)
 		enemies.append(u);u.ai_next=INF;u._perceive_next=INF
-		encounter_start.append({"nid":nid,"prototype":entry.prototype,"position":[p.x,p.y],"texture":authored.get("texture","")})
+		last_health[u.uid]=u.hp
+		encounter_start.append({"nid":nid,"prototype":entry.prototype,"position":[p.x,p.y],"texture":authored.get("texture",""),"initial_hp":u.hp,"initial_severed":u.severed_mask()})
 	print("TRAILER_ENCOUNTER ",JSON.stringify(encounter_start))
 	for u: GameUnit in enemies:
 		print("TRAILER_REACH ",JSON.stringify({"nid":u.uid,"distance":hero.pos.distance_to(u.pos),"melee_reach":hero.melee_reach(u),"enemy_stats":u.stats}))
-	if not enemies.is_empty():focus=(hero.global_position+enemies[0].global_position)*0.5+Vector3.UP*float(spec.get("combat_focus_lift",0.0))
+	if not enemies.is_empty() and not spec.has("focus_world"):focus=(hero.global_position+enemies[0].global_position)*0.5+Vector3.UP*float(spec.get("combat_focus_lift",0.0))
 	if spec.has("weapon"):
 		hero.get_meta("hero").weapons=[String(spec.weapon)]
 		session._refresh_hero(hero)
@@ -358,12 +384,15 @@ func _prepare_combat() -> void:
 			printerr("TRAILER_ERROR hero cannot use staged spell: ",spec.spell);get_tree().quit(2)
 
 func _start_combat() -> void:
+	if not coordination.is_empty():FileAccess.open(coordination+"/action",FileAccess.WRITE).store_string("start")
 	hero._perceive_next=0
 	for u: GameUnit in enemies:
-		u.ai_next=0;u._perceive_next=0;session.world.ai.on_attacked(u,hero)
-		u.facing=(hero.pos-u.pos).angle()
-		u.command({"type":"attack","target":hero})
-	if not enemies.is_empty() and not spec.has("spell") and not spec.get("camera","") in ["first","third"]:
+		u.ai_next=0;u._perceive_next=0
+		if not spec.get("wait_for_hit",false):
+			session.world.ai.on_attacked(u,hero)
+			u.facing=(hero.pos-u.pos).angle()
+			u.command({"type":"attack","target":hero})
+	if not enemies.is_empty() and not spec.has("spell") and not spec.get("camera","") in ["first","third"] and spec.get("touch_demo","")!="combat":
 		session.apply_command({"t":"attack","units":[hero.uid],"target":enemies[0].uid},0)
 
 func _lava_anchor() -> Vector3:
@@ -386,6 +415,8 @@ func _finish() -> void:
 	get_viewport().get_texture().get_image().save_png(out+"-end.png")
 	report["action"]=_action_report()
 	report["movement_samples"]=movement_samples
+	report["hit_samples"]=hit_samples
+	if spec.get("touch_demo","")=="combat":report["touch"]={"events":touch_events,"inventory_open":game.hud._inventory.visible,"enabled":TouchInput.enabled}
 	if spec.get("touch_demo","")=="inventory":
 		report["touch"]={"events":touch_events,"inventory_open":game.hud._inventory.visible,"enabled":TouchInput.enabled}
 	report["end_frame"]=Engine.get_frames_drawn()
@@ -406,7 +437,7 @@ func _middle() -> void:
 	get_viewport().get_texture().get_image().save_png(out+"-middle.png")
 
 func _wait_for(predicate: Callable) -> bool:
-	var deadline:=Time.get_ticks_msec()+120000
+	var deadline:=Time.get_ticks_msec()+600000
 	while not predicate.call():
 		if Time.get_ticks_msec()>deadline:
 			printerr("TRAILER_ERROR co-op synchronization timeout");get_tree().quit(2);return false
@@ -429,7 +460,27 @@ func _graphics_report() -> Dictionary:
 func _vector(a: Array) -> Vector3:
 	return Vector3(float(a[0]),float(a[1]),float(a[2]))
 
+func _point(a: Array) -> Vector2:
+	return Vector2(float(a[0]),float(a[1]))
+
 func _action(frame: int) -> void:
+	for u: GameUnit in enemies:
+		if u.hp < float(last_health.get(u.uid,u.hp)):
+			var event:={"frame":frame,"nid":u.uid,"damage":float(last_health[u.uid])-u.hp,"hp":u.hp,"severed":u.severed_mask()}
+			hit_samples.append(event)
+			print("TRAILER_DAMAGE ",JSON.stringify(event))
+			if probe:_impact_image.call_deferred(frame)
+		last_health[u.uid]=u.hp
+	if spec.get("touch_demo","")=="combat" and frame in [6,12,90,96,180,186]:
+		if frame%2==0:
+			var pressed:=frame in [6,90,180]
+			if pressed and not enemies.is_empty():
+				touch_point=game.rig.camera.unproject_position(enemies[0].global_position+Vector3.UP*enemies[0].figure_half_z)
+				touch_cue.position=touch_point;touch_cue.show()
+			elif not pressed:touch_cue.hide()
+			var touch:=InputEventScreenTouch.new()
+			touch.index=0;touch.position=touch_point;touch.pressed=pressed
+			Input.parse_input_event(touch);touch_events+=1
 	if spec.get("touch_demo","")=="inventory" and frame in [18,24]:
 		if frame==18:
 			touch_point=game.hud.touch_actions._grid.get_child(0).get_global_rect().get_center()
@@ -448,17 +499,25 @@ func _action(frame: int) -> void:
 		var advance:=frame<int(spec.get("advance_frames",0))
 		game.direct.step(Vector2.UP if advance else (Vector2.DOWN if retreat else (Vector2.UP if approach else Vector2.ZERO)),1.0/60.0)
 		if frame%12==0:movement_samples.append({"frame":frame,"pos":[hero.pos.x,hero.pos.y],"action":hero.action,"moving":advance or retreat or approach})
-	if game and spec.get("camera","") in ["first","third"] and spec.get("kind","")=="combat" and frame%24==0 and frame>=int(spec.get("advance_frames",0)):
+	if game and spec.get("camera","") in ["first","third"] and spec.has("enemies") and not spec.has("spell") and frame%24==0 and frame>=int(spec.get("advance_frames",0)):
 		game.direct._neutral=false
 		if frame==0:print("TRAILER_CONTROL ",JSON.stringify({"usable":game.direct.usable(),"active":game.direct.active(),"pointer":game.direct.pointer,"held":game.rig.held,"focus":game.rig._window_focused,"blocks":game.hud.blocks_camera(),"transition":game.direct.transitioning(),"movie":session.movie_active(),"controller":hero.controller,"is_host":session.is_host,"blocked":hero.blocked,"direct_controlled":hero.direct_controlled,"weapon":hero.info.get("weapons",[]),"stats":hero.stats}))
-		game.direct.attack()
+		if spec.has("aim_part") or spec.has("aim_parts"):
+			var direction:=(game.direct.aim_point()-DirectCombat.origin(hero)).normalized()
+			var command:={"t":"direct_attack","units":[hero.uid],"direction":direction,"aim":int(spec.get("aim_part",-1))}
+			if spec.has("aim_parts") and not enemies.is_empty():
+				for part in spec.aim_parts:
+					if not enemies[0].severed_mask() & (1 << int(part)):
+						command.aim=int(part);break
+			command.merge(game.direct.aim_view(hero));game.issue(command)
+		else:game.direct.attack()
 		if frame%48==0:print("TRAILER_ATTACK ",JSON.stringify({"frame":frame,"orders":hero.orders.map(func(o):return String(o.get("type",""))),"action":hero.action,"cooldown":hero._attack_cd,"lock":hero._anim_lock,"pending":hero._pending_hit,"uid":hero.uid,"registered":session.world.units.get(hero.uid)==hero}))
 	if game and spec.has("spell") and spec.get("spell_frames",[1,150]).any(func(value):return int(value)==frame) and not enemies.is_empty() and not enemies[0].dead:
 		session.apply_command({"t":"cast","unit":hero.uid,"spell":String(spec.spell),"target":enemies[0].uid},0)
 
 func _action_report() -> Dictionary:
 	return {"paused":get_tree().paused,"hero": {"hp":hero.hp,"mana":hero.mana,"dead":hero.dead,"pos":[hero.pos.x,hero.pos.y],"order":String(hero.order.get("type","")),"action":hero.action,"attack_cooldown":hero._attack_cd,"pending_hit":hero._pending_hit,"direct_contacts":hero.direct_hit_serial} if hero else {},
-		"enemies":enemies.map(func(u):return {"name":u.proto.get("name",""),"hp":u.hp,"max_hp":u.max_hp,"dead":u.dead,"pos":[u.pos.x,u.pos.y],"action":u.action})}
+		"enemies":enemies.map(func(u):return {"name":u.proto.get("name",""),"hp":u.hp,"max_hp":u.max_hp,"severed":u.severed_mask(),"dead":u.dead,"pos":[u.pos.x,u.pos.y],"action":u.action})}
 
 func _dress(actor: GameUnit) -> bool:
 	if not spec.has("equipment"):return true
@@ -473,3 +532,18 @@ func _dress(actor: GameUnit) -> bool:
 	h.merge(spec.equipment,true)
 	session._refresh_hero(actor)
 	return true
+
+func _impact_image(frame: int) -> void:
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png(out+"-hit-%04d.png"%frame)
+	await frames(8)
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png(out+"-hit-%04d-plus08.png"%frame)
+
+func _offline_peer(pid: int) -> void:
+	# Ultra offline rendering may block longer than a real-time network load.
+	# Extend only this private recording connection; gameplay is unchanged.
+	var enet:=NetSim.enet_of(session.multiplayer)
+	if enet==null or (not session.is_host and pid!=1):return
+	var peer:=enet.get_peer(pid)
+	if peer:peer.set_timeout(0,600000,600000)

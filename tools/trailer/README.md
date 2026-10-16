@@ -1,80 +1,82 @@
 # Cursed Lands reusable trailer
 
-A native-game recording and editing project: 64 seconds, 3,840 frames, 3840 × 2160, 60 fps, SDR Rec.709. The revised English cut alternates scenic pauses with 41.5 seconds of gameplay, using the original “Cool” music track and real game sounds, without narration. Russian and German title tracks are supplied in the same manifest.
+Revision 4 is a 65-second native-game trailer: 3,900 frames, 3840 × 2160, 60 fps, SDR Rec.709. It uses the original “Cool” music and native game sounds, without narration. Titles are supplied in English, Russian and German. The English master is `Cursed-Lands-Trailer-v4-en-2160p60.mp4`; older deliveries remain intact.
 
 ## Re-shoot or edit
 
-Install Python 3 with Pillow, FFmpeg and FFprobe. Use the game's **custom engine** and its matching `.pck`/native libraries, plus your own original game files. A stock Godot engine is not a substitute for the patched renderer. Copy `config.example.json` to a private machine-specific configuration and fill in its absolute paths. The optional `music` configuration entry replaces the manifest’s original-game music selection (`cool.mp3` in revision 3).
-
-Run from this repository:
+Install Python 3 with Pillow, FFmpeg and FFprobe. Recording requires the game's custom engine and matching `.pck`/native libraries, your original game files, and the HD Lands package for shots that use it. A stock Godot engine cannot replace the custom renderer. Copy `config.example.json` to a private configuration and fill in the paths.
 
 ```bash
 python3 tools/trailer/trailer.py validate --config /path/to/local-config.json
-python3 tools/trailer/trailer.py probe --config /path/to/local-config.json --only 03-ingos
-python3 tools/trailer/trailer.py record --config /path/to/local-config.json --only 03-ingos
+python3 tools/trailer/trailer.py probe --config /path/to/local-config.json --only 33-tiger-melee
+python3 tools/trailer/trailer.py record --config /path/to/local-config.json --only 33-tiger-melee
 python3 tools/trailer/trailer.py compose --config /path/to/local-config.json --language en
 python3 tools/trailer/trailer.py verify --config /path/to/local-config.json --language en
 ```
 
-Omit `--only` to record the entire sequence. Use `--force` for a fresh take even when an identical cached take exists. `compose` changes titles/music without recording again. Select `ru` or `de` for the other title tracks; re-record UI shots with `--language ru`/`de` when the actual in-game interface also needs localization. The English original data must likewise be replaced by the corresponding original localized archives for native campaign text.
+Omit `--only` to record the selected edit. `--force` creates a fresh take. `compose` changes trims, order, titles and music without re-recording. Use `ru` or `de` for localized titles. To localize the in-game interface too, record its shots with `--language ru` or `de` and use the corresponding original localized data archives.
 
-New recordings preserve a folder with clean video, PCM game audio, start/middle/end images, the exact shot specification, frozen capture scripts, engine log, command and frame metadata. The earliest scenery sources predate per-take script pinning; their media and shot metadata are retained. Existing takes are retained. The `receipt.json` at each shot's root selects the current take. Machine-specific paths, game assets, HD Lands files and generated media live outside Git. The master also gets a `.project.json` snapshot preserving its exact source selection, soundtrack hash and manifest.
+The portable editable delivery includes selected clean 4K60 MP4 takes, separate PCM game audio, Cool music, fonts, capture scripts and the multilingual manifest. After extraction, install the dependencies and run:
 
-The recorder pins a copy of each runtime and writes a private `override.cfg` before starting it. This is essential: `--resolution` by itself can leave Godot Movie Maker recording the project's 1600 × 900 canvas. Both the viewport and the **encoded AVI dimensions** are checked. Recording uses fixed simulation steps and offline frame output; render speed does not drop frames from the 60 fps movie. Every take uses a private user profile, leaving campaign saves and preferences alone.
+```bash
+python3 tools/trailer/trailer.py compose --config edit-config.json --language en
+```
 
-On this Linux workstation, an isolated capture display was started with `Xephyr :19 -screen 3840x2160 -nolisten tcp -no-host-grab`. An existing suitable display also works. The configured GPU must support presentation to that display. No screen recording of other desktop windows is used.
+The bundle's paths resolve relative to its configuration. Original game data and runtime binaries are not included. Supply them through a private recording configuration for new takes. A `music` configuration entry can replace `cool.mp3`.
 
-## Direct a shot
+## Direct and review shots
 
-Edit `trailer.json`. `shots` defines the reusable source recordings. The separate `edit` array defines the cut: each entry has a unique segment `id`, source `shot`, zero-based `start` frame and exact `frames` duration at 60 fps. The current edit requires a different original encounter for every combat segment, with at least four first-person and four third-person encounters. `editorial` enforces those counts and excludes rejected takes. Other projects may relax these editorial constraints to reuse trims. An empty `title` leaves the gameplay free of captions. `energy` controls the optional soundtrack level changes between calm, action and feature shots. Changing the edit does not require another recording. `zone` and `campaign` choose actual original data. `hour` fixes the light, and `seed` (default 6519) fixes the authored random seed.
+`shots` in `trailer.json` defines source recordings. `edit` selects a source `shot`, zero-based `start` frame, exact `frames` duration and optional title for each segment. An empty title leaves the action unobscured. `energy` adjusts the continuous music level for calm, action, feature and ending sections. The current validator accepts 55–65 seconds and requires unique campaign encounters, including four first-person and four third-person fights.
 
-`focus` is a terrain XY point with optional `focus_height`; `focus_world` is an absolute Godot XYZ target. `eye_from`/`eye_to` are offsets from the target; `eye_world_from`/`eye_world_to` are absolute camera positions. Godot Z is the negative of map Y. The camera follows a smooth eased move between endpoints. `fov` defaults to 55 degrees. A useful shot needs a deliberate subject and an inspected move, not merely a valid coordinate.
+`zone` and `campaign` select native map data. `hour` fixes the light and `seed` fixes the initial random seed. `focus` is a terrain XY point with `focus_height`; `focus_world` is an absolute Godot XYZ target. Godot Z is negative map Y. `eye_from`/`eye_to` are target-relative offsets; `eye_world_from`/`eye_world_to` are absolute positions. Scenic camera motion uses smooth easing. `fov` defaults to 55 degrees.
 
-Probe mode saves alternative angles and, for action shots, middle and final action frames. A `scout_views` array can supply named absolute `eye` and `target` pairs for location scouting. Alternatively, `scout_locations` supplies a named map-XY `center`, terrain-relative `lift` and camera `eye` offset. Original wiki map images are already north-up: pixel Y is `1 - map_y / map_height`; do not flip them again. Keep scouting-only entries out of the production manifest. Inspect the entire recorded clean clip before accepting it; endpoint images alone cannot prove the path stays clear.
+`probe` saves alternate angles and action start/middle/end frames. `scout_views` supplies named absolute eyes/targets; `scout_locations` supplies map XY centers, terrain-relative lifts and eye offsets. Remove scouting entries before recording. Native map images are north-up: pixel Y is `1 - map_y / map_height`. Review the full take, including camera clearance and impact frames; valid coordinates alone do not make a useful shot.
 
-The graphics profile pins **Ultra**: all renderer effects enabled, natural terrain transitions, highest volumetric clouds, mirror water reflections, Ultra shadows, 16× texture filtering, MSAA 4× + SMAA and 100% native render scale. Automatic quality selection is disabled. Each recording logs resolved graphics options. HD Lands shots additionally mount the actual `community.hd-lands-textures@1.5.0` package. The author credit is **Atom**.
+Direct views use the native first/third-person camera. `track_enemy` smoothly follows the real target; `camera_response` controls heading/tilt smoothing and `camera_distance` sets third-person distance. `minimum_tilt` can constrain first-person framing. `advance_frames` provides continuous movement; `minimum_advance_distance` rejects blocked walks. The recorder maintains the native direct-input watchdog during slow offline rendering, so held input does not expire between simulation frames. Physical mouse input cannot steer the capture camera.
 
-Combat uses the original encounter actors at their original MOB coordinates, with native orders, spells, equipment and damage. The manifest records the staged equipment and positions; it does not alter the released game. The co-op shot starts a real second ENet client, sends an ordinary guest movement command and records the participant count and guest positions. A second staged offline character is not used as proof of co-op.
+`spell_frames` schedules ordinary native casts, including pre-roll. `aim_parts` selects native aimed melee attacks. Damage and limb physics are never synthesized. `minimum_damage` requires recorded native HP loss; `minimum_severed` checks actual severed limbs. Every combat trim must retain a successful hit and at least eight aftermath frames. Limb-removal trims must include a new severing event inside their own edit window. Contacts alone are insufficient evidence of a hit.
 
-`wardrobe` selects a complete seven-slot regional kit, including trousers and boots: Gipath leather/stone, Ingos Kania armour, Suslanger Hadagan steel, and player-craftable Kania steel for later Lost in Astral scenes. Equipment comes from the original databases and is validated for a real visual model and compatible material. Per-shot `equipment` can additionally set character attributes and skills. The same wardrobe applies to the co-op guest.
+## Campaign accuracy and graphics
 
-Each enemy entry must specify its original positive `nid` and matching `prototype` from the selected zone. The recorder finds that already loaded actor and retains its authored position, skin, equipment and statistics. Missing IDs and relocation offsets are rejected. Nearby actors are not removed to fabricate an encounter. The current tactical fights use the original skeletons around the Dead City fountain and the dragonkin/dragon encounter in the Middle Mountains. The ravine battle is retained only as an older source and is absent from the revised edit. The revised direct-control footage uses eight distinct encounters listed below. The earlier white-tiger and Suslanger-ogre recordings are included alongside the six newer direct-control encounters. The prison-camp fight is explicitly rejected: Zak has no such equipment during that story sequence.
+Enemy entries identify the original positive MOB `nid` and matching `prototype`. The recorder uses those already loaded actors at their authored coordinates, preserving native enemy equipment and statistics. It rejects missing IDs and relocation offsets. Nearby actors are not removed to fabricate a battle.
 
-The manifest records the location review and excludes the rejected opening village, arrival manor, prison camp and early expansion locations. Original map descriptions, the campaign shop catalogue, authored MOB actors and inspected frames establish the scene context. Armour must fit the story phase as well as the allod.
+`wardrobe` provides regional equipment: Gipath leather/stone, Ingos Kania, Suslanger Hadagan, or late-expansion Kania armour. Material/model combinations are validated. Per-shot `equipment` records staged player attributes, skills and available weapons. The expansion's opening exception uses Kir's native trousers and starting dagger. The original prison camp and rejected opening locations remain excluded; Kir's first map is deliberately included at the user's request.
 
-First-person combat uses the normal first-person camera and weapon animation. `track_enemy` directs its heading and tilt toward the actual enemy from the live camera position. The coastal ruins and dragon valley, Dead City fountain, Ingos lake/castle and waterfall, later Suslanger irrigation canals and late Jigran Sadrok fortress have explicit reviewed views. `combat_focus_lift` raises the composition to include flying creatures. `spell_frames` schedules native casts at integer simulation frames, including pre-roll; JSON numeric values are converted before matching. `pre_roll` lets a native attack reach the useful part of its animation before the take; `keep_distance` and `approach` send normal movement commands. `advance_frames` supplies one continuous forward input before attacking; `minimum_advance_distance` rejects an obstructed walk. First-person tracking uses the game’s full permitted pitch range so flying targets remain in view. The capture driver refreshes the native direct-input watchdog before simulation ticks, so slow offline rendering cannot expire held movement between frames. Release still uses the normal stop command. Physical input is isolated while the director supplies the camera and control commands. No damage or projectile impact is fabricated.
+All new takes use Ultra graphics, automatic quality disabled, native 100% render scale, highest clouds, mirror reflections, Ultra shadows, 16× texture filtering and MSAA 4× + SMAA. Each receipt records resolved options. HD Lands sources mount `community.hd-lands-textures@1.5.0`; its credited author is **Atom**. The contiguous graphics sequence shows clouds, rain/water rings, grass, currents, waterfalls and HD terrain. Rain takes verify that the native surface-rain state and shelter mask are ready. The currents take checks the live flow field at its camera target. Later footage returns to combat before the end card.
 
-## Extend the edit
+## Revision 4 footage
 
-Copy a shot entry, assign a unique ID and title key, choose its campaign/runtime and author its camera/action. Add every title line in English, Russian and German under `text`. Keep the main cut near one minute by changing shot lengths; validation currently accepts 55–65 seconds. A different-duration trailer can deliberately change that validation policy.
-
-`12-trials` uses a separately pinned preview runtime and is visibly marked **Preview**. It is not presented as a released 1.8.0 feature. Replace that entry and the `arena.gd` adapter when the mode becomes final, without touching the other takes.
-
-`13-wiki` records the real in-game wiki and its live model preview. The end card gives the public web wiki address. Touch and controller shots show the game's own controls in the Dead City. The touch take injects an actual screen-touch press/release on the native Inventory control and verifies that inventory opened; a brief editorial ring marks the finger contact. Every radial menu now uses the Alt selector's pie sections, with active-item rims, disabled states and wrapped localized labels. The field HUD can be hidden behind the controller wheel during filming; the actual wheel and its navigation are unchanged. The platform end card names Windows, Linux, macOS, Android and Browser, and reminds viewers that original game files are required.
-
-## Delivery and validation
-
-The revised upload file is `Cursed-Lands-Trailer-v3-en-2160p60.mp4`. Earlier deliveries remain intact. Increment `revision` to keep a new master and its edit cache beside earlier deliveries. It uses H.264 High, progressive 4:2:0, Rec.709, a 30-frame GOP, AAC stereo at 48 kHz/384 kbps and a fast-start MP4 header. The NVIDIA encoder targets 60 Mbps with a 68 Mbps ceiling; the portable x264 path uses CRF 16 with the same ceiling. These settings follow [YouTube's upload guidance](https://support.google.com/youtube/answer/1722171?hl=en). Rendering follows [Godot's offline movie workflow](https://docs.godotengine.org/en/stable/tutorials/animation/creating_movies.html).
-
-`verify` decodes/counts the final frames and checks dimensions, frame rate, codec, pixel format, duration and stereo sample rate. It saves a validation JSON and SHA-256. Game audio is assembled as exact PCM samples before the single final AAC encode, avoiding per-clip AAC padding drift. The music bed is normalized to the manifest's `music_lufs` target before applying `music_gain`; `sfx_gain` controls native effects. `follow_edit_energy` gently raises the score for action and lowers it during scenic pauses while keeping one continuous musical phrase. The final limiter reserves peak headroom. Title PNGs, title subtitles, clean takes and separate game-sound audio remain available for another editor.
-
-Source baseline for the first cut: stable v1.8.0 (`9da078010abe25ba2756939a8b379ca5ce3444f6`), with local fixes for ground projection onto bridge decks and consistent radial pie menus, plus the separately identified Trials of Gipath preview pack. Each take pins its exact pack; earlier unaffected shots retain the stable pack. The renderer fix uses authored BASE walking-surface parts in `game/src/game/fx/ground_contact.gd` and `ground_contact_shader.gd`, with rendered regressions in `tools/tests/ground_contact.gd`. The radial renderer is `game/src/ui/pad_wheel.gd`; its existing English, Russian and German strings are retained. No release tag, published game package, public site or YouTube upload is changed by this project.
-
-## Revision 3 direction
-
-The 22-segment edit lasts 64 seconds, including 41.5 seconds of gameplay. Each of its ten campaign combat segments uses a different native encounter. Four encounters use first-person view and four use third-person view. Three seconds each of the earlier white-tiger and Suslanger-ogre fights are included alongside all six newer direct-control takes. The Ingos blue-troll fight remains four seconds long.
-
-| Take | View | Place and native encounter |
+| Source | View | Content |
 | --- | --- | --- |
-| 20-tiger-first | First person | Ingos: white tiger in the snow; retained earlier recording |
-| 18-ogre-third | Third person | Suslanger: hammer-wielding ogre among the palms; retained earlier recording |
-| 27-orcs-first | First person | Big Lake, Gipath: original lakeside orc camp; bridge, lake and ogre in the background |
-| 28-banshee-first | First person | Two Rivers, Lost in Astral: banshee by the river |
-| 32-dragon-first | First person | Island of Death, Lost in Astral: crossbow against the red dragon by the island bridge |
-| 29-troll-third | Third person | Ingos: blue troll on the snow path |
-| 30-portal-third | Third person | Suslanger Portal: original gate guards and courtyard |
-| 31-fortress-third | Third person | Dar-Ulgorn, Lost in Astral: guard beside the fortress canal bridge |
+| 33-tiger-melee | First person | Original Ingos white tiger, steel battle axe |
+| 34-troll-melee | Third person | Original blue troll on the snow path |
+| 35-ogre-melee | Third person | Suslanger ogre among palms, adamantium battle axe |
+| 36-fortress-third | Third person | Dar-Ulgorn canal guard, wider camera and smooth tracking |
+| 37-dragon-spell | Elevated | Island of Death dragon, lightning and water reflection |
+| 38-kir-walk | Third person | Kir walking through Lost in Astral's opening map |
+| 39-kir-skeletons | Third person | Kir fighting a native opening skeleton; native flying limbs |
+| 40-coop-first | First person | Real second client fighting beside the camera player |
+| 41-touch-combat | Isometric | Native screen-touch targeting and combat, no inventory sequence |
+| 42–45 | Scenic | Clouds, rain/water rings, grass and stream currents |
+| 46-trials-snow | Arena | Current snowy Trials of the Allods map, live fight |
+| 47-banshee-melee | First person | Two Rivers banshee with a meteoric sword |
+| 48-orc-melee | First person | Original Big Lake orc camp |
+| 49-dead-city-spells | Isometric | Native skeleton encounter and spell impacts |
 
-The isometric scenes show native Dead City skeletons in rain and the Middle Mountains dragon encounter. Scenic pauses retain the Ingos lake/castle, coastal Jun ruins in rain, HD Lands fountain paving, irrigation canals and waterfalls. The repeated dry Jun-ruins overview is omitted, and the second isometric battle is shortened by half a second. The original “Cool” music is continuous, with level changes between scenery and action, plus native game sound. Captions are factual labels. The five-second end card shows the uppercase website, repository and wiki addresses.
+The earlier Ingos lake/castle, waterfall, HD Lands, isometric co-op, wiki, gamepad and end-card sources remain available. Tiger, troll and ogre encounters remain in the cut with new successful melee recordings. Rejected sources remain archived but are excluded from the edit.
 
-The editable delivery includes the selected clean 4K60 takes, PCM sound and music in `media`, the EN/RU/DE manifest and scripts, fonts and a portable `edit-config.json`. After extracting it, run `python3 tools/trailer/trailer.py compose --config edit-config.json --language en` to re-edit without launching the game. Install Python/Pillow and FFmpeg/FFprobe first. Paths in the configuration resolve relative to that configuration; selected-take paths can be relative to the output directory. For a new recording, supply the private runtime/game-data paths using `config.example.json`. Original game files and runtime binaries are not included in the edit bundle.
+Both co-op scenes launch an actual second ENet client. The new first-person take sends a native guest attack command, shows the partner in the same frame and records client identity/movement. The caption states the native campaign limit: **up to 6 players**. Two players are present in these recordings. The private recording connections allow longer loading timeouts for offline 4K rendering.
+
+`46-trials-snow` uses a separately pinned current preview pack, explicitly labelled **Preview**. Its adapter starts a live wave on the current snowy map; it fails if the run is not fighting. Replace the runtime/adapter when that mode changes without altering campaign takes.
+
+The touch shot injects real press/release events on the enemy and verifies that inventory stays closed. A small editorial ring marks finger contact. The controller shot retains the native pie menu. The wiki shot uses the actual in-game wiki and live model preview. The five-second end card includes the uppercase website, repository and wiki addresses, supported platforms and the original-data requirement.
+
+## Recording and validation
+
+The recorder pins each runtime and applies a private viewport override. It checks both the viewport and encoded AVI are 3840 × 2160. Fixed simulation steps and offline MovieWriter output preserve 60 frames per second regardless of render speed. Each take uses an isolated profile; player saves and preferences are not modified. The Linux capture display can be started with `Xephyr :19 -screen 3840x2160 -nolisten tcp -no-host-grab`; choose a GPU that can present to it.
+
+New immutable take directories preserve clean video/audio, screenshots, native hit/movement reports, exact shot settings, frozen capture scripts, command and engine log. A shot's `receipt.json` selects its current take. Early scenery predates frozen drivers but retains its media and specifications. The master's `.project.json` preserves the manifest, selected receipts and soundtrack hash.
+
+The upload master is H.264 High, progressive 4:2:0, Rec.709, a 30-frame GOP, AAC stereo 48 kHz/384 kbps and fast-start MP4. NVENC targets 60 Mbps with a 68 Mbps ceiling; portable x264 uses CRF 16 with the same ceiling. `verify` decodes/counts frames and checks dimensions, rate, duration, codecs and audio. It saves a SHA-256 validation report. PCM game sounds are assembled sample-exactly before the single final AAC encode. Music follows the edit's energy levels, with a final limiter for peak headroom.
+
+Source baseline: stable v1.8.0 (`9da078010abe25ba2756939a8b379ca5ce3444f6`) plus local bridge-ground projection and radial pie-menu fixes. Trials has its own pinned preview runtime. No release tag, published package, public site or YouTube upload is changed by this project.

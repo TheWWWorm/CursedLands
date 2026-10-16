@@ -1109,6 +1109,681 @@
           "long crossbow.steel"
         ]
       }
+    },
+    {
+      "id": "33-tiger-melee",
+      "frames": 300,
+      "kind": "combat",
+      "zone": "gz11k",
+      "hour": 11,
+      "camera": "first",
+      "heading": -27,
+      "pan": 0,
+      "tilt": -0.16,
+      "enemies": [
+        {
+          "nid": 3990,
+          "prototype": "TigerWhiteF6"
+        }
+      ],
+      "title": "first",
+      "hud": false,
+      "hd": true,
+      "hero": [
+        264,
+        144
+      ],
+      "equipment": {
+        "str": 40,
+        "dex": 35,
+        "int": 25,
+        "skills": {
+          "melee": 100,
+          "archery": 60,
+          "elemental": 60
+        },
+        "weapons": [
+          "battle axe.steel"
+        ],
+        "exp_total": 30000
+      },
+      "track_enemy": true,
+      "wardrobe": "ingos",
+      "options": {
+        "direct_fov_first": 5
+      },
+      "pre_roll": 0,
+      "minimum_damage": 5,
+      "minimum_tilt": -1.05
+    },
+    {
+      "frames": 300,
+      "kind": "combat",
+      "hour": 14,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.1,
+      "hud": false,
+      "hd": true,
+      "track_enemy": true,
+      "pre_roll": 0,
+      "approach": false,
+      "id": "34-troll-melee",
+      "zone": "gz11k",
+      "camera": "third",
+      "wardrobe": "ingos",
+      "hero": [
+        182,
+        135
+      ],
+      "enemies": [
+        {
+          "nid": 4043,
+          "prototype": "TrollBlueF9"
+        }
+      ],
+      "title": "third",
+      "equipment": {
+        "str": 40,
+        "dex": 35,
+        "int": 25,
+        "skills": {
+          "melee": 100,
+          "archery": 60,
+          "elemental": 60
+        },
+        "exp_total": 30000,
+        "weapons": [
+          "battle axe.steel"
+        ]
+      },
+      "camera_distance": 4.5,
+      "minimum_damage": 5
+    },
+    {
+      "id": "35-ogre-melee",
+      "frames": 300,
+      "kind": "combat",
+      "zone": "gz18h",
+      "hour": 16,
+      "camera": "third",
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.12,
+      "enemies": [
+        {
+          "nid": 150993,
+          "prototype": "OgreHadaganF15"
+        }
+      ],
+      "title": "third",
+      "hud": false,
+      "hd": true,
+      "hero": [
+        142.4,
+        334
+      ],
+      "equipment": {
+        "str": 50,
+        "dex": 35,
+        "int": 25,
+        "skills": {
+          "melee": 100,
+          "archery": 80,
+          "elemental": 80
+        },
+        "exp_total": 60000,
+        "weapons": [
+          "battle axe.adamantium"
+        ]
+      },
+      "track_enemy": true,
+      "wardrobe": "suslanger",
+      "pre_roll": 0,
+      "approach": false,
+      "camera_distance": 4.5,
+      "minimum_damage": 5
+    },
+    {
+      "frames": 360,
+      "kind": "combat",
+      "hour": 14,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.1,
+      "hud": false,
+      "hd": false,
+      "track_enemy": true,
+      "pre_roll": 0,
+      "approach": false,
+      "id": "36-fortress-third",
+      "zone": "gz33j",
+      "camera": "third",
+      "wardrobe": "jigran",
+      "hero": [
+        201.25,
+        99.25
+      ],
+      "enemies": [
+        {
+          "nid": 44453161,
+          "prototype": "zone33 Human Fighter2 M"
+        }
+      ],
+      "title": "third",
+      "campaign": "lost_in_astral",
+      "equipment": {
+        "str": 60,
+        "dex": 50,
+        "int": 40,
+        "skills": {
+          "melee": 100,
+          "archery": 80,
+          "elemental": 80
+        },
+        "exp_total": 140000,
+        "weapons": [
+          "long sword.meteoric"
+        ]
+      },
+      "advance_frames": 60,
+      "minimum_advance_distance": 0.75,
+      "camera_distance": 4.5,
+      "minimum_damage": 5
+    },
+    {
+      "frames": 240,
+      "kind": "combat",
+      "hour": 14,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.1,
+      "hud": false,
+      "hd": false,
+      "track_enemy": true,
+      "pre_roll": 0,
+      "approach": false,
+      "id": "37-dragon-spell",
+      "zone": "gz32j",
+      "camera": "isometric",
+      "wardrobe": "jigran",
+      "hero": [
+        82,
+        191
+      ],
+      "enemies": [
+        {
+          "nid": 44432950,
+          "prototype": "zone32 DragonRed"
+        }
+      ],
+      "title": "first",
+      "options": {
+        "direct_fov_first": 8
+      },
+      "campaign": "lost_in_astral",
+      "equipment": {
+        "str": 60,
+        "dex": 50,
+        "int": 40,
+        "skills": {
+          "melee": 100,
+          "archery": 80,
+          "elemental": 100
+        },
+        "exp_total": 140000,
+        "weapons": []
+      },
+      "eye_from": [
+        14,
+        15,
+        30
+      ],
+      "eye_to": [
+        14,
+        15,
+        30
+      ],
+      "combat_focus_lift": 6,
+      "spell": "lightning{e2;e2;e2;r2;m2;m2}",
+      "spell_frames": [
+        10,
+        160
+      ],
+      "wait_for_hit": true,
+      "minimum_damage": 5,
+      "focus_world": [
+        83,
+        10,
+        -200
+      ],
+      "eye_world_from": [
+        108,
+        24,
+        -228
+      ],
+      "eye_world_to": [
+        108,
+        24,
+        -228
+      ]
+    },
+    {
+      "id": "38-kir-walk",
+      "frames": 180,
+      "kind": "walk",
+      "campaign": "lost_in_astral",
+      "zone": "gz1g",
+      "hour": 13,
+      "hero": [
+        74.25,
+        154.25
+      ],
+      "camera": "third",
+      "heading": 270,
+      "pan": 0,
+      "tilt": -0.12,
+      "camera_distance": 4.5,
+      "advance_frames": 180,
+      "title": "astral",
+      "minimum_advance_distance": 2
+    },
+    {
+      "id": "39-kir-skeletons",
+      "frames": 420,
+      "kind": "combat",
+      "campaign": "lost_in_astral",
+      "zone": "gz1g",
+      "hour": 13,
+      "hero": [
+        82,
+        154
+      ],
+      "enemies": [
+        {
+          "nid": 3340964,
+          "prototype": "zonezero Skeleton"
+        }
+      ],
+      "camera": "third",
+      "track_enemy": true,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.13,
+      "camera_distance": 4.5,
+      "advance_frames": 45,
+      "pre_roll": 0,
+      "title": "astral",
+      "aim_parts": [
+        2,
+        3,
+        4,
+        0
+      ],
+      "wardrobe": "kir-opening",
+      "equipment": {
+        "exp_total": 1200,
+        "skills": {
+          "melee": 30,
+          "astral": 12,
+          "science": 2
+        }
+      },
+      "minimum_damage": 0.5,
+      "minimum_severed": 1
+    },
+    {
+      "id": "40-coop-first",
+      "frames": 360,
+      "kind": "coop",
+      "zone": "gz9g",
+      "hour": 14,
+      "hero": [
+        204,
+        187
+      ],
+      "guest": [
+        208,
+        187
+      ],
+      "camera": "first",
+      "track_enemy": true,
+      "heading": -45,
+      "pan": 0,
+      "tilt": -0.1,
+      "enemies": [
+        {
+          "nid": 1494,
+          "prototype": "SkeletonWarriorF7"
+        }
+      ],
+      "wardrobe": "gipath",
+      "equipment": {
+        "str": 30,
+        "dex": 35,
+        "int": 25,
+        "exp_total": 15000,
+        "skills": {
+          "melee": 100
+        },
+        "weapons": [
+          "stone battle axe.malachite"
+        ]
+      },
+      "hud": false,
+      "hd": true,
+      "title": "coop",
+      "options": {
+        "direct_fov_first": 5
+      },
+      "minimum_damage": 1
+    },
+    {
+      "id": "41-touch-combat",
+      "frames": 360,
+      "kind": "combat",
+      "zone": "gz9g",
+      "hour": 14,
+      "hero": [
+        212,
+        185
+      ],
+      "enemies": [
+        {
+          "nid": 1495,
+          "prototype": "SkeletonWarriorF7"
+        },
+        {
+          "nid": 1496,
+          "prototype": "SkeletonWarriorF7"
+        }
+      ],
+      "eye_from": [
+        -6,
+        7,
+        7
+      ],
+      "eye_to": [
+        -6,
+        7,
+        7
+      ],
+      "wardrobe": "gipath",
+      "equipment": {
+        "str": 25,
+        "dex": 30,
+        "int": 25,
+        "exp_total": 10000,
+        "skills": {
+          "melee": 100
+        },
+        "weapons": [
+          "stone battle axe.malachite"
+        ]
+      },
+      "input": "touch",
+      "touch_demo": "combat",
+      "hud": true,
+      "hd": true,
+      "title": "touch",
+      "minimum_damage": 1
+    },
+    {
+      "id": "42-clouds",
+      "frames": 150,
+      "zone": "gz7g",
+      "hour": 14,
+      "title": "clouds",
+      "hd": true,
+      "hide_party": true,
+      "focus": [
+        362,
+        132
+      ],
+      "focus_height": 18,
+      "eye_from": [
+        -28,
+        -6,
+        1
+      ],
+      "eye_to": [
+        -27.5,
+        -6,
+        1
+      ]
+    },
+    {
+      "id": "43-rain-water",
+      "frames": 210,
+      "zone": "gz7g",
+      "hour": 14,
+      "title": "rain",
+      "hd": true,
+      "weather": "rain",
+      "hide_party": true,
+      "warmup_frames": 420,
+      "focus_world": [
+        365,
+        5.3846,
+        -103
+      ],
+      "eye_world_from": [
+        368,
+        6.5,
+        -107
+      ],
+      "eye_world_to": [
+        367.7,
+        6.5,
+        -107.2
+      ],
+      "fov": 40
+    },
+    {
+      "id": "44-grass",
+      "frames": 180,
+      "zone": "gz7g",
+      "hour": 14,
+      "title": "grass",
+      "hd": true,
+      "hide_party": true,
+      "focus": [
+        337,
+        133
+      ],
+      "focus_height": 0.2,
+      "eye_from": [
+        0,
+        1.3,
+        -3.0414
+      ],
+      "eye_to": [
+        0.35,
+        1.3,
+        -3.0414
+      ]
+    },
+    {
+      "id": "45-streams",
+      "frames": 150,
+      "zone": "gz8g",
+      "hour": 14,
+      "title": "streams",
+      "hide_party": true,
+      "focus_world": [
+        112,
+        14.0245,
+        -170
+      ],
+      "eye_world_from": [
+        108,
+        17,
+        -164
+      ],
+      "hd": true,
+      "eye_world_to": [
+        108.4,
+        17,
+        -164.2
+      ],
+      "minimum_current": 0.05
+    },
+    {
+      "id": "46-trials-snow",
+      "frames": 300,
+      "kind": "arena",
+      "runtime": "arena",
+      "title": "trials",
+      "preview": true
+    },
+    {
+      "frames": 300,
+      "kind": "combat",
+      "hour": 14,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.1,
+      "hud": false,
+      "hd": false,
+      "track_enemy": true,
+      "pre_roll": 0,
+      "approach": false,
+      "id": "47-banshee-melee",
+      "zone": "gz34j",
+      "camera": "first",
+      "wardrobe": "jigran",
+      "hero": [
+        117,
+        49
+      ],
+      "enemies": [
+        {
+          "nid": 44453163,
+          "prototype": "zone34 Banshee Fighter1"
+        }
+      ],
+      "title": "first",
+      "options": {
+        "direct_fov_first": 5
+      },
+      "campaign": "lost_in_astral",
+      "equipment": {
+        "str": 60,
+        "dex": 50,
+        "int": 40,
+        "skills": {
+          "melee": 100,
+          "archery": 80,
+          "elemental": 80
+        },
+        "exp_total": 140000,
+        "weapons": [
+          "long sword.meteoric"
+        ]
+      },
+      "minimum_damage": 5
+    },
+    {
+      "frames": 300,
+      "kind": "combat",
+      "hour": 14,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.1,
+      "hud": false,
+      "hd": true,
+      "track_enemy": true,
+      "pre_roll": 0,
+      "approach": false,
+      "id": "48-orc-melee",
+      "zone": "gz7g",
+      "camera": "first",
+      "wardrobe": "gipath",
+      "hero": [
+        334,
+        133
+      ],
+      "enemies": [
+        {
+          "nid": 5226,
+          "prototype": "OrcMaleF3"
+        }
+      ],
+      "title": "first",
+      "options": {
+        "direct_fov_first": 5
+      },
+      "equipment": {
+        "str": 25,
+        "dex": 25,
+        "int": 25,
+        "skills": {
+          "melee": 65,
+          "archery": 40,
+          "elemental": 65
+        },
+        "exp_total": 10000
+      },
+      "minimum_damage": 1
+    },
+    {
+      "id": "49-dead-city-spells",
+      "frames": 300,
+      "kind": "combat",
+      "zone": "gz9g",
+      "hour": 14,
+      "eye_from": [
+        11,
+        9,
+        10
+      ],
+      "eye_to": [
+        10,
+        9,
+        11
+      ],
+      "enemies": [
+        {
+          "nid": 2304,
+          "prototype": "SkeletonF4"
+        },
+        {
+          "nid": 1584,
+          "prototype": "SkeletonWarriorF7"
+        },
+        {
+          "nid": 1585,
+          "prototype": "SkeletonWarriorF7"
+        }
+      ],
+      "title": "tactical",
+      "hud": false,
+      "hd": true,
+      "hero": [
+        332,
+        164
+      ],
+      "equipment": {
+        "str": 25,
+        "dex": 25,
+        "int": 25,
+        "skills": {
+          "melee": 65,
+          "archery": 40,
+          "elemental": 65
+        },
+        "exp_total": 10000
+      },
+      "wardrobe": "gipath",
+      "pre_roll": 0,
+      "weather": "rain",
+      "spell": "fireball{e1;e1;m1;m1;m1}",
+      "spell_frames": [
+        1,
+        150,
+        300
+      ],
+      "minimum_damage": 1
     }
   ],
   "text": {
@@ -1227,26 +1902,29 @@
     },
     "coop": {
       "en": [
-        "CAMPAIGN CO-OP"
+        "CAMPAIGN CO-OP",
+        "Up to 6 players"
       ],
       "ru": [
-        "СОВМЕСТНАЯ КАМПАНИЯ"
+        "СОВМЕСТНАЯ КАМПАНИЯ",
+        "До 6 игроков"
       ],
       "de": [
-        "KOOP-KAMPAGNE"
+        "KOOP-KAMPAGNE",
+        "Bis zu 6 Spieler"
       ]
     },
     "trials": {
       "en": [
-        "TRIALS OF GIPATH",
+        "TRIALS OF THE ALLODS",
         "Preview"
       ],
       "ru": [
-        "ИСПЫТАНИЯ ГИПАТА",
+        "ИСПЫТАНИЯ АЛЛОДОВ",
         "В разработке"
       ],
       "de": [
-        "PRÜFUNGEN VON GIPATH",
+        "PRÜFUNGEN DER ALLODS",
         "Vorschau"
       ]
     },
@@ -1311,13 +1989,13 @@
     },
     "rain": {
       "en": [
-        "RAINDROPS"
+        "RAIN + WATER RIPPLES"
       ],
       "ru": [
-        "КАПЛИ ДОЖДЯ"
+        "ДОЖДЬ И КРУГИ НА ВОДЕ"
       ],
       "de": [
-        "REGENTROPFEN"
+        "REGEN + WASSERRINGE"
       ]
     },
     "light": {
@@ -1365,6 +2043,61 @@
       "de": [
         "INGOS",
         "Dritte-Person-Perspektive"
+      ]
+    },
+    "clouds": {
+      "en": [
+        "CLOUDS"
+      ],
+      "ru": [
+        "ОБЛАКА"
+      ],
+      "de": [
+        "WOLKEN"
+      ]
+    },
+    "grass": {
+      "en": [
+        "GRASS"
+      ],
+      "ru": [
+        "ТРАВА"
+      ],
+      "de": [
+        "GRAS"
+      ]
+    },
+    "streams": {
+      "en": [
+        "WATER CURRENTS"
+      ],
+      "ru": [
+        "ТЕЧЕНИЕ ВОДЫ"
+      ],
+      "de": [
+        "WASSERSTRÖMUNGEN"
+      ]
+    },
+    "limbs": {
+      "en": [
+        "LIMB REMOVAL"
+      ],
+      "ru": [
+        "ОТСЕЧЕНИЕ КОНЕЧНОСТЕЙ"
+      ],
+      "de": [
+        "ABTRENNBARE GLIEDMASSEN"
+      ]
+    },
+    "reflections": {
+      "en": [
+        "REFLECTIONS"
+      ],
+      "ru": [
+        "ОТРАЖЕНИЯ"
+      ],
+      "de": [
+        "SPIEGELUNGEN"
       ]
     }
   },
@@ -1424,6 +2157,15 @@
       "weapons": [
         "long sword.steel"
       ]
+    },
+    "kir-opening": {
+      "armors": [
+        "hadagan medium pants.wool"
+      ],
+      "weapons": [
+        "cheat dagger.bronze"
+      ],
+      "native_start": true
     }
   },
   "excluded_locations": {
@@ -1434,7 +2176,6 @@
       "bz13h"
     ],
     "lost_in_astral": [
-      "gz1g",
       "gz31j",
       "bz31j"
     ]
@@ -1470,178 +2211,194 @@
     "25-touch-city": "Native touch menu in the Dead City, with Gipath equipment.",
     "32-dragon-first": "Island of Death, Lost in Astral gz32j: native red dragon 44432950 flying over the sea beside the island bridge. Player stands on the island road at the bridge landing, with Kania steel and a long crossbow. The offshore blue-dragon angle was rejected."
   },
-  "revision": 3,
+  "revision": 4,
   "edit": [
     {
       "id": "01-03-ingos",
       "shot": "03-ingos",
-      "frames": 150,
+      "frames": 120,
       "start": 18,
       "title": "return",
       "energy": "calm"
     },
     {
-      "id": "02-29-troll-third",
-      "shot": "29-troll-third",
-      "frames": 240,
-      "start": 0,
+      "id": "02-34-troll-melee",
+      "shot": "34-troll-melee",
+      "frames": 150,
+      "start": 60,
       "title": "ingos_third",
       "energy": "action"
     },
     {
-      "id": "04-23-dead-city",
-      "shot": "23-dead-city",
+      "id": "03-33-tiger-melee",
+      "shot": "33-tiger-melee",
       "frames": 180,
-      "start": 30,
-      "title": "tactical",
-      "energy": "action"
-    },
-    {
-      "id": "05-05-astral",
-      "shot": "05-astral",
-      "frames": 120,
-      "start": 30,
-      "title": "astral",
-      "energy": "calm"
-    },
-    {
-      "id": "06-32-dragon-first",
-      "shot": "32-dragon-first",
-      "frames": 240,
-      "start": 0,
+      "start": 60,
       "title": "first",
       "energy": "action"
     },
     {
-      "id": "07-21-rain-ruins",
-      "shot": "21-rain-ruins",
+      "id": "04-49-dead-city-spells",
+      "shot": "49-dead-city-spells",
       "frames": 150,
-      "start": 0,
+      "start": 145,
+      "title": "tactical",
+      "energy": "action"
+    },
+    {
+      "id": "05-42-clouds",
+      "shot": "42-clouds",
+      "frames": 120,
+      "start": 30,
+      "title": "clouds",
+      "energy": "feature"
+    },
+    {
+      "id": "06-43-rain-water",
+      "shot": "43-rain-water",
+      "frames": 150,
+      "start": 30,
       "title": "rain",
-      "energy": "calm"
+      "energy": "feature"
     },
     {
-      "id": "r3-20-tiger-first",
-      "shot": "20-tiger-first",
-      "frames": 180,
-      "start": 0,
-      "title": "",
-      "energy": "action"
+      "id": "07-44-grass",
+      "shot": "44-grass",
+      "frames": 120,
+      "start": 20,
+      "title": "grass",
+      "energy": "feature"
     },
     {
-      "id": "08-24-dragon-valley",
-      "shot": "24-dragon-valley",
-      "frames": 210,
-      "start": 0,
-      "title": "",
-      "energy": "action"
+      "id": "08-45-streams",
+      "shot": "45-streams",
+      "frames": 120,
+      "start": 30,
+      "title": "streams",
+      "energy": "feature"
     },
     {
-      "id": "09-06-hdlands",
-      "shot": "06-hdlands",
+      "id": "09-07-light",
+      "shot": "07-light",
       "frames": 90,
+      "start": 60,
+      "title": "light",
+      "energy": "feature"
+    },
+    {
+      "id": "10-06-hdlands",
+      "shot": "06-hdlands",
+      "frames": 120,
       "start": 90,
       "title": "hdlands",
+      "energy": "feature"
+    },
+    {
+      "id": "11-38-kir-walk",
+      "shot": "38-kir-walk",
+      "frames": 120,
+      "start": 15,
+      "title": "astral",
       "energy": "calm"
     },
     {
-      "id": "10-30-portal-third",
-      "shot": "30-portal-third",
-      "frames": 210,
-      "start": 0,
-      "title": "suslanger",
+      "id": "12-39-kir-skeletons",
+      "shot": "39-kir-skeletons",
+      "frames": 270,
+      "start": 110,
+      "title": "limbs",
       "energy": "action"
     },
     {
-      "id": "11-11-coop",
-      "shot": "11-coop",
+      "id": "13-37-dragon-spell",
+      "shot": "37-dragon-spell",
       "frames": 240,
+      "start": 0,
+      "title": "reflections",
+      "energy": "action"
+    },
+    {
+      "id": "14-11-coop",
+      "shot": "11-coop",
+      "frames": 150,
       "start": 30,
       "title": "coop",
       "energy": "action"
     },
     {
-      "id": "12-27-orcs-first",
-      "shot": "27-orcs-first",
-      "frames": 180,
-      "start": 0,
-      "title": "gipath",
+      "id": "15-40-coop-first",
+      "shot": "40-coop-first",
+      "frames": 210,
+      "start": 90,
+      "title": "coop",
       "energy": "action"
     },
     {
-      "id": "13-04-suslanger",
-      "shot": "04-suslanger",
-      "frames": 90,
+      "id": "16-48-orc-melee",
+      "shot": "48-orc-melee",
+      "frames": 150,
+      "start": 140,
+      "title": "",
+      "energy": "action"
+    },
+    {
+      "id": "17-47-banshee-melee",
+      "shot": "47-banshee-melee",
+      "frames": 150,
       "start": 60,
       "title": "",
-      "energy": "calm"
-    },
-    {
-      "id": "r3-18-ogre-third",
-      "shot": "18-ogre-third",
-      "frames": 180,
-      "start": 0,
-      "title": "",
       "energy": "action"
     },
     {
-      "id": "14-28-banshee-first",
-      "shot": "28-banshee-first",
+      "id": "18-46-trials-snow",
+      "shot": "46-trials-snow",
       "frames": 210,
-      "start": 0,
-      "title": "",
-      "energy": "action"
-    },
-    {
-      "id": "15-31-fortress-third",
-      "shot": "31-fortress-third",
-      "frames": 180,
-      "start": 0,
-      "title": "",
-      "energy": "action"
-    },
-    {
-      "id": "16-12-trials",
-      "shot": "12-trials",
-      "frames": 240,
-      "start": 0,
+      "start": 30,
       "title": "trials",
       "energy": "action"
     },
     {
-      "id": "17-13-wiki",
+      "id": "19-41-touch-combat",
+      "shot": "41-touch-combat",
+      "frames": 240,
+      "start": 60,
+      "title": "touch",
+      "energy": "action"
+    },
+    {
+      "id": "20-13-wiki",
       "shot": "13-wiki",
-      "frames": 120,
+      "frames": 90,
       "start": 60,
       "title": "wiki",
       "energy": "feature"
     },
     {
-      "id": "18-25-touch-city",
-      "shot": "25-touch-city",
-      "frames": 90,
-      "start": 0,
-      "title": "touch",
-      "energy": "feature"
-    },
-    {
-      "id": "19-15-gamepad",
+      "id": "21-15-gamepad",
       "shot": "15-gamepad",
-      "frames": 120,
+      "frames": 90,
       "start": 30,
       "title": "pad",
       "energy": "feature"
     },
     {
-      "id": "20-07-light",
-      "shot": "07-light",
-      "frames": 120,
-      "start": 60,
-      "title": "light",
-      "energy": "calm"
+      "id": "22-36-fortress-third",
+      "shot": "36-fortress-third",
+      "frames": 180,
+      "start": 110,
+      "title": "",
+      "energy": "action"
     },
     {
-      "id": "21-22-endcard",
+      "id": "23-35-ogre-melee",
+      "shot": "35-ogre-melee",
+      "frames": 180,
+      "start": 50,
+      "title": "suslanger",
+      "energy": "action"
+    },
+    {
+      "id": "24-22-endcard",
       "shot": "22-endcard",
       "frames": 300,
       "start": 0,
