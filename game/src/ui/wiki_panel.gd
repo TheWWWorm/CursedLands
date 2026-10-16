@@ -95,7 +95,7 @@ var _article_column: VBoxContainer
 func _ready() -> void:
 	hide()
 	process_mode=Node.PROCESS_MODE_ALWAYS
-	theme=Theme.new();theme.default_font=preload("res://fonts/LiberationSans-Regular.ttf");theme.default_font_size=16
+	theme=Theme.new();theme.default_font=load("res://fonts/LiberationSans-Regular.ttf");theme.default_font_size=16
 	for type: String in ["Label","Button","OptionButton","CheckButton","LineEdit"]:theme.set_color("font_color",type,Color("eee8d8"))
 	theme.set_color("font_placeholder_color","LineEdit",Color("b7c4ad"))
 	theme.set_constant("arrow_margin","OptionButton",14)
@@ -206,7 +206,7 @@ func _paper_theme() -> Theme:
 	result.set_color("font_placeholder_color","LineEdit",Color("65715a"))
 	for prefix: String in ["up","down"]:
 		for state: String in ["","_hover","_pressed","_disabled"]:result.set_color(prefix+state+"_icon_modulate","SpinBox",Color("5c6c4d"))
-	result.set_color("default_color","RichTextLabel",Color("2d392b"));result.set_color("table_odd_row_bg","RichTextLabel",Color("e7e6d7"));result.set_color("table_even_row_bg","RichTextLabel",Color("eeecdf"));result.set_color("font_selected_color","RichTextLabel",Color("203522"));result.set_color("selection_color","RichTextLabel",Color("cdd9b7"));result.set_font("bold_font","RichTextLabel",preload("res://fonts/LiberationSans-Bold.ttf"))
+	result.set_color("default_color","RichTextLabel",Color("2d392b"));result.set_color("table_odd_row_bg","RichTextLabel",Color("e7e6d7"));result.set_color("table_even_row_bg","RichTextLabel",Color("eeecdf"));result.set_color("font_selected_color","RichTextLabel",Color("203522"));result.set_color("selection_color","RichTextLabel",Color("cdd9b7"));result.set_font("bold_font","RichTextLabel",load("res://fonts/LiberationSans-Bold.ttf"))
 	result.set_constant("table_h_separation","RichTextLabel",12);result.set_constant("table_v_separation","RichTextLabel",3)
 	for state: String in ["normal","hover","pressed","disabled","focus"]:
 		var style := StyleBoxFlat.new();style.bg_color=Color("d6dfc4") if state in ["pressed","hover"] else Color("f6f1e6");style.border_color=Color("7b886a") if state in ["focus","pressed"] else Color("bac2a8");style.set_border_width_all(1);style.set_corner_radius_all(4);style.set_content_margin_all(8)
