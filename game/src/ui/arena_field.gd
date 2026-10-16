@@ -293,7 +293,6 @@ func _draw_overlay() -> void:
 		if numeric_health:
 			var placement: Dictionary = u.get_meta("arena_placement", {})
 			var rank := int(placement.get("rank", ArenaUnitInfo.rank_of(String(u.info.get("prototype", "")))))
-			if placement.has("pact") and match_state is ArenaPveMatch: rank = match_state.run.pact_rank
 			if rank >= 0: ArenaStars.draw_rank(overlay, p - Vector2(((rank + 1) * 14 - 2) / 2.0, 38) * k, rank + 1, k)
 		if numeric_health or u == hovered:
 			var text := "%d/%d" % [maxi(0, ceili(u.hp)), ceili(u.max_hp)] if numeric_health else u.display_name

@@ -37,7 +37,7 @@ func _ready() -> void:
 	check(run.wave == 7,"retry stays on its wave")
 	run.gold = 50
 	var old := run.snapshot()
-	check(run.train().is_empty() and run.capacity() == 6 and run.gold == 45,"training advances capacity before its normal wave")
+	check(run.train().is_empty() and run.experience() == int(old.training) + run.wave - 1 + 5 and run.gold == 45,"training advances capacity before its normal wave")
 	var deployed := run._recruit(0,0,3)
 	run.arrange()
 	var saved := run.snapshot()
@@ -52,18 +52,20 @@ func _ready() -> void:
 	run.gold = 30
 	var before := run.snapshot()
 	run.train()
-	check(run.wave == 1 and run.capacity() == 4,"army growth is available from wave one")
+	check(run.wave == 1 and run.level_progress() == 5,"army growth is available from wave one")
 	run.undo()
 	check(run.snapshot() == before,"training is undoable")
-	for i in 6: run.train()
-	check(run.capacity() == 9 and run.gold == 0,"capacity stops at nine")
-	check(not run.train().is_empty() and run.gold == 0,"max training cannot charge again")
-	var legacy := run.snapshot();legacy.version=3;legacy.erase("training");legacy.erase("battle_savings")
+	run.gold = 200
+	for i in 26: run.train()
+	check(run.capacity() == 9 and run.experience() == 126,"capacity stops at nine")
+	var max_bank := run.gold
+	check(not run.train().is_empty() and run.gold == max_bank,"max training cannot charge again")
+	var legacy := run.snapshot();legacy.version=3;legacy.pact="";legacy.pact_rank=0;legacy.erase("training");legacy.erase("battle_savings")
 	check(restored.restore(legacy) and restored.training == 0,"old saves preserve free army growth")
 	Fixture.begin(run, 33,1)
-	check(run.sale_value(run.army[0]) == 3,"one-star recruits can be exchanged without losing gold")
-	var copy := run._recruit(2,0,3);run._recruit(2,0,3);run.combine_ready()
-	check(run.sale_value(run.army[1]) == 6,"evolved units retain a partial refund")
+	check(run.sale_value(run.army[0]) == 1,"one-star recruits can be exchanged without losing gold")
+	var copy := run._recruit(2,0,1);run._recruit(2,0,1);run.combine_ready()
+	check(run.sale_value(run.army[1]) == 2,"evolved units retain a partial refund")
 	for family in ArenaRules.FAMILIES.size():
 		for rank in ArenaRules.FAMILIES[family].forms.size():
 			var id := ArenaRules.prototype(family,rank)

@@ -220,7 +220,6 @@ func open_arena_pve() -> void:
 	await get_tree().process_frame
 	var arena := ArenaPveScreen.new()
 	arena.exit_requested.connect(back_to_menu)
-	arena.sandbox_requested.connect(open_arena)
 	add_child(arena)
 
 

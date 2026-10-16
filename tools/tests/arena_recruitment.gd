@@ -18,7 +18,7 @@ func _ready() -> void:
 	for seed_value in range(6100, 6130):
 		run.begin(seed_value)
 		check(run.army.is_empty() and run.deployed_count() == 0 and run.next_uid == 1, "no starting creatures")
-		check(run.gold == 16 and run.shop.size() == 6, "opening budget and six offers")
+		check(run.gold == ArenaRules.OPENING_GOLD and run.shop.size() == 6, "opening budget and six offers")
 		var families := {}
 		for offer in run.shop:
 			families[offer.family] = true
@@ -26,11 +26,11 @@ func _ready() -> void:
 		check(families.size() == 6, "every family can be chosen at the start")
 		check(not run.start_battle().is_empty(), "empty army cannot enter battle")
 		check(restored.restore(JSON.parse_string(JSON.stringify(run.snapshot()))), "empty opening saves and loads")
-		check(restored.army.is_empty() and restored.shop == JSON.parse_string(JSON.stringify(run.shop)) and restored.gold == 16, "load never grants a free company")
+		check(restored.army.is_empty() and restored.shop == JSON.parse_string(JSON.stringify(run.shop)) and restored.gold == ArenaRules.OPENING_GOLD, "load never grants a free company")
 		run.refresh(); restored.refresh()
 		check(run.shop == restored.shop and run.shop.size() == 5, "later seeded shops and save RNG agree")
 		while run.spending_error(run.refresh_cost()).is_empty(): run.refresh()
-		check(run.gold >= 3 and run.army.is_empty(), "refresh cannot spend the last recruit budget")
+		check(run.gold >= ArenaRules.MIN_RECRUIT_COST and run.army.is_empty(), "refresh cannot spend the last recruit budget")
 		var index := -1
 		for i in run.shop.size():
 			if run.purchase_error(i).is_empty(): index = i; break
@@ -48,13 +48,11 @@ func _ready() -> void:
 	run.refresh()
 	check(run.shop.size()==5 and run.shop.any(func(o):return o.locked and int(o.family)==held),"opening sixth-slot lock survives a five-offer refresh")
 	run.begin(6200)
-	check(run.train().is_empty() and run.train().is_empty(), "early training remains available")
-	check(not run.train().is_empty() and run.gold == 6, "training preserves a recruit budget")
-	run.begin(6201)
-	check(run.upgrade_shop().is_empty() and run.gold == 6, "shop quality can be bought before recruits")
-	check(run.shop.any(func(offer): return run.offer_cost(offer) <= 3), "quality upgrade leaves an affordable opening recruit")
+	check(run.train().is_empty(), "early training remains available")
+	check(not run.train().is_empty() and run.gold == 5, "training preserves a recruit budget")
+	check(run.shop.any(func(offer): return run.offer_cost(offer) <= ArenaRules.MIN_RECRUIT_COST), "training leaves an affordable opening recruit")
 	Fixture.begin(run, 6202)
-	var legacy := run.snapshot(); legacy.version = 4
+	var legacy := run.snapshot(); legacy.version = 4; legacy.pact = ""; legacy.pact_rank = 0
 	check(restored.restore(legacy) and restored.army == run.army, "existing expeditions retain their purchased or legacy army")
 	# Every three-family opening is affordable and viable against the first wave.
 	var match_state := ArenaPveMatch.new()

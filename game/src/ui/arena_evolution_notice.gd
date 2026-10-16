@@ -42,7 +42,7 @@ func retain(run: ArenaRun) -> void:
 
 
 func _still_owned(event: Dictionary, run: ArenaRun) -> bool:
-	return run.pact_prototype() == event.to if int(event.uid) == 0 else run.unit(event.uid).get("prototype", "") == event.to
+	return int(event.uid) > 0 and run.unit(event.uid).get("prototype", "") == event.to
 
 
 func _next() -> void:

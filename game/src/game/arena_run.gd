@@ -19,9 +19,7 @@ var preparation_left := ArenaRules.PREPARATION_SECONDS
 var army: Array[Dictionary] = []
 var shop: Array[Dictionary] = []
 var boons: Array[String] = []
-var pact := ""
-var pact_rank := 0
-var shop_level := 0
+var free_refresh := false
 var training := 0
 var battle_savings := 0
 var rewards: Array[Dictionary] = []
@@ -42,7 +40,7 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 	wave = 1; wave_limit = ArenaRules.WAVE_COUNT; gold = ArenaRules.OPENING_GOLD; lives = 3; stage = "prepare"; next_uid = 1
 	army.clear(); shop.clear(); boons.clear(); rewards.clear(); history.clear(); _undo.clear()
 	last_result = {}
-	pact = ""; pact_rank = 0; shop_level = 0
+	free_refresh = false
 	training = 0; battle_savings = 0
 	preparation_left = ArenaRules.PREPARATION_SECONDS
 	last_evolutions.clear()
@@ -58,11 +56,19 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 
 
 func capacity() -> int:
-	return mini(ArenaRules.MAX_ARMY, 3 + experience() / 3)
+	return ArenaRules.level_for_xp(experience())
 
 
 func experience() -> int:
 	return mini(ArenaRules.MAX_TRAINING, wave - 1 + training)
+
+
+func level_progress() -> int:
+	return experience() - int(ArenaRules.LEVEL_XP[capacity()])
+
+
+func level_needed() -> int:
+	return 0 if capacity() == ArenaRules.MAX_ARMY else int(ArenaRules.LEVEL_XP[capacity() + 1]) - int(ArenaRules.LEVEL_XP[capacity()])
 
 
 func train() -> String:
@@ -92,14 +98,14 @@ func income_preview(savings := -1) -> Dictionary:
 	var streak := win_streak() + 1
 	var bonus := 2 if streak >= 6 else 1 if streak >= 3 else 0
 	var interest := mini(ArenaRules.INTEREST_CAP, maxi(0, bank) / 10)
-	var bounty := ArenaRules.BASE_INCOME + ArenaRules.region(wave) * 2
+	var bounty := ArenaRules.BASE_INCOME
 	return {"base": bounty, "victory": ArenaRules.WIN_INCOME,
 		"interest": interest, "streak": bonus,
 		"total": bounty + ArenaRules.WIN_INCOME + interest + bonus}
 
 
 func bench_limit() -> int:
-	return 9 if "reserve" in boons else 6
+	return 11 if "reserve" in boons else 8
 
 
 func deployed_count() -> int:
@@ -111,7 +117,7 @@ func bench_count() -> int:
 
 
 func refresh_cost() -> int:
-	return 1 if "merchant" in boons else 2
+	return 0 if free_refresh else 1 if "merchant" in boons else 2
 
 
 func spending_error(cost: int) -> String:
@@ -121,46 +127,8 @@ func spending_error(cost: int) -> String:
 	return ""
 
 
-func pact_families(candidate := "") -> Array[int]:
-	var found: Array[int] = []
-	var key := pact if candidate.is_empty() else candidate
-	if not ArenaRules.PACTS.has(key): return found
-	var rule: Dictionary = ArenaRules.PACTS[key]
-	for entry: Dictionary in army:
-		var family := int(entry.family)
-		if entry.deployed and family in rule.families and int(entry.rank) >= int(rule.min_rank) and family not in found:
-			found.append(family)
-	return found
-
-
-func pact_active() -> bool:
-	return ArenaRules.PACTS.has(pact) and pact_families().size() >= int(ArenaRules.PACTS[pact].needed)
-
-
-func pact_prototype(rank_override := -1) -> String:
-	if not ArenaRules.PACTS.has(pact): return ""
-	var rule: Dictionary = ArenaRules.PACTS[pact]
-	var chapter := ArenaRules.region(wave)
-	var rank := pact_rank if rank_override < 0 else rank_override
-	return rule.forms[rank] if chapter == 0 else rule.later_forms[chapter - 1][rank]
-
-
-func support_placement() -> Dictionary:
-	if not pact_active(): return {}
-	var proto := GameData.db.find("monster_prototypes", pact_prototype())
-	var ranged := float(proto.get("attack_range", 0)) > 0 or not Array(proto.get("spells", [])).is_empty()
-	# Choose a clear position deterministically, after the player's formation.
-	# Recompute after every placement, merge or swap; never store a guest in army.
-	for x in ([21.0, 24.0, 27.0, 29.5] if ranged else [27.0, 29.5, 24.0, 21.0]):
-		for y in [32.0, 28.0, 36.0, 24.0, 40.0, 21.0, 43.0]:
-			var point := Vector2(x, y)
-			var clear := true
-			for entry: Dictionary in army:
-				if entry.deployed and point.distance_to(Vector2(entry.point[0], entry.point[1])) < 2.5:
-					clear = false
-					break
-			if clear: return {"id": pact_prototype(), "team": 0, "point": point, "pact": pact}
-	return {}
+func alliances() -> Dictionary:
+	return ArenaAlliances.counts(army)
 
 
 func unit(uid: int) -> Dictionary:
@@ -233,6 +201,7 @@ func refresh() -> String:
 	var error := spending_error(refresh_cost())
 	if not error.is_empty(): return error
 	gold -= refresh_cost()
+	free_refresh = false
 	_undo.clear() # Revealed randomness is never refunded by undo.
 	_roll_shop(true)
 	_touch()
@@ -256,18 +225,21 @@ func _roll_shop(keep_lock: bool) -> void:
 		for index in range(slots, old.size()):
 			if old[index].locked: old[slots - 1] = old[index]; break
 	shop.clear()
-	var pool := ArenaRules.recruit_pool(wave)
+	var odds: Array = ArenaRules.SHOP_ODDS[capacity()]
 	for i in slots:
 		if keep_lock and i < old.size() and old[i].locked and int(old[i].family) >= 0:
 			shop.append(old[i])
 		else:
-			var family := pool[rng.randi_range(0, pool.size() - 1)]
-			var rank := 0
-			if shop_level > 0:
-				var roll := rng.randi_range(0, 99)
-				rank = (2 if roll < 10 else 1 if roll < 55 else 0) if shop_level == 2 else (1 if roll < 30 else 0)
-				rank = mini(rank, ArenaRules.FAMILIES[family].forms.size() - 1)
-			shop.append({"family": family, "rank": rank, "locked": false})
+			var roll := rng.randi_range(0, 99)
+			var tier := 1
+			for weight: int in odds:
+				if roll < weight: break
+				roll -= weight
+				tier += 1
+			var candidates: Array[int] = []
+			for family in ArenaRules.FAMILIES.size():
+				if int(ArenaRules.FAMILIES[family].tier) == tier: candidates.append(family)
+			shop.append({"family": candidates[rng.randi_range(0, candidates.size() - 1)], "rank": 0, "locked": false})
 	# An empty company must remain recoverable after a paid refresh/improvement.
 	if army.is_empty() and not shop.any(func(offer): return int(offer.family) >= 0 and offer_cost(offer) <= ArenaRules.MIN_RECRUIT_COST):
 		for i in shop.size():
@@ -279,24 +251,9 @@ func _roll_shop(keep_lock: bool) -> void:
 func offer_cost(offer: Dictionary) -> int:
 	var rule: Dictionary = ArenaRules.FAMILIES[int(offer.family)]
 	var rank := int(offer.get("rank", 0))
-	return int(rule.prices[rank]) if rule.has("prices") else int(rule.cost) + [0, 3, 8][rank]
-
-
-func shop_upgrade_cost() -> int:
-	return [10, 18, 0][shop_level]
-
-
-func upgrade_shop() -> String:
-	if stage != "prepare": return RemakeText.t("Recruit between battles.")
-	if shop_level >= 2: return RemakeText.t("Recruitment is fully upgraded.")
-	var error := spending_error(shop_upgrade_cost())
-	if not error.is_empty(): return error
-	gold -= shop_upgrade_cost()
-	shop_level += 1
-	_undo.clear() # The included refresh reveals new random offers.
-	_roll_shop(true)
-	_touch()
-	return ""
+	var copies := 1
+	for previous in rank: copies *= ArenaRules.evolution_copies(int(offer.family), previous)
+	return int(rule.cost) * copies
 
 
 func deploy(uid: int, point: Vector2) -> String:
@@ -425,20 +382,6 @@ func arrange() -> void:
 		var pa := GameData.db.find("monster_prototypes", a.prototype)
 		var pb := GameData.db.find("monster_prototypes", b.prototype)
 		return float(pa.get("base_level", 0)) > float(pb.get("base_level", 0)))
-	# Keep a working pact when the owned army can meet it. Within each family,
-	# reserve its strongest eligible form; fill the other slots by native level.
-	if ArenaRules.PACTS.has(pact):
-		var rule: Dictionary = ArenaRules.PACTS[pact]
-		var reserved: Array[Dictionary] = []
-		var families: Array[int] = []
-		for entry: Dictionary in ordered:
-			if int(entry.family) in rule.families and int(entry.rank) >= int(rule.min_rank) and int(entry.family) not in families:
-				reserved.append(entry)
-				families.append(int(entry.family))
-				if reserved.size() == int(rule.needed): break
-		if reserved.size() == int(rule.needed):
-			for entry in reserved: ordered.erase(entry)
-			ordered = reserved + ordered
 	for entry: Dictionary in army: entry.deployed = false
 	var front := 0
 	var back := 0
@@ -472,6 +415,7 @@ func resolve(winner: int, seconds: float, damage: Array) -> void:
 			last_result.income = income
 	else:
 		lives -= 1
+		free_refresh = true
 	history.append(last_result.duplicate(true))
 	stage = "won" if winner == 0 and wave == wave_limit else "lost" if lives <= 0 else "result"
 	if auto_save: _update_profile()
@@ -483,7 +427,7 @@ func advance() -> void:
 	if int(last_result.winner) != 0:
 		stage = "prepare"
 		preparation_left = ArenaRules.PREPARATION_SECONDS
-	elif wave % 3 == 0:
+	elif wave % 5 == 0:
 		stage = "reward"
 		_make_rewards()
 	else:
@@ -497,32 +441,18 @@ func _next_wave() -> void:
 	preparation_left = ArenaRules.PREPARATION_SECONDS
 	_undo.clear()
 	_roll_shop(true)
-	# Put each newly unlocked family in its first shop. A saved lock survives.
-	var arrivals: Array[int] = []
-	for family in ArenaRules.FAMILIES.size():
-		if int(ArenaRules.FAMILIES[family].get("unlock", 1)) == wave: arrivals.append(family)
-	for index in shop.size():
-		if arrivals.is_empty(): break
-		if shop[index].locked: continue
-		shop[index] = {"family": arrivals.pop_front(), "rank": 0, "locked": false}
 
 
 func _make_rewards() -> void:
 	rewards.clear()
-	var boss := wave % 6 == 0
-	if not boss and pact.is_empty():
-		for key: String in ArenaRules.PACTS: rewards.append({"kind": "pact", "pact": key})
-		return
-	if boss or pact_rank >= 2:
-		rewards.append({"kind": "companion", "prototype": ArenaRules.companion(wave)})
-	else:
-		rewards.append({"kind": "pact_upgrade"})
+	if experience() < ArenaRules.MAX_TRAINING: rewards.append({"kind": "experience"})
+	else: rewards.append({"kind": "companion", "prototype": ArenaRules.companion(wave)})
 	var choices: Array[String] = ["merchant", "reserve", "scout"]
 	choices = choices.filter(func(k): return k not in boons)
-	if not choices.is_empty():
-		rewards.append({"kind": choices[rng.randi_range(0, choices.size() - 1)]})
-	elif not boss and pact_rank < 2:
-		rewards.append({"kind": "companion", "prototype": ArenaRules.companion(wave)})
+	if not choices.is_empty(): rewards.append({"kind": choices[rng.randi_range(0, choices.size() - 1)]})
+	else: rewards.append({"kind": "companion", "prototype": ArenaRules.companion(wave)})
+	# At maximum level and with all upgrades, do not repeat the companion.
+	if rewards[0] == rewards[1]: rewards.remove_at(1)
 	rewards.append({"kind": "life" if lives < 3 else "purse"})
 
 
@@ -532,15 +462,12 @@ func choose_reward(index: int) -> String:
 	if reward.kind == "companion" and bench_count() > bench_limit():
 		return RemakeText.t("Your reserves already hold an extra ally. Choose another reward.")
 	match String(reward.kind):
-		"pact":
-			pact = String(reward.pact)
-			pact_rank = 0
-		"pact_upgrade": pact_rank = mini(2, pact_rank + 1)
+		"experience": training += mini(10, ArenaRules.MAX_TRAINING - experience())
 		"companion":
 			# A reward must never vanish into a full bench. It arrives in one
 			# temporary overflow slot; purchases stay blocked until resolved.
 			_recruit(-1, 0, 9 + ArenaRules.region(wave) * 9, reward.prototype)
-		"purse": gold += 12
+		"purse": gold += 8
 		"supplies": gold += 6
 		"life": lives = mini(3, lives + 1)
 		_: boons.append(String(reward.kind))
@@ -572,7 +499,7 @@ func snapshot() -> Dictionary:
 		"challenge": challenge, "starter": starter, "wave": wave, "wave_limit": wave_limit, "gold": gold, "lives": lives,
 		"stage": stage, "preparation_left": preparation_left, "army": army.duplicate(true), "shop": shop.duplicate(true),
 		"boons": boons.duplicate(), "rewards": rewards.duplicate(true), "history": history.duplicate(true),
-		"pact": pact, "pact_rank": pact_rank, "shop_level": shop_level,
+		"free_refresh": free_refresh,
 		"training": training, "battle_savings": battle_savings,
 		"last_result": last_result.duplicate(true), "next_uid": next_uid}
 
@@ -590,19 +517,20 @@ func restore(data: Dictionary) -> bool:
 	if not _integer(data.get("gold"), 0, 100000) or not _integer(data.get("lives"), 0, 3): return false
 	if not _integer(data.get("challenge"), 0, 2) or not _integer(data.get("starter"), 0, 2): return false
 	if not _integer(data.get("next_uid"), 1, 100000): return false
-	if int(data.version) > 1 and (not data.has("pact") or not data.has("pact_rank")): return false
+	if int(data.version) in range(2, 8) and (not data.has("pact") or not data.has("pact_rank")): return false
+	if not data.get("free_refresh", false) is bool: return false
 	var saved_pact = data.get("pact", "") if int(data.version) > 1 else ""
 	var saved_rank = data.get("pact_rank", 0) if int(data.version) > 1 else 0
 	if not _number(data.get("preparation_left", ArenaRules.PREPARATION_SECONDS), 0, ArenaRules.PREPARATION_SECONDS): return false
 	if not _integer(data.get("shop_level", 0), 0, 2): return false
 	if not _integer(data.get("training", 0), 0, ArenaRules.MAX_TRAINING): return false
 	if not _integer(data.get("battle_savings", 0), 0, 100000): return false
-	if not saved_pact is String or (not saved_pact.is_empty() and not ArenaRules.PACTS.has(saved_pact)): return false
+	if not saved_pact is String or saved_pact not in ["", "hunt", "tribe", "vanguard"]: return false
 	if not _integer(saved_rank, 0, 2): return false
 	if saved_pact.is_empty() and int(saved_rank) != 0: return false
 	if not saved_pact.is_empty() and int(data.wave) < 4: return false
 	if int(saved_rank) > 0 and int(data.wave) < (10 if int(saved_rank) == 1 else 16): return false
-	if data.army.size() > ArenaRules.MAX_ARMY + 10 or data.boons.size() > 3 or data.history.size() > ArenaRules.WAVE_COUNT + 16: return false
+	if data.army.size() > ArenaRules.MAX_ARMY + 12 or data.boons.size() > 3 or data.history.size() > ArenaRules.WAVE_COUNT + 16: return false
 	var seen := {}
 	var deployed := 0
 	var points: Array[Vector2] = []
@@ -627,13 +555,13 @@ func restore(data: Dictionary) -> bool:
 			points.append(point)
 			deployed += 1
 		seen[int(entry.uid)] = true
-	var capacity_at_wave := mini(ArenaRules.MAX_ARMY, 3 + (int(data.wave) - 1 + int(data.get("training", 0))) / 3)
+	var capacity_at_wave := ArenaRules.level_for_xp(int(data.wave) - 1 + int(data.get("training", 0))) if int(data.version) >= 8 else mini(ArenaRules.MAX_ARMY, 3 + (int(data.wave) - 1 + int(data.get("training", 0))) / 3)
 	if deployed > capacity_at_wave: return false
 	var saved_boons := {}
 	for key in data.boons:
 		if not key is String or key not in ["merchant", "reserve", "scout"] or saved_boons.has(key): return false
 		saved_boons[key] = true
-	if data.army.size() - deployed > (10 if saved_boons.has("reserve") else 7): return false
+	if data.army.size() - deployed > (12 if saved_boons.has("reserve") else 9): return false
 	var opening_shelf: bool = int(data.version) >= 5 and int(data.wave) == 1 and data.shop.size() == 6
 	if not opening_shelf and data.shop.size() != (6 if saved_boons.has("scout") else 5): return false
 	var locks := 0
@@ -646,15 +574,15 @@ func restore(data: Dictionary) -> bool:
 			locks += 1
 	if locks > 1: return false
 	if data.stage == "reward":
-		if int(data.wave) % 3 != 0 or int(data.wave) >= ArenaRules.WAVE_COUNT: return false
+		if int(data.wave) % (5 if int(data.version) >= 8 else 3) != 0 or int(data.wave) >= ArenaRules.WAVE_COUNT: return false
 		if data.rewards.size() != 3 and not (data.rewards.size() == 2 and saved_boons.size() == 3): return false
 	elif not data.rewards.is_empty(): return false
 	var reward_kinds := {}
 	for reward in data.rewards:
-		if not reward is Dictionary or not reward.get("kind") is String or not ArenaRules.BOONS.has(reward.kind): return false
+		if not reward is Dictionary or not reward.get("kind") is String or (not ArenaRules.BOONS.has(reward.kind) and not (int(data.version) < 8 and reward.kind in ["pact", "pact_upgrade"])): return false
 		if reward.kind == "companion" and reward.get("prototype") != ArenaRules.companion(int(data.wave)): return false
 		if reward.kind == "pact":
-			if not saved_pact.is_empty() or int(data.wave) % 6 != 3 or not reward.get("pact") in ArenaRules.PACTS: return false
+			if not saved_pact.is_empty() or int(data.wave) % 6 != 3 or not reward.get("pact") in ["hunt", "tribe", "vanguard"]: return false
 			if reward_kinds.has(reward.pact): return false
 			reward_kinds[reward.pact] = true
 		elif reward.kind == "pact_upgrade":
@@ -679,13 +607,23 @@ func restore(data: Dictionary) -> bool:
 	stage = "prepare" if data.stage == "fight" else String(data.stage)
 	preparation_left = ArenaRules.PREPARATION_SECONDS if data.stage == "fight" else float(data.get("preparation_left", ArenaRules.PREPARATION_SECONDS))
 	army.assign(data.army.duplicate(true)); shop.assign(data.shop.duplicate(true)); boons.assign(data.boons)
-	pact = saved_pact; pact_rank = int(saved_rank); shop_level = int(data.get("shop_level", 0))
+	free_refresh = bool(data.get("free_refresh", false))
 	training = int(data.get("training", 0)); battle_savings = int(data.get("battle_savings", 0))
 	rewards.assign(data.rewards.duplicate(true)); history.assign(data.history.duplicate(true))
 	last_result = data.last_result.duplicate(true)
 	next_uid = int(data.next_uid)
 	for id in seen: next_uid = maxi(next_uid, int(id) + 1)
 	_undo.clear()
+	if int(data.version) < 8:
+		# Preserve every purchased slot. Convert retired shop/pact investments
+		# into XP and remove the obsolete choice before the saved run is shown.
+		training = maxi(training, int(ArenaRules.LEVEL_XP[capacity_at_wave]) - (wave - 1))
+		training += [0, 10, 28][int(data.get("shop_level", 0))]
+		if not saved_pact.is_empty(): training += 5 + int(saved_rank) * 5
+		training = mini(training, ArenaRules.MAX_TRAINING)
+		if stage == "reward":
+			rewards.clear()
+			_next_wave()
 	combine_ready()
 	return true
 

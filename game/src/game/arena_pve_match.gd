@@ -7,6 +7,10 @@ var rendered := true
 var contributions := {}
 var selected_run_uid := 0
 var settle_remaining := 0.0
+var formation_motion := ArenaFormationMotion.new()
+var _entrants := {}
+var _round_key := ""
+var _start_pending := false
 signal presentation_finished
 
 
@@ -22,7 +26,9 @@ func bounds() -> Rect2:
 
 func _spawn(placement: Dictionary) -> GameUnit:
 	var unit := super._spawn(placement)
-	if unit: unit.display_name = ArenaRules.title(placement.id)
+	if unit:
+		unit.display_name = ArenaRules.title(placement.id)
+		if rendered: _entrants[unit] = Vector2.INF
 	return unit
 
 
@@ -38,32 +44,38 @@ func prepare() -> void:
 		if entry.deployed:
 			formation.append({"id": entry.prototype, "team": 0,
 				"point": Vector2(entry.point[0], entry.point[1]), "run_uid": int(entry.uid), "rank": int(entry.rank)})
-	var support := run.support_placement()
-	if not support.is_empty(): formation.append(support)
 	var enemies := ArenaRules.enemies(run.wave, run.run_seed, run.challenge)
 	for index in enemies.size():
 		enemies[index]["enemy_slot"] = index
 	formation.append_array(enemies)
-	var rebuild := not is_instance_valid(world) or phase != Phase.DEPLOY
+	var round_key := "%d:%d:%d" % [run.run_seed, run.wave, run.lives]
+	var rebuild := not is_instance_valid(world) or phase != Phase.DEPLOY or round_key != _round_key
 	if rebuild:
+		formation_motion.clear()
+		_entrants.clear()
+		_start_pending = false
 		_rebuild_world()
 	else:
 		_reconcile_formation()
 	world.presentation = rendered
 	world.combat.difficulty_override = 0
 	world.combat.rng.seed = run.battle_seed()
+	ArenaAlliances.apply(world, run.army)
 	contributions.clear()
 	# Scenery geometry participates in both rendered and headless navigation.
 	if rebuild:
 		var objects := ArenaTerrain.scenery(world.terrain, world)
 		world.nav.build(world.terrain, world.terrain.water_base, objects)
 		for u: GameUnit in world.unit_rows(): world.nav.track_unit(u)
+	_round_key = round_key
+	for unit: GameUnit in _entrants:
+		formation_motion.enter(unit, unit.get_meta("arena_placement").point, _entrants[unit])
+	_entrants.clear()
 	changed.emit()
 
 
 func _placement_key(placement: Dictionary) -> String:
 	if placement.has("run_uid"): return "owned:%d" % int(placement.run_uid)
-	if placement.has("pact"): return "pact"
 	return "enemy:%d" % int(placement.get("enemy_slot", -1))
 
 
@@ -77,19 +89,28 @@ func _reconcile_formation() -> void:
 		var key := _placement_key(placement)
 		var unit: GameUnit = existing.get(key)
 		existing.erase(key)
+		var origin := Vector2.INF
 		if is_instance_valid(unit) and unit.info.prototype != placement.id:
+			origin = unit.pos
+			formation_motion.movers.erase(unit)
 			world.remove_unit(unit)
 			unit = null
 		if not is_instance_valid(unit):
-			_spawn(placement)
+			unit = _spawn(placement)
+			if rendered and unit: _entrants[unit] = origin
 			continue
+		var previous: Dictionary = unit.get_meta("arena_placement", {})
 		unit.set_meta("arena_placement", placement)
-		if unit.pos != placement.point:
+		if rendered:
+			if previous.get("point") != placement.point: formation_motion.move(unit, placement.point)
+		elif unit.pos != placement.point:
 			unit.pos = placement.point
 			unit._sync_transform(0.0)
 			unit.reset_physics_interpolation()
 			world.nav.track_unit(unit)
-	for unit: GameUnit in existing.values(): world.remove_unit(unit)
+	for unit: GameUnit in existing.values():
+		formation_motion.movers.erase(unit)
+		world.remove_unit(unit)
 
 
 func placement_error(point: Vector2, radius := 0.8, except: GameUnit = null) -> String:
@@ -98,15 +119,48 @@ func placement_error(point: Vector2, radius := 0.8, except: GameUnit = null) -> 
 		for u: GameUnit in world.unit_rows():
 			if int(u.get_meta("arena_placement", {}).get("run_uid", 0)) == selected_run_uid and selected_run_uid > 0:
 				except = u
-	return super.placement_error(point, radius, except)
+	if not bounds().grow(-radius).has_point(point): return RemakeText.t("Place creatures inside the arena boundary.")
+	for unit: GameUnit in world.unit_rows():
+		if unit == except: continue
+		# Reserve destinations, not the temporary positions along a run-in.
+		var target: Vector2 = unit.get_meta("arena_placement", {}).get("point", unit.pos)
+		if point.distance_to(target) < radius + unit.body_radius() + 0.25:
+			return RemakeText.t("Leave more space between creatures.")
+	var movement_class := except.move_class() if except else NavGrid.WALK_CLASS
+	if not world.nav.cell_open(point, movement_class): return RemakeText.t("Choose clear ground for this creature.")
+	if except:
+		var ignored: Array = [except]
+		for unit in formation_motion.movers:
+			if is_instance_valid(unit) and unit != except: ignored.append(unit)
+		var path := world.nav.find_path(except.pos, point, ignored, [], 0.0, movement_class)
+		if path.is_empty() or path[-1].distance_to(point) > 0.3:
+			return RemakeText.t("Choose clear ground for this creature.")
+	return ""
 
 
 func start() -> bool:
 	if run == null or not is_instance_valid(world) or phase != Phase.DEPLOY or team_count(0) == 0 or team_count(1) == 0: return false
 	if not run.start_battle().is_empty(): return false
+	if not formation_motion.movers.is_empty():
+		_start_pending = true
+		changed.emit()
+		return true
+	return _start_combat()
+
+
+func _start_combat() -> bool:
+	_start_pending = false
+	formation_motion.clear()
 	seed(run.battle_seed())
 	world.combat.rng.seed = run.battle_seed()
 	return super.start()
+
+
+func _physics_process(dt: float) -> void:
+	if not rendered or phase != Phase.DEPLOY or not is_instance_valid(world): return
+	formation_motion.advance(dt / maxf(Engine.time_scale, 0.001), world)
+	if _start_pending and formation_motion.movers.is_empty() and not formation_motion.paused:
+		_start_combat()
 
 
 func expire_preparation() -> void:

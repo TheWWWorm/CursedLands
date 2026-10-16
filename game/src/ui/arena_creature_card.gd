@@ -13,6 +13,7 @@ var cost := 3
 var copies := 0
 var copies_needed := 3
 var quality := 0
+var family := -1
 var preview: WikiPreview
 var _price: Label
 var _copies: Label
@@ -30,7 +31,7 @@ static func style(fill: Color, border := Color("5a624c"), padding := Vector2(10,
 
 
 func _ready() -> void:
-	custom_minimum_size = Vector2(96, 126)
+	custom_minimum_size = Vector2(96, 148)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	tooltip_text = ArenaRules.title(prototype) + "\n" + caption + "\n" + footer
@@ -74,6 +75,18 @@ func _ready() -> void:
 	price_row.add_child(coin)
 	_price = _label(price_row, "", 16, GOLD)
 	_copies = _label(price_row, "", 13, PAPER)
+	var traits := HBoxContainer.new()
+	traits.alignment = BoxContainer.ALIGNMENT_CENTER
+	traits.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_child(traits)
+	for key: String in ArenaAlliances.traits(family):
+		var emblem := TextureRect.new()
+		emblem.texture = load("res://assets/arena/alliance_%s.svg" % key)
+		emblem.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		emblem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		emblem.custom_minimum_size = Vector2(16, 16)
+		emblem.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		traits.add_child(emblem)
 	update_offer()
 	var title := _label(self, heading if not heading.is_empty() else ArenaRules.title(prototype), 14, PAPER)
 	title.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)

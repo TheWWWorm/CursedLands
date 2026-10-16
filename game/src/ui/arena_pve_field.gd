@@ -127,7 +127,7 @@ func _draw_overlay() -> void:
 	for unit: GameUnit in match_state.world.unit_rows():
 		var placement: Dictionary = unit.get_meta("arena_placement", {})
 		var uid := int(placement.get("run_uid", 0))
-		if uid == 0 and not placement.has("pact"): continue
+		if uid == 0: continue
 		if not evolution_pulses.has(uid): continue
 		var remaining: float = evolution_pulses[uid]
 		var color := Color(ArenaCreatureCard.GOLD, minf(1, remaining))

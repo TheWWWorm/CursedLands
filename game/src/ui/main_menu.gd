@@ -31,7 +31,6 @@ var _mods: ModPanel
 var _mods_button: Button
 var _wiki: WikiPanel
 var _wiki_button: Button
-var _arena_button: Button
 var _arena_pve_button: Button
 var _coop_button: Button
 var _opening_panel := false
@@ -108,17 +107,6 @@ func _ready() -> void:
 	_wiki_button.pressed.connect(func():
 		if pad_menu_free(): _wiki.open())
 	_campaign_bar.add_child(_wiki_button)
-	_arena_button = Button.new()
-	_arena_button.text = RemakeText.t("Arena")
-	_arena_button.tooltip_text = RemakeText.t("Build two monster teams and watch them fight under AI control.")
-	_arena_button.custom_minimum_size = Vector2(220, 40)
-	_arena_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	CampaignChoices.style_button(_arena_button)
-	_arena_button.pressed.connect(func():
-		if (_scene == null or pad_menu_free()) and not (_opening_panel or _wiki.visible or _mods.visible or _options.visible):
-			_opening_panel = true
-			get_parent().open_arena())
-	_campaign_bar.add_child(_arena_button)
 	_arena_pve_button = Button.new()
 	_arena_pve_button.text = RemakeText.t("PvE expedition")
 	_arena_pve_button.tooltip_text = RemakeText.t("Recruit creatures from Gipath, Ingos and Suslanger. Survive thirty battles.")
@@ -293,7 +281,6 @@ func campaign_pad_targets() -> Array:
 			targets.append({"rect": _campaigns.buttons[id].get_global_rect(), "id": "campaign_" + id})
 		targets.append({"rect": _mods_button.get_global_rect(), "id": "campaign_mods"})
 		targets.append({"rect": _wiki_button.get_global_rect(), "id": "campaign_wiki"})
-		targets.append({"rect": _arena_button.get_global_rect(), "id": "campaign_arena"})
 		targets.append({"rect": _arena_pve_button.get_global_rect(), "id": "campaign_arena_pve"})
 		if _coop_button:
 			targets.append({"rect": _coop_button.get_global_rect(), "id": "campaign_coop"})

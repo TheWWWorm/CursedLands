@@ -22,7 +22,7 @@ func _ready() -> void:
 	for value in [-1, 46, INF, NAN, "45"]:
 		var invalid := saved.duplicate(true); invalid.preparation_left = value
 		check(not resumed.restore(invalid), "invalid clock rejected")
-	var legacy := saved.duplicate(true); legacy.version = 6; legacy.erase("preparation_left")
+	var legacy := saved.duplicate(true); legacy.version = 6; legacy.pact = ""; legacy.pact_rank = 0; legacy.erase("preparation_left")
 	check(resumed.restore(legacy) and resumed.preparation_left == 45, "older saves get full preparation time")
 	var bought := run.buy(0)
 	check(bought.is_empty() and run.preparation_left == 32.5, "recruit does not reset timer")
@@ -65,12 +65,12 @@ func _ready() -> void:
 	var terrain := battle.world.terrain
 	for x in range(19,46,2):
 		for y in range(19,46,2): check(is_zero_approx(terrain.height_at(x,y)), "battlefield footing stays flat")
-	run.wave = 3; run.stage = "fight"; run.resolve(0,1,[1,0]); run.advance()
+	run.wave = 5; run.stage = "fight"; run.resolve(0,1,[1,0]); run.advance()
 	var clock := run.preparation_left
 	check(run.stage == "reward" and not run.elapse_preparation(100) and run.preparation_left == clock, "camp choices are untimed")
 	var reward := run.choose_reward(0)
 	check(reward.is_empty() and run.preparation_left == 45, "leaving camp starts a fresh countdown")
-	check(run.pact_families("hunt").size() == 3 and run.pact_active(), "pact candidate and active progress use identical deployed-family rules")
+	check(run.alliances().beast == 3, "deployed lineup retains automatic alliance progress")
 	battle.queue_free()
 	print("ARENA_FLOW ",checks," checks; failures=",JSON.stringify(failures))
 	get_tree().quit(0 if failures.is_empty() else 1)

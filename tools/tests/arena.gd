@@ -292,12 +292,12 @@ func menu_checks() -> void:
 	menu.detect_graphics = false
 	main.add_child(menu)
 	await frames(12)
-	check(menu._arena_button.is_visible_in_tree(), "main menu exposes Arena")
+	check(not menu.campaign_pad_targets().any(func(t):return t.id == "campaign_arena"), "arena hidden from main menu")
 	await shot("menu")
-	menu._arena_button.pressed.emit()
+	main.open_arena()
 	await frames(12)
 	var opened := main.get_node_or_null("Arena") as ArenaScreen
-	check(opened != null and opened.match_state.phase == ArenaMatch.Phase.DEPLOY, "main menu opens arena")
+	check(opened != null and opened.match_state.phase == ArenaMatch.Phase.DEPLOY, "developer entry opens arena")
 	check(main.session == null and main.game == null, "arena does not create a campaign session")
 	if opened:
 		opened.match_state.set_speed(2)

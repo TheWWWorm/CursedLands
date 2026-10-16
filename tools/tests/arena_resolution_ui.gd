@@ -102,6 +102,11 @@ func _ready() -> void:
 		Fixture.buy_company(screen.run, 1)
 		screen.run.auto_save = false
 		await frames()
+		# The hover scenario targets a settled body; formation travel is tested
+		# separately, and can carry an airborne creature out from the pointer.
+		for wait in 160:
+			if screen.battle.formation_motion.movers.is_empty(): break
+			await get_tree().create_timer(0.05).timeout
 		for control in [screen._menu, screen._round_panel, screen._start, screen._quality, screen._bench_bar]:
 			bounded(control, tag + " HUD")
 		check(screen._start.get_global_rect().size.y >= 43 * scale, tag + " main target scales")
@@ -145,15 +150,12 @@ func _ready() -> void:
 		screen._close_modal()
 		check(screen._start.focus_mode == Control.FOCUS_ALL, tag + " modal restores focus")
 		screen.run.gold = 50
-		await click(screen._quality.get_global_rect().get_center())
-		bounded(screen._modal_panel, tag + " shop improvement panel")
-		var improve: Button = screen._modal_box.find_child("UpgradeRecruitment", true, false)
-		await click(improve.get_global_rect().get_center())
-		check(screen.run.shop_level == 1 and not screen._modal_layer.visible, tag + " shop improvement button")
-		screen._show_recruitment()
-		await frames()
-		if spec[1].x >= 3840: await shot(tag + "-shop")
-		screen._close_modal()
+		var xp := screen.run.experience()
+		await click(screen._train_button.get_global_rect().get_center())
+		check(screen.run.experience() == xp + 5 and not screen._modal_layer.visible, tag + " direct HUD training")
+		await move(screen._quality.get_global_rect().get_center())
+		await get_tree().create_timer(0.5).timeout
+		if screen._tooltips.visible: bounded(screen._tooltips, tag + " shop odds tooltip")
 		await click(screen._start.get_global_rect().get_center())
 		check(screen.run.stage == "fight", tag + " battle button")
 		screen._show_menu()

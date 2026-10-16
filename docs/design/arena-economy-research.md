@@ -1,60 +1,73 @@
-# Expedition economy and interaction decisions
+# Auto-battler systems research
 
-Research and implementation: 16 October 2026. These are adaptations for a
-solo expedition (initially 18 waves, now 30), not a claim to reproduce another game's current rules.
+Reviewed 17 October 2026. These are PvE adaptations, not a claim that the expedition
+reproduces either game's current complete ruleset.
 
-## References
-
-[Valve's 18 December 2019 Underlords update](https://store.steampowered.com/news/posts/?appids=1046930&enddate=1576696070)
-caps standard-mode interest at 3 on 30 gold, distinguishes unit tier from star
-rank, and describes a faster Knockout variant with smaller merge recipes and no
-interest or streak income. This makes pacing a design choice rather than a
-reason to copy every system from one ruleset.
+## Primary sources
 
 [Auto Chess's official introduction](https://ac.dragonest.com/en/gameIntroduction)
-uses one to three stars for duplicate upgrades and separately describes race and
-class synergies. The expedition retains that readable star convention, but its
-native creature jumps determine recipe sizes. Pacts already reward related
-families without editing native combat stats.
+distinguishes star upgrades from race/class synergies. Different deployed pieces
+with shared traits activate bonuses, and overlapping synergies support lineup
+choices. Its usual merge recipe is three identical pieces per star step.
 
-[Apple's historical Underlords gold guide](https://apps.apple.com/us/ipad/story/id1474387985)
-explains the spend/save tension, buying army capacity and selling unused recruits.
-Its older five-interest cap is not used as a current rules reference.
+[Valve's Big Update](https://store.steampowered.com/news/posts/?appids=1046930&enddate=1572065617&feed=steam_community_announcements)
+describes five-gold/five-XP purchases, a rising level curve and tiered alliance
+effects. Its hero examples carry multiple alliances. These structural relationships
+are the reference, not that historical update's Underlord hero or dated balance values.
 
-## Selected adaptations
+[Valve's December 2019 update](https://store.steampowered.com/news/posts/?appids=1046930&enddate=1576696070)
+provides the historical three-interest cap and separates tier from star rank.
+[Auto Chess's lineup UI notes](https://ac.dragonest.com/en/news/detail/ea86bc29767)
+show synergy membership in the shop and indicate when a lineup activates a bonus.
 
-| Decision | Expedition behavior | Purpose |
-| --- | --- | --- |
-| Economy | 5/7/9 regional bounty + 1 victory + 0–3 interest + 0–2 win streak | Saving has a visible return; buying immediate strength protects lives and streaks. |
-| Interest | Snapshot at battle start; 1 per 10 saved, cap 3 | Clear thresholds, no mid-settlement manipulation. |
-| Streak | +1 from third win, +2 from sixth; defeat resets | Modest reward for a stable formation without unlimited snowballing. |
-| Losses | No income or experience for a retry | A repeatable PvE encounter cannot become a farming loop. |
-| Training | 5 gold buys up to 3 XP and one earlier slot; cap 9 | Gives gold an army-size sink alongside recruits and shop quality. Free wave XP stays. |
-| Selling | Full refund at one star; partial, capped refund for evolved forms | Early exploration is affordable; merging and reselling never yields profit. |
-| Rank | 1–3 stars on field, reserves and offers | One meaning across every surface, not a second rarity ladder. |
-| Information | Hover for native attack, defense, armor types and recipe | Supports composition decisions without a permanently open sidebar. |
-| Interaction | Select, place, release; select, click sell area | One deliberate action per selection, with undo for sales. |
-| Resolution | 1.6-second animation interval before the result | Makes the final hit readable without altering the combat result. |
+## Decisions
 
-A shared multiplayer recruit pool and an Underlord hero are absent. The existing
-pacts, native spells, enemy preview and camp tradeoffs provide composition and
-run variation. Additional rarity grades and equipment inflation would add
-another power scale before the present native roster is understood.
+- Replace a selected pact and free summon with automatic overlapping alliances.
+  Deployed unique families count once. The HUD shows current progress; details live
+  on hover. No extra choice screen interrupts forming an alliance.
+- Connect level, capacity and shop tiers. Five gold buys five XP directly on the HUD.
+  Each level costs more XP. Buying copies, rolling, leveling and keeping interest
+  compete for the same gold. Shops no longer sell higher-star rolls.
+- Use one-to-five-gold tiers and fixed bounty. Preserve the existing native forms
+  and adapted two/three-copy recipes; forcing three copies of small native stat
+  increments would make some evolutions a poor trade.
+- Keep the original creature database immutable. Alliance buffs belong to the
+  temporary PvE encounter. Effective stats are inspectable; bonuses do not leak
+  into the campaign or development sandbox.
+- Advance results automatically after a brief readable notice. Retain five sparse
+  camp choices for the requested roguelite structure. Camp XP and cash have distinct
+  opportunity costs; no weaker duplicate currency reward is offered.
+- Retain three lives, seeded PvE opponents, income/interest, evolution, reserves and
+  later-region recruits. A multiplayer shared pool, multiplayer economy, items and
+  an Underlord hero are outside this change.
 
-## Evaluation
+## Balance iteration
 
-Regression tests cover exact interest/streak thresholds, no duplicate payment,
-failed retry behavior, training/undo/save migration and original stat preservation.
-Rendered checks cover actual pointer placement, returns, sales, hover lifetimes,
-preview bounds across all evolution forms, stable lock geometry and result timing.
-Seeded policy runs compare spending, saving, early training, rigid melee and a
-melee opening that adds magic later. These are small deterministic design samples,
-not estimates of human win rates. Results and limitations are recorded in
-[the expansion validation](../validation/arena-expansion-2026-10-16.json).
+The first level table completely excluded tier-four recruits below level seven.
+Across seeds 1900–1902, the duplicate-focused policy stalled at wave 14, whereas
+earlier leveling cleared all three runs. That was a sharp access gate rather than
+an interesting tradeoff. The revised table adds an 8% tier-four chance at level six,
+a 2% tier-five chance at seven, and raises tier-five chances at eight to 10%.
+Higher levels still improve the odds while lower-level rolling has a route forward.
 
-The longer run adds staged Ingos and Suslanger recruits, regional bounty growth,
-nine army slots, nine camps and stronger native pact guests. Its current
-[winter validation](../validation/arena-winter-2026-10-16.json) records new policy
-runs against those rules. Earlier policy results apply only to their recorded
-revision; a frontline-first policy still recruits later casters and is not a
-test of an exclusively melee army.
+The native AI simulation uses the same economy, terrain navigation, spells and
+projectiles as play. Policies use known prices, native levels, copies and a savings
+target; they are deterministic purchasing heuristics, not human players or proof of
+optimal play. Preference-based policies can transition to late native recruits.
+Their outcomes and losses are recorded separately from functional/UI checks in
+`docs/validation/arena-alliances-2026-10-17.json`.
+
+The revised sample contains 18 Standard runs and 545 native encounters. Seventeen
+runs clear all thirty waves; the beast-preference policy loses one run at wave 24.
+The six policies each use the same three seeds, so these are correlated design
+samples, not eighteen independent player observations. Several policies recover
+from individual losses. Six encounters reach the existing 300-second draw limit;
+long native matchups and higher difficulties still need dedicated playtesting.
+The later formation-animation and opening-screen changes do not alter these
+headless combat policies. The cash camp reward was reduced from twelve to eight
+gold after checking that it otherwise dominated the ten-XP reward; these policies
+choose XP or recovery rather than cash.
+
+The core design tension is spend for immediate strength versus save for broader
+choices. The revision removes the unrelated pact selection and independent shop
+quality purchase rather than adding another currency or upgrade ladder.

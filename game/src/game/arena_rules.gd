@@ -3,47 +3,42 @@ extends RefCounted
 ## Content shared by the playable expedition and its balance simulations.
 ## Every fighter resolves to an unmodified original-game prototype.
 
-const VERSION := 7
+const VERSION := 8
 const PREPARATION_SECONDS := 45.0
 const WAVE_COUNT := 30
-const OPENING_GOLD := 16
-const MIN_RECRUIT_COST := 3
+const OPENING_GOLD := 10
+const MIN_RECRUIT_COST := 1
 const BASE_INCOME := 5
 const WIN_INCOME := 1
 const INTEREST_CAP := 3
 const TRAINING_COST := 5
-const TRAINING_XP := 3
-const MAX_TRAINING := 18
+const TRAINING_XP := 5
+const MAX_TRAINING := 126
 const MAX_ARMY := 9
+# Cumulative XP from the opening level 3. Increasing costs make rolling versus
+# leveling a continuing decision instead of a cheap slot on every third wave.
+const LEVEL_XP := [0, 0, 0, 0, 6, 18, 36, 60, 90, 126]
+const SHOP_ODDS := {
+	3: [70, 30, 0, 0, 0], 4: [55, 45, 0, 0, 0],
+	5: [40, 40, 20, 0, 0], 6: [30, 35, 27, 8, 0],
+	7: [22, 28, 28, 20, 2], 8: [15, 20, 25, 30, 10],
+	9: [10, 15, 25, 35, 15],
+}
 const COMPANIONS := ["orcfemalem3", "orcfemalem5", "octopuskaniam12", "octopushadaganm15"]
 const FAMILIES := [
-	{"name": "Boars", "role": "Melee", "cost": 3, "forms": ["boarredf1", "boarredf3", "boardarkf6"]},
-	{"name": "Tribal fighters", "role": "Melee", "cost": 3, "forms": ["goblinf1", "orcmalef3", "orcmalef5"]},
-	{"name": "Wolves", "role": "Melee", "cost": 3, "forms": ["wolfgreyf1", "wolfgreyf3", "wolfwhitef6"]},
-	{"name": "Tribal shooters", "role": "Ranged", "cost": 4, "copies": [2, 3], "forms": ["goblina1", "goblina3", "orcfemalea5"]},
-	{"name": "Bats", "role": "Magic", "cost": 4, "copies": [2, 3], "forms": ["batredm1", "batredm3", "batlightm7"]},
-	{"name": "Toads", "role": "Magic", "cost": 4, "forms": ["toadm2", "toadm6"]},
-	{"name": "White tigers", "role": "Melee", "cost": 5, "prices": [5, 9], "unlock": 10, "region": 1, "copies": [2], "forms": ["tigerwhitef6", "tigerwhitef10"]},
-	{"name": "Blue trolls", "role": "Melee", "cost": 7, "prices": [7, 12], "unlock": 13, "region": 1, "copies": [2], "forms": ["trollbluef9", "trollbluef12"]},
-	{"name": "Stony harpies", "role": "Magic", "cost": 7, "prices": [7, 14], "unlock": 13, "region": 1, "copies": [2], "forms": ["succubbluem10", "succubbluem17"]},
-	{"name": "Sand ogres", "role": "Melee", "cost": 9, "prices": [9, 16], "unlock": 19, "region": 2, "copies": [2], "forms": ["ogrehadaganf13", "ogrehadaganf17"]},
-	{"name": "Spiders", "role": "Melee", "cost": 8, "prices": [8, 14], "unlock": 19, "region": 2, "copies": [2], "forms": ["spiderf10", "spiderf15"]},
-	{"name": "Grey harpies", "role": "Magic", "cost": 9, "prices": [9, 16], "unlock": 19, "region": 2, "copies": [2], "forms": ["succubgreym13", "succubgreym17"]},
+	{"name": "Boars", "role": "Melee", "cost": 1, "tier": 1, "forms": ["boarredf1", "boarredf3", "boardarkf6"]},
+	{"name": "Tribal fighters", "role": "Melee", "cost": 1, "tier": 1, "forms": ["goblinf1", "orcmalef3", "orcmalef5"]},
+	{"name": "Wolves", "role": "Melee", "cost": 1, "tier": 1, "forms": ["wolfgreyf1", "wolfgreyf3", "wolfwhitef6"]},
+	{"name": "Tribal shooters", "role": "Ranged", "cost": 2, "tier": 2, "copies": [2, 3], "forms": ["goblina1", "goblina3", "orcfemalea5"]},
+	{"name": "Bats", "role": "Magic", "cost": 2, "tier": 2, "copies": [2, 3], "forms": ["batredm1", "batredm3", "batlightm7"]},
+	{"name": "Toads", "role": "Magic", "cost": 2, "tier": 2, "forms": ["toadm2", "toadm6"]},
+	{"name": "White tigers", "role": "Melee", "cost": 3, "tier": 3, "region": 1, "copies": [2], "forms": ["tigerwhitef6", "tigerwhitef10"]},
+	{"name": "Blue trolls", "role": "Melee", "cost": 4, "tier": 4, "region": 1, "copies": [2], "forms": ["trollbluef9", "trollbluef12"]},
+	{"name": "Stony harpies", "role": "Magic", "cost": 4, "tier": 4, "region": 1, "copies": [2], "forms": ["succubbluem10", "succubbluem17"]},
+	{"name": "Sand ogres", "role": "Melee", "cost": 5, "tier": 5, "region": 2, "copies": [2], "forms": ["ogrehadaganf13", "ogrehadaganf17"]},
+	{"name": "Spiders", "role": "Melee", "cost": 4, "tier": 4, "region": 2, "copies": [2], "forms": ["spiderf10", "spiderf15"]},
+	{"name": "Grey harpies", "role": "Magic", "cost": 5, "tier": 5, "region": 2, "copies": [2], "forms": ["succubgreym13", "succubgreym17"]},
 ]
-# One pact per expedition. Only owned, deployed creatures meet its condition;
-# the guest never counts toward its own pact, occupies no army/bench slot and
-# cannot be sold or evolved. Support uses the same native spawn path as everyone.
-const PACTS := {
-	"hunt": {"name": "Wild kin", "help": "Three different beast families call an extra beast to your side.",
-		"families": [0, 2, 4, 5, 6, 8, 10, 11], "needed": 3, "min_rank": 0, "forms": ["wolfgreyf1", "wolfgreyf3", "wolfwhitef6"],
-		"later_forms": [["tigerwhitef6", "tigerwhitef8", "tigerwhitef10"], ["spiderf13", "spiderf14", "spiderf15"]]},
-	"tribe": {"name": "Tribal council", "help": "Two evolved families among tribes, trolls, ogres and harpies call a spellcaster ally.",
-		"families": [1, 3, 7, 8, 9, 11], "needed": 2, "min_rank": 1, "forms": ["orcfemalem3", "orcfemalem5", "orcfemalem7"],
-		"later_forms": [["batlightm7", "batlightm9", "batlightm10"], ["octopushadaganm13", "octopushadaganm15", "octopushadaganm17"]]},
-	"vanguard": {"name": "The vanguard", "help": "Three different melee families call a ranged ally to cover your front line.",
-		"families": [0, 1, 2, 6, 7, 9, 10], "needed": 3, "min_rank": 0, "forms": ["goblina3", "orcfemalea5", "orcfemalea7"],
-		"later_forms": [["batlightm7", "batlightm9", "batlightm10"], ["succubgreym13", "succubgreym15", "succubgreym17"]]},
-}
 # Ordered encounters. Different seeds mirror the enemy formation; all details
 # are visible before commitment. Counts/composition are tuning inputs, not stats.
 const WAVES := [
@@ -81,12 +76,11 @@ const WAVES := [
 const BOONS := {
 	"merchant": ["Quartermaster", "Shop refreshes cost 1 gold instead of 2."],
 	"reserve": ["Pack train", "Three more reserve slots."],
-	"purse": ["War chest", "12 gold for your company."],
+	"purse": ["War chest", "8 gold for your company."],
 	"life": ["Second wind", "Recover one life, up to three."],
 	"scout": ["Well connected", "Every new shop has a sixth recruit offer."],
 	"companion": ["A new ally", "A spellcaster joins your reserves."],
-	"pact": ["Company pact", "Choose a pact for your company. Its families fight together to call an extra ally."],
-	"pact_upgrade": ["Strengthen the pact", "Your pact calls a stronger ally for the rest of this expedition."],
+	"experience": ["Field experience", "Gain 10 experience toward your next company level."],
 	"supplies": ["Travel supplies", "Gain 6 gold for your next recruits."],
 }
 
@@ -110,9 +104,6 @@ static func available() -> bool:
 	if map == null or map.read("zone11.mp").size() < 38: return false
 	for family: Dictionary in FAMILIES:
 		for id: String in family.forms:
-			if GameData.db.find("monster_prototypes", id).is_empty(): return false
-	for pact: Dictionary in PACTS.values():
-		for id: String in Array(pact.forms) + Array(pact.later_forms[0]) + Array(pact.later_forms[1]):
 			if GameData.db.find("monster_prototypes", id).is_empty(): return false
 	for id: String in COMPANIONS:
 		if GameData.db.find("monster_prototypes", id).is_empty(): return false
@@ -156,12 +147,15 @@ static func companion(wave: int) -> String:
 	return COMPANIONS[clampi(wave / 6 - 1, 0, COMPANIONS.size() - 1)]
 
 
-static func recruit_pool(wave: int) -> Array[int]:
+static func level_for_xp(xp: int) -> int:
+	var level := 3
+	while level < MAX_ARMY and xp >= int(LEVEL_XP[level + 1]): level += 1
+	return level
+
+
+static func recruit_pool(level: int) -> Array[int]:
 	var pool: Array[int] = []
+	var odds: Array = SHOP_ODDS[clampi(level, 3, MAX_ARMY)]
 	for family in FAMILIES.size():
-		if wave < int(FAMILIES[family].get("unlock", 1)): continue
-		var origin := int(FAMILIES[family].get("region", 0))
-		var weight := 1 if origin < region(wave) else 5
-		if region(wave) == 2 and origin == 1: weight = 2
-		for copy in weight: pool.append(family)
+		if int(odds[int(FAMILIES[family].tier) - 1]) > 0: pool.append(family)
 	return pool

@@ -4,6 +4,7 @@ extends PanelContainer
 
 var surface := Color(0.045, 0.06, 0.065, 0.94)
 var edge := Color("716348")
+var decorated := true
 
 func _ready() -> void:
 	var padding := StyleBoxEmpty.new()
@@ -13,6 +14,7 @@ func _ready() -> void:
 	resized.connect(queue_redraw)
 
 func _draw() -> void:
+	if not decorated: return
 	draw_rect(Rect2(Vector2.ZERO, size), surface)
 	draw_frame(self, Rect2(Vector2.ZERO, size))
 

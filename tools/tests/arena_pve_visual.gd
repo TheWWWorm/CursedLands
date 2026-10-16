@@ -36,7 +36,7 @@ func _ready() -> void:
 	Fixture.buy_company(screen.run)
 	screen.run.auto_save = false
 	screen.run.wave = 4
-	screen.run.pact = "vanguard"
+	screen.run.training = 60
 	screen.run.army.clear()
 	for family in [0, 1, 2, 3]: screen.run._recruit(family, 0, 3)
 	screen.run.arrange()
@@ -50,7 +50,7 @@ func _ready() -> void:
 	await shot("close")
 	screen.field.reset_camera()
 	screen.run.wave = 18
-	screen.run.pact_rank = 2
+	screen.run.training = 126
 	screen.run.army.clear()
 	for family in ArenaRules.FAMILIES.size():
 		var rank: int = ArenaRules.FAMILIES[family].forms.size() - 1

@@ -30,7 +30,7 @@ func _ready() -> void:
 	screen._seed_input.text="8171";screen._begin();screen.run.auto_save=false
 	await frames(12)
 	check(screen.run.army.is_empty() and screen.battle.team_count(0)==0,"expedition opens without free units")
-	check(screen.run.gold==16 and screen.run.shop.size()==6,"opening shop has all six affordable families")
+	check(screen.run.gold==10 and screen.run.shop.size()==6,"opening shop has all six affordable families")
 	await shot(tag+"-empty")
 	var wolf := await recruit(2)
 	check(wolf>0 and not screen.run.unit(wolf).deployed,"click buys wolf into reserves")
@@ -64,10 +64,10 @@ func _ready() -> void:
 		screen._refresh();await frames(24)
 		for box in screen._shop.get_children():preview_fits(box.get_child(0).preview,"later recruit")
 		await shot(tag+"-roster-%d"%rank)
-	screen._show_recruitment();await frames()
-	bounded(screen._modal_panel,"recruitment progression")
+	screen._show_company();await frames()
+	bounded(screen._rail,"company progression")
 	await shot(tag+"-market")
-	screen._close_modal()
+	screen._hide_inspector()
 	# A normal rendered fight drives foot contacts, terrain compaction and hit
 	# splatter. No synthetic blood/footprint stamps stand in for these events.
 	screen.run.begin(8171);screen.run.auto_save=false
@@ -85,7 +85,9 @@ func _ready() -> void:
 	check(is_instance_valid(marks),"footprint owner exists before the first hit")
 	check(is_instance_valid(terrain.details.soft_ground),"snow deformation enabled")
 	screen._fight()
-	for seconds in 45:
+	# Native armour and the run-in can carry this encounter past 45 seconds.
+	# This exercises settled blood/footprints, not a combat-speed target.
+	for seconds in 90:
 		await get_tree().create_timer(1.0).timeout
 		if seconds==5:await shot(tag+"-combat")
 		if screen.battle.phase==ArenaMatch.Phase.FINISHED:break
@@ -98,6 +100,7 @@ func _ready() -> void:
 	check(not soft.sectors.is_empty(),"walking creatures leave deformed snow trails")
 	print("WINTER_MARKS footprints=",marks.foot_marks.size()," blood=",marks.blood_marks.size()," track_sectors=",soft.sectors.size())
 	await shot(tag+"-victory")
+	screen.set_process(false)
 	screen._outcome.hide();screen._outcome_shade.hide()
 	await shot(tag+"-aftermath")
 	# Compare settled pixels with and without blood and native snow geometry.
