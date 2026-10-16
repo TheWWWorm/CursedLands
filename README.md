@@ -78,6 +78,33 @@ Training purchases apply immediately. The default interface hides the unused Acc
 
 The travel map offers buttons for previously visited islands. You can revisit an earlier island and return to the area and party positions you left, keeping current quest and character progress. Captive and other restricted story sequences retain their travel limits.
 
+## Arena
+
+Open **Arena** from the main menu to arrange two teams of creatures and watch
+them fight under AI control. The searchable roster includes every creature
+prototype in the loaded campaign, with localized names, base statistics and
+an animated model preview.
+
+Choose a creature, select **Blue team** or **Red team**, then click the battlefield.
+Click again to place another copy. Each team supports up to 24 creatures;
+overlapping or out-of-bounds placements are refused. **Remove**, **Undo** and
+**Clear team** let you adjust the formation before starting.
+
+**Start battle** becomes available when both teams have a creature. Combat uses
+the existing monster AI, equipment, damage, movement and spells. Pause with the
+button or Space, choose half/normal/double speed, zoom with the wheel, and orbit
+with middle drag. The result identifies the winner; simultaneous elimination or
+the five-minute simulation limit produces a draw. **Rematch** restores the
+original formation and starts again; **Edit teams** restores it for deployment.
+The arena has no campaign progress, saves or network connection.
+
+For source builds, `godot-4 --path game -- --arena` opens it directly. The
+regression fixture is `tools/tests/arena.gd`; run it through the usual absolute
+`--tool=` argument with private XDG data/config/cache directories. Without
+`--headless`, it also checks real pointer placement and captures the UI at
+1280×800, 1280×720 and 1024×768. `python3 tools/check_translations.py` checks
+the English/Russian/German text coverage.
+
 ## Mods and game rules (experimental)
 
 The game includes **Game setup → Mods and rules**, accessible from New Game, multiplayer and **Options → Remake**. Named profiles keep their own saves and network characters; data mods can provide configurable revival, texture/sound replacements and selected balance patches. Shared rules follow the host, and sandbox profiles keep cheat-enabled progress separate. See the [player and mod-author guide](docs/mods.md), [Quick recovery example](examples/mods/quick-recovery/mod.json) and [legacy mod converter](docs/legacy-mod-converter.md).

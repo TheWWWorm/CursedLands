@@ -1,0 +1,211 @@
+{
+  "date": "2026-10-16",
+  "feature": "Two-team AI arena with searchable creature roster and click-to-place deployment",
+  "base_revision": "20935f137980fc4183b7cab9798aea3e9a8399dd",
+  "branch": "feature/arena",
+  "source_sha256": {
+    "game/src/game/arena_catalog.gd": "97ae808e5ad59487f2a55389c39b9f1a8d167ca6bf2559a5e42595c844af1eda",
+    "game/src/game/arena_match.gd": "c9ad46b5bff1c5c39afa09c28bcf585d03865985e8ced5c814c6e087805df9a2",
+    "game/src/ui/arena_field.gd": "970930498eb69450abdc71d683a113937b01b5238b1b4a59118f5fe0ae12e72b",
+    "game/src/ui/arena_floor.gdshader": "a45aeb5ac7566248787c2356e506791d714e659d9c331187416cf8bcf674f8f8",
+    "game/src/ui/arena_screen.gd": "5baf5f8c054745544939d5d3d1a78a7745aa1db7ef16be2340693f0656f4f1a5",
+    "game/src/main.gd": "9666d5af9b1e43bcec7b971a151d117951d3a9e91c1b90b3d2d80af014d4a894",
+    "game/src/ui/main_menu.gd": "4d1e704e7143045966ee70b072db73d3d0ca34a7e08943c7790bbf6ef2c49ec6",
+    "game/src/ei/remake_text.gd": "1d6d45209868276f30115dec10d832df72747a184a8b67705d582070b6b0506b",
+    "tools/tests/arena.gd": "fc1365b5d2551514a808bbe230a590dc59903553ba201b7c28ee9a79138490f8"
+  },
+  "engine": "Godot 4.7 stable official Linux x86_64 (5b4e0cb0f)",
+  "outcome": "pass within the scope below",
+  "runs": [
+    {
+      "name": "live-en",
+      "campaign": "cursed_lands",
+      "renderer": "gl_compatibility",
+      "main_menu_tested": true,
+      "roster_count": 389,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/checks/live-en.log",
+      "checks": 98,
+      "errors": [],
+      "events": {
+        "arrow": 3,
+        "blood": 27,
+        "castfx": 7,
+        "hitnum": 36,
+        "impact": 24,
+        "loot": 5,
+        "spellfx": 7
+      },
+      "failures": [],
+      "language": "en",
+      "rendered": true
+    },
+    {
+      "name": "verified-en",
+      "campaign": "cursed_lands",
+      "renderer": "headless",
+      "main_menu_tested": true,
+      "roster_count": 389,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/checks/verified-en.log",
+      "checks": 96,
+      "errors": [],
+      "events": {
+        "arrow": 4,
+        "blood": 29,
+        "castfx": 7,
+        "hitnum": 38,
+        "impact": 25,
+        "loot": 5,
+        "spellfx": 7
+      },
+      "failures": [],
+      "language": "en",
+      "rendered": false
+    },
+    {
+      "name": "final-de",
+      "campaign": "cursed_lands",
+      "renderer": "gl_compatibility",
+      "main_menu_tested": true,
+      "roster_count": 389,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/checks/final-de.log",
+      "checks": 96,
+      "errors": [],
+      "events": {
+        "arrow": 2,
+        "blood": 22,
+        "castfx": 3,
+        "hitnum": 49,
+        "impact": 20,
+        "loot": 5,
+        "spellfx": 2
+      },
+      "failures": [],
+      "language": "de",
+      "rendered": true
+    },
+    {
+      "name": "final-ru",
+      "campaign": "cursed_lands",
+      "renderer": "gl_compatibility",
+      "main_menu_tested": true,
+      "roster_count": 389,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/checks/final-ru.log",
+      "checks": 84,
+      "errors": [],
+      "events": {
+        "blood": 9,
+        "castfx": 7,
+        "hitnum": 177,
+        "impact": 9,
+        "loot": 1,
+        "spellfx": 6
+      },
+      "failures": [],
+      "language": "ru",
+      "rendered": true
+    },
+    {
+      "name": "vulkan-arena",
+      "campaign": "cursed_lands",
+      "renderer": "forward_plus",
+      "main_menu_tested": false,
+      "roster_count": 389,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/checks/vulkan-arena.log",
+      "checks": 91,
+      "errors": [],
+      "events": {
+        "arrow": 3,
+        "blood": 32,
+        "castfx": 7,
+        "hitnum": 41,
+        "impact": 29,
+        "loot": 5,
+        "spellfx": 7
+      },
+      "failures": [],
+      "language": "en",
+      "rendered": true
+    },
+    {
+      "name": "verified-lia",
+      "campaign": "lost_in_astral",
+      "renderer": "headless",
+      "main_menu_tested": true,
+      "roster_count": 716,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/checks/verified-lia.log",
+      "checks": 96,
+      "errors": [],
+      "events": {
+        "arrow": 2,
+        "blood": 11,
+        "castfx": 1,
+        "hitnum": 15,
+        "impact": 11,
+        "loot": 4,
+        "spellfx": 1
+      },
+      "failures": [],
+      "language": "ru",
+      "rendered": false
+    }
+  ],
+  "fixture_note": "The fixture gained ranged and mixed-army assertions during implementation; per-run check counts are retained.",
+  "regression": {
+    "fixture": "tools/tests/combat_inputs.gd",
+    "checks": 918,
+    "failures": 0,
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/checks/regression.log"
+  },
+  "translation_check": {
+    "command": "python3 tools/check_translations.py",
+    "entries": 1392,
+    "dynamic_wiki_keys": 46,
+    "errors": 0
+  },
+  "coverage": [
+    "All authored creature prototypes indexed with localized names; localized name search and animated model preview",
+    "Actual mouse event routing to battlefield placement in rendered runs",
+    "Invalid prototype/team/non-finite/boundary/overlap/capacity placement rejection; 24 creatures per team",
+    "Two hostile AI factions using unchanged production movement, melee, physical missiles and monster spells",
+    "Unmodified real-time frame loop advances the world and AI movement before the accelerated tick driver starts",
+    "Real simulated battle produces a winner without modifying damage or stats",
+    "Pause, playback speed, undo, clear team, edit, rematch, simultaneous-death draw and five-minute time-limit draw",
+    "Sound and visual effects survive world replacement; source database and campaign state stay isolated",
+    "Main menu to arena to main menu lifecycle and Engine.time_scale restoration",
+    "Engine/script error logger makes runtime errors fail the fixture"
+  ],
+  "visual_review": {
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "resolutions": [
+      "1280x800",
+      "1280x720",
+      "1024x768"
+    ],
+    "reviewed": [
+      "deployment",
+      "combat",
+      "results",
+      "mixed armies",
+      "main-menu entry"
+    ],
+    "evidence_directory": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/checks",
+    "preview": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/checks/vulkan-arena/data/godot/app_userdata/Cursed Lands/arena-armies.png"
+  },
+  "reproduction": {
+    "fixture": "tools/tests/arena.gd",
+    "launch": "godot-4 --render-thread safe --rendering-method gl_compatibility --path game -- --arena --ei-path=/path/to/game",
+    "test": "XDG_DATA_HOME=/private/test/data XDG_CONFIG_HOME=/private/test/config XDG_CACHE_HOME=/private/test/cache godot-4 --render-thread safe --rendering-method gl_compatibility --path game -- --ei-path=/path/to/game --tool=/absolute/repo/tools/tests/arena.gd",
+    "headless": "Add --headless before --; omits pointer rendering and screenshots.",
+    "vulkan": "Use --rendering-method forward_plus; --arena-skip-menu after -- isolates arena rendering from the original island menu."
+  },
+  "limits": [
+    "Linux desktop execution only. Physical Windows, macOS, Android and browser builds were not run.",
+    "Full main-menu lifecycle passes in Compatibility. Arena passes Forward+ on NVIDIA RTX 3090; the full Forward+ attempt reports push-constant errors in the unchanged main-menu TexUpscaleTexture compute path (checks/vulkan-en.log). The base repository also records that issue in docs/validation/wiki-2026-10-15.json. The local launcher uses Compatibility.",
+    "Roster statistics are base prototype values; the arena does not load map scripts, campaign progress or mod-session rules.",
+    "No release package, public artifact, published tag, hosted export or version metadata changed."
+  ]
+}

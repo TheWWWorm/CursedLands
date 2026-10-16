@@ -5,6 +5,7 @@ extends Node
 ##   --viewer [--map=NAME]  map viewer (also --screenshot=FILE.png --info)
 ##   --tool=res://x.gd      run a test tool
 ##   --play                 start a single player campaign right away
+##   --arena                open the AI battle arena
 ##   --host / --join=ADDR   start or join a co-op game right away
 ##   --name=NAME            player name
 ##   --debug                debug run: the main menu shows the map viewer link
@@ -73,6 +74,9 @@ func _start() -> void:
 			MoviePlayer.enabled = false
 			TutorialPanel.auto_show = false
 			add_child(load(a.trim_prefix("--tool=")).new())
+			return
+		if a == "--arena":
+			open_arena()
 			return
 		if a == "--viewer" or a.begins_with("--map="):
 			open_viewer()
@@ -196,6 +200,15 @@ func back_to_menu() -> void:
 func open_viewer() -> void:
 	_clear()
 	add_child(preload("res://src/ui/map_viewer.gd").new())
+
+
+func open_arena() -> void:
+	_clear()
+	# Release the main menu's camera and sound before attaching the arena.
+	await get_tree().process_frame
+	var arena := ArenaScreen.new()
+	arena.exit_requested.connect(back_to_menu)
+	add_child(arena)
 
 
 ## Called by the menu once a Session exists (single player, host or client).

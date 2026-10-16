@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Add Arena to the main menu: build two teams from the loaded campaign's creature catalogue with searchable names, animated previews and click-to-place deployment.
+- Run autonomous battles with the existing monster combat and spell AI, team health displays, pause, playback speed, winner/draw results and formation-preserving rematches.
+- Provide deployment editing, camera controls and arena interface text in English, Russian and German.
+
 ## 1.6.0 — encyclopedia and rendering updates, 15 October 2026
 
 - Publish a standalone [public wiki](https://cursedlands.wwworm.com/wiki/) with GOG edition data, searchable articles, material variants and illustrations in English, Russian and German. No imported game files or account are needed.
