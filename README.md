@@ -1,6 +1,6 @@
 # Cursed Lands
 
-**[Play](https://cursedlands.wwworm.com/) · [Download](https://github.com/TheWWWorm/CursedLands/releases/latest) · [Wiki](https://cursedlands.wwworm.com/wiki/)**
+**[Trailer on YouTube](https://www.youtube.com/watch?v=3zZLq5H10ic) · [Play](https://cursedlands.wwworm.com/) · [Download](https://github.com/TheWWWorm/CursedLands/releases/latest) · [Wiki](https://cursedlands.wwworm.com/wiki/)**
 
 Play **Evil Islands: Curse of the Lost Soul** («Проклятые земли», Nival, 2000) and **Lost in Astral** («Затерянные в Астрале») on a modern engine on Windows, Linux, macOS and Android or in your browser, with **online co-op** support for the campaigns.
 
@@ -16,13 +16,16 @@ Browse the [**public wiki**](https://cursedlands.wwworm.com/wiki/) without game 
 
 ## Screenshots
 
-Captured in the engine at 3840×2160 with content read from the GOG version.
+Frames from the [4K, 60 FPS trailer](https://www.youtube.com/watch?v=3zZLq5H10ic), captured in the engine at 3840×2160 with Ultra graphics and without trailer titles. Some scenes use **HD Lands textures by Atom**.
 
-![Village](docs/screenshots/village.jpg)
-![Sunset over the coast](docs/screenshots/sunset.jpg)
-![A fight in the ruins](docs/screenshots/fight.jpg)
-![Ruins on the coast](docs/screenshots/ruins.jpg)
-![Snowy hills of Ingos](docs/screenshots/snow.jpg)
+![Ingos castle and lake reflections](docs/screenshots/ingos-lake.jpg)
+![Third-person melee combat against an ogre in Suslanger](docs/screenshots/suslanger-ogre.jpg)
+![First-person campaign co-op against skeletons in the Dead City](docs/screenshots/first-person-coop.jpg)
+![First-person combat against a banshee in Lost in Astral](docs/screenshots/lost-in-astral-banshee.jpg)
+
+**Trials of the Allods — preview**
+
+![Trials of the Allods battle in the snowy arena](docs/screenshots/trials-of-the-allods.jpg)
 
 ## Play in your browser
 
