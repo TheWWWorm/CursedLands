@@ -3,8 +3,8 @@ extends Control
 ## The gamepad's radial menus (docs/gamepad_design.md §6): the action wheels
 ## (LB spells / actions, RB belt / weapons, paged with LB / RB), the system
 ## wheel (RT) and the context ring on a target (X). Drawn in the original HUD's
-## look: a dark disc, bronze cells with gold rims, the selected
-## cell lit with the Options screen's bar colour, Times-style text
+## look: a dark disc, bronze pie sections with gold rims, the selected
+## section lit with the Options screen's bar colour, Times-style text
 ## (Interface800); spell pictures are the HUD's own (SpellSlots.icon), belt and
 ## weapon cells their 3D models (ItemView), the aimed strikes the original
 ## cursor_attack_* strips (the picked one animated at the cursor rate, 125 ms).
@@ -29,7 +29,6 @@ var hints: Array = []
 var _views: Array[ItemView] = []
 var _t := 0.0
 var _content_scale := 1.0
-var _pie_sections := false
 var _center_entry := {}
 
 
@@ -47,10 +46,9 @@ func _ready() -> void:
 
 ## An optional centre action is selected when the mouse returns inside the
 ## inner ring. Other wheels keep -1 as no selection.
-func open(new_entries: Array, preselect := -1, content_scale := 1.0, pie_sections := false, center_entry: Dictionary = {}) -> void:
+func open(new_entries: Array, preselect := -1, content_scale := 1.0, center_entry: Dictionary = {}) -> void:
 	entries = new_entries
 	_content_scale = content_scale
-	_pie_sections = pie_sections
 	_center_entry = center_entry
 	selected = preselect if preselect >= 0 and preselect < entries.size() else -1
 	_t = 0.0
@@ -168,6 +166,7 @@ func _place_items() -> void:
 ## Boundaries follow the same nearest-angle sectors used by flick().
 func _draw_sectors(c: Vector2, inner: float, outer: float, k: float) -> void:
 	for i in entries.size():
+		var e: Dictionary = entries[i]
 		var angle := angle_of(i)
 		var before := 360.0
 		var after := 360.0
@@ -184,9 +183,17 @@ func _draw_sectors(c: Vector2, inner: float, outer: float, k: float) -> void:
 		for step in 17:
 			var a := lerpf(end, start, step / 16.0)
 			points.append(c + Vector2(sin(a), -cos(a)) * inner)
-		draw_colored_polygon(points, Interface800.BAR if i == selected else CELL)
+		var enabled: bool = e.get("enabled", true)
+		var on: bool = e.get("on", false)
+		var fill := Interface800.BAR if i == selected else CELL
+		if not enabled: fill = fill.darkened(0.45)
+		draw_colored_polygon(points, fill)
 		points.append(points[0])
-		draw_polyline(points, BRONZE_HI if i == selected else BRONZE, 1.5 * k, true)
+		draw_polyline(points, BRONZE_HI if i == selected else BRONZE, (2.5 if i == selected else 1.5) * k, true)
+		# The equipped weapon/current gait remains marked after moving focus.
+		if on:
+			draw_arc(c, outer - 4.0 * k, start - PI * 0.5 + 0.03, end - PI * 0.5 - 0.03,
+				32, BRONZE_HI, 3.0 * k, true)
 
 
 func _draw() -> void:
@@ -196,12 +203,11 @@ func _draw() -> void:
 	var c: Vector2 = g[0]
 	var r: float = g[1]
 	var cell: float = g[2]
-	var k := size.y / 600.0 * _content_scale
+	var k := minf(size.x, size.y) / 600.0 * _content_scale
 	var font := Interface800.font()
 	# The backing disc and its bronze ring.
 	draw_circle(c, r + cell * 1.35, Interface800.PANEL)
-	if _pie_sections:
-		_draw_sectors(c, r * INNER_RADIUS_RATIO, r + cell * 1.3, k)
+	_draw_sectors(c, r * INNER_RADIUS_RATIO, r + cell * 1.3, k)
 	if not _center_entry.is_empty():
 		draw_circle(c, r * INNER_RADIUS_RATIO, Interface800.BAR if selected < 0 else CELL)
 	draw_arc(c, r + cell * 1.35, 0.0, TAU, 96, BRONZE_DARK, 4.0 * k, true)
@@ -219,12 +225,7 @@ func _draw() -> void:
 		var e: Dictionary = entries[i]
 		var p := _cell_center(i)
 		var sel := i == selected
-		var on: bool = e.get("on", false)
 		var enabled: bool = e.get("enabled", true)
-		if not _pie_sections:
-			draw_circle(p, cell + 3.0 * k, Color(0, 0, 0, 0.55))
-			draw_circle(p, cell, Interface800.BAR if sel else CELL)
-			draw_arc(p, cell, 0.0, TAU, 48, BRONZE_HI if sel or on else BRONZE, (3.0 if sel else 2.0) * k, true)
 		var mod := Color.WHITE if enabled else Color(0.4, 0.4, 0.4)
 		var tex: Texture2D = e.get("icon")
 		var strip: Array = e.get("strip", [])
@@ -237,15 +238,19 @@ func _draw() -> void:
 			draw_texture_rect(tex, Rect2(centre - Vector2(s, s) * 0.5, Vector2(s, s)), false, mod)
 			if not caption.is_empty():
 				draw_string(font, p + Vector2(-cell, cell * 0.68), caption, HORIZONTAL_ALIGNMENT_CENTER,
-					cell * 2.0, maxi(10, int(12.0 * k)) if _pie_sections else int(12.0 * k), Interface800.TEXT)
+					cell * 2.0, maxi(10, int(12.0 * k)), Interface800.TEXT if enabled else Interface800.GREY)
 		elif String(e.get("item", "")) == "":
 			var short := String(e.get("short", e.get("label", "")))
-			var fs := int(13.0 * k)
-			var w := font.get_string_size(short, HORIZONTAL_ALIGNMENT_CENTER, -1, fs).x
-			if w > cell * 1.8:
-				fs = maxi(8, int(fs * cell * 1.8 / w))
-			draw_string(font, p + Vector2(-cell, fs * 0.35), short, HORIZONTAL_ALIGNMENT_CENTER, cell * 2.0, fs,
-				Interface800.TEXT if enabled else Interface800.GREY)
+			var fs := maxi(8, int(13.0 * k))
+			var lines := _wrap(short, font, fs, cell * 1.8)
+			while fs > 8 and (lines.size() > 2 or _widest(lines, font, fs) > cell * 1.8):
+				fs -= 1
+				lines = _wrap(short, font, fs, cell * 1.8)
+			var y := p.y + fs * 0.35 - (lines.size() - 1) * fs * 0.575
+			for line in lines:
+				draw_string(font, Vector2(p.x - cell, y), line, HORIZONTAL_ALIGNMENT_CENTER, cell * 2.0, fs,
+					Interface800.TEXT if enabled else Interface800.GREY)
+				y += fs * 1.15
 	# Title and page names over the wheel, the picked entry's label in the
 	# centre (or its persistent action) and the picked entry's tip below.
 	var top := c.y - r - cell * 1.35 - 10.0 * k
@@ -286,6 +291,13 @@ func _draw() -> void:
 				ty += tip_height
 	# The button hints right under the wheel (clear of the party faces).
 	PadPrompts.draw_hints(self, hints, Vector2(c.x, c.y + r + cell * 1.35 + 34.0 * k), k)
+
+
+static func _widest(lines: PackedStringArray, font: Font, fs: int) -> float:
+	var width := 0.0
+	for line in lines:
+		width = maxf(width, font.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x)
+	return width
 
 
 static func _wrap(s: String, font: Font, fs: int, width: float) -> PackedStringArray:
