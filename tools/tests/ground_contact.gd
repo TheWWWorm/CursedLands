@@ -93,6 +93,11 @@ func ownership() -> void:
 		var original_contact := Gfx.make_shader(GroundContactShader.source(base.get_meta("ground_contact_source")))
 		check(contact.shader.code == original_contact.code, "Mobile owner retains its exact original contact program")
 	check(small.material_override != contact, "small parts keep proportionate band")
+	var floor_mesh := object_fixture(terrain, base)
+	floor_mesh.get_parent().name = "baseDeck"
+	owner.register(floor_mesh.get_parent())
+	check(floor_mesh.material_override != contact, "floor and wall do not share a contact variant")
+	check(floor_mesh.material_override.get_shader_parameter("contact_floor") == true, "native BASE part preserves its walking surface")
 	check(contact.get_shader_parameter("contact_extent") == Vector3(2, 2, 0), "exact mesh bounds passed to shader")
 	check(contact.get_shader_parameter("albedo_tex") == base.get_shader_parameter("albedo_tex"), "original atlas shared")
 	if Portability.compatibility():
@@ -229,6 +234,38 @@ func render_bands() -> void:
 	check(lower.changed > 3000, "visible lower contact band: " + JSON.stringify(lower))
 	check(on.get_pixel(128, 253).g > off.get_pixel(128, 253).g + 0.1, "ground colour reaches wall base")
 	rows.append({"case":"basic", "upper":upper, "lower":lower})
+	# A visible bridge beneath an overhanging bank is not in ground contact.
+	# Keep the terrain query at y=0 and move the whole visible prop below it.
+	wall.position.y -= 3.0
+	camera.position.y -= 3.0
+	wall.material_override = base
+	var below_off := await capture(view)
+	wall.material_override = contact
+	var below_on := await capture(view)
+	var below := compare(below_off, below_on, Rect2i(2, 2, 252, 252))
+	check(below.changed == 0, "overhanging terrain cannot paint a lower bridge: " + JSON.stringify(below))
+	rows.append({"case":"below_overhang", "difference":below})
+	wall.position.y += 3.0
+	camera.position.y += 3.0
+	contact.set_shader_parameter("contact_floor", true)
+	check(compare(on, await capture(view), Rect2i(2, 2, 252, 252)).changed == 0, "floor classification keeps vertical side contact")
+	wall.rotation.x = -PI * 0.5
+	wall.position.y = 0.03
+	contact.set_shader_parameter("contact_extent", Vector3(2, 2, 0.6))
+	camera.position = Vector3(16, 4, -16)
+	camera.look_at(Vector3(16, 0, -16), Vector3.FORWARD)
+	wall.material_override = base
+	var deck_off := await capture(view)
+	wall.material_override = contact
+	var deck_on := await capture(view)
+	check(compare(deck_off, deck_on, Rect2i(2, 2, 252, 252)).changed == 0, "bridge planks near ground keep their original material")
+	contact.set_shader_parameter("contact_floor", false)
+	check(compare(deck_off, await capture(view), Rect2i(2, 2, 252, 252)).changed > 3000, "deck fixture exercises the unwanted ground overlay")
+	wall.rotation = Vector3.ZERO
+	wall.position.y = 1.0
+	contact.set_shader_parameter("contact_extent", Vector3(2, 2, 0))
+	camera.position = Vector3(16, 1, -12)
+	camera.look_at(Vector3(16, 1, -16))
 	on.save_png("user://ground-contact-" + RenderingServer.get_current_rendering_method() + "-on.png")
 	off.save_png("user://ground-contact-" + RenderingServer.get_current_rendering_method() + "-off.png")
 	# A full-weight ground pixel is independent of figure tint, emission and
