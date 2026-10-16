@@ -11,8 +11,9 @@
   ],
   "audio": {
     "track": "main.mp3",
-    "music_gain": 0.42,
-    "sfx_gain": 0.8
+    "music_lufs": -20,
+    "music_gain": 1.0,
+    "sfx_gain": 0.5
   },
   "shots": [
     {

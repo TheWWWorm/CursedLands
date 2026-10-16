@@ -273,9 +273,13 @@ class Project:
             # A quiet gradient leaves the scene readable, with phone-safe text.
             field_ui=shot.get("kind")=="coop" or shot.get("input")=="touch"
             top=shot.get("kind") in ("combat","coop","arena") or bool(shot.get("input"))
-            for offset in range(580):
-                alpha=round(176*(offset/580)**1.4)
-                y=579-offset if top else h-580+offset
+            # Keep ivory/gold readable over snow and the wiki's pale paper.
+            # The soft edge still leaves the central action unobscured.
+            band=800
+            for offset in range(band):
+                t=offset/(band-1)
+                alpha=round(210*(t*t*(3-2*t))**0.65)
+                y=band-1-offset if top else h-band+offset
                 draw.line((0,y,w,y),fill=(5,10,12,alpha))
             x=700 if field_ui else 180
             y=480 if field_ui else (180 if top else h-365)
@@ -339,7 +343,8 @@ class Project:
                     assert source.getnframes()==expected,(shot["id"],source.getnframes(),expected)
                     target.writeframes(source.readframes(expected))
         graph=(f"[1:a]volume={self.m['audio']['sfx_gain']},afade=t=in:d=0.25,afade=t=out:st={duration-1}:d=1[sfx];"
-               f"[2:a]atrim=duration={duration},asetpts=PTS-STARTPTS,volume={self.m['audio']['music_gain']},"
+               f"[2:a]atrim=duration={duration},asetpts=PTS-STARTPTS,"
+               f"loudnorm=I={self.m['audio'].get('music_lufs',-20)}:TP=-2:LRA=11,volume={self.m['audio']['music_gain']},"
                f"afade=t=in:d=1.2,afade=t=out:st={duration-2.5}:d=2.5[music];"
                "[sfx][music]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.89:level=0:latency=1[a]")
         self.command([self.ffmpeg,"-hide_banner","-y","-i",assembly,"-i",sfx,"-stream_loop","-1","-i",music,
