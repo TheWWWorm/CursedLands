@@ -34,6 +34,8 @@ func prepare() -> void:
 		if entry.deployed:
 			formation.append({"id": entry.prototype, "team": 0,
 				"point": Vector2(entry.point[0], entry.point[1]), "run_uid": int(entry.uid)})
+	var support := run.support_placement()
+	if not support.is_empty(): formation.append(support)
 	formation.append_array(ArenaRules.enemies(run.wave, run.run_seed, run.challenge))
 	var rebuild := not is_instance_valid(world) or phase != Phase.DEPLOY
 	if rebuild:

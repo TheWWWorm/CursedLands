@@ -7,6 +7,8 @@ var _old_sun := Color.WHITE
 var _old_direction := Vector3.ZERO
 var _old_fog := []
 var _shadow_poll := 0.0
+var _environment: Environment
+var _sun_light: DirectionalLight3D
 
 
 func _build_stage() -> void:
@@ -19,6 +21,12 @@ func _build_stage() -> void:
 	resized.connect(_update_camera)
 	zoom = 14.5
 	yaw = -PI / 2
+	# Orthographic shadows use the camera's full depth, ignoring the light's
+	# max distance. The inherited 180 m range wasted most of the shadow map
+	# and put the opposing rows in different cascades. The whole 64 m island
+	# fits this range, including the rotating and widest spectator views.
+	camera.near = 0.5
+	camera.far = 90.0
 	_update_camera()
 	var environment := WorldEnvironment.new()
 	environment.environment = Environment.new()
@@ -26,14 +34,20 @@ func _build_stage() -> void:
 	environment.environment.background_color = Color.BLACK
 	environment.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	environment.environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	environment.environment.ssao_enabled = Gfx.on("gfx_ssao")
+	_environment = environment.environment
 	environment.environment.ssao_radius = 1.1
 	environment.environment.ssao_intensity = 0.8
 	stage.add_child(environment)
 	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-43, -35, 0)
-	sun.light_angular_distance = 1.5
-	sun.directional_shadow_max_distance = 85.0
+	_sun_light = sun
+	sun.rotation_degrees = Vector3(-52, -35, 0)
+	# One map gives this orthographic board a consistent texel scale. A
+	# filtered silhouette keeps feet anchored without PCSS cascade changes.
+	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
+	sun.directional_shadow_fade_start = 1.0
+	sun.shadow_bias = 0.03
+	sun.shadow_normal_bias = 0.6
+	sun.shadow_opacity = 0.85
 	sun.shadow_enabled = true
 	stage.add_child(sun)
 	# Original figure/terrain materials use native light uniforms, not just
@@ -50,6 +64,17 @@ func _build_stage() -> void:
 	# feathered perimeter also hides the physical map edge at maximum zoom.
 	Gfx.set_fog_palette(Color.BLACK, Color.BLACK, Gfx.fog_depth)
 	environment.environment.fog_light_color = Color.BLACK
+	GameData.options_changed.connect(_apply_presentation)
+	_apply_presentation()
+
+
+func _apply_presentation() -> void:
+	# SubViewports do not inherit the root's AA / filtering settings.
+	Gfx.apply_quality(view)
+	_environment.ssao_enabled = Gfx.on("gfx_ssao")
+	# A wider PCF footprint is clean at High/Ultra; keep the sparse Low and
+	# Medium filters tighter instead of spreading their samples into grain.
+	_sun_light.shadow_blur = 1.8 if GameData.option("q_shadows") >= 2 else 1.0
 
 
 func reset_camera() -> void:
@@ -72,7 +97,7 @@ func _process(delta: float) -> void:
 			var diameter := maxf(ContactShadows.MIN_SIZE, unit.figure_radius * ContactShadows.SIZE_K)
 			shadow.size = Vector3(diameter, 2.0, diameter)
 			shadow.texture_albedo = ContactShadows._texture()
-			shadow.modulate = Color(0, 0, 0, ContactShadows.ALPHA)
+			shadow.modulate = Color(0, 0, 0, 0.38)
 			shadow.albedo_mix = 1.0
 			shadow.upper_fade = 0.35
 			shadow.lower_fade = 0.35

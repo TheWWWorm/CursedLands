@@ -40,6 +40,19 @@ func shot(label: String) -> void:
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://pve-ui-" + label + ".png")
 
+
+func reward_buttons() -> Array[Node]:
+	return screen._dock.find_children("ChooseReward", "Button", true, false)
+
+
+func reward_bounds(lang: String) -> void:
+	check(screen._army_title.tooltip_text.is_empty() and screen._army_title.mouse_filter == Control.MOUSE_FILTER_IGNORE, lang + " camp hides inactive army tooltips")
+	check(screen._outcome.get_global_rect().end.x <= get_tree().root.size.x, lang + " camp fits viewport width")
+	for button: Button in reward_buttons():
+		check(button.get_global_rect().end.y < screen._bench_panel.position.y, lang + " camp choice stays above reserves")
+	for label: Label in screen._dock.find_children("*", "Label", true, false):
+		check(label.get_global_rect().end.x <= screen._outcome.get_global_rect().end.x - 8, lang + " camp text stays inside frame")
+
 func _ready() -> void:
 	OS.add_logger(errors)
 	rendered = DisplayServer.get_name() != "headless"
@@ -90,6 +103,11 @@ func _ready() -> void:
 		await shot(lang + "-inspect")
 		var evolve := screen._inspect_actions.get_child(0) as Button
 		check(evolve != null and evolve.get_global_rect().end.y < screen._bench_panel.position.y, lang + " evolution action stays visible outside details scroll")
+		var reserve_id := screen.selected_uid
+		await click(screen.field.global_position + screen.field.screen_point(destination))
+		check(screen.run.unit(reserve_id).deployed and not screen.run.unit(uid).deployed, lang + " pointer swaps reserve directly into full army")
+		screen._menu.get_popup().id_pressed.emit(4)
+		check(not screen.run.unit(reserve_id).deployed and screen.run.unit(uid).deployed, lang + " swap undo restores full formation")
 		screen._clear_selection()
 		check(not screen._rail.visible, lang + " details leave the board clear")
 		check(screen._start.get_global_rect().end.x <= get_tree().root.size.x + 1, lang + " main action within viewport")
@@ -122,6 +140,28 @@ func _ready() -> void:
 		await shot(lang + "-result")
 		# Deliberate state fixtures exercise layouts and reward controls; these
 		# injected outcomes are not counted as combat balance evidence.
+		screen.run.wave = 3
+		screen.run.last_result.wave = 3
+		screen.run.last_result.winner = 0
+		screen.run.stage = "result"
+		screen.run.advance()
+		await frames()
+		check(reward_buttons().size() == 3, lang + " first camp offers three distinct pacts")
+		reward_bounds(lang)
+		await shot(lang + "-pacts")
+		await click((reward_buttons()[2] as Button).get_global_rect().get_center())
+		check(screen.run.wave == 4 and screen.run.pact == "vanguard", lang + " pact choice commits and resumes preparation")
+		screen.run._recruit(2, 0, 3)
+		screen.run.arrange()
+		await frames()
+		check(screen.run.pact_active() and screen.battle.team_count(0) == screen.run.deployed_count() + 1, lang + " eligible formation shows native guest on battlefield")
+		await click(screen._army_title.get_global_rect().get_center())
+		check(screen._showing_company and screen._rail.visible, lang + " army counter opens pact details")
+		var counter := screen._army_title
+		var text_width := counter.get_theme_font("font").get_string_size(counter.text, HORIZONTAL_ALIGNMENT_LEFT, -1, counter.get_theme_font_size("font_size")).x
+		check(counter.size.x >= text_width + counter.get_theme_stylebox("hover").get_minimum_size().x + 22, lang + " hovered army counter keeps capacity readable")
+		await shot(lang + "-company")
+		screen._clear_selection()
 		screen.run.wave = 6
 		screen.run.last_result.wave = 6
 		screen.run.last_result.winner = 0
@@ -129,9 +169,9 @@ func _ready() -> void:
 		screen.run.advance()
 		await frames()
 		check(screen._outcome.visible and screen.run.stage == "reward", lang + " boss reward panel")
-		check(screen._outcome.get_global_rect().end.x <= get_tree().root.size.x, lang + " reward choices fit viewport")
+		reward_bounds(lang)
 		await shot(lang + "-reward")
-		var reward_button: Button = screen._dock.get_child(1).get_child(0).get_child(2)
+		var reward_button: Button = reward_buttons()[0]
 		await click(reward_button.get_global_rect().get_center())
 		check(screen.run.wave == 7 and screen.run.army.back().prototype == "orcfemalem3", lang + " reward click recruits native companion")
 		screen.run._recruit(0, 0, 3)
@@ -147,6 +187,15 @@ func _ready() -> void:
 		screen._menu.get_popup().id_pressed.emit(3)
 		check(screen.run.deployed_count() == screen.run.capacity(), lang + " menu auto arrange fills available army")
 		screen._clear_selection()
+		screen.run.wave = 9
+		screen.run.last_result.wave = 9
+		screen.run.stage = "result"
+		screen.run.advance()
+		await frames()
+		reward_bounds(lang)
+		await shot(lang + "-pact-upgrade")
+		await click((reward_buttons()[0] as Button).get_global_rect().get_center())
+		check(screen.run.pact_rank == 1 and screen.run.pact_prototype() == "orcfemalea5", lang + " camp upgrades to native support form")
 		screen.run.boons.assign(["scout", "reserve"])
 		screen.run._roll_shop(false)
 		while screen.run.bench_count() < screen.run.bench_limit(): screen.run._recruit(3, 0, 3)
@@ -155,6 +204,21 @@ func _ready() -> void:
 		check(screen._shop.get_child_count() == 6, lang + " six-offer shop")
 		check(screen._start.get_global_rect().end.x <= get_tree().root.size.x + 1, lang + " full reserve preserves start action")
 		await shot(lang + "-expanded")
+		screen.run.boons.assign(["merchant", "scout", "reserve"])
+		screen.run.wave = 15; screen.run.stage = "result"; screen.run.last_result.wave = 15
+		screen.run.advance()
+		await frames()
+		check(reward_buttons().size() == 2, lang + " exhausted boon pool presents two distinct choices")
+		reward_bounds(lang)
+		await shot(lang + "-two-choice-camp")
+		var field_unit: GameUnit = screen.battle.world.unit_rows()[0]
+		screen.field.creature_clicked.emit(field_unit)
+		check(not screen._rail.visible, lang + " camp does not open creature details behind its choices")
+		await click((reward_buttons()[0] as Button).get_global_rect().get_center())
+		check(screen.run.pact_rank == 2 and screen.run.pact_prototype() == "orcfemalea7", lang + " final pact upgrade works with full reserves")
+		await click(screen._army_title.get_global_rect().get_center())
+		await shot(lang + "-company-final")
+		screen._clear_selection()
 		screen.run.stage = "won"
 		screen.run.wave = 18
 		screen.run.last_result.wave = 18
@@ -176,6 +240,11 @@ func _ready() -> void:
 			check(screen.field.screen_point(Vector2(20, 32)).y < screen._bench_panel.position.y - 10, "720p near deployment row stays above reserves")
 			check(screen.field.screen_point(Vector2(40.5, 32)).y > screen._shop_panel.get_global_rect().end.y + 60, "720p far row has headroom below shop")
 			await shot("en-720-expanded")
+			screen.run.wave = 15; screen.run.pact_rank = 1; screen.run.stage = "result"; screen.run.last_result.wave = 15
+			screen.run.advance()
+			await frames()
+			reward_bounds("en 720p")
+			await shot("en-720-camp")
 		screen.queue_free()
 		await frames()
 		check(Engine.time_scale == speed, lang + " restores global game speed")

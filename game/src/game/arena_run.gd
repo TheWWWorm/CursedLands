@@ -17,6 +17,8 @@ var stage := "prepare"
 var army: Array[Dictionary] = []
 var shop: Array[Dictionary] = []
 var boons: Array[String] = []
+var pact := ""
+var pact_rank := 0
 var rewards: Array[Dictionary] = []
 var history: Array[Dictionary] = []
 var last_result := {}
@@ -34,10 +36,11 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 	wave = 1; gold = 6; lives = 3; stage = "prepare"; next_uid = 1
 	army.clear(); shop.clear(); boons.clear(); rewards.clear(); history.clear(); _undo.clear()
 	last_result = {}
+	pact = ""; pact_rank = 0
 	rng.seed = run_seed
 	var families: Array = ArenaRules.STARTERS[starter].families
 	for i in families.size():
-		var unit := _recruit(int(families[i]), 0, 3)
+		var unit := _recruit(int(families[i]), 0, int(ArenaRules.FAMILIES[families[i]].cost))
 		unit.deployed = true
 		unit.point = [25.5 if i < 2 else 21.5, 29.5 if i == 0 else 34.5 if i == 1 else 32.0]
 	_roll_shop(false)
@@ -62,6 +65,43 @@ func bench_count() -> int:
 
 func refresh_cost() -> int:
 	return 1 if "merchant" in boons else 2
+
+
+func pact_families() -> Array[int]:
+	var found: Array[int] = []
+	if not ArenaRules.PACTS.has(pact): return found
+	var rule: Dictionary = ArenaRules.PACTS[pact]
+	for entry: Dictionary in army:
+		var family := int(entry.family)
+		if entry.deployed and family in rule.families and int(entry.rank) >= int(rule.min_rank) and family not in found:
+			found.append(family)
+	return found
+
+
+func pact_active() -> bool:
+	return ArenaRules.PACTS.has(pact) and pact_families().size() >= int(ArenaRules.PACTS[pact].needed)
+
+
+func pact_prototype() -> String:
+	return ArenaRules.PACTS[pact].forms[pact_rank] if ArenaRules.PACTS.has(pact) else ""
+
+
+func support_placement() -> Dictionary:
+	if not pact_active(): return {}
+	var proto := GameData.db.find("monster_prototypes", pact_prototype())
+	var ranged := float(proto.get("attack_range", 0)) > 0 or not Array(proto.get("spells", [])).is_empty()
+	# Choose a clear position deterministically, after the player's formation.
+	# Recompute after every placement, merge or swap; never store a guest in army.
+	for x in ([21.0, 24.0, 27.0, 29.5] if ranged else [27.0, 29.5, 24.0, 21.0]):
+		for y in [32.0, 28.0, 36.0, 24.0, 40.0, 21.0, 43.0]:
+			var point := Vector2(x, y)
+			var clear := true
+			for entry: Dictionary in army:
+				if entry.deployed and point.distance_to(Vector2(entry.point[0], entry.point[1])) < 2.5:
+					clear = false
+					break
+			if clear: return {"id": pact_prototype(), "team": 0, "point": point, "pact": pact}
+	return {}
 
 
 func unit(uid: int) -> Dictionary:
@@ -151,6 +191,20 @@ func bench(uid: int) -> String:
 	return ""
 
 
+func swap_from_bench(uid: int, deployed_uid: int) -> String:
+	if stage != "prepare": return RemakeText.t("Arrange your army between battles.")
+	var incoming := unit(uid)
+	var outgoing := unit(deployed_uid)
+	if incoming.is_empty() or outgoing.is_empty() or incoming.deployed or not outgoing.deployed:
+		return RemakeText.t("Select a reserve, then click one of your deployed creatures to swap them.")
+	_checkpoint()
+	incoming.deployed = true
+	incoming.point = outgoing.point.duplicate()
+	outgoing.deployed = false
+	_touch()
+	return ""
+
+
 func sell(uid: int) -> String:
 	if stage != "prepare": return RemakeText.t("Recruit between battles.")
 	var entry := unit(uid)
@@ -222,6 +276,20 @@ func arrange() -> void:
 		var pa := GameData.db.find("monster_prototypes", a.prototype)
 		var pb := GameData.db.find("monster_prototypes", b.prototype)
 		return float(pa.get("base_level", 0)) > float(pb.get("base_level", 0)))
+	# Keep a working pact when the owned army can meet it. Within each family,
+	# reserve its strongest eligible form; fill the other slots by native level.
+	if ArenaRules.PACTS.has(pact):
+		var rule: Dictionary = ArenaRules.PACTS[pact]
+		var reserved: Array[Dictionary] = []
+		var families: Array[int] = []
+		for entry: Dictionary in ordered:
+			if int(entry.family) in rule.families and int(entry.rank) >= int(rule.min_rank) and int(entry.family) not in families:
+				reserved.append(entry)
+				families.append(int(entry.family))
+				if reserved.size() == int(rule.needed): break
+		if reserved.size() == int(rule.needed):
+			for entry in reserved: ordered.erase(entry)
+			ordered = reserved + ordered
 	for entry: Dictionary in army: entry.deployed = false
 	var front := 0
 	var back := 0
@@ -248,8 +316,8 @@ func resolve(winner: int, seconds: float, damage: Array) -> void:
 	last_result = {"wave": wave, "winner": winner, "seconds": seconds, "damage": damage.duplicate(), "gold": 0}
 	if winner == 0:
 		if wave < ArenaRules.WAVE_COUNT:
-			gold += 8
-			last_result.gold = 8
+			gold += ArenaRules.VICTORY_GOLD
+			last_result.gold = ArenaRules.VICTORY_GOLD
 	else:
 		lives -= 1
 	history.append(last_result.duplicate(true))
@@ -262,7 +330,7 @@ func advance() -> void:
 	if stage != "result": return
 	if int(last_result.winner) != 0:
 		stage = "prepare"
-	elif wave % 6 == 0:
+	elif wave % 3 == 0:
 		stage = "reward"
 		_make_rewards()
 	else:
@@ -279,23 +347,37 @@ func _next_wave() -> void:
 
 func _make_rewards() -> void:
 	rewards.clear()
-	var special := "orcfemalem3" if wave == 6 else "orcfemalem5"
-	rewards.append({"kind": "companion", "prototype": special})
+	var boss := wave % 6 == 0
+	if not boss and pact.is_empty():
+		for key: String in ArenaRules.PACTS: rewards.append({"kind": "pact", "pact": key})
+		return
+	if boss:
+		var special := "orcfemalem3" if wave == 6 else "orcfemalem5"
+		rewards.append({"kind": "companion", "prototype": special})
+	else:
+		rewards.append({"kind": "pact_upgrade"})
 	var choices: Array[String] = ["merchant", "reserve", "scout"]
 	choices = choices.filter(func(k): return k not in boons)
-	rewards.append({"kind": choices[rng.randi_range(0, choices.size() - 1)] if not choices.is_empty() else "purse"})
-	rewards.append({"kind": "life" if lives < 3 else "purse"})
+	if not choices.is_empty(): rewards.append({"kind": choices[rng.randi_range(0, choices.size() - 1)]})
+	rewards.append({"kind": "life" if lives < 3 else "purse" if boss else "supplies"})
 
 
 func choose_reward(index: int) -> String:
 	if stage != "reward" or index < 0 or index >= rewards.size(): return RemakeText.t("Choose one of the offered rewards.")
 	var reward: Dictionary = rewards[index]
+	if reward.kind == "companion" and bench_count() > bench_limit():
+		return RemakeText.t("Your reserves already hold an extra ally. Choose another reward.")
 	match String(reward.kind):
+		"pact":
+			pact = String(reward.pact)
+			pact_rank = 0
+		"pact_upgrade": pact_rank = mini(2, pact_rank + 1)
 		"companion":
 			# A reward must never vanish into a full bench. It arrives in one
 			# temporary overflow slot; purchases stay blocked until resolved.
 			_recruit(-1, 0, 9 if wave == 6 else 18, reward.prototype)
 		"purse": gold += 12
+		"supplies": gold += 6
 		"life": lives = mini(3, lives + 1)
 		_: boons.append(String(reward.kind))
 	rewards.clear()
@@ -326,12 +408,13 @@ func snapshot() -> Dictionary:
 		"challenge": challenge, "starter": starter, "wave": wave, "gold": gold, "lives": lives,
 		"stage": stage, "army": army.duplicate(true), "shop": shop.duplicate(true),
 		"boons": boons.duplicate(), "rewards": rewards.duplicate(true), "history": history.duplicate(true),
+		"pact": pact, "pact_rank": pact_rank,
 		"last_result": last_result.duplicate(true), "next_uid": next_uid}
 
 
 func restore(data: Dictionary) -> bool:
 	# Validate before changing any live state. JSON numbers arrive as floats.
-	if data.get("version") != ArenaRules.VERSION: return false
+	if not _integer(data.get("version"), 1, ArenaRules.VERSION): return false
 	if not data.get("stage", "") in ["prepare", "fight", "result", "reward", "won", "lost"]: return false
 	for key in ["army", "shop", "boons", "rewards", "history"]:
 		if not data.get(key) is Array: return false
@@ -342,6 +425,14 @@ func restore(data: Dictionary) -> bool:
 	if not _integer(data.get("gold"), 0, 100000) or not _integer(data.get("lives"), 0, 3): return false
 	if not _integer(data.get("challenge"), 0, 2) or not _integer(data.get("starter"), 0, 2): return false
 	if not _integer(data.get("next_uid"), 1, 100000): return false
+	if int(data.version) > 1 and (not data.has("pact") or not data.has("pact_rank")): return false
+	var saved_pact = data.get("pact", "") if int(data.version) > 1 else ""
+	var saved_rank = data.get("pact_rank", 0) if int(data.version) > 1 else 0
+	if not saved_pact is String or (not saved_pact.is_empty() and not ArenaRules.PACTS.has(saved_pact)): return false
+	if not _integer(saved_rank, 0, 2): return false
+	if saved_pact.is_empty() and int(saved_rank) != 0: return false
+	if not saved_pact.is_empty() and int(data.wave) < 4: return false
+	if int(saved_rank) > 0 and int(data.wave) < (10 if int(saved_rank) == 1 else 16): return false
 	if data.army.size() > 17 or data.boons.size() > 3 or data.history.size() > 24: return false
 	var seen := {}
 	var deployed := 0
@@ -383,12 +474,23 @@ func restore(data: Dictionary) -> bool:
 			locks += 1
 	if locks > 1: return false
 	if data.stage == "reward":
-		if int(data.wave) not in [6, 12] or data.rewards.size() != 3: return false
+		if int(data.wave) not in ([6, 12] if int(data.version) == 1 else [3, 6, 9, 12, 15]): return false
+		if data.rewards.size() != 3 and not (data.rewards.size() == 2 and int(data.wave) == 15 and saved_boons.size() == 3): return false
 	elif not data.rewards.is_empty(): return false
+	var reward_kinds := {}
 	for reward in data.rewards:
 		if not reward is Dictionary or not reward.get("kind") is String or not ArenaRules.BOONS.has(reward.kind): return false
 		if reward.kind == "companion" and reward.get("prototype") != ("orcfemalem3" if int(data.wave) == 6 else "orcfemalem5"): return false
+		if reward.kind == "companion" and int(data.wave) not in [6, 12]: return false
+		if reward.kind == "pact":
+			if not saved_pact.is_empty() or int(data.wave) not in [3, 9, 15] or not reward.get("pact") in ArenaRules.PACTS: return false
+			if reward_kinds.has(reward.pact): return false
+			reward_kinds[reward.pact] = true
+		elif reward.kind == "pact_upgrade":
+			if saved_pact.is_empty() or int(saved_rank) >= 2 or int(data.wave) not in [9, 15]: return false
+		if reward.kind == "supplies" and int(data.wave) not in [9, 15]: return false
 		if reward.kind in saved_boons: return false
+	if reward_kinds.size() not in [0, 3]: return false
 	for record in data.history:
 		if not _valid_result(record) or int(record.wave) > int(data.wave): return false
 	if not data.get("last_result") is Dictionary: return false
@@ -401,6 +503,7 @@ func restore(data: Dictionary) -> bool:
 	wave = int(data.wave); gold = int(data.gold); lives = int(data.lives)
 	stage = "prepare" if data.stage == "fight" else String(data.stage)
 	army.assign(data.army.duplicate(true)); shop.assign(data.shop.duplicate(true)); boons.assign(data.boons)
+	pact = saved_pact; pact_rank = int(saved_rank)
 	rewards.assign(data.rewards.duplicate(true)); history.assign(data.history.duplicate(true))
 	last_result = data.last_result.duplicate(true)
 	next_uid = int(data.next_uid)

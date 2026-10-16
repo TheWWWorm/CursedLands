@@ -1,0 +1,7 @@
+progression-shadow-ui.log: ARENA_PVE_UI 320 checks; failures=[]
+shadow-final.log: ARENA_PVE_VISUAL 123 checks; failures=[]
+progression-rules.log: ARENA_PVE 233 checks; failures=[]
+progression-lifecycle.log: ARENA_PVE_LIFECYCLE 10 checks; failures=[]
+progression-sandbox.log: {"checks": 98, "errors": [], "events": {"arrow": 3, "blood": 25, "castfx": 7, "hitnum": 34, "impact": 22, "loot": 5, "spellfx": 7}, "failures": [], "language": "en", "rendered": false}
+Translations: 1630 entries; 46 dynamic wiki keys; 78 dynamic arena keys; 0 errors
+Physical terrain, eight navigation classes and native database: exact match with prior field snapshot.

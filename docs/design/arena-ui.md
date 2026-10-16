@@ -22,7 +22,7 @@ Creatures, scenery and other terrain textures load from the user's game files.
 
 The courtyard uses smaller, worn limestone blocks, a restrained central stone
 inlay and a broken perimeter band. These are an actual diffuse texture on a 3D
-plane; subtle relief follows its seams and mipmaps keep distant paving stable.
+surface; subtle relief follows its seams and mipmaps keep distant paving stable.
 The original fallen columns, boulders and trees still provide the scenery.
 
 Shorter, less saturated grass gathers at the edges instead of growing through
@@ -32,8 +32,16 @@ heights, navigation costs and scenery collision remain unchanged. Campaign
 materials are not edited. Grass, wind, interaction and ground-cover options can
 be toggled without losing this presentation.
 
-A lower, warmer sun separates the creatures from the paving, with cool ambient
-shade, optional ambient occlusion and the game's existing contact-shadow style.
+A warm sun separates the creatures from the paving, with cool ambient shade,
+optional ambient occlusion and lighter contact shadows. The small orthographic
+arena uses one shadow map and a 90 m camera far plane; the old 180 m range and
+cascade splits gave the opposing rows visibly different shadows. Softer filtered
+edges, shorter shadows and a lower bias retain contact with the ground.
+
+The central paving is opaque so ambient shading reaches feet and rubble bases.
+Only four narrow, non-overlapping border strips blend into the grass, using the
+same texture coordinates. The arena viewport applies the selected anti-aliasing,
+texture filtering and shadow quality; ambient occlusion also responds to changes.
 The distant woodland fades into black at maximum zoom instead of exposing the
 old cyan map edge. Previous lighting and fog uniforms are restored on exit.
 The shop, reserve shelf and selection-only detail layout remain as documented.
@@ -54,7 +62,22 @@ The shop, reserve shelf and selection-only detail layout remain as documented.
 - The deployment boundary appears only while placing a selected creature. Rings
   mark selection or hover; health bars identify the two sides. Enemies are
   inspected directly on the field.
-- Guide, auto-arrange, undo and navigation share the corner menu. Instructions
+- Clicking the army counter opens company details in that same optional rail:
+  the selected pact, distinct eligible families, the support creature and owned
+  expedition upgrades. Its flag is gold while the pact is active. There is no
+  persistent synergy sidebar. Shop tooltips and creature details identify family
+  membership and the Tribal council's evolution requirement.
+- Five camp visits interrupt the run with one deliberate choice. The first shows
+  three pact candidates with live native models and concise conditions. Later
+  visits trade support upgrades against economy or recovery. A completed boon
+  collection leaves two useful options. Names and descriptions wrap in RU/DE;
+  native stats are available in each creature reward's tooltip. Inactive army and
+  reserve controls cannot show tooltips over camp choices. Reward emblems use
+  larger SVG imports to remain crisp at their 44 px display size.
+- A selected reserve can replace an ally directly by clicking that creature on
+  the field. This works with both budgets full and remains undoable. Camp screens
+  disable reserve/field selection, preserving focus on the reward decision.
+- Guide, company details, auto-arrange, undo and navigation share the corner menu. Instructions
   appear during placement or when an action fails. There is no persistent help
   footer, opponent list, progress strip or full-width header/reserve panel.
 
@@ -73,3 +96,13 @@ See the [validation record](../validation/arena-pve-2026-10-16.json) for evidenc
 and platform limits. Controller/mobile layouts are outside this validation.
 The later [field validation](../validation/arena-field-2026-10-16.json) records
 the visual refinement, option checks and exact before/after navigation hashes.
+
+The [progression validation](../validation/arena-progression-2026-10-16.json)
+adds native support, camp and reserve-swap coverage. It includes first-pact and
+upgrade choices, all-owned-boon fallback, final-form labels, full reserves and
+720p camp layout. An initial hover-padding mismatch clipped the army capacity;
+the normal and hover states now reserve identical text space. The same record
+includes the shadow correction, close/default/wide and rotated captures, graphics
+option coverage, and exact physical-data equivalence. The
+[final review](../validation/arena-progression-review-2026-10-16.md) covers this
+pass; the earlier field review is historical evidence.

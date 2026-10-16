@@ -73,7 +73,9 @@ for match in re.finditer(r':\s*(\[[^\n]+\])', block):
     arena_keys.update(json.loads(match[1]))
 arena_keys.update(['Standard expedition', 'Veteran expedition', 'Champion expedition',
     'On bench', 'Deployed', 'Bench', 'Expedition complete', 'The expedition ends',
-    'Victory', 'Regroup and try again', 'Choose reward', 'Next wave', 'Prepare again'])
+    'Victory', 'Regroup and try again', 'Choose reward', 'Next wave', 'Prepare again',
+    'Visit camp', 'Choose your pact', 'A moment at camp', 'Choose pact', 'Ready', 'Not contributing',
+    'Evolve this creature to contribute to your pact.', 'Deploy this family to contribute to your pact.'])
 for key in sorted(arena_keys):
     if key not in entries:
         errors.append(f'Arena dynamic label missing RU/DE key: {key}')

@@ -3,6 +3,8 @@ extends RefCounted
 ## Authored clearing surrounded by Gipath ruins. The atlas and figure assets
 ## come from the installed game. This does not load any campaign scripts.
 
+static var _paving_edge_shader: Shader
+
 class Sectors extends EIResArchive:
 	var files := {}
 	func read(key: String) -> PackedByteArray:
@@ -66,24 +68,43 @@ static func create(rendered := true) -> EITerrain:
 		# Fade the distant woodland into the arena's dark backdrop. The native
 		# campaign profile is too broad for this compact, overhead field.
 		Gfx.set_border(ground.size_ei(), 8.0)
-		var paving := MeshInstance3D.new()
-		paving.name = "CourtyardPaving"
-		var mesh := PlaneMesh.new()
-		mesh.size = Vector2(32, 32)
-		paving.mesh = mesh
-		paving.layers = 1 | EITerrain.DECAL_LAYER
-		paving.position = Vector3(32, 0.025, -32)
-		paving.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		var material := ShaderMaterial.new()
-		material.shader = preload("res://src/ui/arena_paving.gdshader")
-		material.set_shader_parameter("paving", preload("res://assets/arena/courtyard-v2.png"))
-		paving.material_override = material
-		ground.add_child(paving)
+		_add_paving(ground)
 	else:
 		ground.water_base = ground.water.duplicate()
 		ground.surface.fill(0)
 	ground.set_process(false)
 	return ground
+
+
+static func _add_paving(ground: EITerrain) -> void:
+	# Keep the playable stone opaque so SSAO reaches feet and ruin bases.
+	# Only the narrow outer apron needs transparency to blend into the grass.
+	# These five coplanar patches share UVs and never overlap.
+	var base_shader := preload("res://src/ui/arena_paving.gdshader")
+	if _paving_edge_shader == null:
+		_paving_edge_shader = Shader.new()
+		_paving_edge_shader.code = base_shader.code.replace("shader_type spatial;",
+			"shader_type spatial;\n#define ARENA_PAVING_EDGE")
+	var patches: Array[Rect2] = [Rect2(0.045, 0.045, 0.91, 0.91),
+		Rect2(0, 0, 1, 0.045), Rect2(0, 0.955, 1, 0.045),
+		Rect2(0, 0.045, 0.045, 0.91), Rect2(0.955, 0.045, 0.045, 0.91)]
+	for i in patches.size():
+		var rect := patches[i]
+		var paving := MeshInstance3D.new()
+		paving.name = "CourtyardPaving" if i == 0 else "CourtyardApron%d" % i
+		var mesh := PlaneMesh.new()
+		mesh.size = rect.size * 32.0
+		paving.mesh = mesh
+		paving.layers = 1 | EITerrain.DECAL_LAYER
+		var offset := (rect.get_center() - Vector2(0.5, 0.5)) * 32.0
+		paving.position = Vector3(32 + offset.x, 0.025, -32 + offset.y)
+		paving.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		var material := ShaderMaterial.new()
+		material.shader = base_shader if i == 0 else _paving_edge_shader
+		material.set_shader_parameter("paving", preload("res://assets/arena/courtyard-v2.png"))
+		material.set_shader_parameter("atlas_rect", Vector4(rect.position.x, rect.position.y, rect.size.x, rect.size.y))
+		paving.material_override = material
+		ground.add_child(paving)
 
 
 static func scenery(ground: EITerrain, parent: Node3D) -> Array[Node3D]:

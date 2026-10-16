@@ -6,6 +6,7 @@ var policy := "balanced"
 var total := 12
 var seed_start := 100
 var challenge := 0
+var pact_choice := "auto"
 var source_hashes := {}
 var results := []
 var run: ArenaRun
@@ -19,6 +20,7 @@ func _ready() -> void:
 		if arg.begins_with("--arena-seed-start="): seed_start = int(arg.get_slice("=", 1))
 		if arg.begins_with("--arena-challenge="): challenge = clampi(int(arg.get_slice("=", 1)), 0, 2)
 		if arg.begins_with("--arena-policy="): policy = arg.get_slice("=", 1)
+		if arg.begins_with("--arena-pact="): pact_choice = arg.get_slice("=", 1)
 	if not ArenaRules.available():
 		printerr("Original expedition content missing")
 		get_tree().quit(1)
@@ -44,6 +46,7 @@ func _ready() -> void:
 				shop_turn()
 				match_state.prepare()
 				var snapshot := {"wave": run.wave, "gold": run.gold, "lives": run.lives,
+					"pact": run.pact, "pact_rank": run.pact_rank, "pact_active": run.pact_active(),
 					"army": run.army.filter(func(u): return u.deployed).duplicate(true)}
 				if not match_state.start():
 					printerr("Simulation failed to start: ", snapshot)
@@ -63,12 +66,17 @@ func _ready() -> void:
 				run.advance()
 			elif run.stage == "reward":
 				var choice := 0
-				if run.lives < 3:
+				if run.rewards[0].kind == "pact":
+					var desired := pact_choice
+					if desired == "auto": desired = "vanguard" if policy == "melee" else "hunt" if policy == "ranged" or run.starter == 1 else "tribe"
+					for i in run.rewards.size():
+						if run.rewards[i].pact == desired: choice = i
+				elif run.lives < 3:
 					for i in run.rewards.size():
 						if run.rewards[i].kind == "life": choice = i
 				run.choose_reward(choice)
 		var record := {"seed": run.run_seed, "starter": run.starter, "outcome": run.stage,
-			"wave": run.wave, "lives": run.lives, "trace": trace}
+			"wave": run.wave, "lives": run.lives, "pact": run.pact, "pact_rank": run.pact_rank, "trace": trace}
 		results.append(record)
 		print("ARENA_RUN ", policy, " seed=", run.run_seed, " outcome=", run.stage, " wave=", run.wave, " lives=", run.lives)
 		_write()
@@ -97,7 +105,11 @@ func shop_turn() -> void:
 			if policy == "melee": preferred = [0, 1, 2]
 			elif policy == "ranged": preferred = [3, 4, 5]
 			elif policy == "diverse": preferred = [0, 1, 2, 3, 4, 5]
+			if pact_choice in ArenaRules.PACTS and policy != "novice": preferred = ArenaRules.PACTS[pact_choice].families
 			var score := float(owned * 4 + mini(affinity, 3)) + (5 if family in preferred else -7)
+			# A ranged policy still needs a third beast family for Wild kin.
+			# Buy one melee family if absent; it competes with another evolution.
+			if run.pact == "hunt" and family in [0, 2] and not run.army.any(func(u): return int(u.family) in [0, 2]): score += 14
 			if policy == "novice": score = 1 # Buy the first affordable offer.
 			if run.army.size() < run.capacity(): score += 10
 			if score > best:
@@ -134,6 +146,7 @@ func check_native(want: int) -> bool:
 
 func _write() -> void:
 	var output := {"rules_version": ArenaRules.VERSION, "policy": policy, "count": results.size(),
+		"pact_choice": pact_choice,
 		"source_sha256": source_hashes, "challenge": challenge,
 		"seed_start": seed_start, "results": results,
 		"scope": "Actual run economy, native AI/combat/spells/projectiles, authored terrain and scenery navigation. Manual 55ms ticks; no visual/audio presentation. Policy clear rates are not human clear rates."}
