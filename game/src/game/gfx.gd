@@ -260,6 +260,17 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 		and RenderingServer.get_current_rendering_method() == "mobile"
 	if RenderingServer.get_current_rendering_method() == "mobile":
 		code = TerrainSamplingShader.compact(code)
+		if _specialize_mobile_water and _specialize_materials \
+				and code.contains("#define EI_WATER_FX"):
+			# The reflection tracer reads textureLod(..., 0.0) exclusively.
+			# Requesting mipmaps makes Mobile generate unused screen levels.
+			code = code.replace("uniform sampler2D screen_tex : hint_screen_texture, filter_linear_mipmap;",
+				"uniform sampler2D screen_tex : hint_screen_texture, filter_linear;")
+			# A false uniform still leaves the reflection tracer and screen-copy
+			# dependency in Godot's shader analysis. Keep shore depth and sky
+			# reflections; omit only the disabled scene-reflection path.
+			if not on("gfx_water_reflections"):
+				code = code.replace("shader_type spatial;", "shader_type spatial;\n#define EI_NO_WATER_REFLECTIONS")
 	if code.contains("#define EI_FOLIAGE_WIND") and (not _foliage_wind or code.contains("#define EI_FOLIAGE_STILL")):
 		code = code.replace("#define EI_FOLIAGE_WIND\n", "#define EI_FOLIAGE_WIND\n#define EI_FOLIAGE_WIND_DISABLED\n")
 	if lit and not wrap and not code.contains("#define EI_FIGURE_LIGHT"):
@@ -417,6 +428,7 @@ static var _material_mode := -1
 static var _terrain_mode := -1
 static var _cloud_mode := 0
 static var _figure_mode := -1
+static var _water_reflection_mode := -1
 ## Restrict the compatibility change to Android GLES. Tests can exercise the
 ## same source on another GPU without changing the shipped desktop defaults.
 static var _compact_figures := OS.has_feature("android") and Portability.compatibility()
@@ -425,6 +437,8 @@ static var _compact_mobile_lighting := OS.has_feature("android") \
 	and not OS.get_cmdline_user_args().has("--ei-expanded-mobile-lighting")
 static var _skip_clear_mobile_fog := OS.has_feature("android") \
 	and not OS.get_cmdline_user_args().has("--ei-full-mobile-fog")
+static var _specialize_mobile_water := OS.has_feature("android") \
+	and not OS.get_cmdline_user_args().has("--ei-dynamic-mobile-water")
 static var _foliage_wind := true
 
 
@@ -461,13 +475,17 @@ static func _set_vol_fog(v: bool) -> void:
 	var clouds := Clouds.mode() | (int(Clouds.shadows_enabled()) << 2) | (int(Clouds.reflections_enabled()) << 3)
 	var figures := (1 | (int(on("gfx_sharp_units")) << 1) | (int(on("gfx_foliage_light")) << 2)) \
 		if _compact_figures and _specialize_materials else 0
-	if v == _vol_fog and mode == _material_mode and terrain_mode == _terrain_mode and clouds == _cloud_mode and figures == _figure_mode:
+	var water_reflections := int(on("gfx_water_reflections")) if _specialize_mobile_water \
+		and _specialize_materials and RenderingServer.get_current_rendering_method() == "mobile" else -2
+	if v == _vol_fog and mode == _material_mode and terrain_mode == _terrain_mode and clouds == _cloud_mode \
+			and figures == _figure_mode and water_reflections == _water_reflection_mode:
 		return
 	_vol_fog = v
 	_material_mode = mode
 	_terrain_mode = terrain_mode
 	_cloud_mode = clouds
 	_figure_mode = figures
+	_water_reflection_mode = water_reflections
 	var keep: Array = []
 	for r: Array in _made:
 		var sh := (r[0] as WeakRef).get_ref() as Shader

@@ -1,5 +1,8 @@
 # Android Vulkan: additional shader work
 
+The subsequent [water and screen-mipmap pass](android-vulkan-water-performance-2026-10-17.md)
+uses this pass as its measured baseline.
+
 Android Mobile now skips fog calculations for pixels where both distance fog
 and border fog contribute exactly zero. Detailed materials also use an internal
 uniform bound for their four-light loops, keeping the bound out of compile-time

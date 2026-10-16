@@ -391,7 +391,9 @@ uniform float source_texel = 0.001953125;
 uniform sampler2D terrain_cells : filter_nearest, repeat_disable;
 uniform sampler2D rain_cover : filter_nearest, repeat_disable;
 uniform sampler2D depth_tex : hint_depth_texture, filter_nearest, repeat_disable;
+#ifndef EI_NO_WATER_REFLECTIONS
 uniform sampler2D screen_tex : hint_screen_texture, filter_linear_mipmap;
+#endif
 uniform sampler2D wave_a : hint_normal, filter_linear_mipmap, repeat_enable;
 uniform sampler2D wave_b : hint_normal, filter_linear_mipmap, repeat_enable;
 uniform sampler2D foam_tex : filter_linear_mipmap, repeat_enable;
@@ -581,6 +583,7 @@ vec3 rain_rings(vec2 p, float now, float pixel_width) {
 // Mirror uses a reflected geometry view for the selected water level. The
 // lower-cost fallback traces the opaque depth/colour copy (Godot SSR runs
 // before transparent water). Alpha blends the result over the reflected sky.
+#ifndef EI_NO_WATER_REFLECTIONS
 vec4 water_ssr(vec3 origin, vec3 normal, mat4 proj, mat4 inv_proj, mat4 inv_view) {
 #if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
 	if (mirror > 0.5) {
@@ -648,6 +651,7 @@ vec4 water_ssr(vec3 origin, vec3 normal, mat4 proj, mat4 inv_proj, mat4 inv_view
 	}
 	return vec4(0.0);
 }
+#endif
 void fragment() {
 	ei_wave_scale = 1.0;
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
@@ -748,6 +752,7 @@ void fragment() {
 		float w = fres + max(min(length(rain_slope) * 0.6, 0.18), rain_crest);
 		if (swamp) { w = max(w, mix(0.03, 0.055, sediment)); }
 		R = water_sky_colour(R, swamp);
+#ifndef EI_NO_WATER_REFLECTIONS
 		if (reflections) {
 			// Mirror: a calmer surface for scene sampling, so reflected
 			// trees and cliffs stay recognisable.
@@ -758,6 +763,7 @@ void fragment() {
 			R = reflected.rgb;
 			w = reflected.a;
 		}
+#endif
 		w *= (1.0 - foam) * shore;
 		// Retain the murky green body colour even at grazing angles.
 		if (swamp) { w = min(w, 0.45); }

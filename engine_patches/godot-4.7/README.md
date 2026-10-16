@@ -172,6 +172,26 @@ and paired shadow captures. The game fixtures are
 Build hashes, device timings and test results are recorded in
 [`android-vulkan-original-performance-2026-10-16.md`](../../docs/android-vulkan-original-performance-2026-10-16.md).
 
+`mobile-screen-mip-demand.patch` follows `mobile-render-work.patch`. Mobile
+tracks mip-filtered screen samplers on its visible material surfaces and builds
+the screen mip chain only when one is present. Level zero is still copied for
+ordinary screen samplers. The demand flag resets per render list, and the normal
+material-cache invalidation handles live shader changes. Allocations are kept
+compatible with a consumer returning; mip consumers retain the previous full
+chain. Forward+ callers keep the original default. The capability
+`ei_mobile_screen_mip_demand` identifies the patched engine; do not add it to
+export tags. Older engines remain visually compatible with the game's sampler
+change but still generate the unused levels.
+
+`tests/mobile_screen_mips.gd` compares level-zero and forced-mip references,
+mixed consumers, visibility/culling, shader changes, empty/restored MultiMeshes
+and next-pass materials. Run it on both engine versions and compare all captures.
+The water setting/image fixtures are `tools/tests/mobile_water_options.gd` and
+`tools/tests/mobile_water_render.gd`. Android ARM64 measurements and the native
+source/build audit are in
+[`android-vulkan-water-performance-2026-10-17.md`](../../docs/android-vulkan-water-performance-2026-10-17.md).
+Shared installed templates are not replaced by this validation.
+
 The focused `tests/animation_cache_retention.gd` fixture compares normal and
 retained players through completion, library/key/target changes, tree reentry,
 queued clips and reverse playback. Run a patched game build on an isolated
