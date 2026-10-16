@@ -1,0 +1,350 @@
+{
+  "version": "1.8.0",
+  "tag": "v1.8.0",
+  "base_stable": "1.7.0",
+  "release_type": "stable",
+  "game_source_commit": "08e1a811bbff6b988b41b1c13db6f5a4aacc397b",
+  "game_tree": "31fd4da8d15229dee3b827490afa43759804c2a4",
+  "protocol": 23,
+  "same_version_coop_required": true,
+  "all_311_compiled_scripts_identical_across_five_platforms": true,
+  "runtime_checks": {
+    "wiki-en": {
+      "checks": 10175,
+      "failures": 0,
+      "log_sha256": "57ea0f4cd4c5bb53fd6264cdf4bb97f0d55e39173561c4ea21d5e45a7bc328a7",
+      "executable": "published Linux package"
+    },
+    "wiki_features-en": {
+      "checks": 3301,
+      "failures": 0,
+      "log_sha256": "e4c550537a7d98513d5de1bfc6f0890ef2150e436f0f2e680a98624cf8dc9b37",
+      "executable": "published Linux package"
+    },
+    "wiki_quest_locales-en": {
+      "checks": 588,
+      "failures": 0,
+      "log_sha256": "10739b52e101cd222f0eb793a6007c13914f1a53fa59f48123546b0bad43fddf",
+      "executable": "published Linux package"
+    },
+    "wiki_rework-en": {
+      "checks": 9676,
+      "failures": 0,
+      "log_sha256": "b7c28be0631ecd0ed796fdb0a7f445e70100f16904b481ef5a1e1177d1680161",
+      "executable": "published Linux package"
+    },
+    "wiki_rework-ru": {
+      "checks": 9676,
+      "failures": 0,
+      "log_sha256": "7a323166215f87ba397f14950903774cc106ab848c9a37e99811089f3ee9a0ad",
+      "executable": "published Linux package"
+    },
+    "wiki_rework-de": {
+      "checks": 9676,
+      "failures": 0,
+      "log_sha256": "a835a7611832d145bc86d4981c3ad8e8bed36fe6e15c3d1df39d2ac488c8b4ae",
+      "executable": "published Linux package"
+    }
+  },
+  "browser_math_checks": 18676,
+  "browser_plan_search_map_checks": 53,
+  "local_library_checks": "snapshot reloads, recipes, slots, campaigns, cross-tab reads, storage failures, corrupt data and capacity passed",
+  "translations": {
+    "entries": 1555,
+    "dynamic_wiki_keys": 131,
+    "website_keys": 203,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "errors": 0
+  },
+  "layout": {
+    "desktop_short": {
+      "viewport": [
+        1280,
+        720
+      ],
+      "camp_height": 510,
+      "selector_height": 510,
+      "selected_item_footer_visible": true
+    },
+    "desktop": {
+      "viewport": [
+        1440,
+        1000
+      ],
+      "camp_height": 763.3515625,
+      "selector_height": 763.3515625,
+      "planner_and_constructor_equal": true,
+      "languages": [
+        "en",
+        "ru",
+        "de"
+      ]
+    },
+    "mobile_drawer": "390x844 checked; selected-item actions remain visible",
+    "mechanical_layout_findings": []
+  },
+  "desktop": {
+    "linux-x86_64": {
+      "version": "1.8.0",
+      "source_commit": "08e1a811bbff6b988b41b1c13db6f5a4aacc397b",
+      "game_tree": "31fd4da8d15229dee3b827490afa43759804c2a4",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 311,
+      "resource_count": 800,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.pck": "139fd62bf938aaa86e67f67b214bd86dd4bdd53dbf52c13f114c99826f21c1e2"
+      }
+    },
+    "windows-x86_64": {
+      "version": "1.8.0",
+      "source_commit": "08e1a811bbff6b988b41b1c13db6f5a4aacc397b",
+      "game_tree": "31fd4da8d15229dee3b827490afa43759804c2a4",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 311,
+      "resource_count": 800,
+      "files": {
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "CursedLands.pck": "139fd62bf938aaa86e67f67b214bd86dd4bdd53dbf52c13f114c99826f21c1e2"
+      }
+    },
+    "macos-universal": {
+      "version": "1.8.0",
+      "source_commit": "08e1a811bbff6b988b41b1c13db6f5a4aacc397b",
+      "game_tree": "31fd4da8d15229dee3b827490afa43759804c2a4",
+      "protocol": 23,
+      "platform": "macos-universal",
+      "unsigned": true,
+      "target_os_runtime_tested": false,
+      "compiled_scripts": 311,
+      "files": {
+        "CursedLands.zip": "a804b89da60b02a9d277502740ff3d1cdf41e9c23423294ff461898e457bdce4"
+      }
+    }
+  },
+  "android": {
+    "version": "1.8.0",
+    "compiled_scripts": 311,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 40,
+    "debuggable": false,
+    "apk_sha256": "ac696755d5e2bf4f2e1e8234da851b307173940dc6432c2da712ad5f2c17999b",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    }
+  },
+  "browser": {
+    "version": "1.8.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-0aead8277bb699d1bee0",
+      "new_cache": "cursed-engine-2-6d69bfd8b228ff615c58",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "46938d60fe839e5688a60c8586559c46f1dd61f624a11dc358e4619fd8cb3ac3",
+      "old_tab_wait_verified": true,
+      "unchanged_wasm_reused": true,
+      "network_paths": [
+        "__expected",
+        "index.html",
+        "index.pck",
+        "release-check.html",
+        "service-worker.js"
+      ]
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-6d69bfd8b228ff615c58"
+      ],
+      "packs": {
+        "cursed-engine-2-6d69bfd8b228ff615c58": "46938d60fe839e5688a60c8586559c46f1dd61f624a11dc358e4619fd8cb3ac3"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    },
+    "fresh_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": []
+    },
+    "upgraded_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": []
+    },
+    "build": {
+      "version": "1.8.0",
+      "source_tag": "v1.8.0",
+      "source_commit": "08e1a811bbff6b988b41b1c13db6f5a4aacc397b",
+      "game_tree": "31fd4da8d15229dee3b827490afa43759804c2a4",
+      "protocol": 23,
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 311,
+      "resource_count": 797,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "46938d60fe839e5688a60c8586559c46f1dd61f624a11dc358e4619fd8cb3ac3",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    }
+  },
+  "public_wiki": {
+    "version": "1.8.0",
+    "languages": {
+      "en": {
+        "pages": 1229,
+        "listed_pages": 1026,
+        "listed_spells": 31,
+        "versions": 2009,
+        "resolved_links": 13968,
+        "normalized_equipment_links": 116
+      },
+      "ru": {
+        "pages": 1229,
+        "listed_pages": 1029,
+        "listed_spells": 31,
+        "versions": 2009,
+        "resolved_links": 13953,
+        "normalized_equipment_links": 116
+      },
+      "de": {
+        "pages": 1229,
+        "listed_pages": 1026,
+        "listed_spells": 31,
+        "versions": 2009,
+        "resolved_links": 13992,
+        "normalized_equipment_links": 116
+      }
+    },
+    "translation_keys": 203,
+    "requires_game_files": false,
+    "requires_game_engine": false,
+    "requires_account": false,
+    "campaigns": {
+      "cursed_lands": {
+        "languages": {
+          "en": {
+            "pages": 1229,
+            "listed_pages": 1026,
+            "listed_spells": 31,
+            "versions": 2009,
+            "resolved_links": 13968,
+            "normalized_equipment_links": 116
+          },
+          "ru": {
+            "pages": 1229,
+            "listed_pages": 1029,
+            "listed_spells": 31,
+            "versions": 2009,
+            "resolved_links": 13953,
+            "normalized_equipment_links": 116
+          },
+          "de": {
+            "pages": 1229,
+            "listed_pages": 1026,
+            "listed_spells": 31,
+            "versions": 2009,
+            "resolved_links": 13992,
+            "normalized_equipment_links": 116
+          }
+        }
+      },
+      "lost_in_astral": {
+        "languages": {
+          "en": {
+            "pages": 1706,
+            "listed_pages": 1428,
+            "listed_spells": 35,
+            "versions": 2666,
+            "resolved_links": 49108,
+            "normalized_equipment_links": 90
+          },
+          "ru": {
+            "pages": 1706,
+            "listed_pages": 1428,
+            "listed_spells": 35,
+            "versions": 2666,
+            "resolved_links": 49044,
+            "normalized_equipment_links": 90
+          },
+          "de": {
+            "pages": 1706,
+            "listed_pages": 1428,
+            "listed_spells": 35,
+            "versions": 2666,
+            "resolved_links": 49121,
+            "normalized_equipment_links": 90
+          }
+        }
+      }
+    },
+    "illustrations": 4246,
+    "bytes": 164362344
+  },
+  "hosted_files_count": 13211,
+  "hosted_full_manifest_sha256": "ffb256633c93efed2b3ebf66ca88d7c260bddf12c0462b5e958e39125e06f7d8",
+  "hosted_primary_files": {
+    "BUILD-INFO.json": "6606c786fb5891994e2b7d8126a349044e6bc48bd7b4a4baa0a59206fb859023",
+    "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+    "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+    "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+    "THIRD_PARTY_NOTICES.md": "42fea15f445074b0f20ad4e660934c9ddc96975a4ed64bfd42a506996f899e10",
+    "_headers": "385af9098c5d9752a0ff141b34048e2611ad70beba02c7ed03b1b1dc29a67841",
+    "data-worker.js": "23acf2e304952606e7e2a0bf850dc8e02b56dcae2913cc79e461c78afbd49d77",
+    "files.js": "5b23e470c5dedc93d0c80ea0696eff36bad3afbb88eb4bc85ced567f472c5b2a",
+    "icon-192.png": "ce18b6621f58d2b24ef49ec182bf4f021f5992b2e46e666918764c47d92a1a0a",
+    "icon-512.png": "33d17b00001bf55448c56919e7f9a9d56be7089231be189704d72a13d00363d4",
+    "index.apple-touch-icon.png": "a8079e5f32d35cabbc12bb9f66f4b7c49a73b84d7fc1e8e4dde15914f9bc50eb",
+    "index.audio.position.worklet.js": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+    "index.audio.worklet.js": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+    "index.html": "f3bfba3acc0fab33665f04510a575d59c4ebc29e5ff672ceff44443ff5b3f9bc",
+    "index.icon.png": "490c9afe17f218360ceb84d41dd95d0409dfe0349c00a97c40cf3d8e04cf0b45",
+    "index.js": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
+    "index.pck": "46938d60fe839e5688a60c8586559c46f1dd61f624a11dc358e4619fd8cb3ac3",
+    "index.png": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
+    "index.wasm.part0": "e225998ec9fbd2fb1aa80798d571dc381fdd9bfdb3478250832404d941db0426",
+    "index.wasm.part1": "79cae914fb3feb5b3ef307b0906fd111d1ee2ca48ff730ba21cca432c271467b",
+    "installer-worker.js": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
+    "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+    "manifest.webmanifest": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
+    "service-worker.js": "56f4256576a49fad787d18a1a30c75c3f737aebbafe39b731b47780f8e3ac8cb",
+    "storage.js": "9265725b43b6b4e897693fd3be62b175c3e0b07493b51ba7d18a6d1578bee581",
+    "wiki/BUILD-INFO.json": "8abe1fdb3fe3a7c35aad93d282599d625947c8223d5a4255455e1b83246b67ce"
+  },
+  "parts_manifest": {
+    "/index.wasm": {
+      "count": 2,
+      "size": 39509339
+    }
+  },
+  "limits": [
+    "Runtime and rendering checks ran on Linux; Windows and macOS exports were audited without native OS runtime tests. macOS is unsigned.",
+    "Android retains the qualified production template and signing certificate, with versionCode 40. No new on-device gameplay run.",
+    "Browser checks cover startup, cached upgrades and wiki workflows, not a complete campaign.",
+    "Website portraits are illustrative. Character totals exclude gear bonuses, perks and temporary effects. Wiki planning never mutates actual gameplay saves or inventory."
+  ],
+  "deployment_verification": "Live asset hashes and browser rendering must pass before publishing the draft release; publication receipts remain in the release workspace."
+}
