@@ -114,7 +114,7 @@ func ui_checks() -> void:
 	panel.open()
 	await frames()
 	check(panel.visible and panel.current == "home", "wiki opens at contents")
-	check(panel._results.item_count <= WikiPanel.PAGE_SIZE, "search list is paginated")
+	check(panel._results.item_count == panel._matches.size() and panel._results.item_count > 80, "all search results form one continuous list")
 	var samples := {}
 	for key: String in catalog.ordered:
 		var entry: Dictionary = catalog.entries[key]
@@ -192,7 +192,7 @@ func ui_checks() -> void:
 		var value := String(catalog.entries[key].value)
 		if not Spells.mods_of(value).is_empty(): continue
 		for row: Dictionary in GameData.db.table("spell_modifiers"):
-			if Spells.can_add(value, row.code) and String(row.code).begins_with("e"):
+			if WikiCatalog.rune_listed(row.code) and Spells.can_add(value, row.code) and String(row.code).begins_with("e"):
 				spell = value
 				rune = row.code
 				break

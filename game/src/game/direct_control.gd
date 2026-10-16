@@ -540,6 +540,13 @@ func attack() -> void:
 	game.issue(command)
 
 
+func arm_targeting() -> void:
+	# Selecting a spell requires a new confirmation, even if an earlier
+	# attack was held or its release was consumed by another control.
+	_fire = false
+	_repeat = 0.0
+
+
 ## Keyboard E has an explicit self action while a friendly spell/item is
 ## selected. Left click still uses the aimed target, including another hero.
 func _self_target() -> Dictionary:
@@ -766,6 +773,10 @@ func apply_camera(dt := 0.0) -> void:
 		# Eyes sit ahead of the collar: looking down sees the chest, while
 		# walking neck/shoulder motion stays behind the near part of the view.
 		eye += Vector3(cos(heading),0,-sin(heading)) * 0.28
+		var size := rig.camera.get_viewport().get_visible_rect().size
+		var fov := deg_to_rad(50.0 + 5.0 * GameData.option("direct_fov_first"))
+		var clearance := maxf(0.10, 0.03 * tan(fov * 0.5) * maxf(1.0, size.x / maxf(size.y, 1.0)) + 0.01)
+		eye = clear_first_person_eye(game.world, u.global_position, eye, clearance)
 		_shoulder_unit = null
 	else:
 		var wanted := pivot - forward*zoom + right*0.55
@@ -788,6 +799,31 @@ func apply_camera(dt := 0.0) -> void:
 		var half_fov := deg_to_rad(rig.camera.fov) * 0.5
 		var bottom := forward * sin(half_fov) + rig.camera.global_basis.y * cos(half_fov)
 		u.model.align_first_person_body(eye, right, bottom)
+
+
+## The prone head extends beyond the actor's ground contact. Sweep from the
+## body to the drawn eye, including clearance for the near-plane corners.
+## This only adjusts the viewpoint; it never moves the simulation's actor.
+static func clear_first_person_eye(world: GameWorld, body: Vector3, wanted: Vector3, margin := 0.10) -> Vector3:
+	var anchor := Vector3(body.x, maxf(body.y + margin + 0.01, wanted.y), body.z)
+	# At an exact navigation-cell corner the actor's centre can be open while
+	# the near plane overlaps an adjacent wall. Try nearby interior points
+	# before lifting over rising terrain; a sweep must start in clear space.
+	if not DirectCombat.scene_clear(world, anchor, margin):
+		var found := false
+		for rise in 12:
+			for radius: float in [0.0, 0.15, 0.30]:
+				for direction in 8:
+					var offset := Vector2.from_angle(float(direction) * TAU / 8.0) * radius
+					var candidate := anchor + Vector3(offset.x, float(rise) * 0.10, offset.y)
+					if DirectCombat.scene_clear(world, candidate, margin):
+						anchor = candidate
+						found = true
+						break
+				if found: break
+			if found: break
+	var fraction := DirectCombat.scene_fraction(world, anchor, wanted, margin)
+	return wanted if fraction == 1.0 else anchor.lerp(wanted, maxf(0.0, fraction - 0.005))
 
 
 func _update_view_model(model: EIUnitModel) -> void:

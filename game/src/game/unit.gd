@@ -653,9 +653,19 @@ func figure_complexion() -> Vector3:
 func figure_info() -> Dictionary:
 	var shown := info.duplicate()
 	shown.complexion = figure_complexion()
+	shown.peaceful_gear = peaceful_gear()
 	# An actual effective zero build is not the absent-map-override sentinel.
 	shown.effective_complexion = true
 	return shown
+
+
+## Native village605da0 hides the protagonist's helmet, rather than every
+## NPC's; village poses are unarmed. Apply that presentation to each co-op
+## protagonist in a safe hub too. Hired companions and authored guards keep
+## their own equipment. The inventory and combat kit are never changed.
+func peaceful_gear() -> bool:
+	return world != null and world.zone.get("type", "") == "brief" and controller >= 0 \
+		and has_meta("hero") and not get_meta("hero").has("merc")
 
 
 ## Refresh only when magic changed the build. Preserve the playing mixer,
@@ -664,7 +674,9 @@ func figure_info() -> Dictionary:
 func refresh_figure(force := false) -> void:
 	if model == null:
 		return
-	if not force and model.get_meta("complexion", Vector3.INF) == figure_complexion():
+	model.set_invisible(buffs.has("invisible"))
+	if not force and model.get_meta("complexion", Vector3.INF) == figure_complexion() \
+			and model.get_meta("peaceful_gear", false) == peaceful_gear():
 		return
 	var shown := figure_info()
 	# The replacement copies the old rig's current keys and transforms.
@@ -673,6 +685,7 @@ func refresh_figure(force := false) -> void:
 	var m := EIUnitModel.create(shown, false, false)
 	if m == null:
 		return
+	m.set_invisible(buffs.has("invisible"))
 	var old := model
 	for property: String in ["pose_state", "pose_mod", "_current", "_cycle", "_cycle_pos", "_resume", "_resume_clip"]:
 		m.set(property, old.get(property))
@@ -3587,6 +3600,7 @@ func set_equipment(armors: PackedStringArray, weapons: PackedStringArray) -> voi
 	var m := EIUnitModel.create(figure_info())
 	if m == null:
 		return
+	m.set_invisible(buffs.has("invisible"))
 	if model:
 		m.pose_state = model.pose_state
 		m.pose_mod = model.pose_mod

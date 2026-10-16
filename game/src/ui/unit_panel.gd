@@ -549,10 +549,11 @@ func _draw_effects(c: CanvasItem, u: GameUnit) -> void:
 	var names := u.buffs.keys()
 	for i in mini(names.size(), 6):
 		var code := String(names[i])
-		var sp := Spells.parse(code)
+		var spell := Spells.effect_spell(code)
+		var sp := Spells.parse(spell)
 		var t := int(sp.proto.get("texture_type", -1))
 		var tex := SpellSlots.icon("spell%04d" % t) if t >= 0 else null
 		if tex:
 			c.draw_texture_rect(tex, _r(Rect2(28, 38 + 30 * i, 24, 24)), false)
-		_text(c, Rect2(40, 35 + 30 * i, 115, 15), Spells.title(code))
+		_text(c, Rect2(40, 35 + 30 * i, 115, 15), Spells.title(spell))
 		_text(c, Rect2(40, 50 + 30 * i, 115, 15), str(int(float(u.effect_ticks(code)) / 15.0)))

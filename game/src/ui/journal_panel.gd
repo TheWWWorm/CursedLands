@@ -98,8 +98,8 @@ func _quest(q: String, objs: Dictionary, _done: bool) -> String:
 	return s + "\n"
 
 
-static func _parse(q: String) -> Dictionary:
-	var t := SideQuests.quest_doc(q)
+static func _parse(q: String, document := "") -> Dictionary:
+	var t := SideQuests.quest_doc(q) if document.is_empty() else document
 	var lines := t.split("\n")
 	var out := {"title": lines[0].strip_edges() if lines.size() else q, "text": "", "subs": {}}
 	var cur := -1

@@ -22,6 +22,8 @@ var _framing := false
 var _double := false
 ## Spell waiting for a target click ("" = none).
 var pending_spell := ""
+var _last_spell_key := {}
+const SPELL_DOUBLE_TAP_MS := 350
 var sound: GameSound
 var marks: OrderMarks
 var _env: Environment
@@ -386,6 +388,7 @@ func cancel_touch_target() -> void:
 	touch_aim = -1
 	touch_force = ""
 	pending_spell = ""
+	_last_spell_key.clear()
 	if hud:
 		hud.set_targeting("")
 
@@ -803,7 +806,7 @@ func _unhandled_input(e: InputEvent) -> void:
 		if hud._tutorial.visible and not act in ["pause", "quickload"] and e.keycode != KEY_ESCAPE:
 			return
 		if act:
-			_key_action(act)
+			_key_action(act, e.ctrl_pressed or e.alt_pressed, true)
 			return
 		match e.keycode:   # remake-only windows on keys the original leaves free
 			KEY_ENTER, KEY_KP_ENTER:   # co-op chat (NetStatus; Enter is unbound in keyboard.ini)
@@ -829,12 +832,38 @@ func _unhandled_input(e: InputEvent) -> void:
 					hud.toggle_menu()
 
 
-func _key_action(act: String) -> void:
-	# Ctrl or Alt held (UI manager) changes several keys
-	var mod := Input.is_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_ALT)
+func _spell_shortcut(slot: int, mod: bool) -> void:
+	var now := Time.get_ticks_msec()
+	var caster: GameUnit = selected[0] if not selected.is_empty() else null
+	var spells: Array = caster.get_meta("hero",{}).get("spells",[]) if is_instance_valid(caster) else []
+	if slot < 0 or slot >= mini(8,spells.size()):
+		_last_spell_key.clear()
+		return
+	var requested := String(spells[slot])
+	var repeated: bool = not mod and GameData.option("spell_double_tap_self") != 0 \
+		and not _last_spell_key.is_empty() and is_instance_valid(caster) and is_instance_valid(world) \
+		and _last_spell_key.slot == slot and _last_spell_key.unit == caster.get_instance_id() \
+		and _last_spell_key.world == world.get_instance_id() and _last_spell_key.spell == pending_spell and pending_spell == requested \
+		and now - int(_last_spell_key.at) <= SPELL_DOUBLE_TAP_MS
+	_last_spell_key.clear()
+	if repeated and has_spell_target() and not Spells.offensive(pending_spell):
+		# Use the same target validation, stamina checks and authority command
+		# as clicking the caster's portrait. An invalid cast stays selected.
+		cast_portrait(caster)
+		return
+	hud._slots.use(slot,mod)
+	if not mod and has_spell_target() and pending_spell == requested and is_instance_valid(caster) and is_instance_valid(world):
+		_last_spell_key = {"slot":slot,"unit":caster.get_instance_id(),"world":world.get_instance_id(),"spell":pending_spell,"at":now}
+
+
+func _key_action(act: String, mod := false, keyboard := false) -> void:
+	# Use this shortcut event's modifiers. A missed release (Alt+Tab or a
+	# stalled loading frame) can leave the global key state latched until
+	# restart, turning plain spell selection into an immediate quick cast.
 	var n := int(act.right(1)) - 1
 	if act.begins_with("spell"):   # cases 0x1e–0x25: / with Ctrl, Alt
-		hud._slots.use(n, mod)
+		if keyboard: _spell_shortcut(n,mod)
+		else: hud._slots.use(n, mod)
 		return
 	if act.begins_with("item"):    # cases 0x2a–0x2d: / with Ctrl, Alt
 		hud._belt.use(n, mod)
@@ -1089,6 +1118,7 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
 		_dragging = false
 		_framing = false
+		_last_spell_key.clear()
 
 
 ## Frame selection (the original left button up):
@@ -1133,6 +1163,7 @@ func begin_belt(u: GameUnit, item: String) -> void:
 		hud.set_targeting("")
 		return
 	pending_spell = key
+	if direct: direct.arm_targeting()
 	hud.set_targeting(Items.title(item))
 
 
@@ -1147,6 +1178,7 @@ func begin_cast(i: int) -> void:
 		return
 	cancel_touch_target()
 	pending_spell = spells[i]
+	if direct: direct.arm_targeting()
 	hud.set_targeting(Spells.title(pending_spell))
 
 

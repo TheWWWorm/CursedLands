@@ -6,6 +6,7 @@ import path from 'node:path';
 import http from 'node:http';
 import {spawn} from 'node:child_process';
 import assert from 'node:assert/strict';
+import {buildSpell,canEnchant} from '../../web/wiki/constructors.mjs';
 const args = Object.fromEntries(process.argv.slice(2).map(v => v.replace(/^--/, '').split(/=(.*)/s).slice(0, 2)));
 const root = path.resolve(args['public-dir']), output = path.resolve(args.output);
 await fs.mkdir(output, {recursive: true});
@@ -13,7 +14,7 @@ const repo = path.resolve(new URL('../..', import.meta.url).pathname);
 let source = await fs.readFile(path.join(repo, 'worker.js'), 'utf8');
 source = source.replace("import parts from './parts.json';", 'const parts = ' + await fs.readFile(path.join(repo, 'parts.json'), 'utf8') + ';');
 const worker = (await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'))).default;
-const mime = {'.html':'text/html', '.css':'text/css', '.js':'text/javascript', '.json':'application/json', '.webp':'image/webp', '.png':'image/png'};
+const mime = {'.html':'text/html', '.css':'text/css', '.js':'text/javascript', '.mjs':'text/javascript', '.json':'application/json', '.webp':'image/webp', '.png':'image/png'};
 const requests = [], errors = [];
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://' + req.headers.host);
@@ -75,7 +76,7 @@ async function screenshot(name) {
   const shot = await command('Page.captureScreenshot', {format:'png'});
   await fs.writeFile(path.join(output, name + '.png'), Buffer.from(shot.data, 'base64'));
 }
-const report = {version:'1.6.0', live:!!args.url, checks:[], languages:{}, errors};
+const report = {version:'1.7.0', live:!!args.url, checks:[], languages:{}, errors};
 function check(value, label) {assert(value, label); report.checks.push(label);}
 try {
   const endpoint = await until(async () => (await fs.readFile(path.join(profile, 'DevToolsActivePort'), 'utf8')).split('\n'), 'Chromium', 20);
@@ -252,6 +253,72 @@ try {
   check(await evaluate('document.documentElement.scrollWidth <= innerWidth'), 'mobile has no horizontal overflow');
   const mobile = await command('Page.captureScreenshot', {format:'png',captureBeyondViewport:true});
   await fs.writeFile(path.join(output, 'wiki-mobile.png'), Buffer.from(mobile.data, 'base64'));
+  for (const campaign of ['cursed_lands','lost_in_astral']) {
+    const directory=path.join(root,'wiki/data',campaign==='lost_in_astral' ? campaign : '');
+    const data=JSON.parse(await fs.readFile(path.join(directory,'en/constructors.json'),'utf8'));
+    const code=Object.keys(data.spells).find(code=>Object.keys(data.runes).some(r=>r.startsWith('e') && buildSpell(data,code,[r])));
+    const rune=Object.keys(data.runes).find(r=>r.startsWith('e') && buildSpell(data,code,[r]));
+    for (const lang of ['en','ru','de']) {
+      const entries=JSON.parse(await fs.readFile(path.join(directory,lang,'index.json'),'utf8')).entries;
+      check(entries.filter(e=>/^rune\/(?:c\d|ee\d)$/.test(e.key)).every(e=>e.listed===false),campaign+' '+lang+' internal colour/effect records excluded');
+      for (const kind of ['map','quest']) {
+        let row=entries.find(e=>e.kind===kind && e.listed);
+        if (kind==='map') for (const candidate of entries.filter(e=>e.kind==='map' && e.listed)) {
+          const page=JSON.parse(await fs.readFile(path.join(directory,lang,'pages',candidate.file),'utf8'));
+          if (page.versions[0].image) {row=candidate;break;}
+        }
+        assert(row);
+        await openArticle(row.key,lang,'',campaign);
+        check(await evaluate('document.querySelector("#article h1").textContent')===row.title,campaign+' '+lang+' localized '+kind+' article');
+        if (kind==='map') check(await evaluate('!!document.querySelector("#article figure.map-overview img")'),campaign+' '+lang+' authored map image');
+      }
+      await openArticle('spell/'+code,lang,'',campaign);
+      await select('#constructor-rune',rune);
+      await evaluate('document.querySelector("#constructor-add-rune").click()');
+      check(await evaluate('document.querySelector("#constructor-rune").value')===rune,campaign+' '+lang+' rune selection survives addition');
+      await evaluate('document.querySelector("#constructor-add-rune").click()'); await ready();
+      check(await evaluate('document.querySelector("#constructor").dataset.runeCount')==='2',campaign+' '+lang+' repeated rune added');
+      check(await evaluate('document.querySelector("#constructor img.rune-art").naturalWidth>0'),campaign+' '+lang+' selected rune artwork visible');
+      await command('Page.reload'); await ready();
+      check(await evaluate('document.querySelector("#constructor").dataset.runeCount')==='2',campaign+' '+lang+' shared URL restores spell draft');
+      await select('#language',lang==='de'?'en':'de'); await ready();
+      check(await evaluate('document.querySelector("#constructor").dataset.runeCount')==='2',campaign+' '+lang+' language switch retains draft');
+      await command('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+      check(await evaluate('document.documentElement.scrollWidth<=innerWidth'),campaign+' '+lang+' constructor fits mobile');
+      await evaluate('document.querySelector("#constructor").scrollIntoView()');
+      await screenshot('wiki-constructor-'+campaign+'-'+lang);
+      await command('Emulation.setDeviceMetricsOverride',{width:1280,height:800,deviceScaleFactor:1,mobile:false});
+    }
+    for (let i=2;i<8;i++) await evaluate('document.querySelector("#constructor-add-rune").click()');
+    check(await evaluate('document.querySelector("#constructor").dataset.runeCount==="8" && document.querySelector("#constructor-add-rune").disabled'),campaign+' eight-rune limit enforced');
+    await evaluate('document.querySelector("#constructor-remove-rune").click()');
+    check(await evaluate('document.querySelector("#constructor").dataset.runeCount')==='7',campaign+' remove last rune');
+    await evaluate('document.querySelector("#constructor-reset").click()');
+    check(await evaluate('document.querySelector("#constructor").dataset.runeCount')==='0',campaign+' reset spell');
+    const english=JSON.parse(await fs.readFile(path.join(directory,'en/index.json'),'utf8'));
+    let sample;
+    for (const row of english.entries.filter(r=>r.kind==='item' && !r.fixed)) {
+      const page=JSON.parse(await fs.readFile(path.join(directory,'en/pages',row.file),'utf8'));
+      for (const version of page.versions.filter(v=>v.builder)) {
+        const spell=Object.keys(data.spells).find(s=>canEnchant(version.builder,buildSpell(data,s,['it'])));
+        if (spell) {sample={row,version,spell,page};break;}
+      }
+      if (sample) break;
+    }
+    assert(sample,'real enchantable web item');
+    await openArticle(sample.row.key,'en',sample.version.id,campaign);
+    await select('#constructor-spell',sample.spell); await select('#constructor-rune','it');
+    await evaluate('document.querySelector("#constructor-add-rune").click()');
+    check(await evaluate('document.querySelector("#constructor").dataset.valid')==='true',campaign+' native legal item enchantment admitted');
+    await command('Page.reload'); await ready();
+    check(await evaluate('document.querySelector("#constructor").dataset.runeCount==="1" && document.querySelector("#constructor-spell").value')===sample.spell,campaign+' item draft restored from URL');
+    const other=sample.page.versions.find(v=>v.builder && v.id!==sample.version.id);
+    if (other) {
+      await select('#variant',other.id); await ready();
+      check(await evaluate('document.querySelector("#constructor").dataset.runeCount')==='1',campaign+' material switch retains enchantment draft');
+    }
+    await screenshot('wiki-item-constructor-'+campaign);
+  }
   await command('Page.navigate', {url:origin + '/wiki/?lang=ru&page=not-a-page'});
   await until(() => evaluate('document.querySelector("#notice")?.textContent === "Страница недоступна"'), 'localized missing page');
   check(true, 'unknown deep link displays localized missing-page state');

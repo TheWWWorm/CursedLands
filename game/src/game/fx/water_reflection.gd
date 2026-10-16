@@ -167,26 +167,40 @@ func _select_plane(source: Camera3D) -> float:
 			var i := y * width + x
 			var water_height := terrain.water[i]
 			if not is_finite(water_height) or terrain.liquid_ground[i] in [EITerrain.LAVA, 255]: continue
+			# A higher upstream pool may be inside the frustum while hidden by
+			# its bank. It cannot reflect toward an eye below its surface. Do
+			# not let its votes replace the visible lower river and disable the
+			# entire mirror when the camera pitches up (Karansul's Lands).
+			if water_height >= position.y - 0.15: continue
 			var point := Vector3(x + 0.5, water_height, -y - 0.5)
 			var distance := point.distance_squared_to(position)
 			if distance > REACH * REACH: continue
 			var visible := true
+			var cell := Vector3(x + 1.0, water_height, -y - 1.0)
 			for boundary: Plane in frustum:
-				if boundary.is_point_over(point):
+				# This probe represents a 2 m water tile. Its centre can leave
+				# the screen while the foreground surface still fills its edge.
+				# Test the tile bounds so a slight tilt does not select a remote
+				# level simply because that one point fell outside the frustum.
+				var radius := absf(boundary.normal.x) + absf(boundary.normal.z) + 0.125 * absf(boundary.normal.y)
+				if boundary.distance_to(cell) > radius:
 					visible = false
 					break
 			if not visible: continue
 			if water_height < terrain.height_at(point.x, -point.z) + 0.08: continue
 			var weight := 1.0 / maxf(4.0, distance)
 			var key := roundi(water_height * 4.0)
-			var group: Vector2 = groups.get(key, Vector2.ZERO)
-			groups[key] = group + Vector2(weight, water_height * weight)
+			var group: Vector3 = groups.get(key, Vector3(0, 0, INF))
+			groups[key] = Vector3(group.x + weight, group.y + water_height * weight, minf(group.z, distance))
 	var best := -INF
 	var score := 0.0
 	for key in groups:
-		var group: Vector2 = groups[key]
+		var group: Vector3 = groups[key]
 		var candidate := group.y / group.x
-		var weight := group.x * (1.25 if is_finite(plane) and absf(candidate - plane) < 0.25 else 1.0)
+		# A broad pool beyond a waterfall must not outvote a narrow foreground
+		# stream merely because tilting the camera exposes more of its cells.
+		# Choose the nearest visible level, retaining the same small hysteresis.
+		var weight := 1.0 / maxf(4.0, group.z) * (1.25 if is_finite(plane) and absf(candidate - plane) < 0.25 else 1.0)
 		if weight > score:
 			score = weight
 			best = candidate

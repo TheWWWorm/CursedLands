@@ -18,6 +18,11 @@ const DAMAGE_SCHOOLS := {
 ## Damage type slot (piercing .. general) of each elemental school.
 const DAMAGE_TYPE_INDEX := {"fire": 3, "acid": 4, "lightning": 5}
 const PROTECTS := {"prot_fire": "fire", "prot_electro": "lightning", "prot_acid": "acid"}
+## Saved/network buff keys predate the spell code used by texts and icons.
+const BUFF_SPELLS := {"invisible": "invisibility"}
+
+static func effect_spell(buff: String) -> String:
+	return BUFF_SPELLS.get(buff, buff)
 
 static var _cache := {}
 

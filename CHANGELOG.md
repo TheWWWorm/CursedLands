@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.7.0 — wiki constructors and gameplay fixes, 16 October 2026
+
+- Add maps, quests, campaign tabs and item subcategories to both encyclopedias. Bring reviewed expansion translations, item artwork and continuous browsing into the in-game wiki.
+- Add spell and item constructors to the website and an item constructor in game. Retain the selected rune after adding it, show rune artwork, and allow removing runes and enchantments. Exclude internal colour/effect records from rune browsing.
+- Keep rain rings visible at isometric distances and strengthen ordinary, bloody and green footprint opacity while retaining their authored artwork and lifetime.
+- Select nearby visible water levels consistently for Mirror scenery reflections when changing the camera angle.
+- Blend verified natural terrain textures from side projections on steep slopes. Enable the translated Steep terrain textures option in enhanced graphics profiles, with Original look retaining the original projection.
+- Animate the movement of the lava surface's larger crust patterns alongside its existing glow.
+- Select walking clips that match the character's injury state and preserve their animation phase during gait changes.
+- Keep first-person spell selection independent of stale modifier/button state. Add an enabled-by-default option to cast compatible spells on the caster by double-tapping their shortcut.
+- Group identical items collected together into one pickup notification with a quantity.
+- Hide protagonists' helmets and held weapons in safe hubs while retaining their equipped items, companion appearances and inventory previews.
+- Keep opening Suslanger conversation actors on the accessible side of the locked cage and honor the authored deployment facing.
+- Keep prone first-person viewpoints and their near-plane corners outside terrain and solid scenery.
+- Mute game effects, voices and music during movies, retaining movie audio and restoring the current volume settings afterward.
+- Localize the invisibility status name and icon and retain its figure fade across outfit changes, loaded state and renderer choices.
+- Remove the use interaction from exhausted one-way mechanisms while preserving cyclic switches and gates.
+- Prevent completed west-path bridge checks from removing the active Revenge quest areas on return to the mansion. Recover those areas in affected saves without restarting the quest. ([#4](https://github.com/TheWWWorm/CursedLands/issues/4))
+
+See [release notes](docs/releases/1.7.0.md) for compatibility and platform limits.
+
 ## 1.6.0 — encyclopedia and rendering updates, 15 October 2026
 
 - Publish a standalone [public wiki](https://cursedlands.wwworm.com/wiki/) with GOG edition data, searchable articles, material variants and illustrations in English, Russian and German. No imported game files or account are needed.

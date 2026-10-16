@@ -1,0 +1,1166 @@
+{
+  "date": "2026-10-16",
+  "base_commit": "20935f137980fc4183b7cab9798aea3e9a8399dd",
+  "branch": "fix/surface-effect-visibility",
+  "published": false,
+  "released": false,
+  "platform": "Linux x86_64, custom Godot 4.7 runtime from stable 1.6.0; NVIDIA RTX 3090 Ti",
+  "fixtures": [
+    {
+      "name": "surface-forward",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/wiki8/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/surface_effect_visibility.gd"
+      ],
+      "fixture_sha256": "b84463fc31a209e2c65de60b89206007818eeae318132ae45ce055a57bbd6b21",
+      "exit": 0,
+      "seconds": 25.955690664995927,
+      "errors": [],
+      "results": [
+        "RAIN_DISTANCE 12.0 {\"changed_pixels\":61931,\"peak_delta\":37,\"pixels_over_2\":36004}",
+        "RAIN_DISTANCE 24.0 {\"changed_pixels\":35795,\"peak_delta\":35,\"pixels_over_2\":20880}",
+        "RAIN_DISTANCE 45.0 {\"changed_pixels\":40106,\"peak_delta\":41,\"pixels_over_2\":24241}",
+        "RAIN_DISTANCE 60.0 {\"changed_pixels\":42460,\"peak_delta\":38,\"pixels_over_2\":26746}",
+        "RAIN_DISTANCE 72.0 {\"changed_pixels\":40350,\"peak_delta\":34,\"pixels_over_2\":25853}",
+        "MARK_ROWS {\"blood\":[[0.599999964237213,1200,150],[0.599999964237213,1200,150],[0.449999988079071,900,150],[0.5,600,150],[0.449999988079071,900,150],[0.599999964237213,1200,150],[0.0,0,0],[0.599999964237213,900,150],[0.0,0,0],[0.799999952316284,600,150],[0.5,600,150],[0.5,1200,150],[0.799999952316284,600,150],[0.0,0,0],[0.299999982118607,300,75],[0.5,900,150]],\"fire\":[[0.599999964237213,600,150],[0.5,600,150],[0.5,750,150],[0.5,450,300],[0.5,600,150],[0.5,600,150],[0.0,0,0],[0.5,600,150],[0.0,0,0],[0.5,900,150],[0.5,900,150],[0.5,600,150],[0.5,900,150],[0.0,0,0],[0.0,0,0],[0.5,750,150]],\"foot\":[[0.349999994039536,1050,150],[0.399999976158142,600,150],[0.0,0,0],[0.399999976158142,450,150],[0.0,0,0],[0.5,450,150],[0.0,0,0],[0.299999982118607,300,150],[0.0,0,0],[0.399999976158142,1050,150],[0.299999982118607,450,150],[0.5,1050,150],[0.399999976158142,1050,150],[0.0,0,0],[0.349999994039536,300,150],[0.0,0,0]]} ground=0",
+        "FOOT_DISTANCE 12.0 blood=-1 {\"changed_pixels\":1210,\"peak_delta\":17,\"pixels_over_2\":1021}",
+        "FOOT_DISTANCE 12.0 blood=0 {\"changed_pixels\":1297,\"peak_delta\":62,\"pixels_over_2\":1205}",
+        "FOOT_DISTANCE 12.0 blood=1 {\"changed_pixels\":1232,\"peak_delta\":32,\"pixels_over_2\":1071}",
+        "FOOT_DISTANCE 24.0 blood=-1 {\"changed_pixels\":346,\"peak_delta\":14,\"pixels_over_2\":290}",
+        "FOOT_DISTANCE 24.0 blood=0 {\"changed_pixels\":347,\"peak_delta\":51,\"pixels_over_2\":343}",
+        "FOOT_DISTANCE 24.0 blood=1 {\"changed_pixels\":344,\"peak_delta\":24,\"pixels_over_2\":297}",
+        "FOOT_DISTANCE 45.0 blood=-1 {\"changed_pixels\":111,\"peak_delta\":7,\"pixels_over_2\":105}",
+        "FOOT_DISTANCE 45.0 blood=0 {\"changed_pixels\":111,\"peak_delta\":32,\"pixels_over_2\":111}",
+        "FOOT_DISTANCE 45.0 blood=1 {\"changed_pixels\":111,\"peak_delta\":13,\"pixels_over_2\":89}",
+        "FOOT_DISTANCE 60.0 blood=-1 {\"changed_pixels\":41,\"peak_delta\":8,\"pixels_over_2\":41}",
+        "FOOT_DISTANCE 60.0 blood=0 {\"changed_pixels\":41,\"peak_delta\":34,\"pixels_over_2\":41}",
+        "FOOT_DISTANCE 60.0 blood=1 {\"changed_pixels\":41,\"peak_delta\":14,\"pixels_over_2\":37}",
+        "FOOT_DISTANCE 72.0 blood=-1 {\"changed_pixels\":33,\"peak_delta\":6,\"pixels_over_2\":29}",
+        "FOOT_DISTANCE 72.0 blood=0 {\"changed_pixels\":33,\"peak_delta\":28,\"pixels_over_2\":32}",
+        "FOOT_DISTANCE 72.0 blood=1 {\"changed_pixels\":33,\"peak_delta\":10,\"pixels_over_2\":21}",
+        "SURFACE_VISIBILITY checks=27 failures=0"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/surface-forward"
+    },
+    {
+      "name": "surface-compat",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/wiki8/CursedLands.x86_64",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "0",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/surface_effect_visibility.gd"
+      ],
+      "fixture_sha256": "8e5952166173d8b4320da90c81f8425fb24cdcbe8c964f03463464dbb8010ed7",
+      "exit": 0,
+      "seconds": 24.652740633988287,
+      "errors": [],
+      "results": [
+        "RAIN_DISTANCE 12.0 {\"changed_pixels\":35120,\"peak_delta\":14,\"pixels_over_2\":2484}",
+        "RAIN_DISTANCE 24.0 {\"changed_pixels\":21513,\"peak_delta\":14,\"pixels_over_2\":1730}",
+        "RAIN_DISTANCE 45.0 {\"changed_pixels\":23130,\"peak_delta\":12,\"pixels_over_2\":1893}",
+        "RAIN_DISTANCE 60.0 {\"changed_pixels\":23893,\"peak_delta\":10,\"pixels_over_2\":1598}",
+        "RAIN_DISTANCE 72.0 {\"changed_pixels\":22005,\"peak_delta\":8,\"pixels_over_2\":1221}",
+        "MARK_ROWS {\"blood\":[[0.599999964237213,1200,150],[0.599999964237213,1200,150],[0.449999988079071,900,150],[0.5,600,150],[0.449999988079071,900,150],[0.599999964237213,1200,150],[0.0,0,0],[0.599999964237213,900,150],[0.0,0,0],[0.799999952316284,600,150],[0.5,600,150],[0.5,1200,150],[0.799999952316284,600,150],[0.0,0,0],[0.299999982118607,300,75],[0.5,900,150]],\"fire\":[[0.599999964237213,600,150],[0.5,600,150],[0.5,750,150],[0.5,450,300],[0.5,600,150],[0.5,600,150],[0.0,0,0],[0.5,600,150],[0.0,0,0],[0.5,900,150],[0.5,900,150],[0.5,600,150],[0.5,900,150],[0.0,0,0],[0.0,0,0],[0.5,750,150]],\"foot\":[[0.349999994039536,1050,150],[0.399999976158142,600,150],[0.0,0,0],[0.399999976158142,450,150],[0.0,0,0],[0.5,450,150],[0.0,0,0],[0.299999982118607,300,150],[0.0,0,0],[0.399999976158142,1050,150],[0.299999982118607,450,150],[0.5,1050,150],[0.399999976158142,1050,150],[0.0,0,0],[0.349999994039536,300,150],[0.0,0,0]]} ground=0",
+        "FOOT_DISTANCE 12.0 blood=-1 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 12.0 blood=0 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 12.0 blood=1 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 24.0 blood=-1 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 24.0 blood=0 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 24.0 blood=1 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 45.0 blood=-1 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 45.0 blood=0 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 45.0 blood=1 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 60.0 blood=-1 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 60.0 blood=0 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 60.0 blood=1 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 72.0 blood=-1 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 72.0 blood=0 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "FOOT_DISTANCE 72.0 blood=1 {\"changed_pixels\":0,\"peak_delta\":0,\"pixels_over_2\":0}",
+        "SURFACE_VISIBILITY checks=1 failures=0"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/surface-compat"
+    },
+    {
+      "name": "gait-fixed",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/locomotion1/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/direct_gait_continuity.gd"
+      ],
+      "fixture_sha256": "803eb218e7e66cf8030056edb88105dd37bbfea204c5c56945e7c3ec58870b5d",
+      "exit": 0,
+      "seconds": 3.2688946740236133,
+      "errors": [],
+      "results": [
+        "DIRECT_GAIT_CONTINUITY {\"checks\":1920,\"clips\":{\"crun01\":504,\"crun02\":72,\"cwalk01\":24,\"cwalk02\":168,\"cwalk06\":192,\"cwalk08\":24,\"cwalk10\":168},\"failures\":0,\"wrong_healthy_selections\":0}"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/gait-fixed"
+    },
+    {
+      "name": "walking-combat",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/wiki7/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/direct_moving_attacks.gd"
+      ],
+      "fixture_sha256": "e204b6e90cb21ebbf942fb67511c7445b5de79f6dc17d6c759153724e7e7af75",
+      "exit": 0,
+      "seconds": 22.90247501898557,
+      "errors": [],
+      "results": [
+        "MOVING_ATTACKS {\"aligned_frames\":0,\"attack_starts\":[{\"clip\":\"uattack04\",\"remaining\":1.65,\"time\":1.87},{\"clip\":\"uattack10\",\"remaining\":1.65,\"time\":3.52},{\"clip\":\"uattack08\",\"remaining\":1.65,\"time\":5.17},{\"clip\":\"uattack09\",\"remaining\":1.65,\"time\":6.81999999999999},{\"clip\":\"uattack08\",\"remaining\":1.65,\"time\":8.46999999999998},{\"clip\":\"uattack09\",\"remaining\":1.65,\"time\":10.12},{\"clip\":\"uattack09\",\"remaining\":1.65,\"time\":11.77}],\"camera_motion\":0.0,\"checks\":15,\"collar_error\":0.0,\"distance\":6.19530487060547,\"failures\":[],\"first_person\":false,\"joint_angle_error\":0.0,\"joint_position_error\":0.0,\"leg_changes\":925,\"moving_frames\":116,\"moving_seconds\":0.800218,\"observer\":false,\"run\":false,\"torso_error\":0.0009765625,\"weapon\":\"sword\"}"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/walking-combat"
+    },
+    {
+      "name": "walking-casts",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/wiki8/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/direct_moving_casts.gd"
+      ],
+      "fixture_sha256": "6d1de4e0678f4df6f53ff9c845855bc3ab5e39f6d4c870f3eef2a79cd7b4601e",
+      "exit": 0,
+      "seconds": 24.75190320299589,
+      "errors": [],
+      "results": [
+        "CAST_PLAN {\"fire\":13.0,\"hold\":0}",
+        "MOVING_CASTS {\"aligned_frames\":0,\"camera_motion\":0.0,\"cast_starts\":[{\"action\":\"cast\",\"clip\":\"ucast03\",\"remaining\":2.64,\"time\":3.355},{\"action\":\"cast\",\"clip\":\"ucast04\",\"remaining\":2.64,\"time\":7.31499999999999},{\"action\":\"cast\",\"clip\":\"ucast04\",\"remaining\":2.64,\"time\":11.33}],\"checks\":48,\"collar_error\":0.0,\"collar_failures\":[],\"direction_frames\":[48,35,29,32],\"distance\":7.56531787663698,\"failures\":[],\"finished_clip_frames\":0,\"first_person\":false,\"held\":false,\"held_moving_frames\":0,\"joint_angle_error\":0.0,\"joint_position_error\":0.0,\"leg_changes\":1110,\"logic\":[{\"effect_ticks\":13,\"speed_error\":0.0000171408717090094,\"travel\":0.675727844238281}],\"maximum_cast_body_speed\":0.329007190128042,\"maximum_cast_body_step\":0.00230305083096027,\"maximum_recovery_step\":0.00229766801930964,\"moving_frames\":144,\"moving_seconds\":0.993438,\"observer\":false,\"run\":false,\"torso_error\":0.000690533954184502}"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/walking-casts"
+    },
+    {
+      "name": "final-baseen",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/wiki8/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/wiki.gd"
+      ],
+      "fixture_sha256": "0fec3855acbeae123989ea48f523be68096b9450c44bb4e38277f5e039f0d720",
+      "exit": 0,
+      "seconds": 12.732740607985761,
+      "errors": [],
+      "results": [
+        "WIKI_RESULT {\"campaign\":\"cursed_lands\",\"checks\":7497,\"counts\":{\"Creatures\":389,\"Game mechanics\":6,\"Items\":385,\"Maps\":36,\"Materials\":33,\"Quests\":121,\"Runes\":24,\"Spells\":31},\"failures\":[],\"language\":\"en\",\"rendered\":false,\"seconds\":10.231}"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/final-baseen"
+    },
+    {
+      "name": "final-baseru",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/wiki8/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/data/ru",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/wiki.gd"
+      ],
+      "fixture_sha256": "0fec3855acbeae123989ea48f523be68096b9450c44bb4e38277f5e039f0d720",
+      "exit": 0,
+      "seconds": 12.884053654008312,
+      "errors": [],
+      "results": [
+        "WIKI_RESULT {\"campaign\":\"cursed_lands\",\"checks\":7497,\"counts\":{\"Creatures\":389,\"Game mechanics\":6,\"Items\":388,\"Maps\":36,\"Materials\":33,\"Quests\":121,\"Runes\":24,\"Spells\":31},\"failures\":[],\"language\":\"ru\",\"rendered\":false,\"seconds\":10.486}"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/final-baseru"
+    },
+    {
+      "name": "final-basede",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/wiki8/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/wiki.gd"
+      ],
+      "fixture_sha256": "0fec3855acbeae123989ea48f523be68096b9450c44bb4e38277f5e039f0d720",
+      "exit": 0,
+      "seconds": 12.784813553007552,
+      "errors": [],
+      "results": [
+        "WIKI_RESULT {\"campaign\":\"cursed_lands\",\"checks\":7521,\"counts\":{\"Creatures\":389,\"Game mechanics\":6,\"Items\":385,\"Maps\":36,\"Materials\":33,\"Quests\":121,\"Runes\":24,\"Spells\":31},\"failures\":[],\"language\":\"de\",\"rendered\":false,\"seconds\":10.309}"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/final-basede"
+    },
+    {
+      "name": "wiki8-oracles",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/wiki8/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/wiki_features.gd"
+      ],
+      "fixture_sha256": "d739c5d3d5c82c55feb488168612026a6a5b992e21dc333b872a030fc1d51800",
+      "exit": 0,
+      "seconds": 8.327744726993842,
+      "errors": [],
+      "results": [
+        "WIKI_FEATURES {\"checks\":3299,\"failures\":[],\"item_cases\":2820,\"oracle_cases\":898}"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/wiki8-oracles"
+    },
+    {
+      "name": "wiki-quest-locales-final",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes15/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/wiki_quest_locales.gd"
+      ],
+      "fixture_sha256": "831b145e839d2c8d30bd9687aef8881790d7da0c89b758eefac9e2e9860053ef",
+      "exit": 0,
+      "seconds": 2.8190277829999104,
+      "errors": [],
+      "results": [
+        "WIKI_QUEST_LOCALES 588 checks []"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/wiki-quest-locales-final"
+    },
+    {
+      "name": "pickup-final-en",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes14/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/pickup_messages.gd"
+      ],
+      "fixture_sha256": "f059dcab14fbf482e32e71e0625747a40fa32efe158af1d74d8d2fe8b61be95f",
+      "exit": 0,
+      "seconds": 6.674557038000785,
+      "errors": [],
+      "results": [],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/pickup-final-en"
+    },
+    {
+      "name": "pickup-final-ru",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes14/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/data/ru",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/pickup_messages.gd"
+      ],
+      "fixture_sha256": "f059dcab14fbf482e32e71e0625747a40fa32efe158af1d74d8d2fe8b61be95f",
+      "exit": 0,
+      "seconds": 6.774231533985585,
+      "errors": [],
+      "results": [],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/pickup-final-ru"
+    },
+    {
+      "name": "pickup-final-de",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes14/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/pickup_messages.gd"
+      ],
+      "fixture_sha256": "f059dcab14fbf482e32e71e0625747a40fa32efe158af1d74d8d2fe8b61be95f",
+      "exit": 0,
+      "seconds": 6.776382345997263,
+      "errors": [],
+      "results": [],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/pickup-final-de"
+    },
+    {
+      "name": "options-final4",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes17/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/graphics_options.gd"
+      ],
+      "fixture_sha256": "db18f7d9cbc99b1af61314c9bea667db338e48ef3e29f080a123c47aa11c89d0",
+      "exit": 0,
+      "seconds": 7.426038386998698,
+      "errors": [],
+      "results": [
+        "GRAPHICS_OPTIONS 435 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/options-final4"
+    },
+    {
+      "name": "cliff-census",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes9/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/terrain_cliffs.gd",
+        "--cliff-census"
+      ],
+      "fixture_sha256": "d8dcc5c50c90b5f1228060164cb912d1af66b3831ba7b6197d3adcb88bc0a00f",
+      "exit": 0,
+      "seconds": 14.337459867005236,
+      "errors": [],
+      "results": [
+        "CLIFF_MAP {\"admitted\":174,\"build_us\":35927,\"classified\":195,\"examples\":[{\"normal\":\"(-0.484244, 0.661967, 0.572107)\",\"point\":\"(223.0, 14.43616, -12.0)\",\"tile\":\"(111, 6)\",\"weight\":0.560991295203939},{\"normal\":\"(-0.590529, 0.544643, 0.595516)\",\"point\":\"(214.0, 10.50554, -17.0)\",\"tile\":\"(106, 8)\",\"weight\":1.0},{\"normal\":\"(-0.590529, 0.544643, 0.595516)\",\"point\":\"(214.0, 10.50554, -17.0)\",\"tile\":\"(107, 8)\",\"weight\":1.0},{\"normal\":\"(-0.572163, 0.549196, 0.609109)\",\"point\":\"(218.0, 11.09376, -16.0)\",\"tile\":\"(108, 8)\",\"weight\":1.0},{\"normal\":\"(-0.572163, 0.549196, 0.609109)\",\"point\":\"(218.0, 11.09376, -16.0)\",\"tile\":\"(109, 8)\",\"weight\":1.0},{\"normal\":\"(-0.652025, 0.758029, 0.016001)\",\"point\":\"(212.0, 10.55813, -19.0)\",\"tile\":\"(105, 9)\",\"weight\":0.00387747348131125},{\"normal\":\"(-0.783642, 0.417277, 0.460202)\",\"point\":\"(214.0, 11.76439, -18.0)\",\"tile\":\"(106, 9)\",\"weight\":1.0},{\"normal\":\"(-0.910697, 0.412956, 0.009975)\",\"point\":\"(213.0, 10.65829, -20.0)\",\"tile\":\"(106, 10)\",\"weight\":1.0},{\"normal\":\"(-0.902136, 0.393188, -0.177633)\",\"point\":\"(214.0, 12.31877, -22.0)\",\"tile\":\"(106, 11)\",\"weight\":1.0},{\"normal\":\"(-0.801436, 0.515993, 0.30241)\",\"point\":\"(210.0, 12.96695, -28.0)\",\"tile\":\"(104, 13)\",\"weight\":0.867251749841071},{\"normal\":\"(0.649793, 0.726887, -0.222271)\",\"point\":\"(238.0, 15.17746, -28.0)\",\"tile\":\"(118, 13)\",\"weight\":0.0949679584527936},{\"normal\":\"(-0.723568, 0.518973, 0.4551)\",\"point\":\"(210.0, 12.6581, -29.0)\",\"tile\":\"(104, 14)\",\"weight\":1.0},{\"normal\":\"(-0.696604, 0.580836, -0.421156)\",\"point\":\"(83.78175, 5.899277, -33.15079)\",\"tile\":\"(41, 16)\",\"weight\":0.597288682501177},{\"normal\":\"(0.658315, 0.536256, 0.528253)\",\"point\":\"(86.0, 5.145914, -32.0)\",\"tile\":\"(42, 16)\",\"weight\":1.0},{\"normal\":\"(0.658315, 0.536256, 0.528253)\",\"point\":\"(86.0, 5.145914, -32.0)\",\"tile\":\"(43, 16)\",\"weight\":1.0},{\"normal\":\"(-0.540054, 0.580983, 0.608934)\",\"point\":\"(77.84921, 4.749301, -34.23016)\",\"tile\":\"(39, 17)\",\"weight\":0.69473104329547},{\"normal\":\"(-0.861011, 0.482885, 0.159631)\",\"point\":\"(104.119, 4.644788, -33.89682)\",\"tile\":\"(52, 17)\",\"weight\":1.0},{\"normal\":\"(-0.384012, 0.432014, -0.816026)\",\"point\":\"(106.131, 5.76897, -35.89286)\",\"tile\":\"(53, 17)\",\"weight\":1.0},{\"normal\":\"(-0.767944, 0.559959, -0.310977)\",\"point\":\"(77.87302, 5.844676, -37.88889)\",\"tile\":\"(39, 18)\",\"weight\":0.788175919585484},{\"normal\":\"(-0.767944, 0.559959, -0.310977)\",\"point\":\"(77.87302, 5.844676, -37.88889)\",\"tile\":\"(39, 19)\",\"weight\":0.788175919585484}],\"map\":\"zone1\",\"prefix\":\"zone1\",\"rejected_geometry\":0,\"size\":\"(257, 193)\"}",
+        "CLIFF_MAP {\"admitted\":1047,\"build_us\":100386,\"classified\":1553,\"examples\":[{\"normal\":\"(-0.707437, 0.581537, -0.40168)\",\"point\":\"(191.1865, 18.59985, -1.785714)\",\"tile\":\"(95, 1)\",\"weight\":0.99500914796012},{\"normal\":\"(-0.091057, 0.735461, -0.671421)\",\"point\":\"(35.0, 17.18299, -6.134921)\",\"tile\":\"(17, 2)\",\"weight\":0.0423127741126545},{\"normal\":\"(0.075028, 0.754285, -0.652246)\",\"point\":\"(36.0, 17.14225, -6.134921)\",\"tile\":\"(18, 2)\",\"weight\":0.00562564792408877},{\"normal\":\"(-0.545778, 0.646737, -0.532783)\",\"point\":\"(39.99206, 16.45646, -6.007936)\",\"tile\":\"(19, 2)\",\"weight\":0.533104968045718},{\"normal\":\"(-0.674519, 0.475661, -0.564598)\",\"point\":\"(159.0, 13.41146, -4.0)\",\"tile\":\"(79, 2)\",\"weight\":1.0},{\"normal\":\"(-0.526854, 0.628826, -0.571842)\",\"point\":\"(193.7778, 17.57421, -5.210318)\",\"tile\":\"(97, 2)\",\"weight\":0.693889923532807},{\"normal\":\"(0.0, 0.719505, -0.694487)\",\"point\":\"(197.0, 17.48971, -6.0)\",\"tile\":\"(98, 2)\",\"weight\":0.112773784822576},{\"normal\":\"(0.537181, 0.659222, -0.526177)\",\"point\":\"(12.22222, 18.83696, -8.222222)\",\"tile\":\"(6, 3)\",\"weight\":0.582186608726775},{\"normal\":\"(0.026026, 0.675677, -0.736738)\",\"point\":\"(16.0, 19.29354, -7.0)\",\"tile\":\"(7, 3)\",\"weight\":0.429046207305337},{\"normal\":\"(0.026026, 0.675677, -0.736738)\",\"point\":\"(16.0, 19.29354, -7.0)\",\"tile\":\"(8, 3)\",\"weight\":0.429046207305337},{\"normal\":\"(0.581453, 0.6415, -0.50039)\",\"point\":\"(20.22619, 18.49346, -7.214286)\",\"tile\":\"(9, 3)\",\"weight\":0.713071479482387},{\"normal\":\"(-0.657734, 0.637742, -0.400838)\",\"point\":\"(42.0, 17.41736, -7.0)\",\"tile\":\"(21, 3)\",\"weight\":0.740570505013164},{\"normal\":\"(0.494486, 0.612602, -0.616606)\",\"point\":\"(52.99206, 18.68223, -8.0)\",\"tile\":\"(26, 3)\",\"weight\":0.893333582954623},{\"normal\":\"(0.834217, 0.534139, 0.137036)\",\"point\":\"(76.0, 16.01265, -6.0)\",\"tile\":\"(37, 3)\",\"weight\":1.0},{\"normal\":\"(0.700292, 0.557233, 0.446186)\",\"point\":\"(88.0, 11.99976, -6.0)\",\"tile\":\"(43, 3)\",\"weight\":1.0},{\"normal\":\"(-0.740432, 0.648378, -0.177103)\",\"point\":\"(143.8135, 11.79183, -8.214286)\",\"tile\":\"(71, 3)\",\"weight\":0.664268940464978},{\"normal\":\"(-0.413155, 0.471177, -0.779292)\",\"point\":\"(162.0, 15.68587, -6.0)\",\"tile\":\"(81, 3)\",\"weight\":1.0},{\"normal\":\"(-0.318151, 0.662314, -0.678322)\",\"point\":\"(208.7976, 17.57452, -7.226191)\",\"tile\":\"(104, 3)\",\"weight\":0.427932333580924},{\"normal\":\"(0.879442, 0.475239, -0.027014)\",\"point\":\"(76.0, 16.41847, -8.0)\",\"tile\":\"(37, 4)\",\"weight\":1.0},{\"normal\":\"(0.849358, 0.526222, 0.041017)\",\"point\":\"(88.0, 12.12348, -8.0)\",\"tile\":\"(43, 4)\",\"weight\":1.0}],\"map\":\"zone10\",\"prefix\":\"zone10\",\"rejected_geometry\":0,\"size\":\"(257, 193)\"}",
+        "CLIFF_MAP {\"admitted\":485,\"build_us\":112107,\"classified\":2387,\"examples\":[{\"normal\":\"(-0.850228, 0.342092, -0.400107)\",\"point\":\"(214.0, 14.87473, -18.0)\",\"tile\":\"(107, 9)\",\"weight\":1.0},{\"normal\":\"(-0.637833, 0.753802, -0.157959)\",\"point\":\"(136.0, 22.16437, -28.0)\",\"tile\":\"(68, 14)\",\"weight\":0.00578875765506493},{\"normal\":\"(-0.597548, 0.496624, 0.629524)\",\"point\":\"(224.0, 18.64576, -28.0)\",\"tile\":\"(112, 14)\",\"weight\":1.0},{\"normal\":\"(-0.293057, 0.756147, -0.585114)\",\"point\":\"(386.0, 19.05853, -30.0)\",\"tile\":\"(193, 15)\",\"weight\":0.00619854382990744},{\"normal\":\"(0.166152, 0.590539, -0.78972)\",\"point\":\"(156.0, 17.08163, -34.0)\",\"tile\":\"(77, 16)\",\"weight\":0.978068661047384},{\"normal\":\"(0.42713, 0.358109, -0.830252)\",\"point\":\"(198.254, 6.302826, -36.26191)\",\"tile\":\"(99, 18)\",\"weight\":1.0},{\"normal\":\"(0.277323, 0.689803, -0.668778)\",\"point\":\"(199.746, 5.907819, -35.73809)\",\"tile\":\"(100, 18)\",\"weight\":0.34638359329534},{\"normal\":\"(0.655224, 0.356122, -0.666228)\",\"point\":\"(195.877, 6.016271, -37.88492)\",\"tile\":\"(98, 19)\",\"weight\":1.0},{\"normal\":\"(0.858267, 0.493154, -0.142044)\",\"point\":\"(194.0, 7.970273, -40.0)\",\"tile\":\"(97, 20)\",\"weight\":1.0},{\"normal\":\"(0.538322, 0.567285, 0.623215)\",\"point\":\"(212.0, 7.80666, -41.0)\",\"tile\":\"(106, 20)\",\"weight\":1.0},{\"normal\":\"(-0.744086, 0.588068, -0.317037)\",\"point\":\"(215.8929, 6.904921, -39.87698)\",\"tile\":\"(107, 20)\",\"weight\":0.70956302719122},{\"normal\":\"(0.581773, 0.509801, 0.633753)\",\"point\":\"(214.2341, 6.06255, -43.76587)\",\"tile\":\"(107, 21)\",\"weight\":0.649472515699363},{\"normal\":\"(-0.726158, 0.677147, -0.119026)\",\"point\":\"(218.0, 8.942132, -42.0)\",\"tile\":\"(108, 21)\",\"weight\":0.442933490581006},{\"normal\":\"(-0.6671, 0.721109, -0.187028)\",\"point\":\"(218.0, 8.346581, -44.0)\",\"tile\":\"(108, 22)\",\"weight\":0.133500853893018},{\"normal\":\"(-0.644927, 0.679923, -0.348961)\",\"point\":\"(220.0, 9.980839, -44.0)\",\"tile\":\"(109, 22)\",\"weight\":0.421476460819628},{\"normal\":\"(-0.355122, 0.483166, -0.800275)\",\"point\":\"(240.0, 22.87024, -44.0)\",\"tile\":\"(119, 22)\",\"weight\":1.0},{\"normal\":\"(-0.355122, 0.483166, -0.800275)\",\"point\":\"(240.0, 22.87024, -44.0)\",\"tile\":\"(120, 22)\",\"weight\":1.0},{\"normal\":\"(-0.229035, 0.465072, -0.855132)\",\"point\":\"(242.0, 24.14081, -44.0)\",\"tile\":\"(121, 22)\",\"weight\":1.0},{\"normal\":\"(0.03589, 0.508435, 0.860352)\",\"point\":\"(218.0, 9.474574, -48.0)\",\"tile\":\"(108, 23)\",\"weight\":0.995113528866567},{\"normal\":\"(0.03589, 0.508435, 0.860352)\",\"point\":\"(218.0, 9.474574, -48.0)\",\"tile\":\"(109, 23)\",\"weight\":0.995113528866567}],\"map\":\"zone11\",\"prefix\":\"zone11\",\"rejected_geometry\":0,\"size\":\"(513, 385)\"}",
+        "CLIFF_MAP {\"admitted\":495,\"build_us\":85729,\"classified\":1948,\"examples\":[{\"normal\":\"(0.692499, 0.720519, -0.036026)\",\"point\":\"(27.0, 24.4971, -14.0)\",\"tile\":\"(13, 7)\",\"weight\":0.140008521000236},{\"normal\":\"(0.625454, 0.745541, 0.230167)\",\"point\":\"(27.0, 24.92257, -17.0)\",\"tile\":\"(13, 8)\",\"weight\":0.0220686378104718},{\"normal\":\"(0.541421, 0.760592, -0.358279)\",\"point\":\"(82.0, 15.21994, -40.0)\",\"tile\":\"(40, 19)\",\"weight\":0.00123710070072257},{\"normal\":\"(-0.617588, 0.73351, -0.28381)\",\"point\":\"(8.0, 23.03532, -62.0)\",\"tile\":\"(4, 30)\",\"weight\":0.0378844516537496},{\"normal\":\"(0.616654, 0.307326, -0.724768)\",\"point\":\"(268.1111, 11.06611, -60.10714)\",\"tile\":\"(134, 30)\",\"weight\":1.0},{\"normal\":\"(0.021014, 0.500334, -0.865578)\",\"point\":\"(269.9802, 9.282756, -59.97222)\",\"tile\":\"(135, 30)\",\"weight\":1.0},{\"normal\":\"(-0.387235, 0.644391, -0.6594)\",\"point\":\"(274.0, 9.782371, -60.0)\",\"tile\":\"(136, 30)\",\"weight\":0.693401065967895},{\"normal\":\"(-0.655422, 0.71428, -0.245409)\",\"point\":\"(10.0, 23.94058, -64.0)\",\"tile\":\"(4, 31)\",\"weight\":0.136505580757376},{\"normal\":\"(-0.052904, 0.553002, 0.831499)\",\"point\":\"(221.0, 11.16181, -66.0)\",\"tile\":\"(110, 33)\",\"weight\":1.0},{\"normal\":\"(0.039928, 0.63485, 0.771603)\",\"point\":\"(222.0, 11.17819, -66.0)\",\"tile\":\"(111, 33)\",\"weight\":0.760475418257497},{\"normal\":\"(0.318875, 0.598764, 0.734711)\",\"point\":\"(254.0, 10.71565, -86.97222)\",\"tile\":\"(127, 43)\",\"weight\":0.953103029705152},{\"normal\":\"(0.742933, 0.328971, 0.582948)\",\"point\":\"(263.0, 12.40029, -190.0)\",\"tile\":\"(131, 95)\",\"weight\":1.0},{\"normal\":\"(0.847942, 0.451969, 0.276981)\",\"point\":\"(264.0, 10.73375, -192.0)\",\"tile\":\"(131, 96)\",\"weight\":1.0},{\"normal\":\"(0.280418, 0.664621, 0.692563)\",\"point\":\"(264.0, 9.344399, -230.0)\",\"tile\":\"(132, 114)\",\"weight\":0.414209642647331},{\"normal\":\"(0.205186, 0.48408, 0.850626)\",\"point\":\"(263.8849, 11.28294, -231.1071)\",\"tile\":\"(132, 115)\",\"weight\":1.0},{\"normal\":\"(0.09792, 0.723408, 0.683441)\",\"point\":\"(266.0, 10.03067, -231.0)\",\"tile\":\"(133, 115)\",\"weight\":0.0904944917859956},{\"normal\":\"(0.696536, 0.386188, 0.604729)\",\"point\":\"(263.9921, 12.88309, -232.0)\",\"tile\":\"(132, 116)\",\"weight\":1.0},{\"normal\":\"(0.163739, 0.736826, 0.655955)\",\"point\":\"(266.0, 11.07559, -232.0)\",\"tile\":\"(133, 116)\",\"weight\":0.0594226530437948},{\"normal\":\"(0.890579, 0.454295, 0.022014)\",\"point\":\"(264.0, 14.30046, -234.0)\",\"tile\":\"(132, 117)\",\"weight\":1.0},{\"normal\":\"(0.861611, 0.494351, 0.115082)\",\"point\":\"(264.0, 14.19269, -236.0)\",\"tile\":\"(132, 118)\",\"weight\":1.0}],\"map\":\"zone12\",\"prefix\":\"zone12\",\"rejected_geometry\":0,\"size\":\"(321, 513)\"}",
+        "CLIFF_MAP {\"admitted\":211,\"build_us\":49564,\"classified\":270,\"examples\":[{\"normal\":\"(0.507878, 0.532872, 0.676837)\",\"point\":\"(332.0, 27.45045, -8.0)\",\"tile\":\"(165, 4)\",\"weight\":0.999861092378515},{\"normal\":\"(-0.695015, 0.706015, 0.136003)\",\"point\":\"(376.0, 24.50922, -10.0)\",\"tile\":\"(187, 5)\",\"weight\":0.187036875385687},{\"normal\":\"(0.0, 0.596637, 0.802511)\",\"point\":\"(356.0, 25.29336, -16.0)\",\"tile\":\"(177, 7)\",\"weight\":0.96037386537779},{\"normal\":\"(0.0, 0.716537, 0.697549)\",\"point\":\"(369.0, 22.15586, -14.0)\",\"tile\":\"(184, 7)\",\"weight\":0.122378381925084},{\"normal\":\"(0.584242, 0.480199, 0.654271)\",\"point\":\"(159.0, 16.47017, -26.0)\",\"tile\":\"(79, 13)\",\"weight\":1.0},{\"normal\":\"(-0.663363, 0.47954, -0.574449)\",\"point\":\"(161.0, 16.66597, -26.0)\",\"tile\":\"(80, 13)\",\"weight\":1.0},{\"normal\":\"(0.500414, 0.717594, -0.484401)\",\"point\":\"(16.0, 23.33254, -33.0)\",\"tile\":\"(8, 16)\",\"weight\":0.110386309573712},{\"normal\":\"(0.731495, 0.587398, 0.346234)\",\"point\":\"(214.0, 19.21512, -32.0)\",\"tile\":\"(106, 16)\",\"weight\":0.983612651451233},{\"normal\":\"(0.454328, 0.42931, -0.780563)\",\"point\":\"(214.0, 19.21512, -36.0)\",\"tile\":\"(106, 17)\",\"weight\":1.0},{\"normal\":\"(-0.823984, 0.566613, 0.0)\",\"point\":\"(311.0, 15.88183, -35.0)\",\"tile\":\"(155, 17)\",\"weight\":1.0},{\"normal\":\"(-0.748386, 0.418099, -0.51489)\",\"point\":\"(312.0, 18.62678, -36.0)\",\"tile\":\"(156, 18)\",\"weight\":1.0},{\"normal\":\"(0.267137, 0.718368, -0.642329)\",\"point\":\"(56.0, 21.76427, -40.0)\",\"tile\":\"(27, 19)\",\"weight\":0.114364221969601},{\"normal\":\"(-0.64259, 0.404742, -0.650585)\",\"point\":\"(204.0, 18.62678, -38.0)\",\"tile\":\"(102, 19)\",\"weight\":1.0},{\"normal\":\"(0.352527, 0.545817, -0.760137)\",\"point\":\"(207.0, 19.21512, -40.0)\",\"tile\":\"(103, 19)\",\"weight\":1.0},{\"normal\":\"(-0.599693, 0.370193, -0.709454)\",\"point\":\"(314.0, 18.62678, -38.0)\",\"tile\":\"(157, 19)\",\"weight\":1.0},{\"normal\":\"(-0.320989, 0.542982, -0.775974)\",\"point\":\"(316.0, 19.21512, -39.0)\",\"tile\":\"(158, 19)\",\"weight\":1.0},{\"normal\":\"(0.0, 0.617468, -0.786596)\",\"point\":\"(384.0, 19.21512, -40.0)\",\"tile\":\"(192, 19)\",\"weight\":0.867704763746178},{\"normal\":\"(-0.231074, 0.246079, -0.941302)\",\"point\":\"(318.0, 15.88183, -41.0)\",\"tile\":\"(159, 20)\",\"weight\":1.0},{\"normal\":\"(-0.615161, 0.504132, -0.606159)\",\"point\":\"(440.0, 27.45045, -40.0)\",\"tile\":\"(220, 20)\",\"weight\":1.0},{\"normal\":\"(-0.034927, 0.390183, 0.920074)\",\"point\":\"(100.0, 11.12676, -50.0)\",\"tile\":\"(50, 25)\",\"weight\":1.0}],\"map\":\"zone13\",\"prefix\":\"zone13\",\"rejected_geometry\":0,\"size\":\"(449, 321)\"}",
+        "CLIFF_MAP {\"admitted\":3520,\"build_us\":196249,\"classified\":5304,\"examples\":[{\"normal\":\"(0.410404, 0.717706, -0.562554)\",\"point\":\"(59.78571, 30.94642, -1.785714)\",\"tile\":\"(29, 0)\",\"weight\":0.157544785208793},{\"normal\":\"(0.807762, 0.497469, -0.316298)\",\"point\":\"(61.0, 29.17596, -2.0)\",\"tile\":\"(30, 0)\",\"weight\":1.0},{\"normal\":\"(-0.577471, 0.517526, -0.631422)\",\"point\":\"(64.0, 27.52872, -2.0)\",\"tile\":\"(31, 0)\",\"weight\":1.0},{\"normal\":\"(-0.577471, 0.517526, -0.631422)\",\"point\":\"(64.0, 27.52872, -2.0)\",\"tile\":\"(32, 0)\",\"weight\":1.0},{\"normal\":\"(0.817545, 0.533356, -0.217145)\",\"point\":\"(84.0, 0.0, -1.0)\",\"tile\":\"(42, 0)\",\"weight\":0.931171858448997},{\"normal\":\"(0.758582, 0.549422, -0.350269)\",\"point\":\"(118.0, 12.70522, -2.0)\",\"tile\":\"(59, 0)\",\"weight\":1.0},{\"normal\":\"(-0.833764, 0.536848, 0.128964)\",\"point\":\"(158.0, 0.0, -1.0)\",\"tile\":\"(79, 0)\",\"weight\":0.91682086319115},{\"normal\":\"(-0.84116, 0.537102, -0.063012)\",\"point\":\"(164.0079, 30.36224, -2.007936)\",\"tile\":\"(82, 0)\",\"weight\":1.0},{\"normal\":\"(0.237113, 0.56627, -0.789377)\",\"point\":\"(178.0, 0.0, -1.0)\",\"tile\":\"(89, 0)\",\"weight\":0.931171858448997},{\"normal\":\"(-0.884883, 0.403947, -0.231969)\",\"point\":\"(186.2143, 28.8623, -1.785714)\",\"tile\":\"(93, 0)\",\"weight\":1.0},{\"normal\":\"(0.853791, 0.483448, -0.193179)\",\"point\":\"(199.7976, 30.89825, -1.793651)\",\"tile\":\"(99, 0)\",\"weight\":1.0},{\"normal\":\"(0.853791, 0.483448, -0.193179)\",\"point\":\"(199.7976, 30.89825, -1.793651)\",\"tile\":\"(100, 0)\",\"weight\":1.0},{\"normal\":\"(0.321228, 0.486345, -0.812577)\",\"point\":\"(204.0, 0.0, -1.0)\",\"tile\":\"(101, 0)\",\"weight\":0.931171858448997},{\"normal\":\"(0.321228, 0.486345, -0.812577)\",\"point\":\"(204.0, 0.0, -1.0)\",\"tile\":\"(102, 0)\",\"weight\":0.931171858448997},{\"normal\":\"(-0.643177, 0.449124, -0.620171)\",\"point\":\"(217.2103, 29.12723, -1.785714)\",\"tile\":\"(108, 0)\",\"weight\":1.0},{\"normal\":\"(-0.637819, 0.600829, -0.481863)\",\"point\":\"(218.0, 30.11692, -2.0)\",\"tile\":\"(109, 0)\",\"weight\":0.945529610600061},{\"normal\":\"(0.88242, 0.466222, 0.06303)\",\"point\":\"(229.0, 27.52872, -2.0)\",\"tile\":\"(114, 0)\",\"weight\":1.0},{\"normal\":\"(-0.849868, 0.526918, 0.008999)\",\"point\":\"(246.0079, 30.59748, -2.007936)\",\"tile\":\"(122, 0)\",\"weight\":1.0},{\"normal\":\"(-0.849868, 0.526918, 0.008999)\",\"point\":\"(246.0079, 30.59748, -2.007936)\",\"tile\":\"(123, 0)\",\"weight\":1.0},{\"normal\":\"(0.647672, 0.746775, -0.151157)\",\"point\":\"(56.21429, 31.69135, -3.210317)\",\"tile\":\"(27, 1)\",\"weight\":0.0161245325297152}],\"map\":\"zone14\",\"prefix\":\"zone14\",\"rejected_geometry\":0,\"size\":\"(257, 193)\"}",
+        "CLIFF_MAP {\"admitted\":4176,\"build_us\":289859,\"classified\":7606,\"examples\":[{\"normal\":\"(0.73684, 0.67577, 0.020023)\",\"point\":\"(222.0, 0.0, -1.0)\",\"tile\":\"(111, 0)\",\"weight\":0.422388379930692},{\"normal\":\"(0.661592, 0.740663, -0.117105)\",\"point\":\"(229.8056, 36.4475, -1.793651)\",\"tile\":\"(114, 0)\",\"weight\":0.047584353793774},{\"normal\":\"(0.804705, 0.572501, -0.157138)\",\"point\":\"(233.0, 33.13597, -2.0)\",\"tile\":\"(116, 0)\",\"weight\":1.0},{\"normal\":\"(0.882641, 0.425309, -0.200145)\",\"point\":\"(234.0, 31.3712, -2.0)\",\"tile\":\"(117, 0)\",\"weight\":1.0},{\"normal\":\"(0.9378, 0.273233, -0.214183)\",\"point\":\"(236.0, 25.2928, -2.0)\",\"tile\":\"(118, 0)\",\"weight\":1.0},{\"normal\":\"(0.879583, 0.428284, -0.207137)\",\"point\":\"(238.0, 19.01856, -2.0)\",\"tile\":\"(119, 0)\",\"weight\":1.0},{\"normal\":\"(0.414294, 0.631448, -0.655465)\",\"point\":\"(242.0, 16.07728, -2.0)\",\"tile\":\"(120, 0)\",\"weight\":0.783141771193138},{\"normal\":\"(0.447486, 0.3684, -0.814885)\",\"point\":\"(243.0, 14.50909, -2.0)\",\"tile\":\"(121, 0)\",\"weight\":1.0},{\"normal\":\"(-0.477869, 0.178205, 0.860165)\",\"point\":\"(280.0, 24.31213, -2.0)\",\"tile\":\"(140, 0)\",\"weight\":1.0},{\"normal\":\"(-0.525892, 0.283862, 0.801786)\",\"point\":\"(282.0, 28.82308, -2.0)\",\"tile\":\"(141, 0)\",\"weight\":1.0},{\"normal\":\"(-0.507923, 0.466012, 0.724464)\",\"point\":\"(284.0, 31.56778, -2.0)\",\"tile\":\"(142, 0)\",\"weight\":1.0},{\"normal\":\"(-0.576743, 0.632621, 0.516873)\",\"point\":\"(286.0, 0.0, -1.0)\",\"tile\":\"(143, 0)\",\"weight\":0.722037233462408},{\"normal\":\"(-0.450895, 0.724831, 0.520878)\",\"point\":\"(289.0, 34.90074, -2.0)\",\"tile\":\"(144, 0)\",\"weight\":0.117920957990809},{\"normal\":\"(0.678259, 0.724277, -0.124047)\",\"point\":\"(222.2143, 40.04946, -2.214286)\",\"tile\":\"(111, 1)\",\"weight\":0.120841828680316},{\"normal\":\"(0.804705, 0.572501, -0.157138)\",\"point\":\"(233.0, 33.13597, -2.0)\",\"tile\":\"(116, 1)\",\"weight\":1.0},{\"normal\":\"(0.882641, 0.425309, -0.200145)\",\"point\":\"(234.0, 31.3712, -2.0)\",\"tile\":\"(117, 1)\",\"weight\":1.0},{\"normal\":\"(-0.477869, 0.178205, 0.860165)\",\"point\":\"(280.0, 24.31213, -2.0)\",\"tile\":\"(140, 1)\",\"weight\":1.0},{\"normal\":\"(-0.525892, 0.283862, 0.801786)\",\"point\":\"(282.0, 28.82308, -2.0)\",\"tile\":\"(141, 1)\",\"weight\":1.0},{\"normal\":\"(-0.507923, 0.466012, 0.724464)\",\"point\":\"(284.0, 31.56778, -2.0)\",\"tile\":\"(142, 1)\",\"weight\":1.0},{\"normal\":\"(-0.424033, 0.735058, 0.529042)\",\"point\":\"(299.7936, 39.6733, -3.793651)\",\"tile\":\"(149, 1)\",\"weight\":0.0687395595709591}],\"map\":\"zone15\",\"prefix\":\"zone15\",\"rejected_geometry\":0,\"size\":\"(321, 385)\"}",
+        "CLIFF_MAP {\"admitted\":2481,\"build_us\":223895,\"classified\":6088,\"examples\":[{\"normal\":\"(0.814424, 0.541282, -0.209109)\",\"point\":\"(120.0, 27.96776, -2.0)\",\"tile\":\"(59, 0)\",\"weight\":1.0},{\"normal\":\"(0.659242, 0.731268, -0.175064)\",\"point\":\"(136.0, 0.0, -1.0)\",\"tile\":\"(67, 0)\",\"weight\":0.0789792555200871},{\"normal\":\"(0.619103, 0.653109, 0.436073)\",\"point\":\"(142.0, 0.0, -1.0)\",\"tile\":\"(70, 0)\",\"weight\":0.576547705358556},{\"normal\":\"(0.96021, 0.241053, 0.141031)\",\"point\":\"(143.0, 19.45037, -2.0)\",\"tile\":\"(71, 0)\",\"weight\":1.0},{\"normal\":\"(0.962882, 0.268246, 0.030028)\",\"point\":\"(144.0, 7.214686, -2.0)\",\"tile\":\"(72, 0)\",\"weight\":1.0},{\"normal\":\"(-0.685432, 0.655413, -0.3172)\",\"point\":\"(200.0, 0.0, -1.0)\",\"tile\":\"(100, 0)\",\"weight\":0.560513441134129},{\"normal\":\"(-0.839859, 0.519913, 0.155974)\",\"point\":\"(234.0, 26.66604, -2.0)\",\"tile\":\"(116, 0)\",\"weight\":1.0},{\"normal\":\"(-0.683041, 0.724043, 0.096006)\",\"point\":\"(236.0, 0.0, -1.0)\",\"tile\":\"(118, 0)\",\"weight\":0.113679298555337},{\"normal\":\"(0.839276, 0.539177, -0.070023)\",\"point\":\"(264.0, 26.50924, -2.0)\",\"tile\":\"(132, 0)\",\"weight\":1.0},{\"normal\":\"(-0.831988, 0.333995, 0.442994)\",\"point\":\"(283.0, 12.54878, -2.0)\",\"tile\":\"(141, 0)\",\"weight\":1.0},{\"normal\":\"(-0.698103, 0.714106, -0.052008)\",\"point\":\"(292.0, 0.0, -1.0)\",\"tile\":\"(145, 0)\",\"weight\":0.161488579513948},{\"normal\":\"(-0.777164, 0.618131, -0.118025)\",\"point\":\"(294.0079, 21.39654, -1.992064)\",\"tile\":\"(147, 0)\",\"weight\":0.864047767271418},{\"normal\":\"(-0.796782, 0.592838, -0.116968)\",\"point\":\"(304.0, 24.15628, -2.0)\",\"tile\":\"(151, 0)\",\"weight\":0.971958771627128},{\"normal\":\"(-0.850116, 0.505069, -0.14902)\",\"point\":\"(305.7857, 27.35388, -2.214286)\",\"tile\":\"(153, 0)\",\"weight\":1.0},{\"normal\":\"(0.400403, 0.522526, -0.752758)\",\"point\":\"(78.0, 29.019, -4.0)\",\"tile\":\"(39, 1)\",\"weight\":1.0},{\"normal\":\"(0.145081, 0.512286, -0.846472)\",\"point\":\"(80.00793, 27.74784, -4.007936)\",\"tile\":\"(40, 1)\",\"weight\":1.0},{\"normal\":\"(0.034038, 0.541607, -0.839942)\",\"point\":\"(90.0, 29.48939, -4.0)\",\"tile\":\"(45, 1)\",\"weight\":1.0},{\"normal\":\"(0.196281, 0.513735, -0.835195)\",\"point\":\"(92.0, 29.17579, -4.0)\",\"tile\":\"(46, 1)\",\"weight\":1.0},{\"normal\":\"(0.228246, 0.469505, -0.852918)\",\"point\":\"(94.0, 27.76412, -4.0)\",\"tile\":\"(47, 1)\",\"weight\":1.0},{\"normal\":\"(0.052036, 0.513357, -0.856596)\",\"point\":\"(96.0, 27.29323, -4.0)\",\"tile\":\"(48, 1)\",\"weight\":1.0}],\"map\":\"zone16\",\"prefix\":\"zone16\",\"rejected_geometry\":0,\"size\":\"(321, 161)\"}",
+        "CLIFF_MAP {\"admitted\":2982,\"build_us\":150930,\"classified\":3133,\"examples\":[{\"normal\":\"(0.611437, 0.547391, -0.571408)\",\"point\":\"(32.99206, 22.75739, -1.992064)\",\"tile\":\"(16, 0)\",\"weight\":1.0},{\"normal\":\"(0.864023, 0.415011, 0.285008)\",\"point\":\"(46.0, 21.48911, -2.0)\",\"tile\":\"(22, 0)\",\"weight\":1.0},{\"normal\":\"(-0.67955, 0.700536, -0.217856)\",\"point\":\"(80.0, 0.0, -1.0)\",\"tile\":\"(39, 0)\",\"weight\":0.133822908521699},{\"normal\":\"(0.505483, 0.644616, -0.573548)\",\"point\":\"(146.0, 0.0, -1.0)\",\"tile\":\"(72, 0)\",\"weight\":0.449349033112589},{\"normal\":\"(-0.522849, 0.642814, 0.559838)\",\"point\":\"(167.0, 5.489619, -2.0)\",\"tile\":\"(83, 0)\",\"weight\":0.704875673276205},{\"normal\":\"(0.611437, 0.547391, -0.571408)\",\"point\":\"(32.99206, 22.75739, -1.992064)\",\"tile\":\"(16, 1)\",\"weight\":1.0},{\"normal\":\"(0.864023, 0.415011, 0.285008)\",\"point\":\"(46.0, 21.48911, -2.0)\",\"tile\":\"(22, 1)\",\"weight\":1.0},{\"normal\":\"(0.622598, 0.534513, -0.571549)\",\"point\":\"(32.0, 18.03803, -4.0)\",\"tile\":\"(15, 2)\",\"weight\":1.0},{\"normal\":\"(0.672884, 0.548905, 0.495914)\",\"point\":\"(46.0, 23.2149, -4.0)\",\"tile\":\"(23, 2)\",\"weight\":1.0},{\"normal\":\"(-0.740168, 0.549125, -0.388088)\",\"point\":\"(82.20635, 5.728255, -3.793651)\",\"tile\":\"(40, 2)\",\"weight\":0.944337697687105},{\"normal\":\"(0.794506, 0.397253, -0.459293)\",\"point\":\"(31.21032, 19.13289, -6.226191)\",\"tile\":\"(15, 3)\",\"weight\":1.0},{\"normal\":\"(0.940977, 0.32734, 0.086089)\",\"point\":\"(47.0, 22.27369, -6.0)\",\"tile\":\"(23, 3)\",\"weight\":1.0},{\"normal\":\"(0.936219, 0.346081, -0.061014)\",\"point\":\"(54.0, 13.61955, -6.0)\",\"tile\":\"(26, 3)\",\"weight\":1.0},{\"normal\":\"(0.543537, 0.661653, -0.51651)\",\"point\":\"(68.21825, 3.620056, -7.206349)\",\"tile\":\"(33, 3)\",\"weight\":0.563419213176136},{\"normal\":\"(0.810024, 0.271008, 0.520015)\",\"point\":\"(30.78968, 21.81371, -9.214286)\",\"tile\":\"(15, 4)\",\"weight\":1.0},{\"normal\":\"(0.907606, 0.384256, -0.169113)\",\"point\":\"(47.0, 22.43871, -8.0)\",\"tile\":\"(23, 4)\",\"weight\":1.0},{\"normal\":\"(-0.843169, 0.288715, -0.453553)\",\"point\":\"(50.20635, 13.24208, -7.785714)\",\"tile\":\"(24, 4)\",\"weight\":1.0},{\"normal\":\"(-0.843169, 0.288715, -0.453553)\",\"point\":\"(50.20635, 13.24208, -7.785714)\",\"tile\":\"(25, 4)\",\"weight\":1.0},{\"normal\":\"(0.607112, 0.610113, 0.509094)\",\"point\":\"(68.0, 3.763336, -9.0)\",\"tile\":\"(33, 4)\",\"weight\":0.904050308331078},{\"normal\":\"(-0.74623, 0.583833, -0.319813)\",\"point\":\"(84.0, 5.489125, -9.0)\",\"tile\":\"(41, 4)\",\"weight\":0.991783604007555}],\"map\":\"zone17\",\"prefix\":\"zone17\",\"rejected_geometry\":0,\"size\":\"(385, 385)\"}",
+        "CLIFF_MAP {\"admitted\":1302,\"build_us\":133310,\"classified\":2750,\"examples\":[{\"normal\":\"(0.370567, 0.195771, 0.907939)\",\"point\":\"(2.301587, 12.53325, -12.29762)\",\"tile\":\"(0, 6)\",\"weight\":1.0},{\"normal\":\"(0.370567, 0.195771, 0.907939)\",\"point\":\"(2.301587, 12.53325, -12.29762)\",\"tile\":\"(1, 6)\",\"weight\":1.0},{\"normal\":\"(0.345628, 0.32565, 0.880053)\",\"point\":\"(2.0, 20.19515, -14.0)\",\"tile\":\"(1, 7)\",\"weight\":1.0},{\"normal\":\"(0.194754, 0.248686, 0.948802)\",\"point\":\"(4.0, 18.6266, -14.0)\",\"tile\":\"(2, 7)\",\"weight\":1.0},{\"normal\":\"(0.343672, 0.182826, 0.921121)\",\"point\":\"(5.702381, 15.44541, -13.70238)\",\"tile\":\"(3, 7)\",\"weight\":1.0},{\"normal\":\"(0.3397, 0.487569, 0.804289)\",\"point\":\"(6.0, 22.15509, -16.0)\",\"tile\":\"(3, 8)\",\"weight\":1.0},{\"normal\":\"(0.366841, 0.452804, 0.812648)\",\"point\":\"(8.765873, 19.6685, -16.23413)\",\"tile\":\"(4, 8)\",\"weight\":1.0},{\"normal\":\"(0.731365, 0.354692, 0.582494)\",\"point\":\"(10.0, 20.97943, -18.0)\",\"tile\":\"(5, 9)\",\"weight\":1.0},{\"normal\":\"(0.752204, 0.325088, 0.573155)\",\"point\":\"(11.97222, 19.91397, -20.02778)\",\"tile\":\"(6, 10)\",\"weight\":1.0},{\"normal\":\"(0.37094, 0.740881, 0.55991)\",\"point\":\"(2.0, 29.60725, -24.0)\",\"tile\":\"(1, 11)\",\"weight\":0.0468107474937886},{\"normal\":\"(0.614516, 0.72661, 0.307258)\",\"point\":\"(10.0, 25.68586, -24.0)\",\"tile\":\"(4, 11)\",\"weight\":0.0857017598947228},{\"normal\":\"(0.471674, 0.689523, 0.54962)\",\"point\":\"(5.765873, 29.39142, -26.23413)\",\"tile\":\"(2, 12)\",\"weight\":0.226353494177222},{\"normal\":\"(0.836959, 0.501976, 0.217989)\",\"point\":\"(12.0, 23.33227, -24.0)\",\"tile\":\"(5, 12)\",\"weight\":1.0},{\"normal\":\"(0.346113, 0.764249, 0.544177)\",\"point\":\"(2.0, 30.97974, -26.0)\",\"tile\":\"(0, 13)\",\"weight\":0.000259380613503835},{\"normal\":\"(0.513779, 0.678708, 0.524774)\",\"point\":\"(6.234127, 29.43018, -26.76587)\",\"tile\":\"(3, 13)\",\"weight\":0.236610586780655},{\"normal\":\"(0.695685, 0.55275, 0.458792)\",\"point\":\"(8.765873, 29.28883, -29.23413)\",\"tile\":\"(4, 14)\",\"weight\":1.0},{\"normal\":\"(0.846259, 0.428131, 0.317097)\",\"point\":\"(14.0, 23.52758, -30.0)\",\"tile\":\"(7, 15)\",\"weight\":1.0},{\"normal\":\"(0.783393, 0.570286, 0.247124)\",\"point\":\"(14.0, 24.50868, -32.0)\",\"tile\":\"(7, 16)\",\"weight\":1.0},{\"normal\":\"(0.720334, 0.607281, 0.335155)\",\"point\":\"(12.2619, 27.70431, -33.73809)\",\"tile\":\"(5, 17)\",\"weight\":0.918740799193499},{\"normal\":\"(0.728575, 0.551436, 0.406321)\",\"point\":\"(12.76587, 27.41857, -34.23413)\",\"tile\":\"(6, 17)\",\"weight\":1.0}],\"map\":\"zone18\",\"prefix\":\"zone18\",\"rejected_geometry\":0,\"size\":\"(321, 385)\"}",
+        "CLIFF_MAP {\"admitted\":932,\"build_us\":277973,\"classified\":7289,\"examples\":[{\"normal\":\"(0.921654, 0.346246, -0.175124)\",\"point\":\"(380.0, 19.60731, -2.0)\",\"tile\":\"(190, 0)\",\"weight\":1.0},{\"normal\":\"(0.880824, 0.473443, 0.0)\",\"point\":\"(390.0, 5.646069, -2.0)\",\"tile\":\"(194, 0)\",\"weight\":1.0},{\"normal\":\"(0.777245, 0.629198, 0.0)\",\"point\":\"(392.0, 1.882023, -2.0)\",\"tile\":\"(196, 0)\",\"weight\":0.79772135460367},{\"normal\":\"(0.880824, 0.473443, 0.0)\",\"point\":\"(390.0, 5.646069, -2.0)\",\"tile\":\"(194, 1)\",\"weight\":1.0},{\"normal\":\"(0.777245, 0.629198, 0.0)\",\"point\":\"(392.0, 1.882023, -2.0)\",\"tile\":\"(196, 1)\",\"weight\":0.79772135460367},{\"normal\":\"(0.658366, 0.720401, -0.218121)\",\"point\":\"(382.0, 9.646237, -4.0)\",\"tile\":\"(191, 2)\",\"weight\":0.123189180176272},{\"normal\":\"(0.870848, 0.485473, -0.077075)\",\"point\":\"(390.0, 5.411338, -4.0)\",\"tile\":\"(194, 2)\",\"weight\":1.0},{\"normal\":\"(0.761819, 0.645694, -0.052056)\",\"point\":\"(392.0, 1.882023, -4.0)\",\"tile\":\"(196, 2)\",\"weight\":0.684012969961978},{\"normal\":\"(0.833458, 0.484266, -0.266146)\",\"point\":\"(390.0, 4.940484, -6.0)\",\"tile\":\"(194, 3)\",\"weight\":1.0},{\"normal\":\"(0.744854, 0.66276, -0.077088)\",\"point\":\"(392.0, 1.646596, -6.0)\",\"tile\":\"(196, 3)\",\"weight\":0.536473461637295},{\"normal\":\"(-0.66463, 0.725505, 0.178632)\",\"point\":\"(406.0, 1.176438, -8.0)\",\"tile\":\"(202, 3)\",\"weight\":0.106531886409369},{\"normal\":\"(0.72542, 0.627363, -0.283164)\",\"point\":\"(380.0, 9.880968, -8.0)\",\"tile\":\"(190, 4)\",\"weight\":0.790040216850036},{\"normal\":\"(0.784571, 0.561408, -0.263191)\",\"point\":\"(389.0, 5.882192, -8.0)\",\"tile\":\"(194, 4)\",\"weight\":1.0},{\"normal\":\"(0.648544, 0.746626, -0.148124)\",\"point\":\"(392.0, 1.411169, -8.0)\",\"tile\":\"(196, 4)\",\"weight\":0.0256735134019554},{\"normal\":\"(-0.784598, 0.572518, 0.237968)\",\"point\":\"(406.0, 2.138346, -10.00794)\",\"tile\":\"(202, 4)\",\"weight\":1.0},{\"normal\":\"(0.671717, 0.44047, -0.595636)\",\"point\":\"(378.0, 10.35252, -10.0)\",\"tile\":\"(189, 5)\",\"weight\":1.0},{\"normal\":\"(0.636233, 0.564207, -0.526193)\",\"point\":\"(386.7857, 7.049576, -9.785714)\",\"tile\":\"(193, 5)\",\"weight\":1.0},{\"normal\":\"(0.721368, 0.536273, -0.438223)\",\"point\":\"(386.0, 6.116922, -12.0)\",\"tile\":\"(192, 6)\",\"weight\":1.0},{\"normal\":\"(0.49356, 0.761865, -0.419476)\",\"point\":\"(390.0, 0.941011, -12.0)\",\"tile\":\"(195, 6)\",\"weight\":0.00112816645890327},{\"normal\":\"(-0.682302, 0.600505, 0.416962)\",\"point\":\"(404.0, 2.11745, -14.0)\",\"tile\":\"(201, 6)\",\"weight\":0.946750095894458}],\"map\":\"zone19\",\"prefix\":\"zone19\",\"rejected_geometry\":0,\"size\":\"(513, 513)\"}",
+        "CLIFF_MAP {\"admitted\":80,\"build_us\":28699,\"classified\":81,\"examples\":[{\"normal\":\"(0.722423, 0.421247, -0.548321)\",\"point\":\"(49.0, 10.72535, -2.0)\",\"tile\":\"(24, 0)\",\"weight\":1.0},{\"normal\":\"(-0.79856, 0.452617, -0.396787)\",\"point\":\"(90.0, 11.35245, -2.0)\",\"tile\":\"(45, 1)\",\"weight\":1.0},{\"normal\":\"(-0.823811, 0.43285, -0.366028)\",\"point\":\"(91.0, 11.0389, -4.0)\",\"tile\":\"(45, 2)\",\"weight\":1.0},{\"normal\":\"(-0.944772, 0.31061, -0.104532)\",\"point\":\"(92.0, 12.60737, -6.0)\",\"tile\":\"(45, 3)\",\"weight\":1.0},{\"normal\":\"(-0.833233, 0.244068, -0.496139)\",\"point\":\"(115.131, 22.65454, -12.13095)\",\"tile\":\"(57, 6)\",\"weight\":1.0},{\"normal\":\"(-0.466284, 0.299182, -0.832508)\",\"point\":\"(94.0, 13.54874, -14.0)\",\"tile\":\"(47, 7)\",\"weight\":1.0},{\"normal\":\"(0.611364, 0.229136, -0.75745)\",\"point\":\"(106.0, 17.31279, -20.0)\",\"tile\":\"(53, 10)\",\"weight\":1.0},{\"normal\":\"(-0.967773, 0.248942, -0.037991)\",\"point\":\"(98.0, 15.11721, -22.0)\",\"tile\":\"(49, 11)\",\"weight\":1.0},{\"normal\":\"(-0.925959, 0.323986, -0.193991)\",\"point\":\"(98.02778, 14.60432, -24.0)\",\"tile\":\"(49, 12)\",\"weight\":1.0},{\"normal\":\"(0.213178, 0.558465, -0.801668)\",\"point\":\"(126.0, 8.52906, -30.0)\",\"tile\":\"(63, 14)\",\"weight\":1.0},{\"normal\":\"(0.826855, 0.4835, -0.287297)\",\"point\":\"(70.0, 3.427798, -58.0)\",\"tile\":\"(34, 29)\",\"weight\":1.0},{\"normal\":\"(-0.915037, 0.337906, 0.220287)\",\"point\":\"(78.0, 4.460678, -58.0)\",\"tile\":\"(39, 29)\",\"weight\":1.0},{\"normal\":\"(0.891971, 0.45049, 0.038041)\",\"point\":\"(70.0, 3.407935, -60.0)\",\"tile\":\"(34, 30)\",\"weight\":1.0},{\"normal\":\"(0.89375, 0.397334, 0.208175)\",\"point\":\"(70.0, 4.450747, -62.0)\",\"tile\":\"(34, 31)\",\"weight\":1.0},{\"normal\":\"(0.513727, 0.332177, 0.79104)\",\"point\":\"(84.0, 6.811614, -62.0)\",\"tile\":\"(41, 31)\",\"weight\":1.0},{\"normal\":\"(-0.693934, 0.52295, -0.494953)\",\"point\":\"(93.88492, 6.578223, -62.10714)\",\"tile\":\"(46, 31)\",\"weight\":0.990307723684892},{\"normal\":\"(-0.61439, 0.399603, -0.680325)\",\"point\":\"(95.0, 6.451241, -62.97222)\",\"tile\":\"(47, 31)\",\"weight\":1.0},{\"normal\":\"(0.910446, 0.389191, -0.140069)\",\"point\":\"(70.0, 4.764299, -64.0)\",\"tile\":\"(34, 32)\",\"weight\":1.0},{\"normal\":\"(0.59483, 0.360291, 0.718587)\",\"point\":\"(86.0, 6.852759, -64.0)\",\"tile\":\"(43, 32)\",\"weight\":1.0},{\"normal\":\"(0.508119, 0.630147, 0.587137)\",\"point\":\"(90.0, 5.546762, -65.0)\",\"tile\":\"(44, 32)\",\"weight\":0.671885101728066}],\"map\":\"zone2\",\"prefix\":\"zone2\",\"rejected_geometry\":0,\"size\":\"(129, 193)\"}",
+        "CLIFF_MAP {\"admitted\":760,\"build_us\":79576,\"classified\":1904,\"examples\":[{\"normal\":\"(-0.100062, 0.732457, -0.67342)\",\"point\":\"(76.0, 0.0, -1.0)\",\"tile\":\"(37, 0)\",\"weight\":0.0740172059563344},{\"normal\":\"(-0.304237, 0.700546, -0.645503)\",\"point\":\"(77.0, 0.0, -1.0)\",\"tile\":\"(38, 0)\",\"weight\":0.246262477125739},{\"normal\":\"(-0.615253, 0.707291, -0.348143)\",\"point\":\"(78.0, 28.58779, -2.0)\",\"tile\":\"(39, 0)\",\"weight\":0.222666392106943},{\"normal\":\"(-0.225079, 0.671234, -0.706246)\",\"point\":\"(65.79365, 27.2868, -4.226191)\",\"tile\":\"(32, 1)\",\"weight\":0.477233482433746},{\"normal\":\"(-0.615253, 0.707291, -0.348143)\",\"point\":\"(78.0, 28.58779, -2.0)\",\"tile\":\"(38, 1)\",\"weight\":0.222666392106943},{\"normal\":\"(-0.615253, 0.707291, -0.348143)\",\"point\":\"(78.0, 28.58779, -2.0)\",\"tile\":\"(39, 1)\",\"weight\":0.222666392106943},{\"normal\":\"(-0.394259, 0.757498, -0.520342)\",\"point\":\"(80.0, 28.70543, -4.0)\",\"tile\":\"(40, 1)\",\"weight\":0.0047604302175131},{\"normal\":\"(-0.42997, 0.661954, -0.613957)\",\"point\":\"(41.79365, 28.22111, -6.206349)\",\"tile\":\"(21, 2)\",\"weight\":0.561095580194594},{\"normal\":\"(0.640787, 0.656807, -0.397488)\",\"point\":\"(64.0, 27.64661, -5.0)\",\"tile\":\"(31, 2)\",\"weight\":0.600727357426528},{\"normal\":\"(0.640787, 0.656807, -0.397488)\",\"point\":\"(64.0, 27.64661, -5.0)\",\"tile\":\"(32, 2)\",\"weight\":0.600727357426528},{\"normal\":\"(-0.581232, 0.561224, -0.589235)\",\"point\":\"(66.79365, 26.99612, -5.206349)\",\"tile\":\"(33, 2)\",\"weight\":1.0},{\"normal\":\"(0.466155, 0.705234, 0.534177)\",\"point\":\"(77.0, 28.35249, -5.0)\",\"tile\":\"(38, 2)\",\"weight\":0.129820042037358},{\"normal\":\"(-0.006003, 0.687316, -0.726334)\",\"point\":\"(136.0, 26.91601, -6.019841)\",\"tile\":\"(67, 2)\",\"weight\":0.365076067190457},{\"normal\":\"(-0.510983, 0.754975, -0.410986)\",\"point\":\"(139.7857, 28.73244, -6.214286)\",\"tile\":\"(70, 2)\",\"weight\":0.0064304279143953},{\"normal\":\"(-0.117116, 0.753749, -0.646642)\",\"point\":\"(14.0, 28.70543, -7.0)\",\"tile\":\"(6, 3)\",\"weight\":0.00761312788489972},{\"normal\":\"(-0.19402, 0.631064, -0.751076)\",\"point\":\"(15.0, 28.03434, -8.0)\",\"tile\":\"(7, 3)\",\"weight\":0.720304642304255},{\"normal\":\"(-0.159136, 0.636543, -0.754644)\",\"point\":\"(16.0, 28.38728, -8.0)\",\"tile\":\"(8, 3)\",\"weight\":0.675051346532428},{\"normal\":\"(0.007007, 0.741731, -0.670661)\",\"point\":\"(20.0, 28.94073, -8.0)\",\"tile\":\"(9, 3)\",\"weight\":0.0380220445926165},{\"normal\":\"(0.462197, 0.709302, -0.532227)\",\"point\":\"(62.0, 28.1172, -8.0)\",\"tile\":\"(30, 3)\",\"weight\":0.209500072651815},{\"normal\":\"(0.124113, 0.700638, -0.70264)\",\"point\":\"(82.0, 27.91669, -8.0)\",\"tile\":\"(40, 3)\",\"weight\":0.267964276746529}],\"map\":\"zone20\",\"prefix\":\"zone20\",\"rejected_geometry\":0,\"size\":\"(161, 161)\"}",
+        "CLIFF_MAP {\"admitted\":2183,\"build_us\":155428,\"classified\":4184,\"examples\":[{\"normal\":\"(-0.186131, 0.675476, -0.713503)\",\"point\":\"(80.0, 0.0, -1.0)\",\"tile\":\"(39, 0)\",\"weight\":0.318100253306293},{\"normal\":\"(-0.912202, 0.409642, 0.008992)\",\"point\":\"(82.0, 6.617032, -2.0)\",\"tile\":\"(40, 0)\",\"weight\":1.0},{\"normal\":\"(-0.912202, 0.409642, 0.008992)\",\"point\":\"(82.0, 6.617032, -2.0)\",\"tile\":\"(41, 0)\",\"weight\":1.0},{\"normal\":\"(-0.674992, 0.735991, 0.051999)\",\"point\":\"(84.0, 0.0, -1.0)\",\"tile\":\"(42, 0)\",\"weight\":0.0568332983730262},{\"normal\":\"(0.221017, 0.699055, 0.680054)\",\"point\":\"(194.0, 13.2045, -2.0)\",\"tile\":\"(97, 0)\",\"weight\":0.259886923501978},{\"normal\":\"(0.242951, 0.69486, 0.676864)\",\"point\":\"(197.8889, 12.67287, -1.97619)\",\"tile\":\"(98, 0)\",\"weight\":0.301805032568695},{\"normal\":\"(0.469003, 0.588004, 0.659005)\",\"point\":\"(198.869, 11.85063, -1.944444)\",\"tile\":\"(99, 0)\",\"weight\":0.983984681343618},{\"normal\":\"(0.098964, 0.726735, 0.679752)\",\"point\":\"(79.0, 5.471899, -3.0)\",\"tile\":\"(39, 1)\",\"weight\":0.0804437750841195},{\"normal\":\"(-0.912202, 0.409642, 0.008992)\",\"point\":\"(82.0, 6.617032, -2.0)\",\"tile\":\"(40, 1)\",\"weight\":1.0},{\"normal\":\"(-0.912202, 0.409642, 0.008992)\",\"point\":\"(82.0, 6.617032, -2.0)\",\"tile\":\"(41, 1)\",\"weight\":1.0},{\"normal\":\"(-0.66061, 0.74556, 0.087948)\",\"point\":\"(84.0, 11.06113, -2.0)\",\"tile\":\"(42, 1)\",\"weight\":0.0315714877185757},{\"normal\":\"(0.221017, 0.699055, 0.680054)\",\"point\":\"(194.0, 13.2045, -2.0)\",\"tile\":\"(96, 1)\",\"weight\":0.259886923501978},{\"normal\":\"(0.221017, 0.699055, 0.680054)\",\"point\":\"(194.0, 13.2045, -2.0)\",\"tile\":\"(97, 1)\",\"weight\":0.259886923501978},{\"normal\":\"(0.242951, 0.69486, 0.676864)\",\"point\":\"(197.8889, 12.67287, -1.97619)\",\"tile\":\"(98, 1)\",\"weight\":0.301805032568695},{\"normal\":\"(0.551587, 0.543578, -0.632673)\",\"point\":\"(200.0, 10.40807, -4.0)\",\"tile\":\"(99, 1)\",\"weight\":1.0},{\"normal\":\"(-0.838577, 0.429272, 0.335431)\",\"point\":\"(82.0, 8.154184, -4.0)\",\"tile\":\"(40, 2)\",\"weight\":1.0},{\"normal\":\"(0.81752, 0.574365, 0.042027)\",\"point\":\"(197.869, 12.00116, -5.952381)\",\"tile\":\"(98, 2)\",\"weight\":0.99994976126298},{\"normal\":\"(-0.633329, 0.638323, 0.437536)\",\"point\":\"(80.0, 6.436485, -8.0)\",\"tile\":\"(39, 3)\",\"weight\":0.736637278440239},{\"normal\":\"(-0.841187, 0.539479, -0.036964)\",\"point\":\"(81.0, 6.054471, -6.0)\",\"tile\":\"(40, 3)\",\"weight\":1.0},{\"normal\":\"(0.806177, 0.557814, -0.197288)\",\"point\":\"(198.0119, 11.81106, -8.011905)\",\"tile\":\"(98, 3)\",\"weight\":1.0}],\"map\":\"zone3obr\",\"prefix\":\"zone3obr\",\"rejected_geometry\":1,\"size\":\"(289, 321)\"}",
+        "CLIFF_MAP {\"admitted\":4921,\"build_us\":252577,\"classified\":5562,\"examples\":[{\"normal\":\"(-0.837842, 0.545897, 0.003999)\",\"point\":\"(187.0, 8.430611, -2.0)\",\"tile\":\"(93, 0)\",\"weight\":1.0},{\"normal\":\"(-0.667735, 0.660738, 0.342864)\",\"point\":\"(198.0, 13.92081, -2.0)\",\"tile\":\"(98, 0)\",\"weight\":0.570498067196816},{\"normal\":\"(0.953778, 0.295241, -0.056046)\",\"point\":\"(248.0, 10.76143, -2.0)\",\"tile\":\"(123, 0)\",\"weight\":1.0},{\"normal\":\"(-0.805398, 0.315764, -0.501625)\",\"point\":\"(320.0, 11.85703, -2.0)\",\"tile\":\"(160, 0)\",\"weight\":1.0},{\"normal\":\"(-0.586496, 0.756351, 0.289751)\",\"point\":\"(344.0, 19.60708, -2.0)\",\"tile\":\"(171, 0)\",\"weight\":0.00735470115687076},{\"normal\":\"(-0.432857, 0.742755, 0.510832)\",\"point\":\"(345.0, 0.0, -1.0)\",\"tile\":\"(172, 0)\",\"weight\":0.0363977170732365},{\"normal\":\"(-0.429798, 0.754645, 0.495767)\",\"point\":\"(346.0, 0.0, -1.0)\",\"tile\":\"(173, 0)\",\"weight\":0.00926736133174885},{\"normal\":\"(-0.764323, 0.538523, 0.354686)\",\"point\":\"(350.0, 24.11689, -2.0)\",\"tile\":\"(174, 0)\",\"weight\":1.0},{\"normal\":\"(-0.645123, 0.554106, -0.526101)\",\"point\":\"(361.0, 27.05807, -2.0)\",\"tile\":\"(180, 0)\",\"weight\":1.0},{\"normal\":\"(0.138092, 0.608405, -0.78152)\",\"point\":\"(392.0, 28.03846, -2.0)\",\"tile\":\"(195, 0)\",\"weight\":0.91361415981607},{\"normal\":\"(-0.273041, 0.53708, -0.798119)\",\"point\":\"(393.0, 28.43061, -2.0)\",\"tile\":\"(196, 0)\",\"weight\":1.0},{\"normal\":\"(0.418461, 0.596658, -0.684755)\",\"point\":\"(418.0, 28.23454, -2.0)\",\"tile\":\"(208, 0)\",\"weight\":0.960304470210006},{\"normal\":\"(0.422548, 0.594771, -0.683887)\",\"point\":\"(419.0, 27.25414, -2.0)\",\"tile\":\"(209, 0)\",\"weight\":0.966291443466838},{\"normal\":\"(0.43635, 0.595477, -0.674541)\",\"point\":\"(420.0, 0.0, -1.0)\",\"tile\":\"(210, 0)\",\"weight\":0.883908803957817},{\"normal\":\"(-0.788454, 0.605348, -0.109063)\",\"point\":\"(429.0, 26.86199, -2.0)\",\"tile\":\"(214, 0)\",\"weight\":0.927246662879293},{\"normal\":\"(0.291323, 0.55962, -0.775859)\",\"point\":\"(448.0, 27.6463, -2.0)\",\"tile\":\"(223, 0)\",\"weight\":1.0},{\"normal\":\"(0.291323, 0.55962, -0.775859)\",\"point\":\"(448.0, 27.6463, -2.0)\",\"tile\":\"(224, 0)\",\"weight\":1.0},{\"normal\":\"(0.529677, 0.574734, -0.623797)\",\"point\":\"(450.0, 0.0, -1.0)\",\"tile\":\"(225, 0)\",\"weight\":0.916721706341723},{\"normal\":\"(-0.798966, 0.600974, 0.021999)\",\"point\":\"(474.0, 0.0, -1.0)\",\"tile\":\"(236, 0)\",\"weight\":0.86637616610973},{\"normal\":\"(0.336052, 0.614096, -0.714111)\",\"point\":\"(506.0, 28.62669, -2.0)\",\"tile\":\"(252, 0)\",\"weight\":0.885698412497777}],\"map\":\"zone4\",\"prefix\":\"zone4\",\"rejected_geometry\":0,\"size\":\"(513, 321)\"}",
+        "CLIFF_MAP {\"admitted\":1787,\"build_us\":180609,\"classified\":5494,\"examples\":[{\"normal\":\"(0.786741, 0.305288, -0.536505)\",\"point\":\"(92.03175, 28.18219, -2.031746)\",\"tile\":\"(46, 0)\",\"weight\":1.0},{\"normal\":\"(0.875071, 0.386473, -0.291357)\",\"point\":\"(104.0, 18.71122, -2.0)\",\"tile\":\"(51, 0)\",\"weight\":1.0},{\"normal\":\"(-0.79915, 0.510096, -0.31806)\",\"point\":\"(114.0, 36.95369, -2.0)\",\"tile\":\"(56, 0)\",\"weight\":1.0},{\"normal\":\"(0.569298, 0.763399, 0.305159)\",\"point\":\"(240.0, 37.97787, -2.0)\",\"tile\":\"(119, 0)\",\"weight\":0.000561565638115158},{\"normal\":\"(0.931655, 0.353248, 0.08506)\",\"point\":\"(241.0, 36.25238, -2.0)\",\"tile\":\"(120, 0)\",\"weight\":1.0},{\"normal\":\"(-0.471926, 0.619903, 0.626902)\",\"point\":\"(255.0, 0.0, -2.0)\",\"tile\":\"(127, 0)\",\"weight\":0.769823450526821},{\"normal\":\"(0.786741, 0.305288, -0.536505)\",\"point\":\"(92.03175, 28.18219, -2.031746)\",\"tile\":\"(46, 1)\",\"weight\":1.0},{\"normal\":\"(0.858642, 0.418313, 0.296222)\",\"point\":\"(100.0, 23.04723, -2.0)\",\"tile\":\"(49, 1)\",\"weight\":1.0},{\"normal\":\"(0.875071, 0.386473, -0.291357)\",\"point\":\"(104.0, 18.71122, -2.0)\",\"tile\":\"(51, 1)\",\"weight\":1.0},{\"normal\":\"(-0.79915, 0.510096, -0.31806)\",\"point\":\"(114.0, 36.95369, -2.0)\",\"tile\":\"(56, 1)\",\"weight\":1.0},{\"normal\":\"(0.569298, 0.763399, 0.305159)\",\"point\":\"(240.0, 37.97787, -2.0)\",\"tile\":\"(119, 1)\",\"weight\":0.000561565638115158},{\"normal\":\"(0.931655, 0.353248, 0.08506)\",\"point\":\"(241.0, 36.25238, -2.0)\",\"tile\":\"(120, 1)\",\"weight\":1.0},{\"normal\":\"(-0.845372, 0.286787, 0.450665)\",\"point\":\"(255.0, 0.0, -3.0)\",\"tile\":\"(127, 1)\",\"weight\":0.901344192767753},{\"normal\":\"(0.71803, 0.440632, -0.538773)\",\"point\":\"(15.03175, 37.17464, -6.031746)\",\"tile\":\"(7, 2)\",\"weight\":1.0},{\"normal\":\"(0.290383, 0.255336, -0.922215)\",\"point\":\"(16.0, 34.77592, -6.0)\",\"tile\":\"(8, 2)\",\"weight\":1.0},{\"normal\":\"(0.508232, 0.744339, 0.433197)\",\"point\":\"(93.0, 25.33486, -5.0)\",\"tile\":\"(46, 2)\",\"weight\":0.0193772120181493},{\"normal\":\"(0.783628, 0.597479, -0.170136)\",\"point\":\"(100.0, 24.75441, -6.0)\",\"tile\":\"(49, 2)\",\"weight\":0.948281171716475},{\"normal\":\"(0.919934, 0.385391, -0.072073)\",\"point\":\"(104.0, 17.00526, -4.0)\",\"tile\":\"(52, 2)\",\"weight\":1.0},{\"normal\":\"(-0.973723, 0.155956, -0.165953)\",\"point\":\"(114.0, 34.61906, -4.0)\",\"tile\":\"(56, 2)\",\"weight\":1.0},{\"normal\":\"(-0.973723, 0.155956, -0.165953)\",\"point\":\"(114.0, 34.61906, -4.0)\",\"tile\":\"(57, 2)\",\"weight\":1.0}],\"map\":\"zone5_1\",\"prefix\":\"zone5_1\",\"rejected_geometry\":0,\"size\":\"(257, 161)\"}",
+        "CLIFF_MAP {\"admitted\":1594,\"build_us\":109334,\"classified\":1886,\"examples\":[{\"normal\":\"(-0.203147, 0.76155, -0.615445)\",\"point\":\"(212.0, 5.882108, -14.0)\",\"tile\":\"(105, 7)\",\"weight\":0.000925113211685147},{\"normal\":\"(-0.637644, 0.756577, -0.144919)\",\"point\":\"(115.0, 6.077854, -19.0)\",\"tile\":\"(57, 9)\",\"weight\":0.00146468063281312},{\"normal\":\"(-0.554805, 0.745738, -0.368871)\",\"point\":\"(116.8889, 7.24539, -20.13095)\",\"tile\":\"(58, 9)\",\"weight\":0.00647684319005614},{\"normal\":\"(-0.534676, 0.718565, -0.444731)\",\"point\":\"(116.0, 6.035511, -22.0)\",\"tile\":\"(58, 10)\",\"weight\":0.106434709214533},{\"normal\":\"(-0.572888, 0.644874, -0.505901)\",\"point\":\"(118.0, 6.62761, -23.0)\",\"tile\":\"(59, 11)\",\"weight\":0.43108872353822},{\"normal\":\"(-0.294568, 0.5452, 0.784848)\",\"point\":\"(130.0, 6.470041, -25.0)\",\"tile\":\"(64, 12)\",\"weight\":1.0},{\"normal\":\"(-0.156778, 0.546227, 0.822835)\",\"point\":\"(131.0, 5.29348, -24.0)\",\"tile\":\"(65, 12)\",\"weight\":1.0},{\"normal\":\"(-0.608002, 0.40833, 0.680882)\",\"point\":\"(130.0, 8.234534, -26.0)\",\"tile\":\"(64, 13)\",\"weight\":1.0},{\"normal\":\"(-0.6911, 0.699078, 0.183496)\",\"point\":\"(109.0, 7.123917, -43.0)\",\"tile\":\"(54, 21)\",\"weight\":0.146064238184994},{\"normal\":\"(-0.131731, 0.723522, 0.677616)\",\"point\":\"(110.0, 7.36617, -42.0)\",\"tile\":\"(55, 21)\",\"weight\":0.105980515614121},{\"normal\":\"(-0.047948, 0.715227, 0.697246)\",\"point\":\"(177.0, 6.266659, -50.0)\",\"tile\":\"(88, 24)\",\"weight\":0.172326658148308},{\"normal\":\"(-0.094757, 0.639362, 0.763045)\",\"point\":\"(179.0, 5.074133, -49.0)\",\"tile\":\"(89, 24)\",\"weight\":0.508927688489943},{\"normal\":\"(0.079907, 0.689194, 0.720158)\",\"point\":\"(181.0, 5.272656, -48.0)\",\"tile\":\"(90, 24)\",\"weight\":0.28399706573009},{\"normal\":\"(-0.547639, 0.377373, 0.74678)\",\"point\":\"(172.0, 5.685667, -52.0)\",\"tile\":\"(85, 25)\",\"weight\":1.0},{\"normal\":\"(-0.226182, 0.436421, 0.870849)\",\"point\":\"(174.0, 7.097539, -51.0)\",\"tile\":\"(86, 25)\",\"weight\":1.0},{\"normal\":\"(-0.226182, 0.436421, 0.870849)\",\"point\":\"(174.0, 7.097539, -51.0)\",\"tile\":\"(87, 25)\",\"weight\":1.0},{\"normal\":\"(-0.072683, 0.36043, 0.92995)\",\"point\":\"(176.0, 8.07766, -51.0)\",\"tile\":\"(88, 25)\",\"weight\":1.0},{\"normal\":\"(-0.09957, 0.323603, 0.940939)\",\"point\":\"(178.0, 8.374056, -51.0)\",\"tile\":\"(89, 25)\",\"weight\":1.0},{\"normal\":\"(0.010957, 0.271941, 0.962252)\",\"point\":\"(180.0, 9.061944, -51.0)\",\"tile\":\"(90, 25)\",\"weight\":1.0},{\"normal\":\"(0.118539, 0.324736, 0.938347)\",\"point\":\"(182.0, 7.523739, -51.0)\",\"tile\":\"(91, 25)\",\"weight\":1.0}],\"map\":\"zone6\",\"prefix\":\"zone6\",\"rejected_geometry\":0,\"size\":\"(225, 385)\"}",
+        "CLIFF_MAP {\"admitted\":1658,\"build_us\":111512,\"classified\":1939,\"examples\":[{\"normal\":\"(-0.203147, 0.76155, -0.615445)\",\"point\":\"(212.0, 5.882108, -14.0)\",\"tile\":\"(105, 7)\",\"weight\":0.000925113211685147},{\"normal\":\"(-0.637644, 0.756577, -0.144919)\",\"point\":\"(115.0, 6.077854, -19.0)\",\"tile\":\"(57, 9)\",\"weight\":0.00146468063281312},{\"normal\":\"(-0.554805, 0.745738, -0.368871)\",\"point\":\"(116.8889, 7.24539, -20.13095)\",\"tile\":\"(58, 9)\",\"weight\":0.00647684319005614},{\"normal\":\"(-0.535389, 0.718181, -0.444493)\",\"point\":\"(116.0, 6.035511, -22.0)\",\"tile\":\"(58, 10)\",\"weight\":0.107991248181706},{\"normal\":\"(-0.572888, 0.644874, -0.505901)\",\"point\":\"(118.0, 6.62761, -23.0)\",\"tile\":\"(59, 11)\",\"weight\":0.43108872353822},{\"normal\":\"(-0.294337, 0.544773, 0.785231)\",\"point\":\"(130.0, 6.470041, -25.0)\",\"tile\":\"(64, 12)\",\"weight\":1.0},{\"normal\":\"(-0.156649, 0.545778, 0.823157)\",\"point\":\"(131.0, 5.29348, -24.0)\",\"tile\":\"(65, 12)\",\"weight\":1.0},{\"normal\":\"(-0.608217, 0.407805, 0.681004)\",\"point\":\"(130.0, 8.234534, -26.0)\",\"tile\":\"(64, 13)\",\"weight\":1.0},{\"normal\":\"(-0.69162, 0.698596, 0.183369)\",\"point\":\"(109.0, 7.123917, -43.0)\",\"tile\":\"(54, 21)\",\"weight\":0.147851102028825},{\"normal\":\"(-0.131642, 0.723033, 0.678155)\",\"point\":\"(110.0, 7.36617, -42.0)\",\"tile\":\"(55, 21)\",\"weight\":0.10821746015122},{\"normal\":\"(-0.047948, 0.715227, 0.697246)\",\"point\":\"(177.0, 6.266659, -50.0)\",\"tile\":\"(88, 24)\",\"weight\":0.172326658148308},{\"normal\":\"(-0.094757, 0.639362, 0.763045)\",\"point\":\"(179.0, 5.074133, -49.0)\",\"tile\":\"(89, 24)\",\"weight\":0.508927688489943},{\"normal\":\"(0.07902, 0.687174, 0.722183)\",\"point\":\"(181.0, 5.272656, -48.0)\",\"tile\":\"(90, 24)\",\"weight\":0.288587663377581},{\"normal\":\"(-0.547639, 0.377373, 0.74678)\",\"point\":\"(172.0, 5.685667, -52.0)\",\"tile\":\"(85, 25)\",\"weight\":1.0},{\"normal\":\"(-0.226182, 0.436421, 0.870849)\",\"point\":\"(174.0, 7.097539, -51.0)\",\"tile\":\"(86, 25)\",\"weight\":1.0},{\"normal\":\"(-0.226182, 0.436421, 0.870849)\",\"point\":\"(174.0, 7.097539, -51.0)\",\"tile\":\"(87, 25)\",\"weight\":1.0},{\"normal\":\"(-0.072683, 0.36043, 0.92995)\",\"point\":\"(176.0, 8.07766, -51.0)\",\"tile\":\"(88, 25)\",\"weight\":1.0},{\"normal\":\"(-0.09957, 0.323603, 0.940939)\",\"point\":\"(178.0, 8.374056, -51.0)\",\"tile\":\"(89, 25)\",\"weight\":1.0},{\"normal\":\"(0.010957, 0.271941, 0.962252)\",\"point\":\"(180.0, 9.061944, -51.0)\",\"tile\":\"(90, 25)\",\"weight\":1.0},{\"normal\":\"(0.118539, 0.324736, 0.938347)\",\"point\":\"(182.0, 7.523739, -51.0)\",\"tile\":\"(91, 25)\",\"weight\":1.0}],\"map\":\"zone6_2\",\"prefix\":\"zone6_2\",\"rejected_geometry\":0,\"size\":\"(225, 385)\"}",
+        "CLIFF_MAP {\"admitted\":627,\"build_us\":304838,\"classified\":9683,\"examples\":[{\"normal\":\"(0.0, 0.73881, 0.673914)\",\"point\":\"(102.0, 1.568435, -2.0)\",\"tile\":\"(50, 0)\",\"weight\":0.0544026225245773},{\"normal\":\"(0.0, 0.73881, 0.673914)\",\"point\":\"(102.0, 1.568435, -2.0)\",\"tile\":\"(51, 0)\",\"weight\":0.0544026225245773},{\"normal\":\"(0.0, 0.73881, 0.673914)\",\"point\":\"(104.0, 1.568435, -2.0)\",\"tile\":\"(52, 0)\",\"weight\":0.0544026225245773},{\"normal\":\"(0.0, 0.73881, 0.673914)\",\"point\":\"(106.0, 1.568435, -2.0)\",\"tile\":\"(53, 0)\",\"weight\":0.0544026225245773},{\"normal\":\"(0.0, 0.73881, 0.673914)\",\"point\":\"(108.0, 1.568435, -2.0)\",\"tile\":\"(54, 0)\",\"weight\":0.0544026225245773},{\"normal\":\"(0.0, 0.73881, 0.673914)\",\"point\":\"(110.0, 1.568435, -2.0)\",\"tile\":\"(55, 0)\",\"weight\":0.0544026225245773},{\"normal\":\"(-0.197889, 0.763571, 0.614654)\",\"point\":\"(304.0, 1.567983, -2.0)\",\"tile\":\"(151, 0)\",\"weight\":0.000491368852834739},{\"normal\":\"(-0.197889, 0.763571, 0.614654)\",\"point\":\"(304.0, 1.567983, -2.0)\",\"tile\":\"(152, 0)\",\"weight\":0.000491368852834739},{\"normal\":\"(0.0, 0.765922, 0.642934)\",\"point\":\"(308.0, 2.941042, -2.0)\",\"tile\":\"(153, 0)\",\"weight\":0.000000702598463929322},{\"normal\":\"(-0.072028, 0.731282, 0.678262)\",\"point\":\"(310.0, 3.136418, -2.0)\",\"tile\":\"(154, 0)\",\"weight\":0.0600628474389113},{\"normal\":\"(-0.072028, 0.731282, 0.678262)\",\"point\":\"(310.0, 3.136418, -2.0)\",\"tile\":\"(155, 0)\",\"weight\":0.0600628474389113},{\"normal\":\"(0.297865, 0.722672, 0.623717)\",\"point\":\"(318.0, 0.0, -1.0)\",\"tile\":\"(158, 0)\",\"weight\":0.0677921522822476},{\"normal\":\"(0.297865, 0.722672, 0.623717)\",\"point\":\"(320.0, 2.3522, -2.0)\",\"tile\":\"(159, 0)\",\"weight\":0.126370644747983},{\"normal\":\"(0.297865, 0.722672, 0.623717)\",\"point\":\"(321.0, 1.567983, -2.0)\",\"tile\":\"(160, 0)\",\"weight\":0.12946094604852},{\"normal\":\"(0.0, 0.73881, 0.673914)\",\"point\":\"(102.0, 1.568435, -2.0)\",\"tile\":\"(50, 1)\",\"weight\":0.0544026225245773},{\"normal\":\"(0.0, 0.73881, 0.673914)\",\"point\":\"(102.0, 1.568435, -2.0)\",\"tile\":\"(51, 1)\",\"weight\":0.0544026225245773},{\"normal\":\"(0.0, 0.73881, 0.673914)\",\"point\":\"(104.0, 1.568435, -2.0)\",\"tile\":\"(52, 1)\",\"weight\":0.0544026225245773},{\"normal\":\"(0.0, 0.73881, 0.673914)\",\"point\":\"(106.0, 1.568435, -2.0)\",\"tile\":\"(53, 1)\",\"weight\":0.0544026225245773},{\"normal\":\"(0.0, 0.73881, 0.673914)\",\"point\":\"(108.0, 1.568435, -2.0)\",\"tile\":\"(54, 1)\",\"weight\":0.0544026225245773},{\"normal\":\"(0.297865, 0.722672, 0.623717)\",\"point\":\"(112.0, 2.3522, -3.0)\",\"tile\":\"(55, 1)\",\"weight\":0.0840813263149519}],\"map\":\"zone7\",\"prefix\":\"zone7\",\"rejected_geometry\":0,\"size\":\"(481, 321)\"}",
+        "CLIFF_MAP {\"admitted\":1707,\"build_us\":155917,\"classified\":3433,\"examples\":[{\"normal\":\"(-0.744801, 0.549639, -0.378375)\",\"point\":\"(68.0, 1.960479, -2.0)\",\"tile\":\"(33, 0)\",\"weight\":1.0},{\"normal\":\"(-0.744801, 0.549639, -0.378375)\",\"point\":\"(68.0, 1.960479, -2.0)\",\"tile\":\"(33, 1)\",\"weight\":1.0},{\"normal\":\"(-0.387045, 0.600069, -0.700081)\",\"point\":\"(70.0, 1.960479, -4.0)\",\"tile\":\"(34, 2)\",\"weight\":0.948374855353351},{\"normal\":\"(-0.207093, 0.525237, -0.825372)\",\"point\":\"(71.0, 2.352738, -4.0)\",\"tile\":\"(35, 2)\",\"weight\":1.0},{\"normal\":\"(-0.503591, 0.588522, -0.632486)\",\"point\":\"(74.0, 1.960479, -7.0)\",\"tile\":\"(36, 3)\",\"weight\":0.982847507491639},{\"normal\":\"(-0.568237, 0.569236, -0.594203)\",\"point\":\"(75.0, 1.960479, -8.0)\",\"tile\":\"(37, 4)\",\"weight\":1.0},{\"normal\":\"(-0.452224, 0.736365, -0.503249)\",\"point\":\"(76.0, 1.175962, -10.0)\",\"tile\":\"(37, 5)\",\"weight\":0.0640036109016726},{\"normal\":\"(-0.475462, 0.645627, -0.59758)\",\"point\":\"(77.0, 1.960479, -10.0)\",\"tile\":\"(38, 5)\",\"weight\":0.684507442684202},{\"normal\":\"(0.131727, 0.640671, 0.756431)\",\"point\":\"(54.0, 1.175148, -14.0)\",\"tile\":\"(27, 6)\",\"weight\":0.637194163056082},{\"normal\":\"(0.391104, 0.459947, 0.797174)\",\"point\":\"(57.78571, 3.035528, -16.20238)\",\"tile\":\"(29, 7)\",\"weight\":1.0},{\"normal\":\"(0.41794, 0.676902, 0.605912)\",\"point\":\"(60.0, 1.175148, -16.0)\",\"tile\":\"(30, 7)\",\"weight\":0.444830588814229},{\"normal\":\"(0.525001, 0.673002, 0.521001)\",\"point\":\"(61.78571, 1.909209, -18.20238)\",\"tile\":\"(31, 8)\",\"weight\":0.475137969932364},{\"normal\":\"(-0.783118, 0.620094, -0.047007)\",\"point\":\"(252.0, 18.76494, -20.0)\",\"tile\":\"(126, 9)\",\"weight\":0.852996230690361},{\"normal\":\"(-0.69025, 0.571207, -0.444161)\",\"point\":\"(253.0, 18.72181, -21.0)\",\"tile\":\"(126, 10)\",\"weight\":1.0},{\"normal\":\"(0.630379, 0.461278, 0.624376)\",\"point\":\"(256.0, 19.20358, -20.0)\",\"tile\":\"(127, 10)\",\"weight\":1.0},{\"normal\":\"(0.508323, 0.728463, 0.459292)\",\"point\":\"(68.0, 1.175962, -24.0)\",\"tile\":\"(34, 11)\",\"weight\":0.0926426394294939},{\"normal\":\"(-0.614084, 0.559077, -0.557076)\",\"point\":\"(253.8889, 18.41418, -23.10714)\",\"tile\":\"(127, 11)\",\"weight\":1.0},{\"normal\":\"(-0.38708, 0.451093, -0.804166)\",\"point\":\"(256.0, 18.64775, -24.0)\",\"tile\":\"(128, 11)\",\"weight\":1.0},{\"normal\":\"(0.389073, 0.559105, 0.732137)\",\"point\":\"(259.1071, 19.31345, -21.88889)\",\"tile\":\"(129, 11)\",\"weight\":1.0},{\"normal\":\"(-0.513141, 0.559153, -0.651179)\",\"point\":\"(257.996, 17.96903, -25.00794)\",\"tile\":\"(129, 12)\",\"weight\":1.0}],\"map\":\"zone8\",\"prefix\":\"zone8\",\"rejected_geometry\":0,\"size\":\"(353, 353)\"}",
+        "CLIFF_MAP {\"admitted\":2311,\"build_us\":144007,\"classified\":2574,\"examples\":[{\"normal\":\"(-0.812773, 0.551168, -0.188715)\",\"point\":\"(8.0, 10.19494, -2.0)\",\"tile\":\"(4, 0)\",\"weight\":1.0},{\"normal\":\"(0.644487, 0.483365, -0.592448)\",\"point\":\"(104.2103, 8.530819, -2.206349)\",\"tile\":\"(52, 0)\",\"weight\":1.0},{\"normal\":\"(-0.649954, 0.618956, 0.440969)\",\"point\":\"(334.0, 17.25419, -2.0)\",\"tile\":\"(167, 0)\",\"weight\":0.859441332937687},{\"normal\":\"(-0.89544, 0.334164, -0.294145)\",\"point\":\"(352.0, 22.15627, -2.0)\",\"tile\":\"(175, 0)\",\"weight\":1.0},{\"normal\":\"(-0.760813, 0.648841, -0.012997)\",\"point\":\"(375.0, 0.0, -1.0)\",\"tile\":\"(187, 0)\",\"weight\":0.60587274687817},{\"normal\":\"(-0.588011, 0.617012, 0.52301)\",\"point\":\"(405.0, 0.0, -1.0)\",\"tile\":\"(202, 0)\",\"weight\":0.810304725762561},{\"normal\":\"(-0.271988, 0.642971, 0.715968)\",\"point\":\"(421.0, 0.0, -1.0)\",\"tile\":\"(210, 0)\",\"weight\":0.655309380416518},{\"normal\":\"(-0.580044, 0.643049, 0.500038)\",\"point\":\"(422.0, 0.0, -1.0)\",\"tile\":\"(211, 0)\",\"weight\":0.654792664970974},{\"normal\":\"(-0.649954, 0.618956, 0.440969)\",\"point\":\"(334.0, 17.25419, -2.0)\",\"tile\":\"(167, 1)\",\"weight\":0.859441332937687},{\"normal\":\"(-0.89544, 0.334164, -0.294145)\",\"point\":\"(352.0, 22.15627, -2.0)\",\"tile\":\"(175, 1)\",\"weight\":1.0},{\"normal\":\"(-0.719684, 0.693696, -0.028987)\",\"point\":\"(375.0, 27.05835, -2.0)\",\"tile\":\"(187, 1)\",\"weight\":0.317671135198937},{\"normal\":\"(-0.450593, 0.581474, 0.677388)\",\"point\":\"(401.0, 32.35184, -3.0)\",\"tile\":\"(200, 1)\",\"weight\":0.995086655461894},{\"normal\":\"(-0.427755, 0.59366, 0.68161)\",\"point\":\"(403.0, 32.54817, -2.0)\",\"tile\":\"(201, 1)\",\"weight\":0.969605582722522},{\"normal\":\"(-0.124001, 0.748006, 0.652005)\",\"point\":\"(404.0, 33.13655, -2.0)\",\"tile\":\"(202, 1)\",\"weight\":0.02470488173278},{\"normal\":\"(-0.53095, 0.648939, 0.544949)\",\"point\":\"(418.7936, 33.98755, -1.793651)\",\"tile\":\"(209, 1)\",\"weight\":0.66010890414593},{\"normal\":\"(-0.332873, 0.673742, 0.659748)\",\"point\":\"(420.0, 35.88146, -2.0)\",\"tile\":\"(210, 1)\",\"weight\":0.469373667428524},{\"normal\":\"(-0.700694, 0.635723, 0.323859)\",\"point\":\"(333.0, 18.82298, -4.0)\",\"tile\":\"(166, 2)\",\"weight\":0.75455285538545},{\"normal\":\"(-0.883283, 0.439643, 0.162868)\",\"point\":\"(350.7857, 20.77371, -3.785714)\",\"tile\":\"(175, 2)\",\"weight\":1.0},{\"normal\":\"(-0.774485, 0.63258, 0.003997)\",\"point\":\"(375.0, 27.45039, -6.0)\",\"tile\":\"(187, 2)\",\"weight\":0.771892473113803},{\"normal\":\"(-0.759127, 0.588098, 0.279047)\",\"point\":\"(400.0, 32.35184, -4.0)\",\"tile\":\"(199, 2)\",\"weight\":0.983780753040023}],\"map\":\"zone9\",\"prefix\":\"zone9\",\"rejected_geometry\":1,\"size\":\"(449, 321)\"}",
+        "CLIFF_MAP {\"admitted\":41,\"build_us\":13439,\"classified\":87,\"examples\":[{\"normal\":\"(-0.693851, 0.714846, -0.086981)\",\"point\":\"(44.10714, 4.356027, -17.87698)\",\"tile\":\"(22, 9)\",\"weight\":0.174635783941006},{\"normal\":\"(0.724043, 0.656039, 0.213013)\",\"point\":\"(32.0, 6.246997, -22.0)\",\"tile\":\"(15, 10)\",\"weight\":0.126553945770153},{\"normal\":\"(0.515401, 0.639497, -0.570443)\",\"point\":\"(32.0, 6.124566, -24.0)\",\"tile\":\"(15, 11)\",\"weight\":0.716748851407869},{\"normal\":\"(-0.479778, 0.741657, -0.468783)\",\"point\":\"(59.0, 6.431197, -23.0)\",\"tile\":\"(29, 11)\",\"weight\":0.0440904895056009},{\"normal\":\"(-0.779441, 0.61561, 0.116172)\",\"point\":\"(42.0, 4.628061, -25.0)\",\"tile\":\"(21, 12)\",\"weight\":0.691820105673388},{\"normal\":\"(-0.715649, 0.638794, -0.282467)\",\"point\":\"(57.0, 5.646847, -26.0)\",\"tile\":\"(28, 12)\",\"weight\":0.733353271852445},{\"normal\":\"(-0.660047, 0.693998, 0.287585)\",\"point\":\"(63.0, 0.0, -25.0)\",\"tile\":\"(31, 12)\",\"weight\":0.248641293773514},{\"normal\":\"(-0.715649, 0.638794, -0.282467)\",\"point\":\"(57.0, 5.646847, -26.0)\",\"tile\":\"(28, 13)\",\"weight\":0.733353271852445},{\"normal\":\"(-0.69804, 0.659038, -0.280016)\",\"point\":\"(58.0, 7.215548, -27.0)\",\"tile\":\"(29, 13)\",\"weight\":0.583605240209828},{\"normal\":\"(-0.536647, 0.757501, 0.371755)\",\"point\":\"(63.0, 0.0, -26.0)\",\"tile\":\"(31, 13)\",\"weight\":0.00464109552724239},{\"normal\":\"(-0.628092, 0.555197, 0.545212)\",\"point\":\"(40.0, 3.450825, -28.0)\",\"tile\":\"(20, 14)\",\"weight\":1.0},{\"normal\":\"(-0.85824, 0.512369, 0.030038)\",\"point\":\"(60.0, 7.84287, -30.0)\",\"tile\":\"(29, 14)\",\"weight\":1.0},{\"normal\":\"(-0.85824, 0.512369, 0.030038)\",\"point\":\"(60.0, 7.84287, -30.0)\",\"tile\":\"(30, 14)\",\"weight\":1.0},{\"normal\":\"(-0.85824, 0.512369, 0.030038)\",\"point\":\"(60.0, 7.84287, -30.0)\",\"tile\":\"(29, 15)\",\"weight\":1.0},{\"normal\":\"(-0.85824, 0.512369, 0.030038)\",\"point\":\"(60.0, 7.84287, -30.0)\",\"tile\":\"(30, 15)\",\"weight\":1.0},{\"normal\":\"(0.430418, 0.702682, -0.56655)\",\"point\":\"(63.0, 0.0, -32.0)\",\"tile\":\"(31, 15)\",\"weight\":0.215396392150088},{\"normal\":\"(-0.097172, 0.458474, 0.88338)\",\"point\":\"(11.99206, 1.326997, -37.89286)\",\"tile\":\"(6, 19)\",\"weight\":1.0},{\"normal\":\"(0.200109, 0.383993, 0.901391)\",\"point\":\"(14.0, 2.469479, -38.0)\",\"tile\":\"(7, 19)\",\"weight\":1.0},{\"normal\":\"(0.384782, 0.405771, 0.829031)\",\"point\":\"(16.0, 3.328867, -39.0)\",\"tile\":\"(8, 19)\",\"weight\":1.0},{\"normal\":\"(0.666326, 0.421206, 0.615301)\",\"point\":\"(18.0, 1.177394, -40.0)\",\"tile\":\"(8, 20)\",\"weight\":1.0}],\"map\":\"zonemainmenunew\",\"prefix\":\"zonemainmenunew\",\"rejected_geometry\":0,\"size\":\"(65, 65)\"}",
+        "TERRAIN_CLIFFS 142 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/cliff-census"
+    },
+    {
+      "name": "cliff-hd-render",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes11/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/terrain_cliff_render.gd",
+        "--hd"
+      ],
+      "fixture_sha256": "a6ba8aa851633bd8d307a1a41ec1029af206e0f8a1b78a450f9018c52df001d9",
+      "exit": 0,
+      "seconds": 29.565813542023534,
+      "errors": [],
+      "results": [
+        "TERRAIN_CLIFF_RENDER 48 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/cliff-hd-render"
+    },
+    {
+      "name": "cliff-compile-compat",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes18/CursedLands.x86_64",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "0",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/terrain_cliff_render.gd",
+        "--cliff-compile"
+      ],
+      "fixture_sha256": "a6ba8aa851633bd8d307a1a41ec1029af206e0f8a1b78a450f9018c52df001d9",
+      "exit": 0,
+      "seconds": 3.4189428300014697,
+      "errors": [],
+      "results": [
+        "CLIFF_COMPILE 4 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/cliff-compile-compat"
+    },
+    {
+      "name": "revenge-fixed2",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes12/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/lia_revenge_return.gd"
+      ],
+      "fixture_sha256": "73e529c21f7a8a134baa0fdfb7ddd9394123fda6d37e97651ec2bbe8fc48da19",
+      "exit": 0,
+      "seconds": 27.964665975014213,
+      "errors": [],
+      "results": [
+        "LIA_REVENGE_RETURN 13 checks []"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/revenge-fixed2"
+    },
+    {
+      "name": "revenge-recovery",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes12/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/lia_revenge_return.gd",
+        "--save-fixture=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/revenge-old-checkpoint/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/revenge_blocked.sav"
+      ],
+      "fixture_sha256": "58dbe5fffe144532481e0a2d8b2136fb9f9a09b1cbd30aad9b6f5c29d0ddb411",
+      "exit": 0,
+      "seconds": 14.18915226100944,
+      "errors": [],
+      "results": [
+        "LIA_REVENGE_RETURN 5 checks []"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/revenge-recovery"
+    },
+    {
+      "name": "reflection-levels-final",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes15/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/water_reflection_levels.gd"
+      ],
+      "fixture_sha256": "469c68d96c0e69ca7b242134213bdbcf9d3376fabc2999bfe5526d1829729942",
+      "exit": 0,
+      "seconds": 3.11921144099324,
+      "errors": [],
+      "results": [
+        "WATER_REFLECTION_LEVELS 16 checks []"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/reflection-levels-final"
+    },
+    {
+      "name": "reflection-regressions",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes18/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/water_reflection_regressions.gd"
+      ],
+      "fixture_sha256": "bdf953916b26afb96afef584e24b92123f23e1a2b8a22df6acee6d2b2b4c9df7",
+      "exit": 0,
+      "seconds": 61.17131464200793,
+      "errors": [],
+      "results": [
+        "WATER_REFLECTION_REGRESSIONS {\"checks\":34,\"failures\":[],\"hd\":false,\"map\":\"gz11k\",\"rows\":[{\"case\":\"fog-day-0\",\"control\":{\"changed\":1495,\"mean_error\":0.136201414345404,\"samples\":4560},\"fixed\":{\"changed\":0,\"mean_error\":0.0,\"samples\":4560},\"main_view\":{\"changed\":0,\"mean_error\":0.0,\"samples\":22400}},{\"case\":\"fog-day-1\",\"control\":{\"changed\":956,\"mean_error\":0.079096408060657,\"samples\":5714},\"fixed\":{\"changed\":0,\"mean_error\":0.0,\"samples\":5714},\"main_view\":{\"changed\":0,\"mean_error\":0.0,\"samples\":22400}},{\"case\":\"fog-night-0\",\"control\":{\"changed\":3090,\"mean_error\":0.227663404240555,\"samples\":4560},\"fixed\":{\"changed\":0,\"mean_error\":0.0,\"samples\":4560},\"main_view\":{\"changed\":0,\"mean_error\":0.0,\"samples\":22400}},{\"case\":\"fog-night-1\",\"control\":{\"changed\":2457,\"mean_error\":0.133710805924383,\"samples\":5714},\"fixed\":{\"changed\":0,\"mean_error\":0.0,\"samples\":5714},\"main_view\":{\"changed\":0,\"mean_error\":0.0,\"samples\":22400}},{\"bad_frames\":0,\"case\":\"motion\",\"first_submissions\":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],\"transitions\":24,\"variant\":\"fixed\",\"worst_changed_pixels\":0},{\"bad_frames\":24,\"case\":\"motion\",\"first_submissions\":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],\"transitions\":24,\"variant\":\"control\",\"worst_changed_pixels\":10519}]}"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/reflection-regressions"
+    },
+    {
+      "name": "solo-wall-render",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes10/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/solo_wall_quickload.gd"
+      ],
+      "fixture_sha256": "c905291a48b9a2ef076ef78895905e7696181848afa7098971ea8d5163f6e255",
+      "exit": 0,
+      "seconds": 31.712803727015853,
+      "errors": [],
+      "results": [
+        "SOLO_WALL_QUICKLOAD 9 checks []"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/solo-wall-render"
+    },
+    {
+      "name": "movie-audio",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes16/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/movie_audio.gd"
+      ],
+      "fixture_sha256": "9cd0e280db57d9d0498a7b204af6536df9323b0ec05cee1118d7836601a3dee3",
+      "exit": 0,
+      "seconds": 2.167996686999686,
+      "errors": [],
+      "results": [
+        "MOVIE_AUDIO 16 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/movie-audio"
+    },
+    {
+      "name": "safe-gear",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes17/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/safe_zone_appearance.gd"
+      ],
+      "fixture_sha256": "5d8bd28e6c6d0f4e14eb62a75cfea5ede2db7d3ddd89f639ba0baae5e198513b",
+      "exit": 0,
+      "seconds": 10.432429356995272,
+      "errors": [],
+      "results": [
+        "SAFE_ZONE_APPEARANCE 11 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/safe-gear"
+    },
+    {
+      "name": "suslanger-render-final",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes23/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/suslanger_cage.gd"
+      ],
+      "fixture_sha256": "6c5c83dc5b07e47e923fd1393ff7fb0975d662a9431dc15e7c7072846f12e0de",
+      "exit": 0,
+      "seconds": 31.567585628014058,
+      "errors": [],
+      "results": [
+        "SUSLANGER_CAGE 15 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/suslanger-render-final"
+    },
+    {
+      "name": "nalo-entry-regression",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes18/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/nalo_rescue_entry.gd"
+      ],
+      "fixture_sha256": "bcdab43857c799876f251790b70225b514ab703d24c6707159d857eac694c038",
+      "exit": 0,
+      "seconds": 10.332458132004831,
+      "errors": [],
+      "results": [
+        "NALO_RELOAD 14 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/nalo-entry-regression"
+    },
+    {
+      "name": "prone-interior",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes20/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/first_person_camera_collision.gd"
+      ],
+      "fixture_sha256": "62080fb0505fb563f88020de6a28c3fd1c4332cac83abc8656ba8be6a40a0515",
+      "exit": 0,
+      "seconds": 10.780164580006385,
+      "errors": [],
+      "results": [
+        "CAMERA_SAMPLES {\"corner_examples\":[],\"corners_in_scenery\":0,\"examples\":[{\"camera\":\"(8.608155, 44.31557, -7.985653)\",\"foot\":\"(8.0, 43.97881, -8.0)\",\"safe\":true,\"wanted\":\"(8.869182, 44.31557, -7.979496)\"},{\"camera\":\"(24.58398, 44.25719, -7.387804)\",\"foot\":\"(24.0, 43.92043, -8.0)\",\"safe\":true,\"wanted\":\"(24.60011, 44.25719, -7.370897)\"},{\"camera\":\"(88.40184, 44.45303, -8.383317)\",\"foot\":\"(88.0, 44.11626, -8.0)\",\"safe\":true,\"wanted\":\"(88.6291, 44.45303, -8.600105)\"},{\"camera\":\"(88.01067, 44.45303, -8.451975)\",\"foot\":\"(88.0, 44.11626, -8.0)\",\"safe\":true,\"wanted\":\"(88.02051, 44.45303, -8.869182)\"},{\"camera\":\"(87.75452, 44.45303, -8.257342)\",\"foot\":\"(88.0, 44.11626, -8.0)\",\"safe\":true,\"wanted\":\"(87.39989, 44.45303, -8.629103)\"}],\"original_clips\":1368,\"sites\":8320,\"unchanged\":6937,\"unsafe\":0}",
+        "FIRST_PERSON_CAMERA 6 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/prone-interior"
+    },
+    {
+      "name": "prone-ultrawide",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes22/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/first_person_camera_collision.gd",
+        "--wide"
+      ],
+      "fixture_sha256": "40ddab01608190b1a7723996316b1d823fd4efab02a7e0104e06f22e5ea27513",
+      "exit": 0,
+      "seconds": 11.380095065978821,
+      "errors": [],
+      "results": [
+        "CAMERA_SAMPLES {\"corner_examples\":[],\"corners_in_scenery\":0,\"examples\":[{\"camera\":\"(8.557906, 44.31557, -7.986839)\",\"foot\":\"(8.0, 43.97881, -8.0)\",\"safe\":true,\"wanted\":\"(8.869182, 44.31557, -7.979496)\"},{\"camera\":\"(24.54647, 44.25719, -7.427123)\",\"foot\":\"(24.0, 43.92043, -8.0)\",\"safe\":true,\"wanted\":\"(24.60011, 44.25719, -7.370897)\"},{\"camera\":\"(88.37235, 44.45303, -8.355187)\",\"foot\":\"(88.0, 44.11626, -8.0)\",\"safe\":true,\"wanted\":\"(88.6291, 44.45303, -8.600105)\"},{\"camera\":\"(88.00935, 44.45303, -8.396293)\",\"foot\":\"(88.0, 44.11626, -8.0)\",\"safe\":true,\"wanted\":\"(88.02051, 44.45303, -8.869182)\"},{\"camera\":\"(87.78828, 44.45303, -8.221955)\",\"foot\":\"(88.0, 44.11626, -8.0)\",\"safe\":true,\"wanted\":\"(87.39989, 44.45303, -8.629103)\"}],\"original_clips\":1368,\"sites\":8320,\"unchanged\":6848,\"unsafe\":0}",
+        "FIRST_PERSON_CAMERA 6 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/prone-ultrawide"
+    },
+    {
+      "name": "lava-flow",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes17/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/lava_animation.gd"
+      ],
+      "fixture_sha256": "caa2f901b86b5ad8d2be557a58fd4ecd9f8a3e9a58d8915040be1159177bb773",
+      "exit": 0,
+      "seconds": 9.72968002097332,
+      "errors": [],
+      "results": [
+        "LAVA_MOTION {\"changed_pixels\":158154,\"peak_delta\":255,\"pixels_over_2\":153661}",
+        "LAVA_ANIMATION 5 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/lava-flow"
+    },
+    {
+      "name": "lava-flow-compat",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes17/CursedLands.x86_64",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "0",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/lava_animation.gd"
+      ],
+      "fixture_sha256": "caa2f901b86b5ad8d2be557a58fd4ecd9f8a3e9a58d8915040be1159177bb773",
+      "exit": 0,
+      "seconds": 8.076721563003957,
+      "errors": [],
+      "results": [
+        "LAVA_MOTION {\"changed_pixels\":157159,\"peak_delta\":255,\"pixels_over_2\":152681}",
+        "LAVA_ANIMATION 5 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/lava-flow-compat"
+    },
+    {
+      "name": "stealth-final-forward",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes22/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "1",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/stealth_effects.gd"
+      ],
+      "fixture_sha256": "7fc4b921c2b0474a89092f5c687354dda3b81b751d3b5dee508ffdfdfe447b78",
+      "exit": 0,
+      "seconds": 26.611209713999415,
+      "errors": [],
+      "results": [
+        "STEALTH_GAMEPLAY {\"observer\":\"Human Hadagan Guards F20\",\"prone\":true,\"sight_range\":4.25,\"spell_power\":50.0}",
+        "SILENT_STEP_VISUAL {\"box\":\"[P: (108.176, 18.12035, -318.207), S: (0.370195, 0.370195, 0.370195)]\",\"head\":\"(108.3611, 16.60545, -318.0219)\",\"live\":1,\"parts\":[[108.36109161377,318.021881103516,18.3054458618164,0.1667668975897,108.36109161377,318.021881103516,18.3054458618164,0.160722620441667,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,3,3,0,0,0,4294967295,4294967295,0]],\"point\":\"(108.3611, 318.0219, 17.60545)\",\"screen\":\"(702.1037, 233.9148)\",\"type\":8268,\"visible\":1}",
+        "STEALTH_EFFECTS 19 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/stealth-final-forward"
+    },
+    {
+      "name": "stealth-selected-gl",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes24/CursedLands.x86_64",
+        "--rendering-method",
+        "gl_compatibility",
+        "--gpu-index",
+        "0",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/stealth_effects.gd"
+      ],
+      "fixture_sha256": "1e2461fe7aae9567b291c0b259c137b0cd3d92fef0c669436a628c5a35e0e464",
+      "exit": 0,
+      "seconds": 44.29022963298485,
+      "errors": [],
+      "results": [
+        "STEALTH_GAMEPLAY {\"observer\":\"Human Hadagan Guards F20\",\"prone\":true,\"sight_range\":4.25,\"spell_power\":50.0}",
+        "SILENT_STEP_VISUAL {\"box\":\"[P: (108.176, 18.12035, -318.207), S: (0.370195, 0.370195, 0.370195)]\",\"head\":\"(108.3611, 16.60545, -318.0219)\",\"live\":1,\"parts\":[[108.36109161377,318.021881103516,18.3054458618164,0.161043327529815,108.36109161377,318.021881103516,18.3054458618164,0.1667668975897,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,3,3,0,0,0,4294967295,4294967295,0]],\"point\":\"(108.3611, 318.0219, 17.60545)\",\"screen\":\"(555.8127, 66.89634)\",\"type\":8268,\"visible\":1}",
+        "STEALTH_EFFECTS 19 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/stealth-selected-gl"
+    },
+    {
+      "name": "stealth-ru",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes24/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/data/ru",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/stealth_effects.gd"
+      ],
+      "fixture_sha256": "1e2461fe7aae9567b291c0b259c137b0cd3d92fef0c669436a628c5a35e0e464",
+      "exit": 0,
+      "seconds": 9.57945717399707,
+      "errors": [],
+      "results": [
+        "STEALTH_GAMEPLAY {\"observer\":\"Human Hadagan Guards F20\",\"prone\":true,\"sight_range\":4.25,\"spell_power\":50.0}",
+        "STEALTH_EFFECTS 17 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/stealth-ru"
+    },
+    {
+      "name": "stealth-de",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes24/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/stealth_effects.gd"
+      ],
+      "fixture_sha256": "1e2461fe7aae9567b291c0b259c137b0cd3d92fef0c669436a628c5a35e0e464",
+      "exit": 0,
+      "seconds": 9.478825495985802,
+      "errors": [],
+      "results": [
+        "STEALTH_GAMEPLAY {\"observer\":\"Human Hadagan Guards F20\",\"prone\":true,\"sight_range\":4.25,\"spell_power\":50.0}",
+        "STEALTH_EFFECTS 17 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/stealth-de"
+    },
+    {
+      "name": "stealth-net-corrected",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes22/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/stealth_effects_net.gd"
+      ],
+      "fixture_sha256": "45b3380a54c817ca2eadc959eb2ba73beaac15bae4f29129e01393ad17f4c9e9",
+      "exit": 0,
+      "seconds": 13.184019356995123,
+      "errors": [],
+      "results": [
+        "NET_STEALTH_CAST 1500000001",
+        "NET_STEALTH_CAST 1500000002",
+        "STEALTH_EFFECTS_NET 15 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/stealth-net-corrected"
+    },
+    {
+      "name": "exhausted-final",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes24/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/exhausted_interactions.gd"
+      ],
+      "fixture_sha256": "587df392741cec510d2f284dd3733566abecc4bb3c5835c68cd3f61576a22d71",
+      "exit": 0,
+      "seconds": 11.733672468020814,
+      "errors": [],
+      "results": [
+        "INTERACTION_CENSUS {\"campaign\":\"cursed_lands\",\"levers\":291,\"lift_call\":{},\"one_time\":7,\"repeatable\":1,\"single_state\":[]}",
+        "EXHAUSTED_INTERACTIONS 15 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/exhausted-final"
+    },
+    {
+      "name": "exhausted-astral-final",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes24/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/exhausted_interactions.gd"
+      ],
+      "fixture_sha256": "95e630c6e795ab2eeedc11743147c3c811bc2977dafb1668f4d677c446d2730c",
+      "exit": 0,
+      "seconds": 8.627622437023092,
+      "errors": [],
+      "results": [
+        "INTERACTION_CENSUS {\"campaign\":\"lost_in_astral\",\"levers\":1595,\"lift_call\":{\"lever\":{\"cycled\":0,\"science\":[8,22,0],\"state\":0,\"states\":2},\"zone\":\"gz1h\"},\"one_time\":87,\"repeatable\":1,\"single_state\":[]}",
+        "EXHAUSTED_INTERACTIONS 90 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/exhausted-astral-final"
+    },
+    {
+      "name": "lift-interaction-regression",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/fixes23/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/catacomb_group_lever.gd"
+      ],
+      "fixture_sha256": "572876e993e6e2d8cd36d2485c2e50eb5d09a6b40d0fcee6a333ed5018de3070",
+      "exit": 0,
+      "seconds": 14.539117302017985,
+      "errors": [],
+      "results": [
+        "CATACOMB_GROUP_LEVER 24 checks 0 failures"
+      ],
+      "artifacts": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/lift-interaction-regression"
+    }
+  ],
+  "browser": {
+    "checks": 275,
+    "errors": [],
+    "artifact": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/checks/web-browser-final/result.json",
+    "sha256": "baf50a9e515fa30cc84829d2957dfd530fdaca8cae0f00fdbb0af52904703afe"
+  },
+  "wiki": {
+    "version": "1.6.0",
+    "languages": {
+      "en": {
+        "pages": 1228,
+        "listed_pages": 1025,
+        "listed_spells": 31,
+        "versions": 2008,
+        "resolved_links": 7341,
+        "normalized_equipment_links": 116
+      },
+      "ru": {
+        "pages": 1228,
+        "listed_pages": 1028,
+        "listed_spells": 31,
+        "versions": 2008,
+        "resolved_links": 7326,
+        "normalized_equipment_links": 116
+      },
+      "de": {
+        "pages": 1228,
+        "listed_pages": 1025,
+        "listed_spells": 31,
+        "versions": 2008,
+        "resolved_links": 7365,
+        "normalized_equipment_links": 116
+      }
+    },
+    "campaigns": {
+      "cursed_lands": {
+        "languages": {
+          "en": {
+            "pages": 1228,
+            "listed_pages": 1025,
+            "listed_spells": 31,
+            "versions": 2008,
+            "resolved_links": 7341,
+            "normalized_equipment_links": 116
+          },
+          "ru": {
+            "pages": 1228,
+            "listed_pages": 1028,
+            "listed_spells": 31,
+            "versions": 2008,
+            "resolved_links": 7326,
+            "normalized_equipment_links": 116
+          },
+          "de": {
+            "pages": 1228,
+            "listed_pages": 1025,
+            "listed_spells": 31,
+            "versions": 2008,
+            "resolved_links": 7365,
+            "normalized_equipment_links": 116
+          }
+        }
+      },
+      "lost_in_astral": {
+        "languages": {
+          "en": {
+            "pages": 1705,
+            "listed_pages": 1427,
+            "listed_spells": 35,
+            "versions": 2665,
+            "resolved_links": 35902,
+            "normalized_equipment_links": 90
+          },
+          "ru": {
+            "pages": 1705,
+            "listed_pages": 1427,
+            "listed_spells": 35,
+            "versions": 2665,
+            "resolved_links": 35838,
+            "normalized_equipment_links": 90
+          },
+          "de": {
+            "pages": 1705,
+            "listed_pages": 1427,
+            "listed_spells": 35,
+            "versions": 2665,
+            "resolved_links": 35915,
+            "normalized_equipment_links": 90
+          }
+        }
+      }
+    },
+    "translation_keys": 85,
+    "illustrations": 4246,
+    "bytes": 142086794
+  },
+  "limits": [
+    "Prepared routes and cases; not a full playthrough or Windows/Android run.",
+    "Compatibility does not render Godot Decal footprints; rain, cliff, lava and invisibility shader paths were exercised there.",
+    "Original invisibility has base power 50 and lowers sight detectability by 0.5; it does not suppress hearing, close peripheral detection, life sense or prior enemy memory. The fresh-approach gameplay failure was not reproduced in the tested native Nalo/guard case.",
+    "Silent Step already suppresses hearing in the tested case and draws the original green star above the head; no unsubstantiated gameplay formula change was made.",
+    "The reported solo F9 lightning-wall persistence was not reproduced. The real LocalHost/worker quickload control removed the old world and bolt; no claim of a fix.",
+    "The public wiki was packaged and tested locally; no deployment, release, tag or push was performed.",
+    "Early stealth network fixtures dereferenced the intentionally absent client ScriptVM; the corrected fixture guards it. Those setup failures are excluded from acceptance.",
+    "Earlier high-FOV camera checks exposed diagonal navigation cells and a blocked body-centre anchor; the final clearance sweep handles both and includes an ultrawide margin."
+  ],
+  "native_original": {
+    "artifact": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe",
+    "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+    "method": "Static Ghidra analysis through REA; not execution of the original game",
+    "evidence": [
+      {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/native-evidence/0x484c00.json",
+        "evidence_id": "ev_ce700662f4be9f35a8fa96121a83c59cffe2a2f8c6f0ba0ae0e738759c06cbba",
+        "authority": "shipped-artifact",
+        "operation": "procedure_pseudo_code",
+        "parameters": {
+          "procedure": "0x484c00"
+        },
+        "sha256": "d0115d7196e1c7c8c51c537dd32a96e4a667bc3b18d70326951e7360ca0eddc4"
+      },
+      {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/native-evidence/0x52ec70.json",
+        "evidence_id": "ev_dad9f41e19478bb37f6d26e890b9fd91622e3199987b0c4c82e6ce49d7f21f1e",
+        "authority": "shipped-artifact",
+        "operation": "procedure_pseudo_code",
+        "parameters": {
+          "procedure": "0x52ec70"
+        },
+        "sha256": "ba5788dd399fd580944561e1138c0cce461ba4cc38d7cdd33a9fea44565b7036"
+      },
+      {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/native-evidence/0x537cb0.json",
+        "evidence_id": "ev_23786f82df1cf2776a9db44d3ebf02b08f14cca1e7b1b353fc28c061cf4dabb6",
+        "authority": "shipped-artifact",
+        "operation": "procedure_pseudo_code",
+        "parameters": {
+          "procedure": "0x537cb0"
+        },
+        "sha256": "b1a48dc24e33631522d3544681097933daa85f3c51a4676beb8cc54a4bcc3b74"
+      },
+      {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/native-evidence/0x590700.json",
+        "evidence_id": "ev_5446461f671be2234d283cd4e36e76a6fdb6281d1109ceb18d4b405bf1770905",
+        "authority": "shipped-artifact",
+        "operation": "procedure_pseudo_code",
+        "parameters": {
+          "procedure": "0x590700"
+        },
+        "sha256": "3949c52428ba9c971cc275d48080636a786d53e8441dacd7b3ee8a02cf64bd2d"
+      },
+      {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/native-evidence/0x6064a0.json",
+        "evidence_id": "ev_a59483b6b2e3c51b59fe20bc754a36a09dc1c70d25d4a3c6512e8bd4b330d98a",
+        "authority": "shipped-artifact",
+        "operation": "procedure_pseudo_code",
+        "parameters": {
+          "procedure": "0x6064a0"
+        },
+        "sha256": "3713e282d7923987823718777ee4cb35a9fbd781d3a62b07a78b67590f790071"
+      },
+      {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/native-evidence/0x607a20.json",
+        "evidence_id": "ev_6a9f691f080f7d4fce2138cc738b57687982986a2c1a217d5cffc02164a5b177",
+        "authority": "shipped-artifact",
+        "operation": "procedure_pseudo_code",
+        "parameters": {
+          "procedure": "0x607a20"
+        },
+        "sha256": "4e3db46271108de06520e5e2217f30658fa1a2b16e965b0e674485b93f202685"
+      },
+      {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/native-evidence/rea_0x605da0.json",
+        "evidence_id": "ev_48e321477e43eb7dde4b4223d66bbb9e351c4fdcc5508a053207a667fd108b02",
+        "authority": "shipped-artifact",
+        "operation": "procedure_pseudo_code",
+        "parameters": {
+          "procedure": "0x605da0"
+        },
+        "sha256": "82b5410faed754c303a0fec7231d1fb2ca8b5413b11c4bd48902b216bd9eba97"
+      },
+      {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/native-evidence/rea_buff_visual.json",
+        "evidence_id": "ev_ccbe19cac62d60cc68970ceb13501264739bdacecf592c21b2a678158250000f",
+        "authority": "shipped-artifact",
+        "operation": "procedure_pseudo_code",
+        "parameters": {
+          "procedure": "0x510b80"
+        },
+        "sha256": "785aa67e67615b0384c962da2dea254c4345757b84f9f4c003c4bd8207cf03f6"
+      },
+      {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/native-evidence/rea_gear52ebe0.json",
+        "evidence_id": "ev_b2a8b5ae202e35c439aeb2a6a77238aa534ecf104b14c7361903bd370036d7d7",
+        "authority": "shipped-artifact",
+        "operation": "procedure_pseudo_code",
+        "parameters": {
+          "procedure": "0x52ebe0"
+        },
+        "sha256": "170eb92b0d05e7374c35e08ede40faffa0e5d25b6bde5762d8ef5c0d0763d22f"
+      },
+      {
+        "file": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/native-evidence/rea_invis_ctor.json",
+        "evidence_id": "ev_544e26786474196c08fc107d4fa25af79cd9d714cbe6a37aef5adcb0a39e9bb1",
+        "authority": "shipped-artifact",
+        "operation": "procedure_pseudo_code",
+        "parameters": {
+          "procedure": "0x5112a0"
+        },
+        "sha256": "2e1ae18b424d6017066ead591bdbbed4f1b647886dec81a4d0d469da7fe4a8e9"
+      }
+    ]
+  },
+  "constructor_oracles": {
+    "assertions": 18676,
+    "spell_cases": 898,
+    "item_cases": 2820
+  },
+  "translations": {
+    "remake_keys": 1399,
+    "dynamic_wiki_keys": 78,
+    "world_records": 180,
+    "reference_records": 3886,
+    "optional_quest_records": 28,
+    "errors": 0
+  },
+  "review_build": {
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/review-final",
+    "pck_sha256": "ef554b8fa19cff7570fff820c4b68fd2c37dee439cc3f036cc4c91e665ce268b",
+    "import_and_export_errors": 0,
+    "smoke": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/review-final/CursedLands.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/direct_spell_selection.gd"
+      ],
+      "fixture_sha256": "9f05faf67ffa449af231ffb6bc2ff8e9ea6ae8123069c66235388c5cc3ef5a69",
+      "exit": 0,
+      "seconds": 7.225170138000976,
+      "errors": []
+    }
+  }
+}

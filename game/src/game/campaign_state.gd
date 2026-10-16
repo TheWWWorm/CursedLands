@@ -705,6 +705,7 @@ func apply_hero(u: GameUnit) -> void:
 			if float(h.hp) > 0.0:
 				u.hp = minf(float(h.hp), u.max_hp)
 			u.set_meta("hero", h)
+			u.refresh_figure()
 			return
 
 

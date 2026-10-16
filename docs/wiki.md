@@ -4,8 +4,9 @@ Open **Game wiki** from the main menu or the **Esc** menu. Choose a category,
 search the localized page names, and click an entry. Each item has one page;
 its **Material / version** buttons switch the statistics and model on that page.
 Craftable items include a **Blueprint** button alongside the material buttons.
-Search matches every word;
-the result list is paginated. Links connect materials, item variants, recipes,
+Campaign tabs select the base game or an installed Lost in Astral campaign.
+Search matches every word in one continuous result list, with item subcategories.
+Links connect maps, quests, materials, item variants, recipes,
 spells, runes, creature equipment and related mechanics. Back/Forward retain
 page history and scroll position; Alt+Left/Right also navigate history.
 
@@ -17,9 +18,16 @@ pause behavior; in co-op the world continues running while local gameplay
 input is blocked.
 
 Spell pages offer compatible runes using the inventory constructor's admission
-rules. Add a rune to see the calculated power, cost, complexity, range, area,
-radius, duration and targets; **Reset spell** returns to the base prototype.
-These calculations do not edit the character, inventory, save or network state.
+rules. The selected rune stays selected after adding it, with its artwork visible.
+Add a rune to see the calculated power, cost, complexity, range, area, radius,
+duration and targets. Remove the last rune or reset the spell. Item pages offer
+compatible enchantments, removable enchantments and rune combinations within the
+item's slot and native constructor limits. These calculations do not edit the
+character, inventory, save or network state.
+
+Map pages show a north-up overview with pan, zoom and reset controls, plus links
+to their quests. Quest pages contain the authored description and objectives and
+link back to the relevant maps; they do not disclose the current save's progress.
 
 ## Public website
 
@@ -32,16 +40,22 @@ combinations and empty-rune duplicates remain available through article links
 without duplicating the browsing list. Unnamed database templates are also
 excluded from that list; retained spell links have translated descriptive names.
 
-Two campaign tabs select separate catalogs. The base game retains 1,071 article
-addresses and 1,851 precomputed views per language; Lost in Astral has 1,529
-addresses and 2,489 views per language. Both cover English, Russian and German. Only craftable items offer material
+Two campaign tabs select separate catalogs. The base game has 1,228 article
+addresses and 2,008 precomputed views per language; Lost in Astral has 1,705
+addresses and 2,665 views per language. Both cover English, Russian and German,
+including 36 base-game locations and 56 expansion locations. Authored overview
+art is available for 20 base-game maps and 38 expansion maps; other location
+pages retain their quest links and description. Only craftable items offer material
 and blueprint choices. Fixed story items use their authored name and material;
 NPC costumes without an item name use the localized wearer and garment names.
 Links retain the campaign, language, page and selected version and work with browser
 Back/Forward, including the position in the result list. Illustrations use the
 original models and available male/female costume textures. Static thumbnails
 are framed around the visible pose with space around its extremities. The
-in-game wiki retains live model rotation and custom rune construction.
+in-game wiki retains live model rotation. Both versions include spell and item
+constructors, rune artwork, removable runes and calculated statistics. Website
+drafts are retained when changing language or an item's material. Unnamed
+internal colour/effect modifier records are excluded from the rune browsing list.
 
 The base dataset uses the GOG Evil Islands databases and localized text archives.
 The expansion tab uses the original installed Lost in Astral database and Russian
@@ -49,8 +63,11 @@ text. Shared English/German text is reused from GOG only when its Russian source
 agrees; expansion additions use the reviewed translations in
 `tools/wiki_lia_translations.json`. Matching an internal ID alone is unsafe:
 the expansion reuses some IDs for different content. Original Russian text is
-retained. The footer identifies the source and translation treatment for each
-campaign. All statistics use the 1.6.0 calculations and original armor rule.
+retained. Optional base-game quest descriptions also use the original English,
+Russian and German `.mq` texts. Bundled translations are applied only when the
+source fingerprint matches a known original; edited data-mod text stays intact.
+The footer identifies the source and translation treatment for each
+campaign. All statistics use the 1.7.0 calculations and original armor rule.
 
 Creature equipment links lead to available base material articles. Obsolete
 prototype combinations that the expansion's item builder no longer supports
@@ -103,10 +120,12 @@ and applies a restrictive content security policy to the wiki.
 
 ## In-game data sources
 
-The catalogue is rebuilt when opened from the currently loaded `GameData.db`.
-Opening a different campaign, language, multiplayer database or data-mod profile
-therefore uses that data. There is no bundled item, spell or creature list and
-no download of original assets.
+The active catalogue is built from the installed game data and active data mods.
+Opening the other campaign's tab builds a separate catalogue from that installed
+campaign. Archive, database and rendering caches are captured and restored around
+that synchronous operation; changing wiki tabs does not switch the running game,
+save, network session or selected mod profile. Only installed campaigns are
+available in game. No original assets are downloaded.
 
 | Content | Runtime source |
 |---|---|
@@ -116,10 +135,13 @@ no download of original assets.
 | Blueprint view within an item page | Authored craftable records and component counts |
 | Spell prototypes and authored starting variants | `spells.sdb` prototypes and template tables |
 | Interactive spell variants | `Spells.constr_rune_fits`, `Spells.with_mod`, `Spells.parse` |
+| Interactive item enchantments | `Items` constructor limits and native enchanted-item calculations |
 | Rune properties and compatibility | `spell_modifiers` and the same constructor checks |
 | Creature/NPC variants, statistics, equipment and spells | `monster_prototypes` and `race_models` in `units.udb` |
 | Item models and material textures | `ItemView`, `Items.look` and the existing redress composition |
 | Animated creature models | `Paperdoll` / `EIUnitModel`, using the prototype's appearance |
+| Maps and quest links | `CampaignMap`, map overviews, original quest text and script references |
+| Localized world/reference text | Source-checked `WikiWorldText`, `WikiReferenceText`, `WikiQuestText` |
 | Mechanics examples and active rule | `Items`, `Spells`, `Skills`, `Combat.aim_penalty`, `ai.reg`, current session rules |
 
 Mechanics explanations are maintained prose checked against the combat code;

@@ -553,10 +553,14 @@ vec3 scene_pos(vec2 uv, mat4 inv_proj) {
 }
 // One short-lived expanding ring per 0.8 m cell. Its full radius fits in
 // the 3 x 3 neighbourhood, so seams are continuous with exactly nine taps.
-vec2 rain_rings(vec2 p, float now) {
+vec3 rain_rings(vec2 p, float now, float pixel_width) {
 	vec2 grid = p * 1.25;
 	vec2 base = floor(grid);
 	vec2 sum = vec2(0.0);
+	float crest = 0.0;
+	// Widen only the thin ring edge to its projected pixel footprint. A
+	// camera-distance cutoff erased resolved drops in the raised game view.
+	float width = max(0.075, pixel_width * 0.75);
 	for (int y = -1; y <= 1; y++) {
 		for (int x = -1; x <= 1; x++) {
 			vec2 cell = base + vec2(float(x), float(y));
@@ -566,11 +570,13 @@ vec2 rain_rings(vec2 p, float now) {
 			vec2 delta = grid - cell - (0.2 + h.xy * 0.6);
 			float distance = length(delta);
 			float ring = distance - age * 0.80;
-			float envelope = (1.0 - smoothstep(0.0, 0.075, abs(ring))) * smoothstep(0.02, 0.10, age) * (1.0 - age) * (1.0 - age);
-			sum += delta / max(distance, 0.001) * sin(ring * 41.89) * envelope;
+			float life = smoothstep(0.02, 0.10, age) * (1.0 - age) * (1.0 - age);
+			float envelope = (1.0 - smoothstep(0.0, width, abs(ring))) * life;
+			sum += delta / max(distance, 0.001) * sin(ring * 3.14159 / width) * envelope;
+			crest = max(crest, (1.0 - smoothstep(width * 0.3, width, abs(ring))) * life);
 		}
 	}
-	return sum;
+	return vec3(sum, crest);
 }
 // Mirror uses a reflected geometry view for the selected water level. The
 // lower-cost fallback traces the opaque depth/colour copy (Godot SSR runs
@@ -660,9 +666,14 @@ void fragment() {
 	// including pause, game speed and inactive/LMP-held worlds.
 	float water_time = wave_ticks * 0.055;
 	if (is_lava > 0.5) {
-		float n1 = texture(foam_tex, q * 0.045 + water_time * vec2(0.006, 0.004)).r;
-		float n2 = texture(foam_tex, q * 0.11 - water_time * vec2(0.004, 0.009)).r;
-		float grain = texture(foam_tex, q * 0.48 + vec2(n1, n2) * 0.08).r;
+		// Advect the crust as well as its glow. A fixed fine layer made the
+		// large dark patches read as painted rock even while heat changed.
+		vec2 molten = q - water_time * vec2(0.24, 0.16);
+		vec2 eddy = vec2(texture(foam_tex, molten * 0.04).r,
+			texture(foam_tex, molten * 0.04 + vec2(0.37, 0.61)).r) - 0.5;
+		float n1 = texture(foam_tex, molten * 0.045 + eddy * 0.035).r;
+		float n2 = texture(foam_tex, molten * 0.11 - water_time * vec2(0.003, 0.002)).r;
+		float grain = texture(foam_tex, molten * 0.48 + vec2(n1, n2) * 0.08).r;
 		float heat = smoothstep(0.32, 0.68, n1 * 0.4 + n2 * 0.4 + grain * 0.2);
 		ALBEDO = t * mix(0.08, 0.25, heat);
 		EMISSION = t * mix(0.08, 3.8, heat * heat) * vec3(1.0, 0.75, 0.55)
@@ -682,14 +693,19 @@ void fragment() {
 			sediment = smoothstep(0.22, 0.78, broad * 0.7 + eddy * 0.3);
 			slope *= mix(1.05, 1.9, sediment);
 		}
-		// Raindrops on open water; subpixel rings fade out with distance.
+		// Keep resolved rain rings at every zoom; fade only once the projected
+		// diameter is too small. Derivatives account for tilt and resolution.
 		vec2 rain_slope = vec2(0.0);
+		float rain_crest = 0.0;
 		float rain = ei_surface_fx.z * ei_weather.y;
+		float rain_pixel = max(length(dFdx(q)), length(dFdy(q))) * 1.25;
 		if (rain > 0.001) {
 			float exposed = 1.0 - smoothstep(0.08, 0.40, texture(rain_cover, cells_uv).r - wpos.y);
-			float near = 1.0 - smoothstep(18.0, 45.0, length(VERTEX));
-			if (exposed * near > 0.001) {
-				rain_slope = rain_rings(q, water_time) * rain * exposed * near * 0.28;
+			float resolved = 1.0 - smoothstep(0.25, 0.6, rain_pixel);
+			if (exposed * resolved > 0.001) {
+				vec3 rings = rain_rings(q, water_time, rain_pixel);
+				rain_slope = rings.xy * rain * exposed * resolved * 0.28;
+				rain_crest = rings.z * rain * exposed * resolved * 0.12;
 			}
 		}
 		vec3 wn = normalize(gn + vec3(slope.x + rain_slope.x, 0.0, slope.y + rain_slope.y));
@@ -729,7 +745,7 @@ void fragment() {
 		// own colour always stays.
 		float fres = 0.02 + 0.98 * pow(1.0 - clamp(dot(rn, VIEW), 0.0, 1.0), 5.0);
 		vec3 R = ei_lin(ei_sky);
-		float w = fres + min(length(rain_slope) * 0.6, 0.18);
+		float w = fres + max(min(length(rain_slope) * 0.6, 0.18), rain_crest);
 		if (swamp) { w = max(w, mix(0.03, 0.055, sediment)); }
 		R = water_sky_colour(R, swamp);
 		if (reflections) {

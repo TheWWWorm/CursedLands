@@ -105,8 +105,14 @@ func _compose_pose(dt: float) -> void:
 	var gait := "run" if unit.running else "walk"
 	var code := (model.code_for(gait) & ~0x38000) | (EIUnitModel.ST_NEUTRAL if model.has_neutral() else EIUnitModel.ST_ATTACK)
 	if lower_clip.is_empty() or _lower_code != code:
-		lower_clip = model.pick(code, true, true)
-		if lower_clip.is_empty(): lower_clip = model.action_clip(gait)
+		var cycle_fraction := phase / maxf(model.player.get_animation("ei/"+lower_clip).length,0.01) if not lower_clip.is_empty() else 0.0
+		# Modifiers distinguish the healthy and limping walks. Ignoring them
+		# randomly picked a short injured stride after gait/weapon changes.
+		lower_clip = model.pick(code, true)
+		if lower_clip.is_empty() and code & 0x3fc00000:
+			lower_clip = model.pick(code & ~0x3fc00000, true)
+		if lower_clip.is_empty(): lower_clip = model.resolve(gait)
+		if not lower_clip.is_empty(): phase = cycle_fraction * model.player.get_animation("ei/"+lower_clip).length
 		_lower_code = code
 	if lower_clip.is_empty(): return
 	var walk := model.player.get_animation("ei/"+lower_clip)
@@ -118,7 +124,7 @@ func _compose_pose(dt: float) -> void:
 		base.pos[part] = part.position
 	var e: Dictionary = model._clip_records().get(lower_clip,{})
 	var authored_speed := float(e.get("speed",1.0))
-	var rate := unit._move_speed * 15.0 / maxf(0.01,model.height_k * authored_speed * EIAnim.FPS)
+	var rate := unit._move_speed * 15.0 / (model.height_k * authored_speed * EIAnim.FPS) if authored_speed != 0.0 and model.height_k != 0.0 else 1.0
 	var angle := wrapf(unit.direct_motion.angle()-unit.facing,-PI,PI) if moving else leg_yaw
 	if moving:
 		if reverse and absf(angle) < deg_to_rad(80.0): reverse = false

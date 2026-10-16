@@ -92,6 +92,12 @@ def prepare_campaign(data, images, target_data, campaign, labels, used_images):
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(json.dumps(page, ensure_ascii=False, separators=(',', ':')) + '\n')
         (target_data / lang / 'index.json').write_text(json.dumps(index, ensure_ascii=False, separators=(',', ':')) + '\n')
+        constructors = read(data / lang / 'constructors.json')
+        assert constructors['max_runes'] == 8 and constructors['spells'] and constructors['runes']
+        for rune in constructors['runes'].values():
+            assert rune['title'] and rune.get('image')
+            assert (images / (rune['image'] + '.webp')).is_file()
+        (target_data / lang / 'constructors.json').write_text(json.dumps(constructors, ensure_ascii=False, separators=(',', ':')) + '\n')
         listed = [entry for entry in entries.values() if entry.get('listed', True)]
         spell_titles = [entry['title'] for entry in listed if entry['kind'] == 'spell']
         assert len(spell_titles) == len(set(spell_titles)), (campaign, lang, 'duplicate base spells')
@@ -111,7 +117,7 @@ def prepare(data, images, output, astral_data, astral_images):
     output.mkdir(parents=True, exist_ok=True)
     for file in source.iterdir():
         shutil.copy2(file, output / file.name)
-    report = {'version': '1.6.0', 'languages': {}, 'translation_keys': len(labels['en']),
+    report = {'version': '1.7.0', 'languages': {}, 'translation_keys': len(labels['en']),
               'requires_game_files': False, 'requires_game_engine': False, 'requires_account': False}
     used_images = {}
     report['campaigns'] = {}

@@ -1062,6 +1062,10 @@ func _deploy_parties(z: Dictionary, entrance: int) -> void:
 	var exit: Dictionary = z.exits.get(entrance, {})
 	var rect: Rect2 = exit.get("deploy", Rect2(world.terrain.size_ei() * 0.5, Vector2(4, 4)))
 	var view := deg_to_rad(float(exit.get("view", 0.0)))
+	# Native590700 uses #deployangle for the body quaternion, independently
+	# of #view (the camera). The figure's forward axis is -Y in EI space.
+	if exit.has("deploy_angle"):
+		view = deg_to_rad(float(exit.deploy_angle)) - GameUnit.MODEL_YAW_OFFSET
 	var slot := 0
 	for pid in players:
 		var idx: int = players[pid].index
@@ -3755,7 +3759,7 @@ func steal(u: GameUnit, t: GameUnit) -> void:
 			money += st[1]
 		else:
 			add_item(st[0], st[1])
-			got.append(st[0])
+			got.append(it)
 	if got.is_empty() and money <= 0:
 		u.ack(EIAcks.STEAL_EMPTY)
 		return
@@ -3855,7 +3859,7 @@ func take_loot(u: GameUnit, corpse: GameUnit) -> void:
 			money += st[1]
 		else:
 			add_item(st[0], st[1])
-			got.append(st[0])
+			got.append(it)
 	notify_got(loot_player(u), got, money)
 	if not got.is_empty() or money > 0:
 		SmileFaces.unit(self, u)   # remake option "smile_faces"
@@ -3883,7 +3887,7 @@ func notify_got(player: int, items: Array, money := 0, broken := false) -> void:
 		# already hear about their copy through loot_copy; a second generic
 		# pickup line incorrectly reports the same reward again. Quest items
 		# belong to the shared story list, so every player still hears those.
-		var quest_items := items.filter(func(it): return Items.kind(String(it)) == "quest")
+		var quest_items := items.filter(func(it): return Items.kind(String(Items.parse_stack(String(it))[0])) == "quest")
 		for p: Dictionary in players.values():
 			var idx := int(p.index)
 			var private_bag := not coop.purse_entry(idx).is_empty()
@@ -4706,6 +4710,7 @@ func _relink_heroes() -> void:
 				u.set_meta("hero", m)
 				u.display_name = m.name
 				Combat.sync_natural_armor(u, m)
+		u.refresh_figure()
 
 
 ## Text from the current quest map's .mq archive (random quest zones).

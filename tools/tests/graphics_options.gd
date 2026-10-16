@@ -144,6 +144,12 @@ func localization_and_layout() -> void:
 		await capture(language + "-graphics")
 		panel._show_group(OptionsPanel.REMAKE_GROUP)
 		await capture(language + "-remake")
+		panel._show_group(OptionsPanel.INTERFACE_GROUP)
+		check(row_of("spell_double_tap_self") >= 0,"self-cast setting is reachable: " + language)
+		for word: String in GameData.REMAKE_OPTIONS.spell_double_tap_self:
+			check(language == "en" or RemakeText.t(word) != word,"self-cast label and help translated: " + language)
+		check(panel.text_width(RemakeText.t(GameData.REMAKE_OPTIONS.spell_double_tap_self[0])) <= 260.0,"self-cast label fits: " + language)
+		await capture(language + "-interface")
 		for key: String in ["gfx_water_waves","gfx_depth_of_field","gfx_terrain_cliffs","gfx_weather_mist"]:
 			var words: Array = GameData.REMAKE_OPTIONS[key]
 			check(language == "en" or (RemakeText.t(words[0]) != words[0] and RemakeText.t(words[1]) != words[1]),
@@ -154,11 +160,18 @@ func localization_and_layout() -> void:
 
 
 func presets_and_persistence() -> void:
-	for key: String in ["gfx_waterfalls","gfx_ambient_wildlife","gfx_ambient_particles","gfx_clouds","gfx_cloud_shadows","gfx_cloud_reflections","gfx_depth_of_field","gfx_terrain_cliffs","gfx_weather_mist"]:
+	check(GameData.option("spell_double_tap_self") == 1,"self-cast shortcut defaults on")
+	panel._set_value("spell_double_tap_self",0)
+	panel._accept(); panel.open()
+	check(panel._values.spell_double_tap_self == 0 and GameData.option("spell_double_tap_self") == 0,"disabled self-cast option survives reopen")
+	var saved := ConfigFile.new()
+	check(saved.load(GameData.CONFIG_PATH) == OK and saved.get_value("options","spell_double_tap_self",-1) == 0,"disabled self-cast option persists to settings")
+	for key: String in ["gfx_waterfalls","gfx_ambient_wildlife","gfx_ambient_particles","gfx_clouds","gfx_cloud_shadows","gfx_cloud_reflections","gfx_depth_of_field","gfx_weather_mist"]:
 		check(GameData.option(key)==0 and key in GameData.OPTIONS_APPLIED,"new effect is opt-in and registered: "+key)
 		for tier in GfxDetect.LAST+1:
 			check(int(GfxDetect.tier_values(tier,GfxDetect.base_values({})).get(key,-1))==0,"automatic tier %d leaves %s off"%[tier,key])
 	check(GameData.option("gfx_water_waves") == 0, "new wave setting starts off")
+	check(GameData.option("gfx_terrain_cliffs") == 1 and "gfx_terrain_cliffs" in GameData.OPTIONS_APPLIED, "steep terrain textures default on for enhanced graphics")
 	check("gfx_water_waves" in GameData.OPTIONS_APPLIED, "wave setting is applied by the settings screen")
 	var base := GfxDetect.base_values({})
 	for tier in GfxDetect.LAST + 1:
@@ -213,10 +226,14 @@ func presets_and_persistence() -> void:
 
 
 func _ready() -> void:
-	await frames()
+	await frames(12) # startup's deferred display placement must finish first
 	GameData.options.merge({"show_tutorial": 0, "auto_graphics": 0, "confine_mouse": 0,
-		"gfx_biome_cover": 0, "gfx_water_waves": 0}, true)
-	get_window().size = Vector2i(800, 600)
+		"gfx_biome_cover": 0, "gfx_water_waves": 0, "display_mode":0}, true)
+	GameData._window_gen += 1 # retire the startup resize queued for the main menu
+	GameData.options.resolution = GameData.resolutions().find(Vector2i(800,600))
+	GameData._window_state = []
+	GameData._apply_window()
+	await frames(10)
 	if DisplayServer.get_name() != "headless":
 		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS, true)
 	panel = OptionsPanel.new()

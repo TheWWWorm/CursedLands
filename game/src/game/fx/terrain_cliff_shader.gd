@@ -1,7 +1,7 @@
 extends RefCounted
 ## A bounded subset of R1 terrain_cliff.h / native_shader.h: 40–55 degree
 ## side weights, a vertex facet guard, and symmetric neighbouring tile reads.
-## Uses original plain-rock atlas tiles and the existing padded tile sampler.
+## Uses verified plain natural atlas tiles and the existing padded tile sampler.
 const FUNCTIONS := """
 uniform sampler2D cliff_tiles : filter_nearest, repeat_disable;
 uniform sampler2D cliff_flatness : filter_nearest, repeat_disable;

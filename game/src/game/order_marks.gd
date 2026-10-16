@@ -248,6 +248,8 @@ func _bright_of(base: Material) -> Material:
 			lit.albedo_texture = base.albedo_texture
 		if lit.wound_texture != base.wound_texture:
 			lit.wound_texture = base.wound_texture
+		if Portability.compatibility():
+			lit.set_shader_parameter("unit_stealth", base.get_shader_parameter("unit_stealth"))
 		return lit
 	var sm := base as StandardMaterial3D
 	if sm == null:

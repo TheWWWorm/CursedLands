@@ -31,6 +31,13 @@ func _ready() -> void:
 		if FileAccess.file_exists(destination):
 			written += 1
 			continue
+		if plan[key].kind == "map":
+			var map := WikiPreview.map_image(plan[key])
+			if map == null: missing.append(key)
+			else:
+				map.save_webp(destination,false,.9)
+				written += 1
+			continue
 		if not preview.show_model(plan[key]):
 			missing.append(key)
 			continue

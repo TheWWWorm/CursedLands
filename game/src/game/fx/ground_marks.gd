@@ -205,7 +205,7 @@ func _update(m: Mark) -> int:
 	m.a += m.grow
 	m.b += m.grow
 	var f := float(m.fade - m.life) / float(m.fade)
-	var alpha := (1.0 - maxf(f, 0.0)) * m.alpha0
+	var alpha := _decal_alpha((1.0 - maxf(f, 0.0)) * m.alpha0)
 	if moved:
 		_place(m)
 	if m.decal.modulate.a != alpha:
@@ -321,6 +321,14 @@ func rand_angle() -> float:
 	return float(_rng.randi()) * (TAU / 4294967296.0)
 
 
+## The original blends the dark pigments in display space. Godot decals
+## blend in linear light, where the same table alpha makes black and blood
+## tracks much fainter. Approximate that display-space opacity while keeping
+## the authored footprint size, texture, lifetime and fade endpoints.
+static func _decal_alpha(alpha: float) -> float:
+	return 1.0 - pow(1.0 - clampf(alpha, 0.0, 1.0), 2.2)
+
+
 func _add(m: Mark, tex: Texture2D, list: Array[Mark], cap: int, shown: bool) -> void:
 	if tex == null:
 		return
@@ -332,7 +340,7 @@ func _add(m: Mark, tex: Texture2D, list: Array[Mark], cap: int, shown: bool) -> 
 	d.distance_fade_enabled = true
 	d.distance_fade_begin = FADE_FAR
 	d.distance_fade_length = 15.0
-	d.modulate = Color(1, 1, 1, m.alpha0 * minf(1.0, float(m.life) / float(m.fade)))
+	d.modulate = Color(1, 1, 1, _decal_alpha(m.alpha0 * minf(1.0, float(m.life) / float(m.fade))))
 	d.visible = shown
 	m.decal = d
 	add_child(d)

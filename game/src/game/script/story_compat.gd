@@ -37,6 +37,8 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 		_shelter_escape_watch(ast)
 	if zone == "bz1h":
 		_escape_party(ast)
+	if zone == "gz2h":
+		preload("res://src/game/script/story_revenge.gd").apply(ast)
 	if zone != "cz1h": return
 	# Kel walks to (300.5, 61), but the shipped escape script tests (301, 61).
 	# The ordinary route happens to cross the latter's 0.3 m circle. A route
@@ -285,17 +287,26 @@ static func escape_ready(vm: ScriptVM) -> bool:
 ## The stationary call switch only starts Lift#01 once in the original.
 ## Reuse it at the lower stop so a separated party can call the lift back.
 ## The original up/down threads, timing and moving controls remain in charge.
-static func lift_recall(vm: ScriptVM, nid: int) -> void:
-	if nid != 1369841 or vm.session.state.campaign_id != CampaignProfile.ASTRAL \
-			or vm.world.zone.get("id", "") != "gz1d2": return
-	var w := vm.world
+static func lift_recall_available(w: GameWorld, nid: int) -> bool:
+	if nid != 1369841 or w.session == null or w.session.state.campaign_id != CampaignProfile.ASTRAL \
+			or w.zone.get("id", "") != "gz1d2": return false
 	var lift: Node3D = w.objects.get(2240358)
-	if lift == null or lift.get_meta("ei", {}).get("template", "") != "stbr6": return
-	if not vm.ast.scripts.has("Lift#11") or not vm.ast.scripts.has("Lift#12"): return
-	if vm.instances.any(func(i): return i.sname == "Lift#01" and (not i.killed or not i.frames.is_empty())): return
+	if lift == null or lift.get_meta("ei", {}).get("template", "") != "stbr6": return false
+	# Replica worlds have no script VM. Their cursor follows the replicated
+	# mechanism state; the authority also checks the inspected native scripts.
+	if w.vm:
+		if not w.vm.ast.scripts.has("Lift#11") or not w.vm.ast.scripts.has("Lift#12"): return false
+		if w.vm.instances.any(func(i): return i.sname == "Lift#01" and (not i.killed or not i.frames.is_empty())): return false
+	elif w.authority: return false
 	if int(w.levers.get(338779, {}).get("state", -1)) != 0 \
 			or int(w.levers.get(1357456, {}).get("state", -1)) != 0 \
-			or not is_equal_approx(float(lift.get_meta("ei").position.z), -0.3): return
+			or not is_equal_approx(float(lift.get_meta("ei").position.z), -0.3): return false
+	return true
+
+
+static func lift_recall(vm: ScriptVM, nid: int) -> void:
+	if not lift_recall_available(vm.world, nid): return
+	var w := vm.world
 	var time := w.lever_sys.set_state(338779, 1)
 	vm.session.broadcast({"t":"lever", "nid":338779, "state":1, "time":time})
 
@@ -309,6 +320,8 @@ static func recover(vm: ScriptVM) -> void:
 	_recover_elder_departure(vm)
 	if vm.session.state.campaign_id != CampaignProfile.ASTRAL: return
 	var zone := String(vm.world.zone.get("id", ""))
+	if zone == "gz2h":
+		preload("res://src/game/script/story_revenge.gd").recover(vm)
 	if zone == "gz1h":
 		_recover_terror(vm)
 	if zone == "bz2h":

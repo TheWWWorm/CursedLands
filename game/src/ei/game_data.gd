@@ -96,9 +96,9 @@ const OPTIONS := [
 	["gfx_terrain", 1, 3, 22, 0, 1], ["gfx_wind", 1, 2, 22, 1, 1],
 	["gfx_grass", 1, 2, 22, 2, 1], ["gfx_biome_cover", 1, 2, 22, 3, 0],
 	["gfx_vegetation_interaction", 1, 2, 22, 4, 0], ["gfx_soft_ground", 1, 2, 22, 5, 1],
-	# Opt in until first-use compilation and wider device costs are resolved.
+	# Ground contact remains opt in pending wider device cost measurements.
 	["gfx_ground_contact", 1, 2, 22, 6, 0],
-	["gfx_terrain_cliffs", 1, 2, 22, 7, 0],
+	["gfx_terrain_cliffs", 1, 2, 22, 7, 1],
 	# Lighting and shadows (group 14). Independent effects; DOF is opt in.
 	["gfx_firelight", 1, 2, 14, 0, 1], ["gfx_torch_glow", 1, 2, 14, 1, 1],
 	["gfx_lava_light", 1, 2, 14, 2, 1], ["gfx_foliage_light", 1, 2, 14, 3, 1],
@@ -169,6 +169,7 @@ const OPTIONS := [
 	["confine_mouse", 1, 2, 17, 4, 1],
 	["item_icon_fit", 1, 2, 17, 5, 1], ["ui_active_buttons", 1, 2, 17, 6, 1],
 	["original_rune_layout", 1, 2, 17, 7, 0],
+	["spell_double_tap_self", 1, 2, 17, 8, 1],
 	# Gameplay (group 18).
 	# The network game's unit visibility in single player too (UnitFog);
 	# default on (user request).
@@ -269,6 +270,7 @@ const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "
 ## Labels and tips of the remake's own option rows (texts.res has none).
 const REMAKE_OPTIONS := {
 	"direct_hints": ["Control guide", "Compact shows a small view/cursor shortcut hint. Full guide adds movement keys and crosshair explanations. Off hides the lower guide."],
+	"spell_double_tap_self": ["Double-tap spell key to self-cast", "Press the same spell shortcut twice quickly to cast a compatible friendly spell on yourself. One press selects a target normally. Off: a second press cancels spell selection."],
 	"direct_fov_first": ["First-person FOV", "Vertical field of view in first person."],
 	"direct_fov_third": ["Third-person FOV", "Vertical field of view in third person."],
 	"direct_mouse_first": ["First-person look speed", "Mouse sensitivity in first person. The midpoint is the default speed."],
@@ -373,7 +375,7 @@ const REMAKE_OPTIONS := {
 	"gfx_bloom": ["Bloom", "Glow around bright lights."],
 	"gfx_weather_mist": ["Local water mist", "Thin drifting mist above verified water and swamp surfaces, strongest on misty mornings and after rain. Requires Volumetric fog and the Forward+ renderer."],
 	"gfx_depth_of_field": ["Depth of field", "Softens the distant background at low camera angles. Focus follows the visible scene smoothly; tactical views stay sharp. Requires a compatible Forward+ or Mobile build. Off by default."],
-	"gfx_terrain_cliffs": ["Steep rock textures", "Side-projected textures on verified natural rock cliffs. Requires Terrain detail. Preserves paths, other terrain artwork and geometry. Off by default."],
+	"gfx_terrain_cliffs": ["Steep terrain textures", "Blend side-projected textures onto steep natural rock, grass and moss to reduce stretching. Requires Terrain detail. Preserves flat ground, paths, painted material boundaries and geometry."],
 	"gfx_severed_limbs": ["Severed limbs fly off", "A severed head, arm or leg is cut from the figure and thrown to the ground, where it lies for a while. Off: as the original, the part stays on the body, bloodied."],
 	"display_mode": ["Display mode", "Windowed, fullscreen, or a borderless window covering the screen."],
 	"resolution": ["Resolution", "Window size when windowed; in fullscreen the 3D view is rendered at this size and scaled to the screen (the interface stays sharp)."],
@@ -421,6 +423,7 @@ const REMAKE_OPTIONS := {
 ## screen). "marks" = EnableBloodprints and "footprints" = EnableFootprints
 ## switch the ground marks (GroundMarks).
 const OPTIONS_APPLIED := ["direct_hints", "direct_fov_first", "direct_fov_third", "direct_mouse_first", "direct_mouse_third", "direct_invert_x", "direct_invert_y", "direct_pad_x", "direct_pad_y", "direct_pad_deadzone", "direct_pad_curve", "direct_pad_invert_x", "direct_pad_invert_y",
+	"spell_double_tap_self",
 	"volume_sfx", "volume_stream", "volume_voice", "power_kbd",
 	"graphics_preset",
 	"item_icon_fit", "ui_active_buttons", "original_rune_layout", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion",
@@ -825,9 +828,23 @@ func set_options(values: Dictionary) -> void:
 	options_changed.emit()
 
 
-## Audio buses for the three volume sliders.
+## Movies retain the music slider while the ordinary game buses are muted.
+var _movie_audio_owners := {}
+
+
+func movie_audio_acquire(owner: Node) -> void:
+	_movie_audio_owners[owner.get_instance_id()] = weakref(owner)
+	_apply_audio()
+
+
+func movie_audio_release(owner: Node) -> void:
+	if _movie_audio_owners.erase(owner.get_instance_id()):
+		_apply_audio()
+
+
+## Audio buses for the three volume sliders and isolated movie playback.
 func _setup_buses() -> void:
-	for b in ["SFX", "Music", "Voice"]:
+	for b in ["SFX", "Music", "Voice", "Movie"]:
 		add_bus(b)
 
 
@@ -848,10 +865,14 @@ static func add_bus(bus_name: String) -> int:
 
 
 func _apply_audio() -> void:
-	for pair in [["SFX", "volume_sfx"], ["Music", "volume_stream"], ["Voice", "volume_voice"]]:
+	for id: int in _movie_audio_owners.keys():
+		if _movie_audio_owners[id].get_ref() == null:
+			_movie_audio_owners.erase(id)
+	var movie := not _movie_audio_owners.is_empty()
+	for pair in [["SFX", "volume_sfx"], ["Music", "volume_stream"], ["Voice", "volume_voice"], ["Movie", "volume_stream"]]:
 		var i := AudioServer.get_bus_index(pair[0])
 		var v := option(pair[1]) / 100.0
-		AudioServer.set_bus_mute(i, v <= 0.0)
+		AudioServer.set_bus_mute(i, v <= 0.0 or (movie and pair[0] != "Movie"))
 		AudioServer.set_bus_volume_db(i, linear_to_db(maxf(v, 0.0001)))
 	# "reverse_stereo" (Reverse_Stereo, settings → sound manager):
 	#  006b7700 / 006b92b0 negate the pan of every sound effect

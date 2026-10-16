@@ -49,7 +49,20 @@ lines = ['extends RefCounted', '## Verified plain natural-rock tiles; modified/u
 for digest, row in sorted(identities.items()):
     if any(row['masks']):
         lines += ['\t# '+', '.join(row['profiles'])+(' (ambiguous slots omitted: '+str(sorted(row['uncertain']))+')' if row['uncertain'] else ''), '\t"'+digest+'": "'+row['masks'].hex()+'",']
-lines += ['}', '', '', 'static func masks(image: Image) -> PackedByteArray:',
+lines += ['}', '', '', 'const Natural = preload("res://src/game/fx/terrain_transition_tiles.gd")',
+          '', '', 'static func masks(image: Image) -> PackedByteArray:',
+          '\t# Reuse the full, fingerprinted corner metadata for grassy/mossy slopes.',
+          '\t# Projecting an entire painted transition from the side would move its',
+          '\t# material boundary, so only uniform natural families enter this pass.',
+          '\tvar corners := Natural.corners(image)',
+          '\tif not corners.is_empty():',
+          '\t\tvar result := PackedByteArray(); result.resize(64)',
+          '\t\tfor slot in 64:',
+          '\t\t\tvar family: int = corners[slot * 4]',
+          '\t\t\tvar name: String = Natural.FAMILIES[family] if family < Natural.FAMILIES.size() else ""',
+          '\t\t\tif not (name.begins_with("grass /") or name.begins_with("rock /") or name.begins_with("stone /")) or name.contains("snow"): continue',
+          '\t\t\tif corners.slice(slot * 4, slot * 4 + 4).count(family) == 4: result[slot] = 1',
+          '\t\treturn result',
           '\tif image==null or image.get_size()!=Vector2i(512,512): return PackedByteArray()',
           '\tvar pixels := image',
           '\tif image.is_compressed() or image.get_format()!=Image.FORMAT_RGBA8 or image.has_mipmaps():',

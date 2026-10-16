@@ -49,8 +49,9 @@ wiki_keys = set()
 for table in ('CATEGORIES', 'DAMAGE_TYPES'):
     block = re.search(r'const ' + table + r' := (\[[^\n]+\])', wiki_source)[1]
     wiki_keys.update(json.loads(block))
-block = wiki_source.split('const MECHANICS := {', 1)[1].split('\n}', 1)[0]
-wiki_keys.update(json.loads(m[1]) for m in re.finditer(r':\s*(' + STRING + r')', block))
+for table in ('MECHANICS', 'ITEM_TYPES', 'SPELL_NAMES'):
+    block = wiki_source.split('const ' + table + ' := {', 1)[1].split('\n}', 1)[0]
+    wiki_keys.update(json.loads(m[1]) for m in re.finditer(r':\s*(' + STRING + r')', block))
 for match in re.finditer(r'for field: Array in (\[\[.*?\]\]):', wiki_source):
     wiki_keys.update(row[1] for row in json.loads(match[1]))
 for key in ('At least 20% of each incoming damage type passes through armor.',
@@ -59,7 +60,38 @@ for key in ('At least 20% of each incoming damage type passes through armor.',
 for key in sorted(wiki_keys):
     if key not in entries:
         errors.append(f'Wiki dynamic label missing RU/DE key: {key}')
+world_source = (ROOT / 'game/wiki_world_text.gd').read_text()
+world = json.loads(world_source.split('const TEXTS := ', 1)[1])
+reference_source = (ROOT / 'game/wiki_reference_text.gd').read_text()
+reference = json.loads(reference_source.split('const TEXTS := ', 1)[1])
+native_source = (ROOT / 'game/wiki_quest_text.gd').read_text()
+native_quests = json.loads(native_source.split('const TEXTS := ', 1)[1])
+for key, record in native_quests.items():
+    import hashlib
+    for lang in ('en', 'ru', 'de'):
+        text = record.get(lang, '')
+        if not text or hashlib.sha256(text.encode()).hexdigest() not in record.get('sources', []):
+            errors.append(f'Native wiki quest text or source fingerprint missing: {key}/{lang}')
+        if lang != 'ru' and re.search('[А-Яа-яЁё]', text):
+            errors.append(f'Native wiki quest contains untranslated Russian: {key}/{lang}')
+for key, record in reference.items():
+    if len(record) != 3 or not re.fullmatch('[a-f0-9]{64}', record[0]):
+        errors.append(f'Wiki reference source fingerprint missing: {key}')
+    elif any(re.search('[А-Яа-яЁё]', text) for text in record[1:]):
+        errors.append(f'Wiki reference text contains untranslated Russian: {key}')
+for key, record in world.items():
+    if set(record) != {'en', 'ru', 'de'} or not all(record.values()):
+        errors.append(f'Wiki world text missing language: {key}')
+        continue
+    objective_ids = lambda text: re.findall(r'^#subobj\s+(\d+)', text, re.M)
+    for lang in ('en', 'de'):
+        if re.search('[А-Яа-яЁё]', record[lang]):
+            errors.append(f'Wiki world text contains untranslated Russian: {key}/{lang}')
+        if objective_ids(record[lang]) != objective_ids(record['ru']):
+            errors.append(f'Wiki world objective coverage differs: {key}/{lang}')
 print(f'Translations: {len(entries)} entries; {len(wiki_keys)} dynamic wiki keys; {len(errors)} errors')
+print(f'Wiki world text: {len(world)} entries in EN/RU/DE')
+print(f'Wiki reference text: {len(reference)} source-checked EN/DE entries; RU uses original archives')
 for error in errors:
     print(error)
 sys.exit(bool(errors))

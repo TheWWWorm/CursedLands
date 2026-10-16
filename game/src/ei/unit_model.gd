@@ -134,6 +134,7 @@ render_mode cull_back, ambient_light_disabled, alpha_to_coverage;
 #define EI_FIGURE_LIGHT
 varying vec3 ei_e;
 varying float ei_k;
+instance uniform float unit_stealth = 0.0;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 #ifndef EI_NO_MATERIALS
 uniform sampler2D surface_tex : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
@@ -145,6 +146,14 @@ void vertex() {
 	ei_k = 0.0;
 }
 void fragment() {
+	// Screen-door fading preserves the authored depth-tested head, hair and
+	// skinned geometry on every renderer. Alpha-to-coverage otherwise cancels
+	// GeometryInstance3D.transparency, and GLES ignores that property entirely.
+	if (unit_stealth > 0.0) {
+		ivec2 p = ivec2(FRAGCOORD.xy) % 4;
+		float b[16] = float[16](0.0, 8.0, 2.0, 10.0, 12.0, 4.0, 14.0, 6.0, 3.0, 11.0, 1.0, 9.0, 15.0, 7.0, 13.0, 5.0);
+		if ((b[p.x + p.y * 4] + 0.5) / 16.0 < unit_stealth) { discard; }
+	}
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
 	vec4 t = ei_unit_tex(albedo_tex, UV);
 	if (wound_enabled) { t = ei_unit_wound(t, ei_unit_tex(wound_tex, UV)); }
@@ -259,6 +268,7 @@ var template := ""
 var player: AnimationPlayer
 var weapon_type := ""
 var _current := ""
+var _invisible := false
 var _animation_roots: Array[EIAnimPart] = []
 ## Hidden figures retain their playback clock while deferring pose work.
 ## Pose consumers and showing the figure materialize the current pose first.
@@ -325,6 +335,7 @@ static func create(unit: Dictionary, ui_preview := false, initial_action := true
 	var m := EIUnitModel.new()
 	m.template = tmpl
 	m.name = tmpl
+	m.set_meta("peaceful_gear", bool(unit.get("peaceful_gear", false)) and not ui_preview)
 	m._build(model, unit, proto, race, ui_preview, initial_action)
 	return m
 
@@ -832,6 +843,8 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		var a: Dictionary = item.row if item.table == "armors" else {}
 		if a.is_empty():
 			continue
+		if get_meta("peaceful_gear", false) and a.type == "helm":
+			continue
 		armors.append([a, item.mat])
 	armors.sort_custom(func(x, y):
 		var xi := ARMOR_ORDER.find(x[0].type)
@@ -885,6 +898,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	var weapons: Array = Array(unit.get("weapons", PackedStringArray()))
 	if not unit.has("weapons") and String(proto.get("weapon", "")) != "":
 		weapons = [proto.weapon]
+	if get_meta("peaceful_gear", false): weapons = []
 	for w: String in weapons.slice(0, 1):
 		var item := Items.info(w)
 		var wd: Dictionary = item.row if item.table == "weapons" else {}
@@ -1328,6 +1342,36 @@ func set_head_hidden(hidden: bool) -> void:
 	if is_instance_valid(_welded_head): _welded_head.visible = not hidden and _head_visible
 
 
+## The authoritative buff list owns the effect, including load, reconnect,
+## expiry and outfit/figure rebuilds. Preview models retain their own materials.
+func set_invisible(on: bool) -> void:
+	if _invisible == on: return
+	_invisible = on
+	var amount := 0.5 if on else 0.0
+	for node in find_children("*", "MeshInstance3D", true, false):
+		var mi := node as MeshInstance3D
+		if not Portability.compatibility():
+			mi.set_instance_shader_parameter("unit_stealth", amount)
+			continue
+		# GLES uses an ordinary uniform: own the material before changing it.
+		# Preserve the original and brightened materials used by OrderMarks.
+		for i in range(-1, mi.mesh.get_surface_count() if mi.mesh else 0):
+			var key := "unlit" if i < 0 else "unlit%d" % i
+			var owned := "stealth_owned%d" % (i + 1)
+			var m := mi.material_override if i < 0 else mi.get_surface_override_material(i)
+			if not m is LitMaterial: continue
+			if not mi.has_meta(owned):
+				if mi.has_meta(key): m = mi.get_meta(key)
+				m = m.duplicate()
+				if i < 0: mi.material_override = m
+				else: mi.set_surface_override_material(i, m)
+				if mi.has_meta(key): mi.remove_meta(key)
+				mi.set_meta(owned, true)
+			m.set_shader_parameter("unit_stealth", amount)
+			var original := mi.get_meta(key) as LitMaterial if mi.has_meta(key) else null
+			if original: original.set_shader_parameter("unit_stealth", amount)
+
+
 ## Preserve the visible chest. The local first-person body has a closed
 ## collar instead of a neck or a view-dependent hole through the torso.
 ## Its shadow retains the complete original figure. Restore the original
@@ -1415,6 +1459,7 @@ func _set_first_person_shadows(on: bool) -> void:
 			shadow.material_override = source.material_override
 			for i in source.mesh.get_surface_count(): shadow.set_surface_override_material(i, source.get_surface_override_material(i))
 			shadow.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+			if not Portability.compatibility(): shadow.set_instance_shader_parameter("unit_stealth", 0.5 if _invisible else 0.0)
 			add_child(shadow)
 			var skeleton := source.get_node_or_null(source.skeleton) if not source.skeleton.is_empty() else null
 			if skeleton is Skeleton3D: shadow.skeleton = shadow.get_path_to(skeleton)

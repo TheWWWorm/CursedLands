@@ -1,15 +1,16 @@
+import {mountConstructor} from './constructors.mjs';
 const $ = selector => document.querySelector(selector);
 const SUPPORTED = ['en', 'ru', 'de'];
 const CAMPAIGNS = ['cursed_lands', 'lost_in_astral'];
 const ITEM_TYPES = {
   weapon_sword: ['weapons', 'swords'], weapon_axe: ['weapons', 'axes'], weapon_dagger: ['weapons', 'daggers'],
   weapon_spear: ['weapons', 'spears'], weapon_hammer: ['weapons', 'hammers'], weapon_bow: ['weapons', 'bows'], weapon_crossbow: ['weapons', 'crossbows'],
-  armor_helm: ['armour', 'helmets'], armor_plate: ['armour', 'chestArmour'], armor_leggings: ['armour', 'leggings'],
+  armor_helm: ['armour', 'helmets'], armor_plate: ['armour', 'chestArmour'], armor_leggings: ['armour', 'leggings'], armor_leggins: ['armour', 'leggings'],
   armor_shirt: ['armour', 'shirts'], armor_pants: ['armour', 'trousers'], armor_gloves: ['armour', 'gloves'], armor_boots: ['armour', 'boots'],
   quest: ['otherItems', 'questItems'], wand: ['otherItems', 'wands'], potion: ['otherItems', 'potions'], loot: ['otherItems', 'loot'], other: ['otherItems', 'otherItems']
 };
 const ALLOWED = new Set(['ARTICLE', 'H1', 'H2', 'H3', 'P', 'BR', 'TABLE', 'TBODY', 'TR', 'TH', 'TD', 'A', 'STRONG', 'EM']);
-let lang = 'en', campaign = 'cursed_lands', strings, catalog, entry, page, generation = 0;
+let lang = 'en', campaign = 'cursed_lands', strings, catalog, entry, page, constructors, generation = 0;
 const indexes = new Map(), pages = new Map();
 
 function route() {
@@ -17,7 +18,8 @@ function route() {
   const requested = params.get('lang') || navigator.language.slice(0, 2);
   return {lang: SUPPORTED.includes(requested) ? requested : 'en',
     campaign: CAMPAIGNS.includes(params.get('campaign')) ? params.get('campaign') : 'cursed_lands',
-    key: params.get('page') || 'home', variant: params.get('version') || ''};
+    key: params.get('page') || 'home', variant: params.get('version') || '',
+    spell:params.get('spell') || '', runes:params.has('runes') ? params.get('runes').split(';').filter(Boolean) : null};
 }
 
 function href(key, variant = '', language = lang, game = campaign) {
@@ -28,8 +30,12 @@ function href(key, variant = '', language = lang, game = campaign) {
 }
 
 function navigate(key, variant = '', language = lang) {
-  const url = href(key, variant, language);
-  if (location.pathname + location.search !== url) history.pushState(null, '', url);
+  const url = new URL(href(key, variant, language),location.origin);
+  if (key === route().key) {
+    const current = new URLSearchParams(location.search);
+    for (const name of ['spell','runes']) if (current.has(name)) url.searchParams.set(name,current.get(name));
+  }
+  if (location.href !== url.href) history.pushState(null, '', url);
   load();
 }
 
@@ -133,7 +139,10 @@ function article(html) {
 
 function showVersion(id) {
   const version = page.versions.find(row => row.id === id) || page.versions[0];
-  if (id && id !== version.id) history.replaceState(null, '', href(entry.key, version.id));
+  if (id && id !== version.id) {
+    const url = new URL(location.href); url.searchParams.set('version',version.id);
+    history.replaceState(null, '', url);
+  }
   $('#variant').value = version.id;
   const content = article(version.html);
   content.id = 'article'; content.tabIndex = -1;
@@ -142,12 +151,20 @@ function showVersion(id) {
     img.src = '/wiki/images/' + version.image + '.webp';
     img.alt = version.title; img.width = 280; img.height = 280;
     img.decoding = 'async';
-    caption.textContent = version.representative_image ? strings.imageRepresentative : strings.image;
+    caption.textContent = entry.kind === 'map' ? strings.mapOverview : version.representative_image ? strings.imageRepresentative : strings.image;
+    if (entry.kind === 'map') figure.classList.add('map-overview');
     figure.append(img, caption);
     content.querySelector('h1').after(figure);
   }
   $('#content').replaceChildren(content);
-  $('#spell-note').hidden = entry.kind !== 'spell';
+  $('#spell-note').hidden = true;
+  if (constructors) mountConstructor($('#constructor'), {data:constructors,entry,version,strings,state:route(),onChange:state => {
+    const url=new URL(location.href);
+    for (const key of ['spell','runes']) url.searchParams.delete(key);
+    if (entry.kind === 'item' && state.spell) url.searchParams.set('spell',state.spell);
+    if (state.runes.length || (entry.kind === 'spell' && decodeURIComponent(entry.key).includes('{'))) url.searchParams.set('runes',state.runes.join(';'));
+    history.replaceState(null,'',url);
+  }});
   document.title = version.title + ' · Cursed Lands';
 }
 
@@ -159,6 +176,7 @@ async function load() {
   $('#versions').hidden = true;
   $('#spell-note').hidden = true;
   $('#content').replaceChildren();
+  $('#constructor').hidden = true;
   try {
     const directory = '/wiki/data/' + (campaign === 'lost_in_astral' ? campaign + '/' : '') + lang;
     const index = await json(directory + '/index.json', indexes);
@@ -180,6 +198,8 @@ async function load() {
     const loaded = await json(directory + '/pages/' + entry.file, pages);
     if (token !== generation) return;
     page = loaded;
+    constructors = await json(directory + '/constructors.json', pages);
+    if (token !== generation) return;
     $('#variant').replaceChildren(...page.versions.map(row => new Option(row.title, row.id)));
     $('#versions').hidden = page.versions.length < 2;
     showVersion(target.variant);

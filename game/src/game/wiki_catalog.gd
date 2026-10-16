@@ -5,8 +5,20 @@ extends RefCounted
 ## Pages are generated on demand as well-formed HTML fragments. WikiHtml renders
 ## the same fragments in the game without a platform-specific browser dependency.
 
-const CATEGORIES := ["All pages", "Items", "Spells", "Creatures", "Materials", "Runes", "Game mechanics"]
+const CATEGORIES := ["All pages", "Items", "Spells", "Creatures", "Materials", "Runes", "Maps", "Quests", "Game mechanics"]
 const DAMAGE_TYPES := ["Piercing", "Slashing", "Crushing", "Fire", "Acid", "Lightning", "General"]
+const ITEM_TYPES := {
+	"weapon_sword": "Swords", "weapon_axe": "Axes", "weapon_dagger": "Daggers",
+	"weapon_spear": "Spears", "weapon_hammer": "Hammers", "weapon_bow": "Bows", "weapon_crossbow": "Crossbows",
+	"armor_helm": "Helmets", "armor_plate": "Chest armour", "armor_leggins": "Leggings",
+	"armor_shirt": "Shirts", "armor_pants": "Trousers", "armor_gloves": "Gloves", "armor_boots": "Boots",
+	"quest": "Quest items", "wand": "Wands", "potion": "Potions", "loot": "Trophies and valuables", "other": "Other items",
+}
+const SPELL_NAMES := {
+	"detect_life": "Detect Life", "lichdom": "Lichdom", "stench": "Stench", "possession": "Possession",
+	"shapechange": "Shapechange", "link": "Link", "comprehend": "Comprehension", "charm": "Charm",
+	"campfire": "Campfire", "rick_magic": "Destruction", "curse_magic": "Astral Rift",
+}
 const MECHANICS := {
 	"melee": "Melee and ranged damage",
 	"magic": "Magic and spell construction",
@@ -22,6 +34,13 @@ var _families := {}
 var _spell_codes := {}
 var _creature_names := {}
 var _creature_families := {}
+var _fixed := {}
+var _unlisted := {}
+var _family_names := {}
+var _placeholder_names := {}
+var _campaign: CampaignMap
+var _quests := {}
+var _quest_zones := {}
 
 
 func rebuild() -> void:
@@ -31,6 +50,12 @@ func rebuild() -> void:
 	_spell_codes.clear()
 	_creature_names.clear()
 	_creature_families.clear()
+	_fixed.clear()
+	_unlisted.clear()
+	_family_names.clear()
+	_placeholder_names.clear()
+	_quests.clear()
+	_quest_zones.clear()
 	_add("home", RemakeText.t("Game wiki"), "Game mechanics", "home", "")
 	for key: String in MECHANICS:
 		_add("mechanics/" + key, RemakeText.t(MECHANICS[key]), "Game mechanics", "mechanics", key)
@@ -55,6 +80,7 @@ func rebuild() -> void:
 		if code.is_empty(): continue
 		_spell_codes[code] = true
 		_add_spell(code)
+		if GameData.text("spell " + code).strip_edges().is_empty(): _unlisted["spell/" + code.uri_encode()] = true
 	# Authored templates contribute their required-rune variants. Optional and
 	# repeated runes are explored with the same constructor/parse builder as
 	# the inventory, rather than enumerating an exponential set of strings.
@@ -72,6 +98,7 @@ func rebuild() -> void:
 		var code := String(row.get("code", "")).strip_edges().to_lower()
 		if code.is_empty(): continue
 		_add("rune/" + code.uri_encode(), rune_title(code), "Runes", "rune", code)
+		if not rune_listed(code): _unlisted["rune/" + code.uri_encode()] = true
 	# Include all authored creature/NPC variants, not just those spawned on
 	# the current map. The installed edition owns the display name lookup.
 	var counts := {}
@@ -88,8 +115,142 @@ func rebuild() -> void:
 		if counts[title] > 1:
 			title = RemakeText.t("%s (variant %d)") % [title, _creature_families[_creature_names[value]].find(value) + 1]
 		_add("creature/" + value.uri_encode(), title, "Creatures", "creature", value)
+	_prepare_items()
+	_index_world()
 	ordered.assign(entries.keys())
+	ordered = ordered.filter(func(key: String): return not _unlisted.has(key) and not (entries[key].kind == "spell" and "{" in entries[key].value))
 	ordered.sort_custom(func(a: String, b: String): return String(entries[a].title).naturalnocasecmp_to(entries[b].title) < 0)
+
+
+func _index_world() -> void:
+	_campaign = CampaignMap.load_from(GameData.texts)
+	for zone: Dictionary in _campaign.zones.values():
+		if zone.get("type", "") == "edge" or String(zone.get("mpr", "")).is_empty(): continue
+		var title := WikiWorldText.text("zone " + String(zone.id)).get_slice("\n", 0).strip_edges()
+		if title.is_empty(): continue # Unnamed cutscene and editor locations.
+		_add("map/" + String(zone.id).uri_encode(), title, "Maps", "map", zone.id)
+	var ids := {}
+	for key: String in GameData.texts.entries:
+		if key.begins_with("quest "): ids[key.trim_prefix("quest ")] = true
+	for row: Dictionary in GameData.db.table("quests"): ids[String(row.name).to_lower()] = true
+	for quest: Dictionary in SideQuests.all(): ids[quest.id] = true
+	for id: String in ids:
+		var text := WikiWorldText.text("quest " + id)
+		if text.is_empty(): text = SideQuests.quest_doc(id)
+		var title := text.get_slice("\n", 0).strip_edges()
+		if title.is_empty(): continue # Editor-only rows have no journal article.
+		var optional := SideQuests.get_quest(id)
+		_quests[id] = {"doc":JournalPanel._parse(id, text),"row":GameData.db.find("quests", id),"side":optional}
+		_add("quest/" + id.uri_encode(), title, "Quests", "quest", id)
+		if not optional.is_empty():
+			var zone := _campaign.zone_by_map(optional.mpr)
+			if not zone.is_empty(): _quest_zones.get_or_add(id, []).append(zone.id)
+	# Read only script records. No map, unit, VM or quest is instantiated, and
+	# reward/location associations come from authored q.<zone>.<quest> refs.
+	var seen := {}
+	var pattern := RegEx.create_from_string("(?i)q\\.([a-z0-9_]+)\\.([a-z0-9_]+)")
+	for zone: Dictionary in _campaign.zones.values():
+		var mob := String(zone.get("mob", ""))
+		if mob.is_empty() or seen.has(mob): continue
+		seen[mob] = true
+		var data := GameData.read_file("maps/" + mob + ".mob")
+		for found: RegExMatch in pattern.search_all(_mob_script(data,0,data.size(),"ROOT")):
+			var location := found.get_string(1).to_lower()
+			var quest := found.get_string(2).to_lower()
+			if entries.has("map/"+location.uri_encode()) and _quests.has(quest) and not location in _quest_zones.get_or_add(quest, []):
+				_quest_zones[quest].append(location)
+
+
+static func _mob_script(data: PackedByteArray, start: int, end: int, parent: String) -> String:
+	var reader := EIMob.new()
+	var at := start
+	while at + 8 <= end:
+		var id := data.decode_u32(at)
+		var size := reader._record_size(data, at, end, id, parent)
+		if size < 8 or at + size > end: return ""
+		if id == EIMob.SS_TEXT: return EIMob.decrypt(data, at+8, size-8)
+		if id == EIMob.SS_TEXT_PLAIN: return data.slice(at+8,at+size).get_string_from_ascii()
+		if EIMob.R.has(id):
+			var script := _mob_script(data,at+8,at+size,EIMob.R[id])
+			if not script.is_empty(): return script
+		at += size
+	return ""
+
+
+## Share the public wiki's authored family names and fixed-item rules. Keep
+## incomplete prototype pages linkable without filling ordinary search.
+func _prepare_items() -> void:
+	var owners := {}
+	var worn := {}
+	for creature: Dictionary in GameData.db.table("monster_prototypes"):
+		for spec: String in creature.get("wears", []):
+			var id := Items.plain(Items.canonical_equipment(String(Items.parse_stack(spec.to_lower())[0])))
+			var base := String(Items.info(id).base)
+			var owner := GameUnit.unit_title(String(creature.name).to_lower())
+			if owner and not owner in owners.get_or_add(base, []): owners[base].append(owner)
+			if not id in worn.get_or_add(base, []): worn[base].append(id)
+	var unnamed := 0
+	for key: String in entries:
+		var entry: Dictionary = entries[key]
+		if entry.kind != "item": continue
+		var base := String(entry.value)
+		var name := recipe_name(base)
+		var info := Items.info(base)
+		var craftable := Items.has_blueprint(info.table, info.row) and not name.is_empty() and not "_" in name
+		if not craftable:
+			var choices: Array[String] = []
+			for id: String in _families[base]:
+				if authored_name(id): choices.append(id)
+			if choices.is_empty(): choices.assign(worn.get(base, []))
+			if choices.is_empty(): choices.append(_families[base][0])
+			_families[base] = [choices[0]] as Array[String]
+			_fixed[base] = choices[0]
+			var authored := authored_name(choices[0])
+			if authored: entry.title = authored
+		if "_" in name:
+			unnamed += 1
+			entry.title = RemakeText.t("%s (variant %d)") % [Items.type_text(base), unnamed]
+			_placeholder_names[name] = entry.title
+			for token in RegEx.create_from_string("[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+").search_all(Items.flavor("bp:" + base)):
+				_placeholder_names[token.get_string()] = entry.title
+			_unlisted[key] = true
+		elif name:
+			entry.title = name
+		elif not owners.get(base, []).is_empty() and " special " in base:
+			name = recipe_name(base.replace(" special ", " "))
+			if name and not "_" in name: entry.title = ", ".join(owners[base]) + " · " + name
+		elif entry.title == Items.type_text(base):
+			unnamed += 1
+			entry.title = RemakeText.t("%s (variant %d)") % [entry.title, unnamed]
+			_unlisted[key] = true
+		_family_names[base] = String(entry.title)
+
+
+static func recipe_name(base: String) -> String:
+	return GameData.text("instr " + base.replace(" ", "_")).get_slice("\n", 0).strip_edges()
+
+
+static func authored_name(id: String) -> String:
+	var info := Items.info(id)
+	var prefix: String = {"weapons":"weapon", "armors":"armor", "quick_items":"qitem", "quest_items":"questitem", "loot_items":"litem"}.get(info.table, "")
+	for key: String in ["%s %s %s" % [prefix, String(info.base).replace(" ", "_"), String(info.material).replace(" ", "_")], "%s %s" % [prefix, String(info.base).replace(" ", "_")]]:
+		var title := GameData.text(key).get_slice("\n", 0).strip_edges()
+		if title and not "_" in title: return title
+	return ""
+
+
+static func item_subcategory(id: String) -> String:
+	var info := Items.info(id)
+	if info.table == "armors": return "armor_" + Items.slot(id)
+	if info.table == "weapons":
+		var types := ["sword", "axe", "dagger", "spear", "hammer", "bow", "crossbow"]
+		var type := int(info.row.get("type_id", -1))
+		return "weapon_" + types[type] if type >= 0 and type < types.size() else "other"
+	if info.table == "quest_items": return "quest"
+	if info.table == "loot_items": return "loot"
+	if Items.is_wand(id): return "wand"
+	if info.table == "quick_items": return "potion"
+	return "other"
 
 
 func _add(key: String, title: String, category: String, kind: String, value: String) -> void:
@@ -117,13 +278,18 @@ func _rune_code(spec: String) -> String:
 	return ""
 
 
-func search(query: String, category := "All pages") -> Array[String]:
+func search(query: String, category := "All pages", subcategory := "") -> Array[String]:
 	var words := query.strip_edges().to_lower().split(" ", false)
 	var out: Array[String] = []
 	for key: String in ordered:
 		var entry: Dictionary = entries[key]
 		if category != "All pages" and entry.category != category: continue
-		var haystack := (String(entry.title) + " " + RemakeText.t(entry.category)).to_lower()
+		var subtype := item_subcategory(entry.value) if entry.kind == "item" else ""
+		if subcategory and (entry.kind != "item" or subtype != subcategory): continue
+		var haystack := String(entry.title) + " " + RemakeText.t(entry.category)
+		if subtype: haystack += " " + RemakeText.t(ITEM_TYPES.get(subtype, "Other items"))
+		for id: String in _families.get(entry.value, []): haystack += " " + display_item_title(id)
+		haystack = haystack.to_lower()
 		var matches := true
 		for word: String in words:
 			if not word in haystack:
@@ -147,8 +313,21 @@ func variants_for(key: String) -> Array[String]:
 	var base := String(entries[key].value)
 	out.assign(_families.get(base, [base]))
 	var info := Items.info(base)
-	if Items.has_blueprint(info.table, info.row): out.append("bp:" + base)
+	if not _fixed.has(base) and Items.has_blueprint(info.table, info.row): out.append("bp:" + base)
 	return out
+
+
+func display_item_title(id: String) -> String:
+	if not Items.spell_of(id).is_empty(): return display_item_title(Items.plain(id)) + " · " + spell_title(Items.spell_of(id))
+	if id.begins_with("bp:"): return RemakeText.t("Blueprint: %s") % _family_names.get(id.substr(3), item_title(id.substr(3)))
+	var info := Items.info(id)
+	if _fixed.has(info.base): return _family_names.get(info.base, item_title(id))
+	var title := item_title(id)
+	var generic := Items.type_text(id)
+	if _family_names.has(info.base) and (title == generic or title.begins_with(generic + " · ")):
+		title = _family_names[info.base]
+		if not info.material.is_empty(): title += " · " + item_title(Items.material_unit(info.material))
+	return title
 
 
 static func item_link(id: String, title: String) -> String:
@@ -168,6 +347,9 @@ static func item_title(id: String) -> String:
 	var mat := String(i.material).replace(" ", "_")
 	if i.base == "material":
 		var name := GameData.text("material " + mat).get_slice("\n", 0).strip_edges()
+		if name.is_empty() and mat in ["troll_green2","troll_blue2","tiger_hide2"]:
+			var parent := GameData.text("material " + mat.trim_suffix("2")).get_slice("\n",0).strip_edges()
+			if parent: name = RemakeText.t("%s (variant %d)") % [parent,2]
 		return name if name else RemakeText.t("Material")
 	var prefix: String = {"weapons":"weapon", "armors":"armor", "quick_items":"qitem", "quest_items":"questitem", "loot_items":"litem"}.get(i.table, "")
 	for key: String in ["%s %s %s" % [prefix, base, mat], "%s %s" % [prefix, base]]:
@@ -183,6 +365,9 @@ static func item_title(id: String) -> String:
 			var material := item_title(Items.material_unit(i.material))
 			if not material.to_lower() in special.to_lower(): special += " · " + material
 		return special
+	var recipe := recipe_name(i.base)
+	if recipe and not "_" in recipe:
+		return recipe + (" · " + item_title(Items.material_unit(i.material)) if not i.material.is_empty() else "")
 	var title := Items.type_text(id)
 	if title.is_empty(): title = RemakeText.t("Item")
 	if not i.material.is_empty(): title += " · " + item_title(Items.material_unit(i.material))
@@ -192,7 +377,7 @@ static func item_title(id: String) -> String:
 static func spell_title(spell: String) -> String:
 	var code := spell.get_slice("{", 0)
 	var title := GameData.text("spell " + code).get_slice("\n", 0).strip_edges()
-	if title.is_empty(): title = RemakeText.t("Spell")
+	if title.is_empty(): title = RemakeText.t(SPELL_NAMES.get(code, "Spell"))
 	var mods := Spells.mods_of(spell)
 	if mods.is_empty(): return title
 	var counts := {}
@@ -208,10 +393,18 @@ static func rune_title(code: String) -> String:
 	if title: return title
 	var row := Spells.mod_row(code)
 	var name := String(row.get("name", ""))
+	if code.begins_with("ee"): return RemakeText.t("Scripted power modifier (%s)") % num(row.get("value", 0))
+	if code.begins_with("c") and code.substr(1).is_valid_int(): return RemakeText.t("Scripted target modifier (%s)") % num(row.get("value", 0))
 	# Some unused-but-buildable original runes have an authored name only
 	# in the database. Translate those names through the normal text catalogue.
 	if RemakeText.TEXTS.has(name): return RemakeText.t(name)
 	return RemakeText.t("Rune %d") % (GameData.db.table("spell_modifiers").find(row) + 1)
+
+
+static func rune_listed(code: String) -> bool:
+	# Colour/Effect editor records and unnamed placeholders are not ordinary
+	# obtainable runes. Keep deep links for authored equipment/spell variants.
+	return not GameData.text("modifier " + code).strip_edges().is_empty()
 
 
 func page(key: String, variant := "") -> Dictionary:
@@ -224,7 +417,7 @@ func page(key: String, variant := "") -> Dictionary:
 		"home": body = _home()
 		"item":
 			var choices := variants_for(key)
-			if not variant in choices: variant = choices[0]
+			if not variant in choices and not valid_item_variant(key,variant): variant = choices[0]
 			body = _item(variant)
 			preview = {"kind": "item", "value": variant}
 		"material":
@@ -239,11 +432,143 @@ func page(key: String, variant := "") -> Dictionary:
 		"creature":
 			body = _creature(entry.value)
 			preview = {"kind": "creature", "value": entry.value}
+		"map":
+			body = _map_page(entry.value)
+			var zone := _campaign.zone(entry.value)
+			var texture := String(zone.get("objtex", zone.get("minimap", "")))
+			var dimensions: Vector2i = zone.get("size", Vector2i.ONE)
+			if texture: preview = {"kind":"map","value":texture.to_lower(),"dimensions":[dimensions.x,dimensions.y]}
+		"quest": body = _quest_page(entry.value)
 		"mechanics": body = _mechanics(entry.value)
 	var model := ""
 	if not preview.is_empty():
 		model = '<figure><object type="application/x-cursedlands-model" data="wiki://model/%s/%s"/><figcaption>%s</figcaption></figure>' % [preview.kind, String(preview.value).uri_encode(), esc(RemakeText.t("3D preview"))]
-	return {"html": "<article><h1>%s</h1>%s%s</article>" % [esc(entry.title), model, body], "preview": preview, "variant": variant}
+	var title := display_item_title(variant) if entry.kind == "item" else String(entry.title)
+	var html := "<article><h1>%s</h1>%s%s</article>" % [esc(title), model, body]
+	for internal: String in _placeholder_names: html = html.replace(esc(internal), esc(_placeholder_names[internal]))
+	return {"html": html, "preview": preview_descriptor(preview), "variant": variant}
+
+
+func craftable(key: String) -> bool:
+	return entries.has(key) and entries[key].kind == "item" and not _fixed.has(entries[key].value) and Items.valid_blueprint("bp:" + String(entries[key].value))
+
+
+func valid_item_variant(key: String, id: String) -> bool:
+	if not craftable(key) or not Items.plain(id) in variants_for(key): return false
+	var spell := Items.spell_of(id)
+	return not spell.is_empty() and not add_variant(spell).is_empty() and Items.can_enchant(Items.plain(id),spell)
+
+
+## Plain material variants use the same inventory builder; enchantment is
+## admitted only by its actual type, item-rune, complexity and energy rules.
+func construct_item(key: String, material_item: String, spell := "") -> String:
+	if not craftable(key) or not material_item in variants_for(key) or material_item.begins_with("bp:"): return ""
+	if spell.is_empty(): return material_item
+	var id := material_item + "|" + spell
+	return id if valid_item_variant(key,id) else ""
+
+
+func item_builder_data(id: String) -> Dictionary:
+	var plain := Items.plain(id)
+	return {"kind":Items.kind(plain),"slots":Items.slots(plain),"energy":Items.energy(plain),
+		"raw_price":Items._price(plain),"price":Items.price(plain),"weight":Items.weight(plain),
+		"components":Items.components("bp:" + String(Items.info(plain).base)),"construction_coefficient":float(Items.coef[Items.Deal.CONSTR])}
+
+
+func constructor_data() -> Dictionary:
+	var spells := {}; var runes := {}
+	for key: String in search("", "Spells"):
+		var code := String(entries[key].value)
+		var p := Spells.parse(code).duplicate()
+		p.erase("proto")
+		p.erase("name")
+		p.title = spell_title(code)
+		p.allowed = Array(Spells.parse(code).proto.get("mods",[]))
+		spells[code] = p
+	for key: String in search("", "Runes"):
+		var code := String(entries[key].value)
+		var row := Spells.mod_row(code)
+		runes[code] = {"code":code,"title":rune_title(code),"type":row.get("type",9),"value":row.get("value",0),
+			"mana":row.get("mana",0),"complex":row.get("complex",0),"price":row.get("price",0)}
+	return {"max_runes":Spells.MAX_MODS,"spells":spells,"runes":runes}
+
+
+func _map_page(id: String) -> String:
+	var zone := _campaign.zone(id)
+	var text := WikiWorldText.text("zone " + id)
+	var out := paragraph(text.substr(text.find("\n")+1)) if "\n" in text else ""
+	var allod := WikiWorldText.text("allod " + String(zone.get("allod", ""))).get_slice("\n",0).strip_edges()
+	if allod: out += table_html([RemakeText.t("Property"),RemakeText.t("Value")], [[esc(RemakeText.t("Island")),esc(allod)]])
+	var pending: Array = zone.get("exits", {}).values().map(func(exit: Dictionary): return String(exit.get("to", "")))
+	var visited := {id:true}
+	var routes := []
+	while not pending.is_empty():
+		var destination := String(pending.pop_front())
+		if visited.has(destination): continue
+		visited[destination] = true
+		var key := "map/" + destination.uri_encode()
+		if entries.has(key): routes.append([link(key,entries[key].title)]); continue
+		var next := _campaign.zone(destination)
+		for exit: Dictionary in next.get("exits",{}).values(): pending.append(String(exit.get("to","")))
+	if not routes.is_empty(): out += heading(RemakeText.t("Connected locations")) + table_html([RemakeText.t("Maps")],routes)
+	var quests := []
+	for quest: String in _quest_zones:
+		if id in _quest_zones[quest]: quests.append([link("quest/"+quest.uri_encode(),entries["quest/"+quest.uri_encode()].title)])
+	if not quests.is_empty(): out += heading(RemakeText.t("Quests")) + table_html([RemakeText.t("Quests")],quests)
+	return out
+
+
+func _quest_page(id: String) -> String:
+	var quest: Dictionary = _quests[id]
+	var doc: Dictionary = quest.doc
+	var out := paragraph(doc.text)
+	if not doc.subs.is_empty():
+		out += heading(RemakeText.t("Objectives"))
+		for objective: Dictionary in doc.subs.values():
+			out += paragraph(objective.title)
+	var locations := []
+	for location: String in _quest_zones.get(id,[]):
+		var key := "map/" + location.uri_encode()
+		if entries.has(key): locations.append([link(key,entries[key].title)])
+	if not locations.is_empty(): out += heading(RemakeText.t("Locations")) + table_html([RemakeText.t("Maps")],locations)
+	var source: Dictionary = quest.side if not quest.side.is_empty() else quest.row
+	var reward := []
+	var experience := float(source.get("exp",source.get("experience",0)))
+	if experience > 0: reward.append([esc(RemakeText.t("Experience")),num(experience)])
+	if float(source.get("money",0)) > 0: reward.append([esc(RemakeText.t("Gold")),num(source.money)])
+	if not reward.is_empty():
+		out += heading(RemakeText.t("Authored rewards")) + table_html([RemakeText.t("Property"),RemakeText.t("Value")],reward)
+		out += paragraph(RemakeText.t("These are the authored base rewards. Scripts, choices and game rules can change the final reward."))
+	return out
+
+
+## Select an authored skin for this exact equipment model, including female
+## costumes. A representative material is labelled rather than drawn white.
+static func preview_descriptor(descriptor: Dictionary) -> Dictionary:
+	if descriptor.is_empty() or descriptor.kind != "item": return descriptor
+	var look := Items.look(descriptor.value)
+	if not look.has("layer"): return descriptor
+	for mask: String in ["unhuma", "unhufe"]:
+		if _has_layer(mask, look.layer):
+			if mask == "unhuma": return descriptor
+			var result := descriptor.duplicate()
+			result.merge({"mask":mask,"layer":look.layer,"representative":false})
+			return result
+	var info := Items.info(descriptor.value)
+	for material: Dictionary in Items.materials_for("bp:" + String(info.base)):
+		var candidate := Items.look(String(info.base) + "." + String(material.name).to_lower())
+		if candidate.get("model", "") != look.model: continue
+		for mask: String in ["unhuma", "unhufe"]:
+			var skin := String(candidate.get("layer", ""))
+			if skin and _has_layer(mask, skin):
+				var result := descriptor.duplicate()
+				result.merge({"mask":mask,"layer":skin,"representative":true})
+				return result
+	return {}
+
+
+static func _has_layer(mask: String, layer: String) -> bool:
+	return GameData.redress.has(mask + layer + ".mmp") or GameData.textures.has(layer + ".mmp")
 
 
 func _home() -> String:
@@ -271,6 +596,9 @@ func _item(id: String) -> String:
 		rows.append([esc(RemakeText.t("Base value")), num(Items.price(id))])
 		rows.append([esc(RemakeText.t("Durability")), num(Items.max_durability(id))])
 		rows.append([esc(RemakeText.t("Rune slots")), num(Items.slots(id))])
+		rows.append([esc(RemakeText.t("Charge capacity")), num(Items.energy(id))])
+		var enchantment := Items.spell_of(id)
+		if not enchantment.is_empty(): rows.append([esc(RemakeText.t("Spell")),_spell_link(enchantment)])
 		if not info.mat.is_empty():
 			var material := Items.material_unit(info.material)
 			rows.append([esc(RemakeText.t("Material")), link(item_key(material), item_title(material))])
@@ -291,8 +619,10 @@ func _item(id: String) -> String:
 	if not is_bp and info.table == "armors":
 		out += heading(RemakeText.t("Armor: primary coverage")) + _damage_table(Items.armor_layer(id))
 		out += heading(RemakeText.t("Armor: secondary coverage")) + _damage_table(Items.armor_layer(id, 1))
-	if Items.has_blueprint(info.table, info.row) and not is_bp:
+	if not _fixed.has(info.base) and Items.has_blueprint(info.table, info.row) and not is_bp:
 		out += paragraph(item_link("bp:" + info.base, RemakeText.t("Blueprint and materials")), true)
+		out += table_html([RemakeText.t("Property"),RemakeText.t("Value")], [[esc(RemakeText.t("Components")),num(Items.components("bp:"+info.base))],
+			[esc(RemakeText.t("Construction cost")),num(Items.construct_price("bp:"+info.base,info.material,Items.spell_of(id)))]])
 	if info.table == "weapons":
 		out += paragraph(link("mechanics/melee", RemakeText.t("Melee and ranged damage")), true)
 	out += paragraph(link("mechanics/armor" if info.table == "armors" else "mechanics/crafting", RemakeText.t("How these values work")), true)
@@ -348,7 +678,8 @@ func _rune(code: String) -> String:
 	var out := paragraph(_description("modifier " + code)) + table_html([RemakeText.t("Property"), RemakeText.t("Value")], rows)
 	out += heading(RemakeText.t("Compatible spells"))
 	var spells := []
-	for spell: String in _spell_codes:
+	for key: String in search("", "Spells"):
+		var spell := String(entries[key].value)
 		if rune_fits(spell, code): spells.append([_spell_link(spell)])
 	return out + table_html([RemakeText.t("Spells")], spells)
 

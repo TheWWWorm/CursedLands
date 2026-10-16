@@ -50,7 +50,10 @@ static func point_clear(w: GameWorld, p: Vector3, margin := 0.0) -> bool:
 static func scene_clear(w: GameWorld, p: Vector3, margin: float) -> bool:
 	if not point_clear(w, p, margin): return false
 	if margin > 0.0:
-		for offset: Vector3 in [Vector3(margin,0,0), Vector3(-margin,0,0), Vector3(0,0,margin), Vector3(0,0,-margin)]:
+		# Include diagonals: at a navigation-cell corner a near-plane corner
+		# can touch a fourth wall cell missed by the four axial samples.
+		for offset: Vector3 in [Vector3(margin,0,0), Vector3(-margin,0,0), Vector3(0,0,margin), Vector3(0,0,-margin),
+				Vector3(margin,0,margin), Vector3(margin,0,-margin), Vector3(-margin,0,margin), Vector3(-margin,0,-margin)]:
 			if not point_clear(w, p + offset, margin): return false
 	return true
 

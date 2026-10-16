@@ -1370,11 +1370,9 @@ func magic_fx(ev: Dictionary) -> void:
 		delete(old[code])
 	match code:
 		"invisibility":
-			# Remake-only: the original draws an invisible unit as usual (
-			# flag only matters to game mode 3), so a
-			# player's own invisible units get a faint translucent shimmer.
-			if u.controller >= 0:
-				_shimmer(u, secs)
+			# Figure fading follows replicated buffs, rather than a tween over
+			# whichever meshes happened to exist when this event arrived.
+			pass
 		"lichdom":
 			if not replay:
 				spawn(0x2018, Vector3.ZERO, k, u)
@@ -1390,36 +1388,6 @@ func magic_fx(ev: Dictionary) -> void:
 			if MAGIC_TYPES.has(code):
 				old[code] = spawn(MAGIC_TYPES[code], Vector3.ZERO, k, u, {"secs": secs, "prewarm": 30 if replay else 0})
 				u.set_meta("fx_magic", old)
-
-
-## Remake extra: the unit's meshes pulse between 35 and 55 % transparency for
-## `secs` (GeometryInstance3D.transparency; the materials are left alone).
-func _shimmer(u: GameUnit, secs: float) -> void:
-	var old: Tween = u.get_meta("fx_shimmer") if u.has_meta("fx_shimmer") else null
-	if old and old.is_valid():
-		old.kill()
-	var geos: Array = u.find_children("*", "GeometryInstance3D", true, false)
-	var set_t := func(v: float) -> void:
-		for g in geos:
-			if is_instance_valid(g):
-				g.transparency = v
-	var tw := u.create_tween().set_loops(maxi(1, ceili(secs / 1.6)))
-	tw.tween_method(set_t, 0.35, 0.55, 0.8).set_trans(Tween.TRANS_SINE)
-	tw.tween_method(set_t, 0.55, 0.35, 0.8).set_trans(Tween.TRANS_SINE)
-	tw.finished.connect(func():
-		for g in geos:
-			if is_instance_valid(g):
-				g.transparency = 0.0)
-	u.set_meta("fx_shimmer", tw)
-	var ur: WeakRef = weakref(u)
-	_later(secs, func():
-		var u2 = ur.get_ref()
-		if u2 and u2.get_meta("fx_shimmer", null) == tw:
-			tw.kill()
-			for g in geos:
-				if is_instance_valid(g):
-					g.transparency = 0.0
-			u2.remove_meta("fx_shimmer"))
 
 
 ## A unit's effect end (held weakly: the unit may leave the world first).

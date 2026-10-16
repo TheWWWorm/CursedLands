@@ -386,6 +386,16 @@ func _remember_return(u: GameUnit) -> void:
 
 func _stage(u: GameUnit, point: Vector2, angle: float, instant: bool, waiting := true) -> void:
 	if instant:
+		if vm.world.zone.get("cage", false) and not u.has_meta("hero"):
+			# A triangle mark can fall inside the locked pen, especially when
+			# extra protagonists shift deployment. Keep its outside actors on
+			# their side of the cage; an open door permits normal staging again.
+			var ignored: Array = [u]
+			for other: GameUnit in vm.world.unit_rows():
+				if other != u: ignored.append(other)
+			var path := vm.world.nav.find_path(u.pos, point, ignored, [], 0.0, u.move_class(), true)
+			if path.is_empty() or path[-1].distance_to(point) > 0.25:
+				point = u.pos
 		#  tries placement, then applies the facing and clears
 		# the AI order even when the footprint prevents that placement.
 		vm.world.dialog_place(u, point, angle)

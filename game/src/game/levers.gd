@@ -65,14 +65,20 @@ func figure_t(nid: int) -> float:
 	return float(_morph.get(nid, {}).get("t", 0.0))
 
 
-## Whether a hero may try Use on it: switches, chests, gates and doors alike;
+## Whether a hero may advance it: switches, chests, gates and doors alike;
 ## those whose LEVER_SCIENCE_STATS start with 0 ([0, 0, 0] house doors, cave
 ## doors, bridges, script gates) can never pass and are driven
 ## by scripts only.
 func usable(nid: int) -> bool:
 	if not world.levers.has(nid) or not bool(world.levers[nid].get("enabled", true)):
 		return false
-	var l: Array = world.levers[nid].get("science", DEFAULT_SCIENCE)
+	var lever: Dictionary = world.levers[nid]
+	var states := maxi(1, int(lever.get("states", 2)))
+	if states <= 1 or int(lever.get("cycled", 0)) == 0 and int(lever.get("state", 0)) >= states - 1:
+		# The restored Catacombs lift has a meaningful recall operation even
+		# after its call switch reaches the end of its authored morph states.
+		return preload("res://src/game/script/story_compat.gd").lift_recall_available(world, nid)
+	var l: Array = lever.get("science", DEFAULT_SCIENCE)
 	return l.is_empty() or int(l[0]) != 0
 
 

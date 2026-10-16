@@ -2,6 +2,7 @@ extends Node
 ## Run through --tool with an installed GOG edition and --wiki-output=/directory.
 ## Exports reference articles only; never copies game archives or player data.
 
+var catalog: WikiCatalog
 var family_names := {}
 var unlisted := {}
 var craftable := {}
@@ -27,6 +28,7 @@ func _ready() -> void:
 	if language:
 		assert(language in ["en", "ru", "de"])
 		RemakeText.lang = language
+	WikiReferenceText.apply()
 	# LiA adds alternate material records without separate text entries.
 	# Use the named parent material and a localized variant label.
 	for code: String in ["troll_green2", "troll_blue2", "tiger_hide2"]:
@@ -36,68 +38,18 @@ func _ready() -> void:
 				var lines := original.split("\n", true, 1)
 				GameData._text_cache["material " + code] = RemakeText.t("%s (variant %d)") % [lines[0], 2] + ("\n" + lines[1] if lines.size() > 1 else "")
 	var unnamed_spells := {}
-	var names_path: String = get_script().resource_path.get_base_dir().path_join("wiki_spell_names.json")
-	var spell_names: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(names_path))
 	for row: Dictionary in GameData.db.table("spell_prototypes"):
 		var code := String(row.code).to_lower()
-		if GameData.text("spell " + code).strip_edges().is_empty():
-			unnamed_spells[code] = true
-			assert(spell_names.has(code), "Missing spell translation: " + code)
-			GameData._text_cache["spell " + code] = spell_names[code][RemakeText.lang]
-	var catalog := WikiCatalog.new()
+		if GameData.text("spell " + code).strip_edges().is_empty(): unnamed_spells[code] = true
+	catalog = WikiCatalog.new()
 	catalog.rules = {"armor_formula": 0}
 	catalog.rebuild()
-	var placeholder_names := {}
-	var unnamed := 0
-	var owners := {}
-	var worn_items := {}
-	for creature: Dictionary in GameData.db.table("monster_prototypes"):
-		for spec: String in creature.get("wears", []):
-			var id := Items.plain(Items.canonical_equipment(String(Items.parse_stack(spec.to_lower())[0])))
-			var base := String(Items.info(id).base)
-			var owner := GameUnit.unit_title(String(creature.name).to_lower())
-			if owner and not owner in owners.get_or_add(base, []): owners[base].append(owner)
-			if not id in worn_items.get_or_add(base, []): worn_items[base].append(id)
-	# Family records often have only a type label; their recipe contains the
-	# authored family name, without choosing one particular material.
+	var placeholder_names := catalog._placeholder_names
+	family_names = catalog._family_names
+	unlisted = catalog._unlisted.duplicate()
+	fixed = catalog._fixed
 	for key: String in catalog.entries:
-		var entry: Dictionary = catalog.entries[key]
-		if entry.kind == "item":
-			var base := String(entry.value)
-			var name := recipe_name(base)
-			var info := Items.info(base)
-			craftable[base] = Items.has_blueprint(info.table, info.row) and not name.is_empty() and not "_" in name
-			if not craftable[base]:
-				# Material types alone do not make an item craftable. Fixed story
-				# items use their authored material, never the full builder range.
-				var choices: Array[String] = []
-				for id: String in catalog._families[base]:
-					if authored_name(id): choices.append(id)
-				if choices.is_empty(): choices.assign(worn_items.get(base, []))
-				if choices.is_empty(): choices.append(catalog._families[base][0])
-				catalog._families[base] = [choices[0]] as Array[String]
-				fixed[base] = choices[0]
-				var authored := authored_name(choices[0])
-				if authored: entry.title = authored
-			if "_" in name:
-				unnamed += 1
-				entry.title = RemakeText.t("%s (variant %d)") % [entry.title, unnamed]
-				placeholder_names[name] = entry.title
-				for token in RegEx.create_from_string("[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+").search_all(Items.flavor("bp:" + String(entry.value))):
-					placeholder_names[token.get_string()] = entry.title
-				unlisted[key] = true
-			elif name:
-				entry.title = name
-			elif not owners.get(base, []).is_empty() and " special " in base:
-				# Named NPC costumes have no item text. Pair the actual wearer's
-				# localized name with the corresponding authored garment name.
-				name = recipe_name(base.replace(" special ", " "))
-				if name and not "_" in name: entry.title = ", ".join(owners[base]) + " · " + name
-			elif entry.title == Items.type_text(base):
-				unnamed += 1
-				entry.title = RemakeText.t("%s (variant %d)") % [entry.title, unnamed]
-				unlisted[key] = true
-			family_names[base] = String(entry.title)
+		if catalog.entries[key].kind == "item": craftable[catalog.entries[key].value] = catalog.craftable(key)
 	# Creature equipment can introduce authored rune combinations lazily.
 	# Materialize the transitive reference set before writing the static index.
 	var visited := {}
@@ -119,8 +71,9 @@ func _ready() -> void:
 	catalog.ordered = catalog.ordered.filter(func(key: String): return not unlisted.has(key))
 	var directory := output.path_join(RemakeText.lang)
 	DirAccess.make_dir_recursive_absolute(directory.path_join("pages"))
-	var index := {"language": RemakeText.lang, "version": "1.6.0", "campaign": GameData.campaign_id, "source": "Lost in Astral" if GameData.campaign_id == CampaignProfile.ASTRAL else "GOG", "entries": [], "categories": {}}
+	var index := {"language": RemakeText.lang, "version": "1.7.0", "campaign": GameData.campaign_id, "source": "Lost in Astral" if GameData.campaign_id == CampaignProfile.ASTRAL else "GOG", "entries": [], "categories": {}}
 	var images := {}
+	var page_images := {}
 	var variants := 0
 	for category: String in WikiCatalog.CATEGORIES:
 		index.categories[category] = RemakeText.t(category)
@@ -140,8 +93,8 @@ func _ready() -> void:
 			var html: String = page.html
 			var figure := RegEx.create_from_string("<figure>.*?</figure>")
 			html = figure.sub(html, "", true)
-			# The public edition has precomputed material/blueprint versions.
-			# Interactive rune construction and live models remain in the game.
+			# The public edition uses precomputed material versions and the
+			# same numeric constructor inputs without loading the game engine.
 			html = html.replace(WikiCatalog.paragraph(RemakeText.t("Use the rune selector to explore legal variants. The preview uses the inventory's spell builder; your character and inventory are unchanged.")), "")
 			html = html.replace(WikiCatalog.paragraph(RemakeText.t("Explore the items, spells and creatures in your installed game. Values and variants come from the loaded game data, including active data mods.")), "")
 			if entry.kind == "item" and not craftable[entry.value]:
@@ -157,15 +110,23 @@ func _ready() -> void:
 			if not preview.is_empty():
 				var identity := String(preview.kind) + ":" + String(preview.value)
 				if preview.has("layer"): identity += ":" + preview.mask + ":" + preview.layer
+				if preview.kind == "map": identity += ":" + str(preview.dimensions)
 				if GameData.campaign_id == CampaignProfile.ASTRAL: identity = GameData.campaign_id + ":" + identity
 				image = identity.sha256_text().substr(0, 24)
 				images[image] = preview
-			pages.append({"id": choice, "title": title, "html": html, "image": image, "representative_image": preview.get("representative", false)})
+			var output_page := {"id":choice,"title":title,"html":html,"image":image,"representative_image":preview.get("representative",false)}
+			if image and not page_images.has(key): page_images[key] = image
+			if catalog.craftable(key) and choice and not choice.begins_with("bp:"): output_page.builder = catalog.item_builder_data(choice)
+			pages.append(output_page)
 			if choice: index_entry.search += " " + title
 			variants += 1
 		write_json(directory.path_join("pages").path_join(file), {"key": key, "versions": pages})
 		if index.entries.size() % 100 == 0: await get_tree().process_frame
 	write_json(directory.path_join("index.json"), index)
+	var constructors := catalog.constructor_data()
+	for code: String in constructors.runes: constructors.runes[code].image = page_images.get("rune/"+code.uri_encode(),"")
+	for code: String in constructors.spells: constructors.spells[code].image = page_images.get("spell/"+code.uri_encode(),"")
+	write_json(directory.path_join("constructors.json"),constructors)
 	if plan_path: write_json(plan_path, images)
 	print("PUBLIC_WIKI ", JSON.stringify({"language": RemakeText.lang, "entries": index.entries.size(), "versions": variants, "images": images.size()}))
 	get_tree().quit()
@@ -194,30 +155,11 @@ func public_variants(catalog: WikiCatalog, key: String) -> Array[String]:
 
 
 func item_subcategory(id: String) -> String:
-	var info := Items.info(id)
-	if info.table == "armors": return "armor_" + Items.slot(id)
-	if info.table == "weapons":
-		var types := ["sword", "axe", "dagger", "spear", "hammer", "bow", "crossbow"]
-		var type := int(info.row.get("type_id", -1))
-		return "weapon_" + types[type] if type >= 0 and type < types.size() else "other"
-	if info.table == "quest_items": return "quest"
-	if info.table == "loot_items": return "loot"
-	if Items.is_wand(id): return "wand"
-	if info.table == "quick_items": return "potion"
-	return "other"
+	return WikiCatalog.item_subcategory(id)
 
 
 func public_item_title(id: String) -> String:
-	if id.begins_with("bp:"):
-		return RemakeText.t("Blueprint: %s") % family_names.get(id.substr(3), WikiCatalog.item_title(id.substr(3)))
-	var info := Items.info(id)
-	if fixed.has(info.base) and family_names.has(info.base): return family_names[info.base]
-	var title := WikiCatalog.item_title(id)
-	var generic := Items.type_text(id)
-	if family_names.has(info.base) and (title == generic or title.begins_with(generic + " · ")):
-		title = family_names[info.base]
-		if not info.material.is_empty(): title += " · " + WikiCatalog.item_title(Items.material_unit(info.material))
-	return title
+	return catalog.display_item_title(id)
 
 
 func rename_item_links(html: String) -> String:
@@ -231,34 +173,7 @@ func rename_item_links(html: String) -> String:
 
 
 func public_preview(descriptor: Dictionary) -> Dictionary:
-	if descriptor.is_empty() or descriptor.kind != "item": return descriptor
-	var look := Items.look(descriptor.value)
-	if not look.has("layer"): return descriptor
-	var layer := String(look.layer)
-	for mask: String in ["unhuma", "unhufe"]:
-		if has_layer(mask, layer):
-			return descriptor if mask == "unhuma" else with_skin(descriptor, mask, layer, false)
-	# Some NPC/unique items exist in the builder for multiple materials but
-	# ship with one authored costume. Reuse only that same prototype's skin;
-	# report the representative appearance instead of drawing a white mesh.
-	var info := Items.info(descriptor.value)
-	for material: Dictionary in Items.materials_for("bp:" + String(info.base)):
-		var candidate := Items.look(String(info.base) + "." + String(material.name).to_lower())
-		if candidate.get("model", "") != look.model: continue
-		for mask: String in ["unhuma", "unhufe"]:
-			var skin := String(candidate.get("layer", ""))
-			if skin and has_layer(mask, skin): return with_skin(descriptor, mask, skin, true)
-	return {}
-
-
-func has_layer(mask: String, layer: String) -> bool:
-	return GameData.redress.has(mask + layer + ".mmp") or GameData.textures.has(layer + ".mmp")
-
-
-func with_skin(descriptor: Dictionary, mask: String, layer: String, representative: bool) -> Dictionary:
-	var result := descriptor.duplicate()
-	result.merge({"mask": mask, "layer": layer, "representative": representative})
-	return result
+	return WikiCatalog.preview_descriptor(descriptor)
 
 
 func write_json(path: String, value: Variant) -> void:

@@ -88,8 +88,7 @@ func _ready() -> void:
 	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(_label)
 	_audio = AudioStreamPlayer.new()
-	if AudioServer.get_bus_index("Music") >= 0:
-		_audio.bus = "Music"
+	_audio.bus = "Movie"
 	add_child(_audio)
 	var skip := Button.new()
 	_skip = skip
@@ -233,6 +232,7 @@ func wait_for_peers() -> void:
 
 func stop() -> void:
 	_completion_generation += 1
+	GameData.movie_audio_release(self)
 	if not Portability.threads() and _conv and _conv.is_running():
 		_conv.cancel = true
 		_converters.erase(_name)
@@ -425,9 +425,20 @@ func _show(i: int) -> void:
 
 
 func _pause() -> void:
+	# Silent credits backgrounds share the screen with their own music.
+	# Normal cutscenes own a mute even when another modal already paused it.
+	if not silent and not loop:
+		GameData.movie_audio_acquire(self)
 	if pause_game and not _paused_tree and is_inside_tree() and not get_tree().paused:
 		get_tree().paused = true
 		_paused_tree = true
+
+
+func _exit_tree() -> void:
+	GameData.movie_audio_release(self)
+	if _paused_tree:
+		get_tree().paused = false
+	_paused_tree = false
 
 
 func _unhandled_input(e: InputEvent) -> void:
