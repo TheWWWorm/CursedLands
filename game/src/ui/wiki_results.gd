@@ -25,7 +25,7 @@ func add_item(text: String, kind := "book") -> void:
 		style.set_corner_radius_all(4);style.set_content_margin_all(10)
 		if state=="focus":style.border_color=Color("d8b56b");style.set_border_width_all(2)
 		button.add_theme_stylebox_override(state,style)
-	var icon := TextureRect.new();icon.texture=load("res://icons/wiki/"+(kind if kind in ["item","spell","quest","creature","map","material","rune"] else "book")+".svg");icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;icon.position=Vector2(8,12);icon.size=Vector2(36,40);icon.mouse_filter=Control.MOUSE_FILTER_IGNORE;button.add_child(icon)
+	var icon := TextureRect.new();icon.texture=load("res://icons/wiki/"+(kind if kind in ["character","allod","item","spell","quest","creature","map","material","rune"] else "book")+".svg");icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;icon.position=Vector2(8,12);icon.size=Vector2(36,40);icon.mouse_filter=Control.MOUSE_FILTER_IGNORE;button.add_child(icon)
 	var box := VBoxContainer.new();box.mouse_filter=Control.MOUSE_FILTER_IGNORE;button.add_child(box)
 	box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);box.offset_left=52;box.offset_top=9;box.offset_right=-12;box.offset_bottom=-8
 	var title := Label.new();title.text=text.get_slice("\n",0);title.add_theme_color_override("font_color",Color("eee8d8"));title.add_theme_font_size_override("font_size",16)

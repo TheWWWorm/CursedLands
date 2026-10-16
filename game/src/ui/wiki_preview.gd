@@ -4,10 +4,13 @@ extends Control
 ## creature appearance paths. Never constructs a GameUnit or changes the world.
 
 signal article_requested(key: String)
+signal scene_requested
+var eager_scenes := false
 var _pins: Array = []
 var item: ItemView
 var creature: Paperdoll
 var map_view: TextureRect
+var scene_view: WikiScenePreview
 var _map_pan := Vector2.ZERO
 var _drag := false
 var _turn := 0.0
@@ -57,6 +60,21 @@ func show_model(descriptor: Dictionary) -> bool:
 	_creature_fitted = false
 	_item_fit_size = 0.0
 	if descriptor.is_empty(): return false
+	if descriptor.kind == "scene" and not eager_scenes:
+		var center := CenterContainer.new()
+		add_child(center)
+		center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		var button := Button.new()
+		button.text = RemakeText.t("View location")
+		button.tooltip_text = RemakeText.t("Load the original scenery for this location.")
+		button.pressed.connect(func(): scene_requested.emit())
+		center.add_child(button)
+		return true
+	if descriptor.kind in ["scene", "allod"]:
+		scene_view = WikiScenePreview.new()
+		add_child(scene_view)
+		scene_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		return scene_view.show_descriptor(descriptor)
 	if descriptor.kind == "map":
 		var image := map_image(descriptor)
 		if image == null: return false
@@ -105,6 +123,16 @@ func show_model(descriptor: Dictionary) -> bool:
 	return item._model != null
 
 
+func load_scene() -> bool:
+	# Called inside the panel's WikiSource.read scope; alternate campaigns
+	# keep their own archives. Merely reading prose never loads a terrain.
+	var descriptor := _descriptor.duplicate()
+	eager_scenes = true
+	var available := show_model(descriptor)
+	eager_scenes = false
+	return available
+
+
 func clear() -> void:
 	_drag = false
 	_pins.clear()
@@ -115,12 +143,14 @@ func clear() -> void:
 	item = null
 	creature = null
 	map_view = null
+	scene_view = null
 	_descriptor = {}
 	_item_fit_key.clear()
 
 
 func turn_by(radians: float) -> void:
 	_turn += radians
+	if is_instance_valid(scene_view): scene_view.turn_by(radians)
 	if is_instance_valid(creature): creature.turn_by(radians)
 	if is_instance_valid(item) and is_instance_valid(item._model):
 		var axis := item._axis if item._axis != Vector3.ZERO else Vector3(0, 1, 0)
@@ -145,6 +175,7 @@ func reset_view() -> void:
 
 
 func _resize_preview() -> void:
+	if is_instance_valid(scene_view): scene_view.zoom_to(_zoom)
 	if is_instance_valid(map_view):
 		map_view.size = size / _zoom
 		var bounds := (map_view.size-size)*.5

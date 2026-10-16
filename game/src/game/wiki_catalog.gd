@@ -5,7 +5,7 @@ extends RefCounted
 ## Pages are generated on demand as well-formed HTML fragments. WikiHtml renders
 ## the same fragments in the game without a platform-specific browser dependency.
 
-const CATEGORIES := ["All pages", "Items", "Spells", "Creatures", "Materials", "Runes", "Maps", "Quests", "Game mechanics"]
+const CATEGORIES := ["All pages", "Characters", "Allods", "Maps", "Quests", "Items", "Spells", "Creatures", "Materials", "Runes", "Game mechanics"]
 const DAMAGE_TYPES := ["Piercing", "Slashing", "Crushing", "Fire", "Acid", "Lightning", "General"]
 const ITEM_TYPES := {
 	"weapon_sword": "Swords", "weapon_axe": "Axes", "weapon_dagger": "Daggers",
@@ -43,6 +43,7 @@ var _campaign: CampaignMap
 var _quests := {}
 var _quest_zones := {}
 var knowledge: WikiKnowledge
+var lore: WikiLore
 var _search_text := {}
 
 
@@ -120,16 +121,20 @@ func rebuild() -> void:
 		_add("creature/" + value.uri_encode(), title, "Creatures", "creature", value)
 	_prepare_items()
 	_index_world()
+	lore = WikiLore.new()
+	lore.build(self)
 	ordered.assign(entries.keys())
 	ordered = ordered.filter(func(key: String): return not _unlisted.has(key) and not (entries[key].kind == "spell" and "{" in entries[key].value))
 	ordered.sort_custom(func(a: String, b: String): return String(entries[a].title).naturalnocasecmp_to(entries[b].title) < 0)
 	knowledge = WikiKnowledge.new()
 	knowledge.build(self)
+	lore.connect_pages(knowledge)
 	_search_text.clear()
 	for key: String in ordered:
 		var entry: Dictionary = entries[key]
 		var words: String = String(entry.title) + " " + knowledge.subtitles.get(key, "")
 		for id: String in _families.get(entry.value, []): words += " " + display_item_title(id)
+		words += lore.search_text(key)
 		_search_text[key] = words
 
 
@@ -296,9 +301,13 @@ func search(query: String, category := "All pages", subcategory := "") -> Array[
 		if category != "All pages" and entry.category != category: continue
 		if subcategory and (entry.kind != "item" or item_subcategory(entry.value) != subcategory): continue
 		var rank := WikiSearch.score(query, entry.title, _search_text.get(key, entry.title))
+		for alias: String in entry.get("aliases", []): rank = maxi(rank, WikiSearch.score(query, alias, ""))
 		if rank >= 0: ranked.append({"key":key,"score":rank})
 	if ranked.any(func(row):return row.score>=100):ranked=ranked.filter(func(row):return row.score>=100)
-	ranked.sort_custom(func(a,b): return a.score>b.score if a.score!=b.score else String(entries[a.key].title).naturalnocasecmp_to(entries[b.key].title)<0)
+	ranked.sort_custom(func(a,b):
+		if a.score != b.score: return a.score > b.score
+		if not query.strip_edges().is_empty() and entries[a.key].kind != entries[b.key].kind and "character" in [entries[a.key].kind,entries[b.key].kind]: return entries[a.key].kind == "character"
+		return String(entries[a.key].title).naturalnocasecmp_to(entries[b.key].title) < 0)
 	var out: Array[String] = []
 	for row: Dictionary in ranked: out.append(row.key)
 	return out
@@ -446,13 +455,20 @@ func page(key: String, variant := "") -> Dictionary:
 		"creature":
 			body = _creature(entry.value)
 			preview = {"kind": "creature", "value": entry.value}
+		"character", "allod":
+			body = lore.html(key)
+			preview = lore.model(key)
 		"map":
 			body = _map_page(entry.value)
-			var zone := _campaign.zone(entry.value)
-			var texture := String(zone.get("objtex", zone.get("minimap", "")))
-			var dimensions: Vector2i = zone.get("size", Vector2i.ONE)
-			if texture: preview = {"kind":"map","value":texture.to_lower(),"dimensions":[dimensions.x,dimensions.y]}
-		"quest": body = _quest_page(entry.value)
+			preview = map_preview(entry.value)
+		"quest":
+			body = _quest_page(entry.value)
+			for location: String in _quest_zones.get(entry.value, []):
+				preview = map_preview(location)
+				if not preview.is_empty():
+					preview = preview.duplicate()
+					preview.caption = RemakeText.t("Location: %s") % entries["map/" + location.uri_encode()].title
+					break
 		"mechanics": body = _mechanics(entry.value)
 	body += knowledge.html(key) if knowledge != null else ""
 	var model := ""
@@ -519,8 +535,10 @@ func _map_page(id: String) -> String:
 	var zone := _campaign.zone(id)
 	var text := WikiWorldText.text("zone " + id)
 	var out := paragraph(text.substr(text.find("\n")+1)) if "\n" in text else ""
+	out += lore.html("map/" + id.uri_encode())
 	var allod := WikiWorldText.text("allod " + String(zone.get("allod", ""))).get_slice("\n",0).strip_edges()
-	if allod: out += table_html([RemakeText.t("Property"),RemakeText.t("Value")], [[esc(RemakeText.t("Island")),esc(allod)]])
+	var island_key := WikiLore.allod_key(zone.get("allod", ""))
+	if allod: out += table_html([RemakeText.t("Property"),RemakeText.t("Value")], [[esc(RemakeText.t("Island")),link(island_key,allod) if entries.has(island_key) else esc(allod)]])
 	var pending: Array = zone.get("exits", {}).values().map(func(exit: Dictionary): return String(exit.get("to", "")))
 	var visited := {id:true}
 	var routes := []
@@ -538,6 +556,17 @@ func _map_page(id: String) -> String:
 		if id in _quest_zones[quest]: quests.append([link("quest/"+quest.uri_encode(),entries["quest/"+quest.uri_encode()].title)])
 	if not quests.is_empty(): out += heading(RemakeText.t("Quests")) + table_html([RemakeText.t("Quests")],quests)
 	return out
+
+
+func map_preview(id: String) -> Dictionary:
+	var zone := _campaign.zone(id)
+	var texture := String(zone.get("objtex", zone.get("minimap", "")))
+	var dimensions: Vector2i = zone.get("size", Vector2i.ONE)
+	if texture and GameData.textures.has(texture.to_lower()+".mmp"):
+		return {"kind":"map", "value":texture.to_lower(), "dimensions":[dimensions.x,dimensions.y]}
+	if zone.get("type", "") == "brief" and not String(zone.get("mpr", "")).is_empty():
+		return {"kind":"scene", "value":id, "caption":RemakeText.t("Original location scene")}
+	return {}
 
 
 func _quest_page(id: String) -> String:

@@ -18,6 +18,7 @@ func _ready() -> void:
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	Engine.max_fps = 0
 	var preview := WikiPreview.new()
+	preview.eager_scenes = true
 	preview.position = Vector2(20, 20)
 	preview.size = Vector2(280, 280)
 	add_child(preview)
@@ -42,6 +43,20 @@ func _ready() -> void:
 			missing.append(key)
 			continue
 		var descriptor: Dictionary = plan[key]
+		if descriptor.kind in ["scene", "allod"]:
+			preview.scene_view.apply_reference_lighting()
+			preview.scene_view.stretch = false
+			preview.scene_view.viewport.size = Vector2i(960,720)
+			preview.scene_view.zoom_to(1.0)
+			preview.scene_view.viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+			for frame in 8: await get_tree().process_frame
+			await RenderingServer.frame_post_draw
+			var scene_image := preview.scene_view.viewport.get_texture().get_image()
+			if scene_image.is_empty() or scene_image.is_invisible(): missing.append(key)
+			elif scene_image.save_webp(destination,false,.88) == OK: written += 1
+			else: missing.append(key)
+			preview.clear()
+			continue
 		if descriptor.has("layer"):
 			var texture := EIUnitModel._compose(descriptor.mask, [descriptor.layer] as Array[String])
 			if texture == null:
