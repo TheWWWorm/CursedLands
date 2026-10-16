@@ -1,7 +1,7 @@
 # Expedition economy and interaction decisions
 
-Research and implementation: 16 October 2026. These are adaptations for an
-18-wave solo expedition, not a claim to reproduce another game's current rules.
+Research and implementation: 16 October 2026. These are adaptations for a
+solo expedition (initially 18 waves, now 30), not a claim to reproduce another game's current rules.
 
 ## References
 
@@ -25,11 +25,11 @@ Its older five-interest cap is not used as a current rules reference.
 
 | Decision | Expedition behavior | Purpose |
 | --- | --- | --- |
-| Economy | 5 bounty + 1 victory + 0–3 interest + 0–2 win streak | Saving has a visible return; buying immediate strength protects lives and streaks. |
+| Economy | 5/7/9 regional bounty + 1 victory + 0–3 interest + 0–2 win streak | Saving has a visible return; buying immediate strength protects lives and streaks. |
 | Interest | Snapshot at battle start; 1 per 10 saved, cap 3 | Clear thresholds, no mid-settlement manipulation. |
 | Streak | +1 from third win, +2 from sixth; defeat resets | Modest reward for a stable formation without unlimited snowballing. |
 | Losses | No income or experience for a retry | A repeatable PvE encounter cannot become a farming loop. |
-| Training | 5 gold buys up to 3 XP and one earlier slot; cap 7 | Gives gold an army-size sink alongside recruits and shop quality. Free wave XP stays. |
+| Training | 5 gold buys up to 3 XP and one earlier slot; cap 9 | Gives gold an army-size sink alongside recruits and shop quality. Free wave XP stays. |
 | Selling | Full refund at one star; partial, capped refund for evolved forms | Early exploration is affordable; merging and reselling never yields profit. |
 | Rank | 1–3 stars on field, reserves and offers | One meaning across every surface, not a second rarity ladder. |
 | Information | Hover for native attack, defense, armor types and recipe | Supports composition decisions without a permanently open sidebar. |
@@ -51,3 +51,10 @@ Seeded policy runs compare spending, saving, early training, rigid melee and a
 melee opening that adds magic later. These are small deterministic design samples,
 not estimates of human win rates. Results and limitations are recorded in
 [the expansion validation](../validation/arena-expansion-2026-10-16.json).
+
+The longer run adds staged Ingos and Suslanger recruits, regional bounty growth,
+nine army slots, nine camps and stronger native pact guests. Its current
+[winter validation](../validation/arena-winter-2026-10-16.json) records new policy
+runs against those rules. Earlier policy results apply only to their recorded
+revision; a frontline-first policy still recruits later casters and is not a
+test of an exclusively melee army.

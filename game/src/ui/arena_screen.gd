@@ -71,7 +71,7 @@ func _ready() -> void:
 	_subtitle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_button(heading, RemakeText.t("PvE expedition"), func():
 		if get_parent().has_method("open_arena_pve"): get_parent().open_arena_pve(),
-		RemakeText.t("Build an army, evolve your creatures and survive eighteen waves."), GOLD)
+		RemakeText.t("Recruit creatures from Gipath, Ingos and Suslanger. Survive thirty battles."), GOLD)
 	_button(heading, RemakeText.t("Main menu"), func(): exit_requested.emit(), RemakeText.t("Leave the arena and return to the main menu."))
 	var body := HBoxContainer.new()
 	body.add_theme_constant_override("separation", 14)

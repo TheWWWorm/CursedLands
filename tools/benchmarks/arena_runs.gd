@@ -31,7 +31,7 @@ func _ready() -> void:
 		printerr("Original expedition content missing")
 		get_tree().quit(1)
 		return
-	for key in ["arena_rules", "arena_run", "arena_match", "arena_pve_match", "arena_terrain", "unit"]:
+	for key in ["arena_rules", "arena_run", "arena_match", "arena_pve_match", "arena_terrain", "arena_winter_terrain", "unit"]:
 		source_hashes[key] = FileAccess.get_sha256("res://src/game/%s.gd" % key)
 	var native_hash := hash(GameData.db.tables)
 	run = ArenaRun.new()
@@ -96,16 +96,17 @@ func shop_turn() -> void:
 		# Save between waves so this policy actually exercises the investment.
 		if run.gold < run.shop_upgrade_cost() + 4: return
 		run.upgrade_shop()
-	if invest_training and run.capacity() < 7 and run.army.size() > run.capacity() and run.gold >= ArenaRules.TRAINING_COST + 4:
+	if invest_training and run.capacity() < ArenaRules.MAX_ARMY and run.army.size() > run.capacity() and run.gold >= ArenaRules.TRAINING_COST + 4:
 		run.train();run.arrange()
 	var reserve := bank_target if run.wave >= 3 and run.wave <= 13 and run.lives >= 2 else 0
 	var refreshes := 0
 	for step in 40:
 		if run.bench_count() >= run.bench_limit():
-			# Ordinary decisions can be imperfect: recover one stale unmerged
-			# copy only when its family has no matching companion on the bench.
-			var removable := run.army.filter(func(u): return not u.deployed and u.family >= 0 and u.rank == 0 and run.copies(u).size() == 1)
-			if not removable.is_empty() and run.gold >= 3: run.sell(removable[0].uid)
+			# Make room by exchanging the weakest reserve. A full bench must
+			# not trap the policy in obsolete final forms after a new region.
+			var removable := run.army.filter(func(u): return not u.deployed)
+			removable.sort_custom(func(a,b): return int(GameData.db.find("monster_prototypes", a.prototype).base_level) < int(GameData.db.find("monster_prototypes", b.prototype).base_level))
+			if not removable.is_empty(): run.sell(removable[0].uid)
 			else: break
 		var selected := -1
 		var best := -INF
@@ -116,7 +117,7 @@ func shop_turn() -> void:
 			var rank := int(run.shop[i].get("rank", 0))
 			var owned := run.army.filter(func(u): return u.family == family and u.rank == rank).size()
 			var affinity := run.army.filter(func(u): return u.family == family).size()
-			var preferred: Array = ArenaRules.STARTERS[run.starter].families
+			var preferred: Array = [[0, 1, 3], [0, 2, 4], [1, 3, 5]][run.starter]
 			if policy in ["melee", "adaptive"]: preferred = [0, 1, 2]
 			if policy == "adaptive" and run.wave >= 10: preferred = [0, 1, 2, 4, 5]
 			elif policy == "ranged": preferred = [3, 4, 5]
@@ -127,6 +128,19 @@ func shop_turn() -> void:
 			# Buy one melee family if absent; it competes with another evolution.
 			if run.pact == "hunt" and family in [0, 2] and not run.army.any(func(u): return int(u.family) in [0, 2]): score += 14
 			if policy == "adaptive" and run.wave >= 10 and family in [4,5] and run.army.filter(func(u): return u.family in [4,5]).size() < 3: score += 18
+			if family >= 6:
+				var ranged: bool = ArenaRules.FAMILIES[family].role != "Melee"
+				if policy == "melee": score += -25 if ranged else 18
+				elif policy == "ranged": score += 18 if ranged else -10
+				else: score += 16
+			if run.wave >= 10:
+				var level := int(GameData.db.find("monster_prototypes", ArenaRules.prototype(family,rank)).base_level)
+				score += level * 2
+				# Once the field is full, prefer upgrades or a stronger replacement.
+				var lowest := 100
+				for u: Dictionary in run.army:
+					if u.deployed: lowest = mini(lowest, int(GameData.db.find("monster_prototypes", u.prototype).base_level))
+				if run.deployed_count() >= run.capacity() and level < lowest and owned == 0: score -= 60
 			if policy == "novice": score = 1 # Buy the first affordable offer.
 			if run.army.size() < run.capacity(): score += 10
 			if score > best:

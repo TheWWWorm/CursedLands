@@ -23,6 +23,7 @@ var damage := [0.0, 0.0]
 var _world_parent: Node
 var _previous_speed := 1.0
 var speed := 1.0
+var _death_marks: Array[Dictionary] = []
 
 
 func _ready() -> void:
@@ -40,6 +41,7 @@ func create_world(parent: Node) -> void:
 
 func _rebuild_world() -> void:
 	world_replacing.emit()
+	_death_marks.clear()
 	if is_instance_valid(world):
 		world.session = null
 		world.get_parent().remove_child(world)
@@ -68,6 +70,9 @@ func _rebuild_world() -> void:
 	phase = Phase.DEPLOY
 	for placement: Dictionary in formation:
 		_spawn(placement)
+	if DisplayServer.get_name() != "headless":
+		GroundMarks.of(world).prepare_footprints()
+		world.unit_died.connect(_queue_death_mark)
 	changed.emit()
 
 
@@ -223,6 +228,7 @@ func rematch() -> void:
 
 
 func _process(_dt: float) -> void:
+	_update_death_marks(_dt)
 	if phase != Phase.FIGHT or world == null: return
 	var blue := team_count(0, true)
 	var red := team_count(1, true)
@@ -230,6 +236,7 @@ func _process(_dt: float) -> void:
 	winner = 0 if blue > 0 and red == 0 else 1 if red > 0 and blue == 0 else -1
 	phase = Phase.FINISHED
 	world.process_mode = Node.PROCESS_MODE_DISABLED
+	if is_instance_valid(world.ground_marks): world.ground_marks.process_mode = Node.PROCESS_MODE_ALWAYS
 	Engine.time_scale = _previous_speed
 	changed.emit()
 	finished.emit(winner)
@@ -255,9 +262,30 @@ func broadcast(event: Dictionary) -> void:
 			SpellFx.teleport_result(world, event)
 		elif kind in ParticleFx.EVENTS:
 			ParticleFx.of(world).on_event(event)
+		if kind == "blood": GroundMarks.of(world).hit(event)
 	visual_event.emit(event)
 
 
 func _exit_tree() -> void:
 	Engine.time_scale = _previous_speed
 	if is_instance_valid(world): world.session = null
+
+
+func _queue_death_mark(unit: GameUnit, _killer: GameUnit) -> void:
+	if not world.presentation: return
+	# The campaign sends corpse pools only to a controlled party's observers.
+	# Arena spectators have no controlled party; retain the native death delay
+	# and pool renderer locally, including the final finishing animation.
+	_death_marks.append({"unit": weakref(unit), "remaining": maxf(0, unit._pool_left) * GameUnit.TICK})
+
+
+func _update_death_marks(dt: float) -> void:
+	if phase == Phase.PAUSED: return
+	for i in range(_death_marks.size() - 1, -1, -1):
+		var mark: Dictionary = _death_marks[i]
+		mark.remaining -= dt
+		if mark.remaining > 0: continue
+		var unit := (mark.unit as WeakRef).get_ref() as GameUnit
+		if is_instance_valid(unit) and unit.dead and unit.world == world and world.presentation:
+			GroundMarks.of(world).pool(unit)
+		_death_marks.remove_at(i)

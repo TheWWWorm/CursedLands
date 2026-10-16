@@ -1,4 +1,5 @@
 extends Node
+const Fixture = preload("arena_fixture.gd")
 ## Rendered regression for real viewport scaling, body picking and combat feedback.
 ## Run with an X/Wayland display at least 5113x2856; saves per-state PNGs.
 
@@ -88,10 +89,11 @@ func _ready() -> void:
 		var scale := maxf(1, minf(float(spec[1].x) / 1280, float(spec[1].y) / 800))
 		check(is_equal_approx(screen._ui_scale, scale), tag + " coherent HUD scale")
 		bounded(screen._landing_start, tag + " landing action")
-		for button: Button in screen._starter_buttons: bounded(button, tag + " starter choice")
+		bounded(screen._landing_panel, tag + " expedition setup")
 		if spec[1].x >= 3840: await shot(tag + "-landing")
 		screen._seed_input.text = "6519"
-		screen._begin(1)
+		screen._begin()
+		Fixture.buy_company(screen.run, 1)
 		screen.run.auto_save = false
 		await frames()
 		for control in [screen._menu, screen._round_panel, screen._start, screen._quality, screen._bench_bar]:

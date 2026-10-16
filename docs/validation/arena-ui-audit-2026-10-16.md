@@ -1,6 +1,6 @@
 # Expedition interface audit and revision
 
-Scope: every control and overlay in Trials of Gipath, plus its shared battlefield
+Scope: every control and overlay in Trials of the Allods, plus its shared battlefield
 picking and battle feedback. Inline review by the implementing agent, using the
 game-design, Godot UI Builder and Impeccable workflows; no delegated review.
 Disposition: ready for the local desktop preview. The balance limitation below
@@ -15,9 +15,9 @@ small-window usability review. Ratings of a concept are not runtime acceptance.
 | Element | Decision | Implemented treatment / acceptance |
 | --- | --- | --- |
 | Overall HUD and type | Rework | One logical canvas scales fonts, targets, models, spacing and frames together. Field remains full resolution. Body text uses a readable sans serif, with native serif headings. |
-| Landing title and introduction | Keep, scale | Clear company choice before entering the run; no tiny upper-left block at high resolution. |
-| Starter choices | Keep, scale | Three labelled companies, roles, selected state and three live models; localized descriptions remain readable. |
-| Difficulty and seed | Keep | Secondary controls below starter choices; difficulty unlocks remain explicit and seed remains optional. |
+| Landing title and introduction | Rework | Centered setup, 16 starting gold, optional seed/difficulty and Begin. Empty army is explicit. |
+| Starter choices | Remove | No free creatures. All six opening families appear in the first shop. |
+| Difficulty and seed | Keep | Secondary controls in the setup panel; difficulty unlocks remain explicit and seed remains optional. |
 | Begin / resume / replace-run confirmation | Rework confirmation | Primary action stays visible. Replace-run confirmation uses the same framed modal as the rest of the mode. |
 | Recruitment shelf | Keep, refine | Unboxed native models and prices preserve the battlefield. Full names appear on hover/focus and in the hover inspector. Locked and recruited states remain distinct. |
 | Copy progress and evolution | Replace manual control | Show matching-copy progress; combine automatically from wave 1, including chained upgrades. Details explain and preview the next original form. No disabled evolution button or wave gate. |
@@ -43,12 +43,26 @@ small-window usability review. Ratings of a concept are not runtime acceptance.
 | Camp choices | Keep, reflow | Intermittent two/three-choice panels; localized text, native models and actions fit. Bench and field inspection are inactive during the decision. |
 | Error / action feedback | Keep, contextualize | One restrained line for actionable errors. No repeated placement or merge announcements; hidden during results. |
 | Tooltip infrastructure | Replace | One scaled, wrapped, viewport-clamped control handles button help. Creature details use the hover rail. A 350 ms delay prevents immediate obstruction. |
-| Courtyard, ruins and shadows | Keep | Existing textured 3D field and corrected orthographic shadows remain. No new decorative panel competes with the field. |
+| Courtyard, ruins and shadows | Rework for winter | Native Ingos snow and winter scenery; courtyard art shares the native terrain surface so trails, footprints and blood remain visible. Orthographic shadows remain. |
+| Evolution result | Add | Brief queued before/after models, stars, HP/attack changes, sound and creature highlight; click-through and cleared on undo/sale/battle. |
+| Regional recruitment | Add to existing surfaces | Arrival families in the result and recruitment dialog; no permanent extra HUD strip. |
 
 ## Verification and findings
 
-The [current expansion record](arena-expansion-2026-10-16.json) covers income, training, hover/sell interactions, preview bounds, stable icons and delayed results. Its rendered cases cover EN/RU at 1280×800, DE at 1024×768 and EN at 3840×2160. The earlier [usability record](arena-usability-2026-10-16.json) contains source/log hashes,
-checks, captures and current balance samples. Functional checks exercise actual
+The [winter validation](arena-winter-2026-10-16.json) supersedes the earlier
+opening and battlefield evidence: empty start, stronger regional recruits,
+readable evolution feedback and actual snow/blood rendering. Earlier captures
+below remain historical references.
+
+Current captures: [snow tracks and blood](../screenshots/arena-winter-en-trails-blood.png),
+[evolution](../screenshots/arena-winter-en-evolution.png),
+[later recruits](../screenshots/arena-winter-en-late-roster.png),
+[4K HUD](../screenshots/arena-winter-en-4k-empty.png),
+[Russian recruitment](../screenshots/arena-winter-ru-market.png),
+and [German late camp](../screenshots/arena-winter-de-late-camp.png).
+
+The [earlier expansion record](arena-expansion-2026-10-16.json) covers income, training, hover/sell interactions, preview bounds, stable icons and delayed results. Its rendered cases cover EN/RU at 1280×800, DE at 1024×768 and EN at 3840×2160. The earlier [usability record](arena-usability-2026-10-16.json) contains source/log hashes,
+checks, captures and historical balance samples. Functional checks exercise actual
 pointer routing, visible bat bounds, both return paths, shop improvements, native
 hit events, modal focus and pause behavior. Rendered cases include 1024×768 RU/DE,
 1280×720/800, 1920×1080, 2560×1440, 3840×2160 EN/RU/DE and 5113×2856 EN.
@@ -78,9 +92,10 @@ not covered. Dense combat can still overlap health labels, as in the native game
 The original low-polygon models and textures remain deliberately visible.
 
 Automated purchasing policies are not human win rates. Current small cohorts
-still expose a harder final encounter for rigid melee purchasing; the shop
-upgrade feature does not justify claiming equal build balance. See the current
-validation data rather than the historical progression clear rates.
+show that a frontline-first opening survives more consistently than the preset
+affinities used by the comparison policy. Both buy late casters; neither is a
+pure-melee test. Native power gaps and regional transitions still need human
+playtesting. See the winter validation rather than historical clear rates.
 
 Reviewed captures: [hover and HP](../screenshots/arena-usability-en-hover.png), [menu](../screenshots/arena-usability-en-menu.png), [shop improvements](../screenshots/arena-usability-en-shop.png), [native damage](../screenshots/arena-usability-en-hit.png), [victory](../screenshots/arena-usability-en-victory.png), [German guide](../screenshots/arena-usability-de-guide.png).
 
@@ -107,7 +122,7 @@ The updated design and validation supersede the earlier selection/selling and
 flat-income behavior. Existing lighting, textured court, native damage numbers,
 resolution scaling, modal focus and automatic evolution remain.
 
-Current captures: [selection and sell destination](../screenshots/arena-expansion-en-selection.png),
+Earlier captures: [selection and sell destination](../screenshots/arena-expansion-en-selection.png),
 [income and victory](../screenshots/arena-expansion-en-victory.png),
 [Russian training](../screenshots/arena-expansion-ru-training.png),
 [German expanded reserves](../screenshots/arena-expansion-de-expanded.png),

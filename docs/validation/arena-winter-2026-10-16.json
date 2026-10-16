@@ -1,0 +1,354 @@
+{
+  "date": "2026-10-16",
+  "scope": "Private arena worktree / local Linux preview; no published release, tag or hosted artifacts changed.",
+  "base_commit": "0399a692",
+  "source_sha256": {
+    "game/src/ei/remake_text.gd": "4adb6f9f1faebd3c6b90fd3435b3df808c851dcf37baeed67a823511af6be9f6",
+    "game/src/game/arena_rules.gd": "6d845c6a0eb7cb4c05a35e0a7e47f19b9f7afbb87e885753e52d46c239798a51",
+    "game/src/game/arena_run.gd": "eeab6603bcb8f50199b73bfda03e5b844b4d6f0209abb900e197cc648dbddd3e",
+    "game/src/game/arena_match.gd": "ac80471fe7c548d3df941927f2d870ff4fd8722241774c7c075c2ed228666f2e",
+    "game/src/game/arena_pve_match.gd": "089da5e4e2f2a828775c9ee2de53587ebc76f55850ab78b49d26fded3d33a2c7",
+    "game/src/game/arena_terrain.gd": "25da5291fae3d74553293151ff7e503805516d9058b3c08020359d1309e202ab",
+    "game/src/game/arena_winter_terrain.gd": "182a4cf2c54d4f56387b4435839651881f117e35d92184340227261dc5a2514b",
+    "game/src/ui/arena_pve_screen.gd": "25ab39e178ea6004a7f1ea25299d200c11e5352ddb601879d7835f7bc8748e85",
+    "game/src/ui/arena_pve_field.gd": "362140a2d8808b6ea70141e33c27154680b0adee829c7bf19179a823da616198",
+    "game/src/ui/arena_evolution_notice.gd": "4514057a00876b0085b3a663e21443151ccf2e275faebc1cd35c908ae6ed65bb",
+    "game/src/game/unit.gd": "5a0a3377a184951e419b749444e1b6a17e335399674cca84a68b310bb49e8151",
+    "tools/tests/arena_long_run.gd": "5af169a39460ff03cd299e16ff8a9cbaf5531a86843e4749b549e6c14ce29ffe",
+    "tools/tests/arena_recruitment.gd": "f302c0fe08a6ef7ede73a8da37b672d81da80db0491cca917a1fccbab041e3fa",
+    "tools/tests/arena_winter_ui.gd": "faaeabfc0ebe97b6ecb82af7cbe15c127e995605ed81c847cf0064737773f014",
+    "tools/tests/arena_pve_ui.gd": "9ddd158f7bc9560883b7c6aebee8871b23bea0aeac828abc5807a9a41d4201f4",
+    "tools/tests/arena_fixture.gd": "4fe81a07c3392ce6c171cb1f86b1959349fe4e3c5b650b3fa40468566a2c068b",
+    "tools/benchmarks/arena_runs.gd": "c2ee92e64d47818c3f028fcd94a5d01f00ae01f4ff9f2773988da89b0771f05e",
+    "tools/check_translations.py": "35da7245cfbfe2702356b63891c349175e0ab11446eb9122381cdfc44b7993a7"
+  },
+  "runtime": {
+    "engine": "Godot 4.7 private patched Linux x86_64",
+    "renderer": "Forward+ Vulkan",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "window_host": "Xephyr 3840x2160",
+    "pack_sha256": "b6c2f728c1de7cb160ca62f52bade0f0f4e5cf0d64a770df6c255bb993a6ceaf",
+    "original_game": "inspection/extracted/app",
+    "settings": "Isolated per test XDG directories; player play-data untouched.",
+    "export_log_sha256": "cd6c7c0a038ff9b05b05a8b358dad0fa2ddd52f0da16b21e0415b37947221b26"
+  },
+  "headless_checks": [
+    {
+      "suite": "long_run",
+      "checks": 1209,
+      "failures": [],
+      "scope": "30-wave transitions, regional arrivals and locks, all six later evolutions, pacts, every camp/save, v4 completed-save preservation, 56 native unit names and their spells in RU/DE",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-long-final-localized.log",
+      "log_sha256": "da617aa1e9f959b14b466fff16fe925ec9505d75fe2b0419e3846fd24ba08bcc"
+    },
+    {
+      "suite": "recruitment",
+      "checks": 677,
+      "failures": [],
+      "scope": "Empty 16-gold start, opening offers, budget guards, sixth-slot lock, undo/RNG/save and 20 native opening-composition fights",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-recruitment-final.log",
+      "log_sha256": "3c4cc8663ceb6bad2f854258587c0fe6dda6e078986377919fa5eb6569c998c4"
+    },
+    {
+      "suite": "rules",
+      "checks": 301,
+      "failures": [],
+      "scope": "Native roster, rewards, deterministic combat and expedition lifecycle rules",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-rules-final.log",
+      "log_sha256": "da52bd9daa006fad8be2e056447f91e015a89f8731e11e2859df9db330aea370"
+    },
+    {
+      "suite": "economy",
+      "checks": 215,
+      "failures": [],
+      "scope": "Income thresholds, training, capped capacity, selling, save/undo and native stats",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-economy-final.log",
+      "log_sha256": "d4dfad73ee32361e9f1c0af6716498ce2dbef74cea552ae27f60f189186a0ed3"
+    },
+    {
+      "suite": "usability",
+      "checks": 669,
+      "failures": [],
+      "scope": "Automatic wave-one evolution, chained merges, quality, saves and immediate two-team engagement",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-usability-final.log",
+      "log_sha256": "1513753365fb6bef4e249bd9afbd96bc15577df424b95d192a7a1cf104a4199e"
+    },
+    {
+      "suite": "sandbox",
+      "checks": 98,
+      "failures": [],
+      "scope": "Shared sandbox world, roster, combat, spell events and teardown; headless",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-sandbox-regression.log",
+      "log_sha256": "f114cb72f1131be5bd3c4124433ddcbc0446e491dcbeed7bd716bee363bbccf2"
+    }
+  ],
+  "rendered_checks": [
+    {
+      "suite": "winter",
+      "language": "en",
+      "resolution": [
+        1280,
+        800
+      ],
+      "checks": 55,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-final-en-1280-800/run.log",
+      "log_sha256": "adc8013ef2fa3970e15775fd5f23d1af282fb62c283c9b891563918fe64a916a",
+      "visible_ground_effects": {
+        "footprints": 12,
+        "blood_marks": 24,
+        "deformed_sectors": 4,
+        "pixel_difference_checks": "Blood and native track geometry independently change visible battlefield pixels; captures also inspected."
+      }
+    },
+    {
+      "suite": "winter",
+      "language": "en",
+      "resolution": [
+        3840,
+        2160
+      ],
+      "checks": 55,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-final-en-3840-2160/run.log",
+      "log_sha256": "2bef3e7c8ce3ea4f5f9b961695205c3d866873266ba4e8cae20580f3ebed39cc",
+      "visible_ground_effects": {
+        "footprints": 9,
+        "blood_marks": 28,
+        "deformed_sectors": 4,
+        "pixel_difference_checks": "Blood and native track geometry independently change visible battlefield pixels; captures also inspected."
+      }
+    },
+    {
+      "suite": "winter",
+      "language": "ru",
+      "resolution": [
+        1280,
+        800
+      ],
+      "checks": 55,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-localized-ru-1280-800/run.log",
+      "log_sha256": "be338c13e47fda33e936bab5a53bf6dd7c812c4e3e1ad9ea37231f394ef4bdc4",
+      "visible_ground_effects": {
+        "footprints": 12,
+        "blood_marks": 22,
+        "deformed_sectors": 4,
+        "pixel_difference_checks": "Blood and native track geometry independently change visible battlefield pixels; captures also inspected."
+      }
+    },
+    {
+      "suite": "winter",
+      "language": "de",
+      "resolution": [
+        1024,
+        768
+      ],
+      "checks": 55,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-localized-de-1024-768/run.log",
+      "log_sha256": "48277a28d5024f24448adde08fe83bf8a9dde6f893d6cd0a81648ac6b5e5828d",
+      "visible_ground_effects": {
+        "footprints": 13,
+        "blood_marks": 23,
+        "deformed_sectors": 4,
+        "pixel_difference_checks": "Blood and native track geometry independently change visible battlefield pixels; captures also inspected."
+      }
+    },
+    {
+      "suite": "interaction",
+      "language": "en",
+      "resolution": [
+        1280,
+        800
+      ],
+      "checks": 220,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-expansion-regression.log",
+      "log_sha256": "2c2a64a8933e07d027e562fba682b77c42b96d80ccfe3e564ea1aeda92328756"
+    },
+    {
+      "suite": "guide_and_resolution",
+      "language": "en",
+      "resolution": [
+        1280,
+        800
+      ],
+      "checks": 40,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-guide-en/run.log",
+      "log_sha256": "35125536b7d0d9899c18603802b0b28f9e4ddb76d492283d5b9c97e3db30ef6b"
+    },
+    {
+      "suite": "guide_and_resolution",
+      "language": "ru",
+      "resolution": [
+        1280,
+        800
+      ],
+      "checks": 40,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-guide-ru/run.log",
+      "log_sha256": "a156f5a6e8679c85811c97b847c2434cb64e711462f55e0778a9e40352721fb8"
+    },
+    {
+      "suite": "guide_and_resolution",
+      "language": "de",
+      "resolution": [
+        1280,
+        800
+      ],
+      "checks": 40,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-guide-de/run.log",
+      "log_sha256": "1422ce8986778e004481b003b2722a46bdfd0c44617294bcfc73b026d06ead2b"
+    },
+    {
+      "suite": "camps_and_progression",
+      "language": "en/ru/de",
+      "resolution": [
+        [
+          1280,
+          800
+        ],
+        [
+          1280,
+          720
+        ],
+        [
+          1024,
+          768
+        ]
+      ],
+      "checks": 384,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/winter-camp-localized.log",
+      "log_sha256": "9dd7d5afc95ffabaa44e87ed4e8218ac947a78d056d94a245b62f68e2275279a"
+    }
+  ],
+  "translations": {
+    "remake_entries": 1784,
+    "dynamic_wiki_keys": 46,
+    "dynamic_arena_keys": 111,
+    "errors": 0,
+    "native_names_evidence": "arena-winter-names-2026-10-16.json",
+    "note": "Additional names and spell labels copied from original EN/RU/DE texts.res archives; repeated spaces normalized. Native-name coverage is exercised by arena_long_run.gd as well as static literal/dynamic-label checks."
+  },
+  "balance": {
+    "cohorts": [
+      {
+        "policy": "balanced",
+        "description": "Starter-affinity policy that buys later regional strength",
+        "seeds": [
+          7400,
+          7401,
+          7402,
+          7403,
+          7404,
+          7405
+        ],
+        "runs": 6,
+        "clears": 3,
+        "native_fights": 141,
+        "loss_waves": [
+          10,
+          18,
+          14
+        ],
+        "failed_attempts": 12,
+        "time_limit_draws": 1,
+        "median_fight_seconds": 21.78,
+        "maximum_fight_seconds": 300.025
+      },
+      {
+        "policy": "melee",
+        "description": "Frontline-first opening; still buys later casters",
+        "seeds": [
+          7400,
+          7401,
+          7402,
+          7403,
+          7404,
+          7405
+        ],
+        "runs": 6,
+        "clears": 6,
+        "native_fights": 182,
+        "loss_waves": [],
+        "failed_attempts": 2,
+        "time_limit_draws": 0,
+        "median_fight_seconds": 24.337,
+        "maximum_fight_seconds": 135.905
+      }
+    ],
+    "runs": 12,
+    "native_fights": 323,
+    "challenge": 0,
+    "shop_improvements": true,
+    "training": true,
+    "bank_target": 0,
+    "trace_file": "arena-winter-runs-2026-10-16.json.gz",
+    "trace_sha256": "0bd0e9f394b9d20a54279ce480c6681a264325505e379ca7b12871347bf76486",
+    "native_database_unchanged": true,
+    "interpretation": "The frontline-first purchasing policy clears 6/6; starter-affinity policy clears 3/6, losing at waves 10/14/18. Both buy stronger later casters. These are small fixed purchasing policies, not human win rates or evidence that all builds are equally strong."
+  },
+  "visual_review": {
+    "reviewer": "Implementing agent; no subagents",
+    "observed": [
+      "Empty-company setup is centered; HUD targets and text scale together at 4K.",
+      "Early evolution compares the two native figures and HP/attack, with a visible field pulse.",
+      "Later recruit previews fit troll/ogre bulk and harpy wings.",
+      "Native walking animation creates footprints and connected deformation on the snow surface.",
+      "Hits produce blood splashes; dead creatures leave red pools visible above the snow.",
+      "Russian and German help and camp text stay in bounded frames."
+    ],
+    "screenshots": [
+      {
+        "file": "screenshots/arena-winter-de-late-camp.png",
+        "sha256": "472eeefa2f5ddff2cc4e2eeb31633fe12abc2384bbcd80cb2e06dae66a49ee81"
+      },
+      {
+        "file": "screenshots/arena-winter-en-4k-empty.png",
+        "sha256": "c11b9cd8435fd54f991585d0c81a40d915f2d251ee641e2a14e0f1202f865382"
+      },
+      {
+        "file": "screenshots/arena-winter-en-evolution.png",
+        "sha256": "7c56af5c66ab1a2fc5c7b4e931f95e9b98f5c1bb61ec572173a48d07892f1e7b"
+      },
+      {
+        "file": "screenshots/arena-winter-en-landing.png",
+        "sha256": "b137b57c1fe7261c14fa13f89b97f82c3fd46a84c50ffb19ea9a2d9728e98095"
+      },
+      {
+        "file": "screenshots/arena-winter-en-late-roster.png",
+        "sha256": "1bb384c7f131abf5998e55911fb716fad5c416fc7b58e41854628c4981edafb8"
+      },
+      {
+        "file": "screenshots/arena-winter-en-trails-blood.png",
+        "sha256": "fa8a5b4f074870f594a9c5a53ae22e348b1ac41ffbcf9ad4c9458700b158b9c1"
+      },
+      {
+        "file": "screenshots/arena-winter-ru-market.png",
+        "sha256": "0fd1a5be943bc303382c1e233839dde2c1185340d8126b027f014213937db49c"
+      }
+    ]
+  },
+  "corrections_during_validation": [
+    "Replaced the separate opaque courtyard floor with a native terrain material variant so it cannot cover footprints, deformation or blood.",
+    "Arena spectators now receive native blood hits and delayed corpse pools despite having no campaign-controlled party.",
+    "Preserved a locked opening offer when the six-slot opening becomes an ordinary five-slot shop.",
+    "Removed spent pact upgrades and strictly dominated currency options from late camps.",
+    "Fixed test-only fixture calls inside assert statements, which release runtimes omit; gameplay recruitment remains explicit.",
+    "Updated old UI fixtures to explicitly buy a second boar instead of depending on pre-shuffle shop randomness.",
+    "Rendered review found untranslated late creature names; copied their original localized names and added dynamic native-name coverage."
+  ],
+  "limits": [
+    "Linux/NVIDIA Forward+ was reviewed; no Windows, browser, mobile, controller or alternate-renderer validation.",
+    "Later native power gaps and transitions still need human playtesting. Current samples cover Standard; Veteran/Champion were not rebalanced by these cohorts.",
+    "One of 323 fights reached the existing 300-second draw limit; other sampled fights reached at most 135.905 seconds. The existing time limit is unchanged.",
+    "The original low-polygon creature/scenery style remains; dense fights can overlap health labels.",
+    "Known startup XIM/cache messages precede scene logger registration. Captured scene/shader/script logger checks pass."
+  ],
+  "validation_note": "English winter cases preceded the last native-name fallback additions; Russian/German winter and all late-camp cases were rerun after those additions. Guide text was checked in all three languages. The only edit after the final rendered checks removes an unused eighteen-wave translation key. Gameplay and benchmark source hashes match the final source.",
+  "checks_total": 4113
+}

@@ -27,6 +27,7 @@ func _spawn(placement: Dictionary) -> GameUnit:
 
 
 func _make_ground() -> EITerrain:
+	world.zone["allod"] = "ingos"
 	return ArenaTerrain.create(rendered)
 
 

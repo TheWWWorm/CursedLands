@@ -1,4 +1,5 @@
 extends Node
+const Fixture = preload("arena_fixture.gd")
 ## Regression checks for automatic recipes, shop progression and the opening AI.
 var checks := 0
 var failures: Array[String] = []
@@ -11,7 +12,7 @@ func _ready() -> void:
 	var native := hash(GameData.db.tables)
 	var run := ArenaRun.new()
 	run.auto_save = false
-	run.begin(6519, 1)
+	Fixture.begin(run, 6519, 1)
 	var wolf: Dictionary = run.army[1]
 	var uid := int(wolf.uid)
 	var position: Array = wolf.point.duplicate()
@@ -33,14 +34,14 @@ func _ready() -> void:
 	var restored := ArenaRun.new()
 	restored.auto_save = false
 	check(restored.restore(run.snapshot()) and restored.snapshot() == run.snapshot(),'early final forms round-trip through saves')
-	run.begin(12,1)
+	Fixture.begin(run, 12,1)
 	uid = int(run.army[1].uid)
 	run._recruit(2,0,3)
 	for i in 5: run._recruit(-1,0,9,'orcfemalem3')
 	run.shop[0] = {'family':2,'rank':0,'locked':false}
 	check(run.bench_count() == 6 and run.purchase_error(0).is_empty(),'full reserves admit a purchase completing a recipe')
 	check(run.buy(0).is_empty() and run.unit(uid).rank == 1 and run.bench_count() == 5,'automatic evolution frees reserve space atomically')
-	run.begin(13)
+	Fixture.begin(run, 13)
 	run.gold = 80
 	run.lock_offer(0)
 	var locked: Dictionary = run.shop[0].duplicate()
@@ -77,7 +78,7 @@ func _ready() -> void:
 	check(restored.restore(legacy) and restored.shop_level == 0,'legacy expedition keeps its original shop quality')
 	# Both sides must be active before any damage, including the side ticked last.
 	for starter in 3:
-		run.begin(6519,starter)
+		Fixture.begin(run, 6519,starter)
 		var match_state := ArenaPveMatch.new()
 		match_state.run = run
 		match_state.rendered = false

@@ -1,4 +1,5 @@
 extends Node
+const Fixture = preload("arena_fixture.gd")
 ## Run/economy invariants and real ranged/magic encounter smoke tests.
 
 var checks := 0
@@ -20,8 +21,8 @@ func _ready() -> void:
 	var native_hash := hash(GameData.db.tables)
 	var run := ArenaRun.new()
 	run.auto_save = false
-	run.begin(6519)
-	check(run.army.size() == 3 and run.deployed_count() == 3 and run.gold == 6, "starter army and budget")
+	Fixture.begin(run, 6519)
+	check(run.army.size() == 3 and run.deployed_count() == 3 and run.gold == 6, "purchased fixture army and budget")
 	var replay := ArenaRun.new()
 	replay.auto_save = false
 	check(replay.restore(run.snapshot()), "snapshot round trip")
@@ -52,7 +53,7 @@ func _ready() -> void:
 	# state without partially replacing the existing run.
 	var valid := ArenaRun.new()
 	valid.auto_save = false
-	valid.begin(9271)
+	Fixture.begin(valid, 9271)
 	var good := valid.snapshot()
 	var corrupted: Array[Dictionary] = []
 	for field in ["deployed", "investment", "prototype", "point", "uid"]:
@@ -94,7 +95,7 @@ func _ready() -> void:
 	check(not valid.choose_reward(0).is_empty() and valid.snapshot() == after_reward, "reward cannot be claimed twice")
 	for family in ArenaRules.FAMILIES.size():
 		for rank in ArenaRules.FAMILIES[family].forms.size() - 1:
-			valid.begin(1)
+			Fixture.begin(valid, 1)
 			valid.army.clear()
 			valid.wave = 4 if rank == 0 else 10
 			for copy in ArenaRules.evolution_copies(family, rank): valid._recruit(family, rank, 3 * int(pow(3, rank)))
@@ -104,13 +105,13 @@ func _ready() -> void:
 			check(replay.restore(valid.snapshot()), "evolved formation remains a valid save")
 	# Final victory and progression are tested without pretending the stubbed
 	# outcomes below measure combat strength; benchmark scripts run real fights.
-	valid.begin(9)
+	Fixture.begin(valid, 9)
 	for number in ArenaRules.WAVE_COUNT:
 		valid.start_battle(); valid.resolve(0, 20, [100, 0])
 		if valid.stage == "won": break
 		valid.advance()
 		if valid.stage == "reward": valid.choose_reward(0)
-	check(valid.stage == "won" and valid.wave == 18 and valid.lives == 3, "eighteen-wave progression reaches terminal victory")
+	check(valid.stage == "won" and valid.wave == ArenaRules.WAVE_COUNT and valid.lives == 3, "thirty-wave progression reaches terminal victory")
 	check(replay.restore(valid.snapshot()) and replay.stage == "won", "terminal victory reloads")
 	# V1 expeditions retain their state and RNG; new saves require pact fields.
 	var legacy := good.duplicate(true)
@@ -139,7 +140,7 @@ func _ready() -> void:
 	# Camps are one-time decisions. Pact rank is an upgrade choice, not an
 	# automatic level/stat multiplier. Duplicates and benched units never count.
 	var expected_camps: Array[int] = []
-	valid.begin(77)
+	Fixture.begin(valid, 77)
 	for number in ArenaRules.WAVE_COUNT:
 		valid.start_battle(); valid.resolve(0, 20, [100, 0]); valid.advance()
 		if valid.stage != "reward": continue
@@ -147,22 +148,22 @@ func _ready() -> void:
 		check(replay.restore(valid.snapshot()) and replay.rewards == valid.rewards, "camp choices and RNG survive reload")
 		valid.choose_reward(0)
 		check(replay.restore(valid.snapshot()), "claimed camp state survives reload")
-	check(expected_camps == [3, 6, 9, 12, 15] and valid.pact == "hunt" and valid.pact_rank == 2, "five camps with two optional pact upgrades")
-	check(valid.pact_prototype() == "wolfwhitef6", "upgraded pact uses exact native form")
-	valid.begin(88)
+	check(expected_camps == [3, 6, 9, 12, 15, 18, 21, 24, 27] and valid.pact == "hunt" and valid.pact_rank == 2, "nine camps with two optional pact upgrades")
+	check(valid.pact_prototype() == "spiderf15", "upgraded pact uses exact native form")
+	Fixture.begin(valid, 88)
 	valid.wave = 9; valid.stage = "reward"; valid.pact = "vanguard"
 	valid._make_rewards()
 	valid.choose_reward(2)
-	check(valid.gold == 12 and valid.pact_rank == 0 and valid.wave == 10, "supplies forego the pact upgrade")
-	valid.begin(89)
+	check(valid.gold == 18 and valid.pact_rank == 0 and valid.wave == 10, "war chest forgoes the pact upgrade")
+	Fixture.begin(valid, 89)
 	valid.wave = 15; valid.pact = "hunt"; valid.stage = "fight"
 	valid.boons.assign(["merchant", "reserve", "scout"]); valid._roll_shop(false)
 	valid.resolve(0, 20, [100, 0]); valid.advance()
-	check(valid.rewards.size() == 2 and valid.rewards[0].kind == "pact_upgrade" and valid.rewards[1].kind == "supplies", "exhausted boon pool leaves two distinct rewards without a dominated gold offer")
-	check(replay.restore(JSON.parse_string(JSON.stringify(valid.snapshot()))), "two-choice camp survives JSON reload")
+	check(valid.rewards.size() == 3 and valid.rewards[0].kind == "pact_upgrade" and valid.rewards[1].kind == "companion" and valid.rewards[2].kind == "purse", "exhausted boon pool still offers three useful rewards")
+	check(replay.restore(JSON.parse_string(JSON.stringify(valid.snapshot()))), "late camp survives JSON reload")
 	for pact_key: String in ArenaRules.PACTS:
 		var rule: Dictionary = ArenaRules.PACTS[pact_key]
-		valid.begin(90); valid.wave = 10; valid.pact = pact_key; valid.army.clear()
+		Fixture.begin(valid, 90); valid.wave = 10; valid.pact = pact_key; valid.army.clear()
 		for i in int(rule.needed): valid._recruit(int(rule.families[i]), int(rule.min_rank), 9)
 		check(not valid.pact_active(), "reserves do not activate a pact")
 		valid.arrange()
@@ -182,7 +183,7 @@ func _ready() -> void:
 		check(replay.restore(JSON.parse_string(JSON.stringify(valid.snapshot()))) and replay.support_placement() == valid.support_placement(), "support position remains deterministic across JSON reload")
 		replay.arrange()
 		check(replay.pact_active(), "auto arrange preserves pact after JSON integer conversion")
-	valid.begin(91); valid.wave = 4; valid.pact = "hunt"; valid.army.clear()
+	Fixture.begin(valid, 91); valid.wave = 4; valid.pact = "hunt"; valid.army.clear()
 	for i in 3: valid._recruit(0, 0, 3)
 	valid.arrange()
 	check(not valid.pact_active() and valid.pact_families().size() == 1, "three copies of one family cannot fake a synergy")
@@ -191,7 +192,7 @@ func _ready() -> void:
 	check(not valid.pact_active(), "tribal pact requires evolved forms")
 	# Swaps must work even with both budgets full, without a temporary extra
 	# creature, lost investment or a partially committed failure.
-	valid.begin(92)
+	Fixture.begin(valid, 92)
 	for i in valid.bench_limit(): valid._recruit(2, 0, 3)
 	var before_swap := valid.snapshot()
 	var reserve_id := int(valid.army.back().uid)
@@ -203,7 +204,7 @@ func _ready() -> void:
 	check(valid.snapshot() == before_swap, "swap undo restores complete preparation")
 	check(not valid.swap_from_bench(field_id, reserve_id).is_empty() and valid.snapshot() == before_swap, "invalid swap is atomic")
 	# Higher challenges add native combatants without moving or scaling the
-	# base encounter. All eighteen formations must have distinct spawn points.
+	# base encounter. All thirty formations must have distinct spawn points.
 	for wave_number in range(1, ArenaRules.WAVE_COUNT + 1):
 		var standard := ArenaRules.enemies(wave_number, 72)
 		for difficulty in [1, 2]:
@@ -212,7 +213,7 @@ func _ready() -> void:
 			var seen_points := {}
 			for enemy: Dictionary in enemies: seen_points[enemy.point] = true
 			check(seen_points.size() == enemies.size(), "reinforcements never overlap on wave " + str(wave_number))
-	valid.begin(7)
+	Fixture.begin(valid, 7)
 	valid.wave = 6
 	for i in valid.bench_limit(): valid._recruit(0, 0, 3)
 	valid.stage = "reward"
@@ -225,7 +226,7 @@ func _ready() -> void:
 	check(not valid.choose_reward(0).is_empty() and valid.snapshot() == overflow, "second overflow companion cannot make save unrestorable")
 	check(valid.choose_reward(2).is_empty() and valid.wave == 13, "overflow reserve still allows another reward")
 	for kind in ["merchant", "reserve", "scout", "purse", "life"]:
-		valid.begin(42)
+		Fixture.begin(valid, 42)
 		valid.wave = 6; valid.stage = "reward"; valid.lives = 2
 		valid.rewards = [{"kind": kind}]
 		check(valid.choose_reward(0).is_empty(), "boon can be claimed: " + kind)
@@ -235,7 +236,7 @@ func _ready() -> void:
 		elif kind == "purse": check(valid.gold == 18, "war chest grants its stated gold")
 		elif kind == "life": check(valid.lives == 3, "second wind restores one life")
 	for starter in 3:
-		run.begin(6519 + starter, starter)
+		Fixture.begin(run, 6519 + starter, starter)
 		var match_state := ArenaPveMatch.new()
 		match_state.rendered = false
 		match_state.run = run
@@ -262,7 +263,7 @@ func _ready() -> void:
 		await get_tree().process_frame
 	# A guest goes through actual native spawn, combat and death handling,
 	# then returns from the pact rather than being duplicated into saved army.
-	run.begin(9821, 1); run.wave = 4; run.pact = "hunt"
+	Fixture.begin(run, 9821, 1); run.wave = 4; run.pact = "hunt"
 	var guest_match := ArenaPveMatch.new()
 	guest_match.rendered = false; guest_match.run = run
 	add_child(guest_match); guest_match.set_process(false)

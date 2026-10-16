@@ -1,0 +1,342 @@
+{
+  "archives": {
+    "de": "/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app/res/texts.res",
+    "en": "/home/llm2x/Documents/EI/inspection/extracted/app/res/texts.res",
+    "ru": "/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/data/ru/res/texts.res"
+  },
+  "names": {
+    "bansheedarkf14": {
+      "de": "Starke schwarze Todesfee",
+      "en": "Strong black banshee",
+      "ru": "Сильная черная баньши"
+    },
+    "bansheedarkf16": {
+      "de": "Sehr starke schwarze Todesfee",
+      "en": "Very strong black banshee",
+      "ru": "Очень сильная черная баньши"
+    },
+    "batlightm10": {
+      "de": "Riesen-Wolfsfledermaus",
+      "en": "Giant foxbat",
+      "ru": "Гигантский нетопырь"
+    },
+    "batlightm7": {
+      "de": "Wolfsfledermaus-Junges",
+      "en": "Foxbat cub",
+      "ru": "Детеныш нетопыря"
+    },
+    "batlightm8": {
+      "de": "Junge Wolfsfledermaus",
+      "en": "Young foxbat",
+      "ru": "Молодой нетопырь"
+    },
+    "batlightm9": {
+      "de": "Ausgewachsene Wolfsfledermaus",
+      "en": "Adult foxbat",
+      "ru": "Взрослый нетопырь"
+    },
+    "batredm1": {
+      "de": "Fledermaus-Junges",
+      "en": "Bat cub",
+      "ru": "Детеныш летучей мыши"
+    },
+    "batredm3": {
+      "de": "Junge Fledermaus",
+      "en": "Young bat",
+      "ru": "Молодая летучая мышь"
+    },
+    "boardarkf5": {
+      "de": "Ausgewachsenes schwarzes Wildschwein",
+      "en": "Adult black boar",
+      "ru": "Взрослый черный кабан"
+    },
+    "boardarkf6": {
+      "de": "Schwarzes Wildschwein (Veteran)",
+      "en": "Veteran black boar",
+      "ru": "Матерый черный кабан"
+    },
+    "boarredf1": {
+      "de": "Junges Wildschwein",
+      "en": "Young boar",
+      "ru": "Молодой кабан"
+    },
+    "boarredf3": {
+      "de": "Wildschwein (Veteran)",
+      "en": "Veteran boar",
+      "ru": "Матерый кабан"
+    },
+    "goblina1": {
+      "de": "Goblin mit Schleuder",
+      "en": "Goblin with a sling",
+      "ru": "Гоблин с пращой"
+    },
+    "goblina2": {
+      "de": "Ausgebildeter Goblin mit Schleuder",
+      "en": "Trained Goblin with a sling",
+      "ru": "Умелый гоблин с пращой"
+    },
+    "goblina3": {
+      "de": "Goblin-Veteran mit Schleuder",
+      "en": "Veteran Goblin with a sling",
+      "ru": "Опытный гоблин с пращой"
+    },
+    "goblinf1": {
+      "de": "Goblin mit Speer",
+      "en": "Goblin with a spear",
+      "ru": "Гоблин с копьем"
+    },
+    "goblinf2": {
+      "de": "Ausgebildeter Goblin mit Speer",
+      "en": "Trained Goblin with a spear",
+      "ru": "Умелый гоблин с копьем"
+    },
+    "octopushadaganm13": {
+      "de": "Junger schwarzer Wurmkopf",
+      "en": "Young black wormhead",
+      "ru": "Червелицый-послушник"
+    },
+    "octopushadaganm15": {
+      "de": "Ausgewachsener Wurmkopf",
+      "en": "Adult wormhead",
+      "ru": "Червелицый-жрец"
+    },
+    "octopushadaganm17": {
+      "de": "Wurmkopf-Hohepriester",
+      "en": "Wormhead High Priest",
+      "ru": "Червелицый - великий жрец"
+    },
+    "octopuskaniam12": {
+      "de": "Wurmkopf-Posten",
+      "en": "Wormhead sentry",
+      "ru": "Червелицый-страж"
+    },
+    "ogregipatf9": {
+      "de": "Oger-Veteran",
+      "en": "Veteran Ogre",
+      "ru": "Матерый людоед"
+    },
+    "ogrehadaganf13": {
+      "de": "Junger Sand-Oger",
+      "en": "Young sand Ogre",
+      "ru": "Молодой песчаный людоед"
+    },
+    "ogrehadaganf15": {
+      "de": "Ausgewachsener Sand-Oger",
+      "en": "Adult sand Ogre",
+      "ru": "Взрослый песчаный людоед"
+    },
+    "ogrehadaganf17": {
+      "de": "Sand-Oger (Veteran)",
+      "en": "Veteran sand Ogre",
+      "ru": "Матерый песчаный людоед"
+    },
+    "orcfemalea5": {
+      "de": "Ausgewachsener weiblicher Ork",
+      "en": "Adult female Orc",
+      "ru": "Взрослая орчиха"
+    },
+    "orcfemalea7": {
+      "de": "Weiblicher Ork (Veteran)",
+      "en": "Veteran female Orc",
+      "ru": "Матерая орчиха"
+    },
+    "orcfemalem3": {
+      "de": "Schüler des Ork-Sehers",
+      "en": "Orc seer-apprentice",
+      "ru": "Шаман-ученик"
+    },
+    "orcfemalem5": {
+      "de": "Ausgebildeter Ork-Seher",
+      "en": "Trained Orc seer",
+      "ru": "Обученный шаман"
+    },
+    "orcfemalem7": {
+      "de": "Erfahrener Ork-Seher",
+      "en": "Skillful Orc seer",
+      "ru": "Искусный шаман"
+    },
+    "orcmalef3": {
+      "de": "Junger Ork",
+      "en": "Young Orc",
+      "ru": "Молодой орк"
+    },
+    "orcmalef5": {
+      "de": "Ausgewachsener Ork",
+      "en": "Adult Orc",
+      "ru": "Взрослый орк"
+    },
+    "skeletonf2": {
+      "de": "Skelett-Bürger",
+      "en": "Commoner skeleton",
+      "ru": "Скелет простолюдина"
+    },
+    "spiderf10": {
+      "de": "Junge Spinne",
+      "en": "Young spider",
+      "ru": "Молодой паук"
+    },
+    "spiderf13": {
+      "de": "Junge Spinne",
+      "en": "Young spider",
+      "ru": "Молодой паук"
+    },
+    "spiderf14": {
+      "de": "Ausgewachsene Spinne",
+      "en": "Adult spider",
+      "ru": "Взрослый паук"
+    },
+    "spiderf15": {
+      "de": "Alte Spinne",
+      "en": "Old spider",
+      "ru": "Старый паук"
+    },
+    "succubbluem10": {
+      "de": "Junge Steinharpyie",
+      "en": "Young stony harpy",
+      "ru": "Молодая скальная  гарпия"
+    },
+    "succubbluem11": {
+      "de": "Junge Steinharpyie",
+      "en": "Young stony harpy",
+      "ru": "Молодая  скальная гарпия"
+    },
+    "succubbluem17": {
+      "de": "Alte Steinharpyie",
+      "en": "Old stony harpy",
+      "ru": "Старая скальная гарпия"
+    },
+    "succubgreym13": {
+      "de": "Junge graue Harpyie",
+      "en": "Young grey harpy",
+      "ru": "Молодая серая гарпия"
+    },
+    "succubgreym15": {
+      "de": "Ausgewachsene graue Harpyie",
+      "en": "Adult grey harpy",
+      "ru": "Взрослая серая гарпия"
+    },
+    "succubgreym17": {
+      "de": "Alte graue Harpyie",
+      "en": "Old grey harpy",
+      "ru": "Старая серая гарпия"
+    },
+    "tigerwhitef10": {
+      "de": "Weißer Tiger (Veteran)",
+      "en": "Veteran white tiger",
+      "ru": "Матерый снежный тигр"
+    },
+    "tigerwhitef6": {
+      "de": "Junger weißer Tiger",
+      "en": "Young white tiger",
+      "ru": "Молодой снежный тигр"
+    },
+    "tigerwhitef8": {
+      "de": "Ausgewachsener weißer Tiger",
+      "en": "Adult white tiger",
+      "ru": "Взрослый снежный тигр"
+    },
+    "toadm2": {
+      "de": "Giftkröte",
+      "en": "Poisonous toad",
+      "ru": "Ядовитая жаба"
+    },
+    "toadm4": {
+      "de": "Ausgewachsene Giftkröte",
+      "en": "Adult poisonous toad",
+      "ru": "Взрослая ядовитая жаба"
+    },
+    "toadm6": {
+      "de": "Giftkröte (Veteran)",
+      "en": "Veteran poisonous toad",
+      "ru": "Матерая ядовитая жаба"
+    },
+    "trollbluef11": {
+      "de": "Ausgewachsener blauer Troll",
+      "en": "Adult blue troll",
+      "ru": "Взрослый синий тролль"
+    },
+    "trollbluef12": {
+      "de": "Alter blauer Troll",
+      "en": "Old blue troll",
+      "ru": "Старый синий тролль"
+    },
+    "trollbluef9": {
+      "de": "Junger blauer Troll",
+      "en": "Young blue troll",
+      "ru": "Молодой синий тролль"
+    },
+    "wolfgreyf1": {
+      "de": "Junger Wolf",
+      "en": "Young wolf",
+      "ru": "Молодой волк"
+    },
+    "wolfgreyf2": {
+      "de": "Ausgewachsener Wolf",
+      "en": "Adult wolf",
+      "ru": "Взрослый волк"
+    },
+    "wolfgreyf3": {
+      "de": "Wolf (Veteran)",
+      "en": "Veteran wolf",
+      "ru": "Матерый волк"
+    },
+    "wolfwhitef6": {
+      "de": "Weißer Wolf (Veteran)",
+      "en": "Veteran white wolf",
+      "ru": "Матерый белый волк"
+    }
+  },
+  "spells": {
+    "acid_fog": {
+      "de": "Säurenebel",
+      "en": "Acid fog",
+      "ru": "Кислотный туман"
+    },
+    "acid_ray": {
+      "de": "Säurekugel",
+      "en": "Acid blast",
+      "ru": "Сгусток кислоты"
+    },
+    "arrow": {
+      "de": "Feuerpfeil",
+      "en": "Fire arrow",
+      "ru": "Огненная стрела"
+    },
+    "fireball": {
+      "de": "Feuerkugel",
+      "en": "Fireball",
+      "ru": "Огненный шар"
+    },
+    "firewall": {
+      "de": "Feuerwand",
+      "en": "Fire wall",
+      "ru": "Огненная стена"
+    },
+    "inv_lit": {
+      "de": "Himmelsleuchten",
+      "en": "Celestial lightning",
+      "ru": "Небесная молния"
+    },
+    "lightning": {
+      "de": "Blitzschlag",
+      "en": "Lightning",
+      "ru": "Молния"
+    },
+    "speed": {
+      "de": "Beschleunigen",
+      "en": "Haste",
+      "ru": "Ускорение"
+    },
+    "strength": {
+      "de": "Zusätzliche Kraft",
+      "en": "Strengthen",
+      "ru": "Увеличение силы"
+    }
+  },
+  "archive_sha256": {
+    "de": "8b5560283fcdf2b63c706e370ca5f2bef99f333d4908be3497f1da7cc9ef2e6b",
+    "en": "7480721148bf443901bad59ea184606d7a09c97d565040560778ea4663cd5c41",
+    "ru": "96d8e49a3472f93d92ec8b4ad4286fa7662d78fc4577fe2335832542014b3a5a"
+  },
+  "note": "Original first-line names and spell labels for the curated roster, authored enemies, pact forms and camp companions. Repeated whitespace is normalized in RemakeText fallbacks; installed localized game archives remain authoritative."
+}

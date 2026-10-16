@@ -20,34 +20,33 @@ Creatures, scenery and other terrain textures load from the user's game files.
 
 ## Battlefield treatment
 
-The courtyard uses smaller, worn limestone blocks, a restrained central stone
-inlay and a broken perimeter band. These are an actual diffuse texture on a 3D
-surface; subtle relief follows its seams and mipmaps keep distant paving stable.
-The original fallen columns, boulders and trees still provide the scenery.
+The courtyard's worn limestone and central inlay sit under an Ingos snow layer.
+The original `zone11` atlas, winter vegetation and rocks surround the existing
+fallen columns. Paving color is blended inside the native land shader, so snow
+deformation, footprints, blood decals and contact shadows reach one surface.
+The previous separate opaque paving mesh has been removed. Compacted snow has
+slightly stronger contrast at the spectator camera distance. Native walking
+animations create foot contacts and connected travel trails; native hit events
+and delayed deaths create blood splashes and pools. Display options still apply.
 
-Shorter, less saturated grass gathers at the edges instead of growing through
-the fighting area. A courtyard-only `TerrainDetails` subclass changes the grass
-and optional ground-cover shaders; native vegetation generation, terrain types,
-heights, navigation costs and scenery collision remain unchanged. Campaign
-materials are not edited. Grass, wind, interaction and ground-cover options can
-be toggled without losing this presentation.
-
-A warm sun separates the creatures from the paving, with cool ambient shade,
+A cool sun separates the creatures from the snow, with blue ambient shade,
 optional ambient occlusion and lighter contact shadows. The small orthographic
 arena uses one shadow map and a 90 m camera far plane; the old 180 m range and
 cascade splits gave the opposing rows visibly different shadows. Softer filtered
 edges, shorter shadows and a lower bias retain contact with the ground.
 
-The central paving is opaque so ambient shading reaches feet and rubble bases.
-Only four narrow, non-overlapping border strips blend into the grass, using the
-same texture coordinates. The arena viewport applies the selected anti-aliasing,
+The arena viewport applies the selected anti-aliasing,
 texture filtering and shadow quality; ambient occlusion also responds to changes.
 The distant woodland fades into black at maximum zoom instead of exposing the
 old cyan map edge. Previous lighting and fog uniforms are restored on exit.
-The shop, reserve shelf and hover details remain as documented.
+Graphics refreshes retain the winter material without editing campaign shaders.
 
 ## Composition and interaction
 
+- A centered opening panel starts an empty company with 16 gold. No preset
+  creatures are granted. The first shop offers all six opening families;
+  a short prompt remains until the first purchase. The expedition has 30 waves,
+  with stronger regional recruits arriving at waves 10, 13 and 19.
 - Full-screen battlefield. The shop is an unboxed shelf across the top left.
   Models, prices, owned-copy progress and evolution stars stay visible. Names appear on hover or
   keyboard focus; hover details provide the role, native stats, recipe and blocked reasons.
@@ -77,7 +76,7 @@ The shop, reserve shelf and hover details remain as documented.
   and owned expedition upgrades. Clicking the counter opens training. Its flag is gold while the pact is active. There is no
   persistent synergy sidebar. Creature details identify family
   membership and the Tribal council's evolution requirement.
-- Five camp visits interrupt the run with one deliberate choice. The first shows
+- Nine camp visits interrupt the run with one deliberate choice. The first shows
   three pact candidates with live native models and concise conditions. Later
   visits trade support upgrades against economy or recovery. A completed boon
   collection leaves two useful options. Names and descriptions wrap in RU/DE;
@@ -91,8 +90,12 @@ The shop, reserve shelf and hover details remain as documented.
   confines keyboard focus; closing it restores the previous pause state. Guide
   content scrolls within a bounded panel, leaving Close visible.
 - Shop improvements have one compact shelf button. The optional dialog explains
-  current quality odds, the next price and the included refresh. Higher forms
+  current quality odds, regional arrivals, the next price and the included refresh. Higher forms
   remain the original game creatures; the shop never applies numeric buffs.
+- Evolution briefly compares the old and new native creature, stars, health
+  and attack. A sound and gold field/reserve highlight identify the changed
+  unit. The notice never captures clicks, queues multiple evolutions, and
+  disappears automatically or when the creature is sold or its purchase undone.
 - Empty reserve slots become return targets while a deployed creature is selected.
   The reserve count and a labelled first empty slot make this operation discoverable.
 - Combat results wait 1.6 seconds after the final hit. Combat and rewards are already
@@ -167,6 +170,8 @@ This pass follows Impeccable's Clarify writing workflow: audit the interaction,
 remove redundant help, preserve the consequences of each action, then verify
 expanded translations in the rendered interface.
 
-The [expansion validation](../validation/arena-expansion-2026-10-16.json) records
-current income/training, hover details, sale destinations, rank markers, preview
-fitting, reserve reflow and result pacing. Earlier records remain historical.
+The [winter validation](../validation/arena-winter-2026-10-16.json) records the
+current opening, regional roster, evolution feedback and rendered snow/blood
+checks, alongside regressions for hover, sale, preview fitting and result pacing.
+The [earlier expansion validation](../validation/arena-expansion-2026-10-16.json)
+preserves the previous income/training and high-resolution review.

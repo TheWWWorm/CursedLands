@@ -1,4 +1,5 @@
 extends Node
+const Fixture = preload("arena_fixture.gd")
 ## Economy thresholds, early training, native stats and migration boundaries.
 var checks := 0
 var failures: Array[String] = []
@@ -11,7 +12,7 @@ func _ready() -> void:
 	var native := hash(GameData.db.tables)
 	var run := ArenaRun.new()
 	run.auto_save = false
-	run.begin(31)
+	Fixture.begin(run, 31)
 	for savings in [0,9,10,19,20,29,30,99]:
 		run.gold = savings
 		check(run.income_preview().interest == mini(3,savings/10), "interest threshold %d" % savings)
@@ -47,19 +48,19 @@ func _ready() -> void:
 		for invalid in [-1,1.5,"3"]:
 			var broken := saved.duplicate(true);broken[key]=invalid
 			check(not restored.restore(broken),"reject malformed " + key)
-	run.begin(32)
+	Fixture.begin(run, 32)
 	run.gold = 30
 	var before := run.snapshot()
 	run.train()
 	check(run.wave == 1 and run.capacity() == 4,"army growth is available from wave one")
 	run.undo()
 	check(run.snapshot() == before,"training is undoable")
-	for i in 4: run.train()
-	check(run.capacity() == 7 and run.gold == 10,"capacity stops at seven")
-	check(not run.train().is_empty() and run.gold == 10,"max training cannot charge again")
+	for i in 6: run.train()
+	check(run.capacity() == 9 and run.gold == 0,"capacity stops at nine")
+	check(not run.train().is_empty() and run.gold == 0,"max training cannot charge again")
 	var legacy := run.snapshot();legacy.version=3;legacy.erase("training");legacy.erase("battle_savings")
 	check(restored.restore(legacy) and restored.training == 0,"old saves preserve free army growth")
-	run.begin(33,1)
+	Fixture.begin(run, 33,1)
 	check(run.sale_value(run.army[0]) == 3,"one-star recruits can be exchanged without losing gold")
 	var copy := run._recruit(2,0,3);run._recruit(2,0,3);run.combine_ready()
 	check(run.sale_value(run.army[1]) == 6,"evolved units retain a partial refund")

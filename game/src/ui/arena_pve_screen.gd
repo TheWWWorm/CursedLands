@@ -59,7 +59,6 @@ var _refresh_button: Button
 var _speed: OptionButton
 var _sound: GameSound
 var _sound_world: GameWorld
-var _pending_starter := 0
 var _rail: PanelContainer
 var _rail_box: VBoxContainer
 var _shop_panel: PanelContainer
@@ -68,9 +67,8 @@ var _fight_panel: PanelContainer
 var _bench_bar: HBoxContainer
 var _bench_scroll: ScrollContainer
 var _landing_layer: Control
-var _landing_models: HBoxContainer
-var _starter_buttons: Array[Button] = []
-var _landing_description: Label
+var _landing_panel: ArenaHudPanel
+var _evolution_notice: ArenaEvolutionNotice
 var _landing_start: Button
 var _previous_border := Vector2.ZERO
 var _previous_border_dist := -1.0
@@ -133,7 +131,7 @@ func _ready() -> void:
 	_landing_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_landing_layer.offset_top = 78
 	_landing_layer.offset_bottom = -24
-	_header = _label(_hud, RemakeText.t("Trials of Gipath"), 26, GOLD)
+	_header = _label(_hud, RemakeText.t("Trials of the Allods"), 26, GOLD)
 	_header.position = Vector2(28, 18)
 	_header.add_theme_font_override("font", _heading_font)
 	_round_panel = ArenaHudPanel.new()
@@ -315,6 +313,10 @@ func _ready() -> void:
 	_modal_box.add_theme_constant_override("separation", 12)
 	_modal_panel.add_child(_modal_box)
 	_modal_layer.hide()
+	_evolution_notice = ArenaEvolutionNotice.new()
+	_hud.add_child(_evolution_notice)
+	_hud.move_child(_evolution_notice, _modal_layer.get_index())
+	_evolution_notice.shown.connect(_highlight_evolution)
 	_tooltips = ArenaTooltips.new()
 	_tooltips.scope = _hud
 	_tooltips.world_hint = _world_hint
@@ -359,12 +361,14 @@ func _refresh() -> void:
 	_lives.text = "%d/3" % run.lives
 	var income := run.income_preview(run.battle_savings if run.stage == "fight" else -1)
 	_income.text = RemakeText.t("Income +%d") % int(income.total)
-	_income.visible = run.wave < ArenaRules.WAVE_COUNT
+	_income.visible = run.wave < run.wave_limit
 	_gold.get_parent().tooltip_text = _income_details(income) + "\n" + RemakeText.t("Savings earn 1 gold per 10, up to 3. Win three battles in a row for +1 gold, or six for +2. Defeat breaks the streak.")
-	_wave_title.text = RemakeText.t("Wave %d/%d") % [run.wave, ArenaRules.WAVE_COUNT]
-	_round_panel.tooltip_text = RemakeText.t("Wave %d/%d · %s") % [run.wave, ArenaRules.WAVE_COUNT, RemakeText.t(ArenaRules.WAVES[run.wave - 1][0])] + "\n" + RemakeText.t("Seed %s") % str(run.run_seed)
+	_wave_title.text = RemakeText.t("Wave %d/%d") % [run.wave, run.wave_limit]
+	_round_panel.tooltip_text = RemakeText.t("Wave %d/%d · %s") % [run.wave, run.wave_limit, RemakeText.t(ArenaRules.WAVES[run.wave - 1][0])] + "\n" + ArenaRules.region_name(ArenaRules.region(run.wave)) + " · " + RemakeText.t("Seed %s") % str(run.run_seed)
 	var preparing := run.stage == "prepare" and not landing
 	var fighting := run.stage == "fight" and not landing
+	if not preparing: _evolution_notice.clear()
+	else: _evolution_notice.retain(run)
 	_bench_panel.visible = preparing or fighting
 	_bench_bar.visible = not landing
 	_shop_panel.visible = preparing
@@ -406,7 +410,9 @@ func _refresh() -> void:
 	_reserve_count.text = RemakeText.t("Reserves %d/%d") % [run.bench_count(), run.bench_limit()]
 	_refresh_button.text = str(run.refresh_cost())
 	_refresh_button.tooltip_text = RemakeText.t("Refresh · %d gold") % run.refresh_cost() + "\n" + RemakeText.t("Refresh offers. A locked recruit stays.")
-	_refresh_button.disabled = run.gold < run.refresh_cost()
+	var refresh_error := run.spending_error(run.refresh_cost())
+	_refresh_button.disabled = not refresh_error.is_empty()
+	if not refresh_error.is_empty(): _refresh_button.tooltip_text += "\n" + refresh_error
 	_army_title.text = RemakeText.t("Army %d/%d") % [run.deployed_count(), run.capacity()]
 	_army_title.tooltip_text = ""
 	_army_title.remove_meta("arena_help")
@@ -422,6 +428,7 @@ func _refresh() -> void:
 	if selected_uid > 0 and run.unit(selected_uid).is_empty(): _clear_selection()
 	_update_sell_target()
 	_hide_inspector()
+	if preparing and run.army.is_empty(): _hint(RemakeText.t("Recruit your first creature."))
 	_tooltips.capture(_hud)
 	_layout_outcome.call_deferred()
 	if run.save_error: _feedback(RemakeText.t("The expedition could not be saved. Check free disk space before leaving."))
@@ -535,112 +542,57 @@ func _build_shop() -> void:
 
 func _build_landing() -> void:
 	_clear(_landing_layer)
-	_starter_buttons.clear()
 	var shade := ColorRect.new()
-	shade.color = Color(0.055, 0.075, 0.052, 0.82)
+	shade.color = Color(0.055, 0.075, 0.052, 0.6)
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_landing_layer.add_child(shade)
-	var margin := _margin(_landing_layer, 28)
-	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var columns := HBoxContainer.new()
-	columns.add_theme_constant_override("separation", 36)
-	margin.add_child(columns)
+	_landing_panel = ArenaHudPanel.new()
+	_landing_panel.surface.a = 0.98
+	_landing_panel.custom_minimum_size.x = 560
+	_landing_panel.minimum_size_changed.connect(_layout_landing.call_deferred)
+	_landing_layer.add_child(_landing_panel)
 	var choices := VBoxContainer.new()
-	choices.custom_minimum_size.x = 310
-	choices.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	choices.size_flags_stretch_ratio = 0.8
-	choices.add_theme_constant_override("separation", 12)
-	columns.add_child(choices)
-	var title := _wrap(choices, RemakeText.t("Choose your company"), 38, PAPER)
+	choices.add_theme_constant_override("separation", 18)
+	_landing_panel.add_child(choices)
+	var title := _wrap(choices, RemakeText.t("Build your company"), 38, PAPER)
 	title.add_theme_font_override("font", _heading_font)
-	_wrap(choices, RemakeText.t("Lead your company through eighteen battles."), 15, MUTED)
+	_wrap(choices, RemakeText.t("Build a company from three allods. Survive thirty battles."), 17, MUTED)
+	_wrap(choices, RemakeText.t("Starting gold: %d") % ArenaRules.OPENING_GOLD, 22, GOLD)
+	_wrap(choices, RemakeText.t("Buy your first creatures from the shop and place them on the battlefield."), 16, PAPER)
 	if _saved:
 		_button(choices, RemakeText.t("Continue · wave %d") % run.wave, func():
 			landing = false; run.auto_save = true; _refresh(), RemakeText.t("Resume your saved expedition with the same army and shop."), true)
-	for index in ArenaRules.STARTERS.size():
-		var rule: Dictionary = ArenaRules.STARTERS[index]
-		var button := _button(choices, "", func(): _choose_starter(index), RemakeText.t(rule.help))
-		button.custom_minimum_size.y = 88
-		button.toggle_mode = true
-		var inside := _margin(button, 12)
-		inside.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		inside.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var text := VBoxContainer.new()
-		text.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		text.add_theme_constant_override("separation", 6)
-		inside.add_child(text)
-		_label(text, RemakeText.t(rule.name), 21, PAPER)
-		var roles: Array[String] = []
-		for family: int in rule.families: roles.append(RemakeText.t(ArenaRules.FAMILIES[family].role))
-		_wrap(text, " · ".join(roles), 13, MUTED)
-		_starter_buttons.append(button)
-	var fill := Control.new()
-	fill.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	choices.add_child(fill)
+	_rule(choices)
 	_challenge = OptionButton.new()
 	var maximum := int(ArenaRun.profile().get("challenge", 0))
 	for text: String in ["Standard expedition", "Veteran expedition", "Champion expedition"]:
 		_challenge.add_item(RemakeText.t(text))
 	for i in 3: _challenge.set_item_disabled(i, i > maximum)
-	_challenge.custom_minimum_size.y = 36
+	_challenge.custom_minimum_size.y = 40
 	_challenge.tooltip_text = RemakeText.t("Win an expedition to unlock the next difficulty.")
 	choices.add_child(_challenge)
 	_seed_input = LineEdit.new()
 	_seed_input.placeholder_text = RemakeText.t("Random seed")
 	_seed_input.tooltip_text = RemakeText.t("Optional: enter a whole number to replay the same shops and encounters.")
-	_seed_input.custom_minimum_size.y = 34
+	_seed_input.custom_minimum_size.y = 38
 	choices.add_child(_seed_input)
-	var company := VBoxContainer.new()
-	company.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	company.size_flags_stretch_ratio = 1.45
-	company.add_theme_constant_override("separation", 18)
-	columns.add_child(company)
-	_landing_models = HBoxContainer.new()
-	_landing_models.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_landing_models.add_theme_constant_override("separation", 14)
-	company.add_child(_landing_models)
-	_landing_description = _wrap(company, "", 17, PAPER)
-	_landing_description.custom_minimum_size.y = 52
-	_rule(company)
-	_label(company, RemakeText.t("Three creatures · 6 gold · 3 lives"), 15, MUTED)
-	_landing_start = _button(company, RemakeText.t("Begin expedition"), func():
+	_landing_start = _button(choices, RemakeText.t("Begin expedition"), func():
 		if not _seed_input.text.strip_edges().is_empty() and not _seed_input.text.strip_edges().is_valid_int():
 			_feedback(RemakeText.t("Enter a whole number for the seed."))
 		elif _saved: _confirm_new_run()
-		else: _begin(_pending_starter), RemakeText.t("Choose a new starter army and begin another run."), true)
+		else: _begin(), "", true)
 	_landing_start.custom_minimum_size.y = 52
 	_landing_start.add_theme_font_size_override("font_size", 20)
-	_choose_starter(_pending_starter)
+	_layout_landing.call_deferred()
 
 
-func _choose_starter(index: int) -> void:
-	_pending_starter = index
-	for i in _starter_buttons.size():
-		_starter_buttons[i].set_pressed_no_signal(i == index)
-		_starter_buttons[i].add_theme_stylebox_override("normal", ArenaCreatureCard.style(Color("272e23"), GOLD if i == index else Color("4b5143")))
-	_clear(_landing_models)
-	var rule: Dictionary = ArenaRules.STARTERS[index]
-	_landing_description.text = RemakeText.t(rule.help)
-	for family: int in rule.families:
-		var id := ArenaRules.prototype(family, 0)
-		var box := VBoxContainer.new()
-		box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		_landing_models.add_child(box)
-		var preview := WikiPreview.new()
-		preview.fit_slot = true
-		preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		preview.custom_minimum_size = Vector2(100, 180)
-		box.add_child(preview)
-		preview.show_model({"kind": "creature", "value": id})
-		preview.turn_by(-0.35)
-		var title := _wrap(box, ArenaRules.title(id), 17, PAPER)
-		title.custom_minimum_size.y = 48
-		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		var role := _label(box, RemakeText.t(ArenaRules.FAMILIES[family].role), 13, GOLD)
-		role.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+func _layout_landing() -> void:
+	if not is_instance_valid(_landing_panel): return
+	_landing_panel.size = Vector2(560, 0)
+	_landing_panel.position = (_landing_layer.size - _landing_panel.size) / 2
 
 
-func _begin(starter_index: int) -> void:
+func _begin() -> void:
 	var value := _seed_input.text.strip_edges()
 	if not value.is_empty() and not value.is_valid_int():
 		_feedback(RemakeText.t("Enter a whole number for the seed."))
@@ -651,7 +603,7 @@ func _begin(starter_index: int) -> void:
 	_saved = false
 	_clear_selection()
 	run.auto_save = true
-	run.begin(chosen, starter_index, challenge_index)
+	run.begin(chosen, 0, challenge_index)
 	_hint("")
 
 
@@ -662,7 +614,7 @@ func _build_result() -> void:
 	var title := _wrap(_dock, RemakeText.t(text), 42, GOLD if won else PAPER)
 	title.add_theme_font_override("font", _heading_font)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var encounter := _wrap(_dock, RemakeText.t("Wave %d/%d · %s") % [run.wave, ArenaRules.WAVE_COUNT, RemakeText.t(ArenaRules.WAVES[run.wave - 1][0])], 16, MUTED)
+	var encounter := _wrap(_dock, RemakeText.t("Wave %d/%d · %s") % [run.wave, run.wave_limit, RemakeText.t(ArenaRules.WAVES[run.wave - 1][0])], 16, MUTED)
 	encounter.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_rule(_dock)
 	var reward := HBoxContainer.new()
@@ -679,6 +631,12 @@ func _build_result() -> void:
 	if run.stage == "lost": pass
 	elif not won: _wrap(_dock, RemakeText.t("Your company has recovered. Regroup and face this wave again."), 16)
 	if run.stage == "won": _wrap(_dock, RemakeText.t("The ruins are yours.") if run.challenge == 2 else RemakeText.t("A harder expedition awaits."), 16)
+	if won and run.wave < run.wave_limit:
+		var arriving: Array[String] = []
+		for family: Dictionary in ArenaRules.FAMILIES:
+			if int(family.get("unlock", 1)) == run.wave + 1: arriving.append(RemakeText.t(family.name))
+		if not arriving.is_empty():
+			_wrap(_dock, RemakeText.t("New recruits: %s") % ", ".join(arriving), 16, GOLD)
 	var action: Button
 	if run.stage in ["won", "lost"]:
 		action = _button(_dock, RemakeText.t("New expedition"), func(): landing = true; _saved = false; _clear_selection(); _refresh(), "", true)
@@ -714,7 +672,7 @@ func _build_rewards() -> void:
 			title = RemakeText.t(rule.name)
 			help = RemakeText.t(rule.help)
 			id = rule.forms[0]
-		elif reward.kind == "pact_upgrade": id = ArenaRules.PACTS[run.pact].forms[run.pact_rank + 1]
+		elif reward.kind == "pact_upgrade": id = run.pact_prototype(run.pact_rank + 1)
 		elif reward.kind == "companion": id = reward.prototype
 		_wrap(box, title, 21, GOLD).custom_minimum_size.y = 52
 		if not id.is_empty():
@@ -730,7 +688,7 @@ func _build_rewards() -> void:
 			spacer.custom_minimum_size.y = 44
 			box.add_child(spacer)
 		_wrap(box, help, 15, MUTED).custom_minimum_size.y = 100
-		var action := _button(box, RemakeText.t("Choose pact" if choosing_pact else "Choose reward"), func(): _feedback(run.choose_reward(index)), help, true)
+		var action := _button(box, RemakeText.t("Choose pact" if choosing_pact else "Choose reward"), func(): _choose_reward(index), help, true)
 		action.name = "ChooseReward"
 		if not id.is_empty():
 			action.tooltip_text += "\n\n" + ArenaUnitInfo.summary(id)
@@ -769,13 +727,14 @@ func _show_company() -> void:
 		_wrap(_inspect_box, RemakeText.t(rule.help), 14, MUTED)
 		var present := run.pact_families()
 		for family: int in rule.families:
+			if int(ArenaRules.FAMILIES[family].get("unlock", 1)) > run.wave: continue
 			var state := RemakeText.t("Ready") if family in present else RemakeText.t("Not contributing")
 			_wrap(_inspect_box, "%s · %s" % [RemakeText.t(ArenaRules.FAMILIES[family].name), state], 13, PAPER if family in present else MUTED)
 		_creature_preview(_inspect_box, run.pact_prototype(), 90)
 		_wrap(_inspect_box, ArenaRules.title(run.pact_prototype()), 17, GOLD)
 		_wrap(_inspect_box, RemakeText.t("Your pact ally needs no army slot. It leaves when the pact is inactive."), 13, MUTED)
 		if run.pact_rank < 2:
-			_wrap(_inspect_box, RemakeText.t("Improve your pact ally at the camps after waves 9 and 15, or take another reward."), 13, MUTED)
+			_wrap(_inspect_box, RemakeText.t("Strengthen your pact at camp. As new allods join the hunt, a stronger ally answers its call."), 13, MUTED)
 	if not run.boons.is_empty():
 		_rule(_inspect_box)
 		_label(_inspect_box, RemakeText.t("Expedition upgrades"), 17, GOLD)
@@ -836,6 +795,7 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 	var rank := int(entry.get("rank", ArenaUnitInfo.rank_of(id)))
 	if family >= 0:
 		_wrap(_inspect_box, "%s · %s" % [RemakeText.t(ArenaRules.FAMILIES[family].name), RemakeText.t(ArenaRules.FAMILIES[family].role)], 13, MUTED)
+		_wrap(_inspect_box, ArenaRules.region_name(int(ArenaRules.FAMILIES[family].get("region", 0))), 13, MUTED)
 	if rank >= 0:
 		var stars := Control.new()
 		stars.custom_minimum_size.y = 12
@@ -1001,12 +961,12 @@ func _guide() -> void:
 	content.add_theme_constant_override("separation", 12)
 	_guide_scroll.add_child(content)
 	var topics := [
-		["Economy", "Clear a wave for 5 gold, plus 1 for victory. Savings and winning streaks increase that reward. Spend gold on recruits, shop improvements or training. Failed attempts grant no income."],
+		["Economy", "Each victory pays a bounty, plus interest on savings and a winning-streak bonus. Bounties rise as stronger recruits arrive. Failed attempts grant no income."],
 		["Recruitment", "Recruits join your reserves. Improve the shop to find two- and three-star creatures."],
 		["Evolution", "Collect matching creatures to evolve them. Stars mark each stronger form. The creature details show how many you need."],
 		["Your army", "Select a creature, then its place on the field. Select a reserve, then an ally to swap them. An empty reserve slot withdraws a creature. Select a creature to reveal the sell area."],
 		["Battle", "Both teams fight under AI control. Hover a creature for details. Space pauses combat; the speed control switches between normal and double speed."],
-		["Company", "Visit camp every three victories to choose a pact, improve an ally or take an expedition upgrade. Win all 18 waves to unlock harder expeditions."]]
+		["Company", "Visit camp every three victories. Choose a pact, a new ally or supplies. Win all thirty waves to unlock harder expeditions."]]
 	for topic in topics:
 		_label(content, RemakeText.t(topic[0]), 18, GOLD)
 		_wrap(content, RemakeText.t(topic[1]), 15, PAPER)
@@ -1022,6 +982,7 @@ func _feedback(error: String) -> void:
 
 
 func _hint(value: String) -> void:
+	if value.is_empty() and not landing and run.stage == "prepare" and run.army.is_empty(): value = RemakeText.t("Recruit your first creature.")
 	if _message:
 		_message.text = value
 		_message.add_theme_color_override("font_color", MUTED)
@@ -1083,11 +1044,44 @@ func _rule(parent: Node) -> void:
 
 func _recruit_offer(index: int) -> void:
 	var uid := run.next_uid
+	var before := run.army.duplicate(true)
 	var error := run.buy(index)
 	_feedback(error)
 	if error.is_empty():
-		if not run.last_evolutions.is_empty(): _clear_selection()
+		if not run.last_evolutions.is_empty():
+			_clear_selection()
+			var events: Array[Dictionary] = []
+			var seen := {}
+			for evolved_uid in run.last_evolutions:
+				if seen.has(evolved_uid): continue
+				seen[evolved_uid] = true
+				var entry := run.unit(evolved_uid)
+				for old: Dictionary in before:
+					if old.uid == evolved_uid:
+						events.append({"uid": evolved_uid, "from": old.prototype, "to": entry.prototype, "old_rank": old.rank, "rank": entry.rank})
+			_evolution_notice.present(events)
 		elif not run.unit(uid).is_empty(): _select(uid)
+
+
+func _choose_reward(index: int) -> void:
+	var previous := run.pact_prototype()
+	var rank := run.pact_rank
+	var error := run.choose_reward(index)
+	_feedback(error)
+	if error.is_empty() and not previous.is_empty() and previous != run.pact_prototype():
+		_evolution_notice.present([{"uid": 0, "from": previous, "to": run.pact_prototype(), "old_rank": rank, "rank": run.pact_rank}])
+
+
+func _highlight_evolution(event: Dictionary) -> void:
+	if _sound: _sound.ui("buttons\\camp\\perk.wav")
+	field.evolution_pulses[int(event.uid)] = 1.6
+	for button: Button in _army_row.get_children():
+		if int(button.get_meta("arena_creature", {}).get("uid", -1)) != int(event.uid): continue
+		var glow := ArenaCreatureCard.style(Color(GOLD, 0.12), GOLD, Vector2(3, 3))
+		button.add_theme_stylebox_override("normal", glow)
+		var tween := button.create_tween().set_parallel()
+		tween.tween_property(glow, "border_color:a", 0.0, 1.6)
+		tween.tween_property(glow, "bg_color:a", 0.0, 1.6)
 
 
 func _return_to_reserves() -> void:
@@ -1119,6 +1113,7 @@ func _layout_hud() -> void:
 	if _army_row and not run.army.is_empty(): _build_army()
 	_layout_outcome()
 	_layout_modal()
+	_layout_landing()
 	if _tooltips: _tooltips.capture(_hud)
 
 
@@ -1216,7 +1211,7 @@ func _menu_action(id: int) -> void:
 
 func _show_menu() -> void:
 	if _modal_layer.visible: _close_modal(); return
-	_open_modal(RemakeText.t("Trials of Gipath"))
+	_open_modal(RemakeText.t("Trials of the Allods"))
 	_menu_items.clear()
 	_button(_modal_box, RemakeText.t("Return to battle" if run.stage == "fight" else "Continue"), _close_modal, "", true).grab_focus()
 	for pair in [[5, "Train your company"], [3, "Auto arrange"], [4, "Undo"], [0, "Guide"]]:
@@ -1247,15 +1242,22 @@ func _show_recruitment() -> void:
 	for level in 3:
 		var words := ["1 star: 100%", "1 star: 70% · 2 stars: 30%", "1 star: 45% · 2 stars: 45% · 3 stars: 10%"]
 		_wrap(_modal_box, RemakeText.t("Shop %d") % (level + 1) + "  ·  " + RemakeText.t(words[level]), 16, GOLD if level == run.shop_level else MUTED)
-	_wrap(_modal_box, RemakeText.t("Two-star recruits cost 3 more gold; three-star recruits cost 8 more. Toads reach their final form at two stars."), 14, MUTED)
+	_wrap(_modal_box, RemakeText.t("Stars show evolution within a family. Some families have two forms. Later recruits are stronger and cost more."), 14, MUTED)
+	_rule(_modal_box)
+	for milestone in [10, 13, 19]:
+		var names: Array[String] = []
+		for family: Dictionary in ArenaRules.FAMILIES:
+			if int(family.get("unlock", 1)) == milestone: names.append(RemakeText.t(family.name))
+		_wrap(_modal_box, RemakeText.t("Wave %d · %s") % [milestone, ", ".join(names)], 14, GOLD if run.wave >= milestone else MUTED)
 	if run.shop_level < 2:
 		var action := _button(_modal_box, RemakeText.t("Upgrade · %d gold") % run.shop_upgrade_cost(), func():
 			var error := run.upgrade_shop()
 			if error.is_empty(): _close_modal()
 			_feedback(error), RemakeText.t("Includes a refresh. Cannot be undone."), true)
 		action.name = "UpgradeRecruitment"
-		action.disabled = run.gold < run.shop_upgrade_cost()
-		if action.disabled: _label(_modal_box, RemakeText.t("Not enough gold."), 15, MUTED)
+		var error := run.spending_error(run.shop_upgrade_cost())
+		action.disabled = not error.is_empty()
+		if action.disabled: _wrap(_modal_box, error, 15, MUTED)
 	else:
 		_label(_modal_box, RemakeText.t("Recruitment is fully upgraded."), 16, GOLD)
 
@@ -1267,7 +1269,7 @@ func _confirm_new_run() -> void:
 	actions.add_theme_constant_override("separation", 12)
 	_modal_box.add_child(actions)
 	_button(actions, RemakeText.t("Cancel"), _close_modal, "").size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_button(actions, RemakeText.t("Begin expedition"), func(): _close_modal(); _begin(_pending_starter), "", true).size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_button(actions, RemakeText.t("Begin expedition"), func(): _close_modal(); _begin(), "", true).size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 
 func _world_hint(_control: Control) -> Dictionary:
@@ -1309,7 +1311,7 @@ func _show_training() -> void:
 	_open_modal(RemakeText.t("Train your company"), 500)
 	_wrap(_modal_box, RemakeText.t("Army capacity: %d") % run.capacity(), 22, GOLD)
 	_wrap(_modal_box, RemakeText.t("Experience %d/%d") % [run.experience(), ArenaRules.MAX_TRAINING], 16)
-	_wrap(_modal_box, RemakeText.t("Each cleared wave grants 1 experience. Every 3 experience adds an army slot, up to 7."), 16, MUTED)
+	_wrap(_modal_box, RemakeText.t("Each cleared wave grants 1 experience. Every 3 experience adds an army slot, up to 9."), 16, MUTED)
 	if run.experience() < ArenaRules.MAX_TRAINING:
 		_wrap(_modal_box, RemakeText.t("Train now to field one more creature in the next battle."), 16)
 		var train := _button(_modal_box, RemakeText.t("Train · %d gold") % ArenaRules.TRAINING_COST, func():
@@ -1317,7 +1319,9 @@ func _show_training() -> void:
 			if error.is_empty(): _close_modal()
 			_feedback(error), "", true)
 		train.name = "TrainArmy"
-		train.disabled = run.gold < ArenaRules.TRAINING_COST
+		var error := run.spending_error(ArenaRules.TRAINING_COST)
+		train.disabled = not error.is_empty()
+		if train.disabled: _wrap(_modal_box, error, 15, MUTED)
 	else:
 		_wrap(_modal_box, RemakeText.t("Your army is at full strength."), 16, GOLD)
 

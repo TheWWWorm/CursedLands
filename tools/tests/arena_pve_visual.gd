@@ -1,4 +1,5 @@
 extends Node
+const Fixture = preload("arena_fixture.gd")
 ## Rendered courtyard checks and captures; run with a desktop renderer.
 
 var checks := 0
@@ -31,7 +32,8 @@ func _ready() -> void:
 	add_child(screen)
 	await frames()
 	screen._seed_input.text = "6519"
-	screen._begin(0)
+	screen._begin()
+	Fixture.buy_company(screen.run)
 	screen.run.auto_save = false
 	screen.run.wave = 4
 	screen.run.pact = "vanguard"

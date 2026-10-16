@@ -121,7 +121,7 @@ func _ready() -> void:
 	_campaign_bar.add_child(_arena_button)
 	_arena_pve_button = Button.new()
 	_arena_pve_button.text = RemakeText.t("PvE expedition")
-	_arena_pve_button.tooltip_text = RemakeText.t("Build an army, evolve your creatures and survive eighteen waves.")
+	_arena_pve_button.tooltip_text = RemakeText.t("Recruit creatures from Gipath, Ingos and Suslanger. Survive thirty battles.")
 	_arena_pve_button.custom_minimum_size = Vector2(220, 40)
 	_arena_pve_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	CampaignChoices.style_button(_arena_pve_button)

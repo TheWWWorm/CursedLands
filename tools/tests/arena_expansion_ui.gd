@@ -1,4 +1,5 @@
 extends Node
+const Fixture = preload("arena_fixture.gd")
 ## Rendered regression for real viewport scaling, body picking and combat feedback.
 ## Run with an X/Wayland display at least as large as the requested resolution.
 ## Saves per-state PNGs; each language/resolution runs in a fresh process.
@@ -76,7 +77,7 @@ func _ready() -> void:
 	await frames(15)
 	var tag := "%s-%d" % [lang,dimensions.x]
 	await shot(tag+"-landing")
-	screen._seed_input.text="6519";screen._begin(1);screen.run.auto_save=false
+	screen._seed_input.text="6519";screen._begin();Fixture.buy_company(screen.run, 1);screen.run.auto_save=false
 	await frames(12)
 	var uid := int(screen.run.army[2].uid)
 	var bat := body(uid)
@@ -159,7 +160,7 @@ func _ready() -> void:
 	bounded(screen._rail,"localized orc details")
 	await shot(tag+"-expanded")
 	# Final native hit resolves the encounter, then the battlefield gets a beat.
-	screen.run.begin(6519,1);await frames()
+	Fixture.begin(screen.run, 6519,1);await frames()
 	screen._fight();screen.battle.set_process(false)
 	for tick in 1800:
 		if screen.battle.phase != ArenaMatch.Phase.FIGHT:break

@@ -1,4 +1,5 @@
 extends Node
+const Fixture = preload("arena_fixture.gd")
 ## Real controls and pointer coordinates, with per-language rendered captures.
 
 var checks := 0
@@ -87,19 +88,20 @@ func _ready() -> void:
 		add_child(screen)
 		await frames(8)
 		check(screen.landing, lang + " starts on team selection")
-		check(screen._landing_models.get_child_count() == 3, lang + " previews all three team members")
+		check(is_instance_valid(screen._landing_panel), lang + " explains an empty purchased company")
 		await shot(lang + "-landing")
 		screen._seed_input.text = "6519"
 		await click(screen._landing_start.get_global_rect().get_center())
 		await frames()
 		if screen.landing and screen._modal_layer.visible:
 			screen._close_modal()
-			screen._begin(screen._pending_starter)
+			screen._begin()
 			await frames()
 		check(not screen.landing and screen.run.stage == "prepare", lang + " start button creates run")
 		if screen.landing:
 			get_tree().quit(1)
 			return
+		Fixture.buy_company(screen.run)
 		screen.run.auto_save = false
 		check(screen.field.camera.get_camera_transform().origin != Vector3.ZERO, lang + " actual camera projection")
 		var uid := int(screen.run.army[0].uid)
@@ -111,6 +113,11 @@ func _ready() -> void:
 		await click(screen.field.global_position + screen.field.screen_point(destination))
 		check(Vector2(screen.run.unit(uid).point[0], screen.run.unit(uid).point[1]).distance_to(destination) < 0.15, lang + " pointer repositions selected fighter")
 		screen._clear_selection()
+		# This purchase becomes the second boar for the later evolution check;
+		# its identity must not depend on changes to the seeded opening shuffle.
+		screen.run.shop[0] = {"family": 0, "rank": 0, "locked": false}
+		screen.run._touch()
+		await frames()
 		var before := screen.run.army.size()
 		var offer: ArenaCreatureCard = screen._shop.get_child(0).get_child(0)
 		var price: Label = offer.find_children("*", "Label", true, false).filter(func(n): return n.text == str(offer.cost))[0]
@@ -218,7 +225,7 @@ func _ready() -> void:
 		reward_bounds(lang)
 		await shot(lang + "-pact-upgrade")
 		await click((reward_buttons()[0] as Button).get_global_rect().get_center())
-		check(screen.run.pact_rank == 1 and screen.run.pact_prototype() == "orcfemalea5", lang + " camp upgrades to native support form")
+		check(screen.run.pact_rank == 1 and screen.run.pact_prototype() == "batlightm9", lang + " Ingos camp upgrades to native regional support")
 		screen.run.boons.assign(["scout", "reserve"])
 		screen.run._roll_shop(false)
 		while screen.run.bench_count() < screen.run.bench_limit(): screen.run._recruit(3, 0, 3)
@@ -231,20 +238,30 @@ func _ready() -> void:
 		screen.run.wave = 15; screen.run.stage = "result"; screen.run.last_result.wave = 15
 		screen.run.advance()
 		await frames()
-		check(reward_buttons().size() == 2, lang + " exhausted boon pool presents two distinct choices")
+		check(reward_buttons().size() == 3, lang + " exhausted boon pool offers a companion beside pact and gold")
 		reward_bounds(lang)
-		await shot(lang + "-two-choice-camp")
+		await shot(lang + "-full-boon-camp")
 		var field_unit: GameUnit = screen.battle.world.unit_rows()[0]
 		screen.field.creature_clicked.emit(field_unit)
 		check(not screen._rail.visible, lang + " camp does not open creature details behind its choices")
 		await click((reward_buttons()[0] as Button).get_global_rect().get_center())
-		check(screen.run.pact_rank == 2 and screen.run.pact_prototype() == "orcfemalea7", lang + " final pact upgrade works with full reserves")
+		check(screen.run.pact_rank == 2 and screen.run.pact_prototype() == "batlightm10", lang + " final pact upgrade works with full reserves")
 		await hover(screen._army_title.get_global_rect().get_center())
 		await shot(lang + "-company-final")
 		screen._clear_selection()
+		screen.run.wave = 24; screen.run.stage = "result"; screen.run.last_result.wave = 24
+		screen.run.advance()
+		await frames()
+		check(reward_buttons().size() == 2, lang + " completed pact and boons leave two useful camp choices")
+		check(screen.run.rewards[0].prototype == "octopushadaganm15", lang + " late camp offers native Suslanger companion")
+		reward_bounds(lang)
+		await shot(lang + "-late-camp")
+		await click((reward_buttons()[0] as Button).get_global_rect().get_center())
+		check(screen.run.wave == 25 and screen.run.army.back().prototype == "octopushadaganm15", lang + " late companion reaches a full reserve through overflow")
+		screen._clear_selection()
 		screen.run.stage = "won"
-		screen.run.wave = 18
-		screen.run.last_result.wave = 18
+		screen.run.wave = ArenaRules.WAVE_COUNT
+		screen.run.last_result.wave = ArenaRules.WAVE_COUNT
 		screen.run._touch()
 		await frames()
 		check(screen._outcome.visible and not screen._shop_section.visible, lang + " completed expedition presentation")

@@ -1,5 +1,6 @@
 class_name ArenaPveField
 extends ArenaField
+var evolution_pulses := {}
 
 var show_markers := true
 var _old_ambient := Color.WHITE
@@ -53,11 +54,11 @@ func _build_stage() -> void:
 	stage.add_child(sun)
 	# Original figure/terrain materials use native light uniforms, not just
 	# Godot's environment. A fixed afternoon keeps every run equally readable.
-	Gfx.update_original(environment.environment, sun, EILights.load_for("Gipat", false), 14.0, false)
-	# A warm clearing against cool shade. Apply the same palette to native
+	Gfx.update_original(environment.environment, sun, EILights.load_for("Ingos", false), 14.0, false)
+	# Cold daylight over the snowy courtyard. Apply the same palette to native
 	# figures and the Godot paving, after the original-light defaults above.
-	var shade := Color(0.46, 0.49, 0.48)
-	var daylight := Color(1.0, 0.94, 0.84)
+	var shade := Color(0.45, 0.50, 0.59)
+	var daylight := Color(0.88, 0.94, 1.0)
 	Gfx.set_light(shade, daylight)
 	environment.environment.ambient_light_color = shade
 	sun.light_color = daylight
@@ -86,6 +87,9 @@ func reset_camera() -> void:
 
 func _process(delta: float) -> void:
 	super._process(delta)
+	for uid in evolution_pulses.keys():
+		evolution_pulses[uid] -= delta
+		if evolution_pulses[uid] <= 0: evolution_pulses.erase(uid)
 	_shadow_poll -= delta
 	if _shadow_poll > 0 or match_state == null or not is_instance_valid(match_state.world): return
 	_shadow_poll = ContactShadows.SCAN
@@ -119,6 +123,21 @@ func _draw_overlay() -> void:
 		corners.append(corners[0])
 		overlay.draw_polyline(corners, Color(BLUE, 0.32), 1, true)
 	super._draw_overlay()
+	if match_state == null or not is_instance_valid(match_state.world): return
+	for unit: GameUnit in match_state.world.unit_rows():
+		var placement: Dictionary = unit.get_meta("arena_placement", {})
+		var uid := int(placement.get("run_uid", 0))
+		if uid == 0 and not placement.has("pact"): continue
+		if not evolution_pulses.has(uid): continue
+		var remaining: float = evolution_pulses[uid]
+		var color := Color(ArenaCreatureCard.GOLD, minf(1, remaining))
+		var rects := unit_rects(unit)
+		if not rects.is_empty(): _selection_corners(Rect2(rects[0]).grow((6 + (1.6 - remaining) * 4) * ui_scale), color)
+		var center := health_anchor(unit) - Vector2(0, 32) * ui_scale
+		var radius := (13 + (1.6 - remaining) * 10) * ui_scale
+		for i in 8:
+			var direction := Vector2.from_angle(TAU * i / 8)
+			overlay.draw_line(center + direction * radius, center + direction * (radius + 5 * ui_scale), color, ui_scale, true)
 
 
 func _update_camera() -> void:

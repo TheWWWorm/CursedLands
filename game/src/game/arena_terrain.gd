@@ -1,9 +1,7 @@
 class_name ArenaTerrain
 extends RefCounted
-## Authored clearing surrounded by Gipath ruins. The atlas and figure assets
+## Authored clearing surrounded by snow-covered Ingos ruins. The atlas and figure assets
 ## come from the installed game. This does not load any campaign scripts.
-
-static var _paving_edge_shader: Shader
 
 class Sectors extends EIResArchive:
 	var files := {}
@@ -12,15 +10,15 @@ class Sectors extends EIResArchive:
 
 
 static func create(rendered := true) -> EITerrain:
-	var source := EIResArchive.open_path(GameData.root.path_join("maps/basegipat.mpr"))
+	var source := EIResArchive.open_path(GameData.root.path_join("maps/zone11.mpr"))
 	if source == null: return null
-	var header := source.read("basegipat.mp").duplicate()
+	var header := source.read("zone11.mp").duplicate()
 	if header.size() < 38: return null
 	header.encode_u32(8, 2); header.encode_u32(12, 2)
 	header.encode_float(4, 8.0)
-	var ground := EITerrain.new()
+	var ground := ArenaWinterTerrain.new()
 	ground.map_name = "arena_courtyard"
-	ground.resource_prefix = "basegipat"
+	ground.resource_prefix = "zone11"
 	if not ground._parse_header(header):
 		ground.free()
 		return null
@@ -43,21 +41,12 @@ static func create(rendered := true) -> EITerrain:
 				for x in 16:
 					var gx := sx * 16 + x
 					var gy := sy * 16 + y
-					var tile := 0
-					var distance := Vector2(gx - 15.5, gy - 15.5).length()
-					# Broken paving and encroaching grass form an old circular
-					# courtyard. Native transition tiles soften the perimeter.
-					if distance < 5.6:
-						tile = 6
-					elif distance < 7.5:
-						tile = 49 + (gx * 3 + gy * 5) % 15
-					elif gy in [15, 16] and gx > 4 and gx < 27:
-						tile = 6
-					else:
-						tile = (gx * 3 + gy * 7) % 6
+					# The first two Ingos atlas tiles are uninterrupted snow. Using
+					# their native surface type also enables winter ground details.
+					var tile := (gx * 3 + gy * 7) % 2
 					var code := tile | (((gx * 7 + gy * 3) % 4) << 14)
 					data.encode_u16(5 + 33 * 33 * 8 + (y * 16 + x) * 2, code)
-			archive.files["basegipat%03d%03d.sec" % [sx, sy]] = data
+			archive.files["zone11%03d%03d.sec" % [sx, sy]] = data
 			if not rendered:
 				ground._read_vertices(data, 5, sx, sy, true)
 				ground._record_ground(ground._read_u16s(data, 5 + 33 * 33 * 8), sx, sy)
@@ -68,43 +57,11 @@ static func create(rendered := true) -> EITerrain:
 		# Fade the distant woodland into the arena's dark backdrop. The native
 		# campaign profile is too broad for this compact, overhead field.
 		Gfx.set_border(ground.size_ei(), 8.0)
-		_add_paving(ground)
 	else:
 		ground.water_base = ground.water.duplicate()
 		ground.surface.fill(0)
 	ground.set_process(false)
 	return ground
-
-
-static func _add_paving(ground: EITerrain) -> void:
-	# Keep the playable stone opaque so SSAO reaches feet and ruin bases.
-	# Only the narrow outer apron needs transparency to blend into the grass.
-	# These five coplanar patches share UVs and never overlap.
-	var base_shader := preload("res://src/ui/arena_paving.gdshader")
-	if _paving_edge_shader == null:
-		_paving_edge_shader = Shader.new()
-		_paving_edge_shader.code = base_shader.code.replace("shader_type spatial;",
-			"shader_type spatial;\n#define ARENA_PAVING_EDGE")
-	var patches: Array[Rect2] = [Rect2(0.045, 0.045, 0.91, 0.91),
-		Rect2(0, 0, 1, 0.045), Rect2(0, 0.955, 1, 0.045),
-		Rect2(0, 0.045, 0.045, 0.91), Rect2(0.955, 0.045, 0.045, 0.91)]
-	for i in patches.size():
-		var rect := patches[i]
-		var paving := MeshInstance3D.new()
-		paving.name = "CourtyardPaving" if i == 0 else "CourtyardApron%d" % i
-		var mesh := PlaneMesh.new()
-		mesh.size = rect.size * 32.0
-		paving.mesh = mesh
-		paving.layers = 1 | EITerrain.DECAL_LAYER
-		var offset := (rect.get_center() - Vector2(0.5, 0.5)) * 32.0
-		paving.position = Vector3(32 + offset.x, 0.025, -32 + offset.y)
-		paving.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		var material := ShaderMaterial.new()
-		material.shader = base_shader if i == 0 else _paving_edge_shader
-		material.set_shader_parameter("paving", preload("res://assets/arena/courtyard-v2.png"))
-		material.set_shader_parameter("atlas_rect", Vector4(rect.position.x, rect.position.y, rect.size.x, rect.size.y))
-		paving.material_override = material
-		ground.add_child(paving)
 
 
 static func scenery(ground: EITerrain, parent: Node3D) -> Array[Node3D]:
@@ -116,16 +73,16 @@ static func scenery(ground: EITerrain, parent: Node3D) -> Array[Node3D]:
 		["stst13", "columnruins01", 48.0, 17.0, -0.1, 2.2],
 		["stst13", "columnruins01", 16.0, 47.0, -0.2, 1.3],
 		["stst13", "columnruins01", 48.0, 47.0, -0.2, -0.5],
-		["nast15", "stone02", 13.0, 25.0, -0.2, 0.5],
-		["nast16", "stone02", 50.5, 39.0, -0.3, 2.0],
-		["nast8", "stone02", 23.0, 48.0, -0.2, 1.0],
-		["nast8", "stone02", 40.0, 16.0, -0.2, 2.2],
-		["nafltr56", "tree02", 10.0, 18.0, -0.15, 1.1],
-		["nafltr56", "tree02", 53.0, 19.0, -0.15, 2.8],
-		["nafltr56", "tree02", 12.0, 45.0, -0.15, 3.0],
-		["nafltr56", "tree02", 53.0, 46.0, -0.15, 0.5],
-		["naflbu6", "tree02", 16.0, 37.0, 0.0, 0.2],
-		["naflbu6", "tree02", 46.0, 26.0, 0.0, 2.2],
+		["nast15", "stone03", 13.0, 25.0, -0.2, 0.5],
+		["nast16", "stone03", 50.5, 39.0, -0.3, 2.0],
+		["nast8", "stone03", 23.0, 48.0, -0.2, 1.0],
+		["nast8", "stone03", 40.0, 16.0, -0.2, 2.2],
+		["nafltr70", "tree03", 10.0, 18.0, -0.15, 1.1],
+		["nafltr70", "tree03", 53.0, 19.0, -0.15, 2.8],
+		["nafltr70", "tree03", 12.0, 45.0, -0.15, 3.0],
+		["nafltr70", "tree03", 53.0, 46.0, -0.15, 0.5],
+		["naflbu6", "tree03", 16.0, 37.0, 0.0, 0.2],
+		["naflbu6", "tree03", 46.0, 26.0, 0.0, 2.2],
 	]
 	for piece: Array in pieces:
 		var record := {"kind": "OBJECT", "template": piece[0], "texture": piece[1],
