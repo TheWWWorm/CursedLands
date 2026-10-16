@@ -32,7 +32,7 @@ func _ready() -> void:
 	check(panel.catalog == panel._catalogs[CampaignProfile.ASTRAL],"expansion campaign tab owns its catalogue")
 	var map: String = panel.catalog.search("","Maps")[0]
 	for key: String in panel.catalog.search("","Maps"):
-		if source.read(func(): return not panel.catalog.page(key).preview.is_empty()): map = key; break
+		if source.read(func(): return panel.catalog.page(key).preview.get("kind", "") == "map"): map = key; break
 	panel.navigate(map); await frames()
 	check(panel._preview.map_view != null and panel._preview.map_view.texture != null,"map tab shows original map artwork")
 	check(GameData.db == original.data.db and hash(GameData.db.tables)==hash_before,"alternate article and artwork leave gameplay data unchanged")

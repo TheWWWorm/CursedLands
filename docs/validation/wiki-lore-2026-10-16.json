@@ -1,0 +1,70 @@
+{
+  "scope": "Campaign-specific encyclopedia lore and original scenery illustrations; no release or publication.",
+  "languages": [
+    "en",
+    "ru",
+    "de"
+  ],
+  "campaigns": {
+    "cursed_lands": {
+      "characters": 45,
+      "allods": 3,
+      "maps": 36,
+      "new_location_introductions": 16
+    },
+    "lost_in_astral": {
+      "characters": 47,
+      "allods": 4,
+      "maps": 56,
+      "new_location_introductions": 18
+    }
+  },
+  "coverage": "Every original story dialogue speaker is covered; explicit exclusions are developer-credit/unused joke labels and one background battle cry.",
+  "provenance": "Paragraph source fingerprints validated against original archives. Modified scene test suppresses stale claims.",
+  "new_illustrations": {
+    "travel_maps": 7,
+    "location_scenes": 34
+  },
+  "image_audit": "All 99 character/allod articles and 92 map articles resolve an image in EN/RU/DE; existing model artwork remains byte-identical.",
+  "tests": {
+    "wiki_lore_base": 5718,
+    "wiki_lore_astral": 7011,
+    "wiki": 11207,
+    "wiki_features": 3403,
+    "wiki_quest_locales": 588,
+    "wiki_rework": 9987
+  },
+  "rendered_checks": {
+    "native_campaigns": [
+      "cursed_lands",
+      "lost_in_astral"
+    ],
+    "native_languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "native_viewports": [
+      "1440x900",
+      "480x800"
+    ],
+    "native_scene_loading": "Passed; database/root unchanged.",
+    "web_viewports": [
+      "1440x1000",
+      "390x844"
+    ],
+    "web_checks": [
+      "EN/RU/DE article rendering",
+      "No horizontal page overflow",
+      "Zak / At-Zako alias ranking",
+      "Campaign switch and Kir biography ranking",
+      "Allod-to-location navigation",
+      "Original scene image captions",
+      "No browser warnings or errors"
+    ],
+    "design_detector": "No findings on added world-illustration styles; existing stylesheet findings outside this change retained."
+  },
+  "compiler_reproducible": true,
+  "packaged_illustrations": 4287,
+  "follow_up": "wiki-lore-chronology-2026-10-16.json"
+}

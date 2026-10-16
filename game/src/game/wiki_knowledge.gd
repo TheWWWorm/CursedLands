@@ -11,6 +11,8 @@ var catalog: RefCounted:
 	get: return _catalog_ref.get_ref()
 
 const LABELS := {
+	"biography":"Character biography", "people":"Inhabitants", "person":"Related characters",
+	"region":"Locations", "model":"In-game models",
 	"carried":"Carried by", "equipped":"Equipped by", "cast":"Used by",
 	"material":"What uses it", "stock":"Potential trader stock", "location":"Found in",
 	"inhabitant":"Creatures and people", "item_location":"Recorded on this map",
@@ -160,6 +162,10 @@ func html(key: String) -> String:
 		if group.id in ["equipped","carried","item_location"]: out+=WikiCatalog.paragraph(RemakeText.t("Authored equipment and carried items are references, not guaranteed drops. Scripts and quest state can change availability."))
 		if group.id=="location": out+=WikiCatalog.paragraph(RemakeText.t("These locations come from original records. Scripts may move or hide a character."))
 		var rows := []
+		if group.id in ["biography", "people", "person", "region", "model"]:
+			for row: Dictionary in group.rows: rows.append([WikiCatalog.link(row.key,row.title)])
+			out += WikiCatalog.table_html([RemakeText.t("Related page")],rows)
+			continue
 		for row: Dictionary in group.rows: rows.append([WikiCatalog.link(row.key,row.title),WikiCatalog.esc(row.detail)])
 		out+=WikiCatalog.table_html([RemakeText.t("Related page"),RemakeText.t("Details")],rows)
 	return out

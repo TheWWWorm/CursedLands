@@ -14,6 +14,29 @@ Links connect maps, quests, materials, item variants, recipes,
 spells, runes, creature equipment and related mechanics. Back/Forward retain
 page history and scroll position; Alt+Left/Right also navigate history.
 
+**Characters** contains 45 biographies for Cursed Lands and 47 for Lost in
+Astral, including each protagonist, companions and minor speaking characters.
+**Allods** covers the three original islands and four expansion islands. These
+are campaign-specific accounts: reused script actor IDs do not identify the same
+person across campaigns. Zak's article includes his revealed identity and the
+German edition uses its original names Kiran and At-Kira. Search includes aliases
+and article prose. Character articles connect to their original models, locations
+and other characters; creature statistics retain their existing addresses.
+
+Story articles include spoilers, numbered source references and conditional
+wording for optional outcomes. Accusations, rumours and a character's own
+justifications are attributed. The sources are the original dialogue, quest
+journals, event scripts and world descriptions, with fingerprints for each supported edition. If an installed mod
+changes a source, the corresponding prose is withheld with a localized notice.
+The wiki never executes dialogue scripts to discover story events.
+
+The 34 named briefing locations now have written introductions and original
+scene illustrations. The public wiki renders these offline from original map scenery,
+framed around the authored location centres; they are not north-up maps and receive no position
+pins. Native readers can choose **View location** to load the scenery without a
+game world, session or script VM. Allod illustrations use the original travel-map
+models. Quest illustrations identify the associated location in their captions.
+
 Drag a model to turn it, use the wheel to zoom, or use its rotation, zoom and
 reset buttons. The buttons support touch and the game's controller pointer.
 With a controller, LB/RB navigate page history and LT/RT scroll the article.
@@ -45,6 +68,62 @@ camp inventory items provide contextual article links. They use the existing
 menu/pause flow and retain the selected item material and spell where available.
 
 ## Sources, uses and difficulty
+
+### Maintaining lore
+
+Edit `tools/wiki_lore_content.py` for identities and place introductions, and
+`tools/wiki_lore_history.py` for the ordered campaign histories. Each paragraph
+carries English, Russian and German text, its heading and original source IDs.
+`[[character/hero]]` and similar
+references resolve to the current campaign's localized article names. An optional
+label, such as `[[character/rick|Великому Магу]]`, keeps inflected prose grammatical. Do not
+copy a plot from another adaptation, promote rumours to facts, or fill unknown
+history with inference. Keep optional outcomes conditional.
+
+Order histories by the events' narrative prerequisites, checking the original
+dialogue, quest journals and trigger scripts; dialogue and quest numbers alone
+do not define chronology. For example, Zak's opening follows the fleeing
+villagers, village assembly and early errands before his meeting with Estera.
+Explain parallel investigations and optional companion adventures without
+claiming one mandatory order. A shared event appears only on the involved
+character, location and allod pages. Use `quest:<id>` for journal evidence in
+addition to dialogue IDs, `script:<mob-name>` for outcomes established by active
+map triggers, and `zone:<id>` for world descriptions. A conversation present in a
+text archive is not necessarily playable: verify its entry trigger before adding
+it to a biography. Exclude disabled proposals and developer jokes from the
+played history. Script evidence is read and fingerprinted without executing it.
+The source list
+labels these separately for readers. Long web articles have expandable contents.
+
+Run `tools/export_wiki_lore_evidence.gd` through the normal `--tool` entry point
+with `--lore-evidence=/private/path/<edition>-world.json` for the original EN/RU/DE
+editions and the Russian expansion. Name these private exports
+`base-en-world.json`, `base-ru-world.json`, `base-de-world.json` and
+`astral-ru-world.json`. Then run:
+
+```sh
+python3 tools/build_wiki_lore.py --evidence /private/path
+```
+
+The compiler validates sources, translations, references, prototypes and actor
+coverage, then writes `game/src/game/wiki_lore_data.gd`. Original archive text
+and scripts remain private; the generated resource contains authored prose,
+source fingerprints and model/location references. Object matching uses both
+actor names and the engine's numeric name IDs. Explicit placement exceptions
+prevent the generic shop actor `trader` from associating unrelated shopkeepers
+with Karansul. The only uncovered expansion speaker labels are developer-credit
+or unused joke scenes and a background soldier's battle cry; the alternate
+Wormface speaker label resolves to the same biography.
+
+Run `tools/tests/wiki_lore.gd` for each campaign. It reads the actual dialogue
+speaker inventory, checks every section against the installed sources in all
+three languages, validates links and images, and tests suppression after a
+source edit. `tools/tests/wiki_lore_visual.gd --wiki-capture=/private/path` produces
+rendered desktop and phone acceptance captures. Finish with the standard public
+wiki exporter, illustration exporter and `prepare_public_wiki.py` validation.
+Speaker coverage and matching source hashes do not establish that a biography
+is complete or that its events are correctly ordered: review the prose against
+the story separately, and record that editorial review alongside the checks.
 
 Articles link equipment to its wearers, carried items to creatures, materials to
 compatible crafts, quest items to their requirements or rewards, and creatures

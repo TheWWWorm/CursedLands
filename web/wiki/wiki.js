@@ -90,10 +90,10 @@ function search(resetScroll = false) {
   $('#item-filters').hidden = category !== 'Items';
   let ranked = catalog.entries.filter(row => row.listed !== false && !(row.kind==='spell'&&decodeURIComponent(row.key).includes('{')) &&
     (category==='All pages'||row.category===category)&&(category!=='Items'||!itemType||row.subcategory===itemType))
-    .map(row=>({row,rank:score(query,row.title,[row.search,row.subtitle,catalog.categories[row.category],strings[ITEM_TYPES[row.subcategory]?.[1]]].filter(Boolean).join(' '))}))
+    .map(row=>({row,rank:Math.max(score(query,row.title,[row.search,row.subtitle,catalog.categories[row.category],strings[ITEM_TYPES[row.subcategory]?.[1]]].filter(Boolean).join(' ')),...(row.aliases||[]).map(name=>score(query,name,'')))}))
     .filter(r=>r.rank>=0);
   if(ranked.some(r=>r.rank>=100))ranked=ranked.filter(r=>r.rank>=100);
-  const found=ranked.sort((a,b)=>b.rank-a.rank||a.row.title.localeCompare(b.row.title,lang)).map(r=>r.row);
+  const found=ranked.sort((a,b)=>b.rank-a.rank||(query.trim()?Number(b.row.kind==='character')-Number(a.row.kind==='character'):0)||a.row.title.localeCompare(b.row.title,lang)).map(r=>r.row);
   $('#status').textContent = found.length ? strings.matches.replace('{count}', found.length.toLocaleString(lang)) : strings.empty;
   const scroll = resetScroll ? 0 : $('#results').scrollTop;
   $('#results').replaceChildren(...found.map(row => {
@@ -159,11 +159,13 @@ function showVersion(id) {
   $('#variant').value = version.id;
   const content = article(version.html);
   content.id = 'article'; content.tabIndex = -1;
-  if(version.image&&entry.kind==='map')content.querySelector('h1').after(mapFigure(version,{strings,href}));
+  if(version.image&&entry.kind==='map'&&version.image_kind!=='scene')content.querySelector('h1').after(mapFigure(version,{strings,href}));
   else if(version.image){
     const figure=document.createElement('figure'),img=document.createElement('img'),caption=document.createElement('figcaption');
     img.src='/wiki/images/'+version.image+'.webp';img.alt=version.title;img.width=260;img.height=260;img.decoding='async';
-    caption.textContent=version.representative_image?strings.imageRepresentative:strings.image;figure.append(img,caption);content.querySelector('h1').after(figure);
+    caption.textContent=version.image_caption||(version.representative_image?strings.imageRepresentative:strings.image);
+    if(['scene','allod','map'].includes(version.image_kind)){figure.className='world-illustration';img.width=960;img.height=720;}
+    figure.append(img,caption);content.querySelector('h1').after(figure);
   }
   if(entry.subtitle){const sub=document.createElement('p');sub.className='article-subtitle';sub.textContent=entry.subtitle;content.querySelector('h1').after(sub);}
   if(version.guide){const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=strings.questHints;details.className='quest-guide';details.open=true;details.append(summary,article('<article>'+version.guide+'</article>'));content.append(details);}
@@ -177,7 +179,14 @@ function showVersion(id) {
   if(entry.key==='home')home(content);
   $('#toc').hidden=entry.key==='home'||entry.kind==='map'||isPlan;
   $('#toc').replaceChildren();
-  if(entry.key!=='home')for(const [i,h] of [...content.querySelectorAll('h2')].entries()){h.id='section-'+i;const a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent;$('#toc').append(a);}
+  const sections=[...content.querySelectorAll('h2')];
+  let contents=$('#toc');
+  if(sections.length>10){
+    const details=document.createElement('details'),summary=document.createElement('summary');
+    summary.textContent=strings.onThisPage;contents=document.createElement('div');contents.className='toc-sections';
+    details.append(summary,contents);$('#toc').append(details);
+  }
+  if(entry.key!=='home')for(const [i,h] of sections.entries()){h.id='section-'+i;const a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent;contents.append(a);}
   $('#article-heading').replaceChildren();
   if(entry.key!=='home'){const heading=content.querySelector('h1'),subtitle=content.querySelector('.article-subtitle');if(heading)$('#article-heading').append(heading);if(subtitle)$('#article-heading').append(subtitle);}
   $('.article-tools').hidden=entry.key==='home';
@@ -271,7 +280,7 @@ function home(content){
   const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;};
   content.replaceChildren(el('h1',strings.fieldGuide),el('p',strings.homeIntro,'home-intro'));
   const paths=el('div','','home-paths');
-  for(const [category,label,help] of [['Items','findEquipment','findEquipmentHelp'],['Maps','exploreMaps','exploreMapsHelp'],['Quests','followQuest','followQuestHelp'],['Spells','buildSpell','buildSpellHelp']]) {
+  for(const [category,label,help] of [['Characters','meetCharacters','meetCharactersHelp'],['Allods','discoverAllods','discoverAllodsHelp'],['Items','findEquipment','findEquipmentHelp'],['Maps','exploreMaps','exploreMapsHelp'],['Quests','followQuest','followQuestHelp'],['Spells','buildSpell','buildSpellHelp']]) {
     const a=el('a');a.href=href('home');a.dataset.category=category;
     const example=catalog.entries.find(e=>e.category===category&&e.listed!==false&&e.image);
     a.append(art(example||{category},72));

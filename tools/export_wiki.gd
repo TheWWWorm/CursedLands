@@ -80,7 +80,8 @@ func _ready() -> void:
 	for key: String in all_keys:
 		var entry: Dictionary = catalog.entries[key]
 		var file := key.sha256_text().substr(0, 20) + ".json"
-		var index_entry := {"key": key, "title": entry.title, "category": entry.category, "kind": entry.kind, "file": file, "search": "", "listed": not unlisted.has(key), "subtitle":catalog.knowledge.subtitles.get(key,"")}
+		var index_entry := {"key": key, "title": entry.title, "category": entry.category, "kind": entry.kind, "file": file, "search": catalog.lore.search_text(key), "listed": not unlisted.has(key), "subtitle":catalog.knowledge.subtitles.get(key,"")}
+		if entry.has("aliases"): index_entry.aliases = entry.aliases
 		if entry.kind == "item":
 			index_entry.fixed = fixed.has(entry.value)
 			index_entry.subcategory = item_subcategory(entry.value)
@@ -114,7 +115,12 @@ func _ready() -> void:
 				if GameData.campaign_id == CampaignProfile.ASTRAL: identity = GameData.campaign_id + ":" + identity
 				image = identity.sha256_text().substr(0, 24)
 				images[image] = preview
+			var caption := String(preview.get("caption", ""))
+			if preview.get("kind", "") == "allod": caption = RemakeText.t("Original travel map")
 			var output_page := {"id":choice,"title":title,"html":html,"image":image,"representative_image":preview.get("representative",false),"pins":page.pins,"guide":page.guide}
+			if preview.get("kind", "") in ["scene", "allod"] or entry.kind == "quest" and image:
+				output_page.image_kind = preview.kind
+			if caption: output_page.image_caption = caption
 			if image and not page_images.has(key):
 				page_images[key] = image
 				index_entry.image = image

@@ -161,6 +161,7 @@ func _ready() -> void:
 	_preview_box=VBoxContainer.new();_preview_box.add_theme_constant_override("separation",10);_content.add_child(_preview_box)
 	_model_title=Label.new();_model_title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;_model_title.add_theme_color_override("font_color",Color("637057"));_model_title.add_theme_font_size_override("font_size",13);_preview_box.add_child(_model_title)
 	_preview=WikiPreview.new();_preview.size_flags_vertical=Control.SIZE_EXPAND_FILL;_preview.article_requested.connect(func(key):navigate(key));_preview_box.add_child(_preview)
+	_preview.scene_requested.connect(func(): _unavailable.visible = not _source.read(_preview.load_scene))
 	_map_filters=HFlowContainer.new();_preview_box.add_child(_map_filters)
 	for pair: Array in [["exit","Exits"],["quest","Quest areas"],["inhabitant","Creatures"]]:
 		var check := CheckButton.new();check.text=RemakeText.t(pair[1]);check.button_pressed=_map_kinds[pair[0]];check.tooltip_text=RemakeText.t("Show authored map markers. Quest and creature positions may reveal spoilers.");check.toggled.connect(func(on):_map_kinds[pair[0]]=on;_preview.set_pins(_map_pins.filter(func(pin):return _map_kinds.get(pin.kind,false))));_map_filters.add_child(check)
@@ -361,12 +362,13 @@ func _navigate(key: String, remember: bool, variant: String) -> void:
 	_preview_box.visible = _has_preview
 	var available := _preview.show_model(page.preview)
 	var is_map: bool = page.preview.get("kind", "") == "map"
+	var is_scene: bool = page.preview.get("kind", "") == "scene"
 	_map_filters.visible=is_map
 	_map_pins=page.pins
 	_preview.set_pins(_map_pins.filter(func(pin): return _map_kinds.get(pin.kind,false)))
-	_model_title.text = RemakeText.t("Map overview") if is_map else RemakeText.t("3D preview")
-	_preview.tooltip_text = RemakeText.t("Drag to pan. Scroll to zoom.") if is_map else RemakeText.t("Drag to rotate. Scroll to zoom. The buttons also work with touch and a controller.")
-	for button: Button in _rotate_buttons: button.visible = not is_map
+	_model_title.text = RemakeText.t("Map overview") if is_map else RemakeText.t("Original location scene") if is_scene else RemakeText.t("3D preview")
+	_preview.tooltip_text = RemakeText.t("Scroll to zoom.") if is_scene else RemakeText.t("Drag to pan. Scroll to zoom.") if is_map else RemakeText.t("Drag to rotate. Scroll to zoom. The buttons also work with touch and a controller.")
+	for button: Button in _rotate_buttons: button.visible = not is_map and not is_scene
 	_unavailable.visible = not available
 	_representative.visible = available and page.preview.get("representative", false)
 	var is_spell: bool = catalog.entries[key].kind == "spell"
@@ -590,7 +592,7 @@ func _layout() -> void:
 	_assembly.vertical=available.x<1080
 	_workbench.custom_minimum_size.x=0
 	_workbench.size_flags_horizontal=Control.SIZE_EXPAND_FILL if _assembly.vertical else Control.SIZE_FILL
-	_model_title.text=_page_title.text if narrow and _narrow_preview else RemakeText.t("Map overview") if _map_filters.visible else RemakeText.t("3D preview")
+	_model_title.text=_page_title.text if narrow and _narrow_preview else RemakeText.t("Map overview") if _map_filters.visible else RemakeText.t("Original location scene") if _preview._descriptor.get("kind", "") == "scene" else RemakeText.t("3D preview")
 	if not crafting:_title.text=RemakeText.t("Game wiki") if narrow else "Cursed Lands · "+RemakeText.t("Game wiki")
 	var short := available.y / scale < 600
 	_body.vertical = narrow

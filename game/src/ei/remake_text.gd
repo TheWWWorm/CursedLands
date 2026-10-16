@@ -39,7 +39,7 @@ static func detect(texts: EIResArchive) -> String:
 static func t(en: String) -> String:
 	if lang == "en":
 		return en
-	var tr: Array = TEXTS.get(en, [])
+	var tr: Array = TEXTS.get(en, WikiLoreData.DATA.texts.get(en, []))
 	var i := 0 if lang == "ru" else 1
 	return String(tr[i]) if tr.size() > i and String(tr[i]) != "" else en
 

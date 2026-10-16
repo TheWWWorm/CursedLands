@@ -1,0 +1,163 @@
+{
+  "scope": "Expanded campaign histories for the shared game and web encyclopedia. Local revision; no release or publication.",
+  "supersedes": "wiki-lore-2026-10-16.json for prose and chronology validation; existing illustration assets are retained",
+  "languages": [
+    "en",
+    "ru",
+    "de"
+  ],
+  "coverage": {
+    "cursed_lands": {
+      "articles_by_language": {
+        "en": {
+          "map": 36,
+          "character": 45,
+          "allod": 3
+        },
+        "ru": {
+          "character": 45,
+          "map": 36,
+          "allod": 3
+        },
+        "de": {
+          "character": 45,
+          "map": 36,
+          "allod": 3
+        }
+      },
+      "resolved_links": 11952,
+      "authored_location_histories": 36,
+      "characters_with_ordered_events": 44,
+      "protagonist_story_sections": 28,
+      "protagonist_english_words_approx": 2780
+    },
+    "lost_in_astral": {
+      "articles_by_language": {
+        "en": {
+          "map": 56,
+          "character": 47,
+          "allod": 4
+        },
+        "ru": {
+          "character": 47,
+          "map": 56,
+          "allod": 4
+        },
+        "de": {
+          "character": 47,
+          "map": 56,
+          "allod": 4
+        }
+      },
+      "resolved_links": 18198,
+      "authored_location_histories": 50,
+      "characters_with_ordered_events": 43,
+      "protagonist_story_sections": 28,
+      "protagonist_english_words_approx": 2653
+    }
+  },
+  "editorial_review": {
+    "method": "Read original dialogue, quest journals and relevant trigger scripts to establish narrative prerequisites. Reviewed prose separately from structural coverage and source fingerprints.",
+    "base_opening": {
+      "sequence": [
+        "Awakening and fleeing villagers",
+        "River and ford to the village",
+        "Erfar and Gort at the village assembly",
+        "Sentry, White Wolf and Babur’s tools",
+        "Redhead, orc cave and Magic Bit",
+        "Estera and Airy"
+      ],
+      "evidence": [
+        "quest q0g",
+        "briefing s1",
+        "briefing s0",
+        "briefing v0",
+        "briefing s1_3",
+        "briefing s3",
+        "briefing m1",
+        "briefing m1_1",
+        "briefing m4",
+        "briefing m5_1",
+        "briefing m6",
+        "briefing z1",
+        "basecam opening trigger"
+      ]
+    },
+    "base_journey": "Expanded Gipath investigations, Observatory, rebellion, Erfar exposure, expedition captivity, Tka-Rik, Ingos investigation, Lu-a-Jalla, Suslanger escape, At-Zako investigation, identity restoration and final battle in narrative order. Parallel investigations and optional Airy/companion adventures are qualified in the prose.",
+    "expansion_journey": "Expanded escape and enslavement, Kel, estate and Feiruz, Last Shelter, enlistment, Gipath, Ingos murder investigation and Jigran war. Zara’s caravan outcomes remain conditional.",
+    "yam_akara": "The water-damaged pass is rejected. Crooked’s confession clears Yam-Akara, whose library research takes place during confinement.",
+    "kel": {
+      "finding": "The Rod of Life offers a conditional resurrection after three parts are collected. The completed reunion is represented, without claiming that every playthrough obtains it.",
+      "evidence": [
+        "briefing brief_345",
+        "briefing fq20",
+        "briefing fq21",
+        "bz31j three-part check and reunion branch"
+      ]
+    },
+    "bounded_profiles": "Pig, Master Arkhar, the fortune-teller, Uyka and Khabburu retain short descriptions grounded in their limited conversations. Six expansion locations retain their original world descriptions rather than invented story events.",
+    "limitation": "Speaker coverage and valid fingerprints do not by themselves prove exhaustive narrative coverage or correct chronology."
+  },
+  "automated_checks": {
+    "wiki_lore_base_en": {
+      "checks": 16917,
+      "failures": []
+    },
+    "wiki_lore_base_ru": {
+      "checks": 16917,
+      "failures": []
+    },
+    "wiki_lore_base_de": {
+      "checks": 16917,
+      "failures": []
+    },
+    "wiki_lore_astral_ru_with_en_ru_de_prose": {
+      "checks": 24084,
+      "failures": []
+    },
+    "wiki_quest_locales": {
+      "checks": 588,
+      "failures": []
+    },
+    "compiler_reproducible": true,
+    "public_exports": "Both campaigns exported and packaged in EN/RU/DE.",
+    "image_audit": "All 92 character, 7 allod and 92 location articles resolve illustrations in each language.",
+    "link_audit": "All 30,150 internal links in the packaged character, allod and map pages resolve; no unresolved authored-link markup.",
+    "ordered_sections": "Event sections retain unique, increasing narrative order within every associated article.",
+    "syntax_and_whitespace": [
+      "Python compilation",
+      "JavaScript syntax",
+      "git diff --check"
+    ]
+  },
+  "rendered_checks": {
+    "native_campaigns": [
+      "cursed_lands",
+      "lost_in_astral"
+    ],
+    "native_languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "native_capture_viewports": [
+      "1440x900",
+      "480x800"
+    ],
+    "native_behavior": "Readable protagonist text and responsive illustration controls; explicit location scenery loading preserves the database and data root.",
+    "web_viewports": [
+      "1440x1000",
+      "390x844"
+    ],
+    "web_checks": [
+      "EN/RU/DE long articles and localized names",
+      "Collapsed long contents lists with keyboard expansion",
+      "Chapter link reaches the expected heading",
+      "Campaign navigation and protagonist search",
+      "Allod history and original map image",
+      "No horizontal page overflow",
+      "No browser warnings or errors"
+    ]
+  },
+  "superseded_by": "wiki-lore-editorial-2026-10-16.json"
+}
