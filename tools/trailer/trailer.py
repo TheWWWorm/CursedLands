@@ -88,7 +88,7 @@ class Project:
     def probe_media(self, path, count=False):
         args = [self.ffprobe, "-v", "error", "-show_streams", "-show_format", "-of", "json"]
         if count:
-            args += ["-count_frames"]
+            args += ["-threads", "4", "-count_frames"]
         return json.loads(subprocess.check_output(args + [str(path)], env=self.env))
 
     def encoder(self):
