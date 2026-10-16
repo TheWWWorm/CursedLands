@@ -56,6 +56,26 @@ func _rebuild_world() -> void:
 	world.set_physics_process(false)
 	world.ai.distant.enabled = false
 	world.ai.activity.enabled = false
+	var ground := _make_ground()
+	world.add_child(ground)
+	world.terrain = ground
+	world.nav.build(ground, ground.water_base, [])
+	world.set_relation(1, 2, 2)
+	world.set_relation(2, 1, 2)
+	world.combat_event.connect(_combat_event)
+	damage = [0.0, 0.0]
+	winner = -1
+	phase = Phase.DEPLOY
+	for placement: Dictionary in formation:
+		_spawn(placement)
+	changed.emit()
+
+
+func bounds() -> Rect2:
+	return FIELD
+
+
+func _make_ground() -> EITerrain:
 	var ground := EITerrain.new()
 	ground.sectors_x = 1
 	ground.sectors_y = 1
@@ -74,18 +94,7 @@ func _rebuild_world() -> void:
 	ground.water_mat.resize(32 * 32)
 	ground.water_mat.fill(255)
 	ground.set_process(false)
-	world.add_child(ground)
-	world.terrain = ground
-	world.nav.build(ground, ground.water_base, [])
-	world.set_relation(1, 2, 2)
-	world.set_relation(2, 1, 2)
-	world.combat_event.connect(_combat_event)
-	damage = [0.0, 0.0]
-	winner = -1
-	phase = Phase.DEPLOY
-	for placement: Dictionary in formation:
-		_spawn(placement)
-	changed.emit()
+	return ground
 
 
 func _spawn(placement: Dictionary) -> GameUnit:
@@ -98,14 +107,14 @@ func _spawn(placement: Dictionary) -> GameUnit:
 		u.facing = 0.0 if placement.team == 0 else PI
 		u.display_name = String(catalog.by_id.get(placement.id, {}).get("title", RemakeText.t("Creature")))
 		u.set_meta("arena_placement", placement)
-		world.ai.set_post(u, Vector2(16, 16))
+		world.ai.set_post(u, bounds().get_center())
 		u._sync_transform()
 		world.nav.track_unit(u)
 	return u
 
 
 func placement_error(point: Vector2, radius := 0.8, except: GameUnit = null) -> String:
-	if not is_finite(point.x) or not is_finite(point.y) or not FIELD.grow(-radius).has_point(point):
+	if not is_finite(point.x) or not is_finite(point.y) or not bounds().grow(-radius).has_point(point):
 		return RemakeText.t("Place creatures inside the arena boundary.")
 	for u: GameUnit in world.unit_rows():
 		if u == except: continue

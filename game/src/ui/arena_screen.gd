@@ -69,6 +69,9 @@ func _ready() -> void:
 	title.add_theme_font_override("font", preload("res://fonts/LiberationSerif-Regular.ttf"))
 	_subtitle = _label(heading, RemakeText.t("Build two armies. Let the creatures decide."), 16, MUTED)
 	_subtitle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_button(heading, RemakeText.t("PvE expedition"), func():
+		if get_parent().has_method("open_arena_pve"): get_parent().open_arena_pve(),
+		RemakeText.t("Build an army, evolve your creatures and survive eighteen waves."), GOLD)
 	_button(heading, RemakeText.t("Main menu"), func(): exit_requested.emit(), RemakeText.t("Leave the arena and return to the main menu."))
 	var body := HBoxContainer.new()
 	body.add_theme_constant_override("separation", 14)

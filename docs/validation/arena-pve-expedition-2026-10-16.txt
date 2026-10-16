@@ -1,0 +1,8 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 12:52:52 +4744ms] session 75aad99b634c: 1.6.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+STARTER 0 winner=0 seconds=7.31499999999999
+STARTER 1 winner=0 seconds=7.64499999999999
+STARTER 2 winner=0 seconds=21.8899999999999
+ARENA_PVE 93 checks; failures=[]
+[trace 12:52:54 +6814ms] clean exit

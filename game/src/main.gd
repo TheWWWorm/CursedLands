@@ -6,6 +6,7 @@ extends Node
 ##   --tool=res://x.gd      run a test tool
 ##   --play                 start a single player campaign right away
 ##   --arena                open the AI battle arena
+##   --arena-pve            open the roguelite arena expedition
 ##   --host / --join=ADDR   start or join a co-op game right away
 ##   --name=NAME            player name
 ##   --debug                debug run: the main menu shows the map viewer link
@@ -77,6 +78,9 @@ func _start() -> void:
 			return
 		if a == "--arena":
 			open_arena()
+			return
+		if a == "--arena-pve":
+			open_arena_pve()
 			return
 		if a == "--viewer" or a.begins_with("--map="):
 			open_viewer()
@@ -208,6 +212,15 @@ func open_arena() -> void:
 	await get_tree().process_frame
 	var arena := ArenaScreen.new()
 	arena.exit_requested.connect(back_to_menu)
+	add_child(arena)
+
+
+func open_arena_pve() -> void:
+	_clear()
+	await get_tree().process_frame
+	var arena := ArenaPveScreen.new()
+	arena.exit_requested.connect(back_to_menu)
+	arena.sandbox_requested.connect(open_arena)
 	add_child(arena)
 
 

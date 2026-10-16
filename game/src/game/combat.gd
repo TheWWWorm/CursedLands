@@ -4,6 +4,8 @@ extends RefCounted
 
 var world: GameWorld
 var rng := RandomNumberGenerator.new()
+## Isolated native arena rules; -1 follows campaign preferences.
+var difficulty_override := -1
 
 
 ## ai.reg [DifficultyLevels] multiplier ("Attack", "Defence", "Absorption"),
@@ -15,14 +17,15 @@ var rng := RandomNumberGenerator.new()
 ## scales the natural armour of units outside a player party (
 ## ). A network game always plays at 0.
 func difficulty(u: GameUnit, key: String) -> float:
-	if GameData.difficulty == 0 or (world.session and world.session.multiplayer_game):
+	var setting := difficulty_override if difficulty_override >= 0 else GameData.difficulty
+	if setting == 0 or (world.session and world.session.multiplayer_game):
 		return 1.0
 	if key == "Absorption":
 		if u.controller >= 0 or u.has_meta("hero"):
 			return 1.0
 	elif named(u):
 		return 1.0
-	return GameData.ai_value("DifficultyLevels", key, 1.0, GameData.difficulty)
+	return GameData.ai_value("DifficultyLevels", key, 1.0, setting)
 
 
 ## a name-hash id (ScriptVM.name_id); remake heroes too (the original

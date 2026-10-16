@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 12:02:32 +3411ms] session 932bd6fa0ae3: 1.6.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+COMBAT_INPUTS 918 checks 0 failures
+[trace 12:02:33 +3887ms] clean exit

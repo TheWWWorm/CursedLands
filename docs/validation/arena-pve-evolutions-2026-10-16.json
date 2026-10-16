@@ -1,0 +1,95 @@
+{
+	"paired_sides": true,
+	"results": [
+		{
+			"copies": 3,
+			"draws": 0,
+			"input": "boarredf1",
+			"output": "boarredf3",
+			"trials": 24,
+			"wins": 20
+		},
+		{
+			"copies": 3,
+			"draws": 0,
+			"input": "boarredf3",
+			"output": "boardarkf6",
+			"trials": 24,
+			"wins": 24
+		},
+		{
+			"copies": 3,
+			"draws": 0,
+			"input": "goblinf1",
+			"output": "orcmalef3",
+			"trials": 24,
+			"wins": 24
+		},
+		{
+			"copies": 3,
+			"draws": 0,
+			"input": "orcmalef3",
+			"output": "orcmalef5",
+			"trials": 24,
+			"wins": 24
+		},
+		{
+			"copies": 3,
+			"draws": 0,
+			"input": "wolfgreyf1",
+			"output": "wolfgreyf3",
+			"trials": 24,
+			"wins": 19
+		},
+		{
+			"copies": 3,
+			"draws": 0,
+			"input": "wolfgreyf3",
+			"output": "wolfwhitef6",
+			"trials": 24,
+			"wins": 24
+		},
+		{
+			"copies": 2,
+			"draws": 0,
+			"input": "goblina1",
+			"output": "goblina3",
+			"trials": 24,
+			"wins": 21
+		},
+		{
+			"copies": 3,
+			"draws": 0,
+			"input": "goblina3",
+			"output": "orcfemalea5",
+			"trials": 24,
+			"wins": 19
+		},
+		{
+			"copies": 2,
+			"draws": 0,
+			"input": "batredm1",
+			"output": "batredm3",
+			"trials": 24,
+			"wins": 24
+		},
+		{
+			"copies": 3,
+			"draws": 0,
+			"input": "batredm3",
+			"output": "batlightm7",
+			"trials": 24,
+			"wins": 24
+		},
+		{
+			"copies": 3,
+			"draws": 0,
+			"input": "toadm2",
+			"output": "toadm6",
+			"trials": 24,
+			"wins": 24
+		}
+	],
+	"seed_start": 2700,
+	"seeds": 12
+}

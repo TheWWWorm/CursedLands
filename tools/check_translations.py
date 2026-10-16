@@ -59,7 +59,25 @@ for key in ('At least 20% of each incoming damage type passes through armor.',
 for key in sorted(wiki_keys):
     if key not in entries:
         errors.append(f'Wiki dynamic label missing RU/DE key: {key}')
-print(f'Translations: {len(entries)} entries; {len(wiki_keys)} dynamic wiki keys; {len(errors)} errors')
+# Expedition content and phase labels also choose their translation keys
+# dynamically; prototype identifiers are intentionally excluded.
+arena_source = (ROOT / 'game/arena_rules.gd').read_text()
+arena_keys = set()
+for match in re.finditer(r'"(?:name|role|help)":\s*(' + STRING + r')', arena_source):
+    arena_keys.add(json.loads(match[1]))
+block = arena_source.split('const WAVES := [', 1)[1].split('\n]', 1)[0]
+for match in re.finditer(r'^\s*\[(' + STRING + r')', block, re.M):
+    arena_keys.add(json.loads(match[1]))
+block = arena_source.split('const BOONS := {', 1)[1].split('\n}', 1)[0]
+for match in re.finditer(r':\s*(\[[^\n]+\])', block):
+    arena_keys.update(json.loads(match[1]))
+arena_keys.update(['Standard expedition', 'Veteran expedition', 'Champion expedition',
+    'On bench', 'Deployed', 'Bench', 'Expedition complete', 'The expedition ends',
+    'Victory', 'Regroup and try again', 'Choose reward', 'Next wave', 'Prepare again'])
+for key in sorted(arena_keys):
+    if key not in entries:
+        errors.append(f'Arena dynamic label missing RU/DE key: {key}')
+print(f'Translations: {len(entries)} entries; {len(wiki_keys)} dynamic wiki keys; {len(arena_keys)} dynamic arena keys; {len(errors)} errors')
 for error in errors:
     print(error)
 sys.exit(bool(errors))

@@ -1,0 +1,12 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 12:54:13 +3850ms] session 82350605bf97: 1.6.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 12:54:14 +4128ms] menu scene: loading island
+[trace 12:54:21 +11006ms] menu scene: setting up signpost and environment
+[trace 12:54:21 +11053ms] menu scene: built
+[trace 12:54:23 +13573ms] back to main menu
+[trace 12:54:23 +13582ms] menu scene: loading island
+[trace 12:54:23 +13791ms] menu scene: setting up signpost and environment
+[trace 12:54:23 +13795ms] menu scene: built
+ARENA_PVE_LIFECYCLE 10 checks; failures=[]
+[trace 12:54:24 +13994ms] clean exit

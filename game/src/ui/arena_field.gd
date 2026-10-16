@@ -24,6 +24,9 @@ var yaw := 0.0
 var zoom := 30.0
 var _orbit := false
 var _ground_material: ShaderMaterial
+var select_occupied := false
+var show_team_rings := true
+var highlighted_run_uid := 0
 
 
 func _ready() -> void:
@@ -44,6 +47,7 @@ func _ready() -> void:
 	stage = Node3D.new()
 	view.add_child(stage)
 	camera = Camera3D.new()
+	camera.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
 	camera.far = 180
 	stage.add_child(camera)
@@ -142,19 +146,28 @@ func reset_camera() -> void:
 
 func _update_camera() -> void:
 	if camera == null: return
-	var center := Vector3(16, 0, -16)
+	var point := match_state.bounds().get_center() if match_state else Vector2(16, 16)
+	var center := Vector3(point.x, 0, -point.y)
 	camera.position = center + Vector3(sin(yaw) * 30, 29, cos(yaw) * 30)
 	camera.size = zoom
 	camera.look_at(center)
 
 
 func ground_point(at: Vector2) -> Vector2:
-	var p: Variant = Plane(Vector3.UP, 0).intersects_ray(camera.project_ray_origin(at), camera.project_ray_normal(at))
+	var origin := camera.project_ray_origin(at)
+	var direction := camera.project_ray_normal(at)
+	var p: Variant = Plane(Vector3.UP, 0).intersects_ray(origin, direction)
+	if p != null and match_state and is_instance_valid(match_state.world):
+		for i in 5:
+			var height := match_state.world.terrain.height_at(p.x, -p.z)
+			p = Plane(Vector3.UP, height).intersects_ray(origin, direction)
+			if p == null: break
 	return Vector2(p.x, -p.z) if p != null else Vector2.INF
 
 
 func screen_point(point: Vector2) -> Vector2:
-	return camera.unproject_position(Vector3(point.x, 0.04, -point.y))
+	var height := match_state.world.terrain.height_at(point.x, point.y) if match_state and is_instance_valid(match_state.world) else 0.0
+	return camera.unproject_position(Vector3(point.x, height + 0.04, -point.y))
 
 
 func _pick(at: Vector2) -> GameUnit:
@@ -187,7 +200,7 @@ func _gui_input(event: InputEvent) -> void:
 				MOUSE_BUTTON_LEFT:
 					grab_focus()
 					var u := _pick(event.position)
-					if u and (erase or ghost_id.is_empty() or match_state.phase != ArenaMatch.Phase.DEPLOY):
+					if u and (select_occupied or erase or ghost_id.is_empty() or match_state.phase != ArenaMatch.Phase.DEPLOY):
 						creature_clicked.emit(u)
 					else:
 						ground_clicked.emit(ground_point(event.position))
@@ -199,12 +212,12 @@ func _gui_input(event: InputEvent) -> void:
 func _process(_dt: float) -> void:
 	if match_state == null or not is_instance_valid(match_state.world): return
 	if ghost:
-		ghost.visible = hover_point != Vector2.INF and ArenaMatch.FIELD.has_point(hover_point) \
+		ghost.visible = hover_point != Vector2.INF and match_state.bounds().has_point(hover_point) \
 			and match_state.phase == ArenaMatch.Phase.DEPLOY and not erase
 		if ghost.visible:
-			ghost.position = Vector3(hover_point.x, 0, -hover_point.y)
+			ghost.position = Vector3(hover_point.x, match_state.world.terrain.height_at(hover_point.x, hover_point.y), -hover_point.y)
 			ghost.rotation.y = GameUnit.MODEL_YAW_OFFSET if team == 0 else GameUnit.MODEL_YAW_OFFSET + PI
-	_ground_material.set_shader_parameter("deploying", match_state.phase == ArenaMatch.Phase.DEPLOY)
+	if _ground_material: _ground_material.set_shader_parameter("deploying", match_state.phase == ArenaMatch.Phase.DEPLOY)
 	overlay.queue_redraw()
 
 
@@ -222,7 +235,9 @@ func _draw_overlay() -> void:
 	for u: GameUnit in match_state.world.unit_rows():
 		if u.dead or camera.is_position_behind(u.global_position): continue
 		var color := BLUE if u.faction == 1 else RED
-		_ring(u.pos, maxf(0.55, u.body_radius() + 0.15), Color(color, 0.8))
+		var selected := highlighted_run_uid > 0 and int(u.get_meta("arena_placement", {}).get("run_uid", 0)) == highlighted_run_uid
+		if show_team_rings or u == hovered or selected:
+			_ring(u.pos, maxf(0.55, u.body_radius() + 0.15), Color(color, 0.8))
 		var p := camera.unproject_position(u.global_position + Vector3.UP * (u.figure_half_z * 2.0 + 0.45))
 		overlay.draw_style_box(_bar_style(), Rect2(p - Vector2(24, 3), Vector2(48, 6)))
 		overlay.draw_rect(Rect2(p - Vector2(22, 1), Vector2(44 * clampf(u.hp / maxf(1, u.max_hp), 0, 1), 2)), color)
