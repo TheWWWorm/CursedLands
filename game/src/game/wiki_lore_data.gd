@@ -5,37 +5,13 @@ extends RefCounted
 const DATA := {
 	"schema": 1,
 	"texts": {
-		"[[character/hero]] is the protagonist of Cursed Lands. With no memory of his past, he reaches Gipath’s only human village, where [[character/elder]] declares him the Chosen. The title makes him the settlement’s supposed protector and gives its leaders a convenient reason to send him into danger. Zak’s own purpose is to discover who he is.": [
-			"[[character/hero]] — главный герой «Проклятых земель». Потеряв память, он попадает в единственный человеческий посёлок Гипата, где [[character/elder]] объявляет его Избранным. Отныне от него ждут защиты посёлка, а его правители получают удобный повод отправлять чужака навстречу опасности. Сам Зак стремится выяснить, кто он такой.",
-			"[[character/hero]] ist die Hauptfigur von Cursed Lands. Ohne Erinnerung an seine Vergangenheit erreicht er Gipaths einzige menschliche Siedlung. [[character/elder]] erklärt ihn zum Auserwählten. Damit soll er das Dorf beschützen, und dessen Anführer haben einen willkommenen Anlass, ihn in Gefahr zu schicken. Kiran selbst will herausfinden, wer er ist."
-		],
-		"[[character/witch]] recognises that something unusual lies behind his lost memory. Her knowledge, Airy’s discoveries, the Old Dragon’s information and the Hermit Lizard’s bargain lead Zak toward [[character/rick]]. Along the way he becomes entangled in the village leaders’ plots and helps people whose interests often conflict.": [
-			"[[character/witch]] замечает, что за потерей памяти скрывается нечто необычное. Её знания, находки Айри, сведения Старого Дракона и договор с Ящером-Отшельником направляют Зака к [[character/rick|Великому Магу]]. По пути он оказывается втянут в заговоры поселковых правителей и помогает людям с противоречащими друг другу интересами.",
-			"[[character/witch]] erkennt, dass hinter seinem Gedächtnisverlust etwas Ungewöhnliches steckt. Ihr Wissen, Airys Entdeckungen, die Auskünfte des Alten Drachen und die Abmachung mit der Einsiedlerechse führen Kiran zu [[character/rick|Tka-Rik]]. Unterwegs gerät er in die Intrigen der Dorfoberen und hilft Menschen mit widerstreitenden Interessen."
-		],
-		"The Great Magician offers help in exchange for finding two surviving Joons. On [[allod/ingos]], Zak rescues [[character/deva]], who has been imprisoned by [[character/magess]]. His search for her beloved At-Zako then takes him to [[allod/suslanger]], where he is captured, escapes with the Odalisque’s help and finds refuge among the Last Shelter’s brothers. A dead scientist’s testimony and the remains of a teleportation amulet become the decisive clues.": [
-			"Великий Маг обещает помощь в обмен на поиски двух уцелевших джунов. На [[allod/ingos|Ингосе]] Зак спасает [[character/deva|Лу-а-Джаллу]], которую заточила [[character/magess]]. Поиски её возлюбленного Ат-Зако приводят его на [[allod/suslanger]]: там он попадает в плен, бежит с помощью Наложницы и находит пристанище в Последнем Укрытии. Решающие улики — рассказ духа погибшего учёного и остатки телепортационного амулета.",
-			"Der Große Magier verspricht Hilfe, wenn Kiran zwei überlebende Joon findet. Auf [[allod/ingos]] befreit er [[character/deva]] aus der Gefangenschaft bei [[character/magess]]. Die Suche nach ihrem Geliebten At-Kira führt ihn nach [[allod/suslanger]]. Dort wird er gefangen genommen, entkommt mit Hilfe der Odaliske und findet Zuflucht im Letzten Unterschlupf. Die Aussage eines verstorbenen Forschers und die Reste eines Teleportationsamuletts liefern die entscheidenden Hinweise."
-		],
-		"Tka Rik discovers that the amulet transported At-Zako to Gipath: Zak has been searching for himself. A Khadaganian scientist transformed the young Joon to hide him from the Joon Curse; the hurried spell also endangered his memory. Restored to his identity, At-Zako is reunited with Lu-a-Jalla. He chooses to confront the Curse with Tka Rik rather than spend their lives fleeing it.": [
-			"Тка-Рик выясняет, что амулет перенёс Ат-Зако на Гипат: всё это время Зак искал самого себя. Хадаганский учёный изменил облик юного джуна, чтобы спрятать его от Проклятия; поспешное заклинание поставило под угрозу и его память. Вернув своё имя и облик, Ат-Зако воссоединяется с Лу-а-Джалой. Он решает вместе с Тка-Риком сразиться с Проклятием, а не провести жизнь в бегах.",
-			"Tka Rik erkennt, dass das Amulett At-Kira nach Gipath brachte: Kiran hat die ganze Zeit nach sich selbst gesucht. Ein khadaganischer Forscher verwandelte den jungen Joon, um ihn vor dem Fluch der Joon zu verbergen; der hastige Zauber gefährdete auch sein Gedächtnis. Als At-Kira findet er zu Lu-a-Jalla zurück. Gemeinsam mit Tka Rik will er sich dem Fluch stellen, statt ihm lebenslang zu entfliehen."
-		],
 		"[[character/elder]] governs Gipath’s village and presents himself as its devoted elected leader. He proclaims Zak the Chosen and puts that supposed destiny to practical use, assigning dangerous errands while promising honour and hospitality. His speeches conceal a much more personal interest in the island.": [
 			"[[character/elder]] управляет посёлком Гипата и изображает преданного народу выборного старосту. Он объявляет Зака Избранным и использует это звание, поручая ему опасные задания в обмен на обещания почёта и гостеприимства. За красивыми речами скрывается личный интерес к аллоду.",
 			"[[character/elder]] regiert das Dorf auf Gipath und gibt sich als selbstloser gewählter Ältester. Er erklärt Kiran zum Auserwählten und nutzt dessen angebliche Bestimmung für gefährliche Aufträge, begleitet von Versprechen auf Ehre und Gastfreundschaft. Hinter seinen Reden steckt ein persönliches Interesse an der Insel."
 		],
-		"Zak exposes Erfar’s involvement in the plot against him. Estera recalls that Erfar arrived as an adult, claiming to have escaped brigands. In Suslanger, Erfar reveals his real origin and his search for the meteorite. Disguised as [[character/zaku]], he gains Zak’s trust again and arranges an ambush near the Portal.": [
-			"Зак разоблачает участие Эрфара в заговоре против него. Эстера вспоминает, что тот появился взрослым и выдавал себя за беглеца от разбойников. На Суслангере Эрфар раскрывает своё происхождение и цель — поиск метеорита. Под личиной [[character/zaku|Безликого Брата]] он вновь втирается в доверие к Заку и устраивает засаду у Портала.",
-			"Kiran deckt Erfars Beteiligung an der Verschwörung auf. Estera erinnert sich, dass er als Erwachsener ankam und behauptete, Räubern entkommen zu sein. In Suslanger enthüllt er seine Herkunft und die Suche nach dem Meteoriten. Als [[character/zaku]] gewinnt er erneut Kirans Vertrauen und lockt ihn in einen Hinterhalt nahe dem Portal."
-		],
 		"[[character/witch]] is a witch living apart from the village with her granddaughter [[character/daughter]]. Traps guard the approach to her cave. Gruff and suspicious at first, she welcomes Zak after he brings her a Magic Bit, but refuses to accept the villagers’ story that he is simply a divinely sent saviour.": [
 			"[[character/witch]] живёт вдали от посёлка вместе с внучкой [[character/daughter|Айри]]. Подступы к её пещере защищены ловушками. Сначала она встречает Зака грубо и настороженно, но принимает его, когда он приносит Волшебную Штучку. При этом поселковым рассказам о посланном свыше спасителе она не верит.",
 			"[[character/witch]] lebt mit ihrer Enkelin [[character/daughter]] außerhalb des Dorfes. Fallen sichern den Weg zu ihrer Höhle. Zunächst begegnet sie Kiran schroff und misstrauisch, empfängt ihn jedoch, nachdem er ihr einen magischen Gegenstand bringt. Die Geschichte vom gottgesandten Retter nimmt sie ihm nicht ab."
-		],
-		"Estera interprets the orc records that trace the Magic Orb to the Dead City, explains the city’s history and helps uncover the plot against Zak. She can freeze the lake for the journey to the dragon. Her protective anger resurfaces when Airy disappears, and she asks Zak to bring her granddaughter home. [[character/merc3]] is her apprentice.": [
-			"Эстера разбирает орочьи записи о Волшебном Шаре, ведущие в Мёртвый Город, рассказывает его историю и помогает раскрыть заговор против Зака. Она может заморозить озеро на пути к дракону. Когда Айри исчезает, за её гневом чувствуется тревога: она просит Зака вернуть внучку домой. [[character/merc3]] — её ученица.",
-			"Estera entziffert orkische Aufzeichnungen, die die Zauberkugel mit der Toten Stadt verbinden, erklärt deren Geschichte und hilft bei der Aufdeckung der Intrige gegen Kiran. Sie kann den See auf dem Weg zum Drachen vereisen. Als Airy verschwindet, bittet sie Kiran voller Sorge und Zorn, ihre Enkelin zurückzubringen. [[character/merc3]] ist ihre Schülerin."
 		],
 		"[[character/daughter]] is Estera’s strong-willed granddaughter. Determined to be taken seriously by Zak and her grandmother, she investigates the way into the Dead City and explains how a lizard’s amulet can lead a dragon against the harpies at the observatory. Her attempt to find the magician places her in danger, and Zak’s search for her becomes part of his dealings with [[character/orcc]].": [
 			"[[character/daughter]] — своевольная внучка Эстеры. Добиваясь уважения Зака и бабушки, она ищет путь в Мёртвый Город и объясняет, как ящерский амулет поможет привести дракона к гарпиям у обсерватории. Попытка самой найти мага приводит её в беду; спасение Айри становится частью переговоров Зака с [[character/orcc|Шай-Варом]].",
@@ -80,10 +56,6 @@ const DATA := {
 		"[[character/rick]] is the Great Magician of Gipath and a survivor of the Joon people. His dragonet watches Zak’s journey before they meet. He explains that a Great Magician cannot leave his island, so he needs Zak to find two young Joons abroad. In return, he offers help with Zak’s lost identity.": [
 			"[[character/rick|Тка-Рик]] — Великий Маг Гипата и представитель уцелевших джунов. До их встречи его дракончик наблюдает за путешествием Зака. Маг объясняет, что не может покинуть свой аллод, и просит найти в других землях двух юных джунов. Взамен он обещает помочь Заку узнать своё прошлое.",
 			"[[character/rick]] ist Gipaths Großer Magier und ein Überlebender des Joon-Volkes. Sein kleiner Drache beobachtet Kirans Reise schon vor ihrer Begegnung. Da ein Großer Magier seine Insel nicht verlassen kann, soll Kiran zwei junge Joon in fremden Ländern finden. Dafür bietet er Hilfe bei der Suche nach Kirans Identität."
-		],
-		"Tka Rik shelters Lu-a-Jalla after her rescue. When Zak returns with the teleportation amulet’s remnants, he discovers that Zak himself is At-Zako. He acknowledges his mistake, restores the young man’s identity and offers to stand beside him against the Joon Curse, supplying ancient equipment for the confrontation.": [
-			"Тка-Рик даёт приют спасённой Лу-а-Джале. Когда Зак возвращается с остатками телепортационного амулета, маг понимает, что сам Зак и есть Ат-Зако. Он признаёт ошибку, возвращает юноше прежний облик и обещает сражаться рядом с ним против Проклятия джунов, предоставив древнее снаряжение.",
-			"Tka Rik nimmt die gerettete Lu-a-Jalla auf. Als Kiran mit den Resten des Teleportationsamuletts zurückkehrt, erkennt er in ihm At-Kira. Er gesteht seinen Irrtum ein, gibt dem jungen Mann seine Identität zurück und verspricht, ihm mit alter Ausrüstung im Kampf gegen den Fluch der Joon beizustehen."
 		],
 		"[[character/deva]] is a young Joon and At-Zako’s beloved. On Ingos she is sought as the missing Princess. Diera imprisons her, believing her a rival for the governor’s affection, although Lu-a-Jalla says she loves only At-Zako. Zak brings her to Tka Rik and continues searching for her lover. Their reunion comes when Zak’s true identity is revealed, but the Joon Curse still threatens their future.": [
 			"[[character/deva]] — юная джунка, возлюбленная Ат-Зако. На Ингосе её разыскивают как пропавшую Принцессу. Диэра заточает её, считая соперницей в борьбе за внимание губернатора, хотя сама Лу-а-Джала любит только Ат-Зако. Зак приводит её к Тка-Рику и продолжает искать её возлюбленного. Они воссоединяются после раскрытия личности Зака, но их будущему по-прежнему угрожает Проклятие джунов.",
@@ -209,25 +181,9 @@ const DATA := {
 			"Сахиля — воровка из Последнего Укрытия. Украденные ею джунские древности выводят Зака на коллекционера Балуддина, а знания тайников и богатых домов открывают другие возможности. Она может сопровождать его, но просит вернуться на Суслангер: на Гипате ей почти не у кого поживиться.",
 			"Sahilia ist eine Diebin im Letzten Unterschlupf. Ihre gestohlenen Joon-Altertümer führen Kiran zu Baluddin; ihr Wissen über Verstecke und reiche Häuser eröffnet weitere Möglichkeiten. Sie kann ihn begleiten, will aber nach Suslanger zurück, weil Gipath kaum lohnende Ziele bietet."
 		],
-		"[[character/hero]] is the Joon protagonist of Lost in Astral. He escaped from [[character/firez]] on [[allod/jigran]], leaving his family enslaved, and hopes to return to free them. A recruiter’s promise of work instead leads to his enslavement on [[allod/suslanger]]. In the slave pen he meets [[character/merc2]], who saves him after a beating, gives him the short name Kir and helps plan their escape.": [
-			"[[character/hero]] — джун, главный герой «Затерянных в Астрале». Он бежал от [[character/firez|Фиреза]] с [[allod/jigran|Джиграна]], оставив семью в рабстве, и надеется вернуться за ней. Обещание работы оборачивается новым рабством на [[allod/suslanger|Суслангере]]. В загоне он знакомится с [[character/merc2]]: она спасает его после побоев, сокращает его имя до Кира и помогает готовить побег.",
-			"[[character/hero]] ist der Joon-Held von Lost in Astral. Er entkam [[character/firez]] auf [[allod/jigran]], musste seine versklavte Familie aber zurücklassen und will sie befreien. Das Arbeitsangebot eines Anwerbers führt ihn stattdessen in die Sklaverei auf [[allod/suslanger]]. Dort rettet ihn [[character/merc2]] nach einer Prügelstrafe, nennt ihn kurz Kir und plant mit ihm die Flucht."
-		],
-		"Kir and Kel seek refuge, information about the Joons and a route to Gipath’s [[character/rick]]. The magician has not heard of Jigran, but the Magic Orb points them toward [[allod/ingos]]. There they become involved in the investigation of Brissen’s murder. [[character/kmage]] eventually identifies an old passage to Jigran, and Kir chooses to follow it with Kel rather than turn back.": [
-			"Кир и Кель ищут убежище, сведения о джунах и путь к [[character/rick|Великому Магу]] на Гипате. Маг не слышал о Джигране, однако Волшебный Шар указывает на [[allod/ingos]]. Там герои оказываются втянуты в расследование убийства Бриссена. В конце концов [[character/kmage]] находит сведения о старом проходе на Джигран, и Кир решает идти туда вместе с Кель.",
-			"Kir und Kel suchen Schutz, Wissen über die Joons und einen Weg zu [[character/rick|Tka-Rik]] auf Gipath. Der Magier kennt Jigran nicht, doch die magische Kugel weist nach [[allod/ingos]]. Dort geraten sie in die Untersuchung von Brissens Ermordung. [[character/kmage]] entdeckt schließlich einen alten Zugang nach Jigran. Kir folgt ihm mit Kel, statt umzukehren."
-		],
-		"Back on Jigran, Kir aids [[character/baron]] against Firez, frees the elder [[character/junofil]] and rescues [[character/deva]], the woman he remembered from childhood. Kel’s death while retrieving Tai-Ilara’s belongings makes him confront the difference between that childhood attachment and Kel’s loyalty. Firez later reveals that he too is a Joon and claims that his necromancy was meant to protect their people from the Curse. This is Firez’s justification, not an endorsement of his actions.": [
-			"Вернувшись на Джигран, Кир помогает [[character/baron|барону Виррилу]] в борьбе с Фирезом, освобождает старейшину [[character/junofil|Туи-Лена]] и спасает [[character/deva|Тай-Илару]], которую помнил с детства. Гибель Кель при поиске вещей Тай-Илары заставляет его иначе взглянуть на детскую привязанность и верность спутницы. Позднее Фирез признаётся, что тоже джун, и оправдывает некромантию защитой народа от Проклятия. Это объяснение самого Фиреза, а не подтверждение правоты его поступков.",
-			"Auf Jigran unterstützt Kir [[character/baron]] gegen Firez, befreit den Ältesten [[character/junofil]] und rettet seine Jugendliebe [[character/deva]]. Als Kel bei der Suche nach Tai-Ilaras Habseligkeiten stirbt, erkennt er den Unterschied zwischen seiner früheren Schwärmerei und Kels Treue. Firez enthüllt später, dass auch er ein Joon ist. Er rechtfertigt seine Nekromantie mit dem Schutz vor dem Fluch; diese Behauptung ist seine eigene Rechtfertigung."
-		],
 		"[[character/merc2]] is a thief and Kir’s travelling companion. She helps the injured stranger in the slave pen, introduces him to the dangers of Suslanger and stays with him through the search for his homeland. Her practical knowledge, irreverence and resourcefulness repeatedly complement Kir’s direct approach. Their partnership gradually becomes a love she is reluctant to express openly.": [
 			"[[character/merc2]] — воровка и спутница Кира. Она помогает избитому незнакомцу в загоне, знакомит его с опасностями Суслангера и остаётся с ним во время поисков родины. Её житейский опыт, насмешливость и находчивость дополняют прямолинейность Кира. Постепенно их товарищество перерастает для неё в любовь, о которой она не решается сказать прямо.",
 			"[[character/merc2]] ist eine Diebin und Kirs Reisegefährtin. Sie hilft dem verletzten Fremden im Sklavenpferch, macht ihn mit Suslangers Gefahren vertraut und begleitet ihn auf der Suche nach seiner Heimat. Ihre Erfahrung, ihr Spott und ihr Einfallsreichtum ergänzen Kirs direkte Art. Aus ihrer Freundschaft wächst eine Liebe, die sie nur schwer offen aussprechen kann."
-		],
-		"On Jigran, Kel sees Kir reunited with Tai-Ilara and prepares to leave. She agrees to one last expedition for Tai-Ilara’s belongings and dies during it. Kir’s grief is sharpened by Tai-Ilara’s indifference. A later conversation with Tui-Len offers a possible way to restore a loved one through the three pieces of the Rod of Life; the offer is a quest, not proof that every playthrough ends with a resurrection.": [
-			"На Джигране Кель видит встречу Кира с Тай-Иларой и собирается уйти. Она соглашается на последнее приключение ради вещей Тай-Илары и погибает. Равнодушие спасённой девушки усиливает горе Кира. Позднее Туи-Лен рассказывает о возможности вернуть любимого человека с помощью трёх частей Жезла Жизни; это предложение задания, а не утверждение, что любое прохождение заканчивается воскрешением.",
-			"Auf Jigran erlebt Kel Kirs Wiedersehen mit Tai-Ilara und will abreisen. Sie lässt sich auf ein letztes Abenteuer ein, um Tai-Ilaras Sachen zu holen, und stirbt dabei. Tai-Ilaras Gleichgültigkeit vertieft Kirs Trauer. Später beschreibt Tui-Len eine mögliche Wiederbelebung durch die drei Teile des Lebensstabs. Damit eröffnet sich eine Aufgabe; die Aussage legt keinen einheitlichen Ausgang für jeden Spielverlauf fest."
 		],
 		"The recruiter promises Kir work and supplies papers for travel through a portal to Suslanger. The apparent opportunity becomes the opening trap of the campaign: Kir arrives as a stranger whom the imperial authorities enslave.": [
 			"Вербовщик обещает Киру работу и выдаёт бумаги для перехода через портал на Суслангер. Кажущаяся удача становится первой ловушкой истории: имперские власти обращают прибывшего чужака в раба.",
@@ -287,7 +243,7 @@ const DATA := {
 		],
 		"The Great Magician on Gipath is Tka-Rik. He tells Kir that At-Zako and Lu-a-Jalla are travelling elsewhere and that he himself cannot leave his allod. Unfamiliar with Jigran, he uses the Magic Orb as a lead and sends Kir and Kel to Ingos. His knowledge connects the new protagonists’ search with the events of Cursed Lands.": [
 			"Великий Маг Гипата — Тка-Рик. Он рассказывает Киру, что Ат-Зако и Лу-а-Джалла путешествуют, а сам он не может покинуть свой аллод. Не зная Джиграна, он обращается к Волшебному Шару и отправляет Кира и Кель на Ингос. Его сведения связывают поиски новых героев с событиями «Проклятых земель».",
-			"Der Große Magier auf Gipath ist Tka-Rik. Er berichtet Kir, dass At-Zako und Lu-a-Jalla auf Reisen sind und er selbst seine Insel nicht verlassen kann. Jigran kennt er nicht. Die magische Kugel liefert jedoch einen Hinweis, der Kir und Kel nach Ingos führt. Sein Wissen verbindet ihre Suche mit der Geschichte von Cursed Lands."
+			"Der Große Magier auf Gipath ist Tka-Rik. Er berichtet Kir, dass At-Kira und Lu-a-Jalla auf Reisen sind und er selbst seine Insel nicht verlassen kann. Jigran kennt er nicht. Die magische Kugel liefert jedoch einen Hinweis, der Kir und Kel nach Ingos führt. Sein Wissen verbindet ihre Suche mit der Geschichte von Cursed Lands."
 		],
 		"[[character/orcc]] leads an orc tribe on Gipath. He welcomes Kir after the struggle against the Khadaganian expedition and invokes the earlier Chosen and Shei-Var as examples. His dealings with the travellers involve a ritual axe, a harpy hunt and conflict with humans advancing into the Foothills. The struggle over the Shell can turn the local lizards against the settlers.": [
 			"[[character/orcc]] возглавляет орочье племя Гипата. После борьбы с хадаганской экспедицией он приветствует Кира и вспоминает прежнего Избранного и Шай-Вара. С ним связаны обрядовый топор, охота на гарпию и война с людьми, осваивающими Предгорья. Борьба за Раковину позволяет обратить местных ящеров против поселенцев.",
@@ -295,11 +251,11 @@ const DATA := {
 		],
 		"[[character/orcpyr]] is the orc shaman. He distrusts outsiders, explains tribal customs and makes weapons. Kir’s dealings with him include the ritual axe, the chief’s kidnapped wife and the Magic Orb, whose history he connects with Zak’s earlier visit. His account is the tribe’s perspective on those events.": [
 			"[[character/orcpyr]] — орочий шаман. Он не доверяет чужакам, объясняет племенные обычаи и изготовляет оружие. Разговоры с ним касаются обрядового топора, похищенной жены вождя и Волшебного Шара, историю которого он связывает с прежним приходом Зака. Это взгляд племени на события.",
-			"[[character/orcpyr]] ist der Schamane der Orks. Er misstraut Fremden, erklärt Stammesbräuche und fertigt Waffen. Kir spricht mit ihm über die Ritualaxt, die entführte Frau des Häuptlings und die magische Kugel. Deren Geschichte verbindet er mit Zaks früherem Besuch; seine Erzählung gibt die Sicht des Stammes wieder."
+			"[[character/orcpyr]] ist der Schamane der Orks. Er misstraut Fremden, erklärt Stammesbräuche und fertigt Waffen. Kir spricht mit ihm über die Ritualaxt, die entführte Frau des Häuptlings und die magische Kugel. Deren Geschichte verbindet er mit Kirans früherem Besuch; seine Erzählung gibt die Sicht des Stammes wieder."
 		],
 		"The Hermit Lizard wants a secure new home near the lake in the Remote Mountains. He asks Kir to restore the Shell to its pedestal so the lizards will be appeased. In return he provides directions toward the Great Magician; the route is no longer simply the one followed in Zak’s earlier journey.": [
 			"Ящер-Отшельник ищет безопасное новое жилище у озера в Дальних горах. Он просит Кира вернуть Раковину на пьедестал, чтобы успокоить ящеров. Взамен он объясняет путь к Великому Магу: он уже не совпадает во всём с дорогой прежнего путешествия Зака.",
-			"Die Einsiedlerechse sucht eine sichere neue Heimat am See im fernen Gebirge. Kir soll die Muschel auf ihren Sockel zurückbringen, um die Echsen zu besänftigen. Dafür erklärt sie den Weg zum Großen Magier. Die Strecke entspricht nicht mehr vollständig der Route, die Zak einst nahm."
+			"Die Einsiedlerechse sucht eine sichere neue Heimat am See im fernen Gebirge. Kir soll die Muschel auf ihren Sockel zurückbringen, um die Echsen zu besänftigen. Dafür erklärt sie den Weg zum Großen Magier. Die Strecke entspricht nicht mehr vollständig der Route, die Kiran einst nahm."
 		],
 		"[[character/karh]] leads the Free Hunters. He thanks Kir for rescuing his men from lizards, claims neutrality and nevertheless favours the orcs against the village’s expansion. His requests draw Kir into local rivalries, including a scheme to bring Babur to the hunters’ camp through a false message.": [
 			"[[character/karh]] руководит вольными охотниками. Он благодарит Кира за спасение людей от ящеров, говорит о нейтралитете, но сочувствует оркам в споре с разрастающимся посёлком. Его поручения втягивают Кира в местные распри, включая обманное письмо, заманивающее Бабура в лагерь охотников.",
@@ -307,7 +263,7 @@ const DATA := {
 		],
 		"[[character/smith]] is the Gipath craftsman known from Zak’s journey. A forged message brings him into the Free Hunters’ camp. He seeks a magical needle connected with armour-making and offers information about the Magic Orb. Later his captivity among the orcs and transfer to an ogre make him the subject of another rescue.": [
 			"[[character/smith]] — гипатский мастер, знакомый по путешествию Зака. Поддельное письмо приводит его в лагерь вольных охотников. Он ищет волшебную иглу для работы над доспехами и сообщает сведения о Волшебном Шаре. Позднее орки берут его в плен и отдают людоеду, что становится поводом для нового спасения.",
-			"[[character/smith]] ist der aus Zaks Reise bekannte Handwerker auf Gipath. Eine gefälschte Nachricht bringt ihn ins Lager der Freien Jäger. Er sucht eine magische Nadel für die Rüstungsherstellung und weiß etwas über die magische Kugel. Später gerät er in orkische Gefangenschaft und wird einem Oger übergeben, wodurch eine weitere Rettung nötig wird."
+			"[[character/smith]] ist der aus Kirans Reise bekannte Handwerker auf Gipath. Eine gefälschte Nachricht bringt ihn ins Lager der Freien Jäger. Er sucht eine magische Nadel für die Rüstungsherstellung und weiß etwas über die magische Kugel. Später gerät er in orkische Gefangenschaft und wird einem Oger übergeben, wodurch eine weitere Rettung nötig wird."
 		],
 		"[[character/daughter]] guards Estera’s cave while the witch is away. Her exchanges with Kir and Kel include a rivalry over a necklace and directions to the Old Dragon. She also helps explain why the Magic Orb has lost its power after use, making her part of the search for a way to consult it again.": [
 			"[[character/daughter]] сторожит пещеру Эстеры в отсутствие ведьмы. Разговоры с Киром и Кель касаются соперничества из-за ожерелья и пути к Старому Дракону. Она также объясняет утрату силы Волшебным Шаром после использования и участвует в поиске способа снова к нему обратиться.",
@@ -315,7 +271,7 @@ const DATA := {
 		],
 		"[[character/witch]] is the Gipath witch who helped Zak in Cursed Lands. She notices Kir’s resemblance to him and is pursuing a flower associated with the Old Dragon. Her knowledge is again useful, although her complaints about Airy and the theft of the Magic Orb reflect her own irritable view of events.": [
 			"[[character/witch]] — гипатская ведьма, помогавшая Заку в «Проклятых землях». Она замечает сходство Кира с ним и ищет цветок, связанный со Старым Драконом. Её знания вновь оказываются полезны, хотя жалобы на Айри и кражу Волшебного Шара отражают её собственный раздражительный взгляд.",
-			"[[character/witch]] ist die Hexe von Gipath, die Zak in Cursed Lands half. Sie bemerkt Kirs Ähnlichkeit mit ihm und sucht eine Blume im Umfeld des Alten Drachen. Ihr Wissen ist erneut wertvoll, während ihre Klagen über Airy und die gestohlene magische Kugel ihre eigene gereizte Sicht widerspiegeln."
+			"[[character/witch]] ist die Hexe von Gipath, die Kiran in Cursed Lands half. Sie bemerkt Kirs Ähnlichkeit mit ihm und sucht eine Blume im Umfeld des Alten Drachen. Ihr Wissen ist erneut wertvoll, während ihre Klagen über Airy und die gestohlene magische Kugel ihre eigene gereizte Sicht widerspiegeln."
 		],
 		"The Old Dragon remembers the earlier Chosen and his ancient sword. Estera’s persistent requests for a flower irritate him. His conversation supplies information about the flower and helps Kir and Kel negotiate another of Gipath’s awkward bargains.": [
 			"Старый Дракон помнит прежнего Избранного и его древний меч. Назойливые просьбы Эстеры о цветке раздражают его. Разговор даёт Киру и Кель сведения о цветке и помогает разобраться в очередном непростом гипатском обмене услугами.",
@@ -361,17 +317,9 @@ const DATA := {
 			"[[character/vor]] враждебно встречает Кира и Кель и обвиняет их в шпионаже. Расследование раскрывает его кражи из общей казны поселения. На допросе он признаётся, что убил разоблачившего его Бриссена, подбросил украденный нож и погубил Хиса, чтобы скрыть их дела.",
 			"[[character/vor]] begegnet Kir und Kel feindselig und nennt sie Spione. Die Ermittlungen decken seine Diebstähle aus der Gemeinschaftskasse auf. Er gesteht, Brissen nach dessen Entdeckung getötet, das gestohlene Messer platziert und His ermordet zu haben, um ihre Geschäfte zu verbergen."
 		],
-		"[[character/kmage]] is a magician whose inexpensive runes anger Karansul. Suspicion falls on him in Brissen’s murder, but his visit to the mines and the guard’s testimony provide an alibi. After being cleared, he searches the governor’s library and identifies the old passage that can take Kir home to Jigran.": [
-			"[[character/kmage]] — маг, чьи дешёвые руны сердят Карансула. Его подозревают в убийстве Бриссена, но посещение шахт и свидетельство солдата дают алиби. После оправдания он исследует губернаторскую библиотеку и находит старый проход, ведущий Кира домой на Джигран.",
-			"[[character/kmage]] ist ein Magier, dessen preiswerte Runen Karansul verärgern. Er wird des Mordes an Brissen verdächtigt, doch sein Minenbesuch und die Aussage eines Wächters liefern ein Alibi. Nach seiner Entlastung findet er in der Bibliothek des Statthalters Hinweise auf den alten Zugang nach Jigran."
-		],
 		"[[character/mthief]] is a resourceful resident of the Ingos settlement. He reasons that the newcomers’ return speaks against the accusations of theft and supports them in front of Geraldine. Later he sends Kir and Kel on a diversion while he obtains the key needed for their onward journey.": [
 			"[[character/mthief]] — находчивый обитатель ингосского поселения. Он замечает, что возвращение новичков противоречит обвинению в краже, и поддерживает их перед Геральдиной. Позднее он отправляет Кира и Кель отвлекать внимание, пока сам добывает ключ для дальнейшего пути.",
 			"[[character/mthief]] ist ein einfallsreicher Bewohner der Siedlung auf Ingos. Dass die Fremden zurückkehren, spricht für ihn gegen den Diebstahlsvorwurf; er unterstützt sie vor Geraldine. Später schickt er Kir und Kel auf ein Ablenkungsmanöver, während er den Schlüssel für ihre Weiterreise beschafft."
-		],
-		"The mine guard is a witness in the investigation of Brissen’s murder. He allowed Yam-Akara into the mines despite an expired permit. His account and the stamped pass establish where the magician had been, making this otherwise minor soldier important to clearing a suspect.": [
-			"Шахтный стражник становится свидетелем в расследовании убийства Бриссена. Он пропустил Ям-Акару в шахты, несмотря на просроченное разрешение. Его рассказ и пропуск с отметкой подтверждают местонахождение мага, поэтому этот безымянный солдат помогает снять подозрение.",
-			"Der Minenwächter wird zum Zeugen im Mordfall Brissen. Er ließ Yam-Akara trotz eines abgelaufenen Passierscheins hinein. Seine Aussage und der abgestempelte Pass belegen den Aufenthalt des Magiers. Dadurch wird der namenlose Soldat wichtig für die Entlastung eines Verdächtigen."
 		],
 		"[[character/baron]] commands the Canian holdouts on Jigran against Firez’s Khadaganian forces. Proud of his family, he dislikes asking for aid even after losing Dar-Ulgorn. Kir’s arrival, the fight against the undead and the recruitment of powerful allies give his army a chance to attack Firez’s stronghold. He imagines a restored, prosperous Jigran ruled by his descendants.": [
 			"[[character/baron]] командует остатками канийских сил Джиграна в войне с хадаганцами Фиреза. Он гордится родом и не любит просить помощи даже после потери Дар-Улгорна. Приход Кира, борьба с нежитью и привлечение сильных союзников дают шанс атаковать крепость Фиреза. Барон мечтает о процветающем Джигране под властью потомков.",
@@ -409,25 +357,13 @@ const DATA := {
 			"Гипат — никому не принадлежащий аллод развалин, гор и диких земель. Небольшой человеческий посёлок соседствует с гоблинами, орками и ящерами. За кажущейся глухоманью скрыта древняя история: здесь находятся джунские остатки, Мёртвый город и жилище Великого Мага.",
 			"Gipath ist eine unbeanspruchte Insel aus Ruinen, Bergen und Wildnis. Ein kleines Menschendorf teilt sie mit Goblins, Orks und Echsenmenschen. Hinter der Abgeschiedenheit liegt eine ältere Geschichte: Joon-Überreste, die Tote Stadt und der Wohnsitz eines Großen Magiers befinden sich auf derselben Insel."
 		],
-		"[[character/hero]] begins his search for his identity here. The village leaders’ disputes, [[character/witch]]’s advice and encounters with the island’s other peoples lead him to [[character/rick]]. Gipath is also the destination of his return: the truth about At-Zako and the struggle against the Curse bring the story back beneath its ruins.": [
-			"Здесь [[character/hero]] начинает поиски своего прошлого. Распри поселковых правителей, советы [[character/witch|Эстеры]] и встречи с другими народами приводят его к [[character/rick|Великому Магу]]. Сюда же он возвращается: правда об Ат-Зако и борьба с Проклятием вновь ведут под древние развалины.",
-			"Hier beginnt [[character/hero]] die Suche nach seiner Identität. Die Streitigkeiten der Dorfoberen, [[character/witch]] und die anderen Bewohner der Insel führen ihn zu [[character/rick|Tka-Rik]]. Später kehrt er zurück: Die Wahrheit über At-Kira und der Kampf gegen den Fluch führen die Geschichte wieder unter Gipaths Ruinen."
-		],
 		"Ingos belongs to Cania. Its thinly populated provinces leave room for independent communities and the Woodsfolk. A governor and city guards represent imperial authority, but the original gazetteer stresses the inhabitants’ independence. Snowy country, mines, forests and older underground ruins surround the city.": [
 			"Ингос принадлежит Кании. В малонаселённых провинциях остаётся место независимым общинам и лесовикам. Имперскую власть представляют губернатор и стража, однако исходное описание подчёркивает самостоятельность жителей. Город окружают снежные земли, шахты, леса и древние подземелья.",
 			"Ingos gehört zu Kania. Die dünn besiedelten Provinzen lassen unabhängigen Gemeinschaften und Waldleuten Raum. Statthalter und Stadtwache vertreten das Reich, doch die ursprüngliche Landeskunde betont den Eigensinn der Bewohner. Schneegebiete, Minen, Wälder und alte unterirdische Ruinen umgeben die Stadt."
 		],
-		"Zak comes to Ingos to find one of the surviving Joons. Court rivalries, Karansul’s schemes and the displaced Green Clan complicate the search. The imprisoned [[character/deva]] is found in the mines, while [[character/magess]]’s jealousy helps explain her disappearance. Lu-a-Jalla’s account then sends Zak onward to Suslanger.": [
-			"Зак прибывает на Ингос за одной из уцелевших джунов. Поискам мешают придворные распри, интриги Карансула и беды переселившегося Зелёного клана. В шахтах находится пленница [[character/deva]], а ревность [[character/magess|Диэры]] объясняет её исчезновение. Рассказ Лу-а-Джаллы ведёт Зака дальше, на Суслангер.",
-			"Kiran kommt nach Ingos, um eine überlebende Joon zu finden. Hofintrigen, Karansuls Pläne und die Vertreibung des Grünen Klans erschweren die Suche. In den Minen findet er [[character/deva]]; [[character/magess]]’s Eifersucht erklärt ihr Verschwinden. Lu-a-Jallas Bericht führt Kiran anschließend nach Suslanger."
-		],
 		"Suslanger is a dry Khadaganian allod with little cultivable land. A river, lake, dams and irrigation channels sustain its settlements. Imperial decrees are enforced by guards and informers. Beyond that order lie necromancers’ laboratories, Wormface caverns and the hidden refuge of escaped slaves.": [
 			"Суслангер — засушливый хадаганский аллод с небольшим количеством пригодной для земледелия земли. Жизнь поддерживают река, озеро, плотины и каналы. Указы империи проводят в жизнь стража и доносчики. Рядом существуют лаборатории некромантов, пещеры червелицых и тайное убежище беглых рабов.",
 			"Suslanger ist eine trockene khadaganische Insel mit wenig Ackerland. Fluss, See, Dämme und Bewässerungskanäle versorgen die Siedlungen. Wachen und Spitzel setzen kaiserliche Erlasse durch. Daneben bestehen Nekromantenlabore, Höhlen der Wurmgesichter und ein versteckter Zufluchtsort entflohener Sklaven."
-		],
-		"Zak’s arrival leads to imprisonment by [[character/karh]], escape with [[character/nalo]]’s help and shelter under [[character/glav]]. His investigation passes from a collector of Joon antiquities to necromancers and a dead scientist. Their clues reveal how the missing Joon escaped and supply the amulet that ultimately points back to Gipath.": [
-			"Прибытие Зака оборачивается пленом у [[character/karh|Кардаура]], бегством с помощью [[character/nalo|наложницы]] и убежищем у [[character/glav|брата Хатуля]]. Расследование ведёт от коллекционера джунских древностей к некромантам и духу учёного. Так выясняется история бегства пропавшего джуна и находится амулет, указывающий обратно на Гипат.",
-			"Kiran wird von [[character/karh]] gefangen genommen, entkommt mit Hilfe von [[character/nalo]] und findet Schutz bei [[character/glav]]. Die Spur führt von einem Sammler von Joon-Altertümern zu Nekromanten und dem Geist eines Forschers. Ihre Hinweise erklären die Flucht des vermissten Joon und führen zum Amulett, das schließlich nach Gipath weist."
 		],
 		"Suslanger is a small, arid possession of Khadagan. Irrigation supports its farms, while harsh and corrupt authority coexists with criminal networks, smuggling and blackmail. Kir and Kel meet in its slave pen. Their escape leads through estates, thieves’ contacts, the Last Shelter and the search for information about the Joons before military papers provide a way to Gipath.": [
 			"Суслангер — небольшой засушливый аллод Хадагана. Земледелие зависит от орошения, а жестокая коррумпированная власть соседствует с преступными группировками, контрабандой и шантажом. Здесь Кир и Кель встречаются в загоне для рабов. Их бегство ведёт через поместья, воровские связи, Последнее Укрытие и поиски сведений о джунах; военные бумаги открывают путь на Гипат.",
@@ -435,7 +371,7 @@ const DATA := {
 		],
 		"Gipath remains outside the great empires and is strewn with Joon ruins. Lost in Astral presents a changed island after Zak’s journey: human expansion in the Foothills collides with the orcs, while the Free Hunters pursue their own interests. Kir and Kel must negotiate these disputes and recover the use of the Magic Orb before Tka-Rik can direct them onward.": [
 			"Гипат остаётся вне великих империй и хранит множество джунских развалин. После путешествия Зака остров изменился: люди расширяют владения в Предгорьях, вступая в конфликт с орками, а вольные охотники преследуют свои цели. Киру и Кель предстоит разобраться в распрях и вернуть силу Волшебному Шару, прежде чем Тка-Рик укажет дальнейший путь.",
-			"Gipath liegt weiterhin außerhalb der großen Reiche und ist von Joon-Ruinen übersät. Seit Zaks Reise hat sich die Insel verändert: Menschen dringen ins Vorgebirge vor und geraten mit Orks in Konflikt, während die Freien Jäger eigene Ziele verfolgen. Kir und Kel müssen diese Streitigkeiten meistern und die magische Kugel wieder nutzbar machen, bevor Tka-Rik sie weiterleiten kann."
+			"Gipath liegt weiterhin außerhalb der großen Reiche und ist von Joon-Ruinen übersät. Seit Kirans Reise hat sich die Insel verändert: Menschen dringen ins Vorgebirge vor und geraten mit Orks in Konflikt, während die Freien Jäger eigene Ziele verfolgen. Kir und Kel müssen diese Streitigkeiten meistern und die magische Kugel wieder nutzbar machen, bevor Tka-Rik sie weiterleiten kann."
 		],
 		"Ingos is nominally Canian, but its governor’s effective power scarcely extends beyond the city walls. Independent communities and Woodsfolk inhabit the surrounding snowlands. Kir and Kel arrive following the Magic Orb’s clue. Brissen’s murder, a staged caravan and conflicting alibis make their visit an investigation; the cleared magician Yam-Akara discovers the route to Jigran.": [
 			"Ингос формально принадлежит Кании, но действительная власть губернатора едва выходит за городские стены. В снежных землях живут независимые общины и лесовики. Кира и Кель приводит сюда подсказка Волшебного Шара. Убийство Бриссена, подставной караван и противоречивые алиби превращают пребывание в расследование; оправданный маг Ям-Акара находит путь на Джигран.",
@@ -531,7 +467,7 @@ const DATA := {
 		],
 		"Urk-Tar’s fortress is the centre of Kir’s dealings with the orcs. The chief and shaman connect his arrival with memories of Zak, while ritual obligations, a kidnapped wife and conflict with human settlers make the stronghold a place of competing demands.": [
 			"Крепость Урк-Тара — средоточие отношений Кира с орками. Вождь и шаман связывают его приход с памятью о Заке; обряды, похищение жены и конфликт с поселенцами рождают множество требований.",
-			"Urk-Tars Festung ist der Mittelpunkt von Kirs Beziehungen zu den Orks. Häuptling und Schamane verbinden seine Ankunft mit Zak. Rituale, eine entführte Frau und der Streit mit Siedlern schaffen konkurrierende Aufgaben."
+			"Urk-Tars Festung ist der Mittelpunkt von Kirs Beziehungen zu den Orks. Häuptling und Schamane verbinden seine Ankunft mit Kiran. Rituale, eine entführte Frau und der Streit mit Siedlern schaffen konkurrierende Aufgaben."
 		],
 		"The Free Hunters’ camp is led by Bor. It gives Kir a foothold among people who claim independence from the village, yet intervene in its conflicts. Babur’s arrival through a deceptive message exposes how readily the camp’s interests become personal schemes.": [
 			"Лагерем вольных охотников руководит Бор. Здесь Кир знакомится с людьми, заявляющими независимость от посёлка, но вмешивающимися в его конфликты. Обманное письмо Бабуру показывает, как интересы лагеря превращаются в личные интриги.",
@@ -539,15 +475,15 @@ const DATA := {
 		],
 		"Estera’s cave remains a source of magical knowledge after Zak’s journey. Airy guards it in the witch’s absence. The visitors’ search for the Magic Orb becomes entangled with Estera’s flower, the Old Dragon and the two women’s disagreements.": [
 			"После путешествия Зака пещера Эстеры остаётся источником магических знаний. В отсутствие ведьмы её сторожит Айри. Поиски Волшебного Шара переплетаются с цветком Эстеры, Старым Драконом и разногласиями двух женщин.",
-			"Esteras Höhle bleibt nach Zaks Reise eine Quelle magischen Wissens. Airy bewacht sie während der Abwesenheit der Hexe. Die Suche nach der Kugel verknüpft sich mit Esteras Blume, dem Alten Drachen und den Streitigkeiten der beiden Frauen."
+			"Esteras Höhle bleibt nach Kirans Reise eine Quelle magischen Wissens. Airy bewacht sie während der Abwesenheit der Hexe. Die Suche nach der Kugel verknüpft sich mit Esteras Blume, dem Alten Drachen und den Streitigkeiten der beiden Frauen."
 		],
 		"The Dragon’s dwelling is another surviving landmark from Zak’s travels. The Old Dragon remembers the former Chosen but is currently more troubled by Estera’s demands about a flower. Kir and Kel must approach him through conversation and negotiation.": [
 			"Жилище Дракона — ещё одно место прежних странствий Зака. Старый Дракон помнит Избранного, но сейчас больше обеспокоен требованиями Эстеры о цветке. Киру и Кель приходится договариваться с ним.",
-			"Die Behausung des Drachen ist ein weiterer Schauplatz von Zaks früheren Reisen. Der Alte Drache erinnert sich an ihn, wird aber gerade vor allem von Esteras Forderung nach einer Blume geplagt. Kir und Kel müssen mit ihm verhandeln."
+			"Die Behausung des Drachen ist ein weiterer Schauplatz von Kirans früheren Reisen. Der Alte Drache erinnert sich an ihn, wird aber gerade vor allem von Esteras Forderung nach einer Blume geplagt. Kir und Kel müssen mit ihm verhandeln."
 		],
 		"Tka-Rik’s underground home links the two campaigns. He explains that Zak and Lu-a-Jalla have left to travel, listens to Kir’s account of Jigran and interprets the Magic Orb. The resulting clue directs Kir and Kel to Ingos.": [
 			"Подземное жилище Тка-Рика связывает две кампании. Маг рассказывает о путешествующих Заке и Лу-а-Джалле, слушает историю Джиграна и истолковывает Волшебный Шар. Полученная зацепка ведёт Кира и Кель на Ингос.",
-			"Tka-Riks unterirdische Heimat verbindet beide Kampagnen. Er berichtet von Zak und Lu-a-Jalla auf Reisen, hört Kirs Geschichte über Jigran und deutet die magische Kugel. Ihr Hinweis führt Kir und Kel nach Ingos."
+			"Tka-Riks unterirdische Heimat verbindet beide Kampagnen. Er berichtet von Kiran und Lu-a-Jalla auf Reisen, hört Kirs Geschichte über Jigran und deutet die magische Kugel. Ihr Hinweis führt Kir und Kel nach Ingos."
 		],
 		"The city of Ingos houses the governor, his court magician and the merchant Karansul. Their interests intersect with the murder inquiry: private relationships, a stolen nugget and the court’s own schemes all become relevant evidence.": [
 			"В городе Ингосе находятся губернатор, придворный маг и купец Карансул. Их интересы пересекаются с расследованием убийства: личные отношения, украденный самородок и придворные замыслы превращаются в улики.",
@@ -576,6 +512,514 @@ const DATA := {
 		"The exit from the catacombs marks a transition between the underground escape route and the world outside. Its significance lies in the travellers’ progress through Suslanger, rather than a separate local community.": [
 			"Выход из катакомб отмечает переход между подземным путём бегства и внешним миром. Его значение связано с продвижением путешественников по Суслангеру, а не с отдельной общиной.",
 			"Der Ausgang der Katakomben markiert den Übergang vom unterirdischen Fluchtweg nach draußen. Er ist eine Etappe der Reise durch Suslanger, kein eigenständiges Gemeinwesen."
+		],
+		"Overview": [
+			"Обзор",
+			"Überblick"
+		],
+		"Awakening among the ruins": [
+			"Пробуждение среди развалин",
+			"Erwachen in den Ruinen"
+		],
+		"[[character/hero]] begins his journey on [[allod/gipat]], without knowing who he is or how he arrived. His first concern is finding other people. Leaving the ruins, he sees villagers flee from the stranger who has emerged from the ancient site. Their flight gives him a direction to follow. He makes his way along the river and across the ford to the village.": [
+			"Путешествие [[character/hero|Зака]] начинается на [[allod/gipat|Гипате]]: он не знает, кто он и как здесь оказался. Прежде всего ему нужно найти людей. Выйдя из развалин, он замечает жителей, которые убегают от незнакомца, появившегося среди древних построек. Их бегство указывает направление. Двигаясь вдоль реки и перейдя брод, Зак добирается до посёлка.",
+			"[[character/hero]] beginnt seine Reise auf [[allod/gipat]], ohne seine Herkunft oder den Grund seiner Ankunft zu kennen. Zunächst sucht er andere Menschen. Als er die Ruinen verlässt, fliehen Dorfbewohner vor dem Fremden, der aus der alten Stätte kommt. Ihre Flucht weist ihm die Richtung. Er folgt dem Fluss und erreicht über die Furt das Dorf."
+		],
+		"The village and the Chosen": [
+			"Посёлок и Избранный",
+			"Das Dorf und der Auserwählte"
+		],
+		"At the village assembly, [[character/elder]] identifies Zak with the promised Chosen who was to appear at the Sacred Ruins. [[character/sheriff]], the captain, supports the ceremony. The offer of food, shelter and honour comes with a threat: an impostor would be thrown into the fire. Zak accepts the title and gives his name. Erfar immediately sends him against the goblin sentry watching the village, reasoning that his plain clothes and unusual metal knife will let him approach where armed villagers cannot. Afterwards Zak learns that this is Gipath’s only human village, with no king or known route to other lands.": [
+			"На поселковом собрании [[character/elder]] объявляет Зака обещанным Избранным, который должен появиться у Священных Развалин. Воевода [[character/sheriff]] поддерживает старосту. К обещаниям еды, крова и почёта прилагается угроза: самозванца бросят в огонь. Зак принимает звание и называет себя. Эрфар тут же посылает его против гоблина-дозорного: неприметная одежда и необычный металлический нож позволят подойти туда, куда не могут пройти вооружённые поселяне. Затем Зак узнаёт, что это единственный человеческий посёлок Гипата, без короля и известного пути на другие земли.",
+			"Bei der Dorfversammlung erklärt [[character/elder]] Kiran zum verheißenen Auserwählten der Heiligen Ruinen. Hauptmann [[character/sheriff]] unterstützt ihn. Nahrung, Unterkunft und Ehre werden versprochen, doch einem Betrüger droht der Tod im Feuer. Kiran nimmt den Titel an und nennt seinen Namen. Erfar schickt ihn sofort gegen den Goblinposten beim Dorf: Seine schlichte Kleidung und das ungewöhnliche Metallmesser sollen ihn weniger auffällig machen als die Dorfkrieger. Anschließend erfährt Kiran, dass dies Gipaths einziges Menschendorf ist, ohne König und ohne bekannten Weg in andere Länder."
+		],
+		"The wolf, the captain and the craftsman": [
+			"Волк, воевода и мастер",
+			"Wolf, Hauptmann und Handwerker"
+		],
+		"Killing the sentry brings another request from Erfar: the White Wolf and its pack are taking the village livestock. After Zak kills their leader, Erfar and Gort press him to surrender the head so the captain can claim prestige. Gort also sends him to punish the goblins while the village soldiers stay home. Meanwhile [[character/smith]] refuses to work until his stolen iron tools are returned. Erfar calls the thieves friendly “Free Hunters”; Babur calls them brigands and describes the beating of his apprentice. Recovering the chisel and bodkin from the chief and his wife wins Zak the craftsman’s services. These early errands expose the disagreement between the village’s leaders and the man who equips it.": [
+			"После гибели дозорного Эрфар просит разобраться с Белым Волком, чья стая таскает поселковый скот. Когда Зак убивает вожака, Эрфар и Горт требуют отдать голову волка воеводе ради его авторитета. Горт также отправляет Зака наказывать гоблинов, оставив своих воинов дома. Тем временем [[character/smith]] отказывается работать без украденных железных инструментов. Для Эрфара воры являются дружественными «вольными охотниками»; для Бабура это разбойники, избившие его подмастерья. Возвращение резца и шила, отнятых у вожака и его жены, открывает Заку услуги мастера. Первые поручения знакомят героя с распрями поселковых правителей и ремесленника.",
+			"Nach dem Tod des Wachpostens verlangt Erfar Hilfe gegen den Weißen Wolf, dessen Rudel das Vieh reißt. Als Kiran ihn tötet, fordern Erfar und Gort den Kopf für das Ansehen des Hauptmanns. Gort schickt Kiran außerdem gegen die Goblins, während seine Soldaten zu Hause bleiben. [[character/smith]] verweigert unterdessen jede Arbeit, bis seine gestohlenen Eisenwerkzeuge zurück sind. Erfar nennt die Diebe befreundete „Freie Jäger“, Babur dagegen Räuber, die seinen Lehrling verprügelt haben. Kiran beschafft Meißel und Ahle vom Anführer und dessen Frau und gewinnt damit Baburs Dienste. Die frühen Aufträge zeigen den Streit zwischen den Dorfoberen und ihrem Handwerker."
+		],
+		"The brigands’ trail and the Magic Bit": [
+			"След разбойников и Волшебная Штучка",
+			"Die Räuberspur und der magische Fund"
+		],
+		"Babur’s account of a red-haired brigand meeting orcs gives Zak his next lead. A map taken from Redhead points to a Magic Bit in a sarcophagus in the orc cave. Babur explains that Estera values such objects, while Gort can supply the missing drawbridge mechanism. Zak obtains the seer’s key and the object, then asks how to reach the witch. Babur, who made her spare trap key, explains the guarded ravines and controlling obelisks. The craftsman expects a share of the sale. Zak instead intends to exchange the find for help with his lost memory.": [
+			"Рассказ Бабура о Рыжем разбойнике, встречавшемся с орками, даёт новую зацепку. Карта Рыжего указывает на Волшебную Штучку в саркофаге орочьей пещеры. Бабур объясняет, что Эстера ценит такие предметы, а у Горта можно получить недостающий механизм подъёмного моста. Зак добывает ключ прорицателя и находку, после чего выясняет путь к знахарке. Бабур, изготовивший запасной ключ от её ловушек, рассказывает об охраняемых ущельях и управляющих обелисках. Мастер рассчитывает на долю выручки; Зак намерен обменять находку на помощь в возвращении памяти.",
+			"Baburs Bericht über einen rothaarigen Räuber, der mit Orks verkehrt, liefert die nächste Spur. Redheads Karte weist auf einen magischen Gegenstand in einem Sarkophag der Orkhöhle. Babur erklärt, dass Estera solche Funde schätzt; Gort kann das fehlende Teil für die Zugbrücke liefern. Kiran beschafft den Schlüssel des Sehers und den Gegenstand. Anschließend beschreibt Babur, der Esteras Ersatzschlüssel angefertigt hat, die bewachten Schluchten und die Obelisken ihrer Fallen. Der Handwerker erwartet einen Anteil am Verkauf. Kiran will den Fund jedoch gegen Hilfe bei seinem Gedächtnisverlust eintauschen."
+		],
+		"Meeting Estera and Airy": [
+			"Знакомство с Эстерой и Айри",
+			"Begegnung mit Estera und Airy"
+		],
+		"[[character/witch]] initially threatens the intruder, then changes her reception when Zak offers the Magic Bit. She dismisses the villagers’ divine-saviour story but discovers that she cannot see his past. Since Zak cannot remember it either, she suggests finding the orcs’ Magic Orb and directs him back to Erfar for information. This is the beginning of their alliance. Estera also introduces her granddaughter [[character/daughter]], warning Zak to keep his distance; Airy resents being treated as a child. Zak’s search now has a personal aim beyond the village’s demands.": [
+			"[[character/witch]] сначала угрожает незваному гостю, но меняет тон, увидев Волшебную Штучку. Она отвергает поселковые сказки о небесном спасителе, однако не может увидеть прошлое Зака. Узнав, что он сам его не помнит, знахарка советует найти орочий Волшебный Шар и расспросить о нём Эрфара. Так начинается их союз. Эстера представляет внучку [[character/daughter|Айри]] и требует держаться от неё подальше; самой Айри надоело, что её считают ребёнком. Теперь поиски Зака получают личную цель, выходящую за пределы поселковых требований.",
+			"[[character/witch]] bedroht zunächst den Eindringling, wird aber zugänglicher, als Kiran den magischen Fund anbietet. Die Geschichte vom göttlichen Retter glaubt sie nicht. Allerdings kann sie seine Vergangenheit nicht sehen. Da auch Kiran sie nicht erinnert, rät sie zur Suche nach der Zauberkugel der Orks und verweist ihn an Erfar. Damit beginnt ihr Bündnis. Estera stellt außerdem ihre Enkelin [[character/daughter]] vor und verlangt Abstand von Kiran. Airy ärgert sich darüber, wie ein Kind behandelt zu werden. Kirans Suche erhält nun ein persönliches Ziel jenseits der Forderungen des Dorfes."
+		],
+		"Two searches on the islands": [
+			"Два поиска на островах",
+			"Zwei Suchen auf den Inseln"
+		],
+		"The river islands hold two different leads. Estera needs the Orb, which Erfar places on the southernmost island. Erfar also proposes tracing [[character/bgoblinc]]’s blue Eye Stone to a possible portal. Zak takes the First Goblin’s skull to compel GoGo to visit the village; the chief explains that the orcs confiscated the written record of the stone’s origin. The islands require their own bridge mechanism, distinct from the cave’s. Zak retrieves the record and the Orb in this area. Erfar claims the record offers nothing useful, then diverts attention to missing taxes and gold in Golden Valley. His portal scheme and Estera’s search serve different purposes, even though they take Zak through the same territory.": [
+			"Речные острова связаны с двумя разными поисками. Эстере нужен Шар, который, по словам Эрфара, находится на самом южном острове. Сам староста предлагает выяснить происхождение синего Камня-Глаза [[character/bgoblinc|Го-Го]], надеясь найти портал. Зак забирает череп Первого Гоблина, вынуждая вождя прийти в посёлок; тот объясняет, что орки отняли запись о происхождении камня. Для островных мостов нужен собственный механизм, отличный от пещерного. Здесь Зак добывает запись и Шар. Эрфар объявляет запись бесполезной и переключает разговор на пропавшую казну и золото Золотой Долины. Его замысел с порталом и поиски Эстеры ведут в одни места, но преследуют разные цели.",
+			"Auf den Flussinseln verlaufen zwei unterschiedliche Spuren. Estera braucht die Kugel, die Erfar auf der südlichsten Insel verortet. Erfar selbst will über den blauen Augenstein von [[character/bgoblinc]] ein Portal finden. Kiran nimmt den Schädel des Ersten Goblins, um GoGo ins Dorf zu zwingen. Der Häuptling berichtet, dass Orks die Aufzeichnung über die Herkunft des Steins eingezogen haben. Für die Inselbrücken ist ein anderer Mechanismus als für die Höhle nötig. Kiran beschafft dort die Aufzeichnung und die Kugel. Erfar erklärt die Schrift für nutzlos und lenkt auf verschwundene Steuern und das Gold im Goldenen Tal ab. Sein Portalplan und Esteras Suche führen durch dasselbe Gebiet, verfolgen aber verschiedene Ziele."
+		],
+		"The Orb and the Dead City": [
+			"Шар и Мёртвый Город",
+			"Die Kugel und die Tote Stadt"
+		],
+		"When Estera uses the Orb, Zak sees an old man instead of a recognisable memory. She believes he is its owner and a more powerful magician who might help. Orc records trace the object to the Dead City. Estera distinguishes its human fortress from Gipath’s much older ruins: after the Night of Troubles, the dead attacked the living, and survivors fled to found the present village. The obvious route into the fortress is deadly. Airy leaves to investigate another way in, despite her grandmother’s objections. Separately, Erfar can send Zak into the surrounding region’s Golden Valley for a caravan’s lost treasure, an errand he badly understates.": [
+			"Когда Эстера использует Шар, Зак видит старика, а не узнаваемое воспоминание. Знахарка считает его владельцем Шара и более могущественным магом, способным помочь. Орочьи записи ведут в Мёртвый Город. Эстера отличает эту человеческую крепость от гораздо более древних руин Гипата: после Ночи Беды мертвецы напали на живых, а беглецы основали нынешний посёлок. Прямой путь в крепость смертельно опасен. Вопреки бабушке Айри отправляется искать другой вход. Отдельное поручение Эрфара может привести Зака в Золотую Долину поблизости за сокровищами погибшего каравана; староста сильно преуменьшает опасность этой поездки.",
+			"Als Estera die Kugel benutzt, sieht Kiran einen alten Mann statt einer vertrauten Erinnerung. Sie hält ihn für den Eigentümer und einen mächtigeren Magier, der helfen könnte. Orkische Aufzeichnungen führen zur Toten Stadt. Estera unterscheidet diese menschliche Festung von Gipaths viel älteren Ruinen: Nach der Nacht der Unruhen griffen Tote die Lebenden an, und Flüchtlinge gründeten das heutige Dorf. Der direkte Zugang zur Festung ist tödlich. Gegen den Willen ihrer Großmutter sucht Airy nach einem anderen Weg. Unabhängig davon kann Erfar Kiran ins benachbarte Goldene Tal schicken, um den Schatz einer verlorenen Karawane zu bergen. Die Gefahr dieses Auftrags spielt er herunter."
+		],
+		"The supposed attack on the goblins": [
+			"Мнимый поход на гоблинов",
+			"Der angebliche Angriff auf die Goblins"
+		],
+		"While Zak seeks the magician, Erfar and Gort arrange another joint operation with the Free Hunters, supposedly to prevent a goblin raid. The promised friendly meeting becomes an ambush by brigands and village soldiers. Erfar denies responsibility, while Babur warns that the elder is trying to have Zak killed. A note in the newer orc script cannot yet settle the matter: Estera needs an Orc ABC Book to read it. Its translation reveals a contract on Zak’s life, a detailed description of him and a substantial payment. The search for the author becomes a separate investigation alongside the route into the Dead City.": [
+			"Пока Зак ищет мага, Эрфар и Горт готовят совместный поход с вольными охотниками якобы для предотвращения гоблинского набега. Обещанная дружеская встреча оборачивается засадой разбойников и поселковых воинов. Эрфар отрицает причастность, а Бабур обвиняет старосту в попытке убить Зака. Записка на новом орочьем письме пока не решает спор: для перевода Эстере нужна Орочья Азбука. Прочитав её, знахарка обнаруживает заказ на убийство Зака, подробное описание героя и обещание большого вознаграждения. Розыск автора идёт параллельно поиску входа в Мёртвый Город.",
+			"Während Kiran den Magier sucht, planen Erfar und Gort mit den Freien Jägern einen angeblichen Gegenangriff auf Goblins. Das vereinbarte freundliche Treffen wird zum Hinterhalt von Räubern und Dorfsoldaten. Erfar leugnet jede Verantwortung; Babur beschuldigt den Ältesten. Eine Nachricht in der neueren Orkschrift klärt den Fall zunächst nicht, denn Estera benötigt die orkische Fibel. Die Übersetzung enthüllt einen Mordauftrag, eine genaue Beschreibung Kirans und eine hohe Belohnung. Die Suche nach dem Auftraggeber läuft neben der Suche nach dem Zugang zur Toten Stadt."
+		],
+		"Airy’s route through the observatory": [
+			"Путь Айри через обсерваторию",
+			"Airys Weg über die Sternwarte"
+		],
+		"Airy returns with a lead to the old observatory library, but harpies occupy the site. Her plan requires a lizard’s amulet to lead a particular green dragon against them. Reaching that dragon requires Estera to freeze the lake with a green crystal. The hostile lizards on the approach present another obstacle: Zak moves the Big Shell from the Remote Mountains to the Middle Mountains, restoring the peace associated with its altar. This leaves Babur’s former quarry route unsafe and can lead to an additional errand for the craftsman. The observatory book finally supplies the password to the Dead City’s hidden entrance. Airy can also teach Zak the Magic of Feelings, only to be offended when he again calls her a little girl.": [
+			"Айри возвращается со сведениями о библиотеке старой обсерватории, занятой гарпиями. По её плану нужен ящерский амулет, чтобы привести против них определённого зелёного дракона. Добраться до дракона поможет Эстера: зелёный кристалл позволит ей заморозить озеро. Мешают и враждебные ящеры на подходе. Зак переносит Большую Ракушку из Дальних Гор в Средние, возвращая мир, связанный с её алтарём. Прежняя дорога Бабура к каменоломне становится опасной, что может привести к дополнительному поручению мастера. Книга обсерватории наконец даёт пароль к тайному входу в Мёртвый Город. Айри также может научить Зака Магии Чувств, но обижается, когда он вновь зовёт её маленькой девочкой.",
+			"Airy kehrt mit einer Spur zur Bibliothek der alten Sternwarte zurück, die Harpyien besetzt halten. Ihr Plan braucht ein Echsenamulett, um einen bestimmten grünen Drachen gegen sie zu führen. Um ihn zu erreichen, soll Estera mit einem grünen Kristall den See vereisen. Feindliche Echsen versperren außerdem den Zugang. Kiran bringt die Große Muschel aus dem Fernen ins Mittlere Gebirge und stellt den mit ihrem Altar verbundenen Frieden her. Dadurch wird Baburs bisheriger Steinbruchweg gefährlich, was einen weiteren Auftrag ermöglichen kann. Das Buch der Sternwarte liefert schließlich das Passwort für den geheimen Zugang zur Toten Stadt. Airy kann Kiran auch Gefühlsmagie beibringen, ärgert sich jedoch, als er sie erneut ein kleines Mädchen nennt."
+		],
+		"Gort’s rebellion": [
+			"Мятеж Горта",
+			"Gorts Aufstand"
+		],
+		"The written instructions to kill Zak expose Gort’s handwriting. Confronted with the evidence, the captain turns against the authority he formerly served and declares that he will rule the village himself. He flees to gather the forest men. Erfar urges Zak to stop him before he can return; the ensuing pursuit ends Gort’s rebellion. [[character/nsheriff]] becomes the new captain. Unlike his predecessor, Rivar admits that he dislikes fighting, shares his family’s secret of strength and later supports Zak when suspicion finally reaches the elder.": [
+			"Письменные указания убить Зака выдают почерк Горта. Столкнувшись с уликой, воевода отрекается от прежних хозяев и объявляет, что сам будет править посёлком. Он бежит собирать лесных людей. Эрфар требует остановить его до возвращения; преследование кладёт конец мятежу. Новым воеводой становится [[character/nsheriff]]. В отличие от предшественника, Ривар признаётся, что не любит драться, делится семейным секретом силы и позднее поддерживает Зака против старосты.",
+			"Die schriftlichen Anweisungen zum Mord an Kiran tragen Gorts Handschrift. Mit dem Beweis konfrontiert, wendet sich der Hauptmann gegen seine bisherigen Herren und beansprucht selbst die Dorfherrschaft. Er flieht, um die Waldleute zu sammeln. Erfar drängt Kiran zur Verfolgung; diese beendet Gorts Aufstand. [[character/nsheriff]] übernimmt das Amt. Anders als sein Vorgänger kämpft Rivar ungern, verrät das Kraftgeheimnis seiner Familie und unterstützt Kiran später gegen den Ältesten."
+		],
+		"The Old Dragon on Lone Mountain": [
+			"Старый Дракон на Одинокой Горе",
+			"Der Alte Drache auf dem Einsamen Berg"
+		],
+		"The observatory’s password takes Zak into the Dead City and up Lone Mountain. He expects the magician from the Orb but finds [[character/skd]]. The dragon insists on an old bargain: a visitor must perform a task before receiving an answer. Zak deals with the armadillos beneath the lair, using the poison the dragon supplies. The dragon then admits that he cannot identify Zak or locate Gipath’s elusive Great Magician. He suggests the ancient lizards might know more and points instead to an expedition of armoured outsiders. He withdraws the skeletons he had used against their camp. In a further conversation, he gives Zak an old sword because he enjoys his company and would rather not see him become another speechless skeleton.": [
+			"Пароль из обсерватории позволяет Заку войти в Мёртвый Город и подняться на Одинокую Гору. Вместо мага из Шара его встречает [[character/skd]]. Дракон требует соблюсти древний обычай: прежде чем получить ответ, посетитель должен выполнить поручение. Зак избавляет логово от живущих под ним панцирников, используя выданный яд. Затем дракон признаётся, что не знает личности Зака и убежища Великого Мага Гипата. Он советует расспросить древних ящеров, а пока указывает на экспедицию чужеземцев в металлических доспехах и отзывает скелетов, нападавших на их лагерь. В отдельном разговоре дракон дарит Заку старинный меч: ему нравится собеседник, и он не хочет увидеть его ещё одним немым скелетом.",
+			"Das Passwort der Sternwarte führt Kiran in die Tote Stadt und auf den Einsamen Berg. Statt des Magiers aus der Kugel trifft er [[character/skd]]. Der Drache verlangt nach altem Brauch eine Aufgabe vor einer Antwort. Mit dessen Gift beseitigt Kiran die Gürteltiere unter der Höhle. Danach muss der Drache zugeben, weder Kirans Identität noch das Versteck des Großen Magiers zu kennen. Vielleicht wissen die alten Echsen mehr. Zunächst weist er auf eine Expedition gepanzerter Fremder und zieht die Skelette zurück, mit denen er ihr Lager angegriffen hatte. In einem weiteren Gespräch schenkt er Kiran ein altes Schwert: Er schätzt seine Gesellschaft und möchte ihn nicht als weiteres stummes Skelett wiedersehen."
+		],
+		"The White Flower and Erfar’s exposure": [
+			"Белый Цветок и разоблачение Эрфара",
+			"Die Weiße Blume und Erfars Entlarvung"
+		],
+		"After Gort’s fall, Erfar claims that an orc seer has cursed the village with disease and asks for a White Flower. Zak finds armed opposition waiting for him, although no villagers have yet fallen ill. Erfar blames Babur, while Babur’s earlier warning makes Zak suspect both men. Estera suggests setting a trap. Zak tells each suspect a different location for a second flower; the ambush appears at the place he gave Erfar. With Rivar’s support he confronts and imprisons the elder. An expedition report recovered from the abandoned foreign camp becomes leverage: Erfar translates its account of a concealed tunnel and its opening lever. He later escapes custody. Estera recalls that he originally arrived as an adult stranger, leaving his real purpose unresolved.": [
+			"После падения Горта Эрфар заявляет, что орочий прорицатель наслал болезнь на посёлок, и требует Белый Цветок. У растения Зака ждут вооружённые враги, хотя никто из жителей ещё не заболел. Эрфар обвиняет Бабура; прежнее предупреждение мастера заставляет подозревать обоих. Эстера советует устроить ловушку. Зак сообщает каждому разные места, где якобы растёт второй цветок. Засада оказывается там, куда он направил Эрфара. При поддержке Ривара Зак разоблачает и заключает старосту под стражу. Найденный в покинутом лагере экспедиционный отчёт становится средством давления: Эрфар переводит сведения о скрытом тоннеле и открывающем его рычаге. Позже он бежит. Эстера вспоминает, что когда-то он явился взрослым чужаком; его настоящая цель остаётся загадкой.",
+			"Nach Gorts Sturz behauptet Erfar, ein Orkseher habe das Dorf mit Krankheit verflucht, und verlangt eine Weiße Blume. Dort warten bewaffnete Gegner auf Kiran, obwohl noch niemand erkrankt ist. Erfar beschuldigt Babur; dessen frühere Warnung macht beide verdächtig. Estera empfiehlt eine Falle. Kiran nennt den Männern verschiedene Fundorte einer zweiten Blume. Der Hinterhalt liegt an der Erfar genannten Stelle. Mit Rivars Unterstützung stellt und inhaftiert Kiran den Ältesten. Ein Bericht aus dem verlassenen Fremdenlager wird zum Druckmittel: Erfar übersetzt die Hinweise auf einen verborgenen Tunnel und dessen Hebel. Später entkommt er. Estera erinnert sich, dass er einst als erwachsener Fremder ankam. Sein eigentliches Ziel bleibt vorerst ungeklärt."
+		],
+		"The expedition and the Hermit’s bargain": [
+			"Экспедиция и сделка с Отшельником",
+			"Die Expedition und der Handel mit dem Eremiten"
+		],
+		"Estera introduces a lost Khadaganian [[character/clerk|official]], who promises that his expedition can help Zak leave Gipath. Meeting [[character/hwleader]] instead leads to imprisonment and demands for information about a meteorite. Zak plays the ignorant swineherd, but the commander threatens torture. [[character/oliz]] offers escape on the condition that Zak later visit his home. Zak gives his word, receives the Ancient Claw for the traps on the approach and escapes. The Hermit explains that he had intended to negotiate with the armoured humans but changed his mind after seeing their treatment of Zak. Keeping the promise establishes trust where the expedition failed to do so.": [
+			"Эстера знакомит Зака с заблудившимся хадаганским [[character/clerk|чиновником]], обещающим помощь экспедиции в отъезде с Гипата. Однако встреча с [[character/hwleader|её начальником]] заканчивается пленом и допросом о метеорите. Зак изображает невежественного свинопаса, но командир грозит пытками. [[character/oliz]] предлагает побег в обмен на обещание посетить его жилище. Зак даёт слово, получает Древний Коготь для ловушек на подходе и освобождается. Отшельник объясняет, что собирался договориться с закованными в металл людьми, но передумал, увидев обращение с Заком. Выполненное обещание создаёт доверие, которого не добилась экспедиция.",
+			"Estera stellt Kiran einen verirrten khadaganischen [[character/clerk|Beamten]] vor. Dieser verspricht Hilfe seiner Expedition bei der Abreise. Das Treffen mit [[character/hwleader]] endet jedoch in Gefangenschaft und einem Verhör über einen Meteoriten. Kiran spielt den unwissenden Schweinehirten, doch der Kommandant droht mit Folter. [[character/oliz]] bietet die Flucht an, wenn Kiran anschließend sein Heim besucht. Kiran gibt sein Wort und erhält die Alte Klaue für die Fallen am Zugang. Der Eremit erklärt später, er habe mit den gepanzerten Menschen verhandeln wollen, nach ihrer Behandlung Kirans jedoch umgedacht. Kirans eingehaltenes Versprechen schafft das Vertrauen, das der Expedition fehlt."
+		],
+		"Water for the lizards and the Great Magician": [
+			"Вода для ящеров и Великий Маг",
+			"Wasser für die Echsen und der Große Magier"
+		],
+		"The Hermit needs the water diverted by the orcs restored. Zak raises their dam and blocks the diversion canal; in return the lizard locates the magician in a ravine in the Remote Mountains. This information joins the tunnel instructions from the Khadaganian report. Zak passes the ancient defences and reaches [[character/rick]]. Tka-Rik explains that his dragonet has watched Zak since his unusual arrival. Bound to Gipath by his duty as its Great Magician, he offers help with Zak’s memory in exchange for bringing him two surviving young Joons. The first journey will be to Ingos to find the girl. Zak must leave his Gipath companions behind.": [
+			"Отшельнику нужно вернуть воду, отведённую орками. Зак поднимает плотину и перекрывает отводной канал; взамен ящер находит убежище мага в ущелье Дальних Гор. Эти сведения дополняют указания о тоннеле из хадаганского отчёта. Пройдя древние укрепления, Зак встречает [[character/rick|Тка-Рика]]. Маг объясняет, что его дракончик следил за Заком с необычного появления на аллоде. Обязанность Великого Мага удерживает его на Гипате, поэтому он предлагает вернуть память в обмен на помощь: нужно привести двух молодых уцелевших джунов. Сначала предстоит найти девушку на Ингосе. Спутников с Гипата Зак должен оставить здесь.",
+			"Der Eremit verlangt das von den Orks umgeleitete Wasser zurück. Kiran hebt den Damm und sperrt den Umleitungskanal. Dafür nennt die Echse das Versteck des Magiers in einer Schlucht des Fernen Gebirges. Zusammen mit den Tunnelangaben des khadaganischen Berichts eröffnet dies den Weg zu [[character/rick]]. Tka-Rik erklärt, dass sein kleiner Drache Kiran seit dessen ungewöhnlicher Ankunft beobachtet. Seine Pflicht als Großer Magier bindet ihn an Gipath. Er bietet Hilfe mit Kirans Erinnerung, wenn dieser zwei überlebende junge Joon zu ihm bringt. Die erste Reise führt nach Ingos zur Suche nach der jungen Frau. Seine Gipath-Gefährten muss Kiran zurücklassen."
+		],
+		"The rescue of Airy": [
+			"Спасение Айри",
+			"Airys Rettung"
+		],
+		"Before leaving Gipath, Zak can finish the separate search for Airy, who set out to find the magician herself and impress him. Estera’s vision points to a goblin prison, where Zak finds her granddaughter’s potion bottle and a note leading to [[character/orcc]]. The orc chief intends to give Airy to a frightening armoured human he calls a Demon. Zak offers to remove this threat instead. Shei-Var first demands proof of his strength against the ogre brothers, whose wealth also threatens the chief’s influence. Once Zak defeats the Demon, Shei-Var honours his promise and sends Airy home. The rescue ends with Estera’s gratitude and Airy’s distress that Zak still regards her as a child.": [
+			"До отъезда с Гипата Зак может завершить отдельные поиски Айри, которая сама ушла искать мага, желая произвести впечатление на героя. Видение Эстеры приводит в гоблинскую темницу. Там Зак находит флакон внучки и записку, указывающую на [[character/orcc|Шай-Вара]]. Орочий вождь собирается отдать Айри пугающему человеку в доспехах, которого называет Демоном. Зак предлагает устранить угрозу. Сначала Шай-Вар требует доказать силу в борьбе с братьями-людоедами, чьё богатство мешает его влиянию. После победы Зака над Демоном вождь держит слово и отправляет Айри домой. Эстера благодарит спасителя, а Айри страдает от того, что он по-прежнему видит в ней ребёнка.",
+			"Vor seiner Abreise kann Kiran die separate Suche nach Airy abschließen. Sie wollte selbst den Magier finden und ihn damit beeindrucken. Esteras Vision führt zu einem Goblingefängnis. Dort entdeckt Kiran Airys Trankflasche und eine Nachricht, die auf [[character/orcc]] verweist. Der Orkhäuptling will sie einem gefürchteten gepanzerten Menschen übergeben, den er Dämon nennt. Kiran bietet an, diese Gefahr zu beseitigen. Zunächst verlangt Shei-Var einen Kraftbeweis gegen die Ogerbrüder, deren Reichtum auch seinen Einfluss bedroht. Nach Kirans Sieg über den Dämon hält er Wort und schickt Airy heim. Estera dankt dem Retter, während Airy darunter leidet, dass Kiran sie weiterhin als Kind betrachtet."
+		],
+		"Arrival on Ingos and the missing Princess": [
+			"Прибытие на Ингос и пропавшая Принцесса",
+			"Ankunft auf Ingos und die vermisste Prinzessin"
+		],
+		"On [[allod/ingos]], Zak first crosses the hostile countryside to reach the city. [[character/kapitan]] tells him about the missing young woman known locally as the Princess and the reward offered for finding her. Governor [[character/huber]] takes a personal interest in her, while [[character/magess]] discourages the search. The hunter [[character/trapper]] provides a concrete lead: another investigator, the Snoop from the capital, had followed the same trail before disappearing east of the city. Finding his body changes the search for a missing girl into an investigation of murder.": [
+			"На [[allod/ingos|Ингосе]] Зак сначала проходит через враждебные окрестности в город. [[character/kapitan]] рассказывает о пропавшей девушке, которую местные называют Принцессой, и награде за её возвращение. Губернатор [[character/huber]] проявляет к ней личный интерес, тогда как [[character/magess]] отговаривает от поисков. Охотник [[character/trapper]] даёт конкретную зацепку: столичный сыщик уже шёл по этому следу, но исчез к востоку от города. Находка его тела превращает поиски девушки в расследование убийства.",
+			"Auf [[allod/ingos]] muss Kiran zunächst durch feindlich gesinntes Umland in die Stadt gelangen. [[character/kapitan]] berichtet von der vermissten jungen Frau, die man Prinzessin nennt, und der Belohnung. Gouverneur [[character/huber]] zeigt persönliches Interesse an ihr, während [[character/magess]] Kiran von der Suche abhalten will. Jäger [[character/trapper]] liefert eine konkrete Spur: Ein Ermittler aus der Hauptstadt suchte bereits nach ihr, verschwand aber östlich der Stadt. Sein Leichenfund macht die Suche nach der Vermissten zugleich zu einer Mordermittlung."
+		],
+		"The arrow and the Green Clan": [
+			"Стрела и Зелёный клан",
+			"Der Pfeil und der Grüne Clan"
+		],
+		"The arrow in the Snoop’s body appears to implicate the Woodsfolk. Sver explains that their markings identify a clan, while the governor discovers that the case containing similar arrows has been stolen from his collection. Two lines of inquiry now run alongside each other: the stolen collection and the Woodsfolk’s testimony. To approach [[character/ycf]], Zak first returns the Green Clan’s Sacred Flower after rescuing its keeper from the White Clan. Grey Leaf then asks for help with the kidnapped elder Khabburu and his captor. The clan ultimately identifies the murder arrow as a false attribution, even refusing to blame its enemies for it. When the clan moves, Zak receives access to its hidden route and new home.": [
+			"Стрела в теле сыщика будто бы указывает на лесовиков. Свер объясняет, что её знаки обозначают клан, а губернатор обнаруживает пропажу футляра с похожими стрелами из своей коллекции. Возникают два параллельных направления расследования: кража и свидетельство лесовиков. Чтобы встретить [[character/ycf|Серого Листа]], Зак сначала возвращает Священный Цветок Зелёного клана, освободив его хранителя у Белого клана. Затем Серый Лист просит помочь похищенному старейшине Хаббуру и разобраться с похитителем. В итоге клан признаёт стрелу подложной уликой, отказываясь обвинить даже врагов. При переселении лесовики открывают Заку тайную тропу к новому жилищу.",
+			"Der Pfeil im Körper des Ermittlers scheint die Waldleute zu belasten. Sver erklärt die Clanmarkierungen, während der Gouverneur den Diebstahl seiner Sammlung ähnlicher Pfeile entdeckt. Die gestohlene Sammlung und die Aussage der Waldleute bilden nun parallele Spuren. Um [[character/ycf]] zu sprechen, bringt Kiran die Heilige Blume des Grünen Clans zurück, nachdem er ihren Hüter beim Weißen Clan befreit hat. Danach bittet Graues Blatt um Hilfe für den entführten Ältesten Khabburu und gegen dessen Entführer. Schließlich erkennt der Clan den Mordpfeil als falsche Spur und beschuldigt nicht einmal seine Feinde. Beim Umzug erhält Kiran Zugang zum geheimen Weg und zur neuen Heimat des Clans."
+		],
+		"Karansul’s accounts and Baldie’s confession": [
+			"Книги Карансула и признание Плешивого",
+			"Karansuls Bücher und das Geständnis des Diebes"
+		],
+		"[[character/shopper]] is reluctant to help, but Sver knows how to put pressure on him. Zak first delivers the hunter’s furs to a buyer outside the merchant’s monopoly. Sver then reveals Karansul’s hidden trade and unpaid taxes, pointing to the foreman’s accounts; he also recommends [[character/mthief]] as a teacher. With the accounts as leverage, Zak learns where to find [[character/vor]], called Baldie, and secures a meeting. Evidence from the stolen collection makes the thief confess: he killed the Snoop, planted the Woodsfolk arrow and worked for a cloaked employer who knew how to evade the governor’s magical traps.": [
+			"[[character/shopper]] не желает помогать, но Свер знает способ надавить на купца. Сначала Зак доставляет меха охотника покупателю вне торговой монополии. Тогда Свер раскрывает тайную торговлю и неуплаченные налоги Карансула, указывает на книги управляющего и рекомендует [[character/mthief|Ловкача]] как наставника. Используя бухгалтерию как средство давления, Зак узнаёт, где найти [[character/vor|Плешивого]], и добивается встречи. Улики из украденной коллекции вынуждают вора признаться: он убил сыщика, подбросил стрелу лесовиков и работал на закутанного в плащ нанимателя, знавшего обход губернаторских магических ловушек.",
+			"[[character/shopper]] will nicht helfen, doch Sver kennt ein Druckmittel. Kiran liefert zunächst die Felle des Jägers an einen Käufer außerhalb von Karansuls Monopol. Dafür berichtet Sver von dessen verborgenem Handel und hinterzogenen Steuern und verweist auf die Bücher des Verwalters. Außerdem empfiehlt er [[character/mthief]] als Lehrer. Mit den Büchern erpresst Kiran Auskunft über [[character/vor]] und ein Treffen. Die Beweise aus der gestohlenen Sammlung bringen den Dieb zum Geständnis: Er tötete den Ermittler, legte den Waldleutepfeil als falsche Spur und arbeitete für einen verhüllten Auftraggeber, der die magischen Fallen des Gouverneurs umgehen konnte."
+		],
+		"Diera and the locked mines": [
+			"Диера и запертые рудники",
+			"Diera und die verschlossenen Minen"
+		],
+		"At the Green Clan’s new home, Grey Leaf describes the supposed man in grey as a white-haired woman. Zak identifies Diera, whose own traps protected the stolen collection. Her urgent warnings against the abandoned mines reinforce his suspicion. Tilvar explains that the governor holds the key. Karansul suggests winning it with a gold nugget and gives access to a dangerous pit, concealing the tigers that drove out its workers; Sver warns Zak of the trap. Zak obtains the nugget and presents it to the collector-governor as a business prospect. Valrasian releases the mine key, opening the way past Diera’s mercenaries.": [
+			"В новом жилище Зелёного клана Серый Лист описывает мнимого человека в сером как беловолосую женщину. Зак узнаёт Диеру, чьи ловушки охраняли украденную коллекцию. Её настойчивые предостережения против заброшенных рудников усиливают подозрения. Тильвар объясняет, что ключ у губернатора. Карансул советует добиться его золотым самородком и открывает опасный прииск, умалчивая о тиграх, прогнавших рабочих; Свер предупреждает о ловушке. Зак добывает самородок и подносит губернатору-коллекционеру как обещание будущего предприятия. Вальрасиан отдаёт ключ, открывающий путь через наёмников Диеры.",
+			"In der neuen Heimat des Grünen Clans beschreibt Graues Blatt den vermeintlichen Mann in Grau als weißhaarige Frau. Kiran erkennt Diera, deren Fallen die gestohlene Sammlung schützten. Ihre eindringlichen Warnungen vor den verlassenen Minen verstärken den Verdacht. Tilvar erklärt, dass der Gouverneur den Schlüssel besitzt. Karansul empfiehlt einen Goldklumpen als Geschenk und öffnet eine gefährliche Grube. Die Tiger, die ihre Arbeiter vertrieben, verschweigt er; Sver warnt Kiran. Dieser beschafft das Gold und präsentiert es dem sammelnden Gouverneur als Aussicht auf ein Geschäft. Valrasian gibt den Minenschlüssel heraus und öffnet so den Weg durch Dieras Söldner."
+		],
+		"Lu-a-Jalla beneath the mines": [
+			"Лу-а-Джала под рудниками",
+			"Lu-a-Jalla unter den Minen"
+		],
+		"The former punishment cell is empty. Zak follows the trail deeper into the Forbidden Catacombs until he finds [[character/deva]], who first mistakes him for another captor. She has escaped the mercenaries and found protection through the ancient treaty between Joons and Wormheads. She rejects the nickname Princess and explains that Diera imprisoned her out of jealousy over the governor. Zak falls in love with her, but she remains faithful to At-Zako, who drew the Joon Curse away from her. Zak promises to respect that bond. They return to Tka-Rik, and the next mission becomes the search for her missing beloved on Suslanger.": [
+			"Бывший карцер оказывается пуст. Зак идёт глубже в Запретные Катакомбы и находит [[character/deva|Лу-а-Джалу]], которая сначала принимает его за нового тюремщика. Она бежала от наёмников и получила защиту благодаря древнему договору джунов с червелицыми. Девушка отвергает прозвище Принцесса и объясняет, что Диера заточила её из ревности к губернатору. Зак влюбляется в неё, но она верна Ат-Зако, отвлёкшему от неё Проклятие джунов. Зак обещает уважать эту связь. Они возвращаются к Тка-Рику, и следующим поручением становятся поиски её возлюбленного на Суслангере.",
+			"Die frühere Strafzelle ist leer. Kiran folgt der Spur tiefer in die Verbotenen Katakomben und findet [[character/deva]], die ihn zunächst für einen weiteren Entführer hält. Sie ist den Söldnern entkommen und steht durch den alten Vertrag zwischen Joon und Wurmgesichtern unter Schutz. Den Namen Prinzessin lehnt sie ab. Diera hielt sie aus Eifersucht auf die Gunst des Gouverneurs gefangen. Kiran verliebt sich, doch Lu-a-Jalla bleibt At-Kira treu, der den Joon-Fluch von ihr fortlockte. Kiran verspricht, diese Bindung zu achten. Beide kehren zu Tka-Rik zurück; der nächste Auftrag ist die Suche nach ihrem Geliebten auf Suslanger."
+		],
+		"Captivity in Death Canyon": [
+			"Плен в Каньоне Смерти",
+			"Gefangenschaft in der Todesschlucht"
+		],
+		"Zak is captured near the portal on [[allod/suslanger]]. Lieutenant [[character/karh]] presents him to [[character/iz]], who orders him used as live quarry for soldiers seeking promotion. Surviving the run through Death Canyon earns only a return to captivity, not freedom. Kardaur threatens punishment through necromancy if Zak dies too quickly and displeases his superior.": [
+			"Возле портала на [[allod/suslanger|Суслангере]] Зак попадает в плен. Поручик [[character/karh]] представляет его [[character/iz|Айзет-Беку]], который приказывает использовать узника как живую добычу для солдат, добивающихся повышения. Удачный пробег через Каньон Смерти означает лишь возвращение в плен, а не свободу. Кардаур грозит посмертными некромантскими мучениями, если Зак погибнет слишком быстро и разочарует начальника.",
+			"Nahe dem Portal auf [[allod/suslanger]] wird Kiran gefangen genommen. Leutnant [[character/karh]] führt ihn [[character/iz]] vor, der ihn zur lebenden Jagdbeute für aufstiegswillige Soldaten bestimmt. Wer den Lauf durch die Todesschlucht überlebt, kehrt lediglich in die Gefangenschaft zurück. Kardaur droht sogar mit nekromantischer Strafe, falls Kiran zu schnell stirbt und seinen Vorgesetzten enttäuscht."
+		],
+		"The Odalisque and the escape": [
+			"Наложница и побег",
+			"Die Odaliske und die Flucht"
+		],
+		"The [[character/nalo]] approaches Zak after his ordeal. Enslaved by Kardaur and deprived even of a personal name, she wants his death and knows he will guard the gate that night. She steals the key to Zak’s cage. Her father, a rat hunter who disappeared in the caves, told her of the Wormheads’ temple and the bridges across its lava rivers. She uses that knowledge to explain a route the guards fear to follow. Zak kills Kardaur for the fortress key and escapes toward the cave; releasing the caged spiders can delay pursuit. The Odalisque and Zak part with wishes for each other’s freedom and survival, without a stated account of her later fate.": [
+			"После испытания к Заку обращается [[character/nalo]]. Рабыня Кардаура, лишённая даже собственного имени, желает хозяину смерти и знает, что ночью он будет у ворот. Она крадёт ключ от клетки Зака. Её отец-крысолов, исчезнувший в пещерах, рассказывал о храме червелицых и мостах над лавовыми реками. Эти знания позволяют указать путь, по которому стража боится преследовать беглеца. Зак убивает Кардаура ради ключа от крепости и уходит к пещере; выпущенные из клеток пауки могут задержать погоню. Наложница и Зак прощаются, желая друг другу свободы и спасения; её дальнейшая судьба в этом разговоре не раскрывается.",
+			"Nach der Prüfung spricht die [[character/nalo]] Kiran an. Von Kardaur versklavt und selbst ihres Namens beraubt, wünscht sie seinen Tod und weiß, dass er nachts das Tor bewacht. Sie stiehlt den Käfigschlüssel. Ihr Vater, ein in den Höhlen verschwundener Rattenjäger, erzählte ihr vom Tempel der Wurmgesichter und den Brücken über Lavaströme. Damit kann sie einen Weg beschreiben, den die Wachen fürchten. Kiran tötet Kardaur für den Festungsschlüssel und flieht zur Höhle; freigelassene Käfigspinnen können die Verfolger aufhalten. Beide verabschieden sich mit Wünschen für Freiheit und Überleben. Über ihr späteres Schicksal sagt das Gespräch nichts aus."
+		],
+		"Acceptance into the Last Shelter": [
+			"Принятие в Последнее Укрытие",
+			"Aufnahme im Letzten Unterschlupf"
+		],
+		"Beyond the caves, [[character/kuzn]] finds Zak and vouches for him before [[character/glav]]. The brotherhood’s leader fears imperial spies and requires the Emperor’s Signet Ring, taken from a cyclops who killed its courier. Possessing such an object compromises the newcomer with the authorities and makes the test more than a feat of strength. After Zak returns, Khatul accepts him as Brother Blondie and offers the refuge as a new home. Zak explains his promise to find At-Zako and return to Gipath. Khatul respects that purpose and asks those who can help to support him; [[character/guru]] can teach him greater dexterity.": [
+			"За пещерами [[character/kuzn]] находит Зака и поручается за него перед [[character/glav|Хатулем]]. Глава братства опасается имперских шпионов и требует перстень-печать Императора, доставшийся циклопу после гибели курьера. Само владение этой вещью ставит новичка вне закона, поэтому испытание проверяет не только силу. После возвращения Зака Хатуль принимает его как Брата-Блондина и предлагает новый дом. Зак рассказывает об обещании найти Ат-Зако и вернуться на Гипат. Хатуль уважает эту цель и просит братьев помочь; [[character/guru]] может обучить героя ловкости.",
+			"Jenseits der Höhlen findet [[character/kuzn]] Kiran und bürgt vor [[character/glav]] für ihn. Aus Furcht vor kaiserlichen Spionen verlangt der Anführer den Siegelring des Kaisers, den ein Zyklop seinem getöteten Kurier abnahm. Schon der Besitz belastet den Fremden gegenüber den Behörden; die Prüfung misst daher mehr als Kampfkraft. Nach Kirans Rückkehr nimmt Khatul ihn als Bruder Blondie auf und bietet eine neue Heimat. Kiran erklärt sein Versprechen, At-Kira zu finden und nach Gipath zurückzukehren. Khatul achtet dieses Ziel und bittet die Brüder um Hilfe. [[character/guru]] kann Kirans Geschicklichkeit schulen."
+		],
+		"Sahilia’s cache and the Joon collector": [
+			"Тайник Сахили и коллекционер джунских древностей",
+			"Sahilias Versteck und der Joon-Sammler"
+		],
+		"[[character/merc10]] supplies the next lead through her own theft. Antiquities she stole from [[character/junofil]] remain hidden near the city, and Zak recovers them to arrange a meeting. Khatul and Brother Blacksmith help choose the secluded trading place, keeping strangers away from the Shelter. Baluddin admits recognising At-Zako as a living Joon and wanting to keep him in his own house. Imperial scholars took the young man away. Later, Taivo summoned the collector to identify those scholars’ mutilated bodies. The missing youth’s trail now leads to the necromancers rather than a living prisoner whom Zak can simply rescue.": [
+			"Следующую зацепку даёт [[character/merc10]] благодаря собственной краже. Древности, похищенные у [[character/junofil|Балуддина]], спрятаны возле города; Зак забирает их, чтобы устроить встречу. Хатуль и Брат-Кузнец помогают выбрать уединённое место торговли, не допуская чужих в Укрытие. Балуддин признаёт, что узнал в Ат-Зако живого джуна и хотел оставить его у себя. Императорские учёные забрали юношу. Позднее Тайво вызвал коллекционера для опознания изуродованных тел этих учёных. След ведёт теперь к некромантам, а не к живому пленнику, которого можно просто освободить.",
+			"Die nächste Spur liefert [[character/merc10]] durch einen eigenen Diebstahl. Die von [[character/junofil]] gestohlenen Altertümer liegen noch in einem Versteck bei der Stadt. Kiran birgt sie, um ein Treffen zu vereinbaren. Khatul und der Schmiedebruder vermitteln einen abgeschiedenen Handelsplatz, damit kein Fremder zum Unterschlupf gelangt. Baluddin erkannte At-Kira als lebenden Joon und wollte ihn selbst behalten. Kaiserliche Gelehrte nahmen den jungen Mann jedoch mit. Später rief Taivo den Sammler zur Identifizierung der verstümmelten Gelehrtenleichen. Die Spur führt nun zu den Nekromanten statt zu einem Gefangenen, den Kiran einfach befreien könnte."
+		],
+		"Kholai and the dead scientist": [
+			"Холай и погибший учёный",
+			"Kholai und der tote Forscher"
+		],
+		"[[character/nekro]] directs Zak to [[character/oldnekro]], whom Taivo displaced from the imperial laboratory. Kholai wants disgrace for his rival rather than a simple assassination. Zak steals a dead scientist’s head from the laboratory; its disappearance will embarrass Taivo, and Kholai can summon its spirit. The [[character/spirit|scientist]] describes a horror pursuing the red-skinned youth. To conceal him, the scholars changed his appearance and sent him away by teleportation. Kholai interprets the broken testimony and tells Zak to search the ruined mansion for the magical object used in the escape. The fragments Zak finds are beyond Kehel’s ability to interpret: only a Great Magician can identify the destination.": [
+			"[[character/nekro]] направляет Зака к [[character/oldnekro|Холаю]], которого Тайво вытеснил из императорской лаборатории. Холай желает сопернику позора, а не простого убийства. Зак крадёт из лаборатории голову погибшего учёного: исчезновение тела повредит Тайво, а Холай сможет вызвать дух. [[character/spirit|Учёный]] описывает ужас, преследовавший краснокожего юношу. Чтобы скрыть его, учёные изменили ему внешность и отправили телепортом. Холай истолковывает обрывки свидетельства и велит найти в разрушенном особняке магический предмет, использованный при побеге. Найденные осколки Кехелю не поддаются: определить направление способен лишь Великий Маг.",
+			"[[character/nekro]] verweist Kiran an [[character/oldnekro]], den Taivo aus dem kaiserlichen Labor verdrängt hat. Kholai will seinen Rivalen bloßstellen, nicht einfach töten. Kiran stiehlt den Kopf eines toten Forschers aus dem Labor. Dessen Verschwinden soll Taivo schaden, während Kholai den Geist beschwören kann. Der [[character/spirit|Forscher]] berichtet von einem Schrecken, der den rothäutigen Jungen verfolgte. Die Gelehrten veränderten dessen Gestalt und teleportierten ihn fort. Kholai deutet die abgerissene Aussage und schickt Kiran nach dem benutzten magischen Gegenstand in der Ruine des Hauses suchen. Kehel kann die gefundenen Bruchstücke nicht deuten; nur ein Großer Magier kann das Ziel erkennen."
+		],
+		"Brother Faceless and the return to Gipath": [
+			"Брат-Безликий и возвращение на Гипат",
+			"Der Gesichtslose Bruder und die Rückkehr nach Gipath"
+		],
+		"Khatul asks [[character/zaku]] to help Zak reach the guarded portal. Faceless arranges a cave meeting and explains the keys and stone controls. He then reveals himself as Erfar: born on Suslanger, he went to Gipath seeking the meteorite and manipulated the villagers into searching for it. His earlier plots were attempts to remove Zak, who disrupted that scheme. The reunion is another trap, with guards waiting outside the cave. Zak survives the confrontation and forces a route through the portal’s defences. Activating its two controls finally returns him to Tka-Rik with the amulet fragments.": [
+			"Хатуль просит [[character/zaku|Брата-Безликого]] помочь Заку пройти к охраняемому порталу. Тот назначает встречу в пещере и объясняет устройство ключей и каменных переключателей. Затем он раскрывается как Эрфар: уроженец Суслангера отправился на Гипат за метеоритом и заставлял жителей искать его. Прежние заговоры должны были убрать Зака, мешавшего замыслу. Встреча оказывается новой ловушкой: у выхода ждёт стража. Зак переживает столкновение и преодолевает защиту портала. Включение двух переключателей наконец возвращает его к Тка-Рику с осколками амулета.",
+			"Khatul bittet [[character/zaku]], Kiran zum bewachten Portal zu helfen. Der Gesichtslose vereinbart ein Höhlentreffen und erklärt Schlüssel und Steinmechanismen. Dann gibt er sich als Erfar zu erkennen: Er stammt aus Suslanger, ging wegen des Meteoriten nach Gipath und ließ die Dorfbewohner danach suchen. Seine früheren Mordpläne sollten Kiran beseitigen, der diese Suche störte. Auch das Wiedersehen ist eine Falle; Wachen warten vor der Höhle. Kiran überlebt die Konfrontation und überwindet die Verteidigung des Portals. Nach Aktivierung beider Steinmechanismen kehrt er mit den Amulettstücken zu Tka-Rik zurück."
+		],
+		"At-Zako: the search turns back on itself": [
+			"Ат-Зако: поиски самого себя",
+			"At-Kira: Die Suche führt zu ihm selbst"
+		],
+		"Tka-Rik initially expects Zak to bring the missing Joon with him. Lu-a-Jalla defends the exhausted traveller, and Zak insists that he will continue for her sake even if reunion with At-Zako means losing her. The amulet changes everything: Tka-Rik discovers that its destination was Gipath. Only Zak arrived there in that unusual way. The man he has been seeking is himself, hidden by the Khadaganian transformation spell. Restored as At-Zako, he reassures Tka-Rik and reunites with Lu-a-Jalla. The memories of their earlier flight explain why the return of his identity also brings back the danger of the Curse.": [
+			"Тка-Рик сначала ожидает, что Зак приведёт пропавшего джуна. Лу-а-Джала защищает измученного путника, а Зак готов продолжать ради неё, даже если встреча с Ат-Зако лишит его надежды на её любовь. Амулет меняет всё: Тка-Рик устанавливает, что телепорт был направлен на Гипат. Только Зак прибыл сюда таким необычным способом. Всё время он искал самого себя, скрытого хадаганским превращением. Вернувшись к личности Ат-Зако, он успокаивает Тка-Рика и воссоединяется с Лу-а-Джалой. Воспоминания о прежнем бегстве объясняют, почему возвращение личности означает и возвращение угрозы Проклятия.",
+			"Tka-Rik erwartet zunächst, dass Kiran den vermissten Joon mitbringt. Lu-a-Jalla verteidigt den erschöpften Reisenden. Kiran will für sie weitersuchen, selbst wenn ihre Wiedervereinigung mit At-Kira seine eigene Hoffnung aufgibt. Das Amulett verändert alles: Sein Ziel war Gipath, und nur Kiran kam auf diese ungewöhnliche Weise an. Er suchte die ganze Zeit sich selbst, verborgen durch den khadaganischen Verwandlungszauber. Als At-Kira beruhigt er Tka-Rik und findet zu Lu-a-Jalla zurück. Die Erinnerungen an ihre frühere Flucht erklären jedoch, warum seine wiedergewonnene Identität auch die Gefahr des Fluchs zurückbringt."
+		],
+		"The battle with the Joon Curse": [
+			"Битва с Проклятием джунов",
+			"Der Kampf gegen den Fluch der Joon"
+		],
+		"The hurried transformation that concealed At-Zako nearly destroyed his memory. Tka-Rik cannot safely repeat it, so hiding as Zak is no longer an answer. He offers another choice: flee again under his temporary protection, or confront the Curse on Gipath. At-Zako chooses to defend his life with Lu-a-Jalla. Tka-Rik supplies ancient Joon equipment and joins him in the catacombs for the final battle. Defeating the Curse completes the campaign.": [
+			"Поспешное превращение, скрывшее Ат-Зако, едва не уничтожило его память. Тка-Рик не может безопасно повторить заклинание, поэтому снова укрыться под именем Зака нельзя. Он предлагает выбор: бежать под его временной защитой или встретить Проклятие на Гипате. Ат-Зако решает защищать жизнь с Лу-а-Джалой. Тка-Рик даёт древнее джунское снаряжение и присоединяется к нему в катакомбах для последней битвы. Победа над Проклятием завершает кампанию.",
+			"Die hastige Verwandlung, die At-Kira verbarg, hätte sein Gedächtnis beinahe zerstört. Tka-Rik kann sie nicht gefahrlos wiederholen. Er bietet die Wahl zwischen erneuter Flucht unter seinem zeitweiligen Schutz und einem Kampf gegen den Fluch auf Gipath. At-Kira entscheidet sich, sein Leben mit Lu-a-Jalla zu verteidigen. Tka-Rik gibt ihm alte Joon-Ausrüstung und kämpft an seiner Seite in den Katakomben. Der Sieg über den Fluch beendet die Kampagne."
+		],
+		"Recruitment and farewell": [
+			"Присоединение и прощание",
+			"Anwerbung und Abschied"
+		],
+		"Khador, usually called Rowdy, served under Gort and was once his friend. After an episode involving mushrooms and an outspoken quarrel, the two stopped speaking. Free of his former duties, Rowdy offers Zak his axe and enthusiasm for a fight. His recruitment is optional, and other business can temporarily keep him in the village. When Zak leaves Gipath alone, Rowdy accepts the farewell and hopes he will return safely.": [
+			"Хадор, обычно называемый Драчуном, служил Горту и когда-то дружил с ним. После случая с грибами и откровенной ссоры они перестали разговаривать. Освободившись от прежних обязанностей, Драчун предлагает Заку топор и готовность драться. Его участие необязательно, а другие дела могут временно удержать его в посёлке. Когда Зак уходит с Гипата один, Драчун принимает прощание и желает ему вернуться живым.",
+			"Khador, meist Rowdy genannt, diente Gort und war mit ihm befreundet. Nach einem Vorfall mit Pilzen und einem offenen Streit reden beide nicht mehr miteinander. Rowdy bietet Kiran seine Axt und Kampflust an. Seine Anwerbung ist optional; andere Geschäfte können ihn zeitweise im Dorf halten. Als Kiran Gipath allein verlässt, nimmt Rowdy Abschied und hofft auf seine sichere Rückkehr."
+		],
+		"Zak first notices Archer’s marksmanship and proposes that he join his expeditions. Archer initially answers that he reports to the captain. A later conversation establishes that he can now decide for himself and is willing to join. This change explains his availability; it does not imply that he accompanies every expedition. At their farewell, Zak thanks him for his aim, and Archer hopes he will find equally capable help abroad.": [
+			"Зак замечает меткость Стрелка и предлагает ходить с ним в походы. Сначала тот отвечает, что подчинён воеводе. В последующем разговоре он уже может решать сам и готов присоединиться. Так объясняется его доступность, но не обязательное участие в каждом походе. Прощаясь, Зак благодарит его за верный прицел, а Стрелок желает найти столь же умелых помощников за пределами Гипата.",
+			"Kiran bemerkt die Treffsicherheit des Schützen und bietet gemeinsame Unternehmungen an. Zunächst verweist dieser auf seine Pflicht gegenüber dem Hauptmann. Später erklärt er, nun selbst entscheiden zu können, und ist zum Mitkommen bereit. Dies erklärt seine Verfügbarkeit, nicht eine Teilnahme an jeder Expedition. Beim Abschied dankt Kiran für seinen sicheren Schuss; der Schütze wünscht ihm ebenso fähige Hilfe in anderen Ländern."
+		],
+		"Estera introduces Naya as her apprentice and offers her assistance as a test of her training. Naya corrects the impression that she lacks experience: she already hunts for the witch and has faced goblins and orcs. If recruited, she travels as a capable assistant rather than an untrained dependent. At parting she hopes to succeed Estera and teach an apprentice of her own. Her cryptic farewell hints at a change awaiting Zak, but she refuses to explain what she sees.": [
+			"Эстера представляет Найю как ученицу и предлагает её помощь для проверки выучки. Найя поправляет впечатление о своей неопытности: она уже охотится для знахарки и встречалась с гоблинами и орками. Если её взять, она будет умелой помощницей, а не беспомощной подопечной. При прощании она надеется занять место Эстеры и обучать собственную ученицу. Её загадочные слова намекают на перемену в судьбе Зака, но объяснять увиденное она отказывается.",
+			"Estera stellt Naya als Lehrling vor und bietet ihre Hilfe als Ausbildungsprobe an. Naya widerspricht dem Eindruck mangelnder Erfahrung: Sie jagt bereits für die Hexe und begegnete Goblins und Orks. Als Gefährtin ist sie eine fähige Helferin, keine schutzlose Anfängerin. Beim Abschied hofft sie, Estera eines Tages nachzufolgen und selbst einen Lehrling auszubilden. Ihre rätselhaften Worte deuten eine Veränderung für Kiran an, die sie nicht erläutern will."
+		],
+		"Eila left the village hoping to study under Estera, was rejected, and also failed to find a place with the brigands’ chieftess. Redhead directed her to Shei-Var. There the orc seer teaches her magic in exchange for fighting for the tribe. Shei-Var permits her to help Zak, and she admits that she misses human company. Their farewell leaves her planning to return to the orcs and perhaps negotiate peace with the village; the proposed treaty is her hope, not a recorded achievement.": [
+			"Эйла ушла из посёлка, надеясь учиться у Эстеры, но получила отказ и не ужилась с разбойничьей атаманшей. Рыжий направил её к Шай-Вару. Здесь орочий прорицатель учит её магии в обмен на службу племени. Шай-Вар разрешает помочь Заку, а сама Эйла признаёт, что скучает по людям. При прощании она собирается вернуться к оркам и, возможно, договориться о мире с посёлком. Это её надежда, а не уже заключённый договор.",
+			"Eila verließ das Dorf, um bei Estera zu lernen, wurde aber abgewiesen und fand auch bei der Räuberhäuptlingsfrau keinen Platz. Redhead verwies sie an Shei-Var. Dort lehrt der Orkseher sie Magie gegen Kampfdienste für den Stamm. Shei-Var erlaubt ihre Hilfe für Kiran; sie selbst vermisst menschliche Gesellschaft. Beim Abschied plant sie die Rückkehr zu den Orks und vielleicht einen Frieden mit dem Dorf. Dieser Vertrag ist eine Hoffnung, kein bereits erreichtes Ergebnis."
+		],
+		"Diera’s privileged position and the governor’s ban on competing magicians explain why Rinas offers help in the Princess investigation. He postpones any fee, trusting that Zak’s apparent poverty will not last. In their farewell, he treats the end of Diera’s dominance as sufficient payment. His motive is therefore tied to the politics of Ingos as well as the opportunity to travel with Zak.": [
+			"Привилегии Диеры и губернаторский запрет другим магам объясняют, почему Хис предлагает помощь в поисках Принцессы. Он откладывает вопрос платы, полагая, что бедность Зака временна. При прощании он считает конец господства Диеры достаточной наградой. Таким образом, его интерес связан с порядками Ингоса, а не только с возможностью сопровождать героя.",
+			"Dieras Sonderstellung und das Verbot anderer Magier durch den Gouverneur erklären Rinas’ Hilfsangebot bei der Prinzessinnensuche. Die Bezahlung schiebt er auf, weil er Kirans Armut für vorübergehend hält. Beim Abschied betrachtet er das Ende von Dieras Vorherrschaft als ausreichenden Lohn. Sein Beweggrund liegt somit auch in der Politik von Ingos."
+		],
+		"Mairana introduces herself as an archer useful outside the city walls, where the population is hostile to strangers. She cannot yet demand a mercenary’s fee because she has not joined the Guild: experience is her immediate reward. A required permit can delay her departure from the city. At the end of their association, she explicitly chooses to remain on Ingos, which she considers her home.": [
+			"Майрана представляется лучницей, полезной за городскими стенами, где жители враждебны чужакам. Она ещё не вступила в Гильдию и потому не требует платы наёмника: непосредственной наградой должен стать опыт. Необходимость разрешения может задержать её выход из города. Завершая совместный путь, она прямо выбирает остаться на Ингосе, который считает домом.",
+			"Mairana bietet sich als Bogenschützin für das feindselige Umland an. Da sie der Söldnergilde noch nicht beigetreten ist, verlangt sie keinen entsprechenden Lohn; zunächst zählt Erfahrung. Eine erforderliche Genehmigung kann ihren Aufbruch verzögern. Beim Abschied entscheidet sie sich ausdrücklich dafür, auf Ingos zu bleiben, ihrer Heimat."
+		],
+		"Kharad once hunted people like Zak in imperial service. Disillusionment with his superiors turned him against them and brought him to the brotherhood. He offers to make his revenge useful to Zak’s search, while Zak asks him to temper enthusiasm with caution. Khatul’s need for a guard at the Shelter can prevent his recruitment. If he reaches Gipath with Zak, his farewell rejects a new life there: loyalty to the brothers and unfinished revenge call him back to Suslanger.": [
+			"Харад прежде преследовал таких, как Зак, на имперской службе. Разочарование в начальниках обратило его против них и привело в братство. Он предлагает направить месть на пользу поискам Зака, а герой требует не забывать осторожность. Необходимость охранять Укрытие по приказу Хатуля может помешать присоединению. Если Харад добирается с Заком до Гипата, при прощании он отказывается от новой жизни: верность братьям и незаконченная месть зовут обратно на Суслангер.",
+			"Kharad jagte einst Menschen wie Kiran im kaiserlichen Dienst. Die Enttäuschung über seine Vorgesetzten führte ihn zur Bruderschaft. Er will seine Rache für Kirans Suche nutzbar machen, während Kiran zur Vorsicht mahnt. Khatuls Bedarf an einem Wächter kann seine Anwerbung verhindern. Erreicht er mit Kiran Gipath, lehnt er dort ein neues Leben ab: Treue zu den Brüdern und unerledigte Rache führen ihn zurück nach Suslanger."
+		],
+		"Fairakh offers magical help partly because travelling on the surface gives him chances for revenge. Zak asks him to avoid unjustified violence; the magician promises obedience against Zak’s enemies but reserves a different attitude toward his own. Work with Kehel can keep him at the Shelter for a time. His farewell, if he accompanies Zak to Gipath, declines settlement there because he prefers the Shelter and doubts his art would be appreciated on the remote allod.": [
+			"Файрах предлагает магическую помощь отчасти потому, что походы по поверхности дают возможности для мести. Зак требует избегать неоправданного насилия; маг обещает слушаться в борьбе с врагами героя, но делает оговорку о собственных. Работа с Кехелем может на время удержать его в Укрытии. Если он сопровождает Зака до Гипата, при прощании отказывается остаться: ему больше нравится Укрытие, а на далёком аллоде он не ждёт признания своего искусства.",
+			"Fairakh bietet auch deshalb Magie an, weil Reisen an die Oberfläche Gelegenheit zur Rache geben. Kiran verlangt, unnötige Gewalt zu vermeiden. Gegen Kirans Feinde verspricht der Magier Gehorsam, macht für persönliche Gegner jedoch eine Einschränkung. Arbeiten mit Kehel können ihn zeitweise im Unterschlupf halten. Begleitet er Kiran nach Gipath, lehnt er beim Abschied eine Ansiedlung ab: Er bevorzugt den Unterschlupf und erwartet auf dem abgelegenen Allod wenig Anerkennung seiner Kunst."
+		],
+		"Brissen is alive when Zak meets him, despite rumours in the city. Grey Leaf has told him about Zak, and he offers to serve the good cause alongside him. His professed ideals do not forbid stealth or rough methods; he says that war against evil requires practical means. Duties defending the Woodsfolk against the Black Clan can delay his departure. His farewell again dismisses rumours of his death.": [
+			"Когда Зак встречает Бриссена, рыцарь жив вопреки городским слухам. Серый Лист уже рассказал ему о герое, и он предлагает вместе служить добру. Его идеалы не исключают скрытности и суровых методов: по его словам, война со злом требует практических средств. Защита лесовиков от Чёрного клана может задержать его уход. При прощании он вновь просит не верить слухам о своей смерти.",
+			"Als Kiran Brissen trifft, lebt der Ritter trotz der Gerüchte in der Stadt. Graues Blatt hat ihm von Kiran erzählt, und er bietet gemeinsame Dienste für das Gute an. Seine Ideale schließen Heimlichkeit und harte Methoden nicht aus; der Kampf gegen das Böse brauche praktische Mittel. Die Verteidigung der Waldleute gegen den Schwarzen Clan kann seinen Aufbruch verzögern. Beim Abschied warnt er erneut vor Gerüchten über seinen Tod."
+		],
+		"Escape from Jigran": [
+			"Бегство с Джиграна",
+			"Flucht aus Jigran"
+		],
+		"[[character/hero]], whose full name is Kir-A-Chit-La, is a young Joon enslaved under [[character/firez]] on [[allod/jigran]]. He escapes the castle, leaving his family behind, and hopes to return with help. Outside the castle, a [[character/first|recruiter]] mistakes him for someone expected at the camp. Kir conceals his identity and accepts travel papers for work on Suslanger. The apparent opening to freedom instead delivers him to imperial authorities. [[character/hwleader]] dismisses his papers, treats him as a slave and considers reporting the red-skinned stranger for a reward.": [
+			"[[character/hero]], полное имя которого Кир-А-Чит-Ла, является молодым джуном, порабощённым [[character/firez|Фирезом]] на [[allod/jigran|Джигране]]. Он бежит из замка, оставив семью, и надеется вернуться с помощью. За пределами замка [[character/first|вербовщик]] принимает его за ожидаемого работника. Кир скрывает личность и получает бумаги для работы на Суслангере. Кажущийся путь к свободе приводит к имперским властям. [[character/hwleader]] отвергает документы, обращается с ним как с рабом и собирается донести о краснокожем чужаке ради награды.",
+			"[[character/hero]], mit vollem Namen Kir-A-Chit-La, ist ein junger Joon, den [[character/firez]] auf [[allod/jigran]] versklavt hat. Er entkommt dem Schloss, lässt seine Familie zurück und hofft, mit Hilfe wiederzukehren. Draußen verwechselt ihn ein [[character/first|Anwerber]] mit einem erwarteten Arbeiter. Kir verbirgt seine Identität und nimmt Papiere für Arbeit auf Suslanger an. Der vermeintliche Weg in die Freiheit führt jedoch zu den kaiserlichen Behörden. [[character/hwleader]] verwirft seine Papiere, behandelt ihn als Sklaven und will den rothäutigen Fremden für eine Belohnung melden."
+		],
+		"Kel and the slave pen": [
+			"Кель и загон для рабов",
+			"Kel und der Sklavenpferch"
+		],
+		"Soldiers beat Kir nearly to death. In the slave pen, [[character/merc2]] nurses him back to consciousness, shortens his name to Kir and offers a partnership in escape. He initially hopes to explain the mistake to the authorities; the [[character/clerk|official]] instead assigns work according to the prisoners’ abilities. Kel has overheard that an officer possesses a map of the catacombs. They escape and use the underground route to leave the fortress area. Once outside, Kel proposes refuge with an acquaintance who collects spiders. Their relationship begins in this shared dependence: Kir needs her local knowledge, and Kel needs a partner.": [
+			"Солдаты избивают Кира почти до смерти. В загоне для рабов [[character/merc2]] помогает ему прийти в себя, сокращает имя до Кира и предлагает вместе бежать. Сначала он надеется объяснить властям ошибку, но [[character/clerk|чиновник]] лишь распределяет работу по способностям пленников. Кель подслушала, что у офицера есть карта катакомб. Они совершают побег и уходят из крепостного района подземным путём. Оказавшись снаружи, Кель предлагает укрыться у знакомого коллекционера пауков. Их союз начинается с взаимной необходимости: Киру нужны её знания местных порядков, а Кель нужен напарник.",
+			"Soldaten schlagen Kir fast tot. Im Sklavenpferch pflegt [[character/merc2]] ihn, kürzt seinen Namen zu Kir und schlägt eine gemeinsame Flucht vor. Er hofft zunächst, den Behörden das Missverständnis erklären zu können. Der [[character/clerk|Beamte]] teilt die Gefangenen jedoch nur nach ihren Fähigkeiten zur Arbeit ein. Kel hat von einer Katakombenkarte im Besitz eines Offiziers gehört. Beide entkommen durch den unterirdischen Weg aus dem Festungsgebiet. Danach empfiehlt Kel Zuflucht bei einem Spinnensammler. Ihr Bündnis entsteht aus gegenseitiger Abhängigkeit: Kir braucht ihre Ortskenntnis, Kel einen Partner."
+		],
+		"Shelter at Rindeil’s estate": [
+			"Приют в поместье Риндейла",
+			"Zuflucht auf Rindeils Anwesen"
+		],
+		"[[character/elder]] welcomes Kel and her companion to his estate. Kir’s learning gives them common ground, though the collector’s chief concern remains his spiders. [[character/sheriff]], who manages the household and formerly performed on stage, becomes a source of contacts and rumours about another Joon. [[character/merc8]] helps Kir hide his conspicuous face beneath cloth, exploiting the fear of disease. Rindeil’s requests include obtaining a meteorite sample in exchange for a rare specimen for his collection. This period of refuge lets Kir search for information, but its safety depends on the owner’s willingness to risk his household.": [
+			"[[character/elder]] принимает Кель и её спутника в поместье. Начитанность Кира помогает найти общий язык с хозяином, хотя главное его увлечение остаётся коллекцией пауков. [[character/sheriff]], управляющий домом и бывший артист, становится источником знакомств и слухов о другом джуне. [[character/merc8]] помогает скрыть приметное лицо Кира под тканью, используя страх перед болезнью. Среди просьб Риндейла есть добыча образца метеорита для обмена на редкого паука. Приют даёт время искать сведения, но безопасность зависит от готовности хозяина рисковать поместьем.",
+			"[[character/elder]] nimmt Kel und ihren Gefährten auf seinem Anwesen auf. Kirs Belesenheit schafft Gemeinsamkeiten, doch das Hauptinteresse des Sammlers bleiben seine Spinnen. [[character/sheriff]], Verwalter des Hauses und früherer Bühnenkünstler, vermittelt Kontakte und Gerüchte über einen weiteren Joon. [[character/merc8]] hilft Kir, sein auffälliges Gesicht mit Tüchern zu verdecken und die Angst vor Krankheit auszunutzen. Rindeil verlangt unter anderem einen Meteoritenfund für den Tausch gegen eine seltene Spinne. Die Zuflucht gibt Kir Zeit zur Suche, hängt aber davon ab, wie viel der Eigentümer für seine Gäste riskieren will."
+		],
+		"Zara’s affairs": [
+			"Дела Зары",
+			"Zaras Angelegenheiten"
+		],
+		"The merchant [[character/ycf]] is another of Kel’s Suslanger contacts. Her side of the story involves a blackmailer, a threatened caravan and contraband that must be recovered before the authorities inspect it. The conversations distinguish successful recovery from arriving too late; the account of the caravan therefore depends on the outcome of that errand. Later, Zara’s interest in a scholar draws Kir into a scheme against Kehel. These dealings develop alongside the search for a Joon, rather than forming a single inevitable sequence of victories.": [
+			"Торговка [[character/ycf]] является ещё одной знакомой Кель на Суслангере. Её линия связана с шантажистом, караваном под угрозой нападения и запрещёнными товарами, которые нужно забрать до проверки властей. Разговоры различают успешное возвращение груза и опоздание, поэтому рассказ о караване зависит от результата поручения. Позднее любовь Зары к учёному втягивает Кира в замысел против Кехеля. Эти дела развиваются параллельно поискам джуна и не составляют неизбежной череды побед.",
+			"Die Händlerin [[character/ycf]] gehört ebenfalls zu Kels Kontakten auf Suslanger. Ihre Geschichte betrifft einen Erpresser, eine bedrohte Karawane und Schmuggelware, die vor einer behördlichen Kontrolle geborgen werden soll. Die Gespräche unterscheiden eine erfolgreiche Bergung vom Zuspätkommen; der Ausgang hängt also vom Auftrag ab. Später zieht Zaras Zuneigung zu einem Gelehrten Kir in einen Plan gegen Kehel. Diese Geschäfte begleiten die Joon-Suche, bilden aber keine unausweichliche Reihe erfolgreicher Heldentaten."
+		],
+		"Feiruz’s last rescue": [
+			"Последнее спасение Фейруза",
+			"Feiruz’ letzte Rettungsaktion"
+		],
+		"Feiruz asks Kir to repay his help by rescuing his imprisoned fiancée [[character/merc10]]. He dies during the escape. Kel urges the grieving Aliya to avenge him and identifies the man who struck the fatal blow. Kir objects to deliberate revenge, but their companions insist on their code. The death of the prison commandant brings searches across the city. Fearing for his collection, Rindeil withdraws his protection, though he says Kir may return once the danger passes. Aliya then leads Kir and Kel to the Last Shelter and speaks for them before [[character/glav]].": [
+			"Фейруз просит Кира отплатить за помощь спасением его невесты [[character/merc10|Алии]] из тюрьмы. Во время побега он погибает. Кель призывает убитую горем Алию отомстить и указывает того, кто нанёс последний удар. Кир возражает против сознательной мести, но спутницы настаивают на своём кодексе. Гибель начальника тюрьмы вызывает обыски по всему городу. Опасаясь за коллекцию, Риндейл отказывает в защите, хотя разрешает вернуться после окончания тревоги. Тогда Алия приводит Кира и Кель в Последнее Укрытие и поручается за них перед [[character/glav|Хатулем]].",
+			"Feiruz bittet Kir, seine Hilfe durch die Rettung seiner eingekerkerten Verlobten [[character/merc10]] zu vergelten. Bei der Flucht stirbt er. Kel drängt die trauernde Aliya zur Rache und nennt den Mann, der den tödlichen Schlag führte. Kir widerspricht der gezielten Vergeltung, doch seine Gefährtinnen bestehen auf ihrem Kodex. Der Tod des Gefängniskommandanten löst stadtweite Durchsuchungen aus. Aus Angst um die Sammlung entzieht Rindeil seinen Schutz, erlaubt aber eine spätere Rückkehr. Aliya führt Kir und Kel zum Letzten Unterschlupf und bürgt vor [[character/glav]] für sie."
+		],
+		"The ring and the brotherhood": [
+			"Перстень и братство",
+			"Der Ring und die Bruderschaft"
+		],
+		"Khatul demands an imperial signet ring from a cyclops as a test of trust. Kir brings it back and explains his intention to free his family. He also recognises that the ring does not match the description he has read. Khatul already knows it is false, but asks him to preserve the brotherhood’s belief in the trophy. Membership changes how [[character/zaku]] receives Kir: the smith who refused a stranger now offers his craft. Through Aliya, Kir also searches for the missing [[character/merc7]], rescues her and brings medicine. Sahilia’s recovery matters later, when her forged papers open a route into the army.": [
+			"Хатуль требует добыть у циклопа императорский перстень как проверку доверия. Кир возвращается с ним и рассказывает о намерении освободить семью. Он также замечает, что кольцо не совпадает с прочитанным описанием. Хатуль уже знает о подделке, но просит сохранить веру братства в трофей. Принятие меняет отношение [[character/zaku|Брата-Кузнеца]]: прежде он отказывал чужаку, теперь предлагает ремесленные услуги. По просьбе Алии Кир также ищет пропавшую [[character/merc7|Сахилю]], спасает её и приносит лекарства. Её выздоровление позднее позволяет получить поддельные бумаги для поступления в армию.",
+			"Khatul verlangt als Vertrauensprobe einen kaiserlichen Siegelring von einem Zyklopen. Kir bringt ihn und erklärt seinen Plan zur Rettung der Familie. Er erkennt allerdings, dass der Ring nicht seiner gelesenen Beschreibung entspricht. Khatul weiß bereits von der Fälschung und bittet ihn, den Glauben der Brüder an die Trophäe zu erhalten. Die Aufnahme verändert auch [[character/zaku]]s Haltung: Der Schmied, der den Fremden abwies, bietet nun seine Dienste an. Auf Aliyas Bitte sucht Kir außerdem [[character/merc7]], rettet sie und bringt Medizin. Ihre Genesung ermöglicht später die gefälschten Papiere für den Armeedienst."
+		],
+		"Defending the Shelter and the ancient treaty": [
+			"Защита Укрытия и древний договор",
+			"Schutz des Unterschlupfs und der alte Vertrag"
+		],
+		"An imperial scout discovers the Shelter. After fighting the expedition, Khatul proposes placing Wormface bodies at the battlefield to conceal the brotherhood’s involvement. In the depths, [[character/guru]] recognises Kir as a Joon and invokes an ancient treaty. He demands the death of a necromancer disturbing the caves before granting access. Later he calls Kir mentally and offers information for rescuing the Priest of Silence from the necromancers. His account of a human searching for Joon remains gives another lead, though he cannot say where that man now lives. The alliance is reciprocal and conditional, not a promise to answer every question.": [
+			"Имперский разведчик обнаруживает Укрытие. После боя с экспедицией Хатуль предлагает подложить на место сражения тела червелицых, чтобы скрыть участие братства. В глубинах [[character/guru]] узнаёт в Кире джуна и ссылается на древний договор. Прежде чем открыть доступ, он требует убить некроманта, тревожащего пещеры. Позднее Мозгодер мысленно зовёт Кира и предлагает сведения за спасение жреца Тишины из рук некромантов. Его рассказ о человеке, искавшем джунские древности, даёт новую зацепку, хотя местонахождение человека он не знает. Их союз основан на взаимных обязательствах, а не на обещании ответить на любой вопрос.",
+			"Ein kaiserlicher Späher entdeckt den Unterschlupf. Nach dem Kampf gegen die Expedition will Khatul Leichen von Wurmgesichtern auf das Schlachtfeld legen lassen, um die Bruderschaft zu verbergen. In der Tiefe erkennt [[character/guru]] Kir als Joon und beruft sich auf einen alten Vertrag. Vor dem Zugang verlangt er den Tod eines Nekromanten, der die Höhlen stört. Später ruft er Kir durch Gedanken und bietet Auskunft für die Rettung des Priesters der Stille. Sein Bericht über einen Menschen, der nach Joon-Relikten suchte, liefert eine weitere Spur, aber keinen heutigen Aufenthaltsort. Das Bündnis beruht auf gegenseitigen Pflichten, nicht auf uneingeschränkter Auskunft."
+		],
+		"The report and the passage to Gipath": [
+			"Донесение и путь на Гипат",
+			"Der Bericht und der Weg nach Gipath"
+		],
+		"Karim’s rumour about the missing red-skinned youth becomes a document recovered from the necromancers. It records transformation and teleportation before the attack on the scholars’ mansion, with Gipath as the destination. Kir decides to follow that Joon. Sahilia supplies enlistment papers, and Kel refuses to be left behind, passing as a young man herself. [[character/sergant]] puts them through military training in Death Canyon. Their performance earns a courier assignment to the Gipath expedition. Sealed orders and a portal pass finally let them leave Suslanger under the authority of the same empire that enslaved them.": [
+			"Слух Карима о пропавшем краснокожем юноше подтверждается донесением, добытым у некромантов. В нём говорится о превращении и телепортации перед нападением на особняк учёных; целью телепорта был Гипат. Кир решает следовать за джуном. Сахиля готовит бумаги для армии, а Кель отказывается остаться, сама выдавая себя за юношу. [[character/sergant]] проводит их через военную подготовку в Каньоне Смерти. За успешные действия они получают задание доставить приказы экспедиции на Гипате. Запечатанный пакет и пропуск к порталу позволяют покинуть Суслангер от имени той самой империи, которая их поработила.",
+			"Karims Gerücht über den verschwundenen rothäutigen Jungen wird durch einen Bericht aus der Nekromantenfestung belegt. Er nennt Verwandlung und Teleportation vor dem Angriff auf das Gelehrtenhaus; das Ziel war Gipath. Kir will diesem Joon folgen. Sahilia beschafft Einberufungspapiere. Kel weigert sich zurückzubleiben und gibt sich ebenfalls als junger Mann aus. [[character/sergant]] führt sie durch die militärische Ausbildung in der Todesschlucht. Ihre Leistung verschafft ihnen einen Kurierauftrag zur Gipath-Expedition. Versiegelte Befehle und ein Portalpass erlauben die Abreise im Namen desselben Reichs, das sie versklavte."
+		],
+		"Urk-Tar and the destroyed expedition": [
+			"Урк-Тар и разгромленная экспедиция",
+			"Urk-Tar und die vernichtete Expedition"
+		],
+		"On Gipath, [[character/orcc]] says his warriors destroyed the Khadaganian expedition. He remembers how Zak’s defeat of a supposed Demon showed that armoured outsiders could be killed, and hopes Kir will become a Chosen for his own tribe. Kel proposes a false report with unpromising stone samples to prevent another imperial expedition from being sent. The shaman [[character/orcpyr]] distrusts strangers but makes Kir a ritual axe after he supplies suitable stone, and makes beads for Kel. Their welcome depends on helping the tribe, and Kir soon rescues the chief from a harpy and his wife from goblins.": [
+			"На Гипате [[character/orcc]] сообщает, что его воины разгромили хадаганскую экспедицию. Победа Зака над мнимым Демоном показала ему, что чужаков в доспехах можно убить; теперь он надеется получить собственного Избранного в лице Кира. Кель предлагает подложное донесение с невыгодными образцами камня, чтобы не прислали новую экспедицию. Шаман [[character/orcpyr]] не доверяет чужим, но делает Киру обрядовый топор из добытого им камня, а Кель получает бусы. Гостеприимство зависит от помощи племени; вскоре Кир спасает вождя от гарпии, а его жену от гоблинов.",
+			"Auf Gipath erklärt [[character/orcc]], seine Krieger hätten die khadaganische Expedition vernichtet. Kirans Sieg über einen vermeintlichen Dämon zeigte ihm, dass gepanzerte Fremde sterblich sind. Nun hofft er auf Kir als Auserwählten seines Stammes. Kel schlägt einen falschen Bericht mit wenig lohnenden Gesteinsproben vor, um eine weitere Expedition zu verhindern. Schamane [[character/orcpyr]] misstraut Fremden, fertigt Kir aber nach Beschaffung geeigneten Steins eine rituelle Axt und Kel eine Perlenkette. Die Gastfreundschaft hängt von ihrer Hilfe ab. Bald retten sie den Häuptling vor einer Harpyie und seine Frau vor Goblins."
+		],
+		"The Shell and the war with the settlers": [
+			"Ракушка и война с поселянами",
+			"Die Muschel und der Krieg mit den Siedlern"
+		],
+		"Urk-Tar explains that humans have driven orcs out of the Foothills and are advancing into the Middle Mountains. Kir removes the Shell whose presence restrains the lizards, initially refusing to fight humans himself. When Tynachey describes the killing of the tribe’s inhabitants, Kel argues for helping their hosts recover the settlement, and Kir agrees. The [[character/iz|Hermit Lizard]] then offers news of the former Chosen in exchange for placing the Shell by the Remote Mountains’ lake. Restoring it also frees hunters held by lizards. The Hermit directs Kir toward the Great Magician by a route different from Zak’s old tunnel approach.": [
+			"Урк-Тар рассказывает, что люди вытеснили орков из Предгорий и наступают в Средних Горах. Кир убирает Ракушку, присутствие которой сдерживает ящеров, но сначала отказывается сам воевать с людьми. Когда Тыначей описывает гибель жителей стойбища, Кель убеждает помочь гостеприимному племени, и Кир соглашается. Затем [[character/iz|Ящер-Отшельник]] предлагает сведения о прежнем Избранном в обмен на возвращение Ракушки к озеру Дальних Гор. Это также освобождает охотников, удерживаемых ящерами. Отшельник указывает путь к Великому Магу, отличный от старого подхода Зака через тоннель.",
+			"Urk-Tar berichtet, Menschen hätten die Orks aus dem Vorgebirge vertrieben und rückten ins Mittlere Gebirge vor. Kir entfernt die Muschel, die die Echsen friedlich hält, lehnt aber zunächst einen eigenen Kampf gegen Menschen ab. Als Tynachey vom Tod der Stammesbewohner erzählt, setzt sich Kel für ihre Gastgeber ein, und Kir stimmt zu. Der [[character/iz|Echsen-Eremit]] bietet anschließend Nachrichten über den früheren Auserwählten, wenn die Muschel am See des Fernen Gebirges aufgestellt wird. Dadurch kommen auch gefangene Jäger frei. Der Eremit weist Kir einen anderen Weg zum Großen Magier als Kirans früheren Tunnelzugang."
+		],
+		"Tka-Rik and the unknown allod": [
+			"Тка-Рик и неизвестный аллод",
+			"Tka-Rik und das unbekannte Allod"
+		],
+		"Meeting [[character/rick]] gives Kir his first direct contact with a free Joon magician. Tka-Rik explains that At-Zako and Lu-a-Jalla are travelling together and that he himself remains bound to Gipath. He has never heard of Jigran. Kir tells him about Firez, his enslaved family and his promise to return. Learning that more Joons need help renews Tka-Rik’s purpose. Since he cannot locate the hidden allod unaided, he sends Kir to find the Magic Orb that At-Zako once used. Finding the magician therefore begins another investigation rather than immediately opening the road home.": [
+			"Встреча с [[character/rick|Тка-Риком]] впервые знакомит Кира со свободным джуном-магом. Тка-Рик объясняет, что Ат-Зако и Лу-а-Джала путешествуют вместе, а он сам связан с Гипатом. О Джигране он никогда не слышал. Кир рассказывает о Фирезе, порабощённой семье и обещании вернуться. Известие о других джунах, нуждающихся в помощи, возвращает магу цель. Поскольку самостоятельно найти скрытый аллод он не может, Тка-Рик посылает Кира за Магическим Шаром, которым пользовался Ат-Зако. Встреча с магом начинает новые поиски, а не открывает немедленный путь домой.",
+			"Die Begegnung mit [[character/rick]] ist Kirs erster unmittelbarer Kontakt zu einem freien Joon-Magier. Tka-Rik erklärt, dass At-Kira und Lu-a-Jalla gemeinsam reisen, während er an Gipath gebunden bleibt. Von Jigran hat er nie gehört. Kir erzählt von Firez, seiner versklavten Familie und dem Versprechen zurückzukehren. Die Nachricht von weiteren hilfsbedürftigen Joon gibt Tka-Rik ein neues Ziel. Weil er das verborgene Allod nicht allein finden kann, schickt er Kir nach At-Kiras früherer Zauberkugel. Das Treffen beginnt somit eine weitere Suche, statt sofort den Heimweg zu öffnen."
+		],
+		"The Free Hunters and Babur": [
+			"Вольные охотники и Бабур",
+			"Die Freien Jäger und Babur"
+		],
+		"A [[character/loozer|messenger]] invites the rescuers of the hunters to [[character/karh]]’s camp. Bor claims neutrality in the war, yet asks them to act against the village’s hunters and caravans. To question [[character/smith]] about the Orb, Kir helps bring him out of the village. The letter can go to Babur himself or to the elder, with different explanations for the craftsman’s arrival. Babur then sends Kir to the lizards’ tomb for a supposed magical needle. The expedition supplies lizard hides, and Babur admits that useful armour material was his real interest. For information about the Orb, he redirects the visitors to Estera.": [
+			"[[character/loozer|Посланник]] приглашает спасителей охотников в лагерь [[character/karh|Бора]]. Атаман заявляет о нейтралитете, но просит действовать против поселковых охотников и караванов. Чтобы расспросить [[character/smith|Бабура]] о Шаре, Кир помогает выманить его из посёлка. Письмо можно передать самому мастеру или старосте; причины появления Бабура в лагере при этом различаются. Затем он отправляет Кира в гробницу ящеров якобы за волшебной иглой. Поход приносит ящерские шкуры, и мастер признаёт, что на самом деле ему требовался материал для брони. За сведениями о Шаре он направляет гостей к Эстере.",
+			"Ein [[character/loozer|Bote]] lädt die Retter der Jäger ins Lager von [[character/karh]] ein. Bor behauptet Neutralität, verlangt aber Aktionen gegen Jäger und Karawanen des Dorfes. Um [[character/smith]] nach der Kugel zu fragen, hilft Kir, ihn aus dem Dorf zu locken. Der Brief kann Babur selbst oder dem Ältesten zugespielt werden, was seine Ankunft unterschiedlich erklärt. Babur schickt Kir danach wegen einer angeblich magischen Nadel in die Echsengruft. Die Expedition bringt Echsenhäute; der Handwerker gesteht, dass ihn eigentlich dieses Rüstungsmaterial interessierte. Für Auskunft über die Kugel verweist er an Estera."
+		],
+		"Airy, Estera and the Dragon’s flower": [
+			"Айри, Эстера и цветок Дракона",
+			"Airy, Estera und die Blume des Drachen"
+		],
+		"[[character/daughter]] guards the cave while Estera is visiting the [[character/skd|Old Dragon]]. Her quarrel with Kel over a necklace exposes Kel’s jealousy and Kir’s failure to notice it. Airy refuses his courtship and suggests looking at the person already beside him. At the dragon’s lair, Estera is the troublesome visitor rather than a prisoner: she refuses to leave without information about a flower. Kir obtains it and the witch goes home. [[character/witch]] then admits the Orb was stolen by orcs; Airy identifies the islands and warns that it lost its power after its earlier use.": [
+			"[[character/daughter]] сторожит пещеру, пока Эстера гостит у [[character/skd|Старого Дракона]]. Ссора из-за ожерелья раскрывает ревность Кель, которую Кир не замечает. Айри отвергает его ухаживания и советует оглянуться на того, кто уже рядом. В драконьем логове Эстера оказывается назойливой гостьей, а не пленницей: она отказывается уходить без сведений о цветке. Кир добывает его, и знахарка возвращается домой. [[character/witch]] признаёт, что Шар украли орки; Айри указывает острова и предупреждает, что прежнее использование лишило его силы.",
+			"[[character/daughter]] bewacht die Höhle, während Estera beim [[character/skd|Alten Drachen]] ist. Ihr Streit mit Kel um eine Halskette zeigt Kels Eifersucht und Kirs Unaufmerksamkeit. Airy weist sein Werben zurück und rät, auf die Person an seiner Seite zu achten. In der Drachenhöhle ist Estera eine lästige Besucherin, keine Gefangene: Ohne Auskunft über eine Blume will sie nicht gehen. Kir beschafft sie, worauf die Hexe heimkehrt. [[character/witch]] berichtet dann vom Diebstahl der Kugel durch Orks. Airy nennt die Inseln und warnt, dass der frühere Gebrauch ihre Kraft verbraucht hat."
+		],
+		"Babur’s rescue and the restored Orb": [
+			"Спасение Бабура и восстановление Шара",
+			"Baburs Rettung und die erneuerte Kugel"
+		],
+		"The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.": [
+			"Шар нужно восстановить, и Айри указывает на обсерваторию. У Бабура есть ключ к перекрытому подходу, но сначала он просит вернуть нож Зака, ставший святыней. Пока Кир выполняет поручение, островные орки похищают мастера за нарушенный договор и отдают людоеду. Кир спасает Бабура. Увидев испорченный Шар, мастер отдаёт ключ. Книга обсерватории позволяет Эстере найти способ восстановления: омыть Шар водой подземного источника. Затем обвал перекрывает прежний путь к Тка-Рику, заставляя идти старым тоннелем. Исправленный Шар показывает снег вместо Джиграна; маг видит в этом указание на Ингос. Кель требует отправиться вместе с Киром, и Тка-Рик соглашается.",
+			"Die Kugel muss erneuert werden; Airy verweist auf die Sternwarte. Babur besitzt den Schlüssel zum versperrten Zugang, verlangt aber zunächst Kirans inzwischen als Reliquie verehrtes Messer. Während Kir es sucht, entführen Inselorks den Handwerker wegen eines gebrochenen Handels und übergeben ihn einem Oger. Kir rettet Babur. Nach Vorlage der beschädigten Kugel gibt dieser den Schlüssel heraus. Im Buch der Sternwarte findet Estera die Anweisung, die Kugel in unterirdischem Quellwasser zu waschen. Ein Erdrutsch sperrt inzwischen Kirs bisherigen Weg zu Tka-Rik, sodass er den alten Tunnel nutzen muss. Die erneuerte Kugel zeigt Schnee statt Jigran. Tka-Rik deutet dies als Hinweis auf Ingos und erlaubt auf Kels Beharren die gemeinsame Weiterreise."
+		],
+		"[[character/kmage]] is a magician and Brissen’s friend on Ingos. His inexpensive runes anger Karansul. Wrongly accused of murder, he helps Kir investigate his movements and uses the governor’s library during his confinement. After his release he explains how its old records reveal a hidden route to Jigran.": [
+			"[[character/kmage]] является магом и другом Бриссена на Ингосе. Его дешёвые руны сердят Карансула. Ложно обвинённый в убийстве, он помогает Киру выяснить обстоятельства своих перемещений и во время заключения пользуется губернаторской библиотекой. После освобождения он объясняет, как старые записи раскрывают скрытый путь на Джигран.",
+			"[[character/kmage]] ist ein Magier und Brissens Freund auf Ingos. Seine billigen Runen verärgern Karansul. Zu Unrecht des Mordes beschuldigt, hilft er Kir bei der Untersuchung seiner Wege und nutzt während der Haft die Bibliothek des Gouverneurs. Nach seiner Freilassung erklärt er, wie die alten Aufzeichnungen einen verborgenen Weg nach Jigran zeigen."
+		],
+		"The mine guard is a witness in the investigation of Brissen’s murder. He let Yam-Akara enter with an expired permit because the magician had helped his village. His testimony leads Kir to the lost stamped pass, but the governor rejects the damaged document. The guard supplies a lead in clearing an innocent man; he does not settle the case alone.": [
+			"Шахтный стражник является свидетелем в деле об убийстве Бриссена. Он пропустил Ям-Акару с просроченным разрешением, поскольку маг помог его деревне. Его рассказ приводит Кира к потерянному пропуску с отметкой, но губернатор отвергает испорченный документ. Солдат даёт зацепку для оправдания невиновного, а не решает дело единолично.",
+			"Der Minenwächter ist ein Zeuge im Mordfall Brissen. Er ließ Yam-Akara mit einem abgelaufenen Pass ein, weil der Magier seinem Dorf geholfen hatte. Seine Aussage führt Kir zum verlorenen abgestempelten Pass, doch der Gouverneur weist das beschädigte Dokument zurück. Der Wächter liefert eine Spur zur Entlastung eines Unschuldigen, löst den Fall aber nicht allein."
+		],
+		"Two magicians on Ingos": [
+			"Два мага на Ингосе",
+			"Zwei Magier auf Ingos"
+		],
+		"Kir and Kel seek magical help on Ingos. [[character/trader]] complains about [[character/kmage]], whose cheap runes undercut his trade, and identifies [[character/his]] as the governor’s court magician. His receives the travellers with suspicion and later asks them to retrieve materials from his laboratory. [[character/trapper]] offers another route: contact [[character/grey]] through the Sacred Flower and a vessel from his cache. Grey Leaf explains that the knight Brissen and his magician friend have left for the settlement near the mines. Kir’s first task here is finding an informed ally, before the murder that later dominates the investigation.": [
+			"На Ингосе Кир и Кель ищут магическую помощь. [[character/trader]] жалуется на [[character/kmage|Ям-Акару]], чьи дешёвые руны мешают торговле, и называет [[character/his|Хиса]] придворным магом губернатора. Хис встречает путников подозрительно, а затем просит принести материалы из лаборатории. [[character/trapper]] предлагает другой путь: связаться с [[character/grey|Серым Листом]] через Священный Цветок и сосуд из тайника. Вождь объясняет, что рыцарь Бриссен и его друг-маг ушли в поселение у рудников. Сначала Кир ищет сведущего союзника; убийство, которое определит дальнейшее расследование, ещё впереди.",
+			"Kir und Kel suchen auf Ingos magische Hilfe. [[character/trader]] beklagt die billigen Runen von [[character/kmage]], die seinen Handel stören, und nennt [[character/his]] als Hofmagier des Gouverneurs. His empfängt sie misstrauisch und verlangt später Material aus seinem Labor. [[character/trapper]] bietet einen anderen Weg: Über die Heilige Blume und ein Gefäß aus seinem Versteck sollen sie [[character/grey]] kontaktieren. Dieser erklärt, dass Ritter Brissen und sein Magierfreund zur Siedlung bei den Minen gegangen sind. Zunächst suchen die Reisenden also einen kundigen Verbündeten; der spätere Mord bestimmt noch nicht ihre Nachforschungen."
+		],
+		"The Beastmasters and the empty caravan": [
+			"Повелители зверей и пустой караван",
+			"Die Tiermeister und die leere Karawane"
+		],
+		"At the Beastmasters’ settlement, [[character/vor]] accuses Kir and Kel of being spies. [[character/gerald]] agrees to test them. Their attempt to obtain a gold nugget from a caravan finds an empty chest, making their return dangerous. [[character/mthief]] reasons that genuine thieves would not come back empty-handed, and Geraldine accepts them. Sver’s advice about an ice elemental in the abandoned mines provides something to offer Yam-Akara. His work and the governor’s permit requirements then draw the travellers into further dealings with the court. The missing nugget will matter again when the apparent caravan failure becomes evidence of a separate theft.": [
+			"В поселении Повелителей зверей [[character/vor]] обвиняет Кира и Кель в шпионаже. [[character/gerald]] соглашается их испытать. Попытка добыть золотой самородок из каравана заканчивается пустым сундуком, делая возвращение опасным. [[character/mthief]] рассуждает, что настоящие воры не вернулись бы без добычи, и Геральдина принимает путников. Совет Свера о ледяном элементале в заброшенных рудниках даёт возможность предложить Ям-Акаре полезную находку. Его работа и требования губернаторского пропуска вовлекают героев в новые придворные дела. Пропавший самородок ещё сыграет роль: провал с караваном окажется уликой другой кражи.",
+			"In der Siedlung der Tiermeister beschuldigt [[character/vor]] Kir und Kel der Spionage. [[character/gerald]] verlangt eine Prüfung. Beim Versuch, einen Goldklumpen aus einer Karawane zu holen, finden sie nur eine leere Truhe, was die Rückkehr gefährlich macht. [[character/mthief]] erklärt, wirkliche Diebe wären nicht ohne Beute zurückgekommen. Geraldine nimmt sie auf. Svers Hinweis auf einen Eiselementar in den verlassenen Minen liefert ein Angebot für Yam-Akara. Dessen Arbeit und die nötigen Genehmigungen führen zu weiteren Geschäften mit dem Hof. Das verschwundene Gold wird später als Beweis eines anderen Diebstahls wichtig."
+		],
+		"Brissen’s murder and the failed alibi": [
+			"Убийство Бриссена и отвергнутое алиби",
+			"Brissens Mord und das zurückgewiesene Alibi"
+		],
+		"Brissen is murdered and Yam-Akara is accused of killing his old friend. Kir and Kel undertake the defence. The magician says he spent the day in the mines and arrived late for their meeting. [[character/guard]] confirms that he allowed the elderly visitor through with an expired permit and stamped it that day. Kir finds the lost pass, but [[character/huber]] rejects the water-damaged document because the signature and date can no longer be read. This evidence supports the search but does not free Yam-Akara; the travellers still have to identify the murderer.": [
+			"Бриссена убивают, а Ям-Акару обвиняют в смерти старого друга. Кир и Кель берутся за защиту. Маг утверждает, что провёл день в рудниках и опоздал на встречу. [[character/guard]] подтверждает, что пропустил пожилого посетителя с просроченным разрешением и поставил отметку в тот день. Кир находит потерянный пропуск, но [[character/huber]] отвергает испорченную водой бумагу: подпись и дата уже не читаются. Улика помогает поискам, но не освобождает Ям-Акару; путешественникам всё ещё нужно найти убийцу.",
+			"Brissen wird ermordet, und Yam-Akara wird beschuldigt, seinen alten Freund getötet zu haben. Kir und Kel übernehmen seine Verteidigung. Der Magier erklärt, er sei den ganzen Tag in den Minen gewesen und zu spät zum Treffen gekommen. [[character/guard]] bestätigt den Einlass mit einem abgelaufenen, an diesem Tag abgestempelten Pass. Kir findet das verlorene Dokument, doch [[character/huber]] weist es wegen des Wasserschadens zurück: Unterschrift und Datum sind unleserlich. Die Spur hilft den Ermittlungen, befreit Yam-Akara aber noch nicht. Der Mörder muss weiterhin gefunden werden."
+		],
+		"The planted knife and His’s death": [
+			"Подброшенный нож и гибель Хиса",
+			"Das untergeschobene Messer und His’ Tod"
+		],
+		"A knife found at the murder site appears to implicate His. The court magician admits it was stolen from his laboratory together with the governor’s nugget. He had sent out the empty caravan to hide that loss and hoped to blame raiders after an informant warned of the planned attack. His arranges a meeting to produce evidence, but is killed before he can clear himself. Meanwhile Geraldine and Karansul disclose their relationship and provide each other with an alibi. Their commercial hostility and private secrecy had made them suspicious without establishing guilt.": [
+			"Нож с места преступления будто бы указывает на Хиса. Придворный маг признаётся, что нож украли из лаборатории вместе с губернаторским самородком. Пустой караван должен был скрыть пропажу: получив предупреждение о налёте, Хис надеялся обвинить разбойников. Он назначает встречу, чтобы представить доказательства, но погибает прежде, чем успевает оправдаться. Тем временем Геральдина и Карансул раскрывают свои отношения и подтверждают алиби друг друга. Торговая вражда и личная скрытность делали их подозрительными, но не доказывали вину.",
+			"Ein Messer am Tatort scheint His zu belasten. Der Hofmagier gesteht, dass es zusammen mit dem Goldklumpen des Gouverneurs aus seinem Labor gestohlen wurde. Die leere Karawane sollte den Verlust verbergen; nach der Warnung eines Informanten wollte er Räuber verantwortlich machen. His vereinbart ein Treffen für Beweise, wird jedoch getötet, bevor er sich entlasten kann. Unterdessen enthüllen Geraldine und Karansul ihre Beziehung und bestätigen gegenseitig ihr Alibi. Geschäftlicher Streit und private Heimlichkeit machten sie verdächtig, bewiesen aber keine Schuld."
+		],
+		"Crooked’s confession": [
+			"Признание Кривого",
+			"Das Geständnis des Schiefen"
+		],
+		"The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial.": [
+			"Решающим мотивом становятся деньги, пропавшие из общей кассы поселения. Кир и Кель ловят Кривого у тайника. Бриссен раскрыл кражу, и Кривой убил его. Он также похитил нож Хиса и самородок, донёс о налёте на караван и позднее подбросил нож, чтобы перевести подозрения. Хис вызвал того же осведомителя для собственного оправдания; Кривой принял приглашение за ловушку и убил его тоже. Наблюдения лесовиков помогают восстановить историю подложной улики. Перед губернатором Кир связывает преступления воедино, а Кривой признаёт вину. Ям-Акара получает свободу; наказание преступника губернатор оставляет суду.",
+			"Das verschwundene Gemeinschaftsgeld der Siedlung liefert das entscheidende Motiv. Kir und Kel stellen den Schiefen an seinem Versteck. Brissen hatte den Diebstahl entdeckt und wurde deshalb getötet. Der Schiefe stahl auch His’ Messer und den Goldklumpen, verriet den Karawanenüberfall und legte später das Messer als falsche Spur aus. His rief denselben Informanten zu seiner Entlastung; dieser hielt die Einladung für eine Falle und tötete auch ihn. Beobachtungen der Waldleute helfen bei der Rekonstruktion. Vor dem Gouverneur verbindet Kir die Taten, und der Schiefe gesteht. Yam-Akara kommt frei; über die Strafe soll ein Gericht entscheiden."
+		],
+		"The hidden portal to Jigran": [
+			"Скрытый портал на Джигран",
+			"Das verborgene Portal nach Jigran"
+		],
+		"During his confinement, Yam-Akara gains access to the governor’s library. Old exploration reports reveal that the powerful “artifact” is a forgotten passage to another land. Trickster offers a key to the gate, then sends Kir on a fruitless ore search so that he can work without interference. With the key ready, Yam-Akara warns that he cannot sense the destination: the portal may be defective or concealed by a powerful absorbing spell. Kir recognises the same absence Tka-Rik described and concludes that it leads to Jigran. He decides to go directly, trusting the strength gained during his journey. Kel chooses to accompany him again.": [
+			"Во время заключения Ям-Акара получает доступ к губернаторской библиотеке. Старые отчёты об исследованиях показывают, что могущественный «артефакт» является забытым путём на другую землю. Ловкач предлагает сделать ключ к воротам и отправляет Кира на бесплодные поиски руды, чтобы спокойно работать. Когда ключ готов, Ям-Акара предупреждает: он не чувствует землю назначения. Портал либо неисправен, либо скрыт сильным поглощающим заклятием. Кир узнаёт то же отсутствие, о котором говорил Тка-Рик, и заключает, что путь ведёт на Джигран. Он решает идти сразу, доверившись обретённой в путешествии силе. Кель вновь выбирает идти вместе с ним.",
+			"Während seiner Haft erhält Yam-Akara Zugang zur Bibliothek des Gouverneurs. Alte Erkundungsberichte zeigen, dass das mächtige „Artefakt“ ein vergessener Übergang in ein anderes Land ist. Der Gewitzte bietet einen Torschlüssel an und schickt Kir auf eine vergebliche Erzsuche, damit er ungestört arbeiten kann. Als der Schlüssel fertig ist, warnt Yam-Akara: Er spürt das Ziel nicht. Das Portal könnte defekt oder durch einen mächtigen absorbierenden Zauber verborgen sein. Kir erkennt darin dieselbe Leere, von der Tka-Rik sprach, und hält Jigran für das Ziel. Er entscheidet sich zur direkten Reise und vertraut seiner gewachsenen Stärke. Kel begleitet ihn erneut."
+		],
+		"Return to Jigran and Dar-Leanos": [
+			"Возвращение на Джигран и Дар-Леанос",
+			"Rückkehr nach Jigran und Dar-Leanos"
+		],
+		"The old portal brings the travellers to the Canian side of Jigran, where [[character/baron]] questions their arrival amid attacks by the undead. The baron has lost Dar-Ulgorn to Firez’s forces but refuses Kir’s suggestion to seek outside help, citing his family’s pride. Kir and Kel assist the endangered settlements. They meet the baron’s son [[character/bson]] and the overworked [[character/stark]]. Stark provides a password for [[character/doctor]], a seller of sweets who secretly gathers intelligence for the baron. These local alliances make the campaign against Firez possible.": [
+			"Старый портал приводит путешественников на канийскую сторону Джиграна, где [[character/baron]] расспрашивает их о появлении среди нападений нежити. Его войска потеряли Дар-Улгорн, но он отвергает предложение Кира попросить помощи извне, ссылаясь на семейную гордость. Кир и Кель помогают поселениям под угрозой. Они знакомятся с сыном барона [[character/bson|Дартасом]] и перегруженным работой [[character/stark|Старком]]. Мастер даёт пароль к [[character/doctor|Дядюшке Раду]], торговцу сладостями, тайно собирающему сведения для барона. Эти местные союзы делают возможной борьбу с Фирезом.",
+			"Das alte Portal bringt die Reisenden auf die kanianische Seite Jigrans. Zwischen Untotenangriffen befragt [[character/baron]] sie zu ihrer Ankunft. Seine Truppen haben Dar-Ulgorn verloren, doch aus Familienstolz lehnt er Kirs Vorschlag auswärtiger Hilfe ab. Kir und Kel helfen den bedrohten Siedlungen und treffen seinen Sohn [[character/bson]] sowie den überlasteten [[character/stark]]. Der Meister nennt das Erkennungswort für [[character/doctor]], einen Süßwarenhändler, der heimlich Nachrichten für den Baron sammelt. Diese örtlichen Bündnisse ermöglichen den Kampf gegen Firez."
+		],
+		"Jaminin’s experiment and the undead": [
+			"Опыт Джаминина и нежить",
+			"Jaminins Experiment und die Untoten"
+		],
+		"The trail of the local undead leads to [[character/nekro]] on Death Island. Brought before the baron, he bargains for his life with the promise of useful knowledge. Kir and Kel obtain a potion from a tomb, but need to know how to apply it across the affected area. Jaminin first entertains a human sacrifice; Kel rejects it, and he supplies a less destructive method involving cemetery soil and an incantation. The potion puts the dead to rest. His later exchanges preserve the distinction between theoretical learning and practical competence: he possesses information, but his own experiment caused the disaster.": [
+			"След местной нежити приводит к [[character/nekro|Джаминину]] на Острове Смерти. Перед бароном он торгуется за жизнь, обещая полезные знания. Кир и Кель добывают зелье из гробницы, но нужно выяснить, как применить его ко всей округе. Сначала Джаминин предлагает человеческую жертву; Кель отвергает это, и он называет менее губительный способ с кладбищенской землёй и заклинанием. Зелье упокаивает мертвецов. Последующие разговоры подчёркивают разницу между начитанностью и умением: полезные сведения у него есть, но бедствие вызвал его собственный опыт.",
+			"Die Spur der örtlichen Untoten führt zu [[character/nekro]] auf der Todesinsel. Vor dem Baron bietet er nützliches Wissen für sein Leben an. Kir und Kel beschaffen einen Trank aus einem Grab, müssen aber dessen großflächige Anwendung klären. Jaminin erwägt zunächst ein Menschenopfer. Kel lehnt ab, worauf er eine weniger zerstörerische Methode mit Friedhofserde und einer Beschwörung nennt. Der Trank bringt die Toten zur Ruhe. Seine Gespräche zeigen den Abstand zwischen theoretischem Wissen und Können: Er besitzt hilfreiche Informationen, verursachte das Unglück aber selbst."
+		],
+		"Weapons, Dartas and preparations for war": [
+			"Оружие, Дартас и подготовка к войне",
+			"Waffen, Dartas und die Kriegsvorbereitung"
+		],
+		"Kir proposes a special weapon alloy against the undead. Stark initially refuses instruction from a youngster and sends him to an abandoned forge, then has to confront the usefulness of the result. The baron welcomes the advantage for his soldiers. A separate conflict with Dartas moves from arrogance and a duel to an admission of fear for his family and Jigran’s future. Kir explains his own history of enslavement and determination to return, winning the young man’s respect. Dartas later becomes a useful source about an amulet from a village destroyed by harpies.": [
+			"Кир предлагает особый сплав для оружия против нежити. Старк сначала не желает учиться у юнца и отправляет его в заброшенную кузню, но затем сталкивается с полезностью результата. Барон приветствует преимущество для своих солдат. Отдельный конфликт с Дартасом проходит путь от высокомерия и поединка до признания страха за семью и будущее Джиграна. Кир рассказывает о рабстве и решимости вернуться, заслуживая уважение юноши. Позднее Дартас становится источником сведений об амулете из деревни, уничтоженной гарпиями.",
+			"Kir schlägt eine besondere Waffenlegierung gegen Untote vor. Stark will sich zunächst nicht von einem Jungen belehren lassen und schickt ihn zur verlassenen Schmiede, muss aber den Nutzen des Ergebnisses anerkennen. Der Baron begrüßt den Vorteil für seine Soldaten. Ein eigener Streit mit Dartas führt von Hochmut und einem Duell zum Eingeständnis seiner Angst um Familie und Jigran. Kir erzählt von Versklavung und Rückkehrwillen und gewinnt seinen Respekt. Später liefert Dartas einen Hinweis auf ein Amulett aus einem von Harpyien zerstörten Dorf."
+		],
+		"Dar-Ulgorn and the river crossing": [
+			"Дар-Улгорн и переправа",
+			"Dar-Ulgorn und der Flussübergang"
+		],
+		"Uncle Rad’s intelligence and preparations distract the defenders of Dar-Ulgorn so the baron’s forces can retake the fortress. The victory restores the family’s former boundary, but Virril will not advance blindly into Khadaganian territory. Kir and Kel steal a detailed map from the enemy headquarters and deliver Rad’s report. The resulting offensive captures the river crossing and brings Firez within reach. Kel worries that the end of Kir’s family quest will also end their life together, while the baron imagines a prosperous Jigran under his descendants. The victory means different things to the people who share it.": [
+			"Разведка и подготовка Дядюшки Рада отвлекают защитников Дар-Улгорна, позволяя войскам барона вернуть крепость. Победа восстанавливает прежнюю границу семьи, но Виррил не желает вслепую идти на хадаганские земли. Кир и Кель крадут подробную карту во вражеском штабе и доставляют донесение Рада. Последующее наступление приносит переправу и приближает путь к Фирезу. Кель опасается, что завершение поисков семьи разлучит её с Киром; барон представляет процветающий Джигран под властью потомков. Общая победа имеет для её участников разное значение.",
+			"Onkel Rads Aufklärung und Vorbereitungen lenken Dar-Ulgorns Verteidiger ab, sodass der Baron die Festung zurückerobert. Der Sieg stellt die frühere Familiengrenze wieder her, doch Virril will nicht blind ins khadaganische Gebiet vorstoßen. Kir und Kel stehlen eine genaue Karte aus dem feindlichen Hauptquartier und überbringen Rads Bericht. Der folgende Angriff sichert den Flussübergang und rückt Firez näher. Kel fürchtet, mit Kirs Familiensuche könnte auch ihr gemeinsamer Weg enden. Der Baron träumt dagegen von einem wohlhabenden Jigran unter seinen Nachkommen. Derselbe Sieg bedeutet ihnen Unterschiedliches."
+		],
+		"The freed Joons and Kir’s family": [
+			"Освобождённые джуны и семья Кира",
+			"Die befreiten Joon und Kirs Familie"
+		],
+		"Kel and Rad discover that Firez is moving the Joon prisoners from the mountain prison into his fortress. Kel plans an attack on the transfer, avoiding a direct prison assault. Among those freed are [[character/deva]], whom Kir admired as a child, and the elder [[character/junofil]]. Tai-Ilara welcomes his changed appearance and asks him to retrieve belongings left behind. Tui-Len brings harder news: Kir’s parents are dead. The elder fears that killing Firez will expose the survivors to the Curse, but Kir tells him that Tka-Rik and At-Zako have already destroyed it. Tui-Len also opens the sealed Joon cache whose amulet Kir has recovered.": [
+			"Кель и Рад узнают, что Фирез переводит джунских пленников из горной тюрьмы в крепость. Кель предлагает напасть при перевозке, избежав прямого штурма темницы. Среди освобождённых находятся [[character/deva]], которой Кир восхищался ребёнком, и старейшина [[character/junofil]]. Тай-Илара одобряет перемены в его внешности и просит принести оставленные вещи. Туи-Лен сообщает более тяжёлую новость: родители Кира мертвы. Старейшина боится, что гибель Фиреза откроет уцелевших Проклятию, но Кир рассказывает о победе Тка-Рика и Ат-Зако над ним. Туи-Лен также открывает запечатанный джунский тайник, амулет к которому Кир уже добыл.",
+			"Kel und Rad erfahren, dass Firez die Joon-Gefangenen aus dem Berggefängnis in seine Festung verlegt. Kel plant einen Angriff während des Transports statt auf die Haftanstalt. Befreit werden [[character/deva]], die Kir als Kind bewunderte, und der Älteste [[character/junofil]]. Tai-Ilara begrüßt seine Veränderung und bittet um zurückgelassene Gegenstände. Tui-Len überbringt die schwerere Nachricht: Kirs Eltern sind tot. Er fürchtet, Firez’ Tod werde die Überlebenden dem Fluch aussetzen. Kir berichtet jedoch von dessen Vernichtung durch Tka-Rik und At-Kira. Tui-Len öffnet außerdem das versiegelte Joon-Versteck, dessen Amulett Kir gefunden hat."
+		],
+		"Tai-Ilara’s request and Kel’s death": [
+			"Просьба Тай-Илары и гибель Кель",
+			"Tai-Ilaras Bitte und Kels Tod"
+		],
+		"Seeing Kir reunited with Tai-Ilara, Kel asks for the way back to Suslanger. Kir begs her to stay and mentions one more expedition for Tai-Ilara’s belongings. Kel agrees because she still fears for him, calling it their last adventure together. She dies during that expedition. On Kir’s return, Tai-Ilara is concerned with her comb and mirror and dismisses his grief. Her reaction breaks his idealised childhood attachment. He recognises Kel as the person who was closest and most loyal to him, and realises that he failed to see her love while she was beside him.": [
+			"Увидев Кира рядом с Тай-Иларой, Кель спрашивает дорогу обратно на Суслангер. Кир просит её остаться и рассказывает об ещё одном походе за вещами Тай-Илары. Кель соглашается, поскольку всё ещё боится за него, и называет это их последним совместным приключением. Во время похода она погибает. Когда Кир возвращается, Тай-Илару занимают гребень и зеркало, а его горе она отмахивает. Такая реакция разрушает идеальную детскую привязанность. Кир понимает, что самым близким и преданным человеком была Кель, чьей любви он не замечал, пока она шла рядом.",
+			"Als Kir Tai-Ilara wiederfindet, fragt Kel nach dem Rückweg nach Suslanger. Kir bittet sie zu bleiben und erwähnt eine letzte Unternehmung für Tai-Ilaras Sachen. Aus Sorge um ihn stimmt Kel zu und nennt es ihr letztes gemeinsames Abenteuer. Dabei stirbt sie. Nach Kirs Rückkehr interessiert sich Tai-Ilara vor allem für Kamm und Spiegel und weist seine Trauer ab. Ihre Reaktion zerstört sein idealisiertes Bild aus Kindertagen. Er erkennt Kel als die treueste und ihm nächste Person und begreift, dass er ihre Liebe übersah, solange sie an seiner Seite war."
+		],
+		"The Rod of Life: a possible reunion": [
+			"Жезл Жизни: возможное воссоединение",
+			"Der Stab des Lebens: ein mögliches Wiedersehen"
+		],
+		"Kel’s death is not the only outcome recorded in the game. If Kir has collected the three parts of the Rod of Life, Tui-Len offers to assemble the artifact and restore her. The completed quest has its own reunion: Kir calls Kel his love, apologises for his blindness and hears her answer that his love matters more than the rest.": [
+			"Гибель Кель не является единственным записанным в игре исходом. Если Кир собрал три части Жезла Жизни, Туи-Лен предлагает собрать артефакт и вернуть её. У выполненного задания есть отдельное воссоединение: Кир называет Кель любимой, просит прощения за слепоту и слышит в ответ, что его любовь важнее всего остального.",
+			"Kels Tod ist nicht der einzige im Spiel vorgesehene Ausgang. Hat Kir die drei Teile des Stabs des Lebens gesammelt, bietet Tui-Len an, das Artefakt zusammenzusetzen und sie zurückzubringen. Der abgeschlossene Auftrag besitzt ein eigenes Wiedersehen: Kir nennt Kel seine Liebe, entschuldigt sich für seine Blindheit und hört, dass ihr seine Liebe wichtiger ist als alles andere."
+		],
+		"The Joon cache and allies for the assault": [
+			"Джунский тайник и союзники для штурма",
+			"Das Joon-Versteck und Verbündete zum Angriff"
+		],
+		"The sealed cache supplies Kir with Joon armour, but Tui-Len warns him against relying on hatred alone. He gives him an amulet that can turn dangerous creatures into allies. Rad identifies suitable hunting grounds for a cyclops and a dragon. Their recruitment changes the military balance and answers the baron’s objection that his soldiers cannot face Firez’s necromancy in a direct assault. Virril finally orders the attack. Before the confrontation, Rad speaks of the quiet home and family he hopes to have when his secret work is finished.": [
+			"Запечатанный тайник даёт Киру джунские доспехи, но Туи-Лен предупреждает, что одной ненависти недостаточно. Он вручает амулет, способный сделать опасных существ союзниками. Рад указывает, где искать циклопа и дракона. Их привлечение меняет соотношение сил и снимает возражение барона: его солдаты одни не выдержат прямого штурма против некромантии Фиреза. Виррил наконец приказывает наступать. Перед столкновением Рад говорит о мирном доме и семье, которых надеется дождаться после тайной службы.",
+			"Das versiegelte Versteck liefert Kir Joon-Rüstung, doch Tui-Len warnt davor, allein auf Hass zu bauen. Er gibt ihm ein Amulett, das gefährliche Wesen zu Verbündeten machen kann. Rad nennt Aufenthaltsorte eines Zyklopen und eines Drachen. Ihre Unterstützung verändert das Kräfteverhältnis und beantwortet den Einwand des Barons, seine Soldaten könnten Firez’ Nekromantie nicht direkt angreifen. Virril befiehlt schließlich den Angriff. Vor dem Kampf spricht Rad von einem friedlichen Haus und einer Familie nach dem Ende seiner geheimen Arbeit."
+		],
+		"Firez’s identity and the final confrontation": [
+			"Личность Фиреза и последнее столкновение",
+			"Firez’ Identität und die letzte Konfrontation"
+		],
+		"In the throne room, Firez reveals that he too is a Joon and has watched Kir through a dragonet since the escape. He says his people expelled him for necromancy and claims that his rule protected them from the Curse. Kir answers with their enslavement, his parents’ deaths and the destruction of Jigran to prolong Firez’s life. The tyrant’s explanation is his own defence, not proof that the captivity was benevolent. He threatens to kill Kir, raise him as an obedient servant and use him against the baron. Their exchange leads into the final battle for Jigran.": [
+			"В тронном зале Фирез открывает, что тоже является джуном и следил за Киром через дракончика с самого побега. Он говорит, что сородичи изгнали его за некромантию, и оправдывает свою власть защитой от Проклятия. Кир отвечает рассказом об их рабстве, смерти родителей и гибели Джиграна ради продления жизни Фиреза. Объяснение тирана является его собственной защитой, а не доказательством благотворности плена. Он грозит убить Кира, поднять покорным слугой и обратить против барона. Их разговор переходит в последнюю битву за Джигран.",
+			"Im Thronsaal enthüllt Firez, dass auch er ein Joon ist und Kir seit der Flucht durch einen kleinen Drachen beobachtet hat. Sein Volk habe ihn wegen Nekromantie verstoßen; seine Herrschaft habe es vor dem Fluch geschützt. Kir hält ihm die Versklavung, den Tod seiner Eltern und Jigrans Zerstörung zur Verlängerung seines Lebens entgegen. Die Erklärung ist Firez’ eigene Rechtfertigung, kein Beweis wohltätiger Gefangenschaft. Er droht, Kir zu töten, als gehorsamen Diener zu erheben und gegen den Baron einzusetzen. Das Gespräch führt in den letzten Kampf um Jigran."
 		],
 		"[[character/sheriff]] serves Rindeil and formerly performed on stage. He knows the estate’s gossip and helps turn rumours about a red-skinned attacker into useful information. Through a bribed guard he obtains a report connected with the necromancers and Kir’s search for other Joons.": [
 			"[[character/sheriff]] служит Риндейлу, а прежде выступал на сцене. Он знает поместные сплетни и помогает превратить слухи о краснокожем нападавшем в полезные сведения. Подкупленный стражник позволяет ему достать донесение, связанное с некромантами и поиском других джунов.",
@@ -685,6 +1129,10 @@ const DATA := {
 			"Описание мира",
 			"Weltbeschreibung"
 		],
+		"Quest journal": [
+			"Журнал заданий",
+			"Aufgabenjournal"
+		],
 		"Character biography": [
 			"Биография персонажа",
 			"Figurenbiografie"
@@ -733,9 +1181,9 @@ const DATA := {
 			"Локация: %s",
 			"Ort: %s"
 		],
-		"Based on the original game dialogue and world descriptions. Source numbers refer to the scenes listed below.": [
-			"Основано на оригинальных диалогах и описаниях мира. Номера источников отсылают к сценам ниже.",
-			"Grundlage sind die Originaldialoge und Weltbeschreibungen. Die Quellenzahlen verweisen auf die unten aufgeführten Szenen."
+		"Based on the original dialogue, quest journals and world descriptions. Source numbers identify the evidence listed below.": [
+			"Основано на оригинальных диалогах, журналах заданий и описаниях мира. Номера отсылают к источникам ниже.",
+			"Grundlage sind Originaldialoge, Aufgabenjournale und Weltbeschreibungen. Die Zahlen verweisen auf die unten aufgeführten Quellen."
 		],
 		"Some story sections are unavailable because the installed dialogue differs from the sources used for this article.": [
 			"Некоторые разделы истории недоступны: установленные диалоги отличаются от источников статьи.",
@@ -752,46 +1200,403 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "The Chosen of Gipath",
-						"text": "[[character/hero]] is the protagonist of Cursed Lands. With no memory of his past, he reaches Gipath’s only human village, where [[character/elder]] declares him the Chosen. The title makes him the settlement’s supposed protector and gives its leaders a convenient reason to send him into danger. Zak’s own purpose is to discover who he is.",
+						"heading": "Awakening among the ruins",
+						"text": "[[character/hero]] begins his journey on [[allod/gipat]], without knowing who he is or how he arrived. His first concern is finding other people. Leaving the ruins, he sees villagers flee from the stranger who has emerged from the ancient site. Their flight gives him a direction to follow. He makes his way along the river and across the ford to the village.",
+						"sources": [
+							"quest q0g",
+							"briefing s1",
+							"briefing s0"
+						],
+						"event": "awakening",
+						"order": 1
+					},
+					{
+						"heading": "The village and the Chosen",
+						"text": "At the village assembly, [[character/elder]] identifies Zak with the promised Chosen who was to appear at the Sacred Ruins. [[character/sheriff]], the captain, supports the ceremony. The offer of food, shelter and honour comes with a threat: an impostor would be thrown into the fire. Zak accepts the title and gives his name. Erfar immediately sends him against the goblin sentry watching the village, reasoning that his plain clothes and unusual metal knife will let him approach where armed villagers cannot. Afterwards Zak learns that this is Gipath’s only human village, with no king or known route to other lands.",
 						"sources": [
 							"briefing s1",
 							"briefing s0",
-							"briefing z1"
-						]
+							"briefing v0",
+							"quest q1ag"
+						],
+						"event": "chosen",
+						"order": 2
 					},
 					{
-						"heading": "The search for the magician",
-						"text": "[[character/witch]] recognises that something unusual lies behind his lost memory. Her knowledge, Airy’s discoveries, the Old Dragon’s information and the Hermit Lizard’s bargain lead Zak toward [[character/rick]]. Along the way he becomes entangled in the village leaders’ plots and helps people whose interests often conflict.",
+						"heading": "The wolf, the captain and the craftsman",
+						"text": "Killing the sentry brings another request from Erfar: the White Wolf and its pack are taking the village livestock. After Zak kills their leader, Erfar and Gort press him to surrender the head so the captain can claim prestige. Gort also sends him to punish the goblins while the village soldiers stay home. Meanwhile [[character/smith]] refuses to work until his stolen iron tools are returned. Erfar calls the thieves friendly “Free Hunters”; Babur calls them brigands and describes the beating of his apprentice. Recovering the chisel and bodkin from the chief and his wife wins Zak the craftsman’s services. These early errands expose the disagreement between the village’s leaders and the man who equips it.",
+						"sources": [
+							"briefing s1_3",
+							"briefing s3",
+							"briefing v3",
+							"briefing v3_1",
+							"briefing m1",
+							"briefing m1_1",
+							"briefing m4",
+							"quest q2g"
+						],
+						"event": "village_errands",
+						"order": 3
+					},
+					{
+						"heading": "The brigands’ trail and the Magic Bit",
+						"text": "Babur’s account of a red-haired brigand meeting orcs gives Zak his next lead. A map taken from Redhead points to a Magic Bit in a sarcophagus in the orc cave. Babur explains that Estera values such objects, while Gort can supply the missing drawbridge mechanism. Zak obtains the seer’s key and the object, then asks how to reach the witch. Babur, who made her spare trap key, explains the guarded ravines and controlling obelisks. The craftsman expects a share of the sale. Zak instead intends to exchange the find for help with his lost memory.",
+						"sources": [
+							"briefing m4",
+							"briefing m5_1",
+							"briefing v4",
+							"briefing m6",
+							"briefing m6_1",
+							"quest q4g",
+							"quest q5g",
+							"quest q6g"
+						],
+						"event": "magic_bit",
+						"order": 4
+					},
+					{
+						"heading": "Meeting Estera and Airy",
+						"text": "[[character/witch]] initially threatens the intruder, then changes her reception when Zak offers the Magic Bit. She dismisses the villagers’ divine-saviour story but discovers that she cannot see his past. Since Zak cannot remember it either, she suggests finding the orcs’ Magic Orb and directs him back to Erfar for information. This is the beginning of their alliance. Estera also introduces her granddaughter [[character/daughter]], warning Zak to keep his distance; Airy resents being treated as a child. Zak’s search now has a personal aim beyond the village’s demands.",
 						"sources": [
 							"briefing z1",
-							"briefing z13_1",
-							"briefing dr22",
-							"briefing l34",
-							"briefing s25_1"
-						]
+							"briefing z1_2",
+							"briefing z0_2",
+							"briefing m6_1"
+						],
+						"event": "estera",
+						"order": 5
 					},
 					{
-						"heading": "Ingos and Suslanger",
-						"text": "The Great Magician offers help in exchange for finding two surviving Joons. On [[allod/ingos]], Zak rescues [[character/deva]], who has been imprisoned by [[character/magess]]. His search for her beloved At-Zako then takes him to [[allod/suslanger]], where he is captured, escapes with the Odalisque’s help and finds refuge among the Last Shelter’s brothers. A dead scientist’s testimony and the remains of a teleportation amulet become the decisive clues.",
+						"heading": "Two searches on the islands",
+						"text": "The river islands hold two different leads. Estera needs the Orb, which Erfar places on the southernmost island. Erfar also proposes tracing [[character/bgoblinc]]’s blue Eye Stone to a possible portal. Zak takes the First Goblin’s skull to compel GoGo to visit the village; the chief explains that the orcs confiscated the written record of the stone’s origin. The islands require their own bridge mechanism, distinct from the cave’s. Zak retrieves the record and the Orb in this area. Erfar claims the record offers nothing useful, then diverts attention to missing taxes and gold in Golden Valley. His portal scheme and Estera’s search serve different purposes, even though they take Zak through the same territory.",
 						"sources": [
+							"briefing s6_2",
+							"briefing s7_1",
+							"briefing s7_4",
+							"briefing s8_2",
+							"briefing v5",
+							"quest q7g",
+							"quest q8g",
+							"quest q9g",
+							"quest q10g"
+						],
+						"event": "orb_islands",
+						"order": 6
+					},
+					{
+						"heading": "The Orb and the Dead City",
+						"text": "When Estera uses the Orb, Zak sees an old man instead of a recognisable memory. She believes he is its owner and a more powerful magician who might help. Orc records trace the object to the Dead City. Estera distinguishes its human fortress from Gipath’s much older ruins: after the Night of Troubles, the dead attacked the living, and survivors fled to found the present village. The obvious route into the fortress is deadly. Airy leaves to investigate another way in, despite her grandmother’s objections. Separately, Erfar can send Zak into the surrounding region’s Golden Valley for a caravan’s lost treasure, an errand he badly understates.",
+						"sources": [
+							"briefing z2",
+							"briefing z11",
+							"briefing z11_1",
+							"briefing s8_2",
+							"briefing s12",
+							"briefing s12_1",
+							"quest q12g"
+						],
+						"event": "dead_city_lead",
+						"order": 7
+					},
+					{
+						"heading": "The supposed attack on the goblins",
+						"text": "While Zak seeks the magician, Erfar and Gort arrange another joint operation with the Free Hunters, supposedly to prevent a goblin raid. The promised friendly meeting becomes an ambush by brigands and village soldiers. Erfar denies responsibility, while Babur warns that the elder is trying to have Zak killed. A note in the newer orc script cannot yet settle the matter: Estera needs an Orc ABC Book to read it. Its translation reveals a contract on Zak’s life, a detailed description of him and a substantial payment. The search for the author becomes a separate investigation alongside the route into the Dead City.",
+						"sources": [
+							"briefing s12_4",
+							"briefing s13_0",
+							"briefing m13_3",
+							"briefing z13_2",
+							"briefing z14",
+							"quest q13ag",
+							"quest q14g"
+						],
+						"event": "ambush",
+						"order": 8
+					},
+					{
+						"heading": "Airy’s route through the observatory",
+						"text": "Airy returns with a lead to the old observatory library, but harpies occupy the site. Her plan requires a lizard’s amulet to lead a particular green dragon against them. Reaching that dragon requires Estera to freeze the lake with a green crystal. The hostile lizards on the approach present another obstacle: Zak moves the Big Shell from the Remote Mountains to the Middle Mountains, restoring the peace associated with its altar. This leaves Babur’s former quarry route unsafe and can lead to an additional errand for the craftsman. The observatory book finally supplies the password to the Dead City’s hidden entrance. Airy can also teach Zak the Magic of Feelings, only to be offended when he again calls her a little girl.",
+						"sources": [
+							"briefing z13_1",
+							"briefing z14_1",
+							"briefing m13_2",
+							"briefing m15",
+							"briefing z17",
+							"briefing z15",
+							"briefing z18",
+							"quest q15ag",
+							"quest q15bg",
+							"quest q18g"
+						],
+						"event": "observatory",
+						"order": 9
+					},
+					{
+						"heading": "Gort’s rebellion",
+						"text": "The written instructions to kill Zak expose Gort’s handwriting. Confronted with the evidence, the captain turns against the authority he formerly served and declares that he will rule the village himself. He flees to gather the forest men. Erfar urges Zak to stop him before he can return; the ensuing pursuit ends Gort’s rebellion. [[character/nsheriff]] becomes the new captain. Unlike his predecessor, Rivar admits that he dislikes fighting, shares his family’s secret of strength and later supports Zak when suspicion finally reaches the elder.",
+						"sources": [
+							"briefing v19",
+							"briefing v19_1",
+							"briefing m21",
+							"briefing s21",
+							"briefing nv23",
+							"briefing nv26",
+							"quest q19g",
+							"quest q23g"
+						],
+						"event": "gort",
+						"order": 10
+					},
+					{
+						"heading": "The Old Dragon on Lone Mountain",
+						"text": "The observatory’s password takes Zak into the Dead City and up Lone Mountain. He expects the magician from the Orb but finds [[character/skd]]. The dragon insists on an old bargain: a visitor must perform a task before receiving an answer. Zak deals with the armadillos beneath the lair, using the poison the dragon supplies. The dragon then admits that he cannot identify Zak or locate Gipath’s elusive Great Magician. He suggests the ancient lizards might know more and points instead to an expedition of armoured outsiders. He withdraws the skeletons he had used against their camp. In a further conversation, he gives Zak an old sword because he enjoys his company and would rather not see him become another speechless skeleton.",
+						"sources": [
+							"quest q20g",
+							"briefing dr20",
+							"quest q22g",
+							"briefing dr22",
+							"briefing dr22_1"
+						],
+						"event": "dragon",
+						"order": 11
+					},
+					{
+						"heading": "The White Flower and Erfar’s exposure",
+						"text": "After Gort’s fall, Erfar claims that an orc seer has cursed the village with disease and asks for a White Flower. Zak finds armed opposition waiting for him, although no villagers have yet fallen ill. Erfar blames Babur, while Babur’s earlier warning makes Zak suspect both men. Estera suggests setting a trap. Zak tells each suspect a different location for a second flower; the ambush appears at the place he gave Erfar. With Rivar’s support he confronts and imprisons the elder. An expedition report recovered from the abandoned foreign camp becomes leverage: Erfar translates its account of a concealed tunnel and its opening lever. He later escapes custody. Estera recalls that he originally arrived as an adult stranger, leaving his real purpose unresolved.",
+						"sources": [
+							"briefing s21_1",
+							"briefing s24",
+							"briefing m24",
+							"briefing z24_1",
+							"quest q25g",
+							"briefing nv26",
+							"briefing s25_1",
+							"briefing s25_3",
+							"briefing nv27_1",
+							"briefing z25",
+							"quest q26g"
+						],
+						"event": "erfar_exposed",
+						"order": 12
+					},
+					{
+						"heading": "The expedition and the Hermit’s bargain",
+						"text": "Estera introduces a lost Khadaganian [[character/clerk|official]], who promises that his expedition can help Zak leave Gipath. Meeting [[character/hwleader]] instead leads to imprisonment and demands for information about a meteorite. Zak plays the ignorant swineherd, but the commander threatens torture. [[character/oliz]] offers escape on the condition that Zak later visit his home. Zak gives his word, receives the Ancient Claw for the traps on the approach and escapes. The Hermit explains that he had intended to negotiate with the armoured humans but changed his mind after seeing their treatment of Zak. Keeping the promise establishes trust where the expedition failed to do so.",
+						"sources": [
+							"briefing z27",
+							"briefing ha29",
+							"briefing ha29_1",
+							"briefing ha29_2",
+							"briefing ha29_3",
+							"briefing l30"
+						],
+						"event": "expedition",
+						"order": 13
+					},
+					{
+						"heading": "Water for the lizards and the Great Magician",
+						"text": "The Hermit needs the water diverted by the orcs restored. Zak raises their dam and blocks the diversion canal; in return the lizard locates the magician in a ravine in the Remote Mountains. This information joins the tunnel instructions from the Khadaganian report. Zak passes the ancient defences and reaches [[character/rick]]. Tka-Rik explains that his dragonet has watched Zak since his unusual arrival. Bound to Gipath by his duty as its Great Magician, he offers help with Zak’s memory in exchange for bringing him two surviving young Joons. The first journey will be to Ingos to find the girl. Zak must leave his Gipath companions behind.",
+						"sources": [
+							"briefing l30",
+							"quest q34g",
+							"briefing l34",
+							"briefing z35",
+							"quest q36g",
 							"briefing r36",
-							"briefing r54",
+							"briefing r36_3",
+							"briefing r36_4"
+						],
+						"event": "tka_rik",
+						"order": 14
+					},
+					{
+						"heading": "The rescue of Airy",
+						"text": "Before leaving Gipath, Zak can finish the separate search for Airy, who set out to find the magician herself and impress him. Estera’s vision points to a goblin prison, where Zak finds her granddaughter’s potion bottle and a note leading to [[character/orcc]]. The orc chief intends to give Airy to a frightening armoured human he calls a Demon. Zak offers to remove this threat instead. Shei-Var first demands proof of his strength against the ogre brothers, whose wealth also threatens the chief’s influence. Once Zak defeats the Demon, Shei-Var honours his promise and sends Airy home. The rescue ends with Estera’s gratitude and Airy’s distress that Zak still regards her as a child.",
+						"sources": [
+							"briefing z38",
+							"briefing z39",
+							"briefing sh40",
+							"briefing sh41",
+							"briefing sh41_1",
+							"briefing z41_1",
+							"quest q39g",
+							"quest q41g"
+						],
+						"event": "airy_rescue",
+						"order": 15
+					},
+					{
+						"heading": "Arrival on Ingos and the missing Princess",
+						"text": "On [[allod/ingos]], Zak first crosses the hostile countryside to reach the city. [[character/kapitan]] tells him about the missing young woman known locally as the Princess and the reward offered for finding her. Governor [[character/huber]] takes a personal interest in her, while [[character/magess]] discourages the search. The hunter [[character/trapper]] provides a concrete lead: another investigator, the Snoop from the capital, had followed the same trail before disappearing east of the city. Finding his body changes the search for a missing girl into an investigation of murder.",
+						"sources": [
+							"quest q42k",
+							"briefing k42",
+							"briefing k42_1",
+							"briefing g42",
+							"briefing mg42",
+							"briefing t42",
+							"briefing k43"
+						],
+						"event": "ingos_arrival",
+						"order": 16
+					},
+					{
+						"heading": "The arrow and the Green Clan",
+						"text": "The arrow in the Snoop’s body appears to implicate the Woodsfolk. Sver explains that their markings identify a clan, while the governor discovers that the case containing similar arrows has been stolen from his collection. Two lines of inquiry now run alongside each other: the stolen collection and the Woodsfolk’s testimony. To approach [[character/ycf]], Zak first returns the Green Clan’s Sacred Flower after rescuing its keeper from the White Clan. Grey Leaf then asks for help with the kidnapped elder Khabburu and his captor. The clan ultimately identifies the murder arrow as a false attribution, even refusing to blame its enemies for it. When the clan moves, Zak receives access to its hidden route and new home.",
+						"sources": [
+							"briefing g43",
+							"briefing t43",
+							"briefing yc45",
+							"briefing yc46",
+							"briefing yc47",
+							"briefing yc47_1"
+						],
+						"event": "arrow",
+						"order": 17
+					},
+					{
+						"heading": "Karansul’s accounts and Baldie’s confession",
+						"text": "[[character/shopper]] is reluctant to help, but Sver knows how to put pressure on him. Zak first delivers the hunter’s furs to a buyer outside the merchant’s monopoly. Sver then reveals Karansul’s hidden trade and unpaid taxes, pointing to the foreman’s accounts; he also recommends [[character/mthief]] as a teacher. With the accounts as leverage, Zak learns where to find [[character/vor]], called Baldie, and secures a meeting. Evidence from the stolen collection makes the thief confess: he killed the Snoop, planted the Woodsfolk arrow and worked for a cloaked employer who knew how to evade the governor’s magical traps.",
+						"sources": [
+							"briefing t43_1",
+							"briefing t44",
+							"briefing mthief1",
+							"briefing tr48",
+							"briefing tr49",
+							"briefing tr49_1"
+						],
+						"event": "karansul",
+						"order": 18
+					},
+					{
+						"heading": "Diera and the locked mines",
+						"text": "At the Green Clan’s new home, Grey Leaf describes the supposed man in grey as a white-haired woman. Zak identifies Diera, whose own traps protected the stolen collection. Her urgent warnings against the abandoned mines reinforce his suspicion. Tilvar explains that the governor holds the key. Karansul suggests winning it with a gold nugget and gives access to a dangerous pit, concealing the tigers that drove out its workers; Sver warns Zak of the trap. Zak obtains the nugget and presents it to the collector-governor as a business prospect. Valrasian releases the mine key, opening the way past Diera’s mercenaries.",
+						"sources": [
+							"briefing yc50",
+							"briefing mg43_1",
+							"briefing mg50",
+							"briefing k51",
+							"briefing tr52",
+							"briefing t52",
+							"briefing g53",
+							"quest q54k"
+						],
+						"event": "diera",
+						"order": 19
+					},
+					{
+						"heading": "Lu-a-Jalla beneath the mines",
+						"text": "The former punishment cell is empty. Zak follows the trail deeper into the Forbidden Catacombs until he finds [[character/deva]], who first mistakes him for another captor. She has escaped the mercenaries and found protection through the ancient treaty between Joons and Wormheads. She rejects the nickname Princess and explains that Diera imprisoned her out of jealousy over the governor. Zak falls in love with her, but she remains faithful to At-Zako, who drew the Joon Curse away from her. Zak promises to respect that bond. They return to Tka-Rik, and the next mission becomes the search for her missing beloved on Suslanger.",
+						"sources": [
+							"quest q55k",
+							"briefing d55",
+							"briefing d55_1",
+							"briefing d55_3",
+							"briefing r54"
+						],
+						"event": "lua",
+						"order": 20
+					},
+					{
+						"heading": "Captivity in Death Canyon",
+						"text": "Zak is captured near the portal on [[allod/suslanger]]. Lieutenant [[character/karh]] presents him to [[character/iz]], who orders him used as live quarry for soldiers seeking promotion. Surviving the run through Death Canyon earns only a return to captivity, not freedom. Kardaur threatens punishment through necromancy if Zak dies too quickly and displeases his superior.",
+						"sources": [
+							"briefing hns59",
+							"quest q60h"
+						],
+						"event": "canyon",
+						"order": 21
+					},
+					{
+						"heading": "The Odalisque and the escape",
+						"text": "The [[character/nalo]] approaches Zak after his ordeal. Enslaved by Kardaur and deprived even of a personal name, she wants his death and knows he will guard the gate that night. She steals the key to Zak’s cage. Her father, a rat hunter who disappeared in the caves, told her of the Wormheads’ temple and the bridges across its lava rivers. She uses that knowledge to explain a route the guards fear to follow. Zak kills Kardaur for the fortress key and escapes toward the cave; releasing the caged spiders can delay pursuit. The Odalisque and Zak part with wishes for each other’s freedom and survival, without a stated account of her later fate.",
+						"sources": [
 							"briefing kr60",
 							"briefing kr61",
-							"briefing gl64",
-							"briefing sn69_1"
-						]
+							"quest q61h",
+							"quest q62h",
+							"quest q63h"
+						],
+						"event": "odalisque",
+						"order": 22
 					},
 					{
-						"heading": "At-Zako and the Curse",
-						"text": "Tka Rik discovers that the amulet transported At-Zako to Gipath: Zak has been searching for himself. A Khadaganian scientist transformed the young Joon to hide him from the Joon Curse; the hurried spell also endangered his memory. Restored to his identity, At-Zako is reunited with Lu-a-Jalla. He chooses to confront the Curse with Tka Rik rather than spend their lives fleeing it.",
+						"heading": "Acceptance into the Last Shelter",
+						"text": "Beyond the caves, [[character/kuzn]] finds Zak and vouches for him before [[character/glav]]. The brotherhood’s leader fears imperial spies and requires the Emperor’s Signet Ring, taken from a cyclops who killed its courier. Possessing such an object compromises the newcomer with the authorities and makes the test more than a feat of strength. After Zak returns, Khatul accepts him as Brother Blondie and offers the refuge as a new home. Zak explains his promise to find At-Zako and return to Gipath. Khatul respects that purpose and asks those who can help to support him; [[character/guru]] can teach him greater dexterity.",
 						"sources": [
+							"briefing gl63",
+							"briefing gl64",
+							"briefing guru1"
+						],
+						"event": "shelter",
+						"order": 23
+					},
+					{
+						"heading": "Sahilia’s cache and the Joon collector",
+						"text": "[[character/merc10]] supplies the next lead through her own theft. Antiquities she stole from [[character/junofil]] remain hidden near the city, and Zak recovers them to arrange a meeting. Khatul and Brother Blacksmith help choose the secluded trading place, keeping strangers away from the Shelter. Baluddin admits recognising At-Zako as a living Joon and wanting to keep him in his own house. Imperial scholars took the young man away. Later, Taivo summoned the collector to identify those scholars’ mutilated bodies. The missing youth’s trail now leads to the necromancers rather than a living prisoner whom Zak can simply rescue.",
+						"sources": [
+							"briefing vo64",
+							"briefing vo65",
+							"briefing gl66",
+							"briefing jf67",
+							"quest q65h",
+							"quest q66h",
+							"quest q67h"
+						],
+						"event": "collector",
+						"order": 24
+					},
+					{
+						"heading": "Kholai and the dead scientist",
+						"text": "[[character/nekro]] directs Zak to [[character/oldnekro]], whom Taivo displaced from the imperial laboratory. Kholai wants disgrace for his rival rather than a simple assassination. Zak steals a dead scientist’s head from the laboratory; its disappearance will embarrass Taivo, and Kholai can summon its spirit. The [[character/spirit|scientist]] describes a horror pursuing the red-skinned youth. To conceal him, the scholars changed his appearance and sent him away by teleportation. Kholai interprets the broken testimony and tells Zak to search the ruined mansion for the magical object used in the escape. The fragments Zak finds are beyond Kehel’s ability to interpret: only a Great Magician can identify the destination.",
+						"sources": [
+							"briefing ne67",
+							"briefing sn67",
+							"quest q69h",
+							"briefing sn69",
+							"briefing sn69_1",
+							"quest q70h",
+							"briefing ne70"
+						],
+						"event": "spirit",
+						"order": 25
+					},
+					{
+						"heading": "Brother Faceless and the return to Gipath",
+						"text": "Khatul asks [[character/zaku]] to help Zak reach the guarded portal. Faceless arranges a cave meeting and explains the keys and stone controls. He then reveals himself as Erfar: born on Suslanger, he went to Gipath seeking the meteorite and manipulated the villagers into searching for it. His earlier plots were attempts to remove Zak, who disrupted that scheme. The reunion is another trap, with guards waiting outside the cave. Zak survives the confrontation and forces a route through the portal’s defences. Activating its two controls finally returns him to Tka-Rik with the amulet fragments.",
+						"sources": [
+							"briefing s64",
+							"briefing gl70",
+							"briefing s71",
+							"briefing s71_1",
+							"quest q72h"
+						],
+						"event": "faceless",
+						"order": 26
+					},
+					{
+						"heading": "At-Zako: the search turns back on itself",
+						"text": "Tka-Rik initially expects Zak to bring the missing Joon with him. Lu-a-Jalla defends the exhausted traveller, and Zak insists that he will continue for her sake even if reunion with At-Zako means losing her. The amulet changes everything: Tka-Rik discovers that its destination was Gipath. Only Zak arrived there in that unusual way. The man he has been seeking is himself, hidden by the Khadaganian transformation spell. Restored as At-Zako, he reassures Tka-Rik and reunites with Lu-a-Jalla. The memories of their earlier flight explain why the return of his identity also brings back the danger of the Curse.",
+						"sources": [
+							"briefing r72",
 							"briefing r72_1",
 							"briefing r72_4",
-							"briefing r72_6",
 							"briefing d72_5"
-						]
+						],
+						"event": "identity",
+						"order": 27
+					},
+					{
+						"heading": "The battle with the Joon Curse",
+						"text": "The hurried transformation that concealed At-Zako nearly destroyed his memory. Tka-Rik cannot safely repeat it, so hiding as Zak is no longer an answer. He offers another choice: flee again under his temporary protection, or confront the Curse on Gipath. At-Zako chooses to defend his life with Lu-a-Jalla. Tka-Rik supplies ancient Joon equipment and joins him in the catacombs for the final battle. Defeating the Curse completes the campaign.",
+						"sources": [
+							"briefing r72_6",
+							"briefing r72_7",
+							"quest q73g",
+							"zone gz20g"
+						],
+						"event": "curse",
+						"order": 28
 					}
 				],
 				"actors": [
@@ -838,7 +1643,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/elder]] governs Gipath’s village and presents himself as its devoted elected leader. He proclaims Zak the Chosen and puts that supposed destiny to practical use, assigning dangerous errands while promising honour and hospitality. His speeches conceal a much more personal interest in the island.",
 						"sources": [
 							"briefing s0",
@@ -846,14 +1651,127 @@ const DATA := {
 						]
 					},
 					{
-						"heading": "Conspiracy and return",
-						"text": "Zak exposes Erfar’s involvement in the plot against him. Estera recalls that Erfar arrived as an adult, claiming to have escaped brigands. In Suslanger, Erfar reveals his real origin and his search for the meteorite. Disguised as [[character/zaku]], he gains Zak’s trust again and arranges an ambush near the Portal.",
+						"heading": "The village and the Chosen",
+						"text": "At the village assembly, [[character/elder]] identifies Zak with the promised Chosen who was to appear at the Sacred Ruins. [[character/sheriff]], the captain, supports the ceremony. The offer of food, shelter and honour comes with a threat: an impostor would be thrown into the fire. Zak accepts the title and gives his name. Erfar immediately sends him against the goblin sentry watching the village, reasoning that his plain clothes and unusual metal knife will let him approach where armed villagers cannot. Afterwards Zak learns that this is Gipath’s only human village, with no king or known route to other lands.",
 						"sources": [
+							"briefing s1",
+							"briefing s0",
+							"briefing v0",
+							"quest q1ag"
+						],
+						"event": "chosen",
+						"order": 2
+					},
+					{
+						"heading": "The wolf, the captain and the craftsman",
+						"text": "Killing the sentry brings another request from Erfar: the White Wolf and its pack are taking the village livestock. After Zak kills their leader, Erfar and Gort press him to surrender the head so the captain can claim prestige. Gort also sends him to punish the goblins while the village soldiers stay home. Meanwhile [[character/smith]] refuses to work until his stolen iron tools are returned. Erfar calls the thieves friendly “Free Hunters”; Babur calls them brigands and describes the beating of his apprentice. Recovering the chisel and bodkin from the chief and his wife wins Zak the craftsman’s services. These early errands expose the disagreement between the village’s leaders and the man who equips it.",
+						"sources": [
+							"briefing s1_3",
+							"briefing s3",
+							"briefing v3",
+							"briefing v3_1",
+							"briefing m1",
+							"briefing m1_1",
+							"briefing m4",
+							"quest q2g"
+						],
+						"event": "village_errands",
+						"order": 3
+					},
+					{
+						"heading": "Two searches on the islands",
+						"text": "The river islands hold two different leads. Estera needs the Orb, which Erfar places on the southernmost island. Erfar also proposes tracing [[character/bgoblinc]]’s blue Eye Stone to a possible portal. Zak takes the First Goblin’s skull to compel GoGo to visit the village; the chief explains that the orcs confiscated the written record of the stone’s origin. The islands require their own bridge mechanism, distinct from the cave’s. Zak retrieves the record and the Orb in this area. Erfar claims the record offers nothing useful, then diverts attention to missing taxes and gold in Golden Valley. His portal scheme and Estera’s search serve different purposes, even though they take Zak through the same territory.",
+						"sources": [
+							"briefing s6_2",
+							"briefing s7_1",
+							"briefing s7_4",
+							"briefing s8_2",
+							"briefing v5",
+							"quest q7g",
+							"quest q8g",
+							"quest q9g",
+							"quest q10g"
+						],
+						"event": "orb_islands",
+						"order": 6
+					},
+					{
+						"heading": "The Orb and the Dead City",
+						"text": "When Estera uses the Orb, Zak sees an old man instead of a recognisable memory. She believes he is its owner and a more powerful magician who might help. Orc records trace the object to the Dead City. Estera distinguishes its human fortress from Gipath’s much older ruins: after the Night of Troubles, the dead attacked the living, and survivors fled to found the present village. The obvious route into the fortress is deadly. Airy leaves to investigate another way in, despite her grandmother’s objections. Separately, Erfar can send Zak into the surrounding region’s Golden Valley for a caravan’s lost treasure, an errand he badly understates.",
+						"sources": [
+							"briefing z2",
+							"briefing z11",
+							"briefing z11_1",
+							"briefing s8_2",
+							"briefing s12",
+							"briefing s12_1",
+							"quest q12g"
+						],
+						"event": "dead_city_lead",
+						"order": 7
+					},
+					{
+						"heading": "The supposed attack on the goblins",
+						"text": "While Zak seeks the magician, Erfar and Gort arrange another joint operation with the Free Hunters, supposedly to prevent a goblin raid. The promised friendly meeting becomes an ambush by brigands and village soldiers. Erfar denies responsibility, while Babur warns that the elder is trying to have Zak killed. A note in the newer orc script cannot yet settle the matter: Estera needs an Orc ABC Book to read it. Its translation reveals a contract on Zak’s life, a detailed description of him and a substantial payment. The search for the author becomes a separate investigation alongside the route into the Dead City.",
+						"sources": [
+							"briefing s12_4",
+							"briefing s13_0",
+							"briefing m13_3",
+							"briefing z13_2",
+							"briefing z14",
+							"quest q13ag",
+							"quest q14g"
+						],
+						"event": "ambush",
+						"order": 8
+					},
+					{
+						"heading": "Gort’s rebellion",
+						"text": "The written instructions to kill Zak expose Gort’s handwriting. Confronted with the evidence, the captain turns against the authority he formerly served and declares that he will rule the village himself. He flees to gather the forest men. Erfar urges Zak to stop him before he can return; the ensuing pursuit ends Gort’s rebellion. [[character/nsheriff]] becomes the new captain. Unlike his predecessor, Rivar admits that he dislikes fighting, shares his family’s secret of strength and later supports Zak when suspicion finally reaches the elder.",
+						"sources": [
+							"briefing v19",
+							"briefing v19_1",
+							"briefing m21",
+							"briefing s21",
+							"briefing nv23",
+							"briefing nv26",
+							"quest q19g",
+							"quest q23g"
+						],
+						"event": "gort",
+						"order": 10
+					},
+					{
+						"heading": "The White Flower and Erfar’s exposure",
+						"text": "After Gort’s fall, Erfar claims that an orc seer has cursed the village with disease and asks for a White Flower. Zak finds armed opposition waiting for him, although no villagers have yet fallen ill. Erfar blames Babur, while Babur’s earlier warning makes Zak suspect both men. Estera suggests setting a trap. Zak tells each suspect a different location for a second flower; the ambush appears at the place he gave Erfar. With Rivar’s support he confronts and imprisons the elder. An expedition report recovered from the abandoned foreign camp becomes leverage: Erfar translates its account of a concealed tunnel and its opening lever. He later escapes custody. Estera recalls that he originally arrived as an adult stranger, leaving his real purpose unresolved.",
+						"sources": [
+							"briefing s21_1",
+							"briefing s24",
+							"briefing m24",
+							"briefing z24_1",
+							"quest q25g",
+							"briefing nv26",
 							"briefing s25_1",
+							"briefing s25_3",
+							"briefing nv27_1",
 							"briefing z25",
+							"quest q26g"
+						],
+						"event": "erfar_exposed",
+						"order": 12
+					},
+					{
+						"heading": "Brother Faceless and the return to Gipath",
+						"text": "Khatul asks [[character/zaku]] to help Zak reach the guarded portal. Faceless arranges a cave meeting and explains the keys and stone controls. He then reveals himself as Erfar: born on Suslanger, he went to Gipath seeking the meteorite and manipulated the villagers into searching for it. His earlier plots were attempts to remove Zak, who disrupted that scheme. The reunion is another trap, with guards waiting outside the cave. Zak survives the confrontation and forces a route through the portal’s defences. Activating its two controls finally returns him to Tka-Rik with the amulet fragments.",
+						"sources": [
+							"briefing s64",
+							"briefing gl70",
 							"briefing s71",
-							"briefing s71_1"
-						]
+							"briefing s71_1",
+							"quest q72h"
+						],
+						"event": "faceless",
+						"order": 26
 					}
 				],
 				"actors": [
@@ -895,7 +1813,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/witch]] is a witch living apart from the village with her granddaughter [[character/daughter]]. Traps guard the approach to her cave. Gruff and suspicious at first, she welcomes Zak after he brings her a Magic Bit, but refuses to accept the villagers’ story that he is simply a divinely sent saviour.",
 						"sources": [
 							"briefing z1",
@@ -904,16 +1822,113 @@ const DATA := {
 						]
 					},
 					{
-						"heading": "An ally in the search",
-						"text": "Estera interprets the orc records that trace the Magic Orb to the Dead City, explains the city’s history and helps uncover the plot against Zak. She can freeze the lake for the journey to the dragon. Her protective anger resurfaces when Airy disappears, and she asks Zak to bring her granddaughter home. [[character/merc3]] is her apprentice.",
+						"heading": "Meeting Estera and Airy",
+						"text": "[[character/witch]] initially threatens the intruder, then changes her reception when Zak offers the Magic Bit. She dismisses the villagers’ divine-saviour story but discovers that she cannot see his past. Since Zak cannot remember it either, she suggests finding the orcs’ Magic Orb and directs him back to Erfar for information. This is the beginning of their alliance. Estera also introduces her granddaughter [[character/daughter]], warning Zak to keep his distance; Airy resents being treated as a child. Zak’s search now has a personal aim beyond the village’s demands.",
 						"sources": [
+							"briefing z1",
+							"briefing z1_2",
+							"briefing z0_2",
+							"briefing m6_1"
+						],
+						"event": "estera",
+						"order": 5
+					},
+					{
+						"heading": "The Orb and the Dead City",
+						"text": "When Estera uses the Orb, Zak sees an old man instead of a recognisable memory. She believes he is its owner and a more powerful magician who might help. Orc records trace the object to the Dead City. Estera distinguishes its human fortress from Gipath’s much older ruins: after the Night of Troubles, the dead attacked the living, and survivors fled to found the present village. The obvious route into the fortress is deadly. Airy leaves to investigate another way in, despite her grandmother’s objections. Separately, Erfar can send Zak into the surrounding region’s Golden Valley for a caravan’s lost treasure, an errand he badly understates.",
+						"sources": [
+							"briefing z2",
 							"briefing z11",
 							"briefing z11_1",
+							"briefing s8_2",
+							"briefing s12",
+							"briefing s12_1",
+							"quest q12g"
+						],
+						"event": "dead_city_lead",
+						"order": 7
+					},
+					{
+						"heading": "The supposed attack on the goblins",
+						"text": "While Zak seeks the magician, Erfar and Gort arrange another joint operation with the Free Hunters, supposedly to prevent a goblin raid. The promised friendly meeting becomes an ambush by brigands and village soldiers. Erfar denies responsibility, while Babur warns that the elder is trying to have Zak killed. A note in the newer orc script cannot yet settle the matter: Estera needs an Orc ABC Book to read it. Its translation reveals a contract on Zak’s life, a detailed description of him and a substantial payment. The search for the author becomes a separate investigation alongside the route into the Dead City.",
+						"sources": [
+							"briefing s12_4",
+							"briefing s13_0",
+							"briefing m13_3",
+							"briefing z13_2",
 							"briefing z14",
+							"quest q13ag",
+							"quest q14g"
+						],
+						"event": "ambush",
+						"order": 8
+					},
+					{
+						"heading": "Airy’s route through the observatory",
+						"text": "Airy returns with a lead to the old observatory library, but harpies occupy the site. Her plan requires a lizard’s amulet to lead a particular green dragon against them. Reaching that dragon requires Estera to freeze the lake with a green crystal. The hostile lizards on the approach present another obstacle: Zak moves the Big Shell from the Remote Mountains to the Middle Mountains, restoring the peace associated with its altar. This leaves Babur’s former quarry route unsafe and can lead to an additional errand for the craftsman. The observatory book finally supplies the password to the Dead City’s hidden entrance. Airy can also teach Zak the Magic of Feelings, only to be offended when he again calls her a little girl.",
+						"sources": [
+							"briefing z13_1",
+							"briefing z14_1",
+							"briefing m13_2",
+							"briefing m15",
 							"briefing z17",
+							"briefing z15",
+							"briefing z18",
+							"quest q15ag",
+							"quest q15bg",
+							"quest q18g"
+						],
+						"event": "observatory",
+						"order": 9
+					},
+					{
+						"heading": "The White Flower and Erfar’s exposure",
+						"text": "After Gort’s fall, Erfar claims that an orc seer has cursed the village with disease and asks for a White Flower. Zak finds armed opposition waiting for him, although no villagers have yet fallen ill. Erfar blames Babur, while Babur’s earlier warning makes Zak suspect both men. Estera suggests setting a trap. Zak tells each suspect a different location for a second flower; the ambush appears at the place he gave Erfar. With Rivar’s support he confronts and imprisons the elder. An expedition report recovered from the abandoned foreign camp becomes leverage: Erfar translates its account of a concealed tunnel and its opening lever. He later escapes custody. Estera recalls that he originally arrived as an adult stranger, leaving his real purpose unresolved.",
+						"sources": [
+							"briefing s21_1",
+							"briefing s24",
+							"briefing m24",
+							"briefing z24_1",
+							"quest q25g",
+							"briefing nv26",
+							"briefing s25_1",
+							"briefing s25_3",
+							"briefing nv27_1",
+							"briefing z25",
+							"quest q26g"
+						],
+						"event": "erfar_exposed",
+						"order": 12
+					},
+					{
+						"heading": "The expedition and the Hermit’s bargain",
+						"text": "Estera introduces a lost Khadaganian [[character/clerk|official]], who promises that his expedition can help Zak leave Gipath. Meeting [[character/hwleader]] instead leads to imprisonment and demands for information about a meteorite. Zak plays the ignorant swineherd, but the commander threatens torture. [[character/oliz]] offers escape on the condition that Zak later visit his home. Zak gives his word, receives the Ancient Claw for the traps on the approach and escapes. The Hermit explains that he had intended to negotiate with the armoured humans but changed his mind after seeing their treatment of Zak. Keeping the promise establishes trust where the expedition failed to do so.",
+						"sources": [
+							"briefing z27",
+							"briefing ha29",
+							"briefing ha29_1",
+							"briefing ha29_2",
+							"briefing ha29_3",
+							"briefing l30"
+						],
+						"event": "expedition",
+						"order": 13
+					},
+					{
+						"heading": "The rescue of Airy",
+						"text": "Before leaving Gipath, Zak can finish the separate search for Airy, who set out to find the magician herself and impress him. Estera’s vision points to a goblin prison, where Zak finds her granddaughter’s potion bottle and a note leading to [[character/orcc]]. The orc chief intends to give Airy to a frightening armoured human he calls a Demon. Zak offers to remove this threat instead. Shei-Var first demands proof of his strength against the ogre brothers, whose wealth also threatens the chief’s influence. Once Zak defeats the Demon, Shei-Var honours his promise and sends Airy home. The rescue ends with Estera’s gratitude and Airy’s distress that Zak still regards her as a child.",
+						"sources": [
 							"briefing z38",
-							"briefing n8_3"
-						]
+							"briefing z39",
+							"briefing sh40",
+							"briefing sh41",
+							"briefing sh41_1",
+							"briefing z41_1",
+							"quest q39g",
+							"quest q41g"
+						],
+						"event": "airy_rescue",
+						"order": 15
 					}
 				],
 				"actors": [
@@ -948,7 +1963,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/daughter]] is Estera’s strong-willed granddaughter. Determined to be taken seriously by Zak and her grandmother, she investigates the way into the Dead City and explains how a lizard’s amulet can lead a dragon against the harpies at the observatory. Her attempt to find the magician places her in danger, and Zak’s search for her becomes part of his dealings with [[character/orcc]].",
 						"sources": [
 							"briefing z0_2",
@@ -958,6 +1973,67 @@ const DATA := {
 							"briefing sh40",
 							"briefing sh41_1"
 						]
+					},
+					{
+						"heading": "Meeting Estera and Airy",
+						"text": "[[character/witch]] initially threatens the intruder, then changes her reception when Zak offers the Magic Bit. She dismisses the villagers’ divine-saviour story but discovers that she cannot see his past. Since Zak cannot remember it either, she suggests finding the orcs’ Magic Orb and directs him back to Erfar for information. This is the beginning of their alliance. Estera also introduces her granddaughter [[character/daughter]], warning Zak to keep his distance; Airy resents being treated as a child. Zak’s search now has a personal aim beyond the village’s demands.",
+						"sources": [
+							"briefing z1",
+							"briefing z1_2",
+							"briefing z0_2",
+							"briefing m6_1"
+						],
+						"event": "estera",
+						"order": 5
+					},
+					{
+						"heading": "The Orb and the Dead City",
+						"text": "When Estera uses the Orb, Zak sees an old man instead of a recognisable memory. She believes he is its owner and a more powerful magician who might help. Orc records trace the object to the Dead City. Estera distinguishes its human fortress from Gipath’s much older ruins: after the Night of Troubles, the dead attacked the living, and survivors fled to found the present village. The obvious route into the fortress is deadly. Airy leaves to investigate another way in, despite her grandmother’s objections. Separately, Erfar can send Zak into the surrounding region’s Golden Valley for a caravan’s lost treasure, an errand he badly understates.",
+						"sources": [
+							"briefing z2",
+							"briefing z11",
+							"briefing z11_1",
+							"briefing s8_2",
+							"briefing s12",
+							"briefing s12_1",
+							"quest q12g"
+						],
+						"event": "dead_city_lead",
+						"order": 7
+					},
+					{
+						"heading": "Airy’s route through the observatory",
+						"text": "Airy returns with a lead to the old observatory library, but harpies occupy the site. Her plan requires a lizard’s amulet to lead a particular green dragon against them. Reaching that dragon requires Estera to freeze the lake with a green crystal. The hostile lizards on the approach present another obstacle: Zak moves the Big Shell from the Remote Mountains to the Middle Mountains, restoring the peace associated with its altar. This leaves Babur’s former quarry route unsafe and can lead to an additional errand for the craftsman. The observatory book finally supplies the password to the Dead City’s hidden entrance. Airy can also teach Zak the Magic of Feelings, only to be offended when he again calls her a little girl.",
+						"sources": [
+							"briefing z13_1",
+							"briefing z14_1",
+							"briefing m13_2",
+							"briefing m15",
+							"briefing z17",
+							"briefing z15",
+							"briefing z18",
+							"quest q15ag",
+							"quest q15bg",
+							"quest q18g"
+						],
+						"event": "observatory",
+						"order": 9
+					},
+					{
+						"heading": "The rescue of Airy",
+						"text": "Before leaving Gipath, Zak can finish the separate search for Airy, who set out to find the magician herself and impress him. Estera’s vision points to a goblin prison, where Zak finds her granddaughter’s potion bottle and a note leading to [[character/orcc]]. The orc chief intends to give Airy to a frightening armoured human he calls a Demon. Zak offers to remove this threat instead. Shei-Var first demands proof of his strength against the ogre brothers, whose wealth also threatens the chief’s influence. Once Zak defeats the Demon, Shei-Var honours his promise and sends Airy home. The rescue ends with Estera’s gratitude and Airy’s distress that Zak still regards her as a child.",
+						"sources": [
+							"briefing z38",
+							"briefing z39",
+							"briefing sh40",
+							"briefing sh41",
+							"briefing sh41_1",
+							"briefing z41_1",
+							"quest q39g",
+							"quest q41g"
+						],
+						"event": "airy_rescue",
+						"order": 15
 					}
 				],
 				"actors": [
@@ -993,7 +2069,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/sheriff]] commands the village warriors and supports Erfar’s use of the Chosen legend. He pressures Zak into fighting goblins and supplies information about the stolen bridge mechanism. When accused of treachery, he openly declares his ambition to become the village’s ruler and threatens to return with the forest men.",
 						"sources": [
 							"briefing s1",
@@ -1001,6 +2077,81 @@ const DATA := {
 							"briefing v5",
 							"briefing v19_1"
 						]
+					},
+					{
+						"heading": "The village and the Chosen",
+						"text": "At the village assembly, [[character/elder]] identifies Zak with the promised Chosen who was to appear at the Sacred Ruins. [[character/sheriff]], the captain, supports the ceremony. The offer of food, shelter and honour comes with a threat: an impostor would be thrown into the fire. Zak accepts the title and gives his name. Erfar immediately sends him against the goblin sentry watching the village, reasoning that his plain clothes and unusual metal knife will let him approach where armed villagers cannot. Afterwards Zak learns that this is Gipath’s only human village, with no king or known route to other lands.",
+						"sources": [
+							"briefing s1",
+							"briefing s0",
+							"briefing v0",
+							"quest q1ag"
+						],
+						"event": "chosen",
+						"order": 2
+					},
+					{
+						"heading": "The wolf, the captain and the craftsman",
+						"text": "Killing the sentry brings another request from Erfar: the White Wolf and its pack are taking the village livestock. After Zak kills their leader, Erfar and Gort press him to surrender the head so the captain can claim prestige. Gort also sends him to punish the goblins while the village soldiers stay home. Meanwhile [[character/smith]] refuses to work until his stolen iron tools are returned. Erfar calls the thieves friendly “Free Hunters”; Babur calls them brigands and describes the beating of his apprentice. Recovering the chisel and bodkin from the chief and his wife wins Zak the craftsman’s services. These early errands expose the disagreement between the village’s leaders and the man who equips it.",
+						"sources": [
+							"briefing s1_3",
+							"briefing s3",
+							"briefing v3",
+							"briefing v3_1",
+							"briefing m1",
+							"briefing m1_1",
+							"briefing m4",
+							"quest q2g"
+						],
+						"event": "village_errands",
+						"order": 3
+					},
+					{
+						"heading": "The brigands’ trail and the Magic Bit",
+						"text": "Babur’s account of a red-haired brigand meeting orcs gives Zak his next lead. A map taken from Redhead points to a Magic Bit in a sarcophagus in the orc cave. Babur explains that Estera values such objects, while Gort can supply the missing drawbridge mechanism. Zak obtains the seer’s key and the object, then asks how to reach the witch. Babur, who made her spare trap key, explains the guarded ravines and controlling obelisks. The craftsman expects a share of the sale. Zak instead intends to exchange the find for help with his lost memory.",
+						"sources": [
+							"briefing m4",
+							"briefing m5_1",
+							"briefing v4",
+							"briefing m6",
+							"briefing m6_1",
+							"quest q4g",
+							"quest q5g",
+							"quest q6g"
+						],
+						"event": "magic_bit",
+						"order": 4
+					},
+					{
+						"heading": "The supposed attack on the goblins",
+						"text": "While Zak seeks the magician, Erfar and Gort arrange another joint operation with the Free Hunters, supposedly to prevent a goblin raid. The promised friendly meeting becomes an ambush by brigands and village soldiers. Erfar denies responsibility, while Babur warns that the elder is trying to have Zak killed. A note in the newer orc script cannot yet settle the matter: Estera needs an Orc ABC Book to read it. Its translation reveals a contract on Zak’s life, a detailed description of him and a substantial payment. The search for the author becomes a separate investigation alongside the route into the Dead City.",
+						"sources": [
+							"briefing s12_4",
+							"briefing s13_0",
+							"briefing m13_3",
+							"briefing z13_2",
+							"briefing z14",
+							"quest q13ag",
+							"quest q14g"
+						],
+						"event": "ambush",
+						"order": 8
+					},
+					{
+						"heading": "Gort’s rebellion",
+						"text": "The written instructions to kill Zak expose Gort’s handwriting. Confronted with the evidence, the captain turns against the authority he formerly served and declares that he will rule the village himself. He flees to gather the forest men. Erfar urges Zak to stop him before he can return; the ensuing pursuit ends Gort’s rebellion. [[character/nsheriff]] becomes the new captain. Unlike his predecessor, Rivar admits that he dislikes fighting, shares his family’s secret of strength and later supports Zak when suspicion finally reaches the elder.",
+						"sources": [
+							"briefing v19",
+							"briefing v19_1",
+							"briefing m21",
+							"briefing s21",
+							"briefing nv23",
+							"briefing nv26",
+							"quest q19g",
+							"quest q23g"
+						],
+						"event": "gort",
+						"order": 10
 					}
 				],
 				"actors": [
@@ -1036,13 +2187,48 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/nsheriff]] becomes captain after Gort. Though exceptionally strong, he admits that he dislikes fighting and is no gifted speaker. He shares his family’s secret of strength with Zak and supports him against Erfar. His later admission that the prisoner escaped shows the limits of his vigilance.",
 						"sources": [
 							"briefing nv23",
 							"briefing nv26",
 							"briefing nv27_1"
 						]
+					},
+					{
+						"heading": "Gort’s rebellion",
+						"text": "The written instructions to kill Zak expose Gort’s handwriting. Confronted with the evidence, the captain turns against the authority he formerly served and declares that he will rule the village himself. He flees to gather the forest men. Erfar urges Zak to stop him before he can return; the ensuing pursuit ends Gort’s rebellion. [[character/nsheriff]] becomes the new captain. Unlike his predecessor, Rivar admits that he dislikes fighting, shares his family’s secret of strength and later supports Zak when suspicion finally reaches the elder.",
+						"sources": [
+							"briefing v19",
+							"briefing v19_1",
+							"briefing m21",
+							"briefing s21",
+							"briefing nv23",
+							"briefing nv26",
+							"quest q19g",
+							"quest q23g"
+						],
+						"event": "gort",
+						"order": 10
+					},
+					{
+						"heading": "The White Flower and Erfar’s exposure",
+						"text": "After Gort’s fall, Erfar claims that an orc seer has cursed the village with disease and asks for a White Flower. Zak finds armed opposition waiting for him, although no villagers have yet fallen ill. Erfar blames Babur, while Babur’s earlier warning makes Zak suspect both men. Estera suggests setting a trap. Zak tells each suspect a different location for a second flower; the ambush appears at the place he gave Erfar. With Rivar’s support he confronts and imprisons the elder. An expedition report recovered from the abandoned foreign camp becomes leverage: Erfar translates its account of a concealed tunnel and its opening lever. He later escapes custody. Estera recalls that he originally arrived as an adult stranger, leaving his real purpose unresolved.",
+						"sources": [
+							"briefing s21_1",
+							"briefing s24",
+							"briefing m24",
+							"briefing z24_1",
+							"quest q25g",
+							"briefing nv26",
+							"briefing s25_1",
+							"briefing s25_3",
+							"briefing nv27_1",
+							"briefing z25",
+							"quest q26g"
+						],
+						"event": "erfar_exposed",
+						"order": 12
 					}
 				],
 				"actors": [
@@ -1078,7 +2264,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/smith]] is the village craftsman. The theft of his favourite tools leaves him unable to work, and their recovery wins Zak access to his services. He distrusts Erfar’s “Free Hunters”, bargains fiercely and knows much about the surrounding ruins. His advice about the Magic Bit, the drawbridge mechanism and Estera’s trap key helps Zak reach the witch.",
 						"sources": [
 							"briefing m1",
@@ -1086,6 +2272,90 @@ const DATA := {
 							"briefing m5_1",
 							"briefing m6"
 						]
+					},
+					{
+						"heading": "The wolf, the captain and the craftsman",
+						"text": "Killing the sentry brings another request from Erfar: the White Wolf and its pack are taking the village livestock. After Zak kills their leader, Erfar and Gort press him to surrender the head so the captain can claim prestige. Gort also sends him to punish the goblins while the village soldiers stay home. Meanwhile [[character/smith]] refuses to work until his stolen iron tools are returned. Erfar calls the thieves friendly “Free Hunters”; Babur calls them brigands and describes the beating of his apprentice. Recovering the chisel and bodkin from the chief and his wife wins Zak the craftsman’s services. These early errands expose the disagreement between the village’s leaders and the man who equips it.",
+						"sources": [
+							"briefing s1_3",
+							"briefing s3",
+							"briefing v3",
+							"briefing v3_1",
+							"briefing m1",
+							"briefing m1_1",
+							"briefing m4",
+							"quest q2g"
+						],
+						"event": "village_errands",
+						"order": 3
+					},
+					{
+						"heading": "The brigands’ trail and the Magic Bit",
+						"text": "Babur’s account of a red-haired brigand meeting orcs gives Zak his next lead. A map taken from Redhead points to a Magic Bit in a sarcophagus in the orc cave. Babur explains that Estera values such objects, while Gort can supply the missing drawbridge mechanism. Zak obtains the seer’s key and the object, then asks how to reach the witch. Babur, who made her spare trap key, explains the guarded ravines and controlling obelisks. The craftsman expects a share of the sale. Zak instead intends to exchange the find for help with his lost memory.",
+						"sources": [
+							"briefing m4",
+							"briefing m5_1",
+							"briefing v4",
+							"briefing m6",
+							"briefing m6_1",
+							"quest q4g",
+							"quest q5g",
+							"quest q6g"
+						],
+						"event": "magic_bit",
+						"order": 4
+					},
+					{
+						"heading": "The supposed attack on the goblins",
+						"text": "While Zak seeks the magician, Erfar and Gort arrange another joint operation with the Free Hunters, supposedly to prevent a goblin raid. The promised friendly meeting becomes an ambush by brigands and village soldiers. Erfar denies responsibility, while Babur warns that the elder is trying to have Zak killed. A note in the newer orc script cannot yet settle the matter: Estera needs an Orc ABC Book to read it. Its translation reveals a contract on Zak’s life, a detailed description of him and a substantial payment. The search for the author becomes a separate investigation alongside the route into the Dead City.",
+						"sources": [
+							"briefing s12_4",
+							"briefing s13_0",
+							"briefing m13_3",
+							"briefing z13_2",
+							"briefing z14",
+							"quest q13ag",
+							"quest q14g"
+						],
+						"event": "ambush",
+						"order": 8
+					},
+					{
+						"heading": "Airy’s route through the observatory",
+						"text": "Airy returns with a lead to the old observatory library, but harpies occupy the site. Her plan requires a lizard’s amulet to lead a particular green dragon against them. Reaching that dragon requires Estera to freeze the lake with a green crystal. The hostile lizards on the approach present another obstacle: Zak moves the Big Shell from the Remote Mountains to the Middle Mountains, restoring the peace associated with its altar. This leaves Babur’s former quarry route unsafe and can lead to an additional errand for the craftsman. The observatory book finally supplies the password to the Dead City’s hidden entrance. Airy can also teach Zak the Magic of Feelings, only to be offended when he again calls her a little girl.",
+						"sources": [
+							"briefing z13_1",
+							"briefing z14_1",
+							"briefing m13_2",
+							"briefing m15",
+							"briefing z17",
+							"briefing z15",
+							"briefing z18",
+							"quest q15ag",
+							"quest q15bg",
+							"quest q18g"
+						],
+						"event": "observatory",
+						"order": 9
+					},
+					{
+						"heading": "The White Flower and Erfar’s exposure",
+						"text": "After Gort’s fall, Erfar claims that an orc seer has cursed the village with disease and asks for a White Flower. Zak finds armed opposition waiting for him, although no villagers have yet fallen ill. Erfar blames Babur, while Babur’s earlier warning makes Zak suspect both men. Estera suggests setting a trap. Zak tells each suspect a different location for a second flower; the ambush appears at the place he gave Erfar. With Rivar’s support he confronts and imprisons the elder. An expedition report recovered from the abandoned foreign camp becomes leverage: Erfar translates its account of a concealed tunnel and its opening lever. He later escapes custody. Estera recalls that he originally arrived as an adult stranger, leaving his real purpose unresolved.",
+						"sources": [
+							"briefing s21_1",
+							"briefing s24",
+							"briefing m24",
+							"briefing z24_1",
+							"quest q25g",
+							"briefing nv26",
+							"briefing s25_1",
+							"briefing s25_3",
+							"briefing nv27_1",
+							"briefing z25",
+							"quest q26g"
+						],
+						"event": "erfar_exposed",
+						"order": 12
 					}
 				],
 				"actors": [
@@ -1121,12 +2391,29 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/bgoblinc]] comes to the human village to recover the First Goblin. He explains the traditions surrounding its blue Eye Stone and the written record seized from him by orcs. Persistent even when threatened, he offers a magical doll in exchange for the head he wants returned.",
 						"sources": [
 							"briefing s7_1",
 							"briefing gogo1"
 						]
+					},
+					{
+						"heading": "Two searches on the islands",
+						"text": "The river islands hold two different leads. Estera needs the Orb, which Erfar places on the southernmost island. Erfar also proposes tracing [[character/bgoblinc]]’s blue Eye Stone to a possible portal. Zak takes the First Goblin’s skull to compel GoGo to visit the village; the chief explains that the orcs confiscated the written record of the stone’s origin. The islands require their own bridge mechanism, distinct from the cave’s. Zak retrieves the record and the Orb in this area. Erfar claims the record offers nothing useful, then diverts attention to missing taxes and gold in Golden Valley. His portal scheme and Estera’s search serve different purposes, even though they take Zak through the same territory.",
+						"sources": [
+							"briefing s6_2",
+							"briefing s7_1",
+							"briefing s7_4",
+							"briefing s8_2",
+							"briefing v5",
+							"quest q7g",
+							"quest q8g",
+							"quest q9g",
+							"quest q10g"
+						],
+						"event": "orb_islands",
+						"order": 6
 					}
 				],
 				"actors": [
@@ -1161,12 +2448,25 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/skd]] inhabits the mountain lair where Zak expects to find a magician. Amused by the visitor, he invokes old traditions and offers answers in return for a task: poison the underground spring used by the noisy armadillos beneath his home. The meeting turns a mistaken destination into another lead in Zak’s search.",
 						"sources": [
 							"briefing dr20",
 							"briefing dr22"
 						]
+					},
+					{
+						"heading": "The Old Dragon on Lone Mountain",
+						"text": "The observatory’s password takes Zak into the Dead City and up Lone Mountain. He expects the magician from the Orb but finds [[character/skd]]. The dragon insists on an old bargain: a visitor must perform a task before receiving an answer. Zak deals with the armadillos beneath the lair, using the poison the dragon supplies. The dragon then admits that he cannot identify Zak or locate Gipath’s elusive Great Magician. He suggests the ancient lizards might know more and points instead to an expedition of armoured outsiders. He withdraws the skeletons he had used against their camp. In a further conversation, he gives Zak an old sword because he enjoys his company and would rather not see him become another speechless skeleton.",
+						"sources": [
+							"quest q20g",
+							"briefing dr20",
+							"quest q22g",
+							"briefing dr22",
+							"briefing dr22_1"
+						],
+						"event": "dragon",
+						"order": 11
 					}
 				],
 				"actors": [
@@ -1202,7 +2502,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/oliz]] helps Zak escape the Khadaganian expedition in return for a promise to visit his home. He then asks Zak to restore water diverted by the orcs. In exchange he shares what the lizards know of the ancient magician and explains the tunnel route toward his dwelling, including its dangerous golems. His attempts at human humour are considerably less reassuring.",
 						"sources": [
 							"briefing ha29_2",
@@ -1211,6 +2511,36 @@ const DATA := {
 							"briefing l34",
 							"briefing l35"
 						]
+					},
+					{
+						"heading": "The expedition and the Hermit’s bargain",
+						"text": "Estera introduces a lost Khadaganian [[character/clerk|official]], who promises that his expedition can help Zak leave Gipath. Meeting [[character/hwleader]] instead leads to imprisonment and demands for information about a meteorite. Zak plays the ignorant swineherd, but the commander threatens torture. [[character/oliz]] offers escape on the condition that Zak later visit his home. Zak gives his word, receives the Ancient Claw for the traps on the approach and escapes. The Hermit explains that he had intended to negotiate with the armoured humans but changed his mind after seeing their treatment of Zak. Keeping the promise establishes trust where the expedition failed to do so.",
+						"sources": [
+							"briefing z27",
+							"briefing ha29",
+							"briefing ha29_1",
+							"briefing ha29_2",
+							"briefing ha29_3",
+							"briefing l30"
+						],
+						"event": "expedition",
+						"order": 13
+					},
+					{
+						"heading": "Water for the lizards and the Great Magician",
+						"text": "The Hermit needs the water diverted by the orcs restored. Zak raises their dam and blocks the diversion canal; in return the lizard locates the magician in a ravine in the Remote Mountains. This information joins the tunnel instructions from the Khadaganian report. Zak passes the ancient defences and reaches [[character/rick]]. Tka-Rik explains that his dragonet has watched Zak since his unusual arrival. Bound to Gipath by his duty as its Great Magician, he offers help with Zak’s memory in exchange for bringing him two surviving young Joons. The first journey will be to Ingos to find the girl. Zak must leave his Gipath companions behind.",
+						"sources": [
+							"briefing l30",
+							"quest q34g",
+							"briefing l34",
+							"briefing z35",
+							"quest q36g",
+							"briefing r36",
+							"briefing r36_3",
+							"briefing r36_4"
+						],
+						"event": "tka_rik",
+						"order": 14
 					}
 				],
 				"actors": [
@@ -1253,7 +2583,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/orcc]] is an orc leader in the Sands. He holds Airy as a proposed offering to the Human-Demon that takes his warriors. Zak must first prove himself by taking the wealth of the ogre Utundry, strengthening Shei-Var’s position against rival orcs. The chief then directs him to the Demon and promises Airy’s release. He also permits Eila to help Zak.",
 						"sources": [
 							"briefing sh40",
@@ -1261,6 +2591,22 @@ const DATA := {
 							"briefing sh41_1",
 							"briefing n8_4"
 						]
+					},
+					{
+						"heading": "The rescue of Airy",
+						"text": "Before leaving Gipath, Zak can finish the separate search for Airy, who set out to find the magician herself and impress him. Estera’s vision points to a goblin prison, where Zak finds her granddaughter’s potion bottle and a note leading to [[character/orcc]]. The orc chief intends to give Airy to a frightening armoured human he calls a Demon. Zak offers to remove this threat instead. Shei-Var first demands proof of his strength against the ogre brothers, whose wealth also threatens the chief’s influence. Once Zak defeats the Demon, Shei-Var honours his promise and sends Airy home. The rescue ends with Estera’s gratitude and Airy’s distress that Zak still regards her as a child.",
+						"sources": [
+							"briefing z38",
+							"briefing z39",
+							"briefing sh40",
+							"briefing sh41",
+							"briefing sh41_1",
+							"briefing z41_1",
+							"quest q39g",
+							"quest q41g"
+						],
+						"event": "airy_rescue",
+						"order": 15
 					}
 				],
 				"actors": [
@@ -1295,7 +2641,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "The [[character/hwleader]] leads a Khadaganian expedition on Gipath in search of the fallen meteorite. Instead of the friendly reception promised by the stranded official, Zak receives threats of torture and imprisonment. The Hermit Lizard’s offer provides a way out of the camp.",
 						"sources": [
 							"briefing z27",
@@ -1303,6 +2649,20 @@ const DATA := {
 							"briefing ha29_1",
 							"briefing ha29_2"
 						]
+					},
+					{
+						"heading": "The expedition and the Hermit’s bargain",
+						"text": "Estera introduces a lost Khadaganian [[character/clerk|official]], who promises that his expedition can help Zak leave Gipath. Meeting [[character/hwleader]] instead leads to imprisonment and demands for information about a meteorite. Zak plays the ignorant swineherd, but the commander threatens torture. [[character/oliz]] offers escape on the condition that Zak later visit his home. Zak gives his word, receives the Ancient Claw for the traps on the approach and escapes. The Hermit explains that he had intended to negotiate with the armoured humans but changed his mind after seeing their treatment of Zak. Keeping the promise establishes trust where the expedition failed to do so.",
+						"sources": [
+							"briefing z27",
+							"briefing ha29",
+							"briefing ha29_1",
+							"briefing ha29_2",
+							"briefing ha29_3",
+							"briefing l30"
+						],
+						"event": "expedition",
+						"order": 13
 					}
 				],
 				"actors": [
@@ -1338,12 +2698,26 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "The [[character/clerk]] is a Khadaganian official who becomes separated from the expedition on Gipath. Estera finds him while gathering herbs. He directs Zak to the expedition commander, describing the journey as an opportunity for a friendly meeting; the reception Zak actually receives is very different.",
 						"sources": [
 							"briefing z27",
 							"briefing ha29"
 						]
+					},
+					{
+						"heading": "The expedition and the Hermit’s bargain",
+						"text": "Estera introduces a lost Khadaganian [[character/clerk|official]], who promises that his expedition can help Zak leave Gipath. Meeting [[character/hwleader]] instead leads to imprisonment and demands for information about a meteorite. Zak plays the ignorant swineherd, but the commander threatens torture. [[character/oliz]] offers escape on the condition that Zak later visit his home. Zak gives his word, receives the Ancient Claw for the traps on the approach and escapes. The Hermit explains that he had intended to negotiate with the armoured humans but changed his mind after seeing their treatment of Zak. Keeping the promise establishes trust where the expedition failed to do so.",
+						"sources": [
+							"briefing z27",
+							"briefing ha29",
+							"briefing ha29_1",
+							"briefing ha29_2",
+							"briefing ha29_3",
+							"briefing l30"
+						],
+						"event": "expedition",
+						"order": 13
 					}
 				],
 				"actors": [
@@ -1379,21 +2753,64 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/rick]] is the Great Magician of Gipath and a survivor of the Joon people. His dragonet watches Zak’s journey before they meet. He explains that a Great Magician cannot leave his island, so he needs Zak to find two young Joons abroad. In return, he offers help with Zak’s lost identity.",
 						"sources": [
 							"briefing r36"
 						]
 					},
 					{
-						"heading": "The revelation",
-						"text": "Tka Rik shelters Lu-a-Jalla after her rescue. When Zak returns with the teleportation amulet’s remnants, he discovers that Zak himself is At-Zako. He acknowledges his mistake, restores the young man’s identity and offers to stand beside him against the Joon Curse, supplying ancient equipment for the confrontation.",
+						"heading": "Water for the lizards and the Great Magician",
+						"text": "The Hermit needs the water diverted by the orcs restored. Zak raises their dam and blocks the diversion canal; in return the lizard locates the magician in a ravine in the Remote Mountains. This information joins the tunnel instructions from the Khadaganian report. Zak passes the ancient defences and reaches [[character/rick]]. Tka-Rik explains that his dragonet has watched Zak since his unusual arrival. Bound to Gipath by his duty as its Great Magician, he offers help with Zak’s memory in exchange for bringing him two surviving young Joons. The first journey will be to Ingos to find the girl. Zak must leave his Gipath companions behind.",
 						"sources": [
-							"briefing r54",
+							"briefing l30",
+							"quest q34g",
+							"briefing l34",
+							"briefing z35",
+							"quest q36g",
+							"briefing r36",
+							"briefing r36_3",
+							"briefing r36_4"
+						],
+						"event": "tka_rik",
+						"order": 14
+					},
+					{
+						"heading": "Lu-a-Jalla beneath the mines",
+						"text": "The former punishment cell is empty. Zak follows the trail deeper into the Forbidden Catacombs until he finds [[character/deva]], who first mistakes him for another captor. She has escaped the mercenaries and found protection through the ancient treaty between Joons and Wormheads. She rejects the nickname Princess and explains that Diera imprisoned her out of jealousy over the governor. Zak falls in love with her, but she remains faithful to At-Zako, who drew the Joon Curse away from her. Zak promises to respect that bond. They return to Tka-Rik, and the next mission becomes the search for her missing beloved on Suslanger.",
+						"sources": [
+							"quest q55k",
+							"briefing d55",
+							"briefing d55_1",
+							"briefing d55_3",
+							"briefing r54"
+						],
+						"event": "lua",
+						"order": 20
+					},
+					{
+						"heading": "At-Zako: the search turns back on itself",
+						"text": "Tka-Rik initially expects Zak to bring the missing Joon with him. Lu-a-Jalla defends the exhausted traveller, and Zak insists that he will continue for her sake even if reunion with At-Zako means losing her. The amulet changes everything: Tka-Rik discovers that its destination was Gipath. Only Zak arrived there in that unusual way. The man he has been seeking is himself, hidden by the Khadaganian transformation spell. Restored as At-Zako, he reassures Tka-Rik and reunites with Lu-a-Jalla. The memories of their earlier flight explain why the return of his identity also brings back the danger of the Curse.",
+						"sources": [
+							"briefing r72",
 							"briefing r72_1",
 							"briefing r72_4",
-							"briefing r72_6"
-						]
+							"briefing d72_5"
+						],
+						"event": "identity",
+						"order": 27
+					},
+					{
+						"heading": "The battle with the Joon Curse",
+						"text": "The hurried transformation that concealed At-Zako nearly destroyed his memory. Tka-Rik cannot safely repeat it, so hiding as Zak is no longer an answer. He offers another choice: flee again under his temporary protection, or confront the Curse on Gipath. At-Zako chooses to defend his life with Lu-a-Jalla. Tka-Rik supplies ancient Joon equipment and joins him in the catacombs for the final battle. Defeating the Curse completes the campaign.",
+						"sources": [
+							"briefing r72_6",
+							"briefing r72_7",
+							"quest q73g",
+							"zone gz20g"
+						],
+						"event": "curse",
+						"order": 28
 					}
 				],
 				"actors": [
@@ -1435,7 +2852,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/deva]] is a young Joon and At-Zako’s beloved. On Ingos she is sought as the missing Princess. Diera imprisons her, believing her a rival for the governor’s affection, although Lu-a-Jalla says she loves only At-Zako. Zak brings her to Tka Rik and continues searching for her lover. Their reunion comes when Zak’s true identity is revealed, but the Joon Curse still threatens their future.",
 						"sources": [
 							"briefing r54",
@@ -1443,6 +2860,43 @@ const DATA := {
 							"briefing d72_5",
 							"briefing r72_6"
 						]
+					},
+					{
+						"heading": "Lu-a-Jalla beneath the mines",
+						"text": "The former punishment cell is empty. Zak follows the trail deeper into the Forbidden Catacombs until he finds [[character/deva]], who first mistakes him for another captor. She has escaped the mercenaries and found protection through the ancient treaty between Joons and Wormheads. She rejects the nickname Princess and explains that Diera imprisoned her out of jealousy over the governor. Zak falls in love with her, but she remains faithful to At-Zako, who drew the Joon Curse away from her. Zak promises to respect that bond. They return to Tka-Rik, and the next mission becomes the search for her missing beloved on Suslanger.",
+						"sources": [
+							"quest q55k",
+							"briefing d55",
+							"briefing d55_1",
+							"briefing d55_3",
+							"briefing r54"
+						],
+						"event": "lua",
+						"order": 20
+					},
+					{
+						"heading": "At-Zako: the search turns back on itself",
+						"text": "Tka-Rik initially expects Zak to bring the missing Joon with him. Lu-a-Jalla defends the exhausted traveller, and Zak insists that he will continue for her sake even if reunion with At-Zako means losing her. The amulet changes everything: Tka-Rik discovers that its destination was Gipath. Only Zak arrived there in that unusual way. The man he has been seeking is himself, hidden by the Khadaganian transformation spell. Restored as At-Zako, he reassures Tka-Rik and reunites with Lu-a-Jalla. The memories of their earlier flight explain why the return of his identity also brings back the danger of the Curse.",
+						"sources": [
+							"briefing r72",
+							"briefing r72_1",
+							"briefing r72_4",
+							"briefing d72_5"
+						],
+						"event": "identity",
+						"order": 27
+					},
+					{
+						"heading": "The battle with the Joon Curse",
+						"text": "The hurried transformation that concealed At-Zako nearly destroyed his memory. Tka-Rik cannot safely repeat it, so hiding as Zak is no longer an answer. He offers another choice: flee again under his temporary protection, or confront the Curse on Gipath. At-Zako chooses to defend his life with Lu-a-Jalla. Tka-Rik supplies ancient Joon equipment and joins him in the catacombs for the final battle. Defeating the Curse completes the campaign.",
+						"sources": [
+							"briefing r72_6",
+							"briefing r72_7",
+							"quest q73g",
+							"zone gz20g"
+						],
+						"event": "curse",
+						"order": 28
 					}
 				],
 				"actors": [
@@ -1483,13 +2937,58 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/kapitan]] commands the guards in the governor’s city on Ingos. He serves Valrasian’s interests and discourages Zak from pursuing the missing Princess. The arrow found in a murdered investigator gives him a pretext for action against the Woodsfolk. His later advice about the sealed mines is useful, but he openly resents an outsider who might outshine his officers.",
 						"sources": [
 							"briefing k42",
 							"briefing k43",
 							"briefing k51"
 						]
+					},
+					{
+						"heading": "Arrival on Ingos and the missing Princess",
+						"text": "On [[allod/ingos]], Zak first crosses the hostile countryside to reach the city. [[character/kapitan]] tells him about the missing young woman known locally as the Princess and the reward offered for finding her. Governor [[character/huber]] takes a personal interest in her, while [[character/magess]] discourages the search. The hunter [[character/trapper]] provides a concrete lead: another investigator, the Snoop from the capital, had followed the same trail before disappearing east of the city. Finding his body changes the search for a missing girl into an investigation of murder.",
+						"sources": [
+							"quest q42k",
+							"briefing k42",
+							"briefing k42_1",
+							"briefing g42",
+							"briefing mg42",
+							"briefing t42",
+							"briefing k43"
+						],
+						"event": "ingos_arrival",
+						"order": 16
+					},
+					{
+						"heading": "The arrow and the Green Clan",
+						"text": "The arrow in the Snoop’s body appears to implicate the Woodsfolk. Sver explains that their markings identify a clan, while the governor discovers that the case containing similar arrows has been stolen from his collection. Two lines of inquiry now run alongside each other: the stolen collection and the Woodsfolk’s testimony. To approach [[character/ycf]], Zak first returns the Green Clan’s Sacred Flower after rescuing its keeper from the White Clan. Grey Leaf then asks for help with the kidnapped elder Khabburu and his captor. The clan ultimately identifies the murder arrow as a false attribution, even refusing to blame its enemies for it. When the clan moves, Zak receives access to its hidden route and new home.",
+						"sources": [
+							"briefing g43",
+							"briefing t43",
+							"briefing yc45",
+							"briefing yc46",
+							"briefing yc47",
+							"briefing yc47_1"
+						],
+						"event": "arrow",
+						"order": 17
+					},
+					{
+						"heading": "Diera and the locked mines",
+						"text": "At the Green Clan’s new home, Grey Leaf describes the supposed man in grey as a white-haired woman. Zak identifies Diera, whose own traps protected the stolen collection. Her urgent warnings against the abandoned mines reinforce his suspicion. Tilvar explains that the governor holds the key. Karansul suggests winning it with a gold nugget and gives access to a dangerous pit, concealing the tigers that drove out its workers; Sver warns Zak of the trap. Zak obtains the nugget and presents it to the collector-governor as a business prospect. Valrasian releases the mine key, opening the way past Diera’s mercenaries.",
+						"sources": [
+							"briefing yc50",
+							"briefing mg43_1",
+							"briefing mg50",
+							"briefing k51",
+							"briefing tr52",
+							"briefing t52",
+							"briefing g53",
+							"quest q54k"
+						],
+						"event": "diera",
+						"order": 19
 					}
 				],
 				"actors": [
@@ -1524,12 +3023,57 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/huber]] is the governor of the Ingos province visited by Zak. A collector of rare objects, he shows more interest in a beautiful arrow than in the murder it may explain. He has the guards answer for the theft from his collection. Zak can exploit this enthusiasm for valuables to obtain permission to enter the closed mines.",
 						"sources": [
 							"briefing g43",
 							"briefing g53"
 						]
+					},
+					{
+						"heading": "Arrival on Ingos and the missing Princess",
+						"text": "On [[allod/ingos]], Zak first crosses the hostile countryside to reach the city. [[character/kapitan]] tells him about the missing young woman known locally as the Princess and the reward offered for finding her. Governor [[character/huber]] takes a personal interest in her, while [[character/magess]] discourages the search. The hunter [[character/trapper]] provides a concrete lead: another investigator, the Snoop from the capital, had followed the same trail before disappearing east of the city. Finding his body changes the search for a missing girl into an investigation of murder.",
+						"sources": [
+							"quest q42k",
+							"briefing k42",
+							"briefing k42_1",
+							"briefing g42",
+							"briefing mg42",
+							"briefing t42",
+							"briefing k43"
+						],
+						"event": "ingos_arrival",
+						"order": 16
+					},
+					{
+						"heading": "The arrow and the Green Clan",
+						"text": "The arrow in the Snoop’s body appears to implicate the Woodsfolk. Sver explains that their markings identify a clan, while the governor discovers that the case containing similar arrows has been stolen from his collection. Two lines of inquiry now run alongside each other: the stolen collection and the Woodsfolk’s testimony. To approach [[character/ycf]], Zak first returns the Green Clan’s Sacred Flower after rescuing its keeper from the White Clan. Grey Leaf then asks for help with the kidnapped elder Khabburu and his captor. The clan ultimately identifies the murder arrow as a false attribution, even refusing to blame its enemies for it. When the clan moves, Zak receives access to its hidden route and new home.",
+						"sources": [
+							"briefing g43",
+							"briefing t43",
+							"briefing yc45",
+							"briefing yc46",
+							"briefing yc47",
+							"briefing yc47_1"
+						],
+						"event": "arrow",
+						"order": 17
+					},
+					{
+						"heading": "Diera and the locked mines",
+						"text": "At the Green Clan’s new home, Grey Leaf describes the supposed man in grey as a white-haired woman. Zak identifies Diera, whose own traps protected the stolen collection. Her urgent warnings against the abandoned mines reinforce his suspicion. Tilvar explains that the governor holds the key. Karansul suggests winning it with a gold nugget and gives access to a dangerous pit, concealing the tigers that drove out its workers; Sver warns Zak of the trap. Zak obtains the nugget and presents it to the collector-governor as a business prospect. Valrasian releases the mine key, opening the way past Diera’s mercenaries.",
+						"sources": [
+							"briefing yc50",
+							"briefing mg43_1",
+							"briefing mg50",
+							"briefing k51",
+							"briefing tr52",
+							"briefing t52",
+							"briefing g53",
+							"quest q54k"
+						],
+						"event": "diera",
+						"order": 19
 					}
 				],
 				"actors": [
@@ -1564,7 +3108,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/trapper]] is an experienced Ingos hunter who knows the Woodsfolk and their customs. He helps Zak investigate the murdered Snoop and explains how to gain the Green Clan’s trust. He also resents Karansul’s control over the fur trade. In return for help selling his skins, Sver reveals the merchant’s concealed accounts and recommends the thief [[character/mthief]].",
 						"sources": [
 							"briefing t42",
@@ -1572,6 +3116,65 @@ const DATA := {
 							"briefing t43_1",
 							"briefing t44"
 						]
+					},
+					{
+						"heading": "Arrival on Ingos and the missing Princess",
+						"text": "On [[allod/ingos]], Zak first crosses the hostile countryside to reach the city. [[character/kapitan]] tells him about the missing young woman known locally as the Princess and the reward offered for finding her. Governor [[character/huber]] takes a personal interest in her, while [[character/magess]] discourages the search. The hunter [[character/trapper]] provides a concrete lead: another investigator, the Snoop from the capital, had followed the same trail before disappearing east of the city. Finding his body changes the search for a missing girl into an investigation of murder.",
+						"sources": [
+							"quest q42k",
+							"briefing k42",
+							"briefing k42_1",
+							"briefing g42",
+							"briefing mg42",
+							"briefing t42",
+							"briefing k43"
+						],
+						"event": "ingos_arrival",
+						"order": 16
+					},
+					{
+						"heading": "The arrow and the Green Clan",
+						"text": "The arrow in the Snoop’s body appears to implicate the Woodsfolk. Sver explains that their markings identify a clan, while the governor discovers that the case containing similar arrows has been stolen from his collection. Two lines of inquiry now run alongside each other: the stolen collection and the Woodsfolk’s testimony. To approach [[character/ycf]], Zak first returns the Green Clan’s Sacred Flower after rescuing its keeper from the White Clan. Grey Leaf then asks for help with the kidnapped elder Khabburu and his captor. The clan ultimately identifies the murder arrow as a false attribution, even refusing to blame its enemies for it. When the clan moves, Zak receives access to its hidden route and new home.",
+						"sources": [
+							"briefing g43",
+							"briefing t43",
+							"briefing yc45",
+							"briefing yc46",
+							"briefing yc47",
+							"briefing yc47_1"
+						],
+						"event": "arrow",
+						"order": 17
+					},
+					{
+						"heading": "Karansul’s accounts and Baldie’s confession",
+						"text": "[[character/shopper]] is reluctant to help, but Sver knows how to put pressure on him. Zak first delivers the hunter’s furs to a buyer outside the merchant’s monopoly. Sver then reveals Karansul’s hidden trade and unpaid taxes, pointing to the foreman’s accounts; he also recommends [[character/mthief]] as a teacher. With the accounts as leverage, Zak learns where to find [[character/vor]], called Baldie, and secures a meeting. Evidence from the stolen collection makes the thief confess: he killed the Snoop, planted the Woodsfolk arrow and worked for a cloaked employer who knew how to evade the governor’s magical traps.",
+						"sources": [
+							"briefing t43_1",
+							"briefing t44",
+							"briefing mthief1",
+							"briefing tr48",
+							"briefing tr49",
+							"briefing tr49_1"
+						],
+						"event": "karansul",
+						"order": 18
+					},
+					{
+						"heading": "Diera and the locked mines",
+						"text": "At the Green Clan’s new home, Grey Leaf describes the supposed man in grey as a white-haired woman. Zak identifies Diera, whose own traps protected the stolen collection. Her urgent warnings against the abandoned mines reinforce his suspicion. Tilvar explains that the governor holds the key. Karansul suggests winning it with a gold nugget and gives access to a dangerous pit, concealing the tigers that drove out its workers; Sver warns Zak of the trap. Zak obtains the nugget and presents it to the collector-governor as a business prospect. Valrasian releases the mine key, opening the way past Diera’s mercenaries.",
+						"sources": [
+							"briefing yc50",
+							"briefing mg43_1",
+							"briefing mg50",
+							"briefing k51",
+							"briefing tr52",
+							"briefing t52",
+							"briefing g53",
+							"quest q54k"
+						],
+						"event": "diera",
+						"order": 19
 					}
 				],
 				"actors": [
@@ -1607,7 +3210,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/shopper]] dominates trade in the city of Ingos and owns mines, sawmills and workshops. Sver describes a system of debt, low purchase prices and intimidation. When Zak obtains leverage over his hidden accounts, Karansul supplies information about [[character/vor]] and arranges a meeting. His suggestion to fetch a gold nugget from an abandoned pit conceals a dangerous trap for the inquisitive newcomer.",
 						"sources": [
 							"briefing tr42",
@@ -1618,6 +3221,36 @@ const DATA := {
 							"briefing tr52",
 							"briefing t52"
 						]
+					},
+					{
+						"heading": "Karansul’s accounts and Baldie’s confession",
+						"text": "[[character/shopper]] is reluctant to help, but Sver knows how to put pressure on him. Zak first delivers the hunter’s furs to a buyer outside the merchant’s monopoly. Sver then reveals Karansul’s hidden trade and unpaid taxes, pointing to the foreman’s accounts; he also recommends [[character/mthief]] as a teacher. With the accounts as leverage, Zak learns where to find [[character/vor]], called Baldie, and secures a meeting. Evidence from the stolen collection makes the thief confess: he killed the Snoop, planted the Woodsfolk arrow and worked for a cloaked employer who knew how to evade the governor’s magical traps.",
+						"sources": [
+							"briefing t43_1",
+							"briefing t44",
+							"briefing mthief1",
+							"briefing tr48",
+							"briefing tr49",
+							"briefing tr49_1"
+						],
+						"event": "karansul",
+						"order": 18
+					},
+					{
+						"heading": "Diera and the locked mines",
+						"text": "At the Green Clan’s new home, Grey Leaf describes the supposed man in grey as a white-haired woman. Zak identifies Diera, whose own traps protected the stolen collection. Her urgent warnings against the abandoned mines reinforce his suspicion. Tilvar explains that the governor holds the key. Karansul suggests winning it with a gold nugget and gives access to a dangerous pit, concealing the tigers that drove out its workers; Sver warns Zak of the trap. Zak obtains the nugget and presents it to the collector-governor as a business prospect. Valrasian releases the mine key, opening the way past Diera’s mercenaries.",
+						"sources": [
+							"briefing yc50",
+							"briefing mg43_1",
+							"briefing mg50",
+							"briefing k51",
+							"briefing tr52",
+							"briefing t52",
+							"briefing g53",
+							"quest q54k"
+						],
+						"event": "diera",
+						"order": 19
 					}
 				],
 				"actors": [
@@ -1652,12 +3285,26 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/vor]] is a thief from the abandoned-mines district. He admits killing the investigator and planting a Woodsfolk arrow to shift the blame. Rather than steal from the Woodsfolk, he took an arrow from the governor’s collection, helped by a cloaked employer who knew how to bypass the magical traps. His testimony links the theft, murder and search for the Princess.",
 						"sources": [
 							"briefing tr48",
 							"briefing tr49"
 						]
+					},
+					{
+						"heading": "Karansul’s accounts and Baldie’s confession",
+						"text": "[[character/shopper]] is reluctant to help, but Sver knows how to put pressure on him. Zak first delivers the hunter’s furs to a buyer outside the merchant’s monopoly. Sver then reveals Karansul’s hidden trade and unpaid taxes, pointing to the foreman’s accounts; he also recommends [[character/mthief]] as a teacher. With the accounts as leverage, Zak learns where to find [[character/vor]], called Baldie, and secures a meeting. Evidence from the stolen collection makes the thief confess: he killed the Snoop, planted the Woodsfolk arrow and worked for a cloaked employer who knew how to evade the governor’s magical traps.",
+						"sources": [
+							"briefing t43_1",
+							"briefing t44",
+							"briefing mthief1",
+							"briefing tr48",
+							"briefing tr49",
+							"briefing tr49_1"
+						],
+						"event": "karansul",
+						"order": 18
 					}
 				],
 				"actors": [
@@ -1693,7 +3340,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/magess]] is a sorceress close to Governor Valrasian. She supplies magic through Karansul and installed the traps guarding the governor’s collection. She repeatedly warns Zak away from the missing Princess. Grey Leaf’s account of the white-haired cloaked figure helps expose her involvement, and Lu-a-Jalla later identifies Diera as her captor, driven by jealousy over the governor.",
 						"sources": [
 							"briefing tr42",
@@ -1702,6 +3349,50 @@ const DATA := {
 							"briefing yc50",
 							"briefing r54"
 						]
+					},
+					{
+						"heading": "Arrival on Ingos and the missing Princess",
+						"text": "On [[allod/ingos]], Zak first crosses the hostile countryside to reach the city. [[character/kapitan]] tells him about the missing young woman known locally as the Princess and the reward offered for finding her. Governor [[character/huber]] takes a personal interest in her, while [[character/magess]] discourages the search. The hunter [[character/trapper]] provides a concrete lead: another investigator, the Snoop from the capital, had followed the same trail before disappearing east of the city. Finding his body changes the search for a missing girl into an investigation of murder.",
+						"sources": [
+							"quest q42k",
+							"briefing k42",
+							"briefing k42_1",
+							"briefing g42",
+							"briefing mg42",
+							"briefing t42",
+							"briefing k43"
+						],
+						"event": "ingos_arrival",
+						"order": 16
+					},
+					{
+						"heading": "Diera and the locked mines",
+						"text": "At the Green Clan’s new home, Grey Leaf describes the supposed man in grey as a white-haired woman. Zak identifies Diera, whose own traps protected the stolen collection. Her urgent warnings against the abandoned mines reinforce his suspicion. Tilvar explains that the governor holds the key. Karansul suggests winning it with a gold nugget and gives access to a dangerous pit, concealing the tigers that drove out its workers; Sver warns Zak of the trap. Zak obtains the nugget and presents it to the collector-governor as a business prospect. Valrasian releases the mine key, opening the way past Diera’s mercenaries.",
+						"sources": [
+							"briefing yc50",
+							"briefing mg43_1",
+							"briefing mg50",
+							"briefing k51",
+							"briefing tr52",
+							"briefing t52",
+							"briefing g53",
+							"quest q54k"
+						],
+						"event": "diera",
+						"order": 19
+					},
+					{
+						"heading": "Lu-a-Jalla beneath the mines",
+						"text": "The former punishment cell is empty. Zak follows the trail deeper into the Forbidden Catacombs until he finds [[character/deva]], who first mistakes him for another captor. She has escaped the mercenaries and found protection through the ancient treaty between Joons and Wormheads. She rejects the nickname Princess and explains that Diera imprisoned her out of jealousy over the governor. Zak falls in love with her, but she remains faithful to At-Zako, who drew the Joon Curse away from her. Zak promises to respect that bond. They return to Tka-Rik, and the next mission becomes the search for her missing beloved on Suslanger.",
+						"sources": [
+							"quest q55k",
+							"briefing d55",
+							"briefing d55_1",
+							"briefing d55_3",
+							"briefing r54"
+						],
+						"event": "lua",
+						"order": 20
 					}
 				],
 				"actors": [
@@ -1736,7 +3427,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/ycf]] speaks for the Green Clan of the Woodsfolk. He asks Zak to help their kidnapped elder Khabburu and distinguishes the clan’s arrows from the forged evidence used against them. When the clan moves, he opens its hidden route to Zak. His observations of the cloaked woman near the mines provide a crucial clue to the Princess’s imprisonment.",
 						"sources": [
 							"briefing yc45",
@@ -1744,6 +3435,36 @@ const DATA := {
 							"briefing yc47",
 							"briefing yc50"
 						]
+					},
+					{
+						"heading": "The arrow and the Green Clan",
+						"text": "The arrow in the Snoop’s body appears to implicate the Woodsfolk. Sver explains that their markings identify a clan, while the governor discovers that the case containing similar arrows has been stolen from his collection. Two lines of inquiry now run alongside each other: the stolen collection and the Woodsfolk’s testimony. To approach [[character/ycf]], Zak first returns the Green Clan’s Sacred Flower after rescuing its keeper from the White Clan. Grey Leaf then asks for help with the kidnapped elder Khabburu and his captor. The clan ultimately identifies the murder arrow as a false attribution, even refusing to blame its enemies for it. When the clan moves, Zak receives access to its hidden route and new home.",
+						"sources": [
+							"briefing g43",
+							"briefing t43",
+							"briefing yc45",
+							"briefing yc46",
+							"briefing yc47",
+							"briefing yc47_1"
+						],
+						"event": "arrow",
+						"order": 17
+					},
+					{
+						"heading": "Diera and the locked mines",
+						"text": "At the Green Clan’s new home, Grey Leaf describes the supposed man in grey as a white-haired woman. Zak identifies Diera, whose own traps protected the stolen collection. Her urgent warnings against the abandoned mines reinforce his suspicion. Tilvar explains that the governor holds the key. Karansul suggests winning it with a gold nugget and gives access to a dangerous pit, concealing the tigers that drove out its workers; Sver warns Zak of the trap. Zak obtains the nugget and presents it to the collector-governor as a business prospect. Valrasian releases the mine key, opening the way past Diera’s mercenaries.",
+						"sources": [
+							"briefing yc50",
+							"briefing mg43_1",
+							"briefing mg50",
+							"briefing k51",
+							"briefing tr52",
+							"briefing t52",
+							"briefing g53",
+							"quest q54k"
+						],
+						"event": "diera",
+						"order": 19
 					}
 				],
 				"actors": [
@@ -1785,12 +3506,26 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/mthief]] is a thief in the city of Ingos. Sver sends Zak to him while planning how to obtain Karansul’s accounts. The thief says Sver once did him a great favour and agrees to pass on some of his professional skill to the newcomer.",
 						"sources": [
 							"briefing t44",
 							"briefing mthief1"
 						]
+					},
+					{
+						"heading": "Karansul’s accounts and Baldie’s confession",
+						"text": "[[character/shopper]] is reluctant to help, but Sver knows how to put pressure on him. Zak first delivers the hunter’s furs to a buyer outside the merchant’s monopoly. Sver then reveals Karansul’s hidden trade and unpaid taxes, pointing to the foreman’s accounts; he also recommends [[character/mthief]] as a teacher. With the accounts as leverage, Zak learns where to find [[character/vor]], called Baldie, and secures a meeting. Evidence from the stolen collection makes the thief confess: he killed the Snoop, planted the Woodsfolk arrow and worked for a cloaked employer who knew how to evade the governor’s magical traps.",
+						"sources": [
+							"briefing t43_1",
+							"briefing t44",
+							"briefing mthief1",
+							"briefing tr48",
+							"briefing tr49",
+							"briefing tr49_1"
+						],
+						"event": "karansul",
+						"order": 18
 					}
 				],
 				"actors": [
@@ -1826,13 +3561,36 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/karh]] is the Khadaganian lieutenant who presents the captured Zak to Aiset-Bek. He arranges the prisoner hunt in Death Canyon and threatens punishment even beyond death if Zak fails to entertain his superior. The Odalisque, whom he enslaves, helps Zak escape and points out that Kardaur will be guarding the gate.",
 						"sources": [
 							"briefing hns59",
 							"briefing kr60",
 							"briefing kr61"
 						]
+					},
+					{
+						"heading": "Captivity in Death Canyon",
+						"text": "Zak is captured near the portal on [[allod/suslanger]]. Lieutenant [[character/karh]] presents him to [[character/iz]], who orders him used as live quarry for soldiers seeking promotion. Surviving the run through Death Canyon earns only a return to captivity, not freedom. Kardaur threatens punishment through necromancy if Zak dies too quickly and displeases his superior.",
+						"sources": [
+							"briefing hns59",
+							"quest q60h"
+						],
+						"event": "canyon",
+						"order": 21
+					},
+					{
+						"heading": "The Odalisque and the escape",
+						"text": "The [[character/nalo]] approaches Zak after his ordeal. Enslaved by Kardaur and deprived even of a personal name, she wants his death and knows he will guard the gate that night. She steals the key to Zak’s cage. Her father, a rat hunter who disappeared in the caves, told her of the Wormheads’ temple and the bridges across its lava rivers. She uses that knowledge to explain a route the guards fear to follow. Zak kills Kardaur for the fortress key and escapes toward the cave; releasing the caged spiders can delay pursuit. The Odalisque and Zak part with wishes for each other’s freedom and survival, without a stated account of her later fate.",
+						"sources": [
+							"briefing kr60",
+							"briefing kr61",
+							"quest q61h",
+							"quest q62h",
+							"quest q63h"
+						],
+						"event": "odalisque",
+						"order": 22
 					}
 				],
 				"actors": [
@@ -1867,11 +3625,21 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/iz]] is the Khadaganian officer to whom Kardaur brings Zak. He treats the prisoner as material for training his soldiers in Death Canyon. His threat to make Kardaur take Zak’s place if the captive dies too quickly shows that his cruelty also extends to his subordinates.",
 						"sources": [
 							"briefing hns59"
 						]
+					},
+					{
+						"heading": "Captivity in Death Canyon",
+						"text": "Zak is captured near the portal on [[allod/suslanger]]. Lieutenant [[character/karh]] presents him to [[character/iz]], who orders him used as live quarry for soldiers seeking promotion. Surviving the run through Death Canyon earns only a return to captivity, not freedom. Kardaur threatens punishment through necromancy if Zak dies too quickly and displeases his superior.",
+						"sources": [
+							"briefing hns59",
+							"quest q60h"
+						],
+						"event": "canyon",
+						"order": 21
 					}
 				],
 				"actors": [
@@ -1906,12 +3674,25 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "The [[character/nalo]] is an enslaved woman in Kardaur’s household who says she has no name of her own. She steals the key to Zak’s cage, motivated by hatred of her master. Her father’s knowledge of the caves gives Zak an escape route through the Wormheads’ territory. She also explains how releasing the fortress animals can delay pursuit.",
 						"sources": [
 							"briefing kr60",
 							"briefing kr61"
 						]
+					},
+					{
+						"heading": "The Odalisque and the escape",
+						"text": "The [[character/nalo]] approaches Zak after his ordeal. Enslaved by Kardaur and deprived even of a personal name, she wants his death and knows he will guard the gate that night. She steals the key to Zak’s cage. Her father, a rat hunter who disappeared in the caves, told her of the Wormheads’ temple and the bridges across its lava rivers. She uses that knowledge to explain a route the guards fear to follow. Zak kills Kardaur for the fortress key and escapes toward the cave; releasing the caged spiders can delay pursuit. The Odalisque and Zak part with wishes for each other’s freedom and survival, without a stated account of her later fate.",
+						"sources": [
+							"briefing kr60",
+							"briefing kr61",
+							"quest q61h",
+							"quest q62h",
+							"quest q63h"
+						],
+						"event": "odalisque",
+						"order": 22
 					}
 				],
 				"actors": [
@@ -1946,7 +3727,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/glav]] leads the brotherhood of the Last Shelter, calling himself first among equals. He initially tests Zak by demanding the Emperor’s Signet Ring, wary of spies who could betray the refuge. Once Zak is accepted, Khatul offers a home and support but insists that personal revenge must not expose the entire brotherhood. He arranges training with Brother Blind and asks Brother Faceless to help Zak reach the Portal.",
 						"sources": [
 							"briefing gl63",
@@ -1955,6 +3736,45 @@ const DATA := {
 							"briefing guru1",
 							"briefing gl70"
 						]
+					},
+					{
+						"heading": "Acceptance into the Last Shelter",
+						"text": "Beyond the caves, [[character/kuzn]] finds Zak and vouches for him before [[character/glav]]. The brotherhood’s leader fears imperial spies and requires the Emperor’s Signet Ring, taken from a cyclops who killed its courier. Possessing such an object compromises the newcomer with the authorities and makes the test more than a feat of strength. After Zak returns, Khatul accepts him as Brother Blondie and offers the refuge as a new home. Zak explains his promise to find At-Zako and return to Gipath. Khatul respects that purpose and asks those who can help to support him; [[character/guru]] can teach him greater dexterity.",
+						"sources": [
+							"briefing gl63",
+							"briefing gl64",
+							"briefing guru1"
+						],
+						"event": "shelter",
+						"order": 23
+					},
+					{
+						"heading": "Sahilia’s cache and the Joon collector",
+						"text": "[[character/merc10]] supplies the next lead through her own theft. Antiquities she stole from [[character/junofil]] remain hidden near the city, and Zak recovers them to arrange a meeting. Khatul and Brother Blacksmith help choose the secluded trading place, keeping strangers away from the Shelter. Baluddin admits recognising At-Zako as a living Joon and wanting to keep him in his own house. Imperial scholars took the young man away. Later, Taivo summoned the collector to identify those scholars’ mutilated bodies. The missing youth’s trail now leads to the necromancers rather than a living prisoner whom Zak can simply rescue.",
+						"sources": [
+							"briefing vo64",
+							"briefing vo65",
+							"briefing gl66",
+							"briefing jf67",
+							"quest q65h",
+							"quest q66h",
+							"quest q67h"
+						],
+						"event": "collector",
+						"order": 24
+					},
+					{
+						"heading": "Brother Faceless and the return to Gipath",
+						"text": "Khatul asks [[character/zaku]] to help Zak reach the guarded portal. Faceless arranges a cave meeting and explains the keys and stone controls. He then reveals himself as Erfar: born on Suslanger, he went to Gipath seeking the meteorite and manipulated the villagers into searching for it. His earlier plots were attempts to remove Zak, who disrupted that scheme. The reunion is another trap, with guards waiting outside the cave. Zak survives the confrontation and forces a route through the portal’s defences. Activating its two controls finally returns him to Tka-Rik with the amulet fragments.",
+						"sources": [
+							"briefing s64",
+							"briefing gl70",
+							"briefing s71",
+							"briefing s71_1",
+							"quest q72h"
+						],
+						"event": "faceless",
+						"order": 26
 					}
 				],
 				"actors": [
@@ -1990,7 +3810,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/kuzn]] finds Zak after his escape through the caves and speaks for him before Khatul. He fled enslavement after his smithy burned down and maintains secret trade with city merchants to equip the Shelter. He asks Zak to settle an old grievance against the slavedriver brothers Lash-Aga and Whip-Aga, a request that brings him into conflict with Khatul’s caution.",
 						"sources": [
 							"briefing gl63",
@@ -1998,6 +3818,32 @@ const DATA := {
 							"briefing kuz64_2",
 							"briefing gl64_3"
 						]
+					},
+					{
+						"heading": "Acceptance into the Last Shelter",
+						"text": "Beyond the caves, [[character/kuzn]] finds Zak and vouches for him before [[character/glav]]. The brotherhood’s leader fears imperial spies and requires the Emperor’s Signet Ring, taken from a cyclops who killed its courier. Possessing such an object compromises the newcomer with the authorities and makes the test more than a feat of strength. After Zak returns, Khatul accepts him as Brother Blondie and offers the refuge as a new home. Zak explains his promise to find At-Zako and return to Gipath. Khatul respects that purpose and asks those who can help to support him; [[character/guru]] can teach him greater dexterity.",
+						"sources": [
+							"briefing gl63",
+							"briefing gl64",
+							"briefing guru1"
+						],
+						"event": "shelter",
+						"order": 23
+					},
+					{
+						"heading": "Sahilia’s cache and the Joon collector",
+						"text": "[[character/merc10]] supplies the next lead through her own theft. Antiquities she stole from [[character/junofil]] remain hidden near the city, and Zak recovers them to arrange a meeting. Khatul and Brother Blacksmith help choose the secluded trading place, keeping strangers away from the Shelter. Baluddin admits recognising At-Zako as a living Joon and wanting to keep him in his own house. Imperial scholars took the young man away. Later, Taivo summoned the collector to identify those scholars’ mutilated bodies. The missing youth’s trail now leads to the necromancers rather than a living prisoner whom Zak can simply rescue.",
+						"sources": [
+							"briefing vo64",
+							"briefing vo65",
+							"briefing gl66",
+							"briefing jf67",
+							"quest q65h",
+							"quest q66h",
+							"quest q67h"
+						],
+						"event": "collector",
+						"order": 24
 					}
 				],
 				"actors": [
@@ -2033,11 +3879,22 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/guru]] is a blind member of the Last Shelter and an experienced teacher. Khatul praises his extraordinary hearing and accuracy with a bow. At Khatul’s request he agrees to improve Zak’s dexterity; his own dialogue makes clear that blindness has not diminished his wit or independence.",
 						"sources": [
 							"briefing guru1"
 						]
+					},
+					{
+						"heading": "Acceptance into the Last Shelter",
+						"text": "Beyond the caves, [[character/kuzn]] finds Zak and vouches for him before [[character/glav]]. The brotherhood’s leader fears imperial spies and requires the Emperor’s Signet Ring, taken from a cyclops who killed its courier. Possessing such an object compromises the newcomer with the authorities and makes the test more than a feat of strength. After Zak returns, Khatul accepts him as Brother Blondie and offers the refuge as a new home. Zak explains his promise to find At-Zako and return to Gipath. Khatul respects that purpose and asks those who can help to support him; [[character/guru]] can teach him greater dexterity.",
+						"sources": [
+							"briefing gl63",
+							"briefing gl64",
+							"briefing guru1"
+						],
+						"event": "shelter",
+						"order": 23
 					}
 				],
 				"actors": [
@@ -2073,7 +3930,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/zaku]] appears among the brothers of the Last Shelter, claiming to hide a face disfigured by torture. Khatul trusts him to guide Zak toward the Portal. This identity is a disguise: at their later meeting the former village elder [[character/elder]] reveals himself and explains how he has arranged for the guards to intercept Zak.",
 						"sources": [
 							"briefing s64",
@@ -2081,6 +3938,19 @@ const DATA := {
 							"briefing s71",
 							"briefing s71_1"
 						]
+					},
+					{
+						"heading": "Brother Faceless and the return to Gipath",
+						"text": "Khatul asks [[character/zaku]] to help Zak reach the guarded portal. Faceless arranges a cave meeting and explains the keys and stone controls. He then reveals himself as Erfar: born on Suslanger, he went to Gipath seeking the meteorite and manipulated the villagers into searching for it. His earlier plots were attempts to remove Zak, who disrupted that scheme. The reunion is another trap, with guards waiting outside the cave. Zak survives the confrontation and forces a route through the portal’s defences. Activating its two controls finally returns him to Tka-Rik with the amulet fragments.",
+						"sources": [
+							"briefing s64",
+							"briefing gl70",
+							"briefing s71",
+							"briefing s71_1",
+							"quest q72h"
+						],
+						"event": "faceless",
+						"order": 26
 					}
 				],
 				"actors": [
@@ -2122,7 +3992,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/nekro]] is a disgraced necromancer living in the Last Shelter. Bitter about the Guild’s intrigues, he interprets generosity and honour as disguises for greed and revenge. He asks Zak to destroy a harpy from his experiments and directs the search for At-Zako toward Joon scholars and the rival necromancer Kholai. He recognises that the teleport amulet’s destination can only be read by a Great Magician.",
 						"sources": [
 							"briefing ne64_1",
@@ -2130,6 +4000,21 @@ const DATA := {
 							"briefing ne67",
 							"briefing ne70"
 						]
+					},
+					{
+						"heading": "Kholai and the dead scientist",
+						"text": "[[character/nekro]] directs Zak to [[character/oldnekro]], whom Taivo displaced from the imperial laboratory. Kholai wants disgrace for his rival rather than a simple assassination. Zak steals a dead scientist’s head from the laboratory; its disappearance will embarrass Taivo, and Kholai can summon its spirit. The [[character/spirit|scientist]] describes a horror pursuing the red-skinned youth. To conceal him, the scholars changed his appearance and sent him away by teleportation. Kholai interprets the broken testimony and tells Zak to search the ruined mansion for the magical object used in the escape. The fragments Zak finds are beyond Kehel’s ability to interpret: only a Great Magician can identify the destination.",
+						"sources": [
+							"briefing ne67",
+							"briefing sn67",
+							"quest q69h",
+							"briefing sn69",
+							"briefing sn69_1",
+							"quest q70h",
+							"briefing ne70"
+						],
+						"event": "spirit",
+						"order": 25
 					}
 				],
 				"actors": [
@@ -2164,13 +4049,28 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/oldnekro]] is a necromancer removed from the imperial laboratory by Taivo. He wants his rival disgraced rather than killed. In return for a dead scientist’s head, he summons the spirit and interprets its account of the attack on the Joon’s captors. His explanation sends Zak to search for the remains of a teleportation amulet.",
 						"sources": [
 							"briefing sn67",
 							"briefing sn69",
 							"briefing sn69_1"
 						]
+					},
+					{
+						"heading": "Kholai and the dead scientist",
+						"text": "[[character/nekro]] directs Zak to [[character/oldnekro]], whom Taivo displaced from the imperial laboratory. Kholai wants disgrace for his rival rather than a simple assassination. Zak steals a dead scientist’s head from the laboratory; its disappearance will embarrass Taivo, and Kholai can summon its spirit. The [[character/spirit|scientist]] describes a horror pursuing the red-skinned youth. To conceal him, the scholars changed his appearance and sent him away by teleportation. Kholai interprets the broken testimony and tells Zak to search the ruined mansion for the magical object used in the escape. The fragments Zak finds are beyond Kehel’s ability to interpret: only a Great Magician can identify the destination.",
+						"sources": [
+							"briefing ne67",
+							"briefing sn67",
+							"quest q69h",
+							"briefing sn69",
+							"briefing sn69_1",
+							"quest q70h",
+							"briefing ne70"
+						],
+						"event": "spirit",
+						"order": 25
 					}
 				],
 				"actors": [
@@ -2205,12 +4105,27 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/junofil]] collects Joon antiquities. Sahilia’s theft from his house gives Zak a way to arrange a meeting with him. He says he recognised At-Zako as a living Joon before imperial scholars took the young man away. Later he was called to identify those same scholars’ mutilated bodies, a discovery that redirects the investigation toward necromancy.",
 						"sources": [
 							"briefing vo64",
 							"briefing jf67"
 						]
+					},
+					{
+						"heading": "Sahilia’s cache and the Joon collector",
+						"text": "[[character/merc10]] supplies the next lead through her own theft. Antiquities she stole from [[character/junofil]] remain hidden near the city, and Zak recovers them to arrange a meeting. Khatul and Brother Blacksmith help choose the secluded trading place, keeping strangers away from the Shelter. Baluddin admits recognising At-Zako as a living Joon and wanting to keep him in his own house. Imperial scholars took the young man away. Later, Taivo summoned the collector to identify those scholars’ mutilated bodies. The missing youth’s trail now leads to the necromancers rather than a living prisoner whom Zak can simply rescue.",
+						"sources": [
+							"briefing vo64",
+							"briefing vo65",
+							"briefing gl66",
+							"briefing jf67",
+							"quest q65h",
+							"quest q66h",
+							"quest q67h"
+						],
+						"event": "collector",
+						"order": 24
 					}
 				],
 				"actors": [
@@ -2245,12 +4160,27 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "The [[character/spirit]] is the dead scientist summoned by Kholai. Speaking in broken phrases, it describes the horror that pursued the young Joon and the transformation and teleportation used to hide him. The testimony is fragmentary and painful for the spirit; Kholai supplies the interpretation that guides Zak’s next search.",
 						"sources": [
 							"briefing sn69",
 							"briefing sn69_1"
 						]
+					},
+					{
+						"heading": "Kholai and the dead scientist",
+						"text": "[[character/nekro]] directs Zak to [[character/oldnekro]], whom Taivo displaced from the imperial laboratory. Kholai wants disgrace for his rival rather than a simple assassination. Zak steals a dead scientist’s head from the laboratory; its disappearance will embarrass Taivo, and Kholai can summon its spirit. The [[character/spirit|scientist]] describes a horror pursuing the red-skinned youth. To conceal him, the scholars changed his appearance and sent him away by teleportation. Kholai interprets the broken testimony and tells Zak to search the ruined mansion for the magical object used in the escape. The fragments Zak finds are beyond Kehel’s ability to interpret: only a Great Magician can identify the destination.",
+						"sources": [
+							"briefing ne67",
+							"briefing sn67",
+							"quest q69h",
+							"briefing sn69",
+							"briefing sn69_1",
+							"quest q70h",
+							"briefing ne70"
+						],
+						"event": "spirit",
+						"order": 25
 					}
 				],
 				"actors": [
@@ -2327,13 +4257,25 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "A former warrior under Gort, Khador fell out with his commander and now welcomes the chance to fight beside Zak. His eagerness for battle is more prominent than any grand cause. He stays associated with the village and warns that a crowded party would get in the way of his axe.",
 						"sources": [
 							"briefing n8_1",
 							"briefing n9_1",
 							"briefing n2_1"
 						]
+					},
+					{
+						"heading": "Recruitment and farewell",
+						"text": "Khador, usually called Rowdy, served under Gort and was once his friend. After an episode involving mushrooms and an outspoken quarrel, the two stopped speaking. Free of his former duties, Rowdy offers Zak his axe and enthusiasm for a fight. His recruitment is optional, and other business can temporarily keep him in the village. When Zak leaves Gipath alone, Rowdy accepts the farewell and hopes he will return safely.",
+						"sources": [
+							"briefing n8_1",
+							"briefing n1_1",
+							"briefing n10_1",
+							"briefing n11_1"
+						],
+						"event": "companion_1",
+						"order": 29
 					}
 				],
 				"role": "Companion",
@@ -2370,7 +4312,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "Rint is a village archer initially bound by his duty to the captain. When he is free to decide for himself, he can accompany Zak. He is confident in his marksmanship, prefers a small travelling party and wishes Zak well when the journey takes him to other lands.",
 						"sources": [
 							"briefing n8_2",
@@ -2378,6 +4320,18 @@ const DATA := {
 							"briefing n9_2",
 							"briefing n10_2"
 						]
+					},
+					{
+						"heading": "Recruitment and farewell",
+						"text": "Zak first notices Archer’s marksmanship and proposes that he join his expeditions. Archer initially answers that he reports to the captain. A later conversation establishes that he can now decide for himself and is willing to join. This change explains his availability; it does not imply that he accompanies every expedition. At their farewell, Zak thanks him for his aim, and Archer hopes he will find equally capable help abroad.",
+						"sources": [
+							"briefing n8_2",
+							"briefing n1_2",
+							"briefing n10_2",
+							"briefing n11_2"
+						],
+						"event": "companion_2",
+						"order": 30
 					}
 				],
 				"role": "Companion",
@@ -2414,13 +4368,25 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "Naya is Estera’s apprentice and has long hunted on her teacher’s behalf. Estera offers her help to Zak as a test of her training. Naya wants her abilities respected and hopes one day to succeed Estera and teach an apprentice of her own.",
 						"sources": [
 							"briefing n8_3",
 							"briefing n1_3",
 							"briefing n10_3"
 						]
+					},
+					{
+						"heading": "Recruitment and farewell",
+						"text": "Estera introduces Naya as her apprentice and offers her assistance as a test of her training. Naya corrects the impression that she lacks experience: she already hunts for the witch and has faced goblins and orcs. If recruited, she travels as a capable assistant rather than an untrained dependent. At parting she hopes to succeed Estera and teach an apprentice of her own. Her cryptic farewell hints at a change awaiting Zak, but she refuses to explain what she sees.",
+						"sources": [
+							"briefing n8_3",
+							"briefing n1_3",
+							"briefing n10_3",
+							"briefing n11_3"
+						],
+						"event": "companion_3",
+						"order": 31
 					}
 				],
 				"role": "Companion",
@@ -2457,13 +4423,25 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "Eila left the village hoping to learn magic, but Estera rejected her. After an unsuccessful stay with the brigands she found a place among Shei-Var’s orcs, fighting in return for magical instruction. She can join Zak in the Sands and later considers using his example to encourage peace between the orcs and the village.",
 						"sources": [
 							"briefing n8_4",
 							"briefing n1_4",
 							"briefing n10_4"
 						]
+					},
+					{
+						"heading": "Recruitment and farewell",
+						"text": "Eila left the village hoping to study under Estera, was rejected, and also failed to find a place with the brigands’ chieftess. Redhead directed her to Shei-Var. There the orc seer teaches her magic in exchange for fighting for the tribe. Shei-Var permits her to help Zak, and she admits that she misses human company. Their farewell leaves her planning to return to the orcs and perhaps negotiate peace with the village; the proposed treaty is her hope, not a recorded achievement.",
+						"sources": [
+							"briefing n8_4",
+							"briefing n1_4",
+							"briefing n10_4",
+							"briefing n11_4"
+						],
+						"event": "companion_4",
+						"order": 32
 					}
 				],
 				"role": "Companion",
@@ -2500,13 +4478,25 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "Rinas is an Ingos sorcerer whose prospects have suffered under Diera’s privileged position. He offers his talents for the search for the Princess and hopes for compensation later. At parting, he regards the end of Diera’s dominance as reward enough.",
 						"sources": [
 							"briefing n8_5",
 							"briefing n1_5",
 							"briefing n10_5"
 						]
+					},
+					{
+						"heading": "Recruitment and farewell",
+						"text": "Diera’s privileged position and the governor’s ban on competing magicians explain why Rinas offers help in the Princess investigation. He postpones any fee, trusting that Zak’s apparent poverty will not last. In their farewell, he treats the end of Diera’s dominance as sufficient payment. His motive is therefore tied to the politics of Ingos as well as the opportunity to travel with Zak.",
+						"sources": [
+							"briefing n8_5",
+							"briefing n1_5",
+							"briefing n10_5",
+							"briefing n11_5"
+						],
+						"event": "companion_5",
+						"order": 33
 					}
 				],
 				"role": "Companion",
@@ -2542,13 +4532,25 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "Mairana is an Ingos archer who offers Zak protection outside the city walls. She seeks the experience needed to enter the Mercenaries’ Guild rather than immediate pay. Ingos remains her home, and she declines to leave it when Zak’s search moves on.",
 						"sources": [
 							"briefing n8_6",
 							"briefing n1_6",
 							"briefing n10_6"
 						]
+					},
+					{
+						"heading": "Recruitment and farewell",
+						"text": "Mairana introduces herself as an archer useful outside the city walls, where the population is hostile to strangers. She cannot yet demand a mercenary’s fee because she has not joined the Guild: experience is her immediate reward. A required permit can delay her departure from the city. At the end of their association, she explicitly chooses to remain on Ingos, which she considers her home.",
+						"sources": [
+							"briefing n8_6",
+							"briefing n1_6",
+							"briefing n10_6",
+							"briefing n11_6"
+						],
+						"event": "companion_6",
+						"order": 34
 					}
 				],
 				"role": "Companion",
@@ -2584,13 +4586,25 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "Kharad once hunted people like the fugitives of the Last Shelter. Disillusioned by his Khadaganian superiors, he now seeks revenge and offers his fighting skills to Zak. Loyalty to the brotherhood and his unfinished quarrel with the authorities keep him in Suslanger.",
 						"sources": [
 							"briefing n8_7",
 							"briefing n1_7",
 							"briefing n10_7"
 						]
+					},
+					{
+						"heading": "Recruitment and farewell",
+						"text": "Kharad once hunted people like Zak in imperial service. Disillusionment with his superiors turned him against them and brought him to the brotherhood. He offers to make his revenge useful to Zak’s search, while Zak asks him to temper enthusiasm with caution. Khatul’s need for a guard at the Shelter can prevent his recruitment. If he reaches Gipath with Zak, his farewell rejects a new life there: loyalty to the brothers and unfinished revenge call him back to Suslanger.",
+						"sources": [
+							"briefing n8_7",
+							"briefing n1_7",
+							"briefing n10_7",
+							"briefing n11_7"
+						],
+						"event": "companion_7",
+						"order": 35
 					}
 				],
 				"role": "Companion",
@@ -2626,13 +4640,25 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "Fayrakh is a magician of the Last Shelter who sees Zak’s journey as a chance to hurt enemies on the surface. He offers magical aid without disguising his taste for revenge. His work with Kehel can delay his departure, and he ultimately prefers the Shelter to life on Gipath.",
 						"sources": [
 							"briefing n8_8",
 							"briefing n11_8",
 							"briefing n10_8"
 						]
+					},
+					{
+						"heading": "Recruitment and farewell",
+						"text": "Fairakh offers magical help partly because travelling on the surface gives him chances for revenge. Zak asks him to avoid unjustified violence; the magician promises obedience against Zak’s enemies but reserves a different attitude toward his own. Work with Kehel can keep him at the Shelter for a time. His farewell, if he accompanies Zak to Gipath, declines settlement there because he prefers the Shelter and doubts his art would be appreciated on the remote allod.",
+						"sources": [
+							"briefing n8_8",
+							"briefing n1_8",
+							"briefing n10_8",
+							"briefing n11_8"
+						],
+						"event": "companion_8",
+						"order": 36
 					}
 				],
 				"role": "Companion",
@@ -2668,13 +4694,25 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "Brissen is a knight allied with the Woodsfolk who describes his life as service to good. He offers to accompany Zak after hearing of him from Grey Leaf. His methods are less gentle than his ideals sound: he explains how the Woodsfolk intimidate witnesses who might recognise him in the city.",
 						"sources": [
 							"briefing n8_9",
 							"briefing n1_9",
 							"briefing n3_9"
 						]
+					},
+					{
+						"heading": "Recruitment and farewell",
+						"text": "Brissen is alive when Zak meets him, despite rumours in the city. Grey Leaf has told him about Zak, and he offers to serve the good cause alongside him. His professed ideals do not forbid stealth or rough methods; he says that war against evil requires practical means. Duties defending the Woodsfolk against the Black Clan can delay his departure. His farewell again dismisses rumours of his death.",
+						"sources": [
+							"briefing n8_9",
+							"briefing n1_9",
+							"briefing n10_9",
+							"briefing n11_9"
+						],
+						"event": "companion_9",
+						"order": 37
 					}
 				],
 				"role": "Companion",
@@ -2710,13 +4748,28 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "Sahilia is a thief living in the Last Shelter. Her stolen Joon antiquities give Zak a lead to the collector Baluddin, while her knowledge of hiding places and wealthy houses opens other opportunities. She can accompany him, but asks to return to Suslanger rather than stay on Gipath, where she would have few profitable targets.",
 						"sources": [
 							"briefing vo64",
 							"briefing vo65",
 							"briefing n10_10"
 						]
+					},
+					{
+						"heading": "Sahilia’s cache and the Joon collector",
+						"text": "[[character/merc10]] supplies the next lead through her own theft. Antiquities she stole from [[character/junofil]] remain hidden near the city, and Zak recovers them to arrange a meeting. Khatul and Brother Blacksmith help choose the secluded trading place, keeping strangers away from the Shelter. Baluddin admits recognising At-Zako as a living Joon and wanting to keep him in his own house. Imperial scholars took the young man away. Later, Taivo summoned the collector to identify those scholars’ mutilated bodies. The missing youth’s trail now leads to the necromancers rather than a living prisoner whom Zak can simply rescue.",
+						"sources": [
+							"briefing vo64",
+							"briefing vo65",
+							"briefing gl66",
+							"briefing jf67",
+							"quest q65h",
+							"quest q66h",
+							"quest q67h"
+						],
+						"event": "collector",
+						"order": 24
 					}
 				],
 				"role": "Companion",
@@ -2761,14 +4814,254 @@ const DATA := {
 						]
 					},
 					{
-						"heading": "Events in Cursed Lands",
-						"text": "[[character/hero]] begins his search for his identity here. The village leaders’ disputes, [[character/witch]]’s advice and encounters with the island’s other peoples lead him to [[character/rick]]. Gipath is also the destination of his return: the truth about At-Zako and the struggle against the Curse bring the story back beneath its ruins.",
+						"heading": "Awakening among the ruins",
+						"text": "[[character/hero]] begins his journey on [[allod/gipat]], without knowing who he is or how he arrived. His first concern is finding other people. Leaving the ruins, he sees villagers flee from the stranger who has emerged from the ancient site. Their flight gives him a direction to follow. He makes his way along the river and across the ford to the village.",
+						"sources": [
+							"quest q0g",
+							"briefing s1",
+							"briefing s0"
+						],
+						"event": "awakening",
+						"order": 1
+					},
+					{
+						"heading": "The village and the Chosen",
+						"text": "At the village assembly, [[character/elder]] identifies Zak with the promised Chosen who was to appear at the Sacred Ruins. [[character/sheriff]], the captain, supports the ceremony. The offer of food, shelter and honour comes with a threat: an impostor would be thrown into the fire. Zak accepts the title and gives his name. Erfar immediately sends him against the goblin sentry watching the village, reasoning that his plain clothes and unusual metal knife will let him approach where armed villagers cannot. Afterwards Zak learns that this is Gipath’s only human village, with no king or known route to other lands.",
 						"sources": [
 							"briefing s1",
+							"briefing s0",
+							"briefing v0",
+							"quest q1ag"
+						],
+						"event": "chosen",
+						"order": 2
+					},
+					{
+						"heading": "The wolf, the captain and the craftsman",
+						"text": "Killing the sentry brings another request from Erfar: the White Wolf and its pack are taking the village livestock. After Zak kills their leader, Erfar and Gort press him to surrender the head so the captain can claim prestige. Gort also sends him to punish the goblins while the village soldiers stay home. Meanwhile [[character/smith]] refuses to work until his stolen iron tools are returned. Erfar calls the thieves friendly “Free Hunters”; Babur calls them brigands and describes the beating of his apprentice. Recovering the chisel and bodkin from the chief and his wife wins Zak the craftsman’s services. These early errands expose the disagreement between the village’s leaders and the man who equips it.",
+						"sources": [
+							"briefing s1_3",
+							"briefing s3",
+							"briefing v3",
+							"briefing v3_1",
+							"briefing m1",
+							"briefing m1_1",
+							"briefing m4",
+							"quest q2g"
+						],
+						"event": "village_errands",
+						"order": 3
+					},
+					{
+						"heading": "The brigands’ trail and the Magic Bit",
+						"text": "Babur’s account of a red-haired brigand meeting orcs gives Zak his next lead. A map taken from Redhead points to a Magic Bit in a sarcophagus in the orc cave. Babur explains that Estera values such objects, while Gort can supply the missing drawbridge mechanism. Zak obtains the seer’s key and the object, then asks how to reach the witch. Babur, who made her spare trap key, explains the guarded ravines and controlling obelisks. The craftsman expects a share of the sale. Zak instead intends to exchange the find for help with his lost memory.",
+						"sources": [
+							"briefing m4",
+							"briefing m5_1",
+							"briefing v4",
+							"briefing m6",
+							"briefing m6_1",
+							"quest q4g",
+							"quest q5g",
+							"quest q6g"
+						],
+						"event": "magic_bit",
+						"order": 4
+					},
+					{
+						"heading": "Meeting Estera and Airy",
+						"text": "[[character/witch]] initially threatens the intruder, then changes her reception when Zak offers the Magic Bit. She dismisses the villagers’ divine-saviour story but discovers that she cannot see his past. Since Zak cannot remember it either, she suggests finding the orcs’ Magic Orb and directs him back to Erfar for information. This is the beginning of their alliance. Estera also introduces her granddaughter [[character/daughter]], warning Zak to keep his distance; Airy resents being treated as a child. Zak’s search now has a personal aim beyond the village’s demands.",
+						"sources": [
+							"briefing z1",
+							"briefing z1_2",
+							"briefing z0_2",
+							"briefing m6_1"
+						],
+						"event": "estera",
+						"order": 5
+					},
+					{
+						"heading": "Two searches on the islands",
+						"text": "The river islands hold two different leads. Estera needs the Orb, which Erfar places on the southernmost island. Erfar also proposes tracing [[character/bgoblinc]]’s blue Eye Stone to a possible portal. Zak takes the First Goblin’s skull to compel GoGo to visit the village; the chief explains that the orcs confiscated the written record of the stone’s origin. The islands require their own bridge mechanism, distinct from the cave’s. Zak retrieves the record and the Orb in this area. Erfar claims the record offers nothing useful, then diverts attention to missing taxes and gold in Golden Valley. His portal scheme and Estera’s search serve different purposes, even though they take Zak through the same territory.",
+						"sources": [
+							"briefing s6_2",
+							"briefing s7_1",
+							"briefing s7_4",
+							"briefing s8_2",
+							"briefing v5",
+							"quest q7g",
+							"quest q8g",
+							"quest q9g",
+							"quest q10g"
+						],
+						"event": "orb_islands",
+						"order": 6
+					},
+					{
+						"heading": "The Orb and the Dead City",
+						"text": "When Estera uses the Orb, Zak sees an old man instead of a recognisable memory. She believes he is its owner and a more powerful magician who might help. Orc records trace the object to the Dead City. Estera distinguishes its human fortress from Gipath’s much older ruins: after the Night of Troubles, the dead attacked the living, and survivors fled to found the present village. The obvious route into the fortress is deadly. Airy leaves to investigate another way in, despite her grandmother’s objections. Separately, Erfar can send Zak into the surrounding region’s Golden Valley for a caravan’s lost treasure, an errand he badly understates.",
+						"sources": [
+							"briefing z2",
+							"briefing z11",
+							"briefing z11_1",
+							"briefing s8_2",
+							"briefing s12",
+							"briefing s12_1",
+							"quest q12g"
+						],
+						"event": "dead_city_lead",
+						"order": 7
+					},
+					{
+						"heading": "The supposed attack on the goblins",
+						"text": "While Zak seeks the magician, Erfar and Gort arrange another joint operation with the Free Hunters, supposedly to prevent a goblin raid. The promised friendly meeting becomes an ambush by brigands and village soldiers. Erfar denies responsibility, while Babur warns that the elder is trying to have Zak killed. A note in the newer orc script cannot yet settle the matter: Estera needs an Orc ABC Book to read it. Its translation reveals a contract on Zak’s life, a detailed description of him and a substantial payment. The search for the author becomes a separate investigation alongside the route into the Dead City.",
+						"sources": [
+							"briefing s12_4",
+							"briefing s13_0",
+							"briefing m13_3",
+							"briefing z13_2",
+							"briefing z14",
+							"quest q13ag",
+							"quest q14g"
+						],
+						"event": "ambush",
+						"order": 8
+					},
+					{
+						"heading": "Airy’s route through the observatory",
+						"text": "Airy returns with a lead to the old observatory library, but harpies occupy the site. Her plan requires a lizard’s amulet to lead a particular green dragon against them. Reaching that dragon requires Estera to freeze the lake with a green crystal. The hostile lizards on the approach present another obstacle: Zak moves the Big Shell from the Remote Mountains to the Middle Mountains, restoring the peace associated with its altar. This leaves Babur’s former quarry route unsafe and can lead to an additional errand for the craftsman. The observatory book finally supplies the password to the Dead City’s hidden entrance. Airy can also teach Zak the Magic of Feelings, only to be offended when he again calls her a little girl.",
+						"sources": [
+							"briefing z13_1",
+							"briefing z14_1",
+							"briefing m13_2",
+							"briefing m15",
+							"briefing z17",
+							"briefing z15",
+							"briefing z18",
+							"quest q15ag",
+							"quest q15bg",
+							"quest q18g"
+						],
+						"event": "observatory",
+						"order": 9
+					},
+					{
+						"heading": "Gort’s rebellion",
+						"text": "The written instructions to kill Zak expose Gort’s handwriting. Confronted with the evidence, the captain turns against the authority he formerly served and declares that he will rule the village himself. He flees to gather the forest men. Erfar urges Zak to stop him before he can return; the ensuing pursuit ends Gort’s rebellion. [[character/nsheriff]] becomes the new captain. Unlike his predecessor, Rivar admits that he dislikes fighting, shares his family’s secret of strength and later supports Zak when suspicion finally reaches the elder.",
+						"sources": [
+							"briefing v19",
+							"briefing v19_1",
+							"briefing m21",
+							"briefing s21",
+							"briefing nv23",
+							"briefing nv26",
+							"quest q19g",
+							"quest q23g"
+						],
+						"event": "gort",
+						"order": 10
+					},
+					{
+						"heading": "The Old Dragon on Lone Mountain",
+						"text": "The observatory’s password takes Zak into the Dead City and up Lone Mountain. He expects the magician from the Orb but finds [[character/skd]]. The dragon insists on an old bargain: a visitor must perform a task before receiving an answer. Zak deals with the armadillos beneath the lair, using the poison the dragon supplies. The dragon then admits that he cannot identify Zak or locate Gipath’s elusive Great Magician. He suggests the ancient lizards might know more and points instead to an expedition of armoured outsiders. He withdraws the skeletons he had used against their camp. In a further conversation, he gives Zak an old sword because he enjoys his company and would rather not see him become another speechless skeleton.",
+						"sources": [
+							"quest q20g",
+							"briefing dr20",
+							"quest q22g",
+							"briefing dr22",
+							"briefing dr22_1"
+						],
+						"event": "dragon",
+						"order": 11
+					},
+					{
+						"heading": "The White Flower and Erfar’s exposure",
+						"text": "After Gort’s fall, Erfar claims that an orc seer has cursed the village with disease and asks for a White Flower. Zak finds armed opposition waiting for him, although no villagers have yet fallen ill. Erfar blames Babur, while Babur’s earlier warning makes Zak suspect both men. Estera suggests setting a trap. Zak tells each suspect a different location for a second flower; the ambush appears at the place he gave Erfar. With Rivar’s support he confronts and imprisons the elder. An expedition report recovered from the abandoned foreign camp becomes leverage: Erfar translates its account of a concealed tunnel and its opening lever. He later escapes custody. Estera recalls that he originally arrived as an adult stranger, leaving his real purpose unresolved.",
+						"sources": [
+							"briefing s21_1",
+							"briefing s24",
+							"briefing m24",
+							"briefing z24_1",
+							"quest q25g",
+							"briefing nv26",
+							"briefing s25_1",
+							"briefing s25_3",
+							"briefing nv27_1",
+							"briefing z25",
+							"quest q26g"
+						],
+						"event": "erfar_exposed",
+						"order": 12
+					},
+					{
+						"heading": "The expedition and the Hermit’s bargain",
+						"text": "Estera introduces a lost Khadaganian [[character/clerk|official]], who promises that his expedition can help Zak leave Gipath. Meeting [[character/hwleader]] instead leads to imprisonment and demands for information about a meteorite. Zak plays the ignorant swineherd, but the commander threatens torture. [[character/oliz]] offers escape on the condition that Zak later visit his home. Zak gives his word, receives the Ancient Claw for the traps on the approach and escapes. The Hermit explains that he had intended to negotiate with the armoured humans but changed his mind after seeing their treatment of Zak. Keeping the promise establishes trust where the expedition failed to do so.",
+						"sources": [
+							"briefing z27",
+							"briefing ha29",
+							"briefing ha29_1",
+							"briefing ha29_2",
+							"briefing ha29_3",
+							"briefing l30"
+						],
+						"event": "expedition",
+						"order": 13
+					},
+					{
+						"heading": "Water for the lizards and the Great Magician",
+						"text": "The Hermit needs the water diverted by the orcs restored. Zak raises their dam and blocks the diversion canal; in return the lizard locates the magician in a ravine in the Remote Mountains. This information joins the tunnel instructions from the Khadaganian report. Zak passes the ancient defences and reaches [[character/rick]]. Tka-Rik explains that his dragonet has watched Zak since his unusual arrival. Bound to Gipath by his duty as its Great Magician, he offers help with Zak’s memory in exchange for bringing him two surviving young Joons. The first journey will be to Ingos to find the girl. Zak must leave his Gipath companions behind.",
+						"sources": [
+							"briefing l30",
+							"quest q34g",
+							"briefing l34",
+							"briefing z35",
+							"quest q36g",
 							"briefing r36",
+							"briefing r36_3",
+							"briefing r36_4"
+						],
+						"event": "tka_rik",
+						"order": 14
+					},
+					{
+						"heading": "The rescue of Airy",
+						"text": "Before leaving Gipath, Zak can finish the separate search for Airy, who set out to find the magician herself and impress him. Estera’s vision points to a goblin prison, where Zak finds her granddaughter’s potion bottle and a note leading to [[character/orcc]]. The orc chief intends to give Airy to a frightening armoured human he calls a Demon. Zak offers to remove this threat instead. Shei-Var first demands proof of his strength against the ogre brothers, whose wealth also threatens the chief’s influence. Once Zak defeats the Demon, Shei-Var honours his promise and sends Airy home. The rescue ends with Estera’s gratitude and Airy’s distress that Zak still regards her as a child.",
+						"sources": [
+							"briefing z38",
+							"briefing z39",
+							"briefing sh40",
+							"briefing sh41",
+							"briefing sh41_1",
+							"briefing z41_1",
+							"quest q39g",
+							"quest q41g"
+						],
+						"event": "airy_rescue",
+						"order": 15
+					},
+					{
+						"heading": "At-Zako: the search turns back on itself",
+						"text": "Tka-Rik initially expects Zak to bring the missing Joon with him. Lu-a-Jalla defends the exhausted traveller, and Zak insists that he will continue for her sake even if reunion with At-Zako means losing her. The amulet changes everything: Tka-Rik discovers that its destination was Gipath. Only Zak arrived there in that unusual way. The man he has been seeking is himself, hidden by the Khadaganian transformation spell. Restored as At-Zako, he reassures Tka-Rik and reunites with Lu-a-Jalla. The memories of their earlier flight explain why the return of his identity also brings back the danger of the Curse.",
+						"sources": [
+							"briefing r72",
+							"briefing r72_1",
 							"briefing r72_4",
-							"briefing r72_6"
-						]
+							"briefing d72_5"
+						],
+						"event": "identity",
+						"order": 27
+					},
+					{
+						"heading": "The battle with the Joon Curse",
+						"text": "The hurried transformation that concealed At-Zako nearly destroyed his memory. Tka-Rik cannot safely repeat it, so hiding as Zak is no longer an answer. He offers another choice: flee again under his temporary protection, or confront the Curse on Gipath. At-Zako chooses to defend his life with Lu-a-Jalla. Tka-Rik supplies ancient Joon equipment and joins him in the catacombs for the final battle. Defeating the Curse completes the campaign.",
+						"sources": [
+							"briefing r72_6",
+							"briefing r72_7",
+							"quest q73g",
+							"zone gz20g"
+						],
+						"event": "curse",
+						"order": 28
 					}
 				],
 				"name_key": "allod gipat",
@@ -2787,13 +5080,76 @@ const DATA := {
 						]
 					},
 					{
-						"heading": "The search for the Princess",
-						"text": "Zak comes to Ingos to find one of the surviving Joons. Court rivalries, Karansul’s schemes and the displaced Green Clan complicate the search. The imprisoned [[character/deva]] is found in the mines, while [[character/magess]]’s jealousy helps explain her disappearance. Lu-a-Jalla’s account then sends Zak onward to Suslanger.",
+						"heading": "Arrival on Ingos and the missing Princess",
+						"text": "On [[allod/ingos]], Zak first crosses the hostile countryside to reach the city. [[character/kapitan]] tells him about the missing young woman known locally as the Princess and the reward offered for finding her. Governor [[character/huber]] takes a personal interest in her, while [[character/magess]] discourages the search. The hunter [[character/trapper]] provides a concrete lead: another investigator, the Snoop from the capital, had followed the same trail before disappearing east of the city. Finding his body changes the search for a missing girl into an investigation of murder.",
 						"sources": [
-							"briefing r36",
+							"quest q42k",
+							"briefing k42",
+							"briefing k42_1",
+							"briefing g42",
+							"briefing mg42",
+							"briefing t42",
+							"briefing k43"
+						],
+						"event": "ingos_arrival",
+						"order": 16
+					},
+					{
+						"heading": "The arrow and the Green Clan",
+						"text": "The arrow in the Snoop’s body appears to implicate the Woodsfolk. Sver explains that their markings identify a clan, while the governor discovers that the case containing similar arrows has been stolen from his collection. Two lines of inquiry now run alongside each other: the stolen collection and the Woodsfolk’s testimony. To approach [[character/ycf]], Zak first returns the Green Clan’s Sacred Flower after rescuing its keeper from the White Clan. Grey Leaf then asks for help with the kidnapped elder Khabburu and his captor. The clan ultimately identifies the murder arrow as a false attribution, even refusing to blame its enemies for it. When the clan moves, Zak receives access to its hidden route and new home.",
+						"sources": [
+							"briefing g43",
+							"briefing t43",
+							"briefing yc45",
+							"briefing yc46",
+							"briefing yc47",
+							"briefing yc47_1"
+						],
+						"event": "arrow",
+						"order": 17
+					},
+					{
+						"heading": "Karansul’s accounts and Baldie’s confession",
+						"text": "[[character/shopper]] is reluctant to help, but Sver knows how to put pressure on him. Zak first delivers the hunter’s furs to a buyer outside the merchant’s monopoly. Sver then reveals Karansul’s hidden trade and unpaid taxes, pointing to the foreman’s accounts; he also recommends [[character/mthief]] as a teacher. With the accounts as leverage, Zak learns where to find [[character/vor]], called Baldie, and secures a meeting. Evidence from the stolen collection makes the thief confess: he killed the Snoop, planted the Woodsfolk arrow and worked for a cloaked employer who knew how to evade the governor’s magical traps.",
+						"sources": [
+							"briefing t43_1",
+							"briefing t44",
+							"briefing mthief1",
+							"briefing tr48",
+							"briefing tr49",
+							"briefing tr49_1"
+						],
+						"event": "karansul",
+						"order": 18
+					},
+					{
+						"heading": "Diera and the locked mines",
+						"text": "At the Green Clan’s new home, Grey Leaf describes the supposed man in grey as a white-haired woman. Zak identifies Diera, whose own traps protected the stolen collection. Her urgent warnings against the abandoned mines reinforce his suspicion. Tilvar explains that the governor holds the key. Karansul suggests winning it with a gold nugget and gives access to a dangerous pit, concealing the tigers that drove out its workers; Sver warns Zak of the trap. Zak obtains the nugget and presents it to the collector-governor as a business prospect. Valrasian releases the mine key, opening the way past Diera’s mercenaries.",
+						"sources": [
+							"briefing yc50",
+							"briefing mg43_1",
+							"briefing mg50",
+							"briefing k51",
+							"briefing tr52",
+							"briefing t52",
+							"briefing g53",
+							"quest q54k"
+						],
+						"event": "diera",
+						"order": 19
+					},
+					{
+						"heading": "Lu-a-Jalla beneath the mines",
+						"text": "The former punishment cell is empty. Zak follows the trail deeper into the Forbidden Catacombs until he finds [[character/deva]], who first mistakes him for another captor. She has escaped the mercenaries and found protection through the ancient treaty between Joons and Wormheads. She rejects the nickname Princess and explains that Diera imprisoned her out of jealousy over the governor. Zak falls in love with her, but she remains faithful to At-Zako, who drew the Joon Curse away from her. Zak promises to respect that bond. They return to Tka-Rik, and the next mission becomes the search for her missing beloved on Suslanger.",
+						"sources": [
+							"quest q55k",
 							"briefing d55",
+							"briefing d55_1",
+							"briefing d55_3",
 							"briefing r54"
-						]
+						],
+						"event": "lua",
+						"order": 20
 					}
 				],
 				"name_key": "allod ingos",
@@ -2812,17 +5168,81 @@ const DATA := {
 						]
 					},
 					{
-						"heading": "The trail of At-Zako",
-						"text": "Zak’s arrival leads to imprisonment by [[character/karh]], escape with [[character/nalo]]’s help and shelter under [[character/glav]]. His investigation passes from a collector of Joon antiquities to necromancers and a dead scientist. Their clues reveal how the missing Joon escaped and supply the amulet that ultimately points back to Gipath.",
+						"heading": "Captivity in Death Canyon",
+						"text": "Zak is captured near the portal on [[allod/suslanger]]. Lieutenant [[character/karh]] presents him to [[character/iz]], who orders him used as live quarry for soldiers seeking promotion. Surviving the run through Death Canyon earns only a return to captivity, not freedom. Kardaur threatens punishment through necromancy if Zak dies too quickly and displeases his superior.",
+						"sources": [
+							"briefing hns59",
+							"quest q60h"
+						],
+						"event": "canyon",
+						"order": 21
+					},
+					{
+						"heading": "The Odalisque and the escape",
+						"text": "The [[character/nalo]] approaches Zak after his ordeal. Enslaved by Kardaur and deprived even of a personal name, she wants his death and knows he will guard the gate that night. She steals the key to Zak’s cage. Her father, a rat hunter who disappeared in the caves, told her of the Wormheads’ temple and the bridges across its lava rivers. She uses that knowledge to explain a route the guards fear to follow. Zak kills Kardaur for the fortress key and escapes toward the cave; releasing the caged spiders can delay pursuit. The Odalisque and Zak part with wishes for each other’s freedom and survival, without a stated account of her later fate.",
 						"sources": [
 							"briefing kr60",
 							"briefing kr61",
+							"quest q61h",
+							"quest q62h",
+							"quest q63h"
+						],
+						"event": "odalisque",
+						"order": 22
+					},
+					{
+						"heading": "Acceptance into the Last Shelter",
+						"text": "Beyond the caves, [[character/kuzn]] finds Zak and vouches for him before [[character/glav]]. The brotherhood’s leader fears imperial spies and requires the Emperor’s Signet Ring, taken from a cyclops who killed its courier. Possessing such an object compromises the newcomer with the authorities and makes the test more than a feat of strength. After Zak returns, Khatul accepts him as Brother Blondie and offers the refuge as a new home. Zak explains his promise to find At-Zako and return to Gipath. Khatul respects that purpose and asks those who can help to support him; [[character/guru]] can teach him greater dexterity.",
+						"sources": [
+							"briefing gl63",
 							"briefing gl64",
+							"briefing guru1"
+						],
+						"event": "shelter",
+						"order": 23
+					},
+					{
+						"heading": "Sahilia’s cache and the Joon collector",
+						"text": "[[character/merc10]] supplies the next lead through her own theft. Antiquities she stole from [[character/junofil]] remain hidden near the city, and Zak recovers them to arrange a meeting. Khatul and Brother Blacksmith help choose the secluded trading place, keeping strangers away from the Shelter. Baluddin admits recognising At-Zako as a living Joon and wanting to keep him in his own house. Imperial scholars took the young man away. Later, Taivo summoned the collector to identify those scholars’ mutilated bodies. The missing youth’s trail now leads to the necromancers rather than a living prisoner whom Zak can simply rescue.",
+						"sources": [
+							"briefing vo64",
+							"briefing vo65",
+							"briefing gl66",
 							"briefing jf67",
+							"quest q65h",
+							"quest q66h",
+							"quest q67h"
+						],
+						"event": "collector",
+						"order": 24
+					},
+					{
+						"heading": "Kholai and the dead scientist",
+						"text": "[[character/nekro]] directs Zak to [[character/oldnekro]], whom Taivo displaced from the imperial laboratory. Kholai wants disgrace for his rival rather than a simple assassination. Zak steals a dead scientist’s head from the laboratory; its disappearance will embarrass Taivo, and Kholai can summon its spirit. The [[character/spirit|scientist]] describes a horror pursuing the red-skinned youth. To conceal him, the scholars changed his appearance and sent him away by teleportation. Kholai interprets the broken testimony and tells Zak to search the ruined mansion for the magical object used in the escape. The fragments Zak finds are beyond Kehel’s ability to interpret: only a Great Magician can identify the destination.",
+						"sources": [
+							"briefing ne67",
+							"briefing sn67",
+							"quest q69h",
 							"briefing sn69",
 							"briefing sn69_1",
-							"briefing r72_1"
-						]
+							"quest q70h",
+							"briefing ne70"
+						],
+						"event": "spirit",
+						"order": 25
+					},
+					{
+						"heading": "Brother Faceless and the return to Gipath",
+						"text": "Khatul asks [[character/zaku]] to help Zak reach the guarded portal. Faceless arranges a cave meeting and explains the keys and stone controls. He then reveals himself as Erfar: born on Suslanger, he went to Gipath seeking the meteorite and manipulated the villagers into searching for it. His earlier plots were attempts to remove Zak, who disrupted that scheme. The reunion is another trap, with guards waiting outside the cave. Zak survives the confrontation and forces a route through the portal’s defences. Activating its two controls finally returns him to Tka-Rik with the amulet fragments.",
+						"sources": [
+							"briefing s64",
+							"briefing gl70",
+							"briefing s71",
+							"briefing s71_1",
+							"quest q72h"
+						],
+						"event": "faceless",
+						"order": 26
 					}
 				],
 				"name_key": "allod suslanger",
@@ -2839,6 +5259,101 @@ const DATA := {
 							"briefing s1",
 							"briefing s25_1"
 						]
+					},
+					{
+						"heading": "The village and the Chosen",
+						"text": "At the village assembly, [[character/elder]] identifies Zak with the promised Chosen who was to appear at the Sacred Ruins. [[character/sheriff]], the captain, supports the ceremony. The offer of food, shelter and honour comes with a threat: an impostor would be thrown into the fire. Zak accepts the title and gives his name. Erfar immediately sends him against the goblin sentry watching the village, reasoning that his plain clothes and unusual metal knife will let him approach where armed villagers cannot. Afterwards Zak learns that this is Gipath’s only human village, with no king or known route to other lands.",
+						"sources": [
+							"briefing s1",
+							"briefing s0",
+							"briefing v0",
+							"quest q1ag"
+						],
+						"event": "chosen",
+						"order": 2
+					},
+					{
+						"heading": "The wolf, the captain and the craftsman",
+						"text": "Killing the sentry brings another request from Erfar: the White Wolf and its pack are taking the village livestock. After Zak kills their leader, Erfar and Gort press him to surrender the head so the captain can claim prestige. Gort also sends him to punish the goblins while the village soldiers stay home. Meanwhile [[character/smith]] refuses to work until his stolen iron tools are returned. Erfar calls the thieves friendly “Free Hunters”; Babur calls them brigands and describes the beating of his apprentice. Recovering the chisel and bodkin from the chief and his wife wins Zak the craftsman’s services. These early errands expose the disagreement between the village’s leaders and the man who equips it.",
+						"sources": [
+							"briefing s1_3",
+							"briefing s3",
+							"briefing v3",
+							"briefing v3_1",
+							"briefing m1",
+							"briefing m1_1",
+							"briefing m4",
+							"quest q2g"
+						],
+						"event": "village_errands",
+						"order": 3
+					},
+					{
+						"heading": "Two searches on the islands",
+						"text": "The river islands hold two different leads. Estera needs the Orb, which Erfar places on the southernmost island. Erfar also proposes tracing [[character/bgoblinc]]’s blue Eye Stone to a possible portal. Zak takes the First Goblin’s skull to compel GoGo to visit the village; the chief explains that the orcs confiscated the written record of the stone’s origin. The islands require their own bridge mechanism, distinct from the cave’s. Zak retrieves the record and the Orb in this area. Erfar claims the record offers nothing useful, then diverts attention to missing taxes and gold in Golden Valley. His portal scheme and Estera’s search serve different purposes, even though they take Zak through the same territory.",
+						"sources": [
+							"briefing s6_2",
+							"briefing s7_1",
+							"briefing s7_4",
+							"briefing s8_2",
+							"briefing v5",
+							"quest q7g",
+							"quest q8g",
+							"quest q9g",
+							"quest q10g"
+						],
+						"event": "orb_islands",
+						"order": 6
+					},
+					{
+						"heading": "The supposed attack on the goblins",
+						"text": "While Zak seeks the magician, Erfar and Gort arrange another joint operation with the Free Hunters, supposedly to prevent a goblin raid. The promised friendly meeting becomes an ambush by brigands and village soldiers. Erfar denies responsibility, while Babur warns that the elder is trying to have Zak killed. A note in the newer orc script cannot yet settle the matter: Estera needs an Orc ABC Book to read it. Its translation reveals a contract on Zak’s life, a detailed description of him and a substantial payment. The search for the author becomes a separate investigation alongside the route into the Dead City.",
+						"sources": [
+							"briefing s12_4",
+							"briefing s13_0",
+							"briefing m13_3",
+							"briefing z13_2",
+							"briefing z14",
+							"quest q13ag",
+							"quest q14g"
+						],
+						"event": "ambush",
+						"order": 8
+					},
+					{
+						"heading": "Gort’s rebellion",
+						"text": "The written instructions to kill Zak expose Gort’s handwriting. Confronted with the evidence, the captain turns against the authority he formerly served and declares that he will rule the village himself. He flees to gather the forest men. Erfar urges Zak to stop him before he can return; the ensuing pursuit ends Gort’s rebellion. [[character/nsheriff]] becomes the new captain. Unlike his predecessor, Rivar admits that he dislikes fighting, shares his family’s secret of strength and later supports Zak when suspicion finally reaches the elder.",
+						"sources": [
+							"briefing v19",
+							"briefing v19_1",
+							"briefing m21",
+							"briefing s21",
+							"briefing nv23",
+							"briefing nv26",
+							"quest q19g",
+							"quest q23g"
+						],
+						"event": "gort",
+						"order": 10
+					},
+					{
+						"heading": "The White Flower and Erfar’s exposure",
+						"text": "After Gort’s fall, Erfar claims that an orc seer has cursed the village with disease and asks for a White Flower. Zak finds armed opposition waiting for him, although no villagers have yet fallen ill. Erfar blames Babur, while Babur’s earlier warning makes Zak suspect both men. Estera suggests setting a trap. Zak tells each suspect a different location for a second flower; the ambush appears at the place he gave Erfar. With Rivar’s support he confronts and imprisons the elder. An expedition report recovered from the abandoned foreign camp becomes leverage: Erfar translates its account of a concealed tunnel and its opening lever. He later escapes custody. Estera recalls that he originally arrived as an adult stranger, leaving his real purpose unresolved.",
+						"sources": [
+							"briefing s21_1",
+							"briefing s24",
+							"briefing m24",
+							"briefing z24_1",
+							"quest q25g",
+							"briefing nv26",
+							"briefing s25_1",
+							"briefing s25_3",
+							"briefing nv27_1",
+							"briefing z25",
+							"quest q26g"
+						],
+						"event": "erfar_exposed",
+						"order": 12
 					}
 				],
 				"name_key": "zone bz1g",
@@ -2855,6 +5370,81 @@ const DATA := {
 							"briefing z1",
 							"briefing n8_3"
 						]
+					},
+					{
+						"heading": "Meeting Estera and Airy",
+						"text": "[[character/witch]] initially threatens the intruder, then changes her reception when Zak offers the Magic Bit. She dismisses the villagers’ divine-saviour story but discovers that she cannot see his past. Since Zak cannot remember it either, she suggests finding the orcs’ Magic Orb and directs him back to Erfar for information. This is the beginning of their alliance. Estera also introduces her granddaughter [[character/daughter]], warning Zak to keep his distance; Airy resents being treated as a child. Zak’s search now has a personal aim beyond the village’s demands.",
+						"sources": [
+							"briefing z1",
+							"briefing z1_2",
+							"briefing z0_2",
+							"briefing m6_1"
+						],
+						"event": "estera",
+						"order": 5
+					},
+					{
+						"heading": "The Orb and the Dead City",
+						"text": "When Estera uses the Orb, Zak sees an old man instead of a recognisable memory. She believes he is its owner and a more powerful magician who might help. Orc records trace the object to the Dead City. Estera distinguishes its human fortress from Gipath’s much older ruins: after the Night of Troubles, the dead attacked the living, and survivors fled to found the present village. The obvious route into the fortress is deadly. Airy leaves to investigate another way in, despite her grandmother’s objections. Separately, Erfar can send Zak into the surrounding region’s Golden Valley for a caravan’s lost treasure, an errand he badly understates.",
+						"sources": [
+							"briefing z2",
+							"briefing z11",
+							"briefing z11_1",
+							"briefing s8_2",
+							"briefing s12",
+							"briefing s12_1",
+							"quest q12g"
+						],
+						"event": "dead_city_lead",
+						"order": 7
+					},
+					{
+						"heading": "Airy’s route through the observatory",
+						"text": "Airy returns with a lead to the old observatory library, but harpies occupy the site. Her plan requires a lizard’s amulet to lead a particular green dragon against them. Reaching that dragon requires Estera to freeze the lake with a green crystal. The hostile lizards on the approach present another obstacle: Zak moves the Big Shell from the Remote Mountains to the Middle Mountains, restoring the peace associated with its altar. This leaves Babur’s former quarry route unsafe and can lead to an additional errand for the craftsman. The observatory book finally supplies the password to the Dead City’s hidden entrance. Airy can also teach Zak the Magic of Feelings, only to be offended when he again calls her a little girl.",
+						"sources": [
+							"briefing z13_1",
+							"briefing z14_1",
+							"briefing m13_2",
+							"briefing m15",
+							"briefing z17",
+							"briefing z15",
+							"briefing z18",
+							"quest q15ag",
+							"quest q15bg",
+							"quest q18g"
+						],
+						"event": "observatory",
+						"order": 9
+					},
+					{
+						"heading": "The expedition and the Hermit’s bargain",
+						"text": "Estera introduces a lost Khadaganian [[character/clerk|official]], who promises that his expedition can help Zak leave Gipath. Meeting [[character/hwleader]] instead leads to imprisonment and demands for information about a meteorite. Zak plays the ignorant swineherd, but the commander threatens torture. [[character/oliz]] offers escape on the condition that Zak later visit his home. Zak gives his word, receives the Ancient Claw for the traps on the approach and escapes. The Hermit explains that he had intended to negotiate with the armoured humans but changed his mind after seeing their treatment of Zak. Keeping the promise establishes trust where the expedition failed to do so.",
+						"sources": [
+							"briefing z27",
+							"briefing ha29",
+							"briefing ha29_1",
+							"briefing ha29_2",
+							"briefing ha29_3",
+							"briefing l30"
+						],
+						"event": "expedition",
+						"order": 13
+					},
+					{
+						"heading": "The rescue of Airy",
+						"text": "Before leaving Gipath, Zak can finish the separate search for Airy, who set out to find the magician herself and impress him. Estera’s vision points to a goblin prison, where Zak finds her granddaughter’s potion bottle and a note leading to [[character/orcc]]. The orc chief intends to give Airy to a frightening armoured human he calls a Demon. Zak offers to remove this threat instead. Shei-Var first demands proof of his strength against the ogre brothers, whose wealth also threatens the chief’s influence. Once Zak defeats the Demon, Shei-Var honours his promise and sends Airy home. The rescue ends with Estera’s gratitude and Airy’s distress that Zak still regards her as a child.",
+						"sources": [
+							"briefing z38",
+							"briefing z39",
+							"briefing sh40",
+							"briefing sh41",
+							"briefing sh41_1",
+							"briefing z41_1",
+							"quest q39g",
+							"quest q41g"
+						],
+						"event": "airy_rescue",
+						"order": 15
 					}
 				],
 				"name_key": "zone bz2g",
@@ -2870,6 +5460,19 @@ const DATA := {
 							"zone bz3g",
 							"briefing dr22"
 						]
+					},
+					{
+						"heading": "The Old Dragon on Lone Mountain",
+						"text": "The observatory’s password takes Zak into the Dead City and up Lone Mountain. He expects the magician from the Orb but finds [[character/skd]]. The dragon insists on an old bargain: a visitor must perform a task before receiving an answer. Zak deals with the armadillos beneath the lair, using the poison the dragon supplies. The dragon then admits that he cannot identify Zak or locate Gipath’s elusive Great Magician. He suggests the ancient lizards might know more and points instead to an expedition of armoured outsiders. He withdraws the skeletons he had used against their camp. In a further conversation, he gives Zak an old sword because he enjoys his company and would rather not see him become another speechless skeleton.",
+						"sources": [
+							"quest q20g",
+							"briefing dr20",
+							"quest q22g",
+							"briefing dr22",
+							"briefing dr22_1"
+						],
+						"event": "dragon",
+						"order": 11
 					}
 				],
 				"name_key": "zone bz3g",
@@ -2886,6 +5489,20 @@ const DATA := {
 							"briefing ha29",
 							"briefing l30"
 						]
+					},
+					{
+						"heading": "The expedition and the Hermit’s bargain",
+						"text": "Estera introduces a lost Khadaganian [[character/clerk|official]], who promises that his expedition can help Zak leave Gipath. Meeting [[character/hwleader]] instead leads to imprisonment and demands for information about a meteorite. Zak plays the ignorant swineherd, but the commander threatens torture. [[character/oliz]] offers escape on the condition that Zak later visit his home. Zak gives his word, receives the Ancient Claw for the traps on the approach and escapes. The Hermit explains that he had intended to negotiate with the armoured humans but changed his mind after seeing their treatment of Zak. Keeping the promise establishes trust where the expedition failed to do so.",
+						"sources": [
+							"briefing z27",
+							"briefing ha29",
+							"briefing ha29_1",
+							"briefing ha29_2",
+							"briefing ha29_3",
+							"briefing l30"
+						],
+						"event": "expedition",
+						"order": 13
 					}
 				],
 				"name_key": "zone bz4g",
@@ -2901,6 +5518,36 @@ const DATA := {
 							"zone bz5g",
 							"briefing l34"
 						]
+					},
+					{
+						"heading": "The expedition and the Hermit’s bargain",
+						"text": "Estera introduces a lost Khadaganian [[character/clerk|official]], who promises that his expedition can help Zak leave Gipath. Meeting [[character/hwleader]] instead leads to imprisonment and demands for information about a meteorite. Zak plays the ignorant swineherd, but the commander threatens torture. [[character/oliz]] offers escape on the condition that Zak later visit his home. Zak gives his word, receives the Ancient Claw for the traps on the approach and escapes. The Hermit explains that he had intended to negotiate with the armoured humans but changed his mind after seeing their treatment of Zak. Keeping the promise establishes trust where the expedition failed to do so.",
+						"sources": [
+							"briefing z27",
+							"briefing ha29",
+							"briefing ha29_1",
+							"briefing ha29_2",
+							"briefing ha29_3",
+							"briefing l30"
+						],
+						"event": "expedition",
+						"order": 13
+					},
+					{
+						"heading": "Water for the lizards and the Great Magician",
+						"text": "The Hermit needs the water diverted by the orcs restored. Zak raises their dam and blocks the diversion canal; in return the lizard locates the magician in a ravine in the Remote Mountains. This information joins the tunnel instructions from the Khadaganian report. Zak passes the ancient defences and reaches [[character/rick]]. Tka-Rik explains that his dragonet has watched Zak since his unusual arrival. Bound to Gipath by his duty as its Great Magician, he offers help with Zak’s memory in exchange for bringing him two surviving young Joons. The first journey will be to Ingos to find the girl. Zak must leave his Gipath companions behind.",
+						"sources": [
+							"briefing l30",
+							"quest q34g",
+							"briefing l34",
+							"briefing z35",
+							"quest q36g",
+							"briefing r36",
+							"briefing r36_3",
+							"briefing r36_4"
+						],
+						"event": "tka_rik",
+						"order": 14
 					}
 				],
 				"name_key": "zone bz5g",
@@ -2917,6 +5564,22 @@ const DATA := {
 							"briefing sh40",
 							"briefing n8_4"
 						]
+					},
+					{
+						"heading": "The rescue of Airy",
+						"text": "Before leaving Gipath, Zak can finish the separate search for Airy, who set out to find the magician herself and impress him. Estera’s vision points to a goblin prison, where Zak finds her granddaughter’s potion bottle and a note leading to [[character/orcc]]. The orc chief intends to give Airy to a frightening armoured human he calls a Demon. Zak offers to remove this threat instead. Shei-Var first demands proof of his strength against the ogre brothers, whose wealth also threatens the chief’s influence. Once Zak defeats the Demon, Shei-Var honours his promise and sends Airy home. The rescue ends with Estera’s gratitude and Airy’s distress that Zak still regards her as a child.",
+						"sources": [
+							"briefing z38",
+							"briefing z39",
+							"briefing sh40",
+							"briefing sh41",
+							"briefing sh41_1",
+							"briefing z41_1",
+							"quest q39g",
+							"quest q41g"
+						],
+						"event": "airy_rescue",
+						"order": 15
 					}
 				],
 				"name_key": "zone bz6g",
@@ -2934,6 +5597,59 @@ const DATA := {
 							"briefing r54",
 							"briefing r72_4"
 						]
+					},
+					{
+						"heading": "Water for the lizards and the Great Magician",
+						"text": "The Hermit needs the water diverted by the orcs restored. Zak raises their dam and blocks the diversion canal; in return the lizard locates the magician in a ravine in the Remote Mountains. This information joins the tunnel instructions from the Khadaganian report. Zak passes the ancient defences and reaches [[character/rick]]. Tka-Rik explains that his dragonet has watched Zak since his unusual arrival. Bound to Gipath by his duty as its Great Magician, he offers help with Zak’s memory in exchange for bringing him two surviving young Joons. The first journey will be to Ingos to find the girl. Zak must leave his Gipath companions behind.",
+						"sources": [
+							"briefing l30",
+							"quest q34g",
+							"briefing l34",
+							"briefing z35",
+							"quest q36g",
+							"briefing r36",
+							"briefing r36_3",
+							"briefing r36_4"
+						],
+						"event": "tka_rik",
+						"order": 14
+					},
+					{
+						"heading": "Lu-a-Jalla beneath the mines",
+						"text": "The former punishment cell is empty. Zak follows the trail deeper into the Forbidden Catacombs until he finds [[character/deva]], who first mistakes him for another captor. She has escaped the mercenaries and found protection through the ancient treaty between Joons and Wormheads. She rejects the nickname Princess and explains that Diera imprisoned her out of jealousy over the governor. Zak falls in love with her, but she remains faithful to At-Zako, who drew the Joon Curse away from her. Zak promises to respect that bond. They return to Tka-Rik, and the next mission becomes the search for her missing beloved on Suslanger.",
+						"sources": [
+							"quest q55k",
+							"briefing d55",
+							"briefing d55_1",
+							"briefing d55_3",
+							"briefing r54"
+						],
+						"event": "lua",
+						"order": 20
+					},
+					{
+						"heading": "At-Zako: the search turns back on itself",
+						"text": "Tka-Rik initially expects Zak to bring the missing Joon with him. Lu-a-Jalla defends the exhausted traveller, and Zak insists that he will continue for her sake even if reunion with At-Zako means losing her. The amulet changes everything: Tka-Rik discovers that its destination was Gipath. Only Zak arrived there in that unusual way. The man he has been seeking is himself, hidden by the Khadaganian transformation spell. Restored as At-Zako, he reassures Tka-Rik and reunites with Lu-a-Jalla. The memories of their earlier flight explain why the return of his identity also brings back the danger of the Curse.",
+						"sources": [
+							"briefing r72",
+							"briefing r72_1",
+							"briefing r72_4",
+							"briefing d72_5"
+						],
+						"event": "identity",
+						"order": 27
+					},
+					{
+						"heading": "The battle with the Joon Curse",
+						"text": "The hurried transformation that concealed At-Zako nearly destroyed his memory. Tka-Rik cannot safely repeat it, so hiding as Zak is no longer an answer. He offers another choice: flee again under his temporary protection, or confront the Curse on Gipath. At-Zako chooses to defend his life with Lu-a-Jalla. Tka-Rik supplies ancient Joon equipment and joins him in the catacombs for the final battle. Defeating the Curse completes the campaign.",
+						"sources": [
+							"briefing r72_6",
+							"briefing r72_7",
+							"quest q73g",
+							"zone gz20g"
+						],
+						"event": "curse",
+						"order": 28
 					}
 				],
 				"name_key": "zone bz7g",
@@ -2951,6 +5667,65 @@ const DATA := {
 							"briefing n8_5",
 							"briefing n8_6"
 						]
+					},
+					{
+						"heading": "Arrival on Ingos and the missing Princess",
+						"text": "On [[allod/ingos]], Zak first crosses the hostile countryside to reach the city. [[character/kapitan]] tells him about the missing young woman known locally as the Princess and the reward offered for finding her. Governor [[character/huber]] takes a personal interest in her, while [[character/magess]] discourages the search. The hunter [[character/trapper]] provides a concrete lead: another investigator, the Snoop from the capital, had followed the same trail before disappearing east of the city. Finding his body changes the search for a missing girl into an investigation of murder.",
+						"sources": [
+							"quest q42k",
+							"briefing k42",
+							"briefing k42_1",
+							"briefing g42",
+							"briefing mg42",
+							"briefing t42",
+							"briefing k43"
+						],
+						"event": "ingos_arrival",
+						"order": 16
+					},
+					{
+						"heading": "The arrow and the Green Clan",
+						"text": "The arrow in the Snoop’s body appears to implicate the Woodsfolk. Sver explains that their markings identify a clan, while the governor discovers that the case containing similar arrows has been stolen from his collection. Two lines of inquiry now run alongside each other: the stolen collection and the Woodsfolk’s testimony. To approach [[character/ycf]], Zak first returns the Green Clan’s Sacred Flower after rescuing its keeper from the White Clan. Grey Leaf then asks for help with the kidnapped elder Khabburu and his captor. The clan ultimately identifies the murder arrow as a false attribution, even refusing to blame its enemies for it. When the clan moves, Zak receives access to its hidden route and new home.",
+						"sources": [
+							"briefing g43",
+							"briefing t43",
+							"briefing yc45",
+							"briefing yc46",
+							"briefing yc47",
+							"briefing yc47_1"
+						],
+						"event": "arrow",
+						"order": 17
+					},
+					{
+						"heading": "Karansul’s accounts and Baldie’s confession",
+						"text": "[[character/shopper]] is reluctant to help, but Sver knows how to put pressure on him. Zak first delivers the hunter’s furs to a buyer outside the merchant’s monopoly. Sver then reveals Karansul’s hidden trade and unpaid taxes, pointing to the foreman’s accounts; he also recommends [[character/mthief]] as a teacher. With the accounts as leverage, Zak learns where to find [[character/vor]], called Baldie, and secures a meeting. Evidence from the stolen collection makes the thief confess: he killed the Snoop, planted the Woodsfolk arrow and worked for a cloaked employer who knew how to evade the governor’s magical traps.",
+						"sources": [
+							"briefing t43_1",
+							"briefing t44",
+							"briefing mthief1",
+							"briefing tr48",
+							"briefing tr49",
+							"briefing tr49_1"
+						],
+						"event": "karansul",
+						"order": 18
+					},
+					{
+						"heading": "Diera and the locked mines",
+						"text": "At the Green Clan’s new home, Grey Leaf describes the supposed man in grey as a white-haired woman. Zak identifies Diera, whose own traps protected the stolen collection. Her urgent warnings against the abandoned mines reinforce his suspicion. Tilvar explains that the governor holds the key. Karansul suggests winning it with a gold nugget and gives access to a dangerous pit, concealing the tigers that drove out its workers; Sver warns Zak of the trap. Zak obtains the nugget and presents it to the collector-governor as a business prospect. Valrasian releases the mine key, opening the way past Diera’s mercenaries.",
+						"sources": [
+							"briefing yc50",
+							"briefing mg43_1",
+							"briefing mg50",
+							"briefing k51",
+							"briefing tr52",
+							"briefing t52",
+							"briefing g53",
+							"quest q54k"
+						],
+						"event": "diera",
+						"order": 19
 					}
 				],
 				"name_key": "zone bz8k",
@@ -2966,6 +5741,20 @@ const DATA := {
 							"zone bz9k",
 							"briefing n8_9"
 						]
+					},
+					{
+						"heading": "The arrow and the Green Clan",
+						"text": "The arrow in the Snoop’s body appears to implicate the Woodsfolk. Sver explains that their markings identify a clan, while the governor discovers that the case containing similar arrows has been stolen from his collection. Two lines of inquiry now run alongside each other: the stolen collection and the Woodsfolk’s testimony. To approach [[character/ycf]], Zak first returns the Green Clan’s Sacred Flower after rescuing its keeper from the White Clan. Grey Leaf then asks for help with the kidnapped elder Khabburu and his captor. The clan ultimately identifies the murder arrow as a false attribution, even refusing to blame its enemies for it. When the clan moves, Zak receives access to its hidden route and new home.",
+						"sources": [
+							"briefing g43",
+							"briefing t43",
+							"briefing yc45",
+							"briefing yc46",
+							"briefing yc47",
+							"briefing yc47_1"
+						],
+						"event": "arrow",
+						"order": 17
 					}
 				],
 				"name_key": "zone bz9k",
@@ -2982,6 +5771,36 @@ const DATA := {
 							"briefing n8_9",
 							"briefing n3_9"
 						]
+					},
+					{
+						"heading": "The arrow and the Green Clan",
+						"text": "The arrow in the Snoop’s body appears to implicate the Woodsfolk. Sver explains that their markings identify a clan, while the governor discovers that the case containing similar arrows has been stolen from his collection. Two lines of inquiry now run alongside each other: the stolen collection and the Woodsfolk’s testimony. To approach [[character/ycf]], Zak first returns the Green Clan’s Sacred Flower after rescuing its keeper from the White Clan. Grey Leaf then asks for help with the kidnapped elder Khabburu and his captor. The clan ultimately identifies the murder arrow as a false attribution, even refusing to blame its enemies for it. When the clan moves, Zak receives access to its hidden route and new home.",
+						"sources": [
+							"briefing g43",
+							"briefing t43",
+							"briefing yc45",
+							"briefing yc46",
+							"briefing yc47",
+							"briefing yc47_1"
+						],
+						"event": "arrow",
+						"order": 17
+					},
+					{
+						"heading": "Diera and the locked mines",
+						"text": "At the Green Clan’s new home, Grey Leaf describes the supposed man in grey as a white-haired woman. Zak identifies Diera, whose own traps protected the stolen collection. Her urgent warnings against the abandoned mines reinforce his suspicion. Tilvar explains that the governor holds the key. Karansul suggests winning it with a gold nugget and gives access to a dangerous pit, concealing the tigers that drove out its workers; Sver warns Zak of the trap. Zak obtains the nugget and presents it to the collector-governor as a business prospect. Valrasian releases the mine key, opening the way past Diera’s mercenaries.",
+						"sources": [
+							"briefing yc50",
+							"briefing mg43_1",
+							"briefing mg50",
+							"briefing k51",
+							"briefing tr52",
+							"briefing t52",
+							"briefing g53",
+							"quest q54k"
+						],
+						"event": "diera",
+						"order": 19
 					}
 				],
 				"name_key": "zone bz10k",
@@ -2998,6 +5817,19 @@ const DATA := {
 							"briefing d55",
 							"briefing r54"
 						]
+					},
+					{
+						"heading": "Lu-a-Jalla beneath the mines",
+						"text": "The former punishment cell is empty. Zak follows the trail deeper into the Forbidden Catacombs until he finds [[character/deva]], who first mistakes him for another captor. She has escaped the mercenaries and found protection through the ancient treaty between Joons and Wormheads. She rejects the nickname Princess and explains that Diera imprisoned her out of jealousy over the governor. Zak falls in love with her, but she remains faithful to At-Zako, who drew the Joon Curse away from her. Zak promises to respect that bond. They return to Tka-Rik, and the next mission becomes the search for her missing beloved on Suslanger.",
+						"sources": [
+							"quest q55k",
+							"briefing d55",
+							"briefing d55_1",
+							"briefing d55_3",
+							"briefing r54"
+						],
+						"event": "lua",
+						"order": 20
 					}
 				],
 				"name_key": "zone bz11k",
@@ -3014,6 +5846,29 @@ const DATA := {
 							"briefing kr60",
 							"briefing kr61"
 						]
+					},
+					{
+						"heading": "Captivity in Death Canyon",
+						"text": "Zak is captured near the portal on [[allod/suslanger]]. Lieutenant [[character/karh]] presents him to [[character/iz]], who orders him used as live quarry for soldiers seeking promotion. Surviving the run through Death Canyon earns only a return to captivity, not freedom. Kardaur threatens punishment through necromancy if Zak dies too quickly and displeases his superior.",
+						"sources": [
+							"briefing hns59",
+							"quest q60h"
+						],
+						"event": "canyon",
+						"order": 21
+					},
+					{
+						"heading": "The Odalisque and the escape",
+						"text": "The [[character/nalo]] approaches Zak after his ordeal. Enslaved by Kardaur and deprived even of a personal name, she wants his death and knows he will guard the gate that night. She steals the key to Zak’s cage. Her father, a rat hunter who disappeared in the caves, told her of the Wormheads’ temple and the bridges across its lava rivers. She uses that knowledge to explain a route the guards fear to follow. Zak kills Kardaur for the fortress key and escapes toward the cave; releasing the caged spiders can delay pursuit. The Odalisque and Zak part with wishes for each other’s freedom and survival, without a stated account of her later fate.",
+						"sources": [
+							"briefing kr60",
+							"briefing kr61",
+							"quest q61h",
+							"quest q62h",
+							"quest q63h"
+						],
+						"event": "odalisque",
+						"order": 22
 					}
 				],
 				"name_key": "zone bz13h",
@@ -3031,6 +5886,60 @@ const DATA := {
 							"briefing s64",
 							"briefing ne64_1"
 						]
+					},
+					{
+						"heading": "Acceptance into the Last Shelter",
+						"text": "Beyond the caves, [[character/kuzn]] finds Zak and vouches for him before [[character/glav]]. The brotherhood’s leader fears imperial spies and requires the Emperor’s Signet Ring, taken from a cyclops who killed its courier. Possessing such an object compromises the newcomer with the authorities and makes the test more than a feat of strength. After Zak returns, Khatul accepts him as Brother Blondie and offers the refuge as a new home. Zak explains his promise to find At-Zako and return to Gipath. Khatul respects that purpose and asks those who can help to support him; [[character/guru]] can teach him greater dexterity.",
+						"sources": [
+							"briefing gl63",
+							"briefing gl64",
+							"briefing guru1"
+						],
+						"event": "shelter",
+						"order": 23
+					},
+					{
+						"heading": "Sahilia’s cache and the Joon collector",
+						"text": "[[character/merc10]] supplies the next lead through her own theft. Antiquities she stole from [[character/junofil]] remain hidden near the city, and Zak recovers them to arrange a meeting. Khatul and Brother Blacksmith help choose the secluded trading place, keeping strangers away from the Shelter. Baluddin admits recognising At-Zako as a living Joon and wanting to keep him in his own house. Imperial scholars took the young man away. Later, Taivo summoned the collector to identify those scholars’ mutilated bodies. The missing youth’s trail now leads to the necromancers rather than a living prisoner whom Zak can simply rescue.",
+						"sources": [
+							"briefing vo64",
+							"briefing vo65",
+							"briefing gl66",
+							"briefing jf67",
+							"quest q65h",
+							"quest q66h",
+							"quest q67h"
+						],
+						"event": "collector",
+						"order": 24
+					},
+					{
+						"heading": "Kholai and the dead scientist",
+						"text": "[[character/nekro]] directs Zak to [[character/oldnekro]], whom Taivo displaced from the imperial laboratory. Kholai wants disgrace for his rival rather than a simple assassination. Zak steals a dead scientist’s head from the laboratory; its disappearance will embarrass Taivo, and Kholai can summon its spirit. The [[character/spirit|scientist]] describes a horror pursuing the red-skinned youth. To conceal him, the scholars changed his appearance and sent him away by teleportation. Kholai interprets the broken testimony and tells Zak to search the ruined mansion for the magical object used in the escape. The fragments Zak finds are beyond Kehel’s ability to interpret: only a Great Magician can identify the destination.",
+						"sources": [
+							"briefing ne67",
+							"briefing sn67",
+							"quest q69h",
+							"briefing sn69",
+							"briefing sn69_1",
+							"quest q70h",
+							"briefing ne70"
+						],
+						"event": "spirit",
+						"order": 25
+					},
+					{
+						"heading": "Brother Faceless and the return to Gipath",
+						"text": "Khatul asks [[character/zaku]] to help Zak reach the guarded portal. Faceless arranges a cave meeting and explains the keys and stone controls. He then reveals himself as Erfar: born on Suslanger, he went to Gipath seeking the meteorite and manipulated the villagers into searching for it. His earlier plots were attempts to remove Zak, who disrupted that scheme. The reunion is another trap, with guards waiting outside the cave. Zak survives the confrontation and forces a route through the portal’s defences. Activating its two controls finally returns him to Tka-Rik with the amulet fragments.",
+						"sources": [
+							"briefing s64",
+							"briefing gl70",
+							"briefing s71",
+							"briefing s71_1",
+							"quest q72h"
+						],
+						"event": "faceless",
+						"order": 26
 					}
 				],
 				"name_key": "zone bz14h",
@@ -3048,6 +5957,21 @@ const DATA := {
 							"briefing sn69",
 							"briefing sn69_1"
 						]
+					},
+					{
+						"heading": "Kholai and the dead scientist",
+						"text": "[[character/nekro]] directs Zak to [[character/oldnekro]], whom Taivo displaced from the imperial laboratory. Kholai wants disgrace for his rival rather than a simple assassination. Zak steals a dead scientist’s head from the laboratory; its disappearance will embarrass Taivo, and Kholai can summon its spirit. The [[character/spirit|scientist]] describes a horror pursuing the red-skinned youth. To conceal him, the scholars changed his appearance and sent him away by teleportation. Kholai interprets the broken testimony and tells Zak to search the ruined mansion for the magical object used in the escape. The fragments Zak finds are beyond Kehel’s ability to interpret: only a Great Magician can identify the destination.",
+						"sources": [
+							"briefing ne67",
+							"briefing sn67",
+							"quest q69h",
+							"briefing sn69",
+							"briefing sn69_1",
+							"quest q70h",
+							"briefing ne70"
+						],
+						"event": "spirit",
+						"order": 25
 					}
 				],
 				"name_key": "zone bz15h",
@@ -3064,6 +5988,21 @@ const DATA := {
 							"briefing vo64",
 							"briefing jf67"
 						]
+					},
+					{
+						"heading": "Sahilia’s cache and the Joon collector",
+						"text": "[[character/merc10]] supplies the next lead through her own theft. Antiquities she stole from [[character/junofil]] remain hidden near the city, and Zak recovers them to arrange a meeting. Khatul and Brother Blacksmith help choose the secluded trading place, keeping strangers away from the Shelter. Baluddin admits recognising At-Zako as a living Joon and wanting to keep him in his own house. Imperial scholars took the young man away. Later, Taivo summoned the collector to identify those scholars’ mutilated bodies. The missing youth’s trail now leads to the necromancers rather than a living prisoner whom Zak can simply rescue.",
+						"sources": [
+							"briefing vo64",
+							"briefing vo65",
+							"briefing gl66",
+							"briefing jf67",
+							"quest q65h",
+							"quest q66h",
+							"quest q67h"
+						],
+						"event": "collector",
+						"order": 24
 					}
 				],
 				"name_key": "zone bz16h",
@@ -3080,10 +6019,799 @@ const DATA := {
 							"briefing s71",
 							"briefing s71_1"
 						]
+					},
+					{
+						"heading": "Brother Faceless and the return to Gipath",
+						"text": "Khatul asks [[character/zaku]] to help Zak reach the guarded portal. Faceless arranges a cave meeting and explains the keys and stone controls. He then reveals himself as Erfar: born on Suslanger, he went to Gipath seeking the meteorite and manipulated the villagers into searching for it. His earlier plots were attempts to remove Zak, who disrupted that scheme. The reunion is another trap, with guards waiting outside the cave. Zak survives the confrontation and forces a route through the portal’s defences. Activating its two controls finally returns him to Tka-Rik with the amulet fragments.",
+						"sources": [
+							"briefing s64",
+							"briefing gl70",
+							"briefing s71",
+							"briefing s71_1",
+							"quest q72h"
+						],
+						"event": "faceless",
+						"order": 26
 					}
 				],
 				"name_key": "zone bz18h",
 				"id": "bz18h"
+			},
+			"map/gz1g": {
+				"kind": "map",
+				"name_key": "zone gz1g",
+				"sections": [
+					{
+						"heading": "Awakening among the ruins",
+						"text": "[[character/hero]] begins his journey on [[allod/gipat]], without knowing who he is or how he arrived. His first concern is finding other people. Leaving the ruins, he sees villagers flee from the stranger who has emerged from the ancient site. Their flight gives him a direction to follow. He makes his way along the river and across the ford to the village.",
+						"sources": [
+							"quest q0g",
+							"briefing s1",
+							"briefing s0"
+						],
+						"event": "awakening",
+						"order": 1
+					}
+				],
+				"id": "gz1g"
+			},
+			"map/gz3g": {
+				"kind": "map",
+				"name_key": "zone gz3g",
+				"sections": [
+					{
+						"heading": "The village and the Chosen",
+						"text": "At the village assembly, [[character/elder]] identifies Zak with the promised Chosen who was to appear at the Sacred Ruins. [[character/sheriff]], the captain, supports the ceremony. The offer of food, shelter and honour comes with a threat: an impostor would be thrown into the fire. Zak accepts the title and gives his name. Erfar immediately sends him against the goblin sentry watching the village, reasoning that his plain clothes and unusual metal knife will let him approach where armed villagers cannot. Afterwards Zak learns that this is Gipath’s only human village, with no king or known route to other lands.",
+						"sources": [
+							"briefing s1",
+							"briefing s0",
+							"briefing v0",
+							"quest q1ag"
+						],
+						"event": "chosen",
+						"order": 2
+					},
+					{
+						"heading": "The wolf, the captain and the craftsman",
+						"text": "Killing the sentry brings another request from Erfar: the White Wolf and its pack are taking the village livestock. After Zak kills their leader, Erfar and Gort press him to surrender the head so the captain can claim prestige. Gort also sends him to punish the goblins while the village soldiers stay home. Meanwhile [[character/smith]] refuses to work until his stolen iron tools are returned. Erfar calls the thieves friendly “Free Hunters”; Babur calls them brigands and describes the beating of his apprentice. Recovering the chisel and bodkin from the chief and his wife wins Zak the craftsman’s services. These early errands expose the disagreement between the village’s leaders and the man who equips it.",
+						"sources": [
+							"briefing s1_3",
+							"briefing s3",
+							"briefing v3",
+							"briefing v3_1",
+							"briefing m1",
+							"briefing m1_1",
+							"briefing m4",
+							"quest q2g"
+						],
+						"event": "village_errands",
+						"order": 3
+					},
+					{
+						"heading": "The brigands’ trail and the Magic Bit",
+						"text": "Babur’s account of a red-haired brigand meeting orcs gives Zak his next lead. A map taken from Redhead points to a Magic Bit in a sarcophagus in the orc cave. Babur explains that Estera values such objects, while Gort can supply the missing drawbridge mechanism. Zak obtains the seer’s key and the object, then asks how to reach the witch. Babur, who made her spare trap key, explains the guarded ravines and controlling obelisks. The craftsman expects a share of the sale. Zak instead intends to exchange the find for help with his lost memory.",
+						"sources": [
+							"briefing m4",
+							"briefing m5_1",
+							"briefing v4",
+							"briefing m6",
+							"briefing m6_1",
+							"quest q4g",
+							"quest q5g",
+							"quest q6g"
+						],
+						"event": "magic_bit",
+						"order": 4
+					},
+					{
+						"heading": "Gort’s rebellion",
+						"text": "The written instructions to kill Zak expose Gort’s handwriting. Confronted with the evidence, the captain turns against the authority he formerly served and declares that he will rule the village himself. He flees to gather the forest men. Erfar urges Zak to stop him before he can return; the ensuing pursuit ends Gort’s rebellion. [[character/nsheriff]] becomes the new captain. Unlike his predecessor, Rivar admits that he dislikes fighting, shares his family’s secret of strength and later supports Zak when suspicion finally reaches the elder.",
+						"sources": [
+							"briefing v19",
+							"briefing v19_1",
+							"briefing m21",
+							"briefing s21",
+							"briefing nv23",
+							"briefing nv26",
+							"quest q19g",
+							"quest q23g"
+						],
+						"event": "gort",
+						"order": 10
+					}
+				],
+				"id": "gz3g"
+			},
+			"map/gz5g": {
+				"kind": "map",
+				"name_key": "zone gz5g",
+				"sections": [
+					{
+						"heading": "The brigands’ trail and the Magic Bit",
+						"text": "Babur’s account of a red-haired brigand meeting orcs gives Zak his next lead. A map taken from Redhead points to a Magic Bit in a sarcophagus in the orc cave. Babur explains that Estera values such objects, while Gort can supply the missing drawbridge mechanism. Zak obtains the seer’s key and the object, then asks how to reach the witch. Babur, who made her spare trap key, explains the guarded ravines and controlling obelisks. The craftsman expects a share of the sale. Zak instead intends to exchange the find for help with his lost memory.",
+						"sources": [
+							"briefing m4",
+							"briefing m5_1",
+							"briefing v4",
+							"briefing m6",
+							"briefing m6_1",
+							"quest q4g",
+							"quest q5g",
+							"quest q6g"
+						],
+						"event": "magic_bit",
+						"order": 4
+					},
+					{
+						"heading": "The Old Dragon on Lone Mountain",
+						"text": "The observatory’s password takes Zak into the Dead City and up Lone Mountain. He expects the magician from the Orb but finds [[character/skd]]. The dragon insists on an old bargain: a visitor must perform a task before receiving an answer. Zak deals with the armadillos beneath the lair, using the poison the dragon supplies. The dragon then admits that he cannot identify Zak or locate Gipath’s elusive Great Magician. He suggests the ancient lizards might know more and points instead to an expedition of armoured outsiders. He withdraws the skeletons he had used against their camp. In a further conversation, he gives Zak an old sword because he enjoys his company and would rather not see him become another speechless skeleton.",
+						"sources": [
+							"quest q20g",
+							"briefing dr20",
+							"quest q22g",
+							"briefing dr22",
+							"briefing dr22_1"
+						],
+						"event": "dragon",
+						"order": 11
+					}
+				],
+				"id": "gz5g"
+			},
+			"map/gz2g": {
+				"kind": "map",
+				"name_key": "zone gz2g",
+				"sections": [
+					{
+						"heading": "The brigands’ trail and the Magic Bit",
+						"text": "Babur’s account of a red-haired brigand meeting orcs gives Zak his next lead. A map taken from Redhead points to a Magic Bit in a sarcophagus in the orc cave. Babur explains that Estera values such objects, while Gort can supply the missing drawbridge mechanism. Zak obtains the seer’s key and the object, then asks how to reach the witch. Babur, who made her spare trap key, explains the guarded ravines and controlling obelisks. The craftsman expects a share of the sale. Zak instead intends to exchange the find for help with his lost memory.",
+						"sources": [
+							"briefing m4",
+							"briefing m5_1",
+							"briefing v4",
+							"briefing m6",
+							"briefing m6_1",
+							"quest q4g",
+							"quest q5g",
+							"quest q6g"
+						],
+						"event": "magic_bit",
+						"order": 4
+					}
+				],
+				"id": "gz2g"
+			},
+			"map/gz7g": {
+				"kind": "map",
+				"name_key": "zone gz7g",
+				"sections": [
+					{
+						"heading": "Two searches on the islands",
+						"text": "The river islands hold two different leads. Estera needs the Orb, which Erfar places on the southernmost island. Erfar also proposes tracing [[character/bgoblinc]]’s blue Eye Stone to a possible portal. Zak takes the First Goblin’s skull to compel GoGo to visit the village; the chief explains that the orcs confiscated the written record of the stone’s origin. The islands require their own bridge mechanism, distinct from the cave’s. Zak retrieves the record and the Orb in this area. Erfar claims the record offers nothing useful, then diverts attention to missing taxes and gold in Golden Valley. His portal scheme and Estera’s search serve different purposes, even though they take Zak through the same territory.",
+						"sources": [
+							"briefing s6_2",
+							"briefing s7_1",
+							"briefing s7_4",
+							"briefing s8_2",
+							"briefing v5",
+							"quest q7g",
+							"quest q8g",
+							"quest q9g",
+							"quest q10g"
+						],
+						"event": "orb_islands",
+						"order": 6
+					},
+					{
+						"heading": "The supposed attack on the goblins",
+						"text": "While Zak seeks the magician, Erfar and Gort arrange another joint operation with the Free Hunters, supposedly to prevent a goblin raid. The promised friendly meeting becomes an ambush by brigands and village soldiers. Erfar denies responsibility, while Babur warns that the elder is trying to have Zak killed. A note in the newer orc script cannot yet settle the matter: Estera needs an Orc ABC Book to read it. Its translation reveals a contract on Zak’s life, a detailed description of him and a substantial payment. The search for the author becomes a separate investigation alongside the route into the Dead City.",
+						"sources": [
+							"briefing s12_4",
+							"briefing s13_0",
+							"briefing m13_3",
+							"briefing z13_2",
+							"briefing z14",
+							"quest q13ag",
+							"quest q14g"
+						],
+						"event": "ambush",
+						"order": 8
+					}
+				],
+				"id": "gz7g"
+			},
+			"map/gz6g": {
+				"kind": "map",
+				"name_key": "zone gz6g",
+				"sections": [
+					{
+						"heading": "Two searches on the islands",
+						"text": "The river islands hold two different leads. Estera needs the Orb, which Erfar places on the southernmost island. Erfar also proposes tracing [[character/bgoblinc]]’s blue Eye Stone to a possible portal. Zak takes the First Goblin’s skull to compel GoGo to visit the village; the chief explains that the orcs confiscated the written record of the stone’s origin. The islands require their own bridge mechanism, distinct from the cave’s. Zak retrieves the record and the Orb in this area. Erfar claims the record offers nothing useful, then diverts attention to missing taxes and gold in Golden Valley. His portal scheme and Estera’s search serve different purposes, even though they take Zak through the same territory.",
+						"sources": [
+							"briefing s6_2",
+							"briefing s7_1",
+							"briefing s7_4",
+							"briefing s8_2",
+							"briefing v5",
+							"quest q7g",
+							"quest q8g",
+							"quest q9g",
+							"quest q10g"
+						],
+						"event": "orb_islands",
+						"order": 6
+					},
+					{
+						"heading": "Airy’s route through the observatory",
+						"text": "Airy returns with a lead to the old observatory library, but harpies occupy the site. Her plan requires a lizard’s amulet to lead a particular green dragon against them. Reaching that dragon requires Estera to freeze the lake with a green crystal. The hostile lizards on the approach present another obstacle: Zak moves the Big Shell from the Remote Mountains to the Middle Mountains, restoring the peace associated with its altar. This leaves Babur’s former quarry route unsafe and can lead to an additional errand for the craftsman. The observatory book finally supplies the password to the Dead City’s hidden entrance. Airy can also teach Zak the Magic of Feelings, only to be offended when he again calls her a little girl.",
+						"sources": [
+							"briefing z13_1",
+							"briefing z14_1",
+							"briefing m13_2",
+							"briefing m15",
+							"briefing z17",
+							"briefing z15",
+							"briefing z18",
+							"quest q15ag",
+							"quest q15bg",
+							"quest q18g"
+						],
+						"event": "observatory",
+						"order": 9
+					},
+					{
+						"heading": "The White Flower and Erfar’s exposure",
+						"text": "After Gort’s fall, Erfar claims that an orc seer has cursed the village with disease and asks for a White Flower. Zak finds armed opposition waiting for him, although no villagers have yet fallen ill. Erfar blames Babur, while Babur’s earlier warning makes Zak suspect both men. Estera suggests setting a trap. Zak tells each suspect a different location for a second flower; the ambush appears at the place he gave Erfar. With Rivar’s support he confronts and imprisons the elder. An expedition report recovered from the abandoned foreign camp becomes leverage: Erfar translates its account of a concealed tunnel and its opening lever. He later escapes custody. Estera recalls that he originally arrived as an adult stranger, leaving his real purpose unresolved.",
+						"sources": [
+							"briefing s21_1",
+							"briefing s24",
+							"briefing m24",
+							"briefing z24_1",
+							"quest q25g",
+							"briefing nv26",
+							"briefing s25_1",
+							"briefing s25_3",
+							"briefing nv27_1",
+							"briefing z25",
+							"quest q26g"
+						],
+						"event": "erfar_exposed",
+						"order": 12
+					},
+					{
+						"heading": "The rescue of Airy",
+						"text": "Before leaving Gipath, Zak can finish the separate search for Airy, who set out to find the magician herself and impress him. Estera’s vision points to a goblin prison, where Zak finds her granddaughter’s potion bottle and a note leading to [[character/orcc]]. The orc chief intends to give Airy to a frightening armoured human he calls a Demon. Zak offers to remove this threat instead. Shei-Var first demands proof of his strength against the ogre brothers, whose wealth also threatens the chief’s influence. Once Zak defeats the Demon, Shei-Var honours his promise and sends Airy home. The rescue ends with Estera’s gratitude and Airy’s distress that Zak still regards her as a child.",
+						"sources": [
+							"briefing z38",
+							"briefing z39",
+							"briefing sh40",
+							"briefing sh41",
+							"briefing sh41_1",
+							"briefing z41_1",
+							"quest q39g",
+							"quest q41g"
+						],
+						"event": "airy_rescue",
+						"order": 15
+					}
+				],
+				"id": "gz6g"
+			},
+			"map/gz9g": {
+				"kind": "map",
+				"name_key": "zone gz9g",
+				"sections": [
+					{
+						"heading": "The Orb and the Dead City",
+						"text": "When Estera uses the Orb, Zak sees an old man instead of a recognisable memory. She believes he is its owner and a more powerful magician who might help. Orc records trace the object to the Dead City. Estera distinguishes its human fortress from Gipath’s much older ruins: after the Night of Troubles, the dead attacked the living, and survivors fled to found the present village. The obvious route into the fortress is deadly. Airy leaves to investigate another way in, despite her grandmother’s objections. Separately, Erfar can send Zak into the surrounding region’s Golden Valley for a caravan’s lost treasure, an errand he badly understates.",
+						"sources": [
+							"briefing z2",
+							"briefing z11",
+							"briefing z11_1",
+							"briefing s8_2",
+							"briefing s12",
+							"briefing s12_1",
+							"quest q12g"
+						],
+						"event": "dead_city_lead",
+						"order": 7
+					},
+					{
+						"heading": "Airy’s route through the observatory",
+						"text": "Airy returns with a lead to the old observatory library, but harpies occupy the site. Her plan requires a lizard’s amulet to lead a particular green dragon against them. Reaching that dragon requires Estera to freeze the lake with a green crystal. The hostile lizards on the approach present another obstacle: Zak moves the Big Shell from the Remote Mountains to the Middle Mountains, restoring the peace associated with its altar. This leaves Babur’s former quarry route unsafe and can lead to an additional errand for the craftsman. The observatory book finally supplies the password to the Dead City’s hidden entrance. Airy can also teach Zak the Magic of Feelings, only to be offended when he again calls her a little girl.",
+						"sources": [
+							"briefing z13_1",
+							"briefing z14_1",
+							"briefing m13_2",
+							"briefing m15",
+							"briefing z17",
+							"briefing z15",
+							"briefing z18",
+							"quest q15ag",
+							"quest q15bg",
+							"quest q18g"
+						],
+						"event": "observatory",
+						"order": 9
+					},
+					{
+						"heading": "The Old Dragon on Lone Mountain",
+						"text": "The observatory’s password takes Zak into the Dead City and up Lone Mountain. He expects the magician from the Orb but finds [[character/skd]]. The dragon insists on an old bargain: a visitor must perform a task before receiving an answer. Zak deals with the armadillos beneath the lair, using the poison the dragon supplies. The dragon then admits that he cannot identify Zak or locate Gipath’s elusive Great Magician. He suggests the ancient lizards might know more and points instead to an expedition of armoured outsiders. He withdraws the skeletons he had used against their camp. In a further conversation, he gives Zak an old sword because he enjoys his company and would rather not see him become another speechless skeleton.",
+						"sources": [
+							"quest q20g",
+							"briefing dr20",
+							"quest q22g",
+							"briefing dr22",
+							"briefing dr22_1"
+						],
+						"event": "dragon",
+						"order": 11
+					},
+					{
+						"heading": "The White Flower and Erfar’s exposure",
+						"text": "After Gort’s fall, Erfar claims that an orc seer has cursed the village with disease and asks for a White Flower. Zak finds armed opposition waiting for him, although no villagers have yet fallen ill. Erfar blames Babur, while Babur’s earlier warning makes Zak suspect both men. Estera suggests setting a trap. Zak tells each suspect a different location for a second flower; the ambush appears at the place he gave Erfar. With Rivar’s support he confronts and imprisons the elder. An expedition report recovered from the abandoned foreign camp becomes leverage: Erfar translates its account of a concealed tunnel and its opening lever. He later escapes custody. Estera recalls that he originally arrived as an adult stranger, leaving his real purpose unresolved.",
+						"sources": [
+							"briefing s21_1",
+							"briefing s24",
+							"briefing m24",
+							"briefing z24_1",
+							"quest q25g",
+							"briefing nv26",
+							"briefing s25_1",
+							"briefing s25_3",
+							"briefing nv27_1",
+							"briefing z25",
+							"quest q26g"
+						],
+						"event": "erfar_exposed",
+						"order": 12
+					}
+				],
+				"id": "gz9g"
+			},
+			"map/gz8g": {
+				"kind": "map",
+				"name_key": "zone gz8g",
+				"sections": [
+					{
+						"heading": "The supposed attack on the goblins",
+						"text": "While Zak seeks the magician, Erfar and Gort arrange another joint operation with the Free Hunters, supposedly to prevent a goblin raid. The promised friendly meeting becomes an ambush by brigands and village soldiers. Erfar denies responsibility, while Babur warns that the elder is trying to have Zak killed. A note in the newer orc script cannot yet settle the matter: Estera needs an Orc ABC Book to read it. Its translation reveals a contract on Zak’s life, a detailed description of him and a substantial payment. The search for the author becomes a separate investigation alongside the route into the Dead City.",
+						"sources": [
+							"briefing s12_4",
+							"briefing s13_0",
+							"briefing m13_3",
+							"briefing z13_2",
+							"briefing z14",
+							"quest q13ag",
+							"quest q14g"
+						],
+						"event": "ambush",
+						"order": 8
+					},
+					{
+						"heading": "The expedition and the Hermit’s bargain",
+						"text": "Estera introduces a lost Khadaganian [[character/clerk|official]], who promises that his expedition can help Zak leave Gipath. Meeting [[character/hwleader]] instead leads to imprisonment and demands for information about a meteorite. Zak plays the ignorant swineherd, but the commander threatens torture. [[character/oliz]] offers escape on the condition that Zak later visit his home. Zak gives his word, receives the Ancient Claw for the traps on the approach and escapes. The Hermit explains that he had intended to negotiate with the armoured humans but changed his mind after seeing their treatment of Zak. Keeping the promise establishes trust where the expedition failed to do so.",
+						"sources": [
+							"briefing z27",
+							"briefing ha29",
+							"briefing ha29_1",
+							"briefing ha29_2",
+							"briefing ha29_3",
+							"briefing l30"
+						],
+						"event": "expedition",
+						"order": 13
+					},
+					{
+						"heading": "Water for the lizards and the Great Magician",
+						"text": "The Hermit needs the water diverted by the orcs restored. Zak raises their dam and blocks the diversion canal; in return the lizard locates the magician in a ravine in the Remote Mountains. This information joins the tunnel instructions from the Khadaganian report. Zak passes the ancient defences and reaches [[character/rick]]. Tka-Rik explains that his dragonet has watched Zak since his unusual arrival. Bound to Gipath by his duty as its Great Magician, he offers help with Zak’s memory in exchange for bringing him two surviving young Joons. The first journey will be to Ingos to find the girl. Zak must leave his Gipath companions behind.",
+						"sources": [
+							"briefing l30",
+							"quest q34g",
+							"briefing l34",
+							"briefing z35",
+							"quest q36g",
+							"briefing r36",
+							"briefing r36_3",
+							"briefing r36_4"
+						],
+						"event": "tka_rik",
+						"order": 14
+					},
+					{
+						"heading": "The rescue of Airy",
+						"text": "Before leaving Gipath, Zak can finish the separate search for Airy, who set out to find the magician herself and impress him. Estera’s vision points to a goblin prison, where Zak finds her granddaughter’s potion bottle and a note leading to [[character/orcc]]. The orc chief intends to give Airy to a frightening armoured human he calls a Demon. Zak offers to remove this threat instead. Shei-Var first demands proof of his strength against the ogre brothers, whose wealth also threatens the chief’s influence. Once Zak defeats the Demon, Shei-Var honours his promise and sends Airy home. The rescue ends with Estera’s gratitude and Airy’s distress that Zak still regards her as a child.",
+						"sources": [
+							"briefing z38",
+							"briefing z39",
+							"briefing sh40",
+							"briefing sh41",
+							"briefing sh41_1",
+							"briefing z41_1",
+							"quest q39g",
+							"quest q41g"
+						],
+						"event": "airy_rescue",
+						"order": 15
+					}
+				],
+				"id": "gz8g"
+			},
+			"map/gz4g": {
+				"kind": "map",
+				"name_key": "zone gz4g",
+				"sections": [
+					{
+						"heading": "Airy’s route through the observatory",
+						"text": "Airy returns with a lead to the old observatory library, but harpies occupy the site. Her plan requires a lizard’s amulet to lead a particular green dragon against them. Reaching that dragon requires Estera to freeze the lake with a green crystal. The hostile lizards on the approach present another obstacle: Zak moves the Big Shell from the Remote Mountains to the Middle Mountains, restoring the peace associated with its altar. This leaves Babur’s former quarry route unsafe and can lead to an additional errand for the craftsman. The observatory book finally supplies the password to the Dead City’s hidden entrance. Airy can also teach Zak the Magic of Feelings, only to be offended when he again calls her a little girl.",
+						"sources": [
+							"briefing z13_1",
+							"briefing z14_1",
+							"briefing m13_2",
+							"briefing m15",
+							"briefing z17",
+							"briefing z15",
+							"briefing z18",
+							"quest q15ag",
+							"quest q15bg",
+							"quest q18g"
+						],
+						"event": "observatory",
+						"order": 9
+					},
+					{
+						"heading": "The expedition and the Hermit’s bargain",
+						"text": "Estera introduces a lost Khadaganian [[character/clerk|official]], who promises that his expedition can help Zak leave Gipath. Meeting [[character/hwleader]] instead leads to imprisonment and demands for information about a meteorite. Zak plays the ignorant swineherd, but the commander threatens torture. [[character/oliz]] offers escape on the condition that Zak later visit his home. Zak gives his word, receives the Ancient Claw for the traps on the approach and escapes. The Hermit explains that he had intended to negotiate with the armoured humans but changed his mind after seeing their treatment of Zak. Keeping the promise establishes trust where the expedition failed to do so.",
+						"sources": [
+							"briefing z27",
+							"briefing ha29",
+							"briefing ha29_1",
+							"briefing ha29_2",
+							"briefing ha29_3",
+							"briefing l30"
+						],
+						"event": "expedition",
+						"order": 13
+					},
+					{
+						"heading": "Water for the lizards and the Great Magician",
+						"text": "The Hermit needs the water diverted by the orcs restored. Zak raises their dam and blocks the diversion canal; in return the lizard locates the magician in a ravine in the Remote Mountains. This information joins the tunnel instructions from the Khadaganian report. Zak passes the ancient defences and reaches [[character/rick]]. Tka-Rik explains that his dragonet has watched Zak since his unusual arrival. Bound to Gipath by his duty as its Great Magician, he offers help with Zak’s memory in exchange for bringing him two surviving young Joons. The first journey will be to Ingos to find the girl. Zak must leave his Gipath companions behind.",
+						"sources": [
+							"briefing l30",
+							"quest q34g",
+							"briefing l34",
+							"briefing z35",
+							"quest q36g",
+							"briefing r36",
+							"briefing r36_3",
+							"briefing r36_4"
+						],
+						"event": "tka_rik",
+						"order": 14
+					}
+				],
+				"id": "gz4g"
+			},
+			"map/gz10g": {
+				"kind": "map",
+				"name_key": "zone gz10g",
+				"sections": [
+					{
+						"heading": "Water for the lizards and the Great Magician",
+						"text": "The Hermit needs the water diverted by the orcs restored. Zak raises their dam and blocks the diversion canal; in return the lizard locates the magician in a ravine in the Remote Mountains. This information joins the tunnel instructions from the Khadaganian report. Zak passes the ancient defences and reaches [[character/rick]]. Tka-Rik explains that his dragonet has watched Zak since his unusual arrival. Bound to Gipath by his duty as its Great Magician, he offers help with Zak’s memory in exchange for bringing him two surviving young Joons. The first journey will be to Ingos to find the girl. Zak must leave his Gipath companions behind.",
+						"sources": [
+							"briefing l30",
+							"quest q34g",
+							"briefing l34",
+							"briefing z35",
+							"quest q36g",
+							"briefing r36",
+							"briefing r36_3",
+							"briefing r36_4"
+						],
+						"event": "tka_rik",
+						"order": 14
+					}
+				],
+				"id": "gz10g"
+			},
+			"map/gz11k": {
+				"kind": "map",
+				"name_key": "zone gz11k",
+				"sections": [
+					{
+						"heading": "Arrival on Ingos and the missing Princess",
+						"text": "On [[allod/ingos]], Zak first crosses the hostile countryside to reach the city. [[character/kapitan]] tells him about the missing young woman known locally as the Princess and the reward offered for finding her. Governor [[character/huber]] takes a personal interest in her, while [[character/magess]] discourages the search. The hunter [[character/trapper]] provides a concrete lead: another investigator, the Snoop from the capital, had followed the same trail before disappearing east of the city. Finding his body changes the search for a missing girl into an investigation of murder.",
+						"sources": [
+							"quest q42k",
+							"briefing k42",
+							"briefing k42_1",
+							"briefing g42",
+							"briefing mg42",
+							"briefing t42",
+							"briefing k43"
+						],
+						"event": "ingos_arrival",
+						"order": 16
+					},
+					{
+						"heading": "The arrow and the Green Clan",
+						"text": "The arrow in the Snoop’s body appears to implicate the Woodsfolk. Sver explains that their markings identify a clan, while the governor discovers that the case containing similar arrows has been stolen from his collection. Two lines of inquiry now run alongside each other: the stolen collection and the Woodsfolk’s testimony. To approach [[character/ycf]], Zak first returns the Green Clan’s Sacred Flower after rescuing its keeper from the White Clan. Grey Leaf then asks for help with the kidnapped elder Khabburu and his captor. The clan ultimately identifies the murder arrow as a false attribution, even refusing to blame its enemies for it. When the clan moves, Zak receives access to its hidden route and new home.",
+						"sources": [
+							"briefing g43",
+							"briefing t43",
+							"briefing yc45",
+							"briefing yc46",
+							"briefing yc47",
+							"briefing yc47_1"
+						],
+						"event": "arrow",
+						"order": 17
+					}
+				],
+				"id": "gz11k"
+			},
+			"map/gz13k": {
+				"kind": "map",
+				"name_key": "zone gz13k",
+				"sections": [
+					{
+						"heading": "The arrow and the Green Clan",
+						"text": "The arrow in the Snoop’s body appears to implicate the Woodsfolk. Sver explains that their markings identify a clan, while the governor discovers that the case containing similar arrows has been stolen from his collection. Two lines of inquiry now run alongside each other: the stolen collection and the Woodsfolk’s testimony. To approach [[character/ycf]], Zak first returns the Green Clan’s Sacred Flower after rescuing its keeper from the White Clan. Grey Leaf then asks for help with the kidnapped elder Khabburu and his captor. The clan ultimately identifies the murder arrow as a false attribution, even refusing to blame its enemies for it. When the clan moves, Zak receives access to its hidden route and new home.",
+						"sources": [
+							"briefing g43",
+							"briefing t43",
+							"briefing yc45",
+							"briefing yc46",
+							"briefing yc47",
+							"briefing yc47_1"
+						],
+						"event": "arrow",
+						"order": 17
+					},
+					{
+						"heading": "Karansul’s accounts and Baldie’s confession",
+						"text": "[[character/shopper]] is reluctant to help, but Sver knows how to put pressure on him. Zak first delivers the hunter’s furs to a buyer outside the merchant’s monopoly. Sver then reveals Karansul’s hidden trade and unpaid taxes, pointing to the foreman’s accounts; he also recommends [[character/mthief]] as a teacher. With the accounts as leverage, Zak learns where to find [[character/vor]], called Baldie, and secures a meeting. Evidence from the stolen collection makes the thief confess: he killed the Snoop, planted the Woodsfolk arrow and worked for a cloaked employer who knew how to evade the governor’s magical traps.",
+						"sources": [
+							"briefing t43_1",
+							"briefing t44",
+							"briefing mthief1",
+							"briefing tr48",
+							"briefing tr49",
+							"briefing tr49_1"
+						],
+						"event": "karansul",
+						"order": 18
+					}
+				],
+				"id": "gz13k"
+			},
+			"map/gz12k": {
+				"kind": "map",
+				"name_key": "zone gz12k",
+				"sections": [
+					{
+						"heading": "Karansul’s accounts and Baldie’s confession",
+						"text": "[[character/shopper]] is reluctant to help, but Sver knows how to put pressure on him. Zak first delivers the hunter’s furs to a buyer outside the merchant’s monopoly. Sver then reveals Karansul’s hidden trade and unpaid taxes, pointing to the foreman’s accounts; he also recommends [[character/mthief]] as a teacher. With the accounts as leverage, Zak learns where to find [[character/vor]], called Baldie, and secures a meeting. Evidence from the stolen collection makes the thief confess: he killed the Snoop, planted the Woodsfolk arrow and worked for a cloaked employer who knew how to evade the governor’s magical traps.",
+						"sources": [
+							"briefing t43_1",
+							"briefing t44",
+							"briefing mthief1",
+							"briefing tr48",
+							"briefing tr49",
+							"briefing tr49_1"
+						],
+						"event": "karansul",
+						"order": 18
+					},
+					{
+						"heading": "Diera and the locked mines",
+						"text": "At the Green Clan’s new home, Grey Leaf describes the supposed man in grey as a white-haired woman. Zak identifies Diera, whose own traps protected the stolen collection. Her urgent warnings against the abandoned mines reinforce his suspicion. Tilvar explains that the governor holds the key. Karansul suggests winning it with a gold nugget and gives access to a dangerous pit, concealing the tigers that drove out its workers; Sver warns Zak of the trap. Zak obtains the nugget and presents it to the collector-governor as a business prospect. Valrasian releases the mine key, opening the way past Diera’s mercenaries.",
+						"sources": [
+							"briefing yc50",
+							"briefing mg43_1",
+							"briefing mg50",
+							"briefing k51",
+							"briefing tr52",
+							"briefing t52",
+							"briefing g53",
+							"quest q54k"
+						],
+						"event": "diera",
+						"order": 19
+					}
+				],
+				"id": "gz12k"
+			},
+			"map/gz14k": {
+				"kind": "map",
+				"name_key": "zone gz14k",
+				"sections": [
+					{
+						"heading": "Lu-a-Jalla beneath the mines",
+						"text": "The former punishment cell is empty. Zak follows the trail deeper into the Forbidden Catacombs until he finds [[character/deva]], who first mistakes him for another captor. She has escaped the mercenaries and found protection through the ancient treaty between Joons and Wormheads. She rejects the nickname Princess and explains that Diera imprisoned her out of jealousy over the governor. Zak falls in love with her, but she remains faithful to At-Zako, who drew the Joon Curse away from her. Zak promises to respect that bond. They return to Tka-Rik, and the next mission becomes the search for her missing beloved on Suslanger.",
+						"sources": [
+							"quest q55k",
+							"briefing d55",
+							"briefing d55_1",
+							"briefing d55_3",
+							"briefing r54"
+						],
+						"event": "lua",
+						"order": 20
+					}
+				],
+				"id": "gz14k"
+			},
+			"map/gz15h": {
+				"kind": "map",
+				"name_key": "zone gz15h",
+				"sections": [
+					{
+						"heading": "Captivity in Death Canyon",
+						"text": "Zak is captured near the portal on [[allod/suslanger]]. Lieutenant [[character/karh]] presents him to [[character/iz]], who orders him used as live quarry for soldiers seeking promotion. Surviving the run through Death Canyon earns only a return to captivity, not freedom. Kardaur threatens punishment through necromancy if Zak dies too quickly and displeases his superior.",
+						"sources": [
+							"briefing hns59",
+							"quest q60h"
+						],
+						"event": "canyon",
+						"order": 21
+					},
+					{
+						"heading": "The Odalisque and the escape",
+						"text": "The [[character/nalo]] approaches Zak after his ordeal. Enslaved by Kardaur and deprived even of a personal name, she wants his death and knows he will guard the gate that night. She steals the key to Zak’s cage. Her father, a rat hunter who disappeared in the caves, told her of the Wormheads’ temple and the bridges across its lava rivers. She uses that knowledge to explain a route the guards fear to follow. Zak kills Kardaur for the fortress key and escapes toward the cave; releasing the caged spiders can delay pursuit. The Odalisque and Zak part with wishes for each other’s freedom and survival, without a stated account of her later fate.",
+						"sources": [
+							"briefing kr60",
+							"briefing kr61",
+							"quest q61h",
+							"quest q62h",
+							"quest q63h"
+						],
+						"event": "odalisque",
+						"order": 22
+					}
+				],
+				"id": "gz15h"
+			},
+			"map/gz16h": {
+				"kind": "map",
+				"name_key": "zone gz16h",
+				"sections": [
+					{
+						"heading": "The Odalisque and the escape",
+						"text": "The [[character/nalo]] approaches Zak after his ordeal. Enslaved by Kardaur and deprived even of a personal name, she wants his death and knows he will guard the gate that night. She steals the key to Zak’s cage. Her father, a rat hunter who disappeared in the caves, told her of the Wormheads’ temple and the bridges across its lava rivers. She uses that knowledge to explain a route the guards fear to follow. Zak kills Kardaur for the fortress key and escapes toward the cave; releasing the caged spiders can delay pursuit. The Odalisque and Zak part with wishes for each other’s freedom and survival, without a stated account of her later fate.",
+						"sources": [
+							"briefing kr60",
+							"briefing kr61",
+							"quest q61h",
+							"quest q62h",
+							"quest q63h"
+						],
+						"event": "odalisque",
+						"order": 22
+					},
+					{
+						"heading": "Acceptance into the Last Shelter",
+						"text": "Beyond the caves, [[character/kuzn]] finds Zak and vouches for him before [[character/glav]]. The brotherhood’s leader fears imperial spies and requires the Emperor’s Signet Ring, taken from a cyclops who killed its courier. Possessing such an object compromises the newcomer with the authorities and makes the test more than a feat of strength. After Zak returns, Khatul accepts him as Brother Blondie and offers the refuge as a new home. Zak explains his promise to find At-Zako and return to Gipath. Khatul respects that purpose and asks those who can help to support him; [[character/guru]] can teach him greater dexterity.",
+						"sources": [
+							"briefing gl63",
+							"briefing gl64",
+							"briefing guru1"
+						],
+						"event": "shelter",
+						"order": 23
+					}
+				],
+				"id": "gz16h"
+			},
+			"map/gz17h": {
+				"kind": "map",
+				"name_key": "zone gz17h",
+				"sections": [
+					{
+						"heading": "Acceptance into the Last Shelter",
+						"text": "Beyond the caves, [[character/kuzn]] finds Zak and vouches for him before [[character/glav]]. The brotherhood’s leader fears imperial spies and requires the Emperor’s Signet Ring, taken from a cyclops who killed its courier. Possessing such an object compromises the newcomer with the authorities and makes the test more than a feat of strength. After Zak returns, Khatul accepts him as Brother Blondie and offers the refuge as a new home. Zak explains his promise to find At-Zako and return to Gipath. Khatul respects that purpose and asks those who can help to support him; [[character/guru]] can teach him greater dexterity.",
+						"sources": [
+							"briefing gl63",
+							"briefing gl64",
+							"briefing guru1"
+						],
+						"event": "shelter",
+						"order": 23
+					},
+					{
+						"heading": "Kholai and the dead scientist",
+						"text": "[[character/nekro]] directs Zak to [[character/oldnekro]], whom Taivo displaced from the imperial laboratory. Kholai wants disgrace for his rival rather than a simple assassination. Zak steals a dead scientist’s head from the laboratory; its disappearance will embarrass Taivo, and Kholai can summon its spirit. The [[character/spirit|scientist]] describes a horror pursuing the red-skinned youth. To conceal him, the scholars changed his appearance and sent him away by teleportation. Kholai interprets the broken testimony and tells Zak to search the ruined mansion for the magical object used in the escape. The fragments Zak finds are beyond Kehel’s ability to interpret: only a Great Magician can identify the destination.",
+						"sources": [
+							"briefing ne67",
+							"briefing sn67",
+							"quest q69h",
+							"briefing sn69",
+							"briefing sn69_1",
+							"quest q70h",
+							"briefing ne70"
+						],
+						"event": "spirit",
+						"order": 25
+					}
+				],
+				"id": "gz17h"
+			},
+			"map/gz18h": {
+				"kind": "map",
+				"name_key": "zone gz18h",
+				"sections": [
+					{
+						"heading": "Sahilia’s cache and the Joon collector",
+						"text": "[[character/merc10]] supplies the next lead through her own theft. Antiquities she stole from [[character/junofil]] remain hidden near the city, and Zak recovers them to arrange a meeting. Khatul and Brother Blacksmith help choose the secluded trading place, keeping strangers away from the Shelter. Baluddin admits recognising At-Zako as a living Joon and wanting to keep him in his own house. Imperial scholars took the young man away. Later, Taivo summoned the collector to identify those scholars’ mutilated bodies. The missing youth’s trail now leads to the necromancers rather than a living prisoner whom Zak can simply rescue.",
+						"sources": [
+							"briefing vo64",
+							"briefing vo65",
+							"briefing gl66",
+							"briefing jf67",
+							"quest q65h",
+							"quest q66h",
+							"quest q67h"
+						],
+						"event": "collector",
+						"order": 24
+					},
+					{
+						"heading": "Kholai and the dead scientist",
+						"text": "[[character/nekro]] directs Zak to [[character/oldnekro]], whom Taivo displaced from the imperial laboratory. Kholai wants disgrace for his rival rather than a simple assassination. Zak steals a dead scientist’s head from the laboratory; its disappearance will embarrass Taivo, and Kholai can summon its spirit. The [[character/spirit|scientist]] describes a horror pursuing the red-skinned youth. To conceal him, the scholars changed his appearance and sent him away by teleportation. Kholai interprets the broken testimony and tells Zak to search the ruined mansion for the magical object used in the escape. The fragments Zak finds are beyond Kehel’s ability to interpret: only a Great Magician can identify the destination.",
+						"sources": [
+							"briefing ne67",
+							"briefing sn67",
+							"quest q69h",
+							"briefing sn69",
+							"briefing sn69_1",
+							"quest q70h",
+							"briefing ne70"
+						],
+						"event": "spirit",
+						"order": 25
+					}
+				],
+				"id": "gz18h"
+			},
+			"map/gz19h": {
+				"kind": "map",
+				"name_key": "zone gz19h",
+				"sections": [
+					{
+						"heading": "Brother Faceless and the return to Gipath",
+						"text": "Khatul asks [[character/zaku]] to help Zak reach the guarded portal. Faceless arranges a cave meeting and explains the keys and stone controls. He then reveals himself as Erfar: born on Suslanger, he went to Gipath seeking the meteorite and manipulated the villagers into searching for it. His earlier plots were attempts to remove Zak, who disrupted that scheme. The reunion is another trap, with guards waiting outside the cave. Zak survives the confrontation and forces a route through the portal’s defences. Activating its two controls finally returns him to Tka-Rik with the amulet fragments.",
+						"sources": [
+							"briefing s64",
+							"briefing gl70",
+							"briefing s71",
+							"briefing s71_1",
+							"quest q72h"
+						],
+						"event": "faceless",
+						"order": 26
+					}
+				],
+				"id": "gz19h"
+			},
+			"map/gz20g": {
+				"kind": "map",
+				"name_key": "zone gz20g",
+				"sections": [
+					{
+						"heading": "The battle with the Joon Curse",
+						"text": "The hurried transformation that concealed At-Zako nearly destroyed his memory. Tka-Rik cannot safely repeat it, so hiding as Zak is no longer an answer. He offers another choice: flee again under his temporary protection, or confront the Curse on Gipath. At-Zako chooses to defend his life with Lu-a-Jalla. Tka-Rik supplies ancient Joon equipment and joins him in the catacombs for the final battle. Defeating the Curse completes the campaign.",
+						"sources": [
+							"briefing r72_6",
+							"briefing r72_7",
+							"quest q73g",
+							"zone gz20g"
+						],
+						"event": "curse",
+						"order": 28
+					}
+				],
+				"id": "gz20g"
 			}
 		},
 		"lost_in_astral": {
@@ -3091,37 +6819,397 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "A fugitive from Jigran",
-						"text": "[[character/hero]] is the Joon protagonist of Lost in Astral. He escaped from [[character/firez]] on [[allod/jigran]], leaving his family enslaved, and hopes to return to free them. A recruiter’s promise of work instead leads to his enslavement on [[allod/suslanger]]. In the slave pen he meets [[character/merc2]], who saves him after a beating, gives him the short name Kir and helps plan their escape.",
+						"heading": "Escape from Jigran",
+						"text": "[[character/hero]], whose full name is Kir-A-Chit-La, is a young Joon enslaved under [[character/firez]] on [[allod/jigran]]. He escapes the castle, leaving his family behind, and hopes to return with help. Outside the castle, a [[character/first|recruiter]] mistakes him for someone expected at the camp. Kir conceals his identity and accepts travel papers for work on Suslanger. The apparent opening to freedom instead delivers him to imperial authorities. [[character/hwleader]] dismisses his papers, treats him as a slave and considers reporting the red-skinned stranger for a reward.",
 						"sources": [
 							"briefing brief_0",
 							"briefing brief_1",
+							"briefing brief_119",
+							"zone gz1g"
+						],
+						"event": "flight",
+						"order": 1
+					},
+					{
+						"heading": "Kel and the slave pen",
+						"text": "Soldiers beat Kir nearly to death. In the slave pen, [[character/merc2]] nurses him back to consciousness, shortens his name to Kir and offers a partnership in escape. He initially hopes to explain the mistake to the authorities; the [[character/clerk|official]] instead assigns work according to the prisoners’ abilities. Kel has overheard that an officer possesses a map of the catacombs. They escape and use the underground route to leave the fortress area. Once outside, Kel proposes refuge with an acquaintance who collects spiders. Their relationship begins in this shared dependence: Kir needs her local knowledge, and Kel needs a partner.",
+						"sources": [
 							"briefing brief_2",
-							"briefing brief_119"
-						]
+							"briefing brief_3a",
+							"briefing brief_3b",
+							"briefing brief_3c",
+							"briefing brief_4",
+							"briefing brief_5",
+							"briefing brief_5a"
+						],
+						"event": "kel",
+						"order": 2
 					},
 					{
-						"heading": "The road home",
-						"text": "Kir and Kel seek refuge, information about the Joons and a route to Gipath’s [[character/rick]]. The magician has not heard of Jigran, but the Magic Orb points them toward [[allod/ingos]]. There they become involved in the investigation of Brissen’s murder. [[character/kmage]] eventually identifies an old passage to Jigran, and Kir chooses to follow it with Kel rather than turn back.",
+						"heading": "Shelter at Rindeil’s estate",
+						"text": "[[character/elder]] welcomes Kel and her companion to his estate. Kir’s learning gives them common ground, though the collector’s chief concern remains his spiders. [[character/sheriff]], who manages the household and formerly performed on stage, becomes a source of contacts and rumours about another Joon. [[character/merc8]] helps Kir hide his conspicuous face beneath cloth, exploiting the fear of disease. Rindeil’s requests include obtaining a meteorite sample in exchange for a rare specimen for his collection. This period of refuge lets Kir search for information, but its safety depends on the owner’s willingness to risk his household.",
 						"sources": [
-							"briefing brief_41",
+							"briefing brief_6",
+							"briefing brief_8",
+							"briefing brief_14",
+							"briefing brief_18",
+							"briefing brief_25",
+							"briefing brief_31"
+						],
+						"event": "estate",
+						"order": 3
+					},
+					{
+						"heading": "Feiruz’s last rescue",
+						"text": "Feiruz asks Kir to repay his help by rescuing his imprisoned fiancée [[character/merc10]]. He dies during the escape. Kel urges the grieving Aliya to avenge him and identifies the man who struck the fatal blow. Kir objects to deliberate revenge, but their companions insist on their code. The death of the prison commandant brings searches across the city. Fearing for his collection, Rindeil withdraws his protection, though he says Kir may return once the danger passes. Aliya then leads Kir and Kel to the Last Shelter and speaks for them before [[character/glav]].",
+						"sources": [
+							"briefing brief_37",
+							"briefing brief_38",
+							"briefing brief_39",
+							"briefing brief_40",
+							"briefing brief_41"
+						],
+						"event": "feiruz",
+						"order": 5
+					},
+					{
+						"heading": "The ring and the brotherhood",
+						"text": "Khatul demands an imperial signet ring from a cyclops as a test of trust. Kir brings it back and explains his intention to free his family. He also recognises that the ring does not match the description he has read. Khatul already knows it is false, but asks him to preserve the brotherhood’s belief in the trophy. Membership changes how [[character/zaku]] receives Kir: the smith who refused a stranger now offers his craft. Through Aliya, Kir also searches for the missing [[character/merc7]], rescues her and brings medicine. Sahilia’s recovery matters later, when her forged papers open a route into the army.",
+						"sources": [
+							"briefing brief_43",
+							"briefing brief_43a",
+							"briefing brief_44",
+							"briefing brief_45",
+							"briefing brief_46",
+							"briefing brief_47",
+							"briefing brief_48",
+							"briefing brief_59a"
+						],
+						"event": "brotherhood",
+						"order": 6
+					},
+					{
+						"heading": "Defending the Shelter and the ancient treaty",
+						"text": "An imperial scout discovers the Shelter. After fighting the expedition, Khatul proposes placing Wormface bodies at the battlefield to conceal the brotherhood’s involvement. In the depths, [[character/guru]] recognises Kir as a Joon and invokes an ancient treaty. He demands the death of a necromancer disturbing the caves before granting access. Later he calls Kir mentally and offers information for rescuing the Priest of Silence from the necromancers. His account of a human searching for Joon remains gives another lead, though he cannot say where that man now lives. The alliance is reciprocal and conditional, not a promise to answer every question.",
+						"sources": [
+							"briefing brief_49",
+							"briefing brief_50",
+							"briefing brief_51",
+							"briefing brief_52",
+							"briefing brief_53",
+							"briefing brief_70",
+							"briefing brief_71",
+							"briefing brief_72"
+						],
+						"event": "brainripper",
+						"order": 7
+					},
+					{
+						"heading": "The report and the passage to Gipath",
+						"text": "Karim’s rumour about the missing red-skinned youth becomes a document recovered from the necromancers. It records transformation and teleportation before the attack on the scholars’ mansion, with Gipath as the destination. Kir decides to follow that Joon. Sahilia supplies enlistment papers, and Kel refuses to be left behind, passing as a young man herself. [[character/sergant]] puts them through military training in Death Canyon. Their performance earns a courier assignment to the Gipath expedition. Sealed orders and a portal pass finally let them leave Suslanger under the authority of the same empire that enslaved them.",
+						"sources": [
+							"briefing brief_31",
+							"briefing brief_82",
+							"briefing brief_83",
+							"briefing brief_59a",
+							"briefing brief_86",
+							"briefing brief_87",
+							"briefing brief_88",
+							"briefing brief_88a"
+						],
+						"event": "enlistment",
+						"order": 8
+					},
+					{
+						"heading": "Urk-Tar and the destroyed expedition",
+						"text": "On Gipath, [[character/orcc]] says his warriors destroyed the Khadaganian expedition. He remembers how Zak’s defeat of a supposed Demon showed that armoured outsiders could be killed, and hopes Kir will become a Chosen for his own tribe. Kel proposes a false report with unpromising stone samples to prevent another imperial expedition from being sent. The shaman [[character/orcpyr]] distrusts strangers but makes Kir a ritual axe after he supplies suitable stone, and makes beads for Kel. Their welcome depends on helping the tribe, and Kir soon rescues the chief from a harpy and his wife from goblins.",
+						"sources": [
+							"briefing brief_101",
+							"briefing brief_102",
+							"briefing brief_103",
+							"briefing brief_104",
+							"briefing brief_105",
+							"briefing brief_106",
+							"briefing brief_107",
+							"briefing brief_108",
+							"briefing brief_109",
+							"briefing brief_110",
+							"briefing brief_111"
+						],
+						"event": "urk_tar",
+						"order": 9
+					},
+					{
+						"heading": "The Shell and the war with the settlers",
+						"text": "Urk-Tar explains that humans have driven orcs out of the Foothills and are advancing into the Middle Mountains. Kir removes the Shell whose presence restrains the lizards, initially refusing to fight humans himself. When Tynachey describes the killing of the tribe’s inhabitants, Kel argues for helping their hosts recover the settlement, and Kir agrees. The [[character/iz|Hermit Lizard]] then offers news of the former Chosen in exchange for placing the Shell by the Remote Mountains’ lake. Restoring it also frees hunters held by lizards. The Hermit directs Kir toward the Great Magician by a route different from Zak’s old tunnel approach.",
+						"sources": [
+							"briefing brief_112",
+							"briefing brief_113",
+							"briefing brief_114",
+							"briefing brief_115",
+							"briefing brief_116",
+							"briefing brief_117"
+						],
+						"event": "shell_war",
+						"order": 10
+					},
+					{
+						"heading": "Tka-Rik and the unknown allod",
+						"text": "Meeting [[character/rick]] gives Kir his first direct contact with a free Joon magician. Tka-Rik explains that At-Zako and Lu-a-Jalla are travelling together and that he himself remains bound to Gipath. He has never heard of Jigran. Kir tells him about Firez, his enslaved family and his promise to return. Learning that more Joons need help renews Tka-Rik’s purpose. Since he cannot locate the hidden allod unaided, he sends Kir to find the Magic Orb that At-Zako once used. Finding the magician therefore begins another investigation rather than immediately opening the road home.",
+						"sources": [
 							"briefing brief_118",
-							"briefing brief_149",
-							"briefing brief_251",
-							"briefing brief_254"
-						]
+							"briefing brief_119"
+						],
+						"event": "kir_tka",
+						"order": 11
 					},
 					{
-						"heading": "Return to Jigran",
-						"text": "Back on Jigran, Kir aids [[character/baron]] against Firez, frees the elder [[character/junofil]] and rescues [[character/deva]], the woman he remembered from childhood. Kel’s death while retrieving Tai-Ilara’s belongings makes him confront the difference between that childhood attachment and Kel’s loyalty. Firez later reveals that he too is a Joon and claims that his necromancy was meant to protect their people from the Curse. This is Firez’s justification, not an endorsement of his actions.",
+						"heading": "The Free Hunters and Babur",
+						"text": "A [[character/loozer|messenger]] invites the rescuers of the hunters to [[character/karh]]’s camp. Bor claims neutrality in the war, yet asks them to act against the village’s hunters and caravans. To question [[character/smith]] about the Orb, Kir helps bring him out of the village. The letter can go to Babur himself or to the elder, with different explanations for the craftsman’s arrival. Babur then sends Kir to the lizards’ tomb for a supposed magical needle. The expedition supplies lizard hides, and Babur admits that useful armour material was his real interest. For information about the Orb, he redirects the visitors to Estera.",
 						"sources": [
+							"briefing brief_120",
+							"briefing brief_121",
+							"briefing brief_123",
+							"briefing brief_124",
+							"briefing brief_126a",
+							"briefing brief_126b",
+							"briefing brief_127",
+							"briefing brief_128"
+						],
+						"event": "bor_babur",
+						"order": 12
+					},
+					{
+						"heading": "Airy, Estera and the Dragon’s flower",
+						"text": "[[character/daughter]] guards the cave while Estera is visiting the [[character/skd|Old Dragon]]. Her quarrel with Kel over a necklace exposes Kel’s jealousy and Kir’s failure to notice it. Airy refuses his courtship and suggests looking at the person already beside him. At the dragon’s lair, Estera is the troublesome visitor rather than a prisoner: she refuses to leave without information about a flower. Kir obtains it and the witch goes home. [[character/witch]] then admits the Orb was stolen by orcs; Airy identifies the islands and warns that it lost its power after its earlier use.",
+						"sources": [
+							"briefing brief_129",
+							"briefing brief_130",
+							"briefing brief_131",
+							"briefing brief_132",
+							"briefing brief_133",
+							"briefing brief_134",
+							"briefing brief_136",
+							"briefing brief_137"
+						],
+						"event": "flower_dragon",
+						"order": 13
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
+					},
+					{
+						"heading": "Two magicians on Ingos",
+						"text": "Kir and Kel seek magical help on Ingos. [[character/trader]] complains about [[character/kmage]], whose cheap runes undercut his trade, and identifies [[character/his]] as the governor’s court magician. His receives the travellers with suspicion and later asks them to retrieve materials from his laboratory. [[character/trapper]] offers another route: contact [[character/grey]] through the Sacred Flower and a vessel from his cache. Grey Leaf explains that the knight Brissen and his magician friend have left for the settlement near the mines. Kir’s first task here is finding an informed ally, before the murder that later dominates the investigation.",
+						"sources": [
+							"briefing brief_201",
+							"briefing brief_204",
+							"briefing brief_206",
+							"briefing brief_207",
+							"briefing brief_210",
+							"briefing brief_211"
+						],
+						"event": "ingos_contacts",
+						"order": 15
+					},
+					{
+						"heading": "The Beastmasters and the empty caravan",
+						"text": "At the Beastmasters’ settlement, [[character/vor]] accuses Kir and Kel of being spies. [[character/gerald]] agrees to test them. Their attempt to obtain a gold nugget from a caravan finds an empty chest, making their return dangerous. [[character/mthief]] reasons that genuine thieves would not come back empty-handed, and Geraldine accepts them. Sver’s advice about an ice elemental in the abandoned mines provides something to offer Yam-Akara. His work and the governor’s permit requirements then draw the travellers into further dealings with the court. The missing nugget will matter again when the apparent caravan failure becomes evidence of a separate theft.",
+						"sources": [
+							"briefing brief_212",
+							"briefing brief_215",
+							"briefing brief_218",
+							"briefing brief_221",
+							"briefing brief_245a"
+						],
+						"event": "beastmasters",
+						"order": 16
+					},
+					{
+						"heading": "Brissen’s murder and the failed alibi",
+						"text": "Brissen is murdered and Yam-Akara is accused of killing his old friend. Kir and Kel undertake the defence. The magician says he spent the day in the mines and arrived late for their meeting. [[character/guard]] confirms that he allowed the elderly visitor through with an expired permit and stamped it that day. Kir finds the lost pass, but [[character/huber]] rejects the water-damaged document because the signature and date can no longer be read. This evidence supports the search but does not free Yam-Akara; the travellers still have to identify the murderer.",
+						"sources": [
+							"briefing brief_232",
+							"briefing brief_233",
+							"briefing brief_238",
+							"briefing brief_239",
+							"briefing brief_240"
+						],
+						"event": "brissen",
+						"order": 17
+					},
+					{
+						"heading": "The planted knife and His’s death",
+						"text": "A knife found at the murder site appears to implicate His. The court magician admits it was stolen from his laboratory together with the governor’s nugget. He had sent out the empty caravan to hide that loss and hoped to blame raiders after an informant warned of the planned attack. His arranges a meeting to produce evidence, but is killed before he can clear himself. Meanwhile Geraldine and Karansul disclose their relationship and provide each other with an alibi. Their commercial hostility and private secrecy had made them suspicious without establishing guilt.",
+						"sources": [
+							"briefing brief_243",
+							"briefing brief_245",
+							"briefing brief_245a",
+							"briefing brief_246",
+							"briefing brief_247"
+						],
+						"event": "his_murder",
+						"order": 18
+					},
+					{
+						"heading": "Crooked’s confession",
+						"text": "The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial.",
+						"sources": [
+							"briefing brief_237",
+							"briefing brief_248",
+							"briefing brief_249",
+							"briefing brief_250",
+							"briefing brief_250a",
+							"briefing brief_251"
+						],
+						"event": "crooked",
+						"order": 19
+					},
+					{
+						"heading": "The hidden portal to Jigran",
+						"text": "During his confinement, Yam-Akara gains access to the governor’s library. Old exploration reports reveal that the powerful “artifact” is a forgotten passage to another land. Trickster offers a key to the gate, then sends Kir on a fruitless ore search so that he can work without interference. With the key ready, Yam-Akara warns that he cannot sense the destination: the portal may be defective or concealed by a powerful absorbing spell. Kir recognises the same absence Tka-Rik described and concludes that it leads to Jigran. He decides to go directly, trusting the strength gained during his journey. Kel chooses to accompany him again.",
+						"sources": [
+							"briefing brief_251",
+							"briefing brief_252",
+							"briefing brief_253",
+							"briefing brief_254"
+						],
+						"event": "old_portal",
+						"order": 20
+					},
+					{
+						"heading": "Return to Jigran and Dar-Leanos",
+						"text": "The old portal brings the travellers to the Canian side of Jigran, where [[character/baron]] questions their arrival amid attacks by the undead. The baron has lost Dar-Ulgorn to Firez’s forces but refuses Kir’s suggestion to seek outside help, citing his family’s pride. Kir and Kel assist the endangered settlements. They meet the baron’s son [[character/bson]] and the overworked [[character/stark]]. Stark provides a password for [[character/doctor]], a seller of sweets who secretly gathers intelligence for the baron. These local alliances make the campaign against Firez possible.",
+						"sources": [
+							"briefing brief_300",
+							"briefing brief_301",
+							"briefing brief_302",
+							"briefing brief_303",
 							"briefing brief_304",
+							"briefing brief_305",
+							"briefing brief_306"
+						],
+						"event": "dar_leanos",
+						"order": 21
+					},
+					{
+						"heading": "Jaminin’s experiment and the undead",
+						"text": "The trail of the local undead leads to [[character/nekro]] on Death Island. Brought before the baron, he bargains for his life with the promise of useful knowledge. Kir and Kel obtain a potion from a tomb, but need to know how to apply it across the affected area. Jaminin first entertains a human sacrifice; Kel rejects it, and he supplies a less destructive method involving cemetery soil and an incantation. The potion puts the dead to rest. His later exchanges preserve the distinction between theoretical learning and practical competence: he possesses information, but his own experiment caused the disaster.",
+						"sources": [
+							"briefing brief_307",
+							"briefing brief_311",
+							"briefing brief_311a",
+							"briefing brief_312",
+							"briefing brief_313",
+							"briefing brief_315"
+						],
+						"event": "jaminin",
+						"order": 22
+					},
+					{
+						"heading": "Weapons, Dartas and preparations for war",
+						"text": "Kir proposes a special weapon alloy against the undead. Stark initially refuses instruction from a youngster and sends him to an abandoned forge, then has to confront the usefulness of the result. The baron welcomes the advantage for his soldiers. A separate conflict with Dartas moves from arrogance and a duel to an admission of fear for his family and Jigran’s future. Kir explains his own history of enslavement and determination to return, winning the young man’s respect. Dartas later becomes a useful source about an amulet from a village destroyed by harpies.",
+						"sources": [
+							"briefing brief_318",
+							"briefing brief_319",
+							"briefing brief_320",
+							"briefing brief_321",
+							"briefing brief_324",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "preparing_war",
+						"order": 23
+					},
+					{
+						"heading": "Dar-Ulgorn and the river crossing",
+						"text": "Uncle Rad’s intelligence and preparations distract the defenders of Dar-Ulgorn so the baron’s forces can retake the fortress. The victory restores the family’s former boundary, but Virril will not advance blindly into Khadaganian territory. Kir and Kel steal a detailed map from the enemy headquarters and deliver Rad’s report. The resulting offensive captures the river crossing and brings Firez within reach. Kel worries that the end of Kir’s family quest will also end their life together, while the baron imagines a prosperous Jigran under his descendants. The victory means different things to the people who share it.",
+						"sources": [
+							"briefing brief_326",
+							"briefing brief_329",
+							"briefing brief_330",
+							"briefing brief_331",
+							"briefing brief_332",
+							"briefing brief_333",
+							"briefing brief_334",
+							"briefing brief_338",
+							"briefing brief_339"
+						],
+						"event": "offensive",
+						"order": 24
+					},
+					{
+						"heading": "The freed Joons and Kir’s family",
+						"text": "Kel and Rad discover that Firez is moving the Joon prisoners from the mountain prison into his fortress. Kel plans an attack on the transfer, avoiding a direct prison assault. Among those freed are [[character/deva]], whom Kir admired as a child, and the elder [[character/junofil]]. Tai-Ilara welcomes his changed appearance and asks him to retrieve belongings left behind. Tui-Len brings harder news: Kir’s parents are dead. The elder fears that killing Firez will expose the survivors to the Curse, but Kir tells him that Tka-Rik and At-Zako have already destroyed it. Tui-Len also opens the sealed Joon cache whose amulet Kir has recovered.",
+						"sources": [
+							"briefing brief_339",
 							"briefing brief_340",
 							"briefing brief_341",
+							"briefing brief_335",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "joons_freed",
+						"order": 25
+					},
+					{
+						"heading": "Tai-Ilara’s request and Kel’s death",
+						"text": "Seeing Kir reunited with Tai-Ilara, Kel asks for the way back to Suslanger. Kir begs her to stay and mentions one more expedition for Tai-Ilara’s belongings. Kel agrees because she still fears for him, calling it their last adventure together. She dies during that expedition. On Kir’s return, Tai-Ilara is concerned with her comb and mirror and dismisses his grief. Her reaction breaks his idealised childhood attachment. He recognises Kel as the person who was closest and most loyal to him, and realises that he failed to see her love while she was beside him.",
+						"sources": [
 							"briefing brief_342",
 							"briefing brief_345",
-							"briefing brief_349"
-						]
+							"briefing fq20"
+						],
+						"event": "kel_loss",
+						"order": 26
+					},
+					{
+						"heading": "The Rod of Life: a possible reunion",
+						"text": "Kel’s death is not the only outcome recorded in the game. If Kir has collected the three parts of the Rod of Life, Tui-Len offers to assemble the artifact and restore her. The completed quest has its own reunion: Kir calls Kel his love, apologises for his blindness and hears her answer that his love matters more than the rest.",
+						"sources": [
+							"briefing fq20",
+							"briefing fq21"
+						],
+						"event": "rod_of_life",
+						"order": 27
+					},
+					{
+						"heading": "The Joon cache and allies for the assault",
+						"text": "The sealed cache supplies Kir with Joon armour, but Tui-Len warns him against relying on hatred alone. He gives him an amulet that can turn dangerous creatures into allies. Rad identifies suitable hunting grounds for a cyclops and a dragon. Their recruitment changes the military balance and answers the baron’s objection that his soldiers cannot face Firez’s necromancy in a direct assault. Virril finally orders the attack. Before the confrontation, Rad speaks of the quiet home and family he hopes to have when his secret work is finished.",
+						"sources": [
+							"briefing brief_343",
+							"briefing brief_344",
+							"briefing brief_347",
+							"briefing brief_348"
+						],
+						"event": "allies",
+						"order": 28
+					},
+					{
+						"heading": "Firez’s identity and the final confrontation",
+						"text": "In the throne room, Firez reveals that he too is a Joon and has watched Kir through a dragonet since the escape. He says his people expelled him for necromancy and claims that his rule protected them from the Curse. Kir answers with their enslavement, his parents’ deaths and the destruction of Jigran to prolong Firez’s life. The tyrant’s explanation is his own defence, not proof that the captivity was benevolent. He threatens to kill Kir, raise him as an obedient servant and use him against the baron. Their exchange leads into the final battle for Jigran.",
+						"sources": [
+							"briefing brief_349",
+							"zone gz36j"
+						],
+						"event": "firez",
+						"order": 29
 					}
 				],
 				"actors": [
@@ -3156,7 +7244,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/merc2]] is a thief and Kir’s travelling companion. She helps the injured stranger in the slave pen, introduces him to the dangers of Suslanger and stays with him through the search for his homeland. Her practical knowledge, irreverence and resourcefulness repeatedly complement Kir’s direct approach. Their partnership gradually becomes a love she is reluctant to express openly.",
 						"sources": [
 							"briefing brief_2",
@@ -3166,13 +7254,180 @@ const DATA := {
 						]
 					},
 					{
-						"heading": "Love and loss",
-						"text": "On Jigran, Kel sees Kir reunited with Tai-Ilara and prepares to leave. She agrees to one last expedition for Tai-Ilara’s belongings and dies during it. Kir’s grief is sharpened by Tai-Ilara’s indifference. A later conversation with Tui-Len offers a possible way to restore a loved one through the three pieces of the Rod of Life; the offer is a quest, not proof that every playthrough ends with a resurrection.",
+						"heading": "Kel and the slave pen",
+						"text": "Soldiers beat Kir nearly to death. In the slave pen, [[character/merc2]] nurses him back to consciousness, shortens his name to Kir and offers a partnership in escape. He initially hopes to explain the mistake to the authorities; the [[character/clerk|official]] instead assigns work according to the prisoners’ abilities. Kel has overheard that an officer possesses a map of the catacombs. They escape and use the underground route to leave the fortress area. Once outside, Kel proposes refuge with an acquaintance who collects spiders. Their relationship begins in this shared dependence: Kir needs her local knowledge, and Kel needs a partner.",
+						"sources": [
+							"briefing brief_2",
+							"briefing brief_3a",
+							"briefing brief_3b",
+							"briefing brief_3c",
+							"briefing brief_4",
+							"briefing brief_5",
+							"briefing brief_5a"
+						],
+						"event": "kel",
+						"order": 2
+					},
+					{
+						"heading": "Feiruz’s last rescue",
+						"text": "Feiruz asks Kir to repay his help by rescuing his imprisoned fiancée [[character/merc10]]. He dies during the escape. Kel urges the grieving Aliya to avenge him and identifies the man who struck the fatal blow. Kir objects to deliberate revenge, but their companions insist on their code. The death of the prison commandant brings searches across the city. Fearing for his collection, Rindeil withdraws his protection, though he says Kir may return once the danger passes. Aliya then leads Kir and Kel to the Last Shelter and speaks for them before [[character/glav]].",
+						"sources": [
+							"briefing brief_37",
+							"briefing brief_38",
+							"briefing brief_39",
+							"briefing brief_40",
+							"briefing brief_41"
+						],
+						"event": "feiruz",
+						"order": 5
+					},
+					{
+						"heading": "The report and the passage to Gipath",
+						"text": "Karim’s rumour about the missing red-skinned youth becomes a document recovered from the necromancers. It records transformation and teleportation before the attack on the scholars’ mansion, with Gipath as the destination. Kir decides to follow that Joon. Sahilia supplies enlistment papers, and Kel refuses to be left behind, passing as a young man herself. [[character/sergant]] puts them through military training in Death Canyon. Their performance earns a courier assignment to the Gipath expedition. Sealed orders and a portal pass finally let them leave Suslanger under the authority of the same empire that enslaved them.",
+						"sources": [
+							"briefing brief_31",
+							"briefing brief_82",
+							"briefing brief_83",
+							"briefing brief_59a",
+							"briefing brief_86",
+							"briefing brief_87",
+							"briefing brief_88",
+							"briefing brief_88a"
+						],
+						"event": "enlistment",
+						"order": 8
+					},
+					{
+						"heading": "Urk-Tar and the destroyed expedition",
+						"text": "On Gipath, [[character/orcc]] says his warriors destroyed the Khadaganian expedition. He remembers how Zak’s defeat of a supposed Demon showed that armoured outsiders could be killed, and hopes Kir will become a Chosen for his own tribe. Kel proposes a false report with unpromising stone samples to prevent another imperial expedition from being sent. The shaman [[character/orcpyr]] distrusts strangers but makes Kir a ritual axe after he supplies suitable stone, and makes beads for Kel. Their welcome depends on helping the tribe, and Kir soon rescues the chief from a harpy and his wife from goblins.",
+						"sources": [
+							"briefing brief_101",
+							"briefing brief_102",
+							"briefing brief_103",
+							"briefing brief_104",
+							"briefing brief_105",
+							"briefing brief_106",
+							"briefing brief_107",
+							"briefing brief_108",
+							"briefing brief_109",
+							"briefing brief_110",
+							"briefing brief_111"
+						],
+						"event": "urk_tar",
+						"order": 9
+					},
+					{
+						"heading": "The Shell and the war with the settlers",
+						"text": "Urk-Tar explains that humans have driven orcs out of the Foothills and are advancing into the Middle Mountains. Kir removes the Shell whose presence restrains the lizards, initially refusing to fight humans himself. When Tynachey describes the killing of the tribe’s inhabitants, Kel argues for helping their hosts recover the settlement, and Kir agrees. The [[character/iz|Hermit Lizard]] then offers news of the former Chosen in exchange for placing the Shell by the Remote Mountains’ lake. Restoring it also frees hunters held by lizards. The Hermit directs Kir toward the Great Magician by a route different from Zak’s old tunnel approach.",
+						"sources": [
+							"briefing brief_112",
+							"briefing brief_113",
+							"briefing brief_114",
+							"briefing brief_115",
+							"briefing brief_116",
+							"briefing brief_117"
+						],
+						"event": "shell_war",
+						"order": 10
+					},
+					{
+						"heading": "Airy, Estera and the Dragon’s flower",
+						"text": "[[character/daughter]] guards the cave while Estera is visiting the [[character/skd|Old Dragon]]. Her quarrel with Kel over a necklace exposes Kel’s jealousy and Kir’s failure to notice it. Airy refuses his courtship and suggests looking at the person already beside him. At the dragon’s lair, Estera is the troublesome visitor rather than a prisoner: she refuses to leave without information about a flower. Kir obtains it and the witch goes home. [[character/witch]] then admits the Orb was stolen by orcs; Airy identifies the islands and warns that it lost its power after its earlier use.",
+						"sources": [
+							"briefing brief_129",
+							"briefing brief_130",
+							"briefing brief_131",
+							"briefing brief_132",
+							"briefing brief_133",
+							"briefing brief_134",
+							"briefing brief_136",
+							"briefing brief_137"
+						],
+						"event": "flower_dragon",
+						"order": 13
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
+					},
+					{
+						"heading": "The hidden portal to Jigran",
+						"text": "During his confinement, Yam-Akara gains access to the governor’s library. Old exploration reports reveal that the powerful “artifact” is a forgotten passage to another land. Trickster offers a key to the gate, then sends Kir on a fruitless ore search so that he can work without interference. With the key ready, Yam-Akara warns that he cannot sense the destination: the portal may be defective or concealed by a powerful absorbing spell. Kir recognises the same absence Tka-Rik described and concludes that it leads to Jigran. He decides to go directly, trusting the strength gained during his journey. Kel chooses to accompany him again.",
+						"sources": [
+							"briefing brief_251",
+							"briefing brief_252",
+							"briefing brief_253",
+							"briefing brief_254"
+						],
+						"event": "old_portal",
+						"order": 20
+					},
+					{
+						"heading": "Dar-Ulgorn and the river crossing",
+						"text": "Uncle Rad’s intelligence and preparations distract the defenders of Dar-Ulgorn so the baron’s forces can retake the fortress. The victory restores the family’s former boundary, but Virril will not advance blindly into Khadaganian territory. Kir and Kel steal a detailed map from the enemy headquarters and deliver Rad’s report. The resulting offensive captures the river crossing and brings Firez within reach. Kel worries that the end of Kir’s family quest will also end their life together, while the baron imagines a prosperous Jigran under his descendants. The victory means different things to the people who share it.",
+						"sources": [
+							"briefing brief_326",
+							"briefing brief_329",
+							"briefing brief_330",
+							"briefing brief_331",
+							"briefing brief_332",
+							"briefing brief_333",
+							"briefing brief_334",
+							"briefing brief_338",
+							"briefing brief_339"
+						],
+						"event": "offensive",
+						"order": 24
+					},
+					{
+						"heading": "The freed Joons and Kir’s family",
+						"text": "Kel and Rad discover that Firez is moving the Joon prisoners from the mountain prison into his fortress. Kel plans an attack on the transfer, avoiding a direct prison assault. Among those freed are [[character/deva]], whom Kir admired as a child, and the elder [[character/junofil]]. Tai-Ilara welcomes his changed appearance and asks him to retrieve belongings left behind. Tui-Len brings harder news: Kir’s parents are dead. The elder fears that killing Firez will expose the survivors to the Curse, but Kir tells him that Tka-Rik and At-Zako have already destroyed it. Tui-Len also opens the sealed Joon cache whose amulet Kir has recovered.",
+						"sources": [
+							"briefing brief_339",
+							"briefing brief_340",
+							"briefing brief_341",
+							"briefing brief_335",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "joons_freed",
+						"order": 25
+					},
+					{
+						"heading": "Tai-Ilara’s request and Kel’s death",
+						"text": "Seeing Kir reunited with Tai-Ilara, Kel asks for the way back to Suslanger. Kir begs her to stay and mentions one more expedition for Tai-Ilara’s belongings. Kel agrees because she still fears for him, calling it their last adventure together. She dies during that expedition. On Kir’s return, Tai-Ilara is concerned with her comb and mirror and dismisses his grief. Her reaction breaks his idealised childhood attachment. He recognises Kel as the person who was closest and most loyal to him, and realises that he failed to see her love while she was beside him.",
 						"sources": [
 							"briefing brief_342",
 							"briefing brief_345",
 							"briefing fq20"
-						]
+						],
+						"event": "kel_loss",
+						"order": 26
+					},
+					{
+						"heading": "The Rod of Life: a possible reunion",
+						"text": "Kel’s death is not the only outcome recorded in the game. If Kir has collected the three parts of the Rod of Life, Tui-Len offers to assemble the artifact and restore her. The completed quest has its own reunion: Kir calls Kel his love, apologises for his blindness and hears her answer that his love matters more than the rest.",
+						"sources": [
+							"briefing fq20",
+							"briefing fq21"
+						],
+						"event": "rod_of_life",
+						"order": 27
 					}
 				],
 				"role": "Companion",
@@ -3207,12 +7462,24 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "The recruiter promises Kir work and supplies papers for travel through a portal to Suslanger. The apparent opportunity becomes the opening trap of the campaign: Kir arrives as a stranger whom the imperial authorities enslave.",
 						"sources": [
 							"briefing brief_0",
 							"briefing brief_1"
 						]
+					},
+					{
+						"heading": "Escape from Jigran",
+						"text": "[[character/hero]], whose full name is Kir-A-Chit-La, is a young Joon enslaved under [[character/firez]] on [[allod/jigran]]. He escapes the castle, leaving his family behind, and hopes to return with help. Outside the castle, a [[character/first|recruiter]] mistakes him for someone expected at the camp. Kir conceals his identity and accepts travel papers for work on Suslanger. The apparent opening to freedom instead delivers him to imperial authorities. [[character/hwleader]] dismisses his papers, treats him as a slave and considers reporting the red-skinned stranger for a reward.",
+						"sources": [
+							"briefing brief_0",
+							"briefing brief_1",
+							"briefing brief_119",
+							"zone gz1g"
+						],
+						"event": "flight",
+						"order": 1
 					}
 				],
 				"actors": [
@@ -3246,11 +7513,23 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/hwleader]] is the imperial officer who confronts Kir on Suslanger. He dismisses Kir’s papers, treats him as a slave and notices that his red skin resembles a description in a report about an attack on scholars. His interest in reporting Kir is openly tied to the prospect of a reward.",
 						"sources": [
 							"briefing brief_1"
 						]
+					},
+					{
+						"heading": "Escape from Jigran",
+						"text": "[[character/hero]], whose full name is Kir-A-Chit-La, is a young Joon enslaved under [[character/firez]] on [[allod/jigran]]. He escapes the castle, leaving his family behind, and hopes to return with help. Outside the castle, a [[character/first|recruiter]] mistakes him for someone expected at the camp. Kir conceals his identity and accepts travel papers for work on Suslanger. The apparent opening to freedom instead delivers him to imperial authorities. [[character/hwleader]] dismisses his papers, treats him as a slave and considers reporting the red-skinned stranger for a reward.",
+						"sources": [
+							"briefing brief_0",
+							"briefing brief_1",
+							"briefing brief_119",
+							"zone gz1g"
+						],
+						"event": "flight",
+						"order": 1
 					}
 				],
 				"actors": [
@@ -3290,12 +7569,27 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "The official assigns work to the captives after asking about their strength, dexterity or intellect. His contemptuous replies expose the brutality of the slave system: a prisoner’s abilities are treated only as a way to allocate labour.",
 						"sources": [
 							"briefing brief_3b",
 							"briefing brief_3c"
 						]
+					},
+					{
+						"heading": "Kel and the slave pen",
+						"text": "Soldiers beat Kir nearly to death. In the slave pen, [[character/merc2]] nurses him back to consciousness, shortens his name to Kir and offers a partnership in escape. He initially hopes to explain the mistake to the authorities; the [[character/clerk|official]] instead assigns work according to the prisoners’ abilities. Kel has overheard that an officer possesses a map of the catacombs. They escape and use the underground route to leave the fortress area. Once outside, Kel proposes refuge with an acquaintance who collects spiders. Their relationship begins in this shared dependence: Kir needs her local knowledge, and Kel needs a partner.",
+						"sources": [
+							"briefing brief_2",
+							"briefing brief_3a",
+							"briefing brief_3b",
+							"briefing brief_3c",
+							"briefing brief_4",
+							"briefing brief_5",
+							"briefing brief_5a"
+						],
+						"event": "kel",
+						"order": 2
 					}
 				],
 				"actors": [
@@ -3367,7 +7661,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/elder]] owns an estate on Suslanger and collects spiders. Kel knows him, and his scientific interests initially make him receptive to Kir. He sends the newcomers after a meteorite exchanged for a rare spider. His hospitality has limits: when soldiers begin searching after the prison commandant’s murder, he sends them away to protect himself and his collection.",
 						"sources": [
 							"briefing brief_6",
@@ -3375,6 +7669,33 @@ const DATA := {
 							"briefing brief_25",
 							"briefing brief_40"
 						]
+					},
+					{
+						"heading": "Shelter at Rindeil’s estate",
+						"text": "[[character/elder]] welcomes Kel and her companion to his estate. Kir’s learning gives them common ground, though the collector’s chief concern remains his spiders. [[character/sheriff]], who manages the household and formerly performed on stage, becomes a source of contacts and rumours about another Joon. [[character/merc8]] helps Kir hide his conspicuous face beneath cloth, exploiting the fear of disease. Rindeil’s requests include obtaining a meteorite sample in exchange for a rare specimen for his collection. This period of refuge lets Kir search for information, but its safety depends on the owner’s willingness to risk his household.",
+						"sources": [
+							"briefing brief_6",
+							"briefing brief_8",
+							"briefing brief_14",
+							"briefing brief_18",
+							"briefing brief_25",
+							"briefing brief_31"
+						],
+						"event": "estate",
+						"order": 3
+					},
+					{
+						"heading": "Feiruz’s last rescue",
+						"text": "Feiruz asks Kir to repay his help by rescuing his imprisoned fiancée [[character/merc10]]. He dies during the escape. Kel urges the grieving Aliya to avenge him and identifies the man who struck the fatal blow. Kir objects to deliberate revenge, but their companions insist on their code. The death of the prison commandant brings searches across the city. Fearing for his collection, Rindeil withdraws his protection, though he says Kir may return once the danger passes. Aliya then leads Kir and Kel to the Last Shelter and speaks for them before [[character/glav]].",
+						"sources": [
+							"briefing brief_37",
+							"briefing brief_38",
+							"briefing brief_39",
+							"briefing brief_40",
+							"briefing brief_41"
+						],
+						"event": "feiruz",
+						"order": 5
 					}
 				],
 				"actors": [
@@ -3408,13 +7729,43 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/sheriff]] serves Rindeil and formerly performed on stage. He knows the estate’s gossip and helps turn rumours about a red-skinned attacker into useful information. Through a bribed guard he obtains a report connected with the necromancers and Kir’s search for other Joons.",
 						"sources": [
 							"briefing brief_8",
 							"briefing brief_82",
 							"briefing brief_83"
 						]
+					},
+					{
+						"heading": "Shelter at Rindeil’s estate",
+						"text": "[[character/elder]] welcomes Kel and her companion to his estate. Kir’s learning gives them common ground, though the collector’s chief concern remains his spiders. [[character/sheriff]], who manages the household and formerly performed on stage, becomes a source of contacts and rumours about another Joon. [[character/merc8]] helps Kir hide his conspicuous face beneath cloth, exploiting the fear of disease. Rindeil’s requests include obtaining a meteorite sample in exchange for a rare specimen for his collection. This period of refuge lets Kir search for information, but its safety depends on the owner’s willingness to risk his household.",
+						"sources": [
+							"briefing brief_6",
+							"briefing brief_8",
+							"briefing brief_14",
+							"briefing brief_18",
+							"briefing brief_25",
+							"briefing brief_31"
+						],
+						"event": "estate",
+						"order": 3
+					},
+					{
+						"heading": "The report and the passage to Gipath",
+						"text": "Karim’s rumour about the missing red-skinned youth becomes a document recovered from the necromancers. It records transformation and teleportation before the attack on the scholars’ mansion, with Gipath as the destination. Kir decides to follow that Joon. Sahilia supplies enlistment papers, and Kel refuses to be left behind, passing as a young man herself. [[character/sergant]] puts them through military training in Death Canyon. Their performance earns a courier assignment to the Gipath expedition. Sealed orders and a portal pass finally let them leave Suslanger under the authority of the same empire that enslaved them.",
+						"sources": [
+							"briefing brief_31",
+							"briefing brief_82",
+							"briefing brief_83",
+							"briefing brief_59a",
+							"briefing brief_86",
+							"briefing brief_87",
+							"briefing brief_88",
+							"briefing brief_88a"
+						],
+						"event": "enlistment",
+						"order": 8
 					}
 				],
 				"actors": [
@@ -3448,13 +7799,40 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/merc8]] is a thief who helps Kir conceal his conspicuous face beneath a cloth, using fear of disease as a disguise. Later he asks for help rescuing his fiancée [[character/merc10]] from prison. He dies during the escape, leaving Aliya grieving and determined to retaliate.",
 						"sources": [
 							"briefing brief_14",
 							"briefing brief_37",
 							"briefing brief_38"
 						]
+					},
+					{
+						"heading": "Shelter at Rindeil’s estate",
+						"text": "[[character/elder]] welcomes Kel and her companion to his estate. Kir’s learning gives them common ground, though the collector’s chief concern remains his spiders. [[character/sheriff]], who manages the household and formerly performed on stage, becomes a source of contacts and rumours about another Joon. [[character/merc8]] helps Kir hide his conspicuous face beneath cloth, exploiting the fear of disease. Rindeil’s requests include obtaining a meteorite sample in exchange for a rare specimen for his collection. This period of refuge lets Kir search for information, but its safety depends on the owner’s willingness to risk his household.",
+						"sources": [
+							"briefing brief_6",
+							"briefing brief_8",
+							"briefing brief_14",
+							"briefing brief_18",
+							"briefing brief_25",
+							"briefing brief_31"
+						],
+						"event": "estate",
+						"order": 3
+					},
+					{
+						"heading": "Feiruz’s last rescue",
+						"text": "Feiruz asks Kir to repay his help by rescuing his imprisoned fiancée [[character/merc10]]. He dies during the escape. Kel urges the grieving Aliya to avenge him and identifies the man who struck the fatal blow. Kir objects to deliberate revenge, but their companions insist on their code. The death of the prison commandant brings searches across the city. Fearing for his collection, Rindeil withdraws his protection, though he says Kir may return once the danger passes. Aliya then leads Kir and Kel to the Last Shelter and speaks for them before [[character/glav]].",
+						"sources": [
+							"briefing brief_37",
+							"briefing brief_38",
+							"briefing brief_39",
+							"briefing brief_40",
+							"briefing brief_41"
+						],
+						"event": "feiruz",
+						"order": 5
 					}
 				],
 				"actors": [
@@ -3494,7 +7872,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/merc10]] is Feiruz’s fiancée and a contact of the Last Shelter. After escaping prison and losing him, she leads Kir and Kel to the brotherhood and vouches for them before [[character/glav]]. She also asks them to find the missing [[character/merc7]] and obtain medicine for her recovery.",
 						"sources": [
 							"briefing brief_38",
@@ -3503,6 +7881,35 @@ const DATA := {
 							"briefing brief_46",
 							"briefing brief_47"
 						]
+					},
+					{
+						"heading": "Feiruz’s last rescue",
+						"text": "Feiruz asks Kir to repay his help by rescuing his imprisoned fiancée [[character/merc10]]. He dies during the escape. Kel urges the grieving Aliya to avenge him and identifies the man who struck the fatal blow. Kir objects to deliberate revenge, but their companions insist on their code. The death of the prison commandant brings searches across the city. Fearing for his collection, Rindeil withdraws his protection, though he says Kir may return once the danger passes. Aliya then leads Kir and Kel to the Last Shelter and speaks for them before [[character/glav]].",
+						"sources": [
+							"briefing brief_37",
+							"briefing brief_38",
+							"briefing brief_39",
+							"briefing brief_40",
+							"briefing brief_41"
+						],
+						"event": "feiruz",
+						"order": 5
+					},
+					{
+						"heading": "The ring and the brotherhood",
+						"text": "Khatul demands an imperial signet ring from a cyclops as a test of trust. Kir brings it back and explains his intention to free his family. He also recognises that the ring does not match the description he has read. Khatul already knows it is false, but asks him to preserve the brotherhood’s belief in the trophy. Membership changes how [[character/zaku]] receives Kir: the smith who refused a stranger now offers his craft. Through Aliya, Kir also searches for the missing [[character/merc7]], rescues her and brings medicine. Sahilia’s recovery matters later, when her forged papers open a route into the army.",
+						"sources": [
+							"briefing brief_43",
+							"briefing brief_43a",
+							"briefing brief_44",
+							"briefing brief_45",
+							"briefing brief_46",
+							"briefing brief_47",
+							"briefing brief_48",
+							"briefing brief_59a"
+						],
+						"event": "brotherhood",
+						"order": 6
 					}
 				],
 				"actors": [
@@ -3548,7 +7955,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/merc7]] is a thief associated with Aliya and the Last Shelter. Her disappearance leads to a rescue and a search for medicine. Once recovered, she helps the travellers with forged enlistment papers in exchange for recovering a hidden cache, opening a route into imperial service.",
 						"sources": [
 							"briefing brief_47",
@@ -3556,6 +7963,38 @@ const DATA := {
 							"briefing brief_59a",
 							"briefing brief_59b"
 						]
+					},
+					{
+						"heading": "The ring and the brotherhood",
+						"text": "Khatul demands an imperial signet ring from a cyclops as a test of trust. Kir brings it back and explains his intention to free his family. He also recognises that the ring does not match the description he has read. Khatul already knows it is false, but asks him to preserve the brotherhood’s belief in the trophy. Membership changes how [[character/zaku]] receives Kir: the smith who refused a stranger now offers his craft. Through Aliya, Kir also searches for the missing [[character/merc7]], rescues her and brings medicine. Sahilia’s recovery matters later, when her forged papers open a route into the army.",
+						"sources": [
+							"briefing brief_43",
+							"briefing brief_43a",
+							"briefing brief_44",
+							"briefing brief_45",
+							"briefing brief_46",
+							"briefing brief_47",
+							"briefing brief_48",
+							"briefing brief_59a"
+						],
+						"event": "brotherhood",
+						"order": 6
+					},
+					{
+						"heading": "The report and the passage to Gipath",
+						"text": "Karim’s rumour about the missing red-skinned youth becomes a document recovered from the necromancers. It records transformation and teleportation before the attack on the scholars’ mansion, with Gipath as the destination. Kir decides to follow that Joon. Sahilia supplies enlistment papers, and Kel refuses to be left behind, passing as a young man herself. [[character/sergant]] puts them through military training in Death Canyon. Their performance earns a courier assignment to the Gipath expedition. Sealed orders and a portal pass finally let them leave Suslanger under the authority of the same empire that enslaved them.",
+						"sources": [
+							"briefing brief_31",
+							"briefing brief_82",
+							"briefing brief_83",
+							"briefing brief_59a",
+							"briefing brief_86",
+							"briefing brief_87",
+							"briefing brief_88",
+							"briefing brief_88a"
+						],
+						"event": "enlistment",
+						"order": 8
 					}
 				],
 				"actors": [
@@ -3589,7 +8028,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/glav]] leads the Last Shelter and distrusts easy good fortune. He tests Kir with a signet-ring task, accepts him into the brotherhood and works to conceal its existence from imperial scouts. His decisions put the survival and morale of the refuge above straightforward honesty; he knowingly accepts a false ring while keeping that fact quiet.",
 						"sources": [
 							"briefing brief_41",
@@ -3598,6 +8037,51 @@ const DATA := {
 							"briefing brief_49",
 							"briefing brief_50"
 						]
+					},
+					{
+						"heading": "Feiruz’s last rescue",
+						"text": "Feiruz asks Kir to repay his help by rescuing his imprisoned fiancée [[character/merc10]]. He dies during the escape. Kel urges the grieving Aliya to avenge him and identifies the man who struck the fatal blow. Kir objects to deliberate revenge, but their companions insist on their code. The death of the prison commandant brings searches across the city. Fearing for his collection, Rindeil withdraws his protection, though he says Kir may return once the danger passes. Aliya then leads Kir and Kel to the Last Shelter and speaks for them before [[character/glav]].",
+						"sources": [
+							"briefing brief_37",
+							"briefing brief_38",
+							"briefing brief_39",
+							"briefing brief_40",
+							"briefing brief_41"
+						],
+						"event": "feiruz",
+						"order": 5
+					},
+					{
+						"heading": "The ring and the brotherhood",
+						"text": "Khatul demands an imperial signet ring from a cyclops as a test of trust. Kir brings it back and explains his intention to free his family. He also recognises that the ring does not match the description he has read. Khatul already knows it is false, but asks him to preserve the brotherhood’s belief in the trophy. Membership changes how [[character/zaku]] receives Kir: the smith who refused a stranger now offers his craft. Through Aliya, Kir also searches for the missing [[character/merc7]], rescues her and brings medicine. Sahilia’s recovery matters later, when her forged papers open a route into the army.",
+						"sources": [
+							"briefing brief_43",
+							"briefing brief_43a",
+							"briefing brief_44",
+							"briefing brief_45",
+							"briefing brief_46",
+							"briefing brief_47",
+							"briefing brief_48",
+							"briefing brief_59a"
+						],
+						"event": "brotherhood",
+						"order": 6
+					},
+					{
+						"heading": "Defending the Shelter and the ancient treaty",
+						"text": "An imperial scout discovers the Shelter. After fighting the expedition, Khatul proposes placing Wormface bodies at the battlefield to conceal the brotherhood’s involvement. In the depths, [[character/guru]] recognises Kir as a Joon and invokes an ancient treaty. He demands the death of a necromancer disturbing the caves before granting access. Later he calls Kir mentally and offers information for rescuing the Priest of Silence from the necromancers. His account of a human searching for Joon remains gives another lead, though he cannot say where that man now lives. The alliance is reciprocal and conditional, not a promise to answer every question.",
+						"sources": [
+							"briefing brief_49",
+							"briefing brief_50",
+							"briefing brief_51",
+							"briefing brief_52",
+							"briefing brief_53",
+							"briefing brief_70",
+							"briefing brief_71",
+							"briefing brief_72"
+						],
+						"event": "brainripper",
+						"order": 7
 					}
 				],
 				"actors": [
@@ -3631,12 +8115,28 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "The Brother Smith serves the Last Shelter. He initially refuses Kir because a stranger has no place in the brotherhood’s exchange of services. Once Kir is accepted, the smith welcomes him and offers his craft for payment.",
 						"sources": [
 							"briefing brief_43",
 							"briefing brief_43a"
 						]
+					},
+					{
+						"heading": "The ring and the brotherhood",
+						"text": "Khatul demands an imperial signet ring from a cyclops as a test of trust. Kir brings it back and explains his intention to free his family. He also recognises that the ring does not match the description he has read. Khatul already knows it is false, but asks him to preserve the brotherhood’s belief in the trophy. Membership changes how [[character/zaku]] receives Kir: the smith who refused a stranger now offers his craft. Through Aliya, Kir also searches for the missing [[character/merc7]], rescues her and brings medicine. Sahilia’s recovery matters later, when her forged papers open a route into the army.",
+						"sources": [
+							"briefing brief_43",
+							"briefing brief_43a",
+							"briefing brief_44",
+							"briefing brief_45",
+							"briefing brief_46",
+							"briefing brief_47",
+							"briefing brief_48",
+							"briefing brief_59a"
+						],
+						"event": "brotherhood",
+						"order": 6
 					}
 				],
 				"actors": [
@@ -3670,7 +8170,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/guru]] is a Wormface who recognises Kir as a Joon and invokes an ancient agreement between their peoples. Access to the depths and further information depend on tasks involving a necromancer and the Priest of Silence. His conversations give Kir a link to history that Suslanger’s human authorities do not provide.",
 						"sources": [
 							"briefing brief_51",
@@ -3678,6 +8178,22 @@ const DATA := {
 							"briefing brief_71",
 							"briefing brief_72"
 						]
+					},
+					{
+						"heading": "Defending the Shelter and the ancient treaty",
+						"text": "An imperial scout discovers the Shelter. After fighting the expedition, Khatul proposes placing Wormface bodies at the battlefield to conceal the brotherhood’s involvement. In the depths, [[character/guru]] recognises Kir as a Joon and invokes an ancient treaty. He demands the death of a necromancer disturbing the caves before granting access. Later he calls Kir mentally and offers information for rescuing the Priest of Silence from the necromancers. His account of a human searching for Joon remains gives another lead, though he cannot say where that man now lives. The alliance is reciprocal and conditional, not a promise to answer every question.",
+						"sources": [
+							"briefing brief_49",
+							"briefing brief_50",
+							"briefing brief_51",
+							"briefing brief_52",
+							"briefing brief_53",
+							"briefing brief_70",
+							"briefing brief_71",
+							"briefing brief_72"
+						],
+						"event": "brainripper",
+						"order": 7
 					}
 				],
 				"actors": [
@@ -3712,12 +8228,28 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "The sergeant introduces himself as Zairak the Merry. He oversees the newcomers’ military training and later provides sealed orders and a pass for the expedition to Gipath. His role connects the forged enlistment papers to Kir and Kel’s departure from Suslanger.",
 						"sources": [
 							"briefing brief_87",
 							"briefing brief_88a"
 						]
+					},
+					{
+						"heading": "The report and the passage to Gipath",
+						"text": "Karim’s rumour about the missing red-skinned youth becomes a document recovered from the necromancers. It records transformation and teleportation before the attack on the scholars’ mansion, with Gipath as the destination. Kir decides to follow that Joon. Sahilia supplies enlistment papers, and Kel refuses to be left behind, passing as a young man herself. [[character/sergant]] puts them through military training in Death Canyon. Their performance earns a courier assignment to the Gipath expedition. Sealed orders and a portal pass finally let them leave Suslanger under the authority of the same empire that enslaved them.",
+						"sources": [
+							"briefing brief_31",
+							"briefing brief_82",
+							"briefing brief_83",
+							"briefing brief_59a",
+							"briefing brief_86",
+							"briefing brief_87",
+							"briefing brief_88",
+							"briefing brief_88a"
+						],
+						"event": "enlistment",
+						"order": 8
 					}
 				],
 				"actors": [
@@ -3751,7 +8283,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/ycf]] is a widowed merchant on Suslanger whose business draws Kir and Kel into contraband, blackmail and a missing caravan. Her later requests mix commerce with personal affection: she wants Kehel’s standing damaged to favour a scholar she loves. Her claims and suspicions form leads to investigate, rather than automatic proof against the people she names.",
 						"sources": [
 							"briefing brief_7",
@@ -3760,6 +8292,22 @@ const DATA := {
 							"briefing brief_34a",
 							"briefing brief_63"
 						]
+					},
+					{
+						"heading": "Zara’s affairs",
+						"text": "The merchant [[character/ycf]] is another of Kel’s Suslanger contacts. Her side of the story involves a blackmailer, a threatened caravan and contraband that must be recovered before the authorities inspect it. The conversations distinguish successful recovery from arriving too late; the account of the caravan therefore depends on the outcome of that errand. Later, Zara’s interest in a scholar draws Kir into a scheme against Kehel. These dealings develop alongside the search for a Joon, rather than forming a single inevitable sequence of victories.",
+						"sources": [
+							"briefing brief_21",
+							"briefing brief_27",
+							"briefing brief_28",
+							"briefing brief_33",
+							"briefing brief_34a",
+							"briefing brief_34c",
+							"briefing brief_63",
+							"briefing brief_64"
+						],
+						"event": "zara",
+						"order": 4
 					}
 				],
 				"actors": [
@@ -3833,7 +8381,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "The Great Magician on Gipath is Tka-Rik. He tells Kir that At-Zako and Lu-a-Jalla are travelling elsewhere and that he himself cannot leave his allod. Unfamiliar with Jigran, he uses the Magic Orb as a lead and sends Kir and Kel to Ingos. His knowledge connects the new protagonists’ search with the events of Cursed Lands.",
 						"sources": [
 							"briefing brief_118",
@@ -3841,6 +8389,35 @@ const DATA := {
 							"briefing brief_149",
 							"briefing brief_151"
 						]
+					},
+					{
+						"heading": "Tka-Rik and the unknown allod",
+						"text": "Meeting [[character/rick]] gives Kir his first direct contact with a free Joon magician. Tka-Rik explains that At-Zako and Lu-a-Jalla are travelling together and that he himself remains bound to Gipath. He has never heard of Jigran. Kir tells him about Firez, his enslaved family and his promise to return. Learning that more Joons need help renews Tka-Rik’s purpose. Since he cannot locate the hidden allod unaided, he sends Kir to find the Magic Orb that At-Zako once used. Finding the magician therefore begins another investigation rather than immediately opening the road home.",
+						"sources": [
+							"briefing brief_118",
+							"briefing brief_119"
+						],
+						"event": "kir_tka",
+						"order": 11
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
 					}
 				],
 				"actors": [
@@ -3874,7 +8451,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/orcc]] leads an orc tribe on Gipath. He welcomes Kir after the struggle against the Khadaganian expedition and invokes the earlier Chosen and Shei-Var as examples. His dealings with the travellers involve a ritual axe, a harpy hunt and conflict with humans advancing into the Foothills. The struggle over the Shell can turn the local lizards against the settlers.",
 						"sources": [
 							"briefing brief_101",
@@ -3883,6 +8460,58 @@ const DATA := {
 							"briefing brief_112",
 							"briefing brief_113"
 						]
+					},
+					{
+						"heading": "Urk-Tar and the destroyed expedition",
+						"text": "On Gipath, [[character/orcc]] says his warriors destroyed the Khadaganian expedition. He remembers how Zak’s defeat of a supposed Demon showed that armoured outsiders could be killed, and hopes Kir will become a Chosen for his own tribe. Kel proposes a false report with unpromising stone samples to prevent another imperial expedition from being sent. The shaman [[character/orcpyr]] distrusts strangers but makes Kir a ritual axe after he supplies suitable stone, and makes beads for Kel. Their welcome depends on helping the tribe, and Kir soon rescues the chief from a harpy and his wife from goblins.",
+						"sources": [
+							"briefing brief_101",
+							"briefing brief_102",
+							"briefing brief_103",
+							"briefing brief_104",
+							"briefing brief_105",
+							"briefing brief_106",
+							"briefing brief_107",
+							"briefing brief_108",
+							"briefing brief_109",
+							"briefing brief_110",
+							"briefing brief_111"
+						],
+						"event": "urk_tar",
+						"order": 9
+					},
+					{
+						"heading": "The Shell and the war with the settlers",
+						"text": "Urk-Tar explains that humans have driven orcs out of the Foothills and are advancing into the Middle Mountains. Kir removes the Shell whose presence restrains the lizards, initially refusing to fight humans himself. When Tynachey describes the killing of the tribe’s inhabitants, Kel argues for helping their hosts recover the settlement, and Kir agrees. The [[character/iz|Hermit Lizard]] then offers news of the former Chosen in exchange for placing the Shell by the Remote Mountains’ lake. Restoring it also frees hunters held by lizards. The Hermit directs Kir toward the Great Magician by a route different from Zak’s old tunnel approach.",
+						"sources": [
+							"briefing brief_112",
+							"briefing brief_113",
+							"briefing brief_114",
+							"briefing brief_115",
+							"briefing brief_116",
+							"briefing brief_117"
+						],
+						"event": "shell_war",
+						"order": 10
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
 					}
 				],
 				"actors": [
@@ -3916,7 +8545,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/orcpyr]] is the orc shaman. He distrusts outsiders, explains tribal customs and makes weapons. Kir’s dealings with him include the ritual axe, the chief’s kidnapped wife and the Magic Orb, whose history he connects with Zak’s earlier visit. His account is the tribe’s perspective on those events.",
 						"sources": [
 							"briefing brief_102",
@@ -3924,6 +8553,39 @@ const DATA := {
 							"briefing brief_110",
 							"briefing brief_120a"
 						]
+					},
+					{
+						"heading": "Urk-Tar and the destroyed expedition",
+						"text": "On Gipath, [[character/orcc]] says his warriors destroyed the Khadaganian expedition. He remembers how Zak’s defeat of a supposed Demon showed that armoured outsiders could be killed, and hopes Kir will become a Chosen for his own tribe. Kel proposes a false report with unpromising stone samples to prevent another imperial expedition from being sent. The shaman [[character/orcpyr]] distrusts strangers but makes Kir a ritual axe after he supplies suitable stone, and makes beads for Kel. Their welcome depends on helping the tribe, and Kir soon rescues the chief from a harpy and his wife from goblins.",
+						"sources": [
+							"briefing brief_101",
+							"briefing brief_102",
+							"briefing brief_103",
+							"briefing brief_104",
+							"briefing brief_105",
+							"briefing brief_106",
+							"briefing brief_107",
+							"briefing brief_108",
+							"briefing brief_109",
+							"briefing brief_110",
+							"briefing brief_111"
+						],
+						"event": "urk_tar",
+						"order": 9
+					},
+					{
+						"heading": "The Shell and the war with the settlers",
+						"text": "Urk-Tar explains that humans have driven orcs out of the Foothills and are advancing into the Middle Mountains. Kir removes the Shell whose presence restrains the lizards, initially refusing to fight humans himself. When Tynachey describes the killing of the tribe’s inhabitants, Kel argues for helping their hosts recover the settlement, and Kir agrees. The [[character/iz|Hermit Lizard]] then offers news of the former Chosen in exchange for placing the Shell by the Remote Mountains’ lake. Restoring it also frees hunters held by lizards. The Hermit directs Kir toward the Great Magician by a route different from Zak’s old tunnel approach.",
+						"sources": [
+							"briefing brief_112",
+							"briefing brief_113",
+							"briefing brief_114",
+							"briefing brief_115",
+							"briefing brief_116",
+							"briefing brief_117"
+						],
+						"event": "shell_war",
+						"order": 10
 					}
 				],
 				"actors": [
@@ -3957,12 +8619,26 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "The Hermit Lizard wants a secure new home near the lake in the Remote Mountains. He asks Kir to restore the Shell to its pedestal so the lizards will be appeased. In return he provides directions toward the Great Magician; the route is no longer simply the one followed in Zak’s earlier journey.",
 						"sources": [
 							"briefing brief_114",
 							"briefing brief_117"
 						]
+					},
+					{
+						"heading": "The Shell and the war with the settlers",
+						"text": "Urk-Tar explains that humans have driven orcs out of the Foothills and are advancing into the Middle Mountains. Kir removes the Shell whose presence restrains the lizards, initially refusing to fight humans himself. When Tynachey describes the killing of the tribe’s inhabitants, Kel argues for helping their hosts recover the settlement, and Kir agrees. The [[character/iz|Hermit Lizard]] then offers news of the former Chosen in exchange for placing the Shell by the Remote Mountains’ lake. Restoring it also frees hunters held by lizards. The Hermit directs Kir toward the Great Magician by a route different from Zak’s old tunnel approach.",
+						"sources": [
+							"briefing brief_112",
+							"briefing brief_113",
+							"briefing brief_114",
+							"briefing brief_115",
+							"briefing brief_116",
+							"briefing brief_117"
+						],
+						"event": "shell_war",
+						"order": 10
 					}
 				],
 				"actors": [
@@ -3996,13 +8672,48 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/karh]] leads the Free Hunters. He thanks Kir for rescuing his men from lizards, claims neutrality and nevertheless favours the orcs against the village’s expansion. His requests draw Kir into local rivalries, including a scheme to bring Babur to the hunters’ camp through a false message.",
 						"sources": [
 							"briefing brief_121",
 							"briefing brief_126a",
 							"briefing brief_126b"
 						]
+					},
+					{
+						"heading": "The Free Hunters and Babur",
+						"text": "A [[character/loozer|messenger]] invites the rescuers of the hunters to [[character/karh]]’s camp. Bor claims neutrality in the war, yet asks them to act against the village’s hunters and caravans. To question [[character/smith]] about the Orb, Kir helps bring him out of the village. The letter can go to Babur himself or to the elder, with different explanations for the craftsman’s arrival. Babur then sends Kir to the lizards’ tomb for a supposed magical needle. The expedition supplies lizard hides, and Babur admits that useful armour material was his real interest. For information about the Orb, he redirects the visitors to Estera.",
+						"sources": [
+							"briefing brief_120",
+							"briefing brief_121",
+							"briefing brief_123",
+							"briefing brief_124",
+							"briefing brief_126a",
+							"briefing brief_126b",
+							"briefing brief_127",
+							"briefing brief_128"
+						],
+						"event": "bor_babur",
+						"order": 12
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
 					}
 				],
 				"actors": [
@@ -4036,7 +8747,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/smith]] is the Gipath craftsman known from Zak’s journey. A forged message brings him into the Free Hunters’ camp. He seeks a magical needle connected with armour-making and offers information about the Magic Orb. Later his captivity among the orcs and transfer to an ogre make him the subject of another rescue.",
 						"sources": [
 							"briefing brief_126a",
@@ -4044,6 +8755,41 @@ const DATA := {
 							"briefing brief_128",
 							"briefing brief_141"
 						]
+					},
+					{
+						"heading": "The Free Hunters and Babur",
+						"text": "A [[character/loozer|messenger]] invites the rescuers of the hunters to [[character/karh]]’s camp. Bor claims neutrality in the war, yet asks them to act against the village’s hunters and caravans. To question [[character/smith]] about the Orb, Kir helps bring him out of the village. The letter can go to Babur himself or to the elder, with different explanations for the craftsman’s arrival. Babur then sends Kir to the lizards’ tomb for a supposed magical needle. The expedition supplies lizard hides, and Babur admits that useful armour material was his real interest. For information about the Orb, he redirects the visitors to Estera.",
+						"sources": [
+							"briefing brief_120",
+							"briefing brief_121",
+							"briefing brief_123",
+							"briefing brief_124",
+							"briefing brief_126a",
+							"briefing brief_126b",
+							"briefing brief_127",
+							"briefing brief_128"
+						],
+						"event": "bor_babur",
+						"order": 12
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
 					}
 				],
 				"actors": [
@@ -4077,12 +8823,47 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/daughter]] guards Estera’s cave while the witch is away. Her exchanges with Kir and Kel include a rivalry over a necklace and directions to the Old Dragon. She also helps explain why the Magic Orb has lost its power after use, making her part of the search for a way to consult it again.",
 						"sources": [
 							"briefing brief_129",
 							"briefing brief_137"
 						]
+					},
+					{
+						"heading": "Airy, Estera and the Dragon’s flower",
+						"text": "[[character/daughter]] guards the cave while Estera is visiting the [[character/skd|Old Dragon]]. Her quarrel with Kel over a necklace exposes Kel’s jealousy and Kir’s failure to notice it. Airy refuses his courtship and suggests looking at the person already beside him. At the dragon’s lair, Estera is the troublesome visitor rather than a prisoner: she refuses to leave without information about a flower. Kir obtains it and the witch goes home. [[character/witch]] then admits the Orb was stolen by orcs; Airy identifies the islands and warns that it lost its power after its earlier use.",
+						"sources": [
+							"briefing brief_129",
+							"briefing brief_130",
+							"briefing brief_131",
+							"briefing brief_132",
+							"briefing brief_133",
+							"briefing brief_134",
+							"briefing brief_136",
+							"briefing brief_137"
+						],
+						"event": "flower_dragon",
+						"order": 13
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
 					}
 				],
 				"actors": [
@@ -4116,12 +8897,47 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/witch]] is the Gipath witch who helped Zak in Cursed Lands. She notices Kir’s resemblance to him and is pursuing a flower associated with the Old Dragon. Her knowledge is again useful, although her complaints about Airy and the theft of the Magic Orb reflect her own irritable view of events.",
 						"sources": [
 							"briefing brief_133",
 							"briefing brief_136"
 						]
+					},
+					{
+						"heading": "Airy, Estera and the Dragon’s flower",
+						"text": "[[character/daughter]] guards the cave while Estera is visiting the [[character/skd|Old Dragon]]. Her quarrel with Kel over a necklace exposes Kel’s jealousy and Kir’s failure to notice it. Airy refuses his courtship and suggests looking at the person already beside him. At the dragon’s lair, Estera is the troublesome visitor rather than a prisoner: she refuses to leave without information about a flower. Kir obtains it and the witch goes home. [[character/witch]] then admits the Orb was stolen by orcs; Airy identifies the islands and warns that it lost its power after its earlier use.",
+						"sources": [
+							"briefing brief_129",
+							"briefing brief_130",
+							"briefing brief_131",
+							"briefing brief_132",
+							"briefing brief_133",
+							"briefing brief_134",
+							"briefing brief_136",
+							"briefing brief_137"
+						],
+						"event": "flower_dragon",
+						"order": 13
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
 					}
 				],
 				"actors": [
@@ -4161,12 +8977,28 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "The Old Dragon remembers the earlier Chosen and his ancient sword. Estera’s persistent requests for a flower irritate him. His conversation supplies information about the flower and helps Kir and Kel negotiate another of Gipath’s awkward bargains.",
 						"sources": [
 							"briefing brief_132",
 							"briefing brief_133"
 						]
+					},
+					{
+						"heading": "Airy, Estera and the Dragon’s flower",
+						"text": "[[character/daughter]] guards the cave while Estera is visiting the [[character/skd|Old Dragon]]. Her quarrel with Kel over a necklace exposes Kel’s jealousy and Kir’s failure to notice it. Airy refuses his courtship and suggests looking at the person already beside him. At the dragon’s lair, Estera is the troublesome visitor rather than a prisoner: she refuses to leave without information about a flower. Kir obtains it and the witch goes home. [[character/witch]] then admits the Orb was stolen by orcs; Airy identifies the islands and warns that it lost its power after its earlier use.",
+						"sources": [
+							"briefing brief_129",
+							"briefing brief_130",
+							"briefing brief_131",
+							"briefing brief_132",
+							"briefing brief_133",
+							"briefing brief_134",
+							"briefing brief_136",
+							"briefing brief_137"
+						],
+						"event": "flower_dragon",
+						"order": 13
 					}
 				],
 				"actors": [
@@ -4239,11 +9071,27 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "The brigand meets Kir after the rescue of the Free Hunters and conveys the chief’s invitation. He points toward their camp in the northern Foothills and warns that the goblins guarding it can be dangerous. His brief role provides a personal introduction to the hunters’ settlement.",
 						"sources": [
 							"briefing brief_120"
 						]
+					},
+					{
+						"heading": "The Free Hunters and Babur",
+						"text": "A [[character/loozer|messenger]] invites the rescuers of the hunters to [[character/karh]]’s camp. Bor claims neutrality in the war, yet asks them to act against the village’s hunters and caravans. To question [[character/smith]] about the Orb, Kir helps bring him out of the village. The letter can go to Babur himself or to the elder, with different explanations for the craftsman’s arrival. Babur then sends Kir to the lizards’ tomb for a supposed magical needle. The expedition supplies lizard hides, and Babur admits that useful armour material was his real interest. For information about the Orb, he redirects the visitors to Estera.",
+						"sources": [
+							"briefing brief_120",
+							"briefing brief_121",
+							"briefing brief_123",
+							"briefing brief_124",
+							"briefing brief_126a",
+							"briefing brief_126b",
+							"briefing brief_127",
+							"briefing brief_128"
+						],
+						"event": "bor_babur",
+						"order": 12
 					}
 				],
 				"actors": [
@@ -4277,12 +9125,52 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/huber]] governs the Ingos city and collects curiosities. He presents himself as an enlightened ruler and takes an interest in Kel and the visitors’ discoveries. In the murder investigation he demands evidence before accepting Crooked’s guilt, asks why his court magician His died and seeks the return of his stolen nugget.",
 						"sources": [
 							"briefing brief_224",
 							"briefing brief_250a"
 						]
+					},
+					{
+						"heading": "Brissen’s murder and the failed alibi",
+						"text": "Brissen is murdered and Yam-Akara is accused of killing his old friend. Kir and Kel undertake the defence. The magician says he spent the day in the mines and arrived late for their meeting. [[character/guard]] confirms that he allowed the elderly visitor through with an expired permit and stamped it that day. Kir finds the lost pass, but [[character/huber]] rejects the water-damaged document because the signature and date can no longer be read. This evidence supports the search but does not free Yam-Akara; the travellers still have to identify the murderer.",
+						"sources": [
+							"briefing brief_232",
+							"briefing brief_233",
+							"briefing brief_238",
+							"briefing brief_239",
+							"briefing brief_240"
+						],
+						"event": "brissen",
+						"order": 17
+					},
+					{
+						"heading": "The planted knife and His’s death",
+						"text": "A knife found at the murder site appears to implicate His. The court magician admits it was stolen from his laboratory together with the governor’s nugget. He had sent out the empty caravan to hide that loss and hoped to blame raiders after an informant warned of the planned attack. His arranges a meeting to produce evidence, but is killed before he can clear himself. Meanwhile Geraldine and Karansul disclose their relationship and provide each other with an alibi. Their commercial hostility and private secrecy had made them suspicious without establishing guilt.",
+						"sources": [
+							"briefing brief_243",
+							"briefing brief_245",
+							"briefing brief_245a",
+							"briefing brief_246",
+							"briefing brief_247"
+						],
+						"event": "his_murder",
+						"order": 18
+					},
+					{
+						"heading": "Crooked’s confession",
+						"text": "The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial.",
+						"sources": [
+							"briefing brief_237",
+							"briefing brief_248",
+							"briefing brief_249",
+							"briefing brief_250",
+							"briefing brief_250a",
+							"briefing brief_251"
+						],
+						"event": "crooked",
+						"order": 19
 					}
 				],
 				"actors": [
@@ -4316,12 +9204,39 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/trapper]] knows the local Woodsfolk and the requirements for approaching the Green Clan. He helps the travellers interpret events around the supposedly valuable caravan and identifies an ice elemental as the next lead for the magician. His practical advice links several stages of the Ingos investigation.",
 						"sources": [
 							"briefing brief_206",
 							"briefing brief_218"
 						]
+					},
+					{
+						"heading": "Two magicians on Ingos",
+						"text": "Kir and Kel seek magical help on Ingos. [[character/trader]] complains about [[character/kmage]], whose cheap runes undercut his trade, and identifies [[character/his]] as the governor’s court magician. His receives the travellers with suspicion and later asks them to retrieve materials from his laboratory. [[character/trapper]] offers another route: contact [[character/grey]] through the Sacred Flower and a vessel from his cache. Grey Leaf explains that the knight Brissen and his magician friend have left for the settlement near the mines. Kir’s first task here is finding an informed ally, before the murder that later dominates the investigation.",
+						"sources": [
+							"briefing brief_201",
+							"briefing brief_204",
+							"briefing brief_206",
+							"briefing brief_207",
+							"briefing brief_210",
+							"briefing brief_211"
+						],
+						"event": "ingos_contacts",
+						"order": 15
+					},
+					{
+						"heading": "The Beastmasters and the empty caravan",
+						"text": "At the Beastmasters’ settlement, [[character/vor]] accuses Kir and Kel of being spies. [[character/gerald]] agrees to test them. Their attempt to obtain a gold nugget from a caravan finds an empty chest, making their return dangerous. [[character/mthief]] reasons that genuine thieves would not come back empty-handed, and Geraldine accepts them. Sver’s advice about an ice elemental in the abandoned mines provides something to offer Yam-Akara. His work and the governor’s permit requirements then draw the travellers into further dealings with the court. The missing nugget will matter again when the apparent caravan failure becomes evidence of a separate theft.",
+						"sources": [
+							"briefing brief_212",
+							"briefing brief_215",
+							"briefing brief_218",
+							"briefing brief_221",
+							"briefing brief_245a"
+						],
+						"event": "beastmasters",
+						"order": 16
 					}
 				],
 				"actors": [
@@ -4355,12 +9270,40 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/grey]] remembers Brissen with gratitude and tells Kir that the knight left with a friend for the settlement near the abandoned mines. His knowledge of the Woodsfolk and later observations about suspicious evidence help the search for Brissen’s killer. He is distinct from Zara, the merchant of Suslanger.",
 						"sources": [
 							"briefing brief_207",
 							"briefing brief_237"
 						]
+					},
+					{
+						"heading": "Two magicians on Ingos",
+						"text": "Kir and Kel seek magical help on Ingos. [[character/trader]] complains about [[character/kmage]], whose cheap runes undercut his trade, and identifies [[character/his]] as the governor’s court magician. His receives the travellers with suspicion and later asks them to retrieve materials from his laboratory. [[character/trapper]] offers another route: contact [[character/grey]] through the Sacred Flower and a vessel from his cache. Grey Leaf explains that the knight Brissen and his magician friend have left for the settlement near the mines. Kir’s first task here is finding an informed ally, before the murder that later dominates the investigation.",
+						"sources": [
+							"briefing brief_201",
+							"briefing brief_204",
+							"briefing brief_206",
+							"briefing brief_207",
+							"briefing brief_210",
+							"briefing brief_211"
+						],
+						"event": "ingos_contacts",
+						"order": 15
+					},
+					{
+						"heading": "Crooked’s confession",
+						"text": "The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial.",
+						"sources": [
+							"briefing brief_237",
+							"briefing brief_248",
+							"briefing brief_249",
+							"briefing brief_250",
+							"briefing brief_250a",
+							"briefing brief_251"
+						],
+						"event": "crooked",
+						"order": 19
 					}
 				],
 				"actors": [
@@ -4439,12 +9382,39 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/trader]] is an Ingos merchant angry that Yam-Akara’s cheap runes undercut his business. Later his private relationship with [[character/gerald]] becomes evidence in the murder inquiry: the two provide each other with an alibi and reveal plans to marry. His commercial grudges should not be mistaken for proof of murder.",
 						"sources": [
 							"briefing brief_201",
 							"briefing brief_247"
 						]
+					},
+					{
+						"heading": "Two magicians on Ingos",
+						"text": "Kir and Kel seek magical help on Ingos. [[character/trader]] complains about [[character/kmage]], whose cheap runes undercut his trade, and identifies [[character/his]] as the governor’s court magician. His receives the travellers with suspicion and later asks them to retrieve materials from his laboratory. [[character/trapper]] offers another route: contact [[character/grey]] through the Sacred Flower and a vessel from his cache. Grey Leaf explains that the knight Brissen and his magician friend have left for the settlement near the mines. Kir’s first task here is finding an informed ally, before the murder that later dominates the investigation.",
+						"sources": [
+							"briefing brief_201",
+							"briefing brief_204",
+							"briefing brief_206",
+							"briefing brief_207",
+							"briefing brief_210",
+							"briefing brief_211"
+						],
+						"event": "ingos_contacts",
+						"order": 15
+					},
+					{
+						"heading": "The planted knife and His’s death",
+						"text": "A knife found at the murder site appears to implicate His. The court magician admits it was stolen from his laboratory together with the governor’s nugget. He had sent out the empty caravan to hide that loss and hoped to blame raiders after an informant warned of the planned attack. His arranges a meeting to produce evidence, but is killed before he can clear himself. Meanwhile Geraldine and Karansul disclose their relationship and provide each other with an alibi. Their commercial hostility and private secrecy had made them suspicious without establishing guilt.",
+						"sources": [
+							"briefing brief_243",
+							"briefing brief_245",
+							"briefing brief_245a",
+							"briefing brief_246",
+							"briefing brief_247"
+						],
+						"event": "his_murder",
+						"order": 18
 					}
 				],
 				"actors": [
@@ -4478,13 +9448,53 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/gerald]] leads the settlement near the mines. The empty caravan and accusations against the newcomers put her judgment to the test, while Trickster helps explain their position. Her relationship with Karansul later supplies an alibi in the search for Brissen’s murderer.",
 						"sources": [
 							"briefing brief_212",
 							"briefing brief_215",
 							"briefing brief_247"
 						]
+					},
+					{
+						"heading": "The Beastmasters and the empty caravan",
+						"text": "At the Beastmasters’ settlement, [[character/vor]] accuses Kir and Kel of being spies. [[character/gerald]] agrees to test them. Their attempt to obtain a gold nugget from a caravan finds an empty chest, making their return dangerous. [[character/mthief]] reasons that genuine thieves would not come back empty-handed, and Geraldine accepts them. Sver’s advice about an ice elemental in the abandoned mines provides something to offer Yam-Akara. His work and the governor’s permit requirements then draw the travellers into further dealings with the court. The missing nugget will matter again when the apparent caravan failure becomes evidence of a separate theft.",
+						"sources": [
+							"briefing brief_212",
+							"briefing brief_215",
+							"briefing brief_218",
+							"briefing brief_221",
+							"briefing brief_245a"
+						],
+						"event": "beastmasters",
+						"order": 16
+					},
+					{
+						"heading": "The planted knife and His’s death",
+						"text": "A knife found at the murder site appears to implicate His. The court magician admits it was stolen from his laboratory together with the governor’s nugget. He had sent out the empty caravan to hide that loss and hoped to blame raiders after an informant warned of the planned attack. His arranges a meeting to produce evidence, but is killed before he can clear himself. Meanwhile Geraldine and Karansul disclose their relationship and provide each other with an alibi. Their commercial hostility and private secrecy had made them suspicious without establishing guilt.",
+						"sources": [
+							"briefing brief_243",
+							"briefing brief_245",
+							"briefing brief_245a",
+							"briefing brief_246",
+							"briefing brief_247"
+						],
+						"event": "his_murder",
+						"order": 18
+					},
+					{
+						"heading": "Crooked’s confession",
+						"text": "The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial.",
+						"sources": [
+							"briefing brief_237",
+							"briefing brief_248",
+							"briefing brief_249",
+							"briefing brief_250",
+							"briefing brief_250a",
+							"briefing brief_251"
+						],
+						"event": "crooked",
+						"order": 19
 					}
 				],
 				"actors": [
@@ -4518,7 +9528,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/his]] is the governor’s court magician on Ingos. A knife associated with him becomes a misleading clue in Brissen’s murder. He admits that a staged caravan was intended to expose raiders and that the nugget had already been stolen. His planned meeting with an informant ends with his own murder; Crooked’s confession identifies the attempt to silence him.",
 						"sources": [
 							"briefing brief_204",
@@ -4526,6 +9536,47 @@ const DATA := {
 							"briefing brief_245a",
 							"briefing brief_250a"
 						]
+					},
+					{
+						"heading": "Two magicians on Ingos",
+						"text": "Kir and Kel seek magical help on Ingos. [[character/trader]] complains about [[character/kmage]], whose cheap runes undercut his trade, and identifies [[character/his]] as the governor’s court magician. His receives the travellers with suspicion and later asks them to retrieve materials from his laboratory. [[character/trapper]] offers another route: contact [[character/grey]] through the Sacred Flower and a vessel from his cache. Grey Leaf explains that the knight Brissen and his magician friend have left for the settlement near the mines. Kir’s first task here is finding an informed ally, before the murder that later dominates the investigation.",
+						"sources": [
+							"briefing brief_201",
+							"briefing brief_204",
+							"briefing brief_206",
+							"briefing brief_207",
+							"briefing brief_210",
+							"briefing brief_211"
+						],
+						"event": "ingos_contacts",
+						"order": 15
+					},
+					{
+						"heading": "The planted knife and His’s death",
+						"text": "A knife found at the murder site appears to implicate His. The court magician admits it was stolen from his laboratory together with the governor’s nugget. He had sent out the empty caravan to hide that loss and hoped to blame raiders after an informant warned of the planned attack. His arranges a meeting to produce evidence, but is killed before he can clear himself. Meanwhile Geraldine and Karansul disclose their relationship and provide each other with an alibi. Their commercial hostility and private secrecy had made them suspicious without establishing guilt.",
+						"sources": [
+							"briefing brief_243",
+							"briefing brief_245",
+							"briefing brief_245a",
+							"briefing brief_246",
+							"briefing brief_247"
+						],
+						"event": "his_murder",
+						"order": 18
+					},
+					{
+						"heading": "Crooked’s confession",
+						"text": "The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial.",
+						"sources": [
+							"briefing brief_237",
+							"briefing brief_248",
+							"briefing brief_249",
+							"briefing brief_250",
+							"briefing brief_250a",
+							"briefing brief_251"
+						],
+						"event": "crooked",
+						"order": 19
 					}
 				],
 				"actors": [
@@ -4570,7 +9621,7 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/vor]] is hostile to Kir and Kel and accuses them of spying. The investigation ultimately exposes his theft from the settlement’s common funds. In his confession he admits killing Brissen after the knight discovered it, planting the stolen knife and killing His to prevent their dealings from being revealed.",
 						"sources": [
 							"briefing brief_212",
@@ -4578,6 +9629,33 @@ const DATA := {
 							"briefing brief_250",
 							"briefing brief_250a"
 						]
+					},
+					{
+						"heading": "The Beastmasters and the empty caravan",
+						"text": "At the Beastmasters’ settlement, [[character/vor]] accuses Kir and Kel of being spies. [[character/gerald]] agrees to test them. Their attempt to obtain a gold nugget from a caravan finds an empty chest, making their return dangerous. [[character/mthief]] reasons that genuine thieves would not come back empty-handed, and Geraldine accepts them. Sver’s advice about an ice elemental in the abandoned mines provides something to offer Yam-Akara. His work and the governor’s permit requirements then draw the travellers into further dealings with the court. The missing nugget will matter again when the apparent caravan failure becomes evidence of a separate theft.",
+						"sources": [
+							"briefing brief_212",
+							"briefing brief_215",
+							"briefing brief_218",
+							"briefing brief_221",
+							"briefing brief_245a"
+						],
+						"event": "beastmasters",
+						"order": 16
+					},
+					{
+						"heading": "Crooked’s confession",
+						"text": "The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial.",
+						"sources": [
+							"briefing brief_237",
+							"briefing brief_248",
+							"briefing brief_249",
+							"briefing brief_250",
+							"briefing brief_250a",
+							"briefing brief_251"
+						],
+						"event": "crooked",
+						"order": 19
 					}
 				],
 				"actors": [
@@ -4623,14 +9701,80 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
-						"text": "[[character/kmage]] is a magician whose inexpensive runes anger Karansul. Suspicion falls on him in Brissen’s murder, but his visit to the mines and the guard’s testimony provide an alibi. After being cleared, he searches the governor’s library and identifies the old passage that can take Kir home to Jigran.",
+						"heading": "Overview",
+						"text": "[[character/kmage]] is a magician and Brissen’s friend on Ingos. His inexpensive runes anger Karansul. Wrongly accused of murder, he helps Kir investigate his movements and uses the governor’s library during his confinement. After his release he explains how its old records reveal a hidden route to Jigran.",
 						"sources": [
+							"briefing brief_201",
 							"briefing brief_233",
-							"briefing brief_239",
-							"briefing brief_251",
-							"briefing brief_253"
+							"briefing brief_240",
+							"briefing brief_251"
 						]
+					},
+					{
+						"heading": "Two magicians on Ingos",
+						"text": "Kir and Kel seek magical help on Ingos. [[character/trader]] complains about [[character/kmage]], whose cheap runes undercut his trade, and identifies [[character/his]] as the governor’s court magician. His receives the travellers with suspicion and later asks them to retrieve materials from his laboratory. [[character/trapper]] offers another route: contact [[character/grey]] through the Sacred Flower and a vessel from his cache. Grey Leaf explains that the knight Brissen and his magician friend have left for the settlement near the mines. Kir’s first task here is finding an informed ally, before the murder that later dominates the investigation.",
+						"sources": [
+							"briefing brief_201",
+							"briefing brief_204",
+							"briefing brief_206",
+							"briefing brief_207",
+							"briefing brief_210",
+							"briefing brief_211"
+						],
+						"event": "ingos_contacts",
+						"order": 15
+					},
+					{
+						"heading": "The Beastmasters and the empty caravan",
+						"text": "At the Beastmasters’ settlement, [[character/vor]] accuses Kir and Kel of being spies. [[character/gerald]] agrees to test them. Their attempt to obtain a gold nugget from a caravan finds an empty chest, making their return dangerous. [[character/mthief]] reasons that genuine thieves would not come back empty-handed, and Geraldine accepts them. Sver’s advice about an ice elemental in the abandoned mines provides something to offer Yam-Akara. His work and the governor’s permit requirements then draw the travellers into further dealings with the court. The missing nugget will matter again when the apparent caravan failure becomes evidence of a separate theft.",
+						"sources": [
+							"briefing brief_212",
+							"briefing brief_215",
+							"briefing brief_218",
+							"briefing brief_221",
+							"briefing brief_245a"
+						],
+						"event": "beastmasters",
+						"order": 16
+					},
+					{
+						"heading": "Brissen’s murder and the failed alibi",
+						"text": "Brissen is murdered and Yam-Akara is accused of killing his old friend. Kir and Kel undertake the defence. The magician says he spent the day in the mines and arrived late for their meeting. [[character/guard]] confirms that he allowed the elderly visitor through with an expired permit and stamped it that day. Kir finds the lost pass, but [[character/huber]] rejects the water-damaged document because the signature and date can no longer be read. This evidence supports the search but does not free Yam-Akara; the travellers still have to identify the murderer.",
+						"sources": [
+							"briefing brief_232",
+							"briefing brief_233",
+							"briefing brief_238",
+							"briefing brief_239",
+							"briefing brief_240"
+						],
+						"event": "brissen",
+						"order": 17
+					},
+					{
+						"heading": "Crooked’s confession",
+						"text": "The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial.",
+						"sources": [
+							"briefing brief_237",
+							"briefing brief_248",
+							"briefing brief_249",
+							"briefing brief_250",
+							"briefing brief_250a",
+							"briefing brief_251"
+						],
+						"event": "crooked",
+						"order": 19
+					},
+					{
+						"heading": "The hidden portal to Jigran",
+						"text": "During his confinement, Yam-Akara gains access to the governor’s library. Old exploration reports reveal that the powerful “artifact” is a forgotten passage to another land. Trickster offers a key to the gate, then sends Kir on a fruitless ore search so that he can work without interference. With the key ready, Yam-Akara warns that he cannot sense the destination: the portal may be defective or concealed by a powerful absorbing spell. Kir recognises the same absence Tka-Rik described and concludes that it leads to Jigran. He decides to go directly, trusting the strength gained during his journey. Kel chooses to accompany him again.",
+						"sources": [
+							"briefing brief_251",
+							"briefing brief_252",
+							"briefing brief_253",
+							"briefing brief_254"
+						],
+						"event": "old_portal",
+						"order": 20
 					}
 				],
 				"actors": [
@@ -4670,12 +9814,50 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/mthief]] is a resourceful resident of the Ingos settlement. He reasons that the newcomers’ return speaks against the accusations of theft and supports them in front of Geraldine. Later he sends Kir and Kel on a diversion while he obtains the key needed for their onward journey.",
 						"sources": [
 							"briefing brief_215",
 							"briefing brief_253"
 						]
+					},
+					{
+						"heading": "The Beastmasters and the empty caravan",
+						"text": "At the Beastmasters’ settlement, [[character/vor]] accuses Kir and Kel of being spies. [[character/gerald]] agrees to test them. Their attempt to obtain a gold nugget from a caravan finds an empty chest, making their return dangerous. [[character/mthief]] reasons that genuine thieves would not come back empty-handed, and Geraldine accepts them. Sver’s advice about an ice elemental in the abandoned mines provides something to offer Yam-Akara. His work and the governor’s permit requirements then draw the travellers into further dealings with the court. The missing nugget will matter again when the apparent caravan failure becomes evidence of a separate theft.",
+						"sources": [
+							"briefing brief_212",
+							"briefing brief_215",
+							"briefing brief_218",
+							"briefing brief_221",
+							"briefing brief_245a"
+						],
+						"event": "beastmasters",
+						"order": 16
+					},
+					{
+						"heading": "Brissen’s murder and the failed alibi",
+						"text": "Brissen is murdered and Yam-Akara is accused of killing his old friend. Kir and Kel undertake the defence. The magician says he spent the day in the mines and arrived late for their meeting. [[character/guard]] confirms that he allowed the elderly visitor through with an expired permit and stamped it that day. Kir finds the lost pass, but [[character/huber]] rejects the water-damaged document because the signature and date can no longer be read. This evidence supports the search but does not free Yam-Akara; the travellers still have to identify the murderer.",
+						"sources": [
+							"briefing brief_232",
+							"briefing brief_233",
+							"briefing brief_238",
+							"briefing brief_239",
+							"briefing brief_240"
+						],
+						"event": "brissen",
+						"order": 17
+					},
+					{
+						"heading": "The hidden portal to Jigran",
+						"text": "During his confinement, Yam-Akara gains access to the governor’s library. Old exploration reports reveal that the powerful “artifact” is a forgotten passage to another land. Trickster offers a key to the gate, then sends Kir on a fruitless ore search so that he can work without interference. With the key ready, Yam-Akara warns that he cannot sense the destination: the portal may be defective or concealed by a powerful absorbing spell. Kir recognises the same absence Tka-Rik described and concludes that it leads to Jigran. He decides to go directly, trusting the strength gained during his journey. Kel chooses to accompany him again.",
+						"sources": [
+							"briefing brief_251",
+							"briefing brief_252",
+							"briefing brief_253",
+							"briefing brief_254"
+						],
+						"event": "old_portal",
+						"order": 20
 					}
 				],
 				"actors": [
@@ -4709,11 +9891,25 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
-						"text": "The mine guard is a witness in the investigation of Brissen’s murder. He allowed Yam-Akara into the mines despite an expired permit. His account and the stamped pass establish where the magician had been, making this otherwise minor soldier important to clearing a suspect.",
+						"heading": "Overview",
+						"text": "The mine guard is a witness in the investigation of Brissen’s murder. He let Yam-Akara enter with an expired permit because the magician had helped his village. His testimony leads Kir to the lost stamped pass, but the governor rejects the damaged document. The guard supplies a lead in clearing an innocent man; he does not settle the case alone.",
 						"sources": [
-							"briefing brief_239"
+							"briefing brief_239",
+							"briefing brief_240"
 						]
+					},
+					{
+						"heading": "Brissen’s murder and the failed alibi",
+						"text": "Brissen is murdered and Yam-Akara is accused of killing his old friend. Kir and Kel undertake the defence. The magician says he spent the day in the mines and arrived late for their meeting. [[character/guard]] confirms that he allowed the elderly visitor through with an expired permit and stamped it that day. Kir finds the lost pass, but [[character/huber]] rejects the water-damaged document because the signature and date can no longer be read. This evidence supports the search but does not free Yam-Akara; the travellers still have to identify the murderer.",
+						"sources": [
+							"briefing brief_232",
+							"briefing brief_233",
+							"briefing brief_238",
+							"briefing brief_239",
+							"briefing brief_240"
+						],
+						"event": "brissen",
+						"order": 17
 					}
 				],
 				"actors": [
@@ -4747,13 +9943,86 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/baron]] commands the Canian holdouts on Jigran against Firez’s Khadaganian forces. Proud of his family, he dislikes asking for aid even after losing Dar-Ulgorn. Kir’s arrival, the fight against the undead and the recruitment of powerful allies give his army a chance to attack Firez’s stronghold. He imagines a restored, prosperous Jigran ruled by his descendants.",
 						"sources": [
 							"briefing brief_304",
 							"briefing brief_338",
 							"briefing brief_347"
 						]
+					},
+					{
+						"heading": "Return to Jigran and Dar-Leanos",
+						"text": "The old portal brings the travellers to the Canian side of Jigran, where [[character/baron]] questions their arrival amid attacks by the undead. The baron has lost Dar-Ulgorn to Firez’s forces but refuses Kir’s suggestion to seek outside help, citing his family’s pride. Kir and Kel assist the endangered settlements. They meet the baron’s son [[character/bson]] and the overworked [[character/stark]]. Stark provides a password for [[character/doctor]], a seller of sweets who secretly gathers intelligence for the baron. These local alliances make the campaign against Firez possible.",
+						"sources": [
+							"briefing brief_300",
+							"briefing brief_301",
+							"briefing brief_302",
+							"briefing brief_303",
+							"briefing brief_304",
+							"briefing brief_305",
+							"briefing brief_306"
+						],
+						"event": "dar_leanos",
+						"order": 21
+					},
+					{
+						"heading": "Jaminin’s experiment and the undead",
+						"text": "The trail of the local undead leads to [[character/nekro]] on Death Island. Brought before the baron, he bargains for his life with the promise of useful knowledge. Kir and Kel obtain a potion from a tomb, but need to know how to apply it across the affected area. Jaminin first entertains a human sacrifice; Kel rejects it, and he supplies a less destructive method involving cemetery soil and an incantation. The potion puts the dead to rest. His later exchanges preserve the distinction between theoretical learning and practical competence: he possesses information, but his own experiment caused the disaster.",
+						"sources": [
+							"briefing brief_307",
+							"briefing brief_311",
+							"briefing brief_311a",
+							"briefing brief_312",
+							"briefing brief_313",
+							"briefing brief_315"
+						],
+						"event": "jaminin",
+						"order": 22
+					},
+					{
+						"heading": "Weapons, Dartas and preparations for war",
+						"text": "Kir proposes a special weapon alloy against the undead. Stark initially refuses instruction from a youngster and sends him to an abandoned forge, then has to confront the usefulness of the result. The baron welcomes the advantage for his soldiers. A separate conflict with Dartas moves from arrogance and a duel to an admission of fear for his family and Jigran’s future. Kir explains his own history of enslavement and determination to return, winning the young man’s respect. Dartas later becomes a useful source about an amulet from a village destroyed by harpies.",
+						"sources": [
+							"briefing brief_318",
+							"briefing brief_319",
+							"briefing brief_320",
+							"briefing brief_321",
+							"briefing brief_324",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "preparing_war",
+						"order": 23
+					},
+					{
+						"heading": "Dar-Ulgorn and the river crossing",
+						"text": "Uncle Rad’s intelligence and preparations distract the defenders of Dar-Ulgorn so the baron’s forces can retake the fortress. The victory restores the family’s former boundary, but Virril will not advance blindly into Khadaganian territory. Kir and Kel steal a detailed map from the enemy headquarters and deliver Rad’s report. The resulting offensive captures the river crossing and brings Firez within reach. Kel worries that the end of Kir’s family quest will also end their life together, while the baron imagines a prosperous Jigran under his descendants. The victory means different things to the people who share it.",
+						"sources": [
+							"briefing brief_326",
+							"briefing brief_329",
+							"briefing brief_330",
+							"briefing brief_331",
+							"briefing brief_332",
+							"briefing brief_333",
+							"briefing brief_334",
+							"briefing brief_338",
+							"briefing brief_339"
+						],
+						"event": "offensive",
+						"order": 24
+					},
+					{
+						"heading": "The Joon cache and allies for the assault",
+						"text": "The sealed cache supplies Kir with Joon armour, but Tui-Len warns him against relying on hatred alone. He gives him an amulet that can turn dangerous creatures into allies. Rad identifies suitable hunting grounds for a cyclops and a dragon. Their recruitment changes the military balance and answers the baron’s objection that his soldiers cannot face Firez’s necromancy in a direct assault. Virril finally orders the attack. Before the confrontation, Rad speaks of the quiet home and family he hopes to have when his secret work is finished.",
+						"sources": [
+							"briefing brief_343",
+							"briefing brief_344",
+							"briefing brief_347",
+							"briefing brief_348"
+						],
+						"event": "allies",
+						"order": 28
 					}
 				],
 				"actors": [
@@ -4793,13 +10062,43 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/bson]] is the baron’s son and expects to inherit Jigran. His early arrogance and boredom give way to despair as the family’s military position deteriorates. Kir’s resolve wins his trust. His recollection of a blue-stoned medallion and a village destroyed by harpies also provides a lead to Joon relics.",
 						"sources": [
 							"briefing brief_302",
 							"briefing brief_324",
 							"briefing brief_336"
 						]
+					},
+					{
+						"heading": "Return to Jigran and Dar-Leanos",
+						"text": "The old portal brings the travellers to the Canian side of Jigran, where [[character/baron]] questions their arrival amid attacks by the undead. The baron has lost Dar-Ulgorn to Firez’s forces but refuses Kir’s suggestion to seek outside help, citing his family’s pride. Kir and Kel assist the endangered settlements. They meet the baron’s son [[character/bson]] and the overworked [[character/stark]]. Stark provides a password for [[character/doctor]], a seller of sweets who secretly gathers intelligence for the baron. These local alliances make the campaign against Firez possible.",
+						"sources": [
+							"briefing brief_300",
+							"briefing brief_301",
+							"briefing brief_302",
+							"briefing brief_303",
+							"briefing brief_304",
+							"briefing brief_305",
+							"briefing brief_306"
+						],
+						"event": "dar_leanos",
+						"order": 21
+					},
+					{
+						"heading": "Weapons, Dartas and preparations for war",
+						"text": "Kir proposes a special weapon alloy against the undead. Stark initially refuses instruction from a youngster and sends him to an abandoned forge, then has to confront the usefulness of the result. The baron welcomes the advantage for his soldiers. A separate conflict with Dartas moves from arrogance and a duel to an admission of fear for his family and Jigran’s future. Kir explains his own history of enslavement and determination to return, winning the young man’s respect. Dartas later becomes a useful source about an amulet from a village destroyed by harpies.",
+						"sources": [
+							"briefing brief_318",
+							"briefing brief_319",
+							"briefing brief_320",
+							"briefing brief_321",
+							"briefing brief_324",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "preparing_war",
+						"order": 23
 					}
 				],
 				"actors": [
@@ -4846,13 +10145,85 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/doctor]] sells sweets while secretly gathering information for the baron. Stark supplies the password that lets Kir and Kel approach him as allies. His advice includes the whereabouts of cyclopes and dragons who might help against Firez. Behind his discreet service lies a modest wish for a home, a family and ordinary happiness.",
 						"sources": [
 							"briefing brief_305",
 							"briefing brief_344",
 							"briefing brief_348"
 						]
+					},
+					{
+						"heading": "Return to Jigran and Dar-Leanos",
+						"text": "The old portal brings the travellers to the Canian side of Jigran, where [[character/baron]] questions their arrival amid attacks by the undead. The baron has lost Dar-Ulgorn to Firez’s forces but refuses Kir’s suggestion to seek outside help, citing his family’s pride. Kir and Kel assist the endangered settlements. They meet the baron’s son [[character/bson]] and the overworked [[character/stark]]. Stark provides a password for [[character/doctor]], a seller of sweets who secretly gathers intelligence for the baron. These local alliances make the campaign against Firez possible.",
+						"sources": [
+							"briefing brief_300",
+							"briefing brief_301",
+							"briefing brief_302",
+							"briefing brief_303",
+							"briefing brief_304",
+							"briefing brief_305",
+							"briefing brief_306"
+						],
+						"event": "dar_leanos",
+						"order": 21
+					},
+					{
+						"heading": "Jaminin’s experiment and the undead",
+						"text": "The trail of the local undead leads to [[character/nekro]] on Death Island. Brought before the baron, he bargains for his life with the promise of useful knowledge. Kir and Kel obtain a potion from a tomb, but need to know how to apply it across the affected area. Jaminin first entertains a human sacrifice; Kel rejects it, and he supplies a less destructive method involving cemetery soil and an incantation. The potion puts the dead to rest. His later exchanges preserve the distinction between theoretical learning and practical competence: he possesses information, but his own experiment caused the disaster.",
+						"sources": [
+							"briefing brief_307",
+							"briefing brief_311",
+							"briefing brief_311a",
+							"briefing brief_312",
+							"briefing brief_313",
+							"briefing brief_315"
+						],
+						"event": "jaminin",
+						"order": 22
+					},
+					{
+						"heading": "Dar-Ulgorn and the river crossing",
+						"text": "Uncle Rad’s intelligence and preparations distract the defenders of Dar-Ulgorn so the baron’s forces can retake the fortress. The victory restores the family’s former boundary, but Virril will not advance blindly into Khadaganian territory. Kir and Kel steal a detailed map from the enemy headquarters and deliver Rad’s report. The resulting offensive captures the river crossing and brings Firez within reach. Kel worries that the end of Kir’s family quest will also end their life together, while the baron imagines a prosperous Jigran under his descendants. The victory means different things to the people who share it.",
+						"sources": [
+							"briefing brief_326",
+							"briefing brief_329",
+							"briefing brief_330",
+							"briefing brief_331",
+							"briefing brief_332",
+							"briefing brief_333",
+							"briefing brief_334",
+							"briefing brief_338",
+							"briefing brief_339"
+						],
+						"event": "offensive",
+						"order": 24
+					},
+					{
+						"heading": "The freed Joons and Kir’s family",
+						"text": "Kel and Rad discover that Firez is moving the Joon prisoners from the mountain prison into his fortress. Kel plans an attack on the transfer, avoiding a direct prison assault. Among those freed are [[character/deva]], whom Kir admired as a child, and the elder [[character/junofil]]. Tai-Ilara welcomes his changed appearance and asks him to retrieve belongings left behind. Tui-Len brings harder news: Kir’s parents are dead. The elder fears that killing Firez will expose the survivors to the Curse, but Kir tells him that Tka-Rik and At-Zako have already destroyed it. Tui-Len also opens the sealed Joon cache whose amulet Kir has recovered.",
+						"sources": [
+							"briefing brief_339",
+							"briefing brief_340",
+							"briefing brief_341",
+							"briefing brief_335",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "joons_freed",
+						"order": 25
+					},
+					{
+						"heading": "The Joon cache and allies for the assault",
+						"text": "The sealed cache supplies Kir with Joon armour, but Tui-Len warns him against relying on hatred alone. He gives him an amulet that can turn dangerous creatures into allies. Rad identifies suitable hunting grounds for a cyclops and a dragon. Their recruitment changes the military balance and answers the baron’s objection that his soldiers cannot face Firez’s necromancy in a direct assault. Virril finally orders the attack. Before the confrontation, Rad speaks of the quiet home and family he hopes to have when his secret work is finished.",
+						"sources": [
+							"briefing brief_343",
+							"briefing brief_344",
+							"briefing brief_347",
+							"briefing brief_348"
+						],
+						"event": "allies",
+						"order": 28
 					}
 				],
 				"actors": [
@@ -4886,13 +10257,43 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/stark]] is the overworked master serving the Canian garrison. He claims inherited expertise in smithing, spellcraft and complex potions, and complains that people visit only when they need something. He introduces the travellers to Uncle Rad’s covert role and is intrigued by the unusual alloy they later bring him.",
 						"sources": [
 							"briefing brief_303",
 							"briefing brief_305",
 							"briefing brief_320"
 						]
+					},
+					{
+						"heading": "Return to Jigran and Dar-Leanos",
+						"text": "The old portal brings the travellers to the Canian side of Jigran, where [[character/baron]] questions their arrival amid attacks by the undead. The baron has lost Dar-Ulgorn to Firez’s forces but refuses Kir’s suggestion to seek outside help, citing his family’s pride. Kir and Kel assist the endangered settlements. They meet the baron’s son [[character/bson]] and the overworked [[character/stark]]. Stark provides a password for [[character/doctor]], a seller of sweets who secretly gathers intelligence for the baron. These local alliances make the campaign against Firez possible.",
+						"sources": [
+							"briefing brief_300",
+							"briefing brief_301",
+							"briefing brief_302",
+							"briefing brief_303",
+							"briefing brief_304",
+							"briefing brief_305",
+							"briefing brief_306"
+						],
+						"event": "dar_leanos",
+						"order": 21
+					},
+					{
+						"heading": "Weapons, Dartas and preparations for war",
+						"text": "Kir proposes a special weapon alloy against the undead. Stark initially refuses instruction from a youngster and sends him to an abandoned forge, then has to confront the usefulness of the result. The baron welcomes the advantage for his soldiers. A separate conflict with Dartas moves from arrogance and a duel to an admission of fear for his family and Jigran’s future. Kir explains his own history of enslavement and determination to return, winning the young man’s respect. Dartas later becomes a useful source about an amulet from a village destroyed by harpies.",
+						"sources": [
+							"briefing brief_318",
+							"briefing brief_319",
+							"briefing brief_320",
+							"briefing brief_321",
+							"briefing brief_324",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "preparing_war",
+						"order": 23
 					}
 				],
 				"actors": [
@@ -4932,13 +10333,27 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/nekro]] is a necromancer whose theoretical learning proves inadequate in practice. His experiment unleashes undead and lands him in the baron’s custody. Under questioning he provides a way to stop the disaster using a potion at the cemetery and an incantation, revealing the gap between his scholarly ambitions and his competence.",
 						"sources": [
 							"briefing brief_311",
 							"briefing brief_311a",
 							"briefing brief_313"
 						]
+					},
+					{
+						"heading": "Jaminin’s experiment and the undead",
+						"text": "The trail of the local undead leads to [[character/nekro]] on Death Island. Brought before the baron, he bargains for his life with the promise of useful knowledge. Kir and Kel obtain a potion from a tomb, but need to know how to apply it across the affected area. Jaminin first entertains a human sacrifice; Kel rejects it, and he supplies a less destructive method involving cemetery soil and an incantation. The potion puts the dead to rest. His later exchanges preserve the distinction between theoretical learning and practical competence: he possesses information, but his own experiment caused the disaster.",
+						"sources": [
+							"briefing brief_307",
+							"briefing brief_311",
+							"briefing brief_311a",
+							"briefing brief_312",
+							"briefing brief_313",
+							"briefing brief_315"
+						],
+						"event": "jaminin",
+						"order": 22
 					}
 				],
 				"actors": [
@@ -4978,13 +10393,60 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/junofil]] is a Joon elder held under Firez’s rule. He explains that fear of the Curse led his people to trust Firez’s promises, and tells Kir that his parents are dead. After his liberation he opens a sealed Joon cave, counsels against hatred and gives advice about allies and the Rod of Life.",
 						"sources": [
 							"briefing brief_341",
 							"briefing brief_343",
 							"briefing fq20"
 						]
+					},
+					{
+						"heading": "The freed Joons and Kir’s family",
+						"text": "Kel and Rad discover that Firez is moving the Joon prisoners from the mountain prison into his fortress. Kel plans an attack on the transfer, avoiding a direct prison assault. Among those freed are [[character/deva]], whom Kir admired as a child, and the elder [[character/junofil]]. Tai-Ilara welcomes his changed appearance and asks him to retrieve belongings left behind. Tui-Len brings harder news: Kir’s parents are dead. The elder fears that killing Firez will expose the survivors to the Curse, but Kir tells him that Tka-Rik and At-Zako have already destroyed it. Tui-Len also opens the sealed Joon cache whose amulet Kir has recovered.",
+						"sources": [
+							"briefing brief_339",
+							"briefing brief_340",
+							"briefing brief_341",
+							"briefing brief_335",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "joons_freed",
+						"order": 25
+					},
+					{
+						"heading": "Tai-Ilara’s request and Kel’s death",
+						"text": "Seeing Kir reunited with Tai-Ilara, Kel asks for the way back to Suslanger. Kir begs her to stay and mentions one more expedition for Tai-Ilara’s belongings. Kel agrees because she still fears for him, calling it their last adventure together. She dies during that expedition. On Kir’s return, Tai-Ilara is concerned with her comb and mirror and dismisses his grief. Her reaction breaks his idealised childhood attachment. He recognises Kel as the person who was closest and most loyal to him, and realises that he failed to see her love while she was beside him.",
+						"sources": [
+							"briefing brief_342",
+							"briefing brief_345",
+							"briefing fq20"
+						],
+						"event": "kel_loss",
+						"order": 26
+					},
+					{
+						"heading": "The Rod of Life: a possible reunion",
+						"text": "Kel’s death is not the only outcome recorded in the game. If Kir has collected the three parts of the Rod of Life, Tui-Len offers to assemble the artifact and restore her. The completed quest has its own reunion: Kir calls Kel his love, apologises for his blindness and hears her answer that his love matters more than the rest.",
+						"sources": [
+							"briefing fq20",
+							"briefing fq21"
+						],
+						"event": "rod_of_life",
+						"order": 27
+					},
+					{
+						"heading": "The Joon cache and allies for the assault",
+						"text": "The sealed cache supplies Kir with Joon armour, but Tui-Len warns him against relying on hatred alone. He gives him an amulet that can turn dangerous creatures into allies. Rad identifies suitable hunting grounds for a cyclops and a dragon. Their recruitment changes the military balance and answers the baron’s objection that his soldiers cannot face Firez’s necromancy in a direct assault. Virril finally orders the attack. Before the confrontation, Rad speaks of the quiet home and family he hopes to have when his secret work is finished.",
+						"sources": [
+							"briefing brief_343",
+							"briefing brief_344",
+							"briefing brief_347",
+							"briefing brief_348"
+						],
+						"event": "allies",
+						"order": 28
 					}
 				],
 				"actors": [
@@ -5024,13 +10486,38 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/deva]] is the woman Kir remembers from his childhood on Jigran. After he rescues her, she asks him to retrieve her belongings. Kel dies during that expedition, and Tai-Ilara’s dismissive response destroys Kir’s idealised image of his old attachment. Her part in the story reveals what Kir had failed to recognise in Kel.",
 						"sources": [
 							"briefing brief_340",
 							"briefing brief_342",
 							"briefing brief_345"
 						]
+					},
+					{
+						"heading": "The freed Joons and Kir’s family",
+						"text": "Kel and Rad discover that Firez is moving the Joon prisoners from the mountain prison into his fortress. Kel plans an attack on the transfer, avoiding a direct prison assault. Among those freed are [[character/deva]], whom Kir admired as a child, and the elder [[character/junofil]]. Tai-Ilara welcomes his changed appearance and asks him to retrieve belongings left behind. Tui-Len brings harder news: Kir’s parents are dead. The elder fears that killing Firez will expose the survivors to the Curse, but Kir tells him that Tka-Rik and At-Zako have already destroyed it. Tui-Len also opens the sealed Joon cache whose amulet Kir has recovered.",
+						"sources": [
+							"briefing brief_339",
+							"briefing brief_340",
+							"briefing brief_341",
+							"briefing brief_335",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "joons_freed",
+						"order": 25
+					},
+					{
+						"heading": "Tai-Ilara’s request and Kel’s death",
+						"text": "Seeing Kir reunited with Tai-Ilara, Kel asks for the way back to Suslanger. Kir begs her to stay and mentions one more expedition for Tai-Ilara’s belongings. Kel agrees because she still fears for him, calling it their last adventure together. She dies during that expedition. On Kir’s return, Tai-Ilara is concerned with her comb and mirror and dismisses his grief. Her reaction breaks his idealised childhood attachment. He recognises Kel as the person who was closest and most loyal to him, and realises that he failed to see her love while she was beside him.",
+						"sources": [
+							"briefing brief_342",
+							"briefing brief_345",
+							"briefing fq20"
+						],
+						"event": "kel_loss",
+						"order": 26
 					}
 				],
 				"actors": [
@@ -5070,12 +10557,34 @@ const DATA := {
 				"kind": "character",
 				"sections": [
 					{
-						"heading": "Biography",
+						"heading": "Overview",
 						"text": "[[character/firez]] rules the Khadaganian side of Jigran and is the enemy Kir fled. In their confrontation he reveals that he too is a Joon, expelled for necromancy, and claims that his experiments were meant to defeat the Curse. He prolongs his life at Jigran’s expense, tracks Kir with a dragonet and threatens to turn him into an obedient undead servant. His professed concern for the Joons sits beside his enslavement and coercion of them.",
 						"sources": [
 							"briefing brief_119",
 							"briefing brief_349"
 						]
+					},
+					{
+						"heading": "Escape from Jigran",
+						"text": "[[character/hero]], whose full name is Kir-A-Chit-La, is a young Joon enslaved under [[character/firez]] on [[allod/jigran]]. He escapes the castle, leaving his family behind, and hopes to return with help. Outside the castle, a [[character/first|recruiter]] mistakes him for someone expected at the camp. Kir conceals his identity and accepts travel papers for work on Suslanger. The apparent opening to freedom instead delivers him to imperial authorities. [[character/hwleader]] dismisses his papers, treats him as a slave and considers reporting the red-skinned stranger for a reward.",
+						"sources": [
+							"briefing brief_0",
+							"briefing brief_1",
+							"briefing brief_119",
+							"zone gz1g"
+						],
+						"event": "flight",
+						"order": 1
+					},
+					{
+						"heading": "Firez’s identity and the final confrontation",
+						"text": "In the throne room, Firez reveals that he too is a Joon and has watched Kir through a dragonet since the escape. He says his people expelled him for necromancy and claims that his rule protected them from the Curse. Kir answers with their enslavement, his parents’ deaths and the destruction of Jigran to prolong Firez’s life. The tyrant’s explanation is his own defence, not proof that the captivity was benevolent. He threatens to kill Kir, raise him as an obedient servant and use him against the baron. Their exchange leads into the final battle for Jigran.",
+						"sources": [
+							"briefing brief_349",
+							"zone gz36j"
+						],
+						"event": "firez",
+						"order": 29
 					}
 				],
 				"actors": [
@@ -5117,6 +10626,112 @@ const DATA := {
 							"briefing brief_41",
 							"briefing brief_88a"
 						]
+					},
+					{
+						"heading": "Kel and the slave pen",
+						"text": "Soldiers beat Kir nearly to death. In the slave pen, [[character/merc2]] nurses him back to consciousness, shortens his name to Kir and offers a partnership in escape. He initially hopes to explain the mistake to the authorities; the [[character/clerk|official]] instead assigns work according to the prisoners’ abilities. Kel has overheard that an officer possesses a map of the catacombs. They escape and use the underground route to leave the fortress area. Once outside, Kel proposes refuge with an acquaintance who collects spiders. Their relationship begins in this shared dependence: Kir needs her local knowledge, and Kel needs a partner.",
+						"sources": [
+							"briefing brief_2",
+							"briefing brief_3a",
+							"briefing brief_3b",
+							"briefing brief_3c",
+							"briefing brief_4",
+							"briefing brief_5",
+							"briefing brief_5a"
+						],
+						"event": "kel",
+						"order": 2
+					},
+					{
+						"heading": "Shelter at Rindeil’s estate",
+						"text": "[[character/elder]] welcomes Kel and her companion to his estate. Kir’s learning gives them common ground, though the collector’s chief concern remains his spiders. [[character/sheriff]], who manages the household and formerly performed on stage, becomes a source of contacts and rumours about another Joon. [[character/merc8]] helps Kir hide his conspicuous face beneath cloth, exploiting the fear of disease. Rindeil’s requests include obtaining a meteorite sample in exchange for a rare specimen for his collection. This period of refuge lets Kir search for information, but its safety depends on the owner’s willingness to risk his household.",
+						"sources": [
+							"briefing brief_6",
+							"briefing brief_8",
+							"briefing brief_14",
+							"briefing brief_18",
+							"briefing brief_25",
+							"briefing brief_31"
+						],
+						"event": "estate",
+						"order": 3
+					},
+					{
+						"heading": "Zara’s affairs",
+						"text": "The merchant [[character/ycf]] is another of Kel’s Suslanger contacts. Her side of the story involves a blackmailer, a threatened caravan and contraband that must be recovered before the authorities inspect it. The conversations distinguish successful recovery from arriving too late; the account of the caravan therefore depends on the outcome of that errand. Later, Zara’s interest in a scholar draws Kir into a scheme against Kehel. These dealings develop alongside the search for a Joon, rather than forming a single inevitable sequence of victories.",
+						"sources": [
+							"briefing brief_21",
+							"briefing brief_27",
+							"briefing brief_28",
+							"briefing brief_33",
+							"briefing brief_34a",
+							"briefing brief_34c",
+							"briefing brief_63",
+							"briefing brief_64"
+						],
+						"event": "zara",
+						"order": 4
+					},
+					{
+						"heading": "Feiruz’s last rescue",
+						"text": "Feiruz asks Kir to repay his help by rescuing his imprisoned fiancée [[character/merc10]]. He dies during the escape. Kel urges the grieving Aliya to avenge him and identifies the man who struck the fatal blow. Kir objects to deliberate revenge, but their companions insist on their code. The death of the prison commandant brings searches across the city. Fearing for his collection, Rindeil withdraws his protection, though he says Kir may return once the danger passes. Aliya then leads Kir and Kel to the Last Shelter and speaks for them before [[character/glav]].",
+						"sources": [
+							"briefing brief_37",
+							"briefing brief_38",
+							"briefing brief_39",
+							"briefing brief_40",
+							"briefing brief_41"
+						],
+						"event": "feiruz",
+						"order": 5
+					},
+					{
+						"heading": "The ring and the brotherhood",
+						"text": "Khatul demands an imperial signet ring from a cyclops as a test of trust. Kir brings it back and explains his intention to free his family. He also recognises that the ring does not match the description he has read. Khatul already knows it is false, but asks him to preserve the brotherhood’s belief in the trophy. Membership changes how [[character/zaku]] receives Kir: the smith who refused a stranger now offers his craft. Through Aliya, Kir also searches for the missing [[character/merc7]], rescues her and brings medicine. Sahilia’s recovery matters later, when her forged papers open a route into the army.",
+						"sources": [
+							"briefing brief_43",
+							"briefing brief_43a",
+							"briefing brief_44",
+							"briefing brief_45",
+							"briefing brief_46",
+							"briefing brief_47",
+							"briefing brief_48",
+							"briefing brief_59a"
+						],
+						"event": "brotherhood",
+						"order": 6
+					},
+					{
+						"heading": "Defending the Shelter and the ancient treaty",
+						"text": "An imperial scout discovers the Shelter. After fighting the expedition, Khatul proposes placing Wormface bodies at the battlefield to conceal the brotherhood’s involvement. In the depths, [[character/guru]] recognises Kir as a Joon and invokes an ancient treaty. He demands the death of a necromancer disturbing the caves before granting access. Later he calls Kir mentally and offers information for rescuing the Priest of Silence from the necromancers. His account of a human searching for Joon remains gives another lead, though he cannot say where that man now lives. The alliance is reciprocal and conditional, not a promise to answer every question.",
+						"sources": [
+							"briefing brief_49",
+							"briefing brief_50",
+							"briefing brief_51",
+							"briefing brief_52",
+							"briefing brief_53",
+							"briefing brief_70",
+							"briefing brief_71",
+							"briefing brief_72"
+						],
+						"event": "brainripper",
+						"order": 7
+					},
+					{
+						"heading": "The report and the passage to Gipath",
+						"text": "Karim’s rumour about the missing red-skinned youth becomes a document recovered from the necromancers. It records transformation and teleportation before the attack on the scholars’ mansion, with Gipath as the destination. Kir decides to follow that Joon. Sahilia supplies enlistment papers, and Kel refuses to be left behind, passing as a young man herself. [[character/sergant]] puts them through military training in Death Canyon. Their performance earns a courier assignment to the Gipath expedition. Sealed orders and a portal pass finally let them leave Suslanger under the authority of the same empire that enslaved them.",
+						"sources": [
+							"briefing brief_31",
+							"briefing brief_82",
+							"briefing brief_83",
+							"briefing brief_59a",
+							"briefing brief_86",
+							"briefing brief_87",
+							"briefing brief_88",
+							"briefing brief_88a"
+						],
+						"event": "enlistment",
+						"order": 8
 					}
 				],
 				"name_key": "allod suslanger",
@@ -5135,6 +10750,100 @@ const DATA := {
 							"briefing brief_137",
 							"briefing brief_149"
 						]
+					},
+					{
+						"heading": "Urk-Tar and the destroyed expedition",
+						"text": "On Gipath, [[character/orcc]] says his warriors destroyed the Khadaganian expedition. He remembers how Zak’s defeat of a supposed Demon showed that armoured outsiders could be killed, and hopes Kir will become a Chosen for his own tribe. Kel proposes a false report with unpromising stone samples to prevent another imperial expedition from being sent. The shaman [[character/orcpyr]] distrusts strangers but makes Kir a ritual axe after he supplies suitable stone, and makes beads for Kel. Their welcome depends on helping the tribe, and Kir soon rescues the chief from a harpy and his wife from goblins.",
+						"sources": [
+							"briefing brief_101",
+							"briefing brief_102",
+							"briefing brief_103",
+							"briefing brief_104",
+							"briefing brief_105",
+							"briefing brief_106",
+							"briefing brief_107",
+							"briefing brief_108",
+							"briefing brief_109",
+							"briefing brief_110",
+							"briefing brief_111"
+						],
+						"event": "urk_tar",
+						"order": 9
+					},
+					{
+						"heading": "The Shell and the war with the settlers",
+						"text": "Urk-Tar explains that humans have driven orcs out of the Foothills and are advancing into the Middle Mountains. Kir removes the Shell whose presence restrains the lizards, initially refusing to fight humans himself. When Tynachey describes the killing of the tribe’s inhabitants, Kel argues for helping their hosts recover the settlement, and Kir agrees. The [[character/iz|Hermit Lizard]] then offers news of the former Chosen in exchange for placing the Shell by the Remote Mountains’ lake. Restoring it also frees hunters held by lizards. The Hermit directs Kir toward the Great Magician by a route different from Zak’s old tunnel approach.",
+						"sources": [
+							"briefing brief_112",
+							"briefing brief_113",
+							"briefing brief_114",
+							"briefing brief_115",
+							"briefing brief_116",
+							"briefing brief_117"
+						],
+						"event": "shell_war",
+						"order": 10
+					},
+					{
+						"heading": "Tka-Rik and the unknown allod",
+						"text": "Meeting [[character/rick]] gives Kir his first direct contact with a free Joon magician. Tka-Rik explains that At-Zako and Lu-a-Jalla are travelling together and that he himself remains bound to Gipath. He has never heard of Jigran. Kir tells him about Firez, his enslaved family and his promise to return. Learning that more Joons need help renews Tka-Rik’s purpose. Since he cannot locate the hidden allod unaided, he sends Kir to find the Magic Orb that At-Zako once used. Finding the magician therefore begins another investigation rather than immediately opening the road home.",
+						"sources": [
+							"briefing brief_118",
+							"briefing brief_119"
+						],
+						"event": "kir_tka",
+						"order": 11
+					},
+					{
+						"heading": "The Free Hunters and Babur",
+						"text": "A [[character/loozer|messenger]] invites the rescuers of the hunters to [[character/karh]]’s camp. Bor claims neutrality in the war, yet asks them to act against the village’s hunters and caravans. To question [[character/smith]] about the Orb, Kir helps bring him out of the village. The letter can go to Babur himself or to the elder, with different explanations for the craftsman’s arrival. Babur then sends Kir to the lizards’ tomb for a supposed magical needle. The expedition supplies lizard hides, and Babur admits that useful armour material was his real interest. For information about the Orb, he redirects the visitors to Estera.",
+						"sources": [
+							"briefing brief_120",
+							"briefing brief_121",
+							"briefing brief_123",
+							"briefing brief_124",
+							"briefing brief_126a",
+							"briefing brief_126b",
+							"briefing brief_127",
+							"briefing brief_128"
+						],
+						"event": "bor_babur",
+						"order": 12
+					},
+					{
+						"heading": "Airy, Estera and the Dragon’s flower",
+						"text": "[[character/daughter]] guards the cave while Estera is visiting the [[character/skd|Old Dragon]]. Her quarrel with Kel over a necklace exposes Kel’s jealousy and Kir’s failure to notice it. Airy refuses his courtship and suggests looking at the person already beside him. At the dragon’s lair, Estera is the troublesome visitor rather than a prisoner: she refuses to leave without information about a flower. Kir obtains it and the witch goes home. [[character/witch]] then admits the Orb was stolen by orcs; Airy identifies the islands and warns that it lost its power after its earlier use.",
+						"sources": [
+							"briefing brief_129",
+							"briefing brief_130",
+							"briefing brief_131",
+							"briefing brief_132",
+							"briefing brief_133",
+							"briefing brief_134",
+							"briefing brief_136",
+							"briefing brief_137"
+						],
+						"event": "flower_dragon",
+						"order": 13
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
 					}
 				],
 				"name_key": "allod gipat2",
@@ -5153,6 +10862,85 @@ const DATA := {
 							"briefing brief_250a",
 							"briefing brief_251"
 						]
+					},
+					{
+						"heading": "Two magicians on Ingos",
+						"text": "Kir and Kel seek magical help on Ingos. [[character/trader]] complains about [[character/kmage]], whose cheap runes undercut his trade, and identifies [[character/his]] as the governor’s court magician. His receives the travellers with suspicion and later asks them to retrieve materials from his laboratory. [[character/trapper]] offers another route: contact [[character/grey]] through the Sacred Flower and a vessel from his cache. Grey Leaf explains that the knight Brissen and his magician friend have left for the settlement near the mines. Kir’s first task here is finding an informed ally, before the murder that later dominates the investigation.",
+						"sources": [
+							"briefing brief_201",
+							"briefing brief_204",
+							"briefing brief_206",
+							"briefing brief_207",
+							"briefing brief_210",
+							"briefing brief_211"
+						],
+						"event": "ingos_contacts",
+						"order": 15
+					},
+					{
+						"heading": "The Beastmasters and the empty caravan",
+						"text": "At the Beastmasters’ settlement, [[character/vor]] accuses Kir and Kel of being spies. [[character/gerald]] agrees to test them. Their attempt to obtain a gold nugget from a caravan finds an empty chest, making their return dangerous. [[character/mthief]] reasons that genuine thieves would not come back empty-handed, and Geraldine accepts them. Sver’s advice about an ice elemental in the abandoned mines provides something to offer Yam-Akara. His work and the governor’s permit requirements then draw the travellers into further dealings with the court. The missing nugget will matter again when the apparent caravan failure becomes evidence of a separate theft.",
+						"sources": [
+							"briefing brief_212",
+							"briefing brief_215",
+							"briefing brief_218",
+							"briefing brief_221",
+							"briefing brief_245a"
+						],
+						"event": "beastmasters",
+						"order": 16
+					},
+					{
+						"heading": "Brissen’s murder and the failed alibi",
+						"text": "Brissen is murdered and Yam-Akara is accused of killing his old friend. Kir and Kel undertake the defence. The magician says he spent the day in the mines and arrived late for their meeting. [[character/guard]] confirms that he allowed the elderly visitor through with an expired permit and stamped it that day. Kir finds the lost pass, but [[character/huber]] rejects the water-damaged document because the signature and date can no longer be read. This evidence supports the search but does not free Yam-Akara; the travellers still have to identify the murderer.",
+						"sources": [
+							"briefing brief_232",
+							"briefing brief_233",
+							"briefing brief_238",
+							"briefing brief_239",
+							"briefing brief_240"
+						],
+						"event": "brissen",
+						"order": 17
+					},
+					{
+						"heading": "The planted knife and His’s death",
+						"text": "A knife found at the murder site appears to implicate His. The court magician admits it was stolen from his laboratory together with the governor’s nugget. He had sent out the empty caravan to hide that loss and hoped to blame raiders after an informant warned of the planned attack. His arranges a meeting to produce evidence, but is killed before he can clear himself. Meanwhile Geraldine and Karansul disclose their relationship and provide each other with an alibi. Their commercial hostility and private secrecy had made them suspicious without establishing guilt.",
+						"sources": [
+							"briefing brief_243",
+							"briefing brief_245",
+							"briefing brief_245a",
+							"briefing brief_246",
+							"briefing brief_247"
+						],
+						"event": "his_murder",
+						"order": 18
+					},
+					{
+						"heading": "Crooked’s confession",
+						"text": "The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial.",
+						"sources": [
+							"briefing brief_237",
+							"briefing brief_248",
+							"briefing brief_249",
+							"briefing brief_250",
+							"briefing brief_250a",
+							"briefing brief_251"
+						],
+						"event": "crooked",
+						"order": 19
+					},
+					{
+						"heading": "The hidden portal to Jigran",
+						"text": "During his confinement, Yam-Akara gains access to the governor’s library. Old exploration reports reveal that the powerful “artifact” is a forgotten passage to another land. Trickster offers a key to the gate, then sends Kir on a fruitless ore search so that he can work without interference. With the key ready, Yam-Akara warns that he cannot sense the destination: the portal may be defective or concealed by a powerful absorbing spell. Kir recognises the same absence Tka-Rik described and concludes that it leads to Jigran. He decides to go directly, trusting the strength gained during his journey. Kel chooses to accompany him again.",
+						"sources": [
+							"briefing brief_251",
+							"briefing brief_252",
+							"briefing brief_253",
+							"briefing brief_254"
+						],
+						"event": "old_portal",
+						"order": 20
 					}
 				],
 				"name_key": "allod ingos",
@@ -5171,6 +10959,136 @@ const DATA := {
 							"briefing brief_341",
 							"briefing brief_349"
 						]
+					},
+					{
+						"heading": "Escape from Jigran",
+						"text": "[[character/hero]], whose full name is Kir-A-Chit-La, is a young Joon enslaved under [[character/firez]] on [[allod/jigran]]. He escapes the castle, leaving his family behind, and hopes to return with help. Outside the castle, a [[character/first|recruiter]] mistakes him for someone expected at the camp. Kir conceals his identity and accepts travel papers for work on Suslanger. The apparent opening to freedom instead delivers him to imperial authorities. [[character/hwleader]] dismisses his papers, treats him as a slave and considers reporting the red-skinned stranger for a reward.",
+						"sources": [
+							"briefing brief_0",
+							"briefing brief_1",
+							"briefing brief_119",
+							"zone gz1g"
+						],
+						"event": "flight",
+						"order": 1
+					},
+					{
+						"heading": "Return to Jigran and Dar-Leanos",
+						"text": "The old portal brings the travellers to the Canian side of Jigran, where [[character/baron]] questions their arrival amid attacks by the undead. The baron has lost Dar-Ulgorn to Firez’s forces but refuses Kir’s suggestion to seek outside help, citing his family’s pride. Kir and Kel assist the endangered settlements. They meet the baron’s son [[character/bson]] and the overworked [[character/stark]]. Stark provides a password for [[character/doctor]], a seller of sweets who secretly gathers intelligence for the baron. These local alliances make the campaign against Firez possible.",
+						"sources": [
+							"briefing brief_300",
+							"briefing brief_301",
+							"briefing brief_302",
+							"briefing brief_303",
+							"briefing brief_304",
+							"briefing brief_305",
+							"briefing brief_306"
+						],
+						"event": "dar_leanos",
+						"order": 21
+					},
+					{
+						"heading": "Jaminin’s experiment and the undead",
+						"text": "The trail of the local undead leads to [[character/nekro]] on Death Island. Brought before the baron, he bargains for his life with the promise of useful knowledge. Kir and Kel obtain a potion from a tomb, but need to know how to apply it across the affected area. Jaminin first entertains a human sacrifice; Kel rejects it, and he supplies a less destructive method involving cemetery soil and an incantation. The potion puts the dead to rest. His later exchanges preserve the distinction between theoretical learning and practical competence: he possesses information, but his own experiment caused the disaster.",
+						"sources": [
+							"briefing brief_307",
+							"briefing brief_311",
+							"briefing brief_311a",
+							"briefing brief_312",
+							"briefing brief_313",
+							"briefing brief_315"
+						],
+						"event": "jaminin",
+						"order": 22
+					},
+					{
+						"heading": "Weapons, Dartas and preparations for war",
+						"text": "Kir proposes a special weapon alloy against the undead. Stark initially refuses instruction from a youngster and sends him to an abandoned forge, then has to confront the usefulness of the result. The baron welcomes the advantage for his soldiers. A separate conflict with Dartas moves from arrogance and a duel to an admission of fear for his family and Jigran’s future. Kir explains his own history of enslavement and determination to return, winning the young man’s respect. Dartas later becomes a useful source about an amulet from a village destroyed by harpies.",
+						"sources": [
+							"briefing brief_318",
+							"briefing brief_319",
+							"briefing brief_320",
+							"briefing brief_321",
+							"briefing brief_324",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "preparing_war",
+						"order": 23
+					},
+					{
+						"heading": "Dar-Ulgorn and the river crossing",
+						"text": "Uncle Rad’s intelligence and preparations distract the defenders of Dar-Ulgorn so the baron’s forces can retake the fortress. The victory restores the family’s former boundary, but Virril will not advance blindly into Khadaganian territory. Kir and Kel steal a detailed map from the enemy headquarters and deliver Rad’s report. The resulting offensive captures the river crossing and brings Firez within reach. Kel worries that the end of Kir’s family quest will also end their life together, while the baron imagines a prosperous Jigran under his descendants. The victory means different things to the people who share it.",
+						"sources": [
+							"briefing brief_326",
+							"briefing brief_329",
+							"briefing brief_330",
+							"briefing brief_331",
+							"briefing brief_332",
+							"briefing brief_333",
+							"briefing brief_334",
+							"briefing brief_338",
+							"briefing brief_339"
+						],
+						"event": "offensive",
+						"order": 24
+					},
+					{
+						"heading": "The freed Joons and Kir’s family",
+						"text": "Kel and Rad discover that Firez is moving the Joon prisoners from the mountain prison into his fortress. Kel plans an attack on the transfer, avoiding a direct prison assault. Among those freed are [[character/deva]], whom Kir admired as a child, and the elder [[character/junofil]]. Tai-Ilara welcomes his changed appearance and asks him to retrieve belongings left behind. Tui-Len brings harder news: Kir’s parents are dead. The elder fears that killing Firez will expose the survivors to the Curse, but Kir tells him that Tka-Rik and At-Zako have already destroyed it. Tui-Len also opens the sealed Joon cache whose amulet Kir has recovered.",
+						"sources": [
+							"briefing brief_339",
+							"briefing brief_340",
+							"briefing brief_341",
+							"briefing brief_335",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "joons_freed",
+						"order": 25
+					},
+					{
+						"heading": "Tai-Ilara’s request and Kel’s death",
+						"text": "Seeing Kir reunited with Tai-Ilara, Kel asks for the way back to Suslanger. Kir begs her to stay and mentions one more expedition for Tai-Ilara’s belongings. Kel agrees because she still fears for him, calling it their last adventure together. She dies during that expedition. On Kir’s return, Tai-Ilara is concerned with her comb and mirror and dismisses his grief. Her reaction breaks his idealised childhood attachment. He recognises Kel as the person who was closest and most loyal to him, and realises that he failed to see her love while she was beside him.",
+						"sources": [
+							"briefing brief_342",
+							"briefing brief_345",
+							"briefing fq20"
+						],
+						"event": "kel_loss",
+						"order": 26
+					},
+					{
+						"heading": "The Rod of Life: a possible reunion",
+						"text": "Kel’s death is not the only outcome recorded in the game. If Kir has collected the three parts of the Rod of Life, Tui-Len offers to assemble the artifact and restore her. The completed quest has its own reunion: Kir calls Kel his love, apologises for his blindness and hears her answer that his love matters more than the rest.",
+						"sources": [
+							"briefing fq20",
+							"briefing fq21"
+						],
+						"event": "rod_of_life",
+						"order": 27
+					},
+					{
+						"heading": "The Joon cache and allies for the assault",
+						"text": "The sealed cache supplies Kir with Joon armour, but Tui-Len warns him against relying on hatred alone. He gives him an amulet that can turn dangerous creatures into allies. Rad identifies suitable hunting grounds for a cyclops and a dragon. Their recruitment changes the military balance and answers the baron’s objection that his soldiers cannot face Firez’s necromancy in a direct assault. Virril finally orders the attack. Before the confrontation, Rad speaks of the quiet home and family he hopes to have when his secret work is finished.",
+						"sources": [
+							"briefing brief_343",
+							"briefing brief_344",
+							"briefing brief_347",
+							"briefing brief_348"
+						],
+						"event": "allies",
+						"order": 28
+					},
+					{
+						"heading": "Firez’s identity and the final confrontation",
+						"text": "In the throne room, Firez reveals that he too is a Joon and has watched Kir through a dragonet since the escape. He says his people expelled him for necromancy and claims that his rule protected them from the Curse. Kir answers with their enslavement, his parents’ deaths and the destruction of Jigran to prolong Firez’s life. The tyrant’s explanation is his own defence, not proof that the captivity was benevolent. He threatens to kill Kir, raise him as an obedient servant and use him against the baron. Their exchange leads into the final battle for Jigran.",
+						"sources": [
+							"briefing brief_349",
+							"zone gz36j"
+						],
+						"event": "firez",
+						"order": 29
 					}
 				],
 				"name_key": "allod jigran",
@@ -5187,6 +11105,18 @@ const DATA := {
 							"briefing brief_0",
 							"briefing brief_1"
 						]
+					},
+					{
+						"heading": "Escape from Jigran",
+						"text": "[[character/hero]], whose full name is Kir-A-Chit-La, is a young Joon enslaved under [[character/firez]] on [[allod/jigran]]. He escapes the castle, leaving his family behind, and hopes to return with help. Outside the castle, a [[character/first|recruiter]] mistakes him for someone expected at the camp. Kir conceals his identity and accepts travel papers for work on Suslanger. The apparent opening to freedom instead delivers him to imperial authorities. [[character/hwleader]] dismisses his papers, treats him as a slave and considers reporting the red-skinned stranger for a reward.",
+						"sources": [
+							"briefing brief_0",
+							"briefing brief_1",
+							"briefing brief_119",
+							"zone gz1g"
+						],
+						"event": "flight",
+						"order": 1
 					}
 				],
 				"name_key": "zone bz1r",
@@ -5203,6 +11133,21 @@ const DATA := {
 							"briefing brief_2",
 							"briefing brief_3b"
 						]
+					},
+					{
+						"heading": "Kel and the slave pen",
+						"text": "Soldiers beat Kir nearly to death. In the slave pen, [[character/merc2]] nurses him back to consciousness, shortens his name to Kir and offers a partnership in escape. He initially hopes to explain the mistake to the authorities; the [[character/clerk|official]] instead assigns work according to the prisoners’ abilities. Kel has overheard that an officer possesses a map of the catacombs. They escape and use the underground route to leave the fortress area. Once outside, Kel proposes refuge with an acquaintance who collects spiders. Their relationship begins in this shared dependence: Kir needs her local knowledge, and Kel needs a partner.",
+						"sources": [
+							"briefing brief_2",
+							"briefing brief_3a",
+							"briefing brief_3b",
+							"briefing brief_3c",
+							"briefing brief_4",
+							"briefing brief_5",
+							"briefing brief_5a"
+						],
+						"event": "kel",
+						"order": 2
 					}
 				],
 				"name_key": "zone bz1h",
@@ -5220,6 +11165,65 @@ const DATA := {
 							"briefing brief_8",
 							"briefing brief_40"
 						]
+					},
+					{
+						"heading": "Shelter at Rindeil’s estate",
+						"text": "[[character/elder]] welcomes Kel and her companion to his estate. Kir’s learning gives them common ground, though the collector’s chief concern remains his spiders. [[character/sheriff]], who manages the household and formerly performed on stage, becomes a source of contacts and rumours about another Joon. [[character/merc8]] helps Kir hide his conspicuous face beneath cloth, exploiting the fear of disease. Rindeil’s requests include obtaining a meteorite sample in exchange for a rare specimen for his collection. This period of refuge lets Kir search for information, but its safety depends on the owner’s willingness to risk his household.",
+						"sources": [
+							"briefing brief_6",
+							"briefing brief_8",
+							"briefing brief_14",
+							"briefing brief_18",
+							"briefing brief_25",
+							"briefing brief_31"
+						],
+						"event": "estate",
+						"order": 3
+					},
+					{
+						"heading": "Zara’s affairs",
+						"text": "The merchant [[character/ycf]] is another of Kel’s Suslanger contacts. Her side of the story involves a blackmailer, a threatened caravan and contraband that must be recovered before the authorities inspect it. The conversations distinguish successful recovery from arriving too late; the account of the caravan therefore depends on the outcome of that errand. Later, Zara’s interest in a scholar draws Kir into a scheme against Kehel. These dealings develop alongside the search for a Joon, rather than forming a single inevitable sequence of victories.",
+						"sources": [
+							"briefing brief_21",
+							"briefing brief_27",
+							"briefing brief_28",
+							"briefing brief_33",
+							"briefing brief_34a",
+							"briefing brief_34c",
+							"briefing brief_63",
+							"briefing brief_64"
+						],
+						"event": "zara",
+						"order": 4
+					},
+					{
+						"heading": "Feiruz’s last rescue",
+						"text": "Feiruz asks Kir to repay his help by rescuing his imprisoned fiancée [[character/merc10]]. He dies during the escape. Kel urges the grieving Aliya to avenge him and identifies the man who struck the fatal blow. Kir objects to deliberate revenge, but their companions insist on their code. The death of the prison commandant brings searches across the city. Fearing for his collection, Rindeil withdraws his protection, though he says Kir may return once the danger passes. Aliya then leads Kir and Kel to the Last Shelter and speaks for them before [[character/glav]].",
+						"sources": [
+							"briefing brief_37",
+							"briefing brief_38",
+							"briefing brief_39",
+							"briefing brief_40",
+							"briefing brief_41"
+						],
+						"event": "feiruz",
+						"order": 5
+					},
+					{
+						"heading": "The report and the passage to Gipath",
+						"text": "Karim’s rumour about the missing red-skinned youth becomes a document recovered from the necromancers. It records transformation and teleportation before the attack on the scholars’ mansion, with Gipath as the destination. Kir decides to follow that Joon. Sahilia supplies enlistment papers, and Kel refuses to be left behind, passing as a young man herself. [[character/sergant]] puts them through military training in Death Canyon. Their performance earns a courier assignment to the Gipath expedition. Sealed orders and a portal pass finally let them leave Suslanger under the authority of the same empire that enslaved them.",
+						"sources": [
+							"briefing brief_31",
+							"briefing brief_82",
+							"briefing brief_83",
+							"briefing brief_59a",
+							"briefing brief_86",
+							"briefing brief_87",
+							"briefing brief_88",
+							"briefing brief_88a"
+						],
+						"event": "enlistment",
+						"order": 8
 					}
 				],
 				"name_key": "zone bz2h",
@@ -5238,6 +11242,51 @@ const DATA := {
 							"briefing brief_43a",
 							"briefing brief_45"
 						]
+					},
+					{
+						"heading": "Feiruz’s last rescue",
+						"text": "Feiruz asks Kir to repay his help by rescuing his imprisoned fiancée [[character/merc10]]. He dies during the escape. Kel urges the grieving Aliya to avenge him and identifies the man who struck the fatal blow. Kir objects to deliberate revenge, but their companions insist on their code. The death of the prison commandant brings searches across the city. Fearing for his collection, Rindeil withdraws his protection, though he says Kir may return once the danger passes. Aliya then leads Kir and Kel to the Last Shelter and speaks for them before [[character/glav]].",
+						"sources": [
+							"briefing brief_37",
+							"briefing brief_38",
+							"briefing brief_39",
+							"briefing brief_40",
+							"briefing brief_41"
+						],
+						"event": "feiruz",
+						"order": 5
+					},
+					{
+						"heading": "The ring and the brotherhood",
+						"text": "Khatul demands an imperial signet ring from a cyclops as a test of trust. Kir brings it back and explains his intention to free his family. He also recognises that the ring does not match the description he has read. Khatul already knows it is false, but asks him to preserve the brotherhood’s belief in the trophy. Membership changes how [[character/zaku]] receives Kir: the smith who refused a stranger now offers his craft. Through Aliya, Kir also searches for the missing [[character/merc7]], rescues her and brings medicine. Sahilia’s recovery matters later, when her forged papers open a route into the army.",
+						"sources": [
+							"briefing brief_43",
+							"briefing brief_43a",
+							"briefing brief_44",
+							"briefing brief_45",
+							"briefing brief_46",
+							"briefing brief_47",
+							"briefing brief_48",
+							"briefing brief_59a"
+						],
+						"event": "brotherhood",
+						"order": 6
+					},
+					{
+						"heading": "Defending the Shelter and the ancient treaty",
+						"text": "An imperial scout discovers the Shelter. After fighting the expedition, Khatul proposes placing Wormface bodies at the battlefield to conceal the brotherhood’s involvement. In the depths, [[character/guru]] recognises Kir as a Joon and invokes an ancient treaty. He demands the death of a necromancer disturbing the caves before granting access. Later he calls Kir mentally and offers information for rescuing the Priest of Silence from the necromancers. His account of a human searching for Joon remains gives another lead, though he cannot say where that man now lives. The alliance is reciprocal and conditional, not a promise to answer every question.",
+						"sources": [
+							"briefing brief_49",
+							"briefing brief_50",
+							"briefing brief_51",
+							"briefing brief_52",
+							"briefing brief_53",
+							"briefing brief_70",
+							"briefing brief_71",
+							"briefing brief_72"
+						],
+						"event": "brainripper",
+						"order": 7
 					}
 				],
 				"name_key": "zone bz3h",
@@ -5255,6 +11304,22 @@ const DATA := {
 							"briefing brief_52",
 							"briefing brief_71"
 						]
+					},
+					{
+						"heading": "Defending the Shelter and the ancient treaty",
+						"text": "An imperial scout discovers the Shelter. After fighting the expedition, Khatul proposes placing Wormface bodies at the battlefield to conceal the brotherhood’s involvement. In the depths, [[character/guru]] recognises Kir as a Joon and invokes an ancient treaty. He demands the death of a necromancer disturbing the caves before granting access. Later he calls Kir mentally and offers information for rescuing the Priest of Silence from the necromancers. His account of a human searching for Joon remains gives another lead, though he cannot say where that man now lives. The alliance is reciprocal and conditional, not a promise to answer every question.",
+						"sources": [
+							"briefing brief_49",
+							"briefing brief_50",
+							"briefing brief_51",
+							"briefing brief_52",
+							"briefing brief_53",
+							"briefing brief_70",
+							"briefing brief_71",
+							"briefing brief_72"
+						],
+						"event": "brainripper",
+						"order": 7
 					}
 				],
 				"name_key": "zone bz4h",
@@ -5289,6 +11354,39 @@ const DATA := {
 							"briefing brief_110",
 							"briefing brief_112"
 						]
+					},
+					{
+						"heading": "Urk-Tar and the destroyed expedition",
+						"text": "On Gipath, [[character/orcc]] says his warriors destroyed the Khadaganian expedition. He remembers how Zak’s defeat of a supposed Demon showed that armoured outsiders could be killed, and hopes Kir will become a Chosen for his own tribe. Kel proposes a false report with unpromising stone samples to prevent another imperial expedition from being sent. The shaman [[character/orcpyr]] distrusts strangers but makes Kir a ritual axe after he supplies suitable stone, and makes beads for Kel. Their welcome depends on helping the tribe, and Kir soon rescues the chief from a harpy and his wife from goblins.",
+						"sources": [
+							"briefing brief_101",
+							"briefing brief_102",
+							"briefing brief_103",
+							"briefing brief_104",
+							"briefing brief_105",
+							"briefing brief_106",
+							"briefing brief_107",
+							"briefing brief_108",
+							"briefing brief_109",
+							"briefing brief_110",
+							"briefing brief_111"
+						],
+						"event": "urk_tar",
+						"order": 9
+					},
+					{
+						"heading": "The Shell and the war with the settlers",
+						"text": "Urk-Tar explains that humans have driven orcs out of the Foothills and are advancing into the Middle Mountains. Kir removes the Shell whose presence restrains the lizards, initially refusing to fight humans himself. When Tynachey describes the killing of the tribe’s inhabitants, Kel argues for helping their hosts recover the settlement, and Kir agrees. The [[character/iz|Hermit Lizard]] then offers news of the former Chosen in exchange for placing the Shell by the Remote Mountains’ lake. Restoring it also frees hunters held by lizards. The Hermit directs Kir toward the Great Magician by a route different from Zak’s old tunnel approach.",
+						"sources": [
+							"briefing brief_112",
+							"briefing brief_113",
+							"briefing brief_114",
+							"briefing brief_115",
+							"briefing brief_116",
+							"briefing brief_117"
+						],
+						"event": "shell_war",
+						"order": 10
 					}
 				],
 				"name_key": "zone bz8g",
@@ -5306,6 +11404,41 @@ const DATA := {
 							"briefing brief_126a",
 							"briefing brief_126b"
 						]
+					},
+					{
+						"heading": "The Free Hunters and Babur",
+						"text": "A [[character/loozer|messenger]] invites the rescuers of the hunters to [[character/karh]]’s camp. Bor claims neutrality in the war, yet asks them to act against the village’s hunters and caravans. To question [[character/smith]] about the Orb, Kir helps bring him out of the village. The letter can go to Babur himself or to the elder, with different explanations for the craftsman’s arrival. Babur then sends Kir to the lizards’ tomb for a supposed magical needle. The expedition supplies lizard hides, and Babur admits that useful armour material was his real interest. For information about the Orb, he redirects the visitors to Estera.",
+						"sources": [
+							"briefing brief_120",
+							"briefing brief_121",
+							"briefing brief_123",
+							"briefing brief_124",
+							"briefing brief_126a",
+							"briefing brief_126b",
+							"briefing brief_127",
+							"briefing brief_128"
+						],
+						"event": "bor_babur",
+						"order": 12
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
 					}
 				],
 				"name_key": "zone bz11g",
@@ -5324,6 +11457,22 @@ const DATA := {
 							"briefing brief_136",
 							"briefing brief_137"
 						]
+					},
+					{
+						"heading": "Airy, Estera and the Dragon’s flower",
+						"text": "[[character/daughter]] guards the cave while Estera is visiting the [[character/skd|Old Dragon]]. Her quarrel with Kel over a necklace exposes Kel’s jealousy and Kir’s failure to notice it. Airy refuses his courtship and suggests looking at the person already beside him. At the dragon’s lair, Estera is the troublesome visitor rather than a prisoner: she refuses to leave without information about a flower. Kir obtains it and the witch goes home. [[character/witch]] then admits the Orb was stolen by orcs; Airy identifies the islands and warns that it lost its power after its earlier use.",
+						"sources": [
+							"briefing brief_129",
+							"briefing brief_130",
+							"briefing brief_131",
+							"briefing brief_132",
+							"briefing brief_133",
+							"briefing brief_134",
+							"briefing brief_136",
+							"briefing brief_137"
+						],
+						"event": "flower_dragon",
+						"order": 13
 					}
 				],
 				"name_key": "zone bz12g",
@@ -5340,6 +11489,22 @@ const DATA := {
 							"briefing brief_132",
 							"briefing brief_133"
 						]
+					},
+					{
+						"heading": "Airy, Estera and the Dragon’s flower",
+						"text": "[[character/daughter]] guards the cave while Estera is visiting the [[character/skd|Old Dragon]]. Her quarrel with Kel over a necklace exposes Kel’s jealousy and Kir’s failure to notice it. Airy refuses his courtship and suggests looking at the person already beside him. At the dragon’s lair, Estera is the troublesome visitor rather than a prisoner: she refuses to leave without information about a flower. Kir obtains it and the witch goes home. [[character/witch]] then admits the Orb was stolen by orcs; Airy identifies the islands and warns that it lost its power after its earlier use.",
+						"sources": [
+							"briefing brief_129",
+							"briefing brief_130",
+							"briefing brief_131",
+							"briefing brief_132",
+							"briefing brief_133",
+							"briefing brief_134",
+							"briefing brief_136",
+							"briefing brief_137"
+						],
+						"event": "flower_dragon",
+						"order": 13
 					}
 				],
 				"name_key": "zone bz13g",
@@ -5357,6 +11522,35 @@ const DATA := {
 							"briefing brief_119",
 							"briefing brief_149"
 						]
+					},
+					{
+						"heading": "Tka-Rik and the unknown allod",
+						"text": "Meeting [[character/rick]] gives Kir his first direct contact with a free Joon magician. Tka-Rik explains that At-Zako and Lu-a-Jalla are travelling together and that he himself remains bound to Gipath. He has never heard of Jigran. Kir tells him about Firez, his enslaved family and his promise to return. Learning that more Joons need help renews Tka-Rik’s purpose. Since he cannot locate the hidden allod unaided, he sends Kir to find the Magic Orb that At-Zako once used. Finding the magician therefore begins another investigation rather than immediately opening the road home.",
+						"sources": [
+							"briefing brief_118",
+							"briefing brief_119"
+						],
+						"event": "kir_tka",
+						"order": 11
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
 					}
 				],
 				"name_key": "zone bz14g",
@@ -5376,6 +11570,73 @@ const DATA := {
 							"briefing brief_247",
 							"briefing brief_250a"
 						]
+					},
+					{
+						"heading": "Two magicians on Ingos",
+						"text": "Kir and Kel seek magical help on Ingos. [[character/trader]] complains about [[character/kmage]], whose cheap runes undercut his trade, and identifies [[character/his]] as the governor’s court magician. His receives the travellers with suspicion and later asks them to retrieve materials from his laboratory. [[character/trapper]] offers another route: contact [[character/grey]] through the Sacred Flower and a vessel from his cache. Grey Leaf explains that the knight Brissen and his magician friend have left for the settlement near the mines. Kir’s first task here is finding an informed ally, before the murder that later dominates the investigation.",
+						"sources": [
+							"briefing brief_201",
+							"briefing brief_204",
+							"briefing brief_206",
+							"briefing brief_207",
+							"briefing brief_210",
+							"briefing brief_211"
+						],
+						"event": "ingos_contacts",
+						"order": 15
+					},
+					{
+						"heading": "The Beastmasters and the empty caravan",
+						"text": "At the Beastmasters’ settlement, [[character/vor]] accuses Kir and Kel of being spies. [[character/gerald]] agrees to test them. Their attempt to obtain a gold nugget from a caravan finds an empty chest, making their return dangerous. [[character/mthief]] reasons that genuine thieves would not come back empty-handed, and Geraldine accepts them. Sver’s advice about an ice elemental in the abandoned mines provides something to offer Yam-Akara. His work and the governor’s permit requirements then draw the travellers into further dealings with the court. The missing nugget will matter again when the apparent caravan failure becomes evidence of a separate theft.",
+						"sources": [
+							"briefing brief_212",
+							"briefing brief_215",
+							"briefing brief_218",
+							"briefing brief_221",
+							"briefing brief_245a"
+						],
+						"event": "beastmasters",
+						"order": 16
+					},
+					{
+						"heading": "Brissen’s murder and the failed alibi",
+						"text": "Brissen is murdered and Yam-Akara is accused of killing his old friend. Kir and Kel undertake the defence. The magician says he spent the day in the mines and arrived late for their meeting. [[character/guard]] confirms that he allowed the elderly visitor through with an expired permit and stamped it that day. Kir finds the lost pass, but [[character/huber]] rejects the water-damaged document because the signature and date can no longer be read. This evidence supports the search but does not free Yam-Akara; the travellers still have to identify the murderer.",
+						"sources": [
+							"briefing brief_232",
+							"briefing brief_233",
+							"briefing brief_238",
+							"briefing brief_239",
+							"briefing brief_240"
+						],
+						"event": "brissen",
+						"order": 17
+					},
+					{
+						"heading": "The planted knife and His’s death",
+						"text": "A knife found at the murder site appears to implicate His. The court magician admits it was stolen from his laboratory together with the governor’s nugget. He had sent out the empty caravan to hide that loss and hoped to blame raiders after an informant warned of the planned attack. His arranges a meeting to produce evidence, but is killed before he can clear himself. Meanwhile Geraldine and Karansul disclose their relationship and provide each other with an alibi. Their commercial hostility and private secrecy had made them suspicious without establishing guilt.",
+						"sources": [
+							"briefing brief_243",
+							"briefing brief_245",
+							"briefing brief_245a",
+							"briefing brief_246",
+							"briefing brief_247"
+						],
+						"event": "his_murder",
+						"order": 18
+					},
+					{
+						"heading": "Crooked’s confession",
+						"text": "The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial.",
+						"sources": [
+							"briefing brief_237",
+							"briefing brief_248",
+							"briefing brief_249",
+							"briefing brief_250",
+							"briefing brief_250a",
+							"briefing brief_251"
+						],
+						"event": "crooked",
+						"order": 19
 					}
 				],
 				"name_key": "zone bz21k",
@@ -5393,6 +11654,58 @@ const DATA := {
 							"briefing brief_215",
 							"briefing brief_250a"
 						]
+					},
+					{
+						"heading": "The Beastmasters and the empty caravan",
+						"text": "At the Beastmasters’ settlement, [[character/vor]] accuses Kir and Kel of being spies. [[character/gerald]] agrees to test them. Their attempt to obtain a gold nugget from a caravan finds an empty chest, making their return dangerous. [[character/mthief]] reasons that genuine thieves would not come back empty-handed, and Geraldine accepts them. Sver’s advice about an ice elemental in the abandoned mines provides something to offer Yam-Akara. His work and the governor’s permit requirements then draw the travellers into further dealings with the court. The missing nugget will matter again when the apparent caravan failure becomes evidence of a separate theft.",
+						"sources": [
+							"briefing brief_212",
+							"briefing brief_215",
+							"briefing brief_218",
+							"briefing brief_221",
+							"briefing brief_245a"
+						],
+						"event": "beastmasters",
+						"order": 16
+					},
+					{
+						"heading": "The planted knife and His’s death",
+						"text": "A knife found at the murder site appears to implicate His. The court magician admits it was stolen from his laboratory together with the governor’s nugget. He had sent out the empty caravan to hide that loss and hoped to blame raiders after an informant warned of the planned attack. His arranges a meeting to produce evidence, but is killed before he can clear himself. Meanwhile Geraldine and Karansul disclose their relationship and provide each other with an alibi. Their commercial hostility and private secrecy had made them suspicious without establishing guilt.",
+						"sources": [
+							"briefing brief_243",
+							"briefing brief_245",
+							"briefing brief_245a",
+							"briefing brief_246",
+							"briefing brief_247"
+						],
+						"event": "his_murder",
+						"order": 18
+					},
+					{
+						"heading": "Crooked’s confession",
+						"text": "The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial.",
+						"sources": [
+							"briefing brief_237",
+							"briefing brief_248",
+							"briefing brief_249",
+							"briefing brief_250",
+							"briefing brief_250a",
+							"briefing brief_251"
+						],
+						"event": "crooked",
+						"order": 19
+					},
+					{
+						"heading": "The hidden portal to Jigran",
+						"text": "During his confinement, Yam-Akara gains access to the governor’s library. Old exploration reports reveal that the powerful “artifact” is a forgotten passage to another land. Trickster offers a key to the gate, then sends Kir on a fruitless ore search so that he can work without interference. With the key ready, Yam-Akara warns that he cannot sense the destination: the portal may be defective or concealed by a powerful absorbing spell. Kir recognises the same absence Tka-Rik described and concludes that it leads to Jigran. He decides to go directly, trusting the strength gained during his journey. Kel chooses to accompany him again.",
+						"sources": [
+							"briefing brief_251",
+							"briefing brief_252",
+							"briefing brief_253",
+							"briefing brief_254"
+						],
+						"event": "old_portal",
+						"order": 20
 					}
 				],
 				"name_key": "zone bz22k",
@@ -5409,6 +11722,34 @@ const DATA := {
 							"briefing brief_207",
 							"briefing fq15"
 						]
+					},
+					{
+						"heading": "Two magicians on Ingos",
+						"text": "Kir and Kel seek magical help on Ingos. [[character/trader]] complains about [[character/kmage]], whose cheap runes undercut his trade, and identifies [[character/his]] as the governor’s court magician. His receives the travellers with suspicion and later asks them to retrieve materials from his laboratory. [[character/trapper]] offers another route: contact [[character/grey]] through the Sacred Flower and a vessel from his cache. Grey Leaf explains that the knight Brissen and his magician friend have left for the settlement near the mines. Kir’s first task here is finding an informed ally, before the murder that later dominates the investigation.",
+						"sources": [
+							"briefing brief_201",
+							"briefing brief_204",
+							"briefing brief_206",
+							"briefing brief_207",
+							"briefing brief_210",
+							"briefing brief_211"
+						],
+						"event": "ingos_contacts",
+						"order": 15
+					},
+					{
+						"heading": "Crooked’s confession",
+						"text": "The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial.",
+						"sources": [
+							"briefing brief_237",
+							"briefing brief_248",
+							"briefing brief_249",
+							"briefing brief_250",
+							"briefing brief_250a",
+							"briefing brief_251"
+						],
+						"event": "crooked",
+						"order": 19
 					}
 				],
 				"name_key": "zone bz23k",
@@ -5426,6 +11767,114 @@ const DATA := {
 							"briefing brief_303",
 							"briefing brief_304"
 						]
+					},
+					{
+						"heading": "Return to Jigran and Dar-Leanos",
+						"text": "The old portal brings the travellers to the Canian side of Jigran, where [[character/baron]] questions their arrival amid attacks by the undead. The baron has lost Dar-Ulgorn to Firez’s forces but refuses Kir’s suggestion to seek outside help, citing his family’s pride. Kir and Kel assist the endangered settlements. They meet the baron’s son [[character/bson]] and the overworked [[character/stark]]. Stark provides a password for [[character/doctor]], a seller of sweets who secretly gathers intelligence for the baron. These local alliances make the campaign against Firez possible.",
+						"sources": [
+							"briefing brief_300",
+							"briefing brief_301",
+							"briefing brief_302",
+							"briefing brief_303",
+							"briefing brief_304",
+							"briefing brief_305",
+							"briefing brief_306"
+						],
+						"event": "dar_leanos",
+						"order": 21
+					},
+					{
+						"heading": "Jaminin’s experiment and the undead",
+						"text": "The trail of the local undead leads to [[character/nekro]] on Death Island. Brought before the baron, he bargains for his life with the promise of useful knowledge. Kir and Kel obtain a potion from a tomb, but need to know how to apply it across the affected area. Jaminin first entertains a human sacrifice; Kel rejects it, and he supplies a less destructive method involving cemetery soil and an incantation. The potion puts the dead to rest. His later exchanges preserve the distinction between theoretical learning and practical competence: he possesses information, but his own experiment caused the disaster.",
+						"sources": [
+							"briefing brief_307",
+							"briefing brief_311",
+							"briefing brief_311a",
+							"briefing brief_312",
+							"briefing brief_313",
+							"briefing brief_315"
+						],
+						"event": "jaminin",
+						"order": 22
+					},
+					{
+						"heading": "Weapons, Dartas and preparations for war",
+						"text": "Kir proposes a special weapon alloy against the undead. Stark initially refuses instruction from a youngster and sends him to an abandoned forge, then has to confront the usefulness of the result. The baron welcomes the advantage for his soldiers. A separate conflict with Dartas moves from arrogance and a duel to an admission of fear for his family and Jigran’s future. Kir explains his own history of enslavement and determination to return, winning the young man’s respect. Dartas later becomes a useful source about an amulet from a village destroyed by harpies.",
+						"sources": [
+							"briefing brief_318",
+							"briefing brief_319",
+							"briefing brief_320",
+							"briefing brief_321",
+							"briefing brief_324",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "preparing_war",
+						"order": 23
+					},
+					{
+						"heading": "Dar-Ulgorn and the river crossing",
+						"text": "Uncle Rad’s intelligence and preparations distract the defenders of Dar-Ulgorn so the baron’s forces can retake the fortress. The victory restores the family’s former boundary, but Virril will not advance blindly into Khadaganian territory. Kir and Kel steal a detailed map from the enemy headquarters and deliver Rad’s report. The resulting offensive captures the river crossing and brings Firez within reach. Kel worries that the end of Kir’s family quest will also end their life together, while the baron imagines a prosperous Jigran under his descendants. The victory means different things to the people who share it.",
+						"sources": [
+							"briefing brief_326",
+							"briefing brief_329",
+							"briefing brief_330",
+							"briefing brief_331",
+							"briefing brief_332",
+							"briefing brief_333",
+							"briefing brief_334",
+							"briefing brief_338",
+							"briefing brief_339"
+						],
+						"event": "offensive",
+						"order": 24
+					},
+					{
+						"heading": "The freed Joons and Kir’s family",
+						"text": "Kel and Rad discover that Firez is moving the Joon prisoners from the mountain prison into his fortress. Kel plans an attack on the transfer, avoiding a direct prison assault. Among those freed are [[character/deva]], whom Kir admired as a child, and the elder [[character/junofil]]. Tai-Ilara welcomes his changed appearance and asks him to retrieve belongings left behind. Tui-Len brings harder news: Kir’s parents are dead. The elder fears that killing Firez will expose the survivors to the Curse, but Kir tells him that Tka-Rik and At-Zako have already destroyed it. Tui-Len also opens the sealed Joon cache whose amulet Kir has recovered.",
+						"sources": [
+							"briefing brief_339",
+							"briefing brief_340",
+							"briefing brief_341",
+							"briefing brief_335",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "joons_freed",
+						"order": 25
+					},
+					{
+						"heading": "Tai-Ilara’s request and Kel’s death",
+						"text": "Seeing Kir reunited with Tai-Ilara, Kel asks for the way back to Suslanger. Kir begs her to stay and mentions one more expedition for Tai-Ilara’s belongings. Kel agrees because she still fears for him, calling it their last adventure together. She dies during that expedition. On Kir’s return, Tai-Ilara is concerned with her comb and mirror and dismisses his grief. Her reaction breaks his idealised childhood attachment. He recognises Kel as the person who was closest and most loyal to him, and realises that he failed to see her love while she was beside him.",
+						"sources": [
+							"briefing brief_342",
+							"briefing brief_345",
+							"briefing fq20"
+						],
+						"event": "kel_loss",
+						"order": 26
+					},
+					{
+						"heading": "The Rod of Life: a possible reunion",
+						"text": "Kel’s death is not the only outcome recorded in the game. If Kir has collected the three parts of the Rod of Life, Tui-Len offers to assemble the artifact and restore her. The completed quest has its own reunion: Kir calls Kel his love, apologises for his blindness and hears her answer that his love matters more than the rest.",
+						"sources": [
+							"briefing fq20",
+							"briefing fq21"
+						],
+						"event": "rod_of_life",
+						"order": 27
+					},
+					{
+						"heading": "The Joon cache and allies for the assault",
+						"text": "The sealed cache supplies Kir with Joon armour, but Tui-Len warns him against relying on hatred alone. He gives him an amulet that can turn dangerous creatures into allies. Rad identifies suitable hunting grounds for a cyclops and a dragon. Their recruitment changes the military balance and answers the baron’s objection that his soldiers cannot face Firez’s necromancy in a direct assault. Virril finally orders the attack. Before the confrontation, Rad speaks of the quiet home and family he hopes to have when his secret work is finished.",
+						"sources": [
+							"briefing brief_343",
+							"briefing brief_344",
+							"briefing brief_347",
+							"briefing brief_348"
+						],
+						"event": "allies",
+						"order": 28
 					}
 				],
 				"name_key": "zone bz31j",
@@ -5443,6 +11892,50 @@ const DATA := {
 							"briefing brief_344",
 							"briefing brief_348"
 						]
+					},
+					{
+						"heading": "Return to Jigran and Dar-Leanos",
+						"text": "The old portal brings the travellers to the Canian side of Jigran, where [[character/baron]] questions their arrival amid attacks by the undead. The baron has lost Dar-Ulgorn to Firez’s forces but refuses Kir’s suggestion to seek outside help, citing his family’s pride. Kir and Kel assist the endangered settlements. They meet the baron’s son [[character/bson]] and the overworked [[character/stark]]. Stark provides a password for [[character/doctor]], a seller of sweets who secretly gathers intelligence for the baron. These local alliances make the campaign against Firez possible.",
+						"sources": [
+							"briefing brief_300",
+							"briefing brief_301",
+							"briefing brief_302",
+							"briefing brief_303",
+							"briefing brief_304",
+							"briefing brief_305",
+							"briefing brief_306"
+						],
+						"event": "dar_leanos",
+						"order": 21
+					},
+					{
+						"heading": "Dar-Ulgorn and the river crossing",
+						"text": "Uncle Rad’s intelligence and preparations distract the defenders of Dar-Ulgorn so the baron’s forces can retake the fortress. The victory restores the family’s former boundary, but Virril will not advance blindly into Khadaganian territory. Kir and Kel steal a detailed map from the enemy headquarters and deliver Rad’s report. The resulting offensive captures the river crossing and brings Firez within reach. Kel worries that the end of Kir’s family quest will also end their life together, while the baron imagines a prosperous Jigran under his descendants. The victory means different things to the people who share it.",
+						"sources": [
+							"briefing brief_326",
+							"briefing brief_329",
+							"briefing brief_330",
+							"briefing brief_331",
+							"briefing brief_332",
+							"briefing brief_333",
+							"briefing brief_334",
+							"briefing brief_338",
+							"briefing brief_339"
+						],
+						"event": "offensive",
+						"order": 24
+					},
+					{
+						"heading": "The Joon cache and allies for the assault",
+						"text": "The sealed cache supplies Kir with Joon armour, but Tui-Len warns him against relying on hatred alone. He gives him an amulet that can turn dangerous creatures into allies. Rad identifies suitable hunting grounds for a cyclops and a dragon. Their recruitment changes the military balance and answers the baron’s objection that his soldiers cannot face Firez’s necromancy in a direct assault. Virril finally orders the attack. Before the confrontation, Rad speaks of the quiet home and family he hopes to have when his secret work is finished.",
+						"sources": [
+							"briefing brief_343",
+							"briefing brief_344",
+							"briefing brief_347",
+							"briefing brief_348"
+						],
+						"event": "allies",
+						"order": 28
 					}
 				],
 				"name_key": "zone bz32j",
@@ -5457,6 +11950,21 @@ const DATA := {
 						"sources": [
 							"zone cz1h"
 						]
+					},
+					{
+						"heading": "Kel and the slave pen",
+						"text": "Soldiers beat Kir nearly to death. In the slave pen, [[character/merc2]] nurses him back to consciousness, shortens his name to Kir and offers a partnership in escape. He initially hopes to explain the mistake to the authorities; the [[character/clerk|official]] instead assigns work according to the prisoners’ abilities. Kel has overheard that an officer possesses a map of the catacombs. They escape and use the underground route to leave the fortress area. Once outside, Kel proposes refuge with an acquaintance who collects spiders. Their relationship begins in this shared dependence: Kir needs her local knowledge, and Kel needs a partner.",
+						"sources": [
+							"briefing brief_2",
+							"briefing brief_3a",
+							"briefing brief_3b",
+							"briefing brief_3c",
+							"briefing brief_4",
+							"briefing brief_5",
+							"briefing brief_5a"
+						],
+						"event": "kel",
+						"order": 2
 					}
 				],
 				"name_key": "zone cz1h",
@@ -5471,15 +11979,1011 @@ const DATA := {
 						"sources": [
 							"zone cz2h"
 						]
+					},
+					{
+						"heading": "Kel and the slave pen",
+						"text": "Soldiers beat Kir nearly to death. In the slave pen, [[character/merc2]] nurses him back to consciousness, shortens his name to Kir and offers a partnership in escape. He initially hopes to explain the mistake to the authorities; the [[character/clerk|official]] instead assigns work according to the prisoners’ abilities. Kel has overheard that an officer possesses a map of the catacombs. They escape and use the underground route to leave the fortress area. Once outside, Kel proposes refuge with an acquaintance who collects spiders. Their relationship begins in this shared dependence: Kir needs her local knowledge, and Kel needs a partner.",
+						"sources": [
+							"briefing brief_2",
+							"briefing brief_3a",
+							"briefing brief_3b",
+							"briefing brief_3c",
+							"briefing brief_4",
+							"briefing brief_5",
+							"briefing brief_5a"
+						],
+						"event": "kel",
+						"order": 2
 					}
 				],
 				"name_key": "zone cz2h",
 				"id": "cz2h"
+			},
+			"map/gz1g": {
+				"kind": "map",
+				"name_key": "zone gz1g",
+				"sections": [
+					{
+						"heading": "Escape from Jigran",
+						"text": "[[character/hero]], whose full name is Kir-A-Chit-La, is a young Joon enslaved under [[character/firez]] on [[allod/jigran]]. He escapes the castle, leaving his family behind, and hopes to return with help. Outside the castle, a [[character/first|recruiter]] mistakes him for someone expected at the camp. Kir conceals his identity and accepts travel papers for work on Suslanger. The apparent opening to freedom instead delivers him to imperial authorities. [[character/hwleader]] dismisses his papers, treats him as a slave and considers reporting the red-skinned stranger for a reward.",
+						"sources": [
+							"briefing brief_0",
+							"briefing brief_1",
+							"briefing brief_119",
+							"zone gz1g"
+						],
+						"event": "flight",
+						"order": 1
+					}
+				],
+				"id": "gz1g"
+			},
+			"map/gz1h": {
+				"kind": "map",
+				"name_key": "zone gz1h",
+				"sections": [
+					{
+						"heading": "Escape from Jigran",
+						"text": "[[character/hero]], whose full name is Kir-A-Chit-La, is a young Joon enslaved under [[character/firez]] on [[allod/jigran]]. He escapes the castle, leaving his family behind, and hopes to return with help. Outside the castle, a [[character/first|recruiter]] mistakes him for someone expected at the camp. Kir conceals his identity and accepts travel papers for work on Suslanger. The apparent opening to freedom instead delivers him to imperial authorities. [[character/hwleader]] dismisses his papers, treats him as a slave and considers reporting the red-skinned stranger for a reward.",
+						"sources": [
+							"briefing brief_0",
+							"briefing brief_1",
+							"briefing brief_119",
+							"zone gz1g"
+						],
+						"event": "flight",
+						"order": 1
+					},
+					{
+						"heading": "The report and the passage to Gipath",
+						"text": "Karim’s rumour about the missing red-skinned youth becomes a document recovered from the necromancers. It records transformation and teleportation before the attack on the scholars’ mansion, with Gipath as the destination. Kir decides to follow that Joon. Sahilia supplies enlistment papers, and Kel refuses to be left behind, passing as a young man herself. [[character/sergant]] puts them through military training in Death Canyon. Their performance earns a courier assignment to the Gipath expedition. Sealed orders and a portal pass finally let them leave Suslanger under the authority of the same empire that enslaved them.",
+						"sources": [
+							"briefing brief_31",
+							"briefing brief_82",
+							"briefing brief_83",
+							"briefing brief_59a",
+							"briefing brief_86",
+							"briefing brief_87",
+							"briefing brief_88",
+							"briefing brief_88a"
+						],
+						"event": "enlistment",
+						"order": 8
+					}
+				],
+				"id": "gz1h"
+			},
+			"map/gz1d2": {
+				"kind": "map",
+				"name_key": "zone gz1d2",
+				"sections": [
+					{
+						"heading": "Kel and the slave pen",
+						"text": "Soldiers beat Kir nearly to death. In the slave pen, [[character/merc2]] nurses him back to consciousness, shortens his name to Kir and offers a partnership in escape. He initially hopes to explain the mistake to the authorities; the [[character/clerk|official]] instead assigns work according to the prisoners’ abilities. Kel has overheard that an officer possesses a map of the catacombs. They escape and use the underground route to leave the fortress area. Once outside, Kel proposes refuge with an acquaintance who collects spiders. Their relationship begins in this shared dependence: Kir needs her local knowledge, and Kel needs a partner.",
+						"sources": [
+							"briefing brief_2",
+							"briefing brief_3a",
+							"briefing brief_3b",
+							"briefing brief_3c",
+							"briefing brief_4",
+							"briefing brief_5",
+							"briefing brief_5a"
+						],
+						"event": "kel",
+						"order": 2
+					}
+				],
+				"id": "gz1d2"
+			},
+			"map/gz2h": {
+				"kind": "map",
+				"name_key": "zone gz2h",
+				"sections": [
+					{
+						"heading": "Shelter at Rindeil’s estate",
+						"text": "[[character/elder]] welcomes Kel and her companion to his estate. Kir’s learning gives them common ground, though the collector’s chief concern remains his spiders. [[character/sheriff]], who manages the household and formerly performed on stage, becomes a source of contacts and rumours about another Joon. [[character/merc8]] helps Kir hide his conspicuous face beneath cloth, exploiting the fear of disease. Rindeil’s requests include obtaining a meteorite sample in exchange for a rare specimen for his collection. This period of refuge lets Kir search for information, but its safety depends on the owner’s willingness to risk his household.",
+						"sources": [
+							"briefing brief_6",
+							"briefing brief_8",
+							"briefing brief_14",
+							"briefing brief_18",
+							"briefing brief_25",
+							"briefing brief_31"
+						],
+						"event": "estate",
+						"order": 3
+					},
+					{
+						"heading": "Zara’s affairs",
+						"text": "The merchant [[character/ycf]] is another of Kel’s Suslanger contacts. Her side of the story involves a blackmailer, a threatened caravan and contraband that must be recovered before the authorities inspect it. The conversations distinguish successful recovery from arriving too late; the account of the caravan therefore depends on the outcome of that errand. Later, Zara’s interest in a scholar draws Kir into a scheme against Kehel. These dealings develop alongside the search for a Joon, rather than forming a single inevitable sequence of victories.",
+						"sources": [
+							"briefing brief_21",
+							"briefing brief_27",
+							"briefing brief_28",
+							"briefing brief_33",
+							"briefing brief_34a",
+							"briefing brief_34c",
+							"briefing brief_63",
+							"briefing brief_64"
+						],
+						"event": "zara",
+						"order": 4
+					}
+				],
+				"id": "gz2h"
+			},
+			"map/gz3d1": {
+				"kind": "map",
+				"name_key": "zone gz3d1",
+				"sections": [
+					{
+						"heading": "Feiruz’s last rescue",
+						"text": "Feiruz asks Kir to repay his help by rescuing his imprisoned fiancée [[character/merc10]]. He dies during the escape. Kel urges the grieving Aliya to avenge him and identifies the man who struck the fatal blow. Kir objects to deliberate revenge, but their companions insist on their code. The death of the prison commandant brings searches across the city. Fearing for his collection, Rindeil withdraws his protection, though he says Kir may return once the danger passes. Aliya then leads Kir and Kel to the Last Shelter and speaks for them before [[character/glav]].",
+						"sources": [
+							"briefing brief_37",
+							"briefing brief_38",
+							"briefing brief_39",
+							"briefing brief_40",
+							"briefing brief_41"
+						],
+						"event": "feiruz",
+						"order": 5
+					}
+				],
+				"id": "gz3d1"
+			},
+			"map/gz3h": {
+				"kind": "map",
+				"name_key": "zone gz3h",
+				"sections": [
+					{
+						"heading": "The ring and the brotherhood",
+						"text": "Khatul demands an imperial signet ring from a cyclops as a test of trust. Kir brings it back and explains his intention to free his family. He also recognises that the ring does not match the description he has read. Khatul already knows it is false, but asks him to preserve the brotherhood’s belief in the trophy. Membership changes how [[character/zaku]] receives Kir: the smith who refused a stranger now offers his craft. Through Aliya, Kir also searches for the missing [[character/merc7]], rescues her and brings medicine. Sahilia’s recovery matters later, when her forged papers open a route into the army.",
+						"sources": [
+							"briefing brief_43",
+							"briefing brief_43a",
+							"briefing brief_44",
+							"briefing brief_45",
+							"briefing brief_46",
+							"briefing brief_47",
+							"briefing brief_48",
+							"briefing brief_59a"
+						],
+						"event": "brotherhood",
+						"order": 6
+					},
+					{
+						"heading": "Defending the Shelter and the ancient treaty",
+						"text": "An imperial scout discovers the Shelter. After fighting the expedition, Khatul proposes placing Wormface bodies at the battlefield to conceal the brotherhood’s involvement. In the depths, [[character/guru]] recognises Kir as a Joon and invokes an ancient treaty. He demands the death of a necromancer disturbing the caves before granting access. Later he calls Kir mentally and offers information for rescuing the Priest of Silence from the necromancers. His account of a human searching for Joon remains gives another lead, though he cannot say where that man now lives. The alliance is reciprocal and conditional, not a promise to answer every question.",
+						"sources": [
+							"briefing brief_49",
+							"briefing brief_50",
+							"briefing brief_51",
+							"briefing brief_52",
+							"briefing brief_53",
+							"briefing brief_70",
+							"briefing brief_71",
+							"briefing brief_72"
+						],
+						"event": "brainripper",
+						"order": 7
+					},
+					{
+						"heading": "The report and the passage to Gipath",
+						"text": "Karim’s rumour about the missing red-skinned youth becomes a document recovered from the necromancers. It records transformation and teleportation before the attack on the scholars’ mansion, with Gipath as the destination. Kir decides to follow that Joon. Sahilia supplies enlistment papers, and Kel refuses to be left behind, passing as a young man herself. [[character/sergant]] puts them through military training in Death Canyon. Their performance earns a courier assignment to the Gipath expedition. Sealed orders and a portal pass finally let them leave Suslanger under the authority of the same empire that enslaved them.",
+						"sources": [
+							"briefing brief_31",
+							"briefing brief_82",
+							"briefing brief_83",
+							"briefing brief_59a",
+							"briefing brief_86",
+							"briefing brief_87",
+							"briefing brief_88",
+							"briefing brief_88a"
+						],
+						"event": "enlistment",
+						"order": 8
+					}
+				],
+				"id": "gz3h"
+			},
+			"map/gz4h": {
+				"kind": "map",
+				"name_key": "zone gz4h",
+				"sections": [
+					{
+						"heading": "Defending the Shelter and the ancient treaty",
+						"text": "An imperial scout discovers the Shelter. After fighting the expedition, Khatul proposes placing Wormface bodies at the battlefield to conceal the brotherhood’s involvement. In the depths, [[character/guru]] recognises Kir as a Joon and invokes an ancient treaty. He demands the death of a necromancer disturbing the caves before granting access. Later he calls Kir mentally and offers information for rescuing the Priest of Silence from the necromancers. His account of a human searching for Joon remains gives another lead, though he cannot say where that man now lives. The alliance is reciprocal and conditional, not a promise to answer every question.",
+						"sources": [
+							"briefing brief_49",
+							"briefing brief_50",
+							"briefing brief_51",
+							"briefing brief_52",
+							"briefing brief_53",
+							"briefing brief_70",
+							"briefing brief_71",
+							"briefing brief_72"
+						],
+						"event": "brainripper",
+						"order": 7
+					}
+				],
+				"id": "gz4h"
+			},
+			"map/gz5h": {
+				"kind": "map",
+				"name_key": "zone gz5h",
+				"sections": [
+					{
+						"heading": "The report and the passage to Gipath",
+						"text": "Karim’s rumour about the missing red-skinned youth becomes a document recovered from the necromancers. It records transformation and teleportation before the attack on the scholars’ mansion, with Gipath as the destination. Kir decides to follow that Joon. Sahilia supplies enlistment papers, and Kel refuses to be left behind, passing as a young man herself. [[character/sergant]] puts them through military training in Death Canyon. Their performance earns a courier assignment to the Gipath expedition. Sealed orders and a portal pass finally let them leave Suslanger under the authority of the same empire that enslaved them.",
+						"sources": [
+							"briefing brief_31",
+							"briefing brief_82",
+							"briefing brief_83",
+							"briefing brief_59a",
+							"briefing brief_86",
+							"briefing brief_87",
+							"briefing brief_88",
+							"briefing brief_88a"
+						],
+						"event": "enlistment",
+						"order": 8
+					}
+				],
+				"id": "gz5h"
+			},
+			"map/gz7g": {
+				"kind": "map",
+				"name_key": "zone gz7g",
+				"sections": [
+					{
+						"heading": "Urk-Tar and the destroyed expedition",
+						"text": "On Gipath, [[character/orcc]] says his warriors destroyed the Khadaganian expedition. He remembers how Zak’s defeat of a supposed Demon showed that armoured outsiders could be killed, and hopes Kir will become a Chosen for his own tribe. Kel proposes a false report with unpromising stone samples to prevent another imperial expedition from being sent. The shaman [[character/orcpyr]] distrusts strangers but makes Kir a ritual axe after he supplies suitable stone, and makes beads for Kel. Their welcome depends on helping the tribe, and Kir soon rescues the chief from a harpy and his wife from goblins.",
+						"sources": [
+							"briefing brief_101",
+							"briefing brief_102",
+							"briefing brief_103",
+							"briefing brief_104",
+							"briefing brief_105",
+							"briefing brief_106",
+							"briefing brief_107",
+							"briefing brief_108",
+							"briefing brief_109",
+							"briefing brief_110",
+							"briefing brief_111"
+						],
+						"event": "urk_tar",
+						"order": 9
+					},
+					{
+						"heading": "Airy, Estera and the Dragon’s flower",
+						"text": "[[character/daughter]] guards the cave while Estera is visiting the [[character/skd|Old Dragon]]. Her quarrel with Kel over a necklace exposes Kel’s jealousy and Kir’s failure to notice it. Airy refuses his courtship and suggests looking at the person already beside him. At the dragon’s lair, Estera is the troublesome visitor rather than a prisoner: she refuses to leave without information about a flower. Kir obtains it and the witch goes home. [[character/witch]] then admits the Orb was stolen by orcs; Airy identifies the islands and warns that it lost its power after its earlier use.",
+						"sources": [
+							"briefing brief_129",
+							"briefing brief_130",
+							"briefing brief_131",
+							"briefing brief_132",
+							"briefing brief_133",
+							"briefing brief_134",
+							"briefing brief_136",
+							"briefing brief_137"
+						],
+						"event": "flower_dragon",
+						"order": 13
+					}
+				],
+				"id": "gz7g"
+			},
+			"map/gz8g": {
+				"kind": "map",
+				"name_key": "zone gz8g",
+				"sections": [
+					{
+						"heading": "Urk-Tar and the destroyed expedition",
+						"text": "On Gipath, [[character/orcc]] says his warriors destroyed the Khadaganian expedition. He remembers how Zak’s defeat of a supposed Demon showed that armoured outsiders could be killed, and hopes Kir will become a Chosen for his own tribe. Kel proposes a false report with unpromising stone samples to prevent another imperial expedition from being sent. The shaman [[character/orcpyr]] distrusts strangers but makes Kir a ritual axe after he supplies suitable stone, and makes beads for Kel. Their welcome depends on helping the tribe, and Kir soon rescues the chief from a harpy and his wife from goblins.",
+						"sources": [
+							"briefing brief_101",
+							"briefing brief_102",
+							"briefing brief_103",
+							"briefing brief_104",
+							"briefing brief_105",
+							"briefing brief_106",
+							"briefing brief_107",
+							"briefing brief_108",
+							"briefing brief_109",
+							"briefing brief_110",
+							"briefing brief_111"
+						],
+						"event": "urk_tar",
+						"order": 9
+					}
+				],
+				"id": "gz8g"
+			},
+			"map/gz9g": {
+				"kind": "map",
+				"name_key": "zone gz9g",
+				"sections": [
+					{
+						"heading": "Urk-Tar and the destroyed expedition",
+						"text": "On Gipath, [[character/orcc]] says his warriors destroyed the Khadaganian expedition. He remembers how Zak’s defeat of a supposed Demon showed that armoured outsiders could be killed, and hopes Kir will become a Chosen for his own tribe. Kel proposes a false report with unpromising stone samples to prevent another imperial expedition from being sent. The shaman [[character/orcpyr]] distrusts strangers but makes Kir a ritual axe after he supplies suitable stone, and makes beads for Kel. Their welcome depends on helping the tribe, and Kir soon rescues the chief from a harpy and his wife from goblins.",
+						"sources": [
+							"briefing brief_101",
+							"briefing brief_102",
+							"briefing brief_103",
+							"briefing brief_104",
+							"briefing brief_105",
+							"briefing brief_106",
+							"briefing brief_107",
+							"briefing brief_108",
+							"briefing brief_109",
+							"briefing brief_110",
+							"briefing brief_111"
+						],
+						"event": "urk_tar",
+						"order": 9
+					},
+					{
+						"heading": "The Shell and the war with the settlers",
+						"text": "Urk-Tar explains that humans have driven orcs out of the Foothills and are advancing into the Middle Mountains. Kir removes the Shell whose presence restrains the lizards, initially refusing to fight humans himself. When Tynachey describes the killing of the tribe’s inhabitants, Kel argues for helping their hosts recover the settlement, and Kir agrees. The [[character/iz|Hermit Lizard]] then offers news of the former Chosen in exchange for placing the Shell by the Remote Mountains’ lake. Restoring it also frees hunters held by lizards. The Hermit directs Kir toward the Great Magician by a route different from Zak’s old tunnel approach.",
+						"sources": [
+							"briefing brief_112",
+							"briefing brief_113",
+							"briefing brief_114",
+							"briefing brief_115",
+							"briefing brief_116",
+							"briefing brief_117"
+						],
+						"event": "shell_war",
+						"order": 10
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
+					}
+				],
+				"id": "gz9g"
+			},
+			"map/gz11g": {
+				"kind": "map",
+				"name_key": "zone gz11g",
+				"sections": [
+					{
+						"heading": "The Shell and the war with the settlers",
+						"text": "Urk-Tar explains that humans have driven orcs out of the Foothills and are advancing into the Middle Mountains. Kir removes the Shell whose presence restrains the lizards, initially refusing to fight humans himself. When Tynachey describes the killing of the tribe’s inhabitants, Kel argues for helping their hosts recover the settlement, and Kir agrees. The [[character/iz|Hermit Lizard]] then offers news of the former Chosen in exchange for placing the Shell by the Remote Mountains’ lake. Restoring it also frees hunters held by lizards. The Hermit directs Kir toward the Great Magician by a route different from Zak’s old tunnel approach.",
+						"sources": [
+							"briefing brief_112",
+							"briefing brief_113",
+							"briefing brief_114",
+							"briefing brief_115",
+							"briefing brief_116",
+							"briefing brief_117"
+						],
+						"event": "shell_war",
+						"order": 10
+					}
+				],
+				"id": "gz11g"
+			},
+			"map/gz10g": {
+				"kind": "map",
+				"name_key": "zone gz10g",
+				"sections": [
+					{
+						"heading": "The Free Hunters and Babur",
+						"text": "A [[character/loozer|messenger]] invites the rescuers of the hunters to [[character/karh]]’s camp. Bor claims neutrality in the war, yet asks them to act against the village’s hunters and caravans. To question [[character/smith]] about the Orb, Kir helps bring him out of the village. The letter can go to Babur himself or to the elder, with different explanations for the craftsman’s arrival. Babur then sends Kir to the lizards’ tomb for a supposed magical needle. The expedition supplies lizard hides, and Babur admits that useful armour material was his real interest. For information about the Orb, he redirects the visitors to Estera.",
+						"sources": [
+							"briefing brief_120",
+							"briefing brief_121",
+							"briefing brief_123",
+							"briefing brief_124",
+							"briefing brief_126a",
+							"briefing brief_126b",
+							"briefing brief_127",
+							"briefing brief_128"
+						],
+						"event": "bor_babur",
+						"order": 12
+					}
+				],
+				"id": "gz10g"
+			},
+			"map/gz15g": {
+				"kind": "map",
+				"name_key": "zone gz15g",
+				"sections": [
+					{
+						"heading": "The Free Hunters and Babur",
+						"text": "A [[character/loozer|messenger]] invites the rescuers of the hunters to [[character/karh]]’s camp. Bor claims neutrality in the war, yet asks them to act against the village’s hunters and caravans. To question [[character/smith]] about the Orb, Kir helps bring him out of the village. The letter can go to Babur himself or to the elder, with different explanations for the craftsman’s arrival. Babur then sends Kir to the lizards’ tomb for a supposed magical needle. The expedition supplies lizard hides, and Babur admits that useful armour material was his real interest. For information about the Orb, he redirects the visitors to Estera.",
+						"sources": [
+							"briefing brief_120",
+							"briefing brief_121",
+							"briefing brief_123",
+							"briefing brief_124",
+							"briefing brief_126a",
+							"briefing brief_126b",
+							"briefing brief_127",
+							"briefing brief_128"
+						],
+						"event": "bor_babur",
+						"order": 12
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
+					}
+				],
+				"id": "gz15g"
+			},
+			"map/gz11d1": {
+				"kind": "map",
+				"name_key": "zone gz11d1",
+				"sections": [
+					{
+						"heading": "The Free Hunters and Babur",
+						"text": "A [[character/loozer|messenger]] invites the rescuers of the hunters to [[character/karh]]’s camp. Bor claims neutrality in the war, yet asks them to act against the village’s hunters and caravans. To question [[character/smith]] about the Orb, Kir helps bring him out of the village. The letter can go to Babur himself or to the elder, with different explanations for the craftsman’s arrival. Babur then sends Kir to the lizards’ tomb for a supposed magical needle. The expedition supplies lizard hides, and Babur admits that useful armour material was his real interest. For information about the Orb, he redirects the visitors to Estera.",
+						"sources": [
+							"briefing brief_120",
+							"briefing brief_121",
+							"briefing brief_123",
+							"briefing brief_124",
+							"briefing brief_126a",
+							"briefing brief_126b",
+							"briefing brief_127",
+							"briefing brief_128"
+						],
+						"event": "bor_babur",
+						"order": 12
+					}
+				],
+				"id": "gz11d1"
+			},
+			"map/gz12g": {
+				"kind": "map",
+				"name_key": "zone gz12g",
+				"sections": [
+					{
+						"heading": "Airy, Estera and the Dragon’s flower",
+						"text": "[[character/daughter]] guards the cave while Estera is visiting the [[character/skd|Old Dragon]]. Her quarrel with Kel over a necklace exposes Kel’s jealousy and Kir’s failure to notice it. Airy refuses his courtship and suggests looking at the person already beside him. At the dragon’s lair, Estera is the troublesome visitor rather than a prisoner: she refuses to leave without information about a flower. Kir obtains it and the witch goes home. [[character/witch]] then admits the Orb was stolen by orcs; Airy identifies the islands and warns that it lost its power after its earlier use.",
+						"sources": [
+							"briefing brief_129",
+							"briefing brief_130",
+							"briefing brief_131",
+							"briefing brief_132",
+							"briefing brief_133",
+							"briefing brief_134",
+							"briefing brief_136",
+							"briefing brief_137"
+						],
+						"event": "flower_dragon",
+						"order": 13
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
+					}
+				],
+				"id": "gz12g"
+			},
+			"map/gz16g": {
+				"kind": "map",
+				"name_key": "zone gz16g",
+				"sections": [
+					{
+						"heading": "Airy, Estera and the Dragon’s flower",
+						"text": "[[character/daughter]] guards the cave while Estera is visiting the [[character/skd|Old Dragon]]. Her quarrel with Kel over a necklace exposes Kel’s jealousy and Kir’s failure to notice it. Airy refuses his courtship and suggests looking at the person already beside him. At the dragon’s lair, Estera is the troublesome visitor rather than a prisoner: she refuses to leave without information about a flower. Kir obtains it and the witch goes home. [[character/witch]] then admits the Orb was stolen by orcs; Airy identifies the islands and warns that it lost its power after its earlier use.",
+						"sources": [
+							"briefing brief_129",
+							"briefing brief_130",
+							"briefing brief_131",
+							"briefing brief_132",
+							"briefing brief_133",
+							"briefing brief_134",
+							"briefing brief_136",
+							"briefing brief_137"
+						],
+						"event": "flower_dragon",
+						"order": 13
+					},
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
+					}
+				],
+				"id": "gz16g"
+			},
+			"map/gz14g": {
+				"kind": "map",
+				"name_key": "zone gz14g",
+				"sections": [
+					{
+						"heading": "Babur’s rescue and the restored Orb",
+						"text": "The Orb needs restoration, and Airy points to the observatory. Babur has a key to the blocked approach, but first asks for Zak’s knife, now treated as a sacred relic. While Kir pursues that errand, island orcs abduct the craftsman and hand him to an ogre after a broken agreement. Kir rescues him. Once shown the damaged Orb, Babur provides the key. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide then closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. The repaired Orb shows snow rather than Jigran; Tka-Rik interprets this as a clue to Ingos. Kel insists on accompanying Kir, and the magician agrees.",
+						"sources": [
+							"briefing brief_138",
+							"briefing brief_139",
+							"briefing brief_140",
+							"briefing brief_141",
+							"briefing brief_142",
+							"briefing brief_145b",
+							"briefing brief_145c",
+							"briefing brief_146",
+							"briefing brief_148",
+							"briefing brief_149",
+							"briefing brief_151"
+						],
+						"event": "orb_repair",
+						"order": 14
+					}
+				],
+				"id": "gz14g"
+			},
+			"map/gz21k": {
+				"kind": "map",
+				"name_key": "zone gz21k",
+				"sections": [
+					{
+						"heading": "Two magicians on Ingos",
+						"text": "Kir and Kel seek magical help on Ingos. [[character/trader]] complains about [[character/kmage]], whose cheap runes undercut his trade, and identifies [[character/his]] as the governor’s court magician. His receives the travellers with suspicion and later asks them to retrieve materials from his laboratory. [[character/trapper]] offers another route: contact [[character/grey]] through the Sacred Flower and a vessel from his cache. Grey Leaf explains that the knight Brissen and his magician friend have left for the settlement near the mines. Kir’s first task here is finding an informed ally, before the murder that later dominates the investigation.",
+						"sources": [
+							"briefing brief_201",
+							"briefing brief_204",
+							"briefing brief_206",
+							"briefing brief_207",
+							"briefing brief_210",
+							"briefing brief_211"
+						],
+						"event": "ingos_contacts",
+						"order": 15
+					},
+					{
+						"heading": "The planted knife and His’s death",
+						"text": "A knife found at the murder site appears to implicate His. The court magician admits it was stolen from his laboratory together with the governor’s nugget. He had sent out the empty caravan to hide that loss and hoped to blame raiders after an informant warned of the planned attack. His arranges a meeting to produce evidence, but is killed before he can clear himself. Meanwhile Geraldine and Karansul disclose their relationship and provide each other with an alibi. Their commercial hostility and private secrecy had made them suspicious without establishing guilt.",
+						"sources": [
+							"briefing brief_243",
+							"briefing brief_245",
+							"briefing brief_245a",
+							"briefing brief_246",
+							"briefing brief_247"
+						],
+						"event": "his_murder",
+						"order": 18
+					}
+				],
+				"id": "gz21k"
+			},
+			"map/gz23k": {
+				"kind": "map",
+				"name_key": "zone gz23k",
+				"sections": [
+					{
+						"heading": "Two magicians on Ingos",
+						"text": "Kir and Kel seek magical help on Ingos. [[character/trader]] complains about [[character/kmage]], whose cheap runes undercut his trade, and identifies [[character/his]] as the governor’s court magician. His receives the travellers with suspicion and later asks them to retrieve materials from his laboratory. [[character/trapper]] offers another route: contact [[character/grey]] through the Sacred Flower and a vessel from his cache. Grey Leaf explains that the knight Brissen and his magician friend have left for the settlement near the mines. Kir’s first task here is finding an informed ally, before the murder that later dominates the investigation.",
+						"sources": [
+							"briefing brief_201",
+							"briefing brief_204",
+							"briefing brief_206",
+							"briefing brief_207",
+							"briefing brief_210",
+							"briefing brief_211"
+						],
+						"event": "ingos_contacts",
+						"order": 15
+					}
+				],
+				"id": "gz23k"
+			},
+			"map/gz22k": {
+				"kind": "map",
+				"name_key": "zone gz22k",
+				"sections": [
+					{
+						"heading": "The Beastmasters and the empty caravan",
+						"text": "At the Beastmasters’ settlement, [[character/vor]] accuses Kir and Kel of being spies. [[character/gerald]] agrees to test them. Their attempt to obtain a gold nugget from a caravan finds an empty chest, making their return dangerous. [[character/mthief]] reasons that genuine thieves would not come back empty-handed, and Geraldine accepts them. Sver’s advice about an ice elemental in the abandoned mines provides something to offer Yam-Akara. His work and the governor’s permit requirements then draw the travellers into further dealings with the court. The missing nugget will matter again when the apparent caravan failure becomes evidence of a separate theft.",
+						"sources": [
+							"briefing brief_212",
+							"briefing brief_215",
+							"briefing brief_218",
+							"briefing brief_221",
+							"briefing brief_245a"
+						],
+						"event": "beastmasters",
+						"order": 16
+					},
+					{
+						"heading": "Crooked’s confession",
+						"text": "The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial.",
+						"sources": [
+							"briefing brief_237",
+							"briefing brief_248",
+							"briefing brief_249",
+							"briefing brief_250",
+							"briefing brief_250a",
+							"briefing brief_251"
+						],
+						"event": "crooked",
+						"order": 19
+					}
+				],
+				"id": "gz22k"
+			},
+			"map/gz22d1": {
+				"kind": "map",
+				"name_key": "zone gz22d1",
+				"sections": [
+					{
+						"heading": "The Beastmasters and the empty caravan",
+						"text": "At the Beastmasters’ settlement, [[character/vor]] accuses Kir and Kel of being spies. [[character/gerald]] agrees to test them. Their attempt to obtain a gold nugget from a caravan finds an empty chest, making their return dangerous. [[character/mthief]] reasons that genuine thieves would not come back empty-handed, and Geraldine accepts them. Sver’s advice about an ice elemental in the abandoned mines provides something to offer Yam-Akara. His work and the governor’s permit requirements then draw the travellers into further dealings with the court. The missing nugget will matter again when the apparent caravan failure becomes evidence of a separate theft.",
+						"sources": [
+							"briefing brief_212",
+							"briefing brief_215",
+							"briefing brief_218",
+							"briefing brief_221",
+							"briefing brief_245a"
+						],
+						"event": "beastmasters",
+						"order": 16
+					}
+				],
+				"id": "gz22d1"
+			},
+			"map/gz24k": {
+				"kind": "map",
+				"name_key": "zone gz24k",
+				"sections": [
+					{
+						"heading": "Brissen’s murder and the failed alibi",
+						"text": "Brissen is murdered and Yam-Akara is accused of killing his old friend. Kir and Kel undertake the defence. The magician says he spent the day in the mines and arrived late for their meeting. [[character/guard]] confirms that he allowed the elderly visitor through with an expired permit and stamped it that day. Kir finds the lost pass, but [[character/huber]] rejects the water-damaged document because the signature and date can no longer be read. This evidence supports the search but does not free Yam-Akara; the travellers still have to identify the murderer.",
+						"sources": [
+							"briefing brief_232",
+							"briefing brief_233",
+							"briefing brief_238",
+							"briefing brief_239",
+							"briefing brief_240"
+						],
+						"event": "brissen",
+						"order": 17
+					}
+				],
+				"id": "gz24k"
+			},
+			"map/gz25k": {
+				"kind": "map",
+				"name_key": "zone gz25k",
+				"sections": [
+					{
+						"heading": "The hidden portal to Jigran",
+						"text": "During his confinement, Yam-Akara gains access to the governor’s library. Old exploration reports reveal that the powerful “artifact” is a forgotten passage to another land. Trickster offers a key to the gate, then sends Kir on a fruitless ore search so that he can work without interference. With the key ready, Yam-Akara warns that he cannot sense the destination: the portal may be defective or concealed by a powerful absorbing spell. Kir recognises the same absence Tka-Rik described and concludes that it leads to Jigran. He decides to go directly, trusting the strength gained during his journey. Kel chooses to accompany him again.",
+						"sources": [
+							"briefing brief_251",
+							"briefing brief_252",
+							"briefing brief_253",
+							"briefing brief_254"
+						],
+						"event": "old_portal",
+						"order": 20
+					}
+				],
+				"id": "gz25k"
+			},
+			"map/gz26k": {
+				"kind": "map",
+				"name_key": "zone gz26k",
+				"sections": [
+					{
+						"heading": "The hidden portal to Jigran",
+						"text": "During his confinement, Yam-Akara gains access to the governor’s library. Old exploration reports reveal that the powerful “artifact” is a forgotten passage to another land. Trickster offers a key to the gate, then sends Kir on a fruitless ore search so that he can work without interference. With the key ready, Yam-Akara warns that he cannot sense the destination: the portal may be defective or concealed by a powerful absorbing spell. Kir recognises the same absence Tka-Rik described and concludes that it leads to Jigran. He decides to go directly, trusting the strength gained during his journey. Kel chooses to accompany him again.",
+						"sources": [
+							"briefing brief_251",
+							"briefing brief_252",
+							"briefing brief_253",
+							"briefing brief_254"
+						],
+						"event": "old_portal",
+						"order": 20
+					}
+				],
+				"id": "gz26k"
+			},
+			"map/gz31j": {
+				"kind": "map",
+				"name_key": "zone gz31j",
+				"sections": [
+					{
+						"heading": "Return to Jigran and Dar-Leanos",
+						"text": "The old portal brings the travellers to the Canian side of Jigran, where [[character/baron]] questions their arrival amid attacks by the undead. The baron has lost Dar-Ulgorn to Firez’s forces but refuses Kir’s suggestion to seek outside help, citing his family’s pride. Kir and Kel assist the endangered settlements. They meet the baron’s son [[character/bson]] and the overworked [[character/stark]]. Stark provides a password for [[character/doctor]], a seller of sweets who secretly gathers intelligence for the baron. These local alliances make the campaign against Firez possible.",
+						"sources": [
+							"briefing brief_300",
+							"briefing brief_301",
+							"briefing brief_302",
+							"briefing brief_303",
+							"briefing brief_304",
+							"briefing brief_305",
+							"briefing brief_306"
+						],
+						"event": "dar_leanos",
+						"order": 21
+					},
+					{
+						"heading": "Jaminin’s experiment and the undead",
+						"text": "The trail of the local undead leads to [[character/nekro]] on Death Island. Brought before the baron, he bargains for his life with the promise of useful knowledge. Kir and Kel obtain a potion from a tomb, but need to know how to apply it across the affected area. Jaminin first entertains a human sacrifice; Kel rejects it, and he supplies a less destructive method involving cemetery soil and an incantation. The potion puts the dead to rest. His later exchanges preserve the distinction between theoretical learning and practical competence: he possesses information, but his own experiment caused the disaster.",
+						"sources": [
+							"briefing brief_307",
+							"briefing brief_311",
+							"briefing brief_311a",
+							"briefing brief_312",
+							"briefing brief_313",
+							"briefing brief_315"
+						],
+						"event": "jaminin",
+						"order": 22
+					},
+					{
+						"heading": "Weapons, Dartas and preparations for war",
+						"text": "Kir proposes a special weapon alloy against the undead. Stark initially refuses instruction from a youngster and sends him to an abandoned forge, then has to confront the usefulness of the result. The baron welcomes the advantage for his soldiers. A separate conflict with Dartas moves from arrogance and a duel to an admission of fear for his family and Jigran’s future. Kir explains his own history of enslavement and determination to return, winning the young man’s respect. Dartas later becomes a useful source about an amulet from a village destroyed by harpies.",
+						"sources": [
+							"briefing brief_318",
+							"briefing brief_319",
+							"briefing brief_320",
+							"briefing brief_321",
+							"briefing brief_324",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "preparing_war",
+						"order": 23
+					}
+				],
+				"id": "gz31j"
+			},
+			"map/gz32j": {
+				"kind": "map",
+				"name_key": "zone gz32j",
+				"sections": [
+					{
+						"heading": "Jaminin’s experiment and the undead",
+						"text": "The trail of the local undead leads to [[character/nekro]] on Death Island. Brought before the baron, he bargains for his life with the promise of useful knowledge. Kir and Kel obtain a potion from a tomb, but need to know how to apply it across the affected area. Jaminin first entertains a human sacrifice; Kel rejects it, and he supplies a less destructive method involving cemetery soil and an incantation. The potion puts the dead to rest. His later exchanges preserve the distinction between theoretical learning and practical competence: he possesses information, but his own experiment caused the disaster.",
+						"sources": [
+							"briefing brief_307",
+							"briefing brief_311",
+							"briefing brief_311a",
+							"briefing brief_312",
+							"briefing brief_313",
+							"briefing brief_315"
+						],
+						"event": "jaminin",
+						"order": 22
+					}
+				],
+				"id": "gz32j"
+			},
+			"map/gz33j": {
+				"kind": "map",
+				"name_key": "zone gz33j",
+				"sections": [
+					{
+						"heading": "Dar-Ulgorn and the river crossing",
+						"text": "Uncle Rad’s intelligence and preparations distract the defenders of Dar-Ulgorn so the baron’s forces can retake the fortress. The victory restores the family’s former boundary, but Virril will not advance blindly into Khadaganian territory. Kir and Kel steal a detailed map from the enemy headquarters and deliver Rad’s report. The resulting offensive captures the river crossing and brings Firez within reach. Kel worries that the end of Kir’s family quest will also end their life together, while the baron imagines a prosperous Jigran under his descendants. The victory means different things to the people who share it.",
+						"sources": [
+							"briefing brief_326",
+							"briefing brief_329",
+							"briefing brief_330",
+							"briefing brief_331",
+							"briefing brief_332",
+							"briefing brief_333",
+							"briefing brief_334",
+							"briefing brief_338",
+							"briefing brief_339"
+						],
+						"event": "offensive",
+						"order": 24
+					}
+				],
+				"id": "gz33j"
+			},
+			"map/gz34j": {
+				"kind": "map",
+				"name_key": "zone gz34j",
+				"sections": [
+					{
+						"heading": "Dar-Ulgorn and the river crossing",
+						"text": "Uncle Rad’s intelligence and preparations distract the defenders of Dar-Ulgorn so the baron’s forces can retake the fortress. The victory restores the family’s former boundary, but Virril will not advance blindly into Khadaganian territory. Kir and Kel steal a detailed map from the enemy headquarters and deliver Rad’s report. The resulting offensive captures the river crossing and brings Firez within reach. Kel worries that the end of Kir’s family quest will also end their life together, while the baron imagines a prosperous Jigran under his descendants. The victory means different things to the people who share it.",
+						"sources": [
+							"briefing brief_326",
+							"briefing brief_329",
+							"briefing brief_330",
+							"briefing brief_331",
+							"briefing brief_332",
+							"briefing brief_333",
+							"briefing brief_334",
+							"briefing brief_338",
+							"briefing brief_339"
+						],
+						"event": "offensive",
+						"order": 24
+					},
+					{
+						"heading": "The Joon cache and allies for the assault",
+						"text": "The sealed cache supplies Kir with Joon armour, but Tui-Len warns him against relying on hatred alone. He gives him an amulet that can turn dangerous creatures into allies. Rad identifies suitable hunting grounds for a cyclops and a dragon. Their recruitment changes the military balance and answers the baron’s objection that his soldiers cannot face Firez’s necromancy in a direct assault. Virril finally orders the attack. Before the confrontation, Rad speaks of the quiet home and family he hopes to have when his secret work is finished.",
+						"sources": [
+							"briefing brief_343",
+							"briefing brief_344",
+							"briefing brief_347",
+							"briefing brief_348"
+						],
+						"event": "allies",
+						"order": 28
+					}
+				],
+				"id": "gz34j"
+			},
+			"map/gz35j": {
+				"kind": "map",
+				"name_key": "zone gz35j",
+				"sections": [
+					{
+						"heading": "The freed Joons and Kir’s family",
+						"text": "Kel and Rad discover that Firez is moving the Joon prisoners from the mountain prison into his fortress. Kel plans an attack on the transfer, avoiding a direct prison assault. Among those freed are [[character/deva]], whom Kir admired as a child, and the elder [[character/junofil]]. Tai-Ilara welcomes his changed appearance and asks him to retrieve belongings left behind. Tui-Len brings harder news: Kir’s parents are dead. The elder fears that killing Firez will expose the survivors to the Curse, but Kir tells him that Tka-Rik and At-Zako have already destroyed it. Tui-Len also opens the sealed Joon cache whose amulet Kir has recovered.",
+						"sources": [
+							"briefing brief_339",
+							"briefing brief_340",
+							"briefing brief_341",
+							"briefing brief_335",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "joons_freed",
+						"order": 25
+					},
+					{
+						"heading": "Tai-Ilara’s request and Kel’s death",
+						"text": "Seeing Kir reunited with Tai-Ilara, Kel asks for the way back to Suslanger. Kir begs her to stay and mentions one more expedition for Tai-Ilara’s belongings. Kel agrees because she still fears for him, calling it their last adventure together. She dies during that expedition. On Kir’s return, Tai-Ilara is concerned with her comb and mirror and dismisses his grief. Her reaction breaks his idealised childhood attachment. He recognises Kel as the person who was closest and most loyal to him, and realises that he failed to see her love while she was beside him.",
+						"sources": [
+							"briefing brief_342",
+							"briefing brief_345",
+							"briefing fq20"
+						],
+						"event": "kel_loss",
+						"order": 26
+					},
+					{
+						"heading": "The Joon cache and allies for the assault",
+						"text": "The sealed cache supplies Kir with Joon armour, but Tui-Len warns him against relying on hatred alone. He gives him an amulet that can turn dangerous creatures into allies. Rad identifies suitable hunting grounds for a cyclops and a dragon. Their recruitment changes the military balance and answers the baron’s objection that his soldiers cannot face Firez’s necromancy in a direct assault. Virril finally orders the attack. Before the confrontation, Rad speaks of the quiet home and family he hopes to have when his secret work is finished.",
+						"sources": [
+							"briefing brief_343",
+							"briefing brief_344",
+							"briefing brief_347",
+							"briefing brief_348"
+						],
+						"event": "allies",
+						"order": 28
+					}
+				],
+				"id": "gz35j"
+			},
+			"map/gz34d1": {
+				"kind": "map",
+				"name_key": "zone gz34d1",
+				"sections": [
+					{
+						"heading": "The freed Joons and Kir’s family",
+						"text": "Kel and Rad discover that Firez is moving the Joon prisoners from the mountain prison into his fortress. Kel plans an attack on the transfer, avoiding a direct prison assault. Among those freed are [[character/deva]], whom Kir admired as a child, and the elder [[character/junofil]]. Tai-Ilara welcomes his changed appearance and asks him to retrieve belongings left behind. Tui-Len brings harder news: Kir’s parents are dead. The elder fears that killing Firez will expose the survivors to the Curse, but Kir tells him that Tka-Rik and At-Zako have already destroyed it. Tui-Len also opens the sealed Joon cache whose amulet Kir has recovered.",
+						"sources": [
+							"briefing brief_339",
+							"briefing brief_340",
+							"briefing brief_341",
+							"briefing brief_335",
+							"briefing brief_336",
+							"briefing brief_337"
+						],
+						"event": "joons_freed",
+						"order": 25
+					},
+					{
+						"heading": "The Joon cache and allies for the assault",
+						"text": "The sealed cache supplies Kir with Joon armour, but Tui-Len warns him against relying on hatred alone. He gives him an amulet that can turn dangerous creatures into allies. Rad identifies suitable hunting grounds for a cyclops and a dragon. Their recruitment changes the military balance and answers the baron’s objection that his soldiers cannot face Firez’s necromancy in a direct assault. Virril finally orders the attack. Before the confrontation, Rad speaks of the quiet home and family he hopes to have when his secret work is finished.",
+						"sources": [
+							"briefing brief_343",
+							"briefing brief_344",
+							"briefing brief_347",
+							"briefing brief_348"
+						],
+						"event": "allies",
+						"order": 28
+					}
+				],
+				"id": "gz34d1"
+			},
+			"map/gz36j": {
+				"kind": "map",
+				"name_key": "zone gz36j",
+				"sections": [
+					{
+						"heading": "Firez’s identity and the final confrontation",
+						"text": "In the throne room, Firez reveals that he too is a Joon and has watched Kir through a dragonet since the escape. He says his people expelled him for necromancy and claims that his rule protected them from the Curse. Kir answers with their enslavement, his parents’ deaths and the destruction of Jigran to prolong Firez’s life. The tyrant’s explanation is his own defence, not proof that the captivity was benevolent. He threatens to kill Kir, raise him as an obedient servant and use him against the baron. Their exchange leads into the final battle for Jigran.",
+						"sources": [
+							"briefing brief_349",
+							"zone gz36j"
+						],
+						"event": "firez",
+						"order": 29
+					}
+				],
+				"id": "gz36j"
 			}
 		}
 	},
 	"sources": {
 		"cursed_lands": {
+			"quest q0g": {
+				"hashes": [
+					"b727ee8c3a304bb9ee53a51efeb355c2f95e5f18dda5cfb637b818ceb1c2aee9",
+					"a08546db6eccf2f805dabb5622bad9e3ebd226fee8f36f4fd599a1299bc84c3b",
+					"069968edf707095f5d2d4c72f1cfc2c7ff2fff60d3a5a8441f2fa40e4f2190a9"
+				],
+				"world": "quest q0g"
+			},
 			"briefing s1": {
 				"hashes": [
 					"25fb5b1b039eb65e5a7d58c927869f1d6716b974f5a22d796d15700bf1fc9576",
@@ -5503,6 +13007,178 @@ const DATA := {
 					"elder"
 				]
 			},
+			"briefing v0": {
+				"hashes": [
+					"d451947bb8e4e05e2b2199a3dd3d6b0cba66ccaef8a73dffae0bd427932d2cda",
+					"cbf521051b85847dfffe0be9c1b56c768f38cccf7da294622218a756deba12c1",
+					"268850f4b2a91fda7220b82aaa26ba0224f98f7417a147a042a821796218307b"
+				],
+				"actors": [
+					"sheriff",
+					"hero"
+				]
+			},
+			"quest q1ag": {
+				"hashes": [
+					"d374bc78e182ab80990617b00dfdc84468a63e351dc3fb837655c19bcfb24ef5",
+					"364a1f7d0313f47f6b6d424a952eff16f20e7bc78ad2c5748824dc023b60907f",
+					"9d61ae0d29b3b4a4de8dd6460e3c62c33e0732d7968c26ec295cc929c9c5c7ec"
+				],
+				"world": "quest q1ag"
+			},
+			"briefing s1_3": {
+				"hashes": [
+					"26ebdfbbdc88b85eccefa3633cbc4e477914825c823273cbb64475ad16042395",
+					"624b605f50b945f38e29c7e585d4cbe2a07dedd37e1a4b31056816e25cbd71a9",
+					"552082c672222ff338372cabc3f54ebbe920604782693e6c1b2f4ef029e2591c"
+				],
+				"actors": [
+					"elder",
+					"hero"
+				]
+			},
+			"briefing s3": {
+				"hashes": [
+					"04a843ceb0929b4285c09b1fce7ccd51fbe08676d33416f791bd06842eb6d71e",
+					"dfe663bb25c636fd40eb36d3f49c2a622b9c2c7e676f2119cff7fc5afc5ee8f8",
+					"322a3200e8fbbd08a06da24f5a218b5041a6617a2a3a269809f2632485b1cb8e"
+				],
+				"actors": [
+					"hero",
+					"elder"
+				]
+			},
+			"briefing v3": {
+				"hashes": [
+					"9263f38732e46ef70a27a783dca05c8ee9319ad07aff7d71fe063513ffb13dd8",
+					"813f55b36dee1e9b3079bb9aa4388fbada3f95cfc2da5f4a4ee2b89566f4bcca",
+					"6d5cb877fe4cda7f068d4306da6c0e649da80fb1e1b1a77a294ac01e02670333"
+				],
+				"actors": [
+					"sheriff",
+					"hero"
+				]
+			},
+			"briefing v3_1": {
+				"hashes": [
+					"83f1cd92b10b2b4899087523ac02b77dc779789151b9b222a3b87e4c6f271f63",
+					"304475f2f3baf76fd45d887599dfe118e3f83651cd1267e85464ab00becfd133",
+					"365ea6f90b55980871ae18ff990ee787a34d89374dc1331b88b2af67ab929de8"
+				],
+				"actors": [
+					"sheriff",
+					"hero"
+				]
+			},
+			"briefing m1": {
+				"hashes": [
+					"f4b893d6e1c85413c9140c25dc9bbf10d63cf53dcf24797e04392cf4f7e69e92",
+					"60e1e471e2c8e8c25f545d3c23a972522c4cb9bf8a9d1afd400acc4cc1e62ead",
+					"f1f9e663695d01d48d82d90c96ba3cfe9ab5f0582a9d4363c618d5c6c3f57af7"
+				],
+				"actors": [
+					"smith",
+					"hero"
+				]
+			},
+			"briefing m1_1": {
+				"hashes": [
+					"3e071ae80ecc388ded03aed4607d68956e50fed99b2006d13918cc136e36a45b",
+					"6295ac03abc7bb45dd7bd8b7c188a25bed7ee930f6a7c31e8ec4d50cafc83f57",
+					"80f1be632ad11a53d3e76c77abf64f97231a8ec04e5c4087d2732cd461e8b130"
+				],
+				"actors": [
+					"hero",
+					"smith"
+				]
+			},
+			"briefing m4": {
+				"hashes": [
+					"9cbab29f84c881a4433c8a803301d246b716eac22badbca11ddd520a2003810f",
+					"c67569bb622b357909eeb5e1c6693544bfeecc077b35f792b15101f6b86e7cce",
+					"def45232746e6f1bda40a8fcc9ed59cea5d20d77bb523308326845c68b0151ed"
+				],
+				"actors": [
+					"hero",
+					"smith"
+				]
+			},
+			"quest q2g": {
+				"hashes": [
+					"bbd89f3d2d27cf55c98caef358164f232042798bb71a3c16c1b20397d3f451ed",
+					"104b295bb8a2a29eb3a6615628b05b9cbf2a1f6762da1dcde7bc2612407e7f6e",
+					"22c3b3623e547066c3a0a6ebc44f54703d8f1bb3d78b711baa87a3269d0c0ba3"
+				],
+				"world": "quest q2g"
+			},
+			"briefing m5_1": {
+				"hashes": [
+					"582818257d67fa6ffc095f16992e010f4b2fc28c8df526f4d80ff8d5bf84d72d",
+					"2ae2c7b19b26061c6ec02ef3f973fad1425a017f0ecb8cb9f08b550268cbafe9",
+					"cdffef899264fa3b6b9bc524eb87a93adfe9222b9e84a3603aa05898d8f9ec5d"
+				],
+				"actors": [
+					"hero",
+					"smith"
+				]
+			},
+			"briefing v4": {
+				"hashes": [
+					"5619ba401ce178ece7c2c204a68870fd23e7f9b8e289b8dd14341eea4f5b50fb",
+					"9144eea58c6ded63f65bff0f8b58d308dd5dfabf33bd22b3250c0fe8945db884",
+					"81e5f8d68daa9b04134509a3626ad136937bf4264460868e078a5edf6fd8c697"
+				],
+				"actors": [
+					"sheriff",
+					"hero"
+				]
+			},
+			"briefing m6": {
+				"hashes": [
+					"0ef2b23fe36f9fbe7b93c5576ffe6413b0e6137ca9bb268b338a6855170afc8a",
+					"f86b8e9a78d325890bb3fd3f575bbe755814eb7820e978e5bce5e45f6c55a2f8",
+					"4f5b83458a7eb6fea3b9639c644869a2a97924f9e7afa6077fec3899afe5cf58"
+				],
+				"actors": [
+					"hero",
+					"smith"
+				]
+			},
+			"briefing m6_1": {
+				"hashes": [
+					"2b2eafca8a7fceae53c6fffb1a18e2331b7de9a1aed50baa57bf45348ea31e8d",
+					"7d045310d49a6fa45c9bc049a228ee05935099115be23790792b8b3e4effb3b7",
+					"4e68189cf1f10ff3afcbd2ac542f7a0d553319466910afb0ad7807c448ff3694"
+				],
+				"actors": [
+					"smith",
+					"hero"
+				]
+			},
+			"quest q4g": {
+				"hashes": [
+					"fbe4a1e53d3ff396714cafeeb3874cf8bcc6fe311357352013c4b29caa6a995f",
+					"a9353fa84264d7d284d1816fc2f5a2fa3db9357d4b59a6fe2dd040314bb17576",
+					"96b60fe3cc313db3a420e9a4dfe21354b6723bb20577deb225ce0c8782d0cef9"
+				],
+				"world": "quest q4g"
+			},
+			"quest q5g": {
+				"hashes": [
+					"8caf01df76de993139273f9419298eecc89e539f35f7c480dd057efc9d02ff2a",
+					"8972e46be5c1244548c184ad050038eca1a2fc186f76b0c3c72dac1a1a1aeca9",
+					"1eb03f49078a63f8cbdb2e54c4c8adbf7953bc3fec7d53e049dbdf963c9e7a49"
+				],
+				"world": "quest q5g"
+			},
+			"quest q6g": {
+				"hashes": [
+					"f261dbebd4b67f63b117876a352c145146d8e960a6cab4ea5156261fd1ed7a73",
+					"2becd1b9f8aa52c6da5d1a0ef35ed6ccf3966edef50bff8daba942072e3303ba",
+					"6d39085642c8fd25d17d2e495dcd2f93ffc07c07258f68213bfc56c72bd694c9"
+				],
+				"world": "quest q6g"
+			},
 			"briefing z1": {
 				"hashes": [
 					"eb3b777b2f23c6d8dacad4d6258efc50a054be6df61e2964ed9a82d6fa8458e9",
@@ -5514,196 +13190,15 @@ const DATA := {
 					"hero"
 				]
 			},
-			"briefing z13_1": {
+			"briefing z1_2": {
 				"hashes": [
-					"0e2206930d9a221dfe4740cfdf4f8ea36cc460aa6aac51ba44a45b07ccb7e9b8",
-					"9c93f0c7bf45ed987b2a49b2880173ea5de90cf4c911a88025dcaf06a6c319a5",
-					"af78c17895f0859395bfd75f7f6583a643e640e31ce39dd1c426056f7d697350"
-				],
-				"actors": [
-					"witch",
-					"daughter",
-					"hero"
-				]
-			},
-			"briefing dr22": {
-				"hashes": [
-					"1aade00bed2949019cb30eb915ac2e48c325b173328a80d65b2e4fb258698284",
-					"d8ea5a874b61ee9b935f3131ed93e8ecbc3b0742a086acb5c8777daa61ead173",
-					"fc5d80ff559cb38f7c2c67fa1baeb53e12a4449750844e79e3978a847971aaff"
-				],
-				"actors": [
-					"skd",
-					"hero"
-				]
-			},
-			"briefing l34": {
-				"hashes": [
-					"bf841665dea259dad96bf39da4e7511878124e8b8e6061f3866a081157ae8a7a",
-					"b758a09ed40ab5f3d3b6ed840b8b96a45874d1b75e1e03166030b8be9f4f7213",
-					"20cae171ec86b7a6ccb0240c3cc6d3fe7444c312c1bb1dcc478cc8d3936bc754"
-				],
-				"actors": [
-					"hero",
-					"oliz"
-				]
-			},
-			"briefing s25_1": {
-				"hashes": [
-					"1b2e933bf12460611b2aa9067a58df9799a58eb6385aa7679f7621f548e62009",
-					"beaf96c44076ceeaf3b07349692fd30b1845c74d16909455dc1cf66ec77a5d58",
-					"1653245afed697e92d04cd952c3f7168a529844ad45cb849a1ee24be2fb2ed5c"
-				],
-				"actors": [
-					"hero",
-					"elder",
-					"nsheriff"
-				]
-			},
-			"briefing r36": {
-				"hashes": [
-					"e773aaa65aab4c8eb003c172c7a6f06114b5798d4e69468ea1f1d80b5247db87",
-					"1ecf997429ef4ce668c969affc5d9616746dac6d4892cf39d7ed82b334f29c29",
-					"17b6575f6224e2d7f0ff5e02cf9e3eb2650d2caad5170a3f190808b3e33e6d7a"
-				],
-				"actors": [
-					"rick",
-					"hero"
-				]
-			},
-			"briefing r54": {
-				"hashes": [
-					"f0deabe618f3a52aeeea424c1cbf43a7473856ff1f47d7afd1dfe83d7f075c8e",
-					"69cf993f485ec92d4d724ed61348c8d26bd2d6d217e25d9683096135580fc78a",
-					"80c490a1dcac2197030556bfda6999aa96c4259f0b33de68dc328c7792c62354"
-				],
-				"actors": [
-					"rick",
-					"hero",
-					"deva"
-				]
-			},
-			"briefing kr60": {
-				"hashes": [
-					"c1dbdfe32de7fe142ab83f11e458d7e54537d2d1fb578dbc160009ae50eb27ff",
-					"c00ac93efab0020a431c23361af8f837d41d0384a01840adb6fe03833ab9d0c1",
-					"385c998b1f4ccfe53ecd3bee98639d293e296d3222afd6c882ce3d03bde27555"
-				],
-				"actors": [
-					"nalo",
-					"hero"
-				]
-			},
-			"briefing kr61": {
-				"hashes": [
-					"0af80fbd10e3dd7b171a8ed0618ce4fceb243507dbcf1d2fbcfd56a4575fd0cf",
-					"05f0e8d34499b51e1062d043b87722510938a083592c8e98a422a8b7f6778fbd",
-					"c035783014647f67e2267699c63f54abcbedf23bd4fa3ee34280fa8a0f8380b4"
-				],
-				"actors": [
-					"nalo",
-					"hero"
-				]
-			},
-			"briefing gl64": {
-				"hashes": [
-					"6100ebe09831f84a5b00e951ed732f960d0c360728c807e132342fa04f49c601",
-					"72ae456071b79abcf97ab292e6187033bd8ff76f080455f3966596f198416430",
-					"c85ca424fff1c28e984811aa98c22968554e7e5c0cab924a98ffe6db3410d6e5"
-				],
-				"actors": [
-					"glav",
-					"hero"
-				]
-			},
-			"briefing sn69_1": {
-				"hashes": [
-					"41a7fa502f789c3a0fba606a8a74737d6f05baa0ab74451fc043dc9ffdf0f1e4",
-					"12961187894ff2f2b1a7186d1f54a6250c1c9ff820c02625ad533a2d3f790a62",
-					"edf6e91a1917ac75ea313eddafd180473d5c4c50b1161c50faa901e954dce60f"
-				],
-				"actors": [
-					"spirit",
-					"hero",
-					"oldnekro"
-				]
-			},
-			"briefing r72_1": {
-				"hashes": [
-					"ffbf92b1248716602c8edaf256bf8bf4fe591cdc0ff320eeb66b7c3fe0268165",
-					"8315cf2d5ed530f6cb251a60f9cfe7d7507e568e2639e408d7ec93c89c687e1e",
-					"d3540861955cb78f7cd4d9256e63c250687494e98829ef630e5bab963cd17e90"
-				],
-				"actors": [
-					"rick",
-					"hero"
-				]
-			},
-			"briefing r72_4": {
-				"hashes": [
-					"1380a348e8469de754cdd65053e9af8953f13b6bd9f83845f4daad58c3b0d5b7",
-					"3b0ef51147e4f6231e6f57f36783cefa52630f21685497c2c01309f4c1d9189b",
-					"2f5ab9fde002e72e8e11f3c6144a2ea09454de46228041b1e4b94dc0a9d46754"
-				],
-				"actors": [
-					"junboy",
-					"rick"
-				]
-			},
-			"briefing r72_6": {
-				"hashes": [
-					"a51fd84afa924b850caa1be83f65d6c38eccc909b47a40fa615114d97c46bbdb",
-					"9bace9cb4780094a02e9feabe7b5bc7828f817db53718be58f49f3ac31998368",
-					"6dfa57d9ed6e755af57e7b411c3bdfd2e98511a6f0e24da2e490be59c4286ed6"
-				],
-				"actors": [
-					"junboy",
-					"rick",
-					"deva"
-				]
-			},
-			"briefing d72_5": {
-				"hashes": [
-					"f3348508d5bb41b86ea64b023e8ff62e228633c58458cf7eb90155584df4093b",
-					"9f265035871c172d3eba9c261f8da34f0d1704a901400fa8c83b11ace78b1100",
-					"96ef0edf42397c3b542cdbfa0f0e7cdbcd5350ce4ec7d2fedc2d3a175b3f0996"
-				],
-				"actors": [
-					"deva",
-					"junboy"
-				]
-			},
-			"briefing z25": {
-				"hashes": [
-					"57f1d0d2cff264989f9fc725d912d61e5e7b7145f34191ac954e80cb307e14aa",
-					"efc84b25d99cf4ea23e3209071d3b0f37124662d5ac7177f3cd9f11284d0758f",
-					"320f238f36b508a4d8e437d0be48ec7c4bc5f030229992a8b5ab9323bd0bf4cb"
+					"ca40ca081dcd930787c782fc811f2857a743bf631b6bfdafd4584a8c33cf2456",
+					"5b302e1ba8a827a6001071d6f2fd595bc4e199dbcf8d27836253484b1ec0cf7f",
+					"e2dae248878e0ed40b704b1562dc9f424b449ac2a31573ceed6f7bafb1b7f1fc"
 				],
 				"actors": [
 					"witch",
 					"hero"
-				]
-			},
-			"briefing s71": {
-				"hashes": [
-					"00d4d851b8919c1bfc3f5da0294d3f1a3732f50d62a1a2bbeae5c7eee64289c1",
-					"74567b45e9e72e345d355fa7686fc5d78cd148e1738f3bc3cf0a158839bfe53c",
-					"1274f14094e8c158ddc6e256d7105e9985edff1205b20f2bfaeeaa09656fad2b"
-				],
-				"actors": [
-					"zaku",
-					"hero"
-				]
-			},
-			"briefing s71_1": {
-				"hashes": [
-					"ccf6c0932e14bebb0e8ca9f25b378ecc57f6c65b6ac1fe5dde04c89d6e80a513",
-					"4ca9376cf42389159ec88d03813d6ade0e25a732b22bb3db2b0ae9c826f03de7",
-					"f1585122822c30bac85a86ace11399df2b88cf102947e7f94c628dfa436a1564"
-				],
-				"actors": [
-					"hero",
-					"elder"
 				]
 			},
 			"briefing z0_2": {
@@ -5717,15 +13212,103 @@ const DATA := {
 					"daughter"
 				]
 			},
-			"briefing m6": {
+			"briefing s6_2": {
 				"hashes": [
-					"0ef2b23fe36f9fbe7b93c5576ffe6413b0e6137ca9bb268b338a6855170afc8a",
-					"f86b8e9a78d325890bb3fd3f575bbe755814eb7820e978e5bce5e45f6c55a2f8",
-					"4f5b83458a7eb6fea3b9639c644869a2a97924f9e7afa6077fec3899afe5cf58"
+					"cbbf15ba192743d421b3cb95fd59dc01ec8a4007a8502bb614039fe425c246cf",
+					"10f7415d0507c0160b96582982290024b39550293142e57caae48f4afaf4e93c",
+					"752fb4ff8e93af4bcf772ccff6a991e3454b33c54f71e3c9c4a3f5b9612d3495"
+				],
+				"actors": [
+					"elder",
+					"hero"
+				]
+			},
+			"briefing s7_1": {
+				"hashes": [
+					"843dc0f2795293f10a8465c4d21ef6545108c3d11e9f70053beb6351cb877760",
+					"40a1088758749d22a80c94efbcdfaca8e3a48c9be3669a56a8773414b742d6b0",
+					"944aeb4bbacad5ceadd35b2ddf09bd394c88dd3ee9afabbeeb4b560300501cd6"
+				],
+				"actors": [
+					"bgoblinc",
+					"elder",
+					"hero"
+				]
+			},
+			"briefing s7_4": {
+				"hashes": [
+					"5890c5ee0dee4cc8c375a8e2a238700365c1ea1cfc3311e1d2b6de614bbbaccf",
+					"1c9828ced4ec4efc9af0a6a1b581223ce0944bcce7cf809ed6b7fd37589eeea5",
+					"eca26c8116ec464fd135e315fff43ca83a3c0380cb45eabe1a2cfaa587e960f5"
 				],
 				"actors": [
 					"hero",
-					"smith"
+					"elder"
+				]
+			},
+			"briefing s8_2": {
+				"hashes": [
+					"eb7914ed9fc9026a8d356aaf37fa8656378014419d6db56171c2452d764de642",
+					"fc2d444fff0e58b590554c4267fccdf04a9dbfb66850fdb63958c8d4654dc484",
+					"4243039fd4f5f974f6c3fcea5338787c35365c5bb260d5cf17a7150af2431c42"
+				],
+				"actors": [
+					"hero",
+					"elder"
+				]
+			},
+			"briefing v5": {
+				"hashes": [
+					"e1ed8da820aabd1719bc0af367d0bfe3d0c62ec1c2725e29ae421e0b7ac8cb60",
+					"9c423793ed40f29ce48d5e1779c21fca1c410a41f1219f20f2591d5b36388fac",
+					"900919a37256b806691ce7a6de282366f30fcff8c462e32d1c5f3fcc81e1c465"
+				],
+				"actors": [
+					"hero",
+					"sheriff"
+				]
+			},
+			"quest q7g": {
+				"hashes": [
+					"fe7c190b3c40bc8f98ca696e3197f9a83b6777a442317bb06802ea7c70aba2fb",
+					"3290de4c6165ad7ab124c6bfe2306f49335558f8436e3ec9b7f8cbb0d32b404e",
+					"a21dae7acbe9787182466d4c393293b92c57e0ab61af0e99029707e00eaf6ad2"
+				],
+				"world": "quest q7g"
+			},
+			"quest q8g": {
+				"hashes": [
+					"ca176827a98186882dca15e5361aba5f7e99fb38d76fa4ae0ad85f6dd4be9a4b",
+					"2c6b9ec44fbc4ef0ee890aa44fbf5135edc30cf9b00ba4a2c1b3cddc9c950e69",
+					"684286da1049329d41e5935a1a108c3d9bd959b1a9cf10b1df03de305a2db1fb"
+				],
+				"world": "quest q8g"
+			},
+			"quest q9g": {
+				"hashes": [
+					"994b8f5d214e8898d9b9119f74886fddc7637e5a94b1727dcdbf20d581692f11",
+					"0b4a725b33d28b869cccd5185bcaaeb85dc5bc80af23a97d45fb38b9f600b2ed",
+					"b3931c006cf78fe05b7082f4cb099700ee68056c249dcfd0f3e7dcca528c8615"
+				],
+				"world": "quest q9g"
+			},
+			"quest q10g": {
+				"hashes": [
+					"240c67f7f88422107c9741e8712e539ecef155f3669bdc92f5aec6fdcfb9321d",
+					"05218a4167706d9d92dbbdc72300ed70e556b599f6ee6ec82ecbf81014113584",
+					"583dc8c626aff94925d5176d0c656a791988fade94ac4ac6fc1c6ae35fd8c5aa"
+				],
+				"world": "quest q10g"
+			},
+			"briefing z2": {
+				"hashes": [
+					"205fd057d31a5842cc554cd957abe153ab33cfcfe0d9cf3195adac39ae18a205",
+					"2428a68013fcb52a9f937cbd7e9c4cbcea32732762749ac441fcfcfc8ababcfc",
+					"80325b55e8bb92ececfebf25d82fbe05bff81aa3e04097e595ee44a30db36afe"
+				],
+				"actors": [
+					"witch",
+					"hero"
 				]
 			},
 			"briefing z11": {
@@ -5751,6 +13334,81 @@ const DATA := {
 					"hero"
 				]
 			},
+			"briefing s12": {
+				"hashes": [
+					"56fac9ffc312678eb43f25eeb809c2c899e765068f8e05690c264bb982dfcf86",
+					"39c024f317a809f64fcd9988b848ae7500768854cdeead25884113b59259f962",
+					"ea6acbd5a7819abb56d632c6353f7fa5bdbe1e34fc46cc8afb12aed8aa70c87d"
+				],
+				"actors": [
+					"hero",
+					"elder"
+				]
+			},
+			"briefing s12_1": {
+				"hashes": [
+					"8dfa74d2dbbd3203a722dd257279e2a0a9467e2dfa6e0ef757ac2cdf791a8ecd",
+					"a1ca716578b7f2268657668aa4ee2b7da1bca9dc7b6d0c38d13d16c394458276",
+					"3ff0e50574a51b24ef7d3af43f8d44dad3d844e5626cf519fc5a012f2517ce9f"
+				],
+				"actors": [
+					"hero",
+					"elder"
+				]
+			},
+			"quest q12g": {
+				"hashes": [
+					"cf2fb53cae5ced0afb6378489d276e3448b0cb6e906787e632473cc185299696",
+					"9304a3cd0dd662cd371f69416e5e8c043df9cc918f1fef70ec45c7dc4272bf16",
+					"7261c563cb5bb3c127fea06ea2e8507ab044a521cad55c959cd9c0222249813d"
+				],
+				"world": "quest q12g"
+			},
+			"briefing s12_4": {
+				"hashes": [
+					"2522362866a4704c91e05b349e28e489f2bc34a7272af11cabe69c65f431c756",
+					"dc5528a5dd21f84194bb23669b6f476dc4349a0fcfcb9b64edb0550060e24b2a",
+					"bb54390d54f641d34c6b62464a4bb4e496e0614e859a06cc5850968547ffc93d"
+				],
+				"actors": [
+					"elder",
+					"hero",
+					"sheriff"
+				]
+			},
+			"briefing s13_0": {
+				"hashes": [
+					"ff5f059c322c13daffc08889d07e46c604a9fb39bfcc980e0fe6b171f62acfe9",
+					"00e959a87990d053e886cbeae6418c7efead6b77aa5c68a32a369a60a81338eb",
+					"81de98ee5fd41680bd0562fa0b2f5eaba45bd9fc86fc37686076bda5a25f4ae9"
+				],
+				"actors": [
+					"hero",
+					"elder"
+				]
+			},
+			"briefing m13_3": {
+				"hashes": [
+					"3228994ae140fc7f9e1f50c5c643ac2559058f6771b6c32aab6ae42a3ed4ea3e",
+					"ab74966822b2c24bfa398e8b155cc18adeb533a6454c75550cf1c3e11d4d33a6",
+					"f7db2cc26e7092041a269804605c39e85f14f23f56304f2ab43a678b73cd8187"
+				],
+				"actors": [
+					"smith",
+					"hero"
+				]
+			},
+			"briefing z13_2": {
+				"hashes": [
+					"036666a1ebc8f8b2db21c49505a6c4c338873d7d37bd8cd4c68e8e77ef0ddf1c",
+					"069a95f946922041c038c7a3c8d4d30024fedb89638c5cab189df73a259e82c7",
+					"cec719e043571f2933ea13cfeeea8586413fa11702050cbd0d7f7789322153c6"
+				],
+				"actors": [
+					"witch",
+					"hero"
+				]
+			},
 			"briefing z14": {
 				"hashes": [
 					"d47e1661f5af0531ca293e2d7be9077ff03a3fca0e9665648bf2707e6c95c714",
@@ -5762,35 +13420,31 @@ const DATA := {
 					"hero"
 				]
 			},
-			"briefing z17": {
+			"quest q13ag": {
 				"hashes": [
-					"16dc99993a04b50145887c9002d4815963a68cc55f072f1db28e16fed73f278a",
-					"c1a8ec8b29dc6b273629b81d408bbf912f05c16256be603cbde1763fe50e93a8",
-					"6a2e32c921ac3e7821cb2c9fa384290376eacc480f504363c359d4e84589770a"
+					"c8c711ca01df8b2ca577dc682fa7e862309a48f8683ab4da98a131d22452f146",
+					"e9fb62e937fbddbd5ac4c3c6fb7f4da25649f190e35e89c8dae9a5960837d42f",
+					"d840991c0406500d6622d3241cf351caba5652a153dc5a62c7b094448531dc29"
 				],
-				"actors": [
-					"witch"
-				]
+				"world": "quest q13ag"
 			},
-			"briefing z38": {
+			"quest q14g": {
 				"hashes": [
-					"1b8fb0d4b989625a3e1aa2ebee057694adbf1c556f270a3b47575a2d6ef88694",
-					"4ac36c30f3f582266acb3ea76b0fc4f07846563cd5ed44c47f4b270e52bf707c",
-					"41562d2bbb89addb9608183de9ebf6031cc9d3281e8677aed45c5aa40e6f279b"
+					"a97c7cb4dff979f3cacbd9adb70c3325fd9781c5e2eafe849842c98f8362112a",
+					"70d9cbb04982fbd9e7dc4a1fccea82c5a0495537552d880c8d5c496b443b03d7",
+					"4b414592c12a9328f4c58264adbf227432057c11b25a8827243cbded45de720d"
+				],
+				"world": "quest q14g"
+			},
+			"briefing z13_1": {
+				"hashes": [
+					"0e2206930d9a221dfe4740cfdf4f8ea36cc460aa6aac51ba44a45b07ccb7e9b8",
+					"9c93f0c7bf45ed987b2a49b2880173ea5de90cf4c911a88025dcaf06a6c319a5",
+					"af78c17895f0859395bfd75f7f6583a643e640e31ce39dd1c426056f7d697350"
 				],
 				"actors": [
 					"witch",
-					"hero"
-				]
-			},
-			"briefing n8_3": {
-				"hashes": [
-					"97cbf4adc43756d682c1aaa9d0ce31dd91a7fb68456b796e8c425b410fd6ad0b",
-					"12a2b79d53c6b5eef1a838f138f51922724b34b77a6e4a356a98c196f7f8e7f0",
-					"14578acde612813b9b13158a5999ebc5e7583ce3dc1ce3ce7c61acc28c5d8270"
-				],
-				"actors": [
-					"witch",
+					"daughter",
 					"hero"
 				]
 			},
@@ -5806,43 +13460,89 @@ const DATA := {
 					"daughter"
 				]
 			},
-			"briefing sh40": {
+			"briefing m13_2": {
 				"hashes": [
-					"421404d289a75dbcada0ae5b5a7938d0635d13b5d599a077582c219a3db8ff54",
-					"9770402656e75ee8b32df54ae1e6bf2a620735cdddcd30e45958fe4e1f97e8fa",
-					"c2f6151dae357729ae94cf735294a7b9cfbec8627eed505e2efabc402ba6346f"
+					"1d035bd2ca78dd035495ba41d6a58b01a1de58b18d6a75b6578bc968fd7b28be",
+					"15d25eccddbbf60c14ec31e08f8ccc6b94928536f608134cd21ef3ebe7352784",
+					"1d5732b5e5dbcaba4ec376d2fa42c6923b98c763b703053c9de94961b8dfd2d7"
 				],
 				"actors": [
-					"orcc",
+					"hero",
+					"smith"
+				]
+			},
+			"briefing m15": {
+				"hashes": [
+					"b8ac383718d05ece33756812e337bbdb829d27a087e287a281fc94d2bea9f521",
+					"bafacbf582cdf5e5692ecb57ddc4b36582437798d44ffdb9bc13862968b493a2",
+					"94fb4b67e14a98dc53eccc030badd5474d00f8007407b7132252026e728eff1f"
+				],
+				"actors": [
+					"smith",
 					"hero"
 				]
 			},
-			"briefing sh41_1": {
+			"briefing z17": {
 				"hashes": [
-					"541e1404c9cc9b67d6a616065f710ba4a9a5cecdd603be3e7e0f0d287c335d3e",
-					"7a9263d85b02db9b5f941d06c733304bffd962c269e9cdcba5e3e57003475600",
-					"bc08bcd9774993f09288b21ce2ea48fa27af98a9c85e458d2957340be9a657ba"
+					"16dc99993a04b50145887c9002d4815963a68cc55f072f1db28e16fed73f278a",
+					"c1a8ec8b29dc6b273629b81d408bbf912f05c16256be603cbde1763fe50e93a8",
+					"6a2e32c921ac3e7821cb2c9fa384290376eacc480f504363c359d4e84589770a"
 				],
 				"actors": [
-					"orcc"
+					"witch"
 				]
 			},
-			"briefing v3_1": {
+			"briefing z15": {
 				"hashes": [
-					"83f1cd92b10b2b4899087523ac02b77dc779789151b9b222a3b87e4c6f271f63",
-					"304475f2f3baf76fd45d887599dfe118e3f83651cd1267e85464ab00becfd133",
-					"365ea6f90b55980871ae18ff990ee787a34d89374dc1331b88b2af67ab929de8"
+					"81d28a6dab6e8231f222528c6b64b6323515e22f3fc9ca9a7d5e129257ac3ca3",
+					"d24a57aa2713a8678cff2b9edfe6ef60daad46de73fcaf90eac2de120568a58c",
+					"cc46e205d3b737d4b9954b4fc3bb48d72dc3577130a0b1fe3e54d5422149c549"
 				],
 				"actors": [
-					"sheriff",
+					"witch",
 					"hero"
 				]
 			},
-			"briefing v5": {
+			"briefing z18": {
 				"hashes": [
-					"e1ed8da820aabd1719bc0af367d0bfe3d0c62ec1c2725e29ae421e0b7ac8cb60",
-					"9c423793ed40f29ce48d5e1779c21fca1c410a41f1219f20f2591d5b36388fac",
-					"900919a37256b806691ce7a6de282366f30fcff8c462e32d1c5f3fcc81e1c465"
+					"8bdc68ec8cf33f35aa5aeba9a5f7bd0f24760d829eeabb61441ed4553689d667",
+					"89cd98c7f611d830455ffc6d3503f5da03cc66110f16f737f4fa8ef00bb60542",
+					"aecd5649a425f513535da29b387538c8e1c874a04434374302fe5f4ec2b2b1b9"
+				],
+				"actors": [
+					"hero",
+					"daughter"
+				]
+			},
+			"quest q15ag": {
+				"hashes": [
+					"276d765108b2881efd269d78557e099fe1d3077c2c05437e525756873adbdc75",
+					"e1e6bd58fea565149846c21d8ca1361738cff7a416ef560c150ef7f075f7e1ee",
+					"d67757ff7b8d3c2d242a36791cfed98e6c4af12ae6f56b95f10e0c05fa9646e4"
+				],
+				"world": "quest q15ag"
+			},
+			"quest q15bg": {
+				"hashes": [
+					"4f1f7e1283b9b44f9fdc19c317b7eebe770aeba0f7a84f31740513b7cb35e46f",
+					"c2573e2ca9c234b2d9cfee45b8acb09bfc438e9325b33754eb2965c53c90242e",
+					"80f82439ae8d569cb8a893eff5ab047e192f9c854bf822d993e81c1caca25508"
+				],
+				"world": "quest q15bg"
+			},
+			"quest q18g": {
+				"hashes": [
+					"2131e0b3639c2308fa0787f29f230229b16ec2dc84e175265245418b98ac886a",
+					"accc286b276634ee8f1452c57ca6990cd96b3c0434bea54f7afa0973aa88c265",
+					"9fed919857f6a8a270b01764716643558986af00b15e15f94c5e6aa21b632bc4"
+				],
+				"world": "quest q18g"
+			},
+			"briefing v19": {
+				"hashes": [
+					"4e2494b088249f4af3fe657674547c9a92084b4cacc278d8e2480b7139e095bd",
+					"aa62ed8603f05964bf96dc9b80ff8e24702f781fabc633a1649caeee2558a34c",
+					"451ee14aae585ddf6fe680384dd1c9fdfdabbb07ca11fdb63c747da905f83363"
 				],
 				"actors": [
 					"hero",
@@ -5858,6 +13558,26 @@ const DATA := {
 				"actors": [
 					"hero",
 					"sheriff",
+					"elder"
+				]
+			},
+			"briefing m21": {
+				"hashes": [
+					"b041d3708c0df868c212cb1c5db823f3f4dcb99943ce5473366bdf50d457023e",
+					"2ac22f4c386e8e43eb68cdc0f1a79be32c7aabff5c5d7ec21207fe2d0c2621d2",
+					"69369ad0c2ed90394bea0a5f18d1e76336d35e0e81fa95313dc28b3fa6775011"
+				],
+				"actors": [
+					"smith"
+				]
+			},
+			"briefing s21": {
+				"hashes": [
+					"598aff078203426821785cc9e7c025320bb34aeeb84e53bd92220ce92f3c98fd",
+					"465a51a0e0716672cf9bee72dae73ea46532544eb430ad47c9572c9df36337d7",
+					"5af830b6b9ee1bc3b22d77bdefa51255dda1ed6c415ab5ffa247ce406c2f6c04"
+				],
+				"actors": [
 					"elder"
 				]
 			},
@@ -5883,72 +13603,29 @@ const DATA := {
 					"nsheriff"
 				]
 			},
-			"briefing nv27_1": {
+			"quest q19g": {
 				"hashes": [
-					"b3275925d17cb40231202ec8d1a2d6f74b2c80f418edcc815cf309897cbc6536",
-					"c55f8c675162147c3a057bbf203c96882bd3d9737041ef65743f50e588a40566",
-					"9dea8703e4f883456e0ddd8a09b1579fa3cfbed52773124dad5a7c22d1c2cea9"
+					"8ea8f1f2529edd23d06c4ef819d8159cf7ab496811903e0db8e518ebf74a687c",
+					"46efebf4109dd538254e45ee4c999bc6eaa06794e1f0cf91a33a465c9f24771b",
+					"1f947ae67e191e0294aec5002e368e26d44dd07ce36c35feeab71ccc5c846199"
 				],
-				"actors": [
-					"hero",
-					"nsheriff"
-				]
+				"world": "quest q19g"
 			},
-			"briefing m1": {
+			"quest q23g": {
 				"hashes": [
-					"f4b893d6e1c85413c9140c25dc9bbf10d63cf53dcf24797e04392cf4f7e69e92",
-					"60e1e471e2c8e8c25f545d3c23a972522c4cb9bf8a9d1afd400acc4cc1e62ead",
-					"f1f9e663695d01d48d82d90c96ba3cfe9ab5f0582a9d4363c618d5c6c3f57af7"
+					"3f0108e4c9e9217af426df684901ee8e9ea07b6bfe12ccb0186e632f0667b4e0",
+					"8f37e422e226b00fe1e6f412b71ff990786d0206be95cb208c678808f80628bc",
+					"432e5d46c311d5f6255b1bce960700d584de63eca98fbc983c63c64a675f80cb"
 				],
-				"actors": [
-					"smith",
-					"hero"
-				]
+				"world": "quest q23g"
 			},
-			"briefing m4": {
+			"quest q20g": {
 				"hashes": [
-					"9cbab29f84c881a4433c8a803301d246b716eac22badbca11ddd520a2003810f",
-					"c67569bb622b357909eeb5e1c6693544bfeecc077b35f792b15101f6b86e7cce",
-					"def45232746e6f1bda40a8fcc9ed59cea5d20d77bb523308326845c68b0151ed"
+					"454cf56ffc49491704fbf21ec848a8ba1da17f1631e084acfb482ee878b6d300",
+					"e73d3965d6afd7d0a89534b22426d0f954794c655912e9cdde86f438651062c4",
+					"bcf2cc5ce4bc18217a0b44ae542d2e8dbab8f8fcbddbe535edffade3be191242"
 				],
-				"actors": [
-					"hero",
-					"smith"
-				]
-			},
-			"briefing m5_1": {
-				"hashes": [
-					"582818257d67fa6ffc095f16992e010f4b2fc28c8df526f4d80ff8d5bf84d72d",
-					"2ae2c7b19b26061c6ec02ef3f973fad1425a017f0ecb8cb9f08b550268cbafe9",
-					"cdffef899264fa3b6b9bc524eb87a93adfe9222b9e84a3603aa05898d8f9ec5d"
-				],
-				"actors": [
-					"hero",
-					"smith"
-				]
-			},
-			"briefing s7_1": {
-				"hashes": [
-					"843dc0f2795293f10a8465c4d21ef6545108c3d11e9f70053beb6351cb877760",
-					"40a1088758749d22a80c94efbcdfaca8e3a48c9be3669a56a8773414b742d6b0",
-					"944aeb4bbacad5ceadd35b2ddf09bd394c88dd3ee9afabbeeb4b560300501cd6"
-				],
-				"actors": [
-					"bgoblinc",
-					"elder",
-					"hero"
-				]
-			},
-			"briefing gogo1": {
-				"hashes": [
-					"74a7b4a9277f69f5e0b70bb8d3c45ae1cea363e1a02760abbc980c6878d6f4f6",
-					"e20273d5de9d8fbfa8235d927170d2af695fe343893d2779be2dba62ca0620b2",
-					"9c9cda0334624fc0161600047a642c370b46e127e8a648e5e0ca7b4e23f69472"
-				],
-				"actors": [
-					"hero",
-					"bgoblinc"
-				]
+				"world": "quest q20g"
 			},
 			"briefing dr20": {
 				"hashes": [
@@ -5961,72 +13638,139 @@ const DATA := {
 					"skd"
 				]
 			},
-			"briefing ha29_2": {
+			"quest q22g": {
 				"hashes": [
-					"219dc4784c5a1b838114d1b39e089b7f4c1badf74f57c01d4613b41a03c5e85c",
-					"d41244f204645364cc47e50650c22460ce13b1a7a42de4cea17270b3985b4ef5",
-					"2678b9a21ee7ec84fd5ef04f090384f809b7838ada985f49628628be2e721db6"
+					"7dfe49dbd98e695ce2769c32ed78640402fc7b3143dc78ad27face6a5b516a38",
+					"be8a4741d9a379b4e800907e855571ce950a8a96e9b1d2e0eaf64bcfe2be9248",
+					"72e58641a5ca6220a06804eff50e12cc358c228ca3085bcfc89e056feadee089"
+				],
+				"world": "quest q22g"
+			},
+			"briefing dr22": {
+				"hashes": [
+					"1aade00bed2949019cb30eb915ac2e48c325b173328a80d65b2e4fb258698284",
+					"d8ea5a874b61ee9b935f3131ed93e8ecbc3b0742a086acb5c8777daa61ead173",
+					"fc5d80ff559cb38f7c2c67fa1baeb53e12a4449750844e79e3978a847971aaff"
 				],
 				"actors": [
-					"oliz",
+					"skd",
 					"hero"
 				]
 			},
-			"briefing ha29_3": {
+			"briefing dr22_1": {
 				"hashes": [
-					"607fa69b4a13bcca0ef785cc0b63510bb3ad68b0c09f1e412a10f7681f261ac9",
-					"cfc19a07e0c61645e49906201805c7f72504b595041f666a7bac2f33ee975f7d",
-					"0fd7c31f70d0577e6c51e77fdf00ac67748fa92175f5882c8150f049bfb7f2e7"
+					"260e22a3d0c809945e10b201cda3f7c33916fa78834f8c28bf99e348fff7d799",
+					"27dffa3fe29745112c8f9583c389b874614d5c234d1e35343cf2b7e174e8413a",
+					"95932c85c7e9a672023c01f958897b67867d40749cc6d94e505cd0ffc365c5f3"
 				],
 				"actors": [
-					"oliz",
+					"skd",
 					"hero"
 				]
 			},
-			"briefing l30": {
+			"briefing s21_1": {
 				"hashes": [
-					"8b1f4af47d6cdc06c93db76777e087eb4e9fde13ff6c3b19af51edd688aad23b",
-					"3113643f8b11c6ce2157eae31c14aa0dfdaef73e6e2bcc8e9766428814530a5d",
-					"f3d02361eeb7ed2e1f0d1a9745f4639d4e817a3267d3d19bbb305e6b638a69e0"
+					"e688f8a621bc4fc3960c1d151034e6bb63692cf30a8ab8397fc348871822c4e7",
+					"7c6011d2e36185fabf5b2cfb4eeaba7e83478fd0d47e53fca2119fb903b7d35c",
+					"ea79f3bf3d406e06eb0641f2268e1c361d8c87ded641b69ab827b0db1e6e65c9"
 				],
 				"actors": [
-					"oliz",
-					"hero"
+					"elder"
 				]
 			},
-			"briefing l35": {
+			"briefing s24": {
 				"hashes": [
-					"5a4b269f2c9ce4c819a7b7dc4710557474743224b83670a0009aeb876896d6a9",
-					"3e47cd52fccd5694dfd2c4a61414ee88da7a6127004d9f0fdd754e45aae86e3b",
-					"2a08918d744280fc7a7acdab88abe80d686cb37005d9065d078877cc04c2ab7d"
-				],
-				"actors": [
-					"oliz",
-					"hero"
-				]
-			},
-			"briefing sh41": {
-				"hashes": [
-					"c10bc50c774fcd1e2999d6759878cf0e8e3c923ae7205016e769bee893eeca8f",
-					"e5a10af92d6caece8e00608f2d3eddd3b62d83f1cc72d35090c19e761e19ff32",
-					"1f2c254a6c40b0fd9f93cd8358c2dd36a15df240fe262f1c9b28ccea0012757d"
+					"8478eb6cc85779d1a24158dc6e109fda6d2c0a5bc217b17fdece4a016d974093",
+					"1d8c9f508df5e4391690fa39ebd5cda9aebab4143c1e08b5130219754dab9616",
+					"e332114f27de2e16e778e68de8aaa8ce3879ffb3adb88ebafd61e1af55eddd6a"
 				],
 				"actors": [
 					"hero",
-					"orcc"
+					"elder"
 				]
 			},
-			"briefing n8_4": {
+			"briefing m24": {
 				"hashes": [
-					"67c33722d4f54ab2e2aae392c42822d3ca38d44cfc07b5fca1eda42a49c669f1",
-					"89c0d0d0efd3b266aad3212f46829e72011ac3805aaddcfb59dcc05c03d7dd38",
-					"c6275be6ec065bd6ba0fc670ad9b9a01fc60fca98a21cf5e6cda23186a3199bf"
+					"aa60002a4d36833400e725a7351fbde3cc33bc5b236dee2f546a6a2bdc0213b4",
+					"952c534d80a788b4581e3dd5a040cf643f7c56ca3b0569b8e6c93750b0788238",
+					"caa6b7ec73d504e5be0cf9d41f652ec640e69e5c5efdbb4d13693bc990fb1a46"
 				],
 				"actors": [
-					"orcc",
-					"merc4",
+					"hero",
+					"smith"
+				]
+			},
+			"briefing z24_1": {
+				"hashes": [
+					"d5b8445a953b03ce3228231506fba3362a4091f469691978957086934c6c8340",
+					"7c3fc599c8b3db7a4884e37b6b9b823401fea63ab5b819fb5cb1f31fc03354d0",
+					"1c8e45878177f807c2f4aca26091567628eb81ea278fc821e761dd570bd33bf7"
+				],
+				"actors": [
+					"witch",
 					"hero"
 				]
+			},
+			"quest q25g": {
+				"hashes": [
+					"2c7f89354284c7bdeb0b5dcf64a32fd13b8f35a7b06e66abbe8a1ee4f0436731",
+					"7152acbf97625fc7ef7e06105087a9632c79a96121184422504ee32a25ba64a4",
+					"17ac67e7555b3d99f60ab4f84d7cb423ffd8698d610c3cd01de4ad62970a100b"
+				],
+				"world": "quest q25g"
+			},
+			"briefing s25_1": {
+				"hashes": [
+					"1b2e933bf12460611b2aa9067a58df9799a58eb6385aa7679f7621f548e62009",
+					"beaf96c44076ceeaf3b07349692fd30b1845c74d16909455dc1cf66ec77a5d58",
+					"1653245afed697e92d04cd952c3f7168a529844ad45cb849a1ee24be2fb2ed5c"
+				],
+				"actors": [
+					"hero",
+					"elder",
+					"nsheriff"
+				]
+			},
+			"briefing s25_3": {
+				"hashes": [
+					"6f616b06efe3f7445630f762dbb6edef01376b8234f041a94240f81c7c06c781",
+					"fd2a2f7453999210c9056659d298ab939ed3254f726b52236065f4b4ac61cbf0",
+					"80a1b534dd413f4071b66e6755ae2efbbf9f868c27db800416a25da1db28a833"
+				],
+				"actors": [
+					"hero",
+					"elder"
+				]
+			},
+			"briefing nv27_1": {
+				"hashes": [
+					"b3275925d17cb40231202ec8d1a2d6f74b2c80f418edcc815cf309897cbc6536",
+					"c55f8c675162147c3a057bbf203c96882bd3d9737041ef65743f50e588a40566",
+					"9dea8703e4f883456e0ddd8a09b1579fa3cfbed52773124dad5a7c22d1c2cea9"
+				],
+				"actors": [
+					"hero",
+					"nsheriff"
+				]
+			},
+			"briefing z25": {
+				"hashes": [
+					"57f1d0d2cff264989f9fc725d912d61e5e7b7145f34191ac954e80cb307e14aa",
+					"efc84b25d99cf4ea23e3209071d3b0f37124662d5ac7177f3cd9f11284d0758f",
+					"320f238f36b508a4d8e437d0be48ec7c4bc5f030229992a8b5ab9323bd0bf4cb"
+				],
+				"actors": [
+					"witch",
+					"hero"
+				]
+			},
+			"quest q26g": {
+				"hashes": [
+					"019d5adb4372abfc3aa68ff111893071a48d3477552341404789b100dc33e51c",
+					"624229cc50a4ba1602962d9ae345416444486dade2d46884a00653f0f85e0735",
+					"8961ed27383695fcfcf2b0392b15a9856c6e4c9aedcd7800a625ee8ef9bcc15f"
+				],
+				"world": "quest q26g"
 			},
 			"briefing z27": {
 				"hashes": [
@@ -6062,17 +13806,198 @@ const DATA := {
 					"hero"
 				]
 			},
-			"briefing r72": {
+			"briefing ha29_2": {
 				"hashes": [
-					"b0e32953e9034d1566e655aa0557a4ebd82af4d83faa83a361e5adedfeb9b572",
-					"d0139d36999ea926d84da8ed6b6fd9b3ad0e211c4e2667a54e9bd61db568a634",
-					"12d17b52c410c1f5289b756315f8fb4fcfc12948e71baedf0de20a65fe305ee2"
+					"219dc4784c5a1b838114d1b39e089b7f4c1badf74f57c01d4613b41a03c5e85c",
+					"d41244f204645364cc47e50650c22460ce13b1a7a42de4cea17270b3985b4ef5",
+					"2678b9a21ee7ec84fd5ef04f090384f809b7838ada985f49628628be2e721db6"
+				],
+				"actors": [
+					"oliz",
+					"hero"
+				]
+			},
+			"briefing ha29_3": {
+				"hashes": [
+					"607fa69b4a13bcca0ef785cc0b63510bb3ad68b0c09f1e412a10f7681f261ac9",
+					"cfc19a07e0c61645e49906201805c7f72504b595041f666a7bac2f33ee975f7d",
+					"0fd7c31f70d0577e6c51e77fdf00ac67748fa92175f5882c8150f049bfb7f2e7"
+				],
+				"actors": [
+					"oliz",
+					"hero"
+				]
+			},
+			"briefing l30": {
+				"hashes": [
+					"8b1f4af47d6cdc06c93db76777e087eb4e9fde13ff6c3b19af51edd688aad23b",
+					"3113643f8b11c6ce2157eae31c14aa0dfdaef73e6e2bcc8e9766428814530a5d",
+					"f3d02361eeb7ed2e1f0d1a9745f4639d4e817a3267d3d19bbb305e6b638a69e0"
+				],
+				"actors": [
+					"oliz",
+					"hero"
+				]
+			},
+			"quest q34g": {
+				"hashes": [
+					"51ec8a6535a41dfbc3502ae8b4a1b5c542557dce51aeae2c32c8c1693f8b0cbc",
+					"53288562e4e4cc82fde666ff459b8814540a4a2559feb9db9daf7cfc4dcf4eda",
+					"5c0eb3c4c35d582381f94d0d239f8f36c6774648f0162034ac2e077ee231b678"
+				],
+				"world": "quest q34g"
+			},
+			"briefing l34": {
+				"hashes": [
+					"bf841665dea259dad96bf39da4e7511878124e8b8e6061f3866a081157ae8a7a",
+					"b758a09ed40ab5f3d3b6ed840b8b96a45874d1b75e1e03166030b8be9f4f7213",
+					"20cae171ec86b7a6ccb0240c3cc6d3fe7444c312c1bb1dcc478cc8d3936bc754"
+				],
+				"actors": [
+					"hero",
+					"oliz"
+				]
+			},
+			"briefing z35": {
+				"hashes": [
+					"e674ec0c65ee51670525439cdfa33b4bd2f864b67c54607c57cfc24d2f14ea30",
+					"b4f92af1c480efa18078ecbd06cd3f79a59adc71ee72925c65da83503d8904d0",
+					"64308b66a76621165b897815be0a4d2118772064983cf96acae1fb4c1c0cf7b9"
+				],
+				"actors": [
+					"witch",
+					"hero"
+				]
+			},
+			"quest q36g": {
+				"hashes": [
+					"a034eba29ae03a56b444a06ec29a2df76e0ed77d048b912d4dc35a43aa3e7676",
+					"be01f91ab156796f3f7daf8318ffa41ddb2087290d79421343594a210e4aa164",
+					"4eb350f1992dabefd7e9235faa40c113fd845c516e243f7be3f9198424a445b1"
+				],
+				"world": "quest q36g"
+			},
+			"briefing r36": {
+				"hashes": [
+					"e773aaa65aab4c8eb003c172c7a6f06114b5798d4e69468ea1f1d80b5247db87",
+					"1ecf997429ef4ce668c969affc5d9616746dac6d4892cf39d7ed82b334f29c29",
+					"17b6575f6224e2d7f0ff5e02cf9e3eb2650d2caad5170a3f190808b3e33e6d7a"
 				],
 				"actors": [
 					"rick",
-					"deva",
 					"hero"
 				]
+			},
+			"briefing r36_3": {
+				"hashes": [
+					"c504dcb34f4c12c36d087b43aa35afd1c76a4de37acfe2f4dbcb1acc9019c6bf",
+					"c5b6f353b418eac3f73bcfaaeb6fc88f662ecdf2876e244fc85d159604d7dfc6",
+					"a8663446881398a6995f75411b9523f32bdf2da0750bdafb7a2423a1e09a262b"
+				],
+				"actors": [
+					"rick"
+				]
+			},
+			"briefing r36_4": {
+				"hashes": [
+					"2dbaecd9b52eac26f8c6e07892ac17f475bc1caef7b30d5fe99f81685dc2c30b",
+					"d4c909393973793d6565657fe620850a272138e81acf608f75e0239d0d386cfc",
+					"6e5ced9cdb428c3e5c9b1f522acc4ecdd6930b9cf173f423a7871c8c4a076aa3"
+				],
+				"actors": [
+					"hero",
+					"rick"
+				]
+			},
+			"briefing z38": {
+				"hashes": [
+					"1b8fb0d4b989625a3e1aa2ebee057694adbf1c556f270a3b47575a2d6ef88694",
+					"4ac36c30f3f582266acb3ea76b0fc4f07846563cd5ed44c47f4b270e52bf707c",
+					"41562d2bbb89addb9608183de9ebf6031cc9d3281e8677aed45c5aa40e6f279b"
+				],
+				"actors": [
+					"witch",
+					"hero"
+				]
+			},
+			"briefing z39": {
+				"hashes": [
+					"33bfb3c13a3310ef9f6eeca2fd43db037634d1d61bb45c11cbfd198d5386370c",
+					"9958ef5bec9c62592a018a2ff8219d542a3ef7269fef8940fe9085c2c6faf8f8",
+					"f74fdc0e0a32f10f8dea771dcc77ea105821aa5c6904eff00f3c43133fdce930"
+				],
+				"actors": [
+					"hero",
+					"witch"
+				]
+			},
+			"briefing sh40": {
+				"hashes": [
+					"421404d289a75dbcada0ae5b5a7938d0635d13b5d599a077582c219a3db8ff54",
+					"9770402656e75ee8b32df54ae1e6bf2a620735cdddcd30e45958fe4e1f97e8fa",
+					"c2f6151dae357729ae94cf735294a7b9cfbec8627eed505e2efabc402ba6346f"
+				],
+				"actors": [
+					"orcc",
+					"hero"
+				]
+			},
+			"briefing sh41": {
+				"hashes": [
+					"c10bc50c774fcd1e2999d6759878cf0e8e3c923ae7205016e769bee893eeca8f",
+					"e5a10af92d6caece8e00608f2d3eddd3b62d83f1cc72d35090c19e761e19ff32",
+					"1f2c254a6c40b0fd9f93cd8358c2dd36a15df240fe262f1c9b28ccea0012757d"
+				],
+				"actors": [
+					"hero",
+					"orcc"
+				]
+			},
+			"briefing sh41_1": {
+				"hashes": [
+					"541e1404c9cc9b67d6a616065f710ba4a9a5cecdd603be3e7e0f0d287c335d3e",
+					"7a9263d85b02db9b5f941d06c733304bffd962c269e9cdcba5e3e57003475600",
+					"bc08bcd9774993f09288b21ce2ea48fa27af98a9c85e458d2957340be9a657ba"
+				],
+				"actors": [
+					"orcc"
+				]
+			},
+			"briefing z41_1": {
+				"hashes": [
+					"09b444bf4d147996138993cc2b7e26f546f7645598b4d4652b56b317d7fd7aaa",
+					"2d222d50b07cbd518b33325c34da1548541013fdc87010eb53947d32cb42fd83",
+					"46ad70adb71b67b16a7dcee681976c7557b99df68331d01131ba10b6e361088f"
+				],
+				"actors": [
+					"witch",
+					"daughter",
+					"hero"
+				]
+			},
+			"quest q39g": {
+				"hashes": [
+					"832856687d66c792eaccf5ef5111c485b1a5f52e4c0efe50ee878d36c8651165",
+					"4167113bab8574250949207d9a17a799f431b2cf8647bad6f5aa90fe7e4eeb50",
+					"fad5a844daedd3634647b649d3b876fcbf965411d71f826eba44823785a96d61"
+				],
+				"world": "quest q39g"
+			},
+			"quest q41g": {
+				"hashes": [
+					"1846e3e9a3dfb22513855247f3a83724f3d07959928ef16cf6cd7ac4e95d9b24",
+					"fba5c8756463634386950cbdc1d12dab2bbb8139b139945d4ff79ff732d46eeb",
+					"5e8dec2bc43b019a79c57ff4c0e27af1e68e2e4fb42ca05be1e081ef3357d3c4"
+				],
+				"world": "quest q41g"
+			},
+			"quest q42k": {
+				"hashes": [
+					"28570b14250a3dfa6a437ae71ddc9e6c0a41eefc818417caf6cafe220565431f",
+					"16db6458ec2862aac40325230918dc85162ef569eb63febbf3fd286db4a9ab66",
+					"33f41c951bf684d231a814dea62285b38f6de9dc25e51466165512e2d640d45a"
+				],
+				"world": "quest q42k"
 			},
 			"briefing k42": {
 				"hashes": [
@@ -6085,22 +14010,54 @@ const DATA := {
 					"kapitan"
 				]
 			},
-			"briefing k43": {
+			"briefing k42_1": {
 				"hashes": [
-					"cb0d9426a0d12785f594eb89c386a2ffc508ee43a43ccc908058e2503afd52d1",
-					"537a099a9bf1845ec411e239d49f5af1975b8a33d8b2eb3673dc13d62ed15f43",
-					"17b3ee2efa7be53958a2fafa6aa1386f2b75bf9bd947ea2025b21e259384b9a3"
+					"06a3841925198bcc0ee90bb6e4e49130e8a298e2ec9169cad7c5886b5285d96c",
+					"f7486915ee8aab70749a740bf16f399c5b73a0c56142f8f32668a10ade83f2a1",
+					"4b896a6bcd7fbc61141ae4399a635c78feb953ca241b464e0170b53eee5d2a0f"
 				],
 				"actors": [
 					"hero",
 					"kapitan"
 				]
 			},
-			"briefing k51": {
+			"briefing g42": {
 				"hashes": [
-					"c9bb616c2eae2a49d7b9193f063d203d1b170ee7645ef7bd9c9db7c7a8237af5",
-					"685a662e4d0b3f70672bc588de07362060c7c760aa540c4bfc49adaa57992efd",
-					"8cc24a7994074318c5ebf2d99110083cf7ee1546c35090b4e0d70e8cff475ef5"
+					"42e405e970542c6b5d20e135f84a3115ba3fc589614bbf63c2766b066b1f5b86",
+					"7ae932d4c66216c8cea89437230a243ee765acc17878e3fa6b78754acea21f44",
+					"e192a3e39f6542147cd387109f5d819dca14b1f48b297cbcab3dcae7710be7e2"
+				],
+				"actors": [
+					"hero",
+					"huber"
+				]
+			},
+			"briefing mg42": {
+				"hashes": [
+					"215d9fb4639a3d9f540ce4e867fd6f855228591f6ff3fde11d88672376e7be4b",
+					"96cbe16fd33885e3a4cb96ca2d421d9dc908cc4bfd6ed09bc6c5b4e78fa75c2d",
+					"07085bedde9b0096dbc7e481c1dc3231e17b485dc6c5e64fa5c97f9ebc1cb635"
+				],
+				"actors": [
+					"magess"
+				]
+			},
+			"briefing t42": {
+				"hashes": [
+					"d315a79d649aa3413261c56f4bde318913fe757a68e2baff2f732a9ab6312f9d",
+					"5cf8949b8a302e2b0c045c86fa196ee19bae8ea2bbf0c8e95a583dab1ff48d25",
+					"cd2c759d80441ad93d2e4c706ea7af94a1a5e0d4564355337d85093d4a0a5066"
+				],
+				"actors": [
+					"trapper",
+					"hero"
+				]
+			},
+			"briefing k43": {
+				"hashes": [
+					"cb0d9426a0d12785f594eb89c386a2ffc508ee43a43ccc908058e2503afd52d1",
+					"537a099a9bf1845ec411e239d49f5af1975b8a33d8b2eb3673dc13d62ed15f43",
+					"17b3ee2efa7be53958a2fafa6aa1386f2b75bf9bd947ea2025b21e259384b9a3"
 				],
 				"actors": [
 					"hero",
@@ -6119,28 +14076,6 @@ const DATA := {
 					"kapitan"
 				]
 			},
-			"briefing g53": {
-				"hashes": [
-					"b08ee63a0f1a1a8bb2b03bb7d1c66206cdffd0f3c5d07381814b03bfade69b66",
-					"baa7a5eaf419f09ff2994a482c40d451adfd75c88cc9bfef9214ced194675f48",
-					"de65d00a7f6342a9aab79b8702661d73f6358de9dc0a17ddb5033211679d4783"
-				],
-				"actors": [
-					"huber",
-					"hero"
-				]
-			},
-			"briefing t42": {
-				"hashes": [
-					"d315a79d649aa3413261c56f4bde318913fe757a68e2baff2f732a9ab6312f9d",
-					"5cf8949b8a302e2b0c045c86fa196ee19bae8ea2bbf0c8e95a583dab1ff48d25",
-					"cd2c759d80441ad93d2e4c706ea7af94a1a5e0d4564355337d85093d4a0a5066"
-				],
-				"actors": [
-					"trapper",
-					"hero"
-				]
-			},
 			"briefing t43": {
 				"hashes": [
 					"9b95c6ee18e90a65ea55d9216d79bbb611ddf8dd78b75f253a66c98577034c8e",
@@ -6150,115 +14085,6 @@ const DATA := {
 				"actors": [
 					"hero",
 					"trapper"
-				]
-			},
-			"briefing t43_1": {
-				"hashes": [
-					"4a26ea6c7685630428e613f7a68089bbed73430d73fd8fffec42bd1481fe78aa",
-					"fccab175be249b41aeaf204b3f710e9d33132ee64d1142594935718085bc4a46",
-					"a45206fc0e9c14cb3c7821addbc17d90537a61ff120204f383a6c2d13fe1f4e2"
-				],
-				"actors": [
-					"trapper",
-					"hero"
-				]
-			},
-			"briefing t44": {
-				"hashes": [
-					"4a0a7fa6f04e8a4bb3814fbcca9a338e432e870f65da7cb2b6ee3876afb7414b",
-					"c1298488da2221c6c6c5a29ab5e3fdaf80bc525cd655e78c619acbea8376bdda",
-					"7307a25ebde3f2b2c21cefc310b4fc6e040678452df60b06913fd6aeadecca40"
-				],
-				"actors": [
-					"trapper",
-					"hero"
-				]
-			},
-			"briefing tr42": {
-				"hashes": [
-					"bd033439fbdb37df28535c0914a0ccfb0056465aa2ef9c5f0237a5e7bc49dcb9",
-					"ef0a71f70e8485b09dc8cd099aa09ffe04ba9973fecc4d92254dc5ae0a2100c8",
-					"774300312fcb29b57ff8881dee2ce4f342bbafbd285fc33d8343a55e317b28de"
-				],
-				"actors": [
-					"shopper",
-					"hero"
-				]
-			},
-			"briefing tr48": {
-				"hashes": [
-					"58117c886b21157c782f2ae549a4445e1c24ac80c8ebe57bb55c17712cfd106c",
-					"a570fc91a8aacfc26a1832d7ca91198dd6a9fc9edc44f6f2bc5f8c80a3580de4",
-					"0ff50ac0da0c3fc55096e273963544311c768f2b32d80fe341e60e5145de7743"
-				],
-				"actors": [
-					"shopper",
-					"hero"
-				]
-			},
-			"briefing tr49": {
-				"hashes": [
-					"2243edb594d2c42a62261efea83711d1f5f32a44df2ec4ea187854c6c5df2a11",
-					"50a06b99346fc7d9f29a718bc120dbdd04bc5bb21ab8d25b4bd22dad9f64ca10",
-					"6eec61fa89878d75aa9f814a8cb9600ebd5dab3ab2752a26701da8db066b7edb"
-				],
-				"actors": [
-					"shopper",
-					"vor",
-					"hero"
-				]
-			},
-			"briefing tr52": {
-				"hashes": [
-					"d6345dd916a8de6e7b8a865011cd04a4d65535b53c831da175f0b1f79b2b0d1f",
-					"bc39ddb378be501359a9871aa7f6a39d3b5509b4bb9f5a52f0916bbd9f9f70f1",
-					"1524d98e079e39faf817633e751dc8880ec6cf881544c39289f7d06f34b85219"
-				],
-				"actors": [
-					"shopper",
-					"hero"
-				]
-			},
-			"briefing t52": {
-				"hashes": [
-					"7dc6dcb72c48d4c4a0d82cea7135fda2e78f24d59197d4251f2caad2375d5671",
-					"bd0cc231107a67369a59c4b9a61a6b47e39b271c81789847664d9ef94ccf1d00",
-					"65de3357cd56bd6626c55d5c7459c59ba730d8b5cb389440a761135135370d8b"
-				],
-				"actors": [
-					"hero",
-					"trapper"
-				]
-			},
-			"briefing mg42": {
-				"hashes": [
-					"215d9fb4639a3d9f540ce4e867fd6f855228591f6ff3fde11d88672376e7be4b",
-					"96cbe16fd33885e3a4cb96ca2d421d9dc908cc4bfd6ed09bc6c5b4e78fa75c2d",
-					"07085bedde9b0096dbc7e481c1dc3231e17b485dc6c5e64fa5c97f9ebc1cb635"
-				],
-				"actors": [
-					"magess"
-				]
-			},
-			"briefing mg43_1": {
-				"hashes": [
-					"dd96044a63a8517749368498327c7c87590cda662a545cad497a2372a1154cf6",
-					"ced83ac655080ce3cc07caa7b990b8de3670a49ec6975131e6b0a9036d325208",
-					"5fd6e4ae046a4a31e5308d769cb6c8247d539ee8ea46065cae13f369601cfcb5"
-				],
-				"actors": [
-					"magess"
-				]
-			},
-			"briefing yc50": {
-				"hashes": [
-					"c81184897a359d75610a57a61906547f0f4fb79cdb3d256021a6c31d15ad8519",
-					"8b3f6c5c3e726611ebc9f40970e437c2f31e64fe3895d1c1a533bf5f095f21f2",
-					"a19ec0d4efbc3d0304de9f9fb016e11cdc4bf2c424a212031c8a8842f0aee38f"
-				],
-				"actors": [
-					"ycf",
-					"hero"
 				]
 			},
 			"briefing yc45": {
@@ -6294,6 +14120,39 @@ const DATA := {
 					"ycf"
 				]
 			},
+			"briefing yc47_1": {
+				"hashes": [
+					"d2ae552edd3ae267fb61cb23b22bdff5e777d375f61ef34fdf555432459b9d67",
+					"4e3e1dad0295eda3f13ee980512d507225a89352ab47dbfc6db119ad7649bcf2",
+					"cf4459375f4652f8b173ecfc9acc803060e483bccda6fdd62542ddf9563e266b"
+				],
+				"actors": [
+					"hero",
+					"ycf"
+				]
+			},
+			"briefing t43_1": {
+				"hashes": [
+					"4a26ea6c7685630428e613f7a68089bbed73430d73fd8fffec42bd1481fe78aa",
+					"fccab175be249b41aeaf204b3f710e9d33132ee64d1142594935718085bc4a46",
+					"a45206fc0e9c14cb3c7821addbc17d90537a61ff120204f383a6c2d13fe1f4e2"
+				],
+				"actors": [
+					"trapper",
+					"hero"
+				]
+			},
+			"briefing t44": {
+				"hashes": [
+					"4a0a7fa6f04e8a4bb3814fbcca9a338e432e870f65da7cb2b6ee3876afb7414b",
+					"c1298488da2221c6c6c5a29ab5e3fdaf80bc525cd655e78c619acbea8376bdda",
+					"7307a25ebde3f2b2c21cefc310b4fc6e040678452df60b06913fd6aeadecca40"
+				],
+				"actors": [
+					"trapper",
+					"hero"
+				]
+			},
 			"briefing mthief1": {
 				"hashes": [
 					"d4f7b9868cd3a160a38d870c30ccbef682ce8dde74e24b6b63a8e011ac728307",
@@ -6303,6 +14162,178 @@ const DATA := {
 				"actors": [
 					"hero",
 					"mthief"
+				]
+			},
+			"briefing tr48": {
+				"hashes": [
+					"58117c886b21157c782f2ae549a4445e1c24ac80c8ebe57bb55c17712cfd106c",
+					"a570fc91a8aacfc26a1832d7ca91198dd6a9fc9edc44f6f2bc5f8c80a3580de4",
+					"0ff50ac0da0c3fc55096e273963544311c768f2b32d80fe341e60e5145de7743"
+				],
+				"actors": [
+					"shopper",
+					"hero"
+				]
+			},
+			"briefing tr49": {
+				"hashes": [
+					"2243edb594d2c42a62261efea83711d1f5f32a44df2ec4ea187854c6c5df2a11",
+					"50a06b99346fc7d9f29a718bc120dbdd04bc5bb21ab8d25b4bd22dad9f64ca10",
+					"6eec61fa89878d75aa9f814a8cb9600ebd5dab3ab2752a26701da8db066b7edb"
+				],
+				"actors": [
+					"shopper",
+					"vor",
+					"hero"
+				]
+			},
+			"briefing tr49_1": {
+				"hashes": [
+					"9f433df1b7b374f37c93fa6a4647cc0fd355a63ea32113a053cf1242fd65d2d7",
+					"7dea81b12e16ad88c753bf1e19e429b91f410d5b1219d56ce4c3288b1b12b3f2",
+					"d85d0099405ffdf85989e7f4ab1354c03bcf3b09c2cc356afd042a9da32024fd"
+				],
+				"actors": [
+					"shopper",
+					"vor",
+					"hero"
+				]
+			},
+			"briefing yc50": {
+				"hashes": [
+					"c81184897a359d75610a57a61906547f0f4fb79cdb3d256021a6c31d15ad8519",
+					"8b3f6c5c3e726611ebc9f40970e437c2f31e64fe3895d1c1a533bf5f095f21f2",
+					"a19ec0d4efbc3d0304de9f9fb016e11cdc4bf2c424a212031c8a8842f0aee38f"
+				],
+				"actors": [
+					"ycf",
+					"hero"
+				]
+			},
+			"briefing mg43_1": {
+				"hashes": [
+					"dd96044a63a8517749368498327c7c87590cda662a545cad497a2372a1154cf6",
+					"ced83ac655080ce3cc07caa7b990b8de3670a49ec6975131e6b0a9036d325208",
+					"5fd6e4ae046a4a31e5308d769cb6c8247d539ee8ea46065cae13f369601cfcb5"
+				],
+				"actors": [
+					"magess"
+				]
+			},
+			"briefing mg50": {
+				"hashes": [
+					"fb0cbb3723eaa6b95cef37675a0329141d93e1e657dcdd77d0d94d78cc911835",
+					"4ba7adfcec78b34be1ab987191d2ac7dfcb4054a0738568dd6a7058813a9b7d2",
+					"215404388a706a92430ed1bf4825b3e432bc3aec98b7968d5cd2d95795e38b78"
+				],
+				"actors": [
+					"magess",
+					"hero"
+				]
+			},
+			"briefing k51": {
+				"hashes": [
+					"c9bb616c2eae2a49d7b9193f063d203d1b170ee7645ef7bd9c9db7c7a8237af5",
+					"685a662e4d0b3f70672bc588de07362060c7c760aa540c4bfc49adaa57992efd",
+					"8cc24a7994074318c5ebf2d99110083cf7ee1546c35090b4e0d70e8cff475ef5"
+				],
+				"actors": [
+					"hero",
+					"kapitan"
+				]
+			},
+			"briefing tr52": {
+				"hashes": [
+					"d6345dd916a8de6e7b8a865011cd04a4d65535b53c831da175f0b1f79b2b0d1f",
+					"bc39ddb378be501359a9871aa7f6a39d3b5509b4bb9f5a52f0916bbd9f9f70f1",
+					"1524d98e079e39faf817633e751dc8880ec6cf881544c39289f7d06f34b85219"
+				],
+				"actors": [
+					"shopper",
+					"hero"
+				]
+			},
+			"briefing t52": {
+				"hashes": [
+					"7dc6dcb72c48d4c4a0d82cea7135fda2e78f24d59197d4251f2caad2375d5671",
+					"bd0cc231107a67369a59c4b9a61a6b47e39b271c81789847664d9ef94ccf1d00",
+					"65de3357cd56bd6626c55d5c7459c59ba730d8b5cb389440a761135135370d8b"
+				],
+				"actors": [
+					"hero",
+					"trapper"
+				]
+			},
+			"briefing g53": {
+				"hashes": [
+					"b08ee63a0f1a1a8bb2b03bb7d1c66206cdffd0f3c5d07381814b03bfade69b66",
+					"baa7a5eaf419f09ff2994a482c40d451adfd75c88cc9bfef9214ced194675f48",
+					"de65d00a7f6342a9aab79b8702661d73f6358de9dc0a17ddb5033211679d4783"
+				],
+				"actors": [
+					"huber",
+					"hero"
+				]
+			},
+			"quest q54k": {
+				"hashes": [
+					"75deeb8166a3c1378bad011b23078a22884991ae2645c5278876dde47db6b592",
+					"fb32440daa057c007ea3656a171ef8995ae65c1102a97a3a72705c3e81f03d33",
+					"c8e17ec23e9b8cdad18a1a0116fa80772fbf185f6daad8fbe3467379a771c321"
+				],
+				"world": "quest q54k"
+			},
+			"quest q55k": {
+				"hashes": [
+					"50493816e62c4833cd85803142cfa464c07fc3a379d4a5bc0ae06fbdff78fb78",
+					"7e9d96d52eee7c107a08e0c6d0789463818bc24bac1efb6bd5ab1d2ff757f740",
+					"d3a3412e319652defd80186bd1457cae7c292d48a44ad14326947b60f649f4d4"
+				],
+				"world": "quest q55k"
+			},
+			"briefing d55": {
+				"hashes": [
+					"009af38269c3723d6ce159e9015838ae8404eb28eb90c97c0050463e7c3d18e6",
+					"96af2148005a58a4456edad2cbbb2d4d052360f3fd069b8720a24b7463873d93",
+					"409c7b259f620fda93f3ccb828283b779e6d5be8c421af1a3a5fbb6fd1e72df8"
+				],
+				"actors": [
+					"deva",
+					"hero"
+				]
+			},
+			"briefing d55_1": {
+				"hashes": [
+					"58d60629e0d1f130e5640f78be7dbab1e15937fad0b34070ad2f6cddc8d7f55c",
+					"d8d33e8344164b236d83af50bf1bb79c1c595173593a46ea1b6054530243272b",
+					"35905373ad0ff6e937322954162b1d659e52aba6c2995c4806c1373a17bba190"
+				],
+				"actors": [
+					"hero",
+					"deva"
+				]
+			},
+			"briefing d55_3": {
+				"hashes": [
+					"cb288fc0809509def4f001de83c2e2b5edcb4fe20160ec224c3cacbf36e459bc",
+					"e9579cb0e68231ab639e6092b0888e1a652329fbfe4a1de227e3e7b374d9b52f",
+					"05bff276d247c8cc8bb39c75c50d21f049656fe3092dc8b9274eba179079d441"
+				],
+				"actors": [
+					"deva",
+					"hero"
+				]
+			},
+			"briefing r54": {
+				"hashes": [
+					"f0deabe618f3a52aeeea424c1cbf43a7473856ff1f47d7afd1dfe83d7f075c8e",
+					"69cf993f485ec92d4d724ed61348c8d26bd2d6d217e25d9683096135580fc78a",
+					"80c490a1dcac2197030556bfda6999aa96c4259f0b33de68dc328c7792c62354"
+				],
+				"actors": [
+					"rick",
+					"hero",
+					"deva"
 				]
 			},
 			"briefing hns59": {
@@ -6317,6 +14348,60 @@ const DATA := {
 					"hero"
 				]
 			},
+			"quest q60h": {
+				"hashes": [
+					"645fd236cc89e2b6b26a68926bc40ca51cd74330169a661efb81cc93cb5c9dc8",
+					"c062e4ed1fe2dcee2d6cb461f55aaa70b401334ee598406872525f0b14dc27f4",
+					"86f6c9a7489baf2bc5487ac9ec4f01c01e1a84ca281f9cb3ab491181e25b9459"
+				],
+				"world": "quest q60h"
+			},
+			"briefing kr60": {
+				"hashes": [
+					"c1dbdfe32de7fe142ab83f11e458d7e54537d2d1fb578dbc160009ae50eb27ff",
+					"c00ac93efab0020a431c23361af8f837d41d0384a01840adb6fe03833ab9d0c1",
+					"385c998b1f4ccfe53ecd3bee98639d293e296d3222afd6c882ce3d03bde27555"
+				],
+				"actors": [
+					"nalo",
+					"hero"
+				]
+			},
+			"briefing kr61": {
+				"hashes": [
+					"0af80fbd10e3dd7b171a8ed0618ce4fceb243507dbcf1d2fbcfd56a4575fd0cf",
+					"05f0e8d34499b51e1062d043b87722510938a083592c8e98a422a8b7f6778fbd",
+					"c035783014647f67e2267699c63f54abcbedf23bd4fa3ee34280fa8a0f8380b4"
+				],
+				"actors": [
+					"nalo",
+					"hero"
+				]
+			},
+			"quest q61h": {
+				"hashes": [
+					"8f82d434036a8479b3c83c81b7fdd97d90ef22de4922c24ba2ffc71f6d3d9fdb",
+					"76735ecc446252a646bad6c4767e8490d8b256f9fad0ec1b8a512eac600c6e6e",
+					"34ed4590634cd55e38918afa5f08d62b9ddc32e1ed37d2324e8247f2d5dd420e"
+				],
+				"world": "quest q61h"
+			},
+			"quest q62h": {
+				"hashes": [
+					"bf9f82ee27f007cb2e07b4ee594fb0c42ecee987bfb3bfea44430fac8800508e",
+					"d6e619e4bd4fb008f10899a11d2bc504eeade1728dec4ba283ece0054639c088",
+					"7a5f1e26295e055501b0c898e56fb74882dca0e87d77ce6d98b33df869039ea2"
+				],
+				"world": "quest q62h"
+			},
+			"quest q63h": {
+				"hashes": [
+					"e9b9acec23019fd377a30dee9c8799cdd163066a6474d9115cf683364a7448ec",
+					"9de0c0b0bd87e729f5bb6d4941bac0395c31c6584b71dc1b5ee4733201c8fc00",
+					"d38cfe74b7a0581fb6cf4d4fbccbfdb03d74d3d443f6849d1fc4e4e2f2c52d74"
+				],
+				"world": "quest q63h"
+			},
 			"briefing gl63": {
 				"hashes": [
 					"5ab35858d037bf41d3927386e4f860a1c65608d6176aece66fb20f8eda2be096",
@@ -6329,11 +14414,11 @@ const DATA := {
 					"hero"
 				]
 			},
-			"briefing gl64_3": {
+			"briefing gl64": {
 				"hashes": [
-					"f0568793fcb37faef4c23af683e718b7dfe86e83042bd3622d24615340a0d545",
-					"60fe51b4d4bb8e0df66b71857a1fe42e855d560c97332cef07e2ed8102ec2846",
-					"f80b0c7b43b015d97981dd720e1315c91328f8d5473b9bbc69beddbd304fab71"
+					"6100ebe09831f84a5b00e951ed732f960d0c360728c807e132342fa04f49c601",
+					"72ae456071b79abcf97ab292e6187033bd8ff76f080455f3966596f198416430",
+					"c85ca424fff1c28e984811aa98c22968554e7e5c0cab924a98ffe6db3410d6e5"
 				],
 				"actors": [
 					"glav",
@@ -6352,6 +14437,155 @@ const DATA := {
 					"hero"
 				]
 			},
+			"briefing vo64": {
+				"hashes": [
+					"1fa25e4ab19c772f446ad88d5522a87ad8153112d21162b7701e92be7b7d0530",
+					"8cc557ca336f6133a1a0855d7770a74c480c6fb976baf1a064d81888544b8a8b",
+					"06d61cc6835be801c95787ee1fc5acee18d5b251341ddf23402ea55700fc4023"
+				],
+				"actors": [
+					"merc10",
+					"hero"
+				]
+			},
+			"briefing vo65": {
+				"hashes": [
+					"7a364dd85b8498fb4d8de441593208b8b0c4f511d9e87a61fa64955c3c5dc4d9",
+					"26b7034f31e4f48031c05a9d438f91cf6104196101fc1958721427a179e48b10",
+					"4498843511657a239b25e21af60436b60ac285d5ce8215606dd9f723202076e4"
+				],
+				"actors": [
+					"merc10",
+					"hero"
+				]
+			},
+			"briefing gl66": {
+				"hashes": [
+					"a558850dbac851895ef2443bc3df4f59f81caf3f28e877d9f17310a43491d46f",
+					"75e7c27682c75aa3242ac66adc36f5767e52b65d1eda62891e26ceeb1f1ff3fb",
+					"b6c358b77925dd232211846993b6a53d8260d7aa8a90a2dc3441b7428d3ec774"
+				],
+				"actors": [
+					"glav",
+					"kuzn"
+				]
+			},
+			"briefing jf67": {
+				"hashes": [
+					"e8b0e0023b0174cbd36f72965f1b500e7c1dad9558fbaabf35e58fe51d08050d",
+					"e5dc0429b534cb3e5a214b18f2f977216bd2733f93ad04657c75c365ae283456",
+					"9ed6311d33143cfb84861da4c27711068fab2a260e8f057c482b15095bec4dc7"
+				],
+				"actors": [
+					"junofil",
+					"hero"
+				]
+			},
+			"quest q65h": {
+				"hashes": [
+					"9b707acd0d7260650a79487f64847f3960053a605f38b7cf4e08a342eb5eae92",
+					"66617ee871d6fe2e15814d24d7f62e15eebd7103e5b1a784d459cd68ed3a4f17",
+					"89651ad48d39d0bc32217a6d241e4d066b47e57def0758a0bbaea125acbac993"
+				],
+				"world": "quest q65h"
+			},
+			"quest q66h": {
+				"hashes": [
+					"c19535ef154de677b1b5d8fd9260f8fa423d9d28e617ac878a0208c4854eac89",
+					"a6929a65a81fb63b2c381be009afa126eb059a2035dab5c483fd2d35b788577e",
+					"99689d62518ec1d0bd60c641b2ed2bd9fa7dba89e18ca319b83de64f4c07ddbc"
+				],
+				"world": "quest q66h"
+			},
+			"quest q67h": {
+				"hashes": [
+					"b12d8c0116aeee245637c187825e0bbec850985ed954cfc46f097e37f83c4451",
+					"2214f7015b10b90419144078a988053418962c70d2ec9fd2fb7c464c68ccbdcb",
+					"b47aeaebb176ca25d6e90919ac666cbbd4040b89181ab9ee0b7741447a8ade0a"
+				],
+				"world": "quest q67h"
+			},
+			"briefing ne67": {
+				"hashes": [
+					"e684e08698add968c3fd89f568ca3f680b6d1a7ddaff46d18f34ff3916c450fe",
+					"76d60a8f32449dc8bc43f1d60b74a14082cec41de37278591af7b675e9550cc1",
+					"84917d71dc4538d48e8201993f5e8900010a97bb1e7ce0a3df83c37b08f2e604"
+				],
+				"actors": [
+					"nekro",
+					"hero"
+				]
+			},
+			"briefing sn67": {
+				"hashes": [
+					"5d2fb38ed84f19dc29f5a5d291bd9bf4bc2c118e84cfe8157f3b9bf94742e75c",
+					"c0ab36c31768805632289470e31c65dfe82adabe08cac2d1947bbccd9fdc3d40",
+					"05b1fa3c96d6e432700acb70b3cca5ef3ea5885055e324323d4ab676bbbb668f"
+				],
+				"actors": [
+					"hero",
+					"oldnekro"
+				]
+			},
+			"quest q69h": {
+				"hashes": [
+					"23dd3936cec57dfaab3c1acd4b135ac8a484915131a90d639975e46bbeb7848a",
+					"b58c2c34326a27a54ad357f14a634fd6b578e016c08ded4a7b35a2db77a1303f",
+					"f40629e9e1c7b5518f7cd3d08198f81d672bfff11271929c3d326e7635784638"
+				],
+				"world": "quest q69h"
+			},
+			"briefing sn69": {
+				"hashes": [
+					"3e46095ef3aaf2d2983f8a3c957d489548687248a1f8f7663a92c208474d6758",
+					"e673e1d68bbffdad0f98c29450703c1adcf06f7c374d36d3f38da03df7b4a415",
+					"75db2d426066ce5eec5b013f8370408d5fd1becf8b4715a0331c3533e28fdc19"
+				],
+				"actors": [
+					"oldnekro"
+				]
+			},
+			"briefing sn69_1": {
+				"hashes": [
+					"41a7fa502f789c3a0fba606a8a74737d6f05baa0ab74451fc043dc9ffdf0f1e4",
+					"12961187894ff2f2b1a7186d1f54a6250c1c9ff820c02625ad533a2d3f790a62",
+					"edf6e91a1917ac75ea313eddafd180473d5c4c50b1161c50faa901e954dce60f"
+				],
+				"actors": [
+					"spirit",
+					"hero",
+					"oldnekro"
+				]
+			},
+			"quest q70h": {
+				"hashes": [
+					"d942f4a2b261c9e2e67071edaa0d3405cd4eef31be341d99f09365b3a269fb47",
+					"1bf3d28f8d49c56e9586e0c8e6d99096fe47fdfbaf7aa0e3c4efec17a9c2a9f5",
+					"51262567fe09c6496cf16c7b1547c8f53afee86d16b258caf95664fda67b726d"
+				],
+				"world": "quest q70h"
+			},
+			"briefing ne70": {
+				"hashes": [
+					"894a3025ca47e9efce938d46571c32d6b3faa265f285c8bab6c41a4293e07da3",
+					"3c8f96214ae451a1c7bd3f2b29192285a2f509953dbb13ee0dbd37ab8a3b441c",
+					"4b586fe77f8b459d47b18166bbcadcc368d8b1accc013960b01eb72269963eb0"
+				],
+				"actors": [
+					"nekro",
+					"hero"
+				]
+			},
+			"briefing s64": {
+				"hashes": [
+					"13df686a61250c845e099e283db96f28d29c62bb790f05ab09c2d66801e5c27c",
+					"43d5942fbffdf4934cfa819817058c8296363011898312c90e411d1fc031add5",
+					"85ca9afbee3fc8be184ba0e8b0fe10080aaf02d3873f6c407d9af81fdbc17aae"
+				],
+				"actors": [
+					"zaku"
+				]
+			},
 			"briefing gl70": {
 				"hashes": [
 					"5ba55c752220e1de6d355d46dba2e593e80895cba7fb3eb38663478343a4fdd0",
@@ -6362,6 +14596,175 @@ const DATA := {
 					"glav",
 					"hero",
 					"zaku"
+				]
+			},
+			"briefing s71": {
+				"hashes": [
+					"00d4d851b8919c1bfc3f5da0294d3f1a3732f50d62a1a2bbeae5c7eee64289c1",
+					"74567b45e9e72e345d355fa7686fc5d78cd148e1738f3bc3cf0a158839bfe53c",
+					"1274f14094e8c158ddc6e256d7105e9985edff1205b20f2bfaeeaa09656fad2b"
+				],
+				"actors": [
+					"zaku",
+					"hero"
+				]
+			},
+			"briefing s71_1": {
+				"hashes": [
+					"ccf6c0932e14bebb0e8ca9f25b378ecc57f6c65b6ac1fe5dde04c89d6e80a513",
+					"4ca9376cf42389159ec88d03813d6ade0e25a732b22bb3db2b0ae9c826f03de7",
+					"f1585122822c30bac85a86ace11399df2b88cf102947e7f94c628dfa436a1564"
+				],
+				"actors": [
+					"hero",
+					"elder"
+				]
+			},
+			"quest q72h": {
+				"hashes": [
+					"83bb087cbe053bbb380a020c3533abc4f11f46aaa7b44c647dc1dd023a2b519f",
+					"c01b09097ed3166ddcd7bf4eed6259673d5a74eb5953016df69efc9695293795",
+					"61ec00693411755395e4b29ed6c59045267f14dcfd1c80d56ae3adfbc8c65d40"
+				],
+				"world": "quest q72h"
+			},
+			"briefing r72": {
+				"hashes": [
+					"b0e32953e9034d1566e655aa0557a4ebd82af4d83faa83a361e5adedfeb9b572",
+					"d0139d36999ea926d84da8ed6b6fd9b3ad0e211c4e2667a54e9bd61db568a634",
+					"12d17b52c410c1f5289b756315f8fb4fcfc12948e71baedf0de20a65fe305ee2"
+				],
+				"actors": [
+					"rick",
+					"deva",
+					"hero"
+				]
+			},
+			"briefing r72_1": {
+				"hashes": [
+					"ffbf92b1248716602c8edaf256bf8bf4fe591cdc0ff320eeb66b7c3fe0268165",
+					"8315cf2d5ed530f6cb251a60f9cfe7d7507e568e2639e408d7ec93c89c687e1e",
+					"d3540861955cb78f7cd4d9256e63c250687494e98829ef630e5bab963cd17e90"
+				],
+				"actors": [
+					"rick",
+					"hero"
+				]
+			},
+			"briefing r72_4": {
+				"hashes": [
+					"1380a348e8469de754cdd65053e9af8953f13b6bd9f83845f4daad58c3b0d5b7",
+					"3b0ef51147e4f6231e6f57f36783cefa52630f21685497c2c01309f4c1d9189b",
+					"2f5ab9fde002e72e8e11f3c6144a2ea09454de46228041b1e4b94dc0a9d46754"
+				],
+				"actors": [
+					"junboy",
+					"rick"
+				]
+			},
+			"briefing d72_5": {
+				"hashes": [
+					"f3348508d5bb41b86ea64b023e8ff62e228633c58458cf7eb90155584df4093b",
+					"9f265035871c172d3eba9c261f8da34f0d1704a901400fa8c83b11ace78b1100",
+					"96ef0edf42397c3b542cdbfa0f0e7cdbcd5350ce4ec7d2fedc2d3a175b3f0996"
+				],
+				"actors": [
+					"deva",
+					"junboy"
+				]
+			},
+			"briefing r72_6": {
+				"hashes": [
+					"a51fd84afa924b850caa1be83f65d6c38eccc909b47a40fa615114d97c46bbdb",
+					"9bace9cb4780094a02e9feabe7b5bc7828f817db53718be58f49f3ac31998368",
+					"6dfa57d9ed6e755af57e7b411c3bdfd2e98511a6f0e24da2e490be59c4286ed6"
+				],
+				"actors": [
+					"junboy",
+					"rick",
+					"deva"
+				]
+			},
+			"briefing r72_7": {
+				"hashes": [
+					"2a135b73fbb3577cdcf861a8546d70acf51a105006e49be5438d0c717a4b1e44",
+					"d41d9090771b9c57a0699f37742652430c3a8f67cf86fa23fdc1402399aa5621",
+					"b8a3e423c6978564151abdd718085b7f0cc580f90a84f7f3bf69e27b1da1941f"
+				],
+				"actors": [
+					"junboy"
+				]
+			},
+			"quest q73g": {
+				"hashes": [
+					"ced376afca6d5cc7f2c9368c48edb7d74a41da88b7b70c3c88535334085d8753",
+					"2163e419d4df86f96271a73357c080faf88b9d12fe80a37ea07346ab8e13c340",
+					"37e6650e2bcb8201008b73b2f5fd107a763c8633c0decf9e0f9f2f680beac0f6"
+				],
+				"world": "quest q73g"
+			},
+			"zone gz20g": {
+				"hashes": [
+					"297c4203b68c90026809c19caa0de502b7e1d0cd552945a7c7049983289d77a2",
+					"05ceb24c1dc3ded7c2ec4466cd28ff66b373b51346ecd69404139dd8694245ec",
+					"eed60fca4fc27e4722b9fdd78e393fc93e6df9d77154d49c730aeaee6fa2dae3"
+				],
+				"world": "zone gz20g"
+			},
+			"briefing gogo1": {
+				"hashes": [
+					"74a7b4a9277f69f5e0b70bb8d3c45ae1cea363e1a02760abbc980c6878d6f4f6",
+					"e20273d5de9d8fbfa8235d927170d2af695fe343893d2779be2dba62ca0620b2",
+					"9c9cda0334624fc0161600047a642c370b46e127e8a648e5e0ca7b4e23f69472"
+				],
+				"actors": [
+					"hero",
+					"bgoblinc"
+				]
+			},
+			"briefing l35": {
+				"hashes": [
+					"5a4b269f2c9ce4c819a7b7dc4710557474743224b83670a0009aeb876896d6a9",
+					"3e47cd52fccd5694dfd2c4a61414ee88da7a6127004d9f0fdd754e45aae86e3b",
+					"2a08918d744280fc7a7acdab88abe80d686cb37005d9065d078877cc04c2ab7d"
+				],
+				"actors": [
+					"oliz",
+					"hero"
+				]
+			},
+			"briefing n8_4": {
+				"hashes": [
+					"67c33722d4f54ab2e2aae392c42822d3ca38d44cfc07b5fca1eda42a49c669f1",
+					"89c0d0d0efd3b266aad3212f46829e72011ac3805aaddcfb59dcc05c03d7dd38",
+					"c6275be6ec065bd6ba0fc670ad9b9a01fc60fca98a21cf5e6cda23186a3199bf"
+				],
+				"actors": [
+					"orcc",
+					"merc4",
+					"hero"
+				]
+			},
+			"briefing tr42": {
+				"hashes": [
+					"bd033439fbdb37df28535c0914a0ccfb0056465aa2ef9c5f0237a5e7bc49dcb9",
+					"ef0a71f70e8485b09dc8cd099aa09ffe04ba9973fecc4d92254dc5ae0a2100c8",
+					"774300312fcb29b57ff8881dee2ce4f342bbafbd285fc33d8343a55e317b28de"
+				],
+				"actors": [
+					"shopper",
+					"hero"
+				]
+			},
+			"briefing gl64_3": {
+				"hashes": [
+					"f0568793fcb37faef4c23af683e718b7dfe86e83042bd3622d24615340a0d545",
+					"60fe51b4d4bb8e0df66b71857a1fe42e855d560c97332cef07e2ed8102ec2846",
+					"f80b0c7b43b015d97981dd720e1315c91328f8d5473b9bbc69beddbd304fab71"
+				],
+				"actors": [
+					"glav",
+					"hero"
 				]
 			},
 			"briefing kuz64_1": {
@@ -6385,16 +14788,6 @@ const DATA := {
 					"hero"
 				]
 			},
-			"briefing s64": {
-				"hashes": [
-					"13df686a61250c845e099e283db96f28d29c62bb790f05ab09c2d66801e5c27c",
-					"43d5942fbffdf4934cfa819817058c8296363011898312c90e411d1fc031add5",
-					"85ca9afbee3fc8be184ba0e8b0fe10080aaf02d3873f6c407d9af81fdbc17aae"
-				],
-				"actors": [
-					"zaku"
-				]
-			},
 			"briefing ne64_1": {
 				"hashes": [
 					"b5d555465afa9e6e7a3c6580fbb5b8765ea114bdde90bf6343e0aa0fb722e77e",
@@ -6413,71 +14806,6 @@ const DATA := {
 				],
 				"actors": [
 					"nekro",
-					"hero"
-				]
-			},
-			"briefing ne67": {
-				"hashes": [
-					"e684e08698add968c3fd89f568ca3f680b6d1a7ddaff46d18f34ff3916c450fe",
-					"76d60a8f32449dc8bc43f1d60b74a14082cec41de37278591af7b675e9550cc1",
-					"84917d71dc4538d48e8201993f5e8900010a97bb1e7ce0a3df83c37b08f2e604"
-				],
-				"actors": [
-					"nekro",
-					"hero"
-				]
-			},
-			"briefing ne70": {
-				"hashes": [
-					"894a3025ca47e9efce938d46571c32d6b3faa265f285c8bab6c41a4293e07da3",
-					"3c8f96214ae451a1c7bd3f2b29192285a2f509953dbb13ee0dbd37ab8a3b441c",
-					"4b586fe77f8b459d47b18166bbcadcc368d8b1accc013960b01eb72269963eb0"
-				],
-				"actors": [
-					"nekro",
-					"hero"
-				]
-			},
-			"briefing sn67": {
-				"hashes": [
-					"5d2fb38ed84f19dc29f5a5d291bd9bf4bc2c118e84cfe8157f3b9bf94742e75c",
-					"c0ab36c31768805632289470e31c65dfe82adabe08cac2d1947bbccd9fdc3d40",
-					"05b1fa3c96d6e432700acb70b3cca5ef3ea5885055e324323d4ab676bbbb668f"
-				],
-				"actors": [
-					"hero",
-					"oldnekro"
-				]
-			},
-			"briefing sn69": {
-				"hashes": [
-					"3e46095ef3aaf2d2983f8a3c957d489548687248a1f8f7663a92c208474d6758",
-					"e673e1d68bbffdad0f98c29450703c1adcf06f7c374d36d3f38da03df7b4a415",
-					"75db2d426066ce5eec5b013f8370408d5fd1becf8b4715a0331c3533e28fdc19"
-				],
-				"actors": [
-					"oldnekro"
-				]
-			},
-			"briefing vo64": {
-				"hashes": [
-					"1fa25e4ab19c772f446ad88d5522a87ad8153112d21162b7701e92be7b7d0530",
-					"8cc557ca336f6133a1a0855d7770a74c480c6fb976baf1a064d81888544b8a8b",
-					"06d61cc6835be801c95787ee1fc5acee18d5b251341ddf23402ea55700fc4023"
-				],
-				"actors": [
-					"merc10",
-					"hero"
-				]
-			},
-			"briefing jf67": {
-				"hashes": [
-					"e8b0e0023b0174cbd36f72965f1b500e7c1dad9558fbaabf35e58fe51d08050d",
-					"e5dc0429b534cb3e5a214b18f2f977216bd2733f93ad04657c75c365ae283456",
-					"9ed6311d33143cfb84861da4c27711068fab2a260e8f057c482b15095bec4dc7"
-				],
-				"actors": [
-					"junofil",
 					"hero"
 				]
 			},
@@ -6536,6 +14864,38 @@ const DATA := {
 					"merc1"
 				]
 			},
+			"briefing n1_1": {
+				"hashes": [
+					"563688f8fbc4c3264ccba30aff0b6b03faac5b41eee12b8362ebe8afdccf43fc",
+					"bda3e145c3ef53ac436bf72d6ea37f1555d35de18a43d9643910d23b1a5ab18f",
+					"59e7eda20fa5d14fc3e8ccd08c32cdb264104f2182f5a227332e77377738c495"
+				],
+				"actors": [
+					"merc1",
+					"hero"
+				]
+			},
+			"briefing n10_1": {
+				"hashes": [
+					"33fe80e42d2226b60c9f4552fa00e6a630b0502467460a95827ed987854a1942",
+					"4e0f17e4d28bbe5076eb4000349033824be9f50df192b424f925cc0ecdb2d584",
+					"647ea3b534b43658669cf16ca830e6500b53d887d4b14fba19989a51d0f14e52"
+				],
+				"actors": [
+					"hero",
+					"merc1"
+				]
+			},
+			"briefing n11_1": {
+				"hashes": [
+					"3afe4e526a1aeddda956c6b9ad6213149d821977edc0b8a89db5644b97acd711",
+					"e32578f6cef8aea7c2ed4c1a353f8fdd207b0b478c1b448c1cc679c71b58f117",
+					"f3072419d3549bb904a249f2b872f6fd2b1fab221bd2ac1e8cfea12a887dad05"
+				],
+				"actors": [
+					"merc1"
+				]
+			},
 			"briefing n8_2": {
 				"hashes": [
 					"c213d47f12b6094c75217b94ceb6db766fa77440779986cafebfb6ec346ffe69",
@@ -6580,6 +14940,27 @@ const DATA := {
 					"merc2"
 				]
 			},
+			"briefing n11_2": {
+				"hashes": [
+					"77b1f75090f926ac982bb7f0e4808c0ba0a4a5efa8800671d46a9d5bca63bf14",
+					"81371c3525d65faffe55471012a1f0fc09e593900c7ad1b3193826bbd6f86dd9",
+					"10a1bc7776eb9b86c5e026a54e847b78f1eb95357f1a399848bc51622b7ed9db"
+				],
+				"actors": [
+					"merc2"
+				]
+			},
+			"briefing n8_3": {
+				"hashes": [
+					"97cbf4adc43756d682c1aaa9d0ce31dd91a7fb68456b796e8c425b410fd6ad0b",
+					"12a2b79d53c6b5eef1a838f138f51922724b34b77a6e4a356a98c196f7f8e7f0",
+					"14578acde612813b9b13158a5999ebc5e7583ce3dc1ce3ce7c61acc28c5d8270"
+				],
+				"actors": [
+					"witch",
+					"hero"
+				]
+			},
 			"briefing n1_3": {
 				"hashes": [
 					"be4aef121c166963a0f4a156e4764e3e4114cadccfb3a3a25e722ae00efbfe8d",
@@ -6602,6 +14983,16 @@ const DATA := {
 					"hero"
 				]
 			},
+			"briefing n11_3": {
+				"hashes": [
+					"eff6db12d13f3b7167a5af7aca4a0443957291c2b65f28dac05ea4f8f180e8e4",
+					"968dee8874de8e5246e6803add36cd80f82b1098b326e7aa946970884fcc04ac",
+					"522a78b9d3f485238fb0772472ee11f465a78074512b71855c1d8c5cabfb3651"
+				],
+				"actors": [
+					"merc3"
+				]
+			},
 			"briefing n1_4": {
 				"hashes": [
 					"837fddf6c6dc84115cee0bdd4d014a7fd5f09b1be4ca90e1734dafa6af50cf4b",
@@ -6621,6 +15012,16 @@ const DATA := {
 				],
 				"actors": [
 					"hero",
+					"merc4"
+				]
+			},
+			"briefing n11_4": {
+				"hashes": [
+					"d79e275a41d690a3e39788c59ed7285e0c6cfe6f94ea4b02098ec2dbfe43dacd",
+					"a10380b3f9a66ae8fc5688a61f79b6c6f84413a4d77cae3c60457c034fae551a",
+					"b6aa063ddd7c328795dc4c5df7f66bf0af445505b8b41a0e43c12e53f2f88131"
+				],
+				"actors": [
 					"merc4"
 				]
 			},
@@ -6657,6 +15058,16 @@ const DATA := {
 					"merc5"
 				]
 			},
+			"briefing n11_5": {
+				"hashes": [
+					"0ca11ec796ad332be2a1738d7cbfdba9d4686dd227fa2d7d326cc475ca92d471",
+					"9f962868707f4518c8baf26758aff1d5fe0e73ac2d75dea42f31dd215c940d58",
+					"74cf17c8154c26ffee44aab9c0af7da969b8210ad5ca7b42ef85bc6c584d801d"
+				],
+				"actors": [
+					"merc5"
+				]
+			},
 			"briefing n8_6": {
 				"hashes": [
 					"66db37e4c52bb8fe625ec69b413752fae2626a7421d91636409fd8f2ccd70812",
@@ -6688,6 +15099,16 @@ const DATA := {
 				"actors": [
 					"merc6",
 					"hero"
+				]
+			},
+			"briefing n11_6": {
+				"hashes": [
+					"dbba0bdda3d08a61770c7dacc3ed5a2c5fed55d7fa301c18349a1177683d0b2d",
+					"210c5786365de74141d6bdb07095e95a6f315fb4d72adbe6f3d4685597a8039d",
+					"1370612c6669bdaf63c8f36bf1ce9529546076759763ab11e3d0d1420d2e33a1"
+				],
+				"actors": [
+					"merc6"
 				]
 			},
 			"briefing n8_7": {
@@ -6723,6 +15144,16 @@ const DATA := {
 					"hero"
 				]
 			},
+			"briefing n11_7": {
+				"hashes": [
+					"1d17d9c4c48e785d74a70633fe8af851018612407de6efdc6eab58878e2c5ac4",
+					"1678640ec04136a514ddf5f6c3fb9288820d20a681983f35f0d3bd5cb2854b65",
+					"3bdec7b7ced10517b49c0f7859fe1a140e4a91af27d6484713662c85d358d55c"
+				],
+				"actors": [
+					"merc7"
+				]
+			},
 			"briefing n8_8": {
 				"hashes": [
 					"3df5df3c1f9b604f53582f55e818e454e458effc9fe22d42f96b7f7b3d9137db",
@@ -6749,6 +15180,17 @@ const DATA := {
 					"c59a0649f21b4965541372c1fca4c045328d7cc96eea3b9b5da61452d20f1d59",
 					"06d8c4262d2718c2f0674d3ef977d95f80ad114b5f08a89b404d7d081e98895d",
 					"968ca6f7f9c764829bf08770253ef1d9bf40a26571521283b2eaf1aa82c2b45b"
+				],
+				"actors": [
+					"merc8",
+					"hero"
+				]
+			},
+			"briefing n1_8": {
+				"hashes": [
+					"74161986605adc211a30594d4fd7ead24388e8db6d058a10f4a3cce05fe403ec",
+					"440161f0ada852cdf1710238ed273658cdb18eb50220af98a14fea4e018c9120",
+					"8ce39ae71c74310b30f3009d14b36cf7e0992ea92ddb6761e3c1b5e52605932e"
 				],
 				"actors": [
 					"merc8",
@@ -6788,15 +15230,25 @@ const DATA := {
 					"hero"
 				]
 			},
-			"briefing vo65": {
+			"briefing n10_9": {
 				"hashes": [
-					"7a364dd85b8498fb4d8de441593208b8b0c4f511d9e87a61fa64955c3c5dc4d9",
-					"26b7034f31e4f48031c05a9d438f91cf6104196101fc1958721427a179e48b10",
-					"4498843511657a239b25e21af60436b60ac285d5ce8215606dd9f723202076e4"
+					"aa4652c27005436b615c5a2427d37616174b61c5f4017467c77b4f847676e5e1",
+					"30cdc4bfb888e98519b66eb9ae65937c46def265c5d28fc09ba3b2d1e5f40790",
+					"732a85a1888bbb713e9c99d634a51f2ccfef961748a75d5ddc9596f72f646c37"
 				],
 				"actors": [
-					"merc10",
+					"merc9",
 					"hero"
+				]
+			},
+			"briefing n11_9": {
+				"hashes": [
+					"b28607b4eeb303f99233fb84ef6bc5e5949639824609a59966975f3aea148eae",
+					"d7a36558ae91ffca8af276fa08320ed24d25fc7480ff23a4d6ce107fa70b7ea2",
+					"55049a00b4113ed8de13cc14032ead9e2da92a68f0644c1406cf44835ce70f19"
+				],
+				"actors": [
+					"merc9"
 				]
 			},
 			"briefing n10_10": {
@@ -6849,17 +15301,6 @@ const DATA := {
 					"cbf2cc488d1a9c276638bb95b7dd9b9f638101042ac625c981d47387119d1b89"
 				],
 				"world": "zone gz12k"
-			},
-			"briefing d55": {
-				"hashes": [
-					"009af38269c3723d6ce159e9015838ae8404eb28eb90c97c0050463e7c3d18e6",
-					"96af2148005a58a4456edad2cbbb2d4d052360f3fd069b8720a24b7463873d93",
-					"409c7b259f620fda93f3ccb828283b779e6d5be8c421af1a3a5fbb6fd1e72df8"
-				],
-				"actors": [
-					"deva",
-					"hero"
-				]
 			},
 			"allod suslanger": {
 				"hashes": [
@@ -7033,15 +15474,6 @@ const DATA := {
 					"hwleader"
 				]
 			},
-			"briefing brief_2": {
-				"hashes": [
-					"4c107a04e06de66f982bca078da4c2683186c5fd01fe35c32ace3aa12a79b7bb"
-				],
-				"actors": [
-					"merc2",
-					"hero"
-				]
-			},
 			"briefing brief_119": {
 				"hashes": [
 					"22cc65fe41d4569d05e255557fcb238c7b655cfc0bbc058dbf695b2aeee02cbd"
@@ -7051,124 +15483,29 @@ const DATA := {
 					"hero"
 				]
 			},
-			"briefing brief_41": {
+			"zone gz1g": {
 				"hashes": [
-					"9778fa227ca85069d934cb406662d8f39261bbf4f38bcc6b5cb533ba087facd8"
+					"5b18afea344215674884a4e48e16e3d28491310c75f482c1bf8125b91a2753c0"
 				],
-				"actors": [
-					"merc10",
-					"glav",
-					"hero2"
-				]
+				"world": "zone gz1g"
 			},
-			"briefing brief_118": {
+			"briefing brief_2": {
 				"hashes": [
-					"4d4ddfebb3a64e2126e7ee62b478d235cb03390983b4ecaa8cfd1102084e7a74"
-				],
-				"actors": [
-					"hero",
-					"rick"
-				]
-			},
-			"briefing brief_149": {
-				"hashes": [
-					"fbefb842cf92ddeb3e6a90c87f212f66a80c0d6ac376417fb3e5b1c44365f817"
-				],
-				"actors": [
-					"rick",
-					"hero",
-					"merc2"
-				]
-			},
-			"briefing brief_251": {
-				"hashes": [
-					"58f863f40588f74f0b4526c8bb40704086ff6b1f624daa659ac9d889a2cf6604"
-				],
-				"actors": [
-					"hero",
-					"huber",
-					"kmage"
-				]
-			},
-			"briefing brief_254": {
-				"hashes": [
-					"f43281aae0aa580add4a43ccbb2fdfbed22e9ded486a4e669a116cddc5868104"
+					"4c107a04e06de66f982bca078da4c2683186c5fd01fe35c32ace3aa12a79b7bb"
 				],
 				"actors": [
 					"merc2",
 					"hero"
 				]
 			},
-			"briefing brief_304": {
+			"briefing brief_3a": {
 				"hashes": [
-					"93a7eb027009600b8c61e8d56aae4b89c85e42b04086626c31771ab5abbed9a9"
+					"ff010dc5152c77944521482dce8812e18cb6a56433317d06896b43306d36c777"
 				],
 				"actors": [
+					"clerk",
 					"hero",
-					"baron"
-				]
-			},
-			"briefing brief_340": {
-				"hashes": [
-					"2cd5aaa787a6680b7032edbf030f2a382b622efb64d7f75e81692f682f84e1aa"
-				],
-				"actors": [
-					"deva",
-					"hero"
-				]
-			},
-			"briefing brief_341": {
-				"hashes": [
-					"514ffdb0cd61c4f6764206fc911bc4c1fdb7072caf5d06529aa01b8e23867fe3"
-				],
-				"actors": [
-					"junofil",
-					"hero"
-				]
-			},
-			"briefing brief_342": {
-				"hashes": [
-					"05d6e6dbec15532089e78e056ec9d51679c7abb79e02cbc317a6dfc5a7f31e8a"
-				],
-				"actors": [
-					"merc2",
-					"hero"
-				]
-			},
-			"briefing brief_345": {
-				"hashes": [
-					"abedb5b8ee27b020bf61325404cdbcfb2856d0b41257e20c9d5c49c99b5b4dd2"
-				],
-				"actors": [
-					"deva",
-					"hero"
-				]
-			},
-			"briefing brief_349": {
-				"hashes": [
-					"b57cbf3808cc06ef1f5f16b223005de9a121a86093305216e5577f6fa82799de"
-				],
-				"actors": [
-					"hero",
-					"firez"
-				]
-			},
-			"briefing brief_338": {
-				"hashes": [
-					"ab1948312f0da6fb167ce87fc88f991ffaf54e30f4ea486563f4d76b5e6f4566"
-				],
-				"actors": [
-					"baron",
 					"merc2"
-				]
-			},
-			"briefing fq20": {
-				"hashes": [
-					"3c82b17f7ed0a80b470e269fa583bbd194fc35ae36e1edc8ec6586bb6c86c132"
-				],
-				"actors": [
-					"junofil",
-					"hero"
 				]
 			},
 			"briefing brief_3b": {
@@ -7191,13 +15528,31 @@ const DATA := {
 					"hero"
 				]
 			},
-			"briefing nsheriff_about": {
+			"briefing brief_4": {
 				"hashes": [
-					"7966656c774c126c2973e55e2f0fb909ebf5d149475d8b27a08bf224b8ba1c31"
+					"58c13dfdfdf01afbfd02f44a5e2ab831fdb1f1298fa498ca42eea257539cdd45"
 				],
 				"actors": [
-					"nsheriff",
-					"hero2"
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_5": {
+				"hashes": [
+					"adecc0284a7a8c80cb1287c553dda002e72b5e2704b52a0e1435e00a0c12d2d2"
+				],
+				"actors": [
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_5a": {
+				"hashes": [
+					"24911667480f887b0b0ca96c01344a490689ce4c6b01b98ab624bc558251e938"
+				],
+				"actors": [
+					"hero",
+					"merc2"
 				]
 			},
 			"briefing brief_6": {
@@ -7208,6 +15563,24 @@ const DATA := {
 					"elder",
 					"merc2",
 					"hero"
+				]
+			},
+			"briefing brief_8": {
+				"hashes": [
+					"722e045c85f4e496d582de197fab24d2ce7ced0acf1f96f2a8f00c1f01ec7324"
+				],
+				"actors": [
+					"sheriff",
+					"hero"
+				]
+			},
+			"briefing brief_14": {
+				"hashes": [
+					"67b7ce6251c819b2adbfdbc105aff1f16c0485659abe7d3a87d42b679c14b965"
+				],
+				"actors": [
+					"hero",
+					"merc8"
 				]
 			},
 			"briefing brief_18": {
@@ -7228,52 +15601,14 @@ const DATA := {
 					"hero2"
 				]
 			},
-			"briefing brief_40": {
+			"briefing brief_31": {
 				"hashes": [
-					"1ec33e6f699cedf67593e4c2b38c8b389c9542ccd7bde7467e08b98f0c916563"
-				],
-				"actors": [
-					"elder",
-					"hero2",
-					"merc10"
-				]
-			},
-			"briefing brief_8": {
-				"hashes": [
-					"722e045c85f4e496d582de197fab24d2ce7ced0acf1f96f2a8f00c1f01ec7324"
+					"168269774d73df7c2e518cf53eb2f347d4ed2f144ccfd130f70d514b778c97e7"
 				],
 				"actors": [
 					"sheriff",
-					"hero"
-				]
-			},
-			"briefing brief_82": {
-				"hashes": [
-					"1761020dd6354916aac8f171dbdfa405550975985a0b4aff08094fa978ac5792"
-				],
-				"actors": [
 					"merc2",
-					"sheriff",
 					"hero2"
-				]
-			},
-			"briefing brief_83": {
-				"hashes": [
-					"6173979f0c972370953b4ab911a334826a800248703f11e12efcbc966af0934f"
-				],
-				"actors": [
-					"merc2",
-					"hero2",
-					"sheriff"
-				]
-			},
-			"briefing brief_14": {
-				"hashes": [
-					"67b7ce6251c819b2adbfdbc105aff1f16c0485659abe7d3a87d42b679c14b965"
-				],
-				"actors": [
-					"hero",
-					"merc8"
 				]
 			},
 			"briefing brief_37": {
@@ -7294,6 +15629,71 @@ const DATA := {
 					"hero2",
 					"merc10",
 					"merc2"
+				]
+			},
+			"briefing brief_39": {
+				"hashes": [
+					"19e9d47c8bba0d8869cf28872ef515e1465711ac9518a774ab3b16fedc4dba45"
+				],
+				"actors": [
+					"hero2",
+					"merc10"
+				]
+			},
+			"briefing brief_40": {
+				"hashes": [
+					"1ec33e6f699cedf67593e4c2b38c8b389c9542ccd7bde7467e08b98f0c916563"
+				],
+				"actors": [
+					"elder",
+					"hero2",
+					"merc10"
+				]
+			},
+			"briefing brief_41": {
+				"hashes": [
+					"9778fa227ca85069d934cb406662d8f39261bbf4f38bcc6b5cb533ba087facd8"
+				],
+				"actors": [
+					"merc10",
+					"glav",
+					"hero2"
+				]
+			},
+			"briefing brief_43": {
+				"hashes": [
+					"2cae5da616adf6036806564e3f534f690a127db60c63e8ca4badab290a422f0a"
+				],
+				"actors": [
+					"hero2",
+					"zaku"
+				]
+			},
+			"briefing brief_43a": {
+				"hashes": [
+					"778445c91a715287fd4eea697b82fbd056bcfa0e3fe9a64aaa0a43f564797005"
+				],
+				"actors": [
+					"hero2",
+					"zaku"
+				]
+			},
+			"briefing brief_44": {
+				"hashes": [
+					"1f73bacefe1afe9f2b31552754e0a1a873a56f9a20af9ece2793c8180c5e011a"
+				],
+				"actors": [
+					"hero2",
+					"glav"
+				]
+			},
+			"briefing brief_45": {
+				"hashes": [
+					"78180694b7f6565df30e382cb39b94789e2407e79cc2ad7a2e0dad6063c0e471"
+				],
+				"actors": [
+					"glav",
+					"hero2"
 				]
 			},
 			"briefing brief_46": {
@@ -7334,33 +15734,6 @@ const DATA := {
 					"hero2"
 				]
 			},
-			"briefing brief_59b": {
-				"hashes": [
-					"c4d4c89cc81f8712b04765c08f0c4e32fc5d6cdec7f081603ca0e5b1c92b1337"
-				],
-				"actors": [
-					"merc7",
-					"hero2"
-				]
-			},
-			"briefing brief_44": {
-				"hashes": [
-					"1f73bacefe1afe9f2b31552754e0a1a873a56f9a20af9ece2793c8180c5e011a"
-				],
-				"actors": [
-					"hero2",
-					"glav"
-				]
-			},
-			"briefing brief_45": {
-				"hashes": [
-					"78180694b7f6565df30e382cb39b94789e2407e79cc2ad7a2e0dad6063c0e471"
-				],
-				"actors": [
-					"glav",
-					"hero2"
-				]
-			},
 			"briefing brief_49": {
 				"hashes": [
 					"c8974a9584c10432ceda14421443922df0486cfd9c043447971789fed7bb430a"
@@ -7378,24 +15751,6 @@ const DATA := {
 					"merc2",
 					"glav",
 					"hero2"
-				]
-			},
-			"briefing brief_43": {
-				"hashes": [
-					"2cae5da616adf6036806564e3f534f690a127db60c63e8ca4badab290a422f0a"
-				],
-				"actors": [
-					"hero2",
-					"zaku"
-				]
-			},
-			"briefing brief_43a": {
-				"hashes": [
-					"778445c91a715287fd4eea697b82fbd056bcfa0e3fe9a64aaa0a43f564797005"
-				],
-				"actors": [
-					"hero2",
-					"zaku"
 				]
 			},
 			"briefing brief_51": {
@@ -7416,6 +15771,25 @@ const DATA := {
 					"guru"
 				]
 			},
+			"briefing brief_53": {
+				"hashes": [
+					"9e9950bb83d18fd3fbf70a0657c8bcfe58709c2c08527c78be0de3f24c364917"
+				],
+				"actors": [
+					"glav",
+					"hero2"
+				]
+			},
+			"briefing brief_70": {
+				"hashes": [
+					"0824db8c71ce8709449dc86afb62afbc83518b5b3569b9df9e42d01bdcc414e2"
+				],
+				"actors": [
+					"hero2",
+					"glav",
+					"мозгодер"
+				]
+			},
 			"briefing brief_71": {
 				"hashes": [
 					"e9d20e69792219675768ae4e3a1444476825d8978d8c05ff24f2deb9561c7b05"
@@ -7434,6 +15808,35 @@ const DATA := {
 					"hero2"
 				]
 			},
+			"briefing brief_82": {
+				"hashes": [
+					"1761020dd6354916aac8f171dbdfa405550975985a0b4aff08094fa978ac5792"
+				],
+				"actors": [
+					"merc2",
+					"sheriff",
+					"hero2"
+				]
+			},
+			"briefing brief_83": {
+				"hashes": [
+					"6173979f0c972370953b4ab911a334826a800248703f11e12efcbc966af0934f"
+				],
+				"actors": [
+					"merc2",
+					"hero2",
+					"sheriff"
+				]
+			},
+			"briefing brief_86": {
+				"hashes": [
+					"92e162fdd77635451f6cef547f44c24594e1cbfec65064c4edfcdc6507ddceb6"
+				],
+				"actors": [
+					"hero2",
+					"merc2"
+				]
+			},
 			"briefing brief_87": {
 				"hashes": [
 					"3f4457188671b5b2833702707eab4fc6f8cc1498e29ab6e42cbd9ecf87123b86"
@@ -7443,6 +15846,16 @@ const DATA := {
 					"hero2"
 				]
 			},
+			"briefing brief_88": {
+				"hashes": [
+					"c8511d2be3e83efa1579c9456af295bddb3063bf8068bd24436a881849146b05"
+				],
+				"actors": [
+					"sergant",
+					"hero2",
+					"merc2"
+				]
+			},
 			"briefing brief_88a": {
 				"hashes": [
 					"061849c63831b117852a10ca5395154938327362b4320c49cd114ab1b918e255"
@@ -7450,6 +15863,1122 @@ const DATA := {
 				"actors": [
 					"hero2",
 					"sergant"
+				]
+			},
+			"briefing brief_101": {
+				"hashes": [
+					"b574ea2105c3148423bb26426e0a0b1ed3948aec9c36edf8784a0b79962eaf15"
+				],
+				"actors": [
+					"orcc",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_102": {
+				"hashes": [
+					"ead038f46c22e05c2d7cb8bed6c077d74c00015c120c42b13b788e170535aa4f"
+				],
+				"actors": [
+					"orcpyr",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_103": {
+				"hashes": [
+					"ea83e4c9c8d4b851811296fb6e561f503ece703e8d19da036d9b6d103ee83f55"
+				],
+				"actors": [
+					"hero",
+					"orcc"
+				]
+			},
+			"briefing brief_104": {
+				"hashes": [
+					"19632dff6b4abf56a4d08fbe0a5f1de698744fcc8a3714738cdce1fab27e4ad6"
+				],
+				"actors": [
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_105": {
+				"hashes": [
+					"903b8df15a7a2707695666064ecad847ecab06e2d98413ff649ed7dde0c072b5"
+				],
+				"actors": [
+					"hero",
+					"merc2",
+					"orcc"
+				]
+			},
+			"briefing brief_106": {
+				"hashes": [
+					"c34365e57afee1a6e62dbc599158a3b9b34357bc03675623533bcd8331b637bf"
+				],
+				"actors": [
+					"merc2",
+					"hero"
+				]
+			},
+			"briefing brief_107": {
+				"hashes": [
+					"a8dbb05b8cbb1c79b433415b23cc01214c8c6836c9f7c338424b329277f9acb2"
+				],
+				"actors": [
+					"hero",
+					"orcpyr",
+					"merc2"
+				]
+			},
+			"briefing brief_108": {
+				"hashes": [
+					"53f9c34d1319df931396a359f006f4564572e39f1ea3d1e56fea0bcaf9228da4"
+				],
+				"actors": [
+					"hero",
+					"orcpyr",
+					"merc2"
+				]
+			},
+			"briefing brief_109": {
+				"hashes": [
+					"bf0befe735f9657612b258633f2457aba50b328d10aee47d3e49186101f5d791"
+				],
+				"actors": [
+					"hero",
+					"orcc"
+				]
+			},
+			"briefing brief_110": {
+				"hashes": [
+					"bc8f042728052bfa2ae90955707941f5c171493d0721eda04d79589128de1605"
+				],
+				"actors": [
+					"orcpyr",
+					"merc2",
+					"hero"
+				]
+			},
+			"briefing brief_111": {
+				"hashes": [
+					"8a15bda6d507f0e88e0156194204adbdd50f8be73988cdfb831e288c145386b2"
+				],
+				"actors": [
+					"hero",
+					"orcc",
+					"merc2"
+				]
+			},
+			"briefing brief_112": {
+				"hashes": [
+					"d88c8a158c8ba399ee953bf6a36dcbd5dfc5aa7956b90966d20b2112cb6dc7ec"
+				],
+				"actors": [
+					"hero",
+					"orcc"
+				]
+			},
+			"briefing brief_113": {
+				"hashes": [
+					"c7be72bb7fb0c16aaa3f5b0fb337e468b7c582afa483a90ad266692a48b86514"
+				],
+				"actors": [
+					"hero",
+					"orcpyr",
+					"merc2"
+				]
+			},
+			"briefing brief_114": {
+				"hashes": [
+					"852a134f3268b6ca612cd84881614c948ccecea151fffb4c4e6639778f1764c9"
+				],
+				"actors": [
+					"iz",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_115": {
+				"hashes": [
+					"db5e298394fdae2dda27d37fd4cb293bd58003b258ac44ae834240d028bef253"
+				],
+				"actors": [
+					"orcc",
+					"hero"
+				]
+			},
+			"briefing brief_116": {
+				"hashes": [
+					"ceeaaca57e209a7b6b9ff4e0a36df34b2c3584582103e83b8ef256b6c55a7d74"
+				],
+				"actors": [
+					"orcc"
+				]
+			},
+			"briefing brief_117": {
+				"hashes": [
+					"cdd857c742803bd0f95a4747eabe92fa3bd43c78dd9bbcdc04dc47489a2e7e5e"
+				],
+				"actors": [
+					"hero",
+					"iz"
+				]
+			},
+			"briefing brief_118": {
+				"hashes": [
+					"4d4ddfebb3a64e2126e7ee62b478d235cb03390983b4ecaa8cfd1102084e7a74"
+				],
+				"actors": [
+					"hero",
+					"rick"
+				]
+			},
+			"briefing brief_120": {
+				"hashes": [
+					"61eadb5dd43483fba4f75f9f8280e1bc9540dac1128fbefa22b54d118a026c2f"
+				],
+				"actors": [
+					"loozer",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_121": {
+				"hashes": [
+					"c9bbdf378fcdee90e0b1fba9e534704a385e60abcb1edbc7dc18ace278743abd"
+				],
+				"actors": [
+					"karh",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_123": {
+				"hashes": [
+					"23e15a314ca6627a968f8c9a675c15f11fcdca6c5ca77c63da6b40fcfafee8de"
+				],
+				"actors": [
+					"karh",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_124": {
+				"hashes": [
+					"2dd2ecb3043703971f45e9e49b615f9ce8efadc1d8be40b1c9910de9b962b1b7"
+				],
+				"actors": [
+					"hero",
+					"karh",
+					"merc2"
+				]
+			},
+			"briefing brief_126a": {
+				"hashes": [
+					"2ec70174cd1eab24fd93f8a6962f7d912c49af3f944a9c23c83f059cb9610a5b"
+				],
+				"actors": [
+					"smith",
+					"karh",
+					"hero"
+				]
+			},
+			"briefing brief_126b": {
+				"hashes": [
+					"88ed9c74720c073de893d4d5c4ba8d508fb193bd5f3dfc7481ad9ff0286cce4e"
+				],
+				"actors": [
+					"smith",
+					"karh",
+					"hero"
+				]
+			},
+			"briefing brief_127": {
+				"hashes": [
+					"ab3c6eed486d6819c0ee8dc851db380ffb204f6b3d109c644ca96e83ffa3b187"
+				],
+				"actors": [
+					"hero",
+					"smith"
+				]
+			},
+			"briefing brief_128": {
+				"hashes": [
+					"ecc2f301dc900a54f7ec0f56fbb26e33a434f76d273ec88aaf970afcd00c1c3a"
+				],
+				"actors": [
+					"hero",
+					"smith",
+					"merc2"
+				]
+			},
+			"briefing brief_129": {
+				"hashes": [
+					"e4b3fa3c4633744958265d59e1082d73aa8adfb614ed09c18ec17dabfee9b204"
+				],
+				"actors": [
+					"daughter",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_130": {
+				"hashes": [
+					"04cebc4f1a15d98c666fbb232b008b4d332dcd9405c5b474ac5f632f7d999bef"
+				],
+				"actors": [
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_131": {
+				"hashes": [
+					"1e903360eb2d672b2636d8ca7f1390c3984bbcb8fbdb1219064abb784ca1cd08"
+				],
+				"actors": [
+					"hero",
+					"daughter"
+				]
+			},
+			"briefing brief_132": {
+				"hashes": [
+					"7857eec9e759fba763ad80eae6fe6dffeb6f7864d88c62942aad7aa5083ca4c6"
+				],
+				"actors": [
+					"merc2",
+					"hero",
+					"skd"
+				]
+			},
+			"briefing brief_133": {
+				"hashes": [
+					"cf74f08969e20df71b13a5928b8dc2fb0630e3a1777e2bb7f7ea396521fd2807"
+				],
+				"actors": [
+					"witch",
+					"skd",
+					"hero"
+				]
+			},
+			"briefing brief_134": {
+				"hashes": [
+					"fefa8c46ee033e617a2acafaeef4ea73481c545f397e41e52025743aea4b405c"
+				],
+				"actors": [
+					"hero",
+					"witch"
+				]
+			},
+			"briefing brief_136": {
+				"hashes": [
+					"4f8432a8871cbceec0a80cf147ff9ba323d36a5a7dab18d1ac7fbbb12a91348b"
+				],
+				"actors": [
+					"witch",
+					"hero",
+					"daughter"
+				]
+			},
+			"briefing brief_137": {
+				"hashes": [
+					"9ceac830e71134afc83420870c3b057f0585b8ed66edc722cdf362288a432340"
+				],
+				"actors": [
+					"daughter",
+					"merc2",
+					"hero"
+				]
+			},
+			"briefing brief_138": {
+				"hashes": [
+					"4c6a433dbecbe9cea47b8cde0de9e0f2c21b3238523e7622ea1912dc5e54fba5"
+				],
+				"actors": [
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_139": {
+				"hashes": [
+					"cbe564a586c6245def253bc7b158eaeec4ce05f28ed213c77f0ba7e933369039"
+				],
+				"actors": [
+					"smith",
+					"hero"
+				]
+			},
+			"briefing brief_140": {
+				"hashes": [
+					"a23d265795400bb06b779b3362421bcaeb71d66c69f34886e73c8c87c115a1ca"
+				],
+				"actors": [
+					"karh",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_141": {
+				"hashes": [
+					"6367e114369f851bf7b794afb63ef7aa53829a86b35a0acb10ebcc6b500d6182"
+				],
+				"actors": [
+					"orcc",
+					"hero"
+				]
+			},
+			"briefing brief_142": {
+				"hashes": [
+					"7fad6663e117033dba676d6410d5747325652b10797c7e427582245711f4cae2"
+				],
+				"actors": [
+					"merc2",
+					"karh",
+					"hero"
+				]
+			},
+			"briefing brief_145b": {
+				"hashes": [
+					"6463c759c6a3831290eb50830e6ca83450983e0296bb4bc2e5314a2ea186bf46"
+				],
+				"actors": [
+					"hero",
+					"smith"
+				]
+			},
+			"briefing brief_145c": {
+				"hashes": [
+					"111cd08a5e85279561e4d97b27c134a6e4ccc637ee8bf0cf8591fef3d520eccc"
+				],
+				"actors": [
+					"hero",
+					"smith"
+				]
+			},
+			"briefing brief_146": {
+				"hashes": [
+					"c1577b0dfb293a01bbb90ec3a4fc82a351cecc3e756a7e73435f6e365f7e3c5d"
+				],
+				"actors": [
+					"witch",
+					"hero"
+				]
+			},
+			"briefing brief_148": {
+				"hashes": [
+					"63f3392c3784ed910684aa73dd6fc268f9f00cf2e90756f2dc7af8b443b1387b"
+				],
+				"actors": [
+					"hero",
+					"witch"
+				]
+			},
+			"briefing brief_149": {
+				"hashes": [
+					"fbefb842cf92ddeb3e6a90c87f212f66a80c0d6ac376417fb3e5b1c44365f817"
+				],
+				"actors": [
+					"rick",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_151": {
+				"hashes": [
+					"35996060b8bb5d04ae4e7353770c91f03da3d6fa60fe8d572f0b31ae073d2733"
+				],
+				"actors": [
+					"rick",
+					"hero"
+				]
+			},
+			"briefing brief_201": {
+				"hashes": [
+					"6d318afcc96f60e85d06d60dc4dcd34d8350e4a4b22d1b5dda2f8865942e8518"
+				],
+				"actors": [
+					"merc2",
+					"hero",
+					"trader"
+				]
+			},
+			"briefing brief_204": {
+				"hashes": [
+					"d1f80da6e94fedb87204ac1d5eea82c9a932484ce6951e8f94c149a14910ddbc"
+				],
+				"actors": [
+					"his",
+					"merc2",
+					"hero"
+				]
+			},
+			"briefing brief_206": {
+				"hashes": [
+					"b9aa2565ef440506deb59fdda3393994bdc04c04d8bee17251e1d78718872be8"
+				],
+				"actors": [
+					"trapper",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_207": {
+				"hashes": [
+					"cdc4e7bc479d66220a52739977e61eafdc4efda18fdc4240f72847e48fe6f87b"
+				],
+				"actors": [
+					"grey",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_210": {
+				"hashes": [
+					"e4f586c00eaa2d47c4a60442f0e4849e22d1f7023419750a8ba7596256602a32"
+				],
+				"actors": [
+					"his",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_211": {
+				"hashes": [
+					"aa77f703562b7f40e42ab19d734bd1d13fa1ff8e0bed97b9a0e9302133966e9d"
+				],
+				"actors": [
+					"hero",
+					"his",
+					"merc2"
+				]
+			},
+			"briefing brief_212": {
+				"hashes": [
+					"680e1d91465be94ad277ff918ff4f3fb4e78a558913f8f573e8c125ffcbcc1fb"
+				],
+				"actors": [
+					"gerald",
+					"vor",
+					"hero"
+				]
+			},
+			"briefing brief_215": {
+				"hashes": [
+					"b3d4741fdde6dbaf8979c26d1813939c44e016cf163fa3147ca2c2b31c6b09ff"
+				],
+				"actors": [
+					"mthief",
+					"hero",
+					"gerald"
+				]
+			},
+			"briefing brief_218": {
+				"hashes": [
+					"ad5d86ea80736e6ad0ce32eefaae31724a47b553ff2a8a44cbc0fa832ad3eda4"
+				],
+				"actors": [
+					"hero",
+					"trapper"
+				]
+			},
+			"briefing brief_221": {
+				"hashes": [
+					"d98f8859f8a2e299756b789a268a3da155373139a4967bda1816a19488112ec2"
+				],
+				"actors": [
+					"kmage",
+					"hero"
+				]
+			},
+			"briefing brief_245a": {
+				"hashes": [
+					"f8b8180ee08084238f8bd0c401267c0b194e1bed58a7f3e0539f743aa6a771ed"
+				],
+				"actors": [
+					"his",
+					"hero"
+				]
+			},
+			"briefing brief_232": {
+				"hashes": [
+					"a9c6bfde2ec584fd0e5b2029419136be3be6e0669518ace7b71fdb944aaac584"
+				],
+				"actors": [
+					"huber",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_233": {
+				"hashes": [
+					"6cfbfe48b8f0cf05b12b56cd86070794f1664c4e9d94080a6b565fb0482e01a1"
+				],
+				"actors": [
+					"kmage",
+					"merc2",
+					"hero"
+				]
+			},
+			"briefing brief_238": {
+				"hashes": [
+					"45de1daed65a42406b37d883e432da66ad1aab8702c6a51f913649533afe022d"
+				],
+				"actors": [
+					"hero",
+					"mthief",
+					"merc2"
+				]
+			},
+			"briefing brief_239": {
+				"hashes": [
+					"66d889ce3fddfb12090618775a1c37cc75e7039180ecf344be5da75825cc97eb"
+				],
+				"actors": [
+					"guard",
+					"hero"
+				]
+			},
+			"briefing brief_240": {
+				"hashes": [
+					"27ee02900e9add6f7a16abcf69f9bf61a2f546709f1bf4d32097677e49131fba"
+				],
+				"actors": [
+					"hero",
+					"huber"
+				]
+			},
+			"briefing brief_243": {
+				"hashes": [
+					"cfd404535b457e596e0f4aa97b20d5bcfd872a9bcfa3ff26ac6f415cf4918fa7"
+				],
+				"actors": [
+					"hero",
+					"mthief",
+					"merc2"
+				]
+			},
+			"briefing brief_245": {
+				"hashes": [
+					"3d4793484444b1119675bb27f65dc93e6e47ee237f66860cbb3cf766ab71b3dd"
+				],
+				"actors": [
+					"hero",
+					"huber",
+					"his"
+				]
+			},
+			"briefing brief_246": {
+				"hashes": [
+					"6394b5a63cb991f15b10bdcb8f1e5033e12b825c5df01e15e49e666bd4fb1699"
+				],
+				"actors": [
+					"huber",
+					"merc2",
+					"hero"
+				]
+			},
+			"briefing brief_247": {
+				"hashes": [
+					"5c2f7808d676c851df75e60a88f1500d66ec2cd621d231a7bdf90f44e94d66c9"
+				],
+				"actors": [
+					"merc2",
+					"gerald",
+					"hero"
+				]
+			},
+			"briefing brief_237": {
+				"hashes": [
+					"78ebf7db2dfbae15ea71c12348372d8fb3c3ec94024a99caac1b2cd904d69eba"
+				],
+				"actors": [
+					"hero",
+					"grey",
+					"merc2"
+				]
+			},
+			"briefing brief_248": {
+				"hashes": [
+					"5ca3ac48035167ee4a6e04795c8751aab10f8f400f31daff15bc27c03c0885f5"
+				],
+				"actors": [
+					"gerald",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_249": {
+				"hashes": [
+					"44998f5bf9d61c0e5078b350dfe59ef34783d75e21f4093596ffa558820f74b4"
+				],
+				"actors": [
+					"merc2",
+					"hero"
+				]
+			},
+			"briefing brief_250": {
+				"hashes": [
+					"0f2fc9074612728f1e80bb6f1f705a375207dbc86739a954398a2826ea38890a"
+				],
+				"actors": [
+					"merc2",
+					"hero",
+					"vor"
+				]
+			},
+			"briefing brief_250a": {
+				"hashes": [
+					"1ec537d7a4322480e319ce38e6cb4272111a7ebf699219e9bdffe29ed8c63959"
+				],
+				"actors": [
+					"hero",
+					"huber",
+					"vor"
+				]
+			},
+			"briefing brief_251": {
+				"hashes": [
+					"58f863f40588f74f0b4526c8bb40704086ff6b1f624daa659ac9d889a2cf6604"
+				],
+				"actors": [
+					"hero",
+					"huber",
+					"kmage"
+				]
+			},
+			"briefing brief_252": {
+				"hashes": [
+					"b2821a36b22d8c0c8aae3fdb34cafc7b215f0a5adc0503e7d04ac52dc0a11c56"
+				],
+				"actors": [
+					"kmage",
+					"mthief",
+					"hero"
+				]
+			},
+			"briefing brief_253": {
+				"hashes": [
+					"66162b281ee7ff8b326d9c3d41f3fe66ed94fd924ed2b56da5f11b85f4174a07"
+				],
+				"actors": [
+					"hero",
+					"mthief",
+					"kmage"
+				]
+			},
+			"briefing brief_254": {
+				"hashes": [
+					"f43281aae0aa580add4a43ccbb2fdfbed22e9ded486a4e669a116cddc5868104"
+				],
+				"actors": [
+					"merc2",
+					"hero"
+				]
+			},
+			"briefing brief_300": {
+				"hashes": [
+					"6f8dc1476d1a9924e52d3a057101da5b49e86b219d8c031c67458e9e9af9d93f"
+				],
+				"actors": [
+					"baron",
+					"hero",
+					"солдат",
+					"merc2"
+				]
+			},
+			"briefing brief_301": {
+				"hashes": [
+					"cf80d9e3b835cab5a8d71e6d2299bb721ae15e032ae06d86bf6802eafb802942"
+				],
+				"actors": [
+					"baron",
+					"hero"
+				]
+			},
+			"briefing brief_302": {
+				"hashes": [
+					"5c8be0d3c13f47c62dc5c342fc0b04d092615bb0ccf75bb9c016ac8fa8be4faa"
+				],
+				"actors": [
+					"bson",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_303": {
+				"hashes": [
+					"1c632331bc5f14be0011eb6608682dd01c24f84613d9d3644e84143fa20fb209"
+				],
+				"actors": [
+					"stark",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_304": {
+				"hashes": [
+					"93a7eb027009600b8c61e8d56aae4b89c85e42b04086626c31771ab5abbed9a9"
+				],
+				"actors": [
+					"hero",
+					"baron"
+				]
+			},
+			"briefing brief_305": {
+				"hashes": [
+					"1bc83b17cc4334541d92f814a21a7df7f8042380a0a8800b307b940a57e8c1cd"
+				],
+				"actors": [
+					"stark",
+					"merc2",
+					"hero"
+				]
+			},
+			"briefing brief_306": {
+				"hashes": [
+					"d474aacdbf5539277684c815cd194a8cd6ee24909178227f6208d5870f9a6d24"
+				],
+				"actors": [
+					"hero",
+					"baron",
+					"merc2"
+				]
+			},
+			"briefing brief_307": {
+				"hashes": [
+					"5a3fec8c4df1f845f52b2a502ac590495b63eaf1d27ffacecd83b4a52a484e5a"
+				],
+				"actors": [
+					"hero",
+					"stark"
+				]
+			},
+			"briefing brief_311": {
+				"hashes": [
+					"052665c006bec933f002832d4cb7371775fa0e770a1b04f233e99e9a216fe9e3"
+				],
+				"actors": [
+					"hero",
+					"baron",
+					"nekro"
+				]
+			},
+			"briefing brief_311a": {
+				"hashes": [
+					"84d71fd21c7e7c0b60a5dc370012cbe2bcf3d290002a9afd2960ec9568a1050f"
+				],
+				"actors": [
+					"nekro",
+					"hero"
+				]
+			},
+			"briefing brief_312": {
+				"hashes": [
+					"7e8449cf4fae4bbbf90666f806cc9b0927a7ff220d1773226ff55535874afa2e"
+				],
+				"actors": [
+					"merc2",
+					"baron",
+					"hero"
+				]
+			},
+			"briefing brief_313": {
+				"hashes": [
+					"5480539bbcd600f3eead80ef056fb3a2dc34a1e49fa67fe249548b0ed9623930"
+				],
+				"actors": [
+					"nekro",
+					"merc2",
+					"hero"
+				]
+			},
+			"briefing brief_315": {
+				"hashes": [
+					"4296507b0b4f0663c9058006d96ed8e7478a62280ec6ba5600e429d162c4d32c"
+				],
+				"actors": [
+					"hero",
+					"nekro"
+				]
+			},
+			"briefing brief_318": {
+				"hashes": [
+					"5ef79070a1fe2672c6db262dc93d2d36d5358fe6af7a35e51a0b0b909a3bc45b"
+				],
+				"actors": [
+					"hero",
+					"bson"
+				]
+			},
+			"briefing brief_319": {
+				"hashes": [
+					"425be72d467f282dba6b0b48b8fd42372a14e6dc175efcf5d2ec264f5ab2eb60"
+				],
+				"actors": [
+					"stark",
+					"hero"
+				]
+			},
+			"briefing brief_320": {
+				"hashes": [
+					"f1f1353075489ee9918581662e39ab02760fa348ed9b8f92456d65d81c2dc780"
+				],
+				"actors": [
+					"hero",
+					"stark",
+					"merc2"
+				]
+			},
+			"briefing brief_321": {
+				"hashes": [
+					"a0970b6f926dcab6cc9f6929934954e3dcccc4b5d65c3ae00d96ae1f99464ea5"
+				],
+				"actors": [
+					"baron",
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_324": {
+				"hashes": [
+					"3ba80b4efb912b8d8dec5d7c45ce069a38b8ddb64fd9b4f7ffda9eb5985ca8a6"
+				],
+				"actors": [
+					"hero",
+					"bson"
+				]
+			},
+			"briefing brief_336": {
+				"hashes": [
+					"604e617ebe56fc5e177f9ccc4c5ad863e2aca4e5e648e9f3a6e0721162f05d4d"
+				],
+				"actors": [
+					"hero",
+					"bson"
+				]
+			},
+			"briefing brief_337": {
+				"hashes": [
+					"4480dc7df1d9a34b1abd5c5aabc03c3ece37f06d454a916da32fd94b5af22114"
+				],
+				"actors": [
+					"bson",
+					"hero"
+				]
+			},
+			"briefing brief_326": {
+				"hashes": [
+					"89e5bc0b2be7db4dc016d8dc4248834d036793de90fc8ad43872fa03149ee052"
+				],
+				"actors": [
+					"hero",
+					"baron"
+				]
+			},
+			"briefing brief_329": {
+				"hashes": [
+					"dc49c839f6e153c27b11e5aacedcb1a23b9237e293161600cf7e23aae96e18c7"
+				],
+				"actors": [
+					"baron",
+					"hero"
+				]
+			},
+			"briefing brief_330": {
+				"hashes": [
+					"e088f508e6d4f4d3b5962b9d66c06ee7f3a887ea74865db11bb7cf2c5093da70"
+				],
+				"actors": [
+					"doctor",
+					"hero"
+				]
+			},
+			"briefing brief_331": {
+				"hashes": [
+					"66c0109b08e8ef4f3e337844f61cf7a22a38fdc326f0e7e68a6032beed669bef"
+				],
+				"actors": [
+					"hero",
+					"baron"
+				]
+			},
+			"briefing brief_332": {
+				"hashes": [
+					"2be6ad5436634dc7b2b51b44b69c0bdde99b4e8db9b259c8288c9efe759b6ed9"
+				],
+				"actors": [
+					"merc2",
+					"doctor",
+					"hero"
+				]
+			},
+			"briefing brief_333": {
+				"hashes": [
+					"6a6ab35a9b49c26392fee81934bce969f0eab19422bd32e87017d2390a386fc1"
+				],
+				"actors": [
+					"doctor",
+					"hero"
+				]
+			},
+			"briefing brief_334": {
+				"hashes": [
+					"947245083513629acd592d0902041b4e0bb94847999b3e600fabca2c89f3f212"
+				],
+				"actors": [
+					"baron",
+					"hero"
+				]
+			},
+			"briefing brief_338": {
+				"hashes": [
+					"ab1948312f0da6fb167ce87fc88f991ffaf54e30f4ea486563f4d76b5e6f4566"
+				],
+				"actors": [
+					"baron",
+					"merc2"
+				]
+			},
+			"briefing brief_339": {
+				"hashes": [
+					"18db1a7d1b42338e46d75ac848d747543f19a163a0ef8572a5be3b7ada466fbf"
+				],
+				"actors": [
+					"merc2",
+					"hero"
+				]
+			},
+			"briefing brief_340": {
+				"hashes": [
+					"2cd5aaa787a6680b7032edbf030f2a382b622efb64d7f75e81692f682f84e1aa"
+				],
+				"actors": [
+					"deva",
+					"hero"
+				]
+			},
+			"briefing brief_341": {
+				"hashes": [
+					"514ffdb0cd61c4f6764206fc911bc4c1fdb7072caf5d06529aa01b8e23867fe3"
+				],
+				"actors": [
+					"junofil",
+					"hero"
+				]
+			},
+			"briefing brief_335": {
+				"hashes": [
+					"8ca8b3688e8c49433264942d2dda0229a9a9baf289c85a31e8026a329d2754d3"
+				],
+				"actors": [
+					"hero",
+					"doctor"
+				]
+			},
+			"briefing brief_342": {
+				"hashes": [
+					"05d6e6dbec15532089e78e056ec9d51679c7abb79e02cbc317a6dfc5a7f31e8a"
+				],
+				"actors": [
+					"merc2",
+					"hero"
+				]
+			},
+			"briefing brief_345": {
+				"hashes": [
+					"abedb5b8ee27b020bf61325404cdbcfb2856d0b41257e20c9d5c49c99b5b4dd2"
+				],
+				"actors": [
+					"deva",
+					"hero"
+				]
+			},
+			"briefing fq20": {
+				"hashes": [
+					"3c82b17f7ed0a80b470e269fa583bbd194fc35ae36e1edc8ec6586bb6c86c132"
+				],
+				"actors": [
+					"junofil",
+					"hero"
+				]
+			},
+			"briefing fq21": {
+				"hashes": [
+					"3b2e4d6246310a4c1c46d8da83a6bba0f221c4c1688026c73fae6236de364d12"
+				],
+				"actors": [
+					"hero",
+					"merc2"
+				]
+			},
+			"briefing brief_343": {
+				"hashes": [
+					"f55f3ac3cc534e8e5265b92501734023d1f8798e90cca6388a90d1aa96e7a784"
+				],
+				"actors": [
+					"junofil",
+					"hero"
+				]
+			},
+			"briefing brief_344": {
+				"hashes": [
+					"2b49545c1d5ae2cb3c51317197121ccee38a3bf668d0d6ac073e976a103c18e5"
+				],
+				"actors": [
+					"doctor",
+					"hero"
+				]
+			},
+			"briefing brief_347": {
+				"hashes": [
+					"b5714e98d7ed0fbccfc24318cd3bc78a064d53c638a1d88f362a20b3350f9292"
+				],
+				"actors": [
+					"hero",
+					"baron"
+				]
+			},
+			"briefing brief_348": {
+				"hashes": [
+					"7aaa6e622be77934526eda77cecb2837452f5e0237bf2ed7ec13cef96a416366"
+				],
+				"actors": [
+					"hero",
+					"doctor"
+				]
+			},
+			"briefing brief_349": {
+				"hashes": [
+					"b57cbf3808cc06ef1f5f16b223005de9a121a86093305216e5577f6fa82799de"
+				],
+				"actors": [
+					"hero",
+					"firez"
+				]
+			},
+			"zone gz36j": {
+				"hashes": [
+					"a9c4eb50a40a9599490c050689ba1729fefb74a6dd948cb42c27f72ec91d68d6"
+				],
+				"world": "zone gz36j"
+			},
+			"briefing nsheriff_about": {
+				"hashes": [
+					"7966656c774c126c2973e55e2f0fb909ebf5d149475d8b27a08bf224b8ba1c31"
+				],
+				"actors": [
+					"nsheriff",
+					"hero2"
+				]
+			},
+			"briefing brief_59b": {
+				"hashes": [
+					"c4d4c89cc81f8712b04765c08f0c4e32fc5d6cdec7f081603ca0e5b1c92b1337"
+				],
+				"actors": [
+					"merc7",
+					"hero2"
 				]
 			},
 			"briefing brief_7": {
@@ -7499,6 +17028,43 @@ const DATA := {
 					"ycf"
 				]
 			},
+			"briefing brief_27": {
+				"hashes": [
+					"0f5a8109cbe174dfff2c7b25a453ce5593f1413945654d607d6d52e213559902"
+				],
+				"actors": [
+					"ycf",
+					"hero2",
+					"merc2"
+				]
+			},
+			"briefing brief_28": {
+				"hashes": [
+					"c47cca3ec791c75f60ec79f2dd4a067b5f55f6150b83c5e0cfc80dd462206cef"
+				],
+				"actors": [
+					"hero2",
+					"ycf"
+				]
+			},
+			"briefing brief_34c": {
+				"hashes": [
+					"72e9607b7287506b5d60d7be6adbcda86f0d90e300d5a8e59a193aa385713e5f"
+				],
+				"actors": [
+					"hero2",
+					"ycf"
+				]
+			},
+			"briefing brief_64": {
+				"hashes": [
+					"5fd643e308089861c7ce9ccc7afb3eef55b875ea879a0bb50cdc262cc5df27c3"
+				],
+				"actors": [
+					"hero2",
+					"ycf"
+				]
+			},
 			"briefing skelet_about": {
 				"hashes": [
 					"aaed5ee6ef0ba1e8f21a332402d4f97043bc45e04809b03ed8dcd38b0b35b112"
@@ -7526,94 +17092,6 @@ const DATA := {
 					"skelet"
 				]
 			},
-			"briefing brief_151": {
-				"hashes": [
-					"35996060b8bb5d04ae4e7353770c91f03da3d6fa60fe8d572f0b31ae073d2733"
-				],
-				"actors": [
-					"rick",
-					"hero"
-				]
-			},
-			"briefing brief_101": {
-				"hashes": [
-					"b574ea2105c3148423bb26426e0a0b1ed3948aec9c36edf8784a0b79962eaf15"
-				],
-				"actors": [
-					"orcc",
-					"hero",
-					"merc2"
-				]
-			},
-			"briefing brief_105": {
-				"hashes": [
-					"903b8df15a7a2707695666064ecad847ecab06e2d98413ff649ed7dde0c072b5"
-				],
-				"actors": [
-					"hero",
-					"merc2",
-					"orcc"
-				]
-			},
-			"briefing brief_108": {
-				"hashes": [
-					"53f9c34d1319df931396a359f006f4564572e39f1ea3d1e56fea0bcaf9228da4"
-				],
-				"actors": [
-					"hero",
-					"orcpyr",
-					"merc2"
-				]
-			},
-			"briefing brief_112": {
-				"hashes": [
-					"d88c8a158c8ba399ee953bf6a36dcbd5dfc5aa7956b90966d20b2112cb6dc7ec"
-				],
-				"actors": [
-					"hero",
-					"orcc"
-				]
-			},
-			"briefing brief_113": {
-				"hashes": [
-					"c7be72bb7fb0c16aaa3f5b0fb337e468b7c582afa483a90ad266692a48b86514"
-				],
-				"actors": [
-					"hero",
-					"orcpyr",
-					"merc2"
-				]
-			},
-			"briefing brief_102": {
-				"hashes": [
-					"ead038f46c22e05c2d7cb8bed6c077d74c00015c120c42b13b788e170535aa4f"
-				],
-				"actors": [
-					"orcpyr",
-					"hero",
-					"merc2"
-				]
-			},
-			"briefing brief_107": {
-				"hashes": [
-					"a8dbb05b8cbb1c79b433415b23cc01214c8c6836c9f7c338424b329277f9acb2"
-				],
-				"actors": [
-					"hero",
-					"orcpyr",
-					"merc2"
-				]
-			},
-			"briefing brief_110": {
-				"hashes": [
-					"bc8f042728052bfa2ae90955707941f5c171493d0721eda04d79589128de1605"
-				],
-				"actors": [
-					"orcpyr",
-					"merc2",
-					"hero"
-				]
-			},
 			"briefing brief_120a": {
 				"hashes": [
 					"28a79a96db5eecce9db9ff2922bc01d8d1978d0fc4ebbfef2278bd0c5eaf3aed"
@@ -7621,124 +17099,6 @@ const DATA := {
 				"actors": [
 					"orcpyr",
 					"hero"
-				]
-			},
-			"briefing brief_114": {
-				"hashes": [
-					"852a134f3268b6ca612cd84881614c948ccecea151fffb4c4e6639778f1764c9"
-				],
-				"actors": [
-					"iz",
-					"hero",
-					"merc2"
-				]
-			},
-			"briefing brief_117": {
-				"hashes": [
-					"cdd857c742803bd0f95a4747eabe92fa3bd43c78dd9bbcdc04dc47489a2e7e5e"
-				],
-				"actors": [
-					"hero",
-					"iz"
-				]
-			},
-			"briefing brief_121": {
-				"hashes": [
-					"c9bbdf378fcdee90e0b1fba9e534704a385e60abcb1edbc7dc18ace278743abd"
-				],
-				"actors": [
-					"karh",
-					"hero",
-					"merc2"
-				]
-			},
-			"briefing brief_126a": {
-				"hashes": [
-					"2ec70174cd1eab24fd93f8a6962f7d912c49af3f944a9c23c83f059cb9610a5b"
-				],
-				"actors": [
-					"smith",
-					"karh",
-					"hero"
-				]
-			},
-			"briefing brief_126b": {
-				"hashes": [
-					"88ed9c74720c073de893d4d5c4ba8d508fb193bd5f3dfc7481ad9ff0286cce4e"
-				],
-				"actors": [
-					"smith",
-					"karh",
-					"hero"
-				]
-			},
-			"briefing brief_128": {
-				"hashes": [
-					"ecc2f301dc900a54f7ec0f56fbb26e33a434f76d273ec88aaf970afcd00c1c3a"
-				],
-				"actors": [
-					"hero",
-					"smith",
-					"merc2"
-				]
-			},
-			"briefing brief_141": {
-				"hashes": [
-					"6367e114369f851bf7b794afb63ef7aa53829a86b35a0acb10ebcc6b500d6182"
-				],
-				"actors": [
-					"orcc",
-					"hero"
-				]
-			},
-			"briefing brief_129": {
-				"hashes": [
-					"e4b3fa3c4633744958265d59e1082d73aa8adfb614ed09c18ec17dabfee9b204"
-				],
-				"actors": [
-					"daughter",
-					"hero",
-					"merc2"
-				]
-			},
-			"briefing brief_137": {
-				"hashes": [
-					"9ceac830e71134afc83420870c3b057f0585b8ed66edc722cdf362288a432340"
-				],
-				"actors": [
-					"daughter",
-					"merc2",
-					"hero"
-				]
-			},
-			"briefing brief_133": {
-				"hashes": [
-					"cf74f08969e20df71b13a5928b8dc2fb0630e3a1777e2bb7f7ea396521fd2807"
-				],
-				"actors": [
-					"witch",
-					"skd",
-					"hero"
-				]
-			},
-			"briefing brief_136": {
-				"hashes": [
-					"4f8432a8871cbceec0a80cf147ff9ba323d36a5a7dab18d1ac7fbbb12a91348b"
-				],
-				"actors": [
-					"witch",
-					"hero",
-					"daughter"
-				]
-			},
-			"briefing brief_132": {
-				"hashes": [
-					"7857eec9e759fba763ad80eae6fe6dffeb6f7864d88c62942aad7aa5083ca4c6"
-				],
-				"actors": [
-					"merc2",
-					"hero",
-					"skd"
 				]
 			},
 			"briefing fq9": {
@@ -7759,16 +17119,6 @@ const DATA := {
 					"spletnica"
 				]
 			},
-			"briefing brief_120": {
-				"hashes": [
-					"61eadb5dd43483fba4f75f9f8280e1bc9540dac1128fbefa22b54d118a026c2f"
-				],
-				"actors": [
-					"loozer",
-					"hero",
-					"merc2"
-				]
-			},
 			"briefing brief_224": {
 				"hashes": [
 					"bf299922ec8df4b8c00866e98c0863fe2532cd3ed959252cfc2fc089bbcd1632"
@@ -7776,55 +17126,6 @@ const DATA := {
 				"actors": [
 					"hero",
 					"huber",
-					"merc2"
-				]
-			},
-			"briefing brief_250a": {
-				"hashes": [
-					"1ec537d7a4322480e319ce38e6cb4272111a7ebf699219e9bdffe29ed8c63959"
-				],
-				"actors": [
-					"hero",
-					"huber",
-					"vor"
-				]
-			},
-			"briefing brief_206": {
-				"hashes": [
-					"b9aa2565ef440506deb59fdda3393994bdc04c04d8bee17251e1d78718872be8"
-				],
-				"actors": [
-					"trapper",
-					"hero",
-					"merc2"
-				]
-			},
-			"briefing brief_218": {
-				"hashes": [
-					"ad5d86ea80736e6ad0ce32eefaae31724a47b553ff2a8a44cbc0fa832ad3eda4"
-				],
-				"actors": [
-					"hero",
-					"trapper"
-				]
-			},
-			"briefing brief_207": {
-				"hashes": [
-					"cdc4e7bc479d66220a52739977e61eafdc4efda18fdc4240f72847e48fe6f87b"
-				],
-				"actors": [
-					"grey",
-					"hero",
-					"merc2"
-				]
-			},
-			"briefing brief_237": {
-				"hashes": [
-					"78ebf7db2dfbae15ea71c12348372d8fb3c3ec94024a99caac1b2cd904d69eba"
-				],
-				"actors": [
-					"hero",
-					"grey",
 					"merc2"
 				]
 			},
@@ -7846,75 +17147,6 @@ const DATA := {
 					"hero"
 				]
 			},
-			"briefing brief_201": {
-				"hashes": [
-					"6d318afcc96f60e85d06d60dc4dcd34d8350e4a4b22d1b5dda2f8865942e8518"
-				],
-				"actors": [
-					"merc2",
-					"hero",
-					"trader"
-				]
-			},
-			"briefing brief_247": {
-				"hashes": [
-					"5c2f7808d676c851df75e60a88f1500d66ec2cd621d231a7bdf90f44e94d66c9"
-				],
-				"actors": [
-					"merc2",
-					"gerald",
-					"hero"
-				]
-			},
-			"briefing brief_212": {
-				"hashes": [
-					"680e1d91465be94ad277ff918ff4f3fb4e78a558913f8f573e8c125ffcbcc1fb"
-				],
-				"actors": [
-					"gerald",
-					"vor",
-					"hero"
-				]
-			},
-			"briefing brief_215": {
-				"hashes": [
-					"b3d4741fdde6dbaf8979c26d1813939c44e016cf163fa3147ca2c2b31c6b09ff"
-				],
-				"actors": [
-					"mthief",
-					"hero",
-					"gerald"
-				]
-			},
-			"briefing brief_204": {
-				"hashes": [
-					"d1f80da6e94fedb87204ac1d5eea82c9a932484ce6951e8f94c149a14910ddbc"
-				],
-				"actors": [
-					"his",
-					"merc2",
-					"hero"
-				]
-			},
-			"briefing brief_245": {
-				"hashes": [
-					"3d4793484444b1119675bb27f65dc93e6e47ee237f66860cbb3cf766ab71b3dd"
-				],
-				"actors": [
-					"hero",
-					"huber",
-					"his"
-				]
-			},
-			"briefing brief_245a": {
-				"hashes": [
-					"f8b8180ee08084238f8bd0c401267c0b194e1bed58a7f3e0539f743aa6a771ed"
-				],
-				"actors": [
-					"his",
-					"hero"
-				]
-			},
 			"briefing brief_216": {
 				"hashes": [
 					"13e5a7c2d72787ede221f68404d88ebdc2ea564dbed80b81903b0b27b85bc850"
@@ -7922,168 +17154,6 @@ const DATA := {
 				"actors": [
 					"vor",
 					"merc2",
-					"hero"
-				]
-			},
-			"briefing brief_250": {
-				"hashes": [
-					"0f2fc9074612728f1e80bb6f1f705a375207dbc86739a954398a2826ea38890a"
-				],
-				"actors": [
-					"merc2",
-					"hero",
-					"vor"
-				]
-			},
-			"briefing brief_233": {
-				"hashes": [
-					"6cfbfe48b8f0cf05b12b56cd86070794f1664c4e9d94080a6b565fb0482e01a1"
-				],
-				"actors": [
-					"kmage",
-					"merc2",
-					"hero"
-				]
-			},
-			"briefing brief_239": {
-				"hashes": [
-					"66d889ce3fddfb12090618775a1c37cc75e7039180ecf344be5da75825cc97eb"
-				],
-				"actors": [
-					"guard",
-					"hero"
-				]
-			},
-			"briefing brief_253": {
-				"hashes": [
-					"66162b281ee7ff8b326d9c3d41f3fe66ed94fd924ed2b56da5f11b85f4174a07"
-				],
-				"actors": [
-					"hero",
-					"mthief",
-					"kmage"
-				]
-			},
-			"briefing brief_347": {
-				"hashes": [
-					"b5714e98d7ed0fbccfc24318cd3bc78a064d53c638a1d88f362a20b3350f9292"
-				],
-				"actors": [
-					"hero",
-					"baron"
-				]
-			},
-			"briefing brief_302": {
-				"hashes": [
-					"5c8be0d3c13f47c62dc5c342fc0b04d092615bb0ccf75bb9c016ac8fa8be4faa"
-				],
-				"actors": [
-					"bson",
-					"hero",
-					"merc2"
-				]
-			},
-			"briefing brief_324": {
-				"hashes": [
-					"3ba80b4efb912b8d8dec5d7c45ce069a38b8ddb64fd9b4f7ffda9eb5985ca8a6"
-				],
-				"actors": [
-					"hero",
-					"bson"
-				]
-			},
-			"briefing brief_336": {
-				"hashes": [
-					"604e617ebe56fc5e177f9ccc4c5ad863e2aca4e5e648e9f3a6e0721162f05d4d"
-				],
-				"actors": [
-					"hero",
-					"bson"
-				]
-			},
-			"briefing brief_305": {
-				"hashes": [
-					"1bc83b17cc4334541d92f814a21a7df7f8042380a0a8800b307b940a57e8c1cd"
-				],
-				"actors": [
-					"stark",
-					"merc2",
-					"hero"
-				]
-			},
-			"briefing brief_344": {
-				"hashes": [
-					"2b49545c1d5ae2cb3c51317197121ccee38a3bf668d0d6ac073e976a103c18e5"
-				],
-				"actors": [
-					"doctor",
-					"hero"
-				]
-			},
-			"briefing brief_348": {
-				"hashes": [
-					"7aaa6e622be77934526eda77cecb2837452f5e0237bf2ed7ec13cef96a416366"
-				],
-				"actors": [
-					"hero",
-					"doctor"
-				]
-			},
-			"briefing brief_303": {
-				"hashes": [
-					"1c632331bc5f14be0011eb6608682dd01c24f84613d9d3644e84143fa20fb209"
-				],
-				"actors": [
-					"stark",
-					"hero",
-					"merc2"
-				]
-			},
-			"briefing brief_320": {
-				"hashes": [
-					"f1f1353075489ee9918581662e39ab02760fa348ed9b8f92456d65d81c2dc780"
-				],
-				"actors": [
-					"hero",
-					"stark",
-					"merc2"
-				]
-			},
-			"briefing brief_311": {
-				"hashes": [
-					"052665c006bec933f002832d4cb7371775fa0e770a1b04f233e99e9a216fe9e3"
-				],
-				"actors": [
-					"hero",
-					"baron",
-					"nekro"
-				]
-			},
-			"briefing brief_311a": {
-				"hashes": [
-					"84d71fd21c7e7c0b60a5dc370012cbe2bcf3d290002a9afd2960ec9568a1050f"
-				],
-				"actors": [
-					"nekro",
-					"hero"
-				]
-			},
-			"briefing brief_313": {
-				"hashes": [
-					"5480539bbcd600f3eead80ef056fb3a2dc34a1e49fa67fe249548b0ed9623930"
-				],
-				"actors": [
-					"nekro",
-					"merc2",
-					"hero"
-				]
-			},
-			"briefing brief_343": {
-				"hashes": [
-					"f55f3ac3cc534e8e5265b92501734023d1f8798e90cca6388a90d1aa96e7a784"
-				],
-				"actors": [
-					"junofil",
 					"hero"
 				]
 			},

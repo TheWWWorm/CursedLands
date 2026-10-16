@@ -179,7 +179,14 @@ function showVersion(id) {
   if(entry.key==='home')home(content);
   $('#toc').hidden=entry.key==='home'||entry.kind==='map'||isPlan;
   $('#toc').replaceChildren();
-  if(entry.key!=='home')for(const [i,h] of [...content.querySelectorAll('h2')].entries()){h.id='section-'+i;const a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent;$('#toc').append(a);}
+  const sections=[...content.querySelectorAll('h2')];
+  let contents=$('#toc');
+  if(sections.length>10){
+    const details=document.createElement('details'),summary=document.createElement('summary');
+    summary.textContent=strings.onThisPage;contents=document.createElement('div');contents.className='toc-sections';
+    details.append(summary,contents);$('#toc').append(details);
+  }
+  if(entry.key!=='home')for(const [i,h] of sections.entries()){h.id='section-'+i;const a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent;contents.append(a);}
   $('#article-heading').replaceChildren();
   if(entry.key!=='home'){const heading=content.querySelector('h1'),subtitle=content.querySelector('.article-subtitle');if(heading)$('#article-heading').append(heading);if(subtitle)$('#article-heading').append(subtitle);}
   $('.article-tools').hidden=entry.key==='home';

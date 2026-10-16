@@ -65,5 +65,6 @@
     "design_detector": "No findings on added world-illustration styles; existing stylesheet findings outside this change retained."
   },
   "compiler_reproducible": true,
-  "packaged_illustrations": 4287
+  "packaged_illustrations": 4287,
+  "follow_up": "wiki-lore-chronology-2026-10-16.json"
 }

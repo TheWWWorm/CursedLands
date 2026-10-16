@@ -69,7 +69,7 @@ func html(key: String) -> String:
 		out += WikiCatalog.paragraph(RemakeText.t("Some story sections are unavailable because the installed dialogue differs from the sources used for this article."))
 	if not used.is_empty():
 		out += WikiCatalog.heading(RemakeText.t("Sources"))
-		out += WikiCatalog.paragraph(RemakeText.t("Based on the original game dialogue and world descriptions. Source numbers refer to the scenes listed below."))
+		out += WikiCatalog.paragraph(RemakeText.t("Based on the original dialogue, quest journals and world descriptions. Source numbers identify the evidence listed below."))
 		var rows := []
 		for i in used.size(): rows.append([str(i + 1), source_label(used[i])])
 		out += WikiCatalog.table_html(["#", RemakeText.t("Sources")], rows)
@@ -87,7 +87,8 @@ func source_label(key: String) -> String:
 	else:
 		var title := WikiWorldText.text(key).get_slice("\n", 0).strip_edges()
 		if title: names.append(WikiCatalog.esc(title))
-	return WikiCatalog.esc(RemakeText.t("Dialogue" if source.has("actors") else "World description")) + " · " + ", ".join(names) + " (" + WikiCatalog.esc(key) + ")"
+	var label := "Dialogue" if source.has("actors") else ("Quest journal" if key.begins_with("quest ") else "World description")
+	return WikiCatalog.esc(RemakeText.t(label)) + " · " + ", ".join(names) + " (" + WikiCatalog.esc(key) + ")"
 
 func model(key: String) -> Dictionary:
 	var row: Dictionary = records.get(key, {})

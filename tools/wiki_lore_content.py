@@ -22,22 +22,6 @@ def bio(id,en,ru,de,sources,**kw):
  r=rec(id,**kw);sec(r,'Biography',en,ru,de,sources);return r
 
 hero=rec('hero',actors=['hero','junboy'],aliases=['pers junboy'],prototypes=['hero','jun male hero f1'],locations=['gz1g','bz1g','bz7g','bz11k','bz13h','bz14h','gz20g'])
-sec(hero,'The Chosen of Gipath',
-'[[character/hero]] is the protagonist of Cursed Lands. With no memory of his past, he reaches Gipath’s only human village, where [[character/elder]] declares him the Chosen. The title makes him the settlement’s supposed protector and gives its leaders a convenient reason to send him into danger. Zak’s own purpose is to discover who he is.',
-'[[character/hero]] — главный герой «Проклятых земель». Потеряв память, он попадает в единственный человеческий посёлок Гипата, где [[character/elder]] объявляет его Избранным. Отныне от него ждут защиты посёлка, а его правители получают удобный повод отправлять чужака навстречу опасности. Сам Зак стремится выяснить, кто он такой.',
-'[[character/hero]] ist die Hauptfigur von Cursed Lands. Ohne Erinnerung an seine Vergangenheit erreicht er Gipaths einzige menschliche Siedlung. [[character/elder]] erklärt ihn zum Auserwählten. Damit soll er das Dorf beschützen, und dessen Anführer haben einen willkommenen Anlass, ihn in Gefahr zu schicken. Zak selbst will herausfinden, wer er ist.', 's1 s0 z1')
-sec(hero,'The search for the magician',
-'[[character/witch]] recognises that something unusual lies behind his lost memory. Her knowledge, Airy’s discoveries, the Old Dragon’s information and the Hermit Lizard’s bargain lead Zak toward [[character/rick]]. Along the way he becomes entangled in the village leaders’ plots and helps people whose interests often conflict.',
-'[[character/witch]] замечает, что за потерей памяти скрывается нечто необычное. Её знания, находки Айри, сведения Старого Дракона и договор с Ящером-Отшельником направляют Зака к [[character/rick|Великому Магу]]. По пути он оказывается втянут в заговоры поселковых правителей и помогает людям с противоречащими друг другу интересами.',
-'[[character/witch]] erkennt, dass hinter seinem Gedächtnisverlust etwas Ungewöhnliches steckt. Ihr Wissen, Airys Entdeckungen, die Auskünfte des Alten Drachen und die Abmachung mit der Einsiedlerechse führen Zak zu [[character/rick|Tka-Rik]]. Unterwegs gerät er in die Intrigen der Dorfoberen und hilft Menschen mit widerstreitenden Interessen.', 'z1 z13_1 dr22 l34 s25_1')
-sec(hero,'Ingos and Suslanger',
-'The Great Magician offers help in exchange for finding two surviving Joons. On [[allod/ingos]], Zak rescues [[character/deva]], who has been imprisoned by [[character/magess]]. His search for her beloved At-Zako then takes him to [[allod/suslanger]], where he is captured, escapes with the Odalisque’s help and finds refuge among the Last Shelter’s brothers. A dead scientist’s testimony and the remains of a teleportation amulet become the decisive clues.',
-'Великий Маг обещает помощь в обмен на поиски двух уцелевших джунов. На [[allod/ingos|Ингосе]] Зак спасает [[character/deva|Лу-а-Джаллу]], которую заточила [[character/magess]]. Поиски её возлюбленного Ат-Зако приводят его на [[allod/suslanger]]: там он попадает в плен, бежит с помощью Наложницы и находит пристанище в Последнем Укрытии. Решающие улики — рассказ духа погибшего учёного и остатки телепортационного амулета.',
-'Der Große Magier verspricht Hilfe, wenn Zak zwei überlebende Joon findet. Auf [[allod/ingos]] befreit er [[character/deva]] aus der Gefangenschaft bei [[character/magess]]. Die Suche nach ihrem Geliebten At-Zako führt ihn nach [[allod/suslanger]]. Dort wird er gefangen genommen, entkommt mit Hilfe der Odaliske und findet Zuflucht im Letzten Unterschlupf. Die Aussage eines verstorbenen Forschers und die Reste eines Teleportationsamuletts liefern die entscheidenden Hinweise.', 'r36 r54 kr60 kr61 gl64 sn69_1')
-sec(hero,'At-Zako and the Curse',
-'Tka Rik discovers that the amulet transported At-Zako to Gipath: Zak has been searching for himself. A Khadaganian scientist transformed the young Joon to hide him from the Joon Curse; the hurried spell also endangered his memory. Restored to his identity, At-Zako is reunited with Lu-a-Jalla. He chooses to confront the Curse with Tka Rik rather than spend their lives fleeing it.',
-'Тка-Рик выясняет, что амулет перенёс Ат-Зако на Гипат: всё это время Зак искал самого себя. Хадаганский учёный изменил облик юного джуна, чтобы спрятать его от Проклятия; поспешное заклинание поставило под угрозу и его память. Вернув своё имя и облик, Ат-Зако воссоединяется с Лу-а-Джалой. Он решает вместе с Тка-Риком сразиться с Проклятием, а не провести жизнь в бегах.',
-'Tka Rik erkennt, dass das Amulett At-Zako nach Gipath brachte: Zak hat die ganze Zeit nach sich selbst gesucht. Ein khadaganischer Forscher verwandelte den jungen Joon, um ihn vor dem Fluch der Joon zu verbergen; der hastige Zauber gefährdete auch sein Gedächtnis. Als At-Zako findet er zu Lu-a-Jalla zurück. Gemeinsam mit Tka Rik will er sich dem Fluch stellen, statt ihm lebenslang zu entfliehen.', 'r72_1 r72_4 r72_6 d72_5')
 
 r=bio('elder',
 '[[character/elder]] governs Gipath’s village and presents himself as its devoted elected leader. He proclaims Zak the Chosen and puts that supposed destiny to practical use, assigning dangerous errands while promising honour and hospitality. His speeches conceal a much more personal interest in the island.',
@@ -204,18 +188,6 @@ for id,en,ru,de,sources in companions:bio(id,en,ru,de,sources,role='Companion')
 
 C='lost_in_astral'
 hero=rec('hero',actors=['hero','hero2'],locations=['bz1h','bz14h','bz7g'])
-sec(hero,'A fugitive from Jigran',
-'[[character/hero]] is the Joon protagonist of Lost in Astral. He escaped from [[character/firez]] on [[allod/jigran]], leaving his family enslaved, and hopes to return to free them. A recruiter’s promise of work instead leads to his enslavement on [[allod/suslanger]]. In the slave pen he meets [[character/merc2]], who saves him after a beating, gives him the short name Kir and helps plan their escape.',
-'[[character/hero]] — джун, главный герой «Затерянных в Астрале». Он бежал от [[character/firez|Фиреза]] с [[allod/jigran|Джиграна]], оставив семью в рабстве, и надеется вернуться за ней. Обещание работы оборачивается новым рабством на [[allod/suslanger|Суслангере]]. В загоне он знакомится с [[character/merc2]]: она спасает его после побоев, сокращает его имя до Кира и помогает готовить побег.',
-'[[character/hero]] ist der Joon-Held von Lost in Astral. Er entkam [[character/firez]] auf [[allod/jigran]], musste seine versklavte Familie aber zurücklassen und will sie befreien. Das Arbeitsangebot eines Anwerbers führt ihn stattdessen in die Sklaverei auf [[allod/suslanger]]. Dort rettet ihn [[character/merc2]] nach einer Prügelstrafe, nennt ihn kurz Kir und plant mit ihm die Flucht.', 'brief_0 brief_1 brief_2 brief_119')
-sec(hero,'The road home',
-'Kir and Kel seek refuge, information about the Joons and a route to Gipath’s [[character/rick]]. The magician has not heard of Jigran, but the Magic Orb points them toward [[allod/ingos]]. There they become involved in the investigation of Brissen’s murder. [[character/kmage]] eventually identifies an old passage to Jigran, and Kir chooses to follow it with Kel rather than turn back.',
-'Кир и Кель ищут убежище, сведения о джунах и путь к [[character/rick|Великому Магу]] на Гипате. Маг не слышал о Джигране, однако Волшебный Шар указывает на [[allod/ingos]]. Там герои оказываются втянуты в расследование убийства Бриссена. В конце концов [[character/kmage]] находит сведения о старом проходе на Джигран, и Кир решает идти туда вместе с Кель.',
-'Kir und Kel suchen Schutz, Wissen über die Joons und einen Weg zu [[character/rick|Tka-Rik]] auf Gipath. Der Magier kennt Jigran nicht, doch die magische Kugel weist nach [[allod/ingos]]. Dort geraten sie in die Untersuchung von Brissens Ermordung. [[character/kmage]] entdeckt schließlich einen alten Zugang nach Jigran. Kir folgt ihm mit Kel, statt umzukehren.', 'brief_41 brief_118 brief_149 brief_251 brief_254')
-sec(hero,'Return to Jigran',
-'Back on Jigran, Kir aids [[character/baron]] against Firez, frees the elder [[character/junofil]] and rescues [[character/deva]], the woman he remembered from childhood. Kel’s death while retrieving Tai-Ilara’s belongings makes him confront the difference between that childhood attachment and Kel’s loyalty. Firez later reveals that he too is a Joon and claims that his necromancy was meant to protect their people from the Curse. This is Firez’s justification, not an endorsement of his actions.',
-'Вернувшись на Джигран, Кир помогает [[character/baron|барону Виррилу]] в борьбе с Фирезом, освобождает старейшину [[character/junofil|Туи-Лена]] и спасает [[character/deva|Тай-Илару]], которую помнил с детства. Гибель Кель при поиске вещей Тай-Илары заставляет его иначе взглянуть на детскую привязанность и верность спутницы. Позднее Фирез признаётся, что тоже джун, и оправдывает некромантию защитой народа от Проклятия. Это объяснение самого Фиреза, а не подтверждение правоты его поступков.',
-'Auf Jigran unterstützt Kir [[character/baron]] gegen Firez, befreit den Ältesten [[character/junofil]] und rettet seine Jugendliebe [[character/deva]]. Als Kel bei der Suche nach Tai-Ilaras Habseligkeiten stirbt, erkennt er den Unterschied zwischen seiner früheren Schwärmerei und Kels Treue. Firez enthüllt später, dass auch er ein Joon ist. Er rechtfertigt seine Nekromantie mit dem Schutz vor dem Fluch; diese Behauptung ist seine eigene Rechtfertigung.', 'brief_304 brief_340 brief_341 brief_342 brief_345 brief_349')
 kel=bio('merc2',
 '[[character/merc2]] is a thief and Kir’s travelling companion. She helps the injured stranger in the slave pen, introduces him to the dangers of Suslanger and stays with him through the search for his homeland. Her practical knowledge, irreverence and resourcefulness repeatedly complement Kir’s direct approach. Their partnership gradually becomes a love she is reluctant to express openly.',
 '[[character/merc2]] — воровка и спутница Кира. Она помогает избитому незнакомцу в загоне, знакомит его с опасностями Суслангера и остаётся с ним во время поисков родины. Её житейский опыт, насмешливость и находчивость дополняют прямолинейность Кира. Постепенно их товарищество перерастает для неё в любовь, о которой она не решается сказать прямо.',
@@ -360,6 +332,10 @@ map_rows=[
 ]
 for id,en,ru,de,src in map_rows:place(id,'map',en,ru,de,'zone:'+id+' '+src)
 
+# Expand the compact leads into histories ordered by the original quest chains.
+from wiki_lore_history import apply as apply_history
+history_headings = apply_history(DATA, tr)
+
 # Resolve checked editorial corrections before serialising the source resource.
 fixes={'d54':'d55','hw30':'ha29','o28':'sh40','brief_34':'brief_34a'}
 for records in DATA['campaigns'].values():
@@ -380,7 +356,7 @@ for r in DATA['campaigns']['lost_in_astral'].values():
   text=DATA['texts'][s['text']]
   # Keep the expansion's reviewed Latin-script name consistent with its
   # existing gazetteer and character translations.
-  text[1]=text[1].replace('Rindale','Rindeil')
+  text[1]=text[1].replace('Rindale','Rindeil').replace('At-Zako','At-Kira').replace('Zaks','Kirans').replace('Zak','Kiran')
   if 'Rindale' in s['text']:
    en=s['text'].replace('Rindale','Rindeil');DATA['texts'][en]=text;s['text']=en
 
@@ -406,6 +382,7 @@ headings=[
 ('Allods','Аллоды','Allods'),('Protagonist','Главный герой','Hauptfigur'),('Companion','Спутник','Gefährte'),
 ('Sources','Источники','Quellen'),('Dialogue','Диалог','Dialog'),
 ('World description','Описание мира','Weltbeschreibung'),
+('Quest journal','Журнал заданий','Aufgabenjournal'),
 ('Character biography','Биография персонажа','Figurenbiografie'),
 ('Related characters','Связанные персонажи','Verbundene Figuren'),
 ('Inhabitants','Обитатели','Bewohner'),('In-game models','Модели в игре','Modelle im Spiel'),
@@ -417,10 +394,11 @@ headings=[
 ('Original location scene','Оригинальная сцена локации','Originaler Schauplatz'),
 ('Original travel map','Оригинальная карта путешествий','Originale Reisekarte'),
 ('Location: %s','Локация: %s','Ort: %s'),
-('Based on the original game dialogue and world descriptions. Source numbers refer to the scenes listed below.','Основано на оригинальных диалогах и описаниях мира. Номера источников отсылают к сценам ниже.','Grundlage sind die Originaldialoge und Weltbeschreibungen. Die Quellenzahlen verweisen auf die unten aufgeführten Szenen.'),
+('Based on the original dialogue, quest journals and world descriptions. Source numbers identify the evidence listed below.','Основано на оригинальных диалогах, журналах заданий и описаниях мира. Номера отсылают к источникам ниже.','Grundlage sind Originaldialoge, Aufgabenjournale und Weltbeschreibungen. Die Zahlen verweisen auf die unten aufgeführten Quellen.'),
 ('Some story sections are unavailable because the installed dialogue differs from the sources used for this article.','Некоторые разделы истории недоступны: установленные диалоги отличаются от источников статьи.','Einige Abschnitte fehlen, weil die installierten Dialoge von den Quellen dieses Artikels abweichen.'),
 ('Also known as','Также известен как','Auch bekannt als'),
 ]
+headings += history_headings
 for en,ru,de in headings:tr(en,ru,de)
 
 lia_names={

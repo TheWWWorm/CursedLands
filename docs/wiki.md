@@ -71,12 +71,24 @@ menu/pause flow and retain the selected item material and spell where available.
 
 ### Maintaining lore
 
-Edit `tools/wiki_lore_content.py`: each paragraph carries English, Russian and
-German text, its heading and original source IDs. `[[character/hero]]` and similar
+Edit `tools/wiki_lore_content.py` for identities and place introductions, and
+`tools/wiki_lore_history.py` for the ordered campaign histories. Each paragraph
+carries English, Russian and German text, its heading and original source IDs.
+`[[character/hero]]` and similar
 references resolve to the current campaign's localized article names. An optional
 label, such as `[[character/rick|Великому Магу]]`, keeps inflected prose grammatical. Do not
 copy a plot from another adaptation, promote rumours to facts, or fill unknown
 history with inference. Keep optional outcomes conditional.
+
+Order histories by the events' narrative prerequisites, checking the original
+dialogue, quest journals and trigger scripts; dialogue and quest numbers alone
+do not define chronology. For example, Zak's opening follows the fleeing
+villagers, village assembly and early errands before his meeting with Estera.
+Explain parallel investigations and optional companion adventures without
+claiming one mandatory order. A shared event appears only on the involved
+character, location and allod pages. Use `quest:<id>` for journal evidence in
+addition to dialogue IDs and `zone:<id>` for world descriptions. The source list
+labels these separately for readers. Long web articles have expandable contents.
 
 Run `tools/export_wiki_lore_evidence.gd` through the normal `--tool` entry point
 with `--lore-evidence=/private/path/<edition>-world.json` for the original EN/RU/DE
@@ -104,6 +116,9 @@ three languages, validates links and images, and tests suppression after a
 source edit. `tools/tests/wiki_lore_visual.gd --wiki-capture=/private/path` produces
 rendered desktop and phone acceptance captures. Finish with the standard public
 wiki exporter, illustration exporter and `prepare_public_wiki.py` validation.
+Speaker coverage and matching source hashes do not establish that a biography
+is complete or that its events are correctly ordered: review the prose against
+the story separately, and record that editorial review alongside the checks.
 
 Articles link equipment to its wearers, carried items to creatures, materials to
 compatible crafts, quest items to their requirements or rewards, and creatures
