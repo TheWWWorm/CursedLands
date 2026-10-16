@@ -1,0 +1,73 @@
+{
+  "version": "1.7.0",
+  "game_tree": "e23009a0abde18d4dd79157089712f9320092ccb",
+  "assets": [
+    {
+      "name": "CursedLands-1.7.0-linux-x86_64.tar.gz",
+      "bytes": 37818091,
+      "sha256": "490c64f08e3bf23cc4873365b5a99fe021ef8d602ae99c3f9af327c004ab51de",
+      "all_members_verified": true
+    },
+    {
+      "name": "CursedLands-1.7.0-windows-x86_64.zip",
+      "bytes": 38985657,
+      "sha256": "3d8076f2bca4a694e67c62108d5b26c8f07e0f868b975f1f6fbb6c724a0f685b",
+      "all_members_verified": true
+    },
+    {
+      "name": "CursedLands-1.7.0-macos-universal.zip",
+      "bytes": 65043297,
+      "sha256": "2aa29dbdf18efadc6fcacfa40707866e237be3c8f14a9e7cea29cbc1c80c3dce",
+      "all_members_verified": true
+    },
+    {
+      "name": "CursedLands-1.7.0-android.apk",
+      "bytes": 31820675,
+      "sha256": "f74be92ca8956e27ccb7987d0629315caed588790bfe24ba43a19003b3ab4d22"
+    },
+    {
+      "name": "CursedLands-1.7.0-web.zip",
+      "bytes": 133177282,
+      "sha256": "46bd3f3cd78b2ef7e004b4b729decf92a3e4aea202d95b5fdc089ed5d9b7e63f",
+      "all_members_verified": true
+    },
+    {
+      "name": "CursedLands-1.7.0-tools.zip",
+      "bytes": 64298,
+      "sha256": "c708b187a933a5d83dd1a054f1f6bfac1b193f087781d74047b0856eb077f193"
+    },
+    {
+      "name": "Quick-recovery-1.0.0.eimod",
+      "bytes": 546,
+      "sha256": "f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b"
+    }
+  ],
+  "tools_audit": {
+    "files": [
+      "tools/convert_legacy_mod.py",
+      "tools/package_mod.py",
+      "tools/tests/test_legacy_mod_converter.py",
+      "game/src/ei/database.gd",
+      "game/src/game/mod_schema.gd",
+      "docs/mods.md",
+      "docs/versioning.md",
+      "docs/validation/hd-lands-1.5.0-2026-10-13.json",
+      "docs/validation/release-1.7.0-2026-10-16.json",
+      "docs/legacy-mod-converter.md",
+      "docs/legacy-mod-compatibility.md",
+      "docs/validation/legacy-mod-converter-2026-10-11.json",
+      "docs/validation/legacy-mod-real-mods-2026-10-11.json",
+      "LICENSE.md",
+      "examples/mods/quick-recovery/mod.json"
+    ],
+    "exact_source_readback": true,
+    "standalone_tests": 19,
+    "example_byte_identical": true,
+    "artifact": {
+      "name": "CursedLands-1.7.0-tools.zip",
+      "bytes": 64298,
+      "sha256": "c708b187a933a5d83dd1a054f1f6bfac1b193f087781d74047b0856eb077f193"
+    }
+  },
+  "checksum_file_sha256": "5c2f79996db1cb18f3e8d81f529971b8b2109dc103a05c946c979fc470c73745"
+}

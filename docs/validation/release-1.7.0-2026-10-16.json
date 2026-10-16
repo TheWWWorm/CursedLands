@@ -1,0 +1,810 @@
+{
+  "version": "1.7.0",
+  "tag": "v1.7.0",
+  "release_type": "stable",
+  "base_stable": "1.6.0",
+  "game_source_commit": "0dc3b47eec0b8dd11a1fd23e929e7d12989c3af0",
+  "game_tree": "e23009a0abde18d4dd79157089712f9320092ccb",
+  "protocol": 23,
+  "same_version_coop_required": true,
+  "gameplay_validation_record": "feedback-2026-10-16.json",
+  "all_299_compiled_scripts_identical_to_validated_review_build": true,
+  "review_pack_sha256": "ef554b8fa19cff7570fff820c4b68fd2c37dee439cc3f036cc4c91e665ce268b",
+  "stable_runtime_checks": {
+    "stable17-interactions": {
+      "receipt": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/stable17/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/exhausted_interactions.gd"
+        ],
+        "fixture_sha256": "95e630c6e795ab2eeedc11743147c3c811bc2977dafb1668f4d677c446d2730c",
+        "exit": 0,
+        "seconds": 15.247888604993932,
+        "errors": []
+      },
+      "checks": 15,
+      "failures": 0,
+      "log_sha256": "6bc86d4853f6532ed5e1aa513de6bd128b5bc7b72c5eaebcb430aba9e8f733f4"
+    },
+    "stable17-lia-interactions": {
+      "receipt": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/stable17/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/exhausted_interactions.gd"
+        ],
+        "fixture_sha256": "95e630c6e795ab2eeedc11743147c3c811bc2977dafb1668f4d677c446d2730c",
+        "exit": 0,
+        "seconds": 11.73765979098971,
+        "errors": []
+      },
+      "checks": 90,
+      "failures": 0,
+      "log_sha256": "3f72b2d2209a0b4206a037281b968078f66d9ed16f969afd29b9e4b2f7f77c18"
+    },
+    "stable17-spell-input": {
+      "receipt": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/stable17/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/repo/tools/tests/direct_spell_selection.gd"
+        ],
+        "fixture_sha256": "9f05faf67ffa449af231ffb6bc2ff8e9ea6ae8123069c66235388c5cc3ef5a69",
+        "exit": 0,
+        "seconds": 10.58378410700243,
+        "errors": []
+      },
+      "checks": 15,
+      "failures": 0,
+      "log_sha256": "c1518f27ab81dc4936f769f8f5bf9020e1fe094cf1ff0aeba3e504adec42a189"
+    }
+  },
+  "stable_passed_regression_checks": 120,
+  "translations": [
+    "Translations: 1399 entries; 78 dynamic wiki keys; 0 errors",
+    "Wiki world text: 180 entries in EN/RU/DE",
+    "Wiki reference text: 3886 source-checked EN/DE entries; RU uses original archives"
+  ],
+  "desktop": {
+    "linux-x86_64": {
+      "version": "1.7.0",
+      "source_commit": "0dc3b47eec0b8dd11a1fd23e929e7d12989c3af0",
+      "game_tree": "e23009a0abde18d4dd79157089712f9320092ccb",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 12,
+      "target_os_runtime_tested": true,
+      "runtime_validation": "Compiled scripts match the previously validated review build; final stable smoke checks recorded separately.",
+      "compiled_scripts": 299,
+      "resource_count": 752,
+      "production_scripts_identical_across_windows_and_linux": true,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.pck": "d4fd1e314937f8309c6f3a0fd6ae6bc186506ba8ff8cbcb81e61d64a80a4de50"
+      }
+    },
+    "windows-x86_64": {
+      "version": "1.7.0",
+      "source_commit": "0dc3b47eec0b8dd11a1fd23e929e7d12989c3af0",
+      "game_tree": "e23009a0abde18d4dd79157089712f9320092ccb",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 12,
+      "target_os_runtime_tested": false,
+      "runtime_validation": "Package audited; no Windows runtime test available.",
+      "compiled_scripts": 299,
+      "resource_count": 752,
+      "production_scripts_identical_across_windows_and_linux": true,
+      "files": {
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "CursedLands.pck": "d4fd1e314937f8309c6f3a0fd6ae6bc186506ba8ff8cbcb81e61d64a80a4de50"
+      }
+    },
+    "macos-universal": {
+      "version": "1.7.0",
+      "platform": "macos-universal",
+      "source_commit": "0dc3b47eec0b8dd11a1fd23e929e7d12989c3af0",
+      "game_tree": "e23009a0abde18d4dd79157089712f9320092ccb",
+      "protocol": 23,
+      "stock_engine": true,
+      "unsigned": true,
+      "target_os_runtime_tested": false,
+      "compiled_scripts": 299,
+      "production_scripts_identical_across_platforms": true,
+      "files": {
+        "CursedLands.zip": "f17d458fb852370c75904568875f02f1e1a85313b01ee3cf6af54b09080ed3fe"
+      }
+    }
+  },
+  "android": {
+    "version": "1.7.0",
+    "apk_sha256": "f74be92ca8956e27ccb7987d0629315caed588790bfe24ba43a19003b3ab4d22",
+    "resources": 759,
+    "compiled_scripts": 299,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "expected_production_scripts_exact": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "engine_arguments": [
+      "--xr_mode_regular",
+      "--xr-mode",
+      "off",
+      "--fullscreen",
+      "--background_color",
+      "#000000"
+    ],
+    "sparse_pack": {
+      "format": 4,
+      "resources": 759,
+      "all_resource_sizes_and_md5_match": true,
+      "template_baseline_profiles": {
+        "dexopt/baseline.prof": {
+          "bytes": 1168,
+          "sha256": "ff22862d63ff4e294c23e6922f836161f82916c2cc3589f823a5d6741c493b40"
+        },
+        "dexopt/baseline.profm": {
+          "bytes": 142,
+          "sha256": "d2fc2edf2542f31827bca1f48857e1c49fe5d58ee4cc7958cb41c1e68c3e8753"
+        }
+      }
+    },
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "debuggable": false,
+    "same_public_certificate": true,
+    "release_template_provenance": {
+      "base_template": "/home/llm2x/Documents/EI/local/scratchpad/android-original-rendering-20261014/engine/bin/android_release.apk",
+      "base_sha256": "2af5eb84aaa230955d627b2fee4e63e951fb9414e5234c8766d600713ad472e8",
+      "release_template": "/home/llm2x/Documents/EI/local/scratchpad/release-1.5.0-20261015/android_release_startup.apk",
+      "release_template_sha256": "39618fbc955046168013eaf2ab96577f776a240d5f5c075e3ff55fa7f06f6012",
+      "engine_sha256": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+      "libcxx_sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "classes_dex_sha256": "386484cf1c35c955d0a1996d5628ae51e56626cb03cd4ec46d692313330a6601",
+      "patch_count": 14,
+      "new_java_diagnostics_sources": {
+        "AndroidExitReport.java": "466f2236cc950a79b8b409d383bad99d93d0aea282c540627979c459b8587143",
+        "EISimulation.java": "56cdcaedd3d7027e7672231035005cd0b6b5c95e38ca2636fd07b7cebc721c0f",
+        "EarlyStartup.java": "9759125edf22ee9260cad2f87b5220e08400a899499a4471e08a69844b7a0602",
+        "NativeTombstone.java": "4cdb78b00c6434e2905ed946d1d7fd235a90732105793516628ec4b0641a3779",
+        "StartupApplication.java": "450bddb5ad3514c240e697a17e44009dc1a1a15121c9668d62ce2ec8ac6292a4"
+      },
+      "java_template_build": "generateGodotTemplates --offline; all native SCons tasks excluded",
+      "java_template_tested_in": "docs/validation/android-early-startup-recovery-2026-10-15.json",
+      "production_native_libraries_unchanged": true,
+      "private_instrumentation": false,
+      "java_source_commit": "70fd01919514aa68781c0585c7a3b9005e4a4487",
+      "early_startup_journal": true
+    },
+    "normal_installed_app_untouched": true,
+    "version_code": 39,
+    "target_os_runtime_tested": false
+  },
+  "browser": {
+    "version": "1.7.0",
+    "errors": [],
+    "browser": {
+      "protocolVersion": "1.3",
+      "product": "Chrome/151.0.7922.34",
+      "revision": "@782af9cb30a53f54487e5d2e44738645a8ec457c",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.0.0 Safari/537.36",
+      "jsVersion": "15.1.206.8"
+    },
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-5d3c924296637028c122",
+      "new_cache": "cursed-engine-2-0aead8277bb699d1bee0",
+      "pck_sha256": "84c28284aedb38c573df6d712d037fb164f552c0fd4e4f567c18a46229fcd8de",
+      "waited_for_old_tab": true,
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "unchanged_wasm_reused": true,
+      "network_paths": [
+        "service-worker.js",
+        "index.html",
+        "index.pck"
+      ]
+    },
+    "upgraded_start": {
+      "error": "",
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "caches": [
+        "cursed-engine-2-0aead8277bb699d1bee0"
+      ],
+      "visible_frame": true
+    },
+    "fresh_start": {
+      "error": "",
+      "canvas": {
+        "width": 1280,
+        "height": 720
+      },
+      "caches": [
+        "cursed-engine-2-0aead8277bb699d1bee0"
+      ],
+      "visible_frame": true
+    },
+    "build": {
+      "version": "1.7.0",
+      "source_tag": "v1.7.0",
+      "source_commit": "0dc3b47eec0b8dd11a1fd23e929e7d12989c3af0",
+      "game_tree": "e23009a0abde18d4dd79157089712f9320092ccb",
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 299,
+      "production_scripts_byte_identical_to_release_linux": true,
+      "resource_count": 749,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "84c28284aedb38c573df6d712d037fb164f552c0fd4e4f567c18a46229fcd8de",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    }
+  },
+  "public_wiki": {
+    "version": "1.7.0",
+    "languages": {
+      "en": {
+        "pages": 1228,
+        "listed_pages": 1025,
+        "listed_spells": 31,
+        "versions": 2008,
+        "resolved_links": 7341,
+        "normalized_equipment_links": 116
+      },
+      "ru": {
+        "pages": 1228,
+        "listed_pages": 1028,
+        "listed_spells": 31,
+        "versions": 2008,
+        "resolved_links": 7326,
+        "normalized_equipment_links": 116
+      },
+      "de": {
+        "pages": 1228,
+        "listed_pages": 1025,
+        "listed_spells": 31,
+        "versions": 2008,
+        "resolved_links": 7365,
+        "normalized_equipment_links": 116
+      }
+    },
+    "translation_keys": 85,
+    "requires_game_files": false,
+    "requires_game_engine": false,
+    "requires_account": false,
+    "campaigns": {
+      "cursed_lands": {
+        "languages": {
+          "en": {
+            "pages": 1228,
+            "listed_pages": 1025,
+            "listed_spells": 31,
+            "versions": 2008,
+            "resolved_links": 7341,
+            "normalized_equipment_links": 116
+          },
+          "ru": {
+            "pages": 1228,
+            "listed_pages": 1028,
+            "listed_spells": 31,
+            "versions": 2008,
+            "resolved_links": 7326,
+            "normalized_equipment_links": 116
+          },
+          "de": {
+            "pages": 1228,
+            "listed_pages": 1025,
+            "listed_spells": 31,
+            "versions": 2008,
+            "resolved_links": 7365,
+            "normalized_equipment_links": 116
+          }
+        }
+      },
+      "lost_in_astral": {
+        "languages": {
+          "en": {
+            "pages": 1705,
+            "listed_pages": 1427,
+            "listed_spells": 35,
+            "versions": 2665,
+            "resolved_links": 35902,
+            "normalized_equipment_links": 90
+          },
+          "ru": {
+            "pages": 1705,
+            "listed_pages": 1427,
+            "listed_spells": 35,
+            "versions": 2665,
+            "resolved_links": 35838,
+            "normalized_equipment_links": 90
+          },
+          "de": {
+            "pages": 1705,
+            "listed_pages": 1427,
+            "listed_spells": 35,
+            "versions": 2665,
+            "resolved_links": 35915,
+            "normalized_equipment_links": 90
+          }
+        }
+      }
+    },
+    "illustrations": 4246,
+    "bytes": 142086794
+  },
+  "public_wiki_browser": {
+    "version": "1.7.0",
+    "live": false,
+    "checks": [
+      "bare /wiki redirects with language preserved",
+      "wiki security policy served",
+      "fresh wiki works without game data, caches, storage or service worker",
+      "no game engine or importer requested",
+      "all matching entries appear in one continuous list",
+      "no pagination controls",
+      "all material and blueprint versions available",
+      "material selection changes actual statistics",
+      "selected version has shareable URL",
+      "browser Back restores original version",
+      "en language updates page and interface",
+      "en desktop has no horizontal overflow",
+      "en every item subcategory is available",
+      "en item filter weapon_spear",
+      "en item filter quest",
+      "en item filter armor_helm",
+      "en item filter weapon_sword",
+      "en item filter loot",
+      "en item filter weapon_hammer",
+      "en item filter wand",
+      "en item filter weapon_bow",
+      "en item filter armor_boots",
+      "en item filter armor_shirt",
+      "en item filter armor_pants",
+      "en item filter armor_plate",
+      "en item filter armor_gloves",
+      "en item filter armor_leggings",
+      "en item filter weapon_crossbow",
+      "en item filter potion",
+      "en item filter weapon_axe",
+      "en item filter weapon_dagger",
+      "en dynamic subcategory labels are translated",
+      "en item filters stay within Items",
+      "en all base spells are listed",
+      "en rune-equipped spells are absent from list",
+      "en searching all categories returns one base Acid blast",
+      "en fixed item uses its authored name: Goblin doll",
+      "en fixed item has no material or blueprint choices: Goblin doll",
+      "en fixed item uses its authored name: Green Dragon horn",
+      "en fixed item has no material or blueprint choices: Green Dragon horn",
+      "ru language updates page and interface",
+      "ru desktop has no horizontal overflow",
+      "ru every item subcategory is available",
+      "ru item filter quest",
+      "ru item filter weapon_crossbow",
+      "ru item filter loot",
+      "ru item filter weapon_hammer",
+      "ru item filter armor_helm",
+      "ru item filter armor_leggings",
+      "ru item filter armor_plate",
+      "ru item filter armor_pants",
+      "ru item filter armor_shirt",
+      "ru item filter armor_boots",
+      "ru item filter armor_gloves",
+      "ru item filter wand",
+      "ru item filter weapon_spear",
+      "ru item filter weapon_bow",
+      "ru item filter weapon_sword",
+      "ru item filter potion",
+      "ru item filter weapon_axe",
+      "ru item filter weapon_dagger",
+      "ru dynamic subcategory labels are translated",
+      "ru item filters stay within Items",
+      "ru all base spells are listed",
+      "ru rune-equipped spells are absent from list",
+      "ru searching all categories returns one base Acid blast",
+      "ru fixed item uses its authored name: Гоблинская кукла",
+      "ru fixed item has no material or blueprint choices: Гоблинская кукла",
+      "ru fixed item uses its authored name: Рог зеленого дракона",
+      "ru fixed item has no material or blueprint choices: Рог зеленого дракона",
+      "de language updates page and interface",
+      "de desktop has no horizontal overflow",
+      "de every item subcategory is available",
+      "de item filter quest",
+      "de item filter loot",
+      "de item filter armor_helm",
+      "de item filter weapon_sword",
+      "de item filter weapon_crossbow",
+      "de item filter weapon_bow",
+      "de item filter armor_pants",
+      "de item filter armor_leggings",
+      "de item filter armor_boots",
+      "de item filter armor_gloves",
+      "de item filter armor_plate",
+      "de item filter armor_shirt",
+      "de item filter weapon_dagger",
+      "de item filter potion",
+      "de item filter wand",
+      "de item filter weapon_hammer",
+      "de item filter weapon_spear",
+      "de item filter weapon_axe",
+      "de dynamic subcategory labels are translated",
+      "de item filters stay within Items",
+      "de all base spells are listed",
+      "de rune-equipped spells are absent from list",
+      "de searching all categories returns one base Acid blast",
+      "de fixed item uses its authored name: Goblin-Figur",
+      "de fixed item has no material or blueprint choices: Goblin-Figur",
+      "de fixed item uses its authored name: Grünes Drachenhorn",
+      "de fixed item has no material or blueprint choices: Grünes Drachenhorn",
+      "old synthetic material deep link resolves to authored Goblin doll",
+      "NPC armour has a distinct garment and wearer name: Erfar · Stitched Gipath coat",
+      "NPC armour has an illustration and its fixed material",
+      "NPC armour has a distinct garment and wearer name: Estera · Hunting Gipath cloak",
+      "NPC armour has an illustration and its fixed material",
+      "base campaign uses original quest-item name",
+      "campaign tab opens shareable expansion URL",
+      "expansion has its own complete continuous contents list",
+      "browser Back restores base campaign and article",
+      "same quest-item ID uses expansion name in expansion tab",
+      "en missing base spell has a localized deep-link name",
+      "en unnamed dormant base prototype does not clutter spell list",
+      "en expansion spell uses its authored name",
+      "en exactly two campaign tabs with correct active state",
+      "en expansion lists 35 named base spells",
+      "en expansion spell list has no rune variants or generic names",
+      "en article links retain the expansion",
+      "en linked mechanics stay in expansion",
+      "en language change preserves campaign and article",
+      "en expansion item filter weapon_spear",
+      "en expansion item filter loot",
+      "en expansion item filter quest",
+      "en expansion item filter armor_helm",
+      "en expansion item filter weapon_sword",
+      "en expansion item filter potion",
+      "en expansion item filter armor_plate",
+      "en expansion item filter armor_leggings",
+      "en expansion item filter weapon_crossbow",
+      "en expansion item filter weapon_hammer",
+      "en expansion item filter weapon_dagger",
+      "en expansion item filter wand",
+      "en expansion item filter weapon_bow",
+      "en expansion item filter armor_boots",
+      "en expansion item filter armor_shirt",
+      "en expansion item filter armor_pants",
+      "en expansion item filter armor_gloves",
+      "en expansion item filter weapon_axe",
+      "en mobile campaign tabs and article fit viewport",
+      "ru missing base spell has a localized deep-link name",
+      "ru unnamed dormant base prototype does not clutter spell list",
+      "ru expansion spell uses its authored name",
+      "ru exactly two campaign tabs with correct active state",
+      "ru expansion lists 35 named base spells",
+      "ru expansion spell list has no rune variants or generic names",
+      "ru article links retain the expansion",
+      "ru linked mechanics stay in expansion",
+      "ru language change preserves campaign and article",
+      "ru expansion item filter quest",
+      "ru expansion item filter loot",
+      "ru expansion item filter weapon_crossbow",
+      "ru expansion item filter armor_plate",
+      "ru expansion item filter armor_leggings",
+      "ru expansion item filter weapon_sword",
+      "ru expansion item filter weapon_hammer",
+      "ru expansion item filter weapon_spear",
+      "ru expansion item filter weapon_dagger",
+      "ru expansion item filter weapon_bow",
+      "ru expansion item filter armor_shirt",
+      "ru expansion item filter armor_gloves",
+      "ru expansion item filter armor_boots",
+      "ru expansion item filter armor_pants",
+      "ru expansion item filter armor_helm",
+      "ru expansion item filter wand",
+      "ru expansion item filter potion",
+      "ru expansion item filter weapon_axe",
+      "ru mobile campaign tabs and article fit viewport",
+      "de missing base spell has a localized deep-link name",
+      "de unnamed dormant base prototype does not clutter spell list",
+      "de expansion spell uses its authored name",
+      "de exactly two campaign tabs with correct active state",
+      "de expansion lists 35 named base spells",
+      "de expansion spell list has no rune variants or generic names",
+      "de article links retain the expansion",
+      "de linked mechanics stay in expansion",
+      "de language change preserves campaign and article",
+      "de expansion item filter weapon_crossbow",
+      "de expansion item filter weapon_bow",
+      "de expansion item filter loot",
+      "de expansion item filter quest",
+      "de expansion item filter armor_helm",
+      "de expansion item filter weapon_sword",
+      "de expansion item filter potion",
+      "de expansion item filter armor_leggings",
+      "de expansion item filter armor_plate",
+      "de expansion item filter armor_pants",
+      "de expansion item filter armor_boots",
+      "de expansion item filter armor_gloves",
+      "de expansion item filter armor_shirt",
+      "de expansion item filter weapon_dagger",
+      "de expansion item filter weapon_spear",
+      "de expansion item filter wand",
+      "de expansion item filter weapon_hammer",
+      "de expansion item filter weapon_axe",
+      "de mobile campaign tabs and article fit viewport",
+      "expansion creature has its own illustration",
+      "base tab restores legacy base-game URL",
+      "referenced rune-equipped spell remains accessible by deep link",
+      "all creatures available without paging",
+      "continuous result list scrolls to its final entries",
+      "opening last entry retains result-list scroll position",
+      "empty search results",
+      "mobile has no horizontal overflow",
+      "cursed_lands en internal colour/effect records excluded",
+      "cursed_lands en localized map article",
+      "cursed_lands en authored map image",
+      "cursed_lands en localized quest article",
+      "cursed_lands en rune selection survives addition",
+      "cursed_lands en repeated rune added",
+      "cursed_lands en selected rune artwork visible",
+      "cursed_lands en shared URL restores spell draft",
+      "cursed_lands en language switch retains draft",
+      "cursed_lands en constructor fits mobile",
+      "cursed_lands ru internal colour/effect records excluded",
+      "cursed_lands ru localized map article",
+      "cursed_lands ru authored map image",
+      "cursed_lands ru localized quest article",
+      "cursed_lands ru rune selection survives addition",
+      "cursed_lands ru repeated rune added",
+      "cursed_lands ru selected rune artwork visible",
+      "cursed_lands ru shared URL restores spell draft",
+      "cursed_lands ru language switch retains draft",
+      "cursed_lands ru constructor fits mobile",
+      "cursed_lands de internal colour/effect records excluded",
+      "cursed_lands de localized map article",
+      "cursed_lands de authored map image",
+      "cursed_lands de localized quest article",
+      "cursed_lands de rune selection survives addition",
+      "cursed_lands de repeated rune added",
+      "cursed_lands de selected rune artwork visible",
+      "cursed_lands de shared URL restores spell draft",
+      "cursed_lands de language switch retains draft",
+      "cursed_lands de constructor fits mobile",
+      "cursed_lands eight-rune limit enforced",
+      "cursed_lands remove last rune",
+      "cursed_lands reset spell",
+      "cursed_lands native legal item enchantment admitted",
+      "cursed_lands item draft restored from URL",
+      "cursed_lands material switch retains enchantment draft",
+      "lost_in_astral en internal colour/effect records excluded",
+      "lost_in_astral en localized map article",
+      "lost_in_astral en authored map image",
+      "lost_in_astral en localized quest article",
+      "lost_in_astral en rune selection survives addition",
+      "lost_in_astral en repeated rune added",
+      "lost_in_astral en selected rune artwork visible",
+      "lost_in_astral en shared URL restores spell draft",
+      "lost_in_astral en language switch retains draft",
+      "lost_in_astral en constructor fits mobile",
+      "lost_in_astral ru internal colour/effect records excluded",
+      "lost_in_astral ru localized map article",
+      "lost_in_astral ru authored map image",
+      "lost_in_astral ru localized quest article",
+      "lost_in_astral ru rune selection survives addition",
+      "lost_in_astral ru repeated rune added",
+      "lost_in_astral ru selected rune artwork visible",
+      "lost_in_astral ru shared URL restores spell draft",
+      "lost_in_astral ru language switch retains draft",
+      "lost_in_astral ru constructor fits mobile",
+      "lost_in_astral de internal colour/effect records excluded",
+      "lost_in_astral de localized map article",
+      "lost_in_astral de authored map image",
+      "lost_in_astral de localized quest article",
+      "lost_in_astral de rune selection survives addition",
+      "lost_in_astral de repeated rune added",
+      "lost_in_astral de selected rune artwork visible",
+      "lost_in_astral de shared URL restores spell draft",
+      "lost_in_astral de language switch retains draft",
+      "lost_in_astral de constructor fits mobile",
+      "lost_in_astral eight-rune limit enforced",
+      "lost_in_astral remove last rune",
+      "lost_in_astral reset spell",
+      "lost_in_astral native legal item enchantment admitted",
+      "lost_in_astral item draft restored from URL",
+      "lost_in_astral material switch retains enchantment draft",
+      "unknown deep link displays localized missing-page state"
+    ],
+    "languages": {
+      "en": {
+        "title": "Canian army bronze helmet",
+        "label": "Search the encyclopedia"
+      },
+      "ru": {
+        "title": "Рог зеленого дракона",
+        "label": "Поиск по энциклопедии"
+      },
+      "de": {
+        "title": "Grünes Drachenhorn",
+        "label": "Enzyklopädie durchsuchen"
+      }
+    },
+    "errors": [],
+    "no_console_errors": true,
+    "network_requests": 648,
+    "no_engine_requests": true
+  },
+  "wiki_export": {
+    "version": "1.7.0",
+    "receipts": {
+      "baseen": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/stable17/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/repo/tools/export_wiki.gd",
+          "--wiki-language=en",
+          "--wiki-output=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/wiki/base-data",
+          "--wiki-image-plan=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/wiki/base-images.json"
+        ],
+        "exit": 0,
+        "errors": [],
+        "seconds": 4.772095330001321
+      },
+      "baseru": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/stable17/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/data/ru",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/repo/tools/export_wiki.gd",
+          "--wiki-language=ru",
+          "--wiki-output=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/wiki/base-data"
+        ],
+        "exit": 0,
+        "errors": [],
+        "seconds": 5.272852965979837
+      },
+      "basede": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/stable17/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/repo/tools/export_wiki.gd",
+          "--wiki-language=de",
+          "--wiki-output=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/wiki/base-data"
+        ],
+        "exit": 0,
+        "errors": [],
+        "seconds": 5.522679561981931
+      },
+      "liaen": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/stable17/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/repo/tools/export_wiki.gd",
+          "--wiki-language=en",
+          "--wiki-output=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/wiki/lia-data",
+          "--wiki-image-plan=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/wiki/lia-images.json"
+        ],
+        "exit": 0,
+        "errors": [],
+        "seconds": 6.273562533984659
+      },
+      "liaru": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/stable17/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/repo/tools/export_wiki.gd",
+          "--wiki-language=ru",
+          "--wiki-output=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/wiki/lia-data"
+        ],
+        "exit": 0,
+        "errors": [],
+        "seconds": 6.473776575003285
+      },
+      "liade": {
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/builds/stable17/CursedLands.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/repo/tools/export_wiki.gd",
+          "--wiki-language=de",
+          "--wiki-output=/home/llm2x/Documents/EI/local/scratchpad/surface-effect-visibility-20261015/publish17/wiki/lia-data"
+        ],
+        "exit": 0,
+        "errors": [],
+        "seconds": 6.47404898100649
+      }
+    },
+    "cached_illustration_descriptors_identical": true
+  },
+  "hosted_files_count": 13088,
+  "hosted_primary_files": {
+    "BUILD-INFO.json": "4d5da706afedcb263e4a772c23cbd3b7ed4e53599bf79ce8bf22052b1a5267c8",
+    "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+    "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+    "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+    "THIRD_PARTY_NOTICES.md": "9bf95a6be1eea5b3d3e6b45e17d229c400cc2914ae11d37f8082604d77e806ac",
+    "_headers": "385af9098c5d9752a0ff141b34048e2611ad70beba02c7ed03b1b1dc29a67841",
+    "data-worker.js": "23acf2e304952606e7e2a0bf850dc8e02b56dcae2913cc79e461c78afbd49d77",
+    "files.js": "5b23e470c5dedc93d0c80ea0696eff36bad3afbb88eb4bc85ced567f472c5b2a",
+    "icon-192.png": "ce18b6621f58d2b24ef49ec182bf4f021f5992b2e46e666918764c47d92a1a0a",
+    "icon-512.png": "33d17b00001bf55448c56919e7f9a9d56be7089231be189704d72a13d00363d4",
+    "index.apple-touch-icon.png": "a8079e5f32d35cabbc12bb9f66f4b7c49a73b84d7fc1e8e4dde15914f9bc50eb",
+    "index.audio.position.worklet.js": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+    "index.audio.worklet.js": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+    "index.html": "142c76eb3739506f1fe3d2ba7c92cd4eda9213923e680df0824066eef2c0c855",
+    "index.icon.png": "490c9afe17f218360ceb84d41dd95d0409dfe0349c00a97c40cf3d8e04cf0b45",
+    "index.js": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
+    "index.pck": "84c28284aedb38c573df6d712d037fb164f552c0fd4e4f567c18a46229fcd8de",
+    "index.png": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
+    "index.wasm.part0": "e225998ec9fbd2fb1aa80798d571dc381fdd9bfdb3478250832404d941db0426",
+    "index.wasm.part1": "79cae914fb3feb5b3ef307b0906fd111d1ee2ca48ff730ba21cca432c271467b",
+    "installer-worker.js": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
+    "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+    "manifest.webmanifest": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
+    "service-worker.js": "de1650d48d0c3d06a808cb20e972a7e2f091cdabdc2059e249837e8e84856439",
+    "storage.js": "9265725b43b6b4e897693fd3be62b175c3e0b07493b51ba7d18a6d1578bee581",
+    "wiki/BUILD-INFO.json": "25d651935cf09223e77f5d447ebb0b510667c6d64240ec983398c71b40d62ee6"
+  },
+  "hosted_full_manifest_sha256": "b5c108a30f033893e4471646ef2cf936527f7a7560a042fe80da126f4953c464",
+  "parts_manifest": {
+    "/index.wasm": {
+      "count": 2,
+      "size": 39509339
+    }
+  },
+  "limits": [
+    "Gameplay and rendered checks ran on Linux; no new native Windows or macOS runtime test. macOS is unsigned.",
+    "Android versionCode 39 retains the production app ID, signing certificate and previously qualified native engine; no new on-device gameplay run.",
+    "Browser checks cover startup, upgrade preserving stored game files and saves, and both wiki campaigns; no complete browser campaign run.",
+    "Decal footprints remain unsupported by the Compatibility renderer.",
+    "Solo F9 lightning-wall persistence and fresh-approach invisibility failure were not reproduced. Detailed evidence and diagnostic limits are in feedback-2026-10-16.md."
+  ],
+  "deployment_verification": "Live asset hashes, isolation headers, engine startup and wiki behavior must pass before the draft release is published. Publication receipts are retained in the private release workspace."
+}
