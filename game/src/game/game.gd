@@ -515,9 +515,9 @@ func _update_daylight(advance := true) -> void:
 		rig.camera.near = minf(rig.camera.near, Gfx.NEAR_CLIP)
 		rig.camera.far = Gfx.far_clip()
 	_update_hero_lights()
-	if rig:
-		Gfx.update_pass_lights(get_tree(), rig.global_position)
 	if _lights == null:
+		if rig:
+			Gfx.update_pass_lights(get_tree(), rig.global_position)
 		return
 	Gfx.update_original(_env, _sun, _lights, hour, _sky_cave)
 	# Lighting keeps the clock: the land's vertex light and the EI materials'
@@ -525,6 +525,8 @@ func _update_daylight(advance := true) -> void:
 	if sun_aim_mode != 1:
 		sun_light_dir = -gd
 		Gfx.set_sun_direction(sun_light_dir)
+	if rig:
+		Gfx.update_pass_lights(get_tree(), rig.global_position, _sun)
 	var sky := _env.fog_light_color
 	_sky_mat.sky_top_color = sky
 	_sky_mat.sky_horizon_color = sky
@@ -1719,5 +1721,6 @@ func _shadow_for(obj: Variant) -> void:
 
 
 func _exit_tree() -> void:
+	Gfx.clear_baked_pass_lights()
 	get_tree().paused = false
 	Engine.time_scale = 1.0

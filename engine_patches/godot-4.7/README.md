@@ -138,6 +138,60 @@ recorded in
 [`stable-1.3.0-2026-10-14.json`](../../docs/validation/stable-1.3.0-2026-10-14.json).
 The Redmagic 11 Pro crash remains unconfirmed as fixed.
 
+`mobile-render-work.patch` follows those fourteen patches in the Android
+validation engine. It changes four Mobile paths:
+
+- Empty instances are excluded before their materials can request depth or
+  screen copies. Making a MultiMesh visible again restores its normal draws.
+- The directional shadow shader shares one PCF call site between the primary
+  and transition cascades. A transition with zero blend weight needs no second
+  filter. Cascade count, sample count, bias, blur and blend equations remain.
+- Sky shaders may opt into `skip_unneeded_radiance`. Only opted-in skies defer
+  radiance updates when ambient light, reflections, aerial fog and the shader's
+  `RADIANCE` builtin do not consume it. Background/subpass rendering stays live;
+  pending radiance updates run before a consumer returns. Ordinary skies keep
+  their existing behavior. Direct panorama baking of an opted-in, unconsumed
+  sky may see deferred radiance; such callers must not opt in.
+- `Light3D.set_custom_baked(bool)` marks a transient light already represented
+  by a custom material. Mobile omits flagged omni lights only for surfaces with
+  `skip_custom_baked_omni_lights`, repacks their indices and specializes the
+  shader for the remaining count. Other materials in the same mesh retain all
+  their lights. This flag does not change bake mode, cull masks or shadows and
+  is not a serialized scene property. The caller must clear it when its custom
+  lighting no longer includes that light. Compatibility ignores the API;
+  Forward+ retains its existing light lists.
+
+The native capabilities `ei_mobile_lazy_sky_radiance` and
+`ei_mobile_baked_omni_lighting` gate the game's opt-ins; never add them to export
+tags. The game retains older-engine paths. Android ARM64 is the validated
+template for this patch; installed global templates are not replaced.
+`tests/mobile_baked_lights.gd`, `tests/mobile_lazy_sky.gd` and
+`tests/mobile_shadow_cascades.gd` cover material isolation, radiance consumers
+and paired shadow captures. The game fixtures are
+`tools/tests/baked_pass_lights.gd` and `tools/tests/particle_shader_options.gd`.
+Build hashes, device timings and test results are recorded in
+[`android-vulkan-original-performance-2026-10-16.md`](../../docs/android-vulkan-original-performance-2026-10-16.md).
+
+`mobile-screen-mip-demand.patch` follows `mobile-render-work.patch`. Mobile
+tracks mip-filtered screen samplers on its visible material surfaces and builds
+the screen mip chain only when one is present. Level zero is still copied for
+ordinary screen samplers. The demand flag resets per render list, and the normal
+material-cache invalidation handles live shader changes. Allocations are kept
+compatible with a consumer returning; mip consumers retain the previous full
+chain. Forward+ callers keep the original default. The capability
+`ei_mobile_screen_mip_demand` identifies the patched engine; do not add it to
+export tags. Older engines remain visually compatible with the game's sampler
+change but still generate the unused levels.
+
+`tests/mobile_screen_mips.gd` compares level-zero and forced-mip references,
+mixed consumers, visibility/culling, shader changes, empty/restored MultiMeshes
+and next-pass materials. Run it on both engine versions and compare all captures.
+The water setting/image fixtures are `tools/tests/mobile_water_options.gd` and
+`tools/tests/mobile_water_render.gd`. Android ARM64 measurements and the native
+source/build audit are in
+[`android-vulkan-water-performance-2026-10-17.md`](../../docs/android-vulkan-water-performance-2026-10-17.md).
+Shared installed templates are not replaced by this validation.
+
 The focused `tests/animation_cache_retention.gd` fixture compares normal and
 retained players through completion, library/key/target changes, tree reentry,
 queued clips and reverse playback. Run a patched game build on an isolated

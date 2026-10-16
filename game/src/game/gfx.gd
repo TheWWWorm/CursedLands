@@ -246,10 +246,41 @@ void ei_vertex_colours(vec3 p, vec3 n, vec3 e, float kw, out vec3 d, out vec3 s)
 ## and the map objects too.
 static func compose(code: String, lit := true, wrap := false) -> String:
 	ensure_globals()
+	var light_common := LIGHT_COMMON
+	if _skip_clear_mobile_fog and RenderingServer.get_current_rendering_method() == "mobile":
+		# Most nearby pixels have no distance or border fog. Their fog RGB is
+		# multiplied by zero, so skip the border distance and colour conversion.
+		# The original path still handles every partially/fully fogged pixel.
+		light_common = light_common.replace("\tif (ei_border.z > 0.0) {", """
+	float clear_border = ei_border.z + 1.0;
+	if (f <= 0.0 && (ei_border.z <= 0.0 || (w.x >= clear_border && w.x <= ei_border.x-clear_border
+			&& -w.z >= clear_border && -w.z <= ei_border.y-clear_border))) { return vec4(0.0); }
+	if (ei_border.z > 0.0) {""")
+	var compact_lighting := _compact_mobile_lighting and on("gfx_materials") \
+		and RenderingServer.get_current_rendering_method() == "mobile"
+	if RenderingServer.get_current_rendering_method() == "mobile":
+		code = TerrainSamplingShader.compact(code)
+		if _specialize_mobile_water and _specialize_materials \
+				and code.contains("#define EI_WATER_FX"):
+			# The reflection tracer reads textureLod(..., 0.0) exclusively.
+			# Requesting mipmaps makes Mobile generate unused screen levels.
+			code = code.replace("uniform sampler2D screen_tex : hint_screen_texture, filter_linear_mipmap;",
+				"uniform sampler2D screen_tex : hint_screen_texture, filter_linear;")
+			# A false uniform still leaves the reflection tracer and screen-copy
+			# dependency in Godot's shader analysis. Keep shore depth and sky
+			# reflections; omit only the disabled scene-reflection path.
+			if not on("gfx_water_reflections"):
+				code = code.replace("shader_type spatial;", "shader_type spatial;\n#define EI_NO_WATER_REFLECTIONS")
 	if code.contains("#define EI_FOLIAGE_WIND") and (not _foliage_wind or code.contains("#define EI_FOLIAGE_STILL")):
 		code = code.replace("#define EI_FOLIAGE_WIND\n", "#define EI_FOLIAGE_WIND\n#define EI_FOLIAGE_WIND_DISABLED\n")
 	if lit and not wrap and not code.contains("#define EI_FIGURE_LIGHT"):
 		code = code.replace("shader_type spatial;", "shader_type spatial;\n#define EI_FIGURE_LIGHT")
+	if lit and baked_pass_lights_supported() and not code.contains("#define EI_GRASS_LIGHT") \
+			and not code.contains("#define EI_SOLID_COVER_LIGHT"):
+		# These materials already include the selected original lights in D/S.
+		# Grass keeps its extra per-light transmission; ordinary Godot materials
+		# never opt in. The light flag is cleared when extra highlights are on.
+		code = code.replace("render_mode ", "render_mode skip_custom_baked_omni_lights, ")
 	if lit:
 		# A scalar varying still consumes a complete GPU location. Keep the
 		# same interpolated values in one vec4 so the enhanced water shader
@@ -264,7 +295,14 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 	var cloud_reflections := lit and code.contains("#define EI_WATER_FX") and Clouds.reflections_enabled()
 	var extra := "varying vec4 ei_surface_leaf;\n#define ei_surface ei_surface_leaf.rgb\n#define ei_leaf ei_surface_leaf.a\nvarying vec3 ei_vpos;\n" if lit else ""
 	if lit:
-		extra += VERTEX_LIGHT.replace("WRAP_TERM", _wrap_term(wrap))
+		var vertex_light := VERTEX_LIGHT.replace("WRAP_TERM", _wrap_term(wrap))
+		if compact_lighting:
+			# An internal uniform bound keeps Adreno from expanding four copies
+			# of the per-pixel light calculation. Keep all four lights, their
+			# order, byte packing and the overflow-light matching unchanged.
+			extra += "uniform int ei_point_light_passes = 4;\n"
+			vertex_light = vertex_light.replace("i < 4", "i < ei_point_light_passes")
+		extra += vertex_light
 		if cloud_shadows or cloud_reflections:
 			extra = Clouds.common_source()+(Clouds.shadow_source() if cloud_shadows else "")+extra
 		if cloud_shadows:
@@ -293,7 +331,7 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 				extra = extra.replace("vec3 sun = ei_sun *", "vec3 sun = ei_sun * ei_cloud_sun(p) *")
 		if LocalLightShader.enabled():
 			extra += LocalLightShader.COMMON
-	code = code.substr(0, i + 1) + LIGHT_COMMON + extra + code.substr(i + 1)
+	code = code.substr(0, i + 1) + light_common + extra + code.substr(i + 1)
 	if cloud_shadows:
 		# Contact blending reconstructs terrain lighting independently of the
 		# figure's vertex path; its sampled band must share the ground shadow.
@@ -316,6 +354,8 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 		code = code.replace("void fragment() {", "void fragment() {\n\tei_surface_leaf = vec4(0.0, 1.0, 0.0, 0.0);\n\tei_vpos = VERTEX;")
 	if lit:
 		var lighting := light_code(wrap, code.contains("#define EI_GRASS_LIGHT"), code.contains("#define EI_SOLID_COVER_LIGHT"))
+		if compact_lighting:
+			lighting = lighting.replace("i < 4", "i < ei_point_light_passes")
 		if code.contains("#define EI_GROUND_CONTACT"):
 			lighting = GroundContactShader.lighting(lighting)
 		code += lighting
@@ -388,10 +428,17 @@ static var _material_mode := -1
 static var _terrain_mode := -1
 static var _cloud_mode := 0
 static var _figure_mode := -1
+static var _water_reflection_mode := -1
 ## Restrict the compatibility change to Android GLES. Tests can exercise the
 ## same source on another GPU without changing the shipped desktop defaults.
 static var _compact_figures := OS.has_feature("android") and Portability.compatibility()
 static var _specialize_materials := not OS.get_cmdline_user_args().has("--ei-dynamic-material-shader")
+static var _compact_mobile_lighting := OS.has_feature("android") \
+	and not OS.get_cmdline_user_args().has("--ei-expanded-mobile-lighting")
+static var _skip_clear_mobile_fog := OS.has_feature("android") \
+	and not OS.get_cmdline_user_args().has("--ei-full-mobile-fog")
+static var _specialize_mobile_water := OS.has_feature("android") \
+	and not OS.get_cmdline_user_args().has("--ei-dynamic-mobile-water")
 static var _foliage_wind := true
 
 
@@ -428,13 +475,17 @@ static func _set_vol_fog(v: bool) -> void:
 	var clouds := Clouds.mode() | (int(Clouds.shadows_enabled()) << 2) | (int(Clouds.reflections_enabled()) << 3)
 	var figures := (1 | (int(on("gfx_sharp_units")) << 1) | (int(on("gfx_foliage_light")) << 2)) \
 		if _compact_figures and _specialize_materials else 0
-	if v == _vol_fog and mode == _material_mode and terrain_mode == _terrain_mode and clouds == _cloud_mode and figures == _figure_mode:
+	var water_reflections := int(on("gfx_water_reflections")) if _specialize_mobile_water \
+		and _specialize_materials and RenderingServer.get_current_rendering_method() == "mobile" else -2
+	if v == _vol_fog and mode == _material_mode and terrain_mode == _terrain_mode and clouds == _cloud_mode \
+			and figures == _figure_mode and water_reflections == _water_reflection_mode:
 		return
 	_vol_fog = v
 	_material_mode = mode
 	_terrain_mode = terrain_mode
 	_cloud_mode = clouds
 	_figure_mode = figures
+	_water_reflection_mode = water_reflections
 	var keep: Array = []
 	for r: Array in _made:
 		var sh := (r[0] as WeakRef).get_ref() as Shader
@@ -534,6 +585,36 @@ const LOCAL_SPECULAR := 0.012
 const LOCAL_SPECULAR_PASS := 0.0128
 ## Point lights the GLES3 pass correction may need (update_pass_lights).
 const POINT_LIGHT_GROUP := &"ei_point_lights"
+const PASS_POSITION_NAMES := [&"ei_pl0", &"ei_pl1", &"ei_pl2", &"ei_pl3"]
+const PASS_COLOUR_NAMES := [&"ei_plc0", &"ei_plc1", &"ei_plc2", &"ei_plc3"]
+static var _pass_positions: Array[Vector4] = []
+static var _pass_colours: Array[Vector4] = []
+static var _baked_pass_lights := {} # instance id -> WeakRef; never extends a light's lifetime
+
+
+static func baked_pass_lights_supported() -> bool:
+	return RenderingServer.get_current_rendering_method() == "mobile" \
+		and OS.has_feature("ei_mobile_baked_omni_lighting")
+
+
+static func _set_baked_pass_lights(selected: Dictionary) -> void:
+	for id: int in _baked_pass_lights.keys():
+		if selected.has(id):
+			continue
+		var light: Object = (_baked_pass_lights[id] as WeakRef).get_ref()
+		if light:
+			light.call("set_custom_baked", false)
+		_baked_pass_lights.erase(id)
+	for id: int in selected:
+		if _baked_pass_lights.has(id):
+			continue
+		var light: OmniLight3D = selected[id]
+		light.call("set_custom_baked", true)
+		_baked_pass_lights[id] = weakref(light)
+
+
+static func clear_baked_pass_lights() -> void:
+	_set_baked_pass_lights({})
 
 
 ## Switches a LocalLighting light's shadow and keeps its marker in step.
@@ -546,8 +627,20 @@ static func set_local_shadow(l: Light3D, enabled: bool) -> void:
 ## Once per frame: the PASS_LIGHTS original point lights that reach nearest
 ## to `focus`, shared by the vertex evaluator on every renderer. Enhanced
 ## local lights are left out and keep their optional accumulating response.
-static func update_pass_lights(tree: SceneTree, focus: Vector3) -> void:
+static func update_pass_lights(tree: SceneTree, focus: Vector3, sun_light: DirectionalLight3D = null) -> void:
 	ensure_globals()
+	if _pass_positions.is_empty():
+		_pass_positions.resize(PASS_LIGHTS)
+		_pass_colours.resize(PASS_LIGHTS)
+		_pass_positions.fill(Vector4(INF, INF, INF, INF))
+		_pass_colours.fill(Vector4(INF, INF, INF, INF))
+	# With no sun, mapped lights also supply the base diffuse draw. Optional
+	# highlights, leaf transmission and wet surfaces need their light() calls.
+	var bake_mapped := baked_pass_lights_supported() and sun_light != null \
+		and sun_light.is_visible_in_tree() and sun_light.light_energy > 0.0 \
+		and _cloud_sun_direction.length_squared() > 0.5 \
+		and not on("gfx_materials") and not on("gfx_foliage_light") and not on("gfx_weather_surfaces")
+	var selected := {}
 	var found: Array = []
 	for n: Node in tree.get_nodes_in_group(POINT_LIGHT_GROUP):
 		var l := n as OmniLight3D
@@ -564,13 +657,21 @@ static func update_pass_lights(tree: SceneTree, focus: Vector3) -> void:
 		var col := Vector4.ZERO
 		if i < found.size():
 			var l: OmniLight3D = found[i][1]
+			if bake_mapped and l.omni_attenuation == 0.0 and not l.shadow_enabled \
+					and l.light_projector == null and not l.distance_fade_enabled and not l.light_negative:
+				selected[l.get_instance_id()] = l
 			var p := l.global_position
 			pos = Vector4(p.x, p.y, p.z, l.omni_range)
 			# light_code's col = min(srgb(LIGHT_COLOR / π), 1)
 			var c := (l.light_color.srgb_to_linear() * l.light_energy).linear_to_srgb()
 			col = Vector4(minf(c.r, 1.0), minf(c.g, 1.0), minf(c.b, 1.0), 1.0 if is_equal_approx(l.light_specular, ADDITIVE_SPECULAR) else 0.0)
-		RenderingServer.global_shader_parameter_set(StringName("ei_pl%d" % i), pos)
-		RenderingServer.global_shader_parameter_set(StringName("ei_plc%d" % i), col)
+		if _pass_positions[i] != pos:
+			_pass_positions[i] = pos
+			RenderingServer.global_shader_parameter_set(PASS_POSITION_NAMES[i], pos)
+		if _pass_colours[i] != col:
+			_pass_colours[i] = col
+			RenderingServer.global_shader_parameter_set(PASS_COLOUR_NAMES[i], col)
+	_set_baked_pass_lights(selected)
 
 
 static func mark_additive(l: Light3D) -> void:
@@ -594,13 +695,28 @@ vec3 ei_draw_colour(vec3 albedo, vec3 d, vec3 s) {
 vec3 ei_draw_factor(vec3 albedo, vec3 d, vec3 s, float shadow) {
 	return ei_lin(ei_draw_colour(albedo, d, s) * shadow) / max(albedo, vec3(1e-4));
 }
-bool ei_mapped_light(vec3 direction, float falloff, vec3 vpos, mat4 view) {
+bool ei_mapped_light(vec3 direction, float attenuation, vec3 vpos, mat4 view) {
 	vec4 pls[4] = vec4[4](ei_pl0, ei_pl1, ei_pl2, ei_pl3);
+	// Mobile passes half-precision LIGHT and ATTENUATION to custom lighting.
+	// Normalize the promoted direction and compare the forward falloff: its
+	// inverse is ill-conditioned near 1 and can mistake an already packed
+	// light for an overflow light, adding its per-pixel fallback a second time.
+#if CURRENT_RENDERER == RENDERER_MOBILE
+	direction = normalize(direction);
+#else
+	float falloff = 1.0 - sqrt(max(1.0 - sqrt(clamp(attenuation, 0.0, 1.0)), 0.0));
+#endif
 	for (int i = 0; i < 4; i++) {
 		if (pls[i].w <= 0.0) { continue; }
 		vec3 v = (view * vec4(pls[i].xyz, 1.0)).xyz - vpos;
 		float d = length(v);
-		if (dot(v / max(d, 1e-6), direction) > 0.99999 && abs(d / pls[i].w - sqrt(max(1.0 - falloff, 0.0))) < 0.01) { return true; }
+		float r = d / pls[i].w;
+#if CURRENT_RENDERER == RENDERER_MOBILE
+		float a = max(1.0 - r*r*r*r, 0.0);
+		if (dot(v / max(d, 1e-6), direction) > 0.99999 && abs(a*a - attenuation) < 0.001) { return true; }
+#else
+		if (dot(v / max(d, 1e-6), direction) > 0.99999 && abs(r - sqrt(max(1.0 - falloff, 0.0))) < 0.01) { return true; }
+#endif
 	}
 	return false;
 }
@@ -656,13 +772,13 @@ void light() {
 #endif
 		DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_draw_factor(ei_alb, d, s, shadow));
 	} else {
-		// Godot's attenuation0 falloff: (1 - (distance/radius)^4)^2.
-		float a = 1.0 - sqrt(max(1.0 - sqrt(clamp(ATTENUATION, 0.0, 1.0)), 0.0));
-		bool mapped = ei_mapped_light(LIGHT, a, ei_vpos, VIEW_MATRIX);
+		bool mapped = ei_mapped_light(LIGHT, ATTENUATION, ei_vpos, VIEW_MATRIX);
 		bool have_sun = dot(ei_sun_dir, ei_sun_dir) > 0.5;
 		if (mapped && !have_sun) {
 			DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_draw_factor(ei_alb, d, s, 1.0));
 		} else if (!mapped) {
+			// Godot's attenuation0 falloff: (1 - (distance/radius)^4)^2.
+			float a = 1.0 - sqrt(max(1.0 - sqrt(clamp(ATTENUATION, 0.0, 1.0)), 0.0));
 			// The native list has no four-light limit. These remaining Godot
 			// passes cannot recover its full vertex max/shadow, so retain a
 			// bounded fallback while using the traced two-channel operation.

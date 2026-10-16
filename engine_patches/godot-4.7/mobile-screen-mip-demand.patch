@@ -1,0 +1,106 @@
+diff --git a/core/os/os.cpp b/core/os/os.cpp
+--- a/core/os/os.cpp
++++ b/core/os/os.cpp
+@@ -469,6 +469,9 @@
+ }
+ 
+ bool OS::has_feature(const String &p_feature) {
++	if (p_feature == "ei_mobile_screen_mip_demand") {
++		return true;
++	}
+ 	if (p_feature == "ei_mobile_lazy_sky_radiance") {
+ 		return true;
+ 	}
+diff --git a/servers/rendering/renderer_rd/renderer_scene_render_rd.h b/servers/rendering/renderer_rd/renderer_scene_render_rd.h
+--- a/servers/rendering/renderer_rd/renderer_scene_render_rd.h
++++ b/servers/rendering/renderer_rd/renderer_scene_render_rd.h
+@@ -111,7 +111,7 @@
+ 	bool _has_compositor_effect(RSE::CompositorEffectCallbackType p_callback_type, const RenderDataRD *p_render_data);
+ 	void _process_compositor_effects(RSE::CompositorEffectCallbackType p_callback_type, const RenderDataRD *p_render_data);
+ 	void _render_buffers_ensure_screen_texture(const RenderDataRD *p_render_data);
+-	void _render_buffers_copy_screen_texture(const RenderDataRD *p_render_data);
++	void _render_buffers_copy_screen_texture(const RenderDataRD *p_render_data, bool p_generate_mipmaps = true);
+ 	void _render_buffers_ensure_depth_texture(const RenderDataRD *p_render_data);
+ 	void _render_buffers_copy_depth_texture(const RenderDataRD *p_render_data, bool p_use_msaa = false);
+ 	void _render_buffers_post_process_and_tonemap(const RenderDataRD *p_render_data, bool p_use_msaa = false);
+diff --git a/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp b/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
+--- a/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
++++ b/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
+@@ -347,7 +347,7 @@
+ 	}
+ }
+ 
+-void RendererSceneRenderRD::_render_buffers_copy_screen_texture(const RenderDataRD *p_render_data) {
++void RendererSceneRenderRD::_render_buffers_copy_screen_texture(const RenderDataRD *p_render_data, bool p_generate_mipmaps) {
+ 	Ref<RenderSceneBuffersRD> rb = p_render_data->render_buffers;
+ 	ERR_FAIL_COND(rb.is_null());
+ 
+@@ -375,7 +375,7 @@
+ 
+ 	for (uint32_t v = 0; v < rb->get_view_count(); v++) {
+ 		RID texture = rb->get_internal_texture(v);
+-		int mipmaps = int(rb->get_texture_format(RB_SCOPE_BUFFERS, texture_name).mipmaps);
++		int mipmaps = p_generate_mipmaps ? int(rb->get_texture_format(RB_SCOPE_BUFFERS, texture_name).mipmaps) : 1;
+ 		RID dest = rb->get_texture_slice(RB_SCOPE_BUFFERS, texture_name, v, 0);
+ 
+ 		if (can_use_storage) {
+diff --git a/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.h b/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.h
+--- a/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.h
++++ b/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.h
+@@ -298,6 +298,7 @@
+ 		RID lightmap_capture_buffer;
+ 
+ 		bool used_screen_texture = false;
++		bool used_screen_texture_mipmaps = false;
+ 		bool used_depth_texture = false;
+ 		bool used_lightmap = false;
+ 		bool used_opaque_stencil = false;
+@@ -480,6 +481,7 @@
+ 			FLAG_USES_DOUBLE_SIDED_SHADOWS = 32768,
+ 			FLAG_USES_PARTICLE_TRAILS = 65536,
+ 			FLAG_USES_STENCIL = 131072,
++			FLAG_USES_SCREEN_TEXTURE_MIPMAPS = 262144,
+ 		};
+ 
+ 		union {
+diff --git a/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.cpp b/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.cpp
+--- a/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.cpp
++++ b/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.cpp
+@@ -1346,7 +1346,7 @@
+ 
+ 				if (scene_state.used_screen_texture) {
+ 					// Copy screen texture to backbuffer so we can read from it
+-					_render_buffers_copy_screen_texture(p_render_data);
++					_render_buffers_copy_screen_texture(p_render_data, scene_state.used_screen_texture_mipmaps);
+ 				}
+ 			}
+ 
+@@ -2186,6 +2186,7 @@
+ 
+ 	if (p_render_list == RENDER_LIST_OPAQUE) {
+ 		scene_state.used_screen_texture = false;
++		scene_state.used_screen_texture_mipmaps = false;
+ 		scene_state.used_depth_texture = false;
+ 		scene_state.used_lightmap = false;
+ 	}
+@@ -2347,6 +2348,9 @@
+ 				if (surf->flags & GeometryInstanceSurfaceDataCache::FLAG_USES_SCREEN_TEXTURE) {
+ 					scene_state.used_screen_texture = true;
+ 				}
++				if (surf->flags & GeometryInstanceSurfaceDataCache::FLAG_USES_SCREEN_TEXTURE_MIPMAPS) {
++					scene_state.used_screen_texture_mipmaps = true;
++				}
+ 				if (surf->flags & GeometryInstanceSurfaceDataCache::FLAG_USES_DEPTH_TEXTURE) {
+ 					scene_state.used_depth_texture = true;
+ 				}
+@@ -2902,6 +2906,10 @@
+ 		global_surface_data.screen_texture_used = true;
+ 	}
+ 
++	if (p_material->shader_data->uses_screen_texture_mipmaps) {
++		flags |= GeometryInstanceSurfaceDataCache::FLAG_USES_SCREEN_TEXTURE_MIPMAPS;
++	}
++
+ 	if (p_material->shader_data->uses_depth_texture) {
+ 		flags |= GeometryInstanceSurfaceDataCache::FLAG_USES_DEPTH_TEXTURE;
+ 		global_surface_data.depth_texture_used = true;

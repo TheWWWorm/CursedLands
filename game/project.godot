@@ -40,6 +40,7 @@ file_logging/max_log_files=10
 window/size/viewport_width=1600
 window/size/viewport_height=900
 window/handheld/orientation=6
+window/frame_pacing/android/enable_frame_pacing=false
 
 [input_devices]
 

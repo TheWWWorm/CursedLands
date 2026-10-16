@@ -93,6 +93,11 @@ var script_bolts := {}       # script id -> FxLightning
 var script_lights := {}      # script id -> light dict
 var _rng := RandomNumberGenerator.new()
 var _mats := {}
+var _material_options_dirty := true
+var _material_soft := -1.0
+var _material_tint := Color()
+var _material_boost := -1.0
+var _material_firelight := false
 var _quad: QuadMesh
 var _bones := {}             # unit instance id -> {model: instance id, parts: {name: Node3D}}
 var _boxes := {}             # unit instance id -> [tick, AABB] (unit local, Godot space)
@@ -746,29 +751,50 @@ func _material(tex: String, additive: bool, glow := false, lit := false, fire :=
 		m.set_meta("lit", lit and not additive)
 		m.set_meta("fire", fire)
 		_mats[key] = m
+		_material_options_dirty = true
 	return _mats[key]
 
 
 static var _shaders := {}
+static var _shader_soft_mode := -1
+
+
+static func _shader_source(key: int, soft: bool) -> String:
+	var code := EFFECT_SHADER.code
+	var through := bool(key & 2)
+	if not through and not soft:
+		# A zero uniform still declares a depth-texture dependency to the
+		# renderer. Omit it when neither soft particles nor path occlusion
+		# reads depth, so Mobile can retain its combined render pass.
+		code = code.replace("shader_type spatial;", "shader_type spatial;\n#define EI_PARTICLE_NO_DEPTH")
+	if key & 1:
+		code = code.replace("blend_mix", "blend_add")
+	if through:
+		code = code.replace("depth_draw_never,", "depth_draw_never, depth_test_disabled,")
+	if (key & 4) or through:
+		code = WaterReflection.screen_effect_source(code)
+	return code
+
+
+static func _refresh_depth_shaders() -> void:
+	var soft := int(Gfx.on("gfx_soft_particles"))
+	if soft == _shader_soft_mode:
+		return
+	_shader_soft_mode = soft
+	for key: int in _shaders:
+		var shader: Shader = _shaders[key]
+		var code := _shader_source(key, soft != 0)
+		if shader.code != code:
+			shader.code = code
 
 
 static func _shader(additive: bool, through := false, marker := false) -> Shader:
+	_refresh_depth_shaders()
 	var key := int(additive) + 2 * int(through) + 4 * int(marker)
 	if not _shaders.has(key):
-		if not additive and not through and not marker:
-			_shaders[key] = EFFECT_SHADER
-		else:
-			var s := Shader.new()
-			s.code = EFFECT_SHADER.code
-			if additive:
-				s.code = s.code.replace("blend_mix", "blend_add")
-			if through:
-				s.code = s.code.replace("depth_draw_never,", "depth_draw_never, depth_test_disabled,")
-			# Target/path indicators stay in the main view even with the
-			# optional through-obstacles display disabled.
-			if marker or through:
-				s.code = WaterReflection.screen_effect_source(s.code)
-			_shaders[key] = s
+		var shader := Shader.new()
+		shader.code = _shader_source(key, _shader_soft_mode != 0)
+		_shaders[key] = shader
 	return _shaders[key]
 
 
@@ -995,15 +1021,25 @@ func _draw(t: float) -> void:
 
 
 func _apply_material_options() -> void:
+	_refresh_depth_shaders()
 	var soft := SOFT_DISTANCE if Gfx.on("gfx_soft_particles") else 0.0
 	var tint := Gfx.particle_tint()
 	var boost := GLOW_BOOST if Gfx.on("gfx_bloom") else 1.0
+	var firelight := Gfx.on("gfx_firelight")
+	if not _material_options_dirty and soft == _material_soft and tint == _material_tint \
+			and boost == _material_boost and firelight == _material_firelight:
+		return
+	_material_options_dirty = false
+	_material_soft = soft
+	_material_tint = tint
+	_material_boost = boost
+	_material_firelight = firelight
 	for m: ShaderMaterial in _mats.values():
 		m.set_shader_parameter("soft_distance", 0.0 if m.get_meta("through", false) else soft)
 		if m.get_meta("glow", false):
 			# The original campfire atlas already has a bright yellow core.
 			# Extra HDR gain clips its painted detail into a flat yellow shape.
-			var gain := 1.0 if m.get_meta("fire", false) and Gfx.on("gfx_firelight") else boost
+			var gain := 1.0 if m.get_meta("fire", false) and firelight else boost
 			m.set_shader_parameter("boost", gain)
 		else:
 			var lt := tint if m.get_meta("lit", false) else Color.WHITE

@@ -179,12 +179,21 @@ static func material(cave: bool) -> ShaderMaterial:
 	Gfx.ensure_globals()   # ei_flash
 	var m := ShaderMaterial.new()
 	m.shader = Shader.new()
-	m.shader.code = SHADER
+	m.shader.code = source(0)
 	m.set_meta("clouds",false)
 	var tex := GameData.get_texture("sky01" if cave else "sky00") if GameData.textures else null
 	if tex:
 		m.set_shader_parameter("tex", tex)
 	return m
+
+
+static func source(clouds: int) -> String:
+	var code := Clouds.sky_source(SHADER) if clouds > 0 else SHADER
+	if RenderingServer.get_current_rendering_method() == "mobile" and OS.has_feature("ei_mobile_lazy_sky_radiance"):
+		# The native renderer still refreshes radiance for any actual consumer.
+		# Only this dome opts in; other skies retain their normal bake behavior.
+		code = code.replace("shader_type sky;", "shader_type sky;\nrender_mode skip_unneeded_radiance;")
+	return code
 
 
 ## Sun (light) direction in EI space at `hour`.
@@ -208,7 +217,7 @@ static func update(m: ShaderMaterial, lights: EILights, hour: float, cave: bool,
 		return
 	var clouds := Clouds.mode() if not cave else 0
 	if int(m.get_meta("clouds",0)) != clouds:
-		m.shader.code = Clouds.sky_source(SHADER) if clouds>0 else SHADER
+		m.shader.code = source(clouds)
 		m.set_meta("clouds",clouds)
 	# Keep the visible dome live while skipping its unused cubemap shading.
 	# Unknown environments and every radiance consumer retain the full sky.

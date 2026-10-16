@@ -5,6 +5,9 @@ var failures := 0
 var draw: MeshInstance3D
 var render_view: SubViewport
 var rendered_variants := 0
+## The default also probes deliberately unsupported fog combinations. Opt in
+## to runtime-supported modes when qualifying a physical renderer's options.
+var supported_renderer_only := OS.get_cmdline_user_args().has("--supported-renderer-only")
 
 func render_shader(shader: Shader) -> void:
 	if draw == null: return
@@ -86,9 +89,11 @@ func _ready() -> void:
 			await render_shader(shaders[i])
 	# Compose directly so both fog forms compile even on renderers where the
 	# options UI intentionally disallows volumetric fog.
+	var fog_modes := [false] if supported_renderer_only \
+		and RenderingServer.get_current_rendering_method() != "forward_plus" else [false, true]
 	for detail in [0, 1]:
 		GameData.options["gfx_materials"] = detail
-		for fog in [false, true]:
+		for fog in fog_modes:
 			Gfx._vol_fog = fog
 			for row: Array in sources:
 				var code: String = row[0]

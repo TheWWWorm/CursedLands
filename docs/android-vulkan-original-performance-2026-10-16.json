@@ -1,0 +1,3568 @@
+{
+  "date": "2026-10-16",
+  "source_base": "9da078010abe25ba2756939a8b379ca5ce3444f6",
+  "prior_terrain_commit": "2763071c460dac7d9984ccbdb84b146cb8478567",
+  "device": {
+    "model": "Retroid Pocket 5",
+    "gpu": "Adreno 650",
+    "api": 33,
+    "renderer": "Mobile / Vulkan",
+    "resolution": [
+      1920,
+      1080
+    ],
+    "render_scale": 1.0,
+    "quality": "GfxPresets.ORIGINAL (id 1), unchanged preset values",
+    "presentation": "60 Hz FIFO; requested disabled VSync is unsupported on this device.",
+    "package": "org.cursedlands.vulkanbench",
+    "normal_package": "org.cursedlands.engine remains published 1.8.0, versionCode 40; app and saves untouched"
+  },
+  "builds": {
+    "published_baseline": {
+      "baseline": true,
+      "diff_sha256": "c34a78253c3176793d5a3e64f1a3ab51ad47c40b75c6e4673f638559eba3fa3d",
+      "source": "9da078010abe25ba2756939a8b379ca5ce3444f6",
+      "profile": false,
+      "native_libraries_match_1_8_0": true,
+      "libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "apk_sha256": "0d8e59ae831e3d13c8b87c60fbcb3058c1a81066012bc9924762e2382adb4c47"
+    },
+    "final_game_pack_before_native_replacement": {
+      "baseline": false,
+      "diff_sha256": "8d1390bb67b94fd1b50d6864d442ea06aac27cd89ee0a829b4a3167399e27819",
+      "source": "2763071c460dac7d9984ccbdb84b146cb8478567",
+      "profile": false,
+      "native_libraries_match_1_8_0": true,
+      "libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      },
+      "apk_sha256": "cdf21a44852bd38b17db4f2fab987bd769505c552adade6834f0ddd3d3628031"
+    },
+    "final_apk": {
+      "engine_sha256": "bd398cfa7857d40bc1847af64ea18d1a8815881003e3bc7cc63ebb8e4b04e712",
+      "apk_sha256": "aafba01afb9ad776a3697bfdc6c795ead235e265405b153f5c9106ee70a18bef",
+      "seconds": 9.97,
+      "command": [
+        "python3",
+        "-m",
+        "SCons",
+        "target=template_release",
+        "debug_symbols=yes",
+        "lto=none",
+        "production=yes",
+        "optimize=speed",
+        "module_mono_enabled=no",
+        "module_openxr_enabled=no",
+        "module_jolt_physics_enabled=no",
+        "module_fbx_enabled=no",
+        "module_gltf_enabled=no",
+        "module_lightmapper_rd_enabled=no",
+        "module_csg_enabled=no",
+        "module_theora_enabled=no",
+        "module_webrtc_enabled=no",
+        "module_webxr_enabled=no",
+        "-j8",
+        "platform=android",
+        "arch=arm64",
+        "swappy=yes"
+      ],
+      "game_pack": "builds/goal-candidate-6/validation.apk",
+      "baseline_engine_sha256": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e"
+    }
+  },
+  "production_source_sha256": {
+    "game/project.godot": "a7060d8750127c9ebf5e6dae91b41516df2425ecd534d9bcc0fdf6505b4bd6a0",
+    "game/src/game/fx/particle.gdshader": "c49aef217ca179306a365bad23b7281e803fdcc37e86a73949426e5e2154d68e",
+    "game/src/game/fx/particle_system.gd": "fc0c9056bd40af710c1dc3729c88badd96d2ba25c05a0c0c88206bf22062f73d",
+    "game/src/game/game.gd": "05919ab75aecdb0a1338f8d7eae84487a965d053f4e0ad85285100e2622a180f",
+    "game/src/game/gfx.gd": "a0d10387490f5fecfd950203e1dea113ffdc484e6f38149c56091cf28e05a215",
+    "game/src/game/sky.gd": "c3094487b1801cfa56154efe81bfe28f3eedbb97632f1ae98cc906588e6899fa",
+    "engine_patches/godot-4.7/mobile-render-work.patch": "d94ad6fca73b8ad99502be116363b9f5de6a02ec92b1481480ffa03919cc8442"
+  },
+  "native_source_manifest": {
+    "core/os/os.cpp": {
+      "before": "26187ef96f3a3c0e008e71192758811b7c6840219ef6740d99d26fbc74452354",
+      "after": "23f653c2ebbf59d321b997572f45883280fc10d9fee04cb68b0ce8d0eb48bf17"
+    },
+    "scene/3d/light_3d.cpp": {
+      "before": "ea6457cf39f216bba558ec5010bf3fb5af9a6b0acbad0fdb463aaed0dda43820",
+      "after": "88ebf2b7e704aff3940fa270a6893df318fc4af859757c71de910e55c2bd1cf2"
+    },
+    "scene/3d/light_3d.h": {
+      "before": "63fa50a801ffa2aebb79725d28e6b617649505690a54d05770001fec4c7c8cbe",
+      "after": "f7895f99dd5321ed830038300eb619a5e49c680b818629dac47a97c8906c3daa"
+    },
+    "servers/rendering/rendering_server.h": {
+      "before": "48af4abd50357b9a2b0012566f1354b9e56a66327adcefb7798b226eb3998a58",
+      "after": "34d1ce784c67a2ce1f16cabb645bd3e8034068f06a8dd77cdcb51c8bff036bb6"
+    },
+    "servers/rendering/rendering_server.cpp": {
+      "before": "4f668673a2096da2f7949326d7e37fc49f63b91bd74ef32a4d11a35cc3ee5ce7",
+      "after": "3e8bea78eb9aadefc66e74dbead95d3502230418d00fb5fc19b830221b0ca182"
+    },
+    "servers/rendering/rendering_server_default.h": {
+      "before": "4c5332cb15a83f38cc9ae89957ea659dc67f0478bf377b133dac68831ee87b78",
+      "after": "83ed4583b562d008d59972259e48d476905252b710c89b0202e8998ae7db53bd"
+    },
+    "servers/rendering/storage/light_storage.h": {
+      "before": "c632f50f4b0f8c50263023dc7afe5808867d159f7c2429c1db2bf8ab0db40be1",
+      "after": "acbe37a696b55b2e904a69652bbf584871e5c672436000913482d133e92076ad"
+    },
+    "servers/rendering/shader_types.cpp": {
+      "before": "01890eb237de966067f3f924831301b6e193482f1ceb1d77b41dd4486f2a1121",
+      "after": "8bdd306c3ffadb91a9b742f417cbadf56fc855c0a2667719d93a92e3fcbd4483"
+    },
+    "servers/rendering/renderer_rd/environment/sky.cpp": {
+      "before": "cabc000c0869650c050afc7b7e2c6f74f2a3c7f0f0f9b80969c6044fc7887890",
+      "after": "fc6608dd433ab72fcc5f5a924ce7d5f9e3e2348e5b4c0295ceef8bbcd0f51bfc"
+    },
+    "servers/rendering/renderer_rd/environment/sky.h": {
+      "before": "97279c5608d282cc14e79af7a2ebd7dfd173f024d27a4f6cf865f8bc8c6832e4",
+      "after": "b69fb67d230b4d67c14ae8f3445e0a90cbfc6a67c4dbe20c8f9fe2769a2f415c"
+    },
+    "servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.cpp": {
+      "before": "36a56169f6f38bbc8607bc0cc1fefef2f40b4284bd2cccd725476d7e30b18c1f",
+      "after": "e143a246c1534d22ed4ebef936f87130c1ed9c2b590df5756177fdaeb557cd94"
+    },
+    "servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.h": {
+      "before": "9ae45452387bbf416b88554bbfb7c006ea3d34d8f6eb5d353e46fb207cd64be8",
+      "after": "eae6df77dbfcb36c28fe3bc69ad50e5c9f7da2659a772c716bfe47e16a924efb"
+    },
+    "servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.cpp": {
+      "before": "5794a2ce0877fc519b757fd65dda4d2781c89cb62faa21f5170f5304e31a00fe",
+      "after": "b97f87d939b363934c7d54a560acb6d8e5ecc253de1c4e25eb6113ce7db9052b"
+    },
+    "servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.h": {
+      "before": "f3bbe8495533af7edea76c4bb0e5b7b92dfa5a51e2b69ec8b93da75b7a2debc9",
+      "after": "6d6e9958a4b8f88ea7eb5cdd0233017276a262d69821292846c8b66a1271d9d1"
+    },
+    "servers/rendering/renderer_rd/storage_rd/light_storage.cpp": {
+      "before": "b5619355dddef39ddc9a6277786e0cbf3dc1696c57ffb7dcd35df8fcb165e96c",
+      "after": "8115039e27c88a1e25b67ddfbd34d1d69cd7464a4a1b2c91ef045f874dbe2073"
+    },
+    "servers/rendering/renderer_rd/storage_rd/light_storage.h": {
+      "before": "d238c02ff504d1a7d2c7bd7504e566acd2a6abf9dc0aa928640a4e94188be703",
+      "after": "b2d1709443e34b64cca1f7e810158fde59976b51edca02013f285443e25a8676"
+    },
+    "servers/rendering/renderer_rd/shaders/forward_mobile/scene_forward_mobile.glsl": {
+      "before": "4549a45e96d2c553c7f0c014afa4e4c95a0704e2acaa5f7f795e9c26a6448100",
+      "after": "b6365ae8474628fa333b2f1f7f59b803e0d3f17205898840fca12a80bd20cebc"
+    }
+  },
+  "native_patch_checks": {
+    "apply_to_shipping_fourteen_patch_tree": "pass",
+    "reverse_apply_to_built_tree": "pass"
+  },
+  "runs": {
+    "goal-published-original-matched": {
+      "measurements": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "presented_frames": true,
+          "preset": 1.0,
+          "seconds": 15.0,
+          "warmup": 18.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "options": {
+          "aim_press_once": 1,
+          "armor_formula": 0,
+          "auto_exit": 0,
+          "auto_graphics": 0,
+          "autosave": 0,
+          "brightness": 50,
+          "cam_follow": 1,
+          "cam_pan_speed": 50,
+          "cam_rotate_speed": 50,
+          "cam_see_through": 1,
+          "cam_wasd": 1,
+          "cam_zoom_speed": 50,
+          "camera_reverse_x": 0,
+          "camera_reverse_y": 0,
+          "camera_style": 1,
+          "character_light": 0,
+          "confine_mouse": 0,
+          "contrast": 50,
+          "control_mode": 0,
+          "coop_clock": 1,
+          "coop_full_xp": 1,
+          "coop_player_names": 1,
+          "coop_scale": 2,
+          "coop_share_loot": 1,
+          "difficulty": 0,
+          "direct_fov_first": 5,
+          "direct_fov_third": 3,
+          "direct_hints": 1,
+          "direct_invert_x": 0,
+          "direct_invert_y": 0,
+          "direct_mouse_first": 50,
+          "direct_mouse_third": 50,
+          "direct_pad_curve": 1,
+          "direct_pad_deadzone": 13,
+          "direct_pad_invert_x": 0,
+          "direct_pad_invert_y": 0,
+          "direct_pad_x": 50,
+          "direct_pad_y": 50,
+          "display_mode": 1,
+          "distant_ai": 0,
+          "enemy_hp_bars": 1,
+          "footprints": 1,
+          "fps_limit": 0,
+          "free_run": 0,
+          "gamma": 50,
+          "gfx_ambient_particles": 0,
+          "gfx_ambient_wildlife": 0,
+          "gfx_biome_cover": 0,
+          "gfx_bloom": 0,
+          "gfx_cloud_reflections": 0,
+          "gfx_cloud_shadows": 0,
+          "gfx_clouds": 0,
+          "gfx_contact_shadows": 0,
+          "gfx_depth_of_field": 0,
+          "gfx_detailed_heads": 0,
+          "gfx_far_view": 0,
+          "gfx_firelight": 0,
+          "gfx_foliage_light": 0,
+          "gfx_grass": 0,
+          "gfx_ground_contact": 0,
+          "gfx_hd_textures": 0,
+          "gfx_heat_haze": 0,
+          "gfx_lava_light": 0,
+          "gfx_lit_particles": 0,
+          "gfx_materials": 0,
+          "gfx_rain_puddles": 0,
+          "gfx_severed_limbs": 0,
+          "gfx_sharp_units": 0,
+          "gfx_sky": 0,
+          "gfx_soft_ground": 0,
+          "gfx_soft_particles": 0,
+          "gfx_ssao": 0,
+          "gfx_terrain": 0,
+          "gfx_terrain_cliffs": 0,
+          "gfx_torch_glow": 0,
+          "gfx_vegetation_interaction": 0,
+          "gfx_volumetric": 0,
+          "gfx_water": 0,
+          "gfx_water_caustics": 0,
+          "gfx_water_current": 0,
+          "gfx_water_interaction": 0,
+          "gfx_water_reflections": 0,
+          "gfx_water_waves": 0,
+          "gfx_waterfalls": 0,
+          "gfx_weather_mist": 0,
+          "gfx_weather_surfaces": 0,
+          "gfx_wind": 0,
+          "graphics_preset": 0,
+          "item_icon_fit": 1,
+          "marks": 1,
+          "mechanism_motion": 0,
+          "merc_travel": 0,
+          "net_directory": 0,
+          "net_lan": 0,
+          "net_upnp": 0,
+          "net_websocket": 0,
+          "original_rune_layout": 0,
+          "pad_cursor_speed": 50,
+          "pad_deadzone": 13,
+          "pad_enabled": 1,
+          "pad_glyphs": 0,
+          "pad_gyro": 0,
+          "pad_gyro_sensitivity": 50,
+          "pad_light": 1,
+          "pad_rumble": 70,
+          "pad_swap_sticks": 0,
+          "pad_target_radius": 6,
+          "pad_wheel_pause": 1,
+          "path_through": 1,
+          "phys_interp": 1,
+          "power_kbd": 25,
+          "power_mouse": 50,
+          "q_aa": 0,
+          "q_aniso": 1,
+          "q_shadow_fit": 1,
+          "q_shadows": 0,
+          "render_scale": 4,
+          "renderer": 2,
+          "resolution": 0,
+          "reverse_stereo": 0,
+          "revive": 1,
+          "rubber_select": 2,
+          "scroll_border": 0,
+          "select_type": 0,
+          "shadow_buildings": 1,
+          "shadow_flora": 1,
+          "show_flying_hp": 1,
+          "show_fps": 0,
+          "show_path": 1,
+          "show_tutorial": 0,
+          "smile_faces": 1,
+          "sp_death_notice": 1,
+          "sp_full_xp": 0,
+          "spell_double_tap_self": 1,
+          "stamina_regen": 0,
+          "start_zones": 1,
+          "switch_filters": 1,
+          "tooltip_time": 2,
+          "ui_active_buttons": 1,
+          "unit_fog": 1,
+          "village_start_view": 0,
+          "volume_sfx": 100,
+          "volume_stream": 100,
+          "volume_voice": 100,
+          "vsync": 0
+        },
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "draw_calls": 120,
+            "draw_pipelines": 0,
+            "fps": 60.0061644512559,
+            "frame_ms": {
+              "max": 18.824,
+              "mean": 16.6649544950056,
+              "median": 16.666,
+              "p95": 16.826,
+              "p99": 18.435
+            },
+            "frames": 901,
+            "last_gpu_ms": 13.331000328064,
+            "last_render_cpu_ms": 1.70200002193451,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.59,
+              "mean": 0.554325194228632,
+              "median": 0.552,
+              "p95": 0.59,
+              "p99": 0.59
+            },
+            "process_ms": {
+              "max": 18.227,
+              "mean": 17.6918146503886,
+              "median": 17.901,
+              "p95": 18.227,
+              "p99": 18.227
+            },
+            "stalls_over_25ms": []
+          },
+          {
+            "draw_calls": 184,
+            "draw_pipelines": 8,
+            "fps": 50.6184745043735,
+            "frame_ms": {
+              "max": 57.384,
+              "mean": 19.7556328947369,
+              "median": 16.68,
+              "p95": 34.058,
+              "p99": 34.388
+            },
+            "frames": 760,
+            "last_gpu_ms": 14.2559995651245,
+            "last_render_cpu_ms": 1.63499999046326,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.817,
+              "mean": 0.68513289473684,
+              "median": 0.712,
+              "p95": 0.817,
+              "p99": 0.817
+            },
+            "process_ms": {
+              "max": 55.68,
+              "mean": 31.510747368421,
+              "median": 33.142,
+              "p95": 55.68,
+              "p99": 55.68
+            },
+            "stalls_over_25ms": [
+              {
+                "at": 0.916345,
+                "ms": 33.705,
+                "process_ms": 18.159
+              },
+              {
+                "at": 0.999693,
+                "ms": 33.788,
+                "process_ms": 18.159
+              },
+              {
+                "at": 1.783147,
+                "ms": 34.383,
+                "process_ms": 32.896
+              },
+              {
+                "at": 1.882997,
+                "ms": 33.903,
+                "process_ms": 32.896
+              },
+              {
+                "at": 1.91411,
+                "ms": 31.113,
+                "process_ms": 32.896
+              },
+              {
+                "at": 1.971494,
+                "ms": 57.384,
+                "process_ms": 32.896
+              },
+              {
+                "at": 1.998562,
+                "ms": 27.068,
+                "process_ms": 32.896
+              },
+              {
+                "at": 2.065764,
+                "ms": 33.325,
+                "process_ms": 32.896
+              },
+              {
+                "at": 2.115881,
+                "ms": 34.109,
+                "process_ms": 32.896
+              },
+              {
+                "at": 2.184865,
+                "ms": 36.313,
+                "process_ms": 32.896
+              },
+              {
+                "at": 2.232743,
+                "ms": 32.906,
+                "process_ms": 32.896
+              },
+              {
+                "at": 2.282535,
+                "ms": 33.887,
+                "process_ms": 32.896
+              },
+              {
+                "at": 2.332464,
+                "ms": 33.809,
+                "process_ms": 55.68
+              },
+              {
+                "at": 2.382388,
+                "ms": 33.356,
+                "process_ms": 55.68
+              },
+              {
+                "at": 2.432952,
+                "ms": 34.092,
+                "process_ms": 55.68
+              },
+              {
+                "at": 2.483029,
+                "ms": 34.191,
+                "process_ms": 55.68
+              },
+              {
+                "at": 2.53281,
+                "ms": 33.922,
+                "process_ms": 55.68
+              },
+              {
+                "at": 2.582977,
+                "ms": 33.36,
+                "process_ms": 55.68
+              },
+              {
+                "at": 2.632976,
+                "ms": 32.885,
+                "process_ms": 55.68
+              },
+              {
+                "at": 2.682561,
+                "ms": 33.597,
+                "process_ms": 55.68
+              },
+              {
+                "at": 2.732849,
+                "ms": 34.048,
+                "process_ms": 55.68
+              },
+              {
+                "at": 2.782897,
+                "ms": 34.102,
+                "process_ms": 55.68
+              },
+              {
+                "at": 2.832782,
+                "ms": 34.117,
+                "process_ms": 55.68
+              },
+              {
+                "at": 2.882772,
+                "ms": 34.086,
+                "process_ms": 55.68
+              },
+              {
+                "at": 2.932967,
+                "ms": 34.388,
+                "process_ms": 55.68
+              },
+              {
+                "at": 2.98288,
+                "ms": 34.209,
+                "process_ms": 55.68
+              },
+              {
+                "at": 3.032691,
+                "ms": 33.96,
+                "process_ms": 55.68
+              },
+              {
+                "at": 3.082632,
+                "ms": 33.889,
+                "process_ms": 55.68
+              },
+              {
+                "at": 3.132688,
+                "ms": 34.018,
+                "process_ms": 55.68
+              },
+              {
+                "at": 3.182981,
+                "ms": 34.152,
+                "process_ms": 55.68
+              },
+              {
+                "at": 3.232512,
+                "ms": 30.713,
+                "process_ms": 55.68
+              },
+              {
+                "at": 3.282537,
+                "ms": 33.529,
+                "process_ms": 55.68
+              },
+              {
+                "at": 3.332481,
+                "ms": 33.379,
+                "process_ms": 33.345
+              },
+              {
+                "at": 3.382378,
+                "ms": 33.539,
+                "process_ms": 33.345
+              },
+              {
+                "at": 3.432105,
+                "ms": 33.255,
+                "process_ms": 33.345
+              },
+              {
+                "at": 3.482108,
+                "ms": 33.059,
+                "process_ms": 33.345
+              },
+              {
+                "at": 3.532499,
+                "ms": 33.599,
+                "process_ms": 33.345
+              },
+              {
+                "at": 3.582442,
+                "ms": 33.539,
+                "process_ms": 33.345
+              },
+              {
+                "at": 3.649519,
+                "ms": 33.385,
+                "process_ms": 33.345
+              },
+              {
+                "at": 3.69942,
+                "ms": 34.004,
+                "process_ms": 33.345
+              },
+              {
+                "at": 3.749561,
+                "ms": 34.173,
+                "process_ms": 33.345
+              },
+              {
+                "at": 3.799389,
+                "ms": 34.01,
+                "process_ms": 33.345
+              },
+              {
+                "at": 3.849511,
+                "ms": 34.257,
+                "process_ms": 33.345
+              },
+              {
+                "at": 3.899206,
+                "ms": 33.758,
+                "process_ms": 33.345
+              },
+              {
+                "at": 3.949279,
+                "ms": 34.05,
+                "process_ms": 33.345
+              },
+              {
+                "at": 3.999145,
+                "ms": 33.96,
+                "process_ms": 33.345
+              },
+              {
+                "at": 4.049346,
+                "ms": 34.192,
+                "process_ms": 33.345
+              },
+              {
+                "at": 4.099195,
+                "ms": 31.929,
+                "process_ms": 33.345
+              },
+              {
+                "at": 4.149288,
+                "ms": 34.141,
+                "process_ms": 33.345
+              },
+              {
+                "at": 4.199009,
+                "ms": 33.747,
+                "process_ms": 33.345
+              },
+              {
+                "at": 4.249374,
+                "ms": 32.295,
+                "process_ms": 33.345
+              },
+              {
+                "at": 4.316156,
+                "ms": 34.057,
+                "process_ms": 33.202
+              },
+              {
+                "at": 4.365925,
+                "ms": 33.968,
+                "process_ms": 33.202
+              },
+              {
+                "at": 4.432642,
+                "ms": 33.947,
+                "process_ms": 33.202
+              },
+              {
+                "at": 4.483443,
+                "ms": 34.51,
+                "process_ms": 33.202
+              },
+              {
+                "at": 4.532566,
+                "ms": 33.923,
+                "process_ms": 33.202
+              },
+              {
+                "at": 4.582252,
+                "ms": 33.705,
+                "process_ms": 33.202
+              },
+              {
+                "at": 4.632211,
+                "ms": 33.55,
+                "process_ms": 33.202
+              },
+              {
+                "at": 4.698822,
+                "ms": 33.604,
+                "process_ms": 33.202
+              },
+              {
+                "at": 4.765727,
+                "ms": 33.93,
+                "process_ms": 33.202
+              },
+              {
+                "at": 4.81564,
+                "ms": 33.902,
+                "process_ms": 33.202
+              },
+              {
+                "at": 4.86555,
+                "ms": 33.714,
+                "process_ms": 33.202
+              },
+              {
+                "at": 4.932551,
+                "ms": 34.156,
+                "process_ms": 33.202
+              },
+              {
+                "at": 4.981818,
+                "ms": 33.365,
+                "process_ms": 33.202
+              },
+              {
+                "at": 5.066358,
+                "ms": 34.549,
+                "process_ms": 33.202
+              },
+              {
+                "at": 5.215674,
+                "ms": 33.721,
+                "process_ms": 33.202
+              },
+              {
+                "at": 5.998906,
+                "ms": 33.764,
+                "process_ms": 33.288
+              },
+              {
+                "at": 7.324169,
+                "ms": 25.753,
+                "process_ms": 17.698
+              },
+              {
+                "at": 7.365268,
+                "ms": 25.523,
+                "process_ms": 17.698
+              },
+              {
+                "at": 7.498804,
+                "ms": 31.583,
+                "process_ms": 17.698
+              },
+              {
+                "at": 7.715882,
+                "ms": 34.134,
+                "process_ms": 17.698
+              },
+              {
+                "at": 7.832288,
+                "ms": 33.899,
+                "process_ms": 17.698
+              },
+              {
+                "at": 8.632139,
+                "ms": 33.703,
+                "process_ms": 33.166
+              },
+              {
+                "at": 8.715541,
+                "ms": 33.932,
+                "process_ms": 33.166
+              },
+              {
+                "at": 8.782136,
+                "ms": 33.718,
+                "process_ms": 33.166
+              },
+              {
+                "at": 8.848836,
+                "ms": 33.975,
+                "process_ms": 33.166
+              },
+              {
+                "at": 8.898971,
+                "ms": 34.052,
+                "process_ms": 33.166
+              },
+              {
+                "at": 8.949145,
+                "ms": 34.182,
+                "process_ms": 33.166
+              },
+              {
+                "at": 8.998949,
+                "ms": 33.866,
+                "process_ms": 33.166
+              },
+              {
+                "at": 9.065451,
+                "ms": 33.942,
+                "process_ms": 33.166
+              },
+              {
+                "at": 9.115546,
+                "ms": 34.153,
+                "process_ms": 33.166
+              },
+              {
+                "at": 9.165561,
+                "ms": 32.663,
+                "process_ms": 33.166
+              },
+              {
+                "at": 9.215314,
+                "ms": 34.011,
+                "process_ms": 33.166
+              },
+              {
+                "at": 9.282187,
+                "ms": 34.002,
+                "process_ms": 33.166
+              },
+              {
+                "at": 9.331892,
+                "ms": 33.89,
+                "process_ms": 33.198
+              },
+              {
+                "at": 9.398457,
+                "ms": 33.344,
+                "process_ms": 33.198
+              },
+              {
+                "at": 9.4487,
+                "ms": 33.92,
+                "process_ms": 33.198
+              },
+              {
+                "at": 9.498895,
+                "ms": 34.165,
+                "process_ms": 33.198
+              },
+              {
+                "at": 9.548793,
+                "ms": 33.951,
+                "process_ms": 33.198
+              },
+              {
+                "at": 9.598778,
+                "ms": 33.847,
+                "process_ms": 33.198
+              },
+              {
+                "at": 9.648902,
+                "ms": 34.156,
+                "process_ms": 33.198
+              },
+              {
+                "at": 9.701185,
+                "ms": 36.4,
+                "process_ms": 33.198
+              },
+              {
+                "at": 9.748747,
+                "ms": 34.024,
+                "process_ms": 33.198
+              },
+              {
+                "at": 9.798857,
+                "ms": 33.971,
+                "process_ms": 33.198
+              },
+              {
+                "at": 9.849032,
+                "ms": 34.231,
+                "process_ms": 33.198
+              },
+              {
+                "at": 9.89892,
+                "ms": 34.108,
+                "process_ms": 33.198
+              },
+              {
+                "at": 9.9487,
+                "ms": 33.017,
+                "process_ms": 33.198
+              },
+              {
+                "at": 9.998834,
+                "ms": 33.83,
+                "process_ms": 33.198
+              },
+              {
+                "at": 10.048803,
+                "ms": 33.862,
+                "process_ms": 33.198
+              },
+              {
+                "at": 10.098711,
+                "ms": 34.004,
+                "process_ms": 33.198
+              },
+              {
+                "at": 10.148731,
+                "ms": 34.152,
+                "process_ms": 33.198
+              },
+              {
+                "at": 10.198513,
+                "ms": 32.454,
+                "process_ms": 33.198
+              },
+              {
+                "at": 10.248743,
+                "ms": 34.251,
+                "process_ms": 33.198
+              },
+              {
+                "at": 10.298876,
+                "ms": 34.302,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.348851,
+                "ms": 34.168,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.398903,
+                "ms": 33.301,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.449105,
+                "ms": 34.02,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.498846,
+                "ms": 33.437,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.548999,
+                "ms": 34.188,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.598612,
+                "ms": 33.833,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.648312,
+                "ms": 33.7,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.69862,
+                "ms": 34.128,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.748719,
+                "ms": 32.246,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.798545,
+                "ms": 33.939,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.84864,
+                "ms": 34.078,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.898736,
+                "ms": 34.058,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.94898,
+                "ms": 33.278,
+                "process_ms": 35.625
+              },
+              {
+                "at": 10.998829,
+                "ms": 32.492,
+                "process_ms": 35.625
+              },
+              {
+                "at": 11.04885,
+                "ms": 32.626,
+                "process_ms": 35.625
+              },
+              {
+                "at": 11.082188,
+                "ms": 33.338,
+                "process_ms": 35.625
+              },
+              {
+                "at": 11.148513,
+                "ms": 33.444,
+                "process_ms": 35.625
+              },
+              {
+                "at": 11.198285,
+                "ms": 32.166,
+                "process_ms": 35.625
+              },
+              {
+                "at": 11.248346,
+                "ms": 33.333,
+                "process_ms": 35.625
+              },
+              {
+                "at": 11.298147,
+                "ms": 33.396,
+                "process_ms": 33.142
+              },
+              {
+                "at": 11.36521,
+                "ms": 33.831,
+                "process_ms": 33.142
+              },
+              {
+                "at": 11.415028,
+                "ms": 33.951,
+                "process_ms": 33.142
+              },
+              {
+                "at": 11.465202,
+                "ms": 33.939,
+                "process_ms": 33.142
+              },
+              {
+                "at": 11.531901,
+                "ms": 34.041,
+                "process_ms": 33.142
+              },
+              {
+                "at": 11.582018,
+                "ms": 33.865,
+                "process_ms": 33.142
+              },
+              {
+                "at": 11.632225,
+                "ms": 33.415,
+                "process_ms": 33.142
+              },
+              {
+                "at": 11.698564,
+                "ms": 33.902,
+                "process_ms": 33.142
+              },
+              {
+                "at": 11.750812,
+                "ms": 36.289,
+                "process_ms": 33.142
+              },
+              {
+                "at": 11.7982,
+                "ms": 33.461,
+                "process_ms": 33.142
+              },
+              {
+                "at": 11.865092,
+                "ms": 33.63,
+                "process_ms": 33.142
+              },
+              {
+                "at": 11.965684,
+                "ms": 34.38,
+                "process_ms": 33.142
+              },
+              {
+                "at": 12.815104,
+                "ms": 33.754,
+                "process_ms": 35.301
+              },
+              {
+                "at": 12.898461,
+                "ms": 33.679,
+                "process_ms": 35.301
+              },
+              {
+                "at": 14.381353,
+                "ms": 30.08,
+                "process_ms": 18.032
+              },
+              {
+                "at": 14.431386,
+                "ms": 30.324,
+                "process_ms": 18.032
+              },
+              {
+                "at": 14.548819,
+                "ms": 34.464,
+                "process_ms": 18.032
+              },
+              {
+                "at": 14.665005,
+                "ms": 33.665,
+                "process_ms": 18.032
+              }
+            ]
+          },
+          {
+            "draw_calls": 183,
+            "draw_pipelines": 0,
+            "fps": 50.6147258350148,
+            "frame_ms": {
+              "max": 36.175,
+              "mean": 19.7570960526316,
+              "median": 16.677,
+              "p95": 34.051,
+              "p99": 34.403
+            },
+            "frames": 760,
+            "last_gpu_ms": 14.0920000076294,
+            "last_render_cpu_ms": 2.11199998855591,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.855,
+              "mean": 0.694539473684212,
+              "median": 0.683,
+              "p95": 0.855,
+              "p99": 0.855
+            },
+            "process_ms": {
+              "max": 35.197,
+              "mean": 31.2383907894735,
+              "median": 33.141,
+              "p95": 35.197,
+              "p99": 35.197
+            },
+            "stalls_over_25ms": [
+              {
+                "at": 0.750956,
+                "ms": 34.195,
+                "process_ms": 19.471
+              },
+              {
+                "at": 0.91802,
+                "ms": 34.403,
+                "process_ms": 19.471
+              },
+              {
+                "at": 1.733499,
+                "ms": 30.054,
+                "process_ms": 33.141
+              },
+              {
+                "at": 1.800722,
+                "ms": 32.287,
+                "process_ms": 33.141
+              },
+              {
+                "at": 1.884166,
+                "ms": 33.037,
+                "process_ms": 33.141
+              },
+              {
+                "at": 1.933597,
+                "ms": 27.651,
+                "process_ms": 33.141
+              },
+              {
+                "at": 2.000849,
+                "ms": 34.281,
+                "process_ms": 33.141
+              },
+              {
+                "at": 2.069053,
+                "ms": 35.584,
+                "process_ms": 33.141
+              },
+              {
+                "at": 2.117396,
+                "ms": 33.927,
+                "process_ms": 33.141
+              },
+              {
+                "at": 2.184317,
+                "ms": 34.283,
+                "process_ms": 33.141
+              },
+              {
+                "at": 2.234156,
+                "ms": 33.783,
+                "process_ms": 33.141
+              },
+              {
+                "at": 2.284171,
+                "ms": 33.795,
+                "process_ms": 33.141
+              },
+              {
+                "at": 2.350674,
+                "ms": 33.96,
+                "process_ms": 33.141
+              },
+              {
+                "at": 2.40023,
+                "ms": 33.739,
+                "process_ms": 33.141
+              },
+              {
+                "at": 2.45026,
+                "ms": 33.686,
+                "process_ms": 33.141
+              },
+              {
+                "at": 2.500387,
+                "ms": 33.643,
+                "process_ms": 33.141
+              },
+              {
+                "at": 2.567326,
+                "ms": 34.052,
+                "process_ms": 34.747
+              },
+              {
+                "at": 2.61739,
+                "ms": 34.085,
+                "process_ms": 34.747
+              },
+              {
+                "at": 2.667041,
+                "ms": 33.531,
+                "process_ms": 34.747
+              },
+              {
+                "at": 2.717092,
+                "ms": 33.556,
+                "process_ms": 34.747
+              },
+              {
+                "at": 2.767077,
+                "ms": 33.791,
+                "process_ms": 34.747
+              },
+              {
+                "at": 2.817299,
+                "ms": 34.188,
+                "process_ms": 34.747
+              },
+              {
+                "at": 2.867112,
+                "ms": 33.616,
+                "process_ms": 34.747
+              },
+              {
+                "at": 2.917184,
+                "ms": 32.86,
+                "process_ms": 34.747
+              },
+              {
+                "at": 2.967176,
+                "ms": 33.69,
+                "process_ms": 34.747
+              },
+              {
+                "at": 3.017242,
+                "ms": 34.093,
+                "process_ms": 34.747
+              },
+              {
+                "at": 3.067163,
+                "ms": 33.637,
+                "process_ms": 34.747
+              },
+              {
+                "at": 3.116948,
+                "ms": 31.905,
+                "process_ms": 34.747
+              },
+              {
+                "at": 3.167235,
+                "ms": 34.014,
+                "process_ms": 34.747
+              },
+              {
+                "at": 3.217326,
+                "ms": 34.139,
+                "process_ms": 34.747
+              },
+              {
+                "at": 3.26697,
+                "ms": 33.789,
+                "process_ms": 34.747
+              },
+              {
+                "at": 3.333661,
+                "ms": 33.94,
+                "process_ms": 34.747
+              },
+              {
+                "at": 3.399979,
+                "ms": 33.347,
+                "process_ms": 34.747
+              },
+              {
+                "at": 3.449902,
+                "ms": 33.193,
+                "process_ms": 34.747
+              },
+              {
+                "at": 3.500285,
+                "ms": 33.672,
+                "process_ms": 34.747
+              },
+              {
+                "at": 3.550149,
+                "ms": 33.458,
+                "process_ms": 33.266
+              },
+              {
+                "at": 3.600543,
+                "ms": 34.129,
+                "process_ms": 33.266
+              },
+              {
+                "at": 3.666839,
+                "ms": 33.344,
+                "process_ms": 33.266
+              },
+              {
+                "at": 3.716927,
+                "ms": 33.51,
+                "process_ms": 33.266
+              },
+              {
+                "at": 3.766866,
+                "ms": 33.441,
+                "process_ms": 33.266
+              },
+              {
+                "at": 3.81691,
+                "ms": 33.561,
+                "process_ms": 33.266
+              },
+              {
+                "at": 3.867252,
+                "ms": 34.069,
+                "process_ms": 33.266
+              },
+              {
+                "at": 3.917263,
+                "ms": 34.236,
+                "process_ms": 33.266
+              },
+              {
+                "at": 3.967132,
+                "ms": 34.033,
+                "process_ms": 33.266
+              },
+              {
+                "at": 4.017083,
+                "ms": 34.022,
+                "process_ms": 33.266
+              },
+              {
+                "at": 4.066914,
+                "ms": 31.694,
+                "process_ms": 33.266
+              },
+              {
+                "at": 4.118675,
+                "ms": 35.708,
+                "process_ms": 33.266
+              },
+              {
+                "at": 4.167117,
+                "ms": 33.876,
+                "process_ms": 33.266
+              },
+              {
+                "at": 4.217484,
+                "ms": 34.342,
+                "process_ms": 33.266
+              },
+              {
+                "at": 4.267081,
+                "ms": 33.794,
+                "process_ms": 33.266
+              },
+              {
+                "at": 4.317186,
+                "ms": 34.123,
+                "process_ms": 33.266
+              },
+              {
+                "at": 4.383805,
+                "ms": 33.904,
+                "process_ms": 33.266
+              },
+              {
+                "at": 4.433805,
+                "ms": 33.974,
+                "process_ms": 33.266
+              },
+              {
+                "at": 4.483735,
+                "ms": 33.959,
+                "process_ms": 33.266
+              },
+              {
+                "at": 4.533472,
+                "ms": 33.678,
+                "process_ms": 34.832
+              },
+              {
+                "at": 4.600218,
+                "ms": 33.369,
+                "process_ms": 34.832
+              },
+              {
+                "at": 4.650432,
+                "ms": 33.998,
+                "process_ms": 34.832
+              },
+              {
+                "at": 4.71682,
+                "ms": 33.643,
+                "process_ms": 34.832
+              },
+              {
+                "at": 4.766671,
+                "ms": 33.446,
+                "process_ms": 34.832
+              },
+              {
+                "at": 4.833667,
+                "ms": 33.959,
+                "process_ms": 34.832
+              },
+              {
+                "at": 4.883299,
+                "ms": 33.638,
+                "process_ms": 34.832
+              },
+              {
+                "at": 4.933383,
+                "ms": 33.337,
+                "process_ms": 34.832
+              },
+              {
+                "at": 4.983334,
+                "ms": 33.491,
+                "process_ms": 34.832
+              },
+              {
+                "at": 5.067435,
+                "ms": 34.337,
+                "process_ms": 34.832
+              },
+              {
+                "at": 5.135755,
+                "ms": 36.024,
+                "process_ms": 34.832
+              },
+              {
+                "at": 5.200518,
+                "ms": 34.14,
+                "process_ms": 34.832
+              },
+              {
+                "at": 5.283714,
+                "ms": 31.337,
+                "process_ms": 34.832
+              },
+              {
+                "at": 5.333644,
+                "ms": 33.966,
+                "process_ms": 34.832
+              },
+              {
+                "at": 5.417306,
+                "ms": 34.285,
+                "process_ms": 34.832
+              },
+              {
+                "at": 5.500672,
+                "ms": 34.203,
+                "process_ms": 34.832
+              },
+              {
+                "at": 5.567086,
+                "ms": 34.026,
+                "process_ms": 35.032
+              },
+              {
+                "at": 6.000235,
+                "ms": 33.956,
+                "process_ms": 35.032
+              },
+              {
+                "at": 7.70065,
+                "ms": 34.371,
+                "process_ms": 17.995
+              },
+              {
+                "at": 7.800416,
+                "ms": 34.124,
+                "process_ms": 17.995
+              },
+              {
+                "at": 8.616532,
+                "ms": 33.966,
+                "process_ms": 33.025
+              },
+              {
+                "at": 8.71668,
+                "ms": 33.944,
+                "process_ms": 33.025
+              },
+              {
+                "at": 8.849851,
+                "ms": 31.424,
+                "process_ms": 33.025
+              },
+              {
+                "at": 8.899668,
+                "ms": 30.768,
+                "process_ms": 33.025
+              },
+              {
+                "at": 8.949638,
+                "ms": 27.465,
+                "process_ms": 33.025
+              },
+              {
+                "at": 8.999539,
+                "ms": 25.875,
+                "process_ms": 33.025
+              },
+              {
+                "at": 9.050225,
+                "ms": 33.989,
+                "process_ms": 33.025
+              },
+              {
+                "at": 9.116492,
+                "ms": 33.53,
+                "process_ms": 33.025
+              },
+              {
+                "at": 9.166364,
+                "ms": 33.496,
+                "process_ms": 33.025
+              },
+              {
+                "at": 9.233081,
+                "ms": 33.12,
+                "process_ms": 33.025
+              },
+              {
+                "at": 9.282685,
+                "ms": 33.287,
+                "process_ms": 33.025
+              },
+              {
+                "at": 9.333254,
+                "ms": 33.74,
+                "process_ms": 33.025
+              },
+              {
+                "at": 9.40017,
+                "ms": 34.136,
+                "process_ms": 33.025
+              },
+              {
+                "at": 9.449798,
+                "ms": 33.656,
+                "process_ms": 33.025
+              },
+              {
+                "at": 9.502312,
+                "ms": 36.075,
+                "process_ms": 33.025
+              },
+              {
+                "at": 9.549972,
+                "ms": 31.717,
+                "process_ms": 35.03
+              },
+              {
+                "at": 9.582892,
+                "ms": 32.92,
+                "process_ms": 35.03
+              },
+              {
+                "at": 9.633042,
+                "ms": 33.584,
+                "process_ms": 35.03
+              },
+              {
+                "at": 9.682915,
+                "ms": 33.436,
+                "process_ms": 35.03
+              },
+              {
+                "at": 9.732636,
+                "ms": 31.21,
+                "process_ms": 35.03
+              },
+              {
+                "at": 9.782775,
+                "ms": 33.416,
+                "process_ms": 35.03
+              },
+              {
+                "at": 9.833175,
+                "ms": 33.796,
+                "process_ms": 35.03
+              },
+              {
+                "at": 9.882974,
+                "ms": 33.135,
+                "process_ms": 35.03
+              },
+              {
+                "at": 9.932867,
+                "ms": 33.462,
+                "process_ms": 35.03
+              },
+              {
+                "at": 9.982944,
+                "ms": 33.454,
+                "process_ms": 35.03
+              },
+              {
+                "at": 10.03307,
+                "ms": 33.603,
+                "process_ms": 35.03
+              },
+              {
+                "at": 10.082952,
+                "ms": 33.465,
+                "process_ms": 35.03
+              },
+              {
+                "at": 10.13302,
+                "ms": 33.628,
+                "process_ms": 35.03
+              },
+              {
+                "at": 10.201514,
+                "ms": 35.711,
+                "process_ms": 35.03
+              },
+              {
+                "at": 10.249889,
+                "ms": 33.948,
+                "process_ms": 35.03
+              },
+              {
+                "at": 10.300021,
+                "ms": 34.18,
+                "process_ms": 35.03
+              },
+              {
+                "at": 10.349926,
+                "ms": 34.141,
+                "process_ms": 35.03
+              },
+              {
+                "at": 10.399876,
+                "ms": 34.09,
+                "process_ms": 35.03
+              },
+              {
+                "at": 10.449974,
+                "ms": 33.932,
+                "process_ms": 35.03
+              },
+              {
+                "at": 10.499874,
+                "ms": 33.978,
+                "process_ms": 35.03
+              },
+              {
+                "at": 10.549878,
+                "ms": 32.008,
+                "process_ms": 34.88
+              },
+              {
+                "at": 10.599843,
+                "ms": 33.766,
+                "process_ms": 34.88
+              },
+              {
+                "at": 10.649761,
+                "ms": 33.743,
+                "process_ms": 34.88
+              },
+              {
+                "at": 10.699775,
+                "ms": 33.965,
+                "process_ms": 34.88
+              },
+              {
+                "at": 10.749457,
+                "ms": 33.752,
+                "process_ms": 34.88
+              },
+              {
+                "at": 10.799801,
+                "ms": 33.948,
+                "process_ms": 34.88
+              },
+              {
+                "at": 10.84988,
+                "ms": 34.051,
+                "process_ms": 34.88
+              },
+              {
+                "at": 10.900129,
+                "ms": 33.576,
+                "process_ms": 34.88
+              },
+              {
+                "at": 10.949878,
+                "ms": 33.994,
+                "process_ms": 34.88
+              },
+              {
+                "at": 10.99982,
+                "ms": 33.966,
+                "process_ms": 34.88
+              },
+              {
+                "at": 11.049885,
+                "ms": 34.069,
+                "process_ms": 34.88
+              },
+              {
+                "at": 11.099768,
+                "ms": 32.662,
+                "process_ms": 34.88
+              },
+              {
+                "at": 11.149811,
+                "ms": 34.054,
+                "process_ms": 34.88
+              },
+              {
+                "at": 11.199773,
+                "ms": 34.013,
+                "process_ms": 34.88
+              },
+              {
+                "at": 11.249885,
+                "ms": 33.488,
+                "process_ms": 34.88
+              },
+              {
+                "at": 11.299773,
+                "ms": 33.95,
+                "process_ms": 34.88
+              },
+              {
+                "at": 11.349801,
+                "ms": 34.069,
+                "process_ms": 34.88
+              },
+              {
+                "at": 11.416627,
+                "ms": 33.999,
+                "process_ms": 34.88
+              },
+              {
+                "at": 11.466501,
+                "ms": 33.911,
+                "process_ms": 34.88
+              },
+              {
+                "at": 11.535438,
+                "ms": 36.175,
+                "process_ms": 35.197
+              },
+              {
+                "at": 11.583183,
+                "ms": 33.488,
+                "process_ms": 35.197
+              },
+              {
+                "at": 11.633314,
+                "ms": 34.183,
+                "process_ms": 35.197
+              },
+              {
+                "at": 11.699815,
+                "ms": 33.88,
+                "process_ms": 35.197
+              },
+              {
+                "at": 11.749749,
+                "ms": 34.05,
+                "process_ms": 35.197
+              },
+              {
+                "at": 11.799219,
+                "ms": 33.332,
+                "process_ms": 35.197
+              },
+              {
+                "at": 11.883181,
+                "ms": 33.945,
+                "process_ms": 35.197
+              },
+              {
+                "at": 11.950095,
+                "ms": 34.254,
+                "process_ms": 35.197
+              },
+              {
+                "at": 12.299328,
+                "ms": 26.733,
+                "process_ms": 35.197
+              },
+              {
+                "at": 12.800238,
+                "ms": 34.429,
+                "process_ms": 33.178
+              },
+              {
+                "at": 14.533023,
+                "ms": 34.121,
+                "process_ms": 32.883
+              },
+              {
+                "at": 14.632913,
+                "ms": 33.986,
+                "process_ms": 32.883
+              }
+            ]
+          }
+        ],
+        "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)"
+      },
+      "presentation": {
+        "method": "SurfaceFlinger --latency actual-present timestamps (second column); fixed interior phase bounds, four seconds after phase start through one second before phase end, relative to activity launch. Deduplicate overlapping intervals. No interval rejected by its duration. Excludes startup and benchmark screenshot readbacks between phases.",
+        "raw_sha256": "11996d6eeef42137496aecec1cfe0bfd40d0e166cbbe6ef4acee0bfef382bf88",
+        "rows": [
+          {
+            "phase": "stationary",
+            "snapshot_elapsed_seconds": [
+              35.78621822598507,
+              37.87721796898404,
+              39.961006452998845,
+              42.05762223599595
+            ],
+            "unique_intervals": 501,
+            "fps": 60.00542528812295,
+            "mean_ms": 16.665159778443115,
+            "p95_ms": 16.683385,
+            "max_ms": 16.7425,
+            "intervals_over_25ms": 0
+          },
+          {
+            "phase": "first_pan",
+            "snapshot_elapsed_seconds": [
+              52.50316085599479,
+              54.590629713988164,
+              56.684573176986305,
+              58.78124032297637
+            ],
+            "unique_intervals": 436,
+            "fps": 47.65446742132086,
+            "mean_ms": 20.98439147706422,
+            "p95_ms": 33.351042,
+            "max_ms": 33.41276,
+            "intervals_over_25ms": 113
+          },
+          {
+            "phase": "repeat_pan",
+            "snapshot_elapsed_seconds": [
+              69.27520996099338,
+              71.35876992798876,
+              73.44244087897823,
+              75.52610827799072
+            ],
+            "unique_intervals": 436,
+            "fps": 47.224416688153454,
+            "mean_ms": 21.175486541284403,
+            "p95_ms": 33.352292,
+            "max_ms": 33.414323,
+            "intervals_over_25ms": 118
+          }
+        ]
+      },
+      "log_sha256": "2f24283e769268302d88380cdfb4eccb928c2e02b7b67bd8f9abf31f221944eb",
+      "device_before": "512689.78 4041394.50\nCurrent Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 900000\n  Max charging voltage: 5000000\n  Charge counter: 4920772\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4387\n  temperature: 320\n  technology: Li-ion\n587000000\nIsStatusOverride: false\nThermalEventListeners:\n\tcallbacks: 2\n\tkilled: false\n\tbroadcasts count: -1\nThermalStatusListeners:\n\tcallbacks: 5\n\tkilled: false\n\tbroadcasts count: -1\nThermal Status: 0\nCached temperatures:\nHAL Ready: false\n",
+      "device_after": "512769.74 4041859.04\nCurrent Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 900000\n  Max charging voltage: 5000000\n  Charge counter: 4915475\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4340\n  temperature: 322\n  technology: Li-ion\n587000000\nIsStatusOverride: false\nThermalEventListeners:\n\tcallbacks: 2\n\tkilled: false\n\tbroadcasts count: -1\nThermalStatusListeners:\n\tcallbacks: 5\n\tkilled: false\n\tbroadcasts count: -1\nThermal Status: 0\nCached temperatures:\nHAL Ready: false\n"
+    },
+    "goal-final-original": {
+      "measurements": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "presented_frames": true,
+          "preset": 1.0,
+          "seconds": 15.0,
+          "warmup": 18.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "options": {
+          "aim_press_once": 1,
+          "armor_formula": 0,
+          "auto_exit": 0,
+          "auto_graphics": 0,
+          "autosave": 0,
+          "brightness": 50,
+          "cam_follow": 1,
+          "cam_pan_speed": 50,
+          "cam_rotate_speed": 50,
+          "cam_see_through": 1,
+          "cam_wasd": 1,
+          "cam_zoom_speed": 50,
+          "camera_reverse_x": 0,
+          "camera_reverse_y": 0,
+          "camera_style": 1,
+          "character_light": 0,
+          "confine_mouse": 0,
+          "contrast": 50,
+          "control_mode": 0,
+          "coop_clock": 1,
+          "coop_full_xp": 1,
+          "coop_player_names": 1,
+          "coop_scale": 2,
+          "coop_share_loot": 1,
+          "difficulty": 0,
+          "direct_fov_first": 5,
+          "direct_fov_third": 3,
+          "direct_hints": 1,
+          "direct_invert_x": 0,
+          "direct_invert_y": 0,
+          "direct_mouse_first": 50,
+          "direct_mouse_third": 50,
+          "direct_pad_curve": 1,
+          "direct_pad_deadzone": 13,
+          "direct_pad_invert_x": 0,
+          "direct_pad_invert_y": 0,
+          "direct_pad_x": 50,
+          "direct_pad_y": 50,
+          "display_mode": 1,
+          "distant_ai": 0,
+          "enemy_hp_bars": 1,
+          "footprints": 1,
+          "fps_limit": 0,
+          "free_run": 0,
+          "gamma": 50,
+          "gfx_ambient_particles": 0,
+          "gfx_ambient_wildlife": 0,
+          "gfx_biome_cover": 0,
+          "gfx_bloom": 0,
+          "gfx_cloud_reflections": 0,
+          "gfx_cloud_shadows": 0,
+          "gfx_clouds": 0,
+          "gfx_contact_shadows": 0,
+          "gfx_depth_of_field": 0,
+          "gfx_detailed_heads": 0,
+          "gfx_far_view": 0,
+          "gfx_firelight": 0,
+          "gfx_foliage_light": 0,
+          "gfx_grass": 0,
+          "gfx_ground_contact": 0,
+          "gfx_hd_textures": 0,
+          "gfx_heat_haze": 0,
+          "gfx_lava_light": 0,
+          "gfx_lit_particles": 0,
+          "gfx_materials": 0,
+          "gfx_rain_puddles": 0,
+          "gfx_severed_limbs": 0,
+          "gfx_sharp_units": 0,
+          "gfx_sky": 0,
+          "gfx_soft_ground": 0,
+          "gfx_soft_particles": 0,
+          "gfx_ssao": 0,
+          "gfx_terrain": 0,
+          "gfx_terrain_cliffs": 0,
+          "gfx_torch_glow": 0,
+          "gfx_vegetation_interaction": 0,
+          "gfx_volumetric": 0,
+          "gfx_water": 0,
+          "gfx_water_caustics": 0,
+          "gfx_water_current": 0,
+          "gfx_water_interaction": 0,
+          "gfx_water_reflections": 0,
+          "gfx_water_waves": 0,
+          "gfx_waterfalls": 0,
+          "gfx_weather_mist": 0,
+          "gfx_weather_surfaces": 0,
+          "gfx_wind": 0,
+          "graphics_preset": 0,
+          "item_icon_fit": 1,
+          "marks": 1,
+          "mechanism_motion": 0,
+          "merc_travel": 0,
+          "net_directory": 0,
+          "net_lan": 0,
+          "net_upnp": 0,
+          "net_websocket": 0,
+          "original_rune_layout": 0,
+          "pad_cursor_speed": 50,
+          "pad_deadzone": 13,
+          "pad_enabled": 1,
+          "pad_glyphs": 0,
+          "pad_gyro": 0,
+          "pad_gyro_sensitivity": 50,
+          "pad_light": 1,
+          "pad_rumble": 70,
+          "pad_swap_sticks": 0,
+          "pad_target_radius": 6,
+          "pad_wheel_pause": 1,
+          "path_through": 1,
+          "phys_interp": 1,
+          "power_kbd": 25,
+          "power_mouse": 50,
+          "q_aa": 0,
+          "q_aniso": 1,
+          "q_shadow_fit": 1,
+          "q_shadows": 0,
+          "render_scale": 4,
+          "renderer": 2,
+          "resolution": 0,
+          "reverse_stereo": 0,
+          "revive": 1,
+          "rubber_select": 2,
+          "scroll_border": 0,
+          "select_type": 0,
+          "shadow_buildings": 1,
+          "shadow_flora": 1,
+          "show_flying_hp": 1,
+          "show_fps": 0,
+          "show_path": 1,
+          "show_tutorial": 0,
+          "smile_faces": 1,
+          "sp_death_notice": 1,
+          "sp_full_xp": 0,
+          "spell_double_tap_self": 1,
+          "stamina_regen": 0,
+          "start_zones": 1,
+          "switch_filters": 1,
+          "tooltip_time": 2,
+          "ui_active_buttons": 1,
+          "unit_fog": 1,
+          "village_start_view": 0,
+          "volume_sfx": 100,
+          "volume_stream": 100,
+          "volume_voice": 100,
+          "vsync": 0
+        },
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "draw_calls": 120,
+            "draw_pipelines": 0,
+            "fps": 60.0067159569779,
+            "frame_ms": {
+              "max": 19.106,
+              "mean": 16.6648013318535,
+              "median": 16.687,
+              "p95": 17.339,
+              "p99": 18.403
+            },
+            "frames": 901,
+            "last_gpu_ms": 12.2600002288818,
+            "last_render_cpu_ms": 1.09899997711182,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.583,
+              "mean": 0.538779134295226,
+              "median": 0.534,
+              "p95": 0.583,
+              "p99": 0.583
+            },
+            "process_ms": {
+              "max": 18.526,
+              "mean": 17.7872985571589,
+              "median": 17.869,
+              "p95": 18.526,
+              "p99": 18.526
+            },
+            "stalls_over_25ms": []
+          },
+          {
+            "draw_calls": 183,
+            "draw_pipelines": 2,
+            "fps": 60.0088461431129,
+            "frame_ms": {
+              "max": 19.872,
+              "mean": 16.6642097669256,
+              "median": 16.662,
+              "p95": 17.39,
+              "p99": 18.564
+            },
+            "frames": 901,
+            "last_gpu_ms": 12.3629999160767,
+            "last_render_cpu_ms": 1.50499999523163,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.621,
+              "mean": 0.545577136514979,
+              "median": 0.535,
+              "p95": 0.621,
+              "p99": 0.621
+            },
+            "process_ms": {
+              "max": 19.204,
+              "mean": 17.9694972253053,
+              "median": 17.963,
+              "p95": 19.204,
+              "p99": 19.204
+            },
+            "stalls_over_25ms": []
+          },
+          {
+            "draw_calls": 177,
+            "draw_pipelines": 0,
+            "fps": 59.9988080236806,
+            "frame_ms": {
+              "max": 19.472,
+              "mean": 16.6669977777778,
+              "median": 16.642,
+              "p95": 17.356,
+              "p99": 18.585
+            },
+            "frames": 900,
+            "last_gpu_ms": 12.335000038147,
+            "last_render_cpu_ms": 1.43799996376038,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.587,
+              "mean": 0.531097777777774,
+              "median": 0.531,
+              "p95": 0.587,
+              "p99": 0.587
+            },
+            "process_ms": {
+              "max": 763.327,
+              "mean": 21.2875955555554,
+              "median": 18.022,
+              "p95": 18.918,
+              "p99": 18.918
+            },
+            "stalls_over_25ms": []
+          }
+        ],
+        "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)"
+      },
+      "presentation": {
+        "method": "SurfaceFlinger --latency actual-present timestamps (second column); fixed interior phase bounds, four seconds after phase start through one second before phase end, relative to activity launch. Deduplicate overlapping intervals. No interval rejected by its duration. Excludes startup and benchmark screenshot readbacks between phases.",
+        "raw_sha256": "a9f83c503beccd83851b089733dc47da00a39521207d96ffd17099c48f1a59c0",
+        "rows": [
+          {
+            "phase": "stationary",
+            "snapshot_elapsed_seconds": [
+              35.995022666989826,
+              38.10029492000467,
+              40.19241953699384,
+              42.27431643099408,
+              44.359377563989256
+            ],
+            "unique_intervals": 626,
+            "fps": 60.005500627558185,
+            "mean_ms": 16.665138854632588,
+            "p95_ms": 16.677813,
+            "max_ms": 16.69151,
+            "intervals_over_25ms": 0
+          },
+          {
+            "phase": "first_pan",
+            "snapshot_elapsed_seconds": [
+              52.71172571199713,
+              54.79773767199367,
+              56.8822522359842,
+              58.97170981700765,
+              61.05708324798616
+            ],
+            "unique_intervals": 626,
+            "fps": 60.00544400636867,
+            "mean_ms": 16.665154579872205,
+            "p95_ms": 16.680208,
+            "max_ms": 16.715833,
+            "intervals_over_25ms": 0
+          },
+          {
+            "phase": "repeat_pan",
+            "snapshot_elapsed_seconds": [
+              69.40694129600888,
+              71.50195832300233,
+              73.61514960500062,
+              75.71475163000287,
+              77.81351744299172
+            ],
+            "unique_intervals": 629,
+            "fps": 60.00525793926241,
+            "mean_ms": 16.665206255961845,
+            "p95_ms": 16.680156,
+            "max_ms": 16.708541,
+            "intervals_over_25ms": 0
+          }
+        ]
+      },
+      "log_sha256": "5ce68661a13ae470e61cacba3e94dbd75109749e74e3904635e53e88efd287a3",
+      "device_before": "512493.52 4040085.72\nCurrent Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 900000\n  Max charging voltage: 5000000\n  Charge counter: 4925580\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4387\n  temperature: 315\n  technology: Li-ion\n587000000\nIsStatusOverride: false\nThermalEventListeners:\n\tcallbacks: 2\n\tkilled: false\n\tbroadcasts count: -1\nThermalStatusListeners:\n\tcallbacks: 5\n\tkilled: false\n\tbroadcasts count: -1\nThermal Status: 0\nCached temperatures:\nHAL Ready: false\n",
+      "device_after": "512574.67 4040602.73\nCurrent Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 900000\n  Max charging voltage: 5000000\n  Charge counter: 4921997\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4339\n  temperature: 315\n  technology: Li-ion\n587000000\nIsStatusOverride: false\nThermalEventListeners:\n\tcallbacks: 2\n\tkilled: false\n\tbroadcasts count: -1\nThermalStatusListeners:\n\tcallbacks: 5\n\tkilled: false\n\tbroadcasts count: -1\nThermal Status: 0\nCached temperatures:\nHAL Ready: false\n"
+    },
+    "goal-final-original-live": {
+      "measurements": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "presented_frames": true,
+          "preset": 1.0,
+          "seconds": 15.0,
+          "tool": "res://map_pan_live.gd",
+          "warmup": 18.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "options": {
+          "aim_press_once": 1,
+          "armor_formula": 0,
+          "auto_exit": 0,
+          "auto_graphics": 0,
+          "autosave": 0,
+          "brightness": 50,
+          "cam_follow": 1,
+          "cam_pan_speed": 50,
+          "cam_rotate_speed": 50,
+          "cam_see_through": 1,
+          "cam_wasd": 1,
+          "cam_zoom_speed": 50,
+          "camera_reverse_x": 0,
+          "camera_reverse_y": 0,
+          "camera_style": 1,
+          "character_light": 0,
+          "confine_mouse": 0,
+          "contrast": 50,
+          "control_mode": 0,
+          "coop_clock": 1,
+          "coop_full_xp": 1,
+          "coop_player_names": 1,
+          "coop_scale": 2,
+          "coop_share_loot": 1,
+          "difficulty": 0,
+          "direct_fov_first": 5,
+          "direct_fov_third": 3,
+          "direct_hints": 1,
+          "direct_invert_x": 0,
+          "direct_invert_y": 0,
+          "direct_mouse_first": 50,
+          "direct_mouse_third": 50,
+          "direct_pad_curve": 1,
+          "direct_pad_deadzone": 13,
+          "direct_pad_invert_x": 0,
+          "direct_pad_invert_y": 0,
+          "direct_pad_x": 50,
+          "direct_pad_y": 50,
+          "display_mode": 1,
+          "distant_ai": 0,
+          "enemy_hp_bars": 1,
+          "footprints": 1,
+          "fps_limit": 0,
+          "free_run": 0,
+          "gamma": 50,
+          "gfx_ambient_particles": 0,
+          "gfx_ambient_wildlife": 0,
+          "gfx_biome_cover": 0,
+          "gfx_bloom": 0,
+          "gfx_cloud_reflections": 0,
+          "gfx_cloud_shadows": 0,
+          "gfx_clouds": 0,
+          "gfx_contact_shadows": 0,
+          "gfx_depth_of_field": 0,
+          "gfx_detailed_heads": 0,
+          "gfx_far_view": 0,
+          "gfx_firelight": 0,
+          "gfx_foliage_light": 0,
+          "gfx_grass": 0,
+          "gfx_ground_contact": 0,
+          "gfx_hd_textures": 0,
+          "gfx_heat_haze": 0,
+          "gfx_lava_light": 0,
+          "gfx_lit_particles": 0,
+          "gfx_materials": 0,
+          "gfx_rain_puddles": 0,
+          "gfx_severed_limbs": 0,
+          "gfx_sharp_units": 0,
+          "gfx_sky": 0,
+          "gfx_soft_ground": 0,
+          "gfx_soft_particles": 0,
+          "gfx_ssao": 0,
+          "gfx_terrain": 0,
+          "gfx_terrain_cliffs": 0,
+          "gfx_torch_glow": 0,
+          "gfx_vegetation_interaction": 0,
+          "gfx_volumetric": 0,
+          "gfx_water": 0,
+          "gfx_water_caustics": 0,
+          "gfx_water_current": 0,
+          "gfx_water_interaction": 0,
+          "gfx_water_reflections": 0,
+          "gfx_water_waves": 0,
+          "gfx_waterfalls": 0,
+          "gfx_weather_mist": 0,
+          "gfx_weather_surfaces": 0,
+          "gfx_wind": 0,
+          "graphics_preset": 0,
+          "item_icon_fit": 1,
+          "marks": 1,
+          "mechanism_motion": 0,
+          "merc_travel": 0,
+          "net_directory": 0,
+          "net_lan": 0,
+          "net_upnp": 0,
+          "net_websocket": 0,
+          "original_rune_layout": 0,
+          "pad_cursor_speed": 50,
+          "pad_deadzone": 13,
+          "pad_enabled": 1,
+          "pad_glyphs": 0,
+          "pad_gyro": 0,
+          "pad_gyro_sensitivity": 50,
+          "pad_light": 1,
+          "pad_rumble": 70,
+          "pad_swap_sticks": 0,
+          "pad_target_radius": 6,
+          "pad_wheel_pause": 1,
+          "path_through": 1,
+          "phys_interp": 1,
+          "power_kbd": 25,
+          "power_mouse": 50,
+          "q_aa": 0,
+          "q_aniso": 1,
+          "q_shadow_fit": 1,
+          "q_shadows": 0,
+          "render_scale": 4,
+          "renderer": 2,
+          "resolution": 0,
+          "reverse_stereo": 0,
+          "revive": 1,
+          "rubber_select": 2,
+          "scroll_border": 0,
+          "select_type": 0,
+          "shadow_buildings": 1,
+          "shadow_flora": 1,
+          "show_flying_hp": 1,
+          "show_fps": 0,
+          "show_path": 1,
+          "show_tutorial": 0,
+          "smile_faces": 1,
+          "sp_death_notice": 1,
+          "sp_full_xp": 0,
+          "spell_double_tap_self": 1,
+          "stamina_regen": 0,
+          "start_zones": 1,
+          "switch_filters": 1,
+          "tooltip_time": 2,
+          "ui_active_buttons": 1,
+          "unit_fog": 1,
+          "village_start_view": 0,
+          "volume_sfx": 100,
+          "volume_stream": 100,
+          "volume_voice": 100,
+          "vsync": 0
+        },
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "camera_extent": "(0.0, 0.0, 0.0)",
+            "draw_calls": 92,
+            "draw_pipelines": 0,
+            "fade_meshes": 2,
+            "fps": 60.0062004187114,
+            "frame_ms": {
+              "max": 20.25,
+              "mean": 16.6649445061043,
+              "median": 16.678,
+              "p95": 17.71,
+              "p99": 18.868
+            },
+            "frames": 901,
+            "last_gpu_ms": 12.1319999694824,
+            "last_render_cpu_ms": 1.11600005626678,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.408,
+              "mean": 0.34152941176471,
+              "median": 0.335,
+              "p95": 0.408,
+              "p99": 0.408
+            },
+            "process_ms": {
+              "max": 20.654,
+              "mean": 18.7362208657049,
+              "median": 18.67,
+              "p95": 20.654,
+              "p99": 20.654
+            },
+            "simulated_seconds": 15.0149999999999,
+            "stalls_over_25ms": []
+          },
+          {
+            "camera_extent": "(170.2859, 7.499403, 0.0)",
+            "draw_calls": 144,
+            "draw_pipelines": 1,
+            "fade_meshes": 6,
+            "fps": 59.9975520998743,
+            "frame_ms": {
+              "max": 22.042,
+              "mean": 16.6673466666666,
+              "median": 16.643,
+              "p95": 18.332,
+              "p99": 20.788
+            },
+            "frames": 900,
+            "last_gpu_ms": 12.0209999084473,
+            "last_render_cpu_ms": 1.40499997138977,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.345,
+              "mean": 0.323907777777779,
+              "median": 0.326,
+              "p95": 0.345,
+              "p99": 0.345
+            },
+            "process_ms": {
+              "max": 21.776,
+              "mean": 19.9625300000002,
+              "median": 20.403,
+              "p95": 21.776,
+              "p99": 21.776
+            },
+            "simulated_seconds": 15.0149999999999,
+            "stalls_over_25ms": []
+          },
+          {
+            "camera_extent": "(171.7143, 7.49995, 0.0)",
+            "draw_calls": 144,
+            "draw_pipelines": 0,
+            "fade_meshes": 6,
+            "fps": 60.0050215079042,
+            "frame_ms": {
+              "max": 35.551,
+              "mean": 16.6652719200888,
+              "median": 16.633,
+              "p95": 19.28,
+              "p99": 21.077
+            },
+            "frames": 901,
+            "last_gpu_ms": 11.9420003890991,
+            "last_render_cpu_ms": 1.32200002670288,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.409,
+              "mean": 0.333729189789123,
+              "median": 0.322,
+              "p95": 0.409,
+              "p99": 0.409
+            },
+            "process_ms": {
+              "max": 35.33,
+              "mean": 21.3417125416205,
+              "median": 20.853,
+              "p95": 35.33,
+              "p99": 35.33
+            },
+            "simulated_seconds": 15.0149999999999,
+            "stalls_over_25ms": [
+              {
+                "at": 2.952484,
+                "ms": 35.551,
+                "process_ms": 20.853
+              },
+              {
+                "at": 14.443239,
+                "ms": 25.701,
+                "process_ms": 20.943
+              }
+            ]
+          }
+        ],
+        "scope": "live v1: world/session physics active; production camera controller driven by synthetic bound pan key presses, including smoothing, ground clearance and camera fading",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)"
+      },
+      "presentation": {
+        "method": "SurfaceFlinger --latency actual-present timestamps (second column); fixed interior phase bounds, four seconds after phase start through one second before phase end, relative to activity launch. Deduplicate overlapping intervals. No interval rejected by its duration. Excludes startup and benchmark screenshot readbacks between phases.",
+        "raw_sha256": "b8447d3c0dec601a8b74976e4609531fd8ffa2210e3cfeb7434c6be0854edc61",
+        "rows": [
+          {
+            "phase": "stationary",
+            "snapshot_elapsed_seconds": [
+              34.056543682992924,
+              36.14147583398153,
+              38.22351153200725,
+              40.3184526579862,
+              42.40307238799869
+            ],
+            "unique_intervals": 625,
+            "fps": 60.00525228757517,
+            "mean_ms": 16.6652078256,
+            "p95_ms": 16.677969,
+            "max_ms": 16.722656,
+            "intervals_over_25ms": 0
+          },
+          {
+            "phase": "first_pan",
+            "snapshot_elapsed_seconds": [
+              52.844555151008535,
+              54.933295449998695,
+              57.018177313002525,
+              59.10129185699043
+            ],
+            "unique_intervals": 501,
+            "fps": 60.00551063301757,
+            "mean_ms": 16.665136075848302,
+            "p95_ms": 16.678021,
+            "max_ms": 16.736771,
+            "intervals_over_25ms": 0
+          },
+          {
+            "phase": "repeat_pan",
+            "snapshot_elapsed_seconds": [
+              69.55530832198565,
+              71.65249450298143,
+              73.75575921000564,
+              75.85334202699596
+            ],
+            "unique_intervals": 500,
+            "fps": 60.00542526811455,
+            "mean_ms": 16.665159784,
+            "p95_ms": 16.679427,
+            "max_ms": 16.69625,
+            "intervals_over_25ms": 0
+          }
+        ]
+      },
+      "log_sha256": "545e54e9736705e6ff6f24e2bbf32d30813656ce6b3070891570331cf7da7f9a",
+      "device_before": "512574.90 4040603.93\nCurrent Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 900000\n  Max charging voltage: 5000000\n  Charge counter: 4921997\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4339\n  temperature: 315\n  technology: Li-ion\n587000000\nIsStatusOverride: false\nThermalEventListeners:\n\tcallbacks: 2\n\tkilled: false\n\tbroadcasts count: -1\nThermalStatusListeners:\n\tcallbacks: 5\n\tkilled: false\n\tbroadcasts count: -1\nThermal Status: 0\nCached temperatures:\nHAL Ready: false\n",
+      "device_after": "512655.14 4041122.30\nCurrent Battery Service state:\n  AC powered: true\n  USB powered: false\n  Wireless powered: false\n  Max charging current: 900000\n  Max charging voltage: 5000000\n  Charge counter: 4916850\n  status: 2\n  health: 2\n  present: true\n  level: 100\n  scale: 100\n  voltage: 4366\n  temperature: 317\n  technology: Li-ion\n587000000\nIsStatusOverride: false\nThermalEventListeners:\n\tcallbacks: 2\n\tkilled: false\n\tbroadcasts count: -1\nThermalStatusListeners:\n\tcallbacks: 5\n\tkilled: false\n\tbroadcasts count: -1\nThermal Status: 0\nCached temperatures:\nHAL Ready: false\n"
+    }
+  },
+  "tests": {
+    "goal-release-baked-pass-lights": {
+      "result": {
+        "checks": 66,
+        "failures": 0,
+        "rows": [
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 4,
+            "state": "start"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 4,
+            "state": "focus-right"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 4,
+            "state": "move"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 4,
+            "state": "colour"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 4,
+            "state": "hide"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 0,
+            "state": "highlight"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 0,
+            "state": "leaf"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 0,
+            "state": "wet"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 4,
+            "state": "restore"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 3,
+            "state": "shadow"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 3,
+            "state": "attenuation"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 3,
+            "state": "projector"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 3,
+            "state": "fade"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 3,
+            "state": "negative"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 4,
+            "state": "restore-special"
+          },
+          {
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "flagged": 4,
+            "state": "free"
+          }
+        ]
+      },
+      "log_sha256": "5c3d6363b27298bad6495d25505d77aeed285e58ec507c5bd141cb0db4d637b1"
+    },
+    "goal-final-particle-options": {
+      "result": {
+        "checks": 106,
+        "failures": 0,
+        "rows": [
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 0,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 1,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 2,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 3,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 4,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 5,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 6,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 7,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 0,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 1,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 2,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 3,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 4,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 5,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 6,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 7,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 0,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 1,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 2,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 3,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 4,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 5,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 6,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 7,
+            "soft": 0
+          }
+        ]
+      },
+      "log_sha256": "f626e886d65a176825c026e3a27fe31b10e432e72a8191ce347febee8e8f7d97"
+    },
+    "goal-particles-opengl": {
+      "result": {
+        "checks": 106,
+        "failures": 0,
+        "rows": [
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 0,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 1,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 2,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 3,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 4,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 5,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 6,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 7,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 0,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 1,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 2,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 3,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 4,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 5,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 6,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 7,
+            "soft": 1
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 0,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 1,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 2,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 3,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 4,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 5,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 6,
+            "soft": 0
+          },
+          {
+            "delta": {
+              "channels_over_1": 0,
+              "peak": 0
+            },
+            "key": 7,
+            "soft": 0
+          }
+        ]
+      },
+      "log_sha256": "ca34425dc6958f624568530bbe298f85a67dba4e49d10b23d6ca62b4248fc88a"
+    },
+    "goal-mobile-baked-lights-v2": {
+      "result": {
+        "checks": 17,
+        "failures": 0,
+        "rows": [
+          {
+            "alpha": false,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 1
+            },
+            "mask": 0
+          },
+          {
+            "alpha": false,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "mask": 1
+          },
+          {
+            "alpha": false,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "mask": 2
+          },
+          {
+            "alpha": false,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "mask": 3
+          },
+          {
+            "alpha": false,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "mask": 7
+          },
+          {
+            "alpha": false,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "mask": 4
+          },
+          {
+            "alpha": false,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "mask": 0
+          },
+          {
+            "alpha": true,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "mask": 0
+          },
+          {
+            "alpha": true,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "mask": 1
+          },
+          {
+            "alpha": true,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "mask": 2
+          },
+          {
+            "alpha": true,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "mask": 3
+          },
+          {
+            "alpha": true,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "mask": 7
+          },
+          {
+            "alpha": true,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "mask": 4
+          },
+          {
+            "alpha": true,
+            "difference": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "mask": 0
+          }
+        ]
+      },
+      "log_sha256": "68cba58fdeb73c83474fe8efa64c4ead7a1bb3a6e15e5cbadec6b28ef6722cae"
+    },
+    "goal-final-lazy-sky": {
+      "result": {
+        "checks": 22,
+        "failures": 0,
+        "rows": [
+          {
+            "consumer": "none",
+            "screen": {
+              "channels_over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "consumer": "ambient",
+            "radiance": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "screen": {
+              "channels_over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "consumer": "none",
+            "screen": {
+              "channels_over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "consumer": "reflection",
+            "radiance": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "screen": {
+              "channels_over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "consumer": "none",
+            "screen": {
+              "channels_over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "consumer": "aerial",
+            "radiance": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "screen": {
+              "channels_over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "consumer": "none",
+            "screen": {
+              "channels_over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "consumer": "radiance",
+            "radiance": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "screen": {
+              "channels_over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "consumer": "none",
+            "screen": {
+              "channels_over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "consumer": "reflection",
+            "radiance": {
+              "channels_over_2": 0,
+              "peak": 0
+            },
+            "screen": {
+              "channels_over_2": 0,
+              "peak": 0
+            }
+          },
+          {
+            "shared_sky": {
+              "channels_over_2": 0,
+              "peak": 0
+            }
+          }
+        ]
+      },
+      "log_sha256": "8fc673673dc4c45999a50237e526ec098fe083e1457c48c73a5f093c67506ef6"
+    },
+    "goal-final-sky-subpass": {
+      "result": {
+        "checks": 84,
+        "failures": 0,
+        "native_capability": true,
+        "rows": [
+          {
+            "alpha": 0.0,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.0,
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.25,
+            "delta": {
+              "changed_pixels": 110,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.25,
+            "delta": {
+              "changed_pixels": 110,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.625,
+            "delta": {
+              "changed_pixels": 189,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 0.625,
+            "delta": {
+              "changed_pixels": 189,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 1.0,
+            "delta": {
+              "changed_pixels": 114,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": "half",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "alpha": 1.0,
+            "delta": {
+              "changed_pixels": 114,
+              "peak_delta": 1,
+              "pixels_over_2": 0
+            },
+            "quality": "quarter",
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "buffers": {
+              "half_texture": {
+                "format": 63,
+                "height": 64,
+                "rid": "RID(5390183956537)",
+                "width": 64
+              }
+            },
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "rgb_quality": "half"
+          },
+          {
+            "buffers": {
+              "quarter_texture": {
+                "format": 63,
+                "height": 32,
+                "rid": "RID(5476083302457)",
+                "width": 32
+              }
+            },
+            "delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "radiance_delta": {
+              "changed_pixels": 0,
+              "peak_delta": 0,
+              "pixels_over_2": 0
+            },
+            "rgb_quality": "quarter"
+          }
+        ]
+      },
+      "log_sha256": "94c3f534a0a38658a0d3036fb4d2d6ee639d172832977c45905d6a6dd8d16512"
+    },
+    "paired_mobile_shadow_cascades": [
+      {
+        "image": "mobile-shadow-00.png",
+        "peak_delta": 0,
+        "channels_over_2": 0,
+        "mean_delta": 0.0
+      },
+      {
+        "image": "mobile-shadow-01.png",
+        "peak_delta": 0,
+        "channels_over_2": 0,
+        "mean_delta": 0.0
+      },
+      {
+        "image": "mobile-shadow-02.png",
+        "peak_delta": 0,
+        "channels_over_2": 0,
+        "mean_delta": 0.0
+      },
+      {
+        "image": "mobile-shadow-03.png",
+        "peak_delta": 0,
+        "channels_over_2": 0,
+        "mean_delta": 0.0
+      },
+      {
+        "image": "mobile-shadow-04.png",
+        "peak_delta": 0,
+        "channels_over_2": 0,
+        "mean_delta": 0.0
+      },
+      {
+        "image": "mobile-shadow-05.png",
+        "peak_delta": 0,
+        "channels_over_2": 0,
+        "mean_delta": 0.0
+      },
+      {
+        "image": "mobile-shadow-06.png",
+        "peak_delta": 0,
+        "channels_over_2": 0,
+        "mean_delta": 0.0
+      },
+      {
+        "image": "mobile-shadow-07.png",
+        "peak_delta": 0,
+        "channels_over_2": 0,
+        "mean_delta": 0.0
+      }
+    ],
+    "forward_plus_limits": {
+      "android_particle_assertions": {
+        "checks": 106,
+        "failures": 0
+      },
+      "android_startup_error": "Couldn't create Vulkan compute pipelines (VkResult error -13); not counted as a clean Forward+ runtime acceptance.",
+      "desktop_particle_assertions": {
+        "checks": 106,
+        "failures": 0
+      },
+      "desktop_official_engine_exit_error": "Unpatched official 4.7 separate-render-thread finalize error. Not counted as clean runtime acceptance; shipping engines carry render-thread-shutdown.patch.",
+      "scope": "This work qualifies Android Mobile/Vulkan and particle compatibility on Android GLES. Forward+ is not the 60 FPS target."
+    }
+  },
+  "limits": [
+    "One Android device and one authored Gipat route; not an all-map/all-device guarantee.",
+    "Live simulation and camera fading are active, not a deterministic replay.",
+    "60 Hz display caps observed frame rate; GPU timing is not an end-to-end uncapped FPS measurement.",
+    "Medium terrain results are a separate earlier measurement, not a 60 FPS claim.",
+    "No validation on Adreno 840 and no claim about the separate OpenGL crash in issue #3.",
+    "No public release/version bump or shared export-template replacement."
+  ],
+  "qa_handoff": {
+    "installed_build": "goal-candidate-6",
+    "preset": "Original",
+    "renderer": "Mobile / Vulkan",
+    "resolution": "native",
+    "automatic_graphics": false,
+    "benchmark_autorun_removed": true
+  }
+}

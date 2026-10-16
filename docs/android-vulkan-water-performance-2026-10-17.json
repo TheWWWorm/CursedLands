@@ -1,0 +1,4393 @@
+{
+  "date": "2026-10-17",
+  "source_base": "be60a1c2511bf13d2f5960a6b5ddbac80eb4208e",
+  "scope": "Android Mobile enhanced-water reflection work, compared with the previous optimized build be60a1c2, not published 1.8.0.",
+  "device": {
+    "model": "Retroid Pocket 5",
+    "gpu": "Adreno 650",
+    "android": 13,
+    "api": 33,
+    "renderer": "Mobile / Vulkan",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "render_scale": 1.0,
+    "presentation": "60 Hz FIFO; requested disabled VSync is unsupported.",
+    "package": "org.cursedlands.vulkanbench"
+  },
+  "builds": {
+    "baseline": {
+      "apk_sha256": "34c4b08cc954a33195ebb1eff694c4149f07da6ec2e0826973db6fdbdc322431",
+      "libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "bd398cfa7857d40bc1847af64ea18d1a8815881003e3bc7cc63ebb8e4b04e712",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      }
+    },
+    "candidate": {
+      "apk_sha256": "d390610c39ba9cdf6b425dc383be8fc4410ba4bffc5aff78f393e9e2ccf8192e",
+      "libraries": {
+        "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+        "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+        "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+      }
+    }
+  },
+  "comparisons": {
+    "medium": {
+      "identical_options": {
+        "aim_press_once": 1,
+        "armor_formula": 0,
+        "auto_exit": 0,
+        "auto_graphics": 0,
+        "autosave": 0,
+        "brightness": 50,
+        "cam_follow": 1,
+        "cam_pan_speed": 50,
+        "cam_rotate_speed": 50,
+        "cam_see_through": 1,
+        "cam_wasd": 1,
+        "cam_zoom_speed": 50,
+        "camera_reverse_x": 0,
+        "camera_reverse_y": 0,
+        "camera_style": 1,
+        "character_light": 0,
+        "confine_mouse": 0,
+        "contrast": 50,
+        "control_mode": 0,
+        "coop_clock": 1,
+        "coop_full_xp": 1,
+        "coop_player_names": 1,
+        "coop_scale": 2,
+        "coop_share_loot": 1,
+        "difficulty": 0,
+        "direct_fov_first": 5,
+        "direct_fov_third": 3,
+        "direct_hints": 1,
+        "direct_invert_x": 0,
+        "direct_invert_y": 0,
+        "direct_mouse_first": 50,
+        "direct_mouse_third": 50,
+        "direct_pad_curve": 1,
+        "direct_pad_deadzone": 13,
+        "direct_pad_invert_x": 0,
+        "direct_pad_invert_y": 0,
+        "direct_pad_x": 50,
+        "direct_pad_y": 50,
+        "display_mode": 1,
+        "distant_ai": 0,
+        "enemy_hp_bars": 1,
+        "footprints": 1,
+        "fps_limit": 0,
+        "free_run": 0,
+        "gamma": 50,
+        "gfx_ambient_particles": 0,
+        "gfx_ambient_wildlife": 0,
+        "gfx_biome_cover": 0,
+        "gfx_bloom": 1,
+        "gfx_cloud_reflections": 0,
+        "gfx_cloud_shadows": 0,
+        "gfx_clouds": 1,
+        "gfx_contact_shadows": 1,
+        "gfx_depth_of_field": 0,
+        "gfx_detailed_heads": 1,
+        "gfx_far_view": 0,
+        "gfx_firelight": 1,
+        "gfx_foliage_light": 1,
+        "gfx_grass": 0,
+        "gfx_ground_contact": 0,
+        "gfx_hd_textures": 1,
+        "gfx_heat_haze": 0,
+        "gfx_lava_light": 1,
+        "gfx_lit_particles": 1,
+        "gfx_materials": 1,
+        "gfx_rain_puddles": 1,
+        "gfx_severed_limbs": 1,
+        "gfx_sharp_units": 1,
+        "gfx_sky": 1,
+        "gfx_soft_ground": 1,
+        "gfx_soft_particles": 0,
+        "gfx_ssao": 0,
+        "gfx_terrain": 1,
+        "gfx_terrain_cliffs": 0,
+        "gfx_torch_glow": 0,
+        "gfx_vegetation_interaction": 0,
+        "gfx_volumetric": 0,
+        "gfx_water": 1,
+        "gfx_water_caustics": 0,
+        "gfx_water_current": 0,
+        "gfx_water_interaction": 0,
+        "gfx_water_reflections": 0,
+        "gfx_water_waves": 0,
+        "gfx_waterfalls": 0,
+        "gfx_weather_mist": 0,
+        "gfx_weather_surfaces": 1,
+        "gfx_wind": 1,
+        "graphics_preset": 0,
+        "item_icon_fit": 1,
+        "marks": 1,
+        "mechanism_motion": 0,
+        "merc_travel": 0,
+        "net_directory": 0,
+        "net_lan": 0,
+        "net_upnp": 0,
+        "net_websocket": 0,
+        "original_rune_layout": 0,
+        "pad_cursor_speed": 50,
+        "pad_deadzone": 13,
+        "pad_enabled": 1,
+        "pad_glyphs": 0,
+        "pad_gyro": 0,
+        "pad_gyro_sensitivity": 50,
+        "pad_light": 1,
+        "pad_rumble": 70,
+        "pad_swap_sticks": 0,
+        "pad_target_radius": 6,
+        "pad_wheel_pause": 1,
+        "path_through": 1,
+        "phys_interp": 1,
+        "power_kbd": 25,
+        "power_mouse": 50,
+        "q_aa": 1,
+        "q_aniso": 4,
+        "q_shadow_fit": 1,
+        "q_shadows": 1,
+        "render_scale": 4,
+        "renderer": 2,
+        "resolution": 0,
+        "reverse_stereo": 0,
+        "revive": 1,
+        "rubber_select": 2,
+        "scroll_border": 0,
+        "select_type": 0,
+        "shadow_buildings": 1,
+        "shadow_flora": 1,
+        "show_flying_hp": 1,
+        "show_fps": 0,
+        "show_path": 1,
+        "show_tutorial": 0,
+        "smile_faces": 1,
+        "sp_death_notice": 1,
+        "sp_full_xp": 0,
+        "spell_double_tap_self": 1,
+        "stamina_regen": 0,
+        "start_zones": 1,
+        "switch_filters": 1,
+        "tooltip_time": 2,
+        "ui_active_buttons": 1,
+        "unit_fog": 1,
+        "village_start_view": 0,
+        "volume_sfx": 100,
+        "volume_stream": 100,
+        "volume_voice": 100,
+        "vsync": 0
+      },
+      "baseline": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "preset": 3.0,
+          "seconds": 10.0,
+          "warmup": 25.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "draw_calls": 120,
+            "draw_pipelines": 0,
+            "fps": 12.3299375956005,
+            "frame_ms": {
+              "max": 84.5,
+              "mean": 81.1034112903226,
+              "median": 81.052,
+              "p95": 83.275,
+              "p99": 84.055
+            },
+            "frames": 124,
+            "last_gpu_ms": 79.4449996948242,
+            "last_render_cpu_ms": 1.1139999628067,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.724,
+              "mean": 0.653846774193548,
+              "median": 0.647,
+              "p95": 0.724,
+              "p99": 0.724
+            },
+            "intervals_over_25ms": 124
+          },
+          {
+            "draw_calls": 275,
+            "draw_pipelines": 2,
+            "fps": 11.6979142618871,
+            "frame_ms": {
+              "max": 107.551,
+              "mean": 85.4853247863248,
+              "median": 82.847,
+              "p95": 100.998,
+              "p99": 107.327
+            },
+            "frames": 117,
+            "last_gpu_ms": 104.563003540039,
+            "last_render_cpu_ms": 1.60599994659424,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.815,
+              "mean": 0.706811965811965,
+              "median": 0.733,
+              "p95": 0.815,
+              "p99": 0.815
+            },
+            "intervals_over_25ms": 117
+          },
+          {
+            "draw_calls": 276,
+            "draw_pipelines": 0,
+            "fps": 11.6003472172304,
+            "frame_ms": {
+              "max": 108.383,
+              "mean": 86.2043162393162,
+              "median": 83.424,
+              "p95": 100.684,
+              "p99": 105.686
+            },
+            "frames": 117,
+            "last_gpu_ms": 102.675003051758,
+            "last_render_cpu_ms": 1.5440000295639,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.809,
+              "mean": 0.732555555555556,
+              "median": 0.753,
+              "p95": 0.809,
+              "p99": 0.809
+            },
+            "intervals_over_25ms": 117
+          }
+        ],
+        "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-baseline-medium",
+        "raw_sha256": {
+          "result.json": "72735792d38d55d3ec7abd26e0e3e31f45790d689a77c5f42bafd88b886e3c3f",
+          "config.json": "e23a616f60a92b177d67afed7e39edb2e7d843a142f20060a2d14d0723fd2bf8",
+          "logcat.txt": "db84ca1f3a728c513ab61b420866d36c9b22ca1aa7156abd128f6e6d72a4505c",
+          "device-before.txt": "01e1b255334453f4c1193c2b7764c7849d21653e3032451a0ba9014ed0103cb3",
+          "device-after.txt": "38a1fd6bc73e6d643b31491837ad039da83c21790645e8e48b1fb2f2fcf50abd"
+        }
+      },
+      "candidate": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "preset": 3.0,
+          "seconds": 10.0,
+          "warmup": 25.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "draw_calls": 120,
+            "draw_pipelines": 0,
+            "fps": 12.5723383411817,
+            "frame_ms": {
+              "max": 81.889,
+              "mean": 79.5396984126984,
+              "median": 79.487,
+              "p95": 81.547,
+              "p99": 81.848
+            },
+            "frames": 126,
+            "last_gpu_ms": 77.5849990844727,
+            "last_render_cpu_ms": 1.15799999237061,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.688,
+              "mean": 0.640293650793651,
+              "median": 0.652,
+              "p95": 0.688,
+              "p99": 0.688
+            },
+            "intervals_over_25ms": 126
+          },
+          {
+            "draw_calls": 279,
+            "draw_pipelines": 2,
+            "fps": 11.8783718605164,
+            "frame_ms": {
+              "max": 103.022,
+              "mean": 84.1866218487395,
+              "median": 81.974,
+              "p95": 99.185,
+              "p99": 101.891
+            },
+            "frames": 119,
+            "last_gpu_ms": 99.1439971923828,
+            "last_render_cpu_ms": 1.442999958992,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.75,
+              "mean": 0.664705882352941,
+              "median": 0.652,
+              "p95": 0.75,
+              "p99": 0.75
+            },
+            "intervals_over_25ms": 119
+          },
+          {
+            "draw_calls": 275,
+            "draw_pipelines": 0,
+            "fps": 11.7939001948192,
+            "frame_ms": {
+              "max": 106.947,
+              "mean": 84.789593220339,
+              "median": 82.39,
+              "p95": 98.925,
+              "p99": 104.125
+            },
+            "frames": 118,
+            "last_gpu_ms": 104.258003234863,
+            "last_render_cpu_ms": 1.45799994468689,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.783,
+              "mean": 0.717610169491526,
+              "median": 0.736,
+              "p95": 0.775,
+              "p99": 0.783
+            },
+            "intervals_over_25ms": 118
+          }
+        ],
+        "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-candidate-medium",
+        "raw_sha256": {
+          "result.json": "91986964c564955bf391fa163631faba118c2e1793a9d9591e529fb6076a6ffe",
+          "config.json": "e23a616f60a92b177d67afed7e39edb2e7d843a142f20060a2d14d0723fd2bf8",
+          "logcat.txt": "5f2ffde80b4015ca89c49dbed4b7b4a5752f063360a956559cf79c9fad0e635e",
+          "device-before.txt": "dc7ce6a949a47318003b3a862a61ccba2a9880418bf8c13ff3b7c1db430004ea",
+          "device-after.txt": "163f8f2a61a0c604b9e8ec067ddacb5d87e444970a6d4f548b56bb9442c12843"
+        }
+      },
+      "gains": [
+        {
+          "phase": "stationary",
+          "fps_gain_percent": 1.9659527365953,
+          "mean_frame_reduction_percent": 1.928048219854328
+        },
+        {
+          "phase": "first_pan",
+          "fps_gain_percent": 1.542647642898598,
+          "mean_frame_reduction_percent": 1.5192115615533686
+        },
+        {
+          "phase": "repeat_pan",
+          "fps_gain_percent": 1.6685102089126103,
+          "mean_frame_reduction_percent": 1.6411278236343918
+        }
+      ]
+    },
+    "ingos": {
+      "identical_options": {
+        "aim_press_once": 1,
+        "armor_formula": 0,
+        "auto_exit": 0,
+        "auto_graphics": 0,
+        "autosave": 0,
+        "brightness": 50,
+        "cam_follow": 1,
+        "cam_pan_speed": 50,
+        "cam_rotate_speed": 50,
+        "cam_see_through": 1,
+        "cam_wasd": 1,
+        "cam_zoom_speed": 50,
+        "camera_reverse_x": 0,
+        "camera_reverse_y": 0,
+        "camera_style": 1,
+        "character_light": 0,
+        "confine_mouse": 0,
+        "contrast": 50,
+        "control_mode": 0,
+        "coop_clock": 1,
+        "coop_full_xp": 1,
+        "coop_player_names": 1,
+        "coop_scale": 2,
+        "coop_share_loot": 1,
+        "difficulty": 0,
+        "direct_fov_first": 5,
+        "direct_fov_third": 3,
+        "direct_hints": 1,
+        "direct_invert_x": 0,
+        "direct_invert_y": 0,
+        "direct_mouse_first": 50,
+        "direct_mouse_third": 50,
+        "direct_pad_curve": 1,
+        "direct_pad_deadzone": 13,
+        "direct_pad_invert_x": 0,
+        "direct_pad_invert_y": 0,
+        "direct_pad_x": 50,
+        "direct_pad_y": 50,
+        "display_mode": 1,
+        "distant_ai": 0,
+        "enemy_hp_bars": 1,
+        "footprints": 1,
+        "fps_limit": 0,
+        "free_run": 0,
+        "gamma": 50,
+        "gfx_ambient_particles": 0,
+        "gfx_ambient_wildlife": 0,
+        "gfx_biome_cover": 0,
+        "gfx_bloom": 1,
+        "gfx_cloud_reflections": 0,
+        "gfx_cloud_shadows": 0,
+        "gfx_clouds": 1,
+        "gfx_contact_shadows": 1,
+        "gfx_depth_of_field": 0,
+        "gfx_detailed_heads": 1,
+        "gfx_far_view": 0,
+        "gfx_firelight": 1,
+        "gfx_foliage_light": 1,
+        "gfx_grass": 0,
+        "gfx_ground_contact": 0,
+        "gfx_hd_textures": 1,
+        "gfx_heat_haze": 0,
+        "gfx_lava_light": 1,
+        "gfx_lit_particles": 1,
+        "gfx_materials": 1,
+        "gfx_rain_puddles": 1,
+        "gfx_severed_limbs": 1,
+        "gfx_sharp_units": 1,
+        "gfx_sky": 1,
+        "gfx_soft_ground": 1,
+        "gfx_soft_particles": 0,
+        "gfx_ssao": 0,
+        "gfx_terrain": 1,
+        "gfx_terrain_cliffs": 0,
+        "gfx_torch_glow": 0,
+        "gfx_vegetation_interaction": 0,
+        "gfx_volumetric": 0,
+        "gfx_water": 1,
+        "gfx_water_caustics": 0,
+        "gfx_water_current": 0,
+        "gfx_water_interaction": 0,
+        "gfx_water_reflections": 0,
+        "gfx_water_waves": 0,
+        "gfx_waterfalls": 0,
+        "gfx_weather_mist": 0,
+        "gfx_weather_surfaces": 1,
+        "gfx_wind": 1,
+        "graphics_preset": 0,
+        "item_icon_fit": 1,
+        "marks": 1,
+        "mechanism_motion": 0,
+        "merc_travel": 0,
+        "net_directory": 0,
+        "net_lan": 0,
+        "net_upnp": 0,
+        "net_websocket": 0,
+        "original_rune_layout": 0,
+        "pad_cursor_speed": 50,
+        "pad_deadzone": 13,
+        "pad_enabled": 1,
+        "pad_glyphs": 0,
+        "pad_gyro": 0,
+        "pad_gyro_sensitivity": 50,
+        "pad_light": 1,
+        "pad_rumble": 70,
+        "pad_swap_sticks": 0,
+        "pad_target_radius": 6,
+        "pad_wheel_pause": 1,
+        "path_through": 1,
+        "phys_interp": 1,
+        "power_kbd": 25,
+        "power_mouse": 50,
+        "q_aa": 1,
+        "q_aniso": 4,
+        "q_shadow_fit": 1,
+        "q_shadows": 1,
+        "render_scale": 4,
+        "renderer": 2,
+        "resolution": 0,
+        "reverse_stereo": 0,
+        "revive": 1,
+        "rubber_select": 2,
+        "scroll_border": 0,
+        "select_type": 0,
+        "shadow_buildings": 1,
+        "shadow_flora": 1,
+        "show_flying_hp": 1,
+        "show_fps": 0,
+        "show_path": 1,
+        "show_tutorial": 0,
+        "smile_faces": 1,
+        "sp_death_notice": 1,
+        "sp_full_xp": 0,
+        "spell_double_tap_self": 1,
+        "stamina_regen": 0,
+        "start_zones": 1,
+        "switch_filters": 1,
+        "tooltip_time": 2,
+        "ui_active_buttons": 1,
+        "unit_fog": 1,
+        "village_start_view": 0,
+        "volume_sfx": 100,
+        "volume_stream": 100,
+        "volume_voice": 100,
+        "vsync": 0
+      },
+      "baseline": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "preset": 3.0,
+          "seconds": 8.0,
+          "warmup": 25.0,
+          "width": 1920.0,
+          "zone": "gz11k"
+        },
+        "objects": 2078,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "draw_calls": 140,
+            "draw_pipelines": 0,
+            "fps": 12.4714435122179,
+            "frame_ms": {
+              "max": 89.966,
+              "mean": 80.18318,
+              "median": 79.983,
+              "p95": 82.673,
+              "p99": 89.966
+            },
+            "frames": 100,
+            "last_gpu_ms": 78.6999969482422,
+            "last_render_cpu_ms": 0.927999973297119,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 2.334,
+              "mean": 2.21217,
+              "median": 2.207,
+              "p95": 2.334,
+              "p99": 2.334
+            },
+            "intervals_over_25ms": 100
+          },
+          {
+            "draw_calls": 141,
+            "draw_pipelines": 3,
+            "fps": 10.3214985124607,
+            "frame_ms": {
+              "max": 109.019,
+              "mean": 96.885156626506,
+              "median": 99.4,
+              "p95": 107.535,
+              "p99": 109.019
+            },
+            "frames": 83,
+            "last_gpu_ms": 87.1790008544922,
+            "last_render_cpu_ms": 0.99099999666214,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 2.28,
+              "mean": 2.07757831325301,
+              "median": 2.032,
+              "p95": 2.28,
+              "p99": 2.28
+            },
+            "intervals_over_25ms": 83
+          },
+          {
+            "draw_calls": 142,
+            "draw_pipelines": 0,
+            "fps": 10.1592172347899,
+            "frame_ms": {
+              "max": 116.563,
+              "mean": 98.4327804878049,
+              "median": 99.361,
+              "p95": 109.774,
+              "p99": 116.563
+            },
+            "frames": 82,
+            "last_gpu_ms": 88.6890029907227,
+            "last_render_cpu_ms": 1.0110000371933,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 2.238,
+              "mean": 2.04779268292683,
+              "median": 1.974,
+              "p95": 2.238,
+              "p99": 2.238
+            },
+            "intervals_over_25ms": 82
+          }
+        ],
+        "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+        "units": 234,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-baseline-ingos",
+        "raw_sha256": {
+          "result.json": "9d6d048296d0c1fe605b38f0d42a1b60ef774ddff65d6288604857e68cd185b4",
+          "config.json": "e3d004e17345c1792951606ce7d253be8ec15ba66e59327433a4cce7e66ad71e",
+          "logcat.txt": "2470d2a45405470d8e42c0bf08144f48e5cb08fd42b87f514f24d96bbe4899b3",
+          "device-before.txt": "69e31d0730e061014cf575443267f0da14496828cdfaddd4a3f5b366aa4ae227",
+          "device-after.txt": "a3aaf24cfa1bb5526d45ac28f2d5b8e973d824a432fa084a03cb844be39c7767"
+        }
+      },
+      "candidate": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "preset": 3.0,
+          "seconds": 8.0,
+          "warmup": 25.0,
+          "width": 1920.0,
+          "zone": "gz11k"
+        },
+        "objects": 2078,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "draw_calls": 140,
+            "draw_pipelines": 0,
+            "fps": 12.6593197104987,
+            "frame_ms": {
+              "max": 81.906,
+              "mean": 78.9931862745098,
+              "median": 79.198,
+              "p95": 80.978,
+              "p99": 81.787
+            },
+            "frames": 102,
+            "last_gpu_ms": 77.3740005493164,
+            "last_render_cpu_ms": 0.991999983787537,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 2.241,
+              "mean": 2.16,
+              "median": 2.202,
+              "p95": 2.241,
+              "p99": 2.241
+            },
+            "intervals_over_25ms": 102
+          },
+          {
+            "draw_calls": 142,
+            "draw_pipelines": 2,
+            "fps": 10.3857425515371,
+            "frame_ms": {
+              "max": 120.174,
+              "mean": 96.2858452380952,
+              "median": 97.973,
+              "p95": 106.737,
+              "p99": 120.174
+            },
+            "frames": 84,
+            "last_gpu_ms": 87.2939987182617,
+            "last_render_cpu_ms": 0.985000014305115,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 2.356,
+              "mean": 2.05560714285714,
+              "median": 2.063,
+              "p95": 2.146,
+              "p99": 2.356
+            },
+            "intervals_over_25ms": 84
+          },
+          {
+            "draw_calls": 142,
+            "draw_pipelines": 0,
+            "fps": 10.3391464249848,
+            "frame_ms": {
+              "max": 113.474,
+              "mean": 96.7197831325301,
+              "median": 98.21,
+              "p95": 107.003,
+              "p99": 113.474
+            },
+            "frames": 83,
+            "last_gpu_ms": 89.3679962158203,
+            "last_render_cpu_ms": 1.0,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 2.215,
+              "mean": 2.06395180722892,
+              "median": 2.061,
+              "p95": 2.215,
+              "p99": 2.215
+            },
+            "intervals_over_25ms": 83
+          }
+        ],
+        "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+        "units": 234,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-candidate-ingos",
+        "raw_sha256": {
+          "result.json": "995f0335f6a80eb8cf5a6ce9012724547404b168d4cb1d645e5ccf73ff1a19c9",
+          "config.json": "e3d004e17345c1792951606ce7d253be8ec15ba66e59327433a4cce7e66ad71e",
+          "logcat.txt": "b7f4058e83a1abbd0a98b20c5e4353131d84fc0dd5ae426c41e9827e8a42bc69",
+          "device-before.txt": "70377334bddeaee0cf152e69d3edfe068fc2326acab79ed3fb11b9d86bfd71f2",
+          "device-after.txt": "3bcfd7bfed4dff09a94486360a5513d0427276fc2d7ad7188f55d563fe05f656"
+        }
+      },
+      "gains": [
+        {
+          "phase": "stationary",
+          "fps_gain_percent": 1.5064511024464933,
+          "mean_frame_reduction_percent": 1.4840939527344776
+        },
+        {
+          "phase": "first_pan",
+          "fps_gain_percent": 0.6224293788236412,
+          "mean_frame_reduction_percent": 0.6185791603982804
+        },
+        {
+          "phase": "repeat_pan",
+          "fps_gain_percent": 1.7710930481803278,
+          "mean_frame_reduction_percent": 1.7402712254857344
+        }
+      ]
+    },
+    "original": {
+      "identical_options": {
+        "aim_press_once": 1,
+        "armor_formula": 0,
+        "auto_exit": 0,
+        "auto_graphics": 0,
+        "autosave": 0,
+        "brightness": 50,
+        "cam_follow": 1,
+        "cam_pan_speed": 50,
+        "cam_rotate_speed": 50,
+        "cam_see_through": 1,
+        "cam_wasd": 1,
+        "cam_zoom_speed": 50,
+        "camera_reverse_x": 0,
+        "camera_reverse_y": 0,
+        "camera_style": 1,
+        "character_light": 0,
+        "confine_mouse": 0,
+        "contrast": 50,
+        "control_mode": 0,
+        "coop_clock": 1,
+        "coop_full_xp": 1,
+        "coop_player_names": 1,
+        "coop_scale": 2,
+        "coop_share_loot": 1,
+        "difficulty": 0,
+        "direct_fov_first": 5,
+        "direct_fov_third": 3,
+        "direct_hints": 1,
+        "direct_invert_x": 0,
+        "direct_invert_y": 0,
+        "direct_mouse_first": 50,
+        "direct_mouse_third": 50,
+        "direct_pad_curve": 1,
+        "direct_pad_deadzone": 13,
+        "direct_pad_invert_x": 0,
+        "direct_pad_invert_y": 0,
+        "direct_pad_x": 50,
+        "direct_pad_y": 50,
+        "display_mode": 1,
+        "distant_ai": 0,
+        "enemy_hp_bars": 1,
+        "footprints": 1,
+        "fps_limit": 0,
+        "free_run": 0,
+        "gamma": 50,
+        "gfx_ambient_particles": 0,
+        "gfx_ambient_wildlife": 0,
+        "gfx_biome_cover": 0,
+        "gfx_bloom": 0,
+        "gfx_cloud_reflections": 0,
+        "gfx_cloud_shadows": 0,
+        "gfx_clouds": 0,
+        "gfx_contact_shadows": 0,
+        "gfx_depth_of_field": 0,
+        "gfx_detailed_heads": 0,
+        "gfx_far_view": 0,
+        "gfx_firelight": 0,
+        "gfx_foliage_light": 0,
+        "gfx_grass": 0,
+        "gfx_ground_contact": 0,
+        "gfx_hd_textures": 0,
+        "gfx_heat_haze": 0,
+        "gfx_lava_light": 0,
+        "gfx_lit_particles": 0,
+        "gfx_materials": 0,
+        "gfx_rain_puddles": 0,
+        "gfx_severed_limbs": 0,
+        "gfx_sharp_units": 0,
+        "gfx_sky": 0,
+        "gfx_soft_ground": 0,
+        "gfx_soft_particles": 0,
+        "gfx_ssao": 0,
+        "gfx_terrain": 0,
+        "gfx_terrain_cliffs": 0,
+        "gfx_torch_glow": 0,
+        "gfx_vegetation_interaction": 0,
+        "gfx_volumetric": 0,
+        "gfx_water": 0,
+        "gfx_water_caustics": 0,
+        "gfx_water_current": 0,
+        "gfx_water_interaction": 0,
+        "gfx_water_reflections": 0,
+        "gfx_water_waves": 0,
+        "gfx_waterfalls": 0,
+        "gfx_weather_mist": 0,
+        "gfx_weather_surfaces": 0,
+        "gfx_wind": 0,
+        "graphics_preset": 0,
+        "item_icon_fit": 1,
+        "marks": 1,
+        "mechanism_motion": 0,
+        "merc_travel": 0,
+        "net_directory": 0,
+        "net_lan": 0,
+        "net_upnp": 0,
+        "net_websocket": 0,
+        "original_rune_layout": 0,
+        "pad_cursor_speed": 50,
+        "pad_deadzone": 13,
+        "pad_enabled": 1,
+        "pad_glyphs": 0,
+        "pad_gyro": 0,
+        "pad_gyro_sensitivity": 50,
+        "pad_light": 1,
+        "pad_rumble": 70,
+        "pad_swap_sticks": 0,
+        "pad_target_radius": 6,
+        "pad_wheel_pause": 1,
+        "path_through": 1,
+        "phys_interp": 1,
+        "power_kbd": 25,
+        "power_mouse": 50,
+        "q_aa": 0,
+        "q_aniso": 1,
+        "q_shadow_fit": 1,
+        "q_shadows": 0,
+        "render_scale": 4,
+        "renderer": 2,
+        "resolution": 0,
+        "reverse_stereo": 0,
+        "revive": 1,
+        "rubber_select": 2,
+        "scroll_border": 0,
+        "select_type": 0,
+        "shadow_buildings": 1,
+        "shadow_flora": 1,
+        "show_flying_hp": 1,
+        "show_fps": 0,
+        "show_path": 1,
+        "show_tutorial": 0,
+        "smile_faces": 1,
+        "sp_death_notice": 1,
+        "sp_full_xp": 0,
+        "spell_double_tap_self": 1,
+        "stamina_regen": 0,
+        "start_zones": 1,
+        "switch_filters": 1,
+        "tooltip_time": 2,
+        "ui_active_buttons": 1,
+        "unit_fog": 1,
+        "village_start_view": 0,
+        "volume_sfx": 100,
+        "volume_stream": 100,
+        "volume_voice": 100,
+        "vsync": 0
+      },
+      "baseline": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "preset": 1.0,
+          "seconds": 8.0,
+          "warmup": 20.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "draw_calls": 120,
+            "draw_pipelines": 0,
+            "fps": 59.9925888573183,
+            "frame_ms": {
+              "max": 18.903,
+              "mean": 16.6687255717256,
+              "median": 16.688,
+              "p95": 17.333,
+              "p99": 18.771
+            },
+            "frames": 481,
+            "last_gpu_ms": 12.0839996337891,
+            "last_render_cpu_ms": 1.20299994945526,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.609,
+              "mean": 0.550675675675676,
+              "median": 0.535,
+              "p95": 0.609,
+              "p99": 0.609
+            },
+            "intervals_over_25ms": 0
+          },
+          {
+            "draw_calls": 159,
+            "draw_pipelines": 2,
+            "fps": 60.0071235067614,
+            "frame_ms": {
+              "max": 19.054,
+              "mean": 16.6646881496881,
+              "median": 16.663,
+              "p95": 17.454,
+              "p99": 18.275
+            },
+            "frames": 481,
+            "last_gpu_ms": 11.4309997558594,
+            "last_render_cpu_ms": 1.46200001239777,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.695,
+              "mean": 0.555835758835757,
+              "median": 0.537,
+              "p95": 0.695,
+              "p99": 0.695
+            },
+            "intervals_over_25ms": 0
+          },
+          {
+            "draw_calls": 159,
+            "draw_pipelines": 0,
+            "fps": 60.0115856046554,
+            "frame_ms": {
+              "max": 20.146,
+              "mean": 16.6634490644491,
+              "median": 16.684,
+              "p95": 17.27,
+              "p99": 18.838
+            },
+            "frames": 481,
+            "last_gpu_ms": 11.4390001296997,
+            "last_render_cpu_ms": 1.45200002193451,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.599,
+              "mean": 0.554948024948023,
+              "median": 0.544,
+              "p95": 0.599,
+              "p99": 0.599
+            },
+            "intervals_over_25ms": 0
+          }
+        ],
+        "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-baseline-original",
+        "raw_sha256": {
+          "result.json": "94f5dbbae324639e49c9b795c4a98096a9a4197cbe4ebe342549401697a0f439",
+          "config.json": "d2614e4a1a66ea8c2749d5b05cacd4626458746c3d7b8f18c5d6f95a386a2b12",
+          "logcat.txt": "047add15e0f1f4bf866355290db0d14500dee78e79ec00d9b1e3230f5b34b766",
+          "device-before.txt": "0f132a90a96b542f9bd908b333cb87a16034009f24d89382bece1c7487f1bd96",
+          "device-after.txt": "29e6212aba7a68bb0330efc51f21d82f011c9ab603f63ad2a6156544d56db0be"
+        }
+      },
+      "candidate": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "preset": 1.0,
+          "seconds": 8.0,
+          "warmup": 20.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "draw_calls": 120,
+            "draw_pipelines": 0,
+            "fps": 60.0086432407562,
+            "frame_ms": {
+              "max": 19.259,
+              "mean": 16.6642661122661,
+              "median": 16.658,
+              "p95": 17.392,
+              "p99": 18.432
+            },
+            "frames": 481,
+            "last_gpu_ms": 11.8979997634888,
+            "last_render_cpu_ms": 1.17400002479553,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.598,
+              "mean": 0.560513513513519,
+              "median": 0.556,
+              "p95": 0.598,
+              "p99": 0.598
+            },
+            "intervals_over_25ms": 0
+          },
+          {
+            "draw_calls": 160,
+            "draw_pipelines": 2,
+            "fps": 60.001898604775,
+            "frame_ms": {
+              "max": 20.257,
+              "mean": 16.6661392931393,
+              "median": 16.67,
+              "p95": 17.304,
+              "p99": 18.423
+            },
+            "frames": 481,
+            "last_gpu_ms": 11.3090000152588,
+            "last_render_cpu_ms": 1.54900002479553,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.588,
+              "mean": 0.556954261954262,
+              "median": 0.56,
+              "p95": 0.588,
+              "p99": 0.588
+            },
+            "intervals_over_25ms": 0
+          },
+          {
+            "draw_calls": 160,
+            "draw_pipelines": 1,
+            "fps": 60.0109566782027,
+            "frame_ms": {
+              "max": 24.772,
+              "mean": 16.6636237006237,
+              "median": 16.67,
+              "p95": 17.351,
+              "p99": 18.498
+            },
+            "frames": 481,
+            "last_gpu_ms": 11.4350004196167,
+            "last_render_cpu_ms": 1.41100001335144,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.592,
+              "mean": 0.537640332640332,
+              "median": 0.534,
+              "p95": 0.592,
+              "p99": 0.592
+            },
+            "intervals_over_25ms": 0
+          }
+        ],
+        "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-candidate-original",
+        "raw_sha256": {
+          "result.json": "f5c8e586f50913e5e94e3e23888a99cc02f0612daea6ee3acbf857e00f9a4fe7",
+          "config.json": "d2614e4a1a66ea8c2749d5b05cacd4626458746c3d7b8f18c5d6f95a386a2b12",
+          "logcat.txt": "95a286fe92536c04ee4f5a6b1cce5aee91b0e9f263138f3239fe56ae63bf1132",
+          "device-before.txt": "74423bc1b45d8942c2c8a6fd3520ad704bf436e8798eac9855df9e92ae3803ba",
+          "device-after.txt": "42512d251e4b8ac76e54ad9db1a779f4ab29ede672d30f21b47cf57433ff0a1d"
+        }
+      },
+      "gains": [
+        {
+          "phase": "stationary",
+          "fps_gain_percent": 0.026760611174947435,
+          "mean_frame_reduction_percent": 0.026753451787941973
+        },
+        {
+          "phase": "first_pan",
+          "fps_gain_percent": -0.008707136221608458,
+          "mean_frame_reduction_percent": -0.008707894430215468
+        },
+        {
+          "phase": "repeat_pan",
+          "fps_gain_percent": -0.0010480083909802929,
+          "mean_frame_reduction_percent": -0.001048019374150222
+        }
+      ]
+    },
+    "live": {
+      "identical_options": {
+        "aim_press_once": 1,
+        "armor_formula": 0,
+        "auto_exit": 0,
+        "auto_graphics": 0,
+        "autosave": 0,
+        "brightness": 50,
+        "cam_follow": 1,
+        "cam_pan_speed": 50,
+        "cam_rotate_speed": 50,
+        "cam_see_through": 1,
+        "cam_wasd": 1,
+        "cam_zoom_speed": 50,
+        "camera_reverse_x": 0,
+        "camera_reverse_y": 0,
+        "camera_style": 1,
+        "character_light": 0,
+        "confine_mouse": 0,
+        "contrast": 50,
+        "control_mode": 0,
+        "coop_clock": 1,
+        "coop_full_xp": 1,
+        "coop_player_names": 1,
+        "coop_scale": 2,
+        "coop_share_loot": 1,
+        "difficulty": 0,
+        "direct_fov_first": 5,
+        "direct_fov_third": 3,
+        "direct_hints": 1,
+        "direct_invert_x": 0,
+        "direct_invert_y": 0,
+        "direct_mouse_first": 50,
+        "direct_mouse_third": 50,
+        "direct_pad_curve": 1,
+        "direct_pad_deadzone": 13,
+        "direct_pad_invert_x": 0,
+        "direct_pad_invert_y": 0,
+        "direct_pad_x": 50,
+        "direct_pad_y": 50,
+        "display_mode": 1,
+        "distant_ai": 0,
+        "enemy_hp_bars": 1,
+        "footprints": 1,
+        "fps_limit": 0,
+        "free_run": 0,
+        "gamma": 50,
+        "gfx_ambient_particles": 0,
+        "gfx_ambient_wildlife": 0,
+        "gfx_biome_cover": 0,
+        "gfx_bloom": 1,
+        "gfx_cloud_reflections": 0,
+        "gfx_cloud_shadows": 0,
+        "gfx_clouds": 1,
+        "gfx_contact_shadows": 1,
+        "gfx_depth_of_field": 0,
+        "gfx_detailed_heads": 1,
+        "gfx_far_view": 0,
+        "gfx_firelight": 1,
+        "gfx_foliage_light": 1,
+        "gfx_grass": 0,
+        "gfx_ground_contact": 0,
+        "gfx_hd_textures": 1,
+        "gfx_heat_haze": 0,
+        "gfx_lava_light": 1,
+        "gfx_lit_particles": 1,
+        "gfx_materials": 1,
+        "gfx_rain_puddles": 1,
+        "gfx_severed_limbs": 1,
+        "gfx_sharp_units": 1,
+        "gfx_sky": 1,
+        "gfx_soft_ground": 1,
+        "gfx_soft_particles": 0,
+        "gfx_ssao": 0,
+        "gfx_terrain": 1,
+        "gfx_terrain_cliffs": 0,
+        "gfx_torch_glow": 0,
+        "gfx_vegetation_interaction": 0,
+        "gfx_volumetric": 0,
+        "gfx_water": 1,
+        "gfx_water_caustics": 0,
+        "gfx_water_current": 0,
+        "gfx_water_interaction": 0,
+        "gfx_water_reflections": 0,
+        "gfx_water_waves": 0,
+        "gfx_waterfalls": 0,
+        "gfx_weather_mist": 0,
+        "gfx_weather_surfaces": 1,
+        "gfx_wind": 1,
+        "graphics_preset": 0,
+        "item_icon_fit": 1,
+        "marks": 1,
+        "mechanism_motion": 0,
+        "merc_travel": 0,
+        "net_directory": 0,
+        "net_lan": 0,
+        "net_upnp": 0,
+        "net_websocket": 0,
+        "original_rune_layout": 0,
+        "pad_cursor_speed": 50,
+        "pad_deadzone": 13,
+        "pad_enabled": 1,
+        "pad_glyphs": 0,
+        "pad_gyro": 0,
+        "pad_gyro_sensitivity": 50,
+        "pad_light": 1,
+        "pad_rumble": 70,
+        "pad_swap_sticks": 0,
+        "pad_target_radius": 6,
+        "pad_wheel_pause": 1,
+        "path_through": 1,
+        "phys_interp": 1,
+        "power_kbd": 25,
+        "power_mouse": 50,
+        "q_aa": 1,
+        "q_aniso": 4,
+        "q_shadow_fit": 1,
+        "q_shadows": 1,
+        "render_scale": 4,
+        "renderer": 2,
+        "resolution": 0,
+        "reverse_stereo": 0,
+        "revive": 1,
+        "rubber_select": 2,
+        "scroll_border": 0,
+        "select_type": 0,
+        "shadow_buildings": 1,
+        "shadow_flora": 1,
+        "show_flying_hp": 1,
+        "show_fps": 0,
+        "show_path": 1,
+        "show_tutorial": 0,
+        "smile_faces": 1,
+        "sp_death_notice": 1,
+        "sp_full_xp": 0,
+        "spell_double_tap_self": 1,
+        "stamina_regen": 0,
+        "start_zones": 1,
+        "switch_filters": 1,
+        "tooltip_time": 2,
+        "ui_active_buttons": 1,
+        "unit_fog": 1,
+        "village_start_view": 0,
+        "volume_sfx": 100,
+        "volume_stream": 100,
+        "volume_voice": 100,
+        "vsync": 0
+      },
+      "baseline": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "preset": 3.0,
+          "seconds": 10.0,
+          "tool": "res://map_pan_live.gd",
+          "warmup": 20.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "camera_extent": "(0.0, 0.0, 0.0)",
+            "draw_calls": 92,
+            "draw_pipelines": 0,
+            "fade_meshes": 2,
+            "fps": 12.6266856749654,
+            "frame_ms": {
+              "max": 82.692,
+              "mean": 79.1973464566929,
+              "median": 79.244,
+              "p95": 81.17,
+              "p99": 82.414
+            },
+            "frames": 127,
+            "last_gpu_ms": 76.875,
+            "last_render_cpu_ms": 1.09300005435944,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.423,
+              "mean": 0.356755905511812,
+              "median": 0.384,
+              "p95": 0.423,
+              "p99": 0.423
+            },
+            "simulated_seconds": 10.1749999999999,
+            "intervals_over_25ms": 127
+          },
+          {
+            "camera_extent": "(173.2407, 7.574332, 0.0)",
+            "draw_calls": 198,
+            "draw_pipelines": 2,
+            "fade_meshes": 6,
+            "fps": 13.0324618728364,
+            "frame_ms": {
+              "max": 99.464,
+              "mean": 76.7314732824428,
+              "median": 78.526,
+              "p95": 88.636,
+              "p99": 95.884
+            },
+            "frames": 131,
+            "last_gpu_ms": 77.9660034179688,
+            "last_render_cpu_ms": 1.68400001525879,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.528,
+              "mean": 0.370748091603053,
+              "median": 0.355,
+              "p95": 0.528,
+              "p99": 0.528
+            },
+            "simulated_seconds": 10.1199999999999,
+            "intervals_over_25ms": 131
+          },
+          {
+            "camera_extent": "(170.3579, 7.562674, 0.0)",
+            "draw_calls": 198,
+            "draw_pipelines": 0,
+            "fade_meshes": 6,
+            "fps": 13.2946386591623,
+            "frame_ms": {
+              "max": 96.871,
+              "mean": 75.2182910447761,
+              "median": 75.79,
+              "p95": 91.032,
+              "p99": 94.853
+            },
+            "frames": 134,
+            "last_gpu_ms": 85.4700012207031,
+            "last_render_cpu_ms": 1.43400001525879,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.552,
+              "mean": 0.381574626865672,
+              "median": 0.388,
+              "p95": 0.532,
+              "p99": 0.552
+            },
+            "simulated_seconds": 10.1749999999999,
+            "intervals_over_25ms": 134
+          }
+        ],
+        "scope": "live v1: world/session physics active; production camera controller driven by synthetic bound pan key presses, including smoothing, ground clearance and camera fading",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-baseline-live",
+        "raw_sha256": {
+          "result.json": "5cc9d12a0d1e1af46a252b523071821941213deae67c5e240d7dbee86b6664cc",
+          "config.json": "aef22460f4d30837c0351885f7f7f69ff2c46c7c562af55ee6c669bb7e9e866e",
+          "logcat.txt": "a3ead8863e59485faf128635d7f7b45f0b326e1e9a31a71f14ca567202d7833f",
+          "device-before.txt": "9ef95ab409d31ee6a3cae0ae2ca4d5c532ccadbe91bb1da287e38c923f9ab877",
+          "device-after.txt": "4e7e68039d2871336b5e25c73af2ab96bc61f529e324d757963c4db189c6d04a"
+        }
+      },
+      "candidate": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "preset": 3.0,
+          "seconds": 10.0,
+          "tool": "res://map_pan_live.gd",
+          "warmup": 20.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "camera_extent": "(0.0, 0.0, 0.0)",
+            "draw_calls": 92,
+            "draw_pipelines": 0,
+            "fade_meshes": 2,
+            "fps": 12.8773667402174,
+            "frame_ms": {
+              "max": 85.019,
+              "mean": 77.6556279069767,
+              "median": 77.62,
+              "p95": 79.728,
+              "p99": 80.656
+            },
+            "frames": 129,
+            "last_gpu_ms": 75.5690002441406,
+            "last_render_cpu_ms": 1.0349999666214,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.534,
+              "mean": 0.370976744186046,
+              "median": 0.379,
+              "p95": 0.534,
+              "p99": 0.534
+            },
+            "simulated_seconds": 10.1199999999999,
+            "intervals_over_25ms": 129
+          },
+          {
+            "camera_extent": "(173.099, 7.421043, 0.0)",
+            "draw_calls": 196,
+            "draw_pipelines": 1,
+            "fade_meshes": 6,
+            "fps": 12.6510215699918,
+            "frame_ms": {
+              "max": 93.226,
+              "mean": 79.045,
+              "median": 79.289,
+              "p95": 89.819,
+              "p99": 92.978
+            },
+            "frames": 127,
+            "last_gpu_ms": 88.4550018310547,
+            "last_render_cpu_ms": 1.5,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.49,
+              "mean": 0.391771653543308,
+              "median": 0.39,
+              "p95": 0.49,
+              "p99": 0.49
+            },
+            "simulated_seconds": 10.1199999999999,
+            "intervals_over_25ms": 127
+          },
+          {
+            "camera_extent": "(171.2215, 7.556644, 0.0)",
+            "draw_calls": 194,
+            "draw_pipelines": 0,
+            "fade_meshes": 6,
+            "fps": 12.7402799377916,
+            "frame_ms": {
+              "max": 101.97,
+              "mean": 78.4912109375,
+              "median": 78.772,
+              "p95": 91.426,
+              "p99": 94.334
+            },
+            "frames": 128,
+            "last_gpu_ms": 86.7570037841797,
+            "last_render_cpu_ms": 1.39600002765656,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.546,
+              "mean": 0.371484375,
+              "median": 0.366,
+              "p95": 0.546,
+              "p99": 0.546
+            },
+            "simulated_seconds": 10.1199999999999,
+            "intervals_over_25ms": 128
+          }
+        ],
+        "scope": "live v1: world/session physics active; production camera controller driven by synthetic bound pan key presses, including smoothing, ground clearance and camera fading",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-candidate-live",
+        "raw_sha256": {
+          "result.json": "331ae9148b2828a28af83246eb1d5b74439a47aa80f411b4e7387d754ddcd487",
+          "config.json": "aef22460f4d30837c0351885f7f7f69ff2c46c7c562af55ee6c669bb7e9e866e",
+          "logcat.txt": "b5d5dba3fdd87963758164154d8977a32bbbbba8032dd7915302f49cda78c7e8",
+          "device-before.txt": "af753b64dfef0eb11cfc1ce2aca02d13adcd501a9560cfed95f59cd23d135072",
+          "device-after.txt": "10b4cf664c21c69e6f065c1eda1eeb4d28edc4e668fa8ce3f5e2926722a7d8b6"
+        }
+      },
+      "gains": [
+        {
+          "phase": "stationary",
+          "fps_gain_percent": 1.9853275174895657,
+          "mean_frame_reduction_percent": 1.9466795526529967
+        },
+        {
+          "phase": "first_pan",
+          "fps_gain_percent": -2.926847640656738,
+          "mean_frame_reduction_percent": -3.0150948738352445
+        },
+        {
+          "phase": "repeat_pan",
+          "fps_gain_percent": -4.169791564727121,
+          "mean_frame_reduction_percent": -4.351228733414847
+        }
+      ]
+    },
+    "live-repeat": {
+      "identical_options": {
+        "aim_press_once": 1,
+        "armor_formula": 0,
+        "auto_exit": 0,
+        "auto_graphics": 0,
+        "autosave": 0,
+        "brightness": 50,
+        "cam_follow": 1,
+        "cam_pan_speed": 50,
+        "cam_rotate_speed": 50,
+        "cam_see_through": 1,
+        "cam_wasd": 1,
+        "cam_zoom_speed": 50,
+        "camera_reverse_x": 0,
+        "camera_reverse_y": 0,
+        "camera_style": 1,
+        "character_light": 0,
+        "confine_mouse": 0,
+        "contrast": 50,
+        "control_mode": 0,
+        "coop_clock": 1,
+        "coop_full_xp": 1,
+        "coop_player_names": 1,
+        "coop_scale": 2,
+        "coop_share_loot": 1,
+        "difficulty": 0,
+        "direct_fov_first": 5,
+        "direct_fov_third": 3,
+        "direct_hints": 1,
+        "direct_invert_x": 0,
+        "direct_invert_y": 0,
+        "direct_mouse_first": 50,
+        "direct_mouse_third": 50,
+        "direct_pad_curve": 1,
+        "direct_pad_deadzone": 13,
+        "direct_pad_invert_x": 0,
+        "direct_pad_invert_y": 0,
+        "direct_pad_x": 50,
+        "direct_pad_y": 50,
+        "display_mode": 1,
+        "distant_ai": 0,
+        "enemy_hp_bars": 1,
+        "footprints": 1,
+        "fps_limit": 0,
+        "free_run": 0,
+        "gamma": 50,
+        "gfx_ambient_particles": 0,
+        "gfx_ambient_wildlife": 0,
+        "gfx_biome_cover": 0,
+        "gfx_bloom": 1,
+        "gfx_cloud_reflections": 0,
+        "gfx_cloud_shadows": 0,
+        "gfx_clouds": 1,
+        "gfx_contact_shadows": 1,
+        "gfx_depth_of_field": 0,
+        "gfx_detailed_heads": 1,
+        "gfx_far_view": 0,
+        "gfx_firelight": 1,
+        "gfx_foliage_light": 1,
+        "gfx_grass": 0,
+        "gfx_ground_contact": 0,
+        "gfx_hd_textures": 1,
+        "gfx_heat_haze": 0,
+        "gfx_lava_light": 1,
+        "gfx_lit_particles": 1,
+        "gfx_materials": 1,
+        "gfx_rain_puddles": 1,
+        "gfx_severed_limbs": 1,
+        "gfx_sharp_units": 1,
+        "gfx_sky": 1,
+        "gfx_soft_ground": 1,
+        "gfx_soft_particles": 0,
+        "gfx_ssao": 0,
+        "gfx_terrain": 1,
+        "gfx_terrain_cliffs": 0,
+        "gfx_torch_glow": 0,
+        "gfx_vegetation_interaction": 0,
+        "gfx_volumetric": 0,
+        "gfx_water": 1,
+        "gfx_water_caustics": 0,
+        "gfx_water_current": 0,
+        "gfx_water_interaction": 0,
+        "gfx_water_reflections": 0,
+        "gfx_water_waves": 0,
+        "gfx_waterfalls": 0,
+        "gfx_weather_mist": 0,
+        "gfx_weather_surfaces": 1,
+        "gfx_wind": 1,
+        "graphics_preset": 0,
+        "item_icon_fit": 1,
+        "marks": 1,
+        "mechanism_motion": 0,
+        "merc_travel": 0,
+        "net_directory": 0,
+        "net_lan": 0,
+        "net_upnp": 0,
+        "net_websocket": 0,
+        "original_rune_layout": 0,
+        "pad_cursor_speed": 50,
+        "pad_deadzone": 13,
+        "pad_enabled": 1,
+        "pad_glyphs": 0,
+        "pad_gyro": 0,
+        "pad_gyro_sensitivity": 50,
+        "pad_light": 1,
+        "pad_rumble": 70,
+        "pad_swap_sticks": 0,
+        "pad_target_radius": 6,
+        "pad_wheel_pause": 1,
+        "path_through": 1,
+        "phys_interp": 1,
+        "power_kbd": 25,
+        "power_mouse": 50,
+        "q_aa": 1,
+        "q_aniso": 4,
+        "q_shadow_fit": 1,
+        "q_shadows": 1,
+        "render_scale": 4,
+        "renderer": 2,
+        "resolution": 0,
+        "reverse_stereo": 0,
+        "revive": 1,
+        "rubber_select": 2,
+        "scroll_border": 0,
+        "select_type": 0,
+        "shadow_buildings": 1,
+        "shadow_flora": 1,
+        "show_flying_hp": 1,
+        "show_fps": 0,
+        "show_path": 1,
+        "show_tutorial": 0,
+        "smile_faces": 1,
+        "sp_death_notice": 1,
+        "sp_full_xp": 0,
+        "spell_double_tap_self": 1,
+        "stamina_regen": 0,
+        "start_zones": 1,
+        "switch_filters": 1,
+        "tooltip_time": 2,
+        "ui_active_buttons": 1,
+        "unit_fog": 1,
+        "village_start_view": 0,
+        "volume_sfx": 100,
+        "volume_stream": 100,
+        "volume_voice": 100,
+        "vsync": 0
+      },
+      "baseline": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "preset": 3.0,
+          "seconds": 10.0,
+          "tool": "res://map_pan_live.gd",
+          "warmup": 20.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "camera_extent": "(0.0, 0.0, 0.0)",
+            "draw_calls": 92,
+            "draw_pipelines": 0,
+            "fade_meshes": 2,
+            "fps": 12.6170529703622,
+            "frame_ms": {
+              "max": 89.241,
+              "mean": 79.2578110236221,
+              "median": 78.995,
+              "p95": 81.545,
+              "p99": 87.937
+            },
+            "frames": 127,
+            "last_gpu_ms": 76.7949981689453,
+            "last_render_cpu_ms": 1.18700003623962,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.464,
+              "mean": 0.361889763779527,
+              "median": 0.379,
+              "p95": 0.464,
+              "p99": 0.464
+            },
+            "simulated_seconds": 10.1749999999999,
+            "intervals_over_25ms": 127
+          },
+          {
+            "camera_extent": "(172.7183, 7.23868, 0.0)",
+            "draw_calls": 195,
+            "draw_pipelines": 1,
+            "fade_meshes": 6,
+            "fps": 12.6407804716464,
+            "frame_ms": {
+              "max": 98.895,
+              "mean": 79.1090393700787,
+              "median": 79.297,
+              "p95": 90.765,
+              "p99": 94.708
+            },
+            "frames": 127,
+            "last_gpu_ms": 87.7779998779297,
+            "last_render_cpu_ms": 1.43700003623962,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.415,
+              "mean": 0.356157480314961,
+              "median": 0.382,
+              "p95": 0.415,
+              "p99": 0.415
+            },
+            "simulated_seconds": 10.1199999999999,
+            "intervals_over_25ms": 127
+          },
+          {
+            "camera_extent": "(173.2282, 7.489368, 0.0)",
+            "draw_calls": 197,
+            "draw_pipelines": 0,
+            "fade_meshes": 6,
+            "fps": 12.6231050930154,
+            "frame_ms": {
+              "max": 94.567,
+              "mean": 79.219811023622,
+              "median": 79.77,
+              "p95": 91.381,
+              "p99": 92.993
+            },
+            "frames": 127,
+            "last_gpu_ms": 90.8860015869141,
+            "last_render_cpu_ms": 1.49899995326996,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.438,
+              "mean": 0.367291338582677,
+              "median": 0.397,
+              "p95": 0.438,
+              "p99": 0.438
+            },
+            "simulated_seconds": 10.1749999999999,
+            "intervals_over_25ms": 127
+          }
+        ],
+        "scope": "live v1: world/session physics active; production camera controller driven by synthetic bound pan key presses, including smoothing, ground clearance and camera fading",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-baseline-live-repeat",
+        "raw_sha256": {
+          "result.json": "30b6dab740d3b0b9efa4b978b27f2594f01e91f200f5d9c5f9e80b5d917e6514",
+          "config.json": "aef22460f4d30837c0351885f7f7f69ff2c46c7c562af55ee6c669bb7e9e866e",
+          "logcat.txt": "524c49e34e943a2558bb0bbf32f89b31ddfdc8474d3d8d124b4b3d71cbddde84",
+          "device-before.txt": "cfc96dfb19dbc26fbc1acc7540969c9d572f66d37296b6b0db9e106f04baf1f0",
+          "device-after.txt": "b2a2757e045c4edd37ba1de221566b182fa76e7810fc19fc12f5522f983b565c"
+        }
+      },
+      "candidate": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "preset": 3.0,
+          "seconds": 10.0,
+          "tool": "res://map_pan_live.gd",
+          "warmup": 20.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "camera_extent": "(0.0, 0.0, 0.0)",
+            "draw_calls": 92,
+            "draw_pipelines": 0,
+            "fade_meshes": 2,
+            "fps": 12.8592849320481,
+            "frame_ms": {
+              "max": 87.178,
+              "mean": 77.7648217054264,
+              "median": 77.711,
+              "p95": 80.023,
+              "p99": 80.779
+            },
+            "frames": 129,
+            "last_gpu_ms": 75.3919982910156,
+            "last_render_cpu_ms": 1.14400005340576,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.541,
+              "mean": 0.391418604651163,
+              "median": 0.396,
+              "p95": 0.541,
+              "p99": 0.541
+            },
+            "simulated_seconds": 10.1199999999999,
+            "intervals_over_25ms": 129
+          },
+          {
+            "camera_extent": "(172.7828, 7.218752, 0.0)",
+            "draw_calls": 197,
+            "draw_pipelines": 1,
+            "fade_meshes": 6,
+            "fps": 12.7734401858216,
+            "frame_ms": {
+              "max": 95.005,
+              "mean": 78.2874453125,
+              "median": 78.706,
+              "p95": 90.841,
+              "p99": 94.809
+            },
+            "frames": 128,
+            "last_gpu_ms": 92.3889999389648,
+            "last_render_cpu_ms": 1.43400001525879,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.536,
+              "mean": 0.39146875,
+              "median": 0.382,
+              "p95": 0.536,
+              "p99": 0.536
+            },
+            "simulated_seconds": 10.0649999999999,
+            "intervals_over_25ms": 128
+          },
+          {
+            "camera_extent": "(170.39, 7.283556, 0.0)",
+            "draw_calls": 200,
+            "draw_pipelines": 0,
+            "fade_meshes": 6,
+            "fps": 12.6044156741765,
+            "frame_ms": {
+              "max": 93.792,
+              "mean": 79.3372755905512,
+              "median": 79.999,
+              "p95": 90.484,
+              "p99": 92.468
+            },
+            "frames": 127,
+            "last_gpu_ms": 89.3809967041016,
+            "last_render_cpu_ms": 1.62699997425079,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.734,
+              "mean": 0.42467716535433,
+              "median": 0.39,
+              "p95": 0.734,
+              "p99": 0.734
+            },
+            "simulated_seconds": 10.1749999999999,
+            "intervals_over_25ms": 127
+          }
+        ],
+        "scope": "live v1: world/session physics active; production camera controller driven by synthetic bound pan key presses, including smoothing, ground clearance and camera fading",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-candidate-live-repeat",
+        "raw_sha256": {
+          "result.json": "d1dc1f42466c3ac4a86a398a3498e6829d279891296c899437b5ad51efa46afb",
+          "config.json": "aef22460f4d30837c0351885f7f7f69ff2c46c7c562af55ee6c669bb7e9e866e",
+          "logcat.txt": "a03effcb0bee0a9ed77be527b20d4f9242f770fa2bc3fac71741e3eed51faf27",
+          "device-before.txt": "61d0e59f4b08cb0303691a9b65562f7d6077499d74bb6d12dfb2ce78171bbe10",
+          "device-after.txt": "a33e605f756f5803c3a88edf098dc9438676a3b70da7831920300c43253d6973"
+        }
+      },
+      "gains": [
+        {
+          "phase": "stationary",
+          "fps_gain_percent": 1.9198775043182348,
+          "mean_frame_reduction_percent": 1.8837125311860103
+        },
+        {
+          "phase": "first_pan",
+          "fps_gain_percent": 1.049458255150948,
+          "mean_frame_reduction_percent": 1.0385590118661692
+        },
+        {
+          "phase": "repeat_pan",
+          "fps_gain_percent": -0.14805722285589074,
+          "mean_frame_reduction_percent": -0.1482767573052879
+        }
+      ]
+    },
+    "reflections": {
+      "identical_options": {
+        "aim_press_once": 1,
+        "armor_formula": 0,
+        "auto_exit": 0,
+        "auto_graphics": 0,
+        "autosave": 0,
+        "brightness": 50,
+        "cam_follow": 1,
+        "cam_pan_speed": 50,
+        "cam_rotate_speed": 50,
+        "cam_see_through": 1,
+        "cam_wasd": 1,
+        "cam_zoom_speed": 50,
+        "camera_reverse_x": 0,
+        "camera_reverse_y": 0,
+        "camera_style": 1,
+        "character_light": 0,
+        "confine_mouse": 0,
+        "contrast": 50,
+        "control_mode": 0,
+        "coop_clock": 1,
+        "coop_full_xp": 1,
+        "coop_player_names": 1,
+        "coop_scale": 2,
+        "coop_share_loot": 1,
+        "difficulty": 0,
+        "direct_fov_first": 5,
+        "direct_fov_third": 3,
+        "direct_hints": 1,
+        "direct_invert_x": 0,
+        "direct_invert_y": 0,
+        "direct_mouse_first": 50,
+        "direct_mouse_third": 50,
+        "direct_pad_curve": 1,
+        "direct_pad_deadzone": 13,
+        "direct_pad_invert_x": 0,
+        "direct_pad_invert_y": 0,
+        "direct_pad_x": 50,
+        "direct_pad_y": 50,
+        "display_mode": 1,
+        "distant_ai": 0,
+        "enemy_hp_bars": 1,
+        "footprints": 1,
+        "fps_limit": 0,
+        "free_run": 0,
+        "gamma": 50,
+        "gfx_ambient_particles": 0,
+        "gfx_ambient_wildlife": 0,
+        "gfx_biome_cover": 0,
+        "gfx_bloom": 1,
+        "gfx_cloud_reflections": 0,
+        "gfx_cloud_shadows": 0,
+        "gfx_clouds": 1,
+        "gfx_contact_shadows": 1,
+        "gfx_depth_of_field": 0,
+        "gfx_detailed_heads": 1,
+        "gfx_far_view": 0,
+        "gfx_firelight": 1,
+        "gfx_foliage_light": 1,
+        "gfx_grass": 0,
+        "gfx_ground_contact": 0,
+        "gfx_hd_textures": 1,
+        "gfx_heat_haze": 0,
+        "gfx_lava_light": 1,
+        "gfx_lit_particles": 1,
+        "gfx_materials": 1,
+        "gfx_rain_puddles": 1,
+        "gfx_severed_limbs": 1,
+        "gfx_sharp_units": 1,
+        "gfx_sky": 1,
+        "gfx_soft_ground": 1,
+        "gfx_soft_particles": 0,
+        "gfx_ssao": 0,
+        "gfx_terrain": 1,
+        "gfx_terrain_cliffs": 0,
+        "gfx_torch_glow": 0,
+        "gfx_vegetation_interaction": 0,
+        "gfx_volumetric": 0,
+        "gfx_water": 1,
+        "gfx_water_caustics": 0,
+        "gfx_water_current": 0,
+        "gfx_water_interaction": 0,
+        "gfx_water_reflections": 1.0,
+        "gfx_water_waves": 0,
+        "gfx_waterfalls": 0,
+        "gfx_weather_mist": 0,
+        "gfx_weather_surfaces": 1,
+        "gfx_wind": 1,
+        "graphics_preset": 0,
+        "item_icon_fit": 1,
+        "marks": 1,
+        "mechanism_motion": 0,
+        "merc_travel": 0,
+        "net_directory": 0,
+        "net_lan": 0,
+        "net_upnp": 0,
+        "net_websocket": 0,
+        "original_rune_layout": 0,
+        "pad_cursor_speed": 50,
+        "pad_deadzone": 13,
+        "pad_enabled": 1,
+        "pad_glyphs": 0,
+        "pad_gyro": 0,
+        "pad_gyro_sensitivity": 50,
+        "pad_light": 1,
+        "pad_rumble": 70,
+        "pad_swap_sticks": 0,
+        "pad_target_radius": 6,
+        "pad_wheel_pause": 1,
+        "path_through": 1,
+        "phys_interp": 1,
+        "power_kbd": 25,
+        "power_mouse": 50,
+        "q_aa": 1,
+        "q_aniso": 4,
+        "q_shadow_fit": 1,
+        "q_shadows": 1,
+        "render_scale": 4,
+        "renderer": 2,
+        "resolution": 0,
+        "reverse_stereo": 0,
+        "revive": 1,
+        "rubber_select": 2,
+        "scroll_border": 0,
+        "select_type": 0,
+        "shadow_buildings": 1,
+        "shadow_flora": 1,
+        "show_flying_hp": 1,
+        "show_fps": 0,
+        "show_path": 1,
+        "show_tutorial": 0,
+        "smile_faces": 1,
+        "sp_death_notice": 1,
+        "sp_full_xp": 0,
+        "spell_double_tap_self": 1,
+        "stamina_regen": 0,
+        "start_zones": 1,
+        "switch_filters": 1,
+        "tooltip_time": 2,
+        "ui_active_buttons": 1,
+        "unit_fog": 1,
+        "village_start_view": 0,
+        "volume_sfx": 100,
+        "volume_stream": 100,
+        "volume_voice": 100,
+        "vsync": 0
+      },
+      "baseline": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "options": {
+            "gfx_water_reflections": 1.0
+          },
+          "preset": 3.0,
+          "seconds": 8.0,
+          "warmup": 25.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "draw_calls": 120,
+            "draw_pipelines": 0,
+            "fps": 10.9371795748171,
+            "frame_ms": {
+              "max": 96.403,
+              "mean": 91.43125,
+              "median": 91.455,
+              "p95": 95.271,
+              "p99": 96.403
+            },
+            "frames": 88,
+            "last_gpu_ms": 90.9280014038086,
+            "last_render_cpu_ms": 1.22500002384186,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.69,
+              "mean": 0.616409090909091,
+              "median": 0.594,
+              "p95": 0.69,
+              "p99": 0.69
+            },
+            "intervals_over_25ms": 88
+          },
+          {
+            "draw_calls": 201,
+            "draw_pipelines": 2,
+            "fps": 10.8551594822563,
+            "frame_ms": {
+              "max": 115.673,
+              "mean": 92.122091954023,
+              "median": 88.84,
+              "p95": 109.857,
+              "p99": 115.673
+            },
+            "frames": 87,
+            "last_gpu_ms": 82.5780029296875,
+            "last_render_cpu_ms": 1.47000002861023,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.802,
+              "mean": 0.677505747126437,
+              "median": 0.72,
+              "p95": 0.802,
+              "p99": 0.802
+            },
+            "intervals_over_25ms": 87
+          },
+          {
+            "draw_calls": 199,
+            "draw_pipelines": 0,
+            "fps": 10.8685440848136,
+            "frame_ms": {
+              "max": 119.239,
+              "mean": 92.0086436781609,
+              "median": 88.758,
+              "p95": 109.935,
+              "p99": 119.239
+            },
+            "frames": 87,
+            "last_gpu_ms": 83.2539978027344,
+            "last_render_cpu_ms": 1.52100002765656,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.811,
+              "mean": 0.681666666666667,
+              "median": 0.67,
+              "p95": 0.811,
+              "p99": 0.811
+            },
+            "intervals_over_25ms": 87
+          }
+        ],
+        "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-baseline-reflections",
+        "raw_sha256": {
+          "result.json": "144ed8ed9532635b46ca9ed105abe8bdc04fea34c42a285729fb68c4084ff008",
+          "config.json": "d9fab9f34556a092ca7a89f26f6082748bedce6eb30de778d4354a6a82ffb38c",
+          "logcat.txt": "dfa9c5f1fd5ddff9b2afade5a21bfd6dc4a24b2700028ab12777ea81e023a2ca",
+          "device-before.txt": "be7042aa743e2547398a3bd0e3e8ff232e118c960d68b5a6f52ef3fadbca2ecf",
+          "device-after.txt": "f3b54753605179ab352442707a1578f1b356125084d34969e46447a2950a0d1f"
+        }
+      },
+      "candidate": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "options": {
+            "gfx_water_reflections": 1.0
+          },
+          "preset": 3.0,
+          "seconds": 8.0,
+          "warmup": 25.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "draw_calls": 120,
+            "draw_pipelines": 0,
+            "fps": 10.9763884164676,
+            "frame_ms": {
+              "max": 95.175,
+              "mean": 91.1046477272727,
+              "median": 91.185,
+              "p95": 94.268,
+              "p99": 95.175
+            },
+            "frames": 88,
+            "last_gpu_ms": 89.7279968261719,
+            "last_render_cpu_ms": 1.09800004959106,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.671,
+              "mean": 0.611272727272727,
+              "median": 0.598,
+              "p95": 0.671,
+              "p99": 0.671
+            },
+            "intervals_over_25ms": 88
+          },
+          {
+            "draw_calls": 201,
+            "draw_pipelines": 2,
+            "fps": 10.8552610646615,
+            "frame_ms": {
+              "max": 116.322,
+              "mean": 92.1212298850575,
+              "median": 90.149,
+              "p95": 111.295,
+              "p99": 116.322
+            },
+            "frames": 87,
+            "last_gpu_ms": 84.1119995117188,
+            "last_render_cpu_ms": 1.43900001049042,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.827,
+              "mean": 0.678758620689655,
+              "median": 0.698,
+              "p95": 0.827,
+              "p99": 0.827
+            },
+            "intervals_over_25ms": 87
+          },
+          {
+            "draw_calls": 161,
+            "draw_pipelines": 0,
+            "fps": 10.9153947750982,
+            "frame_ms": {
+              "max": 143.644,
+              "mean": 91.6137272727273,
+              "median": 88.475,
+              "p95": 110.827,
+              "p99": 143.644
+            },
+            "frames": 88,
+            "last_gpu_ms": 82.4359970092773,
+            "last_render_cpu_ms": 1.39400005340576,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.881,
+              "mean": 0.68853409090909,
+              "median": 0.694,
+              "p95": 0.759,
+              "p99": 0.881
+            },
+            "intervals_over_25ms": 88
+          }
+        ],
+        "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-candidate-reflections",
+        "raw_sha256": {
+          "result.json": "b271c2c32ec328db37e4902d6d2a287db05af9b44a571acfcfe491c13576e37f",
+          "config.json": "d9fab9f34556a092ca7a89f26f6082748bedce6eb30de778d4354a6a82ffb38c",
+          "logcat.txt": "aa9a50ac58e5176faec25939750ec07f8630d1179b521e252a2476ff9a18db08",
+          "device-before.txt": "4c9192b2966533dd4f40197a4cfa90b484ba4b911f5bd63c0b254b67d6cbe4f0",
+          "device-after.txt": "c5787cc5f7573ccc855855e13afc2e6480bbd76453024a9715fcf2fb7800d9f5"
+        }
+      },
+      "gains": [
+        {
+          "phase": "stationary",
+          "fps_gain_percent": 0.3584913403157364,
+          "mean_frame_reduction_percent": 0.3572107706361849
+        },
+        {
+          "phase": "first_pan",
+          "fps_gain_percent": 0.000935798367285301,
+          "mean_frame_reduction_percent": 0.0009357896105233188
+        },
+        {
+          "phase": "repeat_pan",
+          "fps_gain_percent": 0.43106684684717234,
+          "mean_frame_reduction_percent": 0.42921663622711437
+        }
+      ]
+    },
+    "medium-repeat": {
+      "identical_options": {
+        "aim_press_once": 1,
+        "armor_formula": 0,
+        "auto_exit": 0,
+        "auto_graphics": 0,
+        "autosave": 0,
+        "brightness": 50,
+        "cam_follow": 1,
+        "cam_pan_speed": 50,
+        "cam_rotate_speed": 50,
+        "cam_see_through": 1,
+        "cam_wasd": 1,
+        "cam_zoom_speed": 50,
+        "camera_reverse_x": 0,
+        "camera_reverse_y": 0,
+        "camera_style": 1,
+        "character_light": 0,
+        "confine_mouse": 0,
+        "contrast": 50,
+        "control_mode": 0,
+        "coop_clock": 1,
+        "coop_full_xp": 1,
+        "coop_player_names": 1,
+        "coop_scale": 2,
+        "coop_share_loot": 1,
+        "difficulty": 0,
+        "direct_fov_first": 5,
+        "direct_fov_third": 3,
+        "direct_hints": 1,
+        "direct_invert_x": 0,
+        "direct_invert_y": 0,
+        "direct_mouse_first": 50,
+        "direct_mouse_third": 50,
+        "direct_pad_curve": 1,
+        "direct_pad_deadzone": 13,
+        "direct_pad_invert_x": 0,
+        "direct_pad_invert_y": 0,
+        "direct_pad_x": 50,
+        "direct_pad_y": 50,
+        "display_mode": 1,
+        "distant_ai": 0,
+        "enemy_hp_bars": 1,
+        "footprints": 1,
+        "fps_limit": 0,
+        "free_run": 0,
+        "gamma": 50,
+        "gfx_ambient_particles": 0,
+        "gfx_ambient_wildlife": 0,
+        "gfx_biome_cover": 0,
+        "gfx_bloom": 1,
+        "gfx_cloud_reflections": 0,
+        "gfx_cloud_shadows": 0,
+        "gfx_clouds": 1,
+        "gfx_contact_shadows": 1,
+        "gfx_depth_of_field": 0,
+        "gfx_detailed_heads": 1,
+        "gfx_far_view": 0,
+        "gfx_firelight": 1,
+        "gfx_foliage_light": 1,
+        "gfx_grass": 0,
+        "gfx_ground_contact": 0,
+        "gfx_hd_textures": 1,
+        "gfx_heat_haze": 0,
+        "gfx_lava_light": 1,
+        "gfx_lit_particles": 1,
+        "gfx_materials": 1,
+        "gfx_rain_puddles": 1,
+        "gfx_severed_limbs": 1,
+        "gfx_sharp_units": 1,
+        "gfx_sky": 1,
+        "gfx_soft_ground": 1,
+        "gfx_soft_particles": 0,
+        "gfx_ssao": 0,
+        "gfx_terrain": 1,
+        "gfx_terrain_cliffs": 0,
+        "gfx_torch_glow": 0,
+        "gfx_vegetation_interaction": 0,
+        "gfx_volumetric": 0,
+        "gfx_water": 1,
+        "gfx_water_caustics": 0,
+        "gfx_water_current": 0,
+        "gfx_water_interaction": 0,
+        "gfx_water_reflections": 0,
+        "gfx_water_waves": 0,
+        "gfx_waterfalls": 0,
+        "gfx_weather_mist": 0,
+        "gfx_weather_surfaces": 1,
+        "gfx_wind": 1,
+        "graphics_preset": 0,
+        "item_icon_fit": 1,
+        "marks": 1,
+        "mechanism_motion": 0,
+        "merc_travel": 0,
+        "net_directory": 0,
+        "net_lan": 0,
+        "net_upnp": 0,
+        "net_websocket": 0,
+        "original_rune_layout": 0,
+        "pad_cursor_speed": 50,
+        "pad_deadzone": 13,
+        "pad_enabled": 1,
+        "pad_glyphs": 0,
+        "pad_gyro": 0,
+        "pad_gyro_sensitivity": 50,
+        "pad_light": 1,
+        "pad_rumble": 70,
+        "pad_swap_sticks": 0,
+        "pad_target_radius": 6,
+        "pad_wheel_pause": 1,
+        "path_through": 1,
+        "phys_interp": 1,
+        "power_kbd": 25,
+        "power_mouse": 50,
+        "q_aa": 1,
+        "q_aniso": 4,
+        "q_shadow_fit": 1,
+        "q_shadows": 1,
+        "render_scale": 4,
+        "renderer": 2,
+        "resolution": 0,
+        "reverse_stereo": 0,
+        "revive": 1,
+        "rubber_select": 2,
+        "scroll_border": 0,
+        "select_type": 0,
+        "shadow_buildings": 1,
+        "shadow_flora": 1,
+        "show_flying_hp": 1,
+        "show_fps": 0,
+        "show_path": 1,
+        "show_tutorial": 0,
+        "smile_faces": 1,
+        "sp_death_notice": 1,
+        "sp_full_xp": 0,
+        "spell_double_tap_self": 1,
+        "stamina_regen": 0,
+        "start_zones": 1,
+        "switch_filters": 1,
+        "tooltip_time": 2,
+        "ui_active_buttons": 1,
+        "unit_fog": 1,
+        "village_start_view": 0,
+        "volume_sfx": 100,
+        "volume_stream": 100,
+        "volume_voice": 100,
+        "vsync": 0
+      },
+      "baseline": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "preset": 3.0,
+          "seconds": 10.0,
+          "warmup": 25.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "draw_calls": 120,
+            "draw_pipelines": 0,
+            "fps": 12.3753964742695,
+            "frame_ms": {
+              "max": 83.007,
+              "mean": 80.8054919354839,
+              "median": 80.766,
+              "p95": 82.808,
+              "p99": 82.984
+            },
+            "frames": 124,
+            "last_gpu_ms": 78.2369995117188,
+            "last_render_cpu_ms": 1.06200003623962,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.665,
+              "mean": 0.609870967741936,
+              "median": 0.605,
+              "p95": 0.665,
+              "p99": 0.665
+            },
+            "intervals_over_25ms": 124
+          },
+          {
+            "draw_calls": 275,
+            "draw_pipelines": 2,
+            "fps": 11.6996607098394,
+            "frame_ms": {
+              "max": 124.415,
+              "mean": 85.4725641025641,
+              "median": 82.837,
+              "p95": 100.191,
+              "p99": 102.486
+            },
+            "frames": 117,
+            "last_gpu_ms": 99.8000030517578,
+            "last_render_cpu_ms": 1.52600002288818,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.824,
+              "mean": 0.692521367521367,
+              "median": 0.672,
+              "p95": 0.824,
+              "p99": 0.824
+            },
+            "intervals_over_25ms": 117
+          },
+          {
+            "draw_calls": 280,
+            "draw_pipelines": 0,
+            "fps": 11.677484641862,
+            "frame_ms": {
+              "max": 105.588,
+              "mean": 85.6348803418803,
+              "median": 83.423,
+              "p95": 99.034,
+              "p99": 105.506
+            },
+            "frames": 117,
+            "last_gpu_ms": 100.013999938965,
+            "last_render_cpu_ms": 1.52400004863739,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.739,
+              "mean": 0.68,
+              "median": 0.694,
+              "p95": 0.739,
+              "p99": 0.739
+            },
+            "intervals_over_25ms": 117
+          }
+        ],
+        "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-baseline-medium-repeat",
+        "raw_sha256": {
+          "result.json": "3f1949ae26565bcb530086c549db9e9faf67ac82c26a7531bbd6c4433f13ee6f",
+          "config.json": "e23a616f60a92b177d67afed7e39edb2e7d843a142f20060a2d14d0723fd2bf8",
+          "logcat.txt": "c19bfb1752879ff27b39998087ce4545365a7fcf545808545505762d1102050a",
+          "device-before.txt": "1b786e49de84ffd2327419c508de25bee2e7305e62a55ab04570618d6b50f64b",
+          "device-after.txt": "9f95649e9f13f379d9ee539d2972de126fd67f95f1d06cf14d92599541f5955e"
+        }
+      },
+      "candidate": {
+        "adapter": "Adreno (TM) 650",
+        "config": {
+          "height": 1080.0,
+          "preset": 3.0,
+          "seconds": 10.0,
+          "warmup": 25.0,
+          "width": 1920.0,
+          "zone": "gz1g"
+        },
+        "objects": 730,
+        "render_scale": 1.0,
+        "renderer": "mobile",
+        "rows": [
+          {
+            "draw_calls": 120,
+            "draw_pipelines": 0,
+            "fps": 12.5584203261422,
+            "frame_ms": {
+              "max": 82.572,
+              "mean": 79.6278492063492,
+              "median": 79.707,
+              "p95": 81.241,
+              "p99": 81.834
+            },
+            "frames": 126,
+            "last_gpu_ms": 77.0950012207031,
+            "last_render_cpu_ms": 1.19799995422363,
+            "mesh_pipelines": 0,
+            "phase": "stationary",
+            "physics_ms": {
+              "max": 0.806,
+              "mean": 0.646468253968253,
+              "median": 0.629,
+              "p95": 0.806,
+              "p99": 0.806
+            },
+            "intervals_over_25ms": 126
+          },
+          {
+            "draw_calls": 278,
+            "draw_pipelines": 2,
+            "fps": 11.818131078765,
+            "frame_ms": {
+              "max": 104.505,
+              "mean": 84.6157478991596,
+              "median": 81.486,
+              "p95": 102.453,
+              "p99": 104.472
+            },
+            "frames": 119,
+            "last_gpu_ms": 100.430999755859,
+            "last_render_cpu_ms": 1.3400000333786,
+            "mesh_pipelines": 0,
+            "phase": "first_pan",
+            "physics_ms": {
+              "max": 0.752,
+              "mean": 0.675697478991596,
+              "median": 0.685,
+              "p95": 0.752,
+              "p99": 0.752
+            },
+            "intervals_over_25ms": 119
+          },
+          {
+            "draw_calls": 278,
+            "draw_pipelines": 0,
+            "fps": 11.7918270846476,
+            "frame_ms": {
+              "max": 101.238,
+              "mean": 84.8045,
+              "median": 82.482,
+              "p95": 99.071,
+              "p99": 100.546
+            },
+            "frames": 118,
+            "last_gpu_ms": 98.3970031738281,
+            "last_render_cpu_ms": 1.5110000371933,
+            "mesh_pipelines": 0,
+            "phase": "repeat_pan",
+            "physics_ms": {
+              "max": 0.792,
+              "mean": 0.697296610169491,
+              "median": 0.712,
+              "p95": 0.792,
+              "p99": 0.792
+            },
+            "intervals_over_25ms": 118
+          }
+        ],
+        "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+        "units": 48,
+        "version": "1.8.0",
+        "viewport": "(1920.0, 1080.0)",
+        "label": "round3-final-candidate-medium-repeat",
+        "raw_sha256": {
+          "result.json": "0c92eb773f3e7b9c4a2ac7d1e309feda84236eb27b2afa02cd21998631aa4f37",
+          "config.json": "e23a616f60a92b177d67afed7e39edb2e7d843a142f20060a2d14d0723fd2bf8",
+          "logcat.txt": "a9ace0b2eaeb9c17736851f11adcc50c773d8ac572a3908a3a272a52992452b7",
+          "device-before.txt": "fd0dee4f1bae926b3eb91c4dc241292f8617ff8ad5d3083b8cc3067df4582f8b",
+          "device-after.txt": "c52602ae65cb646a01235cb486be5c6211b25d2936272fd1d0f0f00aaf841cda"
+        }
+      },
+      "gains": [
+        {
+          "phase": "stationary",
+          "fps_gain_percent": 1.4789332386500487,
+          "mean_frame_reduction_percent": 1.4573795678082702
+        },
+        {
+          "phase": "first_pan",
+          "fps_gain_percent": 1.0125966202247705,
+          "mean_frame_reduction_percent": 1.0024458870525499
+        },
+        {
+          "phase": "repeat_pan",
+          "fps_gain_percent": 0.979170140594321,
+          "mean_frame_reduction_percent": 0.9696753689211302
+        }
+      ]
+    }
+  },
+  "tests": {
+    "water-options": {
+      "checks": 663,
+      "failures": 0,
+      "log_sha256": "797b703d00e84d3454c51feb89316886594cbcc248b269de8e6fcd52b98e75c7",
+      "engine": "prior native engine; final game source",
+      "result": {
+        "checks": 663,
+        "draw_variants": 132,
+        "failures": 0
+      },
+      "capture_sha256": {}
+    },
+    "water-off": {
+      "checks": 6,
+      "failures": 0,
+      "log_sha256": "c641c2231bed00ebbb71fe9d828f6c637c2aa3e0163f32b29e948363a95e22e4",
+      "engine": "prior native engine; final game source",
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "rows": [
+          {
+            "along": 0.0,
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            },
+            "reference_repeat": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "along": 80.0,
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            },
+            "reference_repeat": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "along": 160.0,
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            },
+            "reference_repeat": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            }
+          }
+        ]
+      },
+      "capture_sha256": {
+        "mobile-water-render-0-candidate.png": "104b4930c01a12e90d852cdbe29e490b10733879484526b1e18411b245d76b19",
+        "mobile-water-render-0-reference-repeat.png": "104b4930c01a12e90d852cdbe29e490b10733879484526b1e18411b245d76b19",
+        "mobile-water-render-0-reference.png": "104b4930c01a12e90d852cdbe29e490b10733879484526b1e18411b245d76b19",
+        "mobile-water-render-160-candidate.png": "b6d268cc379112ae1696f6e0376885a771034ef620bc176eba45ae7898854d6d",
+        "mobile-water-render-160-reference-repeat.png": "b6d268cc379112ae1696f6e0376885a771034ef620bc176eba45ae7898854d6d",
+        "mobile-water-render-160-reference.png": "b6d268cc379112ae1696f6e0376885a771034ef620bc176eba45ae7898854d6d",
+        "mobile-water-render-80-candidate.png": "4c5b1f3697417165869b109c395a45cfe3b27e5cb56593689bf1ca70c557a746",
+        "mobile-water-render-80-reference-repeat.png": "4c5b1f3697417165869b109c395a45cfe3b27e5cb56593689bf1ca70c557a746",
+        "mobile-water-render-80-reference.png": "4c5b1f3697417165869b109c395a45cfe3b27e5cb56593689bf1ca70c557a746"
+      }
+    },
+    "water-on": {
+      "checks": 6,
+      "failures": 0,
+      "log_sha256": "ee8fd2d24633ad756cd0f8331ec0d421e2b24b03e4246299e09ab00578597a49",
+      "engine": "prior native engine; final game source",
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "rows": [
+          {
+            "along": 0.0,
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            },
+            "reference_repeat": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "along": 80.0,
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            },
+            "reference_repeat": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "along": 160.0,
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            },
+            "reference_repeat": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            }
+          }
+        ]
+      },
+      "capture_sha256": {
+        "mobile-water-render-0-candidate.png": "dd0929183c8464d2f400ea6e38fc6af90096a59b925747ce8f5385287c9c593b",
+        "mobile-water-render-0-reference-repeat.png": "dd0929183c8464d2f400ea6e38fc6af90096a59b925747ce8f5385287c9c593b",
+        "mobile-water-render-0-reference.png": "dd0929183c8464d2f400ea6e38fc6af90096a59b925747ce8f5385287c9c593b",
+        "mobile-water-render-160-candidate.png": "f56038fbfdb2d7ff717b05e136a4cddc854225c869566918fa22541a9dd3092e",
+        "mobile-water-render-160-reference-repeat.png": "f56038fbfdb2d7ff717b05e136a4cddc854225c869566918fa22541a9dd3092e",
+        "mobile-water-render-160-reference.png": "f56038fbfdb2d7ff717b05e136a4cddc854225c869566918fa22541a9dd3092e",
+        "mobile-water-render-80-candidate.png": "ca879590648d00b13e1443756ce3f6b0850db4a8026ed06ae7ea8b25f046901f",
+        "mobile-water-render-80-reference-repeat.png": "ca879590648d00b13e1443756ce3f6b0850db4a8026ed06ae7ea8b25f046901f",
+        "mobile-water-render-80-reference.png": "ca879590648d00b13e1443756ce3f6b0850db4a8026ed06ae7ea8b25f046901f"
+      }
+    },
+    "water-weather": {
+      "checks": 6,
+      "failures": 0,
+      "log_sha256": "6f3467abd48a3a00b3fc9392534e538105769a2fa519806a10c1203fc8606f74",
+      "engine": "prior native engine; final game source",
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "rows": [
+          {
+            "along": 0.0,
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            },
+            "reference_repeat": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "along": 80.0,
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            },
+            "reference_repeat": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "along": 160.0,
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            },
+            "reference_repeat": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            }
+          }
+        ]
+      },
+      "capture_sha256": {
+        "mobile-water-render-0-candidate.png": "1719a143ba73c0becc4a54c46337ada65522a26db047265ceb7fde3982b17f10",
+        "mobile-water-render-0-reference-repeat.png": "1719a143ba73c0becc4a54c46337ada65522a26db047265ceb7fde3982b17f10",
+        "mobile-water-render-0-reference.png": "1719a143ba73c0becc4a54c46337ada65522a26db047265ceb7fde3982b17f10",
+        "mobile-water-render-160-candidate.png": "7e5975b01f6385c8421d65ef204cd0a2c30594b9aac6925c30f2b090c08db442",
+        "mobile-water-render-160-reference-repeat.png": "7e5975b01f6385c8421d65ef204cd0a2c30594b9aac6925c30f2b090c08db442",
+        "mobile-water-render-160-reference.png": "7e5975b01f6385c8421d65ef204cd0a2c30594b9aac6925c30f2b090c08db442",
+        "mobile-water-render-80-candidate.png": "7a0a943a21829ba683c05901ce4b2c299aba87a6034b4a00fd0bdedfdb973e18",
+        "mobile-water-render-80-reference-repeat.png": "7a0a943a21829ba683c05901ce4b2c299aba87a6034b4a00fd0bdedfdb973e18",
+        "mobile-water-render-80-reference.png": "7a0a943a21829ba683c05901ce4b2c299aba87a6034b4a00fd0bdedfdb973e18"
+      }
+    },
+    "material-options": {
+      "checks": 368,
+      "failures": 0,
+      "log_sha256": "3685ee7675476f55b3abdc7611ab045672e71a63ef5df5b73c8fa44a8401a4be",
+      "engine": "prior native engine; final game source",
+      "capture_sha256": {},
+      "rendered_variants": 102,
+      "supported_renderer_only": true
+    },
+    "native-mips-baseline": {
+      "checks": 24,
+      "failures": 0,
+      "log_sha256": "46481745ce8dcb05b336b59448f63013f98062a7e8788c55dcaae7d5cc5f3906",
+      "engine": "prior native engine",
+      "result": {
+        "checks": 24,
+        "failures": 0,
+        "native_mip_demand": false,
+        "rows": [
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "zero-only"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "mixed"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "hidden"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "reappear"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "shader-zero"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "shader-mip"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "culled"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "unculled"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "multi-empty"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "multi-visible"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "multi-empty-again"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "next-pass"
+          }
+        ]
+      },
+      "capture_sha256": {
+        "mobile-screen-mips-culled.png": "97c1601be0539c5a4bc4c9a7ccf7f73e72decd93c9cff5eb96c59016f9b059a2",
+        "mobile-screen-mips-hidden.png": "bbe056e16043a70327a43196c885e884ef9deed9ff25290592350560de324213",
+        "mobile-screen-mips-mixed.png": "1feca3e31455099a408407a302d609585ab7284f33c1479a6aa5ee5becb6b9a8",
+        "mobile-screen-mips-multi-empty-again.png": "7e5345eac05fc998c75692fbf6df0f31b5fd0d8febc21fab34023b554bf07db7",
+        "mobile-screen-mips-multi-empty.png": "bbe056e16043a70327a43196c885e884ef9deed9ff25290592350560de324213",
+        "mobile-screen-mips-multi-visible.png": "fc62582f7ee0c4017cb932bd5c7987fe6dc47c3f9e046b0f837118592da5bf94",
+        "mobile-screen-mips-next-pass.png": "2d0eb5f6ef78ea2dc6cbdb689e7a887481eeda6f4a4f5485d2a181b06df70b73",
+        "mobile-screen-mips-reappear.png": "fc62582f7ee0c4017cb932bd5c7987fe6dc47c3f9e046b0f837118592da5bf94",
+        "mobile-screen-mips-shader-mip.png": "920509970ca6113a38de104d6ce6524460edcf231ce06f046cedc4855a7e5ac2",
+        "mobile-screen-mips-shader-zero.png": "12e16937123f7129cbad2f957d8bd8b3cbe852f2b3904a77561dedb58103fb1d",
+        "mobile-screen-mips-unculled.png": "1feca3e31455099a408407a302d609585ab7284f33c1479a6aa5ee5becb6b9a8",
+        "mobile-screen-mips-zero-only.png": "97c1601be0539c5a4bc4c9a7ccf7f73e72decd93c9cff5eb96c59016f9b059a2"
+      }
+    },
+    "native-mips-candidate": {
+      "checks": 24,
+      "failures": 0,
+      "log_sha256": "b4bc77ce684a4015ca1d7f488b91fac7f628629fce4a5c1b32a7a050aaec1f0d",
+      "engine": "final native engine",
+      "result": {
+        "checks": 24,
+        "failures": 0,
+        "native_mip_demand": true,
+        "rows": [
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "zero-only"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "mixed"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "hidden"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "reappear"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "shader-zero"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "shader-mip"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "culled"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "unculled"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "multi-empty"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "multi-visible"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "multi-empty-again"
+          },
+          {
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "repeat": {
+              "changed_pixels": 0,
+              "peak": 0
+            },
+            "state": "next-pass"
+          }
+        ]
+      },
+      "capture_sha256": {
+        "mobile-screen-mips-culled.png": "97c1601be0539c5a4bc4c9a7ccf7f73e72decd93c9cff5eb96c59016f9b059a2",
+        "mobile-screen-mips-hidden.png": "bbe056e16043a70327a43196c885e884ef9deed9ff25290592350560de324213",
+        "mobile-screen-mips-mixed.png": "1feca3e31455099a408407a302d609585ab7284f33c1479a6aa5ee5becb6b9a8",
+        "mobile-screen-mips-multi-empty-again.png": "7e5345eac05fc998c75692fbf6df0f31b5fd0d8febc21fab34023b554bf07db7",
+        "mobile-screen-mips-multi-empty.png": "bbe056e16043a70327a43196c885e884ef9deed9ff25290592350560de324213",
+        "mobile-screen-mips-multi-visible.png": "fc62582f7ee0c4017cb932bd5c7987fe6dc47c3f9e046b0f837118592da5bf94",
+        "mobile-screen-mips-next-pass.png": "2d0eb5f6ef78ea2dc6cbdb689e7a887481eeda6f4a4f5485d2a181b06df70b73",
+        "mobile-screen-mips-reappear.png": "fc62582f7ee0c4017cb932bd5c7987fe6dc47c3f9e046b0f837118592da5bf94",
+        "mobile-screen-mips-shader-mip.png": "920509970ca6113a38de104d6ce6524460edcf231ce06f046cedc4855a7e5ac2",
+        "mobile-screen-mips-shader-zero.png": "12e16937123f7129cbad2f957d8bd8b3cbe852f2b3904a77561dedb58103fb1d",
+        "mobile-screen-mips-unculled.png": "1feca3e31455099a408407a302d609585ab7284f33c1479a6aa5ee5becb6b9a8",
+        "mobile-screen-mips-zero-only.png": "97c1601be0539c5a4bc4c9a7ccf7f73e72decd93c9cff5eb96c59016f9b059a2"
+      }
+    },
+    "native-water-on": {
+      "checks": 6,
+      "failures": 0,
+      "log_sha256": "457b88bf5c7f4fc998da43a717cac36add3f0bec0eec1744f2446063c3cbbf9e",
+      "engine": "final native engine",
+      "result": {
+        "checks": 6,
+        "failures": 0,
+        "rows": [
+          {
+            "along": 0.0,
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            },
+            "reference_repeat": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "along": 80.0,
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            },
+            "reference_repeat": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            }
+          },
+          {
+            "along": 160.0,
+            "candidate": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            },
+            "reference_repeat": {
+              "changed_pixels": 0,
+              "peak": 0,
+              "pixels_over_2": 0
+            }
+          }
+        ]
+      },
+      "capture_sha256": {
+        "mobile-water-render-0-candidate.png": "494dbc3062d1515cc86101080a3a042908ac368b64296f125a6a90d446d3b344",
+        "mobile-water-render-0-reference-repeat.png": "494dbc3062d1515cc86101080a3a042908ac368b64296f125a6a90d446d3b344",
+        "mobile-water-render-0-reference.png": "494dbc3062d1515cc86101080a3a042908ac368b64296f125a6a90d446d3b344",
+        "mobile-water-render-160-candidate.png": "b0074e3e30200a6e4fe07e0a8a39226218738e9cd58ec12d635a454642449e47",
+        "mobile-water-render-160-reference-repeat.png": "b0074e3e30200a6e4fe07e0a8a39226218738e9cd58ec12d635a454642449e47",
+        "mobile-water-render-160-reference.png": "b0074e3e30200a6e4fe07e0a8a39226218738e9cd58ec12d635a454642449e47",
+        "mobile-water-render-80-candidate.png": "d8814dd3c3ad440a1794392bd62656ff68426f4d583b2b1fa2e802368e84d3f7",
+        "mobile-water-render-80-reference-repeat.png": "d8814dd3c3ad440a1794392bd62656ff68426f4d583b2b1fa2e802368e84d3f7",
+        "mobile-water-render-80-reference.png": "d8814dd3c3ad440a1794392bd62656ff68426f4d583b2b1fa2e802368e84d3f7"
+      }
+    },
+    "native-water-options": {
+      "checks": 663,
+      "failures": 0,
+      "log_sha256": "c8dab915f7f6503e724e44534974584ad318bb750f0c24806deeea2d55c0bbc0",
+      "engine": "final native engine",
+      "result": {
+        "checks": 663,
+        "draw_variants": 132,
+        "failures": 0
+      },
+      "capture_sha256": {}
+    }
+  },
+  "diagnostics": {
+    "round3-frozen-production-variants": {
+      "result_sha256": "937930fb34aba954470a5e28a49b713e51b2238417363737e7e1f72a4fa602d2",
+      "log_sha256": "1bd2900a5ec2704df5d9e2b8e38c8a58637acf2c8fde9449f094404b2a9eaa45",
+      "config": {
+        "height": 1080.0,
+        "phases": [
+          "baseline",
+          "direct",
+          "pair",
+          "water",
+          "repeat"
+        ],
+        "preset": 3.0,
+        "seconds": 8.0,
+        "tool": "user://round3-production-variants.gd",
+        "warmup": 20.0,
+        "width": 1920.0,
+        "zone": "gz1g"
+      },
+      "scope": "diagnostic: frozen scene and shader TIME; production draws at a fixed camera",
+      "rows": [
+        {
+          "phase": "baseline",
+          "fps": 12.8615403979735,
+          "frame_ms": {
+            "max": 81.815,
+            "mean": 77.7511844660194,
+            "median": 77.861,
+            "p95": 79.852,
+            "p99": 80.573
+          },
+          "last_gpu_ms": 74.2679977416992,
+          "draw_calls": 121
+        },
+        {
+          "phase": "direct",
+          "fps": 12.5676553595513,
+          "frame_ms": {
+            "max": 88.92,
+            "mean": 79.5693366336634,
+            "median": 79.415,
+            "p95": 82.002,
+            "p99": 87.245
+          },
+          "last_gpu_ms": 78.3880004882812,
+          "draw_calls": 121
+        },
+        {
+          "phase": "pair",
+          "fps": 12.6904532208744,
+          "frame_ms": {
+            "max": 82.337,
+            "mean": 78.7993921568628,
+            "median": 79.032,
+            "p95": 81.044,
+            "p99": 81.481
+          },
+          "last_gpu_ms": 76.8239974975586,
+          "draw_calls": 121
+        },
+        {
+          "phase": "water",
+          "fps": 13.2960166749446,
+          "frame_ms": {
+            "max": 82.698,
+            "mean": 75.2104953271028,
+            "median": 75.076,
+            "p95": 77.642,
+            "p99": 82.619
+          },
+          "last_gpu_ms": 72.7119979858398,
+          "draw_calls": 121
+        },
+        {
+          "phase": "repeat",
+          "fps": 12.7953123938253,
+          "frame_ms": {
+            "max": 86.97,
+            "mean": 78.1536213592233,
+            "median": 78.081,
+            "p95": 81.283,
+            "p99": 82.27
+          },
+          "last_gpu_ms": 78.5899963378906,
+          "draw_calls": 121
+        }
+      ],
+      "pixel_comparisons": {
+        "direct": {
+          "changed_pixels": 0,
+          "pixels_over_2": 0,
+          "peak": 0
+        },
+        "pair": {
+          "changed_pixels": 0,
+          "pixels_over_2": 0,
+          "peak": 0
+        },
+        "water": {
+          "changed_pixels": 0,
+          "pixels_over_2": 0,
+          "peak": 0
+        },
+        "repeat": {
+          "changed_pixels": 0,
+          "pixels_over_2": 0,
+          "peak": 0
+        }
+      }
+    },
+    "round3-light-reuse": {
+      "result_sha256": "a0dd815e8132a2e3c51e62fbc9d0f331d9be5195c67f2609301fae6e29a2e3db",
+      "log_sha256": "4d95438390070687ed9ac1f07547c3f3334a5f00020268c0722bfafffd9b4258",
+      "config": {
+        "gpu_profile": true,
+        "height": 1080.0,
+        "phases": [
+          "baseline",
+          "needed",
+          "fragment",
+          "repeat"
+        ],
+        "preset": 7.0,
+        "seconds": 7.0,
+        "tool": "user://round3-light-reuse.gd",
+        "warmup": 20.0,
+        "width": 1920.0,
+        "zone": "gz1g"
+      },
+      "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+      "rows": [
+        {
+          "phase": "baseline",
+          "fps": 4.05059443870145,
+          "frame_ms": {
+            "max": 250.556,
+            "mean": 246.877344827586,
+            "median": 246.875,
+            "p95": 248.764,
+            "p99": 250.556
+          },
+          "last_gpu_ms": 244.466995239258,
+          "draw_calls": 244
+        },
+        {
+          "phase": "needed",
+          "fps": 3.4724373204229,
+          "frame_ms": {
+            "max": 469.639,
+            "mean": 287.98216,
+            "median": 275.752,
+            "p95": 313.258,
+            "p99": 469.639
+          },
+          "last_gpu_ms": 273.148986816406,
+          "draw_calls": 244
+        },
+        {
+          "phase": "fragment",
+          "fps": 3.80407706891072,
+          "frame_ms": {
+            "max": 327.659,
+            "mean": 262.875851851852,
+            "median": 252.64,
+            "p95": 325.007,
+            "p99": 327.659
+          },
+          "last_gpu_ms": 249.60400390625,
+          "draw_calls": 244
+        },
+        {
+          "phase": "repeat",
+          "fps": 4.02429508573899,
+          "frame_ms": {
+            "max": 258.93,
+            "mean": 248.490724137931,
+            "median": 248.103,
+            "p95": 252.431,
+            "p99": 258.93
+          },
+          "last_gpu_ms": 246.171997070312,
+          "draw_calls": 244
+        }
+      ]
+    },
+    "round3-light-reuse-medium": {
+      "result_sha256": "16b97d6cc36151e1f016da56d0e54b44fb7f2b419daf37c05985cc6134028582",
+      "log_sha256": "000680c6543f8051c9fa8294b0f3e844bc90bdfbe84496ee73f9fa10b296b0bb",
+      "config": {
+        "height": 1080.0,
+        "phases": [
+          "baseline",
+          "needed",
+          "no_vertex",
+          "combined",
+          "active_count",
+          "repeat"
+        ],
+        "preset": 3.0,
+        "seconds": 7.0,
+        "tool": "user://round3-light-reuse.gd",
+        "warmup": 20.0,
+        "width": 1920.0,
+        "zone": "gz1g"
+      },
+      "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+      "rows": [
+        {
+          "phase": "baseline",
+          "fps": 12.3397796625964,
+          "frame_ms": {
+            "max": 84.114,
+            "mean": 81.038724137931,
+            "median": 80.867,
+            "p95": 83.381,
+            "p99": 84.114
+          },
+          "last_gpu_ms": 79.3330001831055,
+          "draw_calls": 120
+        },
+        {
+          "phase": "needed",
+          "fps": 12.1326466540801,
+          "frame_ms": {
+            "max": 90.157,
+            "mean": 82.4222470588235,
+            "median": 82.198,
+            "p95": 84.678,
+            "p99": 90.157
+          },
+          "last_gpu_ms": 89.8720016479492,
+          "draw_calls": 120
+        },
+        {
+          "phase": "no_vertex",
+          "fps": 12.3145265977497,
+          "frame_ms": {
+            "max": 91.045,
+            "mean": 81.204908045977,
+            "median": 81.122,
+            "p95": 83.436,
+            "p99": 91.045
+          },
+          "last_gpu_ms": 79.4369964599609,
+          "draw_calls": 120
+        },
+        {
+          "phase": "combined",
+          "fps": 12.1810167069726,
+          "frame_ms": {
+            "max": 85.521,
+            "mean": 82.0949534883721,
+            "median": 82.121,
+            "p95": 84.588,
+            "p99": 85.521
+          },
+          "last_gpu_ms": 80.5459976196289,
+          "draw_calls": 120
+        },
+        {
+          "phase": "active_count",
+          "fps": 12.0118184988788,
+          "frame_ms": {
+            "max": 93.881,
+            "mean": 83.2513411764706,
+            "median": 83.095,
+            "p95": 85.136,
+            "p99": 93.881
+          },
+          "last_gpu_ms": 81.6630020141602,
+          "draw_calls": 120
+        },
+        {
+          "phase": "repeat",
+          "fps": 12.2749088588017,
+          "frame_ms": {
+            "max": 91.177,
+            "mean": 81.467,
+            "median": 81.076,
+            "p95": 84.491,
+            "p99": 91.177
+          },
+          "last_gpu_ms": 79.6169967651367,
+          "draw_calls": 120
+        }
+      ]
+    },
+    "round3-selected-pair-medium": {
+      "result_sha256": "3713abdf756e2829623e18c2dfd25936f473229bb12dbaf6f3da40f28df0bab3",
+      "log_sha256": "577384c2770d7496c732b8ee6487ec2f6cad64b8fbcfe58e1f2935f32dc8c64e",
+      "config": {
+        "height": 1080.0,
+        "phases": [
+          "baseline",
+          "light_select",
+          "water_select",
+          "water_pruned",
+          "repeat"
+        ],
+        "preset": 3.0,
+        "seconds": 8.0,
+        "tool": "user://round3-selected-pair.gd",
+        "warmup": 20.0,
+        "width": 1920.0,
+        "zone": "gz1g"
+      },
+      "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+      "rows": [
+        {
+          "phase": "baseline",
+          "fps": 12.3470154893933,
+          "frame_ms": {
+            "max": 84.446,
+            "mean": 80.9912323232323,
+            "median": 80.886,
+            "p95": 83.747,
+            "p99": 84.446
+          },
+          "last_gpu_ms": 78.7229995727539,
+          "draw_calls": 120
+        },
+        {
+          "phase": "light_select",
+          "fps": 12.4891640890073,
+          "frame_ms": {
+            "max": 83.39,
+            "mean": 80.06941,
+            "median": 80.091,
+            "p95": 82.293,
+            "p99": 83.39
+          },
+          "last_gpu_ms": 78.4670028686523,
+          "draw_calls": 120
+        },
+        {
+          "phase": "water_select",
+          "fps": 12.4176631323928,
+          "frame_ms": {
+            "max": 90.586,
+            "mean": 80.53045,
+            "median": 80.456,
+            "p95": 82.772,
+            "p99": 90.586
+          },
+          "last_gpu_ms": 79.4830017089844,
+          "draw_calls": 120
+        },
+        {
+          "phase": "water_pruned",
+          "fps": 12.7769021395977,
+          "frame_ms": {
+            "max": 82.787,
+            "mean": 78.2662330097087,
+            "median": 78.343,
+            "p95": 81.844,
+            "p99": 82.693
+          },
+          "last_gpu_ms": 75.140998840332,
+          "draw_calls": 121
+        },
+        {
+          "phase": "repeat",
+          "fps": 12.7270054828439,
+          "frame_ms": {
+            "max": 88.849,
+            "mean": 78.5730784313726,
+            "median": 78.332,
+            "p95": 81.511,
+            "p99": 83.393
+          },
+          "last_gpu_ms": 76.8629989624023,
+          "draw_calls": 121
+        }
+      ]
+    },
+    "round3-terrain-traits-medium": {
+      "result_sha256": "763fad921c7e21c073c61471d97fb0322c471acb15816f8cedf6316156d33906",
+      "log_sha256": "b6e92b3ea8322e06e87f33165c17ce7e1c86b8cdb3a7338de9acd0f349ce246a",
+      "config": {
+        "height": 1080.0,
+        "phases": [
+          "baseline",
+          "traits_early",
+          "traits_branch",
+          "light_select",
+          "light_select_bound",
+          "repeat"
+        ],
+        "preset": 3.0,
+        "seconds": 7.0,
+        "tool": "user://round3-terrain-traits.gd",
+        "warmup": 20.0,
+        "width": 1920.0,
+        "zone": "gz1g"
+      },
+      "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+      "rows": [
+        {
+          "phase": "baseline",
+          "fps": 12.270955831836,
+          "frame_ms": {
+            "max": 92.66,
+            "mean": 81.4932441860465,
+            "median": 81.058,
+            "p95": 84.092,
+            "p99": 92.66
+          },
+          "last_gpu_ms": 79.7630004882812,
+          "draw_calls": 120
+        },
+        {
+          "phase": "traits_early",
+          "fps": 11.9675116252265,
+          "frame_ms": {
+            "max": 87.503,
+            "mean": 83.5595595238096,
+            "median": 83.626,
+            "p95": 84.952,
+            "p99": 87.503
+          },
+          "last_gpu_ms": 81.7060012817383,
+          "draw_calls": 120
+        },
+        {
+          "phase": "traits_branch",
+          "fps": 12.0901045623361,
+          "frame_ms": {
+            "max": 86.704,
+            "mean": 82.7122705882353,
+            "median": 82.791,
+            "p95": 85.728,
+            "p99": 86.704
+          },
+          "last_gpu_ms": 80.9619979858398,
+          "draw_calls": 120
+        },
+        {
+          "phase": "light_select",
+          "fps": 12.4932139133516,
+          "frame_ms": {
+            "max": 82.546,
+            "mean": 80.0434545454546,
+            "median": 80.119,
+            "p95": 81.738,
+            "p99": 82.546
+          },
+          "last_gpu_ms": 77.8899993896484,
+          "draw_calls": 120
+        },
+        {
+          "phase": "light_select_bound",
+          "fps": 9.29054054054054,
+          "frame_ms": {
+            "max": 110.223,
+            "mean": 107.636363636364,
+            "median": 107.695,
+            "p95": 109.659,
+            "p99": 110.223
+          },
+          "last_gpu_ms": 104.661003112793,
+          "draw_calls": 120
+        },
+        {
+          "phase": "repeat",
+          "fps": 12.3316674242846,
+          "frame_ms": {
+            "max": 84.696,
+            "mean": 81.0920344827586,
+            "median": 81.099,
+            "p95": 83.169,
+            "p99": 84.696
+          },
+          "last_gpu_ms": 78.1289978027344,
+          "draw_calls": 120
+        }
+      ]
+    },
+    "round3-water-mip-enabled": {
+      "result_sha256": "3cbb4dd6457ebd6fcba14e677659bd38a17c09016c8c44eccf340bbc9b265b07",
+      "log_sha256": "ab87c2b53752ae0f17cd935e646e754deeae383d84206685e0467e6903f5482a",
+      "config": {
+        "gpu_profile": true,
+        "height": 1080.0,
+        "options": {
+          "gfx_water_reflections": 1.0
+        },
+        "phases": [
+          "baseline",
+          "mip",
+          "repeat",
+          "mip_repeat"
+        ],
+        "preset": 3.0,
+        "seconds": 8.0,
+        "tool": "user://round3-mip-only.gd",
+        "warmup": 20.0,
+        "width": 1920.0,
+        "zone": "gz1g"
+      },
+      "scope": "diagnostic: frozen scene and shader TIME; production draws at a fixed camera",
+      "rows": [
+        {
+          "phase": "baseline",
+          "fps": 11.0377069151482,
+          "frame_ms": {
+            "max": 99.138,
+            "mean": 90.5985280898876,
+            "median": 90.446,
+            "p95": 93.33,
+            "p99": 99.138
+          },
+          "last_gpu_ms": 88.8820037841797,
+          "draw_calls": 120
+        },
+        {
+          "phase": "mip",
+          "fps": 11.0606546416224,
+          "frame_ms": {
+            "max": 100.171,
+            "mean": 90.4105617977528,
+            "median": 90.281,
+            "p95": 93.536,
+            "p99": 100.171
+          },
+          "last_gpu_ms": 88.5619964599609,
+          "draw_calls": 120
+        },
+        {
+          "phase": "repeat",
+          "fps": 11.0605061884153,
+          "frame_ms": {
+            "max": 92.931,
+            "mean": 90.4117752808989,
+            "median": 90.398,
+            "p95": 92.254,
+            "p99": 92.931
+          },
+          "last_gpu_ms": 88.6070022583008,
+          "draw_calls": 120
+        },
+        {
+          "phase": "mip_repeat",
+          "fps": 11.049704550765,
+          "frame_ms": {
+            "max": 100.722,
+            "mean": 90.5001573033708,
+            "median": 90.209,
+            "p95": 93.748,
+            "p99": 100.722
+          },
+          "last_gpu_ms": 88.9680023193359,
+          "draw_calls": 120
+        }
+      ],
+      "pixel_comparisons": {
+        "mip": {
+          "changed_pixels": 0,
+          "pixels_over_2": 0,
+          "peak": 0
+        },
+        "repeat": {
+          "changed_pixels": 0,
+          "pixels_over_2": 0,
+          "peak": 0
+        },
+        "mip_repeat": {
+          "changed_pixels": 0,
+          "pixels_over_2": 0,
+          "peak": 0
+        }
+      }
+    },
+    "round3-water-reuse-medium": {
+      "result_sha256": "84c7a6ffab4e4b6990f993d2eed74ef0517a26ed93dc09a4cf2aaab77ae0e642",
+      "log_sha256": "ecfdc04f2916b785b83386c879057bdc91610a737ac86a07553eef80f28c99e3",
+      "config": {
+        "gpu_profile": true,
+        "height": 1080.0,
+        "phases": [
+          "baseline",
+          "water_constant",
+          "water_pruned",
+          "radius_bound",
+          "water_count",
+          "repeat"
+        ],
+        "preset": 3.0,
+        "seconds": 7.0,
+        "tool": "user://round3-water-reuse.gd",
+        "warmup": 20.0,
+        "width": 1920.0,
+        "zone": "gz1g"
+      },
+      "scope": "v2: held simulation; live production rendering, effects and UI; rig and camera follow wall-clock route",
+      "rows": [
+        {
+          "phase": "baseline",
+          "fps": 12.3232132367741,
+          "frame_ms": {
+            "max": 92.022,
+            "mean": 81.1476666666667,
+            "median": 80.965,
+            "p95": 83.798,
+            "p99": 92.022
+          },
+          "last_gpu_ms": 79.3730010986328,
+          "draw_calls": 120
+        },
+        {
+          "phase": "water_constant",
+          "fps": 12.3997809086987,
+          "frame_ms": {
+            "max": 83.257,
+            "mean": 80.6465862068966,
+            "median": 80.628,
+            "p95": 82.089,
+            "p99": 83.257
+          },
+          "last_gpu_ms": 79.0100021362305,
+          "draw_calls": 120
+        },
+        {
+          "phase": "water_pruned",
+          "fps": 12.4190814761691,
+          "frame_ms": {
+            "max": 90.163,
+            "mean": 80.5212528735632,
+            "median": 80.494,
+            "p95": 82.021,
+            "p99": 90.163
+          },
+          "last_gpu_ms": 78.5039978027344,
+          "draw_calls": 120
+        },
+        {
+          "phase": "radius_bound",
+          "fps": 11.6782649402393,
+          "frame_ms": {
+            "max": 88.023,
+            "mean": 85.6291585365854,
+            "median": 85.607,
+            "p95": 87.72,
+            "p99": 88.023
+          },
+          "last_gpu_ms": 84.3830032348633,
+          "draw_calls": 120
+        },
+        {
+          "phase": "water_count",
+          "fps": 11.6805755731815,
+          "frame_ms": {
+            "max": 88.826,
+            "mean": 85.6122195121952,
+            "median": 85.67,
+            "p95": 87.08,
+            "p99": 88.826
+          },
+          "last_gpu_ms": 83.4749984741211,
+          "draw_calls": 120
+        },
+        {
+          "phase": "repeat",
+          "fps": 12.3219949734758,
+          "frame_ms": {
+            "max": 90.947,
+            "mean": 81.1556896551724,
+            "median": 81.056,
+            "p95": 84.578,
+            "p99": 90.947
+          },
+          "last_gpu_ms": 79.4079971313477,
+          "draw_calls": 120
+        }
+      ]
+    }
+  },
+  "timing_notes": [
+    "Frame distributions are wall-clock process-frame intervals. TIME_PROCESS includes GPU waits and is not pure CPU time.",
+    "GPU/render CPU fields are end-of-phase samples, not whole-run distributions.",
+    "Held route benchmarks retain live rendering/effects/HUD. Live benchmarks also retain physics and the production camera.",
+    "Only explicitly named frozen diagnostics stop all scene process groups and shader TIME.",
+    "Clocks were not locked; device performance and fan settings were unchanged.",
+    "The sampler-only diagnostic used the prior native engine, which always generated screen mips; the final APK includes the demand-driven engine fix."
+  ],
+  "native_patch": {
+    "path": "engine_patches/godot-4.7/mobile-screen-mip-demand.patch",
+    "sha256": "73b542dd724af8cabaaa2591c94e21472f9f0fcd7299816c141eb7a295fa508b",
+    "source_manifest": {
+      "core/os/os.cpp": {
+        "before": "23f653c2ebbf59d321b997572f45883280fc10d9fee04cb68b0ce8d0eb48bf17",
+        "after": "393cf62de66e68f606e1d40ba7007377769095b3a19193653f7b5960079b62a9"
+      },
+      "servers/rendering/renderer_rd/renderer_scene_render_rd.h": {
+        "before": "560283b1c2bbb6e119cf84ab35aef09353c2f4acfd70f5f3d698df06475dff8e",
+        "after": "c1a3313906d11abab38c07e91e90bc419c266e2800c50de6aa9534ae2e55a8ce"
+      },
+      "servers/rendering/renderer_rd/renderer_scene_render_rd.cpp": {
+        "before": "3b89d9cc6c19933a4c74afc13e5d795989723f32336f446e06773d140ab8cd24",
+        "after": "2bebd1cad45b552ee0b05ce57db0ea443e581e2e861a746431fc94da9b23d8ad"
+      },
+      "servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.h": {
+        "before": "eae6df77dbfcb36c28fe3bc69ad50e5c9f7da2659a772c716bfe47e16a924efb",
+        "after": "c1e17ad3c88d9d2f910fccec8dcd3c76965b1ccac5c969fa21a4f27e699325b9"
+      },
+      "servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.cpp": {
+        "before": "e143a246c1534d22ed4ebef936f87130c1ed9c2b590df5756177fdaeb557cd94",
+        "after": "9a427acf7709227f30f4244e0612244c5e8fbf7c20d2f1fac77647220eb5ad49"
+      }
+    },
+    "build": {
+      "engine_sha256": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "apk_sha256": "d390610c39ba9cdf6b425dc383be8fc4410ba4bffc5aff78f393e9e2ccf8192e",
+      "seconds": 20.84,
+      "command": [
+        "python3",
+        "-m",
+        "SCons",
+        "target=template_release",
+        "debug_symbols=yes",
+        "lto=none",
+        "production=yes",
+        "optimize=speed",
+        "module_mono_enabled=no",
+        "module_openxr_enabled=no",
+        "module_jolt_physics_enabled=no",
+        "module_fbx_enabled=no",
+        "module_gltf_enabled=no",
+        "module_lightmapper_rd_enabled=no",
+        "module_csg_enabled=no",
+        "module_theora_enabled=no",
+        "module_webrtc_enabled=no",
+        "module_webxr_enabled=no",
+        "-j8",
+        "platform=android",
+        "arch=arm64",
+        "swappy=yes"
+      ],
+      "game_pack": "builds/round3-final/validation.apk",
+      "baseline_engine_sha256": "d22765f22a6f011f65414fae7897a8367da1e4a9b140821198e9eeb7277c7e6e"
+    },
+    "build_metadata_note": "The build record baseline_engine_sha256 identifies the original engine-source-baseline.so snapshot, not the timing baseline. The measured baseline engine is builds.baseline.libraries[lib/arm64-v8a/libgodot_android.so].",
+    "build_record_sha256": "1e9d05be538b6b7177c46d4962639fc053ebc1b0033e0a8dfdac236704de1d04",
+    "inherited_mobile_patch_files_checked": 17,
+    "inherited_manifest_sha256": "35e026fe3c43ca0b85bbdcb0c371bd3f0c6961bc7511ddf13cf853b4b071e530"
+  },
+  "native_image_comparison": {
+    "mobile-screen-mips-culled.png": {
+      "peak": 0,
+      "changed_pixels": 0
+    },
+    "mobile-screen-mips-hidden.png": {
+      "peak": 0,
+      "changed_pixels": 0
+    },
+    "mobile-screen-mips-mixed.png": {
+      "peak": 0,
+      "changed_pixels": 0
+    },
+    "mobile-screen-mips-multi-empty-again.png": {
+      "peak": 0,
+      "changed_pixels": 0
+    },
+    "mobile-screen-mips-multi-empty.png": {
+      "peak": 0,
+      "changed_pixels": 0
+    },
+    "mobile-screen-mips-multi-visible.png": {
+      "peak": 0,
+      "changed_pixels": 0
+    },
+    "mobile-screen-mips-next-pass.png": {
+      "peak": 0,
+      "changed_pixels": 0
+    },
+    "mobile-screen-mips-reappear.png": {
+      "peak": 0,
+      "changed_pixels": 0
+    },
+    "mobile-screen-mips-shader-mip.png": {
+      "peak": 0,
+      "changed_pixels": 0
+    },
+    "mobile-screen-mips-shader-zero.png": {
+      "peak": 0,
+      "changed_pixels": 0
+    },
+    "mobile-screen-mips-unculled.png": {
+      "peak": 0,
+      "changed_pixels": 0
+    },
+    "mobile-screen-mips-zero-only.png": {
+      "peak": 0,
+      "changed_pixels": 0
+    }
+  },
+  "rgba_capture_audit": [
+    {
+      "reference": "tests/round3-final-water-off/mobile-water-render-0-reference.png",
+      "candidate": "tests/round3-final-water-off/mobile-water-render-0-candidate.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-off/mobile-water-render-0-reference.png",
+      "candidate": "tests/round3-final-water-off/mobile-water-render-0-reference-repeat.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-off/mobile-water-render-160-reference.png",
+      "candidate": "tests/round3-final-water-off/mobile-water-render-160-candidate.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-off/mobile-water-render-160-reference.png",
+      "candidate": "tests/round3-final-water-off/mobile-water-render-160-reference-repeat.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-off/mobile-water-render-80-reference.png",
+      "candidate": "tests/round3-final-water-off/mobile-water-render-80-candidate.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-off/mobile-water-render-80-reference.png",
+      "candidate": "tests/round3-final-water-off/mobile-water-render-80-reference-repeat.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-on/mobile-water-render-0-reference.png",
+      "candidate": "tests/round3-final-water-on/mobile-water-render-0-candidate.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-on/mobile-water-render-0-reference.png",
+      "candidate": "tests/round3-final-water-on/mobile-water-render-0-reference-repeat.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-on/mobile-water-render-160-reference.png",
+      "candidate": "tests/round3-final-water-on/mobile-water-render-160-candidate.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-on/mobile-water-render-160-reference.png",
+      "candidate": "tests/round3-final-water-on/mobile-water-render-160-reference-repeat.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-on/mobile-water-render-80-reference.png",
+      "candidate": "tests/round3-final-water-on/mobile-water-render-80-candidate.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-on/mobile-water-render-80-reference.png",
+      "candidate": "tests/round3-final-water-on/mobile-water-render-80-reference-repeat.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-weather/mobile-water-render-0-reference.png",
+      "candidate": "tests/round3-final-water-weather/mobile-water-render-0-candidate.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-weather/mobile-water-render-0-reference.png",
+      "candidate": "tests/round3-final-water-weather/mobile-water-render-0-reference-repeat.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-weather/mobile-water-render-160-reference.png",
+      "candidate": "tests/round3-final-water-weather/mobile-water-render-160-candidate.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-weather/mobile-water-render-160-reference.png",
+      "candidate": "tests/round3-final-water-weather/mobile-water-render-160-reference-repeat.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-weather/mobile-water-render-80-reference.png",
+      "candidate": "tests/round3-final-water-weather/mobile-water-render-80-candidate.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-final-water-weather/mobile-water-render-80-reference.png",
+      "candidate": "tests/round3-final-water-weather/mobile-water-render-80-reference-repeat.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-native-water-on/mobile-water-render-0-reference.png",
+      "candidate": "tests/round3-native-water-on/mobile-water-render-0-candidate.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-native-water-on/mobile-water-render-0-reference.png",
+      "candidate": "tests/round3-native-water-on/mobile-water-render-0-reference-repeat.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-native-water-on/mobile-water-render-160-reference.png",
+      "candidate": "tests/round3-native-water-on/mobile-water-render-160-candidate.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-native-water-on/mobile-water-render-160-reference.png",
+      "candidate": "tests/round3-native-water-on/mobile-water-render-160-reference-repeat.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-native-water-on/mobile-water-render-80-reference.png",
+      "candidate": "tests/round3-native-water-on/mobile-water-render-80-candidate.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-native-water-on/mobile-water-render-80-reference.png",
+      "candidate": "tests/round3-native-water-on/mobile-water-render-80-reference-repeat.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-screen-mips-baseline/mobile-screen-mips-culled.png",
+      "candidate": "tests/round3-screen-mips-candidate/mobile-screen-mips-culled.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-screen-mips-baseline/mobile-screen-mips-hidden.png",
+      "candidate": "tests/round3-screen-mips-candidate/mobile-screen-mips-hidden.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-screen-mips-baseline/mobile-screen-mips-mixed.png",
+      "candidate": "tests/round3-screen-mips-candidate/mobile-screen-mips-mixed.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-screen-mips-baseline/mobile-screen-mips-multi-empty-again.png",
+      "candidate": "tests/round3-screen-mips-candidate/mobile-screen-mips-multi-empty-again.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-screen-mips-baseline/mobile-screen-mips-multi-empty.png",
+      "candidate": "tests/round3-screen-mips-candidate/mobile-screen-mips-multi-empty.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-screen-mips-baseline/mobile-screen-mips-multi-visible.png",
+      "candidate": "tests/round3-screen-mips-candidate/mobile-screen-mips-multi-visible.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-screen-mips-baseline/mobile-screen-mips-next-pass.png",
+      "candidate": "tests/round3-screen-mips-candidate/mobile-screen-mips-next-pass.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-screen-mips-baseline/mobile-screen-mips-reappear.png",
+      "candidate": "tests/round3-screen-mips-candidate/mobile-screen-mips-reappear.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-screen-mips-baseline/mobile-screen-mips-shader-mip.png",
+      "candidate": "tests/round3-screen-mips-candidate/mobile-screen-mips-shader-mip.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-screen-mips-baseline/mobile-screen-mips-shader-zero.png",
+      "candidate": "tests/round3-screen-mips-candidate/mobile-screen-mips-shader-zero.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-screen-mips-baseline/mobile-screen-mips-unculled.png",
+      "candidate": "tests/round3-screen-mips-candidate/mobile-screen-mips-unculled.png",
+      "peak_rgba_difference": 0
+    },
+    {
+      "reference": "tests/round3-screen-mips-baseline/mobile-screen-mips-zero-only.png",
+      "candidate": "tests/round3-screen-mips-candidate/mobile-screen-mips-zero-only.png",
+      "peak_rgba_difference": 0
+    }
+  ],
+  "staged_build_comparison": {
+    "tracked_game_files_checked": 796,
+    "differing_files": [
+      "game/src/ei/terrain.gd",
+      "game/src/game/gfx.gd"
+    ],
+    "identical_qa_overrides": [
+      {
+        "path": "game/export_presets.cfg",
+        "source_sha256": "a7a2d744163eae4b116ac9662e89e42fc6d98792ba39a6894cc79d5687e476c7",
+        "stage_sha256": "e0836cf52ae131451eceacbb5f5290dcf647713ff960c8bf67284bfcaa612f82"
+      },
+      {
+        "path": "game/src/main.gd",
+        "source_sha256": "3fc8d56f11db90fc867b5b75a8ef2ac371c85eeb9787143d5786bfa5549449e8",
+        "stage_sha256": "182dc4727767341f19602d1df3a2617adb62e4da52c27ddce14c6b893d476559"
+      }
+    ],
+    "qa_override_note": "Both builds use the same isolated Android export preset and validation.json autorun entry point. Neither is a production source change."
+  },
+  "production_source_sha256": {
+    "game/src/ei/terrain.gd": "9a18f8798736f22f182d96cb1ec7ead68bd22fc70edfc7673d80421aa6f12793",
+    "game/src/game/gfx.gd": "d7ac68059a6555b3884b832199a8aea84933d6eb9c938be5957b6200c82b7334"
+  },
+  "fixture_sha256": {
+    "engine_patches/godot-4.7/tests/mobile_screen_mips.gd": "488fdb31308d32699c8af2b644ad992f99d9eeaf9d07e06eccd6272e14a47b83",
+    "tools/tests/mobile_water_options.gd": "210f25f6e9d9892d853f515b09971030aa5f15cc6c84c072ab74d22514a4687b",
+    "tools/tests/mobile_water_render.gd": "4d50a41c4c97297b657e1b9555a168d495c480e0d8a4455dc1c6cc0a446eb2af",
+    "tools/tests/material_shader_options.gd": "875b78540a24a78a48a12cb9c50ff57418588640be725e7a3373f543f7615313",
+    "tools/benchmarks/map_pan.gd": "d995d06993ab45f447519de9db2047101ae66b7b73a32b78f4cd325ff208859b",
+    "tools/benchmarks/map_pan_live.gd": "4e55cfb965cab5067dd3c0b2fb71cf6f61930471837c6fbac5544e94f1f91a4c"
+  },
+  "qualification_configuration": {
+    "full_map_base": {
+      "zone": "gz1g",
+      "preset": 3,
+      "views_along": [
+        0,
+        80,
+        160
+      ],
+      "viewport": [
+        1920,
+        1080
+      ]
+    },
+    "water-off": {
+      "extra_options": {},
+      "wet_weather": false
+    },
+    "water-on": {
+      "extra_options": {
+        "gfx_water_reflections": 1
+      },
+      "wet_weather": false
+    },
+    "water-weather": {
+      "extra_options": {
+        "gfx_clouds": 1,
+        "gfx_cloud_reflections": 1,
+        "gfx_water_interaction": 1,
+        "gfx_water_current": 1,
+        "gfx_water_waves": 1
+      },
+      "wet_weather": true,
+      "wetness": 0.8,
+      "rain": 0.9
+    },
+    "native-water-on": "same configuration as water-on",
+    "material-options": {
+      "supported_renderer_only": true
+    }
+  },
+  "local_harness_sha256": {
+    "build.py": "76144acd4461ebae69462770bab8c397b3199d5a3f04f2694a19f08da76edf6d",
+    "build_native.py": "0db0bb83215d75a5099b8a3e785f5e9251a5d91760b39a00a1facb42a53c4bb9",
+    "round3/qualify.py": "5fe8836e8113e7723a4c9a23d8d73b8eb324e4dbc7048022754c037190469849",
+    "round3/native_qualify.py": "9a20611a8a736bc9830373a856834970a7f39993f708099a20b6cbfbc4e83b4a",
+    "round3/benchmark.py": "3c8e99e459d866ad9d88e3428dd0d0501d29b9bf7eb607583fd5c9afe89c9eaf",
+    "round3/live_repeat.py": "38f46d632f5cdbce9ed27e4c4cd8014a12a52d56b1ee39a353a45e330ed8b2f6",
+    "round3/restore.py": "53b303bc360cadae288dd3a39d4ed317aae25c787b16176e3ea32a0a60726b1b",
+    "round2/test.py": "82446121265c80e4d2130f2f164e4398f0e66134f7184ef66a65595a89e4ffda"
+  },
+  "fixture_correction": {
+    "initial_run": "round3-water-options-metadata-probe",
+    "log_sha256": "0b14b12d25e809b890a3845236bc958dc6bb3359545f62bd591315521835058a",
+    "reason": "Godot ShaderCompiler excludes renderer-owned screen/depth samplers from editable uniform metadata. An inspection-only copy uses ordinary samplers to inspect preprocessed declarations; GPU draws and pixel comparisons always use the actual production shader. No image tolerances changed.",
+    "initial_result": {
+      "checks": 663,
+      "failures": 204
+    }
+  },
+  "device_observations": {
+    "snapshots": 28,
+    "battery_temperature_c": [
+      34.5,
+      34.7,
+      35.0
+    ],
+    "thermal_status": [
+      0
+    ],
+    "gpu_clocks_hz": [
+      587000000
+    ]
+  },
+  "restoration": {
+    "package": "org.cursedlands.vulkanbench",
+    "settings": {
+      "settings.cfg": {
+        "restored": true,
+        "sha256": "97fc48c912d22f5c4d5bd08bf01643318a0566a01c40f30a6926136d62b367a4"
+      },
+      "renderer.cfg": {
+        "restored": true,
+        "sha256": "190d097fa4195691e9df54d116bba98724edad2c3cf4969010e27306c9ec7590"
+      }
+    },
+    "autorun_removed": true,
+    "stopped": true,
+    "installed_apk_sha256": "d390610c39ba9cdf6b425dc383be8fc4410ba4bffc5aff78f393e9e2ccf8192e",
+    "normal_game_modified": false
+  }
+}
