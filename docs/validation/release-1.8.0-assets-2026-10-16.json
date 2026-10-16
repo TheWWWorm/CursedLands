@@ -1,0 +1,67 @@
+{
+  "version": "1.8.0",
+  "assets": [
+    {
+      "name": "CursedLands-1.8.0-android.apk",
+      "bytes": 32431243,
+      "sha256": "ac696755d5e2bf4f2e1e8234da851b307173940dc6432c2da712ad5f2c17999b"
+    },
+    {
+      "name": "CursedLands-1.8.0-linux-x86_64.tar.gz",
+      "bytes": 38384489,
+      "sha256": "774b4d71f4ee12d4be058590fb409dad9f990d12b9f3ad01116f9c1d3b636524"
+    },
+    {
+      "name": "CursedLands-1.8.0-macos-universal.zip",
+      "bytes": 65630118,
+      "sha256": "3acbc7b1343d43581f6bcc1bc8989be8d747b6c4e227f6f615334179ed9babad"
+    },
+    {
+      "name": "CursedLands-1.8.0-tools.zip",
+      "bytes": 59954,
+      "sha256": "1dc4a3eb87bed6554b09b5a47318d4192138e76e90095eafa24650c121dae735"
+    },
+    {
+      "name": "CursedLands-1.8.0-web.zip",
+      "bytes": 138278630,
+      "sha256": "1196ee775c56272db6e3e3e2a94210624ebc6d0fc5bcf27b4abe027313fc07bf"
+    },
+    {
+      "name": "CursedLands-1.8.0-windows-x86_64.zip",
+      "bytes": 39550543,
+      "sha256": "ca44f1e02e4f63029e8577e41b39ac87e0c005705720cabfd1ceffb466e279d4"
+    },
+    {
+      "name": "Quick-recovery-1.0.0.eimod",
+      "bytes": 546,
+      "sha256": "f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b"
+    }
+  ],
+  "tools_bundle": {
+    "files": [
+      "tools/convert_legacy_mod.py",
+      "tools/package_mod.py",
+      "tools/tests/test_legacy_mod_converter.py",
+      "game/src/ei/database.gd",
+      "game/src/game/mod_schema.gd",
+      "docs/mods.md",
+      "docs/versioning.md",
+      "docs/validation/hd-lands-1.5.0-2026-10-13.json",
+      "docs/validation/release-1.8.0-2026-10-16.json",
+      "docs/legacy-mod-converter.md",
+      "docs/legacy-mod-compatibility.md",
+      "docs/validation/legacy-mod-converter-2026-10-11.json",
+      "docs/validation/legacy-mod-real-mods-2026-10-11.json",
+      "LICENSE.md",
+      "examples/mods/quick-recovery/mod.json"
+    ],
+    "exact_source_readback": true,
+    "standalone_tests": 19,
+    "example_byte_identical": true,
+    "artifact": {
+      "name": "CursedLands-1.8.0-tools.zip",
+      "bytes": 59954,
+      "sha256": "1dc4a3eb87bed6554b09b5a47318d4192138e76e90095eafa24650c121dae735"
+    }
+  }
+}
