@@ -3,7 +3,8 @@ extends RefCounted
 ## Content shared by the playable expedition and its balance simulations.
 ## Every fighter resolves to an unmodified original-game prototype.
 
-const VERSION := 6
+const VERSION := 7
+const PREPARATION_SECONDS := 45.0
 const WAVE_COUNT := 30
 const OPENING_GOLD := 16
 const MIN_RECRUIT_COST := 3

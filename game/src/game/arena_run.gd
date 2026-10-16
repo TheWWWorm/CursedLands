@@ -15,6 +15,7 @@ var wave_limit := ArenaRules.WAVE_COUNT
 var gold := ArenaRules.OPENING_GOLD
 var lives := 3
 var stage := "prepare"
+var preparation_left := ArenaRules.PREPARATION_SECONDS
 var army: Array[Dictionary] = []
 var shop: Array[Dictionary] = []
 var boons: Array[String] = []
@@ -43,6 +44,7 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 	last_result = {}
 	pact = ""; pact_rank = 0; shop_level = 0
 	training = 0; battle_savings = 0
+	preparation_left = ArenaRules.PREPARATION_SECONDS
 	last_evolutions.clear()
 	rng.seed = run_seed
 	# Every opening role is available to buy. Later shops use seeded random offers.
@@ -119,10 +121,11 @@ func spending_error(cost: int) -> String:
 	return ""
 
 
-func pact_families() -> Array[int]:
+func pact_families(candidate := "") -> Array[int]:
 	var found: Array[int] = []
-	if not ArenaRules.PACTS.has(pact): return found
-	var rule: Dictionary = ArenaRules.PACTS[pact]
+	var key := pact if candidate.is_empty() else candidate
+	if not ArenaRules.PACTS.has(key): return found
+	var rule: Dictionary = ArenaRules.PACTS[key]
 	for entry: Dictionary in army:
 		var family := int(entry.family)
 		if entry.deployed and family in rule.families and int(entry.rank) >= int(rule.min_rank) and family not in found:
@@ -397,9 +400,16 @@ func _merge(entry: Dictionary) -> void:
 	entry.prototype = ArenaRules.prototype(entry.family, entry.rank)
 
 
-func start_battle() -> String:
+## The presentation clock is independent of combat speed and undo history.
+func elapse_preparation(seconds: float) -> bool:
+	if stage != "prepare": return false
+	preparation_left = maxf(0.0, preparation_left - maxf(0.0, seconds))
+	return preparation_left <= 0.0
+
+
+func start_battle(timed_out := false) -> String:
 	if stage != "prepare": return RemakeText.t("Finish the current encounter first.")
-	if deployed_count() == 0: return RemakeText.t("Deploy at least one creature before starting.")
+	if deployed_count() == 0 and not (timed_out and preparation_left <= 0): return RemakeText.t("Deploy at least one creature before starting.")
 	battle_savings = gold
 	stage = "fight"
 	_undo.clear()
@@ -453,6 +463,7 @@ func battle_seed() -> int:
 func resolve(winner: int, seconds: float, damage: Array) -> void:
 	if stage != "fight": return
 	last_result = {"wave": wave, "winner": winner, "seconds": seconds, "damage": damage.duplicate(), "gold": 0}
+	if deployed_count() == 0: last_result["empty_army"] = true
 	if winner == 0:
 		if wave < wave_limit:
 			var income := income_preview(battle_savings)
@@ -471,6 +482,7 @@ func advance() -> void:
 	if stage != "result": return
 	if int(last_result.winner) != 0:
 		stage = "prepare"
+		preparation_left = ArenaRules.PREPARATION_SECONDS
 	elif wave % 3 == 0:
 		stage = "reward"
 		_make_rewards()
@@ -482,6 +494,7 @@ func advance() -> void:
 func _next_wave() -> void:
 	wave += 1
 	stage = "prepare"
+	preparation_left = ArenaRules.PREPARATION_SECONDS
 	_undo.clear()
 	_roll_shop(true)
 	# Put each newly unlocked family in its first shop. A saved lock survives.
@@ -557,7 +570,7 @@ func can_undo() -> bool:
 func snapshot() -> Dictionary:
 	return {"version": ArenaRules.VERSION, "seed": str(run_seed), "rng": str(rng.state),
 		"challenge": challenge, "starter": starter, "wave": wave, "wave_limit": wave_limit, "gold": gold, "lives": lives,
-		"stage": stage, "army": army.duplicate(true), "shop": shop.duplicate(true),
+		"stage": stage, "preparation_left": preparation_left, "army": army.duplicate(true), "shop": shop.duplicate(true),
 		"boons": boons.duplicate(), "rewards": rewards.duplicate(true), "history": history.duplicate(true),
 		"pact": pact, "pact_rank": pact_rank, "shop_level": shop_level,
 		"training": training, "battle_savings": battle_savings,
@@ -580,6 +593,7 @@ func restore(data: Dictionary) -> bool:
 	if int(data.version) > 1 and (not data.has("pact") or not data.has("pact_rank")): return false
 	var saved_pact = data.get("pact", "") if int(data.version) > 1 else ""
 	var saved_rank = data.get("pact_rank", 0) if int(data.version) > 1 else 0
+	if not _number(data.get("preparation_left", ArenaRules.PREPARATION_SECONDS), 0, ArenaRules.PREPARATION_SECONDS): return false
 	if not _integer(data.get("shop_level", 0), 0, 2): return false
 	if not _integer(data.get("training", 0), 0, ArenaRules.MAX_TRAINING): return false
 	if not _integer(data.get("battle_savings", 0), 0, 100000): return false
@@ -663,6 +677,7 @@ func restore(data: Dictionary) -> bool:
 	challenge = int(data.challenge); starter = int(data.starter)
 	wave = int(data.wave); wave_limit = int(saved_limit); gold = int(data.gold); lives = int(data.lives)
 	stage = "prepare" if data.stage == "fight" else String(data.stage)
+	preparation_left = ArenaRules.PREPARATION_SECONDS if data.stage == "fight" else float(data.get("preparation_left", ArenaRules.PREPARATION_SECONDS))
 	army.assign(data.army.duplicate(true)); shop.assign(data.shop.duplicate(true)); boons.assign(data.boons)
 	pact = saved_pact; pact_rank = int(saved_rank); shop_level = int(data.get("shop_level", 0))
 	training = int(data.get("training", 0)); battle_savings = int(data.get("battle_savings", 0))

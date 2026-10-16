@@ -1,18 +1,13 @@
 class_name ArenaWinterTerrain
 extends EITerrain
-## The courtyard artwork lives in the native land material. Footprints, snow
-## deformation, blood decals and contact shadows all reach the same surface.
+## Unbroken snow on the native land receiver: tracks deform this exact surface,
+## and combat blood remains above it. No courtyard image or extra floor mesh.
 
-const WINTER_UNIFORMS := "uniform sampler2D arena_paving : source_color, filter_linear_mipmap_anisotropic, repeat_disable;\n"
 const WINTER_COLOR := """
-	vec2 court_uv = vec2(wpos.x - 16.0, wpos.z + 48.0) / 32.0;
-	vec2 court_edge = abs(court_uv - vec2(0.5));
-	float court_rim = max(court_edge.x, court_edge.y);
-	float court_drift = sin(court_uv.x * 42.0 + sin(court_uv.y * 23.0)) * 0.017
-		+ sin(court_uv.y * 51.0 - court_uv.x * 19.0) * 0.012;
-	float court_snow = 0.48 + 0.52 * smoothstep(0.20, 0.46, court_rim + court_drift);
-	vec3 court_stone = texture(arena_paving, court_uv).rgb * vec3(0.70, 0.78, 0.86);
-	c = mix(court_stone, c * vec3(0.86, 0.93, 1.0), court_snow);
+	// Powder has soft tonal variation, without paving or a coarse tile pattern.
+	float arena_snow = texture(macro_tex, wpos.xz * 0.035).r;
+	c = mix(vec3(0.83, 0.89, 0.95), c * vec3(0.88, 0.94, 1.0), 0.20);
+	c *= 0.97 + 0.04 * arena_snow;
 """
 static var _winter_shaders := {}
 static var _variants := {}
@@ -31,7 +26,7 @@ static func _treat(material: ShaderMaterial) -> void:
 	var source := material.shader
 	if not _winter_shaders.has(source):
 		var variant := source.duplicate() as Shader
-		variant.code = source.code.replace("varying vec3 wpos;", WINTER_UNIFORMS + "varying vec3 wpos;").replace(
+		variant.code = source.code.replace(
 			"// Rain affects exposed ground", WINTER_COLOR + "\n\t// Rain affects exposed ground")
 		# At the spectator distance, a slightly stronger compacted-snow tint
 		# supplements the native geometric trough and planted-foot normals.
@@ -39,4 +34,3 @@ static func _treat(material: ShaderMaterial) -> void:
 		_winter_shaders[source] = variant
 		_variants[variant] = true
 	material.shader = _winter_shaders[source]
-	material.set_shader_parameter("arena_paving", preload("res://assets/arena/courtyard-v2.png"))

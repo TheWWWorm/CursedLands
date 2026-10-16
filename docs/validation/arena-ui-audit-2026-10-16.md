@@ -24,9 +24,9 @@ small-window usability review. Ratings of a concept are not runtime acceptance.
 | Offer quality | Add restrained feedback | One to three stars identify evolution rank on offers, reserves and field units. Original forms and native stats are used. |
 | Refresh / offer lock | Keep | Refresh price and blocked reason are readable; one lock survives refresh and shop improvement. Equal state padding keeps icons still. |
 | Shop improvement | Add | One small shelf action opens costs, quality odds and a purchase button. Insufficient gold and maximum level are explicit. An improvement includes an immediate refresh of unlocked offers. |
-| Wave / phase / clock | Keep, scale | Compact corner badge; encounter and seed move to help. Clock appears only in combat. |
+| Wave / phase / clock | Keep, scale | Compact corner badge; encounter and seed move to help. Preparation shows 45 seconds; combat shows elapsed time. Menus pause the countdown. |
 | Menu button and contents | Rework | Labelled button and themed modal replace the tiny icon/native popup. State-aware Continue, training, Arrange, Undo, Guide and navigation. Combat pause state survives opening/closing. Keyboard focus stays in the modal. |
-| Guide | Rework | Six short topics in a bounded scroll area; fixed Close action. Minimum-size changes recenter/reflow the panel after localized text wraps. |
+| Guide | Rework | Seven short topics in a bounded scroll area; fixed Close action. Minimum-size changes recenter/reflow the panel after localized text wraps. |
 | Battlefield picking | Rework | Current posed mesh/part bounds and a small screen-space tolerance replace ground-origin proximity. A bat is selected on its visible body. HP/star markers are also targets when bodies overlap. |
 | Team circles | Remove in expedition | Team identity uses health bars. Small corners appear only on hover or selection. A placement preview still shows where a creature will land. |
 | Health feedback | Rework | Current / maximum HP above the line; bars anchor to the actual model head, including flight height. Scale follows the HUD. |
@@ -34,18 +34,29 @@ small-window usability review. Ratings of a concept are not runtime acceptance.
 | World hover information | Add | Hover opens native live HP, attack, defense, armor weaknesses/resistances, damage type, spells and recipe progress in the side panel. |
 | Inspector | Refine | Delayed hover rail with scrolling details and a leave grace period. It remains open while hovered; selection does not pin it. |
 | Company / synergy details | Keep | Hovering the army counter opens the rail with experience, pact conditions, native guest and acquired upgrades. Clicking opens training. No permanent extra sidebar. |
-| Army and reserve counters | Refine | Both capacities are labelled. An active pact is explained through the company rail; color is not the only cue. |
-| Reserve shelf and return flow | Rework interaction | Selecting a deployed ally enables empty reserve slots as return targets. The first empty slot is labelled Return. Successful placement/withdrawal releases the creature. Direct reserve-to-ally swaps and Undo remain available. |
+| Army and reserve counters | Refine | Both capacities are labelled. Pact N/N shows distinct-family progress, with a hover checklist; color is not the only cue. |
+| Reserve shelf and return flow | Rework interaction | Selecting a deployed ally enables empty reserve slots as return targets. The first empty slot is labelled Return, or uses a return icon at narrow widths. Selection keeps all slot widths stable. Successful placement/withdrawal releases the creature. Direct reserve-to-ally swaps and Undo remain available. |
 | Gold / lives | Keep, scale | Compact resource cluster next to the main action; victory-income forecast with interest and streak breakdown in bounded help. |
 | Start battle | Keep, refine | One primary action. No redundant tooltip. |
 | Pause / speed | Keep | Replace recruitment actions during combat. Space pauses, speed stays explicit, opening the menu preserves prior pause state. |
-| Victory / defeat / final outcome | Rework | Centered, content-sized panel after a 1.6-second animation interval, with result, wave, income breakdown/lives and one next action. |
+| Victory / defeat / final outcome | Rework | Compact side notification after a 1.6-second animation interval, with result, wave, reward/lives and one next action. No full-screen shade; detailed totals are on hover. |
 | Camp choices | Keep, reflow | Intermittent two/three-choice panels; localized text, native models and actions fit. Bench and field inspection are inactive during the decision. |
 | Error / action feedback | Keep, contextualize | One restrained line for actionable errors. No repeated placement or merge announcements; hidden during results. |
 | Tooltip infrastructure | Replace | One scaled, wrapped, viewport-clamped control handles button help. Creature details use the hover rail. A 350 ms delay prevents immediate obstruction. |
-| Courtyard, ruins and shadows | Rework for winter | Native Ingos snow and winter scenery; courtyard art shares the native terrain surface so trails, footprints and blood remain visible. Orthographic shadows remain. |
-| Evolution result | Add | Brief queued before/after models, stars, HP/attack changes, sound and creature highlight; click-through and cleared on undo/sale/battle. |
+| Courtyard, ruins and shadows | Rework for winter | Continuous native Ingos snow without the courtyard pattern; varied conifers, rocks, snowbanks and snow-capped ruins. Trails, footprints and blood share the native receiver. Orthographic shadows remain. |
+| Evolution result | Add | Brief queued side notification with before/after models, stars, HP/attack changes, sound and creature highlight; click-through and cleared on undo/sale/battle. |
 | Regional recruitment | Add to existing surfaces | Arrival families in the result and recruitment dialog; no permanent extra HUD strip. |
+
+## Continuity and flow review
+
+The [flow validation](arena-flow-2026-10-16.json) supersedes earlier captures for
+preparation, snow, evolution, results and pact choices. Shop/reserve previews
+retain their render targets through selection, copy-count, affordability and lock
+changes. Native battlefield actors move in place without resetting other clips.
+Portrait render targets match physical display pixels at 4K. Preparation runs
+for 45 seconds, pauses in menus, and starts combat at expiry. Evolution/results
+sit at the right edge; camps retain the focused choice panel. Pact cards show
+eligible-family checklists and current progress before committing.
 
 ## Verification and findings
 
@@ -54,7 +65,14 @@ opening and battlefield evidence: empty start, stronger regional recruits,
 readable evolution feedback and actual snow/blood rendering. Earlier captures
 below remain historical references.
 
-Current captures: [snow tracks and blood](../screenshots/arena-winter-en-trails-blood.png),
+Current captures: [4K preparation](../screenshots/arena-flow-en-4k.png),
+[side evolution](../screenshots/arena-flow-en-evolution.png),
+[side victory](../screenshots/arena-flow-en-victory.png),
+[snow tracks and blood](../screenshots/arena-flow-en-trails-blood.png),
+[Russian pact choices](../screenshots/arena-flow-ru-pacts.png) and
+[German pact details](../screenshots/arena-flow-de-pact.png).
+
+Earlier winter captures: [snow tracks and blood](../screenshots/arena-winter-en-trails-blood.png),
 [evolution](../screenshots/arena-winter-en-evolution.png),
 [later recruits](../screenshots/arena-winter-en-late-roster.png),
 [4K HUD](../screenshots/arena-winter-en-4k-empty.png),

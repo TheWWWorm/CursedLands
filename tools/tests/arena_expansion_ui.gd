@@ -7,6 +7,13 @@ const Fixture = preload("arena_fixture.gd")
 var checks := 0
 var failures: Array[String] = []
 var screen: ArenaPveScreen
+var hold_preparation := true
+
+func _process(_dt: float) -> void:
+	# Long visual inspection fixtures own their clock; the flow fixture releases it.
+	if hold_preparation and is_instance_valid(screen) and screen.run.stage == "prepare":
+		screen.run.preparation_left = ArenaRules.PREPARATION_SECONDS
+
 class Errors extends Logger:
 	var messages: Array[String] = []
 	func _log_error(fn: String, file: String, line: int, code: String, why: String, _notify: bool, kind: int, _trace: Array[ScriptBacktrace]) -> void:

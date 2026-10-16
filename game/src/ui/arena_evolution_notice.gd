@@ -7,6 +7,7 @@ const DURATION := 3.4
 var current := {}
 var pending: Array[Dictionary] = []
 var age := 0.0
+var covered := false
 var _content: VBoxContainer
 
 
@@ -14,7 +15,7 @@ func _ready() -> void:
 	super._ready()
 	surface.a = 1.0
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	custom_minimum_size.x = 440
+	custom_minimum_size.x = 292
 	minimum_size_changed.connect(_layout.call_deferred)
 	get_parent().resized.connect(_layout)
 	hide()
@@ -65,7 +66,8 @@ func _next() -> void:
 	_figure(row, current.to, int(current.rank), true)
 	var before := ArenaUnitInfo.values(current.from)
 	var after := ArenaUnitInfo.values(current.to)
-	_label(_content, RemakeText.t("Health %d → %d · Attack %d → %d") % [before.max_hp, after.max_hp, before.attack, after.attack], 14, ArenaCreatureCard.PAPER)
+	var stats := _label(_content, RemakeText.t("Health %d → %d · Attack %d → %d") % [before.max_hp, after.max_hp, before.attack, after.attack], 14, ArenaCreatureCard.PAPER)
+	stats.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for control: Control in find_children("*", "Control", true, false): control.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	modulate.a = 0
 	show()
@@ -83,7 +85,7 @@ func _figure(parent: Control, id: String, rank: int, upgraded := false) -> void:
 	ArenaStars.add_to(center, rank + 1, Vector2.ZERO)
 	var preview := WikiPreview.new()
 	preview.fit_slot = true
-	preview.custom_minimum_size = Vector2(160, 74)
+	preview.custom_minimum_size = Vector2(100, 66)
 	box.add_child(preview)
 	preview.show_model({"kind": "creature", "value": id})
 	preview.turn_by(-0.35)
@@ -103,12 +105,15 @@ func _label(parent: Node, value: String, pixels: int, color: Color) -> Label:
 
 
 func _layout() -> void:
-	size = Vector2(440, 0)
-	position = Vector2((get_parent().size.x - size.x) / 2, 154)
+	size = Vector2(292, 0)
+	position = Vector2(get_parent().size.x - size.x - 16, 158)
 
 
 func _process(dt: float) -> void:
 	if not visible: return
+	if covered:
+		modulate.a = 0
+		return
 	age += dt
 	modulate.a = minf(clampf(age / 0.16, 0, 1), clampf((DURATION - age) / 0.4, 0, 1))
 	if age >= DURATION: _next()

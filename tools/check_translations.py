@@ -75,7 +75,8 @@ arena_keys.update(['Standard expedition', 'Veteran expedition', 'Champion expedi
     'On bench', 'Deployed', 'Bench', 'Expedition complete', 'The expedition ends',
     'Victory', 'Regroup and try again', 'Choose reward', 'Next wave', 'Prepare again',
     'Visit camp', 'Choose your pact', 'A moment at camp', 'Choose pact', 'Ready', 'Not contributing',
-    'Your pact needs a two-star recruit from this family.', 'This family belongs to your pact.'])
+    'Your pact needs a two-star recruit from this family.', 'This family belongs to your pact.',
+    'On field', 'In reserves', 'Needs 2 stars', 'Not recruited'])
 arena_ui = (ROOT / 'ui/arena_pve_screen.gd').read_text()
 for block_name in ('topics',):
     block = arena_ui.split('var ' + block_name + ' := [', 1)[1].split(']\n', 1)[0]

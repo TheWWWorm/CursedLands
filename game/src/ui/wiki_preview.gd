@@ -36,7 +36,8 @@ func show_model(descriptor: Dictionary) -> bool:
 		creature.view_size = Vector2i(180, 220)
 		creature.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(creature)
-		creature.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		creature.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT if fit_slot else Control.PRESET_FULL_RECT)
+		_sync_resolution()
 		creature.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		creature.custom_minimum_size = Vector2.ZERO
 		creature.show_info({"prototype": descriptor.value})
@@ -95,7 +96,20 @@ func _resize_preview() -> void:
 
 
 func _process(_dt: float) -> void:
+	if fit_slot: _sync_resolution()
 	if fit_slot or not _creature_fitted: _fit_creature()
+
+
+## SubViewportContainer normally allocates logical pixels, even under a scaled
+## HUD. Render at the displayed pixel density, then scale the container back.
+func _sync_resolution() -> void:
+	if not fit_slot or not is_instance_valid(creature): return
+	var canvas_scale := get_global_transform_with_canvas().get_scale().abs()
+	var density := clampf(maxf(canvas_scale.x, canvas_scale.y), 1.0, 4.0)
+	var pixels := Vector2i((size * density).ceil()).max(Vector2i(1, 1))
+	var inverse := Vector2.ONE / density
+	if creature.scale != inverse: creature.scale = inverse
+	if Vector2i(creature.size) != pixels: creature.size = Vector2(pixels)
 
 
 func _fit_creature() -> void:

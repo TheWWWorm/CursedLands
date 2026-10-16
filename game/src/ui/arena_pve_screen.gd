@@ -37,6 +37,7 @@ var _modal_focus: Array[Dictionary] = []
 var _guide_scroll: ScrollContainer
 var _quality: Button
 var _reserve_count: Label
+var _pact_hint: Label
 var _live_health: Label
 var _inspected_unit: GameUnit
 var _outcome_shade: ColorRect
@@ -78,6 +79,7 @@ var _income: Label
 var _hover_key := ""
 var _hover_wait := 0.0
 var _hover_missing := 0.0
+var _timer_save_wait := 0.0
 var _challenge: OptionButton
 
 
@@ -224,6 +226,10 @@ func _ready() -> void:
 	_army_title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_reserve_count = _label(company_status, "", 13, MUTED)
 	_reserve_count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_pact_hint = _label(company_status, "", 13, GOLD)
+	_pact_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_pact_hint.set_meta("arena_company", true)
+	_pact_hint.mouse_filter = Control.MOUSE_FILTER_STOP
 	_bench_scroll = ScrollContainer.new()
 	_bench_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_bench_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -351,6 +357,7 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	if not landing and run.auto_save: run.save()
 	if _sound: _sound.on_world(null)
 	Gfx.set_border(_previous_border, _previous_border_dist)
 
@@ -378,13 +385,13 @@ func _refresh() -> void:
 	_shop_section.visible = preparing
 	_dock.visible = not preparing and not fighting and not landing and battle.settle_remaining <= 0
 	_outcome.visible = _dock.visible
-	_outcome_shade.visible = _dock.visible
+	_outcome_shade.visible = _dock.visible and run.stage == "reward"
 	_layout_outcome()
 	_pause.visible = fighting
 	_speed.visible = fighting
 	_rail.visible = not landing and _inspector.visible
 	_landing_layer.visible = landing
-	_clock.visible = fighting
+	_clock.visible = fighting or preparing
 	field.show_markers = preparing or fighting or battle.settle_remaining > 0
 	_message.visible = preparing or fighting or run.save_error
 	_battle_changed()
@@ -414,6 +421,10 @@ func _refresh() -> void:
 	_refresh_button.disabled = not refresh_error.is_empty()
 	if not refresh_error.is_empty(): _refresh_button.tooltip_text += "\n" + refresh_error
 	_army_title.text = RemakeText.t("Army %d/%d") % [run.deployed_count(), run.capacity()]
+	_pact_hint.visible = not run.pact.is_empty()
+	if _pact_hint.visible:
+		_pact_hint.text = RemakeText.t("Pact %d/%d") % [mini(run.pact_families().size(), int(ArenaRules.PACTS[run.pact].needed)), int(ArenaRules.PACTS[run.pact].needed)]
+		_pact_hint.add_theme_color_override("font_color", GOLD if run.pact_active() else MUTED)
 	_army_title.tooltip_text = ""
 	_army_title.remove_meta("arena_help")
 	_army_title.add_theme_color_override("icon_normal_color", GOLD if run.pact_active() else MUTED)
@@ -435,108 +446,124 @@ func _refresh() -> void:
 
 
 func _build_army() -> void:
-	_clear(_army_row)
 	var benched := run.army.filter(func(u): return not u.deployed)
-	var slot_width := clampf((_hud.size.x - 550.0) / maxi(run.bench_limit(), benched.size()) - 8.0, 44, 88)
+	var existing := {}
+	for button: Button in _army_row.get_children(): existing[button.get_meta("slot_key", "")] = button
+	var selected := run.unit(selected_uid)
+	var returning: bool = run.stage == "prepare" and not selected.is_empty() and selected.deployed
 	for i in maxi(run.bench_limit(), benched.size()):
-		var button := Button.new()
-		button.custom_minimum_size = Vector2(slot_width, 84)
-		button.add_theme_stylebox_override("normal", ArenaCreatureCard.style(Color(0,0,0,0), Color(0,0,0,0), Vector2(3,3)))
-		button.add_theme_stylebox_override("hover", ArenaCreatureCard.style(Color(0.12, 0.16, 0.17, 0.45), Color(0, 0, 0, 0), Vector2(3,3)))
-		button.add_theme_stylebox_override("focus", ArenaCreatureCard.style(Color(0, 0, 0, 0), PAPER, Vector2(3,3)))
-		button.add_theme_stylebox_override("disabled", ArenaCreatureCard.style(Color(0,0,0,0), Color(0,0,0,0), Vector2(3,3)))
-		button.add_theme_stylebox_override("pressed", ArenaCreatureCard.style(Color("344248"), GOLD, Vector2(3,3)))
-		if landing or run.stage not in ["prepare", "fight"]: button.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_army_row.add_child(button)
-		var marker := ColorRect.new()
-		marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		button.add_child(marker)
-		marker.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-		marker.offset_left = 10; marker.offset_right = -10
-		marker.offset_top = -3; marker.offset_bottom = -2
-		marker.color = Color(0.72, 0.75, 0.72, 0.32)
-		if i >= benched.size():
-			var selected := run.unit(selected_uid)
-			var returning: bool = run.stage == "prepare" and not selected.is_empty() and selected.deployed
-			button.disabled = not returning
-			button.tooltip_text = RemakeText.t("Return the selected creature to reserves.") if returning else RemakeText.t("Recruits wait here until you deploy them.")
-			if returning:
-				button.pressed.connect(func(): _return_to_reserves())
-				marker.color = GOLD
-				if i == benched.size():
-					button.text = RemakeText.t("Return")
-					button.add_theme_font_size_override("font_size", 13)
-			continue
-		var entry: Dictionary = benched[i]
-		button.set_meta("arena_creature", {"id": entry.prototype, "uid": int(entry.uid)})
-		button.pressed.connect(func(): _select(entry.uid))
-		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		button.disabled = landing or run.stage not in ["prepare", "fight"]
-		var preview := WikiPreview.new()
-		preview.fit_slot = true
-		preview.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		preview.offset_top = 14; preview.offset_bottom = -6
-		button.add_child(preview)
-		preview.show_model({"kind": "creature", "value": entry.prototype})
-		preview.turn_by(-0.35)
-		preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		ArenaStars.add_to(button, int(entry.rank) + 1, Vector2(5, 1))
-		if int(entry.uid) == selected_uid:
-			marker.color = GOLD
-			marker.offset_top = -4
-	_fit_reserve_slots.call_deferred()
+		var entry: Dictionary = benched[i] if i < benched.size() else {}
+		var key := "empty:%d" % i if entry.is_empty() else "%d:%s" % [entry.uid, entry.prototype]
+		var button: Button = existing.get(key)
+		existing.erase(key)
+		if button == null:
+			button = Button.new()
+			button.set_meta("slot_key", key)
+			button.custom_minimum_size = Vector2(44, 84)
+			button.add_theme_stylebox_override("normal", ArenaCreatureCard.style(Color(0,0,0,0), Color(0,0,0,0), Vector2(3,3)))
+			button.add_theme_stylebox_override("hover", ArenaCreatureCard.style(Color(0.12, 0.16, 0.17, 0.45), Color(0, 0, 0, 0), Vector2(3,3)))
+			button.add_theme_stylebox_override("focus", ArenaCreatureCard.style(Color(0, 0, 0, 0), PAPER, Vector2(3,3)))
+			button.add_theme_stylebox_override("disabled", ArenaCreatureCard.style(Color(0,0,0,0), Color(0,0,0,0), Vector2(3,3)))
+			button.add_theme_stylebox_override("pressed", ArenaCreatureCard.style(Color("344248"), GOLD, Vector2(3,3)))
+			button.add_theme_font_size_override("font_size", 13)
+			_army_row.add_child(button)
+			var line := ColorRect.new()
+			line.name = "SlotLine"
+			line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			button.add_child(line)
+			line.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+			line.offset_left = 10; line.offset_right = -10
+			line.offset_bottom = -2
+			if entry.is_empty():
+				button.pressed.connect(_return_to_reserves)
+			else:
+				button.set_meta("arena_creature", {"id": entry.prototype, "uid": int(entry.uid)})
+				button.pressed.connect(_select.bind(int(entry.uid)))
+				var preview := WikiPreview.new()
+				preview.fit_slot = true
+				button.add_child(preview)
+				preview.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+				preview.offset_top = 14; preview.offset_bottom = -6
+				preview.show_model({"kind": "creature", "value": entry.prototype})
+				preview.turn_by(-0.35)
+				preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				ArenaStars.add_to(button, int(entry.rank) + 1, Vector2(5, 1))
+		_army_row.move_child(button, i)
+		button.mouse_filter = Control.MOUSE_FILTER_IGNORE if landing or run.stage not in ["prepare", "fight"] else Control.MOUSE_FILTER_STOP
+		button.disabled = not returning if entry.is_empty() else landing or run.stage not in ["prepare", "fight"]
+		button.mouse_default_cursor_shape = Control.CURSOR_ARROW if button.disabled else Control.CURSOR_POINTING_HAND
+		button.set_meta("return_slot", returning and i == benched.size())
+		button.tooltip_text = (RemakeText.t("Return the selected creature to reserves.") if returning else RemakeText.t("Recruits wait here until you deploy them.")) if entry.is_empty() else ""
+		var marker := button.get_node("SlotLine") as ColorRect
+		var active := returning if entry.is_empty() else int(entry.uid) == selected_uid
+		marker.color = GOLD if active else Color(0.72, 0.75, 0.72, 0.32)
+		marker.offset_top = -4 if active else -3
+	for button: Button in existing.values():
+		_army_row.remove_child(button)
+		button.queue_free()
+	_fit_reserve_slots()
 	if _tooltips: _tooltips.capture(_army_row)
 
 
 func _build_shop() -> void:
-	_clear(_shop)
+	# Reuse each offer's render target while only prices, counts or locks change.
+	while _shop.get_child_count() > run.shop.size():
+		var extra := _shop.get_child(_shop.get_child_count() - 1)
+		_shop.remove_child(extra); extra.queue_free()
 	for index in run.shop.size():
 		var offer: Dictionary = run.shop[index]
-		var box := Control.new()
-		box.custom_minimum_size = Vector2(96, 126)
-		box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		_shop.add_child(box)
 		var family := int(offer.family)
+		var rank := int(offer.get("rank", 0))
+		var key := "%d:%d" % [family, rank]
+		var box: Control = _shop.get_child(index) if index < _shop.get_child_count() else null
+		if box != null and box.get_meta("offer_key", "") != key:
+			_shop.remove_child(box); box.queue_free(); box = null
+		var fresh := box == null
+		if fresh:
+			box = Control.new()
+			box.set_meta("offer_key", key)
+			box.custom_minimum_size = Vector2(96, 126)
+			box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			_shop.add_child(box)
+			_shop.move_child(box, index)
 		if family < 0:
-			var bought := _label(box, RemakeText.t("Recruited"), 13, MUTED)
-			bought.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-			bought.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			bought.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			if fresh:
+				var bought := _label(box, RemakeText.t("Recruited"), 13, MUTED)
+				bought.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+				bought.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+				bought.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			continue
 		var rule: Dictionary = ArenaRules.FAMILIES[family]
-		var rank := int(offer.get("rank", 0))
-		var card := ArenaCreatureCard.new()
+		var card := ArenaCreatureCard.new() if fresh else box.get_child(0) as ArenaCreatureCard
 		card.prototype = rule.forms[rank]
 		card.quality = rank
-		var count := run.army.filter(func(entry): return entry.family == family and entry.rank == rank).size()
-		card.caption = RemakeText.t("%s · %d owned") % [RemakeText.t(rule.role), count]
-		card.caption = RemakeText.t(rule.name) + "\n" + card.caption
-		if not run.pact.is_empty() and family in ArenaRules.PACTS[run.pact].families:
-			card.caption += "\n" + RemakeText.t("Your pact needs a two-star recruit from this family." if int(ArenaRules.PACTS[run.pact].min_rank) > 0 else "This family belongs to your pact.")
-		var needed := ArenaRules.evolution_copies(family, rank)
-		card.footer = RemakeText.t("%d gold") % run.offer_cost(offer)
-		if needed > 0: card.footer += "\n" + RemakeText.t("Copies: %d/%d") % [mini(needed, count), needed]
-		card.set_meta("arena_creature", {"id": card.prototype, "family": family, "rank": rank, "offer": index})
 		card.cost = run.offer_cost(offer)
-		card.copies = count
-		card.copies_needed = needed
+		card.copies = run.army.filter(func(entry): return entry.family == family and entry.rank == rank).size()
+		card.copies_needed = ArenaRules.evolution_copies(family, rank)
 		card.disabled = not run.purchase_error(index).is_empty()
-		card.pressed.connect(func(): _recruit_offer(index))
-		box.add_child(card)
+		card.caption = RemakeText.t(rule.name) + " · " + RemakeText.t(rule.role)
+		card.footer = RemakeText.t("%d gold") % card.cost
+		if fresh:
+			card.set_meta("arena_creature", {"id": card.prototype, "family": family, "rank": rank, "offer": index})
+			card.pressed.connect(_recruit_offer.bind(index))
+			box.add_child(card)
+			card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		card.tooltip_text = ""
-		card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		var lock := _icon_button(box, preload("res://assets/arena/lock.svg"), func(): pass, RemakeText.t("Lock recruit"))
-		lock.toggle_mode = true
-		lock.add_theme_stylebox_override("pressed", ArenaCreatureCard.style(Color("464f34"), GOLD, Vector2(3, 3)))
-		lock.custom_minimum_size = Vector2(28, 28)
-		lock.add_theme_constant_override("icon_max_width", 16)
-		lock.tooltip_text = RemakeText.t("Lock recruit")
-		lock.button_pressed = offer.locked
-		lock.toggled.connect(func(_on): run.lock_offer(index))
-		lock.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-		lock.offset_left = -30; lock.offset_right = -2
-		lock.offset_top = 0; lock.offset_bottom = 28
+		card.update_offer()
+		var lock: Button
+		if fresh:
+			lock = _icon_button(box, preload("res://assets/arena/lock.svg"), func(): pass, RemakeText.t("Lock recruit"))
+			lock.toggle_mode = true
+			lock.add_theme_stylebox_override("pressed", ArenaCreatureCard.style(Color("464f34"), GOLD, Vector2(3, 3)))
+			lock.custom_minimum_size = Vector2(28, 28)
+			lock.add_theme_constant_override("icon_max_width", 16)
+			lock.toggled.connect(func(_on): run.lock_offer(index))
+			lock.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+			lock.offset_left = -30; lock.offset_right = -2
+			lock.offset_top = 0; lock.offset_bottom = 28
+		else: lock = box.get_child(1)
+		lock.set_pressed_no_signal(offer.locked)
 		lock.modulate.a = 1 if offer.locked else 0.65
 
 
@@ -611,41 +638,34 @@ func _build_result() -> void:
 	var result: Dictionary = run.last_result
 	var won := int(result.get("winner", -1)) == 0
 	var text := "Expedition complete" if run.stage == "won" else "The expedition ends" if run.stage == "lost" else "Victory" if won else "Defeat"
-	var title := _wrap(_dock, RemakeText.t(text), 42, GOLD if won else PAPER)
+	var title := _wrap(_dock, RemakeText.t(text), 28, GOLD if won else PAPER)
 	title.add_theme_font_override("font", _heading_font)
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var encounter := _wrap(_dock, RemakeText.t("Wave %d/%d · %s") % [run.wave, run.wave_limit, RemakeText.t(ArenaRules.WAVES[run.wave - 1][0])], 16, MUTED)
-	encounter.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_rule(_dock)
+	_wrap(_dock, RemakeText.t("Wave %d/%d · %s") % [run.wave, run.wave_limit, RemakeText.t(ArenaRules.WAVES[run.wave - 1][0])], 14, MUTED)
 	var reward := HBoxContainer.new()
-	reward.alignment = BoxContainer.ALIGNMENT_CENTER
-	reward.add_theme_constant_override("separation", 12)
+	reward.add_theme_constant_override("separation", 8)
 	_dock.add_child(reward)
 	_icon(reward, preload("res://assets/arena/coin.svg") if won else preload("res://assets/arena/life.svg"))
 	_label(reward, RemakeText.t("+%d gold") % int(result.get("gold", 0)) if won and run.stage != "won" else RemakeText.t("Lives %d/%d") % [run.lives, 3], 20, GOLD if won else PAPER)
-	if result.has("income"):
-		var breakdown := _wrap(_dock, _income_details(result.income), 14, MUTED)
-		breakdown.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var details := _wrap(_dock, RemakeText.t("Battle: %d seconds · Damage dealt: %d · Damage taken: %d") % [int(result.get("seconds", 0)), int(result.get("damage", [0, 0])[0]), int(result.get("damage", [0, 0])[1])], 14, MUTED)
-	details.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	if run.stage == "lost": pass
-	elif not won: _wrap(_dock, RemakeText.t("Your company has recovered. Regroup and face this wave again."), 16)
+	var details := RemakeText.t("Battle: %d seconds · Damage dealt: %d · Damage taken: %d") % [int(result.get("seconds", 0)), int(result.get("damage", [0, 0])[0]), int(result.get("damage", [0, 0])[1])]
+	if result.has("income"): details = _income_details(result.income) + "\n" + details
+	reward.tooltip_text = details
+	if result.get("empty_army", false): _wrap(_dock, RemakeText.t("No creatures were recruited."), 15, MUTED)
+	elif not won and run.stage != "lost": _wrap(_dock, RemakeText.t("Your company has recovered. Regroup and face this wave again."), 15, MUTED)
 	if run.stage == "won": _wrap(_dock, RemakeText.t("The ruins are yours.") if run.challenge == 2 else RemakeText.t("A harder expedition awaits."), 16)
 	if won and run.wave < run.wave_limit:
 		var arriving: Array[String] = []
 		for family: Dictionary in ArenaRules.FAMILIES:
 			if int(family.get("unlock", 1)) == run.wave + 1: arriving.append(RemakeText.t(family.name))
-		if not arriving.is_empty():
-			_wrap(_dock, RemakeText.t("New recruits: %s") % ", ".join(arriving), 16, GOLD)
+		if not arriving.is_empty(): _wrap(_dock, RemakeText.t("New recruits: %s") % ", ".join(arriving), 15, GOLD)
 	var action: Button
 	if run.stage in ["won", "lost"]:
 		action = _button(_dock, RemakeText.t("New expedition"), func(): landing = true; _saved = false; _clear_selection(); _refresh(), "", true)
 	else:
 		action = _button(_dock, RemakeText.t("Visit camp" if won and run.wave % 3 == 0 else "Next wave" if won else "Prepare again"), func(): run.advance(), "", true)
 	action.name = "ContinueResult"
-	action.custom_minimum_size.y = 48
+	action.custom_minimum_size.y = 44
 	action.add_theme_font_override("font", _heading_font)
-	action.add_theme_font_size_override("font_size", 23)
+	action.add_theme_font_size_override("font_size", 20)
 	action.grab_focus()
 
 
@@ -653,7 +673,7 @@ func _build_rewards() -> void:
 	var choosing_pact := String(run.rewards[0].kind) == "pact"
 	var heading := _label(_dock, RemakeText.t("Choose your pact" if choosing_pact else "A moment at camp"), 28, GOLD)
 	heading.add_theme_font_override("font", _heading_font)
-	_wrap(_dock, RemakeText.t(ArenaRules.BOONS.pact[1]) if choosing_pact else RemakeText.t("Take one reward before the next battle."), 15, MUTED)
+	_wrap(_dock, RemakeText.t("Deploy the listed families to gain an extra ally. Each family counts once.") if choosing_pact else RemakeText.t("Take one reward before the next battle."), 15, MUTED)
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 24)
 	_dock.add_child(row)
@@ -670,7 +690,7 @@ func _build_rewards() -> void:
 		if reward.kind == "pact":
 			var rule: Dictionary = ArenaRules.PACTS[reward.pact]
 			title = RemakeText.t(rule.name)
-			help = RemakeText.t(rule.help)
+			help = _pact_requirement(reward.pact)
 			id = rule.forms[0]
 		elif reward.kind == "pact_upgrade": id = run.pact_prototype(run.pact_rank + 1)
 		elif reward.kind == "companion": id = reward.prototype
@@ -687,7 +707,13 @@ func _build_rewards() -> void:
 			var spacer := Control.new()
 			spacer.custom_minimum_size.y = 44
 			box.add_child(spacer)
-		_wrap(box, help, 15, MUTED).custom_minimum_size.y = 100
+		_wrap(box, help, 15, MUTED).custom_minimum_size.y = 54 if choosing_pact else 100
+		if choosing_pact:
+			_wrap(box, RemakeText.t("On field: %d/%d") % [mini(run.pact_families(reward.pact).size(), int(ArenaRules.PACTS[reward.pact].needed)), int(ArenaRules.PACTS[reward.pact].needed)], 15, GOLD)
+			var families := VBoxContainer.new()
+			families.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			box.add_child(families)
+			_pact_checklist(families, reward.pact)
 		var action := _button(box, RemakeText.t("Choose pact" if choosing_pact else "Choose reward"), func(): _choose_reward(index), help, true)
 		action.name = "ChooseReward"
 		if not id.is_empty():
@@ -700,7 +726,23 @@ func _build_rewards() -> void:
 
 
 func _pact_status() -> String:
-	return RemakeText.t("Pact active · one extra ally") if run.pact_active() else RemakeText.t("Pact inactive · %d/%d families") % [run.pact_families().size(), int(ArenaRules.PACTS[run.pact].needed)]
+	return RemakeText.t("Ally summoned") if run.pact_active() else RemakeText.t("On field: %d/%d") % [run.pact_families().size(), int(ArenaRules.PACTS[run.pact].needed)]
+
+
+func _pact_requirement(key: String) -> String:
+	var rule: Dictionary = ArenaRules.PACTS[key]
+	return RemakeText.t("Deploy creatures with at least 2 stars from %d different families.") % int(rule.needed) if int(rule.min_rank) > 0 else RemakeText.t("Deploy creatures from %d different families.") % int(rule.needed)
+
+
+func _pact_checklist(parent: Control, key: String) -> void:
+	var rule: Dictionary = ArenaRules.PACTS[key]
+	var present := run.pact_families(key)
+	for family: int in rule.families:
+		if int(ArenaRules.FAMILIES[family].get("unlock", 1)) > run.wave: continue
+		var owned := run.army.filter(func(entry): return int(entry.family) == family)
+		var eligible := owned.any(func(entry): return int(entry.rank) >= int(rule.min_rank))
+		var status := "On field" if family in present else "In reserves" if eligible else "Needs 2 stars" if not owned.is_empty() else "Not recruited"
+		_wrap(parent, "%s · %s" % [RemakeText.t(ArenaRules.FAMILIES[family].name), RemakeText.t(status)], 13, GOLD if family in present else MUTED)
 
 
 func _show_company() -> void:
@@ -708,40 +750,29 @@ func _show_company() -> void:
 	_showing_company = true
 	_rail.show(); _inspector.show()
 	_clear(_inspect_box); _clear(_inspect_actions)
-	var heading := HBoxContainer.new()
-	_inspect_box.add_child(heading)
-	var title := _wrap(heading, RemakeText.t("Company"), 23, GOLD)
-	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var title := _wrap(_inspect_box, RemakeText.t("Company") if run.pact.is_empty() else RemakeText.t(ArenaRules.PACTS[run.pact].name), 23, GOLD)
 	title.add_theme_font_override("font", _heading_font)
-
-	_wrap(_inspect_box, RemakeText.t("Army %d/%d") % [run.deployed_count(), run.capacity()], 18, PAPER)
-	_wrap(_inspect_box, RemakeText.t("Experience %d/%d") % [run.experience(), ArenaRules.MAX_TRAINING], 14, GOLD)
-	if run.experience() < ArenaRules.MAX_TRAINING:
-		_wrap(_inspect_box, RemakeText.t("Click the army counter to train your company."), 14, MUTED)
 	if run.pact.is_empty():
+		_wrap(_inspect_box, RemakeText.t("Army %d/%d") % [run.deployed_count(), run.capacity()], 18, PAPER)
+		_wrap(_inspect_box, RemakeText.t("Experience %d/%d") % [run.experience(), ArenaRules.MAX_TRAINING], 14, GOLD)
+		if run.experience() < ArenaRules.MAX_TRAINING:
+			_wrap(_inspect_box, RemakeText.t("Click the army counter to train your company."), 14, MUTED)
 		_wrap(_inspect_box, RemakeText.t("Choose a pact at your next camp."), 15, MUTED)
 	else:
-		var rule: Dictionary = ArenaRules.PACTS[run.pact]
-		_wrap(_inspect_box, RemakeText.t(rule.name), 20, PAPER)
+		# The summoned ally is the pact's benefit. Keep it and the condition
+		# together above the optional upgrades, even in the smallest layout.
 		_wrap(_inspect_box, _pact_status(), 14, GOLD)
-		_wrap(_inspect_box, RemakeText.t(rule.help), 14, MUTED)
-		var present := run.pact_families()
-		for family: int in rule.families:
-			if int(ArenaRules.FAMILIES[family].get("unlock", 1)) > run.wave: continue
-			var state := RemakeText.t("Ready") if family in present else RemakeText.t("Not contributing")
-			_wrap(_inspect_box, "%s · %s" % [RemakeText.t(ArenaRules.FAMILIES[family].name), state], 13, PAPER if family in present else MUTED)
-		_creature_preview(_inspect_box, run.pact_prototype(), 90)
-		_wrap(_inspect_box, ArenaRules.title(run.pact_prototype()), 17, GOLD)
-		_wrap(_inspect_box, RemakeText.t("Your pact ally needs no army slot. It leaves when the pact is inactive."), 13, MUTED)
-		if run.pact_rank < 2:
-			_wrap(_inspect_box, RemakeText.t("Strengthen your pact at camp. As new allods join the hunt, a stronger ally answers its call."), 13, MUTED)
+		_creature_preview(_inspect_box, run.pact_prototype(), 64)
+		_wrap(_inspect_box, ArenaRules.title(run.pact_prototype()), 17, PAPER)
+		_wrap(_inspect_box, _pact_requirement(run.pact), 14, MUTED)
+		_pact_checklist(_inspect_box, run.pact)
+		_wrap(_inspect_box, RemakeText.t("No army slot needed. The ally leaves if you withdraw a required family. Copies of one family count once."), 13, MUTED)
 	if not run.boons.is_empty():
 		_rule(_inspect_box)
 		_label(_inspect_box, RemakeText.t("Expedition upgrades"), 17, GOLD)
 		for boon: String in run.boons:
 			_wrap(_inspect_box, RemakeText.t(ArenaRules.BOONS[boon][0]), 15, PAPER)
 			_wrap(_inspect_box, RemakeText.t(ArenaRules.BOONS[boon][1]), 13, MUTED)
-
 	_tooltips.capture(_hud)
 
 
@@ -917,11 +948,22 @@ func _battle_changed() -> void:
 
 func _process(dt: float) -> void:
 	_hover_inspector(dt)
+	if not landing and run.stage == "prepare" and not _modal_layer.visible:
+		if run.elapse_preparation(dt / maxf(Engine.time_scale, 0.001)):
+			_clear_selection()
+			battle.expire_preparation()
+		_timer_save_wait += dt
+		if _timer_save_wait >= 5.0:
+			_timer_save_wait = 0
+			if run.auto_save: run.save_error = not run.save()
+	if _evolution_notice.visible:
+		_evolution_notice.covered = _rail.visible or _modal_layer.visible
 	if is_instance_valid(_live_health) and is_instance_valid(_inspected_unit) and _rail.visible:
 		var unit := _inspected_unit
 		_live_health.text = ArenaUnitInfo.summary(_inspected, unit)
 	if _clock and battle and is_instance_valid(battle.world):
-		_clock.text = "%d:%02d" % [int(battle.world.time) / 60, int(battle.world.time) % 60]
+		_clock.text = RemakeText.t("Battle in %ds") % ceili(run.preparation_left) if run.stage == "prepare" else "%d:%02d" % [int(battle.world.time) / 60, int(battle.world.time) % 60]
+		_clock.add_theme_color_override("font_color", Color("efbf87") if run.stage == "prepare" and run.preparation_left <= 10 else GOLD)
 
 	if _sound and battle and is_instance_valid(battle.world):
 		if not is_instance_valid(_sound_world) or _sound_world != battle.world:
@@ -962,6 +1004,7 @@ func _guide() -> void:
 	_guide_scroll.add_child(content)
 	var topics := [
 		["Economy", "Each victory pays a bounty, plus interest on savings and a winning-streak bonus. Bounties rise as stronger recruits arrive. Failed attempts grant no income."],
+		["Preparation", "You have 45 seconds to recruit and deploy. Start early when ready. Menus pause the countdown. If the field is empty, reserves deploy when time runs out. With no recruits, you lose the wave."],
 		["Recruitment", "Recruits join your reserves. Improve the shop to find two- and three-star creatures."],
 		["Evolution", "Collect matching creatures to evolve them. Stars mark each stronger form. The creature details show how many you need."],
 		["Your army", "Select a creature, then its place on the field. Select a reserve, then an ally to swap them. An empty reserve slot withdraws a creature. Select a creature to reveal the sell area."],
@@ -1092,10 +1135,10 @@ func _return_to_reserves() -> void:
 
 func _layout_outcome() -> void:
 	if not _outcome or not _hud: return
-	var width := minf(900 if run.stage == "reward" else 520, _hud.size.x - 48)
+	var width := minf(900 if run.stage == "reward" else 292, _hud.size.x - 48)
 	_outcome.custom_minimum_size.x = width
 	_outcome.size = Vector2(width, 0)
-	_outcome.position = (_hud.size - _outcome.size) / 2
+	_outcome.position = (_hud.size - _outcome.size) / 2 if run.stage == "reward" else Vector2(_hud.size.x - width - 16, minf(158, _hud.size.y - _outcome.size.y - 120))
 
 
 func _layout_hud() -> void:
@@ -1330,13 +1373,13 @@ func _fit_reserve_slots() -> void:
 	if not _army_row or not _bench_scroll or _bench_scroll.size.x <= 0: return
 	var buttons := _army_row.get_children()
 	if buttons.is_empty(): return
-	var widths: Array[float] = []
-	var minimum := 0.0
+	# Selection must not resize the other portraits and invalidate their images.
+	var width := clampf(floorf((_bench_scroll.size.x - 8 * (buttons.size() - 1)) / buttons.size()), 44, 88)
+	var title := RemakeText.t("Return")
 	for button: Button in buttons:
-		var width := ceilf(maxf(40, button.get_theme_font("font").get_string_size(button.text, HORIZONTAL_ALIGNMENT_LEFT, -1, button.get_theme_font_size("font_size")).x + 6))
-		widths.append(width)
-		minimum += width
-	# Containers round each child's size up. Allocate whole pixels so nine
-	# fractional widths do not add a scrollbar to an otherwise fitting row.
-	var extra := floorf(maxf(0, (_bench_scroll.size.x - 8 * (buttons.size() - 1) - minimum) / buttons.size()))
-	for i in buttons.size(): buttons[i].custom_minimum_size.x = minf(88, widths[i] + extra)
+		var returning: bool = button.get_meta("return_slot", false)
+		var text_width := button.get_theme_font("font").get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 13).x + 6
+		button.text = title if returning and text_width <= width else ""
+		button.icon = preload("res://assets/arena/return.svg") if returning and text_width > width else null
+		button.add_theme_constant_override("icon_max_width", 22)
+		button.custom_minimum_size.x = width

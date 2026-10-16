@@ -53,6 +53,7 @@ func _ready() -> void:
 	await click(point(body(boar)))
 	check(screen.selected_uid==boar,"feedback leaves battlefield interaction available")
 	await click(screen.field.screen_point(Vector2(27,38)))
+	await move(screen.field.screen_point(Vector2(32,40)))
 	await get_tree().create_timer(3.5).timeout
 	check(not screen._evolution_notice.visible,"feedback closes on its own")
 	# Later-region models are inspected at both ranks, including wings/weapons.
@@ -78,7 +79,7 @@ func _ready() -> void:
 	screen.run.arrange();screen._refresh();await frames(12)
 	var terrain := screen.battle.world.terrain
 	check(terrain is ArenaWinterTerrain and terrain.resource_prefix=="zone11","original Ingos winter terrain")
-	check(terrain._land_mat.shader.code.contains("arena_paving") and terrain.get_node_or_null("CourtyardPaving")==null,"artwork shares the native deformed ground receiver")
+	check(terrain._land_mat.shader.code.contains("arena_snow") and not terrain._land_mat.shader.code.contains("arena_paving") and terrain.get_node_or_null("CourtyardPaving")==null,"unbroken snow shares the native deformed ground receiver")
 	check(terrain.ground_type(27,32)==9,"battlefield uses native snow surface")
 	var marks := screen.battle.world.ground_marks
 	check(is_instance_valid(marks),"footprint owner exists before the first hit")
@@ -96,6 +97,7 @@ func _ready() -> void:
 	var soft := terrain.details.soft_ground
 	check(not soft.sectors.is_empty(),"walking creatures leave deformed snow trails")
 	print("WINTER_MARKS footprints=",marks.foot_marks.size()," blood=",marks.blood_marks.size()," track_sectors=",soft.sectors.size())
+	await shot(tag+"-victory")
 	screen._outcome.hide();screen._outcome_shade.hide()
 	await shot(tag+"-aftermath")
 	# Compare settled pixels with and without blood and native snow geometry.
@@ -113,7 +115,7 @@ func _ready() -> void:
 	check(changed_pixels(before,get_viewport().get_texture().get_image())>30,"snow trails change visible battlefield pixels")
 	# A quality change must keep the courtyard material and mark receivers.
 	terrain.apply_gfx();await frames()
-	check(terrain._land_mat.shader.code.contains("arena_paving"),"graphics refresh preserves winter art")
+	check(terrain._land_mat.shader.code.contains("arena_snow") and not terrain._land_mat.shader.code.contains("arena_paving"),"graphics refresh preserves plain snow")
 	screen.queue_free();await frames(8)
 	check(errors.messages.is_empty(),"no scene, shader or script errors: "+JSON.stringify(errors.messages))
 	print("ARENA_WINTER_UI ",checks," checks; failures=",JSON.stringify(failures))

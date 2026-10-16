@@ -14,6 +14,8 @@ var copies := 0
 var copies_needed := 3
 var quality := 0
 var preview: WikiPreview
+var _price: Label
+var _copies: Label
 
 
 static func style(fill: Color, border := Color("5a624c"), padding := Vector2(10, 8)) -> StyleBoxFlat:
@@ -70,10 +72,9 @@ func _ready() -> void:
 	coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	coin.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	price_row.add_child(coin)
-	_label(price_row, str(cost), 16, MUTED if disabled else GOLD)
-	if copies > 0 and copies_needed > 0:
-		var count := _label(price_row, "  %d/%d" % [mini(copies, copies_needed), copies_needed], 13, PAPER)
-		count.tooltip_text = RemakeText.t("Copies: %d/%d") % [copies, copies_needed]
+	_price = _label(price_row, "", 16, GOLD)
+	_copies = _label(price_row, "", 13, PAPER)
+	update_offer()
 	var title := _label(self, heading if not heading.is_empty() else ArenaRules.title(prototype), 14, PAPER)
 	title.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	title.offset_top = 4; title.offset_bottom = 42
@@ -93,6 +94,16 @@ func _ready() -> void:
 	mouse_exited.connect(func(): title.modulate.a = 1 if has_focus() else 0)
 	focus_entered.connect(func(): title.modulate.a = 1)
 	focus_exited.connect(func(): title.modulate.a = 0)
+
+
+func update_offer() -> void:
+	if not is_instance_valid(_price): return
+	_price.text = str(cost)
+	_price.add_theme_color_override("font_color", MUTED if disabled else GOLD)
+	_copies.visible = copies > 0 and copies_needed > 0
+	_copies.text = "  %d/%d" % [mini(copies, copies_needed), copies_needed]
+	_copies.tooltip_text = RemakeText.t("Copies: %d/%d") % [copies, copies_needed]
+	preview.modulate.a = 0.65 if disabled else 1.0
 
 
 func _label(parent: Node, value: String, pixels: int, color: Color) -> Label:

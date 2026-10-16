@@ -40,13 +40,15 @@ func prepare() -> void:
 				"point": Vector2(entry.point[0], entry.point[1]), "run_uid": int(entry.uid), "rank": int(entry.rank)})
 	var support := run.support_placement()
 	if not support.is_empty(): formation.append(support)
-	formation.append_array(ArenaRules.enemies(run.wave, run.run_seed, run.challenge))
+	var enemies := ArenaRules.enemies(run.wave, run.run_seed, run.challenge)
+	for index in enemies.size():
+		enemies[index]["enemy_slot"] = index
+	formation.append_array(enemies)
 	var rebuild := not is_instance_valid(world) or phase != Phase.DEPLOY
 	if rebuild:
 		_rebuild_world()
 	else:
-		for u: GameUnit in world.unit_rows(): world.remove_unit(u)
-		for placement: Dictionary in formation: _spawn(placement)
+		_reconcile_formation()
 	world.presentation = rendered
 	world.combat.difficulty_override = 0
 	world.combat.rng.seed = run.battle_seed()
@@ -57,6 +59,37 @@ func prepare() -> void:
 		world.nav.build(world.terrain, world.terrain.water_base, objects)
 		for u: GameUnit in world.unit_rows(): world.nav.track_unit(u)
 	changed.emit()
+
+
+func _placement_key(placement: Dictionary) -> String:
+	if placement.has("run_uid"): return "owned:%d" % int(placement.run_uid)
+	if placement.has("pact"): return "pact"
+	return "enemy:%d" % int(placement.get("enemy_slot", -1))
+
+
+## Moving one creature must not recreate the others or restart their clips.
+## Keep native IDs, figures and navigation registrations until a form changes.
+func _reconcile_formation() -> void:
+	var existing := {}
+	for unit: GameUnit in world.unit_rows():
+		existing[_placement_key(unit.get_meta("arena_placement", {}))] = unit
+	for placement: Dictionary in formation:
+		var key := _placement_key(placement)
+		var unit: GameUnit = existing.get(key)
+		existing.erase(key)
+		if is_instance_valid(unit) and unit.info.prototype != placement.id:
+			world.remove_unit(unit)
+			unit = null
+		if not is_instance_valid(unit):
+			_spawn(placement)
+			continue
+		unit.set_meta("arena_placement", placement)
+		if unit.pos != placement.point:
+			unit.pos = placement.point
+			unit._sync_transform(0.0)
+			unit.reset_physics_interpolation()
+			world.nav.track_unit(unit)
+	for unit: GameUnit in existing.values(): world.remove_unit(unit)
 
 
 func placement_error(point: Vector2, radius := 0.8, except: GameUnit = null) -> String:
@@ -74,6 +107,22 @@ func start() -> bool:
 	seed(run.battle_seed())
 	world.combat.rng.seed = run.battle_seed()
 	return super.start()
+
+
+func expire_preparation() -> void:
+	if run == null or run.stage != "prepare" or run.preparation_left > 0: return
+	# A purchased company should not lose because its first deployment was missed.
+	if run.deployed_count() == 0 and not run.army.is_empty():
+		run.arrange()
+		prepare()
+	if team_count(0) > 0:
+		start()
+	elif run.start_battle(true).is_empty():
+		winner = 1
+		phase = Phase.FINISHED
+		world.process_mode = Node.PROCESS_MODE_DISABLED
+		changed.emit()
+		finished.emit(winner)
 
 
 func _combat_event(kind: String, a: GameUnit, b: GameUnit, amount: float) -> void:

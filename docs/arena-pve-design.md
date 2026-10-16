@@ -128,9 +128,10 @@ pact before filling remaining positions by native level.
 ## Winter battlefield and interface
 
 The arena uses the original Ingos `zone11` snow atlas, snow surface metadata,
-winter trees/rocks and the existing ruin models. The courtyard pattern is blended
-inside the native terrain shader, under a snow layer. There is no second opaque
-floor over the snow. Native footprint geometry, connected travel troughs, blood
+winter trees/rocks and the existing ruin models. A continuous powder surface
+replaces the courtyard pattern. Uneven conifer and rock groups, smaller saplings,
+rolling perimeter banks and snow-covered ruin tops frame the flat fighting area.
+There is no second opaque floor over the snow. Native footprint geometry, connected travel troughs, blood
 decals and contact shadows all reach that same surface. The local material
 increases compacted-snow contrast for the spectator camera and survives graphics
 option changes without modifying campaign shaders.
@@ -150,7 +151,8 @@ All added and changed copy is in English, Russian and German.
 
 ## Saves and evidence
 
-Schema 6 preserves earlier armies, investment, gold, shop RNG and training.
+Schema 7 preserves earlier armies, investment, gold, shop RNG and training, and
+adds the remaining preparation time.
 Active old runs can continue into the extended sequence. A completed 18-wave
 save remains completed with its original length, including after re-saving.
 Campaign saves are untouched. Schema numbers are independent of public releases.
@@ -166,3 +168,28 @@ Automated purchase policies are probes, not estimates of human win rates. Native
 power gaps make some openings more forgiving than others; the current limits and
 measured outcomes are recorded with the validation, rather than claiming equal
 build strength or completed human playtesting.
+
+## Preparation and feedback
+
+Each preparation round lasts up to 45 seconds. The player may start early;
+expiry starts the encounter. If no creature is deployed but reserves are owned,
+they are arranged automatically. A company without recruits forfeits one life.
+Menus, guide, training and shop-improvement dialogs pause the timer; camp choices
+and results are untimed. Shopping, selecting, placing and undo do not refund time.
+Schema 7 saves the remaining countdown. Older saves and interrupted battles resume
+with 45 seconds; subsequent waves, retries and departures from camp reset it.
+
+Moving a creature updates its existing actor and navigation position. Other
+actors retain their identity and animation. Offer and reserve previews retain
+render targets through selection and price/count/lock changes; arena previews
+render at physical HUD resolution. Evolution and results appear on the right,
+leaving the battle center clear. Results keep the 1.6-second finish interval and
+one next action. Camp rewards remain deliberate choices.
+
+Pact selection shows the actual summoned ally, current qualifying-family count,
+eligible families and the two-star requirement where applicable. The company
+counter shows Pact N/N; hovering lists which families are deployed, waiting in
+reserves, still missing or need evolution. Multiple copies of one family count
+once. These presentation changes do not alter pact bonuses or native creature stats.
+
+See [flow validation](validation/arena-flow-2026-10-16.json) for current evidence.
