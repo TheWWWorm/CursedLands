@@ -1,5 +1,9 @@
 # Android Vulkan terrain performance
 
+This record covers the Medium-preset terrain work. The subsequent
+[Original-preset investigation](android-vulkan-original-performance-2026-10-16.md)
+records the additional game/engine changes and the 60 FPS device measurements.
+
 The Mobile renderer now shares the expanded terrain sampler across the centre
 colour and four relief samples. Android Mobile also uses the existing bounded
 terrain colour cache. Immutable atlas colour blending is baked once for resident

@@ -1,0 +1,445 @@
+diff --git a/core/os/os.cpp b/core/os/os.cpp
+--- a/core/os/os.cpp
++++ b/core/os/os.cpp
+@@ -469,6 +469,12 @@
+ }
+ 
+ bool OS::has_feature(const String &p_feature) {
++	if (p_feature == "ei_mobile_lazy_sky_radiance") {
++		return true;
++	}
++	if (p_feature == "ei_mobile_baked_omni_lighting") {
++		return true;
++	}
+ 	// Sky subpass alpha is independent of exposure and Mobile RGB scaling.
+ 	if (p_feature == "ei_sky_subpass_alpha") {
+ 		return true;
+diff --git a/scene/3d/light_3d.cpp b/scene/3d/light_3d.cpp
+--- a/scene/3d/light_3d.cpp
++++ b/scene/3d/light_3d.cpp
+@@ -68,6 +68,10 @@
+ 	return shadow;
+ }
+ 
++void Light3D::set_custom_baked(bool p_enable) {
++	RS::get_singleton()->light_set_custom_baked(light, p_enable);
++}
++
+ void Light3D::set_negative(bool p_enable) {
+ 	negative = p_enable;
+ 	RS::get_singleton()->light_set_negative(light, p_enable);
+@@ -358,6 +362,7 @@
+ 	ClassDB::bind_method(D_METHOD("has_shadow"), &Light3D::has_shadow);
+ 
+ 	ClassDB::bind_method(D_METHOD("set_negative", "enabled"), &Light3D::set_negative);
++	ClassDB::bind_method(D_METHOD("set_custom_baked", "enabled"), &Light3D::set_custom_baked);
+ 	ClassDB::bind_method(D_METHOD("is_negative"), &Light3D::is_negative);
+ 
+ 	ClassDB::bind_method(D_METHOD("set_cull_mask", "cull_mask"), &Light3D::set_cull_mask);
+diff --git a/scene/3d/light_3d.h b/scene/3d/light_3d.h
+--- a/scene/3d/light_3d.h
++++ b/scene/3d/light_3d.h
+@@ -111,6 +111,8 @@
+ 	void set_shadow(bool p_enable);
+ 	bool has_shadow() const;
+ 
++	// Transient opt-in for custom Mobile shaders that already contain this light.
++	void set_custom_baked(bool p_enable);
+ 	void set_negative(bool p_enable);
+ 	bool is_negative() const;
+ 
+diff --git a/servers/rendering/rendering_server.h b/servers/rendering/rendering_server.h
+--- a/servers/rendering/rendering_server.h
++++ b/servers/rendering/rendering_server.h
+@@ -310,6 +310,7 @@
+ 	virtual void light_set_shadow(RID p_light, bool p_enabled) = 0;
+ 	virtual void light_set_projector(RID p_light, RID p_texture) = 0;
+ 	virtual void light_set_negative(RID p_light, bool p_enable) = 0;
++	virtual void light_set_custom_baked(RID p_light, bool p_enable) = 0;
+ 	virtual void light_set_cull_mask(RID p_light, uint32_t p_mask) = 0;
+ 	virtual void light_set_distance_fade(RID p_light, bool p_enabled, float p_begin, float p_shadow, float p_length) = 0;
+ 	virtual void light_set_reverse_cull_face_mode(RID p_light, bool p_enabled) = 0;
+diff --git a/servers/rendering/rendering_server.cpp b/servers/rendering/rendering_server.cpp
+--- a/servers/rendering/rendering_server.cpp
++++ b/servers/rendering/rendering_server.cpp
+@@ -2524,6 +2524,7 @@
+ 	ClassDB::bind_method(D_METHOD("light_set_shadow", "light", "enabled"), &RenderingServer::light_set_shadow);
+ 	ClassDB::bind_method(D_METHOD("light_set_projector", "light", "texture"), &RenderingServer::light_set_projector);
+ 	ClassDB::bind_method(D_METHOD("light_set_negative", "light", "enable"), &RenderingServer::light_set_negative);
++	ClassDB::bind_method(D_METHOD("light_set_custom_baked", "light", "enable"), &RenderingServer::light_set_custom_baked);
+ 	ClassDB::bind_method(D_METHOD("light_set_cull_mask", "light", "mask"), &RenderingServer::light_set_cull_mask);
+ 	ClassDB::bind_method(D_METHOD("light_set_distance_fade", "decal", "enabled", "begin", "shadow", "length"), &RenderingServer::light_set_distance_fade);
+ 	ClassDB::bind_method(D_METHOD("light_set_reverse_cull_face_mode", "light", "enabled"), &RenderingServer::light_set_reverse_cull_face_mode);
+diff --git a/servers/rendering/rendering_server_default.h b/servers/rendering/rendering_server_default.h
+--- a/servers/rendering/rendering_server_default.h
++++ b/servers/rendering/rendering_server_default.h
+@@ -516,6 +516,7 @@
+ 	FUNC2(light_set_shadow, RID, bool)
+ 	FUNC2(light_set_projector, RID, RID)
+ 	FUNC2(light_set_negative, RID, bool)
++	FUNC2(light_set_custom_baked, RID, bool)
+ 	FUNC2(light_set_cull_mask, RID, uint32_t)
+ 	FUNC5(light_set_distance_fade, RID, bool, float, float, float)
+ 	FUNC2(light_set_reverse_cull_face_mode, RID, bool)
+diff --git a/servers/rendering/storage/light_storage.h b/servers/rendering/storage/light_storage.h
+--- a/servers/rendering/storage/light_storage.h
++++ b/servers/rendering/storage/light_storage.h
+@@ -58,6 +58,7 @@
+ 	virtual void light_set_shadow(RID p_light, bool p_enabled) = 0;
+ 	virtual void light_set_projector(RID p_light, RID p_texture) = 0;
+ 	virtual void light_set_negative(RID p_light, bool p_enable) = 0;
++	virtual void light_set_custom_baked(RID p_light, bool p_enable) {}
+ 	virtual void light_set_cull_mask(RID p_light, uint32_t p_mask) = 0;
+ 	virtual void light_set_distance_fade(RID p_light, bool p_enabled, float p_begin, float p_shadow, float p_length) = 0;
+ 	virtual void light_set_reverse_cull_face_mode(RID p_light, bool p_enabled) = 0;
+diff --git a/servers/rendering/shader_types.cpp b/servers/rendering/shader_types.cpp
+--- a/servers/rendering/shader_types.cpp
++++ b/servers/rendering/shader_types.cpp
+@@ -250,6 +250,7 @@
+ 		shader_modes[RSE::SHADER_SPATIAL].modes.push_back({ PNAME("ensure_correct_normals") });
+ 		shader_modes[RSE::SHADER_SPATIAL].modes.push_back({ PNAME("shadows_disabled") });
+ 		shader_modes[RSE::SHADER_SPATIAL].modes.push_back({ PNAME("ambient_light_disabled") });
++		shader_modes[RSE::SHADER_SPATIAL].modes.push_back({ PNAME("skip_custom_baked_omni_lights") });
+ 		shader_modes[RSE::SHADER_SPATIAL].modes.push_back({ PNAME("shadow_to_opacity") });
+ 		shader_modes[RSE::SHADER_SPATIAL].modes.push_back({ PNAME("vertex_lighting") });
+ 		shader_modes[RSE::SHADER_SPATIAL].modes.push_back({ PNAME("particle_trails") });
+@@ -504,6 +505,7 @@
+ 		shader_modes[RSE::SHADER_SKY].modes.push_back({ PNAME("use_half_res_pass") });
+ 		shader_modes[RSE::SHADER_SKY].modes.push_back({ PNAME("use_quarter_res_pass") });
+ 		shader_modes[RSE::SHADER_SKY].modes.push_back({ PNAME("disable_fog") });
++		shader_modes[RSE::SHADER_SKY].modes.push_back({ PNAME("skip_unneeded_radiance") });
+ 		shader_modes[RSE::SHADER_SKY].modes.push_back({ PNAME("use_debanding") });
+ 	}
+ 
+diff --git a/servers/rendering/renderer_rd/environment/sky.cpp b/servers/rendering/renderer_rd/environment/sky.cpp
+--- a/servers/rendering/renderer_rd/environment/sky.cpp
++++ b/servers/rendering/renderer_rd/environment/sky.cpp
+@@ -70,17 +70,21 @@
+ 	actions.entry_point_stages["sky"] = ShaderCompiler::STAGE_FRAGMENT;
+ 
+ 	uses_time = false;
++	uses_radiance = false;
++	skip_unneeded_radiance = false;
+ 	uses_half_res = false;
+ 	uses_quarter_res = false;
+ 	uses_alpha = false;
+ 	uses_position = false;
+ 	uses_light = false;
+ 
++	actions.render_mode_flags["skip_unneeded_radiance"] = &skip_unneeded_radiance;
+ 	actions.render_mode_flags["use_half_res_pass"] = &uses_half_res;
+ 	actions.render_mode_flags["use_quarter_res_pass"] = &uses_quarter_res;
+ 
+ 	actions.usage_flag_pointers["ALPHA"] = &uses_alpha;
+ 	actions.usage_flag_pointers["TIME"] = &uses_time;
++	actions.usage_flag_pointers["RADIANCE"] = &uses_radiance;
+ 	actions.usage_flag_pointers["POSITION"] = &uses_position;
+ 	actions.usage_flag_pointers["LIGHT0_ENABLED"] = &uses_light;
+ 	actions.usage_flag_pointers["LIGHT0_ENERGY"] = &uses_light;
+@@ -1707,6 +1711,15 @@
+ 	return sky->bake_panorama(p_energy, p_bake_irradiance ? roughness_layers : 0, p_size);
+ }
+ 
++bool SkyRD::sky_uses_radiance(RID p_sky) const {
++	const Sky *sky = get_sky(p_sky);
++	if (!sky) {
++		return true;
++	}
++	SkyMaterialData *material = static_cast<SkyMaterialData *>(RendererRD::MaterialStorage::get_singleton()->material_get_data(sky->material, RendererRD::MaterialStorage::SHADER_TYPE_SKY));
++	return !material || !material->shader_data || !material->shader_data->valid || !material->shader_data->skip_unneeded_radiance || material->shader_data->uses_radiance;
++}
++
+ RID SkyRD::sky_get_radiance_texture_rd(RID p_sky) const {
+ 	Sky *sky = get_sky(p_sky);
+ 	ERR_FAIL_NULL_V(sky, RID());
+diff --git a/servers/rendering/renderer_rd/environment/sky.h b/servers/rendering/renderer_rd/environment/sky.h
+--- a/servers/rendering/renderer_rd/environment/sky.h
++++ b/servers/rendering/renderer_rd/environment/sky.h
+@@ -119,6 +119,8 @@
+ 		String code;
+ 
+ 		bool uses_time = false;
++		bool uses_radiance = false;
++		bool skip_unneeded_radiance = false;
+ 		bool uses_position = false;
+ 		bool uses_half_res = false;
+ 		bool uses_quarter_res = false;
+@@ -315,6 +317,7 @@
+ 
+ 	RID sky_get_material(RID p_sky) const;
+ 	RID sky_get_radiance_texture_rd(RID p_sky) const;
++	bool sky_uses_radiance(RID p_sky) const;
+ 	float sky_get_baked_exposure(RID p_sky) const;
+ 
+ 	RID allocate_sky_rid();
+diff --git a/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.cpp b/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.cpp
+--- a/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.cpp
++++ b/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.cpp
+@@ -80,7 +80,7 @@
+ 	forward_id_allocators[p_type].last_pass[p_id] = p_last_pass;
+ }
+ 
+-void RenderForwardMobile::fill_push_constant_instance_indices(SceneState::InstanceData *p_instance_data, const GeometryInstanceForwardMobile *p_instance) {
++uint32_t RenderForwardMobile::fill_push_constant_instance_indices(SceneState::InstanceData *p_instance_data, const GeometryInstanceForwardMobile *p_instance, bool p_skip_custom_baked_omni_lights) {
+ 	uint64_t current_frame = RSG::rasterizer->get_frame_number();
+ 
+ 	p_instance_data->omni_lights[0] = 0xFFFFFFFF;
+@@ -93,12 +93,18 @@
+ 		uint32_t mask = ~(0xFF << shift);
+ 
+ 		if (forward_id_storage_mobile->forward_id_allocators[RendererRD::FORWARD_ID_TYPE_OMNI_LIGHT].last_pass[p_instance->omni_lights[i]] == current_frame) {
++			uint32_t light_index = forward_id_storage_mobile->forward_id_allocators[RendererRD::FORWARD_ID_TYPE_OMNI_LIGHT].map[p_instance->omni_lights[i]];
++			if (p_skip_custom_baked_omni_lights && RendererRD::LightStorage::get_singleton()->omni_light_is_custom_baked(light_index)) {
++				continue;
++			}
+ 			p_instance_data->omni_lights[ofs] &= mask;
+ 			p_instance_data->omni_lights[ofs] |= uint32_t(forward_id_storage_mobile->forward_id_allocators[RendererRD::FORWARD_ID_TYPE_OMNI_LIGHT].map[p_instance->omni_lights[i]]) << shift;
+ 			idx++;
+ 		}
+ 	}
+ 
++	uint32_t omni_count = p_skip_custom_baked_omni_lights ? idx : p_instance->omni_light_count;
++
+ 	p_instance_data->spot_lights[0] = 0xFFFFFFFF;
+ 	p_instance_data->spot_lights[1] = 0xFFFFFFFF;
+ 
+@@ -167,6 +173,7 @@
+ 			idx++;
+ 		}
+ 	}
++	return omni_count;
+ }
+ 
+ /* Render buffer */
+@@ -1133,7 +1140,12 @@
+ 
+ 			RID sky_rid = environment_get_sky(p_render_data->environment);
+ 			if (sky_rid.is_valid()) {
+-				sky.update_radiance_buffers(rb, p_render_data->environment, p_render_data->scene_data->cam_transform.origin, time, sky_luminance_multiplier, sky_brightness_multiplier);
++				// Explicitly opted-in backgrounds can defer unconsumed radiance.
++				// Keep the dirty state until a real consumer needs the current sky.
++				bool fog_uses_radiance = environment_get_fog_enabled(p_render_data->environment) && environment_get_fog_aerial_perspective(p_render_data->environment) > 0.0;
++				if (use_ambient_cubemap || use_reflection_cubemap || fog_uses_radiance || sky.sky_uses_radiance(sky_rid)) {
++					sky.update_radiance_buffers(rb, p_render_data->environment, p_render_data->scene_data->cam_transform.origin, time, sky_luminance_multiplier, sky_brightness_multiplier);
++				}
+ 				radiance_texture = sky.sky_get_radiance_texture_rd(sky_rid);
+ 			} else {
+ 				// do not try to draw sky if invalid
+@@ -2143,7 +2155,8 @@
+ 			uv_scale = RendererRD::MeshStorage::get_singleton()->mesh_surface_get_uv_scale(surface->surface);
+ 		}
+ 
+-		fill_push_constant_instance_indices(&instance_data, inst);
++		bool skip_custom_baked_omni = surface->shader->skip_custom_baked_omni_lights && get_debug_draw_mode() == RSE::VIEWPORT_DEBUG_DRAW_DISABLED;
++		uint32_t omni_count = fill_push_constant_instance_indices(&instance_data, inst, skip_custom_baked_omni);
+ 
+ 		instance_data.set_compressed_aabb(surface_aabb);
+ 		instance_data.set_uv_scale(uv_scale);
+@@ -2154,6 +2167,7 @@
+ 
+ 		// Sets lod_index and uses_lightmap at once.
+ 		element_info.value = uint32_t(surface->sort.sort_key1 & 0x1FF);
++		element_info.omni_light_count = omni_count;
+ 	}
+ 
+ 	if (p_update_buffer && element_total > 0u) {
+@@ -2197,6 +2211,11 @@
+ 
+ 	for (int i = 0; i < (int)p_render_data->instances->size(); i++) {
+ 		GeometryInstanceForwardMobile *inst = static_cast<GeometryInstanceForwardMobile *>((*p_render_data->instances)[i]);
++		// Empty MultiMeshes are also skipped at draw time. Exclude them before
++		// their material can request screen/depth copies and split subpasses.
++		if (inst->instance_count == 0) {
++			continue;
++		}
+ 
+ 		Vector3 center = inst->transform.origin;
+ 		if (p_render_data->scene_data->cam_orthogonal) {
+@@ -2475,7 +2494,7 @@
+ 		} else {
+ 			pipeline_specialization.use_light_projector = inst->use_projector;
+ 			pipeline_specialization.use_light_soft_shadows = inst->use_soft_shadow;
+-			pipeline_specialization.omni_lights = SceneShaderForwardMobile::shader_count_for(inst->omni_light_count);
++			pipeline_specialization.omni_lights = SceneShaderForwardMobile::shader_count_for(element_info.omni_light_count);
+ 			pipeline_specialization.spot_lights = SceneShaderForwardMobile::shader_count_for(inst->spot_light_count);
+ 			pipeline_specialization.area_lights = SceneShaderForwardMobile::shader_count_for(inst->area_light_count);
+ 			pipeline_specialization.reflection_probes = SceneShaderForwardMobile::shader_count_for(inst->reflection_probe_count);
+diff --git a/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.h b/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.h
+--- a/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.h
++++ b/servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.h
+@@ -402,7 +402,8 @@
+ 			struct {
+ 				uint32_t lod_index : 8;
+ 				uint32_t uses_lightmap : 1;
+-				uint32_t reserved : 23;
++				uint32_t omni_light_count : 4;
++				uint32_t reserved : 19;
+ 			};
+ 			uint32_t value;
+ 		};
+@@ -618,7 +619,7 @@
+ 
+ 	ForwardIDStorageMobile *forward_id_storage_mobile = nullptr;
+ 
+-	void fill_push_constant_instance_indices(SceneState::InstanceData *p_instance_data, const GeometryInstanceForwardMobile *p_instance);
++	uint32_t fill_push_constant_instance_indices(SceneState::InstanceData *p_instance_data, const GeometryInstanceForwardMobile *p_instance, bool p_skip_custom_baked_omni_lights);
+ 
+ 	virtual RendererRD::ForwardIDStorage *create_forward_id_storage() override {
+ 		forward_id_storage_mobile = memnew(ForwardIDStorageMobile);
+diff --git a/servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.cpp b/servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.cpp
+--- a/servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.cpp
++++ b/servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.cpp
+@@ -80,6 +80,7 @@
+ 	wireframe = false;
+ 
+ 	unshaded = false;
++	skip_custom_baked_omni_lights = false;
+ 	uses_vertex = false;
+ 	uses_sss = false;
+ 	uses_transmittance = false;
+@@ -122,6 +123,7 @@
+ 	actions.render_mode_values["cull_back"] = Pair<int *, int>(&cull_mode, RSE::CULL_MODE_BACK);
+ 
+ 	actions.render_mode_flags["unshaded"] = &unshaded;
++	actions.render_mode_flags["skip_custom_baked_omni_lights"] = &skip_custom_baked_omni_lights;
+ 	actions.render_mode_flags["wireframe"] = &wireframe;
+ 	actions.render_mode_flags["particle_trails"] = &uses_particle_trails;
+ 	actions.render_mode_flags["world_vertex_coords"] = &uses_world_coordinates;
+diff --git a/servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.h b/servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.h
+--- a/servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.h
++++ b/servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.h
+@@ -260,6 +260,7 @@
+ 		bool wireframe = false;
+ 
+ 		bool unshaded = false;
++		bool skip_custom_baked_omni_lights = false;
+ 		bool uses_vertex = false;
+ 		bool uses_sss = false;
+ 		bool uses_transmittance = false;
+diff --git a/servers/rendering/renderer_rd/storage_rd/light_storage.cpp b/servers/rendering/renderer_rd/storage_rd/light_storage.cpp
+--- a/servers/rendering/renderer_rd/storage_rd/light_storage.cpp
++++ b/servers/rendering/renderer_rd/storage_rd/light_storage.cpp
+@@ -292,6 +292,12 @@
+ 	light->negative = p_enable;
+ }
+ 
++void LightStorage::light_set_custom_baked(RID p_light, bool p_enable) {
++	Light *light = light_owner.get_or_null(p_light);
++	ERR_FAIL_NULL(light);
++	light->custom_baked = p_enable;
++}
++
+ void LightStorage::light_set_cull_mask(RID p_light, uint32_t p_mask) {
+ 	Light *light = light_owner.get_or_null(p_light);
+ 	ERR_FAIL_NULL(light);
+@@ -998,6 +1004,7 @@
+ 		}
+ 
+ 		LightData &light_data = *light_data_ptr;
++		light_data.custom_baked = light->custom_baked;
+ 		Transform3D light_transform = light_instance->transform;
+ 
+ 		float sign = light->negative ? -1 : 1;
+diff --git a/servers/rendering/renderer_rd/storage_rd/light_storage.h b/servers/rendering/renderer_rd/storage_rd/light_storage.h
+--- a/servers/rendering/renderer_rd/storage_rd/light_storage.h
++++ b/servers/rendering/renderer_rd/storage_rd/light_storage.h
+@@ -65,6 +65,7 @@
+ 		RID projector;
+ 		bool shadow = false;
+ 		bool negative = false;
++		bool custom_baked = false;
+ 		bool reverse_cull = false;
+ 		RSE::LightBakeMode bake_mode = RSE::LIGHT_BAKE_DYNAMIC;
+ 		uint32_t max_sdfgi_cascade = 2;
+@@ -154,7 +155,8 @@
+ 		float specular_amount;
+ 		float shadow_opacity;
+ 
+-		float pad[2];
++		uint32_t custom_baked;
++		float pad;
+ 		float atlas_rect[4]; // in omni, used for atlas uv, in spot, used for projector uv
+ 		float shadow_matrix[16];
+ 		float shadow_bias;
+@@ -506,6 +508,7 @@
+ 	virtual void light_set_shadow(RID p_light, bool p_enabled) override;
+ 	virtual void light_set_projector(RID p_light, RID p_texture) override;
+ 	virtual void light_set_negative(RID p_light, bool p_enable) override;
++	virtual void light_set_custom_baked(RID p_light, bool p_enable) override;
+ 	virtual void light_set_cull_mask(RID p_light, uint32_t p_mask) override;
+ 	virtual void light_set_distance_fade(RID p_light, bool p_enabled, float p_begin, float p_shadow, float p_length) override;
+ 	virtual void light_set_reverse_cull_face_mode(RID p_light, bool p_enabled) override;
+@@ -830,6 +833,9 @@
+ 	void free_light_data();
+ 	void set_max_lights(const uint32_t p_max_lights);
+ 	RID get_omni_light_buffer() { return omni_light_buffer; }
++	bool omni_light_is_custom_baked(uint32_t p_index) const {
++		return p_index < omni_light_count && omni_lights[p_index].custom_baked;
++	}
+ 	RID get_spot_light_buffer() { return spot_light_buffer; }
+ 	RID get_area_light_buffer() { return area_light_buffer; }
+ 	RID get_directional_light_buffer() { return directional_light_buffer; }
+diff --git a/servers/rendering/renderer_rd/shaders/forward_mobile/scene_forward_mobile.glsl b/servers/rendering/renderer_rd/shaders/forward_mobile/scene_forward_mobile.glsl
+--- a/servers/rendering/renderer_rd/shaders/forward_mobile/scene_forward_mobile.glsl
++++ b/servers/rendering/renderer_rd/shaders/forward_mobile/scene_forward_mobile.glsl
+@@ -2020,34 +2020,31 @@
+ 						blur_factor = directional_lights.data[i].shadow_split_offsets.x / directional_lights.data[i].shadow_split_offsets.w;
+ 					}
+ 
+-					pssm_coord /= pssm_coord.w;
+-
+ 					bool blend_split = sc_directional_light_blend_split(i);
+ 					float blend_split_weight = blend_split ? 1.0f : 0.0f;
+-					shadow = half(sample_directional_pcf_shadow(directional_shadow_atlas, scene_data.directional_shadow_pixel_size * directional_lights.data[i].soft_shadow_scale * (blur_factor + (1.0 - blur_factor) * blend_split_weight), pssm_coord, scene_data.taa_frame_count));
+-
++					half pssm_blend = half(0.0);
++					float blur_factor2 = 1.0;
++					vec4 pssm_coord2 = pssm_coord;
+ 					if (blend_split) {
+-						half pssm_blend;
+-						float blur_factor2;
+ 
+ 						if (depth_z < directional_lights.data[i].shadow_split_offsets.x) {
+ 							vec4 v = vec4(vertex, 1.0);
+ 							BIAS_FUNC(v, 1)
+-							pssm_coord = (directional_lights.data[i].shadow_matrix2 * v);
++							pssm_coord2 = (directional_lights.data[i].shadow_matrix2 * v);
+ 							pssm_blend = half(smoothstep(directional_lights.data[i].shadow_split_offsets.x - directional_lights.data[i].shadow_split_offsets.x * 0.1, directional_lights.data[i].shadow_split_offsets.x, depth_z));
+ 							// Adjust shadow blur with reference to the first split to reduce discrepancy between shadow splits.
+ 							blur_factor2 = directional_lights.data[i].shadow_split_offsets.x / directional_lights.data[i].shadow_split_offsets.y;
+ 						} else if (depth_z < directional_lights.data[i].shadow_split_offsets.y) {
+ 							vec4 v = vec4(vertex, 1.0);
+ 							BIAS_FUNC(v, 2)
+-							pssm_coord = (directional_lights.data[i].shadow_matrix3 * v);
++							pssm_coord2 = (directional_lights.data[i].shadow_matrix3 * v);
+ 							pssm_blend = half(smoothstep(directional_lights.data[i].shadow_split_offsets.y - directional_lights.data[i].shadow_split_offsets.y * 0.1, directional_lights.data[i].shadow_split_offsets.y, depth_z));
+ 							// Adjust shadow blur with reference to the first split to reduce discrepancy between shadow splits.
+ 							blur_factor2 = directional_lights.data[i].shadow_split_offsets.x / directional_lights.data[i].shadow_split_offsets.z;
+ 						} else if (depth_z < directional_lights.data[i].shadow_split_offsets.z) {
+ 							vec4 v = vec4(vertex, 1.0);
+ 							BIAS_FUNC(v, 3)
+-							pssm_coord = (directional_lights.data[i].shadow_matrix4 * v);
++							pssm_coord2 = (directional_lights.data[i].shadow_matrix4 * v);
+ 							pssm_blend = half(smoothstep(directional_lights.data[i].shadow_split_offsets.z - directional_lights.data[i].shadow_split_offsets.z * 0.1, directional_lights.data[i].shadow_split_offsets.z, depth_z));
+ 							// Adjust shadow blur with reference to the first split to reduce discrepancy between shadow splits.
+ 							blur_factor2 = directional_lights.data[i].shadow_split_offsets.x / directional_lights.data[i].shadow_split_offsets.w;
+@@ -2056,10 +2053,16 @@
+ 							blur_factor2 = 1.0;
+ 						}
+ 
+-						pssm_coord /= pssm_coord.w;
++					}
+ 
+-						half shadow2 = half(sample_directional_pcf_shadow(directional_shadow_atlas, scene_data.directional_shadow_pixel_size * directional_lights.data[i].soft_shadow_scale * (blur_factor2 + (1.0 - blur_factor2) * blend_split_weight), pssm_coord, scene_data.taa_frame_count));
+-						shadow = mix(shadow, shadow2, pssm_blend);
++					// Share one filter call site across the primary and transition cascade.
++					uint cascade_count = pssm_blend > half(0.0) ? 2u : 1u;
++					for (uint cascade = 0u; cascade < cascade_count; cascade++) {
++						vec4 coord = cascade == 0u ? pssm_coord : pssm_coord2;
++						float blur = cascade == 0u ? blur_factor : blur_factor2;
++						coord /= coord.w;
++						half filtered = half(sample_directional_pcf_shadow(directional_shadow_atlas, scene_data.directional_shadow_pixel_size * directional_lights.data[i].soft_shadow_scale * (blur + (1.0 - blur) * blend_split_weight), coord, scene_data.taa_frame_count));
++						shadow = cascade == 0u ? filtered : mix(shadow, filtered, pssm_blend);
+ 					}
+ 
+ #ifdef USE_LIGHTMAP

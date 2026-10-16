@@ -252,6 +252,12 @@ static func compose(code: String, lit := true, wrap := false) -> String:
 		code = code.replace("#define EI_FOLIAGE_WIND\n", "#define EI_FOLIAGE_WIND\n#define EI_FOLIAGE_WIND_DISABLED\n")
 	if lit and not wrap and not code.contains("#define EI_FIGURE_LIGHT"):
 		code = code.replace("shader_type spatial;", "shader_type spatial;\n#define EI_FIGURE_LIGHT")
+	if lit and baked_pass_lights_supported() and not code.contains("#define EI_GRASS_LIGHT") \
+			and not code.contains("#define EI_SOLID_COVER_LIGHT"):
+		# These materials already include the selected original lights in D/S.
+		# Grass keeps its extra per-light transmission; ordinary Godot materials
+		# never opt in. The light flag is cleared when extra highlights are on.
+		code = code.replace("render_mode ", "render_mode skip_custom_baked_omni_lights, ")
 	if lit:
 		# A scalar varying still consumes a complete GPU location. Keep the
 		# same interpolated values in one vec4 so the enhanced water shader
@@ -536,6 +542,36 @@ const LOCAL_SPECULAR := 0.012
 const LOCAL_SPECULAR_PASS := 0.0128
 ## Point lights the GLES3 pass correction may need (update_pass_lights).
 const POINT_LIGHT_GROUP := &"ei_point_lights"
+const PASS_POSITION_NAMES := [&"ei_pl0", &"ei_pl1", &"ei_pl2", &"ei_pl3"]
+const PASS_COLOUR_NAMES := [&"ei_plc0", &"ei_plc1", &"ei_plc2", &"ei_plc3"]
+static var _pass_positions: Array[Vector4] = []
+static var _pass_colours: Array[Vector4] = []
+static var _baked_pass_lights := {} # instance id -> WeakRef; never extends a light's lifetime
+
+
+static func baked_pass_lights_supported() -> bool:
+	return RenderingServer.get_current_rendering_method() == "mobile" \
+		and OS.has_feature("ei_mobile_baked_omni_lighting")
+
+
+static func _set_baked_pass_lights(selected: Dictionary) -> void:
+	for id: int in _baked_pass_lights.keys():
+		if selected.has(id):
+			continue
+		var light: Object = (_baked_pass_lights[id] as WeakRef).get_ref()
+		if light:
+			light.call("set_custom_baked", false)
+		_baked_pass_lights.erase(id)
+	for id: int in selected:
+		if _baked_pass_lights.has(id):
+			continue
+		var light: OmniLight3D = selected[id]
+		light.call("set_custom_baked", true)
+		_baked_pass_lights[id] = weakref(light)
+
+
+static func clear_baked_pass_lights() -> void:
+	_set_baked_pass_lights({})
 
 
 ## Switches a LocalLighting light's shadow and keeps its marker in step.
@@ -548,8 +584,20 @@ static func set_local_shadow(l: Light3D, enabled: bool) -> void:
 ## Once per frame: the PASS_LIGHTS original point lights that reach nearest
 ## to `focus`, shared by the vertex evaluator on every renderer. Enhanced
 ## local lights are left out and keep their optional accumulating response.
-static func update_pass_lights(tree: SceneTree, focus: Vector3) -> void:
+static func update_pass_lights(tree: SceneTree, focus: Vector3, sun_light: DirectionalLight3D = null) -> void:
 	ensure_globals()
+	if _pass_positions.is_empty():
+		_pass_positions.resize(PASS_LIGHTS)
+		_pass_colours.resize(PASS_LIGHTS)
+		_pass_positions.fill(Vector4(INF, INF, INF, INF))
+		_pass_colours.fill(Vector4(INF, INF, INF, INF))
+	# With no sun, mapped lights also supply the base diffuse draw. Optional
+	# highlights, leaf transmission and wet surfaces need their light() calls.
+	var bake_mapped := baked_pass_lights_supported() and sun_light != null \
+		and sun_light.is_visible_in_tree() and sun_light.light_energy > 0.0 \
+		and _cloud_sun_direction.length_squared() > 0.5 \
+		and not on("gfx_materials") and not on("gfx_foliage_light") and not on("gfx_weather_surfaces")
+	var selected := {}
 	var found: Array = []
 	for n: Node in tree.get_nodes_in_group(POINT_LIGHT_GROUP):
 		var l := n as OmniLight3D
@@ -566,13 +614,21 @@ static func update_pass_lights(tree: SceneTree, focus: Vector3) -> void:
 		var col := Vector4.ZERO
 		if i < found.size():
 			var l: OmniLight3D = found[i][1]
+			if bake_mapped and l.omni_attenuation == 0.0 and not l.shadow_enabled \
+					and l.light_projector == null and not l.distance_fade_enabled and not l.light_negative:
+				selected[l.get_instance_id()] = l
 			var p := l.global_position
 			pos = Vector4(p.x, p.y, p.z, l.omni_range)
 			# light_code's col = min(srgb(LIGHT_COLOR / π), 1)
 			var c := (l.light_color.srgb_to_linear() * l.light_energy).linear_to_srgb()
 			col = Vector4(minf(c.r, 1.0), minf(c.g, 1.0), minf(c.b, 1.0), 1.0 if is_equal_approx(l.light_specular, ADDITIVE_SPECULAR) else 0.0)
-		RenderingServer.global_shader_parameter_set(StringName("ei_pl%d" % i), pos)
-		RenderingServer.global_shader_parameter_set(StringName("ei_plc%d" % i), col)
+		if _pass_positions[i] != pos:
+			_pass_positions[i] = pos
+			RenderingServer.global_shader_parameter_set(PASS_POSITION_NAMES[i], pos)
+		if _pass_colours[i] != col:
+			_pass_colours[i] = col
+			RenderingServer.global_shader_parameter_set(PASS_COLOUR_NAMES[i], col)
+	_set_baked_pass_lights(selected)
 
 
 static func mark_additive(l: Light3D) -> void:
@@ -596,13 +652,28 @@ vec3 ei_draw_colour(vec3 albedo, vec3 d, vec3 s) {
 vec3 ei_draw_factor(vec3 albedo, vec3 d, vec3 s, float shadow) {
 	return ei_lin(ei_draw_colour(albedo, d, s) * shadow) / max(albedo, vec3(1e-4));
 }
-bool ei_mapped_light(vec3 direction, float falloff, vec3 vpos, mat4 view) {
+bool ei_mapped_light(vec3 direction, float attenuation, vec3 vpos, mat4 view) {
 	vec4 pls[4] = vec4[4](ei_pl0, ei_pl1, ei_pl2, ei_pl3);
+	// Mobile passes half-precision LIGHT and ATTENUATION to custom lighting.
+	// Normalize the promoted direction and compare the forward falloff: its
+	// inverse is ill-conditioned near 1 and can mistake an already packed
+	// light for an overflow light, adding its per-pixel fallback a second time.
+#if CURRENT_RENDERER == RENDERER_MOBILE
+	direction = normalize(direction);
+#else
+	float falloff = 1.0 - sqrt(max(1.0 - sqrt(clamp(attenuation, 0.0, 1.0)), 0.0));
+#endif
 	for (int i = 0; i < 4; i++) {
 		if (pls[i].w <= 0.0) { continue; }
 		vec3 v = (view * vec4(pls[i].xyz, 1.0)).xyz - vpos;
 		float d = length(v);
-		if (dot(v / max(d, 1e-6), direction) > 0.99999 && abs(d / pls[i].w - sqrt(max(1.0 - falloff, 0.0))) < 0.01) { return true; }
+		float r = d / pls[i].w;
+#if CURRENT_RENDERER == RENDERER_MOBILE
+		float a = max(1.0 - r*r*r*r, 0.0);
+		if (dot(v / max(d, 1e-6), direction) > 0.99999 && abs(a*a - attenuation) < 0.001) { return true; }
+#else
+		if (dot(v / max(d, 1e-6), direction) > 0.99999 && abs(r - sqrt(max(1.0 - falloff, 0.0))) < 0.01) { return true; }
+#endif
 	}
 	return false;
 }
@@ -658,13 +729,13 @@ void light() {
 #endif
 		DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_draw_factor(ei_alb, d, s, shadow));
 	} else {
-		// Godot's attenuation0 falloff: (1 - (distance/radius)^4)^2.
-		float a = 1.0 - sqrt(max(1.0 - sqrt(clamp(ATTENUATION, 0.0, 1.0)), 0.0));
-		bool mapped = ei_mapped_light(LIGHT, a, ei_vpos, VIEW_MATRIX);
+		bool mapped = ei_mapped_light(LIGHT, ATTENUATION, ei_vpos, VIEW_MATRIX);
 		bool have_sun = dot(ei_sun_dir, ei_sun_dir) > 0.5;
 		if (mapped && !have_sun) {
 			DIFFUSE_LIGHT = max(DIFFUSE_LIGHT, ei_draw_factor(ei_alb, d, s, 1.0));
 		} else if (!mapped) {
+			// Godot's attenuation0 falloff: (1 - (distance/radius)^4)^2.
+			float a = 1.0 - sqrt(max(1.0 - sqrt(clamp(ATTENUATION, 0.0, 1.0)), 0.0));
 			// The native list has no four-light limit. These remaining Godot
 			// passes cannot recover its full vertex max/shadow, so retain a
 			// bounded fallback while using the traced two-channel operation.

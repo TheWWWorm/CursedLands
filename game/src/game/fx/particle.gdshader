@@ -16,7 +16,9 @@ shader_type spatial;
 render_mode unshaded, blend_mix, depth_draw_never, cull_disabled, skip_vertex_transform, shadows_disabled;
 
 uniform sampler2D tex : source_color, filter_linear_mipmap, repeat_disable;
+#ifndef EI_PARTICLE_NO_DEPTH
 uniform sampler2D depth_tex : hint_depth_texture, filter_nearest;
+#endif
 uniform float soft_distance = 0.35;   // 0: off (option gfx_soft_particles)
 uniform float lerp_t = 1.0;
 // Remake options, set by ParticleFx each frame: light_tint = the scene light
@@ -53,6 +55,7 @@ void vertex() {
 void fragment() {
 	vec4 t = texture(tex, UV);
 	float soft = 1.0;
+#ifndef EI_PARTICLE_NO_DEPTH
 	if (through_alpha > 0.0) {
 		float depth = texture(depth_tex, SCREEN_UV).r;
 #if CURRENT_RENDERER == RENDERER_COMPATIBILITY
@@ -76,6 +79,7 @@ void fragment() {
 		soft = clamp((scene - (-VERTEX.z)) / range, 0.0, 1.0);
 		soft = soft * soft * (3.0 - 2.0 * soft);
 	}
+#endif
 	// Never negative, alpha within 0..1: blend_mix with alpha outside it
 	// would write a negative colour into the HDR buffer (bloom, TAA).
 	ALBEDO = max(t.rgb * COLOR.rgb * light_tint * boost, vec3(0.0));
