@@ -35,14 +35,14 @@ class BakeJob extends RefCounted:
 static func available()->bool:
 	var args:=OS.get_cmdline_user_args()
 	return DisplayServer.get_name()!="headless" and ClassDB.class_exists("TerrainColorField") \
-		and Portability.compatibility() and not args.has("--ei-script-terrain") \
+		and RenderingServer.get_current_rendering_method() in ["gl_compatibility", "mobile"] and not args.has("--ei-script-terrain") \
 		and (OS.has_feature("android") or args.has("--ei-baked-terrain"))
 
 static func create(t:EITerrain)->TerrainColorCache:
 	var cache:=TerrainColorCache.new();cache.name="TerrainColorCache";cache.terrain=t;t.add_child(cache);cache.refresh();return cache
 
 func refresh()->void:
-	var enabled:=Gfx.on("gfx_terrain") and not Gfx.on("gfx_soft_ground")
+	var enabled:=Gfx.on("gfx_terrain") and (not Gfx.on("gfx_soft_ground") or not Portability.compatibility())
 	if not enabled:
 		clear();_enabled=false;return
 	_enabled=true
@@ -51,9 +51,10 @@ func refresh()->void:
 		for i in terrain._detail_atlases.get_layers():
 			var pixels:=terrain._detail_atlases.get_layer_data(i)
 			if pixels==null:_enabled=false;return
+			if pixels.is_compressed() and pixels.decompress()!=OK:_enabled=false;return
 			images.append(pixels)
 		_field=ClassDB.instantiate("TerrainColorField")
-		if not _field.configure(images,terrain.land_tile,Vector2i(terrain.sectors_x*16,terrain.sectors_y*16),terrain.texture_size,terrain.tile_size,EITerrain.TERRAIN_GUTTER,false):
+		if not _field.configure(images,terrain.land_tile,Vector2i(terrain.sectors_x*16,terrain.sectors_y*16),terrain.texture_size,terrain.tile_size,EITerrain.TERRAIN_GUTTER,not Portability.compatibility()):
 			_field=null;_enabled=false;return
 		_sectors.clear()
 		for node in terrain.get_children():

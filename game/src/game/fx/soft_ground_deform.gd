@@ -69,6 +69,8 @@ func _restore(key: Vector2i) -> void:
 	if node:
 		node.mesh = rec.source
 		node.extra_cull_margin = rec.margin
+		if node.get_parent() is EITerrainSector:
+			node.get_parent().set_deformation_active(false)
 	var shadow := (rec.shadow as WeakRef).get_ref() as MeshInstance3D
 	if shadow: shadow.free()
 	sectors.erase(key)
@@ -328,6 +330,8 @@ func _sector(key: Vector2i) -> Dictionary:
 	var node: MeshInstance3D = sector.deformation_surface() if sector is EITerrainSector else sector as MeshInstance3D
 	if node == null or node.mesh == null:
 		return {}
+	if sector is EITerrainSector:
+		sector.set_deformation_active(true)
 	var image := Image.create(RESOLUTION, RESOLUTION, false, Image.FORMAT_RGBAF)
 	image.fill(Color(0, 0, 0, 0))
 	var layer := shared_field().allocate(key, image)

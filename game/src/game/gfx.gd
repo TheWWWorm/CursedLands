@@ -246,6 +246,8 @@ void ei_vertex_colours(vec3 p, vec3 n, vec3 e, float kw, out vec3 d, out vec3 s)
 ## and the map objects too.
 static func compose(code: String, lit := true, wrap := false) -> String:
 	ensure_globals()
+	if RenderingServer.get_current_rendering_method() == "mobile":
+		code = TerrainSamplingShader.compact(code)
 	if code.contains("#define EI_FOLIAGE_WIND") and (not _foliage_wind or code.contains("#define EI_FOLIAGE_STILL")):
 		code = code.replace("#define EI_FOLIAGE_WIND\n", "#define EI_FOLIAGE_WIND\n#define EI_FOLIAGE_WIND_DISABLED\n")
 	if lit and not wrap and not code.contains("#define EI_FIGURE_LIGHT"):

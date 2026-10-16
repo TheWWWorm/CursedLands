@@ -17,6 +17,7 @@ var _bounds: AABB
 var _parts: Array[MeshInstance3D] = []
 var _meshes: Array[ArrayMesh] = []
 var _subdivided := false
+var _deformation_active := false
 var tile_origin := Vector2i.ZERO
 
 
@@ -63,7 +64,15 @@ func get_surface_override_material(_surface: int) -> Material:
 func set_surface_override_material(_surface: int, material: Material) -> void:
 	_override = material
 	for piece in _parts:
-		piece.set_surface_override_material(0, material)
+		piece.set_surface_override_material(0, null if _deformation_active else material)
+
+
+func set_deformation_active(active: bool) -> void:
+	# A colour-cache override must not hide the mesh's live track material.
+	# Retain the resident cache so expiry can restore it without another bake;
+	# uploads, eviction and option changes may still update it while suspended.
+	_deformation_active = active
+	set_surface_override_material(0, _override)
 
 
 func deformation_surface() -> MeshInstance3D:
@@ -99,7 +108,7 @@ func _add_piece(arrays: Array) -> void:
 	var piece := MeshInstance3D.new()
 	piece.mesh = mesh
 	piece.layers = _layers
-	piece.set_surface_override_material(0, _override)
+	piece.set_surface_override_material(0, null if _deformation_active else _override)
 	add_child(piece)
 	_parts.append(piece)
 
