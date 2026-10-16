@@ -1,6 +1,6 @@
 # Cursed Lands reusable trailer
 
-Revision 4 is a 65-second native-game trailer: 3,900 frames, 3840 × 2160, 60 fps, SDR Rec.709. It uses the original “Cool” music and native game sounds, without narration. Titles are supplied in English, Russian and German. The English master is `Cursed-Lands-Trailer-v4-en-2160p60.mp4`; older deliveries remain intact.
+Revision 5 is a 69.5-second native-game trailer: 4,170 frames, 3840 × 2160, 60 fps, SDR Rec.709. It uses the original “Cool” music and native game sounds, without narration. Titles are supplied in English, Russian and German. The English master is `Cursed-Lands-Trailer-v5-en-2160p60.mp4`; older deliveries remain intact.
 
 ## Re-shoot or edit
 
@@ -26,11 +26,11 @@ The bundle's paths resolve relative to its configuration. Original game data and
 
 ## Direct and review shots
 
-`shots` in `trailer.json` defines source recordings. `edit` selects a source `shot`, zero-based `start` frame, exact `frames` duration and optional title for each segment. An empty title leaves the action unobscured. `energy` adjusts the continuous music level for calm, action, feature and ending sections. The current validator accepts 55–65 seconds and requires unique campaign encounters, including four first-person and four third-person fights.
+`shots` in `trailer.json` defines source recordings. `edit` selects a source `shot`, zero-based `start` frame, exact `frames` duration and optional title for each segment. An empty title leaves the action unobscured. `energy` adjusts the continuous music level for calm, action, feature and ending sections. `sfx_gain` sets a clip’s game-sound level; `sfx_mute_head`, `sfx_fade_in` and `sfx_fade_out` are seconds within that edit segment. The troll clip mutes its first 0.7 seconds of game audio and fades it back over 0.3 seconds. The continuous music remains audible, and clean recordings are preserved. `editorial.duration_range_seconds` bounds the total edit (55–75 seconds for this cut) and the validator requires unique campaign encounters, including four first-person and four third-person fights.
 
 `zone` and `campaign` select native map data. `hour` fixes the light and `seed` fixes the initial random seed. `focus` is a terrain XY point with `focus_height`; `focus_world` is an absolute Godot XYZ target. Godot Z is negative map Y. `eye_from`/`eye_to` are target-relative offsets; `eye_world_from`/`eye_world_to` are absolute positions. Scenic camera motion uses smooth easing. `fov` defaults to 55 degrees.
 
-`probe` saves alternate angles and action start/middle/end frames. `scout_views` supplies named absolute eyes/targets; `scout_locations` supplies map XY centers, terrain-relative lifts and eye offsets. Remove scouting entries before recording. Native map images are north-up: pixel Y is `1 - map_y / map_height`. Review the full take, including camera clearance and impact frames; valid coordinates alone do not make a useful shot.
+`probe` saves alternate angles and action start/middle/end frames. `scout_views` supplies named absolute eyes/targets; `scout_locations` supplies map XY centers, terrain-relative lifts and eye offsets. Its optional `eye_map: [x, y, height]` places the test camera above the terrain at its own coordinates, helping review low camera clearance; the log records exact eye/target positions for the final path. Remove scouting entries before recording. Native map images are north-up: pixel Y is `1 - map_y / map_height`. Review the full take, including camera clearance and impact frames; valid coordinates alone do not make a useful shot.
 
 Direct views use the native first/third-person camera. `track_enemy` smoothly follows the real target; `camera_response` controls heading/tilt smoothing and `camera_distance` sets third-person distance. `minimum_tilt` can constrain first-person framing. `advance_frames` provides continuous movement; `minimum_advance_distance` rejects blocked walks. The recorder maintains the native direct-input watchdog during slow offline rendering, so held input does not expire between simulation frames. Physical mouse input cannot steer the capture camera.
 
@@ -42,14 +42,14 @@ Enemy entries identify the original positive MOB `nid` and matching `prototype`.
 
 `wardrobe` provides regional equipment: Gipath leather/stone, Ingos Kania, Suslanger Hadagan, or late-expansion Kania armour. Material/model combinations are validated. Per-shot `equipment` records staged player attributes, skills and available weapons. The expansion's opening exception uses Kir's native trousers and starting dagger. The original prison camp and rejected opening locations remain excluded; Kir's first map is deliberately included at the user's request.
 
-All new takes use Ultra graphics, automatic quality disabled, native 100% render scale, highest clouds, mirror reflections, Ultra shadows, 16× texture filtering and MSAA 4× + SMAA. Each receipt records resolved options. HD Lands sources mount `community.hd-lands-textures@1.5.0`; its credited author is **Atom**. The contiguous graphics sequence shows clouds, rain/water rings, grass, currents, waterfalls and HD terrain. Rain takes verify that the native surface-rain state and shelter mask are ready. The currents take checks the live flow field at its camera target. Later footage returns to combat before the end card.
+All new takes use Ultra graphics, automatic quality disabled, native 100% render scale, highest clouds, mirror reflections, Ultra shadows, 16× texture filtering and MSAA 4× + SMAA. Each receipt records resolved options. HD Lands sources mount `community.hd-lands-textures@1.5.0`; its credited author is **Atom**. The contiguous graphics sequence shows clouds, rain/water rings, grass, currents, waterfalls and HD terrain. Rain takes verify that the native surface-rain state and shelter mask are ready. The currents take checks the live flow field at its camera target. Later footage returns to combat, then closes with two uncaptioned scenic passes before the end card.
 
-## Revision 4 footage
+## Current footage
 
 | Source | View | Content |
 | --- | --- | --- |
 | 33-tiger-melee | First person | Original Ingos white tiger, steel battle axe |
-| 34-troll-melee | Third person | Original blue troll on the snow path |
+| 50-troll-open | Third person | Original blue troll in an open snowy clearing, wider camera |
 | 35-ogre-melee | Third person | Suslanger ogre among palms, adamantium battle axe |
 | 36-fortress-third | Third person | Dar-Ulgorn canal guard, wider camera and smooth tracking |
 | 37-dragon-spell | Elevated | Island of Death dragon, lightning and water reflection |
@@ -61,9 +61,12 @@ All new takes use Ultra graphics, automatic quality disabled, native 100% render
 | 46-trials-snow | Arena | Current snowy Trials of the Allods map, live fight |
 | 47-banshee-melee | First person | Two Rivers banshee with a meteoric sword |
 | 48-orc-melee | First person | Original Big Lake orc camp |
-| 49-dead-city-spells | Isometric | Native skeleton encounter and spell impacts |
+| 49-dead-city-spells | Isometric | Native skeleton encounter and spell impacts, without a feature title |
+| 51-ruins-low | Scenic | Low pass through Gipath’s river ruins |
+| 52-castle-aerial | Scenic | Aerial pass over Ingos’s castle and lake |
+| 53-ingos-opening | Scenic | Four-second opening across Ingos’s lake |
 
-The earlier Ingos lake/castle, waterfall, HD Lands, isometric co-op, wiki, gamepad and end-card sources remain available. Tiger, troll and ogre encounters remain in the cut with new successful melee recordings. Rejected sources remain archived but are excluded from the edit.
+The opening lasts four seconds. Suslanger sits near the middle, after the dragon encounter. The final two shots change from a low ruins pass to an aerial castle/lake view before the existing five-second end card. The earlier waterfall, HD Lands, isometric co-op, wiki, gamepad and end-card sources remain available. Tiger, troll and ogre encounters remain in the cut with new successful melee recordings. Rejected sources remain archived but are excluded from the edit.
 
 Both co-op scenes launch an actual second ENet client. The new first-person take sends a native guest attack command, shows the partner in the same frame and records client identity/movement. The caption states the native campaign limit: **up to 6 players**. Two players are present in these recordings. The private recording connections allow longer loading timeouts for offline 4K rendering.
 

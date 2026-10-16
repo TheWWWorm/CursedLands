@@ -231,7 +231,12 @@ func _run() -> void:
 			for view: Dictionary in spec.scout_locations:
 				var at:=Vector2(float(view.center[0]),float(view.center[1]))
 				var target:=Vector3(at.x,session.world.ground_at(at.x,at.y)+float(view.get("lift",1.0)),-at.y)
-				game.rig.hold_view(target+_vector(view.eye),target)
+				var eye:=target+_vector(view.get("eye",[0,3,10]))
+				if view.has("eye_map"):
+					var e:Array=view.eye_map
+					eye=Vector3(float(e[0]),session.world.ground_at(float(e[0]),float(e[1]))+float(e[2]),-float(e[1]))
+				print("TRAILER_SCOUT ",JSON.stringify({"name":view.name,"eye":[eye.x,eye.y,eye.z],"target":[target.x,target.y,target.z]}))
+				game.rig.hold_view(eye,target)
 				await frames(24)
 				await RenderingServer.frame_post_draw
 				get_viewport().get_texture().get_image().save_png(out+"-scout-"+String(view.name)+".png")

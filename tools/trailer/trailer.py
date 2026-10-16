@@ -7,6 +7,7 @@ game runtime are supplied explicitly in a local config, never downloaded.
 from __future__ import annotations
 
 import argparse
+from array import array
 import hashlib
 import json
 import os
@@ -37,6 +38,34 @@ def digest(path):
         for block in iter(lambda: source.read(1024 * 1024), b""):
             h.update(block)
     return h.hexdigest()
+
+
+def edit_sfx(data, segment):
+    """Apply editable per-clip gain/fades to stereo 48 kHz PCM; preserve the clean take."""
+    gain = float(segment.get("sfx_gain", 1))
+    head = round(float(segment.get("sfx_mute_head", 0)) * 48000)
+    fade_in = round(float(segment.get("sfx_fade_in", 0)) * 48000)
+    fade_out = round(float(segment.get("sfx_fade_out", 0)) * 48000)
+    if gain == 1 and not (head or fade_in or fade_out):
+        return data
+    pcm = array("h", data)
+    if sys.byteorder != "little":
+        pcm.byteswap()
+    frames = len(pcm) // 2
+    for frame in range(frames):
+        level = gain
+        if frame < head:
+            level = 0
+        elif fade_in:
+            level *= min(1, (frame - head) / fade_in)
+        if fade_out:
+            level *= min(1, (frames - 1 - frame) / fade_out)
+        for channel in (0, 1):
+            i = frame * 2 + channel
+            pcm[i] = max(-32768, min(32767, round(pcm[i] * level)))
+    if sys.byteorder != "little":
+        pcm.byteswap()
+    return pcm.tobytes()
 
 
 def validate(m):
@@ -78,13 +107,18 @@ def validate(m):
         assert re.fullmatch(r"[a-z0-9][a-z0-9-]*",e["id"])
         assert e["shot"] in source and isinstance(e["frames"],int) and e["frames"]>0
         assert e.get("energy", "action") in ("calm", "action", "feature", "end")
+        assert 0 <= float(e.get("sfx_gain", 1)) <= 4
+        for field in ("sfx_mute_head", "sfx_fade_in", "sfx_fade_out"):
+            assert 0 <= float(e.get(field, 0)) <= e["frames"] / 60, field
+        assert float(e.get("sfx_mute_head", 0)) + float(e.get("sfx_fade_in", 0)) <= e["frames"] / 60
         start=e.get("start",0)
         assert isinstance(start,int) and start>=0 and start+e["frames"]<=source[e["shot"]]["frames"], "Edit exceeds its clean take"
         key=e.get("title",source[e["shot"]]["title"])
         assert not key or key in m["text"]
     total = sum(e["frames"] for e in edit)
-    assert 55 * 60 <= total <= 65 * 60, "Keep the main cut about one minute"
     editorial = m.get("editorial", {})
+    low, high = editorial.get("duration_range_seconds", [55, 65])
+    assert 0 < low <= high and low * 60 <= total <= high * 60, "Cut exceeds its duration range"
     assert not {e["shot"] for e in edit}.intersection(editorial.get("excluded_from_edit", [])), "Rejected take in the edit"
     encounters = set()
     modes = {}
@@ -440,7 +474,7 @@ class Project:
                     start=segment.get("start",0)*800
                     assert source.getnframes()>=start+expected,(shot["id"],source.getnframes(),start+expected)
                     source.setpos(start)
-                    target.writeframes(source.readframes(expected))
+                    target.writeframes(edit_sfx(source.readframes(expected), segment))
         envelope=""
         if self.m['audio'].get('follow_edit_energy'):
             levels={"calm":0.62,"action":1.0,"feature":0.78,"end":0.9}

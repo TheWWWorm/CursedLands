@@ -1784,6 +1784,120 @@
         300
       ],
       "minimum_damage": 1
+    },
+    {
+      "frames": 300,
+      "kind": "combat",
+      "hour": 12,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.16,
+      "hud": false,
+      "hd": true,
+      "track_enemy": true,
+      "pre_roll": 0,
+      "approach": false,
+      "id": "50-troll-open",
+      "zone": "gz11k",
+      "camera": "third",
+      "wardrobe": "ingos",
+      "hero": [
+        443.3,
+        68.3
+      ],
+      "enemies": [
+        {
+          "nid": 3794,
+          "prototype": "TrollBlueF9"
+        }
+      ],
+      "title": "third",
+      "equipment": {
+        "str": 40,
+        "dex": 35,
+        "int": 25,
+        "skills": {
+          "melee": 100,
+          "archery": 60,
+          "elemental": 60
+        },
+        "exp_total": 30000,
+        "weapons": [
+          "battle axe.steel"
+        ]
+      },
+      "camera_distance": 5.8,
+      "minimum_damage": 5
+    },
+    {
+      "id": "51-ruins-low",
+      "frames": 180,
+      "zone": "gz8g",
+      "hour": 16,
+      "hide_party": true,
+      "hd": true,
+      "title": "gipath",
+      "focus_world": [
+        153,
+        14.524428,
+        -102
+      ],
+      "eye_world_from": [
+        139,
+        19.423677,
+        -86
+      ],
+      "eye_world_to": [
+        137,
+        19.5,
+        -89
+      ]
+    },
+    {
+      "id": "52-castle-aerial",
+      "frames": 180,
+      "zone": "gz11k",
+      "hour": 12,
+      "hide_party": true,
+      "hd": true,
+      "focus_world": [
+        290,
+        10,
+        -215
+      ],
+      "eye_world_from": [
+        235,
+        45,
+        -270
+      ],
+      "eye_world_to": [
+        246,
+        47,
+        -278
+      ],
+      "title": "ingos"
+    },
+    {
+      "id": "53-ingos-opening",
+      "frames": 270,
+      "zone": "gz11k",
+      "hour": 12,
+      "title": "return",
+      "focus_world": [
+        255,
+        9,
+        -184
+      ],
+      "eye_world_from": [
+        165,
+        12,
+        -240
+      ],
+      "eye_world_to": [
+        177,
+        14,
+        -247
+      ]
     }
   ],
   "text": {
@@ -2211,23 +2325,27 @@
     "25-touch-city": "Native touch menu in the Dead City, with Gipath equipment.",
     "32-dragon-first": "Island of Death, Lost in Astral gz32j: native red dragon 44432950 flying over the sea beside the island bridge. Player stands on the island road at the bridge landing, with Kania steel and a long crossbow. The offshore blue-dragon angle was rejected."
   },
-  "revision": 4,
+  "revision": 5,
   "edit": [
     {
-      "id": "01-03-ingos",
-      "shot": "03-ingos",
-      "frames": 120,
+      "id": "01-53-ingos-opening",
+      "shot": "53-ingos-opening",
+      "frames": 240,
       "start": 18,
       "title": "return",
       "energy": "calm"
     },
     {
-      "id": "02-34-troll-melee",
-      "shot": "34-troll-melee",
-      "frames": 150,
-      "start": 60,
+      "id": "02-50-troll-open",
+      "shot": "50-troll-open",
+      "frames": 180,
+      "start": 120,
       "title": "ingos_third",
-      "energy": "action"
+      "energy": "action",
+      "sfx_gain": 0.85,
+      "sfx_mute_head": 0.7,
+      "sfx_fade_in": 0.3,
+      "sfx_fade_out": 0.08
     },
     {
       "id": "03-33-tiger-melee",
@@ -2242,7 +2360,7 @@
       "shot": "49-dead-city-spells",
       "frames": 150,
       "start": 145,
-      "title": "tactical",
+      "title": "",
       "energy": "action"
     },
     {
@@ -2304,37 +2422,45 @@
     {
       "id": "12-39-kir-skeletons",
       "shot": "39-kir-skeletons",
-      "frames": 270,
-      "start": 110,
+      "frames": 240,
+      "start": 116,
       "title": "limbs",
       "energy": "action"
     },
     {
       "id": "13-37-dragon-spell",
       "shot": "37-dragon-spell",
-      "frames": 240,
-      "start": 0,
+      "frames": 210,
+      "start": 30,
       "title": "reflections",
       "energy": "action"
     },
     {
-      "id": "14-11-coop",
-      "shot": "11-coop",
+      "id": "14-35-ogre-melee",
+      "shot": "35-ogre-melee",
       "frames": 150,
+      "start": 60,
+      "title": "suslanger",
+      "energy": "action"
+    },
+    {
+      "id": "15-11-coop",
+      "shot": "11-coop",
+      "frames": 120,
       "start": 30,
       "title": "coop",
       "energy": "action"
     },
     {
-      "id": "15-40-coop-first",
+      "id": "16-40-coop-first",
       "shot": "40-coop-first",
-      "frames": 210,
+      "frames": 180,
       "start": 90,
       "title": "coop",
       "energy": "action"
     },
     {
-      "id": "16-48-orc-melee",
+      "id": "17-48-orc-melee",
       "shot": "48-orc-melee",
       "frames": 150,
       "start": 140,
@@ -2342,7 +2468,7 @@
       "energy": "action"
     },
     {
-      "id": "17-47-banshee-melee",
+      "id": "18-47-banshee-melee",
       "shot": "47-banshee-melee",
       "frames": 150,
       "start": 60,
@@ -2350,7 +2476,7 @@
       "energy": "action"
     },
     {
-      "id": "18-46-trials-snow",
+      "id": "19-46-trials-snow",
       "shot": "46-trials-snow",
       "frames": 210,
       "start": 30,
@@ -2358,7 +2484,7 @@
       "energy": "action"
     },
     {
-      "id": "19-41-touch-combat",
+      "id": "20-41-touch-combat",
       "shot": "41-touch-combat",
       "frames": 240,
       "start": 60,
@@ -2366,7 +2492,7 @@
       "energy": "action"
     },
     {
-      "id": "20-13-wiki",
+      "id": "21-13-wiki",
       "shot": "13-wiki",
       "frames": 90,
       "start": 60,
@@ -2374,7 +2500,7 @@
       "energy": "feature"
     },
     {
-      "id": "21-15-gamepad",
+      "id": "22-15-gamepad",
       "shot": "15-gamepad",
       "frames": 90,
       "start": 30,
@@ -2382,23 +2508,31 @@
       "energy": "feature"
     },
     {
-      "id": "22-36-fortress-third",
+      "id": "23-36-fortress-third",
       "shot": "36-fortress-third",
-      "frames": 180,
-      "start": 110,
+      "frames": 150,
+      "start": 128,
       "title": "",
       "energy": "action"
     },
     {
-      "id": "23-35-ogre-melee",
-      "shot": "35-ogre-melee",
-      "frames": 180,
-      "start": 50,
-      "title": "suslanger",
-      "energy": "action"
+      "id": "24-51-ruins-low",
+      "shot": "51-ruins-low",
+      "frames": 150,
+      "start": 15,
+      "title": "",
+      "energy": "calm"
     },
     {
-      "id": "24-22-endcard",
+      "id": "25-52-castle-aerial",
+      "shot": "52-castle-aerial",
+      "frames": 150,
+      "start": 15,
+      "title": "",
+      "energy": "calm"
+    },
+    {
+      "id": "26-22-endcard",
       "shot": "22-endcard",
       "frames": 300,
       "start": 0,
@@ -2420,7 +2554,12 @@
       "14-touch",
       "17-rain-tactical",
       "19-ogre-tactical",
-      "26-lava-first"
+      "26-lava-first",
+      "34-troll-melee"
+    ],
+    "duration_range_seconds": [
+      55,
+      75
     ]
   }
 }
