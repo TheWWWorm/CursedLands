@@ -1470,7 +1470,7 @@
     "25-touch-city": "Native touch menu in the Dead City, with Gipath equipment.",
     "32-dragon-first": "Island of Death, Lost in Astral gz32j: native red dragon 44432950 flying over the sea beside the island bridge. Player stands on the island road at the bridge landing, with Kania steel and a long crossbow. The offshore blue-dragon angle was rejected."
   },
-  "revision": 2,
+  "revision": 3,
   "edit": [
     {
       "id": "01-03-ingos",
@@ -1487,14 +1487,6 @@
       "start": 0,
       "title": "ingos_third",
       "energy": "action"
-    },
-    {
-      "id": "03-01-return",
-      "shot": "01-return",
-      "frames": 90,
-      "start": 60,
-      "title": "gipath",
-      "energy": "calm"
     },
     {
       "id": "04-23-dead-city",
@@ -1529,9 +1521,17 @@
       "energy": "calm"
     },
     {
+      "id": "r3-20-tiger-first",
+      "shot": "20-tiger-first",
+      "frames": 180,
+      "start": 0,
+      "title": "",
+      "energy": "action"
+    },
+    {
       "id": "08-24-dragon-valley",
       "shot": "24-dragon-valley",
-      "frames": 240,
+      "frames": 210,
       "start": 0,
       "title": "",
       "energy": "action"
@@ -1565,7 +1565,7 @@
       "shot": "27-orcs-first",
       "frames": 180,
       "start": 0,
-      "title": "",
+      "title": "gipath",
       "energy": "action"
     },
     {
@@ -1575,6 +1575,14 @@
       "start": 60,
       "title": "",
       "energy": "calm"
+    },
+    {
+      "id": "r3-18-ogre-third",
+      "shot": "18-ogre-third",
+      "frames": 180,
+      "start": 0,
+      "title": "",
+      "energy": "action"
     },
     {
       "id": "14-28-banshee-first",
@@ -1644,8 +1652,8 @@
   "editorial": {
     "unique_combat_encounters": true,
     "minimum_mode_encounters": {
-      "first": 3,
-      "third": 3,
+      "first": 4,
+      "third": 4,
       "isometric": 2
     },
     "excluded_from_edit": [
@@ -1654,9 +1662,7 @@
       "10-third",
       "14-touch",
       "17-rain-tactical",
-      "18-ogre-third",
       "19-ogre-tactical",
-      "20-tiger-first",
       "26-lava-first"
     ]
   }
