@@ -3,7 +3,7 @@ extends RefCounted
 ## Content shared by the playable expedition and its balance simulations.
 ## Every fighter resolves to an unmodified original-game prototype.
 
-const VERSION := 2
+const VERSION := 3
 const WAVE_COUNT := 18
 const VICTORY_GOLD := 7
 const FAMILIES := [

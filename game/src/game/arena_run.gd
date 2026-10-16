@@ -19,6 +19,7 @@ var shop: Array[Dictionary] = []
 var boons: Array[String] = []
 var pact := ""
 var pact_rank := 0
+var shop_level := 0
 var rewards: Array[Dictionary] = []
 var history: Array[Dictionary] = []
 var last_result := {}
@@ -26,6 +27,7 @@ var next_uid := 1
 var rng := RandomNumberGenerator.new()
 var auto_save := true
 var save_error := false
+var last_evolutions: Array[int] = []
 var _undo: Array[Dictionary] = []
 
 
@@ -36,7 +38,8 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 	wave = 1; gold = 6; lives = 3; stage = "prepare"; next_uid = 1
 	army.clear(); shop.clear(); boons.clear(); rewards.clear(); history.clear(); _undo.clear()
 	last_result = {}
-	pact = ""; pact_rank = 0
+	pact = ""; pact_rank = 0; shop_level = 0
+	last_evolutions.clear()
 	rng.seed = run_seed
 	var families: Array = ArenaRules.STARTERS[starter].families
 	for i in families.size():
@@ -119,19 +122,54 @@ func _recruit(family: int, rank: int, investment: int, special := "") -> Diction
 	return entry
 
 
-func buy(index: int) -> String:
+func purchase_error(index: int) -> String:
 	if stage != "prepare": return RemakeText.t("Recruit between battles.")
 	if index < 0 or index >= shop.size() or int(shop[index].family) < 0: return RemakeText.t("This offer has already been recruited.")
 	var family := int(shop[index].family)
-	var cost := int(ArenaRules.FAMILIES[family].cost)
+	var rank := int(shop[index].get("rank", 0))
+	var cost := offer_cost(shop[index])
 	if gold < cost: return RemakeText.t("Not enough gold.")
-	if bench_count() >= bench_limit(): return RemakeText.t("Bench full. Deploy, evolve or sell a creature first.")
+	var matching := army.filter(func(entry): return entry.family == family and entry.rank == rank).size()
+	var needed := ArenaRules.evolution_copies(family, rank)
+	if bench_count() >= bench_limit() and (needed == 0 or matching + 1 < needed):
+		return RemakeText.t("Reserves full. Deploy or sell a creature first.")
+	return ""
+
+
+func buy(index: int) -> String:
+	var error := purchase_error(index)
+	if error: return error
+	var family := int(shop[index].family)
+	var cost := offer_cost(shop[index])
+	var rank := int(shop[index].get("rank", 0))
 	_checkpoint()
 	gold -= cost
-	_recruit(family, 0, cost)
+	_recruit(family, rank, cost)
 	shop[index] = {"family": -1, "locked": false}
+	combine_ready()
 	_touch()
 	return ""
+
+
+## A purchase and every resulting evolution are one undoable action. Prefer a
+## deployed copy, keeping its identity and position through chained evolutions.
+func combine_ready() -> void:
+	last_evolutions.clear()
+	if stage != "prepare": return
+	for family in ArenaRules.FAMILIES.size():
+		for rank in 2:
+			var needed := ArenaRules.evolution_copies(family, rank)
+			if needed == 0: continue
+			while true:
+				var matching := army.filter(func(entry): return entry.family == family and entry.rank == rank)
+				if matching.size() < needed: break
+				var kept: Dictionary = matching[0]
+				for entry: Dictionary in matching:
+					if entry.deployed:
+						kept = entry
+						break
+				_merge(kept)
+				last_evolutions.append(int(kept.uid))
 
 
 func refresh() -> String:
@@ -159,7 +197,34 @@ func _roll_shop(keep_lock: bool) -> void:
 		if keep_lock and i < old.size() and old[i].locked and int(old[i].family) >= 0:
 			shop.append(old[i])
 		else:
-			shop.append({"family": rng.randi_range(0, ArenaRules.FAMILIES.size() - 1), "locked": false})
+			var family := rng.randi_range(0, ArenaRules.FAMILIES.size() - 1)
+			var rank := 0
+			if shop_level > 0:
+				var roll := rng.randi_range(0, 99)
+				rank = (2 if roll < 10 else 1 if roll < 55 else 0) if shop_level == 2 else (1 if roll < 30 else 0)
+				rank = mini(rank, ArenaRules.FAMILIES[family].forms.size() - 1)
+			shop.append({"family": family, "rank": rank, "locked": false})
+
+
+func offer_cost(offer: Dictionary) -> int:
+	var base := int(ArenaRules.FAMILIES[int(offer.family)].cost)
+	return base + [0, 3, 8][int(offer.get("rank", 0))]
+
+
+func shop_upgrade_cost() -> int:
+	return [10, 18, 0][shop_level]
+
+
+func upgrade_shop() -> String:
+	if stage != "prepare": return RemakeText.t("Recruit between battles.")
+	if shop_level >= 2: return RemakeText.t("Recruitment is fully upgraded.")
+	if gold < shop_upgrade_cost(): return RemakeText.t("Not enough gold.")
+	gold -= shop_upgrade_cost()
+	shop_level += 1
+	_undo.clear() # The included refresh reveals new random offers.
+	_roll_shop(true)
+	_touch()
+	return ""
 
 
 func deploy(uid: int, point: Vector2) -> String:
@@ -234,8 +299,6 @@ func evolution_error(uid: int) -> String:
 	if entry.is_empty(): return RemakeText.t("Choose a creature from your army.")
 	var needed := ArenaRules.evolution_copies(int(entry.family), int(entry.rank))
 	if needed == 0: return RemakeText.t("This creature has reached its final form.")
-	var unlock := 4 if int(entry.rank) == 0 else 10
-	if wave < unlock: return RemakeText.t("This evolution unlocks at wave %d.") % unlock
 	if copies(entry).size() < needed: return RemakeText.t("Collect %d copies of this form to evolve.") % needed
 	return ""
 
@@ -245,18 +308,22 @@ func evolve(uid: int) -> String:
 	if error: return error
 	_checkpoint()
 	var entry := unit(uid)
+	_merge(entry)
+	_touch()
+	return ""
+
+
+func _merge(entry: Dictionary) -> void:
 	var needed := ArenaRules.evolution_copies(int(entry.family), int(entry.rank))
 	var consumed := 0
 	for other: Dictionary in copies(entry):
-		if other.uid == uid: continue
+		if other.uid == entry.uid: continue
 		entry.investment += other.investment
 		army.erase(other)
 		consumed += 1
 		if consumed == needed - 1: break
 	entry.rank += 1
 	entry.prototype = ArenaRules.prototype(entry.family, entry.rank)
-	_touch()
-	return ""
 
 
 func start_battle() -> String:
@@ -408,7 +475,7 @@ func snapshot() -> Dictionary:
 		"challenge": challenge, "starter": starter, "wave": wave, "gold": gold, "lives": lives,
 		"stage": stage, "army": army.duplicate(true), "shop": shop.duplicate(true),
 		"boons": boons.duplicate(), "rewards": rewards.duplicate(true), "history": history.duplicate(true),
-		"pact": pact, "pact_rank": pact_rank,
+		"pact": pact, "pact_rank": pact_rank, "shop_level": shop_level,
 		"last_result": last_result.duplicate(true), "next_uid": next_uid}
 
 
@@ -428,6 +495,7 @@ func restore(data: Dictionary) -> bool:
 	if int(data.version) > 1 and (not data.has("pact") or not data.has("pact_rank")): return false
 	var saved_pact = data.get("pact", "") if int(data.version) > 1 else ""
 	var saved_rank = data.get("pact_rank", 0) if int(data.version) > 1 else 0
+	if not _integer(data.get("shop_level", 0), 0, 2): return false
 	if not saved_pact is String or (not saved_pact.is_empty() and not ArenaRules.PACTS.has(saved_pact)): return false
 	if not _integer(saved_rank, 0, 2): return false
 	if saved_pact.is_empty() and int(saved_rank) != 0: return false
@@ -469,6 +537,8 @@ func restore(data: Dictionary) -> bool:
 	var locks := 0
 	for offer in data.shop:
 		if not offer is Dictionary or not _integer(offer.get("family"), -1, ArenaRules.FAMILIES.size() - 1) or not offer.get("locked") is bool: return false
+		if not _integer(offer.get("rank", 0), 0, 2): return false
+		if int(offer.family) >= 0 and int(offer.get("rank", 0)) >= ArenaRules.FAMILIES[int(offer.family)].forms.size(): return false
 		if offer.locked:
 			if int(offer.family) < 0: return false
 			locks += 1
@@ -503,12 +573,13 @@ func restore(data: Dictionary) -> bool:
 	wave = int(data.wave); gold = int(data.gold); lives = int(data.lives)
 	stage = "prepare" if data.stage == "fight" else String(data.stage)
 	army.assign(data.army.duplicate(true)); shop.assign(data.shop.duplicate(true)); boons.assign(data.boons)
-	pact = saved_pact; pact_rank = int(saved_rank)
+	pact = saved_pact; pact_rank = int(saved_rank); shop_level = int(data.get("shop_level", 0))
 	rewards.assign(data.rewards.duplicate(true)); history.assign(data.history.duplicate(true))
 	last_result = data.last_result.duplicate(true)
 	next_uid = int(data.next_uid)
 	for id in seen: next_uid = maxi(next_uid, int(id) + 1)
 	_undo.clear()
+	combine_ready()
 	return true
 
 

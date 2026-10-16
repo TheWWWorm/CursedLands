@@ -49,7 +49,7 @@ The shop, reserve shelf and selection-only detail layout remain as documented.
 ## Composition and interaction
 
 - Full-screen battlefield. The shop is an unboxed shelf across the top left.
-  Models, prices and owned-copy progress stay visible. Names appear on hover or
+  Models, prices, owned-copy progress and higher-tier badges stay visible. Names appear on hover or
   keyboard focus; tooltips provide full names, role, price and blocked reasons.
 - A small top-right badge carries wave and preparation/combat state. The encounter
   name and seed are in its tooltip. Combat adds an elapsed clock.
@@ -57,11 +57,14 @@ The shop, reserve shelf and selection-only detail layout remain as documented.
   lower-right group holds gold, lives and the single main action. Combat replaces
   Start with pause/speed controls and removes the recruitment shelf.
 - Selection opens one detail panel. It contains native stats and spells,
-  bench/sell actions and the next evolution. The evolution action stays outside
-  the scrolling content. Esc or right-click clears it.
-- The deployment boundary appears only while placing a selected creature. Rings
-  mark selection or hover; health bars identify the two sides. Enemies are
-  inspected directly on the field.
+  reserve/sell actions and the next automatic evolution. Return to reserves and
+  Sell stay outside the scrolling content. Esc or right-click clears it.
+- The deployment boundary appears only while placing a selected creature. Small corners
+  mark the selected or hovered model; persistent enemy circles are removed. Health
+  bars identify the two sides and show current/maximum HP above the line. Picking
+  uses current posed model bounds, including flying creatures. Hovering reveals
+  native stats and spells without opening the inspector. Native floating damage
+  numbers use the campaign atlas and the existing display option.
 - Clicking the army counter opens company details in that same optional rail:
   the selected pact, distinct eligible families, the support creature and owned
   expedition upgrades. Its flag is gold while the pact is active. There is no
@@ -77,8 +80,19 @@ The shop, reserve shelf and selection-only detail layout remain as documented.
 - A selected reserve can replace an ally directly by clicking that creature on
   the field. This works with both budgets full and remains undoable. Camp screens
   disable reserve/field selection, preserving focus on the reward decision.
-- Guide, company details, auto-arrange, undo and navigation share the corner menu. Instructions
-  appear during placement or when an action fails. There is no persistent help
+- A labelled Menu button opens a native framed panel with Continue, company
+  details, auto-arrange, undo, guide and navigation. It pauses active combat and
+  confines keyboard focus; closing it restores the previous pause state. Guide
+  content scrolls within a bounded panel, leaving Close visible.
+- Shop improvements have one compact shelf button. The optional dialog explains
+  current quality odds, the next price and the included refresh. Higher forms
+  remain the original game creatures; the shop never applies numeric buffs.
+- Empty reserve slots become return targets while a deployed creature is selected.
+  The reserve count and inspector action make the same operation discoverable.
+- Victory, defeat, final outcomes and camp choices use centered panels with content
+  driven height. An opaque surface and quiet backdrop separate the result from the
+  battlefield. Placement hints and health markers disappear for those decisions.
+- Instructions appear during placement or when an action fails. There is no persistent help
   footer, opponent list, progress strip or full-width header/reserve panel.
 
 The primary action uses an ivory serif label and the original thin bronze frame.
@@ -106,3 +120,19 @@ includes the shadow correction, close/default/wide and rotated captures, graphic
 option coverage, and exact physical-data equivalence. The
 [final review](../validation/arena-progression-review-2026-10-16.md) covers this
 pass; the earlier field review is historical evidence.
+
+## Resolution and input contract
+
+The field renders at the physical viewport resolution. The HUD uses a 1280×800
+reference canvas with scale max(1, min(width/1280, height/800)); its text, frames,
+portraits, spacing and hit targets enlarge together. Camera safe areas and world
+health feedback use the same scale. Font oversampling preserves crisp text.
+The minimum reviewed desktop layout is 1024×768; 1280×720 is also covered.
+
+Tooltips use this canvas, a 310-unit text measure and a 350 ms hover delay. They
+wrap and clamp to the window instead of opening unconstrained native tooltip
+windows. Visible creature bounds, not ground origins, drive selection.
+
+The [complete element audit](../validation/arena-ui-audit-2026-10-16.md) supersedes
+the earlier small-window usability review. It records retained and reworked
+controls, screenshot review and remaining limits.

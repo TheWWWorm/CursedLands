@@ -12,6 +12,7 @@ var footer := ""
 var cost := 3
 var copies := 0
 var copies_needed := 3
+var quality := 0
 var preview: WikiPreview
 
 
@@ -36,6 +37,11 @@ func _ready() -> void:
 	add_theme_stylebox_override("pressed", style(Color(0.2, 0.24, 0.22, 0.7), GOLD))
 	add_theme_stylebox_override("focus", style(Color(0, 0, 0, 0), PAPER))
 	add_theme_stylebox_override("disabled", StyleBoxEmpty.new())
+	if quality > 0:
+		var tier := _label(self, "II" if quality == 1 else "III", 16, GOLD)
+		tier.position = Vector2(8, 6)
+		tier.add_theme_color_override("font_shadow_color", Color.BLACK)
+		tier.add_theme_constant_override("shadow_offset_y", 2)
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side in ["left", "right", "top", "bottom"]: margin.add_theme_constant_override("margin_" + side, 4)
@@ -69,7 +75,7 @@ func _ready() -> void:
 	coin.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	price_row.add_child(coin)
 	_label(price_row, str(cost), 16, MUTED if disabled else GOLD)
-	if copies > 0:
+	if copies > 0 and copies_needed > 0:
 		var count := _label(price_row, "  %d/%d" % [mini(copies, copies_needed), copies_needed], 13, PAPER)
 		count.tooltip_text = RemakeText.t("Copies: %d/%d") % [copies, copies_needed]
 	var title := _label(self, heading if not heading.is_empty() else ArenaRules.title(prototype), 14, PAPER)

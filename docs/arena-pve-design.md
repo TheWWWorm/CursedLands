@@ -18,7 +18,21 @@ the final one pays 7 gold. Army capacity grows from 3 to 4/5/6/7 at waves
 4/7/10/13. The bench holds six, or nine with Pack train. Five offers appear per
 shop, or six with Well connected. Melee recruits cost 3 gold; shooters, bats and
 toads cost 4. Refresh costs
-2, or 1 with Quartermaster. One offer can be locked between shops.
+2, or 1 with Quartermaster. One offer can be locked between shops. Recruitment
+can also be improved for 10 gold, then 18 gold. Each improvement immediately
+refreshes unlocked offers and lasts for the expedition. It is available during
+preparation without a wave gate.
+
+| Shop | Tier I | Tier II | Tier III |
+| --- | --- | --- | --- |
+| 1 | 100% | 0% | 0% |
+| 2 | 70% | 30% | 0% |
+| 3 | 45% | 45% | 10% |
+
+Higher tiers are the same native forms used by evolution. Tier II costs 3 extra
+gold; tier III costs 8 extra. Toads have only two forms, so a tier III roll becomes
+their final form at the tier II price. Improving recruitment trades current army
+spending for stronger future offers; it does not increase creature stats.
 
 Camps follow waves 3, 6, 9, 12 and 15. The first camp commits the company to one
 pact for the run. Camps 9 and 15 offer its next support form, an unused shop/bench
@@ -30,7 +44,8 @@ currency offer.
 Boss camps at 6 and 12 offer a native Orc seer companion, an unused boon, or a
 life if injured (otherwise 12 gold). Companions join the permanent reserves and
 use ordinary army slots when deployed. A full bench can accept one temporary
-overflow creature; purchases remain blocked until a slot is freed. A second
+overflow creature; purchases remain blocked until a slot is freed, except when
+the purchase immediately completes a recipe and frees reserve space. A second
 overflow companion is disabled with a reason, leaving the other rewards usable.
 
 Defeat costs one life and no gold is paid. The entire army recovers for a retry of
@@ -44,9 +59,11 @@ A seed determines shops and encounter mirroring. Separate shop RNG state is save
 combat does not consume shop randomness. Save validation checks content, formation,
 economy and nested data before replacing live state. Save writes use a flushed
 intermediate file and rename. An interrupted fight returns to preparation with
-its attempt seed. Version 1 saves migrate without resetting their army,
-investment, gold or RNG. A legacy run without a pact can choose one at a later
-pact camp. Campaign saves and network sessions are not involved.
+its attempt seed. Versions 1 and 2 migrate to save schema 3, retaining investment,
+gold and RNG; older saves start with shop level 1. Completed recipes combine on
+loading a preparation state. A legacy run without a pact can choose one at a later
+pact camp. Campaign saves and network sessions are not involved. The schema
+number is independent of the public release version.
 
 ## Native creatures and evolution
 
@@ -65,13 +82,17 @@ pools are not mixed into a normalized stat table.
 | Toads | `toadm2 → toadm6` | 3 | 12 gold |
 
 IDs here document implementation; players see localized original names. Evolution
-is explicit and previews its result, stats, copy requirement and unlock. First
-steps unlock at wave 4; second steps at wave 10. Toads have one useful step.
+is automatic as soon as a purchase completes a recipe. Every step is available
+from wave 1, including a chained final evolution. Toads have one useful step.
+Details preview the next native form and its stats; shop offers show owned copies
+and tier II/III badges. There is no manual evolution action or wave lock.
 Native melee/magic roles are retained; the tribal promotion crosses goblin/Orc
-species. Weak intermediate ages are skipped. The chosen unit retains its place;
-other required copies are consumed. Undo is available during preparation until
-a refresh or battle commits the transaction. Sales recover one third of invested
-recruitment cost.
+species. Weak intermediate ages are skipped. A deployed copy retains its identity
+and place;
+other required copies are consumed. A purchase and its resulting evolutions are
+one undoable action. Undo is available during preparation until
+a refresh, shop improvement or battle commits the transaction. Sales recover one
+third of invested recruitment cost.
 
 ## Company pacts
 
@@ -103,7 +124,35 @@ prototype rather than applying a numeric modifier to the existing one.
 
 ## Balance evidence
 
-Current progression measurements are recorded in
+The [usability and recruitment validation](validation/arena-usability-2026-10-16.json)
+records the current automatic evolutions, stronger shops and opening engagement.
+Both armies now approach on the first native tick; only the opening pursuit
+bypasses the campaign interception/wait tactic. Native target selection, attacks,
+spells and subsequent pursuit remain in use. These changes invalidate direct
+comparison with older clear-rate claims. Small current samples find starter-focus
+and ranged policies more forgiving than a rigid melee-only purchasing policy,
+especially against wave 18. This remains a playtesting concern, not evidence of
+equal build balance.
+
+
+Thirty current runs contain 567 native fights (seeds 4000–4005 per cohort):
+
+| Standard policy | Shop investment | Clears | 95% Wilson interval |
+| --- | --- | --- | --- |
+| Starter focus | None | 6/6 | 61–100% |
+| Ranged / magic | None | 6/6 | 61–100% |
+| Melee / Vanguard | None | 1/6 | 3–56% |
+| Starter focus | Both improvements | 6/6 | 61–100% |
+| Melee / Vanguard | Both improvements | 2/6 | 10–70% |
+
+Both improvements were purchased in every investment-policy run: first at wave 5,
+second at wave 12 or 13. Those policies save for upgrades instead of spending every
+coin immediately. An initial attempted upgrade cohort never saved enough and is
+excluded from upgrade evidence. All five retained cohorts match the final combat
+and run source hashes. The sample is too small to establish an upgrade advantage;
+it mainly confirms progression is affordable and highlights the final melee wall.
+
+The previous progression measurements are recorded in
 [the progression validation](validation/arena-progression-2026-10-16.json).
 The simulator runs the real run economy, native AI/combat/spells/projectiles and
 authored terrain/navigation in 55 ms ticks. Native database hashes remain unchanged.
@@ -122,7 +171,7 @@ and seeds are used across difficulties in the new comparison.
 | Standard | First affordable | 14/18 (78%) | 55–91% | 343 |
 | Standard | Melee / Vanguard | 13/18 (72%) | 49–88% | 319 |
 
-The comparison contains 108 runs and 1,940 native fights, using seeds 3000–3017
+That historical comparison contains 108 runs and 1,940 native fights, using seeds 3000–3017
 in each row (six runs per starter). Intervals describe each small cohort; they
 do not establish a statistically significant ordering between policies.
 
@@ -161,7 +210,11 @@ when both army and bench are full; the swap can be undone. Camp choices show liv
 native models and localized requirements, with creature stats in their tooltips.
 The original game's bronze frame atlas and native creatures establish
 visual continuity. EN/RU/DE are checked in real rendered layouts, including the
-expanded shop and bench at 1024×768 and the battlefield at 1280×720.
+expanded shop and bench at 1024×768 and the battlefield at 1280×720. The later
+usability pass adds a coherent logical HUD scale through 5113×2856, bounded
+tooltips, body-based picking, live hover details, numeric HP, native damage numbers,
+explicit reserve returns and themed menu/result panels. See the
+[complete element audit](validation/arena-ui-audit-2026-10-16.md).
 
 ## Genre references
 

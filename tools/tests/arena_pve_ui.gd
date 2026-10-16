@@ -49,13 +49,23 @@ func reward_bounds(lang: String) -> void:
 	check(screen._army_title.tooltip_text.is_empty() and screen._army_title.mouse_filter == Control.MOUSE_FILTER_IGNORE, lang + " camp hides inactive army tooltips")
 	check(screen._outcome.get_global_rect().end.x <= get_tree().root.size.x, lang + " camp fits viewport width")
 	for button: Button in reward_buttons():
-		check(button.get_global_rect().end.y < screen._bench_panel.position.y, lang + " camp choice stays above reserves")
+		check(button.get_global_rect().end.y <= screen._outcome.get_global_rect().end.y - 8, lang + " camp choice stays within its panel")
 	for label: Label in screen._dock.find_children("*", "Label", true, false):
 		check(label.get_global_rect().end.x <= screen._outcome.get_global_rect().end.x - 8, lang + " camp text stays inside frame")
+
+func body_point(uid: int) -> Vector2:
+	for unit: GameUnit in screen.battle.world.unit_rows():
+		if int(unit.get_meta("arena_placement", {}).get("run_uid", 0)) == uid:
+			var rects := unit.screen_rects(screen.field.camera)
+			if not rects.is_empty(): return Rect2(rects[0]).get_center()
+			return screen.field.screen_point(unit.pos)
+	return Vector2.ZERO
 
 func _ready() -> void:
 	OS.add_logger(errors)
 	rendered = DisplayServer.get_name() != "headless"
+	# Let startup's deferred saved-window application finish before test sizes.
+	await frames(24)
 	GameData._window_gen += 1
 	get_tree().root.mode = Window.MODE_WINDOWED
 	var language := RemakeText.lang
@@ -74,9 +84,9 @@ func _ready() -> void:
 		screen._seed_input.text = "6519"
 		await click(screen._landing_start.get_global_rect().get_center())
 		await frames()
-		if screen.landing and screen._new_run_dialog.visible:
-			screen._new_run_dialog.confirmed.emit()
-			screen._new_run_dialog.hide()
+		if screen.landing and screen._modal_layer.visible:
+			screen._close_modal()
+			screen._begin(screen._pending_starter)
 			await frames()
 		check(not screen.landing and screen.run.stage == "prepare", lang + " start button creates run")
 		if screen.landing:
@@ -86,7 +96,7 @@ func _ready() -> void:
 		check(screen.field.camera.get_camera_transform().origin != Vector3.ZERO, lang + " actual camera projection")
 		var uid := int(screen.run.army[0].uid)
 		var original := Vector2(screen.run.unit(uid).point[0], screen.run.unit(uid).point[1])
-		await click(screen.field.global_position + screen.field.screen_point(original))
+		await click(body_point(uid))
 		check(screen.selected_uid == uid, lang + " pointer selects the rendered fighter")
 		var destination := Vector2(28, 39)
 		check(screen.field.ground_point(screen.field.screen_point(destination)).distance_to(destination) < 0.1, lang + " projection round trip")
@@ -102,17 +112,22 @@ func _ready() -> void:
 		check(screen.selected_uid == screen.run.next_uid - 1, lang + " recruit becomes placement selection")
 		await shot(lang + "-inspect")
 		var evolve := screen._inspect_actions.get_child(0) as Button
-		check(evolve != null and evolve.get_global_rect().end.y < screen._bench_panel.position.y, lang + " evolution action stays visible outside details scroll")
+		check(evolve != null and evolve.get_global_rect().end.y < screen._bench_panel.get_global_rect().position.y, lang + " reserve action stays visible outside details scroll")
 		var reserve_id := screen.selected_uid
-		await click(screen.field.global_position + screen.field.screen_point(destination))
+		await click(body_point(uid))
 		check(screen.run.unit(reserve_id).deployed and not screen.run.unit(uid).deployed, lang + " pointer swaps reserve directly into full army")
-		screen._menu.get_popup().id_pressed.emit(4)
+		screen._menu_action(4)
 		check(not screen.run.unit(reserve_id).deployed and screen.run.unit(uid).deployed, lang + " swap undo restores full formation")
 		screen._clear_selection()
 		check(not screen._rail.visible, lang + " details leave the board clear")
+		check(screen._army_row.find_children("*", "Control", true, false).all(func(control): return control.tooltip_text.is_empty()), lang + " rebuilt reserves keep scaled help")
+		screen._show_menu()
+		await frames()
+		check(screen._menu_items[3].has_meta("arena_help") and screen._menu_items[4].has_meta("arena_help"), lang + " menu actions retain bounded explanatory help")
+		screen._close_modal()
 		check(screen._start.get_global_rect().end.x <= get_tree().root.size.x + 1, lang + " main action within viewport")
 		check(screen._bench_bar.get_global_rect().end.y <= get_tree().root.size.y + 1, lang + " bench within viewport")
-		var header: ArenaHudPanel = screen.get_children().filter(func(n): return n is ArenaHudPanel)[0]
+		var header: ArenaHudPanel = screen._hud.get_children().filter(func(n): return n is ArenaHudPanel)[0]
 		for control in header.find_children("*", "Control", true, false):
 			if control is Button or control is Label:
 				check(control.get_global_rect().end.x <= get_tree().root.size.x + 1, lang + " header control stays visible: " + control.text)
@@ -124,6 +139,7 @@ func _ready() -> void:
 		check(screen.battle.world.time > 0, lang + " real frame clock advances AI battle")
 		await click(screen._pause.get_global_rect().get_center())
 		check(screen.battle.phase == ArenaMatch.Phase.PAUSED, lang + " pause button is wired")
+		check(screen._pause.tooltip_text.is_empty() and screen._pause.has_meta("arena_help"), lang + " pause state keeps scaled help")
 		var time := screen.battle.world.time
 		await frames(8)
 		check(screen.battle.world.time == time, lang + " pause freezes native combat")
@@ -174,18 +190,16 @@ func _ready() -> void:
 		var reward_button: Button = reward_buttons()[0]
 		await click(reward_button.get_global_rect().get_center())
 		check(screen.run.wave == 7 and screen.run.army.back().prototype == "orcfemalem3", lang + " reward click recruits native companion")
-		screen.run._recruit(0, 0, 3)
-		screen.run._touch()
-		screen._select(uid)
+		screen.run.gold += 12
+		screen.run.shop[0] = {"family": 0, "rank": 0, "locked": false}
+		screen._recruit_offer(0)
 		await frames()
-		var merge: Button = screen._inspect_actions.get_child(0)
-		check(not merge.disabled, lang + " available native evolution enabled")
-		await click(merge.get_global_rect().get_center())
-		check(screen.run.unit(uid).prototype == "boarredf3", lang + " evolution button combines original creatures")
-		screen._menu.get_popup().id_pressed.emit(4)
-		check(screen.run.unit(uid).prototype == "boarredf1", lang + " menu undo restores evolution")
-		screen._menu.get_popup().id_pressed.emit(3)
+		check(screen.run.unit(uid).prototype == "boarredf3", lang + " purchase automatically evolves original creatures")
+		screen._menu_action(4)
+		check(screen.run.unit(uid).prototype == "boarredf1", lang + " menu undo restores purchase and evolution")
+		screen._menu_action(3)
 		check(screen.run.deployed_count() == screen.run.capacity(), lang + " menu auto arrange fills available army")
+
 		screen._clear_selection()
 		screen.run.wave = 9
 		screen.run.last_result.wave = 9
@@ -228,16 +242,16 @@ func _ready() -> void:
 		await shot(lang + "-complete")
 		screen._guide()
 		await frames()
-		var guide: AcceptDialog = screen.get_child(screen.get_child_count() - 1)
-		if rendered: check(guide.size.x <= get_tree().root.size.x and guide.size.y <= get_tree().root.size.y, lang + " wrapped guide fits window")
-		guide.queue_free()
+		var guide := screen._modal_panel
+		if rendered: check(guide.get_global_rect().end.x <= get_tree().root.size.x and guide.get_global_rect().end.y <= get_tree().root.size.y, lang + " wrapped guide fits window")
+		screen._close_modal()
 		await frames()
 		if lang == "en":
 			get_tree().root.size = Vector2i(1280, 720)
 			screen.run.stage = "prepare"
 			screen.run._touch()
 			await frames()
-			check(screen.field.screen_point(Vector2(20, 32)).y < screen._bench_panel.position.y - 10, "720p near deployment row stays above reserves")
+			check(screen.field.screen_point(Vector2(20, 32)).y < screen._bench_panel.get_global_rect().position.y - 10, "720p near deployment row stays above reserves")
 			check(screen.field.screen_point(Vector2(40.5, 32)).y > screen._shop_panel.get_global_rect().end.y + 60, "720p far row has headroom below shop")
 			await shot("en-720-expanded")
 			screen.run.wave = 15; screen.run.pact_rank = 1; screen.run.stage = "result"; screen.run.last_result.wave = 15

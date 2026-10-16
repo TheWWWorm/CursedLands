@@ -187,8 +187,9 @@ func start() -> bool:
 	for u: GameUnit in world.unit_rows():
 		var noticed := {}
 		for other: GameUnit in world.unit_rows():
-			if world.is_enemy(u, other): noticed[other.uid] = other
+			if world.is_enemy(u, other): noticed[other.get_instance_id()] = other
 		u.set_meta("noticed", noticed)
+		u.set_meta("arena_opening", true)
 	phase = Phase.FIGHT
 	world.process_mode = Node.PROCESS_MODE_INHERIT
 	world.set_process(true)

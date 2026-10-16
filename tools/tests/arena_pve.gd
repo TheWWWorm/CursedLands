@@ -36,11 +36,11 @@ func _ready() -> void:
 	run.shop = [{"family": 0, "locked": false}, {"family": 0, "locked": false}]
 	check(run.buy(0).is_empty() and run.buy(1).is_empty(), "buy native duplicates")
 	var id := int(run.army[0].uid)
-	check(run.evolve(id).is_empty(), "explicit three-copy evolution")
+	check(run.unit(id).rank == 1, "third purchase evolves automatically")
 	check(run.unit(id).prototype == "boarredf3" and run.unit(id).investment == 9, "native output and invested cost")
 	check(run.army.size() == 3 and run.sale_value(run.unit(id)) == 3, "merge frees two slots without resale profit")
 	run.undo()
-	check(run.army.size() == 5 and run.unit(id).prototype == "boarredf1", "merge undo restores consumed copies")
+	check(run.army.size() == 4 and run.unit(id).prototype == "boarredf1", "purchase undo restores pre-merge copies")
 	run.refresh()
 	check(not run.can_undo(), "refresh cannot be undone for free information")
 	run.lock_offer(0)
@@ -218,6 +218,7 @@ func _ready() -> void:
 	valid.stage = "reward"
 	valid._make_rewards()
 	check(valid.choose_reward(0).is_empty() and valid.bench_count() == valid.bench_limit() + 1, "full bench still accepts a boss companion")
+	valid.shop[0] = {"family": 2, "rank": 0, "locked": false}
 	check(not valid.buy(0).is_empty(), "overflow bench blocks purchases until a space is freed")
 	valid.wave = 12; valid.stage = "reward"; valid._make_rewards()
 	var overflow := valid.snapshot()

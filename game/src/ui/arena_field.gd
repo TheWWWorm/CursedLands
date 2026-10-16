@@ -27,6 +27,10 @@ var _ground_material: ShaderMaterial
 var select_occupied := false
 var show_team_rings := true
 var highlighted_run_uid := 0
+var ui_scale := 1.0
+var numeric_health := false
+var _bounds_frame := -1
+var _screen_bounds := {}
 
 
 func _ready() -> void:
@@ -170,15 +174,37 @@ func screen_point(point: Vector2) -> Vector2:
 	return camera.unproject_position(Vector3(point.x, height + 0.04, -point.y))
 
 
+func unit_rects(unit: GameUnit) -> Array:
+	var frame := Engine.get_process_frames()
+	if frame != _bounds_frame:
+		_bounds_frame = frame
+		_screen_bounds.clear()
+	var key := unit.get_instance_id()
+	if not _screen_bounds.has(key): _screen_bounds[key] = unit.screen_rects(camera)
+	return _screen_bounds[key]
+
+
 func _pick(at: Vector2) -> GameUnit:
-	var best: GameUnit
-	var distance := 36.0
-	for u: GameUnit in match_state.world.unit_rows():
-		var d := screen_point(u.pos).distance_to(at)
-		if d < distance:
-			distance = d
-			best = u
-	return best
+	if match_state == null or not is_instance_valid(match_state.world): return null
+	var exact: Array = []
+	var nearby: Array = []
+	var to_view := camera.global_transform.affine_inverse()
+	for unit: GameUnit in match_state.world.unit_rows():
+		if unit.dead or unit.hidden or not unit.visible or not unit.may_cover(camera, at, 10 * ui_scale): continue
+		var rects := unit_rects(unit)
+		if rects.is_empty(): continue
+		var rect := Rect2(rects[0])
+		var distance := at.distance_to(at.clamp(rect.position, rect.end))
+		if distance > 10 * ui_scale: continue
+		var depth := -(to_view * unit.global_position).z
+		var part_hit := false
+		for part in rects.slice(1):
+			if Rect2(part).has_point(at): part_hit = true; break
+		(exact if part_hit else nearby).append([distance, depth, unit])
+	var hits := exact if not exact.is_empty() else nearby
+	if hits.is_empty(): return null
+	hits.sort_custom(func(a, b): return a[0] < b[0] if not is_equal_approx(a[0], b[0]) else a[1] < b[1])
+	return hits[0][2]
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -211,9 +237,14 @@ func _gui_input(event: InputEvent) -> void:
 
 func _process(_dt: float) -> void:
 	if match_state == null or not is_instance_valid(match_state.world): return
+	if get_viewport().gui_get_hovered_control() == self:
+		hovered = _pick(get_local_mouse_position())
+	else:
+		hovered = null
 	if ghost:
 		ghost.visible = hover_point != Vector2.INF and match_state.bounds().has_point(hover_point) \
-			and match_state.phase == ArenaMatch.Phase.DEPLOY and not erase
+			and match_state.phase == ArenaMatch.Phase.DEPLOY and not erase and hovered == null \
+			and get_viewport().gui_get_hovered_control() == self
 		if ghost.visible:
 			ghost.position = Vector3(hover_point.x, match_state.world.terrain.height_at(hover_point.x, hover_point.y), -hover_point.y)
 			ghost.rotation.y = GameUnit.MODEL_YAW_OFFSET if team == 0 else GameUnit.MODEL_YAW_OFFSET + PI
@@ -232,23 +263,38 @@ func _ring(point: Vector2, radius: float, color: Color, width := 2.0) -> void:
 func _draw_overlay() -> void:
 	if match_state == null or not is_instance_valid(match_state.world): return
 	var font := ThemeDB.fallback_font
+	var k := ui_scale
 	for u: GameUnit in match_state.world.unit_rows():
-		if u.dead or camera.is_position_behind(u.global_position): continue
+		if u.dead or not u.visible or camera.is_position_behind(u.global_position): continue
 		var color := BLUE if u.faction == 1 else RED
 		var selected := highlighted_run_uid > 0 and int(u.get_meta("arena_placement", {}).get("run_uid", 0)) == highlighted_run_uid
-		if show_team_rings or u == hovered or selected:
-			_ring(u.pos, maxf(0.55, u.body_radius() + 0.15), Color(color, 0.8))
-		var p := camera.unproject_position(u.global_position + Vector3.UP * (u.figure_half_z * 2.0 + 0.45))
-		overlay.draw_style_box(_bar_style(), Rect2(p - Vector2(24, 3), Vector2(48, 6)))
-		overlay.draw_rect(Rect2(p - Vector2(22, 1), Vector2(44 * clampf(u.hp / maxf(1, u.max_hp), 0, 1), 2)), color)
-		if u == hovered:
-			var text := u.display_name
-			var w := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x
-			overlay.draw_string_outline(font, p - Vector2(w / 2, 12), text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14, 5, Color("10151b"))
-			overlay.draw_string(font, p - Vector2(w / 2, 12), text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("fff4df"))
+		if show_team_rings:
+			_ring(u.pos, maxf(0.55, u.body_radius() + 0.15), Color(color, 0.65), k)
+		elif u == hovered or selected:
+			var rects := unit_rects(u)
+			if not rects.is_empty(): _selection_corners(Rect2(rects[0]).grow(5 * k), ArenaCreatureCard.GOLD if selected else color)
+		var p := camera.unproject_position(u.global_position + Vector3.UP * EnemyBars.head_top(u)) - Vector2(0, 10 * k)
+		overlay.draw_style_box(_bar_style(), Rect2(p - Vector2(27, 3) * k, Vector2(54, 6) * k))
+		overlay.draw_rect(Rect2(p - Vector2(25, 1) * k, Vector2(50 * clampf(u.hp / maxf(1, u.max_hp), 0, 1), 2) * k), color)
+		if numeric_health or u == hovered:
+			var text := "%d/%d" % [maxi(0, ceili(u.hp)), ceili(u.max_hp)] if numeric_health else u.display_name
+			var pixels := roundi(14 * k)
+			var width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, pixels).x
+			var at := p - Vector2(width / 2, 8 * k)
+			overlay.draw_string_outline(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, pixels, maxi(3, roundi(3 * k)), Color("10151b"))
+			overlay.draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, pixels, ArenaCreatureCard.PAPER)
+
 	if ghost and ghost.visible:
 		var valid := match_state.placement_error(hover_point).is_empty()
 		_ring(hover_point, 0.9, (BLUE if team == 0 else RED) if valid else Color("ffcf75"), 3)
+
+
+func _selection_corners(rect: Rect2, color: Color) -> void:
+	var length := minf(12 * ui_scale, minf(rect.size.x, rect.size.y) * 0.35)
+	for corner in [Vector2(0, 0), Vector2(1, 0), Vector2(0, 1), Vector2(1, 1)]:
+		var at: Vector2 = rect.position + rect.size * corner
+		var inward: Vector2 = Vector2.ONE - corner * 2
+		overlay.draw_polyline(PackedVector2Array([at + Vector2(inward.x * length, 0), at, at + Vector2(0, inward.y * length)]), color, 1.5 * ui_scale, true)
 
 
 var _bar: StyleBoxFlat

@@ -18,6 +18,7 @@ func _build_stage() -> void:
 	_old_fog = [Gfx.fog_sky, Gfx.fog_color, Gfx.fog_depth]
 	select_occupied = true
 	show_team_rings = false
+	numeric_health = true
 	resized.connect(_update_camera)
 	zoom = 14.5
 	yaw = -PI / 2
@@ -129,12 +130,12 @@ func _update_camera() -> void:
 		# Keep both starting rows, including their health bars, between the
 		# recruitment shelf and reserves at 16:9 and 4:3 desktop sizes.
 		var pixels_per_meter := size.y / fitted_size
-		var depth_sine := clampf((size.y - 360.0) / (21.0 * pixels_per_meter), 0.25, 0.55)
+		var depth_sine := clampf((size.y - 360.0 * ui_scale) / (21.0 * pixels_per_meter), 0.25, 0.55)
 		var height := 36.0 * depth_sine / sqrt(1.0 - depth_sine * depth_sine)
 		camera.position = center + Vector3(sin(yaw) * 36, height, cos(yaw) * 36)
 		camera.look_at(center)
 		camera.size = fitted_size * zoom / 14.5
-		camera.position += camera.basis.y * camera.size * 70.0 / size.y
+		camera.position += camera.basis.y * camera.size * 70.0 * ui_scale / size.y
 
 
 func _gui_input(event: InputEvent) -> void:

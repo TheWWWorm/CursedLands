@@ -3,6 +3,7 @@ extends Node
 ## --arena-seeds=12 --arena-seed-start=100 --arena-policy=balanced
 
 var policy := "balanced"
+var improve_shop := false
 var total := 12
 var seed_start := 100
 var challenge := 0
@@ -20,12 +21,13 @@ func _ready() -> void:
 		if arg.begins_with("--arena-seed-start="): seed_start = int(arg.get_slice("=", 1))
 		if arg.begins_with("--arena-challenge="): challenge = clampi(int(arg.get_slice("=", 1)), 0, 2)
 		if arg.begins_with("--arena-policy="): policy = arg.get_slice("=", 1)
+		if arg == "--arena-shop-upgrades": improve_shop = true
 		if arg.begins_with("--arena-pact="): pact_choice = arg.get_slice("=", 1)
 	if not ArenaRules.available():
 		printerr("Original expedition content missing")
 		get_tree().quit(1)
 		return
-	for key in ["arena_rules", "arena_run", "arena_pve_match", "arena_terrain"]:
+	for key in ["arena_rules", "arena_run", "arena_match", "arena_pve_match", "arena_terrain", "unit"]:
 		source_hashes[key] = FileAccess.get_sha256("res://src/game/%s.gd" % key)
 	var native_hash := hash(GameData.db.tables)
 	run = ArenaRun.new()
@@ -45,7 +47,7 @@ func _ready() -> void:
 			if run.stage == "prepare":
 				shop_turn()
 				match_state.prepare()
-				var snapshot := {"wave": run.wave, "gold": run.gold, "lives": run.lives,
+				var snapshot := {"wave": run.wave, "gold": run.gold, "lives": run.lives, "shop_level": run.shop_level,
 					"pact": run.pact, "pact_rank": run.pact_rank, "pact_active": run.pact_active(),
 					"army": run.army.filter(func(u): return u.deployed).duplicate(true)}
 				if not match_state.start():
@@ -86,6 +88,10 @@ func _ready() -> void:
 func shop_turn() -> void:
 	merge_all()
 	run.arrange()
+	if improve_shop and run.shop_level < 2 and run.wave >= (4 if run.shop_level == 0 else 10):
+		# Save between waves so this policy actually exercises the investment.
+		if run.gold < run.shop_upgrade_cost() + 4: return
+		run.upgrade_shop()
 	var refreshes := 0
 	for step in 40:
 		if run.bench_count() >= run.bench_limit():
@@ -98,15 +104,16 @@ func shop_turn() -> void:
 		var best := -INF
 		for i in run.shop.size():
 			var family := int(run.shop[i].family)
-			if family < 0 or run.gold < int(ArenaRules.FAMILIES[family].cost): continue
-			var owned := run.army.filter(func(u): return u.family == family and u.rank == 0).size()
+			if family < 0 or not run.purchase_error(i).is_empty(): continue
+			var rank := int(run.shop[i].get("rank", 0))
+			var owned := run.army.filter(func(u): return u.family == family and u.rank == rank).size()
 			var affinity := run.army.filter(func(u): return u.family == family).size()
 			var preferred: Array = ArenaRules.STARTERS[run.starter].families
 			if policy == "melee": preferred = [0, 1, 2]
 			elif policy == "ranged": preferred = [3, 4, 5]
 			elif policy == "diverse": preferred = [0, 1, 2, 3, 4, 5]
 			if pact_choice in ArenaRules.PACTS and policy != "novice": preferred = ArenaRules.PACTS[pact_choice].families
-			var score := float(owned * 4 + mini(affinity, 3)) + (5 if family in preferred else -7)
+			var score := float(owned * 4 + mini(affinity, 3) + rank * 2) + (5 if family in preferred else -7)
 			# A ranged policy still needs a third beast family for Wild kin.
 			# Buy one melee family if absent; it competes with another evolution.
 			if run.pact == "hunt" and family in [0, 2] and not run.army.any(func(u): return int(u.family) in [0, 2]): score += 14
@@ -146,7 +153,7 @@ func check_native(want: int) -> bool:
 
 func _write() -> void:
 	var output := {"rules_version": ArenaRules.VERSION, "policy": policy, "count": results.size(),
-		"pact_choice": pact_choice,
+		"pact_choice": pact_choice, "shop_upgrades": improve_shop,
 		"source_sha256": source_hashes, "challenge": challenge,
 		"seed_start": seed_start, "results": results,
 		"scope": "Actual run economy, native AI/combat/spells/projectiles, authored terrain and scenery navigation. Manual 55ms ticks; no visual/audio presentation. Policy clear rates are not human clear rates."}

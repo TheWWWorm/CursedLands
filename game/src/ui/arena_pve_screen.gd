@@ -22,7 +22,24 @@ var _lives: Label
 var _round_badge: VBoxContainer
 var _round_panel: ArenaHudPanel
 var _phase: Label
-var _menu: MenuButton
+var _menu: Button
+var _hud: Control
+var _ui_scale := 1.0
+var _heading_font: Font
+var _tooltips: ArenaTooltips
+var _hit_numbers: ArenaHitNumbers
+var _modal_layer: Control
+var _modal_panel: ArenaHudPanel
+var _modal_box: VBoxContainer
+var _menu_items := {}
+var _menu_was_fighting := false
+var _modal_focus: Array[Dictionary] = []
+var _guide_scroll: ScrollContainer
+var _quality: Button
+var _reserve_count: Label
+var _live_health: Label
+var _inspected_unit: GameUnit
+var _outcome_shade: ColorRect
 var _inspect_actions: VBoxContainer
 var _wave_title: Label
 var _clock: Label
@@ -42,7 +59,6 @@ var _refresh_button: Button
 var _speed: OptionButton
 var _sound: GameSound
 var _sound_world: GameWorld
-var _new_run_dialog: ConfirmationDialog
 var _pending_starter := 0
 var _rail: PanelContainer
 var _rail_box: VBoxContainer
@@ -68,8 +84,18 @@ func _ready() -> void:
 	_previous_border = Gfx._border_size
 	_previous_border_dist = Gfx._border_menu
 	theme = Theme.new()
-	theme.default_font_size = 15
+	theme.default_font_size = 16
+	theme.default_font = ThemeDB.fallback_font.duplicate()
+	_heading_font = preload("res://fonts/LiberationSerif-Regular.ttf").duplicate()
 	theme.set_color("font_color", "Label", PAPER)
+	for kind in ["Button", "OptionButton", "LineEdit"]:
+		theme.set_color("font_color", kind, PAPER)
+		theme.set_color("font_disabled_color", kind, Color("858b80"))
+	for state in ["grabber", "grabber_highlight", "grabber_pressed"]:
+		var thumb := StyleBoxFlat.new()
+		thumb.bg_color = Color("9c8a60")
+		thumb.content_margin_left = 3; thumb.content_margin_right = 3
+		theme.set_stylebox(state, "VScrollBar", thumb)
 	battle = ArenaPveMatch.new()
 	battle.run = run
 	add_child(battle)
@@ -87,56 +113,46 @@ func _ready() -> void:
 	vignette.material.shader = preload("res://src/ui/arena_vignette.gdshader")
 	add_child(vignette)
 	vignette.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_hit_numbers = ArenaHitNumbers.new()
+	_hit_numbers.field = field
+	add_child(_hit_numbers)
+	_hit_numbers.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	battle.visual_event.connect(func(event):
+		if event.get("t") == "hitnum": _hit_numbers.add(event))
+	battle.world_replacing.connect(func(): _hit_numbers._items.clear())
+	_hud = Control.new()
+	_hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_hud)
 	_landing_layer = Control.new()
-	add_child(_landing_layer)
+	_hud.add_child(_landing_layer)
 	_landing_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_landing_layer.offset_top = 78
 	_landing_layer.offset_bottom = -24
-	_header = _label(self, RemakeText.t("Trials of Gipath"), 26, GOLD)
+	_header = _label(_hud, RemakeText.t("Trials of Gipath"), 26, GOLD)
 	_header.position = Vector2(28, 18)
-	_header.add_theme_font_override("font", preload("res://fonts/LiberationSerif-Regular.ttf"))
+	_header.add_theme_font_override("font", _heading_font)
 	_round_panel = ArenaHudPanel.new()
 	_round_panel.surface = Color(0.055, 0.055, 0.04, 0.85)
-	add_child(_round_panel)
+	_hud.add_child(_round_panel)
 	_round_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	_round_panel.offset_left = -232; _round_panel.offset_right = -72
+	_round_panel.offset_left = -276; _round_panel.offset_right = -116
 	_round_panel.offset_top = 16; _round_panel.offset_bottom = 86
 	_round_badge = VBoxContainer.new()
 	_round_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_round_badge.add_theme_constant_override("separation", 3)
 	_round_panel.add_child(_round_badge)
 	_wave_title = _label(_round_badge, "", 20, PAPER)
-	_wave_title.add_theme_font_override("font", preload("res://fonts/LiberationSerif-Regular.ttf"))
+	_wave_title.add_theme_font_override("font", _heading_font)
 	_phase = _label(_round_badge, "", 14, MUTED)
 	_clock = _label(_round_badge, "", 16, GOLD)
-	_menu = MenuButton.new()
-	_menu.icon = preload("res://assets/arena/menu.svg")
-	_menu.tooltip_text = RemakeText.t("Menu")
-	_menu.custom_minimum_size = Vector2(44, 44)
-	_menu.add_theme_stylebox_override("normal", ArenaCreatureCard.style(Color(0.055, 0.055, 0.04, 0.85), Color(0, 0, 0, 0)))
-	_menu.draw.connect(func(): ArenaHudPanel.draw_frame(_menu, Rect2(Vector2.ZERO, _menu.size)))
-	add_child(_menu)
+	_menu = _button(_hud, RemakeText.t("Menu"), _show_menu, "")
+	_menu.custom_minimum_size = Vector2(88, 44)
+	_menu.add_theme_font_override("font", _heading_font)
+	_menu.add_theme_font_size_override("font_size", 20)
 	_menu.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	_menu.offset_left = -60; _menu.offset_right = -16
+	_menu.offset_left = -104; _menu.offset_right = -16
 	_menu.offset_top = 16; _menu.offset_bottom = 60
-	var popup := _menu.get_popup()
-	popup.add_item(RemakeText.t("Guide"), 0)
-	popup.add_item(RemakeText.t("Auto arrange"), 3)
-	popup.set_item_tooltip(1, RemakeText.t("Deploy your strongest forms with ranged creatures behind the front line. Keep your pact active when your army can meet its condition."))
-	popup.add_item(RemakeText.t("Undo"), 4)
-	popup.set_item_tooltip(2, RemakeText.t("Undo a preparation action. Shop refreshes cannot be refunded."))
-	popup.add_item(RemakeText.t("Company"), 5)
-	popup.add_separator()
-	popup.add_item(RemakeText.t("Sandbox"), 1)
-	popup.add_item(RemakeText.t("Main menu"), 2)
-	popup.id_pressed.connect(func(id):
-		if id == 0: _guide()
-		elif id == 1: sandbox_requested.emit()
-		elif id == 2: exit_requested.emit()
-		elif id == 3: run.arrange()
-		elif id == 4: run.undo()
-		elif id == 5: _show_company())
-	_shop_panel = _unframed(self)
+	_shop_panel = _unframed(_hud)
 	_shop_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	_shop_panel.offset_left = 24; _shop_panel.offset_top = 12
 	_shop_panel.offset_bottom = 138
@@ -153,12 +169,18 @@ func _ready() -> void:
 	_shop = HBoxContainer.new()
 	_shop.add_theme_constant_override("separation", 8)
 	_shop_section.add_child(_shop)
-	_refresh_button = _icon_button(recruitment, preload("res://assets/arena/refresh.svg"), func(): _feedback(run.refresh()), RemakeText.t("Replace unlocked offers. One offer can be locked between shops."))
-	_refresh_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	_refresh_button.custom_minimum_size = Vector2(56, 44)
+	var shop_tools := VBoxContainer.new()
+	shop_tools.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	shop_tools.add_theme_constant_override("separation", 6)
+	recruitment.add_child(shop_tools)
+	_refresh_button = _icon_button(shop_tools, preload("res://assets/arena/refresh.svg"), func(): _feedback(run.refresh()), RemakeText.t("Replace unlocked offers. One offer can be locked between shops."))
+	_refresh_button.custom_minimum_size = Vector2(76, 44)
+	_quality = _button(shop_tools, "", _show_recruitment, RemakeText.t("Improve recruitment to find stronger creature forms."))
+	_quality.custom_minimum_size = Vector2(76, 36)
+	_quality.add_theme_font_size_override("font_size", 14)
 	_rail = ArenaHudPanel.new()
 	_rail.custom_minimum_size.x = 264
-	add_child(_rail)
+	_hud.add_child(_rail)
 	_rail.set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE)
 	_rail.offset_left = -284; _rail.offset_right = -16
 	_rail.offset_top = 170; _rail.offset_bottom = -142
@@ -178,20 +200,26 @@ func _ready() -> void:
 	_inspect_actions.add_theme_constant_override("separation", 6)
 	_rail_box.add_child(_inspect_actions)
 	_inspector.hide()
-	_bench_panel = _unframed(self)
+	_bench_panel = _unframed(_hud)
 	_bench_panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_bench_panel.offset_left = 24; _bench_panel.offset_right = -24
 	_bench_panel.offset_top = -104; _bench_panel.offset_bottom = -20
 	_bench_bar = HBoxContainer.new()
 	_bench_bar.add_theme_constant_override("separation", 20)
 	_bench_panel.add_child(_bench_bar)
-	_army_title = _button(_bench_bar, "", _show_company, RemakeText.t("Inspect your company pact and expedition upgrades."))
+	var company_status := VBoxContainer.new()
+	company_status.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	company_status.add_theme_constant_override("separation", 3)
+	_bench_bar.add_child(company_status)
+	_army_title = _button(company_status, "", _show_company, RemakeText.t("Inspect your company pact and expedition upgrades."))
 	_army_title.add_theme_stylebox_override("normal", ArenaCreatureCard.style(Color(0, 0, 0, 0), Color(0, 0, 0, 0)))
 	_army_title.add_theme_font_size_override("font_size", 16)
 	_army_title.icon = preload("res://assets/arena/company.svg")
 	_army_title.add_theme_constant_override("icon_max_width", 18)
 	_army_title.custom_minimum_size.x = 90
 	_army_title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_reserve_count = _label(company_status, "", 13, MUTED)
+	_reserve_count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_bench_scroll = ScrollContainer.new()
 	_bench_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_bench_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -218,7 +246,7 @@ func _ready() -> void:
 	_start = _button(actions, RemakeText.t("Start battle"), _fight, RemakeText.t("Your deployed army fights the previewed enemies under AI control."), true)
 	_start.custom_minimum_size = Vector2(152, 44)
 	_start.add_theme_font_size_override("font_size", 21)
-	_start.add_theme_font_override("font", preload("res://fonts/LiberationSerif-Regular.ttf"))
+	_start.add_theme_font_override("font", _heading_font)
 	_fight_panel = _unframed(actions)
 	var time_bar := HBoxContainer.new()
 	time_bar.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -231,19 +259,47 @@ func _ready() -> void:
 	_speed.tooltip_text = RemakeText.t("Watch at normal or double speed. Creature stats and battle rules stay the same.")
 	_speed.item_selected.connect(func(i): battle.set_speed(1.0 if i == 0 else 2.0))
 	time_bar.add_child(_speed)
+	_outcome_shade = ColorRect.new()
+	_outcome_shade.color = Color(0.02, 0.025, 0.02, 0.32)
+	_hud.add_child(_outcome_shade)
+	_outcome_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_outcome = ArenaHudPanel.new()
-	add_child(_outcome)
-	_outcome.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	_outcome.surface.a = 1.0
+	_outcome.minimum_size_changed.connect(_layout_outcome.call_deferred)
+	_hud.add_child(_outcome)
+	_outcome.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	_dock = VBoxContainer.new()
-	_dock.add_theme_constant_override("separation", 10)
+	_dock.add_theme_constant_override("separation", 16)
 	_outcome.add_child(_dock)
-	_message = _label(self, "", 13, PAPER)
+	_message = _label(_hud, "", 13, PAPER)
 	_message.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_message.offset_left = 24; _message.offset_right = -24
 	_message.offset_top = -26; _message.offset_bottom = -6
 	_message.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_message.add_theme_color_override("font_shadow_color", Color.BLACK)
 	_message.add_theme_constant_override("shadow_offset_y", 2)
+	_hud.move_child(_menu, _hud.get_child_count() - 1)
+	_modal_layer = Control.new()
+	_hud.add_child(_modal_layer)
+	_modal_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var dim := ColorRect.new()
+	dim.color = Color(0.025, 0.03, 0.025, 0.65)
+	_modal_layer.add_child(dim)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	dim.gui_input.connect(func(event):
+		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT: _close_modal())
+	_modal_panel = ArenaHudPanel.new()
+	_modal_panel.surface.a = 1.0
+	_modal_panel.minimum_size_changed.connect(_layout_modal.call_deferred)
+	_modal_layer.add_child(_modal_panel)
+	_modal_box = VBoxContainer.new()
+	_modal_box.add_theme_constant_override("separation", 12)
+	_modal_panel.add_child(_modal_box)
+	_modal_layer.hide()
+	_tooltips = ArenaTooltips.new()
+	_tooltips.scope = _hud
+	_tooltips.world_hint = _world_hint
+	_hud.add_child(_tooltips)
 	resized.connect(_layout_hud)
 	_layout_hud()
 	_sound = GameSound.new()
@@ -258,12 +314,6 @@ func _ready() -> void:
 			_sound.on_world(_sound_world)
 		_sound.on_event(event))
 	battle.changed.connect(_battle_changed)
-	_new_run_dialog = ConfirmationDialog.new()
-	_new_run_dialog.dialog_text = RemakeText.t("Start a new expedition? This replaces your current expedition.")
-	_new_run_dialog.ok_button_text = RemakeText.t("Begin expedition")
-	_new_run_dialog.cancel_button_text = RemakeText.t("Cancel")
-	_new_run_dialog.confirmed.connect(func(): _begin(_pending_starter))
-	add_child(_new_run_dialog)
 	if not ArenaRules.available():
 		_rail.hide(); _shop_section.hide(); _pause.hide(); _speed.hide(); _bench_bar.hide()
 		_shop_panel.hide(); _bench_panel.hide(); _fight_panel.hide(); _round_panel.hide()
@@ -292,7 +342,7 @@ func _refresh() -> void:
 	_round_panel.tooltip_text = RemakeText.t("Wave %d/%d · %s") % [run.wave, ArenaRules.WAVE_COUNT, RemakeText.t(ArenaRules.WAVES[run.wave - 1][0])] + "\n" + RemakeText.t("Seed %s") % str(run.run_seed)
 	var preparing := run.stage == "prepare" and not landing
 	var fighting := run.stage == "fight" and not landing
-	_bench_panel.visible = not landing
+	_bench_panel.visible = preparing or fighting
 	_bench_bar.visible = not landing
 	_shop_panel.visible = preparing
 	_fight_panel.visible = fighting
@@ -301,13 +351,15 @@ func _refresh() -> void:
 	_shop_section.visible = preparing
 	_dock.visible = not preparing and not fighting and not landing
 	_outcome.visible = _dock.visible
+	_outcome_shade.visible = _dock.visible
 	_layout_outcome()
 	_pause.visible = fighting
 	_speed.visible = fighting
 	_rail.visible = not landing and _inspector.visible
 	_landing_layer.visible = landing
 	_clock.visible = fighting
-	field.show_markers = not landing
+	field.show_markers = preparing or fighting
+	_message.visible = preparing or fighting or run.save_error
 	_battle_changed()
 	if preparing or landing or not is_instance_valid(battle.world):
 		var board := [run.run_seed, run.wave, run.army.filter(func(entry): return entry.deployed), run.challenge, run.lives, run.pact, run.pact_rank]
@@ -327,8 +379,8 @@ func _refresh() -> void:
 		if run.stage == "reward": _build_rewards()
 		elif run.stage in ["result", "won", "lost"]: _build_result()
 	_start.disabled = run.deployed_count() == 0
-	_menu.get_popup().set_item_disabled(1, not preparing)
-	_menu.get_popup().set_item_disabled(2, not preparing or not run.can_undo())
+	_quality.text = RemakeText.t("Shop %d") % (run.shop_level + 1)
+	_reserve_count.text = RemakeText.t("Reserves %d/%d") % [run.bench_count(), run.bench_limit()]
 	_refresh_button.text = str(run.refresh_cost())
 	_refresh_button.tooltip_text = RemakeText.t("Refresh · %d gold") % run.refresh_cost() + "\n" + RemakeText.t("Replace unlocked offers. One offer can be locked between shops.")
 	_refresh_button.disabled = run.gold < run.refresh_cost()
@@ -339,7 +391,9 @@ func _refresh() -> void:
 	_army_title.disabled = not preparing and not fighting
 	if not run.pact.is_empty():
 		_army_title.tooltip_text += "\n" + RemakeText.t(ArenaRules.PACTS[run.pact].name) + " · " + _pact_status()
-	if _army_title.disabled: _army_title.tooltip_text = ""
+	if _army_title.disabled:
+		_army_title.tooltip_text = ""
+		_army_title.remove_meta("arena_help")
 	_army_title.mouse_filter = Control.MOUSE_FILTER_IGNORE if _army_title.disabled else Control.MOUSE_FILTER_STOP
 	if run.stage != "prepare" or landing: field.select_creature("")
 	elif selected_uid > 0 and not run.unit(selected_uid).is_empty(): field.select_creature(run.unit(selected_uid).prototype)
@@ -349,13 +403,15 @@ func _refresh() -> void:
 		else: _inspect(entry.prototype, entry)
 	elif _showing_company: _show_company()
 	_rail.visible = not landing and not _outcome.visible and _inspector.visible
+	_tooltips.capture(_hud)
+	_layout_outcome.call_deferred()
 	if run.save_error: _feedback(RemakeText.t("The expedition could not be saved. Check free disk space before leaving."))
 
 
 func _build_army() -> void:
 	_clear(_army_row)
 	var benched := run.army.filter(func(u): return not u.deployed)
-	var slot_width := clampf((size.x - 534.0) / maxi(run.bench_limit(), benched.size()) - 8.0, 44, 88)
+	var slot_width := clampf((_hud.size.x - 550.0) / maxi(run.bench_limit(), benched.size()) - 8.0, 44, 88)
 	for i in maxi(run.bench_limit(), benched.size()):
 		var button := Button.new()
 		button.custom_minimum_size = Vector2(slot_width, 84)
@@ -373,8 +429,16 @@ func _build_army() -> void:
 		marker.offset_top = -3; marker.offset_bottom = -2
 		marker.color = Color(0.72, 0.75, 0.72, 0.32)
 		if i >= benched.size():
-			button.disabled = true
-			button.tooltip_text = RemakeText.t("Recruits wait here until you deploy them.")
+			var selected := run.unit(selected_uid)
+			var returning: bool = run.stage == "prepare" and not selected.is_empty() and selected.deployed
+			button.disabled = not returning
+			button.tooltip_text = RemakeText.t("Return the selected creature to reserves.") if returning else RemakeText.t("Recruits wait here until you deploy them.")
+			if returning:
+				button.pressed.connect(func(): _return_to_reserves())
+				marker.color = GOLD
+				if i == benched.size():
+					button.text = RemakeText.t("Return")
+					button.add_theme_font_size_override("font_size", 13)
 			continue
 		var entry: Dictionary = benched[i]
 		button.tooltip_text = ArenaRules.title(entry.prototype) + "\n" + RemakeText.t("Select this creature, then click the battlefield to place it.")
@@ -392,6 +456,7 @@ func _build_army() -> void:
 		if int(entry.uid) == selected_uid:
 			marker.color = GOLD
 			marker.offset_top = -4
+	if _tooltips: _tooltips.capture(_army_row)
 
 
 func _build_shop() -> void:
@@ -410,23 +475,27 @@ func _build_shop() -> void:
 			bought.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			continue
 		var rule: Dictionary = ArenaRules.FAMILIES[family]
+		var rank := int(offer.get("rank", 0))
 		var card := ArenaCreatureCard.new()
-		card.prototype = rule.forms[0]
-		var count := run.army.filter(func(entry): return entry.family == family and entry.rank == 0).size()
+		card.prototype = rule.forms[rank]
+		card.quality = rank
+		var count := run.army.filter(func(entry): return entry.family == family and entry.rank == rank).size()
 		card.caption = RemakeText.t("%s · %d owned") % [RemakeText.t(rule.role), count]
 		card.caption = RemakeText.t(rule.name) + "\n" + card.caption
 		if not run.pact.is_empty() and family in ArenaRules.PACTS[run.pact].families:
 			card.caption += "\n" + RemakeText.t("Evolve this creature to contribute to your pact." if int(ArenaRules.PACTS[run.pact].min_rank) > 0 else "Deploy this family to contribute to your pact.")
-		var needed := ArenaRules.evolution_copies(family, 0)
-		card.footer = RemakeText.t("%d gold · %d/%d") % [int(rule.cost), mini(needed, count), needed]
-		card.cost = int(rule.cost)
+		var needed := ArenaRules.evolution_copies(family, rank)
+		card.footer = RemakeText.t("%d gold") % run.offer_cost(offer)
+		if needed > 0: card.footer += "\n" + RemakeText.t("%d/%d copies · combines automatically") % [mini(needed, count), needed]
+		if rank > 0: card.caption += "\n" + RemakeText.t("Tier %d") % (rank + 1)
+		card.cost = run.offer_cost(offer)
 		card.copies = count
 		card.copies_needed = needed
-		card.disabled = run.gold < int(rule.cost) or run.bench_count() >= run.bench_limit()
+		card.disabled = not run.purchase_error(index).is_empty()
 		card.pressed.connect(func(): _recruit_offer(index))
 		box.add_child(card)
 		if card.disabled:
-			card.tooltip_text += "\n" + RemakeText.t("Not enough gold." if run.gold < int(rule.cost) else "Bench full. Deploy, evolve or sell a creature first.")
+			card.tooltip_text += "\n" + run.purchase_error(index)
 		card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		var lock := _icon_button(box, preload("res://assets/arena/lock.svg"), func(): pass, RemakeText.t("Keep offer"))
 		lock.toggle_mode = true
@@ -462,7 +531,7 @@ func _build_landing() -> void:
 	choices.add_theme_constant_override("separation", 12)
 	columns.add_child(choices)
 	var title := _wrap(choices, RemakeText.t("Choose your company"), 38, PAPER)
-	title.add_theme_font_override("font", preload("res://fonts/LiberationSerif-Regular.ttf"))
+	title.add_theme_font_override("font", _heading_font)
 	_wrap(choices, RemakeText.t("Recruit strange allies. Shape their evolution. Survive eighteen battles together."), 15, MUTED)
 	if _saved:
 		_button(choices, RemakeText.t("Continue · wave %d") % run.wave, func():
@@ -516,7 +585,7 @@ func _build_landing() -> void:
 	_landing_start = _button(company, RemakeText.t("Begin expedition"), func():
 		if not _seed_input.text.strip_edges().is_empty() and not _seed_input.text.strip_edges().is_valid_int():
 			_feedback(RemakeText.t("Enter a whole number for the seed."))
-		elif _saved: _new_run_dialog.popup_centered()
+		elif _saved: _confirm_new_run()
 		else: _begin(_pending_starter), RemakeText.t("Choose a new starter army and begin another run."), true)
 	_landing_start.custom_minimum_size.y = 52
 	_landing_start.add_theme_font_size_override("font_size", 20)
@@ -566,29 +635,42 @@ func _begin(starter_index: int) -> void:
 
 
 func _build_result() -> void:
-	var won := int(run.last_result.get("winner", -1)) == 0
-	var text := "Expedition complete" if run.stage == "won" else "The expedition ends" if run.stage == "lost" else "Victory" if won else "Regroup and try again"
-	var title := _label(_dock, RemakeText.t(text), 28, GOLD)
-	title.add_theme_font_override("font", preload("res://fonts/LiberationSerif-Regular.ttf"))
-	title.mouse_filter = Control.MOUSE_FILTER_PASS
 	var result: Dictionary = run.last_result
-	title.tooltip_text = RemakeText.t("Battle: %d seconds · Damage dealt: %d · Damage taken: %d") % [int(result.get("seconds", 0)), int(result.get("damage", [0, 0])[0]), int(result.get("damage", [0, 0])[1])]
-	if won and run.stage != "won": _label(_dock, RemakeText.t("Victory income: %d gold") % int(result.get("gold", 0)), 16, GOLD)
-	elif run.stage == "lost": _wrap(_dock, RemakeText.t("Your expedition has ended. Start a new expedition with a different army."), 15)
-	elif not won: _wrap(_dock, RemakeText.t("Your creatures recover fully. Reposition or recruit before trying the same enemies again."), 15)
+	var won := int(result.get("winner", -1)) == 0
+	var text := "Expedition complete" if run.stage == "won" else "The expedition ends" if run.stage == "lost" else "Victory" if won else "Defeat"
+	var title := _wrap(_dock, RemakeText.t(text), 42, GOLD if won else PAPER)
+	title.add_theme_font_override("font", _heading_font)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var encounter := _wrap(_dock, RemakeText.t("Wave %d/%d · %s") % [run.wave, ArenaRules.WAVE_COUNT, RemakeText.t(ArenaRules.WAVES[run.wave - 1][0])], 16, MUTED)
+	encounter.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_rule(_dock)
+	var reward := HBoxContainer.new()
+	reward.alignment = BoxContainer.ALIGNMENT_CENTER
+	reward.add_theme_constant_override("separation", 12)
+	_dock.add_child(reward)
+	_icon(reward, preload("res://assets/arena/coin.svg") if won else preload("res://assets/arena/life.svg"))
+	_label(reward, RemakeText.t("Victory income: %d gold") % int(result.get("gold", 0)) if won and run.stage != "won" else RemakeText.t("Lives %d/%d") % [run.lives, 3], 20, GOLD if won else PAPER)
+	var details := _wrap(_dock, RemakeText.t("Battle: %d seconds · Damage dealt: %d · Damage taken: %d") % [int(result.get("seconds", 0)), int(result.get("damage", [0, 0])[0]), int(result.get("damage", [0, 0])[1])], 14, MUTED)
+	details.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	if run.stage == "lost": _wrap(_dock, RemakeText.t("Your expedition has ended. Start a new expedition with a different army."), 16)
+	elif not won: _wrap(_dock, RemakeText.t("Your creatures recover fully. Reposition or recruit before trying the same enemies again."), 16)
 	if run.stage == "won": _wrap(_dock, RemakeText.t("You conquered the ruins with your creatures’ original strength.") if run.challenge == 2 else RemakeText.t("A harder expedition is unlocked. Your creatures kept their original stats throughout the run."), 16)
-	var row := HBoxContainer.new()
-	_dock.add_child(row)
+	var action: Button
 	if run.stage in ["won", "lost"]:
-		_button(row, RemakeText.t("New expedition"), func(): landing = true; _saved = false; _clear_selection(); _refresh(), RemakeText.t("Choose a new starter army and begin another run."), true)
+		action = _button(_dock, RemakeText.t("New expedition"), func(): landing = true; _saved = false; _clear_selection(); _refresh(), "", true)
 	else:
-		_button(row, RemakeText.t("Visit camp" if won and run.wave % 3 == 0 else "Next wave" if won else "Prepare again"), func(): run.advance(), RemakeText.t("Return to preparation with your army restored."), true)
+		action = _button(_dock, RemakeText.t("Visit camp" if won and run.wave % 3 == 0 else "Next wave" if won else "Prepare again"), func(): run.advance(), "", true)
+	action.name = "ContinueResult"
+	action.custom_minimum_size.y = 48
+	action.add_theme_font_override("font", _heading_font)
+	action.add_theme_font_size_override("font_size", 23)
+	action.grab_focus()
 
 
 func _build_rewards() -> void:
 	var choosing_pact := String(run.rewards[0].kind) == "pact"
 	var heading := _label(_dock, RemakeText.t("Choose your pact" if choosing_pact else "A moment at camp"), 28, GOLD)
-	heading.add_theme_font_override("font", preload("res://fonts/LiberationSerif-Regular.ttf"))
+	heading.add_theme_font_override("font", _heading_font)
 	_wrap(_dock, RemakeText.t(ArenaRules.BOONS.pact[1]) if choosing_pact else RemakeText.t("Take one reward before the next battle."), 15, MUTED)
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 24)
@@ -650,7 +732,7 @@ func _show_company() -> void:
 	_inspect_box.add_child(heading)
 	var title := _wrap(heading, RemakeText.t("Company"), 23, GOLD)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	title.add_theme_font_override("font", preload("res://fonts/LiberationSerif-Regular.ttf"))
+	title.add_theme_font_override("font", _heading_font)
 	_icon_button(heading, preload("res://assets/arena/close.svg"), _clear_selection, RemakeText.t("Close"))
 	if run.pact.is_empty():
 		_wrap(_inspect_box, RemakeText.t("Company pacts are offered at the camps after waves 3, 9 and 15 until you choose one."), 15, MUTED)
@@ -675,6 +757,8 @@ func _show_company() -> void:
 			_wrap(_inspect_box, RemakeText.t(ArenaRules.BOONS[boon][0]), 15, PAPER)
 			_wrap(_inspect_box, RemakeText.t(ArenaRules.BOONS[boon][1]), 13, MUTED)
 
+	_tooltips.capture(_hud)
+
 
 func _creature_preview(parent: Node, id: String, height: float) -> WikiPreview:
 	var preview := WikiPreview.new()
@@ -696,7 +780,8 @@ func _select(uid: int) -> void:
 	_inspect(entry.prototype, entry)
 	if run.stage == "prepare" and not landing: field.select_creature(entry.prototype)
 	_build_army()
-	_hint((RemakeText.t("Click a clear position in the blue deployment area.") if entry.deployed else RemakeText.t("Click the field to deploy, or click an ally to swap places.")) if run.stage == "prepare" else "")
+	_tooltips.capture(_hud)
+	_hint((RemakeText.t("Click the field to move, or an empty reserve slot to return.") if entry.deployed else RemakeText.t("Click the field to deploy, or click an ally to swap places.")) if run.stage == "prepare" else "")
 
 
 func _select_world(unit: GameUnit) -> void:
@@ -710,13 +795,21 @@ func _select_world(unit: GameUnit) -> void:
 	else:
 		_clear_selection()
 		_inspect(String(unit.info.get("prototype", "")))
+		_inspected_unit = unit
 		if unit.get_meta("arena_placement", {}).has("pact"):
 			_wrap(_inspect_box, RemakeText.t("Pact ally · returns each battle while your pact is active."), 14, GOLD)
 			_button(_inspect_actions, RemakeText.t("Company"), _show_company, RemakeText.t("Inspect your company pact and expedition upgrades."))
+	_tooltips.capture(_hud)
 
 
 func _inspect(id: String, entry: Dictionary = {}) -> void:
 	if id.is_empty(): return
+	_inspected_unit = null
+	if not entry.is_empty():
+		for unit: GameUnit in battle.world.unit_rows():
+			if int(unit.get_meta("arena_placement", {}).get("run_uid", 0)) == int(entry.uid):
+				_inspected_unit = unit
+				break
 	_showing_company = false
 	_rail.show()
 	_inspected = id
@@ -728,19 +821,19 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 	var title := _wrap(heading, ArenaRules.title(id), 21, GOLD)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_icon_button(heading, preload("res://assets/arena/close.svg"), _clear_selection, RemakeText.t("Close the creature details."))
-	title.add_theme_font_override("font", preload("res://fonts/LiberationSerif-Regular.ttf"))
+	title.add_theme_font_override("font", _heading_font)
 	if not entry.is_empty() and int(entry.family) >= 0:
 		var family: Dictionary = ArenaRules.FAMILIES[int(entry.family)]
 		_wrap(_inspect_box, "%s · %s" % [RemakeText.t(family.name), RemakeText.t(family.role)], 13, GOLD)
 		if not run.pact.is_empty() and int(entry.family) in ArenaRules.PACTS[run.pact].families:
 			_wrap(_inspect_box, RemakeText.t("Evolve this creature to contribute to your pact." if int(entry.rank) < int(ArenaRules.PACTS[run.pact].min_rank) else "Deploy this family to contribute to your pact."), 13, MUTED)
 	var preview := WikiPreview.new()
-	preview.custom_minimum_size.y = 64
+	preview.custom_minimum_size.y = 90
 	_inspect_box.add_child(preview)
 	preview.show_model({"kind": "creature", "value": id})
 	preview.zoom_by(0.8)
 	var row := GameData.db.find("monster_prototypes", id)
-	_wrap(_inspect_box, RemakeText.t("Health %d · Armor %d\nDamage %d–%d") % [int(row.get("hp", 0)), int(row.get("absorption", 0)), int(row.get("damage_min", 0)), int(row.get("damage_min", 0) + row.get("damage_max", 0))], 14)
+	_live_health = _wrap(_inspect_box, RemakeText.t("Health %d · Armor %d\nDamage %d–%d") % [int(row.get("hp", 0)), int(row.get("absorption", 0)), int(row.get("damage_min", 0)), int(row.get("damage_min", 0) + row.get("damage_max", 0))], 14)
 	var spells: Array = row.get("spells", [])
 	if not spells.is_empty():
 		# Spell titles resolve through the original text layer, never raw specs.
@@ -751,8 +844,12 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 			if not name.is_empty() and name not in names: names.append(name)
 		if not names.is_empty(): _wrap(_inspect_box, ", ".join(names), 13, MUTED)
 	if not entry.is_empty() and run.stage == "prepare" and not landing:
-		if entry.deployed: _button(_inspect_box, RemakeText.t("Move to bench"), func(): _feedback(run.bench(entry.uid)), RemakeText.t("Free a deployment slot while keeping this creature."))
-		_button(_inspect_box, RemakeText.t("Sell · %d gold") % run.sale_value(entry), func(): _feedback(run.sell(entry.uid)), RemakeText.t("Recover part of the recruitment cost. You can undo this before refreshing or fighting."))
+		if entry.deployed:
+			var returning := _button(_inspect_actions, RemakeText.t("Return to reserves"), _return_to_reserves, RemakeText.t("Free a deployment slot while keeping this creature."), true)
+			returning.name = "ReturnToReserves"
+			returning.disabled = run.bench_count() >= run.bench_limit()
+			if returning.disabled: returning.tooltip_text = RemakeText.t("Reserves full. Deploy or sell a creature first.")
+		_button(_inspect_actions, RemakeText.t("Sell · %d gold") % run.sale_value(entry), func(): _feedback(run.sell(entry.uid)), RemakeText.t("Recover part of the recruitment cost. You can undo this before refreshing or fighting."))
 	if not entry.is_empty() and ArenaRules.evolution_copies(int(entry.family), int(entry.rank)) > 0:
 		_rule(_inspect_box)
 		var next := ArenaRules.prototype(entry.family, int(entry.rank) + 1)
@@ -760,16 +857,14 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 		_wrap(_inspect_box, ArenaRules.title(next), 17, PAPER)
 		var stats := GameData.db.find("monster_prototypes", next)
 		_wrap(_inspect_box, RemakeText.t("Health %d · Armor %d\nDamage %d–%d") % [int(stats.get("hp", 0)), int(stats.get("absorption", 0)), int(stats.get("damage_min", 0)), int(stats.get("damage_min", 0) + stats.get("damage_max", 0))], 13, MUTED)
-		var error := run.evolution_error(entry.uid)
 		var needed := ArenaRules.evolution_copies(int(entry.family), int(entry.rank))
-		_wrap(_inspect_box, RemakeText.t("Copies: %d/%d") % [mini(needed, run.copies(entry).size()), needed], 13, GOLD)
-		_wrap(_inspect_box, error if error else RemakeText.t("Combine matching creatures to recruit this form."), 13, MUTED)
-		var merge := _button(_inspect_actions, RemakeText.t("Evolve · %d copies") % needed, func(): _feedback(run.evolve(entry.uid)), RemakeText.t("Consume %d identical forms to recruit the previewed creature.") % needed, true)
-		merge.disabled = not error.is_empty()
+		_wrap(_inspect_box, RemakeText.t("%d/%d copies · combines automatically") % [mini(needed, run.copies(entry).size()), needed], 14, GOLD)
+		_wrap(_inspect_box, RemakeText.t("Matching forms combine automatically, from the first wave. The deployed creature keeps its position."), 14, MUTED)
+
 	elif not entry.is_empty():
 		_wrap(_inspect_box, RemakeText.t("This creature has reached its final form."), 13, GOLD)
 
-
+	_tooltips.capture(_hud)
 
 
 func _place(point: Vector2) -> void:
@@ -787,6 +882,7 @@ func _fight() -> void:
 
 func _clear_selection() -> void:
 	_showing_company = false
+	_inspected_unit = null
 	selected_uid = 0
 	if battle: battle.selected_run_uid = 0
 	if field:
@@ -802,12 +898,16 @@ func _battle_changed() -> void:
 	if _pause:
 		_pause.icon = preload("res://assets/arena/play.svg") if battle.phase == ArenaMatch.Phase.PAUSED else preload("res://assets/arena/pause.svg")
 		_pause.tooltip_text = RemakeText.t("Resume" if battle.phase == ArenaMatch.Phase.PAUSED else "Pause") + " · " + RemakeText.t("Pause or resume the battle. Space also works.")
+		if _tooltips: _tooltips.capture(_pause)
 	if _phase:
 		_phase.text = RemakeText.t("Preparing") if run.stage == "prepare" else RemakeText.t("Paused") if battle.phase == ArenaMatch.Phase.PAUSED else RemakeText.t("Battle") if run.stage == "fight" else ""
 	if _sound: _sound.music.tick(2 if battle.phase == ArenaMatch.Phase.FIGHT else 0)
 
 
 func _process(dt: float) -> void:
+	if is_instance_valid(_live_health) and is_instance_valid(_inspected_unit) and _rail.visible:
+		var unit := _inspected_unit
+		_live_health.text = RemakeText.t("Health %d/%d · Armor %d\nDamage %d–%d") % [maxi(0, ceili(unit.hp)), ceili(unit.max_hp), int(unit.proto.get("absorption", 0)), int(unit.stats.get("dmg_min", 0)), int(unit.stats.get("dmg_max", 0))]
 	if _clock and battle and is_instance_valid(battle.world):
 		_clock.text = "%d:%02d" % [int(battle.world.time) / 60, int(battle.world.time) % 60]
 
@@ -829,22 +929,35 @@ func _process(dt: float) -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_SPACE and run.stage == "fight":
+		if event.keycode == KEY_SPACE and run.stage == "fight" and not _modal_layer.visible:
 			battle.toggle_pause(); get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_ESCAPE:
-			_clear_selection(); get_viewport().set_input_as_handled()
+			if _modal_layer.visible: _close_modal()
+			elif _inspector.visible: _clear_selection()
+			else: _show_menu()
+			get_viewport().set_input_as_handled()
 
 
 func _guide() -> void:
-	var dialog := AcceptDialog.new()
-	dialog.title = RemakeText.t("Expedition guide")
-	dialog.ok_button_text = RemakeText.t("Close")
-	dialog.dialog_autowrap = true
-	dialog.dialog_text = RemakeText.t("Recruit creatures into your bench. Select one, then click the blue deployment area.\n\nCombine matching forms to evolve. Shooters and bats need two copies for their first evolution; other recipes need three. First evolutions unlock at wave 4, final evolutions at wave 10. Toads have one evolution. Check the creature panel before combining.\n\nMelee recruits cost 3 gold; shooters and magic creatures cost 4. Victories before the final wave earn 7 gold. Visit camp every three victories: choose a company pact after wave 3, then improve it or take other rewards. Inspect your army counter to see pact requirements and upgrades. Defeat costs one life; your army recovers fully.\n\nPrepare without a timer, then let the AI fight. Win all 18 waves to unlock harder expeditions. Scroll to zoom; hold the middle mouse button to rotate the battlefield.")
-	dialog.confirmed.connect(dialog.queue_free)
-	dialog.canceled.connect(dialog.queue_free)
-	add_child(dialog)
-	dialog.popup_centered(Vector2i(630, 480))
+	_open_modal(RemakeText.t("Expedition guide"), 640)
+	_guide_scroll = ScrollContainer.new()
+	_guide_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_guide_scroll.custom_minimum_size.y = minf(440, _hud.size.y - 220)
+	_modal_box.add_child(_guide_scroll)
+	var content := VBoxContainer.new()
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.add_theme_constant_override("separation", 12)
+	_guide_scroll.add_child(content)
+	var topics := [
+		["Recruitment", "Buy creatures into reserves. Shop improvements add stronger native forms to future offers."],
+		["Evolution", "Matching forms combine automatically, from the first wave. The deployed creature keeps its position."],
+		["Your army", "Select a creature, then click the field to place it. Select a reserve and click an ally to swap them. To withdraw an ally, click Return to reserves or an empty reserve slot."],
+		["Battle", "Both teams fight under AI control. Hover a creature for details. Space pauses combat; the speed control switches between normal and double speed."],
+		["Company", "Visit camp every three victories to choose a pact, improve an ally or take an expedition upgrade. Win all 18 waves to unlock harder expeditions."]]
+	for topic in topics:
+		_label(content, RemakeText.t(topic[0]), 18, GOLD)
+		_wrap(content, RemakeText.t(topic[1]), 15, PAPER)
+	_button(_modal_box, RemakeText.t("Close"), _close_modal, "", true)
 
 
 func _feedback(error: String) -> void:
@@ -887,7 +1000,7 @@ func _button(parent: Node, value: String, action: Callable, help: String, primar
 	var button := Button.new()
 	button.text = value
 	button.tooltip_text = help
-	button.custom_minimum_size.y = 34
+	button.custom_minimum_size.y = 40
 	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	button.add_theme_color_override("font_color", PAPER)
 	button.add_theme_stylebox_override("normal", ArenaCreatureCard.style(Color("25251e") if primary else Color("202726"), GOLD if primary else Color("4b5143")))
@@ -920,25 +1033,45 @@ func _recruit_offer(index: int) -> void:
 	var error := run.buy(index)
 	_feedback(error)
 	if error.is_empty():
+		if not run.last_evolutions.is_empty():
+			uid = run.last_evolutions.back()
 		_select(uid)
-		if run.deployed_count() >= run.capacity():
+		if not run.last_evolutions.is_empty():
+			_hint(RemakeText.t("Evolved into %s") % ArenaRules.title(run.unit(uid).prototype))
+		elif run.deployed_count() >= run.capacity():
 			_hint(RemakeText.t("Select a reserve, then click one of your deployed creatures to swap them."))
 
 
+func _return_to_reserves() -> void:
+	var error := run.bench(selected_uid)
+	if error.is_empty(): _clear_selection()
+	_feedback(error)
+
+
 func _layout_outcome() -> void:
-	if not _outcome or not field: return
-	var width := minf(900 if run.stage == "reward" else 600, field.size.x - 32)
-	_outcome.offset_left = -width / 2
-	_outcome.offset_right = width / 2
-	_outcome.offset_top = -238 if run.stage == "reward" else -120
-	_outcome.offset_bottom = 238 if run.stage == "reward" else 120
+	if not _outcome or not _hud: return
+	var width := minf(900 if run.stage == "reward" else 520, _hud.size.x - 48)
+	_outcome.custom_minimum_size.x = width
+	_outcome.size = Vector2(width, 0)
+	_outcome.position = (_hud.size - _outcome.size) / 2
 
 
 func _layout_hud() -> void:
 	if not _shop_panel: return
-	_shop_panel.offset_right = minf(984, size.x - 252)
+	# One logical canvas; type, targets, portraits and spacing scale together.
+	# The battlefield still renders at the full physical window resolution.
+	_ui_scale = maxf(1.0, minf(size.x / 1280.0, size.y / 800.0))
+	_hud.scale = Vector2.ONE * _ui_scale
+	_hud.size = size / _ui_scale
+	if theme.default_font is FontFile: theme.default_font.oversampling = _ui_scale
+	if _heading_font is FontFile: _heading_font.oversampling = _ui_scale
+	field.ui_scale = _ui_scale
+	field._update_camera()
+	_shop_panel.offset_right = minf(960, _hud.size.x - 300)
 	if _army_row and not run.army.is_empty(): _build_army()
 	_layout_outcome()
+	_layout_modal()
+	if _tooltips: _tooltips.capture(_hud)
 
 
 func _unframed(parent: Node) -> PanelContainer:
@@ -966,3 +1099,148 @@ func _icon_button(parent: Node, texture: Texture2D, action: Callable, help: Stri
 	button.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
 	button.add_theme_constant_override("icon_max_width", 22)
 	return button
+
+
+func _layout_modal() -> void:
+	if not _modal_panel: return
+	if is_instance_valid(_guide_scroll): _guide_scroll.custom_minimum_size.y = minf(440, _hud.size.y - 220)
+	_modal_panel.size = Vector2(_modal_panel.custom_minimum_size.x, 0)
+	_modal_panel.position = (_hud.size - _modal_panel.size) / 2
+
+
+func _open_modal(title: String, width := 360.0) -> void:
+	if not _modal_layer.visible:
+		_menu_was_fighting = battle.phase == ArenaMatch.Phase.FIGHT
+		if _menu_was_fighting: battle.toggle_pause()
+		# Keep keyboard navigation inside the same modal as pointer input.
+		_modal_focus.clear()
+		for control: Control in _hud.find_children("*", "Control", true, false):
+			if _modal_layer.is_ancestor_of(control) or control.focus_mode == Control.FOCUS_NONE: continue
+			_modal_focus.append({"control": weakref(control), "mode": control.focus_mode})
+			control.focus_mode = Control.FOCUS_NONE
+	_guide_scroll = null
+	_clear(_modal_box)
+	_modal_layer.show()
+	_modal_panel.custom_minimum_size = Vector2(width, 0)
+	var row := HBoxContainer.new()
+	_modal_box.add_child(row)
+	var heading := _wrap(row, title, 28, GOLD)
+	heading.add_theme_font_override("font", _heading_font)
+	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_icon_button(row, preload("res://assets/arena/close.svg"), _close_modal, RemakeText.t("Close"))
+	_rule(_modal_box)
+	_layout_modal.call_deferred()
+	_tooltips.capture.call_deferred(_hud)
+	_focus_modal.call_deferred()
+
+
+func _focus_modal() -> void:
+	if not _modal_layer.visible: return
+	for control in _modal_box.find_children("*", "Button", true, false):
+		if not control.disabled:
+			control.grab_focus()
+			return
+
+
+func _close_modal() -> void:
+	_modal_layer.hide()
+	for entry in _modal_focus:
+		var control = entry.control.get_ref()
+		if is_instance_valid(control): control.focus_mode = entry.mode
+	_modal_focus.clear()
+	if _menu_was_fighting and battle.phase == ArenaMatch.Phase.PAUSED: battle.toggle_pause()
+	_menu_was_fighting = false
+	_menu.grab_focus()
+
+
+func _menu_action(id: int) -> void:
+	if id == 0: _guide(); return
+	_close_modal()
+	match id:
+		1: sandbox_requested.emit()
+		2: exit_requested.emit()
+		3: run.arrange()
+		4: run.undo()
+		5: _show_company()
+
+
+func _show_menu() -> void:
+	if _modal_layer.visible: _close_modal(); return
+	_open_modal(RemakeText.t("Trials of Gipath"))
+	_menu_items.clear()
+	_button(_modal_box, RemakeText.t("Return to battle" if run.stage == "fight" else "Continue"), _close_modal, "", true).grab_focus()
+	for pair in [[5, "Company"], [3, "Auto arrange"], [4, "Undo"], [0, "Guide"]]:
+		var id := int(pair[0])
+		var button := _button(_modal_box, RemakeText.t(pair[1]), func(): _menu_action(id), "")
+		if id == 3:
+			button.disabled = landing or run.stage != "prepare"
+			button.tooltip_text = RemakeText.t("Deploy your strongest forms with ranged creatures behind the front line. Keep your pact active when your army can meet its condition.")
+		elif id == 4:
+			button.disabled = landing or not run.can_undo()
+			button.tooltip_text = RemakeText.t("Undo a preparation action. Shop refreshes cannot be refunded.")
+		elif id == 5:
+			button.disabled = landing or run.stage not in ["prepare", "fight"]
+			button.tooltip_text = RemakeText.t("Inspect your company pact and expedition upgrades.")
+		_menu_items[id] = button
+	_rule(_modal_box)
+	var navigation := HBoxContainer.new()
+	navigation.add_theme_constant_override("separation", 12)
+	_modal_box.add_child(navigation)
+	for pair in [[1, "Sandbox"], [2, "Main menu"]]:
+		var id := int(pair[0])
+		_button(navigation, RemakeText.t(pair[1]), func(): _menu_action(id), "").size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+
+func _show_recruitment() -> void:
+	_open_modal(RemakeText.t("Improve recruitment"), 500)
+	_wrap(_modal_box, RemakeText.t("Recruit stronger forms with their original stats. Each improvement refreshes unlocked offers immediately."), 16, PAPER)
+	for level in 3:
+		var words := ["Tier I: 100%", "Tier I: 70% · Tier II: 30%", "Tier I: 45% · Tier II: 45% · Tier III: 10%"]
+		_wrap(_modal_box, RemakeText.t("Shop %d") % (level + 1) + "  ·  " + RemakeText.t(words[level]), 16, GOLD if level == run.shop_level else MUTED)
+	_wrap(_modal_box, RemakeText.t("Tier II costs 3 extra gold; tier III costs 8 extra. Toads have two forms, so tier III offers use their final form."), 14, MUTED)
+	if run.shop_level < 2:
+		var action := _button(_modal_box, RemakeText.t("Upgrade · %d gold") % run.shop_upgrade_cost(), func():
+			var error := run.upgrade_shop()
+			if error.is_empty(): _close_modal()
+			_feedback(error), RemakeText.t("The improvement includes a refresh and cannot be undone."), true)
+		action.name = "UpgradeRecruitment"
+		action.disabled = run.gold < run.shop_upgrade_cost()
+		if action.disabled: _label(_modal_box, RemakeText.t("Not enough gold."), 15, MUTED)
+	else:
+		_label(_modal_box, RemakeText.t("Recruitment is fully upgraded."), 16, GOLD)
+
+
+func _confirm_new_run() -> void:
+	_open_modal(RemakeText.t("New expedition"), 480)
+	_wrap(_modal_box, RemakeText.t("Start a new expedition? This replaces your current expedition."), 16)
+	var actions := HBoxContainer.new()
+	actions.add_theme_constant_override("separation", 12)
+	_modal_box.add_child(actions)
+	_button(actions, RemakeText.t("Cancel"), _close_modal, "").size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_button(actions, RemakeText.t("Begin expedition"), func(): _close_modal(); _begin(_pending_starter), "", true).size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+
+func _world_hint(control: Control) -> Dictionary:
+	if control != field or landing or _outcome.visible or _modal_layer.visible: return {}
+	var unit := field.hovered
+	if not is_instance_valid(unit): return {}
+	var row := unit.proto
+	var body := RemakeText.t("Health %d/%d · Armor %d\nDamage %d–%d") % [maxi(0, ceili(unit.hp)), ceili(unit.max_hp), int(row.get("absorption", 0)), int(unit.stats.get("dmg_min", 0)), int(unit.stats.get("dmg_max", 0))]
+	var spells := _spell_titles(row)
+	if not spells.is_empty(): body += "\n" + spells
+	var uid := int(unit.get_meta("arena_placement", {}).get("run_uid", 0))
+	var entry := run.unit(uid)
+	if not entry.is_empty():
+		var needed := ArenaRules.evolution_copies(int(entry.family), int(entry.rank))
+		if needed > 0: body += "\n" + RemakeText.t("%d/%d copies · combines automatically") % [run.copies(entry).size(), needed]
+		if run.stage == "prepare": body += "\n" + RemakeText.t("Click to move or return to reserves.")
+	return {"key": unit.get_instance_id(), "title": unit.display_name, "text": body}
+
+
+func _spell_titles(row: Dictionary) -> String:
+	var names: Array[String] = []
+	for spell: String in row.get("spells", []):
+		var parsed := Spells.parse(spell)
+		var value := RemakeText.t(Spells.title(parsed.code)) if parsed.has("code") else ""
+		if not value.is_empty() and value not in names: names.append(value)
+	return ", ".join(names)
