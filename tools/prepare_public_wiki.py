@@ -138,7 +138,8 @@ def prepare(data, images, output, astral_data, astral_images):
     output.mkdir(parents=True, exist_ok=True)
     for file in source.iterdir():
         shutil.copy2(file, output / file.name)
-    report = {'version': '1.8.0', 'languages': {}, 'translation_keys': len(labels['en']),
+    version = re.search(r'^config/version="([^"]+)"', (source.parents[1] / 'game/project.godot').read_text(), re.M)[1]
+    report = {'version': version, 'languages': {}, 'translation_keys': len(labels['en']),
               'requires_game_files': False, 'requires_game_engine': False, 'requires_account': False}
     used_images = {}
     report['campaigns'] = {}

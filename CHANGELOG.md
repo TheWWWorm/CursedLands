@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.9.0 — Trials, illustrated lore and Android rendering, 17 October 2026
+
+- Add **Trials of the Allods**, a solo PvE expedition across 30 encounters on a snowy battlefield. Buy a company from original Gipath, Ingos and Suslanger creatures, arrange the formation, and let both teams fight under AI control.
+- Add automatic creature evolution, overlapping Beast, Horde, Warrior, Hunter and Mage alliances, level-based recruitment, paid training, interest, win streaks and camp rewards. Each preparation lasts up to 45 seconds; ordinary results advance automatically.
+- Add native run-in and repositioning animations, visible snow trails and blood, numeric health, damage feedback, creature details and a HUD that scales through 4K. Keep the opening, menus and feedback localized in English, Russian and German.
+- Expand both encyclopedias with 92 character biographies, seven allod articles, revised location histories and original scenery illustrations. Link the accounts to dialogue, journals, event scripts and related characters and places.
+- Reduce repeated terrain sampling and colour-cache work. On Android Vulkan, skip unused baked-light, sky-radiance, clear-fog, water-reflection and screen-mipmap work while preserving the selected graphics settings.
+- Correct terrain contact on authored bridge decks and use consistent sectors in radial menus.
+- Add the YouTube trailer, five new README screenshots and the reusable native 4K60 capture/editing project.
+
+
+See [release notes](docs/releases/1.9.0.md) for compatibility and platform limits.
+
 ## 1.8.0 — encyclopedia, planning and local creations, 16 October 2026
 
 - Rework the website and in-game encyclopedia with clearer search results, category artwork and readable article layouts in English, Russian and German.

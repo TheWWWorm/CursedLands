@@ -10,7 +10,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.8.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.8.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It reworks both encyclopedias, adds character planning and local creation libraries, and connects maps, quests, equipment and crafting. See the [release notes](docs/releases/1.8.0.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.9.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.9.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It adds Trials of the Allods, illustrated character and world histories, and Android Vulkan optimizations. See the [release notes](docs/releases/1.9.0.md) and [versioning policy](docs/versioning.md).
 
 Browse the [**public wiki**](https://cursedlands.wwworm.com/wiki/) without game files or an account. Separate tabs cover the GOG base game and Lost in Astral: items, materials, spells, runes, creatures and mechanics in English, Russian and German.
 
@@ -23,7 +23,7 @@ Frames from the [4K, 60 FPS trailer](https://www.youtube.com/watch?v=3zZLq5H10ic
 ![First-person campaign co-op against skeletons in the Dead City](docs/screenshots/first-person-coop.jpg)
 ![First-person combat against a banshee in Lost in Astral](docs/screenshots/lost-in-astral-banshee.jpg)
 
-**Trials of the Allods — preview**
+**Trials of the Allods**
 
 ![Trials of the Allods battle in the snowy arena](docs/screenshots/trials-of-the-allods.jpg)
 

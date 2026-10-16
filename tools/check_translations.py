@@ -9,7 +9,12 @@ ROOT = Path(__file__).resolve().parents[1] / 'game/src'
 STRING = r'"(?:[^"\\]|\\.)*"'
 entries = {}
 errors = []
-for line in (ROOT / 'ei/remake_text.gd').read_text().splitlines():
+lore_source = (ROOT / 'game/wiki_lore_data.gd').read_text()
+lore_texts = json.loads(lore_source.split('const DATA := ', 1)[1])['texts']
+# RemakeText.t also resolves the generated, source-checked lore catalog.
+translation_lines = (ROOT / 'ei/remake_text.gd').read_text().splitlines()
+translation_lines += [json.dumps(key) + ': ' + json.dumps(value) for key, value in lore_texts.items()]
+for line in translation_lines:
     match = re.match(r'\s*(' + STRING + r'):\s*(\[.*\]),?\s*$', line)
     if not match:
         continue
