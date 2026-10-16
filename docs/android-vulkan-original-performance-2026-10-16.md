@@ -141,6 +141,11 @@ runtime acceptance. An official desktop 4.7 Forward+ run passes the same pixel
 assertions but encounters its separate-render-thread shutdown error. These
 additional runs do not qualify Forward+ or a new desktop engine template.
 
+A later [desktop follow-up](desktop-performance-2026-10-16.md) runs the particle
+fixture successfully with the shipping Linux runtime and measures the shared
+CPU caches. Its repeated desktop FPS tests do not establish an overall gain;
+the Android FPS result above remains device- and renderer-specific.
+
 ## Builds, reproduction and limits
 
 Apply `engine_patches/godot-4.7/mobile-render-work.patch` after the fourteen
