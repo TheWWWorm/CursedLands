@@ -42,6 +42,11 @@ def digest(path):
 def validate(m):
     assert m["schema"] == 1
     assert (m["width"], m["height"], m["fps"]) == (3840, 2160, 60), "Master must be native 2160p60"
+    for key, translations in m["text"].items():
+        for lang in LANGUAGES:
+            lines = translations[lang]
+            assert lines and all(isinstance(line, str) and line.strip() for line in lines), (key, lang)
+            assert len(lines) == len(translations["en"]), (key, lang)
     ids = []
     for s in m["shots"]:
         excluded = m.get("excluded_locations", {}).get(s.get("campaign", "cursed_lands"), [])
@@ -62,14 +67,48 @@ def validate(m):
             assert len(lines) == len(m["text"][s["title"]]["en"])
         ids.append(s["id"])
     assert len(set(ids)) == len(ids), "Duplicate shot ids"
-    total = sum(s["frames"] for s in m["shots"])
+    source={s["id"]:s for s in m["shots"]}
+    edit=m.get("edit",[{"id":s["id"],"shot":s["id"],"frames":s["frames"]} for s in m["shots"]])
+    assert len({e['id'] for e in edit})==len(edit), "Duplicate edit ids"
+    for e in edit:
+        assert re.fullmatch(r"[a-z0-9][a-z0-9-]*",e["id"])
+        assert e["shot"] in source and isinstance(e["frames"],int) and e["frames"]>0
+        assert e.get("energy", "action") in ("calm", "action", "feature", "end")
+        start=e.get("start",0)
+        assert isinstance(start,int) and start>=0 and start+e["frames"]<=source[e["shot"]]["frames"], "Edit exceeds its clean take"
+        key=e.get("title",source[e["shot"]]["title"])
+        assert not key or key in m["text"]
+    total = sum(e["frames"] for e in edit)
     assert 55 * 60 <= total <= 65 * 60, "Keep the main cut about one minute"
+    editorial = m.get("editorial", {})
+    assert not {e["shot"] for e in edit}.intersection(editorial.get("excluded_from_edit", [])), "Rejected take in the edit"
+    encounters = set()
+    modes = {}
+    for e in edit:
+        shot = source[e["shot"]]
+        if shot.get("kind") != "combat":
+            continue
+        actors = {(shot.get("campaign", "cursed_lands"), shot["zone"], actor["nid"])
+                  for actor in shot["enemies"]}
+        if editorial.get("unique_combat_encounters"):
+            assert encounters.isdisjoint(actors), "Repeated encounter in the edit; record a different battle"
+        encounters.update(actors)
+        mode = shot.get("camera", "isometric")
+        modes.setdefault(mode, set()).add(e["shot"])
+    for mode, minimum in editorial.get("minimum_mode_encounters", {}).items():
+        assert len(modes.get(mode, set())) >= minimum, f"Need {minimum} separate {mode} encounters"
     return total
 
 
 class Project:
     def __init__(self, config, manifest):
         self.c = read(config)
+        base = Path(config).resolve().parent
+        for key in ("output", "music", "hd_lands"):
+            if self.c.get(key):
+                self.c[key] = str((base / self.c[key]).resolve())
+        for key in ("runtimes", "game_data"):
+            self.c[key] = {name: str((base / value).resolve()) for name, value in self.c.get(key, {}).items()}
         self.m = read(manifest)
         self.manifest = Path(manifest).resolve()
         validate(self.m)
@@ -79,6 +118,9 @@ class Project:
         self.env.update(self.c.get("environment", {}))
         self.ffmpeg = self.c["ffmpeg"]
         self.ffprobe = self.c["ffprobe"]
+
+    def take_path(self, receipt):
+        return self.out / receipt["take"]
 
     def command(self, args, log, env=None, timeout=1800):
         with Path(log).open("w") as f:
@@ -104,11 +146,18 @@ class Project:
                                 "-color_primaries", "bt709", "-r", "60", "-movflags", "+faststart"]
 
     def selected(self, only):
-        names = set(only.split(",")) if only else {s["id"] for s in self.m["shots"]}
+        names = set(only.split(",")) if only else {e["shot"] for e in self.timeline()}
         unknown = names - {s["id"] for s in self.m["shots"]}
         if unknown:
             raise ValueError(f"Unknown shots: {sorted(unknown)}")
         return [s for s in self.m["shots"] if s["id"] in names]
+
+    def timeline(self):
+        return self.m.get("edit",[{"id":s["id"],"shot":s["id"],"frames":s["frames"]} for s in self.m["shots"]])
+
+    def master(self,language):
+        revision=f"-v{self.m['revision']}" if self.m.get("revision") else ""
+        return self.out/f"Cursed-Lands-Trailer{revision}-{language}-2160p60.mp4"
 
     def shot_spec(self, shot, probe=False):
         spec=dict(shot,width=1920 if probe else 3840,height=1080 if probe else 2160)
@@ -140,7 +189,7 @@ class Project:
         fingerprint = hashlib.sha256(json.dumps({"shot":spec,"language":language,"script":digest(script),"base_script":digest(HERE/"capture.gd"),"coop_client":digest(HERE/"coop_client.gd") if shot.get("kind")=="coop" else None,
             "engine":digest(runtime),"pck":digest(runtime.with_suffix(".pck"))},sort_keys=True).encode()).hexdigest()
         cache = root / "receipt.json"
-        if cache.exists() and not force and read(cache).get("fingerprint") == fingerprint and (Path(read(cache)["take"])/("capture-start.png" if probe else "clean.mp4")).is_file():
+        if cache.exists() and not force and read(cache).get("fingerprint") == fingerprint and (self.take_path(read(cache))/("capture-start.png" if probe else "clean.mp4")).is_file():
             print(f"Cached {mode}: {shot['id']}", flush=True)
             return
         # Numbered takes are immutable. A new version never replaces old media.
@@ -222,6 +271,12 @@ class Project:
                 proof=report["coop"]
                 assert proof["players_at_end"]==2 and proof["guest_start"]!=proof["guest_end"],"Guest must move in the real co-op take"
                 assert proof["client_command"]["index"]==1
+            if shot.get("touch_demo") == "inventory":
+                assert report["touch"]["events"] == 2 and report["touch"]["inventory_open"], "Native touch tap must open inventory"
+            if shot.get("minimum_advance_distance"):
+                points = [s["pos"] for s in report["movement_samples"] if s["moving"]]
+                distance = sum((points[-1][i] - points[0][i]) ** 2 for i in (0, 1)) ** 0.5 if points else 0
+                assert distance >= shot["minimum_advance_distance"], "Walking shot is obstructed; choose a clear approach"
             src = self.probe_media(take / "capture.avi")
             v = next(s for s in src["streams"] if s["codec_type"] == "video")
             assert (v["width"], v["height"],v["r_frame_rate"]) == (3840,2160,"60/1"), v
@@ -248,6 +303,9 @@ class Project:
         w,h = self.m["width"],self.m["height"]
         im=Image.new("RGBA",(w,h))
         draw=ImageDraw.Draw(im)
+        if not shot.get("title"):
+            im.save(path)
+            return
         fonts=HERE.parent.parent / "game/fonts"
         serif=fonts / "LiberationSerif-Regular.ttf"
         sans=fonts / "LiberationSans-Regular.ttf"
@@ -262,17 +320,18 @@ class Project:
             raise ValueError(f"Title cannot fit: {text}")
         if shot.get("card"):
             draw.rectangle((0,0,w,h),fill=(9,14,16,150))
-            y=700
-            for line,size,font,col in zip(lines,[184,86,58,44],[serif,sans,sans,sans],[ivory,gold,ivory,ivory]):
+            layout=[(490,164,serif,ivory),(780,100,sans,gold),(1080,64,sans,ivory),(1220,64,sans,ivory),(1490,52,sans,ivory),(1610,44,sans,ivory)] if len(lines)>4 else [(700,184,serif,ivory),(930,86,sans,gold),(1120,58,sans,ivory),(1245,44,sans,ivory)]
+            for line,(y,size,font,col) in zip(lines,layout):
                 f=fit(line,font,size,w-420)
                 draw.text((w//2,y),line,font=f,fill=col,anchor="mt",stroke_width=1)
-                y+=[230,190,125,90][lines.index(line)]
-            draw.line((w//2-180,610,w//2+180,610),fill=gold,width=3)
-            draw.line((w//2-180,1440,w//2+180,1440),fill=gold,width=3)
+            draw.line((w//2-180,400,w//2+180,400),fill=gold,width=3)
+            draw.line((w//2-180,1770,w//2+180,1770),fill=gold,width=3)
         else:
             # A quiet gradient leaves the scene readable, with phone-safe text.
             field_ui=shot.get("kind")=="coop" or shot.get("input")=="touch"
             top=shot.get("kind") in ("combat","coop","arena") or bool(shot.get("input"))
+            if shot.get("touch_demo") == "inventory":
+                field_ui = top = False
             # Keep ivory/gold readable over snow and the wiki's pale paper.
             # The soft edge still leaves the central action unobscured.
             band=800
@@ -285,67 +344,93 @@ class Project:
             y=480 if field_ui else (180 if top else h-365)
             draw.line((x,y-36,x+100,y-36),fill=gold,width=4)
             draw.text((x,y),lines[0],font=fit(lines[0],serif,92,w-x-360),fill=ivory,stroke_width=1,stroke_fill=(10,10,10,180))
-            draw.text((x,y+128),lines[1],font=fit(lines[1],sans,52,w-x-360),fill=gold,stroke_width=1,stroke_fill=(10,10,10,180))
+            if len(lines)>1:
+                draw.text((x,y+128),lines[1],font=fit(lines[1],sans,52,w-x-360),fill=gold,stroke_width=1,stroke_fill=(10,10,10,180))
         im.save(path)
 
     def compose(self, language):
-        folder=self.out / "edits" / language
+        folder=self.out / "edits" / (f"v{self.m['revision']}" if self.m.get("revision") else "") / language
         folder.mkdir(parents=True,exist_ok=True)
         parts=[]
         cursor=0
         srt=[]
-        for n,shot in enumerate(self.m["shots"],1):
+        sources={s["id"]:s for s in self.m["shots"]}
+        for n,segment in enumerate(self.timeline(),1):
+            shot=sources[segment["shot"]]
             receipt=read(self.out / "takes" / shot["id"] / "receipt.json")
             if receipt["spec"] != self.shot_spec(shot):
                 raise RuntimeError(f"Stale shot {shot['id']}; record it again")
             if receipt.get("capture",{}).get("graphics",{}).get("graphics_preset") != 8:
                 raise RuntimeError(f"Re-record {shot['id']} with Ultra graphics")
-            take=Path(receipt["take"])
-            overlay=folder / f"{shot['id']}.png"
-            self.title_image(shot,language,overlay)
-            seconds=shot["frames"]/60
-            part=folder / f"{shot['id']}.mp4"
+            take=self.take_path(receipt)
+            overlay=folder / f"{segment['id']}.png"
+            presentation=dict(shot,frames=segment["frames"],title=segment.get("title",shot["title"]))
+            self.title_image(presentation,language,overlay)
+            seconds=segment["frames"]/60
+            start=segment.get("start",0)
+            part=folder / f"{segment['id']}.mp4"
             fade=min(.35,seconds/5)
             graph=f"[1:v]format=rgba,fade=t=in:st=0:d={fade}:alpha=1,fade=t=out:st={seconds-fade}:d={fade}:alpha=1[title];[0:v][title]overlay=shortest=1:format=auto,format=yuv420p[v]"
-            args=[self.ffmpeg,"-hide_banner","-y","-i",take/"clean.mp4","-loop","1","-framerate","60","-i",overlay,
+            args=[self.ffmpeg,"-hide_banner","-y","-ss",f"{start/60:.9f}","-i",take/"clean.mp4","-loop","1","-framerate","60","-i",overlay,
                   "-filter_complex_threads","2","-filter_complex",graph,"-map","[v]","-an"]+self.video_args()+[
-                  "-frames:v",str(shot["frames"]),part]
+                  "-frames:v",str(segment["frames"]),part]
             signature=hashlib.sha256(json.dumps({"take":receipt["fingerprint"],"title":digest(overlay),
-                "encoding":self.video_args(),"filter":graph},sort_keys=True).encode()).hexdigest()
-            edit_receipt=folder/f"{shot['id']}.edit.json"
+                "encoding":self.video_args(),"filter":graph,"start":start,"frames":segment["frames"]},sort_keys=True).encode()).hexdigest()
+            edit_receipt=folder/f"{segment['id']}.edit.json"
             if part.exists() and edit_receipt.exists() and read(edit_receipt).get("signature")==signature:
-                print(f"Cached titles {language}: {shot['id']}",flush=True)
+                print(f"Cached titles {language}: {segment['id']}",flush=True)
             else:
-                print(f"Titles {language}: {shot['id']}",flush=True)
-                self.command(args,folder/f"{shot['id']}.log")
-                write(edit_receipt,{"signature":signature,"take":str(take),"frames":shot["frames"]})
+                print(f"Titles {language}: {segment['id']}",flush=True)
+                self.command(args,folder/f"{segment['id']}.log")
+                write(edit_receipt,{"signature":signature,"take":str(take),"start":start,"frames":segment["frames"]})
             parts.append(part)
             def stamp(frame):
                 ms=round(frame*1000/60);return f"{ms//3600000:02}:{ms//60000%60:02}:{ms//1000%60:02},{ms%1000:03}"
-            srt.append(f"{n}\n{stamp(cursor)} --> {stamp(cursor+shot['frames'])}\n"+"\n".join(self.m["text"][shot["title"]][language])+"\n")
-            cursor+=shot["frames"]
+            if presentation["title"]:
+                srt.append(f"{len(srt)+1}\n{stamp(cursor)} --> {stamp(cursor+segment['frames'])}\n"+"\n".join(self.m["text"][presentation["title"]][language])+"\n")
+            cursor+=segment["frames"]
         (folder/"titles.srt").write_text("\n".join(srt),encoding="utf-8")
         concat=folder/"concat.txt"
         concat.write_text("".join("file '"+str(p).replace("'","'\\''")+"'\n" for p in parts))
         assembly=folder/"assembly.mp4"
         self.command([self.ffmpeg,"-hide_banner","-y","-f","concat","-safe","0","-i",concat,"-c","copy",assembly],folder/"assemble.log")
-        master=self.out/f"Cursed-Lands-Trailer-{language}-2160p60.mp4"
+        master=self.master(language)
         duration=cursor/60
         music=self.c.get("music") or str(Path(self.c["game_data"]["cursed_lands"])/"stream"/self.m["audio"]["track"])
         sfx=folder/"game-sounds.wav"
         with wave.open(str(sfx),"wb") as target:
             target.setparams((2,2,48000,0,"NONE","not compressed"))
-            for shot in self.m["shots"]:
-                take=Path(read(self.out/"takes"/shot["id"]/"receipt.json")["take"])
+            for segment in self.timeline():
+                shot=sources[segment["shot"]]
+                take=self.take_path(read(self.out/"takes"/shot["id"]/"receipt.json"))
                 with wave.open(str(take/"clean.wav"),"rb") as source:
                     assert (source.getnchannels(),source.getsampwidth(),source.getframerate())==(2,2,48000)
-                    expected=shot["frames"]*800
-                    assert source.getnframes()==expected,(shot["id"],source.getnframes(),expected)
+                    expected=segment["frames"]*800
+                    start=segment.get("start",0)*800
+                    assert source.getnframes()>=start+expected,(shot["id"],source.getnframes(),start+expected)
+                    source.setpos(start)
                     target.writeframes(source.readframes(expected))
+        envelope=""
+        if self.m['audio'].get('follow_edit_energy'):
+            levels={"calm":0.62,"action":1.0,"feature":0.78,"end":0.9}
+            points=[(0.0,levels.get(self.timeline()[0].get('energy'),1.0))]
+            elapsed=0.0
+            previous=points[0][1]
+            for segment in self.timeline():
+                level=levels.get(segment.get('energy'),1.0)
+                if level!=previous:
+                    points.extend([(max(0,elapsed-.2),previous),(elapsed+.2,level)])
+                elapsed+=segment['frames']/60
+                previous=level
+            expression=str(points[-1][1])
+            for (a,ga),(b,gb) in reversed(list(zip(points,points[1:]))):
+                if b>a:
+                    expression=f"if(lt(t,{b}),{ga}+({gb-ga})*(t-{a})/{b-a},{expression})"
+            envelope=f"volume='{expression}':eval=frame,"
         graph=(f"[1:a]volume={self.m['audio']['sfx_gain']},afade=t=in:d=0.25,afade=t=out:st={duration-1}:d=1[sfx];"
                f"[2:a]atrim=duration={duration},asetpts=PTS-STARTPTS,"
                f"loudnorm=I={self.m['audio'].get('music_lufs',-20)}:TP=-2:LRA=11,volume={self.m['audio']['music_gain']},"
-               f"afade=t=in:d=1.2,afade=t=out:st={duration-2.5}:d=2.5[music];"
+               f"{envelope}afade=t=in:d=0.8,afade=t=out:st={duration-2.5}:d=2.5[music];"
                "[sfx][music]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.89:level=0:latency=1[a]")
         self.command([self.ffmpeg,"-hide_banner","-y","-i",assembly,"-i",sfx,"-stream_loop","-1","-i",music,
                       "-filter_complex",graph,"-map","0:v","-map","[a]","-c:v","copy","-c:a","aac","-b:a","384k",
@@ -355,7 +440,7 @@ class Project:
         # after another recording updates a shot's current receipt.
         write(str(master)+".project.json", {
             "manifest":self.m,"language":language,"master_sha256":digest(master),
-            "takes":[read(self.out/"takes"/s["id"]/"receipt.json") for s in self.m["shots"]],
+            "takes":[read(self.out/"takes"/s["id"]/"receipt.json") for s in self.selected("")],
             "audio":{"music":str(music),"music_sha256":digest(music),"game_sounds":str(sfx)},
         })
         print(master,flush=True)
@@ -391,7 +476,7 @@ def main():
             folder=p.out/"title-proofs"/lang;folder.mkdir(parents=True,exist_ok=True)
             for shot in p.m["shots"]:p.title_image(shot,lang,folder/f"{shot['id']}.png")
     else:
-        p.verify(p.out/f"Cursed-Lands-Trailer-{args.language}-2160p60.mp4",validate(p.m))
+        p.verify(p.master(args.language),validate(p.m))
 
 
 if __name__=="__main__":

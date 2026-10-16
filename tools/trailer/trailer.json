@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "name": "Cursed Lands — Return to the allods",
+  "name": "Cursed Lands trailer",
   "fps": 60,
   "width": 3840,
   "height": 2160,
@@ -10,10 +10,11 @@
     "de"
   ],
   "audio": {
-    "track": "main.mp3",
-    "music_lufs": -20,
+    "track": "cool.mp3",
+    "music_lufs": -18,
     "music_gain": 1.0,
-    "sfx_gain": 0.5
+    "sfx_gain": 0.6,
+    "follow_edit_energy": true
   },
   "shots": [
     {
@@ -430,237 +431,940 @@
         178
       ],
       "focus_height": 3
+    },
+    {
+      "id": "17-rain-tactical",
+      "frames": 420,
+      "kind": "combat",
+      "zone": "gz8g",
+      "hour": 14,
+      "eye_from": [
+        7,
+        8,
+        7
+      ],
+      "eye_to": [
+        8,
+        8,
+        6
+      ],
+      "enemies": [
+        {
+          "nid": 1895,
+          "prototype": "OrcMaleTribeLF7"
+        },
+        {
+          "nid": 1896,
+          "prototype": "WolfWhiteF6"
+        },
+        {
+          "nid": 1740,
+          "prototype": "OrcFemaleTribeLM7"
+        }
+      ],
+      "title": "tactical",
+      "hud": false,
+      "hd": true,
+      "hero": [
+        146,
+        150
+      ],
+      "equipment": {
+        "str": 25,
+        "dex": 25,
+        "int": 25,
+        "skills": {
+          "melee": 65,
+          "archery": 40,
+          "elemental": 65
+        },
+        "exp_total": 10000
+      },
+      "wardrobe": "gipath",
+      "pre_roll": 90,
+      "weather": "rain"
+    },
+    {
+      "id": "18-ogre-third",
+      "frames": 480,
+      "kind": "combat",
+      "zone": "gz18h",
+      "hour": 16,
+      "camera": "third",
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.12,
+      "enemies": [
+        {
+          "nid": 150993,
+          "prototype": "OgreHadaganF15"
+        }
+      ],
+      "title": "third",
+      "hud": false,
+      "hd": true,
+      "hero": [
+        142.4,
+        334
+      ],
+      "equipment": {
+        "str": 50,
+        "dex": 35,
+        "int": 25,
+        "skills": {
+          "melee": 100,
+          "archery": 80,
+          "elemental": 80
+        },
+        "exp_total": 60000
+      },
+      "track_enemy": true,
+      "wardrobe": "suslanger",
+      "pre_roll": 45,
+      "approach": false
+    },
+    {
+      "id": "19-ogre-tactical",
+      "frames": 240,
+      "kind": "combat",
+      "zone": "gz18h",
+      "hour": 16,
+      "camera": "isometric",
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.12,
+      "enemies": [
+        {
+          "nid": 150993,
+          "prototype": "OgreHadaganF15"
+        }
+      ],
+      "title": "tactical",
+      "hud": false,
+      "hd": true,
+      "hero": [
+        143,
+        334
+      ],
+      "equipment": {
+        "str": 50,
+        "dex": 35,
+        "int": 25,
+        "skills": {
+          "melee": 100,
+          "archery": 80,
+          "elemental": 80
+        },
+        "exp_total": 60000
+      },
+      "track_enemy": true,
+      "wardrobe": "suslanger",
+      "pre_roll": 90,
+      "approach": false,
+      "eye_from": [
+        9,
+        9,
+        9
+      ],
+      "eye_to": [
+        10,
+        9,
+        7
+      ]
+    },
+    {
+      "id": "20-tiger-first",
+      "frames": 480,
+      "kind": "combat",
+      "zone": "gz11k",
+      "hour": 11,
+      "camera": "first",
+      "heading": -27,
+      "pan": 0,
+      "tilt": -0.16,
+      "enemies": [
+        {
+          "nid": 3990,
+          "prototype": "TigerWhiteF6"
+        }
+      ],
+      "title": "first",
+      "hud": false,
+      "hd": true,
+      "hero": [
+        264,
+        144
+      ],
+      "equipment": {
+        "str": 40,
+        "dex": 30,
+        "int": 25,
+        "skills": {
+          "melee": 90,
+          "archery": 60,
+          "elemental": 60
+        },
+        "weapons": [
+          "short bow.iron"
+        ],
+        "exp_total": 30000
+      },
+      "track_enemy": true,
+      "wardrobe": "ingos",
+      "options": {
+        "direct_fov_first": 5
+      },
+      "pre_roll": 30,
+      "keep_distance": 5.5
+    },
+    {
+      "id": "21-rain-ruins",
+      "frames": 150,
+      "zone": "gz8g",
+      "hour": 14,
+      "eye_from": [
+        -28,
+        18,
+        24
+      ],
+      "eye_to": [
+        -24,
+        17,
+        26
+      ],
+      "title": "rain",
+      "hide_party": true,
+      "focus": [
+        153,
+        103
+      ],
+      "focus_height": 2,
+      "weather": "rain",
+      "hd": true
+    },
+    {
+      "id": "22-endcard",
+      "frames": 300,
+      "zone": "gz35j",
+      "hour": 16,
+      "eye_from": [
+        30,
+        22,
+        32
+      ],
+      "eye_to": [
+        34,
+        24,
+        27
+      ],
+      "title": "play",
+      "card": true,
+      "hide_party": true,
+      "campaign": "lost_in_astral",
+      "focus": [
+        90,
+        178
+      ],
+      "focus_height": 3
+    },
+    {
+      "id": "23-dead-city",
+      "frames": 420,
+      "kind": "combat",
+      "zone": "gz9g",
+      "hour": 14,
+      "eye_from": [
+        11,
+        9,
+        10
+      ],
+      "eye_to": [
+        10,
+        9,
+        11
+      ],
+      "enemies": [
+        {
+          "nid": 2304,
+          "prototype": "SkeletonF4"
+        },
+        {
+          "nid": 1584,
+          "prototype": "SkeletonWarriorF7"
+        },
+        {
+          "nid": 1585,
+          "prototype": "SkeletonWarriorF7"
+        }
+      ],
+      "title": "tactical",
+      "hud": false,
+      "hd": true,
+      "hero": [
+        332,
+        164
+      ],
+      "equipment": {
+        "str": 25,
+        "dex": 25,
+        "int": 25,
+        "skills": {
+          "melee": 65,
+          "archery": 40,
+          "elemental": 65
+        },
+        "exp_total": 10000
+      },
+      "wardrobe": "gipath",
+      "pre_roll": 30,
+      "weather": "rain",
+      "spell": "fireball{e1;e1;m1;m1;m1}",
+      "spell_frames": [
+        1,
+        150,
+        300
+      ]
+    },
+    {
+      "id": "24-dragon-valley",
+      "frames": 240,
+      "kind": "combat",
+      "zone": "gz6g",
+      "hour": 14,
+      "eye_from": [
+        -20,
+        14,
+        22
+      ],
+      "eye_to": [
+        -18,
+        14,
+        23
+      ],
+      "enemies": [
+        {
+          "nid": 1434,
+          "prototype": "DragonkinGreenF7"
+        },
+        {
+          "nid": 1435,
+          "prototype": "DragonkinGreenF7"
+        },
+        {
+          "nid": 1436,
+          "prototype": "DragonGreenM12"
+        }
+      ],
+      "title": "tactical",
+      "hud": false,
+      "hd": true,
+      "hero": [
+        137,
+        186
+      ],
+      "equipment": {
+        "str": 25,
+        "dex": 25,
+        "int": 25,
+        "skills": {
+          "melee": 65,
+          "archery": 40,
+          "elemental": 65
+        },
+        "exp_total": 10000
+      },
+      "wardrobe": "gipath",
+      "pre_roll": 30,
+      "spell": "fireball{e1;e1;m1;m1;m1}",
+      "spell_frames": [
+        1,
+        130
+      ],
+      "combat_focus_lift": 6
+    },
+    {
+      "frames": 300,
+      "kind": "combat",
+      "hour": 14,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.1,
+      "hud": false,
+      "hd": true,
+      "track_enemy": true,
+      "pre_roll": 30,
+      "approach": false,
+      "id": "26-lava-first",
+      "zone": "gz10g",
+      "camera": "first",
+      "wardrobe": "gipath",
+      "hero": [
+        61,
+        143
+      ],
+      "enemies": [
+        {
+          "nid": 1,
+          "prototype": "ElementalLavaF12"
+        }
+      ],
+      "title": "first",
+      "options": {
+        "direct_fov_first": 5
+      },
+      "equipment": {
+        "str": 30,
+        "dex": 35,
+        "int": 25,
+        "skills": {
+          "melee": 65,
+          "archery": 40,
+          "elemental": 65
+        },
+        "exp_total": 10000,
+        "weapons": [
+          "bone short bow.burned bones"
+        ]
+      },
+      "keep_distance": 5.5
+    },
+    {
+      "frames": 300,
+      "kind": "combat",
+      "hour": 14,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.1,
+      "hud": false,
+      "hd": true,
+      "track_enemy": true,
+      "pre_roll": 30,
+      "approach": false,
+      "id": "27-orcs-first",
+      "zone": "gz7g",
+      "camera": "first",
+      "wardrobe": "gipath",
+      "hero": [
+        334,
+        133
+      ],
+      "enemies": [
+        {
+          "nid": 5226,
+          "prototype": "OrcMaleF3"
+        }
+      ],
+      "title": "first",
+      "options": {
+        "direct_fov_first": 5
+      },
+      "equipment": {
+        "str": 25,
+        "dex": 25,
+        "int": 25,
+        "skills": {
+          "melee": 65,
+          "archery": 40,
+          "elemental": 65
+        },
+        "exp_total": 10000
+      }
+    },
+    {
+      "frames": 300,
+      "kind": "combat",
+      "hour": 14,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.1,
+      "hud": false,
+      "hd": false,
+      "track_enemy": true,
+      "pre_roll": 30,
+      "approach": false,
+      "id": "28-banshee-first",
+      "zone": "gz34j",
+      "camera": "first",
+      "wardrobe": "jigran",
+      "hero": [
+        117,
+        49
+      ],
+      "enemies": [
+        {
+          "nid": 44453163,
+          "prototype": "zone34 Banshee Fighter1"
+        }
+      ],
+      "title": "first",
+      "options": {
+        "direct_fov_first": 5
+      },
+      "campaign": "lost_in_astral",
+      "equipment": {
+        "str": 60,
+        "dex": 50,
+        "int": 40,
+        "skills": {
+          "melee": 100,
+          "archery": 80,
+          "elemental": 80
+        },
+        "exp_total": 140000
+      }
+    },
+    {
+      "frames": 300,
+      "kind": "combat",
+      "hour": 14,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.1,
+      "hud": false,
+      "hd": true,
+      "track_enemy": true,
+      "pre_roll": 30,
+      "approach": false,
+      "id": "29-troll-third",
+      "zone": "gz11k",
+      "camera": "third",
+      "wardrobe": "ingos",
+      "hero": [
+        182,
+        135
+      ],
+      "enemies": [
+        {
+          "nid": 4043,
+          "prototype": "TrollBlueF9"
+        }
+      ],
+      "title": "third",
+      "equipment": {
+        "str": 40,
+        "dex": 30,
+        "int": 25,
+        "skills": {
+          "melee": 90,
+          "archery": 60,
+          "elemental": 60
+        },
+        "exp_total": 30000
+      }
+    },
+    {
+      "frames": 300,
+      "kind": "combat",
+      "hour": 14,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.1,
+      "hud": false,
+      "hd": true,
+      "track_enemy": true,
+      "pre_roll": 25,
+      "approach": false,
+      "id": "30-portal-third",
+      "zone": "gz19h",
+      "camera": "third",
+      "wardrobe": "suslanger",
+      "hero": [
+        169.5,
+        107
+      ],
+      "enemies": [
+        {
+          "nid": 997003,
+          "prototype": "Human Hadagan Guards F20"
+        },
+        {
+          "nid": 997007,
+          "prototype": "Human Hadagan Guards F20"
+        }
+      ],
+      "title": "third",
+      "equipment": {
+        "str": 50,
+        "dex": 35,
+        "int": 25,
+        "skills": {
+          "melee": 100,
+          "archery": 80,
+          "elemental": 80
+        },
+        "exp_total": 60000
+      }
+    },
+    {
+      "frames": 300,
+      "kind": "combat",
+      "hour": 14,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.1,
+      "hud": false,
+      "hd": false,
+      "track_enemy": true,
+      "pre_roll": 0,
+      "approach": false,
+      "id": "31-fortress-third",
+      "zone": "gz33j",
+      "camera": "third",
+      "wardrobe": "jigran",
+      "hero": [
+        201.25,
+        99.25
+      ],
+      "enemies": [
+        {
+          "nid": 44453161,
+          "prototype": "zone33 Human Fighter2 M"
+        }
+      ],
+      "title": "third",
+      "campaign": "lost_in_astral",
+      "equipment": {
+        "str": 60,
+        "dex": 50,
+        "int": 40,
+        "skills": {
+          "melee": 100,
+          "archery": 80,
+          "elemental": 80
+        },
+        "exp_total": 140000
+      },
+      "advance_frames": 60,
+      "minimum_advance_distance": 0.75
+    },
+    {
+      "id": "25-touch-city",
+      "frames": 180,
+      "zone": "gz9g",
+      "hour": 14,
+      "eye_from": [
+        16,
+        10,
+        16
+      ],
+      "eye_to": [
+        13,
+        9,
+        19
+      ],
+      "input": "touch",
+      "hud": true,
+      "title": "touch",
+      "hero": [
+        326,
+        166
+      ],
+      "wardrobe": "gipath",
+      "hd": true,
+      "touch_panel": "menu",
+      "touch_demo": "inventory"
+    },
+    {
+      "frames": 300,
+      "kind": "combat",
+      "hour": 14,
+      "heading": 0,
+      "pan": 0,
+      "tilt": -0.1,
+      "hud": false,
+      "hd": false,
+      "track_enemy": true,
+      "pre_roll": 0,
+      "approach": false,
+      "id": "32-dragon-first",
+      "zone": "gz32j",
+      "camera": "first",
+      "wardrobe": "jigran",
+      "hero": [
+        82,
+        182
+      ],
+      "enemies": [
+        {
+          "nid": 44432950,
+          "prototype": "zone32 DragonRed"
+        }
+      ],
+      "title": "first",
+      "options": {
+        "direct_fov_first": 8
+      },
+      "campaign": "lost_in_astral",
+      "equipment": {
+        "str": 60,
+        "dex": 50,
+        "int": 40,
+        "skills": {
+          "melee": 100,
+          "archery": 80,
+          "elemental": 80
+        },
+        "exp_total": 140000,
+        "weapons": [
+          "long crossbow.steel"
+        ]
+      }
     }
   ],
   "text": {
     "return": {
       "en": [
-        "RETURN TO THE ALLODS",
-        "Cursed Lands"
+        "CURSED LANDS"
       ],
       "ru": [
-        "ВОЗВРАЩЕНИЕ НА АЛЛОДЫ",
-        "Проклятые земли"
+        "ПРОКЛЯТЫЕ ЗЕМЛИ"
       ],
       "de": [
-        "ZURÜCK AUF DIE ALLODS",
-        "Cursed Lands"
+        "CURSED LANDS"
       ]
     },
     "gipath": {
       "en": [
-        "GIPATH",
-        "The world you remember"
+        "GIPATH"
       ],
       "ru": [
-        "ГИПАТ",
-        "Знакомый мир"
+        "ГИПАТ"
       ],
       "de": [
-        "GIPATH",
-        "Die vertraute Welt"
+        "GIPATH"
       ]
     },
     "ingos": {
       "en": [
-        "INGOS",
-        "Beyond the snow"
+        "INGOS"
       ],
       "ru": [
-        "ИНГОС",
-        "За снежными перевалами"
+        "ИНГОС"
       ],
       "de": [
-        "INGOS",
-        "Jenseits des Schnees"
+        "INGOS"
       ]
     },
     "suslanger": {
       "en": [
-        "SUSLANGER",
-        "Across burning sands"
+        "SUSLANGER"
       ],
       "ru": [
-        "СУСЛАНГЕР",
-        "Сквозь раскалённые пески"
+        "СУСЛАНГЕР"
       ],
       "de": [
-        "SUSLANGER",
-        "Durch glühenden Sand"
+        "SUSLANGER"
       ]
     },
     "astral": {
       "en": [
-        "LOST IN ASTRAL",
-        "The expansion, reborn"
+        "LOST IN ASTRAL"
       ],
       "ru": [
-        "ЗАТЕРЯННЫЕ В АСТРАЛЕ",
-        "Новое воплощение дополнения"
+        "ЗАТЕРЯННЫЕ В АСТРАЛЕ"
       ],
       "de": [
-        "LOST IN ASTRAL",
-        "Die Erweiterung lebt wieder auf"
+        "LOST IN ASTRAL"
       ]
     },
     "hdlands": {
       "en": [
-        "A CLOSER LOOK",
-        "HD Lands texture support · by Atom"
+        "HD LANDS",
+        "Textures by Atom"
       ],
       "ru": [
-        "ВЗГЛЯНИТЕ БЛИЖЕ",
-        "Поддержка текстур HD Lands · автор Atom"
+        "HD LANDS",
+        "Текстуры: Atom"
       ],
       "de": [
-        "GENAUER HINSEHEN",
-        "HD Lands Texturunterstützung · von Atom"
+        "HD LANDS",
+        "Texturen von Atom"
       ]
     },
     "tech": {
       "en": [
-        "LIGHT. WATER. ATMOSPHERE.",
-        "Modern rendering, original worlds"
+        "WATERFALLS"
       ],
       "ru": [
-        "СВЕТ. ВОДА. АТМОСФЕРА.",
-        "Новый рендеринг, знакомые миры"
+        "ВОДОПАДЫ"
       ],
       "de": [
-        "LICHT. WASSER. ATMOSPHÄRE.",
-        "Moderne Grafik, vertraute Welten"
+        "WASSERFÄLLE"
       ]
     },
     "tactical": {
       "en": [
-        "EVERY ENCOUNTER MATTERS",
-        "Classic tactical combat"
+        "ISOMETRIC VIEW"
       ],
       "ru": [
-        "КАЖДАЯ СХВАТКА ВАЖНА",
-        "Классические тактические бои"
+        "ИЗОМЕТРИЧЕСКИЙ ВИД"
       ],
       "de": [
-        "JEDE BEGEGNUNG ZÄHLT",
-        "Klassische taktische Kämpfe"
+        "ISOMETRISCHE ANSICHT"
       ]
     },
     "first": {
       "en": [
-        "THROUGH YOUR OWN EYES",
-        "First-person mode"
+        "FIRST-PERSON VIEW"
       ],
       "ru": [
-        "СВОИМИ ГЛАЗАМИ",
-        "Режим от первого лица"
+        "ВИД ОТ ПЕРВОГО ЛИЦА"
       ],
       "de": [
-        "MIT EIGENEN AUGEN",
-        "Egoperspektive"
+        "EGOPERSPEKTIVE"
       ]
     },
     "third": {
       "en": [
-        "CLOSER TO THE ACTION",
-        "Third-person mode"
+        "THIRD-PERSON VIEW"
       ],
       "ru": [
-        "В ГУЩЕ СОБЫТИЙ",
-        "Режим от третьего лица"
+        "ВИД ОТ ТРЕТЬЕГО ЛИЦА"
       ],
       "de": [
-        "MITTEN IM GESCHEHEN",
-        "Schulterperspektive"
+        "DRITTE-PERSON-PERSPEKTIVE"
       ]
     },
     "coop": {
       "en": [
-        "SHARE THE ADVENTURE",
-        "Online campaign co-op"
+        "CAMPAIGN CO-OP"
       ],
       "ru": [
-        "ПРИКЛЮЧЕНИЕ ВМЕСТЕ",
-        "Сетевая совместная кампания"
+        "СОВМЕСТНАЯ КАМПАНИЯ"
       ],
       "de": [
-        "ERLEBT DAS ABENTEUER GEMEINSAM",
-        "Online-Koop für die Kampagne"
+        "KOOP-KAMPAGNE"
       ]
     },
     "trials": {
       "en": [
         "TRIALS OF GIPATH",
-        "Build your company · New mode preview"
+        "Preview"
       ],
       "ru": [
         "ИСПЫТАНИЯ ГИПАТА",
-        "Соберите отряд · Новый режим в разработке"
+        "В разработке"
       ],
       "de": [
         "PRÜFUNGEN VON GIPATH",
-        "Stelle deine Truppe auf · Vorschau des neuen Modus"
+        "Vorschau"
       ]
     },
     "wiki": {
       "en": [
-        "KNOW YOUR WORLD",
-        "Game wiki · cursedlands.wwworm.com/wiki"
+        "IN-GAME WIKI"
       ],
       "ru": [
-        "ИЗУЧАЙТЕ МИР",
-        "Энциклопедия · cursedlands.wwworm.com/wiki"
+        "ИГРОВАЯ ЭНЦИКЛОПЕДИЯ"
       ],
       "de": [
-        "KENNE DEINE WELT",
-        "Spielwiki · cursedlands.wwworm.com/wiki"
+        "WIKI IM SPIEL"
       ]
     },
     "touch": {
       "en": [
-        "AT YOUR FINGERTIPS",
-        "Touch controls"
+        "TOUCH CONTROLS"
       ],
       "ru": [
-        "ВСЁ ПОД РУКОЙ",
-        "Сенсорное управление"
+        "СЕНСОРНОЕ УПРАВЛЕНИЕ"
       ],
       "de": [
-        "MIT DEN FINGERSPITZEN",
-        "Touch-Steuerung"
+        "TOUCHSTEUERUNG"
       ]
     },
     "pad": {
       "en": [
-        "PLAY YOUR WAY",
-        "Gamepad support"
+        "GAMEPAD SUPPORT"
       ],
       "ru": [
-        "ИГРАЙТЕ ПО-СВОЕМУ",
-        "Поддержка геймпадов"
+        "ПОДДЕРЖКА ГЕЙМПАДА"
       ],
       "de": [
-        "SPIELE AUF DEINE WEISE",
-        "Gamepad-Unterstützung"
+        "GAMEPAD-UNTERSTÜTZUNG"
       ]
     },
     "play": {
       "en": [
         "CURSED LANDS",
-        "cursedlands.wwworm.com",
+        "CURSEDLANDS.WWWORM.COM",
+        "GITHUB.COM/TheWWWorm/CursedLands",
+        "CURSEDLANDS.WWWORM.COM/wiki",
         "Windows · Linux · macOS · Android · Browser",
-        "Requires your own original game files"
+        "Original game files required"
       ],
       "ru": [
         "ПРОКЛЯТЫЕ ЗЕМЛИ",
-        "cursedlands.wwworm.com",
+        "CURSEDLANDS.WWWORM.COM",
+        "GITHUB.COM/TheWWWorm/CursedLands",
+        "CURSEDLANDS.WWWORM.COM/wiki",
         "Windows · Linux · macOS · Android · Браузер",
-        "Нужны файлы вашей копии оригинальной игры"
+        "Нужны файлы оригинальной игры"
       ],
       "de": [
         "CURSED LANDS",
-        "cursedlands.wwworm.com",
+        "CURSEDLANDS.WWWORM.COM",
+        "GITHUB.COM/TheWWWorm/CursedLands",
+        "CURSEDLANDS.WWWORM.COM/wiki",
         "Windows · Linux · macOS · Android · Browser",
-        "Die Dateien deiner Originalversion werden benötigt"
+        "Originalspieldateien erforderlich"
+      ]
+    },
+    "rain": {
+      "en": [
+        "RAINDROPS"
+      ],
+      "ru": [
+        "КАПЛИ ДОЖДЯ"
+      ],
+      "de": [
+        "REGENTROPFEN"
+      ]
+    },
+    "light": {
+      "en": [
+        "WATERFALLS"
+      ],
+      "ru": [
+        "ВОДОПАДЫ"
+      ],
+      "de": [
+        "WASSERFÄLLE"
+      ]
+    },
+    "personal": {
+      "en": [
+        "GAMEPLAY"
+      ],
+      "ru": [
+        "ИГРОВОЙ ПРОЦЕСС"
+      ],
+      "de": [
+        "GAMEPLAY"
+      ]
+    },
+    "second": {
+      "en": [
+        "COMBAT"
+      ],
+      "ru": [
+        "СРАЖЕНИЯ"
+      ],
+      "de": [
+        "KÄMPFE"
+      ]
+    },
+    "ingos_third": {
+      "en": [
+        "INGOS",
+        "Third-person view"
+      ],
+      "ru": [
+        "ИНГОС",
+        "Вид от третьего лица"
+      ],
+      "de": [
+        "INGOS",
+        "Dritte-Person-Perspektive"
       ]
     }
   },
@@ -748,6 +1452,212 @@
     "11-coop": "Two actual network players at the Dead City fountain approach, with Gipath equipment.",
     "14-touch": "Sands bridge encounter area with native touch controls and Gipath equipment.",
     "15-gamepad": "Dead City fountain approach with native pie-section system wheel and Gipath equipment.",
-    "16-play": "Late-map establishing view behind the platform/website end card."
+    "16-play": "Late-map establishing view behind the platform/website end card.",
+    "17-rain-tactical": "Archived ravine take; excluded from revision 2 because the rock walls dominate the battle composition.",
+    "18-ogre-third": "Original later Suslanger ogre; stationary player attack input avoids repeated approach nudges.",
+    "19-ogre-tactical": "Archived isometric ogre angle; excluded from revision 2 because palm fronds obscure the action.",
+    "20-tiger-first": "Longer native Ingos white tiger encounter, tracked from first-person eyes.",
+    "21-rain-ruins": "Later Gipath coastal Jun ruins, native zone rain.",
+    "22-endcard": "Later Lost in Astral Sadrok island and fortress.",
+    "23-dead-city": "Original Dead City skeletons 2304, 1584 and 1585, retained at their authored positions; player approaches from the open ground east of the ruined fountain. Native rain, HD Lands, Gipath leather/stone wardrobe, and a player-craftable fireball with effect/stamina runes.",
+    "24-dragon-valley": "Original Middle Mountains dragonkin 1434/1435 and flying green dragon 1436; player remains on the valley path, with the camera raised to include the dragon above the ruins. Native actor statistics and Gipath equipment/spell components.",
+    "26-lava-first": "Rejected from the final edit: the tunnel camera obscured the setting; the earlier source is retained only for reference.",
+    "27-orcs-first": "Original orc camp by the Big Lake, gz7g, NID 5226. West-side player approach keeps the lake, bridge and original ogre behind the melee; Gipath leather and granite sword.",
+    "28-banshee-first": "Two Rivers, Lost in Astral gz34j: native banshee fighter NID 44453163 beside the river. Kania steel kit, actual first-person sword swings and native banshee attacks.",
+    "29-troll-third": "Original Ingos blue troll, NID 4043, approached from the east along the snow path. Kania iron and blue-troll-hide kit. The alternative south-facing angle was rejected because its foreground cliff blocks the view.",
+    "30-portal-third": "The guarded Portal, later Suslanger map gz19h (not prison gz15h). Original gate guards 997003 and 997007, player approaches from the northeast; the gate towers and courtyard frame the duel. Hadagan steel equipment fits the free, later-campaign Zak.",
+    "31-fortress-third": "Dar-Ulgorn fortress, native guard 44453161 beside the canal bridge. The east bank approach at 201.25,99.25 has a clear camera, visible bridge and reflections, and a native walkable path. A continuous one-second forward input precedes combat; offline capture keeps the normal input watchdog alive. West approaches were rejected for bridge-post, roof and shrub obstructions.",
+    "25-touch-city": "Native touch menu in the Dead City, with Gipath equipment.",
+    "32-dragon-first": "Island of Death, Lost in Astral gz32j: native red dragon 44432950 flying over the sea beside the island bridge. Player stands on the island road at the bridge landing, with Kania steel and a long crossbow. The offshore blue-dragon angle was rejected."
+  },
+  "revision": 2,
+  "edit": [
+    {
+      "id": "01-03-ingos",
+      "shot": "03-ingos",
+      "frames": 150,
+      "start": 18,
+      "title": "return",
+      "energy": "calm"
+    },
+    {
+      "id": "02-29-troll-third",
+      "shot": "29-troll-third",
+      "frames": 240,
+      "start": 0,
+      "title": "ingos_third",
+      "energy": "action"
+    },
+    {
+      "id": "03-01-return",
+      "shot": "01-return",
+      "frames": 90,
+      "start": 60,
+      "title": "gipath",
+      "energy": "calm"
+    },
+    {
+      "id": "04-23-dead-city",
+      "shot": "23-dead-city",
+      "frames": 180,
+      "start": 30,
+      "title": "tactical",
+      "energy": "action"
+    },
+    {
+      "id": "05-05-astral",
+      "shot": "05-astral",
+      "frames": 120,
+      "start": 30,
+      "title": "astral",
+      "energy": "calm"
+    },
+    {
+      "id": "06-32-dragon-first",
+      "shot": "32-dragon-first",
+      "frames": 240,
+      "start": 0,
+      "title": "first",
+      "energy": "action"
+    },
+    {
+      "id": "07-21-rain-ruins",
+      "shot": "21-rain-ruins",
+      "frames": 150,
+      "start": 0,
+      "title": "rain",
+      "energy": "calm"
+    },
+    {
+      "id": "08-24-dragon-valley",
+      "shot": "24-dragon-valley",
+      "frames": 240,
+      "start": 0,
+      "title": "",
+      "energy": "action"
+    },
+    {
+      "id": "09-06-hdlands",
+      "shot": "06-hdlands",
+      "frames": 90,
+      "start": 90,
+      "title": "hdlands",
+      "energy": "calm"
+    },
+    {
+      "id": "10-30-portal-third",
+      "shot": "30-portal-third",
+      "frames": 210,
+      "start": 0,
+      "title": "suslanger",
+      "energy": "action"
+    },
+    {
+      "id": "11-11-coop",
+      "shot": "11-coop",
+      "frames": 240,
+      "start": 30,
+      "title": "coop",
+      "energy": "action"
+    },
+    {
+      "id": "12-27-orcs-first",
+      "shot": "27-orcs-first",
+      "frames": 180,
+      "start": 0,
+      "title": "",
+      "energy": "action"
+    },
+    {
+      "id": "13-04-suslanger",
+      "shot": "04-suslanger",
+      "frames": 90,
+      "start": 60,
+      "title": "",
+      "energy": "calm"
+    },
+    {
+      "id": "14-28-banshee-first",
+      "shot": "28-banshee-first",
+      "frames": 210,
+      "start": 0,
+      "title": "",
+      "energy": "action"
+    },
+    {
+      "id": "15-31-fortress-third",
+      "shot": "31-fortress-third",
+      "frames": 180,
+      "start": 0,
+      "title": "",
+      "energy": "action"
+    },
+    {
+      "id": "16-12-trials",
+      "shot": "12-trials",
+      "frames": 240,
+      "start": 0,
+      "title": "trials",
+      "energy": "action"
+    },
+    {
+      "id": "17-13-wiki",
+      "shot": "13-wiki",
+      "frames": 120,
+      "start": 60,
+      "title": "wiki",
+      "energy": "feature"
+    },
+    {
+      "id": "18-25-touch-city",
+      "shot": "25-touch-city",
+      "frames": 90,
+      "start": 0,
+      "title": "touch",
+      "energy": "feature"
+    },
+    {
+      "id": "19-15-gamepad",
+      "shot": "15-gamepad",
+      "frames": 120,
+      "start": 30,
+      "title": "pad",
+      "energy": "feature"
+    },
+    {
+      "id": "20-07-light",
+      "shot": "07-light",
+      "frames": 120,
+      "start": 60,
+      "title": "light",
+      "energy": "calm"
+    },
+    {
+      "id": "21-22-endcard",
+      "shot": "22-endcard",
+      "frames": 300,
+      "start": 0,
+      "title": "play",
+      "energy": "end"
+    }
+  ],
+  "editorial": {
+    "unique_combat_encounters": true,
+    "minimum_mode_encounters": {
+      "first": 3,
+      "third": 3,
+      "isometric": 2
+    },
+    "excluded_from_edit": [
+      "08-tactical",
+      "09-first",
+      "10-third",
+      "14-touch",
+      "17-rain-tactical",
+      "18-ogre-third",
+      "19-ogre-tactical",
+      "20-tiger-first",
+      "26-lava-first"
+    ]
   }
 }

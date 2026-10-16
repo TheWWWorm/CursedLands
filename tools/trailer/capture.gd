@@ -20,10 +20,20 @@ var language := "en"
 var coordination := ""
 var coop_start := {}
 var encounter_start := []
+var movement_samples := []
+var touch_events := 0
+var touch_point := Vector2.ZERO
+var touch_cue: Node2D
+
+class TouchCue extends Node2D:
+	func _draw() -> void:
+		draw_circle(Vector2.ZERO,30,Color(1,1,1,0.25))
+		draw_circle(Vector2.ZERO,30,Color(1,1,1,0.9),false,3,true)
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	process_priority = 100
+	process_physics_priority = -100
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--shot-spec="): spec = JSON.parse_string(FileAccess.get_file_as_string(a.trim_prefix("--shot-spec=")))
 		elif a.begins_with("--shot-output="): out = a.trim_prefix("--shot-output=")
@@ -146,8 +156,19 @@ func _run() -> void:
 			PadInput.set_process_input(false)
 			PadInput.field.set_process(false)
 		else: _camera(0)
+		if spec.get("weather","")=="rain":
+			var weather:=game.sound.weather
+			if weather.type!=1:
+				printerr("TRAILER_ERROR rain is not native to this zone");get_tree().quit(2);return
+			weather.state=1
+			Weather._countdown=10000
+			weather.on_event({"w":1,"fade":0.0},game.sound._ticks)
 		if spec.get("input","")=="touch":
 			TouchInput.pinned=true;TouchInput.enabled=true;TouchInput.mode_changed.emit()
+			PadInput.set_process_input(false)
+			if spec.get("touch_demo","")=="inventory":
+				var layer:=CanvasLayer.new();layer.layer=127;add_child(layer)
+				touch_cue=TouchCue.new();layer.add_child(touch_cue);touch_cue.hide()
 		elif spec.get("input","")=="gamepad":
 			PadInput._set_active("pad")
 			GameData.options.pad_enabled=1
@@ -233,8 +254,20 @@ func _run() -> void:
 		"campaign":GameData.campaign_id,"language":language,"seed":spec.get("seed",6519),"hd_packages":ModStore.profile().packages,
 		"renderer":RenderingServer.get_current_rendering_method(),"engine":Engine.get_version_info(),"staged":true,"graphics":_graphics_report(),"wardrobe":spec.get("wardrobe","offscreen"),"equipment":spec.get("equipment",{}),"authored_encounter":encounter_start}
 	if not coop_start.is_empty(): report["coop"]=coop_start
+	if game and game.sound.weather:
+		report["weather"]={"native_type":game.sound.weather.type,"shown":game.sound.weather._shown,"target":game.sound.weather._target}
 	print("TRAILER_START ",JSON.stringify(report))
 	recording=true
+
+func _physics_process(_dt: float) -> void:
+	# Native direct input has a 500 ms network watchdog. Offline rendering
+	# can take longer than that between simulation frames. Keep only the
+	# current input alive while filming; normal step/stop commands still
+	# control movement, and native navigation/animation/damage stay intact.
+	if hero and game and spec.get("camera","") in ["first","third"]:
+		if not hero.direct_steering.is_empty():
+			hero.direct_steering.until=Time.get_ticks_msec()+10000
+		if hero.direct_look_until>0:hero.direct_look_until=Time.get_ticks_msec()+10000
 
 func _process(_dt: float) -> void:
 	if session and session.state: session.state.world_time=float(spec.get("hour",14))
@@ -276,7 +309,9 @@ func _camera(t: float) -> void:
 				if head:aim=head.global_position
 				var eye:=game.rig.camera.global_position
 				var delta:=aim-eye
-				var desired:=clampf(atan2(delta.y,Vector2(delta.x,delta.z).length()),-1.1,0.6)
+				# Match the game's first-person pitch range, including flying
+				# targets overhead; the earlier limit cut off dragon heads.
+				var desired:=clampf(atan2(delta.y,Vector2(delta.x,delta.z).length()),-1.45,1.35)
 				game.direct.tilt=lerpf(game.direct.tilt,desired,0.15)
 		game.direct.apply_camera(1.0/60.0)
 		return
@@ -310,7 +345,9 @@ func _prepare_combat() -> void:
 		enemies.append(u);u.ai_next=INF;u._perceive_next=INF
 		encounter_start.append({"nid":nid,"prototype":entry.prototype,"position":[p.x,p.y],"texture":authored.get("texture","")})
 	print("TRAILER_ENCOUNTER ",JSON.stringify(encounter_start))
-	if not enemies.is_empty():focus=(hero.global_position+enemies[0].global_position)*0.5
+	for u: GameUnit in enemies:
+		print("TRAILER_REACH ",JSON.stringify({"nid":u.uid,"distance":hero.pos.distance_to(u.pos),"melee_reach":hero.melee_reach(u),"enemy_stats":u.stats}))
+	if not enemies.is_empty():focus=(hero.global_position+enemies[0].global_position)*0.5+Vector3.UP*float(spec.get("combat_focus_lift",0.0))
 	if spec.has("weapon"):
 		hero.get_meta("hero").weapons=[String(spec.weapon)]
 		session._refresh_hero(hero)
@@ -348,6 +385,9 @@ func _finish() -> void:
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png(out+"-end.png")
 	report["action"]=_action_report()
+	report["movement_samples"]=movement_samples
+	if spec.get("touch_demo","")=="inventory":
+		report["touch"]={"events":touch_events,"inventory_open":game.hud._inventory.visible,"enabled":TouchInput.enabled}
 	report["end_frame"]=Engine.get_frames_drawn()
 	report["simulation_seconds"]=session.world.time if session and session.world else 0
 	if not coop_start.is_empty():
@@ -390,23 +430,34 @@ func _vector(a: Array) -> Vector3:
 	return Vector3(float(a[0]),float(a[1]),float(a[2]))
 
 func _action(frame: int) -> void:
+	if spec.get("touch_demo","")=="inventory" and frame in [18,24]:
+		if frame==18:
+			touch_point=game.hud.touch_actions._grid.get_child(0).get_global_rect().get_center()
+			touch_cue.position=touch_point;touch_cue.show()
+		else:touch_cue.hide()
+		var event:=InputEventScreenTouch.new()
+		event.index=0;event.position=touch_point;event.pressed=frame==18
+		Input.parse_input_event(event)
+		touch_events+=1
 	if spec.get("input","")=="gamepad" and PadInput.field and frame%60==0:
 		PadInput.field.wheel.cycle(1)
 	if game and spec.get("camera","") in ["first","third"]:
 		game.direct._neutral=false
 		var retreat:=spec.has("keep_distance") and not enemies.is_empty() and hero.pos.distance_to(enemies[0].pos)<float(spec.keep_distance)
 		var approach:bool=spec.get("approach",false) and not enemies.is_empty() and hero.pos.distance_to(enemies[0].pos)>hero.melee_reach(enemies[0])*0.9
-		game.direct.step(Vector2.DOWN if retreat else (Vector2.UP if approach else Vector2.ZERO),1.0/60.0)
-	if game and spec.get("camera","") in ["first","third"] and spec.get("kind","")=="combat" and frame%24==0:
+		var advance:=frame<int(spec.get("advance_frames",0))
+		game.direct.step(Vector2.UP if advance else (Vector2.DOWN if retreat else (Vector2.UP if approach else Vector2.ZERO)),1.0/60.0)
+		if frame%12==0:movement_samples.append({"frame":frame,"pos":[hero.pos.x,hero.pos.y],"action":hero.action,"moving":advance or retreat or approach})
+	if game and spec.get("camera","") in ["first","third"] and spec.get("kind","")=="combat" and frame%24==0 and frame>=int(spec.get("advance_frames",0)):
 		game.direct._neutral=false
 		if frame==0:print("TRAILER_CONTROL ",JSON.stringify({"usable":game.direct.usable(),"active":game.direct.active(),"pointer":game.direct.pointer,"held":game.rig.held,"focus":game.rig._window_focused,"blocks":game.hud.blocks_camera(),"transition":game.direct.transitioning(),"movie":session.movie_active(),"controller":hero.controller,"is_host":session.is_host,"blocked":hero.blocked,"direct_controlled":hero.direct_controlled,"weapon":hero.info.get("weapons",[]),"stats":hero.stats}))
 		game.direct.attack()
 		if frame%48==0:print("TRAILER_ATTACK ",JSON.stringify({"frame":frame,"orders":hero.orders.map(func(o):return String(o.get("type",""))),"action":hero.action,"cooldown":hero._attack_cd,"lock":hero._anim_lock,"pending":hero._pending_hit,"uid":hero.uid,"registered":session.world.units.get(hero.uid)==hero}))
-	if game and spec.has("spell") and frame in spec.get("spell_frames",[1,150]) and not enemies.is_empty() and not enemies[0].dead:
+	if game and spec.has("spell") and spec.get("spell_frames",[1,150]).any(func(value):return int(value)==frame) and not enemies.is_empty() and not enemies[0].dead:
 		session.apply_command({"t":"cast","unit":hero.uid,"spell":String(spec.spell),"target":enemies[0].uid},0)
 
 func _action_report() -> Dictionary:
-	return {"paused":get_tree().paused,"hero": {"hp":hero.hp,"mana":hero.mana,"dead":hero.dead,"pos":[hero.pos.x,hero.pos.y],"order":String(hero.order.get("type","")),"action":hero.action,"attack_cooldown":hero._attack_cd,"pending_hit":hero._pending_hit} if hero else {},
+	return {"paused":get_tree().paused,"hero": {"hp":hero.hp,"mana":hero.mana,"dead":hero.dead,"pos":[hero.pos.x,hero.pos.y],"order":String(hero.order.get("type","")),"action":hero.action,"attack_cooldown":hero._attack_cd,"pending_hit":hero._pending_hit,"direct_contacts":hero.direct_hit_serial} if hero else {},
 		"enemies":enemies.map(func(u):return {"name":u.proto.get("name",""),"hp":u.hp,"max_hp":u.max_hp,"dead":u.dead,"pos":[u.pos.x,u.pos.y],"action":u.action})}
 
 func _dress(actor: GameUnit) -> bool:
