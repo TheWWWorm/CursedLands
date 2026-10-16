@@ -1,0 +1,2510 @@
+{
+  "date": "2026-10-16",
+  "kind": "design_research_not_full_mode_validation",
+  "base_commit": "04800b62dc8e8f5eb5f220ec733c8989d6fcb0aa",
+  "player_requirements": [
+    "PvE roguelite with AI-controlled teams, recruitment and deployment between increasingly difficult encounters",
+    "Preserve original creature stats by default; curate roster and permit logical native cross-species evolution",
+    "Improve battlefield UI and author an actual textured arena using available original assets",
+    "Localize all eventual player-facing mode content in English, Russian and German"
+  ],
+  "source_sha256": {
+    "tools/benchmarks/arena_evolutions.gd": "88815f41b35e5de4d16e22c0022c52ab15eda566e2718c2f7e5f3b2cbbe42c1d",
+    "game/src/game/arena_match.gd": "c9ad46b5bff1c5c39afa09c28bcf585d03865985e8ced5c814c6e087805df9a2",
+    "game/src/game/combat.gd": "d3222a311363dcc4b18a5b051b98024d097ffed2ddea379a9c56656f1ba17034",
+    "game/src/game/unit.gd": "ea4d5048eeee9d1fe5af297d496dacf11aeb9e456137285fcd612753f9439aa2",
+    "game/src/game/world.gd": "d1754a1e9dc968c86088ef931602e1365c9e07b4af5e24475cba3e6199470418"
+  },
+  "data_census": {
+    "original": {
+      "prototype_rows": 389,
+      "map_headers": 38,
+      "source_sha256": "009ba76856dfc2ee0d6154a21f2665b33ee1ccc48015b7defca6b7410d90531d",
+      "language": "en"
+    },
+    "expansion": {
+      "prototype_rows": 716,
+      "map_headers": 51,
+      "source_sha256": "288805808a8036984b2a983290de88a77af0cda2e2c8334bc9bbbba3b8b12392",
+      "language": "ru"
+    },
+    "scope": "Rows include named/scripted and repeated variants. Map checks read headers and atlas references, not rendered layouts. Separate editions require separate balance."
+  },
+  "native_prototype_samples": [
+    {
+      "name": "BoarDarkF6",
+      "localized_title": "Veteran black boar",
+      "base_level": 6,
+      "hp": 70.0,
+      "damage_min": 12.0,
+      "damage_max": 11.0,
+      "absorption": 12.0,
+      "to_hit": 53.0,
+      "parry": 45.0,
+      "tuning_actions": 81.0,
+      "tuning_move": 1.0,
+      "weapon_type_id": 8,
+      "weapon": "",
+      "spells": []
+    },
+    {
+      "name": "BoarRedF1",
+      "localized_title": "Young boar",
+      "base_level": 1,
+      "hp": 25.0,
+      "damage_min": 8.0,
+      "damage_max": 6.0,
+      "absorption": 7.0,
+      "to_hit": 13.0,
+      "parry": 12.0,
+      "tuning_actions": 81.0,
+      "tuning_move": 1.0,
+      "weapon_type_id": 8,
+      "weapon": "",
+      "spells": []
+    },
+    {
+      "name": "BoarRedF3",
+      "localized_title": "Veteran boar",
+      "base_level": 3,
+      "hp": 40.0,
+      "damage_min": 9.0,
+      "damage_max": 8.0,
+      "absorption": 9.0,
+      "to_hit": 29.0,
+      "parry": 25.0,
+      "tuning_actions": 81.0,
+      "tuning_move": 1.0,
+      "weapon_type_id": 8,
+      "weapon": "",
+      "spells": []
+    },
+    {
+      "name": "GoblinF1",
+      "localized_title": "Goblin with a spear",
+      "base_level": 1,
+      "hp": 25.0,
+      "damage_min": 8.0,
+      "damage_max": 6.0,
+      "absorption": 7.0,
+      "to_hit": 13.0,
+      "parry": 12.0,
+      "tuning_actions": 55.0,
+      "tuning_move": 1.0,
+      "weapon_type_id": 3,
+      "weapon": "",
+      "spells": []
+    },
+    {
+      "name": "OgreGipatF5",
+      "localized_title": "Young Ogre",
+      "base_level": 6,
+      "hp": 70.0,
+      "damage_min": 12.0,
+      "damage_max": 11.0,
+      "absorption": 12.0,
+      "to_hit": 53.0,
+      "parry": 45.0,
+      "tuning_actions": 55.0,
+      "tuning_move": 1.0,
+      "weapon_type_id": 8,
+      "weapon": "",
+      "spells": []
+    },
+    {
+      "name": "OrcMaleF3",
+      "localized_title": "Young Orc",
+      "base_level": 3,
+      "hp": 40.0,
+      "damage_min": 9.0,
+      "damage_max": 8.0,
+      "absorption": 9.0,
+      "to_hit": 29.0,
+      "parry": 25.0,
+      "tuning_actions": 55.0,
+      "tuning_move": 1.0,
+      "weapon_type_id": 8,
+      "weapon": "stone axe.silicon",
+      "spells": []
+    },
+    {
+      "name": "OrcMaleF5",
+      "localized_title": "Adult Orc",
+      "base_level": 5,
+      "hp": 60.0,
+      "damage_min": 11.0,
+      "damage_max": 10.0,
+      "absorption": 11.0,
+      "to_hit": 45.0,
+      "parry": 38.0,
+      "tuning_actions": 55.0,
+      "tuning_move": 1.0,
+      "weapon_type_id": 8,
+      "weapon": "stone axe.malachite",
+      "spells": []
+    },
+    {
+      "name": "TigerRedF4",
+      "localized_title": "Adult tiger",
+      "base_level": 4,
+      "hp": 50.0,
+      "damage_min": 10.0,
+      "damage_max": 9.0,
+      "absorption": 10.0,
+      "to_hit": 37.0,
+      "parry": 32.0,
+      "tuning_actions": 79.0,
+      "tuning_move": 1.0,
+      "weapon_type_id": 8,
+      "weapon": "",
+      "spells": []
+    },
+    {
+      "name": "WolfGreyF1",
+      "localized_title": "Young wolf",
+      "base_level": 1,
+      "hp": 25.0,
+      "damage_min": 8.0,
+      "damage_max": 6.0,
+      "absorption": 7.0,
+      "to_hit": 13.0,
+      "parry": 12.0,
+      "tuning_actions": 68.0,
+      "tuning_move": 1.0,
+      "weapon_type_id": 8,
+      "weapon": "",
+      "spells": []
+    }
+  ],
+  "native_damage_note": "damage_max in the database is an added random range; final maximum equals damage_min + damage_max.",
+  "paired_evolution_probe": {
+    "armor_formula": 0,
+    "cases": [
+      {
+        "copies": 2,
+        "draws": 0,
+        "input": "boarredf1",
+        "input_wins": 0,
+        "output": "boarredf3",
+        "output_wins": 24,
+        "trials": [
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 61.05,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 34.265,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 51.975,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 65.45,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 78.705,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 74.36,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 65.45,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 52.25,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 56.54,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 34.375,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 78.815,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 38.83,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 34.155,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 43.175,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 47.52,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 60.995,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 69.795,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 61.16,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 65.45,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 34.375,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 65.45,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 70.015,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 47.63,
+            "seed": 2411
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 60.995,
+            "seed": 2411
+          }
+        ],
+        "median_seconds": 60.995
+      },
+      {
+        "copies": 3,
+        "draws": 0,
+        "input": "boarredf1",
+        "input_wins": 1,
+        "output": "boarredf3",
+        "output_wins": 23,
+        "trials": [
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 60.995,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 101.035,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 87.835,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 92.235,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 87.725,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 78.87,
+            "seed": 2402
+          },
+          {
+            "outcome": "input",
+            "output_side": 0,
+            "seconds": 88.385,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 92.125,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 105.545,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 96.745,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 78.815,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 78.925,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 87.835,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 119.02,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 56.54,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 114.4,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 96.745,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 92.235,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 74.36,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 74.415,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 96.635,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 118.855,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 87.725,
+            "seed": 2411
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 69.85,
+            "seed": 2411
+          }
+        ],
+        "median_seconds": 88.11
+      },
+      {
+        "copies": 2,
+        "draws": 0,
+        "input": "boarredf3",
+        "input_wins": 0,
+        "output": "boardarkf6",
+        "output_wins": 24,
+        "trials": [
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 74.03,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 74.195,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 42.68,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 65.395,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 51.7,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 34.265,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 47.245,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 65.45,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 42.68,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 56.375,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 38.335,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 56.485,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 47.135,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 43.12,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 60.5,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 65.395,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 60.5,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 74.305,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 73.865,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 78.65,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 47.245,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 52.03,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 38.335,
+            "seed": 2411
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 7.535,
+            "seed": 2411
+          }
+        ],
+        "median_seconds": 54.2025
+      },
+      {
+        "copies": 3,
+        "draws": 0,
+        "input": "boarredf3",
+        "input_wins": 0,
+        "output": "boardarkf6",
+        "output_wins": 24,
+        "trials": [
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 65.285,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 87.505,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 83.105,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 69.685,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 43.12,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 92.07,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 105.49,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 60.885,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 78.76,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 65.34,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 52.03,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 65.23,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 69.74,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 87.505,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 56.485,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 96.415,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 87.56,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 91.96,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 65.395,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 65.34,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 78.76,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 83.16,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 87.67,
+            "seed": 2411
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 74.25,
+            "seed": 2411
+          }
+        ],
+        "median_seconds": 76.505
+      },
+      {
+        "copies": 2,
+        "draws": 0,
+        "input": "goblinf1",
+        "input_wins": 0,
+        "output": "orcmalef3",
+        "output_wins": 24,
+        "trials": [
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 36.355,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 42.57,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 39.38,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 15.51,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 30.305,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 27.775,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 51.645,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 64.02,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 52.305,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 66.935,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 18.205,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 45.76,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 39.215,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 28.27,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 43.01,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 52.03,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 27.115,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 58.025,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 48.895,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 64.075,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 33.495,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 55.055,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 24.42,
+            "seed": 2411
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 27.775,
+            "seed": 2411
+          }
+        ],
+        "median_seconds": 40.975
+      },
+      {
+        "copies": 3,
+        "draws": 0,
+        "input": "goblinf1",
+        "input_wins": 1,
+        "output": "orcmalef3",
+        "output_wins": 23,
+        "trials": [
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 109.835,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 67.1,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 60.72,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 82.06,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 70.235,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 61.82,
+            "seed": 2402
+          },
+          {
+            "outcome": "input",
+            "output_side": 0,
+            "seconds": 97.13,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 33.825,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 72.82,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 39.545,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 45.43,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 60.885,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 76.395,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 54.67,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 63.58,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 72.82,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 57.53,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 76.01,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 66.99,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 67.43,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 51.315,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 85.8,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 69.905,
+            "seed": 2411
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 64.075,
+            "seed": 2411
+          }
+        ],
+        "median_seconds": 67.04499999999999
+      },
+      {
+        "copies": 2,
+        "draws": 0,
+        "input": "orcmalef3",
+        "input_wins": 0,
+        "output": "orcmalef5",
+        "output_wins": 24,
+        "trials": [
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 39.215,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 54.505,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 36.355,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 39.545,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 39.38,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 57.365,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 81.895,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 54.505,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 51.48,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 57.53,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 69.795,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 57.53,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 42.24,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 60.39,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 51.48,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 72.82,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 78.54,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 48.455,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 42.24,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 36.52,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 42.24,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 57.695,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 57.53,
+            "seed": 2411
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 45.43,
+            "seed": 2411
+          }
+        ],
+        "median_seconds": 52.9925
+      },
+      {
+        "copies": 3,
+        "draws": 0,
+        "input": "orcmalef3",
+        "input_wins": 2,
+        "output": "orcmalef5",
+        "output_wins": 22,
+        "trials": [
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 105.93,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 78.485,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 54.34,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 54.285,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 97.02,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 72.435,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 90.64,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 66.715,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 100.045,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 84.535,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 60.72,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 78.815,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 84.59,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 84.7,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 81.73,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 90.75,
+            "seed": 2407
+          },
+          {
+            "outcome": "input",
+            "output_side": 0,
+            "seconds": 117.92,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 66.55,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 66.77,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 51.59,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 78.705,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 175.615,
+            "seed": 2410
+          },
+          {
+            "outcome": "input",
+            "output_side": 0,
+            "seconds": 114.895,
+            "seed": 2411
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 93.775,
+            "seed": 2411
+          }
+        ],
+        "median_seconds": 83.1325
+      },
+      {
+        "copies": 2,
+        "draws": 0,
+        "input": "orcmalef3",
+        "input_wins": 0,
+        "output": "ogregipatf5",
+        "output_wins": 24,
+        "trials": [
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 41.525,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 35.86,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 32.45,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 32.835,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 29.535,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 23.76,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 38.61,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 41.8,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 20.46,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 44.825,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 44.55,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 35.86,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 38.5,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 26.675,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 44.55,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 41.8,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 38.61,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 38.885,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 53.735,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 38.885,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 41.525,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 44.825,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 35.475,
+            "seed": 2411
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 32.835,
+            "seed": 2411
+          }
+        ],
+        "median_seconds": 38.61
+      },
+      {
+        "copies": 3,
+        "draws": 0,
+        "input": "orcmalef3",
+        "input_wins": 0,
+        "output": "ogregipatf5",
+        "output_wins": 24,
+        "trials": [
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 59.785,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 56.925,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 56.65,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 44.935,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 56.65,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 44.935,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 53.735,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 66.0,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 56.76,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 59.95,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 59.675,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 44.935,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 65.835,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 62.975,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 50.71,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 20.625,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 44.66,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 56.925,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 53.735,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 47.96,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 35.475,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 57.035,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 47.685,
+            "seed": 2411
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 72.16,
+            "seed": 2411
+          }
+        ],
+        "median_seconds": 56.65
+      },
+      {
+        "copies": 2,
+        "draws": 0,
+        "input": "wolfgreyf1",
+        "input_wins": 0,
+        "output": "tigerredf4",
+        "output_wins": 24,
+        "trials": [
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 46.2,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 41.635,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 11.22,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 54.89,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 54.67,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 59.125,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 45.98,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 37.29,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 50.435,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 28.71,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 32.945,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 37.29,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 19.69,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 37.51,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 37.29,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 37.29,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 24.255,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 50.325,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 20.13,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 28.82,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 50.655,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 32.945,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 45.98,
+            "seed": 2411
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 28.82,
+            "seed": 2411
+          }
+        ],
+        "median_seconds": 37.29
+      },
+      {
+        "copies": 3,
+        "draws": 0,
+        "input": "wolfgreyf1",
+        "input_wins": 0,
+        "output": "tigerredf4",
+        "output_wins": 24,
+        "trials": [
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 54.67,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 50.6,
+            "seed": 2400
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 59.07,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 37.29,
+            "seed": 2401
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 45.98,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 55.165,
+            "seed": 2402
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 67.815,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 46.475,
+            "seed": 2403
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 80.96,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 72.325,
+            "seed": 2404
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 68.035,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 55.275,
+            "seed": 2405
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 54.67,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 41.855,
+            "seed": 2406
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 63.69,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 32.945,
+            "seed": 2407
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 76.395,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 64.075,
+            "seed": 2408
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 54.615,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 63.525,
+            "seed": 2409
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 81.18,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 72.27,
+            "seed": 2410
+          },
+          {
+            "outcome": "output",
+            "output_side": 0,
+            "seconds": 80.74,
+            "seed": 2411
+          },
+          {
+            "outcome": "output",
+            "output_side": 1,
+            "seconds": 63.8,
+            "seed": 2411
+          }
+        ],
+        "median_seconds": 61.2975
+      }
+    ],
+    "difficulty": 0,
+    "engine": "4.7-stable (official)",
+    "fixture_version": 1,
+    "limit_seconds": 300.0,
+    "scope": "Native melee stats/AI; headless flat field; paired sides and group insertion order. No projectiles, mixed teams, economy or full runs.",
+    "seed_base": 2400,
+    "seeds_per_case": 12,
+    "tick_seconds": 0.055,
+    "trials_per_case": 24
+  },
+  "paired_probe_execution": {
+    "exit_code": 0,
+    "battle_count": 288,
+    "script_or_engine_errors": 0,
+    "warning": "Godot reported the configured separate rendering thread as experimental; this was a headless correctness probe, not a render benchmark.",
+    "log_sha256": "d47f89af9ae99302ec835b328c59fe6e3ccd0d2419659843fa8c88f84925232c",
+    "changes_to_native_stats": false,
+    "limitations": [
+      "12 paired seeds per case; 24 fights are not 24 independent seed samples.",
+      "Side swaps also reverse group insertion order, but do not eliminate every AI/RNG/formation dependency.",
+      "Only melee matchups, flat ground, presentation disabled and 55 ms manual world ticks.",
+      "No projectiles, spells, mixed armies, shop, economy, campaign modifiers, authored terrain or complete PvE runs.",
+      "Output-versus-input victory does not determine fair price or the value of freed deployment slots."
+    ]
+  },
+  "earlier_boar_probe": {
+    "armor_formula": 0,
+    "cases": [
+      {
+        "draws": 0,
+        "higher": "boarredf2",
+        "higher_count": 1,
+        "higher_wins": 24,
+        "lower": "boarredf1",
+        "lower_count": 1,
+        "lower_wins": 0,
+        "seconds": [
+          38.9399999999998,
+          21.1749999999999,
+          56.7599999999997,
+          29.9199999999999,
+          25.6299999999999,
+          16.6649999999999,
+          25.4649999999999,
+          56.6499999999997,
+          21.1199999999999,
+          21.1199999999999,
+          29.9199999999999,
+          7.64499999999999,
+          16.6649999999999,
+          38.8299999999998,
+          70.1250000000005,
+          34.3749999999999,
+          16.5549999999999,
+          21.1199999999999,
+          61.1049999999997,
+          74.580000000001,
+          30.0299999999999,
+          16.6649999999999,
+          92.4550000000032,
+          21.1199999999999
+        ]
+      },
+      {
+        "draws": 0,
+        "higher": "boarredf2",
+        "higher_count": 1,
+        "higher_wins": 10,
+        "lower": "boarredf1",
+        "lower_count": 2,
+        "lower_wins": 14,
+        "seconds": [
+          65.4499999999999,
+          101.365000000004,
+          52.4699999999998,
+          30.1399999999999,
+          38.6649999999998,
+          56.8149999999997,
+          56.5399999999997,
+          47.9599999999998,
+          56.7049999999997,
+          87.8900000000027,
+          66.385,
+          47.9049999999998,
+          25.2999999999999,
+          48.0149999999998,
+          65.5599999999999,
+          25.6299999999999,
+          65.5599999999999,
+          61.3799999999997,
+          38.7199999999998,
+          48.0149999999998,
+          30.7999999999999,
+          83.6550000000021,
+          30.1949999999999,
+          114.840000000006
+        ]
+      },
+      {
+        "draws": 0,
+        "higher": "boarredf3",
+        "higher_count": 1,
+        "higher_wins": 14,
+        "lower": "boarredf2",
+        "lower_count": 2,
+        "lower_wins": 10,
+        "seconds": [
+          65.9449999999999,
+          47.6299999999998,
+          91.6850000000031,
+          74.360000000001,
+          122.870000000007,
+          16.5549999999999,
+          48.1249999999998,
+          70.0150000000004,
+          56.2099999999997,
+          83.2700000000021,
+          74.0300000000009,
+          141.185000000009,
+          11.55,
+          96.8000000000038,
+          39.2699999999998,
+          43.3399999999998,
+          69.5750000000004,
+          101.090000000004,
+          39.2149999999998,
+          56.5399999999997,
+          48.2349999999998,
+          38.8849999999998,
+          101.640000000004,
+          20.8999999999999
+        ]
+      },
+      {
+        "draws": 0,
+        "higher": "boarredf3",
+        "higher_count": 1,
+        "higher_wins": 16,
+        "lower": "boarredf1",
+        "lower_count": 4,
+        "lower_wins": 8,
+        "seconds": [
+          43.5599999999998,
+          70.4000000000005,
+          119.075000000007,
+          131.890000000008,
+          87.8350000000027,
+          100.540000000004,
+          92.2900000000032,
+          48.0149999999998,
+          141.295000000009,
+          69.5750000000004,
+          119.020000000007,
+          140.745000000009,
+          136.895000000009,
+          91.6300000000031,
+          71.0600000000006,
+          145.20000000001,
+          110.110000000005,
+          42.8449999999998,
+          101.090000000004,
+          47.9049999999998,
+          75.5150000000011,
+          91.7400000000031,
+          96.7450000000038,
+          91.7950000000031
+        ]
+      },
+      {
+        "draws": 0,
+        "higher": "boarredf2",
+        "higher_count": 1,
+        "higher_wins": 1,
+        "lower": "boarredf1",
+        "lower_count": 3,
+        "lower_wins": 23,
+        "seconds": [
+          30.1949999999999,
+          79.4200000000016,
+          34.4299999999999,
+          48.1799999999998,
+          53.1299999999998,
+          48.2349999999998,
+          30.7449999999999,
+          30.3599999999999,
+          21.3399999999999,
+          75.4050000000011,
+          34.3199999999999,
+          34.8149999999998,
+          16.8849999999999,
+          43.5599999999998,
+          48.0149999999998,
+          30.3599999999999,
+          16.8849999999999,
+          43.6149999999998,
+          34.5949999999998,
+          21.2849999999999,
+          12.43,
+          61.5449999999997,
+          56.9799999999997,
+          96.8550000000038
+        ]
+      },
+      {
+        "draws": 0,
+        "higher": "boarredf3",
+        "higher_count": 1,
+        "higher_wins": 3,
+        "lower": "boarredf2",
+        "lower_count": 3,
+        "lower_wins": 21,
+        "seconds": [
+          52.9099999999998,
+          78.7050000000015,
+          34.7049999999998,
+          43.0649999999998,
+          93.1700000000033,
+          35.1999999999998,
+          34.1549999999999,
+          21.2299999999999,
+          43.6149999999998,
+          105.600000000005,
+          52.0849999999998,
+          44.1099999999998,
+          16.9399999999999,
+          53.0199999999998,
+          52.4149999999998,
+          61.0499999999997,
+          48.5649999999998,
+          70.7300000000005,
+          29.6999999999999,
+          43.1749999999998,
+          21.3399999999999,
+          52.9099999999998,
+          26.2899999999999,
+          109.945000000005
+        ]
+      }
+    ],
+    "difficulty": 0,
+    "seed_base": 1700,
+    "trials_per_case": 24,
+    "scope": "144 preliminary native-stat melee fights. Higher unit always spawned first; sides alternated with different seeds, not paired. Do not pool with the later fixture as one controlled experiment."
+  },
+  "shop_model": {
+    "model": "Binomial offer availability for a single preselected creature; not run win rate",
+    "assumptions": [
+      "5 independent uniform shop offers per round, with replacement",
+      "No starting copy, rerolls, locks, costs, rarity weights, purchases or bench limits",
+      "2-copy same-rank merging needs 2 base copies for rank II and 4 for rank III",
+      "3-copy same-rank merging needs 3 base copies for rank II and 9 for rank III"
+    ],
+    "results": [
+      {
+        "pool_size": 6,
+        "rounds": 6,
+        "offers": 30,
+        "probability_find_2": 0.9705109583683887,
+        "probability_find_3": 0.8972096263126674,
+        "probability_find_4": 0.7603804731419878,
+        "probability_find_9": 0.05056555815376998
+      },
+      {
+        "pool_size": 6,
+        "rounds": 12,
+        "offers": 60,
+        "probability_find_2": 0.9997692888470923,
+        "probability_find_3": 0.998512800414324,
+        "probability_find_4": 0.9936543784742865,
+        "probability_find_9": 0.6879531418370054
+      },
+      {
+        "pool_size": 6,
+        "rounds": 18,
+        "offers": 90,
+        "probability_find_2": 0.9999985794992875,
+        "probability_find_3": 0.999986602435364,
+        "probability_find_4": 0.9999163369936792,
+        "probability_find_9": 0.9735942532858785
+      },
+      {
+        "pool_size": 8,
+        "rounds": 6,
+        "offers": 30,
+        "probability_find_2": 0.9037622912383858,
+        "probability_find_3": 0.7421275294186863,
+        "probability_find_4": 0.526614513659087,
+        "probability_find_9": 0.009035686015987348
+      },
+      {
+        "pool_size": 8,
+        "rounds": 12,
+        "offers": 60,
+        "probability_find_2": 0.9968270739958917,
+        "probability_find_3": 0.9848524918481905,
+        "probability_find_4": 0.9517798363926347,
+        "probability_find_9": 0.3330754023364141
+      },
+      {
+        "pool_size": 8,
+        "rounds": 18,
+        "offers": 90,
+        "probability_find_2": 0.9999163629962117,
+        "probability_find_3": 0.9994230401682708,
+        "probability_find_4": 0.9973557826035657,
+        "probability_find_9": 0.807293586417152
+      },
+      {
+        "pool_size": 12,
+        "rounds": 6,
+        "offers": 30,
+        "probability_find_2": 0.7260102318427085,
+        "probability_find_3": 0.461740721535788,
+        "probability_find_4": 0.23751204612385537,
+        "probability_find_9": 0.0005475653436648691
+      },
+      {
+        "pool_size": 12,
+        "rounds": 12,
+        "offers": 60,
+        "probability_find_2": 0.9651219649161988,
+        "probability_find_3": 0.886076994239728,
+        "probability_find_4": 0.7471494700204762,
+        "probability_find_9": 0.05963234712612469
+      },
+      {
+        "pool_size": 12,
+        "rounds": 18,
+        "offers": 90,
+        "probability_find_2": 0.9963528115103908,
+        "probability_find_3": 0.983205205839041,
+        "probability_find_4": 0.9481449240487748,
+        "probability_find_9": 0.3348878073368224
+      },
+      {
+        "pool_size": 18,
+        "rounds": 6,
+        "offers": 30,
+        "probability_find_2": 0.5023300424685538,
+        "probability_find_3": 0.23138331965731637,
+        "probability_find_4": 0.0826282561531076,
+        "probability_find_9": 2.471598458891438e-05
+      },
+      {
+        "pool_size": 18,
+        "rounds": 12,
+        "offers": 60,
+        "probability_find_2": 0.8532335531472053,
+        "probability_find_3": 0.6547793049199755,
+        "probability_find_4": 0.42908623830861614,
+        "probability_find_9": 0.005673953972989599
+      },
+      {
+        "pool_size": 18,
+        "rounds": 18,
+        "offers": 90,
+        "probability_find_2": 0.9632876385061704,
+        "probability_find_3": 0.8824558585266336,
+        "probability_find_4": 0.7429814146403738,
+        "probability_find_9": 0.0625201438060038
+      },
+      {
+        "pool_size": 24,
+        "rounds": 6,
+        "offers": 30,
+        "probability_find_2": 0.3572444094035265,
+        "probability_find_3": 0.1278771559913309,
+        "probability_find_4": 0.03480058938928055,
+        "probability_find_9": 2.4351072456393965e-06
+      },
+      {
+        "pool_size": 24,
+        "rounds": 12,
+        "offers": 60,
+        "probability_find_2": 0.7192330949430671,
+        "probability_find_3": 0.4589096680437611,
+        "probability_find_4": 0.24008707731680834,
+        "probability_find_9": 0.0008140553875402335
+      },
+      {
+        "pool_size": 24,
+        "rounds": 18,
+        "offers": 90,
+        "probability_find_2": 0.893378670154666,
+        "probability_find_3": 0.7290776212779537,
+        "probability_find_4": 0.5195342545946104,
+        "probability_find_9": 0.012817480448208143
+      },
+      {
+        "pool_size": 389,
+        "rounds": 6,
+        "offers": 30,
+        "probability_find_2": 0.002740265552989588,
+        "probability_find_3": 6.547652025855943e-05,
+        "probability_find_4": 1.1345160347889587e-06,
+        "probability_find_9": 6.681693548329537e-17
+      },
+      {
+        "pool_size": 389,
+        "rounds": 12,
+        "offers": 60,
+        "probability_find_2": 0.01059581159392584,
+        "probability_find_3": 0.0005209921588722882,
+        "probability_find_4": 1.8982255751063087e-05,
+        "probability_find_9": 6.440902369539666e-14
+      },
+      {
+        "pool_size": 389,
+        "rounds": 18,
+        "offers": 90,
+        "probability_find_2": 0.022791231641630532,
+        "probability_find_3": 0.0016889092649145104,
+        "probability_find_4": 9.354468660608263e-05,
+        "probability_find_9": 2.870834058733633e-12
+      }
+    ],
+    "formula": "P(X >= k) = sum(comb(n,i) * p**i * (1-p)**(n-i), i=k..n), with n=5*rounds and p=1/pool_size"
+  },
+  "design_starting_point": {
+    "recruit_families": 6,
+    "encounters": 18,
+    "bosses_at": [
+      6,
+      12,
+      18
+    ],
+    "lives": 3,
+    "bench": 6,
+    "shop_slots": 5,
+    "reference_recruit_gold": 3,
+    "starting_gold": 6,
+    "starting_units": 3,
+    "victory_income": 8,
+    "refresh_gold": 2,
+    "deployment_start": 3,
+    "deployment_growth_after": [
+      3,
+      6,
+      9,
+      12
+    ],
+    "deployment_max": 7,
+    "evolution_unlock_encounters": [
+      4,
+      10
+    ],
+    "status": "Proposed tuning seed. No economy, wave or full-run balance validated yet."
+  },
+  "primary_references": [
+    {
+      "title": "New TFT Workshop Mode - Tocker’s Trials",
+      "url": "https://teamfighttactics.leagueoflegends.com/en-us/news/game-updates/new-tft-workshop-mode-tockers-trials/",
+      "scope": "Historical 2024 launch design"
+    },
+    {
+      "title": "The Last Flame",
+      "url": "https://store.steampowered.com/app/1830970/The_Last_Flame/",
+      "scope": "Developer description of roguelike autobattler loop"
+    },
+    {
+      "title": "Dev: TFT Magic n’ Mayhem Learnings",
+      "url": "https://teamfighttactics.leagueoflegends.com/en-us/news/dev/dev-tft-magic-n-mayhem-learnings/",
+      "scope": "Historical design retrospective"
+    }
+  ],
+  "delivered": "Research document and reusable melee probe only. No PvE gameplay, UI, map, translations, version or release artifacts modified."
+}

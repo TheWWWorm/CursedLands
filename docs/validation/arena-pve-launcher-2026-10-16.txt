@@ -1,0 +1,9 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 12:59:55 +2578ms] session f062641b5763: 1.6.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+[trace 12:59:55 +2579ms] previous session 74a7d287cdff ended unexpectedly in (menu); its log: user://logs/godot2026-10-16T12.59.53.log
+PREVIEW_LAUNCH ready; original data loaded; isolated persistent saves
+[trace 12:59:58 +4892ms] clean exit

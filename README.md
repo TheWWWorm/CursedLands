@@ -78,6 +78,67 @@ Training purchases apply immediately. The default interface hides the unused Acc
 
 The travel map offers buttons for previously visited islands. You can revisit an earlier island and return to the area and party positions you left, keeping current quest and character progress. Captive and other restricted story sequences retain their travel limits.
 
+## Arena
+
+Open **Arena** from the main menu to arrange two teams of creatures and watch
+them fight under AI control. The searchable roster includes every creature
+prototype in the loaded campaign, with localized names, base statistics and
+an animated model preview.
+
+Choose a creature, select **Blue team** or **Red team**, then click the battlefield.
+Click again to place another copy. Each team supports up to 24 creatures;
+overlapping or out-of-bounds placements are refused. **Remove**, **Undo** and
+**Clear team** let you adjust the formation before starting.
+
+**Start battle** becomes available when both teams have a creature. Combat uses
+the existing monster AI, equipment, damage, movement and spells. Pause with the
+button or Space, choose half/normal/double speed, zoom with the wheel, and orbit
+with middle drag. The result identifies the winner; simultaneous elimination or
+the five-minute simulation limit produces a draw. **Rematch** restores the
+original formation and starts again; **Edit teams** restores it for deployment.
+The arena has no campaign progress, saves or network connection.
+
+For source builds, `godot-4 --path game -- --arena` opens it directly. The
+regression fixture is `tools/tests/arena.gd`; run it through the usual absolute
+`--tool=` argument with private XDG data/config/cache directories. Without
+`--headless`, it also checks real pointer placement and captures the UI at
+1280×800, 1280×720 and 1024×768. `python3 tools/check_translations.py` checks
+the English/Russian/German text coverage.
+
+## Trials of Gipath — PvE expedition
+
+Open **PvE expedition** from the main menu (or from Arena) for a solo, 18-wave
+autobattler. Choose one of three starter companies, recruit from six creature
+families, and evolve matching forms into curated creatures from the original game.
+Creature statistics, equipment and spells retain their native values.
+
+Click an offer to recruit it, then select a reserve and click a clear position in
+the blue deployment area. Select a creature on the field to move it, inspect its
+stats, move it to the bench, sell it or preview its evolution. Right-click or Esc
+closes selection. Two matching shooters or bats unlock their first evolution;
+other recipes require three copies. First evolutions unlock at wave 4 and final
+forms at wave 10. Evolution is an explicit action, never an automatic purchase.
+
+The corner menu contains **Guide**, **Auto arrange**, **Undo**, **Sandbox** and
+**Main menu**. **Start battle** commits the formation to AI control and hides the
+shop. Space pauses; the speed selector offers normal/double speed. Scroll zooms;
+middle drag rotates. There is no preparation timer.
+
+Begin with three creatures, 6 gold and three lives. Victories before the final wave
+earn 8 gold; defeat costs one life and lets the restored army retry the same wave.
+Army capacity grows from three to seven. Waves 6 and 12 offer a companion or a
+run-specific boon. Clearing a run unlocks the next expedition difficulty.
+
+Expeditions autosave separately from campaigns in `user://arena-expedition.json`;
+unlocks use `user://arena-profile.json`. Interrupted battles resume in preparation.
+An optional seed repeats shops and encounter formations. The original campaign's
+game data is required; the expansion is not a separately balanced PvE roster.
+
+Source launch: `godot-4 --path game -- --arena-pve`. The local preview launcher and
+renderer details are recorded in the workspace handoff. See the [implemented
+rules and balance evidence](docs/arena-pve-design.md), [UI design](docs/design/arena-ui.md)
+and [validation record](docs/validation/arena-pve-2026-10-16.json).
+
 ## Mods and game rules (experimental)
 
 The game includes **Game setup → Mods and rules**, accessible from New Game, multiplayer and **Options → Remake**. Named profiles keep their own saves and network characters; data mods can provide configurable revival, texture/sound replacements and selected balance patches. Shared rules follow the host, and sandbox profiles keep cheat-enabled progress separate. See the [player and mod-author guide](docs/mods.md), [Quick recovery example](examples/mods/quick-recovery/mod.json) and [legacy mod converter](docs/legacy-mod-converter.md).

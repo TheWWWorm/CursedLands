@@ -1,0 +1,333 @@
+{
+  "date": "2026-10-16",
+  "scope": "Company pacts, camp upgrades, recruitment/encounter balancing, reserve swaps and courtyard shadowing; local feature branch, no release",
+  "baseline_commit": "b51650bf",
+  "source_sha256": {
+    "game/src/game/arena_rules.gd": "d02dde8ac0d62324d913210be5bbe535f81b6e62e38ce1b30602ab46b97a4e2b",
+    "game/src/game/arena_run.gd": "592db6c85cf97542fa7dbfeba48b50cd75ed3afbc7f7c815fa867e0f3d0b3cad",
+    "game/src/game/arena_pve_match.gd": "d4acf5185d0a9be3dcb02434a3027002fa4375e912022dc1f42e1ff5100ac39c",
+    "game/src/game/arena_terrain.gd": "c8ff162dd409ffcdb054c603444dc96a15368262d78b80ee82f44ba7985b70fa",
+    "game/src/ui/arena_pve_field.gd": "a826d59da5d0a9e47939360e4715a455e3d24d2c9077bc7c17361d666fb658e8",
+    "game/src/ui/arena_paving.gdshader": "a5b44e14907b1037a47297e8a41763ccb7453d597c10cd4efe0997adc0d6614e",
+    "game/src/ui/arena_pve_screen.gd": "e43ed32bed4e9232cb4405bd658a7b00a0176ef280d5ff82d3f0264c4b926a51",
+    "game/src/ei/remake_text.gd": "cf12a65ef4c38cb0da51eea0473b9b6750b67d6edd3e0b9b749866b7dc7511f0",
+    "tools/benchmarks/arena_runs.gd": "5cea90043734df67ec9634a4ffb858fbccdb6ddb4df302db617324f2a2ae2114",
+    "tools/tests/arena_pve.gd": "50607d0e222f395ad7ae059d18d6f2f8d23cb5d0eb68c984284f0c257b88d51d",
+    "tools/tests/arena_pve_ui.gd": "da74d609212f2704addea75023c10d6fe05399b46d9a0f90488ec706f5a216bc",
+    "tools/tests/arena_pve_visual.gd": "28ba9c3d13ce4a5c781478fe5e820d3188ce9904923a7e907319bdf070b0df67",
+    "tools/tests/arena_pve_lifecycle.gd": "3dcaf5b4ef952f6dcc322cdb234ad42ea0e162341b632b6be0e03aa73bfa8d67",
+    "tools/check_translations.py": "428ad73a1281d62cfe69daa8b4137229bcb617a47775257889a948d44238dd52",
+    "game/assets/arena/company.svg": "84f6886b4e7789cc6aac81b6022620711f969b7491365ba4d18fc8e9cc4eaa95",
+    "game/assets/arena/coin.svg": "c227dd561b7555e5084e529224df018104dd76683a2215c3813cd0cf3f084b48",
+    "game/assets/arena/life.svg": "2accbcb8d529720b6cfc51120618d94913fa4a49cb61184398554236a29a786f"
+  },
+  "checks": {
+    "rendered_ui": 320,
+    "field_visual": 123,
+    "expedition_rules": 233,
+    "menu_lifecycle": 10,
+    "sandbox": 98,
+    "translation_entries": 1630,
+    "dynamic_wiki_keys": 46,
+    "dynamic_arena_keys": 78,
+    "translation_errors": 0
+  },
+  "balance": {
+    "final_runs": 108,
+    "final_native_fights": 1940,
+    "cohorts": [
+      {
+        "cohort": "progression-tier-standard",
+        "challenge": 0,
+        "policy": "balanced",
+        "seeds": [
+          3000,
+          3017
+        ],
+        "runs": 18,
+        "clears": 15,
+        "fights": 325,
+        "clear_percent": 83.3,
+        "wilson_95_percent": [
+          60.8,
+          94.2
+        ],
+        "starter_clears_of_6": {
+          "0": 3,
+          "1": 6,
+          "2": 6
+        },
+        "pacts_observed": [
+          "hunt",
+          "tribe"
+        ],
+        "source_sha256": {
+          "arena_pve_match": "d4acf5185d0a9be3dcb02434a3027002fa4375e912022dc1f42e1ff5100ac39c",
+          "arena_rules": "82b709f5634bb0ea2fc8033d580f9ff58d4d10afcd9031a3d574c63868286eb1",
+          "arena_run": "a92d60da708b076c0ed8ef84b81fd86869b217251946377be642bf44015f8240",
+          "arena_terrain": "2a78d62d36902adca15dc850fc20e3956042fe1afdee1ec7d08b4432316409e9"
+        },
+        "raw_sha256": "312a7026989b338b1d3d07595ffc48ad4cc24cee1038bbd97db0678349a091cf"
+      },
+      {
+        "cohort": "progression-tier-veteran",
+        "challenge": 1,
+        "policy": "balanced",
+        "seeds": [
+          3000,
+          3017
+        ],
+        "runs": 18,
+        "clears": 14,
+        "fights": 301,
+        "clear_percent": 77.8,
+        "wilson_95_percent": [
+          54.8,
+          91.0
+        ],
+        "starter_clears_of_6": {
+          "0": 3,
+          "1": 6,
+          "2": 5
+        },
+        "pacts_observed": [
+          "",
+          "hunt",
+          "tribe"
+        ],
+        "source_sha256": {
+          "arena_pve_match": "d4acf5185d0a9be3dcb02434a3027002fa4375e912022dc1f42e1ff5100ac39c",
+          "arena_rules": "82b709f5634bb0ea2fc8033d580f9ff58d4d10afcd9031a3d574c63868286eb1",
+          "arena_run": "a92d60da708b076c0ed8ef84b81fd86869b217251946377be642bf44015f8240",
+          "arena_terrain": "2a78d62d36902adca15dc850fc20e3956042fe1afdee1ec7d08b4432316409e9"
+        },
+        "raw_sha256": "a0fba550a328d66aadf6aaa296c3f8343b2fefda539fdd1ecd2676a5e2274aff"
+      },
+      {
+        "cohort": "progression-tier-champion",
+        "challenge": 2,
+        "policy": "balanced",
+        "seeds": [
+          3000,
+          3017
+        ],
+        "runs": 18,
+        "clears": 10,
+        "fights": 320,
+        "clear_percent": 55.6,
+        "wilson_95_percent": [
+          33.7,
+          75.4
+        ],
+        "starter_clears_of_6": {
+          "0": 1,
+          "1": 6,
+          "2": 3
+        },
+        "pacts_observed": [
+          "",
+          "hunt",
+          "tribe"
+        ],
+        "source_sha256": {
+          "arena_pve_match": "d4acf5185d0a9be3dcb02434a3027002fa4375e912022dc1f42e1ff5100ac39c",
+          "arena_rules": "82b709f5634bb0ea2fc8033d580f9ff58d4d10afcd9031a3d574c63868286eb1",
+          "arena_run": "a92d60da708b076c0ed8ef84b81fd86869b217251946377be642bf44015f8240",
+          "arena_terrain": "2a78d62d36902adca15dc850fc20e3956042fe1afdee1ec7d08b4432316409e9"
+        },
+        "raw_sha256": "c5894a398b05e8a9e3385c5cd538e7a70600d212e0119c4616066c3969ad5e34"
+      },
+      {
+        "cohort": "progression-final-ranged",
+        "challenge": 0,
+        "policy": "ranged",
+        "seeds": [
+          3000,
+          3017
+        ],
+        "runs": 18,
+        "clears": 16,
+        "fights": 332,
+        "clear_percent": 88.9,
+        "wilson_95_percent": [
+          67.2,
+          96.9
+        ],
+        "starter_clears_of_6": {
+          "0": 6,
+          "1": 6,
+          "2": 4
+        },
+        "pacts_observed": [
+          "hunt"
+        ],
+        "source_sha256": {
+          "arena_pve_match": "d4acf5185d0a9be3dcb02434a3027002fa4375e912022dc1f42e1ff5100ac39c",
+          "arena_rules": "82b709f5634bb0ea2fc8033d580f9ff58d4d10afcd9031a3d574c63868286eb1",
+          "arena_run": "a92d60da708b076c0ed8ef84b81fd86869b217251946377be642bf44015f8240",
+          "arena_terrain": "2a78d62d36902adca15dc850fc20e3956042fe1afdee1ec7d08b4432316409e9"
+        },
+        "raw_sha256": "f36d91fa4c820226733f8b0928e51b821ade7fd7a8e379cc61157bb32d0d33eb"
+      },
+      {
+        "cohort": "progression-final-novice",
+        "challenge": 0,
+        "policy": "novice",
+        "seeds": [
+          3000,
+          3017
+        ],
+        "runs": 18,
+        "clears": 14,
+        "fights": 343,
+        "clear_percent": 77.8,
+        "wilson_95_percent": [
+          54.8,
+          91.0
+        ],
+        "starter_clears_of_6": {
+          "0": 5,
+          "1": 6,
+          "2": 3
+        },
+        "pacts_observed": [
+          "hunt",
+          "tribe"
+        ],
+        "source_sha256": {
+          "arena_pve_match": "d4acf5185d0a9be3dcb02434a3027002fa4375e912022dc1f42e1ff5100ac39c",
+          "arena_rules": "82b709f5634bb0ea2fc8033d580f9ff58d4d10afcd9031a3d574c63868286eb1",
+          "arena_run": "a92d60da708b076c0ed8ef84b81fd86869b217251946377be642bf44015f8240",
+          "arena_terrain": "2a78d62d36902adca15dc850fc20e3956042fe1afdee1ec7d08b4432316409e9"
+        },
+        "raw_sha256": "b078a0b855d51a7bcb212f27959779a44dd2e7a57c10947f6484c08650c3b91d"
+      },
+      {
+        "cohort": "progression-vanguard",
+        "challenge": 0,
+        "policy": "melee",
+        "seeds": [
+          3000,
+          3017
+        ],
+        "runs": 18,
+        "clears": 13,
+        "fights": 319,
+        "clear_percent": 72.2,
+        "wilson_95_percent": [
+          49.1,
+          87.5
+        ],
+        "starter_clears_of_6": {
+          "0": 3,
+          "1": 6,
+          "2": 4
+        },
+        "pacts_observed": [
+          "vanguard"
+        ],
+        "source_sha256": {
+          "arena_pve_match": "d4acf5185d0a9be3dcb02434a3027002fa4375e912022dc1f42e1ff5100ac39c",
+          "arena_rules": "d02dde8ac0d62324d913210be5bbe535f81b6e62e38ce1b30602ab46b97a4e2b",
+          "arena_run": "592db6c85cf97542fa7dbfeba48b50cd75ed3afbc7f7c815fa867e0f3d0b3cad",
+          "arena_terrain": "2a78d62d36902adca15dc850fc20e3956042fe1afdee1ec7d08b4432316409e9"
+        },
+        "raw_sha256": "daa1d877200438f1a6208d60c247ee494584b911b3a5d1a92c08b38f7acd1f1c"
+      }
+    ],
+    "method": "Real run economy and native AI/combat/spells/projectiles on authored terrain/navigation, advanced in 55 ms ticks. Every cohort process completed with exit 0 and the unchanged native-table assertion. Six seeds per starter; six policies/difficulty combinations share seeds 3000\u20133017.",
+    "policy_limits": "Policies merge and auto-arrange competently. Recovery is chosen when injured; otherwise companion/pact upgrade. No policy selects economic boons. First-affordable is a purchase heuristic, not a model of a new human player. Ranged policy recruits a missing melee beast for Wild kin. No adaptive enemy-specific positioning.",
+    "source_provenance": "The first five cohorts predate the final Vanguard promotion and two-choice exhausted-boon fallback. Their exact source hashes were reconstructed by reversing only those two edits. Their traces contain no Vanguard pact and their policy never buys boons, so neither changed path is exercised. The final melee cohort uses the current rules/run hashes. Terrain source later changes only rendered paving; native/physical/navigation digests match exactly. Original run hashes are preserved, not relabeled.",
+    "calibration": {
+      "description": "Same 18 melee seeds before Vanguard support was promoted from goblina1/goblina3/orcfemalea5 to goblina3/orcfemalea5/orcfemalea7",
+      "runs": 18,
+      "clears": 11,
+      "fights": 308,
+      "included_in_final_comparison": false
+    },
+    "raw_archive": "arena-progression-runs-2026-10-16.json.gz",
+    "raw_archive_sha256": "e13d0c7913470af7032d1dfe82d73bab99e635a52f3dff4ef919f34f920bb2c3",
+    "interpretation": "Ranged/magic remains more forgiving. Melee clears improved from 11/18 to 13/18 in the paired calibration. Starter-focus clears fall 15/18 to 14/18 to 10/18 across Standard/Veteran/Champion. Samples are too small to prove equal balance or significant differences; these are automated clear rates, not human win rates.",
+    "unchanged_evolution_evidence": "264 prior paired native fights, recorded in arena-pve-2026-10-16.json; not rerun because recipes and native stats are unchanged."
+  },
+  "shadowing": {
+    "cause": "The orthographic camera used a 180 m far plane. Godot ignores directional_shadow_max_distance for orthographic cameras; original cascades allocated detail unevenly across the opposing rows. The translucent full courtyard also excluded it from ordinary opaque ambient shading.",
+    "changes": [
+      "0.5\u201390 m camera depth and one orthographic shadow map across the small arena",
+      "Shorter sun direction, lower bias and softer quality-dependent PCF edges, with 85% shadow opacity",
+      "Opaque central stone with four non-overlapping translucent border patches sharing the original UV coordinates",
+      "Lighter optional contact shadows; arena AA/filtering and SSAO now follow graphics options"
+    ],
+    "gameplay_equivalence": {
+      "equal": true,
+      "method": "Same field_probe.gd serialized-array hashes as arena-field-2026-10-16.json; physical terrain, navigation, eight movement classes and native tables unchanged",
+      "snapshot": {
+        "native_stats": "57327141dda6ed708ddcca36cef00df4cdc39a94776256b3c527cdd18f7ec542",
+        "navigation": {
+          "0": "f9c9d15cfdcf522f72b94b7a5d97790bba4b5ae4bc0dce7d06591eebb8dd36cc",
+          "1": "542a66ab5c569c35bd18c4acd600cb0163f7c6eefb6a3a8ba09590124e0c5666",
+          "2": "542a66ab5c569c35bd18c4acd600cb0163f7c6eefb6a3a8ba09590124e0c5666",
+          "3": "4a1d5e094e67665028c2e26328317a26064fd6ca41b3884691c0b674718d2aa0",
+          "4": "c13a0df4dc4321aae755d1631dcf1c144ffc779132843471bc5cb7c1ffb2173f",
+          "5": "1349e1bab18f133dbdc0f854ea574c35149bc02069ed60b9fe364d5fa9c20ffd",
+          "6": "7cbce25eb198fda9f1bd04a783d156d047261f34056239450e43cdd98c5c5681",
+          "7": "08dc5b412ac2ed4cc645ca8ad4839a16ba2136fdd9e3d94a1ce05d1b9c925c5c",
+          "_cost": "f458a68412583001dfa06b3d2c72b7744a202aba34b7e58aa93a37cbc6562cce",
+          "_depth": "a09794ec343cb7d177dc2fca838f52008717c9cdeba321962d34b3ffa15d3d86",
+          "_dry_raw": "d2c79a7a756b2c7913508114c94ad06cdf5a1e21c329201bada9483abe964bc8",
+          "_dry_weight": "2309d4e6bfb5256afec8f8da6e81b1247b9688d4a0955ae0149479f2130d36bb",
+          "_h": "89f882fc62928c8d4473c36092845ca3bfbe156f7c799cee299cc98db53636fe",
+          "_h0": "89f882fc62928c8d4473c36092845ca3bfbe156f7c799cee299cc98db53636fe",
+          "_hq": "e6eeb48ec9b2b4f0a6d0c17b6020164244c379ccabe418fdc88ed3007797653c",
+          "_liq": "a2f75f282e8969b9054572b87cdfe69a7f92748706dc92b6ddd352a89c38177a",
+          "_special": "4a65790d854da7089df3beb4ce235b0327aa3ea19d1f53ca198a629c5f496f38",
+          "_steep": "d2c79a7a756b2c7913508114c94ad06cdf5a1e21c329201bada9483abe964bc8"
+        },
+        "terrain": {
+          "ground": "2e4f40c3620df1e7cf2304e52c82553763791d4156b29a2b86463c513170f860",
+          "heights": "172ddb085e0e2e8b3b22d58c4fdfe45d09a633aae18d72e97e10f59e6632c0b0",
+          "land_n": "7dee7a5e79d329dfa405ac70046af4b123b0013e10609f62996e9d40e75db3d2",
+          "land_tile": "9935f6603c4857fbd07e45cfd8560e64a9c3ac7f7b3c92f8ac829e553105e31e",
+          "land_xy": "834ed7aa26ee7a19d2f3b31d559ccbbe9606ac952379502de4739c1d7214c181",
+          "surface": "29de73167711fa36d1c87b5594ecfd1c05c9c5369cdc8631765b1e15ccc95eff",
+          "water": "f697a988ecf7b5ff56c6f723ac5637939a0daab6dac46b7584ecbf5542d622bc",
+          "water_base": "f697a988ecf7b5ff56c6f723ac5637939a0daab6dac46b7584ecbf5542d622bc"
+        }
+      }
+    }
+  },
+  "visual_fixtures": "Wave-4 and wave-18 formations are deliberately assembled for inspection, not claimed as player-earned runs. Final UI screenshots use synthetic interaction fixtures. Close, default, wide, rotated, company, all three languages, five camps, full shop/reserves and native combat were inspected.",
+  "screenshots": {
+    "arena-progression-en-prepare.png": "1e95127fc36a8b9991384f69b63c12274e9a2581a66c0f8f21df180640fbdbb6",
+    "arena-progression-en-combat.png": "83c63550d97d6a5f18c60af77f1e0346a551c939f440beaa0050d98c52744ca0",
+    "arena-progression-en-720-expanded.png": "541df5fdbfecadab851784dc79b8f7cbefea39f9bdb4f5695e06f008f7813059",
+    "arena-progression-ru-inspect.png": "a6ae4953d46031f4ee8b426fc66ac398922f6fc369f7af6267ad9bfb6f3bf92c",
+    "arena-progression-de-expanded.png": "f7c347f348d36eb5be4ca9712eac7ff974923ee6e9df31bfc507818b644fe217",
+    "arena-progression-en-pacts.png": "90229b82f3386090e57bfa15e29694a35bfe312edd06870a1749407c6bb12eda",
+    "arena-progression-ru-pact-upgrade.png": "5b2c4c5482f5c45110d6b4551a6f4912178e9e39638a139563facdf507a856b6",
+    "arena-progression-de-company-final.png": "8407e8374e3591c4b11a3fa115a49e5d742494ef533cedac94046254dc181c88",
+    "arena-progression-en-720-camp.png": "3d8478ec2540685cd89c2b1f93e1307381e6b732e170f50ba7d6dd8ff41ffdda",
+    "arena-progression-de-two-choice-camp.png": "e33b3cd0e2060616ca1aa967846040207f99f1f2ab58003e7092d5f46e6fbedc",
+    "arena-shadows-shadows.png": "199bd4c72002e0df1eb6ba199656b3e8ef9fea6aec4bea8e874aab1563012115",
+    "arena-shadows-company.png": "3548b42bffbec29e833d2d8a4ce3f98ca3603e421c5835df18ac33fd3743d49d",
+    "arena-shadows-close.png": "75be33357bbe91dc641c39aced5fa200352581916b6c868621beafbdb9b9e5b3",
+    "arena-shadows-late-combat.png": "a4c61c7138f202c83d2bcbea0c66b4b69e92f6b02297d159a760e1a1269a75fc",
+    "arena-shadows-wide.png": "dfa9e3632b2d58915a8c0600356cc651c8c055e7300f68b6705654673282c37b",
+    "arena-shadows-wide-rotated.png": "3287715ec7773c2841b5abbe94d793ccb9c2980492560ec244c38fee3fca00b5"
+  },
+  "review": "arena-progression-review-2026-10-16.md",
+  "limits": [
+    "Rendering validated on Linux/NVIDIA with the private patched Godot 4.7 runtime, Forward+.",
+    "Existing pre-scene shader-cache-folder diagnostic and XIM warning remain. Scene loggers recorded no rendering or script errors.",
+    "No Windows, mobile, web, controller or accessibility-device certification.",
+    "Fixed-step balance simulation does not reproduce presentation interpolation or incidental runtime RNG, so bit-for-bit live-fight parity is not established."
+  ],
+  "preview": {
+    "launcher": "../run-expedition.sh",
+    "runtime": "../runtime/arena-engine.x86_64",
+    "runtime_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+    "pack_sha256": "6491ce6cb25613993ecd7374f7f549868b913683db6d220dd351d58d1d456188",
+    "smoke": "Passed: original data loaded, expedition landing opens, persistent saves isolated under play-data.",
+    "published": false
+  }
+}

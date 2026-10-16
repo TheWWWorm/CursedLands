@@ -1,0 +1,342 @@
+{
+  "date": "2026-10-16",
+  "scope": "Income, early army training, original combat-stat inspection, hover-only details, one-action placement, contextual selling, consistent evolution stars, posed-model preview fitting, stable icons, localized writing and delayed results. Local desktop preview.",
+  "baseline_commit": "ae574153",
+  "source_sha256": {
+    "game/assets/arena/sell.svg": "0641a9f51c39b96a8f0a9c444b9b7a9f4d66eb0566ea9d988371921b011ac736",
+    "game/src/ei/remake_text.gd": "06b5dc52ef44da7b610e5f84d8f2d0c54c05a5bba7813502741341ce5ee2459e",
+    "game/src/game/arena_match.gd": "ea07780630407a48440f3b35c6a8550fda277712216702e97c60e7f0be98e390",
+    "game/src/game/arena_pve_match.gd": "264bc2b13b07110a6dfc079c2ce5ee96d57353b6f8ef26b8013e7f300f1ebc15",
+    "game/src/game/arena_rules.gd": "8eb7caed0bd25eb0fc31560a3d09126e3b1355699f0bdbcdabb3d03122a4c781",
+    "game/src/game/arena_run.gd": "87daa6422cef54721db6905ed7ac773f6780acbca80dad608a2f4d610aef47c6",
+    "game/src/game/arena_terrain.gd": "c8ff162dd409ffcdb054c603444dc96a15368262d78b80ee82f44ba7985b70fa",
+    "game/src/game/arena_unit_info.gd": "ac98f4206c4df1c3a03da34d6467af3dc7583285e0ea8ab49a880ce44777f6f7",
+    "game/src/game/unit.gd": "5a0a3377a184951e419b749444e1b6a17e335399674cca84a68b310bb49e8151",
+    "game/src/ui/arena_creature_card.gd": "f7c750b26df8ee829ed2008bdd4b150d4daa645d5eefe0a421a22a5465b2c0d0",
+    "game/src/ui/arena_field.gd": "75d17d8fd1675d2ae872d05c2de6c18f82518e4cde8c046bfef389989cdd791c",
+    "game/src/ui/arena_pve_screen.gd": "c8092036653cba38d8719f4a2f07dd2bd52ae578adc0343afd0b427a7671f491",
+    "game/src/ui/arena_stars.gd": "19a2ec088b121542d43eec03eabdf1780b5cb9be335832e3c9844cd44e05a9b2",
+    "game/src/ui/wiki_preview.gd": "728c591c1acfb006812d401dc6bf0b5b929c24e6eba00042bf25d26694a82316",
+    "tools/benchmarks/arena_runs.gd": "fc16d3b3d8f5d868692beb8e8ecd1e272195589bb4f389ea9792dfca5522a802",
+    "tools/check_translations.py": "df6af4bb49c53ddf68546ca54225c031ae5b8aad9fa4f20e89e2e1f28879bf6a",
+    "tools/tests/arena_economy.gd": "53882a74da9f443cfc01a7ea83dad3206877b8fb5c1ef316e7c5e286fc32feaa",
+    "tools/tests/arena_expansion_ui.gd": "e1453084b0bd6bfb22c4357dcf3430ba0672e86007d8d24f61304e8a8a8110ab",
+    "tools/tests/arena_pve.gd": "afefa8a448cd86bb74ffc4d5fdd320d20c6bbd60e3f75b9dc0db2ad78cc6c14d",
+    "tools/tests/arena_pve_ui.gd": "febf630d237c76a3a7b8cb0b22f5ec09cf0942f8559506bf86ad689acedf323a",
+    "tools/tests/arena_resolution_ui.gd": "0e4f117dea225526a4d33c0085f1f4a4f2274055a94c4b534098afd7b6a73071"
+  },
+  "checks": {
+    "economy_training_stats": {
+      "checks": 143,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/expansion-arena_economy.log",
+      "sha256": "e7c9aeea09a2b0f6cc6c82ea9c8909c65d4ccbb15570a2e9637d9cb83a18496a"
+    },
+    "automatic_evolution_shop_engagement": {
+      "checks": 669,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/expansion-arena_usability.log",
+      "sha256": "c0bd957b67451127af30fac93609b32cad8f511041c20a7df6c7531ac0bc91b1"
+    },
+    "expedition_rules": {
+      "checks": 233,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/expansion-arena_pve.log",
+      "sha256": "bc1870aa6fea0e2f3867f8c84d55e68f8e0669b8485d39d6398b81fcbd79c2b6"
+    },
+    "campaign_combat_inputs": {
+      "checks": 918,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/expansion-combat_inputs.log",
+      "sha256": "0cf7644c8798a92c75bafddf837d126746e4aeb050c67ffe386c26a2da5152db"
+    },
+    "localized_ui": {
+      "checks": 326,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/expansion-arena_pve_ui/run.log",
+      "sha256": "c2644ad354b746f8add613a79fb273911b76448ea99422a16e3e12a569916bc9"
+    },
+    "resolution_live_resize": {
+      "checks": 42,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/expansion-arena_resolution_ui/run.log",
+      "sha256": "2d37e66b1239dc783363e35d1d4d0d24fb1e988e16209a625d2f020943941065"
+    },
+    "sandbox_native_rendered": {
+      "checks": 98,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/expansion-arena/run.log",
+      "sha256": "4c2d6c23216cb09283a741a505c1e429fb5753c5d4e38233cc8281a3b53e368b"
+    },
+    "menu_lifecycle": {
+      "checks": 10,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/expansion-arena_pve_lifecycle/run.log",
+      "sha256": "b0506b00fe0ccf67c49bfa4c7cd0892bfced0970954eb633b1b3e58074ae988b"
+    }
+  },
+  "rendered_resolution_cases": [
+    {
+      "checks": 220,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/expansion-en-1280-800/run.log",
+      "sha256": "b68302df19c5f5012a8327e62af7e9044fb65d62b4df6255c936078d967b00d6",
+      "language": "en",
+      "size": [
+        1280,
+        800
+      ],
+      "covered": [
+        "landing",
+        "visible-body and health-marker picking",
+        "hover lifetime",
+        "native attack/defense/weaknesses",
+        "reserve return",
+        "place then release",
+        "sale and undo",
+        "stable lock geometry",
+        "training purchase and undo",
+        "all evolution-form preview mesh bounds",
+        "six offers and nine reserves",
+        "1.6-second result delay"
+      ]
+    },
+    {
+      "checks": 220,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/expansion-ru-1280-800/run.log",
+      "sha256": "283c9df714eea0d611da3473f366146fc06551bc1dfc04caf333d9446cede81c",
+      "language": "ru",
+      "size": [
+        1280,
+        800
+      ],
+      "covered": [
+        "landing",
+        "visible-body and health-marker picking",
+        "hover lifetime",
+        "native attack/defense/weaknesses",
+        "reserve return",
+        "place then release",
+        "sale and undo",
+        "stable lock geometry",
+        "training purchase and undo",
+        "all evolution-form preview mesh bounds",
+        "six offers and nine reserves",
+        "1.6-second result delay"
+      ]
+    },
+    {
+      "checks": 220,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/expansion-de-1024-768/run.log",
+      "sha256": "8f9420d77e3ee6fea2ad1193051bcadfe5546362c55b9bf291027add501e72e4",
+      "language": "de",
+      "size": [
+        1024,
+        768
+      ],
+      "covered": [
+        "landing",
+        "visible-body and health-marker picking",
+        "hover lifetime",
+        "native attack/defense/weaknesses",
+        "reserve return",
+        "place then release",
+        "sale and undo",
+        "stable lock geometry",
+        "training purchase and undo",
+        "all evolution-form preview mesh bounds",
+        "six offers and nine reserves",
+        "1.6-second result delay"
+      ]
+    },
+    {
+      "checks": 220,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/expansion-en-3840-2160/run.log",
+      "sha256": "49d679fe6f895f963e81842489ff135331f33af7c38156328a3638dfcf831699",
+      "language": "en",
+      "size": [
+        3840,
+        2160
+      ],
+      "covered": [
+        "landing",
+        "visible-body and health-marker picking",
+        "hover lifetime",
+        "native attack/defense/weaknesses",
+        "reserve return",
+        "place then release",
+        "sale and undo",
+        "stable lock geometry",
+        "training purchase and undo",
+        "all evolution-form preview mesh bounds",
+        "six offers and nine reserves",
+        "1.6-second result delay"
+      ]
+    }
+  ],
+  "verification_sequence": "Core/native/lifecycle regressions passed with the final mechanics and hover/header picking. The final change floors reserve-width allocation to prevent Godot pixel rounding from adding a scrollbar. All four expansion cases passed after that fix; each checks the full nine-reserve row.",
+  "translations": {
+    "entries": 1712,
+    "dynamic_wiki": 46,
+    "dynamic_arena": 96,
+    "errors": 0,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ]
+  },
+  "balance": {
+    "runs": 30,
+    "native_fights": 564,
+    "cohorts": [
+      {
+        "cohort": "spend",
+        "policy": "balanced",
+        "shop_upgrades": true,
+        "training": false,
+        "bank_target": 0,
+        "challenge": 0,
+        "seeds": [
+          5000,
+          5005
+        ],
+        "runs": 6,
+        "clears": 6,
+        "native_fights": 109,
+        "interest_earned": 17
+      },
+      {
+        "cohort": "bank",
+        "policy": "balanced",
+        "shop_upgrades": true,
+        "training": false,
+        "bank_target": 10,
+        "challenge": 0,
+        "seeds": [
+          5000,
+          5005
+        ],
+        "runs": 6,
+        "clears": 5,
+        "native_fights": 111,
+        "interest_earned": 57
+      },
+      {
+        "cohort": "training",
+        "policy": "balanced",
+        "shop_upgrades": true,
+        "training": true,
+        "bank_target": 0,
+        "challenge": 0,
+        "seeds": [
+          5000,
+          5005
+        ],
+        "runs": 6,
+        "clears": 6,
+        "native_fights": 109,
+        "interest_earned": 12
+      },
+      {
+        "cohort": "melee",
+        "policy": "melee",
+        "shop_upgrades": true,
+        "training": true,
+        "bank_target": 0,
+        "challenge": 0,
+        "seeds": [
+          5000,
+          5005
+        ],
+        "runs": 6,
+        "clears": 1,
+        "native_fights": 118,
+        "interest_earned": 10
+      },
+      {
+        "cohort": "adaptive",
+        "policy": "adaptive",
+        "shop_upgrades": true,
+        "training": true,
+        "bank_target": 0,
+        "challenge": 0,
+        "seeds": [
+          5000,
+          5005
+        ],
+        "runs": 6,
+        "clears": 4,
+        "native_fights": 117,
+        "interest_earned": 19
+      }
+    ],
+    "data": "arena-expansion-runs-2026-10-16.json.gz",
+    "sha256": "f043b1947bdc2674deb3720dd4fe2d4e6ec7cd4f2910664d8be5a60dc9e621f1",
+    "all_recorded_gameplay_hashes_match": true,
+    "native_prototype_data_unchanged": true,
+    "scope": "Real run economy, native AI/combat/spells/projectiles and authored terrain/navigation in 55 ms ticks. Small deterministic policy samples, not human win rates. Harder difficulties were not resampled. Rigid melee cleared 1/6; a comparable opening adding late magic cleared 4/6. This supports adaptation, not equal strength of every composition."
+  },
+  "captures": [
+    {
+      "path": "docs/screenshots/arena-expansion-en-selection.png",
+      "sha256": "230bb2f7b445ea275b566e8bc82d8be356af71241c2c9d2fb05a576bae54139a",
+      "size": [
+        1280,
+        800
+      ],
+      "language": "en",
+      "state": "selected"
+    },
+    {
+      "path": "docs/screenshots/arena-expansion-en-victory.png",
+      "sha256": "0055ff48edad2d6c6973206fc6b20af0e8ca7c5fd0e08f645b5c141459c02955",
+      "size": [
+        1280,
+        800
+      ],
+      "language": "en",
+      "state": "victory"
+    },
+    {
+      "path": "docs/screenshots/arena-expansion-ru-training.png",
+      "sha256": "73e10fee580fa131db359b7f187c2bc58a805a0a45c1f9cb95335985b3c01b16",
+      "size": [
+        1280,
+        800
+      ],
+      "language": "ru",
+      "state": "training"
+    },
+    {
+      "path": "docs/screenshots/arena-expansion-de-expanded.png",
+      "sha256": "0faa60be45b0caad5bed28fae97e2157134e081030af095a8bebff69814997d3",
+      "size": [
+        1024,
+        768
+      ],
+      "language": "de",
+      "state": "expanded"
+    },
+    {
+      "path": "docs/screenshots/arena-expansion-en-4k-landing.png",
+      "sha256": "ff726eae63b4d0b5ff4a37e9cb38060eabec6cc2cc2b8329dd903a3665c97af6",
+      "size": [
+        3840,
+        2160
+      ],
+      "language": "en",
+      "state": "landing"
+    }
+  ],
+  "runtime": {
+    "engine": "Private patched Godot 4.7 Linux Forward+ preview",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "display": "Xephyr :19",
+    "scene_errors": [],
+    "baseline_startup_messages": [
+      "XIM input-method warning",
+      "shader-cache directory unavailable before scene logging"
+    ],
+    "pck_sha256": "7efe79dd8871330b3584038ece219993f8ee7a3fefa6dc2e1d0f9eb87e826c6b",
+    "launcher": "../run-expedition.sh"
+  },
+  "limits": [
+    "Mouse/keyboard desktop UI; Windows, mobile, controller and other renderers not verified.",
+    "Health labels can overlap in dense fights; labels and bars are also hover targets.",
+    "No human playtest or claim of equal build viability.",
+    "Original native models, textures and combat-stat values retained.",
+    "No release version, published tag or remote repository changed."
+  ]
+}

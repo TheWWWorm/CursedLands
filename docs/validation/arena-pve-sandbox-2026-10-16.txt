@@ -1,0 +1,15 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 12:52:50 +4722ms] session 168f85c00ca8: 1.6.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA fixtures wolfwhitef5 / boardarkf5 roster=389
+ARENA combat time=96.9100000000038 phase=3 winner=0 events={ "blood": 21, "impact": 21, "hitnum": 21, "loot": 1 }
+ARENA caster batredm5 ["arrow {e2}"]
+[trace 12:52:55 +8896ms] menu scene: loading island
+[trace 12:53:03 +17670ms] menu scene: setting up signpost and environment
+[trace 12:53:03 +17704ms] menu scene: built
+[trace 12:53:04 +18293ms] back to main menu
+[trace 12:53:04 +18300ms] menu scene: loading island
+[trace 12:53:04 +18537ms] menu scene: setting up signpost and environment
+[trace 12:53:04 +18543ms] menu scene: built
+ARENA_RESULT {"checks":98,"errors":[],"events":{"arrow":3,"blood":28,"castfx":7,"hitnum":37,"impact":25,"loot":5,"spellfx":7},"failures":[],"language":"en","rendered":false}
+[trace 12:53:05 +18927ms] clean exit

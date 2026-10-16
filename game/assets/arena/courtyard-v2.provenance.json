@@ -1,0 +1,11 @@
+{
+  "source": "Generated with built-in image_gen, 2026-10-16",
+  "purpose": "Courtyard albedo on the real 3D battlefield. Original creature/scenery assets and native terrain movement data are preserved.",
+  "prompt": "Use case: stylized-concept. Asset type: production diffuse/albedo texture, a single square 2048 by 2048 image mapped over a 32 metre square ancient courtyard in an isometric early-2000s fantasy RPG, Cursed Lands / Evil Islands. Perfect orthographic straight-down view, no perspective. Author a believable ruined Gipath stone court: the inner 26 metres is uninterrupted flat walkable paving, with approximately 22 irregular rectangular limestone blocks across the width, moderate-sized worn buff-grey slabs with quiet broad faces and thin subtle dark seams. A softly worn, understated circular stone inlay about 8 metres across at the exact centre, made of the same stone, a simple faded four-point geometric mosaic with a slender double circle, low contrast, no glowing runes. A narrow, broken architectural band of smaller stones follows the square courtyard perimeter near the outer 3 metres, with several stones missing, small ground-level fragments and olive moss feathering into dark earthy leaf litter at the very edge. Keep the inner 80 percent clear of vegetation and rubble. At the centre, broad, sparse rubbed patches and small hairline cracks add age without noise. Palette: warm desaturated limestone, grey-brown seams, restrained olive moss and earthy umber margins, matching old low-polygon stone ruins and native greenery. Style: high-quality softly painted game environment texture, tactility without photographic grit, restrained contrast so small creature silhouettes remain easy to see. All features at consistent scale. Uniform diffuse illumination, NO painted directional light or cast shadows, no vignette or overall gradient. This is just a flat surface material for real 3D lighting. No upright objects, walls, pillars, stairs, characters, foliage canopy, water, text, UI, labels, borders outside the texture, checkerboard, glowing symbols, chess board, camera angle or horizon. Fill the image edge to edge.",
+  "asset": "courtyard-v2.png",
+  "actual_dimensions": [
+    1254,
+    1254
+  ],
+  "sha256": "2d6461eaf95a25502e4d952765ad43d8522311d658adafe28ce4e24d98eb33e7"
+}

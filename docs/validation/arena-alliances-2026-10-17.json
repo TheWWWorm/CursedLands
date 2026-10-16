@@ -1,0 +1,493 @@
+{
+  "date": "2026-10-17",
+  "base_commit": "771b9117",
+  "scope": "Private feature/arena worktree and rebuilt local Linux preview; no public release or remote changes.",
+  "source_sha256": {
+    "game/assets/arena/alliance_beast.svg": "1e3edfbfda0b9b3be55edcf69fe16caaaf79a9bbe161e5ffc4e021eee3c5c209",
+    "game/assets/arena/alliance_horde.svg": "0bd92e115f3ebcc53f1166953b99d46adf5810947a731013fde8cbe96ef97742",
+    "game/assets/arena/alliance_hunter.svg": "22dbace1bbac0bca5bc9220443cce843e580572660a5ded1cc1e43f852f6b1f2",
+    "game/assets/arena/alliance_mage.svg": "300ab24fe839dc16710bd4bf4bc2f932690c6f03aa27f6d38df716d2cd0d5910",
+    "game/assets/arena/alliance_warrior.svg": "0debf3443d494053420aab2bb6dfa25cb3bf4236d48f21f4404124af4cf76eac",
+    "game/src/ei/remake_text.gd": "684bd46a789d5afc73e915636992ed4ce4274bec5303232ae326567fc8d921bd",
+    "game/src/game/arena_alliances.gd": "f619e608438699525ecd8452d185c33376505f2a2f4bbe807a6be3f93305b2aa",
+    "game/src/game/arena_alliances.gd.uid": "bb042c3cbda1820c1be054a9f75f0e2b04a695b5f67aeb5b479e0bf123b48e44",
+    "game/src/game/arena_formation_motion.gd": "006d414914b6d3c262bd1e8e6239edd6292d3c5a0d86da0708857ebf155dc28a",
+    "game/src/game/arena_formation_motion.gd.uid": "8e450327bf1c90cbc342b679b36c583379b132526b7f14c161ad7127ddd9c814",
+    "game/src/game/arena_pve_match.gd": "f28609a5387ba57c13e133c5d8ce131f65d458c448756847177227ccef291de1",
+    "game/src/game/arena_rules.gd": "9f7996e34e0903c724a6e53f8d9b408577f54d4d6f454697a97756155a93e778",
+    "game/src/game/arena_run.gd": "03093787766efa50644ff90aa6086d5eb0023f34d30b57845e63061cec650d1d",
+    "game/src/main.gd": "3d9dc8fed6efb32767e74fd3660326cc95251ebd291b00750b773425a2f2587c",
+    "game/src/ui/arena_creature_card.gd": "01a3b62c79e59236432cec63accb999d33d318becbf9fe18aa2b829a1540219a",
+    "game/src/ui/arena_evolution_notice.gd": "e6ff811bedf1f7ae8bedea129f1bb7b25a97b42f8893b57bac566b78b5a9c813",
+    "game/src/ui/arena_field.gd": "227efdda4347f2766c8376f937b2740c15ebf3ec1b8e8a4331183c5c7bff9f03",
+    "game/src/ui/arena_hud_panel.gd": "7e19aa6ff8ec15a0fd86ee00729a47f644faea28670226c9dcb56e1ebb83ab69",
+    "game/src/ui/arena_pve_field.gd": "db6e1ef1fb5c97e13b04da6847ff23a54f889d223c5c212701c542a3b89e7c0e",
+    "game/src/ui/arena_pve_screen.gd": "59d5d9d66e6d4b4afecc9c79622484fd25f47d3e9ca218aaa926d839dd638561",
+    "game/src/ui/main_menu.gd": "853057cd620c4a3b401a574ed411caa9c5129a6fe93e39dfbcaac6b6fbe4d347",
+    "tools/benchmarks/arena_alliance_runs.gd": "433567756614eaa98533aca49f41a50cf63a3a83a510e7a192372dc3d0dd6ad5",
+    "tools/benchmarks/arena_runs.gd": "be51126926182aeab808c9e7d0afc68733a86e20d3da441b547faec3541055f7",
+    "tools/check_translations.py": "1fa039e6f1fe8e0e69628f9f7d96fb977e5a934fb1068e5ed1325eb22543691f",
+    "tools/tests/arena.gd": "791f2f1466bc36d815f58777e6d73289c7924d0633f6f515bdb6bf8277be28d2",
+    "tools/tests/arena_alliances.gd": "fd1cce033f07608affd142e1d80a194bd526b2c244985ce33f107ae8f3e4334a",
+    "tools/tests/arena_alliances_ui.gd": "a27f71fe4e570724077277ea14c56422a900a6d0158d43a7369f66803a8a7e28",
+    "tools/tests/arena_economy.gd": "8d9fdea939047590974e4800c880e00bbc41fa3cb27d4de7decfa9fe75a36132",
+    "tools/tests/arena_flow.gd": "3e3c5f88f6323937e8eb31c2dadd36aa82449c8c1b0126a0e8e5656546f9fe9a",
+    "tools/tests/arena_flow_ui.gd": "5158d1f406add0986e3c2a15d87c262107e6e97bbc793e8754ace3ac56a6b16d",
+    "tools/tests/arena_formation.gd": "1f8b72faa3eba9dfcee19dfc0389c41dfa7a7d2ac80582bfd19b3b37eef976e7",
+    "tools/tests/arena_formation_ui.gd": "a28025277f53bc4369bdb0f540c2f30e5cc3538103941559f943d0f6cf3c993e",
+    "tools/tests/arena_long_run.gd": "902095f9661ffe5876833e05e775db6be652bfd513b2c1674f6a42f9f8814a9b",
+    "tools/tests/arena_opening_ui.gd": "7c05dde0348e2ba40fb15905c35df42690fc85b0d633e5b19a1414623b42db22",
+    "tools/tests/arena_pact_ui.gd": "5158d1f406add0986e3c2a15d87c262107e6e97bbc793e8754ace3ac56a6b16d",
+    "tools/tests/arena_pve.gd": "902095f9661ffe5876833e05e775db6be652bfd513b2c1674f6a42f9f8814a9b",
+    "tools/tests/arena_pve_lifecycle.gd": "5e2bb2d81885f475ae43b3391fbb18eb4bad18f081b00bff554761287667f620",
+    "tools/tests/arena_pve_ui.gd": "5158d1f406add0986e3c2a15d87c262107e6e97bbc793e8754ace3ac56a6b16d",
+    "tools/tests/arena_pve_visual.gd": "4678ca7497fe96a5ca61a1403e1d9dcfc57974c73c89560c37c40732edd08a75",
+    "tools/tests/arena_recruitment.gd": "58d9aa48ef39d0943b21b7e010deac84c31140693bc5a9d3b7c79f73446471bd",
+    "tools/tests/arena_resolution_ui.gd": "974828d6c3efecb91322d045e240020fd1c89d08eaebc1c288f4784a17a1ee7f",
+    "tools/tests/arena_usability.gd": "902095f9661ffe5876833e05e775db6be652bfd513b2c1674f6a42f9f8814a9b",
+    "tools/tests/arena_winter_ui.gd": "e6cc64313cda8bfef98ec091e1e7591769c8d07c2fcbf669a9508496be9e4074"
+  },
+  "runtime": {
+    "engine": "Godot 4.7 private patched Linux x86_64",
+    "renderer": "Forward+ Vulkan",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "window_host": "Xephyr :19",
+    "pack_sha256": "7f694b4f7e0d78e36653a1510177a0d81c95ff65bee648c202eb1807b2b3f659",
+    "functional_pack_sha256": "62fd269d4e35f809c398a30e84c16eae162cde665e3f2f3e6d7df02ec26f6abd",
+    "note": "The full rendered suite precedes the final opening portrait, wave-badge height and borderless-result presentation changes only. Dedicated opening, mesh-fit, compact result and camp-transition checks then ran against the final pack in all four language/resolution cases. Isolated XDG directories; play-data untouched."
+  },
+  "headless": [
+    {
+      "suite": "arena_alliances",
+      "checks": 448,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-check-arena_alliances/run.log",
+      "log_sha256": "63cc17e3eb325b229b881fad98e5c2bd0a722def330ba4c3f6e4c1c1fe4ab432"
+    },
+    {
+      "suite": "arena_flow",
+      "checks": 234,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-check-arena_flow/run.log",
+      "log_sha256": "f0e8dfce87f7dc00913fe57249cd2b8cc7969b359837ca4c385cddf90b76199e"
+    },
+    {
+      "suite": "arena_economy",
+      "checks": 215,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-check-arena_economy/run.log",
+      "log_sha256": "08573574370e352c56899a75707cc47c8e78c2fcdc5a59c667e76be725c93450"
+    },
+    {
+      "suite": "arena_recruitment",
+      "checks": 676,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-check-arena_recruitment/run.log",
+      "log_sha256": "1cfd49e4520f2c1b35a3fb3737ef6dc3f2f7fe1a2f4af58121b275f1c482f7af"
+    },
+    {
+      "suite": "arena_formation",
+      "checks": 20,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-check-arena_formation/run.log",
+      "log_sha256": "e18875e967e2a7d8e12f700cb13a2fd45d7b47102d23040f6cc9d68bdc83a80d"
+    }
+  ],
+  "rendered": [
+    {
+      "suite": "arena_formation_ui en-1280-800",
+      "checks": 33,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-complete-arena_formation_ui-en-1280-800/run.log",
+      "log_sha256": "69ca436c0d2ae6a3838b97a73c17c33ec52eb2fe92e4e2487d20a4cc11671889",
+      "pack_sha256": "62fd269d4e35f809c398a30e84c16eae162cde665e3f2f3e6d7df02ec26f6abd"
+    },
+    {
+      "suite": "arena_alliances_ui en-1280-800",
+      "checks": 89,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-complete-arena_alliances_ui-en-1280-800/run.log",
+      "log_sha256": "afa04a1c484fc688d3b337e718f3789b2843363546ad298cbf8b411889c5eb91",
+      "pack_sha256": "62fd269d4e35f809c398a30e84c16eae162cde665e3f2f3e6d7df02ec26f6abd"
+    },
+    {
+      "suite": "arena_formation_ui ru-1024-768",
+      "checks": 33,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-complete-arena_formation_ui-ru-1024-768/run.log",
+      "log_sha256": "ad6fb798718db7b136666d750549243e51e33aaa30f828455060400f06f8c725",
+      "pack_sha256": "62fd269d4e35f809c398a30e84c16eae162cde665e3f2f3e6d7df02ec26f6abd"
+    },
+    {
+      "suite": "arena_alliances_ui ru-1024-768",
+      "checks": 89,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-complete-arena_alliances_ui-ru-1024-768/run.log",
+      "log_sha256": "2dbeb9f864b8c95dfa1d98a51a6dd51940f5c18bc03c4c82a2334e5e4663425b",
+      "pack_sha256": "62fd269d4e35f809c398a30e84c16eae162cde665e3f2f3e6d7df02ec26f6abd"
+    },
+    {
+      "suite": "arena_formation_ui de-1024-768",
+      "checks": 33,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-complete-arena_formation_ui-de-1024-768/run.log",
+      "log_sha256": "092ba1b82130e485645192fa22562955ba6c257865d290056f446d638ea9ba38",
+      "pack_sha256": "62fd269d4e35f809c398a30e84c16eae162cde665e3f2f3e6d7df02ec26f6abd"
+    },
+    {
+      "suite": "arena_alliances_ui de-1024-768",
+      "checks": 89,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-complete-arena_alliances_ui-de-1024-768/run.log",
+      "log_sha256": "ba8fcb02acbf121d2ca85c72106b192918db9f10ae57d6d9297d20da447606ac",
+      "pack_sha256": "62fd269d4e35f809c398a30e84c16eae162cde665e3f2f3e6d7df02ec26f6abd"
+    },
+    {
+      "suite": "arena_formation_ui en-3840-2160",
+      "checks": 33,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-complete-arena_formation_ui-en-3840-2160/run.log",
+      "log_sha256": "a51c9ed2ec2a617a576199ce0acc68fa37cd9e3912f29aa093966268b967a693",
+      "pack_sha256": "62fd269d4e35f809c398a30e84c16eae162cde665e3f2f3e6d7df02ec26f6abd"
+    },
+    {
+      "suite": "arena_alliances_ui en-3840-2160",
+      "checks": 89,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-complete-arena_alliances_ui-en-3840-2160/run.log",
+      "log_sha256": "1406dbeef436b5b4b7fe7165b362a3185e4270448b7a026956d890441412afb3",
+      "pack_sha256": "62fd269d4e35f809c398a30e84c16eae162cde665e3f2f3e6d7df02ec26f6abd"
+    },
+    {
+      "suite": "arena_pve_lifecycle",
+      "checks": 12,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-regression-arena_pve_lifecycle/run.log",
+      "log_sha256": "8c98d2bba3c918d6ee8df6dfa5db252f372dc00448d71c91695d56876370ece6",
+      "pack_sha256": "62fd269d4e35f809c398a30e84c16eae162cde665e3f2f3e6d7df02ec26f6abd"
+    },
+    {
+      "suite": "arena_winter_ui",
+      "checks": 55,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-regression-arena_winter_ui/run.log",
+      "log_sha256": "bbcb9f481746ba0045910a6e316812586b0ebb79304174df88acf7a79d99c75c",
+      "pack_sha256": "62fd269d4e35f809c398a30e84c16eae162cde665e3f2f3e6d7df02ec26f6abd"
+    },
+    {
+      "suite": "arena_resolution_ui",
+      "checks": 40,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-regression-arena_resolution_ui/run.log",
+      "log_sha256": "d7a1cd40c8b32dd836f633766e04c9febd3cb4b72b6f7b615dd2adb1ed258efd",
+      "pack_sha256": "62fd269d4e35f809c398a30e84c16eae162cde665e3f2f3e6d7df02ec26f6abd"
+    },
+    {
+      "suite": "arena_opening_ui en-1280-800",
+      "checks": 18,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-opening-final-en-1280-800/run.log",
+      "log_sha256": "4e02c412fd54a3264c3837f9cdbc5bb366d60b1470f18a50610359e7f6879ebd",
+      "pack_sha256": "7f694b4f7e0d78e36653a1510177a0d81c95ff65bee648c202eb1807b2b3f659"
+    },
+    {
+      "suite": "arena_opening_ui ru-1024-768",
+      "checks": 18,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-opening-final-ru-1024-768/run.log",
+      "log_sha256": "4b7223c4bb5a7f91f523ac38e83a8957e0a92376250733c3e057ba33686034c6",
+      "pack_sha256": "7f694b4f7e0d78e36653a1510177a0d81c95ff65bee648c202eb1807b2b3f659"
+    },
+    {
+      "suite": "arena_opening_ui de-1024-768",
+      "checks": 18,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-opening-final-de-1024-768/run.log",
+      "log_sha256": "b6b202f3d56ecad7abe3e5364e22b743312e1782d7d5315a1bc6df66ea0f4187",
+      "pack_sha256": "7f694b4f7e0d78e36653a1510177a0d81c95ff65bee648c202eb1807b2b3f659"
+    },
+    {
+      "suite": "arena_opening_ui en-3840-2160",
+      "checks": 18,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-opening-final-en-3840-2160/run.log",
+      "log_sha256": "00fcba57159aac869da38fb0b0fcec1003db1911562851e0cea0f0055735dd22",
+      "pack_sha256": "7f694b4f7e0d78e36653a1510177a0d81c95ff65bee648c202eb1807b2b3f659"
+    }
+  ],
+  "total_checks": 2260,
+  "translation_coverage": "Translations: 1848 entries; 46 dynamic wiki keys; 121 dynamic arena keys; 0 errors",
+  "winter": {
+    "footprints": 20,
+    "blood_marks": 21,
+    "deformation_sectors": 4
+  },
+  "balance": {
+    "runs": 18,
+    "encounters": 545,
+    "clears": 17,
+    "draws": 6,
+    "max_combat_seconds": 300.025000000029,
+    "policies": [
+      {
+        "policy": "balanced",
+        "runs": [
+          {
+            "seed": 1900,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 31,
+            "lost_encounters": [
+              14
+            ],
+            "draws": []
+          },
+          {
+            "seed": 1901,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 30,
+            "lost_encounters": [],
+            "draws": []
+          },
+          {
+            "seed": 1902,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 30,
+            "lost_encounters": [],
+            "draws": []
+          }
+        ],
+        "raw_sha256": "05fccf5ef4ff4c7e04e2613394da8d1aff8205fbf312390f561200c8cc03f4c6"
+      },
+      {
+        "policy": "levels",
+        "runs": [
+          {
+            "seed": 1900,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 31,
+            "lost_encounters": [
+              14
+            ],
+            "draws": []
+          },
+          {
+            "seed": 1901,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 31,
+            "lost_encounters": [
+              16
+            ],
+            "draws": []
+          },
+          {
+            "seed": 1902,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 30,
+            "lost_encounters": [],
+            "draws": []
+          }
+        ],
+        "raw_sha256": "7ea6f411b4b36cded0253f3e14ac140f2649dbb75904bf4b4639d80a5b478304"
+      },
+      {
+        "policy": "reroll",
+        "runs": [
+          {
+            "seed": 1900,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 30,
+            "lost_encounters": [],
+            "draws": []
+          },
+          {
+            "seed": 1901,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 30,
+            "lost_encounters": [],
+            "draws": []
+          },
+          {
+            "seed": 1902,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 31,
+            "lost_encounters": [
+              14
+            ],
+            "draws": []
+          }
+        ],
+        "raw_sha256": "15551cccd25cf008ac1ec823a900cb5b3431aa45ec9a5f6edc638817b6bb96e0"
+      },
+      {
+        "policy": "beast",
+        "runs": [
+          {
+            "seed": 1900,
+            "outcome": "lost",
+            "last_wave": 24,
+            "encounters": 28,
+            "lost_encounters": [
+              14,
+              16,
+              21,
+              21,
+              24
+            ],
+            "draws": [
+              16,
+              21,
+              21,
+              24
+            ]
+          },
+          {
+            "seed": 1901,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 31,
+            "lost_encounters": [
+              16
+            ],
+            "draws": [
+              16
+            ]
+          },
+          {
+            "seed": 1902,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 30,
+            "lost_encounters": [],
+            "draws": []
+          }
+        ],
+        "raw_sha256": "ba8ebf8dc6dc13441067e4b23ecfcb737d95d755b8371fd3f735d7f1142b6f0f"
+      },
+      {
+        "policy": "mage",
+        "runs": [
+          {
+            "seed": 1900,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 31,
+            "lost_encounters": [
+              14
+            ],
+            "draws": []
+          },
+          {
+            "seed": 1901,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 30,
+            "lost_encounters": [],
+            "draws": []
+          },
+          {
+            "seed": 1902,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 30,
+            "lost_encounters": [],
+            "draws": []
+          }
+        ],
+        "raw_sha256": "be27b9704209fb45432e532949a545368d176499249a2eb54d2259fad5b44dc8"
+      },
+      {
+        "policy": "warrior",
+        "runs": [
+          {
+            "seed": 1900,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 31,
+            "lost_encounters": [
+              18
+            ],
+            "draws": [
+              18
+            ]
+          },
+          {
+            "seed": 1901,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 30,
+            "lost_encounters": [],
+            "draws": []
+          },
+          {
+            "seed": 1902,
+            "outcome": "won",
+            "last_wave": 30,
+            "encounters": 30,
+            "lost_encounters": [],
+            "draws": []
+          }
+        ],
+        "raw_sha256": "dcd03c0ca77d695e71839022504783ddbe6ace508a2cfd91e926f77565a69bcc"
+      }
+    ],
+    "raw_file": "docs/validation/arena-alliances-runs-2026-10-17.json.gz",
+    "raw_sha256": "091af3f0553dd3976824ae139d1c5641ffe2831b3ea852ad408ed0a92710e7cf",
+    "scope": "Standard difficulty, six deterministic purchasing preferences, three shared seeds. Preferences can transition to late recruits. No claim of optimal play or human win rates. Tests preceded presentation changes. The late cash reward change does not affect these XP/recovery policies."
+  },
+  "screenshots": [
+    {
+      "file": "docs/screenshots/arena-alliances-opening-en.png",
+      "sha256": "51573810ccdd21e58d154deb75cf6a8eae90b42a36a8e78dfbca0a9e22a4df7c",
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-opening-final-en-1280-800/data/godot/app_userdata/Cursed Lands/expansion-opening-en-1280.png"
+    },
+    {
+      "file": "docs/screenshots/arena-alliances-compact-victory.png",
+      "sha256": "b7ddd7226eae29c4027ad2988674ff49959e944ed086415a38c1523747cb1dc4",
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-opening-final-en-1280-800/data/godot/app_userdata/Cursed Lands/expansion-compact-victory-en-1280.png"
+    },
+    {
+      "file": "docs/screenshots/arena-alliances-opening-de.png",
+      "sha256": "e13f5f718fec42c39ea7e680218f48215145d5cd3a239d0827df05bf51fbcabc",
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-opening-final-de-1024-768/data/godot/app_userdata/Cursed Lands/expansion-opening-de-1024.png"
+    },
+    {
+      "file": "docs/screenshots/arena-alliances-opening-ru.png",
+      "sha256": "ee711cf1f9185c86df2d7be3b2484ddbdb7596538769313222d23eba0652e713",
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-opening-final-ru-1024-768/data/godot/app_userdata/Cursed Lands/expansion-opening-ru-1024.png"
+    },
+    {
+      "file": "docs/screenshots/arena-alliances-hud.png",
+      "sha256": "cbb93f5572d9a5f8e3424158c00d46cbcab921957befa5af08d38ffe2322b22e",
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-complete-arena_alliances_ui-en-1280-800/data/godot/app_userdata/Cursed Lands/expansion-alliances-en-1280-hud.png"
+    },
+    {
+      "file": "docs/screenshots/arena-alliances-details-ru.png",
+      "sha256": "a8f609440a95fd833850156c89f6cc7355a21901e7da71b63b09516378310d02",
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-complete-arena_alliances_ui-ru-1024-768/data/godot/app_userdata/Cursed Lands/expansion-alliances-ru-1024-alliance.png"
+    },
+    {
+      "file": "docs/screenshots/arena-alliances-4k.png",
+      "sha256": "399512aa9faf7c29f4a22605fde15f15603f77883f7ae5c79dcc3f819de19d2b",
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-complete-arena_alliances_ui-en-3840-2160/data/godot/app_userdata/Cursed Lands/expansion-alliances-en-3840-hud.png"
+    },
+    {
+      "file": "docs/screenshots/arena-alliances-movement.png",
+      "sha256": "fd55c0ed593b96864c8d6de7ec98db6214f8e169df9783190829bab72d097ce3",
+      "original": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/alliance-complete-arena_formation_ui-en-1280-800/data/godot/app_userdata/Cursed Lands/expansion-formation-en-1280-moving.png"
+    }
+  ],
+  "limitations": [
+    "Six native matchups reach the existing 300-second draw limit; long fights and higher difficulties need human playtesting.",
+    "Linux/NVIDIA Forward+ only. No Windows, browser or mobile rendering pass.",
+    "Startup XIM/shader-cache messages precede scene logging; captured scene/script error lists are empty."
+  ]
+}

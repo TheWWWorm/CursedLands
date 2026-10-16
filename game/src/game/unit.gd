@@ -2838,6 +2838,7 @@ func _do_attack(dt: float) -> void:
 	var ranged: bool = stats.get("ranged", false)
 	var reach: float = stats.reach if ranged else melee_reach(t)
 	var d := pos.distance_to(t.pos)
+	if d <= reach: remove_meta("arena_opening")
 	if not ranged and d <= reach and not _melee_height_clear(t):
 		_approach(t, dist3(t), reach, dt)
 		return
@@ -2955,6 +2956,14 @@ func _do_attack(dt: float) -> void:
 ## (d + 1) x 0.1 m of the new spot. A path ending farther than the reach from
 ## it means no way to the target (ack NoWayAtt, the order ends).
 func _approach(t: GameUnit, d: float, reach: float, dt: float) -> void:
+	# Arena opponents close together on the opening engagement. The campaign's
+	# intercept/wait tactic can otherwise leave the side processed second at
+	# its starting position while the first side crosses the whole courtyard.
+	# Once in reach, all subsequent pursuit uses the native prediction again.
+	var opening := has_meta("arena_opening")
+	if opening and d <= reach:
+		remove_meta("arena_opening")
+		opening = false
 	path_flat_cost = true   # even while waiting for a target coming closer
 	# a party unit approaches at its gait, any other one runs
 	# (its combat flag is set by the attack command); only standing.
@@ -2969,7 +2978,7 @@ func _approach(t: GameUnit, d: float, reach: float, dt: float) -> void:
 	# factor) = metres a tick — it stands (idle
 	# (2)) and lets the target come; otherwise it keeps closing
 	# in, so a fleeing target is chased at a run, not in stop-and-go.
-	if t._moving:
+	if t._moving and not opening:
 		var w := roundi(_attack_cd / TICK) + 16
 		if w > 0:
 			var p := path
@@ -2981,10 +2990,10 @@ func _approach(t: GameUnit, d: float, reach: float, dt: float) -> void:
 				return
 			path = p
 	if path.is_empty() or world.time >= _arrive_t - 16.0 * TICK:
-		var tv := t.speed() * TICK if t._moving else 0.0
+		var tv := t.speed() * TICK if t._moving and not opening else 0.0
 		var closing := speed() * TICK + tv * Vector2.from_angle(t.facing).dot((t.pos - pos) / maxf(d, 0.001))
 		var ticks := clampi(roundi((d - reach) / maxf(closing, 0.1)), 2, 64)
-		var at := t.future_pos(ticks)
+		var at := t.pos if opening else t.future_pos(ticks)
 		if path.is_empty() or _goal.distance_to(at) >= (d + 1.0) * 0.1:
 			_fresh_path = _avoid != null and is_instance_valid(_avoid)
 			path = _path_to(at,t,-1,3.0*dist3(t)+15.0 if controller < 0 else 1000000.0)

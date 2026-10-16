@@ -14,6 +14,9 @@ var _turn := 0.0
 var _zoom := 1.0
 var _descriptor := {}
 var _creature_fitted := false
+var fit_slot := false
+var _fit_distance := 0.0
+var _fit_center := Vector3.ZERO
 var _item_fit_size := 0.0
 var _item_fit_key := []
 var _pin_popup: PopupPanel
@@ -55,6 +58,7 @@ func show_model(descriptor: Dictionary) -> bool:
 	_turn = 0.0
 	_zoom = 1.0
 	_creature_fitted = false
+	_fit_distance = 0.0
 	_item_fit_size = 0.0
 	if descriptor.is_empty(): return false
 	if descriptor.kind == "map":
@@ -74,7 +78,8 @@ func show_model(descriptor: Dictionary) -> bool:
 		creature.view_size = Vector2i(180, 220)
 		creature.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(creature)
-		creature.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		creature.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT if fit_slot else Control.PRESET_FULL_RECT)
+		_sync_resolution()
 		creature.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		creature.custom_minimum_size = Vector2.ZERO
 		creature.show_info({"prototype": descriptor.value})
@@ -129,6 +134,7 @@ func turn_by(radians: float) -> void:
 		item._model.position = -(item._model.basis * item._fit_center)
 		_fit_item()
 	_creature_fitted = false
+	_fit_distance = 0.0
 	_fit_creature()
 
 
@@ -157,11 +163,13 @@ func _resize_preview() -> void:
 		_item_fit_key.clear()
 		_fit_item()
 	_creature_fitted = false
+	_fit_distance = 0.0
 	_fit_creature()
 
 
 func _process(_dt: float) -> void:
-	if not _creature_fitted: _fit_creature()
+	if fit_slot: _sync_resolution()
+	if fit_slot or not _creature_fitted: _fit_creature()
 	# Child container layout can resize ItemView after our resize callback.
 	if is_instance_valid(item): _fit_item()
 
@@ -180,6 +188,18 @@ func _fit_item() -> void:
 	item._fit_camera.size = maxf(_item_fit_size, fitted) * _zoom
 	item._fit_camera.position = Vector3(box.get_center().x, box.position.y - 2.0, box.get_center().z)
 	item._fit_camera.far = box.size.y + 4.0
+
+
+## SubViewportContainer normally allocates logical pixels, even under a scaled
+## HUD. Render at the displayed pixel density, then scale the container back.
+func _sync_resolution() -> void:
+	if not fit_slot or not is_instance_valid(creature): return
+	var canvas_scale := get_global_transform_with_canvas().get_scale().abs()
+	var density := clampf(maxf(canvas_scale.x, canvas_scale.y), 1.0, 4.0)
+	var pixels := Vector2i((size * density).ceil()).max(Vector2i(1, 1))
+	var inverse := Vector2.ONE / density
+	if creature.scale != inverse: creature.scale = inverse
+	if Vector2i(creature.size) != pixels: creature.size = Vector2(pixels)
 
 
 func _fit_creature() -> void:
@@ -201,6 +221,17 @@ func _fit_creature() -> void:
 	var distance := maxf(box.size.y, width / maxf(aspect, 0.1)) * 0.5 / tan(deg_to_rad(30.0) * 0.5)
 	distance = (distance * 1.15 + box.size.z * 0.5) * _zoom
 	var center := box.get_center()
+	if fit_slot:
+		# Frame all visible meshes including held weapons and wings. Camera
+		# KEEP_HEIGHT matches this calculation at both wide and narrow slots.
+		creature._cam.keep_aspect = Camera3D.KEEP_HEIGHT
+		if _fit_distance == 0: _fit_center = box.get_center()
+		var radius_y := maxf(absf(box.position.y - _fit_center.y), absf(box.end.y - _fit_center.y))
+		var radius_x := maxf(absf(box.position.x - _fit_center.x), absf(box.end.x - _fit_center.x))
+		var fit := maxf(radius_y, radius_x / maxf(aspect, 0.1)) / tan(deg_to_rad(15.0))
+		_fit_distance = maxf(_fit_distance, fit * 1.12 + maxf(0, box.end.z - _fit_center.z))
+		distance = _fit_distance
+		center = _fit_center
 	creature.fov = 30.0
 	creature._cam.fov = 30.0
 	creature._cam.position = center + Vector3(0, 0, distance)

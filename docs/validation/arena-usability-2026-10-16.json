@@ -1,0 +1,370 @@
+{
+  "date": "2026-10-16",
+  "scope": "Automatic evolution from wave one, native shop quality upgrades, complete expedition UI audit, high-resolution layout and combat feedback, immediate opposing-team engagement. Local preview; no release.",
+  "baseline_commit": "793bc82b",
+  "source_sha256": {
+    "game/src/game/arena_rules.gd": "492ac6ca463cf18bd915b84571c5590c1c88bcfbfc90cc7c96e3935ac81a95f6",
+    "game/src/game/arena_run.gd": "7ce4d248cfea93ab412865bfc112523088ecc9cd1575a2b3a31fc493a2716288",
+    "game/src/game/arena_match.gd": "ea07780630407a48440f3b35c6a8550fda277712216702e97c60e7f0be98e390",
+    "game/src/game/arena_pve_match.gd": "d4acf5185d0a9be3dcb02434a3027002fa4375e912022dc1f42e1ff5100ac39c",
+    "game/src/game/unit.gd": "5a0a3377a184951e419b749444e1b6a17e335399674cca84a68b310bb49e8151",
+    "game/src/ui/arena_pve_screen.gd": "1ac54cb762649241222e71d1fd0b4a0a1191846c332f277979b560172985039a",
+    "game/src/ui/arena_pve_field.gd": "001664e710a2b6c2b081ff1207468e8bade92c23c08bef538fbd2b67f3d3f22b",
+    "game/src/ui/arena_field.gd": "02acc4947c2d3f563a4db9efe973d8bd2928788d76cfbefcdd262611a6989157",
+    "game/src/ui/arena_creature_card.gd": "8f16d6cffc3f551ee4cbaa2c28ccb5e6f3b3973e04016ccbd1a5b39a76e74f18",
+    "game/src/ui/arena_hit_numbers.gd": "fb0c93e58ecaf85bc829ca92ceec168f370210770214499b62c50dcd9681ea80",
+    "game/src/ui/arena_tooltips.gd": "100ae527bd943784f491e8b54129531c40d3623289b9bdd5d52d501b969b0017",
+    "game/src/ei/remake_text.gd": "954599dfcab2b94070ec820943f1ad54121027e2c81f63375cc0ef8805c5c3e0",
+    "tools/check_translations.py": "a8878a766243772bac6d72c2c07515e44308b85b221e1efe6f1ea3dbd1202691",
+    "tools/benchmarks/arena_runs.gd": "292fa4e4c45d53c6fb438724f403e0d031d468c867c3663811dd770337019926",
+    "tools/tests/arena_pve.gd": "50955ce88d38aa139db4ffae925b6d00d3b404e3b4c5190b488da5f4402091b4",
+    "tools/tests/arena_usability.gd": "3a151f2c2ba9c595051ee5fedff2efabe22c9089e5245dbf8117beb3fd5132c5",
+    "tools/tests/arena_pve_ui.gd": "526004fd1aa2e39b35ef46933535fd1a08a4762f738283a44d3433c13f8e9a27",
+    "tools/tests/arena_resolution_ui.gd": "76703e60a3316498560dbeaf2bf81368d170af23f15c166193ae9de8aa9d8df4"
+  },
+  "checks": {
+    "expedition_rules": {
+      "checks": 233,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/arena-pve-final.log",
+      "sha256": "47c4d1aba6bfa04c55983977b74109bf40c94e8fb75c9a306d1a0f15178982f2"
+    },
+    "automatic_evolution_shop_engagement": {
+      "checks": 669,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/arena-usability-final.log",
+      "sha256": "4c478c18d21f788cf23b32c1d538210aa0d15babbae47dee425c600741a6c47d"
+    },
+    "campaign_combat_inputs": {
+      "checks": 918,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/combat-inputs-current.log",
+      "sha256": "64fe2c22f1f591d2da390fd54099ab264dce8f78832f044c0139bb0f6077157e"
+    },
+    "sandbox_native_rendered": {
+      "checks": 98,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/arena-sandbox-final.log",
+      "sha256": "a28719b75bb262721502b8e901d9182bb520635a96b3aad1f81dfc0236cd70f2"
+    },
+    "menu_lifecycle": {
+      "checks": 10,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/arena-lifecycle-final.log",
+      "sha256": "343efdf8f0170b1bd6e3c169dc8c86998b9b585be34070e5e82574fc77d8e014"
+    },
+    "localized_ui_final": {
+      "checks": 326,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/arena-ui-final.log",
+      "sha256": "e5aa39c14432249bf5b94211775b4c08bec94f32a9b787aac3a0191442a8328a"
+    }
+  },
+  "rendered_resolution_cases": [
+    {
+      "language": "en",
+      "size": [
+        1280,
+        800
+      ],
+      "checks": 42,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/arena-resolution-en-1280.log",
+      "sha256": "bbfc17e0b36ccd0b08219fe82ee31bd2bbba2b4a5df897b83aea7a2a04cc298c"
+    },
+    {
+      "language": "en",
+      "size": [
+        1920,
+        1080
+      ],
+      "checks": 37,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/arena-resolution-1920.log",
+      "sha256": "fbf1d23089b636fd8fcc387fa83601305582e96016eaef537364d479e3f6bc1d"
+    },
+    {
+      "language": "en",
+      "size": [
+        2560,
+        1440
+      ],
+      "checks": 42,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/arena-resolution-en-2560.log",
+      "sha256": "b2f9b0f9159d0eecfb1bded4aeef2062f1930b0dbecaf8aa074665f2dc2b6d55"
+    },
+    {
+      "language": "en",
+      "size": [
+        3840,
+        2160
+      ],
+      "checks": 37,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/arena-resolution-en-3840.log",
+      "sha256": "74a13ad1e5d994bfd6962ce3c4b9111f407ab968575c316715c3183bb74da607"
+    },
+    {
+      "language": "ru",
+      "size": [
+        3840,
+        2160
+      ],
+      "checks": 43,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/arena-resolution-ru-3840.log",
+      "sha256": "8e70c3027920c9e32a98ef981e4c9fd7dfc07a3cb7cb15d4980f4e6e85ffdcd3"
+    },
+    {
+      "language": "de",
+      "size": [
+        3840,
+        2160
+      ],
+      "checks": 43,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/arena-resolution-de-3840.log",
+      "sha256": "5f9cb14252a551a80f3309474e27e53396a45fc7245f96751fafc839479d143c"
+    },
+    {
+      "language": "en",
+      "size": [
+        5113,
+        2856
+      ],
+      "checks": 43,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/arena-resolution-en-5113.log",
+      "sha256": "2f1ce5e8a39320bb7685ba104341a113c63356fa22ddef9a73e87c3b700c6f78"
+    }
+  ],
+  "translations": {
+    "entries": 1663,
+    "dynamic_wiki": 46,
+    "dynamic_arena": 94,
+    "errors": 0,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ]
+  },
+  "balance": {
+    "runs": 30,
+    "native_fights": 567,
+    "cohorts": [
+      {
+        "cohort": "balance-ui-balanced",
+        "policy": "balanced",
+        "shop_upgrades": false,
+        "seeds": [
+          4000,
+          4005
+        ],
+        "runs": 6,
+        "clears": 6,
+        "fights": 110,
+        "wilson95": [
+          61.0,
+          100.0
+        ],
+        "all_combat_source_hashes_match_final": true,
+        "upgrade_levels_observed": [
+          0
+        ]
+      },
+      {
+        "cohort": "balance-ui-ranged",
+        "policy": "ranged",
+        "shop_upgrades": false,
+        "seeds": [
+          4000,
+          4005
+        ],
+        "runs": 6,
+        "clears": 6,
+        "fights": 110,
+        "wilson95": [
+          61.0,
+          100.0
+        ],
+        "all_combat_source_hashes_match_final": true,
+        "upgrade_levels_observed": [
+          0
+        ]
+      },
+      {
+        "cohort": "balance-ui-melee",
+        "policy": "melee",
+        "shop_upgrades": false,
+        "seeds": [
+          4000,
+          4005
+        ],
+        "runs": 6,
+        "clears": 1,
+        "fights": 119,
+        "wilson95": [
+          3.0,
+          56.4
+        ],
+        "all_combat_source_hashes_match_final": true,
+        "upgrade_levels_observed": [
+          0
+        ]
+      },
+      {
+        "cohort": "balance-upgrades-balanced",
+        "policy": "balanced",
+        "shop_upgrades": true,
+        "seeds": [
+          4000,
+          4005
+        ],
+        "runs": 6,
+        "clears": 6,
+        "fights": 111,
+        "wilson95": [
+          61.0,
+          100.0
+        ],
+        "all_combat_source_hashes_match_final": true,
+        "upgrade_levels_observed": [
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "cohort": "balance-upgrades-melee",
+        "policy": "melee",
+        "shop_upgrades": true,
+        "seeds": [
+          4000,
+          4005
+        ],
+        "runs": 6,
+        "clears": 2,
+        "fights": 117,
+        "wilson95": [
+          9.7,
+          70.0
+        ],
+        "all_combat_source_hashes_match_final": true,
+        "upgrade_levels_observed": [
+          0,
+          1,
+          2
+        ]
+      }
+    ],
+    "raw": "arena-usability-runs-2026-10-16.json.gz",
+    "raw_sha256": "d11c89c3439e5f2873440db38b22ba06278fd96a45a0b5526bd1e1f5f53d7290",
+    "notes": [
+      "Every retained cohort matches final combat and run source hashes.",
+      "Initial upgrade-policy attempt spent every wave income and never improved recruitment; excluded from upgrade evidence. Corrected policies save and purchase both upgrades.",
+      "No creature stats changed. Native database identity checked during every rules/balance run.",
+      "Small automated policy samples are not human win rates. Rigid melee buying is still much less forgiving at wave 18. No claim of equal build balance.",
+      "Older 108-run progression cohorts predate automatic evolution and corrected opening engagement and must not be treated as current measurements."
+    ]
+  },
+  "ui_review": "arena-ui-audit-2026-10-16.md",
+  "screenshots": {
+    "docs/screenshots/arena-usability-en-menu.png": "3382c115aeb11452399bcc9869ebead292d3a31f90a2d8f74090377ce27c3c24",
+    "docs/screenshots/arena-usability-en-landing.png": "2997be196655f5b39fe34d5fa1eb59d4f0c5bf8ed4bf68f15ff899d1c9076790",
+    "docs/screenshots/arena-usability-en-shop.png": "b723a945b240fb3551a57ab41e097681a7a86c15f5ccfb1e69272a4fbb4faf75",
+    "docs/screenshots/arena-usability-en-hit.png": "8094d262657029c71ed39aed0d72124e8fae53eb598ad3e10fd7f13b822284c0",
+    "docs/screenshots/arena-usability-en-victory.png": "ca485b5b0c2389b675be257e8205fceaade87681516333d27df8a80f359821a9",
+    "docs/screenshots/arena-usability-de-guide.png": "a15f85e5da8b08625aa6980b372b90e65de0620c95f724d9d7a97678bad982a2",
+    "docs/screenshots/arena-usability-en-hover.png": "985ce9f28aaa738e9c35c1fdbd6449dae7fbd93d70859656aefcd899ff990992",
+    "docs/screenshots/arena-usability-ru-expanded.png": "2474bce063e482621bb509b1b222c51d600f928f6961e24949cd81f37127971b"
+  },
+  "physical_capture_files": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-en-5113/data/godot/app_userdata/Cursed Lands/resolution-en-5113-shop.png",
+      "sha256": "e1e00167078ec6d457871a4b078bff1dfdb430687c2199ab59be802e0e923a95"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-en-5113/data/godot/app_userdata/Cursed Lands/resolution-en-5113-landing.png",
+      "sha256": "b9436a3b92e305dab95f83717ec5df55cf023408e00253cc0fed03a486d02191"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-en-5113/data/godot/app_userdata/Cursed Lands/resolution-en-5113-hit.png",
+      "sha256": "8de4bb8113da513b65a5f64656daa22e2ca8e9676b068af41afed1a43729a933"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-en-5113/data/godot/app_userdata/Cursed Lands/resolution-en-5113-menu.png",
+      "sha256": "0caeca5053b17f7ce3966f6aad85433ae6681ec8ab13571b365d389c980ee950"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-en-5113/data/godot/app_userdata/Cursed Lands/resolution-en-5113-victory.png",
+      "sha256": "bc2e18f3d9b9deb93feaba4be7ee987c9be7d484acb661208e0ff436b119206d"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-en-5113/data/godot/app_userdata/Cursed Lands/resolution-en-5113-hover.png",
+      "sha256": "9f95de77c5aec5d759d33d23ff7b1c984d89d498a0dcba055159894569ee7cfc"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-ru-3840/data/godot/app_userdata/Cursed Lands/resolution-ru-3840-guide.png",
+      "sha256": "d1b3489cfdf42d0ab226d2fb45ac5465d0563c67f3c7135e19d6081c05676f84"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-ru-3840/data/godot/app_userdata/Cursed Lands/resolution-ru-3840-menu.png",
+      "sha256": "85019856b549634748707c21eea95bb83a1eeb5136e3020e7ecad820e694b362"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-ru-3840/data/godot/app_userdata/Cursed Lands/resolution-ru-3840-victory.png",
+      "sha256": "fec780d09f391e598c1286fef08f795e8dfbcbac05c11bf2b19fb44300ecd907"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-ru-3840/data/godot/app_userdata/Cursed Lands/resolution-ru-3840-shop.png",
+      "sha256": "c0bdb2f0fe96095db8c0cc61babbc2c448f21e6939a9c148393b24dbafcb6765"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-ru-3840/data/godot/app_userdata/Cursed Lands/resolution-ru-3840-landing.png",
+      "sha256": "70ed91c7874eb619c1dca9f20810aaaf8a473df7a45299c02082f875ca80c2cc"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-ru-3840/data/godot/app_userdata/Cursed Lands/resolution-ru-3840-hover.png",
+      "sha256": "588b606c73be8375e068fb14a250ac2ec6a96aa4adf639fa207b48132461282a"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-ru-3840/data/godot/app_userdata/Cursed Lands/resolution-ru-3840-hit.png",
+      "sha256": "765dbdeb402b323fdcf1cc7b218b2c6cb5e1b61fb9fcbb2279bcd3b05e1862b1"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-de-3840/data/godot/app_userdata/Cursed Lands/resolution-de-3840-landing.png",
+      "sha256": "036bf5002048fe87e48af14531c014f649fa2fcd05c22aabc594fabf67850206"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-de-3840/data/godot/app_userdata/Cursed Lands/resolution-de-3840-hit.png",
+      "sha256": "a98f462bf5611f802cc86a17276c18ba3d300181c2799e20a9b84a5245c01d56"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-de-3840/data/godot/app_userdata/Cursed Lands/resolution-de-3840-shop.png",
+      "sha256": "185f347ab80d82bae0fa1415dd1e2b6274a4f8b5319d1966b448d9fffe402fb4"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-de-3840/data/godot/app_userdata/Cursed Lands/resolution-de-3840-menu.png",
+      "sha256": "dac88fbd345d2d2873df96ff7a8feda908c8bb8d24a5f1abf32ebd1557986ff3"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-de-3840/data/godot/app_userdata/Cursed Lands/resolution-de-3840-victory.png",
+      "sha256": "c0ad0b65e4884cd5aa6b0b271b115360a1df9ae8eeb67787648a4a3feb02e721"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-de-3840/data/godot/app_userdata/Cursed Lands/resolution-de-3840-hover.png",
+      "sha256": "fb6999430e6f8b3e1a17f69e368d6ffdce0baa1da308c2beff67e15048b33bdb"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/ui-resolution-de-3840/data/godot/app_userdata/Cursed Lands/resolution-de-3840-guide.png",
+      "sha256": "0ce43ae7f3f7fc376050821058a50b5f82da681e228bb7a3036ec66ddb00274b"
+    }
+  ],
+  "capture_notes": [
+    "Committed PNGs are resized copies of actual native rendered captures; no generated UI background.",
+    "Damage capture uses a real native hit event; its presentation age is held at 400 ms for readable GPU readback. No event value or damage result is fabricated.",
+    "Result/camp fixtures verify layouts and are not counted as combat balance evidence.",
+    "Final localized suite ran after the last blocked-return help/menu-help/save-error visibility adjustments. These three changes follow the full-resolution capture pass and do not alter its layout or combat.",
+    "Resolution cases run as fresh processes. An initial multi-resolution process terminated in the private native runtime after a focus assertion; that attempt is excluded. Live resizing back to 720p is exercised in the completed 43-check cases."
+  ],
+  "runtime": {
+    "engine": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/runtime/arena-engine.x86_64",
+    "engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+    "pck_sha256": "492f2deb4c7d83156b65b60b930b9f988d0cece4159a5efbe7e67782b4a4d99c",
+    "renderer": "Linux NVIDIA Forward+ / Vulkan, private Godot 4.7 runtime",
+    "notes": [
+      "Known startup XIM/shader-cache diagnostics precede scene loggers; completed scene logger checks report no errors.",
+      "Stock headless sandbox renderer emits existing water-shader errors; the patched rendered sandbox passes 98 checks.",
+      "Windows, browser, mobile and controller paths were not validated."
+    ]
+  }
+}

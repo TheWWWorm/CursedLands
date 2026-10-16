@@ -1,0 +1,293 @@
+{
+  "date": "2026-10-16",
+  "scope": "Local source worktree and private Linux preview; no release, published artifact or browser deployment.",
+  "source_sha256": {
+    "arena_rules": "bba9b485d88cd0a1a8c7e6838ff90dd576dc0a3b73f98d2eac89b2d265a26c24",
+    "arena_run": "fe9315c5b338d0d284002331ae25fd89019ded65f6e90c8cdc8902ca7252dfcf",
+    "arena_pve_match": "e7c7485f08977fd3ca4526b07b345fad849ebfb7d12a7214d4fc771bfd0178f6",
+    "arena_terrain": "fb2583bd6e0d23b247551890f46166cff0b58d34c8f9d1165cb6d135ca398653"
+  },
+  "checks": {
+    "ui": {
+      "path": "docs/validation/arena-pve-ui-2026-10-16.txt",
+      "sha256": "447ca97844b77ec8902d68002facc1a1fd55d6030f9c8fd898794482144f42ae",
+      "result": "ARENA_PVE_UI 114 checks; failures=[]"
+    },
+    "expedition": {
+      "path": "docs/validation/arena-pve-expedition-2026-10-16.txt",
+      "sha256": "b89cea02bd7832f7cc0171fb7a353336e832ab454ac04e9996f4feb1df99dd3e",
+      "result": "ARENA_PVE 93 checks; failures=[]"
+    },
+    "sandbox": {
+      "path": "docs/validation/arena-pve-sandbox-2026-10-16.txt",
+      "sha256": "dec010d3267445298113591aecd8b87290286a7a388749d7c61d3d3358bd26be",
+      "result": "\"checks\":98"
+    },
+    "lifecycle": {
+      "path": "docs/validation/arena-pve-lifecycle-2026-10-16.txt",
+      "sha256": "c90854ac531bbf20c108f30f8d845581beb105cc5310ca85855831674ec9e144",
+      "result": "ARENA_PVE_LIFECYCLE 10 checks; failures=[]"
+    },
+    "combat_inputs": {
+      "path": "docs/validation/arena-pve-combat_inputs-2026-10-16.txt",
+      "sha256": "995c971c8133922cf3a5718472d671c50a79f434dff93ada6b65f8e419a59c6e",
+      "result": "COMBAT_INPUTS 918 checks 0 failures"
+    },
+    "preview_launcher": {
+      "path": "docs/validation/arena-pve-launcher-2026-10-16.txt",
+      "sha256": "44c77b7c671acde81f5907747411f9d0f60e6d574def4dc177bed5923e8963cc",
+      "result": "PREVIEW_LAUNCH ready; original data loaded; isolated persistent saves"
+    }
+  },
+  "translations": {
+    "command": "python3 tools/check_translations.py",
+    "entries": 1591,
+    "dynamic_wiki": 46,
+    "dynamic_arena": 58,
+    "errors": 0
+  },
+  "rendered": {
+    "engine": "Godot 4.7 custom patched renderer copied into private preview runtime",
+    "renderer": "Forward+ Vulkan",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "display": "Xephyr :18",
+    "sizes": {
+      "en": [
+        "1280x800",
+        "1280x720"
+      ],
+      "ru": [
+        "1024x768"
+      ],
+      "de": [
+        "1024x768"
+      ]
+    },
+    "gui_capture_directory": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/quiet-final/data/godot/app_userdata/Cursed Lands",
+    "screenshots": [
+      {
+        "path": "docs/screenshots/arena-pve-en-prepare.png",
+        "sha256": "3a18ad3afe747625cbcecd6c80addcce2a55e30c3ef6702058cbe0e4dccbc04d"
+      },
+      {
+        "path": "docs/screenshots/arena-pve-en-combat.png",
+        "sha256": "d69b2d7c1686e5633c8152d6d84a12bbfd7279d9657570b2684a24da8e7799f0"
+      },
+      {
+        "path": "docs/screenshots/arena-pve-en-720-expanded.png",
+        "sha256": "5c45d75c21601795a74ee41b226600d3d4db3a77b23a833b7e1c933ecc787003"
+      },
+      {
+        "path": "docs/screenshots/arena-pve-ru-inspect.png",
+        "sha256": "52a2ab5d7c7c116ab704290060ac016bbf68679592b9f4ab10bac44906f49f36"
+      },
+      {
+        "path": "docs/screenshots/arena-pve-de-expanded.png",
+        "sha256": "cf7eb54f3b1418d19a55ab3938797b9c290fe5aef5f3387e2f4d9b06a6f305f5"
+      }
+    ],
+    "preview_engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+    "preview_pack_sha256": "f23389186c40d2ca327c1946ae2e74f1e58fd3a077e06de2dc01c1414250a20e"
+  },
+  "simulation": {
+    "runs": 186,
+    "fights": 3280,
+    "batches": [
+      {
+        "name": "final-balanced",
+        "policy": "balanced",
+        "challenge": 0,
+        "seed_start": 2000,
+        "seed_end": 2059,
+        "runs": 60,
+        "clears": 39,
+        "fights": 1063,
+        "wilson_95": [
+          0.5236,
+          0.7583
+        ],
+        "winning_combat_minutes_median": 7.54,
+        "by_starter": [
+          {
+            "starter": 0,
+            "runs": 20,
+            "clears": 8
+          },
+          {
+            "starter": 1,
+            "runs": 20,
+            "clears": 20
+          },
+          {
+            "starter": 2,
+            "runs": 20,
+            "clears": 11
+          }
+        ],
+        "original_record": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/final-balanced/data/godot/app_userdata/Cursed Lands/arena-runs-balanced-2000.json",
+        "original_sha256": "504e64e0fdfe85c99a42eea9167a78225d46365cfbd3d789783861d0839c1cc1"
+      },
+      {
+        "name": "final-ranged",
+        "policy": "ranged",
+        "challenge": 0,
+        "seed_start": 2000,
+        "seed_end": 2059,
+        "runs": 60,
+        "clears": 52,
+        "fights": 1065,
+        "wilson_95": [
+          0.7583,
+          0.9309
+        ],
+        "winning_combat_minutes_median": 6.25,
+        "by_starter": [
+          {
+            "starter": 0,
+            "runs": 20,
+            "clears": 19
+          },
+          {
+            "starter": 1,
+            "runs": 20,
+            "clears": 18
+          },
+          {
+            "starter": 2,
+            "runs": 20,
+            "clears": 15
+          }
+        ],
+        "original_record": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/final-ranged/data/godot/app_userdata/Cursed Lands/arena-runs-ranged-2000.json",
+        "original_sha256": "2d268ff5679e79f4f22434499cf51e3daea320272e960d852dcccc98c907458a"
+      },
+      {
+        "name": "final-novice",
+        "policy": "novice",
+        "challenge": 0,
+        "seed_start": 2000,
+        "seed_end": 2029,
+        "runs": 30,
+        "clears": 10,
+        "fights": 554,
+        "wilson_95": [
+          0.1923,
+          0.5122
+        ],
+        "winning_combat_minutes_median": 8.34,
+        "by_starter": [
+          {
+            "starter": 0,
+            "runs": 10,
+            "clears": 4
+          },
+          {
+            "starter": 1,
+            "runs": 10,
+            "clears": 3
+          },
+          {
+            "starter": 2,
+            "runs": 10,
+            "clears": 3
+          }
+        ],
+        "original_record": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/final-novice/data/godot/app_userdata/Cursed Lands/arena-runs-novice-2000.json",
+        "original_sha256": "6f6b8408e0ec5d2c5142f9fcb3cee497c6945e3f15efa78fcd83b0227b6b66dd"
+      },
+      {
+        "name": "challenge1",
+        "policy": "balanced",
+        "challenge": 1,
+        "seed_start": 3000,
+        "seed_end": 3017,
+        "runs": 18,
+        "clears": 9,
+        "fights": 277,
+        "wilson_95": [
+          0.2903,
+          0.7097
+        ],
+        "winning_combat_minutes_median": 7.72,
+        "by_starter": [
+          {
+            "starter": 0,
+            "runs": 6,
+            "clears": 0
+          },
+          {
+            "starter": 1,
+            "runs": 6,
+            "clears": 6
+          },
+          {
+            "starter": 2,
+            "runs": 6,
+            "clears": 3
+          }
+        ],
+        "original_record": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/challenge1/data/godot/app_userdata/Cursed Lands/arena-runs-balanced-3000.json",
+        "original_sha256": "b6f0a136e9000eec7811497f23f493ceca039034b36a8c5246e1916f087c21af"
+      },
+      {
+        "name": "challenge2",
+        "policy": "ranged",
+        "challenge": 2,
+        "seed_start": 3000,
+        "seed_end": 3017,
+        "runs": 18,
+        "clears": 16,
+        "fights": 321,
+        "wilson_95": [
+          0.672,
+          0.969
+        ],
+        "winning_combat_minutes_median": 8.0,
+        "by_starter": [
+          {
+            "starter": 0,
+            "runs": 6,
+            "clears": 5
+          },
+          {
+            "starter": 1,
+            "runs": 6,
+            "clears": 6
+          },
+          {
+            "starter": 2,
+            "runs": 6,
+            "clears": 5
+          }
+        ],
+        "original_record": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/challenge2/data/godot/app_userdata/Cursed Lands/arena-runs-ranged-3000.json",
+        "original_sha256": "6695f6aa1b92798aa5cbd80c184e240df0140fa1e4aeff189ba68363ae6ff680"
+      }
+    ],
+    "raw_combined_gzip": "docs/validation/arena-pve-runs-2026-10-16.json.gz",
+    "raw_combined_gzip_sha256": "323444c1c258b4bf3312ee8b390e1d3504a626cd290927e9e29b78c0999731ed",
+    "evolution": {
+      "trials": 264,
+      "recipes": 11,
+      "seeds": 12,
+      "paired_sides": true,
+      "path": "docs/validation/arena-pve-evolutions-2026-10-16.json",
+      "sha256": "ed78f2fb15a5c1be6c940fe9d40e4ec0dec18b15113b203e4d76f245b84095e6"
+    }
+  },
+  "limitations": [
+    "Bot policy clear rates are not human win rates; fixed 55ms tick behavior is not established as bit-identical to normal frame-driven combat.",
+    "Standard ranged/magic policy clears more often than starter-family focus; starter outcomes also differ. This is a first tested balance, not proof of optimal balance.",
+    "Veteran and Champion samples use different policies and are not a controlled difficulty comparison.",
+    "Reward, expanded-shop and completion UI states are injected fixtures, not full-run combat evidence.",
+    "Only Linux native rendering was validated; stock Godot renderer has an existing project push-constant issue, so screenshots use the private patched runtime. Windows, browser, mobile and controller behavior were not validated for the expedition.",
+    "Some earlier long simulation startup logs contain UI compile errors from concurrent UI editing. Final data source hashes match; final UI and regression logs listed above are clean."
+  ],
+  "reproduce": {
+    "integration": "godot-4 --headless --render-thread safe --path game -- --ei-path=/path/to/original --tool=/absolute/repo/tools/tests/arena_pve.gd",
+    "runs": "godot-4 --headless --render-thread safe --path game -- --ei-path=/path/to/original --tool=/absolute/repo/tools/benchmarks/arena_runs.gd --arena-policy=balanced --arena-seeds=60 --arena-seed-start=2000",
+    "isolation": "Use private XDG_DATA_HOME/XDG_CONFIG_HOME/XDG_CACHE_HOME for tests and simulations."
+  },
+  "preview_launcher": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/run-expedition.sh",
+  "preview_rebuild": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/rebuild-preview.sh"
+}

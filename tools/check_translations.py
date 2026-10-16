@@ -112,9 +112,42 @@ for key, record in world.items():
             errors.append(f'Wiki world text contains untranslated Russian: {key}/{lang}')
         if objective_ids(record[lang]) != objective_ids(record['ru']):
             errors.append(f'Wiki world objective coverage differs: {key}/{lang}')
-print(f'Translations: {len(entries)} entries; {len(wiki_keys)} dynamic wiki keys; {len(errors)} errors')
+
 print(f'Wiki world text: {len(world)} entries in EN/RU/DE')
 print(f'Wiki reference text: {len(reference)} source-checked EN/DE entries; RU uses original archives')
+# Expedition content and phase labels also choose their translation keys
+# dynamically; prototype identifiers are intentionally excluded.
+arena_source = (ROOT / 'game/arena_rules.gd').read_text()
+arena_keys = set()
+alliance_source = (ROOT / 'game/arena_alliances.gd').read_text()
+for match in re.finditer(r'"(?:name|help)":\s*(' + STRING + r')', alliance_source):
+    arena_keys.add(json.loads(match[1]))
+arena_keys.update(['Next wave in %ds', 'Retry in %ds', 'Camp in %ds'])
+for match in re.finditer(r'"(?:name|role|help)":\s*(' + STRING + r')', arena_source):
+    arena_keys.add(json.loads(match[1]))
+block = arena_source.split('const WAVES := [', 1)[1].split('\n]', 1)[0]
+for match in re.finditer(r'^\s*\[(' + STRING + r')', block, re.M):
+    arena_keys.add(json.loads(match[1]))
+block = arena_source.split('const BOONS := {', 1)[1].split('\n}', 1)[0]
+for match in re.finditer(r':\s*(\[[^\n]+\])', block):
+    arena_keys.update(json.loads(match[1]))
+arena_keys.update(['Standard expedition', 'Veteran expedition', 'Champion expedition',
+    'On bench', 'Deployed', 'Bench', 'Expedition complete', 'The expedition ends',
+    'Victory', 'Regroup and try again', 'Choose reward', 'Next wave', 'Prepare again',
+    'Visit camp', 'Choose your pact', 'A moment at camp', 'Choose pact', 'Ready', 'Not contributing',
+    'Your pact needs a two-star recruit from this family.', 'This family belongs to your pact.',
+    'On field', 'In reserves', 'Needs 2 stars', 'Not recruited'])
+arena_ui = (ROOT / 'ui/arena_pve_screen.gd').read_text()
+for block_name in ('topics',):
+    block = arena_ui.split('var ' + block_name + ' := [', 1)[1].split(']\n', 1)[0]
+    arena_keys.update(json.loads(m[0]) for m in re.finditer(STRING, block))
+for match in re.finditer(r'var words := (\[[^\n]+\])', arena_ui):
+    arena_keys.update(json.loads(match[1]))
+arena_keys.update(['Return to battle', 'Continue', 'Defeat', 'Gipath', 'Ingos', 'Suslanger'])
+for key in sorted(arena_keys):
+    if key not in entries:
+        errors.append(f'Arena dynamic label missing RU/DE key: {key}')
+print(f'Translations: {len(entries)} entries; {len(wiki_keys)} dynamic wiki keys; {len(arena_keys)} dynamic arena keys; {len(errors)} errors')
 for error in errors:
     print(error)
 sys.exit(bool(errors))

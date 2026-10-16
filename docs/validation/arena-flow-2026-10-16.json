@@ -1,0 +1,234 @@
+{
+  "date": "2026-10-16",
+  "base_commit": "2451d1a2",
+  "scope": "Private feature/arena worktree and local Linux preview; no public release or remote changes.",
+  "source_sha256": {
+    "game/src/ei/remake_text.gd": "243de44e473711ba92e375928670de86aa80eb6fb785910a9caadf57b5cc3ad1",
+    "game/src/game/arena_pve_match.gd": "11285d8947cf6b841d8f7a8d7a1550eb755dd0e810e6cf31e2ef8a155f3a6631",
+    "game/src/game/arena_rules.gd": "9719eeac855914bc8eb3915d3246d39b3285a6babb901ed59215adc77ceaf7d2",
+    "game/src/game/arena_run.gd": "9ddcb90f8d794a6eaa09b4d1f2588feaec73384269fbc928b7b96f1c20192879",
+    "game/src/game/arena_terrain.gd": "dae844147800cbad3657dbd9147ddbd76d66e9821ed3d137653379e241ad66a5",
+    "game/src/game/arena_winter_terrain.gd": "1d05141ffcd90f5768afe86abe1562d617d4e372fad06258e44cca298fa9a7f9",
+    "game/src/ui/arena_creature_card.gd": "011fe167017124e14af788e8e73cb6298f79779660852730bd21bae08880d54a",
+    "game/src/ui/arena_evolution_notice.gd": "9432eac1db3ba220a6281555d79280d7ee9e615ae275b2fd3efddac54151051d",
+    "game/src/ui/arena_pve_screen.gd": "622f72ec9ddab156c64e6c31038e3f9bbeb70aa541b22db657e766cb7386e53d",
+    "game/src/ui/wiki_preview.gd": "5c41615714e686da2e24e53cf0306b020684c61ae518e11ad0fdd8fbf5c88586",
+    "tools/check_translations.py": "d17ed0aedd06ec86afc41efd2305e35f6d391f1095bb30df743bc56e01bb2984",
+    "tools/tests/arena_expansion_ui.gd": "df41ef1b20f2b6bee6e31baa6ff1a8b26a726c9b901cbf58f327e26b291b043c",
+    "tools/tests/arena_pve_ui.gd": "b24c6c3e17d2616c327ca4583fbcfa168196b6799232b38e8d868c243d958efd",
+    "tools/tests/arena_resolution_ui.gd": "ba046468f274e056c3584c34c381985b45a1b6ec378d68ed973e6f215d28e6d2",
+    "tools/tests/arena_winter_ui.gd": "0ecb569671a5e620436aaa3ac16c2acc1b32eb588af4d306bb2cdf5bb5ff8a44",
+    "game/assets/arena/return.svg": "7dab98fd2fd5f57bb4041b1343d39563e935fd116e203e8f68e52c2accbec784",
+    "tools/tests/arena_flow.gd": "56c277e4deea5eb939f2cacc07b5bf51c9861de2c7df9912dcbbae952f0be112",
+    "tools/tests/arena_flow_ui.gd": "4087af3ae0e775c07c743b10639d7ef3e3e4dd16b6ae9ff253a30ab1764e8891",
+    "tools/tests/arena_pact_ui.gd": "1ac4bb77a98d8f3fcf86a078de87fbf01609554325b244075ab667f8fabf2d9b"
+  },
+  "runtime": {
+    "engine": "Godot 4.7 private patched Linux x86_64",
+    "renderer": "Forward+ Vulkan",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "window_host": "Xephyr :19",
+    "pack_sha256": "c30d6ad778c2890a5fe17c5fd3f4abb5db004fdfe3ab5b72db9a882ea33bcdfd",
+    "export_log_sha256": "0f99085bf81bb453e9581e157ef13618534f916f65019a5e471290fb7dc37312",
+    "settings": "Rendered and final native-flow/recruitment/sandbox checks use isolated XDG directories; play-data untouched."
+  },
+  "headless": [
+    {
+      "suite": "flow",
+      "checks": 234,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-ship-arena_flow.log",
+      "log_sha256": "e9e201ff32f2c0a0ca0b08eb530181f7782932e5737996c51ec1f53a2e38d8c0"
+    },
+    {
+      "suite": "recruitment",
+      "checks": 677,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-ship-arena_recruitment.log",
+      "log_sha256": "da3d3ceba504b66b12fb40cd2338c006db0bfc49e0792a6410860a08945755e7"
+    },
+    {
+      "suite": "rules",
+      "checks": 301,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-arena_pve.log",
+      "log_sha256": "3a063877b272a10d6e1e89d1cddfed84a4f6c43ead9f88c09cce19b244e5a88d"
+    },
+    {
+      "suite": "economy",
+      "checks": 215,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-arena_economy.log",
+      "log_sha256": "324523b7d8f4a177e457a80baf288f092f061ac890ce5aedcd31d21b1f1187aa"
+    },
+    {
+      "suite": "usability",
+      "checks": 669,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-arena_usability.log",
+      "log_sha256": "6158aca7efb076c8a08f001d1ac47b640f6cd3048e8ea1ace8c696c0da014771"
+    },
+    {
+      "suite": "long_run",
+      "checks": 1209,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-arena_long_run.log",
+      "log_sha256": "9629827a24de2dfad46e5a57b75347157b26d7558d496bc1d7ee2c4e0f8b14ef"
+    },
+    {
+      "suite": "sandbox",
+      "checks": 98,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-sandbox/run.log",
+      "log_sha256": "4691dffd30fbd6ef98a20abe05f92c6b3f9639987efc68a2d62ccac6a31385d4"
+    }
+  ],
+  "rendered": [
+    {
+      "suite": "flow en-1280-800",
+      "checks": 102,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-ship-en-1280-800/run.log",
+      "log_sha256": "ae1d60917d7e2850e3f8e6bbda0e8ecffb4eadada67cdbebf39cdc83f3d2e40a",
+      "pack_sha256": "c30d6ad778c2890a5fe17c5fd3f4abb5db004fdfe3ab5b72db9a882ea33bcdfd"
+    },
+    {
+      "suite": "flow ru-1024-768",
+      "checks": 102,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-ship-ru-1024-768/run.log",
+      "log_sha256": "86c535594da51244b97ca9365aef38c2a24f7e53e5c6f0614be38dd6e0530462",
+      "pack_sha256": "c30d6ad778c2890a5fe17c5fd3f4abb5db004fdfe3ab5b72db9a882ea33bcdfd"
+    },
+    {
+      "suite": "flow de-1024-768",
+      "checks": 102,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-ship-de-1024-768/run.log",
+      "log_sha256": "213adb35cf26919d53bffaa91dc0ff788945034796683463de701429354b1930",
+      "pack_sha256": "c30d6ad778c2890a5fe17c5fd3f4abb5db004fdfe3ab5b72db9a882ea33bcdfd"
+    },
+    {
+      "suite": "flow en-3840-2160",
+      "checks": 102,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-ship-en-3840-2160/run.log",
+      "log_sha256": "764c9965020b80be91bceec4bf46be084ff61ad0f786426beccb2d58cd0e4183",
+      "pack_sha256": "c30d6ad778c2890a5fe17c5fd3f4abb5db004fdfe3ab5b72db9a882ea33bcdfd"
+    },
+    {
+      "suite": "pact en",
+      "checks": 36,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-ship-pact-en/run.log",
+      "log_sha256": "5a12fbc111d32dcf6a0a7107b1f7cea09b2f283d755d34166cd5c7c27afb9c4b",
+      "pack_sha256": "c30d6ad778c2890a5fe17c5fd3f4abb5db004fdfe3ab5b72db9a882ea33bcdfd"
+    },
+    {
+      "suite": "pact ru",
+      "checks": 36,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-ship-pact-ru/run.log",
+      "log_sha256": "ed0cb5164017027cf2929d3066619402d82a1e39098da80547313f759669f976",
+      "pack_sha256": "c30d6ad778c2890a5fe17c5fd3f4abb5db004fdfe3ab5b72db9a882ea33bcdfd"
+    },
+    {
+      "suite": "pact de",
+      "checks": 36,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-ship-pact-de/run.log",
+      "log_sha256": "1016833b4958c91e07655847a7483ba59a0d3180837adf606b660cda195dc9e8",
+      "pack_sha256": "c30d6ad778c2890a5fe17c5fd3f4abb5db004fdfe3ab5b72db9a882ea33bcdfd"
+    },
+    {
+      "suite": "winter",
+      "checks": 55,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-ship-winter/run.log",
+      "log_sha256": "24562831392479e872bf29332be18b7fe838101bd8b036ad8778a2b957e5b4a5",
+      "pack_sha256": "c30d6ad778c2890a5fe17c5fd3f4abb5db004fdfe3ab5b72db9a882ea33bcdfd"
+    }
+  ],
+  "additional_regressions": [
+    {
+      "suite": "expanded controls",
+      "checks": 220,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-final-arena_expansion_ui/run.log",
+      "log_sha256": "1083b904abf641fcd0bc04e531329dfb0bffe57471726c546b86fb03a7ce572d",
+      "revision_note": "Ran before the final pact-panel ordering and requirement-copy refinement; the final flow and pact suites cover those later changes."
+    },
+    {
+      "suite": "camp and languages",
+      "checks": 420,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-final-arena_pve_ui/run.log",
+      "log_sha256": "242267bb8109fc12dfe456fc505c6bc3e1eb4075b26948e9ff570c23a47c8717",
+      "revision_note": "Ran before the final pact-panel ordering and requirement-copy refinement; the final flow and pact suites cover those later changes."
+    },
+    {
+      "suite": "lifecycle",
+      "checks": 10,
+      "failures": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/arena-20261016/research/flow-final-arena_pve_lifecycle/run.log",
+      "log_sha256": "7bb1d162d2019f6427d9692b3607e5dbcafcbc01ebf2308f36b54d65df86ed4b",
+      "revision_note": "Ran before the final pact-panel ordering and requirement-copy refinement; the final flow and pact suites cover those later changes."
+    }
+  ],
+  "checks": 4624,
+  "translations": "Translations: 1799 entries; 46 dynamic wiki keys; 117 dynamic arena keys; 0 errors",
+  "captures": [
+    {
+      "path": "docs/screenshots/arena-flow-en-prepare.png",
+      "sha256": "3312832463be72a56de698c7c10d7c608b06bd586a6ea764ba30b9f41295c337"
+    },
+    {
+      "path": "docs/screenshots/arena-flow-en-4k.png",
+      "sha256": "85e495221ff132ccf4682eea1ddf53c74785f0029f2b66179c35ee3410eb6149"
+    },
+    {
+      "path": "docs/screenshots/arena-flow-en-evolution.png",
+      "sha256": "cc013ab0ee667a88c2fb907381e4696be119a4c24d062975789f80dbcdd8d564"
+    },
+    {
+      "path": "docs/screenshots/arena-flow-en-victory.png",
+      "sha256": "d76e4042abbbcd218e40dfacb5917fbc976d516a89fe8fc495fe0e7fca75649f"
+    },
+    {
+      "path": "docs/screenshots/arena-flow-en-trails-blood.png",
+      "sha256": "2cba410b96961902a83321685c0069cc7f6ad391980e92f84038058105d7e22f"
+    },
+    {
+      "path": "docs/screenshots/arena-flow-ru-pacts.png",
+      "sha256": "bfd400ffff98fc71ca50a5ee6a4efa9a40e613ace78c6d6e104e66341249ff83"
+    },
+    {
+      "path": "docs/screenshots/arena-flow-de-pact.png",
+      "sha256": "715a87d6e0100a10b5e3d555af78b2ee900f42a460e39c8542ce99a49b1e743c"
+    }
+  ],
+  "verified": [
+    "Native actor/model identity and animation phase survive formation moves; navigation registration remains valid.",
+    "Shop and reserve render targets survive selection, placement, locks and unrelated purchases; selection produces no viewport size-change events.",
+    "Preview render targets match physical displayed size at 3840x2160; models remain within slots.",
+    "45-second preparation, unscaled by combat speed, early start, menu pause, expiry, empty-field reserve deployment, empty-company single-life forfeit, retry/camp resets and save migration.",
+    "Evolution and victory occupy the right edge; the battlefield center stays available. Final-hit animation interval remains 1.6 seconds.",
+    "Pact choice/checklist progress, required stars, active/inactive ally and visible ally name in EN/RU/DE at 1024x768.",
+    "Unbroken snow material, flat fighting area, perimeter drifts and native scenery with local snow caps.",
+    "Real combat produces visible native footprints, deformed tracks, splashes and delayed corpse pools; hiding blood or clearing tracks changes battlefield pixels."
+  ],
+  "iterations": [
+    "An initial formation fixture clicked an occupied point, then used exact floating-point equality for screen-to-world placement; the final fixture uses an unoccupied point and a 0.1-unit picking tolerance.",
+    "The first winter notice timeout fixture hovered a creature, intentionally covering/pausing the notice. It now leaves the inspector before asserting automatic dismissal.",
+    "The initial sandbox test inherited shared enhanced-water settings and hit existing water shader insertion assertions. A fresh isolated settings directory passed all 98 checks; no water code changed.",
+    "Visual review moved the pact ally above the checklist so its native name is visible without scrolling, and rewrote requirements around creatures rather than families having stars."
+  ],
+  "limits": [
+    "Linux Forward+ desktop mouse/keyboard only; no new Windows, browser, mobile or controller validation.",
+    "Original creature texture/mesh detail is unchanged; improved preview pixel density cannot invent source detail.",
+    "Combat labels can overlap in dense fights.",
+    "No new full-run balance estimate; native creature stats, economy, wave roster and pact bonuses are unchanged.",
+    "Startup XIM/shader-cache messages precede test scene logging; final scene/script/shader checks pass.",
+    "Results and camp choices await the player; the 45-second clock applies to preparation."
+  ]
+}
