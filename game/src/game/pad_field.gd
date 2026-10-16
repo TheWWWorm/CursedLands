@@ -895,7 +895,7 @@ func open_keyboard_aim() -> void:
 	wheel.title = RemakeText.t("Aimed strike")
 	wheel.pages = PackedStringArray()
 	wheel.hints = []
-	wheel.open(aim_entries(), -1, 0.5, true, {
+	wheel.open(aim_entries(), -1, 0.5, {
 		"id": ["aim", -1], "label": RemakeText.t("Default"), "tip": RemakeText.t("No preferred body part")})
 	get_viewport().warp_mouse(wheel.get_global_transform_with_canvas() * wheel._geom()[0])
 	_hold_pause(not direct)

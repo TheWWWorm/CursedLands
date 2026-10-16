@@ -6,6 +6,7 @@ extends RefCounted
 ## replacement material. Its lighting is blended after the figure's own tint.
 const DECLARATIONS := """
 uniform vec3 contact_extent = vec3(1.0);
+uniform bool contact_floor = false;
 uniform float contact_strength = 0.7;
 // One call site for the two projections keeps GL compilers from expanding
 // the complete displaced-surface search twice. Internal bound, always two.
@@ -190,6 +191,9 @@ bool contact_locate(vec3 world,vec3 wn,float band,float distance_to_eye,out floa
 	vec2 p=vec2(world.x,-world.z);
 	height=0.0; grid=vec2(0.0); tile=ivec2(0); jacobian=mat2(1.0); rise=0.0; folded=p;
 	strength=contact_strength*(1.0-smoothstep(30.0,45.0,distance_to_eye));
+	// Authored BASE parts carry bridge decks, floors and moving lifts.
+	// Keep their walking faces intact; vertical sides still meet the land.
+	if (contact_floor) { strength*=1.0-smoothstep(0.5,0.8,wn.y); }
 	if (strength<=0.0 || band<=0.0) { return false; }
 	ivec2 cell=ivec2(floor(p));
 	if (any(lessThan(p,vec2(0.0))) || any(greaterThanEqual(p,vec2(textureSize(query_vertices,0)-1)))) { return false; }
@@ -210,7 +214,14 @@ bool contact_locate(vec3 world,vec3 wn,float band,float distance_to_eye,out floa
 		}
 		height=sampled_height; grid=sampled_grid; tile=sampled_tile; jacobian=sampled_jacobian;
 		if (pass==0) {
-			rise=max(world.y-height,0.0);
+			// A folded cliff can overhang a visible bridge or prop. Clamping
+			// negative clearance to zero treated every point below that bank
+			// as touching it, projecting rock arbitrarily far down the object.
+			// Keep a small, smooth intersection band on either side of land.
+			float clearance=world.y-height;
+			strength*=smoothstep(-max(band,0.02),0.0,clearance);
+			if (strength<=0.0) { return false; }
+			rise=max(clearance,0.0);
 			if (rise>band*2.5) { return false; }
 			vec4 water=textureLod(terrain_cells,p/vec2(textureSize(terrain_cells,0)),0.0);
 			float water_y=water.r+level[clamp(int(water.a+0.5),0,63)];

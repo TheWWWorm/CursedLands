@@ -1,0 +1,18 @@
+{
+  "output": "/absolute/path/to/trailer-output",
+  "runtimes": {
+    "stable": "/absolute/path/to/CursedLands.x86_64",
+    "arena": "/absolute/path/to/preview-engine.x86_64"
+  },
+  "game_data": {
+    "cursed_lands": "/absolute/path/to/original-game",
+    "lost_in_astral": "/absolute/path/to/lost-in-astral"
+  },
+  "hd_lands": "/absolute/path/to/mods/community.hd-lands-textures@1.5.0",
+  "ffmpeg": "ffmpeg",
+  "ffprobe": "ffprobe",
+  "encoder": "libx264",
+  "display": ":19",
+  "gpu": 0,
+  "environment": {}
+}

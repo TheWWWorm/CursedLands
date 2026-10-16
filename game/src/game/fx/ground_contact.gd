@@ -6,7 +6,7 @@ extends Node
 var terrain: EITerrain
 var surface: GroundSurfaceData
 var _meshes := {} # instance id -> weak node, current base/owned material, local bounds
-var _variants := {} # base material -> {extent: ShaderMaterial}
+var _variants := {} # base material -> {extent/floor key: ShaderMaterial}
 var _shaders := {} # raw figure source -> Shader
 var _queued := false
 var _cliffs := false
@@ -42,10 +42,14 @@ func register(root: Node3D) -> void:
 		var original := node.material_override as ShaderMaterial
 		if original == null or not original.has_meta("ground_contact_source") or node.mesh == null:
 			continue
-		var entry := {"node": weakref(node), "base": original, "applied": original, "extent": node.mesh.get_aabb().size}
+		# EIFigure names each part's parent from its authored figure record.
+		# BASE parts are walking surfaces, also used by NavGrid for bridges,
+		# floors and lifts. Their upper faces must retain their own material.
+		var floor_part := String(node.get_parent().name).to_lower().begins_with("base")
+		var entry := {"node": weakref(node), "base": original, "applied": original, "extent": node.mesh.get_aabb().size, "floor": floor_part}
 		_meshes[node.get_instance_id()] = entry
 		if Gfx.on("gfx_ground_contact"):
-			node.material_override = _variant(original, entry.extent)
+			node.material_override = _variant(original, entry.extent, entry.floor)
 			entry.applied = node.material_override
 
 
@@ -82,7 +86,7 @@ func refresh() -> void:
 		if not _retain_material(node, entry):
 			_meshes.erase(id)
 			continue
-		var material := _variant(entry.base, entry.extent) if enabled else entry.base as ShaderMaterial
+		var material := _variant(entry.base, entry.extent, entry.floor) if enabled else entry.base as ShaderMaterial
 		_replace(node, material)
 		entry.applied = material
 	if not enabled:
@@ -125,14 +129,15 @@ func _retain_material(node: MeshInstance3D, entry: Dictionary) -> bool:
 	return true
 
 
-func _variant(base: ShaderMaterial, extent: Vector3) -> ShaderMaterial:
+func _variant(base: ShaderMaterial, extent: Vector3, floor_part := false) -> ShaderMaterial:
 	if surface == null:
 		surface = terrain.ground_surface_data()
 		_cliffs = terrain._cliffs != null and terrain._cliffs.admitted > 0
 		_transitions = terrain._transitions != null and terrain._transitions.admitted > 0
 	var variants: Dictionary = _variants.get(base, {})
-	if variants.has(extent):
-		return variants[extent]
+	var key := Vector4(extent.x, extent.y, extent.z, float(floor_part))
+	if variants.has(key):
+		return variants[key]
 	var source: String = base.get_meta("ground_contact_source")
 	if not _shaders.has(source):
 		var code := GroundContactShader.source(source, _cliffs)
@@ -144,8 +149,9 @@ func _variant(base: ShaderMaterial, extent: Vector3) -> ShaderMaterial:
 	material.shader = _shaders[source]
 	_copy_base(base, material)
 	material.set_shader_parameter("contact_extent", extent)
+	material.set_shader_parameter("contact_floor", floor_part)
 	surface.bind(material)
-	variants[extent] = material
+	variants[key] = material
 	_variants[base] = variants
 	return material
 
