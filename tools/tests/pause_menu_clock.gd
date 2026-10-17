@@ -33,7 +33,14 @@ func clip(menu: EscSignpost, name: String, scale: float, paused: bool) -> void:
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	GameData.options.confine_mouse = 0
-	if DisplayServer.get_name() != "headless": DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_VISIBLE)
+	if DisplayServer.get_name() != "headless":
+		# Fix the rendering workload for a clock test. Layout at larger sizes
+		# is covered separately by menu_build_version and arena_menu_scale.
+		GameData.options.merge({"display_mode":0,"auto_graphics":0}, true)
+		GameData.options.resolution = GameData.resolutions().find(Vector2i(800,600))
+		GameData._apply_window()
+		DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_VISIBLE)
+		for i in 12: await get_tree().process_frame
 	var menu := EscSignpost.new()
 	add_child(menu)
 	check(menu._player != null, "original signpost and animation library load")

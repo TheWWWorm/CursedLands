@@ -34,7 +34,9 @@ the expedition. Every fifth completed wave opens one camp reward choice; selecti
 ## Company level and recruitment
 
 The opening has no creatures, ten gold, three army slots and eight reserve slots.
-Its six offers include every early family. Purchases fill clear field positions
+Its six offers sample twelve early families, with three distinct melee choices and
+three distinct ranged or magic choices. Recruits from every island are placed by
+power and price; the current region does not gate the shop. Purchases fill clear field positions
 while army capacity permits, then enter reserves. Buying never starts manual
 placement. A purchase, its deployment and any evolution are one undo action. Subsequent
 shops have five offers, six with Well connected. Any number of offers can be locked. A locked sixth opening offer stays until bought or unlocked. An entirely locked shop costs nothing to refresh. Refresh
@@ -54,7 +56,7 @@ purchasing a separate shop upgrade.
 
 | Level / slots | Cumulative XP from start | Tier 1 | Tier 2 | Tier 3 | Tier 4 | Tier 5 |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 3 | 0 | 70% | 30% | 0% | 0% | 0% |
+| 3 | 0 | 55% | 45% | 0% | 0% | 0% |
 | 4 | 6 | 55% | 45% | 0% | 0% | 0% |
 | 5 | 18 | 40% | 40% | 20% | 0% | 0% |
 | 6 | 36 | 30% | 35% | 27% | 8% | 0% |
@@ -70,26 +72,42 @@ measures evolution within a family.
 
 | Tier | Family | Price | Copies at each evolution |
 | --- | --- | ---: | --- |
-| 1 | Boars, Tribal fighters, Wolves | 1 | 3, then 3 |
-| 2 | Tribal shooters, Bats | 2 | 2, then 3 |
+| 1 | Boars | 1 | 3, then 3 |
+| 1 | Tribal fighters | 1 | 3, then 3 |
+| 1 | Wolves | 1 | 3, then 3 |
+| 1 | Wisps | 1 | 3, then 3 |
+| 1 | Red tigers | 1 | 3, then 3 |
+| 2 | Tribal shooters | 2 | 2, then 3 |
+| 2 | Bats | 2 | 2, then 3 |
 | 2 | Toads | 2 | 3, then 3 |
+| 2 | Skeletons | 2 | 2, then 3 |
+| 2 | Banshees | 2 | 3, then 3 |
+| 2 | Lizardfolk | 2 | 3, then 3 |
+| 2 | Orc shamans | 3 | 3, then 3 |
 | 3 | White tigers | 4 | 2, then 3 |
 | 3 | Spiders | 3 | 3, then 3 |
+| 3 | Evil eyes | 3 | 3, then 3 |
+| 3 | Armadillos | 3 | 3, then 3 |
+| 3 | Woodsfolk archers | 3 | 2, then 3 |
+| 3 | Hill ogres | 3 | 2, then 3 |
+| 3 | Red harpies | 4 | 2, then 3 |
 | 4 | Blue trolls | 7 | 2, then 3 |
 | 4 | Stony harpies | 6 | 2, then 3 |
+| 4 | Wormheads | 5 | 2, then 3 |
 | 5 | Sand ogres | 10 | 2, then 3 |
 | 5 | Grey harpies | 7 | 2, then 3 |
 
-All twelve families reach three stars, with thirty native models/prototypes across
-thirty-six ranks. Grey harpies gain their authored level-20 form. Toads, white
-tigers, blue trolls, stony harpies, sand ogres and spiders retain their existing
+All twenty-four families reach three stars, with 65 native prototypes across
+seventy-two ranks. Grey harpies gain their authored level-20 form. Toads, white
+tigers, blue trolls, stony harpies, sand ogres, spiders and armadillos retain their existing
 two-star form and gain a three-star elite using that original appearance:
 +75% health, +50% attack damage, +20% accuracy/armor and +15% action speed. Native
-spells remain unchanged. Elite bonuses are local to Trials actors and displayed
+spells remain unchanged. Wisps receive 2.4× health in Trials (12/24/36 across
+their ranks) so the early magic choice can survive a hit. Elite bonuses are local to Trials actors and displayed
 in inspection; no installed prototype is edited. Recipes remain adapted to their actual
 native power jumps; this is not a universal three-for-one conversion of original
 creatures. Evolution works from wave one, preserves a deployed copy's identity
-and position, and shows a short side comparison, sound and field highlight.
+and position, and shows one comparison below the tribes, sound and a field highlight.
 
 ## Difficulty and spell damage
 
@@ -98,14 +116,13 @@ absorb at most 80% of each incoming damage type. Both teams retain at least 20%
 damage on a successful hit, including spells. This reduces armor stalemates and
 keeps weaker attacks useful without changing the campaign's selected armor rule.
 
-Standard uses thirty authored encounters, with larger mixed formations in the
-second half to keep pace with a full, upgraded company. Standard and Veteran add
-a modest frontline reinforcement from wave six and ranged support from wave
-nineteen, advancing through native forms. Veteran adds a further melee reinforcement
-from wave three, progressing through stronger original forms in later regions.
-Champion uses its own stronger ranged/magic support from wave six and another
-caster from wave ten instead of the Standard/Veteran reinforcement pair. Its late caster additions include octopuses, providing pressure against
-physical-armor formations. No prototype statistics are changed.
+Standard uses thirty authored encounters and adds a frontline reinforcement in
+waves 6–18. Later Standard waves retain the authored encounters because the wider
+recruitment pool makes high-rank merges less frequent. Veteran adds a melee
+reinforcement from wave three and the second frontline from wave six through
+wave thirty. Champion adds the melee reinforcement from wave three and its own
+stronger ranged/magic support from wave six. Prices and evolution forms are tuned
+alongside these formations. Encounter difficulty does not alter prototype stats.
 
 Damaging spells cannot hit creatures on the caster's own team in Trials. The rule
 applies equally to both sides, including persistent acid fog. Beneficial spell
@@ -121,11 +138,11 @@ the bonus immediately; deaths during combat do not recalculate the starting line
 
 | Alliance | Members | Thresholds | Effect at each threshold |
 | --- | --- | --- | --- |
-| Beasts | Boars, Wolves, Bats, Toads, White tigers, Spiders | 2 / 4 / 6 | All allies: +10 / 20 / 30% attack damage |
-| Horde | Tribal fighters, Tribal shooters, Blue trolls, Sand ogres | 2 / 4 | Members: +15 / 30% maximum health |
-| Warriors | Boars, Tribal fighters, Blue trolls, Sand ogres | 2 / 4 | Members: +20 / 40% physical armor, plus 2 / 4 armor |
-| Hunters | Wolves, Tribal shooters, White tigers, Spiders | 2 / 4 | Members: +15 / 30% accuracy, +10 / 20% action speed |
-| Mages | Bats, Toads, Stony harpies, Grey harpies | 2 / 4 | Enemies: −20 / 40% fire, acid and lightning armor |
+| Beasts | Boars, Wolves, Bats, Toads, White tigers, Spiders, Red tigers, Evil eyes, Armadillos | 2 / 4 / 6 | All allies: +10 / 20 / 30% attack damage |
+| Horde | Tribal fighters, Tribal shooters, Blue trolls, Sand ogres, Lizardfolk, Orc shamans, Hill ogres, Wormheads | 2 / 4 | Members: +15 / 30% maximum health |
+| Warriors | Boars, Tribal fighters, Blue trolls, Sand ogres, Skeletons, Banshees, Lizardfolk, Armadillos, Hill ogres | 2 / 4 | Members: +20 / 40% physical armor, plus 2 / 4 armor |
+| Hunters | Wolves, Tribal shooters, White tigers, Spiders, Red tigers, Woodsfolk archers | 2 / 4 | Members: +15 / 30% accuracy, +10 / 20% action speed |
+| Mages | Bats, Toads, Stony harpies, Grey harpies, Wisps, Orc shamans, Evil eyes, Red harpies, Wormheads | 2 / 4 | Enemies: −20 / 40% fire, acid and lightning armor |
 
 Bonuses are applied to private encounter actors, restored from cached native values
 on each formation change. They never edit the prototype database or campaign.
@@ -175,13 +192,13 @@ native pathfinding command at an accelerated presentation pace; it does not
 teleport an existing actor. New deployments enter from nearby clear ground.
 Returning a creature to reserves removes its field actor. Movement keeps native
 run clips, turning and snow footprints, without advancing combat or perception.
-An early start waits for formation to settle; menus pause that movement. A second
+An early start gives formation movement up to two seconds, then settles any
+blocked actor at its intended position. Menus pause that movement. A second
 move replaces the destination, and saved formations store their intended positions.
 Shop/reserve previews retain their render targets and render at physical HUD scale.
-The HUD scales from a 1440×900 reference, bounded to 0.85–2×; the battlefield
+The HUD scales from a 1440×900 reference with a 0.85× minimum and no upper cap; the battlefield
 still renders at full resolution. The shop and reserve have no backing panels,
-and all reserve slots fit in one row without horizontal scrolling. Shop prices, currency, health, player names and inactive tribes use dark gray
-with a fine light edge. Active tribes use dark copper, without a backing panel. Hover
+and all reserve slots fit in one row without horizontal scrolling. Shop prices, currency, health, player names and inactive tribes use near-black regular text (`#141414`) without an outline or shadow. Active tribes use dark copper, without a backing panel. Hover
 inspectors, sell/return targets and notices leave the center of the battlefield clear.
 The opening uses a separate, wider composition with original creature previews,
 starting gold, difficulty and a prominent Begin action. Its optional seed entry
@@ -189,7 +206,8 @@ is collapsed initially; saved expeditions retain a visible resume action.
 
 Arena/Sandbox buttons are removed from player menus and controller targets. Trials remains accessible from the original campaign only. Mods and rules,
 Encyclopedia and Trials occupy a centered bottom row; campaign choices stay above
-the signpost. Lost in Astral has no Trials button or controller target. The internal `--arena` entry remains available
+the signpost. Bottom utility buttons use the same 64-pixel reference height as
+the campaign choices and scale with the screen. Lost in Astral has no Trials button or controller target. The internal `--arena` entry remains available
 for development and regression tests.
 
 Save schema ten migrates older runs without losing armies or purchased capacity.
@@ -213,4 +231,5 @@ Buying, selling, evolving, and round outcomes use original sound effects.
 Balance measurements use `tools/benchmarks/arena_balance.py`: isolated headless
 Godot processes exercise native combat across six deterministic purchase policies,
 three difficulties and matched seeds. These design samples do not estimate human
-win rates. See `docs/validation/trials-ui-balance.md` for the current evidence.
+win rates. See [roster and presentation validation](validation/autochess-roster-presentation.md)
+for the current evidence. Older measurements retain their original versions.

@@ -1,0 +1,577 @@
+{
+  "version": "1.11.0",
+  "tag": "v1.11.0",
+  "base_stable": "1.10.0",
+  "release_type": "stable feature",
+  "game_source_commit": "1f1d290d881f15b10c3e95a46df45f5a52a0d263",
+  "game_tree": "9b268ba565250bed49ad6857faff6d34d3ed8a97",
+  "issues": [
+    16,
+    17,
+    19
+  ],
+  "protocol": 23,
+  "same_version_coop_required": true,
+  "compiled_scripts": 343,
+  "all_compiled_scripts_identical_across_five_platforms": true,
+  "runtime_checks": [
+    {
+      "suite": "arena_roster",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_ROSTER checks=693 opening_pair_duplicate_rate=0.08815 failures=[]"
+      ],
+      "log_sha256": "fbf7c5f989d658392fa9174f3e4a99b45a1577157c907a69aec0dced18754495",
+      "renderer": "headless",
+      "checks": 693,
+      "render_thread": null
+    },
+    {
+      "suite": "arena_tournament",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_TOURNAMENT 151 checks; native_fights=169; failures=[]"
+      ],
+      "log_sha256": "6e38bc28e29d934383634336015c83cab01dcd01cee130f954a6375c1e1481ef",
+      "renderer": "headless",
+      "checks": 151,
+      "render_thread": null
+    },
+    {
+      "suite": "arena_issue_19",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ISSUE_19 restored=true accepted=true arrival_seconds=2.01666666666666 phase=1 movers=0",
+        "ISSUE_19 finished=true seconds=25.5749999999999 damage=[999.603340530396, 181.824149513245] success=true",
+        "ISSUE_19 rearranged_player_same_enemies=true arrival_seconds=2.01666666666666"
+      ],
+      "log_sha256": "606d1b29fbc5e11dd77691521eb84aa034d19aace0d03bfa6c20a698e46be3f2",
+      "renderer": "headless",
+      "render_thread": null
+    },
+    {
+      "suite": "arena_live_shop",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_LIVE_SHOP 108 checks; failures=[]"
+      ],
+      "log_sha256": "af5063f7561ddae8425b072ee5f85f236ead4877265056aea6ffa4435e56c500",
+      "renderer": "headless",
+      "checks": 108,
+      "render_thread": null
+    },
+    {
+      "suite": "arena_filtered_spells",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_FILTERED_SPELLS success=true before=[25.0, 25.0, 25.0] after=[11.0, 11.0, 25.0]"
+      ],
+      "log_sha256": "c0eb36b305f02ef44f78528245d56f4538ab409d374fca74cd26873055d97bbd",
+      "renderer": "headless",
+      "render_thread": null
+    },
+    {
+      "suite": "lia_tomb_exit",
+      "language": "lia",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "LIA_TOMB_EXIT 36 checks 0 failures",
+        "STORY_COOP_TRAPS_NET 36 checks 0 failures"
+      ],
+      "log_sha256": "5c2ce91549256cf28b1df7a3f3e6f3b4fed0de62215c3d36abd81fe170a77072",
+      "renderer": "headless",
+      "checks": 36,
+      "render_thread": null
+    },
+    {
+      "suite": "arena_roster_ui",
+      "language": "en",
+      "args": [
+        "--arena-lang=en"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_ROSTER_UI en checks=145 failures=[]"
+      ],
+      "log_sha256": "c89d26cb4b531a682bd9be399981a2947b5079992400eb0f6c621b2045e6806a",
+      "renderer": "Forward+ Vulkan",
+      "checks": 145,
+      "render_thread": "safe"
+    },
+    {
+      "suite": "arena_roster_ui",
+      "language": "de",
+      "args": [
+        "--arena-lang=de"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_ROSTER_UI de checks=145 failures=[]"
+      ],
+      "log_sha256": "ee83a913f5496a8a9269620eef251532c22009a8aabffcb85c047a6e96d7ebf9",
+      "renderer": "Forward+ Vulkan",
+      "checks": 145,
+      "render_thread": "safe"
+    },
+    {
+      "suite": "arena_presentation_ui",
+      "language": "en",
+      "args": [
+        "--arena-resolution=en,5065,2757"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_START_PROFILE request_ms=24.358 frames_ms=[5.69, 12.385, 5.872, 7.803, 3.395, 7.312, 7.56, 5.764, 7.619, 24.954]",
+        "ARENA_PRESENTATION_UI presentation-en-5065 checks=29 failures=[]"
+      ],
+      "log_sha256": "77c04289678e90b38ee4bacab7bbef9d6b00af039cfde65d52955ba20715deaa",
+      "renderer": "Forward+ Vulkan",
+      "checks": 29,
+      "render_thread": "safe"
+    },
+    {
+      "suite": "menu_build_version",
+      "language": "ru",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "MENU_BUILD_VERSION ru 58 checks 0 failures",
+        "STORY_COOP_TRAPS_NET 58 checks 0 failures"
+      ],
+      "log_sha256": "83485c76da47ae278f8838eced449cc98be8cd711e9d48313abb5fea4ff197a7",
+      "renderer": "Forward+ Vulkan",
+      "checks": 58,
+      "render_thread": "safe"
+    },
+    {
+      "suite": "menu_build_version",
+      "language": "de",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "MENU_BUILD_VERSION de 58 checks 0 failures",
+        "STORY_COOP_TRAPS_NET 58 checks 0 failures"
+      ],
+      "log_sha256": "2c7bca3857f4cf5366ad4a753941d6cb7f5838b6c6d276be637f71e6b934d80e",
+      "renderer": "Forward+ Vulkan",
+      "checks": 58,
+      "render_thread": "safe"
+    },
+    {
+      "suite": "pause_menu_clock",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "PAUSE_MENU_CLOCK 21 checks 0 failures"
+      ],
+      "log_sha256": "5457bbce2dfd84f06b39bf3919f0eb14d7f91f9f01ea45a704f655c25fb9a1d8",
+      "renderer": "Forward+ Vulkan",
+      "checks": 21,
+      "render_thread": "separate"
+    },
+    {
+      "suite": "pause_menu_frames",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "PAUSE_MENU_FRAMES 28 checks 0 failures"
+      ],
+      "log_sha256": "d24e369d13b566d576e734ff4faa98c18428ac0026b2eb29e535732944e54efc",
+      "renderer": "Forward+ Vulkan",
+      "checks": 28,
+      "render_thread": "separate"
+    },
+    {
+      "suite": "arena_menu_scale",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_MENU_SCALE checks=13 failures=[]"
+      ],
+      "log_sha256": "f2468ebc166bd38a517b521bbff65e9f970c465104b89dbf1f42c60cbb46076a",
+      "renderer": "Forward+ Vulkan",
+      "checks": 13,
+      "render_thread": "separate"
+    },
+    {
+      "suite": "menu_build_version",
+      "language": "en",
+      "passed": true,
+      "checks": 58,
+      "renderer": "Forward+ Vulkan",
+      "render_thread": "safe",
+      "summary": [
+        "MENU_BUILD_VERSION en 58 checks 0 failures",
+        "STORY_COOP_TRAPS_NET 58 checks 0 failures"
+      ],
+      "log_sha256": "fc03aca3bb5f6f8cd2a48322e1e57d1679a2672d67d0fa7caf05e84c6092797d",
+      "pack_scripts_match_release": true,
+      "startup_note": null
+    },
+    {
+      "suite": "arena_roster_ui",
+      "language": "ru",
+      "passed": true,
+      "checks": 145,
+      "renderer": "Forward+ Vulkan",
+      "render_thread": "safe",
+      "summary": [
+        "ARENA_ROSTER_UI ru checks=145 failures=[]"
+      ],
+      "log_sha256": "d6c5f05504b70258af64db4146c6624356b2b3707a319ed2f2f39cefc7526cf6",
+      "pack_scripts_match_release": true,
+      "startup_note": "Initial missing shader-cache directory"
+    }
+  ],
+  "runtime_assertions": 1688,
+  "supplemental_pre_release_checks": [
+    {
+      "test": "arena_battle_limits",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_BATTLE_LIMITS checks=9 failures=[]"
+      ]
+    },
+    {
+      "test": "arena_opponent_alliances",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_OPPONENT_ALLIANCES 12 checks; failures=[]"
+      ]
+    },
+    {
+      "test": "arena_balance_feedback",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_BALANCE_FEEDBACK 23 checks 0 failures"
+      ]
+    },
+    {
+      "test": "repeated_spells",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "REPEATED_SPELLS 86 checks 0 failures"
+      ]
+    },
+    {
+      "test": "perception_batch",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "PERCEPTION_BATCH checks=2857 failures=0 native_us=39664 script_us=135954"
+      ]
+    },
+    {
+      "test": "arena_alliances",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_ALLIANCES 647 checks; failures=[]"
+      ],
+      "log_sha256": "ca689488c87744c70e5683c07b3b88a1c6eca7019f1dedcfa98c23c7541502e1"
+    },
+    {
+      "test": "arena_recruitment",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_RECRUITMENT 1676 checks; native_fights=220; failures=[]"
+      ],
+      "log_sha256": "a26b974786f16ccefd88c531c247b1550382f4d2ed20ff1437a4dca6d8e98953"
+    },
+    {
+      "test": "arena_presentation_ru",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_PRESENTATION_UI presentation-ru-1024 checks=29 failures=[]"
+      ],
+      "log_sha256": "5b930a737797c5f000edc7bda2afab6eb96a6ee2fee79180162d1da82822f446"
+    },
+    {
+      "test": "arena_presentation_de",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_PRESENTATION_UI presentation-de-1920 checks=29 failures=[]"
+      ],
+      "log_sha256": "84d657e33c4a7eafc6bd518c51c7e6b74c15d9669f824eb18165974091686dc1"
+    }
+  ],
+  "translations": {
+    "entries": 2563,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 141,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "errors": 0,
+    "output": "Wiki world text: 180 entries in EN/RU/DE\nWiki reference text: 3886 source-checked EN/DE entries; RU uses original archives\nTranslations: 2563 entries; 141 dynamic wiki keys; 141 dynamic arena keys; 0 errors"
+  },
+  "desktop": {
+    "linux-x86_64": {
+      "version": "1.11.0",
+      "source_commit": "1f1d290d881f15b10c3e95a46df45f5a52a0d263",
+      "game_tree": "9b268ba565250bed49ad6857faff6d34d3ed8a97",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 343,
+      "resource_count": 914,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.pck": "d3996195c46377c77a8b3b3b4d89baa63ad755ddce8dfa983c3072db56938338"
+      }
+    },
+    "windows-x86_64": {
+      "version": "1.11.0",
+      "source_commit": "1f1d290d881f15b10c3e95a46df45f5a52a0d263",
+      "game_tree": "9b268ba565250bed49ad6857faff6d34d3ed8a97",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 343,
+      "resource_count": 914,
+      "files": {
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "CursedLands.pck": "d3996195c46377c77a8b3b3b4d89baa63ad755ddce8dfa983c3072db56938338"
+      }
+    },
+    "macos-universal": {
+      "version": "1.11.0",
+      "source_commit": "1f1d290d881f15b10c3e95a46df45f5a52a0d263",
+      "game_tree": "9b268ba565250bed49ad6857faff6d34d3ed8a97",
+      "protocol": 23,
+      "platform": "macos-universal",
+      "unsigned": true,
+      "target_os_runtime_tested": false,
+      "compiled_scripts": 343,
+      "files": {
+        "CursedLands.zip": "448ca363c6a9786bfb1d9b36ee5f5288ce2a2567158a16268f86f330ffc38c29"
+      }
+    }
+  },
+  "android": {
+    "version": "1.11.0",
+    "compiled_scripts": 343,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 45,
+    "debuggable": false,
+    "apk_sha256": "399b8661accae6b53cec200af91364ff60a448730f5a2b776b7b3db683c9487e",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16,
+    "target_os_runtime_tested": false,
+    "previous_qualified_engine_release": "1.10.0"
+  },
+  "browser": {
+    "version": "1.11.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-c23bb626d9a0ec304542",
+      "new_cache": "cursed-engine-2-cdedb1ec42673c4d20dd",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "e0f6ef5d0d13ef28a1ec85d0b633395c0322c5de2a5d0b87b689c39fe86d88e9",
+      "old_tab_wait_verified": true,
+      "unchanged_wasm_reused": true,
+      "network_paths": [
+        "__expected",
+        "index.html",
+        "index.pck",
+        "release-check.html",
+        "service-worker.js"
+      ],
+      "previous_version": "1.10.0"
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-cdedb1ec42673c4d20dd"
+      ],
+      "packs": {
+        "cursed-engine-2-cdedb1ec42673c4d20dd": "e0f6ef5d0d13ef28a1ec85d0b633395c0322c5de2a5d0b87b689c39fe86d88e9"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    },
+    "fresh_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": [],
+      "inspection": "In-app browser canvas screenshot and console; isolated origins 28829 fresh and 28828 upgraded."
+    },
+    "upgraded_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": [],
+      "inspection": "In-app browser canvas screenshot and console; isolated origins 28829 fresh and 28828 upgraded."
+    },
+    "build": {
+      "version": "1.11.0",
+      "source_tag": "v1.11.0",
+      "source_commit": "1f1d290d881f15b10c3e95a46df45f5a52a0d263",
+      "game_tree": "9b268ba565250bed49ad6857faff6d34d3ed8a97",
+      "protocol": 23,
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 343,
+      "resource_count": 911,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "e0f6ef5d0d13ef28a1ec85d0b633395c0322c5de2a5d0b87b689c39fe86d88e9",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    }
+  },
+  "wiki": {
+    "version": "1.11.0",
+    "indexes": {
+      "wiki/data/de/index.json": 1277,
+      "wiki/data/en/index.json": 1277,
+      "wiki/data/ru/index.json": 1277,
+      "wiki/data/lost_in_astral/de/index.json": 1757,
+      "wiki/data/lost_in_astral/en/index.json": 1757,
+      "wiki/data/lost_in_astral/ru/index.json": 1757
+    },
+    "files": 13526,
+    "manifest_sha256": "f8089eab28dc6abd4d7ec41a5481ac23ced380340dac67bfe7149f6d5580284a",
+    "content": "Existing 1.10.0 encyclopedia retained; index version metadata updated."
+  },
+  "balance": {
+    "families": 24,
+    "opening_families": 12,
+    "native_prototypes": 65,
+    "rank_slots": 72,
+    "opening_pair_duplicate_rate": 0.08815,
+    "final_runs": 144,
+    "final_battles": 3698,
+    "aggregates": [
+      {
+        "difficulty": "Standard",
+        "runs": 48,
+        "completed": 24,
+        "battles": 1377,
+        "timeouts": 8,
+        "mean_wave": 28.6875
+      },
+      {
+        "difficulty": "Veteran",
+        "runs": 48,
+        "completed": 5,
+        "battles": 1207,
+        "timeouts": 17,
+        "mean_wave": 25.145833333333332
+      },
+      {
+        "difficulty": "Champion",
+        "runs": 48,
+        "completed": 2,
+        "battles": 1114,
+        "timeouts": 5,
+        "mean_wave": 23.208333333333332
+      }
+    ],
+    "full_run_trace": "autochess-roster-balance.json.gz",
+    "opening_combinations_passed": 220,
+    "initial_duel_fights": 864,
+    "final_changed_rank_duels": 96,
+    "report": "autochess-roster-presentation.md"
+  },
+  "hosted_files_count": 13551,
+  "hosted_manifest_sha256": "bd4e3bf36f384c63c9ce45b428baa52fe001486a74e6f5eaefe5d4dfe8d97c83",
+  "parts_manifest": {
+    "/index.wasm": {
+      "count": 2,
+      "size": 39509339
+    }
+  },
+  "evidence": {
+    "hud-en-5065.png": "f787a5130d721ddc63bd050903f8be26c084d45b27dc8d842f43eb9c7491be06",
+    "menu-de.png": "f6e12dc8589dccfeffc2db1a7cc3218e3effb0585423d880f7cac1886a10a2b3",
+    "results.json.gz": "564475ae79a4e2923d56501c842be48e78ec95c5411444c76957c209ff39eb92",
+    "roster-de.png": "ec1533e28a122bf2b8225ca63e7bfb8eb170c61629e817239490a6be0ec43d91",
+    "roster-ru.png": "83ea8ffb91b0c8df859ebaaf4a789b9b4012dbe0e29dc052def8c31cff88ca67"
+  },
+  "validation_notes": [
+    "Game source is frozen at the source commit. Later commits add documentation, a fixed-size timing fixture, rebuilt browser export and validation without modifying game code.",
+    "The final balance sample uses fixed 55 ms native combat ticks and six deterministic purchase policies with eight seeds each per difficulty. These are design samples, not human win rates.",
+    "Surviving wave 30 completes Expedition even if the last individual fight was lost; completion and fight wins are recorded separately.",
+    "The issue 19 public save enters combat at 2.017 seconds. Repositioning the player army while retaining the enemy formation also passes.",
+    "The integrated issue 16 and 17 fixtures pass on the packaged source. The pause-clock fixture fixes resolution to 800x600; a preliminary unbounded 4K run at roughly 5 FPS exceeded its short-clip timing window. Separate layout checks cover 800x600 through 5K.",
+    "Fresh and upgraded browser starts reached visible setup with no console warnings/errors. Every IndexedDB store is preserved byte for byte, including isolated game-data and save sentinels.",
+    "The existing public encyclopedia content is retained with version metadata updated in all six campaign/language indexes."
+  ],
+  "limits": [
+    "Linux packages were runtime-tested. Windows, macOS and Android were audited for source/resource integrity and packaging without target-OS runtime tests; macOS is unsigned.",
+    "Browser checks cover visible setup, engine cache replacement, storage preservation and console errors, not a complete campaign playthrough.",
+    "Audio decoding and dispatch were checked with the Dummy audio driver; no listening assessment is claimed.",
+    "No physical input-device or live network-peer qualification is claimed. Co-op requires matching versions.",
+    "Timing measurements are local observations on an RTX 3090. Balance simulations do not establish human difficulty or competitive parity."
+  ],
+  "deployment_verification": "Live asset hashes and browser startup must pass before the draft release is published; receipts are retained in the release workspace."
+}

@@ -18,7 +18,11 @@ armor, movement and both armies' alliances. Scouting switches the live view,
 without pausing or replacing a company. The overview shows every board and its
 moving army markers; clicking a cell focuses that board. Menu and combat pause
 stop all boards. Each native world has its own simulation state; only the human
-match controls global speed.
+match controls global speed. Scouting enables the viewed world's battle audio.
+Particles, lightning and their bounds use their own board origin, and hidden
+boards hide their top-level effect renderers. Combat stops damaging projectiles
+at resolution, then drains the remaining visual effects for up to 1.5 seconds
+without advancing health or the combat clock.
 
 The round settles once every living owner reports a result. Health and income
 cannot be applied twice. Defeat costs `3 + floor(round / 5) + surviving enemy stars`
@@ -36,7 +40,10 @@ CPUs spend the same gold on the same offers, training and refreshes as the human
 They recruit in visible steps throughout preparation, favor family groups, pursue
 matching copies, level gradually and keep savings when healthy. They receive no
 free units or stat multipliers. Starting early completes their outstanding shop
-choices before all formations lock. Strategy still needs broader balance testing.
+choices before all formations lock. Opponent models prepare one board per frame
+while shop transactions and formation changes are briefly locked. After staging,
+all boards begin on the same bell and the combat shop reopens. CPU purchase
+preferences follow traits across the expanded twenty-four-family pool.
 
 Every completed round pays five base gold plus interest. A win adds one gold and
 the existing winning-streak bonus. XP advances on every round, including defeat.
@@ -55,7 +62,11 @@ Old ten-seat local previews migrate to nine, retaining the human army and econom
 Classic saves do not update expedition difficulty unlocks.
 
 The compact right-hand list shows names and health, with a small grid button for
-the overview. Expanding it reveals company level and gold. CPUs use original
+the overview. Expanding it reveals company level and gold. Names and health use 14-pixel
+reference text; the compact panel is 164 pixels wide before HUD scaling. A copper
+left-edge marker identifies the watched board without adding a row background.
+The last ten seconds of preparation or combat change the clock to coral and pulse
+its opacity; pausing also stops the pulse. CPUs use original
 localized NPC names: Erfar, Estera, Babur, Tilvar, Valrasian, Diera, Shei-Var and
 Kardaur. Hover details temporarily replace the standings. Names, help, status,
 errors and both modes' rules are localized in English, Russian and German.
