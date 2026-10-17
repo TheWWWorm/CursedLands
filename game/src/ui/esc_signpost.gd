@@ -122,6 +122,9 @@ func _on_open() -> void:
 	_frame()
 	_hover_board = ""
 	_sfx("buttons\\menu\\shift.wav")
+	# Closing during the slide leaves the hidden manual player partway
+	# through this same clip. Every opening starts from its first frame.
+	if _player: _player.stop()
 	_play("uspecial02")
 	# The SubViewport still holds its last picture (the rest pose) on the
 	# first visible frame; keep it transparent until the slide has rendered.

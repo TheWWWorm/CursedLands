@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.9.2 — pause menu and companion controls, 17 October 2026
+
+- Keep pause-menu opening and board animations at the same real-time speed when gameplay is paused, normal or accelerated, including reopening after an interrupted slide. ([#6](https://github.com/TheWWWorm/CursedLands/issues/6))
+- Restore normal stamina recovery for companions standing still with a follow order, retaining movement and combat recovery rules. ([#7](https://github.com/TheWWWorm/CursedLands/issues/7))
+- Allow party portraits to select follow targets while preserving the acting party selection, with matching target cursors and invalid-target handling. ([#8](https://github.com/TheWWWorm/CursedLands/issues/8))
+- Prevent a typed-array error when resolving world tooltips in direct control.
+
+See [release notes](docs/releases/1.9.2.md) for compatibility and platform limits.
+
 ## 1.9.1 — pause menu and companion controls, 17 October 2026
 
 - Keep pause-menu opening and board animations at the same real-time speed when gameplay is paused, normal or accelerated. ([#6](https://github.com/TheWWWorm/CursedLands/issues/6))

@@ -47,6 +47,20 @@ func _ready() -> void:
 	var elapsed := (Time.get_ticks_usec() - started) / 1000000.0
 	check(absf(menu._player.current_animation_position - before - elapsed) < 0.035,
 		"changing speed during opening preserves the animation clock")
+	for scale in [1.0, 55.0 / 27.0]:
+		Engine.time_scale = scale
+		menu._player.stop(); menu._play("uspecial02"); menu._player.advance(0.2)
+		menu.hide()
+		await get_tree().create_timer(0.15, true, false, true).timeout
+		menu.show()
+		check(is_zero_approx(menu._player.current_animation_position),
+			"reopening a partially hidden slide restarts from frame zero at scale %.3f" % scale)
+		started = Time.get_ticks_usec()
+		while menu._player.is_playing() and Time.get_ticks_usec() - started < 1000000:
+			await get_tree().process_frame
+		elapsed = (Time.get_ticks_usec() - started) / 1000000.0
+		check(absf(elapsed - menu._player.get_animation("ei/uspecial02").length) < 0.10,
+			"reopened menu plays its full duration at scale %.3f" % scale)
 	Engine.time_scale = 1.0
 	get_tree().paused = false
 	menu.free()
