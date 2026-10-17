@@ -46,13 +46,13 @@ func _ready() -> void:
 	run.lock_offer(5)
 	var held := int(run.shop[5].family)
 	run.refresh()
-	check(run.shop.size()==5 and run.shop.any(func(o):return o.locked and int(o.family)==held),"opening sixth-slot lock survives a five-offer refresh")
+	check(run.shop.size()==6 and run.shop.any(func(o):return o.locked and int(o.family)==held),"opening sixth-slot lock stays in its slot after refresh")
 	run.begin(6200)
 	check(run.train().is_empty(), "early training remains available")
 	check(not run.train().is_empty() and run.gold == 5, "training preserves a recruit budget")
 	check(run.shop.any(func(offer): return run.offer_cost(offer) <= ArenaRules.MIN_RECRUIT_COST), "training leaves an affordable opening recruit")
 	Fixture.begin(run, 6202)
-	var legacy := run.snapshot(); legacy.version = 4; legacy.pact = ""; legacy.pact_rank = 0
+	var legacy := run.snapshot(); legacy.version = 4; legacy.preparation_left = 45; legacy.pact = ""; legacy.pact_rank = 0
 	check(restored.restore(legacy) and restored.army == run.army, "existing expeditions retain their purchased or legacy army")
 	# Every three-family opening is affordable and viable against the first wave.
 	var match_state := ArenaPveMatch.new()

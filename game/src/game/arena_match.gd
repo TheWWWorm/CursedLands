@@ -20,6 +20,8 @@ var winner := -1
 var formation: Array[Dictionary] = []
 var catalog := ArenaCatalog.new()
 var damage := [0.0, 0.0]
+var last_damage_at := 0.0
+var end_reason := ""
 var _world_parent: Node
 var _previous_speed := 1.0
 var speed := 1.0
@@ -68,6 +70,7 @@ func _rebuild_world() -> void:
 	world.set_relation(2, 1, 2)
 	world.combat_event.connect(_combat_event)
 	damage = [0.0, 0.0]
+	last_damage_at = 0.0; end_reason = ""
 	winner = -1
 	phase = Phase.DEPLOY
 	for placement: Dictionary in formation:
@@ -231,12 +234,23 @@ func rematch() -> void:
 	start()
 
 
+func time_limit() -> float:
+	return TIME_LIMIT
+
+
+func stalemate_seconds() -> float:
+	return INF
+
+
 func _process(_dt: float) -> void:
 	_update_death_marks(_dt)
 	if phase != Phase.FIGHT or world == null: return
 	var blue := team_count(0, true)
 	var red := team_count(1, true)
-	if blue > 0 and red > 0 and world.time < TIME_LIMIT: return
+	var stalled := world.time - last_damage_at >= stalemate_seconds()
+	var timed_out := world.time >= time_limit()
+	if blue > 0 and red > 0 and not stalled and not timed_out: return
+	end_reason = "stalemate" if stalled and blue > 0 and red > 0 else "timeout" if timed_out and blue > 0 and red > 0 else "defeated"
 	winner = 0 if blue > 0 and red == 0 else 1 if red > 0 and blue == 0 else -1
 	phase = Phase.FINISHED
 	world.process_mode = Node.PROCESS_MODE_DISABLED
@@ -253,6 +267,7 @@ func _physics_process(_dt: float) -> void:
 func _combat_event(kind: String, a: GameUnit, _b: GameUnit, amount: float) -> void:
 	if kind == "damage" and is_instance_valid(a) and a.faction in TEAMS:
 		damage[TEAMS.find(a.faction)] += maxf(0.0, amount)
+		if amount > 0: last_damage_at = world.time
 
 
 func broadcast(event: Dictionary) -> void:

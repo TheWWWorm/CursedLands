@@ -1,6 +1,13 @@
 class_name ArenaPveField
 extends ArenaField
+signal board_chosen(player: int)
 var evolution_pulses := {}
+var tournament: ArenaTournamentBattles
+var _arena_fog := Vector2(90, 100)
+
+
+func showing_boards() -> bool:
+	return is_instance_valid(tournament) and tournament.overview
 
 var show_markers := true
 var _old_ambient := Color.WHITE
@@ -65,6 +72,7 @@ func _build_stage() -> void:
 	# The overhead spectator camera has no visible sky. A black, softly
 	# feathered perimeter also hides the physical map edge at maximum zoom.
 	Gfx.set_fog_palette(Color.BLACK, Color.BLACK, Gfx.fog_depth)
+	_arena_fog = Gfx.fog_depth
 	environment.environment.fog_light_color = Color.BLACK
 	GameData.options_changed.connect(_apply_presentation)
 	_apply_presentation()
@@ -86,6 +94,11 @@ func reset_camera() -> void:
 
 
 func _process(delta: float) -> void:
+	if showing_boards():
+		hovered = null
+		if ghost: ghost.hide()
+		overlay.queue_redraw()
+		return
 	super._process(delta)
 	for uid in evolution_pulses.keys():
 		evolution_pulses[uid] -= delta
@@ -114,6 +127,9 @@ func _process(delta: float) -> void:
 
 
 func _draw_overlay() -> void:
+	if showing_boards():
+		_draw_boards()
+		return
 	if not show_markers: return
 	if not ghost_id.is_empty() and match_state and is_instance_valid(match_state.world) and match_state.phase == ArenaMatch.Phase.DEPLOY:
 		var rect := ArenaRun.DEPLOY
@@ -141,29 +157,78 @@ func _draw_overlay() -> void:
 
 
 func _update_camera() -> void:
+	if camera and showing_boards():
+		camera.far = 300
+		camera.position = Vector3(96, 160, -96)
+		camera.look_at(Vector3(96, 0, -96), Vector3(0, 0, -1))
+		camera.size = maxf(208.0, 192.0 * size.y / maxf(100, minf(size.x - 48 * ui_scale, size.y - 128 * ui_scale)))
+		Gfx.set_fog_palette(Color.BLACK, Color.BLACK, Vector2(250, 300))
+		return
 	super._update_camera()
 	if camera and size.x > 0 and size.y > 0:
+		camera.far = 90
+		Gfx.set_fog_palette(Color.BLACK, Color.BLACK, _arena_fog)
 		var point := match_state.bounds().get_center() if match_state else Vector2(32, 32)
 		var center := Vector3(point.x - 1.75, 0, -point.y)
 		var fitted_size := maxf(14.5, 29.0 * size.y / size.x)
 		# Keep both starting rows, including their health bars, between the
 		# recruitment shelf and reserves at 16:9 and 4:3 desktop sizes.
 		var pixels_per_meter := size.y / fitted_size
-		var depth_sine := clampf((size.y - 360.0 * ui_scale) / (21.0 * pixels_per_meter), 0.25, 0.55)
+		var depth_sine := clampf((size.y - 430.0 * ui_scale) / (21.0 * pixels_per_meter), 0.25, 0.55)
 		var height := 36.0 * depth_sine / sqrt(1.0 - depth_sine * depth_sine)
 		camera.position = center + Vector3(sin(yaw) * 36, height, cos(yaw) * 36)
 		camera.look_at(center)
 		camera.size = fitted_size * zoom / 14.5
-		camera.position += camera.basis.y * camera.size * 70.0 * ui_scale / size.y
 
 
 func _gui_input(event: InputEvent) -> void:
+	if showing_boards():
+		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			var player := _map_player(event.position)
+			if player >= 0: board_chosen.emit(player)
+		accept_event()
+		return
 	if event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 		zoom = clampf(zoom * (0.9 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.1), 8, 35)
 		_update_camera()
 		accept_event()
 		return
 	super._gui_input(event)
+
+
+func _map_player(at: Vector2) -> int:
+	var point = Plane(Vector3.UP, 0).intersects_ray(camera.project_ray_origin(at), camera.project_ray_normal(at))
+	if point == null or point.x < 0 or point.x >= 192 or -point.z < 0 or -point.z >= 192: return -1
+	return ArenaTournamentBattles.MAP_SEATS[int(-point.z / 64) * 3 + int(point.x / 64)]
+
+
+func _draw_boards() -> void:
+	var font := ThemeDB.fallback_font
+	var pixels := roundi(14 * ui_scale)
+	var hovered_player := _map_player(get_local_mouse_position())
+	for player in ArenaTournamentBattles.MAP_SEATS:
+		var origin := ArenaTournamentBattles.board_offset(player)
+		var start := camera.unproject_position(origin)
+		var end := camera.unproject_position(origin + Vector3(64, 0, -64))
+		var rect := Rect2(start, end - start).abs().grow(-4 * ui_scale)
+		var alive := tournament.run.health(player) > 0
+		var board: ArenaPveMatch = tournament.home if player == 0 else tournament.boards.get(player)
+		if board and is_instance_valid(board.world):
+			for unit: GameUnit in board.world.unit_rows():
+				if unit.dead or unit.hidden: continue
+				var at := camera.unproject_position(unit.global_position)
+				overlay.draw_circle(at, 3.4 * ui_scale, Color("17262d"), true, -1, true)
+				overlay.draw_circle(at, 2.2 * ui_scale, BLUE if unit.faction == 1 else RED, true, -1, true)
+		var colour := BLUE if player == hovered_player and alive else Color(0.8, 0.87, 0.91, 0.35)
+		overlay.draw_rect(rect, colour, false, ui_scale, true)
+		var text_colour := ArenaCreatureCard.SNOW_INK if alive else Color("454545")
+		var title := tournament.run.player_title(player)
+		var hp := str(tournament.run.health(player)) if alive else RemakeText.t("Eliminated")
+		for line in 2:
+			var text := title if line == 0 else hp
+			var at := Vector2(rect.position.x, rect.end.y - (24 if line == 0 else 7) * ui_scale)
+			overlay.draw_string_outline(font, at, text, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x, pixels, 1, Color("eeeeee"))
+			overlay.draw_string(font, at, text, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x, pixels, text_colour)
 
 
 func _exit_tree() -> void:

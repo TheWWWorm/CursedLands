@@ -1176,6 +1176,8 @@ func command(o: Dictionary, queue := false) -> void:
 	if orders.is_empty():
 		_talk_posted = _talk_order_command(o)
 	orders.append(o)
+	if not queue and is_inside_tree() and get_tree().paused:
+		preview_order_path(o)
 
 
 ## The current order ends unsuccessfully: creature = 1 with the
@@ -1581,11 +1583,19 @@ func always_regenerate_stamina() -> bool:
 	return GameData.option("stamina_regen") == 1
 
 
+## Follow is a persistent AI state, but has a movement command only while
+## catching up. Do not make is_idle() true: the AI must keep the follow order.
+func _stamina_idle() -> bool:
+	return is_idle() or (order.get("type", "") == "follow" and not order.get("once", false)
+		and not order.has("walk") and orders.is_empty() and direct_steering.is_empty() and _anim_lock <= 0.0)
+
+
 ## Original recovery cadence: 15 logic ticks. The optional party rule removes
 ## the idle restriction at the HP rate; standing idle retains native recovery.
 func _regenerate(dt: float) -> void:
 	if dead: return
 	var continuous := always_regenerate_stamina()
+	var idle := _stamina_idle()
 	_regen_t += dt
 	while _regen_t >= TICK * 15.0:
 		_regen_t -= TICK * 15.0
@@ -1595,9 +1605,9 @@ func _regenerate(dt: float) -> void:
 		var health := max_hp * float(race.get("health_regen", 0.0)) * (1.0 + float(stats.get("regen_hp", 0.0)) / 100.0) * rm
 		var stamina := max_mana * float(race.get("mana_regen", 0.0)) * (1.0 + float(stats.get("regen_mana", 0.0)) / 100.0)
 		heal(health)
-		if continuous and not is_idle():
+		if continuous and not idle:
 			stamina = maxf(0.0, health)
-		if continuous or is_idle():
+		if continuous or idle:
 			mana = minf(max_mana, mana + stamina)
 
 
@@ -2218,17 +2228,68 @@ func motion_notice(at: Vector2, mode: int, reach := -1.0, full_path := false) ->
 	order.erase("path_notice")
 	var record := _planned_motion if _planned_motion.get("path") == path and _planned_motion.get("from") == pos \
 		else world.nav.motion_record(pos, path, move_class(), has_meta("flying"))
+	_send_motion_notice(order, path, record, at, mode, reach, full_path)
+
+
+## Tactical pause plans a preview without advancing orders, movement, combat,
+## RNG or world timers. The real order replans against live state on resume.
+func preview_order_path(command: Dictionary) -> void:
+	if not command.get("path_notice", false) or world == null or world.session == null: return
+	var kind := String(command.get("type", ""))
+	var target: Variant = command.get("target")
+	if target != null and (not is_instance_valid(target) or (target.dead and not command.get("corpse", false))): return
+	var t := target as GameUnit
+	var at: Vector2 = command.get("to", pos)
+	var mode := 0
+	var reach := -1.0
+	match kind:
+		"move": pass
+		"attack":
+			if t == null: return
+			at = t.pos
+			mode = 2
+			reach = float(stats.reach) if stats.get("ranged", false) else melee_reach(t)
+		"follow":
+			if t == null: return
+			at = t.pos
+			mode = 1
+			reach = float(command.get("dist", 2.0))
+		"cast":
+			if command.get("in_place", false): return
+			at = t.pos if t else command.get("point", pos)
+			mode = 2
+			reach = float(Spells.parse(String(command.get("spell", ""))).range)
+		_: return
+	var route: PackedVector2Array
+	var record: Dictionary
+	if command.has("use_object"):
+		var object: Node3D = world.objects.get(int(command.use_object))
+		if object == null: return
+		mode = 1
+		reach = world.vm._interact_reach(self, object)
+		var plan := world.nav.find_object_path(self, at, int(command.use_object))
+		route = plan.path
+		record = plan.motion
+	else:
+		var flat := world.nav.cell_wet(pos) if kind == "move" else t != null or path_flat_cost
+		route = world.nav.find_path(pos, at, [self, t] if t else [self], [], 0.0, move_class(), flat)
+		record = world.nav.motion_record(pos, route, move_class(), has_meta("flying"))
+	_send_motion_notice(command, route, record, at, mode, reach, bool(command.get("full_path", false)))
+
+
+func _send_motion_notice(command: Dictionary, route: PackedVector2Array, record: Dictionary,
+		at: Vector2, mode: int, reach: float, full_path: bool) -> void:
 	var cells: Array = []
 	for c: Vector2i in record.cells:
 		cells.append([c.x, c.y])
-	var failed := path.is_empty()
-	var ray := _ghost_ray(at,full_path)
+	var failed := route.is_empty()
+	var ray := _ghost_ray(at, full_path, command)
 	var already := reach >= 0.0 and _ghost_in_range(pos,at,reach,ray)
 	var ring := 0
 	var f := 1000000.0
 	if reach < 0.0:
 		if not failed:
-			ring = int(path[-1].distance_squared_to(at) >= pos.distance_squared_to(at) * 0.01)
+			ring = int(route[-1].distance_squared_to(at) >= pos.distance_squared_to(at) * 0.01)
 	elif already:
 		mode = 3
 		cells.clear()
@@ -2236,27 +2297,28 @@ func motion_notice(at: Vector2, mode: int, reach := -1.0, full_path := false) ->
 		mode = 3
 		ring = 1
 	else:
-		ring = int(not _ghost_in_range(path[-1],at,reach,ray))
+		ring = int(not _ghost_in_range(route[-1],at,reach,ray))
 		# Native54e600 calls54e250 only for an endpoint that can perform
 		# the action. A failed endpoint and restored full-path order keep1e6.
 		if ring == 0 and not full_path:
-			f = _ghost_cutoff(record,at,reach,ray)
+			f = _ghost_cutoff(record, at, reach, ray, route[-1])
 	if failed and not already:
 		mode = 3
 		ring = 1
 	world.session.broadcast({"t": "order_path", "to": controller, "uid": uid,
-		"start": [pos.x, pos.y], "target": [at.x, at.y], "end": [path[-1].x, path[-1].y] if not failed else [pos.x, pos.y],
+		"start": [pos.x, pos.y], "target": [at.x, at.y], "end": [route[-1].x, route[-1].y] if not failed else [pos.x, pos.y],
 		"heading": facing, "mode": mode, "cross": ring, "cells": cells, "values": Array(record.values), "ticks": f})
 
 
 ## Native54bcb0: attack/use rays to a creature allow the10m² overlap;
 ## traced spells require their prototype flag, with summed body radii+0.3.
 ## Point spells trace to ground+1. The ghost carries no independent pose.
-func _ghost_ray(at: Vector2,full_path: bool) -> Dictionary:
+func _ghost_ray(at: Vector2, full_path: bool, command: Dictionary) -> Dictionary:
 	if full_path: return {}
-	var target := _order_target()
-	var casting: bool = order.get("type","") == "cast"
-	if casting and int(Spells.parse(String(order.get("spell",""))).proto.get("require_trace",0)) == 0:
+	var value: Variant = command.get("target")
+	var target := value as GameUnit if is_instance_valid(value) else null
+	var casting: bool = command.get("type", "") == "cast"
+	if casting and int(Spells.parse(String(command.get("spell",""))).proto.get("require_trace",0)) == 0:
 		return {}
 	if target == null and not casting: return {}
 	var overlap := 0.0
@@ -2291,10 +2353,10 @@ func _ghost_in_range(point: Vector2,at: Vector2,reach: float,ray: Dictionary) ->
 
 ## Complete54e250: the native0.5-base spline sampled every five ticks,
 ## stopping only at a repeated position or a feasible in-range sample.
-func _ghost_cutoff(record: Dictionary,at: Vector2,reach: float,ray: Dictionary) -> float:
+func _ghost_cutoff(record: Dictionary, at: Vector2, reach: float, ray: Dictionary, end: Vector2) -> float:
 	if record.cells.is_empty(): return 0.0
 	var spline := MotionSpline.new()
-	spline.build(pos,path[-1],record.cells,record.values,0.5,1e10,facing)
+	spline.build(pos, end, record.cells, record.values, 0.5, 1e10, facing)
 	var f := 0.0
 	var previous := Vector2.INF
 	while true:

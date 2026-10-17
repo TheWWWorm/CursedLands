@@ -1,18 +1,25 @@
 extends Node
 ## Identical opposing companies must receive identical alliance modifiers.
 func _ready() -> void:
+	var league := ArenaTournamentRun.new()
+	league.auto_save = false; league.begin(7391); league.wave = 4
+	league.pairings.assign([{"a":0,"b":1,"ghost":false}])
 	var duel := ArenaTournamentBattles.DuelRun.new()
 	duel.auto_save = false; duel.begin(7391); duel.training = 126
+	duel.league = league; duel.player = 1; duel.wave = 4
 	for family in [0,1,3,4,5]: duel._recruit(family,0,2)
 	duel.arrange()
-	duel.opposing_army = duel.army.duplicate(true)
-	duel.opponents = ArenaTournamentRun.formation_for(duel.opposing_army,1)
+	league.army.assign(duel.army.duplicate(true))
 	var battle := ArenaPveMatch.new()
 	battle.run = duel; battle.rendered = false; battle.drives_clock = false
 	add_child(battle); battle.set_process(false); battle._world_parent = self
 	battle.prepare()
 	var failures: Array[String] = []
-	var checks := 0
+	var checks := 2
+	if battle.team_count(0) != 5 or battle.team_count(1) != 0:
+		failures.append("five owned creatures prepare before opponent copies arrive")
+	if not battle.start() or battle.team_count(1) != 5:
+		failures.append("all five opponent copies arrive at the bell")
 	for own: GameUnit in battle.world.unit_rows():
 		var placement: Dictionary = own.get_meta("arena_placement")
 		if not placement.has("run_uid"): continue

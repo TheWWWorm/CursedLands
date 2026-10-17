@@ -119,7 +119,7 @@ func _ready() -> void:
 	check(not run.free_refresh and run.gold==bank and run.refresh_cost()==2,"free refresh is consumed once")
 	# Schema seven paid army slots and shop investment survive the replacement.
 	run=fresh();Fixture.buy_company(run);var old:=run.snapshot()
-	old.version=7;old.wave=10;old.training=6;old.pact="hunt";old.pact_rank=1;old.shop_level=2
+	old.version=7;old.preparation_left=45;old.wave=10;old.training=6;old.pact="hunt";old.pact_rank=1;old.shop_level=2
 	check(other.restore(old) and other.capacity()>=8 and not other.snapshot().has("pact"),"legacy capacity and investments migrate without pact state")
 	check(other.restore(other.snapshot()),"migrated save reloads under schema eight")
 	old.stage="reward";old.wave=3;old.training=0;old.pact="";old.pact_rank=0

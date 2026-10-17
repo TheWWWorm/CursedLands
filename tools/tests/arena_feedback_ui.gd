@@ -92,7 +92,7 @@ func _ready()->void:
 	var league:=screen.run as ArenaTournamentRun
 	ArenaTournamentRun.shop_for(league,1,league.wave,league.lives)
 	league.wave=4;league._roll_shop(false);league._prepare_round();league._touch();await frames(24)
-	check(league.rivals.size()==9 and screen._standing_rows.find_children("*","Button",true,false).size()==10,"standings show human plus nine CPUs")
+	check(league.rivals.size()==8 and screen._standing_rows.find_children("*","Button",true,false).size()==11,"standings show human plus eight CPUs and board controls")
 	bounded(screen._standings,"standings")
 	check(screen._wave_title.text==RemakeText.t("Round %d")%4 and screen._lives.text=="100","classic HUD shows rounds and health")
 	await shot(tag+"-autochess")

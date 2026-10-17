@@ -33,8 +33,8 @@ func _ready() -> void:
 	run.advance();run.choose_reward(0)
 	var bank := run.gold
 	run.start_battle();run.resolve(1,10,[4,20]);run.advance()
-	check(run.gold == bank and run.income_preview().streak == 0,"defeat breaks streak and grants no income")
-	check(run.wave == 7,"retry stays on its wave")
+	check(run.gold == bank + 5 + mini(3, bank / 10) and run.income_preview().streak == 0,"defeat breaks streak and pays base plus interest")
+	check(run.wave == 8,"defeat advances to the next wave")
 	run.gold = 50
 	var old := run.snapshot()
 	check(run.train().is_empty() and run.experience() == int(old.training) + run.wave - 1 + 5 and run.gold == 45,"training advances capacity before its normal wave")
@@ -60,7 +60,7 @@ func _ready() -> void:
 	check(run.capacity() == 9 and run.experience() == 126,"capacity stops at nine")
 	var max_bank := run.gold
 	check(not run.train().is_empty() and run.gold == max_bank,"max training cannot charge again")
-	var legacy := run.snapshot();legacy.version=3;legacy.pact="";legacy.pact_rank=0;legacy.erase("training");legacy.erase("battle_savings")
+	var legacy := run.snapshot();legacy.version=3;legacy.preparation_left=45;legacy.pact="";legacy.pact_rank=0;legacy.erase("training");legacy.erase("battle_savings")
 	check(restored.restore(legacy) and restored.training == 0,"old saves preserve free army growth")
 	Fixture.begin(run, 33,1)
 	check(run.sale_value(run.army[0]) == 1,"one-star recruits can be exchanged without losing gold")
@@ -69,7 +69,7 @@ func _ready() -> void:
 	for family in ArenaRules.FAMILIES.size():
 		for rank in ArenaRules.FAMILIES[family].forms.size():
 			var id := ArenaRules.prototype(family,rank)
-			check(ArenaUnitInfo.rank_of(id) == rank,"rank follows evolution: " + id)
+			check(ArenaUnitInfo.rank_of(id) == (1 if ArenaRules.is_elite(family,rank) else rank),"rank follows evolution: " + id)
 			var stats := ArenaUnitInfo.values(id)
 			var proto := GameData.db.find("monster_prototypes",id)
 			check(stats.attack == int(proto.to_hit),"native attack: " + id)

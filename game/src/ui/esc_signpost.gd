@@ -23,6 +23,8 @@ const REG := [["SaveGame", "save"], ["LoadGame", "load"], ["ResumeGame", "return
 
 var _post: Node3D
 var _player: AnimationPlayer
+var _animation_usec := 0
+var _open_serial := 0
 var _boards := {}
 var _board_meshes := {}
 var _rects: Array[Rect2] = []
@@ -62,6 +64,9 @@ func _ready() -> void:
 		if not n is MeshInstance3D:
 			paths[String(n.name)] = _post.get_path_to(n)
 	_player = AnimationPlayer.new()
+	# Menu motion uses real time even when the gameplay clock is accelerated
+	# or paused. Advance manually so changing that clock cannot alter a clip.
+	_player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 	_post.add_child(_player)
 	_player.root_node = NodePath("..")
 	# The figure's root part is escmenu00 (unmoco1.lnk); only the root's
@@ -80,8 +85,17 @@ func _frame() -> void:
 	place(Vector3(400, 700, 4.8))
 
 
+func _process(dt: float) -> void:
+	super._process(dt)
+	var now := Time.get_ticks_usec()
+	if _player and is_visible_in_tree() and _animation_usec > 0:
+		_player.advance((now - _animation_usec) / 1000000.0)
+	_animation_usec = now
+
+
 func _gui_input(e: InputEvent) -> void:
 	if e is InputEventMouseMotion:
+		if _player and _player.is_playing() and _player.current_animation == "ei/uspecial02": return
 		# a newly hovered board sounds buttons\menu\stone.wav and
 		# turns (its uspecial); off the boards plays the idle.
 		var hb := board_at(e.position)
@@ -110,16 +124,27 @@ func _on_open() -> void:
 	_frame()
 	_hover_board = ""
 	_sfx("buttons\\menu\\shift.wav")
+	# Closing during the slide leaves the hidden manual player partway
+	# through this same clip. Every opening starts from its first frame.
+	if _player: _player.stop()
 	_play("uspecial02")
 	# The SubViewport still holds its last picture (the rest pose) on the
 	# first visible frame; keep it transparent until the slide has rendered.
+	_open_serial += 1
+	var serial := _open_serial
 	self_modulate.a = 0.0
+	# A transparent TextureRect is culled, so UPDATE_WHEN_VISIBLE cannot
+	# refresh its stale texture. Explicitly render the hidden opening pose.
+	_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	await RenderingServer.frame_post_draw
+	if serial != _open_serial: return
 	self_modulate.a = 1.0
+	_vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 
 
 func _play(anim: String) -> void:
 	if _player and _player.has_animation("ei/" + anim):
+		_animation_usec = Time.get_ticks_usec()
 		_player.play("ei/" + anim)
 		_player.advance(0.0)
 

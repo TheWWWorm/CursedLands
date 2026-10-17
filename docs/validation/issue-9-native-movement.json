@@ -1,0 +1,138 @@
+{
+  "evidence_id": "ev_88abc281b7209aa53738e044c68009ab04f52c58a52903ebd71428092ea8e78f",
+  "subject": {
+    "name": "game.exe",
+    "digest": {
+      "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+    },
+    "format": "pe",
+    "architecture": "x86",
+    "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+  },
+  "provider": {
+    "id": "rea-workflow",
+    "name": "REA composed investigation workflow",
+    "version": "1"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "rea-workflow",
+      "name": "REA composed investigation workflow",
+      "version": "1"
+    },
+    "parameters": {
+      "upstream_analysis_profile": {
+        "provider": {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        },
+        "parameters": {
+          "target_kind": "executable",
+          "target_format": "pe",
+          "executable_role": "application",
+          "managed": false,
+          "native_aot_metadata": {
+            "contract_revision": "rtr-9.1-x64-pe-read-only-v3",
+            "source_bytes": 134217728,
+            "work_units": 67108864,
+            "working_memory_bytes": 67108864,
+            "report_bytes": 4194304
+          },
+          "architecture": "x86",
+          "available_architectures": [
+            "x86"
+          ],
+          "import_mode": "ephemeral-source-immutable",
+          "annotation_policy": "atomic-function-entry-metadata-v1",
+          "load_image_observations": "source-mappings-entry-context-v2",
+          "function_body_evidence": "complete-inclusive-ranges-v1",
+          "function_references": "complete-body-and-entry-reference-manager-v2",
+          "string_inventory_evidence": "defined-data-coverage-v1",
+          "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+          "instruction_flow_evidence": "decoded-return-pcode-v1",
+          "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+          "no_return_repair": "returning-imports-decoded-return-v2",
+          "process_launch": "inspected-jvm-launch-support-v1",
+          "jump_table_evidence": "typed-case-default-blocks-v1",
+          "decompiler_jump_loads": true,
+          "loader": "auto-from-header",
+          "language_id": "auto-from-header",
+          "compiler_spec_id": "auto-default",
+          "analyzer_preset": "ghidra-default"
+        },
+        "digest": "4f6212bfe31448a7b96743a449e91c35890105cedd34e1d9951e9467d284e0a5"
+      },
+      "workflow_revision": 2
+    },
+    "digest": "4ac93523d89696a48def07d531bb54c8331c5fd9eb058f5a45b9444a3d4389d6"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "batch_decompile",
+  "parameters": {
+    "addresses": [
+      "0x0052f920",
+      "0x0052e9d0",
+      "0x0052ea40"
+    ]
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "items": [
+      {
+        "address": "0x0052f920",
+        "procedure": {
+          "status": "resolved",
+          "address": "0x52f920",
+          "name": "FUN_0052f920"
+        },
+        "status": "ok",
+        "pseudocode": "\nvoid FUN_0052f920(float *param_1,float *param_2)\n\n{\n  float fVar1;\n  int in_ECX;\n  \n  fVar1 = (float)*(byte *)(in_ECX + 0x344) * 0.039215688;\n  *param_1 = fVar1;\n  *param_2 = fVar1;\n  switch(*(undefined4 *)(in_ECX + 0x264)) {\n  case 0:\n    fVar1 = (float)*(byte *)(in_ECX + 0x343);\n    break;\n  case 1:\n    fVar1 = (float)*(byte *)(in_ECX + 0x342);\n    break;\n  case 2:\n  case 4:\n    *param_2 = (float)*(byte *)(in_ECX + 0x340) * *param_1 * 2.0 * 0.003921569;\n    *param_1 = (float)*(byte *)(in_ECX + 0x341) * *param_1 * 2.0 * 0.003921569;\n    *param_2 = DAT_007c5428 * *param_2;\n    return;\n  case 3:\n    fVar1 = (float)*(byte *)(in_ECX + 0x340);\n    break;\n  default:\n    goto switchD_0052f955_default;\n  }\n  fVar1 = fVar1 * *param_1 * 2.0 * 0.003921569;\n  *param_1 = fVar1;\n  *param_2 = fVar1;\nswitchD_0052f955_default:\n  *param_2 = DAT_007c5428 * *param_2;\n  return;\n}\n\n"
+      },
+      {
+        "address": "0x0052e9d0",
+        "procedure": {
+          "status": "resolved",
+          "address": "0x52e9d0",
+          "name": "FUN_0052e9d0"
+        },
+        "status": "ok",
+        "pseudocode": "\nvoid FUN_0052e9d0(void)\n\n{\n  undefined4 uVar1;\n  int in_ECX;\n  undefined4 uStack_8;\n  undefined4 uStack_4;\n  \n  uVar1 = (**(code **)(**(int **)(in_ECX + 0x240) + 0x40))();\n  FUN_005c7c90(*(undefined4 *)(in_ECX + 0xc));\n  FUN_0052f920(&uStack_8,&uStack_4);\n  *(undefined4 *)(in_ECX + 0x31c) = 0xffffffff;\n  *(undefined4 *)(in_ECX + 0x2b8) = uStack_8;\n  *(undefined4 *)(in_ECX + 700) = uStack_4;\n  FUN_005c67d0(uVar1);\n  FUN_0050e9f0(10);\n  return;\n}\n\n"
+      },
+      {
+        "address": "0x0052ea40",
+        "procedure": {
+          "status": "resolved",
+          "address": "0x52ea40",
+          "name": "FUN_0052ea40"
+        },
+        "status": "ok",
+        "pseudocode": "\nvoid FUN_0052ea40(undefined4 param_1,undefined4 param_2)\n\n{\n  undefined4 uVar1;\n  int in_ECX;\n  \n  uVar1 = (**(code **)(**(int **)(in_ECX + 0x240) + 0x40))();\n  FUN_005c7c90(*(undefined4 *)(in_ECX + 0xc));\n  *(undefined4 *)(in_ECX + 0x31c) = 0xffffffff;\n  *(undefined4 *)(in_ECX + 0x2b8) = param_1;\n  *(undefined4 *)(in_ECX + 700) = param_2;\n  FUN_005c67d0(uVar1);\n  return;\n}\n\n"
+      }
+    ],
+    "total": 3,
+    "succeeded": 3,
+    "failed": 0
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Derived by an REA composed workflow."
+  ],
+  "locations": [
+    {
+      "kind": "address",
+      "address": "0x52f920"
+    },
+    {
+      "kind": "address",
+      "address": "0x52e9d0"
+    },
+    {
+      "kind": "address",
+      "address": "0x52ea40"
+    }
+  ],
+  "evidence_links": []
+}

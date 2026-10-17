@@ -375,6 +375,16 @@ func spawn(type: int, at: Vector3, size: float, carrier: Object = null, opt := {
 	return ef
 
 
+## Draw just-created UI markers even while the simulation is paused.
+## No world FX, projectile, light, or lifetime clocks are advanced.
+func prime_order_mark(ef: Effect) -> void:
+	if ef == null or ef.e.type not in THROUGH_TYPES or not get_tree().paused: return
+	_ground = FxGround.of(world)
+	ef.e.update() # emit
+	ef.e.update() # initialize the native particle alpha
+	_draw(1.0)
+
+
 ## On creation (when is made; for the wall):
 ## scorch marks (x, y, a, b, angle, min(· 0.6, 1)) —
 ## FireBlast 0x2002 a = b = (k11c), random angle; LightningBlast 0x2030

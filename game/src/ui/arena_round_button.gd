@@ -10,7 +10,7 @@ var progress := -1.0
 
 
 func _ready() -> void:
-	custom_minimum_size = Vector2(96, 84)
+	custom_minimum_size = Vector2(80, 74)
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	for state in ["normal", "hover", "pressed", "disabled", "focus"]:
 		add_theme_stylebox_override(state, StyleBoxEmpty.new())
@@ -38,7 +38,7 @@ func _draw() -> void:
 		draw_circle(badge, 11, ArenaCreatureCard.GOLD if not disabled else Color("8a8060"))
 		draw_arc(badge, 11, 0, TAU, 32, Color("50462e"), 1, true)
 		_centered(str(price), badge + Vector2(0, 5), 14, Color("19211e"))
-	_centered(caption, Vector2(size.x * 0.5, 80), 13, ArenaCreatureCard.PAPER)
+	_centered(caption, Vector2(size.x * 0.5, 72), 13, ArenaCreatureCard.PAPER)
 
 
 func _centered(text: String, baseline: Vector2, pixels: int, color: Color) -> void:

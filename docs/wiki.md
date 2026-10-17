@@ -72,7 +72,9 @@ menu/pause flow and retain the selected item material and spell where available.
 ### Maintaining lore
 
 Edit `tools/wiki_lore_content.py` for identities and place introductions, and
-`tools/wiki_lore_history.py` for the ordered campaign histories. Each paragraph
+`tools/wiki_lore_history.py` for the ordered campaign histories.
+`tools/wiki_lore_kel.py` selects Kel's shared events and adds her focused
+biography and the verified Rod of Life walkthrough. Each paragraph
 carries English, Russian and German text, its heading and original source IDs.
 `[[character/hero]]` and similar
 references resolve to the current campaign's localized article names. An optional

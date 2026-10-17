@@ -2562,11 +2562,13 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			if u and camp_available() and Perks.learn(u.get_meta("hero"), String(cmd.get("perk", ""))):
 				Combat.hero_stats(u, u.get_meta("hero"))
 				_sync_menu_state()
-		"refund_training":
+		"refund_training", "reset_training":
 			var u := _hero_unit(int(cmd.get("unit", -1)), player)
 			if u and not u.dead and camp_available():
 				var h: Dictionary = u.get_meta("hero")
-				if TrainingRefund.refund(h):
+				# Legacy commands remain full resets. The choice has a new verb,
+				# so older hosts cannot mistake a vanilla reset for a full one.
+				if TrainingRefund.refund(h, cmd.t == "refund_training" or bool(cmd.get("full", true))):
 					Combat.hero_stats(u, h)
 					_sync_menu_state()
 		"equip", "unequip", "use", "give_quick", "take_quick", "select_weapon", "learn", "unlearn":

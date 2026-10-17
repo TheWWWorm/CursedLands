@@ -489,7 +489,8 @@ func _player(u: GameUnit) -> void:
 ## The Player motivation in state 2 (= 2: packet 0x3a, a Ctrl or
 ## aimed-key click on the ground): calls the engage
 ## check on every tick of the walk, not only when idle. That check
-## needs the aggressive flag (== 1) and in state 2 gathers the noticed
+## originally needs the aggressive flag. Explicit attack-move now engages
+## in either stance; ordinary defensive movement remains passive. It gathers the noticed
 ## enemies round the walk's point within (
 ## ai.reg [Logic] SwarmRadius, confirmed below) instead of round the unit, then
 ## the targets of the player's other fighting units as always.
@@ -527,10 +528,6 @@ func swarm_tick(u: GameUnit) -> bool:
 		waiting = false
 		u.order.run = false
 	u.order.swarm_wait = waiting
-	if not u.aggressive:
-		if waiting:
-			u._set_action("idle")
-		return waiting
 	var at: Vector2 = u.order.get("swarm", u.pos)
 	var t := _player_target(u, at, GameData.ai_value("Logic", "SwarmRadius", 10.0))
 	if t == null:
@@ -538,7 +535,7 @@ func swarm_tick(u: GameUnit) -> bool:
 			u._set_action("idle")
 		return waiting
 	u.ack(EIAcks.DECIDE_TO_ATTACK)
-	u.attack(t)
+	u.attack(t, false, -1, false, true)
 	return true
 
 

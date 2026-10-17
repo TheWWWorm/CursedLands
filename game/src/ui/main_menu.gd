@@ -26,6 +26,7 @@ var _music: AudioStreamPlayer
 var _cursor: GameCursor
 var _campaigns: CampaignChoices
 var _campaign_bar: VBoxContainer
+var _utility_bar: HFlowContainer
 var _campaign_error: Label
 var _mods: ModPanel
 var _mods_button: Button
@@ -81,6 +82,13 @@ func _ready() -> void:
 	_campaigns.current = GameData.campaign_id
 	_campaigns.selected.connect(_select_campaign)
 	_campaign_bar.add_child(_campaigns)
+	_utility_bar = HFlowContainer.new()
+	_utility_bar.name = "MenuUtilities"
+	_utility_bar.alignment = FlowContainer.ALIGNMENT_CENTER
+	_utility_bar.add_theme_constant_override("h_separation", 12)
+	_utility_bar.add_theme_constant_override("v_separation", 8)
+	add_child(_utility_bar)
+	_utility_bar.minimum_size_changed.connect(_layout_campaign_bar.call_deferred)
 	# The expansion's original signpost deliberately has no Multiplayer
 	# board. Its remake co-op gets a visible entry beside the game choices.
 	if GameData.campaign_id == CampaignProfile.ASTRAL:
@@ -97,8 +105,9 @@ func _ready() -> void:
 	_mods_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	CampaignChoices.style_button(_mods_button)
 	_mods_button.pressed.connect(func(): _on_board("mods"))
-	_campaign_bar.add_child(_mods_button)
+	_utility_bar.add_child(_mods_button)
 	_wiki_button = Button.new()
+	_wiki_button.set_meta("compact_tooltip", true)
 	_wiki_button.text = RemakeText.t("Game wiki")
 	_wiki_button.tooltip_text = RemakeText.t("Browse items, spells, creatures and game mechanics.")
 	_wiki_button.custom_minimum_size = Vector2(220, 40)
@@ -106,18 +115,20 @@ func _ready() -> void:
 	CampaignChoices.style_button(_wiki_button)
 	_wiki_button.pressed.connect(func():
 		if pad_menu_free(): _wiki.open())
-	_campaign_bar.add_child(_wiki_button)
+	_utility_bar.add_child(_wiki_button)
 	_arena_pve_button = Button.new()
-	_arena_pve_button.text = RemakeText.t("PvE expedition")
+	_arena_pve_button.set_meta("compact_tooltip", true)
+	_arena_pve_button.visible = GameData.campaign_id == CampaignProfile.ORIGINAL
+	_arena_pve_button.text = RemakeText.t("Trials of the Allods")
 	_arena_pve_button.tooltip_text = RemakeText.t("Recruit creatures from Gipath, Ingos and Suslanger. Survive thirty battles.")
 	_arena_pve_button.custom_minimum_size = Vector2(220, 40)
 	_arena_pve_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	CampaignChoices.style_button(_arena_pve_button)
 	_arena_pve_button.pressed.connect(func():
-		if (_scene == null or pad_menu_free()) and not (_opening_panel or _wiki.visible or _mods.visible or _options.visible):
+		if GameData.campaign_id == CampaignProfile.ORIGINAL and (_scene == null or pad_menu_free()) and not (_opening_panel or _wiki.visible or _mods.visible or _options.visible):
 			_opening_panel = true
 			get_parent().open_arena_pve())
-	_campaign_bar.add_child(_arena_pve_button)
+	_utility_bar.add_child(_arena_pve_button)
 	_campaign_error = Label.new()
 	_campaign_error.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_campaign_error.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -265,6 +276,7 @@ func _select_campaign(id: String) -> void:
 func _process(_dt: float) -> void:
 	if _campaign_bar:
 		_campaign_bar.visible = not _scene or pad_menu_free()
+		_utility_bar.visible = _campaign_bar.visible
 
 
 func _layout_campaign_bar() -> void:
@@ -272,6 +284,11 @@ func _layout_campaign_bar() -> void:
 	var width := minf(600, maxf(0, safe.size.x - 32))
 	_campaign_bar.position = Vector2(safe.get_center().x - width * 0.5, safe.position.y + 16)
 	_campaign_bar.size.x = width
+	if _utility_bar:
+		var footer_width := minf(708, maxf(0, safe.size.x - 32))
+		_utility_bar.size.x = footer_width
+		_utility_bar.size.y = _utility_bar.get_combined_minimum_size().y
+		_utility_bar.position = Vector2(safe.get_center().x - footer_width * 0.5, safe.end.y - 16 - _utility_bar.size.y)
 
 
 func campaign_pad_targets() -> Array:
@@ -281,7 +298,7 @@ func campaign_pad_targets() -> Array:
 			targets.append({"rect": _campaigns.buttons[id].get_global_rect(), "id": "campaign_" + id})
 		targets.append({"rect": _mods_button.get_global_rect(), "id": "campaign_mods"})
 		targets.append({"rect": _wiki_button.get_global_rect(), "id": "campaign_wiki"})
-		targets.append({"rect": _arena_pve_button.get_global_rect(), "id": "campaign_arena_pve"})
+		if _arena_pve_button.visible: targets.append({"rect": _arena_pve_button.get_global_rect(), "id": "campaign_arena_pve"})
 		if _coop_button:
 			targets.append({"rect": _coop_button.get_global_rect(), "id": "campaign_coop"})
 	return targets

@@ -1,5 +1,45 @@
 # Changelog
 
+## 1.10.0 — 2026-10-17
+
+- Expand Kel’s encyclopedia biography and add the original Rod of Life resurrection requirements, fragment quests and dialogue deadline in English, Russian and German.
+
+- Put Mods and rules, Encyclopedia and Trials in a bottom menu row. Use the localized Trials of the Allods name, compact menu hints, and show Trials only for the original campaign.
+- Move company level, XP and recruitment odds into compact shop controls. Allow combat recruitment, XP purchases, rerolls, multiple offer locks and reserve sales; deployed upgrades take effect next round.
+- Fit creature/alliance details to their content, center utility icons, highlight upgrade-completing offers, and make camp rewards clickable cards with original item illustrations.
+- Keep the HUD and creature animation visible after a round, with results/countdown in the top badge. Add original sounds for transactions, evolution and round outcomes.
+- Give every recruit family a three-star evolution. Pay base income and interest after defeats and advance each completed wave; strengthen later enemy formations. Use the remake's 80% armor absorption cap for both sides in Trials and resolve unfinished battles as defeats after two minutes.
+- Cache unchanged encyclopedia indexes, decode only required map records once, and render visible search rows. Space navigation buttons and remove redundant difficulty explanations.
+
+- Offer starting-skill restoration or a full refund from a camp dialog, with original window styling and content-sized English, Russian and German layouts. ([#5](https://github.com/TheWWWorm/CursedLands/issues/5))
+- Adjust Trials recruit prices, make spiders available at company level five, and strengthen Veteran and Champion reinforcements. Set preparation to 60/45/30 seconds by difficulty and prevent damaging spells from hitting allies in Trials. ([#15](https://github.com/TheWWWorm/CursedLands/issues/15))
+- Show movement and attack routes during tactical pause, honor explicit attack-move in defensive stance, and show routes when attack-move acquires a target. ([#12](https://github.com/TheWWWorm/CursedLands/issues/12), [#13](https://github.com/TheWWWorm/CursedLands/issues/13), [#14](https://github.com/TheWWWorm/CursedLands/issues/14))
+- Render the pause signpost's opening pose before revealing it and keep pointer motion from interrupting the opening animation. ([#11](https://github.com/TheWWWorm/CursedLands/issues/11))
+- Suppress incidental acknowledgements and creature voices during quest dialogue while preserving scripted lines. ([#10](https://github.com/TheWWWorm/CursedLands/issues/10))
+
+Movement clarification ([#9](https://github.com/TheWWWorm/CursedLands/issues/9)):
+the player character's base crouching and walking speeds are equal, and crawling
+uses 80% of walking speed, matching the original game. This release makes no
+movement-speed adjustment.
+
+## 1.9.2 — pause menu and companion controls, 17 October 2026
+
+- Keep pause-menu opening and board animations at the same real-time speed when gameplay is paused, normal or accelerated, including reopening after an interrupted slide. ([#6](https://github.com/TheWWWorm/CursedLands/issues/6))
+- Restore normal stamina recovery for companions standing still with a follow order, retaining movement and combat recovery rules. ([#7](https://github.com/TheWWWorm/CursedLands/issues/7))
+- Allow party portraits to select follow targets while preserving the acting party selection, with matching target cursors and invalid-target handling. ([#8](https://github.com/TheWWWorm/CursedLands/issues/8))
+- Prevent a typed-array error when resolving world tooltips in direct control.
+
+See [release notes](docs/releases/1.9.2.md) for compatibility and platform limits.
+
+## 1.9.1 — pause menu and companion controls, 17 October 2026
+
+- Keep pause-menu opening and board animations at the same real-time speed when gameplay is paused, normal or accelerated. ([#6](https://github.com/TheWWWorm/CursedLands/issues/6))
+- Restore normal stamina recovery for companions standing still with a follow order, retaining movement and combat recovery rules. ([#7](https://github.com/TheWWWorm/CursedLands/issues/7))
+- Allow party portraits to select follow targets while preserving the acting party selection, with matching target cursors and invalid-target handling. ([#8](https://github.com/TheWWWorm/CursedLands/issues/8))
+- Prevent a typed-array error when resolving world tooltips in direct control.
+
+See [release notes](docs/releases/1.9.1.md) for compatibility and platform limits.
+
 ## 1.9.0 — Trials, illustrated lore and Android rendering, 17 October 2026
 
 - Draw native battlefield marks on the snowy surface on Mobile and Compatibility renderers.

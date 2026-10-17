@@ -278,7 +278,7 @@ func _update_cursor() -> void:
 	if hud.blocks_input() or vp.gui_get_hovered_control() != null:
 		var portrait: GameUnit = hud._faces.unit_at_screen(vp.get_mouse_position()) if not hud.blocks_input() \
 				and vp.gui_get_hovered_control() == hud._faces else null
-		cursor.set_kind(pending_cursor(portrait) if portrait and has_spell_target() else "cursor_default")
+		cursor.set_kind(pending_cursor(portrait) if portrait and has_portrait_target() else "cursor_default")
 		return
 	if Input.get_mouse_button_mask() & (MOUSE_BUTTON_MASK_RIGHT | MOUSE_BUTTON_MASK_MIDDLE):
 		cursor.set_kind("cursor_camera")
@@ -1196,6 +1196,10 @@ func has_spell_target() -> bool:
 	return not pending_spell.is_empty() and not pending_spell in [FOLLOW, SCIENCE]
 
 
+func has_portrait_target() -> bool:
+	return pending_spell == FOLLOW or has_spell_target()
+
+
 ##  use the client's byte Intelligence and
 ## unsigned-short stamina. The server pays from the unquantized floats.
 static func spell_ui_cost(u: GameUnit, sp: Dictionary) -> float:
@@ -1256,6 +1260,8 @@ func pending_target(u: GameUnit, ground: Variant = null) -> Dictionary:
 
 
 func pending_cursor(u: GameUnit, ground: Variant = null) -> String:
+	if pending_spell == FOLLOW:
+		return "cursor_move" if can_cast_portrait(u) else "cursor_cancel"
 	var target := pending_target(u, ground)
 	return "cursor_spell" if not target.is_empty() and pending_in_range(target) else "cursor_spellcancel"
 
@@ -1270,6 +1276,8 @@ func pending_in_range(target: Dictionary) -> bool:
 
 
 func can_cast_portrait(u: GameUnit) -> bool:
+	if pending_spell == FOLLOW:
+		return is_instance_valid(u) and not u.dead and not selected.is_empty()
 	return is_instance_valid(u) and not u.dead and pending_in_range(pending_target(u))
 
 
@@ -1277,7 +1285,7 @@ func cast_portrait(u: GameUnit) -> bool:
 	if not can_cast_portrait(u):
 		return false
 	# A portrait supplies only the target, including a co-op partner.
-	# Keep the caster selected and use the normal host-authoritative order.
+	# Keep the acting units selected and use the normal authoritative order.
 	cast_on(u)
 	cancel_touch_target()
 	return true
@@ -1531,7 +1539,8 @@ func world_tooltip() -> Dictionary:
 	if direct and direct.active() and not direct.pointer:
 		p = get_viewport().get_visible_rect().size * 0.5
 		var leader := direct.leader()
-		actors = [leader] if leader else []
+		actors = []
+		if leader: actors.append(leader)
 		exclude = leader
 	if actors.is_empty() or pick_unit(p, exclude) != null:
 		return {}

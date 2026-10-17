@@ -57,6 +57,11 @@ func _ready() -> void:
 	check(await until(func():return zero(guest(client))),"two queued reset clicks return to zero")
 	await settled()
 	check(guest(host).exp==expected and guest(client).exp==expected,"duplicate request cannot pay twice")
+	client.submit({"t":"reset_training","unit":uid,"full":false})
+	check(await until(func():return Perks.has(guest(host),"bs1") and Perks.has(guest(client),"bs1") and Skills.level(guest(client),"sense")==12),"guest vanilla reset restores the original allocation on both peers")
+	check(guest(host).exp+Refund.amount(guest(host))==expected and guest(host).exp==guest(client).exp,"network vanilla restoration conserves the same point budget")
+	client.submit({"t":"reset_training","unit":uid,"full":true})
+	check(await until(func():return zero(guest(host)) and zero(guest(client))),"explicit full choice resets both network copies")
 	host.state.shops[2]={"restock":false,"goods":{"rune:e1":3},"sold":{}}
 	host.open_shop(2)
 	check(await until(func():return int(client.state.shops.get(2,{}).get("goods",{}).get("rune:ic",0))==20 and int(client.state.shops.get(2,{}).get("goods",{}).get("rune:it",0))==20),"new infusion stock reaches the co-op guest")

@@ -10,7 +10,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.9.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.9.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It adds Trials of the Allods, illustrated character and world histories, and Android Vulkan optimizations. See the [release notes](docs/releases/1.9.0.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.10.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.10.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It expands Trials combat shopping and creature upgrades, refines balance and UI, improves encyclopedia responsiveness, and adds Kel’s resurrection guide. See the [release notes](docs/releases/1.10.0.md) and [versioning policy](docs/versioning.md).
 
 Browse the [**public wiki**](https://cursedlands.wwworm.com/wiki/) without game files or an account. Separate tabs cover the GOG base game and Lost in Astral: items, materials, spells, runes, creatures and mechanics in English, Russian and German.
 
@@ -75,72 +75,46 @@ Download the package for your system from the [Releases](https://github.com/TheW
 
 The setup screen and main menu let you choose **Main game — Evil Islands** or **Expansion — Lost in Astral**. Keep either or both installed; each has separate saves. **Options → Remake → Game files…** manages the two installations. For the expansion's supported CDs, choose **Import Lost in Astral ISO images…** and select both discs together. The engine reads the files without mounting the images or running the installer. Browser ISO import is unavailable; use a folder or data pack there. See [game library and expansion import](docs/campaign_library.md).
 
-In a camp's skills screen, **Refund all points** returns the experience spent on training for redistribution. Starting skills and attributes, free quest rewards and total earned experience are kept. Older characters are supported when their paid training can be reconstructed safely.
+In a camp's skills screen, **Refund all points** opens a choice between restoring the original starting allocation and a full reset. The dialog explains each option before applying it. Paid training and older characters are supported when their history can be reconstructed safely; Cancel leaves the character unchanged.
 
 Training purchases apply immediately. The default interface hides the unused Accept/Cancel controls on the skills screen and explains this; trade controls still reflect the current transaction.
 
 The travel map offers buttons for previously visited islands. You can revisit an earlier island and return to the area and party positions you left, keeping current quest and character progress. Captive and other restricted story sequences retain their travel limits.
 
-## Arena
+## Trials of the Allods
 
-Open **Arena** from the main menu to arrange two teams of creatures and watch
-them fight under AI control. The searchable roster includes every creature
-prototype in the loaded campaign, with localized names, base statistics and
-an animated model preview.
+Open **Trials of the Allods** from the original campaign’s bottom menu row for a
+solo, thirty-wave autobattler. Recruit twelve creature families from Gipath,
+Ingos and Suslanger, combine matching copies into three-star creatures, and form
+alliances from the distinct families deployed on the battlefield.
 
-Choose a creature, select **Blue team** or **Red team**, then click the battlefield.
-Click again to place another copy. Each team supports up to 24 creatures;
-overlapping or out-of-bounds placements are refused. **Remove**, **Undo** and
-**Clear team** let you adjust the formation before starting.
+The shop’s level number buys company XP; hover it for progress, price and recruit
+odds. Lock any number of offers, reroll the others, and deploy reserves before
+the preparation countdown ends. Start battle begins early. Preparation lasts
+60/45/30 seconds on Standard/Veteran/Champion.
 
-**Start battle** becomes available when both teams have a creature. Combat uses
-the existing monster AI, equipment, damage, movement and spells. Pause with the
-button or Space, choose half/normal/double speed, zoom with the wheel, and orbit
-with middle drag. The result identifies the winner; simultaneous elimination or
-the five-minute simulation limit produces a draw. **Rematch** restores the
-original formation and starts again; **Edit teams** restores it for deployment.
-The arena has no campaign progress, saves or network connection.
+The top **Shop** button opens recruitment during combat. You can buy creatures
+and XP, reroll, lock offers and sell reserves. Upgrades involving deployed copies
+appear on the battlefield next round; the ongoing battle keeps its starting
+figures and bonuses. Space pauses combat, and the speed control offers normal
+or double speed.
 
-For source builds, `godot-4 --path game -- --arena` opens it directly. The
-regression fixture is `tools/tests/arena.gd`; run it through the usual absolute
-`--tool=` argument with private XDG data/config/cache directories. Without
-`--headless`, it also checks real pointer placement and captures the UI at
-1280×800, 1280×720 and 1024×768. `python3 tools/check_translations.py` checks
-the English/Russian/German text coverage.
-
-## Trials of Gipath — PvE expedition
-
-Open **PvE expedition** from the main menu (or from Arena) for a solo, 18-wave
-autobattler. Choose one of three starter companies, recruit from six creature
-families, and evolve matching forms into curated creatures from the original game.
-Creature statistics, equipment and spells retain their native values.
-
-Click an offer to recruit it, then select a reserve and click a clear position in
-the blue deployment area. Select a creature on the field to move it, inspect its
-stats, move it to the bench, sell it or preview its evolution. Right-click or Esc
-closes selection. Two matching shooters or bats unlock their first evolution;
-other recipes require three copies. First evolutions unlock at wave 4 and final
-forms at wave 10. Evolution is an explicit action, never an automatic purchase.
-
-The corner menu contains **Guide**, **Auto arrange**, **Undo**, **Sandbox** and
-**Main menu**. **Start battle** commits the formation to AI control and hides the
-shop. Space pauses; the speed selector offers normal/double speed. Scroll zooms;
-middle drag rotates. There is no preparation timer.
-
-Begin with three creatures, 6 gold and three lives. Victories before the final wave
-earn 8 gold; defeat costs one life and lets the restored army retry the same wave.
-Army capacity grows from three to seven. Waves 6 and 12 offer a companion or a
-run-specific boon. Clearing a run unlocks the next expedition difficulty.
+Every completed round pays base income, interest and XP. Wins add victory and
+streak rewards. Defeat costs one life and advances to the next wave. Every fifth
+round offers a camp reward. Surviving all thirty waves unlocks the next difficulty.
+Armor absorbs at most 80% of each damage type for both sides. A battle unfinished
+after two minutes of combat counts as a defeat. The HUD and creature animations
+remain visible during the result notification.
 
 Expeditions autosave separately from campaigns in `user://arena-expedition.json`;
 unlocks use `user://arena-profile.json`. Interrupted battles resume in preparation.
-An optional seed repeats shops and encounter formations. The original campaign's
-game data is required; the expansion is not a separately balanced PvE roster.
+An optional seed repeats shops and formations. Original campaign data is required;
+Trials is not offered from Lost in Astral.
 
-Source launch: `godot-4 --path game -- --arena-pve`. The local preview launcher and
-renderer details are recorded in the workspace handoff. See the [implemented
-rules and balance evidence](docs/arena-pve-design.md), [UI design](docs/design/arena-ui.md)
-and [validation record](docs/validation/arena-pve-2026-10-16.json).
+Source launch: `godot-4 --path game -- --arena-pve`. See the [current rules](docs/arena-pve-design.md)
+and [balance and UI validation](docs/validation/trials-ui-balance.md). The separate
+creature sandbox remains available to developers through `--arena`; it uses its
+original five-minute draw limit.
 
 ## Mods and game rules (experimental)
 

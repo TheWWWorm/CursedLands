@@ -76,7 +76,7 @@ func build(source: RefCounted) -> void:
 				for edge: Dictionary in catalog._campaign.zone(dest).get("exits",{}).values():pending.append(String(edge.get("to","")))
 		var mob_name := String(zone.get("mob",""))
 		if mob_name.is_empty(): continue
-		var mob := EIMob.load_bytes(GameData.read_file("maps/"+mob_name+".mob"))
+		var mob: EIMob = catalog.map_records(mob_name)
 		for object: Dictionary in mob.objects:
 			if object.kind!="UNIT": continue
 			var creature := "creature/"+String(object.get("prototype","")).to_lower().uri_encode()

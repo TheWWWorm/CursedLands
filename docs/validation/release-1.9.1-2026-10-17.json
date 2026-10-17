@@ -1,0 +1,309 @@
+{
+  "version": "1.9.1",
+  "tag": "v1.9.1",
+  "base_stable": "1.9.0",
+  "release_type": "stable patch",
+  "game_source_commit": "00814f73ff36b460b12f34e0af50a64f6eee6a59",
+  "game_tree": "0b437f57fa4c2cd96200500fe39b258153ca4182",
+  "issues": [
+    6,
+    7,
+    8
+  ],
+  "protocol": 23,
+  "same_version_coop_required": true,
+  "compiled_scripts": 336,
+  "all_compiled_scripts_identical_across_five_platforms": true,
+  "runtime_checks": [
+    {
+      "suite": "pause_menu_clock",
+      "language": "en",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "summary": [
+        "PAUSE_MENU_CLOCK 14 checks 0 failures"
+      ],
+      "log_sha256": "3fd05cccfda354d3cac462ce7cdfc92e2e12fb30cd40088c37948bad1ad541d1",
+      "checks": 14,
+      "renderer": "headless"
+    },
+    {
+      "suite": "stamina_regen",
+      "language": "en",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "summary": [
+        "STAMINA_REGEN 33 checks 0 failures"
+      ],
+      "log_sha256": "727620e14306389ec12338c38b0a208bfdf7b4dffb4b8b5f76eaf9361671d6c1",
+      "checks": 33,
+      "renderer": "headless"
+    },
+    {
+      "suite": "direct_spell_selection",
+      "language": "en",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "summary": [
+        "DIRECT_SPELL_SELECTION {\"checks\":15,\"failures\":[]}"
+      ],
+      "log_sha256": "ce0c0cd528a5361a68484ba6397e12db2db43ce64d3d0cc9320fbe956ccd83d3",
+      "checks": 15,
+      "renderer": "headless"
+    },
+    {
+      "suite": "repeated_spells",
+      "language": "en",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "summary": [
+        "REPEATED_SPELLS 86 checks 0 failures"
+      ],
+      "log_sha256": "48690738932518b9a27e8c8aa94cb8a8132ae452e951e0c7c480a7626de16d32",
+      "checks": 86,
+      "renderer": "headless"
+    },
+    {
+      "suite": "follow_portraits",
+      "language": "en",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "summary": [
+        "FOLLOW_PORTRAITS 26 checks 0 failures"
+      ],
+      "log_sha256": "e9fc04bfdb8db4fb0358d9457c45fb854f37766306dd10f3c1ce26400f12c08f",
+      "checks": 26,
+      "renderer": "headless"
+    },
+    {
+      "suite": "follow_portraits",
+      "language": "en",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "summary": [
+        "FOLLOW_PORTRAITS 27 checks 0 failures"
+      ],
+      "log_sha256": "a4ec816d207a246a669abc3f26983b21932aab4ca050dace02d51a8d8f775dc4",
+      "checks": 27,
+      "renderer": "Compatibility"
+    },
+    {
+      "suite": "follow_portraits",
+      "language": "ru",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "summary": [
+        "FOLLOW_PORTRAITS 27 checks 0 failures"
+      ],
+      "log_sha256": "d37820adb8706a7ad3743c343f1416eb5d41f91e9c3a0653c29c2d4c6382013f",
+      "checks": 27,
+      "renderer": "Compatibility"
+    },
+    {
+      "suite": "follow_portraits",
+      "language": "de",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "summary": [
+        "FOLLOW_PORTRAITS 27 checks 0 failures"
+      ],
+      "log_sha256": "35f99b978e18f2f6afbf1b4461df8e07239b92b32f57a376752dfddc0bc5149c",
+      "checks": 27,
+      "renderer": "Compatibility"
+    },
+    {
+      "suite": "pause_menu_clock",
+      "language": "en",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "summary": [
+        "PAUSE_MENU_CLOCK 14 checks 0 failures"
+      ],
+      "log_sha256": "6068ba11addf94775c521c2c266bd9b1d3db767d01611d8b5fdbe04debdb0b45",
+      "checks": 14,
+      "renderer": "Compatibility"
+    }
+  ],
+  "runtime_assertions": 269,
+  "translations": {
+    "entries": 2413,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 121,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "errors": 0,
+    "player_text_changed": false
+  },
+  "desktop": {
+    "linux-x86_64": {
+      "version": "1.9.1",
+      "source_commit": "00814f73ff36b460b12f34e0af50a64f6eee6a59",
+      "game_tree": "0b437f57fa4c2cd96200500fe39b258153ca4182",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 336,
+      "resource_count": 894,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.pck": "5e5319316cff7c2c7d4876faf6371b68a8e7e1d0c253c559b45020690868276b"
+      }
+    },
+    "windows-x86_64": {
+      "version": "1.9.1",
+      "source_commit": "00814f73ff36b460b12f34e0af50a64f6eee6a59",
+      "game_tree": "0b437f57fa4c2cd96200500fe39b258153ca4182",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 336,
+      "resource_count": 894,
+      "files": {
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "CursedLands.pck": "5e5319316cff7c2c7d4876faf6371b68a8e7e1d0c253c559b45020690868276b"
+      }
+    },
+    "macos-universal": {
+      "version": "1.9.1",
+      "source_commit": "00814f73ff36b460b12f34e0af50a64f6eee6a59",
+      "game_tree": "0b437f57fa4c2cd96200500fe39b258153ca4182",
+      "protocol": 23,
+      "platform": "macos-universal",
+      "unsigned": true,
+      "target_os_runtime_tested": false,
+      "compiled_scripts": 336,
+      "files": {
+        "CursedLands.zip": "56b06dbbc9f11e29f7f425d04cf1cc7d634157eab7682c9855be15c1e03dc7ea"
+      }
+    }
+  },
+  "android": {
+    "version": "1.9.1",
+    "compiled_scripts": 336,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 42,
+    "debuggable": false,
+    "apk_sha256": "cbc1502fbd475fe2faff28b1e2830992d3a8af224729df57f9a2611193f012ba",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16,
+    "target_os_runtime_tested": false,
+    "previous_qualified_engine_release": "1.9.0"
+  },
+  "browser": {
+    "version": "1.9.1",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-668c64abdfa8f4b6c9da",
+      "new_cache": "cursed-engine-2-3b12694fe23506c44d23",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "81ff2e0bc52273782d2798321938643ddd4ffa98f610b1e5a7bf61a54417a57f",
+      "old_tab_wait_verified": true,
+      "unchanged_wasm_reused": true,
+      "network_paths": [
+        "__expected",
+        "index.html",
+        "index.pck",
+        "release-check.html",
+        "service-worker.js"
+      ],
+      "previous_version": "1.9.0"
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-3b12694fe23506c44d23"
+      ],
+      "packs": {
+        "cursed-engine-2-3b12694fe23506c44d23": "81ff2e0bc52273782d2798321938643ddd4ffa98f610b1e5a7bf61a54417a57f"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    },
+    "fresh_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": [],
+      "inspection": "In-app browser canvas screenshot and developer console"
+    },
+    "upgraded_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": [],
+      "inspection": "In-app browser canvas screenshot and developer console"
+    },
+    "build": {
+      "version": "1.9.1",
+      "source_tag": "v1.9.1",
+      "source_commit": "00814f73ff36b460b12f34e0af50a64f6eee6a59",
+      "game_tree": "0b437f57fa4c2cd96200500fe39b258153ca4182",
+      "protocol": 23,
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 336,
+      "resource_count": 891,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "81ff2e0bc52273782d2798321938643ddd4ffa98f610b1e5a7bf61a54417a57f",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    }
+  },
+  "hosted_files_count": 13551,
+  "hosted_manifest_sha256": "fdbe1051910c8be616b1e8634c7294c899a752cb1bbc5fcc735f67f0b994de5b",
+  "parts_manifest": {
+    "/index.wasm": {
+      "count": 2,
+      "size": 39509339
+    }
+  },
+  "evidence": {
+    "follow-menu-de.png": "a9cc4c624312e4b39be23496cd994118631abd3084837aa13d608c38f4fdfd74",
+    "results.json.gz": "da269d27cc9ff461d0135657df359a09575417818560823fa78b1efdf4dce414",
+    "follow-menu-en.png": "9c030beea9f8b105d9cd768ca171dc04ba59ed065bb5c38a004d74895b85fcf7",
+    "follow-menu-ru.png": "b339ad6210fa6025acf2b7a3e0c50c32504b2994d3584b6675aec61a2dfda790"
+  },
+  "validation_notes": [
+    "The new regressions reproduced scaled menu animations, missing stamina recovery for stationary followers, and portrait clicks selecting instead of following in the unmodified source.",
+    "The rendered input fixture waits for HUD fitting after selection changes before resolving portrait coordinates. Headless checks resolve cursor eligibility directly because they have no OS pointer.",
+    "An existing direct-control tooltip typed-array error found during regression testing was corrected; direct spell selection now completes without script errors.",
+    "Menu clips use wall time; their opening and hover durations were checked at half, normal and accelerated game speed, with and without a paused scene tree.",
+    "Browser upgrade checks compare every IndexedDB store, including isolated game-data and save-file sentinels. They do not represent a complete saved campaign playthrough."
+  ],
+  "limits": [
+    "Runtime tests ran on the packaged Linux build. Windows, macOS and Android packages were audited without runtime tests on their target operating systems. macOS is unsigned.",
+    "Linux UI was rendered with Compatibility and checked in English, Russian and German. Original EN/RU/DE archives supply the existing captions; no player-visible strings changed.",
+    "Portrait tests inject mouse input and use the normal authority handler. They do not exercise a physical input device or a live network peer.",
+    "Browser checks cover setup, cache replacement, storage preservation and error logs, not a complete campaign."
+  ],
+  "deployment_verification": "Live asset hashes and browser startup must pass before the draft release is published; receipts are retained in the release workspace."
+}

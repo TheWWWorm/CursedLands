@@ -11,23 +11,23 @@ func _ready() -> void:
 	var run := ArenaRun.new()
 	run.auto_save = false
 	run.begin(1901)
-	check(run.preparation_left == 45, "opening gives 45 seconds")
-	check(not run.elapse_preparation(12.5) and run.preparation_left == 32.5, "clock advances without starting early")
+	check(run.preparation_left == 60, "opening gives 60 seconds")
+	check(not run.elapse_preparation(12.5) and run.preparation_left == 47.5, "clock advances without starting early")
 	run.elapse_preparation(-3)
-	check(run.preparation_left == 32.5, "negative delta cannot add time")
+	check(run.preparation_left == 47.5, "negative delta cannot add time")
 	var saved := run.snapshot()
 	var resumed := ArenaRun.new()
 	resumed.auto_save = false
-	check(resumed.restore(JSON.parse_string(JSON.stringify(saved))) and resumed.preparation_left == 32.5, "save retains exact countdown")
-	for value in [-1, 46, INF, NAN, "45"]:
+	check(resumed.restore(JSON.parse_string(JSON.stringify(saved))) and resumed.preparation_left == 47.5, "save retains exact countdown")
+	for value in [-1, 61, INF, NAN, "60"]:
 		var invalid := saved.duplicate(true); invalid.preparation_left = value
 		check(not resumed.restore(invalid), "invalid clock rejected")
 	var legacy := saved.duplicate(true); legacy.version = 6; legacy.pact = ""; legacy.pact_rank = 0; legacy.erase("preparation_left")
 	check(resumed.restore(legacy) and resumed.preparation_left == 45, "older saves get full preparation time")
 	var bought := run.buy(0)
-	check(bought.is_empty() and run.preparation_left == 32.5, "recruit does not reset timer")
+	check(bought.is_empty() and run.preparation_left == 47.5, "recruit does not reset timer")
 	run.elapse_preparation(3); run.undo()
-	check(run.preparation_left == 29.5 and run.army.is_empty(), "undo never refunds elapsed time")
+	check(run.preparation_left == 44.5 and run.army.is_empty(), "undo never refunds elapsed time")
 	check(not run.start_battle().is_empty(), "manual start still rejects empty army")
 	check(not run.start_battle(true).is_empty(), "cannot forfeit before timeout")
 	var battle := ArenaPveMatch.new()
@@ -41,15 +41,16 @@ func _ready() -> void:
 	battle.expire_preparation()
 	check(run.lives == 2, "expiry cannot repeat after resolution")
 	run.advance()
-	check(run.stage == "prepare" and run.preparation_left == 45, "retry resets preparation")
+	check(run.stage == "prepare" and run.preparation_left == 60, "next wave resets preparation after a loss")
+	run.shop = [{"family": 0, "rank": 0, "locked": false}, {"family": 2, "rank": 0, "locked": false}, {"family": 4, "rank": 0, "locked": false}, {"family": 1, "rank": 0, "locked": false}, {"family": 3, "rank": 0, "locked": false}]
 	Fixture.buy_company(run, 1)
 	for entry in run.army: entry.deployed = false
-	battle.prepare(); run.elapse_preparation(45); battle.expire_preparation()
+	battle.prepare(); run.elapse_preparation(60); battle.expire_preparation()
 	check(run.stage == "fight" and run.deployed_count() == 3 and battle.phase == ArenaMatch.Phase.FIGHT, "timeout deploys reserves on an empty field and starts combat")
 	check(run.preparation_left == 0 and not run.elapse_preparation(9), "combat does not advance preparation clock")
-	check(resumed.restore(run.snapshot()) and resumed.stage == "prepare" and resumed.preparation_left == 45, "interrupted combat restores a full planning round")
+	check(resumed.restore(run.snapshot()) and resumed.stage == "prepare" and resumed.preparation_left == 60, "interrupted combat restores a full planning round")
 	run.resolve(0, 1, [1,0]); run.advance()
-	check(run.wave == 2 and run.preparation_left == 45, "next wave resets preparation")
+	check(run.wave == 3 and run.preparation_left == 60, "next wave resets preparation")
 	battle.prepare()
 	var bodies := {}
 	for unit in battle.world.unit_rows(): bodies[unit.get_instance_id()] = unit
@@ -69,7 +70,7 @@ func _ready() -> void:
 	var clock := run.preparation_left
 	check(run.stage == "reward" and not run.elapse_preparation(100) and run.preparation_left == clock, "camp choices are untimed")
 	var reward := run.choose_reward(0)
-	check(reward.is_empty() and run.preparation_left == 45, "leaving camp starts a fresh countdown")
+	check(reward.is_empty() and run.preparation_left == 60, "leaving camp starts a fresh countdown")
 	check(run.alliances().beast == 3, "deployed lineup retains automatic alliance progress")
 	battle.queue_free()
 	print("ARENA_FLOW ",checks," checks; failures=",JSON.stringify(failures))

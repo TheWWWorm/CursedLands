@@ -7,6 +7,7 @@ var rendered := true
 var contributions := {}
 var selected_run_uid := 0
 var settle_remaining := 0.0
+var round_army: Array[Dictionary] = []
 var formation_motion := ArenaFormationMotion.new()
 var _entrants := {}
 var _round_key := ""
@@ -16,12 +17,22 @@ signal presentation_finished
 
 func _ready() -> void:
 	super._ready()
-	mod_config = {"rules": {"armor_formula": 0, "free_run": 0, "stamina_regen": 0}, "values": {}}
+	# Trials use the remake's shared 80% absorption cap: strong armor remains
+	# useful, while low-damage attacks and spells can still make progress.
+	mod_config = {"rules": {"armor_formula": 1, "free_run": 0, "stamina_regen": 0}, "values": {}}
 	finished.connect(_resolved)
 
 
 func bounds() -> Rect2:
 	return Rect2(18.5, 18.5, 27, 27)
+
+
+func stalemate_seconds() -> float:
+	return 10.0
+
+
+func time_limit() -> float:
+	return ArenaRules.BATTLE_SECONDS
 
 
 func _spawn(placement: Dictionary) -> GameUnit:
@@ -39,12 +50,16 @@ func _make_ground() -> EITerrain:
 
 func prepare() -> void:
 	settle_remaining = 0.0
+	# Purchases may evolve or consume roster copies while their original
+	# figures are still fighting. This snapshot owns this round's bonuses.
+	round_army.assign(run.army.duplicate(true))
 	formation.clear()
 	for entry: Dictionary in run.army:
 		if entry.deployed:
 			formation.append({"id": entry.prototype, "team": 0,
 				"point": Vector2(entry.point[0], entry.point[1]), "run_uid": int(entry.uid), "rank": int(entry.rank)})
-	var enemies := run.enemy_formation()
+	var enemies: Array[Dictionary] = []
+	if not run.arrivals_at_start(): enemies = run.enemy_formation()
 	for index in enemies.size():
 		enemies[index]["enemy_slot"] = index
 	formation.append_array(enemies)
@@ -57,6 +72,7 @@ func prepare() -> void:
 		_rebuild_world()
 	else:
 		_reconcile_formation()
+	world.set_meta("expedition_spell_safety", true)
 	world.presentation = rendered
 	world.combat.difficulty_override = 0
 	world.combat.rng.seed = run.battle_seed()
@@ -143,8 +159,30 @@ func placement_error(point: Vector2, radius := 0.8, except: GameUnit = null, use
 
 
 func start() -> bool:
-	if run == null or not is_instance_valid(world) or phase != Phase.DEPLOY or team_count(0) == 0 or team_count(1) == 0: return false
+	if run == null or not is_instance_valid(world) or phase != Phase.DEPLOY or team_count(0) == 0: return false
 	if not run.start_battle().is_empty(): return false
+	if run.arrivals_at_start():
+		var enemies := run.enemy_formation()
+		for index in enemies.size():
+			var placement: Dictionary = enemies[index]
+			placement["enemy_slot"] = index
+			formation.append(placement)
+			var incoming := _spawn(placement)
+			_entrants.erase(incoming)
+			if rendered and incoming:
+				SpellFx.spawn(world, incoming.pos, "teleport", 2, 0.6, {"red":0.35, "green":0.65, "blue":1.0, "light_radius":2.5})
+		ArenaAlliances.apply(world, round_army, run.enemy_army())
+		# The shared bell locks every home board. Preparation walk-ins must not
+		# give one company extra combat time while another is still arriving.
+		formation_motion.clear()
+		for unit: GameUnit in world.unit_rows():
+			unit.pos = unit.get_meta("arena_placement").point
+			unit.resync_drawn()
+			world.nav.track_unit(unit)
+	if team_count(1) == 0:
+		winner = 0; phase = Phase.FINISHED
+		changed.emit(); finished.emit(winner)
+		return true
 	if not formation_motion.movers.is_empty():
 		_start_pending = true
 		changed.emit()
@@ -204,12 +242,14 @@ func _resolved(side: int) -> void:
 
 func _process(dt: float) -> void:
 	super._process(dt)
-	if settle_remaining <= 0: return
+	if not rendered or phase != Phase.FINISHED or not is_instance_valid(world): return
 	# Combat is frozen by ArenaMatch. Advance only the figure clips so the
-	# final death can finish, without late hits, changed HP, or extra income.
+	# final death and idle animations continue through results and camp,
+	# without late hits, changed HP, or extra income.
 	for unit: GameUnit in world.unit_rows():
 		unit._anim_acc += dt
 		unit.anim_flush()
+	if settle_remaining <= 0: return
 	settle_remaining = maxf(0, settle_remaining - dt)
 	if settle_remaining == 0: presentation_finished.emit()
 

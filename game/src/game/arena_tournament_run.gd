@@ -1,8 +1,8 @@
 class_name ArenaTournamentRun
 extends ArenaRun
-## Ten persistent companies. Pairings and purchases are fixed before combat;
+## Nine persistent companies. Pairings and purchases are fixed before combat;
 ## all health/income changes settle together, once every duel has finished.
-const PLAYER_COUNT := 10
+const PLAYER_COUNT := 9
 const MAX_ROUNDS := 100
 const TOURNAMENT_SAVE := "user://arena-autochess.json"
 const STYLES := [[0,2,4,5,6,10], [1,3,7,9], [0,1,7,9], [2,3,6,10], [4,5,8,11]]
@@ -14,6 +14,23 @@ var results := {}
 var previous_opponent := -1
 var _human_result := {}
 var _initializing := false
+var live_boards := false
+var board_results := {}
+var bot_plans: Array[Dictionary] = []
+const NPCS := ["elder", "witch", "smith", "kapitan", "huber", "magess", "orcc", "karh"]
+
+func arrivals_at_start() -> bool: return true
+
+func opponent_for(player: int) -> int:
+	for pair: Dictionary in pairings:
+		if int(pair.a) == player: return int(pair.b)
+		if int(pair.b) == player and not pair.ghost: return int(pair.a)
+	return -1
+
+func board_encounter(player: int) -> String:
+	var opponent := opponent_for(player)
+	return RemakeText.t("Creep round") if opponent < 0 else RemakeText.t("Opponent: %s") % player_title(opponent)
+
 
 
 func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
@@ -50,7 +67,9 @@ func company(player: int) -> ArenaRun:
 	return self if player == 0 else rivals[player - 1]
 
 func player_title(player: int) -> String:
-	return RemakeText.t("You") if player == 0 else RemakeText.t("CPU %d") % player
+	if player == 0: return RemakeText.t("You")
+	var row: Dictionary = WikiLoreData.DATA.campaigns.cursed_lands["character/" + NPCS[player - 1]]
+	return WikiLore.new().character_name(row)
 
 func alive_players() -> Array[int]:
 	var alive: Array[int] = []
@@ -69,7 +88,7 @@ func encounter_title() -> String:
 	var index := human_pair()
 	if index < 0: return RemakeText.t("Autochess")
 	var pair := pairings[index]
-	return (RemakeText.t("Against a copy of %s") if pair.ghost else RemakeText.t("Against %s")) % player_title(int(pair.b))
+	return (RemakeText.t("Opponent: %s (copy)") if pair.ghost else RemakeText.t("Opponent: %s")) % player_title(int(pair.b))
 
 func enemy_formation() -> Array[Dictionary]:
 	if is_creep_round(): return creeps()
@@ -96,54 +115,95 @@ static func formation_for(army_rows: Array, team: int) -> Array[Dictionary]:
 
 
 func _prepare_round() -> void:
-	results.clear(); _human_result.clear()
+	results.clear(); board_results.clear(); _human_result.clear(); bot_plans.clear()
 	for index in rivals.size():
+		bot_plans.append({"actions":0, "rerolls":0, "wait":0.4 + index * 0.13, "done":false})
 		if rival_health[index] <= 0: continue
 		var rival := rivals[index]
 		rival.stage = "prepare"
 		rival.wave = mini(wave, ArenaRules.WAVE_COUNT)
 		if wave > ArenaRules.WAVE_COUNT: rival.training = mini(ArenaRules.MAX_TRAINING, rival.training + 1)
 		if wave > 1: rival._roll_shop(true)
-		shop_for(rival, index + 1, wave, rival_health[index])
 	_choose_pairings()
 
 
 ## Bots pay the same prices and use the same offers, XP and merge recipes.
 static func shop_for(bot: ArenaRun, player: int, round_number: int, hp: int) -> void:
+	var plan := {"actions":0, "rerolls":0, "done":false}
+	while not plan.done: shop_step(bot, player, round_number, hp, plan)
+
+
+static func shop_step(bot: ArenaRun, player: int, round_number: int, hp: int, plan: Dictionary) -> void:
+	if plan.done: return
+	plan.actions += 1
+	if plan.actions >= 40: plan.done = true; return
 	var desired_level := mini(ArenaRules.MAX_ARMY, 3 + (round_number - 1) / 3)
-	while bot.capacity() < desired_level and bot.gold >= ArenaRules.TRAINING_COST + 4:
-		if not bot.train().is_empty(): break
+	if bot.capacity() < desired_level and bot.gold >= ArenaRules.TRAINING_COST + 4:
+		if bot.train().is_empty(): return
 	var reserve_gold := 10 if round_number >= 8 and hp > 35 else 0
-	var rerolls := 0
-	for action in 40:
-		var best := -1
-		var best_score := -INF
-		for index in bot.shop.size():
-			if not bot.purchase_error(index).is_empty(): continue
-			var offer: Dictionary = bot.shop[index]
-			var family := int(offer.family)
-			var copies := bot.army.filter(func(entry):return int(entry.family) == family and int(entry.rank) == 0).size()
-			var needed := ArenaRules.evolution_copies(family, 0)
-			var merging := needed > 0 and copies + 1 >= needed
-			if bot.gold - bot.offer_cost(offer) < reserve_gold and not merging and bot.deployed_count() >= bot.capacity(): continue
-			var score := float(ArenaRules.FAMILIES[family].tier) * 2.0
-			if family in STYLES[(player - 1) % STYLES.size()]: score += 5
-			if copies > 0: score += 8 + copies * 3
-			if merging: score += 20
-			if not bot.army.any(func(entry):return int(entry.family) == family): score += 2
-			if score > best_score: best = index; best_score = score
-		if best >= 0:
-			bot.buy(best)
-			continue
-		if bot.bench_count() >= bot.bench_limit():
-			var spare := bot.army.filter(func(entry):return not entry.deployed and int(entry.rank) == 0)
-			spare.sort_custom(func(a,b):return int(a.investment) < int(b.investment))
-			if not spare.is_empty(): bot.sell(int(spare[0].uid))
-		if rerolls >= 5 or bot.gold < reserve_gold + bot.refresh_cost() + 3: break
-		if not bot.refresh().is_empty(): break
-		rerolls += 1
-	bot.arrange()
+	var best := -1
+	var best_score := -INF
+	for index in bot.shop.size():
+		if not bot.purchase_error(index).is_empty(): continue
+		var offer: Dictionary = bot.shop[index]
+		var family := int(offer.family)
+		var copies := bot.army.filter(func(entry): return int(entry.family) == family and int(entry.rank) == 0).size()
+		var needed := ArenaRules.evolution_copies(family, 0)
+		var merging := needed > 0 and copies + 1 >= needed
+		if bot.gold - bot.offer_cost(offer) < reserve_gold and not merging and bot.deployed_count() >= bot.capacity(): continue
+		var score := float(ArenaRules.FAMILIES[family].tier) * 2.0
+		if family in STYLES[(player - 1) % STYLES.size()]: score += 5
+		if copies > 0: score += 8 + copies * 3
+		if merging: score += 20
+		if not bot.army.any(func(entry): return int(entry.family) == family): score += 2
+		if score > best_score: best = index; best_score = score
+	if best >= 0:
+		bot.buy(best)
+		bot.arrange()
+	elif bot.bench_count() >= bot.bench_limit():
+		var spare := bot.army.filter(func(entry): return not entry.deployed and int(entry.rank) == 0)
+		spare.sort_custom(func(a,b): return int(a.investment) < int(b.investment))
+		if not spare.is_empty(): bot.sell(int(spare[0].uid))
+		else: plan.done = true
+	elif plan.rerolls < 5 and bot.gold >= reserve_gold + bot.refresh_cost() + 3 and bot.refresh().is_empty():
+		plan.rerolls += 1
+	else: plan.done = true
 	bot._undo.clear()
+
+
+func advance_bots(dt: float) -> Array[int]:
+	var changed_players: Array[int] = []
+	if stage != "prepare": return changed_players
+	for index in rivals.size():
+		var plan := bot_plans[index]
+		if rival_health[index] <= 0 or plan.done: continue
+		plan.wait -= dt
+		if plan.wait > 0: continue
+		plan.wait += 0.8 + float(index % 4) * 0.18
+		shop_step(rivals[index], index + 1, wave, rival_health[index], plan)
+		changed_players.append(index + 1)
+	return changed_players
+
+
+func finish_preparation() -> void:
+	for index in rivals.size():
+		if rival_health[index] <= 0: continue
+		while not bot_plans[index].done: shop_step(rivals[index], index + 1, wave, rival_health[index], bot_plans[index])
+
+
+func start_battle(allow_empty := false) -> String:
+	if stage == "prepare": finish_preparation()
+	return super.start_battle(allow_empty)
+
+
+func record_board(player: int, winner: int, survivors: Array) -> void:
+	if stage != "fight" or board_results.has(player): return
+	board_results[player] = {"winner":winner, "survivors":survivors.duplicate()}
+	if board_results.size() == alive_players().size() and not _human_result.is_empty(): _settle_round()
+
+
+func draw_damage() -> int:
+	return 10
 
 
 func _choose_pairings() -> void:
@@ -177,7 +237,8 @@ func resolve(winner: int, seconds: float, damage: Array, survivors: Array = [0,0
 	if stage != "fight" or not _human_result.is_empty(): return
 	_human_result = {"wave":wave,"winner":winner,"seconds":seconds,"damage":damage.duplicate(),"gold":0}
 	if deployed_count() == 0: _human_result["empty_army"] = true
-	record_duel(human_pair(), winner, survivors)
+	if live_boards: record_board(0, winner, survivors)
+	else: record_duel(human_pair(), winner, survivors)
 
 func record_duel(index: int, winner: int, survivors: Array) -> void:
 	if stage != "fight" or index < 0 or index >= pairings.size() or results.has(index): return
@@ -190,14 +251,27 @@ func defeat_damage(surviving_stars: int) -> int:
 func _settle_round() -> void:
 	var alive := alive_players()
 	var losses := {}; var victories := {}
-	for index in pairings.size():
+	for index in (0 if live_boards else pairings.size()):
 		var pair := pairings[index]; var result: Dictionary = results[index]
 		var a := int(pair.a); var b := int(pair.b); var winner := int(result.winner)
 		victories[a] = winner == 0
-		if winner != 0: losses[a] = defeat_damage(int(result.survivors[1]))
+		if winner != 0: losses[a] = draw_damage() if winner == -1 else defeat_damage(int(result.survivors[1]))
 		if b >= 0 and not pair.ghost:
 			victories[b] = winner == 1
-			if winner != 1: losses[b] = defeat_damage(int(result.survivors[0]))
+			if winner != 1: losses[b] = draw_damage() if winner == -1 else defeat_damage(int(result.survivors[0]))
+	if live_boards:
+		for player: int in board_results:
+			var result: Dictionary = board_results[player]
+			victories[player] = int(result.winner) == 0
+			if int(result.winner) != 0:
+				losses[player] = draw_damage() if int(result.winner) == -1 else defeat_damage(int(result.survivors[1]))
+		# A drawn duel costs both owners ten health. A ghost never damages its donor.
+		for pair: Dictionary in pairings:
+			var a := int(pair.a); var b := int(pair.b)
+			if b < 0 or pair.ghost: continue
+			if int(board_results[a].winner) == -1 or int(board_results[b].winner) == -1:
+				losses[a] = draw_damage(); losses[b] = draw_damage()
+				victories[a] = false; victories[b] = false
 	var remaining := {}
 	for player in alive:
 		remaining[player] = health(player) - int(losses.get(player, 0))
@@ -221,6 +295,7 @@ func _settle_round() -> void:
 		company_run.gold += int(income.total)
 		if player == 0:
 			last_result = _human_result.duplicate(true)
+			if live_boards and not won and int(last_result.winner) == 0: last_result.winner = -1
 			last_result.gold = int(income.total); last_result.income = income
 			last_result["health_lost"] = int(losses.get(0, 0))
 		else:
@@ -248,6 +323,7 @@ func snapshot() -> Dictionary:
 	data["placements"] = placements.duplicate()
 	data["pairings"] = pairings.duplicate(true)
 	data["previous_opponent"] = previous_opponent
+	data["bot_plans"] = bot_plans.duplicate(true)
 	return data
 
 func valid_terminal(data: Dictionary, _limit: int) -> bool:
@@ -259,11 +335,36 @@ func valid_terminal(data: Dictionary, _limit: int) -> bool:
 	return data.stage == "won" if alive == 1 else data.stage in ["prepare", "fight", "result"]
 
 func restore(data: Dictionary) -> bool:
+	# The earlier local preview used ten seats. Validate it fully before
+	# removing the extra CPU; keep the human company, health and economy.
+	var old_preview: bool = data.get("rivals") is Array and data.rivals.size() == 9
+	if not _restore_companies(data, 10 if old_preview else PLAYER_COUNT): return false
+	if old_preview:
+		var removed_rank: int = placements.pop_back()
+		rivals.pop_back(); rival_health.pop_back(); bot_plans.pop_back()
+		for player in placements.size():
+			if placements[player] > 0 and (removed_rank == 0 or placements[player] > removed_rank): placements[player] -= 1
+		if previous_opponent >= PLAYER_COUNT: previous_opponent = -1
+		var alive := alive_players()
+		if alive.is_empty():
+			var champion := placements.find(1)
+			if champion == 0: lives = 1
+			else: rival_health[champion - 1] = 1
+			alive.append(champion)
+		if alive.size() == 1:
+			placements[alive[0]] = 1
+			stage = "won" if alive[0] == 0 else "lost"
+		if stage not in ["won", "lost"]: _choose_pairings()
+		else: pairings = [{"a":0, "b":-1 if is_creep_round() else maxi(1, alive[0]), "ghost":false}]
+	return true
+
+
+func _restore_companies(data: Dictionary, seats: int) -> bool:
 	if data.get("mode") != "autochess" or not _integer(data.get("wave"),1,MAX_ROUNDS): return false
-	if data.get("stage") == "reward" or not data.get("rivals") is Array or data.rivals.size() != PLAYER_COUNT - 1: return false
-	if not data.get("rival_health") is Array or data.rival_health.size() != PLAYER_COUNT - 1: return false
-	if not data.get("placements") is Array or data.placements.size() != PLAYER_COUNT: return false
-	if not _integer(data.get("previous_opponent"),-1,PLAYER_COUNT - 1): return false
+	if data.get("stage") == "reward" or not data.get("rivals") is Array or data.rivals.size() != seats - 1: return false
+	if not data.get("rival_health") is Array or data.rival_health.size() != seats - 1: return false
+	if not data.get("placements") is Array or data.placements.size() != seats: return false
+	if not _integer(data.get("previous_opponent"),-1,seats - 1): return false
 	var loaded: Array[ArenaRun] = []
 	for index in data.rivals.size():
 		if not _integer(data.rival_health[index],0,100) or not data.rivals[index] is Dictionary: return false
@@ -272,15 +373,15 @@ func restore(data: Dictionary) -> bool:
 		loaded.append(bot)
 	var ranked := {}
 	for rank in data.placements:
-		if not _integer(rank,0,PLAYER_COUNT): return false
+		if not _integer(rank,0,seats): return false
 		if int(rank) > 0:
 			if ranked.has(int(rank)): return false
 			ranked[int(rank)] = true
-	if not data.get("pairings") is Array or data.pairings.is_empty() or data.pairings.size() > PLAYER_COUNT: return false
+	if not data.get("pairings") is Array or data.pairings.is_empty() or data.pairings.size() > seats: return false
 	var owners := {}
 	var creeps_round := int(data.wave) <= 3 or int(data.wave) % 5 == 0
 	for pair in data.pairings:
-		if not pair is Dictionary or not _integer(pair.get("a"),0,PLAYER_COUNT - 1) or not _integer(pair.get("b"),-1,PLAYER_COUNT - 1) or not pair.get("ghost") is bool: return false
+		if not pair is Dictionary or not _integer(pair.get("a"),0,seats - 1) or not _integer(pair.get("b"),-1,seats - 1) or not pair.get("ghost") is bool: return false
 		if int(pair.a) == int(pair.b) or owners.has(int(pair.a)): return false
 		owners[int(pair.a)] = true
 		if (int(pair.b) == -1) != creeps_round or (creeps_round and pair.ghost): return false
@@ -290,7 +391,7 @@ func restore(data: Dictionary) -> bool:
 			owners[int(pair.b)] = true
 	if not owners.has(0): return false
 	if data.stage in ["prepare","fight"]:
-		for player in PLAYER_COUNT:
+		for player in seats:
 			var hp: int = int(data.lives) if player == 0 else int(data.rival_health[player - 1])
 			if (hp > 0) != owners.has(player): return false
 		for pair in data.pairings:
@@ -298,5 +399,13 @@ func restore(data: Dictionary) -> bool:
 	if not super.restore(data): return false
 	rivals = loaded; rival_health.assign(data.rival_health); placements.assign(data.placements)
 	pairings.assign(data.pairings.duplicate(true)); previous_opponent = int(data.previous_opponent)
-	results.clear(); _human_result.clear()
+	results.clear(); board_results.clear(); _human_result.clear()
+	bot_plans.clear()
+	for index in rivals.size():
+		var plan := {"actions":0, "rerolls":0, "wait":0.5 + index * 0.1, "done":false}
+		if data.get("bot_plans") is Array and data.bot_plans.size() == rivals.size():
+			var saved = data.bot_plans[index]
+			if saved is Dictionary and _integer(saved.get("actions"),0,40) and _integer(saved.get("rerolls"),0,5) and saved.get("done") is bool and _number(saved.get("wait"),-10,10):
+				plan = saved.duplicate(true)
+		bot_plans.append(plan)
 	return true

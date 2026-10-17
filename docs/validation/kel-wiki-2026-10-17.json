@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-17",
+  "scope": "Kel biography and Rod of Life guide; shared native/public encyclopedia content in English, Russian and German. No gameplay change.",
+  "editorial_review": [
+    "Replaced the repeated full campaign chronology on Kel’s page with a focused account of her rescue of Kir, humour, thieves’ loyalties, practical contributions and relationship with Kir.",
+    "Checked new biography claims against original briefings brief_2, n3_2, brief_23, brief_38, brief_254, brief_317, brief_320, brief_338, brief_339 and brief_342.",
+    "Kept the shared escape, Dartas duel, death and resurrection events sourced from the common campaign history.",
+    "Verified fragment rewards and active script start calls in zone4, zone11dun1 and zone24; checked the fortune-teller, Uyka and Khabburu dialogue chains and localized quest titles.",
+    "Verified the one-shot brief_345 completion gate in bz31j, original fq20 reward consumption, Kel’s saved copy in cz3j, restored party in bz31j and fq21 reunion. The route requires all three fragments before the decision and restores Kel after the scripted death.",
+    "Added Rindeil’s house and the baron’s camp to Kel’s location references and rebuilt related page links."
+  ],
+  "runtime_evidence": {
+    "version": "1.9.2",
+    "commit": "7c77cb16eff2ec758b88506fbdd26f6b7b16efd1",
+    "checks": 38,
+    "failures": 0,
+    "cases": [
+      "All three fragments: automatic offer, ordinary dialogue rewards, live restored actor, preserved attributes/experience/equipment, reunion and save/load.",
+      "Three separate missing-fragment cases: no resurrection and alternative party."
+    ],
+    "limits": "Prepared single-player checkpoints using unchanged original expansion scripts in the stable remake. Fragment puzzles were inspected statically. No full campaign, co-op or original Windows executable playthrough."
+  },
+  "checks": {
+    "build_wiki_lore": "Passed source fingerprints, translations, references, prototype and speaker coverage validation.",
+    "wiki_lore_original": {
+      "checks": 18711,
+      "failures": [],
+      "languages": [
+        "en",
+        "ru",
+        "de"
+      ]
+    },
+    "wiki_lore_astral": {
+      "checks": 28845,
+      "failures": [],
+      "languages": [
+        "en",
+        "ru",
+        "de"
+      ]
+    },
+    "native_visuals": {
+      "languages": [
+        "en",
+        "ru",
+        "de"
+      ],
+      "viewports": [
+        [
+          1440,
+          900
+        ],
+        [
+          480,
+          800
+        ]
+      ],
+      "captures": 21,
+      "result": "Passed; reviewed overview, resurrection, fragment and timing layouts."
+    },
+    "public_packaging": "Passed prepare_public_wiki.py for both campaigns and all languages. Updated only affected expansion lore pages, search text and the build manifest; preserved unrelated pages and existing artwork.",
+    "public_browser": "Russian Kel page rendered successfully in local preview; revised overview, fragment guide and conditional resurrection are present.",
+    "diff_check": "Passed."
+  },
+  "publication": "Local source and public/wiki build updated; no release, tag or deployment."
+}

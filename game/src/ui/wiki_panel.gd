@@ -90,6 +90,7 @@ var _narrow_browsing := false
 var _narrow_preview := false
 var _has_preview := false
 var _article_column: VBoxContainer
+var _catalog_identity := []
 
 
 func _ready() -> void:
@@ -124,7 +125,7 @@ func _ready() -> void:
 	for id: String in [CampaignProfile.ORIGINAL,CampaignProfile.ASTRAL]:
 		var text := RemakeText.t("Base game") if id==CampaignProfile.ORIGINAL else RemakeText.t("Lost in Astral")
 		var button := _button(campaigns,text,func():_select_campaign(id));button.toggle_mode=true;button.set_meta("campaign",id);_campaign_buttons.append(button)
-	var navigation := HBoxContainer.new();_sidebar.add_child(navigation)
+	var navigation := HFlowContainer.new();_sidebar.add_child(navigation)
 	_button(navigation,RemakeText.t("Contents"),func():navigate("home"))
 	_button(navigation,RemakeText.t("Build planner"),func():navigate("mechanics/planning"))
 	_button(_sidebar,RemakeText.t("Saved creations"),_open_library)
@@ -226,12 +227,15 @@ func _dialog_theme() -> Theme:
 
 
 func open(rules: Dictionary = {}) -> void:
-	# Rebuild even when a mod patches the database in place. Indexing has no
-	# model loads, and takes only a few frames for the original campaigns.
-	WikiCampArt._cache.clear();_workbench._current="";_camp_constructor._identity=""
+	# Keep read-only indexes while their installed source and rules are unchanged.
+	# A mod can patch the same database instance: its revision is part of the key.
+	var identity := [GameData.root, GameData.campaign_id, GameData.db.get_instance_id(), ModStore.data_revision, RemakeText.lang, GameData.campaign_roots.duplicate(), rules.duplicate(true)]
+	if identity != _catalog_identity:
+		_catalog_identity = identity
+		_sources.clear(); _catalogs.clear()
+		WikiCampArt._cache.clear()
+	_workbench._current="";_camp_constructor._identity=""
 	_rules = rules.duplicate(true)
-	_sources.clear()
-	_catalogs.clear()
 	show()
 	move_to_front()
 	for button: Button in _campaign_buttons:
@@ -281,8 +285,6 @@ func dismiss() -> void:
 	_page_revision += 1
 	_preview.clear()
 	_rune_preview.clear()
-	_sources.clear()
-	_catalogs.clear()
 	_source = null
 
 
@@ -558,13 +560,19 @@ func _layout() -> void:
 	var scale := clampf(available.y / 900.0, 0.85, 3.0)
 	if not is_equal_approx(scale, _ui_scale):
 		_ui_scale = scale
-		theme.default_font_size = roundi(18 * scale)
+		theme.default_font_size = roundi(16 * scale)
+		for kind: String in ["BoxContainer", "VBoxContainer", "HBoxContainer"]:
+			theme.set_constant("separation", kind, roundi(8 * scale))
+		theme.set_constant("h_separation", "FlowContainer", roundi(10 * scale))
+		theme.set_constant("v_separation", "FlowContainer", roundi(8 * scale))
+		_sidebar.add_theme_constant_override("separation", roundi(10 * scale))
+		_results.set_ui_scale(scale)
 		_title.add_theme_font_size_override("font_size", roundi(28 * scale))
 		_page_title.add_theme_font_size_override("font_size",roundi(36*scale))
 		_results.add_theme_font_size_override("font_size", roundi(17 * scale))
 		_status.add_theme_font_size_override("font_size", roundi(14 * scale))
-		_article.add_theme_font_size_override("normal_font_size", roundi(20 * scale))
-		_article.add_theme_font_size_override("bold_font_size", roundi(20 * scale))
+		_article.add_theme_font_size_override("normal_font_size", roundi(18 * scale))
+		_article.add_theme_font_size_override("bold_font_size", roundi(18 * scale))
 		for button: Node in find_children("*", "Button", true, false):
 			if not button.get_meta("map_pin",false) and not button.get_meta("equipment_slot",false) and not button.get_meta("workbench_slot",false):button.custom_minimum_size.y = roundi((65 if button.get_meta("wiki_result",false) else 34)*scale)
 		if not html.is_empty(): _render_article()
@@ -650,7 +658,7 @@ func pad_targets() -> Array:
 		if control.is_visible_in_tree() and not control.disabled and not control.get_meta("wiki_result",false):
 			targets.append({"rect": control.get_global_rect(), "id": control.get_instance_id()})
 	var view := _results.get_global_rect()
-	for index in _results.item_count:
+	for index in _results.visible_indices():
 		var rect := _results.get_item_rect(index)
 		rect.position += view.position - Vector2(0, _results.get_v_scroll_bar().value)
 		rect = rect.intersection(view)

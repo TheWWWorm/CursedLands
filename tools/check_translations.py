@@ -148,7 +148,7 @@ for block_name in ('topics',):
     arena_keys.update(json.loads(m[0]) for m in re.finditer(STRING, block))
 for match in re.finditer(r'var words := (\[[^\n]+\])', arena_ui):
     arena_keys.update(json.loads(match[1]))
-arena_keys.update(['Return to battle', 'Continue', 'Defeat', 'Gipath', 'Ingos', 'Suslanger'])
+arena_keys.update(['Return to battle', 'Continue', 'Draw', 'Defeat', 'Gipath', 'Ingos', 'Suslanger'])
 for key in sorted(arena_keys):
     if key not in entries:
         errors.append(f'Arena dynamic label missing RU/DE key: {key}')
