@@ -229,12 +229,16 @@ func rematch() -> void:
 	start()
 
 
+func time_limit() -> float:
+	return TIME_LIMIT
+
+
 func _process(_dt: float) -> void:
 	_update_death_marks(_dt)
 	if phase != Phase.FIGHT or world == null: return
 	var blue := team_count(0, true)
 	var red := team_count(1, true)
-	if blue > 0 and red > 0 and world.time < TIME_LIMIT: return
+	if blue > 0 and red > 0 and world.time < time_limit(): return
 	winner = 0 if blue > 0 and red == 0 else 1 if red > 0 and blue == 0 else -1
 	phase = Phase.FINISHED
 	world.process_mode = Node.PROCESS_MODE_DISABLED

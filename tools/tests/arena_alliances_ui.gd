@@ -155,7 +155,7 @@ func _ready() -> void:
 	check(screen.run.stage == "reward" and screen.run.rewards.all(func(r):return r.kind not in ["pact","pact_upgrade"]),"camp cannot show retired pact UI")
 	bounded(screen._outcome,"localized camp")
 	await shot(tag + "-camp")
-	var first := screen._dock.find_children("ChooseReward","Button",true,false)[0] as Button
+	var first := screen._dock.get_child(2).get_child(0) as Button
 	await click(first.get_global_rect().get_center())
 	check(screen.run.stage == "prepare" and screen.run.wave == 6,"upgrade choice immediately returns to preparation")
 	check(errors.messages.is_empty(), "no script or shader errors")

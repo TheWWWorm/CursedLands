@@ -42,7 +42,7 @@ func retain(run: ArenaRun) -> void:
 
 
 func _still_owned(event: Dictionary, run: ArenaRun) -> bool:
-	return int(event.uid) > 0 and run.unit(event.uid).get("prototype", "") == event.to
+	return int(event.uid) > 0 and run.unit(event.uid).get("prototype", "") == event.to and run.unit(event.uid).get("rank", -1) == event.rank
 
 
 func _next() -> void:
@@ -64,10 +64,13 @@ func _next() -> void:
 	var arrow := _label(row, "→", 24, ArenaCreatureCard.GOLD)
 	arrow.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_figure(row, current.to, int(current.rank), true)
-	var before := ArenaUnitInfo.values(current.from)
-	var after := ArenaUnitInfo.values(current.to)
+	var before := ArenaUnitInfo.values(current.from, null, int(current.get("family", -1)), int(current.old_rank))
+	var after := ArenaUnitInfo.values(current.to, null, int(current.get("family", -1)), int(current.rank))
 	var stats := _label(_content, RemakeText.t("Health %d → %d · Attack %d → %d") % [before.max_hp, after.max_hp, before.attack, after.attack], 14, ArenaCreatureCard.PAPER)
 	stats.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	if current.get("next_round", false):
+		var note := _label(_content, RemakeText.t("On the field next round."), 13, ArenaCreatureCard.GOLD)
+		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for control: Control in find_children("*", "Control", true, false): control.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	modulate.a = 0
 	show()

@@ -42,7 +42,7 @@ func source_text(key: String) -> String:
 	if not sources[key].has("script"): return GameData.text(key)
 	var name: String = sources[key].script
 	if not _script_cache.has(name):
-		_script_cache[name] = EIMob.load_bytes(GameData.read_file("maps/" + name + ".mob")).script_text
+		_script_cache[name] = catalog.map_records(name).script_text
 	return _script_cache[name]
 
 func prose(text: String) -> String:

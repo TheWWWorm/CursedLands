@@ -107,7 +107,7 @@ func _ready() -> void:
 		for wait in 160:
 			if screen.battle.formation_motion.movers.is_empty(): break
 			await get_tree().create_timer(0.05).timeout
-		for control in [screen._menu, screen._round_panel, screen._start, screen._quality, screen._bench_bar]:
+		for control in [screen._menu, screen._round_panel, screen._start, screen._train_button, screen._bench_bar]:
 			bounded(control, tag + " HUD")
 		check(screen._start.get_global_rect().size.y >= 43 * scale, tag + " main target scales")
 		check(screen._menu.text == RemakeText.t("Menu"), tag + " labelled menu")
@@ -153,7 +153,7 @@ func _ready() -> void:
 		var xp := screen.run.experience()
 		await click(screen._train_button.get_global_rect().get_center())
 		check(screen.run.experience() == xp + 5 and not screen._modal_layer.visible, tag + " direct HUD training")
-		await move(screen._quality.get_global_rect().get_center())
+		await move(screen._train_button.get_global_rect().get_center())
 		await get_tree().create_timer(0.5).timeout
 		if screen._tooltips.visible: bounded(screen._tooltips, tag + " shop odds tooltip")
 		await click(screen._start.get_global_rect().get_center())
@@ -195,7 +195,7 @@ func _ready() -> void:
 		screen.run.resolve(0, 32, [103.0, 21.0])
 		await frames()
 		bounded(screen._outcome, tag + " victory panel")
-		check(not screen._message.visible and not screen.field.show_markers, tag + " victory clears placement and health overlays")
+		check(screen._bench_panel.visible and screen.field.show_markers and not screen._outcome.visible, tag + " victory preserves HUD and health overlays")
 		if spec[1].x >= 3840: await shot(tag + "-victory")
 		get_tree().root.size = Vector2i(1280, 720)
 		await frames(10)

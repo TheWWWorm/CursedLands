@@ -67,6 +67,9 @@ static func apply(world: GameWorld, army: Array) -> void:
 			var family := -1
 			for entry: Dictionary in army:
 				if int(entry.uid) == int(placement.get("run_uid", -1)): family = int(entry.family); break
+			if ArenaRules.is_elite(family, int(placement.get("rank", 0))):
+				ArenaRules.elite_stats(stats)
+				health = ArenaRules.elite_health(health)
 			var member := traits(family)
 			var beasts := rank("beast", count.beast)
 			stats.dmg_min *= 1.0 + beasts * 0.1

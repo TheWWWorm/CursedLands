@@ -41,7 +41,8 @@ func _ready() -> void:
 	battle.expire_preparation()
 	check(run.lives == 2, "expiry cannot repeat after resolution")
 	run.advance()
-	check(run.stage == "prepare" and run.preparation_left == 60, "retry resets preparation")
+	check(run.stage == "prepare" and run.preparation_left == 60, "next wave resets preparation after a loss")
+	run.shop = [{"family": 0, "rank": 0, "locked": false}, {"family": 2, "rank": 0, "locked": false}, {"family": 4, "rank": 0, "locked": false}, {"family": 1, "rank": 0, "locked": false}, {"family": 3, "rank": 0, "locked": false}]
 	Fixture.buy_company(run, 1)
 	for entry in run.army: entry.deployed = false
 	battle.prepare(); run.elapse_preparation(60); battle.expire_preparation()
@@ -49,7 +50,7 @@ func _ready() -> void:
 	check(run.preparation_left == 0 and not run.elapse_preparation(9), "combat does not advance preparation clock")
 	check(resumed.restore(run.snapshot()) and resumed.stage == "prepare" and resumed.preparation_left == 60, "interrupted combat restores a full planning round")
 	run.resolve(0, 1, [1,0]); run.advance()
-	check(run.wave == 2 and run.preparation_left == 60, "next wave resets preparation")
+	check(run.wave == 3 and run.preparation_left == 60, "next wave resets preparation")
 	battle.prepare()
 	var bodies := {}
 	for unit in battle.world.unit_rows(): bodies[unit.get_instance_id()] = unit

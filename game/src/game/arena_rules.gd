@@ -1,10 +1,11 @@
 class_name ArenaRules
 extends RefCounted
 ## Content shared by the playable expedition and its balance simulations.
-## Every fighter resolves to an unmodified original-game prototype.
+## Original prototypes remain immutable. Elite ranks only scale Trials actors.
 
-const VERSION := 9
+const VERSION := 10
 const PREPARATION_SECONDS := 60.0
+const BATTLE_SECONDS := 120.0
 const WAVE_COUNT := 30
 const OPENING_GOLD := 10
 const MIN_RECRUIT_COST := 1
@@ -31,13 +32,13 @@ const FAMILIES := [
 	{"name": "Wolves", "role": "Melee", "cost": 1, "tier": 1, "forms": ["wolfgreyf1", "wolfgreyf3", "wolfwhitef6"]},
 	{"name": "Tribal shooters", "role": "Ranged", "cost": 2, "tier": 2, "copies": [2, 3], "forms": ["goblina1", "goblina3", "orcfemalea5"]},
 	{"name": "Bats", "role": "Magic", "cost": 2, "tier": 2, "copies": [2, 3], "forms": ["batredm1", "batredm3", "batlightm7"]},
-	{"name": "Toads", "role": "Magic", "cost": 2, "tier": 2, "forms": ["toadm2", "toadm6"]},
-	{"name": "White tigers", "role": "Melee", "cost": 4, "tier": 3, "region": 1, "copies": [2], "forms": ["tigerwhitef6", "tigerwhitef10"]},
-	{"name": "Blue trolls", "role": "Melee", "cost": 7, "tier": 4, "region": 1, "copies": [2], "forms": ["trollbluef9", "trollbluef12"]},
-	{"name": "Stony harpies", "role": "Magic", "cost": 6, "tier": 4, "region": 1, "copies": [2], "forms": ["succubbluem10", "succubbluem17"]},
-	{"name": "Sand ogres", "role": "Melee", "cost": 10, "tier": 5, "region": 2, "copies": [2], "forms": ["ogrehadaganf13", "ogrehadaganf17"]},
-	{"name": "Spiders", "role": "Melee", "cost": 3, "tier": 3, "region": 2, "copies": [3], "forms": ["spiderf10", "spiderf15"]},
-	{"name": "Grey harpies", "role": "Magic", "cost": 7, "tier": 5, "region": 2, "copies": [2], "forms": ["succubgreym13", "succubgreym17"]},
+	{"name": "Toads", "role": "Magic", "cost": 2, "tier": 2, "forms": ["toadm2", "toadm6", "toadm6"]},
+	{"name": "White tigers", "role": "Melee", "cost": 4, "tier": 3, "region": 1, "copies": [2, 3], "forms": ["tigerwhitef6", "tigerwhitef10", "tigerwhitef10"]},
+	{"name": "Blue trolls", "role": "Melee", "cost": 7, "tier": 4, "region": 1, "copies": [2, 3], "forms": ["trollbluef9", "trollbluef12", "trollbluef12"]},
+	{"name": "Stony harpies", "role": "Magic", "cost": 6, "tier": 4, "region": 1, "copies": [2, 3], "forms": ["succubbluem10", "succubbluem17", "succubbluem17"]},
+	{"name": "Sand ogres", "role": "Melee", "cost": 10, "tier": 5, "region": 2, "copies": [2, 3], "forms": ["ogrehadaganf13", "ogrehadaganf17", "ogrehadaganf17"]},
+	{"name": "Spiders", "role": "Melee", "cost": 3, "tier": 3, "region": 2, "copies": [3, 3], "forms": ["spiderf10", "spiderf15", "spiderf15"]},
+	{"name": "Grey harpies", "role": "Magic", "cost": 7, "tier": 5, "region": 2, "copies": [2, 3], "forms": ["succubgreym13", "succubgreym17", "succubgreym20"]},
 ]
 # Ordered encounters. Different seeds mirror the enemy formation; all details
 # are visible before commitment. Counts/composition are tuning inputs, not stats.
@@ -52,26 +53,26 @@ const WAVES := [
 	["The bone guard", "skeletonf2", "skeletonf2", "goblina3", "toadm2"],
 	["The seer's escort", "orcmalef3", "orcfemalem3", "goblina3"],
 	["Black tusks", "boardarkf5", "boarredf3", "boarredf3", "toadm4"],
-	["The ridge hunters", "tigerwhitef6", "tigerwhitef6", "wolfwhitef6", "goblina3"],
-	["The Ogre's court", "ogregipatf9", "wolfwhitef6", "batlightm7"],
-	["The white pack", "tigerwhitef8", "tigerwhitef8", "batlightm8", "toadm6"],
+	["The ridge hunters", "tigerwhitef6", "tigerwhitef6", "wolfwhitef6", "goblina3", "goblina3"],
+	["The Ogre's court", "ogregipatf9", "wolfwhitef6", "batlightm7", "wolfwhitef6", "goblina3"],
+	["The white pack", "tigerwhitef8", "tigerwhitef8", "batlightm8", "toadm6", "goblina3"],
 	["The war council", "trollbluef9", "trollbluef9", "tigerwhitef6", "batlightm8"],
-	["The ancient guard", "succubbluem10", "tigerwhitef8", "tigerwhitef8", "batlightm8"],
-	["The last hunt", "trollbluef11", "tigerwhitef10", "batlightm10", "orcfemalem7"],
-	["At the gates", "spiderf10", "spiderf10", "trollbluef9", "succubbluem10"],
-	["The lord of the ruins", "trollbluef12", "tigerwhitef10", "tigerwhitef10", "succubbluem11", "octopuskaniam12"],
-	["Tracks in the snow", "ogrehadaganf13", "tigerwhitef10", "batlightm10"],
-	["The frozen pass", "spiderf13", "spiderf13", "succubbluem11", "batlightm10"],
-	["Stone wings", "ogrehadaganf13", "spiderf14", "succubgreym13", "trollbluef9"],
-	["The silk road", "spiderf13", "spiderf13", "tigerwhitef10", "batlightm10"],
-	["Desert raiders", "ogrehadaganf13", "spiderf13", "succubgreym13"],
-	["The winter council", "trollbluef12", "ogrehadaganf13", "succubbluem11", "octopushadaganm13"],
-	["Giants at dusk", "ogrehadaganf15", "ogrehadaganf15", "spiderf14", "succubgreym13"],
-	["The hollow voices", "bansheedarkf14", "bansheedarkf14", "spiderf15", "succubgreym15"],
-	["The high priest", "ogrehadaganf17", "trollbluef12", "succubgreym15", "spiderf15", "octopushadaganm15"],
-	["Ash and ice", "ogrehadaganf15", "ogrehadaganf15", "bansheedarkf16", "succubgreym17"],
-	["The last watch", "ogrehadaganf17", "ogrehadaganf17", "spiderf15", "spiderf15", "succubgreym15", "octopushadaganm17"],
-	["The siege of winter", "ogrehadaganf17", "ogrehadaganf17", "trollbluef12", "succubgreym17", "succubgreym17", "bansheedarkf16"],
+	["The ancient guard", "succubbluem10", "tigerwhitef8", "tigerwhitef8", "batlightm8", "wolfwhitef6"],
+	["The last hunt", "trollbluef11", "tigerwhitef10", "batlightm10", "orcfemalem7", "batlightm8"],
+	["At the gates", "spiderf10", "spiderf10", "trollbluef9", "succubbluem10", "wolfwhitef6"],
+	["The lord of the ruins", "trollbluef12", "tigerwhitef10", "tigerwhitef10", "succubbluem11", "octopuskaniam12", "goblina3"],
+	["Tracks in the snow", "ogrehadaganf13", "tigerwhitef10", "batlightm10", "trollbluef9", "batlightm8", "tigerwhitef8"],
+	["The frozen pass", "spiderf13", "spiderf13", "succubbluem11", "batlightm10", "tigerwhitef10", "trollbluef9"],
+	["Stone wings", "ogrehadaganf13", "spiderf14", "succubgreym13", "trollbluef9", "spiderf10", "batlightm10"],
+	["The silk road", "spiderf13", "spiderf13", "tigerwhitef10", "batlightm10", "ogrehadaganf13", "succubgreym13"],
+	["Desert raiders", "ogrehadaganf13", "spiderf13", "succubgreym13", "trollbluef12", "spiderf13", "succubgreym13"],
+	["The winter council", "trollbluef12", "ogrehadaganf13", "succubbluem11", "octopushadaganm13", "spiderf14", "succubbluem17"],
+	["Giants at dusk", "ogrehadaganf15", "ogrehadaganf15", "spiderf14", "succubgreym13", "spiderf15", "succubgreym15", "tigerwhitef10"],
+	["The hollow voices", "bansheedarkf14", "bansheedarkf14", "spiderf15", "succubgreym15", "trollbluef12", "succubbluem17", "tigerwhitef10"],
+	["The high priest", "ogrehadaganf17", "trollbluef12", "succubgreym15", "spiderf15", "octopushadaganm15", "ogrehadaganf15", "succubgreym17"],
+	["Ash and ice", "ogrehadaganf15", "ogrehadaganf15", "bansheedarkf16", "succubgreym17", "spiderf15", "ogrehadaganf15", "batlightm10"],
+	["The last watch", "ogrehadaganf17", "ogrehadaganf17", "spiderf15", "spiderf15", "succubgreym15", "octopushadaganm17", "succubbluem17", "tigerwhitef10"],
+	["The siege of winter", "ogrehadaganf17", "ogrehadaganf17", "trollbluef12", "succubgreym17", "succubgreym17", "bansheedarkf16", "succubgreym20", "octopushadaganm17"],
 ]
 const BOONS := {
 	"merchant": ["Quartermaster", "Shop refreshes cost 1 gold instead of 2."],
@@ -93,6 +94,24 @@ static func prototype(family: int, rank: int) -> String:
 static func evolution_copies(family: int, rank: int) -> int:
 	if prototype(family, rank + 1).is_empty(): return 0
 	return int(FAMILIES[family].get("copies", [3, 3])[rank])
+
+
+## A three-star elite keeps the strongest original model when that creature
+## has no higher authored form. These multipliers never patch the campaign DB.
+static func is_elite(family: int, rank: int) -> bool:
+	return rank == 2 and not prototype(family, rank).is_empty() and prototype(family, rank) == prototype(family, rank - 1)
+
+
+static func elite_stats(stats: Dictionary) -> void:
+	stats.dmg_min *= 1.5
+	stats.dmg_max *= 1.5
+	stats.to_hit *= 1.2
+	stats.actions = float(stats.get("actions", 15.0)) * 1.15
+	for i in stats.armor.size(): stats.armor[i] *= 1.2
+
+
+static func elite_health(health: float) -> float:
+	return ceilf(health * 1.75)
 
 
 static func title(id: String) -> String:
@@ -125,6 +144,12 @@ static func enemies(wave: int, run_seed: int, challenge := 0) -> Array[Dictionar
 		ids.append("succubgreym17" if wave >= 25 else "succubbluem17" if wave >= 19 else "batlightm10" if wave > 12 else "toadm6" if wave > 9 else "goblina3")
 	if challenge > 1 and wave >= 10:
 		ids.append("octopushadaganm17" if wave >= 24 else "octopuskaniam12" if wave >= 16 else "toadm6")
+	# Standard/Veteran pressure comes from mixed numbers. Champion already
+	# supplies stronger casters in these slots, rather than stacking both sets.
+	if challenge < 2 and wave >= 6:
+		ids.append("ogrehadaganf15" if wave >= 25 else "trollbluef12" if wave >= 19 else "tigerwhitef10" if wave >= 15 else "wolfwhitef6" if wave >= 11 else "orcmalef5" if wave >= 9 else "goblinf2")
+	if challenge < 2 and wave >= 19:
+		ids.append("succubgreym13" if wave >= 25 else "batlightm10")
 	var flip := -1 if (run_seed + wave) % 2 else 1
 	for id: String in ids:
 		var proto := GameData.db.find("monster_prototypes", id)

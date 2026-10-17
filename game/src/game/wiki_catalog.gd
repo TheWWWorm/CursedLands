@@ -45,9 +45,11 @@ var _quest_zones := {}
 var knowledge: WikiKnowledge
 var lore: WikiLore
 var _search_text := {}
+var _map_records := {}
 
 
 func rebuild() -> void:
+	_map_records.clear()
 	entries.clear()
 	ordered.clear()
 	_families.clear()
@@ -169,28 +171,41 @@ func _index_world() -> void:
 		var mob := String(zone.get("mob", ""))
 		if mob.is_empty() or seen.has(mob): continue
 		seen[mob] = true
-		var data := GameData.read_file("maps/" + mob + ".mob")
-		for found: RegExMatch in pattern.search_all(_mob_script(data,0,data.size(),"ROOT")):
+		var record := map_records(mob)
+		for found: RegExMatch in pattern.search_all(record.script_text):
 			var location := found.get_string(1).to_lower()
 			var quest := found.get_string(2).to_lower()
 			if entries.has("map/"+location.uri_encode()) and _quests.has(quest) and not location in _quest_zones.get_or_add(quest, []):
 				_quest_zones[quest].append(location)
 
 
-static func _mob_script(data: PackedByteArray, start: int, end: int, parent: String) -> String:
-	var reader := EIMob.new()
+## The reference needs unit records and scripts, not scenery, sound or AI patrols.
+## Decode each installed map once and share it with lore and relationship indexing.
+func map_records(name: String) -> EIMob:
+	if not _map_records.has(name):
+		var data := GameData.read_file("maps/" + name + ".mob")
+		var record := EIMob.new()
+		_read_map(record, data, 0, data.size(), "ROOT", {})
+		_map_records[name] = record
+	return _map_records[name]
+
+
+static func _read_map(reader: EIMob, data: PackedByteArray, start: int, end: int, parent: String, unit: Dictionary) -> void:
 	var at := start
 	while at + 8 <= end:
 		var id := data.decode_u32(at)
 		var size := reader._record_size(data, at, end, id, parent)
-		if size < 8 or at + size > end: return ""
-		if id == EIMob.SS_TEXT: return EIMob.decrypt(data, at+8, size-8)
-		if id == EIMob.SS_TEXT_PLAIN: return data.slice(at+8,at+size).get_string_from_ascii()
-		if EIMob.R.has(id):
-			var script := _mob_script(data,at+8,at+size,EIMob.R[id])
-			if not script.is_empty(): return script
+		if size < 8 or at + size > end: return
+		var kind: String = EIMob.R.get(id, "")
+		if kind in ["OBJECTDBFILE", "OBJECTSECTION"]:
+			_read_map(reader, data, at + 8, at + size, kind, unit)
+		elif kind == "UNIT":
+			var entry := {"kind": "UNIT"}
+			_read_map(reader, data, at + 8, at + size, kind, entry)
+			reader.objects.append(entry)
+		elif id in [EIMob.SS_TEXT, EIMob.SS_TEXT_PLAIN] or (parent == "UNIT" and id in [EIMob.OBJNAME, EIMob.UNIT_PROTOTYPE, EIMob.OBJPOSITION, EIMob.UNIT_QUEST_ITEMS, EIMob.UNIT_QUICK_ITEMS]):
+			reader._field(data, id, at + 8, size - 8, unit)
 		at += size
-	return ""
 
 
 ## Share the public wiki's authored family names and fixed-item rules. Keep
@@ -784,10 +799,8 @@ func _creature(value: String) -> String:
 		rows.append([esc(RemakeText.t(field[1])), num(p.get(field[0], 0))])
 	var out := paragraph(_description("unit " + value.replace(" ", "_")))
 	out += heading(RemakeText.t("Difficulty comparison"))
-	out += paragraph(RemakeText.t("Pairs show Easy / Hard. A single value is the same on both difficulties."))
 	var headers := [RemakeText.t("Property"), RemakeText.t("Value · Easy / Hard")]
 	out += table_html(headers, comparison + rows)
-	out += paragraph(RemakeText.t("Hard is the standard difficulty, called Normal in some editions. Co-op uses Hard before multiplayer scaling."))
 	var attack: Array = Array(race.get("attack", []))
 	if attack.size() >= 7:
 		out += heading(RemakeText.t("Damage types")) + _damage_table(PackedFloat32Array(attack.slice(0, 7)), true)

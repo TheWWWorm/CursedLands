@@ -18,7 +18,8 @@ func _ready() -> void:
 	check(ArenaRules.recruit_pool(5).has(10) and not ArenaRules.recruit_pool(5).has(7),"spiders become available before trolls")
 	check(run.offer_cost({"family":7})==7 and run.offer_cost({"family":9})==10,"troll and ogre costs require meaningful investment")
 	check(run.offer_cost({"family":10,"rank":1})==9,"early spider evolution costs three copies")
-	check(ArenaRules.enemies(24,1515,2).size()>ArenaRules.enemies(24,1515,1).size(),"Champion brings additional native caster support")
+	var casters := func(entry: Dictionary): return not Array(GameData.db.find("monster_prototypes", entry.id).get("spells", [])).is_empty()
+	check(ArenaRules.enemies(24,1515,2).filter(casters).size()>ArenaRules.enemies(24,1515,1).filter(casters).size(),"Champion brings additional native caster support")
 	# Preserve old owned creatures and actual paid investment through schema 8.
 	run.begin(1515);run.gold=100
 	run.shop[0]={"family":7,"rank":0,"locked":false};run.buy(0)
@@ -34,6 +35,12 @@ func _ready() -> void:
 	var caster:=world.unit_rows().filter(func(u):return u.faction==1)[0] as GameUnit
 	var ally:=battle._spawn({"id":"trollbluef9","team":0,"point":Vector2(26,32)})
 	var enemy:=battle._spawn({"id":"trollbluef9","team":1,"point":Vector2(27,32)})
+	var hit := PackedFloat32Array([0, 0, 1, 0, 0, 0, 0])
+	check(is_equal_approx(world.combat.absorb(ally, 5.0, hit), 1.0), "player armor leaves the remake minimum damage")
+	check(is_equal_approx(world.combat.absorb(enemy, 5.0, hit), 1.0), "enemy armor uses the same absorption cap")
+	battle.mod_config.rules.armor_formula = 0
+	check(is_zero_approx(world.combat.absorb(enemy, 5.0, hit)), "original comparison can fully absorb the same hit")
+	battle.mod_config.rules.armor_formula = 1
 	var spell:=Spells.parse("acid_fog").duplicate(true);spell.effect=5000.0;spell.radius=12.0
 	var ally_hp:=ally.hp;var enemy_hp:=enemy.hp
 	Spells._area_hit(world,caster,spell,Vector2(26,32))

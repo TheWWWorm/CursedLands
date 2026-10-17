@@ -20,17 +20,16 @@ func _ready() -> void:
 	column.add_theme_constant_override("separation", 8)
 	add_child(column)
 	_heading = Label.new()
-	_heading.add_theme_font_size_override("font_size", 20)
+	_heading.add_theme_font_size_override("font_size", 18)
 	_heading.add_theme_color_override("font_color", ArenaCreatureCard.GOLD)
 	_heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_heading.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(_heading)
 	_body = Label.new()
-	_body.add_theme_font_size_override("font_size", 15)
+	_body.add_theme_font_size_override("font_size", 14)
 	_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(_body)
-	custom_minimum_size.x = 310
 	hide()
 
 
@@ -64,7 +63,11 @@ func _process(_dt: float) -> void:
 	_heading.text = String(hint.get("title", ""))
 	_heading.visible = not _heading.text.is_empty()
 	_body.text = String(hint.get("text", ""))
-	size = Vector2(310, 0)
+	var width := 80.0
+	for label: Label in [_heading, _body]:
+		for line in label.text.split("\n"):
+			width = maxf(width, label.get_theme_font("font").get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, label.get_theme_font_size("font_size")).x + 24)
+	size = Vector2(minf(310, width), 0)
 	var pointer := scope.get_local_mouse_position()
 	var at := pointer + Vector2(18, 24)
 	if at.y + size.y > scope.size.y - 12: at.y = pointer.y - size.y - 16

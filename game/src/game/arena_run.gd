@@ -72,7 +72,7 @@ func level_needed() -> int:
 
 
 func train() -> String:
-	if stage != "prepare": return RemakeText.t("Recruit between battles.")
+	if not can_shop(): return RemakeText.t("Finish the current encounter first.")
 	if experience() >= ArenaRules.MAX_TRAINING: return RemakeText.t("Your army is at full strength.")
 	var error := spending_error(ArenaRules.TRAINING_COST)
 	if not error.is_empty(): return error
@@ -91,17 +91,18 @@ func win_streak() -> int:
 	return wins
 
 
-## Snapshot savings at battle start. Only a newly cleared wave pays income.
-## Failed retries break the streak and cannot be farmed for gold or experience.
-func income_preview(savings := -1) -> Dictionary:
+## Snapshot savings at battle start. Every round pays base income and interest;
+## victory and streak bonuses require a win. Every outcome advances the wave.
+func income_preview(savings := -1, won := true) -> Dictionary:
 	var bank := gold if savings < 0 else savings
 	var streak := win_streak() + 1
-	var bonus := 2 if streak >= 6 else 1 if streak >= 3 else 0
+	var bonus := (2 if streak >= 6 else 1 if streak >= 3 else 0) if won else 0
 	var interest := mini(ArenaRules.INTEREST_CAP, maxi(0, bank) / 10)
 	var bounty := ArenaRules.BASE_INCOME
-	return {"base": bounty, "victory": ArenaRules.WIN_INCOME,
+	var victory := ArenaRules.WIN_INCOME if won else 0
+	return {"base": bounty, "victory": victory,
 		"interest": interest, "streak": bonus,
-		"total": bounty + ArenaRules.WIN_INCOME + interest + bonus}
+		"total": bounty + victory + interest + bonus}
 
 
 func bench_limit() -> int:
@@ -147,7 +148,7 @@ func _recruit(family: int, rank: int, investment: int, special := "") -> Diction
 
 
 func purchase_error(index: int) -> String:
-	if stage != "prepare": return RemakeText.t("Recruit between battles.")
+	if not can_shop(): return RemakeText.t("Finish the current encounter first.")
 	if index < 0 or index >= shop.size() or int(shop[index].family) < 0: return RemakeText.t("This offer has already been recruited.")
 	var family := int(shop[index].family)
 	var rank := int(shop[index].get("rank", 0))
@@ -179,7 +180,7 @@ func buy(index: int) -> String:
 ## deployed copy, keeping its identity and position through chained evolutions.
 func combine_ready() -> void:
 	last_evolutions.clear()
-	if stage != "prepare": return
+	if not can_shop(): return
 	for family in ArenaRules.FAMILIES.size():
 		for rank in 2:
 			var needed := ArenaRules.evolution_copies(family, rank)
@@ -197,7 +198,8 @@ func combine_ready() -> void:
 
 
 func refresh() -> String:
-	if stage != "prepare": return RemakeText.t("Recruit between battles.")
+	if not can_shop(): return RemakeText.t("Finish the current encounter first.")
+	if shop.all(func(offer): return offer.locked): return RemakeText.t("Unlock an offer before refreshing.")
 	var error := spending_error(refresh_cost())
 	if not error.is_empty(): return error
 	gold -= refresh_cost()
@@ -209,9 +211,8 @@ func refresh() -> String:
 
 
 func lock_offer(index: int) -> void:
-	if stage != "prepare" or index < 0 or index >= shop.size() or int(shop[index].family) < 0: return
+	if not can_shop() or index < 0 or index >= shop.size() or int(shop[index].family) < 0: return
 	var was_locked := bool(shop[index].locked)
-	for offer: Dictionary in shop: offer.locked = false
 	shop[index].locked = not was_locked
 	_touch()
 
@@ -219,11 +220,11 @@ func lock_offer(index: int) -> void:
 func _roll_shop(keep_lock: bool) -> void:
 	var old := shop.duplicate(true)
 	var slots := 6 if "scout" in boons else 5
-	# The opening has six offers even without a scout. Preserve a lock in its
-	# last slot when the next ordinary shop returns to five offers.
+	# Keep every locked slot, including the opening's sixth offer. Once that
+	# extra slot is bought or unlocked, the next refresh returns to five.
 	if keep_lock and old.size() > slots:
 		for index in range(slots, old.size()):
-			if old[index].locked: old[slots - 1] = old[index]; break
+			if old[index].locked: slots = index + 1
 	shop.clear()
 	var odds: Array = ArenaRules.SHOP_ODDS[capacity()]
 	for i in slots:
@@ -262,7 +263,7 @@ func deploy(uid: int, point: Vector2) -> String:
 	if entry.is_empty(): return RemakeText.t("Choose a creature from your army.")
 	if not is_finite(point.x) or not is_finite(point.y) or not DEPLOY.has_point(point):
 		return RemakeText.t("Deploy inside the blue half of the battlefield.")
-	if not entry.deployed and deployed_count() >= capacity(): return RemakeText.t("Army full. Train your company or withdraw a creature.")
+	if not entry.deployed and deployed_count() >= capacity(): return RemakeText.t("Army full. Upgrade your company or withdraw a creature.")
 	for other: Dictionary in army:
 		if other.uid == uid or not other.deployed: continue
 		if point.distance_to(Vector2(other.point[0], other.point[1])) < 2.5:
@@ -300,9 +301,10 @@ func swap_from_bench(uid: int, deployed_uid: int) -> String:
 
 
 func sell(uid: int) -> String:
-	if stage != "prepare": return RemakeText.t("Recruit between battles.")
+	if not can_shop(): return RemakeText.t("Finish the current encounter first.")
 	var entry := unit(uid)
 	if entry.is_empty(): return RemakeText.t("Choose a creature from your army.")
+	if stage != "prepare" and entry.deployed: return RemakeText.t("Only reserves can be sold during battle.")
 	_checkpoint()
 	gold += sale_value(entry)
 	army.erase(entry)
@@ -407,27 +409,22 @@ func resolve(winner: int, seconds: float, damage: Array) -> void:
 	if stage != "fight": return
 	last_result = {"wave": wave, "winner": winner, "seconds": seconds, "damage": damage.duplicate(), "gold": 0}
 	if deployed_count() == 0: last_result["empty_army"] = true
-	if winner == 0:
-		if wave < wave_limit:
-			var income := income_preview(battle_savings)
-			gold += int(income.total)
-			last_result.gold = int(income.total)
-			last_result.income = income
-	else:
+	var income := income_preview(battle_savings, winner == 0)
+	gold += int(income.total)
+	last_result.gold = int(income.total)
+	last_result.income = income
+	if winner != 0:
 		lives -= 1
 		free_refresh = true
 	history.append(last_result.duplicate(true))
-	stage = "won" if winner == 0 and wave == wave_limit else "lost" if lives <= 0 else "result"
+	stage = "lost" if lives <= 0 else "won" if wave == wave_limit else "result"
 	if auto_save: _update_profile()
 	_touch()
 
 
 func advance() -> void:
 	if stage != "result": return
-	if int(last_result.winner) != 0:
-		stage = "prepare"
-		preparation_left = ArenaRules.preparation_seconds(challenge)
-	elif wave % 5 == 0:
+	if wave % 5 == 0:
 		stage = "reward"
 		_make_rewards()
 	else:
@@ -478,6 +475,9 @@ func choose_reward(index: int) -> String:
 
 
 func _checkpoint() -> void:
+	# Combat shopping is committed immediately. A failed wave must not make
+	# those purchases undoable after its income/result has already resolved.
+	if stage != "prepare": return
 	_undo.append({"army": army.duplicate(true), "shop": shop.duplicate(true), "gold": gold, "next_uid": next_uid, "training": training})
 	if _undo.size() > 30: _undo.pop_front()
 
@@ -492,6 +492,10 @@ func undo() -> void:
 
 func can_undo() -> bool:
 	return stage == "prepare" and not _undo.is_empty()
+
+
+func can_shop() -> bool:
+	return stage in ["prepare", "fight", "result"]
 
 
 func snapshot() -> Dictionary:
@@ -567,7 +571,9 @@ func restore(data: Dictionary) -> bool:
 		saved_boons[key] = true
 	if data.army.size() - deployed > (12 if saved_boons.has("reserve") else 9): return false
 	var opening_shelf: bool = int(data.version) >= 5 and int(data.wave) == 1 and data.shop.size() == 6
-	if not opening_shelf and data.shop.size() != (6 if saved_boons.has("scout") else 5): return false
+	var base_slots := 6 if saved_boons.has("scout") else 5
+	if not opening_shelf and data.shop.size() != base_slots:
+		if int(data.version) < 10 or data.shop.size() != 6: return false
 	var locks := 0
 	for offer in data.shop:
 		if not offer is Dictionary or not _integer(offer.get("family"), -1, ArenaRules.FAMILIES.size() - 1) or not offer.get("locked") is bool: return false
@@ -576,7 +582,7 @@ func restore(data: Dictionary) -> bool:
 		if offer.locked:
 			if int(offer.family) < 0: return false
 			locks += 1
-	if locks > 1: return false
+	if int(data.version) < 10 and locks > 1: return false
 	if data.stage == "reward":
 		if int(data.wave) % (5 if int(data.version) >= 8 else 3) != 0 or int(data.wave) >= ArenaRules.WAVE_COUNT: return false
 		if data.rewards.size() != 3 and not (data.rewards.size() == 2 and saved_boons.size() == 3): return false
@@ -603,7 +609,7 @@ func restore(data: Dictionary) -> bool:
 	var saved_limit = data.get("wave_limit", 18 if int(data.version) <= 4 and data.stage == "won" else ArenaRules.WAVE_COUNT)
 	if not _integer(saved_limit, 18, ArenaRules.WAVE_COUNT) or int(saved_limit) not in [18, ArenaRules.WAVE_COUNT]: return false
 	if int(data.wave) > int(saved_limit): return false
-	if data.stage == "won" and (int(data.wave) != int(saved_limit) or int(data.last_result.winner) != 0): return false
+	if data.stage == "won" and (int(data.wave) != int(saved_limit) or (int(data.version) < 10 and int(data.last_result.winner) != 0)): return false
 	if (data.stage == "lost") != (int(data.lives) == 0): return false
 	run_seed = int(data.seed); rng.seed = run_seed; rng.state = int(data.rng)
 	challenge = int(data.challenge); starter = int(data.starter)
@@ -689,7 +695,7 @@ static func profile() -> Dictionary:
 
 func _update_profile() -> void:
 	var data := profile()
-	data.best_wave = maxi(int(data.get("best_wave", 0)), wave if last_result.winner == 0 else wave - 1)
+	data.best_wave = maxi(int(data.get("best_wave", 0)), wave if stage == "won" or last_result.winner == 0 else wave - 1)
 	if stage == "won":
 		data.wins = int(data.get("wins", 0)) + 1
 		data.challenge = mini(2, maxi(int(data.get("challenge", 0)), challenge + 1))

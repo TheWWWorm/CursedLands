@@ -976,10 +976,15 @@ class TipLayer extends CanvasLayer:
 			_hide()
 			_since = Time.get_ticks_msec()
 
+	func _compact() -> bool:
+		return is_instance_valid(_ctrl) and _ctrl.get_meta("compact_tooltip", false)
+
 	func _kv() -> Vector2:
+		if _compact(): return Vector2.ONE * clampf(get_viewport().get_visible_rect().size.y / 900.0, 1.0, 2.0)
 		return get_viewport().get_visible_rect().size / Vector2(800, 600)
 
 	func _fs() -> int:
+		if _compact(): return roundi(16 * _kv().y)
 		return maxi(6, int(round(get_viewport().get_visible_rect().size.x * Interface800.FONT_EM[0])))
 
 	func _line_h(f: Font, fs: int, s: String) -> float:
@@ -1020,7 +1025,7 @@ class TipLayer extends CanvasLayer:
 			var f := Interface800.font()
 			var fs := _fs()
 			var kv := _kv()
-			_lines = _wrap(t.split("\n"), f, fs, vp.get_visible_rect().size.x * 0.45)
+			_lines = _wrap(t.split("\n"), f, fs, minf(320 * kv.x, vp.get_visible_rect().size.x - 24) if _compact() else vp.get_visible_rect().size.x * 0.45)
 			var w := 0.0
 			var h := 0.0
 			for s in _lines:

@@ -8,24 +8,36 @@ Buy a team, arrange it, fight under AI control, then reinvest the rewards.
 Preparation lasts 60 seconds on Standard, 45 on Veteran and 30 on Champion;
 Start battle begins early. Menus pause the
 clock. An empty battlefield deploys owned reserves at expiry; an entirely empty
-company forfeits a life. The final attack gets 1.6 seconds to finish animating,
-then a four-second side result advances automatically. No wave confirmation is
+company forfeits a life. The final attack gets 1.6 seconds to settle,
+then a four-second notification in the top badge advances automatically. Creature
+animations continue throughout results and camps; the HUD remains visible. No wave confirmation is
 required. Final victory/defeat offers a new expedition.
 
+Combat has a two-minute limit, measured by the simulation clock: pause stops it
+and double speed advances it twice as fast. An unfinished fight at the limit
+counts as a player defeat, pays loss income and advances normally if lives remain.
+The top clock displays elapsed time and the limit, with a warning color for the
+last ten seconds. The separate sandbox arena retains its original five-minute limit.
+
 There are thirty authored waves, three lives, and harder expeditions after a
-clear. A loss retries the same wave without income or XP farming. It grants one
-free shop refresh to help the player change their formation. Every fifth victory
-opens one camp reward choice; selecting the reward starts preparation immediately.
+clear. A loss costs a life and advances to the next wave, paying base income, interest
+and completed-round XP. Victory and streak bonuses require a win. A defeat grants
+one free shop refresh. Surviving the final wave with a life remaining completes
+the expedition. Every fifth completed wave opens one camp reward choice; selecting the reward starts preparation immediately.
 
 ## Company level and recruitment
 
 The opening has no creatures, ten gold, three army slots and eight reserve slots.
 Its six offers include every early family. Purchases enter reserves. Subsequent
-shops have five offers, six with Well connected. One offer can be locked. Refresh
+shops have five offers, six with Well connected. Any number of offers can be locked. A locked sixth opening offer stays in its
+slot until purchased or unlocked. Refreshing an entirely locked shop spends nothing. Refresh
 costs two gold, one with Quartermaster, or zero for the first refresh after defeat.
 An empty company cannot spend its last recruitment gold on refreshes or training.
 
-Training is a direct HUD action: five gold buys five XP. Each cleared wave grants
+The shop level button is the direct Upgrade company action: five gold buys five XP.
+It displays level, cost and XP as text without a progress underline. Open/closed
+padlocks distinguish offer states; locked offers have a gold border, and neither
+state has a background. Each completed wave grants
 one XP. Company level determines both army capacity and the odds of each recruit
 tier. Leveling does not replace an existing shop; the next refresh uses the new
 odds. All new offers have one star. Stars are earned by collecting copies, not by
@@ -51,26 +63,39 @@ measures evolution within a family.
 | --- | --- | ---: | --- |
 | 1 | Boars, Tribal fighters, Wolves | 1 | 3, then 3 |
 | 2 | Tribal shooters, Bats | 2 | 2, then 3 |
-| 2 | Toads | 2 | 3 |
-| 3 | White tigers | 4 | 2 |
-| 3 | Spiders | 3 | 3 |
-| 4 | Blue trolls | 7 | 2 |
-| 4 | Stony harpies | 6 | 2 |
-| 5 | Sand ogres | 10 | 2 |
-| 5 | Grey harpies | 7 | 2 |
+| 2 | Toads | 2 | 3, then 3 |
+| 3 | White tigers | 4 | 2, then 3 |
+| 3 | Spiders | 3 | 3, then 3 |
+| 4 | Blue trolls | 7 | 2, then 3 |
+| 4 | Stony harpies | 6 | 2, then 3 |
+| 5 | Sand ogres | 10 | 2, then 3 |
+| 5 | Grey harpies | 7 | 2, then 3 |
 
-Twelve families use twenty-nine existing forms from Gipath, Ingos and Suslanger.
-The native forms and spells are retained. Recipes remain adapted to their actual
+All twelve families reach three stars, with thirty native models/prototypes across
+thirty-six ranks. Grey harpies gain their authored level-20 form. Toads, white
+tigers, blue trolls, stony harpies, sand ogres and spiders retain their existing
+two-star form and gain a three-star elite using that original appearance:
++75% health, +50% attack damage, +20% accuracy/armor and +15% action speed. Native
+spells remain unchanged. Elite bonuses are local to Trials actors and displayed
+in inspection; no installed prototype is edited. Recipes remain adapted to their actual
 native power jumps; this is not a universal three-for-one conversion of original
 creatures. Evolution works from wave one, preserves a deployed copy's identity
 and position, and shows a short side comparison, sound and field highlight.
 
 ## Difficulty and spell damage
 
-Standard retains the thirty base encounters. Veteran adds a melee reinforcement
+Trials use the existing remake armor formula: natural and worn armor together
+absorb at most 80% of each incoming damage type. Both teams retain at least 20%
+damage on a successful hit, including spells. This reduces armor stalemates and
+keeps weaker attacks useful without changing the campaign's selected armor rule.
+
+Standard uses thirty authored encounters, with larger mixed formations in the
+second half to keep pace with a full, upgraded company. Standard and Veteran add
+a modest frontline reinforcement from wave six and ranged support from wave
+nineteen, advancing through native forms. Veteran adds a further melee reinforcement
 from wave three, progressing through stronger original forms in later regions.
-Champion also adds ranged/magic support from wave six and another caster from
-wave ten. Its late caster additions include octopuses, providing pressure against
+Champion uses its own stronger ranged/magic support from wave six and another
+caster from wave ten instead of the Standard/Veteran reinforcement pair. Its late caster additions include octopuses, providing pressure against
 physical-armor formations. No prototype statistics are changed.
 
 Damaging spells cannot hit creatures on the caster's own team in Trials. The rule
@@ -106,16 +131,24 @@ purchase. Original localized creature names remain in EN/RU/DE.
 
 ## Economy and camps
 
-Each newly cleared, nonfinal wave pays five bounty plus one victory gold. Savings
+Every completed wave pays five bounty; victories add one gold, including the
+final wave. Savings
 at combat start earn one per ten, capped at three. Three consecutive wins add one;
 six add two. A defeat ends the streak. Base prices and income stay consistent across
 regions, so unlocking stronger offers is an investment decision rather than a wave
 schedule that also inflates the purse.
 
 One-star sales refund their purchase price. Evolved sales return two thirds of
-investment, capped at replacement cost. Gift companions return one third. Training,
-purchases, deployment, sales and their merge chains are undoable; refreshing reveals
+investment, capped at replacement cost. Gift companions return one third. During preparation, XP purchases,
+recruitment, deployment, sales and their merge chains are undoable; refreshing reveals
 new randomness and clears undo. Neither undo nor purchasing refunds preparation time.
+
+The top Shop button also opens recruitment during combat and the result countdown.
+Buying recruits, XP and rerolls, locking offers, and selling reserves remain
+available. Deployed creatures cannot be sold or moved. Combat uses an immutable
+round roster: purchases can merge deployed copies, but their current models,
+statistics and alliance bonuses remain in battle until the next preparation.
+Combat transactions are committed without undo.
 
 Camps at waves 5, 10, 15, 20 and 25 offer ten XP, an unowned company improvement,
 and eight gold or one recovered life. Ten XP is worth more than the cash alternative
@@ -142,14 +175,28 @@ The opening uses a separate, wider composition with original creature previews,
 starting gold, difficulty and a prominent Begin action. Its optional seed entry
 is collapsed initially; saved expeditions retain a visible resume action.
 
-Arena/Sandbox buttons are removed from player menus and controller targets. The
-PvE expedition remains accessible. The internal `--arena` entry remains available
+Arena/Sandbox buttons are removed from player menus and controller targets. Trials remains accessible from the original campaign only. Mods and rules,
+Encyclopedia and Trials occupy a centered bottom row; campaign choices stay above
+the signpost. Lost in Astral has no Trials button or controller target. The internal `--arena` entry remains available
 for development and regression tests.
 
-Save schema nine migrates older runs without losing armies or purchased capacity.
+Save schema ten migrates older runs without losing armies or purchased capacity.
 Existing recruits keep their actual paid investment, including when sold. An old
 active 45-second preparation is preserved through migration and subsequent saves;
 the next preparation uses the chosen difficulty's duration.
 Retired shop investment and earned pact upgrades convert to XP. Old pending camp
 screens advance into preparation; no retired pact choice can reappear. Completed
 18-wave saves stay complete. Public release versions and artifacts are unchanged.
+
+
+Shop level and reroll controls have persistent button surfaces and visible costs.
+The level number buys XP; hover explains progress and recruitment odds. A soft
+gold outline marks offers that complete an evolution. Creature and alliance
+inspectors fit their content, with scrolling only when viewport height requires
+it. Camp rewards are whole clickable cards illustrated with original game items.
+Buying, selling, evolving, and round outcomes use original sound effects.
+
+Balance measurements use `tools/benchmarks/arena_balance.py`: isolated headless
+Godot processes exercise native combat across six deterministic purchase policies,
+three difficulties and matched seeds. These design samples do not estimate human
+win rates. See `docs/validation/trials-ui-balance.md` for the current evidence.

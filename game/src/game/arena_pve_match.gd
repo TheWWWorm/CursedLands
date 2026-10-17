@@ -7,6 +7,7 @@ var rendered := true
 var contributions := {}
 var selected_run_uid := 0
 var settle_remaining := 0.0
+var round_army: Array[Dictionary] = []
 var formation_motion := ArenaFormationMotion.new()
 var _entrants := {}
 var _round_key := ""
@@ -16,12 +17,18 @@ signal presentation_finished
 
 func _ready() -> void:
 	super._ready()
-	mod_config = {"rules": {"armor_formula": 0, "free_run": 0, "stamina_regen": 0}, "values": {}}
+	# Trials use the remake's shared 80% absorption cap: strong armor remains
+	# useful, while low-damage attacks and spells can still make progress.
+	mod_config = {"rules": {"armor_formula": 1, "free_run": 0, "stamina_regen": 0}, "values": {}}
 	finished.connect(_resolved)
 
 
 func bounds() -> Rect2:
 	return Rect2(18.5, 18.5, 27, 27)
+
+
+func time_limit() -> float:
+	return ArenaRules.BATTLE_SECONDS
 
 
 func _spawn(placement: Dictionary) -> GameUnit:
@@ -39,6 +46,9 @@ func _make_ground() -> EITerrain:
 
 func prepare() -> void:
 	settle_remaining = 0.0
+	# Purchases may evolve or consume roster copies while their original
+	# figures are still fighting. This snapshot owns this round's bonuses.
+	round_army.assign(run.army.duplicate(true))
 	formation.clear()
 	for entry: Dictionary in run.army:
 		if entry.deployed:
@@ -196,12 +206,14 @@ func _resolved(side: int) -> void:
 
 func _process(dt: float) -> void:
 	super._process(dt)
-	if settle_remaining <= 0: return
+	if not rendered or phase != Phase.FINISHED or not is_instance_valid(world): return
 	# Combat is frozen by ArenaMatch. Advance only the figure clips so the
-	# final death can finish, without late hits, changed HP, or extra income.
+	# final death and idle animations continue through results and camp,
+	# without late hits, changed HP, or extra income.
 	for unit: GameUnit in world.unit_rows():
 		unit._anim_acc += dt
 		unit.anim_flush()
+	if settle_remaining <= 0: return
 	settle_remaining = maxf(0, settle_remaining - dt)
 	if settle_remaining == 0: presentation_finished.emit()
 

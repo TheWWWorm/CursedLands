@@ -1,6 +1,6 @@
 class_name ArenaUnitInfo
 extends RefCounted
-## Native combat values only. Weaknesses compare each damage-type armor with
+## Combat values, including Trials elite bonuses. Weaknesses compare armor with
 ## general armor, as in the campaign panel; they are not invented multipliers.
 
 static func rank_of(id: String) -> int:
@@ -10,7 +10,7 @@ static func rank_of(id: String) -> int:
 	return 0
 
 
-static func values(id: String, unit: GameUnit = null) -> Dictionary:
+static func values(id: String, unit: GameUnit = null, family := -1, rank := 0) -> Dictionary:
 	var row := GameData.db.find("monster_prototypes", id)
 	var race := GameData.db.find("race_models", String(row.get("base_race", "")))
 	var armor := PackedFloat32Array()
@@ -21,6 +21,12 @@ static func values(id: String, unit: GameUnit = null) -> Dictionary:
 		"attack": int(row.get("to_hit", 0)), "defense": 0 if int(row.get("weapon_type_id", -1)) in [5, 6] else int(row.get("parry", 0)),
 		"min": int(row.get("damage_min", 0)), "max": int(row.get("damage_min", 0)) + int(row.get("damage_max", 0)),
 		"armor": armor, "types": types}
+	if ArenaRules.is_elite(family, rank):
+		result.hp = int(ArenaRules.elite_health(result.hp)); result.max_hp = result.hp
+		result.attack = int(result.attack * 1.2)
+		result.min = int(result.min * 1.5); result.max = int(result.max * 1.5)
+		for i in armor.size(): armor[i] *= 1.2
+		result.armor = armor
 	if is_instance_valid(unit):
 		result.hp = maxi(0, ceili(unit.hp)); result.max_hp = ceili(unit.max_hp)
 		result.attack = unit.world.combat.attack_value(unit)
@@ -31,8 +37,8 @@ static func values(id: String, unit: GameUnit = null) -> Dictionary:
 	return result
 
 
-static func summary(id: String, unit: GameUnit = null) -> String:
-	var stats := values(id, unit)
+static func summary(id: String, unit: GameUnit = null, family := -1, rank := 0) -> String:
+	var stats := values(id, unit, family, rank)
 	var best := 6
 	var types: Array = stats.types
 	for i in mini(types.size(), 7):

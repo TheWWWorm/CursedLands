@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Put Mods and rules, Encyclopedia and Trials in a bottom menu row. Use the localized Trials of the Allods name, compact menu hints, and show Trials only for the original campaign.
+- Move company level, XP and recruitment odds into compact shop controls. Allow combat recruitment, XP purchases, rerolls, multiple offer locks and reserve sales; deployed upgrades take effect next round.
+- Fit creature/alliance details to their content, center utility icons, highlight upgrade-completing offers, and make camp rewards clickable cards with original item illustrations.
+- Keep the HUD and creature animation visible after a round, with results/countdown in the top badge. Add original sounds for transactions, evolution and round outcomes.
+- Give every recruit family a three-star evolution. Pay base income and interest after defeats and advance each completed wave; strengthen later enemy formations. Use the remake's 80% armor absorption cap for both sides in Trials and resolve unfinished battles as defeats after two minutes.
+- Cache unchanged encyclopedia indexes, decode only required map records once, and render visible search rows. Space navigation buttons and remove redundant difficulty explanations.
+
 - Offer starting-skill restoration or a full refund from a camp dialog, with original window styling and content-sized English, Russian and German layouts. ([#5](https://github.com/TheWWWorm/CursedLands/issues/5))
 - Adjust Trials recruit prices, make spiders available at company level five, and strengthen Veteran and Champion reinforcements. Set preparation to 60/45/30 seconds by difficulty and prevent damaging spells from hitting allies in Trials. ([#15](https://github.com/TheWWWorm/CursedLands/issues/15))
 - Show movement and attack routes during tactical pause, honor explicit attack-move in defensive stance, and show routes when attack-move acquires a target. ([#12](https://github.com/TheWWWorm/CursedLands/issues/12), [#13](https://github.com/TheWWWorm/CursedLands/issues/13), [#14](https://github.com/TheWWWorm/CursedLands/issues/14))

@@ -7,6 +7,7 @@ var policy := "balanced"
 var count := 3
 var first := 1900
 var challenge := 0
+var armor_formula := 1
 var results := []
 func _ready() -> void:
 	for arg in OS.get_cmdline_user_args():
@@ -14,10 +15,12 @@ func _ready() -> void:
 		if arg.begins_with("--arena-seeds="): count=int(arg.get_slice("=",1))
 		if arg.begins_with("--arena-seed-start="): first=int(arg.get_slice("=",1))
 		if arg.begins_with("--arena-challenge="): challenge=clampi(int(arg.get_slice("=",1)),0,2)
+		if arg.begins_with("--arena-armor-formula="): armor_formula=clampi(int(arg.get_slice("=",1)),0,1)
 	var native := hash(GameData.db.tables)
 	run=ArenaRun.new();run.auto_save=false
 	battle=ArenaPveMatch.new();battle.rendered=false;battle.run=run
 	add_child(battle);battle.set_process(false);battle._world_parent=self
+	battle.mod_config.rules.armor_formula = armor_formula
 	for offset in count:
 		run.begin(first+offset,0,challenge)
 		var trace:=[]
@@ -36,17 +39,28 @@ func _ready() -> void:
 				if battle.phase!=ArenaMatch.Phase.FIGHT:break
 				battle.simulate_tick()
 			if run.stage=="fight":printerr("unfinished simulation");get_tree().quit(1);return
-			row.merge(run.last_result,true);trace.append(row)
+			row.merge(run.last_result,true)
+			row["timed_out"] = battle.winner == -1 and battle.world.time >= battle.time_limit()
+			if battle.winner == -1:
+				row["survivors"] = []
+				for unit: GameUnit in battle.world.unit_rows():
+					if unit.dead: continue
+					row.survivors.append({"id": unit.info.prototype, "team": unit.faction, "hp": unit.hp,
+						"mana": unit.mana, "pos": [unit.pos.x, unit.pos.y], "action": unit.action,
+						"target": unit.target.info.prototype if is_instance_valid(unit.target) else "",
+						"stats": unit.stats.duplicate(true)})
+			trace.append(row)
 			await get_tree().process_frame
 		results.append({"seed":run.run_seed,"outcome":run.stage,"wave":run.wave,"trace":trace})
 		print("ALLIANCE_RUN ",policy," seed=",run.run_seed," ",run.stage," wave=",run.wave," level=",run.capacity())
 		var f:=FileAccess.open("user://alliance-runs-%s.json"%policy,FileAccess.WRITE)
-		f.store_string(JSON.stringify({"policy":policy,"challenge":challenge,"results":results},"\t"))
+		f.store_string(JSON.stringify({"policy":policy,"challenge":challenge,"armor_formula":armor_formula,"time_limit":battle.time_limit(),"results":results},"\t"))
+		f.close()
 	get_tree().quit(0 if hash(GameData.db.tables)==native else 1)
 
 func strength(entry: Dictionary) -> float:
 	var p:=GameData.db.find("monster_prototypes",entry.prototype)
-	return float(p.get("base_level",0))*2 + int(entry.rank)*0.5
+	return float(p.get("base_level",0))*2 + int(entry.rank)*0.5 + (5.0 if ArenaRules.is_elite(int(entry.get("family",-1)),int(entry.rank)) else 0.0)
 
 func shop_turn() -> void:
 	run.arrange()
@@ -76,9 +90,10 @@ func shop_turn() -> void:
 			if run.gold-run.offer_cost(offer)<bank and run.deployed_count()>=run.capacity():continue
 			var n:=run.army.filter(func(u):return int(u.family)==family and int(u.rank)==0).size()
 			var same:=run.army.any(func(u):return int(u.family)==family)
+			var veterans:=run.army.filter(func(u):return int(u.family)==family and int(u.rank)==1).size()
 			var p:=ArenaRules.prototype(family,0)
 			var power:=strength({"prototype":p,"rank":0})
-			var score:=power-weakest + n*4
+			var score:=power-weakest + n*4 + veterans*3
 			if run.army.size()<run.capacity():score+=30
 			if not same: score+=2
 			if policy in ["beast","warrior","mage"]:

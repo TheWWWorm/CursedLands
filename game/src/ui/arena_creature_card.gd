@@ -17,6 +17,8 @@ var family := -1
 var preview: WikiPreview
 var _price: Label
 var _copies: Label
+var upgrade_ready := false
+var _glow: ShaderMaterial
 
 
 static func style(fill: Color, border := Color("5a624c"), padding := Vector2(10, 8)) -> StyleBoxFlat:
@@ -117,6 +119,13 @@ func update_offer() -> void:
 	_copies.text = "  %d/%d" % [mini(copies, copies_needed), copies_needed]
 	_copies.tooltip_text = RemakeText.t("Copies: %d/%d") % [copies, copies_needed]
 	preview.modulate.a = 0.65 if disabled else 1.0
+	upgrade_ready = copies_needed > 0 and copies + 1 >= copies_needed
+	if upgrade_ready and _glow == null:
+		_glow = ShaderMaterial.new()
+		_glow.shader = preload("res://src/ui/arena_upgrade_glow.gdshader")
+	if is_instance_valid(preview.creature): preview.creature.material = _glow if upgrade_ready else null
+	_copies.text += " ↑" if upgrade_ready else ""
+	_copies.add_theme_color_override("font_color", GOLD if upgrade_ready else PAPER)
 
 
 func _label(parent: Node, value: String, pixels: int, color: Color) -> Label:
