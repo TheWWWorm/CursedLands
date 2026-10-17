@@ -1,0 +1,861 @@
+{
+  "version": "1.14.0",
+  "tag": "v1.14.0",
+  "base_stable": "1.12.0",
+  "supersedes_unpublished_candidate": "1.13.0 (tag and assets unchanged)",
+  "release_type": "stable minor (automatic Windows API detection)",
+  "game_source_commit": "175f6a2bb6149159ebfcd3af38db9b241dbfdcca",
+  "game_tree": "489582c02706d8bd7058d3a6d122cd2be2eeb85d",
+  "protocol": 23,
+  "same_version_coop_required": true,
+  "compiled_scripts": 347,
+  "all_compiled_scripts_identical_across_five_platforms": true,
+  "runtime_checks": [
+    {
+      "suite": "graphics_detection_recovery",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "GRAPHICS_DETECTION_RECOVERY {\"checks\":74,\"failures\":0}"
+      ],
+      "seconds": 2.669,
+      "log_sha256": "94c22d75ce36cc59f0652db8823cbb2cb6db56a70882f33c57c4aa4eb1ff8604",
+      "renderer": "headless",
+      "render_thread": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/graphics_detection_recovery.gd"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/headless-graphics_detection_recovery-en",
+      "checks": 74
+    },
+    {
+      "suite": "graphics_presets",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "GRAPHICS_PRESETS 229 checks 0 failures"
+      ],
+      "seconds": 2.769,
+      "log_sha256": "53edb7bcde660589e7e8178c0d9f4c51f718f3961facc43a59d49dac08a86adb",
+      "renderer": "headless",
+      "render_thread": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/graphics_presets.gd"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/headless-graphics_presets-en",
+      "checks": 229
+    },
+    {
+      "suite": "first_person_actions",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "FIRST_PERSON_ACTIONS 64 checks 0 failures"
+      ],
+      "seconds": 7.928,
+      "log_sha256": "43e2b513c7948a9b09c47228322f9a7d60c43df17d325987cff18487e830048b",
+      "renderer": "headless",
+      "render_thread": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/first_person_actions.gd"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/headless-first_person_actions-en",
+      "checks": 64
+    },
+    {
+      "suite": "arena_report_balance",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_REPORT_BALANCE checks=46 failures=[]"
+      ],
+      "seconds": 3.871,
+      "log_sha256": "6890d28b31f8c29df9bb36f5e41331f5ba4cf6029c2c67405b46bef16bded966",
+      "renderer": "headless",
+      "render_thread": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/arena_report_balance.gd"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/headless-arena_report_balance-en",
+      "checks": 46
+    },
+    {
+      "suite": "arena_roster",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_ROSTER checks=693 opening_pair_duplicate_rate=0.08815 failures=[]"
+      ],
+      "seconds": 2.568,
+      "log_sha256": "23dfb803bdabb283a14474ff8a25ac7ee3283c82cf51c271c96c873e09f55bf1",
+      "renderer": "headless",
+      "render_thread": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/arena_roster.gd"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/headless-arena_roster-en",
+      "checks": 693
+    },
+    {
+      "suite": "arena_alliances",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_ALLIANCES 643 checks; failures=[]"
+      ],
+      "seconds": 3.671,
+      "log_sha256": "ff7c4ccff411afcbe72389767032a53087dd5c396b389b9cd61d330cddfe36d6",
+      "renderer": "headless",
+      "render_thread": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/arena_alliances.gd"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/headless-arena_alliances-en",
+      "checks": 643
+    },
+    {
+      "suite": "arena_tournament",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_TOURNAMENT 151 checks; native_fights=173; failures=[]"
+      ],
+      "seconds": 70.736,
+      "log_sha256": "4a02621388a2f78b8135a5b4149009f432e18671068a5cd420f4b40b4750f200",
+      "renderer": "headless",
+      "render_thread": null,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/arena_tournament.gd"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/headless-arena_tournament-en",
+      "checks": 151
+    },
+    {
+      "suite": "windows_renderer_recovery",
+      "language": "en",
+      "args": [
+        "--windows-renderer-option"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "WINDOWS_RENDERER_RECOVERY 196 checks 0 failures"
+      ],
+      "seconds": 9.029,
+      "log_sha256": "9d08158471616c51d081b22e85c887e5598e1d131c0a6bc34934e4744953dad5",
+      "renderer": "Forward+ NVIDIA Vulkan",
+      "render_thread": "safe",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--audio-driver",
+        "Dummy",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/windows_renderer_recovery.gd",
+        "--windows-renderer-option"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/rendered-windows_renderer_recovery-en-windows-renderer-option",
+      "checks": 196
+    },
+    {
+      "suite": "startup_crash_report",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "STARTUP_CRASH_REPORT {\"checks\":106,\"failures\":0,\"platform\":\"Linux\",\"renderer\":\"forward_plus\"}"
+      ],
+      "seconds": 19.998,
+      "log_sha256": "9d6c9e9c53ffec997c1bd78a25b26a682f14f9e7de33244540892ba2672b8683",
+      "renderer": "Forward+ NVIDIA Vulkan",
+      "render_thread": "safe",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--audio-driver",
+        "Dummy",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/startup_crash_report.gd"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/rendered-startup_crash_report-en",
+      "checks": 106
+    },
+    {
+      "suite": "menu_loading_screen",
+      "language": "ru",
+      "args": [
+        "--new-game",
+        "--back-to-menu",
+        "--original-graphics"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "[trace 22:29:32 +36804ms] shader warm-up: 25 of 25 materials, 5583 ms (zone's first picture 647 ms)",
+        "MENU_LOADING_FRAMES covered=34 exposed=0",
+        "MENU_LOADING_SCREEN 13 checks 0 failures"
+      ],
+      "seconds": 43.737,
+      "log_sha256": "aa948285999bf4a2545c1fccf5277b7858678134813cc9c5b1689b294f8bf2ab",
+      "renderer": "Forward+ NVIDIA Vulkan",
+      "render_thread": "safe",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--audio-driver",
+        "Dummy",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/data/ru",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/menu_loading_screen.gd",
+        "--new-game",
+        "--back-to-menu",
+        "--original-graphics"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/rendered-menu_loading_screen-ru-new-game-back-to-menu-original-graphics",
+      "checks": 13
+    },
+    {
+      "suite": "startup_renderer_recovery",
+      "language": "en",
+      "args": [
+        "--renderer-option"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "STARTUP_RENDERER_RECOVERY 199 checks 0 failures"
+      ],
+      "seconds": 5.477,
+      "log_sha256": "a81f44b9cdcba89e0995fa04e4518773fdb6cdb06a8449aafc51645ee18a94e4",
+      "renderer": "Compatibility llvmpipe OpenGL",
+      "render_thread": "safe",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/startup_renderer_recovery.gd",
+        "--renderer-option"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/compatibility-startup_renderer_recovery-en-renderer-option",
+      "checks": 199
+    },
+    {
+      "suite": "menu_loading_screen",
+      "language": "ru",
+      "args": [
+        "--new-game",
+        "--back-to-menu",
+        "--original-graphics"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "[trace 22:30:19 +34267ms] shader warm-up: 12 of 25 materials, 3555 ms (zone's first picture 1359 ms)",
+        "MENU_LOADING_FRAMES covered=234 exposed=0",
+        "MENU_LOADING_SCREEN 13 checks 0 failures"
+      ],
+      "seconds": 40.928,
+      "log_sha256": "ff163d752f69287de5a464712ae37d711e9b4d625cad06fa916fac0ad5770236",
+      "renderer": "Compatibility llvmpipe OpenGL",
+      "render_thread": "safe",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/data/ru",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/menu_loading_screen.gd",
+        "--new-game",
+        "--back-to-menu",
+        "--original-graphics"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/compatibility-menu_loading_screen-ru-new-game-back-to-menu-original-graphics",
+      "checks": 13
+    },
+    {
+      "suite": "windows_renderer_detection",
+      "language": "en",
+      "args": [
+        "--windows-renderer-option"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "WINDOWS_RENDERER_DETECTION 36 checks 0 failures"
+      ],
+      "seconds": 30.865,
+      "log_sha256": "cb6f09ac9e099bc502dbde552fc84c37d657aaec97146311b21c3d97212be360",
+      "renderer": "Forward+ NVIDIA Vulkan",
+      "render_thread": "safe",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--audio-driver",
+        "Dummy",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/windows_renderer_detection.gd",
+        "--windows-renderer-option"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/detector-windows_renderer_detection-en-windows-renderer-option",
+      "checks": 36
+    },
+    {
+      "suite": "arena_latest_ui",
+      "language": "en",
+      "args": [
+        "--arena-resolution=en,1280,800"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_LATEST_UI latest-en-1280 checks=76 failures=[]"
+      ],
+      "seconds": 39.581,
+      "log_sha256": "9cf21108fdb680899c241996fe8af1fb4125d194f3357bfc997c904e1fb9df92",
+      "renderer": "Forward+ NVIDIA Vulkan",
+      "render_thread": "safe",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--audio-driver",
+        "Dummy",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/arena_latest_ui.gd",
+        "--arena-resolution=en,1280,800"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/arena-ui-arena_latest_ui-en-arena-resolution-en,1280,800",
+      "checks": 76
+    },
+    {
+      "suite": "arena_latest_ui",
+      "language": "ru",
+      "args": [
+        "--arena-resolution=ru,1280,800"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_LATEST_UI latest-ru-1280 checks=76 failures=[]"
+      ],
+      "seconds": 38.378,
+      "log_sha256": "47091b0c296fb4f39bb4542a409eb1d2be77062c7edea76fd80562c621ead520",
+      "renderer": "Forward+ NVIDIA Vulkan",
+      "render_thread": "safe",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--audio-driver",
+        "Dummy",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/data/ru",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/arena_latest_ui.gd",
+        "--arena-resolution=ru,1280,800"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/arena-ui-arena_latest_ui-ru-arena-resolution-ru,1280,800",
+      "checks": 76
+    },
+    {
+      "suite": "arena_latest_ui",
+      "language": "de",
+      "args": [
+        "--arena-resolution=de,1280,800"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_LATEST_UI latest-de-1280 checks=76 failures=[]"
+      ],
+      "seconds": 37.825,
+      "log_sha256": "a0a55afdb44e655d0e110549fc5db1fcf9620bc88a8f467deccd6afa6c3ad3e4",
+      "renderer": "Forward+ NVIDIA Vulkan",
+      "render_thread": "safe",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--audio-driver",
+        "Dummy",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/arena_latest_ui.gd",
+        "--arena-resolution=de,1280,800"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/arena-ui-arena_latest_ui-de-arena-resolution-de,1280,800",
+      "checks": 76
+    },
+    {
+      "suite": "arena_latest_ui",
+      "language": "en",
+      "args": [
+        "--arena-resolution=en,1280,800",
+        "--arena-panels-only"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_PANELS_UI latest-en-1280 checks=39 failures=[]"
+      ],
+      "seconds": 35.456,
+      "log_sha256": "f22281c85d7b325e6b9fa0cfb6e580da950ca6f149c1e616e3400c8edccce4c9",
+      "renderer": "Compatibility llvmpipe OpenGL",
+      "render_thread": "safe",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/CursedLands-1.14.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/repo/tools/tests/arena_latest_ui.gd",
+        "--arena-resolution=en,1280,800",
+        "--arena-panels-only"
+      ],
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/source-startup-graphics-20261017/release-1.14.0-final/checks/arena-compatibility-arena_latest_ui-en-arena-resolution-en,1280,800-arena-panels-only",
+      "checks": 39
+    }
+  ],
+  "runtime_assertions": 2730,
+  "isolated_probes": [
+    {
+      "driver": "vulkan",
+      "exit": 0,
+      "receipt": {
+        "actual_driver": "vulkan",
+        "driver": "vulkan",
+        "frames": 48,
+        "rendered": true,
+        "token": "release-1.14.0-vulkan"
+      },
+      "settings_preserved": true,
+      "normal_session_not_created": true,
+      "seconds": 7.927,
+      "errors": [],
+      "log_sha256": "ab59ac13d383ade3306c99cd590d28cfac4b8442b2f7c83cf142b75d97f88459",
+      "passed": true
+    },
+    {
+      "driver": "opengl3",
+      "exit": 0,
+      "receipt": {
+        "actual_driver": "opengl3",
+        "driver": "opengl3",
+        "frames": 48,
+        "rendered": true,
+        "token": "release-1.14.0-opengl3"
+      },
+      "settings_preserved": true,
+      "normal_session_not_created": true,
+      "seconds": 5.223,
+      "errors": [],
+      "log_sha256": "45cfa19d197038cb114ab66afe4d4c8ca4e22c84eccddda67dcb394a1be5f3d8",
+      "passed": true
+    }
+  ],
+  "translations": {
+    "entries": 2577,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 141,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "errors": 0,
+    "output": "Wiki world text: 180 entries in EN/RU/DE\nWiki reference text: 3886 source-checked EN/DE entries; RU uses original archives\nTranslations: 2577 entries; 141 dynamic wiki keys; 141 dynamic arena keys; 0 errors"
+  },
+  "desktop": {
+    "linux-x86_64": {
+      "version": "1.14.0",
+      "source_commit": "175f6a2bb6149159ebfcd3af38db9b241dbfdcca",
+      "game_tree": "489582c02706d8bd7058d3a6d122cd2be2eeb85d",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 347,
+      "resource_count": 922,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.pck": "72af08c4da813d0a2df285bae70cd910c2bea4721a55c1e276f4c8fac91f6cca"
+      }
+    },
+    "windows-x86_64": {
+      "version": "1.14.0",
+      "source_commit": "175f6a2bb6149159ebfcd3af38db9b241dbfdcca",
+      "game_tree": "489582c02706d8bd7058d3a6d122cd2be2eeb85d",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 347,
+      "resource_count": 922,
+      "files": {
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "CursedLands.pck": "72af08c4da813d0a2df285bae70cd910c2bea4721a55c1e276f4c8fac91f6cca"
+      }
+    },
+    "macos-universal": {
+      "version": "1.14.0",
+      "source_commit": "175f6a2bb6149159ebfcd3af38db9b241dbfdcca",
+      "game_tree": "489582c02706d8bd7058d3a6d122cd2be2eeb85d",
+      "protocol": 23,
+      "platform": "macos-universal",
+      "unsigned": true,
+      "target_os_runtime_tested": false,
+      "compiled_scripts": 347,
+      "files": {
+        "CursedLands.zip": "d674f4c743fc4f5fc92e0d9022aed401f942c35c6603d98c04c43b99f4c9c62c"
+      }
+    }
+  },
+  "android": {
+    "version": "1.14.0",
+    "compiled_scripts": 347,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 48,
+    "debuggable": false,
+    "apk_sha256": "9e40738cde22f4d9b6131a7a348c7fe4d9fc4c6f7a9f9ae2f5f5dbe0fe1a69d1",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16,
+    "target_os_runtime_tested": false
+  },
+  "browser": {
+    "version": "1.14.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-bfdff694cdd032347704",
+      "new_cache": "cursed-engine-2-be376f1ea394a4cd72e9",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "1001a2c749ca1bbbfaf385b3f2bc5e6b66cb9912c253bd1e7ad8e4ca5c3acfb2",
+      "old_tab_wait_verified": true
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-be376f1ea394a4cd72e9"
+      ],
+      "packs": {
+        "cursed-engine-2-be376f1ea394a4cd72e9": "1001a2c749ca1bbbfaf385b3f2bc5e6b66cb9912c253bd1e7ad8e4ca5c3acfb2"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    },
+    "previous_start": {
+      "version": "1.12.0",
+      "visible_setup_screen": true,
+      "runtime_errors": [],
+      "origin": "http://127.0.0.1:29132/"
+    },
+    "fresh_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": [],
+      "origin": "http://127.0.0.1:29133/",
+      "inspection": "In-app browser screenshot and error/warning console inspection"
+    },
+    "upgraded_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": [],
+      "origin": "http://127.0.0.1:29132/",
+      "inspection": "In-app browser screenshot and error/warning console inspection"
+    },
+    "build": {
+      "version": "1.14.0",
+      "source_tag": "v1.14.0",
+      "source_commit": "175f6a2bb6149159ebfcd3af38db9b241dbfdcca",
+      "game_tree": "489582c02706d8bd7058d3a6d122cd2be2eeb85d",
+      "protocol": 23,
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 347,
+      "resource_count": 919,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "1001a2c749ca1bbbfaf385b3f2bc5e6b66cb9912c253bd1e7ad8e4ca5c3acfb2",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    }
+  },
+  "wiki": {
+    "version": "1.14.0",
+    "indexes": {
+      "wiki/data/de/index.json": 1277,
+      "wiki/data/en/index.json": 1277,
+      "wiki/data/ru/index.json": 1277,
+      "wiki/data/lost_in_astral/de/index.json": 1757,
+      "wiki/data/lost_in_astral/en/index.json": 1757,
+      "wiki/data/lost_in_astral/ru/index.json": 1757
+    },
+    "files": 13526,
+    "manifest_sha256": "040c12772e0aff9e2c42ab6c073a1e96dca2c6a12abc6f879d4acdc02faf2994",
+    "content": "Existing 1.12.0 encyclopedia retained; index version metadata updated."
+  },
+  "hosted_files_count": 13551,
+  "hosted_manifest_sha256": "3463b94ea94833877bb2ee19694eb125147ebbe207a52686fcf45a1e72399d6b",
+  "parts_manifest": {
+    "/index.wasm": {
+      "count": 2,
+      "size": 39509339
+    }
+  },
+  "evidence": {
+    "balance-analysis.json": "cbdacb1bcfea4fd48f3621aeb920cfb711ddb97be7e29cbb0fb32ad5075c33b9",
+    "balance-bouts.json.gz": "02b58d4c7fcf8dee226b615fe8e1c314f63af430d310b12442239a5de11ddf42",
+    "compatibility-expansion-latest-en-1280-cost-panels.png": "7e64a8caaecad28c519bb27db6457630acb0d81ef553af90535255e882072121",
+    "compatibility-expansion-latest-en-1280-reserves.png": "3b2a81ba0be6b9c218c54930ebe0061ac6c5ad66a7879663637d252a601b33ad",
+    "expansion-latest-de-1280-cost-panels.png": "33fb3d4b5aa14a64cdd1859a469159ee0128e12224260bd7256577cc39fd98dc",
+    "expansion-latest-de-1280-expanded.png": "30e493cf54136a9bbfebb2110c32412c0dfe37aca2a5036c6588d5e48c9b4851",
+    "expansion-latest-de-1280-reserves.png": "eddd25fc4515484f4b9e2914ec14cb99b5dc6df4c4cf39665d9b8b522fba55ba",
+    "expansion-latest-de-1280-scouting.png": "14143612950e2df1eb01943f75651bf95f7cbb45724c96aab0ff107fc30fb6a6",
+    "expansion-latest-en-1280-cost-panels.png": "5e6e05752af4946f30febb770a2f35060b0c3624e033b9ac9640a81036c9d4c0",
+    "expansion-latest-en-1280-expanded.png": "a37ed454844581c820dd06e0029f5ea931842f645abad8f620339795ba6e2016",
+    "expansion-latest-en-1280-reserves.png": "973dd553c65ee0851fd200ffa1ae535f337f0d7f7080a941a189846ccd5f40ff",
+    "expansion-latest-en-1280-scouting.png": "d6f7b4333a66e1a9fc64ddd1d26b3bd3c07c428cffadd5e0dd6d3e3d0dedcf92",
+    "expansion-latest-ru-1280-cost-panels.png": "79c765cc4e94948d1bd2ca5f4c48d8f70e06c7b77bb3113663f74a013d3e9de4",
+    "expansion-latest-ru-1280-expanded.png": "4643d6dccd7e6cf816099aefbf3be6157cd38ec4619f4df4ec8678e12295d312",
+    "expansion-latest-ru-1280-reserves.png": "172a654d40eaf4154207e7278e2a5016ccc769a2471e12727a5c7508a7c97a8b",
+    "expansion-latest-ru-1280-scouting.png": "8ae1c4358da08e58856768214de307d3ca3759fce4b5b40833b420f18f85d4ea",
+    "results.json.gz": "1e86775934847c41f78127d785ea9fe40b09d9dfda4bc96c25eff8e562cceb4c",
+    "windows-detector-de.png": "0fc642487db677635df67c9af865743c785a5a1e7f59aa9231858ac686f89e8f",
+    "windows-detector-en.png": "20a603ac97cbb4cab99fbe2e2bc3322aeb28585dcef02fc791500bda177c7578",
+    "windows-detector-ru.png": "b9c91f34f5f6a1d51ff703ebf4b7dbdb64f1c47bb5c609c97edbf2c242ecf32a",
+    "windows-help-de.png": "1d1b0faad659293bcdf5b7f29c51218126e06f642ee9f6722eb75f2d3ae98a15",
+    "windows-help-en.png": "eb40c045beddccdad3b80a77ab1b248328bf537545446714e1cd3d374d816e58",
+    "windows-help-ru.png": "123e1ff20662db6f5e02e5513fdeb2ddb8448658eefe00a3451853426444abf7",
+    "windows-option-compat-de.png": "3831f83359a7072fc962cfe8eda98e676b0f5df6cf0d39318eeebe01f48d4203",
+    "windows-option-compat-en.png": "2507c42594e22c4074f129e17c46a21b482b5707efbe40ca795fa83b62759212",
+    "windows-option-compat-ru.png": "9f9f3c6d94b777665098fdc666a104a6e5d461500c72574b12a6dce00fd951f8",
+    "windows-option-de.png": "3fbb653573b3d90a9521ebd23c53d20e905ac6644ab5957894f833269ee50d3c",
+    "windows-option-en.png": "1637755a67c61d8e542555bc74c767328e6c549958c454bba2f31fc923c85bc7",
+    "windows-option-ru.png": "fcdc3d76bdc25dc99b4ee85dd020fc57eff419e086a1246f403ae17235e9fa2a",
+    "windows-prompt-de.png": "22f7add19f759d77aa4405a7437afce61ebfc80d4854b2b66ab7cdd72fc51391",
+    "windows-prompt-en.png": "7faf7327ef7a66e1933dd44fc6b6532c5bae268a8f65304eb56c54ee4c763608",
+    "windows-prompt-ru.png": "70a4ccbc235006738b9db3aff16dc9676bab113f3ae041e3f5b027291fe588a5",
+    "windows-recovery-de.png": "d3ffeac75ac393b1529e36b31df98f2a09d5eac92db3c692f29e01695ce581ea",
+    "windows-recovery-en.png": "754d1aef25e959f3685acd0687c19bb2a844c9680df3c4991e1c85cce9515afc",
+    "windows-recovery-ru.png": "33587f563a145093c21b6fc33813a7dfdb4609a472a0b13d8ea38f38e4fc0140"
+  },
+  "changes_qualified": [
+    "Windows uses Safe render threading. Automatic tests D3D12, Vulkan then OpenGL in independent processes; a successful 48-frame 3D readback with the correct API and a fresh token is required.",
+    "A 45-second timeout bounds each child test. Interrupted tests are journaled before launch; failed probes are skipped on the next start. Cached success is invalidated when the driver fingerprint changes.",
+    "The test executable enters an early branch before original game data, settings, normal session logging and controller initialization. Failed D3D12 on Linux advances to a real Vulkan probe without a manual restart. Separate Vulkan and OpenGL child receipts pass.",
+    "A successful small probe cannot confirm the full 3D menu. The next fallback is persisted before menu presentation; an unpresented trial advances on the following launch. Unrelated gameplay crashes do not blacklist APIs.",
+    "Automatic and manual D3D12, Vulkan and Compatibility choices, help and status have EN/RU/DE coverage. Manual launchers select Safe rendering before scripts; Compatibility also selects basic graphics.",
+    "Packaged Linux runtime completes menu loading, opens a Russian campaign and returns to the menu under Forward+ and Compatibility. Existing Android renderer recovery and first-person action settings pass regression checks.",
+    "Tribe icons glow in their own color when represented by the deployed army. Absent tribes remain neutral; scouting does not substitute the rival army for shop indicators. The glow shader also runs in Compatibility without scene bloom.",
+    "Recruitment metadata uses translucent chamfered panels with light cost-colored borders; numeric prices and copy counts remain explicit. All price bands, progression counts and matching alliance rows are captured. Trials UI is rendered in EN/RU/DE with the corresponding original language archives.",
+    "Trials-only banshee and red harpy tuning passes 46 targeted assertions; campaign prototypes, native spell cache, saved army identities and bonus reapplication remain isolated. 216 native-AI duels before and after are archived separately.",
+    "Browser update from published stable 1.12.0 preserves every IndexedDB store, including save and data sentinels."
+  ],
+  "balance_analysis": {
+    "file": "release-1.14.0/balance-analysis.json",
+    "bouts_per_version": 216
+  },
+  "ui_cost_palette": {
+    "1": "ivory",
+    "2": "blue",
+    "3": "mint",
+    "4": "lilac",
+    "5+": "gold",
+    "price_text": "ivory",
+    "background": "64% opaque dark blue-black",
+    "border": "light cost accent"
+  },
+  "tribe_palette": {
+    "beast": "amber",
+    "horde": "coral",
+    "warrior": "blue",
+    "hunter": "green",
+    "mage": "violet"
+  },
+  "diagnostic_assessment": [
+    "The supplied 1.11.0 report has all optional effects disabled while the engine is still Forward+ / D3D12 with Separate rendering. Its final trace precedes presentation of the constructed 3D menu; the report screen itself works.",
+    "No GPU reset code, thread backtrace or shader failure proves the exact freeze. Safe threading and automatic API recovery avoid retrying the reported failed configuration; no claim is made that the driver defect was reproduced or repaired."
+  ],
+  "sources": [
+    "https://docs.godotengine.org/en/4.7/tutorials/editor/command_line_tutorial.html",
+    "https://github.com/godotengine/godot/issues/119457"
+  ],
+  "limits": [
+    "No Windows 10 / Intel Iris Xe or ThinkPad E15 Gen 2 runtime was available. The laptop-wide freeze remains unconfirmed as resolved.",
+    "Windows, macOS and Android packages were audited, not target-OS runtime-tested. Windows policy tests run on Linux with NVIDIA Vulkan and Mesa llvmpipe OpenGL. D3D12 is unavailable on this host. CMD arguments and packaging were checked; cmd.exe was not executed.",
+    "Detection requires the initial 2D game window to open. Native capability fallback handles unsupported APIs before scripts. A driver freeze affecting the entire OS still requires a system restart; the journal chooses the next API afterward.",
+    "A previously observed nonfatal shader-cache header error is not addressed. Browser checks cover startup/storage upgrade, not campaign gameplay. Audio uses Dummy; physical devices and remote co-op peers were not retested.",
+    "Small deterministic combat samples do not establish global balance. No laptop performance claim is made. Compatibility intentionally has fewer effects."
+  ],
+  "test_scope_notes": [
+    "Compatibility panel captures exclude checks that require short audio clips to remain playing after a fixed number of rendered frames. The same audio assertions pass in all three Forward+ language runs."
+  ],
+  "deployment_verification": "Hosted hashes and live browser startup must pass before publishing the draft; receipts are retained with the release workspace."
+}
