@@ -311,8 +311,7 @@ static func lift_recall(vm: ScriptVM, nid: int) -> void:
 	vm.session.broadcast({"t":"lever", "nid":338779, "state":1, "time":time})
 
 
-## Earlier saves kept VM waits but lost the corresponding walking orders.
-## Recover inspected active trap families and the two proven escape waits.
+## Recover inspected story state and waits in earlier region checkpoints.
 static func recover(vm: ScriptVM) -> void:
 	# Trap recovery uses only definitions installed by apply(), in either campaign.
 	preload("res://src/game/script/story_coop_traps.gd").recover(vm)
@@ -320,6 +319,8 @@ static func recover(vm: ScriptVM) -> void:
 	_recover_elder_departure(vm)
 	if vm.session.state.campaign_id != CampaignProfile.ASTRAL: return
 	var zone := String(vm.world.zone.get("id", ""))
+	if zone == "gz11d1":
+		_recover_tomb_exit(vm)
 	if zone == "gz2h":
 		preload("res://src/game/script/story_revenge.gd").recover(vm)
 	if zone == "gz1h":
@@ -344,6 +345,56 @@ static func recover(vm: ScriptVM) -> void:
 			u.command({"type":"move", "to":at, "run":false, "story_move":true})
 			u.set_meta("ai_state",1)
 			return
+
+
+## Island travel can reveal the Rift again (z.gz11g = 1) after the needle
+## opened the tomb's return exit. The saved VM has already consumed Start,
+## whose second branch normally reopens that exit on a flooded-tomb revisit.
+## Replay only that inspected startup after needle completion, including for
+## existing stuck saves. An unfinished first visit must still collect it.
+static func _recover_tomb_exit(vm: ScriptVM) -> void:
+	var st := vm.session.state
+	if st.get_var(0,"z.gz11g") != 1 or st.get_var(0,"q.gz11d1.q16ag") != 2 \
+		or st.get_var(0,"start_zone11dun1") != 1: return
+	if int(vm.world.levers.get(4523,{}).get("state",-1)) != 1: return
+	if vm.instances.any(func(i): return (i.sname == "Start" or (i.sname == "WorldScript" and i.src == "")) \
+		and (not i.killed or not i.frames.is_empty())): return
+	var expected := P.parse("""
+DeclareScript Start (this : object)
+DeclareScript VCheck#0#5 (this : object)
+Script Start (
+ if (IsEqual(GSGetVar(0, "start_zone11dun1"), 0)) then (
+  KillScript()
+  GSSetVarMax(0, "start_zone11dun1", 1)
+  AddRectToArea(1, 84, 44, 98, 50)
+  CreateParticleSource(10, 85.5, 36.2, 6.2, 0.7, "campfire")
+  Sleep(30)
+  PlayMusic(0, "dungeon")
+  CreateFX(GetX(GetUnitOfPlayer(0, 0)), GetY(GetUnitOfPlayer(0, 0)), GetZ(GetUnitOfPlayer(0, 0)), 15, 50, "Acks\\Scenario\\11.wav")
+ )
+ if (IsEqual(GetLeverState(GetObject(4523)), 1)) then (
+  KillScript()
+  CreateParticleSource(10, 85.5, 36.2, 6.2, 0.7, "campfire")
+  Sleep(20)
+  SetWaterLevel(0, 0.7, 1)
+  GSSetVar(0, "z.gz11g", 0)
+ )
+)
+Script VCheck#0#5 (
+ if (IsEqual(GetLeverState(GetObject(2002355)), 1)) then (
+  KillScript()
+  GSSetVarMax(0, "q.gz11d1.q16ag.5", 2)
+  GSSetVarMax(0, "q.gz11d1.q16ag", 2)
+  QuestComplete(0, "q16g")
+  GiveQuestItem(0, "Awl")
+  GSSetVar(0, "z.gz11g", 0)
+ )
+)
+""")
+	for name: String in expected.scripts:
+		if vm.ast.scripts.get(name,{}) != expected.scripts[name]: return
+	if not vm.ast.world.has([P.S_CALL,"Start",[[P.N_VAR,"NULL"]]]): return
+	vm.spawn("Start",[null])
 
 
 ## The original village runs this departure check on every deployment.

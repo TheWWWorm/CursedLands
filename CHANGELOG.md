@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Restore the lizard tomb's return exit when revisiting after The Magic Needle, including affected saved games, while preserving quest rewards and the unfinished quest's exit restriction. ([#16](https://github.com/TheWWWorm/CursedLands/issues/16))
+
 ## 1.10.0 — 2026-10-17
 
 - Expand Kel’s encyclopedia biography and add the original Rod of Life resurrection requirements, fragment quests and dialogue deadline in English, Russian and German.
