@@ -214,6 +214,14 @@ Saves and settings are kept in the engine's user folder:
 
 Open the `game` folder in [Godot 4.7](https://godotengine.org/) and export with the included presets. The Windows and Linux release packages use the [patched desktop templates](engine_patches/godot-4.7/README.md).
 
+For a source run with an unmodified Godot binary, launch with
+`godot --path game --render-thread safe` (substitute your Godot executable).
+The project enables a separate render thread for the patched desktop templates;
+stock Godot 4.7.2 can abort during shutdown with that mode. In an editor-launched
+run, set the active platform's **Thread Model** override to **Safe** in your local
+project settings. The source checkout keeps GDScript and shader files at LF line
+endings through `.gitattributes`, including on Windows.
+
 ## License
 
 The engine's code is licensed under the Apache License 2.0 (see [LICENSE.md](LICENSE.md)); see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for third-party components. Evil Islands and all of its content belong to their respective owners and are not part of this project.

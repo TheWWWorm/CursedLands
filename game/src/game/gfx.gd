@@ -245,6 +245,9 @@ void ei_vertex_colours(vec3 p, vec3 n, vec3 e, float kw, out vec3 d, out vec3 s)
 ## blended variant (_blend_fog), so Godot's volumetric fog reaches the land
 ## and the map objects too.
 static func compose(code: String, lit := true, wrap := false) -> String:
+	# GDScript preserves CRLF inside multiline strings. Normalize before
+	# matching shader fragments, including strings from an older checkout.
+	code = code.replace("\r\n", "\n")
 	ensure_globals()
 	var light_common := LIGHT_COMMON
 	if _skip_clear_mobile_fog and RenderingServer.get_current_rendering_method() == "mobile":

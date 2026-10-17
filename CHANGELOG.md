@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Keep embedded shaders compatible with Windows checkout line endings.
+- Allow graphics detection to finish applying a preset when terrain updates replace scene nodes.
+
 ## 1.11.0 — 2026-10-17
 
 - Add Autochess alongside Expedition: nine players on a 3×3 map, eight named CPU rivals, announced random matchups, creep rounds, live board spectating and elimination.

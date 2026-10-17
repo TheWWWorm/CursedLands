@@ -801,7 +801,8 @@ func _apply_live() -> void:
 		Gfx.apply_env(_env)
 	EIFigure.set_wind(Gfx.on("gfx_wind"))
 	for n in get_tree().root.find_children("*", "", true, false):
-		if n is EITerrain:
+		# Earlier terrains can free reflection/sector children in this snapshot.
+		if is_instance_valid(n) and n is EITerrain:
 			(n as EITerrain).apply_gfx()
 	GameData.options_changed.emit()
 

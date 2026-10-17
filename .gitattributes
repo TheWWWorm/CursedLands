@@ -1,2 +1,8 @@
+# Embedded shader source uses literal newlines in its composition rules.
+# Keep those literals consistent even with core.autocrlf=true on Windows.
+*.gd text eol=lf
+*.gdshader text eol=lf
+*.gdshaderinc text eol=lf
+
 # Unified patch context deliberately prefixes tab-indented code with a space.
 engine_patches/**/*.patch -whitespace
