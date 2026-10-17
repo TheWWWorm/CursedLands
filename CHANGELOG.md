@@ -1,9 +1,10 @@
 # Changelog
 
-## Unreleased
+## 1.11.1 — 2026-10-17
 
 - Keep embedded shaders compatible with Windows checkout line endings.
 - Allow graphics detection to finish applying a preset when terrain updates replace scene nodes.
+- Document the safe rendering-thread configuration for running from source with official Godot builds.
 
 ## 1.11.0 — 2026-10-17
 

@@ -2,8 +2,9 @@
 
 The two errors visible in the 1.11.0 editor screenshot reproduce from stable
 commit `f123ee28fc4eb90c0463595c637831e76e57647c` with official Godot and the
-ordinary English GOG game data. The fixes remain local; no release, published
-tag, hosted export, or installed game was changed.
+ordinary English GOG game data. This record covers the initial source-level
+investigation. Packaging, additional checks and publication qualification are
+recorded separately for release 1.11.1.
 
 ## Shader compilation
 
