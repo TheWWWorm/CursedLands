@@ -81,7 +81,7 @@ func _ready() -> void:
 	screen._evolution_notice.present([{"uid":uid,"from":"boarredf1","to":"boarredf3","old_rank":0,"rank":1}])
 	await get_tree().create_timer(0.35).timeout
 	bounded(screen._evolution_notice,"side evolution")
-	check(screen._evolution_notice.position.x > screen._hud.size.x * 0.65,"evolution stays at the right edge")
+	check(screen._evolution_notice.position.x == 24 and screen._evolution_notice.position.y >= screen._alliance_panel.position.y + screen._alliance_panel.size.y,"evolution stays below alliances on the left")
 	check(screen._evolution_notice.mouse_filter==Control.MOUSE_FILTER_IGNORE,"evolution never captures battlefield clicks")
 	await shot(tag+"-evolution")
 	screen._evolution_notice.clear()
@@ -131,7 +131,7 @@ func _ready() -> void:
 	check(screen.run.gold == old_gold - 5 and screen.run.training == 10, "HUD training click buys XP directly")
 	check(not screen._modal_layer.visible and screen.run.capacity() == 4, "training needs no menu or confirmation")
 	check(screen.run.shop == shelf, "training preserves existing offers")
-	check(screen._level_label.text.contains(str(screen.run.capacity())), "HUD displays the company level")
+	check(screen._train_button.value == str(screen.run.capacity()), "HUD displays the company level")
 	# Alliance hover explains automatic contributions and bonuses.
 	var beast := screen._alliance_list.get_node("beast") as Control
 	check(beast.is_visible_in_tree(), "alliance progress is permanently visible beside the field")

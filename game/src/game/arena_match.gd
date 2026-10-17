@@ -23,6 +23,7 @@ var damage := [0.0, 0.0]
 var _world_parent: Node
 var _previous_speed := 1.0
 var speed := 1.0
+var drives_clock := true
 var _death_marks: Array[Dictionary] = []
 
 
@@ -47,6 +48,7 @@ func _rebuild_world() -> void:
 		world.get_parent().remove_child(world)
 		world.queue_free()
 	world = GameWorld.new()
+	world.presentation = presents_world()
 	world.name = "ArenaWorld"
 	world.zone = {"id": "arena", "type": "arena", "allod": "gipat"}
 	# IDs in [1e9, 2e9) identify scripted party actors to the original AI
@@ -70,7 +72,7 @@ func _rebuild_world() -> void:
 	phase = Phase.DEPLOY
 	for placement: Dictionary in formation:
 		_spawn(placement)
-	if DisplayServer.get_name() != "headless":
+	if world.presentation and DisplayServer.get_name() != "headless":
 		var marks := GroundMarks.of(world)
 		marks.prepare_footprints()
 		if ground is ArenaWinterTerrain: ground.bind_ground_marks(marks)
@@ -201,7 +203,7 @@ func start() -> bool:
 	world.process_mode = Node.PROCESS_MODE_INHERIT
 	world.set_process(true)
 	world.set_physics_process(true)
-	Engine.time_scale = speed
+	if drives_clock: Engine.time_scale = speed
 	changed.emit()
 	return true
 
@@ -215,12 +217,12 @@ func toggle_pause() -> void:
 
 func set_speed(value: float) -> void:
 	speed = clampf(value, 0.5, 2.0)
-	Engine.time_scale = speed if phase in [Phase.FIGHT, Phase.PAUSED] else _previous_speed
+	if drives_clock: Engine.time_scale = speed if phase in [Phase.FIGHT, Phase.PAUSED] else _previous_speed
 	changed.emit()
 
 
 func reset() -> void:
-	Engine.time_scale = _previous_speed
+	if drives_clock: Engine.time_scale = _previous_speed
 	_rebuild_world()
 
 
@@ -239,7 +241,7 @@ func _process(_dt: float) -> void:
 	phase = Phase.FINISHED
 	world.process_mode = Node.PROCESS_MODE_DISABLED
 	if is_instance_valid(world.ground_marks): world.ground_marks.process_mode = Node.PROCESS_MODE_ALWAYS
-	Engine.time_scale = _previous_speed
+	if drives_clock: Engine.time_scale = _previous_speed
 	changed.emit()
 	finished.emit(winner)
 
@@ -269,7 +271,7 @@ func broadcast(event: Dictionary) -> void:
 
 
 func _exit_tree() -> void:
-	Engine.time_scale = _previous_speed
+	if drives_clock: Engine.time_scale = _previous_speed
 	if is_instance_valid(world): world.session = null
 
 
@@ -291,3 +293,7 @@ func _update_death_marks(dt: float) -> void:
 		if is_instance_valid(unit) and unit.dead and unit.world == world and world.presentation:
 			GroundMarks.of(world).pool(unit)
 		_death_marks.remove_at(i)
+
+
+func presents_world() -> bool:
+	return true

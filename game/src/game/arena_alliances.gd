@@ -54,8 +54,9 @@ static func effect(key: String, level: int) -> String:
 		"mage": return RemakeText.t("Enemies: −%d%% elemental armor.") % (level * 20)
 	return ""
 
-static func apply(world: GameWorld, army: Array) -> void:
-	var count := counts(army)
+static func apply(world: GameWorld, army: Array, opponents: Array = []) -> void:
+	var companies := [army, opponents]
+	var totals := [counts(army), counts(opponents)]
 	for unit: GameUnit in world.unit_rows():
 		if not unit.has_meta("alliance_base"):
 			unit.set_meta("alliance_base", {"stats": unit.stats.duplicate(true), "hp": unit.max_hp})
@@ -63,10 +64,12 @@ static func apply(world: GameWorld, army: Array) -> void:
 		var stats: Dictionary = base.stats.duplicate(true)
 		var health := float(base.hp)
 		var placement: Dictionary = unit.get_meta("arena_placement", {})
-		if int(placement.get("team", 1)) == 0:
+		var team := int(placement.get("team", 1))
+		var count: Dictionary = totals[team]
+		if not companies[team].is_empty():
 			var family := -1
-			for entry: Dictionary in army:
-				if int(entry.uid) == int(placement.get("run_uid", -1)): family = int(entry.family); break
+			for entry: Dictionary in companies[team]:
+				if int(entry.uid) == int(placement.get("run_uid", placement.get("source_uid", -1))): family = int(entry.family); break
 			var member := traits(family)
 			var beasts := rank("beast", count.beast)
 			stats.dmg_min *= 1.0 + beasts * 0.1
@@ -79,9 +82,8 @@ static func apply(world: GameWorld, army: Array) -> void:
 				var hunters := rank("hunter", count.hunter)
 				stats.to_hit *= 1.0 + hunters * 0.15
 				stats.actions = float(stats.get("actions", 15.0)) * (1.0 + hunters * 0.1)
-		else:
-			var mages := rank("mage", count.mage)
-			for type in range(3, 6): stats.armor[type] *= 1.0 - mages * 0.2
+		var mages := rank("mage", totals[1 - team].mage)
+		for type in range(3, 6): stats.armor[type] *= 1.0 - mages * 0.2
 		unit.stats = stats
 		unit.max_hp = health
 		unit.hp = health

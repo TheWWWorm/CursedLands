@@ -9,6 +9,9 @@ var pending: Array[Dictionary] = []
 var age := 0.0
 var covered := false
 var _content: VBoxContainer
+var below: Control
+var _ready_to_show := false
+var _previews: Array[WikiPreview] = []
 
 
 func _ready() -> void:
@@ -18,6 +21,9 @@ func _ready() -> void:
 	custom_minimum_size.x = 292
 	minimum_size_changed.connect(_layout.call_deferred)
 	get_parent().resized.connect(_layout)
+	if below:
+		below.resized.connect(_layout)
+		below.visibility_changed.connect(_layout.call_deferred)
 	hide()
 
 
@@ -29,6 +35,9 @@ func present(events: Array[Dictionary]) -> void:
 func clear() -> void:
 	pending.clear()
 	current.clear()
+	_previews.clear()
+	_ready_to_show = false
+	age = 0
 	if is_instance_valid(_content):
 		remove_child(_content)
 		_content.queue_free()
@@ -66,13 +75,12 @@ func _next() -> void:
 	_figure(row, current.to, int(current.rank), true)
 	var before := ArenaUnitInfo.values(current.from)
 	var after := ArenaUnitInfo.values(current.to)
-	var stats := _label(_content, RemakeText.t("Health %d → %d · Attack %d → %d") % [before.max_hp, after.max_hp, before.attack, after.attack], 14, ArenaCreatureCard.PAPER)
+	var stats := _label(_content, RemakeText.t("Health %d → %d") % [int(before.max_hp), int(after.max_hp)] + "\n" + RemakeText.t("Attack %d → %d") % [int(before.attack), int(after.attack)], 14, ArenaCreatureCard.PAPER)
 	stats.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for control: Control in find_children("*", "Control", true, false): control.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	modulate.a = 0
 	show()
 	_layout.call_deferred()
-	shown.emit(current)
 
 
 func _figure(parent: Control, id: String, rank: int, upgraded := false) -> void:
@@ -89,6 +97,7 @@ func _figure(parent: Control, id: String, rank: int, upgraded := false) -> void:
 	box.add_child(preview)
 	preview.show_model({"kind": "creature", "value": id})
 	preview.turn_by(-0.35)
+	_previews.append(preview)
 	var label := _label(box, ArenaRules.title(id), 16, ArenaCreatureCard.GOLD if upgraded else ArenaCreatureCard.MUTED)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.custom_minimum_size.y = 44
@@ -106,7 +115,7 @@ func _label(parent: Node, value: String, pixels: int, color: Color) -> Label:
 
 func _layout() -> void:
 	size = Vector2(292, 0)
-	position = Vector2(get_parent().size.x - size.x - 16, 158)
+	position = Vector2(24, below.position.y + below.size.y + 12 if below and below.visible else 190)
 
 
 func _process(dt: float) -> void:
@@ -114,6 +123,13 @@ func _process(dt: float) -> void:
 	if covered:
 		modulate.a = 0
 		return
-	age += dt
-	modulate.a = minf(clampf(age / 0.16, 0, 1), clampf((DURATION - age) / 0.4, 0, 1))
+	if not _ready_to_show:
+		# Both models finish layout, framing and their first render before the
+		# single comparison appears. Do not spend its reading time on loading.
+		for preview in _previews:
+			if is_instance_valid(preview.creature) and (not preview._creature_fitted or preview.creature._preview_pending): return
+		_ready_to_show = true
+		shown.emit(current)
+	modulate.a = 1
+	age += dt / maxf(Engine.time_scale, 0.001)
 	if age >= DURATION: _next()

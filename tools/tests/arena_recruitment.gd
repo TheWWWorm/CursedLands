@@ -37,8 +37,8 @@ func _ready() -> void:
 		check(index >= 0, "an empty company can still afford an offer")
 		var before := run.gold
 		var cost := run.offer_cost(run.shop[index])
-		check(run.buy(index).is_empty() and run.gold == before - cost and run.bench_count() == 1, "first creature is bought into reserves")
-		check(not run.start_battle().is_empty(), "buying does not deploy for the player")
+		check(run.buy(index).is_empty() and run.gold == before - cost and run.deployed_count() == 1, "first creature is bought onto the field")
+		check(run.army[0].deployed, "buying deploys without a second action")
 		check(run.deploy(run.army[0].uid, Vector2(25, 32)).is_empty(), "bought recruit can be placed")
 		run.undo(); run.undo()
 		check(run.army.is_empty() and run.gold == before, "undo can return to the empty purchased opening")

@@ -2,6 +2,9 @@
 
 Current design, 17 October 2026. Older validation files describe earlier builds.
 
+Expedition remains the thirty-wave mode. [Autochess](arena-autochess-design.md)
+adds a separate ten-player game against nine computer opponents.
+
 ## Core loop
 
 Buy a team, arrange it, fight under AI control, then reinvest the rewards.
@@ -19,7 +22,9 @@ opens one camp reward choice; selecting the reward starts preparation immediatel
 ## Company level and recruitment
 
 The opening has no creatures, ten gold, three army slots and eight reserve slots.
-Its six offers include every early family. Purchases enter reserves. Subsequent
+Its six offers include every early family. Purchases fill clear field positions
+while army capacity permits, then enter reserves. Buying never starts manual
+placement. A purchase, its deployment and any evolution are one undo action. Subsequent
 shops have five offers, six with Well connected. One offer can be locked. Refresh
 costs two gold, one with Quartermaster, or zero for the first refresh after defeat.
 An empty company cannot spend its last recruitment gold on refreshes or training.
@@ -132,4 +137,6 @@ for development and regression tests.
 Save schema eight migrates older runs without losing armies or purchased capacity.
 Retired shop investment and earned pact upgrades convert to XP. Old pending camp
 screens advance into preparation; no retired pact choice can reappear. Completed
-18-wave saves stay complete. Public release versions and artifacts are unchanged.
+18-wave saves stay complete. The speed setting is a separate player preference: 1× or 2× carries across old
+save loads and new runs in both modes. Each mode keeps a separate save file.
+Public release versions and artifacts are unchanged.

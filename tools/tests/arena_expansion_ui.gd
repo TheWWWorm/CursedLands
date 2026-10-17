@@ -127,12 +127,11 @@ func _ready() -> void:
 	check(lock.get_global_rect()==lock_rect,"pressed lock preserves geometry")
 	# Training is a real spend, can be undone, and exposes its effect before buying.
 	screen.run.gold=25;screen._refresh();await frames()
-	await click(screen._army_title.get_global_rect().get_center());await frames()
-	bounded(screen._modal_panel,"training modal")
+	bounded(screen._train_button,"direct training")
 	await shot(tag+"-training")
-	var train:=screen._modal_box.find_child("TrainArmy",true,false) as Button
-	await click(train.get_global_rect().get_center())
-	check(screen.run.capacity()==4 and screen.run.gold==20,"training control pays for early capacity")
+	var previous_xp := screen.run.experience()
+	await click(screen._train_button.get_global_rect().get_center())
+	check(screen.run.experience()==previous_xp+5 and screen.run.gold==20,"training control buys five XP")
 	screen.run.undo();await frames()
 	check(screen.run.capacity()==3 and screen.run.gold==25,"training undo restores capacity and gold")
 	# Every evolution form fits, including held weapons and animated wings.
@@ -160,7 +159,7 @@ func _ready() -> void:
 			if child is WikiPreview: preview_fits(child,"reserve orc")
 	for box in screen._shop.get_children(): preview_fits(box.get_child(0).preview,"expanded shop")
 	bounded(screen._bench_panel,"expanded reserves")
-	check(screen._army_row.size.x <= screen._bench_scroll.size.x + 1,"all nine reserves fit without unnecessary scrolling")
+	check(screen._army_row.size.x > screen._bench_scroll.size.x,"full-size reserves scroll when they exceed the shelf")
 	bounded(screen._shop_panel,"expanded shop")
 	await move((screen._shop.get_child(1).get_child(0) as Control).get_global_rect().get_center())
 	await get_tree().create_timer(0.4).timeout

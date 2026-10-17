@@ -127,7 +127,7 @@ arena_keys = set()
 alliance_source = (ROOT / 'game/arena_alliances.gd').read_text()
 for match in re.finditer(r'"(?:name|help)":\s*(' + STRING + r')', alliance_source):
     arena_keys.add(json.loads(match[1]))
-arena_keys.update(['Next wave in %ds', 'Retry in %ds', 'Camp in %ds'])
+arena_keys.update(['Next wave in %ds', 'Retry in %ds', 'Camp in %ds', 'Next round in %ds', 'First place', 'Eliminated', '1×', '2×'])
 for match in re.finditer(r'"(?:name|role|help)":\s*(' + STRING + r')', arena_source):
     arena_keys.add(json.loads(match[1]))
 block = arena_source.split('const WAVES := [', 1)[1].split('\n]', 1)[0]

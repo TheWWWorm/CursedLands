@@ -44,7 +44,7 @@ func prepare() -> void:
 		if entry.deployed:
 			formation.append({"id": entry.prototype, "team": 0,
 				"point": Vector2(entry.point[0], entry.point[1]), "run_uid": int(entry.uid), "rank": int(entry.rank)})
-	var enemies := ArenaRules.enemies(run.wave, run.run_seed, run.challenge)
+	var enemies := run.enemy_formation()
 	for index in enemies.size():
 		enemies[index]["enemy_slot"] = index
 	formation.append_array(enemies)
@@ -60,7 +60,7 @@ func prepare() -> void:
 	world.presentation = rendered
 	world.combat.difficulty_override = 0
 	world.combat.rng.seed = run.battle_seed()
-	ArenaAlliances.apply(world, run.army)
+	ArenaAlliances.apply(world, run.army, run.enemy_army())
 	contributions.clear()
 	# Scenery geometry participates in both rendered and headless navigation.
 	if rebuild:
@@ -113,9 +113,13 @@ func _reconcile_formation() -> void:
 		world.remove_unit(unit)
 
 
-func placement_error(point: Vector2, radius := 0.8, except: GameUnit = null) -> String:
+func recruitment_clear(point: Vector2) -> bool:
+	return is_instance_valid(world) and placement_error(point, 0.8, null, false).is_empty()
+
+
+func placement_error(point: Vector2, radius := 0.8, except: GameUnit = null, use_selection := true) -> String:
 	if not ArenaRun.DEPLOY.has_point(point): return RemakeText.t("Deploy inside the blue half of the battlefield.")
-	if except == null and is_instance_valid(world):
+	if except == null and use_selection and is_instance_valid(world):
 		for u: GameUnit in world.unit_rows():
 			if int(u.get_meta("arena_placement", {}).get("run_uid", 0)) == selected_run_uid and selected_run_uid > 0:
 				except = u
@@ -190,7 +194,12 @@ func _resolved(side: int) -> void:
 	if rendered:
 		for unit: GameUnit in world.unit_rows():
 			if not unit.dead: unit._set_action("idle")
-	if run: run.resolve(side, world.time, damage)
+	var survivors := [0, 0]
+	for unit: GameUnit in world.unit_rows():
+		if not unit.dead:
+			var placement: Dictionary = unit.get_meta("arena_placement", {})
+			survivors[int(placement.get("team", 0))] += int(placement.get("rank", 0)) + 1
+	if run: run.resolve(side, world.time, damage, survivors)
 
 
 func _process(dt: float) -> void:
@@ -218,3 +227,7 @@ func simulate_tick() -> void:
 			node.set_physics_process(false)
 			node._tick(GameUnit.TICK)
 	_process(0)
+
+
+func presents_world() -> bool:
+	return rendered

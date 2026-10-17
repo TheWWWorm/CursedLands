@@ -31,13 +31,15 @@ var auto_save := true
 var save_error := false
 var last_evolutions: Array[int] = []
 var _undo: Array[Dictionary] = []
+## The rendered match checks scenery as well as the formation's reserved slots.
+var deployment_check: Callable
 
 
 func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 	run_seed = maxi(1, seed_value)
 	starter = clampi(chosen_starter, 0, 2)
 	challenge = clampi(difficulty, 0, 2)
-	wave = 1; wave_limit = ArenaRules.WAVE_COUNT; gold = ArenaRules.OPENING_GOLD; lives = 3; stage = "prepare"; next_uid = 1
+	wave = 1; wave_limit = round_limit(); gold = ArenaRules.OPENING_GOLD; lives = life_limit(); stage = "prepare"; next_uid = 1
 	army.clear(); shop.clear(); boons.clear(); rewards.clear(); history.clear(); _undo.clear()
 	last_result = {}
 	free_refresh = false
@@ -155,7 +157,7 @@ func purchase_error(index: int) -> String:
 	if gold < cost: return RemakeText.t("Not enough gold.")
 	var matching := army.filter(func(entry): return entry.family == family and entry.rank == rank).size()
 	var needed := ArenaRules.evolution_copies(family, rank)
-	if bench_count() >= bench_limit() and (needed == 0 or matching + 1 < needed):
+	if bench_count() >= bench_limit() and (needed == 0 or matching + 1 < needed) and recruit_point(family) == Vector2.INF:
 		return RemakeText.t("Reserves full. Deploy or sell a creature first.")
 	return ""
 
@@ -168,11 +170,38 @@ func buy(index: int) -> String:
 	var rank := int(shop[index].get("rank", 0))
 	_checkpoint()
 	gold -= cost
-	_recruit(family, rank, cost)
+	var recruit := _recruit(family, rank, cost)
 	shop[index] = {"family": -1, "locked": false}
 	combine_ready()
+	if not unit(recruit.uid).is_empty():
+		_auto_deploy(recruit)
+	else:
+		for uid in last_evolutions:
+			var evolved := unit(uid)
+			if not evolved.is_empty(): _auto_deploy(evolved)
 	_touch()
 	return ""
+
+
+func recruit_point(family: int) -> Vector2:
+	if deployed_count() >= capacity(): return Vector2.INF
+	var proto := GameData.db.find("monster_prototypes", ArenaRules.prototype(family, 0))
+	var ranged := float(proto.get("attack_range", 0)) > 0 or not Array(proto.get("spells", [])).is_empty()
+	for x: float in ([22.0, 25.0, 28.0] if ranged else [28.0, 25.0, 22.0]):
+		for y: float in [32.0, 28.0, 36.0, 24.0, 40.0, 21.0, 43.0]:
+			var point := Vector2(x, y)
+			if army.any(func(entry): return entry.deployed and point.distance_to(Vector2(entry.point[0], entry.point[1])) < 2.5): continue
+			if deployment_check.is_valid() and not deployment_check.call(point): continue
+			return point
+	return Vector2.INF
+
+
+func _auto_deploy(entry: Dictionary) -> void:
+	if entry.deployed: return
+	var point := recruit_point(int(entry.family))
+	if point == Vector2.INF: return
+	entry.deployed = true
+	entry.point = [point.x, point.y]
 
 
 ## A purchase and every resulting evolution are one undoable action. Prefer a
@@ -403,7 +432,7 @@ func battle_seed() -> int:
 	return run_seed * 7919 + wave * 104729 + challenge * 31 + attempts * 15485863
 
 
-func resolve(winner: int, seconds: float, damage: Array) -> void:
+func resolve(winner: int, seconds: float, damage: Array, _survivors: Array = [0, 0]) -> void:
 	if stage != "fight": return
 	last_result = {"wave": wave, "winner": winner, "seconds": seconds, "damage": damage.duplicate(), "gold": 0}
 	if deployed_count() == 0: last_result["empty_army"] = true
@@ -513,8 +542,8 @@ func restore(data: Dictionary) -> bool:
 	for key in ["seed", "rng"]:
 		if not data.get(key) is String or not data[key].is_valid_int(): return false
 	if not _integer(int(data.seed), 1, 99999999): return false
-	if not _integer(data.get("wave"), 1, ArenaRules.WAVE_COUNT): return false
-	if not _integer(data.get("gold"), 0, 100000) or not _integer(data.get("lives"), 0, 3): return false
+	if not _integer(data.get("wave"), 1, round_limit()): return false
+	if not _integer(data.get("gold"), 0, 100000) or not _integer(data.get("lives"), 0, life_limit()): return false
 	if not _integer(data.get("challenge"), 0, 2) or not _integer(data.get("starter"), 0, 2): return false
 	if not _integer(data.get("next_uid"), 1, 100000): return false
 	if int(data.version) in range(2, 8) and (not data.has("pact") or not data.has("pact_rank")): return false
@@ -530,7 +559,7 @@ func restore(data: Dictionary) -> bool:
 	if saved_pact.is_empty() and int(saved_rank) != 0: return false
 	if not saved_pact.is_empty() and int(data.wave) < 4: return false
 	if int(saved_rank) > 0 and int(data.wave) < (10 if int(saved_rank) == 1 else 16): return false
-	if data.army.size() > ArenaRules.MAX_ARMY + 12 or data.boons.size() > 3 or data.history.size() > ArenaRules.WAVE_COUNT + 16: return false
+	if data.army.size() > ArenaRules.MAX_ARMY + 12 or data.boons.size() > 3 or data.history.size() > round_limit() + 16: return false
 	var seen := {}
 	var deployed := 0
 	var points: Array[Vector2] = []
@@ -591,16 +620,15 @@ func restore(data: Dictionary) -> bool:
 		if reward.kind in saved_boons: return false
 	if reward_kinds.size() not in [0, 3]: return false
 	for record in data.history:
-		if not _valid_result(record) or int(record.wave) > int(data.wave): return false
+		if not _valid_result(record, round_limit()) or int(record.wave) > int(data.wave): return false
 	if not data.get("last_result") is Dictionary: return false
-	if not data.last_result.is_empty() and not _valid_result(data.last_result): return false
+	if not data.last_result.is_empty() and not _valid_result(data.last_result, round_limit()): return false
 	if data.stage in ["result", "reward", "won", "lost"] and data.last_result.is_empty(): return false
 	# Completed older expeditions stay completed; active saves join the extended run.
 	var saved_limit = data.get("wave_limit", 18 if int(data.version) <= 4 and data.stage == "won" else ArenaRules.WAVE_COUNT)
-	if not _integer(saved_limit, 18, ArenaRules.WAVE_COUNT) or int(saved_limit) not in [18, ArenaRules.WAVE_COUNT]: return false
+	if not _integer(saved_limit, 18, round_limit()) or int(saved_limit) not in [18, round_limit()]: return false
 	if int(data.wave) > int(saved_limit): return false
-	if data.stage == "won" and (int(data.wave) != int(saved_limit) or int(data.last_result.winner) != 0): return false
-	if (data.stage == "lost") != (int(data.lives) == 0): return false
+	if not valid_terminal(data, int(saved_limit)): return false
 	run_seed = int(data.seed); rng.seed = run_seed; rng.state = int(data.rng)
 	challenge = int(data.challenge); starter = int(data.starter)
 	wave = int(data.wave); wave_limit = int(saved_limit); gold = int(data.gold); lives = int(data.lives)
@@ -636,9 +664,9 @@ static func _integer(value: Variant, low: int, high: int) -> bool:
 	return _number(value, low, high) and float(value) == floorf(float(value))
 
 
-static func _valid_result(value: Variant) -> bool:
+static func _valid_result(value: Variant, limit := ArenaRules.WAVE_COUNT) -> bool:
 	if not value is Dictionary: return false
-	if not _integer(value.get("wave"), 1, ArenaRules.WAVE_COUNT) or not _integer(value.get("winner"), -1, 1): return false
+	if not _integer(value.get("wave"), 1, limit) or not _integer(value.get("winner"), -1, 1): return false
 	if not _number(value.get("seconds"), 0, 301) or not _integer(value.get("gold"), 0, 15): return false
 	if value.has("income"):
 		if not value.income is Dictionary: return false
@@ -651,13 +679,13 @@ static func _valid_result(value: Variant) -> bool:
 
 
 func load_saved() -> bool:
-	if not FileAccess.file_exists(SAVE_PATH): return false
-	var data = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
+	if not FileAccess.file_exists(save_path()): return false
+	var data = JSON.parse_string(FileAccess.get_file_as_string(save_path()))
 	return restore(data) if data is Dictionary else false
 
 
 func save() -> bool:
-	return _write_json(SAVE_PATH, snapshot())
+	return _write_json(save_path(), snapshot())
 
 
 static func _write_json(path: String, data: Dictionary) -> bool:
@@ -695,3 +723,35 @@ func _update_profile() -> void:
 func _touch() -> void:
 	if auto_save: save_error = not save()
 	changed.emit()
+
+
+func round_limit() -> int:
+	return ArenaRules.WAVE_COUNT
+
+
+func life_limit() -> int:
+	return 3
+
+
+func save_path() -> String:
+	return SAVE_PATH
+
+
+func valid_terminal(data: Dictionary, limit: int) -> bool:
+	return not (data.stage == "won" and (int(data.wave) != limit or int(data.last_result.winner) != 0)) and ((data.stage == "lost") == (int(data.lives) == 0))
+
+
+func enemy_formation() -> Array[Dictionary]:
+	return ArenaRules.enemies(wave, run_seed, challenge)
+
+
+func enemy_army() -> Array[Dictionary]:
+	return []
+
+
+func round_title() -> String:
+	return RemakeText.t("Wave %d/%d") % [wave, wave_limit]
+
+
+func encounter_title() -> String:
+	return RemakeText.t(ArenaRules.WAVES[wave - 1][0])
