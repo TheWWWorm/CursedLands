@@ -74,3 +74,13 @@ func clear() -> void:
 		unit._draw_motion_active = false; unit._draw_line_goal = Vector2.INF
 		unit._set_action("idle")
 	movers.clear()
+
+
+## A ready formation must never hold combat behind a blocked walk-in.
+func settle(world: GameWorld) -> void:
+	for unit in movers:
+		if not is_instance_valid(unit) or unit.world != world: continue
+		unit.pos = movers[unit]
+		unit.resync_drawn()
+		world.nav.track_unit(unit)
+	clear()

@@ -3491,12 +3491,13 @@ func die(killer: GameUnit = null) -> void:
 	action = "death"
 	GameSound.unit(self, "death")
 	if len > 0.0:
-		var m := model
-		get_tree().create_timer(len - 0.05).timeout.connect(func():
-			if is_instance_valid(m) and m == model and dead:
-				freeze_pose())
+		get_tree().create_timer(len - 0.05).timeout.connect(_freeze_dead_model.bind(weakref(model)))
 	died.emit(self)
 	world.on_death(self, killer)
+
+
+func _freeze_dead_model(previous: WeakRef) -> void:
+	if dead and previous.get_ref() == model: freeze_pose()
 
 
 func _queue_blood_pool(clip: String) -> void:

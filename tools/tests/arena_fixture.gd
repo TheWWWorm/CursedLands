@@ -10,7 +10,8 @@ static func begin(run: ArenaRun, seed_value: int, composition := 0, challenge :=
 static func buy_company(run: ArenaRun, composition := 0) -> void:
 	for i in 3:
 		var family: int = COMPOSITIONS[composition][i]
-		var index := run.shop.find(run.shop.filter(func(offer): return int(offer.family) == family)[0])
+		run.shop[0] = {"family":family,"rank":0,"locked":false}
+		var index := 0
 		var bought := run.buy(index)
 		assert(bought.is_empty())
 		var entry: Dictionary = run.army.back()

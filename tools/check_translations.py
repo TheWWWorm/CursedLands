@@ -34,6 +34,12 @@ for path in ROOT.rglob('*.gd'):
         if key and key not in entries:
             line = source[:match.start()].count('\n') + 1
             errors.append(f'{path.relative_to(ROOT)}:{line}: missing RU/DE key: {key}')
+# Recruit family names/roles are chosen dynamically by the shop and guide.
+arena_rules = (ROOT / 'game/arena_rules.gd').read_text().split('const FAMILIES := [', 1)[1].split('\n]', 1)[0]
+for match in re.finditer(r'"(?:name|role)":\s*(' + STRING + r')', arena_rules):
+    key = json.loads(match[1])
+    if key not in entries:
+        errors.append(f'Arena recruit label missing RU/DE key: {key}')
 # Options are selected dynamically, so literal RemakeText.t calls alone
 # cannot catch a missing label, help paragraph or translated choice.
 options_source = (ROOT / 'ei/game_data.gd').read_text()

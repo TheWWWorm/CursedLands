@@ -20,7 +20,7 @@ const MAX_ARMY := 9
 # leveling a continuing decision instead of a cheap slot on every third wave.
 const LEVEL_XP := [0, 0, 0, 0, 6, 18, 36, 60, 90, 126]
 const SHOP_ODDS := {
-	3: [70, 30, 0, 0, 0], 4: [55, 45, 0, 0, 0],
+	3: [55, 45, 0, 0, 0], 4: [55, 45, 0, 0, 0],
 	5: [40, 40, 20, 0, 0], 6: [30, 35, 27, 8, 0],
 	7: [22, 28, 28, 20, 2], 8: [15, 20, 25, 30, 10],
 	9: [10, 15, 25, 35, 15],
@@ -39,6 +39,20 @@ const FAMILIES := [
 	{"name": "Sand ogres", "role": "Melee", "cost": 10, "tier": 5, "region": 2, "copies": [2, 3], "forms": ["ogrehadaganf13", "ogrehadaganf17", "ogrehadaganf17"]},
 	{"name": "Spiders", "role": "Melee", "cost": 3, "tier": 3, "region": 2, "copies": [3, 3], "forms": ["spiderf10", "spiderf15", "spiderf15"]},
 	{"name": "Grey harpies", "role": "Magic", "cost": 7, "tier": 5, "region": 2, "copies": [2, 3], "forms": ["succubgreym13", "succubgreym17", "succubgreym20"]},
+	# Append families: saved companies store these indices. Island does not gate recruitment.
+	{"name": "Skeletons", "role": "Melee", "cost": 2, "tier": 2, "copies": [2, 3], "forms": ["skeletonf2", "skeletonf4", "skeletonwarriorf7"]},
+	{"name": "Wisps", "role": "Magic", "health_multiplier": 2.4, "cost": 1, "tier": 1, "copies": [3, 3], "forms": ["willowispm1", "willowispm3", "willowispm5"]},
+	{"name": "Red tigers", "role": "Melee", "cost": 1, "tier": 1, "copies": [3, 3], "forms": ["tigerredf2", "tigerredf4", "tigerredf6"]},
+	{"name": "Banshees", "role": "Melee", "cost": 2, "tier": 2, "copies": [3, 3], "forms": ["bansheelightf2", "bansheelightf4", "bansheedarkf12"]},
+	{"name": "Lizardfolk", "role": "Melee", "cost": 2, "tier": 2, "copies": [3, 3], "forms": ["dragonkinbeastmenf3", "dragonkingreenf7", "dragonkinjunf11"]},
+	{"name": "Orc shamans", "role": "Magic", "cost": 3, "tier": 2, "copies": [3, 3], "forms": ["orcfemalem3", "orcfemalem5", "orcfemalem7"]},
+	{"name": "Evil eyes", "role": "Magic", "cost": 3, "tier": 3, "copies": [3, 3], "forms": ["evileyesimplem5", "evileyegreenm13", "evileyegreenm17"]},
+	{"name": "Armadillos", "role": "Melee", "cost": 3, "tier": 3, "copies": [3, 3], "forms": ["scrabbluef5", "scrabmotherpoisonedf6", "scrabmotherpoisonedf6"]},
+	{"name": "Woodsfolk archers", "role": "Ranged", "cost": 3, "tier": 3, "copies": [2, 3], "forms": ["driadgreena7", "driadgreena9", "driadgreena11"]},
+	{"name": "Hill ogres", "role": "Melee", "cost": 3, "tier": 3, "copies": [2, 3], "forms": ["ogregipatf5", "ogregipatf7", "ogregipatf9"]},
+	{"name": "Red harpies", "role": "Magic", "cost": 4, "tier": 3, "copies": [2, 3], "forms": ["succubredm9", "succubredm10", "succubredm11"]},
+	{"name": "Wormheads", "role": "Magic", "cost": 5, "tier": 4, "copies": [2, 3], "forms": ["octopuskaniam11", "octopuskaniam12", "octopuskaniam15"]},
+
 ]
 # Ordered encounters. Different seeds mirror the enemy formation; all details
 # are visible before commitment. Counts/composition are tuning inputs, not stats.
@@ -110,6 +124,13 @@ static func elite_stats(stats: Dictionary) -> void:
 	for i in stats.armor.size(): stats.armor[i] *= 1.2
 
 
+## Lightweight native wisps need enough health to serve as an opening caster.
+## Only recruited Trials actors receive this tuning; campaign data is unchanged.
+static func recruit_health(family: int, health: float) -> float:
+	if family < 0 or family >= FAMILIES.size(): return health
+	return ceilf(health * float(FAMILIES[family].get("health_multiplier", 1.0)))
+
+
 static func elite_health(health: float) -> float:
 	return ceilf(health * 1.75)
 
@@ -148,7 +169,7 @@ static func enemies(wave: int, run_seed: int, challenge := 0) -> Array[Dictionar
 	# supplies stronger casters in these slots, rather than stacking both sets.
 	if challenge < 2 and wave >= 6:
 		ids.append("ogrehadaganf15" if wave >= 25 else "trollbluef12" if wave >= 19 else "tigerwhitef10" if wave >= 15 else "wolfwhitef6" if wave >= 11 else "orcmalef5" if wave >= 9 else "goblinf2")
-	if challenge < 2 and wave >= 19:
+	if challenge == 1 and wave >= 19:
 		ids.append("succubgreym13" if wave >= 25 else "batlightm10")
 	var flip := -1 if (run_seed + wave) % 2 else 1
 	for id: String in ids:

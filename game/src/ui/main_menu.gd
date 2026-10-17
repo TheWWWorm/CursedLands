@@ -94,14 +94,14 @@ func _ready() -> void:
 	if GameData.campaign_id == CampaignProfile.ASTRAL:
 		_coop_button = Button.new()
 		_coop_button.text = RemakeText.t("Co-op campaign")
-		_coop_button.custom_minimum_size = Vector2(220, 40)
+		_coop_button.custom_minimum_size = Vector2(288, 64)
 		_coop_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		CampaignChoices.style_button(_coop_button)
 		_coop_button.pressed.connect(func(): _on_board("multiplayer"))
 		_campaign_bar.add_child(_coop_button)
 	_mods_button = Button.new()
 	_mods_button.text = RemakeText.t("Mods and rules")
-	_mods_button.custom_minimum_size = Vector2(220, 40)
+	_mods_button.custom_minimum_size = Vector2(288, 64)
 	_mods_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	CampaignChoices.style_button(_mods_button)
 	_mods_button.pressed.connect(func(): _on_board("mods"))
@@ -110,7 +110,7 @@ func _ready() -> void:
 	_wiki_button.set_meta("compact_tooltip", true)
 	_wiki_button.text = RemakeText.t("Game wiki")
 	_wiki_button.tooltip_text = RemakeText.t("Browse items, spells, creatures and game mechanics.")
-	_wiki_button.custom_minimum_size = Vector2(220, 40)
+	_wiki_button.custom_minimum_size = Vector2(288, 64)
 	_wiki_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	CampaignChoices.style_button(_wiki_button)
 	_wiki_button.pressed.connect(func():
@@ -121,7 +121,7 @@ func _ready() -> void:
 	_arena_pve_button.visible = GameData.campaign_id == CampaignProfile.ORIGINAL
 	_arena_pve_button.text = RemakeText.t("Trials of the Allods")
 	_arena_pve_button.tooltip_text = RemakeText.t("Recruit creatures from Gipath, Ingos and Suslanger. Survive thirty battles.")
-	_arena_pve_button.custom_minimum_size = Vector2(220, 40)
+	_arena_pve_button.custom_minimum_size = Vector2(288, 64)
 	_arena_pve_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	CampaignChoices.style_button(_arena_pve_button)
 	_arena_pve_button.pressed.connect(func():
@@ -281,14 +281,17 @@ func _process(_dt: float) -> void:
 
 func _layout_campaign_bar() -> void:
 	var safe := Portability.safe_rect(size)
-	var width := minf(600, maxf(0, safe.size.x - 32))
-	_campaign_bar.position = Vector2(safe.get_center().x - width * 0.5, safe.position.y + 16)
+	var ui_scale := maxf(0.75, minf(safe.size.x / 1280.0, safe.size.y / 800.0))
+	var width := minf(600, maxf(0, safe.size.x / ui_scale - 32))
+	_campaign_bar.scale = Vector2.ONE * ui_scale
+	_campaign_bar.position = Vector2(safe.get_center().x - width * ui_scale * 0.5, safe.position.y + 16 * ui_scale)
 	_campaign_bar.size.x = width
 	if _utility_bar:
-		var footer_width := minf(708, maxf(0, safe.size.x - 32))
+		var footer_width := minf(900, maxf(0, safe.size.x / ui_scale - 32))
+		_utility_bar.scale = Vector2.ONE * ui_scale
 		_utility_bar.size.x = footer_width
 		_utility_bar.size.y = _utility_bar.get_combined_minimum_size().y
-		_utility_bar.position = Vector2(safe.get_center().x - footer_width * 0.5, safe.end.y - 16 - _utility_bar.size.y)
+		_utility_bar.position = Vector2(safe.get_center().x - footer_width * ui_scale * 0.5, safe.end.y - (16 + _utility_bar.size.y) * ui_scale)
 
 
 func campaign_pad_targets() -> Array:

@@ -27,6 +27,7 @@ static func values(id: String, unit: GameUnit = null, family := -1, rank := 0) -
 		result.min = int(result.min * 1.5); result.max = int(result.max * 1.5)
 		for i in armor.size(): armor[i] *= 1.2
 		result.armor = armor
+	result.hp = int(ArenaRules.recruit_health(family, result.hp)); result.max_hp = result.hp
 	if is_instance_valid(unit):
 		result.hp = maxi(0, ceili(unit.hp)); result.max_hp = ceili(unit.max_hp)
 		result.attack = unit.world.combat.attack_value(unit)

@@ -281,7 +281,7 @@ func draw(frac: float) -> void:
 		var u0: float = 0.0 if param < 0.0 else bolt.band
 		var g := PackedVector3Array()
 		for p in pts:
-			g.append(Vector3(p.x, p.z, -p.y))
+			g.append(Vector3(p.x, p.z, -p.y) + fx.display_origin())
 		_draw_strip(cam, g, bolt.width, vrep, u0)
 	_mesh.surface_end()
 	if param >= 0.0:
@@ -289,7 +289,7 @@ func draw(frac: float) -> void:
 		var now := roundi(fx.world.time / ParticleFx.TICK) if fx.world else fx.tick
 		_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES, _glow_mat(demon))
 		for p in glow_ends(a, b, param):
-			var slices := glow_slices(p, ParticleFx.ei(cam.global_position), sz, now)
+			var slices := glow_slices(p + ParticleFx.ei(fx.display_origin()), ParticleFx.ei(cam.global_position), sz, now)
 			for i in 8:
 				var v: Vector4 = slices.points[i]
 				var uv: Vector4 = slices.uvs[i]

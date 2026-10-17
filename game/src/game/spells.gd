@@ -409,7 +409,7 @@ static func cast_unit(world: GameWorld, caster: GameUnit, spell: String, target:
 			break
 		pool.erase(pick)
 		var known := noticed.has(pick.uid) if caster.controller >= 0 and world.session else \
-				pick.uid in (caster.get_meta("noticed", {}) as Dictionary) \
+				pick.get_instance_id() in (caster.get_meta("noticed", {}) as Dictionary) \
 				or world.relation(pick.faction, caster.faction) == 0
 		if known and _trace_ok(world, p, caster.pos, caster.eye_z(), pick) \
 				and passes_filter(world, caster, pick, int(p.filter)):

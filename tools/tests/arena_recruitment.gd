@@ -23,7 +23,7 @@ func _ready() -> void:
 		for offer in run.shop:
 			families[offer.family] = true
 			check(int(offer.rank) == 0, "opening forms are base recruits")
-		check(families.size() == 6, "every family can be chosen at the start")
+		check(families.size() == 6, "opening contains six different families")
 		check(not run.start_battle().is_empty(), "empty army cannot enter battle")
 		check(restored.restore(JSON.parse_string(JSON.stringify(run.snapshot()))), "empty opening saves and loads")
 		check(restored.army.is_empty() and restored.shop == JSON.parse_string(JSON.stringify(run.shop)) and restored.gold == ArenaRules.OPENING_GOLD, "load never grants a free company")
@@ -60,13 +60,15 @@ func _ready() -> void:
 	add_child(match_state); match_state.set_process(false)
 	match_state._world_parent = self
 	var fights := 0
-	for a in 6:
-		for b in range(a + 1, 6):
-			for c in range(b + 1, 6):
+	var pool:=ArenaRules.recruit_pool(3)
+	for ai in pool.size():
+		for bi in range(ai + 1, pool.size()):
+			for ci in range(bi + 1, pool.size()):
+				var a:=pool[ai];var b:=pool[bi];var c:=pool[ci]
 				run.begin(6300 + fights)
 				for family in [a, b, c]:
-					var offer: Dictionary = run.shop.filter(func(entry): return int(entry.family) == family)[0]
-					check(run.buy(run.shop.find(offer)).is_empty(), "three-family opening can be bought")
+					run.shop[0]={"family":family,"rank":0,"locked":false}
+					check(run.buy(0).is_empty(), "three-family opening can be bought")
 				run.arrange(); match_state.prepare()
 				check(match_state.start(), "purchased opening starts native combat")
 				for tick in 5500:
@@ -74,6 +76,7 @@ func _ready() -> void:
 					match_state.simulate_tick()
 				check(match_state.winner == 0, "first wave accepts composition %d/%d/%d" % [a, b, c])
 				fights += 1
+				await get_tree().process_frame
 	check(hash(GameData.db.tables) == native, "native prototype data unchanged")
 	print("ARENA_RECRUITMENT ", checks, " checks; native_fights=", fights, "; failures=", JSON.stringify(failures))
 	get_tree().quit(0 if failures.is_empty() else 1)

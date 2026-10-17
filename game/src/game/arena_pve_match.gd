@@ -12,6 +12,11 @@ var formation_motion := ArenaFormationMotion.new()
 var _entrants := {}
 var _round_key := ""
 var _start_pending := false
+var _arrival_left := 0.0
+var _effects_left := 0.0
+var _light_finish_age := {}
+var _waiting: Node3D
+var _prepared_enemies := {}
 signal presentation_finished
 
 
@@ -43,6 +48,39 @@ func _spawn(placement: Dictionary) -> GameUnit:
 	return unit
 
 
+## Warm copied models while the UI can still draw. They are absent from the
+## combat registry, navigation, picking and alliance calculations until the bell.
+func prepare_opponent_models() -> void:
+	if not rendered or not run.arrivals_at_start() or phase != Phase.DEPLOY: return
+	if not is_instance_valid(_waiting):
+		_waiting = Node3D.new(); _waiting.hide()
+		_waiting.process_mode = Node.PROCESS_MODE_DISABLED
+		world.add_child(_waiting)
+	for placement: Dictionary in run.enemy_formation():
+		var key := str(placement)
+		if _prepared_enemies.has(key): continue
+		var unit := GameUnit.new()
+		var point: Vector2 = placement.point
+		if not unit.setup(world, {"nid":world.new_uid(), "prototype":placement.id,
+				"player":TEAMS[placement.team], "position":Vector3(point.x,point.y,0)}):
+			unit.free(); continue
+		_waiting.add_child(unit)
+		if unit.model.player and unit.model.player.has_method("prepare_track_caches"):
+			unit.model.player.call("prepare_track_caches")
+		_prepared_enemies[key] = unit
+	world.prepare_animation_bindings()
+
+
+func _create_unit(placement: Dictionary) -> GameUnit:
+	var lookup := placement.duplicate(); lookup.erase("enemy_slot")
+	var key := str(lookup)
+	var unit: GameUnit = _prepared_enemies.get(key)
+	if not is_instance_valid(unit): return super._create_unit(placement)
+	_prepared_enemies.erase(key)
+	_waiting.remove_child(unit)
+	return world.adopt_prepared_unit(unit)
+
+
 func _make_ground() -> EITerrain:
 	world.zone["allod"] = "ingos"
 	return ArenaTerrain.create(rendered)
@@ -66,6 +104,7 @@ func prepare() -> void:
 	var round_key := "%d:%d:%d" % [run.run_seed, run.wave, run.lives]
 	var rebuild := not is_instance_valid(world) or phase != Phase.DEPLOY or round_key != _round_key
 	if rebuild:
+		_prepared_enemies.clear(); _waiting = null
 		formation_motion.clear()
 		_entrants.clear()
 		_start_pending = false
@@ -171,6 +210,8 @@ func start() -> bool:
 			_entrants.erase(incoming)
 			if rendered and incoming:
 				SpellFx.spawn(world, incoming.pos, "teleport", 2, 0.6, {"red":0.35, "green":0.65, "blue":1.0, "light_radius":2.5})
+		if is_instance_valid(_waiting): _waiting.queue_free()
+		_waiting = null; _prepared_enemies.clear()
 		ArenaAlliances.apply(world, round_army, run.enemy_army())
 		# The shared bell locks every home board. Preparation walk-ins must not
 		# give one company extra combat time while another is still arriving.
@@ -185,6 +226,7 @@ func start() -> bool:
 		return true
 	if not formation_motion.movers.is_empty():
 		_start_pending = true
+		_arrival_left = 2.0
 		changed.emit()
 		return true
 	return _start_combat()
@@ -201,8 +243,10 @@ func _start_combat() -> bool:
 func _physics_process(dt: float) -> void:
 	if not rendered or phase != Phase.DEPLOY or not is_instance_valid(world): return
 	formation_motion.advance(dt / maxf(Engine.time_scale, 0.001), world)
-	if _start_pending and formation_motion.movers.is_empty() and not formation_motion.paused:
-		_start_combat()
+	if _start_pending and not formation_motion.paused:
+		_arrival_left -= dt / maxf(Engine.time_scale, 0.001)
+		if _arrival_left <= 0: formation_motion.settle(world)
+		if formation_motion.movers.is_empty(): _start_combat()
 
 
 func expire_preparation() -> void:
@@ -230,6 +274,12 @@ func _combat_event(kind: String, a: GameUnit, b: GameUnit, amount: float) -> voi
 func _resolved(side: int) -> void:
 	settle_remaining = 1.6 if rendered else 0.0
 	if rendered:
+		_effects_left = 1.5
+		_light_finish_age.clear()
+		for node in world.get_children():
+			if node is ParticleFx: node.finish_emitters()
+			elif node is Projectile: node.apply_hit = false
+			elif node is SpellFx: _light_finish_age[node] = node._age
 		for unit: GameUnit in world.unit_rows():
 			if not unit.dead: unit._set_action("idle")
 	var survivors := [0, 0]
@@ -242,7 +292,8 @@ func _resolved(side: int) -> void:
 
 func _process(dt: float) -> void:
 	super._process(dt)
-	if not rendered or phase != Phase.FINISHED or not is_instance_valid(world): return
+	if not rendered or phase != Phase.FINISHED or not is_instance_valid(world) or formation_motion.paused: return
+	_finish_effects(dt)
 	# Combat is frozen by ArenaMatch. Advance only the figure clips so the
 	# final death and idle animations continue through results and camp,
 	# without late hits, changed HP, or extra income.
@@ -271,3 +322,18 @@ func simulate_tick() -> void:
 
 func presents_world() -> bool:
 	return rendered
+
+
+func _finish_effects(dt: float) -> void:
+	if _effects_left <= 0: return
+	_effects_left = maxf(0.0, _effects_left - dt)
+	for node in world.get_children():
+		if node.is_queued_for_deletion(): continue
+		if node is ParticleFx or node is Projectile or node is SpellFx:
+			if _effects_left <= 0:
+				node.queue_free()
+			elif node is ParticleFx: node._process(dt)
+			elif node is Projectile: node._tick(dt)
+			elif node is SpellFx:
+				node.advance(int(_light_finish_age.get(node, node._age)) + floori((1.5 - _effects_left) / GameUnit.TICK))
+	if _effects_left <= 0: _light_finish_age.clear()

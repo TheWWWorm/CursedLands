@@ -21,6 +21,7 @@ uniform sampler2D depth_tex : hint_depth_texture, filter_nearest;
 #endif
 uniform float soft_distance = 0.35;   // 0: off (option gfx_soft_particles)
 uniform float lerp_t = 1.0;
+uniform vec3 world_offset = vec3(0.0);
 // Remake options, set by ParticleFx each frame: light_tint = the scene light
 // on smoke / dust (gfx_lit_particles, white in daylight), boost = HDR gain of
 // fire / magic / additive effects so only they pass the bloom threshold
@@ -40,7 +41,7 @@ void vertex() {
 	vec3 centre = mix(vec3(m[0][0], m[1][0], m[2][0]), vec3(m[3][0], m[0][1], m[1][1]), lerp_t);
 	float size = abs(mix(m[2][1], m[3][1], lerp_t)) * SIZE_K;
 	COLOR = mix(vec4(m[0][2], m[1][2], m[2][2], m[3][2]), COLOR, lerp_t);
-	vec4 vc = VIEW_MATRIX * vec4(centre, 1.0);
+	vec4 vc = VIEW_MATRIX * vec4(centre + world_offset, 1.0);
 	// A non-finite particle collapses behind the eye instead of a huge quad.
 	if (any(isnan(vc.xyz)) || any(isinf(vc.xyz)) || isnan(size) || isinf(size)) {
 		vc = vec4(0.0, 0.0, 1.0, 1.0);

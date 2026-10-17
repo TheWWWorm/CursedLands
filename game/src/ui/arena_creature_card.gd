@@ -5,7 +5,7 @@ extends Button
 const PAPER := Color("f0eadc")
 const GOLD := Color("d6b66f")
 const MUTED := Color("b7c0bd")
-const SNOW_INK := Color("242424")
+const SNOW_INK := Color("141414")
 const SNOW_ACCENT := Color("713b0f")
 var prototype := ""
 var heading := ""
@@ -126,7 +126,7 @@ func _ready() -> void:
 func update_offer() -> void:
 	if not is_instance_valid(_price): return
 	_price.text = str(cost)
-	_price.add_theme_color_override("font_color", Color("454545") if disabled else SNOW_INK)
+	_price.add_theme_color_override("font_color", Color("383838") if disabled else SNOW_INK)
 	_copies.visible = copies > 0 and copies_needed > 0
 	_copies.text = "  %d/%d" % [mini(copies, copies_needed), copies_needed]
 	_copies.tooltip_text = RemakeText.t("Copies: %d/%d") % [copies, copies_needed]
@@ -152,7 +152,7 @@ func _label(parent: Node, value: String, pixels: int, color: Color) -> Label:
 	return label
 
 
-static func ink_icon(icon: TextureRect, color: Color, edge := Color("eeeeee")) -> void:
+static func ink_icon(icon: TextureRect, color: Color, edge := Color.TRANSPARENT) -> void:
 	var ink := ShaderMaterial.new()
 	ink.shader = preload("res://src/ui/arena_icon_ink.gdshader")
 	ink.set_shader_parameter("ink", color)
@@ -171,7 +171,8 @@ static func outline(control: Control) -> void:
 static func snow_ink(control: Control, color := SNOW_INK) -> void:
 	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color", "font_disabled_color"]:
 		control.add_theme_color_override(state, color)
-	control.add_theme_color_override("font_outline_color", Color("eeeeee"))
-	control.add_theme_constant_override("outline_size", 1)
+	control.add_theme_font_override("font", preload("res://fonts/LiberationSans-Regular.ttf"))
+	control.add_theme_color_override("font_outline_color", Color.TRANSPARENT)
+	control.add_theme_constant_override("outline_size", 0)
 	control.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
 	control.add_theme_constant_override("shadow_offset_y", 0)

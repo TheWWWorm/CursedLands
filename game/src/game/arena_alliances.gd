@@ -3,11 +3,11 @@ extends RefCounted
 ## Automatic, overlapping traits. Unique deployed families count, not copies,
 ## stars, reserves or old camp guests. Bonuses are isolated to expedition actors.
 const RULES := {
-	"beast": {"name": "Beasts", "families": [0, 2, 4, 5, 6, 10], "thresholds": [2, 4, 6], "help": "All allies deal 10/20/30% more attack damage."},
-	"horde": {"name": "Horde", "families": [1, 3, 7, 9], "thresholds": [2, 4], "help": "Horde creatures gain 15/30% maximum health."},
-	"warrior": {"name": "Warriors", "families": [0, 1, 7, 9], "thresholds": [2, 4], "help": "Warriors gain 20/40% physical armor, plus 2/4 armor."},
-	"hunter": {"name": "Hunters", "families": [2, 3, 6, 10], "thresholds": [2, 4], "help": "Hunters gain 15/30% attack accuracy and act 10/20% faster."},
-	"mage": {"name": "Mages", "families": [4, 5, 8, 11], "thresholds": [2, 4], "help": "Enemies lose 20/40% fire, acid and lightning armor."},
+	"beast": {"name": "Beasts", "families": [0, 2, 4, 5, 6, 10, 14, 18, 19], "thresholds": [2, 4, 6], "help": "All allies deal 10/20/30% more attack damage."},
+	"horde": {"name": "Horde", "families": [1, 3, 7, 9, 16, 17, 21, 23], "thresholds": [2, 4], "help": "Horde creatures gain 15/30% maximum health."},
+	"warrior": {"name": "Warriors", "families": [0, 1, 7, 9, 12, 15, 16, 19, 21], "thresholds": [2, 4], "help": "Warriors gain 20/40% physical armor, plus 2/4 armor."},
+	"hunter": {"name": "Hunters", "families": [2, 3, 6, 10, 14, 20], "thresholds": [2, 4], "help": "Hunters gain 15/30% attack accuracy and act 10/20% faster."},
+	"mage": {"name": "Mages", "families": [4, 5, 8, 11, 13, 17, 18, 22, 23], "thresholds": [2, 4], "help": "Enemies lose 20/40% fire, acid and lightning armor."},
 }
 
 static func traits(family: int) -> Array[String]:
@@ -73,6 +73,7 @@ static func apply(world: GameWorld, army: Array, opponents: Array = []) -> void:
 			if ArenaRules.is_elite(family, int(placement.get("rank", 0))):
 				ArenaRules.elite_stats(stats)
 				health = ArenaRules.elite_health(health)
+			health = ArenaRules.recruit_health(family, health)
 			var member := traits(family)
 			var beasts := rank("beast", count.beast)
 			stats.dmg_min *= 1.0 + beasts * 0.1

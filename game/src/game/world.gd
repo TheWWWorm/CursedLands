@@ -384,6 +384,11 @@ func spawn_unit(record: Dictionary) -> GameUnit:
 	if not u.setup(self, record):
 		u.free()
 		return null
+	return adopt_prepared_unit(u)
+
+
+## Attach an already constructed unit without repeating model/animation setup.
+func adopt_prepared_unit(u: GameUnit) -> GameUnit:
 	set_unit(u.uid, u)
 	_seq_n += 1
 	u._seq = _seq_n

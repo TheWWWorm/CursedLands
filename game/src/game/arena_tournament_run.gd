@@ -5,7 +5,7 @@ extends ArenaRun
 const PLAYER_COUNT := 9
 const MAX_ROUNDS := 100
 const TOURNAMENT_SAVE := "user://arena-autochess.json"
-const STYLES := [[0,2,4,5,6,10], [1,3,7,9], [0,1,7,9], [2,3,6,10], [4,5,8,11]]
+const STYLES := ["beast", "horde", "warrior", "hunter", "mage"]
 var rivals: Array[ArenaRun] = []
 var rival_health: Array[int] = []
 var placements: Array[int] = []
@@ -152,7 +152,7 @@ static func shop_step(bot: ArenaRun, player: int, round_number: int, hp: int, pl
 		var merging := needed > 0 and copies + 1 >= needed
 		if bot.gold - bot.offer_cost(offer) < reserve_gold and not merging and bot.deployed_count() >= bot.capacity(): continue
 		var score := float(ArenaRules.FAMILIES[family].tier) * 2.0
-		if family in STYLES[(player - 1) % STYLES.size()]: score += 5
+		if STYLES[(player - 1) % STYLES.size()] in ArenaAlliances.traits(family): score += 5
 		if copies > 0: score += 8 + copies * 3
 		if merging: score += 20
 		if not bot.army.any(func(entry): return int(entry.family) == family): score += 2

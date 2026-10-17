@@ -16,6 +16,9 @@ var rendered := true
 var overview := false
 var _round := -1
 var _started := false
+var starting := false
+var _start_queue: Array[int] = []
+var _allow_empty := false
 
 class DuelRun extends ArenaRun:
 	var league: ArenaTournamentRun
@@ -39,7 +42,7 @@ func _exit_tree() -> void:
 func synchronize() -> void:
 	if parent_stage == null or home == null or run.stage != "prepare" or run.rivals.size() != ArenaTournamentRun.PLAYER_COUNT - 1: return
 	if _round != run.wave:
-		_round = run.wave; _started = false
+		_round = run.wave; _started = false; starting = false; _start_queue.clear()
 		for player in range(1, ArenaTournamentRun.PLAYER_COUNT):
 			if run.health(player) <= 0: continue
 			_sync_board(player)
@@ -111,7 +114,42 @@ func _apply_view() -> void:
 	for id: int in holders:
 		holders[id].visible = overview or id == viewed_player
 		holders[id].position = board_offset(id) if overview else Vector3.ZERO
+	for match_node: ArenaPveMatch in [home] + boards.values():
+		if not is_instance_valid(match_node.world): continue
+		var fx := match_node.world.get_node_or_null("ParticleFx") as ParticleFx
+		if fx: fx.sync_visibility()
 	if rendered: Gfx.set_border(Vector2.ONE * (192 if overview else 64), 8.0)
+
+
+func request_start(allow_empty := false) -> bool:
+	if starting: return true
+	if run.stage != "prepare" or (home.team_count(0) == 0 and not allow_empty): return false
+	run.finish_preparation()
+	_allow_empty = allow_empty
+	_start_queue.assign(run.alive_players())
+	starting = true
+	run.preparing_battle = true
+	run.changed.emit()
+	return true
+
+
+func _prepare_start_frame() -> void:
+	if not _start_queue.is_empty():
+		var player: int = _start_queue.pop_front()
+		if player > 0: _sync_board(player)
+		var encounter := home if player == 0 else boards[player] as ArenaPveMatch
+		encounter.prepare_opponent_models()
+		return
+	starting = false; _started = true
+	run.preparing_battle = false
+	if _allow_empty: home.expire_preparation()
+	else: home.start()
+	for player in range(1, ArenaTournamentRun.PLAYER_COUNT):
+		if run.health(player) <= 0: continue
+		var encounter: ArenaPveMatch = boards[player]
+		if encounter.team_count(0) > 0: encounter.start()
+		else: run.record_board(player, 1, [0, encounter.run.enemy_formation().size()])
+	_apply_view()
 
 
 func _process(dt: float) -> void:
@@ -122,6 +160,9 @@ func _process(dt: float) -> void:
 		elif not paused and match_node.phase == ArenaMatch.Phase.PAUSED: match_node.toggle_pause()
 	if paused: return
 	synchronize()
+	if starting:
+		_prepare_start_frame()
+		return
 	if run.stage == "prepare":
 		for player in run.advance_bots(dt / maxf(Engine.time_scale, 0.001)):
 			_sync_board(player)

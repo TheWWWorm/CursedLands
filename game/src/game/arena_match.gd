@@ -53,6 +53,7 @@ func _rebuild_world() -> void:
 	world.presentation = presents_world()
 	world.name = "ArenaWorld"
 	world.zone = {"id": "arena", "type": "arena", "allod": "gipat"}
+	world.set_meta("arena_local_fx", true)
 	# IDs in [1e9, 2e9) identify scripted party actors to the original AI
 	# and disable their monster spells. Arena fighters use ordinary mob IDs.
 	world._next_uid = 100000
@@ -110,9 +111,7 @@ func _make_ground() -> EITerrain:
 
 
 func _spawn(placement: Dictionary) -> GameUnit:
-	var p: Vector2 = placement.point
-	var u := world.spawn_unit({"prototype": placement.id, "player": TEAMS[placement.team],
-		"position": Vector3(p.x, p.y, 0.0)})
+	var u := _create_unit(placement)
 	if u:
 		u.controller = -1
 		u.mode = "aggression"
@@ -123,6 +122,12 @@ func _spawn(placement: Dictionary) -> GameUnit:
 		u._sync_transform()
 		world.nav.track_unit(u)
 	return u
+
+
+func _create_unit(placement: Dictionary) -> GameUnit:
+	var p: Vector2 = placement.point
+	return world.spawn_unit({"prototype": placement.id, "player": TEAMS[placement.team],
+		"position": Vector3(p.x, p.y, 0.0)})
 
 
 func placement_error(point: Vector2, radius := 0.8, except: GameUnit = null) -> String:

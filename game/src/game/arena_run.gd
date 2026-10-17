@@ -16,6 +16,8 @@ var gold := ArenaRules.OPENING_GOLD
 var lives := 3
 var stage := "prepare"
 var preparation_left := ArenaRules.PREPARATION_SECONDS
+# Short-lived rendered staging lock; never persisted in a save.
+var preparing_battle := false
 var army: Array[Dictionary] = []
 var shop: Array[Dictionary] = []
 var boons: Array[String] = []
@@ -36,6 +38,7 @@ var deployment_check: Callable
 
 
 func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
+	preparing_battle = false
 	run_seed = maxi(1, seed_value)
 	starter = clampi(chosen_starter, 0, 2)
 	challenge = clampi(difficulty, 0, 2)
@@ -47,13 +50,20 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 	preparation_left = ArenaRules.preparation_seconds(challenge)
 	last_evolutions.clear()
 	rng.seed = run_seed
-	# Every opening role is available to buy. Later shops use seeded random offers.
-	var families := [0, 1, 2, 3, 4, 5]
+	# Deal six different starting creatures from every island.
+	var families := ArenaRules.recruit_pool(capacity())
 	for i in range(families.size() - 1, 0, -1):
 		var other := rng.randi_range(0, i)
 		var held: int = families[i]
 		families[i] = families[other]; families[other] = held
-	for family: int in families: shop.append({"family": family, "rank": 0, "locked": false})
+	# Keep both a front line and ranged choices without fixing their identities.
+	var opening: Array[int] = []
+	for melee in [true, false]:
+		for family in families:
+			if (ArenaRules.FAMILIES[family].role == "Melee") == melee:
+				opening.append(family)
+				if opening.size() == (3 if melee else 6): break
+	for family in opening: shop.append({"family": family, "rank": 0, "locked": false})
 	_touch()
 
 
@@ -274,7 +284,8 @@ func _roll_shop(keep_lock: bool) -> void:
 	if army.is_empty() and not shop.any(func(offer): return int(offer.family) >= 0 and offer_cost(offer) <= ArenaRules.MIN_RECRUIT_COST):
 		for i in shop.size():
 			if not shop[i].locked:
-				shop[i] = {"family": rng.randi_range(0, 2), "rank": 0, "locked": false}
+				var affordable := ArenaRules.recruit_pool(capacity()).filter(func(family): return int(ArenaRules.FAMILIES[family].cost) <= ArenaRules.MIN_RECRUIT_COST)
+				shop[i] = {"family": affordable[rng.randi_range(0, affordable.size() - 1)], "rank": 0, "locked": false}
 				break
 
 
@@ -287,6 +298,7 @@ func offer_cost(offer: Dictionary) -> int:
 
 
 func deploy(uid: int, point: Vector2) -> String:
+	if preparing_battle: return RemakeText.t("Finish the current encounter first.")
 	if stage != "prepare": return RemakeText.t("Arrange your army between battles.")
 	var entry := unit(uid)
 	if entry.is_empty(): return RemakeText.t("Choose a creature from your army.")
@@ -356,7 +368,7 @@ func copies(entry: Dictionary) -> Array[Dictionary]:
 
 
 func evolution_error(uid: int) -> String:
-	if stage != "prepare": return RemakeText.t("Evolve between battles.")
+	if stage != "prepare" or preparing_battle: return RemakeText.t("Evolve between battles.")
 	var entry := unit(uid)
 	if entry.is_empty(): return RemakeText.t("Choose a creature from your army.")
 	var needed := ArenaRules.evolution_copies(int(entry.family), int(entry.rank))
@@ -406,7 +418,7 @@ func start_battle(timed_out := false) -> String:
 
 
 func arrange() -> void:
-	if stage != "prepare": return
+	if stage != "prepare" or preparing_battle: return
 	_checkpoint()
 	var ordered := army.duplicate()
 	ordered.sort_custom(func(a, b):
@@ -512,7 +524,7 @@ func _checkpoint() -> void:
 
 
 func undo() -> void:
-	if stage != "prepare" or _undo.is_empty(): return
+	if stage != "prepare" or preparing_battle or _undo.is_empty(): return
 	var previous: Dictionary = _undo.pop_back()
 	army.assign(previous.army); shop.assign(previous.shop)
 	gold = previous.gold; next_uid = previous.next_uid; training = previous.training
@@ -520,11 +532,11 @@ func undo() -> void:
 
 
 func can_undo() -> bool:
-	return stage == "prepare" and not _undo.is_empty()
+	return stage == "prepare" and not preparing_battle and not _undo.is_empty()
 
 
 func can_shop() -> bool:
-	return stage in ["prepare", "fight", "result"]
+	return not preparing_battle and stage in ["prepare", "fight", "result"]
 
 
 func snapshot() -> Dictionary:

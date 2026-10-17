@@ -110,6 +110,27 @@ var gs_var: Callable
 var drawn := 0
 
 
+func display_origin() -> Vector3:
+	return world.global_position if is_instance_valid(world) and world.has_meta("arena_local_fx") else Vector3.ZERO
+
+
+func sync_visibility() -> void:
+	var shown := is_visible_in_tree()
+	for ef in effects:
+		if is_instance_valid(ef.mmi): ef.mmi.visible = shown
+	for bolt: FxLightning in bolts: bolt.node.visible = shown
+
+
+func finish_emitters() -> void:
+	# Drain existing particles after a settled battle; never spawn another cast.
+	missiles.clear(); _pending_bolts.clear(); _pending_fireballs.clear()
+	for ef in effects:
+		ef.e.stop()
+		ef.until = mini(ef.until, tick + 24) if ef.until >= 0 else tick + 24
+	for bolt: FxLightning in bolts: bolt.until = mini(bolt.until, tick + 12)
+	for light in lights: light.until = mini(int(light.until), tick + 12) if light.until >= 0 else tick + 12
+
+
 static func of(w: GameWorld) -> ParticleFx:
 	if w == null:
 		return null
@@ -263,9 +284,9 @@ func carrier_point(e: FxEmitter, obj: Object) -> Vector3:
 		u.observe_presentation()
 		if e.flags & FxEmitter.F_BONE:
 			return unit_point(u, e.bone)
-		return ei(u.global_position)
+		return ei(u.global_position - display_origin())
 	if obj is Node3D:
-		return ei((obj as Node3D).global_position)
+		return ei((obj as Node3D).global_position - display_origin())
 	return e.ofs
 
 
@@ -278,22 +299,22 @@ func unit_point(u: GameUnit, sel: int) -> Vector3:
 		if int(u.race.get("type_id", -1)) == 0x32:
 			var hand := _bone(u, "rh3")
 			if hand:
-				return ei(hand.global_position)
+				return ei(hand.global_position - display_origin())
 		var geometry := EIFigureGeometry.of(u.model)
 		if not geometry.is_empty():
-			return ei(u.global_position) + geometry.centre
+			return ei(u.global_position - display_origin()) + geometry.centre
 		var b := _box(u)
-		return ei(u.global_position) + Vector3(0, 0, b.get_center().y)
+		return ei(u.global_position - display_origin()) + Vector3(0, 0, b.get_center().y)
 	var n := _bone(u, BONES.get(sel, "bd"))
 	if n == null:
 		n = _bone(u, "bd")
 	var p: Vector3
 	if n:
-		p = ei(n.global_position)
+		p = ei(n.global_position - display_origin())
 	else:
 		var geometry := EIFigureGeometry.of(u.model)
 		var z := float(geometry.max.z) if not geometry.is_empty() else _box(u).size.y
-		p = ei(u.global_position) + Vector3(0, 0, z)
+		p = ei(u.global_position - display_origin()) + Vector3(0, 0, z)
 	if sel == 2:
 		p.z += 1.0
 	return p
@@ -302,7 +323,7 @@ func unit_point(u: GameUnit, sel: int) -> Vector3:
 func bone_point(u: GameUnit, name: String) -> Vector3:
 	u.observe_presentation()
 	var n := _bone(u, name)
-	return ei(n.global_position) if n else ei(u.global_position)
+	return ei(n.global_position - display_origin()) if n else ei(u.global_position - display_origin())
 
 
 ## the authored part radius. No blood emitter is
@@ -432,7 +453,7 @@ func add_light(at: Vector3, color: Color, radius: float, secs := -1.0, energy :=
 	add_child(l)
 	var halo := Gfx.torch_halo(absf(radius), color) if glow else null
 	if halo: l.add_child(halo)
-	l.global_position = godot(at)
+	l.global_position = godot(at) + display_origin()
 	var d := {"light": l, "until": -1 if secs < 0.0 else tick + roundi(secs / TICK), "pos": at,
 		"step": Vector3.ZERO, "ticks": 0, "energy": energy, "age": 0,
 		"duration_ticks": -1 if secs < 0.0 else maxi(1, roundi(secs / TICK)),
@@ -644,7 +665,7 @@ func _tick(last := true) -> void:
 	if last:
 		var cam := get_viewport().get_camera_3d() if is_inside_tree() else null
 		job.has_cam = cam != null
-		job.eye = ei(cam.global_position) if cam else Vector3.ZERO
+		job.eye = ei(cam.global_position - display_origin()) if cam else Vector3.ZERO
 		job.fwd = view_dir()
 	if Portability.threads() and job.efs.size() > 1 and parts >= PAR_MIN_PARTS:
 		# -1 posts a task for every pool thread, including empty tasks when
@@ -692,7 +713,7 @@ func _tick(last := true) -> void:
 		if d.ticks > 0:
 			d.ticks -= 1
 			d.pos += d.step
-			d.light.global_position = godot(d.pos)
+			d.light.global_position = godot(d.pos) + display_origin()
 		if d.until >= 0 and tick >= d.until:
 			remove_light(d)
 	#58dcd0 advances existing scene objects before67e690 updates wrappers.
@@ -821,7 +842,7 @@ static func _sim_ef(ef: Effect, job: SimJob) -> void:
 
 func _fill(ef: Effect, mm: MultiMesh) -> void:
 	var cam := get_viewport().get_camera_3d() if is_inside_tree() else null
-	_fill_calc(ef, cam != null, ei(cam.global_position) if cam else Vector3.ZERO, view_dir() if cam else Vector3.ZERO, tick)
+	_fill_calc(ef, cam != null, ei(cam.global_position - display_origin()) if cam else Vector3.ZERO, view_dir() if cam else Vector3.ZERO, tick)
 	_fill_apply(ef, mm)
 
 
@@ -948,8 +969,10 @@ static func _draw_order(e: FxEmitter, has_cam: bool, eye: Vector3, fwd: Vector3)
 ## previous -> current lerp; the UV rect is the previous frame's.
 func _draw(t: float) -> void:
 	drawn = 0
+	var shown := is_visible_in_tree()
+	var origin := display_origin()
 	var cam := get_viewport().get_camera_3d() if is_inside_tree() else null
-	var eye := ei(cam.global_position) if cam else Vector3.ZERO
+	var eye := ei(cam.global_position - display_origin()) if cam else Vector3.ZERO
 	# Out of view effects are not refilled either (a remake saving; filling
 	# the quads of a few thousand particles each frame costs milliseconds).
 	var planes: Array[Plane] = []
@@ -957,7 +980,7 @@ func _draw(t: float) -> void:
 		planes = cam.get_frustum()
 	for ef in effects:
 		var e := ef.e
-		var hidden: bool = is_instance_valid(e.carrier) and e.carrier is GameUnit \
+		var hidden: bool = not shown or is_instance_valid(e.carrier) and e.carrier is GameUnit \
 			and (not e.carrier.visible or e.carrier.hidden)
 		var unseen := false
 		# A path can cross the screen while its starting point is far away.
@@ -969,7 +992,7 @@ func _draw(t: float) -> void:
 			var gw := godot(e.wp)
 			var r := ef.reach * 1.5 + 3.0
 			for pl in planes:
-				if pl.distance_to(gw) > r:
+				if pl.distance_to(gw + origin) > r:
 					unseen = true
 					break
 		# an emitter with particles counts the frames its box is
@@ -1001,6 +1024,7 @@ func _draw(t: float) -> void:
 			var want := _material_of(e)   # option path_through switched meanwhile
 			if ef.mmi.material_override != want:
 				ef.mmi.material_override = want
+		ef.mmi.visible = shown
 		var mm := ef.mmi.multimesh
 		if hidden or n == 0:
 			mm.visible_instance_count = 0
@@ -1010,6 +1034,7 @@ func _draw(t: float) -> void:
 			_fill_apply(ef, mm)
 		elif ef.filled != tick or ef.filled_n != n:
 			_fill(ef, mm)
+		ef.mmi.custom_aabb = AABB(mm.custom_aabb.position + origin, mm.custom_aabb.size)
 		drawn += mm.visible_instance_count
 		#  draws the emitters in order of the dot product of their
 		# position with the camera direction, larger first (introsort
@@ -1018,16 +1043,18 @@ func _draw(t: float) -> void:
 		# axis minus sorting_offset; the pivot is the top-level origin (0), so
 		# this offset makes the depth fwd · (wp - eye) as in the original.
 		if cam:
-			var so := cam.global_basis.z.dot(godot(e.wp))
+			var so := cam.global_basis.z.dot(godot(e.wp) + origin)
 			if absf(so - ef.mmi.sorting_offset) > 0.01:
 				ef.mmi.sorting_offset = so
 	# The previous -> current lerp runs in the shader (lerp_t), so the
 	# buffers are only refilled once per tick.
 	for m: ShaderMaterial in _mats.values():
 		m.set_shader_parameter("lerp_t", t)
+		m.set_shader_parameter("world_offset", origin)
 	_apply_material_options()
 	for l: FxLightning in bolts:
-		l.draw(t)
+		l.node.visible = shown
+		if shown: l.draw(t)
 
 
 func _apply_material_options() -> void:
@@ -1163,7 +1190,7 @@ func spell_cast(ev: Dictionary) -> void:
 			if has_src:
 				var origin: Array = ev.get("flight_from", [])
 				var start := Vector3(float(origin[0]), float(origin[1]), float(origin[2])) if origin.size() == 3 else src
-				_fireball(ei(caster.global_position) if caster else src, gp, s, sp, age, start)
+				_fireball(ei(caster.global_position - display_origin()) if caster else src, gp, s, sp, age, start)
 		"inv_lit":
 			var top := Vector3(at.x, at.y, gp.z - 3.0 + 30.0)
 			var bot := Vector3(at.x, at.y, gp.z - 3.0)
@@ -1221,7 +1248,7 @@ func spell_cast(ev: Dictionary) -> void:
 				spawn(0x2014, a3, s, null, {"v130": unit_point(target, 0) - a3, "secs": maxf(ticks, 10.0) * TICK})
 		"teleport":
 			if caster:
-				var cp := ei(caster.global_position)
+				var cp := ei(caster.global_position - display_origin())
 				spawn(0x2019, cp + Vector3(0, 0, carrier_height(caster)), 1.0, null, {"age": age})
 			elif ev.has("fx"):   # replayed: where the caster stood at the cast (Session._track)
 				spawn(0x2019, _ground_pt(float(ev.fx), float(ev.fy), float(ev.get("fz", 1.0))), 1.0, null, {"age": age})
@@ -1345,7 +1372,7 @@ func _missile_tick(m: Dictionary) -> void:
 	var t: GameUnit = m.target if is_instance_valid(m.target) and m.target.is_inside_tree() else null
 	var dest: Vector3 = m.point
 	if t:
-		dest = ei(t.global_position) + Vector3(0, 0, carrier_height(t) * 0.5)
+		dest = ei(t.global_position - display_origin()) + Vector3(0, 0, carrier_height(t) * 0.5)
 		m.point = dest
 	var pos: Vector3 = m.pos
 	var d := dest - pos
@@ -1361,7 +1388,7 @@ func _missile_tick(m: Dictionary) -> void:
 	ef.e.ofs = pos
 	if not m.light.is_empty():
 		m.light.pos = pos
-		m.light.light.global_position = godot(pos)
+		m.light.light.global_position = godot(pos) + display_origin()
 	if arrived:
 		missiles.erase(m)
 		delete(ef)
@@ -1572,7 +1599,7 @@ func script_cmd(f: String, a: Array) -> void:
 			var d: Dictionary = script_lights.get(int(a[0]), {})
 			if not d.is_empty() and a.size() > 3:
 				d.pos = Vector3(float(a[1]), float(a[2]), float(a[3]))
-				d.light.global_position = godot(d.pos)
+				d.light.global_position = godot(d.pos) + display_origin()
 		"DeletePointLight":
 			var d: Dictionary = script_lights.get(int(a[0]), {})
 			if not _release_flash(d):
