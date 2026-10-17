@@ -10,6 +10,9 @@ func portrait_point(u: GameUnit) -> Vector2:
 	return Vector2(-1, -1)
 
 func portrait_click(u: GameUnit, double := false) -> void:
+	# Changing the selection refreshes the adjacent HUD strips and the face
+	# strip's fit. Resolve its hit point after that layout has settled.
+	await frames(4)
 	var point := portrait_point(u)
 	check(point.x >= 0, "target has a visible portrait")
 	get_viewport().warp_mouse(point)
@@ -19,8 +22,12 @@ func portrait_click(u: GameUnit, double := false) -> void:
 	Input.parse_input_event(motion)
 	await frames(2)
 	if g.pending_spell == Game.FOLLOW:
-		g._update_cursor()
-		check(g.cursor.kind == ("cursor_cancel" if u.dead else "cursor_move"), "portrait shows the follow target cursor")
+		var expected := "cursor_cancel" if u.dead else "cursor_move"
+		if DisplayServer.get_name() == "headless":
+			check(g.pending_cursor(u) == expected, "portrait target resolves the follow cursor")
+		else:
+			g._update_cursor()
+			check(g.cursor.kind == expected, "portrait shows the follow target cursor")
 	var event := InputEventMouseButton.new()
 	event.position = point; event.button_index = MOUSE_BUTTON_LEFT; event.pressed = true; event.double_click = double
 	Input.parse_input_event(event)
