@@ -109,6 +109,18 @@ func _ready() -> void:
 				if group==24:panel._sel=7
 				await frames(3);await RenderingServer.frame_post_draw
 				get_viewport().get_texture().get_image().save_png("user://direct-settings-%s-%d.png"%[lang,group])
+		get_window().size=Vector2i(800,600);Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
+		for lang in ["en","ru","de"]:
+			RemakeText.lang=lang;panel._show_group(OptionsPanel.DIRECT_GROUP);panel._sel=7
+			GameData._tips.delay=0.001
+			await frames(3)
+			Input.warp_mouse(panel.get_global_transform_with_canvas()*panel.p8(Vector2(400,panel._row_y(7)+10)))
+			await frames(5);GameData._tips._since=0;GameData._tips._process(0)
+			await RenderingServer.frame_post_draw
+			var tip:=GameData._tips
+			check(tip._panel.visible and tip._text==panel._rows[7].tip,"action tooltip is displayed in "+lang)
+			check(get_viewport().get_visible_rect().encloses(tip._panel.get_rect()),"action tooltip fits the 800x600 viewport in "+lang)
+			get_viewport().get_texture().get_image().save_png("user://direct-settings-help-%s.png"%lang)
 	panel.queue_free();g.queue_free();s.queue_free();await frames(10);TexUpscale.shutdown()
 	print("DIRECT_SETTINGS ",checks," checks ",failures.size()," failures")
 	get_tree().quit(0 if failures.is_empty() else 1)
