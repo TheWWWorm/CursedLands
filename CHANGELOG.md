@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 1.10.0 — 2026-10-17
+
+- Expand Kel’s encyclopedia biography and add the original Rod of Life resurrection requirements, fragment quests and dialogue deadline in English, Russian and German.
 
 - Put Mods and rules, Encyclopedia and Trials in a bottom menu row. Use the localized Trials of the Allods name, compact menu hints, and show Trials only for the original campaign.
 - Move company level, XP and recruitment odds into compact shop controls. Allow combat recruitment, XP purchases, rerolls, multiple offer locks and reserve sales; deployed upgrades take effect next round.
