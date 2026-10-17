@@ -10,7 +10,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.12.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.12.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It adds an option to stay in first person during action animations and fixes shader compilation in Windows source checkouts and interrupted graphics preset updates. See the [release notes](docs/releases/1.12.0.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.13.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.13.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It adds a persistent OpenGL recovery choice on Windows, uses Safe rendering there, and waits for the menu to render before confirming a renderer trial. See the [release notes](docs/releases/1.13.0.md) and [versioning policy](docs/versioning.md).
 
 Browse the [**public wiki**](https://cursedlands.wwworm.com/wiki/) without game files or an account. Separate tabs cover the GOG base game and Lost in Astral: items, materials, spells, runes, creatures and mechanics in English, Russian and German.
 
@@ -56,6 +56,7 @@ Needs WebGL 2 and a desktop-class browser or a recent phone. Browsers can clear 
 Download the package for your system from the [Releases](https://github.com/TheWWWorm/CursedLands/releases) page.
 
 - **Windows (x86-64):** extract the ZIP and run `CursedLands.exe`. The EXE and native DLL are unsigned. SmartScreen may offer **More info → Run anyway**. Smart App Control is a separate policy: if it blocks the native DLL with `0xC0E90002`, the game shows a notice with an **Open Windows Security** button. You can manually turn Smart App Control Off under **App & browser control → Smart App Control**, then restart the game. This changes protection for all apps; older Windows versions may require a Windows reset to re-enable it. Native acceleration remains required on Windows.
+  If startup freezes, run `Play-Compatibility.cmd` from the extracted Windows folder. It starts with OpenGL and Safe rendering, disables enhanced effects and automatic detection, and keeps Compatibility for future launches. The startup crash report also offers **Use Compatibility (OpenGL)**. Change back under **Options → Screen → Renderer** after resolving a driver issue. The launcher works before any game menu needs to load.
 - **Linux (x86-64):** extract the archive and run `CursedLands.x86_64`. If your file manager dropped the executable permission, run `chmod +x CursedLands.x86_64` first.
 - **macOS (Apple silicon and Intel):** extract the ZIP and open the app. It is not signed or notarized, so macOS may block the first start; allow it under **System Settings → Privacy & Security**.
 - **Android 8+ (ARM64):** install the APK; allow your browser or file manager to install apps when it asks. The APK retains the existing application ID and signing certificate, so it updates earlier releases without uninstalling them. On first start, choose a game data pack (`.eipack`, see [Play in your browser](#play-in-your-browser)) or the GOG installer (`setup_evil_islands_*.exe`), which is unpacked without being run. Touch controls are explained in the game. Older releases also provide x86-64 Android support.
@@ -216,8 +217,8 @@ Open the `game` folder in [Godot 4.7](https://godotengine.org/) and export with 
 
 For a source run with an unmodified Godot binary, launch with
 `godot --path game --render-thread safe` (substitute your Godot executable).
-The project enables a separate render thread for the patched desktop templates;
-stock Godot 4.7.2 can abort during shutdown with that mode. In an editor-launched
+The project enables a separate render thread for the patched Linux template;
+Windows uses Safe by default. Stock Godot 4.7.2 can abort during shutdown with that mode. In an editor-launched
 run, set the active platform's **Thread Model** override to **Safe** in your local
 project settings. The source checkout keeps GDScript and shader files at LF line
 endings through `.gitattributes`, including on Windows.

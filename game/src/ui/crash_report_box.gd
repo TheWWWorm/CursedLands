@@ -22,6 +22,8 @@ const RECOVERY_ROWS := [
 ]
 const RENDERER_ROW := ["Try Mobile (Vulkan)", "Switches to a different graphics driver after a restart. This may avoid an OpenGL startup crash."]
 const RENDERER_PROMPT := "Restart with Mobile (Vulkan)? This uses a different graphics driver and may avoid the startup crash. If the game does not reopen automatically, open it again."
+const WINDOWS_RENDERER_ROW := ["Use Compatibility (OpenGL)", "Restarts with OpenGL and basic graphics. This choice is kept for future launches; change it in Options under Screen."]
+const WINDOWS_RENDERER_PROMPT := "Restart with Compatibility (OpenGL) and basic graphics? This choice is kept for future launches. You can change it in Options under Screen."
 const ROW_H := 30.0
 
 ## The previous session's info (CrashReport.previous); {} = Export log.
@@ -34,7 +36,9 @@ var _confirm: MessageBox
 
 func _row_defs() -> Array:
 	var rows := ROWS + RECOVERY_ROWS if startup_recovery else ROWS
-	if startup_recovery and RendererChoice.available() and Portability.compatibility():
+	if startup_recovery and RendererChoice.windows() and not Portability.compatibility():
+		rows = rows + [WINDOWS_RENDERER_ROW]
+	elif startup_recovery and RendererChoice.available() and not RendererChoice.windows() and Portability.compatibility():
 		rows = rows + [RENDERER_ROW]
 	return rows
 
@@ -148,13 +152,19 @@ func act(i: int) -> void:
 		visible = false
 		_confirm = MessageBox.new()
 		_confirm.title = RemakeText.t("Renderer")
-		_confirm.message = RemakeText.t(RENDERER_PROMPT)
+		_confirm.message = RemakeText.t(WINDOWS_RENDERER_PROMPT if RendererChoice.windows() else RENDERER_PROMPT)
 		_confirm.esc_closes = true
 		_confirm.answered.connect(func(yes: bool):
 			_confirm = null
 			if yes:
-				GameData.set_option("renderer", 2)
-				GameData.trace("startup recovery: Mobile renderer selected")
+				if RendererChoice.windows():
+					var values := GfxDetect.original_recovery_values(GameData.options)
+					values.renderer = 0
+					GameData.set_options(values)
+					GameData.trace("startup recovery: Compatibility renderer selected")
+				else:
+					GameData.set_option("renderer", 2)
+					GameData.trace("startup recovery: Mobile renderer selected")
 				RendererChoice.restart(get_tree())
 			else:
 				_probing = false

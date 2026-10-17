@@ -75,7 +75,7 @@ const OPTIONS := [
 	# Units drawn between their 60 Hz physics steps (default on). Visual only:
 	# the game state is unchanged; not gfx_*, so the preset leaves it.
 	["phys_interp", 1, 2, 12, 6, 1], ["show_fps", 1, 2, 12, 7, 0],
-	# The renderer on Android (RendererChoice: 0 Compatibility, 1 Forward+,
+	# The renderer on Android and Windows (RendererChoice: 0 Compatibility, 1 Forward+,
 	# 2 Mobile); hidden elsewhere. Not gfx_*: the Original look preset and the
 	# graphics test leave it.
 	["renderer", 1, 3, 12, 12, 0],
@@ -1155,6 +1155,8 @@ func ai_value(section: String, key: String, fallback: float, index := 0) -> floa
 
 ## Labels of a multiple-choice option row, [] for an on / off switch.
 func option_choices(name: String) -> Array:
+	if name == "renderer":
+		return RemakeText.tl(RendererChoice.labels())
 	if name == "resolution":
 		var out := []
 		for i in resolutions().size():

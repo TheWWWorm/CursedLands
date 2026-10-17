@@ -88,6 +88,7 @@ func _run() -> void:
 			box._answer(true); await settle()
 			check(notices_finished, "report dismissal releases startup")
 	if expected.get("confirm", false):
+		RendererChoice.menu_presented()
 		RendererChoice.confirm()
 		check(RendererChoice.chosen() == 2 and not FileAccess.file_exists(RendererChoice.TRIAL), "successful Mobile startup remains selected")
 	var result := {"checks":checks,"failures":failures,"renderer":RenderingServer.get_current_rendering_method(),"session":cr.info.session,"retained":cr.startup_failures.size()}

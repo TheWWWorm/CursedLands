@@ -51,6 +51,14 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Forward+ (Direct3D 12)": ["Forward+ (Direct3D 12)", "Forward+ (Direct3D 12)"],
+	"Compatibility (OpenGL 3) uses fewer effects and a different graphics driver. Forward+ (Direct3D 12) supports all effects and is the default. Changes require a restart. If a Forward+ trial stops while loading the menu, the next launch uses Compatibility.": ["Совместимость (OpenGL 3) использует меньше эффектов и другой графический драйвер. Forward+ (Direct3D 12) поддерживает все эффекты и выбран по умолчанию. Изменения требуют перезапуска. Если пробный запуск Forward+ прервётся при загрузке меню, следующий запуск будет в режиме совместимости.", "Kompatibilität (OpenGL 3) nutzt weniger Effekte und einen anderen Grafiktreiber. Forward+ (Direct3D 12) unterstützt alle Effekte und ist die Voreinstellung. Änderungen erfordern einen Neustart. Bricht ein Forward+-Probestart beim Laden des Menüs ab, nutzt der nächste Start Kompatibilität."],
+	"The selected renderer could not start. The next launch uses Compatibility (OpenGL 3).": ["Выбранный рендерер не запустился. Следующий запуск будет в режиме совместимости (OpenGL 3).", "Der gewählte Renderer konnte nicht starten. Der nächste Start nutzt Kompatibilität (OpenGL 3)."],
+	"The previous renderer trial did not finish. Compatibility (OpenGL 3) is selected; you can change the renderer in Options.": ["Предыдущий пробный запуск рендерера не завершился. Выбрана совместимость (OpenGL 3); рендерер можно изменить в настройках.", "Der vorige Renderer-Probestart wurde nicht abgeschlossen. Kompatibilität (OpenGL 3) ist gewählt; der Renderer lässt sich in den Optionen ändern."],
+	"Use Compatibility (OpenGL)": ["Включить совместимость (OpenGL)", "Kompatibilität (OpenGL) nutzen"],
+	"Restarts with OpenGL and basic graphics. This choice is kept for future launches; change it in Options under Screen.": ["Перезапускает игру с OpenGL и простой графикой. Выбор сохраняется для следующих запусков; изменить его можно в настройках экрана.", "Startet mit OpenGL und einfacher Grafik neu. Die Wahl bleibt für spätere Starts erhalten und lässt sich unter Optionen → Bildschirm ändern."],
+	"Restart with Compatibility (OpenGL) and basic graphics? This choice is kept for future launches. You can change it in Options under Screen.": ["Перезапустить в режиме совместимости (OpenGL) с простой графикой? Выбор сохранится для следующих запусков. Изменить его можно в настройках экрана.", "Mit Kompatibilität (OpenGL) und einfacher Grafik neu starten? Die Wahl bleibt für spätere Starts erhalten. Sie lässt sich unter Optionen → Bildschirm ändern."],
+
 	"Black banshee": ["Черная баньши", "Schwarze Todesfee"],
 	"Small green evileye": ["Мелкий зеленый злобоглаз", "Kleines grünes Bösauge"],
 	"Adult green evileye": ["Взрослый зеленый злобоглаз", "Ausgewachsenes grünes Bösauge"],

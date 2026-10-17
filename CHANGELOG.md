@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.13.0 — 2026-10-17
+
+- Add persistent Compatibility (OpenGL) and Forward+ (Direct3D 12) selection on Windows, with startup recovery and a compatibility launcher.
+- Use the Safe rendering thread by default on Windows and include the actual thread mode in diagnostic reports.
+- Require a presented 3D menu before confirming a renderer trial; keep the Compatibility fallback armed while startup notices are open.
+
 ## 1.12.0 — 2026-10-17
 
 - Add First-person actions under the First / third person settings. It keeps first person during action animations by default; Off restores automatic third-person framing. Scripted cameras retain control.

@@ -105,6 +105,7 @@ func _collect() -> void:
 	info.memory_mb = mem >> 20 if mem > 0 else -1
 	info.gpu = "%s %s" % [RenderingServer.get_video_adapter_vendor(), RenderingServer.get_video_adapter_name()]
 	info.gpu_api = RenderingServer.get_video_adapter_api_version()
+	info.render_thread = "safe" if RenderingServer.is_on_render_thread() else "separate"
 	info.renderer = "%s / %s" % [RenderingServer.get_current_rendering_method(), RenderingServer.get_current_rendering_driver_name()]
 	var hz := DisplayServer.screen_get_refresh_rate()
 	info.screen = "%s @ %s Hz, window %s" % [DisplayServer.screen_get_size(), "%.0f" % hz if hz > 0.0 else "?", DisplayServer.window_get_size()]
@@ -309,7 +310,7 @@ func simulate_kill(paused: bool, focus_out := false) -> void:
 
 static func _info_text(title: String, d: Dictionary) -> String:
 	var s := "== %s ==\n" % title
-	for k in ["session", "version", "engine", "os", "device", "cpu", "memory_mb", "gpu", "gpu_api", "renderer",
+	for k in ["session", "version", "engine", "os", "device", "cpu", "memory_mb", "gpu", "gpu_api", "renderer", "render_thread",
 			"screen", "locale", "graphics_tier", "options", "started", "updated", "uptime_s", "zone", "last", "state", "focus",
 			"requested_renderer", "startup_stage", "recovered_renderer", "startup_log_truncated"]:
 		if d.has(k):

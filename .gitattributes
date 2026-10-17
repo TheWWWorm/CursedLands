@@ -6,3 +6,6 @@
 
 # Unified patch context deliberately prefixes tab-indented code with a space.
 engine_patches/**/*.patch -whitespace
+
+# Windows launchers need native command-file line endings.
+*.cmd text eol=crlf

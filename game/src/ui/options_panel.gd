@@ -343,12 +343,12 @@ func _show_group(g: int) -> void:
 			continue
 		var name: String = o[0]
 		if name == "renderer" and not RendererChoice.available():
-			continue   # Android only (desktop Forward+, web Compatibility)
+			continue   # Android and Windows
 		var label := _t("string option_" + name, name.capitalize()).trim_suffix(":").strip_edges()
 		var tip := GameData.text("tip option_" + name).strip_edges()
 		if GameData.REMAKE_OPTIONS.has(name):
 			label = RemakeText.t(GameData.REMAKE_OPTIONS[name][0])
-			tip = _remake_tip(GameData.REMAKE_OPTIONS[name])
+			tip = _remake_tip(["Renderer", RendererChoice.WINDOWS_HELP] if name == "renderer" and RendererChoice.windows() else GameData.REMAKE_OPTIONS[name])
 		var choices := GameData.option_choices(name)
 		_rows[int(o[4])] = {"kind": "slider" if int(o[1]) == 0 else "switch", "name": name,
 			"max": choices.size() if not choices.is_empty() else int(o[2]), "label": label, "tip": tip,
@@ -575,7 +575,7 @@ func _set_value(name: String, v: int) -> void:
 		_values.graphics_preset = GfxPresets.CUSTOM
 		_values.auto_graphics = 0
 	_values[name] = v
-	if name == "renderer" and v == RendererChoice.FORWARD_PLUS and was != v and RendererChoice.available():
+	if name == "renderer" and v == RendererChoice.FORWARD_PLUS and was != v and RendererChoice.available() and not RendererChoice.windows():
 		_ask_experimental(was)
 	if name in ["camera_style", "cam_wasd"]:
 		_select_key_profile()

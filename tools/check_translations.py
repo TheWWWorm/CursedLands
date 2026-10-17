@@ -34,6 +34,12 @@ for path in ROOT.rglob('*.gd'):
         if key and key not in entries:
             line = source[:match.start()].count('\n') + 1
             errors.append(f'{path.relative_to(ROOT)}:{line}: missing RU/DE key: {key}')
+# Renderer labels and recovery help are chosen dynamically by platform.
+renderer_source = (ROOT / 'platform/renderer_choice.gd').read_text()
+for match in re.finditer(r'^const WINDOWS_[A-Z_]+ := (.+)$', renderer_source, re.M):
+    value = json.loads(match[1])
+    for key in value if isinstance(value, list) else [value]:
+        if key not in entries: errors.append(f'Windows renderer text missing RU/DE key: {key}')
 # Recruit family names/roles are chosen dynamically by the shop and guide.
 arena_rules = (ROOT / 'game/arena_rules.gd').read_text().split('const FAMILIES := [', 1)[1].split('\n]', 1)[0]
 for match in re.finditer(r'"(?:name|role)":\s*(' + STRING + r')', arena_rules):

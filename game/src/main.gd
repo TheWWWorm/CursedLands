@@ -150,6 +150,11 @@ func open_menu() -> Control:
 	GameData.trace("startup: main menu built; presenting loading animation")
 	if splash:
 		await splash.finish()
+	# Even without a loading movie, require a presented 3D frame before a
+	# renderer trial can be accepted by its timer, pause or clean quit.
+	if DisplayServer.get_name() != "headless":
+		await RenderingServer.frame_post_draw
+		RendererChoice.menu_presented()
 	GameData.trace("startup: main menu ready")
 	return menu
 

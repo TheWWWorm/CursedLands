@@ -1,34 +1,22 @@
 class_name RendererChoice
 extends Node
-## Remake: the renderer on Android (option "renderer", Options › Screen
-## row 12; no counterpart in the 2000 game). 0 Compatibility (OpenGL ES 3,
-## the default), 1 Forward+ (Vulkan), 2 Mobile (Vulkan). Desktop always runs
-## Forward+ and the web Compatibility: the row is hidden there (`available`).
-## Godot picks the rendering method at startup, before any script runs:
-## project.godot's application/config/project_settings_override.android names
-## OVERRIDE, which `choose` writes ([rendering] renderer/rendering_method and
-## its .mobile override; the driver follows the method: vulkan / opengl3).
-## Without the file the project's own Compatibility setting stays. A device
-## without Vulkan 1.1 gets OpenGL anyway: Godot's Android layer checks the
-## Vulkan feature level and falls back (rendering_device/fallback_to_opengl3,
-## Godot's default, on). Whatever branches on the renderer reads the running
-## one (Portability.compatibility()), never this option.
-## Crash safety: the first start on a newly chosen Vulkan renderer is a trial
-## (TRIAL, state "pending"). Once it runs (`startup`, state "running"),
-## OVERRIDE goes back to Compatibility, so if this run crashes the next start
-## is on OpenGL again; after TRIAL_S seconds in the foreground, the app going
-## to the background or a clean quit, the choice is confirmed and OVERRIDE
-## written again. A start that finds a trial still "running" (that run ended
-## unexpectedly) or Godot on another renderer than the pending one (Vulkan
-## could not start) puts the option back on Compatibility; the main menu
-## tells the player (`offer`). The Android StartupApplication separately tracks
-## failures before scripts and resets the override before the engine starts.
-## Older templates without that hook retain only the script-level trial.
+## Persistent renderer choice for Android and Windows, applied before scripts
+## by project.godot's platform-specific project_settings_override. Android
+## defaults to Compatibility; Windows defaults to Forward+ / D3D12 with the
+## Safe render thread. A pending enhanced renderer is a trial. Before drawing
+## 3D it writes a Compatibility fallback for the next launch; only a menu that
+## has actually been presented may confirm the trial. Waiting on startup
+## notices, an early clean quit or backgrounding cannot accept an untested GPU.
 
 const OVERRIDE := "user://renderer.cfg"
 const TRIAL := "user://renderer_trial.cfg"
 const METHODS := ["gl_compatibility", "forward_plus", "mobile"]
 const TRIAL_S := 60.0
+const WINDOWS_CHOICES := ["Compatibility", "Forward+ (Direct3D 12)"]
+const WINDOWS_HELP := "Compatibility (OpenGL 3) uses fewer effects and a different graphics driver. Forward+ (Direct3D 12) supports all effects and is the default. Changes require a restart. If a Forward+ trial stops while loading the menu, the next launch uses Compatibility."
+const WINDOWS_FAILED := "The selected renderer could not start. The next launch uses Compatibility (OpenGL 3)."
+const WINDOWS_CRASHED := "The previous renderer trial did not finish. Compatibility (OpenGL 3) is selected; you can change the renderer in Options."
+static var _menu_ready_ms := -1
 const RESTART := ["Renderer", "The renderer changes when the game starts again. Restart the game now? If it does not start again by itself, open it again."]
 ## In a game: the same box, which says what a restart costs.
 const RESTART_GAME := "The renderer changes when the game starts again. Restart now? Progress since the last save will be lost."
@@ -48,12 +36,20 @@ static var notice_method := 0
 ## Tests: called instead of quitting the game (`restart`).
 static var on_restart := Callable()
 
-var _start_ms := Time.get_ticks_msec()
 
 
-## The row is offered: Android (and tests on a PC: --renderer-option).
+## The test flags exercise each platform's policy on an isolated PC profile.
+static func windows() -> bool:
+	return OS.has_feature("windows") or OS.get_cmdline_user_args().has("--windows-renderer-option")
+
+
+static func labels() -> Array:
+	return WINDOWS_CHOICES if windows() else GameData.DISPLAY_CHOICES.renderer
+
+
+## The row is offered on Android and Windows.
 static func available() -> bool:
-	return OS.has_feature("android") or OS.get_cmdline_user_args().has("--renderer-option")
+	return windows() or OS.has_feature("android") or OS.get_cmdline_user_args().has("--renderer-option")
 
 
 ## The option value the player chose (a trial counts as chosen).
@@ -62,12 +58,12 @@ static func chosen() -> int:
 	if not t.is_empty():
 		return maxi(0, METHODS.find(String(t.get("method", ""))))
 	var o := _load(OVERRIDE, "rendering")
-	return maxi(0, METHODS.find(String(o.get("renderer/rendering_method", ""))))
+	return maxi(0, METHODS.find(String(o.get("renderer/rendering_method", "forward_plus" if windows() else "gl_compatibility"))))
 
 
 ## Option set (GameData.set_option): the method for the next start.
 static func choose(v: int) -> void:
-	v = clampi(v, 0, METHODS.size() - 1)
+	v = clampi(v, 0, labels().size() - 1)
 	if v == chosen():
 		return
 	if v == 0:
@@ -82,13 +78,18 @@ static func choose(v: int) -> void:
 ## (the confirmation timer) or null. Sets GameData.options.renderer.
 static func startup() -> RendererChoice:
 	var node: RendererChoice = null
+	_menu_ready_ms = -1
+	if windows() and OS.get_cmdline_user_args().has("--compatibility-recovery") and Portability.compatibility():
+		_reset()
+		GameData.set_options(GfxDetect.original_recovery_values(GameData.options))
+		GameData.trace("startup recovery: Compatibility launcher; basic graphics selected")
 	var t := _load(TRIAL, "trial")
 	var running := RenderingServer.get_current_rendering_method()
 	var boot := CrashReport.android_startup()
 	var early: Dictionary = boot.current if boot.get("current") is Dictionary else {}
 	if available() and not String(early.get("recovered_renderer", "")).is_empty():
 		_reset()
-		notice = FAILED
+		notice = WINDOWS_FAILED if windows() else FAILED
 		GameData.trace("renderer recovered before engine startup: %s" % early.recovered_renderer)
 	elif available() and not t.is_empty():
 		var method := String(t.get("method", ""))
@@ -96,16 +97,16 @@ static func startup() -> RendererChoice:
 		if String(t.get("state", "")) == "running":
 			GameData.trace("renderer trial on %s ended unexpectedly: back to %s" % [method, METHODS[0]])
 			_reset()
-			notice = CRASHED
+			notice = WINDOWS_CRASHED if windows() else CRASHED
 			notice_method = i
 		elif running != method:
 			GameData.trace("renderer %s did not start (running %s): back to %s" % [method, running, METHODS[0]])
 			_reset()
-			notice = FAILED
+			notice = WINDOWS_FAILED if windows() else FAILED
 		else:
 			t.state = "running"
 			_save_trial(t)
-			DirAccess.remove_absolute(OVERRIDE)   # a crash in this run: the next start is on OpenGL
+			_fallback_override()   # written before the first 3D draw
 			GameData.trace("renderer trial: %s" % method)
 			node = RendererChoice.new()
 	GameData.options.renderer = chosen()
@@ -114,6 +115,8 @@ static func startup() -> RendererChoice:
 
 ## The trial run works: its renderer stays for the next starts.
 static func confirm() -> void:
+	if _menu_ready_ms < 0:
+		return
 	var t := _load(TRIAL, "trial")
 	if t.is_empty() or String(t.get("state", "")) != "running":
 		return
@@ -138,7 +141,7 @@ static func offer(parent: Node, after: Node = null) -> MessageBox:
 	var b := MessageBox.new()
 	b.title = RemakeText.t(RESTART[0])
 	b.message = RemakeText.t(CRASHED) % RemakeText.t(GameData.DISPLAY_CHOICES.renderer[notice_method]) if notice == CRASHED \
-		else RemakeText.t(FAILED)
+		else RemakeText.t(notice)
 	b.ok_only = true
 	b.esc_closes = true
 	notice = ""
@@ -171,30 +174,71 @@ static func ask_experimental(parent: Node) -> MessageBox:
 	return b
 
 
-## Quits; Android starts the app again where Godot supports it
-## (OS.set_restart_on_exit), else the player opens it again.
+## Restart into the selected backend. Drop old engine renderer overrides and
+## direct-start/tool arguments so they cannot defeat the saved recovery choice.
 static func restart(tree: SceneTree) -> void:
 	if on_restart.is_valid():
 		on_restart.call()
 		return
 	GameData.trace("restart for the renderer")
-	if OS.has_feature("android"):
+	if windows():
+		OS.set_restart_on_exit(true, restart_args())
+	elif OS.has_feature("android"):
 		OS.set_restart_on_exit(true)
 	tree.quit()
 
 
+static func restart_args() -> PackedStringArray:
+	var args := PackedStringArray()
+	var skip := false
+	for arg in OS.get_cmdline_args():
+		if skip:
+			skip = false
+			continue
+		if arg in ["--rendering-method", "--rendering-driver", "--render-thread", "--path"]:
+			skip = true
+			continue
+		args.append(arg)
+	if not OS.has_feature("template"):
+		args.append_array(["--path", ProjectSettings.globalize_path("res://")])
+	args.append_array(["--render-thread", "safe"])
+	var user := PackedStringArray()
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--ei-path="):
+			user.append(arg)
+	if not user.is_empty():
+		args.append("--")
+		args.append_array(user)
+	return args
+
+
+static func menu_presented() -> void:
+	_menu_ready_ms = Time.get_ticks_msec()
+
+
+static func _fallback_override() -> void:
+	if windows():
+		_write_override("gl_compatibility")
+	else:
+		DirAccess.remove_absolute(OVERRIDE)
+
+
 static func _reset() -> void:
-	DirAccess.remove_absolute(OVERRIDE)
+	_fallback_override()
 	DirAccess.remove_absolute(TRIAL)
 	GameData.options.renderer = 0
 
 
 static func _write_override(method: String) -> void:
 	var cfg := ConfigFile.new()
-	# Both keys: the exported project.binary may keep project.godot's
-	# .mobile override, which wins over the plain key on Android.
+	# The platform override wins over the plain key in exported projects.
 	cfg.set_value("rendering", "renderer/rendering_method", method)
-	cfg.set_value("rendering", "renderer/rendering_method.mobile", method)
+	if windows():
+		cfg.set_value("rendering", "renderer/rendering_method.windows", method)
+		cfg.set_value("rendering", "rendering_device/driver.windows", "d3d12")
+		cfg.set_value("rendering", "driver/threads/thread_model.windows", 1)
+	else:
+		cfg.set_value("rendering", "renderer/rendering_method.mobile", method)
 	cfg.save(OVERRIDE)
 
 
@@ -223,7 +267,7 @@ func _ready() -> void:
 
 
 func _process(_dt: float) -> void:
-	if Time.get_ticks_msec() - _start_ms >= TRIAL_S * 1000.0:
+	if _menu_ready_ms >= 0 and Time.get_ticks_msec() - _menu_ready_ms >= TRIAL_S * 1000.0:
 		confirm()
 		queue_free()
 
