@@ -17,6 +17,11 @@
 - Render the pause signpost's opening pose before revealing it and keep pointer motion from interrupting the opening animation. ([#11](https://github.com/TheWWWorm/CursedLands/issues/11))
 - Suppress incidental acknowledgements and creature voices during quest dialogue while preserving scripted lines. ([#10](https://github.com/TheWWWorm/CursedLands/issues/10))
 
+Movement clarification ([#9](https://github.com/TheWWWorm/CursedLands/issues/9)):
+the player character's base crouching and walking speeds are equal, and crawling
+uses 80% of walking speed, matching the original game. This release makes no
+movement-speed adjustment.
+
 ## 1.9.2 — pause menu and companion controls, 17 October 2026
 
 - Keep pause-menu opening and board animations at the same real-time speed when gameplay is paused, normal or accelerated, including reopening after an interrupted slide. ([#6](https://github.com/TheWWWorm/CursedLands/issues/6))
