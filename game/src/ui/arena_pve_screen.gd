@@ -649,6 +649,8 @@ func _build_army() -> void:
 
 func _build_shop() -> void:
 	# Reuse each offer's render target while only prices, counts or locks change.
+	# The shop always belongs to the player, even while scouting another board.
+	var represented := ArenaAlliances.counts(run.army)
 	while _shop.get_child_count() > run.shop.size():
 		var extra := _shop.get_child(_shop.get_child_count() - 1)
 		_shop.remove_child(extra); extra.queue_free()
@@ -685,6 +687,7 @@ func _build_shop() -> void:
 		card.disabled = not run.purchase_error(index).is_empty()
 		card.caption = ArenaAlliances.names(family)
 		card.family = family
+		card.represented_traits = represented
 		card.footer = RemakeText.t("%d gold") % card.cost
 		if fresh:
 			card.set_meta("arena_creature", {"id": card.prototype, "family": family, "rank": rank, "offer": index})
@@ -1932,10 +1935,10 @@ func _refresh_alliances() -> void:
 		var label := row.get_child(1) as Label
 		label.text = "%s  %d/%d" % [RemakeText.t(ArenaAlliances.RULES[key].name), count, ArenaAlliances.target(key, count)]
 		var active := ArenaAlliances.rank(key, count) > 0
-		var color := ArenaCreatureCard.SNOW_ACCENT if active else GOLD
-		plaque.accent = color if active else Color("9c9279")
+		var color: Color = ArenaCreatureCard.TRIBE_COLORS[key]
+		plaque.accent = color.lerp(PAPER, 0.3) if active else color
 		ArenaCreatureCard.snow_ink(label, PAPER)
-		ArenaCreatureCard.ink_icon(row.get_child(0), color)
+		ArenaCreatureCard.tribe_icon(row.get_child(0), key, count > 0)
 	_layout_alliances.call_deferred()
 
 

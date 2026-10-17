@@ -32,7 +32,7 @@ func _draw() -> void:
 	var shadow := points.duplicate()
 	for i in shadow.size(): shadow[i] += Vector2(0, 2)
 	draw_colored_polygon(shadow, Color(0, 0, 0, 0.22))
-	draw_colored_polygon(points, Color(0.055, 0.075, 0.09, 0.94 if highlighted else 0.88))
+	draw_colored_polygon(points, Color(0.055, 0.075, 0.09, 0.76 if highlighted else 0.64))
 	points.append(points[0])
 	draw_polyline(points, accent.lerp(Color.WHITE, 0.45 if highlighted else 0.2), 1.0, true)
 	draw_line(Vector2(a.x + cut, a.y + 2), Vector2(b.x - cut, a.y + 2), Color(accent, 0.2), 1.0)

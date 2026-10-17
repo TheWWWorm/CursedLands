@@ -4,7 +4,7 @@
 
 - Detect Windows graphics APIs with separate rendered tests, preferring Direct3D 12 and Vulkan before OpenGL. Cache successful detection and advance after an interrupted test or failed first menu presentation.
 - Add Automatic and Vulkan to the Windows renderer setting, with English, Russian and German labels and help.
-- Place recruitment prices, copy counts and trait icons on compact dark panels with light borders and cost-based accents. Add matching alliance labels and outlined Trials text and icons. ([#15](https://github.com/TheWWWorm/CursedLands/issues/15))
+- Place recruitment prices, copy counts and trait icons on compact translucent panels with light borders and cost-based accents. Add matching alliance labels and outlined Trials text and icons. Matching tribe icons glow in their tribe color when that tribe is represented in the deployed army. ([#15](https://github.com/TheWWWorm/CursedLands/issues/15))
 - Include Safe Windows rendering and persistent manual renderer choices from the unpublished 1.13.0 candidate.
 - Improve one- and two-star banshee health and attack cadence in Trials, and strengthen upgraded red harpy fire spells. Keep campaign creatures and the final dark banshee unchanged. ([#15](https://github.com/TheWWWorm/CursedLands/issues/15))
 

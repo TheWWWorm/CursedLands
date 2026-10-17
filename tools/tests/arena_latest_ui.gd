@@ -75,6 +75,24 @@ func _ready() -> void:
 		var card := slot.get_child(0) as ArenaCreatureCard
 		check(card.get_global_rect().grow(1).encloses(card._info.get_global_rect()), "price panel fits its offer")
 	await shot(tag+"-cost-panels")
+	var glowing := false; var unlit := false
+	for slot in screen._shop.get_children():
+		var card := slot.get_child(0) as ArenaCreatureCard
+		for icon: TextureRect in card._offer_icons:
+			if not icon.has_meta("tribe"): continue
+			var lit := float(icon.material.get_shader_parameter("glow")) > 0
+			glowing = glowing or lit
+			unlit = unlit or not lit
+	check(glowing and unlit, "shop distinguishes represented tribes from absent tribes")
+	var beast := screen._alliance_list.get_node("beast") as Control
+	await move(beast.get_global_rect().get_center()); await get_tree().create_timer(0.4).timeout
+	check(screen._rail.visible, "alliance plaque still opens its details on hover")
+	await move(Vector2(500,400))
+	if OS.get_cmdline_user_args().has("--arena-panels-only"):
+		check(errors.messages.is_empty(), "no native or shader errors: " + JSON.stringify(errors.messages))
+		print("ARENA_PANELS_UI ", tag, " checks=", checks, " failures=", JSON.stringify(failures))
+		get_tree().quit(0 if failures.is_empty() else 1)
+		return
 	screen.landing=true; screen._switch_mode(1); await frames(12)
 	modes=screen._landing_panel.find_children("*Mode","Button",true,false)
 	check(modes[0].size==modes[1].size, "mode dimensions stay equal after switching")
@@ -105,6 +123,9 @@ func _ready() -> void:
 	await get_tree().create_timer(2.0).timeout
 	check(league.rivals.reduce(func(n,bot): return n+bot.gold,0)<total, "rivals keep buying while watched")
 	check(screen.field.match_state==watched, "watching preserves board identity")
+	check(screen._shop.get_children().all(func(slot):
+		var card := slot.get_child(0) as ArenaCreatureCard
+		return card == null or card.represented_traits == ArenaAlliances.counts(screen.run.army)), "scouting keeps the player's own tribe indicators")
 	check(screen._standings.get_global_rect().position.y>=screen._round_panel.get_global_rect().end.y+8,"standings clear the round panel")
 	check(screen._standings.get_theme_stylebox("panel") is StyleBoxEmpty,"standings have no background")
 	bounded(screen._standings,"compact standings"); check(screen._standings.size.x<=170,"compact standings width")

@@ -7,6 +7,11 @@ const GOLD := Color("d6b66f")
 const MUTED := Color("b7c0bd")
 const SNOW_INK := GOLD
 const SNOW_ACCENT := Color("f2d58f")
+const TRIBE_COLORS := {
+	"beast": Color("e2bc75"), "horde": Color("ed998b"),
+	"warrior": Color("9dc8e7"), "hunter": Color("a5d99a"),
+	"mage": Color("c9a7ec"),
+}
 var prototype := ""
 var heading := ""
 var caption := ""
@@ -16,6 +21,7 @@ var copies := 0
 var copies_needed := 3
 var quality := 0
 var family := -1
+var represented_traits := {}
 var preview: WikiPreview
 var _price: Label
 var _copies: Label
@@ -101,6 +107,7 @@ func _ready() -> void:
 	metadata.add_child(traits)
 	for key: String in ArenaAlliances.traits(family):
 		var emblem := TextureRect.new()
+		emblem.set_meta("tribe", key)
 		emblem.texture = load("res://assets/arena/alliance_%s.svg" % key)
 		emblem.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		emblem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -139,7 +146,11 @@ func update_offer() -> void:
 	_info.accent = accent.lerp(MUTED, 0.55) if disabled else accent
 	_info.highlighted = not disabled and (is_hovered() or has_focus())
 	for icon in _offer_icons:
-		(icon.material as ShaderMaterial).set_shader_parameter("ink", _info.accent)
+		if icon.has_meta("tribe"):
+			var key := String(icon.get_meta("tribe"))
+			tribe_icon(icon, key, int(represented_traits.get(key, 0)) > 0)
+		else:
+			(icon.material as ShaderMaterial).set_shader_parameter("ink", _info.accent)
 	_copies.visible = copies > 0 and copies_needed > 0
 	_copies.text = "%d/%d" % [mini(copies, copies_needed), copies_needed]
 	_copies.tooltip_text = RemakeText.t("Copies: %d/%d") % [copies, copies_needed]
@@ -181,6 +192,15 @@ static func ink_icon(icon: TextureRect, color: Color, edge := Color("222222")) -
 	ink.set_shader_parameter("edge_ink", edge)
 	icon.material = ink
 	icon.modulate = Color.WHITE
+
+
+static func tribe_icon(icon: TextureRect, key: String, represented: bool) -> void:
+	var color: Color = TRIBE_COLORS.get(key, PAPER)
+	if icon.material == null: ink_icon(icon, PAPER)
+	var ink := icon.material as ShaderMaterial
+	ink.set_shader_parameter("ink", color if represented else MUTED)
+	ink.set_shader_parameter("glow", 0.9 if represented else 0.0)
+	ink.set_shader_parameter("glow_ink", color)
 
 
 static func outline(control: Control) -> void:
