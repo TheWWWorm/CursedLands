@@ -1,0 +1,621 @@
+{
+  "version": "1.10.0",
+  "tag": "v1.10.0",
+  "base_stable": "1.9.2",
+  "release_type": "stable feature",
+  "game_source_commit": "561b37d26c1ce3274a243bca8215ff17915aa285",
+  "game_tree": "04a0191a80486197b2c199aae3c97e261989cc88",
+  "issues": [
+    5,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "protocol": 23,
+  "same_version_coop_required": true,
+  "compiled_scripts": 339,
+  "all_compiled_scripts_identical_across_five_platforms": true,
+  "runtime_checks": [
+    {
+      "suite": "arena_live_shop",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_LIVE_SHOP 72 checks; failures=[]"
+      ],
+      "log_sha256": "d78bcc5ab18ed90fe752df8a7a51cde19c762ef61bd7cc7438f2fb39dd618373",
+      "checks": 72,
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_balance_feedback",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_BALANCE_FEEDBACK 23 checks 0 failures"
+      ],
+      "log_sha256": "8b9b8cad9922191f25133e8d513c1d4456efc74251e35094825c4b9559eec29d",
+      "checks": 23,
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_flow",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_FLOW 234 checks; failures=[]"
+      ],
+      "log_sha256": "37859d9061e1ace7ebc578acb104654b25bd31b377183aed6bc9b61031039594",
+      "checks": 234,
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_economy",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_ECONOMY 257 checks; failures=[]"
+      ],
+      "log_sha256": "862fd96a2f8ed5d0eac9263efcdb195851540148e9d8a95affbbdc5eaee63af5",
+      "checks": 257,
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_recruitment",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_RECRUITMENT 676 checks; native_fights=20; failures=[]"
+      ],
+      "log_sha256": "f0521ffa86b697175f2929d8c50bbc7d741afa03b85776ab04edbf84dffce89d",
+      "checks": 676,
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_alliances",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_ALLIANCES 492 checks; failures=[]"
+      ],
+      "log_sha256": "ed0e1e96ba6bff1ed4f146ba67844676204e0d5c985c67f954f42ca93023a89d",
+      "checks": 492,
+      "renderer": "headless"
+    },
+    {
+      "suite": "training_reset",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "TRAINING_RESET 92 checks 0 failures; 5247 legal orders"
+      ],
+      "log_sha256": "d0328df7ee91e03675d23ab58a3983c3dd31a597ac50d6d9e281d36d02fd6417",
+      "checks": 92,
+      "renderer": "headless"
+    },
+    {
+      "suite": "training_coop",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "TRAINING_COOP 16 checks 0 failures"
+      ],
+      "log_sha256": "dbc3d68fd9fde43a0974e06db9c0d91a2868071a850b686f0afcbcab67c4a557",
+      "checks": 16,
+      "renderer": "headless"
+    },
+    {
+      "suite": "issue_campaign_orders",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ISSUE_CAMPAIGN_ORDERS 26 checks 0 failures"
+      ],
+      "log_sha256": "1bc5cc2ccc4bb866eaf9f0ad9c7728938d19861d1985ac07ce5f1a7a03b5ef09",
+      "checks": 26,
+      "renderer": "headless"
+    },
+    {
+      "suite": "path_preview",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "PATH_PREVIEW 8 checks 0 failures"
+      ],
+      "log_sha256": "da152dbe23f9d6e3db9c875f5bffd486e059eaa0c209130d3c12ba6d3f89bb15",
+      "checks": 8,
+      "renderer": "headless"
+    },
+    {
+      "suite": "pause_menu_clock",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "PAUSE_MENU_CLOCK 18 checks 0 failures"
+      ],
+      "log_sha256": "1c75c969873d1b918a47f8886f36aa01aa6a48f4877a742842634be07b1efc3e",
+      "checks": 18,
+      "renderer": "headless"
+    },
+    {
+      "suite": "wiki_performance",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "WIKI_PERFORMANCE cold=620ms warm=39ms 18607 checks; failures=[]"
+      ],
+      "log_sha256": "c6dd6ec710f48c50199f50c10f8af3a571887e1f1081892cb0b3d9665c1aad3d",
+      "checks": 18607,
+      "renderer": "headless"
+    },
+    {
+      "suite": "wiki_lore",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "WIKI_LORE_TEST {\"campaign\":\"cursed_lands\",\"checks\":18711,\"failures\":[]}"
+      ],
+      "log_sha256": "019f22d4f03173a6078cdcbeced4173361c0282abba80438067a62bfa0cdfc6a",
+      "checks": 18711,
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_shop_ui",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_SHOP_UI 166 checks; failures=[]"
+      ],
+      "log_sha256": "8aa9691ca45ea50143fc818fbe721a7d9ff5069549a2ee1793ebbd8c70fcc172",
+      "checks": 166,
+      "renderer": "Compatibility"
+    },
+    {
+      "suite": "arena_shop_ui",
+      "language": "ru",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_SHOP_UI 166 checks; failures=[]"
+      ],
+      "log_sha256": "2408fdf13a304a5b11d222309c2f7586ccee668ebd45a31d5276e2c7ce9ad31f",
+      "checks": 166,
+      "renderer": "Compatibility"
+    },
+    {
+      "suite": "arena_shop_ui",
+      "language": "de",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_SHOP_UI 166 checks; failures=[]"
+      ],
+      "log_sha256": "d32ad497b2cf1b45b4157e69c00dd8209612ea83da5bd0b528a72d3160556181",
+      "checks": 166,
+      "renderer": "Compatibility"
+    },
+    {
+      "suite": "training_reset_choice",
+      "language": "en",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "TRAINING_RESET_CHOICE 36 checks 0 failures"
+      ],
+      "log_sha256": "4d726639ba6a71421fba3217472121db30b618d4552f44f5b5250d80c4b3d6d8",
+      "checks": 36,
+      "renderer": "Compatibility"
+    },
+    {
+      "suite": "training_reset_choice",
+      "language": "ru",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "TRAINING_RESET_CHOICE 36 checks 0 failures"
+      ],
+      "log_sha256": "6b0948b4d727adcf9e0d095bd07924b9734fdcfdf2aee9b719880aa042682224",
+      "checks": 36,
+      "renderer": "Compatibility"
+    },
+    {
+      "suite": "training_reset_choice",
+      "language": "de",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "TRAINING_RESET_CHOICE 36 checks 0 failures"
+      ],
+      "log_sha256": "2683453d062f865a796bb70b6fd46b8ef95b9ac4a03dd8a2599ed2aae90d8fee",
+      "checks": 36,
+      "renderer": "Compatibility"
+    },
+    {
+      "suite": "menu_wiki_ui",
+      "language": "ru",
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "MENU_WIKI_UI ru 14 checks; failures=[]"
+      ],
+      "log_sha256": "74f44c81413b259c119fe5a64923c0a921950bf91d7c422330289411d10bcf58",
+      "checks": 14,
+      "renderer": "Compatibility"
+    }
+  ],
+  "runtime_assertions": 39852,
+  "translations": {
+    "entries": 2472,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 123,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "errors": 0,
+    "output": "Wiki world text: 180 entries in EN/RU/DE\nWiki reference text: 3886 source-checked EN/DE entries; RU uses original archives\nTranslations: 2472 entries; 141 dynamic wiki keys; 123 dynamic arena keys; 0 errors"
+  },
+  "desktop": {
+    "linux-x86_64": {
+      "version": "1.10.0",
+      "source_commit": "561b37d26c1ce3274a243bca8215ff17915aa285",
+      "game_tree": "04a0191a80486197b2c199aae3c97e261989cc88",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 339,
+      "resource_count": 903,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.pck": "62935dca3041a61fce42d609e771ed2ad012d44e47f2f0d8f40af05e1a5c5a84"
+      }
+    },
+    "windows-x86_64": {
+      "version": "1.10.0",
+      "source_commit": "561b37d26c1ce3274a243bca8215ff17915aa285",
+      "game_tree": "04a0191a80486197b2c199aae3c97e261989cc88",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 339,
+      "resource_count": 903,
+      "files": {
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "CursedLands.pck": "62935dca3041a61fce42d609e771ed2ad012d44e47f2f0d8f40af05e1a5c5a84"
+      }
+    },
+    "macos-universal": {
+      "version": "1.10.0",
+      "source_commit": "561b37d26c1ce3274a243bca8215ff17915aa285",
+      "game_tree": "04a0191a80486197b2c199aae3c97e261989cc88",
+      "protocol": 23,
+      "platform": "macos-universal",
+      "unsigned": true,
+      "target_os_runtime_tested": false,
+      "compiled_scripts": 339,
+      "files": {
+        "CursedLands.zip": "f1c2c8aadb2408954dc6bfc178195f62e29ed22a725bc55a284b69586295e0a0"
+      }
+    }
+  },
+  "android": {
+    "version": "1.10.0",
+    "compiled_scripts": 339,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 44,
+    "debuggable": false,
+    "apk_sha256": "cfe84afbeaedbb0dab7128e4c1553542dc34a89edbfb2836079534fcc2bba164",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16,
+    "target_os_runtime_tested": false,
+    "previous_qualified_engine_release": "1.9.2"
+  },
+  "browser": {
+    "version": "1.10.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-c4ea156880126684b6a0",
+      "new_cache": "cursed-engine-2-c23bb626d9a0ec304542",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "28865e24af3a1a0dc597690ee5b30fa5becfed0a5c8dfff9aa279542dac83936",
+      "old_tab_wait_verified": true,
+      "unchanged_wasm_reused": true,
+      "network_paths": [
+        "__expected",
+        "index.html",
+        "index.pck",
+        "release-check.html",
+        "service-worker.js"
+      ],
+      "previous_version": "1.9.2"
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-c23bb626d9a0ec304542"
+      ],
+      "packs": {
+        "cursed-engine-2-c23bb626d9a0ec304542": "28865e24af3a1a0dc597690ee5b30fa5becfed0a5c8dfff9aa279542dac83936"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    },
+    "fresh_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": [],
+      "inspection": "In-app browser canvas screenshot and developer console; local origin 28819 fresh, 28818 upgraded."
+    },
+    "upgraded_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": [],
+      "inspection": "In-app browser canvas screenshot and developer console; local origin 28819 fresh, 28818 upgraded."
+    },
+    "build": {
+      "version": "1.10.0",
+      "source_tag": "v1.10.0",
+      "source_commit": "561b37d26c1ce3274a243bca8215ff17915aa285",
+      "game_tree": "04a0191a80486197b2c199aae3c97e261989cc88",
+      "protocol": 23,
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 339,
+      "resource_count": 900,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "28865e24af3a1a0dc597690ee5b30fa5becfed0a5c8dfff9aa279542dac83936",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    }
+  },
+  "wiki": {
+    "version": "1.10.0",
+    "languages": {
+      "en": {
+        "pages": 1277,
+        "listed_pages": 1074,
+        "listed_spells": 31,
+        "versions": 2057,
+        "resolved_links": 17732,
+        "normalized_equipment_links": 0
+      },
+      "ru": {
+        "pages": 1277,
+        "listed_pages": 1077,
+        "listed_spells": 31,
+        "versions": 2057,
+        "resolved_links": 17717,
+        "normalized_equipment_links": 0
+      },
+      "de": {
+        "pages": 1277,
+        "listed_pages": 1074,
+        "listed_spells": 31,
+        "versions": 2057,
+        "resolved_links": 17756,
+        "normalized_equipment_links": 0
+      }
+    },
+    "translation_keys": 207,
+    "requires_game_files": false,
+    "requires_game_engine": false,
+    "requires_account": false,
+    "campaigns": {
+      "cursed_lands": {
+        "languages": {
+          "en": {
+            "pages": 1277,
+            "listed_pages": 1074,
+            "listed_spells": 31,
+            "versions": 2057,
+            "resolved_links": 17732,
+            "normalized_equipment_links": 0
+          },
+          "ru": {
+            "pages": 1277,
+            "listed_pages": 1077,
+            "listed_spells": 31,
+            "versions": 2057,
+            "resolved_links": 17717,
+            "normalized_equipment_links": 0
+          },
+          "de": {
+            "pages": 1277,
+            "listed_pages": 1074,
+            "listed_spells": 31,
+            "versions": 2057,
+            "resolved_links": 17756,
+            "normalized_equipment_links": 0
+          }
+        }
+      },
+      "lost_in_astral": {
+        "languages": {
+          "en": {
+            "pages": 1757,
+            "listed_pages": 1479,
+            "listed_spells": 35,
+            "versions": 2717,
+            "resolved_links": 55528,
+            "normalized_equipment_links": 0
+          },
+          "ru": {
+            "pages": 1757,
+            "listed_pages": 1479,
+            "listed_spells": 35,
+            "versions": 2717,
+            "resolved_links": 55464,
+            "normalized_equipment_links": 0
+          },
+          "de": {
+            "pages": 1757,
+            "listed_pages": 1479,
+            "listed_spells": 35,
+            "versions": 2717,
+            "resolved_links": 55550,
+            "normalized_equipment_links": 0
+          }
+        }
+      }
+    },
+    "illustrations": 4287,
+    "bytes": 202265599
+  },
+  "balance": {
+    "armor_comparison_battles": 8289,
+    "final_battles": 4147,
+    "final_runs": 144,
+    "selected": "80% maximum armor absorption on both sides, 120 combat seconds as a player loss",
+    "final_aggregates": [
+      {
+        "challenge": 0,
+        "runs": 48,
+        "completed": 43,
+        "battles": 1439,
+        "wins": 1385,
+        "timeouts": 17,
+        "mean_seconds": 31.157977762335047,
+        "median_seconds": 25.5199999999999,
+        "p90_seconds": 58.0799999999997,
+        "max_seconds": 120.010000000007,
+        "final_wave_wins": 28,
+        "mean_losses_per_run": 1.125
+      },
+      {
+        "challenge": 1,
+        "runs": 48,
+        "completed": 22,
+        "battles": 1383,
+        "wins": 1227,
+        "timeouts": 44,
+        "mean_seconds": 39.64764280549568,
+        "median_seconds": 29.2049999999999,
+        "p90_seconds": 79.2000000000016,
+        "max_seconds": 120.010000000007,
+        "final_wave_wins": 7,
+        "mean_losses_per_run": 3.25
+      },
+      {
+        "challenge": 2,
+        "runs": 48,
+        "completed": 15,
+        "battles": 1325,
+        "wins": 1141,
+        "timeouts": 23,
+        "mean_seconds": 35.38438490566052,
+        "median_seconds": 28.7649999999999,
+        "p90_seconds": 64.1849999999997,
+        "max_seconds": 120.010000000007,
+        "final_wave_wins": 5,
+        "mean_losses_per_run": 3.8333333333333335
+      }
+    ],
+    "report": "trials-ui-balance.md"
+  },
+  "source_validation": {
+    "checks": 21,
+    "all_passed": true,
+    "record": "trials-ui-balance.json",
+    "kel_record": "kel-wiki-2026-10-17.json"
+  },
+  "hosted_files_count": 13551,
+  "hosted_manifest_sha256": "c4e21912fb19dd3322be141299e3d021aa9de45109cfb5d730c9a449af05b2d8",
+  "parts_manifest": {
+    "/index.wasm": {
+      "count": 2,
+      "size": 39509339
+    }
+  },
+  "evidence": {
+    "results.json.gz": "b7fcd1f59f2aee037e78dd24d59eb9165359b905e1204ca9a9b506f48d729001",
+    "shop-company-de.png": "64023e21b0bc56d18fa2f69b699c650802abaec9e96f0d1dea11de69cd678c6f",
+    "shop-company-en.png": "4a9ea682b21a251db67c2ff90075567e501a8876ad2c51a45e691cfff177b9fb",
+    "shop-company-ru.png": "592258b02c57ec75ab98f25f094e0af91fa63ea8752b5c3a867f16276a246326",
+    "shop-creature-de.png": "7d7e0b41c42c221a14dedd3826ed31461d0f436d7890af336d1843f3bdb2f4d4",
+    "shop-creature-en.png": "c7e0e257dc3fce57faadbf1114b96b92a67ac4832f5013e5096afdea0c3d4e07",
+    "shop-creature-ru.png": "b05a5edaf985e82d62cc199a71f01622f85d9faaf3912ccd7ed5d95ed1c22732",
+    "shop-locked-de.png": "9e9c6265df161cc0f83fdc40a9421a093cb5be9daacf62dfdc8625de4aa511b2",
+    "shop-locked-en.png": "7fbbb38eb778365f94204186206799b331a69f3896bcf6c4591aa34752a09075",
+    "shop-locked-ru.png": "788ae961e21654c7c8ec9de1e4b1a055dc13a2f8da72c4156395db11af512796",
+    "shop-rewards-de.png": "7b2fda09d8de04afc8fdda0c4d34feb4afa83deaa757ca4193e2a147485d1a80",
+    "shop-rewards-en.png": "0003918c9d10505a1dc7e07004b53653f9cb67e3c2e5c436a67466af7989dc6d",
+    "shop-rewards-ru.png": "2b84693a2779b197949b5802dd5bbf3e77b4cf492a58bef09d008cfb7661dda3",
+    "training-reset-de.png": "602fecc97669d8f2d4d5b3473ead7224f7c5ea893707cad4939cf52110e32cb1",
+    "training-reset-en.png": "6d5418f067c6c32afd82303d0460e966f3de97517dcaafd027fe45a6c78abd62",
+    "training-reset-ru.png": "735951bacdd7d68f03cd1e0454b0a84181e3391ddef7f1021b9f813a8ee3d7de"
+  },
+  "validation_notes": [
+    "Game source is frozen at the source commit; the final release commit adds the rebuilt public export, validation and download checksums without changing game source.",
+    "The 80% absorption cap reduced timeout frequency from 5.94% to 1.05% in the matched pre-tuning armor comparison. Final encounters were then checked separately for 4,147 battles.",
+    "Native AI, movement, terrain, spells and armor were simulated at a fixed 55 ms tick. Six shopping policies, eight seeds and three difficulties are deterministic design samples, not human win-rate estimates.",
+    "Issue 9 was checked against the original executable and race data: crouch uses walk speed and crawl uses 80%; no movement-speed change was required.",
+    "Browser upgrade compares every IndexedDB store, including isolated game-data and save-file sentinels; the old tab keeps its worker until closed, and the unchanged WebAssembly is reused.",
+    "The Kel chat changes were integrated into the shared native/public wiki. Its original resurrection route required documentation; existing gameplay scripts were retained."
+  ],
+  "limits": [
+    "Runtime tests ran on the packaged Linux build. Windows, macOS and Android packages were audited without target-OS runtime tests. macOS is unsigned.",
+    "Browser checks cover visible setup, cache replacement, storage preservation and error logs, not a complete saved campaign playthrough.",
+    "UI was rendered and checked in English, Russian and German; input fixtures use normal handlers but do not constitute a physical-device or live-network-peer test.",
+    "Audio decoding and cue dispatch were checked with the Dummy audio driver; no listening assessment.",
+    "Surviving the last wave completes an expedition even when that individual battle was lost; battle wins and expedition completion are reported separately."
+  ],
+  "deployment_verification": "Live asset hashes and browser startup must pass before the draft release is published; receipts are retained in the release workspace."
+}
