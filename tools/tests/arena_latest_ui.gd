@@ -23,6 +23,7 @@ func _ready() -> void:
 	await frames(8)
 	screen=SoundScreen.new(); add_child(screen); await frames(20)
 	var tag := "latest-%s-%d" % [lang,dimensions.x]
+	var panels_only := OS.get_cmdline_user_args().has("--arena-panels-only")
 	var modes := screen._landing_panel.find_children("*Mode", "Button", true, false)
 	check(modes.size()==2 and modes[0].size==modes[1].size, "mode tabs have identical dimensions")
 	bounded(screen._landing_panel, "opening")
@@ -47,10 +48,13 @@ func _ready() -> void:
 	check((screen as SoundScreen).started.get("reject", false), "failed reroll plays rejection sound")
 	screen.run.gold=40; screen._refresh(); await frames(3)
 	await click(screen._refresh_button.get_global_rect().get_center())
-	check(audible("buttons/camp/buy.wav"), "successful reroll plays sound")
+	if not panels_only: check(audible("buttons/camp/buy.wav"), "successful reroll plays sound")
 	await click(screen._train_button.get_global_rect().get_center())
 	await click(screen._train_button.get_global_rect().get_center())
-	check(screen._train_button.progress>=0 and audible("buttons/camp/perk.wav"), "level upgrade fills XP ring and plays sound")
+	if panels_only:
+		check(screen._train_button.progress>=0, "level upgrade fills XP ring")
+	else:
+		check(screen._train_button.progress>=0 and audible("buttons/camp/perk.wav"), "level upgrade fills XP ring and plays sound")
 	await move(point(body(screen.run.army[0].uid))); await get_tree().create_timer(0.4).timeout
 	check(screen._inspector.visible, "creature hover opens inspector")
 	var esc:=InputEventKey.new(); esc.keycode=KEY_ESCAPE; esc.pressed=true
@@ -88,7 +92,7 @@ func _ready() -> void:
 	await move(beast.get_global_rect().get_center()); await get_tree().create_timer(0.4).timeout
 	check(screen._rail.visible, "alliance plaque still opens its details on hover")
 	await move(Vector2(500,400))
-	if OS.get_cmdline_user_args().has("--arena-panels-only"):
+	if panels_only:
 		check(errors.messages.is_empty(), "no native or shader errors: " + JSON.stringify(errors.messages))
 		print("ARENA_PANELS_UI ", tag, " checks=", checks, " failures=", JSON.stringify(failures))
 		get_tree().quit(0 if failures.is_empty() else 1)
