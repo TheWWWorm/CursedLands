@@ -10,7 +10,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.14.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.14.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It adds automatic Windows graphics-API detection, translucent recruitment labels with cost accents, and tribe icons that glow when represented in your deployed army. See the [release notes](docs/releases/1.14.0.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.15.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.15.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It adds online autochess with bot-filled seats, a hover-context wiki shortcut, and an option to disable cave echo. See the [release notes](docs/releases/1.15.0.md) and [versioning policy](docs/versioning.md).
 
 Browse the [**public wiki**](https://cursedlands.wwworm.com/wiki/) without game files or an account. Separate tabs cover the GOG base game and Lost in Astral: items, materials, spells, runes, creatures and mechanics in English, Russian and German.
 
@@ -178,6 +178,7 @@ Keys are read from the game's own `keyboard.ini`. To change one, open **Options*
 | Right drag, Ctrl / Alt + arrows | turn and tilt the camera; middle drag moves it (Modern style: middle drag also turns, Shift + middle drag moves, Delete / End turn, W / A / S / D can move it if enabled in Options) |
 | B / J | inventory / journal |
 | Esc | game menu: save, load, options, exit |
+| F7 | wiki page for the subject under the pointer; rebind under Options → Windows |
 | Enter / Backspace | co-op: type a chat message / clear the chat |
 
 ### Gamepad

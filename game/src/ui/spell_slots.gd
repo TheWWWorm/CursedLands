@@ -326,3 +326,8 @@ func _draw() -> void:
 
 func shortcut_label(index: int) -> String:
 	return EIKeymap.key_of_id(30 + index) if game and game.direct and game.direct.active() else ""
+
+
+func wiki_context() -> Dictionary:
+	var i := _slot_at(get_local_mouse_position())
+	return {"item": "spell:" + String(_entries[i][0])} if i >= 0 else {}

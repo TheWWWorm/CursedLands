@@ -1,6 +1,14 @@
 # Encyclopedia
 
-Open **Game wiki** from the main menu or the **Esc** menu. Choose a category,
+Press **F7** while pointing at an item, spell, rune, creature, quest or map to
+open its wiki page. The shortcut also works in inventory, shops, HUD slots,
+quest screens and Trials, including online autochess. Without a subject under
+the pointer, it opens the wiki home page. Rebind **Wiki under pointer** under
+**Options → Windows**; classic and WASD layouts keep separate bindings.
+Existing custom keys are preserved. Escape returns to the previous screen.
+Single-player gameplay pauses while browsing; online gameplay continues.
+
+From the home page, choose a category,
 search the localized page names, and click an entry. Each item has one page;
 its **Material / version** selector switches the statistics and model on that page.
 Craftable items include a **Blueprint** choice in that selector.

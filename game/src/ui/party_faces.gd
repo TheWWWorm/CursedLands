@@ -316,3 +316,8 @@ func _strip(from: Vector2, to: Vector2, uv: Rect2, mod: Color) -> void:
 	var uvs := PackedVector2Array([uv.position / s, Vector2(uv.end.x, uv.position.y) / s, uv.end / s,
 		Vector2(uv.position.x, uv.end.y) / s])
 	draw_primitive(pts, PackedColorArray([mod, mod, mod, mod]), uvs, _atlas)
+
+
+func wiki_context() -> Dictionary:
+	var i := _cell_at(get_local_mouse_position())
+	return WikiContext.for_unit(_cells[i][0]) if i >= 0 else {}

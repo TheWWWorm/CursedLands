@@ -1,0 +1,219 @@
+{
+  "date": "2026-10-18",
+  "status": "passed",
+  "base_commit": "16d04110900f9638f726ec70e21fd2c30c6c1252",
+  "engine": "Godot 4.7 stable 5b4e0cb0f",
+  "platform": "Linux x86_64",
+  "renderer": "OpenGL Compatibility / Mesa llvmpipe",
+  "scope": [
+    "Cave echo preference and live audio effect updates",
+    "Hover-based rebindable wiki shortcut and removed entry buttons",
+    "Native-density menu button border tiling"
+  ],
+  "locale_validation": "New EN/RU/DE strings forced with RemakeText.lang against owned English GOG archives; unchanged original strings still use that installation. Translation scan also checks every new dynamic option label, help and choice.",
+  "source_sha256": {
+    "game/src/ei/game_data.gd": "c96aaa52e55f53e1ef0eadc5565e21c3f267d8065c7d71fc5e7ead76ecc0e5b4",
+    "game/src/ei/keymap.gd": "5960049b31186a486844fbb02530096c18a34382a48ce600791ec8355a3a82fc",
+    "game/src/ei/remake_text.gd": "b2b3f3b3cbf06e07325bdf580fd23ef4f8dbc14ee289a5a4388243fa7686bf08",
+    "game/src/game/arena_tournament_run.gd": "dd6e53b41960fc7731af3a37e3b53775517f3de6e23553f7eb220c29cfb19c09",
+    "game/src/game/sound_mixer.gd": "d305d823158f4cfbbbf83c127fd925e2ee169faaa50cfee99a34f48f659d8a6f",
+    "game/src/main.gd": "ee670707dab276f07adc8b1013d6824451cc59d3a503173398bafb8fb30b7bfc",
+    "game/src/ui/arena_pve_screen.gd": "84fad1146cfbecfb7a78020c314b875870a4948023efa14a1b04171970390223",
+    "game/src/ui/belt_strip.gd": "f5132685b4b3123447091adba036ea0bce948f085b41a08d9554594403334943",
+    "game/src/ui/camp_view.gd": "a45d09eb47c90e18b1830adf4aa86781d2cab4d629d4ebe1ad4a5cf7c82856a2",
+    "game/src/ui/campaign_choices.gd": "8566c8ff436b3ec00b7e97bbfac1c4a5b3277efb3fb1d85505ebfd06b96d6f7b",
+    "game/src/ui/game_hud.gd": "349d0d0b25619fb7c7377a1de9833d584b4f999d0a48fab283bb9b52d1e32432",
+    "game/src/ui/inventory_panel.gd": "209cc5998277b49aae6326d417c5b210d976c567594116572ed2b8ca0ca2720f",
+    "game/src/ui/journal_panel.gd": "8d9cbfcc09cc1fb15b0bb0e6432f918ec2aa1fdd365d8613e32461a936c156a7",
+    "game/src/ui/main_menu.gd": "4ca153b2685ba99ec2d2f63db0c0273cdce15ec83b25d902bbaa06aeaac0d7ec",
+    "game/src/ui/network_panel.gd": "da4805fc2c79f05c671d09503479fa34035627a07598a986dcc3661326c578de",
+    "game/src/ui/options_panel.gd": "78c27d75132896170ccb381bed93d6df5369776a1185eda907050fe8a961b98a",
+    "game/src/ui/party_faces.gd": "1246d48090a751b09fd20cf48800e5e1a5d078131ac54b839a9df51bc41de5f3",
+    "game/src/ui/side_quest_panel.gd": "6316e50f8a8e25ef0fe190c9ea45b9942cef61696398212a3f1d01429199baf4",
+    "game/src/ui/spell_slots.gd": "4ec6eee131f1cda6a09cefb4c4acc2a977115b2ad9f906d6ddaa668beef8d773",
+    "game/src/ui/travel_map.gd": "a4576212f2c995b3112a896492cd849348b520c54a798034d9b1fee5d744bc3e",
+    "game/src/ui/unit_panel.gd": "1b5e624d0da4f83de2d3742d1d8d1d0fd4ccfbf208fdc148427119c76e2f4e9a",
+    "game/src/ui/weapon_bar.gd": "d2fcd123ac827e43eb474ca3f2c4a00ee43b091a5606f97165760e0fc980b6f1",
+    "game/src/ui/zone_objectives.gd": "72b1cba9de1dd9776c5d9baec3fa4f87014e4956d77cb628a97a796d894f3cba",
+    "game/src/ui/wiki_context.gd": "d3fa09eba6b6a81f083c4167d4d2eaf1d14694ae3d01c86edbefc339b3c9be52"
+  },
+  "tests": {
+    "echo-en-final": {
+      "exit_code": 0,
+      "errors": [],
+      "summary": [
+        "AUDIO_ECHO_OPTIONS en 16 checks; failures=[]"
+      ],
+      "checks": 16,
+      "test": "audio_echo_options.gd",
+      "arguments": [
+        "--test-lang=en"
+      ],
+      "log_sha256": "0be52d66c4c46dc0ee24d313b27397cbb7662ed7812843298675672d9f94b705",
+      "captures": {
+        "data/godot/app_userdata/Cursed Lands/audio-echo-en.png": "7ef416fd20924918b2b16a473f3be823a851c450839c2bc1c7ee52c21b76da31",
+        "data/godot/app_userdata/Cursed Lands/wiki-binding-en.png": "31eb01668571ad631a9aed9a4f585d786af1efe798a482ee2bdf2b935c121876"
+      }
+    },
+    "echo-ru": {
+      "exit_code": 0,
+      "errors": [],
+      "summary": [
+        "AUDIO_ECHO_OPTIONS ru 16 checks; failures=[]"
+      ],
+      "checks": 16,
+      "test": "audio_echo_options.gd",
+      "arguments": [
+        "--test-lang=ru"
+      ],
+      "log_sha256": "3223d35e53a5a5db05b729798bb87cba6ad4cebcd185ec7c26deadd025c430ab",
+      "captures": {
+        "data/godot/app_userdata/Cursed Lands/audio-echo-ru.png": "9af4f72b0992ca008eeb63fbee1e78113a9541844832cb6dab9efc5242e8c6d2",
+        "data/godot/app_userdata/Cursed Lands/wiki-binding-ru.png": "6651a8fb2b31836bb0921f783fd24b39c9ed84fa7f6a2e6569676b5b54f50783"
+      }
+    },
+    "echo-de": {
+      "exit_code": 0,
+      "errors": [],
+      "summary": [
+        "AUDIO_ECHO_OPTIONS de 16 checks; failures=[]"
+      ],
+      "checks": 16,
+      "test": "audio_echo_options.gd",
+      "arguments": [
+        "--test-lang=de"
+      ],
+      "log_sha256": "7709e24a9ee41a7785666f976068833bbc4afc4a8d4018e648d1498d8551ffd9",
+      "captures": {
+        "data/godot/app_userdata/Cursed Lands/wiki-binding-de.png": "6ce22b61eaf30bea572a70237a3421352bf4451894939218b8edcbfe30965e10",
+        "data/godot/app_userdata/Cursed Lands/audio-echo-de.png": "43276ea60b2488011c025d655b17a5f4a3b1971da95b254dbe756ea314cca396"
+      }
+    },
+    "menu-wiki-en": {
+      "exit_code": 0,
+      "errors": [],
+      "summary": [
+        "MENU_WIKI_UI en 16 checks; failures=[]"
+      ],
+      "checks": 16,
+      "test": "menu_wiki_ui.gd",
+      "arguments": [
+        "--test-lang=en"
+      ],
+      "log_sha256": "667d13d68854d570565c285034857123a9719c828343f6a05b28396a4a856633",
+      "captures": {
+        "data/godot/app_userdata/Cursed Lands/menu-wiki-tooltip.png": "b30cc6d9f4be6a4f47960d08f8af3267cbe42771a910bb0a0431ecdc1a49054a",
+        "data/godot/app_userdata/Cursed Lands/menu-wiki-article.png": "ac3cdc87ea9e7b6d2bdbe6c164cb7d4ae4c3b16229a9d54b632ce7b8dc952229"
+      }
+    },
+    "menu-wiki-ru": {
+      "exit_code": 0,
+      "errors": [],
+      "summary": [
+        "MENU_WIKI_UI ru 16 checks; failures=[]"
+      ],
+      "checks": 16,
+      "test": "menu_wiki_ui.gd",
+      "arguments": [
+        "--test-lang=ru"
+      ],
+      "log_sha256": "264b79dab50100320054d914f46bea90e973e217eb13926f8d801c22807cd1da",
+      "captures": {
+        "data/godot/app_userdata/Cursed Lands/menu-wiki-tooltip.png": "0ecaca2eb8d4b7604e726002c4aeaf12680630047cc15cf614e6f1066a2ed21e",
+        "data/godot/app_userdata/Cursed Lands/menu-wiki-article.png": "e11274ba76abd1a6faa6f8028cd0ad32da1ce7691339e24bbaa60d7788169f3f"
+      }
+    },
+    "menu-wiki-de": {
+      "exit_code": 0,
+      "errors": [],
+      "summary": [
+        "MENU_WIKI_UI de 16 checks; failures=[]"
+      ],
+      "checks": 16,
+      "test": "menu_wiki_ui.gd",
+      "arguments": [
+        "--test-lang=de",
+        "--test-size=1920,1080"
+      ],
+      "log_sha256": "9b556b94a5b749f5dd10476e79d4100b2525d4e785c3c1d9cdda587667fb3051",
+      "captures": {
+        "data/godot/app_userdata/Cursed Lands/menu-wiki-tooltip.png": "c6071300f2eb8de5076f406bc820313a0fd302d4a8f0aa6a0ea6faba8201f724",
+        "data/godot/app_userdata/Cursed Lands/menu-wiki-article.png": "8114b8dc60322aec63242beb068a32657f10c4f3877bc790875c7e6020fcebe9"
+      }
+    },
+    "wiki-context-final": {
+      "exit_code": 0,
+      "errors": [],
+      "summary": [
+        "WIKI_CONTEXT_INPUT 37 checks; failures=[]"
+      ],
+      "checks": 37,
+      "test": "wiki_context_input.gd",
+      "arguments": [],
+      "log_sha256": "b29117ba8a54f856a6155d644c1659f583f6e2d146dd70581850e8db6f0b10a4",
+      "captures": {
+        "data/godot/app_userdata/Cursed Lands/expansion-camp-without-wiki-button.png": "17cfe70919f4496f7acc2856a5638ac82c0a16e56de15adb580f3ac5d6273cee"
+      }
+    },
+    "online-wiki-final": {
+      "exit_code": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_ONLINE_UI 34 checks; failures=[]"
+      ],
+      "checks": 34,
+      "test": "arena_online_ui.gd",
+      "arguments": [
+        "--arena-resolution=en,1920,1080"
+      ],
+      "log_sha256": "881434db7596ff15949f02fb21ace10fb974e94d4ea521ff3d51a90491524554",
+      "captures": {
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-joined.png": "43e458a88bca85a79f70144a154b9dd749a47b0f73502a0072fac05cc22c1713",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-host.png": "fe2896515f20fb727de39df2be1fb11747b897dfb8dc3b68bd07665c58081c6f",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-menu.png": "accaaf90654be75ebc8372b9267e6098ed90fa0a63d986f91a9dd95a3914b6ac",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-modes.png": "15d6e3e12bf1b701b40abdcd33251f69ae0229ade13337e61af3983b6a5b0ee4",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-lobby.png": "612162de00eae12c87f6a510d407ea1a092a97ecf51507ceccda868ff121868d",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-scout.png": "c704e862e1b8a3ca9a663bc82f9586474e68da5113f9358f5b84399ab9794b2d",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-overview.png": "c400f3383d235d440502a4988eeb87baa820a6c8fe69d9946cb1eba507011cb4",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-guide.png": "1b5e078e924433901f13bf89f50dfb1f6edf307880623442b4368e70e97137c6",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-combat.png": "58c12288fa7d5cf394f7ca8e5bf4d58dd496cfd172556169d2e60e603607b62b",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-wiki.png": "1177d03ffec8605cbd75b9251944f6f682476c8827d30be9449cd0fc660062d7",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-prepare.png": "62e6ac75ebd43c9e9d8aa1102eaf6e0160ca81af8f6817d660ae8347d20a7abd",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-join.png": "07425aa44a99ae54df05f98d2630e2040bf2e3296a65f14751a0a4eb191b7de4"
+      }
+    },
+    "online-wiki-large": {
+      "exit_code": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_ONLINE_UI 34 checks; failures=[]"
+      ],
+      "checks": 34,
+      "test": "arena_online_ui.gd",
+      "arguments": [
+        "--online-ui=en,1920,1080"
+      ],
+      "log_sha256": "8224e6ae8165f7c383fd2672c823ca5dd5cb3fae6eca5fcf98d7bebc32cfdb8b",
+      "captures": {
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-joined.png": "1b889bedf0bee2871c9dac9addf4bb127c7aeb3fa482215466d830bbf825f830",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-host.png": "b77f8fc134bd0467678b7eecd1214fa2bead0d92e9b405cab1c00365cf701f21",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-menu.png": "ec0dc57be54551ae139e5ff3003a5a20d00350f389bcae6fe80d5aea725dabcf",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-modes.png": "c580f75a9fe7d19fb1f4135ac2e2d0c3bc7e273d71eea4751745cc3f817619ea",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-lobby.png": "094c570b6d6d6fa79806683f0663776ac121ee42a92cd7fa607ce93aa73282be",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-scout.png": "bf7f17a68a4a619d38ecd4ca87f049a06837db576b7053e8f66e01fe9bf373b5",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-overview.png": "d76f442e070f0ef4daa31f81841918bd5d51f5bf88a63482b780ab7126e7813a",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-guide.png": "d64f9af3c3cc05ce3821b71203a3c2ed07dd51a224bf8242137f0426343aa830",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-combat.png": "042acd1184e561bb2480204b3f391d8726e57917f7ab048a27956b16b2b511f5",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-wiki.png": "dd706ac206e7aab2b414482da0a26613ff7e0fd2bfc175a90839dbfc6693a1d5",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-prepare.png": "08af423cfbd6bd32774c7b6d2ff0e15f1843e01b712b68dc57ecb68d98e09851",
+        "data/godot/app_userdata/Cursed Lands/expansion-online-en-join.png": "b48c013d2621daee1fbb45626324a8267f7097e094e820d8c367ca9423335e10"
+      }
+    }
+  },
+  "notes": [
+    "Test settings and saves use isolated XDG profiles. No player data or published release was changed.",
+    "Earlier autochess transport and battle validation is recorded in autochess-online-2026-10-18.json."
+  ],
+  "translations": "Wiki world text: 180 entries in EN/RU/DE\nWiki reference text: 3886 source-checked EN/DE entries; RU uses original archives\nTranslations: 2618 entries; 141 dynamic wiki keys; 145 dynamic arena keys; 0 errors",
+  "total_checks": 201
+}

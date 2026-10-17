@@ -39,12 +39,15 @@ func open() -> void:
 		_list.add_child(l)
 	for q: Dictionary in offers:
 		var l := Label.new()
+		l.mouse_filter = Control.MOUSE_FILTER_PASS
+		l.set_meta("wiki_context", {"key": "quest/" + String(q.id).uri_encode()})
 		l.text = RemakeText.t("%s  (%s, %d experience)\n%s") % [q.title, s.zone_title(SideQuests.zone_of(s, q)), int(q.exp), q.desc]
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD
 		l.custom_minimum_size.x = 540
 		_list.add_child(l)
 		var b := Button.new()
 		b.text = RemakeText.t("Accept")
+		b.set_meta("wiki_context", {"key": "quest/" + String(q.id).uri_encode()})
 		b.pressed.connect(func():
 			visible = false
 			hud.game.issue({"t": "side_quest", "q": q.id}))

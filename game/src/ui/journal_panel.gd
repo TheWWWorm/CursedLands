@@ -41,7 +41,11 @@ func _ready() -> void:
 	top.add_child(close)
 	_text = RichTextLabel.new()
 	_text.bbcode_enabled = true
+	_text.meta_underlined = false
 	_text.meta_clicked.connect(func(meta): hud.open_wiki_article(WikiHtml.key_from_url(str(meta))))
+	_text.meta_hover_started.connect(func(meta): _text.set_meta("wiki_context", {"key": WikiHtml.key_from_url(str(meta))}))
+	_text.meta_hover_ended.connect(func(_meta): _text.remove_meta("wiki_context"))
+	_text.mouse_exited.connect(func(): _text.remove_meta("wiki_context"))
 	for f in ["normal_font", "bold_font", "italics_font"]:
 		_text.add_theme_font_override(f, Interface800.font())
 	_text.add_theme_color_override("default_color", Interface800.TEXT)
@@ -88,7 +92,7 @@ func refresh() -> void:
 
 func _quest(q: String, objs: Dictionary, _done: bool) -> String:
 	var d := _parse(q)
-	var s := "[b][url=wiki://quest/%s]%s[/url][/b]\n%s\n" % [q.uri_encode(), d.title, d.text]
+	var s := "[url=wiki://quest/%s][b][u]%s[/u][/b]\n%s\n" % [q.uri_encode(), d.title, d.text]
 	for n in d.subs:
 		if objs.has(n):
 			var sub: Dictionary = d.subs[n]
@@ -96,7 +100,7 @@ func _quest(q: String, objs: Dictionary, _done: bool) -> String:
 			s += "  %s %s\n" % [mark, sub.title]
 			if objs[n] < 2.0 and sub.text:
 				s += "     [i]%s[/i]\n" % sub.text
-	return s + "\n"
+	return s + "[/url]\n"
 
 
 static func _parse(q: String, document := "") -> Dictionary:

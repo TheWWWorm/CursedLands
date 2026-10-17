@@ -934,3 +934,10 @@ func _sound(name: String) -> void:
 	add_child(s)
 	s.play()
 	s.finished.connect(s.queue_free)
+
+
+func wiki_context() -> Dictionary:
+	_on_move(get_local_mouse_position())
+	if _hover < 0: return {}
+	var entry: Dictionary = _briefs[_hover] if _hover_brief else _pieces[_hover]
+	return {"key": "map/" + String(entry.id).uri_encode()}

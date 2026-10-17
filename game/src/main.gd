@@ -86,6 +86,13 @@ func _start() -> void:
 				await RenderingServer.frame_post_draw
 				RendererChoice.menu_presented()
 			return
+		if a == "--autochess-online":
+			if not await WindowsRenderer.prepare(self): return
+			open_arena_online()
+			if DisplayServer.get_name() != "headless":
+				await RenderingServer.frame_post_draw
+				RendererChoice.menu_presented()
+			return
 		if a == "--arena-pve":
 			if not await WindowsRenderer.prepare(self): return
 			open_arena_pve()
@@ -234,6 +241,13 @@ func open_arena() -> void:
 	var arena := ArenaScreen.new()
 	arena.exit_requested.connect(back_to_menu)
 	add_child(arena)
+
+
+func open_arena_online() -> void:
+	_clear()
+	var lobby := ArenaOnlineLobby.new()
+	lobby.exit_requested.connect(back_to_menu)
+	add_child(lobby)
 
 
 func open_arena_pve() -> void:

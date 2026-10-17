@@ -47,13 +47,7 @@ class StonePlate extends StyleBox:
 		var t := rim.texture_margin_top / k.y
 		var b := rim.texture_margin_bottom / k.y
 		var inner := rect.grow_individual(-l, -t, -r, -b)
-		var tile := face.region_rect.size * 256.0 / face.texture.get_size()
-		for y in maxi(0, ceili(inner.size.y / tile.y)):
-			for x in maxi(0, ceili(inner.size.x / tile.x)):
-				var offset := Vector2(x, y) * tile
-				var size := tile.min(inner.size - offset)
-				face.texture.draw_rect_region(canvas_item, Rect2(inner.position + offset, size),
-					Rect2(face.region_rect.position, face.region_rect.size * size / tile), face.modulate_color)
+		_tile(canvas_item, face.texture, inner, face.region_rect, face.modulate_color)
 		var dx := [rect.position.x, inner.position.x, inner.end.x, rect.end.x]
 		var dy := [rect.position.y, inner.position.y, inner.end.y, rect.end.y]
 		var uv := rim.region_rect
@@ -62,8 +56,20 @@ class StonePlate extends StyleBox:
 		for y in 3:
 			for x in 3:
 				if x == 1 and y == 1: continue
-				rim.texture.draw_rect_region(canvas_item, Rect2(dx[x], dy[y], dx[x+1]-dx[x], dy[y+1]-dy[y]),
+				# The source's side strip is only six logical pixels high.
+				# Repeat it at native density instead of stretching it over the button.
+				_tile(canvas_item, rim.texture, Rect2(dx[x], dy[y], dx[x+1]-dx[x], dy[y+1]-dy[y]),
 					Rect2(sx[x], sy[y], sx[x+1]-sx[x], sy[y+1]-sy[y]), rim.modulate_color)
+
+	func _tile(canvas_item: RID, texture: Texture2D, dest: Rect2, source: Rect2, tint: Color) -> void:
+		var tile := source.size * 256.0 / texture.get_size()
+		if tile.x <= 0 or tile.y <= 0: return
+		for y in maxi(0, ceili(dest.size.y / tile.y)):
+			for x in maxi(0, ceili(dest.size.x / tile.x)):
+				var offset := Vector2(x, y) * tile
+				var size := tile.min(dest.size - offset)
+				texture.draw_rect_region(canvas_item, Rect2(dest.position + offset, size),
+					Rect2(source.position, source.size * size / tile), tint)
 
 static func style_button(button: Button) -> void:
 	button.add_theme_font_override("font", Interface800.font())

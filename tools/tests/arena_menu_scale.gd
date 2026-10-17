@@ -11,7 +11,7 @@ func _ready()->void:
 	await frames(8)
 	var menu:=MainMenu.new();menu.detect_graphics=false;add_child(menu);await frames(24)
 	var top:Button=menu._campaigns.buttons[CampaignProfile.ORIGINAL]
-	for button in [menu._mods_button,menu._wiki_button,menu._arena_pve_button]:
+	for button in [menu._mods_button,menu._arena_pve_button]:
 		bounded(button,"footer action")
 		check(button.get_global_rect().size.y>=top.get_global_rect().size.y-1,"footer action is as tall as campaign actions")
 		check(button.get_global_rect().position.y>dimensions.y*0.8,"footer action stays at bottom")

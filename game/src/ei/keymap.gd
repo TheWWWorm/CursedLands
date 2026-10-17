@@ -76,10 +76,11 @@ const ACTIONS := [[1, "pause", 3, 4], [2, "decel", 3, 3], [3, "accel", 3, 2], [4
 	[109, "direct_aim", 25, 7],
 	[111, "direct_tactical", 25, 8],
 	[112, "direct_sprint", 25, 9],
-	[113, "direct_attack", 25, 10], [114, "direct_quests", 25, 11]]
+	[113, "direct_attack", 25, 10], [114, "direct_quests", 25, 11],
+	[115, "wiki_context", 10, 12]]
 ## Keys the remake's own actions get when nothing is bound to them and the key
 ## is free (Delete / End turn the camera, as in Divinity: Original Sin 2).
-const REMAKE_DEFAULTS := {"camera_rotate_left": "DEL", "camera_rotate_right": "END"}
+const REMAKE_DEFAULTS := {"camera_rotate_left": "DEL", "camera_rotate_right": "END", "wiki_context": "F7"}
 
 ## Windows key names as GetKeyNameText(scan << 16) gives them on an English
 ## system (the US layout's key name tables; the original fills its key table with
@@ -169,6 +170,7 @@ static func _active_map(profile := -1) -> Dictionary:
 				if not "direct_quests" in _direct_map.values():
 					for candidate in [KEY_Q, KEY_J, KEY_F7]:
 						var sc := scan_code(candidate)
+						if _map.get(sc, "") == "wiki_context": continue
 						if not _direct_map.has(sc):
 							_direct_map[sc] = "direct_quests"
 							break
@@ -178,6 +180,7 @@ static func _active_map(profile := -1) -> Dictionary:
 		if not _wasd_loaded:
 			_wasd_loaded = true
 			_wasd_map = _read_map(WASD_FILE) if FileAccess.file_exists(WASD_FILE) else wasd_defaults(_map)
+			_remake_defaults(_wasd_map, WASD_FILE)
 		return _wasd_map
 	return _map
 
@@ -301,7 +304,7 @@ static func save(profile := -1) -> void:
 	var f := FileAccess.open(DIRECT_FILE if profile == 2 else WASD_FILE if wasd else USER_FILE, FileAccess.WRITE)
 	if f == null:
 		return
-	var out := "# direct quests v1\r\n" if profile == 2 else ""
+	var out := "# direct quests v1\r\n" if profile == 2 else "# wiki context v1\r\n"
 	for s: int in _sorted(map):
 		if _names.has(s):
 			out += "%s %s\r\n" % [_names[s], map[s]]
@@ -320,7 +323,7 @@ static func _load() -> void:
 	if not FileAccess.file_exists(path):
 		path = GameData.root.path_join("config/keyboard.ini")
 	_map = _read_map(path)
-	_remake_defaults()
+	_remake_defaults(_map, USER_FILE)
 
 
 static func _read_map(path: String) -> Dictionary:
@@ -345,14 +348,16 @@ static func _read_map(path: String) -> Dictionary:
 	return map
 
 
-static func _remake_defaults() -> void:
+static func _remake_defaults(map: Dictionary, path: String) -> void:
 	var by_name := {}
 	for sc: int in _names:
 		by_name[_names[sc]] = sc
+	var wiki_saved := FileAccess.file_exists(path) and "# wiki context v1" in FileAccess.get_file_as_string(path)
 	for act: String in REMAKE_DEFAULTS:
+		if act == "wiki_context" and wiki_saved: continue
 		var sc: int = by_name.get(REMAKE_DEFAULTS[act], -1)
-		if sc >= 0 and not _map.has(sc) and not act in _map.values():
-			_map[sc] = act
+		if sc >= 0 and not map.has(sc) and not act in map.values():
+			map[sc] = act
 
 
 ## Remake: the tutorial texts (texts.res "tutor …") name the original

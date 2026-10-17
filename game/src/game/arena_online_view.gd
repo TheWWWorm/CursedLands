@@ -1,0 +1,92 @@
+class_name ArenaOnlineView
+extends ArenaTournamentRun
+## Read-only, locally oriented projection. UI actions send intents; only the
+## host's reply changes money, army, shops, health or the round.
+var submit: Callable
+var seat := 0
+var seats: Array[int] = []
+var names: Array[String] = []
+var ready_seats: Array[int] = []
+var can_revert := false
+var connected := true
+var _ui_key := 0
+var global_stage := "prepare"
+var result_left := 4.0
+
+func _init() -> void:
+	auto_save = false
+
+func apply_state(data: Dictionary) -> void:
+	seat = int(data.seat)
+	seats.assign([seat])
+	for player in PLAYER_COUNT:
+		if player != seat: seats.append(player)
+	_copy_company(self, data.companies[seat])
+	run_seed = int(data.seed); wave = int(data.round); wave_limit = MAX_ROUNDS
+	preparation_left = float(data.left); result_left = float(data.result_left)
+	preparing_battle = bool(data.staging)
+	global_stage = String(data.stage)
+	stage = global_stage
+	if global_stage == "won": stage = "won" if int(data.placements[seat]) == 1 else "lost"
+	lives = int(data.health[seat])
+	rivals.clear(); rival_health.clear(); placements.clear(); names.clear()
+	for local in PLAYER_COUNT:
+		var server := seats[local]
+		placements.append(int(data.placements[server]))
+		names.append(String(data.names[server]))
+		if local == 0: continue
+		var rival := ArenaRun.new(); rival.auto_save = false
+		_copy_company(rival, data.companies[server])
+		rivals.append(rival); rival_health.append(int(data.health[server]))
+	pairings.clear()
+	for pairing: Dictionary in data.pairings:
+		var a := seats.find(int(pairing.a)); var b := seats.find(int(pairing.b))
+		if b == 0 and not pairing.ghost:
+			var held := a; a = b; b = held
+		pairings.append({"a":a,"b":b,"ghost":bool(pairing.ghost)})
+	ready_seats.assign(data.ready)
+	can_revert = bool(data.undo)
+	var key := hash([data.companies[seat], data.health, data.placements, data.stage, data.ready, data.names, data.round, data.staging])
+	if key != _ui_key:
+		_ui_key = key
+		changed.emit()
+
+static func _copy_company(target: ArenaRun, data: Dictionary) -> void:
+	for key in ["gold", "training", "battle_savings", "wave", "next_uid"]:
+		target.set(key, int(data[key]))
+	target.run_seed = int(data.seed)
+	target.army.assign(data.army.duplicate(true)); target.shop.assign(data.shop.duplicate(true))
+	target.history.assign(data.history.duplicate(true)); target.last_result = data.last_result.duplicate(true)
+	target.free_refresh = bool(data.free_refresh)
+	target.last_evolutions.assign(data.get("evolutions", []))
+
+func player_title(player: int) -> String:
+	if player == 0: return RemakeText.t("You")
+	var server := seats[player]
+	if not names[player].is_empty(): return names[player]
+	return super.player_title(server) if server > 0 else RemakeText.t("Computer")
+
+func _intent(action: String, args: Array = []) -> String:
+	if not connected: return RemakeText.t("Connection to the host was lost.")
+	if submit.is_valid(): submit.call(action, args)
+	return ""
+
+func can_shop() -> bool: return connected and lives > 0 and super.can_shop()
+func buy(index: int) -> String: return _intent("buy", [index])
+func refresh() -> String: return _intent("refresh")
+func train() -> String: return _intent("train")
+func lock_offer(index: int) -> void: _intent("lock", [index])
+func deploy(uid: int, point: Vector2) -> String: return _intent("deploy", [uid, point])
+func bench(uid: int) -> String: return _intent("bench", [uid])
+func sell(uid: int) -> String: return _intent("sell", [uid])
+func evolve(uid: int) -> String: return _intent("evolve", [uid])
+func swap_from_bench(uid: int, deployed_uid: int) -> String: return _intent("swap", [uid, deployed_uid])
+func arrange() -> void: _intent("arrange")
+func undo() -> void: _intent("undo")
+func can_undo() -> bool: return can_revert and connected and lives > 0 and stage == "prepare"
+func advance() -> void: pass
+func elapse_preparation(_seconds: float) -> bool: return false
+func save() -> bool: return false
+func load_saved() -> bool: return false
+func resolve(_winner: int, _seconds: float, _damage: Array, _survivors: Array = [0,0]) -> void: pass
+func record_board(_player: int, _winner: int, _survivors: Array) -> void: pass

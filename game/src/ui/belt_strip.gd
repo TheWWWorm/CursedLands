@@ -261,3 +261,8 @@ func _no_target(item: String) -> bool:
 ## their 3D models.
 func _draw() -> void:
 	pass
+
+
+func wiki_context() -> Dictionary:
+	var i := _slot_at(get_local_mouse_position())
+	return {"item": _items[i]} if i >= 0 else {}

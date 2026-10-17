@@ -39,8 +39,6 @@ var _travel: Control
 var _inventory: InventoryPanel
 var _journal: JournalPanel
 var _wiki: WikiPanel
-var _wiki_button: Button
-var _wiki_button_scale := -1.0
 var _side_quests: SideQuestPanel
 var _tutorial: TutorialPanel
 var _movie: MoviePlayer
@@ -162,17 +160,6 @@ func _ready() -> void:
 	_menu.visible = false
 	_menu.pressed.connect(_on_signpost)
 	_add_ui(_menu)
-	_wiki_button = Button.new()
-	_wiki_button.text = RemakeText.t("Game wiki")
-	_wiki_button.tooltip_text = RemakeText.t("Browse items, spells, creatures and game mechanics.")
-	_wiki_button.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	_wiki_button.offset_left = -240
-	_wiki_button.offset_right = -24
-	_wiki_button.offset_top = 24
-	_wiki_button.offset_bottom = 66
-	_wiki_button.hide()
-	_wiki_button.pressed.connect(open_wiki)
-	_add_ui(_wiki_button)
 	_wiki = WikiPanel.new()
 	_wiki.closed.connect(_close_menu)
 	_add_ui(_wiki)
@@ -183,7 +170,6 @@ func _ready() -> void:
 	_add_ui(_players_btn)
 	_menu.pad_extra = func() -> Array:
 		var targets := [{"rect": _players_btn.pad_rect(PlayersPanel.EscButton.R), "id": "players"}] if _players_btn.visible else []
-		if _wiki_button.visible: targets.append({"rect": _wiki_button.get_global_rect(), "id": "wiki"})
 		return targets
 	# Remake: the gamepad's prompts under the signpost (A / B, Y quick save,
 	# X held quick load), shown while the controller drives.
@@ -523,16 +509,6 @@ func _process(_dt: float) -> void:
 	var host_online: bool = game != null and game.session != null and game.session.multiplayer_game and game.session.can_manage_game()
 	if _players_btn.visible != (_menu.visible and host_online):
 		_players_btn.visible = _menu.visible and host_online
-	_wiki_button.visible = _menu.visible
-	if _menu.visible:
-		var scale := clampf(ui_size().y / 900.0, 0.85, 3.0)
-		if not is_equal_approx(scale, _wiki_button_scale):
-			_wiki_button_scale = scale
-			_wiki_button.offset_left = -240 * scale
-			_wiki_button.offset_right = -24 * scale
-			_wiki_button.offset_top = 24 * scale
-			_wiki_button.offset_bottom = 66 * scale
-			_wiki_button.add_theme_font_size_override("font_size", roundi(20 * scale))
 	var hints: bool = _menu.visible and PadInput.active == "pad"
 	if _esc_hints.visible != hints:
 		_esc_hints.visible = hints
@@ -1036,7 +1012,6 @@ func toggle_journal() -> void:
 func open_wiki() -> void:
 	if not _esc_open: _open_menu()
 	_menu.hide()
-	_wiki_button.hide()
 	var rules: Dictionary = game.session.mod_config.get("rules", {})
 	_wiki.open(rules)
 
@@ -1150,7 +1125,6 @@ func _close_menu() -> void:
 		return
 	_esc_open = false
 	_menu.visible = false
-	_wiki_button.hide()
 	_wiki.dismiss()
 	_esc_bg.visible = false
 	_esc_bg.texture = null
@@ -1347,11 +1321,23 @@ func open_wiki_article(key: String, variant := "") -> void:
 	_wiki.navigate(key,true,variant)
 
 func open_wiki_item(id: String) -> void:
-	id=id.trim_prefix("belt:")
-	if id.begins_with("spell:"):
-		var magic := id.trim_prefix("spell:")
-		open_wiki()
-		var key: String=_wiki._source.read(func(): return _wiki.catalog.add_variant(magic))
-		if key: _wiki.navigate(key)
-	elif id.begins_with("rune:"): open_wiki_article("rune/"+id.trim_prefix("rune:").uri_encode())
-	else: open_wiki_article(WikiCatalog.item_key(id),id)
+	open_wiki()
+	WikiContext.navigate(_wiki, {"item": id})
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if not visible or _wiki.visible or not WikiContext.matches(event, get_viewport()): return
+	# Preserve an existing direct-control binding on the same physical key.
+	if game.direct and game.direct.active() and not EIKeymap.direct_event(event).is_empty(): return
+	# These dialogs own their keys, including rebinding and text entry.
+	for panel in [_options, _save_load, _movie, _tutorial, _dialog, _players_panel, _quit_box, _game_over_box]:
+		if is_instance_valid(panel) and panel.visible: return
+	if game.session.loading_game: return
+	if is_instance_valid(quests_screen) and quests_screen._tutorial.visible: return
+	if _inventory.visible and _inventory._camp.tutorial_visible(): return
+	var context := WikiContext.hovered(self)
+	if context.is_empty() and not _panel_open() and not _esc_open and get_viewport().gui_get_hovered_control() == null:
+		context = WikiContext.for_unit(game.pick_unit(get_viewport().get_mouse_position()))
+	open_wiki()
+	WikiContext.navigate(_wiki, context)
+	get_viewport().set_input_as_handled()

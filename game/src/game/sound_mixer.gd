@@ -76,6 +76,8 @@ func _ready() -> void:
 		c.player.finished.connect(_on_finished.bind(c))
 		add_child(c.player)
 		_chans.append(c)
+	GameData.options_changed.connect(_apply_reverb)
+	_apply_reverb()
 
 
 ## Miles AIL_set_sample_reverb(level 0.3, reflect time 1.0 s, decay 3.0 s).
@@ -92,8 +94,13 @@ func _set_reverb_params(rv: AudioEffectReverb) -> void:
 
 func set_reverb(on: bool) -> void:
 	reverb = on
+	_apply_reverb()
+
+
+func _apply_reverb() -> void:
+	var enabled := reverb and GameData.option("cave_echo") != 0
 	for c in _chans:
-		AudioServer.set_bus_effect_enabled(AudioServer.get_bus_index(c.bus), 1, on)
+		AudioServer.set_bus_effect_enabled(AudioServer.get_bus_index(c.bus), 1, enabled)
 
 
 # ------------------------------------------------------------------ playing

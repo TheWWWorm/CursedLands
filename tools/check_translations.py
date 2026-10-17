@@ -44,6 +44,12 @@ detector_source = (ROOT / 'platform/renderer_detector.gd').read_text()
 for match in re.finditer(r'^const (?:STATUS|DETAIL) := (".*")$', detector_source, re.M):
     key = json.loads(match[1])
     if key not in entries: errors.append(f'Renderer detector text missing RU/DE key: {key}')
+# Online errors cross the wire as English keys and translate on each client.
+online_source = (ROOT / 'game/arena_online_session.gd').read_text()
+for key in json.loads(re.search(r'^const ERRORS := (\[.*\])$', online_source, re.M)[1]):
+    if key not in entries: errors.append(f'Online error missing RU/DE key: {key}')
+for key in ('Ready', 'Not ready', 'First place', 'Eliminated'):
+    if key not in entries: errors.append(f'Online state missing RU/DE key: {key}')
 # Recruit family names/roles are chosen dynamically by the shop and guide.
 arena_rules = (ROOT / 'game/arena_rules.gd').read_text().split('const FAMILIES := [', 1)[1].split('\n]', 1)[0]
 for match in re.finditer(r'"(?:name|role)":\s*(' + STRING + r')', arena_rules):
@@ -162,6 +168,8 @@ arena_ui = (ROOT / 'ui/arena_pve_screen.gd').read_text()
 for block_name in ('topics',):
     block = arena_ui.split('var ' + block_name + ' := [', 1)[1].split(']\n', 1)[0]
     arena_keys.update(json.loads(m[0]) for m in re.finditer(STRING, block))
+for match in re.finditer(r'topics\[\d+\] = (\[[^\n]+\])', arena_ui):
+    if 'RemakeText.t(' not in match[1]: arena_keys.update(json.loads(match[1]))
 for match in re.finditer(r'var words := (\[[^\n]+\])', arena_ui):
     arena_keys.update(json.loads(match[1]))
 arena_keys.update(['Return to battle', 'Continue', 'Draw', 'Defeat', 'Gipath', 'Ingos', 'Suslanger'])

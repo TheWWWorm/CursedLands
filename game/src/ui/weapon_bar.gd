@@ -147,3 +147,8 @@ func _txt(i: int) -> String:
 ## No cell frames (only makes the 40×80 hit rectangles).
 func _draw() -> void:
 	pass
+
+
+func wiki_context() -> Dictionary:
+	var i := _cell_at(get_local_mouse_position())
+	return {"item": _items[i]} if i >= 0 else {}

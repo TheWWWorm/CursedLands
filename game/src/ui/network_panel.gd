@@ -409,6 +409,10 @@ func _char_row(locked: bool) -> Dictionary:
 		"on": not locked and LmpMode.available(), "hint": h}
 
 
+func _address_placeholder() -> String:
+	return RemakeText.t("e.g. wss://example.org/game") if _web() else RemakeText.t("e.g. 192.168.1.20 or 203.0.113.7:27015")
+
+
 func _addr_hint() -> String:
 	if _web():
 		return RemakeText.t("Browser version: ask the host for a secure WebSocket address starting with wss://. The host turns WebSocket on in its connection settings; ws:// works only for a host on this same computer.")
@@ -649,7 +653,7 @@ func _draw_row(r: int, row: Dictionary) -> void:
 			var w := 208.0 if row.id == "addr" else 285.0
 			var ph := ""
 			if row.id == "addr":
-				ph = RemakeText.t("e.g. wss://example.org/game") if _web() else RemakeText.t("e.g. 192.168.1.20 or 203.0.113.7:27015")
+				ph = _address_placeholder()
 			elif row.id == "password":
 				ph = RemakeText.t("none")
 			_edit(Rect2(400, y + m, w, 18), String(row.value), _focus == row.id and on, on, ph)
@@ -1516,7 +1520,7 @@ func _process(dt: float) -> void:
 ## targets are clicked at their centre, as the mouse does.
 func pad_targets() -> Array:
 	var out: Array = []
-	if _setup_button != null: out.append({"rect": _setup_button.get_global_rect(), "id": "setup"})
+	if _setup_button != null and _setup_button.is_visible_in_tree(): out.append({"rect": _setup_button.get_global_rect(), "id": "setup"})
 	for id: String in _targets:
 		if id == "ok" and _ok_label().is_empty():
 			continue

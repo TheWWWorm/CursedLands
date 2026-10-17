@@ -77,7 +77,6 @@ const PART_POS := [Vector2(50, 35), Vector2(50, 105), Vector2(95, 70), Vector2(5
 	Vector2(95, 140), Vector2(5, 140)]
 const PART_TEXT := {0: "string hl_skull", 1: "string hl_torso", 2: "string hl_arm", 3: "string hl_leg"}
 
-var _wiki_button: Button
 var game: Game
 var mode := "general"
 var open := true
@@ -99,10 +98,6 @@ const PART_ARMOR := ["head", "torso", "arms", "legs"]
 
 
 func _ready() -> void:
-	_wiki_button=Button.new();_wiki_button.text=RemakeText.t("Open wiki")
-	_wiki_button.pressed.connect(func():
-		if is_instance_valid(_unit) and game and game.hud: game.hud.open_wiki_article("creature/"+String(_unit.proto.get("name","")).to_lower().uri_encode()))
-	add_child(_wiki_button)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	var img := GameData.load_image("battle00") if GameData.is_open() else null
 	if img:
@@ -143,10 +138,6 @@ func _txt(key: String) -> String:
 
 func _process(dt: float) -> void:
 	var k := _k()
-	_wiki_button.visible=_off<20 and is_instance_valid(_unit)
-	_wiki_button.position=Vector2(22,226)*k
-	_wiki_button.size=Vector2(155,27)*k
-	_wiki_button.add_theme_font_size_override("font_size",maxi(11,int(14*k)))
 	position = Vector2.ZERO
 	size = Vector2(185, 225) * k
 	if _sp != (0.0 if open else 1.0):
@@ -159,7 +150,7 @@ func _process(dt: float) -> void:
 	if _t <= 0.0:
 		_t = 0.1
 		var was := _unit
-		if not _wiki_button.get_global_rect().has_point(get_global_mouse_position()): _unit = _pick()
+		_unit = _pick()
 		_doll.visible = _off < 180.0 and _unit != null and mode != "attributes"
 		# The panel's figure mirrors the unit's pose: keep that unit animating
 		# at the full rate even when it is off screen (GameUnit anim LOD).
@@ -566,3 +557,7 @@ func _draw_effects(c: CanvasItem, u: GameUnit) -> void:
 			c.draw_texture_rect(tex, _r(Rect2(28, 38 + 30 * i, 24, 24)), false)
 		_text(c, Rect2(40, 35 + 30 * i, 115, 15), Spells.title(spell))
 		_text(c, Rect2(40, 50 + 30 * i, 115, 15), str(int(float(u.effect_ticks(code)) / 15.0)))
+
+
+func wiki_context() -> Dictionary:
+	return WikiContext.for_unit(_unit) if _off < 20 else {}

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.15.0 — 2026-10-18
+
+- Add online autochess for up to nine human players, with computers filling empty seats and taking over departing guests.
+- Use the campaign co-op host/join window for autochess connections, including address copy/paste, recent addresses, passwords, readiness and a nine-seat roster.
+- Synchronize shops, armies, native battles, scouting and standings through the host over ENet or WebSocket. Keep eliminated players as spectators.
+- Add English, Russian and German connection text, errors and online rules. Keep solo saves separate from online matches.
+- Replace standalone wiki buttons with a rebindable F7 shortcut for the hovered item, spell, creature, quest or map. Open the wiki home page when no subject is under the pointer.
+- Add a Cave echo setting under Sound, with immediate preview and saved On/Off choices in English, Russian and German.
+- Tile extra menu button borders at their native texture density instead of stretching their narrow source strips.
+
 ## 1.14.0 — 2026-10-17
 
 - Detect Windows graphics APIs with separate rendered tests, preferring Direct3D 12 and Vulkan before OpenGL. Cache successful detection and advance after an interrupted test or failed first menu presentation.

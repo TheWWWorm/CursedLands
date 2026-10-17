@@ -70,3 +70,13 @@ its opacity; pausing also stops the pulse. CPUs use original
 localized NPC names: Erfar, Estera, Babur, Tilvar, Valrasian, Diera, Shei-Var and
 Kardaur. Hover details temporarily replace the standings. Names, help, status,
 errors and both modes' rules are localized in English, Russian and German.
+
+## Online play
+
+The opening also offers **Play online**. Up to nine humans compete with their
+own companies; computers occupy empty seats. A co-op-style host/join window
+handles addresses, passwords, readiness and the roster. The host owns the shared
+60-second preparation timer and all native battles; menus never pause online
+play. Guests who disconnect become computers, and eliminated players can keep
+watching. See [online autochess](autochess-online.md) for connection instructions,
+rules, implementation and limitations.

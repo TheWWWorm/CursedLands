@@ -1,0 +1,453 @@
+{
+  "date": "2026-10-18",
+  "status": "passed",
+  "base_commit": "16d04110900f9638f726ec70e21fd2c30c6c1252",
+  "branch": "feature/autochess-online-20261018",
+  "engine": "Godot 4.7 stable 5b4e0cb0f",
+  "platform": "Linux x86_64",
+  "rendered_ui": "OpenGL Compatibility / Mesa llvmpipe, 1280x800 EN/RU and 1024x768 DE",
+  "original_data": "Owned GOG base-game data",
+  "source_sha256": {
+    "game/src/ei/remake_text.gd": "780f0acc7fcf0c3b7702b9133d97398592336d24bdad33375aad0578dd343e85",
+    "game/src/game/arena_tournament_run.gd": "dd6e53b41960fc7731af3a37e3b53775517f3de6e23553f7eb220c29cfb19c09",
+    "game/src/main.gd": "ee670707dab276f07adc8b1013d6824451cc59d3a503173398bafb8fb30b7bfc",
+    "game/src/ui/arena_pve_screen.gd": "ffd82238fc74936018401b7c43dc982d4ee73fcd2e4aa47f5641c39a57472799",
+    "game/src/ui/network_panel.gd": "da4805fc2c79f05c671d09503479fa34035627a07598a986dcc3661326c578de",
+    "tools/check_translations.py": "15bfe29eac032af42ef3c22b99c7e6155cb03a9df245f00f469d83ef3dc2e05d",
+    "game/src/game/arena_online_boards.gd": "5f4f912685e85b178a2d57c7aeb6df095d6703e77e281a361513179394dc3352",
+    "game/src/game/arena_online_game.gd": "e35fea5129ef7b265cba5199b3b7e40a32f1a43477307881c487383f3d935e00",
+    "game/src/game/arena_online_match.gd": "75f3b819377083ad77eb9bdc1831208ab9e1be1e732e40970769287cd75c537a",
+    "game/src/game/arena_online_session.gd": "82afa32a0ce318d46eb56ef06d26bcb5b2b455ad36e25cfeef8411c2a64ac0b0",
+    "game/src/game/arena_online_tournament.gd": "7736e671e731f0b6982675bd0959b8294366660f4aa8207832db66247a186ad8",
+    "game/src/game/arena_online_view.gd": "d20c68ef74d10e199e72143117c18cf0652bac2740c336b7deef76706e697ec3",
+    "game/src/ui/arena_online_lobby.gd": "a21df72f05632807fd1b7d07542de6a6e4e9e6d471b03130fea90a4a1336b976",
+    "game/src/ui/arena_online_panel.gd": "28a4de6a785222e0d4f38f3ff4d39ba5ba347f0ecbbb23a75549bc06bc442394",
+    "game/src/ui/arena_online_screen.gd": "c6360834dfb8266157322f8731cf4d37506cbf1f38cf6a17f01213a199c967c1",
+    "tools/tests/arena_online.gd": "852b4c01661f6e70afa75a98fddde69842451ca8fc13f4ede5547f8301a1b7af",
+    "tools/tests/arena_online_lobby.gd": "5eec9f4ed11c5a5bb1cab612afb8d4d9c8ddee376d053ad806c4ab12ae7ff327",
+    "tools/tests/arena_online_peer.gd": "d65ad1bb4b3f7c13ece3537b0925a9e669eff6e8f66b8c042952bc7ede770c77",
+    "tools/tests/arena_online_ui.gd": "5a2778e557eed3949db7112a8d8e4589215df7a8f82f7e58c5d32ca2fc9f934e",
+    "tools/tests/run_arena_online_peers.py": "f7c1097b34360675aa3da3cc6fc9be535475c0f0eb4c0f774c88b75688c6b591"
+  },
+  "tests": {
+    "core-verified": {
+      "name": "core-verified",
+      "exit_code": 0,
+      "command": [
+        "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/game",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/arena_online.gd"
+      ],
+      "summary": [
+        "ARENA_ONLINE 64 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/qa/core-verified/run.log"
+    },
+    "lobby-final": {
+      "name": "lobby-final",
+      "exit_code": 0,
+      "command": [
+        "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/game",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/arena_online_lobby.gd"
+      ],
+      "summary": [
+        "ARENA_ONLINE_LOBBY 75 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/qa/lobby-final/run.log"
+    },
+    "ui-verified-en": {
+      "name": "ui-verified-en",
+      "exit_code": 0,
+      "command": [
+        "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/game",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/arena_online_ui.gd",
+        "--online-ui=en,1280,800"
+      ],
+      "summary": [
+        "CAPTURE online-en-modes (1280.0, 800.0)",
+        "CAPTURE online-en-join (1280.0, 800.0)",
+        "CAPTURE online-en-joined (1280.0, 800.0)",
+        "CAPTURE online-en-host (1280.0, 800.0)",
+        "CAPTURE online-en-lobby (1280.0, 800.0)",
+        "CAPTURE online-en-prepare (1280.0, 800.0)",
+        "CAPTURE online-en-menu (1280.0, 800.0)",
+        "CAPTURE online-en-guide (1280.0, 800.0)",
+        "CAPTURE online-en-combat (1280.0, 800.0)",
+        "CAPTURE online-en-scout (1280.0, 800.0)",
+        "CAPTURE online-en-overview (1280.0, 800.0)",
+        "ARENA_ONLINE_UI 29 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/qa/ui-verified-en/run.log"
+    },
+    "ui-verified-ru": {
+      "name": "ui-verified-ru",
+      "exit_code": 0,
+      "command": [
+        "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/game",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/arena_online_ui.gd",
+        "--online-ui=ru,1280,800"
+      ],
+      "summary": [
+        "CAPTURE online-ru-modes (1280.0, 800.0)",
+        "CAPTURE online-ru-join (1280.0, 800.0)",
+        "CAPTURE online-ru-joined (1280.0, 800.0)",
+        "CAPTURE online-ru-host (1280.0, 800.0)",
+        "CAPTURE online-ru-lobby (1280.0, 800.0)",
+        "CAPTURE online-ru-prepare (1280.0, 800.0)",
+        "CAPTURE online-ru-menu (1280.0, 800.0)",
+        "CAPTURE online-ru-guide (1280.0, 800.0)",
+        "CAPTURE online-ru-combat (1280.0, 800.0)",
+        "CAPTURE online-ru-scout (1280.0, 800.0)",
+        "CAPTURE online-ru-overview (1280.0, 800.0)",
+        "ARENA_ONLINE_UI 29 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/qa/ui-verified-ru/run.log"
+    },
+    "ui-verified-de": {
+      "name": "ui-verified-de",
+      "exit_code": 0,
+      "command": [
+        "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/game",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/arena_online_ui.gd",
+        "--online-ui=de,1024,768"
+      ],
+      "summary": [
+        "CAPTURE online-de-modes (1024.0, 768.0)",
+        "CAPTURE online-de-join (1024.0, 768.0)",
+        "CAPTURE online-de-joined (1024.0, 768.0)",
+        "CAPTURE online-de-host (1024.0, 768.0)",
+        "CAPTURE online-de-lobby (1024.0, 768.0)",
+        "CAPTURE online-de-prepare (1024.0, 768.0)",
+        "CAPTURE online-de-menu (1024.0, 768.0)",
+        "CAPTURE online-de-guide (1024.0, 768.0)",
+        "CAPTURE online-de-combat (1024.0, 768.0)",
+        "CAPTURE online-de-scout (1024.0, 768.0)",
+        "CAPTURE online-de-overview (1024.0, 768.0)",
+        "ARENA_ONLINE_UI 29 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/qa/ui-verified-de/run.log"
+    },
+    "regression-tournament": {
+      "name": "regression-tournament",
+      "exit_code": 0,
+      "command": [
+        "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/game",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/arena_tournament.gd"
+      ],
+      "summary": [
+        "ARENA_TOURNAMENT 151 checks; native_fights=173; failures=[]"
+      ],
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/qa/regression-tournament/run.log"
+    },
+    "coop-window-regression": {
+      "name": "coop-window-regression",
+      "exit_code": 0,
+      "command": [
+        "/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/game",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/network_save_choices.gd"
+      ],
+      "summary": [
+        "NETWORK_SAVE_CHOICES 43 checks 0 failures"
+      ],
+      "errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/qa/coop-window-regression/run.log"
+    }
+  },
+  "separate_processes": [
+    {
+      "transport": "enet",
+      "passed": true,
+      "results_match": true,
+      "peers": [
+        {
+          "board_frames": 277,
+          "checks": 12,
+          "failures": [],
+          "fight_frames": 189,
+          "health": [
+            79,
+            80,
+            100,
+            82,
+            90,
+            100,
+            100,
+            83,
+            100
+          ],
+          "placements": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pvp_rounds": [
+            4,
+            6
+          ],
+          "role": "host",
+          "rounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "transport": "enet",
+          "exit_code": 0,
+          "errors": []
+        },
+        {
+          "board_frames": 272,
+          "checks": 8,
+          "failures": [],
+          "fight_frames": 134,
+          "health": [
+            79,
+            80,
+            100,
+            82,
+            90,
+            100,
+            100,
+            83,
+            100
+          ],
+          "placements": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pvp_rounds": [
+            4,
+            6
+          ],
+          "role": "client",
+          "rounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "transport": "enet",
+          "exit_code": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "transport": "websocket",
+      "passed": true,
+      "results_match": true,
+      "peers": [
+        {
+          "board_frames": 268,
+          "checks": 12,
+          "failures": [],
+          "fight_frames": 181,
+          "health": [
+            79,
+            80,
+            100,
+            82,
+            86,
+            100,
+            100,
+            83,
+            100
+          ],
+          "placements": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pvp_rounds": [
+            4,
+            6
+          ],
+          "role": "host",
+          "rounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "transport": "websocket",
+          "exit_code": 0,
+          "errors": []
+        },
+        {
+          "board_frames": 268,
+          "checks": 8,
+          "failures": [],
+          "fight_frames": 144,
+          "health": [
+            79,
+            80,
+            100,
+            82,
+            86,
+            100,
+            100,
+            83,
+            100
+          ],
+          "placements": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pvp_rounds": [
+            4,
+            6
+          ],
+          "role": "client",
+          "rounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "transport": "websocket",
+          "exit_code": 0,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "translations": {
+    "entries": 2614,
+    "dynamic_arena_keys": 145,
+    "errors": 0
+  },
+  "limits": [
+    "Loopback transport tests; external WAN routing and UPnP were not exercised.",
+    "Desktop Linux runtime validated; browser TLS/proxy and other platform exports were not tested.",
+    "No release assets, tags, deployment or public repository changes were published."
+  ],
+  "launcher_smoke": {
+    "started": true,
+    "errors": [],
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/qa/launcher/run.log"
+  }
+}

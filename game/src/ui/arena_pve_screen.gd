@@ -8,6 +8,7 @@ const GOLD := ArenaCreatureCard.GOLD
 const PAPER := ArenaCreatureCard.PAPER
 const MUTED := ArenaCreatureCard.MUTED
 var run := ArenaRun.new()
+var network_play := false
 var battle: ArenaPveMatch
 var field: ArenaPveField
 var selected_uid := 0
@@ -28,6 +29,7 @@ var _heading_font: Font
 var _tooltips: ArenaTooltips
 var _hit_numbers: ArenaHitNumbers
 var _modal_layer: Control
+var _wiki: WikiPanel
 var _modal_panel: ArenaHudPanel
 var _modal_box: VBoxContainer
 var _menu_items := {}
@@ -123,8 +125,8 @@ func _ready() -> void:
 		thumb.bg_color = Color("9c8a60")
 		thumb.content_margin_left = 3; thumb.content_margin_right = 3
 		theme.set_stylebox(state, "VScrollBar", thumb)
-	if GameData.arena_mode == 1: run = ArenaTournamentRun.new()
-	battle = ArenaPveMatch.new()
+	if not network_play and GameData.arena_mode == 1: run = ArenaTournamentRun.new()
+	battle = _create_battle()
 	battle.run = run
 	add_child(battle)
 	battle.set_speed(float(GameData.arena_speed))
@@ -459,10 +461,18 @@ func _ready() -> void:
 		_wrap(_dock, RemakeText.t("This expedition needs the original Evil Islands game files. Choose the original campaign in the main menu."), 18)
 		return
 	run.auto_save = false
-	_saved = run.load_saved() and run.stage not in ["won", "lost"]
-	if not _saved: run.begin(1)
+	_saved = not network_play and run.load_saved() and run.stage not in ["won", "lost"]
+	if not network_play and not _saved: run.begin(1)
 	run.changed.connect(_refresh)
 	_refresh()
+
+
+func _create_battle() -> ArenaPveMatch:
+	return ArenaPveMatch.new()
+
+
+func _create_boards() -> ArenaTournamentBattles:
+	return ArenaTournamentBattles.new()
 
 
 func _exit_tree() -> void:
@@ -511,9 +521,9 @@ func _refresh() -> void:
 	_outcome.visible = _dock.visible
 	_outcome_shade.visible = _dock.visible and run.stage == "reward"
 	_layout_outcome()
-	_pause.visible = not preparing
+	_pause.visible = not preparing and not network_play
 	_pause.disabled = not fighting
-	_speed.visible = not preparing
+	_speed.visible = not preparing and not network_play
 	_speed.disabled = false
 	_rail.visible = not landing and _inspector.visible
 	_landing_layer.visible = landing
@@ -539,7 +549,7 @@ func _refresh() -> void:
 	if not landing:
 		if run.stage == "reward": _build_rewards()
 		elif run.stage in ["won", "lost"] and battle.settle_remaining <= 0: _build_result()
-	_start.disabled = run.deployed_count() == 0
+	_start.disabled = run.preparing_battle or run.deployed_count() == 0 or (network_play and run.lives <= 0)
 	_train_button.disabled = not run.can_shop() or run.experience() >= ArenaRules.MAX_TRAINING or not run.spending_error(ArenaRules.TRAINING_COST).is_empty()
 	_train_button.price = -1 if run.level_needed() == 0 else ArenaRules.TRAINING_COST
 	_train_button.value = str(run.capacity())
@@ -797,6 +807,9 @@ func _build_landing() -> void:
 		else: _begin(), "", true)
 	_landing_start.custom_minimum_size.y = 52
 	_landing_start.add_theme_font_size_override("font_size", 20)
+	if run is ArenaTournamentRun:
+		_button(choices, RemakeText.t("Play online"), func():
+			if get_parent().has_method("open_arena_online"): get_parent().open_arena_online(), RemakeText.t("Host or join a nine-player tournament. Computers fill empty seats."))
 	# Original models form one scene, rather than three starter-choice cards.
 	var showcase := VBoxContainer.new()
 	showcase.custom_minimum_size.x = 430
@@ -1231,18 +1244,18 @@ func _process(dt: float) -> void:
 	_standings.visible = run is ArenaTournamentRun and not landing and not _rail.visible and not _modal_layer.visible and not _outcome.visible
 	if is_instance_valid(_tournament_battles):
 		_tournament_battles.paused = landing or _modal_layer.visible or battle.phase == ArenaMatch.Phase.PAUSED or _league_paused
-		if run.stage == "fight": Engine.time_scale = float(GameData.arena_speed)
+		if not network_play and run.stage == "fight": Engine.time_scale = float(GameData.arena_speed)
 	_update_scout()
 	_overview_bar.visible = field.showing_boards() and not landing
 	_hit_numbers.visible = not field.showing_boards()
 	_vignette.visible = not field.showing_boards()
 	if field.showing_boards():
 		for control in [_shop_panel, _bench_panel, _round_panel, _fight_panel, _shop_toggle, _start, _alliance_panel, _scout_bar, _standings, _rail, _message]: control.hide()
-	if not landing and run.stage == "result" and battle.settle_remaining <= 0 and not _modal_layer.visible:
+	if not network_play and not landing and run.stage == "result" and battle.settle_remaining <= 0 and not _modal_layer.visible:
 		_result_remaining = maxf(0.0, _result_remaining - dt / maxf(Engine.time_scale, 0.001))
 		_update_result_countdown()
 		if _result_remaining <= 0: run.advance()
-	if not landing and run.stage == "prepare" and not _modal_layer.visible:
+	if not network_play and not landing and run.stage == "prepare" and not _modal_layer.visible:
 		if run.elapse_preparation(dt / maxf(Engine.time_scale, 0.001)):
 			_clear_selection()
 			if is_instance_valid(_tournament_battles): _tournament_battles.request_start(true)
@@ -1294,6 +1307,11 @@ func _listen_to(world: GameWorld) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if is_instance_valid(_wiki) and _wiki.visible: return
+	if not _modal_layer.visible and WikiContext.matches(event, get_viewport()):
+		_open_wiki()
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_SPACE and run.stage == "fight" and not _modal_layer.visible:
 			_toggle_pause(); get_viewport().set_input_as_handled()
@@ -1333,6 +1351,10 @@ func _guide() -> void:
 		topics[-1] = [RemakeText.t("Players"), RemakeText.t("Eight computer opponents build their own armies. Losing costs health based on the round and surviving enemy stars. At zero health you are eliminated. Click a player to inspect their army.")]
 		topics.append([RemakeText.t("Rounds"), RemakeText.t("Rounds 1–3 and every fifth round are against creeps. Other rounds pair surviving players. With an odd player count, one army fights a copy without damaging its owner. After round 30, defeat damage increases each round.")])
 	if run is ArenaTournamentRun: topics.append([RemakeText.t("Draw"), RemakeText.t("A draw costs both players 10 health.")])
+	if network_play:
+		topics[1] = ["Preparation", "Everyone has 60 seconds to recruit and arrange their army. The round starts early when all surviving human players are ready. Changing your army cancels ready. Menus and scouting do not pause the timer."]
+		topics[6] = ["Battle", "Both teams fight under AI control. The host runs all battles on the same clock. Hover a creature for details. Online battles cannot be paused or sped up by a player."]
+		topics[8] = ["Players", "Up to nine players compete with their own armies. Computers fill empty seats and take over disconnected players. At zero health you are eliminated and can keep watching. If the host leaves, the game ends for everyone."]
 	for topic in topics:
 		_label(content, RemakeText.t(topic[0]), 18, GOLD)
 		_wrap(content, RemakeText.t(topic[1]), 15, PAPER)
@@ -1548,11 +1570,13 @@ func _layout_modal() -> void:
 
 
 func _open_modal(title: String, width := 360.0) -> void:
-	battle.formation_motion.paused = true
-	if battle.phase == ArenaMatch.Phase.DEPLOY: battle.world.process_mode = Node.PROCESS_MODE_DISABLED
+	if is_instance_valid(_wiki): _wiki.dismiss()
+	_modal_panel.show()
+	battle.formation_motion.paused = not network_play
+	if not network_play and battle.phase == ArenaMatch.Phase.DEPLOY: battle.world.process_mode = Node.PROCESS_MODE_DISABLED
 	if not _modal_layer.visible:
 		_menu_was_fighting = battle.phase == ArenaMatch.Phase.FIGHT
-		if _menu_was_fighting: battle.toggle_pause()
+		if not network_play and _menu_was_fighting: battle.toggle_pause()
 		# Keep keyboard navigation inside the same modal as pointer input.
 		_modal_focus.clear()
 		for control: Control in _hud.find_children("*", "Control", true, false):
@@ -1579,6 +1603,7 @@ func _open_modal(title: String, width := 360.0) -> void:
 
 func _focus_modal() -> void:
 	if not _modal_layer.visible: return
+	if is_instance_valid(_wiki) and _wiki.visible: return
 	for control in _modal_box.find_children("*", "Button", true, false):
 		if not control.disabled:
 			control.grab_focus()
@@ -1586,6 +1611,8 @@ func _focus_modal() -> void:
 
 
 func _close_modal() -> void:
+	if is_instance_valid(_wiki): _wiki.dismiss()
+	_modal_panel.show()
 	battle.formation_motion.paused = false
 	if battle.phase == ArenaMatch.Phase.DEPLOY: battle.world.process_mode = Node.PROCESS_MODE_INHERIT
 	_modal_layer.hide()
@@ -1737,6 +1764,7 @@ func _reroll() -> void:
 
 
 func _toggle_speed() -> void:
+	if network_play: return
 	GameData.arena_speed = 1 if GameData.arena_speed == 2 else 2
 	GameData.save_settings()
 	battle.set_speed(float(GameData.arena_speed))
@@ -1761,7 +1789,7 @@ func _setup_tournament_battles() -> void:
 	if battle and is_instance_valid(battle.world): battle.world.show()
 	if run is ArenaTournamentRun:
 		run.live_boards = true
-		_tournament_battles = ArenaTournamentBattles.new()
+		_tournament_battles = _create_boards()
 		_tournament_battles.run = run
 		_tournament_battles.parent_stage = field.stage
 		_tournament_battles.home = battle
@@ -1947,8 +1975,35 @@ func _layout_alliances() -> void:
 
 
 func _toggle_pause() -> void:
+	if network_play: return
 	if run.stage != "fight": return
 	if run is ArenaTournamentRun and battle.phase == ArenaMatch.Phase.FINISHED:
 		_league_paused = not _league_paused
 		_battle_changed()
 	else: battle.toggle_pause()
+
+
+func _open_wiki() -> void:
+	var context := {}
+	var control := get_viewport().gui_get_hovered_control()
+	if control == field and is_instance_valid(field.hovered):
+		context = WikiContext.for_unit(field.hovered)
+	elif _rail.visible and not _showing_company and control and (control == _rail or _rail.is_ancestor_of(control)):
+		context = {"key": "creature/" + _inspected.to_lower().uri_encode()}
+	else:
+		while control and control != _hud:
+			if control.has_meta("arena_creature"):
+				context = {"key": "creature/" + String(control.get_meta("arena_creature").id).to_lower().uri_encode()}
+				break
+			control = control.get_parent() as Control
+	# Reuse the existing modal pause/focus ownership. Online clocks keep running.
+	_open_modal(RemakeText.t("Game wiki"))
+	_modal_panel.hide()
+	if not is_instance_valid(_wiki):
+		_wiki = WikiPanel.new()
+		# WikiPanel scales itself from the physical viewport. Keep it outside
+		# the scaled arena HUD so large windows do not scale it twice.
+		add_child(_wiki)
+		_wiki.closed.connect(func(): _modal_panel.show(); _close_modal())
+	_wiki.open()
+	WikiContext.navigate(_wiki, context)

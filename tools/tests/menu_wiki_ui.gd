@@ -11,6 +11,8 @@ func shot(name: String) -> void:
 	await frames(); await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://menu-wiki-" + name + ".png")
 func _ready() -> void:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--test-lang="): RemakeText.lang = arg.get_slice("=", 1)
 	GameData.options.confine_mouse = 0
 	await frames(24)
 	GameData._window_gen += 1
@@ -28,7 +30,7 @@ func _ready() -> void:
 	check(menu._arena_pve_button.visible and menu._arena_pve_button.text == RemakeText.t("Trials of the Allods"), "original campaign has renamed Trials button")
 	check(menu.campaign_pad_targets().any(func(t): return t.id == "campaign_arena_pve"), "original controller can reach Trials")
 	check(menu._utility_bar.position.y > wanted.y * 0.8, "utility buttons sit at the bottom")
-	check(is_equal_approx(menu._mods_button.position.y, menu._wiki_button.position.y) and is_equal_approx(menu._wiki_button.position.y, menu._arena_pve_button.position.y), "utility buttons share one row")
+	check(is_equal_approx(menu._mods_button.position.y, menu._arena_pve_button.position.y), "utility buttons share one row")
 	var at := menu._arena_pve_button.get_global_rect().get_center()
 	Input.warp_mouse(at)
 	var motion := InputEventMouseMotion.new(); motion.position = at; Input.parse_input_event(motion)
@@ -40,7 +42,10 @@ func _ready() -> void:
 	check(GameData._tips._panel.visible, "menu hint appears on hover")
 	check(GameData._tips._fs() <= 32 and GameData._tips._panel.size.x <= 665, "menu hint has bounded font and measure")
 	await shot("tooltip")
-	menu._wiki.open(); await frames(20)
+	var key := InputEventKey.new(); key.keycode = KEY_F7; key.physical_keycode = KEY_F7; key.pressed = true
+	get_viewport().push_input(key); await frames(20)
+	check(menu._wiki.visible, "F7 opens the wiki from the main menu")
+	check(menu._utility_bar.get_child_count() == 2, "standalone wiki button is removed")
 	var panel: WikiPanel = menu._wiki
 	panel.navigate("creature/toadm2"); await frames()
 	check(Rect2(Vector2.ZERO, Vector2(wanted)).encloses(panel.get_global_rect()), "wiki fits physical viewport")

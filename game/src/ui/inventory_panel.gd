@@ -366,3 +366,14 @@ func _on_deal(buy: Array, sell: Array) -> void:
 func _select(id: String, _where: String) -> void:
 	_clear_buttons()
 	_info.text = _camp.item_info_text(id.trim_prefix("belt:"))   # the camp info widget's text
+
+
+func wiki_context() -> Dictionary:
+	if _camp.visible: return _camp.wiki_context()
+	for pair: Array in [[_bag, _bag_ids], [_right, _right_ids]]:
+		var list: ItemList = pair[0]
+		var p := list.get_local_mouse_position()
+		if not Rect2(Vector2.ZERO, list.size).has_point(p): continue
+		var i := list.get_item_at_position(p, true)
+		if i >= 0 and i < pair[1].size(): return {"item": pair[1][i]}
+	return {}

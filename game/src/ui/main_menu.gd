@@ -32,7 +32,7 @@ var _campaign_error: Label
 var _mods: ModPanel
 var _mods_button: Button
 var _wiki: WikiPanel
-var _wiki_button: Button
+var _wiki_hint: Label
 var _arena_pve_button: Button
 var _coop_button: Button
 var _opening_panel := false
@@ -92,6 +92,13 @@ func _ready() -> void:
 	_utility_bar.add_theme_constant_override("v_separation", 8)
 	add_child(_utility_bar)
 	_utility_bar.minimum_size_changed.connect(_layout_campaign_bar.call_deferred)
+	_wiki_hint = Label.new()
+	_wiki_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_wiki_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_wiki_hint.add_theme_font_override("font", Interface800.font())
+	_wiki_hint.add_theme_font_size_override("font_size", 14)
+	_wiki_hint.add_theme_color_override("font_color", Interface800.GREY)
+	add_child(_wiki_hint)
 	# The expansion's original signpost deliberately has no Multiplayer
 	# board. Its remake co-op gets a visible entry beside the game choices.
 	if GameData.campaign_id == CampaignProfile.ASTRAL:
@@ -109,16 +116,6 @@ func _ready() -> void:
 	CampaignChoices.style_button(_mods_button)
 	_mods_button.pressed.connect(func(): _on_board("mods"))
 	_utility_bar.add_child(_mods_button)
-	_wiki_button = Button.new()
-	_wiki_button.set_meta("compact_tooltip", true)
-	_wiki_button.text = RemakeText.t("Game wiki")
-	_wiki_button.tooltip_text = RemakeText.t("Browse items, spells, creatures and game mechanics.")
-	_wiki_button.custom_minimum_size = Vector2(288, 64)
-	_wiki_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	CampaignChoices.style_button(_wiki_button)
-	_wiki_button.pressed.connect(func():
-		if pad_menu_free(): _wiki.open())
-	_utility_bar.add_child(_wiki_button)
 	_arena_pve_button = Button.new()
 	_arena_pve_button.set_meta("compact_tooltip", true)
 	_arena_pve_button.visible = GameData.campaign_id == CampaignProfile.ORIGINAL
@@ -280,6 +277,9 @@ func _process(_dt: float) -> void:
 	if _campaign_bar:
 		_campaign_bar.visible = not _scene or pad_menu_free()
 		_utility_bar.visible = _campaign_bar.visible
+		var wiki_key := EIKeymap.key_of("wiki_context")
+		_wiki_hint.text = "%s · %s" % [wiki_key, RemakeText.t("Game wiki")]
+		_wiki_hint.visible = _campaign_bar.visible and not wiki_key.is_empty()
 		_version.visible = _campaign_bar.visible
 
 
@@ -295,7 +295,10 @@ func _layout_campaign_bar() -> void:
 		_utility_bar.scale = Vector2.ONE * ui_scale
 		_utility_bar.size.x = footer_width
 		_utility_bar.size.y = _utility_bar.get_combined_minimum_size().y
-		_utility_bar.position = Vector2(safe.get_center().x - footer_width * ui_scale * 0.5, safe.end.y - (16 + _utility_bar.size.y) * ui_scale - _version.footer_height())
+		_utility_bar.position = Vector2(safe.get_center().x - footer_width * ui_scale * 0.5, safe.end.y - (38 + _utility_bar.size.y) * ui_scale - _version.footer_height())
+		_wiki_hint.scale = Vector2.ONE * ui_scale
+		_wiki_hint.size = Vector2(footer_width, 20)
+		_wiki_hint.position = Vector2(_utility_bar.position.x, safe.end.y - 30 * ui_scale - _version.footer_height())
 
 
 func campaign_pad_targets() -> Array:
@@ -304,7 +307,6 @@ func campaign_pad_targets() -> Array:
 		for id: String in _campaigns.buttons:
 			targets.append({"rect": _campaigns.buttons[id].get_global_rect(), "id": "campaign_" + id})
 		targets.append({"rect": _mods_button.get_global_rect(), "id": "campaign_mods"})
-		targets.append({"rect": _wiki_button.get_global_rect(), "id": "campaign_wiki"})
 		if _arena_pve_button.visible: targets.append({"rect": _arena_pve_button.get_global_rect(), "id": "campaign_arena_pve"})
 		if _coop_button:
 			targets.append({"rect": _coop_button.get_global_rect(), "id": "campaign_coop"})
@@ -343,6 +345,7 @@ func _on_board(action: String) -> void:
 		_opening_panel = true
 		_campaign_bar.hide()
 		_utility_bar.hide()
+		_wiki_hint.hide()
 		_version.hide()
 		if DisplayServer.get_name() != "headless":
 			await RenderingServer.frame_post_draw
@@ -632,3 +635,9 @@ func _refresh_lobby() -> void:
 	_lobby.clear()
 	for pid in _session.players:
 		_lobby.add_item("%d. %s" % [_session.players[pid].index + 1, _session.players[pid].name])
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if pad_menu_free() and WikiContext.matches(event, get_viewport()):
+		_wiki.open()
+		get_viewport().set_input_as_handled()

@@ -151,7 +151,7 @@ const FILES_LINK := ["Game files…", "Choose another Evil Islands folder or ins
 ## (CrashReportBox), from the main menu and in a game.
 const LOG_ROW := 12
 const LOG_LINK := ["Export log…", "Saves the game's log with the system information to a folder you can open, or copies it, to send it with a bug report."]
-const LIVE := ["volume_sfx", "volume_stream", "volume_voice", "brightness", "contrast", "gamma", "reverse_stereo",
+const LIVE := ["volume_sfx", "volume_stream", "volume_voice", "brightness", "contrast", "gamma", "reverse_stereo", "cave_echo",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale"]
 const OK_RECT := Rect2(213, 526, 74, 48)
 const CANCEL_RECT := Rect2(513, 526, 74, 48)

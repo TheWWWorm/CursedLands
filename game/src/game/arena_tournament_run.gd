@@ -21,6 +21,11 @@ const NPCS := ["elder", "witch", "smith", "kapitan", "huber", "magess", "orcc", 
 
 func arrivals_at_start() -> bool: return true
 
+func computer_controls(player: int) -> bool: return player > 0
+func continues_after_elimination() -> bool: return false
+func round_savings(player: int) -> int:
+	return battle_savings if player == 0 else company(player).gold
+
 func opponent_for(player: int) -> int:
 	for pair: Dictionary in pairings:
 		if int(pair.a) == player: return int(pair.b)
@@ -176,7 +181,7 @@ func advance_bots(dt: float) -> Array[int]:
 	if stage != "prepare": return changed_players
 	for index in rivals.size():
 		var plan := bot_plans[index]
-		if rival_health[index] <= 0 or plan.done: continue
+		if rival_health[index] <= 0 or plan.done or not computer_controls(index + 1): continue
 		plan.wait -= dt
 		if plan.wait > 0: continue
 		plan.wait += 0.8 + float(index % 4) * 0.18
@@ -187,7 +192,7 @@ func advance_bots(dt: float) -> Array[int]:
 
 func finish_preparation() -> void:
 	for index in rivals.size():
-		if rival_health[index] <= 0: continue
+		if rival_health[index] <= 0 or not computer_controls(index + 1): continue
 		while not bot_plans[index].done: shop_step(rivals[index], index + 1, wave, rival_health[index], bot_plans[index])
 
 
@@ -218,12 +223,13 @@ func _choose_pairings() -> void:
 		var other := random.randi_range(0, index)
 		var held := alive[index]; alive[index] = alive[other]; alive[other] = held
 	# Give the human a new opponent whenever at least two rivals remain.
-	alive.erase(0)
-	var candidates := alive.filter(func(player):return int(player) != previous_opponent)
-	var opponent: int = candidates[0] if not candidates.is_empty() else alive[0]
-	alive.erase(opponent)
-	pairings.append({"a":0,"b":opponent,"ghost":false})
-	previous_opponent = opponent
+	if alive.has(0) and alive.size() > 1:
+		alive.erase(0)
+		var candidates := alive.filter(func(player):return int(player) != previous_opponent)
+		var opponent: int = candidates[0] if not candidates.is_empty() else alive[0]
+		alive.erase(opponent)
+		pairings.append({"a":0,"b":opponent,"ghost":false})
+		previous_opponent = opponent
 	while alive.size() >= 2:
 		pairings.append({"a":alive.pop_back(),"b":alive.pop_back(),"ghost":false})
 	if not alive.is_empty():
@@ -288,7 +294,7 @@ func _settle_round() -> void:
 	for player in alive:
 		var company_run := company(player)
 		var won := bool(victories.get(player, false))
-		var income := company_run.income_preview(battle_savings if player == 0 else company_run.gold)
+		var income := company_run.income_preview(round_savings(player))
 		if not won:
 			income.victory = 0; income.streak = 0
 			income.total = int(income.base) + int(income.interest)
@@ -306,7 +312,8 @@ func _settle_round() -> void:
 	history.append(last_result.duplicate(true))
 	var survivors := alive_players()
 	if survivors.size() == 1: placements[survivors[0]] = 1
-	stage = "lost" if lives <= 0 else "won" if survivors.size() == 1 else "result"
+	stage = "won" if survivors.size() == 1 else "lost" if lives <= 0 and not continues_after_elimination() else "result"
+	if not continues_after_elimination() and lives <= 0: stage = "lost"
 	_touch()
 
 func advance() -> void:

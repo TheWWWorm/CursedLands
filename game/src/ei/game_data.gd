@@ -62,6 +62,7 @@ const OPTIONS := [
 	["tooltip_time", 0, 20, 2, 4, 2], ["switch_filters", 1, 2, 3, 12, 1],
 	["camera_reverse_x", 1, 2, 2, 6, 0], ["camera_reverse_y", 1, 2, 2, 7, 0],
 	["reverse_stereo", 1, 2, 1, 4, 0], ["difficulty", 1, 2, 3, 0, 0],
+	["cave_echo", 1, 2, 1, 5, 1],
 	# Everything below is the remake's own (not in the original's table): the
 	# Screen tab (group 12) and the Remake tab's sub-pages (group 11 lists
 	# them, see OptionsPanel.SECTIONS; labels and tips in REMAKE_OPTIONS).
@@ -226,6 +227,7 @@ const FIXED_OPTIONS := {"shadow_units": 1, "shadow_buildings": 1, "shadow_flora"
 ## Labels of the remake's multiple-choice rows (value = index); "resolution"
 ## is built from the monitor (resolutions()).
 const DISPLAY_CHOICES := {
+	"cave_echo": ["Off", "On"],
 	"direct_first_person_actions": ["Off", "On"],
 	"direct_hints": ["Off", "Compact", "Full guide"],
 	"direct_fov_first": ["50°", "55°", "60°", "65°", "70°", "75°", "80°", "85°", "90°", "95°", "100°", "105°", "110°"],
@@ -271,6 +273,8 @@ const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "
 	"r_camera", "r_interface", "r_game", "r_coop", "gamepad", "gamepad_buttons", "r_terrain", "r_water", "direct_view", "direct_keys", "direct_pad"]
 ## Labels and tips of the remake's own option rows (texts.res has none).
 const REMAKE_OPTIONS := {
+	"cave_echo": ["Cave echo", "Add echo to sounds in caves. Turn off for dry sound. Changes apply immediately."],
+	"wiki_context": ["Wiki under pointer", "Open the wiki for the item, spell, creature or quest under the pointer. With no subject under the pointer, open the wiki home page."],
 	"direct_first_person_actions": ["First-person actions", "Stay in first person when picking up items, using levers and performing other actions. Off: show action animations in third person. Scripted cameras keep control."],
 	"direct_hints": ["Control guide", "Compact shows a small view/cursor shortcut hint. Full guide adds movement keys and crosshair explanations. Off hides the lower guide."],
 	"spell_double_tap_self": ["Double-tap spell key to self-cast", "Press the same spell shortcut twice quickly to cast a compatible friendly spell on yourself. One press selects a target normally. Off: a second press cancels spell selection."],
@@ -433,7 +437,7 @@ const OPTIONS_APPLIED := ["direct_hints", "direct_fov_first", "direct_fov_third"
 	"item_icon_fit", "ui_active_buttons", "original_rune_layout", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion",
 	"power_mouse", "scroll_border", "rubber_select", "marks", "footprints", "select_type", "show_path", "brightness", "contrast", "gamma",
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
-	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "difficulty",
+	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "cave_echo", "difficulty",
 	"gfx_sky", "gfx_water", "gfx_wind", "gfx_volumetric", "gfx_terrain", "gfx_heat_haze",
 	"gfx_grass", "gfx_soft_ground", "gfx_ground_contact", "gfx_water_interaction", "gfx_water_caustics", "gfx_water_current", "gfx_water_waves", "gfx_waterfalls", "gfx_vegetation_interaction", "gfx_biome_cover",
 	"gfx_ambient_wildlife", "gfx_ambient_particles",

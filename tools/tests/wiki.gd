@@ -316,8 +316,8 @@ func main_menu_checks() -> void:
 	menu.detect_graphics = false
 	add_child(menu)
 	await frames()
-	check(menu._wiki_button.is_visible_in_tree(), "main menu wiki entry visible")
-	menu._wiki_button.pressed.emit()
+	var key := InputEventKey.new(); key.keycode = KEY_F7; key.physical_keycode = KEY_F7; key.pressed = true
+	get_viewport().push_input(key)
 	await frames()
 	check(menu._wiki.visible and not menu.pad_menu_free(), "main menu opens wiki as a modal")
 	menu._wiki.close()
