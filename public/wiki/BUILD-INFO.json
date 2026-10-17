@@ -1,5 +1,5 @@
 {
-  "version": "1.8.0",
+  "version": "1.9.0",
   "languages": {
     "en": {
       "pages": 1277,
@@ -7,7 +7,7 @@
       "listed_spells": 31,
       "versions": 2057,
       "resolved_links": 17732,
-      "normalized_equipment_links": 116
+      "normalized_equipment_links": 0
     },
     "ru": {
       "pages": 1277,
@@ -15,7 +15,7 @@
       "listed_spells": 31,
       "versions": 2057,
       "resolved_links": 17717,
-      "normalized_equipment_links": 116
+      "normalized_equipment_links": 0
     },
     "de": {
       "pages": 1277,
@@ -23,7 +23,7 @@
       "listed_spells": 31,
       "versions": 2057,
       "resolved_links": 17756,
-      "normalized_equipment_links": 116
+      "normalized_equipment_links": 0
     }
   },
   "translation_keys": 207,
@@ -39,7 +39,7 @@
           "listed_spells": 31,
           "versions": 2057,
           "resolved_links": 17732,
-          "normalized_equipment_links": 116
+          "normalized_equipment_links": 0
         },
         "ru": {
           "pages": 1277,
@@ -47,7 +47,7 @@
           "listed_spells": 31,
           "versions": 2057,
           "resolved_links": 17717,
-          "normalized_equipment_links": 116
+          "normalized_equipment_links": 0
         },
         "de": {
           "pages": 1277,
@@ -55,7 +55,7 @@
           "listed_spells": 31,
           "versions": 2057,
           "resolved_links": 17756,
-          "normalized_equipment_links": 116
+          "normalized_equipment_links": 0
         }
       }
     },
@@ -67,7 +67,7 @@
           "listed_spells": 35,
           "versions": 2717,
           "resolved_links": 55794,
-          "normalized_equipment_links": 90
+          "normalized_equipment_links": 0
         },
         "ru": {
           "pages": 1757,
@@ -75,7 +75,7 @@
           "listed_spells": 35,
           "versions": 2717,
           "resolved_links": 55730,
-          "normalized_equipment_links": 90
+          "normalized_equipment_links": 0
         },
         "de": {
           "pages": 1757,
@@ -83,7 +83,7 @@
           "listed_spells": 35,
           "versions": 2717,
           "resolved_links": 55816,
-          "normalized_equipment_links": 90
+          "normalized_equipment_links": 0
         }
       }
     }
@@ -152,7 +152,7 @@
     },
     "data/de/index.json": {
       "bytes": 567077,
-      "sha256": "0beebb721d1043d0acb4936c5fde4785f6cf312df84b3deef191dc1e0695c2d9"
+      "sha256": "43aa48828736ab25b807c1700e525be9012e6c400ee75c53aefa171e26cb13aa"
     },
     "data/de/pages/004027f6a8d9eda4199c.json": {
       "bytes": 3855,
@@ -5268,7 +5268,7 @@
     },
     "data/en/index.json": {
       "bytes": 540689,
-      "sha256": "d43e8f290a379e389fa3f0c77330fc3813a84436fd4f8c83f30e5d357c67b755"
+      "sha256": "7d7b8ae874bda22bdb0de1647ce59665d1276bf66867ef7ba92112ea17048430"
     },
     "data/en/pages/004027f6a8d9eda4199c.json": {
       "bytes": 3636,
@@ -10384,7 +10384,7 @@
     },
     "data/lost_in_astral/de/index.json": {
       "bytes": 775537,
-      "sha256": "4b095bea4c79d901038c42141e5eda6cf5e672b6d216d11a589b91139989751e"
+      "sha256": "597d4352a316ede0e2e0829a002ecf96261590cccdc408b5cff7c39eefeadffc"
     },
     "data/lost_in_astral/de/pages/005036e374568b4dd48f.json": {
       "bytes": 3978,
@@ -17420,7 +17420,7 @@
     },
     "data/lost_in_astral/en/index.json": {
       "bytes": 743853,
-      "sha256": "7023eb5d0b912617678e9a5c865c110975d974ff5297a1a76df3489c7f3f54b3"
+      "sha256": "abf8c965055e21630869c0853aa112f2d9860bfb1f6284d7912e4080a0fc04ab"
     },
     "data/lost_in_astral/en/pages/005036e374568b4dd48f.json": {
       "bytes": 3732,
@@ -24456,7 +24456,7 @@
     },
     "data/lost_in_astral/ru/index.json": {
       "bytes": 1051123,
-      "sha256": "67dbefc50654b602c947ca614ede641b710d5e585436b7a39849d90190fd492e"
+      "sha256": "687248a9641c4011084e73deebd6c35098bc78097ff31aa7fc7cc092bc5cb7fc"
     },
     "data/lost_in_astral/ru/pages/005036e374568b4dd48f.json": {
       "bytes": 5171,
@@ -31492,7 +31492,7 @@
     },
     "data/ru/index.json": {
       "bytes": 769147,
-      "sha256": "c48bb3d8d736f70f790257770d3ada0a2e4524cf4f568aa2b1ea1d292474fdc0"
+      "sha256": "3344000f83745154d39ed616b38127a2a5d53cb5830e7ff0fb3e45e128e82385"
     },
     "data/ru/pages/004027f6a8d9eda4199c.json": {
       "bytes": 4983,
@@ -36608,7 +36608,7 @@
     },
     "i18n.json": {
       "bytes": 40384,
-      "sha256": "b19949057939ad5b67b497af53db015c2c55624fd7eede807ef52eb15e56f317"
+      "sha256": "e5e1337213879a27092545afb4b653c5a2d9f9dd175a14935757dc1ea2e3a207"
     },
     "icon-allod.svg": {
       "bytes": 256,

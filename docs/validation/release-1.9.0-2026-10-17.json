@@ -1,0 +1,765 @@
+{
+  "version": "1.9.0",
+  "tag": "v1.9.0",
+  "base_stable": "1.8.0",
+  "release_type": "stable",
+  "game_source_commit": "1c2a3a33c7e0c18216f0c4f65b8741c55fca17f9",
+  "game_tree": "b05a535908df4d7598eab294a0ffb9cf0a69910a",
+  "merged_heads": {
+    "trials": "b9d2b014",
+    "media": "6a7da05a6045f00c072ae52442a97df3b1814a72",
+    "android": "14782a25d73ddd8b7611506e590a364c015f8e57",
+    "wiki": "8dac1b6e4e3c36e98f1941adedf2b745753c89db"
+  },
+  "protocol": 23,
+  "same_version_coop_required": true,
+  "all_336_compiled_scripts_identical_across_five_platforms": true,
+  "runtime_checks": [
+    {
+      "suite": "arena_alliances",
+      "language": "en",
+      "resolution": "",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "5429709f725930cda50efdfd5409d12b6df371738416918c0d3aa9521b122e7d",
+      "summary": [
+        "ARENA_ALLIANCES 448 checks; failures=[]"
+      ],
+      "checks": 448
+    },
+    {
+      "suite": "arena_flow",
+      "language": "en",
+      "resolution": "",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "a5689f3d51edb0fe01056c608ca1a9a8873cfed9f68a6710c4e25e29754c4689",
+      "summary": [
+        "ARENA_FLOW 234 checks; failures=[]"
+      ],
+      "checks": 234
+    },
+    {
+      "suite": "arena_economy",
+      "language": "en",
+      "resolution": "",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "2997282d9f904bd067fd33342b5c961bb2393b6b1819941bf319c589512c0654",
+      "summary": [
+        "ARENA_ECONOMY 215 checks; failures=[]"
+      ],
+      "checks": 215
+    },
+    {
+      "suite": "arena_recruitment",
+      "language": "en",
+      "resolution": "",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "fbac4148c8f9005cc3cb668df5179bb5f1a2e849f726ad949ff6830ae036544b",
+      "summary": [
+        "ARENA_RECRUITMENT 676 checks; native_fights=20; failures=[]"
+      ],
+      "checks": 676
+    },
+    {
+      "suite": "arena_formation",
+      "language": "en",
+      "resolution": "",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "a0ac38562a0691e3cef840e59ef66f44ddd0480631813141c07dfc6da5fa5e4d",
+      "summary": [
+        "ARENA_FORMATION 20 checks; failures=[]"
+      ],
+      "checks": 20
+    },
+    {
+      "suite": "wiki",
+      "language": "en",
+      "resolution": "",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "3abe365ce156960a51d08954a982e54c4af3262f0e5a4fd2158480691eadb8b0",
+      "summary": [
+        "WIKI_RESULT {\"campaign\":\"cursed_lands\",\"checks\":14085,\"counts\":{\"Allods\":3,\"Characters\":45,\"Creatures\":389,\"Game mechanics\":7,\"Items\":385,\"Maps\":36,\"Materials\":33,\"Quests\":121,\"Runes\":24,\"Spells\":31},\"failures\":[],\"language\":\"en\",\"rendered\":false,\"seconds\":35.376}"
+      ],
+      "checks": 14085
+    },
+    {
+      "suite": "wiki_features",
+      "language": "en",
+      "resolution": "",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "01a9178c85e91332b1608cd0779f418f2d20444a2a419006633a070d97831ce4",
+      "summary": [
+        "WIKI_FEATURES {\"checks\":3403,\"failures\":[],\"item_cases\":2820,\"oracle_cases\":898}"
+      ],
+      "checks": 3403
+    },
+    {
+      "suite": "wiki_quest_locales",
+      "language": "en",
+      "resolution": "",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "d6c46cb169828cbd87f654d27bfec3b496066383ee938bd3b04697dd3b7482eb",
+      "summary": [
+        "WIKI_QUEST_LOCALES 588 checks []"
+      ],
+      "checks": 588
+    },
+    {
+      "suite": "ground_contact",
+      "language": "en",
+      "resolution": "",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "0c17816abab0450abdf94ef1e619166583c2eed30fefcc4e46fb5acef6451076",
+      "summary": [
+        "GROUND_CONTACT checks=37 failures=0"
+      ],
+      "checks": 37
+    },
+    {
+      "suite": "wiki_lore",
+      "language": "en",
+      "resolution": "",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "d657a7e52c53e99117f262990cf33cb1f4336c1bf92caddcd8c0a0390eab7489",
+      "summary": [
+        "WIKI_LORE_TEST {\"campaign\":\"cursed_lands\",\"checks\":18711,\"failures\":[]}"
+      ],
+      "checks": 18711
+    },
+    {
+      "suite": "wiki_lore",
+      "language": "ru",
+      "resolution": "",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "21b01fe4ba258388798ebbc7a94ed76af19db51df715b8a9a22a78c446d43725",
+      "summary": [
+        "WIKI_LORE_TEST {\"campaign\":\"cursed_lands\",\"checks\":18711,\"failures\":[]}"
+      ],
+      "checks": 18711
+    },
+    {
+      "suite": "wiki_lore",
+      "language": "de",
+      "resolution": "",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "c64c99bce4e96b30ef6343a34b7c5bf20131068f07be8d4d33bf02c4217ecaab",
+      "summary": [
+        "WIKI_LORE_TEST {\"campaign\":\"cursed_lands\",\"checks\":18711,\"failures\":[]}"
+      ],
+      "checks": 18711
+    },
+    {
+      "suite": "wiki_lore",
+      "language": "astral",
+      "resolution": "",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "587481b25a5eea67c5728c447c98361f5df24a59626d22146c769e3f64c8922c",
+      "summary": [
+        "WIKI_LORE_TEST {\"campaign\":\"lost_in_astral\",\"checks\":29760,\"failures\":[]}"
+      ],
+      "checks": 29760
+    },
+    {
+      "suite": "arena_opening_ui",
+      "language": "en",
+      "resolution": "1280,800",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "27c9734ef557faecaada64c4dac7955f1e566c9da49fe234f0c4e6ec84cb018d",
+      "summary": [
+        "ARENA_OPENING_UI 18 checks; failures=[] errors=[]"
+      ],
+      "checks": 18
+    },
+    {
+      "suite": "arena_formation_ui",
+      "language": "en",
+      "resolution": "1280,800",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "f432c245d13fda891cb46c5321ca8e830fb9908ce2c0f54c7bba7ddb3199bb1b",
+      "summary": [
+        "ARENA_FORMATION_UI 33 checks; failures=[] errors=[]"
+      ],
+      "checks": 33
+    },
+    {
+      "suite": "arena_alliances_ui",
+      "language": "en",
+      "resolution": "1280,800",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "8853e2c6a4e396617affcaca328f44943dd63e32f31db0ea7bf828ad8a96c9fc",
+      "summary": [
+        "ARENA_ALLIANCES_UI 89 checks; failures=[] errors=[]"
+      ],
+      "checks": 89
+    },
+    {
+      "suite": "arena_opening_ui",
+      "language": "ru",
+      "resolution": "1024,768",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "072200526d03599b1f07b127e83452b67b08bc60a647912a6651a5d6e9d5ed51",
+      "summary": [
+        "ARENA_OPENING_UI 18 checks; failures=[] errors=[]"
+      ],
+      "checks": 18
+    },
+    {
+      "suite": "arena_formation_ui",
+      "language": "ru",
+      "resolution": "1024,768",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "05c21ebf1926543f90bf52e5f3209a61c8aab0aa14d4472e3769d228f3c4983c",
+      "summary": [
+        "ARENA_FORMATION_UI 33 checks; failures=[] errors=[]"
+      ],
+      "checks": 33
+    },
+    {
+      "suite": "arena_alliances_ui",
+      "language": "ru",
+      "resolution": "1024,768",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "a6172c9e3918724a779948bde1ccb975ffbc867c15dccb873c2ec36182ce0f97",
+      "summary": [
+        "ARENA_ALLIANCES_UI 89 checks; failures=[] errors=[]"
+      ],
+      "checks": 89
+    },
+    {
+      "suite": "arena_opening_ui",
+      "language": "de",
+      "resolution": "1024,768",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "f8eb615d41b2653ed0867f08290ca22340f3ee4a66047f241906c01a7f72e727",
+      "summary": [
+        "ARENA_OPENING_UI 18 checks; failures=[] errors=[]"
+      ],
+      "checks": 18
+    },
+    {
+      "suite": "arena_formation_ui",
+      "language": "de",
+      "resolution": "1024,768",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "d48831c18b2b5025205256c9a187d9cf5b4554d9923c0da589a1b691399a76bd",
+      "summary": [
+        "ARENA_FORMATION_UI 33 checks; failures=[] errors=[]"
+      ],
+      "checks": 33
+    },
+    {
+      "suite": "arena_alliances_ui",
+      "language": "de",
+      "resolution": "1024,768",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "8d862681ad20029affb9fb90beb5f319f8c94c8646a1e7a971e3ec4871eb2dc7",
+      "summary": [
+        "ARENA_ALLIANCES_UI 89 checks; failures=[] errors=[]"
+      ],
+      "checks": 89
+    },
+    {
+      "suite": "arena_opening_ui",
+      "language": "en",
+      "resolution": "3840,2160",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "3033db5741b32cd7c91886d4f0d903ffa8b908c00fecd724ed87fe3332be3d1c",
+      "summary": [
+        "ARENA_OPENING_UI 18 checks; failures=[] errors=[]"
+      ],
+      "checks": 18
+    },
+    {
+      "suite": "arena_formation_ui",
+      "language": "en",
+      "resolution": "3840,2160",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "9fd2494cf2ab91493bb88de1431a66913c1fa0da75710cc9d008d57403bc88db",
+      "summary": [
+        "ARENA_FORMATION_UI 33 checks; failures=[] errors=[]"
+      ],
+      "checks": 33
+    },
+    {
+      "suite": "arena_alliances_ui",
+      "language": "en",
+      "resolution": "3840,2160",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "0b1d9dcdfb032461b35f44dd2699d5fdad59047909958602e3914b7b62adcc80",
+      "summary": [
+        "ARENA_ALLIANCES_UI 89 checks; failures=[] errors=[]"
+      ],
+      "checks": 89
+    },
+    {
+      "suite": "arena_winter_ui",
+      "language": "en",
+      "resolution": "1280,800",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "89be526843a8d9f4dec31b1c868e2c46fe21445fa755f18537f5b570b3a080e9",
+      "summary": [
+        "ARENA_WINTER_UI 55 checks; failures=[]"
+      ],
+      "checks": 55
+    },
+    {
+      "suite": "arena_resolution_ui",
+      "language": "en",
+      "resolution": "1280,800",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "2bcf61312975869c9c7d5c3a7023cc3cbc7c08d360444c671202ca2cab4a0c0e",
+      "summary": [
+        "ARENA_RESOLUTION_UI 40 checks; failures=[]"
+      ],
+      "checks": 40
+    },
+    {
+      "suite": "terrain_sampling",
+      "language": "en",
+      "resolution": "1280,800",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "c12743538af25aadbdace3bd9053cb37f51ec01aae554e98736196c9b3a569c8",
+      "summary": [
+        "TERRAIN_SAMPLING checks=96 failures=0"
+      ],
+      "checks": 96
+    },
+    {
+      "suite": "terrain_color_lifecycle",
+      "language": "en",
+      "resolution": "1280,800",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "ad36d2ae568423afa1520eb69d5571523f893fd6d73112029f43d2422fd1a35d",
+      "summary": [
+        "TERRAIN_COLOR_LIFECYCLE checks=14 failures=0"
+      ],
+      "checks": 14
+    },
+    {
+      "suite": "wiki_rework",
+      "language": "en",
+      "resolution": "1280,800",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "bf94981ed9f7b5b9276ef0fb3799380ed7ca58962955543e0e0dc07d07f53e0c",
+      "summary": [
+        "WIKI_REWORK {\"build_ms\":2426,\"checks\":10280,\"failures\":[],\"pins\":3574,\"relations\":4304}"
+      ],
+      "checks": 10280
+    },
+    {
+      "suite": "wiki_rework",
+      "language": "ru",
+      "resolution": "1280,800",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "c1e3e95bf167044d6a67c687d3408b692d07d0a8d2a6766ee43729cc223b035d",
+      "summary": [
+        "WIKI_REWORK {\"build_ms\":2519,\"checks\":10280,\"failures\":[],\"pins\":3574,\"relations\":4304}"
+      ],
+      "checks": 10280
+    },
+    {
+      "suite": "wiki_rework",
+      "language": "de",
+      "resolution": "1280,800",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "38db356064c4760779e2599a7ab25fbded7378171837dc12db680dfaf6765928",
+      "summary": [
+        "WIKI_REWORK {\"build_ms\":2431,\"checks\":10280,\"failures\":[],\"pins\":3574,\"relations\":4304}"
+      ],
+      "checks": 10280
+    },
+    {
+      "suite": "arena_ground_ink",
+      "language": "en",
+      "resolution": "1280,800",
+      "exit": 0,
+      "passed": true,
+      "errors": [],
+      "log_sha256": "f58b953ab7f560a1197bcfd68320cdccdda8ab76e4358c1884362b8716f6a47c",
+      "summary": [
+        "ARENA_GROUND_INK 5 checks; pixels=12717 failures=[]"
+      ],
+      "checks": 5
+    }
+  ],
+  "runtime_assertions": 137209,
+  "translations": {
+    "entries": 2413,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 121,
+    "website_keys": 207,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "errors": 0
+  },
+  "desktop": {
+    "linux-x86_64": {
+      "version": "1.9.0",
+      "source_commit": "1c2a3a33c7e0c18216f0c4f65b8741c55fca17f9",
+      "game_tree": "b05a535908df4d7598eab294a0ffb9cf0a69910a",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 336,
+      "resource_count": 894,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.pck": "e2e59a4a6e78e5bef49c6b1e28ccae96942828c65c1e6fabcc60325612da74d5"
+      }
+    },
+    "windows-x86_64": {
+      "version": "1.9.0",
+      "source_commit": "1c2a3a33c7e0c18216f0c4f65b8741c55fca17f9",
+      "game_tree": "b05a535908df4d7598eab294a0ffb9cf0a69910a",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 336,
+      "resource_count": 894,
+      "files": {
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "CursedLands.pck": "e2e59a4a6e78e5bef49c6b1e28ccae96942828c65c1e6fabcc60325612da74d5"
+      }
+    },
+    "macos-universal": {
+      "version": "1.9.0",
+      "source_commit": "1c2a3a33c7e0c18216f0c4f65b8741c55fca17f9",
+      "game_tree": "b05a535908df4d7598eab294a0ffb9cf0a69910a",
+      "protocol": 23,
+      "platform": "macos-universal",
+      "unsigned": true,
+      "target_os_runtime_tested": false,
+      "compiled_scripts": 336,
+      "files": {
+        "CursedLands.zip": "20503a94d747f4b42516e30b14a198b22783f32ced99a83e983db3ee5553b291"
+      }
+    }
+  },
+  "android": {
+    "version": "1.9.0",
+    "compiled_scripts": 336,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 41,
+    "debuggable": false,
+    "apk_sha256": "2c8708b7f3ba853098e0279d5d12e7bfed567685c96a56d77556927fcc78dd08",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16,
+    "device_validation": {
+      "device": "Retroid Pocket 5",
+      "renderer": "Vulkan Mobile",
+      "passed": true,
+      "summary": [
+        "WINTER_MARKS footprints=17 blood=29 track_sectors=4",
+        "ARENA_WINTER_UI 55 checks; failures=[]"
+      ],
+      "normal_game_modified": false,
+      "qa_game_scripts_identical_to_release_except_bootstrap": 335,
+      "all_native_libraries_match_production": true,
+      "log_sha256": "29d4c64d958ed45bed95bbcedd176c3ccd5f10898aa1a0b194d8ab9e560406db",
+      "qa_restored": true
+    }
+  },
+  "browser": {
+    "version": "1.9.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-6d69bfd8b228ff615c58",
+      "new_cache": "cursed-engine-2-668c64abdfa8f4b6c9da",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "4e4e6d038bd59a6999f1462f4e035edc89bb6c5f9700f1d3678c259e4b5a8a9f",
+      "old_tab_wait_verified": true,
+      "unchanged_wasm_reused": true,
+      "network_paths": [
+        "__expected",
+        "index.html",
+        "index.pck",
+        "release-check.html",
+        "service-worker.js"
+      ]
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-668c64abdfa8f4b6c9da"
+      ],
+      "packs": {
+        "cursed-engine-2-668c64abdfa8f4b6c9da": "4e4e6d038bd59a6999f1462f4e035edc89bb6c5f9700f1d3678c259e4b5a8a9f"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    },
+    "fresh_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": []
+    },
+    "upgraded_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": []
+    },
+    "wiki": {
+      "languages": [
+        "en",
+        "ru",
+        "de"
+      ],
+      "character": "character/hero",
+      "native_illustration_loaded": true,
+      "version": "1.9.0",
+      "mobile_viewport": [
+        390,
+        844
+      ],
+      "mobile_horizontal_overflow": false,
+      "runtime_errors": []
+    },
+    "build": {
+      "version": "1.9.0",
+      "source_tag": "v1.9.0",
+      "source_commit": "1c2a3a33c7e0c18216f0c4f65b8741c55fca17f9",
+      "game_tree": "b05a535908df4d7598eab294a0ffb9cf0a69910a",
+      "protocol": 23,
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 336,
+      "resource_count": 891,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "4e4e6d038bd59a6999f1462f4e035edc89bb6c5f9700f1d3678c259e4b5a8a9f",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    }
+  },
+  "public_wiki": {
+    "version": "1.9.0",
+    "languages": {
+      "en": {
+        "pages": 1277,
+        "listed_pages": 1074,
+        "listed_spells": 31,
+        "versions": 2057,
+        "resolved_links": 17732,
+        "normalized_equipment_links": 0
+      },
+      "ru": {
+        "pages": 1277,
+        "listed_pages": 1077,
+        "listed_spells": 31,
+        "versions": 2057,
+        "resolved_links": 17717,
+        "normalized_equipment_links": 0
+      },
+      "de": {
+        "pages": 1277,
+        "listed_pages": 1074,
+        "listed_spells": 31,
+        "versions": 2057,
+        "resolved_links": 17756,
+        "normalized_equipment_links": 0
+      }
+    },
+    "translation_keys": 207,
+    "requires_game_files": false,
+    "requires_game_engine": false,
+    "requires_account": false,
+    "campaigns": {
+      "cursed_lands": {
+        "languages": {
+          "en": {
+            "pages": 1277,
+            "listed_pages": 1074,
+            "listed_spells": 31,
+            "versions": 2057,
+            "resolved_links": 17732,
+            "normalized_equipment_links": 0
+          },
+          "ru": {
+            "pages": 1277,
+            "listed_pages": 1077,
+            "listed_spells": 31,
+            "versions": 2057,
+            "resolved_links": 17717,
+            "normalized_equipment_links": 0
+          },
+          "de": {
+            "pages": 1277,
+            "listed_pages": 1074,
+            "listed_spells": 31,
+            "versions": 2057,
+            "resolved_links": 17756,
+            "normalized_equipment_links": 0
+          }
+        }
+      },
+      "lost_in_astral": {
+        "languages": {
+          "en": {
+            "pages": 1757,
+            "listed_pages": 1479,
+            "listed_spells": 35,
+            "versions": 2717,
+            "resolved_links": 55794,
+            "normalized_equipment_links": 0
+          },
+          "ru": {
+            "pages": 1757,
+            "listed_pages": 1479,
+            "listed_spells": 35,
+            "versions": 2717,
+            "resolved_links": 55730,
+            "normalized_equipment_links": 0
+          },
+          "de": {
+            "pages": 1757,
+            "listed_pages": 1479,
+            "listed_spells": 35,
+            "versions": 2717,
+            "resolved_links": 55816,
+            "normalized_equipment_links": 0
+          }
+        }
+      }
+    },
+    "illustrations": 4287,
+    "bytes": 203357963
+  },
+  "hosted_files_count": 13551,
+  "hosted_full_manifest_sha256": "c5904a576b0f876b78330b547838be8fb15a7b56bab1272f7e96b4df16c14056",
+  "hosted_primary_files": {
+    "BUILD-INFO.json": "fb7ab88c0ac7bfc0735b4bc934c9851b650682fd0bc9f0c22371fddf8624783e",
+    "FONT_LICENSE.txt": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9",
+    "GODOT_LICENSES.txt": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7",
+    "LICENSE.md": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c",
+    "THIRD_PARTY_NOTICES.md": "42fea15f445074b0f20ad4e660934c9ddc96975a4ed64bfd42a506996f899e10",
+    "_headers": "385af9098c5d9752a0ff141b34048e2611ad70beba02c7ed03b1b1dc29a67841",
+    "data-worker.js": "23acf2e304952606e7e2a0bf850dc8e02b56dcae2913cc79e461c78afbd49d77",
+    "files.js": "5b23e470c5dedc93d0c80ea0696eff36bad3afbb88eb4bc85ced567f472c5b2a",
+    "icon-192.png": "ce18b6621f58d2b24ef49ec182bf4f021f5992b2e46e666918764c47d92a1a0a",
+    "icon-512.png": "33d17b00001bf55448c56919e7f9a9d56be7089231be189704d72a13d00363d4",
+    "index.apple-touch-icon.png": "a8079e5f32d35cabbc12bb9f66f4b7c49a73b84d7fc1e8e4dde15914f9bc50eb",
+    "index.audio.position.worklet.js": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+    "index.audio.worklet.js": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+    "index.html": "870c7182fade3decafcdff3c934967bc2c511f9316add87476c66e9d2084173a",
+    "index.icon.png": "490c9afe17f218360ceb84d41dd95d0409dfe0349c00a97c40cf3d8e04cf0b45",
+    "index.js": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
+    "index.pck": "4e4e6d038bd59a6999f1462f4e035edc89bb6c5f9700f1d3678c259e4b5a8a9f",
+    "index.png": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
+    "index.wasm.part0": "e225998ec9fbd2fb1aa80798d571dc381fdd9bfdb3478250832404d941db0426",
+    "index.wasm.part1": "79cae914fb3feb5b3ef307b0906fd111d1ee2ca48ff730ba21cca432c271467b",
+    "installer-worker.js": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
+    "licenses/LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+    "manifest.webmanifest": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
+    "service-worker.js": "0f8161fd94b5707de6b62301970345443e9dd80ae2f595de3749eca2f775ac06",
+    "storage.js": "9265725b43b6b4e897693fd3be62b175c3e0b07493b51ba7d18a6d1578bee581",
+    "wiki/BUILD-INFO.json": "77a717330a9e4ddf15caaa5bbd07a3364b45d208a6ad30c868f0abb4fb8bbeec"
+  },
+  "parts_manifest": {
+    "/index.wasm": {
+      "count": 2,
+      "size": 39509339
+    }
+  },
+  "evidence": {
+    "results.json.gz": "bc8e15ac3d8f378866a64a9ade6b3a47dbd0842cef4ab7536a7b731c5a7834f9",
+    "android-winter-victory.png": "1022ad0f6b9f24eb7b2ac56596b5fa298ef6692825ff1bb589949927dda5003e"
+  },
+  "validation_notes": [
+    "A first desktop hover test sampled a still-interpolating hit pose; the fixture now waits for its visual pose before targeting the health marker.",
+    "The terrain colour lifecycle check uses Mobile with --ei-baked-terrain, as required by that fixture.",
+    "The Android native battle exposed the Mobile per-mesh decal limit. The final build composites the original arena marks onto the snow on Mobile and Compatibility, retaining their growth, visibility and lifetime.",
+    "The Android fixture instruments only the launcher; 335 gameplay scripts and every native library match the production APK. The separate QA package and settings were restored; the normal game was not modified."
+  ],
+  "limits": [
+    "Runtime and rendering checks ran on Linux and Retroid Pocket 5. Windows and macOS exports were audited without native OS runtime tests. macOS is unsigned.",
+    "Android validation covers the snowy expedition and previously qualified renderer workloads; it does not measure a complete campaign or every Android GPU.",
+    "Browser checks cover startup, cached upgrades and localized wiki layouts, not a complete campaign.",
+    "Trials balance measurements in arena-alliances-2026-10-17.json cover Standard difficulty and deterministic purchasing policies, not human win rates.",
+    "Wiki portraits are illustrative. Planning does not mutate actual gameplay saves or inventory."
+  ],
+  "deployment_verification": "Live asset hashes and browser rendering must pass before publishing the draft release; publication receipts remain in the release workspace."
+}
