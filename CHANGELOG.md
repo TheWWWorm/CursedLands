@@ -2,6 +2,8 @@
 
 ## 1.9.0 — Trials, illustrated lore and Android rendering, 17 October 2026
 
+- Draw native battlefield marks on the snowy surface on Mobile and Compatibility renderers.
+
 - Add **Trials of the Allods**, a solo PvE expedition across 30 encounters on a snowy battlefield. Buy a company from original Gipath, Ingos and Suslanger creatures, arrange the formation, and let both teams fight under AI control.
 - Add automatic creature evolution, overlapping Beast, Horde, Warrior, Hunter and Mage alliances, level-based recruitment, paid training, interest, win streaks and camp rewards. Each preparation lasts up to 45 seconds; ordinary results advance automatically.
 - Add native run-in and repositioning animations, visible snow trails and blood, numeric health, damage feedback, creature details and a HUD that scales through 4K. Keep the opening, menus and feedback localized in English, Russian and German.

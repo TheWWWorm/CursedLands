@@ -183,6 +183,7 @@ func _ready() -> void:
 		screen._hit_numbers.queue_redraw()
 		await frames(2)
 		if spec[1].x >= 3840: await shot(tag + "-hit")
+		await get_tree().create_timer(0.3).timeout
 		var enemy: GameUnit = screen.battle.world.unit_rows().filter(func(unit): return unit.faction == 2)[0]
 		var enemy_marker := screen.field.health_anchor(enemy) - Vector2(0, 15) * screen._ui_scale
 		check(screen.field._pick(enemy_marker) == enemy, tag + " health marker picks enemy in a crowded fight")

@@ -71,7 +71,7 @@ func _ready() -> void:
 	catalog.ordered = catalog.ordered.filter(func(key: String): return not unlisted.has(key))
 	var directory := output.path_join(RemakeText.lang)
 	DirAccess.make_dir_recursive_absolute(directory.path_join("pages"))
-	var index := {"schema":2,"language": RemakeText.lang, "version": "1.8.0", "campaign": GameData.campaign_id, "source": "Lost in Astral" if GameData.campaign_id == CampaignProfile.ASTRAL else "GOG", "entries": [], "categories": {}}
+	var index := {"schema":2,"language": RemakeText.lang, "version": str(ProjectSettings.get_setting("application/config/version")), "campaign": GameData.campaign_id, "source": "Lost in Astral" if GameData.campaign_id == CampaignProfile.ASTRAL else "GOG", "entries": [], "categories": {}}
 	var images := {}
 	var page_images := {}
 	var variants := 0

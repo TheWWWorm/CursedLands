@@ -71,7 +71,9 @@ func _rebuild_world() -> void:
 	for placement: Dictionary in formation:
 		_spawn(placement)
 	if DisplayServer.get_name() != "headless":
-		GroundMarks.of(world).prepare_footprints()
+		var marks := GroundMarks.of(world)
+		marks.prepare_footprints()
+		if ground is ArenaWinterTerrain: ground.bind_ground_marks(marks)
 		world.unit_died.connect(_queue_death_mark)
 	changed.emit()
 
