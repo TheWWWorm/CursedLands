@@ -1,0 +1,46 @@
+{
+  "version": "1.15.0",
+  "game_source_commit": "6130d29ab76f072c6c25c4c87d3250ca1e0bc4af",
+  "assets": [
+    {
+      "name": "CursedLands-1.15.0-android.apk",
+      "bytes": 38817371,
+      "sha256": "347501a490252568a81dab850f1f16999b2225a2815a2909d0a8640e450c32db"
+    },
+    {
+      "name": "CursedLands-1.15.0-linux-x86_64.tar.gz",
+      "bytes": 55196017,
+      "sha256": "07dab89de2a65e9fd0fba264588da5d1c0368819a28303473653b19d6ecc4b09"
+    },
+    {
+      "name": "CursedLands-1.15.0-macos-universal.zip",
+      "bytes": 82438764,
+      "sha256": "d3590b36e3864d51b09dceb4406d7a3c49171814205b514c851272085b1eb103"
+    },
+    {
+      "name": "CursedLands-1.15.0-tools.zip",
+      "bytes": 60991,
+      "sha256": "7231934e0bb67b543779007863668829f9b24a0e7af81fcb5ad803926578cb6e"
+    },
+    {
+      "name": "CursedLands-1.15.0-web.zip",
+      "bytes": 177409698,
+      "sha256": "216c920c27a1098c8f85ff1eb663917efabd498a892eda287463f0139d1b8db7"
+    },
+    {
+      "name": "CursedLands-1.15.0-windows-x86_64.zip",
+      "bytes": 56361023,
+      "sha256": "eff02c42c31a60426ca675f63e79ca210fa43c3d4c291368ccc6faccd0af02aa"
+    },
+    {
+      "name": "quick-recovery.eimod",
+      "bytes": 546,
+      "sha256": "f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 686,
+      "sha256": "7658cd764b34ab6844a27a02ea2ce8c6c3c424e44799fed0bb195e696d1e03d1"
+    }
+  ]
+}

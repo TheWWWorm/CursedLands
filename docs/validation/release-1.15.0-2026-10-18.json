@@ -1,0 +1,676 @@
+{
+  "version": "1.15.0",
+  "tag": "v1.15.0",
+  "date": "2026-10-18",
+  "base_stable": "1.14.0",
+  "release_type": "stable minor (online autochess and optional controls)",
+  "game_source_commit": "6130d29ab76f072c6c25c4c87d3250ca1e0bc4af",
+  "game_tree": "cc49ffe8b9175a7da5dc14c4507bbb8e4b8a7b55",
+  "coop_protocol": 23,
+  "autochess_protocol": 1,
+  "matching_game_versions_required": true,
+  "compiled_scripts": 357,
+  "all_compiled_scripts_identical_across_five_platforms": true,
+  "runtime_checks": [
+    {
+      "suite": "arena_online",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_ONLINE 64 checks; failures=[]"
+      ],
+      "checks": 64,
+      "seconds": 9.629,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/CursedLands-1.15.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/arena_online.gd"
+      ],
+      "log_sha256": "14e9777d7e80141cc845fc692208d8b52af2b5712e6875e108e5396063bb3f91",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/checks/headless-arena_online-en",
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_online_lobby",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_ONLINE_LOBBY 75 checks; failures=[]"
+      ],
+      "checks": 75,
+      "seconds": 4.521,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/CursedLands-1.15.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/arena_online_lobby.gd"
+      ],
+      "log_sha256": "09247cfdec4c2b20db48912f1439bad378a29be1cf77f9b1a989743dc9e56c67",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/checks/headless-arena_online_lobby-en",
+      "renderer": "headless"
+    },
+    {
+      "suite": "audio_echo_options",
+      "language": "en",
+      "args": [
+        "--test-lang=en"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "AUDIO_ECHO_OPTIONS en 16 checks; failures=[]"
+      ],
+      "checks": 16,
+      "seconds": 4.12,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/CursedLands-1.15.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/audio_echo_options.gd",
+        "--test-lang=en"
+      ],
+      "log_sha256": "ea50ae96a34f40c5e827a394e8676232a068bace9c6a222976f172cb0ba88397",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/checks/rendered-audio_echo_options-en",
+      "renderer": "Mesa llvmpipe OpenGL Compatibility"
+    },
+    {
+      "suite": "audio_echo_options",
+      "language": "ru",
+      "args": [
+        "--test-lang=ru"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "AUDIO_ECHO_OPTIONS ru 16 checks; failures=[]"
+      ],
+      "checks": 16,
+      "seconds": 4.12,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/CursedLands-1.15.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/data/ru",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/audio_echo_options.gd",
+        "--test-lang=ru"
+      ],
+      "log_sha256": "c63f90771f5201db099c5b162df9d68aca8409e8162571fbbaadb7a5ac8a6745",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/checks/rendered-audio_echo_options-ru",
+      "renderer": "Mesa llvmpipe OpenGL Compatibility"
+    },
+    {
+      "suite": "audio_echo_options",
+      "language": "de",
+      "args": [
+        "--test-lang=de"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "AUDIO_ECHO_OPTIONS de 16 checks; failures=[]"
+      ],
+      "checks": 16,
+      "seconds": 4.121,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/CursedLands-1.15.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/audio_echo_options.gd",
+        "--test-lang=de"
+      ],
+      "log_sha256": "3ac8d0cff7cbe0721d17d236f3e1ad54da4ec55ef1b4a4e969e7d5306bfce734",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/checks/rendered-audio_echo_options-de",
+      "renderer": "Mesa llvmpipe OpenGL Compatibility"
+    },
+    {
+      "suite": "menu_wiki_ui",
+      "language": "de",
+      "args": [
+        "--test-lang=de",
+        "--test-size=1920,1080"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "MENU_WIKI_UI de 16 checks; failures=[]"
+      ],
+      "checks": 16,
+      "seconds": 37.123,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/CursedLands-1.15.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/menu_wiki_ui.gd",
+        "--test-lang=de",
+        "--test-size=1920,1080"
+      ],
+      "log_sha256": "e3ebe2020d2263f1a071a8087f35d1a57b919e5a66ff8a0abac41b8da0f4df6e",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/checks/rendered-menu_wiki_ui-de",
+      "renderer": "Mesa llvmpipe OpenGL Compatibility"
+    },
+    {
+      "suite": "arena_online_ui",
+      "language": "en",
+      "args": [
+        "--online-ui=en,1920,1080"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "ARENA_ONLINE_UI 34 checks; failures=[]"
+      ],
+      "checks": 34,
+      "seconds": 66.341,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/CursedLands-1.15.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/arena_online_ui.gd",
+        "--online-ui=en,1920,1080"
+      ],
+      "log_sha256": "e4ce947e6745c3e62a86002786b927c656c15a1948a4ecffa19defda629b843f",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/checks/rendered-arena_online_ui-en",
+      "renderer": "Mesa llvmpipe OpenGL Compatibility"
+    },
+    {
+      "suite": "wiki_context_input",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "WIKI_CONTEXT_INPUT 37 checks; failures=[]"
+      ],
+      "checks": 37,
+      "seconds": 149.389,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/CursedLands-1.15.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/repo/tools/tests/wiki_context_input.gd"
+      ],
+      "log_sha256": "e3609478a6105d47248474a137607471da9cc0141e17a232fa8da461ed5605ae",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-online-20261018/release-1.15.0/checks/rendered-wiki_context_input-en",
+      "renderer": "Mesa llvmpipe OpenGL Compatibility"
+    }
+  ],
+  "separate_processes": [
+    {
+      "transport": "enet",
+      "passed": true,
+      "results_match": true,
+      "peers": [
+        {
+          "board_frames": 273,
+          "checks": 12,
+          "failures": [],
+          "fight_frames": 187,
+          "health": [
+            79,
+            80,
+            100,
+            82,
+            86,
+            100,
+            100,
+            83,
+            100
+          ],
+          "placements": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pvp_rounds": [
+            4,
+            6
+          ],
+          "role": "host",
+          "rounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "transport": "enet",
+          "exit_code": 0,
+          "errors": []
+        },
+        {
+          "board_frames": 273,
+          "checks": 8,
+          "failures": [],
+          "fight_frames": 148,
+          "health": [
+            79,
+            80,
+            100,
+            82,
+            86,
+            100,
+            100,
+            83,
+            100
+          ],
+          "placements": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pvp_rounds": [
+            4,
+            6
+          ],
+          "role": "client",
+          "rounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "transport": "enet",
+          "exit_code": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "transport": "websocket",
+      "passed": true,
+      "results_match": true,
+      "peers": [
+        {
+          "board_frames": 272,
+          "checks": 12,
+          "failures": [],
+          "fight_frames": 186,
+          "health": [
+            79,
+            80,
+            100,
+            82,
+            86,
+            100,
+            100,
+            83,
+            100
+          ],
+          "placements": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pvp_rounds": [
+            4,
+            6
+          ],
+          "role": "host",
+          "rounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "transport": "websocket",
+          "exit_code": 0,
+          "errors": []
+        },
+        {
+          "board_frames": 272,
+          "checks": 8,
+          "failures": [],
+          "fight_frames": 147,
+          "health": [
+            79,
+            80,
+            100,
+            82,
+            86,
+            100,
+            100,
+            83,
+            100
+          ],
+          "placements": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pvp_rounds": [
+            4,
+            6
+          ],
+          "role": "client",
+          "rounds": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "transport": "websocket",
+          "exit_code": 0,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "packaged_runtime_assertions": 314,
+  "source_validation": [
+    "autochess-online-2026-10-18.json",
+    "wiki-audio-ui-2026-10-18.json"
+  ],
+  "translations": {
+    "entries": 2618,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 145,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "errors": 0,
+    "output": "Wiki world text: 180 entries in EN/RU/DE\nWiki reference text: 3886 source-checked EN/DE entries; RU uses original archives\nTranslations: 2618 entries; 141 dynamic wiki keys; 145 dynamic arena keys; 0 errors"
+  },
+  "desktop": {
+    "linux-x86_64": {
+      "version": "1.15.0",
+      "source_commit": "6130d29ab76f072c6c25c4c87d3250ca1e0bc4af",
+      "game_tree": "cc49ffe8b9175a7da5dc14c4507bbb8e4b8a7b55",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 357,
+      "resource_count": 942,
+      "files": {
+        "CursedLands.x86_64": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.pck": "66ba041488e5ceb4736f5df74cf256a41563eb0e0a57209138296bb6b6d67031"
+      }
+    },
+    "windows-x86_64": {
+      "version": "1.15.0",
+      "source_commit": "6130d29ab76f072c6c25c4c87d3250ca1e0bc4af",
+      "game_tree": "cc49ffe8b9175a7da5dc14c4507bbb8e4b8a7b55",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 12,
+      "unchanged_qualified_engine": true,
+      "compiled_scripts": 357,
+      "resource_count": 942,
+      "files": {
+        "CursedLands.exe": "9fb8fe22ae1eeb61568b624d935b9d003f74a67ff714f548c92426ad7baee51b",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "CursedLands.pck": "66ba041488e5ceb4736f5df74cf256a41563eb0e0a57209138296bb6b6d67031"
+      }
+    },
+    "macos-universal": {
+      "version": "1.15.0",
+      "source_commit": "6130d29ab76f072c6c25c4c87d3250ca1e0bc4af",
+      "game_tree": "cc49ffe8b9175a7da5dc14c4507bbb8e4b8a7b55",
+      "protocol": 23,
+      "platform": "macos-universal",
+      "unsigned": true,
+      "target_os_runtime_tested": false,
+      "compiled_scripts": 357,
+      "files": {
+        "CursedLands.zip": "765794e0ed51ff431991c9ae6dc9834b98d575d74b0c82bb62410caa4f715114"
+      }
+    }
+  },
+  "android": {
+    "version": "1.15.0",
+    "compiled_scripts": 357,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 49,
+    "debuggable": false,
+    "apk_sha256": "347501a490252568a81dab850f1f16999b2225a2815a2909d0a8640e450c32db",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16,
+    "target_os_runtime_tested": false
+  },
+  "browser": {
+    "version": "1.15.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-be376f1ea394a4cd72e9",
+      "new_cache": "cursed-engine-2-d1509efe7974059afebc",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "1b3bf19e2fc9c7b158cf96b1834dc7264f1bf94c584b37ddbe0ec217e7be1058",
+      "old_tab_wait_verified": true
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-d1509efe7974059afebc"
+      ],
+      "packs": {
+        "cursed-engine-2-d1509efe7974059afebc": "1b3bf19e2fc9c7b158cf96b1834dc7264f1bf94c584b37ddbe0ec217e7be1058"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    },
+    "previous_start": {
+      "version": "1.14.0",
+      "visible_setup_screen": true,
+      "runtime_errors": [],
+      "origin": "http://127.0.0.1:29152/"
+    },
+    "fresh_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": [],
+      "origin": "http://127.0.0.1:29153/",
+      "inspection": "In-app browser screenshot and error/warning console inspection"
+    },
+    "upgraded_start": {
+      "visible_setup_screen": true,
+      "runtime_errors": [],
+      "origin": "http://127.0.0.1:29152/",
+      "inspection": "In-app browser screenshot and error/warning console inspection"
+    },
+    "build": {
+      "version": "1.15.0",
+      "source_tag": "v1.15.0",
+      "source_commit": "6130d29ab76f072c6c25c4c87d3250ca1e0bc4af",
+      "game_tree": "cc49ffe8b9175a7da5dc14c4507bbb8e4b8a7b55",
+      "protocol": 23,
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 357,
+      "resource_count": 939,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "1b3bf19e2fc9c7b158cf96b1834dc7264f1bf94c584b37ddbe0ec217e7be1058",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    }
+  },
+  "wiki": {
+    "version": "1.15.0",
+    "indexes": {
+      "wiki/data/de/index.json": 1277,
+      "wiki/data/en/index.json": 1277,
+      "wiki/data/ru/index.json": 1277,
+      "wiki/data/lost_in_astral/de/index.json": 1757,
+      "wiki/data/lost_in_astral/en/index.json": 1757,
+      "wiki/data/lost_in_astral/ru/index.json": 1757
+    },
+    "files": 13526,
+    "manifest_sha256": "d384899b1dfa2346d775985213dfb100b264aaf277d30da660ad77d3545effac",
+    "content": "Existing 1.14.0 encyclopedia retained; index version metadata updated."
+  },
+  "hosted_files_count": 13551,
+  "hosted_manifest_sha256": "52f2007e999cab4d9acebcaf1c466a770fdf573f5386c3bd5757ac730922a0d3",
+  "parts_manifest": {
+    "/index.wasm": {
+      "count": 2,
+      "size": 39509339
+    }
+  },
+  "evidence": {
+    "audio-echo-de.png": "b95ae93f11b22c519481c39288062da370ab7a4d1d707ef356e3647f7060ca20",
+    "audio-echo-en.png": "7ef416fd20924918b2b16a473f3be823a851c450839c2bc1c7ee52c21b76da31",
+    "audio-echo-ru.png": "2f15fc956d24f678860ce1e1cd0491d64c686257eaa56e8143335934afcbca6b",
+    "expansion-online-en-host.png": "b77f8fc134bd0467678b7eecd1214fa2bead0d92e9b405cab1c00365cf701f21",
+    "expansion-online-en-lobby.png": "094c570b6d6d6fa79806683f0663776ac121ee42a92cd7fa607ce93aa73282be",
+    "expansion-online-en-prepare.png": "238e4dbec2113b2668e8a968892e67ea4dc2d136573804e76ceb7b41f87202bc",
+    "expansion-online-en-wiki.png": "1ec3a25a4640fac2136d477d206757732c17d133dc27e92f1edfcf1be7c606b3",
+    "menu-wiki-tooltip.png": "6b508a7a1f54894a32e6271ba0943a51577d426212d84409eedac90e825abdfc",
+    "results.json.gz": "ba0220c06fa6474e0422b264e6091aa26f01e1ab62bf520c7d8055a6ebd825a6",
+    "wiki-binding-de.png": "57f90add699adee56936fd0860f3c7e1762f8615c5de0b54c8c73f03dbc17b5d"
+  },
+  "changes_qualified": [
+    "Host-authoritative nine-seat autochess over ENet and WebSocket: independent shops, bounded and sequenced actions, stale/replayed/malformed intent rejection, bots, combat shopping, exact native body-part health, elimination and disconnect takeover.",
+    "Both transports complete six rounds, including PvP rounds four and six, in independent packaged host/client processes with matching health and standings.",
+    "The familiar co-op host/join forms expose address copy/paste, recent addresses, passwords and readiness. Source UI checks cover English, Russian and German and multiple window sizes.",
+    "F7 resolves actual hovered campaign and autochess subjects, preserves binding changes and explicit unbinding, ignores text entry and restores modal focus. Campaign pauses while online preparation continues advancing.",
+    "All fifteen sample-channel reverb effects obey Cave echo immediately. Cancel restores the prior choice; accept persists it; zone changes and replacement mixers retain the preference.",
+    "Packaged Audio and shortcut settings use the corresponding original English, Russian and German archives. Labels, help and choices remain readable at 1280x800. The German menu and English online wiki fit 1920x1080.",
+    "Browser update from published stable 1.14.0 waits for the old game to close and preserves every IndexedDB store, including save and data sentinels."
+  ],
+  "limits": [
+    "Linux x86_64 was executed. Windows, macOS and Android packages were exported and audited, but not run on their target operating systems. The macOS package is unsigned.",
+    "Online tests use loopback; external WAN routing, UPnP and browser secure-WebSocket proxy operation were not exercised. Browser validation covers startup and storage upgrade, not multiplayer or campaign gameplay.",
+    "Audio uses the Dummy driver; effect state, option persistence and localization were verified, not acoustic output through physical speakers.",
+    "This online version has no late joining, reconnection, host migration or online save/resume. Browser clients require a reachable wss:// endpoint and cannot host."
+  ],
+  "deployment_verification": "The draft is published only after hosted hashes and live browser startup match this build; deployment and publication receipts are retained with the release workspace."
+}
