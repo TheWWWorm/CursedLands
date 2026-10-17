@@ -735,10 +735,11 @@ func view_target() -> GameUnit:
 	return leader()
 
 
-## Scripted full-body poses (including the opening wake-up) are framed from
-## outside the body. Direct eyes resume when normal player actions resume.
+## Action animations can keep the player's chosen eye view. Explicit movie,
+## held and portrait cameras still own their framing in the callers.
 func _first_person_view(u: GameUnit) -> bool:
-	return first_person() and not u.action.begins_with("anim:")
+	return first_person() and (GameData.option("direct_first_person_actions") != 0 \
+		or not u.action.begins_with("anim:"))
 
 
 func apply_camera(dt := 0.0) -> void:

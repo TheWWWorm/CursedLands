@@ -1,6 +1,8 @@
 # Changelog
 
-## 1.11.1 — 2026-10-17
+## 1.12.0 — 2026-10-17
+
+- Add First-person actions under the First / third person settings. It keeps first person during action animations by default; Off restores automatic third-person framing. Scripted cameras retain control.
 
 - Keep embedded shaders compatible with Windows checkout line endings.
 - Allow graphics detection to finish applying a preset when terrain updates replace scene nodes.

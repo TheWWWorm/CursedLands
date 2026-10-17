@@ -139,6 +139,7 @@ const OPTIONS := [
 	["direct_invert_x", 1, 2, 24, 4, 0],
 	["direct_invert_y", 1, 2, 24, 5, 0],
 	["direct_hints", 1, 3, 24, 6, 1],
+	["direct_first_person_actions", 1, 2, 24, 7, 1],
 	["direct_pad_x", 0, 100, 26, 0, 50],
 	["direct_pad_y", 0, 100, 26, 1, 50],
 	["direct_pad_deadzone", 0, 40, 26, 2, 13],
@@ -225,6 +226,7 @@ const FIXED_OPTIONS := {"shadow_units": 1, "shadow_buildings": 1, "shadow_flora"
 ## Labels of the remake's multiple-choice rows (value = index); "resolution"
 ## is built from the monitor (resolutions()).
 const DISPLAY_CHOICES := {
+	"direct_first_person_actions": ["Off", "On"],
 	"direct_hints": ["Off", "Compact", "Full guide"],
 	"direct_fov_first": ["50°", "55°", "60°", "65°", "70°", "75°", "80°", "85°", "90°", "95°", "100°", "105°", "110°"],
 	"direct_fov_third": ["50°", "55°", "60°", "65°", "70°", "75°", "80°", "85°", "90°", "95°", "100°", "105°", "110°"],
@@ -269,6 +271,7 @@ const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "
 	"r_camera", "r_interface", "r_game", "r_coop", "gamepad", "gamepad_buttons", "r_terrain", "r_water", "direct_view", "direct_keys", "direct_pad"]
 ## Labels and tips of the remake's own option rows (texts.res has none).
 const REMAKE_OPTIONS := {
+	"direct_first_person_actions": ["First-person actions", "Stay in first person when picking up items, using levers and performing other actions. Off: show action animations in third person. Scripted cameras keep control."],
 	"direct_hints": ["Control guide", "Compact shows a small view/cursor shortcut hint. Full guide adds movement keys and crosshair explanations. Off hides the lower guide."],
 	"spell_double_tap_self": ["Double-tap spell key to self-cast", "Press the same spell shortcut twice quickly to cast a compatible friendly spell on yourself. One press selects a target normally. Off: a second press cancels spell selection."],
 	"direct_fov_first": ["First-person FOV", "Vertical field of view in first person."],
@@ -423,6 +426,7 @@ const REMAKE_OPTIONS := {
 ## screen). "marks" = EnableBloodprints and "footprints" = EnableFootprints
 ## switch the ground marks (GroundMarks).
 const OPTIONS_APPLIED := ["direct_hints", "direct_fov_first", "direct_fov_third", "direct_mouse_first", "direct_mouse_third", "direct_invert_x", "direct_invert_y", "direct_pad_x", "direct_pad_y", "direct_pad_deadzone", "direct_pad_curve", "direct_pad_invert_x", "direct_pad_invert_y",
+	"direct_first_person_actions",
 	"spell_double_tap_self",
 	"volume_sfx", "volume_stream", "volume_voice", "power_kbd",
 	"graphics_preset",

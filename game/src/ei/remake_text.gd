@@ -1158,6 +1158,8 @@ const TEXTS := {
 	"Third-person FOV": ["Угол обзора от третьего лица", "Sichtfeld: Schulteransicht"],
 	"First-person look speed": ["Скорость обзора от первого лица", "Maus: Egoansicht"],
 	"Third-person look speed": ["Скорость обзора от третьего лица", "Maus: Schulteransicht"],
+	"First-person actions": ["Действия от первого лица", "Aktionen in Egoansicht"],
+	"Stay in first person when picking up items, using levers and performing other actions. Off: show action animations in third person. Scripted cameras keep control.": ["Сохранять вид от первого лица при подборе предметов, использовании рычагов и других действиях. Выкл.: показывать анимации действий от третьего лица. Камеры сюжетных сцен сохраняют управление.", "Beim Aufheben von Gegenständen, Betätigen von Hebeln und anderen Aktionen in der Egoansicht bleiben. Aus: Aktionsanimationen in der Schulteransicht zeigen. Skriptgesteuerte Kameras behalten die Kontrolle."],
 	"Invert mouse horizontal": ["Инверсия мыши по горизонтали", "Maus horizontal umkehren"],
 	"Invert mouse vertical": ["Инверсия мыши по вертикали", "Maus vertikal umkehren"],
 	"Horizontal aim speed": ["Скорость прицела по горизонтали", "Horizontales Zieltempo"],

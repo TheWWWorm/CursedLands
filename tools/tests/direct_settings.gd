@@ -35,6 +35,11 @@ func _ready() -> void:
 	var panel:=OptionsPanel.new();add_child(panel);panel.open();panel._tutorial.visible=false
 	panel._show_group(OptionsPanel.DIRECT_GROUP)
 	check(panel._rows[0].name=="direct_fov_first" and panel._rows[11].to==26 and panel._rows[12].to==25,"direct settings page exposes camera, controller and key pages")
+	check(panel._rows[7].name=="direct_first_person_actions" and panel._values.direct_first_person_actions==1,"first-person actions appear on the camera page and default to On")
+	panel._set_value("direct_first_person_actions",0);panel._close()
+	check(GameData.option("direct_first_person_actions")==1,"cancel leaves action perspective unchanged")
+	panel.open();panel._tutorial.visible=false
+	panel._set_value("direct_first_person_actions",0)
 	panel._show_group(OptionsPanel.DIRECT_KEYS_GROUP)
 	panel._assign("direct_forward",EIKeymap.scan_code(KEY_I))
 	check(panel._key_profiles[0]==classic,"rebinding direct movement leaves tactical bindings unchanged")
@@ -44,6 +49,10 @@ func _ready() -> void:
 	EIKeymap._direct_loaded=false
 	check(EIKeymap.bindings(2).get(EIKeymap.scan_code(KEY_I))=="direct_forward","direct binding survives reloading its separate file")
 	var cfg:=ConfigFile.new();check(cfg.load(GameData.CONFIG_PATH)==OK and cfg.get_value("options","direct_fov_first")==8,"FOV settings are persisted")
+	check(cfg.get_value("options","direct_first_person_actions")==0 and GameData.option("direct_first_person_actions")==0,"applying Off persists the action perspective preference")
+	panel.open();panel._tutorial.visible=false;panel._set_value("direct_first_person_actions",1);panel._apply();panel._close()
+	cfg.load(GameData.CONFIG_PATH)
+	check(cfg.get_value("options","direct_first_person_actions")==1 and GameData.option("direct_first_person_actions")==1,"applying On persists the action perspective preference")
 	g.direct.apply_camera()
 	check(is_equal_approx(g.rig.camera.fov,90.0),"first-person FOV uses its own value")
 	GameData.options.control_mode=2;g.direct.apply_camera()
@@ -80,6 +89,14 @@ func _ready() -> void:
 	check(g.direct._hit_until>Time.get_ticks_msec(),"confirmed hit sequence flashes the reticle")
 	g.direct._hit_until=0;hero.hp-=1;g.direct._update_feedback(0.01)
 	check(g.direct._hit_until==0,"unattributed HP changes never confirm a hit")
+	for lang in ["en","ru","de"]:
+		RemakeText.lang=lang;panel._show_group(OptionsPanel.DIRECT_GROUP)
+		var row: Dictionary=panel._rows[7]
+		check(row.label==RemakeText.t("First-person actions") and panel.text_width(row.label,1)<=260,"action label is localized and fits in "+lang)
+		check(row.tip.contains(RemakeText.t(GameData.REMAKE_OPTIONS.direct_first_person_actions[1])),"action help is localized in "+lang)
+		for value in [0,1]:
+			panel._values.direct_first_person_actions=value
+			check(panel._switch_text(row)==RemakeText.t("On" if value else "Off") and panel.text_width(panel._switch_text(row),1)<=160,"action choice %d is localized and fits in %s"%[value,lang])
 	if DisplayServer.get_name()!="headless":
 		PadInput.active="kbm";panel.open();panel._tutorial.visible=false
 		g.hud.visible=false;g.hud._safe_root.visible=false;g.direct._overlay.visible=false
@@ -88,7 +105,9 @@ func _ready() -> void:
 		for lang in ["en","ru","de"]:
 			RemakeText.lang=lang
 			for group in [24,25,26]:
-				panel._show_group(group);await frames(3);await RenderingServer.frame_post_draw
+				panel._show_group(group)
+				if group==24:panel._sel=7
+				await frames(3);await RenderingServer.frame_post_draw
 				get_viewport().get_texture().get_image().save_png("user://direct-settings-%s-%d.png"%[lang,group])
 	panel.queue_free();g.queue_free();s.queue_free();await frames(10);TexUpscale.shutdown()
 	print("DIRECT_SETTINGS ",checks," checks ",failures.size()," failures")

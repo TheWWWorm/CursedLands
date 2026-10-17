@@ -65,7 +65,10 @@ func _run() -> void:
 			check(notifications == before + 1, "menu tier %d finishes applying" % tier)
 			await RenderingServer.frame_post_draw
 			await get_tree().process_frame
-		check(expired > 0, "real terrain invalidated snapshot entries")
+		if EITerrain.WaterReflection.supported() or EITerrain.CloudReflectionView.supported():
+			check(expired > 0, "real terrain invalidated reflection snapshot entries")
+		else:
+			check(expired == 0, "unsupported reflection views are absent on this renderer")
 		print("GFX_DETECT_LIVE expired_menu_nodes=", expired)
 		if OS.get_cmdline_user_args().has("--calibrate-startup"):
 			var calibration := GfxDetect.start(false)
