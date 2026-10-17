@@ -26,6 +26,9 @@ func _ready()->void:
 	check(LoadingScreen._current==replacement and is_instance_valid(replacement),"older completion cannot remove a newer load's cover")
 	LoadingScreen.end();await frames(4)
 	check(LoadingScreen._current==null,"finished replacement clears after presentation")
+	# Removal runs after a draw; queued render-thread frees affect the next
+	# submitted frame, not the image that triggered the removal callback.
+	await frames(2)
 	pixels=get_viewport().get_texture().get_image()
 	check(pixels.get_pixel(20,20).r>0.9,"completed cover releases the underlying view")
 	GameData.root=root

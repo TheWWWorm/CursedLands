@@ -111,7 +111,7 @@ unlocks use `user://arena-profile.json`. Interrupted battles resume in preparati
 An optional seed repeats shops and formations. Original campaign data is required;
 Trials is not offered from Lost in Astral.
 
-Source launch: `godot-4 --path game -- --arena-pve`. See the [current rules](docs/arena-pve-design.md)
+Source launch: `godot-4 --path game --render-thread safe -- --arena-pve`. See the [current rules](docs/arena-pve-design.md)
 and [balance and UI validation](docs/validation/trials-ui-balance.md). The separate
 creature sandbox remains available to developers through `--arena`; it uses its
 original five-minute draw limit.

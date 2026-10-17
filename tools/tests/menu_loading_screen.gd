@@ -18,6 +18,13 @@ func check(ok: bool, label: String) -> void:
 	if not ok: failures += 1
 	print("PASS " if ok else "FAIL ",label)
 
+func finish_loading_frames() -> void:
+	# The cover waits for up to eight presented frames while pipelines settle.
+	# A fixed three/four-frame wait can stop before that bounded completion.
+	for i in 12:
+		await get_tree().process_frame
+		if LoadingScreen._current == null: return
+
 func presented() -> void:
 	if not monitoring or session == null or session.game == null: return
 	if session.world != null and not session.loading_game and not session._remote_loading:
@@ -42,7 +49,11 @@ func _ready() -> void:
 	var main := get_parent()
 	reparent(get_tree().root)
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,
-		"net_directory":0,"auto_graphics":0,"control_mode":1,"scroll_border":0},true)
+		"net_directory":0,"auto_graphics":0,"control_mode":1,"scroll_border":0,
+		"confine_mouse":0,"display_mode":0},true)
+	if OS.get_cmdline_user_args().has("--original-graphics"):
+		GameData.options.merge(GfxDetect.tier_values(GfxDetect.ORIGINAL, GfxDetect.base_values()), true)
+		GameData._apply_window()
 	new_game = OS.get_cmdline_user_args().has("--new-game")
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--zone="):requested_zone=arg.trim_prefix("--zone=")
@@ -76,7 +87,7 @@ func _ready() -> void:
 	var deadline:=Time.get_ticks_msec()+90000
 	while (session==null or session.world==null or session.loading_game or session._remote_loading) and Time.get_ticks_msec()<deadline:
 		await get_tree().process_frame
-	for i in 4: await get_tree().process_frame
+	await finish_loading_frames()
 	monitoring=false
 	check(premature_hud == 0, "HUD stays hidden for every unfinished-world frame")
 	check(final_cover > 0, "cover stays through the first completed-world frame")
@@ -91,7 +102,7 @@ func _ready() -> void:
 		"new_game":new_game,"deferred":LoadingScreen.deferred(),"covered":covered,"exposed":exposed,"premature_hud":premature_hud,"final_cover":final_cover,
 		"zone":session.zone_id,"worker":session.local_host.frontend,"worker_pid":session.local_host.process_id},"\t"))
 	check(not await session.load_game_shown("missing-slot"),"missing save returns failure")
-	for i in 3: await get_tree().process_frame
+	await finish_loading_frames()
 	check(LoadingScreen._current==null,"failed load cleans up loading picture")
 	if OS.get_cmdline_user_args().has("--back-to-menu"):
 		await main.back_to_menu()
