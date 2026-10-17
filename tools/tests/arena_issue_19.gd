@@ -12,9 +12,23 @@ func _ready() -> void:
 		battle._physics_process(1.0/60.0);elapsed+=1.0/60.0
 	print("ISSUE_19 restored=",restored," accepted=",started," arrival_seconds=",elapsed," phase=",battle.phase," movers=",battle.formation_motion.movers.size())
 	var good:=restored and started and battle.phase==ArenaMatch.Phase.FIGHT and elapsed<=2.1
+	var enemy_formation := run.enemy_formation().duplicate(true)
 	var steps:=0
 	while good and battle.phase==ArenaMatch.Phase.FIGHT and steps<2300:
 		battle.simulate_tick();steps+=1
 	good=good and battle.phase==ArenaMatch.Phase.FINISHED and battle.world.time<=120.055
 	print("ISSUE_19 finished=",battle.phase==ArenaMatch.Phase.FINISHED," seconds=",battle.world.time," damage=",battle.damage," success=",good)
+	# The report's update identifies the enemy camp. Moving only the owned
+	# company must still start with that exact authored enemy formation.
+	battle.free()
+	run.restore(JSON.parse_string(FileAccess.get_file_as_string(path)))
+	run.arrange()
+	var second := ArenaPveMatch.new(); second.run = run; second.drives_clock = false
+	add_child(second); second.set_process(false); second.set_physics_process(false); second._world_parent = self
+	second.prepare(); second.start(); elapsed = 0.0
+	while second.phase == ArenaMatch.Phase.DEPLOY and elapsed < 3.0:
+		second._physics_process(1.0 / 60.0); elapsed += 1.0 / 60.0
+	var moved_starts := second.phase == ArenaMatch.Phase.FIGHT and elapsed <= 2.1 and run.enemy_formation() == enemy_formation
+	print("ISSUE_19 rearranged_player_same_enemies=", moved_starts, " arrival_seconds=", elapsed)
+	good = good and moved_starts
 	get_tree().quit(0 if good else 1)

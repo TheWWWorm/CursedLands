@@ -1,6 +1,15 @@
 # Changelog
 
-## Unreleased
+## 1.11.0 — 2026-10-17
+
+- Add Autochess alongside Expedition: nine players on a 3×3 map, eight named CPU rivals, announced random matchups, creep rounds, live board spectating and elimination.
+- Expand recruitment from twelve to twenty-four families, with twelve starting families from across the islands. Reprice new recruits, use stronger native evolution forms where needed, and retune later expedition reinforcements for the larger shop pool.
+- Scale the Trials HUD and main-menu buttons with display resolution. Use near-black regular text on snow, keep the shop, reserve, tribes and player list transparent, and mark the board being watched.
+- Enable battle audio when spectating, isolate spells to their own board, drain effects after combat, and spread opponent-model preparation over frames before the shared start.
+- Add a pulsing warning during the last ten seconds. End fights after two minutes or ten seconds without damage; Autochess draws damage both players.
+- Deploy new recruits into free field positions, remember combat speed across runs, use a 1×/2× toggle, and place evolution notices below the tribes. Center menu icons and keep every reserve slot visible.
+- Bound formation arrival before combat so blocked preparation movement cannot hold an encounter indefinitely. ([#19](https://github.com/TheWWWorm/CursedLands/issues/19))
+- Correct NPC target lookup for filtered multi-target spells and avoid callbacks retaining destroyed death-animation models.
 
 - Prevent a stale pause-menu frame from flashing when reopening the menu, and show the build version in the main and pause menus. ([#17](https://github.com/TheWWWorm/CursedLands/issues/17))
 

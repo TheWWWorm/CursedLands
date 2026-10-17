@@ -163,14 +163,11 @@ static func enemies(wave: int, run_seed: int, challenge := 0) -> Array[Dictionar
 		ids.append("ogrehadaganf17" if wave >= 25 else "trollbluef12" if wave >= 19 else "tigerwhitef10" if wave > 12 else "orcmalef5" if wave > 6 else "goblinf2")
 	if challenge > 1 and wave >= 6:
 		ids.append("succubgreym17" if wave >= 25 else "succubbluem17" if wave >= 19 else "batlightm10" if wave > 12 else "toadm6" if wave > 9 else "goblina3")
-	if challenge > 1 and wave >= 10:
-		ids.append("octopushadaganm17" if wave >= 24 else "octopuskaniam12" if wave >= 16 else "toadm6")
-	# Standard/Veteran pressure comes from mixed numbers. Champion already
-	# supplies stronger casters in these slots, rather than stacking both sets.
-	if challenge < 2 and wave >= 6:
+	# The larger shop pool makes finished upgrades less frequent. Standard
+	# uses the authored late waves; Veteran retains its extra front line,
+	# while Champion adds a caster instead of stacking both support groups.
+	if challenge < 2 and wave >= 6 and (challenge == 1 or wave < 19):
 		ids.append("ogrehadaganf15" if wave >= 25 else "trollbluef12" if wave >= 19 else "tigerwhitef10" if wave >= 15 else "wolfwhitef6" if wave >= 11 else "orcmalef5" if wave >= 9 else "goblinf2")
-	if challenge == 1 and wave >= 19:
-		ids.append("succubgreym13" if wave >= 25 else "batlightm10")
 	var flip := -1 if (run_seed + wave) % 2 else 1
 	for id: String in ids:
 		var proto := GameData.db.find("monster_prototypes", id)
