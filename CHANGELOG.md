@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Prevent a stale pause-menu frame from flashing when reopening the menu, and show the build version in the main and pause menus. ([#17](https://github.com/TheWWWorm/CursedLands/issues/17))
+
 - Restore the lizard tomb's return exit when revisiting after The Magic Needle, including affected saved games, while preserving quest rewards and the unfinished quest's exit restriction. ([#16](https://github.com/TheWWWorm/CursedLands/issues/16))
 
 ## 1.10.0 — 2026-10-17

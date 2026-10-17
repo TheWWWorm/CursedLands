@@ -16,15 +16,24 @@ func clip(menu: EscSignpost, name: String, scale: float, paused: bool) -> void:
 	var started := Time.get_ticks_usec()
 	menu._play(name)
 	var duration := menu._player.get_animation("ei/" + name).length
+	var previous := started
+	var longest_frame := 0.0
 	while menu._player.is_playing() and Time.get_ticks_usec() - started < (duration * 2.5 + 0.25) * 1000000:
 		await get_tree().process_frame
+		var now := Time.get_ticks_usec()
+		longest_frame = maxf(longest_frame, (now-previous)/1000000.0)
+		previous = now
 	var elapsed := (Time.get_ticks_usec() - started) / 1000000.0
-	check(not menu._player.is_playing() and absf(elapsed - duration) < 0.10,
+	# Completion is observed on the next process frame. A window-system or
+	# shader stall can delay that observation; it must never make a clip end early.
+	check(not menu._player.is_playing() and elapsed >= duration-0.035 and elapsed <= duration+longest_frame+0.035,
 		"%s takes %.3f real seconds at scale %.3f, paused=%s (%.3f measured)" % [name, duration, scale, paused, elapsed])
-	samples.append({"clip":name, "scale":scale, "paused":paused, "duration":duration, "elapsed":elapsed})
+	samples.append({"clip":name, "scale":scale, "paused":paused, "duration":duration, "elapsed":elapsed,"longest_frame":longest_frame})
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	GameData.options.confine_mouse = 0
+	if DisplayServer.get_name() != "headless": DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_VISIBLE)
 	var menu := EscSignpost.new()
 	add_child(menu)
 	check(menu._player != null, "original signpost and animation library load")
@@ -35,12 +44,13 @@ func _ready() -> void:
 	for i in 12: await get_tree().process_frame
 	if DisplayServer.get_name() != "headless":
 		menu._play("cidle")
-		for i in 3: await RenderingServer.frame_post_draw
+		for i in 8: await RenderingServer.frame_post_draw
 		var rest := opaque_pixels(menu._vp.get_texture().get_image())
 		menu.hide(); menu.show()
 		check(menu.self_modulate.a == 0.0, "stale rest texture is hidden on opening")
-		await RenderingServer.frame_post_draw
+		while menu.self_modulate.a == 0.0: await RenderingServer.frame_post_draw
 		var opening := opaque_pixels(menu._vp.get_texture().get_image())
+		print("PAUSE_MENU_OPENING_PIXELS rest=", rest, " opening=", opening)
 		check(rest > 0 and opening < rest / 2, "first refreshed frame is the hidden opening pose, not the fully open signpost")
 		menu._vp.get_texture().get_image().save_png("user://pause-opening-pose.png")
 		var motion := InputEventMouseMotion.new(); motion.position = menu.size * 0.5

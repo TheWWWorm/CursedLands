@@ -27,6 +27,7 @@ var _cursor: GameCursor
 var _campaigns: CampaignChoices
 var _campaign_bar: VBoxContainer
 var _utility_bar: HFlowContainer
+var _version: BuildVersion
 var _campaign_error: Label
 var _mods: ModPanel
 var _mods_button: Button
@@ -68,6 +69,8 @@ func _ready() -> void:
 	add_child(music)
 	if music.stream:
 		music.play()
+	_version = BuildVersion.new()
+	add_child(_version)
 	_mods = ModPanel.new()
 	add_child(_mods)
 	_wiki = WikiPanel.new()
@@ -277,6 +280,7 @@ func _process(_dt: float) -> void:
 	if _campaign_bar:
 		_campaign_bar.visible = not _scene or pad_menu_free()
 		_utility_bar.visible = _campaign_bar.visible
+		_version.visible = _campaign_bar.visible
 
 
 func _layout_campaign_bar() -> void:
@@ -291,7 +295,7 @@ func _layout_campaign_bar() -> void:
 		_utility_bar.scale = Vector2.ONE * ui_scale
 		_utility_bar.size.x = footer_width
 		_utility_bar.size.y = _utility_bar.get_combined_minimum_size().y
-		_utility_bar.position = Vector2(safe.get_center().x - footer_width * ui_scale * 0.5, safe.end.y - (16 + _utility_bar.size.y) * ui_scale)
+		_utility_bar.position = Vector2(safe.get_center().x - footer_width * ui_scale * 0.5, safe.end.y - (16 + _utility_bar.size.y) * ui_scale - _version.footer_height())
 
 
 func campaign_pad_targets() -> Array:
@@ -338,6 +342,8 @@ func _on_board(action: String) -> void:
 		# otherwise their frozen text remains behind the next screen's status.
 		_opening_panel = true
 		_campaign_bar.hide()
+		_utility_bar.hide()
+		_version.hide()
 		if DisplayServer.get_name() != "headless":
 			await RenderingServer.frame_post_draw
 	match action:

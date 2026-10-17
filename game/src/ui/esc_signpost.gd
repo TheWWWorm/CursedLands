@@ -25,9 +25,11 @@ var _post: Node3D
 var _player: AnimationPlayer
 var _animation_usec := 0
 var _open_serial := 0
+var _opening_pending := false
 var _boards := {}
 var _board_meshes := {}
 var _rects: Array[Rect2] = []
+var _version: BuildVersion
 
 
 func _ready() -> void:
@@ -35,12 +37,13 @@ func _ready() -> void:
 	# SubViewport and AnimationPlayer keep running.
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	add_to_group("pad_panel")   # remake: gamepad snap targets (PadUI)
-	visibility_changed.connect(func():
-		if visible:
-			_on_open())
+	visibility_changed.connect(_visibility_changed)
 	# the same CI3DFigure projection as the other interface
 	# screens, X-axis turn PI/2, screen position (400,700), depth 4.8.
 	_build("unmoco1", "escmenu00", "escmenu00labels", PackedStringArray(), PI * 0.5, Vector3(400, 700, 4.8))
+	_version = BuildVersion.new()
+	_version.above_pad_hints = true
+	add_child(_version)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	_post = _fig
 	if _post == null:
@@ -88,7 +91,7 @@ func _frame() -> void:
 func _process(dt: float) -> void:
 	super._process(dt)
 	var now := Time.get_ticks_usec()
-	if _player and is_visible_in_tree() and _animation_usec > 0:
+	if _player and is_visible_in_tree() and not _opening_pending and _animation_usec > 0:
 		_player.advance((now - _animation_usec) / 1000000.0)
 	_animation_usec = now
 
@@ -117,6 +120,16 @@ func _gui_input(e: InputEvent) -> void:
 var _hover_board := ""
 
 
+func _visibility_changed() -> void:
+	if is_visible_in_tree():
+		_on_open()
+	else:
+		_open_serial += 1
+		_opening_pending = false
+		if _vp:
+			_vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
+
+
 ## the signpost opens with buttons\menu\shift.wav and
 ## (1), uspecial02 (the post rises from below, 12 frames).
 func _on_open() -> void:
@@ -128,16 +141,25 @@ func _on_open() -> void:
 	# through this same clip. Every opening starts from its first frame.
 	if _player: _player.stop()
 	_play("uspecial02")
+	if DisplayServer.get_name() == "headless": return
 	# The SubViewport still holds its last picture (the rest pose) on the
 	# first visible frame; keep it transparent until the slide has rendered.
 	_open_serial += 1
 	var serial := _open_serial
+	_opening_pending = true
 	self_modulate.a = 0.0
 	# A transparent TextureRect is culled, so UPDATE_WHEN_VISIBLE cannot
 	# refresh its stale texture. Explicitly render the hidden opening pose.
 	_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-	await RenderingServer.frame_post_draw
-	if serial != _open_serial: return
+	# The desktop render thread defers frame_post_draw to the main thread.
+	# The first signal can still belong to the draw queued BEFORE this open.
+	# Keep the first pose held through two completions so that stale picture
+	# cannot be exposed, even when opening between process and render steps.
+	for i in 2:
+		await RenderingServer.frame_post_draw
+		if serial != _open_serial or not is_visible_in_tree(): return
+	_opening_pending = false
+	_animation_usec = Time.get_ticks_usec()
 	self_modulate.a = 1.0
 	_vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 

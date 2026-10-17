@@ -1,0 +1,132 @@
+{
+  "date": "2026-10-17",
+  "issue": "https://github.com/TheWWWorm/CursedLands/issues/17",
+  "base_stable": "1.10.0",
+  "base_commit": "2da3e23cee9fbb542b318a0d1637b383a3909e68",
+  "local_only": true,
+  "platform": "Linux x86_64 / NVIDIA RTX 3090 / production Godot 4.7 custom executable",
+  "baseline": {
+    "case": "published-1.10.0",
+    "checks": 21,
+    "failures": 1,
+    "summary": "PAUSE_MENU_CLOCK 21 checks 1 failures",
+    "log_sha256": "cac0063825b81452e4fb7b0173eee814a5ebce348022d99206fdb604f1e05a90"
+  },
+  "baseline_failure": "first refreshed frame contains the complete retained signpost (115977 opaque samples)",
+  "fixed_opening_opaque_samples": 6685,
+  "checks": 356,
+  "failures": 0,
+  "results": [
+    {
+      "case": "clock-gl",
+      "checks": 21,
+      "failures": 0,
+      "summary": "PAUSE_MENU_CLOCK 21 checks 0 failures",
+      "log_sha256": "ab800226a8371959dff815763814833681aff90113af0407f3067eed0dec2add"
+    },
+    {
+      "case": "clock-vulkan",
+      "checks": 21,
+      "failures": 0,
+      "summary": "PAUSE_MENU_CLOCK 21 checks 0 failures",
+      "log_sha256": "ac682ad19200e7d985eeb4289b7662d4189192695f25bc10cf442568f28de589"
+    },
+    {
+      "case": "clock-safe",
+      "checks": 21,
+      "failures": 0,
+      "summary": "PAUSE_MENU_CLOCK 21 checks 0 failures",
+      "log_sha256": "2b848c51f1762ddabd43358ffce3da76a8ce2e124b8bdb84bc4c8bedee4064d8"
+    },
+    {
+      "case": "clock-headless",
+      "checks": 18,
+      "failures": 0,
+      "summary": "PAUSE_MENU_CLOCK 18 checks 0 failures",
+      "log_sha256": "5b7bcf2e6a5d4c8ddeb6fe44a46b3a03b2f1e296ac06445aed482ea73540211e"
+    },
+    {
+      "case": "frames-gl",
+      "checks": 28,
+      "failures": 0,
+      "summary": "PAUSE_MENU_FRAMES 28 checks 0 failures",
+      "log_sha256": "236f35049b9ce87d0ecb9fa1e8d4c800c329552475a0d9b4f20efde6aa6710b5"
+    },
+    {
+      "case": "frames-vulkan",
+      "checks": 28,
+      "failures": 0,
+      "summary": "PAUSE_MENU_FRAMES 28 checks 0 failures",
+      "log_sha256": "1e6660d70911c5865617345c53831435f768a900e710b57584c5c86d3d0b28df"
+    },
+    {
+      "case": "version-en",
+      "checks": 58,
+      "failures": 0,
+      "summary": "MENU_BUILD_VERSION en 58 checks 0 failures",
+      "log_sha256": "4d34ae4c71dbc7b3b8fab027e7a8ac79a8fcee96a140a2ae019f3eca441b046a"
+    },
+    {
+      "case": "version-ru",
+      "checks": 58,
+      "failures": 0,
+      "summary": "MENU_BUILD_VERSION ru 58 checks 0 failures",
+      "log_sha256": "2c6b3ca9a2d0e5bbc94fbc0d2818e0d77f555bb65eab0aea53ceeddfcf0ebfa4"
+    },
+    {
+      "case": "version-de",
+      "checks": 58,
+      "failures": 0,
+      "summary": "MENU_BUILD_VERSION de 58 checks 0 failures",
+      "log_sha256": "a3a26877e4758eb64b1879990dbbe8c5955f07bae6964ffdee900e2c6c11d11d"
+    },
+    {
+      "case": "hidden-viewports",
+      "checks": 9,
+      "failures": 0,
+      "summary": "MENU_HIDDEN_VIEWPORTS_RESULT {\"boards\":5,\"checks\":9,\"failures\":0,\"renderer\":\"gl_compatibility\",\"rows\":[{\"draw_calls\":509.0,\"label\":\"as-built hidden\"},{\"draw_calls\":509.0,\"label\":\"disabled control\"},{\"draw_calls\":518.0,\"label\":\"always control\"},{\"draw_calls\":509.0,\"label\":\"visible-only hidden\"},{\"draw_calls\":552.0,\"label\":\"visible-only options open\"},{\"draw_calls\":550.0,\"label\":\"disabled options control\"},{\"draw_calls\":509.0,\"label\":\"visible-only options closed\"}]}",
+      "log_sha256": "bdfdf21b7e6a70df14d8d269e7cbce5403dfda021e06fb3fb5193b3f7ac4fbc9"
+    },
+    {
+      "case": "tomb-regression",
+      "checks": 36,
+      "failures": 0,
+      "summary": "LIA_TOMB_EXIT 36 checks 0 failures",
+      "log_sha256": "a70b24dab2cc0d7737c2988592320b718f77ed516cf9b15fcfa84d461c48bdc1"
+    }
+  ],
+  "language_archives": [
+    "original English",
+    "original Russian",
+    "original German"
+  ],
+  "screen_sizes": [
+    "800x600",
+    "1024x768",
+    "1920x1080",
+    "3840x2160"
+  ],
+  "translations": {
+    "entries": 2473,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 123,
+    "errors": 0
+  },
+  "source_sha256": {
+    "game/src/ui/esc_signpost.gd": "f0f42bbfedc71dbc92332567751801417f2fe143972b6cd6cdd3bc5d1f93893c",
+    "game/src/ui/build_version.gd": "046131197c199c6692f0b4fa2b0154f887310b251f096e1204ecc406f6203cdf",
+    "game/src/ui/main_menu.gd": "c988fd605f15d74afa0ba232c92b465ff572558fb4acb901e8a2a404c532294b",
+    "game/src/ei/remake_text.gd": "ebd263422ef4de80064009f9f718921572e671f2da80343d97ac1a1cee8efaaf",
+    "tools/tests/pause_menu_clock.gd": "f477e8fffffefe79a6206cc55e05a7f2de34030ece538cbf62619964d6e7ea15",
+    "tools/tests/pause_menu_frames.gd": "dcf437eb0c18ba30dbf51b5ae8b37a0b929330d907f20ab567a275600e93891c",
+    "tools/tests/menu_build_version.gd": "0405027e9d4cad6f9a9c3a97a3466edc4a0ff6a9bb68139329e7bb695e9689fc"
+  },
+  "preview_pack_sha256": "4fb211a3ae5979c4d71290bea1ae0d74c91a8409c543a737f26ca61f56cb185d",
+  "engine_sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+  "notes": [
+    "EN UI checks precede only the headless-render-wait bypass; rendered UI code is identical. RU/DE and all final clock/frame/regression checks use the final pack.",
+    "Initial fixed clock runs caught observation delays during render/window stalls. The final timing assertion records the longest process-frame interval and allows completion on the next process frame, while rejecting early completion.",
+    "No remote branch, PR, release or deployment was created for issue 17.",
+    "No Windows/macOS/Android/browser or co-op runtime qualification."
+  ]
+}

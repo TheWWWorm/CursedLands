@@ -129,6 +129,7 @@ const TEXTS := {
 	"2×": ["2×", "2×"],
 	"1×": ["1×", "1×"],
 	"Max level": ["Макс. уровень", "Max. Stufe"],
+	"Version %s": ["Версия %s", "Version %s"],
 	"Veteran grey harpy": ["Матерая серая гарпия", "Graue Harpyie (Veteran)"],
 	"Elite: +75% health, +50% damage, +20% accuracy and armor, +15% action speed.": ["Элита: +75% здоровья, +50% урона, +20% меткости и брони, +15% скорости действий.", "Elite: +75% Leben, +50% Schaden, +20% Treffergenauigkeit und Rüstung, +15% Aktionstempo."],
 	"Visit camp every five rounds for experience, supplies or company upgrades. Survive all thirty waves to unlock harder expeditions.": ["Каждые пять боёв вы посещаете лагерь: там можно получить опыт, припасы или улучшения отряда. Переживите все тридцать волн, чтобы открыть более сложные походы.", "Besucht nach jeweils fünf Kämpfen das Lager für Erfahrung, Vorräte oder Truppenverbesserungen. Übersteht alle dreißig Wellen, um schwierigere Expeditionen freizuschalten."],
