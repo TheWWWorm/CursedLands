@@ -40,6 +40,10 @@ for match in re.finditer(r'^const WINDOWS_[A-Z_]+ := (.+)$', renderer_source, re
     value = json.loads(match[1])
     for key in value if isinstance(value, list) else [value]:
         if key not in entries: errors.append(f'Windows renderer text missing RU/DE key: {key}')
+detector_source = (ROOT / 'platform/renderer_detector.gd').read_text()
+for match in re.finditer(r'^const (?:STATUS|DETAIL) := (".*")$', detector_source, re.M):
+    key = json.loads(match[1])
+    if key not in entries: errors.append(f'Renderer detector text missing RU/DE key: {key}')
 # Recruit family names/roles are chosen dynamically by the shop and guide.
 arena_rules = (ROOT / 'game/arena_rules.gd').read_text().split('const FAMILIES := [', 1)[1].split('\n]', 1)[0]
 for match in re.finditer(r'"(?:name|role)":\s*(' + STRING + r')', arena_rules):

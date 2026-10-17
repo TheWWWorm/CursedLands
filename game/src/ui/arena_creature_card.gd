@@ -5,8 +5,8 @@ extends Button
 const PAPER := Color("f0eadc")
 const GOLD := Color("d6b66f")
 const MUTED := Color("b7c0bd")
-const SNOW_INK := Color("141414")
-const SNOW_ACCENT := Color("713b0f")
+const SNOW_INK := GOLD
+const SNOW_ACCENT := Color("f2d58f")
 var prototype := ""
 var heading := ""
 var caption := ""
@@ -19,6 +19,8 @@ var family := -1
 var preview: WikiPreview
 var _price: Label
 var _copies: Label
+var _info: ArenaInfoPanel
+var _offer_icons: Array[TextureRect] = []
 var upgrade_ready := false
 var _glow: ShaderMaterial
 
@@ -40,8 +42,8 @@ func _ready() -> void:
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	tooltip_text = ArenaRules.title(prototype) + "\n" + caption + "\n" + footer
 	add_theme_stylebox_override("normal", StyleBoxEmpty.new())
-	add_theme_stylebox_override("hover", style(Color(0.12, 0.16, 0.17, 0.45), Color(0, 0, 0, 0)))
-	add_theme_stylebox_override("pressed", style(Color(0.2, 0.24, 0.22, 0.7), GOLD))
+	add_theme_stylebox_override("hover", StyleBoxEmpty.new())
+	add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
 	add_theme_stylebox_override("focus", style(Color(0, 0, 0, 0), PAPER))
 	add_theme_stylebox_override("disabled", StyleBoxEmpty.new())
 	ArenaStars.add_to(self, quality + 1, Vector2(6, 4))
@@ -56,7 +58,7 @@ func _ready() -> void:
 	margin.add_child(box)
 	preview = WikiPreview.new()
 	preview.fit_slot = true
-	preview.custom_minimum_size.y = 94
+	preview.custom_minimum_size.y = 84
 	preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	box.add_child(preview)
 	if not prototype.is_empty():
@@ -65,12 +67,15 @@ func _ready() -> void:
 	if disabled: preview.modulate.a = 0.65
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_info = ArenaInfoPanel.new()
+	_info.name = "OfferInfo"
+	_info.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_info.custom_minimum_size.x = 76
+	box.add_child(_info)
 	var metadata := VBoxContainer.new()
-	metadata.name = "OfferInfo"
 	metadata.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	metadata.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	metadata.add_theme_constant_override("separation", 1)
-	box.add_child(metadata)
+	metadata.add_theme_constant_override("separation", 2)
+	_info.add_child(metadata)
 	var price_row := HBoxContainer.new()
 	price_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	price_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -83,11 +88,13 @@ func _ready() -> void:
 	coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	coin.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	price_row.add_child(coin)
-	ink_icon(coin, SNOW_INK)
-	_price = _label(price_row, "", 16, SNOW_INK)
-	snow_ink(_price)
-	_copies = _label(price_row, "", 13, SNOW_INK)
-	snow_ink(_copies)
+	_offer_icons.append(coin)
+	ink_icon(coin, cost_accent(cost))
+	_price = _label(price_row, "", 17, PAPER)
+	snow_ink(_price, PAPER)
+	_price.add_theme_font_override("font", preload("res://fonts/LiberationSans-Bold.ttf"))
+	_copies = _label(price_row, "", 13, PAPER)
+	snow_ink(_copies, PAPER)
 	var traits := HBoxContainer.new()
 	traits.alignment = BoxContainer.ALIGNMENT_CENTER
 	traits.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -100,7 +107,8 @@ func _ready() -> void:
 		emblem.custom_minimum_size = Vector2(18, 18)
 		emblem.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		traits.add_child(emblem)
-		ink_icon(emblem, SNOW_INK)
+		_offer_icons.append(emblem)
+		ink_icon(emblem, cost_accent(cost))
 	update_offer()
 	var title := _label(self, heading if not heading.is_empty() else ArenaRules.title(prototype), 14, PAPER)
 	title.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
@@ -117,18 +125,23 @@ func _ready() -> void:
 	title.add_theme_color_override("font_shadow_color", Color.BLACK)
 	title.add_theme_constant_override("shadow_offset_y", 2)
 	title.modulate.a = 0
-	mouse_entered.connect(func(): title.modulate.a = 1)
-	mouse_exited.connect(func(): title.modulate.a = 1 if has_focus() else 0)
-	focus_entered.connect(func(): title.modulate.a = 1)
-	focus_exited.connect(func(): title.modulate.a = 0)
+	mouse_entered.connect(func(): title.modulate.a = 1; _info.highlighted = not disabled)
+	mouse_exited.connect(func(): title.modulate.a = 1 if has_focus() else 0; _info.highlighted = has_focus())
+	focus_entered.connect(func(): title.modulate.a = 1; _info.highlighted = true)
+	focus_exited.connect(func(): title.modulate.a = 0; _info.highlighted = is_hovered() and not disabled)
 
 
 func update_offer() -> void:
 	if not is_instance_valid(_price): return
 	_price.text = str(cost)
-	_price.add_theme_color_override("font_color", Color("383838") if disabled else SNOW_INK)
+	_price.add_theme_color_override("font_color", MUTED if disabled else PAPER)
+	var accent := cost_accent(cost)
+	_info.accent = accent.lerp(MUTED, 0.55) if disabled else accent
+	_info.highlighted = not disabled and (is_hovered() or has_focus())
+	for icon in _offer_icons:
+		(icon.material as ShaderMaterial).set_shader_parameter("ink", _info.accent)
 	_copies.visible = copies > 0 and copies_needed > 0
-	_copies.text = "  %d/%d" % [mini(copies, copies_needed), copies_needed]
+	_copies.text = "%d/%d" % [mini(copies, copies_needed), copies_needed]
 	_copies.tooltip_text = RemakeText.t("Copies: %d/%d") % [copies, copies_needed]
 	preview.modulate.a = 0.65 if disabled else 1.0
 	upgrade_ready = copies_needed > 0 and copies + 1 >= copies_needed
@@ -137,7 +150,16 @@ func update_offer() -> void:
 		_glow.shader = preload("res://src/ui/arena_upgrade_glow.gdshader")
 	if is_instance_valid(preview.creature): preview.creature.material = _glow if upgrade_ready else null
 	_copies.text += " ↑" if upgrade_ready else ""
-	_copies.add_theme_color_override("font_color", SNOW_ACCENT if upgrade_ready else SNOW_INK)
+	_copies.add_theme_color_override("font_color", SNOW_ACCENT if upgrade_ready else PAPER)
+
+
+static func cost_accent(price: int) -> Color:
+	# The price stays explicit. Color only helps scan the available price bands.
+	if price <= 1: return PAPER
+	if price == 2: return Color("8fc8ee")
+	if price == 3: return Color("a6d5b0")
+	if price == 4: return Color("c9afe6")
+	return GOLD
 
 
 func _label(parent: Node, value: String, pixels: int, color: Color) -> Label:
@@ -152,7 +174,7 @@ func _label(parent: Node, value: String, pixels: int, color: Color) -> Label:
 	return label
 
 
-static func ink_icon(icon: TextureRect, color: Color, edge := Color.TRANSPARENT) -> void:
+static func ink_icon(icon: TextureRect, color: Color, edge := Color("222222")) -> void:
 	var ink := ShaderMaterial.new()
 	ink.shader = preload("res://src/ui/arena_icon_ink.gdshader")
 	ink.set_shader_parameter("ink", color)
@@ -172,7 +194,7 @@ static func snow_ink(control: Control, color := SNOW_INK) -> void:
 	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color", "font_disabled_color"]:
 		control.add_theme_color_override(state, color)
 	control.add_theme_font_override("font", preload("res://fonts/LiberationSans-Regular.ttf"))
-	control.add_theme_color_override("font_outline_color", Color.TRANSPARENT)
-	control.add_theme_constant_override("outline_size", 0)
+	control.add_theme_color_override("font_outline_color", Color("222222"))
+	control.add_theme_constant_override("outline_size", 2)
 	control.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
 	control.add_theme_constant_override("shadow_offset_y", 0)

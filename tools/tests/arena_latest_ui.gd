@@ -37,7 +37,10 @@ func _ready() -> void:
 	for slot in screen._army_row.get_children(): bounded(slot, "reserve slot")
 	check(not screen._bench_scroll.get_h_scroll_bar().visible, "reserve never scrolls horizontally")
 	check(screen._bench_panel.get_theme_stylebox("panel") is StyleBoxEmpty,"reserves have no background")
-	check(not screen._shop.find_children("OfferInfo","VBoxContainer",true,false).is_empty() and screen._shop.find_children("OfferInfo","PanelContainer",true,false).is_empty(),"prices and traits have no background")
+	var offer_panels := screen._shop.find_children("OfferInfo", "PanelContainer", true, false)
+	check(not offer_panels.is_empty(), "prices, copy counts and traits share readable panels")
+	for panel: Control in offer_panels:
+		bounded(panel, "offer details")
 	check(screen._army_row.get_child(0).size.y == screen._shop.get_child(0).size.y, "reserve and shop have matching heights")
 	screen.run.gold=0; screen._refresh(); await frames(3)
 	await click(screen._refresh_button.get_global_rect().get_center())
@@ -59,6 +62,19 @@ func _ready() -> void:
 	bounded(screen._modal_panel,"menu"); await shot(tag+"-menu")
 	screen._close_modal(); await move(Vector2(500,400)); await shot(tag+"-reserves")
 	check(screen.run.save(), "expedition saves with latest schema")
+	# Include every price band and an evolution count in the visual evidence.
+	screen.run.shop.clear()
+	for family in [0, 12, 17, 22, 23, 7]:
+		screen.run.shop.append({"family":family, "rank":0, "locked":false})
+	screen.run.gold = 40
+	screen._refresh(); await frames(12)
+	var offer := screen._shop.get_child(0).get_child(0) as ArenaCreatureCard
+	offer.copies = 2; offer.copies_needed = 3; offer.update_offer()
+	await frames(6)
+	for slot in screen._shop.get_children():
+		var card := slot.get_child(0) as ArenaCreatureCard
+		check(card.get_global_rect().grow(1).encloses(card._info.get_global_rect()), "price panel fits its offer")
+	await shot(tag+"-cost-panels")
 	screen.landing=true; screen._switch_mode(1); await frames(12)
 	modes=screen._landing_panel.find_children("*Mode","Button",true,false)
 	check(modes[0].size==modes[1].size, "mode dimensions stay equal after switching")

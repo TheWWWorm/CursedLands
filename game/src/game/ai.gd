@@ -883,7 +883,7 @@ func _spell_list(u: GameUnit) -> Array:
 	# the village mercenaries) receive the weapon option alone, no AI spells.
 	if u.uid >= 1000000000 and u.uid < 2000000000:
 		return [[], []]
-	var key: String = u.proto.get("name", "")
+	var key: String = u.proto.get("_spell_cache_key", u.proto.get("name", ""))
 	if not _spell_opts.has(key):
 		_spell_opts[key] = _spell_options(u, int(u.proto.get("weapon_type_id", 0)) == 16)
 	return _spell_opts[key]

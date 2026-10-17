@@ -126,9 +126,28 @@ static func elite_stats(stats: Dictionary) -> void:
 
 ## Lightweight native wisps need enough health to serve as an opening caster.
 ## Only recruited Trials actors receive this tuning; campaign data is unchanged.
-static func recruit_health(family: int, health: float) -> float:
+static func recruit_health(family: int, health: float, rank := 0) -> float:
 	if family < 0 or family >= FAMILIES.size(): return health
+	# The first two banshees are slow melee recruits. Their final dark form
+	# already has much stronger native stats and keeps its authored values.
+	if family == 15 and rank < 2: health *= 1.3
 	return ceilf(health * float(FAMILIES[family].get("health_multiplier", 1.0)))
+
+
+static func recruit_stats(family: int, rank: int, stats: Dictionary) -> void:
+	if family == 15 and rank < 2: stats.attack_rate = 1.5
+
+
+## Six red harpies should buy a stronger spellcaster, not just a few melee
+## stats. Use native effect runes, so AI, spell ticks and restored effects all
+## consume the same spell definition. Only the actor receives this copy.
+static func recruit_prototype(family: int, rank: int, proto: Dictionary) -> Dictionary:
+	if family != 22 or rank < 1: return proto
+	var tuned := proto.duplicate(true)
+	var runes := "e2;e2;e2;e1" if rank == 1 else "e2;e2;e2;e2;e2;e2;e1"
+	tuned.spells = ["firewall{%s}" % runes, "arrow{%s}" % runes]
+	tuned["_spell_cache_key"] = "%s:trials:%d" % [proto.name, rank]
+	return tuned
 
 
 static func elite_health(health: float) -> float:

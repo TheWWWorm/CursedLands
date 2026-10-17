@@ -31,6 +31,9 @@ var _scroll_owner: Control
 var _hold_owner: Control
 
 func _ready() -> void:
+	if OS.get_cmdline_user_args().has("--renderer-probe"):
+		process_mode = Node.PROCESS_MODE_DISABLED
+		return
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Input.set_emulate_mouse_from_touch(false)
 	pinned = Portability.handheld() or OS.get_cmdline_user_args().has("--touch")
@@ -277,6 +280,7 @@ func holding(control: Control) -> bool:
 	return _held and is_instance_valid(_hold_owner) and _hold_owner == control
 
 func _notification(what: int) -> void:
+	if OS.get_cmdline_user_args().has("--renderer-probe"): return
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
 		cancel_gesture()
 		var g := game()

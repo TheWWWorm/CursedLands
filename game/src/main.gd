@@ -18,6 +18,9 @@ var _leaving := false   # back_to_menu waiting for a joiner's last package
 
 
 func _ready() -> void:
+	if OS.get_cmdline_user_args().has("--renderer-probe"):
+		add_child(preload("res://src/platform/renderer_probe.gd").new())
+		return
 	# The exported Windows build requires its native helper. A blocked DLL
 	# must be explained before a campaign can quietly start without it.
 	var native_startup := preload("res://src/platform/windows_native_startup.gd")
@@ -77,13 +80,25 @@ func _start() -> void:
 			add_child(load(a.trim_prefix("--tool=")).new())
 			return
 		if a == "--arena":
+			if not await WindowsRenderer.prepare(self): return
 			open_arena()
+			if DisplayServer.get_name() != "headless":
+				await RenderingServer.frame_post_draw
+				RendererChoice.menu_presented()
 			return
 		if a == "--arena-pve":
+			if not await WindowsRenderer.prepare(self): return
 			open_arena_pve()
+			if DisplayServer.get_name() != "headless":
+				await RenderingServer.frame_post_draw
+				RendererChoice.menu_presented()
 			return
 		if a == "--viewer" or a.begins_with("--map="):
+			if not await WindowsRenderer.prepare(self): return
 			open_viewer()
+			if DisplayServer.get_name() != "headless":
+				await RenderingServer.frame_post_draw
+				RendererChoice.menu_presented()
 			return
 	# the original plays config/movie.ini [Start] (fishtank, Nival)
 	# before the main menu; skipped when the command line starts a game.
@@ -96,6 +111,7 @@ func _start() -> void:
 		var seq := MovieSequence.start(self, MoviePlayer.ini_movies("Start"))
 		await seq.done
 		GameData.trace("startup: intro movies finished")
+	if not await WindowsRenderer.prepare(self): return
 	var menu: Control = await open_menu()
 	for a in args:
 		if a == "--play":

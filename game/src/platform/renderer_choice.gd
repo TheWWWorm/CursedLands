@@ -2,9 +2,9 @@ class_name RendererChoice
 extends Node
 ## Persistent renderer choice for Android and Windows, applied before scripts
 ## by project.godot's platform-specific project_settings_override. Android
-## defaults to Compatibility; Windows defaults to Forward+ / D3D12 with the
-## Safe render thread. A pending enhanced renderer is a trial. Before drawing
-## 3D it writes a Compatibility fallback for the next launch; only a menu that
+## defaults to Compatibility; Windows automatically tests modern APIs with
+## the Safe render thread (WindowsRenderer). Android enhanced modes are trials.
+## Before drawing 3D the next fallback is saved for restart; only a menu that
 ## has actually been presented may confirm the trial. Waiting on startup
 ## notices, an early clean quit or backgrounding cannot accept an untested GPU.
 
@@ -12,10 +12,10 @@ const OVERRIDE := "user://renderer.cfg"
 const TRIAL := "user://renderer_trial.cfg"
 const METHODS := ["gl_compatibility", "forward_plus", "mobile"]
 const TRIAL_S := 60.0
-const WINDOWS_CHOICES := ["Compatibility", "Forward+ (Direct3D 12)"]
-const WINDOWS_HELP := "Compatibility (OpenGL 3) uses fewer effects and a different graphics driver. Forward+ (Direct3D 12) supports all effects and is the default. Changes require a restart. If a Forward+ trial stops while loading the menu, the next launch uses Compatibility."
+const WINDOWS_CHOICES := ["Compatibility", "Forward+ (Direct3D 12)", "Forward+ (Vulkan)", "Automatic"]
+const WINDOWS_HELP := "Automatic prefers Direct3D 12, then Vulkan, with OpenGL as the last fallback. A failed menu startup tries the next API on the following launch. Successful detection is remembered until the graphics driver changes. You can also choose an API yourself. Changes require a restart."
 const WINDOWS_FAILED := "The selected renderer could not start. The next launch uses Compatibility (OpenGL 3)."
-const WINDOWS_CRASHED := "The previous renderer trial did not finish. Compatibility (OpenGL 3) is selected; you can change the renderer in Options."
+const WINDOWS_CRASHED := "The previous renderer test did not finish. Automatic will try another graphics API. Direct3D 12 and Vulkan are preferred; OpenGL is the last fallback."
 static var _menu_ready_ms := -1
 const RESTART := ["Renderer", "The renderer changes when the game starts again. Restart the game now? If it does not start again by itself, open it again."]
 ## In a game: the same box, which says what a restart costs.
@@ -54,6 +54,7 @@ static func available() -> bool:
 
 ## The option value the player chose (a trial counts as chosen).
 static func chosen() -> int:
+	if windows(): return WindowsRenderer.chosen()
 	var t := _load(TRIAL, "trial")
 	if not t.is_empty():
 		return maxi(0, METHODS.find(String(t.get("method", ""))))
@@ -63,6 +64,9 @@ static func chosen() -> int:
 
 ## Option set (GameData.set_option): the method for the next start.
 static func choose(v: int) -> void:
+	if windows():
+		WindowsRenderer.choose(v)
+		return
 	v = clampi(v, 0, labels().size() - 1)
 	if v == chosen():
 		return
@@ -77,6 +81,10 @@ static func choose(v: int) -> void:
 ## GameData._ready: the trial's step for this start; returns a node to add
 ## (the confirmation timer) or null. Sets GameData.options.renderer.
 static func startup() -> RendererChoice:
+	if windows():
+		_menu_ready_ms = -1
+		WindowsRenderer.startup()
+		return RendererChoice.new()
 	var node: RendererChoice = null
 	_menu_ready_ms = -1
 	if windows() and OS.get_cmdline_user_args().has("--compatibility-recovery") and Portability.compatibility():
@@ -115,6 +123,9 @@ static func startup() -> RendererChoice:
 
 ## The trial run works: its renderer stays for the next starts.
 static func confirm() -> void:
+	if windows():
+		WindowsRenderer.confirm()
+		return
 	if _menu_ready_ms < 0:
 		return
 	var t := _load(TRIAL, "trial")

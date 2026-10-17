@@ -483,6 +483,7 @@ static func trace(what: String) -> void:
 ## Keys whose release went to another window are forgotten once this frame's
 ## input has been read (EIKeymap.release_keys).
 func _notification(what: int) -> void:
+	if OS.get_cmdline_user_args().has("--renderer-probe"): return
 	if what in [NOTIFICATION_APPLICATION_FOCUS_IN, NOTIFICATION_APPLICATION_FOCUS_OUT,
 			NOTIFICATION_WM_WINDOW_FOCUS_IN, NOTIFICATION_WM_WINDOW_FOCUS_OUT] and is_inside_tree():
 		if not get_tree().process_frame.is_connected(EIKeymap.release_keys):
@@ -517,6 +518,9 @@ static func ground_effect_defaults(cfg: ConfigFile, platform: Dictionary = {}) -
 
 
 func _ready() -> void:
+	if OS.get_cmdline_user_args().has("--renderer-probe"):
+		process_mode = Node.PROCESS_MODE_DISABLED
+		return
 	GameFiles.initialize()
 	var cfg := ConfigFile.new()
 	if cfg.load(CONFIG_PATH) == OK:
@@ -578,6 +582,8 @@ func _ready() -> void:
 	if rc:
 		add_child(rc)
 	add_child(CrashReport.new())   # session marker, unexpected-exit report
+	if RendererChoice.windows() and rc:
+		WindowsRenderer.observe_previous(CrashReport.instance.previous)
 
 
 ## Returns an empty string when `path` is a usable install, otherwise the reason.

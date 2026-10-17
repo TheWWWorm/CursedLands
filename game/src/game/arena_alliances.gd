@@ -59,8 +59,9 @@ static func apply(world: GameWorld, army: Array, opponents: Array = []) -> void:
 	var totals := [counts(army), counts(opponents)]
 	for unit: GameUnit in world.unit_rows():
 		if not unit.has_meta("alliance_base"):
-			unit.set_meta("alliance_base", {"stats": unit.stats.duplicate(true), "hp": unit.max_hp})
+			unit.set_meta("alliance_base", {"stats": unit.stats.duplicate(true), "hp": unit.max_hp, "proto": unit.proto})
 		var base: Dictionary = unit.get_meta("alliance_base")
+		unit.proto = base.get("proto", unit.proto)
 		var stats: Dictionary = base.stats.duplicate(true)
 		var health := float(base.hp)
 		var placement: Dictionary = unit.get_meta("arena_placement", {})
@@ -73,7 +74,9 @@ static func apply(world: GameWorld, army: Array, opponents: Array = []) -> void:
 			if ArenaRules.is_elite(family, int(placement.get("rank", 0))):
 				ArenaRules.elite_stats(stats)
 				health = ArenaRules.elite_health(health)
-			health = ArenaRules.recruit_health(family, health)
+			health = ArenaRules.recruit_health(family, health, int(placement.get("rank", 0)))
+			ArenaRules.recruit_stats(family, int(placement.get("rank", 0)), stats)
+			unit.proto = ArenaRules.recruit_prototype(family, int(placement.get("rank", 0)), unit.proto)
 			var member := traits(family)
 			var beasts := rank("beast", count.beast)
 			stats.dmg_min *= 1.0 + beasts * 0.1

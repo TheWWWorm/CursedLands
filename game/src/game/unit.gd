@@ -2991,6 +2991,8 @@ func _do_attack(dt: float) -> void:
 	else:
 		len = model.act("attack", variant, 0.05)
 	len = maxf(len, 0.6)
+	var attack_rate := float(stats.get("attack_rate", 1.0))
+	len /= attack_rate
 	action = "attack"
 	_anim_lock = len
 	# the original: the next strike may start round(A x 15 / actions)
@@ -2998,14 +3000,14 @@ func _do_attack(dt: float) -> void:
 	# "tuning actions", inferred), actions = Dex * 0.2 + 10 (x quickness, x arm
 	# wounds; monsters 15). The strike animation still has to finish.
 	var a_w := float(stats.get("weapon_actions", proto.get("tuning_actions", 50.0)))
-	_attack_cd = maxf(_strike_delay_ticks(a_w, actions(), stats.has("weapon_actions")) * TICK, len)
+	_attack_cd = maxf(_strike_delay_ticks(a_w, actions(), stats.has("weapon_actions")) * TICK / attack_rate, len)
 	# The outcome is rolled now, the blow lands later. The hit
 	# record takes this order's aim before the roll (
 	# then reads its).
 	strike_aim = int(order.get("aim", -1))
 	var roll := world.combat.strike_roll(self, t)
 	strike_miss = not roll.hit
-	_pending_hit = {"t": (hit_ticks if hit_ticks >= 1.0 else _hit_ticks()) * TICK, "target": t, "roll": roll}
+	_pending_hit = {"t": (hit_ticks if hit_ticks >= 1.0 else _hit_ticks()) * TICK / attack_rate, "target": t, "roll": roll}
 	GameSound.unit(self, "attack")
 	world.on_attack(self, t)
 
@@ -3961,6 +3963,7 @@ func _present_native_frame(dt: float) -> void:
 ## the unit's ground speed (the original, EIUnitModel.move_rate), so
 ## its feet keep to the ground; any other clip at the normal rate.
 func _anim_rate() -> float:
+	if action == "attack": return float(stats.get("attack_rate", 1.0))
 	if model == null or not action in ["walk", "run", "crawl"]:
 		return 1.0
 	return model.move_rate(_draw_move_speed if world and world.authority else _move_speed)

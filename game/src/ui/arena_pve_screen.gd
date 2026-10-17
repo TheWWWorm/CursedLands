@@ -294,12 +294,16 @@ func _ready() -> void:
 	_alliance_panel.position = Vector2(24, 190)
 	_alliance_panel.add_child(_alliance_list)
 	for key: String in ArenaAlliances.RULES:
+		var plaque := ArenaInfoPanel.new()
+		plaque.name = key
+		plaque.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		plaque.set_meta("arena_alliance", key)
+		_alliance_list.add_child(plaque)
+		plaque.mouse_filter = Control.MOUSE_FILTER_STOP
 		var row := HBoxContainer.new()
-		row.name = key
 		row.add_theme_constant_override("separation", 8)
-		row.mouse_filter = Control.MOUSE_FILTER_STOP
-		row.set_meta("arena_alliance", key)
-		_alliance_list.add_child(row)
+		row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		plaque.add_child(row)
 		_icon(row, load("res://assets/arena/alliance_%s.svg" % key))
 		var label := _label(row, "", 14, PAPER)
 	_bench_scroll = ScrollContainer.new()
@@ -1920,14 +1924,17 @@ func _update_scout() -> void:
 func _refresh_alliances() -> void:
 	_alliance_panel.visible = not landing and not _field_army().is_empty()
 	var counts := ArenaAlliances.counts(_field_army())
-	for row: HBoxContainer in _alliance_list.get_children():
-		var key := String(row.name)
+	for plaque: ArenaInfoPanel in _alliance_list.get_children():
+		var key := String(plaque.name)
 		var count := int(counts[key])
-		row.visible = count > 0
+		plaque.visible = count > 0
+		var row := plaque.get_child(0) as HBoxContainer
 		var label := row.get_child(1) as Label
 		label.text = "%s  %d/%d" % [RemakeText.t(ArenaAlliances.RULES[key].name), count, ArenaAlliances.target(key, count)]
-		var color := ArenaCreatureCard.SNOW_ACCENT if ArenaAlliances.rank(key, count) > 0 else ArenaCreatureCard.SNOW_INK
-		ArenaCreatureCard.snow_ink(label, color)
+		var active := ArenaAlliances.rank(key, count) > 0
+		var color := ArenaCreatureCard.SNOW_ACCENT if active else GOLD
+		plaque.accent = color if active else Color("9c9279")
+		ArenaCreatureCard.snow_ink(label, PAPER)
 		ArenaCreatureCard.ink_icon(row.get_child(0), color)
 	_layout_alliances.call_deferred()
 

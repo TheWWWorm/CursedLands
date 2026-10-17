@@ -1,0 +1,645 @@
+{
+  "baseline": "Published 1.12.0 combat; unchanged through 1.13.0 candidate. Baseline pack preceded these Trials-only changes.",
+  "candidate": "1.14.0 final combat scripts; rerun before final UI-only edits.",
+  "method": "Nine matchups, three evolution ranks, four seeds (8415..8418), both sides. Native AI and native damage clock. One-on-one empty boards without alliance bonuses; each row has eight bouts.",
+  "total_bouts_per_version": 216,
+  "comparison": [
+    {
+      "matchup": "Skeleton vs Banshee",
+      "stars": 1,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          307.628368377686,
+          91.9764614105225
+        ],
+        "seconds": 247.224999999999
+      },
+      "after": {
+        "wins": 6,
+        "draws": 0,
+        "damage": [
+          399.845099639893,
+          151.55257358551
+        ],
+        "seconds": 298.539999999999
+      }
+    },
+    {
+      "matchup": "Skeleton vs Banshee",
+      "stars": 2,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 7,
+        "draws": 1,
+        "damage": [
+          479.119508361816,
+          155.415162849426
+        ],
+        "seconds": 323.894999999999
+      },
+      "after": {
+        "wins": 7,
+        "draws": 1,
+        "damage": [
+          785.856973075867,
+          349.573915672302
+        ],
+        "seconds": 545.930000000011
+      }
+    },
+    {
+      "matchup": "Skeleton vs Banshee",
+      "stars": 3,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 0,
+        "draws": 0,
+        "damage": [
+          90.9007381439209,
+          840.033849716187
+        ],
+        "seconds": 202.509999999999
+      },
+      "after": {
+        "wins": 0,
+        "draws": 0,
+        "damage": [
+          90.9007381439209,
+          840.033849716187
+        ],
+        "seconds": 202.509999999999
+      }
+    },
+    {
+      "matchup": "Banshee vs Boar",
+      "stars": 1,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 4,
+        "draws": 4,
+        "damage": [
+          129.706834793091,
+          52.0615343093872
+        ],
+        "seconds": 227.699999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          202.223170471191,
+          89.5784580230713
+        ],
+        "seconds": 240.899999999999
+      }
+    },
+    {
+      "matchup": "Banshee vs Boar",
+      "stars": 2,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 4,
+        "draws": 4,
+        "damage": [
+          164.227842903137,
+          59.0940698623657
+        ],
+        "seconds": 249.259999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          317.754218864441,
+          139.369109725952
+        ],
+        "seconds": 291.884999999999
+      }
+    },
+    {
+      "matchup": "Banshee vs Boar",
+      "stars": 3,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          700.865921020508,
+          20.5325691223145
+        ],
+        "seconds": 168.849999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          700.865921020508,
+          20.5325691223145
+        ],
+        "seconds": 168.849999999999
+      }
+    },
+    {
+      "matchup": "Skeleton vs Boar",
+      "stars": 1,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          224.819579124451,
+          32.9802694320679
+        ],
+        "seconds": 137.17
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          224.819579124451,
+          32.9802694320679
+        ],
+        "seconds": 137.17
+      }
+    },
+    {
+      "matchup": "Skeleton vs Boar",
+      "stars": 2,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          314.917179489136,
+          56.0174062728882
+        ],
+        "seconds": 168.519999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          314.917179489136,
+          56.0174062728882
+        ],
+        "seconds": 168.519999999999
+      }
+    },
+    {
+      "matchup": "Skeleton vs Boar",
+      "stars": 3,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          593.338433265686,
+          93.1450143814087
+        ],
+        "seconds": 206.414999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          593.338433265686,
+          93.1450143814087
+        ],
+        "seconds": 206.414999999999
+      }
+    },
+    {
+      "matchup": "Banshee vs Red tiger",
+      "stars": 1,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 3,
+        "draws": 4,
+        "damage": [
+          201.499315261841,
+          170.363621711731
+        ],
+        "seconds": 370.480000000002
+      },
+      "after": {
+        "wins": 6,
+        "draws": 2,
+        "damage": [
+          237.31005821228,
+          157.551125526428
+        ],
+        "seconds": 294.689999999999
+      }
+    },
+    {
+      "matchup": "Banshee vs Red tiger",
+      "stars": 2,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 2,
+        "draws": 4,
+        "damage": [
+          434.756289482117,
+          443.591541862488
+        ],
+        "seconds": 739.420000000026
+      },
+      "after": {
+        "wins": 6,
+        "draws": 2,
+        "damage": [
+          398.424776268005,
+          303.743034362793
+        ],
+        "seconds": 445.720000000002
+      }
+    },
+    {
+      "matchup": "Banshee vs Red tiger",
+      "stars": 3,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          651.56556892395,
+          16.1773410797119
+        ],
+        "seconds": 147.949999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          651.56556892395,
+          16.1773410797119
+        ],
+        "seconds": 147.949999999999
+      }
+    },
+    {
+      "matchup": "Skeleton vs Red tiger",
+      "stars": 1,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          311.074841690064,
+          97.3643449783325
+        ],
+        "seconds": 243.814999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          311.074841690064,
+          97.3643449783325
+        ],
+        "seconds": 243.814999999999
+      }
+    },
+    {
+      "matchup": "Skeleton vs Red tiger",
+      "stars": 2,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          429.504137420654,
+          156.771160316467
+        ],
+        "seconds": 274.394999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          429.504137420654,
+          156.771160316467
+        ],
+        "seconds": 274.394999999999
+      }
+    },
+    {
+      "matchup": "Skeleton vs Red tiger",
+      "stars": 3,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          579.067627906799,
+          97.108434677124
+        ],
+        "seconds": 194.039999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          579.067627906799,
+          97.108434677124
+        ],
+        "seconds": 194.039999999999
+      }
+    },
+    {
+      "matchup": "Red harpy vs Blue troll",
+      "stars": 1,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 0,
+        "draws": 0,
+        "damage": [
+          872.080000000002,
+          565.441772460938
+        ],
+        "seconds": 167.364999999999
+      },
+      "after": {
+        "wins": 0,
+        "draws": 0,
+        "damage": [
+          872.080000000002,
+          565.441772460938
+        ],
+        "seconds": 167.364999999999
+      }
+    },
+    {
+      "matchup": "Red harpy vs Blue troll",
+      "stars": 2,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 0,
+        "draws": 0,
+        "damage": [
+          203.2,
+          578.22557258606
+        ],
+        "seconds": 83.5449999999998
+      },
+      "after": {
+        "wins": 0,
+        "draws": 0,
+        "damage": [
+          786.933333333334,
+          578.22557258606
+        ],
+        "seconds": 83.5449999999998
+      }
+    },
+    {
+      "matchup": "Red harpy vs Blue troll",
+      "stars": 3,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 0,
+        "draws": 0,
+        "damage": [
+          87.2,
+          727.515281677246
+        ],
+        "seconds": 47.3
+      },
+      "after": {
+        "wins": 0,
+        "draws": 0,
+        "damage": [
+          597.6,
+          727.515281677246
+        ],
+        "seconds": 47.3
+      }
+    },
+    {
+      "matchup": "Red harpy vs White tiger",
+      "stars": 1,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          592.640000000001,
+          50.6398658752441
+        ],
+        "seconds": 95.2599999999997
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          592.640000000001,
+          50.6398658752441
+        ],
+        "seconds": 95.2599999999997
+      }
+    },
+    {
+      "matchup": "Red harpy vs White tiger",
+      "stars": 2,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          1064.58666666666,
+          214.441361236572
+        ],
+        "seconds": 160.159999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          1009.44,
+          101.841305923462
+        ],
+        "seconds": 81.6199999999998
+      }
+    },
+    {
+      "matchup": "Red harpy vs White tiger",
+      "stars": 3,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 0,
+        "draws": 0,
+        "damage": [
+          936.138679504395,
+          722.136070251465
+        ],
+        "seconds": 170.334999999999
+      },
+      "after": {
+        "wins": 6,
+        "draws": 0,
+        "damage": [
+          1589.32267227173,
+          390.357597351074
+        ],
+        "seconds": 80.2449999999998
+      }
+    },
+    {
+      "matchup": "Stony harpy vs Blue troll",
+      "stars": 1,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 0,
+        "draws": 0,
+        "damage": [
+          793.0,
+          615.475498962402
+        ],
+        "seconds": 196.844999999999
+      },
+      "after": {
+        "wins": 0,
+        "draws": 0,
+        "damage": [
+          793.0,
+          615.475498962402
+        ],
+        "seconds": 196.844999999999
+      }
+    },
+    {
+      "matchup": "Stony harpy vs Blue troll",
+      "stars": 2,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          2790.0,
+          397.989338684082
+        ],
+        "seconds": 227.259999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          2790.0,
+          397.989338684082
+        ],
+        "seconds": 227.259999999999
+      }
+    },
+    {
+      "matchup": "Stony harpy vs Blue troll",
+      "stars": 3,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 0,
+        "draws": 0,
+        "damage": [
+          4654.0,
+          2750.57192764282
+        ],
+        "seconds": 457.379999999999
+      },
+      "after": {
+        "wins": 0,
+        "draws": 0,
+        "damage": [
+          4654.0,
+          2750.57192764282
+        ],
+        "seconds": 457.379999999999
+      }
+    },
+    {
+      "matchup": "Grey harpy vs Blue troll",
+      "stars": 1,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          1582.10666666667,
+          208.792127990723
+        ],
+        "seconds": 154.384999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          1582.10666666667,
+          208.792127990723
+        ],
+        "seconds": 154.384999999999
+      }
+    },
+    {
+      "matchup": "Grey harpy vs Blue troll",
+      "stars": 2,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          2378.13333333333,
+          259.563330841064
+        ],
+        "seconds": 156.309999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          2378.13333333333,
+          259.563330841064
+        ],
+        "seconds": 156.309999999999
+      }
+    },
+    {
+      "matchup": "Grey harpy vs Blue troll",
+      "stars": 3,
+      "samples_per_version": 8,
+      "before": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          4540.0,
+          536.622756958008
+        ],
+        "seconds": 198.879999999999
+      },
+      "after": {
+        "wins": 8,
+        "draws": 0,
+        "damage": [
+          4540.0,
+          536.622756958008
+        ],
+        "seconds": 198.879999999999
+      }
+    }
+  ],
+  "evidence": {
+    "file": "balance-bouts.json.gz",
+    "sha256": "02b58d4c7fcf8dee226b615fe8e1c314f63af430d310b12442239a5de11ddf42"
+  },
+  "findings": [
+    "Early banshees originally have 31/50 HP and 4.51 s cadence. The Trials health multiplier produces 41/65 HP; 1.5 attack playback/cadence gives 3.025 s in isolated clock measurement. The final dark banshee remains unchanged.",
+    "Early banshees stop drawing with weak boars in this sample, while skeletons remain a strong counter. Final dark banshees retain their existing advantage over skeletons.",
+    "Red harpy native fire-wall power is 40/40/50 over 8.25 seconds. Blue troll fire armor and regeneration can absorb this output. Trials upgrades now use wall power 40/80/140 and arrow power 28/56/98.",
+    "Rank-three red harpy damage dealt to an elite blue troll before dying increases from mean 10.9 to 74.7. The fragile harpy still loses all eight isolated troll bouts. Against elite white tigers, it wins six instead of zero. These samples do not establish global balance.",
+    "Red harpy evolution currently requires two copies, then three: six base recruits, 24 gold at base price four. Recipes and prices are unchanged.",
+    "Forty-six regression assertions cover native/campaign prototype isolation, actor-local spell cache, noncompounding bonuses, removal restoration, save roundtrip, UI health agreement, attack cadence and a stationary regenerating troll inside a wall."
+  ],
+  "limits": [
+    "Small deterministic matchup sample, not live win rates or a whole-economy simulation. Formation, alliances, area targets and resource choices can change outcomes.",
+    "No general campaign stats or native spell definitions are edited. Existing saves and army identities are preserved."
+  ]
+}

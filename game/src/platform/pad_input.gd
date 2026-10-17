@@ -108,6 +108,9 @@ var _glyphs := {}
 
 
 func _ready() -> void:
+	if OS.get_cmdline_user_args().has("--renderer-probe"):
+		process_mode = Node.PROCESS_MODE_DISABLED
+		return
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	process_priority = -100   # before the field reads the sticks
 	_strip_ui_joypad()
@@ -304,6 +307,7 @@ func _process(dt: float) -> void:
 
 
 func _notification(what: int) -> void:
+	if OS.get_cmdline_user_args().has("--renderer-probe"): return
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
 		_focused = false
 		_back_pending_ms = -1

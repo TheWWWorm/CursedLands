@@ -1,6 +1,14 @@
 # Changelog
 
-## 1.13.0 — 2026-10-17
+## 1.14.0 — 2026-10-17
+
+- Detect Windows graphics APIs with separate rendered tests, preferring Direct3D 12 and Vulkan before OpenGL. Cache successful detection and advance after an interrupted test or failed first menu presentation.
+- Add Automatic and Vulkan to the Windows renderer setting, with English, Russian and German labels and help.
+- Place recruitment prices, copy counts and trait icons on compact dark panels with light borders and cost-based accents. Add matching alliance labels and outlined Trials text and icons. ([#15](https://github.com/TheWWWorm/CursedLands/issues/15))
+- Include Safe Windows rendering and persistent manual renderer choices from the unpublished 1.13.0 candidate.
+- Improve one- and two-star banshee health and attack cadence in Trials, and strengthen upgraded red harpy fire spells. Keep campaign creatures and the final dark banshee unchanged. ([#15](https://github.com/TheWWWorm/CursedLands/issues/15))
+
+## 1.13.0 — unpublished candidate
 
 - Add persistent Compatibility (OpenGL) and Forward+ (Direct3D 12) selection on Windows, with startup recovery and a compatibility launcher.
 - Use the Safe rendering thread by default on Windows and include the actual thread mode in diagnostic reports.
