@@ -36,6 +36,20 @@ func _ready() -> void:
 	check(u.mana==50.0,"independent direct steering retains active stamina rules")
 	u.direct_steering.clear();recover()
 	check(is_equal_approx(u.mana,50.5),"off retains normal idle stamina rate")
+	u.order={"type":"follow"};u.mana=50.0;recover()
+	check(is_equal_approx(u.mana,50.5),"stationary follower recovers at the native idle rate")
+	check(not u.is_idle() and u.order.get("type")=="follow","recovery preserves the persistent follow command and AI busy state")
+	u.order.walk=Vector2(10,10);u.mana=50.0;recover()
+	check(u.mana==50.0,"moving follower does not recover with the option off")
+	u.order.erase("walk");u.order.once=true;recover()
+	check(u.mana==50.0,"one-shot interaction approach is not idle follow")
+	u.order.erase("once");u._anim_lock=0.2;recover()
+	check(u.mana==50.0,"follow cannot regenerate through an active action animation")
+	u._anim_lock=0.0;u.orders.assign([{"type":"attack"}]);recover()
+	check(u.mana==50.0,"queued action prevents idle follower recovery")
+	u.orders.clear();u.direct_steering={"direction":Vector2.RIGHT};recover()
+	check(u.mana==50.0,"direct steering prevents idle follower recovery")
+	u.direct_steering.clear()
 	s.mod_config.rules.stamina_regen = 1
 	for action in ["direct_move","move","attack","cast"]:
 		u.hp=50.0;u.mana=50.0;u.order={"type":action}
@@ -49,6 +63,10 @@ func _ready() -> void:
 	check(is_equal_approx(u.mana,54.0),"higher native stamina rate does not accelerate continuous recovery")
 	u.order={};u.mana=50.0;recover()
 	check(is_equal_approx(u.mana,60.0),"standing idle retains faster native stamina recovery")
+	u.order={"type":"follow"};u.mana=50.0;recover()
+	check(is_equal_approx(u.mana,60.0),"stationary follower keeps the native idle rate with optional recovery on")
+	u.order.walk=Vector2(10,10);u.mana=50.0;recover()
+	check(is_equal_approx(u.mana,54.0),"moving follower uses the optional HP-based recovery rate")
 	u.order={"type":"attack"}
 	u.mana=99.0;recover()
 	check(u.mana==100.0,"recovery cannot exceed maximum stamina")

@@ -23,6 +23,7 @@ const REG := [["SaveGame", "save"], ["LoadGame", "load"], ["ResumeGame", "return
 
 var _post: Node3D
 var _player: AnimationPlayer
+var _animation_usec := 0
 var _boards := {}
 var _board_meshes := {}
 var _rects: Array[Rect2] = []
@@ -62,6 +63,9 @@ func _ready() -> void:
 		if not n is MeshInstance3D:
 			paths[String(n.name)] = _post.get_path_to(n)
 	_player = AnimationPlayer.new()
+	# Menu motion uses real time even when the gameplay clock is accelerated
+	# or paused. Advance manually so changing that clock cannot alter a clip.
+	_player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 	_post.add_child(_player)
 	_player.root_node = NodePath("..")
 	# The figure's root part is escmenu00 (unmoco1.lnk); only the root's
@@ -78,6 +82,14 @@ func _ready() -> void:
 ## Native placement; animation keys move only the figure's root part.
 func _frame() -> void:
 	place(Vector3(400, 700, 4.8))
+
+
+func _process(dt: float) -> void:
+	super._process(dt)
+	var now := Time.get_ticks_usec()
+	if _player and is_visible_in_tree() and _animation_usec > 0:
+		_player.advance((now - _animation_usec) / 1000000.0)
+	_animation_usec = now
 
 
 func _gui_input(e: InputEvent) -> void:
@@ -120,6 +132,7 @@ func _on_open() -> void:
 
 func _play(anim: String) -> void:
 	if _player and _player.has_animation("ei/" + anim):
+		_animation_usec = Time.get_ticks_usec()
 		_player.play("ei/" + anim)
 		_player.advance(0.0)
 

@@ -1581,11 +1581,19 @@ func always_regenerate_stamina() -> bool:
 	return GameData.option("stamina_regen") == 1
 
 
+## Follow is a persistent AI state, but has a movement command only while
+## catching up. Do not make is_idle() true: the AI must keep the follow order.
+func _stamina_idle() -> bool:
+	return is_idle() or (order.get("type", "") == "follow" and not order.get("once", false)
+		and not order.has("walk") and orders.is_empty() and direct_steering.is_empty() and _anim_lock <= 0.0)
+
+
 ## Original recovery cadence: 15 logic ticks. The optional party rule removes
 ## the idle restriction at the HP rate; standing idle retains native recovery.
 func _regenerate(dt: float) -> void:
 	if dead: return
 	var continuous := always_regenerate_stamina()
+	var idle := _stamina_idle()
 	_regen_t += dt
 	while _regen_t >= TICK * 15.0:
 		_regen_t -= TICK * 15.0
@@ -1595,9 +1603,9 @@ func _regenerate(dt: float) -> void:
 		var health := max_hp * float(race.get("health_regen", 0.0)) * (1.0 + float(stats.get("regen_hp", 0.0)) / 100.0) * rm
 		var stamina := max_mana * float(race.get("mana_regen", 0.0)) * (1.0 + float(stats.get("regen_mana", 0.0)) / 100.0)
 		heal(health)
-		if continuous and not is_idle():
+		if continuous and not idle:
 			stamina = maxf(0.0, health)
-		if continuous or is_idle():
+		if continuous or idle:
 			mana = minf(max_mana, mana + stamina)
 
 
