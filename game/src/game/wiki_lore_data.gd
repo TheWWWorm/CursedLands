@@ -181,10 +181,6 @@ const DATA := {
 			"Сахиля — воровка из Последнего Укрытия. Украденные ею джунские древности выводят Зака на коллекционера Балуддина, а знания тайников и богатых домов открывают другие возможности. Она может сопровождать его, но просит вернуться на Суслангер: на Гипате ей почти не у кого поживиться.",
 			"Sahilia ist eine Diebin im Letzten Unterschlupf. Ihre gestohlenen Joon-Altertümer führen Kiran zu Baluddin; ihr Wissen über Verstecke und reiche Häuser eröffnet weitere Möglichkeiten. Sie kann ihn begleiten, will aber nach Suslanger zurück, weil Gipath kaum lohnende Ziele bietet."
 		],
-		"[[character/merc2]] is a thief and Kir’s travelling companion. She helps the injured stranger in the slave pen, introduces him to the dangers of Suslanger and stays with him through the search for his homeland. Her practical knowledge, irreverence and resourcefulness repeatedly complement Kir’s direct approach. Their partnership gradually becomes a love she is reluctant to express openly.": [
-			"[[character/merc2]] — воровка и спутница Кира. Она помогает избитому незнакомцу в загоне, знакомит его с опасностями Суслангера и остаётся с ним во время поисков родины. Её житейский опыт, насмешливость и находчивость дополняют прямолинейность Кира. Постепенно их товарищество перерастает для неё в любовь, о которой она не решается сказать прямо.",
-			"[[character/merc2]] ist eine Diebin und Kirs Reisegefährtin. Sie hilft dem verletzten Fremden im Sklavenpferch, macht ihn mit Suslangers Gefahren vertraut und begleitet ihn auf der Suche nach seiner Heimat. Ihre Erfahrung, ihr Spott und ihr Einfallsreichtum ergänzen Kirs direkte Art. Aus ihrer Freundschaft wächst eine Liebe, die sie nur schwer offen aussprechen kann."
-		],
 		"The recruiter promises Kir work and supplies papers for travel through a portal to Suslanger. The apparent opportunity becomes the opening trap of the campaign: Kir arrives as a stranger whom the imperial authorities enslave.": [
 			"Вербовщик обещает Киру работу и выдаёт бумаги для перехода через портал на Суслангер. Кажущаяся удача становится первой ловушкой истории: имперские власти обращают прибывшего чужака в раба.",
 			"Der Anwerber verspricht Kir Arbeit und gibt ihm Papiere für das Portal nach Suslanger. Das Angebot erweist sich als erste Falle der Geschichte: Die kaiserlichen Behörden versklaven den Neuankömmling."
@@ -1194,16 +1190,16 @@ const DATA := {
 			"Tai-Ilaras Bitte und Kels Tod"
 		],
 		"Seeing Kir reunited with Tai-Ilara, Kel asks for the way back to Suslanger. Kir begs her to stay and mentions one more expedition for Tai-Ilara’s belongings. Kel agrees because she still fears for him, calling it their last adventure together. She dies during that expedition. On Kir’s return, Tai-Ilara is concerned with her comb and mirror and dismisses his grief. Her reaction breaks his idealised childhood attachment. He recognises Kel as the person who was closest and most loyal to him, and realises that he failed to see her love while she was beside him.": [
-			"Увидев Кира рядом с Тай-Иларой, Кель спрашивает дорогу обратно на Суслангер. Кир просит её остаться и рассказывает об ещё одном походе за вещами Тай-Илары. Кель соглашается, поскольку всё ещё боится за него, и называет это их последним совместным приключением. Во время похода она погибает. Когда Кир возвращается, Тай-Илару занимают гребень и зеркало, а его горе она отмахивает. Такая реакция разрушает идеальную детскую привязанность. Кир понимает, что самым близким и преданным человеком была Кель, чьей любви он не замечал, пока она шла рядом.",
+			"Увидев Кира рядом с Тай-Иларой, Кель спрашивает дорогу обратно на Суслангер. Кир просит её остаться и рассказывает об ещё одном походе за вещами Тай-Илары. Кель соглашается, поскольку всё ещё боится за него, и называет это их последним совместным приключением. Во время похода она погибает. Когда Кир возвращается, Тай-Илару занимают гребень и зеркало, а от его горя она отмахивается. Такая реакция разрушает идеальную детскую привязанность. Кир понимает, что самым близким и преданным человеком была Кель, чьей любви он не замечал, пока она шла рядом.",
 			"Als Kir Tai-Ilara wiederfindet, fragt Kel nach dem Rückweg nach Suslanger. Kir bittet sie zu bleiben und erwähnt eine letzte Unternehmung für Tai-Ilaras Sachen. Aus Sorge um ihn stimmt Kel zu und nennt es ihr letztes gemeinsames Abenteuer. Dabei stirbt sie. Nach Kirs Rückkehr interessiert sich Tai-Ilara vor allem für Kamm und Spiegel und weist seine Trauer ab. Ihre Reaktion zerstört sein idealisiertes Bild aus Kindertagen. Er erkennt Kel als die treueste und ihm nächste Person und begreift, dass er ihre Liebe übersah, solange sie an seiner Seite war."
 		],
-		"The Rod of Life: a possible reunion": [
-			"Жезл Жизни: возможное воссоединение",
-			"Der Stab des Lebens: ein mögliches Wiedersehen"
+		"The Rod of Life: resurrecting Kel": [
+			"Жезл Жизни: воскрешение Кель",
+			"Der Stab des Lebens: Kel wiederbeleben"
 		],
-		"Kel’s death is not the only outcome recorded in the game. If Kir has collected the three parts of the Rod of Life, Tui-Len offers to assemble the artifact and restore her. The completed quest has its own reunion: Kir calls Kel his love, apologises for his blindness and hears her answer that his love matters more than the rest. ": [
-			"Гибель Кель не является единственным записанным в игре исходом. Если Кир собрал три части Жезла Жизни, Туи-Лен предлагает собрать артефакт и вернуть её. У выполненного задания есть отдельное воссоединение: Кир называет Кель любимой, просит прощения за слепоту и слышит в ответ, что его любовь важнее всего остального. ",
-			"Kels Tod ist nicht der einzige im Spiel vorgesehene Ausgang. Hat Kir die drei Teile des Stabs des Lebens gesammelt, bietet Tui-Len an, das Artefakt zusammenzusetzen und sie zurückzubringen. Der abgeschlossene Auftrag besitzt ein eigenes Wiedersehen: Kir nennt Kel seine Liebe, entschuldigt sich für seine Blindheit und hört, dass ihr seine Liebe wichtiger ist als alles andere. "
+		"Kel can be resurrected in the original Lost in Astral campaign. Her scripted death still occurs, but if Kir has all three parts of the Rod of Life when he finishes the conversation with [[character/deva|Tai-Ilara]] about her retrieved belongings, [[character/junofil|Tui-Len]] offers to bring Kel back. Completing his conversation consumes the fragments and returns Kel alive to the playable party before the final battle, with her saved skills, experience and equipment. Speak to her afterward for their reunion: Kir finally declares his love and asks forgiveness for his blindness. Kel answers that his love matters more than everything else.": [
+			"Кель можно воскресить в оригинальной кампании «Затерянные в Астрале». Сюжетная сцена её гибели всё равно происходит, но если у Кира есть все три части Жезла Жизни к завершению разговора с [[character/deva|Тай-Иларой]] о принесённых вещах, [[character/junofil|Туи-Лен]] предлагает вернуть Кель к жизни. Завершение его разговора расходует части жезла и возвращает живую Кель в управляемый отряд ещё до последней битвы, с сохранёнными навыками, опытом и снаряжением. Поговорите с ней после воскрешения: Кир наконец признаётся ей в любви и просит прощения за свою слепоту. Кель отвечает, что его любовь важнее всего остального.",
+			"Kel lässt sich in der ursprünglichen Kampagne von Lost in Astral wiederbeleben. Ihre geskriptete Todesszene findet weiterhin statt. Besitzt Kir jedoch alle drei Teile des Stabs des Lebens, wenn er das Gespräch mit [[character/deva|Tai-Ilara]] über ihre zurückgebrachten Sachen beendet, bietet [[character/junofil|Tui-Len]] an, Kel zurückzuholen. Nach seinem Gespräch werden die Bruchstücke verbraucht und Kel kehrt noch vor dem Endkampf lebendig in die steuerbare Gruppe zurück, mit ihren gespeicherten Fähigkeiten, ihrer Erfahrung und ihrer Ausrüstung. Sprecht danach mit ihr: Kir gesteht endlich seine Liebe und bittet um Verzeihung für seine Blindheit. Kel antwortet, dass ihr seine Liebe wichtiger ist als alles andere."
 		],
 		"The Joon cache and allies for the assault": [
 			"Джунский тайник и союзники для штурма",
@@ -1220,6 +1216,90 @@ const DATA := {
 		"In the throne room, Firez reveals that he too is a Joon and has watched Kir through a dragonet since the escape. He says his people expelled him for necromancy and claims that his rule protected them from the Curse. Kir answers with their enslavement, his parents’ deaths and the destruction of Jigran to prolong Firez’s life. The tyrant’s explanation is his own defence, not proof that the captivity was benevolent. He threatens to kill Kir, raise him as an obedient servant and use him against the baron. Their exchange leads into the final battle for Jigran. Firez shelters behind a lethal magical barrier. Kir disables its four controls before he can reach the necromancer; teleportation platforms and enchanted lion statues form part of the final arena. Killing Firez completes the last quest and ends the campaign.": [
 			"В тронном зале Фирез открывает, что тоже является джуном и следил за Киром через дракончика с самого побега. Он говорит, что сородичи изгнали его за некромантию, и оправдывает свою власть защитой от Проклятия. Кир отвечает рассказом об их рабстве, смерти родителей и гибели Джиграна ради продления жизни Фиреза. Объяснение тирана является его собственной защитой, а не доказательством благотворности плена. Он грозит убить Кира, поднять покорным слугой и обратить против барона. Их разговор переходит в последнюю битву за Джигран. Фирез укрывается за смертельной магической преградой. Чтобы добраться до некроманта, Кир отключает четыре управляющих элемента; в последней битве можно воспользоваться телепортационными площадками и зачарованными статуями львов. Гибель Фиреза завершает последнее задание и кампанию.",
 			"Im Thronsaal enthüllt Firez, dass auch er ein Joon ist und Kir seit der Flucht durch einen kleinen Drachen beobachtet hat. Sein Volk habe ihn wegen Nekromantie verstoßen; seine Herrschaft habe es vor dem Fluch geschützt. Kir hält ihm die Versklavung, den Tod seiner Eltern und Jigrans Zerstörung zur Verlängerung seines Lebens entgegen. Die Erklärung ist Firez’ eigene Rechtfertigung, kein Beweis wohltätiger Gefangenschaft. Er droht, Kir zu töten, als gehorsamen Diener zu erheben und gegen den Baron einzusetzen. Das Gespräch führt in den letzten Kampf um Jigran. Firez verbirgt sich hinter einer tödlichen magischen Barriere. Kir schaltet ihre vier Steuerungen aus, bevor er den Nekromanten erreichen kann. Teleportplattformen und verzauberte Löwenstatuen gehören zur letzten Kampfarena. Firez’ Tod schließt den letzten Auftrag und die Kampagne ab."
+		],
+		"[[character/merc2]] is a thief from [[allod/suslanger]] and [[character/hero|Kir’s]] travelling companion in Lost in Astral. She saves his life in the slave pen, helps him escape and accompanies him through Gipath and Ingos to Jigran. Her contacts, quick thinking and willingness to challenge him make her an active partner in his search. She falls in love with him, although he is slow to recognise it. Kel can be resurrected after her scripted death: the optional Rod of Life route returns her to the party. The guide below explains the three fragments and the conversation that decides her fate.": [
+			"[[character/merc2]] — воровка с [[allod/suslanger|Суслангера]] и спутница [[character/hero|Кира]] в «Затерянных в Астрале». Она спасает ему жизнь в загоне для рабов, помогает бежать и проходит с ним через Гипат и Ингос до Джиграна. Знакомства, находчивость и готовность спорить с Киром делают её деятельной участницей его поисков. Кель влюбляется в него, но он долго не замечает её чувств. После сюжетной гибели Кель можно воскресить: необязательная ветка Жезла Жизни возвращает её в отряд. Ниже описано, где найти три части жезла и какой разговор определяет её судьбу.",
+			"[[character/merc2]] ist eine Diebin aus [[allod/suslanger]] und [[character/hero|Kirs]] Reisegefährtin in Lost in Astral. Sie rettet ihm im Sklavenpferch das Leben, hilft ihm bei der Flucht und begleitet ihn über Gipath und Ingos nach Jigran. Mit ihren Kontakten, ihrer Geistesgegenwart und ihrem Widerspruch trägt sie selbstständig zu seiner Suche bei. Sie verliebt sich in ihn, doch er bemerkt ihre Gefühle lange nicht. Kel lässt sich nach ihrem geskripteten Tod wiederbeleben: Der optionale Weg über den Stab des Lebens bringt sie in die Gruppe zurück. Die Anleitung weiter unten erklärt die drei Bruchstücke und das Gespräch, das über ihr Schicksal entscheidet."
+		],
+		"Character and loyalties": [
+			"Характер и верность",
+			"Charakter und Loyalität"
+		],
+		"Kel hides concern behind jokes, taunts and a habit of speaking about herself in the third person. She spots expensive tricks and wounded pride quickly: Kir’s costly disguise amuses her, Feiruz’s vanity gives her a way to recruit him, and Stark’s reluctance to learn becomes obvious to her. Her loyalty also has limits and demands of its own. After Feiruz’s death she insists on vengeance under the thieves’ code, despite Kir’s objections. When Dartas insults her, she rejects pity and makes her anger clear. Her affection for Kir does not erase her judgement or her ties to other people.": [
+			"Кель прячет заботу за шутками, насмешками и привычкой говорить о себе в третьем лице. Она быстро замечает дорогие уловки и задетое самолюбие: смеётся над расточительной маскировкой Кира, использует тщеславие Фейруза, чтобы привлечь его к делу, и понимает, почему Старк не хочет учиться новому. Её верность связана и с собственными принципами. После смерти Фейруза она настаивает на мести по воровскому кодексу, несмотря на возражения Кира. Оскорблённая Дартасом, она отвергает жалость и не скрывает гнева. Любовь к Киру не лишает её самостоятельных суждений и привязанностей.",
+			"Kel verbirgt ihre Sorge hinter Scherzen, Spott und der Gewohnheit, von sich in der dritten Person zu sprechen. Teure Tricks und verletzten Stolz durchschaut sie schnell: Kirs kostspielige Verkleidung belustigt sie, Feiruz’ Eitelkeit hilft ihr, ihn anzuwerben, und Starks Widerwillen gegen neues Wissen erkennt sie sofort. Ihre Loyalität folgt auch eigenen Grundsätzen. Nach Feiruz’ Tod besteht sie trotz Kirs Einwänden auf Rache nach dem Diebeskodex. Als Dartas sie beleidigt, weist sie Mitleid zurück und zeigt ihren Zorn. Ihre Liebe zu Kir nimmt ihr weder das eigene Urteil noch die Bindung an andere Menschen."
+		],
+		"Suslanger: contacts and confidence": [
+			"Суслангер: знакомства и находчивость",
+			"Suslanger: Kontakte und Geistesgegenwart"
+		],
+		"After the escape, Kel directs Kir to [[character/elder|Rindeil’s]] house. She knows enough of his habits to warn Kir that promises of help come second to his spiders. When she sees Kir’s new face wrapping, she points out how much money he has spent on looking poor and rejoins him to keep other rogues from exploiting him. Later, the locked meteorite chest requires [[character/merc8|Feiruz’s]] skill. Kel turns his refusal into a challenge to his nerve and reputation as a thief. His agreement creates a debt that draws them into the rescue of [[character/merc10]].": [
+			"После побега Кель направляет Кира к дому [[character/elder|Риндейла]]. Она знает его привычки и предупреждает: обещания помощи для него менее важны, чем пауки. Увидев повязку на лице Кира, Кель высмеивает деньги, потраченные на образ бедняка, и возвращается в отряд, чтобы другие пройдохи не пользовались его доверчивостью. Позже для вскрытия сундука с метеоритом требуется мастерство [[character/merc8|Фейруза]]. Кель превращает его отказ в вызов его смелости и воровской репутации. Он соглашается, но требует ответной услуги, которая приводит спутников к спасению [[character/merc10|Алии]].",
+			"Nach der Flucht führt Kel Kir zu [[character/elder|Rindeils]] Haus. Sie kennt dessen Gewohnheiten und warnt Kir, dass ihm seine Spinnen wichtiger sind als Hilfsversprechen. Als sie Kirs Gesichtsverband sieht, verspottet sie das viele Geld, das er für ein ärmliches Aussehen ausgegeben hat. Sie schließt sich ihm wieder an, damit andere Gauner seine Gutgläubigkeit nicht ausnutzen. Später verlangt die verschlossene Meteoritenkiste nach [[character/merc8|Feiruz’]] Können. Kel macht aus seiner Weigerung eine Frage des Mutes und seines Rufs als Dieb. Er stimmt zu, fordert aber einen Gegendienst, der die Gefährten in [[character/merc10|Aliyas]] Rettung hineinzieht."
+		],
+		"Feiruz and the thieves’ code": [
+			"Фейруз и воровской кодекс",
+			"Feiruz und der Diebeskodex"
+		],
+		"Feiruz dies during Aliya’s rescue. Kel has seen who struck the fatal blow and tells the grieving Aliya to rally their comrades. Kir objects to another killing, but Kel insists that the thieves must avenge one of their own. The episode shows a harder side of the woman who saved him: she can be tender toward Kir and uncompromising about obligations he does not share.": [
+			"Фейруз погибает при спасении Алии. Кель видела, кто нанёс смертельный удар, и призывает скорбящую Алию собрать товарищей. Кир возражает против нового убийства, но Кель настаивает: воры должны отомстить за своего. Здесь проявляется суровая сторона девушки, которая спасла ему жизнь: нежность к Киру сочетается с непреклонностью в вопросах долга, который он не разделяет.",
+			"Feiruz stirbt bei Aliyas Rettung. Kel hat gesehen, wer den tödlichen Schlag führte, und fordert die trauernde Aliya auf, ihre Gefährten zu sammeln. Kir widerspricht einem weiteren Mord, doch Kel besteht darauf, dass die Diebe einen der Ihren rächen müssen. Hier zeigt sich eine härtere Seite seiner Retterin: Zuneigung zu Kir verbindet sich mit unerbittlichen Pflichten, die er nicht teilt."
+		],
+		"Staying with Kir": [
+			"Решение остаться с Киром",
+			"Die Entscheidung, bei Kir zu bleiben"
+		],
+		"Their journey takes them from Suslanger through [[allod/gipat]] and [[allod/ingos]]. When the hidden road to Jigran finally appears, Kel admits that the unknown destination frightens her. Kir decides to go immediately, believing that he now has the strength to face Firez himself. She corrects his assumption that he will travel alone: they are going together. Kir had expected her to remain with [[character/mthief|Trickster]], but she tells him she prefers him. Her decision brings her into a war for a homeland that is his, not hers.": [
+			"Путь ведёт спутников с Суслангера через [[allod/gipat|Гипат]] и [[allod/ingos|Ингос]]. Когда открывается скрытая дорога на Джигран, Кель признаётся, что неизвестность её пугает. Кир решает отправиться немедленно: теперь он верит, что сам достаточно силён для борьбы с Фирезом. Кель поправляет его: они идут вместе. Кир ожидал, что она останется с [[character/mthief|Ловкачом]], но Кель говорит, что Кир ей дороже. По собственному выбору она вступает в войну за его родину, хотя её дом остался на Суслангере.",
+			"Die Reise führt die beiden von Suslanger über [[allod/gipat]] und [[allod/ingos]]. Als sich der verborgene Weg nach Jigran öffnet, gesteht Kel ihre Angst vor dem unbekannten Ziel. Kir will sofort aufbrechen, weil er sich inzwischen stark genug fühlt, Firez selbst entgegenzutreten. Sie korrigiert seine Annahme, allein zu reisen: Sie gehen gemeinsam. Kir hatte erwartet, dass sie bei [[character/mthief|dem Gauner]] bleiben würde, doch Kel sagt ihm, dass er ihr lieber ist. Aus eigener Entscheidung zieht sie in einen Krieg um seine Heimat, während ihre eigene auf Suslanger liegt."
+		],
+		"Understanding Stark and planning the rescue": [
+			"Помощь Старку и план спасения пленных",
+			"Stark verstehen und die Rettung planen"
+		],
+		"Kel contributes more than another weapon to Kir’s cause. When [[character/stark]] resists the new alloy, she identifies his pride as the obstacle: accepting Kir’s discovery would mean admitting a gap in his own knowledge. Later, she asks [[character/doctor|Uncle Rad]] to investigate the Joon prisoners. Learning that Firez is transferring them from the mountain prison to his fortress, she proposes intercepting the convoy. This gives Kir a practical plan at the moment his fear for his family threatens his confidence. In gratitude he promises her a kiss; she makes sure he knows she will remember.": [
+			"Кель помогает Киру не только в бою. Когда [[character/stark]] сопротивляется идее нового сплава, она видит причину в его гордости: признать открытие Кира означает признаться в собственном незнании. Позже она просит [[character/doctor|дядюшку Рада]] разузнать о пленных джунах. Выяснив, что Фирез переводит их из горной тюрьмы в крепость, Кель предлагает перехватить караван. Её план поддерживает Кира в тот момент, когда страх за семью подрывает его уверенность. В благодарность он обещает поцеловать её, а она даёт понять, что будет помнить и ждать.",
+			"Kel hilft Kir nicht nur im Kampf. Als [[character/stark]] die neue Legierung ablehnt, erkennt sie seinen Stolz als Hindernis: Kirs Entdeckung anzuerkennen hieße, eine Lücke im eigenen Wissen einzugestehen. Später bittet sie [[character/doctor|Onkel Rad]], sich nach den gefangenen Joons zu erkundigen. Als sie erfährt, dass Firez sie vom Berggefängnis in seine Festung verlegen lässt, schlägt sie einen Überfall auf den Transport vor. Damit gibt sie Kir einen konkreten Plan, als die Sorge um seine Familie sein Selbstvertrauen erschüttert. Zum Dank verspricht er ihr einen Kuss; sie lässt ihn wissen, dass sie sich daran erinnern und darauf warten wird."
+		],
+		"The future she hopes for": [
+			"Будущее, о котором она мечтает",
+			"Die Zukunft, die sie sich erhofft"
+		],
+		"While [[character/baron|Virril]] celebrates his military success and imagines his descendants ruling Jigran, Kel worries that freeing Kir’s family will end their journey together. She tells the baron that her own wish is simply to stay near Kir and have him notice her more often. His reunion with [[character/deva|Tai-Ilara]] seems to confirm her fear. Kel asks for the portal home, yet agrees to accompany him once more because she believes he is about to risk his life for Tai-Ilara’s belongings. Her decision to stay grows out of concern for him even as she prepares to leave.": [
+			"Пока [[character/baron|Виррил]] празднует военный успех и мечтает о власти своих потомков над Джиграном, Кель боится, что освобождение семьи Кира завершит их совместный путь. Барону она говорит о куда более личном желании: быть рядом с Киром и чаще привлекать его внимание. Встреча Кира с [[character/deva|Тай-Иларой]] словно подтверждает её опасения. Кель просит показать портал домой, но соглашается сопровождать его ещё раз: она понимает, что ради вещей Тай-Илары он снова рискует жизнью. Даже собираясь уйти, она остаётся из заботы о нём.",
+			"Während [[character/baron|Virril]] seinen militärischen Erfolg feiert und von der Herrschaft seiner Nachkommen über Jigran träumt, fürchtet Kel, dass die Befreiung von Kirs Familie ihre gemeinsame Reise beendet. Dem Baron sagt sie, ihr eigener Wunsch sei nur, bei Kir zu bleiben und öfter von ihm beachtet zu werden. Sein Wiedersehen mit [[character/deva|Tai-Ilara]] scheint diese Sorge zu bestätigen. Kel fragt nach dem Portal nach Hause, begleitet ihn aber noch einmal, weil er für Tai-Ilaras Habseligkeiten erneut sein Leben riskiert. Selbst als sie sich zum Abschied entschließt, bleibt sie aus Sorge um ihn."
+		],
+		"First fragment: Suslanger": [
+			"Первая часть: Суслангер",
+			"Erstes Bruchstück: Suslanger"
+		],
+		"Follow [[character/skelet|the fortune-teller’s]] optional chain of predictions on [[allod/suslanger]]. It ends at the enchanted levers in the Wormface underground passages, in “The Wormfaces’ Riddle”. Solve the puzzle and open the reward chest to obtain the first fragment. Complete this before leaving Suslanger for Gipath; the earlier predictions lead to the final puzzle.": [
+			"На [[allod/suslanger|Суслангере]] выполните необязательную цепочку предсказаний [[character/skelet|гадалки]]. Она приводит к зачарованным рычагам в подземелье червелицых, в задании «Загадка червелицых». Решите головоломку и откройте сундук с наградой, чтобы получить первую часть жезла. Завершите эту цепочку до отъезда с Суслангера на Гипат: предыдущие предсказания указывают путь к последней загадке.",
+			"Folgt auf [[allod/suslanger]] der optionalen Kette von Vorhersagen [[character/skelet|der Wahrsagerin]]. Sie führt zu den verzauberten Hebeln in den unterirdischen Gängen der Wurmgesichter, im Auftrag „Das Rätsel der Wurmgesichter“. Löst das Rätsel und öffnet die Belohnungstruhe, um das erste Bruchstück zu erhalten. Schließt die Kette vor der Abreise nach Gipath ab; die früheren Vorhersagen führen zum letzten Rätsel."
+		],
+		"Second fragment: Gipath": [
+			"Вторая часть: Гипат",
+			"Zweites Bruchstück: Gipath"
+		],
+		"Follow [[character/spletnica|Uyka’s]] optional stories and errands on [[allod/gipat]] until she offers to sell the key she wears around her neck. It opens the way to the “Hall of the Great” in the lizardmen’s tomb. Explore that hall and take the second fragment from its reward chest before continuing to Ingos.": [
+			"На [[allod/gipat|Гипате]] следуйте необязательным рассказам и поручениям [[character/spletnica|Уйки]], пока она не предложит купить ключ, который носит на шее. Он открывает путь в «Зал Великих» в гробнице ящеров. Исследуйте зал и заберите вторую часть жезла из сундука с наградой до продолжения пути на Ингос.",
+			"Folgt auf [[allod/gipat]] [[character/spletnica|Uykas]] optionalen Geschichten und Aufträgen, bis sie den Schlüssel an ihrem Hals zum Verkauf anbietet. Er öffnet den Weg zur „Halle der Großen“ im Grabmal der Echsenmenschen. Erkundet die Halle und nehmt das zweite Bruchstück aus der Belohnungstruhe, bevor ihr nach Ingos weiterreist."
+		],
+		"Third fragment: Ingos": [
+			"Третья часть: Ингос",
+			"Drittes Bruchstück: Ingos"
+		],
+		"Continue helping [[character/haburu|Khabburu]] on [[allod/ingos]]: free the dogs, follow his lead to the fenced cache, water the tree and bring the cow to the Woodsfolk. He eventually gives Kir a key connected to the mines. In “Groping in the Dark”, use it to solve the cave’s sequence of gates and levers, then open the final chest for the third fragment. Obtain it before travelling to Jigran.": [
+			"На [[allod/ingos|Ингосе]] продолжайте помогать [[character/haburu|Хаббуру]]: освободите собак, найдите по его подсказке тайник за оградой, полейте дерево и приведите корову к лесовикам. В итоге он даст Киру ключ, связанный с рудниками. В задании «Блуждание в потемках» разберитесь с последовательностью ворот и рычагов в пещере и откройте последний сундук, чтобы получить третью часть жезла. Заберите её до путешествия на Джигран.",
+			"Helft [[character/haburu|Khabburu]] auf [[allod/ingos]] weiter: Befreit die Hunde, folgt seinem Hinweis zum umzäunten Versteck, gießt den Baum und bringt die Kuh zu den Waldleuten. Schließlich gibt er Kir einen Schlüssel, der mit den Minen zusammenhängt. Löst damit im Auftrag „Im Dunkeln tappen“ die Folge von Toren und Hebeln in der Höhle und öffnet die letzte Truhe für das dritte Bruchstück. Holt es vor der Reise nach Jigran."
+		],
+		"The conversation that decides her fate": [
+			"Разговор, который решает её судьбу",
+			"Das entscheidende Gespräch"
+		],
+		"Keep all three fragments until you return to [[map/bz31j|the baron’s camp]] after Kel’s death. Finish the conversation with Tai-Ilara about the belongings you retrieved; the resurrection offer then begins if all three pieces are present. Complete Tui-Len’s conversation and speak to Kel for the reunion. If any fragment is missing at that first conversation’s conclusion, the story commits to the route without her. Finding a missing piece afterward does not reopen the offer; load a save from before the decision. The resurrection is handled through dialogue, so you do not need to craft or equip a usable staff.": [
+			"Сохраните все три части до возвращения в [[map/bz31j|лагерь барона]] после гибели Кель. Завершите разговор с Тай-Иларой о принесённых вещах: если все части при вас, начнётся разговор о воскрешении. Договорите с Туи-Леном, а затем поговорите с Кель, чтобы увидеть воссоединение. Если к концу первого разговора не хватает хотя бы одной части, сюжет продолжится без неё. Поздняя находка не вернёт предложение о воскрешении — понадобится сохранение до этого решения. Воскрешение происходит через диалог: собирать жезл в конструкторе или брать его в руки не требуется.",
+			"Behaltet alle drei Bruchstücke bis zur Rückkehr in [[map/bz31j|das Lager des Barons]] nach Kels Tod. Beendet dort das Gespräch mit Tai-Ilara über ihre zurückgebrachten Sachen. Sind alle Teile vorhanden, beginnt das Angebot zur Wiederbelebung. Schließt Tui-Lens Gespräch ab und sprecht anschließend mit Kel für das Wiedersehen. Fehlt beim Ende des ersten Gesprächs auch nur ein Teil, setzt sich die Geschichte ohne sie fort. Ein später gefundenes Bruchstück öffnet das Angebot nicht erneut; ladet dafür einen Spielstand vor dieser Entscheidung. Die Wiederbelebung erfolgt im Dialog. Ihr müsst keinen benutzbaren Stab herstellen oder ausrüsten."
 		],
 		"[[character/sheriff]] serves Rindeil and formerly performed on stage. He tells Kir about a red-skinned youth once held by the scholars and locates a report in the necromancers’ citadel. Karim bribes a guard to open the gate and get the other guards drunk, but the plan fails. Kir and Kel nevertheless retrieve the report, which points Kir toward another Joon.": [
 			"[[character/sheriff]] служит Риндейлу, а прежде выступал на сцене. Он рассказывает Киру о краснокожем юноше, которого держали учёные, и находит след донесения в цитадели некромантов. Карим подкупает стражника, чтобы тот открыл ворота и напоил остальных, но план срывается. Тем не менее Кир и Кель добывают документ, указывающий путь к другому джуну.",
@@ -8252,11 +8332,13 @@ const DATA := {
 						"order": 41
 					},
 					{
-						"heading": "The Rod of Life: a possible reunion",
-						"text": "Kel’s death is not the only outcome recorded in the game. If Kir has collected the three parts of the Rod of Life, Tui-Len offers to assemble the artifact and restore her. The completed quest has its own reunion: Kir calls Kel his love, apologises for his blindness and hears her answer that his love matters more than the rest. ",
+						"heading": "The Rod of Life: resurrecting Kel",
+						"text": "Kel can be resurrected in the original Lost in Astral campaign. Her scripted death still occurs, but if Kir has all three parts of the Rod of Life when he finishes the conversation with [[character/deva|Tai-Ilara]] about her retrieved belongings, [[character/junofil|Tui-Len]] offers to bring Kel back. Completing his conversation consumes the fragments and returns Kel alive to the playable party before the final battle, with her saved skills, experience and equipment. Speak to her afterward for their reunion: Kir finally declares his love and asks forgiveness for his blindness. Kel answers that his love matters more than everything else.",
 						"sources": [
+							"briefing brief_345",
 							"briefing fq20",
 							"briefing fq21",
+							"script cz3j",
 							"script bz31j"
 						],
 						"event": "rod_of_life",
@@ -8324,12 +8406,26 @@ const DATA := {
 				"sections": [
 					{
 						"heading": "Overview",
-						"text": "[[character/merc2]] is a thief and Kir’s travelling companion. She helps the injured stranger in the slave pen, introduces him to the dangers of Suslanger and stays with him through the search for his homeland. Her practical knowledge, irreverence and resourcefulness repeatedly complement Kir’s direct approach. Their partnership gradually becomes a love she is reluctant to express openly.",
+						"text": "[[character/merc2]] is a thief from [[allod/suslanger]] and [[character/hero|Kir’s]] travelling companion in Lost in Astral. She saves his life in the slave pen, helps him escape and accompanies him through Gipath and Ingos to Jigran. Her contacts, quick thinking and willingness to challenge him make her an active partner in his search. She falls in love with him, although he is slow to recognise it. Kel can be resurrected after her scripted death: the optional Rod of Life route returns her to the party. The guide below explains the three fragments and the conversation that decides her fate.",
 						"sources": [
 							"briefing brief_2",
+							"briefing brief_23",
 							"briefing brief_254",
 							"briefing brief_338",
-							"briefing brief_342"
+							"briefing fq20",
+							"briefing fq21",
+							"script bz31j"
+						]
+					},
+					{
+						"heading": "Character and loyalties",
+						"text": "Kel hides concern behind jokes, taunts and a habit of speaking about herself in the third person. She spots expensive tricks and wounded pride quickly: Kir’s costly disguise amuses her, Feiruz’s vanity gives her a way to recruit him, and Stark’s reluctance to learn becomes obvious to her. Her loyalty also has limits and demands of its own. After Feiruz’s death she insists on vengeance under the thieves’ code, despite Kir’s objections. When Dartas insults her, she rejects pity and makes her anger clear. Her affection for Kir does not erase her judgement or her ties to other people.",
+						"sources": [
+							"briefing n3_2",
+							"briefing brief_23",
+							"briefing brief_38",
+							"briefing brief_317",
+							"briefing brief_320"
 						]
 					},
 					{
@@ -8351,321 +8447,36 @@ const DATA := {
 						"order": 2
 					},
 					{
-						"heading": "Records and a new disguise",
-						"text": "Rindeil suggests a poison that would change Kir’s skin colour but could cause paralysis; Karim offers a recipe that would take months. Neither solves the urgent problem. [[character/merc8]] proposes wrapping Kir’s face in cloth: survivors of a recent disease already conceal their disfigurement that way. Kir helps him with a theft to obtain the fabric, and Feiruz rewards his assistance. The disguise initially fools even Rindeil. It lets Kir move among the Khadaganians while continuing the search for another Joon. When Kel returns, she mocks the expensive cloth as an extravagant way to impersonate a poor survivor. She also warns that Rindeil’s promises of help are less reliable than his interest in spiders, and rejoins Kir to keep others from taking advantage of him.",
+						"heading": "Suslanger: contacts and confidence",
+						"text": "After the escape, Kel directs Kir to [[character/elder|Rindeil’s]] house. She knows enough of his habits to warn Kir that promises of help come second to his spiders. When she sees Kir’s new face wrapping, she points out how much money he has spent on looking poor and rejoins him to keep other rogues from exploiting him. Later, the locked meteorite chest requires [[character/merc8|Feiruz’s]] skill. Kel turns his refusal into a challenge to his nerve and reputation as a thief. His agreement creates a debt that draws them into the rescue of [[character/merc10]].",
 						"sources": [
-							"briefing brief_11",
-							"briefing brief_12",
-							"briefing brief_14",
-							"briefing brief_15",
-							"briefing brief_17",
-							"briefing n3_2"
-						],
-						"event": "kir_disguise",
-						"order": 4
-					},
-					{
-						"heading": "The meteorite and Feiruz’s favour",
-						"text": "Rindeil wants a meteorite sample brought from the lands the Khadaganians call useless. He has arranged to exchange it for a rare addition to his collection. Kir overhears the guards to locate the sample, but its locked chest calls for a better thief. Karim directs him to Feiruz at the Black Market. Kel challenges Feiruz’s pride until he agrees to help, on condition that they return the favour later. He opens the chest, earns Kel’s praise and leaves the party to rest. Rindeil rewards the delivery. The unpaid favour explains why Feiruz later expects help rescuing Aliya.",
-						"sources": [
+							"briefing brief_5a",
+							"briefing n3_2",
 							"briefing brief_18",
 							"briefing brief_20",
 							"briefing brief_22",
 							"briefing brief_23",
-							"briefing brief_24",
 							"briefing brief_25",
-							"quest q5h",
-							"quest q7h",
-							"quest q8h"
-						],
-						"event": "meteorite_theft",
-						"order": 5
+							"briefing brief_37"
+						]
 					},
 					{
-						"heading": "Zara’s affairs",
-						"text": "Kel introduces Kir to the widowed merchant [[character/ycf]]. Zara has sold forbidden goods, including a powder Kel bought for her mother, and a blackmailer threatens to report her. She asks the pair to deliver a letter and later the payment, citing her late husband’s belief in a merchant’s good name. The quest takes a harsher turn: Kir can keep the money, leave a message, track the blackmailer and kill him. Zara then pays an additional reward. Kir’s private reaction acknowledges that he has profited twice from her trouble.",
-						"sources": [
-							"briefing brief_21",
-							"briefing brief_27",
-							"briefing brief_28",
-							"briefing brief_33",
-							"briefing brief_34a",
-							"briefing brief_34c",
-							"briefing brief_63",
-							"briefing brief_64",
-							"briefing brief_7",
-							"briefing brief_26",
-							"quest q6h",
-							"quest q9h"
-						],
-						"event": "zara",
-						"order": 6
-					},
-					{
-						"heading": "Feiruz’s last rescue",
-						"text": "Feiruz asks Kir to repay his help by rescuing his imprisoned fiancée [[character/merc10]]. He dies during the escape. Kel urges the grieving Aliya to avenge him and identifies the man who struck the fatal blow. Kir objects to deliberate revenge, but their companions insist on their code. The death of the prison commandant brings searches across the city. Fearing for his collection, Rindeil withdraws his protection, though he says Kir may return once the danger passes. Aliya then leads Kir and Kel to the Last Shelter and speaks for them before [[character/glav]].",
+						"heading": "Feiruz and the thieves’ code",
+						"text": "Feiruz dies during Aliya’s rescue. Kel has seen who struck the fatal blow and tells the grieving Aliya to rally their comrades. Kir objects to another killing, but Kel insists that the thieves must avenge one of their own. The episode shows a harder side of the woman who saved him: she can be tender toward Kir and uncompromising about obligations he does not share.",
 						"sources": [
 							"briefing brief_37",
 							"briefing brief_38",
-							"briefing brief_39",
-							"briefing brief_40",
-							"briefing brief_41"
-						],
-						"event": "feiruz",
-						"order": 8
+							"briefing brief_39"
+						]
 					},
 					{
-						"heading": "The fortune-teller’s leads",
-						"text": "While travelling through Suslanger in human guise, Kir can buy a succession of predictions from the [[character/skelet|fortune-teller]]. She first points him toward an orchard near the Portal, then toward a public building and an underground route. Further hints concern a harvest basket on the plantations, a chest beyond a fenced property, and an estate where undead appear at night. Kir challenges her obscure language but continues to investigate. The last prediction concerns the Wormface underground passages and a choice among enchanted mechanisms. Solving that puzzle can yield one of the fragments later identified as parts of the Rod of Life. These optional discoveries require Kir to act on the clues; the fortune-teller explicitly speaks of what may happen, not an inevitable future.",
+						"heading": "Staying with Kir",
+						"text": "Their journey takes them from Suslanger through [[allod/gipat]] and [[allod/ingos]]. When the hidden road to Jigran finally appears, Kel admits that the unknown destination frightens her. Kir decides to go immediately, believing that he now has the strength to face Firez himself. She corrects his assumption that he will travel alone: they are going together. Kir had expected her to remain with [[character/mthief|Trickster]], but she tells him she prefers him. Her decision brings her into a war for a homeland that is his, not hers.",
 						"sources": [
-							"briefing skelet_about",
-							"briefing skelet_fq2",
-							"briefing skelet_fq3",
-							"briefing skelet_fq4",
-							"briefing skelet_fq5",
-							"briefing skelet_fq6",
-							"quest fq2",
-							"quest fq3",
-							"quest fq4",
-							"quest fq5",
-							"quest fq6",
-							"script zone4"
-						],
-						"event": "fortune_chain",
-						"order": 12
-					},
-					{
-						"heading": "The report and the passage to Gipath",
-						"text": "Karim locates a report about the missing red-skinned youth in the necromancers’ citadel. He has bribed a guard to open the gate and get the other guards drunk, but the watch remains alert. Kir and Kel retrieve the document despite the failed arrangement, and Kir defends Karim when Kel blames him. The report records transformation and teleportation before the attack on the scholars’ mansion, with Gipath as the destination. Kir decides to follow that Joon. Sahilia initially warns against joining the army, then has convincing enlistment papers forged while Kir empties her dangerous caches for her. Kel refuses to be left behind, passing as a young man herself. [[character/sergant]] puts them through military training in Death Canyon. Their performance earns a courier assignment to the Gipath expedition. Sealed orders and a portal pass finally let them leave Suslanger under the authority of the same empire that enslaved them.",
-						"sources": [
-							"briefing brief_31",
-							"briefing brief_82",
-							"briefing brief_83",
-							"briefing brief_59a",
-							"briefing brief_86",
-							"briefing brief_87",
-							"briefing brief_88",
 							"briefing brief_88a",
-							"briefing brief_59",
-							"briefing brief_59c"
-						],
-						"event": "enlistment",
-						"order": 13
-					},
-					{
-						"heading": "Urk-Tar and the destroyed expedition",
-						"text": "On Gipath, [[character/orcc]] says his warriors destroyed the Khadaganian expedition. He remembers how Zak’s defeat of a supposed Demon showed that armoured outsiders could be killed, and hopes Kir will become a Chosen for his own tribe. Kel proposes a false report with unpromising stone samples to prevent another imperial expedition from being sent. The shaman [[character/orcpyr]] distrusts strangers but makes Kir a ritual axe after he supplies suitable stone, and makes beads for Kel. Their welcome depends on helping the tribe, and Kir soon rescues the chief from a harpy and his wife from goblins.",
-						"sources": [
-							"briefing brief_101",
-							"briefing brief_102",
-							"briefing brief_103",
-							"briefing brief_104",
-							"briefing brief_105",
-							"briefing brief_106",
-							"briefing brief_107",
-							"briefing brief_108",
-							"briefing brief_109",
-							"briefing brief_110",
-							"briefing brief_111"
-						],
-						"event": "urk_tar",
-						"order": 14
-					},
-					{
-						"heading": "The Shell and the war with the settlers",
-						"text": "Urk-Tar explains that humans have driven orcs out of the Foothills and are advancing into the Middle Mountains. Kir removes the Shell whose presence restrains the lizards, initially refusing to fight humans himself. When Tynachey describes the killing of the tribe’s inhabitants, Kel argues for helping their hosts recover the settlement, and Kir agrees. The [[character/iz|Hermit Lizard]] then offers news of the former Chosen in exchange for placing the Shell by the Remote Mountains’ lake. Restoring it also frees hunters held by lizards. The Hermit directs Kir toward the Great Magician by a route different from Zak’s old tunnel approach.",
-						"sources": [
-							"briefing brief_112",
-							"briefing brief_113",
-							"briefing brief_114",
-							"briefing brief_115",
-							"briefing brief_116",
-							"briefing brief_117"
-						],
-						"event": "shell_war",
-						"order": 15
-					},
-					{
-						"heading": "Uyka’s rumours and the captive Go-Go",
-						"text": "Bor introduces Kir to [[character/spletnica]], who lives alone and receives household help in exchange for news. Her first story points toward the giant mushrooms near the goblin camp in the Middle Mountains; only one is edible. Later she reports that a survivor of the Khadaganian expedition left Estera’s refuge for the Distant Mountains. Kir worries that the man might return to Suslanger, and the resulting lead concerns treasure in the ruined expedition camp. Uyka also describes Go-Go as an imprisoned champion of goblin freedom and praises his supposed beauty. Kel is curious enough to consider visiting him, and the pair can free him from the island orcs. Uyka’s requests for repairs, provisions and money accompany these conversations; her account of someone’s motives or attractiveness remains her opinion.",
-						"sources": [
-							"briefing spletnica_about",
-							"briefing fq9",
-							"briefing fq10",
-							"quest fq8",
-							"quest fq9",
-							"quest fq10"
-						],
-						"event": "uyka_leads",
-						"order": 18
-					},
-					{
-						"heading": "Running bones, the ogre and Uyka’s key",
-						"text": "Further paid stories lead Kir to an animated skeleton’s severed legs in the Dead City and to a giant ogre being fattened by the island orcs. The ogre quest proposes overfeeding it: starving it would make it dangerous, while ordinary feeding would let it grow. At the end of this optional sequence, Kir notices the heavy object Uyka wears around her neck. She found it in the mountains and treats it as a possible charm against evil or lizards. Kir recognises it as a key and can buy it. It opens the way to the Hall of the Great in the lizardmen’s tomb, where the greatest chiefs were buried. Among its rewards is another fragment of the Rod of Life, giving Uyka’s local gossip a consequence far beyond Gipath.",
-						"sources": [
-							"briefing fq11",
-							"briefing fq12",
-							"briefing fq13",
-							"quest fq11",
-							"quest fq12",
-							"quest fq13",
-							"script zone11dun1"
-						],
-						"event": "uyka_key",
-						"order": 19
-					},
-					{
-						"heading": "Airy, Estera and the Dragon’s flower",
-						"text": "[[character/daughter]] guards the cave while Estera is visiting the [[character/skd|Old Dragon]]. Her quarrel with Kel over a necklace exposes Kel’s jealousy and Kir’s failure to notice it. Airy refuses his courtship and suggests looking at the person already beside him. At the dragon’s lair, Estera is the troublesome visitor rather than a prisoner: she refuses to leave without information about a flower. Kir obtains it and the witch goes home. [[character/witch]] then admits the Orb was stolen by orcs; Airy identifies the islands and warns that it lost its power after its earlier use.",
-						"sources": [
-							"briefing brief_129",
-							"briefing brief_130",
-							"briefing brief_131",
-							"briefing brief_132",
-							"briefing brief_133",
-							"briefing brief_134",
-							"briefing brief_136",
-							"briefing brief_137"
-						],
-						"event": "flower_dragon",
-						"order": 20
-					},
-					{
-						"heading": "Babur’s knife bargain and captivity",
-						"text": "Airy’s warning about the depleted Orb leads Kir towards the observatory. Babur can open the blocked approach, but first demands the Chosen’s knife, now a sacred relic. While Kir pursues the relic, island orcs raid the hunters’ camp and carry Babur away. They hand him to their ogre neighbours after his dealings with them turn sour. Kir obtains the two keys to the pit, frees the craftsman and escorts him back alive. Babur renounces further trade with the orcs. His rescue also lets Bor put forward a new plan against the settlers.",
-						"sources": [
-							"briefing brief_139",
-							"briefing brief_140",
-							"briefing brief_141",
-							"briefing brief_142",
-							"briefing brief_145a",
-							"quest q24g",
-							"script zone16"
-						],
-						"event": "babur_rescue",
-						"order": 21
-					},
-					{
-						"heading": "Bor’s attack on the new village",
-						"text": "Bor’s final plan against the settlers uses the orcs’ old lightning pyramid. He supplies its key and asks Kir to activate it inside the new village, then escape its reach. The attack continues with orcs and Free Hunters finishing the surviving defenders. Kel calls the result a massacre and accuses Bor of using them for his dirty work. Bor answers that the settlers have retreated to the old village: he wanted to restore the balance disrupted by the Chosen. Kir understands that motive, while Kel’s objection remains part of the exchange. The restored order is Bor’s justification for the violence.",
-						"sources": [
-							"briefing brief_143",
-							"briefing brief_144",
-							"quest q25g"
-						],
-						"event": "bor_pyramid",
-						"order": 22
-					},
-					{
-						"heading": "Babur’s rescue and the restored Orb",
-						"text": "The stolen Orb stands on an island orc pedestal. Kir obtains the bridge gear from their gathering on Council Mountain to reach it. Once Babur is safe and has seen the damaged Orb, he provides the key to the observatory approach. The observatory book lets Estera prescribe washing the Orb in underground spring water. A landslide closes Kir’s former route to Tka-Rik, forcing him through the old tunnel. Before departure, Airy asks Kel to greet the Chosen if they meet him and says she still remembers him. Kel apologises for her earlier jealousy; both women recognise feelings Kir has yet to understand. The repaired Orb shows snow rather than Jigran. Tka-Rik interprets this as Ingos, agrees that Kel can go with Kir, and warns that greater freedom there does not prevent cruel government or make their search for powerful magic safe.",
-						"sources": [
-							"briefing brief_138",
-							"briefing brief_139",
-							"briefing brief_140",
-							"briefing brief_141",
-							"briefing brief_142",
-							"briefing brief_145b",
-							"briefing brief_145c",
-							"briefing brief_146",
-							"briefing brief_148",
-							"briefing brief_149",
-							"briefing brief_151",
-							"briefing brief_147",
-							"briefing brief_150",
-							"quest q22g",
-							"briefing brief_145a"
-						],
-						"event": "orb_repair",
-						"order": 23
-					},
-					{
-						"heading": "Grey Leaf and the poisoned river",
-						"text": "Grey Leaf reports that animals are dying after drinking from the northern river. His healers cannot save them while Karansul’s factory keeps discharging poison into the water. Kel recognises that treating the animals alone cannot solve the problem. Karansul proudly confirms his ownership and describes a blasting powder used in his mines. Kir can obtain the powder and destroy the polluting works. Grey Leaf thanks him for ending the contamination. This request concerns the Woodsfolk’s protection of the forest, separately from the search for the Joon artifact.",
-						"sources": [
-							"briefing brief_208",
-							"briefing brief_208b",
-							"briefing brief_209",
-							"quest q7k"
-						],
-						"event": "poisoned_river",
-						"order": 25
-					},
-					{
-						"heading": "Yam-Akara’s research and the governor’s gift",
-						"text": "Yam-Akara introduces himself as a practising magician of the first rank and an honorary member of the Assembly of Magicians of Three Worlds. The elemental samples interest him, and the Joon artifact promises material for a scholarly report. He agrees to search while Kir renews his permit for the mines, where Wormface magic interferes with his measurements. His summons the travellers to Governor Valrasian whether or not his own laboratory errand is complete. The governor demands proper introductions, pays unwelcome attention to Kel and hints at a rare Blue Clan mage’s dart for his collection. Bringing the dart wins the permit, despite his complaints about Yam-Akara’s visits.",
-						"sources": [
-							"briefing brief_219",
-							"briefing brief_221",
-							"briefing brief_222",
-							"briefing brief_223",
-							"briefing brief_224",
-							"briefing brief_225",
-							"quest q12k"
-						],
-						"event": "governor_gift",
-						"order": 27
-					},
-					{
-						"heading": "Khabburu’s requests and the third fragment",
-						"text": "Kir can continue helping [[character/haburu]] after freeing the dogs kept near Karansul’s manufactories. The elder first rewards him with a clue to valuables behind a fence south of the city; Kir finds that he can crawl underneath. Khabburu then asks him to water a neglected tree beside the well in a military camp. Next he asks for a frightened animal from the village south of Karansul’s domain to be guided to the Woodsfolk. The animal is a cow, whose milk interests them. After these acts, Khabburu gives Kir a key dropped by a man he saw staggering and singing near the mines. The key helps solve the gates and levers barring an underground chest. Its contents include the third Rod of Life fragment. This chain is optional, but its completion can determine whether Kir later has the means to bring Kel back.",
-						"sources": [
-							"briefing fq15",
-							"briefing fq16",
-							"briefing fq17",
-							"briefing fq18",
-							"briefing fq19",
-							"quest fq15",
-							"quest fq16",
-							"quest fq17",
-							"quest fq18",
-							"quest fq19",
-							"script zone24"
-						],
-						"event": "khabburu_chain",
-						"order": 29
-					},
-					{
-						"heading": "Crooked’s confession",
-						"text": "The settlement’s missing communal money supplies the decisive motive. Kir and Kel catch Crooked at his cache. Brissen had discovered the theft, so Crooked killed him. He also stole His’s knife and the gold nugget, informed on the caravan raid and later planted the knife to shift suspicion. His called the same informant to clear his own name; Crooked mistook that invitation for a trap and killed him too. Woodsfolk observations help reconstruct the planted evidence. Before the governor, Kir explains the connected crimes and Crooked admits them. Yam-Akara is released, while the governor reserves Crooked’s punishment for trial. Kel draws the thief out by spreading word that they have found the hidden money. Afterwards the travellers return the recovered communal funds to Geraldine and Trickster. Geraldine wants personal revenge, but Crooked is already in the governor’s custody.",
-						"sources": [
-							"briefing brief_237",
-							"briefing brief_248",
-							"briefing brief_249",
-							"briefing brief_250",
-							"briefing brief_250a",
-							"briefing brief_251",
-							"briefing brief_251a"
-						],
-						"event": "crooked",
-						"order": 32
-					},
-					{
-						"heading": "The hidden portal to Jigran",
-						"text": "During his confinement, Yam-Akara gains access to the governor’s library. Old exploration reports reveal that the powerful “artifact” is a forgotten passage to another land. Trickster offers a key to the gate, then sends Kir on a fruitless ore search so that he can work without interference. With the key ready, Yam-Akara warns that he cannot sense the destination: the portal may be defective or concealed by a powerful absorbing spell. Kir recognises the same absence Tka-Rik described and concludes that it leads to Jigran. He decides to go directly, trusting the strength gained during his journey. Kel chooses to accompany him again.",
-						"sources": [
-							"briefing brief_251",
-							"briefing brief_252",
-							"briefing brief_253",
-							"briefing brief_254"
-						],
-						"event": "old_portal",
-						"order": 33
-					},
-					{
-						"heading": "Jaminin’s experiment and the undead",
-						"text": "The trail of the local undead leads to [[character/nekro]] on Death Island. Brought before the baron, he bargains for his life with the promise of useful knowledge. Kir and Kel obtain a potion from a tomb, but need to know how to apply it across the affected area. Jaminin first entertains a human sacrifice; Kel rejects it, and he supplies a less destructive method involving cemetery soil and an incantation. The potion puts the dead to rest. His later exchanges preserve the distinction between theoretical learning and practical competence: he possesses information, but his own experiment caused the disaster. Their success also changes the baron’s view of Kel. He admits that her achievements have repeatedly disproved his claim that war is no business for women.",
-						"sources": [
-							"briefing brief_307",
-							"briefing brief_311",
-							"briefing brief_311a",
-							"briefing brief_312",
-							"briefing brief_313",
-							"briefing brief_315",
-							"briefing brief_316"
-						],
-						"event": "jaminin",
-						"order": 36
+							"briefing brief_254",
+							"briefing brief_342"
+						]
 					},
 					{
 						"heading": "Dartas, Kel and the duel",
@@ -8682,55 +8493,23 @@ const DATA := {
 						"order": 37
 					},
 					{
-						"heading": "Weapons, Dartas and preparations for war",
-						"text": "Kir proposes a special weapon alloy against the undead, drawing on a book he read. Stark sends him to an abandoned forge rather than allow a youngster to work in his own smithy. When Kir returns with the alloy, Kel recognises the source of the craftsman’s resistance: a hereditary master is ashamed of learning something his father never taught him. Kir presents the discovery as knowledge Stark can pass to his own son. The smith agrees to try it, and the baron welcomes the advantage for his soldiers. The improved weapons strengthen his preparations for an offensive.",
+						"heading": "Understanding Stark and planning the rescue",
+						"text": "Kel contributes more than another weapon to Kir’s cause. When [[character/stark]] resists the new alloy, she identifies his pride as the obstacle: accepting Kir’s discovery would mean admitting a gap in his own knowledge. Later, she asks [[character/doctor|Uncle Rad]] to investigate the Joon prisoners. Learning that Firez is transferring them from the mountain prison to his fortress, she proposes intercepting the convoy. This gives Kir a practical plan at the moment his fear for his family threatens his confidence. In gratitude he promises her a kiss; she makes sure he knows she will remember.",
 						"sources": [
-							"briefing brief_318",
 							"briefing brief_319",
 							"briefing brief_320",
 							"briefing brief_321",
-							"briefing brief_324",
-							"briefing brief_336",
-							"briefing brief_337"
-						],
-						"event": "preparing_war",
-						"order": 38
+							"briefing brief_339"
+						]
 					},
 					{
-						"heading": "Dar-Ulgorn and the river crossing",
-						"text": "Rad leaves his troop report in a cemetery cache; collecting herbs gives him an innocent reason to visit it. Kir and Kel deliver the report, gather poisonous mushrooms and a pumpkin for Rad’s stew, then take the prepared meal to the enemy mess hall. The pumpkin prolongs the mushrooms’ laxative effect, keeping defenders away from their posts during the assault. Uncle Rad’s intelligence and preparations distract the defenders of Dar-Ulgorn so the baron’s forces can retake the fortress. The victory restores the family’s former boundary, but Virril will not advance blindly into Khadaganian territory. Kir and Kel steal a detailed map from the enemy headquarters and deliver Rad’s report. The resulting offensive captures the river crossing and brings Firez within reach. Kel worries that the end of Kir’s family quest will also end their life together, while the baron imagines a prosperous Jigran under his descendants. The victory means different things to the people who share it.",
+						"heading": "The future she hopes for",
+						"text": "While [[character/baron|Virril]] celebrates his military success and imagines his descendants ruling Jigran, Kel worries that freeing Kir’s family will end their journey together. She tells the baron that her own wish is simply to stay near Kir and have him notice her more often. His reunion with [[character/deva|Tai-Ilara]] seems to confirm her fear. Kel asks for the portal home, yet agrees to accompany him once more because she believes he is about to risk his life for Tai-Ilara’s belongings. Her decision to stay grows out of concern for him even as she prepares to leave.",
 						"sources": [
-							"briefing brief_326",
-							"briefing brief_329",
-							"briefing brief_330",
-							"briefing brief_331",
-							"briefing brief_332",
-							"briefing brief_333",
-							"briefing brief_334",
 							"briefing brief_338",
-							"briefing brief_339",
-							"briefing brief_322",
-							"briefing brief_325",
-							"briefing brief_327",
-							"quest q10j",
-							"quest q11j"
-						],
-						"event": "offensive",
-						"order": 39
-					},
-					{
-						"heading": "The freed Joons and Kir’s family",
-						"text": "Kel and Rad discover that Firez is moving the Joon prisoners from the mountain prison into his fortress. Kel plans an attack on the transfer, avoiding a direct prison assault. Among those freed are [[character/deva]], whom Kir admired as a child, and the elder [[character/junofil]]. Tai-Ilara welcomes his changed appearance and asks him to retrieve belongings left behind. Tui-Len brings harder news: Kir’s parents are dead. The elder fears that killing Firez will expose the survivors to the Curse, but Kir tells him that Tka-Rik and At-Zako have already destroyed it. Tui-Len also opens the sealed Joon cache whose amulet Kir has recovered.",
-						"sources": [
-							"briefing brief_339",
 							"briefing brief_340",
-							"briefing brief_341",
-							"briefing brief_335",
-							"briefing brief_336",
-							"briefing brief_337"
-						],
-						"event": "joons_freed",
-						"order": 40
+							"briefing brief_342"
+						]
 					},
 					{
 						"heading": "Tai-Ilara’s request and Kel’s death",
@@ -8744,15 +8523,67 @@ const DATA := {
 						"order": 41
 					},
 					{
-						"heading": "The Rod of Life: a possible reunion",
-						"text": "Kel’s death is not the only outcome recorded in the game. If Kir has collected the three parts of the Rod of Life, Tui-Len offers to assemble the artifact and restore her. The completed quest has its own reunion: Kir calls Kel his love, apologises for his blindness and hears her answer that his love matters more than the rest. ",
+						"heading": "The Rod of Life: resurrecting Kel",
+						"text": "Kel can be resurrected in the original Lost in Astral campaign. Her scripted death still occurs, but if Kir has all three parts of the Rod of Life when he finishes the conversation with [[character/deva|Tai-Ilara]] about her retrieved belongings, [[character/junofil|Tui-Len]] offers to bring Kel back. Completing his conversation consumes the fragments and returns Kel alive to the playable party before the final battle, with her saved skills, experience and equipment. Speak to her afterward for their reunion: Kir finally declares his love and asks forgiveness for his blindness. Kel answers that his love matters more than everything else.",
 						"sources": [
+							"briefing brief_345",
 							"briefing fq20",
 							"briefing fq21",
+							"script cz3j",
 							"script bz31j"
 						],
 						"event": "rod_of_life",
 						"order": 42
+					},
+					{
+						"heading": "First fragment: Suslanger",
+						"text": "Follow [[character/skelet|the fortune-teller’s]] optional chain of predictions on [[allod/suslanger]]. It ends at the enchanted levers in the Wormface underground passages, in “The Wormfaces’ Riddle”. Solve the puzzle and open the reward chest to obtain the first fragment. Complete this before leaving Suslanger for Gipath; the earlier predictions lead to the final puzzle.",
+						"sources": [
+							"briefing skelet_about",
+							"briefing skelet_fq2",
+							"briefing skelet_fq3",
+							"briefing skelet_fq4",
+							"briefing skelet_fq5",
+							"briefing skelet_fq6",
+							"quest fq6",
+							"script zone4",
+							"script bz7h"
+						]
+					},
+					{
+						"heading": "Second fragment: Gipath",
+						"text": "Follow [[character/spletnica|Uyka’s]] optional stories and errands on [[allod/gipat]] until she offers to sell the key she wears around her neck. It opens the way to the “Hall of the Great” in the lizardmen’s tomb. Explore that hall and take the second fragment from its reward chest before continuing to Ingos.",
+						"sources": [
+							"briefing fq11",
+							"briefing fq12",
+							"briefing fq13",
+							"quest fq13",
+							"script zone11dun1"
+						]
+					},
+					{
+						"heading": "Third fragment: Ingos",
+						"text": "Continue helping [[character/haburu|Khabburu]] on [[allod/ingos]]: free the dogs, follow his lead to the fenced cache, water the tree and bring the cow to the Woodsfolk. He eventually gives Kir a key connected to the mines. In “Groping in the Dark”, use it to solve the cave’s sequence of gates and levers, then open the final chest for the third fragment. Obtain it before travelling to Jigran.",
+						"sources": [
+							"briefing fq15",
+							"briefing fq16",
+							"briefing fq17",
+							"briefing fq18",
+							"briefing fq19",
+							"quest fq19",
+							"script zone24"
+						]
+					},
+					{
+						"heading": "The conversation that decides her fate",
+						"text": "Keep all three fragments until you return to [[map/bz31j|the baron’s camp]] after Kel’s death. Finish the conversation with Tai-Ilara about the belongings you retrieved; the resurrection offer then begins if all three pieces are present. Complete Tui-Len’s conversation and speak to Kel for the reunion. If any fragment is missing at that first conversation’s conclusion, the story commits to the route without her. Finding a missing piece afterward does not reopen the offer; load a save from before the decision. The resurrection is handled through dialogue, so you do not need to craft or equip a usable staff.",
+						"sources": [
+							"briefing brief_345",
+							"briefing fq20",
+							"briefing fq21",
+							"script bz31j",
+							"script cz3j"
+						]
 					}
 				],
 				"role": "Companion",
@@ -8760,6 +8591,11 @@ const DATA := {
 					"merc2"
 				],
 				"name_key": "pers merc2",
+				"locations": [
+					"bz1h",
+					"bz2h",
+					"bz31j"
+				],
 				"id": "merc2",
 				"placements": [
 					{
@@ -8770,9 +8606,6 @@ const DATA := {
 				],
 				"prototypes": [
 					"merc2"
-				],
-				"locations": [
-					"bz1h"
 				],
 				"names": {
 					"en": "Kel",
@@ -12249,11 +12082,13 @@ const DATA := {
 						"order": 41
 					},
 					{
-						"heading": "The Rod of Life: a possible reunion",
-						"text": "Kel’s death is not the only outcome recorded in the game. If Kir has collected the three parts of the Rod of Life, Tui-Len offers to assemble the artifact and restore her. The completed quest has its own reunion: Kir calls Kel his love, apologises for his blindness and hears her answer that his love matters more than the rest. ",
+						"heading": "The Rod of Life: resurrecting Kel",
+						"text": "Kel can be resurrected in the original Lost in Astral campaign. Her scripted death still occurs, but if Kir has all three parts of the Rod of Life when he finishes the conversation with [[character/deva|Tai-Ilara]] about her retrieved belongings, [[character/junofil|Tui-Len]] offers to bring Kel back. Completing his conversation consumes the fragments and returns Kel alive to the playable party before the final battle, with her saved skills, experience and equipment. Speak to her afterward for their reunion: Kir finally declares his love and asks forgiveness for his blindness. Kel answers that his love matters more than everything else.",
 						"sources": [
+							"briefing brief_345",
 							"briefing fq20",
 							"briefing fq21",
+							"script cz3j",
 							"script bz31j"
 						],
 						"event": "rod_of_life",
@@ -13097,11 +12932,13 @@ const DATA := {
 						"order": 41
 					},
 					{
-						"heading": "The Rod of Life: a possible reunion",
-						"text": "Kel’s death is not the only outcome recorded in the game. If Kir has collected the three parts of the Rod of Life, Tui-Len offers to assemble the artifact and restore her. The completed quest has its own reunion: Kir calls Kel his love, apologises for his blindness and hears her answer that his love matters more than the rest. ",
+						"heading": "The Rod of Life: resurrecting Kel",
+						"text": "Kel can be resurrected in the original Lost in Astral campaign. Her scripted death still occurs, but if Kir has all three parts of the Rod of Life when he finishes the conversation with [[character/deva|Tai-Ilara]] about her retrieved belongings, [[character/junofil|Tui-Len]] offers to bring Kel back. Completing his conversation consumes the fragments and returns Kel alive to the playable party before the final battle, with her saved skills, experience and equipment. Speak to her afterward for their reunion: Kir finally declares his love and asks forgiveness for his blindness. Kel answers that his love matters more than everything else.",
 						"sources": [
+							"briefing brief_345",
 							"briefing fq20",
 							"briefing fq21",
+							"script cz3j",
 							"script bz31j"
 						],
 						"event": "rod_of_life",
@@ -14089,11 +13926,13 @@ const DATA := {
 						"order": 41
 					},
 					{
-						"heading": "The Rod of Life: a possible reunion",
-						"text": "Kel’s death is not the only outcome recorded in the game. If Kir has collected the three parts of the Rod of Life, Tui-Len offers to assemble the artifact and restore her. The completed quest has its own reunion: Kir calls Kel his love, apologises for his blindness and hears her answer that his love matters more than the rest. ",
+						"heading": "The Rod of Life: resurrecting Kel",
+						"text": "Kel can be resurrected in the original Lost in Astral campaign. Her scripted death still occurs, but if Kir has all three parts of the Rod of Life when he finishes the conversation with [[character/deva|Tai-Ilara]] about her retrieved belongings, [[character/junofil|Tui-Len]] offers to bring Kel back. Completing his conversation consumes the fragments and returns Kel alive to the playable party before the final battle, with her saved skills, experience and equipment. Speak to her afterward for their reunion: Kir finally declares his love and asks forgiveness for his blindness. Kel answers that his love matters more than everything else.",
 						"sources": [
+							"briefing brief_345",
 							"briefing fq20",
 							"briefing fq21",
+							"script cz3j",
 							"script bz31j"
 						],
 						"event": "rod_of_life",
@@ -21043,6 +20882,13 @@ const DATA := {
 					"merc2"
 				]
 			},
+			"script cz3j": {
+				"hashes": [
+					"a0dcc8c2fc96a5382604dd67fd93a7e361abf8fdf04435f91da51d8880b5c6da"
+				],
+				"script": "cz3j",
+				"zones": []
+			},
 			"script bz31j": {
 				"hashes": [
 					"08c8b659ca439f3ce1e2bb44e405db743cbab9030779057888a36dd4940a22b7"
@@ -21124,6 +20970,40 @@ const DATA := {
 					"gz36j"
 				]
 			},
+			"script bz7h": {
+				"hashes": [
+					"d73d37ced2412b25e2aecb2d42df588e78293857609550fb28e23b8aebafac5c"
+				],
+				"script": "bz7h",
+				"zones": []
+			},
+			"briefing nsheriff_about": {
+				"hashes": [
+					"7966656c774c126c2973e55e2f0fb909ebf5d149475d8b27a08bf224b8ba1c31"
+				],
+				"actors": [
+					"nsheriff",
+					"hero2"
+				]
+			},
+			"briefing brief_59b": {
+				"hashes": [
+					"c4d4c89cc81f8712b04765c08f0c4e32fc5d6cdec7f081603ca0e5b1c92b1337"
+				],
+				"actors": [
+					"merc7",
+					"hero2"
+				]
+			},
+			"briefing brief_7": {
+				"hashes": [
+					"3d682d37f8fcad9206a8b4002a61dfea4ae3ffe554b0b590d381669750c67bb7"
+				],
+				"actors": [
+					"hero",
+					"ycf"
+				]
+			},
 			"briefing brief_21": {
 				"hashes": [
 					"e728f57b49696e671f10a89da005e55de850bcdeff7056f1dce009b195d79287"
@@ -21132,6 +21012,34 @@ const DATA := {
 					"merc2",
 					"ycf",
 					"hero2"
+				]
+			},
+			"briefing brief_33": {
+				"hashes": [
+					"9836f618d8e93cada26fe3f368ffe64402c2fda3ad021beb65c448871bf00f6e"
+				],
+				"actors": [
+					"hero2",
+					"ycf"
+				]
+			},
+			"briefing brief_34a": {
+				"hashes": [
+					"fd07ec102677347e908b3250878bd5655129c63d251df806abd188f38d7a294b"
+				],
+				"actors": [
+					"hero2",
+					"ycf"
+				]
+			},
+			"briefing brief_63": {
+				"hashes": [
+					"461ba3938919ff06aa81afe4df3481e3accf2731bc79a31ae90f6a243e08dcae"
+				],
+				"actors": [
+					"hero2",
+					"merc2",
+					"ycf"
 				]
 			},
 			"briefing brief_27": {
@@ -21153,24 +21061,6 @@ const DATA := {
 					"ycf"
 				]
 			},
-			"briefing brief_33": {
-				"hashes": [
-					"9836f618d8e93cada26fe3f368ffe64402c2fda3ad021beb65c448871bf00f6e"
-				],
-				"actors": [
-					"hero2",
-					"ycf"
-				]
-			},
-			"briefing brief_34a": {
-				"hashes": [
-					"fd07ec102677347e908b3250878bd5655129c63d251df806abd188f38d7a294b"
-				],
-				"actors": [
-					"hero2",
-					"ycf"
-				]
-			},
 			"briefing brief_34c": {
 				"hashes": [
 					"72e9607b7287506b5d60d7be6adbcda86f0d90e300d5a8e59a193aa385713e5f"
@@ -21180,31 +21070,12 @@ const DATA := {
 					"ycf"
 				]
 			},
-			"briefing brief_63": {
-				"hashes": [
-					"461ba3938919ff06aa81afe4df3481e3accf2731bc79a31ae90f6a243e08dcae"
-				],
-				"actors": [
-					"hero2",
-					"merc2",
-					"ycf"
-				]
-			},
 			"briefing brief_64": {
 				"hashes": [
 					"5fd643e308089861c7ce9ccc7afb3eef55b875ea879a0bb50cdc262cc5df27c3"
 				],
 				"actors": [
 					"hero2",
-					"ycf"
-				]
-			},
-			"briefing brief_7": {
-				"hashes": [
-					"3d682d37f8fcad9206a8b4002a61dfea4ae3ffe554b0b590d381669750c67bb7"
-				],
-				"actors": [
-					"hero",
 					"ycf"
 				]
 			},
@@ -21229,6 +21100,39 @@ const DATA := {
 					"a1bd5394b1706fd37cf6a465a39d0a00acc1574221202f26a9588504aa50e0c5"
 				],
 				"world": "quest q9h"
+			},
+			"briefing brief_34b": {
+				"hashes": [
+					"aef3a4e20d9be6ff842ba906662f7b76b92bcf6514d20f27c6ef96e2638e80e1"
+				],
+				"actors": [
+					"hero2",
+					"ycf"
+				]
+			},
+			"briefing brief_36": {
+				"hashes": [
+					"78201db869cabee1d1f796a94a894f30437c24ec3fed5d8c71a5fc9fd4e646e3"
+				],
+				"actors": [
+					"hero2",
+					"ycf"
+				]
+			},
+			"quest q12h": {
+				"hashes": [
+					"9f3a370235e60754c06967252bd5b350f43f74e97dcaf3c4a0ef3f9b328dae30"
+				],
+				"world": "quest q12h"
+			},
+			"briefing brief_120a": {
+				"hashes": [
+					"28a79a96db5eecce9db9ff2922bc01d8d1978d0fc4ebbfef2278bd0c5eaf3aed"
+				],
+				"actors": [
+					"orcpyr",
+					"hero"
+				]
 			},
 			"briefing brief_208": {
 				"hashes": [
@@ -21264,57 +21168,6 @@ const DATA := {
 					"ac0f9922e08316d8841861c91df9f37f374f479e147632389466eea6a4682d54"
 				],
 				"world": "quest q7k"
-			},
-			"briefing nsheriff_about": {
-				"hashes": [
-					"7966656c774c126c2973e55e2f0fb909ebf5d149475d8b27a08bf224b8ba1c31"
-				],
-				"actors": [
-					"nsheriff",
-					"hero2"
-				]
-			},
-			"briefing brief_59b": {
-				"hashes": [
-					"c4d4c89cc81f8712b04765c08f0c4e32fc5d6cdec7f081603ca0e5b1c92b1337"
-				],
-				"actors": [
-					"merc7",
-					"hero2"
-				]
-			},
-			"briefing brief_34b": {
-				"hashes": [
-					"aef3a4e20d9be6ff842ba906662f7b76b92bcf6514d20f27c6ef96e2638e80e1"
-				],
-				"actors": [
-					"hero2",
-					"ycf"
-				]
-			},
-			"briefing brief_36": {
-				"hashes": [
-					"78201db869cabee1d1f796a94a894f30437c24ec3fed5d8c71a5fc9fd4e646e3"
-				],
-				"actors": [
-					"hero2",
-					"ycf"
-				]
-			},
-			"quest q12h": {
-				"hashes": [
-					"9f3a370235e60754c06967252bd5b350f43f74e97dcaf3c4a0ef3f9b328dae30"
-				],
-				"world": "quest q12h"
-			},
-			"briefing brief_120a": {
-				"hashes": [
-					"28a79a96db5eecce9db9ff2922bc01d8d1978d0fc4ebbfef2278bd0c5eaf3aed"
-				],
-				"actors": [
-					"orcpyr",
-					"hero"
-				]
 			},
 			"briefing brief_230": {
 				"hashes": [

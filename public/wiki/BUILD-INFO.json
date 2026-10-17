@@ -66,7 +66,7 @@
           "listed_pages": 1479,
           "listed_spells": 35,
           "versions": 2717,
-          "resolved_links": 55794,
+          "resolved_links": 55528,
           "normalized_equipment_links": 0
         },
         "ru": {
@@ -74,7 +74,7 @@
           "listed_pages": 1479,
           "listed_spells": 35,
           "versions": 2717,
-          "resolved_links": 55730,
+          "resolved_links": 55464,
           "normalized_equipment_links": 0
         },
         "de": {
@@ -82,7 +82,7 @@
           "listed_pages": 1479,
           "listed_spells": 35,
           "versions": 2717,
-          "resolved_links": 55816,
+          "resolved_links": 55550,
           "normalized_equipment_links": 0
         }
       }
@@ -10383,8 +10383,8 @@
       "sha256": "7d2b5577490604cd5d69634f2d67bb75d142577e83b73cb371af002033fdf510"
     },
     "data/lost_in_astral/de/index.json": {
-      "bytes": 775537,
-      "sha256": "597d4352a316ede0e2e0829a002ecf96261590cccdc408b5cff7c39eefeadffc"
+      "bytes": 766121,
+      "sha256": "5e3fb066d16da824bfc919ef90512fbb1a5b7fce41c585c3874ab32af119d8ce"
     },
     "data/lost_in_astral/de/pages/005036e374568b4dd48f.json": {
       "bytes": 3978,
@@ -10699,8 +10699,8 @@
       "sha256": "5635d411f93cd06215fd873b49eb0ebc833fd73bb7d06d90935f9a05de18e2d5"
     },
     "data/lost_in_astral/de/pages/0b170c8b09af71ab4259.json": {
-      "bytes": 11606,
-      "sha256": "cc5df4cb8a1033c31eb86a9fa632eef2c41e9ff9d84ba8269af13b70fb45d974"
+      "bytes": 11731,
+      "sha256": "1cd62c1b7655857192d4151e884a53384fe388ff5797bf2da8937aaa5245cae7"
     },
     "data/lost_in_astral/de/pages/0b2fa7a3ec6b61a5e156.json": {
       "bytes": 1228,
@@ -11151,8 +11151,8 @@
       "sha256": "88ddc3f369c8fe0a849bcf7bac211dc0c18fed927c6b72dc19174e99e23bec1d"
     },
     "data/lost_in_astral/de/pages/1b139ab5508f54bab62c.json": {
-      "bytes": 4510,
-      "sha256": "52950e692f986e0ad728040f6797260d47a1ebbf538a2ee8786654b4f9412e44"
+      "bytes": 4385,
+      "sha256": "c91541bf9fe4b4ddd8a2d54a09c7ddbffc51bd76752bf976a08048a224a3e25a"
     },
     "data/lost_in_astral/de/pages/1b525ed04c1548473df3.json": {
       "bytes": 2212,
@@ -11275,8 +11275,8 @@
       "sha256": "58025d3412693d20c3d46fb57bfeba286fbc73d75af58050a431b9a2c2595f7b"
     },
     "data/lost_in_astral/de/pages/1fde04632356abbebe2a.json": {
-      "bytes": 7707,
-      "sha256": "cc51b32de2864e2c546d62b8b4627634122411d71ae6411a3bef250c6bb51269"
+      "bytes": 8159,
+      "sha256": "f37c82baa547d48161e85b4380697dcd5441c764e75bf808a462b0597cd694df"
     },
     "data/lost_in_astral/de/pages/1fe6daa645c49e420bfd.json": {
       "bytes": 3251,
@@ -11771,8 +11771,8 @@
       "sha256": "638318a3a55ea107825f8509351a54d970d121a06e30ece5fc6178e016106c05"
     },
     "data/lost_in_astral/de/pages/32dc1dc6fc4929b22cfe.json": {
-      "bytes": 24025,
-      "sha256": "dcd7a9982dfe19917f70717d11d590f63886ab01d16f0b0ab1baf36e2f2b3337"
+      "bytes": 24602,
+      "sha256": "032d469db12325535913332d30e96390131d5b594c43ca5bc09913f81c3a9954"
     },
     "data/lost_in_astral/de/pages/330397132a18d16b6bd6.json": {
       "bytes": 7806,
@@ -12271,8 +12271,8 @@
       "sha256": "8d4377046b09e4da3f42ea5fabbd6d5b6e8754788948f12900ebac15e62f2d5a"
     },
     "data/lost_in_astral/de/pages/473ee8f6ff96833287ae.json": {
-      "bytes": 6341,
-      "sha256": "1664dc16665a1202b0824413bf7067f3fc27a09ec065d2036b9f0c79d98550b9"
+      "bytes": 6466,
+      "sha256": "f152587168c62465e4808dd0ce4a069cdbb2e8465e8a176f56f8d54c47628868"
     },
     "data/lost_in_astral/de/pages/4743187232d717b8d719.json": {
       "bytes": 2670,
@@ -12655,8 +12655,8 @@
       "sha256": "f3cff36a98bf1fafb6769d81dc46db4ab5696d7a1747e2a858ceef68e8ac3388"
     },
     "data/lost_in_astral/de/pages/51e981fd5e748cf1770e.json": {
-      "bytes": 9387,
-      "sha256": "4dbe27a9196d3c767317557f075b15c3cb3f6054f6f99e154954f5982329d5be"
+      "bytes": 9512,
+      "sha256": "ce7df9a72e2f1e0e6d9fc9def446a99b3a96853c30a7a968d029ac41126e2367"
     },
     "data/lost_in_astral/de/pages/52116dfdba0ecc8d3e87.json": {
       "bytes": 3998,
@@ -12779,8 +12779,8 @@
       "sha256": "b0b6ee0b95f2362eac0826d60144e9097f7c8efdb7e3ac618634f523c7deaa67"
     },
     "data/lost_in_astral/de/pages/570a4c3f9d7554474a99.json": {
-      "bytes": 15167,
-      "sha256": "7ae4474fc6c80d09a6782eff4b92d3b625a164533b90f02c5c6af7a1e98584f5"
+      "bytes": 15292,
+      "sha256": "197b01138d8d49cc0be4a9f133f9e63e6b90c0e820cd4a5dd71c3494cdbd03e2"
     },
     "data/lost_in_astral/de/pages/578cce373717b2fa88ef.json": {
       "bytes": 3250,
@@ -12823,8 +12823,8 @@
       "sha256": "75a8a8b62c72c5813c7aff8bcff05a7154808227dfb4f456626a3af022d5308e"
     },
     "data/lost_in_astral/de/pages/598e06717f1522838ee5.json": {
-      "bytes": 79946,
-      "sha256": "84b6e48552e1b4b71a6a3a039ea68727484475747b83f57dbc9ef2168d6cca7f"
+      "bytes": 80401,
+      "sha256": "e92d9f3d21e1d9eb89b37d59ec77d63bbfff89022e52539de4ab94ebcf604562"
     },
     "data/lost_in_astral/de/pages/59d2ac73b7cc2da04c15.json": {
       "bytes": 1320,
@@ -13103,8 +13103,8 @@
       "sha256": "0f151b0929d6b7eda2d39855b36bc536ab84808c433c7b28900d8ce433b357f9"
     },
     "data/lost_in_astral/de/pages/63d01b743cd806c6bdb0.json": {
-      "bytes": 14506,
-      "sha256": "2a7238b28d45dbb8ad53503aff61e30780cb62e1d0d6466351274386fa8deae4"
+      "bytes": 14631,
+      "sha256": "9a4d75b94a48877172b38a9789d7780fe2398a3e0d2a93ac59825bfe18e2da30"
     },
     "data/lost_in_astral/de/pages/63e1f3b57084f9cd29c4.json": {
       "bytes": 25942,
@@ -13443,8 +13443,8 @@
       "sha256": "f93c00b97ae1da063b4356d99bf49c8f949b9d94daa7f3f763e7eabb747936b0"
     },
     "data/lost_in_astral/de/pages/6ee0900160aaf457416c.json": {
-      "bytes": 3886,
-      "sha256": "69b4c4bd1910a78674a3c413b8418063f4ca751c9b12989e98b1c844f87c0aad"
+      "bytes": 3761,
+      "sha256": "c70fc7187b51fdbb12630437a1d004e65d724dc98f4b455f17b7940e360b3683"
     },
     "data/lost_in_astral/de/pages/6ee2d1ee9a2cffd44892.json": {
       "bytes": 21148,
@@ -13559,8 +13559,8 @@
       "sha256": "6784c86372dc681a34cc9333dd7f9760289a583d1c74c0e63e8ff864908ed86d"
     },
     "data/lost_in_astral/de/pages/73c07de021c864771449.json": {
-      "bytes": 22850,
-      "sha256": "4e518969022908a45b6a24348510b268c6f1d07e36d37f9c8a31eca39b0a5006"
+      "bytes": 23427,
+      "sha256": "40902d4f2ac69241c8fd916d4591c62af2be318217f20086c0b15cbc54844c3e"
     },
     "data/lost_in_astral/de/pages/73d7f817df4af2efdf15.json": {
       "bytes": 12666,
@@ -14027,8 +14027,8 @@
       "sha256": "6bdb6a5ae061d805628338d4cc1f4989c2831714df758810c698d005a221d24f"
     },
     "data/lost_in_astral/de/pages/859b4c03e2c358338ede.json": {
-      "bytes": 8190,
-      "sha256": "f462651f192e49776ee6881f6b45b991f772e4244b9030d14ac266d245c64e96"
+      "bytes": 8065,
+      "sha256": "d3979f3f3570239bdef0acbb6caff3fa69b56569908e6d9aebb6ea8f512d9cb2"
     },
     "data/lost_in_astral/de/pages/85aba19161f048cd4e19.json": {
       "bytes": 4815,
@@ -14811,8 +14811,8 @@
       "sha256": "d435b23e466c2cee96f5947fdd29d1e63d5eddc21c1e6ae5c04eb4df6f6605af"
     },
     "data/lost_in_astral/de/pages/a2c370d13d044e6b398b.json": {
-      "bytes": 4991,
-      "sha256": "30554a11d001c3fa5a80ddf8712d0c3178789600b847de9ec4c0033e3dbbedc3"
+      "bytes": 4866,
+      "sha256": "06fb8b189f3a2b72b123b9c57d80a6861bad555c204b1e20653ae933136767d5"
     },
     "data/lost_in_astral/de/pages/a2d52957ce0ec3d7a1d3.json": {
       "bytes": 879,
@@ -15063,8 +15063,8 @@
       "sha256": "3432cf87ea82cb44997e03cce9ffdbd52825f9be63611f21c245ad3d07190c15"
     },
     "data/lost_in_astral/de/pages/a96acae8a44dd0ce22cf.json": {
-      "bytes": 10338,
-      "sha256": "b2e0b45b9b355e208bf00888d99780f4ec433c1df8a6564915650e2bb15c20ef"
+      "bytes": 10213,
+      "sha256": "22e95d2c72d3fc5bd976b9ed14deec987cbd91e582ca8ef956f3a711442d3612"
     },
     "data/lost_in_astral/de/pages/a9ab2a80d06dedef66d1.json": {
       "bytes": 20959,
@@ -15159,12 +15159,12 @@
       "sha256": "481ee987b24446a1bac9616f0d195c31a78ed31454d4df6924f4fbba2e38ad81"
     },
     "data/lost_in_astral/de/pages/ac72e0b472eff37168ac.json": {
-      "bytes": 20133,
-      "sha256": "3bcdaad3f3f6026285cb7520aa3e0e236522f7ddd2914fbc04be6eaec60a8975"
+      "bytes": 20258,
+      "sha256": "4a25ab1d7ce23731a9c4d356e9c3d4917e275be0395cc8a263d11229c1822c2b"
     },
     "data/lost_in_astral/de/pages/ac7a66ab98f3e800f2c0.json": {
-      "bytes": 6920,
-      "sha256": "5e14e1ab2042eec038dfc3ec24eba92705a74faabfbe3bc7c15dc781e2657f97"
+      "bytes": 6795,
+      "sha256": "41f6532ce9d685fb5180d83c5be26ae4d5fda7b93e6696fac53e50b1693594df"
     },
     "data/lost_in_astral/de/pages/ac7cae9e1e46fdd5cfab.json": {
       "bytes": 3745,
@@ -15531,8 +15531,8 @@
       "sha256": "194b7c940adedff2899b4505068280794694ba677823dabbdbab4c1c647bc314"
     },
     "data/lost_in_astral/de/pages/b9957a243ea94275c2f1.json": {
-      "bytes": 4434,
-      "sha256": "814f045b8dea0768862102634e76f07bb22ad6c4baf9662363cd141b83e2e66c"
+      "bytes": 4309,
+      "sha256": "f508e332b546686f7302ed043236a1d6810b2b609a3c44db7cacb9dbf6880c1d"
     },
     "data/lost_in_astral/de/pages/b9fca3db98d31770eb1d.json": {
       "bytes": 20666,
@@ -16247,8 +16247,8 @@
       "sha256": "f5f6b60dc11e157ffab82adaec2db5fb5efe8ac6df292ecf9940dfcb9df82351"
     },
     "data/lost_in_astral/de/pages/d5d612c01b867ecdda4c.json": {
-      "bytes": 8674,
-      "sha256": "1097070ef5d867797f7a5b28d8b2f8ab9e78f34d81a3b4f7451f01aff4020981"
+      "bytes": 8549,
+      "sha256": "63acf6e78a57c8de8f94028e791fb7b1be2b15b0952f180ef89788d924f66c69"
     },
     "data/lost_in_astral/de/pages/d60a515105cd020388f2.json": {
       "bytes": 1240,
@@ -16507,8 +16507,8 @@
       "sha256": "42465f58fd2cd081c682a8e93fdc5d3a05072feeea7e70128233b5856c512891"
     },
     "data/lost_in_astral/de/pages/df93f7c2de6edd4a2ee3.json": {
-      "bytes": 56543,
-      "sha256": "a866144994ff1739496662da6938ea40614feab3c6b3b9392935ffe5df71d19d"
+      "bytes": 22739,
+      "sha256": "bd08bf5e1eae12b0b5b41e443147ce9d9c1aa2c2a2ffe703ab5363375156c081"
     },
     "data/lost_in_astral/de/pages/dfb23239df2341b0fc9f.json": {
       "bytes": 1357,
@@ -16895,8 +16895,8 @@
       "sha256": "05765cec5bc9dd96eb85f9a618a426105a149f667911594f7feafcab6d84f6bb"
     },
     "data/lost_in_astral/de/pages/ed57415bc2a16a5c4662.json": {
-      "bytes": 8035,
-      "sha256": "39e1bc6aa74e6490de8c02ae06fd30f4d5d6628bb20d299ac0ed2dee71dfd53d"
+      "bytes": 7910,
+      "sha256": "bf5e05b23c0265824d4e8f331818f48f579168523a90ad2137b198a4c05dce1a"
     },
     "data/lost_in_astral/de/pages/ed6fb08487a5291b9e14.json": {
       "bytes": 1366,
@@ -17195,8 +17195,8 @@
       "sha256": "5c25832141056a4553d6852750c19e3181d3cf6d6b43402092780c0b0edf3e32"
     },
     "data/lost_in_astral/de/pages/f6b88b0adc54bec8c6ef.json": {
-      "bytes": 5817,
-      "sha256": "78806735505b11f2190360a2e21515981a5c3aa2f89937c1dc01f7f85f4e4eca"
+      "bytes": 5544,
+      "sha256": "8806577b5217bff1edfa4cef1d59e342d1a7657abf61dd6d775e1f7a3d5f708d"
     },
     "data/lost_in_astral/de/pages/f6e9652adcfe12dcaec0.json": {
       "bytes": 22002,
@@ -17419,8 +17419,8 @@
       "sha256": "c34c0d26254c4b8bc5bffadff5dff2e8a53989bee4676ff2f4fa754c9a3b8b30"
     },
     "data/lost_in_astral/en/index.json": {
-      "bytes": 743853,
-      "sha256": "abf8c965055e21630869c0853aa112f2d9860bfb1f6284d7912e4080a0fc04ab"
+      "bytes": 734429,
+      "sha256": "176afcd1e1c8afb647d54321fc303f247082f3772157953cc93566243dd6abcf"
     },
     "data/lost_in_astral/en/pages/005036e374568b4dd48f.json": {
       "bytes": 3732,
@@ -17735,8 +17735,8 @@
       "sha256": "d65226fee42a65b08d9c4a8ed00fc2f30045374ee52198fc822de033944f783a"
     },
     "data/lost_in_astral/en/pages/0b170c8b09af71ab4259.json": {
-      "bytes": 11449,
-      "sha256": "9ec5e96d13fbd675873c56259f123f248456ae58259a6829cbb10505825dcbc1"
+      "bytes": 11574,
+      "sha256": "019e7124459fdf3fa7ba4fb9c961352d26fee94b14af71bfa74667a629345492"
     },
     "data/lost_in_astral/en/pages/0b2fa7a3ec6b61a5e156.json": {
       "bytes": 1209,
@@ -18187,8 +18187,8 @@
       "sha256": "3351a04192f44da75cb5ead153c4bc04cde0185ba52d53d65190a60cccc446e3"
     },
     "data/lost_in_astral/en/pages/1b139ab5508f54bab62c.json": {
-      "bytes": 4535,
-      "sha256": "8fbfd42d4944eb3b73c2a8d51fe1c7e1cd0512aa96b8082820744569171867f2"
+      "bytes": 4410,
+      "sha256": "67e74eefeea045f32a46ac15c3e3cb62fb3bc905c6916a0a3a455bd62e1cf0c4"
     },
     "data/lost_in_astral/en/pages/1b525ed04c1548473df3.json": {
       "bytes": 2055,
@@ -18311,8 +18311,8 @@
       "sha256": "f4d7fae9b7461e210cd0a14f6a3ad29bb3e93d8c5f55d2fc19a49bb45ffa0fbc"
     },
     "data/lost_in_astral/en/pages/1fde04632356abbebe2a.json": {
-      "bytes": 7628,
-      "sha256": "18b1ca0d0d8c3535cbcd90851c01245dd121ff551e242651fda602c13fe45d47"
+      "bytes": 8044,
+      "sha256": "639c5b115fa711cfca27fab843b0ef989aefadb8bc034e8ece1e92a98855eb8c"
     },
     "data/lost_in_astral/en/pages/1fe6daa645c49e420bfd.json": {
       "bytes": 3042,
@@ -18807,8 +18807,8 @@
       "sha256": "a7335ebbd8ef52c3b60ce268833609ac9e1d2d029b9c86a634925749afc5be4b"
     },
     "data/lost_in_astral/en/pages/32dc1dc6fc4929b22cfe.json": {
-      "bytes": 23902,
-      "sha256": "c753729dc89b86c06b4857f54b768b415c66667bee0b91d3f9ec6c6abeb94871"
+      "bytes": 24443,
+      "sha256": "d2ed1ea72b1590a3228e7173f98fed3737fbb82bc6b7e2624504fcd28ec6054a"
     },
     "data/lost_in_astral/en/pages/330397132a18d16b6bd6.json": {
       "bytes": 7337,
@@ -19307,8 +19307,8 @@
       "sha256": "d4f0607031fab4de3c1af00c7af8eb6411ac7b2d584db053506f442f3ca7cdc1"
     },
     "data/lost_in_astral/en/pages/473ee8f6ff96833287ae.json": {
-      "bytes": 6300,
-      "sha256": "98cb17649cbf2612964758e872c4eec24fbf8a3dc2269f824ca39a80cc432cb2"
+      "bytes": 6425,
+      "sha256": "f7607bd427e2b2cc807df034f5ebe606258280a99fdeb2154e37ff90411f8a34"
     },
     "data/lost_in_astral/en/pages/4743187232d717b8d719.json": {
       "bytes": 2509,
@@ -19691,8 +19691,8 @@
       "sha256": "358c9225ad58c68bef12e1c9c5bf0f7cb643f40dceab54e560c42abae712f143"
     },
     "data/lost_in_astral/en/pages/51e981fd5e748cf1770e.json": {
-      "bytes": 9277,
-      "sha256": "73b9a88b323f46ed5e5b877f4552446446edb428f679f70747688d8dbea25532"
+      "bytes": 9402,
+      "sha256": "559c1d5e72c76cb3421e2568dc28ebbce152a29fe9c45a7defbf01abd24a7b9a"
     },
     "data/lost_in_astral/en/pages/52116dfdba0ecc8d3e87.json": {
       "bytes": 3759,
@@ -19815,8 +19815,8 @@
       "sha256": "22f12ce0123328f609544fe03e3fbdc1ea784979cde41070dbfa33e756521908"
     },
     "data/lost_in_astral/en/pages/570a4c3f9d7554474a99.json": {
-      "bytes": 15146,
-      "sha256": "4992bd6de2996904b5e19f244e5a45831dd23c18313967d028c31c0ccc778ae8"
+      "bytes": 15271,
+      "sha256": "3fdf97d63a8cf4c96c3df3f339e0f30edb70cee5c7cac58f13589e8f60d7f806"
     },
     "data/lost_in_astral/en/pages/578cce373717b2fa88ef.json": {
       "bytes": 3040,
@@ -19859,8 +19859,8 @@
       "sha256": "fb258953fedeca32821abad9bdf7866bfcb03d11eda8faa426a61f452bff658c"
     },
     "data/lost_in_astral/en/pages/598e06717f1522838ee5.json": {
-      "bytes": 78991,
-      "sha256": "18a62a5b9506fa5a6229574691ce3d2748eaa21bdafd473d33c246be3551bebd"
+      "bytes": 79410,
+      "sha256": "700d0786247752a45a5722ad13737031e687b07809aacff5f80d1ee12b76757e"
     },
     "data/lost_in_astral/en/pages/59d2ac73b7cc2da04c15.json": {
       "bytes": 1233,
@@ -20139,8 +20139,8 @@
       "sha256": "8f957d33cb4f76d9e8acaf011cca7d4ace1ed53bde88d436d953173848a92b65"
     },
     "data/lost_in_astral/en/pages/63d01b743cd806c6bdb0.json": {
-      "bytes": 14441,
-      "sha256": "028a3d3f8fce6405150c63f89f218b6a71649836f21061f6aece62bec6f5629b"
+      "bytes": 14566,
+      "sha256": "91fede3d314bf93ff2df7f32f3acb9889b725333287be3b1e7a00202b5641567"
     },
     "data/lost_in_astral/en/pages/63e1f3b57084f9cd29c4.json": {
       "bytes": 25049,
@@ -20479,8 +20479,8 @@
       "sha256": "8a7ae01adcec26431357fb8d56130795abee439e87bed00b976265e36f6f8c31"
     },
     "data/lost_in_astral/en/pages/6ee0900160aaf457416c.json": {
-      "bytes": 3844,
-      "sha256": "6d38e66c2ef17addcd4a5134ea5801076fb7cfb23b496d863a02bb9b1d21ea31"
+      "bytes": 3719,
+      "sha256": "4ea17285482cbf861cd641e9fad24fae1a049c33cb6f38572f9399e287cec492"
     },
     "data/lost_in_astral/en/pages/6ee2d1ee9a2cffd44892.json": {
       "bytes": 20878,
@@ -20595,8 +20595,8 @@
       "sha256": "033757bffb2cd1df2ba6281330f93686c88a59cae416ba0f6bb61e5cc18fa697"
     },
     "data/lost_in_astral/en/pages/73c07de021c864771449.json": {
-      "bytes": 22793,
-      "sha256": "771c7df2f5a93268d2283c62e9ac2cb17f2504fc74f661cec36641964eaa51e4"
+      "bytes": 23334,
+      "sha256": "1a2e9f3731b9d8687b348e2697a7dc2d1a8d92704a6fa3ca150307146ec159ee"
     },
     "data/lost_in_astral/en/pages/73d7f817df4af2efdf15.json": {
       "bytes": 11776,
@@ -21063,8 +21063,8 @@
       "sha256": "fc78bddad4997eef09bb5631781cf0c8c8f8b7bbc21fb95429bcad192bd51632"
     },
     "data/lost_in_astral/en/pages/859b4c03e2c358338ede.json": {
-      "bytes": 8063,
-      "sha256": "37d97bad16a410f0316b6b476034114129955907a9032d55e3e405bffc784b03"
+      "bytes": 7938,
+      "sha256": "5330fe4facc6cf174c009a288ae907788eb963c57ff4bc1e5a9fdd0df1c09eaf"
     },
     "data/lost_in_astral/en/pages/85aba19161f048cd4e19.json": {
       "bytes": 4433,
@@ -21847,8 +21847,8 @@
       "sha256": "7e726ae9721d488312645c909a33ffe37e001a78c7697ea124b1ef2b2a8e4440"
     },
     "data/lost_in_astral/en/pages/a2c370d13d044e6b398b.json": {
-      "bytes": 4868,
-      "sha256": "ea80fc54fa75ebca78e8b029e6fbfc94a8fa7c39881075221cc3dab134f067af"
+      "bytes": 4743,
+      "sha256": "20c12d4db43b0bb493b931ff96d73e9b4d184c5ec2bce4d1454ef5bc309f81ca"
     },
     "data/lost_in_astral/en/pages/a2d52957ce0ec3d7a1d3.json": {
       "bytes": 852,
@@ -22099,8 +22099,8 @@
       "sha256": "61cc6104b1b5ce7f73aedbbc6c0143f4c06f580bc5a4f0fc476f3d560512842f"
     },
     "data/lost_in_astral/en/pages/a96acae8a44dd0ce22cf.json": {
-      "bytes": 10193,
-      "sha256": "bbd2e739eeb98805b79e6e39b5451c042ccbe70aec4ec33bb5e1667cbb497db1"
+      "bytes": 10068,
+      "sha256": "364ce936c05324a2d8bac3dc1d9ae575a469b55fec785ea195eb4f5ead9ac9a7"
     },
     "data/lost_in_astral/en/pages/a9ab2a80d06dedef66d1.json": {
       "bytes": 20751,
@@ -22195,12 +22195,12 @@
       "sha256": "9230a34c2afdb67f1170cda9b103865636042bbc1f96dd18daaa048a6e2e622d"
     },
     "data/lost_in_astral/en/pages/ac72e0b472eff37168ac.json": {
-      "bytes": 19922,
-      "sha256": "5a77fcf1baa2c9633600dce96fa06d6be3246126e6e4cc7a8c0f9128ce7c7dea"
+      "bytes": 20047,
+      "sha256": "a77487d25b183d5d625b56e5a39202874ac711ec2928f6ae4ae6fe7e7b715a9b"
     },
     "data/lost_in_astral/en/pages/ac7a66ab98f3e800f2c0.json": {
-      "bytes": 6817,
-      "sha256": "caaafb5b286e0bb4ec905441114ff52a250c09485b5352d3d92456635c56b338"
+      "bytes": 6692,
+      "sha256": "7ed3389aa7524f19b0d820c953f8adef527ccb9214fdd30403b10c7cfbd0df10"
     },
     "data/lost_in_astral/en/pages/ac7cae9e1e46fdd5cfab.json": {
       "bytes": 3492,
@@ -22567,8 +22567,8 @@
       "sha256": "57f245956a15872468c036a959f498249c2ca729cc41804af9bc390b2923011b"
     },
     "data/lost_in_astral/en/pages/b9957a243ea94275c2f1.json": {
-      "bytes": 4349,
-      "sha256": "167b838a550646e38f9fe4ecb12ad83c5f82382cee1b2fe430cfbc972371a327"
+      "bytes": 4224,
+      "sha256": "70e7b8ae180ca56b8d3b361e22c75c67adcde5c2c71ff62f8e9a8b3803b5d92d"
     },
     "data/lost_in_astral/en/pages/b9fca3db98d31770eb1d.json": {
       "bytes": 20439,
@@ -23283,8 +23283,8 @@
       "sha256": "588951233d8f4b69b5b16c54e4e15285acb7ee4867de6ed66a922a5b6704a7d3"
     },
     "data/lost_in_astral/en/pages/d5d612c01b867ecdda4c.json": {
-      "bytes": 8567,
-      "sha256": "188e424d54ec4c80aa5b29b9af147e8d566a603cbb8d77ca3120401a68512b63"
+      "bytes": 8442,
+      "sha256": "c538677ad5da1128a8d04e0f10ad7e23e5fd99d134b42db9706e44303aae6bbd"
     },
     "data/lost_in_astral/en/pages/d60a515105cd020388f2.json": {
       "bytes": 1147,
@@ -23543,8 +23543,8 @@
       "sha256": "1397c7a471c21091290aff35debb4ab32618301f7f5d767252699f36b2ae6b46"
     },
     "data/lost_in_astral/en/pages/df93f7c2de6edd4a2ee3.json": {
-      "bytes": 55790,
-      "sha256": "641b682ebc84cb1923c64bdf4e174328cfaca7c2c68975861ca8cc66131514a7"
+      "bytes": 22131,
+      "sha256": "227e34e897461101e4009e12378687104bfcc4fc4c2bb8bea33f00e69b94de5b"
     },
     "data/lost_in_astral/en/pages/dfb23239df2341b0fc9f.json": {
       "bytes": 1266,
@@ -23931,8 +23931,8 @@
       "sha256": "6188e2876e4f59ec1f89aaf83560c88039578c81d6b9ecd0d8f70a37c297e98d"
     },
     "data/lost_in_astral/en/pages/ed57415bc2a16a5c4662.json": {
-      "bytes": 7917,
-      "sha256": "aea1fcde427c50b6dbc260e1798558e627fa8eeba6113e055203f2815b293056"
+      "bytes": 7792,
+      "sha256": "e16aa48704ff207513c983a49ecf3b769ef1bd4c81490ebedc77a1db0cfa4055"
     },
     "data/lost_in_astral/en/pages/ed6fb08487a5291b9e14.json": {
       "bytes": 1259,
@@ -24231,8 +24231,8 @@
       "sha256": "a89c5a6f8d49aba4180d2e6a4b61e6ff71133d5b9ab0eedba8cbcef887dc4419"
     },
     "data/lost_in_astral/en/pages/f6b88b0adc54bec8c6ef.json": {
-      "bytes": 5786,
-      "sha256": "ec6f0e815397e7a7d66aae3a4654d911e1416377979c8e98063ccf02e828a654"
+      "bytes": 5516,
+      "sha256": "c5e6df9ac05b445bde5caf1775f8f098048df5d825bff41316ed355d4be2ba3a"
     },
     "data/lost_in_astral/en/pages/f6e9652adcfe12dcaec0.json": {
       "bytes": 20957,
@@ -24455,8 +24455,8 @@
       "sha256": "45e695981b41a9054c2133f95b3c0993575de27aa4df3c4d1762d9376d6a8328"
     },
     "data/lost_in_astral/ru/index.json": {
-      "bytes": 1051123,
-      "sha256": "687248a9641c4011084e73deebd6c35098bc78097ff31aa7fc7cc092bc5cb7fc"
+      "bytes": 1035325,
+      "sha256": "213bb4f26ca733ae7cbfe796fd0bfa6bed27040f33ab23020d3960d092930476"
     },
     "data/lost_in_astral/ru/pages/005036e374568b4dd48f.json": {
       "bytes": 5171,
@@ -24771,8 +24771,8 @@
       "sha256": "ab0f5ef40c762df8075985d5b5147f329dfec84a11dc63fe9a6d3066aaab2c8d"
     },
     "data/lost_in_astral/ru/pages/0b170c8b09af71ab4259.json": {
-      "bytes": 15250,
-      "sha256": "36f689674a188cc1cfe380644a8bea433b51a639b9b27c3e2c6bcda27bbfcc59"
+      "bytes": 15385,
+      "sha256": "637eefcefe721579c5923702b1165b9e79425be5719471d34b6efd676e0f7d93"
     },
     "data/lost_in_astral/ru/pages/0b2fa7a3ec6b61a5e156.json": {
       "bytes": 1461,
@@ -25223,8 +25223,8 @@
       "sha256": "c762ee211c774b7e86e3cbc7a65c5a0f7aff5ea1647248945bbb2c9917b68099"
     },
     "data/lost_in_astral/ru/pages/1b139ab5508f54bab62c.json": {
-      "bytes": 5867,
-      "sha256": "2c2ad6d776f7e63fb373ac49302ff997f0fe5ae2de16fb7c6bd08097996ed84f"
+      "bytes": 5732,
+      "sha256": "a9b03514f36885f3bbf0044635f78a1c637cec0d4a23d2da9019de495b8441ed"
     },
     "data/lost_in_astral/ru/pages/1b525ed04c1548473df3.json": {
       "bytes": 2777,
@@ -25347,8 +25347,8 @@
       "sha256": "865c2b0bb4a9c1b933c857749b8a5cea264f21f51d3c84e3db2dbef3cb668b2d"
     },
     "data/lost_in_astral/ru/pages/1fde04632356abbebe2a.json": {
-      "bytes": 10611,
-      "sha256": "25b2ed892b20837e9327c258c05f2bc85492b10b1db26fe20e74140f834ce911"
+      "bytes": 11254,
+      "sha256": "5a2ffd985a12deaa4d65fd79bdd53793eaa2633d08382ec3745da6d0facc508e"
     },
     "data/lost_in_astral/ru/pages/1fe6daa645c49e420bfd.json": {
       "bytes": 4172,
@@ -25843,8 +25843,8 @@
       "sha256": "bff8e22109ad0ccafb88b55d0dbbbdfb166a030c81fb8042e5664c7e649a0d19"
     },
     "data/lost_in_astral/ru/pages/32dc1dc6fc4929b22cfe.json": {
-      "bytes": 31631,
-      "sha256": "da722e090e111e314a0062c109af6c65e7aaeebd86cf8b5186a9dbd4d3880e23"
+      "bytes": 32409,
+      "sha256": "8e4c0db442b61951f65c58334a0c55ac40e5bb964c2998029ed5ee47e6cbadbe"
     },
     "data/lost_in_astral/ru/pages/330397132a18d16b6bd6.json": {
       "bytes": 9854,
@@ -25959,8 +25959,8 @@
       "sha256": "b0029a9c918aac028cc4a5d74b2e77959e6887e012f684bb0f0761cd4005842e"
     },
     "data/lost_in_astral/ru/pages/37c5f53e93a2883a51c9.json": {
-      "bytes": 6973,
-      "sha256": "d0a8edc526e6aceeaf33247d391f1656bad9614964b19ccd9e943bc4293491d7"
+      "bytes": 6982,
+      "sha256": "120980fc3532d6f023deeec97e4af96e6dfd2d0bae797714dfcd8bc3aa1f73d9"
     },
     "data/lost_in_astral/ru/pages/37ef256f047400411e8a.json": {
       "bytes": 16870,
@@ -26343,8 +26343,8 @@
       "sha256": "594721da7a5c17e8ce511459a29cb60be721ee09122bf214c804348625cf5299"
     },
     "data/lost_in_astral/ru/pages/473ee8f6ff96833287ae.json": {
-      "bytes": 8212,
-      "sha256": "6a625cdf01892d8b391f09558c411180c909d5b66354df1945b56a97a4defa09"
+      "bytes": 8347,
+      "sha256": "c8f82068bb644f8ab689e84ac4b8794c9c036924e637a49e5fdbc910496eede5"
     },
     "data/lost_in_astral/ru/pages/4743187232d717b8d719.json": {
       "bytes": 3480,
@@ -26727,8 +26727,8 @@
       "sha256": "b3ca0742f9b15cadaaa22fc55380fcf1612fda49a07fb5a53f43af0bf9201c1c"
     },
     "data/lost_in_astral/ru/pages/51e981fd5e748cf1770e.json": {
-      "bytes": 12203,
-      "sha256": "2fb7fd1690146b6e2b768f1d3ea27f8bc37f5183bbb6a8b398cd7934ea28ff98"
+      "bytes": 12338,
+      "sha256": "55703d14957c8702d1f0e4a44f82518c01cf5ec506a110268edab7bbff971258"
     },
     "data/lost_in_astral/ru/pages/52116dfdba0ecc8d3e87.json": {
       "bytes": 5148,
@@ -26851,8 +26851,8 @@
       "sha256": "b58e10e10d323f37dddffc2a8ff0d094a134f63658a8d7be63e00af2e6ac3aa2"
     },
     "data/lost_in_astral/ru/pages/570a4c3f9d7554474a99.json": {
-      "bytes": 19920,
-      "sha256": "85bfd3e31083340d9fbebd7903014aaeb508ee4d274cbd5428199f892dbcb9f4"
+      "bytes": 20055,
+      "sha256": "3dc4b362a33f17fde6632d39eee982e2e1223b45de523a828e8382089553d631"
     },
     "data/lost_in_astral/ru/pages/578cce373717b2fa88ef.json": {
       "bytes": 4190,
@@ -26895,8 +26895,8 @@
       "sha256": "a48b1f635a1560b5090e3c750a5068113c40d3b5655515cec46585377895faeb"
     },
     "data/lost_in_astral/ru/pages/598e06717f1522838ee5.json": {
-      "bytes": 103485,
-      "sha256": "5860a821de5602349948c5f1b3059bbcf663d151225b74f453392c505abd98d9"
+      "bytes": 104131,
+      "sha256": "8a778434d4a18a6897e1e5795d8261f0788f9018ea3111ee08f189a8c867a69d"
     },
     "data/lost_in_astral/ru/pages/59d2ac73b7cc2da04c15.json": {
       "bytes": 2553,
@@ -27175,8 +27175,8 @@
       "sha256": "0ec0a5526e982dc5cf1a3291a84216099eb0dd7d7613ca72867e0cb5828bb217"
     },
     "data/lost_in_astral/ru/pages/63d01b743cd806c6bdb0.json": {
-      "bytes": 19042,
-      "sha256": "26d3183a02a4a4207f2f5ff228bfd406b05ddde1e948687f885ee705ea65a1c7"
+      "bytes": 19177,
+      "sha256": "d78ee8106f22bfb4480deedd5c8c5bad83419048db2c25537e410a4fd8623cf5"
     },
     "data/lost_in_astral/ru/pages/63e1f3b57084f9cd29c4.json": {
       "bytes": 31002,
@@ -27515,8 +27515,8 @@
       "sha256": "822d596bbe5b24086081d63150aa5af24dcd53a21795bf1f9f33bd1235bc50fd"
     },
     "data/lost_in_astral/ru/pages/6ee0900160aaf457416c.json": {
-      "bytes": 5033,
-      "sha256": "e0f2dff205e67d23bb961d4e5bdeca97194daad3d7c921da7b85225dba8de100"
+      "bytes": 4898,
+      "sha256": "f47a35318f5b3aafe05bc8d5c1d22106db33acd978cc8764be4237421ff4ced9"
     },
     "data/lost_in_astral/ru/pages/6ee2d1ee9a2cffd44892.json": {
       "bytes": 24663,
@@ -27631,8 +27631,8 @@
       "sha256": "7441142ffaa5705321b9f02451af004342d6033fb1651f486d2e2837e75a5f59"
     },
     "data/lost_in_astral/ru/pages/73c07de021c864771449.json": {
-      "bytes": 29585,
-      "sha256": "6b43c547e2ab2a648f30ec462b137a52ce9ed840e3dc7807028ef426c72c4f1c"
+      "bytes": 30363,
+      "sha256": "a33969efed3f11b5b9f14afabcb6abb42f934d6343c395864a416ca6b29e4e86"
     },
     "data/lost_in_astral/ru/pages/73d7f817df4af2efdf15.json": {
       "bytes": 16309,
@@ -28075,8 +28075,8 @@
       "sha256": "91b0edb7840a47101eaacbfad7faa4a4d3b69f8b93499f910253e845f80f3d5d"
     },
     "data/lost_in_astral/ru/pages/85138c44ebeaf95b4472.json": {
-      "bytes": 47729,
-      "sha256": "9feb25260a65e2afccf40c23642d497601bf115ed405d130d23b08dfc89145d2"
+      "bytes": 47738,
+      "sha256": "cc9ccd288b60f375449ae4b761ceb7ae20f09cbb59280ad6a2f9d58b268d479e"
     },
     "data/lost_in_astral/ru/pages/855339d3b175dd00aefe.json": {
       "bytes": 4491,
@@ -28099,8 +28099,8 @@
       "sha256": "e2d799777311ccd416a61a25187c00c642dc4637bc97f176648bbe65aa5272ea"
     },
     "data/lost_in_astral/ru/pages/859b4c03e2c358338ede.json": {
-      "bytes": 10348,
-      "sha256": "38b8c017505a1033cdcd98c295c1ae4fc6a6934de443ba98ef3660906f3fc588"
+      "bytes": 10213,
+      "sha256": "e2a50ea8608308960ac5decb89f579ba4c681ab7f5fc7ca3bea670afb59630e2"
     },
     "data/lost_in_astral/ru/pages/85aba19161f048cd4e19.json": {
       "bytes": 5725,
@@ -28883,8 +28883,8 @@
       "sha256": "36a6e8b3c46608b9c419361a9b471398e487045f55f672423d01e788509ab414"
     },
     "data/lost_in_astral/ru/pages/a2c370d13d044e6b398b.json": {
-      "bytes": 6341,
-      "sha256": "b1625e13fed0988b855523034c4fd008c3685f8ce0bc4db910301cca44840f9e"
+      "bytes": 6206,
+      "sha256": "69bcd7b01965b9b08cd3403d87a10ad7c6c2bd219759a694ea4756f6b3867c35"
     },
     "data/lost_in_astral/ru/pages/a2d52957ce0ec3d7a1d3.json": {
       "bytes": 1066,
@@ -29135,8 +29135,8 @@
       "sha256": "e44edd75dbaa571639be486d19a7cc36881c65742278a0e9ede19453386ce004"
     },
     "data/lost_in_astral/ru/pages/a96acae8a44dd0ce22cf.json": {
-      "bytes": 13012,
-      "sha256": "73c92c6318e667074f1a65343b561a7bacb4d7d35577e37191ccbde3d0edfe63"
+      "bytes": 12877,
+      "sha256": "ab4895f2947bbff9396cff35ada948b9b63db6a412dd2e6463b5d77c6fd91e54"
     },
     "data/lost_in_astral/ru/pages/a9ab2a80d06dedef66d1.json": {
       "bytes": 24435,
@@ -29231,12 +29231,12 @@
       "sha256": "92d1c135de19db2fc72caf427d7b79f80c44e7fc7406b4efe42f6fba280091d1"
     },
     "data/lost_in_astral/ru/pages/ac72e0b472eff37168ac.json": {
-      "bytes": 25376,
-      "sha256": "fd0449a3dc4df25b7f0894fcd3a7c488db5c10445870df1502274f86c3eec3c3"
+      "bytes": 25511,
+      "sha256": "ac8f57fd829e2daf59a5a94c39a296c4010dd301bbf169abb81c8c2ebb26163f"
     },
     "data/lost_in_astral/ru/pages/ac7a66ab98f3e800f2c0.json": {
-      "bytes": 8683,
-      "sha256": "82cacf611189b90c2ac122c2ccc2cdb4ac65eaec993f3b96a68f8b070f6cb948"
+      "bytes": 8548,
+      "sha256": "05db62e9ac76e400c09132c3d4e2872c5aee2b8a27e3cee8571385edb00920bc"
     },
     "data/lost_in_astral/ru/pages/ac7cae9e1e46fdd5cfab.json": {
       "bytes": 4880,
@@ -29603,8 +29603,8 @@
       "sha256": "21b6482f34258e8fa473ba06d2d579b1221d7fc074d2aaa3c1ccd50645150187"
     },
     "data/lost_in_astral/ru/pages/b9957a243ea94275c2f1.json": {
-      "bytes": 5608,
-      "sha256": "e528c78d65e98baa8c44f6f27326b2a4562711516ec2b15585fd3667c20ed695"
+      "bytes": 5473,
+      "sha256": "555c92abd2033c5a14c35e08b4c7109c7ec4b5f16d966c06f3ac5e20262640d7"
     },
     "data/lost_in_astral/ru/pages/b9fca3db98d31770eb1d.json": {
       "bytes": 24029,
@@ -30319,8 +30319,8 @@
       "sha256": "ce97070adb6b567da479d620c3ad26cfacf7f9d51faf77694b78cd9068518dab"
     },
     "data/lost_in_astral/ru/pages/d5d612c01b867ecdda4c.json": {
-      "bytes": 11008,
-      "sha256": "21091e1e6ab12318acf9298e096c21b09470de0d9025780431cf741148bbd3ad"
+      "bytes": 10873,
+      "sha256": "4fb9bbfdc0812f683b996aa62f341a04f61c88f352bd8f245c8790176acf62c9"
     },
     "data/lost_in_astral/ru/pages/d60a515105cd020388f2.json": {
       "bytes": 1602,
@@ -30579,8 +30579,8 @@
       "sha256": "8464c5e9cc3f220756eb1f9c55a56618f495b1560ea4099c2f0b45c47a2b493a"
     },
     "data/lost_in_astral/ru/pages/df93f7c2de6edd4a2ee3.json": {
-      "bytes": 73475,
-      "sha256": "1061d67b4f816199d4c5537ed2272e41a5c9a4a3ed9cf23b9ff11530d90d328b"
+      "bytes": 29809,
+      "sha256": "7205f56fa79ecc41939b2957ff5d2b5d83da118482677bfc6995b38c62d66589"
     },
     "data/lost_in_astral/ru/pages/dfb23239df2341b0fc9f.json": {
       "bytes": 2900,
@@ -30967,8 +30967,8 @@
       "sha256": "651d50bf6a2512157045e6c80163b626c6d870f4beadd06c3450fde313df49b9"
     },
     "data/lost_in_astral/ru/pages/ed57415bc2a16a5c4662.json": {
-      "bytes": 10165,
-      "sha256": "43e374dfc4f9cefb7cd3e573a44c705432467f99bbcd3f478e4bca73469af5b1"
+      "bytes": 10030,
+      "sha256": "5317ccdd4fa5b0012829763787279f113349fdbb6e2d65c8016ff35adaacfe6d"
     },
     "data/lost_in_astral/ru/pages/ed6fb08487a5291b9e14.json": {
       "bytes": 2318,
@@ -31267,8 +31267,8 @@
       "sha256": "8637f799aed23f61ea283a15339d1201b006d05da99f1ac0309118aea795966a"
     },
     "data/lost_in_astral/ru/pages/f6b88b0adc54bec8c6ef.json": {
-      "bytes": 7655,
-      "sha256": "1d01c54461cb68ce77985ba79273122864d48923ec8c2e2acff035b3f6340d8a"
+      "bytes": 7314,
+      "sha256": "9fca8945ddda7f62b87a1e4411e5b4eff8e62b85206eeaca0d70bea9b59586f8"
     },
     "data/lost_in_astral/ru/pages/f6e9652adcfe12dcaec0.json": {
       "bytes": 26100,
@@ -54191,6 +54191,5 @@
       "sha256": "29aec0935f5d56923fe3c1a66f35e4965ab6eda83b3eaabd8b673a828109e313"
     }
   },
-  "bytes": 203357963,
-  "unchanged_content_from": "1.9.0"
+  "bytes": 203216998
 }

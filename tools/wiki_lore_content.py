@@ -336,6 +336,11 @@ for id,en,ru,de,src in map_rows:place(id,'map',en,ru,de,'zone:'+id+' '+src)
 from wiki_lore_history import apply as apply_history
 history_headings = apply_history(DATA, tr)
 
+# Kel's biography focuses on her choices, with a practical guide to the
+# verified optional resurrection. Shared events retain one authored account.
+from wiki_lore_kel import apply as apply_kel
+history_headings += apply_kel(DATA, tr)
+
 # Resolve checked editorial corrections before serialising the source resource.
 fixes={'d54':'d55','hw30':'ha29','o28':'sh40','brief_34':'brief_34a'}
 for records in DATA['campaigns'].values():
