@@ -308,10 +308,28 @@ func _screens() -> void:
 		and hud._dialog._mode in [DialogPanel.PLAYING, DialogPanel.LAST]
 	if talk != _dialog_was:
 		_dialog_was = talk
+		if units: units.silence_dialogue(talk)
+		if talk: _silence_chatter()
 		if talk:
 			music.fade_out()
 		else:
 			music.fade_in()
+
+
+func dialogue_active() -> bool:
+	var hud := game.hud if game else null
+	return hud != null and hud._dialog != null and hud._dialog.visible \
+		and hud._dialog._mode in [DialogPanel.PLAYING, DialogPanel.LAST]
+
+
+func _silence_chatter() -> void:
+	for uid in _ack_q.keys():
+		var kept := []
+		for e: Dictionary in _ack_q[uid]:
+			if int(e.code) in [EIAcks.SCENARIO, 0x2b]: kept.append(e)
+			else: mixer.stop(int(e.handle))
+		_ack_q[uid] = kept
+	_bored.clear()
 
 
 # ------------------------------------------------------------------ combat flag
@@ -689,6 +707,7 @@ func bored_context(u: GameUnit) -> int:
 ## net handler, unit). Approx.: "acts" = the remake unit is
 ## not idle, rather than the native post-action dispatcher's return value.
 func _bored_tick() -> void:
+	if dialogue_active(): return
 	for u: GameUnit in _world.unit_rows():
 		if not is_instance_valid(u) or u.dead or u.controller < 0 or not u.has_meta("hero"):
 			continue
@@ -746,6 +765,7 @@ static func voice_name(u: GameUnit) -> String:
 ## once it is first). A "say_block" line (0x2b) blocks the
 ## unit's orders from the moment it is queued first until it ends.
 func _ack_queue(u: GameUnit, code: int, wav: String) -> void:
+	if code not in [EIAcks.SCENARIO, 0x2b] and dialogue_active(): return
 	var q: Array = _ack_q.get(u.uid, [])
 	var drop: Array = ACK_REPLACES.get(code, [])
 	q = q.filter(func(e): return not (int(e.code) in drop))
@@ -809,6 +829,7 @@ func _on_item_worn(u: GameUnit, _item: String, kind: String) -> void:
 func _ack_play(e: Dictionary) -> void:
 	var u: GameUnit = e.u
 	var code := int(e.code)
+	if code not in [EIAcks.SCENARIO, 0x2b] and dialogue_active(): return
 	if (code == 2 or code == 0x1c) and units and units.attack_playing(u):
 		if trace_acks:
 			print("[ack] %s 0x%x %s skipped: attack sound playing" % [u.display_name, code, e.wav])

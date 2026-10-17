@@ -6,18 +6,20 @@ var battle: ArenaPveMatch
 var policy := "balanced"
 var count := 3
 var first := 1900
+var challenge := 0
 var results := []
 func _ready() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--arena-policy="): policy=arg.get_slice("=",1)
 		if arg.begins_with("--arena-seeds="): count=int(arg.get_slice("=",1))
 		if arg.begins_with("--arena-seed-start="): first=int(arg.get_slice("=",1))
+		if arg.begins_with("--arena-challenge="): challenge=clampi(int(arg.get_slice("=",1)),0,2)
 	var native := hash(GameData.db.tables)
 	run=ArenaRun.new();run.auto_save=false
 	battle=ArenaPveMatch.new();battle.rendered=false;battle.run=run
 	add_child(battle);battle.set_process(false);battle._world_parent=self
 	for offset in count:
-		run.begin(first+offset)
+		run.begin(first+offset,0,challenge)
 		var trace:=[]
 		while run.stage not in ["won","lost"]:
 			if run.stage=="result": run.advance();continue
@@ -39,7 +41,7 @@ func _ready() -> void:
 		results.append({"seed":run.run_seed,"outcome":run.stage,"wave":run.wave,"trace":trace})
 		print("ALLIANCE_RUN ",policy," seed=",run.run_seed," ",run.stage," wave=",run.wave," level=",run.capacity())
 		var f:=FileAccess.open("user://alliance-runs-%s.json"%policy,FileAccess.WRITE)
-		f.store_string(JSON.stringify({"policy":policy,"results":results},"\t"))
+		f.store_string(JSON.stringify({"policy":policy,"challenge":challenge,"results":results},"\t"))
 	get_tree().quit(0 if hash(GameData.db.tables)==native else 1)
 
 func strength(entry: Dictionary) -> float:

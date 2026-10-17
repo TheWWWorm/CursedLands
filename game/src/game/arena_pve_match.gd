@@ -57,6 +57,7 @@ func prepare() -> void:
 		_rebuild_world()
 	else:
 		_reconcile_formation()
+	world.set_meta("expedition_spell_safety", true)
 	world.presentation = rendered
 	world.combat.difficulty_override = 0
 	world.combat.rng.seed = run.battle_seed()

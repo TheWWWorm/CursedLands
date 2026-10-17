@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Offer starting-skill restoration or a full refund from a camp dialog, with original window styling and content-sized English, Russian and German layouts. ([#5](https://github.com/TheWWWorm/CursedLands/issues/5))
+- Adjust Trials recruit prices, make spiders available at company level five, and strengthen Veteran and Champion reinforcements. Set preparation to 60/45/30 seconds by difficulty and prevent damaging spells from hitting allies in Trials. ([#15](https://github.com/TheWWWorm/CursedLands/issues/15))
+- Show movement and attack routes during tactical pause, honor explicit attack-move in defensive stance, and show routes when attack-move acquires a target. ([#12](https://github.com/TheWWWorm/CursedLands/issues/12), [#13](https://github.com/TheWWWorm/CursedLands/issues/13), [#14](https://github.com/TheWWWorm/CursedLands/issues/14))
+- Render the pause signpost's opening pose before revealing it and keep pointer motion from interrupting the opening animation. ([#11](https://github.com/TheWWWorm/CursedLands/issues/11))
+- Suppress incidental acknowledgements and creature voices during quest dialogue while preserving scripted lines. ([#10](https://github.com/TheWWWorm/CursedLands/issues/10))
+
 ## 1.9.2 — pause menu and companion controls, 17 October 2026
 
 - Keep pause-menu opening and board animations at the same real-time speed when gameplay is paused, normal or accelerated, including reopening after an interrupted slide. ([#6](https://github.com/TheWWWorm/CursedLands/issues/6))

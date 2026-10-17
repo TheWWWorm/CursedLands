@@ -879,7 +879,7 @@ static func _hit(world: GameWorld, caster, p: Dictionary, u) -> void:
 	if u == null or not is_instance_valid(u) or u.dead:
 		return
 	var c: GameUnit = caster if caster != null and is_instance_valid(caster) else null
-	if c and not passes_filter(world, c, u, int(p.get("filter", 0))):
+	if c and not damage_target_allowed(world, c, u, int(p.get("filter", 0))):
 		return
 	_spell_damage(world, c, p, u)
 
@@ -893,9 +893,16 @@ static func _area_hit(world: GameWorld, caster, p: Dictionary, at: Vector2, dir 
 			continue
 		if dir != Vector2.ZERO and absf((u.pos - at).dot(dir)) > 0.5:
 			continue
-		if c and not passes_filter(world, c, u, int(p.get("filter", 0))):
+		if c and not damage_target_allowed(world, c, u, int(p.get("filter", 0))):
 			continue
 		_spell_damage(world, c, p, u, owner_only)
+
+
+## Automated expedition formations cannot steer allies out of persistent
+## hazards. Protect both teams there; campaign spells keep their native filters.
+static func damage_target_allowed(world: GameWorld, caster: GameUnit, target: GameUnit, mask: int) -> bool:
+	if world.get_meta("expedition_spell_safety", false) and caster.faction == target.faction: return false
+	return passes_filter(world, caster, target, mask)
 
 
 ## a unit of move class 0 whose altitude is 0.5 m or more.

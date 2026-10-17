@@ -37,6 +37,7 @@ var _talk_scan := 0.0
 var _talk_dialog := ""   # remains set while a local close awaits the host
 var _talk_completed := {}   # close notice can arrive before the campaign snapshot
 var _bright := {}   # unit material -> its lightened copy
+var _paused_marks := {} # uid -> newly drawn tactical-pause effects
 var _flash := {}    # GameUnit -> seconds of white flash left (figure ticks)
 ## The emissive (1) pushes (RGB 1.0).
 const WHITE := 1.0
@@ -60,8 +61,8 @@ func _ready() -> void:
 
 
 ## The original owner-only path message.
-## Input handlers retain these call sites, but only the authoritative first
-## command tick supplies the path, mode, ring/cross and ghost cutoff.
+## Input handlers retain these call sites. The authority supplies the path,
+## mode and ghost cutoff on the first command tick, or immediately in pause.
 func move_ordered(_p: Vector2) -> void:
 	pass
 
@@ -120,6 +121,13 @@ func _show(u: GameUnit, at: Vector2, a: int, b: int, ticks: PackedVector3Array, 
 	var fx := ParticleFx.of(w)
 	if fx == null:
 		return
+	for old in _paused_marks.get(u.uid, []):
+		if old in fx.effects:
+			fx.effects.erase(old)
+			if is_instance_valid(old.mmi): old.mmi.queue_free()
+	_paused_marks.erase(u.uid)
+	var paused := get_tree().paused
+	if paused: _paused_marks[u.uid] = []
 	if start == Vector2.INF:
 		start = u.pos
 	if a != 3 and ticks.size() > 0:
@@ -128,7 +136,11 @@ func _show(u: GameUnit, at: Vector2, a: int, b: int, ticks: PackedVector3Array, 
 			{"k118": k118, "k11c": float(ticks.size() - 1), "secs": 1.5})
 		if ef:
 			ef.e.set_meta("path", ticks)
-	fx.spawn(0x203b if b != 0 else 0x203a, Vector3(at.x, at.y, w.ground_at(at.x, at.y)), 1.0, null, {"secs": 0.6})
+			fx.prime_order_mark(ef)
+			if paused: _paused_marks[u.uid].append(ef)
+	var target := fx.spawn(0x203b if b != 0 else 0x203a, Vector3(at.x, at.y, w.ground_at(at.x, at.y)), 1.0, null, {"secs": 0.6})
+	fx.prime_order_mark(target)
+	if paused and target: _paused_marks[u.uid].append(target)
 
 
 ## The ghost's speed: (= 0.5
@@ -355,6 +367,7 @@ func _process(dt: float) -> void:
 		if _talk_world != game.world:
 			_talk_dialog = ""
 			_talk_completed.clear()
+			_paused_marks.clear()
 		_talk_world = game.world
 		_talk_scan = 0.25
 		_refresh_talk_units()

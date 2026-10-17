@@ -24,6 +24,7 @@ const REG := [["SaveGame", "save"], ["LoadGame", "load"], ["ResumeGame", "return
 var _post: Node3D
 var _player: AnimationPlayer
 var _animation_usec := 0
+var _open_serial := 0
 var _boards := {}
 var _board_meshes := {}
 var _rects: Array[Rect2] = []
@@ -94,6 +95,7 @@ func _process(dt: float) -> void:
 
 func _gui_input(e: InputEvent) -> void:
 	if e is InputEventMouseMotion:
+		if _player and _player.is_playing() and _player.current_animation == "ei/uspecial02": return
 		# a newly hovered board sounds buttons\menu\stone.wav and
 		# turns (its uspecial); off the boards plays the idle.
 		var hb := board_at(e.position)
@@ -128,9 +130,16 @@ func _on_open() -> void:
 	_play("uspecial02")
 	# The SubViewport still holds its last picture (the rest pose) on the
 	# first visible frame; keep it transparent until the slide has rendered.
+	_open_serial += 1
+	var serial := _open_serial
 	self_modulate.a = 0.0
+	# A transparent TextureRect is culled, so UPDATE_WHEN_VISIBLE cannot
+	# refresh its stale texture. Explicitly render the hidden opening pose.
+	_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	await RenderingServer.frame_post_draw
+	if serial != _open_serial: return
 	self_modulate.a = 1.0
+	_vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 
 
 func _play(anim: String) -> void:

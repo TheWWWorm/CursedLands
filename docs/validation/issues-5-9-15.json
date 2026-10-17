@@ -1,0 +1,383 @@
+{
+  "date": "2026-10-17",
+  "base": "7c77cb16eff2ec758b88506fbdd26f6b7b16efd1",
+  "branch": "fix/issues-5-9-15",
+  "platform": "Linux x86_64, Godot 4.7, Compatibility renderer for rendered checks",
+  "release_status": "unreleased local source; version metadata remains 1.9.2",
+  "test_runs": [
+    {
+      "phase": "regression",
+      "suite": "arena_economy",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "ARENA_ECONOMY 215 checks; failures=[]"
+      ]
+    },
+    {
+      "phase": "regression",
+      "suite": "arena_alliances",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "ARENA_ALLIANCES 448 checks; failures=[]"
+      ]
+    },
+    {
+      "phase": "regression",
+      "suite": "arena_recruitment",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "ARENA_RECRUITMENT 676 checks; native_fights=20; failures=[]"
+      ]
+    },
+    {
+      "phase": "regression",
+      "suite": "follow_portraits",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "FOLLOW_PORTRAITS 26 checks 0 failures"
+      ]
+    },
+    {
+      "phase": "regression",
+      "suite": "stamina_regen",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "STAMINA_REGEN 33 checks 0 failures"
+      ]
+    },
+    {
+      "phase": "final",
+      "suite": "arena_flow",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "ARENA_FLOW 234 checks; failures=[]"
+      ]
+    },
+    {
+      "phase": "final",
+      "suite": "arena_balance_feedback",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "ARENA_BALANCE_FEEDBACK 20 checks 0 failures"
+      ]
+    },
+    {
+      "phase": "final",
+      "suite": "issue_campaign_orders",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "ISSUE_CAMPAIGN_ORDERS 26 checks 0 failures"
+      ]
+    },
+    {
+      "phase": "final",
+      "suite": "path_preview",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "PATH_PREVIEW 8 checks 0 failures"
+      ]
+    },
+    {
+      "phase": "final",
+      "suite": "training_reset",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "TRAINING_RESET 92 checks 0 failures; 5247 legal orders"
+      ]
+    },
+    {
+      "phase": "final",
+      "suite": "training_coop",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "TRAINING_COOP 16 checks 0 failures"
+      ]
+    },
+    {
+      "phase": "final",
+      "suite": "training_reset_choice",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "TRAINING_RESET_CHOICE 35 checks 0 failures"
+      ]
+    },
+    {
+      "phase": "final",
+      "suite": "motion_build",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "MOTION_BUILD checks=57185 failures=0 native_us=4687 script_us=179585"
+      ]
+    },
+    {
+      "phase": "final-rendered",
+      "suite": "issue_campaign_orders",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "ISSUE_CAMPAIGN_ORDERS 28 checks 0 failures"
+      ]
+    },
+    {
+      "phase": "final-rendered",
+      "suite": "pause_menu_clock",
+      "language": "en",
+      "passed": true,
+      "summary": [
+        "PAUSE_MENU_CLOCK 21 checks 0 failures"
+      ]
+    },
+    {
+      "phase": "final-rendered-1024",
+      "suite": "training_reset_choice",
+      "language": "en",
+      "passed": true,
+      "summary": "TRAINING_RESET_CHOICE 33 checks 0 failures",
+      "image_sha256": "6d5418f067c6c32afd82303d0460e966f3de97517dcaafd027fe45a6c78abd62"
+    },
+    {
+      "phase": "final-rendered-1024",
+      "suite": "training_reset_choice",
+      "language": "ru",
+      "passed": true,
+      "summary": "TRAINING_RESET_CHOICE 33 checks 0 failures",
+      "image_sha256": "735951bacdd7d68f03cd1e0454b0a84181e3391ddef7f1021b9f813a8ee3d7de"
+    },
+    {
+      "phase": "final-rendered-1024",
+      "suite": "training_reset_choice",
+      "language": "de",
+      "passed": true,
+      "summary": "TRAINING_RESET_CHOICE 33 checks 0 failures",
+      "image_sha256": "3c0cbbc1a8d8c8f00b25be539f2f256627696b154a585203a62686f2827a78df"
+    },
+    {
+      "phase": "final-rendered-4k",
+      "suite": "training_reset_choice",
+      "language": "de",
+      "passed": true,
+      "summary": "TRAINING_RESET_CHOICE 33 checks 0 failures",
+      "image_sha256": "4ef673be0b3e225d071e51edcb1471a91bdd6c45b44dba3fe06d7da8c62ddaa1"
+    }
+  ],
+  "localization": {
+    "entries": 2080,
+    "changed_keys": [
+      "Reset skills…",
+      "Reset skills",
+      "Restore starting skills",
+      "Full reset",
+      "Base attributes, equipment and earned XP stay unchanged.",
+      "Keep the character's original skills and abilities. Refund points spent beyond those starting ranks.",
+      "Set every skill and ability to zero and refund all their points, including starting ranks and skill gifts.",
+      "Choose whether to restore starting skills or refund every skill and ability.",
+      "Starting skills are unavailable for this character.",
+      "Not enough points to restore starting skills.",
+      "Starting skills are already restored.",
+      "Tier %d · %s gold · %d%%",
+      "Recruit and arrange your team before the timer ends. The creatures handle the fighting.",
+      "Preparation lasts 60 seconds on Standard, 45 on Veteran and 30 on Champion. Start early when ready. Menus pause the countdown. An empty field deploys reserves at expiry; with no recruits, you lose the wave.",
+      "Both teams fight under AI control. Damaging spells cannot hurt allies in Trials. Hover a creature for details. Space pauses combat; the speed control switches between normal and double speed."
+    ],
+    "language_archive_tests": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "missing_translations": [],
+    "placeholder_errors": []
+  },
+  "editor_import": {
+    "passed": true
+  },
+  "balance": [
+    {
+      "build": "baseline v1.9.2",
+      "challenge": 0,
+      "policy": "warrior",
+      "results": [
+        {
+          "seed": 1900,
+          "outcome": "won",
+          "wave": 30,
+          "fights": 31,
+          "lost_or_drawn_fights": 1
+        },
+        {
+          "seed": 1901,
+          "outcome": "won",
+          "wave": 30,
+          "fights": 30,
+          "lost_or_drawn_fights": 0
+        },
+        {
+          "seed": 1902,
+          "outcome": "won",
+          "wave": 30,
+          "fights": 30,
+          "lost_or_drawn_fights": 0
+        }
+      ]
+    },
+    {
+      "build": "baseline v1.9.2",
+      "challenge": 2,
+      "policy": "balanced",
+      "results": [
+        {
+          "seed": 1900,
+          "outcome": "won",
+          "wave": 30,
+          "fights": 31,
+          "lost_or_drawn_fights": 1
+        },
+        {
+          "seed": 1901,
+          "outcome": "won",
+          "wave": 30,
+          "fights": 30,
+          "lost_or_drawn_fights": 0
+        },
+        {
+          "seed": 1902,
+          "outcome": "won",
+          "wave": 30,
+          "fights": 30,
+          "lost_or_drawn_fights": 0
+        }
+      ]
+    },
+    {
+      "build": "revised",
+      "challenge": 0,
+      "policy": "warrior",
+      "results": [
+        {
+          "seed": 1900,
+          "outcome": "won",
+          "wave": 30,
+          "fights": 30,
+          "lost_or_drawn_fights": 0
+        },
+        {
+          "seed": 1901,
+          "outcome": "won",
+          "wave": 30,
+          "fights": 30,
+          "lost_or_drawn_fights": 0
+        },
+        {
+          "seed": 1902,
+          "outcome": "lost",
+          "wave": 30,
+          "fights": 32,
+          "lost_or_drawn_fights": 3
+        }
+      ]
+    },
+    {
+      "build": "revised",
+      "challenge": 2,
+      "policy": "balanced",
+      "results": [
+        {
+          "seed": 1900,
+          "outcome": "lost",
+          "wave": 30,
+          "fights": 33,
+          "lost_or_drawn_fights": 4
+        },
+        {
+          "seed": 1901,
+          "outcome": "lost",
+          "wave": 26,
+          "fights": 29,
+          "lost_or_drawn_fights": 4
+        },
+        {
+          "seed": 1902,
+          "outcome": "lost",
+          "wave": 30,
+          "fights": 33,
+          "lost_or_drawn_fights": 4
+        }
+      ]
+    },
+    {
+      "build": "revised",
+      "challenge": 2,
+      "policy": "mage",
+      "results": [
+        {
+          "seed": 1910,
+          "outcome": "won",
+          "wave": 30,
+          "fights": 30,
+          "lost_or_drawn_fights": 0
+        },
+        {
+          "seed": 1911,
+          "outcome": "won",
+          "wave": 30,
+          "fights": 30,
+          "lost_or_drawn_fights": 0
+        },
+        {
+          "seed": 1912,
+          "outcome": "lost",
+          "wave": 27,
+          "fights": 32,
+          "lost_or_drawn_fights": 6
+        }
+      ]
+    },
+    {
+      "build": "revised",
+      "challenge": 1,
+      "policy": "balanced",
+      "results": [
+        {
+          "seed": 1920,
+          "outcome": "lost",
+          "wave": 30,
+          "fights": 32,
+          "lost_or_drawn_fights": 3
+        },
+        {
+          "seed": 1921,
+          "outcome": "won",
+          "wave": 30,
+          "fights": 30,
+          "lost_or_drawn_fights": 0
+        },
+        {
+          "seed": 1922,
+          "outcome": "won",
+          "wave": 30,
+          "fights": 31,
+          "lost_or_drawn_fights": 1
+        }
+      ]
+    }
+  ],
+  "balance_scope": "Seeded native simulation samples, not human win rates. No raw prototype-stat changes.",
+  "limitations": [
+    "No target-OS validation on Windows, macOS or Android.",
+    "No Web runtime or release package validation.",
+    "Further human balance assessment is needed."
+  ],
+  "logs": "/home/llm2x/Documents/EI/local/scratchpad/issues-5-9-15-20261017/checks"
+}

@@ -42,7 +42,7 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 	last_result = {}
 	free_refresh = false
 	training = 0; battle_savings = 0
-	preparation_left = ArenaRules.PREPARATION_SECONDS
+	preparation_left = ArenaRules.preparation_seconds(challenge)
 	last_evolutions.clear()
 	rng.seed = run_seed
 	# Every opening role is available to buy. Later shops use seeded random offers.
@@ -426,7 +426,7 @@ func advance() -> void:
 	if stage != "result": return
 	if int(last_result.winner) != 0:
 		stage = "prepare"
-		preparation_left = ArenaRules.PREPARATION_SECONDS
+		preparation_left = ArenaRules.preparation_seconds(challenge)
 	elif wave % 5 == 0:
 		stage = "reward"
 		_make_rewards()
@@ -438,7 +438,7 @@ func advance() -> void:
 func _next_wave() -> void:
 	wave += 1
 	stage = "prepare"
-	preparation_left = ArenaRules.PREPARATION_SECONDS
+	preparation_left = ArenaRules.preparation_seconds(challenge)
 	_undo.clear()
 	_roll_shop(true)
 
@@ -521,7 +521,11 @@ func restore(data: Dictionary) -> bool:
 	if not data.get("free_refresh", false) is bool: return false
 	var saved_pact = data.get("pact", "") if int(data.version) > 1 else ""
 	var saved_rank = data.get("pact_rank", 0) if int(data.version) > 1 else 0
-	if not _number(data.get("preparation_left", ArenaRules.PREPARATION_SECONDS), 0, ArenaRules.PREPARATION_SECONDS): return false
+	var saved_preparation := ArenaRules.preparation_seconds(int(data.challenge)) if int(data.version) >= 9 else 45.0
+	# A resumed schema-8 Champion run may still have its original 45 seconds.
+	# Its next snapshot must remain readable after the schema upgrade.
+	var maximum_preparation := ArenaRules.PREPARATION_SECONDS if int(data.version) >= 9 else 45.0
+	if not _number(data.get("preparation_left", saved_preparation), 0, maximum_preparation): return false
 	if not _integer(data.get("shop_level", 0), 0, 2): return false
 	if not _integer(data.get("training", 0), 0, ArenaRules.MAX_TRAINING): return false
 	if not _integer(data.get("battle_savings", 0), 0, 100000): return false
@@ -605,7 +609,7 @@ func restore(data: Dictionary) -> bool:
 	challenge = int(data.challenge); starter = int(data.starter)
 	wave = int(data.wave); wave_limit = int(saved_limit); gold = int(data.gold); lives = int(data.lives)
 	stage = "prepare" if data.stage == "fight" else String(data.stage)
-	preparation_left = ArenaRules.PREPARATION_SECONDS if data.stage == "fight" else float(data.get("preparation_left", ArenaRules.PREPARATION_SECONDS))
+	preparation_left = ArenaRules.preparation_seconds(challenge) if data.stage == "fight" else float(data.get("preparation_left", saved_preparation))
 	army.assign(data.army.duplicate(true)); shop.assign(data.shop.duplicate(true)); boons.assign(data.boons)
 	free_refresh = bool(data.get("free_refresh", false))
 	training = int(data.get("training", 0)); battle_savings = int(data.get("battle_savings", 0))

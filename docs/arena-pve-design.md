@@ -5,7 +5,8 @@ Current design, 17 October 2026. Older validation files describe earlier builds.
 ## Core loop
 
 Buy a team, arrange it, fight under AI control, then reinvest the rewards.
-Each preparation lasts 45 seconds; Start battle begins early. Menus pause the
+Preparation lasts 60 seconds on Standard, 45 on Veteran and 30 on Champion;
+Start battle begins early. Menus pause the
 clock. An empty battlefield deploys owned reserves at expiry; an entirely empty
 company forfeits a life. The final attack gets 1.6 seconds to finish animating,
 then a four-second side result advances automatically. No wave confirmation is
@@ -42,23 +43,39 @@ purchasing a separate shop upgrade.
 
 The shop first rolls a tier, then chooses uniformly among that tier's families.
 An empty-company affordability guarantee is the one explicit exception. Tiers
-cost one through five gold. They measure recruitment rarity and native strength;
-star rank measures evolution within a family.
+measure recruitment rarity; prices also account for each family's native power.
+The shop-odds tooltip shows the actual price range within each tier. Star rank
+measures evolution within a family.
 
-| Tier / price | Families | Copies at each evolution |
-| --- | --- | --- |
-| 1 | Boars, Tribal fighters, Wolves | 3, then 3 |
-| 2 | Tribal shooters, Bats | 2, then 3 |
-| 2 | Toads | 3 |
-| 3 | White tigers | 2 |
-| 4 | Blue trolls, Stony harpies, Spiders | 2 |
-| 5 | Sand ogres, Grey harpies | 2 |
+| Tier | Family | Price | Copies at each evolution |
+| --- | --- | ---: | --- |
+| 1 | Boars, Tribal fighters, Wolves | 1 | 3, then 3 |
+| 2 | Tribal shooters, Bats | 2 | 2, then 3 |
+| 2 | Toads | 2 | 3 |
+| 3 | White tigers | 4 | 2 |
+| 3 | Spiders | 3 | 3 |
+| 4 | Blue trolls | 7 | 2 |
+| 4 | Stony harpies | 6 | 2 |
+| 5 | Sand ogres | 10 | 2 |
+| 5 | Grey harpies | 7 | 2 |
 
 Twelve families use twenty-nine existing forms from Gipath, Ingos and Suslanger.
 The native forms and spells are retained. Recipes remain adapted to their actual
 native power jumps; this is not a universal three-for-one conversion of original
 creatures. Evolution works from wave one, preserves a deployed copy's identity
 and position, and shows a short side comparison, sound and field highlight.
+
+## Difficulty and spell damage
+
+Standard retains the thirty base encounters. Veteran adds a melee reinforcement
+from wave three, progressing through stronger original forms in later regions.
+Champion also adds ranged/magic support from wave six and another caster from
+wave ten. Its late caster additions include octopuses, providing pressure against
+physical-armor formations. No prototype statistics are changed.
+
+Damaging spells cannot hit creatures on the caster's own team in Trials. The rule
+applies equally to both sides, including persistent acid fog. Beneficial spell
+filters and campaign friendly-fire behavior retain their original rules.
 
 ## Automatic alliances
 
@@ -129,7 +146,10 @@ Arena/Sandbox buttons are removed from player menus and controller targets. The
 PvE expedition remains accessible. The internal `--arena` entry remains available
 for development and regression tests.
 
-Save schema eight migrates older runs without losing armies or purchased capacity.
+Save schema nine migrates older runs without losing armies or purchased capacity.
+Existing recruits keep their actual paid investment, including when sold. An old
+active 45-second preparation is preserved through migration and subsequent saves;
+the next preparation uses the chosen difficulty's duration.
 Retired shop investment and earned pact upgrades convert to XP. Old pending camp
 screens advance into preparation; no retired pact choice can reappear. Completed
 18-wave saves stay complete. Public release versions and artifacts are unchanged.

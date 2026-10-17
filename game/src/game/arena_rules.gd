@@ -3,8 +3,8 @@ extends RefCounted
 ## Content shared by the playable expedition and its balance simulations.
 ## Every fighter resolves to an unmodified original-game prototype.
 
-const VERSION := 8
-const PREPARATION_SECONDS := 45.0
+const VERSION := 9
+const PREPARATION_SECONDS := 60.0
 const WAVE_COUNT := 30
 const OPENING_GOLD := 10
 const MIN_RECRUIT_COST := 1
@@ -32,12 +32,12 @@ const FAMILIES := [
 	{"name": "Tribal shooters", "role": "Ranged", "cost": 2, "tier": 2, "copies": [2, 3], "forms": ["goblina1", "goblina3", "orcfemalea5"]},
 	{"name": "Bats", "role": "Magic", "cost": 2, "tier": 2, "copies": [2, 3], "forms": ["batredm1", "batredm3", "batlightm7"]},
 	{"name": "Toads", "role": "Magic", "cost": 2, "tier": 2, "forms": ["toadm2", "toadm6"]},
-	{"name": "White tigers", "role": "Melee", "cost": 3, "tier": 3, "region": 1, "copies": [2], "forms": ["tigerwhitef6", "tigerwhitef10"]},
-	{"name": "Blue trolls", "role": "Melee", "cost": 4, "tier": 4, "region": 1, "copies": [2], "forms": ["trollbluef9", "trollbluef12"]},
-	{"name": "Stony harpies", "role": "Magic", "cost": 4, "tier": 4, "region": 1, "copies": [2], "forms": ["succubbluem10", "succubbluem17"]},
-	{"name": "Sand ogres", "role": "Melee", "cost": 5, "tier": 5, "region": 2, "copies": [2], "forms": ["ogrehadaganf13", "ogrehadaganf17"]},
-	{"name": "Spiders", "role": "Melee", "cost": 4, "tier": 4, "region": 2, "copies": [2], "forms": ["spiderf10", "spiderf15"]},
-	{"name": "Grey harpies", "role": "Magic", "cost": 5, "tier": 5, "region": 2, "copies": [2], "forms": ["succubgreym13", "succubgreym17"]},
+	{"name": "White tigers", "role": "Melee", "cost": 4, "tier": 3, "region": 1, "copies": [2], "forms": ["tigerwhitef6", "tigerwhitef10"]},
+	{"name": "Blue trolls", "role": "Melee", "cost": 7, "tier": 4, "region": 1, "copies": [2], "forms": ["trollbluef9", "trollbluef12"]},
+	{"name": "Stony harpies", "role": "Magic", "cost": 6, "tier": 4, "region": 1, "copies": [2], "forms": ["succubbluem10", "succubbluem17"]},
+	{"name": "Sand ogres", "role": "Melee", "cost": 10, "tier": 5, "region": 2, "copies": [2], "forms": ["ogrehadaganf13", "ogrehadaganf17"]},
+	{"name": "Spiders", "role": "Melee", "cost": 3, "tier": 3, "region": 2, "copies": [3], "forms": ["spiderf10", "spiderf15"]},
+	{"name": "Grey harpies", "role": "Magic", "cost": 7, "tier": 5, "region": 2, "copies": [2], "forms": ["succubgreym13", "succubgreym17"]},
 ]
 # Ordered encounters. Different seeds mirror the enemy formation; all details
 # are visible before commitment. Counts/composition are tuning inputs, not stats.
@@ -120,9 +120,11 @@ static func enemies(wave: int, run_seed: int, challenge := 0) -> Array[Dictionar
 	var back := 0
 	var ids := row.slice(1)
 	if challenge > 0 and wave >= 3:
-		ids.append("ogrehadaganf15" if wave >= 25 else "trollbluef9" if wave >= 19 else "orcmalef5" if wave > 12 else "orcmalef3" if wave > 6 else "goblinf1")
+		ids.append("ogrehadaganf17" if wave >= 25 else "trollbluef12" if wave >= 19 else "tigerwhitef10" if wave > 12 else "orcmalef5" if wave > 6 else "goblinf2")
 	if challenge > 1 and wave >= 6:
-		ids.append("succubgreym15" if wave >= 25 else "batlightm8" if wave >= 19 else "orcfemalea5" if wave > 12 else "goblina3" if wave > 9 else "goblina2")
+		ids.append("succubgreym17" if wave >= 25 else "succubbluem17" if wave >= 19 else "batlightm10" if wave > 12 else "toadm6" if wave > 9 else "goblina3")
+	if challenge > 1 and wave >= 10:
+		ids.append("octopushadaganm17" if wave >= 24 else "octopuskaniam12" if wave >= 16 else "toadm6")
 	var flip := -1 if (run_seed + wave) % 2 else 1
 	for id: String in ids:
 		var proto := GameData.db.find("monster_prototypes", id)
@@ -159,3 +161,15 @@ static func recruit_pool(level: int) -> Array[int]:
 	for family in FAMILIES.size():
 		if int(odds[int(FAMILIES[family].tier) - 1]) > 0: pool.append(family)
 	return pool
+
+
+static func preparation_seconds(challenge: int) -> float:
+	return [60.0, 45.0, 30.0][clampi(challenge, 0, 2)]
+
+
+static func tier_price_label(tier: int) -> String:
+	var prices: Array[int] = []
+	for family: Dictionary in FAMILIES:
+		if int(family.tier) == tier: prices.append(int(family.cost))
+	prices.sort()
+	return str(prices[0]) if prices[0] == prices[-1] else "%d-%d" % [prices[0], prices[-1]]

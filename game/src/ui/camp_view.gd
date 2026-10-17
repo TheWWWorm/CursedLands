@@ -291,6 +291,7 @@ var _hover_item := ""
 var _hover_help := -1
 var _hover_desc: Array = []
 ## Skills screen rows hit areas: [rect, cmd or {}, description [title, text]].
+var _reset_dialog: Control
 var _skill_rows: Array = []   # [rect, command, description, kind]
 var _perk_scroll := 0    # known abilities
 var _avail_scroll := 0   # available abilities
@@ -320,6 +321,8 @@ const TUTORIALS := {"weapons": "camp_weapons", "spells": "camp_skills", "spelltr
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	visibility_changed.connect(func():
+		if not is_visible_in_tree(): _close_training_reset())
 	_wiki_button=Button.new();_wiki_button.text=RemakeText.t("Open wiki");_wiki_button.tooltip_text=RemakeText.t("Read about the selected item or spell.")
 	_wiki_button.pressed.connect(func(): if _wiki_item and hud: hud.open_wiki_item(_wiki_item))
 	add_child(_wiki_button)
@@ -477,6 +480,7 @@ func set_mode(m: String) -> void:
 	_touch_spell_info = false
 	var changed := m != mode
 	if changed:
+		_close_training_reset()
 		_stop_transfer_hold()
 		var rows := _row_counts()
 		buy_pile.clear()
@@ -1365,6 +1369,7 @@ func _on_cancel() -> void:
 
 func refresh(u: GameUnit) -> void:
 	if u != _unit:
+		_close_training_reset()
 		_stop_transfer_hold()
 	_unit = u
 	_sig = ""
@@ -1703,7 +1708,8 @@ func _gui_input(e: InputEvent) -> void:
 			if GameSound.instance:
 				GameSound.instance.ui("buttons\\camp\\perk.wav")
 			if not cmd.is_empty():
-				construct.emit(cmd)
+				if row[3] == "refund": _choose_training_reset()
+				else: construct.emit(cmd)
 				if row[3] == "skill":
 					_hold_cmd = cmd
 					_hold_t = -0.5
@@ -3085,6 +3091,24 @@ func _draw_hero() -> void:
 ##   0.75 s .
 ## Skill and perk hover panes follow numeric
 ## skill rows and three-rank table; platform font/wrap metrics are separate.
+func _choose_training_reset() -> void:
+	if is_instance_valid(_reset_dialog) or _unit == null or not _unit.has_meta("hero"): return
+	_hold_cmd = {}
+	var unit_id := _unit.uid
+	var dialog := preload("res://src/ui/training_reset_dialog.gd").new()
+	_reset_dialog = dialog
+	add_child(dialog)
+	dialog.chosen.connect(func(full: bool): construct.emit({"t": "reset_training", "unit": unit_id, "full": full}))
+	dialog.open(_unit.get_meta("hero"))
+
+
+func _close_training_reset() -> void:
+	if is_instance_valid(_reset_dialog):
+		_reset_dialog.hide()
+		_reset_dialog.queue_free()
+	_reset_dialog = null
+
+
 func _draw_skills() -> void:
 	_skill_rows.clear()
 	if _unit == null or not _unit.has_meta("hero"):
@@ -3093,12 +3117,12 @@ func _draw_skills() -> void:
 	var xp := float(h.get("exp", 0.0))
 	var mine := hud != null and _unit.controller == hud.game.session.my_index
 	var at_camp := mine and hud.game.session.camp_available()
-	var refundable := at_camp and not _unit.dead and TrainingRefund.amount(h) > 0.0
+	var refundable := at_camp and not _unit.dead and (TrainingRefund.reason(h).is_empty() or TrainingRefund.reason(h, false).is_empty())
 	_region("campinfo", REFUND_RECT, Rect2(124, 138, 40, 15))
 	_t(Rect2(REFUND_RECT.position + Vector2(2, 6), REFUND_RECT.size - Vector2(4, 8)),
-		RemakeText.t("Refund all points"), 0, Interface800.TEXT if refundable else DIM, HORIZONTAL_ALIGNMENT_CENTER)
+		RemakeText.t("Reset skills…"), 0, Interface800.TEXT if refundable else DIM, HORIZONTAL_ALIGNMENT_CENTER)
 	var refund_help := TrainingRefund.reason(h)
-	if refund_help.is_empty():
+	if refund_help.is_empty() or TrainingRefund.reason(h, false).is_empty():
 		if not mine:
 			refund_help = "You can only refund your own character's points."
 		elif _unit.dead:
@@ -3106,9 +3130,9 @@ func _draw_skills() -> void:
 		elif not at_camp:
 			refund_help = "Points can be refunded in a village or camp."
 		else:
-			refund_help = "Resets all skills and abilities, including starting ranks and skill gifts, and refunds their points. Base attributes, equipment and earned XP stay."
+			refund_help = "Choose whether to restore starting skills or refund every skill and ability."
 	_skill_rows.append([REFUND_RECT, {"t": "refund_training", "unit": _unit.uid} if refundable else {},
-		[RemakeText.t("Refund all points"), RemakeText.t(refund_help)], "refund"])
+		[RemakeText.t("Reset skills…"), RemakeText.t(refund_help)], "refund"])
 	var o := Vector2(200, 100)
 	_t(Rect2(o + Vector2(0, 10), Vector2(200, 15)), _str("skills"), 0, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	_t(Rect2(o + Vector2(0, 205), Vector2(200, 15)), _str("perks"), 0, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)

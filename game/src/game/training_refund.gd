@@ -34,24 +34,45 @@ static func _skill_value(h: Dictionary) -> float:
 	return total
 
 
-static func amount(h: Dictionary) -> float:
+## Read the active campaign's original NPC allocation. This also supports
+## mercenaries and mod characters without hard-coding Zak's starting ranks.
+static func baseline(h: Dictionary) -> Dictionary:
+	var npc := GameData.db.find("npcs", String(h.get("prototype", "")))
+	if npc.is_empty(): return {}
+	return {"skills": Skills.from_npc(npc),
+		"perks": Array(npc.get("perks", [])).map(func(code): return String(code).to_lower())}
+
+
+static func amount(h: Dictionary, full := true) -> float:
 	prepare(h)
-	return _skill_value(h) + Perks.total_price(h.get("perks", [])) + float(h[KEY].credit)
+	var value := _skill_value(h) + Perks.total_price(h.get("perks", [])) + float(h[KEY].credit)
+	if not full:
+		var original := baseline(h)
+		value -= _skill_value(original) + Perks.total_price(original.get("perks", []))
+	return value
 
 
-static func reason(h: Dictionary) -> String:
-	return "No allocated points to refund." if amount(h) <= 0.0 else ""
+static func reason(h: Dictionary, full := true) -> String:
+	if full: return "No allocated points to refund." if amount(h) <= 0.0 else ""
+	var original := baseline(h)
+	if original.is_empty(): return "Starting skills are unavailable for this character."
+	var value := amount(h, false)
+	if float(h.get("exp", 0.0)) + value < 0.0: return "Not enough points to restore starting skills."
+	var same := Array(h.get("perks", [])) == Array(original.perks)
+	for skill: String in Skills.LIST:
+		same = same and Skills.level(h, skill) == Skills.level(original, skill)
+	return "Starting skills are already restored." if same and is_zero_approx(value) else ""
 
 
-static func refund(h: Dictionary) -> bool:
-	var value := amount(h)
-	if value <= 0.0:
-		return false
+static func refund(h: Dictionary, full := true) -> bool:
+	if not reason(h, full).is_empty(): return false
+	var value := amount(h, full)
+	var original := baseline(h) if not full else {"skills": {}, "perks": []}
 	var skills: Dictionary = Dictionary(h.get("skills", {})).duplicate()
 	for skill: String in Skills.LIST:
-		skills[skill] = 0
+		skills[skill] = Skills.level(original, skill)
 	h.skills = skills
-	h.perks = []
+	h.perks = original.perks.duplicate()
 	h.exp = float(h.get("exp", 0.0)) + value
 	start(h) # the old pricing credit is consumed exactly once
 	return true

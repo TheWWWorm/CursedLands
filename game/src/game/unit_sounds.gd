@@ -28,6 +28,7 @@ var world: GameWorld
 var _adb := {}            # template -> {clip: record}
 var _units := {}          # instance id -> {clip, frame, idle, attack}
 var _stamp := 0
+var dialogue_silent := false
 var _steps := {}          # steps path -> file count
 static var _dbres: EIResArchive
 
@@ -109,6 +110,14 @@ func tick() -> void:
 				_units.erase(k)
 
 
+func silence_dialogue(active: bool) -> void:
+	dialogue_silent = active
+	if active:
+		for st: Dictionary in _units.values():
+			mixer.stop(int(st.idle))
+			mixer.stop(int(st.attack))
+
+
 ## The unit's attack sound is still playing.
 func attack_playing(u: GameUnit) -> bool:
 	var st: Dictionary = _units.get(u.get_instance_id(), EMPTY_STATE)
@@ -172,6 +181,7 @@ func _frame(u: GameUnit, st: Dictionary, rec: Dictionary, prev: float, cur: floa
 ## the clip's sound frame f (0 = none) sounds when
 ## prev ≤ f < cur; one of its non-zero sound numbers at random.
 func _voice(u: GameUnit, st: Dictionary, rec: Dictionary, prev: float, cur: float, prio: int) -> void:
+	if dialogue_silent: return
 	var f := float(rec.frame)
 	if rec.frame == 0 or f < prev or cur <= f:
 		return

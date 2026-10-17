@@ -714,7 +714,7 @@ func _build_landing() -> void:
 	_rule(showcase)
 	var facts := _wrap(showcase, RemakeText.t("30 battles · 3 lives · One company"), 16, PAPER)
 	facts.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var help := _wrap(showcase, RemakeText.t("Recruit and arrange your team in 45 seconds. The creatures handle the fighting."), 14, MUTED)
+	var help := _wrap(showcase, RemakeText.t("Recruit and arrange your team before the timer ends. The creatures handle the fighting."), 14, MUTED)
 	help.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_layout_landing.call_deferred()
 
@@ -876,7 +876,7 @@ func _show_company() -> void:
 func _shop_odds_text() -> String:
 	var text := RemakeText.t("Shop odds") + " · " + RemakeText.t("Level %d") % run.capacity()
 	var odds: Array = ArenaRules.SHOP_ODDS[run.capacity()]
-	for tier in 5: text += "\n" + RemakeText.t("Tier %d · %d gold · %d%%") % [tier + 1, tier + 1, int(odds[tier])]
+	for tier in 5: text += "\n" + RemakeText.t("Tier %d · %s gold · %d%%") % [tier + 1, ArenaRules.tier_price_label(tier + 1), int(odds[tier])]
 	return text + "\n\n" + RemakeText.t("New offers use your company level. Recruits start at one star; matching copies evolve them.")
 
 
@@ -1127,11 +1127,11 @@ func _guide() -> void:
 	_guide_scroll.add_child(content)
 	var topics := [
 		["Economy", "Each victory pays a bounty, plus interest on savings and a winning-streak bonus. Failed attempts grant no income."],
-		["Preparation", "You have 45 seconds to recruit and deploy. Start early when ready. Menus pause the countdown. If the field is empty, reserves deploy when time runs out. With no recruits, you lose the wave."],
+		["Preparation", "Preparation lasts 60 seconds on Standard, 45 on Veteran and 30 on Champion. Start early when ready. Menus pause the countdown. An empty field deploys reserves at expiry; with no recruits, you lose the wave."],
 		["Recruitment", "Recruits join your reserves at one star. Company level determines the chance of each recruit tier. Train for stronger offers, or refresh to find matching copies."],
 		["Evolution", "Collect matching creatures to evolve them. Stars mark each stronger form. The creature details show how many you need."],
 		["Your army", "Select a creature, then its place on the field. Select a reserve, then an ally to swap them. An empty reserve slot withdraws a creature. Select a creature to reveal the sell area."],
-		["Battle", "Both teams fight under AI control. Hover a creature for details. Space pauses combat; the speed control switches between normal and double speed."],
+		["Battle", "Both teams fight under AI control. Damaging spells cannot hurt allies in Trials. Hover a creature for details. Space pauses combat; the speed control switches between normal and double speed."],
 		["Alliances", "Different deployed creatures with matching traits activate bonuses. Multiple alliances can be active together. Reserves and duplicates do not add to the count."],
 		["Company", "Visit camp every five victories for experience, supplies or company upgrades. Win all thirty waves to unlock harder expeditions."]]
 	for topic in topics:
