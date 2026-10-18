@@ -1612,7 +1612,7 @@ func _regenerate(dt: float) -> void:
 		var rm := 1.0
 		for b in buffs.values():
 			rm *= float(b.get("regen_mul", 1.0))
-		var health := max_hp * float(race.get("health_regen", 0.0)) * (1.0 + float(stats.get("regen_hp", 0.0)) / 100.0) * rm
+		var health := max_hp * float(stats.get("health_regen", race.get("health_regen", 0.0))) * (1.0 + float(stats.get("regen_hp", 0.0)) / 100.0) * rm
 		var stamina := max_mana * float(race.get("mana_regen", 0.0)) * (1.0 + float(stats.get("regen_mana", 0.0)) / 100.0)
 		heal(health)
 		if continuous and not idle:

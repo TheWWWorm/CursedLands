@@ -61,11 +61,27 @@ does not secretly increase the chance of finding more copies.
 
 Campaign prototype levels are not shop prices. Trials apply explicit price/star
 budgets to copies of the native data. Base health by cost is 35/48/66/90/120, with
-role factors of 1.0 melee, 0.9 ranged and 0.78 magic. Star health is ×1/×2.2/×5;
+role factors of 1.0 melee, 0.9 ranged and 0.78 magic. Bow-using casters retain the
+0.9 factor because they cannot parry; utility-only spells do not classify a melee
+fighter as a caster. Star health is ×1/×2.2/×5;
 attack damage is ×1/×1.6/×2.8. Accuracy, defense, action speed and general armor
 also grow with cost and stars. Native resistance ratios, movement, attack types,
-weapons and spell behavior remain; offensive spells use real effect runes to fit
-the same budget. Creep accuracy, avoidance and exceptional boss armor are capped
+weapons and spell behavior remain. Physical attack damage accounts for native
+attack cadence, with additional damage and accuracy for ordinary ranged attacks.
+Recruits recover one quarter of their native regeneration, capped at 0.5% maximum
+health per 15 native ticks (0.825 seconds). Faster-recovering creature types retain
+their advantage without outhealing the entire bounded attack budget.
+
+Offensive spells use real effect runes to fit the same budget, including area
+and extra-target costs. Healing receives 60% of the comparable offensive budget.
+When a native spell cannot reach a small enough effect, the Cut Effect rune and
+a slower action rate preserve its heavy hit. Trials self-healing waits until
+half health, and elemental protection requires a matching enemy damage source.
+Recruits skip night vision and quieter-footstep buffs in the revealed arena.
+Native AI also re-evaluates multiple attack options against its last opponent
+and scores spell damage using the damage school used by combat.
+
+Creep accuracy, avoidance and exceptional boss armor are capped
 by wave, while their native bodies, damage and spells remain. These changes apply
 to Trials only, leaving the campaign database immutable.
 
@@ -79,8 +95,19 @@ Each seat keeps one of four spending policies. Economy targets fifty saved gold,
 expansion thirty and earlier levels, evolution forty and more searches for copies,
 and tempo twenty. Low health and losing streaks release savings. The evolution
 policy delays levels to leave room in its budget for rolls; every policy still
-fills empty slots, values spells and alliances, and replaces weak units. These
+fills empty slots, values spells and alliances, and replaces weak units. Army
+valuation estimates sustained damage and survival, including parry, instead of
+ranking units by the largest damage packet. These
 are testable purchasing heuristics, not a claim of optimal or human play.
+
+Level thresholds from the opening level three are 6, 18, 36, 55, 80 and 110
+cumulative XP for levels four through nine. The last three thresholds were
+reduced from 60, 90 and 126 so expansion leaves more gold for recruits and
+upgrades. Training still costs five gold for five XP, and completed rounds
+still grant one XP. At level nine the XP control is disabled and camp offers
+a companion instead of more XP. Previously purchased training up to 126 remains
+loadable and round-trips without changing its stored value; displayed XP caps
+at 110. Shop odds, interest and the four policy reserves are unchanged.
 
 Version-11 saves migrate the previous forty-family roster to these chains,
 preserving rank, deployment and recorded investment. Loaded snapshots are copied
@@ -89,7 +116,8 @@ sales return the lesser of the full copy cost and two thirds of investment.
 Online previews use the host's quote. If the unit changes before a quoted sale
 arrives, the host rejects it instead of accepting a different price.
 
-See [the experiment and validation record](validation/allods-challenge-2026-10-18.md)
+See [the roster experiment](validation/allods-challenge-2026-10-18.md) and
+[the combat-budget follow-up](validation/trials-combat-balance-2026-10-18.md)
 for native fight comparisons, policy results and remaining playtest questions.
 
 Desktop solo combat uses a private authenticated loopback worker. The visible

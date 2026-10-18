@@ -46,7 +46,7 @@ func _ready() -> void:
 	for entry in run.army: entry.deployed = true
 	run._recruit(-1,0,9,"orcfemalem3").deployed = true
 	var counts := run.alliances()
-	check(counts == {"beast":6,"horde":4,"warrior":4,"hunter":4,"mage":4},"overlapping tribe/class membership without duplicate counts")
+	check(counts == {"beast":7,"horde":4,"warrior":3,"hunter":3,"mage":6},"current roster counts overlapping traits without duplicate families")
 	check(ArenaAlliances.rank("beast",6)==3 and ArenaAlliances.rank("mage",4)==2,"thresholds scale bonuses")
 	run.army[0].rank = 1; run.army[0].prototype = ArenaRules.prototype(0,1)
 	check(run.alliances()==counts,"evolution stars do not inflate alliance progress")
@@ -66,13 +66,17 @@ func _ready() -> void:
 		var base: Dictionary = unit.get_meta("alliance_base")
 		var placement: Dictionary = unit.get_meta("arena_placement")
 		if int(placement.team) == 1:
-			check(is_equal_approx(unit.stats.armor[3],base.stats.armor[3]*0.6),"four mages reduce enemy elemental armor")
+			var encounter: Dictionary=base.stats.duplicate(true)
+			ArenaRules.creep_stats(run.wave,encounter)
+			check(is_equal_approx(unit.stats.armor[3],encounter.armor[3]*0.6),"four mages reduce encounter elemental armor")
 		else:
 			var family := int(run.unit(placement.run_uid).family)
-			check(is_equal_approx(unit.stats.dmg_min,base.stats.dmg_min*1.2),"four beasts improve allied attack damage")
-			if family in [1,3,7]: check(is_equal_approx(unit.max_hp,base.hp*1.15),"two horde families improve member health")
-			if family in [0,1,7]: check(is_equal_approx(unit.stats.armor[0],base.stats.armor[0]*1.2+2),"warriors gain physical armor")
-			if family in [2,3]: check(is_equal_approx(unit.stats.to_hit,base.stats.to_hit*1.15),"hunters gain accuracy")
+			# Alliances modify the recruit budget, not campaign boss statistics.
+			var recruit:=ArenaUnitInfo.values(unit.info.prototype,null,family,0)
+			check(is_equal_approx(unit.stats.dmg_min,recruit.min*1.2),"four beasts improve allied attack damage")
+			if family in [1,3,11]: check(is_equal_approx(unit.max_hp,recruit.max_hp*1.15),"two horde families improve member health")
+			if family in [0,1]: check(is_equal_approx(unit.stats.armor[0],recruit.armor[0]*1.2+2),"warriors gain physical armor")
+			if family in [2,3,7]: check(is_equal_approx(unit.stats.to_hit,recruit.attack*1.15),"hunters gain accuracy")
 	for repeat in 4: battle.prepare()
 	for unit in battle.world.unit_rows():
 		check(identity.has(unit.get_instance_id()),"alliance recalculation retains actors")
@@ -80,7 +84,9 @@ func _ready() -> void:
 	ArenaAlliances.apply(battle.world, [])
 	for unit in battle.world.unit_rows():
 		var base: Dictionary = unit.get_meta("alliance_base")
-		check(unit.stats == base.stats and is_equal_approx(unit.max_hp,base.hp),"withdrawing traits restores exact native values")
+		var expected: Dictionary=base.stats.duplicate(true)
+		if int(unit.get_meta("arena_placement").team)==1: ArenaRules.creep_stats(run.wave,expected)
+		check(unit.stats == expected and is_equal_approx(unit.max_hp,base.hp),"withdrawing traits restores base values while preserving encounter limits")
 	battle.queue_free()
 	# Every recipe works from wave one; all resulting forms remain native.
 	for family in ArenaRules.FAMILIES.size():
@@ -137,26 +143,22 @@ func _ready() -> void:
 
 
 func check_localized_roster() -> void:
-	# Native editions supply their own names. The English reference also
-	# exercises the remake fallbacks used by every localized UI fixture.
-	if RemakeText.detect(GameData.texts) != "en": return
+	# Run with each edition's archives: native names come from texts.res, not
+	# RemakeText. Proper names may legitimately match between EN and DE.
 	var ids := {}
 	for family: Dictionary in ArenaRules.FAMILIES:
 		for id: String in family.forms: ids[id] = true
 	for row: Array in ArenaRules.WAVES:
 		for id: String in row.slice(1): ids[id] = true
 	for id: String in ArenaRules.COMPANIONS: ids[id] = true
-	var titles := {}
 	for id: String in ids:
 		var title := GameUnit.unit_title(id)
-		check(not title.is_empty(), "native creature has a display name: " + id)
-		titles[title] = true
+		check(not title.is_empty() and title!=id, "native creature has a localized display name: " + id)
 		for spell: String in GameData.db.find("monster_prototypes",id).get("spells",[]):
 			var parsed := Spells.parse(spell)
-			if parsed.has("code"): titles[Spells.title(parsed.code)] = true
-	var previous := RemakeText.lang
-	for lang: String in ["ru","de"]:
-		RemakeText.lang = lang
-		for title: String in titles:
-			check(RemakeText.TEXTS.has(title) and RemakeText.t(title) != title, lang + " translates native creature/spell: " + title)
-	RemakeText.lang = previous
+			if parsed.has("code"):
+				var native_title:=GameData.text("spell "+String(parsed.code)).get_slice("\n",0).strip_edges()
+				if not native_title.is_empty():
+					check(WikiCatalog.spell_title(parsed.code)==native_title,"spell name comes from the loaded edition: "+str(parsed.code))
+				else:
+					check(WikiCatalog.SPELL_NAMES.has(parsed.code) and WikiCatalog.spell_title(parsed.code)==RemakeText.t(WikiCatalog.SPELL_NAMES[parsed.code]),"unnamed native spell has a translated display name: "+str(parsed.code))

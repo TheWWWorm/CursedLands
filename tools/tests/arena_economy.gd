@@ -57,9 +57,28 @@ func _ready() -> void:
 	check(run.snapshot() == before,"training is undoable")
 	run.gold = 200
 	for i in 26: run.train()
-	check(run.capacity() == 9 and run.experience() == 126,"capacity stops at nine")
+	check(run.capacity() == 9 and run.experience() == 110,"capacity stops at nine at the new threshold")
 	var max_bank := run.gold
 	check(not run.train().is_empty() and run.gold == max_bank,"max training cannot charge again")
+	for xp in [110, 115, 126]:
+		var older := run.snapshot(); older.training=xp
+		check(restored.restore(older) and restored.capacity()==9 and restored.training==xp,"previously purchased XP remains loadable")
+		check(restored.experience()==110 and restored.level_progress()==0 and restored.level_needed()==0,"maximum level shows a complete XP bar")
+		var old_bank:=restored.gold
+		check(not restored.train().is_empty() and restored.gold==old_bank,"older full-level saves cannot buy more XP")
+		check(restored.restore(restored.snapshot()),"older maximum XP survives another save")
+		restored.stage="reward"; restored._make_rewards()
+		check(restored.rewards.all(func(r):return r.kind!="experience"),"full-level camp offers useful rewards instead of XP")
+	for threshold in [6,18,36,55,80,110]:
+		Fixture.begin(run, 34); run.gold=30; run.training=threshold-1
+		var old_level:=run.capacity()
+		check(run.level_needed()-run.level_progress()==1,"one XP remains immediately before each level")
+		check(run.train().is_empty() and run.capacity()==old_level+1 and run.gold==25,"paid XP crosses each level boundary once")
+		check(restored.restore(run.snapshot()) and restored.capacity()==run.capacity(),"every new XP boundary saves and restores")
+	Fixture.begin(run, 35); run.gold=30; run.training=109
+	check(run.train().is_empty() and run.training==110,"final purchase clamps XP to the level cap")
+	run.undo()
+	check(run.training==109 and run.gold==30 and run.capacity()==8,"undo restores final-level purchase and capacity")
 	var legacy := run.snapshot();legacy.version=3;legacy.preparation_left=45;legacy.pact="";legacy.pact_rank=0;legacy.erase("training");legacy.erase("battle_savings")
 	check(restored.restore(legacy) and restored.training == 0,"old saves preserve free army growth")
 	Fixture.begin(run, 33,1)

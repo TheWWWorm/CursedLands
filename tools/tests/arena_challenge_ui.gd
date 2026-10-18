@@ -9,6 +9,7 @@ func _ready() -> void:
 		if arg.begins_with("--lang="): lang=arg.trim_prefix("--lang=")
 	RemakeText.lang=lang
 	get_window().mode=Window.MODE_WINDOWED; get_window().size=Vector2i(1280,800)
+	get_window().grab_focus(); await frames(6)
 	screen=InlineScreen.new(); add_child(screen); await frames(12)
 	screen._seed_input.text="7319"; screen._begin(); screen.run.auto_save=false
 	screen.run.gold=60; screen.run.training=90
@@ -22,11 +23,23 @@ func _ready() -> void:
 		if screen._shop.get_children().all(func(box):return not box.get_child(0)._preview_pending): break
 	await frames(16)
 	check(screen.battle.time_limit()==90.0,"90 second battle limit")
+	check(screen._spell_titles({"spells":["curse_magic"]})==RemakeText.t("Astral Rift"),"spell without an archive title uses the localized wiki name")
 	for card in screen._shop.get_children(): check(card.get_child(0).cost<=5,"shop costs at most five gold")
 	for entry in screen.run.army: check(ArenaPortraits.texture(entry.prototype)!=null,"native portrait exists")
 	for unit: GameUnit in screen.battle.world.unit_rows():
 		check(EnemyBars.head_top(unit)<5.0,"large native figures fit the challenge board")
 	screen._round_banner._age=10; await shot("challenge-"+lang+"-prepare")
+	screen.set_process(false)
+	screen._inspect(screen.run.army[0].prototype,screen.run.army[0]); await frames(12)
+	await move(screen._rail.get_global_rect().get_center())
+	var motion := InputEventMouseMotion.new(); motion.position=screen._rail.get_global_rect().get_center()
+	get_viewport().push_input(motion,true); await frames(2)
+	screen.set_process(true); await frames(4); screen.set_process(false)
+	check(screen._live_health.text.contains(RemakeText.t("Recovery: %.2f health/s").get_slice("%",0)),"recovery rate is localized in the unit inspector")
+	check(not screen._standings.visible,"unit details replace the player list while hovered")
+	bounded(screen._rail,"localized combat summary")
+	await shot("challenge-"+lang+"-recovery")
+	screen._hide_inspector(); screen.set_process(true)
 	var press := InputEventMouseButton.new(); press.button_index=MOUSE_BUTTON_RIGHT; press.pressed=true
 	screen.field._gui_input(press)
 	var drag := InputEventMouseMotion.new(); drag.relative=Vector2(50,45); drag.button_mask=MOUSE_BUTTON_MASK_RIGHT
@@ -51,6 +64,11 @@ func _ready() -> void:
 	await shot("challenge-"+lang+"-income")
 	hold_preparation=false; screen.run.preparation_left=7; screen._round_banner.update_round(screen.run,0.1,4,false)
 	await shot("challenge-"+lang+"-countdown")
+	screen.run.training=110; screen._refresh()
+	check(screen._train_button.disabled and screen._train_button.price==-1,"new maximum level cannot buy more XP")
+	check(screen._train_button.caption==RemakeText.t("Max level") and screen._train_button.get_meta("arena_help","")==RemakeText.t("Your army is at full strength."),"maximum level label and custom help are localized")
+	screen.run.training=126; screen._refresh()
+	check(screen._train_button.disabled and screen._train_button.progress==1.0,"previous maximum-training saves keep a complete disabled XP control")
 	for control in [screen._battle_sidebar,screen._round_banner]: bounded(control,"challenge panel")
 	check(errors.messages.is_empty(),"no engine errors: "+str(errors.messages))
 	print("ARENA_CHALLENGE_UI ",checks," checks; failures=",JSON.stringify(failures))

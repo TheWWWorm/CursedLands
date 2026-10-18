@@ -1,0 +1,558 @@
+{
+  "tournaments": {
+    "inputs": [
+      {
+        "run": "strategy-h-0",
+        "file": "arena-bot-tournaments.json",
+        "sha256": "f1643cd8070bf35c4701275b1e172909f04ff34689e84284ac8c2cd4ee5894dd"
+      },
+      {
+        "run": "strategy-h-4",
+        "file": "arena-bot-tournaments.json",
+        "sha256": "e58998afb422177d44a72449df2b9d595b94887a195d4890e930887cd2750bb5"
+      },
+      {
+        "run": "strategy-h-8",
+        "file": "arena-bot-tournaments.json",
+        "sha256": "17b200537d53f036afba7b62eac8b483d9204ce511ac6453e22b1ac4de90afa9"
+      },
+      {
+        "run": "strategy-h-12",
+        "file": "arena-bot-tournaments.json",
+        "sha256": "86517aff565f773d8fa1c2b0b7bd6cd8c8b165913c2fae23b91a1ef0bf0d5728"
+      }
+    ],
+    "summary": {
+      "games": 16,
+      "seeds": [
+        7319,
+        8316,
+        9313,
+        10310,
+        11307,
+        12304,
+        13301,
+        14298
+      ],
+      "policies": {
+        "economy": {
+          "seats": 36,
+          "mean_place": 5.972222222222222,
+          "median_place": 7.0,
+          "wins": 2,
+          "top_three": 8,
+          "average_spending": {
+            "recruits": 72.02777777777777,
+            "refreshes": 8.333333333333334,
+            "sales": 1.1944444444444444,
+            "training": 96.11111111111111
+          },
+          "checkpoints": {
+            "5": {
+              "alive": 36,
+              "capacity": 3.9444444444444446,
+              "hp": 97.19444444444444,
+              "gold": 15.555555555555555,
+              "three_star_units": 0
+            },
+            "10": {
+              "alive": 36,
+              "capacity": 5.027777777777778,
+              "hp": 74.80555555555556,
+              "gold": 40.44444444444444,
+              "three_star_units": 0
+            },
+            "15": {
+              "alive": 36,
+              "capacity": 7.111111111111111,
+              "hp": 45,
+              "gold": 21.444444444444443,
+              "three_star_units": 0
+            },
+            "20": {
+              "alive": 27,
+              "capacity": 8.148148148148149,
+              "hp": 31.925925925925927,
+              "gold": 10.814814814814815,
+              "three_star_units": 0.07407407407407407
+            },
+            "25": {
+              "alive": 12,
+              "capacity": 9,
+              "hp": 23.666666666666668,
+              "gold": 10.166666666666666,
+              "three_star_units": 0.5833333333333334
+            }
+          }
+        },
+        "expansion": {
+          "seats": 36,
+          "mean_place": 5.5,
+          "median_place": 5.0,
+          "wins": 3,
+          "top_three": 9,
+          "average_spending": {
+            "recruits": 72.16666666666667,
+            "refreshes": 5.222222222222222,
+            "sales": 1.2777777777777777,
+            "training": 94.86111111111111
+          },
+          "checkpoints": {
+            "5": {
+              "alive": 36,
+              "capacity": 4.083333333333333,
+              "hp": 95.5,
+              "gold": 15.194444444444445,
+              "three_star_units": 0
+            },
+            "10": {
+              "alive": 36,
+              "capacity": 5.333333333333333,
+              "hp": 75.75,
+              "gold": 28.25,
+              "three_star_units": 0
+            },
+            "15": {
+              "alive": 36,
+              "capacity": 6.777777777777778,
+              "hp": 52.44444444444444,
+              "gold": 21.25,
+              "three_star_units": 0.027777777777777776
+            },
+            "20": {
+              "alive": 29,
+              "capacity": 7.896551724137931,
+              "hp": 36.86206896551724,
+              "gold": 14.310344827586206,
+              "three_star_units": 0.13793103448275862
+            },
+            "25": {
+              "alive": 13,
+              "capacity": 8.923076923076923,
+              "hp": 26.53846153846154,
+              "gold": 8.923076923076923,
+              "three_star_units": 0.5384615384615384
+            }
+          }
+        },
+        "evolution": {
+          "seats": 36,
+          "mean_place": 4.166666666666667,
+          "median_place": 3.5,
+          "wins": 7,
+          "top_three": 18,
+          "average_spending": {
+            "recruits": 94.91666666666667,
+            "refreshes": 42.5,
+            "sales": 3.4444444444444446,
+            "training": 61.80555555555556
+          },
+          "checkpoints": {
+            "5": {
+              "alive": 36,
+              "capacity": 3.0277777777777777,
+              "hp": 96.61111111111111,
+              "gold": 15.63888888888889,
+              "three_star_units": 0
+            },
+            "10": {
+              "alive": 36,
+              "capacity": 4.888888888888889,
+              "hp": 81.5,
+              "gold": 38.19444444444444,
+              "three_star_units": 0.027777777777777776
+            },
+            "15": {
+              "alive": 36,
+              "capacity": 6,
+              "hp": 61.638888888888886,
+              "gold": 29.75,
+              "three_star_units": 0.6111111111111112
+            },
+            "20": {
+              "alive": 35,
+              "capacity": 7,
+              "hp": 41.457142857142856,
+              "gold": 18.62857142857143,
+              "three_star_units": 1.4285714285714286
+            },
+            "25": {
+              "alive": 19,
+              "capacity": 7.2631578947368425,
+              "hp": 37.26315789473684,
+              "gold": 13.263157894736842,
+              "three_star_units": 3
+            }
+          }
+        },
+        "tempo": {
+          "seats": 36,
+          "mean_place": 4.361111111111111,
+          "median_place": 4.0,
+          "wins": 4,
+          "top_three": 13,
+          "average_spending": {
+            "recruits": 80.83333333333333,
+            "refreshes": 8.944444444444445,
+            "sales": 2.0,
+            "training": 99.72222222222223
+          },
+          "checkpoints": {
+            "5": {
+              "alive": 36,
+              "capacity": 3.9444444444444446,
+              "hp": 97.08333333333333,
+              "gold": 16.13888888888889,
+              "three_star_units": 0
+            },
+            "10": {
+              "alive": 36,
+              "capacity": 5.388888888888889,
+              "hp": 89.27777777777777,
+              "gold": 22.27777777777778,
+              "three_star_units": 0.027777777777777776
+            },
+            "15": {
+              "alive": 36,
+              "capacity": 6.777777777777778,
+              "hp": 78.33333333333333,
+              "gold": 21.555555555555557,
+              "three_star_units": 0.1388888888888889
+            },
+            "20": {
+              "alive": 35,
+              "capacity": 7.828571428571428,
+              "hp": 56.628571428571426,
+              "gold": 15.82857142857143,
+              "three_star_units": 0.2857142857142857
+            },
+            "25": {
+              "alive": 19,
+              "capacity": 8.894736842105264,
+              "hp": 36.1578947368421,
+              "gold": 8.894736842105264,
+              "three_star_units": 0.631578947368421
+            }
+          }
+        }
+      },
+      "mean_distinct_final_families": 6.597222222222222,
+      "final_roster_presence": [
+        {
+          "family": 6,
+          "rank": 1,
+          "teams": 102
+        },
+        {
+          "family": 11,
+          "rank": 1,
+          "teams": 77
+        },
+        {
+          "family": 7,
+          "rank": 1,
+          "teams": 75
+        },
+        {
+          "family": 8,
+          "rank": 1,
+          "teams": 74
+        },
+        {
+          "family": 13,
+          "rank": 1,
+          "teams": 63
+        },
+        {
+          "family": 22,
+          "rank": 1,
+          "teams": 62
+        },
+        {
+          "family": 24,
+          "rank": 0,
+          "teams": 45
+        },
+        {
+          "family": 4,
+          "rank": 1,
+          "teams": 40
+        },
+        {
+          "family": 18,
+          "rank": 0,
+          "teams": 40
+        },
+        {
+          "family": 8,
+          "rank": 0,
+          "teams": 37
+        },
+        {
+          "family": 3,
+          "rank": 1,
+          "teams": 33
+        },
+        {
+          "family": 29,
+          "rank": 0,
+          "teams": 31
+        },
+        {
+          "family": 7,
+          "rank": 0,
+          "teams": 23
+        },
+        {
+          "family": 11,
+          "rank": 2,
+          "teams": 22
+        },
+        {
+          "family": 13,
+          "rank": 0,
+          "teams": 21
+        },
+        {
+          "family": 5,
+          "rank": 1,
+          "teams": 21
+        },
+        {
+          "family": 23,
+          "rank": 1,
+          "teams": 20
+        },
+        {
+          "family": 17,
+          "rank": 1,
+          "teams": 19
+        },
+        {
+          "family": 6,
+          "rank": 2,
+          "teams": 18
+        },
+        {
+          "family": 3,
+          "rank": 2,
+          "teams": 16
+        },
+        {
+          "family": 18,
+          "rank": 1,
+          "teams": 15
+        },
+        {
+          "family": 5,
+          "rank": 2,
+          "teams": 15
+        },
+        {
+          "family": 22,
+          "rank": 2,
+          "teams": 15
+        },
+        {
+          "family": 29,
+          "rank": 1,
+          "teams": 13
+        },
+        {
+          "family": 11,
+          "rank": 0,
+          "teams": 11
+        },
+        {
+          "family": 24,
+          "rank": 1,
+          "teams": 10
+        },
+        {
+          "family": 8,
+          "rank": 2,
+          "teams": 8
+        },
+        {
+          "family": 4,
+          "rank": 2,
+          "teams": 7
+        },
+        {
+          "family": 6,
+          "rank": 0,
+          "teams": 6
+        },
+        {
+          "family": 23,
+          "rank": 0,
+          "teams": 5
+        },
+        {
+          "family": 14,
+          "rank": 1,
+          "teams": 5
+        },
+        {
+          "family": 7,
+          "rank": 2,
+          "teams": 5
+        },
+        {
+          "family": 13,
+          "rank": 2,
+          "teams": 5
+        },
+        {
+          "family": 17,
+          "rank": 2,
+          "teams": 4
+        },
+        {
+          "family": 5,
+          "rank": 0,
+          "teams": 2
+        },
+        {
+          "family": 0,
+          "rank": 2,
+          "teams": 2
+        },
+        {
+          "family": 2,
+          "rank": 1,
+          "teams": 1
+        },
+        {
+          "family": 21,
+          "rank": 1,
+          "teams": 1
+        },
+        {
+          "family": 9,
+          "rank": 0,
+          "teams": 1
+        },
+        {
+          "family": 16,
+          "rank": 1,
+          "teams": 1
+        },
+        {
+          "family": 23,
+          "rank": 2,
+          "teams": 1
+        },
+        {
+          "family": 14,
+          "rank": 2,
+          "teams": 1
+        }
+      ]
+    }
+  },
+  "expeditions": {
+    "inputs": [
+      {
+        "run": "expedition-h",
+        "file": "arena-challenge-runs.json",
+        "sha256": "1d1351c5177c44097123b213581d8cfa3de39b514a27f8e82eb5fe529f2669f8"
+      }
+    ],
+    "summary": {
+      "runs": 16,
+      "clears": 0,
+      "mean_wave": 25.125,
+      "policies": {
+        "economy": [
+          {
+            "seed": 7319,
+            "wave": 27,
+            "outcome": "lost"
+          },
+          {
+            "seed": 8316,
+            "wave": 27,
+            "outcome": "lost"
+          },
+          {
+            "seed": 9313,
+            "wave": 27,
+            "outcome": "lost"
+          },
+          {
+            "seed": 10310,
+            "wave": 22,
+            "outcome": "lost"
+          }
+        ],
+        "expansion": [
+          {
+            "seed": 7319,
+            "wave": 23,
+            "outcome": "lost"
+          },
+          {
+            "seed": 8316,
+            "wave": 25,
+            "outcome": "lost"
+          },
+          {
+            "seed": 9313,
+            "wave": 23,
+            "outcome": "lost"
+          },
+          {
+            "seed": 10310,
+            "wave": 24,
+            "outcome": "lost"
+          }
+        ],
+        "evolution": [
+          {
+            "seed": 7319,
+            "wave": 30,
+            "outcome": "lost"
+          },
+          {
+            "seed": 8316,
+            "wave": 29,
+            "outcome": "lost"
+          },
+          {
+            "seed": 9313,
+            "wave": 27,
+            "outcome": "lost"
+          },
+          {
+            "seed": 10310,
+            "wave": 20,
+            "outcome": "lost"
+          }
+        ],
+        "tempo": [
+          {
+            "seed": 7319,
+            "wave": 27,
+            "outcome": "lost"
+          },
+          {
+            "seed": 8316,
+            "wave": 25,
+            "outcome": "lost"
+          },
+          {
+            "seed": 9313,
+            "wave": 24,
+            "outcome": "lost"
+          },
+          {
+            "seed": 10310,
+            "wave": 22,
+            "outcome": "lost"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -7,7 +7,7 @@ class Duel extends ArenaRun:
 	func enemy_formation() -> Array[Dictionary]: return ArenaTournamentRun.formation_for(opposing, 1)
 	func resolve(_winner: int, _seconds: float, _damage: Array, _survivors: Array = [0,0]) -> void: stage = "result"
 
-const FRONTS := [[0,2], [12,16], [6,27], [28,29], [9,33]]
+const FRONTS := [[0,2], [12,14], [15,25], [26,27], [28,29]]
 var rows := []
 
 func army(run: ArenaRun, family: int, rank: int, front: Array) -> void:
@@ -21,9 +21,11 @@ func army(run: ArenaRun, family: int, rank: int, front: Array) -> void:
 func _ready() -> void:
 	var native := hash(GameData.db.tables)
 	var rank := 0
+	var first := 0
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--rank="): rank = int(arg.get_slice("=", 1))
-	for candidate in range(30, ArenaRules.FAMILIES.size()):
+		elif arg.begins_with("--from="): first = int(arg.get_slice("=",1))
+	for candidate in range(first, ArenaRules.FAMILIES.size()):
 		var tier := int(ArenaRules.FAMILIES[candidate].tier)
 		var row := {"family":candidate, "name":ArenaRules.FAMILIES[candidate].name, "rank":rank, "opponents":[]}
 		for baseline in ArenaRules.FAMILIES.size():
@@ -50,4 +52,4 @@ func _ready() -> void:
 			row.opponents.append({"family":baseline, "wins":wins, "draws":draws, "seconds":seconds/2})
 		rows.append(row); print("ROSTER_TEAM ", JSON.stringify(row))
 		FileAccess.open("user://roster-teams-%d.json" % rank, FileAccess.WRITE).store_string(JSON.stringify(rows, "\t"))
-	get_tree().quit(0 if hash(GameData.db.tables) == native else 1)
+	get_tree().quit(0 if not rows.is_empty() and hash(GameData.db.tables) == native else 1)

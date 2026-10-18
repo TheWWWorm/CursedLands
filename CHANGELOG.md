@@ -8,6 +8,11 @@
 - Restore hit particles and magic attachment positions on creatures with numbered body parts, including wisps, using the original game's part-prefix lookup.
 
 - Add an experimental 30-chain Trials roster with 90 distinct original forms, 1–5-gold recruits and three-copy evolution at each star step. Apply price/star budgets to Trials health, attacks, armor and offensive spells, and migrate older roster saves.
+- Account for native attack cadence, area effects, extra spell targets and regeneration in Trials combat budgets. Preserve ranged health for bow casters and melee roles for utility-only fighters. Show localized recovery rates in unit details.
+- Refine Trials army valuation to consider sustained damage and survival. Keep healers attacking through light wounds, cast elemental protection when a matching threat is present, and skip night-vision and footstep-concealment buffs in the revealed arena.
+- Reduce cumulative XP for Trials levels 7–9 to 55, 80 and 110. Stop training purchases and XP rewards at level nine while retaining compatibility with saves holding up to 126 purchased XP.
+- Reconsider available spells when an AI unit has one enemy left, and evaluate spell damage using its actual elemental type.
+- Use localized spell names in Trials details when the original text archive has no title.
 - Show friendly damage with native pixel portraits, names, stars and bars above a compact alliance grid without an outer panel. Add central round, countdown, income and victory/defeat notices.
 - Preserve the Trials camera between rounds and board views. Add WASD panning and right-drag tilt, using modern-camera speed and inversion preferences. Fit camera clipping to the orbit distance so tall windows and steep angles retain the battlefield and creatures. Limit battles to 90 simulated seconds.
 - Apply tournament health loss as each board finishes, settle income and places once all participants finish, and preserve original round health when replaying interrupted combat.

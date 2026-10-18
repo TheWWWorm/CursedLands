@@ -1,0 +1,8 @@
+{
+  "game/src/game/arena_rules.gd": "33fa6d2a0945ce767844de64165d69ec5987b98bde45249a0dfe344fe6351217",
+  "game/src/game/arena_bot_planner.gd": "5716e59dfbba58395ace552ce6d31e7464af53f7ecfdee3ac895c8c085fa8731",
+  "game/src/game/ai.gd": "60674b22f94479b3b40604d8b63321b45c5edef9d80a276c04ad75dc1563adf0",
+  "game/src/game/unit.gd": "7809fd3c01ab6cf2c0dad86fdd7d96e333e1a0d12bebcf1fbac435259f8a4c6a",
+  "game/src/game/arena_unit_info.gd": "a0264a1a558f96d920328bb2000b824b9e100720e791d77fb17816b51580468d",
+  "game/src/ei/remake_text.gd": "b24e4eca8915e88991a266d4b5b3a6a467711bbeade80525a31be186330517b5"
+}

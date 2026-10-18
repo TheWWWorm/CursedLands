@@ -408,6 +408,7 @@ const TEXTS := {
 	"Weaknesses: %s": ["Уязвимости: %s", "Schwächen: %s"],
 	"Weaknesses: none": ["Уязвимостей нет", "Keine Schwächen"],
 	"Resistant to: %s": ["Устойчивость: %s", "Resistent gegen: %s"],
+	"Recovery: %.2f health/s": ["Регенерация: %.2f здоровья/с", "Regeneration: %.2f Leben/s"],
 	"Income +%d": ["Доход +%d", "Einkommen +%d"],
 	"Savings earn 1 gold per 10, up to 5. Win three battles in a row for +1 gold, or six for +2. Defeat breaks the streak.": ["За каждые 10 золота в кошельке вы получите ещё одну монету, максимум пять. Три победы подряд добавляют одну монету, шесть побед — две. Поражение прерывает серию.", "Je 10 Gold im Beutel bringen 1 Gold Zinsen, höchstens 5. Drei Siege in Folge bringen +1 Gold, sechs +2. Eine Niederlage beendet die Serie."],
 	"Bounty %d · Victory %d · Interest %d · Streak %d": ["Награда %d · Победа %d · Проценты %d · Серия %d", "Sold %d · Sieg %d · Zinsen %d · Serie %d"],

@@ -1,0 +1,3579 @@
+{
+  "note": "Native deterministic fixtures; not human win rates or a measure of fun.",
+  "inputs": {
+    "baseline": [
+      {
+        "run": "context-baseline-rank0",
+        "file": "arena-context-balance.json",
+        "sha256": "e3171b88e11103cb100f16a1c60aa9cd3cceca7a999a5a30f5d92f93eac3389a"
+      },
+      {
+        "run": "context-baseline-rank1",
+        "file": "arena-context-balance.json",
+        "sha256": "5f08283d99a872780a51b6cd8a25f4e8cfc705c4f69001130910f8d5cfe735f9"
+      },
+      {
+        "run": "context-baseline-rank2",
+        "file": "arena-context-balance.json",
+        "sha256": "51c6b44aa55b7466988049491fc42499a3132c6ed0d8c6ca3dbd008a5e1f975d"
+      }
+    ],
+    "contexts": [
+      {
+        "run": "context-g-rank0",
+        "file": "arena-context-balance.json",
+        "sha256": "7bb89f429ebeb240806f3841d0fd149c08f4d513f705c28502e8b58ac0f026c0"
+      },
+      {
+        "run": "context-g-rank1",
+        "file": "arena-context-balance.json",
+        "sha256": "5a6639ddcd08f6beb583a083ca8608faf83a4fe72933cf9e9b4e50f2129ee313"
+      },
+      {
+        "run": "context-g-rank2",
+        "file": "arena-context-balance.json",
+        "sha256": "37b5e92f515ea032398cc4831b21996b6ac0adc2323da98b3f2d8d8fa59583c8"
+      },
+      {
+        "run": "context-h-rank2",
+        "file": "arena-context-balance.json",
+        "sha256": "5daab2e954822fe8606c47260dd650d29b0637af85bf948f2d4f948a7de04cd7"
+      }
+    ],
+    "stars": [
+      {
+        "run": "star-balance-g",
+        "file": "arena-star-balance.json",
+        "sha256": "0ebe5f3f02d5304d987d2291094a275e71121870cc3a6826e7117f0257cf68ef"
+      },
+      {
+        "run": "star-balance-h",
+        "file": "arena-star-balance.json",
+        "sha256": "595c133c790518632bd191fa6096fd77a67c5f38a99cb3a91af302f2e9d5e6d9"
+      }
+    ],
+    "tournaments": [
+      {
+        "run": "strategy-xp-i-0",
+        "file": "arena-bot-tournaments.json",
+        "sha256": "ef3932360f0520e900df346b8ee514729a504c5014ad7c5e86a1dcfee4bb69ce"
+      },
+      {
+        "run": "strategy-xp-i-2",
+        "file": "arena-bot-tournaments.json",
+        "sha256": "d38e25a9fdcb072a59415e53836a2af549fdb28fa8743c2224dbf4a9cd5de3f6"
+      },
+      {
+        "run": "strategy-xp-i-4",
+        "file": "arena-bot-tournaments.json",
+        "sha256": "5aec665286fdedd2fd412433a040b006159891cafceb960bb62eddb6a38aa55a"
+      },
+      {
+        "run": "strategy-xp-i-6",
+        "file": "arena-bot-tournaments.json",
+        "sha256": "e278aae0303f38e4b207a9b5ca2b4a0582fb970828c1a307e8020a66799b781f"
+      },
+      {
+        "run": "strategy-xp-i-8",
+        "file": "arena-bot-tournaments.json",
+        "sha256": "a7465dcc9b4caa8cefca67585b5fb6f0c6d0b3d5b9c219f0d5515421c9db93be"
+      },
+      {
+        "run": "strategy-xp-i-10",
+        "file": "arena-bot-tournaments.json",
+        "sha256": "e853f9cc5bbd148f87d5e1acd784b45d35cb88963ef9ddc68dd5fd2b3a8bac06"
+      },
+      {
+        "run": "strategy-xp-i-12",
+        "file": "arena-bot-tournaments.json",
+        "sha256": "944ff350b3477572529da0cc21368861baa5b969e3c4ea5f3bdcc3ca54b22592"
+      },
+      {
+        "run": "strategy-xp-i-14",
+        "file": "arena-bot-tournaments.json",
+        "sha256": "91871cac341ffef2352dddf0ffa68e5ae255ea80ebf7b24f28491e8bc5513556"
+      }
+    ],
+    "expeditions": [
+      {
+        "run": "expedition-xp-i-final",
+        "file": "arena-challenge-runs.json",
+        "sha256": "c11aed04e19f7c659964713b910f12716f7241477c282265990ffbf80533528c"
+      }
+    ]
+  },
+  "baseline": {
+    "fixtures": 468,
+    "fights": 1872,
+    "reasons": {
+      "defeated": 1671,
+      "timeout": 179,
+      "stalemate": 22
+    },
+    "mean_seconds": 37.69256944444469,
+    "median_seconds": 29.7549999999999,
+    "forms": [
+      {
+        "family": 0,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 0,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 16,
+        "draws": 2
+      },
+      {
+        "family": 0,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 23,
+        "draws": 0
+      },
+      {
+        "family": 0,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 23,
+        "draws": 0
+      },
+      {
+        "family": 0,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 8,
+        "draws": 3
+      },
+      {
+        "family": 0,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 15,
+        "draws": 0
+      },
+      {
+        "family": 1,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 9,
+        "draws": 1
+      },
+      {
+        "family": 1,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 1,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 1,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 16,
+        "draws": 0
+      },
+      {
+        "family": 1,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 16,
+        "draws": 7
+      },
+      {
+        "family": 1,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 3,
+        "draws": 2
+      },
+      {
+        "family": 2,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 8,
+        "draws": 1
+      },
+      {
+        "family": 2,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 1,
+        "draws": 6
+      },
+      {
+        "family": 2,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 4,
+        "draws": 0
+      },
+      {
+        "family": 2,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 5,
+        "draws": 0
+      },
+      {
+        "family": 2,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 16,
+        "draws": 0
+      },
+      {
+        "family": 2,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 15,
+        "draws": 0
+      },
+      {
+        "family": 3,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 0,
+        "draws": 0
+      },
+      {
+        "family": 3,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 0,
+        "draws": 4
+      },
+      {
+        "family": 3,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 0,
+        "draws": 0
+      },
+      {
+        "family": 3,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 0,
+        "draws": 1
+      },
+      {
+        "family": 3,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 0,
+        "draws": 0
+      },
+      {
+        "family": 3,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 3,
+        "draws": 1
+      },
+      {
+        "family": 4,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 24,
+        "draws": 0
+      },
+      {
+        "family": 4,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 19,
+        "draws": 0
+      },
+      {
+        "family": 4,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 4,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 4,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 16,
+        "draws": 4
+      },
+      {
+        "family": 4,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 21,
+        "draws": 1
+      },
+      {
+        "family": 5,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 5,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 19,
+        "draws": 0
+      },
+      {
+        "family": 5,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 15,
+        "draws": 0
+      },
+      {
+        "family": 5,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 14,
+        "draws": 1
+      },
+      {
+        "family": 5,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 5,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 14,
+        "draws": 0
+      },
+      {
+        "family": 6,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 24,
+        "draws": 0
+      },
+      {
+        "family": 6,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 17,
+        "draws": 0
+      },
+      {
+        "family": 6,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 6,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 10,
+        "draws": 0
+      },
+      {
+        "family": 6,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 6,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 19,
+        "draws": 0
+      },
+      {
+        "family": 7,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 2,
+        "draws": 2
+      },
+      {
+        "family": 7,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 3,
+        "draws": 2
+      },
+      {
+        "family": 7,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 2,
+        "draws": 0
+      },
+      {
+        "family": 7,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 8,
+        "draws": 0
+      },
+      {
+        "family": 7,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 18,
+        "draws": 0
+      },
+      {
+        "family": 7,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 8,
+        "draws": 1
+      },
+      {
+        "family": 8,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 8,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 8,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 8,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 7,
+        "draws": 0
+      },
+      {
+        "family": 8,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 13,
+        "draws": 0
+      },
+      {
+        "family": 8,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 9,
+        "draws": 2
+      },
+      {
+        "family": 9,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 5,
+        "draws": 4
+      },
+      {
+        "family": 9,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 11,
+        "draws": 8
+      },
+      {
+        "family": 9,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 16,
+        "draws": 4
+      },
+      {
+        "family": 9,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 3,
+        "draws": 17
+      },
+      {
+        "family": 9,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 7,
+        "draws": 0
+      },
+      {
+        "family": 9,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 0,
+        "draws": 18
+      },
+      {
+        "family": 10,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 16,
+        "draws": 0
+      },
+      {
+        "family": 10,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 6,
+        "draws": 4
+      },
+      {
+        "family": 10,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 18,
+        "draws": 0
+      },
+      {
+        "family": 10,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 9,
+        "draws": 1
+      },
+      {
+        "family": 10,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 16,
+        "draws": 0
+      },
+      {
+        "family": 10,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 18,
+        "draws": 0
+      },
+      {
+        "family": 11,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 11,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 23,
+        "draws": 0
+      },
+      {
+        "family": 11,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 18,
+        "draws": 0
+      },
+      {
+        "family": 11,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 23,
+        "draws": 0
+      },
+      {
+        "family": 11,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 24,
+        "draws": 0
+      },
+      {
+        "family": 11,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 12,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 12,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 6,
+        "draws": 2
+      },
+      {
+        "family": 12,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 4,
+        "draws": 0
+      },
+      {
+        "family": 12,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 7,
+        "draws": 0
+      },
+      {
+        "family": 12,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 12,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 13,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 2,
+        "draws": 2
+      },
+      {
+        "family": 13,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 3,
+        "draws": 2
+      },
+      {
+        "family": 13,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 2,
+        "draws": 0
+      },
+      {
+        "family": 13,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 13,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 13,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 14,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 3,
+        "draws": 1
+      },
+      {
+        "family": 14,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 3,
+        "draws": 3
+      },
+      {
+        "family": 14,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 16,
+        "draws": 0
+      },
+      {
+        "family": 14,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 13,
+        "draws": 1
+      },
+      {
+        "family": 14,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 1,
+        "draws": 0
+      },
+      {
+        "family": 14,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 5,
+        "draws": 0
+      },
+      {
+        "family": 15,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 14,
+        "draws": 0
+      },
+      {
+        "family": 15,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 6,
+        "draws": 9
+      },
+      {
+        "family": 15,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 18,
+        "draws": 1
+      },
+      {
+        "family": 15,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 16,
+        "draws": 3
+      },
+      {
+        "family": 15,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 15,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 16,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 10,
+        "draws": 6
+      },
+      {
+        "family": 16,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 6,
+        "draws": 14
+      },
+      {
+        "family": 16,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 14,
+        "draws": 6
+      },
+      {
+        "family": 16,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 8,
+        "draws": 12
+      },
+      {
+        "family": 16,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 16,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 17,
+        "draws": 3
+      },
+      {
+        "family": 17,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 17,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 4,
+        "draws": 0
+      },
+      {
+        "family": 17,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 1,
+        "draws": 0
+      },
+      {
+        "family": 17,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 3,
+        "draws": 1
+      },
+      {
+        "family": 17,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 5,
+        "draws": 0
+      },
+      {
+        "family": 17,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 4,
+        "draws": 0
+      },
+      {
+        "family": 18,
+        "rank": 0,
+        "context": "duel",
+        "fights": 12,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 18,
+        "rank": 0,
+        "context": "line",
+        "fights": 12,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 18,
+        "rank": 1,
+        "context": "duel",
+        "fights": 12,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 18,
+        "rank": 1,
+        "context": "line",
+        "fights": 12,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 18,
+        "rank": 2,
+        "context": "duel",
+        "fights": 12,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 18,
+        "rank": 2,
+        "context": "line",
+        "fights": 12,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 19,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 9,
+        "draws": 1
+      },
+      {
+        "family": 19,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 9,
+        "draws": 1
+      },
+      {
+        "family": 19,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 18,
+        "draws": 0
+      },
+      {
+        "family": 19,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 12,
+        "draws": 1
+      },
+      {
+        "family": 19,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 19,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 10,
+        "draws": 0
+      },
+      {
+        "family": 20,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 6,
+        "draws": 5
+      },
+      {
+        "family": 20,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 1,
+        "draws": 14
+      },
+      {
+        "family": 20,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 0,
+        "draws": 0
+      },
+      {
+        "family": 20,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 0,
+        "draws": 16
+      },
+      {
+        "family": 20,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 5,
+        "draws": 1
+      },
+      {
+        "family": 20,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 0,
+        "draws": 17
+      },
+      {
+        "family": 21,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 14,
+        "draws": 2
+      },
+      {
+        "family": 21,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 4,
+        "draws": 6
+      },
+      {
+        "family": 21,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 7,
+        "draws": 0
+      },
+      {
+        "family": 21,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 0,
+        "draws": 17
+      },
+      {
+        "family": 21,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 21,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 0,
+        "draws": 16
+      },
+      {
+        "family": 22,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 17,
+        "draws": 0
+      },
+      {
+        "family": 22,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 22,
+        "draws": 0
+      },
+      {
+        "family": 22,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 17,
+        "draws": 0
+      },
+      {
+        "family": 22,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 19,
+        "draws": 0
+      },
+      {
+        "family": 22,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 5,
+        "draws": 0
+      },
+      {
+        "family": 22,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 7,
+        "draws": 0
+      },
+      {
+        "family": 23,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 23,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 7,
+        "draws": 1
+      },
+      {
+        "family": 23,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 8,
+        "draws": 0
+      },
+      {
+        "family": 23,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 0,
+        "draws": 0
+      },
+      {
+        "family": 23,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 2,
+        "draws": 0
+      },
+      {
+        "family": 23,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 2,
+        "draws": 3
+      },
+      {
+        "family": 24,
+        "rank": 0,
+        "context": "duel",
+        "fights": 12,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 24,
+        "rank": 0,
+        "context": "line",
+        "fights": 12,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 24,
+        "rank": 1,
+        "context": "duel",
+        "fights": 12,
+        "wins": 0,
+        "draws": 0
+      },
+      {
+        "family": 24,
+        "rank": 1,
+        "context": "line",
+        "fights": 12,
+        "wins": 8,
+        "draws": 0
+      },
+      {
+        "family": 24,
+        "rank": 2,
+        "context": "duel",
+        "fights": 12,
+        "wins": 1,
+        "draws": 0
+      },
+      {
+        "family": 24,
+        "rank": 2,
+        "context": "line",
+        "fights": 12,
+        "wins": 4,
+        "draws": 4
+      },
+      {
+        "family": 25,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 14,
+        "draws": 0
+      },
+      {
+        "family": 25,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 12,
+        "draws": 4
+      },
+      {
+        "family": 25,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 17,
+        "draws": 1
+      },
+      {
+        "family": 25,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 17,
+        "draws": 3
+      },
+      {
+        "family": 25,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 25,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 26,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 8,
+        "draws": 1
+      },
+      {
+        "family": 26,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 3,
+        "draws": 9
+      },
+      {
+        "family": 26,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 7,
+        "draws": 2
+      },
+      {
+        "family": 26,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 0,
+        "draws": 18
+      },
+      {
+        "family": 26,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 26,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 0,
+        "draws": 16
+      },
+      {
+        "family": 27,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 5,
+        "draws": 6
+      },
+      {
+        "family": 27,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 3,
+        "draws": 13
+      },
+      {
+        "family": 27,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 9,
+        "draws": 2
+      },
+      {
+        "family": 27,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 1,
+        "draws": 16
+      },
+      {
+        "family": 27,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 7,
+        "draws": 1
+      },
+      {
+        "family": 27,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 0,
+        "draws": 16
+      },
+      {
+        "family": 28,
+        "rank": 0,
+        "context": "duel",
+        "fights": 12,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 28,
+        "rank": 0,
+        "context": "line",
+        "fights": 12,
+        "wins": 4,
+        "draws": 0
+      },
+      {
+        "family": 28,
+        "rank": 1,
+        "context": "duel",
+        "fights": 12,
+        "wins": 4,
+        "draws": 3
+      },
+      {
+        "family": 28,
+        "rank": 1,
+        "context": "line",
+        "fights": 12,
+        "wins": 0,
+        "draws": 4
+      },
+      {
+        "family": 28,
+        "rank": 2,
+        "context": "duel",
+        "fights": 12,
+        "wins": 5,
+        "draws": 0
+      },
+      {
+        "family": 28,
+        "rank": 2,
+        "context": "line",
+        "fights": 12,
+        "wins": 0,
+        "draws": 4
+      },
+      {
+        "family": 29,
+        "rank": 0,
+        "context": "duel",
+        "fights": 12,
+        "wins": 0,
+        "draws": 0
+      },
+      {
+        "family": 29,
+        "rank": 0,
+        "context": "line",
+        "fights": 12,
+        "wins": 0,
+        "draws": 0
+      },
+      {
+        "family": 29,
+        "rank": 1,
+        "context": "duel",
+        "fights": 12,
+        "wins": 5,
+        "draws": 3
+      },
+      {
+        "family": 29,
+        "rank": 1,
+        "context": "line",
+        "fights": 12,
+        "wins": 0,
+        "draws": 4
+      },
+      {
+        "family": 29,
+        "rank": 2,
+        "context": "duel",
+        "fights": 12,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 29,
+        "rank": 2,
+        "context": "line",
+        "fights": 12,
+        "wins": 0,
+        "draws": 8
+      }
+    ]
+  },
+  "contexts": {
+    "fixtures": 468,
+    "fights": 1872,
+    "reasons": {
+      "defeated": 1828,
+      "stalemate": 17,
+      "timeout": 27
+    },
+    "mean_seconds": 31.989903846153823,
+    "median_seconds": 28.2974999999999,
+    "forms": [
+      {
+        "family": 0,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 8,
+        "draws": 0
+      },
+      {
+        "family": 0,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 13,
+        "draws": 0
+      },
+      {
+        "family": 0,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 13,
+        "draws": 0
+      },
+      {
+        "family": 0,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 0,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 10,
+        "draws": 0
+      },
+      {
+        "family": 0,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 7,
+        "draws": 0
+      },
+      {
+        "family": 1,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 1,
+        "draws": 0
+      },
+      {
+        "family": 1,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 1,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 7,
+        "draws": 0
+      },
+      {
+        "family": 1,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 17,
+        "draws": 0
+      },
+      {
+        "family": 1,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 23,
+        "draws": 0
+      },
+      {
+        "family": 1,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 16,
+        "draws": 0
+      },
+      {
+        "family": 2,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 2,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 5,
+        "draws": 0
+      },
+      {
+        "family": 2,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 14,
+        "draws": 0
+      },
+      {
+        "family": 2,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 2,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 2,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 3,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 15,
+        "draws": 0
+      },
+      {
+        "family": 3,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 16,
+        "draws": 0
+      },
+      {
+        "family": 3,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 3,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 15,
+        "draws": 0
+      },
+      {
+        "family": 3,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 7,
+        "draws": 0
+      },
+      {
+        "family": 3,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 4,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 18,
+        "draws": 0
+      },
+      {
+        "family": 4,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 14,
+        "draws": 0
+      },
+      {
+        "family": 4,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 2,
+        "draws": 0
+      },
+      {
+        "family": 4,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 5,
+        "draws": 0
+      },
+      {
+        "family": 4,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 4,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 21,
+        "draws": 0
+      },
+      {
+        "family": 5,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 19,
+        "draws": 0
+      },
+      {
+        "family": 5,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 5,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 5,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 5,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 8,
+        "draws": 1
+      },
+      {
+        "family": 5,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 6,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 24,
+        "draws": 0
+      },
+      {
+        "family": 6,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 16,
+        "draws": 0
+      },
+      {
+        "family": 6,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 6,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 7,
+        "draws": 0
+      },
+      {
+        "family": 6,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 6,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 23,
+        "draws": 0
+      },
+      {
+        "family": 7,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 14,
+        "draws": 2
+      },
+      {
+        "family": 7,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 14,
+        "draws": 0
+      },
+      {
+        "family": 7,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 10,
+        "draws": 0
+      },
+      {
+        "family": 7,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 7,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 11,
+        "draws": 2
+      },
+      {
+        "family": 7,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 8,
+        "draws": 1
+      },
+      {
+        "family": 8,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 16,
+        "draws": 0
+      },
+      {
+        "family": 8,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 8,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 1,
+        "draws": 0
+      },
+      {
+        "family": 8,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 8,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 3,
+        "draws": 1
+      },
+      {
+        "family": 8,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 8,
+        "draws": 2
+      },
+      {
+        "family": 9,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 15,
+        "draws": 1
+      },
+      {
+        "family": 9,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 16,
+        "draws": 4
+      },
+      {
+        "family": 9,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 15,
+        "draws": 0
+      },
+      {
+        "family": 9,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 9,
+        "draws": 6
+      },
+      {
+        "family": 9,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 9,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 10,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 7,
+        "draws": 0
+      },
+      {
+        "family": 10,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 2,
+        "draws": 0
+      },
+      {
+        "family": 10,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 10,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 10,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 10,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 11,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 11,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 23,
+        "draws": 0
+      },
+      {
+        "family": 11,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 15,
+        "draws": 0
+      },
+      {
+        "family": 11,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 24,
+        "draws": 0
+      },
+      {
+        "family": 11,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 22,
+        "draws": 1
+      },
+      {
+        "family": 11,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 19,
+        "draws": 0
+      },
+      {
+        "family": 12,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 1,
+        "draws": 0
+      },
+      {
+        "family": 12,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 3,
+        "draws": 0
+      },
+      {
+        "family": 12,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 12,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 10,
+        "draws": 0
+      },
+      {
+        "family": 12,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 12,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 13,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 14,
+        "draws": 2
+      },
+      {
+        "family": 13,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 14,
+        "draws": 0
+      },
+      {
+        "family": 13,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 13,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 13,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 8,
+        "draws": 0
+      },
+      {
+        "family": 13,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 14,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 8,
+        "draws": 0
+      },
+      {
+        "family": 14,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 5,
+        "draws": 0
+      },
+      {
+        "family": 14,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 10,
+        "draws": 0
+      },
+      {
+        "family": 14,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 14,
+        "draws": 0
+      },
+      {
+        "family": 14,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 4,
+        "draws": 1
+      },
+      {
+        "family": 14,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 16,
+        "draws": 0
+      },
+      {
+        "family": 15,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 15,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 5,
+        "draws": 2
+      },
+      {
+        "family": 15,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 10,
+        "draws": 1
+      },
+      {
+        "family": 15,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 15,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 15,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 16,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 13,
+        "draws": 2
+      },
+      {
+        "family": 16,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 11,
+        "draws": 6
+      },
+      {
+        "family": 16,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 18,
+        "draws": 2
+      },
+      {
+        "family": 16,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 16,
+        "draws": 2
+      },
+      {
+        "family": 16,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 15,
+        "draws": 0
+      },
+      {
+        "family": 16,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 17,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 17,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 10,
+        "draws": 0
+      },
+      {
+        "family": 17,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 17,
+        "draws": 0
+      },
+      {
+        "family": 17,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 17,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 7,
+        "draws": 1
+      },
+      {
+        "family": 17,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 1,
+        "draws": 0
+      },
+      {
+        "family": 18,
+        "rank": 0,
+        "context": "duel",
+        "fights": 12,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 18,
+        "rank": 0,
+        "context": "line",
+        "fights": 12,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 18,
+        "rank": 1,
+        "context": "duel",
+        "fights": 12,
+        "wins": 8,
+        "draws": 0
+      },
+      {
+        "family": 18,
+        "rank": 1,
+        "context": "line",
+        "fights": 12,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 18,
+        "rank": 2,
+        "context": "duel",
+        "fights": 12,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 18,
+        "rank": 2,
+        "context": "line",
+        "fights": 12,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 19,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 19,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 7,
+        "draws": 0
+      },
+      {
+        "family": 19,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 10,
+        "draws": 0
+      },
+      {
+        "family": 19,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 8,
+        "draws": 0
+      },
+      {
+        "family": 19,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 10,
+        "draws": 0
+      },
+      {
+        "family": 19,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 7,
+        "draws": 0
+      },
+      {
+        "family": 20,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 4,
+        "draws": 0
+      },
+      {
+        "family": 20,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 6,
+        "draws": 6
+      },
+      {
+        "family": 20,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 5,
+        "draws": 0
+      },
+      {
+        "family": 20,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 13,
+        "draws": 3
+      },
+      {
+        "family": 20,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 6,
+        "draws": 1
+      },
+      {
+        "family": 20,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 10,
+        "draws": 0
+      },
+      {
+        "family": 21,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 11,
+        "draws": 3
+      },
+      {
+        "family": 21,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 2,
+        "draws": 4
+      },
+      {
+        "family": 21,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 5,
+        "draws": 1
+      },
+      {
+        "family": 21,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 3,
+        "draws": 4
+      },
+      {
+        "family": 21,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 10,
+        "draws": 0
+      },
+      {
+        "family": 21,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 22,
+        "rank": 0,
+        "context": "duel",
+        "fights": 24,
+        "wins": 23,
+        "draws": 0
+      },
+      {
+        "family": 22,
+        "rank": 0,
+        "context": "line",
+        "fights": 24,
+        "wins": 22,
+        "draws": 0
+      },
+      {
+        "family": 22,
+        "rank": 1,
+        "context": "duel",
+        "fights": 24,
+        "wins": 16,
+        "draws": 0
+      },
+      {
+        "family": 22,
+        "rank": 1,
+        "context": "line",
+        "fights": 24,
+        "wins": 19,
+        "draws": 0
+      },
+      {
+        "family": 22,
+        "rank": 2,
+        "context": "duel",
+        "fights": 24,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 22,
+        "rank": 2,
+        "context": "line",
+        "fights": 24,
+        "wins": 8,
+        "draws": 0
+      },
+      {
+        "family": 23,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 5,
+        "draws": 0
+      },
+      {
+        "family": 23,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 2,
+        "draws": 1
+      },
+      {
+        "family": 23,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 20,
+        "draws": 0
+      },
+      {
+        "family": 23,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 18,
+        "draws": 0
+      },
+      {
+        "family": 23,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 15,
+        "draws": 0
+      },
+      {
+        "family": 23,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 10,
+        "draws": 3
+      },
+      {
+        "family": 24,
+        "rank": 0,
+        "context": "duel",
+        "fights": 12,
+        "wins": 8,
+        "draws": 0
+      },
+      {
+        "family": 24,
+        "rank": 0,
+        "context": "line",
+        "fights": 12,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 24,
+        "rank": 1,
+        "context": "duel",
+        "fights": 12,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 24,
+        "rank": 1,
+        "context": "line",
+        "fights": 12,
+        "wins": 11,
+        "draws": 0
+      },
+      {
+        "family": 24,
+        "rank": 2,
+        "context": "duel",
+        "fights": 12,
+        "wins": 6,
+        "draws": 0
+      },
+      {
+        "family": 24,
+        "rank": 2,
+        "context": "line",
+        "fights": 12,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 25,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 3,
+        "draws": 0
+      },
+      {
+        "family": 25,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 3,
+        "draws": 1
+      },
+      {
+        "family": 25,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 9,
+        "draws": 1
+      },
+      {
+        "family": 25,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 10,
+        "draws": 0
+      },
+      {
+        "family": 25,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 12,
+        "draws": 1
+      },
+      {
+        "family": 25,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 26,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 7,
+        "draws": 1
+      },
+      {
+        "family": 26,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 6,
+        "draws": 2
+      },
+      {
+        "family": 26,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 7,
+        "draws": 3
+      },
+      {
+        "family": 26,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 6,
+        "draws": 4
+      },
+      {
+        "family": 26,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 13,
+        "draws": 0
+      },
+      {
+        "family": 26,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 12,
+        "draws": 0
+      },
+      {
+        "family": 27,
+        "rank": 0,
+        "context": "duel",
+        "fights": 20,
+        "wins": 5,
+        "draws": 3
+      },
+      {
+        "family": 27,
+        "rank": 0,
+        "context": "line",
+        "fights": 20,
+        "wins": 8,
+        "draws": 0
+      },
+      {
+        "family": 27,
+        "rank": 1,
+        "context": "duel",
+        "fights": 20,
+        "wins": 6,
+        "draws": 2
+      },
+      {
+        "family": 27,
+        "rank": 1,
+        "context": "line",
+        "fights": 20,
+        "wins": 2,
+        "draws": 3
+      },
+      {
+        "family": 27,
+        "rank": 2,
+        "context": "duel",
+        "fights": 20,
+        "wins": 4,
+        "draws": 1
+      },
+      {
+        "family": 27,
+        "rank": 2,
+        "context": "line",
+        "fights": 20,
+        "wins": 9,
+        "draws": 0
+      },
+      {
+        "family": 28,
+        "rank": 0,
+        "context": "duel",
+        "fights": 12,
+        "wins": 1,
+        "draws": 0
+      },
+      {
+        "family": 28,
+        "rank": 0,
+        "context": "line",
+        "fights": 12,
+        "wins": 3,
+        "draws": 0
+      },
+      {
+        "family": 28,
+        "rank": 1,
+        "context": "duel",
+        "fights": 12,
+        "wins": 3,
+        "draws": 2
+      },
+      {
+        "family": 28,
+        "rank": 1,
+        "context": "line",
+        "fights": 12,
+        "wins": 5,
+        "draws": 0
+      },
+      {
+        "family": 28,
+        "rank": 2,
+        "context": "duel",
+        "fights": 12,
+        "wins": 2,
+        "draws": 0
+      },
+      {
+        "family": 28,
+        "rank": 2,
+        "context": "line",
+        "fights": 12,
+        "wins": 2,
+        "draws": 0
+      },
+      {
+        "family": 29,
+        "rank": 0,
+        "context": "duel",
+        "fights": 12,
+        "wins": 3,
+        "draws": 0
+      },
+      {
+        "family": 29,
+        "rank": 0,
+        "context": "line",
+        "fights": 12,
+        "wins": 1,
+        "draws": 0
+      },
+      {
+        "family": 29,
+        "rank": 1,
+        "context": "duel",
+        "fights": 12,
+        "wins": 2,
+        "draws": 2
+      },
+      {
+        "family": 29,
+        "rank": 1,
+        "context": "line",
+        "fights": 12,
+        "wins": 2,
+        "draws": 0
+      },
+      {
+        "family": 29,
+        "rank": 2,
+        "context": "duel",
+        "fights": 12,
+        "wins": 4,
+        "draws": 0
+      },
+      {
+        "family": 29,
+        "rank": 2,
+        "context": "line",
+        "fights": 12,
+        "wins": 2,
+        "draws": 0
+      }
+    ]
+  },
+  "stars": {
+    "promotion": {
+      "trials": 240,
+      "wins": 240,
+      "draws": 0,
+      "timeouts": 0
+    },
+    "three_gold": {
+      "trials": 168,
+      "wins": 86,
+      "draws": 1,
+      "timeouts": 0
+    },
+    "nine_vs_ten_gold": {
+      "trials": 112,
+      "wins": 17,
+      "draws": 0,
+      "timeouts": 0
+    }
+  },
+  "tournaments": {
+    "games": 16,
+    "seeds": [
+      7319,
+      8316,
+      9313,
+      10310,
+      11307,
+      12304,
+      13301,
+      14298
+    ],
+    "policies": {
+      "economy": {
+        "seats": 36,
+        "mean_place": 5.361111111111111,
+        "median_place": 5.0,
+        "wins": 1,
+        "top_three": 9,
+        "average_spending": {
+          "recruits": 78.86111111111111,
+          "refreshes": 13.222222222222221,
+          "sales": 1.6111111111111112,
+          "training": 89.86111111111111
+        },
+        "checkpoints": {
+          "5": {
+            "alive": 36,
+            "capacity": 3.9444444444444446,
+            "hp": 97.19444444444444,
+            "gold": 15.555555555555555,
+            "three_star_units": 0
+          },
+          "10": {
+            "alive": 36,
+            "capacity": 5.027777777777778,
+            "hp": 74.80555555555556,
+            "gold": 40.44444444444444,
+            "three_star_units": 0
+          },
+          "15": {
+            "alive": 36,
+            "capacity": 7.5,
+            "hp": 45.111111111111114,
+            "gold": 21.36111111111111,
+            "three_star_units": 0
+          },
+          "20": {
+            "alive": 31,
+            "capacity": 8.580645161290322,
+            "hp": 31.70967741935484,
+            "gold": 11.193548387096774,
+            "three_star_units": 0
+          },
+          "25": {
+            "alive": 17,
+            "capacity": 9,
+            "hp": 21.352941176470587,
+            "gold": 6.823529411764706,
+            "three_star_units": 0.5882352941176471
+          }
+        }
+      },
+      "expansion": {
+        "seats": 36,
+        "mean_place": 5.805555555555555,
+        "median_place": 6.5,
+        "wins": 2,
+        "top_three": 8,
+        "average_spending": {
+          "recruits": 75.27777777777777,
+          "refreshes": 9.222222222222221,
+          "sales": 1.5555555555555556,
+          "training": 86.94444444444444
+        },
+        "checkpoints": {
+          "5": {
+            "alive": 36,
+            "capacity": 4.083333333333333,
+            "hp": 95.5,
+            "gold": 15.194444444444445,
+            "three_star_units": 0
+          },
+          "10": {
+            "alive": 36,
+            "capacity": 5.333333333333333,
+            "hp": 75.75,
+            "gold": 28.25,
+            "three_star_units": 0
+          },
+          "15": {
+            "alive": 36,
+            "capacity": 7.083333333333333,
+            "hp": 53.27777777777778,
+            "gold": 20.11111111111111,
+            "three_star_units": 0.027777777777777776
+          },
+          "20": {
+            "alive": 31,
+            "capacity": 8.290322580645162,
+            "hp": 31.806451612903224,
+            "gold": 10.161290322580646,
+            "three_star_units": 0.0967741935483871
+          },
+          "25": {
+            "alive": 11,
+            "capacity": 9,
+            "hp": 27.90909090909091,
+            "gold": 13,
+            "three_star_units": 0.6363636363636364
+          }
+        }
+      },
+      "evolution": {
+        "seats": 36,
+        "mean_place": 4.722222222222222,
+        "median_place": 4.5,
+        "wins": 8,
+        "top_three": 15,
+        "average_spending": {
+          "recruits": 97.19444444444444,
+          "refreshes": 44.22222222222222,
+          "sales": 2.638888888888889,
+          "training": 55.138888888888886
+        },
+        "checkpoints": {
+          "5": {
+            "alive": 36,
+            "capacity": 3.0277777777777777,
+            "hp": 96.61111111111111,
+            "gold": 15.63888888888889,
+            "three_star_units": 0
+          },
+          "10": {
+            "alive": 36,
+            "capacity": 4.888888888888889,
+            "hp": 81.5,
+            "gold": 38.19444444444444,
+            "three_star_units": 0.027777777777777776
+          },
+          "15": {
+            "alive": 36,
+            "capacity": 6,
+            "hp": 60.861111111111114,
+            "gold": 28.555555555555557,
+            "three_star_units": 0.6111111111111112
+          },
+          "20": {
+            "alive": 32,
+            "capacity": 7,
+            "hp": 44.28125,
+            "gold": 19.28125,
+            "three_star_units": 1.40625
+          },
+          "25": {
+            "alive": 16,
+            "capacity": 7.375,
+            "hp": 43.5,
+            "gold": 20.25,
+            "three_star_units": 3.5
+          }
+        }
+      },
+      "tempo": {
+        "seats": 36,
+        "mean_place": 4.111111111111111,
+        "median_place": 4.0,
+        "wins": 5,
+        "top_three": 16,
+        "average_spending": {
+          "recruits": 88.22222222222223,
+          "refreshes": 17.333333333333332,
+          "sales": 2.3333333333333335,
+          "training": 90.0
+        },
+        "checkpoints": {
+          "5": {
+            "alive": 36,
+            "capacity": 3.9444444444444446,
+            "hp": 97.08333333333333,
+            "gold": 16.13888888888889,
+            "three_star_units": 0
+          },
+          "10": {
+            "alive": 36,
+            "capacity": 5.388888888888889,
+            "hp": 89.27777777777777,
+            "gold": 22.27777777777778,
+            "three_star_units": 0.027777777777777776
+          },
+          "15": {
+            "alive": 36,
+            "capacity": 7.055555555555555,
+            "hp": 79.27777777777777,
+            "gold": 21.47222222222222,
+            "three_star_units": 0.1111111111111111
+          },
+          "20": {
+            "alive": 36,
+            "capacity": 8.166666666666666,
+            "hp": 58.75,
+            "gold": 16.416666666666668,
+            "three_star_units": 0.19444444444444445
+          },
+          "25": {
+            "alive": 23,
+            "capacity": 9,
+            "hp": 40.34782608695652,
+            "gold": 11.217391304347826,
+            "three_star_units": 0.6086956521739131
+          }
+        }
+      }
+    },
+    "mean_distinct_final_families": 6.916666666666667,
+    "final_roster_presence": [
+      {
+        "family": 6,
+        "rank": 1,
+        "teams": 98
+      },
+      {
+        "family": 11,
+        "rank": 1,
+        "teams": 85
+      },
+      {
+        "family": 7,
+        "rank": 1,
+        "teams": 74
+      },
+      {
+        "family": 8,
+        "rank": 1,
+        "teams": 67
+      },
+      {
+        "family": 13,
+        "rank": 1,
+        "teams": 60
+      },
+      {
+        "family": 18,
+        "rank": 0,
+        "teams": 57
+      },
+      {
+        "family": 24,
+        "rank": 0,
+        "teams": 54
+      },
+      {
+        "family": 22,
+        "rank": 1,
+        "teams": 50
+      },
+      {
+        "family": 4,
+        "rank": 1,
+        "teams": 35
+      },
+      {
+        "family": 29,
+        "rank": 0,
+        "teams": 34
+      },
+      {
+        "family": 3,
+        "rank": 1,
+        "teams": 33
+      },
+      {
+        "family": 8,
+        "rank": 0,
+        "teams": 32
+      },
+      {
+        "family": 7,
+        "rank": 0,
+        "teams": 27
+      },
+      {
+        "family": 13,
+        "rank": 0,
+        "teams": 27
+      },
+      {
+        "family": 18,
+        "rank": 1,
+        "teams": 26
+      },
+      {
+        "family": 5,
+        "rank": 1,
+        "teams": 24
+      },
+      {
+        "family": 23,
+        "rank": 1,
+        "teams": 22
+      },
+      {
+        "family": 6,
+        "rank": 2,
+        "teams": 21
+      },
+      {
+        "family": 5,
+        "rank": 2,
+        "teams": 20
+      },
+      {
+        "family": 11,
+        "rank": 2,
+        "teams": 20
+      },
+      {
+        "family": 24,
+        "rank": 1,
+        "teams": 19
+      },
+      {
+        "family": 17,
+        "rank": 1,
+        "teams": 16
+      },
+      {
+        "family": 3,
+        "rank": 2,
+        "teams": 16
+      },
+      {
+        "family": 22,
+        "rank": 2,
+        "teams": 16
+      },
+      {
+        "family": 8,
+        "rank": 2,
+        "teams": 12
+      },
+      {
+        "family": 29,
+        "rank": 1,
+        "teams": 11
+      },
+      {
+        "family": 11,
+        "rank": 0,
+        "teams": 8
+      },
+      {
+        "family": 14,
+        "rank": 1,
+        "teams": 7
+      },
+      {
+        "family": 7,
+        "rank": 2,
+        "teams": 7
+      },
+      {
+        "family": 13,
+        "rank": 2,
+        "teams": 7
+      },
+      {
+        "family": 4,
+        "rank": 2,
+        "teams": 6
+      },
+      {
+        "family": 6,
+        "rank": 0,
+        "teams": 4
+      },
+      {
+        "family": 17,
+        "rank": 2,
+        "teams": 4
+      },
+      {
+        "family": 9,
+        "rank": 0,
+        "teams": 3
+      },
+      {
+        "family": 21,
+        "rank": 1,
+        "teams": 2
+      },
+      {
+        "family": 23,
+        "rank": 0,
+        "teams": 2
+      },
+      {
+        "family": 5,
+        "rank": 0,
+        "teams": 2
+      },
+      {
+        "family": 28,
+        "rank": 0,
+        "teams": 2
+      },
+      {
+        "family": 2,
+        "rank": 1,
+        "teams": 2
+      },
+      {
+        "family": 0,
+        "rank": 2,
+        "teams": 2
+      },
+      {
+        "family": 27,
+        "rank": 1,
+        "teams": 1
+      },
+      {
+        "family": 16,
+        "rank": 1,
+        "teams": 1
+      },
+      {
+        "family": 28,
+        "rank": 1,
+        "teams": 1
+      },
+      {
+        "family": 21,
+        "rank": 0,
+        "teams": 1
+      },
+      {
+        "family": 9,
+        "rank": 1,
+        "teams": 1
+      },
+      {
+        "family": 14,
+        "rank": 2,
+        "teams": 1
+      },
+      {
+        "family": 23,
+        "rank": 2,
+        "teams": 1
+      }
+    ]
+  },
+  "expeditions": {
+    "runs": 16,
+    "clears": 1,
+    "mean_wave": 26.3125,
+    "policies": {
+      "economy": [
+        {
+          "seed": 7319,
+          "wave": 22,
+          "outcome": "lost"
+        },
+        {
+          "seed": 8316,
+          "wave": 28,
+          "outcome": "lost"
+        },
+        {
+          "seed": 9313,
+          "wave": 29,
+          "outcome": "lost"
+        },
+        {
+          "seed": 10310,
+          "wave": 25,
+          "outcome": "lost"
+        }
+      ],
+      "expansion": [
+        {
+          "seed": 7319,
+          "wave": 22,
+          "outcome": "lost"
+        },
+        {
+          "seed": 8316,
+          "wave": 29,
+          "outcome": "lost"
+        },
+        {
+          "seed": 9313,
+          "wave": 30,
+          "outcome": "lost"
+        },
+        {
+          "seed": 10310,
+          "wave": 27,
+          "outcome": "lost"
+        }
+      ],
+      "evolution": [
+        {
+          "seed": 7319,
+          "wave": 30,
+          "outcome": "won"
+        },
+        {
+          "seed": 8316,
+          "wave": 29,
+          "outcome": "lost"
+        },
+        {
+          "seed": 9313,
+          "wave": 29,
+          "outcome": "lost"
+        },
+        {
+          "seed": 10310,
+          "wave": 20,
+          "outcome": "lost"
+        }
+      ],
+      "tempo": [
+        {
+          "seed": 7319,
+          "wave": 24,
+          "outcome": "lost"
+        },
+        {
+          "seed": 8316,
+          "wave": 28,
+          "outcome": "lost"
+        },
+        {
+          "seed": 9313,
+          "wave": 24,
+          "outcome": "lost"
+        },
+        {
+          "seed": 10310,
+          "wave": 25,
+          "outcome": "lost"
+        }
+      ]
+    }
+  }
+}

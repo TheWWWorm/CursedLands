@@ -14,11 +14,14 @@ const WIN_INCOME := 1
 const INTEREST_CAP := 5
 const TRAINING_COST := 5
 const TRAINING_XP := 5
-const MAX_TRAINING := 126
 const MAX_ARMY := 9
 # Cumulative XP from the opening level 3. Increasing costs make rolling versus
 # leveling a continuing decision instead of a cheap slot on every third wave.
-const LEVEL_XP := [0, 0, 0, 0, 6, 18, 36, 60, 90, 126]
+const LEVEL_XP := [0, 0, 0, 0, 6, 18, 36, 55, 80, 110]
+const MAX_TRAINING: int = LEVEL_XP[MAX_ARMY]
+# Older schema-11 saves may have paid toward the previous level-nine threshold.
+# Accept their accumulated training without allowing further purchases at nine.
+const MAX_SAVED_TRAINING := 126
 const SHOP_ODDS := {
 	3: [55, 45, 0, 0, 0], 4: [55, 45, 0, 0, 0],
 	5: [40, 40, 20, 0, 0], 6: [30, 35, 27, 8, 0],
@@ -173,33 +176,59 @@ static func star_damage(_family: int, rank: int) -> float:
 
 static func recruit_role(family: int, rank: int) -> String:
 	var proto := GameData.db.find("monster_prototypes",prototype(family,rank))
-	if not Array(proto.get("spells",[])).is_empty(): return "Magic"
+	# Scouting/invisibility do not turn a dagger fighter into a fragile caster.
+	for spell: String in proto.get("spells",[]):
+		if Spells.DAMAGE_SCHOOLS.has(Spells.parse(spell).code): return "Magic"
 	if float(proto.get("attack_range",0.0))>0.0: return "Ranged"
-	var weapon := Items.info(str(proto.get("weapon","")))
-	return "Ranged" if int(weapon.get("row",{}).get("type_id",-1)) in [5,6] else "Melee"
+	return "Ranged" if bow_user(proto) else "Melee"
+
+static func bow_user(proto: Dictionary) -> bool:
+	var type:=int(proto.get("weapon_type_id",-1))
+	if type==8:
+		type=int(Items.info(str(proto.get("weapon",""))).get("row",{}).get("type_id",-1))
+	return type in [5,6]
 
 static func recruit_health(family: int, health: float, rank := 0) -> float:
 	if family < 0 or family >= FAMILIES.size(): return health
 	var role := recruit_role(family,rank)
-	var body := 0.78 if role == "Magic" else 0.9 if role == "Ranged" else 1.0
+	var bow:=bow_user(GameData.db.find("monster_prototypes",prototype(family,rank)))
+	# Bow casters cannot parry, including natural blowpipes. They retain the
+	# ranged health budget instead of paying for a caster's missing defense.
+	var body := 0.9 if bow or role=="Ranged" else 0.78 if role=="Magic" else 1.0
 	return ceilf(HEALTH_BUDGET[int(FAMILIES[family].tier)-1] * body * star_health(family,rank))
 
 static func recruit_stats(family: int, rank: int, stats: Dictionary) -> void:
 	if family < 0 or family >= FAMILIES.size(): return
 	var tier := int(FAMILIES[family].tier)
+	var proto := GameData.db.find("monster_prototypes",prototype(family,rank))
+	var race := GameData.db.find("race_models",str(proto.get("base_race","")))
+	var role := recruit_role(family,rank)
 	var mean: float = DAMAGE_BUDGET[tier-1] * star_damage(family,rank)
+	# Native swings/shots range from 49 to 130 ticks. Price damage per cadence,
+	# keeping slow heavy blows and quick light attacks instead of equal hits.
+	if role != "Magic":
+		mean *= clampf(float(proto.get("tuning_actions",55.0))/55.0,0.85,2.5)
+		if role == "Ranged": mean *= 1.3
 	var preview := stats.has("min")
 	stats["min" if preview else "dmg_min"] = mean * 0.73
 	stats["max" if preview else "dmg_max"] = mean * 1.27
-	stats["attack" if preview else "to_hit"] = 28.0 + tier * 4.0 + rank * 12.0
+	stats["attack" if preview else "to_hit"] = 28.0 + tier * 4.0 + rank * 12.0 + (14.0 if role == "Ranged" else 0.0)
 	stats["defense" if preview else "parry"] = 18.0 + tier * 3.0 + rank * 8.0
 	var armor: PackedFloat32Array = stats.armor
 	var native_general := maxf(1.0,armor[6])
 	for type in armor.size(): armor[type] = armor[type] / native_general * (5.0 + tier * 2.0) * (1.0 + rank * 0.2)
 	stats.armor = armor
-	stats.actions = float(stats.get("actions",15.0)) * (1.0 + rank * 0.08)
+	stats.actions = float(stats.get("actions",15.0)) * (1.0 + rank * 0.08) * float(recruit_prototype(family,rank,proto).get("_trials_cast_rate",1.0))
+	# Campaign bosses recover as much as 10% HP every 15 ticks. Their native
+	# advantage remains, within the damage budget of a ninety-second round.
+	stats.health_regen = minf(float(race.get("health_regen",0.0)),0.02)*0.25
 	stats["trials_budget"] = true
-	if recruit_role(family,rank)=="Ranged": stats["defense" if preview else "parry"] = 0.0
+	if role=="Ranged" or bow_user(proto): stats["defense" if preview else "parry"] = 0.0
+
+static func spell_target_budget(parsed: Dictionary) -> float:
+	var area := 1.45 if float(parsed.get("area",0.0))>0.0 else 1.0
+	# Extra-target runes launch separate effects, including separate fireballs.
+	return area * (1.0 + maxi(0,int(parsed.get("targets",1))-1)*0.6)
 
 ## Campaign skill ratings otherwise overwhelm the bounded recruit economy.
 ## Keep authored creep bodies, damage, spells and weaknesses; only cap their
@@ -221,20 +250,30 @@ static func recruit_prototype(family: int, rank: int, proto: Dictionary) -> Dict
 	var tuned := proto.duplicate(true)
 	var spells: Array = proto.get("spells",[]).duplicate()
 	var desired := (14.0 + (int(FAMILIES[family].tier)-1) * 5.5) * star_damage(family,rank)
+	var cast_rate := 1.0
 	for i in spells.size():
 		var parsed := Spells.parse(spells[i])
-		if not Spells.DAMAGE_SCHOOLS.has(parsed.code): continue
+		if not Spells.DAMAGE_SCHOOLS.has(parsed.code) and parsed.code!="healing": continue
 		var mods := Spells.mods_of(spells[i])
 		var retained := PackedStringArray()
 		for mod: String in mods:
 			if not mod.begins_with("e"): retained.append(mod)
-		var area := 1.45 if parsed.code in ["firewall","litnwall","acid_fog","fireball"] else 1.0
+		var area := spell_target_budget(parsed)
+		if parsed.code=="healing": area/=0.6
 		var base := float(parsed.proto.get("effect",1.0))
 		var step := maxf(0.1,base * float(Spells.mod_row("e1").get("value",0.5)))
-		var count := maxi(0,roundi((desired/area-base)/step))
-		for rune in count: retained.append("e1")
+		if base > desired/area:
+			# The native Cut Effect rune has a positive floor of half the base.
+			# Curse keeps its heavy hit; a longer wind-up pays for that floor.
+			retained.append("e0")
+			var floor_effect := base*(1.0+float(Spells.mod_row("e0").get("value",-0.5)))
+			cast_rate=minf(cast_rate,minf(1.0,desired/area/maxf(0.1,floor_effect)))
+		else:
+			var count := maxi(0,roundi((desired/area-base)/step))
+			for rune in count: retained.append("e1")
 		spells[i] = "%s{%s}" % [parsed.code,";".join(retained)]
 	tuned.spells = spells
+	tuned["_trials_cast_rate"] = cast_rate
 	tuned["_spell_cache_key"] = "%s:trials:%d:%d" % [proto.name,family,rank]
 	return tuned
 

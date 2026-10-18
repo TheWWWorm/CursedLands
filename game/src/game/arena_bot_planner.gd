@@ -22,18 +22,32 @@ static func power(family: int, rank: int) -> float:
 	var id:=ArenaRules.prototype(family,rank)
 	var row:=ArenaRules.recruit_prototype(family,rank,GameData.db.find("monster_prototypes",id))
 	var values:=ArenaUnitInfo.values(id,null,family,rank)
-	var attack:=float(values.min+values.max)*0.5
-	var spell_power:=0.0
+	var mean:=float(values.min+values.max)*0.5
+	var tier:=int(ArenaRules.FAMILIES[family].tier)
+	var armor:=(5.0+tier*2.0)*(1.0+rank*0.2)
+	var defense:=18.0+tier*3.0+rank*8.0
+	var needed:=ceili((defense-float(values.attack)+41.0)/2.0)
+	var hit:=clampf(float(41-clampi(needed,0,41))/41.0,0.0,1.0)
+	var interval:=maxf(0.6,float(row.get("tuning_actions",50.0))*GameUnit.TICK*15.0/float(values.actions))
+	var damage_rate:=maxf(mean*0.2,mean-armor)*hit/interval
 	for spell: String in row.get("spells",[]):
-		if not Spells.offensive(spell): continue
 		var parsed:=Spells.parse(spell)
-		var area:=1.5 if parsed.code in ["firewall","fireball","acid_fog","litnwall"] else 1.0
-		# Recruited creatures use the native AI casting rule: no stamina cost.
-		# Applying the player spell-builder cost undervalues almost every caster.
-		spell_power=maxf(spell_power,float(parsed.effect)*area)
-	attack=maxf(attack,spell_power*1.3)
-	var value:=sqrt(float(values.hp))*attack*(1+float(values.armor[6])/70)
-	if float(row.get("attack_range",0))>0 or spell_power>0: value*=1.2
+		if not Spells.DAMAGE_SCHOOLS.has(parsed.code): continue
+		var effect:=float(parsed.effect)
+		var cast_time:=maxf(0.6,float(parsed.proto.get("actions",45.0))*GameUnit.TICK*15.0/float(values.actions))
+		damage_rate=maxf(damage_rate,maxf(effect*0.2,effect-armor)*ArenaRules.spell_target_budget(parsed)/cast_time)
+	# Survival and sustained output both contribute to fighting strength.
+	# Multiplying sqrt(HP) by DPS overvalued casters so much that CPUs filled
+	# nearly every slot with them, even when those formations lost to melee.
+	# Half incoming attacks are estimated as physical; bows cannot parry.
+	var incoming:=1.0
+	if float(values.defense)>0.0:
+		var enemy_attack:=28.0+tier*4.0+rank*12.0
+		var defend_roll:=ceili((float(values.defense)-enemy_attack+41.0)/2.0)
+		incoming=0.5+0.5*float(41-clampi(defend_roll,0,41))/41.0
+	var value:=sqrt(float(values.hp)/incoming*damage_rate)*10.0*(1+float(values.armor[6])/70)
+	# This remains an estimate: animation, positioning and counters matter.
+	if ArenaRules.recruit_role(family,rank)!="Melee": value*=1.2
 	_powers[key]=value
 	return value
 
@@ -147,8 +161,7 @@ static func arrange(bot: ArenaRun, style: String) -> void:
 	for entry: Dictionary in bot.army:entry.deployed=false
 	var front:=0;var back:=0
 	for entry: Dictionary in chosen:
-		var proto:=GameData.db.find("monster_prototypes",entry.prototype)
-		var ranged:=float(proto.get("attack_range",0))>0 or not Array(proto.get("spells",[])).is_empty()
+		var ranged:=ArenaRules.recruit_role(int(entry.family),int(entry.rank))!="Melee"
 		var number:=back if ranged else front
 		entry.deployed=true
 		entry.point=[(22.0 if ranged else 27.0) if number<5 else 24.0,

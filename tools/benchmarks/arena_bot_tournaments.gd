@@ -14,11 +14,20 @@ class League extends ArenaOnlineTournament:
 		for player in alive_players():
 			var bot:=company(player)
 			var plan:={"actions":0,"rerolls":0,"done":false}
+			var spending:={"recruits":0,"training":0,"refreshes":0,"sales":0}
 			while not plan.done:
+				var before_gold:=bot.gold
+				var before_training:=bot.training
+				var before_rolls:=int(plan.rerolls)
 				if is_new(player):ArenaBotPlanner.step(bot,player+1+strategy_offset,wave,health(player),plan)
 				else:Legacy.legacy_step(bot,player+1,wave,health(player),plan)
+				var spent:=before_gold-bot.gold
+				if spent<0:spending.sales-=spent
+				elif bot.training>before_training:spending.training+=spent
+				elif int(plan.rerolls)>before_rolls:spending.refreshes+=spent
+				else:spending.recruits+=spent
 			if player>0:bot_plans[player-1].done=true
-			samples.append({"round":wave,"seat":player,"new":is_new(player),"strategy":ArenaBotPlanner.strategy(bot,player+1+strategy_offset),"gold":bot.gold,"interest":bot.income_preview().interest,"capacity":bot.capacity(),"field":bot.deployed_count(),"families":bot.army.filter(func(entry):return entry.deployed).map(func(entry):return entry.family),"stars":bot.army.filter(func(entry):return entry.deployed).map(func(entry):return entry.rank),"hp":health(player)})
+			samples.append({"round":wave,"seat":player,"new":is_new(player),"strategy":ArenaBotPlanner.strategy(bot,player+1+strategy_offset),"gold":bot.gold,"interest":bot.income_preview().interest,"capacity":bot.capacity(),"field":bot.deployed_count(),"families":bot.army.filter(func(entry):return entry.deployed).map(func(entry):return entry.family),"stars":bot.army.filter(func(entry):return entry.deployed).map(func(entry):return entry.rank),"hp":health(player),"spending":spending})
 var results:=[]
 func _ready()->void:
 	var count:=4

@@ -9,7 +9,8 @@ func _ready() -> void:
 	var data := {"version": ArenaRules.VERSION, "families": [], "native": []}
 	for row: Dictionary in GameData.db.table("monster_prototypes"):
 		var id := String(row.get("name", ""))
-		data.native.append({"id": id, "title": ArenaRules.title(id), "stats": ArenaUnitInfo.values(id), "proto": row})
+		data.native.append({"id": id, "title": ArenaRules.title(id), "stats": ArenaUnitInfo.values(id), "proto": row,
+			"race": GameData.db.find("race_models", str(row.get("base_race","")))})
 	var seen := {}
 	var preview := WikiPreview.new()
 	if portraits:
@@ -34,4 +35,5 @@ func _ready() -> void:
 		data.families.append(entry)
 		print("ROSTER_EXPORT ", family, " ", entry.name)
 	FileAccess.open(output.path_join("roster.json"),FileAccess.WRITE).store_string(JSON.stringify(data,"\t"))
+	preview.free()
 	get_tree().quit()

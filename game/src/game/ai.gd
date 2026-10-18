@@ -905,7 +905,8 @@ func _spell_options(u: GameUnit, only16: bool) -> Array:
 				continue
 			var v := PackedInt32Array([0, 0, 0, 0, 0, 0, 0])
 			if ty <= 3:
-				v[int(Spells.DAMAGE_TYPE_INDEX.get(sp.subtype, 6))] = int(sp.effect)
+				var school: String=Spells.DAMAGE_SCHOOLS.get(sp.code,sp.subtype)
+				v[int(Spells.DAMAGE_TYPE_INDEX.get(school, 6))] = int(sp.effect)
 			var o := {"type": ty, "slot": id, "idx": idx, "v": v,
 				"range": float(u.proto.get("attack_range", 0.0)) if only16 else float(sp.range),
 				"n1": maxi(int(sp.targets), 1) - 1, "radius": float(sp.radius),
@@ -987,11 +988,26 @@ func _score(u: GameUnit, c: GameUnit, opt: Dictionary, list: Array, cur, thr: fl
 		4, 5, 6:
 			if c.buffs.has(opt.key):
 				return NO_SCORE
+			# ArenaMatch reveals the opposing formation at the bell. Night
+			# sight and quieter footsteps do not help an open fight; spending
+			# two opening casts on them left Fairakh's final form ineffective.
+			# Native Silence affects hearing, not the ability to cast spells.
+			if u.stats.get("trials_budget",false) and opt.key in ["infravision","silence"]:
+				return NO_SCORE
+			if u.stats.get("trials_budget",false) and Spells.PROTECTS.has(opt.key) \
+					and not _trials_protection_needed(u,Spells.PROTECTS[opt.key]):
+				return NO_SCORE
 			score = bonus + 1.0 + mini(n - 1, k)
 		7:
 			var eff := _healing_max(c)
 			var hp := GameUnit._fistp(c.hp)
 			if hp > eff - 2:
+				return NO_SCORE
+			# Trials healers keep attacking after light wounds. Native distance
+			# penalties otherwise make any self-heal beat a distant attack and
+			# trap an upgraded archer in healing until it dies. Ally support and
+			# campaign decisions retain their native priorities.
+			if u.stats.get("trials_budget",false) and c==u and hp*2>eff:
 				return NO_SCORE
 			if 3 * hp < eff:
 				var pw: float = options(c).power
@@ -1008,6 +1024,18 @@ func _score(u: GameUnit, c: GameUnit, opt: Dictionary, list: Array, cur, thr: fl
 	if ty <= 3 and score >= thr:
 		score -= 2.0 * (int(c.hp) / dd if dd != 0 else 20)
 	return score
+
+## Trials expose the complete opposing formation. A protection spell earns
+## its casting time only when an opponent can deal that elemental damage.
+func _trials_protection_needed(u: GameUnit, school: String) -> bool:
+	var type:=int(Spells.DAMAGE_TYPE_INDEX[school])
+	for enemy: GameUnit in world.unit_rows():
+		if enemy.dead or not world.is_enemy(u,enemy): continue
+		var damage: PackedFloat32Array=enemy.stats.get("dmg_types",PackedFloat32Array())
+		if damage.size()>type and damage[type]>0.0: return true
+		for spell: String in enemy.proto.get("spells",[]):
+			if Spells.DAMAGE_SCHOOLS.get(Spells.parse(spell).code,"")==school: return true
+	return false
 
 
 ## then the float32 store / nearest-even FISTP in 5cf9a0.
@@ -1222,7 +1250,10 @@ func choose(u: GameUnit, foes: Array, friendly_only := false) -> Dictionary:
 		if not cur.is_empty() and not _area_safe(u, cur.opt, cur.t):
 			cur = {}
 		if not cur.is_empty():
-			if foes.size() == 1 and os.b.is_empty():
+			# One target does not imply one action: hybrids must reconsider
+			# spells after an attack, including after a completed cast queues
+			# a weapon order. Only the single-option case is invariant.
+			if foes.size() == 1 and os.a.size() == 1 and os.b.is_empty():
 				return cur
 			var s := _score(u, cur.t, cur.opt, cur.list, cur.t, -1e20)
 			if s < -1e20:

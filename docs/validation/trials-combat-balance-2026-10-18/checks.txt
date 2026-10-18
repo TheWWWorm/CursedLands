@@ -1,0 +1,229 @@
+h-final-arena_combat_budgets
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 23:56:19 +4801ms] session ba36f186428c: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_COMBAT_BUDGETS checks=919 failures=[]
+[trace 23:56:31 +17115ms] clean exit
+
+g-final-arena_filtered_spells
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 23:48:09 +5227ms] session 047548c4c272: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_FILTERED_SPELLS success=true before=[25.0, 25.0, 25.0] after=[11.0, 11.0, 25.0]
+[trace 23:48:09 +5545ms] clean exit
+
+g-final-ai_activity_health
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 23:48:14 +5201ms] session 9575c7335d45: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+AI_HEALTH_CHECKS 45 checks 0 failures
+[trace 23:48:15 +5431ms] clean exit
+
+g-final-ai_live_eligibility
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 23:48:20 +5169ms] session e099a8a0df5f: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+AI_OWNED_TIMING object_us=31148 owned_us=23933
+AI_LIVE_ELIGIBILITY 4589 checks 0 failures
+[trace 23:48:20 +5481ms] clean exit
+
+g-final-ai_activity_senses
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 23:48:26 +5009ms] session 0c439e7b6cfa: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+AI_SENSES_CHECKS 7340 checks 0 failures
+[trace 23:48:26 +5419ms] clean exit
+
+g-final-ai_reaction_recipients
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 23:48:31 +5042ms] session dfeed87fee9d: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+AI_REACTION_RECIPIENTS 7 checks; failures=0
+[trace 23:48:32 +5285ms] clean exit
+
+g-final-arena_recruitment
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 23:48:37 +5041ms] session b9d5e90bebca: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_RECRUITMENT 2396 checks; native_fights=364; failures=[]
+[trace 23:49:01 +28635ms] clean exit
+
+balance-final-arena_online_feedback
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 23:34:03 +5037ms] session 214a294cdc1b: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_ONLINE_FEEDBACK 32 checks; failures=[]
+[trace 23:34:07 +9006ms] clean exit
+
+balance-final-arena_sale_quotes
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 23:34:12 +4942ms] session cd09f53a68d8: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_SALE_QUOTES 272 checks; failures=[]
+[trace 23:34:14 +6921ms] clean exit
+
+balance-final-stamina_regen
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 23:33:52 +4773ms] session cbb6ae6ed6c0: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PASS off keeps normal HP recovery and no movement stamina recovery
+PASS host rule overrides local preference
+PASS independent direct steering retains active stamina rules
+PASS off retains normal idle stamina rate
+PASS stationary follower recovers at the native idle rate
+PASS recovery preserves the persistent follow command and AI busy state
+PASS moving follower does not recover with the option off
+PASS one-shot interaction approach is not idle follow
+PASS follow cannot regenerate through an active action animation
+PASS queued action prevents idle follower recovery
+PASS direct steering prevents idle follower recovery
+PASS on recovers exactly HP amount during direct_move
+PASS on recovers exactly HP amount during move
+PASS on recovers exactly HP amount during attack
+PASS on recovers exactly HP amount during cast
+PASS full health does not remove the stamina rate
+PASS health regeneration buffs also raise the stamina rate
+PASS higher native stamina rate does not accelerate continuous recovery
+PASS standing idle retains faster native stamina recovery
+PASS stationary follower keeps the native idle rate with optional recovery on
+PASS moving follower uses the optional HP-based recovery rate
+PASS recovery cannot exceed maximum stamina
+PASS party rule does not alter hostile NPC recovery
+PASS dead units cannot regenerate
+PASS older saved rule sets load with the new option off
+PASS new games keep optional recovery off by default
+PASS save accepts the stamina rule
+PASS load preserves the stamina rule
+PASS ru translates the rule
+PASS ru translates its explanation
+PASS de translates the rule
+PASS de translates its explanation
+PASS disabling the option restores the idle restriction
+STAMINA_REGEN 33 checks 0 failures
+[trace 23:33:52 +4990ms] clean exit
+
+i-final-arena_economy
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:09:36 +4647ms] session 39a77513ea68: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_ECONOMY 626 checks; failures=[]
+[trace 00:09:36 +4884ms] clean exit
+
+i-final-arena_roster
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:15:38 +4588ms] session cf01a09e0184: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_ROSTER checks=1608 opening_pair_duplicate_rate=0.07215 failures=[]
+[trace 00:15:38 +4916ms] clean exit
+
+i-final-arena_bot_planner
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:15:38 +4538ms] session d4e2fd934020: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_BOT_PLANNER checks=21 family=1 filler=0 failures=[]
+[trace 00:15:38 +4757ms] clean exit
+
+i-final-arena_solo_worker
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:15:38 +4624ms] session a9c725d090ab: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:15:42 +4274ms] session 9cedc2fa36a4: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+WORKER_CLOCK 0 worker=22.9349999999999 inline=22.9349999999999
+WORKER_CLOCK 1 worker=20.7899999999999 inline=20.7899999999999
+WORKER_CLOCK 2 worker=33.6599999999999 inline=33.6599999999999
+WORKER_CLOCK 3 worker=45.9249999999998 inline=45.9249999999998
+WORKER_CLOCK 4 worker=25.5199999999999 inline=25.5199999999999
+WORKER_CLOCK 5 worker=41.0849999999998 inline=41.0849999999998
+WORKER_CLOCK 6 worker=36.8499999999998 inline=36.8499999999998
+WORKER_CLOCK 7 worker=55.5499999999997 inline=55.5499999999997
+WORKER_CLOCK 8 worker=36.3549999999998 inline=36.3549999999998
+[trace 00:16:21 +43078ms] clean exit
+ARENA_SOLO_WORKER 57 checks; failures=[]
+[trace 00:16:22 +48303ms] clean exit
+
+i-final-alliances-en-v2
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:13:26 +4897ms] session 24322631b944: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_ALLIANCES 626 checks; failures=[]
+[trace 00:13:27 +6586ms] clean exit
+
+i-final-alliances-ru-v2
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:13:26 +5220ms] session 66655519a839: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_ALLIANCES 626 checks; failures=[]
+[trace 00:13:28 +6881ms] clean exit
+
+i-final-alliances-de-v2
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:13:26 +5142ms] session c0aae5d7780c: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_ALLIANCES 626 checks; failures=[]
+[trace 00:13:27 +6800ms] clean exit
+
+i-ui-en-final
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+[trace 00:13:28 +6607ms] session c9aed5eecfac: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, gl_compatibility / opengl3
+CAPTURE challenge-en-prepare (1280.0, 726.0)
+CAPTURE challenge-en-recovery (1280.0, 726.0)
+CAPTURE challenge-en-battle (1280.0, 726.0)
+CAPTURE challenge-en-victory (1280.0, 726.0)
+CAPTURE challenge-en-defeat (1280.0, 726.0)
+CAPTURE challenge-en-income (1280.0, 726.0)
+CAPTURE challenge-en-countdown (1280.0, 726.0)
+ARENA_CHALLENGE_UI 33 checks; failures=[]
+[trace 00:14:02 +40334ms] clean exit
+
+i-ui-ru-final
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+[trace 00:14:08 +5538ms] session 93af4da48034: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, gl_compatibility / opengl3
+CAPTURE challenge-ru-prepare (1280.0, 726.0)
+CAPTURE challenge-ru-recovery (1280.0, 726.0)
+CAPTURE challenge-ru-battle (1280.0, 726.0)
+CAPTURE challenge-ru-victory (1280.0, 726.0)
+CAPTURE challenge-ru-defeat (1280.0, 726.0)
+CAPTURE challenge-ru-income (1280.0, 726.0)
+CAPTURE challenge-ru-countdown (1280.0, 726.0)
+ARENA_CHALLENGE_UI 33 checks; failures=[]
+[trace 00:14:40 +37436ms] clean exit
+
+i-ui-de-final
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+[trace 00:14:47 +5626ms] session 839fdb48d733: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, gl_compatibility / opengl3
+CAPTURE challenge-de-prepare (1280.0, 726.0)
+CAPTURE challenge-de-recovery (1280.0, 726.0)
+CAPTURE challenge-de-battle (1280.0, 726.0)
+CAPTURE challenge-de-victory (1280.0, 726.0)
+CAPTURE challenge-de-defeat (1280.0, 726.0)
+CAPTURE challenge-de-income (1280.0, 726.0)
+CAPTURE challenge-de-countdown (1280.0, 726.0)
+ARENA_CHALLENGE_UI 33 checks; failures=[]
+[trace 00:15:19 +37646ms] clean exit
+
+i-online-updates
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+[trace 00:16:11 +5491ms] session 4e39fa01c888: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, gl_compatibility / opengl3
+CAPTURE online-upgrade (1280.0, 726.0)
+CAPTURE online-sale-2 (1280.0, 726.0)
+CAPTURE online-sale-3 (1280.0, 726.0)
+ARENA_ONLINE_UPDATES_UI 24 checks; failures=[]
+[trace 00:16:39 +33787ms] clean exit

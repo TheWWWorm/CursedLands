@@ -40,6 +40,18 @@ func _ready() -> void:
 	await shot("online-upgrade")
 	screen._recruit_offer(1); await frames(40)
 	check(events.size()==1 and screen._evolution_notice.pending.is_empty(),"unrelated purchase cannot repeat old upgrade")
+	company.army.clear()
+	var veteran := int(company._recruit(4,1,3).uid)
+	company._recruit(4,1,3); company._recruit(4,0,1); company._recruit(4,0,1); company.arrange()
+	company.shop.assign([{"family":4,"rank":0,"locked":false}])
+	host.game.boards._sync_board(1); host._dirty=true
+	check(await until(func():return screen.run.army.size()==4 and not screen.run.unit(veteran).is_empty()),"guest receives eight-copy fixture")
+	screen._recruit_offer(0)
+	check(await until(func():return screen.run.unit(veteran).get("rank",-1)==2),"ninth copy completes three-star evolution")
+	check(await until(func():return events.size()==2),"three-star notice appears without another action")
+	check(events[1].old_rank==1 and events[1].rank==2,"chained merge compares the retained two-star form with the final form")
+	for repeat in 3: host._dirty=true; await frames(8)
+	check(events.size()==2 and screen._evolution_notice.pending.is_empty(),"repeated acknowledged snapshots cannot replay the notice")
 	for rank in [1,2]:
 		var uid := int(company._recruit(15,rank,9 if rank==1 else 27).uid)
 		company.unit(uid).deployed=false; host._dirty=true

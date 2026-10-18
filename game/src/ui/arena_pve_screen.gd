@@ -1785,7 +1785,7 @@ func _spell_titles(row: Dictionary) -> String:
 	var names: Array[String] = []
 	for spell: String in row.get("spells", []):
 		var parsed := Spells.parse(spell)
-		var value := RemakeText.t(Spells.title(parsed.code)) if parsed.has("code") else ""
+		var value := WikiCatalog.spell_title(parsed.code) if parsed.has("code") else ""
 		if not value.is_empty() and value not in names: names.append(value)
 	return ", ".join(names)
 

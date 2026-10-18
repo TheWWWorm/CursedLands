@@ -578,7 +578,7 @@ func restore(data: Dictionary) -> bool:
 	var maximum_preparation := ArenaRules.PREPARATION_SECONDS if int(data.version) >= 9 else 45.0
 	if not _number(data.get("preparation_left", saved_preparation), 0, maximum_preparation): return false
 	if not _integer(data.get("shop_level", 0), 0, 2): return false
-	if not _integer(data.get("training", 0), 0, ArenaRules.MAX_TRAINING): return false
+	if not _integer(data.get("training", 0), 0, ArenaRules.MAX_SAVED_TRAINING): return false
 	if not _integer(data.get("battle_savings", 0), 0, 100000): return false
 	if not saved_pact is String or saved_pact not in ["", "hunt", "tribe", "vanguard"]: return false
 	if not _integer(saved_rank, 0, 2): return false

@@ -26,8 +26,7 @@ static func values(id: String, unit: GameUnit = null, family := -1, rank := 0) -
 	ArenaRules.recruit_stats(family, rank, result)
 	# Bow-using spellcasters still cannot parry with their bow. Their budget
 	# role is Magic, but the preview follows the native equipped weapon rule.
-	var weapon := Items.info(str(row.get("weapon","")))
-	if int(weapon.get("row",{}).get("type_id",-1)) in [5,6]: result.defense=0
+	if ArenaRules.bow_user(row): result.defense=0
 	if is_instance_valid(unit):
 		result.hp = maxi(0, ceili(unit.hp)); result.max_hp = ceili(unit.max_hp)
 		result.attack = unit.world.combat.attack_value(unit)
@@ -35,6 +34,10 @@ static func values(id: String, unit: GameUnit = null, family := -1, rank := 0) -
 		result.min = int(unit.stats.get("dmg_min", 0)); result.max = int(unit.stats.get("dmg_max", 0))
 		result.armor = unit.stats.get("armor", armor)
 		result.types = Array(unit.stats.get("dmg_types", PackedFloat32Array(types)))
+	var source: Dictionary = unit.stats if is_instance_valid(unit) else result
+	result.regeneration = float(result.max_hp)*float(source.get("health_regen",race.get("health_regen",0.0)))/(GameUnit.TICK*15.0)*(1.0+float(source.get("regen_hp",0.0))/100.0)
+	if is_instance_valid(unit):
+		for buff: Dictionary in unit.buffs.values(): result.regeneration*=float(buff.get("regen_mul",1.0))
 	return result
 
 
@@ -52,6 +55,7 @@ static func summary(id: String, unit: GameUnit = null, family := -1, rank := 0) 
 		if armor[i] < general: weak.append(RemakeText.t(WikiCatalog.DAMAGE_TYPES[i]))
 		elif armor[i] > general: strong.append(RemakeText.t(WikiCatalog.DAMAGE_TYPES[i]))
 	var text := RemakeText.t("Health %d/%d\nAttack %d    Defense %d\nDamage %d–%d · %s\nArmor %d") % [stats.hp, stats.max_hp, stats.attack, stats.defense, stats.min, stats.max, RemakeText.t(WikiCatalog.DAMAGE_TYPES[best]), roundi(general)]
+	if float(stats.regeneration)>0: text += "\n" + RemakeText.t("Recovery: %.2f health/s") % float(stats.regeneration)
 	text += "\n" + (RemakeText.t("Weaknesses: %s") % ", ".join(weak) if not weak.is_empty() else RemakeText.t("Weaknesses: none"))
 	if not strong.is_empty(): text += "\n" + RemakeText.t("Resistant to: %s") % ", ".join(strong)
 	return text

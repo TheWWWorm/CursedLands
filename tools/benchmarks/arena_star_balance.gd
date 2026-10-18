@@ -25,6 +25,11 @@ func duel(a_family: int, a_rank: int, b_family: int, b_rank: int, copies: int, s
 	return result
 func _ready() -> void:
 	var native := hash(GameData.db.tables)
+	var families := []
+	var kind := ""
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--families="): families=Array(arg.get_slice("=",1).split(",")).map(func(s):return int(s))
+		elif arg.begins_with("--kind="): kind=arg.get_slice("=",1)
 	var pairs := []
 	for family in ArenaRules.ACTIVE_FAMILIES:
 		for rank in [1,2]: pairs.append(["promotion",family,rank,family,rank-1,1])
@@ -34,6 +39,8 @@ func _ready() -> void:
 			if ArenaRules.FAMILIES[rival].cost==3:pairs.append(["three_gold",cheap,1,rival,0,1])
 			if ArenaRules.FAMILIES[rival].cost==5:pairs.append(["nine_vs_ten_gold",cheap,2,rival,0,2])
 	for pair: Array in pairs:
+		if not families.is_empty() and pair[1] not in families: continue
+		if not kind.is_empty() and pair[0]!=kind: continue
 		var row := {"kind":pair[0],"family":pair[1],"rank":pair[2],"opponent":pair[3],"opponent_rank":pair[4],"copies":pair[5],"wins":0,"draws":0,"trials":4,"timeouts":0,"seconds":0.0}
 		for seed_value in [8519,10777]:
 			for side in 2:
@@ -42,4 +49,4 @@ func _ready() -> void:
 				row.timeouts+=int(result.reason=="timeout")
 		rows.append(row); print("STAR_BALANCE ",JSON.stringify(row))
 		FileAccess.open("user://arena-star-balance.json",FileAccess.WRITE).store_string(JSON.stringify(rows,"\t"))
-	get_tree().quit(0 if hash(GameData.db.tables)==native else 1)
+	get_tree().quit(0 if not rows.is_empty() and hash(GameData.db.tables)==native else 1)
