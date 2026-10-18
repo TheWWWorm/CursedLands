@@ -56,14 +56,15 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 		var other := rng.randi_range(0, i)
 		var held: int = families[i]
 		families[i] = families[other]; families[other] = held
-	# Keep both a front line and ranged choices without fixing their identities.
-	var opening: Array[int] = []
-	for melee in [true, false]:
-		for family in families:
-			if (ArenaRules.FAMILIES[family].role == "Melee") == melee:
-				opening.append(family)
-				if opening.size() == (3 if melee else 6): break
-	for family in opening: shop.append({"family": family, "rank": 0, "locked": false})
+	# Six different recruits leave room to choose a direction before rolling.
+	var opening: Array[int] = families.duplicate()
+	while opening.size()<6: opening.append(families[rng.randi_range(0,families.size()-1)])
+	# Keep the initial hand playable without biasing subsequent shop rolls.
+	for melee in [true,false]:
+		if not opening.slice(0,6).any(func(f):return (ArenaRules.FAMILIES[f].role=="Melee")==melee):
+			var substitute: int=families.filter(func(f):return (ArenaRules.FAMILIES[f].role=="Melee")==melee)[0]
+			opening[5]=substitute
+	for family in opening.slice(0,6): shop.append({"family": family, "rank": 0, "locked": false})
 	_touch()
 
 
@@ -277,8 +278,10 @@ func _roll_shop(keep_lock: bool) -> void:
 				roll -= weight
 				tier += 1
 			var candidates: Array[int] = []
-			for family in ArenaRules.FAMILIES.size():
-				if int(ArenaRules.FAMILIES[family].tier) == tier: candidates.append(family)
+			for family in ArenaRules.ACTIVE_FAMILIES:
+				if int(ArenaRules.FAMILIES[family].tier) != tier: continue
+				candidates.append(family)
+
 			shop.append({"family": candidates[rng.randi_range(0, candidates.size() - 1)], "rank": 0, "locked": false})
 	# An empty company must remain recoverable after a paid refresh/improvement.
 	if army.is_empty() and not shop.any(func(offer): return int(offer.family) >= 0 and offer_cost(offer) <= ArenaRules.MIN_RECRUIT_COST):
@@ -457,6 +460,7 @@ func resolve(winner: int, seconds: float, damage: Array, _survivors: Array = [0,
 	if winner != 0:
 		lives -= 1
 		free_refresh = true
+	last_result.health_lost = 1 if winner != 0 else 0
 	history.append(last_result.duplicate(true))
 	stage = "lost" if lives <= 0 else "won" if wave == wave_limit else "result"
 	if auto_save: _update_profile()
@@ -504,7 +508,8 @@ func choose_reward(index: int) -> String:
 		"companion":
 			# A reward must never vanish into a full bench. It arrives in one
 			# temporary overflow slot; purchases stay blocked until resolved.
-			_recruit(-1, 0, 9 + ArenaRules.region(wave) * 9, reward.prototype)
+			_recruit(11, 1, int(ArenaRules.FAMILIES[11].cost)*3)
+			combine_ready()
 		"purse": gold += 8
 		"supplies": gold += 6
 		"life": lives = mini(3, lives + 1)
@@ -536,7 +541,7 @@ func can_undo() -> bool:
 
 
 func can_shop() -> bool:
-	return not preparing_battle and stage in ["prepare", "fight", "result"]
+	return lives > 0 and not preparing_battle and stage in ["prepare", "fight", "result"]
 
 
 func snapshot() -> Dictionary:
@@ -550,6 +555,7 @@ func snapshot() -> Dictionary:
 
 
 func restore(data: Dictionary) -> bool:
+	data = data.duplicate(true)
 	# Validate before changing any live state. JSON numbers arrive as floats.
 	if not _integer(data.get("version"), 1, ArenaRules.VERSION): return false
 	if not data.get("stage", "") in ["prepare", "fight", "result", "reward", "won", "lost"]: return false
@@ -587,12 +593,19 @@ func restore(data: Dictionary) -> bool:
 		if not entry is Dictionary or not entry.get("point") is Array or entry.point.size() != 2: return false
 		if not _integer(entry.get("uid"), 1, 100000) or seen.has(int(entry.uid)): return false
 		if not entry.get("deployed") is bool or not entry.get("prototype") is String: return false
-		if not _integer(entry.get("family"), -1, ArenaRules.FAMILIES.size() - 1) or not _integer(entry.get("rank"), 0, 2): return false
+		if not _integer(entry.get("family"), -1, (ArenaRules.LEGACY_FORMS.size() if int(data.version)<11 else ArenaRules.FAMILIES.size()) - 1) or not _integer(entry.get("rank"), 0, 2): return false
 		if not _integer(entry.get("investment"), 1, 10000): return false
 		var family := int(entry.family)
 		var rank := int(entry.rank)
-		if family >= 0 and entry.prototype != ArenaRules.prototype(family, rank): return false
-		if family < 0 and (entry.prototype not in ArenaRules.COMPANIONS or rank != 0): return false
+		if family >= 0:
+			if int(data.version)<11:
+				if entry.prototype != ArenaRules.LEGACY_FORMS[family][rank]: return false
+				family = int(ArenaRules.LEGACY_FAMILIES[family])
+				entry.family=family; entry.prototype=ArenaRules.prototype(family,rank)
+			elif family not in ArenaRules.ACTIVE_FAMILIES or entry.prototype != ArenaRules.prototype(family,rank): return false
+		if family < 0:
+			if entry.prototype not in ArenaRules.COMPANIONS or rank != 0: return false
+			entry.family=11; entry.prototype=ArenaRules.prototype(11,0)
 		if GameData.db.find("monster_prototypes", entry.prototype).is_empty(): return false
 		for value in entry.point:
 			if not _number(value, 0, 64): return false
@@ -617,9 +630,11 @@ func restore(data: Dictionary) -> bool:
 		if int(data.version) < 10 or data.shop.size() != 6: return false
 	var locks := 0
 	for offer in data.shop:
-		if not offer is Dictionary or not _integer(offer.get("family"), -1, ArenaRules.FAMILIES.size() - 1) or not offer.get("locked") is bool: return false
+		if not offer is Dictionary or not _integer(offer.get("family"), -1, (ArenaRules.LEGACY_FORMS.size() if int(data.version)<11 else ArenaRules.FAMILIES.size()) - 1) or not offer.get("locked") is bool: return false
 		if not _integer(offer.get("rank", 0), 0, 2): return false
-		if int(offer.family) >= 0 and int(offer.get("rank", 0)) >= ArenaRules.FAMILIES[int(offer.family)].forms.size(): return false
+		if int(offer.family)>=0:
+			if int(data.version)<11: offer.family=int(ArenaRules.LEGACY_FAMILIES[int(offer.family)])
+			elif int(offer.family) not in ArenaRules.ACTIVE_FAMILIES: return false
 		if offer.locked:
 			if int(offer.family) < 0: return false
 			locks += 1
@@ -631,7 +646,10 @@ func restore(data: Dictionary) -> bool:
 	var reward_kinds := {}
 	for reward in data.rewards:
 		if not reward is Dictionary or not reward.get("kind") is String or (not ArenaRules.BOONS.has(reward.kind) and not (int(data.version) < 8 and reward.kind in ["pact", "pact_upgrade"])): return false
-		if reward.kind == "companion" and reward.get("prototype") != ArenaRules.companion(int(data.wave)): return false
+		if reward.kind == "companion":
+			var expected: String=ArenaRules.COMPANIONS[clampi(int(data.wave)/6-1,0,3)] if int(data.version)<11 else ArenaRules.companion(int(data.wave))
+			if reward.get("prototype")!=expected: return false
+			reward.prototype=ArenaRules.companion(int(data.wave))
 		if reward.kind == "pact":
 			if not saved_pact.is_empty() or int(data.wave) % 6 != 3 or not reward.get("pact") in ["hunt", "tribe", "vanguard"]: return false
 			if reward_kinds.has(reward.pact): return false

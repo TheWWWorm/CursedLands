@@ -53,13 +53,17 @@ func run()->void:
 		if not outcomes.has(player):continue
 		var expected:Dictionary=oracle.run.board_results[player]
 		check(int(outcomes[player].winner)==int(expected.winner) and Array(outcomes[player].survivors)==Array(expected.survivors),"worker preserves native result for board %d"%player)
+		var ledger := {}
+		for row in states.get(player,{}).get("friendly_damage",[]): ledger[int(row[0])]=float(row[1])
+		check(ledger==oracle.encounter(player).friendly_damage,"worker preserves per-unit friendly damage for board %d"%player)
 		print("WORKER_CLOCK ",player," worker=",outcomes[player].time," inline=",oracle.encounter(player).world.time)
 		check(is_equal_approx(float(outcomes[player].time),oracle.encounter(player).world.time),"worker preserves native clock for board %d"%player)
 	oracle.queue_free()
 	# A vacant player's immediate loss must not vanish before the bell.
-	prepared={};outcomes.clear();states.clear();league.army.clear()
+	prepared={};outcomes.clear();states.clear();league.army.clear();league.lives=1
 	host._send(1,{"t":"solo_prepare","snapshot":league.snapshot(),"speed":1})
 	check(await until(func():return not prepared.is_empty(),30),"empty player round prepares")
+	check(prepared.get("boards",[]).any(func(board):return int(board.seat)==0),"bell-lethal empty player retains initial replica")
 	host._send(1,{"t":"solo_clock","round":12,"paused":false,"speed":1})
 	check(await until(func():return outcomes.has(0)),"empty player receives immediate outcome")
 	await host.close_shown();check(not OS.is_process_running(child),"solo worker exits with frontend")

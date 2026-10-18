@@ -20,7 +20,7 @@ provides the historical three-interest cap and separates tier from star rank.
 [Auto Chess's lineup UI notes](https://ac.dragonest.com/en/news/detail/ea86bc29767)
 show synergy membership in the shop and indicate when a lineup activates a bonus.
 
-## Decisions
+## Historical decisions (17 October)
 
 - Replace a selected pact and free summon with automatic overlapping alliances.
   Deployed unique families count once. The HUD shows current progress; details live
@@ -71,3 +71,10 @@ choose XP or recovery rather than cash.
 The core design tension is spend for immediate strength versus save for broader
 choices. The revision removes the unrelated pact selection and independent shop
 quality purchase rather than adding another currency or upgrade ladder.
+
+## 18 October experiment
+
+The 30-chain roster, uniform three-copy evolution, bounded Trials stats and
+expanded native simulation checks supersede the roster and merge recipes above.
+See [the current experiment](../validation/allods-challenge-2026-10-18.md).
+The historical 18-run expedition sample above describes its earlier ruleset.

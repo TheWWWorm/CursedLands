@@ -141,7 +141,7 @@ func _process(_delta: float) -> void:
 		preview.show_model({"kind": "creature", "value": prototype}, true)
 		preview.turn_by(-0.4)
 		for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		if is_instance_valid(preview.creature): preview.creature.material = _glow if upgrade_ready else null
+		if is_instance_valid(preview.creature): preview.creature.material = _glow if upgrade_ready or cost >= 4 else null
 	if is_instance_valid(preview.creature) and (preview.creature._framed < 3 or is_instance_valid(preview.creature._old_pivot)): return
 	_preview_pending = false
 	preview.modulate.a = 0.65 if disabled else 1.0
@@ -188,10 +188,13 @@ func update_offer() -> void:
 	_copies.tooltip_text = RemakeText.t("Copies: %d/%d") % [copies, copies_needed]
 	preview.modulate.a = 0.0 if _preview_pending else 0.65 if disabled else 1.0
 	upgrade_ready = copies_needed > 0 and copies + 1 >= copies_needed
-	if upgrade_ready and _glow == null:
+	if (upgrade_ready or cost >= 4) and _glow == null:
 		_glow = ShaderMaterial.new()
 		_glow.shader = preload("res://src/ui/arena_upgrade_glow.gdshader")
-	if is_instance_valid(preview.creature): preview.creature.material = _glow if upgrade_ready else null
+	if _glow:
+		_glow.set_shader_parameter("glow_color",GOLD if upgrade_ready else cost_accent(cost))
+		_glow.set_shader_parameter("glow_strength",0.65 if upgrade_ready else 0.4)
+	if is_instance_valid(preview.creature): preview.creature.material = _glow if upgrade_ready or cost >= 4 else null
 	_copies.text += " ↑" if upgrade_ready else ""
 	_copies.add_theme_color_override("font_color", SNOW_ACCENT if upgrade_ready else PAPER)
 

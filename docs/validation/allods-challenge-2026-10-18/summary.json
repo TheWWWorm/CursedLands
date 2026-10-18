@@ -1,0 +1,105 @@
+{
+  "tournaments": 8,
+  "seeds": [
+    7319,
+    8316,
+    9313,
+    10310
+  ],
+  "policies": {
+    "economy": {
+      "seats": 18,
+      "mean_place": 5.7778,
+      "wins": 3,
+      "top_three": 4
+    },
+    "expansion": {
+      "seats": 18,
+      "mean_place": 5.3333,
+      "wins": 2,
+      "top_three": 5
+    },
+    "evolution": {
+      "seats": 18,
+      "mean_place": 4.3889,
+      "wins": 1,
+      "top_three": 9
+    },
+    "tempo": {
+      "seats": 18,
+      "mean_place": 4.5,
+      "wins": 2,
+      "top_three": 6
+    }
+  },
+  "direct_fights": {
+    "promotion": {
+      "trials": 240,
+      "wins": 240,
+      "draws": 0,
+      "timeouts": 0
+    },
+    "three_gold": {
+      "trials": 168,
+      "wins": 92,
+      "draws": 2,
+      "timeouts": 0
+    },
+    "nine_vs_ten_gold": {
+      "trials": 112,
+      "wins": 21,
+      "draws": 3,
+      "timeouts": 3
+    }
+  },
+  "expeditions": [
+    {
+      "strategy": 0,
+      "seed": 7319,
+      "wave": 27,
+      "outcome": "lost"
+    },
+    {
+      "strategy": 0,
+      "seed": 8316,
+      "wave": 29,
+      "outcome": "lost"
+    },
+    {
+      "strategy": 1,
+      "seed": 7319,
+      "wave": 29,
+      "outcome": "lost"
+    },
+    {
+      "strategy": 1,
+      "seed": 8316,
+      "wave": 28,
+      "outcome": "lost"
+    },
+    {
+      "strategy": 2,
+      "seed": 7319,
+      "wave": 30,
+      "outcome": "won"
+    },
+    {
+      "strategy": 2,
+      "seed": 8316,
+      "wave": 30,
+      "outcome": "lost"
+    },
+    {
+      "strategy": 3,
+      "seed": 7319,
+      "wave": 28,
+      "outcome": "lost"
+    },
+    {
+      "strategy": 3,
+      "seed": 8316,
+      "wave": 29,
+      "outcome": "lost"
+    }
+  ]
+}

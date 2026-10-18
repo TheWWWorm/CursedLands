@@ -54,6 +54,8 @@ func attack_value(u: GameUnit) -> int:
 ## skills). when the prototype path applies (unnamed / unarmed).
 ## Cached per weapon in u.stats.
 static func named_weapon_ratings(u: GameUnit) -> Array:
+	# Trials budgets also govern named campaign companions recruited there.
+	if u.stats.get("trials_budget",false): return [int(u.stats.to_hit),int(u.stats.parry)]
 	if u.has_meta("hero") or u.has_meta("npc_character") or u.uid < 1000000000 or u.uid >= 2000000000:
 		return []
 	var wid := ""

@@ -7,6 +7,14 @@
 - Restore the original ambient wisp stars across the whole creature, including their flicker, running cadence and finite lifetime.
 - Restore hit particles and magic attachment positions on creatures with numbered body parts, including wisps, using the original game's part-prefix lookup.
 
+- Add an experimental 30-chain Trials roster with 90 distinct original forms, 1–5-gold recruits and three-copy evolution at each star step. Apply price/star budgets to Trials health, attacks, armor and offensive spells, and migrate older roster saves.
+- Show friendly damage with native pixel portraits, names, stars and bars above a compact alliance grid without an outer panel. Add central round, countdown, income and victory/defeat notices.
+- Preserve the Trials camera between rounds and board views. Add WASD panning and right-drag tilt, using modern-camera speed and inversion preferences. Fit camera clipping to the orbit distance so tall windows and steep angles retain the battlefield and creatures. Limit battles to 90 simulated seconds.
+- Apply tournament health loss as each board finishes, settle income and places once all participants finish, and preserve original round health when replaying interrupted combat.
+- Use host-supplied online sale quotes and reject changed prices. Display evolution notices on the acknowledged roster update and retain spectator hover details after elimination.
+- Advertise online autochess lobbies automatically on the LAN; keep private solo combat workers unlisted.
+- Switch replicated survivors from movement to idle clips when combat ends. Isolate Trials animation randomness and native pose clocks from frame timing and unrelated activity.
+
 ## 1.17.0 — 2026-10-18
 
 - Apply saved idle and movement postures before displaying loaded or joining characters, including paused solo saves. ([#28](https://github.com/TheWWWorm/CursedLands/issues/28))

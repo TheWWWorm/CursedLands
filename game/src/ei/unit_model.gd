@@ -25,6 +25,9 @@ const WEAPON_MESH := {"sword": "rh3.sword%02d", "axe": "rh3.axe%02d", "dagger": 
 
 static var _textures := {}
 static var _surface_textures := {}
+## Trials seed each actor's animation choices independently of UI/network
+## random calls. Campaign models retain the original global stream.
+var animation_rng: RandomNumberGenerator
 const AnimatedPart = preload("res://src/ei/anim_part.gd")
 const SurfaceResponse = preload("res://src/game/surface_materials.gd")
 const FigureMaterial = preload("res://src/ei/figure_material.gd")
@@ -324,7 +327,7 @@ var _view_active := false
 
 ## `unit` is a map object dictionary from EIMob (or a synthetic one with
 ## prototype/complexion/armors/weapons).
-static func create(unit: Dictionary, ui_preview := false, initial_action := true) -> EIUnitModel:
+static func create(unit: Dictionary, ui_preview := false, initial_action := true, random: RandomNumberGenerator = null) -> EIUnitModel:
 	unit = CampaignState.map_unit_record(unit)
 	var db := GameData.db
 	var proto := db.find("monster_prototypes", unit.get("prototype", unit.get("parent_template", "")))
@@ -336,6 +339,7 @@ static func create(unit: Dictionary, ui_preview := false, initial_action := true
 	if model.is_empty():
 		return null
 	var m := EIUnitModel.new()
+	m.animation_rng = random
 	m.template = tmpl
 	m.name = tmpl
 	m.set_meta("peaceful_gear", bool(unit.get("peaceful_gear", false)) and not ui_preview)
@@ -628,7 +632,7 @@ func pick(code: int, fallback := true, any_mod := false) -> String:
 			if _same(int(e.code), code, any_mod) and has_anim(e.name):
 				c.append(e.name)
 		if not c.is_empty():
-			r = c.pick_random()
+			r = _animation_pick(c)
 	return r
 
 
@@ -651,10 +655,18 @@ func _match(q: int, any_mod: bool) -> String:
 		return ""
 	if c.size() == 1:
 		return c[0].name
-	var roll := randi() % 100
-	var first: Dictionary = c.pick_random()
+	var roll := _animation_roll() % 100
+	var first: Dictionary = _animation_pick(c)
 	var kept := c.filter(func(e): return int(e.weight) >= roll)
-	return (kept.pick_random() if not kept.is_empty() else first).name
+	return (_animation_pick(kept) if not kept.is_empty() else first).name
+
+
+func _animation_roll() -> int:
+	return animation_rng.randi() if animation_rng else randi()
+
+
+func _animation_pick(values: Array) -> Variant:
+	return values[animation_rng.randi()%values.size()] if animation_rng else values.pick_random()
 
 
 ## The original's query for a logical action (idle

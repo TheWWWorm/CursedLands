@@ -1,6 +1,6 @@
 class_name ArenaUnitInfo
 extends RefCounted
-## Combat values, including Trials elite bonuses. Weaknesses compare armor with
+## Combat values, including Trials price and star budgets. Weaknesses compare armor with
 ## general armor, as in the campaign panel; they are not invented multipliers.
 
 static func rank_of(id: String) -> int:
@@ -21,14 +21,13 @@ static func values(id: String, unit: GameUnit = null, family := -1, rank := 0) -
 		"attack": int(row.get("to_hit", 0)), "defense": 0 if int(row.get("weapon_type_id", -1)) in [5, 6] else int(row.get("parry", 0)),
 		"min": int(row.get("damage_min", 0)), "max": int(row.get("damage_min", 0)) + int(row.get("damage_max", 0)),
 		"armor": armor, "types": types}
-	if ArenaRules.is_elite(family, rank):
-		result.hp = int(ArenaRules.elite_health(result.hp)); result.max_hp = result.hp
-		result.attack = int(result.attack * 1.2)
-		result.min = int(result.min * 1.5); result.max = int(result.max * 1.5)
-		for i in armor.size(): armor[i] *= 1.2
-		result.armor = armor
+
 	result.hp = int(ArenaRules.recruit_health(family, result.hp, rank)); result.max_hp = result.hp
 	ArenaRules.recruit_stats(family, rank, result)
+	# Bow-using spellcasters still cannot parry with their bow. Their budget
+	# role is Magic, but the preview follows the native equipped weapon rule.
+	var weapon := Items.info(str(row.get("weapon","")))
+	if int(weapon.get("row",{}).get("type_id",-1)) in [5,6]: result.defense=0
 	if is_instance_valid(unit):
 		result.hp = maxi(0, ceili(unit.hp)); result.max_hp = ceili(unit.max_hp)
 		result.attack = unit.world.combat.attack_value(unit)

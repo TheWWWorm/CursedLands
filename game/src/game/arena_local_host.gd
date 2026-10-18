@@ -42,7 +42,6 @@ func start(port: int, use_websocket: bool, solo := false) -> Error:
 		"options":GameData.options.duplicate(true)}
 	# The visible process owns router mapping and its existing status UI.
 	config.options.net_upnp = 0
-	if solo: config.options.net_lan = 0
 	var file := FileAccess.open(_config, FileAccess.WRITE)
 	if file == null: return FileAccess.get_open_error()
 	if OS.get_name() != "Windows": FileAccess.set_unix_permissions(_config, 0x180)

@@ -37,7 +37,12 @@ var _menu_was_fighting := false
 var _modal_focus: Array[Dictionary] = []
 var _guide_scroll: ScrollContainer
 var _reserve_count: Label
-var _alliance_list: VBoxContainer
+var _alliance_list: GridContainer
+var _battle_sidebar: PanelContainer
+var _sidebar_content: VBoxContainer
+var _damage_panel: ArenaDamagePanel
+var _damage_wait := 0.0
+var _round_banner: ArenaRoundBanner
 var _alliance_panel: PanelContainer
 var _train_button: ArenaRoundButton
 var _last_level := 0
@@ -296,26 +301,32 @@ func _ready() -> void:
 	_army_title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_reserve_count = _label(company_status, "", 13, MUTED)
 	_reserve_count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_alliance_list = VBoxContainer.new()
-	_alliance_list.add_theme_constant_override("separation", 6)
+	_battle_sidebar = PanelContainer.new()
+	_battle_sidebar.position=Vector2(16,182)
+	_battle_sidebar.custom_minimum_size.x=262
+	var sidebar_spacing := StyleBoxEmpty.new()
+	sidebar_spacing.content_margin_left=12; sidebar_spacing.content_margin_right=12
+	sidebar_spacing.content_margin_top=10; sidebar_spacing.content_margin_bottom=10
+	_battle_sidebar.add_theme_stylebox_override("panel",sidebar_spacing)
+	_hud.add_child(_battle_sidebar)
+	_sidebar_content=VBoxContainer.new(); _sidebar_content.add_theme_constant_override("separation",12)
+	_battle_sidebar.add_child(_sidebar_content)
+	_damage_panel = ArenaDamagePanel.new(); _sidebar_content.add_child(_damage_panel)
+	_round_banner = ArenaRoundBanner.new(); _hud.add_child(_round_banner)
 	_alliance_panel = PanelContainer.new()
-	_alliance_panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
-	_hud.add_child(_alliance_panel)
-	_alliance_panel.position = Vector2(24, 190)
-	_alliance_panel.add_child(_alliance_list)
+	_alliance_panel.add_theme_stylebox_override("panel",StyleBoxEmpty.new())
+	_sidebar_content.add_child(_alliance_panel)
+	var alliance_box := VBoxContainer.new(); _alliance_panel.add_child(alliance_box)
+	var alliance_heading := _label(alliance_box,RemakeText.t("Alliances"),21,GOLD)
+	alliance_heading.add_theme_font_override("font",_heading_font)
+	ArenaCreatureCard.outline(alliance_heading)
+	_alliance_list = GridContainer.new(); _alliance_list.columns=3
+	_alliance_list.add_theme_constant_override("h_separation",10)
+	_alliance_list.add_theme_constant_override("v_separation",6)
+	alliance_box.add_child(_alliance_list)
 	for key: String in ArenaAlliances.RULES:
-		var plaque := ArenaInfoPanel.new()
-		plaque.name = key
-		plaque.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-		plaque.set_meta("arena_alliance", key)
-		_alliance_list.add_child(plaque)
-		plaque.mouse_filter = Control.MOUSE_FILTER_STOP
-		var row := HBoxContainer.new()
-		row.add_theme_constant_override("separation", 8)
-		row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		plaque.add_child(row)
-		_icon(row, load("res://assets/arena/alliance_%s.svg" % key))
-		var label := _label(row, "", 14, PAPER)
+		var badge := ArenaAllianceBadge.new(); badge.key=key; badge.name=key
+		_alliance_list.add_child(badge)
 	_bench_scroll = ScrollContainer.new()
 	_bench_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_bench_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -438,7 +449,7 @@ func _ready() -> void:
 	_modal_panel.add_child(_modal_box)
 	_modal_layer.hide()
 	_evolution_notice = ArenaEvolutionNotice.new()
-	_evolution_notice.below = _alliance_panel
+	_evolution_notice.below = _battle_sidebar
 	_hud.add_child(_evolution_notice)
 	_hud.move_child(_evolution_notice, _modal_layer.get_index())
 	_evolution_notice.shown.connect(_highlight_evolution)
@@ -596,7 +607,7 @@ func _refresh() -> void:
 	if selected_uid > 0 and run.unit(selected_uid).is_empty(): _clear_selection()
 	_update_sell_target()
 	# A network roster refresh must not reset a stable world hover.
-	if landing or not run.can_shop(): _hide_inspector()
+	if landing: _hide_inspector()
 	if preparing and run.army.is_empty(): _hint(RemakeText.t("Recruit your first creature."))
 	_tooltips.capture(_hud)
 	if is_instance_valid(_tournament_battles) and not landing:
@@ -983,6 +994,7 @@ func _show_alliance(key: String) -> void:
 	grid.add_theme_constant_override("v_separation", 5)
 	_inspect_box.add_child(grid)
 	for family: int in rule.families:
+		if family not in ArenaRules.ACTIVE_FAMILIES: continue
 		var owned := run.army.filter(func(entry): return int(entry.family) == family)
 		var deployed := _field_army().any(func(entry): return int(entry.family) == family and entry.deployed)
 		var status := "On field" if deployed else "In reserves" if not owned.is_empty() else "Not recruited"
@@ -998,6 +1010,9 @@ func _show_company() -> void:
 	_clear(_inspect_box); _clear(_inspect_actions)
 	_inspect_scroll.scroll_vertical = 0
 	_wrap(_inspect_box, RemakeText.t("Level %d") % run.capacity(), 22, GOLD)
+	_wrap(_inspect_box, RemakeText.t("30 recruit chains cost 1–5 gold. Every recruit in the same tier has the same shop chance."), 13, PAPER)
+	_wrap(_inspect_box, RemakeText.t("Three copies evolve into a different creature. Three evolved copies unlock the final form. Each creature type belongs to one chain."), 13, PAPER)
+	_wrap(_inspect_box, RemakeText.t("Stars strengthen health, attacks and spells. The strongest forms are evolution-only."), 13, GOLD)
 	_wrap(_inspect_box, RemakeText.t("Army %d/%d") % [run.deployed_count(), run.capacity()], 14, PAPER)
 	if run.level_needed() > 0:
 		_wrap(_inspect_box, RemakeText.t("XP %d/%d") % [run.level_progress(), run.level_needed()], 13, PAPER)
@@ -1117,9 +1132,8 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 	_live_health = _wrap(_inspect_box, ArenaUnitInfo.summary(id, _inspected_unit, family, rank), 13)
 	if is_instance_valid(_inspected_unit) and family >= 0 and ArenaAlliances.counts(_field_army()).values().any(func(n): return int(n) >= 2):
 		_wrap(_inspect_box, RemakeText.t("Active bonuses are included in these stats."), 12, MUTED)
-	if ArenaRules.is_elite(family, rank):
-		_wrap(_inspect_box, RemakeText.t("Elite: +75% health, +50% damage, +20% accuracy and armor, +15% action speed."), 12, MUTED)
-	var spells := _spell_titles(GameData.db.find("monster_prototypes", id))
+
+	var spells := _spell_titles(ArenaRules.recruit_prototype(family,rank,GameData.db.find("monster_prototypes", id)))
 	if not spells.is_empty(): _wrap(_inspect_box, spells, 13, GOLD)
 	if family >= 0:
 		var needed := ArenaRules.evolution_copies(family, rank)
@@ -1151,7 +1165,9 @@ func _hide_inspector() -> void:
 
 
 func _hover_inspector(dt: float) -> void:
-	if landing or not run.can_shop() or _modal_layer.visible:
+	# Inspection is read-only. Eliminated spectators cannot shop, but still
+	# need to inspect the watched army and its alliances.
+	if landing or _modal_layer.visible:
 		_hide_inspector()
 		return
 	var control := get_viewport().gui_get_hovered_control()
@@ -1261,7 +1277,7 @@ func _update_encounter_status() -> void:
 	_encounter_key = key
 	var encounter: String = run.board_encounter(player) if run is ArenaTournamentRun else run.encounter_title()
 	_opponent.text = encounter if run is ArenaTournamentRun else ""
-	_round_panel.set_meta("arena_help", run.round_title() + " · " + encounter + "\n" + RemakeText.t("Seed %s") % str(run.run_seed) + "\n" + RemakeText.t("Battles last at most 2 minutes. Ten seconds without damage ends a battle in a draw."))
+	_round_panel.set_meta("arena_help", run.round_title() + " · " + encounter + "\n" + RemakeText.t("Seed %s") % str(run.run_seed) + "\n" + RemakeText.t("Battles last at most 90 seconds. Ten seconds without damage ends a battle in a draw."))
 	var status := RemakeText.t("Preparing")
 	if run.stage != "prepare":
 		if watched.phase == ArenaMatch.Phase.PAUSED or _league_paused: status = RemakeText.t("Paused")
@@ -1280,9 +1296,18 @@ func _process(dt: float) -> void:
 	_cursor.set_kind("cursor_camera" if field._right_dragged or field._orbit else "cursor_default")
 	if _camera_input_allowed():
 		var turn := float(_camera_keys.has(KEY_E)) - float(_camera_keys.has(KEY_Q))
-		field.advance_camera(dt / maxf(Engine.time_scale, 0.001), turn)
+		var movement := Vector2(float(_camera_keys.has(KEY_D))-float(_camera_keys.has(KEY_A)),float(_camera_keys.has(KEY_S))-float(_camera_keys.has(KEY_W)))
+		field.advance_camera(dt / maxf(Engine.time_scale, 0.001), turn, movement)
 	else:
 		_clear_camera_input()
+	_damage_wait -= dt / maxf(Engine.time_scale,0.001)
+	_battle_sidebar.visible = not landing and not field.showing_boards() and not _modal_layer.visible
+	if _damage_wait <= 0 and _battle_sidebar.visible:
+		_damage_wait = 0.2
+		_damage_panel.update_damage(battle, battle.round_army if run.stage != "prepare" else run.army, maxf(45,_bench_panel.position.y-_battle_sidebar.position.y-215))
+	_round_banner.size=Vector2(minf(470,_hud.size.x-500),190)
+	_round_banner.position=Vector2((_hud.size.x-_round_banner.size.x)*0.5,maxf(200,_hud.size.y*0.34))
+	_round_banner.update_round(run,dt/maxf(Engine.time_scale,0.001),_result_remaining,landing or _modal_layer.visible or field.showing_boards() or _evolution_notice.visible or (run.stage in ["result","won","lost"] and battle.settle_remaining>0))
 	_hover_inspector(dt)
 	if run is ArenaTournamentRun and run.stage == "fight": _update_fighting_icons()
 	_standings.visible = run is ArenaTournamentRun and not landing and not _rail.visible and not _modal_layer.visible and not _outcome.visible
@@ -1295,7 +1320,7 @@ func _process(dt: float) -> void:
 	_hit_numbers.visible = not field.showing_boards()
 	_vignette.visible = not field.showing_boards()
 	if field.showing_boards():
-		for control in [_shop_panel, _bench_panel, _round_panel, _fight_panel, _shop_toggle, _start, _alliance_panel, _scout_bar, _standings, _rail, _message]: control.hide()
+		for control in [_shop_panel, _bench_panel, _round_panel, _fight_panel, _shop_toggle, _start, _battle_sidebar, _alliance_panel, _scout_bar, _standings, _rail, _message]: control.hide()
 	if not network_play and not landing and run.stage == "result" and battle.settle_remaining <= 0 and not _modal_layer.visible:
 		_result_remaining = maxf(0.0, _result_remaining - dt / maxf(Engine.time_scale, 0.001))
 		_update_result_countdown()
@@ -1383,7 +1408,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if is_instance_valid(_wiki) and _wiki.visible: return
 	if event is InputEventKey and event.pressed and _camera_input_allowed():
 		var key: int = event.physical_keycode if event.physical_keycode else event.keycode
-		if key in [KEY_Q, KEY_E, KEY_HOME]:
+		if key in [KEY_W, KEY_A, KEY_S, KEY_D, KEY_Q, KEY_E, KEY_HOME]:
 			if key == KEY_HOME:
 				_clear_camera_input()
 				field.reset_camera()
@@ -1437,13 +1462,13 @@ func _guide() -> void:
 		topics[1] = ["Preparation", "Everyone has 60 seconds to recruit and arrange their army. The round starts early when all surviving human players are ready. Changing your army cancels ready. Menus and scouting do not pause the timer."]
 		topics[6] = ["Battle", "Both teams fight under AI control. The host runs all battles on the same clock and can switch between normal and double speed. Hover a creature for details. Online battles cannot be paused."]
 		topics[8] = ["Players", "Up to nine players compete with their own armies. Computers fill empty seats and take over disconnected players. At zero health you are eliminated and can keep watching. If the host leaves, the game ends for everyone."]
-	topics.append(["Camera", "Hold Q/E or drag with the right or middle mouse button to rotate the camera. Use the wheel to zoom. Home restores the starting view."])
+	topics.append(["Camera", "Use WASD to move the camera. Hold Q/E or drag with the right or middle mouse button to rotate. Right-drag also tilts the camera; Shift + middle-drag pans. Use the wheel to zoom. Home restores the starting view."])
 	for topic in topics:
 		_label(content, RemakeText.t(topic[0]), 18, GOLD)
 		_wrap(content, RemakeText.t(topic[1]), 15, PAPER)
 		if topic[0] == "Battle":
 			_wrap(content, RemakeText.t("In Trials, armor absorbs at most 80% of each damage type. This applies to both teams, including spells."), 15, PAPER)
-			_wrap(content, RemakeText.t("Battles last at most 2 minutes. Ten seconds without damage ends a battle in a draw."), 15, PAPER)
+			_wrap(content, RemakeText.t("Battles last at most 90 seconds. Ten seconds without damage ends a battle in a draw."), 15, PAPER)
 	_button(_modal_box, RemakeText.t("Close"), _close_modal, "", true)
 
 
@@ -1525,18 +1550,18 @@ func _recruit_offer(index: int) -> void:
 	if error.is_empty():
 		_play_cue("buy")
 		_clear_selection()
-		if not run.last_evolutions.is_empty():
-			_play_cue("upgrade")
-			var events: Array[Dictionary] = []
-			var seen := {}
-			for evolved_uid in run.last_evolutions:
-				if seen.has(evolved_uid): continue
-				seen[evolved_uid] = true
-				var entry := run.unit(evolved_uid)
-				for old: Dictionary in before:
-					if old.uid == evolved_uid:
-						events.append({"uid": evolved_uid, "family": int(entry.family), "from": old.prototype, "to": entry.prototype, "old_rank": old.rank, "rank": entry.rank, "next_round": run.stage != "prepare" and entry.deployed})
-			_evolution_notice.present(events)
+		if not network_play: _present_evolutions(before)
+
+
+func _present_evolutions(before: Array) -> void:
+	var events: Array[Dictionary] = []
+	for old: Dictionary in before:
+		var entry := run.unit(int(old.uid))
+		if entry.is_empty() or int(entry.rank)<=int(old.rank): continue
+		events.append({"uid":int(entry.uid),"family":int(entry.family),"from":old.prototype,"to":entry.prototype,"old_rank":old.rank,"rank":entry.rank,"next_round":run.stage!="prepare" and entry.deployed})
+	if not events.is_empty():
+		_play_cue("upgrade")
+		_evolution_notice.present(events)
 
 
 func _choose_reward(index: int) -> void:
@@ -2022,7 +2047,8 @@ func _show_player(player: int) -> void:
 	_tournament_battles.synchronize()
 	_tournament_battles.watch(player)
 	field.match_state = _tournament_battles.watched_match()
-	field.reset_camera()
+	field.stop_camera_motion()
+	field._update_camera()
 	_refresh_alliances()
 	_mark_watched_player()
 	_listen_to(field.match_state.world)
@@ -2037,7 +2063,8 @@ func _show_boards() -> void:
 	_clear_selection()
 	_tournament_battles.synchronize()
 	_tournament_battles.show_all()
-	field.reset_camera()
+	field.stop_camera_motion()
+	field._update_camera()
 	_hit_numbers._items.clear()
 
 
@@ -2045,7 +2072,7 @@ func _update_scout() -> void:
 	if not _scout_bar: return
 	var scouting := is_instance_valid(_tournament_battles) and _tournament_battles.viewed_player != 0 and not landing and not field.showing_boards()
 	_scout_bar.visible = scouting
-	_alliance_panel.position.y = 206 if scouting else 190
+	_battle_sidebar.position.y = 206 if scouting else 182
 	if not scouting: return
 	var player := _tournament_battles.viewed_player
 	var company: ArenaRun = run.company(player)
@@ -2057,18 +2084,8 @@ func _update_scout() -> void:
 func _refresh_alliances() -> void:
 	_alliance_panel.visible = not landing and not _field_army().is_empty()
 	var counts := ArenaAlliances.counts(_field_army())
-	for plaque: ArenaInfoPanel in _alliance_list.get_children():
-		var key := String(plaque.name)
-		var count := int(counts[key])
-		plaque.visible = count > 0
-		var row := plaque.get_child(0) as HBoxContainer
-		var label := row.get_child(1) as Label
-		label.text = "%s  %d/%d" % [RemakeText.t(ArenaAlliances.RULES[key].name), count, ArenaAlliances.target(key, count)]
-		var active := ArenaAlliances.rank(key, count) > 0
-		var color: Color = ArenaCreatureCard.TRIBE_COLORS[key]
-		plaque.accent = color.lerp(PAPER, 0.3) if active else color
-		ArenaCreatureCard.snow_ink(label, PAPER)
-		ArenaCreatureCard.tribe_icon(row.get_child(0), key, count > 0)
+	for plaque: ArenaAllianceBadge in _alliance_list.get_children():
+		plaque.update_count(int(counts[plaque.key]))
 	_layout_alliances.call_deferred()
 
 

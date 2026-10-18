@@ -1,6 +1,8 @@
 class_name ArenaOnlineScreen
 extends ArenaPveScreen
 var connection: ArenaOnlineSession
+var _previous_army: Array = []
+var _have_roster := false
 
 func _ready() -> void:
 	network_play = true; landing = false
@@ -40,6 +42,10 @@ func _show_boards() -> void:
 
 func _refresh() -> void:
 	super._refresh()
+	# Purchases are asynchronous. Compare the acknowledged army when its
+	# state arrives, rather than reading the previous purchase's merge list.
+	if _have_roster: _present_evolutions(_previous_army)
+	_previous_army=run.army.duplicate(true); _have_roster=true
 	_speed.visible = run.stage == "fight"
 	_speed.disabled = not connection.owns_game()
 	_update_speed()
@@ -54,7 +60,7 @@ func _process(dt: float) -> void:
 	_result_remaining = connection.view.result_left
 	super._process(dt)
 	if run.lives <= 0 and connection.view.global_stage != "won" and _tournament_battles.viewed_player == 0:
-		_phase.text = RemakeText.t("Place #%d") % run.placements[0]
+		_phase.text = RemakeText.t("Place #%d") % run.placements[0] if run.placements[0]>0 else RemakeText.t("Defeat")
 
 func _build_result() -> void:
 	_wrap(_dock, RemakeText.t("First place" if run.stage == "won" else "Eliminated"), 28, GOLD)

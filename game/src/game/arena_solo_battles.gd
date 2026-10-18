@@ -132,6 +132,7 @@ func _lost(_reason: String) -> void:
 	if run.stage!="fight": return
 	# Partial outcomes must never settle a failed round. Restore its normal
 	# saved preparation, keeping purchases made while combat was running.
+	run.rollback_round_health()
 	run.stage="prepare";run.results.clear();run.board_results.clear();run._human_result.clear()
 	run.preparing_battle=false;run.preparation_left=ArenaRules.PREPARATION_SECONDS
 	home._round_key="";home.prepare();_round=-1;synchronize();run.changed.emit()

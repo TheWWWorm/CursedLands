@@ -5,6 +5,7 @@ extends ArenaMatch
 var run: ArenaRun
 var rendered := true
 var contributions := {}
+var friendly_damage := {}
 var selected_run_uid := 0
 var settle_remaining := 0.0
 var round_army: Array[Dictionary] = []
@@ -53,12 +54,32 @@ func time_limit() -> float:
 func _spawn(placement: Dictionary) -> GameUnit:
 	var unit := super._spawn(placement)
 	if unit:
+		_fit_figure(unit)
 		unit.display_name = ArenaRules.title(placement.id)
 		if rendered: _entrants[unit] = Vector2.INF
 		else:
 			unit.set_process(false);unit.set_physics_process(false)
 			unit.model.set_process(false)
 	return unit
+
+
+## Native bosses can span an entire board. Keep their proportions and animated
+## sockets while fitting them to a formation slot, in Trials only. This is also
+## applied on the authority so reach and picking agree with the visible body.
+static func _fit_figure(unit: GameUnit) -> void:
+	if unit.has_meta("arena_figure_scale"): return
+	var geometry := EIFigureGeometry.of(unit.model)
+	if geometry.is_empty(): return
+	var span: Vector3 = geometry.max - geometry.min
+	var top: float = geometry.centre.z + geometry.max.z
+	var factor := minf(1.0,minf(5.5/maxf(0.1,maxf(span.x,span.y)),3.6/maxf(0.1,top)))
+	unit.set_meta("arena_figure_scale",factor)
+	unit.model.scale=Vector3.ONE*factor
+	unit.model.height_k*=factor
+	unit.figure_radius*=factor; unit._radius_base*=factor; unit.figure_half_z*=factor
+	if unit.move_class()!=0:
+		unit._classes.clear()
+		for k in [0.2,0.6,1.0]: unit._classes.append(GameUnit._class_of(unit.figure_radius,unit.figure_half_z*2.0*k))
 
 
 ## Warm copied models while the UI can still draw. They are absent from the
@@ -250,11 +271,13 @@ func prepare() -> void:
 	else:
 		_reconcile_formation()
 	world.set_meta("expedition_spell_safety", true)
+	world.set_meta("arena_wave",run.wave)
 	world.presentation = rendered
 	world.combat.difficulty_override = 0
 	world.combat.rng.seed = run.battle_seed()
 	ArenaAlliances.apply(world, run.army, run.enemy_army())
 	contributions.clear()
+	friendly_damage.clear()
 	_round_key = round_key
 	for unit: GameUnit in _entrants:
 		if world.is_visible_in_tree(): formation_motion.enter(unit, unit.get_meta("arena_placement").point, _entrants[unit])
@@ -416,6 +439,10 @@ func _combat_event(kind: String, a: GameUnit, b: GameUnit, amount: float) -> voi
 	super._combat_event(kind, a, b, amount)
 	if kind == "damage" and is_instance_valid(a):
 		contributions[a.uid] = float(contributions.get(a.uid, 0.0)) + maxf(0, amount)
+		var placement: Dictionary = a.get_meta("arena_placement",{})
+		if int(placement.get("team",-1))==0 and placement.has("run_uid"):
+			var uid := int(placement.run_uid)
+			friendly_damage[uid] = float(friendly_damage.get(uid,0.0)) + maxf(0,amount)
 
 
 func _resolved(side: int) -> void:
@@ -528,6 +555,7 @@ func apply_board(data: Dictionary) -> void:
 			if created: unit = _spawn_record(record)
 			elif record.has("snap") and (not deploying or not same_board): unit.apply_snapshot(record.snap, true)
 			if unit:
+				_fit_figure(unit)
 				restore_body(unit, record.online_body)
 				unit.set_meta("arena_placement", record.placement)
 				unit.display_name = ArenaRules.title(record.prototype)
@@ -550,6 +578,9 @@ func apply_board(data: Dictionary) -> void:
 	serial = int(data.serial)
 	world.time = float(data.time)
 	damage = data.damage.duplicate()
+	friendly_damage.clear()
+	for row: Array in data.get("friendly_damage",[]):
+		if row.size()==2: friendly_damage[int(row[0])] = maxf(0.0,float(row[1]))
 	var previous := phase
 	phase = int(data.phase) as Phase
 	# A worker snapshot already in flight must not undo a local pause.

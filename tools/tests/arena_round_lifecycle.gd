@@ -104,7 +104,7 @@ func _ready() -> void:
 			var details: TerrainDetails=terrains[index].details
 			if details and details.soft_ground:
 				check(not details.soft_ground._walkers.keys().any(func(id):return id in footprints[index]),"new round releases old footprint owners")
-	var environment:=weakref(screen.battle.presentation_root())
+	var environment: WeakRef=weakref(screen.battle.presentation_root())
 	screen.queue_free();screen=null;await frames(8)
 	check(environment.get_ref()==null,"leaving the screen releases retained courtyard")
 	check(is_equal_approx(Engine.time_scale,1.0),"leaving restores normal engine speed")

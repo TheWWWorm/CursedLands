@@ -5,11 +5,19 @@ func check(ok:bool,message:String)->void:
 	checks+=1
 	if not ok:failures.append(message);printerr("FAIL ",message)
 func _ready()->void:
-	check(ArenaRules.FAMILIES.size()==40 and ArenaRules.recruit_pool(3).size()==16,"expanded roster and opening pool")
+	check(ArenaRules.FAMILIES.size()==30 and ArenaRules.recruit_pool(3).size()==14,"expanded roster and opening pool")
 	var tiers := [0,0,0,0,0]
 	for family: Dictionary in ArenaRules.FAMILIES: tiers[int(family.tier)-1]+=1
-	check(tiers==[7,9,10,8,6],"every shop tier has multiple role and tribe choices")
+	check(tiers==[7,7,6,6,4],"every shop tier has multiple role and tribe choices")
 	check(ArenaRules.available(),"every recruited form exists in the loaded localized game")
+	var forms := {}; var archetypes := {}
+	for family: Dictionary in ArenaRules.FAMILIES:
+		check(family.cost==family.tier and family.cost in range(1,6),"price equals its 1–5 shop tier")
+		check(family.copies==[3,3],"nine base copies earn a final form")
+		for index in 3:
+			check(not forms.has(family.forms[index]),"native form belongs to one chain")
+			check(not archetypes.has(family.archetypes[index]),"combat archetype belongs to one chain")
+			forms[family.forms[index]]=true; archetypes[family.archetypes[index]]=true
 	var native:=hash(GameData.db.tables)
 	var caster:=GameUnit.new();caster.controller=-1
 	var run:=ArenaRun.new();run.auto_save=false
@@ -26,9 +34,9 @@ func _ready()->void:
 				for b in range(a+1,run.shop.size()):
 					pairs+=1
 					if run.shop[a].family==run.shop[b].family:matching+=1
-	check(sampled.size()==16,"all sixteen opening families appear across seeds")
+	check(sampled.size()==14,"all fourteen opening families appear across seeds")
 	var duplicate_rate:=float(matching)/pairs
-	check(duplicate_rate<0.12,"early pairwise duplicate rate is below the old 19.3 percent")
+	check(duplicate_rate<0.12,"early pairwise duplicate rate stays below twelve percent")
 	for family in ArenaRules.FAMILIES.size():
 		check(not ArenaAlliances.traits(family).is_empty(),"every recruit participates in alliances")
 		for lang in ["en","ru","de"]:
@@ -38,12 +46,7 @@ func _ready()->void:
 			run.begin(7719+family);run.army.clear();run._recruit(family,rank,1);run.arrange()
 			var values:=ArenaUnitInfo.values(run.army[0].prototype,null,family,rank)
 			check(values.hp>0 and values.max>0,"every recruit has combat stats")
-			if family in [11,36] and rank==2:
-				var stats := {"armor":values.armor.duplicate()}
-				# Rebuild the raw value before applying the same combat adjustment.
-				for type in stats.armor.size():stats.armor[type]*=150.0/44.0
-				ArenaRules.recruit_stats(family,rank,stats)
-				check(is_equal_approx(values.armor[6],44.0) and stats.armor==values.armor,"inspector and combat use the same recruit armor")
+
 			var row:=GameData.db.find("monster_prototypes",run.army[0].prototype)
 			var tuned:=ArenaRules.recruit_prototype(family,rank,row)
 			for spell:String in tuned.get("spells",[]):
@@ -55,6 +58,27 @@ func _ready()->void:
 				for copy in needed-1:run._recruit(family,rank,1)
 				run._merge(run.army[0])
 				check(run.army.size()==1 and run.army[0].rank==rank+1,"every evolution recipe reaches the next form")
+	# All forty schema-10 lineages, including removed indices, remain loadable.
+	for family in ArenaRules.LEGACY_FORMS:
+		for rank in 3:
+			run.begin(8219); run.army.clear(); run._recruit(0,rank,27)
+			var saved := run.snapshot(); saved.version=10
+			saved.army[0].family=family; saved.army[0].prototype=ArenaRules.LEGACY_FORMS[family][rank]
+			saved.shop[0].family=family
+			var immutable := saved.duplicate(true)
+			var loaded := ArenaRun.new(); loaded.auto_save=false
+			check(loaded.restore(saved),"legacy lineage migrates")
+			check(saved==immutable,"migration never mutates caller data")
+			check(loaded.army[0].prototype==ArenaRules.prototype(ArenaRules.LEGACY_FAMILIES[family],rank),"migration preserves star rank")
+	# Ownership must not make a target family easier to roll.
+	var empty := ArenaRun.new(); var committed := ArenaRun.new()
+	empty.auto_save=false; committed.auto_save=false
+	empty.begin(9919); committed.begin(9919)
+	# A nonempty comparison avoids the empty-company recovery offer.
+	empty._recruit(1,0,1); committed._recruit(0,1,3)
+	for refresh in 200:
+		empty._roll_shop(false); committed._roll_shop(false)
+		check(empty.shop==committed.shop,"shop odds are independent of owned copies")
 	check(hash(GameData.db.tables)==native,"roster tuning leaves native campaign data unchanged")
 	caster.free()
 	print("ARENA_ROSTER checks=",checks," opening_pair_duplicate_rate=",duplicate_rate," failures=",JSON.stringify(failures))

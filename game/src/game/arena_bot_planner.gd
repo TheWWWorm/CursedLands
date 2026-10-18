@@ -114,6 +114,9 @@ static func step(bot: ArenaRun, player: int, round_number: int, hp: int, plan: D
 	if best>=0:
 		bot.buy(best);arrange(bot,style);bot._undo.clear();return
 	var desired:=clampi(3+round_number/2+int(profile.level),3,ArenaRules.MAX_ARMY)
+	# Evolution deliberately stays where its committed families are common.
+	# Previously every personality rushed level nine before seriously rolling.
+	if strategy(bot,player)==2: desired=clampi(3+round_number/4,3,7 if round_number<24 else 9)
 	if bot.capacity()<desired and bot.gold-ArenaRules.TRAINING_COST>=bank:
 		if bot.train().is_empty():bot._undo.clear();return
 	var rolls:=int(profile.rolls) if round_number>3 else 1

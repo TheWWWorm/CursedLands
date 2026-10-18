@@ -482,7 +482,11 @@ func setup(w: GameWorld, record: Dictionary) -> bool:
 	pos = Vector2(p.x, p.y)
 	var q: Quaternion = record.get("rotation", Quaternion.IDENTITY)
 	facing = q.get_euler().y - MODEL_YAW_OFFSET
-	model = EIUnitModel.create(record)
+	var animation_random: RandomNumberGenerator
+	if world.zone.get("type") == "arena":
+		animation_random=RandomNumberGenerator.new()
+		animation_random.seed=hash([String(record.get("prototype","")),uid])
+	model = EIUnitModel.create(record,false,true,animation_random)
 	if model == null:
 		return false
 	add_child(model)
@@ -3927,7 +3931,10 @@ func _present_native_frame(dt: float) -> void:
 			if is_instance_valid(g):
 				g.layers = OFFSCREEN_LAYER if far else 1
 	var now := _game_clock
-	if not _frame_drawing:
+	# Native Trials workers/research advance this pose at exact 55 ms ticks.
+	# The frontend's physics interpolation fraction must not change attack
+	# timing or projectile sockets when running at a different frame rate.
+	if not _frame_drawing and not (world and not world.presentation and world.zone.get("type") == "arena"):
 		now += Engine.get_physics_interpolation_fraction() * get_physics_process_delta_time()
 	var game_dt := 0.0
 	if _anim_clock < 0.0:
@@ -4144,7 +4151,7 @@ func _set_action(a: String) -> void:
 	# same for a unit that keeps walking / running / crawling (every physics
 	# step of a move; EIUnitModel keeps a repeated cycle request as it is).
 	if a == action and a in _STEADY and model and model.player and not _pose_dirty:
-		if _idle_key.size() == 6 and _idle_key[0] == stance and _idle_key[1] == alert \
+		if _idle_key.size() == 7 and _idle_key[6] == a and _idle_key[0] == stance and _idle_key[1] == alert \
 				and _idle_key[2] == model.get_instance_id() and _idle_key[3] == model.player.current_animation \
 				and _idle_key[4] == model.pose_state and _idle_key[5] == model.pose_mod:
 			return
@@ -4156,7 +4163,9 @@ func _set_action(a: String) -> void:
 	if model and not _update_pose(not resume_motion):
 		if resume_motion: model.act(a)
 		else: model.act_with_start(a)
-	_idle_key = [stance, alert, model.get_instance_id(), model.player.current_animation, model.pose_state, model.pose_mod] \
+	# Snapshots set action before requesting its clip. Include the requested
+	# action itself, so a cached run pose can never satisfy a new idle request.
+	_idle_key = [stance, alert, model.get_instance_id(), model.player.current_animation, model.pose_state, model.pose_mod, a] \
 		if a == action and a in _STEADY and model and model.player else []
 
 

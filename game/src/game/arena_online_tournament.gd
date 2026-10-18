@@ -28,7 +28,8 @@ func record_board(player: int, winner: int, survivors: Array) -> void:
 	super.record_board(player, winner, survivors)
 
 func _settle_round() -> void:
-	var before := rival_health.duplicate()
+	_remember_round_health()
+	var before := _round_health.slice(1)
 	super._settle_round()
 	for index in rivals.size():
 		var rival := rivals[index]

@@ -69,7 +69,7 @@ func _ready() -> void:
 	for family in ArenaRules.FAMILIES.size():
 		for rank in ArenaRules.FAMILIES[family].forms.size():
 			var id := ArenaRules.prototype(family,rank)
-			check(ArenaUnitInfo.rank_of(id) == (1 if ArenaRules.is_elite(family,rank) else rank),"rank follows evolution: " + id)
+			check(ArenaUnitInfo.rank_of(id) == rank,"rank follows evolution: " + id)
 			var stats := ArenaUnitInfo.values(id)
 			var proto := GameData.db.find("monster_prototypes",id)
 			check(stats.attack == int(proto.to_hit),"native attack: " + id)

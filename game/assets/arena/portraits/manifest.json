@@ -1,0 +1,812 @@
+{
+	"ancientcursem25": {
+		"family": 18,
+		"file": "18-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"bansheedarkm12": {
+		"family": 6,
+		"file": "06-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"bansheelightf4": {
+		"family": 12,
+		"file": "12-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"batdarkm12": {
+		"family": 8,
+		"file": "08-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"batredm1": {
+		"family": 4,
+		"file": "04-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"boarredf1": {
+		"family": 0,
+		"file": "00-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"cyclopsa20": {
+		"family": 1,
+		"file": "01-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"doggreyf6": {
+		"family": 14,
+		"file": "14-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"dragonbluem14": {
+		"family": 6,
+		"file": "06-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"dragonbrownm16": {
+		"family": 4,
+		"file": "04-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"dragongreenm12": {
+		"family": 8,
+		"file": "08-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"dragonkinbeastmenf3": {
+		"family": 16,
+		"file": "16-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"driaddarka7": {
+		"family": 23,
+		"file": "23-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"driaddarkm9": {
+		"family": 24,
+		"file": "24-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"driadgreena7": {
+		"family": 13,
+		"file": "13-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"driadgreenm7": {
+		"family": 13,
+		"file": "13-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"driadsnowa7": {
+		"family": 7,
+		"file": "07-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"driadsnowqm9": {
+		"family": 7,
+		"file": "07-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"elementalearthf8": {
+		"family": 5,
+		"file": "05-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"elementalicef15": {
+		"family": 7,
+		"file": "07-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"elementallavaf12": {
+		"family": 21,
+		"file": "21-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"evileyegreenm17": {
+		"family": 18,
+		"file": "18-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"evileyeredm16": {
+		"family": 10,
+		"file": "10-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"goblina1": {
+		"family": 3,
+		"file": "03-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"goblinf1": {
+		"family": 1,
+		"file": "01-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"golemhorizontalf20": {
+		"family": 9,
+		"file": "09-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"golemverticalf20": {
+		"family": 0,
+		"file": "00-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human gipath brigand a1": {
+		"family": 17,
+		"file": "17-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human gipath brigand deputy f1": {
+		"family": 25,
+		"file": "25-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human gipath brigand f1": {
+		"family": 19,
+		"file": "19-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human gipath npc expeditor f15": {
+		"family": 27,
+		"file": "27-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human gipath npc wife m3": {
+		"family": 22,
+		"file": "22-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human gipath warlord f2": {
+		"family": 15,
+		"file": "15-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human hadagan guards a14": {
+		"family": 20,
+		"file": "20-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human hadagan guards m14": {
+		"family": 18,
+		"file": "18-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human hadagan necromancer m17": {
+		"family": 24,
+		"file": "24-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human hadagan npc lieutenant f15": {
+		"family": 29,
+		"file": "29-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human hadagan overseer f14": {
+		"family": 29,
+		"file": "29-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human hadagan overseerba f14": {
+		"family": 26,
+		"file": "26-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human hadagan peasants a1": {
+		"family": 22,
+		"file": "22-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human hadagan students f10": {
+		"family": 27,
+		"file": "27-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania citizen a7": {
+		"family": 23,
+		"file": "23-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania gang f11": {
+		"family": 28,
+		"file": "28-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania gang f9": {
+		"family": 19,
+		"file": "19-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania gang spear f10": {
+		"family": 28,
+		"file": "28-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania goldminer f7": {
+		"family": 27,
+		"file": "27-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania hunter f7": {
+		"family": 14,
+		"file": "14-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania npc captain f14": {
+		"family": 20,
+		"file": "20-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania npc sorceress m11": {
+		"family": 13,
+		"file": "13-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania police a8": {
+		"family": 29,
+		"file": "29-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania police f10": {
+		"family": 26,
+		"file": "26-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania police f8": {
+		"family": 20,
+		"file": "20-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania police karansul f8": {
+		"family": 25,
+		"file": "25-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania ranger f9": {
+		"family": 17,
+		"file": "17-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania sorceress bodyguard f9": {
+		"family": 15,
+		"file": "15-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human kania woodcutter f8": {
+		"family": 26,
+		"file": "26-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human mercenary bodyguard": {
+		"family": 14,
+		"file": "14-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human mercenary hadagan rogue": {
+		"family": 17,
+		"file": "17-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human mercenary hadagan thief": {
+		"family": 22,
+		"file": "22-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human mercenary hadagan warrior": {
+		"family": 19,
+		"file": "19-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human mercenary kania archer": {
+		"family": 3,
+		"file": "03-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human mercenary kania paladin": {
+		"family": 15,
+		"file": "15-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human mercenary kania thief": {
+		"family": 28,
+		"file": "28-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human mercenary shaivar": {
+		"family": 24,
+		"file": "24-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human mercenary thief": {
+		"family": 23,
+		"file": "23-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"human mercenary warrior": {
+		"family": 25,
+		"file": "25-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"hyenaf6": {
+		"family": 9,
+		"file": "09-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"octopushadaganm17": {
+		"family": 11,
+		"file": "11-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"ogregipatf9": {
+		"family": 16,
+		"file": "16-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"ogrehadaganf17": {
+		"family": 9,
+		"file": "09-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"orcfemalea5": {
+		"family": 3,
+		"file": "03-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"orcfemalem3": {
+		"family": 11,
+		"file": "11-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"orcmalef5": {
+		"family": 1,
+		"file": "01-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"ratsmallf1": {
+		"family": 10,
+		"file": "10-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"scrabmotherpoisonedf6": {
+		"family": 5,
+		"file": "05-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"shadowm20": {
+		"family": 12,
+		"file": "12-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"skeletonf2": {
+		"family": 12,
+		"file": "12-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"spiderf10": {
+		"family": 10,
+		"file": "10-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"succubbluem10": {
+		"family": 11,
+		"file": "11-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"succubgreym13": {
+		"family": 8,
+		"file": "08-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"succubredm9": {
+		"family": 4,
+		"file": "04-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"tigerwhitef10": {
+		"family": 2,
+		"file": "02-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"toadm2": {
+		"family": 5,
+		"file": "05-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"trollblackslowf16": {
+		"family": 16,
+		"file": "16-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"trollbluef9": {
+		"family": 0,
+		"file": "00-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"undeadf17": {
+		"family": 21,
+		"file": "21-1.png",
+		"rank": 1,
+		"size": [
+			64,
+			64
+		]
+	},
+	"unicornwhitem15": {
+		"family": 2,
+		"file": "02-2.png",
+		"rank": 2,
+		"size": [
+			64,
+			64
+		]
+	},
+	"willowispm1": {
+		"family": 6,
+		"file": "06-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"wolfgreyf1": {
+		"family": 2,
+		"file": "02-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	},
+	"zombiemalef10": {
+		"family": 21,
+		"file": "21-0.png",
+		"rank": 0,
+		"size": [
+			64,
+			64
+		]
+	}
+}

@@ -131,10 +131,16 @@ func command(player: int, action: String, args: Array) -> String:
 			else: error = "Finish the current encounter first."
 		"refresh": error = company.refresh()
 		"train": error = company.train()
-		"bench", "sell", "evolve":
+		"sell":
+			if args.size() not in [1,2] or not ArenaRun._integer(args[0],1,1000000): return "Invalid online action."
+			var entry := company.unit(int(args[0]))
+			if args.size()==2:
+				if not ArenaRun._integer(args[1],0,10000): return "Invalid online action."
+				if entry.is_empty() or company.sale_value(entry)!=int(args[1]): return "The sale value changed. Select the creature again."
+			error = company.sell(int(args[0]))
+		"bench", "evolve":
 			if args.size() != 1 or not ArenaRun._integer(args[0],1,1000000): return "Invalid online action."
 			if action == "bench": error = company.bench(int(args[0]))
-			elif action == "sell": error = company.sell(int(args[0]))
 			else: error = company.evolve(int(args[0]))
 		"swap":
 			if args.size() != 2 or not ArenaRun._integer(args[0],1,1000000) or not ArenaRun._integer(args[1],1,1000000): return "Invalid online action."
@@ -179,7 +185,8 @@ func state_for(player: int, names: Array) -> Dictionary:
 		"speed":battle_speed, "fighting":run.alive_players().filter(func(id): return encounter(id) != null and encounter(id).phase == ArenaMatch.Phase.FIGHT),
 		"left":run.preparation_left, "result_left":result_left, "staging":run.preparing_battle,
 		"companies":companies, "health":[run.lives] + run.rival_health, "placements":run.placements.duplicate(),
-		"pairings":run.pairings.duplicate(true), "names":names.duplicate(), "ready":ready_seats.duplicate(), "undo":run.company(player).can_undo()}
+		"pairings":run.pairings.duplicate(true), "names":names.duplicate(), "ready":ready_seats.duplicate(), "undo":run.company(player).can_undo(),
+		"sale_quotes":run.company(player).army.map(func(entry):return [int(entry.uid),run.company(player).sale_value(entry)])}
 
 func _own_snapshot() -> Dictionary:
 	# Avoid nesting the complete tournament inside seat zero's company.
@@ -199,6 +206,8 @@ func board_frame(player: int, full: bool) -> Dictionary:
 	_revision += 1
 	var data := {"t":"board", "seat":player, "round":run.wave, "generation":board_key(player), "serial":_revision,
 		"phase":battle.phase, "winner":battle.winner, "time":battle.world.time, "damage":battle.damage.duplicate(), "full":full}
+	data["friendly_damage"] = []
+	for uid in battle.friendly_damage: data.friendly_damage.append([int(uid),float(battle.friendly_damage[uid])])
 	if full:
 		var records := []
 		for unit: GameUnit in battle.world.unit_rows():

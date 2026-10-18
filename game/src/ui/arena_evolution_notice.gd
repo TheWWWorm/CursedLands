@@ -118,7 +118,7 @@ func _label(parent: Node, value: String, pixels: int, color: Color) -> Label:
 
 func _layout() -> void:
 	size = Vector2(292, 0)
-	position = Vector2(24, below.position.y + below.size.y + 12 if below and below.visible else 190)
+	position = Vector2(below.position.x+below.size.x+12,below.position.y) if below and below.visible else Vector2(24,190)
 
 
 func _process(dt: float) -> void:

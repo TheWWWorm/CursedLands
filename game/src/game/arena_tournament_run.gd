@@ -1,7 +1,7 @@
 class_name ArenaTournamentRun
 extends ArenaRun
 ## Nine persistent companies. Pairings and purchases are fixed before combat;
-## all health/income changes settle together, once every duel has finished.
+## health changes when each board finishes; income and places settle together.
 const PLAYER_COUNT := 9
 const MAX_ROUNDS := 100
 const TOURNAMENT_SAVE := "user://arena-autochess.json"
@@ -16,6 +16,7 @@ var _human_result := {}
 var _initializing := false
 var live_boards := false
 var board_results := {}
+var _round_health: Array[int] = []
 var bot_plans: Array[Dictionary] = []
 const NPCS := ["elder", "witch", "smith", "kapitan", "huber", "magess", "orcc", "karh"]
 
@@ -127,6 +128,7 @@ static func formation_for(army_rows: Array, team: int) -> Array[Dictionary]:
 
 func _prepare_round() -> void:
 	results.clear(); board_results.clear(); _human_result.clear(); bot_plans.clear()
+	_round_health.clear()
 	for index in rivals.size():
 		bot_plans.append({"actions":0, "rerolls":0, "wait":0.4 + index * 0.13, "done":false})
 		if rival_health[index] <= 0: continue
@@ -175,8 +177,40 @@ func start_battle(allow_empty := false) -> String:
 
 func record_board(player: int, winner: int, survivors: Array) -> void:
 	if stage != "fight" or board_results.has(player): return
+	_remember_round_health()
 	board_results[player] = {"winner":winner, "survivors":survivors.duplicate()}
-	if board_results.size() == alive_players().size() and not _human_result.is_empty(): _settle_round()
+	var loss := 0 if winner == 0 else draw_damage() if winner == -1 else defeat_damage(int(survivors[1]))
+	_apply_round_loss(player,loss)
+	var result := _human_result.duplicate(true) if player == 0 else {"wave":wave,"winner":winner,"seconds":0,"damage":[0,0],"gold":0}
+	result["health_lost"] = loss
+	company(player).last_result = result
+	if board_results.size() == _round_players().size() and not _human_result.is_empty(): _settle_round()
+	else: _touch()
+
+
+func _remember_round_health() -> void:
+	if _round_health.is_empty(): _round_health.assign([lives]+rival_health)
+
+
+func _round_players() -> Array[int]:
+	var players: Array[int] = []
+	for player in PLAYER_COUNT:
+		if (_round_health[player] if not _round_health.is_empty() else health(player)) > 0: players.append(player)
+	return players
+
+
+func _apply_round_loss(player: int, loss: int) -> void:
+	var remaining := maxi(0,_round_health[player]-loss)
+	if player == 0: lives = remaining
+	else: rival_health[player-1] = remaining
+
+
+## Interrupted worker combat replays from preparation, including original HP.
+func rollback_round_health() -> void:
+	if _round_health.is_empty(): return
+	lives = _round_health[0]
+	for index in rival_health.size(): rival_health[index] = _round_health[index+1]
+	_round_health.clear()
 
 
 func draw_damage() -> int:
@@ -220,14 +254,21 @@ func resolve(winner: int, seconds: float, damage: Array, survivors: Array = [0,0
 
 func record_duel(index: int, winner: int, survivors: Array) -> void:
 	if stage != "fight" or index < 0 or index >= pairings.size() or results.has(index): return
+	_remember_round_health()
 	results[index] = {"winner":winner,"survivors":survivors.duplicate()}
+	var pair: Dictionary = pairings[index]
+	_apply_round_loss(int(pair.a),0 if winner == 0 else draw_damage() if winner == -1 else defeat_damage(int(survivors[1])))
+	if int(pair.b)>=0 and not pair.ghost:
+		_apply_round_loss(int(pair.b),0 if winner == 1 else draw_damage() if winner == -1 else defeat_damage(int(survivors[0])))
 	if results.size() == pairings.size() and not _human_result.is_empty(): _settle_round()
+	else: _touch()
 
 func defeat_damage(surviving_stars: int) -> int:
 	return 3 + wave / 5 + maxi(0, surviving_stars) + maxi(0, wave - 30) * 5
 
 func _settle_round() -> void:
-	var alive := alive_players()
+	_remember_round_health()
+	var alive := _round_players()
 	var losses := {}; var victories := {}
 	for index in (0 if live_boards else pairings.size()):
 		var pair := pairings[index]; var result: Dictionary = results[index]
@@ -252,7 +293,7 @@ func _settle_round() -> void:
 				victories[a] = false; victories[b] = false
 	var remaining := {}
 	for player in alive:
-		remaining[player] = health(player) - int(losses.get(player, 0))
+		remaining[player] = _round_health[player] - int(losses.get(player, 0))
 		if player == 0: lives = maxi(0, int(remaining[player]))
 		else: rival_health[player - 1] = maxi(0, int(remaining[player]))
 	var eliminated := alive.filter(func(player):return health(player) == 0)
@@ -303,6 +344,11 @@ func snapshot() -> Dictionary:
 	data["pairings"] = pairings.duplicate(true)
 	data["previous_opponent"] = previous_opponent
 	data["bot_plans"] = bot_plans.duplicate(true)
+	# Interrupted fights restart, so persist the pre-fight health alongside
+	# the current purchases instead of charging a partial outcome twice.
+	if stage == "fight" and not _round_health.is_empty():
+		data.lives = _round_health[0]
+		data.rival_health = _round_health.slice(1)
 	return data
 
 func valid_terminal(data: Dictionary, _limit: int) -> bool:
@@ -379,6 +425,7 @@ func _restore_companies(data: Dictionary, seats: int) -> bool:
 	rivals = loaded; rival_health.assign(data.rival_health); placements.assign(data.placements)
 	pairings.assign(data.pairings.duplicate(true)); previous_opponent = int(data.previous_opponent)
 	results.clear(); board_results.clear(); _human_result.clear()
+	_round_health.clear()
 	bot_plans.clear()
 	for index in rivals.size():
 		var plan := {"actions":0, "rerolls":0, "wait":0.5 + index * 0.1, "done":false}

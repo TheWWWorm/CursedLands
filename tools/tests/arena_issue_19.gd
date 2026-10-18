@@ -16,7 +16,7 @@ func _ready() -> void:
 	var steps:=0
 	while good and battle.phase==ArenaMatch.Phase.FIGHT and steps<2300:
 		battle.simulate_tick();steps+=1
-	good=good and battle.phase==ArenaMatch.Phase.FINISHED and battle.world.time<=120.055
+	good=good and battle.phase==ArenaMatch.Phase.FINISHED and battle.world.time<=ArenaRules.BATTLE_SECONDS+0.055
 	print("ISSUE_19 finished=",battle.phase==ArenaMatch.Phase.FINISHED," seconds=",battle.world.time," damage=",battle.damage," success=",good)
 	# The report's update identifies the enemy camp. Moving only the owned
 	# company must still start with that exact authored enemy formation.

@@ -15,7 +15,7 @@ const LAN_PORT := 27018   # 27016 is the autochess game socket / campaign discov
 const PROTOCOL := 1
 const MAX_PACKET := 1048576
 const HELLO_TIMEOUT := 15.0
-const ERRORS := ["Online autochess requires the same game version and original game data.", "This online game has already started.", "This online game is full.", "Incorrect password.", "Connection to the host was lost.", "Could not connect to the host.", "Invalid online action.", "You have been eliminated. You can keep watching.", "The round changed. Try the action again.", "Wait for every player to be ready.", "Too many actions. Try again in a moment.", "The shop changed. Choose an offer again."]
+const ERRORS := ["Online autochess requires the same game version and original game data.", "This online game has already started.", "This online game is full.", "Incorrect password.", "Connection to the host was lost.", "Could not connect to the host.", "Invalid online action.", "You have been eliminated. You can keep watching.", "The round changed. Try the action again.", "Wait for every player to be ready.", "Too many actions. Try again in a moment.", "The shop changed. Choose an offer again.", "The sale value changed. Select the creature again."]
 var peer: MultiplayerPeer
 var is_host := false
 var my_seat := -1
@@ -86,7 +86,9 @@ func host(port := PORT, use_websocket := false) -> Error:
 	_views[1] = 0
 	peer.peer_connected.connect(_peer_connected); peer.peer_disconnected.connect(_peer_disconnected)
 	if not local_host.solo_combat and not websocket and GameData.option("net_upnp") == 1 and not Array(OS.get_cmdline_user_args()).any(func(arg): return arg.begins_with("--tool=")): upnp.open(port)
-	if not local_host.solo_combat and GameData.option("net_lan") == 1: lan.listen()
+	# Public LAN lobbies advertise like campaign co-op. There is no net_lan
+	# setting; unknown options read as zero and silently hid every real lobby.
+	if not local_host.solo_combat: lan.listen()
 	_connected = true; lobby_changed.emit()
 	return OK
 
@@ -383,14 +385,15 @@ func solo_packet(id: int, data: Dictionary) -> bool:
 			return true
 		game.battle_speed = clampi(int(data.get("speed",1)),1,2)
 		game._prepare()
-		for player in game.run.alive_players():
+		var participants := game.run.alive_players()
+		for player in participants:
 			var battle := game.encounter(player)
 			if not battle.has_meta("solo_results"):
 				battle.set_meta("solo_results",true)
 				battle.finished.connect(func(winner): _solo_finished(player,winner))
 		game.start_round(); game.set_process(false)
 		var initial := []
-		for player in game.run.alive_players():
+		for player in participants:
 			initial.append(game.board_frame(player,true))
 			if game.run.board_results.has(player) and not _solo_pending.any(func(result): return int(result.seat)==player):
 				_solo_finished(player,int(game.run.board_results[player].winner))

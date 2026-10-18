@@ -274,10 +274,19 @@ func _bone(u: GameUnit, name: String) -> Node3D:
 	return n if is_instance_valid(n) else null
 
 
+func _unit_geometry(unit: GameUnit) -> Dictionary:
+	var geometry := EIFigureGeometry.of(unit.model)
+	var factor := float(unit.get_meta("arena_figure_scale",1.0))
+	if factor!=1.0 and not geometry.is_empty():
+		geometry=geometry.duplicate()
+		for key in ["centre","min","max","radius"]: geometry[key]*=factor
+	return geometry
+
+
 ## Authored FIG bounds at current part origins. Mesh bounds remain a fallback
 ## for custom carriers without original figure metadata.
 func _box(u: GameUnit) -> AABB:
-	var geometry := EIFigureGeometry.of(u.model)
+	var geometry := _unit_geometry(u)
 	if not geometry.is_empty():
 		return EIFigureGeometry.box(geometry)
 	var key := u.get_instance_id()
@@ -310,7 +319,7 @@ func _box(u: GameUnit) -> AABB:
 ## part radius is a separate value (blood uses it below).
 func carrier_size(obj: Object) -> Vector2:
 	if obj is GameUnit:
-		var geometry := EIFigureGeometry.of(obj.model)
+		var geometry := _unit_geometry(obj)
 		if not geometry.is_empty():
 			return EIFigureGeometry.carrier(geometry)
 		var b := _box(obj)
@@ -441,7 +450,7 @@ func _sample_unit_point(u: GameUnit, sel: int) -> Vector3:
 				var mouth: Dictionary = jaw.get_meta(EIFigureGeometry.META)
 				var tip: Vector3 = mouth.centre + Vector3(0, mouth.min.y, mouth.max.z)
 				return ei(jaw.to_global(godot(tip)) - display_origin())
-		var geometry := EIFigureGeometry.of(u.model)
+		var geometry := _unit_geometry(u)
 		if not geometry.is_empty():
 			return ei(u.global_position - display_origin()) + geometry.centre
 		var b := _box(u)
@@ -453,7 +462,7 @@ func _sample_unit_point(u: GameUnit, sel: int) -> Vector3:
 	if n:
 		p = ei(n.global_position - display_origin())
 	else:
-		var geometry := EIFigureGeometry.of(u.model)
+		var geometry := _unit_geometry(u)
 		var z := float(geometry.max.z) if not geometry.is_empty() else _box(u).size.y
 		p = ei(u.global_position - display_origin()) + Vector3(0, 0, z)
 	if sel == 2:

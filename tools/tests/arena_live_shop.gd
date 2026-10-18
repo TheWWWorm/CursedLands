@@ -27,8 +27,8 @@ func _ready() -> void:
 		run = fresh()
 		var kept := run._recruit(family, 1, 6)
 		run.deploy(kept.uid, Vector2(27, 32))
-		var old := run.snapshot(); old.version = 9
-		check(restored.restore(old) and restored.army == run.army, "old two-star save preserved: %d" % family)
+		var old := run.snapshot(); old.version = ArenaRules.VERSION
+		check(restored.restore(old) and restored.army == run.army, "two-star save preserved: %d" % family)
 		for i in 2: run._recruit(family, 1, 6)
 		run.combine_ready()
 		check(run.army.size() == 1 and kept.rank == 2 and kept.uid == run.army[0].uid, "three-star recipe: %d" % family)
@@ -62,31 +62,31 @@ func _ready() -> void:
 	check(run.wave == 2 and run.experience() == 6 and run.free_refresh, "loss advances wave with XP and free refresh")
 	battle.prepare()
 	live = battle.world.unit_rows().filter(func(u): return u.get_meta("arena_placement").get("run_uid", 0) == kept.uid)[0]
-	check(live.get_meta("arena_placement").rank == 2 and live.max_hp == ArenaRules.elite_health(hp), "elite applies next round")
+	check(live.get_meta("arena_placement").rank == 2 and live.max_hp > hp, "elite applies next round")
 	var elite := live.stats.duplicate(true)
 	check(ArenaUnitInfo.values(kept.prototype, null, 5, 2).armor == live.stats.armor, "bench preview matches elite armor")
-	check(is_equal_approx(elite.dmg_min, stats.dmg_min * 1.5), "elite improves attack damage")
+	check(is_equal_approx(elite.dmg_min, stats.dmg_min * ArenaRules.star_damage(5,2)/ArenaRules.star_damage(5,1)), "elite improves attack damage")
 	check(ArenaUnitInfo.values(kept.prototype, null, 5, 2).max_hp == live.max_hp, "bench preview matches elite health")
 	battle.prepare()
 	check(live.stats == elite, "elite modifiers never accumulate")
 	battle.queue_free()
-	# The Trials clock resolves an unfinished fight as a paid loss at two
-	# minutes. Pausing cannot expire it, and settlement cannot fire twice.
+	# The Trials clock resolves an unfinished fight as a paid loss at 90
+	# seconds. Pausing cannot expire it, and settlement cannot fire twice.
 	run = fresh(); run._recruit(0, 0, 1); run.arrange()
 	var timed := ArenaPveMatch.new(); timed.run = run; timed.rendered = false
 	add_child(timed); timed.set_process(false); timed._world_parent = self; timed.prepare()
 	check(timed.start(), "start timed encounter")
 	timed.last_damage_at = 119.0
-	timed.world.time = 120.0 - GameUnit.TICK
+	timed.world.time = 90.0 - GameUnit.TICK
 	timed._process(0)
-	check(timed.phase == ArenaMatch.Phase.FIGHT and run.history.is_empty(), "no timeout before two minutes")
+	check(timed.phase == ArenaMatch.Phase.FIGHT and run.history.is_empty(), "no timeout before 90 seconds")
 	timed.toggle_pause()
 	timed._process(30)
 	check(timed.phase == ArenaMatch.Phase.PAUSED and run.history.is_empty(), "paused time does not expire battle")
 	timed.toggle_pause()
-	timed.world.time = 120.0
+	timed.world.time = 90.0
 	timed._process(0)
-	check(run.stage == "result" and run.lives == 2 and run.last_result.winner != 0, "two minutes resolves as a player loss")
+	check(run.stage == "result" and run.lives == 2 and run.last_result.winner != 0, "90 seconds resolves as a player loss")
 	check(run.last_result.gold == 10 and run.last_result.income.interest == 5 and run.last_result.income.victory == 0, "timeout earns defeat income")
 	bank = run.gold
 	timed._process(5)

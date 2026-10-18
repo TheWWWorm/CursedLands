@@ -42,6 +42,14 @@ func _ready()->void:
 	press.pressed=true;screen.field._gui_input(press)
 	press.pressed=false;screen.field._gui_input(press)
 	check(cancellations[0]==1,"stationary right click still cancels placement")
+	drag.relative=Vector2(35,40); press.pressed=true; screen.field._gui_input(press)
+	screen.field._gui_input(drag); press.pressed=false; screen.field._gui_input(press)
+	check(screen.field.pitch_offset>0.0,"right drag changes yaw and pitch")
+	var pose := [screen.field.yaw,screen.field.pitch_offset,screen.field.zoom,screen.field.pan_offset]
+	var uid := screen.run._recruit(0,0,1); screen.run.arrange(); screen._refresh()
+	screen._fight()
+	check(pose==[screen.field.yaw,screen.field.pitch_offset,screen.field.zoom,screen.field.pan_offset],"starting a round retains the whole camera pose")
+	screen.run.stage="prepare"; screen.battle.prepare()
 	var angles := []
 	for fps in [30,60,120]:
 		screen.field.reset_camera()
@@ -65,6 +73,22 @@ func _ready()->void:
 		drag_angles.append(screen.field.yaw)
 	check(is_equal_approx(speed_angles[0],speed_angles[1]),"held camera rotation has the same speed at 1x and 2x")
 	check(is_equal_approx(drag_angles[0],drag_angles[1]),"right drag has the same sensitivity at 1x and 2x")
+	var pans := []
+	for rate in [1.0,2.0]:
+		Engine.time_scale=rate; screen.field.reset_camera(); screen._camera_keys.clear()
+		turn.physical_keycode=KEY_W; turn.pressed=true; screen._unhandled_key_input(turn)
+		for i in 120: screen._process(rate/120.0)
+		pans.append(screen.field.pan_offset)
+		turn.pressed=false; screen._input(turn)
+	check(pans[0].length()>1 and pans[0].is_equal_approx(pans[1]),"WASD pans at the same wall-time speed at 1x and 2x")
+	screen.field.reset_camera(); screen._camera_keys.clear(); screen.field.yaw=0; screen.field._update_camera()
+	var right := Vector2(screen.field.camera.basis.x.x,-screen.field.camera.basis.x.z).normalized()
+	screen.field.advance_camera(0.1,0,Vector2.RIGHT)
+	check(screen.field.pan_offset.normalized().dot(right)>0.99,"D moves right relative to the rotated camera")
+	var edit := LineEdit.new(); screen.add_child(edit); edit.grab_focus(); await frames(2)
+	screen._clear_camera_input(); turn.physical_keycode=KEY_A; turn.pressed=true; screen._unhandled_key_input(turn)
+	check(screen._camera_keys.is_empty(),"typing in a text field cannot pan the camera")
+	edit.queue_free(); await frames(2)
 	Engine.time_scale=1.0;screen.set_process(true);turn.pressed=true
 	screen.field.reset_camera()
 	screen._show_menu();rotated=screen.field.yaw

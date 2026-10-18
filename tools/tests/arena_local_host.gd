@@ -19,7 +19,8 @@ func begin_capture(host: ArenaOnlineSession, port: int) -> void:
 	startup_result = await host.local_host.start(port, false)
 func _ready() -> void: run.call_deferred()
 func run() -> void:
-	GameData.options.merge({"net_lan":1,"net_upnp":0,"net_directory":0,"autosave":0,"auto_graphics":0},true)
+	GameData.options.merge({"net_upnp":0,"net_directory":0,"autosave":0,"auto_graphics":0},true)
+	GameData.options.erase("net_lan") # No such setting exists in normal play.
 	Engine.max_fps = 120
 	for websocket in [false, true]: await transport(websocket)
 	var host := connection("Cancelled host")

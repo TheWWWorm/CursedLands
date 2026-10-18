@@ -1,6 +1,10 @@
 # Trials of the Allods
 
-Current design, 17 October 2026. Older validation files describe earlier builds.
+Historical expedition design, 17 October 2026. The shared recruitment, star
+budgets, 90-second combat limit, camera and HUD have since changed; see the
+[current Trials rules](arena-autochess-design.md) and
+[18 October experiment validation](validation/allods-challenge-2026-10-18.md).
+The older values below are retained as design history.
 
 Expedition remains the thirty-wave mode. [Autochess](arena-autochess-design.md)
 adds a separate nine-player game against eight computer opponents.

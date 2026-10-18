@@ -59,8 +59,12 @@ func _ready() -> void:
 	get_tree().quit(0 if hash(GameData.db.tables)==native else 1)
 
 func strength(entry: Dictionary) -> float:
-	var p:=GameData.db.find("monster_prototypes",entry.prototype)
-	return float(p.get("base_level",0))*2 + int(entry.rank)*0.5 + (5.0 if ArenaRules.is_elite(int(entry.get("family",-1)),int(entry.rank)) else 0.0)
+	var family := int(entry.get("family",-1))
+	if family<0:
+		for candidate in ArenaRules.ACTIVE_FAMILIES:
+			if entry.prototype in ArenaRules.FAMILIES[candidate].forms: family=candidate; break
+	return ArenaBotPlanner.power(family,int(entry.rank))/8.0 if family>=0 else 0.0
+
 
 func shop_turn() -> void:
 	run.arrange()

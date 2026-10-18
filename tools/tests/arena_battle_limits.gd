@@ -19,7 +19,7 @@ func _ready()->void:
 	for tick in 2200:
 		if battle.phase!=ArenaMatch.Phase.FIGHT:break
 		battle.simulate_tick()
-	check(battle.phase==ArenaMatch.Phase.FINISHED and battle.world.time<=120.1,"native two-star toads cannot fight past two minutes")
+	check(battle.phase==ArenaMatch.Phase.FINISHED and battle.world.time<=90.1,"native evolved recruits cannot fight past 90 seconds")
 	print("TOAD_DUEL seconds=",battle.world.time," damage=",battle.damage," reason=",battle.end_reason)
 	battle.queue_free();await get_tree().process_frame
 	battle=make_battle()
@@ -33,10 +33,10 @@ func _ready()->void:
 	battle.world.time=20.0;battle._process(0)
 	check(battle.winner==-1 and battle.end_reason=="stalemate","zero-damage hits cannot postpone draw")
 	battle.queue_free();await get_tree().process_frame
-	battle=make_battle();battle.world.time=119.9;battle.last_damage_at=119.9;battle._process(0)
-	check(battle.phase==ArenaMatch.Phase.FIGHT,"active combat lasts up to two minutes")
-	battle.world.time=120.0;battle._process(0)
-	check(battle.phase==ArenaMatch.Phase.FINISHED and battle.end_reason=="timeout","hard two-minute limit")
+	battle=make_battle();battle.world.time=89.9;battle.last_damage_at=89.9;battle._process(0)
+	check(battle.phase==ArenaMatch.Phase.FIGHT,"active combat lasts up to 90 seconds")
+	battle.world.time=90.0;battle._process(0)
+	check(battle.phase==ArenaMatch.Phase.FINISHED and battle.end_reason=="timeout","hard 90-second limit")
 	var run:=ArenaTournamentRun.new();run.auto_save=false;run.begin(7191);run.live_boards=true;run.wave=4;run._prepare_round();run.finish_preparation();run.preparation_left=0;run.start_battle(true)
 	var opponent:=run.opponent_for(0)
 	run.resolve(-1,10,[0,0],[9,9])

@@ -14,6 +14,7 @@ var global_stage := "prepare"
 var result_left := 4.0
 var battle_speed := 1
 var fighting_seats: Array = []
+var sale_quotes := {}
 
 func _init() -> void:
 	auto_save = false
@@ -24,6 +25,9 @@ func apply_state(data: Dictionary) -> void:
 	for player in PLAYER_COUNT:
 		if player != seat: seats.append(player)
 	_copy_company(self, data.companies[seat])
+	sale_quotes.clear()
+	for quote: Array in data.get("sale_quotes",[]):
+		if quote.size()==2: sale_quotes[int(quote[0])] = int(quote[1])
 	run_seed = int(data.seed); wave = int(data.round); wave_limit = MAX_ROUNDS
 	preparation_left = float(data.left); result_left = float(data.result_left)
 	preparing_battle = bool(data.staging)
@@ -87,7 +91,12 @@ func train() -> String: return _intent("train")
 func lock_offer(index: int) -> void: _intent("lock", [index])
 func deploy(uid: int, point: Vector2) -> String: return _intent("deploy", [uid, point])
 func bench(uid: int) -> String: return _intent("bench", [uid])
-func sell(uid: int) -> String: return _intent("sell", [uid])
+func sale_value(entry: Dictionary) -> int:
+	return int(sale_quotes.get(int(entry.uid),super.sale_value(entry)))
+func sell(uid: int) -> String:
+	var entry := unit(uid)
+	if entry.is_empty(): return RemakeText.t("Choose a creature from your army.")
+	return _intent("sell", [uid,sale_value(entry)])
 func evolve(uid: int) -> String: return _intent("evolve", [uid])
 func swap_from_bench(uid: int, deployed_uid: int) -> String: return _intent("swap", [uid, deployed_uid])
 func arrange() -> void: _intent("arrange")

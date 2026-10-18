@@ -1,5 +1,7 @@
 shader_type canvas_item;
 // A soft outline on the original animated model, not on its entire tile.
+uniform vec4 glow_color : source_color = vec4(0.84,0.71,0.43,1.0);
+uniform float glow_strength = 0.45;
 varying vec4 modulation;
 void vertex() { modulation = COLOR; }
 void fragment() {
@@ -11,8 +13,8 @@ void fragment() {
 			halo = max(halo, texture(TEXTURE, UV + vec2(float(x), float(y)) * step_uv).a);
 		}
 	}
-	vec3 gold = vec3(0.84, 0.71, 0.43);
-	float edge = halo * (1.0 - figure.a) * 0.45;
+	vec3 gold = glow_color.rgb;
+	float edge = halo * (1.0 - figure.a) * glow_strength;
 	float alpha = figure.a + edge;
 	vec3 tint = mix(figure.rgb, gold, 0.10);
 	COLOR = vec4((tint * figure.a + gold * edge) / max(alpha, 0.001), alpha) * modulation;

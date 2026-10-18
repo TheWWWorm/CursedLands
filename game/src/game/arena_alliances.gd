@@ -3,11 +3,11 @@ extends RefCounted
 ## Automatic, overlapping traits. Unique deployed families count, not copies,
 ## stars, reserves or old camp guests. Bonuses are isolated to expedition actors.
 const RULES := {
-	"beast": {"name": "Beasts", "families": [0, 2, 4, 5, 6, 10, 14, 18, 19, 31, 34, 35], "thresholds": [2, 4, 6], "help": "All allies deal 10/20/30% more attack damage."},
-	"horde": {"name": "Horde", "families": [1, 3, 7, 9, 16, 17, 21, 23, 27, 33, 36, 37, 39], "thresholds": [2, 4], "help": "Horde creatures gain 15/30% maximum health."},
-	"warrior": {"name": "Warriors", "families": [0, 1, 7, 9, 12, 15, 16, 19, 21, 24, 27, 28, 29, 38], "thresholds": [2, 4], "help": "Warriors gain 20/40% physical armor, plus 2/4 armor."},
-	"hunter": {"name": "Hunters", "families": [2, 3, 6, 10, 14, 20, 24, 25, 31, 33, 36, 38], "thresholds": [2, 4], "help": "Hunters gain 15/30% attack accuracy and act 10/20% faster."},
-	"mage": {"name": "Mages", "families": [4, 5, 8, 11, 13, 17, 18, 22, 23, 26, 29, 30, 32, 34, 35, 37, 39], "thresholds": [2, 4], "help": "Enemies lose 20/40% fire, acid and lightning armor."},
+	"beast": {"name": "Beasts", "families": [0, 2, 4, 5, 8, 9, 10, 14, 16], "thresholds": [2, 4, 6], "help": "All allies deal 10/20/30% more attack damage."},
+	"horde": {"name": "Horde", "families": [1, 3, 9, 11, 12, 16, 19, 21, 25, 28], "thresholds": [2, 4], "help": "Horde creatures gain 15/30% maximum health."},
+	"warrior": {"name": "Warriors", "families": [0, 1, 9, 15, 16, 19, 20, 21, 25, 26, 27, 28, 29], "thresholds": [2, 4], "help": "Warriors gain 20/40% physical armor, plus 2/4 armor."},
+	"hunter": {"name": "Hunters", "families": [2, 3, 7, 13, 14, 17, 20, 23, 26, 29], "thresholds": [2, 4], "help": "Hunters gain 15/30% attack accuracy and act 10/20% faster."},
+	"mage": {"name": "Mages", "families": [4, 5, 6, 7, 8, 11, 12, 13, 18, 22, 24], "thresholds": [2, 4], "help": "Enemies lose 20/40% fire, acid and lightning armor."},
 }
 
 static func traits(family: int) -> Array[String]:
@@ -71,9 +71,7 @@ static func apply(world: GameWorld, army: Array, opponents: Array = []) -> void:
 			var family := -1
 			for entry: Dictionary in companies[team]:
 				if int(entry.uid) == int(placement.get("run_uid", placement.get("source_uid", -1))): family = int(entry.family); break
-			if ArenaRules.is_elite(family, int(placement.get("rank", 0))):
-				ArenaRules.elite_stats(stats)
-				health = ArenaRules.elite_health(health)
+
 			health = ArenaRules.recruit_health(family, health, int(placement.get("rank", 0)))
 			ArenaRules.recruit_stats(family, int(placement.get("rank", 0)), stats)
 			unit.proto = ArenaRules.recruit_prototype(family, int(placement.get("rank", 0)), unit.proto)
@@ -89,6 +87,8 @@ static func apply(world: GameWorld, army: Array, opponents: Array = []) -> void:
 				var hunters := rank("hunter", count.hunter)
 				stats.to_hit *= 1.0 + hunters * 0.15
 				stats.actions = float(stats.get("actions", 15.0)) * (1.0 + hunters * 0.1)
+		elif team==1 and int(world.get_meta("arena_wave",0))>0:
+			ArenaRules.creep_stats(int(world.get_meta("arena_wave")),stats)
 		var mages := rank("mage", totals[1 - team].mage)
 		for type in range(3, 6): stats.armor[type] *= 1.0 - mages * 0.2
 		unit.stats = stats

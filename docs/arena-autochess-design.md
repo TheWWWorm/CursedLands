@@ -24,10 +24,12 @@ boards hide their top-level effect renderers. Combat stops damaging projectiles
 at resolution, then drains the remaining visual effects for up to 1.5 seconds
 without advancing health or the combat clock.
 
-The round settles once every living owner reports a result. Health and income
-cannot be applied twice. Defeat costs `3 + floor(round / 5) + surviving enemy stars`
-health, plus `5 × (round − 30)` after round 30. A fight ends after two simulated
-minutes, or ten seconds without positive damage. Draws cost both owners ten
+Health is deducted when a board finishes, while the other boards keep fighting.
+The shared round settles income and places once every owner who entered the round
+reports a result, including owners eliminated by that result. Repeated results
+cannot charge health twice. Defeat costs `3 + floor(round / 5) + surviving enemy stars`
+health, plus `5 × (round − 30)` after round 30. A fight ends after ninety simulated
+seconds, or ten seconds without positive damage. Draws cost both owners ten
 health and grant no victory bonus. A copied army never penalizes its donor.
 
 At zero health a player is eliminated; the last survivor wins. For a simultaneous
@@ -36,57 +38,59 @@ a tie. The human receives a final place on elimination or victory.
 
 ## Building armies
 
+The experimental roster has **30 recruit chains and 90 original forms**. Each
+chain has three different archetypes. No step merely ages the previous creature,
+and no archetype appears in two chains. Distinct original combat roles, clans and
+named characters provide the larger roster without inventing new models.
+
+| Shop cost / tier | Recruit chains |
+| --- | ---: |
+| 1 gold | 7 |
+| 2 gold | 7 |
+| 3 gold | 6 |
+| 4 gold | 6 |
+| 5 gold | 4 |
+
+Only first forms appear in the shop. Both upgrades require three copies, making a
+three-star creature an investment of nine first forms. Two- and three-star forms
+are obtained through evolution. Tier-four and tier-five shop figures have a subtle
+rarity glow. Fourteen low-cost chains can appear at the opening; the six starting
+offers are distinct and include melee and ranged/magic choices. Later offers roll
+a tier with the existing level table and choose uniformly within it. Owning a chain
+does not secretly increase the chance of finding more copies.
+
+Campaign prototype levels are not shop prices. Trials apply explicit price/star
+budgets to copies of the native data. Base health by cost is 35/48/66/90/120, with
+role factors of 1.0 melee, 0.9 ranged and 0.78 magic. Star health is ×1/×2.2/×5;
+attack damage is ×1/×1.6/×2.8. Accuracy, defense, action speed and general armor
+also grow with cost and stars. Native resistance ratios, movement, attack types,
+weapons and spell behavior remain; offensive spells use real effect runes to fit
+the same budget. Creep accuracy, avoidance and exceptional boss armor are capped
+by wave, while their native bodies, damage and spells remain. These changes apply
+to Trials only, leaving the campaign database immutable.
+
 CPUs spend the same gold on the same offers, training and refreshes as the human.
-They recruit in visible steps throughout preparation, favor family groups, pursue
-matching copies, level gradually and keep savings when healthy. They receive no
-free units or stat multipliers. Starting early completes their outstanding shop
-choices before all formations lock. Models prepare one per frame across all boards
-while shop transactions and formation changes are briefly locked. After staging,
-all boards begin on the same bell and the combat shop reopens. CPU purchase
-preferences follow traits across the expanded forty-family pool. The five shop
-tiers contain 7, 9, 10, 8 and 6 families; sixteen are available at the opening.
+They recruit in visible steps, pursue copies, level gradually and keep savings
+when healthy. They receive no free units or stat multipliers. Starting early
+completes their shop choices before all formations lock. Models prepare one per
+frame across all boards; after staging, all boards begin at the same bell.
 
-Each CPU seat keeps one of four spending strategies. Economy targets fifty
-saved gold, expansion targets thirty and an earlier company level, evolution
-targets forty and more searches for matching copies, and tempo targets twenty.
-Savings ramp up after round three; low health and losing streaks release the
-bank. All strategies fill empty army slots, replace weak units, value native
-spells and armor, and retain coherent upgrade lines rather than unrelated bench
-singles. Upgrade estimates count the lower-rank copies needed to complete either
-remaining evolution, including progress already held in two-star copies. Native
-AI casters do not pay player stamina costs, and shopping estimates follow that
-rule. Formation selection considers distinct-family tribe thresholds and
-places ranged recruits behind melee troops. These estimates affect shopping
-only; combat uses the same native stats and rules as the player's army.
+Each seat keeps one of four spending policies. Economy targets fifty saved gold,
+expansion thirty and earlier levels, evolution forty and more searches for copies,
+and tempo twenty. Low health and losing streaks release savings. The evolution
+policy delays levels to leave room in its budget for rolls; every policy still
+fills empty slots, values spells and alliances, and replaces weak units. These
+are testable purchasing heuristics, not a claim of optimal or human play.
 
-Sixteen appended families preserve existing save indices:
+Version-11 saves migrate the previous forty-family roster to these chains,
+preserving rank, deployment and recorded investment. Loaded snapshots are copied
+before migration. A first-form sale returns its recorded investment; evolved
+sales return the lesser of the full copy cost and two thirds of investment.
+Online previews use the host's quote. If the unit changes before a quoted sale
+arrives, the host rejects it instead of accepting a different price.
 
-| Family | Tier | Gold | Copies for first evolution | Tribes |
-| --- | ---: | ---: | ---: | --- |
-| Brigands | 1 | 1 | 3 | Warrior, hunter |
-| Marksmen | 2 | 2 | 2 | Hunter |
-| Battle mages | 3 | 4 | 3 | Mage |
-| Zombies | 3 | 4 | 3 | Horde, warrior |
-| Guards | 4 | 6 | 2 | Warrior |
-| Ice elementals | 4 | 6 | 2 | Warrior, mage |
-| Apprentices | 1 | 1 | 3 | Mage |
-| Hounds | 2 | 3 | 3 | Beast, hunter |
-| Woodsfolk mystics | 3 | 3 | 2 | Mage |
-| Ghouls | 4 | 6 | 2 | Horde, hunter |
-| Red eyes | 4 | 7 | 2 | Beast, mage |
-| Dragons | 5 | 9 | 2 | Beast, mage |
-| Cyclopes | 5 | 10 | 3 | Horde, hunter |
-| Shadows | 5 | 8 | 2 | Horde, mage |
-| Imperial archers | 5 | 8 | 2 | Warrior, hunter |
-| Storm banshees | 4 | 7 | 2 | Horde, mage |
-
-Every second evolution needs three copies. Cross-kin forms follow a role or
-tribal connection: apprentices become forest spellcasters, and woodsfolk mystics
-become a white unicorn through the forest/mage theme. The campaign's source
-prototypes remain unchanged. Dragons and storm banshees gain stronger native
-effect runes on evolution. The final grey harpy and cyclops use 44 general armor
-instead of their original boss value of 150, preserving each elemental
-resistance ratio. Shop details and combat use these same recruit adjustments.
+See [the experiment and validation record](validation/allods-challenge-2026-10-18.md)
+for native fight comparisons, policy results and remaining playtest questions.
 
 Desktop solo combat uses a private authenticated loopback worker. The visible
 process owns shopping, economy and saves, and displays the worker's frozen
@@ -154,9 +158,12 @@ existing fighters and their bonuses keep their start-of-round state.
 
 ## Interface and saves
 
-Held Q/E smoothly accelerates camera rotation; right-button dragging rotates
-after a small drag threshold and a stationary right click keeps its cancel
-behavior. Camera motion uses real elapsed time at either battle speed. Menus
+WASD pans relative to the current view, using the modern camera pan-speed setting.
+Held Q/E smoothly accelerates rotation; right-button dragging rotates and tilts
+after a small drag threshold. A stationary right click keeps its cancel behavior.
+Shift + middle-drag pans, the wheel zooms, and Home explicitly resets the view.
+Round starts and scouting retain the current yaw, tilt, zoom and pan. Text fields,
+menus and focus loss suppress held camera input. Camera motion uses real elapsed time at either battle speed. Menus
 use the original game cursor. Creature details pair localized tribe names with
 their emblems, and text uses the displayed UI pixel density.
 
@@ -170,6 +177,8 @@ save (`arena-expedition.json` / `arena-autochess.json`). The save contains all n
 companies, health, places, pairings and unfinished CPU shop plans. Interrupted
 fights restart preparation against the same opponent without partial payment.
 Old ten-seat local previews migrate to nine, retaining the human army and economy.
+Partial combat saves retain the health from the beginning of the round so replaying
+an interrupted fight cannot charge an earlier partial result again.
 Classic saves do not update expedition difficulty unlocks.
 
 The compact right-hand list shows names and health, with a small grid button for
@@ -179,14 +188,21 @@ left-edge marker identifies the watched board without adding a row background.
 The last ten seconds of preparation or combat change the clock to coral and pulse
 its opacity; pausing also stops the pulse. CPUs use original
 localized NPC names: Erfar, Estera, Babur, Tilvar, Valrasian, Diera, Shei-Var and
-Kardaur. Hover details temporarily replace the standings. Names, help, status,
+Kardaur. Hover details temporarily replace the standings and remain available after elimination.
+The transparent left sidebar shows only the local company’s damage, sorted by
+contribution, with native pixel portraits, stars and bars. Dead combatants remain
+in that round’s list. Compact alliance icons show thresholds below it. Brief central
+banners announce rounds, preparation countdowns, income and victory/defeat. Online
+evolution notices follow the acknowledged roster update, without another purchase. Names, help, status,
 errors and both modes' rules are localized in English, Russian and German.
 
 ## Online play
 
 The opening also offers **Play online**. Up to nine humans compete with their
 own companies; computers occupy empty seats. A co-op-style host/join window
-handles addresses, passwords, readiness and the roster. The host owns the shared
+handles addresses, passwords, readiness and the roster. Desktop hosts advertise
+automatically through the same LAN discovery implementation as campaign co-op,
+on autochess discovery port 27018; private solo workers never advertise. The host owns the shared
 60-second preparation timer and all native battles; menus never pause online
 play. Guests who disconnect become computers, and eliminated players can keep
 watching. See [online autochess](autochess-online.md) for connection instructions,

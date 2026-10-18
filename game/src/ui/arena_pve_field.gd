@@ -40,7 +40,10 @@ var _old_fog := []
 var _shadow_poll := 0.0
 var _environment: Environment
 var _sun_light: DirectionalLight3D
+var pitch_offset := 0.0
+var pan_offset := Vector2.ZERO
 var _yaw_velocity := 0.0
+var _pan_velocity := Vector2.ZERO
 var _right_orbit := false
 var _right_dragged := false
 var _right_distance := Vector2.ZERO
@@ -57,10 +60,7 @@ func _build_stage() -> void:
 	resized.connect(_update_camera)
 	zoom = 14.5
 	yaw = -PI / 2
-	# Orthographic shadows use the camera's full depth, ignoring the light's
-	# max distance. The inherited 180 m range wasted most of the shadow map
-	# and put the opposing rows in different cascades. The whole 64 m island
-	# fits this range, including the rotating and widest spectator views.
+	# Keep the board inside the depth range even at the highest orbit tilt.
 	camera.near = 0.5
 	camera.far = 90.0
 	_update_camera()
@@ -117,12 +117,15 @@ func _apply_presentation() -> void:
 func reset_camera() -> void:
 	stop_camera_motion()
 	yaw = -PI / 2
+	pitch_offset = 0.0
+	pan_offset = Vector2.ZERO
 	zoom = 14.5
 	_update_camera()
 
 
 func stop_camera_motion() -> void:
 	_yaw_velocity = 0.0
+	_pan_velocity = Vector2.ZERO
 	_orbit = false
 	_right_orbit = false
 	_right_dragged = false
@@ -131,21 +134,30 @@ func stop_camera_motion() -> void:
 
 ## Match the main game's continuous turn acceleration and short release tail.
 ## The camera uses wall time, so 2x combat does not double the turn speed.
-func advance_camera(dt: float, turn: float) -> void:
+func advance_camera(dt: float, turn: float, movement := Vector2.ZERO) -> void:
 	var direction := -1.0 if GameData.option("camera_reverse_x") else 1.0
 	var target := -turn * 2.0 * CameraRig.speed_factor("cam_rotate_speed") * direction
 	_yaw_velocity = lerpf(_yaw_velocity, target, 1.0 - exp(-(18.0 if turn else 32.0) * dt))
 	if absf(_yaw_velocity) < 0.001:
 		_yaw_velocity = 0.0
-		return
 	yaw += _yaw_velocity * dt
+	var right := Vector2(camera.basis.x.x,-camera.basis.x.z).normalized()
+	var back := Vector2(camera.basis.z.x,-camera.basis.z.z).normalized()
+	var pan_target := (right*movement.x+back*movement.y).limit_length() * 14.0 * zoom/14.5 * CameraRig.speed_factor("cam_pan_speed")
+	_pan_velocity = _pan_velocity.lerp(pan_target,1.0-exp(-(18.0 if movement else 32.0)*dt))
+	if _pan_velocity.length_squared()<0.000001: _pan_velocity=Vector2.ZERO
+	if _yaw_velocity==0.0 and _pan_velocity==Vector2.ZERO: return
+	pan_offset=(pan_offset+_pan_velocity*dt).clamp(Vector2(-16,-16),Vector2(16,16))
 	_update_camera()
 
 
-func _drag_camera(dx: float) -> void:
+func _drag_camera(delta: Vector2, tilt := false) -> void:
 	var direction := -1.0 if GameData.option("camera_reverse_x") else 1.0
 	_yaw_velocity = 0.0
-	yaw -= dx * 0.006 * CameraRig.speed_factor("cam_rotate_speed") * direction
+	yaw -= delta.x * 0.006 * CameraRig.speed_factor("cam_rotate_speed") * direction
+	if tilt:
+		var vertical := -1.0 if GameData.option("camera_reverse_y") else 1.0
+		pitch_offset = clampf(pitch_offset + delta.y * 0.004 * vertical * CameraRig.speed_factor("cam_rotate_speed"), deg_to_rad(-35.0), deg_to_rad(35.0))
 	_update_camera()
 
 
@@ -230,18 +242,20 @@ func _update_camera() -> void:
 		return
 	super._update_camera()
 	if camera and size.x > 0 and size.y > 0:
-		camera.far = 90
-		Gfx.set_fog_palette(Color.BLACK, Color.BLACK, _arena_fog)
 		var point := match_state.bounds().get_center() if match_state else Vector2(32, 32)
-		var center := Vector3(point.x - 1.75, 0, -point.y)
+		var center := Vector3(point.x - 1.75 + pan_offset.x, 0, -point.y - pan_offset.y)
 		var fitted_size := maxf(14.5, 29.0 * size.y / size.x)
 		# Keep both starting rows, including their health bars, between the
 		# recruitment shelf and reserves at 16:9 and 4:3 desktop sizes.
 		var pixels_per_meter := size.y / fitted_size
 		var depth_sine := clampf((size.y - 430.0 * ui_scale) / (21.0 * pixels_per_meter), 0.25, 0.55)
-		var height := 36.0 * depth_sine / sqrt(1.0 - depth_sine * depth_sine)
+		var angle := clampf(asin(depth_sine) + pitch_offset, deg_to_rad(10.0), deg_to_rad(75.0))
+		var height := 36.0 * tan(angle)
 		camera.position = center + Vector3(sin(yaw) * 36, height, cos(yaw) * 36)
 		camera.look_at(center)
+		var distance := camera.position.distance_to(center)
+		camera.far=maxf(90.0,distance+45.0)
+		Gfx.set_fog_palette(Color.BLACK,Color.BLACK,_arena_fog+Vector2.ONE*maxf(0.0,distance-60.0))
 		camera.size = fitted_size * zoom / 14.5
 
 
@@ -269,18 +283,26 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		if _right_orbit and event.button_mask & MOUSE_BUTTON_MASK_RIGHT:
 			_right_distance += event.relative
-			if _right_dragged: _drag_camera(event.relative.x)
+			if _right_dragged: _drag_camera(event.relative, true)
 			elif _right_distance.length() >= 3.0:
 				_right_dragged = true
-				_drag_camera(_right_distance.x)
+				_drag_camera(_right_distance, true)
 			accept_event()
 			return
 		if _orbit and event.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
-			_drag_camera(event.relative.x)
+			if event.shift_pressed:
+				var plane := Plane(Vector3.UP, 0)
+				var before = plane.intersects_ray(camera.project_ray_origin(event.position-event.relative),camera.project_ray_normal(event.position-event.relative))
+				var after = plane.intersects_ray(camera.project_ray_origin(event.position),camera.project_ray_normal(event.position))
+				if before is Vector3 and after is Vector3:
+					pan_offset += Vector2(before.x-after.x,after.z-before.z)
+					pan_offset = pan_offset.clamp(Vector2(-16,-16),Vector2(16,16))
+					_update_camera()
+			else: _drag_camera(event.relative, event.alt_pressed)
 			accept_event()
 			return
 	if event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
-		zoom = clampf(zoom * (0.9 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.1), 8, 35)
+		zoom = clampf(zoom * pow(0.85 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0/0.85, CameraRig.speed_factor("cam_zoom_speed") * (event.factor if event.factor>0.0 else 1.0)), 8, 35)
 		_update_camera()
 		accept_event()
 		return

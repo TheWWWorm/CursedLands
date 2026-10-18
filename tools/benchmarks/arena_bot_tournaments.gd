@@ -22,10 +22,12 @@ class League extends ArenaOnlineTournament:
 var results:=[]
 func _ready()->void:
 	var count:=4
+	var first_game:=0
 	var self_play := "--all-new" in OS.get_cmdline_user_args()
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--games="):count=int(arg.get_slice("=",1))
-	for index in count:
+		elif arg.begins_with("--first-game="):first_game=int(arg.get_slice("=",1))
+	for index in range(first_game,first_game+count):
 		var game:=ArenaOnlineGame.new();var league:=League.new()
 		league.auto_save=false;league.flip=index%2;league.all_new=self_play;league.strategy_offset=index%4 if self_play else 0;game.run=league
 		add_child(game);game.begin(7319+index/2*997,{});game.set_process(false)

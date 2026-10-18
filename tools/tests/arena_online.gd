@@ -81,6 +81,9 @@ func pair(use_websocket: bool) -> void:
 			all_hp_match=false
 			print("HP_DIAGNOSTIC ",unit.uid," ",unit.hp," != ",authoritative.hp," gen=",replica.generation==host.game.board_key(1)," serial=",replica.serial)
 	check(all_hp_match,"received combat health matches authority")
+	check(replica.friendly_damage==host.game.encounter(1).friendly_damage,"damage ledger survives a delta snapshot")
+	var round_uids := replica.round_army.map(func(entry):return int(entry.uid))
+	check(replica.friendly_damage.keys().all(func(uid):return int(uid) in round_uids),"damage rows belong only to the friendly round roster")
 	var income:=guest.gold
 	host.game.run.record_board(1,0,[9,0]);check(guest.gold==income,"results cannot pay twice")
 	host.game.advance_clock(5)

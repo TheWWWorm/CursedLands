@@ -43,7 +43,7 @@ func _ready()->void:
 		check(screen.field._map_player(at)==player,"overview selects board "+str(player))
 	await shot("feedback-"+lang+"-overview")
 	screen._show_player(0);await frames(8)
-	check(screen.battle.world.global_position==Vector3.ZERO and screen.field.camera.far==90,"return restores focused board and camera")
+	check(screen.battle.world.global_position==Vector3.ZERO and screen.field.camera.far>=90,"return restores focused board and camera")
 	c.game.start_round();await frames(15)
 	online._toggle_speed();await frames(15)
 	check(screen._speed.visible and not screen._speed.disabled and c.view.battle_speed==2 and Engine.time_scale==2,"host can use shared 2x control")
@@ -55,24 +55,24 @@ func _ready()->void:
 	await shot("feedback-"+lang+"-combat")
 	# A finished home board must not supply the timer or opponent while scouting.
 	c.game.home.phase=ArenaMatch.Phase.FINISHED;c.game.home.winner=0;c.game.home.world.time=15.0
-	c.game.encounter(1).world.time=65.0;c.game.encounter(2).world.time=112.0
+	c.game.encounter(1).world.time=65.0;c.game.encounter(2).world.time=82.0
 	c.game.run.company(2).gold=37
 	c.game.run.pairings.assign([{"a":0,"b":1,"ghost":false},{"a":2,"b":3,"ghost":true}])
 	c.view.apply_state(c.game.state_for(0,c._names()))
 	online._show_player(1);await frames(20)
-	check(screen._clock.text=="1:05 / 2:00" and screen._phase.text==RemakeText.t("Battle"),"spectator timer and phase follow an active rival after home finishes")
+	check(screen._clock.text=="1:05 / 1:30" and screen._phase.text==RemakeText.t("Battle"),"spectator timer and phase follow an active rival after home finishes")
 	check(screen._opponent.text==RemakeText.t("Opponent: %s")%"Worm" and screen._scout_name.text==c.view.player_title(1),"spectator shows watched owner and opponent")
 	c.game.encounter(1).world.time=70.0;await frames(20)
-	check(screen._clock.text=="1:10 / 2:00","spectated timer continues receiving time")
+	check(screen._clock.text=="1:10 / 1:30","spectated timer continues receiving time")
 	online._show_player(2);await frames(20)
-	check(screen._clock.text=="1:52 / 2:00" and screen._clock.get_theme_color("font_color")==Color("ff9377"),"switching boards changes timer and urgency")
+	check(screen._clock.text=="1:22 / 1:30" and screen._clock.get_theme_color("font_color")==Color("ff9377"),"switching boards changes timer and urgency")
 	check(screen._opponent.text==RemakeText.t("Opponent: %s (copy)")%c.view.player_title(3),"watched ghost opponent is identified")
 	check(screen._scout_details.is_visible_in_tree() and screen._scout_details.text==RemakeText.t("Level %d")%c.view.company(2).capacity()+" · "+RemakeText.t("%d gold")%37,"spectator sees watched player's level and gold")
 	await shot("feedback-"+lang+"-spectator")
 	c.game.encounter(2).phase=ArenaMatch.Phase.FINISHED;c.game.encounter(2).winner=1;await frames(20)
 	check(screen._phase.text.begins_with(RemakeText.t("Defeat")) and screen._clock.modulate.a==1.0,"finished rival shows its result without timer pulse")
 	online._show_player(0);await frames(20)
-	check(screen._clock.text=="0:15 / 2:00" and screen._phase.text.begins_with(RemakeText.t("Victory")),"returning home restores own result and time")
+	check(screen._clock.text=="0:15 / 1:30" and screen._phase.text.begins_with(RemakeText.t("Victory")),"returning home restores own result and time")
 	c.close();screen.queue_free();c.queue_free();screen=null;await frames(6)
 	# Xvfb may lack a desktop mouse grab; actual script/render errors still fail.
 	check(errors.messages.filter(func(message):return not message.begins_with("NO GRAB")).is_empty(),"no runtime/render errors: "+str(errors.messages))

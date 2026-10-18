@@ -1,0 +1,69 @@
+## regression-final-arena_battle_limits.log
+ARENA_BATTLE_LIMITS checks=9 failures=[]
+
+## regression-final-arena_economy.log
+ARENA_ECONOMY 591 checks; failures=[]
+
+## regression-final-arena_live_shop.log
+ARENA_LIVE_SHOP 126 checks; failures=[]
+
+## regression-final-arena_online.log
+ARENA_ONLINE 68 checks; failures=[]
+
+## regression-final-arena_recruitment.log
+ARENA_RECRUITMENT 2396 checks; native_fights=364; failures=[]
+
+## regression-final-arena_result_health.log
+ARENA_RESULT_HEALTH 11 checks; failures=[]
+
+## regression-final-arena_roster.log
+ARENA_ROSTER checks=1608 opening_pair_duplicate_rate=0.07215 failures=[]
+
+## regression-final-arena_sale_quotes.log
+ARENA_SALE_QUOTES 272 checks; failures=[]
+
+## regression-final-creature_projectile_origins.log
+CREATURE_PROJECTILE_ORIGINS checks=182 failures=0
+
+## regression-final-replica_action_clips.log
+REPLICA_ACTION_CLIPS 43 checks; failures=[]
+
+## camera-final.log
+ARENA_CAMERA 26 checks; failures=[]
+
+## board-clip-final.log
+CAMERA_CLIP old_pixels=0 fitted_pixels=3671 far=142.651000976562
+ARENA_BOARD_PRESENTATION 420 checks; failures=[]
+
+## board-clip-vulkan.log
+CAMERA_CLIP old_pixels=0 fitted_pixels=3352 far=142.651000976562
+ARENA_BOARD_PRESENTATION 420 checks; failures=[]
+
+## online-updates-current.log
+ARENA_ONLINE_UPDATES_UI 19 checks; failures=[]
+
+## feedback-current.log
+ARENA_ONLINE_FEEDBACK_UI 38 checks; failures=[]
+
+## lan-worker-final.log
+ARENA_LOCAL_HOST 74 checks; failures=[]
+
+## worker-rng.log
+ARENA_SOLO_WORKER 57 checks; failures=[]
+
+## challenge-ui-final-en.log
+ARENA_CHALLENGE_UI 26 checks; failures=[]
+
+## challenge-ui-current-ru.log
+ARENA_CHALLENGE_UI 26 checks; failures=[]
+
+## challenge-ui-final-de.log
+ARENA_CHALLENGE_UI 26 checks; failures=[]
+
+## final-arena_issue_19.log
+ISSUE_19 restored=true accepted=true arrival_seconds=1.7 phase=1 movers=0
+ISSUE_19 finished=true seconds=36.5199999999998 damage=[496.050652885437, 1049.91969394684] success=true
+ISSUE_19 rearranged_player_same_enemies=true arrival_seconds=1.7
+
+## lifecycle-current.log
+ARENA_ROUND_LIFECYCLE 641 checks; failures=[]
