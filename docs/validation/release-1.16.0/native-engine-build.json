@@ -1,0 +1,20 @@
+{
+  "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "common_patches": 13,
+  "source_stack_receipt": "campaign-autochess-20261018/forward-shadow-source-stack.json",
+  "build_command": "PYTHONPATH=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/scons MINGW_PREFIX=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/native-deps/mingw/root/usr nice -n 10 python3 -m SCons -j4 platform=windows arch=x86_64 target=template_release debug_symbols=no lto=none production=yes optimize=speed use_mingw=yes use_static_cpp=yes mingw_prefix=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/native-deps/mingw/root/usr mesa_libs=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/windows-deps/mesa use_pix=no module_mono_enabled=no module_openxr_enabled=no accesskit=no",
+  "build_log_sha256": "10ef41834ba453939c0d3a0e29efd99ea0243ca07c09dae93d49873f35c206ab",
+  "windows_executable": {
+    "sha256": "7aa9ea486b050bf7dbd881ca9f8ac7d015e8fe328ecdaff1b8d718d49a599c73",
+    "bytes": 94036992,
+    "x86_64_pe": true,
+    "target_os_runtime_tested": false
+  },
+  "linux_executable": {
+    "sha256": "8e9e70d6ffefe09d4491696251c71e1cf880725fcfce9efe110dd6d36c02b99e",
+    "performance_receipt": "campaign-autochess-20261018/performance-runtime-validated.json"
+  },
+  "shader_guard_sha256": "7ce40d66ba714b49dfcc30dfe97b7e6f35ae49163a039605e0096fb5b72a8af4",
+  "native_source_matches_audited_stack": true,
+  "native_source_files_verified": 26
+}

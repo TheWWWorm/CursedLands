@@ -1,0 +1,46 @@
+{
+  "version": "1.16.0",
+  "game_source_commit": "4dff208c3a0c9714d57865583039a13002203eea",
+  "assets": [
+    {
+      "name": "CursedLands-1.16.0-android.apk",
+      "bytes": 38854579,
+      "sha256": "d72e465c336d379d61d82c2de55367589144992ec5fb01bf8aa9f8d674aa878f"
+    },
+    {
+      "name": "CursedLands-1.16.0-linux-x86_64.tar.gz",
+      "bytes": 50689397,
+      "sha256": "1f3f12631a9d5a4c2e6befbd7972f39f100ad8f47900c371029e18897971fd88"
+    },
+    {
+      "name": "CursedLands-1.16.0-macos-universal.zip",
+      "bytes": 77934510,
+      "sha256": "89df07a39263381ac56b093de1a55db01c3c1b1ac48d9a546b2835912fbc2f47"
+    },
+    {
+      "name": "CursedLands-1.16.0-tools.zip",
+      "bytes": 62143,
+      "sha256": "68b3f5841c3d30982218068b14873297132bc72b81f0313be63e7f0ab55b4b99"
+    },
+    {
+      "name": "CursedLands-1.16.0-web.zip",
+      "bytes": 177438495,
+      "sha256": "5a34e91d9999049eccd04ee6667f8ccb1ff4c9e5626a9e98f4c495d4902a9f52"
+    },
+    {
+      "name": "CursedLands-1.16.0-windows-x86_64.zip",
+      "bytes": 51856895,
+      "sha256": "3b57a6d4f9333e9f12278bf93099bfe351db52a6e2a0afe5a9bf302b38e13507"
+    },
+    {
+      "name": "quick-recovery.eimod",
+      "bytes": 546,
+      "sha256": "f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 686,
+      "sha256": "3e5f11c0db8eb091949e77529d5a7f2fb7bc2fd10e1351c29d5bac274847b862"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 09:39:42 +2056ms] session 30e2935b5e92: 1.15.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ERROR: Unable to send packet on channel 0, max channels: 0
+   at: send (modules/enet/enet_packet_peer.cpp:64)
+ERROR: No lobby packet targets a peer already disconnected in the same poll
+   at: push_error (core/variant/variant_utility.cpp:1023)
+ERROR: Unable to send packet on channel 0, max channels: 0
+   at: send (modules/enet/enet_packet_peer.cpp:64)
+ERROR: No lobby packet targets a peer already disconnected in the same poll
+   at: push_error (core/variant/variant_utility.cpp:1023)
+ERROR: Unable to send packet on channel 0, max channels: 0
+   at: send (modules/enet/enet_packet_peer.cpp:64)
+ERROR: No lobby packet targets a peer already disconnected in the same poll
+   at: push_error (core/variant/variant_utility.cpp:1023)
+ARENA_ONLINE_DISCONNECT 27 checks; failures=["No lobby packet targets a peer already disconnected in the same poll","No lobby packet targets a peer already disconnected in the same poll","No lobby packet targets a peer already disconnected in the same poll"]
+[trace 09:39:43 +2680ms] clean exit

@@ -1,0 +1,23 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 09:41:26 +2059ms] session bcd5a9d569e0: 1.15.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 09:41:28 +2009ms] session ecf1a74ea79e: 1.15.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 09:41:38 +11922ms] clean exit
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 09:41:43 +2036ms] session 9fc7f5521011: 1.15.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 09:41:46 +4954ms] clean exit
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 09:41:50 +2054ms] session a40db10c5692: 1.15.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 09:41:51 +2417ms] clean exit
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 09:41:53 +2018ms] session 2dffd6a7cc4f: 1.15.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ERROR: Couldn't create an ENet host.
+   at: _create (modules/enet/enet_connection.cpp:319)
+[trace 09:41:53 +2198ms] clean exit
+ARENA_LOCAL_HOST 74 checks; failures=[]
+[trace 09:41:53 +29624ms] clean exit

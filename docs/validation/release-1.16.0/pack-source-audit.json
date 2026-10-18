@@ -1,0 +1,12 @@
+{
+  "game_source_commit": "4dff208c3a0c9714d57865583039a13002203eea",
+  "game_tree": "e12ce9ee6f639e169db69548f60c6aec561989c3",
+  "compiled_scripts": 359,
+  "performance_pack_sha256": "398c431b2769be83b144ea8933fb70d1f0633fa96419b1f3cd1b2ba438b9a3c0",
+  "all_compiled_scripts_byte_identical_to_final_performance_runtime": true,
+  "release_pack_sha256": "3e81c6df53bf1a5230decdc4ed320513722120300e7d8898c5adb55dd9490b74",
+  "version_metadata": "1.16.0",
+  "linux_engine_identical_to_final_performance_runtime": true,
+  "native_terrain_identical_to_final_performance_runtime": true,
+  "native_terrain_sha256": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+}

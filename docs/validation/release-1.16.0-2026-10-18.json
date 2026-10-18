@@ -1,0 +1,530 @@
+{
+  "version": "1.16.0",
+  "tag": "v1.16.0",
+  "date": "2026-10-18",
+  "base_stable": "1.15.0",
+  "release_type": "stable minor (campaign travel, autochess controls and compatible fixes)",
+  "game_source_commit": "4dff208c3a0c9714d57865583039a13002203eea",
+  "game_tree": "e12ce9ee6f639e169db69548f60c6aec561989c3",
+  "coop_protocol": 23,
+  "autochess_protocol": 1,
+  "matching_game_versions_required": true,
+  "compiled_scripts": 359,
+  "all_compiled_scripts_identical_across_five_platforms": true,
+  "runtime_checks": [
+    {
+      "suite": "campaign_feedback",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [],
+      "summary": [
+        "CAMPAIGN_FEEDBACK 35 checks 0 failures"
+      ],
+      "checks": 35,
+      "seconds": 51.754,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/release-1.16.0/CursedLands-1.16.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/tests/campaign_feedback.gd"
+      ],
+      "log_sha256": "fc5f7382749615bcceffaec91ecb37a1c723e51169776085a8121c2a6a1c833f",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/release-1.16.0/checks/headless-campaign_feedback-en",
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_economy",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [],
+      "summary": [
+        "ARENA_ECONOMY 483 checks; failures=[]"
+      ],
+      "checks": 483,
+      "seconds": 2.969,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/release-1.16.0/CursedLands-1.16.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/tests/arena_economy.gd"
+      ],
+      "log_sha256": "77484ff96cf660797f4d086db33c3564424536a85a1333982086456de1214bf7",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/release-1.16.0/checks/headless-arena_economy-en",
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_online_disconnect",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [],
+      "summary": [
+        "ARENA_ONLINE_DISCONNECT 27 checks; failures=[]"
+      ],
+      "checks": 27,
+      "seconds": 3.069,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/release-1.16.0/CursedLands-1.16.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/tests/arena_online_disconnect.gd"
+      ],
+      "log_sha256": "2bee0fb1c4325f36fe392d8c46002d2e167f93a1d1e205095ff7d2efcc2ccd14",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/release-1.16.0/checks/headless-arena_online_disconnect-en",
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_local_host",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [
+        "ERROR: Couldn't create an ENet host."
+      ],
+      "summary": [
+        "ARENA_LOCAL_HOST 74 checks; failures=[]"
+      ],
+      "checks": 74,
+      "seconds": 30.918,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/release-1.16.0/CursedLands-1.16.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/tests/arena_local_host.gd"
+      ],
+      "log_sha256": "89a53ff485dd573298fb54e35a30ee2263349c195fd0fc2e0be72a6bda76a6c3",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/release-1.16.0/checks/headless-arena_local_host-en",
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_online_feedback_ui",
+      "language": "ru",
+      "args": [
+        "--feedback-ui=ru,1280,800"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [],
+      "summary": [
+        "ARENA_ONLINE_FEEDBACK_UI 38 checks; failures=[]"
+      ],
+      "checks": 38,
+      "seconds": 49.964,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/release-1.16.0/CursedLands-1.16.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/data/ru",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/tests/arena_online_feedback_ui.gd",
+        "--feedback-ui=ru,1280,800"
+      ],
+      "log_sha256": "03aa512681b62135e2fabe1e40f2f7d741f9a330be7edb90837899d330d20bb2",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/release-1.16.0/checks/rendered-arena_online_feedback_ui-ru",
+      "renderer": "Mesa llvmpipe OpenGL Compatibility"
+    },
+    {
+      "suite": "campaign_feedback_ui",
+      "language": "de",
+      "args": [
+        "--test-lang=de"
+      ],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [],
+      "summary": [
+        "CAMPAIGN_FEEDBACK_UI de 6 checks; failures=[]"
+      ],
+      "checks": 6,
+      "seconds": 4.322,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/release-1.16.0/CursedLands-1.16.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/tests/campaign_feedback_ui.gd",
+        "--test-lang=de"
+      ],
+      "log_sha256": "d3ec57936da41e7587889cded0d779b50369a0f7075ae50d917349ca0844d6e9",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/release-1.16.0/checks/rendered-campaign_feedback_ui-de",
+      "renderer": "Mesa llvmpipe OpenGL Compatibility"
+    }
+  ],
+  "packaged_runtime_assertions": 663,
+  "source_validation": [
+    "campaign-autochess-20261018.md"
+  ],
+  "pack_source_audit": {
+    "game_source_commit": "4dff208c3a0c9714d57865583039a13002203eea",
+    "game_tree": "e12ce9ee6f639e169db69548f60c6aec561989c3",
+    "compiled_scripts": 359,
+    "performance_pack_sha256": "398c431b2769be83b144ea8933fb70d1f0633fa96419b1f3cd1b2ba438b9a3c0",
+    "all_compiled_scripts_byte_identical_to_final_performance_runtime": true,
+    "release_pack_sha256": "3e81c6df53bf1a5230decdc4ed320513722120300e7d8898c5adb55dd9490b74",
+    "version_metadata": "1.16.0",
+    "linux_engine_identical_to_final_performance_runtime": true,
+    "native_terrain_identical_to_final_performance_runtime": true,
+    "native_terrain_sha256": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d"
+  },
+  "performance": {
+    "scope": "Final performance runtime: Forward+ shadow guard plus deferred online departure roster broadcasts. PCK exported from this working tree.",
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-validated",
+    "files": {
+      "CursedLands.x86_64": {
+        "sha256": "8e9e70d6ffefe09d4491696251c71e1cf880725fcfce9efe110dd6d36c02b99e",
+        "bytes": 82141352
+      },
+      "CursedLands.pck": {
+        "sha256": "398c431b2769be83b144ea8933fb70d1f0633fa96419b1f3cd1b2ba438b9a3c0",
+        "bytes": 12293352
+      },
+      "src/native/bin/libterrain_search.so": {
+        "sha256": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "bytes": 3110064
+      }
+    },
+    "prior_paired_engine_receipt": "performance-runtime-forward-shadow.json",
+    "pack_change_since_shadow_comparison": "ArenaOnlineSession._peer_disconnected defers _send_lobby until the current network poll has finished. No rendering or campaign logic changed.",
+    "platform": "Linux Vulkan on NVIDIA RTX 3090; safe render thread. Windows and RTX 4090 Laptop untested.",
+    "runs": [
+      {
+        "name": "validated-desert",
+        "average_fps": 66.00564396568973,
+        "frame_ms": {
+          "max": 59.894,
+          "median": 15.01,
+          "p95": 18.154,
+          "p99": 19.112
+        },
+        "runtime_errors": [],
+        "data": "validated-desert.json",
+        "log": "validated-desert.log"
+      },
+      {
+        "name": "validated-host-1",
+        "average_fps": 66.30285832954979,
+        "frame_ms": {
+          "max": 63.599,
+          "median": 14.917,
+          "p95": 17.246,
+          "p99": 20.187
+        },
+        "runtime_errors": [],
+        "data": "validated-host-1.json",
+        "log": "validated-host-1.log",
+        "max_clock_lag_seconds": 0.05549300000010149,
+        "peak_drawn_particles": 4404,
+        "guest_connected": true,
+        "worker_exited": true
+      },
+      {
+        "name": "validated-host-2",
+        "average_fps": 62.74880534134884,
+        "frame_ms": {
+          "max": 73.772,
+          "median": 15.448,
+          "p95": 20.002,
+          "p99": 26.191
+        },
+        "runtime_errors": [],
+        "data": "validated-host-2.json",
+        "log": "validated-host-2.log",
+        "max_clock_lag_seconds": 0.3051179999999998,
+        "peak_drawn_particles": 4378,
+        "guest_connected": true,
+        "worker_exited": true
+      }
+    ],
+    "tests": "final-network-checks.json",
+    "commands": "validated-commands.json",
+    "safe_zone_and_turn_runs": {
+      "pack_sha256": "394a7bc3cad16cfac9431336fc77dd5cf1be7c5ef8635f0fc0466b91529f2d62",
+      "files": [
+        "shadow-final-camp-bz14h.json",
+        "shadow-final-camp-bz15h.json",
+        "shadow-final-turn.json"
+      ],
+      "note": "Same engine and rendering/campaign code; before the final autochess disconnect-only pack change."
+    },
+    "source_checksums": {
+      "game/src/game/arena_online_session.gd": "1f56e43c74a6ceeb3d936c148b3162576b6b3806abafa8eb213f87baf561b8ed",
+      "engine_patches/godot-4.7/forward-shadow-blend-guard.patch": "7ce40d66ba714b49dfcc30dfe97b7e6f35ae49163a039605e0096fb5b72a8af4",
+      "tools/tests/arena_online_disconnect.gd": "4e21120d3c40c7131ef49d69cf3c6b0e639833fb55b55d7ad0df160fc6c7083d"
+    }
+  },
+  "translations": {
+    "entries": 2623,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 145,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "errors": 0,
+    "output": "Wiki world text: 180 entries in EN/RU/DE\nWiki reference text: 3886 source-checked EN/DE entries; RU uses original archives\nTranslations: 2623 entries; 141 dynamic wiki keys; 145 dynamic arena keys; 0 errors"
+  },
+  "desktop": {
+    "linux-x86_64": {
+      "version": "1.16.0",
+      "source_commit": "4dff208c3a0c9714d57865583039a13002203eea",
+      "game_tree": "e12ce9ee6f639e169db69548f60c6aec561989c3",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 13,
+      "unchanged_qualified_engine": false,
+      "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus common patches 1\u201313",
+      "compiled_scripts": 359,
+      "resource_count": 946,
+      "files": {
+        "CursedLands.x86_64": "8e9e70d6ffefe09d4491696251c71e1cf880725fcfce9efe110dd6d36c02b99e",
+        "libterrain_search.so": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.pck": "3e81c6df53bf1a5230decdc4ed320513722120300e7d8898c5adb55dd9490b74"
+      }
+    },
+    "windows-x86_64": {
+      "version": "1.16.0",
+      "source_commit": "4dff208c3a0c9714d57865583039a13002203eea",
+      "game_tree": "e12ce9ee6f639e169db69548f60c6aec561989c3",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 13,
+      "unchanged_qualified_engine": false,
+      "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus common patches 1\u201313",
+      "compiled_scripts": 359,
+      "resource_count": 946,
+      "files": {
+        "CursedLands.exe": "7aa9ea486b050bf7dbd881ca9f8ac7d015e8fe328ecdaff1b8d718d49a599c73",
+        "libterrain_search.dll": "d6d04f4a2135edad5e25c21bca9545402b5f636b11699d6e802daccd592633e1",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "CursedLands.pck": "3e81c6df53bf1a5230decdc4ed320513722120300e7d8898c5adb55dd9490b74"
+      }
+    },
+    "macos-universal": {
+      "version": "1.16.0",
+      "source_commit": "4dff208c3a0c9714d57865583039a13002203eea",
+      "game_tree": "e12ce9ee6f639e169db69548f60c6aec561989c3",
+      "protocol": 23,
+      "platform": "macos-universal",
+      "unsigned": true,
+      "target_os_runtime_tested": false,
+      "compiled_scripts": 359,
+      "files": {
+        "CursedLands.zip": "0a0827381c05c26a6268061275481b88d5a4da29c049851fd28edcf477360cb1"
+      }
+    }
+  },
+  "android": {
+    "version": "1.16.0",
+    "compiled_scripts": 359,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 50,
+    "debuggable": false,
+    "apk_sha256": "d72e465c336d379d61d82c2de55367589144992ec5fb01bf8aa9f8d674aa878f",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "f121b36709bd5ddd880dabbaf11f38cb6a8038f1a098cd958ffc51877bf84b58"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16,
+    "target_os_runtime_tested": false
+  },
+  "native_build": {
+    "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "common_patches": 13,
+    "source_stack_receipt": "campaign-autochess-20261018/forward-shadow-source-stack.json",
+    "build_command": "PYTHONPATH=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/scons MINGW_PREFIX=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/native-deps/mingw/root/usr nice -n 10 python3 -m SCons -j4 platform=windows arch=x86_64 target=template_release debug_symbols=no lto=none production=yes optimize=speed use_mingw=yes use_static_cpp=yes mingw_prefix=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/native-deps/mingw/root/usr mesa_libs=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/windows-deps/mesa use_pix=no module_mono_enabled=no module_openxr_enabled=no accesskit=no",
+    "build_log_sha256": "10ef41834ba453939c0d3a0e29efd99ea0243ca07c09dae93d49873f35c206ab",
+    "windows_executable": {
+      "sha256": "7aa9ea486b050bf7dbd881ca9f8ac7d015e8fe328ecdaff1b8d718d49a599c73",
+      "bytes": 94036992,
+      "x86_64_pe": true,
+      "target_os_runtime_tested": false
+    },
+    "linux_executable": {
+      "sha256": "8e9e70d6ffefe09d4491696251c71e1cf880725fcfce9efe110dd6d36c02b99e",
+      "performance_receipt": "campaign-autochess-20261018/performance-runtime-validated.json"
+    },
+    "shader_guard_sha256": "7ce40d66ba714b49dfcc30dfe97b7e6f35ae49163a039605e0096fb5b72a8af4",
+    "native_source_matches_audited_stack": true,
+    "native_source_files_verified": 26
+  },
+  "browser": {
+    "version": "1.16.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-d1509efe7974059afebc",
+      "new_cache": "cursed-engine-2-0722de8b7e9414d2c175",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "149350dec13dbc3a111a19f15c5a9a6595280c4e9ea9010b566f8e8c45cf908b",
+      "old_tab_wait_verified": true
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-0722de8b7e9414d2c175"
+      ],
+      "packs": {
+        "cursed-engine-2-0722de8b7e9414d2c175": "149350dec13dbc3a111a19f15c5a9a6595280c4e9ea9010b566f8e8c45cf908b"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    },
+    "previous_start": {
+      "visible_setup_screen": true,
+      "origin": "http://127.0.0.1:29162/",
+      "runtime_errors": [],
+      "capture": "browser-previous.png",
+      "version": "1.15.0",
+      "inspection": "Rendered Chromium setup screenshot visually inspected"
+    },
+    "upgraded_start": {
+      "visible_setup_screen": true,
+      "origin": "http://127.0.0.1:29162/",
+      "runtime_errors": [],
+      "capture": "browser-upgraded.png",
+      "inspection": "Rendered Chromium setup screenshot visually inspected"
+    },
+    "fresh_start": {
+      "visible_setup_screen": true,
+      "origin": "http://127.0.0.1:29163/",
+      "runtime_errors": [],
+      "capture": "browser-fresh.png",
+      "inspection": "Rendered Chromium setup screenshot visually inspected"
+    },
+    "browser": "Chromium 149 / software WebGL 2",
+    "runtime_errors": [],
+    "http_failures": [],
+    "build": {
+      "version": "1.16.0",
+      "source_tag": "v1.16.0",
+      "source_commit": "4dff208c3a0c9714d57865583039a13002203eea",
+      "game_tree": "e12ce9ee6f639e169db69548f60c6aec561989c3",
+      "protocol": 23,
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 359,
+      "resource_count": 943,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "149350dec13dbc3a111a19f15c5a9a6595280c4e9ea9010b566f8e8c45cf908b",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    }
+  },
+  "wiki": {
+    "version": "1.16.0",
+    "indexes": {
+      "wiki/data/de/index.json": 1277,
+      "wiki/data/en/index.json": 1277,
+      "wiki/data/ru/index.json": 1277,
+      "wiki/data/lost_in_astral/de/index.json": 1757,
+      "wiki/data/lost_in_astral/en/index.json": 1757,
+      "wiki/data/lost_in_astral/ru/index.json": 1757
+    },
+    "files": 13526,
+    "manifest_sha256": "5961a40902eaa577a7d4f45f80b204841bf356d252ca20a7344d2a5303ed3dea",
+    "content": "Existing 1.15.0 encyclopedia retained; index version metadata updated."
+  },
+  "hosted_files_count": 13551,
+  "hosted_manifest_sha256": "2f97f5bedc46b798578bd214f112fb4cd404700f17c20d5c865ff653a1579161",
+  "parts_manifest": {
+    "/index.wasm": {
+      "count": 2,
+      "size": 39509339
+    }
+  },
+  "evidence": {
+    "browser-fresh.png": "2eba1904b247f91bdacc2de39e4aa45b3a1b769a6f554e6b61501f322f9a65f5",
+    "browser-update-waiting.png": "ad24db2f9c78c2ebd32cd99e256e165f8d43da2a4ad26fde538b966f07d5f83b",
+    "browser-upgrade-check.png": "0ec631ece0cd67caea3df10373cf310008550063ea68277634e94cec10db015f",
+    "browser-upgraded.png": "2eba1904b247f91bdacc2de39e4aa45b3a1b769a6f554e6b61501f322f9a65f5",
+    "expansion-feedback-ru-overview.png": "8a340945228bfffc7a76f7938eaa1aa90c60f03ac3b1d50dca6f9113dbbfe966",
+    "expansion-feedback-ru-spectator.png": "7d17347ae8ad9b5234bcd84cd1d1f40fbbf35dc60f683b3dc610b53aa8d993b1",
+    "expansion-selection-glow-de.png": "9b676e50b02ffb477bc74247e63a782a8549ed937a6e4cb2c9795c5cd66fb736",
+    "native-engine-build.json": "055ec82b2e76590170d977d6dff27736ad4b3636e4aaf6ef61748311b54d6bf4",
+    "pack-source-audit.json": "df40245a7140ba4573a069adceff0f8e34f2af35460151b17e04a1f6fcac6b66",
+    "results.json.gz": "c3ff6a98ec9178c1380e679483f028cbef45281ff7f263fdfceae609b2b0601f",
+    "windows-engine-build.log": "10ef41834ba453939c0d3a0e29efd99ea0243ca07c09dae93d49873f35c206ab"
+  },
+  "changes_qualified": [
+    "Packaged campaign checks preserve save clock, defeat handling, quest state and travel; packaged economy checks cover interest boundaries and once-only settlement.",
+    "Packaged ENet/WebSocket authority checks cover seat ownership, host-only speed, private owner token rejection, LAN advertisement, startup cancellation, occupied ports and child shutdown. Simultaneous guest departures preserve the surviving guest connection.",
+    "Packaged Russian spectator HUD checks stable hover, names, sword markers, 2x, nine-board overview, watched timers, opponents, results and level/gold. Packaged German campaign UI checks journal and selection glow labels, choices and help.",
+    "Browser update from stable 1.15.0 waits for old tabs to close and preserves every IndexedDB store, including save and data sentinels.",
+    "Windows and Linux templates include common patches 1\u201313. Android retains its qualified 16-patch Mobile template, signing certificate and application ID, with version code 50. macOS and Web retain official Godot 4.7 templates."
+  ],
+  "limits": [
+    "Linux x86_64 was executed. Windows, macOS and Android packages were exported and audited, but not run on their target operating systems. The macOS package is unsigned.",
+    "Performance measurements use Linux Vulkan, RTX 3090 and Ryzen 5950X at native 3840x2160 Ultra. FPS values are averages with documented frame-time tails. Windows 11 and RTX 4090 Laptop performance remains unmeasured.",
+    "Online checks use local networking; external WAN routing, UPnP and browser secure-WebSocket proxy operation were not exercised. Browser checks cover startup and storage upgrades, not campaign gameplay.",
+    "This online version has no late joining, reconnection, host migration or online save/resume. Browser clients require a reachable wss:// endpoint and cannot host."
+  ],
+  "deployment_verification": "Publish the draft only after hosted hashes and live browser startup match this build; deployment and publication receipts are retained with the release workspace."
+}
