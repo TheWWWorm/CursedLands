@@ -1,0 +1,46 @@
+
+This GDB supports auto-downloading debuginfo from the following URLs:
+  <https://debuginfod.ubuntu.com>
+Enable debuginfod for this session? (y or [n]) [answered N; input not from terminal]
+Debuginfod has been disabled.
+To make this setting permanent, add 'set debuginfod enabled off' to .gdbinit.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[Detaching after vfork from child process 498866]
+[New Thread 0x7ffff71ff6c0 (LWP 498868)]
+[New Thread 0x7ffff69fe6c0 (LWP 498869)]
+[New Thread 0x7ffff61fd6c0 (LWP 498870)]
+[New Thread 0x7ffff59fc6c0 (LWP 498871)]
+[New Thread 0x7ffff51fb6c0 (LWP 498872)]
+warning: Could not load shared library symbols for ./src/native/bin/libmod_archive.so.
+Do you need "set solib-search-path" or "set sysroot"?
+warning: Could not load shared library symbols for ./src/native/bin/libterrain_search.so.
+Do you need "set solib-search-path" or "set sysroot"?
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+[New Thread 0x7fffe7fff6c0 (LWP 498887)]
+
+[New Thread 0x7fffe77fe6c0 (LWP 498888)]
+[trace 19:37:16 +2059ms] session 5a4d725969d2: 1.16.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+
+Thread 1 "CursedLands.x86" received signal SIGSEGV, Segmentation fault.
+0x0000555558ae8afb in ?? ()
+#0  0x0000555558ae8afb in ?? ()
+#1  0x0000555558d32a50 in ?? ()
+#2  0x0000555555ccd159 in ?? ()
+#3  0x0000555555c1fc13 in ?? ()
+#4  0x0000555555c1ff02 in ?? ()
+#5  0x0000555555c252ca in ?? ()
+#6  0x0000555558dc63f0 in ?? ()
+#7  0x0000555558adbe2f in ?? ()
+#8  0x0000555558adc789 in ?? ()
+#9  0x0000555558dd5daa in ?? ()
+#10 0x0000555555cc7ed5 in ?? ()
+#11 0x0000555555c1fc13 in ?? ()
+#12 0x0000555555c1ff02 in ?? ()
+#13 0x0000555555c252ca in ?? ()
+#14 0x0000555558dc63f0 in ?? ()
+#15 0x0000555558adbe2f in ?? ()
+#16 0x0000555558adc789 in ?? ()
+#17 0x0000555558dd5daa in ?? ()
+#18 0x0000555556d05dfb in ?? ()
+#19 0x0000555555965a70 in ?? ()

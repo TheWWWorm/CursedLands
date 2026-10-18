@@ -1,0 +1,638 @@
+{
+  "version": "1.17.0",
+  "tag": "v1.17.0",
+  "date": "2026-10-18",
+  "base_stable": "1.16.0",
+  "release_type": "stable minor (autochess recruitment, strategies, player profile and compatible fixes)",
+  "game_source_commit": "45793d68e643c2f09abc9f2ba86f433d328bc5b9",
+  "game_tree": "29697b53cd616fff9e0c5f23f5b5656be2e038e2",
+  "coop_protocol": 23,
+  "autochess_protocol": 1,
+  "matching_game_versions_required": true,
+  "compiled_scripts": 364,
+  "all_compiled_scripts_identical_across_five_platforms": true,
+  "runtime_checks": [
+    {
+      "suite": "paused_spawn_pose",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [],
+      "summary": [
+        "PAUSED_SPAWN_POSE checks=42 failures=0"
+      ],
+      "checks": 42,
+      "seconds": 3.87,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/CursedLands-1.17.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/paused_spawn_pose.gd"
+      ],
+      "log_sha256": "83749d0cada8966a26740f80836565efc44a356b096599b3b26b3411722887f8",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/checks/headless-paused_spawn_pose-en",
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_bot_planner",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [],
+      "summary": [
+        "ARENA_BOT_PLANNER checks=18 family=4 filler=12 failures=[]"
+      ],
+      "checks": 18,
+      "seconds": 2.668,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/CursedLands-1.17.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_bot_planner.gd"
+      ],
+      "log_sha256": "f11a905ee9a1fc9920cf12ee9e2159a32c48f9e8e0eee5b264ce364c5b0f0ab8",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/checks/headless-arena_bot_planner-en",
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_roster",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [],
+      "summary": [
+        "ARENA_ROSTER checks=964 opening_pair_duplicate_rate=0.06685 failures=[]"
+      ],
+      "checks": 964,
+      "seconds": 2.769,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/CursedLands-1.17.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_roster.gd"
+      ],
+      "log_sha256": "7548e06b4966bcebb22c4172d1d010471400c13d66140b7bf13dd497f258244a",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/checks/headless-arena_roster-en",
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_solo_worker",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [],
+      "summary": [
+        "ARENA_SOLO_WORKER 47 checks; failures=[]"
+      ],
+      "checks": 47,
+      "seconds": 76.244,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/CursedLands-1.17.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_solo_worker.gd"
+      ],
+      "log_sha256": "fad6f6f5e01a4ee0acc738941b7dd68aef7493ec73b2b331b21fccc6afa8bbaa",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/checks/headless-arena_solo_worker-en",
+      "renderer": "headless"
+    },
+    {
+      "suite": "arena_online_disconnect",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [],
+      "summary": [
+        "ARENA_ONLINE_DISCONNECT 27 checks; failures=[]"
+      ],
+      "checks": 27,
+      "seconds": 3.52,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/CursedLands-1.17.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_online_disconnect.gd"
+      ],
+      "log_sha256": "be4d19256a08af4489cb4f329e1a8b6ce192940e56fdfbae34623ab4cd13cf23",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/checks/headless-arena_online_disconnect-en",
+      "renderer": "headless"
+    },
+    {
+      "suite": "player_profile",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [],
+      "summary": [
+        "PLAYER_PROFILE 24 checks; failures=[]"
+      ],
+      "checks": 24,
+      "seconds": 8.177,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/CursedLands-1.17.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "0",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/player_profile.gd"
+      ],
+      "log_sha256": "710e4dacda5e2255d46cc22442929ff2d05bd033a835a5a53e0f90aaaec436d9",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/checks/rendered-player_profile-en",
+      "renderer": "Linux Vulkan Forward+ / RTX 3090"
+    },
+    {
+      "suite": "arena_camera",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [],
+      "summary": [
+        "ARENA_CAMERA 21 checks; failures=[]"
+      ],
+      "checks": 21,
+      "seconds": 15.089,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/CursedLands-1.17.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "0",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_camera.gd"
+      ],
+      "log_sha256": "ec4bfa313015d134383f6aaac14188f8ccba126a59f8f6f607df8b7209241917",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/checks/rendered-arena_camera-en",
+      "renderer": "Linux Vulkan Forward+ / RTX 3090"
+    },
+    {
+      "suite": "arena_round_lifecycle",
+      "language": "en",
+      "args": [],
+      "passed": true,
+      "exit": 0,
+      "errors": [],
+      "expected_negative_test_diagnostics": [],
+      "summary": [
+        "ARENA_ROUND_LIFECYCLE 625 checks; failures=[]"
+      ],
+      "checks": 625,
+      "seconds": 24.655,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/CursedLands-1.17.0-linux-x86_64/CursedLands.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "0",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_round_lifecycle.gd"
+      ],
+      "log_sha256": "bda0df7149adf81fd76046d43bea24bd6aa74bc4039b8dadcf8d863db6de60c5",
+      "profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/release-1.17.0/checks/rendered-arena_round_lifecycle-en",
+      "renderer": "Linux Vulkan Forward+ / RTX 3090"
+    }
+  ],
+  "packaged_runtime_assertions": 1768,
+  "source_validation": [
+    "autochess-frame-time-20261018.md",
+    "autochess-preview2-20261018.md",
+    "autochess-goal-audit-20261018.md",
+    "campaign-issues-28-29-20261018.md"
+  ],
+  "pack_source_audit": {
+    "version": "1.17.0",
+    "source_commit": "45793d68e643c2f09abc9f2ba86f433d328bc5b9",
+    "game_tree": "29697b53cd616fff9e0c5f23f5b5656be2e038e2",
+    "compiled_scripts": 364,
+    "all_scripts_identical_to_validated_preview3": true,
+    "linux_and_windows_engines_identical_to_validated_previews": true,
+    "native_libraries": [
+      {
+        "platform": "linux-x86_64",
+        "file": "libterrain_search.so",
+        "sha256": "d9c6bb8393e46e47d3caa0c78d59ef16d571c2e8e494f696896df7cf29a93834",
+        "matches_source_binary": true
+      },
+      {
+        "platform": "linux-x86_64",
+        "file": "libmod_archive.so",
+        "sha256": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "matches_source_binary": true
+      },
+      {
+        "platform": "windows-x86_64",
+        "file": "libterrain_search.dll",
+        "sha256": "82575b1c6b895caf4db66169e01c8c19bb6202b202622463d6cadab82e3a0b46",
+        "matches_source_binary": true
+      },
+      {
+        "platform": "windows-x86_64",
+        "file": "libmod_archive.dll",
+        "sha256": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "matches_source_binary": true
+      }
+    ],
+    "release_metadata_only_game_change_since_preview3": true,
+    "release_pck_sha256": "5df50f29d50d2859acd9e2561363c12cad93092e1de46608b7620e67d8204f49",
+    "preview3_pck_sha256": "b20001cfef2df59a7b580a16fccbe9ec255e1eb5fddbdc7bf591f23a7b0f10b9"
+  },
+  "performance": [
+    {
+      "case": "expanded-2x-rounds",
+      "round": 12,
+      "resolution": "(2560, 1366)",
+      "speed": 2,
+      "average_fps": 113.100836971138,
+      "minimum_1s_fps": 66.0722139714134,
+      "p95_ms": 10.834,
+      "maximum_ms": 30.673,
+      "entry_maximum_ms": 21.896,
+      "combat_seconds": 60.135298,
+      "acceptance": true,
+      "next_round_maximum_ms": 44.836,
+      "retained_resources": 0,
+      "tracked_resources": 171,
+      "reused_courtyard": true,
+      "passes_60fps": true
+    },
+    {
+      "case": "expanded-2x-rounds",
+      "round": 13,
+      "resolution": "(2560, 1366)",
+      "speed": 2,
+      "average_fps": 114.088686835721,
+      "minimum_1s_fps": 68.2282025724999,
+      "p95_ms": 10.672,
+      "maximum_ms": 37.754,
+      "entry_maximum_ms": 22.947,
+      "combat_seconds": 60.113861,
+      "acceptance": true,
+      "next_round_maximum_ms": 44.024,
+      "retained_resources": 0,
+      "tracked_resources": 171,
+      "reused_courtyard": true,
+      "passes_60fps": true
+    },
+    {
+      "case": "expanded-2x-rounds",
+      "round": 14,
+      "resolution": "(2560, 1366)",
+      "speed": 2,
+      "average_fps": 112.651352482555,
+      "minimum_1s_fps": 66.2290278863747,
+      "p95_ms": 10.913,
+      "maximum_ms": 43.482,
+      "entry_maximum_ms": 21.975,
+      "combat_seconds": 60.10879,
+      "acceptance": true,
+      "next_round_maximum_ms": 45.062,
+      "retained_resources": 0,
+      "tracked_resources": 171,
+      "reused_courtyard": true,
+      "passes_60fps": true
+    },
+    {
+      "case": "expanded-2x-overview",
+      "round": 24,
+      "resolution": "(2560, 1366)",
+      "speed": 2,
+      "average_fps": 165.260278613383,
+      "minimum_1s_fps": 69.4644292504787,
+      "p95_ms": 10.554,
+      "maximum_ms": 37.383,
+      "entry_maximum_ms": 22.62,
+      "combat_seconds": 60.080077,
+      "acceptance": true,
+      "next_round_maximum_ms": 45.66,
+      "retained_resources": 0,
+      "tracked_resources": 171,
+      "reused_courtyard": true,
+      "passes_60fps": true
+    },
+    {
+      "case": "expanded-2x-scout",
+      "round": 24,
+      "resolution": "(2560, 1366)",
+      "speed": 2,
+      "average_fps": 141.108185808996,
+      "minimum_1s_fps": 69.12255824563,
+      "p95_ms": 11.422,
+      "maximum_ms": 48.474,
+      "entry_maximum_ms": 23.666,
+      "combat_seconds": 35.003857,
+      "acceptance": true,
+      "passes_60fps": true
+    },
+    {
+      "case": "expanded-1x",
+      "round": 24,
+      "resolution": "(2560, 1366)",
+      "speed": 1,
+      "average_fps": 100.20975075361,
+      "minimum_1s_fps": 82.6754163155452,
+      "p95_ms": 12.943,
+      "maximum_ms": 21.657,
+      "entry_maximum_ms": 22.715,
+      "combat_seconds": 20.00899,
+      "acceptance": true,
+      "passes_60fps": true
+    },
+    {
+      "case": "expanded-2x-host",
+      "resolution": "(3840, 2160)",
+      "speed": 2,
+      "average_fps": 64.1363149138052,
+      "minimum_1s_fps": 52.2573705077149,
+      "p95_ms": 17.767,
+      "maximum_ms": 26.572,
+      "extra_fires": 18,
+      "combat_seconds": 40.008535,
+      "acceptance": false,
+      "passes_60fps": false
+    },
+    {
+      "case": "expanded-2x-host-1440",
+      "resolution": "(2560, 1440)",
+      "speed": 2,
+      "average_fps": 103.474736139423,
+      "minimum_1s_fps": 62.3514205237123,
+      "p95_ms": 12.954,
+      "maximum_ms": 24.086,
+      "extra_fires": 18,
+      "combat_seconds": 40.000102,
+      "acceptance": true,
+      "passes_60fps": true
+    }
+  ],
+  "translations": {
+    "entries": 2687,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 161,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "errors": 0,
+    "output": "Wiki world text: 180 entries in EN/RU/DE\nWiki reference text: 3886 source-checked EN/DE entries; RU uses original archives\nTranslations: 2687 entries; 141 dynamic wiki keys; 161 dynamic arena keys; 0 errors"
+  },
+  "desktop": {
+    "linux-x86_64": {
+      "version": "1.17.0",
+      "source_commit": "45793d68e643c2f09abc9f2ba86f433d328bc5b9",
+      "game_tree": "29697b53cd616fff9e0c5f23f5b5656be2e038e2",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 14,
+      "unchanged_qualified_engine": false,
+      "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus common patches 1\u201314",
+      "compiled_scripts": 364,
+      "resource_count": 964,
+      "files": {
+        "CursedLands.x86_64": "a67d02872a2866c110515f081f81a9e834f0d38b19cd5cd0e03c96d7429f65a0",
+        "libterrain_search.so": "d9c6bb8393e46e47d3caa0c78d59ef16d571c2e8e494f696896df7cf29a93834",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.pck": "5df50f29d50d2859acd9e2561363c12cad93092e1de46608b7620e67d8204f49"
+      }
+    },
+    "windows-x86_64": {
+      "version": "1.17.0",
+      "source_commit": "45793d68e643c2f09abc9f2ba86f433d328bc5b9",
+      "game_tree": "29697b53cd616fff9e0c5f23f5b5656be2e038e2",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 14,
+      "unchanged_qualified_engine": false,
+      "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus common patches 1\u201314",
+      "compiled_scripts": 364,
+      "resource_count": 964,
+      "files": {
+        "CursedLands.exe": "bc401685dd6238c54ba97585bb7c83418689fdddfe4f8a67d00be8fe31affa62",
+        "libterrain_search.dll": "82575b1c6b895caf4db66169e01c8c19bb6202b202622463d6cadab82e3a0b46",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "CursedLands.pck": "5df50f29d50d2859acd9e2561363c12cad93092e1de46608b7620e67d8204f49"
+      }
+    },
+    "macos-universal": {
+      "version": "1.17.0",
+      "source_commit": "45793d68e643c2f09abc9f2ba86f433d328bc5b9",
+      "game_tree": "29697b53cd616fff9e0c5f23f5b5656be2e038e2",
+      "protocol": 23,
+      "platform": "macos-universal",
+      "unsigned": true,
+      "target_os_runtime_tested": false,
+      "compiled_scripts": 364,
+      "files": {
+        "CursedLands.zip": "4398e729b3b143ef1c61c91d0d3de2e0ae18cf76b20fc586bfd6f1a9088a15b5"
+      }
+    }
+  },
+  "android": {
+    "version": "1.17.0",
+    "compiled_scripts": 364,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 51,
+    "debuggable": false,
+    "apk_sha256": "da7eff0635faeaec38015c5536aa579309bcdcc7e8892a08e6065f423901f529",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "cc64f9d4f3cace4010e33810ae684a2b738dd5bbd2289746fca20b7ffc2c65d6"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16,
+    "target_os_runtime_tested": false
+  },
+  "browser": {
+    "version": "1.17.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-0722de8b7e9414d2c175",
+      "new_cache": "cursed-engine-2-dca8c9ec4cd89a5f1e77",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "d17e68938a52488cc98021c3865f655e46cb61f721f6bcb6ad076a5e35468133",
+      "old_tab_wait_verified": true
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-dca8c9ec4cd89a5f1e77"
+      ],
+      "packs": {
+        "cursed-engine-2-dca8c9ec4cd89a5f1e77": "d17e68938a52488cc98021c3865f655e46cb61f721f6bcb6ad076a5e35468133"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    },
+    "previous_start": {
+      "visible_setup_screen": true,
+      "origin": "http://127.0.0.1:29172/",
+      "runtime_errors": [],
+      "capture": "browser-previous.png",
+      "version": "1.16.0"
+    },
+    "upgraded_start": {
+      "visible_setup_screen": true,
+      "origin": "http://127.0.0.1:29172/",
+      "runtime_errors": [],
+      "capture": "browser-upgraded.png"
+    },
+    "fresh_start": {
+      "visible_setup_screen": true,
+      "origin": "http://127.0.0.1:29173/",
+      "runtime_errors": [],
+      "capture": "browser-fresh.png"
+    },
+    "browser": "Chromium 149 / software WebGL 2",
+    "runtime_errors": [],
+    "http_failures": [],
+    "visual_inspection": "Fresh setup screen inspected; previous and upgraded screenshots are byte-identical.",
+    "build": {
+      "version": "1.17.0",
+      "source_tag": "v1.17.0",
+      "source_commit": "45793d68e643c2f09abc9f2ba86f433d328bc5b9",
+      "game_tree": "29697b53cd616fff9e0c5f23f5b5656be2e038e2",
+      "protocol": 23,
+      "platform": "web",
+      "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+      "threads": false,
+      "extensions": false,
+      "compiled_scripts": 364,
+      "resource_count": 961,
+      "all_pck_resource_md5_valid": true,
+      "original_game_data_bundled": false,
+      "pck_sha256": "d17e68938a52488cc98021c3865f655e46cb61f721f6bcb6ad076a5e35468133",
+      "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+    }
+  },
+  "wiki": {
+    "version": "1.17.0",
+    "indexes": {
+      "wiki/data/de/index.json": 1277,
+      "wiki/data/en/index.json": 1277,
+      "wiki/data/ru/index.json": 1277,
+      "wiki/data/lost_in_astral/de/index.json": 1757,
+      "wiki/data/lost_in_astral/en/index.json": 1757,
+      "wiki/data/lost_in_astral/ru/index.json": 1757
+    },
+    "files": 13526,
+    "manifest_sha256": "e22696b63acc83e35c30d6de0220cdd35135fa13a8d514c6151cabf15247571f",
+    "content": "Existing 1.16.0 encyclopedia retained; index version metadata updated."
+  },
+  "hosted_files_count": 13551,
+  "hosted_manifest_sha256": "10cee78c92aff2c792d38189a4a5f3e2e3239a48c82cb9af4dbcc739919bdfdb",
+  "parts_manifest": {
+    "/index.wasm": {
+      "count": 2,
+      "size": 39509339
+    }
+  },
+  "evidence": {
+    "android-audit.json": "5abec81a69236d0e34d1001b61c22ce0b0ebabf6a6f6748db7a6b41a7d55d0f8",
+    "browser-fresh.png": "2eba1904b247f91bdacc2de39e4aa45b3a1b769a6f554e6b61501f322f9a65f5",
+    "browser-update-waiting.png": "710cd37c71347bef8aab96a288059fad20cd4bc43bcf7c1998c7aed339800bdb",
+    "browser-upgrade-check.png": "cf8bddebb2f2b78b7a292383c51534145882e659e262492274004261da54dfdd",
+    "browser-upgraded.png": "2eba1904b247f91bdacc2de39e4aa45b3a1b769a6f554e6b61501f322f9a65f5",
+    "pack-source-audit.json": "41c87b3fd058ca75892b04a5ec67f3ff3a7c0818567410a32b1c008c578005fb",
+    "results.json.gz": "a6b7b330ea207f127e15c4cd9fc4caf193226d2404070cae5c25848c6fba24fc"
+  },
+  "build_import": "Clean-source imports initially encounter preloaded SVGs before Godot imports them; a separate second import is required to be free of all errors. Every final export and runtime check is clean.",
+  "changes_qualified": [
+    "Packaged tests cover paused character posture, CPU planning, the expanded roster, private solo worker combat/clock parity and cleanup, online disconnect, persistent player names in three languages, continuous Q/E/right-drag controls and three rendered round transitions at 2x.",
+    "364 compiled game scripts match the fully tested preview3 runtime and every release platform. Desktop native libraries match the committed rebuilt binaries.",
+    "Browser upgrade from stable 1.16.0 waits for old tabs to close and preserves every IndexedDB store, including save and data sentinels. Fresh and upgraded startup reach the game-data setup screen.",
+    "Windows and Linux use common engine patches 1\u201314. Android retains its qualified 16-patch Mobile template, certificate and application ID, with version code 51. macOS and Web use official Godot 4.7 templates."
+  ],
+  "limits": [
+    "Linux x86_64 was executed. Windows, macOS and Android packages were exported and audited but not run on their target operating systems. macOS is unsigned.",
+    "FPS measurements use Linux Vulkan Forward+, RTX 3090 and Ryzen 5950X. Main-resolution 2x cases exceed 60 FPS in their lowest rolling second; individual long frames remain. Additional 4K host stress falls to 52.26 FPS in its lowest rolling second. Windows/RTX 4090 Laptop performance is unmeasured.",
+    "Deliberately cold forced army setup can still produce isolated roughly 130 ms frames. Staged preparation duration and blocking frame time are distinct. No universal stutter-free or 60 FPS guarantee is made.",
+    "A rendered UI lifecycle fixture crashes when forced headless on both the previous and current runtime. Its rendered run passes; actual headless simulation workers pass.",
+    "Issue #29 was investigated but not reproduced on published 1.16.0 or this candidate; no footprint-rendering fix is included.",
+    "Browser checks cover startup and local cache/storage upgrades, not full campaign gameplay. WAN routing and secure WebSocket proxy operation are untested. macOS, Android, Web and script fallbacks are outside the desktop FPS measurements.",
+    "Online play has no late joining, reconnection, host migration or online save/resume. Browser clients need a reachable wss:// endpoint and cannot host."
+  ],
+  "deployment_verification": "Public GitHub publication proceeds independently of live Cloudflare verification. Deployment and publication receipts are recorded after the push."
+}

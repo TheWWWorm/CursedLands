@@ -1,0 +1,36 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 19:25:53 +2113ms] session 1a9d05ac3ca0: 1.16.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 19:25:56 +2161ms] session 4e3e3318faef: 1.16.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 19:25:56 +2570ms] load paused-pose-0 (from )
+[trace 19:25:56 +2588ms] zone load gz1g (entrance 1)
+[trace 19:26:00 +6543ms] zone ready gz1g
+[trace 19:26:00 +6760ms] navigation prepared 5 classes in 216 ms
+[trace 19:26:00 +6766ms] load paused-pose-0 done in gz1g
+[trace 19:26:00 +9500ms] zone load gz1g (from host)
+[trace 19:26:04 +12703ms] zone ready gz1g (from host)
+FAIL worker gait 0 saved posture is already displayed
+[trace 19:26:04 +10330ms] load paused-pose-1 (from gz1g)
+[trace 19:26:04 +10363ms] zone load gz1g (entrance 1)
+[trace 19:26:05 +11482ms] zone teardown gz1g
+[trace 19:26:05 +11508ms] zone ready gz1g
+[trace 19:26:05 +11723ms] navigation prepared 5 classes in 213 ms
+[trace 19:26:05 +11729ms] load paused-pose-1 done in gz1g
+[trace 19:26:05 +14342ms] zone load gz1g (from host)
+[trace 19:26:06 +15290ms] zone teardown gz1g
+[trace 19:26:06 +15399ms] zone ready gz1g (from host)
+FAIL worker gait 1 saved posture is already displayed
+[trace 19:26:06 +12930ms] load paused-pose-2 (from gz1g)
+[trace 19:26:07 +12963ms] zone load gz1g (entrance 1)
+[trace 19:26:08 +14003ms] zone teardown gz1g
+[trace 19:26:08 +14028ms] zone ready gz1g
+[trace 19:26:08 +14249ms] navigation prepared 5 classes in 219 ms
+[trace 19:26:08 +14256ms] load paused-pose-2 done in gz1g
+[trace 19:26:08 +16865ms] zone load gz1g (from host)
+[trace 19:26:09 +17782ms] zone teardown gz1g
+[trace 19:26:09 +17884ms] zone ready gz1g (from host)
+[trace 19:26:09 +15457ms] clean exit
+PAUSED_LOAD_POSE checks=31 failures=2
+[trace 19:26:09 +18462ms] clean exit

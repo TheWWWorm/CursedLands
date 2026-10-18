@@ -1,0 +1,22 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 19:26:28 +2060ms] session 2ef82a847035: 1.16.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 19:26:29 +2490ms] load paused-pose-0 (from )
+[trace 19:26:29 +2491ms] zone load gz1g (entrance 1)
+[trace 19:26:33 +6457ms] zone ready gz1g
+[trace 19:26:33 +6672ms] navigation prepared 5 classes in 214 ms
+[trace 19:26:33 +6673ms] load paused-pose-0 done in gz1g
+[trace 19:26:33 +6910ms] load paused-pose-1 (from gz1g)
+[trace 19:26:33 +6916ms] zone load gz1g (entrance 1)
+[trace 19:26:34 +8043ms] zone teardown gz1g
+[trace 19:26:34 +8100ms] zone ready gz1g
+[trace 19:26:35 +8316ms] navigation prepared 5 classes in 214 ms
+[trace 19:26:35 +8317ms] load paused-pose-1 done in gz1g
+[trace 19:26:35 +8404ms] load paused-pose-2 (from gz1g)
+[trace 19:26:35 +8410ms] zone load gz1g (entrance 1)
+[trace 19:26:36 +9463ms] zone teardown gz1g
+[trace 19:26:36 +9517ms] zone ready gz1g
+[trace 19:26:36 +9729ms] navigation prepared 5 classes in 210 ms
+[trace 19:26:36 +9730ms] load paused-pose-2 done in gz1g
+PAUSED_LOAD_POSE checks=30 failures=0
+[trace 19:26:36 +9912ms] clean exit

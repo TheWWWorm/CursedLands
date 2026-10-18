@@ -1,0 +1,6 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 19:35:47 +2874ms] session f66f77c0da9e: 1.16.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+FOOTPRINT_RUNNING_SCENE checks=15 failures=0 generated=93
+[trace 19:35:50 +6610ms] clean exit

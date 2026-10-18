@@ -1,0 +1,37 @@
+{
+  "version": "1.17.0",
+  "source_commit": "45793d68e643c2f09abc9f2ba86f433d328bc5b9",
+  "game_tree": "29697b53cd616fff9e0c5f23f5b5656be2e038e2",
+  "compiled_scripts": 364,
+  "all_scripts_identical_to_validated_preview3": true,
+  "linux_and_windows_engines_identical_to_validated_previews": true,
+  "native_libraries": [
+    {
+      "platform": "linux-x86_64",
+      "file": "libterrain_search.so",
+      "sha256": "d9c6bb8393e46e47d3caa0c78d59ef16d571c2e8e494f696896df7cf29a93834",
+      "matches_source_binary": true
+    },
+    {
+      "platform": "linux-x86_64",
+      "file": "libmod_archive.so",
+      "sha256": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "matches_source_binary": true
+    },
+    {
+      "platform": "windows-x86_64",
+      "file": "libterrain_search.dll",
+      "sha256": "82575b1c6b895caf4db66169e01c8c19bb6202b202622463d6cadab82e3a0b46",
+      "matches_source_binary": true
+    },
+    {
+      "platform": "windows-x86_64",
+      "file": "libmod_archive.dll",
+      "sha256": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "matches_source_binary": true
+    }
+  ],
+  "release_metadata_only_game_change_since_preview3": true,
+  "release_pck_sha256": "5df50f29d50d2859acd9e2561363c12cad93092e1de46608b7620e67d8204f49",
+  "preview3_pck_sha256": "b20001cfef2df59a7b580a16fccbe9ec255e1eb5fddbdc7bf591f23a7b0f10b9"
+}

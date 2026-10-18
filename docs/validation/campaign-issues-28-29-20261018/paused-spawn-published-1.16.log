@@ -1,0 +1,11 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 19:39:56 +2366ms] session 3b6666a41cb2: 1.16.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+FAIL gait=0 action=idle displayed posture ready while paused
+FAIL gait=0 action=idle first evaluation cannot correct a stale pose
+FAIL gait=1 action=idle displayed posture ready while paused
+FAIL gait=1 action=idle first evaluation cannot correct a stale pose
+FAIL gait=2 action=walk no transition into saved stance
+FAIL gait=3 action=walk no transition into saved stance
+PAUSED_SPAWN_POSE checks=42 failures=6
+[trace 19:39:58 +3689ms] clean exit

@@ -1,0 +1,15 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3514)
+
+[trace 19:22:03 +2069ms] session d5f387779106: 1.16.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+FAIL gait=0 action=idle displayed posture ready while paused
+FAIL gait=0 action=idle first evaluation cannot correct a stale pose
+FAIL gait=1 action=idle displayed posture ready while paused
+FAIL gait=1 action=idle first evaluation cannot correct a stale pose
+FAIL gait=2 action=walk no transition into saved stance
+FAIL gait=3 action=walk no transition into saved stance
+PAUSED_SPAWN_POSE checks=42 failures=6
+[trace 19:22:04 +3084ms] clean exit
