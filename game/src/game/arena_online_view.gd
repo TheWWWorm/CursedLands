@@ -12,6 +12,8 @@ var connected := true
 var _ui_key := 0
 var global_stage := "prepare"
 var result_left := 4.0
+var battle_speed := 1
+var fighting_seats: Array = []
 
 func _init() -> void:
 	auto_save = false
@@ -26,6 +28,8 @@ func apply_state(data: Dictionary) -> void:
 	preparation_left = float(data.left); result_left = float(data.result_left)
 	preparing_battle = bool(data.staging)
 	global_stage = String(data.stage)
+	battle_speed = clampi(int(data.get("speed", 1)), 1, 2)
+	fighting_seats = data.get("fighting", [])
 	stage = global_stage
 	if global_stage == "won": stage = "won" if int(data.placements[seat]) == 1 else "lost"
 	lives = int(data.health[seat])
@@ -46,7 +50,10 @@ func apply_state(data: Dictionary) -> void:
 		pairings.append({"a":a,"b":b,"ghost":bool(pairing.ghost)})
 	ready_seats.assign(data.ready)
 	can_revert = bool(data.undo)
-	var key := hash([data.companies[seat], data.health, data.placements, data.stage, data.ready, data.names, data.round, data.staging])
+	var company_ui: Dictionary = data.companies[seat].duplicate()
+	# The host company owns the countdown; it is not a roster/UI change.
+	company_ui.erase("preparation_left")
+	var key := hash([company_ui, battle_speed, fighting_seats, data.health, data.placements, data.stage, data.ready, data.names, data.round, data.staging])
 	if key != _ui_key:
 		_ui_key = key
 		changed.emit()
@@ -61,10 +68,12 @@ static func _copy_company(target: ArenaRun, data: Dictionary) -> void:
 	target.last_evolutions.assign(data.get("evolutions", []))
 
 func player_title(player: int) -> String:
-	if player == 0: return RemakeText.t("You")
 	var server := seats[player]
 	if not names[player].is_empty(): return names[player]
 	return super.player_title(server) if server > 0 else RemakeText.t("Computer")
+
+func player_fighting(player: int) -> bool:
+	return global_stage == "fight" and seats[player] in fighting_seats
 
 func _intent(action: String, args: Array = []) -> String:
 	if not connected: return RemakeText.t("Connection to the host was lost.")

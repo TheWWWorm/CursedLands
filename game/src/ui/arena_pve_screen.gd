@@ -104,6 +104,7 @@ var _scout_name: Label
 var _scout_details: Label
 var _scout_return: Button
 var _opponent: Label
+var _encounter_key := 0
 var _clock_pulse := 0.0
 
 
@@ -114,7 +115,7 @@ func _ready() -> void:
 	_previous_border_dist = Gfx._border_menu
 	theme = Theme.new()
 	theme.default_font_size = 16
-	theme.default_font = ThemeDB.fallback_font.duplicate()
+	theme.default_font = preload("res://fonts/LiberationSans-Regular.ttf").duplicate()
 	_heading_font = preload("res://fonts/LiberationSerif-Regular.ttf").duplicate()
 	theme.set_color("font_color", "Label", PAPER)
 	for kind in ["Button", "OptionButton", "LineEdit"]:
@@ -394,8 +395,8 @@ func _ready() -> void:
 	_scout_return.custom_minimum_size = Vector2(28, 28)
 	_scout_return.add_theme_constant_override("icon_max_width", 16)
 	_scout_return.name = "ReturnToBoard"
-	_scout_details.hide()
-	for label in [_scout_name, _scout_details, _gold, _income, _lives]: ArenaCreatureCard.snow_ink(label)
+	for label in [_scout_name, _scout_details]: _standing_ink(label)
+	for label in [_gold, _income, _lives]: ArenaCreatureCard.snow_ink(label)
 	for label in [_army_title, _reserve_count]:
 		label.add_theme_color_override("font_color", PAPER)
 		ArenaCreatureCard.outline(label)
@@ -482,6 +483,7 @@ func _exit_tree() -> void:
 
 
 func _refresh() -> void:
+	_encounter_key = 0
 	_header.visible = false # The opening composition carries the expedition title.
 	_gold.text = str(run.gold)
 	_lives.text = str(run.lives) if run is ArenaTournamentRun else "%d/3" % run.lives
@@ -489,12 +491,9 @@ func _refresh() -> void:
 	var income := run.income_preview(run.battle_savings if run.stage == "fight" else -1)
 	_income.text = RemakeText.t("Income +%d") % int(income.total)
 	_income.visible = run.wave < run.wave_limit
-	_gold.get_parent().tooltip_text = _income_details(income) + "\n" + RemakeText.t("Savings earn 1 gold per 10, up to 3. Win three battles in a row for +1 gold, or six for +2. Defeat breaks the streak.")
+	_gold.get_parent().tooltip_text = _income_details(income) + "\n" + RemakeText.t("Savings earn 1 gold per 10, up to 5. Win three battles in a row for +1 gold, or six for +2. Defeat breaks the streak.")
 	_wave_title.text = run.round_title()
-	_round_panel.tooltip_text = run.round_title() + " · " + run.encounter_title() + "\n" + RemakeText.t("Seed %s") % str(run.run_seed)
-	_round_panel.tooltip_text += "\n" + RemakeText.t("Battles last at most 2 minutes. Ten seconds without damage ends a battle in a draw.")
 	_opponent.visible = run is ArenaTournamentRun and not landing
-	_opponent.text = run.encounter_title() if run is ArenaTournamentRun else ""
 	var preparing := run.stage == "prepare" and not landing
 	var fighting := run.stage == "fight" and not landing
 	if not run.can_shop(): _evolution_notice.clear()
@@ -585,12 +584,17 @@ func _refresh() -> void:
 	elif selected_uid > 0 and not run.unit(selected_uid).is_empty(): field.select_creature(run.unit(selected_uid).prototype)
 	if selected_uid > 0 and run.unit(selected_uid).is_empty(): _clear_selection()
 	_update_sell_target()
-	_hide_inspector()
+	# A network roster refresh must not reset a stable world hover.
+	if landing or not run.can_shop(): _hide_inspector()
 	if preparing and run.army.is_empty(): _hint(RemakeText.t("Recruit your first creature."))
 	_tooltips.capture(_hud)
 	if is_instance_valid(_tournament_battles) and not landing:
 		_tournament_battles.synchronize()
-		_tournament_battles.watch(_tournament_battles.viewed_player)
+		# Keep the overview open when roster, gold or round state changes.
+		# watch() collapses the worlds back onto one board without moving the
+		# overview camera, leaving most of its map empty.
+		if not _tournament_battles.overview:
+			_tournament_battles.watch(_tournament_battles.viewed_player)
 	_update_scout()
 	_layout_outcome.call_deferred()
 	if run.save_error: _feedback(RemakeText.t("The game could not be saved. Check free disk space before leaving."))
@@ -1228,24 +1232,48 @@ func _battle_changed() -> void:
 		_pause.icon = preload("res://assets/arena/play.svg") if (battle.phase == ArenaMatch.Phase.PAUSED or _league_paused) else preload("res://assets/arena/pause.svg")
 		_pause.tooltip_text = RemakeText.t("Resume" if battle.phase == ArenaMatch.Phase.PAUSED or _league_paused else "Pause") + " · " + RemakeText.t("Space")
 		if _tooltips: _tooltips.capture(_pause)
-	if _phase:
-		_phase.text = RemakeText.t("Preparing") if run.stage == "prepare" else RemakeText.t("Paused") if battle.phase == ArenaMatch.Phase.PAUSED or _league_paused else RemakeText.t("Battle") if run.stage == "fight" else RemakeText.t("Draw" if int(run.last_result.get("winner", -1)) == -1 else "Victory" if int(run.last_result.get("winner", -1)) == 0 else "Defeat")
-		_phase.add_theme_color_override("font_color", GOLD if run.stage in ["result", "reward", "won"] else MUTED)
-		if run is ArenaTournamentRun and run.stage == "fight" and battle.phase == ArenaMatch.Phase.FINISHED and not _league_paused:
-			_phase.text = RemakeText.t("Other battles")
-		_phase.visible = not _phase.text.is_empty()
+	_update_encounter_status()
+	if _sound: _sound.music.tick(2 if battle.phase == ArenaMatch.Phase.FIGHT else 0)
+
+
+func _viewed_battle() -> ArenaPveMatch:
+	return field.match_state as ArenaPveMatch if field and field.match_state else battle
+
+
+func _update_encounter_status() -> void:
+	if not _phase: return
+	var watched := _viewed_battle()
+	if not watched: return
+	var player := _tournament_battles.viewed_player if is_instance_valid(_tournament_battles) else 0
+	var key := hash([watched.get_instance_id(), run.wave, run.stage, watched.phase, watched.winner, _league_paused, player])
+	if key == _encounter_key: return
+	_encounter_key = key
+	var encounter: String = run.board_encounter(player) if run is ArenaTournamentRun else run.encounter_title()
+	_opponent.text = encounter if run is ArenaTournamentRun else ""
+	_round_panel.set_meta("arena_help", run.round_title() + " · " + encounter + "\n" + RemakeText.t("Seed %s") % str(run.run_seed) + "\n" + RemakeText.t("Battles last at most 2 minutes. Ten seconds without damage ends a battle in a draw."))
+	var status := RemakeText.t("Preparing")
+	if run.stage != "prepare":
+		if watched.phase == ArenaMatch.Phase.PAUSED or _league_paused: status = RemakeText.t("Paused")
+		elif watched.phase == ArenaMatch.Phase.FIGHT: status = RemakeText.t("Battle")
+		else:
+			status = RemakeText.t("Draw" if watched.winner == -1 else "Victory" if watched.winner == 0 else "Defeat")
+			if run.stage == "fight": status += "\n" + RemakeText.t("Other battles")
+	if _phase.text != status:
+		_phase.text = status
 		_layout_round_badge.call_deferred()
 		_layout_standings.call_deferred()
-	if _sound: _sound.music.tick(2 if battle.phase == ArenaMatch.Phase.FIGHT else 0)
+	_phase.add_theme_color_override("font_color", GOLD if watched.phase == ArenaMatch.Phase.FINISHED else MUTED)
 
 
 func _process(dt: float) -> void:
 	_hover_inspector(dt)
+	if run is ArenaTournamentRun and run.stage == "fight": _update_fighting_icons()
 	_standings.visible = run is ArenaTournamentRun and not landing and not _rail.visible and not _modal_layer.visible and not _outcome.visible
 	if is_instance_valid(_tournament_battles):
 		_tournament_battles.paused = landing or _modal_layer.visible or battle.phase == ArenaMatch.Phase.PAUSED or _league_paused
 		if not network_play and run.stage == "fight": Engine.time_scale = float(GameData.arena_speed)
 	_update_scout()
+	_update_encounter_status()
 	_overview_bar.visible = field.showing_boards() and not landing
 	_hit_numbers.visible = not field.showing_boards()
 	_vignette.visible = not field.showing_boards()
@@ -1269,20 +1297,20 @@ func _process(dt: float) -> void:
 	if is_instance_valid(_live_health) and is_instance_valid(_inspected_unit) and _rail.visible:
 		var unit := _inspected_unit
 		_live_health.text = ArenaUnitInfo.summary(_inspected, unit)
-	if _clock and battle and is_instance_valid(battle.world):
+	var watched := _viewed_battle()
+	if _clock and watched and is_instance_valid(watched.world):
 		if run.stage == "prepare": _clock.text = RemakeText.t("Battle in %ds") % ceili(run.preparation_left)
 		elif run.stage == "result": _clock.text = _result_countdown()
 		elif run.stage in ["won", "lost"]: _clock.text = RemakeText.t("First place" if run.stage == "won" else "Eliminated") if run is ArenaTournamentRun else RemakeText.t("Expedition complete" if run.stage == "won" else "The expedition ends")
-		else: _clock.text = "%d:%02d / %d:%02d" % [int(battle.world.time) / 60, int(battle.world.time) % 60, int(battle.time_limit()) / 60, int(battle.time_limit()) % 60]
-		var urgent := (run.stage == "prepare" and run.preparation_left <= 10) or (run.stage == "fight" and battle.time_limit() - battle.world.time <= 10)
-		if not _modal_layer.visible and not _league_paused and battle.phase != ArenaMatch.Phase.PAUSED:
+		else: _clock.text = "%d:%02d / %d:%02d" % [int(watched.world.time) / 60, int(watched.world.time) % 60, int(watched.time_limit()) / 60, int(watched.time_limit()) % 60]
+		var urgent := (run.stage == "prepare" and run.preparation_left <= 10) or (run.stage == "fight" and watched.phase == ArenaMatch.Phase.FIGHT and watched.time_limit() - watched.world.time <= 10)
+		if not _modal_layer.visible and not _league_paused and watched.phase != ArenaMatch.Phase.PAUSED:
 			_clock_pulse += dt / maxf(Engine.time_scale, 0.001)
 		_clock.add_theme_color_override("font_color", Color("ff9377") if urgent else GOLD)
 		_clock.add_theme_color_override("font_outline_color", Color("35140e"))
 		_clock.add_theme_constant_override("outline_size", 2 if urgent else 0)
 		_clock.modulate.a = 0.72 + 0.28 * (0.5 + 0.5 * cos(_clock_pulse * TAU * 1.5)) if urgent else 1.0
 
-	var watched := field.match_state as ArenaPveMatch
 	if _sound and watched and is_instance_valid(watched.world):
 		_listen_to(watched.world)
 		_sound.mixer.set_listener(Vector3(32, 32, 2), Vector2(0, 1).rotated(field.yaw), Vector2(1, 0).rotated(field.yaw))
@@ -1308,6 +1336,15 @@ func _listen_to(world: GameWorld) -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if is_instance_valid(_wiki) and _wiki.visible: return
+	if event is InputEventKey and event.pressed and not landing and not _modal_layer.visible and not field.showing_boards():
+		var key: int = event.physical_keycode if event.physical_keycode else event.keycode
+		if key in [KEY_Q, KEY_E, KEY_HOME]:
+			if key == KEY_HOME: field.reset_camera()
+			else:
+				field.yaw += deg_to_rad(15) * (1 if key == KEY_Q else -1)
+				field._update_camera()
+			get_viewport().set_input_as_handled()
+			return
 	if not _modal_layer.visible and WikiContext.matches(event, get_viewport()):
 		_open_wiki()
 		get_viewport().set_input_as_handled()
@@ -1353,8 +1390,9 @@ func _guide() -> void:
 	if run is ArenaTournamentRun: topics.append([RemakeText.t("Draw"), RemakeText.t("A draw costs both players 10 health.")])
 	if network_play:
 		topics[1] = ["Preparation", "Everyone has 60 seconds to recruit and arrange their army. The round starts early when all surviving human players are ready. Changing your army cancels ready. Menus and scouting do not pause the timer."]
-		topics[6] = ["Battle", "Both teams fight under AI control. The host runs all battles on the same clock. Hover a creature for details. Online battles cannot be paused or sped up by a player."]
+		topics[6] = ["Battle", "Both teams fight under AI control. The host runs all battles on the same clock and can switch between normal and double speed. Hover a creature for details. Online battles cannot be paused."]
 		topics[8] = ["Players", "Up to nine players compete with their own armies. Computers fill empty seats and take over disconnected players. At zero health you are eliminated and can keep watching. If the host leaves, the game ends for everyone."]
+	topics.append(["Camera", "Hold the middle mouse button and drag, or press Q/E, to rotate the camera. Use the wheel to zoom. Home restores the starting view."])
 	for topic in topics:
 		_label(content, RemakeText.t(topic[0]), 18, GOLD)
 		_wrap(content, RemakeText.t(topic[1]), 15, PAPER)
@@ -1860,7 +1898,10 @@ func _build_standings() -> void:
 		_standing_rows.add_child(row)
 		var button := _button(row, league.player_title(player), _show_player.bind(player), RemakeText.t("Watch this player's board.") + "\n" + league.player_title(player))
 		button.set_meta("board_player", player)
-		ArenaCreatureCard.snow_ink(button)
+		button.add_theme_constant_override("icon_max_width", 16)
+		button.expand_icon = true
+		button.icon = preload("res://assets/arena/alliance_warrior.svg") if league.player_fighting(player) else null
+		_standing_ink(button)
 		button.clip_text = true
 		button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -1873,23 +1914,37 @@ func _build_standings() -> void:
 		button.add_theme_stylebox_override("disabled", StyleBoxEmpty.new())
 		button.disabled = league.health(player) <= 0
 		var health := _label(row, str(league.health(player)) if league.health(player) > 0 else "#%d" % league.placements[player], 14, PAPER)
-		ArenaCreatureCard.snow_ink(health, Color("712b35") if league.health(player) < 25 else ArenaCreatureCard.SNOW_INK)
+		_standing_ink(health, Color("712b35") if league.health(player) < 25 else ArenaCreatureCard.SNOW_INK)
 		health.custom_minimum_size.x = 24
 		health.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		health.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		if _standings_expanded:
 			var company := league.company(player)
 			var details := _label(_standing_rows, RemakeText.t("Level %d") % company.capacity() + " · " + RemakeText.t("%d gold") % company.gold, 13, ArenaCreatureCard.SNOW_INK)
-			ArenaCreatureCard.snow_ink(details)
+			_standing_ink(details)
 			details.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_mark_watched_player()
 	_layout_standings.call_deferred()
+
+
+func _update_fighting_icons() -> void:
+	for button: Button in _standing_rows.find_children("*", "Button", true, false):
+		if button.has_meta("board_player"):
+			button.icon = preload("res://assets/arena/alliance_warrior.svg") if run.player_fighting(int(button.get_meta("board_player"))) else null
+
+
+func _standing_ink(control: Control, color := ArenaCreatureCard.SNOW_INK) -> void:
+	ArenaCreatureCard.snow_ink(control, color)
+	# Inherit the HUD font rasterized at the actual display scale.
+	control.remove_theme_font_override("font")
+	control.add_theme_constant_override("outline_size", 1)
 
 
 func _mark_watched_player() -> void:
 	if not is_instance_valid(_tournament_battles): return
 	for button: Button in _standing_rows.find_children("*", "Button", true, false):
 		if not button.has_meta("board_player"): continue
+		button.icon = preload("res://assets/arena/alliance_warrior.svg") if run.player_fighting(int(button.get_meta("board_player"))) else null
 		var selected := int(button.get_meta("board_player")) == _tournament_battles.viewed_player
 		var line := StyleBoxFlat.new()
 		line.bg_color = Color.TRANSPARENT
@@ -1897,7 +1952,7 @@ func _mark_watched_player() -> void:
 		line.border_width_left = 3 if selected else 0
 		line.border_color = ArenaCreatureCard.SNOW_ACCENT
 		button.add_theme_stylebox_override("normal", line)
-		ArenaCreatureCard.snow_ink(button, ArenaCreatureCard.SNOW_ACCENT if selected else ArenaCreatureCard.SNOW_INK)
+		_standing_ink(button, ArenaCreatureCard.SNOW_ACCENT if selected else ArenaCreatureCard.SNOW_INK)
 
 
 func _layout_standings() -> void:
@@ -1927,6 +1982,7 @@ func _show_player(player: int) -> void:
 	_listen_to(field.match_state.world)
 	_hit_numbers._items.clear()
 	_update_scout()
+	_update_encounter_status()
 	if from_overview: _refresh()
 
 

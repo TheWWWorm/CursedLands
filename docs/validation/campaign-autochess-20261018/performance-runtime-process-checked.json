@@ -1,0 +1,26 @@
+{
+  "base": "ecfd9122b943cfde2d48d6dff2b1104a9de0325f",
+  "branch": "fix/suslanger-and-campaign-feedback",
+  "local_uncommitted_source": true,
+  "runtime": [
+    {
+      "file": "CursedLands.x86_64",
+      "sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "bytes": 82141352,
+      "measured_source_note": "Final candidate with desktop autochess authority, cancellation/disconnect cleanup, queued-frame timeout recovery and campaign-equivalent ENet loading grace. All four strict connected-guest inline/process FPS samples use this same pack."
+    },
+    {
+      "file": "CursedLands.pck",
+      "sha256": "ff194663ebd1fba28fa78d99a03b4d5f31e5ec89b9f855aa89b24b6b869b5d67",
+      "bytes": 12288736,
+      "measured_source_note": "Final candidate with desktop autochess authority, cancellation/disconnect cleanup, queued-frame timeout recovery and campaign-equivalent ENet loading grace. All four strict connected-guest inline/process FPS samples use this same pack."
+    },
+    {
+      "file": "libterrain_search.so",
+      "sha256": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+      "bytes": 3110064,
+      "measured_source_note": "Final candidate with desktop autochess authority, cancellation/disconnect cleanup, queued-frame timeout recovery and campaign-equivalent ENet loading grace. All four strict connected-guest inline/process FPS samples use this same pack."
+    }
+  ],
+  "limits": "Local uncommitted candidate; built-in version remains 1.15.0, not a release. Linux Vulkan RTX 3090 and Ryzen 9 5950X. Windows/RTX 4090 Laptop not tested. The cold-arena effect-quality change intentionally matches the existing campaign profile."
+}

@@ -1,0 +1,15 @@
+{
+	"adapter": "NVIDIA GeForce RTX 3090",
+	"checks": 5,
+	"engine_default_difference": {
+		"changed": 625,
+		"mean": 0.00166189156952612,
+		"peak": 0.517647087574005
+	},
+	"failures": 0,
+	"history_difference": {
+		"changed": 0,
+		"mean": 0.0,
+		"peak": 0.0
+	}
+}

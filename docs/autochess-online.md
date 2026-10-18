@@ -15,7 +15,8 @@ text entry.
    select **Start hosting**. The default port is **27016**.
 2. Copy an address from the lower panel and give it to the other players.
 3. They choose **Join autochess**, paste the address, enter the password if
-   needed, and select **Join**. Recently used autochess addresses are retained
+   needed, and select **Join**. Local autochess rooms also appear automatically
+   in the LAN list. Recently used autochess addresses are retained
    separately from campaign addresses.
 4. Joining players select **Ready**. The host selects **Start the game** once
    everyone is ready. Empty seats are labeled **Computer**. Starting alone
@@ -42,17 +43,23 @@ Preparation lasts **60 seconds**, matching solo autochess. Surviving human
 players can start early by selecting **Ready**. Changing the army cancels that
 player's ready state. The host handles the shared countdown, bot purchases,
 combat and results. Menus, guides and scouting keep the online clock running.
-There are no per-player pause or speed controls.
+During combat, the host can switch between **1×** and **2×** speed for everyone.
+Guests see the shared speed. Online play has no per-player pause.
 
 Recruitment, training, reserves, evolution, alliances, creeps, pairings, damage
 and income follow the existing tournament rules. Combat shopping is available;
 deployed fighters remain locked until the next round. Interest uses each
-player's savings at battle start. Shops stay private while armies and standings
-can be scouted. All nine boards can be watched in the overview.
+player's savings at battle start, adding one gold per ten saved, up to five gold
+at fifty saved. Shops stay private while armies and standings can be scouted.
+The player list uses each player's name and marks ongoing fights with a sword.
+Selecting a player shows that board's timer, opponent and result, alongside the
+player's level and gold. All nine boards can be watched in the overview.
+
+Rotate the Trials camera with **Q/E** or a middle-button drag; **Home** resets it.
 
 An eliminated player can keep watching. A departing guest is replaced by a
 computer using the same company. If the host leaves, the game closes for everyone.
-This first version has no late joining, reconnection, host migration or online
+Online play has no late joining, reconnection, host migration or online
 save/resume. Solo autochess and expedition saves remain separate.
 
 ## Implementation and checks
@@ -63,7 +70,9 @@ intent with the sender's seat and validates phase, round, arguments, prices,
 formation and the selected shop offer. It applies rate limits to actions and
 scouting changes. Packets use value serialization without object decoding or RPC.
 
-`ArenaOnlineGame` runs the native boards on a fixed combat tick. Each participant,
+`ArenaOnlineGame` runs the native boards on a fixed combat tick. Desktop hosts
+run authority in a separate process, retaining the owner's seat and host controls.
+Independent boards share a bounded tick schedule. Each participant,
 including the host, presents an `ArenaOnlineView` and received board snapshots.
 Replica worlds do not run authoritative damage or movement. Reliable actor
 records and effect events accompany motion snapshots; exact body-part health

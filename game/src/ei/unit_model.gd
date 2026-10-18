@@ -294,6 +294,7 @@ func flush_pending_pose() -> void:
 ## Vertex morph parts: [MeshInstance3D "morph", {clip: [first shape, frame
 ## count]}, [shape indices set last]] (_apply_morphs).
 var _morph_parts: Array = []
+var _preview_model := false
 ## Option gfx_detailed_heads: the fitted HUD face under "hd" (DetailedHead)
 ## and the original head mesh and hair node it replaces.
 var _detail: MeshInstance3D
@@ -759,6 +760,7 @@ func anim_names() -> PackedStringArray:
 
 
 func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictionary, ui_preview := false, initial_action := true) -> void:
+	_preview_model = ui_preview
 	var db := GameData.db
 	var complexion: Vector3 = unit.get("complexion", Vector3.ZERO)
 	if complexion == Vector3.ZERO and not unit.get("effective_complexion", false):   # absent map override
@@ -1166,6 +1168,22 @@ func _apply_morphs() -> void:
 		for j in now.size():
 			mi.set_blend_shape_value(now[j], w[j])
 		mp[2] = now
+		if _preview_model and mi.mesh.has_meta("ei_morph_bounds"):
+			# A mesh's default AABB covers every attack/death morph. Fitting a
+			# shop portrait to that union shrinks idle banshees and their scythes.
+			var bounds: AABB = mi.mesh.get_meta("ei_morph_rest_bounds")
+			if not now.is_empty():
+				var poses: Array = mi.mesh.get_meta("ei_morph_bounds")
+				var lo := Vector3.ZERO; var hi := Vector3.ZERO
+				for j in now.size():
+					lo += poses[now[j]].position * w[j]
+					hi += poses[now[j]].end * w[j]
+				bounds = AABB(lo, hi - lo)
+			mi.set_meta("ei_preview_bounds", bounds)
+
+
+static func preview_bounds(mesh: MeshInstance3D) -> AABB:
+	return mesh.get_meta("ei_preview_bounds", mesh.get_aabb())
 
 
 ## UI previews have their own light and camera, and must not inherit the

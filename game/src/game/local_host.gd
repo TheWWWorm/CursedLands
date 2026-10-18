@@ -14,6 +14,7 @@ var worker := false
 ## Local transport does not turn an offline campaign into a multiplayer game.
 var single_player := false
 var _single_clock: Array = []
+var saved_clock: Dictionary = {}
 var _single_pause_observer: Node
 var owner_peer := 0
 var process_id := -1
@@ -226,17 +227,18 @@ class SinglePauseObserver extends Node:
 func _sync_single_clock() -> void:
 	if not frontend or not single_player or not _ready_owner or not CoopProgress.peer_alive(multiplayer, 1):
 		return
-	var value := [get_tree().paused, Engine.time_scale]
+	var value := [get_tree().paused, Engine.time_scale, session.saved_play_clock().paused]
 	if value != _single_clock:
 		_single_clock = value
-		_rpc_single_clock.rpc_id(1, bool(value[0]), float(value[1]))
+		_rpc_single_clock.rpc_id(1, bool(value[0]), float(value[1]), bool(value[2]))
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func _rpc_single_clock(paused: bool, rate: float) -> void:
+func _rpc_single_clock(paused: bool, rate: float, gameplay_paused := false) -> void:
 	if not single_player or not authorized(multiplayer.get_remote_sender_id()) \
 			or not is_finite(rate) or rate <= 0.0 or rate > 8.0:
 		return
+	saved_clock = {"paused":gameplay_paused, "speed":int(rate > 1.0)}
 	Engine.time_scale = rate
 	get_tree().paused = paused
 	if session.game:
@@ -250,6 +252,8 @@ func authorized(pid: int) -> bool:
 func request(command: String, data := {}) -> Dictionary:
 	if not frontend or not _ready_owner or not CoopProgress.peer_alive(multiplayer, 1):
 		return {"ok": false}
+	if single_player and command in ["save", "measure_save"]:
+		data["play_clock"] = session.saved_play_clock()
 	_sequence += 1
 	var serial := _sequence
 	_rpc_request.rpc_id(1, serial, command, data)
@@ -273,6 +277,8 @@ func _rpc_request(serial: int, command: String, data: Dictionary) -> void:
 	if not authorized(pid):
 		return
 	var result := {"ok": true}
+	if single_player and command in ["save", "measure_save"] and data.get("play_clock") is Dictionary:
+		saved_clock = {"paused":bool(data.play_clock.get("paused",false)),"speed":clampi(int(data.play_clock.get("speed",0)),0,1)}
 	match command:
 		"campaign":
 			await session.new_campaign(bool(data.get("intro", true)))

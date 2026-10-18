@@ -1,0 +1,29 @@
+{
+  "checks": [
+    {
+      "suite": "arena_host_tick_schedule",
+      "checks": 24442,
+      "failures": [],
+      "clean_exit": true
+    },
+    {
+      "suite": "arena_online",
+      "checks": 64,
+      "failures": [],
+      "clean_exit": true
+    },
+    {
+      "suite": "arena_online_feedback",
+      "checks": 26,
+      "failures": [],
+      "clean_exit": true
+    },
+    {
+      "suite": "material_shader_options",
+      "checks": 470,
+      "failures": [],
+      "clean_exit": true
+    }
+  ],
+  "scope": "Adaptive frame budget: complete native round comparison with no budget and forced one microsecond budget at 1x and 2x; ENet/WebSocket, feedback, and shader-option regressions. Number of drain-progress checks varies with measured tick cost."
+}

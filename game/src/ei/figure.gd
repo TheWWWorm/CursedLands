@@ -75,6 +75,8 @@ void fragment() {
 	vec4 t = texture(albedo_tex, UV);
 	ALBEDO = t.rgb;
 	ALPHA = t.a * ei_material_diffuse.a;
+	// Match the scissor test before relief, foliage and contact sampling.
+	if (ALPHA < 0.5) { discard; }
 	ALPHA_SCISSOR_THRESHOLD = 0.5;
 	ALPHA_ANTIALIASING_EDGE = 0.3;
 	ALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));
@@ -111,7 +113,6 @@ render_mode cull_disabled, ambient_light_disabled;
 varying vec3 ei_e;
 varying float ei_k;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
-uniform float a2c = 0.0;
 uniform vec4 surface_profile = vec4(0.0, 1.0, 0.0, 0.0);
 """ + SurfaceResponse.RELIEF_SHADER + """
 void vertex() {
@@ -123,11 +124,12 @@ void fragment() {
 	vec4 t = texture(albedo_tex, UV);
 	ALBEDO = t.rgb;
 	ALPHA = t.a * ei_material_diffuse.a;
+	if (ALPHA < 0.5) { discard; }
 	ALPHA_SCISSOR_THRESHOLD = 0.5;
-	if (a2c > 0.5) {
-		ALPHA_ANTIALIASING_EDGE = 0.3;
-		ALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));
-	}
+#ifdef EI_OBJECT_A2C
+	ALPHA_ANTIALIASING_EDGE = 0.3;
+	ALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));
+#endif
 	ROUGHNESS = 1.0;
 #ifndef EI_NO_MATERIALS
 	if (ei_surface_fx.x > 0.5) {
@@ -139,6 +141,7 @@ void fragment() {
 #endif
 }
 """
+const OBJECT_A2C_SHADER := "#define EI_OBJECT_A2C\n" + OBJECT_SHADER
 static var _oshader: Shader
 static var _oshader_a2c: Shader
 static var _world := {}
@@ -156,12 +159,13 @@ static func world_material_for(texture: String, material_id := 0) -> Material:
 	if _oshader == null:
 		Gfx.ensure_globals()
 		_oshader = Gfx.make_shader(OBJECT_SHADER)
-		# alpha-to-coverage puts a material into the transparent pass (see
-		# material_for), so only the tree atlases get the variant that writes it
-		_oshader_a2c = Gfx.make_shader(OBJECT_SHADER.replace("if (a2c > 0.5) {", "if (true) {"))
+		# Merely declaring ALPHA_ANTIALIASING_EDGE selects the transparent
+		# pass, even behind a false uniform branch. Compile it only for trees;
+		# solid scenery then writes ordinary depth and appears in refraction.
+		_oshader_a2c = Gfx.make_shader(OBJECT_A2C_SHADER)
 	var m := ShaderMaterial.new()
 	m.shader = _oshader_a2c if a2c else _oshader
-	m.set_meta("ground_contact_source", OBJECT_SHADER.replace("if (a2c > 0.5) {", "if (true) {") if a2c else OBJECT_SHADER)
+	m.set_meta("ground_contact_source", OBJECT_A2C_SHADER if a2c else OBJECT_SHADER)
 	m.set_shader_parameter("albedo_tex", tex)
 	m.set_shader_parameter("surface_profile", SurfaceResponse.object_profile(texture))
 	FigureMaterial.apply(m, material_id)
@@ -424,12 +428,16 @@ static func build_anim_morph_mesh(f: Dictionary, c: Vector3, names: PackedString
 	var mesh := ArrayMesh.new()
 	mesh.blend_shape_mode = Mesh.BLEND_SHAPE_MODE_NORMALIZED
 	var shapes := []
+	var pose_bounds: Array[AABB] = []
 	for k in frames.size():
 		var offs: PackedVector3Array = frames[k]
 		var p := pos.duplicate()
 		for j in p.size():
 			if vidx[j] < offs.size():
 				p[j] += offs[vidx[j]]
+		var bounds := AABB(p[0], Vector3.ZERO)
+		for vertex in p: bounds = bounds.expand(vertex)
+		pose_bounds.append(bounds)
 		var shape := []
 		shape.resize(Mesh.ARRAY_MAX)
 		shape[Mesh.ARRAY_VERTEX] = p
@@ -437,6 +445,8 @@ static func build_anim_morph_mesh(f: Dictionary, c: Vector3, names: PackedString
 		shapes.append(shape)
 		mesh.add_blend_shape(names[k])
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, shapes)
+	mesh.set_meta("ei_morph_bounds", pose_bounds)
+	mesh.set_meta("ei_morph_rest_bounds", base.get_aabb())
 	mesh.set_meta(GEOMETRY_META, [pos, arrays[Mesh.ARRAY_INDEX]])
 	_meshes[key] = mesh
 	return mesh

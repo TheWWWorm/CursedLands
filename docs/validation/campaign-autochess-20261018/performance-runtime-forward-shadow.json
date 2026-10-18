@@ -1,0 +1,82 @@
+{
+  "scope": "Guard the second Forward+ directional PCF cascade only when its blend weight is positive. No shadow quality, atlas, bias, cascade or filter sample count changes.",
+  "base_engine_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "runtimes": {
+    "baseline": {
+      "CursedLands.x86_64": {
+        "sha256": "72e053815f8cd32fc9e5124ba05665aa6ca044f4c13f8d720573370b15572fe7",
+        "bytes": 82141352
+      },
+      "CursedLands.pck": {
+        "sha256": "394a7bc3cad16cfac9431336fc77dd5cf1be7c5ef8635f0fc0466b91529f2d62",
+        "bytes": 12293416
+      },
+      "src/native/bin/libterrain_search.so": {
+        "sha256": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "bytes": 3110064
+      }
+    },
+    "candidate": {
+      "CursedLands.x86_64": {
+        "sha256": "8e9e70d6ffefe09d4491696251c71e1cf880725fcfce9efe110dd6d36c02b99e",
+        "bytes": 82141352
+      },
+      "CursedLands.pck": {
+        "sha256": "394a7bc3cad16cfac9431336fc77dd5cf1be7c5ef8635f0fc0466b91529f2d62",
+        "bytes": 12293416
+      },
+      "src/native/bin/libterrain_search.so": {
+        "sha256": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+        "bytes": 3110064
+      }
+    }
+  },
+  "pixel_controls": {
+    "captures": 72,
+    "identical_pngs": 72,
+    "distinct_blend_controls": 24
+  },
+  "build_command": [
+    "nice",
+    "-n",
+    "10",
+    "python3",
+    "-m",
+    "SCons",
+    "-j2",
+    "platform=linuxbsd",
+    "target=template_release",
+    "debug_symbols=yes",
+    "lto=none",
+    "production=yes",
+    "optimize=speed",
+    "wayland=no",
+    "module_mono_enabled=no",
+    "module_openxr_enabled=no",
+    "module_jolt_physics_enabled=no",
+    "module_fbx_enabled=no",
+    "module_gltf_enabled=no",
+    "module_lightmapper_rd_enabled=no",
+    "module_csg_enabled=no",
+    "module_theora_enabled=no",
+    "module_webrtc_enabled=no",
+    "module_webxr_enabled=no",
+    "accesskit=no"
+  ],
+  "build_environment": {
+    "PYTHONPATH": "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/scons"
+  },
+  "build_directory": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/engine-shadow-probe",
+  "baseline_common_patches": "README common patches 1 through 12",
+  "candidate_common_patches": "README common patches 1 through 13",
+  "build_elapsed_seconds": {
+    "baseline": 354.86,
+    "candidate": 29.66
+  },
+  "source_stack_round_trip": "forward-shadow-source-stack.json",
+  "shadow_fixture_sha256": "58fdfe1d65e9bcc92c13c151c2de42c43f83deaba10d275dd917bf1f78463db3",
+  "image_manifest": "forward-shadow-images.json",
+  "baseline_matches_shipped_executable": false,
+  "comparison": "Both engines rebuilt using the same recipe; PCK and native extension identical. Guard gain uses this matched pair, not the previously shipped executable.",
+  "platform_limits": "Linux Vulkan RTX 3090 only; Windows/D3D12 and RTX 4090 Laptop are not validated."
+}

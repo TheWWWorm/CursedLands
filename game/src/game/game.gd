@@ -522,7 +522,7 @@ func _update_daylight(advance := true) -> void:
 	Gfx.update_original(_env, _sun, _lights, hour, _sky_cave)
 	# Lighting keeps the clock: the land's vertex light and the EI materials'
 	# sun term read ei_sun_dir, not the held light's direction (_aim_sun).
-	if sun_aim_mode != 1:
+	if sun_aim_mode != 1 or GameData.option("q_shadows") == 0:
 		sun_light_dir = -gd
 		Gfx.set_sun_direction(sun_light_dir)
 	if rig:
@@ -554,13 +554,14 @@ func _update_daylight(advance := true) -> void:
 ## keeps the exact direction (ei_sun_dir; the EI materials' light() reads it
 ## for the marked sun, Gfx.SUN_MARK). Visual only: nothing is saved or sent.
 func _aim_sun(gd: Vector3, new_zone: bool) -> void:
+	var continuous := sun_aim_mode == 1 and GameData.option("q_shadows") > 0
 	var reason := ""
 	var cam := rig.camera.global_position if rig and rig.camera and rig.camera.is_inside_tree() else Vector3.INF
 	if _held_sun == Vector3.ZERO:
 		reason = "start"
 	elif new_zone:
 		reason = "zone"
-	elif sun_aim_mode == 1:
+	elif continuous:
 		reason = "continuous"
 	elif sun_aim_mode == 2:
 		reason = ""
@@ -571,7 +572,7 @@ func _aim_sun(gd: Vector3, new_zone: bool) -> void:
 	elif rad_to_deg(_held_sun.angle_to(gd)) >= SUN_MAX_LAG_DEG:
 		reason = "cap"
 	_sun_cam = cam
-	if sun_aim_mode == 1:
+	if continuous:
 		_held_sun = gd   # exactly the clock's (desktop, as 0.1.7)
 	if reason != "" and not _held_sun.is_equal_approx(gd):
 		# a hidden view or the continuous mode re-aims every frame: count once
@@ -580,7 +581,7 @@ func _aim_sun(gd: Vector3, new_zone: bool) -> void:
 			sun_reaim_reason = reason
 		_held_sun = gd
 	_sun_state = reason
-	_sun.basis = sun_basis(_held_sun) if sun_grid_lock else Basis.looking_at(_held_sun, Vector3.FORWARD if absf(_held_sun.y) > 0.99 else Vector3.UP)
+	_sun.basis = sun_basis(_held_sun) if sun_grid_lock or GameData.option("q_shadows") == 0 else Basis.looking_at(_held_sun, Vector3.FORWARD if absf(_held_sun.y) > 0.99 else Vector3.UP)
 
 
 ## Forces a re-aim on the next frame (tools; ShadowDiag preset changes).
@@ -624,6 +625,13 @@ static func sun_basis(d: Vector3) -> Basis:
 const HERO_LIGHT := Color8(255, 236, 170)
 const HERO_LIGHT_RADIUS := 10.0
 var _hero_lights := {}   # GameUnit -> OmniLight3D
+
+
+func selection_glow_enabled() -> bool:
+	var mode := GameData.option("selection_glow")
+	if direct and direct.active():
+		return mode == 2 and GameData.option("control_mode") != 3
+	return mode != 1
 
 
 func character_light_enabled() -> bool:

@@ -32,17 +32,29 @@ class BakeJob extends RefCounted:
 	var pixels:Image
 	func run()->void:pixels=field.bake(sector,density)
 
-static func available()->bool:
+static func available(t:EITerrain=null)->bool:
 	var args:=OS.get_cmdline_user_args()
+	if RenderingServer.get_current_rendering_method()=="forward_plus":
+		return DisplayServer.get_name()!="headless" and ClassDB.class_exists("TerrainColorField") \
+			and not args.has("--ei-script-terrain") and _forward_eligible(t)
 	return DisplayServer.get_name()!="headless" and ClassDB.class_exists("TerrainColorField") \
 		and RenderingServer.get_current_rendering_method() in ["gl_compatibility", "mobile"] and not args.has("--ei-script-terrain") \
 		and (OS.has_feature("android") or args.has("--ei-baked-terrain"))
+
+static func _forward_eligible(t:EITerrain)->bool:
+	# Arenas share their own compact cache. Keep richer transition samplers
+	# and oversized replacement atlases on the original desktop path.
+	if t==null or t.texture_size<=0 or (t.sectors_x<=2 and t.sectors_y<=2):return false
+	var density:=(t.tile_size-16)*(t._atlas_source_size/t.texture_size)*(2 if t._atlas_hd else 1)
+	return density>=16 and density<=192 \
+		and (t._transitions==null or t._transitions.admitted==0)
 
 static func create(t:EITerrain)->TerrainColorCache:
 	var cache:=TerrainColorCache.new();cache.name="TerrainColorCache";cache.terrain=t;t.add_child(cache);cache.refresh();return cache
 
 func refresh()->void:
 	var enabled:=Gfx.on("gfx_terrain") and (not Gfx.on("gfx_soft_ground") or not Portability.compatibility())
+	if RenderingServer.get_current_rendering_method()=="forward_plus":enabled=enabled and _forward_eligible(terrain)
 	if not enabled:
 		clear();_enabled=false;return
 	_enabled=true
@@ -68,7 +80,28 @@ func refresh()->void:
 	for record:Dictionary in _resident.values():
 		record.material.shader=_shader
 		_copy_parameters(record.material)
+	for key:Vector2i in _resident:_refresh_soft(key)
 	_poll=0.0
+
+## The deformed mesh owns its live trail parameters. Change only its colour
+## sampler, retaining clock, layer, geometry, lighting and weather updates.
+## Mobile/Compatibility preserve their existing override/expiry behaviour.
+func apply_soft_material(key:Vector2i,material:ShaderMaterial)->void:
+	if RenderingServer.get_current_rendering_method()!="forward_plus" or not _resident.has(key):return
+	var cached:ShaderMaterial=_resident[key].material
+	material.shader=_shader
+	for name:StringName in [&"baked_ground",&"bake_origin",&"bake_span"]:
+		material.set_shader_parameter(name,cached.get_shader_parameter(name))
+
+func _refresh_soft(key:Vector2i,restore:=false)->void:
+	if RenderingServer.get_current_rendering_method()!="forward_plus" or not is_instance_valid(terrain.details):return
+	var soft:=terrain.details.soft_ground
+	if not is_instance_valid(soft) or not soft.sectors.has(key):return
+	var material:ShaderMaterial=soft.sectors[key].material
+	if restore:
+		material.shader=terrain._land_mat.shader
+		material.set_shader_parameter("baked_ground",null)
+	else:apply_soft_material(key,material)
 
 func _copy_parameters(material:ShaderMaterial)->void:
 	if terrain._transitions==null or terrain._transitions.admitted==0:
@@ -130,6 +163,7 @@ func _evict()->bool:
 		if not _wanted_keys.has(key) and int(record.used)<oldest:victim=key;oldest=record.used
 	if victim==null:return false
 	var record:Dictionary=_resident[victim]
+	_refresh_soft(victim,true)
 	if is_instance_valid(record.node) and record.node.get_surface_override_material(0)==record.material:
 		record.node.set_surface_override_material(0,null)
 	_bytes-=int(record.bytes);_resident.erase(victim);return true
@@ -153,6 +187,7 @@ func _finish(wait_all:=false)->void:
 		material.set_shader_parameter("bake_span",Vector2(18,18))
 		row.node.set_surface_override_material(0,material)
 		_resident[row.key]={"node":row.node,"material":material,"bytes":bytes,"used":_serial};_bytes+=bytes;built+=1;uploaded=true
+		_refresh_soft(row.key)
 
 func prepare(camera:Camera3D)->void:
 	if not _enabled:return
@@ -172,7 +207,9 @@ func clear()->void:
 	_enabled=false
 	for row in _jobs:WorkerThreadPool.wait_for_task_completion(row.task)
 	_jobs.clear();_building.clear();_failed.clear();_wanted.clear();_wanted_keys.clear()
-	for row:Dictionary in _resident.values():
+	for key:Vector2i in _resident:
+		_refresh_soft(key,true)
+		var row:Dictionary=_resident[key]
 		if is_instance_valid(row.node) and row.node.get_surface_override_material(0)==row.material:row.node.set_surface_override_material(0,null)
 	_resident.clear();_bytes=0;_field=null;_shader=null;_shader_source="";_sectors.clear()
 

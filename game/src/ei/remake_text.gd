@@ -51,6 +51,9 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Selection glow": ["Подсветка выбранных героев", "Auswahlleuchten"],
+	"Highlight selected characters. Auto enables the glow in classic view only. Off hides it in every view; On also shows it in third person. First person always hides the glow.": ["Подсветка выбранных персонажей. Авто включает её только в классическом виде. Выкл. скрывает её во всех видах; Вкл. показывает её и от третьего лица. От первого лица подсветка всегда скрыта.", "Hebt ausgewählte Figuren hervor. Auto aktiviert das Leuchten nur in der klassischen Ansicht. Aus blendet es überall aus; Ein zeigt es auch in der dritten Person. In der Egoansicht bleibt es immer verborgen."],
+	"The host controls battle speed for everyone.": ["Хозяин игры управляет скоростью боя для всех игроков.", "Der Gastgeber bestimmt das Kampftempo für alle Spieler."],
 	"Cave echo": ["Эхо в пещерах", "Höhlenecho"],
 	"Add echo to sounds in caves. Turn off for dry sound. Changes apply immediately.": ["Добавляет эхо к звукам в пещерах. Выключите, чтобы убрать эхо. Изменения применяются сразу.", "Fügt Geräuschen in Höhlen einen Nachhall hinzu. Ausschalten für Klang ohne Nachhall. Änderungen werden sofort wirksam."],
 	"Wiki under pointer": ["Вики под указателем", "Wiki unter dem Zeiger"],
@@ -364,7 +367,7 @@ const TEXTS := {
 	"Weaknesses: none": ["Уязвимостей нет", "Keine Schwächen"],
 	"Resistant to: %s": ["Устойчивость: %s", "Resistent gegen: %s"],
 	"Income +%d": ["Доход +%d", "Einkommen +%d"],
-	"Savings earn 1 gold per 10, up to 3. Win three battles in a row for +1 gold, or six for +2. Defeat breaks the streak.": ["За каждые 10 золота в кошельке вы получите ещё одну монету, максимум три. Три победы подряд добавляют одну монету, шесть побед — две. Поражение прерывает серию.", "Je 10 Gold im Beutel bringen 1 Gold Zinsen, höchstens 3. Drei Siege in Folge bringen +1 Gold, sechs +2. Eine Niederlage beendet die Serie."],
+	"Savings earn 1 gold per 10, up to 5. Win three battles in a row for +1 gold, or six for +2. Defeat breaks the streak.": ["За каждые 10 золота в кошельке вы получите ещё одну монету, максимум пять. Три победы подряд добавляют одну монету, шесть побед — две. Поражение прерывает серию.", "Je 10 Gold im Beutel bringen 1 Gold Zinsen, höchstens 5. Drei Siege in Folge bringen +1 Gold, sechs +2. Eine Niederlage beendet die Serie."],
 	"Bounty %d · Victory %d · Interest %d · Streak %d": ["Награда %d · Победа %d · Проценты %d · Серия %d", "Sold %d · Sieg %d · Zinsen %d · Serie %d"],
 	"Sell · +%d gold": ["Продать · +%d золота", "Verkaufen · +%d Gold"],
 	"+%d gold": ["+%d золота", "+%d Gold"],
@@ -2194,6 +2197,8 @@ const TEXTS := {
 	"Altar": ["Алтарь", "Altar"],
 	"Exit": ["Выход", "Ausgang"],
 	"Camera": ["Камера", "Kamera"],
+	"Hold the middle mouse button and drag, or press Q/E, to rotate the camera. Use the wheel to zoom. Home restores the starting view.": ["Удерживайте среднюю кнопку мыши и двигайте мышь или нажимайте Q/E, чтобы вращать камеру. Колёсико меняет масштаб. Home возвращает исходный вид.", "Haltet die mittlere Maustaste gedrückt und zieht die Maus oder drückt Q/E, um die Kamera zu drehen. Das Mausrad zoomt. Pos1 stellt die Ausgangsansicht wieder her."],
+	"Both teams fight under AI control. The host runs all battles on the same clock and can switch between normal and double speed. Hover a creature for details. Online battles cannot be paused.": ["Оба отряда сражаются под управлением ИИ. Все бои идут по общим часам сервера; ведущий может переключать обычную и двойную скорость. Наведите курсор на существо для подробностей. Сетевые бои нельзя поставить на паузу.", "Beide Truppen kämpfen unter KI-Steuerung. Der Host führt alle Kämpfe mit derselben Uhr aus und kann zwischen normalem und doppeltem Tempo wechseln. Bewegt den Zeiger über eine Kreatur, um Details zu sehen. Onlinekämpfe können nicht pausiert werden."],
 	"Store view": ["Запомнить вид", "Ansicht speichern"],
 	"Recalls this camera view; with %s held, stores the current view in it.": ["Вызывает этот вид камеры; если удерживать %s, запоминает в нём текущий вид.", "Ruft diese Kameraansicht ab; mit gehaltenem %s wird die aktuelle Ansicht darin gespeichert."],
 	"Actions": ["Действия", "Aktionen"],

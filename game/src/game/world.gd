@@ -1131,6 +1131,7 @@ func on_death(u: GameUnit, killer: GameUnit) -> void:
 		if not Revive.keep_fallen(session, u):   # remake option "revive": the record waits
 			session.state.mercs.erase(n)
 		session.broadcast({"t": "party"})
+		session.check_party_defeat()
 	if not u.has_meta("hero"):
 		# What was not stolen stays in its pockets.
 		var loot: Array = u.get_meta("pockets") if u.has_meta("pockets") else Items.roll_loot(u.proto, u.info, combat.rng)

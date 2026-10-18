@@ -1,0 +1,21 @@
+diff --git a/servers/rendering/renderer_rd/shaders/forward_clustered/scene_forward_clustered.glsl b/servers/rendering/renderer_rd/shaders/forward_clustered/scene_forward_clustered.glsl
+--- a/servers/rendering/renderer_rd/shaders/forward_clustered/scene_forward_clustered.glsl
++++ b/servers/rendering/renderer_rd/shaders/forward_clustered/scene_forward_clustered.glsl
+@@ -2518,10 +2518,13 @@
+ 								blur_factor2 = 1.0;
+ 							}
+ 
+-							pssm_coord /= pssm_coord.w;
+-
+-							float shadow2 = sample_directional_pcf_shadow(directional_shadow_atlas, scene_data.directional_shadow_pixel_size * directional_lights.data[i].soft_shadow_scale * (blur_factor2 + (1.0 - blur_factor2) * float(directional_lights.data[i].blend_splits)), pssm_coord, scene_data.taa_frame_count);
+-							shadow = mix(shadow, shadow2, pssm_blend);
++							// The next cascade contributes only inside its transition band.
++							if (pssm_blend > 0.0) {
++								pssm_coord /= pssm_coord.w;
++
++								float shadow2 = sample_directional_pcf_shadow(directional_shadow_atlas, scene_data.directional_shadow_pixel_size * directional_lights.data[i].soft_shadow_scale * (blur_factor2 + (1.0 - blur_factor2) * float(directional_lights.data[i].blend_splits)), pssm_coord, scene_data.taa_frame_count);
++								shadow = mix(shadow, shadow2, pssm_blend);
++							}
+ 						}
+ 					}
+ 

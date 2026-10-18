@@ -241,7 +241,7 @@ func _fit_creature() -> void:
 	var first := true
 	for mesh: MeshInstance3D in creature._model.find_children("*", "MeshInstance3D", true, false):
 		if not creature._shown_part(mesh): continue
-		var bounds: AABB = mesh.global_transform * mesh.get_aabb()
+		var bounds: AABB = mesh.global_transform * EIUnitModel.preview_bounds(mesh)
 		box = bounds if first else box.merge(bounds)
 		first = false
 	if first: return

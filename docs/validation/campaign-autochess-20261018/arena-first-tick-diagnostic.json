@@ -1,0 +1,1191 @@
+{
+  "scope": "Headless first-tick diagnostic; nine boards of eight fighters. Same seed/units with detailed profiling. Compare voice-recipient guard only. Not live FPS acceptance.",
+  "runs": {
+    "host-first-tick": [
+      {
+        "elapsed_us": 46281,
+        "nav": {
+          "failed": 0,
+          "max_us": 5337,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 3268,
+          "search_us": 10288,
+          "turn_us": 4155
+        },
+        "nav_slow": [],
+        "player": 0,
+        "profile": {
+          "ai_notice_candidates": 315,
+          "ai_tick": 1,
+          "aichatter": 34,
+          "aichoose": 18255,
+          "aiplayer_perceive": 646,
+          "airechoose": 173,
+          "aithink": 39342,
+          "tornadoes": 2,
+          "traps": 2,
+          "unit_ensure_motion": 239,
+          "unit_housekeeping": 30,
+          "unit_logic": 45863,
+          "unit_move_base": 186,
+          "unit_set_action": 134,
+          "unit_stamp": 189,
+          "unit_step_along_path": 648,
+          "units": 46121,
+          "water": 1,
+          "world": 46166
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100001,
+            "us": 5221
+          },
+          {
+            "part": "aithink",
+            "uid": 100001,
+            "us": 25608
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100001,
+            "us": 26136
+          },
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 7058
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 7214
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 7620
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 46121
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 46166
+          }
+        ]
+      },
+      {
+        "elapsed_us": 21489,
+        "nav": {
+          "failed": 0,
+          "max_us": 5346,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2869,
+          "search_us": 10626,
+          "turn_us": 1089
+        },
+        "nav_slow": [],
+        "player": 1,
+        "profile": {
+          "ai_notice_candidates": 176,
+          "ai_tick": 1,
+          "aichatter": 33,
+          "aichoose": 14701,
+          "aiplayer_perceive": 465,
+          "airechoose": 151,
+          "aithink": 15519,
+          "tornadoes": 1,
+          "traps": 1,
+          "unit_ensure_motion": 229,
+          "unit_housekeeping": 26,
+          "unit_logic": 21079,
+          "unit_move_base": 181,
+          "unit_set_action": 118,
+          "unit_stamp": 186,
+          "unit_step_along_path": 599,
+          "units": 21331,
+          "water": 1,
+          "world": 21371
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6571
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6678
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 7140
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 21331
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 21371
+          }
+        ]
+      },
+      {
+        "elapsed_us": 19075,
+        "nav": {
+          "failed": 0,
+          "max_us": 4962,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2855,
+          "search_us": 9744,
+          "turn_us": 906
+        },
+        "nav_slow": [],
+        "player": 2,
+        "profile": {
+          "ai_notice_candidates": 168,
+          "ai_tick": 1,
+          "aichatter": 32,
+          "aichoose": 13658,
+          "aiplayer_perceive": 432,
+          "airechoose": 123,
+          "aithink": 14407,
+          "tornadoes": 1,
+          "traps": 1,
+          "unit_ensure_motion": 206,
+          "unit_housekeeping": 20,
+          "unit_logic": 18697,
+          "unit_move_base": 159,
+          "unit_set_action": 114,
+          "unit_stamp": 180,
+          "unit_step_along_path": 552,
+          "units": 18935,
+          "water": 0,
+          "world": 18970
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6163
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6260
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6618
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 18935
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 18970
+          }
+        ]
+      },
+      {
+        "elapsed_us": 19037,
+        "nav": {
+          "failed": 0,
+          "max_us": 5000,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2871,
+          "search_us": 9802,
+          "turn_us": 912
+        },
+        "nav_slow": [],
+        "player": 3,
+        "profile": {
+          "ai_notice_candidates": 160,
+          "ai_tick": 1,
+          "aichatter": 31,
+          "aichoose": 13747,
+          "aiplayer_perceive": 424,
+          "airechoose": 123,
+          "aithink": 14506,
+          "tornadoes": 1,
+          "traps": 2,
+          "unit_ensure_motion": 218,
+          "unit_housekeeping": 22,
+          "unit_logic": 18661,
+          "unit_move_base": 167,
+          "unit_set_action": 104,
+          "unit_stamp": 178,
+          "unit_step_along_path": 546,
+          "units": 18898,
+          "water": 1,
+          "world": 18933
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6255
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6363
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6713
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 18898
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 18933
+          }
+        ]
+      },
+      {
+        "elapsed_us": 18932,
+        "nav": {
+          "failed": 0,
+          "max_us": 5045,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2890,
+          "search_us": 9864,
+          "turn_us": 910
+        },
+        "nav_slow": [],
+        "player": 4,
+        "profile": {
+          "ai_notice_candidates": 169,
+          "ai_tick": 1,
+          "aichatter": 31,
+          "aichoose": 13809,
+          "aiplayer_perceive": 438,
+          "airechoose": 122,
+          "aithink": 14572,
+          "tornadoes": 2,
+          "traps": 1,
+          "unit_ensure_motion": 211,
+          "unit_housekeeping": 20,
+          "unit_logic": 18562,
+          "unit_move_base": 161,
+          "unit_set_action": 106,
+          "unit_stamp": 180,
+          "unit_step_along_path": 576,
+          "units": 18803,
+          "water": 1,
+          "world": 18837
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6270
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6370
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6728
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 18803
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 18837
+          }
+        ]
+      },
+      {
+        "elapsed_us": 19560,
+        "nav": {
+          "failed": 0,
+          "max_us": 4977,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2914,
+          "search_us": 9802,
+          "turn_us": 920
+        },
+        "nav_slow": [],
+        "player": 5,
+        "profile": {
+          "ai_notice_candidates": 169,
+          "ai_tick": 2,
+          "aichatter": 32,
+          "aichoose": 13813,
+          "aiplayer_perceive": 435,
+          "airechoose": 132,
+          "aithink": 14578,
+          "tornadoes": 2,
+          "traps": 2,
+          "unit_ensure_motion": 221,
+          "unit_housekeeping": 18,
+          "unit_logic": 19148,
+          "unit_move_base": 161,
+          "unit_set_action": 107,
+          "unit_stamp": 179,
+          "unit_step_along_path": 563,
+          "units": 19392,
+          "water": 1,
+          "world": 19450
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6199
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6301
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6664
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 19392
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 19450
+          }
+        ]
+      },
+      {
+        "elapsed_us": 18853,
+        "nav": {
+          "failed": 0,
+          "max_us": 4976,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2812,
+          "search_us": 9803,
+          "turn_us": 923
+        },
+        "nav_slow": [],
+        "player": 6,
+        "profile": {
+          "ai_notice_candidates": 168,
+          "ai_tick": 1,
+          "aichatter": 31,
+          "aichoose": 13693,
+          "aiplayer_perceive": 431,
+          "airechoose": 123,
+          "aithink": 14448,
+          "tornadoes": 1,
+          "traps": 2,
+          "unit_ensure_motion": 204,
+          "unit_housekeeping": 21,
+          "unit_logic": 18470,
+          "unit_move_base": 157,
+          "unit_set_action": 107,
+          "unit_stamp": 177,
+          "unit_step_along_path": 538,
+          "units": 18707,
+          "water": 1,
+          "world": 18745
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6177
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6277
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6637
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 18707
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 18745
+          }
+        ]
+      },
+      {
+        "elapsed_us": 19268,
+        "nav": {
+          "failed": 0,
+          "max_us": 4979,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2880,
+          "search_us": 9817,
+          "turn_us": 909
+        },
+        "nav_slow": [],
+        "player": 7,
+        "profile": {
+          "ai_notice_candidates": 173,
+          "ai_tick": 1,
+          "aichatter": 30,
+          "aichoose": 13783,
+          "aiplayer_perceive": 439,
+          "airechoose": 125,
+          "aithink": 14547,
+          "tornadoes": 1,
+          "traps": 2,
+          "unit_ensure_motion": 201,
+          "unit_housekeeping": 21,
+          "unit_logic": 18902,
+          "unit_move_base": 159,
+          "unit_set_action": 102,
+          "unit_stamp": 176,
+          "unit_step_along_path": 532,
+          "units": 19138,
+          "water": 1,
+          "world": 19172
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6197
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6296
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6656
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 19138
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 19172
+          }
+        ]
+      },
+      {
+        "elapsed_us": 19468,
+        "nav": {
+          "failed": 0,
+          "max_us": 5085,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 3171,
+          "search_us": 10133,
+          "turn_us": 920
+        },
+        "nav_slow": [],
+        "player": 8,
+        "profile": {
+          "ai_notice_candidates": 161,
+          "ai_tick": 2,
+          "aichatter": 32,
+          "aichoose": 14380,
+          "aiplayer_perceive": 431,
+          "airechoose": 124,
+          "aithink": 15138,
+          "tornadoes": 1,
+          "traps": 2,
+          "unit_ensure_motion": 206,
+          "unit_housekeeping": 20,
+          "unit_logic": 19097,
+          "unit_move_base": 158,
+          "unit_set_action": 107,
+          "unit_stamp": 176,
+          "unit_step_along_path": 546,
+          "units": 19333,
+          "water": 0,
+          "world": 19368
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6636
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6734
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 7085
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 19333
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 19368
+          }
+        ]
+      }
+    ],
+    "host-first-tick-recipients": [
+      {
+        "elapsed_us": 23018,
+        "nav": {
+          "failed": 0,
+          "max_us": 5045,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2884,
+          "search_us": 9876,
+          "turn_us": 4184
+        },
+        "nav_slow": [],
+        "player": 0,
+        "profile": {
+          "ai_notice_candidates": 296,
+          "ai_tick": 2,
+          "aichatter": 32,
+          "aichoose": 17393,
+          "aiplayer_perceive": 575,
+          "airechoose": 130,
+          "aithink": 18302,
+          "tornadoes": 2,
+          "traps": 2,
+          "unit_ensure_motion": 215,
+          "unit_housekeeping": 25,
+          "unit_logic": 22619,
+          "unit_move_base": 170,
+          "unit_set_action": 107,
+          "unit_stamp": 187,
+          "unit_step_along_path": 561,
+          "units": 22871,
+          "water": 1,
+          "world": 22910
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100001,
+            "us": 5249
+          },
+          {
+            "part": "aithink",
+            "uid": 100001,
+            "us": 5549
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100001,
+            "us": 5925
+          },
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6379
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6481
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6837
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 22871
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 22910
+          }
+        ]
+      },
+      {
+        "elapsed_us": 18664,
+        "nav": {
+          "failed": 0,
+          "max_us": 4996,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2796,
+          "search_us": 9814,
+          "turn_us": 896
+        },
+        "nav_slow": [],
+        "player": 1,
+        "profile": {
+          "ai_notice_candidates": 157,
+          "ai_tick": 1,
+          "aichatter": 30,
+          "aichoose": 13652,
+          "aiplayer_perceive": 414,
+          "airechoose": 122,
+          "aithink": 14369,
+          "tornadoes": 1,
+          "traps": 1,
+          "unit_ensure_motion": 211,
+          "unit_housekeeping": 18,
+          "unit_logic": 18298,
+          "unit_move_base": 154,
+          "unit_set_action": 103,
+          "unit_stamp": 184,
+          "unit_step_along_path": 537,
+          "units": 18539,
+          "water": 1,
+          "world": 18568
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6177
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6274
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6621
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 18539
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 18568
+          }
+        ]
+      },
+      {
+        "elapsed_us": 19158,
+        "nav": {
+          "failed": 0,
+          "max_us": 5103,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2790,
+          "search_us": 9881,
+          "turn_us": 929
+        },
+        "nav_slow": [],
+        "player": 2,
+        "profile": {
+          "ai_notice_candidates": 162,
+          "ai_tick": 2,
+          "aichatter": 31,
+          "aichoose": 13782,
+          "aiplayer_perceive": 420,
+          "airechoose": 124,
+          "aithink": 14500,
+          "tornadoes": 1,
+          "traps": 2,
+          "unit_ensure_motion": 203,
+          "unit_housekeeping": 20,
+          "unit_logic": 18765,
+          "unit_move_base": 154,
+          "unit_set_action": 105,
+          "unit_stamp": 202,
+          "unit_step_along_path": 535,
+          "units": 19027,
+          "water": 1,
+          "world": 19057
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6297
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6394
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6750
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 19027
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 19057
+          }
+        ]
+      },
+      {
+        "elapsed_us": 18900,
+        "nav": {
+          "failed": 0,
+          "max_us": 4988,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2907,
+          "search_us": 9778,
+          "turn_us": 944
+        },
+        "nav_slow": [],
+        "player": 3,
+        "profile": {
+          "ai_notice_candidates": 157,
+          "ai_tick": 1,
+          "aichatter": 31,
+          "aichoose": 13793,
+          "aiplayer_perceive": 422,
+          "airechoose": 126,
+          "aithink": 14514,
+          "tornadoes": 2,
+          "traps": 2,
+          "unit_ensure_motion": 209,
+          "unit_housekeeping": 21,
+          "unit_logic": 18516,
+          "unit_move_base": 156,
+          "unit_set_action": 105,
+          "unit_stamp": 192,
+          "unit_step_along_path": 539,
+          "units": 18768,
+          "water": 2,
+          "world": 18800
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6260
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6362
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6715
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 18768
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 18800
+          }
+        ]
+      },
+      {
+        "elapsed_us": 19537,
+        "nav": {
+          "failed": 0,
+          "max_us": 5048,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 3000,
+          "search_us": 9910,
+          "turn_us": 924
+        },
+        "nav_slow": [],
+        "player": 4,
+        "profile": {
+          "ai_notice_candidates": 177,
+          "ai_tick": 0,
+          "aichatter": 39,
+          "aichoose": 13996,
+          "aiplayer_perceive": 441,
+          "airechoose": 133,
+          "aithink": 14738,
+          "tornadoes": 1,
+          "traps": 1,
+          "unit_ensure_motion": 208,
+          "unit_housekeeping": 20,
+          "unit_logic": 19161,
+          "unit_move_base": 160,
+          "unit_set_action": 112,
+          "unit_stamp": 183,
+          "unit_step_along_path": 549,
+          "units": 19411,
+          "water": 0,
+          "world": 19441
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6348
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6445
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6801
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 19411
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 19441
+          }
+        ]
+      },
+      {
+        "elapsed_us": 18891,
+        "nav": {
+          "failed": 0,
+          "max_us": 4991,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2793,
+          "search_us": 9926,
+          "turn_us": 914
+        },
+        "nav_slow": [],
+        "player": 5,
+        "profile": {
+          "ai_notice_candidates": 161,
+          "ai_tick": 1,
+          "aichatter": 33,
+          "aichoose": 13774,
+          "aiplayer_perceive": 417,
+          "airechoose": 123,
+          "aithink": 14497,
+          "tornadoes": 1,
+          "traps": 2,
+          "unit_ensure_motion": 205,
+          "unit_housekeeping": 19,
+          "unit_logic": 18507,
+          "unit_move_base": 157,
+          "unit_set_action": 102,
+          "unit_stamp": 185,
+          "unit_step_along_path": 536,
+          "units": 18754,
+          "water": 0,
+          "world": 18787
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6179
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6272
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6638
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 18754
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 18787
+          }
+        ]
+      },
+      {
+        "elapsed_us": 18905,
+        "nav": {
+          "failed": 0,
+          "max_us": 5045,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2936,
+          "search_us": 9843,
+          "turn_us": 934
+        },
+        "nav_slow": [],
+        "player": 6,
+        "profile": {
+          "ai_notice_candidates": 160,
+          "ai_tick": 1,
+          "aichatter": 31,
+          "aichoose": 13874,
+          "aiplayer_perceive": 414,
+          "airechoose": 124,
+          "aithink": 14586,
+          "tornadoes": 2,
+          "traps": 2,
+          "unit_ensure_motion": 202,
+          "unit_housekeeping": 20,
+          "unit_logic": 18524,
+          "unit_move_base": 154,
+          "unit_set_action": 102,
+          "unit_stamp": 183,
+          "unit_step_along_path": 526,
+          "units": 18762,
+          "water": 1,
+          "world": 18794
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6261
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6357
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6707
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 18762
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 18794
+          }
+        ]
+      },
+      {
+        "elapsed_us": 19048,
+        "nav": {
+          "failed": 0,
+          "max_us": 5036,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2798,
+          "search_us": 9895,
+          "turn_us": 922
+        },
+        "nav_slow": [],
+        "player": 7,
+        "profile": {
+          "ai_notice_candidates": 167,
+          "ai_tick": 1,
+          "aichatter": 32,
+          "aichoose": 13757,
+          "aiplayer_perceive": 426,
+          "airechoose": 123,
+          "aithink": 14479,
+          "tornadoes": 2,
+          "traps": 1,
+          "unit_ensure_motion": 203,
+          "unit_housekeeping": 20,
+          "unit_logic": 18664,
+          "unit_move_base": 159,
+          "unit_set_action": 115,
+          "unit_stamp": 187,
+          "unit_step_along_path": 544,
+          "units": 18911,
+          "water": 1,
+          "world": 18946
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6214
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6308
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6663
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 18911
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 18946
+          }
+        ]
+      },
+      {
+        "elapsed_us": 18804,
+        "nav": {
+          "failed": 0,
+          "max_us": 5041,
+          "memo_hits": 6,
+          "queries": 12,
+          "reach_checks": 6,
+          "reach_pruned": 0,
+          "reach_us": 2853,
+          "search_us": 9838,
+          "turn_us": 938
+        },
+        "nav_slow": [],
+        "player": 8,
+        "profile": {
+          "ai_notice_candidates": 159,
+          "ai_tick": 1,
+          "aichatter": 30,
+          "aichoose": 13783,
+          "aiplayer_perceive": 416,
+          "airechoose": 123,
+          "aithink": 14490,
+          "tornadoes": 1,
+          "traps": 2,
+          "unit_ensure_motion": 201,
+          "unit_housekeeping": 22,
+          "unit_logic": 18430,
+          "unit_move_base": 154,
+          "unit_set_action": 102,
+          "unit_stamp": 184,
+          "unit_step_along_path": 526,
+          "units": 18672,
+          "water": 1,
+          "world": 18706
+        },
+        "slow": [
+          {
+            "part": "aichoose",
+            "uid": 100002,
+            "us": 6247
+          },
+          {
+            "part": "aithink",
+            "uid": 100002,
+            "us": 6343
+          },
+          {
+            "part": "unit_logic",
+            "uid": 100002,
+            "us": 6696
+          },
+          {
+            "part": "units",
+            "uid": -1,
+            "us": 18672
+          },
+          {
+            "part": "world",
+            "uid": -1,
+            "us": 18706
+          }
+        ]
+      }
+    ]
+  }
+}

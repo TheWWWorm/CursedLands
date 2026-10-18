@@ -2,6 +2,7 @@ class_name ArenaTerrain
 extends RefCounted
 ## Authored clearing surrounded by snow-covered Ingos ruins. The atlas and figure assets
 ## come from the installed game. This does not load any campaign scripts.
+const PLAY_AREA := Rect2(18.5, 18.5, 27, 27)
 
 class Sectors extends EIResArchive:
 	var files := {}
@@ -104,11 +105,39 @@ static func scenery(ground: EITerrain, parent: Node3D) -> Array[Node3D]:
 		var object := scene.place_object(record, parent)
 		if object:
 			object.scale = Vector3.ONE * float(piece[6])
+			_keep_clearing(object, ground)
 			if String(piece[0]).begins_with("nast") or String(piece[0]).begins_with("stst"):
 				_snow_caps(object)
 			placed.append(object)
 	scene.free()
 	return placed
+
+
+## Both companies share the same clear field, including after X reflection.
+## Native navigation uses unscaled FIG boxes; small decorative meshes can
+## otherwise conceal large blockers. Keep those boxes and the visible model
+## beyond the largest movement-class dilation, instead of changing formations.
+static func _keep_clearing(object: Node3D, ground: EITerrain) -> void:
+	var geometry := EIFigureGeometry.of(object)
+	if geometry.is_empty(): return
+	var record: Dictionary = object.get_meta("ei")
+	var at: Vector3 = record.position
+	var extent := maxf(1.0, object.scale.x)
+	var transform := Transform3D(Basis(record.rotation).scaled(Vector3.ONE * extent), EISpace.vec(at))
+	var box := transform * EIFigureGeometry.box(geometry)
+	var footprint := Rect2(Vector2(box.position.x, -box.end.z), Vector2(box.size.x, box.size.z))
+	var clearing := PLAY_AREA.grow(2.0)
+	if not clearing.intersects(footprint): return
+	var shifts := [Vector2(clearing.position.x - footprint.end.x, 0),
+		Vector2(clearing.end.x - footprint.position.x, 0),
+		Vector2(0, clearing.position.y - footprint.end.y),
+		Vector2(0, clearing.end.y - footprint.position.y)]
+	var shift: Vector2 = shifts[0]
+	for candidate: Vector2 in shifts:
+		if candidate.length_squared() < shift.length_squared(): shift = candidate
+	at += Vector3(shift.x, shift.y, 0)
+	record.position = at
+	object.position = EISpace.pos(at.x, at.y, ground.height_at(at.x, at.y) + at.z)
 
 
 static var _snow_materials := {}

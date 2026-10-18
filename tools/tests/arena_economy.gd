@@ -13,17 +13,17 @@ func _ready() -> void:
 	var run := ArenaRun.new()
 	run.auto_save = false
 	Fixture.begin(run, 31)
-	for savings in [0,9,10,19,20,29,30,99]:
+	for savings in [0,9,10,19,20,29,30,39,40,49,50,59,99]:
 		run.gold = savings
-		check(run.income_preview().interest == mini(3,savings/10), "interest threshold %d" % savings)
-		check(run.income_preview().total == 6+mini(3,savings/10), "transparent total %d" % savings)
-	run.gold = 30
+		check(run.income_preview().interest == mini(5,savings/10), "interest threshold %d" % savings)
+		check(run.income_preview().total == 6+mini(5,savings/10), "transparent total %d" % savings)
+	run.gold = 50
 	run.start_battle()
 	run.gold = 0 # Interest is committed at the start, never the final purse.
 	run.resolve(0,12,[20,4])
-	check(run.gold == 9 and run.last_result.income.interest == 3,"battle-start interest snapshot")
+	check(run.gold == 11 and run.last_result.income.interest == 5,"battle-start interest snapshot")
 	run.resolve(0,12,[20,4])
-	check(run.gold == 9,"settlement pays exactly once")
+	check(run.gold == 11,"settlement pays exactly once")
 	for i in 5:
 		run.advance()
 		if run.stage == "reward": run.choose_reward(0)
@@ -33,7 +33,7 @@ func _ready() -> void:
 	run.advance();run.choose_reward(0)
 	var bank := run.gold
 	run.start_battle();run.resolve(1,10,[4,20]);run.advance()
-	check(run.gold == bank + 5 + mini(3, bank / 10) and run.income_preview().streak == 0,"defeat breaks streak and pays base plus interest")
+	check(run.gold == bank + 5 + mini(5, bank / 10) and run.income_preview().streak == 0,"defeat breaks streak and pays base plus interest")
 	check(run.wave == 8,"defeat advances to the next wave")
 	run.gold = 50
 	var old := run.snapshot()

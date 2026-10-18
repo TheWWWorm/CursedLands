@@ -1,0 +1,92 @@
+{
+  "runtime": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime/CursedLands.x86_64",
+      "sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "bytes": 82141352
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime/CursedLands.pck",
+      "sha256": "394a7bc3cad16cfac9431336fc77dd5cf1be7c5ef8635f0fc0466b91529f2d62",
+      "bytes": 12293416
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/game/src/native/bin/libterrain_search.so",
+      "sha256": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+      "bytes": 3110064
+    }
+  ],
+  "qualification": "Native 4K Ultra Forward+ on Linux RTX 3090, safe render thread. Heavy first-person desert averages 59.54 FPS in repeat versus 53.16 with the colour cache disabled in the same pack; not a sustained 60 FPS minimum. Windows RTX 4090 Laptop GPU unverified.",
+  "first_desert_average_fps": 59.98536357128861,
+  "checks": {
+    "forward_plus_lifecycle": 36,
+    "failures": 0,
+    "quality_poses": 5
+  },
+  "live_repeat_checks": [
+    {
+      "name": "forward-color-live-baseline",
+      "path": "campaign-autochess-20261018/forward-color-live-baseline.json",
+      "zone": "gz17h",
+      "fps": 53.16401023828843,
+      "frame_ms": {
+        "max": 59.071,
+        "median": 18.781,
+        "p95": 21.723,
+        "p99": 22.981
+      }
+    },
+    {
+      "name": "forward-color-live-repeat",
+      "path": "campaign-autochess-20261018/forward-color-live-repeat.json",
+      "zone": "gz17h",
+      "fps": 59.538383949677765,
+      "frame_ms": {
+        "max": 56.435,
+        "median": 16.651,
+        "p95": 19.588,
+        "p99": 20.88
+      }
+    },
+    {
+      "name": "forward-color-live-turn",
+      "path": "campaign-autochess-20261018/forward-color-live-turn.json",
+      "zone": "gz17h",
+      "fps": 82.0112668351369,
+      "frame_ms": {
+        "max": 56.436,
+        "median": 11.393,
+        "p95": 18.215,
+        "p99": 20.073
+      }
+    },
+    {
+      "name": "forward-color-camp-bz14h",
+      "path": "campaign-autochess-20261018/forward-color-camp-bz14h.json",
+      "zone": "bz14h",
+      "fps": 60.647319388483034,
+      "frame_ms": {
+        "max": 20.199,
+        "median": 16.407,
+        "p95": 17.983,
+        "p99": 18.843
+      }
+    },
+    {
+      "name": "forward-color-camp-bz15h",
+      "path": "campaign-autochess-20261018/forward-color-camp-bz15h.json",
+      "zone": "bz15h",
+      "fps": 85.97234269735426,
+      "frame_ms": {
+        "max": 14.378,
+        "median": 11.603,
+        "p95": 13.011,
+        "p99": 13.727
+      }
+    }
+  ],
+  "mobile_lifecycle_checks": {
+    "checks": 14,
+    "failures": 0
+  }
+}

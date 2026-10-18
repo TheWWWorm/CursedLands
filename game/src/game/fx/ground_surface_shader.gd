@@ -255,6 +255,9 @@ const bool query_no_tracks = false;
 const bool query_first_hit = false;
 const bool query_implicit_gradients = false;
 uniform sampler2D query_clock : filter_nearest, repeat_disable;
+#ifdef EI_CONTACT_QUERY_MASK
+uniform sampler2D query_candidates : filter_nearest, repeat_disable;
+#endif
 // Data uses EI xy; returned vertices use Godot xyz.
 vec3 query_vertex(ivec2 p) {
 	vec3 data = texelFetch(query_vertices, p, 0).rgb;
@@ -335,7 +338,19 @@ bool query_surface(vec2 p, out float height, out vec2 grid, out ivec2 tile, out 
 	// triangles of all nine candidate cells and retain the highest surface.
 	ivec2 offsets[9] = ivec2[9](ivec2(0), ivec2(-1,0), ivec2(1,0), ivec2(0,-1), ivec2(0,1),
 		ivec2(-1,-1), ivec2(1,-1), ivec2(-1,1), ivec2(1,1));
+#ifdef EI_CONTACT_QUERY_MASK
+	// A folded strip can leave the nominal map bounds. Preserve the full
+	// search there, including authored triangles that overhang the edge.
+	uint candidates = 511u;
+	ivec2 bin = ivec2(floor(p * 4.0));
+	if (all(greaterThanEqual(bin, ivec2(0))) && all(lessThan(bin, textureSize(query_candidates, 0)))) {
+		candidates = uint(texelFetch(query_candidates, bin, 0).r);
+	}
+#endif
 	for (int i = 0; i < query_cell_count; i++) {
+#ifdef EI_CONTACT_QUERY_MASK
+		if ((candidates & (1u << uint(i))) == 0u) { continue; }
+#endif
 		if (found && query_first_hit) { break; }
 		ivec2 cell = ivec2(floor(p)) + offsets[i];
 		if (any(lessThan(cell, ivec2(0))) || any(greaterThanEqual(cell, textureSize(query_vertices, 0) - 1))) { continue; }

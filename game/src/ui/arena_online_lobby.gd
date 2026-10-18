@@ -5,6 +5,8 @@ var connection: ArenaOnlineSession
 var screen: ArenaOnlineScreen
 var panel: ArenaOnlinePanel
 var _prior_speed := 1.0
+var _connection_generation := 0
+var _stopping := false
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -19,6 +21,7 @@ func _ready() -> void:
 	panel.open()
 
 func _connection() -> void:
+	_connection_generation += 1
 	GameData.player_name = ArenaOnlineSession.clean_name(panel.player_name)
 	GameData.save_settings()
 	if connection:
@@ -33,14 +36,23 @@ func _connection() -> void:
 	connection.upnp.finished.connect(func(_ok,text):panel.upnp_text=text;_refresh())
 
 func _host() -> void:
+	if _stopping: return
 	_connection()
-	var error:=connection.host(int(panel.port_text),GameData.option("net_websocket")!=0)
-	if error!=OK:panel.status=RemakeText.t("Could not host the game. Check the port and try again.")
+	var pending := connection
+	var generation := _connection_generation
+	panel.hosting = true; panel.host_port = int(panel.port_text)
+	panel.status = RemakeText.t("Connecting…"); panel.queue_redraw()
+	var error := await pending.host_shown(int(panel.port_text), GameData.option("net_websocket") != 0)
+	if not is_inside_tree() or generation != _connection_generation or connection != pending or not panel.hosting: return
+	if error != OK:
+		panel.hosting = false
+		panel.status = RemakeText.t("Could not host the game. Check the port and try again.")
 	else:
-		panel.hosting=true;panel.host_port=connection.host_port;panel.status="";_refresh()
+		panel.host_port = connection.host_port; panel.status = ""; _refresh()
 	panel.queue_redraw()
 
 func _join(address: String) -> void:
+	if _stopping: return
 	_connection()
 	var error:=connection.join(address)
 	if error!=OK:panel.status=RemakeText.t("Could not connect to the host.")
@@ -48,7 +60,13 @@ func _join(address: String) -> void:
 	panel.queue_redraw()
 
 func _stop() -> void:
-	if connection:connection.close()
+	if _stopping: return
+	_stopping = true
+	_connection_generation += 1
+	var pending := connection
+	if pending: await pending.close_shown()
+	_stopping = false
+	if not is_inside_tree() or connection != pending: return
 	panel.hosting=false;panel.joining=false;panel.lobby.clear()
 	panel.upnp_text="";panel.status="";panel.connection=null;panel.queue_redraw()
 

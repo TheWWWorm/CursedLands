@@ -1,0 +1,120 @@
+{
+  "pairs": 31,
+  "rows": [
+    {
+      "case": 0,
+      "cpu_ms": {
+        "max": 51.9129981994629,
+        "median": 0.691999971866608,
+        "p95": 39.5480003356934,
+        "p99": 46.0299987792969
+      },
+      "gpu_ms": {
+        "max": 16.5860004425049,
+        "median": 14.4930000305176,
+        "p95": 15.8900003433228,
+        "p99": 16.2059993743896
+      },
+      "optimized": false,
+      "particles": 4010,
+      "time_scale": 0.0
+    },
+    {
+      "case": 1,
+      "cpu_ms": {
+        "max": 1.19200003147125,
+        "median": 0.642000019550323,
+        "p95": 1.0,
+        "p99": 1.13900005817413
+      },
+      "gpu_ms": {
+        "max": 16.4860000610352,
+        "median": 14.6129999160767,
+        "p95": 15.8719997406006,
+        "p99": 16.3689994812012
+      },
+      "optimized": true,
+      "particles": 4010,
+      "time_scale": 0.0
+    },
+    {
+      "case": 2,
+      "cpu_ms": {
+        "max": 1.25199997425079,
+        "median": 0.644999980926514,
+        "p95": 1.03799998760223,
+        "p99": 1.20200002193451
+      },
+      "gpu_ms": {
+        "max": 16.7679996490479,
+        "median": 14.7440004348755,
+        "p95": 16.0580005645752,
+        "p99": 16.69700050354
+      },
+      "optimized": true,
+      "particles": 4010,
+      "time_scale": 0.0
+    },
+    {
+      "case": 2,
+      "cpu_ms": {
+        "max": 1.12999999523163,
+        "median": 0.640999972820282,
+        "p95": 0.915000021457672,
+        "p99": 1.09899997711182
+      },
+      "gpu_ms": {
+        "max": 16.8139991760254,
+        "median": 14.7419996261597,
+        "p95": 16.0919990539551,
+        "p99": 16.7299995422363
+      },
+      "optimized": true,
+      "particles": 4010,
+      "time_scale": 0.0
+    },
+    {
+      "case": 1,
+      "cpu_ms": {
+        "max": 1.00899994373322,
+        "median": 0.570999979972839,
+        "p95": 0.907000005245209,
+        "p99": 0.97299998998642
+      },
+      "gpu_ms": {
+        "max": 17.8020000457764,
+        "median": 14.7580003738403,
+        "p95": 15.9460000991821,
+        "p99": 17.2849998474121
+      },
+      "optimized": true,
+      "particles": 4010,
+      "time_scale": 0.0
+    },
+    {
+      "case": 0,
+      "cpu_ms": {
+        "max": 1.22899997234344,
+        "median": 0.591000020503998,
+        "p95": 0.915000021457672,
+        "p99": 1.09500002861023
+      },
+      "gpu_ms": {
+        "max": 16.9400005340576,
+        "median": 14.9309997558594,
+        "p95": 16.0349998474121,
+        "p99": 16.7150001525879
+      },
+      "optimized": false,
+      "particles": 4010,
+      "time_scale": 0.0
+    }
+  ],
+  "qualification": "Frozen diagnostic at native 4K Ultra, Linux RTX 3090, Safe. Every scene processor explicitly disabled; time_scale=0 and particle count recorded in each row. Not live FPS evidence.",
+  "cases": {
+    "0": "Unmodified shader",
+    "1": "Cached static soft-ground profile with fallback",
+    "2": "Direct original-vertex sampling at integer coordinates"
+  },
+  "decision": "No reliable useful gain; candidate source edits reverted."
+}

@@ -29,7 +29,7 @@ func _ready() -> void:
 
 
 func bounds() -> Rect2:
-	return Rect2(18.5, 18.5, 27, 27)
+	return ArenaTerrain.PLAY_AREA
 
 
 func stalemate_seconds() -> float:
@@ -272,6 +272,7 @@ func _combat_event(kind: String, a: GameUnit, b: GameUnit, amount: float) -> voi
 
 
 func _resolved(side: int) -> void:
+	_stop_locomotion()
 	settle_remaining = 1.6 if rendered else 0.0
 	if rendered:
 		_effects_left = 1.5
@@ -280,14 +281,26 @@ func _resolved(side: int) -> void:
 			if node is ParticleFx: node.finish_emitters()
 			elif node is Projectile: node.apply_hit = false
 			elif node is SpellFx: _light_finish_age[node] = node._age
-		for unit: GameUnit in world.unit_rows():
-			if not unit.dead: unit._set_action("idle")
 	var survivors := [0, 0]
 	for unit: GameUnit in world.unit_rows():
 		if not unit.dead:
 			var placement: Dictionary = unit.get_meta("arena_placement", {})
 			survivors[int(placement.get("team", 0))] += int(placement.get("rank", 0)) + 1
 	if run: run.resolve(side, world.time, damage, survivors)
+
+
+## Authority and replicas must agree on the final stationary pose. A stopped
+## combat clock cannot clear movement on its next tick, and late snapshots
+## must not restart a survivor's walking clip while waiting for other boards.
+func _stop_locomotion() -> void:
+	formation_motion.clear()
+	for unit: GameUnit in world.unit_rows():
+		unit.order = {}; unit.orders.clear(); unit.path.clear()
+		unit._moving = false; unit._move_speed = 0.0
+		unit._draw_motion_active = false; unit._draw_line_goal = Vector2.INF
+		unit.net_view.got(unit.pos, true, unit.facing)
+		unit.resync_drawn()
+		if not unit.dead: unit._set_action("idle")
 
 
 func _process(dt: float) -> void:

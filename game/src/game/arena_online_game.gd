@@ -8,13 +8,21 @@ var boards: ArenaTournamentBattles
 var ready_seats: Array[int] = []
 var result_left := 4.0
 var events := {}
+var battle_speed := 1
 var _ticks := 0.0
+var _tick_player := 0
 var _revision := 0
+## Yield between complete board ticks so a costly first route does not turn
+## into several frames' catch-up work inside the same rendered frame.
+const FRAME_TICK_BUDGET_USEC := 6000
 
 func begin(seed_value: int, humans: Dictionary) -> void:
 	run.humans = humans.duplicate()
 	run.begin(seed_value)
-	var stage := Node3D.new(); add_child(stage)
+	var stage := Node3D.new(); stage.hide(); add_child(stage)
+	# The host renders the same network replica as every guest. Authority
+	# figures still supply animation/bone geometry to combat and navigation,
+	# but must never draw a second army or cast duplicate scenery shadows.
 	home = ArenaPveMatch.new(); home.run = run; home.rendered = false; home.drives_clock = false
 	add_child(home); home._world_parent = stage
 	home.set_process(false); home.set_physics_process(false)
@@ -24,7 +32,7 @@ func begin(seed_value: int, humans: Dictionary) -> void:
 	_prepare()
 
 func _prepare() -> void:
-	ready_seats.clear(); result_left = 4.0; _ticks = 0.0
+	ready_seats.clear(); result_left = 4.0; _ticks = 0.0; _tick_player = 0
 	home.prepare(); boards.synchronize()
 	for player in ArenaTournamentRun.PLAYER_COUNT:
 		var battle := encounter(player)
@@ -40,20 +48,36 @@ func encounter(player: int) -> ArenaPveMatch:
 
 func _process(dt: float) -> void:
 	if home == null: return
-	advance_clock(dt)
+	advance_clock(dt / maxf(Engine.time_scale, 0.001), FRAME_TICK_BUDGET_USEC * battle_speed)
 
-func advance_clock(dt: float) -> void:
+func advance_clock(dt: float, budget_usec := 0) -> void:
 	if run.stage == "prepare":
 		var changed_players := run.advance_bots(dt)
 		for player in changed_players: boards._sync_board(player)
 		if not changed_players.is_empty(): updated.emit()
 		if run.elapse_preparation(dt): start_round()
 	elif run.stage == "fight":
-		_ticks += dt
+		_ticks += dt * battle_speed
+		# Independent boards retain their 55 ms simulation ticks and player
+		# order, but become due across that interval instead of all at once.
+		# This bounds the usual inter-board clock difference to one tick and
+		# avoids making the renderer wait for nine battles in one frame.
+		var slice := GameUnit.TICK / float(ArenaTournamentRun.PLAYER_COUNT)
 		var count := 0
-		while _ticks >= GameUnit.TICK and run.stage == "fight" and count < 8:
-			_ticks -= GameUnit.TICK; count += 1
-			home.simulate_tick(); boards.step()
+		# A short budget smooths ordinary frames, but must not prolong a large
+		# backlog (especially at 2x). Temporarily allow twice as much work once
+		# two simulation ticks are owed; all yields still finish a whole tick.
+		var catch_up := 2 if _ticks > 2.0 * GameUnit.TICK else 1
+		var deadline := Time.get_ticks_usec() + budget_usec * catch_up if budget_usec > 0 else 0
+		while _ticks + 1e-9 >= slice and run.stage == "fight" and count < 8 * ArenaTournamentRun.PLAYER_COUNT:
+			_ticks = maxf(0.0, _ticks - slice); count += 1
+			var battle := encounter(_tick_player)
+			if battle: battle.simulate_tick()
+			_tick_player = (_tick_player + 1) % ArenaTournamentRun.PLAYER_COUNT
+			# Always finish a native tick. Keep the remaining debt and player
+			# cursor for the next frame; no combat time or board is skipped.
+			# Explicit deterministic advances can omit the real-time budget.
+			if deadline > 0 and Time.get_ticks_usec() >= deadline: break
 		if run.stage != "fight": updated.emit()
 	elif run.stage == "result":
 		result_left -= dt
@@ -86,6 +110,9 @@ func start_round() -> void:
 
 func command(player: int, action: String, args: Array) -> String:
 	if player < 0 or player >= ArenaTournamentRun.PLAYER_COUNT or not run.humans.has(player): return "Invalid online action."
+	if action == "speed":
+		if player != 0 or args.size() != 1 or not ArenaRun._integer(args[0], 1, 2): return "Invalid online action."
+		battle_speed = int(args[0]); updated.emit(); return ""
 	if run.health(player) <= 0 or run.stage == "won": return "You have been eliminated. You can keep watching."
 	var company := run.company(player)
 	var error := ""
@@ -149,6 +176,7 @@ func state_for(player: int, names: Array) -> Dictionary:
 		data["evolutions"] = company.last_evolutions.duplicate()
 		companies.append(data)
 	return {"t":"state", "seat":player, "seed":run.run_seed, "round":run.wave, "stage":run.stage,
+		"speed":battle_speed, "fighting":run.alive_players().filter(func(id): return encounter(id) != null and encounter(id).phase == ArenaMatch.Phase.FIGHT),
 		"left":run.preparation_left, "result_left":result_left, "staging":run.preparing_battle,
 		"companies":companies, "health":[run.lives] + run.rival_health, "placements":run.placements.duplicate(),
 		"pairings":run.pairings.duplicate(true), "names":names.duplicate(), "ready":ready_seats.duplicate(), "undo":run.company(player).can_undo()}
@@ -163,7 +191,7 @@ func board_key(player: int) -> String:
 	var battle := encounter(player)
 	if battle == null: return ""
 	var actors := []
-	for unit: GameUnit in battle.world.unit_rows(): actors.append([unit.uid, unit.info.prototype])
+	for unit: GameUnit in battle.world.unit_rows(): actors.append([unit.uid, unit.info.prototype, unit.get_meta("arena_placement", {})])
 	return "%d:%s" % [battle.world.get_instance_id(), str(actors)]
 
 func board_frame(player: int, full: bool) -> Dictionary:

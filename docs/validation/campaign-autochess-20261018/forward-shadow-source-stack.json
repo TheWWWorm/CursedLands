@@ -1,0 +1,205 @@
+{
+  "scope": "Reverse all thirteen common patches in an isolated copy of their touched native files, then reapply in documented order and compare every file hash. Does not independently verify the upstream archive.",
+  "touched_files": {
+    "core/object/worker_thread_pool.cpp": "2d8d05ef55272e50118203ab5f37a368d55ebf3685ab66a65c54ade9d4170561",
+    "core/os/os.cpp": "26187ef96f3a3c0e008e71192758811b7c6840219ef6740d99d26fbc74452354",
+    "scene/animation/animation_mixer.cpp": "bd3555527ebf7384c149797fdabf32d8a48659d8f6a6815a663084fb3bfe0536",
+    "scene/animation/animation_mixer.h": "ffdcb29f9a10f43d86dd3c630605a15318e22d51b33d2d9ef5abd6a07cbee66b",
+    "scene/animation/animation_player.cpp": "7fd1fe3155041e8a9d8bc26d78c602ab7490a317b1f1650c7c6b3d86643e9993",
+    "scene/animation/animation_player.h": "885cefb1a2f46d52ee76b3adf04fa8108bca7b622fe992c70e4775222da76147",
+    "servers/rendering/renderer_rd/effects/bokeh_dof.cpp": "5c87417ca784c6f95cf88515718f3578f7c8e1ed43e7e3a0dbb66e94c882d328",
+    "servers/rendering/renderer_rd/effects/far_dof.cpp": "a0beeb52b3d4eb6911f15aeac1e3fbbe055b5f885b1d18dcd0ebeb62b38f2328",
+    "servers/rendering/renderer_rd/effects/far_dof.h": "fa68c3ec153809143be2fdafafa33ec27dbe421fae78c12e0e2c9e0f008068bd",
+    "servers/rendering/renderer_rd/environment/sky.cpp": "cabc000c0869650c050afc7b7e2c6f74f2a3c7f0f0f9b80969c6044fc7887890",
+    "servers/rendering/renderer_rd/environment/sky.h": "97279c5608d282cc14e79af7a2ebd7dfd173f024d27a4f6cf865f8bc8c6832e4",
+    "servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp": "f4024ff284a33774563d45d2f38441a92fe9352262620832bcf65e1876c6ba9b",
+    "servers/rendering/renderer_rd/forward_mobile/scene_shader_forward_mobile.cpp": "5794a2ce0877fc519b757fd65dda4d2781c89cb62faa21f5170f5304e31a00fe",
+    "servers/rendering/renderer_rd/renderer_scene_render_rd.cpp": "3b89d9cc6c19933a4c74afc13e5d795989723f32336f446e06773d140ab8cd24",
+    "servers/rendering/renderer_rd/renderer_scene_render_rd.h": "560283b1c2bbb6e119cf84ab35aef09353c2f4acfd70f5f3d698df06475dff8e",
+    "servers/rendering/renderer_rd/shaders/effects/bokeh_dof.glsl": "45a897218b3e9e7addc393511762be96af236ad693d58b4d9cb782485daee644",
+    "servers/rendering/renderer_rd/shaders/effects/bokeh_dof_raster.glsl": "878bede308e088c0270544c02c9e2563cb917304e372d33a9cee5088cb4a2536",
+    "servers/rendering/renderer_rd/shaders/effects/far_dof.glsl": "9dda02ad4575e750c1cc10cc002906b0764c16af1f85b2ec2e0cd97cc4d2247e",
+    "servers/rendering/renderer_rd/shaders/environment/sky.glsl": "01903e5f1aebcf2610e602368b4ff78522ed0a9f49ba0331504b39805054e9a8",
+    "servers/rendering/renderer_rd/shaders/forward_clustered/scene_forward_clustered.glsl": "a44f9e599d814f2107ec06e3249253977f6c95c13294a4d96b5091303963261a",
+    "servers/rendering/rendering_server.cpp": "4f668673a2096da2f7949326d7e37fc49f63b91bd74ef32a4d11a35cc3ee5ce7",
+    "servers/rendering/rendering_server.h": "48af4abd50357b9a2b0012566f1354b9e56a66327adcefb7798b226eb3998a58",
+    "servers/rendering/rendering_server_default.cpp": "6464c44575a0c0d3a51b1e76c895b93bfe89181ebe0bf29d36122832ded35dd8",
+    "servers/rendering/rendering_server_default.h": "4c5332cb15a83f38cc9ae89957ea659dc67f0478bf377b133dac68831ee87b78",
+    "servers/rendering/storage/camera_attributes_storage.cpp": "1e75932acd26ac425b398fd64e1a836da1f85f2ab764b77d5a429bc415dfc0c5",
+    "servers/rendering/storage/camera_attributes_storage.h": "c9d873c692a86646dc401c0ff3b4144f7ce4fa7e87e6dc63dadd7f875c2452f3"
+  },
+  "patches": {
+    "render-thread-shutdown.patch": "0d7dc8b88c8708df9948002477f7bf14d9cf6e718251b0dc798606c5572b712e",
+    "queued-image-snapshot.patch": "e747f95b3d324582130e1e0ba24a3f17e2a3a2da350474fca61e4970243a4fe3",
+    "unobserved-pose.patch": "fdef4bafc6d2c9a94ef628fd692b7845fd9ed0e1ffd168b21a6a0c8e1ea45978",
+    "preserve-character-track-caches.patch": "5b938580ef002448d35f0c1535dcde2021032f6eb1385be56815f157aa99a3b8",
+    "prepare-character-track-caches.patch": "693f6eac8fee284b4493a8eb49c7bf9a2426d4e0c8a9f2ef3f96d4147c0ce1bb",
+    "cache-unobserved-track-eligibility.patch": "788b24561c8f377f1f4f8aea4a33b05d9b21f31b6bc1772699156131a80173b8",
+    "mobile-shader-recompile-lock.patch": "02bc97dd57f9b3388d71837b30b036e814ae5bf6e6fca3b3cf3948d260c746b6",
+    "forward-shader-recompile-lifetime.patch": "6620cefedded50733fa65e71164dc8918c8a0ac02387d54252aedf6f185b701e",
+    "far-dof-sharp-guard.patch": "c6070bfbfbf5e36014d37d2b58a74ae8ff156202aa063134cebd0b21610e7286",
+    "sky-subpass-alpha.patch": "a2ba63fac3d1ec8804f96bf3cdeb45b7f2c1597e1ac410f1739df812d82f3a67",
+    "worker-thread-language-shutdown.patch": "dc402e5bdc3b595d3dc50886a144da55d6a7d199dc2efaf348df394bd4b5321e",
+    "far-dof-reference.patch": "9c906ae637c9df620f1976d7b6c3bfe6aed4e236c91fcf27b40afeb8bacf3954",
+    "forward-shadow-blend-guard.patch": "7ce40d66ba714b49dfcc30dfe97b7e6f35ae49163a039605e0096fb5b72a8af4"
+  },
+  "steps": [
+    {
+      "direction": "reverse",
+      "patch": "forward-shadow-blend-guard.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "reverse",
+      "patch": "far-dof-reference.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "reverse",
+      "patch": "worker-thread-language-shutdown.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "reverse",
+      "patch": "sky-subpass-alpha.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "reverse",
+      "patch": "far-dof-sharp-guard.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "reverse",
+      "patch": "forward-shader-recompile-lifetime.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "reverse",
+      "patch": "mobile-shader-recompile-lock.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "reverse",
+      "patch": "cache-unobserved-track-eligibility.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "reverse",
+      "patch": "prepare-character-track-caches.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "reverse",
+      "patch": "preserve-character-track-caches.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "reverse",
+      "patch": "unobserved-pose.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "reverse",
+      "patch": "queued-image-snapshot.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "reverse",
+      "patch": "render-thread-shutdown.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "forward",
+      "patch": "render-thread-shutdown.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "forward",
+      "patch": "queued-image-snapshot.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "forward",
+      "patch": "unobserved-pose.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "forward",
+      "patch": "preserve-character-track-caches.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "forward",
+      "patch": "prepare-character-track-caches.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "forward",
+      "patch": "cache-unobserved-track-eligibility.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "forward",
+      "patch": "mobile-shader-recompile-lock.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "forward",
+      "patch": "forward-shader-recompile-lifetime.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "forward",
+      "patch": "far-dof-sharp-guard.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "forward",
+      "patch": "sky-subpass-alpha.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "forward",
+      "patch": "worker-thread-language-shutdown.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "forward",
+      "patch": "far-dof-reference.patch",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "direction": "forward",
+      "patch": "forward-shadow-blend-guard.patch",
+      "exit_code": 0,
+      "output": ""
+    }
+  ],
+  "round_trip_identical": true
+}

@@ -1,0 +1,680 @@
+{
+	"adapter": "NVIDIA GeForce RTX 3090",
+	"camera": "[X: (0.564367, 0.0, -0.825524), Y: (-0.098826, 0.992809, -0.067562), Z: (0.819588, 0.119713, 0.560308), O: (374.2314, 7.943686, -67.658)]",
+	"census": [
+		{
+			"actors": 341,
+			"camera": "[X: (0.563553, 0.0, -0.82608), Y: (-0.098893, 0.992808, -0.067465), Z: (0.820139, 0.119714, 0.559501)]",
+			"color_cache": {
+				"built": 11,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 2.5462073856814,
+			"hero": "(374.5, 67.5)",
+			"sim": 7.75499999999999,
+			"wall": 0.015702
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.377134, 0.0, -0.926159), Y: (-0.110873, 0.992809, -0.045148), Z: (0.919498, 0.119713, 0.374422)]",
+			"color_cache": {
+				"built": 11,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 2.75834384849407,
+			"hero": "(374.5, 67.5)",
+			"sim": 8.85499999999998,
+			"wall": 1.028579
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.175174, 0.0, -0.984538), Y: (-0.117862, 0.992808, -0.020971), Z: (0.977457, 0.119714, 0.173914)]",
+			"color_cache": {
+				"built": 12,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 2.96944609900518,
+			"hero": "(374.5, 67.5)",
+			"sim": 9.84499999999998,
+			"wall": 2.036518
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.036302, 0.0, -0.999341), Y: (-0.119633, 0.992809, 0.004346), Z: (0.992154, 0.119712, -0.036041)]",
+			"color_cache": {
+				"built": 12,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 3.18108493354152,
+			"hero": "(374.5, 67.5)",
+			"sim": 10.89,
+			"wall": 3.047019
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.243852, 0.0, -0.969813), Y: (-0.1161, 0.992809, 0.029192), Z: (0.962838, 0.119713, -0.242098)]",
+			"color_cache": {
+				"built": 13,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 3.39193983599104,
+			"hero": "(374.5, 67.5)",
+			"sim": 11.88,
+			"wall": 4.053777
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.44341, 0.0, -0.896319), Y: (-0.107302, 0.992808, 0.053082), Z: (0.889873, 0.119714, -0.440221)]",
+			"color_cache": {
+				"built": 13,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 3.60451277074305,
+			"hero": "(374.5, 67.5)",
+			"sim": 12.87,
+			"wall": 5.068738
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.621834, 0.0, -0.783149), Y: (-0.093751, 0.992809, 0.07444), Z: (0.777517, 0.119711, -0.617363)]",
+			"color_cache": {
+				"built": 14,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 3.81564476166461,
+			"hero": "(374.5, 67.5)",
+			"sim": 13.86,
+			"wall": 6.076819
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.771709, 0.0, -0.635976), Y: (-0.076133, 0.992809, 0.092382), Z: (0.631403, 0.119711, -0.766159)]",
+			"color_cache": {
+				"built": 14,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 4.02593836622669,
+			"hero": "(374.5, 67.5)",
+			"sim": 14.9049999999999,
+			"wall": 7.080897
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.887488, 0.0, -0.460831), Y: (-0.055167, 0.992809, 0.106243), Z: (0.457517, 0.119712, -0.881106)]",
+			"color_cache": {
+				"built": 15,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 4.23646277312905,
+			"hero": "(374.5, 67.5)",
+			"sim": 15.8949999999999,
+			"wall": 8.086077
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.964164, 0.0, -0.265306), Y: (-0.03176, 0.992809, 0.115423), Z: (0.263398, 0.119713, -0.957231)]",
+			"color_cache": {
+				"built": 16,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 4.4464286048576,
+			"hero": "(374.5, 67.5)",
+			"sim": 16.8849999999999,
+			"wall": 9.08859
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.998362, 0.0, -0.057205), Y: (-0.006848, 0.992809, 0.119517), Z: (0.056793, 0.119713, -0.991183)]",
+			"color_cache": {
+				"built": 17,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 4.65756583176692,
+			"hero": "(374.5, 67.5)",
+			"sim": 17.8749999999999,
+			"wall": 10.096696
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.988228, 0.0, 0.152987), Y: (0.018314, 0.992809, 0.118304), Z: (-0.151887, 0.119713, -0.981121)]",
+			"color_cache": {
+				"built": 17,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 4.86808940091124,
+			"hero": "(374.5, 67.5)",
+			"sim": 18.9199999999999,
+			"wall": 11.101872
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.934257, 0.0, 0.3566), Y: (0.04269, 0.992809, 0.111842), Z: (-0.354036, 0.119713, -0.927539)]",
+			"color_cache": {
+				"built": 17,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 5.07907625025221,
+			"hero": "(374.5, 67.5)",
+			"sim": 19.9099999999999,
+			"wall": 12.10926
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.838818, 0.0, 0.544411), Y: (0.065173, 0.992809, 0.100417), Z: (-0.540496, 0.119712, -0.832786)]",
+			"color_cache": {
+				"built": 17,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 5.29027191078488,
+			"hero": "(374.5, 67.5)",
+			"sim": 20.9549999999999,
+			"wall": 13.117645
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.706953, 0.0, 0.707261), Y: (0.084667, 0.992809, 0.08463), Z: (-0.702174, 0.119712, -0.701869)]",
+			"color_cache": {
+				"built": 17,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 5.49996735610571,
+			"hero": "(374.5, 67.5)",
+			"sim": 21.9449999999999,
+			"wall": 14.118867
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.544258, 0.0, 0.838918), Y: (0.100429, 0.992809, 0.065154), Z: (-0.832885, 0.119712, -0.540344)]",
+			"color_cache": {
+				"built": 17,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 5.7094204799132,
+			"hero": "(374.5, 67.5)",
+			"sim": 22.9349999999999,
+			"wall": 15.118932
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.356665, 0.0, 0.934232), Y: (0.111838, 0.992809, 0.042697), Z: (-0.927514, 0.119711, -0.3541)]",
+			"color_cache": {
+				"built": 17,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 5.92010070981118,
+			"hero": "(374.5, 67.5)",
+			"sim": 23.9249999999999,
+			"wall": 16.124856
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (-0.15333, 0.0, 0.988175), Y: (0.118295, 0.992809, 0.018355), Z: (-0.981069, 0.119711, -0.152228)]",
+			"color_cache": {
+				"built": 17,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 6.13192552663261,
+			"hero": "(374.5, 67.5)",
+			"sim": 24.9149999999999,
+			"wall": 17.136245
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.057804, 0.0, 0.998328), Y: (0.119512, 0.992809, -0.00692), Z: (-0.991149, 0.119712, 0.057388)]",
+			"color_cache": {
+				"built": 17,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 6.34280577126287,
+			"hero": "(374.5, 67.5)",
+			"sim": 25.9599999999999,
+			"wall": 18.143124
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.264756, 0.0, 0.964316), Y: (0.115442, 0.992808, -0.031695), Z: (-0.957381, 0.119714, 0.262852)]",
+			"color_cache": {
+				"built": 17,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 6.55277306906799,
+			"hero": "(374.5, 67.5)",
+			"sim": 26.9499999999999,
+			"wall": 19.145644
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.459357, 0.0, 0.888252), Y: (0.106334, 0.992809, -0.054991), Z: (-0.881864, 0.119712, 0.456053)]",
+			"color_cache": {
+				"built": 18,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 1,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 6.76224881234258,
+			"hero": "(374.5, 67.5)",
+			"sim": 27.9399999999999,
+			"wall": 20.145817
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.635322, 0.0, 0.772247), Y: (0.092448, 0.992809, -0.076056), Z: (-0.766694, 0.119712, 0.630753)]",
+			"color_cache": {
+				"built": 21,
+				"bytes": 127401088,
+				"discarded": 1,
+				"jobs": 2,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 6.97329262923033,
+			"hero": "(374.5, 67.5)",
+			"sim": 28.9849999999999,
+			"wall": 21.153477
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.782408, 0.0, 0.622766), Y: (0.074553, 0.992809, -0.093664), Z: (-0.618288, 0.119713, 0.776781)]",
+			"color_cache": {
+				"built": 23,
+				"bytes": 127401088,
+				"discarded": 3,
+				"jobs": 2,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 7.18361367036825,
+			"hero": "(374.5, 67.5)",
+			"sim": 29.9749999999999,
+			"wall": 22.157686
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.895053, 0.0, 0.445959), Y: (0.053387, 0.992809, -0.10715), Z: (-0.442752, 0.119713, 0.888617)]",
+			"color_cache": {
+				"built": 27,
+				"bytes": 127401088,
+				"discarded": 3,
+				"jobs": 1,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 7.39358536640309,
+			"hero": "(374.5, 67.5)",
+			"sim": 30.9649999999999,
+			"wall": 23.160227
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.968484, 0.0, 0.249076), Y: (0.029817, 0.992809, -0.11594), Z: (-0.247284, 0.119713, 0.961519)]",
+			"color_cache": {
+				"built": 29,
+				"bytes": 127401088,
+				"discarded": 4,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 7.60425847535772,
+			"hero": "(374.5, 67.5)",
+			"sim": 31.9549999999999,
+			"wall": 24.166117
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.999149, 0.0, 0.041251), Y: (0.004938, 0.992809, -0.11961), Z: (-0.040954, 0.119712, 0.991964)]",
+			"color_cache": {
+				"built": 31,
+				"bytes": 127401088,
+				"discarded": 4,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 7.81477953122791,
+			"hero": "(374.5, 67.5)",
+			"sim": 32.9999999999999,
+			"wall": 25.171281
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.985658, 0.0, -0.168755), Y: (-0.020202, 0.992809, -0.117996), Z: (0.167542, 0.119712, 0.97857)]",
+			"color_cache": {
+				"built": 31,
+				"bytes": 127401088,
+				"discarded": 4,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 8.02595948379732,
+			"hero": "(374.5, 67.5)",
+			"sim": 33.9349999999999,
+			"wall": 26.179591
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.928653, 0.0, -0.370951), Y: (-0.044407, 0.992809, -0.11117), Z: (0.368283, 0.119711, 0.921974)]",
+			"color_cache": {
+				"built": 33,
+				"bytes": 127401088,
+				"discarded": 4,
+				"jobs": 1,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 8.23669961339523,
+			"hero": "(374.5, 67.5)",
+			"sim": 34.9799999999998,
+			"wall": 27.185801
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.830237, 0.0, -0.557411), Y: (-0.066728, 0.992809, -0.099389), Z: (0.553402, 0.119712, 0.824267)]",
+			"color_cache": {
+				"built": 34,
+				"bytes": 127401088,
+				"discarded": 4,
+				"jobs": 0,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 8.44816419425905,
+			"hero": "(374.5, 67.5)",
+			"sim": 35.9699999999998,
+			"wall": 28.19547
+		},
+		{
+			"actors": 341,
+			"camera": "[X: (0.696497, 0.0, -0.71756), Y: (-0.085901, 0.992809, -0.083379), Z: (0.7124, 0.119712, 0.691488)]",
+			"color_cache": {
+				"built": 35,
+				"bytes": 127401088,
+				"discarded": 4,
+				"jobs": 2,
+				"resident": 8
+			},
+			"dead": false,
+			"heading": 8.65804436522791,
+			"hero": "(374.5, 67.5)",
+			"sim": 37.0149999999998,
+			"wall": 29.197574
+		}
+	],
+	"display": ":0",
+	"end_sim": 37.8399999999998,
+	"frame_ms": {
+		"max": 57.775,
+		"median": 10.677,
+		"p95": 16.826,
+		"p99": 19.186
+	},
+	"frame_parts": {
+		"between_ms": {
+			"max": 5.284,
+			"median": 0.158,
+			"p95": 2.318,
+			"p99": 2.722
+		},
+		"draw_ms": {
+			"max": 32.63,
+			"median": 3.436,
+			"p95": 7.43,
+			"p99": 8.869
+		},
+		"process_ms": {
+			"max": 24.787,
+			"median": 6.93,
+			"p95": 10.415,
+			"p99": 12.618
+		}
+	},
+	"frames": 2624,
+	"gpu_ms": {},
+	"gpu_queries": false,
+	"msaa": 2,
+	"onscreen": true,
+	"options": {
+		"aim_press_once": 1,
+		"armor_formula": 0,
+		"auto_exit": 0,
+		"auto_graphics": 0,
+		"autosave": 0,
+		"brightness": 50,
+		"cam_follow": 1,
+		"cam_pan_speed": 50,
+		"cam_rotate_speed": 50,
+		"cam_see_through": 1,
+		"cam_wasd": 1,
+		"cam_zoom_speed": 50,
+		"camera_reverse_x": 0,
+		"camera_reverse_y": 0,
+		"camera_style": 1,
+		"cave_echo": 1,
+		"character_light": 0,
+		"confine_mouse": 0,
+		"contrast": 50,
+		"control_mode": 3,
+		"coop_clock": 1,
+		"coop_full_xp": 1,
+		"coop_player_names": 1,
+		"coop_scale": 2,
+		"coop_share_loot": 1,
+		"difficulty": 0,
+		"direct_first_person_actions": 1,
+		"direct_fov_first": 5,
+		"direct_fov_third": 3,
+		"direct_hints": 1,
+		"direct_invert_x": 0,
+		"direct_invert_y": 0,
+		"direct_mouse_first": 50,
+		"direct_mouse_third": 50,
+		"direct_pad_curve": 1,
+		"direct_pad_deadzone": 13,
+		"direct_pad_invert_x": 0,
+		"direct_pad_invert_y": 0,
+		"direct_pad_x": 50,
+		"direct_pad_y": 50,
+		"display_mode": 0,
+		"distant_ai": 0,
+		"enemy_hp_bars": 1,
+		"footprints": 1,
+		"fps_limit": 0,
+		"free_run": 0,
+		"gamma": 50,
+		"gfx_ambient_particles": 1,
+		"gfx_ambient_wildlife": 1,
+		"gfx_biome_cover": 1,
+		"gfx_bloom": 1,
+		"gfx_cloud_reflections": 1,
+		"gfx_cloud_shadows": 1,
+		"gfx_clouds": 3,
+		"gfx_contact_shadows": 1,
+		"gfx_depth_of_field": 1,
+		"gfx_detailed_heads": 1,
+		"gfx_far_view": 1,
+		"gfx_firelight": 1,
+		"gfx_foliage_light": 1,
+		"gfx_grass": 1,
+		"gfx_ground_contact": 1,
+		"gfx_hd_textures": 1,
+		"gfx_heat_haze": 1,
+		"gfx_lava_light": 1,
+		"gfx_lit_particles": 1,
+		"gfx_materials": 1,
+		"gfx_rain_puddles": 1,
+		"gfx_severed_limbs": 1,
+		"gfx_sharp_units": 1,
+		"gfx_sky": 1,
+		"gfx_soft_ground": 1,
+		"gfx_soft_particles": 1,
+		"gfx_ssao": 1,
+		"gfx_terrain": 2,
+		"gfx_terrain_cliffs": 1,
+		"gfx_torch_glow": 1,
+		"gfx_vegetation_interaction": 1,
+		"gfx_volumetric": 1,
+		"gfx_water": 1,
+		"gfx_water_caustics": 1,
+		"gfx_water_current": 1,
+		"gfx_water_interaction": 1,
+		"gfx_water_reflections": 2,
+		"gfx_water_waves": 1,
+		"gfx_waterfalls": 1,
+		"gfx_weather_mist": 1,
+		"gfx_weather_surfaces": 1,
+		"gfx_wind": 1,
+		"graphics_preset": 0,
+		"item_icon_fit": 1,
+		"marks": 1,
+		"mechanism_motion": 0,
+		"merc_travel": 0,
+		"net_directory": 0,
+		"net_lan": 0,
+		"net_upnp": 0,
+		"net_websocket": 0,
+		"original_rune_layout": 0,
+		"pad_cursor_speed": 50,
+		"pad_deadzone": 13,
+		"pad_enabled": 0,
+		"pad_glyphs": 0,
+		"pad_gyro": 0,
+		"pad_gyro_sensitivity": 50,
+		"pad_light": 1,
+		"pad_rumble": 70,
+		"pad_swap_sticks": 0,
+		"pad_target_radius": 6,
+		"pad_wheel_pause": 1,
+		"path_through": 1,
+		"phys_interp": 1,
+		"power_kbd": 25,
+		"power_mouse": 50,
+		"q_aa": 3,
+		"q_aniso": 4,
+		"q_shadow_fit": 1,
+		"q_shadows": 3,
+		"render_scale": 4,
+		"renderer": 0,
+		"resolution": 0,
+		"reverse_stereo": 0,
+		"revive": 1,
+		"rubber_select": 2,
+		"scroll_border": 0,
+		"select_type": 0,
+		"selection_glow": 0,
+		"shadow_buildings": 1,
+		"shadow_flora": 1,
+		"show_flying_hp": 1,
+		"show_fps": 0,
+		"show_path": 1,
+		"show_tutorial": 0,
+		"smile_faces": 1,
+		"sp_death_notice": 1,
+		"sp_full_xp": 0,
+		"spell_double_tap_self": 1,
+		"stamina_regen": 0,
+		"start_zones": 1,
+		"switch_filters": 1,
+		"tooltip_time": 2,
+		"ui_active_buttons": 1,
+		"unit_fog": 1,
+		"village_start_view": 0,
+		"volume_sfx": 100,
+		"volume_stream": 100,
+		"volume_voice": 100,
+		"vsync": 0
+	},
+	"render_cpu_ms": {},
+	"render_scale": 1.0,
+	"render_thread": "safe",
+	"renderer": "forward_plus",
+	"root_viewport": true,
+	"size": "(3840.0, 2160.0)",
+	"start_sim": 7.75499999999999,
+	"turn": true,
+	"wall_seconds": 30.014388,
+	"worker": true,
+	"zone": "gz17h"
+}

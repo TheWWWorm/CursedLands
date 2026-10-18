@@ -34,7 +34,10 @@ func opponent_for(player: int) -> int:
 
 func board_encounter(player: int) -> String:
 	var opponent := opponent_for(player)
-	return RemakeText.t("Creep round") if opponent < 0 else RemakeText.t("Opponent: %s") % player_title(opponent)
+	if opponent < 0: return RemakeText.t("Creep round")
+	for pair: Dictionary in pairings:
+		if int(pair.a) == player and pair.ghost: return RemakeText.t("Opponent: %s (copy)") % player_title(opponent)
+	return RemakeText.t("Opponent: %s") % player_title(opponent)
 
 
 
@@ -72,9 +75,12 @@ func company(player: int) -> ArenaRun:
 	return self if player == 0 else rivals[player - 1]
 
 func player_title(player: int) -> String:
-	if player == 0: return RemakeText.t("You")
+	if player == 0: return GameData.player_name
 	var row: Dictionary = WikiLoreData.DATA.campaigns.cursed_lands["character/" + NPCS[player - 1]]
 	return WikiLore.new().character_name(row)
+
+func player_fighting(player: int) -> bool:
+	return stage == "fight" and health(player) > 0 and not board_results.has(player)
 
 func alive_players() -> Array[int]:
 	var alive: Array[int] = []

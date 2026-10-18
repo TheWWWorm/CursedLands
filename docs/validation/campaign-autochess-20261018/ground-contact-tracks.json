@@ -1,0 +1,292 @@
+{
+	"adapter": "NVIDIA GeForce RTX 3090",
+	"baseline_directory": "",
+	"captures": {
+		"local-light-complete-search": "9af135ccb6c6cb616042b128abf64b30a3d4cdec4713c3e63dc3e44a1c76ee9d",
+		"local-light-disabled": "2f0f6e8cff33e3a65a5a6fc588d884ed89d5755dbc91a4fba701a8bfc7171cd5",
+		"local-light-held": "9af135ccb6c6cb616042b128abf64b30a3d4cdec4713c3e63dc3e44a1c76ee9d",
+		"local-light-lookup-restored": "9af135ccb6c6cb616042b128abf64b30a3d4cdec4713c3e63dc3e44a1c76ee9d",
+		"local-light-off": "0b8e5c34ae0760955f1dfe052d50267f706e6fa83f3452ed84867f549ee901fe",
+		"local-light-on": "9af135ccb6c6cb616042b128abf64b30a3d4cdec4713c3e63dc3e44a1c76ee9d",
+		"local-light-restored": "0b8e5c34ae0760955f1dfe052d50267f706e6fa83f3452ed84867f549ee901fe",
+		"off-mask": "343a4028e2f4248554bc512ea4b726676a90477b9cad8523c103c8601e16b2b6",
+		"on-mask": "37010357b9ca462003024c9472c2360e0001f1e34262092fe989d97a75a41ed6",
+		"packed-point-complete-search": "c68eb02bc01590f6170f51e4641b49bd0fccf74a2f1feb07b25b3c20c8a725b1",
+		"packed-point-held": "c68eb02bc01590f6170f51e4641b49bd0fccf74a2f1feb07b25b3c20c8a725b1",
+		"packed-point-lookup-restored": "c68eb02bc01590f6170f51e4641b49bd0fccf74a2f1feb07b25b3c20c8a725b1",
+		"packed-point-off": "58814035fe1aef412296502933e296111ae0d156a8dd0af20788d1c5176f7aa9",
+		"packed-point-on": "c68eb02bc01590f6170f51e4641b49bd0fccf74a2f1feb07b25b3c20c8a725b1",
+		"packed-point-restored": "58814035fe1aef412296502933e296111ae0d156a8dd0af20788d1c5176f7aa9",
+		"sun-complete-search": "ce49f128abbcb367c93e4aba93d1c4d7558db2e6d457df761ff75320f5a24cbf",
+		"sun-held": "ce49f128abbcb367c93e4aba93d1c4d7558db2e6d457df761ff75320f5a24cbf",
+		"sun-lookup-restored": "ce49f128abbcb367c93e4aba93d1c4d7558db2e6d457df761ff75320f5a24cbf",
+		"sun-off": "1766f4d06dc7814dcd748985c6566f2f39375ceab624bb3e5e69ab4f9d872304",
+		"sun-on": "ce49f128abbcb367c93e4aba93d1c4d7558db2e6d457df761ff75320f5a24cbf",
+		"sun-restored": "1766f4d06dc7814dcd748985c6566f2f39375ceab624bb3e5e69ab4f9d872304",
+		"tracks-local-light-normal-disabled": "ae1d8415b9d56960dff72f55c2e8c866791a377dffdf4d899f889181ac5453c4",
+		"tracks-local-light-normal-restored": "9af135ccb6c6cb616042b128abf64b30a3d4cdec4713c3e63dc3e44a1c76ee9d",
+		"tracks-local-light-on": "9af135ccb6c6cb616042b128abf64b30a3d4cdec4713c3e63dc3e44a1c76ee9d",
+		"tracks-packed-point-normal-disabled": "9c102a3ef60e8ea78f6c725f9401aec2d58b9eb285255e3acdc492486479960a",
+		"tracks-packed-point-normal-restored": "c68eb02bc01590f6170f51e4641b49bd0fccf74a2f1feb07b25b3c20c8a725b1",
+		"tracks-packed-point-on": "c68eb02bc01590f6170f51e4641b49bd0fccf74a2f1feb07b25b3c20c8a725b1",
+		"tracks-sun-normal-disabled": "081a764b7bf1249c77481485ce28b92ac17601c9546e2f202a251c0bcc79e3f8",
+		"tracks-sun-normal-restored": "ce49f128abbcb367c93e4aba93d1c4d7558db2e6d457df761ff75320f5a24cbf",
+		"tracks-sun-on": "ce49f128abbcb367c93e4aba93d1c4d7558db2e6d457df761ff75320f5a24cbf"
+	},
+	"checks": 136,
+	"failures": 0,
+	"fixture": {
+		"anchor": "(129.6497, 8.711053, -156.1539)",
+		"anchor_witness": {
+			"bounds": "[P: (123.3282, 8.710678, -165.2368), S: (11.28325, 3.817787, 11.11324)]",
+			"closest_vertex_bilinear_gap": 0.0165168424591364,
+			"dry_crossings": 8,
+			"edge": [
+				"(133.0585, 8.711053, -159.8094)",
+				"(129.14, 8.711053, -155.6073)"
+			],
+			"footprints": {
+				"clock": 123.0,
+				"controlled_stamps": true,
+				"ground_type": 9,
+				"installed_sectors": 1,
+				"positions": [
+					"(130.0697, 155.5939)",
+					"(129.9317, 155.7779)",
+					"(129.7937, 155.9619)",
+					"(129.6557, 156.1459)",
+					"(129.5177, 156.3299)"
+				]
+			},
+			"land_triangle": [
+				"(129.0, 8.6659, -157.0)",
+				"(130.0595, 8.736, -156.0)",
+				"(129.0, 8.6752, -156.0)"
+			],
+			"native_edges": 207,
+			"nearby_land_triangles": 228
+		},
+		"camera": "[X: (0.8, 0.0, -0.6), Y: (-0.172409, 0.957826, -0.229879), Z: (0.574695, 0.287348, 0.766261), O: (135.0497, 12.31105, -148.9539)]",
+		"composed": false,
+		"coverage": {
+			"band_pixels": 24498,
+			"object_pixels": 257465,
+			"silhouette_mismatches": 0,
+			"upper_pixels": 168364
+		},
+		"map": "zone11",
+		"nid": 1651,
+		"object": "Barrack00-6",
+		"parts": 4,
+		"placement": "[X: (-0.731354, 0.0, -0.681998), Y: (0.0, 1.0, 0.0), Z: (0.681998, 0.0, -0.731354), O: (127.938, 8.710953, -160.6515)]",
+		"size": [
+			800,
+			600
+		],
+		"span": 3.8,
+		"template": "stbuho19",
+		"texture": "kanianhouse00",
+		"upper_mask_offset": 1.0
+	},
+	"painted_ablation": false,
+	"renderer": "forward_plus",
+	"rows": [
+		{
+			"band": {
+				"changed_pixels": 21909,
+				"mean_byte_delta": 25.5484529349335,
+				"over_two_bytes": 19844,
+				"peak_byte_delta": 95,
+				"pixels": 24498
+			},
+			"candidate_lookup": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 480000
+			},
+			"held": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 480000
+			},
+			"light": "sun",
+			"outside_band": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 455502
+			},
+			"restored": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 480000
+			},
+			"upper": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 168364
+			}
+		},
+		{
+			"band_normal_response": {
+				"changed_pixels": 2464,
+				"mean_byte_delta": 0.836027430810678,
+				"over_two_bytes": 1747,
+				"peak_byte_delta": 38,
+				"pixels": 24498
+			},
+			"light": "tracks-sun",
+			"outside_band": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 455502
+			},
+			"scope": "Native field stamps and installed terrain; only copied-ground normal ablated, no geometry or colour change."
+		},
+		{
+			"band": {
+				"changed_pixels": 21172,
+				"mean_byte_delta": 37.503551310311,
+				"over_two_bytes": 18174,
+				"peak_byte_delta": 105,
+				"pixels": 24498
+			},
+			"candidate_lookup": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 480000
+			},
+			"held": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 480000
+			},
+			"light": "packed-point",
+			"outside_band": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 455502
+			},
+			"restored": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 480000
+			},
+			"upper": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 168364
+			}
+		},
+		{
+			"band_normal_response": {
+				"changed_pixels": 2310,
+				"mean_byte_delta": 0.525838843987264,
+				"over_two_bytes": 1389,
+				"peak_byte_delta": 37,
+				"pixels": 24498
+			},
+			"light": "tracks-packed-point",
+			"outside_band": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 455502
+			},
+			"scope": "Native field stamps and installed terrain; only copied-ground normal ablated, no geometry or colour change."
+		},
+		{
+			"band": {
+				"changed_pixels": 20676,
+				"mean_byte_delta": 5.93436198873377,
+				"over_two_bytes": 16035,
+				"peak_byte_delta": 39,
+				"pixels": 24498
+			},
+			"candidate_lookup": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 480000
+			},
+			"held": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 480000
+			},
+			"light": "local-light",
+			"light_contribution": {
+				"changed_pixels": 19540,
+				"mean_byte_delta": 13.7896971181321,
+				"over_two_bytes": 18169,
+				"peak_byte_delta": 55,
+				"pixels": 24498
+			},
+			"outside_band": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 455502
+			},
+			"restored": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 480000
+			},
+			"upper": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 168364
+			}
+		},
+		{
+			"band_normal_response": {
+				"changed_pixels": 2228,
+				"mean_byte_delta": 0.580659645685362,
+				"over_two_bytes": 1455,
+				"peak_byte_delta": 22,
+				"pixels": 24498
+			},
+			"light": "tracks-local-light",
+			"outside_band": {
+				"changed_pixels": 0,
+				"mean_byte_delta": 0.0,
+				"over_two_bytes": 0,
+				"peak_byte_delta": 0,
+				"pixels": 455502
+			},
+			"scope": "Native field stamps and installed terrain; only copied-ground normal ablated, no geometry or colour change."
+		}
+	],
+	"scope": "Authored rigid wall-root lighting; no full terrain/figure RGB parity, shadow, frame-time or device claim."
+}

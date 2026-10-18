@@ -1,0 +1,28 @@
+{
+	"checks": 53,
+	"failures": 0,
+	"renderer": "gl_compatibility",
+	"rows": [
+		{
+			"case": "basic",
+			"lower": {
+				"changed": 5112,
+				"mean": 0.245912960765171,
+				"peak": 0.439215688034892
+			},
+			"upper": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0.0
+			}
+		},
+		{
+			"case": "below_overhang",
+			"difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0.0
+			}
+		}
+	]
+}

@@ -73,6 +73,16 @@ func _start() -> void:
 			start_game(s)
 			return
 	for a in args:
+		if a.begins_with("--autochess-host-config="):
+			MoviePlayer.enabled = false; TutorialPanel.auto_show = false
+			var online := ArenaOnlineSession.new(); add_child(online)
+			var config := online.local_host.configure(a.trim_prefix("--autochess-host-config="))
+			if config.is_empty(): get_tree().quit(1); return
+			var error := online.host(int(config.port), bool(config.get("websocket", false)))
+			online.local_host.listening(error)
+			if error != OK: get_tree().quit(1)
+			return
+	for a in args:
 		if a.begins_with("--tool="):
 			# Tools drive the game themselves: no movies, no tutorial pop-ups.
 			MoviePlayer.enabled = false

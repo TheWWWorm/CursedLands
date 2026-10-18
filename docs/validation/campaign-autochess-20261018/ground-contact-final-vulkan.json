@@ -1,0 +1,28 @@
+{
+	"checks": 51,
+	"failures": 0,
+	"renderer": "forward_plus",
+	"rows": [
+		{
+			"case": "basic",
+			"lower": {
+				"changed": 5083,
+				"mean": 0.239871358847315,
+				"peak": 0.419607847929001
+			},
+			"upper": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0.0
+			}
+		},
+		{
+			"case": "below_overhang",
+			"difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0.0
+			}
+		}
+	]
+}

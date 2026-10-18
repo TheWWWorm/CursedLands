@@ -110,15 +110,23 @@ static func board_offset(player: int) -> Vector3:
 func _apply_view() -> void:
 	if is_instance_valid(home.world):
 		home.world.visible = overview or viewed_player == 0
-		home.world.position = board_offset(0) if overview else Vector3.ZERO
+		_place_world(home.world, board_offset(0) if overview else Vector3.ZERO)
 	for id: int in holders:
 		holders[id].visible = overview or id == viewed_player
-		holders[id].position = board_offset(id) if overview else Vector3.ZERO
+		_place_world(holders[id], board_offset(id) if overview else Vector3.ZERO)
 	for match_node: ArenaPveMatch in [home] + boards.values():
 		if not is_instance_valid(match_node.world): continue
 		var fx := match_node.world.get_node_or_null("ParticleFx") as ParticleFx
 		if fx: fx.sync_visibility()
 	if rendered: Gfx.set_border(Vector2.ONE * (192 if overview else 64), 8.0)
+
+
+func _place_world(node: Node3D, at: Vector3) -> void:
+	if node.position == at: return
+	node.position = at
+	node.reset_physics_interpolation()
+	for child in node.find_children("*", "Node3D", true, false):
+		if child is GameUnit: child.resync_drawn()
 
 
 func request_start(allow_empty := false) -> bool:
@@ -176,7 +184,6 @@ func _process(dt: float) -> void:
 			else:
 				run.record_board(player, 1, [0, match_node.run.enemy_formation().size()])
 		_apply_view()
-	if overview: _apply_view()
 
 
 ## Research uses the same concurrent boards, advancing one native tick each.

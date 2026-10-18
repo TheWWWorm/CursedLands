@@ -1,0 +1,1965 @@
+{
+  "adapter": "NVIDIA GeForce RTX 3090",
+  "census": [
+    {
+      "alive": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ],
+      "effects": 18,
+      "particles": 922,
+      "sim": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stage": "fight",
+      "wall": 0.020638
+    },
+    {
+      "alive": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ],
+      "effects": 22,
+      "particles": 1750,
+      "sim": [
+        0.715,
+        0.715,
+        0.715,
+        0.715,
+        0.715,
+        0.715,
+        0.715,
+        0.715,
+        0.715
+      ],
+      "stage": "fight",
+      "wall": 1.080738
+    },
+    {
+      "alive": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ],
+      "effects": 26,
+      "particles": 2915,
+      "sim": [
+        1.76,
+        1.76,
+        1.76,
+        1.76,
+        1.76,
+        1.76,
+        1.76,
+        1.76,
+        1.76
+      ],
+      "stage": "fight",
+      "wall": 2.106077
+    },
+    {
+      "alive": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ],
+      "effects": 37,
+      "particles": 2398,
+      "sim": [
+        2.75,
+        2.75,
+        2.75,
+        2.75,
+        2.75,
+        2.75,
+        2.75,
+        2.75,
+        2.75
+      ],
+      "stage": "fight",
+      "wall": 3.129974
+    },
+    {
+      "alive": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ],
+      "effects": 41,
+      "particles": 3364,
+      "sim": [
+        3.795,
+        3.795,
+        3.795,
+        3.795,
+        3.795,
+        3.795,
+        3.795,
+        3.795,
+        3.795
+      ],
+      "stage": "fight",
+      "wall": 4.130357
+    },
+    {
+      "alive": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        17,
+        18
+      ],
+      "effects": 47,
+      "particles": 3755,
+      "sim": [
+        4.785,
+        4.785,
+        4.785,
+        4.785,
+        4.785,
+        4.785,
+        4.785,
+        4.785,
+        4.785
+      ],
+      "stage": "fight",
+      "wall": 5.137199
+    },
+    {
+      "alive": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        17,
+        18
+      ],
+      "effects": 41,
+      "particles": 3382,
+      "sim": [
+        5.83,
+        5.83,
+        5.83,
+        5.83,
+        5.83,
+        5.83,
+        5.83,
+        5.83,
+        5.83
+      ],
+      "stage": "fight",
+      "wall": 6.179827
+    },
+    {
+      "alive": [
+        16,
+        16,
+        17,
+        16,
+        16,
+        17,
+        16,
+        16,
+        16
+      ],
+      "effects": 51,
+      "particles": 4064,
+      "sim": [
+        6.81999999999999,
+        6.81999999999999,
+        6.81999999999999,
+        6.81999999999999,
+        6.81999999999999,
+        6.81999999999999,
+        6.81999999999999,
+        6.81999999999999,
+        6.81999999999999
+      ],
+      "stage": "fight",
+      "wall": 7.195184
+    },
+    {
+      "alive": [
+        16,
+        16,
+        17,
+        16,
+        16,
+        17,
+        16,
+        16,
+        16
+      ],
+      "effects": 45,
+      "particles": 3821,
+      "sim": [
+        7.86499999999999,
+        7.86499999999999,
+        7.86499999999999,
+        7.86499999999999,
+        7.86499999999999,
+        7.86499999999999,
+        7.86499999999999,
+        7.86499999999999,
+        7.86499999999999
+      ],
+      "stage": "fight",
+      "wall": 8.209164
+    },
+    {
+      "alive": [
+        16,
+        15,
+        16,
+        15,
+        15,
+        16,
+        15,
+        15,
+        15
+      ],
+      "effects": 50,
+      "particles": 4452,
+      "sim": [
+        8.90999999999998,
+        8.90999999999998,
+        8.90999999999998,
+        8.90999999999998,
+        8.90999999999998,
+        8.90999999999998,
+        8.90999999999998,
+        8.90999999999998,
+        8.90999999999998
+      ],
+      "stage": "fight",
+      "wall": 9.265281
+    },
+    {
+      "alive": [
+        13,
+        13,
+        12,
+        12,
+        14,
+        13,
+        13,
+        13,
+        13
+      ],
+      "effects": 52,
+      "particles": 4226,
+      "sim": [
+        9.89999999999998,
+        9.89999999999998,
+        9.89999999999998,
+        9.89999999999998,
+        9.89999999999998,
+        9.89999999999998,
+        9.89999999999998,
+        9.89999999999998,
+        9.89999999999998
+      ],
+      "stage": "fight",
+      "wall": 10.273344
+    },
+    {
+      "alive": [
+        12,
+        12,
+        12,
+        11,
+        12,
+        13,
+        12,
+        12,
+        12
+      ],
+      "effects": 55,
+      "particles": 4908,
+      "sim": [
+        10.945,
+        10.945,
+        10.945,
+        10.945,
+        10.945,
+        10.945,
+        10.945,
+        10.945,
+        10.945
+      ],
+      "stage": "fight",
+      "wall": 11.274407
+    },
+    {
+      "alive": [
+        12,
+        12,
+        11,
+        11,
+        12,
+        12,
+        12,
+        12,
+        12
+      ],
+      "effects": 57,
+      "particles": 3843,
+      "sim": [
+        11.99,
+        11.99,
+        11.99,
+        11.99,
+        11.99,
+        11.99,
+        11.99,
+        11.99,
+        11.99
+      ],
+      "stage": "fight",
+      "wall": 12.315925
+    },
+    {
+      "alive": [
+        12,
+        11,
+        11,
+        11,
+        12,
+        11,
+        12,
+        12,
+        12
+      ],
+      "effects": 51,
+      "particles": 3415,
+      "sim": [
+        13.035,
+        13.035,
+        13.035,
+        13.035,
+        13.035,
+        13.035,
+        13.035,
+        13.035,
+        13.035
+      ],
+      "stage": "fight",
+      "wall": 13.364099
+    },
+    {
+      "alive": [
+        11,
+        11,
+        11,
+        10,
+        11,
+        11,
+        10,
+        11,
+        12
+      ],
+      "effects": 52,
+      "particles": 3417,
+      "sim": [
+        14.025,
+        14.025,
+        14.025,
+        14.025,
+        14.025,
+        14.025,
+        14.025,
+        14.025,
+        14.025
+      ],
+      "stage": "fight",
+      "wall": 14.369466
+    },
+    {
+      "alive": [
+        11,
+        11,
+        11,
+        10,
+        11,
+        11,
+        10,
+        11,
+        11
+      ],
+      "effects": 49,
+      "particles": 3314,
+      "sim": [
+        15.0149999999999,
+        15.0149999999999,
+        15.0149999999999,
+        15.0149999999999,
+        15.0149999999999,
+        15.0149999999999,
+        15.0149999999999,
+        15.0149999999999,
+        15.0149999999999
+      ],
+      "stage": "fight",
+      "wall": 15.38169
+    },
+    {
+      "alive": [
+        10,
+        10,
+        10,
+        9,
+        9,
+        10,
+        9,
+        10,
+        10
+      ],
+      "effects": 50,
+      "particles": 4086,
+      "sim": [
+        16.0599999999999,
+        16.0599999999999,
+        16.0599999999999,
+        16.0599999999999,
+        16.0599999999999,
+        16.0599999999999,
+        16.0599999999999,
+        16.0599999999999,
+        16.0599999999999
+      ],
+      "stage": "fight",
+      "wall": 16.4034
+    },
+    {
+      "alive": [
+        9,
+        9,
+        10,
+        9,
+        8,
+        10,
+        9,
+        10,
+        9
+      ],
+      "effects": 46,
+      "particles": 3021,
+      "sim": [
+        17.1049999999999,
+        17.1049999999999,
+        17.1049999999999,
+        17.1049999999999,
+        17.1049999999999,
+        17.1049999999999,
+        17.1049999999999,
+        17.1049999999999,
+        17.1049999999999
+      ],
+      "stage": "fight",
+      "wall": 17.438333
+    },
+    {
+      "alive": [
+        9,
+        9,
+        10,
+        9,
+        8,
+        10,
+        9,
+        10,
+        9
+      ],
+      "effects": 42,
+      "particles": 2573,
+      "sim": [
+        18.1499999999999,
+        18.1499999999999,
+        18.1499999999999,
+        18.1499999999999,
+        18.1499999999999,
+        18.1499999999999,
+        18.1499999999999,
+        18.1499999999999,
+        18.1499999999999
+      ],
+      "stage": "fight",
+      "wall": 18.465009
+    },
+    {
+      "alive": [
+        9,
+        9,
+        10,
+        9,
+        8,
+        10,
+        9,
+        10,
+        9
+      ],
+      "effects": 46,
+      "particles": 3131,
+      "sim": [
+        19.1399999999999,
+        19.1399999999999,
+        19.1399999999999,
+        19.1399999999999,
+        19.1399999999999,
+        19.1399999999999,
+        19.1399999999999,
+        19.1399999999999,
+        19.1399999999999
+      ],
+      "stage": "fight",
+      "wall": 19.470032
+    },
+    {
+      "alive": [
+        9,
+        9,
+        10,
+        9,
+        8,
+        10,
+        8,
+        10,
+        9
+      ],
+      "effects": 44,
+      "particles": 3067,
+      "sim": [
+        20.1299999999999,
+        20.1299999999999,
+        20.1299999999999,
+        20.1299999999999,
+        20.1299999999999,
+        20.1299999999999,
+        20.1299999999999,
+        20.1299999999999,
+        20.1299999999999
+      ],
+      "stage": "fight",
+      "wall": 20.482772
+    },
+    {
+      "alive": [
+        9,
+        9,
+        10,
+        9,
+        8,
+        10,
+        8,
+        9,
+        9
+      ],
+      "effects": 45,
+      "particles": 2394,
+      "sim": [
+        21.1749999999999,
+        21.1749999999999,
+        21.1749999999999,
+        21.1749999999999,
+        21.1749999999999,
+        21.1749999999999,
+        21.1749999999999,
+        21.1749999999999,
+        21.1749999999999
+      ],
+      "stage": "fight",
+      "wall": 21.501406
+    },
+    {
+      "alive": [
+        9,
+        9,
+        10,
+        9,
+        8,
+        9,
+        8,
+        9,
+        9
+      ],
+      "effects": 45,
+      "particles": 3014,
+      "sim": [
+        22.1649999999999,
+        22.1649999999999,
+        22.1649999999999,
+        22.1649999999999,
+        22.1649999999999,
+        22.1649999999999,
+        22.1649999999999,
+        22.1649999999999,
+        22.1649999999999
+      ],
+      "stage": "fight",
+      "wall": 22.524671
+    },
+    {
+      "alive": [
+        9,
+        9,
+        9,
+        8,
+        8,
+        8,
+        8,
+        8,
+        9
+      ],
+      "effects": 45,
+      "particles": 3109,
+      "sim": [
+        23.2099999999999,
+        23.2099999999999,
+        23.2099999999999,
+        23.2099999999999,
+        23.2099999999999,
+        23.2099999999999,
+        23.2099999999999,
+        23.2099999999999,
+        23.2099999999999
+      ],
+      "stage": "fight",
+      "wall": 23.53612
+    },
+    {
+      "alive": [
+        9,
+        9,
+        9,
+        8,
+        8,
+        8,
+        8,
+        8,
+        9
+      ],
+      "effects": 46,
+      "particles": 3382,
+      "sim": [
+        24.1999999999999,
+        24.1999999999999,
+        24.1999999999999,
+        24.1999999999999,
+        24.1999999999999,
+        24.1999999999999,
+        24.1999999999999,
+        24.1999999999999,
+        24.1999999999999
+      ],
+      "stage": "fight",
+      "wall": 24.552015
+    },
+    {
+      "alive": [
+        9,
+        9,
+        9,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "effects": 43,
+      "particles": 2496,
+      "sim": [
+        25.2449999999999,
+        25.2449999999999,
+        25.2449999999999,
+        25.2449999999999,
+        25.2449999999999,
+        25.2449999999999,
+        25.2449999999999,
+        25.2449999999999,
+        25.2449999999999
+      ],
+      "stage": "fight",
+      "wall": 25.561206
+    },
+    {
+      "alive": [
+        9,
+        9,
+        9,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "effects": 48,
+      "particles": 2745,
+      "sim": [
+        26.2349999999999,
+        26.2349999999999,
+        26.2349999999999,
+        26.2349999999999,
+        26.2349999999999,
+        26.2349999999999,
+        26.2349999999999,
+        26.2349999999999,
+        26.2349999999999
+      ],
+      "stage": "fight",
+      "wall": 26.584425
+    },
+    {
+      "alive": [
+        8,
+        8,
+        9,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "effects": 43,
+      "particles": 3510,
+      "sim": [
+        27.2799999999999,
+        27.2799999999999,
+        27.2799999999999,
+        27.2799999999999,
+        27.2799999999999,
+        27.2799999999999,
+        27.2799999999999,
+        27.2799999999999,
+        27.2799999999999
+      ],
+      "stage": "fight",
+      "wall": 27.608021
+    },
+    {
+      "alive": [
+        8,
+        8,
+        9,
+        7,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "effects": 41,
+      "particles": 2184,
+      "sim": [
+        28.2699999999999,
+        28.2699999999999,
+        28.2699999999999,
+        28.2699999999999,
+        28.2699999999999,
+        28.2699999999999,
+        28.2699999999999,
+        28.2699999999999,
+        28.2699999999999
+      ],
+      "stage": "fight",
+      "wall": 28.619522
+    },
+    {
+      "alive": [
+        8,
+        8,
+        9,
+        7,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "effects": 40,
+      "particles": 2468,
+      "sim": [
+        29.3149999999999,
+        29.3149999999999,
+        29.3149999999999,
+        29.3149999999999,
+        29.3149999999999,
+        29.3149999999999,
+        29.3149999999999,
+        29.3149999999999,
+        29.3149999999999
+      ],
+      "stage": "fight",
+      "wall": 29.662037
+    }
+  ],
+  "combat_frame_ms": {
+    "max": 448.827,
+    "median": 40.215,
+    "p95": 59.08,
+    "p99": 77.429
+  },
+  "combat_frames": 709,
+  "fire_count": 18,
+  "frame_ms": {
+    "max": 448.827,
+    "median": 40.215,
+    "p95": 59.08,
+    "p99": 77.429
+  },
+  "frames": 709,
+  "gpu_ms": {},
+  "gpu_queries": false,
+  "guest_connected": true,
+  "onscreen": false,
+  "options": {
+    "aim_press_once": 1,
+    "armor_formula": 0,
+    "auto_exit": 0,
+    "auto_graphics": 0,
+    "autosave": 0,
+    "brightness": 50,
+    "cam_follow": 1,
+    "cam_pan_speed": 50,
+    "cam_rotate_speed": 50,
+    "cam_see_through": 1,
+    "cam_wasd": 1,
+    "cam_zoom_speed": 50,
+    "camera_reverse_x": 0,
+    "camera_reverse_y": 0,
+    "camera_style": 1,
+    "cave_echo": 1,
+    "character_light": 0,
+    "confine_mouse": 0,
+    "contrast": 50,
+    "control_mode": 0,
+    "coop_clock": 1,
+    "coop_full_xp": 1,
+    "coop_player_names": 1,
+    "coop_scale": 2,
+    "coop_share_loot": 1,
+    "difficulty": 0,
+    "direct_first_person_actions": 1,
+    "direct_fov_first": 5,
+    "direct_fov_third": 3,
+    "direct_hints": 1,
+    "direct_invert_x": 0,
+    "direct_invert_y": 0,
+    "direct_mouse_first": 50,
+    "direct_mouse_third": 50,
+    "direct_pad_curve": 1,
+    "direct_pad_deadzone": 13,
+    "direct_pad_invert_x": 0,
+    "direct_pad_invert_y": 0,
+    "direct_pad_x": 50,
+    "direct_pad_y": 50,
+    "display_mode": 0,
+    "distant_ai": 0,
+    "enemy_hp_bars": 1,
+    "footprints": 1,
+    "fps_limit": 0,
+    "free_run": 0,
+    "gamma": 50,
+    "gfx_ambient_particles": 1,
+    "gfx_ambient_wildlife": 1,
+    "gfx_biome_cover": 1,
+    "gfx_bloom": 1,
+    "gfx_cloud_reflections": 1,
+    "gfx_cloud_shadows": 1,
+    "gfx_clouds": 3,
+    "gfx_contact_shadows": 1,
+    "gfx_depth_of_field": 1,
+    "gfx_detailed_heads": 1,
+    "gfx_far_view": 1,
+    "gfx_firelight": 1,
+    "gfx_foliage_light": 1,
+    "gfx_grass": 1,
+    "gfx_ground_contact": 1,
+    "gfx_hd_textures": 1,
+    "gfx_heat_haze": 1,
+    "gfx_lava_light": 1,
+    "gfx_lit_particles": 1,
+    "gfx_materials": 1,
+    "gfx_rain_puddles": 1,
+    "gfx_severed_limbs": 1,
+    "gfx_sharp_units": 1,
+    "gfx_sky": 1,
+    "gfx_soft_ground": 1,
+    "gfx_soft_particles": 1,
+    "gfx_ssao": 1,
+    "gfx_terrain": 2,
+    "gfx_terrain_cliffs": 1,
+    "gfx_torch_glow": 1,
+    "gfx_vegetation_interaction": 1,
+    "gfx_volumetric": 1,
+    "gfx_water": 1,
+    "gfx_water_caustics": 1,
+    "gfx_water_current": 1,
+    "gfx_water_interaction": 1,
+    "gfx_water_reflections": 2,
+    "gfx_water_waves": 1,
+    "gfx_waterfalls": 1,
+    "gfx_weather_mist": 1,
+    "gfx_weather_surfaces": 1,
+    "gfx_wind": 1,
+    "graphics_preset": 0,
+    "item_icon_fit": 1,
+    "marks": 1,
+    "mechanism_motion": 0,
+    "merc_travel": 0,
+    "net_directory": 0,
+    "net_lan": 0,
+    "net_upnp": 0,
+    "net_websocket": 0,
+    "original_rune_layout": 0,
+    "pad_cursor_speed": 50,
+    "pad_deadzone": 13,
+    "pad_enabled": 0,
+    "pad_glyphs": 0,
+    "pad_gyro": 0,
+    "pad_gyro_sensitivity": 50,
+    "pad_light": 1,
+    "pad_rumble": 70,
+    "pad_swap_sticks": 0,
+    "pad_target_radius": 6,
+    "pad_wheel_pause": 1,
+    "path_through": 1,
+    "phys_interp": 1,
+    "power_kbd": 25,
+    "power_mouse": 50,
+    "q_aa": 3,
+    "q_aniso": 4,
+    "q_shadow_fit": 1,
+    "q_shadows": 3,
+    "render_scale": 4,
+    "renderer": 0,
+    "resolution": 0,
+    "reverse_stereo": 0,
+    "revive": 1,
+    "rubber_select": 2,
+    "scroll_border": 0,
+    "select_type": 0,
+    "selection_glow": 0,
+    "shadow_buildings": 1,
+    "shadow_flora": 1,
+    "show_flying_hp": 1,
+    "show_fps": 0,
+    "show_path": 1,
+    "show_tutorial": 0,
+    "smile_faces": 1,
+    "sp_death_notice": 1,
+    "sp_full_xp": 0,
+    "spell_double_tap_self": 1,
+    "stamina_regen": 0,
+    "start_zones": 1,
+    "switch_filters": 1,
+    "tooltip_time": 2,
+    "ui_active_buttons": 1,
+    "unit_fog": 1,
+    "village_start_view": 0,
+    "volume_sfx": 100,
+    "volume_stream": 100,
+    "volume_voice": 100,
+    "vsync": 0
+  },
+  "render_cpu_ms": {},
+  "render_scale": 1.0,
+  "renderer": "forward_plus",
+  "simulation": [
+    {
+      "counts": {
+        "ai_notice_candidates": 1491,
+        "ai_tick": 540,
+        "aichatter": 9720,
+        "aichoose": 1151,
+        "aiplayer_perceive": 1464,
+        "airechoose": 1094,
+        "aithink": 57,
+        "spell_callback": 3629,
+        "tornadoes": 540,
+        "traps": 540,
+        "unit_ensure_motion": 1157,
+        "unit_housekeeping": 6546,
+        "unit_logic": 9720,
+        "unit_move_base": 3432,
+        "unit_set_action": 1963,
+        "unit_stamp": 9720,
+        "unit_step_along_path": 1105,
+        "units": 540,
+        "water": 540,
+        "world": 540
+      },
+      "slow": [
+        {
+          "part": "aichoose",
+          "uid": 100001,
+          "us": 6565
+        },
+        {
+          "part": "aithink",
+          "uid": 100001,
+          "us": 28042
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100001,
+          "us": 28661
+        },
+        {
+          "part": "aichoose",
+          "uid": 100004,
+          "us": 7003
+        },
+        {
+          "part": "aithink",
+          "uid": 100004,
+          "us": 7132
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100004,
+          "us": 7576
+        },
+        {
+          "part": "aichoose",
+          "uid": 100005,
+          "us": 5196
+        },
+        {
+          "part": "aithink",
+          "uid": 100005,
+          "us": 5333
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100005,
+          "us": 5854
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 68885
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 68929
+        },
+        {
+          "part": "spell_callback",
+          "uid": -1,
+          "us": 9136
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 10921
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 5330
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 5554
+        }
+      ],
+      "us": {
+        "ai_notice_candidates": 11485,
+        "ai_tick": 14876,
+        "aichatter": 25064,
+        "aichoose": 113995,
+        "aiplayer_perceive": 99333,
+        "airechoose": 178670,
+        "aithink": 80125,
+        "spell_callback": 112996,
+        "tornadoes": 853,
+        "traps": 867,
+        "unit_ensure_motion": 18049,
+        "unit_housekeeping": 40111,
+        "unit_logic": 513038,
+        "unit_move_base": 23802,
+        "unit_set_action": 11159,
+        "unit_stamp": 27711,
+        "unit_step_along_path": 93985,
+        "units": 589456,
+        "water": 477,
+        "world": 749725
+      }
+    },
+    {
+      "counts": {
+        "ai_notice_candidates": 1456,
+        "ai_tick": 540,
+        "aichatter": 9720,
+        "aichoose": 1116,
+        "aiplayer_perceive": 1429,
+        "airechoose": 1059,
+        "aithink": 57,
+        "spell_callback": 3634,
+        "tornadoes": 540,
+        "traps": 540,
+        "unit_ensure_motion": 1151,
+        "unit_housekeeping": 6539,
+        "unit_logic": 9720,
+        "unit_move_base": 3384,
+        "unit_set_action": 1923,
+        "unit_stamp": 9720,
+        "unit_step_along_path": 1097,
+        "units": 540,
+        "water": 540,
+        "world": 540
+      },
+      "slow": [
+        {
+          "part": "aichoose",
+          "uid": 100004,
+          "us": 6931
+        },
+        {
+          "part": "aithink",
+          "uid": 100004,
+          "us": 7060
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100004,
+          "us": 7494
+        },
+        {
+          "part": "aichoose",
+          "uid": 100005,
+          "us": 5146
+        },
+        {
+          "part": "aithink",
+          "uid": 100005,
+          "us": 5322
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100005,
+          "us": 5816
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 42221
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 42263
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 5545
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 5623
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 5787
+        }
+      ],
+      "us": {
+        "ai_notice_candidates": 9857,
+        "ai_tick": 13962,
+        "aichatter": 21815,
+        "aichoose": 99839,
+        "aiplayer_perceive": 82415,
+        "airechoose": 145911,
+        "aithink": 53164,
+        "spell_callback": 93717,
+        "tornadoes": 519,
+        "traps": 519,
+        "unit_ensure_motion": 16871,
+        "unit_housekeeping": 34507,
+        "unit_logic": 418449,
+        "unit_move_base": 20720,
+        "unit_set_action": 9619,
+        "unit_stamp": 25538,
+        "unit_step_along_path": 84819,
+        "units": 487294,
+        "water": 313,
+        "world": 620704
+      }
+    },
+    {
+      "counts": {
+        "ai_notice_candidates": 1515,
+        "ai_tick": 540,
+        "aichatter": 9720,
+        "aichoose": 1165,
+        "aiplayer_perceive": 1478,
+        "airechoose": 1115,
+        "aithink": 50,
+        "spell_callback": 3287,
+        "tornadoes": 540,
+        "traps": 540,
+        "unit_ensure_motion": 1140,
+        "unit_housekeeping": 6703,
+        "unit_logic": 9720,
+        "unit_move_base": 3411,
+        "unit_set_action": 1955,
+        "unit_stamp": 9720,
+        "unit_step_along_path": 1082,
+        "units": 540,
+        "water": 540,
+        "world": 540
+      },
+      "slow": [
+        {
+          "part": "aichoose",
+          "uid": 100004,
+          "us": 6851
+        },
+        {
+          "part": "aithink",
+          "uid": 100004,
+          "us": 6977
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100004,
+          "us": 7409
+        },
+        {
+          "part": "aichoose",
+          "uid": 100005,
+          "us": 5098
+        },
+        {
+          "part": "aithink",
+          "uid": 100005,
+          "us": 5230
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100005,
+          "us": 5747
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 42287
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 42329
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 5525
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 5602
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 5071
+        }
+      ],
+      "us": {
+        "ai_notice_candidates": 9966,
+        "ai_tick": 13138,
+        "aichatter": 21913,
+        "aichoose": 100605,
+        "aiplayer_perceive": 80512,
+        "airechoose": 145725,
+        "aithink": 53284,
+        "spell_callback": 86470,
+        "tornadoes": 491,
+        "traps": 459,
+        "unit_ensure_motion": 16568,
+        "unit_housekeeping": 36483,
+        "unit_logic": 418884,
+        "unit_move_base": 20858,
+        "unit_set_action": 9534,
+        "unit_stamp": 25473,
+        "unit_step_along_path": 83028,
+        "units": 488176,
+        "water": 261,
+        "world": 611506
+      }
+    },
+    {
+      "counts": {
+        "ai_notice_candidates": 1568,
+        "ai_tick": 540,
+        "aichatter": 9720,
+        "aichoose": 1199,
+        "aiplayer_perceive": 1536,
+        "airechoose": 1149,
+        "aithink": 50,
+        "spell_callback": 3352,
+        "tornadoes": 540,
+        "traps": 540,
+        "unit_ensure_motion": 1159,
+        "unit_housekeeping": 6309,
+        "unit_logic": 9720,
+        "unit_move_base": 3483,
+        "unit_set_action": 1991,
+        "unit_stamp": 9720,
+        "unit_step_along_path": 1088,
+        "units": 540,
+        "water": 540,
+        "world": 540
+      },
+      "slow": [
+        {
+          "part": "aichoose",
+          "uid": 100004,
+          "us": 6833
+        },
+        {
+          "part": "aithink",
+          "uid": 100004,
+          "us": 6959
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100004,
+          "us": 7390
+        },
+        {
+          "part": "aichoose",
+          "uid": 100005,
+          "us": 5061
+        },
+        {
+          "part": "aithink",
+          "uid": 100005,
+          "us": 5200
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100005,
+          "us": 5687
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 42083
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 42123
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 5011
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 5083
+        }
+      ],
+      "us": {
+        "ai_notice_candidates": 9823,
+        "ai_tick": 11182,
+        "aichatter": 21220,
+        "aichoose": 97801,
+        "aiplayer_perceive": 84492,
+        "airechoose": 147561,
+        "aithink": 50602,
+        "spell_callback": 82858,
+        "tornadoes": 464,
+        "traps": 457,
+        "unit_ensure_motion": 16577,
+        "unit_housekeeping": 36362,
+        "unit_logic": 414803,
+        "unit_move_base": 21030,
+        "unit_set_action": 9368,
+        "unit_stamp": 25187,
+        "unit_step_along_path": 81240,
+        "units": 482655,
+        "water": 260,
+        "world": 599838
+      }
+    },
+    {
+      "counts": {
+        "ai_notice_candidates": 1520,
+        "ai_tick": 540,
+        "aichatter": 9720,
+        "aichoose": 1181,
+        "aiplayer_perceive": 1494,
+        "airechoose": 1123,
+        "aithink": 58,
+        "spell_callback": 3583,
+        "tornadoes": 540,
+        "traps": 540,
+        "unit_ensure_motion": 1107,
+        "unit_housekeeping": 6393,
+        "unit_logic": 9720,
+        "unit_move_base": 3360,
+        "unit_set_action": 1964,
+        "unit_stamp": 9720,
+        "unit_step_along_path": 1056,
+        "units": 540,
+        "water": 540,
+        "world": 540
+      },
+      "slow": [
+        {
+          "part": "aichoose",
+          "uid": 100004,
+          "us": 6823
+        },
+        {
+          "part": "aithink",
+          "uid": 100004,
+          "us": 6951
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100004,
+          "us": 7380
+        },
+        {
+          "part": "aichoose",
+          "uid": 100005,
+          "us": 5276
+        },
+        {
+          "part": "aithink",
+          "uid": 100005,
+          "us": 5412
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100005,
+          "us": 5913
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 42286
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 42332
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 5623
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 5824
+        }
+      ],
+      "us": {
+        "ai_notice_candidates": 9303,
+        "ai_tick": 12123,
+        "aichatter": 21230,
+        "aichoose": 98013,
+        "aiplayer_perceive": 81582,
+        "airechoose": 145340,
+        "aithink": 51693,
+        "spell_callback": 84993,
+        "tornadoes": 444,
+        "traps": 467,
+        "unit_ensure_motion": 15946,
+        "unit_housekeeping": 38077,
+        "unit_logic": 412359,
+        "unit_move_base": 20439,
+        "unit_set_action": 9317,
+        "unit_stamp": 24550,
+        "unit_step_along_path": 78952,
+        "units": 479720,
+        "water": 261,
+        "world": 600410
+      }
+    },
+    {
+      "counts": {
+        "ai_notice_candidates": 1484,
+        "ai_tick": 540,
+        "aichatter": 9720,
+        "aichoose": 1140,
+        "aiplayer_perceive": 1453,
+        "airechoose": 1078,
+        "aithink": 62,
+        "spell_callback": 3438,
+        "tornadoes": 540,
+        "traps": 540,
+        "unit_ensure_motion": 1151,
+        "unit_housekeeping": 6630,
+        "unit_logic": 9720,
+        "unit_move_base": 3409,
+        "unit_set_action": 1944,
+        "unit_stamp": 9720,
+        "unit_step_along_path": 1107,
+        "units": 540,
+        "water": 540,
+        "world": 540
+      },
+      "slow": [
+        {
+          "part": "aichoose",
+          "uid": 100004,
+          "us": 6906
+        },
+        {
+          "part": "aithink",
+          "uid": 100004,
+          "us": 7035
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100004,
+          "us": 7477
+        },
+        {
+          "part": "aichoose",
+          "uid": 100005,
+          "us": 5075
+        },
+        {
+          "part": "aithink",
+          "uid": 100005,
+          "us": 5213
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100005,
+          "us": 5719
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 42182
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 42227
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 5037
+        },
+        {
+          "part": "aichoose",
+          "uid": 100012,
+          "us": 5379
+        },
+        {
+          "part": "aithink",
+          "uid": 100012,
+          "us": 5475
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100012,
+          "us": 6146
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 6665
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 6812
+        }
+      ],
+      "us": {
+        "ai_notice_candidates": 9238,
+        "ai_tick": 12847,
+        "aichatter": 21655,
+        "aichoose": 103208,
+        "aiplayer_perceive": 76391,
+        "airechoose": 137787,
+        "aithink": 58726,
+        "spell_callback": 83232,
+        "tornadoes": 471,
+        "traps": 410,
+        "unit_ensure_motion": 16741,
+        "unit_housekeeping": 37586,
+        "unit_logic": 414980,
+        "unit_move_base": 20425,
+        "unit_set_action": 9096,
+        "unit_stamp": 25672,
+        "unit_step_along_path": 84213,
+        "units": 484002,
+        "water": 240,
+        "world": 603592
+      }
+    },
+    {
+      "counts": {
+        "ai_notice_candidates": 1516,
+        "ai_tick": 540,
+        "aichatter": 9720,
+        "aichoose": 1148,
+        "aiplayer_perceive": 1485,
+        "airechoose": 1091,
+        "aithink": 57,
+        "spell_callback": 3580,
+        "tornadoes": 540,
+        "traps": 540,
+        "unit_ensure_motion": 1116,
+        "unit_housekeeping": 6381,
+        "unit_logic": 9720,
+        "unit_move_base": 3344,
+        "unit_set_action": 1934,
+        "unit_stamp": 9720,
+        "unit_step_along_path": 1065,
+        "units": 540,
+        "water": 540,
+        "world": 540
+      },
+      "slow": [
+        {
+          "part": "aichoose",
+          "uid": 100004,
+          "us": 6819
+        },
+        {
+          "part": "aithink",
+          "uid": 100004,
+          "us": 6946
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100004,
+          "us": 7376
+        },
+        {
+          "part": "aichoose",
+          "uid": 100005,
+          "us": 5050
+        },
+        {
+          "part": "aithink",
+          "uid": 100005,
+          "us": 5181
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100005,
+          "us": 5672
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 42523
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 42566
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 5473
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 5660
+        }
+      ],
+      "us": {
+        "ai_notice_candidates": 9483,
+        "ai_tick": 11744,
+        "aichatter": 21162,
+        "aichoose": 97240,
+        "aiplayer_perceive": 81253,
+        "airechoose": 139672,
+        "aithink": 53471,
+        "spell_callback": 82608,
+        "tornadoes": 447,
+        "traps": 427,
+        "unit_ensure_motion": 16049,
+        "unit_housekeeping": 40452,
+        "unit_logic": 408660,
+        "unit_move_base": 20131,
+        "unit_set_action": 9075,
+        "unit_stamp": 24759,
+        "unit_step_along_path": 79401,
+        "units": 476206,
+        "water": 245,
+        "world": 594021
+      }
+    },
+    {
+      "counts": {
+        "ai_notice_candidates": 1502,
+        "ai_tick": 540,
+        "aichatter": 9720,
+        "aichoose": 1159,
+        "aiplayer_perceive": 1472,
+        "airechoose": 1100,
+        "aithink": 59,
+        "spell_callback": 3327,
+        "tornadoes": 540,
+        "traps": 540,
+        "unit_ensure_motion": 1048,
+        "unit_housekeeping": 6486,
+        "unit_logic": 9720,
+        "unit_move_base": 3216,
+        "unit_set_action": 1854,
+        "unit_stamp": 9720,
+        "unit_step_along_path": 1006,
+        "units": 540,
+        "water": 540,
+        "world": 540
+      },
+      "slow": [
+        {
+          "part": "aichoose",
+          "uid": 100004,
+          "us": 6928
+        },
+        {
+          "part": "aithink",
+          "uid": 100004,
+          "us": 7065
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100004,
+          "us": 7492
+        },
+        {
+          "part": "aichoose",
+          "uid": 100005,
+          "us": 5130
+        },
+        {
+          "part": "aithink",
+          "uid": 100005,
+          "us": 5264
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100005,
+          "us": 5761
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 42771
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 42814
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 5036
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 5333
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 5574
+        }
+      ],
+      "us": {
+        "ai_notice_candidates": 9591,
+        "ai_tick": 12926,
+        "aichatter": 21170,
+        "aichoose": 98648,
+        "aiplayer_perceive": 82344,
+        "airechoose": 144630,
+        "aithink": 53766,
+        "spell_callback": 78018,
+        "tornadoes": 474,
+        "traps": 422,
+        "unit_ensure_motion": 15189,
+        "unit_housekeeping": 39446,
+        "unit_logic": 411719,
+        "unit_move_base": 19506,
+        "unit_set_action": 9007,
+        "unit_stamp": 25191,
+        "unit_step_along_path": 81123,
+        "units": 479615,
+        "water": 238,
+        "world": 593491
+      }
+    },
+    {
+      "counts": {
+        "ai_notice_candidates": 1575,
+        "ai_tick": 540,
+        "aichatter": 9720,
+        "aichoose": 1237,
+        "aiplayer_perceive": 1550,
+        "airechoose": 1181,
+        "aithink": 56,
+        "spell_callback": 3591,
+        "tornadoes": 540,
+        "traps": 540,
+        "unit_ensure_motion": 1136,
+        "unit_housekeeping": 6534,
+        "unit_logic": 9720,
+        "unit_move_base": 3472,
+        "unit_set_action": 2023,
+        "unit_stamp": 9720,
+        "unit_step_along_path": 1083,
+        "units": 540,
+        "water": 540,
+        "world": 540
+      },
+      "slow": [
+        {
+          "part": "aichoose",
+          "uid": 100004,
+          "us": 7016
+        },
+        {
+          "part": "aithink",
+          "uid": 100004,
+          "us": 7147
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100004,
+          "us": 7590
+        },
+        {
+          "part": "aichoose",
+          "uid": 100005,
+          "us": 5122
+        },
+        {
+          "part": "aithink",
+          "uid": 100005,
+          "us": 5258
+        },
+        {
+          "part": "unit_logic",
+          "uid": 100005,
+          "us": 5766
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 42602
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 42646
+        },
+        {
+          "part": "units",
+          "uid": -1,
+          "us": 5428
+        },
+        {
+          "part": "world",
+          "uid": -1,
+          "us": 5611
+        }
+      ],
+      "us": {
+        "ai_notice_candidates": 9671,
+        "ai_tick": 11960,
+        "aichatter": 21332,
+        "aichoose": 100961,
+        "aiplayer_perceive": 84539,
+        "airechoose": 150416,
+        "aithink": 53401,
+        "spell_callback": 78949,
+        "tornadoes": 481,
+        "traps": 421,
+        "unit_ensure_motion": 16494,
+        "unit_housekeeping": 40866,
+        "unit_logic": 426644,
+        "unit_move_base": 21154,
+        "unit_set_action": 9393,
+        "unit_stamp": 25060,
+        "unit_step_along_path": 81334,
+        "units": 494634,
+        "water": 257,
+        "world": 609027
+      }
+    }
+  ],
+  "start_sim": 0.0,
+  "viewport": "(3840.0, 2160.0)",
+  "wall_seconds": 30.024883,
+  "scope": "Diagnostic run on Xvfb :41. Not frame-rate acceptance for a hardware-backed display."
+}

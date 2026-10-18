@@ -9,6 +9,7 @@ signal effects_received(data: Dictionary)
 signal notice(text: String)
 signal closed(text: String)
 const PORT := 27016
+const LAN_PORT := 27018   # 27016 is the autochess game socket / campaign discovery port
 const PROTOCOL := 1
 const MAX_PACKET := 1048576
 const HELLO_TIMEOUT := 15.0
@@ -19,7 +20,9 @@ var my_seat := -1
 var members := {}
 var view := ArenaOnlineView.new()
 var game: ArenaOnlineGame
+var lan: LanDiscovery
 var upnp: UpnpPort
+var local_host: ArenaLocalHost
 var password := ""
 var player_name := ""
 var status := ""
@@ -43,9 +46,28 @@ var _last_frame_at := 0
 
 func _ready() -> void:
 	view.submit = request
+	local_host = ArenaLocalHost.new(); local_host.session = self; add_child(local_host)
 	upnp = UpnpPort.new(); add_child(upnp)
+	lan = LanDiscovery.new()
+	lan.discovery_port = LAN_PORT
+	lan.protocol = PROTOCOL
+	lan.modes = PackedStringArray(["autochess"])
+	lan.info_provider = lan_info
+	add_child(lan)
+
+func owns_game() -> bool:
+	return peer != null and (is_host or (local_host != null and local_host.frontend and local_host.owned))
+
+func host_shown(port := PORT, use_websocket := false) -> Error:
+	if not ArenaLocalHost.available(): return host(port, use_websocket)
+	var error := await local_host.start(port, use_websocket)
+	if error == OK and not use_websocket and GameData.option("net_upnp") == 1 \
+			and not Array(OS.get_cmdline_user_args()).any(func(arg): return arg.begins_with("--tool=")):
+		upnp.open(port)
+	return error
 
 func host(port := PORT, use_websocket := false) -> Error:
+	if peer != null: return ERR_ALREADY_IN_USE
 	if OS.has_feature("web"): return ERR_UNAVAILABLE
 	if port < 1 or port > 65535: return ERR_INVALID_PARAMETER
 	websocket = use_websocket
@@ -58,8 +80,14 @@ func host(port := PORT, use_websocket := false) -> Error:
 	_views[1] = 0
 	peer.peer_connected.connect(_peer_connected); peer.peer_disconnected.connect(_peer_disconnected)
 	if not websocket and GameData.option("net_upnp") == 1 and not Array(OS.get_cmdline_user_args()).any(func(arg): return arg.begins_with("--tool=")): upnp.open(port)
+	if GameData.option("net_lan") == 1: lan.listen()
 	_connected = true; lobby_changed.emit()
 	return OK
+
+func lan_info() -> Dictionary:
+	if not is_host or peer == null: return {}
+	return {"name":clean_name(player_name), "mode":"autochess", "players":members.size(),
+		"max":9, "pw":not password.is_empty(), "ws":websocket, "port":host_port, "in_game":started}
 
 func join(address: String) -> Error:
 	var parsed := Session.parse_address(address, PORT)
@@ -79,30 +107,49 @@ static func clean_name(value: String) -> String:
 		if character.unicode_at(0) >= 32 and character.unicode_at(0) != 127: clean += character
 	return clean.left(24) if not clean.is_empty() else RemakeText.t("Player name")
 
+func _loading_timeout(id: int) -> void:
+	# Match campaign co-op: a cold scene build can exceed ENet's default
+	# five-second transport timeout even while the game is still loading.
+	if peer is ENetMultiplayerPeer:
+		var remote := (peer as ENetMultiplayerPeer).get_peer(id)
+		if remote: remote.set_timeout(0, Session.PEER_TIMEOUT_MS, Session.PEER_TIMEOUT_MS)
+
 func _peer_connected(id: int) -> void:
+	_loading_timeout(id)
 	_pending[id] = Time.get_ticks_msec()
 
 func _peer_disconnected(id: int) -> void:
+	if local_host.worker and id == local_host.owner_peer:
+		# poll() can emit this before the frame's state broadcast. Never send
+		# another packet to the departed owner while deferred cleanup waits.
+		members.erase(id)
+		local_host.shutdown.call_deferred(); return
 	_pending.erase(id); _sent_boards.erase(id); _views.erase(id); _budgets.erase(id); _view_budgets.erase(id); _sequences.erase(id)
 	if not members.has(id): return
 	var seat := int(members[id].seat)
 	members.erase(id)
 	if game: game.disconnect_player(seat)
-	_send_lobby(); _dirty = true
+	# ENet can reset several peers before poll() emits their disconnect signals.
+	# Wait until every departed peer has been removed before broadcasting.
+	_send_lobby.call_deferred(); _dirty = true
 
 func _process(dt: float) -> void:
+	# Networking and handshakes keep wall time at either combat speed.
+	dt /= maxf(Engine.time_scale, 0.001)
 	if peer == null: return
 	peer.poll()
+	if peer == null: return   # owner disconnect may close the worker during poll
 	var connection := peer.get_connection_status()
 	if not is_host:
 		_elapsed += dt
 		if connection == MultiplayerPeer.CONNECTION_CONNECTED and not _connected:
 			_connected = true
-			_send(1, {"t":"hello","protocol":PROTOCOL,"version":ProjectSettings.get_setting("application/config/version"),"hash":NetStatus.world_hash(),"name":clean_name(player_name),"password":password.left(64)})
+			_loading_timeout(1)
+			var hello := {"t":"hello","protocol":PROTOCOL,"version":ProjectSettings.get_setting("application/config/version"),"hash":NetStatus.world_hash(),"name":clean_name(player_name),"password":password.left(64)}
+			local_host.hello(hello)
+			_send(1, hello)
 		elif connection == MultiplayerPeer.CONNECTION_DISCONNECTED or (_elapsed > HELLO_TIMEOUT and my_seat < 0):
 			fail("Connection to the host was lost." if started else "Could not connect to the host."); return
-		if started and Time.get_ticks_msec() - _last_frame_at > 15000:
-			fail("Connection to the host was lost."); return
 	var processed := 0
 	while peer and peer.get_available_packet_count() > 0 and processed < 256:
 		var sender := peer.get_packet_peer()
@@ -112,6 +159,10 @@ func _process(dt: float) -> void:
 		if not data is Dictionary or not data.get("t") is String: continue
 		if is_host: _from_client(sender, data)
 		elif sender == 1: _from_host(data)
+	# A long local shader/scene build may have queued fresh server frames.
+	# Consume them before deciding the connection has gone silent.
+	if not is_host and peer != null and started and Time.get_ticks_msec() - _last_frame_at > 15000:
+		fail("Connection to the host was lost."); return
 	if not is_host or peer == null: return
 	for id: int in _pending.keys():
 		if Time.get_ticks_msec() - int(_pending[id]) > HELLO_TIMEOUT * 1000:
@@ -143,11 +194,17 @@ func _from_client(id: int, data: Dictionary) -> void:
 		var reason := ""
 		if data.get("protocol") != PROTOCOL or data.get("version") != ProjectSettings.get_setting("application/config/version") or data.get("hash") != NetStatus.world_hash(): reason = ERRORS[0]
 		elif started: reason = ERRORS[1]
-		elif members.size() >= 9: reason = ERRORS[2]
+		elif members.size() >= 9 and not data.has("owner"): reason = ERRORS[2]
 		elif data.get("password") != password.left(64): reason = ERRORS[3]
+		elif data.has("owner") and not local_host.may_own(id, data.owner): reason = ERRORS[6]
 		if not reason.is_empty():
 			_send(id, {"t":"reject","error":reason}); return
 		if not data.get("name") is String: return
+		if data.has("owner"):
+			local_host.claim(id)
+			members[id] = members[1]; members.erase(1)
+			_views.erase(1); _views[id] = 0; _pending.erase(id); _send_lobby()
+			return
 		var seats := members.values().map(func(member): return int(member.seat))
 		var seat := 0
 		while seat in seats: seat += 1
@@ -155,6 +212,7 @@ func _from_client(id: int, data: Dictionary) -> void:
 		_views[id] = seat; _pending.erase(id); _send_lobby()
 		return
 	if not members.has(id): return
+	if local_host.packet(id, data): return
 	if data.t == "view":
 		if ArenaRun._integer(data.get("seat"),-1,8):
 			if int(_views.get(id, -2)) != int(data.seat):
@@ -174,7 +232,11 @@ func _from_client(id: int, data: Dictionary) -> void:
 	budget.count += 1; _budgets[id] = budget
 	if budget.count > 30: _deliver(id,{"t":"error","error":ERRORS[10]}); return
 	if not started:
-		if data.action == "ready": members[id].ready = not members[id].ready; _send_lobby()
+		if data.action == "start" and local_host.worker and id == local_host.owner_peer \
+				and data.args.size() == 1 and ArenaRun._integer(data.args[0], 0, 99999999):
+			var error := start_game(int(data.args[0]))
+			if not error.is_empty(): _deliver(id, {"t":"error", "error":error})
+		elif data.action == "ready": members[id].ready = not members[id].ready; _send_lobby()
 		return
 	if data.get("round") != game.run.wave:
 		_deliver(id, {"t":"error","error":ERRORS[8]}); return
@@ -200,6 +262,9 @@ func request(action: String, args: Array = []) -> void:
 	else: _send(1,data)
 
 func start_game(seed_value := 0) -> String:
+	if local_host.frontend and local_host.owned and not started:
+		if members.values().any(func(member): return not member.ready): return "Wait for every player to be ready."
+		request("start", [seed_value]); return ""
 	if not is_host or started: return "Invalid online action."
 	if members.values().any(func(member): return not member.ready): return "Wait for every player to be ready."
 	started = true
@@ -224,7 +289,7 @@ func _names() -> Array:
 
 func _send_lobby() -> void:
 	for id: int in members:
-		_deliver(id, {"t":"lobby","members":members.duplicate(true),"seat":int(members[id].seat),"started":started})
+		_deliver(id, {"t":"lobby","members":members.duplicate(true),"seat":int(members[id].seat),"started":started,"owner":local_host.worker and id == local_host.owner_peer})
 
 func _send(id: int, data: Dictionary, reliable := true) -> void:
 	if peer == null: return
@@ -243,6 +308,7 @@ func _from_host(data: Dictionary) -> void:
 	match String(data.t):
 		"lobby":
 			members = data.members; my_seat = int(data.seat)
+			local_host.welcomed(data)
 			lobby_changed.emit()
 		"reject": fail(String(data.error))
 		"error": notice.emit(localize_error(String(data.error)))
@@ -266,7 +332,14 @@ func fail(reason: String) -> void:
 	close()
 	closed.emit(status)
 
+func close_shown() -> void:
+	var reaper := local_host.stop() if is_instance_valid(local_host) else null
+	close()
+	if reaper: await reaper.tree_exited
+
 func close() -> void:
+	if is_instance_valid(local_host): local_host.stop()
+	if is_instance_valid(lan): lan.stop()
 	if peer: peer.close(); peer = null
 	if game: game.set_process(false)
 	if is_instance_valid(upnp): upnp.close()

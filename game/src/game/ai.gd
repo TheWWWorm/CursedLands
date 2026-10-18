@@ -1421,9 +1421,13 @@ func on_attacked(u: GameUnit, by: GameUnit) -> void:
 ## the unit noticed by (player), without a distance
 ## test. Co-op shares the party's noticed list as it shares the party's eyes.
 func _react(u: GameUnit, code: int) -> void:
+	# Arena authority has no controlled party to receive acknowledgements.
+	# Avoid decoding the voice database on its first combat tick, and reuse
+	# the current party registry for ordinary campaign/co-op recipients.
+	if world.session == null or world.party_units().is_empty(): return
 	if world.session and not EIAcks.lines([GameSound.voice_name(u)], code).is_empty():
 		var players := {}
-		for m: GameUnit in world.unit_rows():
+		for m: GameUnit in world.party_units():
 			if is_instance_valid(m) and m.controller >= 0:
 				players[m.controller] = true
 		for player: int in players:

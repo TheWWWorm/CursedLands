@@ -62,6 +62,8 @@ var coop := {}
 ## record, — look-at point, turn, pitch
 ## distance and velocities; restored as saved, no refocus): CameraRig.pose().
 var camera := {}
+## Player clock, separate from scripted time-of-day freezes. Empty in old saves.
+var play_clock: Dictionary = {}
 
 
 ## Remake co-op (CoopProgress): called as watch(state, player, key, old, new)
@@ -1353,7 +1355,7 @@ func to_dict() -> Dictionary:
 	return {"version": 2, "campaign_id": campaign_id, "mod_config": mod_config, "vars": vars, "gs_tables": tables, "gs_reconstructed": gs_reconstructed, "heroes": heroes, "zones": zones, "visited": visited, "island_returns": island_returns,
 		"quests": quests, "money": money, "items": items, "quest_items": quest_items,
 		"parties": parties, "current_party": current_party, "party_bags": party_bags, "experience": experience, "mercs": mercs, "dismissed_mercs": dismissed_mercs, "pets": pets, "side_quests": side_quests, "shops": shops, "current_zone": current_zone,
-		"world_time": world_time, "day": day, "coop": coop, "camera": camera}
+		"world_time": world_time, "day": day, "coop": coop, "camera": camera, "play_clock": play_clock}
 
 
 func save(path: String) -> Error:

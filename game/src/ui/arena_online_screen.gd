@@ -40,6 +40,9 @@ func _show_boards() -> void:
 
 func _refresh() -> void:
 	super._refresh()
+	_speed.visible = run.stage == "fight"
+	_speed.disabled = not connection.owns_game()
+	_update_speed()
 	var ready_now := connection.view.ready_seats.has(connection.my_seat)
 	_start.text = RemakeText.t("Not ready" if ready_now else "Ready")
 	_start.tooltip_text = RemakeText.t("Start when every human is ready, or when the timer ends. Changing your army cancels ready.")
@@ -47,9 +50,10 @@ func _refresh() -> void:
 		_hint(RemakeText.t("You have been eliminated. You can keep watching."))
 
 func _process(dt: float) -> void:
+	Engine.time_scale = float(connection.view.battle_speed) if connection.view.global_stage == "fight" else 1.0
 	_result_remaining = connection.view.result_left
 	super._process(dt)
-	if run.lives <= 0 and connection.view.global_stage != "won":
+	if run.lives <= 0 and connection.view.global_stage != "won" and _tournament_battles.viewed_player == 0:
 		_phase.text = RemakeText.t("Place #%d") % run.placements[0]
 
 func _build_result() -> void:
@@ -60,7 +64,7 @@ func _build_result() -> void:
 func _menu_action(id: int) -> void:
 	if id != 2: super._menu_action(id); return
 	_open_modal(RemakeText.t("Leave game"), 480)
-	_wrap(_modal_box, RemakeText.t("Leaving closes the online game for everyone.") if connection.is_host else RemakeText.t("A computer will take over your army if you leave."), 16)
+	_wrap(_modal_box, RemakeText.t("Leaving closes the online game for everyone.") if connection.owns_game() else RemakeText.t("A computer will take over your army if you leave."), 16)
 	_button(_modal_box, RemakeText.t("Cancel"), _close_modal, "")
 	_button(_modal_box, RemakeText.t("Leave game"), func(): exit_requested.emit(), "")
 
@@ -68,3 +72,15 @@ func _disconnected(text: String) -> void:
 	_open_modal(RemakeText.t("Connection lost"), 480)
 	_wrap(_modal_box, text, 16)
 	_button(_modal_box, RemakeText.t("Main menu"), func(): exit_requested.emit(), "")
+
+func _toggle_speed() -> void:
+	if connection.owns_game(): connection.request("speed", [3 - connection.view.battle_speed])
+
+func _update_speed() -> void:
+	_speed.text = RemakeText.t("1×" if connection.view.battle_speed == 1 else "2×")
+	_speed.tooltip_text = RemakeText.t("Battle speed") + "\n" + RemakeText.t("The host controls battle speed for everyone.")
+	if _tooltips: _tooltips.capture(_speed)
+
+func _exit_tree() -> void:
+	Engine.time_scale = 1.0
+	super._exit_tree()

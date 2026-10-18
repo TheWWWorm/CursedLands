@@ -1,0 +1,67 @@
+{
+  "scope": "Linux RTX 3090, native 3840x2160 Ultra, Safe rendering, separate desktop authority, one real connected guest and seven bots, nine boards and 18 additional native fire/smoke emitters. No GPU timestamp queries in live FPS runs. Windows RTX4090 Laptop is not tested.",
+  "rows": [
+    {
+      "speed": 1,
+      "average_fps": 65.43886823544025,
+      "frame_ms": {
+        "max": 54.666,
+        "median": 15.169,
+        "p95": 17.609,
+        "p99": 20.123
+      },
+      "guest_connected": true,
+      "max_observed_simulation_lag": 0.05863499999999977,
+      "peak_particles": 4417
+    },
+    {
+      "speed": 2,
+      "average_fps": 63.37695613874795,
+      "frame_ms": {
+        "max": 59.787,
+        "median": 15.4,
+        "p95": 19.398,
+        "p99": 22.593
+      },
+      "guest_connected": true,
+      "max_observed_simulation_lag": 0.20069199999999987,
+      "peak_particles": 4272
+    }
+  ],
+  "runtime": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime/CursedLands.x86_64",
+      "sha256": "edaf2a26ba540f5647dd1a8965fe3ab169a8eddc2b5e3b9e6cdd099cc3acecf0",
+      "bytes": 82141352
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime/CursedLands.pck",
+      "sha256": "ce8f47540a6bd97899f4adf7f56d5e02d6cdcff3fe03da68f25df4e4a8827bd1",
+      "bytes": 12292312
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/game/src/native/bin/libterrain_search.so",
+      "sha256": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+      "bytes": 3110064
+    }
+  ],
+  "shared_color_texture_bytes": 113246112,
+  "build_ms_prototype": 1780.311,
+  "quality_note": "Arena-only 128 pixels/tile cache. Four camera headings, close/normal/wide zoom. Small colour/filter differences remain; this is not a pixel-identical optimization. Worst crops inspected.",
+  "checks": {
+    "forward_plus": 40,
+    "mobile_fallback": 17,
+    "opengl_fallback": 17,
+    "online_ui_en": 41
+  },
+  "unmet": "Heavy first-person Necromancers Desert remains below the 60 FPS target.",
+  "quality_production": {
+    "poses": 8,
+    "pixels_per_pose": 8294400,
+    "largest_mean_channel_difference_0_to_255": 0.040887,
+    "maximum_pixels_over_1": 886,
+    "largest_isolated_channel_difference": 89,
+    "baseline_repeats": "Seven exact repeats; one view has isolated differences up to 14/255.",
+    "diff_report": "arena-color-production-quality.json"
+  }
+}

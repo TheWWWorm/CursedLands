@@ -45,7 +45,15 @@ func _ready() -> void:
 	check(lobby.panel.page==NetworkPanel.HOST_COOP,"host choice opens connection rows")
 	check(lobby.panel._rows()[-1].value==RemakeText.t("Off"),"transport choice is translated")
 	await shot("online-"+lang+"-host")
+	if ArenaLocalHost.available():
+		lobby.panel.port_text="29917";lobby.panel._primary()
+		var cancelled_child := lobby.connection.local_host.process_id
+		check(lobby.connection.local_host.starting and not lobby.panel._ok_enabled(), "startup locks Start until ownership is confirmed")
+		lobby._stop(); lobby._stop()
+		check(await wait_for(func(): return not lobby.panel.hosting and not lobby._stopping), "repeated Stop cancels startup once")
+		check(cancelled_child > 0 and not OS.is_process_running(cancelled_child), "cancelled startup has no orphan process")
 	lobby.panel.player_name="Host";lobby.panel.port_text="29917";lobby.panel._primary()
+	check(await wait_for(func(): return lobby.connection != null and lobby.connection.owns_game()), "host frontend owns the room before guests join")
 	client=ArenaOnlineSession.new();client.player_name="Guest";add_child(client)
 	check(client.join("127.0.0.1:29917")==OK,"rendered guest joins")
 	check(await wait_for(func():return client.my_seat==1),"guest reaches lobby")
@@ -59,7 +67,7 @@ func _ready() -> void:
 	check(await wait_for(func():return lobby.screen!=null),"online match screen opens")
 	screen=lobby.screen
 	await frames(16)
-	lobby.connection.game.set_process(false)
+	if lobby.connection.game: lobby.connection.game.set_process(false)
 	screen._recruit_offer(0);await frames(20)
 	screen._recruit_offer(1);await frames(20)
 	client.request("buy",[0]);await frames(20)
@@ -73,11 +81,11 @@ func _ready() -> void:
 	get_viewport().push_input(wiki_key); await frames(8)
 	check(screen._wiki != null and screen._wiki.visible and screen._wiki.current == "creature/" + card.prototype.to_lower().uri_encode(), "F7 opens the hovered online recruit")
 	check(screen.battle.phase != ArenaMatch.Phase.PAUSED and not get_tree().paused, "online wiki does not pause the match")
-	var time_before: float = lobby.connection.game.run.preparation_left
-	lobby.connection.game.set_process(true)
-	await get_tree().create_timer(0.25).timeout
-	lobby.connection.game.set_process(false)
-	check(lobby.connection.game.run.preparation_left < time_before, "authoritative online countdown advances while wiki is open")
+	var time_before: float = lobby.connection.view.preparation_left
+	if lobby.connection.game: lobby.connection.game.set_process(true)
+	await get_tree().create_timer(0.7).timeout
+	if lobby.connection.game: lobby.connection.game.set_process(false)
+	check(lobby.connection.view.preparation_left < time_before, "authoritative online countdown advances while wiki is open")
 	bounded(screen._wiki, "online wiki")
 	await shot("online-"+lang+"-wiki")
 	var escape := InputEventKey.new(); escape.pressed = true; escape.keycode = KEY_ESCAPE
@@ -94,8 +102,8 @@ func _ready() -> void:
 	await shot("online-"+lang+"-guide")
 	screen._close_modal()
 	screen._fight();client.request("ready")
-	check(await wait_for(func():return lobby.connection.game.run.stage=="fight"),"all humans ready starts battle")
-	lobby.connection.game.set_process(true)
+	check(await wait_for(func():return lobby.connection.view.global_stage=="fight"),"all humans ready starts battle")
+	if lobby.connection.game: lobby.connection.game.set_process(true)
 	await get_tree().create_timer(3).timeout
 	check(screen.battle.phase in [ArenaMatch.Phase.FIGHT,ArenaMatch.Phase.FINISHED],"host combat reaches rendered replica")
 	await shot("online-"+lang+"-combat")
@@ -107,8 +115,14 @@ func _ready() -> void:
 	await shot("online-"+lang+"-overview")
 	screen._show_player(0);await frames(12)
 	client.close();await frames(20)
-	check(lobby.connection.game.run.humans.size()==1,"disconnect takeover during rendered match")
+	check(lobby.connection.members.size()==1,"disconnect takeover during rendered match")
+	var child := lobby.connection.local_host.process_id
+	var worker_log := lobby.connection.local_host._config + ".log"
 	lobby.queue_free();client.queue_free();screen=null;await frames(10)
+	if child > 0:
+		check(await wait_for(func(): return not OS.is_process_running(child)), "closing the lobby releases its authority")
+		check(not FileAccess.get_file_as_string(worker_log).contains("ERROR:"), "authority log has no runtime errors")
+		check(not FileAccess.file_exists("user://crash/running_%d.cfg" % child), "authority exits cleanly")
 	check(errors.messages.is_empty(),"no runtime or rendering errors: "+str(errors.messages))
 	print("ARENA_ONLINE_UI ",checks," checks; failures=",JSON.stringify(failures))
 	get_tree().quit(0 if failures.is_empty() else 1)

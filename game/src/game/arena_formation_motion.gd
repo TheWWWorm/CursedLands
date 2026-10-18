@@ -11,7 +11,9 @@ func enter(unit: GameUnit, target: Vector2, origin := Vector2.INF) -> void:
 	if origin == Vector2.INF:
 		var direction := -1.0 if unit.faction == 1 else 1.0
 		var candidates: Array[Vector2] = []
-		for distance in [5.0, 3.5, 2.0, 1.0]:
+		# Prefer a run-in from the rear; packed giant formations may only
+		# leave a short clear approach immediately ahead of the destination.
+		for distance in [5.0, 3.5, 2.0, 1.0, 0.5, -0.5, -1.0]:
 			for side in [0.0, -2.0, 2.0, -4.0, 4.0]:
 				candidates.append(Vector2(clampf(target.x + direction * distance, 18.8, 45.2), clampf(target.y + side, 19, 45)))
 		for candidate in candidates:
@@ -62,6 +64,9 @@ func advance(dt: float, world: GameWorld) -> void:
 			unit.order = {}; unit.orders.clear(); unit.path.clear()
 			unit._set_action("idle")
 			if unit._turn_to(0.0 if unit.faction == 1 else PI, dt * PACE): movers.erase(unit)
+		# Online preparation owns only this presentation pose; combat remains
+		# host-authoritative. Do not smooth back to the last idle snapshot.
+		if not world.authority: unit.net_view.got(unit.pos, true, unit.facing)
 		unit._sync_transform(0.0)
 		world.nav.track_unit(unit)
 

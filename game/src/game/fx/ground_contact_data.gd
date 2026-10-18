@@ -2,7 +2,7 @@ class_name GroundContactData
 extends RefCounted
 ## Fit contact and native shadows within the tested Android GLES sampler
 ## budget. Static fields share one array; dynamic tracks and roof maps retain
-## their existing resources. Forward+ and Mobile keep their original shaders.
+## their existing resources. Forward+ and Mobile retain individual bindings.
 const FIELDS := ["query_vertices", "query_normals", "query_light_inputs",
 	"terrain_tiles", "terrain_cells", "cliff_tiles", "cliff_flatness", "transition_tiles"]
 var texture := Texture2DArray.new()
@@ -54,6 +54,9 @@ static func _power_of_two(value: int) -> bool:
 
 
 static func specialize(original: String, terrain: EITerrain) -> String:
+	# Keep the constrained renderer sampler/memory budgets unchanged.
+	if RenderingServer.get_current_rendering_method() == "forward_plus":
+		return original.replace("shader_type spatial;", "shader_type spatial;\n#define EI_CONTACT_QUERY_MASK")
 	# Cells are sectors*32. These maps need no integer division per query tap;
 	# other dimensions retain the general page layout and address calculation.
 	if Portability.compatibility() and _power_of_two(terrain.sectors_x) and _power_of_two(terrain.sectors_y):

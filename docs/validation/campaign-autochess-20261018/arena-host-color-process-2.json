@@ -1,0 +1,627 @@
+{
+	"adapter": "NVIDIA GeForce RTX 3090",
+	"census": [
+		{
+			"effects": 18,
+			"particles": 949,
+			"wall": 0.011313
+		},
+		{
+			"authority": {
+				"alive": [
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0
+				],
+				"sim": [
+					0.055,
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0
+				],
+				"stage": "fight",
+				"wall": 0.048476
+			},
+			"effects": 27,
+			"particles": 2861,
+			"wall": 1.012951
+		},
+		{
+			"authority": {
+				"alive": [
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0
+				],
+				"sim": [
+					1.98,
+					1.98,
+					1.98,
+					1.98,
+					1.98,
+					1.925,
+					1.925,
+					1.925,
+					1.925
+				],
+				"stage": "fight",
+				"wall": 1.062846
+			},
+			"effects": 40,
+			"particles": 3379,
+			"wall": 2.013148
+		},
+		{
+			"authority": {
+				"alive": [
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0,
+					18.0
+				],
+				"sim": [
+					4.18,
+					4.18,
+					4.125,
+					4.125,
+					4.125,
+					4.125,
+					4.125,
+					4.125,
+					4.125
+				],
+				"stage": "fight",
+				"wall": 2.068233
+			},
+			"effects": 41,
+			"particles": 3245,
+			"wall": 3.02075
+		},
+		{
+			"authority": {
+				"alive": [
+					17.0,
+					17.0,
+					17.0,
+					17.0,
+					17.0,
+					17.0,
+					17.0,
+					17.0,
+					17.0
+				],
+				"sim": [
+					6.15999999999999,
+					6.15999999999999,
+					6.15999999999999,
+					6.15999999999999,
+					6.15999999999999,
+					6.15999999999999,
+					6.15999999999999,
+					6.10499999999999,
+					6.10499999999999
+				],
+				"stage": "fight",
+				"wall": 3.073953
+			},
+			"effects": 47,
+			"particles": 3884,
+			"wall": 4.02708
+		},
+		{
+			"authority": {
+				"alive": [
+					16.0,
+					15.0,
+					17.0,
+					15.0,
+					16.0,
+					17.0,
+					17.0,
+					16.0,
+					15.0
+				],
+				"sim": [
+					8.19499999999998,
+					8.19499999999998,
+					8.13999999999998,
+					8.13999999999998,
+					8.13999999999998,
+					8.13999999999998,
+					8.13999999999998,
+					8.13999999999998,
+					8.13999999999998
+				],
+				"stage": "fight",
+				"wall": 4.080302
+			},
+			"effects": 50,
+			"particles": 4255,
+			"wall": 5.035865
+		},
+		{
+			"authority": {
+				"alive": [
+					13.0,
+					13.0,
+					12.0,
+					13.0,
+					14.0,
+					13.0,
+					13.0,
+					14.0,
+					12.0
+				],
+				"sim": [
+					10.175,
+					10.175,
+					10.175,
+					10.175,
+					10.175,
+					10.175,
+					10.175,
+					10.175,
+					10.12
+				],
+				"stage": "fight",
+				"wall": 5.087725
+			},
+			"effects": 56,
+			"particles": 3681,
+			"wall": 6.043709
+		},
+		{
+			"authority": {
+				"alive": [
+					12.0,
+					11.0,
+					11.0,
+					11.0,
+					12.0,
+					12.0,
+					11.0,
+					12.0,
+					11.0
+				],
+				"sim": [
+					12.21,
+					12.21,
+					12.155,
+					12.155,
+					12.155,
+					12.155,
+					12.155,
+					12.155,
+					12.155
+				],
+				"stage": "fight",
+				"wall": 6.091818
+			},
+			"effects": 51,
+			"particles": 3302,
+			"wall": 7.056279
+		},
+		{
+			"authority": {
+				"alive": [
+					11.0,
+					11.0,
+					11.0,
+					10.0,
+					12.0,
+					11.0,
+					10.0,
+					11.0,
+					10.0
+				],
+				"sim": [
+					14.245,
+					14.19,
+					14.19,
+					14.19,
+					14.19,
+					14.19,
+					14.19,
+					14.19,
+					14.19
+				],
+				"stage": "fight",
+				"wall": 7.099244
+			},
+			"effects": 51,
+			"particles": 4272,
+			"wall": 8.058379
+		},
+		{
+			"authority": {
+				"alive": [
+					10.0,
+					9.0,
+					10.0,
+					8.0,
+					11.0,
+					10.0,
+					10.0,
+					9.0,
+					9.0
+				],
+				"sim": [
+					16.2249999999999,
+					16.2249999999999,
+					16.2249999999999,
+					16.2249999999999,
+					16.2249999999999,
+					16.2249999999999,
+					16.1699999999999,
+					16.1699999999999,
+					16.1699999999999
+				],
+				"stage": "fight",
+				"wall": 8.105891
+			},
+			"effects": 43,
+			"particles": 2534,
+			"wall": 9.071926
+		},
+		{
+			"authority": {
+				"alive": [
+					9.0,
+					8.0,
+					10.0,
+					8.0,
+					8.0,
+					10.0,
+					9.0,
+					9.0,
+					9.0
+				],
+				"sim": [
+					18.2599999999999,
+					18.2049999999999,
+					18.2049999999999,
+					18.2049999999999,
+					18.2049999999999,
+					18.2049999999999,
+					18.2049999999999,
+					18.2049999999999,
+					18.2049999999999
+				],
+				"stage": "fight",
+				"wall": 9.106388
+			},
+			"effects": 46,
+			"particles": 3511,
+			"wall": 10.089865
+		},
+		{
+			"authority": {
+				"alive": [
+					9.0,
+					7.0,
+					10.0,
+					8.0,
+					8.0,
+					10.0,
+					9.0,
+					8.0,
+					9.0
+				],
+				"sim": [
+					20.2399999999999,
+					20.2399999999999,
+					20.2399999999999,
+					20.2399999999999,
+					20.1849999999999,
+					20.1849999999999,
+					20.1849999999999,
+					20.1849999999999,
+					20.1849999999999
+				],
+				"stage": "fight",
+				"wall": 10.106887
+			},
+			"effects": 47,
+			"particles": 3071,
+			"wall": 11.094248
+		},
+		{
+			"authority": {
+				"alive": [
+					9.0,
+					7.0,
+					10.0,
+					8.0,
+					8.0,
+					9.0,
+					9.0,
+					8.0,
+					9.0
+				],
+				"sim": [
+					22.2199999999999,
+					22.2199999999999,
+					22.2199999999999,
+					22.2199999999999,
+					22.2199999999999,
+					22.2199999999999,
+					22.2199999999999,
+					22.1649999999999,
+					22.1649999999999
+				],
+				"stage": "fight",
+				"wall": 11.10739
+			},
+			"effects": 45,
+			"particles": 3299,
+			"wall": 12.103232
+		},
+		{
+			"authority": {
+				"alive": [
+					9.0,
+					7.0,
+					9.0,
+					8.0,
+					8.0,
+					7.0,
+					8.0,
+					8.0,
+					9.0
+				],
+				"sim": [
+					26.2349999999999,
+					26.2349999999999,
+					26.2349999999999,
+					26.2349999999999,
+					26.2349999999999,
+					26.1799999999999,
+					26.1799999999999,
+					26.1799999999999,
+					26.1799999999999
+				],
+				"stage": "fight",
+				"wall": 13.108384
+			},
+			"effects": 42,
+			"particles": 2667,
+			"wall": 13.118285
+		},
+		{
+			"authority": {
+				"alive": [
+					8.0,
+					7.0,
+					9.0,
+					8.0,
+					8.0,
+					7.0,
+					8.0,
+					8.0,
+					9.0
+				],
+				"sim": [
+					28.2149999999999,
+					28.2149999999999,
+					28.2149999999999,
+					28.2149999999999,
+					28.2149999999999,
+					28.2149999999999,
+					28.2149999999999,
+					28.2149999999999,
+					28.1599999999999
+				],
+				"stage": "fight",
+				"wall": 14.108881
+			},
+			"effects": 41,
+			"particles": 2125,
+			"wall": 14.120644
+		}
+	],
+	"field_size": "(3840, 2160)",
+	"fire_count": 18,
+	"frame_ms": {
+		"max": 59.787,
+		"median": 15.4,
+		"p95": 19.398,
+		"p99": 22.593
+	},
+	"frames": 951,
+	"guest_connected": true,
+	"guest_status": "",
+	"members": {
+		"1217174870": {
+			"name": "Benchmark guest",
+			"ready": true,
+			"seat": 1
+		},
+		"1904966745": {
+			"name": "Benchmark host",
+			"ready": true,
+			"seat": 0
+		}
+	},
+	"msaa": 2,
+	"options": {
+		"aim_press_once": 1,
+		"armor_formula": 0,
+		"auto_exit": 0,
+		"auto_graphics": 0,
+		"autosave": 0,
+		"brightness": 50,
+		"cam_follow": 1,
+		"cam_pan_speed": 50,
+		"cam_rotate_speed": 50,
+		"cam_see_through": 1,
+		"cam_wasd": 1,
+		"cam_zoom_speed": 50,
+		"camera_reverse_x": 0,
+		"camera_reverse_y": 0,
+		"camera_style": 1,
+		"cave_echo": 1,
+		"character_light": 0,
+		"confine_mouse": 0,
+		"contrast": 50,
+		"control_mode": 0,
+		"coop_clock": 1,
+		"coop_full_xp": 1,
+		"coop_player_names": 1,
+		"coop_scale": 2,
+		"coop_share_loot": 1,
+		"difficulty": 0,
+		"direct_first_person_actions": 1,
+		"direct_fov_first": 5,
+		"direct_fov_third": 3,
+		"direct_hints": 1,
+		"direct_invert_x": 0,
+		"direct_invert_y": 0,
+		"direct_mouse_first": 50,
+		"direct_mouse_third": 50,
+		"direct_pad_curve": 1,
+		"direct_pad_deadzone": 13,
+		"direct_pad_invert_x": 0,
+		"direct_pad_invert_y": 0,
+		"direct_pad_x": 50,
+		"direct_pad_y": 50,
+		"display_mode": 0,
+		"distant_ai": 0,
+		"enemy_hp_bars": 1,
+		"footprints": 1,
+		"fps_limit": 0,
+		"free_run": 0,
+		"gamma": 50,
+		"gfx_ambient_particles": 1,
+		"gfx_ambient_wildlife": 1,
+		"gfx_biome_cover": 1,
+		"gfx_bloom": 1,
+		"gfx_cloud_reflections": 1,
+		"gfx_cloud_shadows": 1,
+		"gfx_clouds": 3,
+		"gfx_contact_shadows": 1,
+		"gfx_depth_of_field": 1,
+		"gfx_detailed_heads": 1,
+		"gfx_far_view": 1,
+		"gfx_firelight": 1,
+		"gfx_foliage_light": 1,
+		"gfx_grass": 1,
+		"gfx_ground_contact": 1,
+		"gfx_hd_textures": 1,
+		"gfx_heat_haze": 1,
+		"gfx_lava_light": 1,
+		"gfx_lit_particles": 1,
+		"gfx_materials": 1,
+		"gfx_rain_puddles": 1,
+		"gfx_severed_limbs": 1,
+		"gfx_sharp_units": 1,
+		"gfx_sky": 1,
+		"gfx_soft_ground": 1,
+		"gfx_soft_particles": 1,
+		"gfx_ssao": 1,
+		"gfx_terrain": 2,
+		"gfx_terrain_cliffs": 1,
+		"gfx_torch_glow": 1,
+		"gfx_vegetation_interaction": 1,
+		"gfx_volumetric": 1,
+		"gfx_water": 1,
+		"gfx_water_caustics": 1,
+		"gfx_water_current": 1,
+		"gfx_water_interaction": 1,
+		"gfx_water_reflections": 2,
+		"gfx_water_waves": 1,
+		"gfx_waterfalls": 1,
+		"gfx_weather_mist": 1,
+		"gfx_weather_surfaces": 1,
+		"gfx_wind": 1,
+		"graphics_preset": 0,
+		"item_icon_fit": 1,
+		"marks": 1,
+		"mechanism_motion": 0,
+		"merc_travel": 0,
+		"net_directory": 0,
+		"net_lan": 0,
+		"net_upnp": 0,
+		"net_websocket": 0,
+		"original_rune_layout": 0,
+		"pad_cursor_speed": 50,
+		"pad_deadzone": 13,
+		"pad_enabled": 0,
+		"pad_glyphs": 0,
+		"pad_gyro": 0,
+		"pad_gyro_sensitivity": 50,
+		"pad_light": 1,
+		"pad_rumble": 70,
+		"pad_swap_sticks": 0,
+		"pad_target_radius": 6,
+		"pad_wheel_pause": 1,
+		"path_through": 1,
+		"phys_interp": 1,
+		"power_kbd": 25,
+		"power_mouse": 50,
+		"q_aa": 3,
+		"q_aniso": 4,
+		"q_shadow_fit": 1,
+		"q_shadows": 3,
+		"render_scale": 4,
+		"renderer": 0,
+		"resolution": 0,
+		"reverse_stereo": 0,
+		"revive": 1,
+		"rubber_select": 2,
+		"scroll_border": 0,
+		"select_type": 0,
+		"selection_glow": 0,
+		"shadow_buildings": 1,
+		"shadow_flora": 1,
+		"show_flying_hp": 1,
+		"show_fps": 0,
+		"show_path": 1,
+		"show_tutorial": 0,
+		"smile_faces": 1,
+		"sp_death_notice": 1,
+		"sp_full_xp": 0,
+		"spell_double_tap_self": 1,
+		"stamina_regen": 0,
+		"start_zones": 1,
+		"switch_filters": 1,
+		"tooltip_time": 2,
+		"ui_active_buttons": 1,
+		"unit_fog": 1,
+		"village_start_view": 0,
+		"volume_sfx": 100,
+		"volume_stream": 100,
+		"volume_voice": 100,
+		"vsync": 0
+	},
+	"owns_game": true,
+	"render_scale": 1.0,
+	"render_thread": "safe",
+	"scope": "Production local-authority owner (seat zero), real guest and seven bots; deterministic nine-army stress setup in an external child fixture.",
+	"seat": 0,
+	"speed": 2,
+	"wall_seconds": 15.005454,
+	"worker_data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/../checks/host-color-process-2/godot/app_userdata/Cursed Lands/autochess-host/3844038-4042150.cfg.worker.json",
+	"worker_pid": 3844147
+}

@@ -10,6 +10,7 @@ var _terrain: WeakRef
 var vertices: ImageTexture
 var normals: ImageTexture
 var light_inputs: ImageTexture
+var candidates: ImageTexture
 var metadata: GroundContactData
 var _metadata_key := []
 var _vertex_snapshot: Image
@@ -67,6 +68,45 @@ func _build(terrain: EITerrain, contact: bool) -> void:
 		else:
 			normals = ImageTexture.create_from_image(_normal_image(terrain))
 			light_inputs = ImageTexture.create_from_image(_light_input_image(terrain))
+			if RenderingServer.get_current_rendering_method() == "forward_plus":
+				candidates = ImageTexture.create_from_image(_candidate_image(terrain))
+
+
+## Conservative XY broad phase for the nine-cell surface query. Four bins per
+## metre keep most fragments on one or two candidate cells. The exact triangle,
+## highest-surface and live footprint queries still decide the result. Loose
+## ground and footprints only displace Y, so this map remains static.
+static func _candidate_image(terrain: EITerrain) -> Image:
+	var width := terrain.grid_w - 1
+	var height := terrain.sectors_y * 32
+	var stride := width * 4
+	var pixels := PackedFloat32Array()
+	pixels.resize(width * height * 16)
+	# Bits follow query_surface's centre, axial, then diagonal cell order.
+	const BITS := [32, 8, 64, 2, 1, 4, 128, 16, 256]
+	for y in height:
+		for x in width:
+			var low := Vector2.INF
+			var high := -Vector2.INF
+			for dy in 2:
+				for dx in 2:
+					var p := Vector2(x + dx, y + dy) + terrain.land_xy[(y + dy) * terrain.grid_w + x + dx]
+					low = low.min(p)
+					high = high.max(p)
+			# Include barycentric tolerance and float rounding at map edges.
+			var padding := maxf(0.001, high.abs().length() * 0.000001) + (high - low).length() * 0.00002
+			low -= Vector2.ONE * padding
+			high += Vector2.ONE * padding
+			var first := Vector2i(maxi((x - 1) * 4, 0), maxi((y - 1) * 4, 0)).max(Vector2i(floor(low * 4)))
+			var last := Vector2i(mini((x + 2) * 4 - 1, width * 4 - 1), mini((y + 2) * 4 - 1, height * 4 - 1)).min(Vector2i(floor(high * 4)))
+			for py in range(first.y, last.y + 1):
+				for px in range(first.x, last.x + 1):
+					var bit: int = BITS[(y - py / 4 + 1) * 3 + x - px / 4 + 1]
+					var at := py * stride + px
+					pixels[at] = float(int(pixels[at]) | bit)
+	var image := Image.create_from_data(stride, height * 4, false, Image.FORMAT_RF, pixels.to_byte_array())
+	image.convert(Image.FORMAT_RH) # All nine-bit masks are exact in float16.
+	return image
 
 
 func _refresh_metadata(terrain: EITerrain) -> void:
@@ -164,6 +204,7 @@ func bind(material: ShaderMaterial, triangle_only := false) -> void:
 		else:
 			material.set_shader_parameter("query_normals", normals)
 			material.set_shader_parameter("query_light_inputs", light_inputs)
+			if candidates: material.set_shader_parameter("query_candidates", candidates)
 	material.set_shader_parameter("query_vertices", vertices)
 	material.set_shader_parameter("soft_vertices", vertices)
 	material.set_shader_parameter("query_vertex_count", 3)

@@ -1,0 +1,76 @@
+{
+  "authority": {
+    "script": "tools/tests/arena_local_host.gd",
+    "checks": 74,
+    "failures": [],
+    "scope": "Real ENet/WebSocket authority processes; authenticated seat zero, invalid owner rejection, LAN metadata, all nine boards, purchases, host-only start and 2x, queued-frame timeout recovery, a 6.5-second non-polling guest, startup cancellation, occupied port, owner departure closing connected guests, cleanup and clean worker logs.",
+    "log": "process-final-arena_local_host.log"
+  },
+  "rendered": [
+    {
+      "language": "en",
+      "actual_viewport": [
+        1280,
+        726
+      ],
+      "checks": 41,
+      "failures": [],
+      "script": "tools/tests/arena_online_ui.gd",
+      "scope": "Repeated startup cancellation, owner and guest lobby, real combat, wiki, menus, scouting, nine-board overview and clean child shutdown. These runs preceded the transport-timeout-only change."
+    },
+    {
+      "language": "ru",
+      "actual_viewport": [
+        2560,
+        1366
+      ],
+      "checks": 41,
+      "failures": [],
+      "script": "tools/tests/arena_online_ui.gd",
+      "scope": "Repeated startup cancellation, owner and guest lobby, real combat, wiki, menus, scouting, nine-board overview and clean child shutdown. These runs preceded the transport-timeout-only change."
+    },
+    {
+      "language": "de",
+      "actual_viewport": [
+        1280,
+        726
+      ],
+      "checks": 41,
+      "failures": [],
+      "script": "tools/tests/arena_online_ui.gd",
+      "scope": "Repeated startup cancellation, owner and guest lobby, real combat, wiki, menus, scouting, nine-board overview and clean child shutdown. These runs preceded the transport-timeout-only change."
+    }
+  ],
+  "regressions": [
+    {
+      "script": "tools/tests/arena_online.gd",
+      "checks": 64,
+      "failures": [],
+      "scope": "Existing ENet/WebSocket synchronization rechecked on the final transport-timeout candidate."
+    },
+    {
+      "script": "tools/tests/arena_online_feedback.gd",
+      "checks": 26,
+      "failures": [],
+      "scope": "Existing inline protocol/feedback/LAN coverage; passed before the transport-timeout-only change."
+    },
+    {
+      "script": "tools/tests/arena_online_lobby.gd",
+      "checks": 75,
+      "failures": [],
+      "scope": "Existing inline protocol/feedback/LAN coverage; passed before the transport-timeout-only change."
+    },
+    {
+      "script": "tools/tests/arena_lan_discovery.gd",
+      "checks": 12,
+      "failures": [],
+      "scope": "Existing inline protocol/feedback/LAN coverage; passed before the transport-timeout-only change."
+    }
+  ],
+  "translation": {
+    "entries": 2623,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 145,
+    "errors": 0
+  }
+}

@@ -1,0 +1,6 @@
+{
+	"adapter": "NVIDIA GeForce RTX 3090",
+	"checks": 36,
+	"failures": [],
+	"renderer": "forward_plus"
+}

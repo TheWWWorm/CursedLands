@@ -1,0 +1,423 @@
+{
+	"adapter": "NVIDIA GeForce RTX 3090",
+	"checks": 40,
+	"failures": 0,
+	"rows": [
+		{
+			"angle": 0,
+			"focus": "(224.1466, 7.37104, -70.46963)",
+			"gpu_ms": 7.01599979400635,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "gz17h",
+			"optimized": false,
+			"pass": 0
+		},
+		{
+			"angle": 0,
+			"focus": "(224.1466, 7.37104, -70.46963)",
+			"gpu_ms": 5.17399978637695,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.000000120563271604938,
+				"peak": 1
+			},
+			"map": "gz17h",
+			"optimized": true,
+			"pass": 1
+		},
+		{
+			"angle": 0,
+			"focus": "(224.1466, 7.37104, -70.46963)",
+			"gpu_ms": 5.26200008392334,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.000000120563271604938,
+				"peak": 1
+			},
+			"map": "gz17h",
+			"optimized": true,
+			"pass": 2
+		},
+		{
+			"angle": 0,
+			"focus": "(224.1466, 7.37104, -70.46963)",
+			"gpu_ms": 6.52799987792969,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.000000120563271604938,
+				"peak": 1
+			},
+			"map": "gz17h",
+			"optimized": false,
+			"pass": 3
+		},
+		{
+			"angle": 1,
+			"focus": "(224.1466, 7.37104, -70.46963)",
+			"gpu_ms": 5.58199977874756,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "gz17h",
+			"optimized": false,
+			"pass": 0
+		},
+		{
+			"angle": 1,
+			"focus": "(224.1466, 7.37104, -70.46963)",
+			"gpu_ms": 4.47800016403198,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "gz17h",
+			"optimized": true,
+			"pass": 1
+		},
+		{
+			"angle": 1,
+			"focus": "(224.1466, 7.37104, -70.46963)",
+			"gpu_ms": 4.44600009918213,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "gz17h",
+			"optimized": true,
+			"pass": 2
+		},
+		{
+			"angle": 1,
+			"focus": "(224.1466, 7.37104, -70.46963)",
+			"gpu_ms": 5.63199996948242,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "gz17h",
+			"optimized": false,
+			"pass": 3
+		},
+		{
+			"angle": 0,
+			"focus": "(79.03616, 9.575324, -39.94392)",
+			"gpu_ms": 4.83900022506714,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz14h",
+			"optimized": false,
+			"pass": 0
+		},
+		{
+			"angle": 0,
+			"focus": "(79.03616, 9.575324, -39.94392)",
+			"gpu_ms": 4.5019998550415,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz14h",
+			"optimized": true,
+			"pass": 1
+		},
+		{
+			"angle": 0,
+			"focus": "(79.03616, 9.575324, -39.94392)",
+			"gpu_ms": 4.37200021743774,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz14h",
+			"optimized": true,
+			"pass": 2
+		},
+		{
+			"angle": 0,
+			"focus": "(79.03616, 9.575324, -39.94392)",
+			"gpu_ms": 4.77799987792969,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz14h",
+			"optimized": false,
+			"pass": 3
+		},
+		{
+			"angle": 1,
+			"focus": "(79.03616, 9.575324, -39.94392)",
+			"gpu_ms": 3.94400000572205,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz14h",
+			"optimized": false,
+			"pass": 0
+		},
+		{
+			"angle": 1,
+			"focus": "(79.03616, 9.575324, -39.94392)",
+			"gpu_ms": 3.71199989318848,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz14h",
+			"optimized": true,
+			"pass": 1
+		},
+		{
+			"angle": 1,
+			"focus": "(79.03616, 9.575324, -39.94392)",
+			"gpu_ms": 3.71799993515015,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz14h",
+			"optimized": true,
+			"pass": 2
+		},
+		{
+			"angle": 1,
+			"focus": "(79.03616, 9.575324, -39.94392)",
+			"gpu_ms": 3.94799995422363,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz14h",
+			"optimized": false,
+			"pass": 3
+		},
+		{
+			"angle": 0,
+			"focus": "(65.13489, 6.274203, -17.29468)",
+			"gpu_ms": 5.43100023269653,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz15h",
+			"optimized": false,
+			"pass": 0
+		},
+		{
+			"angle": 0,
+			"focus": "(65.13489, 6.274203, -17.29468)",
+			"gpu_ms": 4.67199993133545,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz15h",
+			"optimized": true,
+			"pass": 1
+		},
+		{
+			"angle": 0,
+			"focus": "(65.13489, 6.274203, -17.29468)",
+			"gpu_ms": 4.47800016403198,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz15h",
+			"optimized": true,
+			"pass": 2
+		},
+		{
+			"angle": 0,
+			"focus": "(65.13489, 6.274203, -17.29468)",
+			"gpu_ms": 5.46000003814697,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz15h",
+			"optimized": false,
+			"pass": 3
+		},
+		{
+			"angle": 1,
+			"focus": "(65.13489, 6.274203, -17.29468)",
+			"gpu_ms": 5.39200019836426,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz15h",
+			"optimized": false,
+			"pass": 0
+		},
+		{
+			"angle": 1,
+			"focus": "(65.13489, 6.274203, -17.29468)",
+			"gpu_ms": 4.05299997329712,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz15h",
+			"optimized": true,
+			"pass": 1
+		},
+		{
+			"angle": 1,
+			"focus": "(65.13489, 6.274203, -17.29468)",
+			"gpu_ms": 4.02199983596802,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz15h",
+			"optimized": true,
+			"pass": 2
+		},
+		{
+			"angle": 1,
+			"focus": "(65.13489, 6.274203, -17.29468)",
+			"gpu_ms": 5.44500017166138,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz15h",
+			"optimized": false,
+			"pass": 3
+		},
+		{
+			"angle": 0,
+			"focus": "(84.42931, 12.86823, -82.66885)",
+			"gpu_ms": 13.0539999008179,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz10k",
+			"optimized": false,
+			"pass": 0
+		},
+		{
+			"angle": 0,
+			"focus": "(84.42931, 12.86823, -82.66885)",
+			"gpu_ms": 10.8079996109009,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.00000132619598765432,
+				"peak": 1
+			},
+			"map": "bz10k",
+			"optimized": true,
+			"pass": 1
+		},
+		{
+			"angle": 0,
+			"focus": "(84.42931, 12.86823, -82.66885)",
+			"gpu_ms": 10.8330001831055,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.00000132619598765432,
+				"peak": 1
+			},
+			"map": "bz10k",
+			"optimized": true,
+			"pass": 2
+		},
+		{
+			"angle": 0,
+			"focus": "(84.42931, 12.86823, -82.66885)",
+			"gpu_ms": 12.6770000457764,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.00000132619598765432,
+				"peak": 1
+			},
+			"map": "bz10k",
+			"optimized": false,
+			"pass": 3
+		},
+		{
+			"angle": 1,
+			"focus": "(84.42931, 12.86823, -82.66885)",
+			"gpu_ms": 9.35000038146973,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz10k",
+			"optimized": false,
+			"pass": 0
+		},
+		{
+			"angle": 1,
+			"focus": "(84.42931, 12.86823, -82.66885)",
+			"gpu_ms": 8.07900047302246,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz10k",
+			"optimized": true,
+			"pass": 1
+		},
+		{
+			"angle": 1,
+			"focus": "(84.42931, 12.86823, -82.66885)",
+			"gpu_ms": 8.08800029754639,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz10k",
+			"optimized": true,
+			"pass": 2
+		},
+		{
+			"angle": 1,
+			"focus": "(84.42931, 12.86823, -82.66885)",
+			"gpu_ms": 9.4980001449585,
+			"image_difference": {
+				"changed": 0,
+				"mean": 0.0,
+				"peak": 0
+			},
+			"map": "bz10k",
+			"optimized": false,
+			"pass": 3
+		}
+	]
+}

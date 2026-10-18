@@ -10,6 +10,9 @@ const ONLINE_BOOK := "user://autochess-addresses.cfg"
 func _ready() -> void:
 	campaign_only = true
 	super._ready()
+	lan.discovery_port = ArenaOnlineSession.LAN_PORT
+	lan.protocol = ArenaOnlineSession.PROTOCOL
+	lan.modes = PackedStringArray(["autochess"])
 	_setup_button.hide()
 	max_players = 9
 
@@ -17,7 +20,12 @@ func _refresh_start_saves() -> void: pass
 func _rebuild_save_choices() -> void: pass
 func _sync_save_choice() -> void:
 	if _save_choice: _save_choice.hide()
-func _lan_on() -> bool: return false
+func _discovery_protocol() -> int: return ArenaOnlineSession.PROTOCOL
+func _island(_g: Dictionary) -> String: return RemakeText.t("Autochess")
+func _book_game(a: String) -> Dictionary:
+	if not _lan_on(): return {}
+	var hp := Session.parse_address(a.trim_prefix("ws://").trim_prefix("wss://"), ArenaOnlineSession.PORT)
+	return lan.game_at(String(hp[0]), int(hp[1]))
 func _on_off(on: bool) -> String:
 	return RemakeText.t("On") if on else RemakeText.t("Off")
 
@@ -135,7 +143,7 @@ func _ok_label() -> String:
 		return RemakeText.t("Not ready" if mine.get("ready",false) else "Ready")
 	return super._ok_label()
 func _ok_enabled() -> bool:
-	if hosting: return connection != null and not connection.members.values().any(func(member):return not member.ready)
+	if hosting: return connection != null and connection.owns_game() and not connection.members.values().any(func(member):return not member.ready)
 	if joining: return connection != null and connection.peer != null and connection.my_seat>=0
 	return super._ok_enabled()
 func _primary() -> void:

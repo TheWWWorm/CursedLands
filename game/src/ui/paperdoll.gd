@@ -328,7 +328,7 @@ func _process(dt: float) -> void:
 	for mi: MeshInstance3D in _model.find_children("*", "MeshInstance3D", true, false):
 		if not _shown_part(mi):
 			continue
-		var b: AABB = mi.global_transform * mi.get_aabb()
+		var b: AABB = mi.global_transform * EIUnitModel.preview_bounds(mi)
 		box = b if first else box.merge(b)
 		first = false
 	if first:

@@ -10,7 +10,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.15.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.15.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It adds online autochess with bot-filled seats, a hover-context wiki shortcut, and an option to disable cave echo. See the [release notes](docs/releases/1.15.0.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.16.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.16.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It adds autochess LAN discovery and shared host speed controls, allows revisiting two Suslanger maps, and updates campaign and autochess rendering, movement and spectator information. See the [release notes](docs/releases/1.16.0.md) and [versioning policy](docs/versioning.md).
 
 Browse the [**public wiki**](https://cursedlands.wwworm.com/wiki/) without game files or an account. Separate tabs cover the GOG base game and Lost in Astral: items, materials, spells, runes, creatures and mechanics in English, Russian and German.
 

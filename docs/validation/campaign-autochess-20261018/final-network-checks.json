@@ -1,0 +1,30 @@
+{
+  "suites": [
+    {
+      "name": "validated-disconnect",
+      "checks": 27,
+      "failures_empty": true,
+      "log": "validated-disconnect.log"
+    },
+    {
+      "name": "validated-authority",
+      "checks": 74,
+      "failures_empty": true,
+      "log": "validated-authority.log"
+    },
+    {
+      "name": "validated-online",
+      "checks": 64,
+      "failures_empty": true,
+      "log": "validated-online.log"
+    },
+    {
+      "name": "validated-lobby",
+      "checks": 75,
+      "failures_empty": true,
+      "log": "validated-lobby.log"
+    }
+  ],
+  "expected_diagnostic": "The authority suite deliberately binds an occupied ENet port; that one negative test logs Could not create / Couldn't create an ENet host. Other successful authority instances assert clean logs.",
+  "regression_before": "disconnect-race-before.log"
+}

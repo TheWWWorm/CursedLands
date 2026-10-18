@@ -190,7 +190,7 @@ func _ghost_ticks(e: Dictionary) -> PackedVector3Array:
 ## for copies with that emissive; a second overlay pass z-fought and flickered.
 func _update_lit() -> void:
 	var want := {}
-	if game and GameData.option("select_type") == 0:
+	if game and GameData.option("select_type") == 0 and game.selection_glow_enabled():
 		for u: GameUnit in game.selected:
 			if is_instance_valid(u) and not u.dead and u.model:
 				want[u] = u.model

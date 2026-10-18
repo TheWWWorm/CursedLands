@@ -64,7 +64,9 @@ func _ready() -> void:
 		[GroundContactShader.source(EIFigure.OBJECT_SHADER), false],
 		[GroundContactShader.source(EIFigure.FOLIAGE_SHADER), false],
 		[EIFigure.FOLIAGE_STILL_SHADER, false],
-		[GroundContactShader.source(EIFigure.FOLIAGE_STILL_SHADER), false]]
+		[GroundContactShader.source(EIFigure.FOLIAGE_STILL_SHADER), false],
+		[EIFigure.OBJECT_A2C_SHADER, false],
+		[GroundContactShader.source(EIFigure.OBJECT_A2C_SHADER), false]]
 	var shaders: Array[Shader] = []
 	var materials: Array[ShaderMaterial] = []
 	GameData.options["gfx_materials"] = 0

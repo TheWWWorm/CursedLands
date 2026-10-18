@@ -290,9 +290,8 @@ func carrier_point(e: FxEmitter, obj: Object) -> Vector3:
 	return e.ofs
 
 
-## . Character selector0 uses the current right
-## hand. Creature baseline weapon nodes are still represented by the raw
-## centre fallback until that animation-manager cache is ported.
+## Characters cast from the right hand; toads spit from the animated jaw.
+## Other creatures retain the original figure-centre fallback.
 func unit_point(u: GameUnit, sel: int) -> Vector3:
 	u.observe_presentation()
 	if sel == 0:
@@ -300,6 +299,12 @@ func unit_point(u: GameUnit, sel: int) -> Vector3:
 			var hand := _bone(u, "rh3")
 			if hand:
 				return ei(hand.global_position - display_origin())
+		if int(u.race.get("type_id", -1)) == 0x33:
+			var jaw := _bone(u, "jaw-bone")
+			if jaw and jaw.has_meta(EIFigureGeometry.META):
+				var mouth: Dictionary = jaw.get_meta(EIFigureGeometry.META)
+				var tip: Vector3 = mouth.centre + Vector3(0, mouth.min.y, mouth.max.z)
+				return ei(jaw.to_global(godot(tip)) - display_origin())
 		var geometry := EIFigureGeometry.of(u.model)
 		if not geometry.is_empty():
 			return ei(u.global_position - display_origin()) + geometry.centre
@@ -657,7 +662,7 @@ func _tick(last := true) -> void:
 		ef.want_fill = false
 		if ef.e.update_pre():
 			if ef.e.par:
-				ef.want_fill = last and ef.filled >= 0 and ef.mmi != null
+				ef.want_fill = last and is_visible_in_tree() and ef.filled >= 0 and ef.mmi != null
 				job.efs.append(ef)
 				parts += ef.e.parts.size()
 			else:
@@ -970,6 +975,15 @@ static func _draw_order(e: FxEmitter, has_cam: bool, eye: Vector3, fwd: Vector3)
 func _draw(t: float) -> void:
 	drawn = 0
 	var shown := is_visible_in_tree()
+	if not shown:
+		# Hidden autochess boards still age their effects, but need no draw
+		# resources, frustum work, buffer uploads or per-material updates.
+		for ef in effects:
+			ef.filled = -1
+			if is_instance_valid(ef.mmi) and ef.mmi.visible: ef.mmi.hide()
+		for bolt: FxLightning in bolts:
+			if bolt.node.visible: bolt.node.hide()
+		return
 	var origin := display_origin()
 	var cam := get_viewport().get_camera_3d() if is_inside_tree() else null
 	var eye := ei(cam.global_position - display_origin()) if cam else Vector3.ZERO
@@ -1003,6 +1017,10 @@ func _draw(t: float) -> void:
 			e.e8 = e.e8 + 1 if unseen else 0
 		hidden = hidden or unseen
 		var n := e.parts.size()
+		if hidden or n == 0:
+			if ef.mmi != null: ef.mmi.multimesh.visible_instance_count = 0
+			ef.filled = -1
+			continue
 		if ef.mmi == null:
 			ef.mmi = MultiMeshInstance3D.new()
 			# The draw buffer already samples the effect's render-time pose.
@@ -1026,10 +1044,6 @@ func _draw(t: float) -> void:
 				ef.mmi.material_override = want
 		ef.mmi.visible = shown
 		var mm := ef.mmi.multimesh
-		if hidden or n == 0:
-			mm.visible_instance_count = 0
-			ef.filled = -1
-			continue
 		if ef.pre == tick:
 			_fill_apply(ef, mm)
 		elif ef.filled != tick or ef.filled_n != n:
@@ -1362,6 +1376,7 @@ func _missile(code: String, start: Vector3, target: GameUnit, point: Vector3, s:
 		return
 	var lc := _spell_light(sp)
 	var m := {"ef": ef, "pos": start, "target": target, "point": point, "s": s, "code": code, "ticks": 0, "sp": sp,
+		"clearance": clampf(start.z - ground(start.x, start.y), 0.05, 1.0) if code == "acid_ray" else 1.0,
 		"light": add_light(start, lc.color, lc.radius, -1.0, lc.energy, true) if lc.radius > 0.0 else {}}
 	missiles.append(m)
 
@@ -1380,7 +1395,7 @@ func _missile_tick(m: Dictionary) -> void:
 	var arrived: bool = Vector2(d.x, d.y).length() < 0.6667 or m.ticks > 400
 	if not arrived:
 		pos += d.normalized() * 0.6667
-		pos.z = maxf(pos.z, ground(pos.x, pos.y) + 1.0)
+		pos.z = maxf(pos.z, ground(pos.x, pos.y) + float(m.get("clearance", 1.0)))
 	else:
 		pos = dest
 	m.pos = pos

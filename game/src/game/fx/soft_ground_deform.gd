@@ -92,6 +92,7 @@ func refresh_materials() -> void:
 		rec.material.set_shader_parameter("soft_track_texture", rec.texture)
 		rec.material.set_shader_parameter("soft_track_layer", rec.layer)
 		rec.material.set_shader_parameter("soft_track_time", _age)
+		if is_instance_valid(terrain.color_cache):terrain.color_cache.apply_soft_material(key,rec.material)
 		var node := (rec.node as WeakRef).get_ref() as MeshInstance3D
 		# A newly queued sector still displays its original mesh. Never attach
 		# the track material to that source: restoring it must remove tracks.
@@ -357,6 +358,7 @@ func _sector(key: Vector2i) -> Dictionary:
 	rec.material.set_shader_parameter("soft_track_texture", rec.texture)
 	rec.material.set_shader_parameter("soft_track_layer", layer)
 	rec.material.set_shader_parameter("soft_track_time", _age)
+	if is_instance_valid(terrain.color_cache):terrain.color_cache.apply_soft_material(key,rec.material)
 	sectors[key] = rec
 	return rec
 

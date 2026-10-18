@@ -17,6 +17,7 @@ build instructions. Adding a patch here does not update installed templates.
 10. `sky-subpass-alpha.patch`
 11. `worker-thread-language-shutdown.patch`
 12. `far-dof-reference.patch`
+13. `forward-shadow-blend-guard.patch`
 
 The first two patches repair separate-render-thread shutdown and snapshot
 mutable images for queued texture uploads. The third lets an unobserved looping
@@ -98,7 +99,7 @@ controls. XR/multiview and other platform templates still need execution tests;
 no installed template is changed here.
 
 macOS and Web use the official 4.7 templates. Stable 1.0.3 Android ARM64 uses
-all twelve common patches and `android-headless-service.patch`; Experimental 5
+the first twelve common patches and `android-headless-service.patch`; Experimental 5
 and 6 used the first six common patches plus that service patch. See
 [the Android service guide](../../platform/android/simulation/README.md).
 The extra patch guards Android-only sensor dispatch and supplies a surface-free
@@ -236,3 +237,20 @@ See [`camera-depth-focus-2026-10-10.json`](../../docs/validation/camera-depth-fo
 for GPU focus/image/resource checks and exact legacy controls. Linux and Windows
 templates were compiled; Windows runtime and representative device costs remain
 separate acceptance work. No installed templates are replaced by this recipe.
+
+The thirteenth skips Forward+'s second directional PCF shadow lookup where its
+cascade blend weight is zero. The positive-weight transition still uses the
+same two filtered lookups, kernel, atlas, bias and blend equation. The angular
+soft-shadow path, Mobile and Compatibility shaders are unchanged. This requires
+a rebuilt native template; changing the game pack alone cannot enable it.
+
+`tests/forward_shadow_cascades.gd` records 72 deterministic images across Hard,
+Soft Low and Soft High filtering, one/two/four cascades, blending on/off and
+four camera offsets. Run it in both matched native builds via an absolute
+`--tool` path after `--`. On Linux Vulkan all paired PNGs are identical; all
+24 two/four-cascade blend controls differ from their non-blended counterparts,
+confirming that the tested transitions are visible. The matched engine builds,
+first-person 4K timings and platform limits are recorded in
+[the performance validation](../../docs/validation/campaign-autochess-20261018.md#directional-shadow-blend-work).
+Windows templates and execution still need validation; installed templates
+are not replaced by this recipe.

@@ -19,17 +19,20 @@ vec3 ei_relief_normal(sampler2D tex, vec2 uv, vec3 p, vec3 n, float strength) {
 	vec2 dy = dFdy(uv) * size;
 	float visible_detail = 1.0 - smoothstep(1.2, 4.0, max(length(dx), length(dy)));
 	visible_detail *= 1.0 - smoothstep(14.0, 40.0, length(p));
-	vec2 px = 1.0 / size;
-	vec3 lum = vec3(0.2126, 0.7152, 0.0722);
-	float left = dot(texture(tex, uv - vec2(px.x, 0.0)).rgb, lum);
-	float right = dot(texture(tex, uv + vec2(px.x, 0.0)).rgb, lum);
-	float above = dot(texture(tex, uv - vec2(0.0, px.y)).rgb, lum);
-	float below = dot(texture(tex, uv + vec2(0.0, px.y)).rgb, lum);
-	vec2 slope = clamp(vec2(right - left, below - above) * 2.0, vec2(-0.12), vec2(0.12));
+	// Take derivatives before the distance/minification branch. Explicit
+	// gradients retain the same texture footprint at its quad boundary.
 	vec3 dpdx = dFdx(p);
 	vec3 dpdy = dFdy(p);
 	vec2 duvdx = dFdx(uv);
 	vec2 duvdy = dFdy(uv);
+	if (visible_detail <= 0.0) { return normalize(n); }
+	vec2 px = 1.0 / size;
+	vec3 lum = vec3(0.2126, 0.7152, 0.0722);
+	float left = dot(textureGrad(tex, uv - vec2(px.x, 0.0), duvdx, duvdy).rgb, lum);
+	float right = dot(textureGrad(tex, uv + vec2(px.x, 0.0), duvdx, duvdy).rgb, lum);
+	float above = dot(textureGrad(tex, uv - vec2(0.0, px.y), duvdx, duvdy).rgb, lum);
+	float below = dot(textureGrad(tex, uv + vec2(0.0, px.y), duvdx, duvdy).rgb, lum);
+	vec2 slope = clamp(vec2(right - left, below - above) * 2.0, vec2(-0.12), vec2(0.12));
 	vec3 r1 = cross(dpdy, n);
 	vec3 r2 = cross(n, dpdx);
 	vec3 u = r1 * duvdx.x + r2 * duvdy.x;

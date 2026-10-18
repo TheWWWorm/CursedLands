@@ -1,0 +1,45 @@
+{
+	"adapter": "NVIDIA GeForce RTX 3090",
+	"checks": 5,
+	"failures": 0,
+	"particles": 3593,
+	"rows": [
+		{
+			"gpu_median_ms": 2.61500000953674,
+			"gpu_p95_ms": 3.48300004005432,
+			"optimized": false,
+			"pass": 0
+		},
+		{
+			"gpu_median_ms": 1.70299994945526,
+			"gpu_p95_ms": 2.23300004005432,
+			"optimized": true,
+			"pass": 0
+		},
+		{
+			"gpu_median_ms": 1.70500004291534,
+			"gpu_p95_ms": 2.22300004959106,
+			"optimized": true,
+			"pass": 1
+		},
+		{
+			"gpu_median_ms": 2.42300009727478,
+			"gpu_p95_ms": 2.83100008964539,
+			"optimized": false,
+			"pass": 1
+		},
+		{
+			"gpu_median_ms": 2.43400001525879,
+			"gpu_p95_ms": 3.06399989128113,
+			"optimized": false,
+			"pass": 2
+		},
+		{
+			"gpu_median_ms": 1.70500004291534,
+			"gpu_p95_ms": 2.22399997711182,
+			"optimized": true,
+			"pass": 2
+		}
+	],
+	"viewport": "(2560, 1440)"
+}

@@ -1275,8 +1275,10 @@ static func setup_sun_casters(sun: DirectionalLight3D) -> void:
 ## aliasing q_aa (0 off, 1 SMAA, 2 MSAA 4×, 3 MSAA 4× + SMAA, 4 TAA, 5 FSR 2,
 ## whose upscaler mode GameData._apply_window sets), shadow filter and atlas
 ## size q_shadows (0..3), anisotropic filtering q_aniso (0 off .. 4 = 16×).
-## None of them changes a colour. Called by GameData._apply_window.
+## Also initializes the shared effect sampling quality. Called by
+## GameData._apply_window and viewports created by the game modes.
 static func apply_quality(vp: Viewport) -> void:
+	apply_effect_quality()
 	var aa := GameData.option("q_aa")
 	vp.msaa_3d = Viewport.MSAA_4X if aa == 2 or aa == 3 else Viewport.MSAA_DISABLED
 	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_SMAA if (aa == 1 or aa == 3) and not Portability.compatibility() else Viewport.SCREEN_SPACE_AA_DISABLED
@@ -1323,6 +1325,16 @@ const VOL_FOG_SIZE := Vector2i(64, 48)
 const GLOW_LUMINANCE_CAP := 8.0
 
 
+## These are renderer-wide settings, shared by every viewport. Apply them
+## with view quality as well as environments: autochess can open before any
+## campaign Game exists and must not inherit the engine's heavier defaults.
+static func apply_effect_quality() -> void:
+	if not Portability.compatibility():
+		RenderingServer.environment_set_ssao_quality(SSAO_QUALITY, true, 0.5, 2, 50.0, 300.0)
+		RenderingServer.environment_set_volumetric_fog_volume_size(VOL_FOG_SIZE.x, VOL_FOG_SIZE.y)
+		RenderingServer.environment_glow_set_use_bicubic_upscale(false)
+
+
 ## The play view's environment switches (Options → Graphics).
 static func apply_env(env: Environment) -> void:
 	apply_surface_options()
@@ -1340,14 +1352,7 @@ static func apply_env(env: Environment) -> void:
 	env.glow_hdr_luminance_cap = GLOW_LUMINANCE_CAP
 	env.volumetric_fog_enabled = on("gfx_volumetric")
 	_set_vol_fog(on("gfx_volumetric"))
-	if not Portability.compatibility():
-		# Cheaper than project.godot's Ultra / 128 × 96 / bicubic glow at no
-		# visible loss (measured at 1440p on an RTX 3090: SSAO 1.7 → 0.9 ms,
-		# volumetric fog at night 0.8 → 0.4 ms, bloom 0.6 → 0.1 ms; the
-		# rest of SSAO and the fog is fixed cost).
-		RenderingServer.environment_set_ssao_quality(SSAO_QUALITY, true, 0.5, 2, 50.0, 300.0)
-		RenderingServer.environment_set_volumetric_fog_volume_size(VOL_FOG_SIZE.x, VOL_FOG_SIZE.y)
-		RenderingServer.environment_glow_set_use_bicubic_upscale(false)
+	apply_effect_quality()
 	var tree := Engine.get_main_loop() as SceneTree
 	if tree:
 		for l: Node in tree.get_nodes_in_group(&"gfx_torch_glow"):

@@ -16,8 +16,7 @@ func synchronize() -> void:
 			if viewed_player == player: board_event.emit(event))
 	_apply_view()
 
-func _process(_dt: float) -> void:
-	if overview: _apply_view()
+func _process(_dt: float) -> void: pass
 
 func request_start(_allow_empty := false) -> bool: return false
 

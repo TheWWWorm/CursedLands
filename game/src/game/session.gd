@@ -1939,7 +1939,7 @@ func leave_zone(target: String, entrance: int, player := -1, source_zone := "", 
 		# piece leads to the village, TravelMap); the remake option offers it.
 		var shown := start_zones_shown()
 		travel_options = travel_options.filter(func(o): return not START_ZONES.has(String(o.zone)) or shown.has(String(o.zone)))
-		for o: Dictionary in island_return_options(target):
+		for o: Dictionary in island_return_options(target) + suslanger_revisit_options(target):
 			if not travel_options.any(func(existing): return existing.zone == o.zone):
 				travel_options.append(o)
 	if travel_options.is_empty():
@@ -2003,6 +2003,27 @@ func island_return_options(edge: String) -> Array:
 		if exits.is_empty(): continue
 		out.append({"zone":id, "entrance":int(resume.get("entrance", exits.keys()[0])), "title":zone_title(id),
 			"hours":0.0, "return_allod":allod})
+	return out
+
+
+## The completed prison/cave sequence is disconnected from the later desert
+## by an authored one-way transfer. Revisit only after reaching that desert;
+## retain saved scripts and offer the way back from the old shared edge.
+func suslanger_revisit_options(edge: String) -> Array:
+	if state.campaign_id != CampaignProfile.ORIGINAL or not lmp.is_empty() \
+			or not state.current_party.is_empty() or state.get_var(0, "i.nocamp") == 1.0 or movie_active(): return []
+	if world == null or world.zone.get("cage", false) or not world.dialog_actors.is_empty() \
+			or party_heroes().any(func(u): return u.blocked): return []
+	var from := campaign.zone(edge)
+	if from.get("type", "") != "edge" or from.get("allod", "").to_lower() != "suslanger" \
+			or world.zone.get("allod", "").to_lower() != "suslanger" or not state.visited.has("gz17h"): return []
+	var destinations := ["gz15h", "gz16h"]
+	if zone_id in destinations: destinations.append("gz17h")
+	var out := []
+	for id: String in destinations:
+		if id == zone_id or not state.visited.has(id) or not zone_exists(id) \
+				or Dictionary(state.zones.get(id, {}).get("vm", {})).is_empty(): continue
+		out.append({"zone":id, "entrance":1, "title":zone_title(id), "hours":0.0, "suslanger_revisit":true})
 	return out
 
 
@@ -2176,6 +2197,7 @@ func _travel(zone: String, entrance: int) -> void:
 			if not zone_exists(zone) or not campaign.zone(zone).has("mpr"):
 				return
 			var resume: Dictionary = {}
+			if o.get("suslanger_revisit", false) and not suslanger_revisit_options(String(_travel_ev.get("from", ""))).any(func(v): return v.zone == zone and v.entrance == entrance): return
 			if o.has("return_allod"):
 				# Recheck the authority's current story gates at selection time.
 				if not island_return_options(String(_travel_ev.get("from", ""))).any(func(v): return v.zone == zone and v.entrance == entrance): return
@@ -4140,22 +4162,30 @@ func all_party_heroes_dead() -> bool:
 	return found
 
 
-## Host: a player's own hero died. Single player: nothing yet — the original shows
-## "Your main character is dead!" (texts.res game_over_msg) only when the
-## player next changes zone (`sp_game_over`). Co-op: the original multiplayer
-## ("LMP", the -lmp campaign maps) rules bring it back.
+## Solo play may continue with a living companion, but an entirely dead
+## party must offer Load immediately, including after restoring a dead-party save.
+func check_party_defeat() -> bool:
+	if not is_host or multiplayer_game or not lmp.is_empty() or loading_game or _restoring or world == null:
+		return false
+	var found := false
+	for u: GameUnit in world.unit_rows():
+		if u.controller < 0 or not u.has_meta("hero"): continue
+		found = true
+		if not u.dead: return false
+	if found:
+		travel_options.clear()
+		broadcast({"t":"game_over"})
+	return found
+
+
+## Host: a player's hero died. Solo play ends immediately only when no
+## companion survives; with a living party the original zone-change gate
+## remains. Co-op retains its original respawn rules.
 func hero_died(u: GameUnit) -> void:
 	if not is_host:
 		return
-	# Single player: the death itself opens no box. (player
-	# the only sender of client message 9 = game over) is called
-	# only by the zone change, and that only from the leave box's
-	# ✓ (message 3), the global map (message 6) and the script's LeaveToZone;
-	# no timer, no death hook reaches it. The party plays on with
-	# the companions; leaving the zone ends the game (`sp_game_over`).
-	# Remake option "sp_death_notice": the game-over sound and a small notice
-	# (GameHUD) at once, without pausing; the zone change rule is unchanged.
 	if not multiplayer_game and lmp.is_empty():
+		if check_party_defeat(): return
 		if GameData.option("sp_death_notice") == 1 and sp_main_hero_dead():
 			# Remake option "revive": the notice says a companion can help.
 			broadcast({"t": "death_notice", "revive": Revive.helper_present(self, u)})
@@ -4375,6 +4405,7 @@ func _on_event(event: Dictionary) -> void:
 		return
 	if t == "local_host_view":
 		local_host.restore_view(event.get("camera", {}))
+		if local_host.single_player: restore_play_clock(event.get("play_clock", {}))
 		return
 	if t == "local_save_failed" and local_host.frontend:
 		message.emit(RemakeText.t("Could not save the game."))
@@ -5060,6 +5091,31 @@ func save_game(slot: String, save_name := "", frame: Image = null) -> Error:
 	return err
 
 
+## Modal pause belongs to the interface, not to the saved gameplay clock.
+func saved_play_clock() -> Dictionary:
+	if multiplayer_game:
+		return {"paused":clock_paused if coop_clock_enabled() else false, "speed":clock_speed if coop_clock_enabled() else 0}
+	if local_host.worker and local_host.single_player and not local_host.saved_clock.is_empty():
+		return local_host.saved_clock.duplicate()
+	var paused := get_tree().paused
+	if game and game.hud:
+		if game.hud._pause_before != null: paused = bool(game.hud._pause_before)
+		elif game.hud._tutorial and game.hud._tutorial._paused: paused = false
+	return {"paused":paused, "speed":game.speed if game else int(Engine.time_scale > 1.0)}
+
+
+func restore_play_clock(value: Dictionary) -> void:
+	var rate := clampi(int(value.get("speed", 0)), 0, 1)
+	var paused := bool(value.get("paused", false))
+	if multiplayer_game:
+		_apply_clock(paused if coop_clock_enabled() else false, rate if coop_clock_enabled() else 0)
+		return
+	if game: game.speed = rate
+	Engine.time_scale = 55.0 / 27.0 if rate == 1 else 1.0
+	get_tree().paused = paused
+	if local_host.single_player: local_host.saved_clock = {"paused":paused,"speed":rate}
+
+
 ## Snapshot the running world before measuring or writing it. Otherwise the
 ## Save screen measures the previous autosave / zone departure, missing new
 ## script frames, lasting effects and current party bodies.
@@ -5067,6 +5123,7 @@ func _capture_save_state() -> void:
 	if state != null: state.mod_config = mod_config.duplicate(true)
 	if not is_host or not lmp.is_empty() or loading_game or coop.purse_active() or state == null or world == null:
 		return
+	state.play_clock = saved_play_clock()
 	state.collect_pets(world)
 	state.store_zone(zone_id, world)
 	state.current_zone = zone_id
@@ -5366,10 +5423,12 @@ func _load_state(slot: String, s: CampaignState) -> bool:
 	_publish_zone()
 	state.replay_restored(world)
 	sync_state()
+	restore_play_clock(state.play_clock)
 	if local_host.worker and local_host.owner_peer > 1:
-		_rpc_event.rpc_id(local_host.owner_peer, {"t": "local_host_view", "camera": state.camera})
+		_rpc_event.rpc_id(local_host.owner_peer, {"t": "local_host_view", "camera": state.camera, "play_clock":state.play_clock})
 	GameData.trace("load %s done in %s" % [slot, zone_id])
 	_finish_host_load()
+	check_party_defeat.call_deferred()
 	return true
 
 

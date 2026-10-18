@@ -14,8 +14,10 @@ var _transitions := false
 
 
 static func attach(root: Node3D, ground: EITerrain) -> void:
-	if DisplayServer.get_name() == "headless":
-		return # Dedicated simulation workers do not build visual field caches.
+	if DisplayServer.get_name() == "headless" or ground._land_mat == null:
+		# A hosted tournament also has simulation-only terrain inside the
+		# rendered process. Its navigation scenery has no visual ground data.
+		return
 	if not is_instance_valid(ground.contact):
 		var owner := GroundContact.new()
 		owner.name = "GroundContact"

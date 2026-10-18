@@ -197,7 +197,7 @@ func preview_fits(preview:WikiPreview,label:String)->void:
 	var fits:=true
 	for mesh:MeshInstance3D in doll._model.find_children("*","MeshInstance3D",true,false):
 		if not doll._shown_part(mesh):continue
-		var bounds:=mesh.get_aabb()
+		var bounds:=EIUnitModel.preview_bounds(mesh)
 		for i in 8:
 			var corner:=mesh.global_transform*bounds.get_endpoint(i)
 			if not box.has_point(doll._cam.unproject_position(corner)):fits=false

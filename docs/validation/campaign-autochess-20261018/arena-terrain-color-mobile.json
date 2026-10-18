@@ -1,0 +1,14 @@
+{
+	"adapter": "NVIDIA GeForce RTX 3090",
+	"captures": {
+		"before": "arena-terrain-color-before.png",
+		"detail-0": "arena-terrain-color-detail-0.png",
+		"detail-1": "arena-terrain-color-detail-1.png",
+		"detail-2": "arena-terrain-color-detail-2.png",
+		"restored": "arena-terrain-color-restored.png",
+		"tracks": "arena-terrain-color-tracks.png"
+	},
+	"checks": 17,
+	"failures": 0,
+	"renderer": "mobile"
+}

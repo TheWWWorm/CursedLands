@@ -47,6 +47,7 @@ class GroundInk extends Node2D:
 			draw_texture_rect(row[4], Rect2(-half, half * 2), false, row[5])
 
 var _ink: SubViewport
+var _color: Texture2DArray
 
 
 func bind_ground_marks(marks: GroundMarks) -> void:
@@ -71,8 +72,10 @@ static var _variants := {}
 
 func apply_gfx() -> void:
 	super.apply_gfx()
-	_treat(_land_mat)
-	_treat(_pair_land_mat)
+	var cached := ArenaTerrainColor.available(self)
+	if cached and _color == null: _color = ArenaTerrainColor.acquire(self)
+	_treat(_land_mat, _color if cached else null)
+	_treat(_pair_land_mat, _color if cached else null)
 	if _ink:
 		for material in [_land_mat, _pair_land_mat]:
 			if material:
@@ -82,10 +85,19 @@ func apply_gfx() -> void:
 		details.soft_ground.refresh_materials()
 
 
-static func _treat(material: ShaderMaterial) -> void:
+static func _treat(material: ShaderMaterial, color: Texture2DArray = null) -> void:
 	if material == null or material.shader == null or _variants.has(material.shader): return
 	var source := material.shader
-	if not _winter_shaders.has(source):
+	# Gfx can recompose this same Shader resource when an option changes.
+	# Rebuild its winter variants from the new source, not an old copy.
+	if not _winter_shaders.has(source) or _winter_shaders[source].code != source.code:
+		if _winter_shaders.has(source):
+			for old_kind in ["plain", "cached"]:
+				if _winter_shaders[source].has(old_kind): _variants.erase(_winter_shaders[source][old_kind])
+		_winter_shaders[source] = {"code": source.code}
+	var kind := "cached" if color != null else "plain"
+	var shaders: Dictionary = _winter_shaders[source]
+	if not shaders.has(kind):
 		var variant := source.duplicate() as Shader
 		variant.code = source.code.replace("shader_type spatial;", "shader_type spatial;\nuniform bool arena_ink_enabled = false;\nuniform sampler2D arena_ink : source_color, filter_linear, repeat_disable;")
 		variant.code = variant.code.replace("ALBEDO = c;", "if (arena_ink_enabled) { vec4 ink = texture(arena_ink, vec2(wpos.x, -wpos.z) / 64.0); c = c * (1.0 - ink.a) + ink.rgb; }\n\tALBEDO = c;")
@@ -94,6 +106,8 @@ static func _treat(material: ShaderMaterial) -> void:
 		# At the spectator distance, a slightly stronger compacted-snow tint
 		# supplements the native geometric trough and planted-foot normals.
 		variant.code = variant.code.replace("ground == 3 ? 0.12 : 0.16", "ground == 3 ? 0.12 : 0.28")
-		_winter_shaders[source] = variant
+		if color != null: variant.code = ArenaTerrainColor.source(variant.code)
+		shaders[kind] = variant
 		_variants[variant] = true
-	material.shader = _winter_shaders[source]
+	material.shader = shaders[kind]
+	material.set_shader_parameter("baked_ground", color)

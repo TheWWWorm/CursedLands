@@ -1,0 +1,86 @@
+{
+  "scope": "Final performance runtime: Forward+ shadow guard plus deferred online departure roster broadcasts. PCK exported from this working tree.",
+  "path": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-validated",
+  "files": {
+    "CursedLands.x86_64": {
+      "sha256": "8e9e70d6ffefe09d4491696251c71e1cf880725fcfce9efe110dd6d36c02b99e",
+      "bytes": 82141352
+    },
+    "CursedLands.pck": {
+      "sha256": "398c431b2769be83b144ea8933fb70d1f0633fa96419b1f3cd1b2ba438b9a3c0",
+      "bytes": 12293352
+    },
+    "src/native/bin/libterrain_search.so": {
+      "sha256": "a258c8cd64c0684b797d61b5ca08bd14f98cddda3e19f5466cfc40b5b5829f4d",
+      "bytes": 3110064
+    }
+  },
+  "prior_paired_engine_receipt": "performance-runtime-forward-shadow.json",
+  "pack_change_since_shadow_comparison": "ArenaOnlineSession._peer_disconnected defers _send_lobby until the current network poll has finished. No rendering or campaign logic changed.",
+  "platform": "Linux Vulkan on NVIDIA RTX 3090; safe render thread. Windows and RTX 4090 Laptop untested.",
+  "runs": [
+    {
+      "name": "validated-desert",
+      "average_fps": 66.00564396568973,
+      "frame_ms": {
+        "max": 59.894,
+        "median": 15.01,
+        "p95": 18.154,
+        "p99": 19.112
+      },
+      "runtime_errors": [],
+      "data": "validated-desert.json",
+      "log": "validated-desert.log"
+    },
+    {
+      "name": "validated-host-1",
+      "average_fps": 66.30285832954979,
+      "frame_ms": {
+        "max": 63.599,
+        "median": 14.917,
+        "p95": 17.246,
+        "p99": 20.187
+      },
+      "runtime_errors": [],
+      "data": "validated-host-1.json",
+      "log": "validated-host-1.log",
+      "max_clock_lag_seconds": 0.05549300000010149,
+      "peak_drawn_particles": 4404,
+      "guest_connected": true,
+      "worker_exited": true
+    },
+    {
+      "name": "validated-host-2",
+      "average_fps": 62.74880534134884,
+      "frame_ms": {
+        "max": 73.772,
+        "median": 15.448,
+        "p95": 20.002,
+        "p99": 26.191
+      },
+      "runtime_errors": [],
+      "data": "validated-host-2.json",
+      "log": "validated-host-2.log",
+      "max_clock_lag_seconds": 0.3051179999999998,
+      "peak_drawn_particles": 4378,
+      "guest_connected": true,
+      "worker_exited": true
+    }
+  ],
+  "tests": "final-network-checks.json",
+  "commands": "validated-commands.json",
+  "safe_zone_and_turn_runs": {
+    "pack_sha256": "394a7bc3cad16cfac9431336fc77dd5cf1be7c5ef8635f0fc0466b91529f2d62",
+    "files": [
+      "shadow-final-camp-bz14h.json",
+      "shadow-final-camp-bz15h.json",
+      "shadow-final-turn.json"
+    ],
+    "note": "Same engine and rendering/campaign code; before the final autochess disconnect-only pack change."
+  },
+  "source_checksums": {
+    "game/src/game/arena_online_session.gd": "1f56e43c74a6ceeb3d936c148b3162576b6b3806abafa8eb213f87baf561b8ed",
+    "engine_patches/godot-4.7/forward-shadow-blend-guard.patch": "7ce40d66ba714b49dfcc30dfe97b7e6f35ae49163a039605e0096fb5b72a8af4",
+    "tools/tests/arena_online_disconnect.gd": "4e21120d3c40c7131ef49d69cf3c6b0e639833fb55b55d7ad0df160fc6c7083d"
+  }
+}

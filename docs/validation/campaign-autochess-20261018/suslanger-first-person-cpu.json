@@ -1,0 +1,90 @@
+[
+	{
+		"operations": {
+			"aim": {
+				"max_ms": 0.575,
+				"median_ms": 0.281,
+				"p95_ms": 0.54
+			},
+			"camera": {
+				"max_ms": 0.135,
+				"median_ms": 0.106,
+				"p95_ms": 0.122
+			},
+			"control": {
+				"max_ms": 0.113,
+				"median_ms": 0.053,
+				"p95_ms": 0.062
+			}
+		},
+		"units": 23,
+		"usable": true,
+		"zone": "bz14h"
+	},
+	{
+		"operations": {
+			"aim": {
+				"max_ms": 0.299,
+				"median_ms": 0.202,
+				"p95_ms": 0.293
+			},
+			"camera": {
+				"max_ms": 0.12,
+				"median_ms": 0.106,
+				"p95_ms": 0.112
+			},
+			"control": {
+				"max_ms": 0.094,
+				"median_ms": 0.053,
+				"p95_ms": 0.057
+			}
+		},
+		"units": 21,
+		"usable": true,
+		"zone": "bz15h"
+	},
+	{
+		"operations": {
+			"aim": {
+				"max_ms": 0.301,
+				"median_ms": 0.267,
+				"p95_ms": 0.293
+			},
+			"camera": {
+				"max_ms": 0.303,
+				"median_ms": 0.109,
+				"p95_ms": 0.115
+			},
+			"control": {
+				"max_ms": 0.386,
+				"median_ms": 0.32,
+				"p95_ms": 0.352
+			}
+		},
+		"units": 341,
+		"usable": true,
+		"zone": "gz17h"
+	},
+	{
+		"operations": {
+			"aim": {
+				"max_ms": 0.527,
+				"median_ms": 0.256,
+				"p95_ms": 0.321
+			},
+			"camera": {
+				"max_ms": 0.177,
+				"median_ms": 0.116,
+				"p95_ms": 0.139
+			},
+			"control": {
+				"max_ms": 0.472,
+				"median_ms": 0.304,
+				"p95_ms": 0.379
+			}
+		},
+		"units": 74,
+		"usable": true,
+		"zone": "gz15h"
+	}
+]

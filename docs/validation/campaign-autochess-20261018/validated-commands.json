@@ -1,0 +1,117 @@
+[
+  {
+    "name": "validated-disconnect",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-validated/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/tests/arena_online_disconnect.gd"
+    ],
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/checks/validated-disconnect",
+    "exit_code": 0,
+    "duration_seconds": 2.9683348610415123
+  },
+  {
+    "name": "validated-authority",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-validated/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/tests/arena_local_host.gd"
+    ],
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/checks/validated-authority",
+    "exit_code": 0,
+    "duration_seconds": 29.909127910039388
+  },
+  {
+    "name": "validated-online",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-validated/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/tests/arena_online.gd"
+    ],
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/checks/validated-online",
+    "exit_code": 0,
+    "duration_seconds": 9.17768886795966
+  },
+  {
+    "name": "validated-lobby",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-validated/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/tests/arena_online_lobby.gd"
+    ],
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/checks/validated-lobby",
+    "exit_code": 0,
+    "duration_seconds": 4.170940313022584
+  },
+  {
+    "name": "validated-desert",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-validated/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--position",
+      "100,900",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/benchmarks/suslanger_live.gd",
+      "--root-viewport",
+      "--zone=gz17h",
+      "--seconds=30"
+    ],
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/checks/validated-desert",
+    "exit_code": 0,
+    "duration_seconds": 85.9631775880116
+  },
+  {
+    "name": "validated-host-1",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-validated/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--position",
+      "100,900",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/benchmarks/arena_host_process_frame_time.gd",
+      "--speed=1",
+      "--seconds=30"
+    ],
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/checks/validated-host-1",
+    "exit_code": 0,
+    "duration_seconds": 65.2762492900365
+  },
+  {
+    "name": "validated-host-2",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-validated/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--position",
+      "100,900",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/benchmarks/arena_host_process_frame_time.gd",
+      "--speed=2",
+      "--seconds=15"
+    ],
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/checks/validated-host-2",
+    "exit_code": 0,
+    "duration_seconds": 51.70081188698532
+  }
+]

@@ -1,0 +1,1173 @@
+[
+  {
+    "case": "constant vertex loop",
+    "decision": "Not integrated: no consistent useful GPU improvement.",
+    "rows": [
+      {
+        "frame_median_ms": 33.796,
+        "frame_p95_ms": 38.339,
+        "gpu_median_ms": 18.5669994354248,
+        "gpu_p95_ms": 20.6200008392334,
+        "optimized": false,
+        "render_cpu_median_ms": 3.0220000743866
+      },
+      {
+        "frame_median_ms": 34.635,
+        "frame_p95_ms": 38.625,
+        "gpu_median_ms": 18.7189998626709,
+        "gpu_p95_ms": 20.7019996643066,
+        "optimized": true,
+        "render_cpu_median_ms": 3.26399993896484
+      },
+      {
+        "frame_median_ms": 34.267,
+        "frame_p95_ms": 38.141,
+        "gpu_median_ms": 18.8509998321533,
+        "gpu_p95_ms": 20.6089992523193,
+        "optimized": false,
+        "render_cpu_median_ms": 3.12899994850159
+      },
+      {
+        "frame_median_ms": 34.502,
+        "frame_p95_ms": 38.125,
+        "gpu_median_ms": 18.57200050354,
+        "gpu_p95_ms": 20.5900001525879,
+        "optimized": true,
+        "render_cpu_median_ms": 3.12299990653992
+      }
+    ]
+  },
+  {
+    "case": "candidate bit iteration",
+    "decision": "Not integrated: no consistent useful GPU improvement.",
+    "rows": [
+      {
+        "frame_median_ms": 34.094,
+        "frame_p95_ms": 37.09,
+        "gpu_median_ms": 18.3689994812012,
+        "gpu_p95_ms": 20.3250007629395,
+        "optimized": false,
+        "render_cpu_median_ms": 3.00600004196167
+      },
+      {
+        "frame_median_ms": 34.142,
+        "frame_p95_ms": 38.105,
+        "gpu_median_ms": 18.375,
+        "gpu_p95_ms": 20.1520004272461,
+        "optimized": true,
+        "render_cpu_median_ms": 3.10599994659424
+      },
+      {
+        "frame_median_ms": 33.995,
+        "frame_p95_ms": 37.407,
+        "gpu_median_ms": 18.3880004882812,
+        "gpu_p95_ms": 20.3239994049072,
+        "optimized": false,
+        "render_cpu_median_ms": 3.06399989128113
+      },
+      {
+        "frame_median_ms": 33.785,
+        "frame_p95_ms": 38.148,
+        "gpu_median_ms": 18.1459999084473,
+        "gpu_p95_ms": 20.3059997558594,
+        "optimized": true,
+        "render_cpu_median_ms": 3.07699990272522
+      }
+    ]
+  },
+  {
+    "case": "Prewarm all nine navigation graphs",
+    "decision": "Not integrated: 304 ms of preparation still left a 305 ms worst frame; it moves/adds work without resolving the opening hitch.",
+    "frame_ms": {
+      "max": 305.472,
+      "median": 16.997,
+      "p95": 40.144,
+      "p99": 55.939
+    }
+  },
+  {
+    "case": "Share four interior terrain relief atlas coordinate calculations",
+    "decision": "Not integrated: no consistent GPU gain across alternating passes; baseline 17.67/17.51 ms, candidate 17.44/18.22 ms. Pure tiles only; borders and transitions retained their original sampling. No production source changed.",
+    "rows": [
+      {
+        "frame_median_ms": 17.803,
+        "frame_p95_ms": 19.483,
+        "gpu_median_ms": 17.6690006256104,
+        "gpu_p95_ms": 18.875,
+        "optimized": false,
+        "render_cpu_median_ms": 3.23099994659424
+      },
+      {
+        "frame_median_ms": 17.513,
+        "frame_p95_ms": 18.949,
+        "gpu_median_ms": 17.4409999847412,
+        "gpu_p95_ms": 18.367000579834,
+        "optimized": true,
+        "render_cpu_median_ms": 2.82299995422363
+      },
+      {
+        "frame_median_ms": 17.672,
+        "frame_p95_ms": 19.291,
+        "gpu_median_ms": 17.5069999694824,
+        "gpu_p95_ms": 18.7800006866455,
+        "optimized": false,
+        "render_cpu_median_ms": 3.08400011062622
+      },
+      {
+        "frame_median_ms": 18.349,
+        "frame_p95_ms": 20.418,
+        "gpu_median_ms": 18.2169990539551,
+        "gpu_p95_ms": 19.9529991149902,
+        "optimized": true,
+        "render_cpu_median_ms": 3.12700009346008
+      }
+    ]
+  },
+  {
+    "case": "Skip fog colour conversion for fully clear fragments",
+    "decision": "Not integrated: no consistent GPU improvement. Both profiles preserve all fogged fragments; baseline 17.29/17.43 ms, candidate 17.73/17.09 ms.",
+    "rows": [
+      {
+        "frame_median_ms": 17.721,
+        "frame_p95_ms": 19.359,
+        "gpu_median_ms": 17.2910003662109,
+        "gpu_p95_ms": 18.5830001831055,
+        "optimized": false,
+        "render_cpu_median_ms": 3.20700001716614
+      },
+      {
+        "frame_median_ms": 17.935,
+        "frame_p95_ms": 19.79,
+        "gpu_median_ms": 17.7329998016357,
+        "gpu_p95_ms": 19.6720008850098,
+        "optimized": true,
+        "render_cpu_median_ms": 3.67700004577637
+      },
+      {
+        "frame_median_ms": 17.696,
+        "frame_p95_ms": 19.363,
+        "gpu_median_ms": 17.4290008544922,
+        "gpu_p95_ms": 18.6609992980957,
+        "optimized": false,
+        "render_cpu_median_ms": 3.36199998855591
+      },
+      {
+        "frame_median_ms": 17.343,
+        "frame_p95_ms": 18.403,
+        "gpu_median_ms": 17.0930004119873,
+        "gpu_p95_ms": 18.0069999694824,
+        "optimized": true,
+        "render_cpu_median_ms": 3.06299996376038
+      }
+    ]
+  },
+  {
+    "case": "Exclude high scenery parts from ground-contact material",
+    "decision": "Not integrated: excluding 790 of 4439 parts, using conservative height bounds and an additional 2 m foliage margin, did not give a consistent gain. Baseline 17.30/17.77 ms, candidate 17.42/17.42 ms.",
+    "rows": [
+      {
+        "frame_median_ms": 17.597,
+        "frame_p95_ms": 19.498,
+        "gpu_median_ms": 17.2970008850098,
+        "gpu_p95_ms": 18.7049999237061,
+        "optimized": false,
+        "render_cpu_median_ms": 3.32999992370605
+      },
+      {
+        "frame_median_ms": 17.672,
+        "frame_p95_ms": 19.527,
+        "gpu_median_ms": 17.4220008850098,
+        "gpu_p95_ms": 18.9820003509521,
+        "optimized": true,
+        "render_cpu_median_ms": 3.15199995040894
+      },
+      {
+        "frame_median_ms": 18.047,
+        "frame_p95_ms": 19.898,
+        "gpu_median_ms": 17.7709999084473,
+        "gpu_p95_ms": 19.5219993591309,
+        "optimized": false,
+        "render_cpu_median_ms": 2.80299997329712
+      },
+      {
+        "frame_median_ms": 17.631,
+        "frame_p95_ms": 19.2,
+        "gpu_median_ms": 17.4160003662109,
+        "gpu_p95_ms": 18.7520008087158,
+        "optimized": true,
+        "render_cpu_median_ms": 2.80200004577637
+      }
+    ]
+  },
+  {
+    "case": "Skip unused native relighting for enhanced local lights",
+    "decision": "Not integrated: only about 0.13 ms (under 1%) in both frozen host pairs; not a material gain toward the target.",
+    "rows": [
+      {
+        "cpu_ms": {
+          "max": 0.861999988555908,
+          "median": 0.642000019550323,
+          "p95": 0.728999972343445,
+          "p99": 0.85699999332428
+        },
+        "gpu_ms": {
+          "max": 17.0510005950928,
+          "median": 14.6429996490479,
+          "p95": 16.1650009155273,
+          "p99": 16.9130001068115
+        },
+        "optimized": false
+      },
+      {
+        "cpu_ms": {
+          "max": 0.888999998569489,
+          "median": 0.660000026226044,
+          "p95": 0.787000000476837,
+          "p99": 0.83899998664856
+        },
+        "gpu_ms": {
+          "max": 16.871000289917,
+          "median": 14.5150003433228,
+          "p95": 16.0020008087158,
+          "p99": 16.7999992370605
+        },
+        "optimized": true
+      },
+      {
+        "cpu_ms": {
+          "max": 0.861999988555908,
+          "median": 0.635999977588654,
+          "p95": 0.73199999332428,
+          "p99": 0.805999994277954
+        },
+        "gpu_ms": {
+          "max": 15.3179998397827,
+          "median": 13.9350004196167,
+          "p95": 14.8439998626709,
+          "p99": 15.3149995803833
+        },
+        "optimized": false
+      },
+      {
+        "cpu_ms": {
+          "max": 0.945999979972839,
+          "median": 0.643999993801117,
+          "p95": 0.819000005722046,
+          "p99": 0.916000008583069
+        },
+        "gpu_ms": {
+          "max": 15.8459997177124,
+          "median": 13.8059997558594,
+          "p95": 15.1990003585815,
+          "p99": 15.5780000686646
+        },
+        "optimized": true
+      }
+    ]
+  },
+  {
+    "case": "Opaque texture depth-only variant",
+    "decision": "Not integrated: only 0.08/0.16 ms GPU savings (under 1%) across two frozen desert pairs, with additional alpha classification and shader variants.",
+    "rows": [
+      {
+        "frame_median_ms": 17.729,
+        "frame_p95_ms": 19.387,
+        "gpu_median_ms": 17.4939994812012,
+        "gpu_p95_ms": 18.7940006256104,
+        "optimized": false,
+        "render_cpu_median_ms": 3.38700008392334
+      },
+      {
+        "frame_median_ms": 17.6,
+        "frame_p95_ms": 19.531,
+        "gpu_median_ms": 17.4179992675781,
+        "gpu_p95_ms": 19.076000213623,
+        "optimized": true,
+        "render_cpu_median_ms": 2.86999988555908
+      },
+      {
+        "frame_median_ms": 17.935,
+        "frame_p95_ms": 19.332,
+        "gpu_median_ms": 17.6660003662109,
+        "gpu_p95_ms": 18.9479999542236,
+        "optimized": false,
+        "render_cpu_median_ms": 2.83100008964539
+      },
+      {
+        "frame_median_ms": 17.794,
+        "frame_p95_ms": 19.904,
+        "gpu_median_ms": 17.507999420166,
+        "gpu_p95_ms": 19.1040000915527,
+        "optimized": true,
+        "render_cpu_median_ms": 2.88499999046326
+      }
+    ]
+  },
+  {
+    "case": "Triangle-level contact candidate mask",
+    "decision": "Not integrated: no consistent gain (17.45/17.38 ms baseline, 17.53/17.36 ms candidate), while adding 4.9 seconds of map preprocessing and doubling lookup storage.",
+    "rows": [
+      {
+        "frame_median_ms": 17.699,
+        "frame_p95_ms": 19.271,
+        "gpu_median_ms": 17.4549999237061,
+        "gpu_p95_ms": 18.7679996490479,
+        "optimized": false,
+        "render_cpu_median_ms": 3.37400007247925
+      },
+      {
+        "frame_median_ms": 17.698,
+        "frame_p95_ms": 19.259,
+        "gpu_median_ms": 17.5300006866455,
+        "gpu_p95_ms": 18.8819999694824,
+        "optimized": true,
+        "render_cpu_median_ms": 3.22399997711182
+      },
+      {
+        "frame_median_ms": 17.569,
+        "frame_p95_ms": 18.921,
+        "gpu_median_ms": 17.3840007781982,
+        "gpu_p95_ms": 18.4489994049072,
+        "optimized": false,
+        "render_cpu_median_ms": 3.69099998474121
+      },
+      {
+        "frame_median_ms": 17.615,
+        "frame_p95_ms": 19.317,
+        "gpu_median_ms": 17.3600006103516,
+        "gpu_p95_ms": 19.2409992218018,
+        "optimized": true,
+        "render_cpu_median_ms": 3.56399989128113
+      }
+    ]
+  },
+  {
+    "case": "Explicit Forward+ scenery MultiMesh batching",
+    "decision": "Not integrated: GPU and render CPU cost increased, as did draws (3765 to 3889). 1541 mesh parts grouped into 579 batches by mesh/material, cell and draw state. Forward+ already performs automatic grouping.",
+    "rows": [
+      {
+        "draws": 3765,
+        "frame_median_ms": 17.359,
+        "frame_p95_ms": 18.886,
+        "gpu_median_ms": 17.2269992828369,
+        "gpu_p95_ms": 18.5109996795654,
+        "optimized": false,
+        "render_cpu_median_ms": 3.35500001907349
+      },
+      {
+        "draws": 3889,
+        "frame_median_ms": 17.965,
+        "frame_p95_ms": 19.365,
+        "gpu_median_ms": 17.6840000152588,
+        "gpu_p95_ms": 19.0890007019043,
+        "optimized": true,
+        "render_cpu_median_ms": 3.80900001525879
+      },
+      {
+        "draws": 3765,
+        "frame_median_ms": 17.816,
+        "frame_p95_ms": 19.202,
+        "gpu_median_ms": 17.5109996795654,
+        "gpu_p95_ms": 18.8770008087158,
+        "optimized": false,
+        "render_cpu_median_ms": 2.875
+      },
+      {
+        "draws": 3889,
+        "frame_median_ms": 18.104,
+        "frame_p95_ms": 20.271,
+        "gpu_median_ms": 17.9009990692139,
+        "gpu_p95_ms": 19.673999786377,
+        "optimized": true,
+        "render_cpu_median_ms": 3.51999998092651
+      }
+    ]
+  },
+  {
+    "case": "Memoize repeated area damage scores within each native AI choice",
+    "decision": "Reverted: synthetic repeated scoring improved about 20%, but the live instrumented host remained 35.30 versus 35.31 FPS, with native aichoose 88.46 versus 87.94 microseconds. No meaningful live gain.",
+    "validation": {
+      "score_checks": 11557,
+      "full_round_cycles": 807,
+      "before_and_after_full_state_sha256": "e3660b03010516394d34072a2d77d4d35afd4ea95e41086612266584adc164b6",
+      "scheduler_checks": 24448,
+      "online_checks": 64
+    },
+    "qualification": "Instrumented simulation profile, not FPS acceptance. Original AI source and runtime restored before the separate-process work."
+  },
+  {
+    "case": "Static soft-ground profile cache in first-person desert",
+    "decision": "About 0.25\u20130.44 ms in desert diagnostics; a fully frozen arena recheck did not reproduce a useful gain. No cache integrated.",
+    "rows": [
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.602,
+        "frame_p95_ms": 18.904,
+        "gpu_median_ms": 17.3470001220703,
+        "gpu_p95_ms": 18.6280002593994,
+        "render_cpu_median_ms": 3.26699995994568
+      },
+      {
+        "case": "cached",
+        "draws": 3765,
+        "frame_median_ms": 17.269,
+        "frame_p95_ms": 18.902,
+        "gpu_median_ms": 17.0919990539551,
+        "gpu_p95_ms": 18.5139999389648,
+        "render_cpu_median_ms": 3.57800006866455
+      },
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.552,
+        "frame_p95_ms": 19.317,
+        "gpu_median_ms": 17.3889999389648,
+        "gpu_p95_ms": 18.7639999389648,
+        "render_cpu_median_ms": 3.3199999332428
+      },
+      {
+        "case": "cached",
+        "draws": 3765,
+        "frame_median_ms": 17.098,
+        "frame_p95_ms": 18.723,
+        "gpu_median_ms": 16.9500007629395,
+        "gpu_p95_ms": 18.2070007324219,
+        "render_cpu_median_ms": 3.01300001144409
+      }
+    ]
+  },
+  {
+    "case": "Cached shoreline metadata in first-person desert",
+    "decision": "No further gain over the simpler profile cache; not integrated.",
+    "rows": [
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.677,
+        "frame_p95_ms": 19.689,
+        "gpu_median_ms": 17.3780002593994,
+        "gpu_p95_ms": 18.5960006713867,
+        "render_cpu_median_ms": 3.35700011253357
+      },
+      {
+        "case": "cached",
+        "draws": 3765,
+        "frame_median_ms": 17.321,
+        "frame_p95_ms": 19.05,
+        "gpu_median_ms": 17.136999130249,
+        "gpu_p95_ms": 18.3719997406006,
+        "render_cpu_median_ms": 3.73600006103516
+      },
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.539,
+        "frame_p95_ms": 19.105,
+        "gpu_median_ms": 17.3390007019043,
+        "gpu_p95_ms": 18.693000793457,
+        "render_cpu_median_ms": 2.78900003433228
+      },
+      {
+        "case": "cached",
+        "draws": 3765,
+        "frame_median_ms": 17.178,
+        "frame_p95_ms": 18.903,
+        "gpu_median_ms": 16.9930000305176,
+        "gpu_p95_ms": 18.3530006408691,
+        "render_cpu_median_ms": 3.34100008010864
+      }
+    ]
+  },
+  {
+    "case": "Tighter ground-contact reach bounds and zero-weight lighting exit",
+    "decision": "Small inconsistent savings (0.13\u20130.35 ms) in frozen desert; not integrated.",
+    "rows": [
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.704,
+        "frame_p95_ms": 19.542,
+        "gpu_median_ms": 17.488000869751,
+        "gpu_p95_ms": 19.0060005187988,
+        "render_cpu_median_ms": 3.24000000953674
+      },
+      {
+        "case": "bounded",
+        "draws": 3765,
+        "frame_median_ms": 17.393,
+        "frame_p95_ms": 19.361,
+        "gpu_median_ms": 17.1429996490479,
+        "gpu_p95_ms": 18.8290004730225,
+        "render_cpu_median_ms": 3.40199995040894
+      },
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.933,
+        "frame_p95_ms": 19.623,
+        "gpu_median_ms": 17.6650009155273,
+        "gpu_p95_ms": 19.0739994049072,
+        "render_cpu_median_ms": 2.8989999294281
+      },
+      {
+        "case": "bounded",
+        "draws": 3765,
+        "frame_median_ms": 17.618,
+        "frame_p95_ms": 19.621,
+        "gpu_median_ms": 17.5340003967285,
+        "gpu_p95_ms": 19.0830001831055,
+        "render_cpu_median_ms": 3.49699997901917
+      }
+    ]
+  },
+  {
+    "case": "Opaque shader for entirely opaque foliage atlases",
+    "decision": "Slower GPU time in both alternating pairs; not integrated.",
+    "rows": [
+      {
+        "frame_median_ms": 17.47,
+        "frame_p95_ms": 19.047,
+        "gpu_median_ms": 17.242000579834,
+        "gpu_p95_ms": 18.4109992980957,
+        "optimized": false,
+        "render_cpu_median_ms": 3.42600011825562
+      },
+      {
+        "frame_median_ms": 17.704,
+        "frame_p95_ms": 19.395,
+        "gpu_median_ms": 17.5359992980957,
+        "gpu_p95_ms": 18.8840007781982,
+        "optimized": true,
+        "render_cpu_median_ms": 2.89000010490417
+      },
+      {
+        "frame_median_ms": 17.741,
+        "frame_p95_ms": 19.535,
+        "gpu_median_ms": 17.5499992370605,
+        "gpu_p95_ms": 19.1200008392334,
+        "optimized": false,
+        "render_cpu_median_ms": 2.9760000705719
+      },
+      {
+        "frame_median_ms": 17.975,
+        "frame_p95_ms": 19.859,
+        "gpu_median_ms": 17.7759990692139,
+        "gpu_p95_ms": 19.3050003051758,
+        "optimized": true,
+        "render_cpu_median_ms": 2.96499991416931
+      }
+    ]
+  },
+  {
+    "case": "Terrain occlusion in first-person desert",
+    "decision": "144 terrain occluders reduce draw count but give only about 0.1\u20130.2 ms mixed GPU gains with extra setup/CPU work; not integrated.",
+    "rows": [
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.18,
+        "frame_p95_ms": 18.199,
+        "gpu_median_ms": 16.9850006103516,
+        "gpu_p95_ms": 18.0209999084473,
+        "render_cpu_median_ms": 3.78099989891052
+      },
+      {
+        "case": "occlusion",
+        "draws": 3334,
+        "frame_median_ms": 17.179,
+        "frame_p95_ms": 18.63,
+        "gpu_median_ms": 16.9080009460449,
+        "gpu_p95_ms": 18.4340000152588,
+        "render_cpu_median_ms": 3.59299993515015
+      },
+      {
+        "case": "occlusion",
+        "draws": 3334,
+        "frame_median_ms": 17.182,
+        "frame_p95_ms": 18.329,
+        "gpu_median_ms": 16.9459991455078,
+        "gpu_p95_ms": 18.1439990997314,
+        "render_cpu_median_ms": 3.28900003433228
+      },
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.393,
+        "frame_p95_ms": 18.68,
+        "gpu_median_ms": 17.1749992370605,
+        "gpu_p95_ms": 18.5030002593994,
+        "render_cpu_median_ms": 2.99600005149841
+      }
+    ],
+    "scope": "Frozen simulation, native first-person eye, full HUD, same-process shader A/B at 4K Ultra."
+  },
+  {
+    "case": "Skip fully projected cliff colour relief",
+    "decision": "Guard alone is slightly slower in the tested heavy view. Its output differs by at most 1/255. Not integrated; combined colour-page cases are exploratory.",
+    "rows": [
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.219,
+        "frame_p95_ms": 18.552,
+        "gpu_median_ms": 16.9769992828369,
+        "gpu_p95_ms": 18.3470001220703,
+        "render_cpu_median_ms": 3.53500008583069
+      },
+      {
+        "case": "guard",
+        "draws": 3765,
+        "frame_median_ms": 17.363,
+        "frame_p95_ms": 18.367,
+        "gpu_median_ms": 17.1490001678467,
+        "gpu_p95_ms": 18.1459999084473,
+        "render_cpu_median_ms": 3.01099991798401
+      },
+      {
+        "case": "cached",
+        "draws": 3765,
+        "frame_median_ms": 16.64,
+        "frame_p95_ms": 18.092,
+        "gpu_median_ms": 16.4659996032715,
+        "gpu_p95_ms": 17.9220008850098,
+        "render_cpu_median_ms": 3.99600005149841
+      },
+      {
+        "case": "both",
+        "draws": 3765,
+        "frame_median_ms": 16.304,
+        "frame_p95_ms": 17.823,
+        "gpu_median_ms": 16.128999710083,
+        "gpu_p95_ms": 17.5559997558594,
+        "render_cpu_median_ms": 2.91199994087219
+      },
+      {
+        "case": "both",
+        "draws": 3765,
+        "frame_median_ms": 16.471,
+        "frame_p95_ms": 17.929,
+        "gpu_median_ms": 16.257999420166,
+        "gpu_p95_ms": 17.7660007476807,
+        "render_cpu_median_ms": 2.86500000953674
+      },
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.816,
+        "frame_p95_ms": 19.953,
+        "gpu_median_ms": 17.5739994049072,
+        "gpu_p95_ms": 19.7910003662109,
+        "render_cpu_median_ms": 3.31599998474121
+      }
+    ],
+    "scope": "Frozen simulation, native first-person eye, full HUD, same-process shader A/B at 4K Ultra."
+  },
+  {
+    "case": "Reuse queried terrain triangle in contact lighting",
+    "decision": "No measurable GPU benefit in the heavy first-person view. Image difference is at most 1/255, within the repeated baseline difference. Not integrated.",
+    "rows": [
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.333,
+        "frame_p95_ms": 18.458,
+        "gpu_median_ms": 17.1040000915527,
+        "gpu_p95_ms": 18.2679996490479,
+        "render_cpu_median_ms": 3.18499994277954
+      },
+      {
+        "case": "reuse",
+        "draws": 3765,
+        "frame_median_ms": 17.364,
+        "frame_p95_ms": 18.75,
+        "gpu_median_ms": 17.1860008239746,
+        "gpu_p95_ms": 18.5200004577637,
+        "render_cpu_median_ms": 3.16199994087219
+      },
+      {
+        "case": "reuse",
+        "draws": 3765,
+        "frame_median_ms": 17.409,
+        "frame_p95_ms": 18.671,
+        "gpu_median_ms": 17.2159996032715,
+        "gpu_p95_ms": 18.4850006103516,
+        "render_cpu_median_ms": 3.43700003623962
+      },
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.41,
+        "frame_p95_ms": 18.926,
+        "gpu_median_ms": 17.2409992218018,
+        "gpu_p95_ms": 18.7140007019043,
+        "render_cpu_median_ms": 2.86899995803833
+      }
+    ],
+    "scope": "Frozen simulation, native first-person eye, full HUD, same-process shader A/B at 4K Ultra.",
+    "pixels": {
+      "mean_rgb": [
+        2.4112654320987654e-06,
+        3.49633487654321e-06,
+        2.4112654320987654e-06
+      ],
+      "max": 1,
+      "pixels": 8294400,
+      "over_1": 0,
+      "over_4": 0,
+      "over_8": 0,
+      "repeat_max": 1
+    }
+  },
+  {
+    "case": "Double the partial terrain-colour residency",
+    "decision": "Sixteen pages use twice the memory of eight for a similar 0.7\u20131.2 ms frozen GPU saving. No sixteen-page cache integrated.",
+    "rows": [
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.314,
+        "frame_p95_ms": 18.597,
+        "gpu_median_ms": 17.0690002441406,
+        "gpu_p95_ms": 18.4349994659424,
+        "render_cpu_median_ms": 3.46700000762939
+      },
+      {
+        "case": "cached",
+        "draws": 3765,
+        "frame_median_ms": 16.605,
+        "frame_p95_ms": 18.057,
+        "gpu_median_ms": 16.4020004272461,
+        "gpu_p95_ms": 17.8540000915527,
+        "render_cpu_median_ms": 4.05399990081787
+      },
+      {
+        "case": "cached",
+        "draws": 3765,
+        "frame_median_ms": 16.376,
+        "frame_p95_ms": 17.803,
+        "gpu_median_ms": 16.1350002288818,
+        "gpu_p95_ms": 17.6149997711182,
+        "render_cpu_median_ms": 3.65899991989136
+      },
+      {
+        "case": "baseline",
+        "draws": 3765,
+        "frame_median_ms": 17.497,
+        "frame_p95_ms": 19.036,
+        "gpu_median_ms": 17.3110008239746,
+        "gpu_p95_ms": 18.8419990539551,
+        "render_cpu_median_ms": 3.11400008201599
+      }
+    ],
+    "scope": "Frozen simulation, native first-person eye, full HUD, same-process shader A/B at 4K Ultra.",
+    "pixels": {
+      "mean_rgb": [
+        0.06510054976851852,
+        0.03866753472222222,
+        0.024730179398148148
+      ],
+      "max": 30,
+      "pixels": 8294400,
+      "over_1": 39157,
+      "over_4": 9049,
+      "over_8": 1939,
+      "repeat_max": 1
+    }
+  },
+  {
+    "case": "Vertex-stage terrain tile coordinate decoding",
+    "decision": "No consistent frozen 4K GPU gain on top of campaign colour pages; not integrated. Baselines 15.28\u201315.50 ms versus candidate 15.05\u201315.36 ms.",
+    "evidence": {
+      "rows": [
+        {
+          "cpu_ms": 3.15400004386902,
+          "frame_ms": 15.487,
+          "gpu_ms": 15.2849998474121,
+          "optimized": false,
+          "p95_gpu": 16.6760005950928,
+          "path": "user://terrain-tile-vertex-0.png"
+        },
+        {
+          "cpu_ms": 3.00200009346008,
+          "frame_ms": 15.54,
+          "gpu_ms": 15.3620004653931,
+          "optimized": true,
+          "p95_gpu": 16.9790000915527,
+          "path": "user://terrain-tile-vertex-1.png"
+        },
+        {
+          "cpu_ms": 3.22499990463257,
+          "frame_ms": 15.255,
+          "gpu_ms": 15.0509996414185,
+          "optimized": true,
+          "p95_gpu": 16.882999420166,
+          "path": "user://terrain-tile-vertex-2.png"
+        },
+        {
+          "cpu_ms": 2.94300007820129,
+          "frame_ms": 15.487,
+          "gpu_ms": 15.2889995574951,
+          "optimized": false,
+          "p95_gpu": 16.9060001373291,
+          "path": "user://terrain-tile-vertex-3.png"
+        },
+        {
+          "cpu_ms": 3.05399990081787,
+          "frame_ms": 15.729,
+          "gpu_ms": 15.503999710083,
+          "optimized": false,
+          "p95_gpu": 16.8209991455078,
+          "path": "user://terrain-tile-vertex-4.png"
+        }
+      ],
+      "size": "(3840, 2160)",
+      "zone": "gz17h",
+      "pixels": {
+        "mean_rgb": [
+          0.0009536554783950617,
+          0.0009009693287037037,
+          0.001316430362654321
+        ],
+        "max": 15,
+        "repeat_max": 6
+      }
+    }
+  },
+  {
+    "case": "Campaign sector colour specialization on fully enclosed scenery",
+    "decision": "At most 0.17 ms frozen GPU difference, requiring 145 additional materials for 267 meshes; not integrated.",
+    "evidence": {
+      "rows": [
+        {
+          "cpu_ms": 3.36800003051758,
+          "frame_ms": 15.312,
+          "gpu_ms": 15.1529998779297,
+          "optimized": false,
+          "p95_gpu": 16.3239994049072,
+          "path": "user://contact-sector-color-0.png"
+        },
+        {
+          "cpu_ms": 3.1489999294281,
+          "frame_ms": 15.348,
+          "gpu_ms": 15.1510000228882,
+          "optimized": true,
+          "p95_gpu": 16.3729991912842,
+          "path": "user://contact-sector-color-1.png"
+        },
+        {
+          "cpu_ms": 3.08599996566772,
+          "frame_ms": 15.321,
+          "gpu_ms": 15.0930004119873,
+          "optimized": true,
+          "p95_gpu": 16.0580005645752,
+          "path": "user://contact-sector-color-2.png"
+        },
+        {
+          "cpu_ms": 2.90100002288818,
+          "frame_ms": 15.478,
+          "gpu_ms": 15.2650003433228,
+          "optimized": false,
+          "p95_gpu": 16.8250007629395,
+          "path": "user://contact-sector-color-3.png"
+        },
+        {
+          "cpu_ms": 2.8659999370575,
+          "frame_ms": 15.363,
+          "gpu_ms": 15.1829996109009,
+          "optimized": false,
+          "p95_gpu": 16.2689990997314,
+          "path": "user://contact-sector-color-4.png"
+        }
+      ],
+      "size": "(3840, 2160)",
+      "zone": "gz17h",
+      "pixels": {
+        "mean_rgb": [
+          0.0003566261574074074,
+          0.0007210889274691358,
+          0.001283396026234568
+        ],
+        "max": 15,
+        "repeat_max": 7
+      }
+    }
+  },
+  {
+    "case": "Remove overwritten vertex light values in enhanced materials",
+    "decision": "No GPU saving: 15.30\u201315.31 ms original versus 15.32\u201315.54 ms candidate on 1099 materials / six shaders; not integrated.",
+    "startup": "The first launch failed before running the fixture with Vulkan device loss and NVIDIA Xid 13. This record uses the successful retry; no results from the failed launch are counted.",
+    "evidence": {
+      "rows": [
+        {
+          "cpu_ms": 3.32599997520447,
+          "frame_ms": 15.503,
+          "gpu_ms": 15.2969999313354,
+          "optimized": false,
+          "p95_gpu": 16.8640003204346,
+          "path": "user://vertex-light-0.png"
+        },
+        {
+          "cpu_ms": 3.31900000572205,
+          "frame_ms": 15.489,
+          "gpu_ms": 15.3229999542236,
+          "optimized": true,
+          "p95_gpu": 16.6700000762939,
+          "path": "user://vertex-light-1.png"
+        },
+        {
+          "cpu_ms": 3.01699995994568,
+          "frame_ms": 15.761,
+          "gpu_ms": 15.53600025177,
+          "optimized": true,
+          "p95_gpu": 17.132999420166,
+          "path": "user://vertex-light-2.png"
+        },
+        {
+          "cpu_ms": 2.92000007629395,
+          "frame_ms": 15.508,
+          "gpu_ms": 15.3059997558594,
+          "optimized": false,
+          "p95_gpu": 16.7339992523193,
+          "path": "user://vertex-light-3.png"
+        },
+        {
+          "cpu_ms": 2.95300006866455,
+          "frame_ms": 15.522,
+          "gpu_ms": 15.3090000152588,
+          "optimized": false,
+          "p95_gpu": 16.8379993438721,
+          "path": "user://vertex-light-4.png"
+        }
+      ],
+      "size": "(3840, 2160)",
+      "zone": "gz17h",
+      "pixels": {
+        "mean_rgb": [
+          0.00028645833333333333,
+          0.0006441695601851852,
+          0.0012044270833333334
+        ],
+        "max": 7,
+        "repeat_max": 6
+      }
+    }
+  },
+  {
+    "case": "Projected broad lever mesh bounds before exact bounds",
+    "decision": "Not integrated: 772 targeting comparisons matched, but the additional eight-corner script projection increased stationary query medians from about 0.53 ms to 0.86 ms. This was a frozen diagnostic, not live frame-time acceptance.",
+    "results": {
+      "bounds": 159,
+      "checks": 772,
+      "failures": 0,
+      "rows": [
+        {
+          "candidate_median_usec": 862,
+          "original_median_usec": 530,
+          "pose": 0,
+          "queries": 112
+        },
+        {
+          "candidate_median_usec": 864,
+          "original_median_usec": 529,
+          "pose": 1,
+          "queries": 110
+        },
+        {
+          "candidate_median_usec": 859,
+          "original_median_usec": 525,
+          "pose": 2,
+          "queries": 94
+        },
+        {
+          "candidate_median_usec": 853,
+          "original_median_usec": 523,
+          "pose": 3,
+          "queries": 81
+        },
+        {
+          "candidate_median_usec": 855,
+          "original_median_usec": 524,
+          "pose": 4,
+          "queries": 81
+        },
+        {
+          "candidate_median_usec": 857,
+          "original_median_usec": 523,
+          "pose": 5,
+          "queries": 83
+        },
+        {
+          "candidate_median_usec": 861,
+          "original_median_usec": 528,
+          "pose": 6,
+          "queries": 99
+        },
+        {
+          "candidate_median_usec": 856,
+          "original_median_usec": 525,
+          "pose": 7,
+          "queries": 112
+        }
+      ],
+      "zone": "gz17h"
+    }
+  },
+  {
+    "case": "First-person tooltip scheduling and disabled-tooltip diagnostic",
+    "decision": "Not integrated: moving tooltip processing after the camera or temporarily disabling tooltips did not improve live 4K frame rate. Crosshair interaction still needs the same picking work. The disabled-tooltip case is diagnostic only and is not a quality-preserving candidate.",
+    "rows": [
+      {
+        "mode": "normal",
+        "average_fps": 59.93418636492761,
+        "frame_ms": {
+          "max": 54.558,
+          "median": 16.532,
+          "p95": 19.715,
+          "p99": 21.119
+        },
+        "process_ms": {
+          "max": 22.065,
+          "median": 6.55,
+          "p95": 9.108,
+          "p99": 10.644
+        }
+      },
+      {
+        "mode": "late",
+        "average_fps": 59.16898066188801,
+        "frame_ms": {
+          "max": 61.031,
+          "median": 16.65,
+          "p95": 19.758,
+          "p99": 21.21
+        },
+        "process_ms": {
+          "max": 23.702,
+          "median": 6.48,
+          "p95": 8.951,
+          "p99": 10.917
+        }
+      },
+      {
+        "mode": "off",
+        "average_fps": 59.325344386872814,
+        "frame_ms": {
+          "max": 61.96,
+          "median": 16.74,
+          "p95": 19.179,
+          "p99": 20.473
+        },
+        "process_ms": {
+          "max": 23.812,
+          "median": 6.358,
+          "p95": 8.502,
+          "p99": 9.993
+        }
+      }
+    ]
+  },
+  {
+    "case": "Larger specialized campaign colour cache and screen-area cache priority",
+    "decision": "Not integrated: sixteen specialized pages (243 MiB) and eight screen-area-prioritized pages did not consistently improve the live 4K desert view. Retain the existing eight nearest frustum pages and 128 MiB limit. Each case uses a separate live solo authority and a 20-second sample.",
+    "rows": [
+      {
+        "mode": "256",
+        "average_fps": 59.55925551330335,
+        "frame_ms": {
+          "max": 91.795,
+          "median": 16.507,
+          "p95": 19.625,
+          "p99": 20.94
+        },
+        "cache": {
+          "built": 16,
+          "bytes": 254802176,
+          "discarded": 0,
+          "jobs": 0,
+          "resident": 16
+        }
+      },
+      {
+        "mode": "area",
+        "average_fps": 58.65351708770799,
+        "frame_ms": {
+          "max": 56.796,
+          "median": 16.871,
+          "p95": 19.811,
+          "p99": 20.947
+        },
+        "cache": {
+          "built": 8,
+          "bytes": 127401088,
+          "discarded": 0,
+          "jobs": 0,
+          "resident": 8
+        }
+      },
+      {
+        "mode": "normal",
+        "average_fps": 59.05515056590273,
+        "frame_ms": {
+          "max": 56.286,
+          "median": 16.705,
+          "p95": 20.065,
+          "p99": 21.098
+        },
+        "cache": {
+          "built": 13,
+          "bytes": 127401088,
+          "discarded": 0,
+          "jobs": 0,
+          "resident": 8
+        }
+      }
+    ]
+  },
+  {
+    "case": "Hoist volumetric sky scattering phase terms per view ray",
+    "decision": "Not integrated: baseline median GPU times 15.272/15.373/15.308 ms, candidate 15.368/15.470 ms. No useful gain in the frozen first-person 4K desert fixture.",
+    "rows": [
+      {
+        "cpu_ms": 3.24399995803833,
+        "frame_ms": 15.471,
+        "gpu_ms": 15.2720003128052,
+        "optimized": false,
+        "p95_gpu": 16.5069999694824,
+        "path": "user://cloud-phase-0.png"
+      },
+      {
+        "cpu_ms": 3.35700011253357,
+        "frame_ms": 15.563,
+        "gpu_ms": 15.3680000305176,
+        "optimized": true,
+        "p95_gpu": 17.0170001983643,
+        "path": "user://cloud-phase-1.png"
+      },
+      {
+        "cpu_ms": 2.94700002670288,
+        "frame_ms": 15.674,
+        "gpu_ms": 15.4700002670288,
+        "optimized": true,
+        "p95_gpu": 16.7630004882812,
+        "path": "user://cloud-phase-2.png"
+      },
+      {
+        "cpu_ms": 2.95900011062622,
+        "frame_ms": 15.579,
+        "gpu_ms": 15.3730001449585,
+        "optimized": false,
+        "p95_gpu": 16.8110008239746,
+        "path": "user://cloud-phase-3.png"
+      },
+      {
+        "cpu_ms": 2.875,
+        "frame_ms": 15.512,
+        "gpu_ms": 15.3079996109009,
+        "optimized": false,
+        "p95_gpu": 16.5879993438721,
+        "path": "user://cloud-phase-4.png"
+      }
+    ]
+  }
+]

@@ -1,0 +1,205 @@
+{
+	"checks": 23,
+	"failures": [],
+	"renderer": "gl_compatibility",
+	"rows": [
+		{
+			"depth_shift": 0.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 0,
+			"uv_scale": 1.0
+		},
+		{
+			"depth_shift": 5.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 0,
+			"uv_scale": 1.0
+		},
+		{
+			"depth_shift": 18.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 0,
+			"uv_scale": 1.0
+		},
+		{
+			"depth_shift": 31.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 0,
+			"uv_scale": 1.0
+		},
+		{
+			"depth_shift": 32.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 0,
+			"uv_scale": 1.0
+		},
+		{
+			"depth_shift": 60.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 0,
+			"uv_scale": 1.0
+		},
+		{
+			"depth_shift": 0.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 1
+			},
+			"msaa": 0,
+			"uv_scale": 6.0
+		},
+		{
+			"depth_shift": 0.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 1
+			},
+			"msaa": 0,
+			"uv_scale": 8.0
+		},
+		{
+			"depth_shift": 0.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 0,
+			"uv_scale": 16.0
+		},
+		{
+			"depth_shift": 0.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 0,
+			"uv_scale": 24.0
+		},
+		{
+			"depth_shift": 0.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 0,
+			"uv_scale": 32.0
+		},
+		{
+			"depth_shift": 0.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 2,
+			"uv_scale": 1.0
+		},
+		{
+			"depth_shift": 5.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 2,
+			"uv_scale": 1.0
+		},
+		{
+			"depth_shift": 18.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 2,
+			"uv_scale": 1.0
+		},
+		{
+			"depth_shift": 31.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 2,
+			"uv_scale": 1.0
+		},
+		{
+			"depth_shift": 32.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 2,
+			"uv_scale": 1.0
+		},
+		{
+			"depth_shift": 60.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 2,
+			"uv_scale": 1.0
+		},
+		{
+			"depth_shift": 0.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 1
+			},
+			"msaa": 2,
+			"uv_scale": 6.0
+		},
+		{
+			"depth_shift": 0.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 1
+			},
+			"msaa": 2,
+			"uv_scale": 8.0
+		},
+		{
+			"depth_shift": 0.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 2,
+			"uv_scale": 16.0
+		},
+		{
+			"depth_shift": 0.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 2,
+			"uv_scale": 24.0
+		},
+		{
+			"depth_shift": 0.0,
+			"difference": {
+				"over_one_byte": 0,
+				"peak": 0
+			},
+			"msaa": 2,
+			"uv_scale": 32.0
+		}
+	]
+}

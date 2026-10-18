@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.16.0 — 2026-10-18
+
+- Restore gameplay pause and speed when loading campaign saves, including the separate solo simulation process. ([#27](https://github.com/TheWWWorm/CursedLands/issues/27))
+- Open the load-game prompt when the last controlled solo party member dies. ([#25](https://github.com/TheWWWorm/CursedLands/issues/25))
+- Stabilize Low-quality sun shadows while the daylight direction changes. ([#23](https://github.com/TheWWWorm/CursedLands/issues/23))
+- Add a Selection glow setting with Automatic, Off and On choices; Automatic hides the selection glow in direct camera modes. ([#22](https://github.com/TheWWWorm/CursedLands/issues/22))
+- Emit toad acid from the animated mouth and preserve its low launch height. ([#21](https://github.com/TheWWWorm/CursedLands/issues/21))
+- Allow revisiting the Canyon of Death and Wormfaces' Cave after reaching the Necromancers' Desert, retaining their quest state and a route back.
+- Discover local autochess lobbies automatically and let the online host switch shared combat between normal and double speed.
+- Keep hovered online creature details stable, render player names at the HUD's display scale, show the local player's name and mark ongoing battles with a sword icon.
+- Show the watched player's battle timer, opponent and result when scouting. Keep all nine boards positioned correctly while the overview receives updates.
+- Animate online formation placement and movement, stop locomotion when a battle ends, and keep decorative obstacles clear of both halves of the playing field.
+- Fit banshee previews to their current animated pose. Add Q/E camera rotation and Home reset to Trials, alongside middle-button dragging.
+- Raise the savings-interest cap to five gold per round, reached at fifty saved gold. Translate the updated help and new controls into English, Russian and German.
+- Avoid particle draw setup and uploads on hidden boards, and skip depth sampling and blending for fully transparent particle fragments.
+- Reduce ground-contact blending cost in Forward+ by skipping terrain cells that cannot reach the shaded point, retaining the exact surface and footprint tests.
+- Render solid scenery in the opaque pass and reject cutout texels before calculating foliage, relief and ground blending.
+- Skip scenery relief sampling after its distance or minification fade reaches zero.
+- Keep online autochess authority boards hidden and skip visual ground-contact setup for their navigation-only terrain.
+- Run desktop online autochess simulation in a separate process while preserving seat-zero ownership, host controls, guest slots and LAN discovery. Allow ENet peers time to finish cold scene loading.
+- Handle simultaneous online departures without sending roster updates to closed connections.
+- Spread independent online battles across render frames and limit catch-up work between complete ticks, retaining combat time, player order and shared speed.
+- Skip NPC acknowledgement lookup when no controlled party member can receive it, avoiding voice-database loading during autochess combat.
+- Apply the shared SSAO, fog and glow quality settings when initializing viewports, so autochess rendering does not depend on first opening a campaign.
+- Share cached arena tile colours between Forward+ boards while retaining live lighting, terrain relief, footprints and effects. Preserve the original sampler for other renderers and larger replacement textures.
+- Cache nearby terrain colours in eligible Forward+ campaign maps within a fixed memory budget. Retain live footprint materials during page loading, eviction and graphics changes.
+- Skip unused secondary sun-shadow lookups outside cascade transitions in the custom Forward+ engine template, preserving shadow filtering and transition blending.
+
 ## 1.15.0 — 2026-10-18
 
 - Add online autochess for up to nine human players, with computers filling empty seats and taking over departing guests.

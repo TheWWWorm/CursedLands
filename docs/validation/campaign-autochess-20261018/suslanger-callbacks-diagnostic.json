@@ -1,0 +1,584 @@
+{
+	"callbacks": {
+		"max": 211,
+		"median": 209,
+		"p95": 211,
+		"p99": 211
+	},
+	"rows": [
+		{
+			"calls": 90,
+			"maximum": 2158,
+			"mean_frame_ms": 1.48472222222222,
+			"script": "res://src/game/world.gd",
+			"usec": 133625
+		},
+		{
+			"calls": 90,
+			"maximum": 1885,
+			"mean_frame_ms": 1.2409,
+			"script": "/root/GameData/@CanvasLayer@2",
+			"usec": 111681
+		},
+		{
+			"calls": 90,
+			"maximum": 1425,
+			"mean_frame_ms": 1.03616666666667,
+			"script": "res://src/game/fx/particle_system.gd",
+			"usec": 93255
+		},
+		{
+			"calls": 90,
+			"maximum": 1018,
+			"mean_frame_ms": 0.442277777777778,
+			"script": "res://src/game/direct_control.gd",
+			"usec": 39805
+		},
+		{
+			"calls": 90,
+			"maximum": 636,
+			"mean_frame_ms": 0.342933333333333,
+			"script": "res://src/game/fx/ground_marks.gd",
+			"usec": 30864
+		},
+		{
+			"calls": 90,
+			"maximum": 5089,
+			"mean_frame_ms": 0.274688888888889,
+			"script": "res://src/game/game_sound.gd",
+			"usec": 24722
+		},
+		{
+			"calls": 90,
+			"maximum": 957,
+			"mean_frame_ms": 0.216977777777778,
+			"script": "res://src/game/fx/surface_weather.gd",
+			"usec": 19528
+		},
+		{
+			"calls": 90,
+			"maximum": 544,
+			"mean_frame_ms": 0.193588888888889,
+			"script": "res://src/game/unit_fog.gd",
+			"usec": 17423
+		},
+		{
+			"calls": 90,
+			"maximum": 504,
+			"mean_frame_ms": 0.192688888888889,
+			"script": "res://src/ui/revive_overlay.gd",
+			"usec": 17342
+		},
+		{
+			"calls": 90,
+			"maximum": 246,
+			"mean_frame_ms": 0.182088888888889,
+			"script": "res://src/game/fx/terrain_details.gd",
+			"usec": 16388
+		},
+		{
+			"calls": 732,
+			"maximum": 110,
+			"mean_frame_ms": 0.178422222222222,
+			"script": "res://src/game/unit.gd",
+			"usec": 16058
+		},
+		{
+			"calls": 90,
+			"maximum": 284,
+			"mean_frame_ms": 0.171455555555556,
+			"script": "res://src/ui/camera_rig.gd",
+			"usec": 15431
+		},
+		{
+			"calls": 90,
+			"maximum": 725,
+			"mean_frame_ms": 0.160222222222222,
+			"script": "res://src/ui/unit_panel.gd",
+			"usec": 14420
+		},
+		{
+			"calls": 90,
+			"maximum": 171,
+			"mean_frame_ms": 0.119066666666667,
+			"script": "res://src/game/game.gd",
+			"usec": 10716
+		},
+		{
+			"calls": 90,
+			"maximum": 173,
+			"mean_frame_ms": 0.114244444444444,
+			"script": "res://src/ei/terrain.gd",
+			"usec": 10282
+		},
+		{
+			"calls": 90,
+			"maximum": 569,
+			"mean_frame_ms": 0.0983888888888889,
+			"script": "res://src/game/fx/local_lighting.gd",
+			"usec": 8855
+		},
+		{
+			"calls": 90,
+			"maximum": 295,
+			"mean_frame_ms": 0.0941666666666667,
+			"script": "res://src/ui/game_cursor.gd",
+			"usec": 8475
+		},
+		{
+			"calls": 90,
+			"maximum": 120,
+			"mean_frame_ms": 0.0831111111111111,
+			"script": "res://src/ui/spell_slots.gd",
+			"usec": 7480
+		},
+		{
+			"calls": 90,
+			"maximum": 128,
+			"mean_frame_ms": 0.0798333333333333,
+			"script": "res://src/game/sound_mixer.gd",
+			"usec": 7185
+		},
+		{
+			"calls": 90,
+			"maximum": 307,
+			"mean_frame_ms": 0.0798,
+			"script": "res://src/game/fx/cloud_reflection_view.gd",
+			"usec": 7182
+		},
+		{
+			"calls": 90,
+			"maximum": 302,
+			"mean_frame_ms": 0.0716777777777778,
+			"script": "res://src/game/fx/water_reflection.gd",
+			"usec": 6451
+		},
+		{
+			"calls": 90,
+			"maximum": 334,
+			"mean_frame_ms": 0.0713222222222222,
+			"script": "res://src/game/fx/terrain_color_cache.gd",
+			"usec": 6419
+		},
+		{
+			"calls": 90,
+			"maximum": 315,
+			"mean_frame_ms": 0.0543111111111111,
+			"script": "res://src/game/fx/ambient_life.gd",
+			"usec": 4888
+		},
+		{
+			"calls": 90,
+			"maximum": 177,
+			"mean_frame_ms": 0.0504222222222222,
+			"script": "res://src/ui/enemy_bars.gd",
+			"usec": 4538
+		},
+		{
+			"calls": 90,
+			"maximum": 51,
+			"mean_frame_ms": 0.0411,
+			"script": "res://src/game/fx/weather_mist.gd",
+			"usec": 3699
+		},
+		{
+			"calls": 270,
+			"maximum": 90,
+			"mean_frame_ms": 0.0404222222222222,
+			"script": "res://src/ui/paperdoll.gd",
+			"usec": 3638
+		},
+		{
+			"calls": 9720,
+			"maximum": 8,
+			"mean_frame_ms": 0.0395888888888889,
+			"script": "res://src/ui/item_view.gd",
+			"usec": 3563
+		},
+		{
+			"calls": 90,
+			"maximum": 71,
+			"mean_frame_ms": 0.039,
+			"script": "res://src/ui/party_faces.gd",
+			"usec": 3510
+		},
+		{
+			"calls": 90,
+			"maximum": 69,
+			"mean_frame_ms": 0.0380555555555556,
+			"script": "res://src/game/fx/water_interaction.gd",
+			"usec": 3425
+		},
+		{
+			"calls": 90,
+			"maximum": 45,
+			"mean_frame_ms": 0.0332777777777778,
+			"script": "res://src/ui/message_log.gd",
+			"usec": 2995
+		},
+		{
+			"calls": 90,
+			"maximum": 37,
+			"mean_frame_ms": 0.0287,
+			"script": "res://src/ui/camera_depth_of_field.gd",
+			"usec": 2583
+		},
+		{
+			"calls": 90,
+			"maximum": 34,
+			"mean_frame_ms": 0.0247333333333333,
+			"script": "res://src/ui/game_hud.gd",
+			"usec": 2226
+		},
+		{
+			"calls": 90,
+			"maximum": 30,
+			"mean_frame_ms": 0.0202222222222222,
+			"script": "res://src/game/order_marks.gd",
+			"usec": 1820
+		},
+		{
+			"calls": 90,
+			"maximum": 106,
+			"mean_frame_ms": 0.0185666666666667,
+			"script": "res://src/game/fx/contact_shadows.gd",
+			"usec": 1671
+		},
+		{
+			"calls": 90,
+			"maximum": 62,
+			"mean_frame_ms": 0.0166888888888889,
+			"script": "res://src/game/local_host.gd",
+			"usec": 1502
+		},
+		{
+			"calls": 90,
+			"maximum": 24,
+			"mean_frame_ms": 0.0157555555555556,
+			"script": "res://src/platform/pad_ui.gd",
+			"usec": 1418
+		},
+		{
+			"calls": 90,
+			"maximum": 21,
+			"mean_frame_ms": 0.0136777777777778,
+			"script": "res://src/ui/portrait.gd",
+			"usec": 1231
+		},
+		{
+			"calls": 90,
+			"maximum": 51,
+			"mean_frame_ms": 0.0132,
+			"script": "res://src/game/session.gd",
+			"usec": 1188
+		},
+		{
+			"calls": 90,
+			"maximum": 16,
+			"mean_frame_ms": 0.0107555555555556,
+			"script": "res://src/ui/belt_strip.gd",
+			"usec": 968
+		},
+		{
+			"calls": 90,
+			"maximum": 15,
+			"mean_frame_ms": 0.0101222222222222,
+			"script": "res://src/ui/minimap.gd",
+			"usec": 911
+		},
+		{
+			"calls": 90,
+			"maximum": 19,
+			"mean_frame_ms": 0.01,
+			"script": "res://src/game/direct_pose.gd",
+			"usec": 900
+		},
+		{
+			"calls": 732,
+			"maximum": 60,
+			"mean_frame_ms": 0.00982222222222222,
+			"script": "res://src/ei/unit_model.gd",
+			"usec": 884
+		},
+		{
+			"calls": 90,
+			"maximum": 11,
+			"mean_frame_ms": 0.00871111111111111,
+			"script": "res://src/platform/pad_input.gd",
+			"usec": 784
+		},
+		{
+			"calls": 90,
+			"maximum": 14,
+			"mean_frame_ms": 0.00867777777777778,
+			"script": "res://src/ui/weapon_bar.gd",
+			"usec": 781
+		},
+		{
+			"calls": 90,
+			"maximum": 20,
+			"mean_frame_ms": 0.00696666666666667,
+			"script": "res://src/game/pad_field.gd",
+			"usec": 627
+		},
+		{
+			"calls": 90,
+			"maximum": 10,
+			"mean_frame_ms": 0.00677777777777778,
+			"script": "res://src/game/fx/soft_ground_deform.gd",
+			"usec": 610
+		},
+		{
+			"calls": 90,
+			"maximum": 34,
+			"mean_frame_ms": 0.00626666666666667,
+			"script": "res://src/game/fx/quest_lights.gd",
+			"usec": 564
+		},
+		{
+			"calls": 90,
+			"maximum": 7,
+			"mean_frame_ms": 0.00487777777777778,
+			"script": "res://src/ui/action_strip.gd",
+			"usec": 439
+		},
+		{
+			"calls": 90,
+			"maximum": 6,
+			"mean_frame_ms": 0.00484444444444444,
+			"script": "res://src/ui/inventory_panel.gd",
+			"usec": 436
+		},
+		{
+			"calls": 90,
+			"maximum": 7,
+			"mean_frame_ms": 0.00478888888888889,
+			"script": "res://src/ui/base_strip.gd",
+			"usec": 431
+		},
+		{
+			"calls": 90,
+			"maximum": 5,
+			"mean_frame_ms": 0.00358888888888889,
+			"script": "res://src/ui/camp_view.gd",
+			"usec": 323
+		},
+		{
+			"calls": 90,
+			"maximum": 13,
+			"mean_frame_ms": 0.0035,
+			"script": "res://src/game/fx/rain_snow.gd",
+			"usec": 315
+		},
+		{
+			"calls": 180,
+			"maximum": 4,
+			"mean_frame_ms": 0.00333333333333333,
+			"script": "res://src/ui/wiki_preview.gd",
+			"usec": 300
+		},
+		{
+			"calls": 90,
+			"maximum": 6,
+			"mean_frame_ms": 0.00306666666666667,
+			"script": "res://src/game/music_system.gd",
+			"usec": 276
+		},
+		{
+			"calls": 90,
+			"maximum": 4,
+			"mean_frame_ms": 0.003,
+			"script": "res://src/ui/player_names.gd",
+			"usec": 270
+		},
+		{
+			"calls": 90,
+			"maximum": 7,
+			"mean_frame_ms": 0.00282222222222222,
+			"script": "res://src/ui/village_name.gd",
+			"usec": 254
+		},
+		{
+			"calls": 90,
+			"maximum": 7,
+			"mean_frame_ms": 0.0027,
+			"script": "res://src/ui/player_list.gd",
+			"usec": 243
+		},
+		{
+			"calls": 90,
+			"maximum": 4,
+			"mean_frame_ms": 0.00245555555555556,
+			"script": "res://src/ui/world_labels.gd",
+			"usec": 221
+		},
+		{
+			"calls": 90,
+			"maximum": 3,
+			"mean_frame_ms": 0.00232222222222222,
+			"script": "res://src/ui/hud_dial.gd",
+			"usec": 209
+		},
+		{
+			"calls": 90,
+			"maximum": 4,
+			"mean_frame_ms": 0.00232222222222222,
+			"script": "res://src/ui/esc_signpost.gd",
+			"usec": 209
+		},
+		{
+			"calls": 90,
+			"maximum": 4,
+			"mean_frame_ms": 0.00227777777777778,
+			"script": "res://src/ui/chat_overlay.gd",
+			"usec": 205
+		},
+		{
+			"calls": 90,
+			"maximum": 3,
+			"mean_frame_ms": 0.00214444444444444,
+			"script": "res://src/ui/selection_frame.gd",
+			"usec": 193
+		},
+		{
+			"calls": 90,
+			"maximum": 12,
+			"mean_frame_ms": 0.00191111111111111,
+			"script": "res://src/ui/pad_prompts.gd",
+			"usec": 172
+		},
+		{
+			"calls": 90,
+			"maximum": 3,
+			"mean_frame_ms": 0.00182222222222222,
+			"script": "res://src/ui/touch_actions.gd",
+			"usec": 164
+		},
+		{
+			"calls": 270,
+			"maximum": 2,
+			"mean_frame_ms": 0.00154444444444444,
+			"script": "res://src/ui/tutorial_panel.gd",
+			"usec": 139
+		},
+		{
+			"calls": 90,
+			"maximum": 2,
+			"mean_frame_ms": 0.00132222222222222,
+			"script": "res://src/platform/touch_input.gd",
+			"usec": 119
+		},
+		{
+			"calls": 90,
+			"maximum": 2,
+			"mean_frame_ms": 0.00124444444444444,
+			"script": "res://src/ui/movie_player.gd",
+			"usec": 112
+		},
+		{
+			"calls": 90,
+			"maximum": 2,
+			"mean_frame_ms": 0.00117777777777778,
+			"script": "res://src/ui/options_panel.gd",
+			"usec": 106
+		},
+		{
+			"calls": 90,
+			"maximum": 8,
+			"mean_frame_ms": 0.00113333333333333,
+			"script": "res://src/ui/save_transfer.gd",
+			"usec": 102
+		},
+		{
+			"calls": 90,
+			"maximum": 2,
+			"mean_frame_ms": 0.00112222222222222,
+			"script": "res://src/ui/dialog_panel.gd",
+			"usec": 101
+		},
+		{
+			"calls": 90,
+			"maximum": 2,
+			"mean_frame_ms": 0.00102222222222222,
+			"script": "res://src/game/player_swap.gd",
+			"usec": 92
+		},
+		{
+			"calls": 90,
+			"maximum": 8,
+			"mean_frame_ms": 0.001,
+			"script": "res://src/ui/load_panel.gd",
+			"usec": 90
+		},
+		{
+			"calls": 90,
+			"maximum": 2,
+			"mean_frame_ms": 0.000988888888888889,
+			"script": "res://src/game/internet_directory.gd",
+			"usec": 89
+		},
+		{
+			"calls": 90,
+			"maximum": 2,
+			"mean_frame_ms": 0.000988888888888889,
+			"script": "res://src/game/lan_discovery.gd",
+			"usec": 89
+		},
+		{
+			"calls": 90,
+			"maximum": 2,
+			"mean_frame_ms": 0.000966666666666667,
+			"script": "/root/Main/@Node@8/@Node3D@14/@CanvasLayer@20/SafeArea/@TextureRect@73",
+			"usec": 87
+		},
+		{
+			"calls": 270,
+			"maximum": 1,
+			"mean_frame_ms": 0.000944444444444444,
+			"script": "res://src/ui/interface_board.gd",
+			"usec": 85
+		},
+		{
+			"calls": 90,
+			"maximum": 2,
+			"mean_frame_ms": 0.0009,
+			"script": "res://src/ui/players_panel.gd",
+			"usec": 81
+		},
+		{
+			"calls": 90,
+			"maximum": 2,
+			"mean_frame_ms": 0.000755555555555556,
+			"script": "res://src/ui/notify_line.gd",
+			"usec": 68
+		},
+		{
+			"calls": 90,
+			"maximum": 2,
+			"mean_frame_ms": 0.000722222222222222,
+			"script": "res://src/ui/pad_wheel.gd",
+			"usec": 65
+		},
+		{
+			"calls": 90,
+			"maximum": 1,
+			"mean_frame_ms": 0.000344444444444444,
+			"script": "/root/Main/@Node@8/@Node3D@14/@CanvasLayer@20/SafeArea/@Control@237/@TextureRect@238",
+			"usec": 31
+		},
+		{
+			"calls": 90,
+			"maximum": 1,
+			"mean_frame_ms": 0.000233333333333333,
+			"script": "/root/Main/@Node@8/@Node3D@14/@CanvasLayer@20/SafeArea/@Control@256/@TextureRect@257",
+			"usec": 21
+		}
+	],
+	"scope": "90 manually scheduled live render callbacks in normal priority/tree order, retaining all callback flags until the pass completes. Instrumented diagnostic only; not live FPS acceptance.",
+	"total_script_ms": {
+		"max": 11.788,
+		"median": 7.52,
+		"p95": 9.752,
+		"p99": 11.788
+	}
+}

@@ -859,6 +859,10 @@ func _draw_join_low() -> void:
 		ry += 16
 
 
+func _discovery_protocol() -> int:
+	return NetStatus.PROTOCOL
+
+
 func _lan_on() -> bool:
 	return LanDiscovery.available() and not _web()
 
@@ -991,7 +995,7 @@ func _draw_details(rx: float, ry: float, g: Dictionary) -> void:
 	if bool(g.get("pw", false)):
 		text(Rect2(rx, ry, 230, 20), NetStatus.lmp_text("lmp_connection_21", "", RemakeText.t("Password required")), 1, ORANGE)
 		ry += 20
-	if int(g.get("protocol", 0)) != NetStatus.PROTOCOL:
+	if int(g.get("protocol", 0)) != _discovery_protocol():
 		_block(Rect2(rx, ry, 230, LOW.end.y - ry - 4), NetStatus.lmp_text("lmp_wrong_protocol_msg", "", RemakeText.t("Wrong communication protocol version")), 0, ORANGE, 2)
 
 
@@ -1232,7 +1236,7 @@ func _primary() -> void:
 			# the original: a listed server of another protocol is
 			# refused with «lmp_wrong_protocol» before connecting.
 			var g := _selected_game()
-			if not g.is_empty() and String(g.address) == a and int(g.get("protocol", 0)) != NetStatus.PROTOCOL:
+			if not g.is_empty() and String(g.address) == a and int(g.get("protocol", 0)) != _discovery_protocol():
 				status = NetStatus.lmp_text("lmp_wrong_protocol_msg", "", RemakeText.t("Wrong communication protocol version"))
 				return
 			sound("messbox\\ok")

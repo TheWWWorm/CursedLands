@@ -264,6 +264,20 @@ func light_case(mode: String, view: SubViewport, object: Node3D, owner: GroundCo
 	check(row.band.over_two_bytes > 50, mode + " visible native contact band " + str(row.band))
 	check(row.upper.changed_pixels == 0 and row.outside_band.changed_pixels == 0, mode + " contact leaves upper and non-band pixels exact")
 	check(row.held.changed_pixels == 0, mode + " held contact image is stable")
+	if RenderingServer.get_current_rendering_method() == "forward_plus":
+		var programs := {}
+		for shader: Shader in owner._shaders.values():
+			check(shader.code.contains("#define EI_CONTACT_QUERY_MASK"), "authored contact uses candidate lookup")
+			programs[shader] = shader.code
+			shader.code = shader.code.replace("#define EI_CONTACT_QUERY_MASK", "")
+		owner.refresh_parameters()
+		var complete_search := await capture(view, mode + "-complete-search")
+		row["candidate_lookup"] = difference(on, complete_search)
+		check(row.candidate_lookup.peak_byte_delta <= 1, mode + " broad phase preserves complete-search pixels " + str(row.candidate_lookup))
+		for shader: Shader in programs: shader.code = programs[shader]
+		owner.refresh_parameters()
+		var lookup_restored := await capture(view, mode + "-lookup-restored")
+		check(difference(on, lookup_restored).changed_pixels == 0, mode + " candidate lookup restores exact pixels")
 	if mode == "local-light":
 		point.visible = false; Gfx.update_pass_lights(get_tree(), anchor)
 		var dark := await capture(view, mode + "-disabled")

@@ -1,0 +1,45 @@
+{
+  "windows_archive_sha256": "eff02c42c31a60426ca675f63e79ca210fa43c3d4c291368ccc6faccd0af02aa",
+  "matches_publication_checksum": true,
+  "archive_pck_matches_inspected_pck": true,
+  "journal_and_hud_match_linux": true,
+  "packages": [
+    {
+      "files": {
+        "game_hud": {
+          "path": "res://src/ui/game_hud.gdc",
+          "sha256": "58bb0d22b57b4fe076cb17cf49ae7f06b2cd56f592d1595876579e81574203c1"
+        },
+        "journal_panel": {
+          "path": "res://src/ui/journal_panel.gdc",
+          "sha256": "1ce667bd6c80ec6f2ae514c732b35af5144423543d5f1536702be7e862a7e7cd"
+        },
+        "unit_panel": {
+          "path": "res://src/ui/unit_panel.gdc",
+          "sha256": "81612cd2e80b791337c693c8577d580576af2e64a5e11900a6fa4f55bfe6b375"
+        }
+      },
+      "loaded": true,
+      "platform": "windows-x86_64"
+    },
+    {
+      "files": {
+        "game_hud": {
+          "path": "res://src/ui/game_hud.gdc",
+          "sha256": "58bb0d22b57b4fe076cb17cf49ae7f06b2cd56f592d1595876579e81574203c1"
+        },
+        "journal_panel": {
+          "path": "res://src/ui/journal_panel.gdc",
+          "sha256": "1ce667bd6c80ec6f2ae514c732b35af5144423543d5f1536702be7e862a7e7cd"
+        },
+        "unit_panel": {
+          "path": "res://src/ui/unit_panel.gdc",
+          "sha256": "81612cd2e80b791337c693c8577d580576af2e64a5e11900a6fa4f55bfe6b375"
+        }
+      },
+      "loaded": true,
+      "platform": "linux-x86_64"
+    }
+  ],
+  "scope": "Resource-byte comparison only; Windows executable was not run."
+}

@@ -1432,7 +1432,7 @@ func apply_gfx() -> void:
 				material = _pair_land_mat
 			sector.set_base_material(material)
 
-	if is_inside_tree() and not is_instance_valid(color_cache) and TerrainColorCache.available():
+	if is_inside_tree() and not is_instance_valid(color_cache) and TerrainColorCache.available(self):
 		color_cache = TerrainColorCache.create(self)
 	elif is_instance_valid(color_cache):
 		color_cache.refresh()

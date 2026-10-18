@@ -79,7 +79,7 @@ fixture against a player's installed package. The plugin contains no crash trigg
 
 To build a template, use the Godot commit in `engine_patches/godot-4.7/README.md`:
 
-1. Apply all twelve common engine patches in the order documented in the engine
+1. Apply the first twelve common engine patches in the order documented in the engine
    README, then `android-headless-service.patch`.
 2. Run `python3 platform/android/simulation/install_into_engine.py /path/to/godot`
    from this repository. It installs the Java plugin and private manifest entries

@@ -55,6 +55,9 @@ void vertex() {
 
 void fragment() {
 	vec4 t = texture(tex, UV);
+	// Transparent atlas borders and expired particles need no scene-depth
+	// reconstruction or blending. Keep every nonzero authored alpha.
+	if (t.a * COLOR.a <= 0.0) { discard; }
 	float soft = 1.0;
 #ifndef EI_PARTICLE_NO_DEPTH
 	if (through_alpha > 0.0) {

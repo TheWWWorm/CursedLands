@@ -203,6 +203,9 @@ func compare(a: Image, b: Image, area: Rect2i) -> Dictionary:
 func render_bands() -> void:
 	var view := SubViewport.new(); view.size = Vector2i(SIZE, SIZE)
 	view.own_world_3d = true; view.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	# These comparisons teleport the fixture between surfaces. Three fast
+	# render frames need not span a physics tick on a physical display.
+	view.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	view.msaa_3d = Viewport.MSAA_DISABLED
 	if not Portability.compatibility(): view.screen_space_aa = Viewport.SCREEN_SPACE_AA_DISABLED
 	add_child(view)

@@ -379,9 +379,16 @@ The scene-side `TerrainColorCache` additionally limits resident textures to
 visible sectors before play, camera changes queue missing sectors, and
 uncached sectors retain the original shader. Cleanup joins all jobs.
 Geometry, dynamic lighting, weather, water levels, relief and sharpening
-keep their existing renderer paths. Soft-ground mode uses its original
-materials. Android Compatibility enables the cache automatically; other
-Compatibility platforms can opt in with `-- --ei-baked-terrain`, and
+keep their existing renderer paths. Forward+ enables bounded sector colour
+pages for maps without admitted Natural transitions, at the source atlas's
+actual texel density (at most 192 pixels per tile). Its deformed receivers
+retain the live trail material and bind only the resident colour page; eviction
+restores the original sampler without removing trails. Arenas use their separate
+shared four-layer cache. Larger replacement atlases retain their authored
+resolution through the original sampler. Mobile and Compatibility keep their
+existing soft-ground material/expiry behaviour. Android Compatibility enables
+the cache automatically; other Compatibility platforms can opt in with
+`-- --ei-baked-terrain`, and
 `-- --ei-script-terrain` disables it for comparison. Unsupported renderers
 retain the original shader. The compact source representation passes 2,598
 checks on Linux and Android plus ASan/UBSan, with 173 device cache lifecycle

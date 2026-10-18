@@ -76,7 +76,7 @@ static func run(game: Game) -> void:
 			_finish_previews(game.get_tree(), previews)
 	if game.world.terrain:
 		var terrain:=game.world.terrain
-		if not is_instance_valid(terrain.color_cache) and TerrainColorCache.available():
+		if not is_instance_valid(terrain.color_cache) and TerrainColorCache.available(terrain):
 			terrain.color_cache=TerrainColorCache.create(terrain)
 		if is_instance_valid(terrain.color_cache):terrain.color_cache.prepare(cam)
 	var t0 := Time.get_ticks_msec()

@@ -36,6 +36,14 @@ const NO_PING := 9999
 
 ## Host side: the session whose game is described.
 var session: Session
+## Other game modes can reuse discovery without masquerading as a campaign.
+var info_provider := Callable()
+var discovery_port := PORT
+var protocol := NetStatus.PROTOCOL
+var modes := PackedStringArray(["coop", "lmp"])
+
+func query_port() -> int:
+	return port() if discovery_port == PORT else discovery_port
 var _sock: PacketPeerUDP
 var _token := ""
 
@@ -71,8 +79,8 @@ func listen() -> bool:
 	if not available():
 		return false
 	_sock = PacketPeerUDP.new()
-	if _sock.bind(port(), "0.0.0.0") != OK:
-		push_warning("LanDiscovery: port %d is in use; this game is not listed on the local network." % port())
+	if _sock.bind(query_port(), "0.0.0.0") != OK:
+		push_warning("LanDiscovery: port %d is in use; this game is not listed on the local network." % query_port())
 		_sock = null
 		return false
 	_token = "%08x" % (randi() & 0x7fffffff)
@@ -97,13 +105,18 @@ func _answer() -> void:
 		if pkt.size() < 8 or pkt.size() > 512 or pkt.slice(0, 4).get_string_from_ascii() != QUERY:
 			continue
 		var q: Variant = bytes_to_var(pkt.slice(4))
-		if not q is Dictionary or session == null or not session.multiplayer_game or not session.is_host:
+		if not q is Dictionary:
 			continue
-		var info := session.lan_info()
+		var info: Dictionary = {}
+		if info_provider.is_valid():
+			info = info_provider.call()
+		elif session != null and session.multiplayer_game and session.is_host:
+			info = session.lan_info()
+		if info.is_empty(): continue
 		info["t"] = int((q as Dictionary).get("t", 0))
 		info["n"] = int((q as Dictionary).get("n", 0))
 		info["id"] = _token
-		info["v"] = NetStatus.PROTOCOL
+		info["v"] = protocol
 		var out := ANSWER.to_ascii_buffer()
 		out.append_array(var_to_bytes(info))
 		_sock.set_dest_address(ip, from)
@@ -170,7 +183,7 @@ func _query() -> void:
 	var pkt := QUERY.to_ascii_buffer()
 	pkt.append_array(var_to_bytes({"t": Time.get_ticks_msec(), "n": n}))
 	for ip in targets(direct):
-		_sock.set_dest_address(ip, port())
+		_sock.set_dest_address(ip, query_port())
 		_sock.put_packet(pkt)
 
 
@@ -184,10 +197,13 @@ func _hear() -> void:
 		var a: Variant = bytes_to_var(pkt.slice(4))
 		if not a is Dictionary or not _sent.has(int(a.get("n", -1))):
 			continue
+		var mode := String(a.get("mode", "coop"))
+		if not modes.has(mode): continue
 		var gport := int(a.get("port", Session.PORT))
+		if gport < 1 or gport > 65535: continue
 		var g := {
 			"name": NetStatus.clean(String(a.get("name", ""))).left(24),
-			"mode": "lmp" if String(a.get("mode", "")) == "lmp" else "coop",
+			"mode": mode,
 			"base": String(a.get("base", "")).left(16),
 			"quest": String(a.get("quest", "")).left(32),
 			"players": clampi(int(a.get("players", 0)), 0, 99),

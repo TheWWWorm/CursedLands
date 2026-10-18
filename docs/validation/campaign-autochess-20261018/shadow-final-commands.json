@@ -1,0 +1,115 @@
+[
+  {
+    "name": "shadow-final-desert",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-shadow-candidate/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--position",
+      "100,900",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/benchmarks/suslanger_live.gd",
+      "--root-viewport",
+      "--zone=gz17h",
+      "--seconds=30"
+    ],
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/checks/shadow-final-desert",
+    "exit_code": 0,
+    "duration_seconds": 86.4017010940006
+  },
+  {
+    "name": "shadow-final-camp-bz14h",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-shadow-candidate/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--position",
+      "100,900",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/benchmarks/suslanger_live.gd",
+      "--root-viewport",
+      "--zone=bz14h",
+      "--seconds=20"
+    ],
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/checks/shadow-final-camp-bz14h",
+    "exit_code": 0,
+    "duration_seconds": 61.569310310995206
+  },
+  {
+    "name": "shadow-final-camp-bz15h",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-shadow-candidate/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--position",
+      "100,900",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/benchmarks/suslanger_live.gd",
+      "--root-viewport",
+      "--zone=bz15h",
+      "--seconds=20"
+    ],
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/checks/shadow-final-camp-bz15h",
+    "exit_code": 0,
+    "duration_seconds": 62.87291241402272
+  },
+  {
+    "name": "shadow-final-turn",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-shadow-candidate/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--position",
+      "100,900",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/benchmarks/suslanger_live.gd",
+      "--root-viewport",
+      "--zone=gz17h",
+      "--seconds=30",
+      "--turn"
+    ],
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/checks/shadow-final-turn",
+    "exit_code": 0,
+    "duration_seconds": 86.40984097402543
+  },
+  {
+    "name": "shadow-final-host-1",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-shadow-candidate/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--position",
+      "100,900",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/benchmarks/arena_host_process_frame_time.gd",
+      "--speed=1",
+      "--seconds=30"
+    ],
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/checks/shadow-final-host-1",
+    "exit_code": 0,
+    "duration_seconds": 66.32899441401241
+  },
+  {
+    "name": "shadow-final-host-2",
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/runtime-shadow-candidate/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--position",
+      "100,900",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/repo/tools/benchmarks/arena_host_process_frame_time.gd",
+      "--speed=2",
+      "--seconds=15"
+    ],
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/suslanger-issues-20261018/checks/shadow-final-host-2",
+    "exit_code": 0,
+    "duration_seconds": 51.95339859096566
+  }
+]

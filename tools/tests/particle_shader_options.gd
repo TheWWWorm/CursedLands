@@ -24,7 +24,7 @@ func difference(a: Image, b: Image) -> Dictionary:
 	return {"peak":peak, "channels_over_1":over}
 
 func original(key: int) -> Shader:
-	var code := ParticleFx.EFFECT_SHADER.code
+	var code := ParticleFx.EFFECT_SHADER.code.replace("\tif (t.a * COLOR.a <= 0.0) { discard; }\n", "")
 	if key & 1: code = code.replace("blend_mix", "blend_add")
 	if key & 2: code = code.replace("depth_draw_never,", "depth_draw_never, depth_test_disabled,")
 	if key & 6: code = ParticleFx.WaterReflection.screen_effect_source(code)
@@ -32,6 +32,11 @@ func original(key: int) -> Shader:
 	return shader
 
 func _ready() -> void:
+	await frames(24)
+	GameData._window_gen += 1
+	get_window().mode = Window.MODE_WINDOWED
+	get_window().size = Vector2i(320,320)
+	GameData.options.confine_mouse = 0
 	Engine.max_fps = 120
 	GameData.options.merge({"gfx_soft_particles":0,"gfx_lit_particles":0,"gfx_bloom":0,"gfx_firelight":0},true)
 	Gfx.ensure_globals()
@@ -46,7 +51,7 @@ func _ready() -> void:
 	opaque.albedo_color = Color(.12,.31,.46); wall.material_override = opaque
 	var image := Image.create(16,16,false,Image.FORMAT_RGBA8)
 	for y in 16:
-		for x in 16: image.set_pixel(x,y,Color(.3+x/24.0,.8-y/30.0,.24,1.0-abs(x-7.5)/10.0))
+		for x in 16: image.set_pixel(x,y,Color(.3+x/24.0,.8-y/30.0,.24,maxf(0.0, 1.0-abs(x-7.5)/5.0)))
 	var texture := ImageTexture.create_from_image(image)
 	var multi := MultiMesh.new(); multi.transform_format = MultiMesh.TRANSFORM_3D
 	multi.use_colors = true; multi.use_custom_data = true; multi.mesh = QuadMesh.new(); multi.instance_count = 1
