@@ -21,6 +21,12 @@ its artifacts. Historical versions remain unchanged.
 
 # Browser publishing
 
+An authorized "push and publish" must finish with a public GitHub release,
+unless the user explicitly requests a draft. Verify that `isDraft` is false;
+uploading assets to a draft is not completion. Do not delay GitHub publication
+while waiting for browser checks or Cloudflare deployment. Continue that work
+independently and report any deployment or browser failures separately.
+
 When publishing a release, rebuild and commit the hosted browser export in
 `public/` and its `parts.json` manifest from the release source. Verify a fresh
 browser start and an update from the previous service-worker cache, then confirm
